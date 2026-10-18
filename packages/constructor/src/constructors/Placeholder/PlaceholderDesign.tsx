@@ -63,16 +63,12 @@ export class PlaceholderDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -96,10 +92,10 @@ export class PlaceholderDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        image: this.getSubClass('image'),
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description'),
-        actions: this.getSubClass('actions')
+        image: this.naming.getSubClass('image'),
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description'),
+        actions: this.naming.getSubClass('actions')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

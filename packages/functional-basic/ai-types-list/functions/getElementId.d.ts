@@ -14,3 +14,5 @@ export declare function getElementId<E extends ElementOrWindow>(element?: Elemen
  * @keywords init id, ssr id listener, setup getElementId
  */
 export declare function initGetElementId(newListener: () => string | number): void;
+/** Resets the getElementId listener. @keywords reset id, reset getElementId */
+export declare function resetGetElementId(): void;

@@ -2,7 +2,6 @@
 
 import { EventItem } from '@dxtmisha/functional'
 import {
-  type ToRefs,
   onMounted,
   onUnmounted,
   provide,
@@ -41,7 +40,6 @@ export class CollageVariant {
    *
    * Конструктор для CollageVariant.
    * @param props input component properties / входные свойства компонента
-   * @param refs input reactive properties / входные реактивные свойства
    * @param elementItem manager for container DOM elements / менеджер DOM-элементов контейнера
    * @param woven manager for woven variant layout / менеджер макета варианта woven
    * @param masonryHorizontal manager for horizontal masonry variant layout / менеджер макета варианта горизонтальной кладки
@@ -50,7 +48,6 @@ export class CollageVariant {
    */
   constructor(
     protected readonly props: CollageProps,
-    protected readonly refs: ToRefs<CollageProps>,
     protected readonly elementItem: CollageElement,
     protected readonly woven: CollageWoven,
     protected readonly masonryHorizontal: CollageMasonryHorizontal,
@@ -61,10 +58,10 @@ export class CollageVariant {
 
     watch(
       [
-        this.refs.variant,
-        this.refs.columns,
-        this.refs.cellSize,
-        this.refs.images
+        () => this.props.variant,
+        () => this.props.columns,
+        () => this.props.cellSize,
+        () => this.props.images
       ],
       this.update
     )

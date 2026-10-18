@@ -60,16 +60,12 @@ export class CollageItemDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -94,10 +90,10 @@ export class CollageItemDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        image: this.getSubClass('image'),
-        icon: this.getSubClass('icon'),
-        collageBar: this.getSubClass('collageBar')
+        body: this.naming.getSubClass('body'),
+        image: this.naming.getSubClass('image'),
+        icon: this.naming.getSubClass('icon'),
+        collageBar: this.naming.getSubClass('collageBar')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -161,7 +157,7 @@ export class CollageItemDesign<
         {
           class: [
             this.classes?.value.body,
-            tag === 'a' ? getClassTagAStatic(this.getDesign()) : undefined
+            tag === 'a' ? getClassTagAStatic(this.naming.getDesign()) : undefined
           ],
           ...this.item.event.binds
         },

@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { HeadroomInclude } from '../../classes/HeadroomInclude'
 
@@ -18,10 +18,8 @@ export class Headroom {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -30,10 +28,8 @@ export class Headroom {
    */
   constructor(
     protected readonly props: HeadroomProps,
-    protected readonly refs: ToRefs<HeadroomProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<HeadroomComponents, HeadroomProps>,
     protected readonly slots?: HeadroomSlots,
     protected readonly emits?: ConstrEmit<HeadroomEmits>,
@@ -47,9 +43,8 @@ export class Headroom {
 
     this.headroom = new HeadroomConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.className,
+      this.naming,
       this.emits
     )
   }

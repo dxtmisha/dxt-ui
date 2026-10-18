@@ -1,5 +1,5 @@
-import type { Ref, ToRefs } from 'vue'
-import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import type { ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -58,10 +58,8 @@ export class InputSearch {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element ref / ссылка на элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits function called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -81,10 +79,8 @@ export class InputSearch {
    */
   constructor(
     protected readonly props: InputSearchProps,
-    protected readonly refs: ToRefs<InputSearchProps>,
     protected readonly element: Ref<FieldElementInput>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<InputSearchComponents, InputSearchProps>,
     protected readonly slots?: InputSearchSlots,
     protected readonly emits?: ConstrEmit<InputSearchEmits>,
@@ -139,7 +135,6 @@ export class InputSearch {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.refs,
       this.elementItem
     )
 
@@ -172,7 +167,7 @@ export class InputSearch {
     )
 
     this.field = new FieldIncludeConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       () => ({

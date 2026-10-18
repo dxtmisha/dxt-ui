@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { FieldSize } from '../FieldSize'
 
 vi.mock('vue', async () => {
@@ -46,7 +47,7 @@ describe('FieldSize', () => {
     Object.defineProperty(prefixEl, 'offsetLeft', { value: 5, configurable: true })
     label.appendChild(prefixEl)
 
-    const fieldSize = new FieldSize(ref(label), 'field-class')
+    const fieldSize = new FieldSize(ref(label), new DesignName('field.class'))
     fieldSize.update()
 
     expect(label.style.getPropertyValue('--field-class-sys-left')).toBe('10px')

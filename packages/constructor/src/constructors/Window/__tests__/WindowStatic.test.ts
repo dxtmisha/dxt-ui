@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { ref, toRefs, nextTick } from 'vue'
-import type { ToRefs } from 'vue'
+import { ref, nextTick } from 'vue'
+
 import { WindowStatic } from '../WindowStatic'
 import type { WindowProps } from '../props'
 
@@ -21,10 +21,9 @@ function createWindowStatic(
     staticMode: false,
     ...initialProperties
   })
-  const references = toRefs(reactiveProperties.value as any) as unknown as ToRefs<WindowProps>
+
   const windowStatic = new WindowStatic(
     reactiveProperties.value as unknown as WindowProps,
-    references,
     mockElement
   )
   return { windowStatic, reactiveProperties }

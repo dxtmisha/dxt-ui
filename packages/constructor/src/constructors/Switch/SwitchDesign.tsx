@@ -61,14 +61,14 @@ export class SwitchDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        input: this.getSubClass('input'),
-        body: this.getSubClass('body'),
-        item: this.getSubClass('item'),
-        icon: this.getSubClass('icon'),
-        loading: this.getSubClass('loading'),
-        info: this.getSubClass('info'),
-        label: this.getSubClass('label'),
-        track: this.getSubClass('track')
+        input: this.naming.getSubClass('input'),
+        body: this.naming.getSubClass('body'),
+        item: this.naming.getSubClass('item'),
+        icon: this.naming.getSubClass('icon'),
+        loading: this.naming.getSubClass('loading'),
+        info: this.naming.getSubClass('info'),
+        label: this.naming.getSubClass('label'),
+        track: this.naming.getSubClass('track')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -3,6 +3,7 @@
 import { computed, watch } from 'vue'
 import {
   type DesignComponents,
+  type DesignName,
   executeFunctionRef,
   getBind,
   type RefOrNormalOrFunction
@@ -32,7 +33,7 @@ export class MaskInclude<
 
   /**
    * Constructor
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input data/ входные данные
    * @param components object for working with components/ объект для работы с компонентами
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
@@ -42,7 +43,7 @@ export class MaskInclude<
    * @param type object for working with the input type/ объект для работы с типом ввода
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: ComponentIncludeProps<Props>,
     components?: DesignComponents<MaskComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
@@ -51,7 +52,7 @@ export class MaskInclude<
     protected readonly valueDefault: RefOrNormalOrFunction<any> = '',
     protected readonly type?: FieldTypeInclude
   ) {
-    super(className, props, components, extra, index)
+    super(naming, props, components, extra, index)
 
     if (this.value) {
       watch(

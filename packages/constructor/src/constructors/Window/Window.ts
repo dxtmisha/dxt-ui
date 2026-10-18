@@ -1,5 +1,5 @@
-import { onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { onMounted, onUnmounted, type Ref, watch } from 'vue'
+import { type ConstrClassObject, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
@@ -106,10 +106,8 @@ export class Window {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
@@ -141,10 +139,8 @@ export class Window {
    */
   constructor(
     protected readonly props: WindowPropsBasic,
-    protected readonly refs: ToRefs<WindowPropsBasic>,
     element: Ref<HTMLDivElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<WindowComponents, WindowPropsBasic>,
     protected readonly slots?: WindowSlots,
     protected readonly emits?: ConstrEmit<WindowEmits>,
@@ -207,7 +203,7 @@ export class Window {
     this.hook = new WindowHookConstructor(props)
     this.clientOnly = new ClientOnlyIncludeConstructor()
 
-    this.classes = new WindowClassesConstructor(className)
+    this.classes = new WindowClassesConstructor(naming)
     this.element = new WindowElementConstructor(this.classes, element)
     this.client = new WindowClientConstructor(this.element)
     this.tabIndex = new TabIndexConstructor(
@@ -222,7 +218,7 @@ export class Window {
     this.coordinates = new WindowCoordinatesConstructor(this.classes, this.element)
     this.position = new WindowPositionConstructor(props, this.client, this.element, this.coordinates)
     this.origin = new WindowOriginConstructor(this.client, this.element, this.position)
-    this.staticMode = new WindowStaticConstructor(props, refs, this.element)
+    this.staticMode = new WindowStaticConstructor(props, this.element)
     this.emit = new WindowEmitConstructor(this.classes, this.element, emits)
 
     this.styles = new WindowStylesConstructor(
@@ -230,7 +226,7 @@ export class Window {
       this.coordinates,
       this.position,
       this.origin,
-      className
+      naming
     )
     this.open = new WindowOpenConstructor(
       props,
@@ -269,12 +265,12 @@ export class Window {
 
     this.scrollbar = new ScrollbarConstructor(
       props,
-      className,
+      naming,
       components,
       emits
     )
     this.image = new ImageConstructor(
-      className,
+      naming,
       props,
       components,
       undefined,
@@ -297,7 +293,7 @@ export class Window {
 
     new ModelConstructor<boolean>('open', this.emits, this.open.item)
 
-    watch([refs.open], () => this.open.set(props.open))
+    watch(() => props.open, () => this.open.set(props.open))
 
     onMounted(() => {
       if (props.open) {
@@ -366,8 +362,8 @@ export class Window {
   get classesList(): ConstrClassObject {
     return {
       [this.classes.getId()]: true,
-      [`${this.className}--staticMode`]: this.staticMode.item.value,
-      [`${this.className}--embedded`]: Boolean(this.props.embedded)
+      [this.naming.getStatusClass('staticMode')]: this.staticMode.item.value,
+      [this.naming.getStatusClass('embedded')]: Boolean(this.props.embedded)
     }
   }
 

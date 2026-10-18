@@ -1,5 +1,5 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -63,10 +63,8 @@ export class InputPhone {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -87,10 +85,8 @@ export class InputPhone {
    */
   constructor(
     protected readonly props: InputPhoneProps,
-    protected readonly refs: ToRefs<InputPhoneProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<InputPhoneComponents, InputPhoneProps>,
     protected readonly slots?: InputPhoneSlots,
     protected readonly emits?: ConstrEmit<InputPhoneEmits>,
@@ -136,7 +132,6 @@ export class InputPhone {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.refs,
       this.elementItem
     )
 
@@ -166,7 +161,7 @@ export class InputPhone {
     this.phoneMask = new InputPhoneMaskConstructor(props, this.data, this.value)
 
     this.field = new FieldIncludeConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       undefined,
@@ -175,7 +170,7 @@ export class InputPhone {
       this.event
     )
     this.mask = new MaskIncludeConstructor(
-      this.className,
+      this.naming,
       () => this.phoneMask.maskProps,
       this.components,
       undefined,
@@ -184,7 +179,7 @@ export class InputPhone {
       this.data.valueDefault
     )
     this.dialCode = new InputPhoneDialCodeIncludeConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       () => ({

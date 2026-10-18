@@ -1,5 +1,5 @@
-import { shallowRef, watch, type Ref } from 'vue'
-import { toRefItem } from '@dxtmisha/functional'
+import { shallowRef, watch } from 'vue'
+import { toRefItem, type RefOrNormal } from '@dxtmisha/functional'
 import { isFilled } from '@dxtmisha/functional-basic'
 import {
   fetchClientStorage,
@@ -21,8 +21,8 @@ import {
  */
 export function useFigmaStorageMulti<T = unknown>(
   name: string,
-  inDocument?: Ref<boolean> | boolean,
-  inLocal?: Ref<boolean> | boolean,
+  inDocument?: RefOrNormal<boolean>,
+  inLocal?: RefOrNormal<boolean>,
   defaultValue?: T
 ) {
   /** Save in document flag / Флаг сохранения в макете */
@@ -65,49 +65,16 @@ export function useFigmaStorageMulti<T = unknown>(
     false
   )
 
-  watch(item, (value) => {
-    if (isLocal.value) {
-      sendClientStorage(name, isFilled(value) ? value : '')
-    }
+  watch([item, isLocal, isDocument], () => {
+    sendClientStorage(
+      name,
+      isLocal.value && isFilled(item.value) ? item.value : ''
+    )
 
-    if (isDocument.value) {
-      sendStorage(name, isFilled(value) ? value : '')
-    }
-  })
-
-  watch(isLocal, (active) => {
-    if (active) {
-      if (isFilled(item.value)) {
-        sendClientStorage(name, item.value)
-      } else {
-        fetchClientStorage<T>(
-          name,
-          update,
-          defaultValue,
-          false
-        )
-      }
-    } else {
-      sendClientStorage(name, '')
-    }
-  })
-
-  watch(isDocument, (active) => {
-    if (active) {
-      if (isFilled(item.value)) {
-        sendStorage(name, item.value)
-      } else {
-        fetchStorage<T>(
-          name,
-          update,
-          undefined,
-          defaultValue,
-          false
-        )
-      }
-    } else {
-      sendStorage(name, '')
-    }
+    sendStorage(
+      name,
+      isDocument.value && isFilled(item.value) ? item.value : ''
+    )
   })
 
   return {

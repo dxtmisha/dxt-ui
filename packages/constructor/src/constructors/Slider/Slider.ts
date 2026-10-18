@@ -1,15 +1,15 @@
 import {
   computed,
   onUnmounted,
-  type Ref,
-  type ToRefs
+  type Ref
 } from 'vue'
 
 import {
   type ConstrClassObject,
   type ConstrEmit,
   type ConstrStyles,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
@@ -85,10 +85,8 @@ export class Slider {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -97,10 +95,8 @@ export class Slider {
    */
   constructor(
     protected readonly props: SliderProps,
-    protected readonly refs: ToRefs<SliderProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<SliderComponents, SliderProps>,
     protected readonly slots?: SliderSlots,
     protected readonly emits?: ConstrEmit<SliderEmits>,
@@ -140,7 +136,7 @@ export class Slider {
 
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      classDesign
+      naming
     )
     this.enabled = new EnabledIncludeConstructor(props)
     this.focus = new SliderFocusConstructor()
@@ -150,12 +146,12 @@ export class Slider {
       emits,
       undefined,
       computed(() => props.modelValue || props.value),
-      refs.readonly,
-      refs.multiple
+      () => props.readonly,
+      () => props.multiple
     )
 
-    this.marksData = new SliderMarksDataConstructor(props, className)
-    this.marks = new SliderMarksConstructor(props, className, this.marksData)
+    this.marksData = new SliderMarksDataConstructor(props, naming)
+    this.marks = new SliderMarksConstructor(props, naming, this.marksData)
     this.value = new SliderValueConstructor(this.focus, this.marks, this.model, props)
 
     this.minElement = new SliderThumbMinConstructor(props, this.marksData, this.marks, this.value)
@@ -217,7 +213,7 @@ export class Slider {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--mark`]: this.marksData.is()
+      [this.naming.getStatusClass('mark')]: this.marksData.is()
     }
   }
 
@@ -229,8 +225,8 @@ export class Slider {
    */
   get styles(): ConstrStyles {
     return {
-      [`--${this.className}-sys-thumb-min-x`]: `${this.marksData.toPercent(this.value.min)}%`,
-      [`--${this.className}-sys-thumb-max-x`]: `${this.marksData.toPercent(this.value.max)}%`
+      [this.naming.getStyle('thumb-min-x')]: `${this.marksData.toPercent(this.value.min)}%`,
+      [this.naming.getStyle('thumb-max-x')]: `${this.marksData.toPercent(this.value.max)}%`
     }
   }
 

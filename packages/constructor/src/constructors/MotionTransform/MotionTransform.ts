@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -49,11 +49,9 @@ export class MotionTransform {
   /**
    * Constructor
    * @param props input properties / входные свойства
-   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target window element / элемент окна
    * @param elementContext substrate element / элемент подложка
-   * @param classDesign design system prefix / префикс дизайна
-   * @param className base class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
@@ -70,11 +68,9 @@ export class MotionTransform {
    */
   constructor(
     protected readonly props: MotionTransformProps,
-    protected readonly refs: ToRefs<MotionTransformProps>,
     element: Ref<HTMLDivElement | undefined>,
     elementContext: Ref<HTMLDivElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<MotionTransformComponents, MotionTransformProps>,
     protected readonly slots?: MotionTransformSlots,
     protected readonly emits?: ConstrEmit<MotionTransformEmits>,
@@ -106,7 +102,7 @@ export class MotionTransform {
       props,
       element,
       elementContext,
-      className
+      naming
     )
     this.tabIndex = new TabIndexIncludeConstructor(
       () => this.element.elementBody,
@@ -116,7 +112,6 @@ export class MotionTransform {
     this.size = new MotionTransformSizeConstructor(this.element)
     this.state = new MotionTransformStateConstructor(
       props,
-      refs,
       this.element,
       this.tabIndex,
       this.size
@@ -185,7 +180,7 @@ export class MotionTransform {
     return {
       isOpen: this.state.isOpen(),
       isShow: this.state.isShow(),
-      classes: MotionTransformElement.getClassesList(this.className),
+      classes: MotionTransformElement.getClassesList(this.naming.getName()),
       idControl: this.element.idControl,
       idBody: this.element.idBody,
       binds: AriaStaticInclude.control(

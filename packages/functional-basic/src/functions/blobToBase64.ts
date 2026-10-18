@@ -1,6 +1,12 @@
 import { isDomRuntime } from './isDomRuntime'
 
 /**
+ * Matches the Data URL prefix up to base64 content /
+ * Регулярное выражение для поиска префикса Data URL до содержимого base64
+ */
+const REGEXP_DATA_URL_PREFIX = /^data:.*?,/
+
+/**
  * Check if Buffer is available.
  *
  * Проверяет доступность Buffer.
@@ -21,29 +27,31 @@ const getBuffer = () => (globalThis as any)?.Buffer
  *
  * Получает base64 из Blob с помощью FileReader.
  * @param blob The blob to convert / Blob для преобразования
- * @returns base64 string / строка base64
+ * @returns Promise with base64 string or undefined / Промис со строкой base64 или undefined
  */
-const getDataByFileReader = async (blob: Blob): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    if (typeof FileReader !== 'undefined') {
-      const reader = new FileReader()
+const getDataByFileReader = async (blob: Blob): Promise<string | undefined> => {
+  if (typeof FileReader === 'undefined') {
+    return undefined
+  }
 
-      reader.onloadend = () => {
-        if (!reader?.result) {
-          reject(new Error('Failed to read blob'))
-          return
-        }
+  return new Promise((resolve) => {
+    const reader = new FileReader()
 
-        const base64: string = (reader.result as string)
-          .replace(/^data:.*?,/, '')
-
-        resolve(base64)
+    reader.onloadend = () => {
+      if (typeof reader.result !== 'string') {
+        resolve(undefined)
+        return
       }
-      reader.onerror = reject
-      reader.readAsDataURL(blob)
-    } else {
-      reject()
+
+      const base64: string = reader.result.replace(REGEXP_DATA_URL_PREFIX, '')
+      resolve(base64)
     }
+
+    reader.onerror = () => {
+      resolve(undefined)
+    }
+
+    reader.readAsDataURL(blob)
   })
 }
 
@@ -61,27 +69,33 @@ const getDataByBuffer = (arrayBuffer: ArrayBuffer): string => {
 
 /**
  * Convert a Blob to a Base64 string.
+ * Returns undefined if the Blob is empty or cannot be read.
  *
  * Преобразует Blob в строку Base64.
+ * Возвращает undefined, если Blob пустой или не может быть прочитан.
  * @param blob The Blob to convert / Blob для преобразования
- * @param clean if true, removes the data URL prefix / если true, удаляет префикс data URL
- * @returns promise with the base64 string or undefined / промис со строкой base64 или undefined
+ * @param clean If true, removes the data URL prefix / Если true, удаляет префикс data URL
+ * @returns Promise with the base64 string or undefined if empty / Промис со строкой base64 или undefined, если Blob пустой
  */
 export async function blobToBase64(
   blob: Blob,
   clean: boolean = false
 ): Promise<string | undefined> {
-  const base64: string | undefined = isDomRuntime()
-    ? (await getDataByFileReader(blob))
-    : (isBuffer() ? getDataByBuffer(await blob.arrayBuffer()) : undefined)
+  try {
+    const base64: string | undefined = isDomRuntime()
+      ? (await getDataByFileReader(blob))
+      : (isBuffer() ? getDataByBuffer(await blob.arrayBuffer()) : undefined)
 
-  if (!base64) {
+    if (!base64) {
+      return undefined
+    }
+
+    if (!clean) {
+      return `data:${blob.type};base64,${base64}`
+    }
+
+    return base64
+  } catch {
     return undefined
   }
-
-  if (!clean) {
-    return `data:${blob.type};base64,${base64}`
-  }
-
-  return base64
 }

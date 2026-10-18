@@ -1,7 +1,8 @@
-import { computed, type ComputedRef, type Ref, type ToRefs } from 'vue'
+import { toRef, computed, type ComputedRef, type Ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   forEach,
   type GeoFlagNational,
   GeoFlagRef,
@@ -41,10 +42,8 @@ export class MenuCountry {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits function called when an event is triggered / функция, вызываемая при возникновении события
@@ -55,10 +54,8 @@ export class MenuCountry {
    */
   constructor(
     protected readonly props: MenuCountryProps,
-    protected readonly refs: ToRefs<MenuCountryProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<MenuCountryComponents, MenuCountryProps>,
     protected readonly slots?: MenuCountrySlots,
     protected readonly emits?: ConstrEmit<MenuCountryEmits>,
@@ -80,7 +77,7 @@ export class MenuCountry {
     this.model = new ModelIncludeConstructor('selected', this.emits)
 
     this.menu = new MenuIncludeConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       () => ({
@@ -123,6 +120,6 @@ export class MenuCountry {
    * @returns reactive list of national flag items / реактивный список элементов национальных флагов
    */
   protected initFlagList(): ComputedRef<GeoFlagNational[]> {
-    return new GeoFlagRef(this.refs.language).getNational(this.refs.list)
+    return new GeoFlagRef(toRef(this.props, 'language')).getNational(toRef(this.props, 'list'))
   }
 }

@@ -1,7 +1,7 @@
 // ai-none
 
 import { h, type VNode } from 'vue'
-import { type ConstrEmit, type DesignComponents, toBinds } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComponents, type DesignName, toBinds } from '@dxtmisha/functional'
 
 import type { ScrollbarComponentInclude, ScrollbarEmitsInclude, ScrollbarPropsInclude, ScrollbarEdgeType } from './basicTypes'
 
@@ -33,13 +33,13 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
    *
    * Конструктор класса ScrollbarInclude.
    * @param props input parameter / входной параметр
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
     protected readonly props: Readonly<Props>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComponents<ScrollbarComponentInclude, Props>,
     protected readonly emits?: ConstrEmit<ScrollbarEmitsInclude>
   ) {
@@ -74,7 +74,7 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
         toBinds(
           {
             tag,
-            class: `${this.className}__scrollbar`,
+            class: this.naming.getSubClass('scrollbar'),
             ...this.scrollbarEvents
           },
           props,

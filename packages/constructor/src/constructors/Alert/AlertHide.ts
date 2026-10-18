@@ -1,7 +1,7 @@
 // ai-none
 
 import { ref } from 'vue'
-import { type ConstrClass } from '@dxtmisha/functional'
+import { type ConstrClass, type DesignName } from '@dxtmisha/functional'
 /**
  * Class for working with a hidden element.
  *
@@ -16,10 +16,10 @@ export class AlertHide {
 
   /**
    * Constructor
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
   }
 
@@ -39,7 +39,7 @@ export class AlertHide {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.className}--hide`]: this.hide.value
+      [this.naming.getStatusClass('hide')]: this.hide.value
     }
   }
 

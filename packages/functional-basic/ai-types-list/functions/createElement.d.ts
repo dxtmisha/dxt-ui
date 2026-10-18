@@ -1,7 +1,7 @@
-// md5:3a0c5789fe9524f733251fec26842062 true
+// md5:3b47ab08c09cb30eaed755140cc47d68 true
 /**
- * Creates an HTML element, applies properties or a setup callback, and inserts it into the DOM.
- * @remarks Returns `undefined` during SSR. Call within client-only lifecycle hooks (e.g., `onMounted`, `useEffect`) to prevent hydration mismatches.
- * @keywords createElement, create dom element, html node, ssr safe
+ * Creates an HTML element, configures its attributes or logic, and optionally mounts it to a parent DOM node.
+ * @remarks Designed for standard HTML elements via `document.createElement` (use `document.createElementNS` for SVG/MathML). Returns `undefined` in SSR environments; execute within client-only lifecycle hooks to avoid hydration mismatches.
+ * @keywords createElement, create dom element, html, dom manipulation, mount
  */
-export declare function createElement<T extends HTMLElement>(parentElement?: HTMLElement, tagName?: string, options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void), referenceElement?: HTMLElement): T | undefined;
+export declare function createElement<T extends HTMLElement>(parentElement?: Element | DocumentFragment, tagName?: string, options?: Partial<T> | Record<string, unknown> | ((element: T) => void), referenceElement?: Node | null): T | undefined;

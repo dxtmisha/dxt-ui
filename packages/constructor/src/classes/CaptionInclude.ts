@@ -1,6 +1,7 @@
 import { type VNode } from 'vue'
 import {
   executeFunctionRef,
+  type DesignName,
   isFilled,
   type RefOrNormalOrFunction,
   render,
@@ -27,14 +28,14 @@ export class CaptionInclude {
    *
    * Конструктор
    * @param props input property / входное свойство
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param slots object for working with slots / объект для работы со слотами
    * @param skeleton optional skeleton for loading state / необязательный скелетон для состояния загрузки
    * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
     protected readonly props: RefOrNormalOrFunction<CaptionProps>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly slots?: CaptionSlots,
     protected readonly skeleton?: SkeletonInclude,
     protected readonly tag: string = 'div'
@@ -60,7 +61,7 @@ export class CaptionInclude {
   get binds() {
     const binds = {
       'class': {
-        [`${this.className}__caption`]: true,
+        [this.naming.getSubClass('caption')]: true,
         ...this.skeleton?.classes
       },
       'data-event-type': 'caption'

@@ -65,16 +65,12 @@ export class TabItemDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -100,9 +96,9 @@ export class TabItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        icon: this.getSubClass('icon'),
-        badge: this.getSubClass('badge')
+        label: this.naming.getSubClass('label'),
+        icon: this.naming.getSubClass('icon'),
+        badge: this.naming.getSubClass('badge')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

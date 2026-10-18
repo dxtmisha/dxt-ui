@@ -1,5 +1,5 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -65,10 +65,8 @@ export class SliderField {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -88,10 +86,8 @@ export class SliderField {
    */
   constructor(
     protected readonly props: SliderFieldProps,
-    protected readonly refs: ToRefs<SliderFieldProps>,
     protected readonly element: Ref<FieldElementInput>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<SliderFieldComponents, SliderFieldProps>,
     protected readonly slots?: SliderFieldSlots,
     protected readonly emits?: ConstrEmit<SliderFieldEmits>,
@@ -130,7 +126,7 @@ export class SliderField {
     this.change = new FieldChangeIncludeConstructor(props)
     this.attributes = new FieldAttributesIncludeConstructor(props)
 
-    this.value = new FieldValueIncludeConstructor<SliderValueType>(props, refs, undefined, undefined, false)
+    this.value = new FieldValueIncludeConstructor<SliderValueType>(props, undefined, undefined, false)
     this.valueItem = new SliderFieldValueConstructor(props, this.value)
 
     this.code = new FieldCodeIncludeConstructor(props)
@@ -161,13 +157,13 @@ export class SliderField {
     )
 
     this.fieldLabel = new FieldLabelIncludeConstructor(
-      this.className,
+      this.naming,
       () => this.label.labelProps,
       this.components
     )
 
     this.fieldMessage = new FieldMessageIncludeConstructor(
-      this.className,
+      this.naming,
       props,
       this.components,
       undefined,
@@ -175,7 +171,7 @@ export class SliderField {
       () => this.validation.message
     )
 
-    this.icon = new IconTrailingIncludeConstructor(props, this.className, this.components)
+    this.icon = new IconTrailingIncludeConstructor(props, this.naming, this.components)
     this.label = new SliderFieldLabelConstructor(props, this.valueItem)
   }
 

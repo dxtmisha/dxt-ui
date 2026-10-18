@@ -59,16 +59,12 @@ export class PageAreaDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -127,6 +123,6 @@ export class PageAreaDesign<
         break
     }
 
-    return this.components.renderOne(componentName as never, this.props, this.slots as RawSlots)
+    return this.components?.renderOne(componentName as never, this.props, this.slots as RawSlots)
   }
 }

@@ -69,16 +69,12 @@ export class PaginationDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -102,15 +98,15 @@ export class PaginationDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        button: this.getSubClass('button'),
-        navigation: this.getSubClass('navigation'),
-        more: this.getSubClass('more'),
-        morePrev: this.getSubClass('morePrev'),
-        info: this.getSubClass('info'),
-        menuRows: this.getSubClass('menuRows'),
-        menuRowsLabel: this.getSubClass('menuRows__label'),
-        ellipsis: this.getSubClass('ellipsis'),
-        spacer: this.getSubClass('spacer')
+        button: this.naming.getSubClass('button'),
+        navigation: this.naming.getSubClass('navigation'),
+        more: this.naming.getSubClass('more'),
+        morePrev: this.naming.getSubClass('morePrev'),
+        info: this.naming.getSubClass('info'),
+        menuRows: this.naming.getSubClass('menuRows'),
+        menuRowsLabel: this.naming.getSubClass('menuRows__label'),
+        ellipsis: this.naming.getSubClass('ellipsis'),
+        spacer: this.naming.getSubClass('spacer')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -275,7 +271,7 @@ export class PaginationDesign<
    * @returns limit selector menu VNode or undefined / VNode меню выбора лимита или undefined
    */
   readonly renderMenuControl = (): VNode[] => {
-    const menu = this.components.renderOne(
+    const menu = this.components?.renderOne(
       'menu',
       this.item.menuRows.binds,
       { control: this.renderMenuButton }
@@ -503,7 +499,7 @@ export class PaginationDesign<
     props: ConstrBind<ButtonPropsBasic>,
     index: string | undefined = props.selected ? 'selected' : undefined
   ): VNode | undefined => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'button',
       toBinds(
         props,

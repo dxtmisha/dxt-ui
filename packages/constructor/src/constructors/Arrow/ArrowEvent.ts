@@ -5,7 +5,6 @@ import {
   onMounted,
   onUnmounted,
   type Ref,
-  type ToRefs,
   watch
 } from 'vue'
 import { EventItem, EventRef } from '@dxtmisha/functional'
@@ -36,7 +35,6 @@ export class ArrowEvent {
   /**
    * Constructor
    * @param props input properties / входные свойства
-   * @param refs input properties as refs / входные свойства как ссылки
    * @param element arrow element / элемент стрелки
    * @param elementTarget target element / целевой элемент
    * @param parent parent object / объект родителя
@@ -44,14 +42,13 @@ export class ArrowEvent {
    */
   constructor(
     protected readonly props: ArrowProps,
-    protected readonly refs: ToRefs<ArrowProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly elementTarget: ArrowElementTarget,
     protected readonly parent: ArrowParent,
     protected readonly position: ArrowPosition
   ) {
     watch(this.elementTarget.element, this.makeEvents)
-    watch([...Object.values(this.refs)], this.update)
+    watch(() => Object.values(this.props), this.update)
 
     onMounted(async () => {
       await nextTick()

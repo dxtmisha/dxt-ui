@@ -1,5 +1,7 @@
 // ai-none
 
+import type { DesignName } from '@dxtmisha/functional'
+
 import type { SliderMarksData } from './SliderMarksData'
 
 import { SliderFocusType, type SliderMarkItem } from './basicTypes'
@@ -14,12 +16,12 @@ export class SliderMarks {
   /**
    * Constructor
    * @param props input properties / входящие свойства
-   * @param className class name prefix / префикс названия класса
+   * @param naming component naming helper / помощник именования компонента
    * @param data manager for computing normalized mark items list / менеджер вычисления нормализованного списка элементов меток
    */
   constructor(
     protected readonly props: SliderPropsBasic,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly data: SliderMarksData
   ) { }
 

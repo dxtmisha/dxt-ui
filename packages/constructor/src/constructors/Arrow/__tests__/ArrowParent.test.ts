@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { ArrowParent } from '../ArrowParent'
 
 vi.mock('vue', async () => {
@@ -44,7 +45,7 @@ describe('ArrowParent', () => {
   })
 
   it('should initialize parent parameters and set styling variables on make()', async () => {
-    const parent = new ArrowParent(ref(element), 'my-arrow', mockElementItem)
+    const parent = new ArrowParent(ref(element), new DesignName('my.arrow'), mockElementItem)
 
     await new Promise(resolve => requestAnimationFrame(resolve))
 

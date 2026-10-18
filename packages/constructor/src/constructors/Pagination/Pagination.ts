@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../classes/AreaInclude'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -48,10 +48,8 @@ export class Pagination {
    *
    * Конструктор для координации логических подсистем компонента постраничного вывода (Pagination).
    * @param props input reactive properties / входные реактивные свойства
-   * @param refs raw properties wrapped as refs / исходные свойства в виде ссылок (refs)
    * @param element root HTML element / корневой HTML-элемент
-   * @param classDesign component design system name / имя дизайн-системы компонента
-   * @param className base CSS class name / базовое имя CSS класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components helper object for dynamic component rendering / вспомогательный объект для динамического рендеринга компонентов
    * @param slots slot definition descriptors / дескрипторы определений слотов
    * @param emits Vue callback emitter function / функция генерации событий Vue
@@ -68,10 +66,8 @@ export class Pagination {
    */
   constructor(
     protected readonly props: PaginationProps,
-    protected readonly refs: ToRefs<PaginationProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<PaginationComponents, PaginationProps>,
     protected readonly slots?: PaginationSlots,
     protected readonly emits?: ConstrEmit<PaginationEmits>,
@@ -102,7 +98,6 @@ export class Pagination {
     this.text = new TextIncludeConstructor(props)
     this.page = new PaginationPageConstructor(
       props,
-      refs,
       this.text,
       emits
     )
@@ -118,9 +113,9 @@ export class Pagination {
 
     this.focusDirection = new FocusDirectionIncludeConstructor(
       this.element,
-      `.${className}__button:not(:disabled)`,
-      `.${this.classDesign}-button--selected`,
-      `${this.classDesign}-button--focus`
+      `.${naming.getSubClass('button')}:not(:disabled)`,
+      `.${this.naming.getDesign()}-button--selected`,
+      `${this.naming.getDesign()}-button--focus`
     )
 
     this.button = new PaginationButtonConstructor(

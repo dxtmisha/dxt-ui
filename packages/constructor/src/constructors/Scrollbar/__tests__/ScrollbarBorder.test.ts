@@ -1,5 +1,7 @@
+// @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { ref, toRefs, reactive } from 'vue'
+import { ref, reactive } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { ScrollbarBorder } from '../ScrollbarBorder'
 import type { ScrollbarProps } from '../props'
 
@@ -19,7 +21,6 @@ describe('ScrollbarBorder', () => {
       dividerTop: false,
       dividerBottom: false
     })
-    const refs = toRefs(props)
 
     const element = document.createElement('div')
     const child = document.createElement('div')
@@ -28,7 +29,7 @@ describe('ScrollbarBorder', () => {
     const elementRef = ref(element)
     const emits = vi.fn()
 
-    const border = new ScrollbarBorder(props, refs, elementRef, 'd1-scrollbar', emits)
+    const border = new ScrollbarBorder(props, elementRef, new DesignName('d1.scrollbar'), emits)
 
     expect(border).toBeDefined()
   })
@@ -39,14 +40,13 @@ describe('ScrollbarBorder', () => {
       dividerTop: false,
       dividerBottom: false
     })
-    const refs = toRefs(props)
 
     const element = document.createElement('div')
     const child = document.createElement('div')
     element.appendChild(child)
     const elementRef = ref(element)
 
-    const border = new ScrollbarBorder(props, refs, elementRef, 'd1-scrollbar')
+    const border = new ScrollbarBorder(props, elementRef, new DesignName('d1.scrollbar'))
 
     const startSpy = vi.spyOn(border, 'start')
     const stopSpy = vi.spyOn(border, 'stop')
@@ -65,7 +65,6 @@ describe('ScrollbarBorder', () => {
       dividerTop: false,
       dividerBottom: false
     })
-    const refs = toRefs(props)
 
     const element = document.createElement('div')
     const child = document.createElement('div')
@@ -73,7 +72,7 @@ describe('ScrollbarBorder', () => {
     const elementRef = ref(element)
     const emits = vi.fn()
 
-    const border = new ScrollbarBorder(props, refs, elementRef, 'd1-scrollbar', emits)
+    const border = new ScrollbarBorder(props, elementRef, new DesignName('d1.scrollbar'), emits)
 
     Object.defineProperty(element, 'scrollTop', { value: 10, writable: true, configurable: true })
     Object.defineProperty(element, 'scrollHeight', { value: 100, writable: true, configurable: true })

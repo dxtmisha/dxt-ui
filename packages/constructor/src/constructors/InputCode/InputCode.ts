@@ -1,5 +1,5 @@
-import { type ConstrEmit, type DesignComp, isFilled } from '@dxtmisha/functional'
-import { onMounted, ref, type Ref, type ToRefs, watch } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName, isFilled } from '@dxtmisha/functional'
+import { onMounted, ref, type Ref, watch } from 'vue'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -40,10 +40,8 @@ export class InputCode {
   /**
    * Constructor
    * @param props input properties / входные свойства
-   * @param refs input properties as reactive references / входные свойства в виде реактивных ссылок
    * @param element main HTML element ref / ссылка на основной HTML-элемент
-   * @param classDesign design class name / название класса дизайна
-   * @param className basic CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components sub-components configuration object / объект конфигурации подкомпонентов
    * @param slots slots configuration object / объект конфигурации слотов
    * @param emits event emitter function / функция для вызова событий
@@ -55,10 +53,8 @@ export class InputCode {
    */
   constructor(
     protected readonly props: InputCodeProps,
-    protected readonly refs: ToRefs<InputCodeProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<InputCodeComponents, InputCodeProps>,
     protected readonly slots?: any,
     protected readonly emits?: ConstrEmit<InputCodeEmits>,
@@ -77,15 +73,15 @@ export class InputCode {
     } = constructors
 
     this.fieldLabel = new FieldLabelIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       () => ({ loading: props.loading })
     )
-    this.fieldMessage = new FieldMessageIncludeConstructor(className, props, components)
+    this.fieldMessage = new FieldMessageIncludeConstructor(naming, props, components)
 
     this.inputCodeItem = new InputCodeItemIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       this.onInput
@@ -95,8 +91,8 @@ export class InputCode {
 
     watch(
       [
-        this.refs.value,
-        this.refs.modelValue
+        () => this.props.value,
+        () => this.props.modelValue
       ],
       this.update
     )

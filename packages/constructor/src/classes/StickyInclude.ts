@@ -6,6 +6,7 @@ import {
 } from 'vue'
 import {
   getRef,
+  type DesignName,
   EventItem,
   getElementOrWindow,
   executeFunction
@@ -41,13 +42,13 @@ export class StickyInclude {
    *
    * Конструктор
    * @param props input properties / входящие свойства
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param element target element reference / ссылка на целевой элемент
    * @param parent parent element reference / ссылка на родительский элемент
    */
   constructor(
     protected readonly props: StickyPropsInclude | (() => StickyPropsInclude),
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly parent: Ref<HTMLElement | undefined>
   ) {
@@ -98,7 +99,7 @@ export class StickyInclude {
    * @returns custom CSS property name / имя пользовательского CSS-свойства
    */
   protected getCustomProperty(): string {
-    return `--${this.className}-sys-sticky-fix`
+    return this.naming.getStyle('sticky-fix')
   }
 
   /**
@@ -108,7 +109,7 @@ export class StickyInclude {
    * @returns custom CSS property name / имя пользовательского CSS-свойства
    */
   protected getCustomPropertyHeight(): string {
-    return `--${this.className}-sys-sticky-height`
+    return this.naming.getStyle('sticky-height')
   }
 
   /**

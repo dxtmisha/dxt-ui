@@ -1,3 +1,5 @@
-// md5:8f6652c7f30031feb18cf12ad01b22c7 true
-/** Removes all properties matching an exception value from an object. @keywords object filter remove undefined clean */
-export declare function getObjectNoUndefined<T extends Record<string | number, any>>(data: T, exception?: any): T;
+// md5:8dfb6ba80afc6c04bfe3786274a11fe2 true
+/** Removes elements matching the exception value from an array and returns an indexed object. @keywords filter, omit, clean, undefined, array to object */
+export declare function getObjectNoUndefined<V>(data: readonly V[], exception?: unknown): Record<number, V>;
+/** Removes properties matching the exception value from an object. @keywords filter, omit, clean, undefined, compact */
+export declare function getObjectNoUndefined<T extends Record<PropertyKey, unknown>>(data: T, exception?: unknown): T;

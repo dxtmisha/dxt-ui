@@ -58,16 +58,12 @@ export class AccordionDesign<
 
     this.item = new Accordion(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -91,8 +87,8 @@ export class AccordionDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        head: this.getSubClass('head'),
-        body: this.getSubClass('body')
+        head: this.naming.getSubClass('head'),
+        body: this.naming.getSubClass('body')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -155,7 +151,7 @@ export class AccordionDesign<
       }
     }
 
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'cell',
       toBinds(
         this.item.bindsCell,

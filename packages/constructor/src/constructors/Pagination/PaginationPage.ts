@@ -1,6 +1,6 @@
 // ai-none
 
-import { computed, ref, type ToRefs, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { ConstrEmit } from '@dxtmisha/functional'
 
 import type { TextInclude } from '../../classes/TextInclude'
@@ -22,22 +22,20 @@ export class PaginationPage {
    *
    * Конструктор для PaginationPage.
    * @param props input properties / входные свойства
-   * @param refs raw properties wrapped as refs / исходные свойства в виде ссылок (refs)
    * @param text text manager instance / экземпляр менеджера текстов
    * @param emits callback for event emitter / функция для генерации событий
    */
   constructor(
     protected readonly props: PaginationProps,
-    protected readonly refs: ToRefs<PaginationProps>,
     protected readonly text?: TextInclude,
     protected readonly emits?: ConstrEmit<PaginationEmits>
   ) {
     watch(
       [
-        this.refs.value,
-        this.refs.modelValue,
-        this.refs.rows,
-        this.refs.modelRows
+        () => this.props.value,
+        () => this.props.modelValue,
+        () => this.props.rows,
+        () => this.props.modelRows
       ],
       () => {
         this.valueItem.value = Number(this.props.modelValue ?? this.props.value ?? 1)

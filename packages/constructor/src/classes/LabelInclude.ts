@@ -1,6 +1,7 @@
 import { type Ref, type VNode } from 'vue'
 import {
   type ConstrClass,
+  type DesignName,
   executeFunctionRef,
   getElementId,
   isFilled,
@@ -29,7 +30,7 @@ export class LabelInclude {
    *
    * Конструктор для инициализации свойств LabelInclude.
    * @param props input properties / входные свойства
-   * @param className base class name / название базового класса
+   * @param naming component naming helper / помощник именования компонента
    * @param classesExtra additional CSS classes / дополнительные CSS-классы
    * @param slots slots dictionary / объект слотов
    * @param elementsExtra callback for extra VNode elements / коллбэк для дополнительных VNode-элементов
@@ -41,7 +42,7 @@ export class LabelInclude {
    */
   constructor(
     protected readonly props: RefOrNormalOrFunction<LabelProps>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly classesExtra?: ConstrClass,
     protected readonly slots?: LabelSlots | LabelAlternativeSlots,
     protected readonly elementsExtra?: () => VNode[],
@@ -169,7 +170,7 @@ export class LabelInclude {
    * @returns resolved CSS classes / разрешенные CSS-классы
    */
   protected getClassName(): ConstrClass {
-    const classes: ConstrClass = [`${this.className}__label`]
+    const classes: ConstrClass = [this.naming.getSubClass('label')]
 
     if (this.classesExtra) {
       classes.push(this.classesExtra)

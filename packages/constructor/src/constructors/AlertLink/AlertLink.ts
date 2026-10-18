@@ -1,5 +1,5 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import { type ConstrClass, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -23,10 +23,8 @@ export class AlertLink {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
@@ -36,10 +34,8 @@ export class AlertLink {
    */
   constructor(
     protected readonly props: AlertLinkProps,
-    protected readonly refs: ToRefs<AlertLinkProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<AlertLinkComponents, AlertLinkProps>,
     protected readonly slots?: AlertLinkSlots,
     protected readonly emits?: ConstrEmit<AlertLinkEmits>,
@@ -61,7 +57,7 @@ export class AlertLink {
 
     this.label = new LabelIncludeConstructor(
       props,
-      className,
+      naming,
       undefined,
       slots
     )
@@ -75,7 +71,7 @@ export class AlertLink {
    */
   get classes(): ConstrClass {
     return {
-      [getClassTagAStatic(this.classDesign)]: true
+      [getClassTagAStatic(this.naming.getDesign())]: true
     }
   }
 }

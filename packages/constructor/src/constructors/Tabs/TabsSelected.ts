@@ -1,6 +1,6 @@
 // ai-none
 
-import { ref, type ToRefs, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { getFirst, isSelected, type ListSelectedList } from '@dxtmisha/functional'
 
 import type { TabsProps } from './props'
@@ -16,15 +16,13 @@ export class TabsSelected {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    */
   constructor(
-    protected readonly props: TabsProps,
-    protected readonly refs: ToRefs<TabsProps>
+    protected readonly props: TabsProps
   ) {
     this.item.value = props.selected || getFirst(props.tabs)?.value
 
-    watch([this.refs.selected], this.update)
+    watch(() => this.props.selected, this.update)
   }
 
   /**

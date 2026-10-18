@@ -66,11 +66,8 @@ export class ProgressDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
-      this.getName()
+      this.naming
     )
-
-    this.init()
   }
 
   /**
@@ -94,9 +91,9 @@ export class ProgressDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        circle: this.getSubClass('circle'),
-        circleSub: this.getSubClass('circleSub'),
-        point: this.getSubClass('point')
+        circle: this.naming.getSubClass('circle'),
+        circleSub: this.naming.getSubClass('circleSub'),
+        point: this.naming.getSubClass('point')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

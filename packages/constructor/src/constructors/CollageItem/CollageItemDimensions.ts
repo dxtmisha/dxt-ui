@@ -1,6 +1,6 @@
 // ai-none
 
-import type { ConstrEmit, ConstrStyles } from '@dxtmisha/functional'
+import type { ConstrEmit, DesignName, ConstrStyles } from '@dxtmisha/functional'
 import { inject, ref } from 'vue'
 
 import type { ImageEventData } from '../Image'
@@ -44,17 +44,17 @@ export class CollageItemDimensions {
    *
    * Конструктор для CollageItemDimensions.
    * @param props input component properties / входные свойства компонента
-   * @param className base class name of the component / базовое имя класса компонента
+   * @param naming component naming helper / помощник именования компонента
    * @param emits constructor emitter for component events / конструктор событий для событий компонента
    */
   constructor(
     protected readonly props: CollageItemProps,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly emits?: ConstrEmit<CollageItemEmits>
   ) {
     this.property = {
-      height: `--${className}-sys-height`,
-      width: `--${className}-sys-width`
+      height: naming.getStyle('height'),
+      width: naming.getStyle('width')
     }
   }
 

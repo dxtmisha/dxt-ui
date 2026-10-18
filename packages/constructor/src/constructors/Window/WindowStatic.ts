@@ -1,6 +1,6 @@
 // ai-none
 
-import { onMounted, ref, type ToRefs, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { EventItem, setRef } from '@dxtmisha/functional'
 
 import { WindowElement } from './WindowElement'
@@ -21,15 +21,13 @@ export class WindowStatic {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element an object of the class for working with elements/ объект класса для работы с элементами
    */
   constructor(
     protected readonly props: WindowProps,
-    refs: ToRefs<WindowProps>,
     protected readonly element: WindowElement
   ) {
-    watch([refs.staticMode], this.make)
+    watch(() => props.staticMode, this.make)
 
     onMounted(() => {
       if (this.is()) {

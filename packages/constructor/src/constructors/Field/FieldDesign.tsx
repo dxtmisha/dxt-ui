@@ -65,16 +65,12 @@ export class FieldDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -98,18 +94,18 @@ export class FieldDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        bodyInput: this.getSubClass('body__input'),
-        bodyTitle: this.getSubClass('body__title'),
-        bodyTitleLabel: this.getSubClass('body__title__label'),
-        bodyTitleLabelText: this.getSubClass('body__title__label__text'),
-        bodyScoreboard: this.getSubClass('body__scoreboard'),
-        bodyScoreboardLeft: this.getSubClass('body__scoreboard__left'),
-        bodyScoreboardRight: this.getSubClass('body__scoreboard__right'),
-        bodyScoreboardSpace: this.getSubClass('body__scoreboard__space'),
-        bodyScoreboardInput: this.getSubClass('body__scoreboard__input'),
-        bodyBorder: this.getSubClass('body__border'),
-        required: this.getSubClass('required')
+        body: this.naming.getSubClass('body'),
+        bodyInput: this.naming.getSubClass('body__input'),
+        bodyTitle: this.naming.getSubClass('body__title'),
+        bodyTitleLabel: this.naming.getSubClass('body__title__label'),
+        bodyTitleLabelText: this.naming.getSubClass('body__title__label__text'),
+        bodyScoreboard: this.naming.getSubClass('body__scoreboard'),
+        bodyScoreboardLeft: this.naming.getSubClass('body__scoreboard__left'),
+        bodyScoreboardRight: this.naming.getSubClass('body__scoreboard__right'),
+        bodyScoreboardSpace: this.naming.getSubClass('body__scoreboard__space'),
+        bodyScoreboardInput: this.naming.getSubClass('body__scoreboard__input'),
+        bodyBorder: this.naming.getSubClass('body__border'),
+        required: this.naming.getSubClass('required')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -280,7 +276,7 @@ export class FieldDesign<
     const icons: any[] = [...this.item.icon.render()]
 
     if (this.item.icons.isCancel()) {
-      this.components.renderAdd(
+      this.components?.renderAdd(
         icons,
         'icon',
         this.item.icons.cancelBind,
@@ -290,7 +286,7 @@ export class FieldDesign<
     }
 
     if (this.item.icons.isArrow()) {
-      this.components.renderAdd(
+      this.components?.renderAdd(
         icons,
         'icon',
         this.item.icons.previousBind,
@@ -298,7 +294,7 @@ export class FieldDesign<
         'previous'
       )
 
-      this.components.renderAdd(
+      this.components?.renderAdd(
         icons,
         'icon',
         this.item.icons.nextBind,

@@ -58,10 +58,8 @@ export class InputFileDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -69,8 +67,6 @@ export class InputFileDesign<
 
     // TODO: Method for initializing base objects
     // TODO: Метод для инициализации базовых объектов
-
-    this.init()
   }
 
   /**

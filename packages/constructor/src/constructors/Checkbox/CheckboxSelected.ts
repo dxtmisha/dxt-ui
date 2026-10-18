@@ -1,6 +1,6 @@
 // ai-none
 
-import { ref, type ToRefs, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { anyToString, type ConstrEmit } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -25,13 +25,11 @@ export class CheckboxSelected {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param value field value inclusion object / объект включения значения поля
    */
   constructor(
     protected readonly props: CheckboxProps,
-    protected readonly refs: ToRefs<CheckboxProps>,
     protected readonly value: FieldValueInclude,
     protected readonly emits?: ConstrEmit<CheckboxEmits>
   ) {
@@ -44,7 +42,7 @@ export class CheckboxSelected {
     this.update()
 
     watch(
-      [refs.selected],
+      () => props.selected,
       this.update
     )
     watch(this.value.item, this.updateByValue)

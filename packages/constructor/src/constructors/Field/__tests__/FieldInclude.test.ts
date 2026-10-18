@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { FieldInclude } from '../FieldInclude'
 
 describe('FieldInclude', () => {
@@ -20,7 +21,7 @@ describe('FieldInclude', () => {
     } as any
 
     const fieldInclude = new FieldInclude(
-      'field-class',
+      new DesignName('field.class'),
       { focus: true, label: 'My Label' },
       undefined,
       undefined,
@@ -64,7 +65,7 @@ describe('FieldInclude', () => {
     } as any
 
     const fieldInclude = new FieldInclude(
-      'field-class',
+      new DesignName('field.class'),
       {},
       undefined,
       undefined,

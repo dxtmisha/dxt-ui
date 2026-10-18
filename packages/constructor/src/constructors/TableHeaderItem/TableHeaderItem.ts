@@ -1,8 +1,9 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -40,10 +41,8 @@ export class TableHeaderItem extends TableItem {
    *
    * Конструктор для TableHeaderItem.
    * @param props input parameters / входные параметры
-   * @param refs input parameters in the form of reactive elements / входные параметры в виде реактивных элементов
    * @param element element / элемент
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
@@ -57,10 +56,8 @@ export class TableHeaderItem extends TableItem {
    */
   constructor(
     protected readonly props: TableHeaderItemProps,
-    protected readonly refs: ToRefs<TableHeaderItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<TableHeaderItemComponents, TableHeaderItemProps>,
     protected readonly slots?: TableHeaderItemSlots,
     protected readonly emits?: ConstrEmit<TableHeaderItemEmits>,
@@ -84,10 +81,8 @@ export class TableHeaderItem extends TableItem {
 
     super(
       props,
-      refs,
       element,
-      classDesign,
-      className,
+      naming,
       components,
       slots,
       emits,
@@ -101,13 +96,13 @@ export class TableHeaderItem extends TableItem {
     this.sort = new TableHeaderItemSortConstructor(props, emits)
 
     this.chip = new ChipIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       this.sort.chipExtra
     )
 
-    this.tooltip = new TooltipIncludeConstructor(className, props, components, this.slots)
+    this.tooltip = new TooltipIncludeConstructor(naming, props, components, this.slots)
   }
 
   /**
@@ -132,7 +127,7 @@ export class TableHeaderItem extends TableItem {
    */
   get tooltipControlBind(): ConstrBind<IconPropsBasic> {
     return {
-      'class': `${this.className}__tooltip`,
+      'class': this.naming.getSubClass('tooltip'),
       'icon': this.props.iconTooltip || 'help-circle',
       'data-event-type': 'tooltip'
     }

@@ -3,6 +3,7 @@
 import { type VNode } from 'vue'
 import {
   type DesignComponents,
+  type DesignName,
   isObjectNotArray,
   toBinds
 } from '@dxtmisha/functional'
@@ -44,8 +45,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * Constructor for TableItemInclude.
    *
    * Конструктор для TableItemInclude.
-   * @param classDesign design system prefix / префикс дизайн-системы
-   * @param className base class name / базовое имя класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input properties / входные свойства
    * @param components design components registry / реестр дизайн-компонентов
    * @param extra additional properties or attributes / дополнительные свойства или атрибуты
@@ -53,15 +53,14 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    protected readonly classDesign: string,
-    className: string,
+    protected readonly naming: DesignName,
     props: ComponentIncludeProps<TableItemPropsInclude>,
     components?: DesignComponents<any, TableItemPropsInclude>,
     extra?: ComponentIncludeExtra<TableItemPropsBasic>,
     protected readonly slots?: Record<string, any>,
     index?: string
   ) {
-    super(className, props, components, extra, index)
+    super(naming, props, components, extra, index)
   }
 
   /**
@@ -173,7 +172,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * @returns class name / имя класса
    */
   protected getItemClassName(): string {
-    return `${this.className}-tableItem`
+    return `${this.naming.getName()}-tableItem`
   }
 
   /**
@@ -220,7 +219,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
   protected getCellAttrs(value: any): Record<string, any> | undefined {
     if (value === '*none') {
       return {
-        class: `${this.className}--none`
+        class: this.naming.getStatusClass('none')
       }
     }
 

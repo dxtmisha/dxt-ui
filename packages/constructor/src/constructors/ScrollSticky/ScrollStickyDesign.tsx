@@ -65,16 +65,12 @@ export class ScrollStickyDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -98,8 +94,8 @@ export class ScrollStickyDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        context: this.getSubClass('context'),
-        scroll: this.getSubClass('scroll')
+        context: this.naming.getSubClass('context'),
+        scroll: this.naming.getSubClass('scroll')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

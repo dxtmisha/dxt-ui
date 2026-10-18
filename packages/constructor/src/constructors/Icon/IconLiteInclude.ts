@@ -5,6 +5,7 @@ import {
   type ConstrBind,
   type ConstrClass,
   type DesignComponents,
+  type DesignName,
   executeFunction,
   executeFunctionRef,
   getBind
@@ -27,13 +28,13 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
    *
    * Конструктор для инициализации помощника IconLiteInclude.
    * @param props input parameter / входной параметр
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter / дополнительный параметр
    */
   constructor(
     protected readonly props: Readonly<Props> | (() => Readonly<Props>),
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComponents<IconComponentInclude, Props>,
     protected readonly extra?: ComponentIncludeExtra<IconPropsBasic>
   ) {
@@ -114,7 +115,7 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
     classesUser?: ConstrClass,
     name: string = 'icon'
   ): { class: ConstrClass } {
-    const classes: ConstrClass = [`${this.className}__${name}`]
+    const classes: ConstrClass = [this.naming.getSubClass(name)]
     const classesExtra = this.getExtra()?.class
 
     if (classesExtra) {

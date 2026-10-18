@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { MaskView } from '../MaskView'
 import { MASK_CHAR_DELETE, MASK_VIEW_DEFAULT } from '../basicTypes'
 import type { MaskType } from '../MaskType'
@@ -73,7 +74,7 @@ describe('MaskView', () => {
       mockMask,
       mockValueBasic,
       mockValidation,
-      'd1-mask'
+      new DesignName('d1.mask')
     )
   })
 

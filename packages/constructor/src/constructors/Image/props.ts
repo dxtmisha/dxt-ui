@@ -1,5 +1,6 @@
-import type { ImagePicture } from './basicTypes'
+import type { ImageAttrs, ImageCoordinatorItem, ImagePicture, ImageUint8ArrayType } from './basicTypes'
 
+/** Image design token properties / Свойства дизайн-токенов изображения */
 export type ImagePropsToken = {
   // :type [!] System label / Системная метка
   turn?: boolean
@@ -11,13 +12,14 @@ export type ImagePropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/** Image source, layout and loading properties / Свойства источника, размещения и загрузки изображения */
 export type ImagePropsBasic = {
   // Value
   /**
-   * Accepts icon name, image URL, File object or PDF link/
-   * Принимает название иконки, ссылку на изображение, объект File или ссылку на PDF файл
+   * Icon name, image or PDF URL, File, binary buffer, or null to clear; image:photo.png marks an explicit image path /
+   * Название иконки, URL изображения или PDF, File, бинарный буфер либо null для очистки; image:photo.png явно задаёт путь изображения
    */
-  value?: string | any
+  value?: string | File | ImageUint8ArrayType | null
 
   /** Image URL/ URL изображения */
   url?: string
@@ -40,7 +42,7 @@ export type ImagePropsBasic = {
    * Image coordinates (e.g. for cropping or positioning)/
    * Координаты изображения (например, для обрезки или позиционирования)
    */
-  coordinator?: number[] | any
+  coordinator?: ImageCoordinatorItem
   /** X position/ Позиция по оси X */
   x?: string | number
   /** Y position/ Позиция по оси Y */
@@ -68,7 +70,7 @@ export type ImagePropsBasic = {
   /** Preload offset/ Смещение для предзагрузки */
   preloadOffset?: string
   /** Image fetch priority (low, high, auto)/ Приоритет загрузки изображения (low, high, auto) */
-  fetchPriority?: HTMLImageElement['fetchPriority']
+  fetchPriority?: ImageAttrs['fetchPriority']
 }
 
 /**

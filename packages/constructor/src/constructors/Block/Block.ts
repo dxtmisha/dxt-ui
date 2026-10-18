@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp, getElementId } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName, getElementId } from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../classes/AreaInclude'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -31,10 +31,8 @@ export class Block {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -44,10 +42,8 @@ export class Block {
    */
   constructor(
     protected readonly props: BlockProps,
-    protected readonly refs: ToRefs<BlockProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<BlockComponents, BlockProps>,
     protected readonly slots?: BlockSlots,
     protected readonly emits?: ConstrEmit<BlockEmits>,
@@ -64,7 +60,7 @@ export class Block {
     } = constructors
 
     this.header = new HeaderIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       undefined,
@@ -72,7 +68,7 @@ export class Block {
       this.labelId
     )
 
-    this.description = new DescriptionIncludeConstructor(props, className, slots)
+    this.description = new DescriptionIncludeConstructor(props, naming, slots)
     this.area = new AreaIncludeConstructor(props)
   }
 

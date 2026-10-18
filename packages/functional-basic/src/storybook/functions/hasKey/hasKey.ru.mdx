@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/hasKey - Проверка наличия собственного ключа в объекте'/>
+
+# `hasKey`
+
+Проверяет, является ли указанное свойство собственным свойством объекта или функции, используя безопасный вызов `Object.prototype.hasOwnProperty.call`.
+
+Функция обеспечивает защиту от **Prototype Pollution** и исключает ложные срабатывания на свойства из цепочки прототипов (такие как `toString`, `valueOf`, `constructor`, `__proto__`, `hasOwnProperty`). Безопасна для работы с `null`, `undefined`, примитивами и словарями без прототипа (`Object.create(null)`). В среде TypeScript выступает в качестве защитника типа (type guard), автоматически сужая тип объекта.
+
+**Параметры:**
+- `object: unknown` — проверяемый объект, функция или значение любого типа.
+- `key: PropertyKey` — ключ свойства (`string | number | symbol`).
+
+**Возвращает:**
+`boolean` — `true`, если свойство существует и принадлежит непосредственно данному объекту (собственное свойство), иначе `false`.
+
+```typescript
+import { hasKey } from '@dxtmisha/functional-basic'
+
+const user = { name: 'Alice', age: 30 }
+console.log(hasKey(user, 'name')) // true
+console.log(hasKey(user, 'email')) // false
+
+// Защита от prototype pollution:
+console.log(hasKey({}, 'toString')) // false
+console.log(hasKey({ toString: 'custom' }, 'toString')) // true
+
+// Безопасность при работе с null, undefined и примитивами:
+console.log(hasKey(null, 'foo')) // false
+console.log(hasKey(123, 'foo')) // false
+
+// Работа со словарями без прототипа (Object.create(null)):
+const dict = Object.create(null)
+dict.item = 'value'
+console.log(hasKey(dict, 'item')) // true
+console.log(hasKey(dict, 'toString')) // false
+
+// Сужение типов в TypeScript (Type Guard):
+const data: unknown = { id: 1, title: 'DXT' }
+if (hasKey(data, 'title')) {
+  console.log(data.title) // data гарантированно содержит свойство title
+}
+```

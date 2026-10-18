@@ -59,16 +59,12 @@ export class FieldLabelDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -90,8 +86,8 @@ export class FieldLabelDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        required: this.getSubClass('required')
+        label: this.naming.getSubClass('label'),
+        required: this.naming.getSubClass('required')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

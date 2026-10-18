@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { HorizontalScrollInclude } from '../HorizontalScrollInclude'
 
 describe('HorizontalScrollInclude', () => {
@@ -8,7 +9,7 @@ describe('HorizontalScrollInclude', () => {
       horizontalScrollBleed: true,
       horizontalScrollAlign: 'block' as const
     }
-    const include = new HorizontalScrollInclude('parent-class', props)
+    const include = new HorizontalScrollInclude(new DesignName('parent.class'), props)
 
     expect(include.elementHtml).toBeUndefined()
 
@@ -32,7 +33,7 @@ describe('HorizontalScrollInclude', () => {
       horizontalScrollBleed: false,
       horizontalScrollAlign: 'left' as const
     }
-    const include = new HorizontalScrollInclude('parent-class', props)
+    const include = new HorizontalScrollInclude(new DesignName('parent.class'), props)
 
     const binds = include.binds.value
     expect(binds.bleed).toBe(false)

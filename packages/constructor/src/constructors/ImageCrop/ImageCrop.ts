@@ -1,5 +1,5 @@
-import type { Ref, ToRefs } from 'vue'
-import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import type { ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -41,10 +41,8 @@ export class ImageCrop {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -57,10 +55,8 @@ export class ImageCrop {
    */
   constructor(
     protected readonly props: ImageCropProps,
-    protected readonly refs: ToRefs<ImageCropProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ImageCropComponents, ImageCropProps>,
     protected readonly slots?: ImageCropSlots,
     protected readonly emits?: ConstrEmit<ImageCropEmits>,
@@ -81,10 +77,10 @@ export class ImageCrop {
     } = constructors
 
     this.model = new ModelIncludeConstructor('value', this.emits)
-    this.cropImage = new ImageCropImageConstructor(className, props, emits)
+    this.cropImage = new ImageCropImageConstructor(naming, props, emits)
 
     this.image = new ImageIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       () => ({
@@ -99,7 +95,7 @@ export class ImageCrop {
     )
 
     this.cropArea = new CropAreaIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       () => ({
@@ -115,7 +111,7 @@ export class ImageCrop {
     )
 
     this.progress = new ProgressConstructor(
-      className,
+      naming,
       () => ({
         loading: this.cropImage.isLoading()
       }),

@@ -1,7 +1,8 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   getBind
 } from '@dxtmisha/functional'
 
@@ -33,10 +34,8 @@ export class CollageBar {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -48,10 +47,8 @@ export class CollageBar {
    */
   constructor(
     protected readonly props: CollageBarProps,
-    protected readonly refs: ToRefs<CollageBarProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<CollageBarComponents, CollageBarProps>,
     protected readonly slots?: CollageBarSlots,
     protected readonly emits?: ConstrEmit<CollageBarEmits>,
@@ -73,19 +70,19 @@ export class CollageBar {
 
     this.label = new LabelIncludeConstructor(
       props,
-      className,
+      naming,
       undefined,
       slots
     )
 
     this.description = new DescriptionIncludeConstructor(
       props,
-      className,
+      naming,
       slots
     )
 
     this.button = new ButtonIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       () => ({

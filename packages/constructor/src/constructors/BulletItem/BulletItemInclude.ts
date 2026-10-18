@@ -47,7 +47,7 @@ export class BulletItemInclude extends ComponentIncludeAbstract<
    * @returns component name / имя компонента
    */
   getName(): string {
-    return this.className
+    return this.naming.getName()
   }
 
   /**

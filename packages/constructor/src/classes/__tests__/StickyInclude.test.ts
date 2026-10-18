@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { ref, reactive } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { StickyInclude } from '../StickyInclude'
 
 vi.mock('vue', async () => {
@@ -48,7 +49,7 @@ describe('StickyInclude', () => {
     // Mock offsetHeight
     vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: undefined }), 'dxt-sticky', elementReference, parentReference)
+    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: undefined }), new DesignName('dxt.sticky'), elementReference, parentReference)
 
     // Top is at 100px relative to viewport, boundaryTop + topOffset = 0.
     // calculatedTop = 0 - 100 = -100, clamped to [0, 450] -> 0
@@ -79,7 +80,7 @@ describe('StickyInclude', () => {
 
     vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: undefined }), 'dxt-sticky', elementReference, parentReference)
+    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: undefined }), new DesignName('dxt.sticky'), elementReference, parentReference)
 
     // calculatedTop = 0 - (-100) = 100px, clamped to [0, 450] -> 100px
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('100px')
@@ -105,7 +106,7 @@ describe('StickyInclude', () => {
 
     vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyTop: 20, stickyEnable: undefined }), 'dxt-sticky', elementReference, parentReference)
+    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyTop: 20, stickyEnable: undefined }), new DesignName('dxt.sticky'), elementReference, parentReference)
 
     // calculatedTop = (0 + 20) - (-100) = 120px
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('120px')
@@ -131,7 +132,7 @@ describe('StickyInclude', () => {
 
     vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: undefined }), 'dxt-sticky', elementReference, parentReference)
+    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: undefined }), new DesignName('dxt.sticky'), elementReference, parentReference)
 
     // calculatedTop = 0 - (-600) = 600px, clamped to parent height - element height (500 - 50 = 450px)
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('450px')
@@ -156,7 +157,7 @@ describe('StickyInclude', () => {
 
     vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: false }), 'dxt-sticky', elementReference, parentReference)
+    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: false }), new DesignName('dxt.sticky'), elementReference, parentReference)
 
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
     ;(sticky as unknown as { reset(): void }).reset()
@@ -166,7 +167,7 @@ describe('StickyInclude', () => {
     const parentReference = ref(parentElement)
     const elementReference = ref(stickyElement)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: false }), 'dxt-sticky', elementReference, parentReference)
+    const sticky = new StickyInclude(reactive({ stickyScrollBottom: false }), new DesignName('dxt.sticky'), elementReference, parentReference)
 
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
     ;(sticky as unknown as { reset(): void }).reset()
@@ -191,7 +192,7 @@ describe('StickyInclude', () => {
     vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
     const isEnabled = ref(false)
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: isEnabled }), 'dxt-sticky', elementReference, parentReference)
+    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: isEnabled }), new DesignName('dxt.sticky'), elementReference, parentReference)
 
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
 
@@ -225,7 +226,7 @@ describe('StickyInclude', () => {
     vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
     const propsFunction = () => reactive({ stickyScrollBottom: true, stickyTop: 10, stickyEnable: true })
-    const sticky = new StickyInclude(propsFunction, 'dxt-sticky', elementReference, parentReference)
+    const sticky = new StickyInclude(propsFunction, new DesignName('dxt.sticky'), elementReference, parentReference)
 
     // calculatedTop = (0 + 10) - (-100) = 110px
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('110px')
@@ -250,7 +251,7 @@ describe('StickyInclude', () => {
     const parentReference = ref(testParent)
     const elementReference = ref(testSticky)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: true }), 'dxt-sticky', elementReference, parentReference)
+    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: true }), new DesignName('dxt.sticky'), elementReference, parentReference)
 
     // Access protected fields for verification
     const scrollContainers = (sticky as unknown as { scrollContainer: (HTMLElement | Window)[] }).scrollContainer
@@ -284,7 +285,7 @@ describe('StickyInclude', () => {
 
     vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
 
-    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: true }), 'dxt-sticky', elementReference, parentReference)
+    const sticky = new StickyInclude(reactive({ stickyScrollBottom: true, stickyEnable: true }), new DesignName('dxt.sticky'), elementReference, parentReference)
 
     const getScrollTopSpy = vi.spyOn(sticky as any, 'getScrollTop')
 

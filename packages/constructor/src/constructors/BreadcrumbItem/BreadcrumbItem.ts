@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrClass, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -34,10 +34,8 @@ export class BreadcrumbItem {
    *
    * Конструктор для BreadcrumbItem.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -50,10 +48,8 @@ export class BreadcrumbItem {
    */
   constructor(
     protected readonly props: BreadcrumbItemProps,
-    protected readonly refs: ToRefs<BreadcrumbItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<BreadcrumbItemComponents, BreadcrumbItemProps>,
     protected readonly slots?: BreadcrumbItemSlots,
     protected readonly emits?: ConstrEmit<BreadcrumbItemEmits>,
@@ -77,19 +73,19 @@ export class BreadcrumbItem {
 
     this.icon = new IconLiteIncludeConstructor(
       props,
-      className,
+      naming,
       components
     )
 
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      classDesign,
+      naming,
       ['classTextVariant']
     )
 
     this.label = new LabelIncludeConstructor(
       props,
-      className,
+      naming,
       undefined,
       slots,
       undefined,
@@ -127,7 +123,7 @@ export class BreadcrumbItem {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.classDesign}-a--static`]: true
+      [`${this.naming.getDesign()}-a--static`]: true
     }
   }
 }

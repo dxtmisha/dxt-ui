@@ -65,17 +65,13 @@ export class MotionTransformDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
       this.elementContext,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -107,12 +103,12 @@ export class MotionTransformDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        context: this.getSubClass('context'),
-        head: this.getSubClass('head'),
-        body: this.getSubClass('body'),
-        backdrop: this.getSubClass('backdrop'),
-        scrim: this.getSubClass('scrim'),
-        clickNone: this.getSubClass('clickNone')
+        context: this.naming.getSubClass('context'),
+        head: this.naming.getSubClass('head'),
+        body: this.naming.getSubClass('body'),
+        backdrop: this.naming.getSubClass('backdrop'),
+        scrim: this.naming.getSubClass('scrim'),
+        clickNone: this.naming.getSubClass('clickNone')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

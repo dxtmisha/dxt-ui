@@ -65,16 +65,12 @@ export class SelectValueDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -98,8 +94,8 @@ export class SelectValueDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item'),
-        trailing: this.getSubClass('trailing')
+        item: this.naming.getSubClass('item'),
+        trailing: this.naming.getSubClass('trailing')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -189,7 +185,7 @@ export class SelectValueDesign<
    * @returns chip VNode or undefined / VNode чипа или undefined
    */
   readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'chip',
       toBinds(
         this.props.chipAttrs,

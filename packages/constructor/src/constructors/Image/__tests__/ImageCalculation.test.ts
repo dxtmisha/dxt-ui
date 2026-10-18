@@ -1,40 +1,57 @@
-import { describe, it, expect } from 'vitest'
-import { ImageCalculation } from '../ImageCalculation'
+import './testWarnings'
+import { describe, expect, it } from 'vitest'
+import { computed } from 'vue'
+import { ImageCalculation, MAX_IMAGE_OFFSET } from '../ImageCalculation'
 
 describe('ImageCalculation', () => {
-  it('should initialize properties correctly', () => {
-    const calc = new ImageCalculation('group-name')
-    expect(calc.width).toBe(0)
-    expect(calc.height).toBe(0)
-    expect(calc.offsetWidth).toBe(7680)
-    expect(calc.offsetHeight).toBe(7680)
-    expect(calc.factorMax).toBe(1)
-    expect(calc.is('group-name')).toBe(true)
-    expect(calc.is('other')).toBe(false)
-    expect(calc.isSize()).toBe(false)
+  it.each(['gallery', ''])('initializes an isolated group %j', (name) => {
+    const calculation = new ImageCalculation(name)
+    expect(calculation.is(name)).toBe(true)
+    expect(calculation.is(name + '-other')).toBe(false)
+    expect(calculation.isSize()).toBe(false)
+    expect([calculation.width, calculation.height, calculation.factorMax]).toEqual([0, 0, 1])
+    expect([calculation.offsetWidth, calculation.offsetHeight]).toEqual([MAX_IMAGE_OFFSET, MAX_IMAGE_OFFSET])
   })
 
-  it('should update properties correctly', () => {
-    const calc = new ImageCalculation('group')
-    calc.makeWidth(100)
-    calc.makeHeight(200)
-    calc.makeOffsetWidth(50)
-    calc.makeOffsetHeight(60)
-    calc.makeFactorMax(0.5)
+  it('keeps independent maxima and minima without allowing later values to undo them', () => {
+    const calculation = new ImageCalculation('gallery')
+    expect(calculation.makeWidth(100).makeHeight(200).makeOffsetWidth(80).makeOffsetHeight(60)).toBe(calculation)
+    calculation.makeWidth(50).makeHeight(150).makeOffsetWidth(90).makeOffsetHeight(70)
+    expect([calculation.width, calculation.height, calculation.offsetWidth, calculation.offsetHeight])
+      .toEqual([100, 200, 80, 60])
+    calculation.makeWidth(300).makeHeight(400).makeOffsetWidth(40).makeOffsetHeight(30)
+    expect([calculation.width, calculation.height, calculation.offsetWidth, calculation.offsetHeight])
+      .toEqual([300, 400, 40, 30])
+  })
 
-    expect(calc.width).toBe(100)
-    expect(calc.height).toBe(200)
-    expect(calc.offsetWidth).toBe(50)
-    expect(calc.offsetHeight).toBe(60)
-    expect(calc.factorMax).toBe(0.5)
-    expect(calc.isSize()).toBe(true)
+  it.each([0, -1, NaN])('ignores an unavailable physical maximum %s', (value) => {
+    const calculation = new ImageCalculation('gallery')
+    calculation.makeWidth(value).makeHeight(value)
+    expect(calculation.isSize()).toBe(false)
+    expect([calculation.width, calculation.height]).toEqual([0, 0])
+  })
 
-    calc.reset()
-    expect(calc.width).toBe(0)
-    expect(calc.height).toBe(0)
-    expect(calc.offsetWidth).toBe(7680)
-    expect(calc.offsetHeight).toBe(7680)
-    expect(calc.factorMax).toBe(1)
-    expect(calc.isSize()).toBe(false)
+  it('tracks physical size when only one axis is available', () => {
+    const calculation = new ImageCalculation('gallery')
+    calculation.makeHeight(120)
+    expect(calculation.isSize()).toBe(true)
+    expect(calculation.width).toBe(0)
+  })
+
+  it('invalidates reactive consumers when the limiting factor changes or resets', () => {
+    const calculation = new ImageCalculation('gallery')
+    const scale = computed(() => calculation.factorMax * 100)
+    expect(scale.value).toBe(100)
+    expect(calculation.makeFactorMax(0.5)).toBe(calculation)
+    calculation.makeFactorMax(0.8)
+    expect(scale.value).toBe(50)
+    calculation.factorMax = 0.25
+    expect(scale.value).toBe(25)
+    calculation.makeWidth(300).makeHeight(100).makeOffsetWidth(50).makeOffsetHeight(20)
+    expect(calculation.reset()).toBe(calculation)
+    expect(scale.value).toBe(100)
+    expect(calculation.isSize()).toBe(false)
+    expect([calculation.width, calculation.height, calculation.offsetWidth, calculation.offsetHeight])
+      .toEqual([0, 0, MAX_IMAGE_OFFSET, MAX_IMAGE_OFFSET])
   })
 })

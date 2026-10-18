@@ -1,6 +1,7 @@
 // ai-none
 
 import type { Ref } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 
 /**
  * Class for managing the main HTML element and class modifications for MotionFlip.
@@ -11,11 +12,11 @@ export class MotionFlipElement {
   /**
    * Constructor
    * @param element main HTML element container / главный контейнер HTML-элемента
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) { }
 
   /**
@@ -35,7 +36,7 @@ export class MotionFlipElement {
    * @returns class name string / строка названия класса
    */
   getClassName(): string {
-    return this.className
+    return this.naming.getName()
   }
 
   /**
@@ -54,7 +55,7 @@ export class MotionFlipElement {
    * Добавляет модифицирующий класс заморозки непосредственно на элемент.
    */
   addClassFreeze(): void {
-    this.element.value?.classList.add(`${this.className}--freeze`)
+    this.element.value?.classList.add(this.naming.getStatusClass('freeze'))
   }
 
   /**
@@ -63,7 +64,7 @@ export class MotionFlipElement {
    * Добавляет модифицирующий класс анимации непосредственно на элемент.
    */
   addClassGo(): void {
-    this.element.value?.classList.add(`${this.className}--go`)
+    this.element.value?.classList.add(this.naming.getStatusClass('go'))
   }
 
   /**
@@ -73,8 +74,8 @@ export class MotionFlipElement {
    */
   resetStatus(): void {
     this.element.value?.classList.remove(
-      `${this.className}--freeze`,
-      `${this.className}--go`
+      this.naming.getStatusClass('freeze'),
+      this.naming.getStatusClass('go')
     )
   }
 }

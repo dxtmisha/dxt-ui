@@ -4,6 +4,7 @@ import { type VNode } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
+  type DesignName,
   isSelected,
   toBinds
 } from '@dxtmisha/functional'
@@ -47,8 +48,7 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
    * Constructor for TableRecordInclude.
    *
    * Конструктор для TableRecordInclude.
-   * @param classDesign design system prefix / префикс дизайн-системы
-   * @param className base class name / базовое имя класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input properties / входные свойства
    * @param components design components registry / реестр дизайн-компонентов
    * @param extra additional properties or attributes / дополнительные свойства или атрибуты
@@ -56,15 +56,14 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    protected readonly classDesign: string,
-    className: string,
+    protected readonly naming: DesignName,
     props: ComponentIncludeProps<TableRecordPropsInclude>,
     components?: DesignComponents<any, TableRecordPropsInclude>,
     extra?: ComponentIncludeExtra<TableRecordPropsBasic>,
     protected readonly slots?: Record<string, any>,
     index?: string
   ) {
-    super(className, props, components, extra, index)
+    super(naming, props, components, extra, index)
   }
 
   /**

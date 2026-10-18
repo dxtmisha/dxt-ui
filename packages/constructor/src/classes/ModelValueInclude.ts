@@ -44,7 +44,7 @@ export class ModelValueInclude<Value = any> {
     protected readonly multiple?: RefOrNormalOrFunction<boolean | undefined>
   ) {
     if (this.inputValue) {
-      this.value.value = this.inputValue?.value
+      this.value.value = this.inputValue.value
 
       watch(
         this.inputValue,

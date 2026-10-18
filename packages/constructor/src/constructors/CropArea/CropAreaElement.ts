@@ -1,6 +1,7 @@
 // ai-none
 
 import type { Ref } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 
 /**
  * Class managing CropArea DOM element, rect bounds, and document selection locking.
@@ -16,13 +17,13 @@ export class CropAreaElement {
    *
    * Конструктор.
    * @param element wrapper element reference / ссылка на элемент обертки
-   * @param className main component class name / имя класса основного компонента
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
-    className: string
+    naming: DesignName
   ) {
-    this.classBlockSelection = `${className}__blockSelection`
+    this.classBlockSelection = naming.getSubClass('blockSelection')
   }
 
   /**

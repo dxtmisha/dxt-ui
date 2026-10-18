@@ -68,15 +68,12 @@ export class RippleDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -103,7 +100,7 @@ export class RippleDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item')
+        item: this.naming.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

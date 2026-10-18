@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { BulletItemInclude } from '../BulletItem'
 
@@ -18,10 +18,8 @@ export class Bullet {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -30,10 +28,8 @@ export class Bullet {
    */
   constructor(
     protected readonly props: BulletProps,
-    protected readonly refs: ToRefs<BulletProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<BulletComponents, BulletProps>,
     protected readonly slots?: BulletSlots,
     protected readonly emits?: ConstrEmit<BulletEmits>,
@@ -46,7 +42,7 @@ export class Bullet {
     } = constructors
 
     this.list = new BulletItemIncludeConstructor(
-      className,
+      naming,
       props,
       components
     )

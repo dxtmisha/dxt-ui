@@ -1,7 +1,7 @@
 // ai-none
 
 import type { Ref } from 'vue'
-import { getElementId } from '@dxtmisha/functional'
+import { getElementId, type DesignName } from '@dxtmisha/functional'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import type { DraggableWrapperClassesList } from './basicTypes'
@@ -23,15 +23,13 @@ export class DraggableWrapperClassesData {
    *
    * Конструктор.
    * @param element wrapper element reference / ссылка на элемент обертки
-   * @param classDesign design class prefix / префикс класса дизайна
-   * @param className main component class name / имя класса основного компонента
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
-    this.list = DraggableWrapperClassesData.getClassesList(classDesign)
+    this.list = DraggableWrapperClassesData.getClassesList(naming.getDesign())
   }
 
   /**
@@ -95,7 +93,7 @@ export class DraggableWrapperClassesData {
    * @returns component class name / имя класса компонента
    */
   getName(): string {
-    return this.className
+    return this.naming.getName()
   }
 
   /**

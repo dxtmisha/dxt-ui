@@ -1,10 +1,24 @@
 import type { Ref, PropType, ComputedRef } from 'vue'
 import type { Undefined } from '@dxtmisha/functional-basic'
 
+import type { DesignLifecycleAbstract } from '../classes/design/DesignLifecycleAbstract'
+
 import type {
   RefOrNormal,
   RefType
 } from './refTypes'
+
+/** Optional constructors with string names / Необязательные конструкторы со строковыми именами */
+export type ConstrConstructors<T extends object> = Partial<Record<
+  keyof T & string,
+  new (...parameters: never[]) => object | DesignLifecycleAbstract
+>>
+
+/** Constructor arguments for a named dependency / Аргументы конструктора зависимости по имени */
+export type ConstrParameters<T extends ConstrConstructors<T>, K extends keyof T & string> = ConstructorParameters<NonNullable<T[K]>>
+
+/** Instance type for a named dependency / Тип экземпляра зависимости по имени */
+export type ConstrInstance<T extends ConstrConstructors<T>, K extends keyof T & string> = InstanceType<NonNullable<T[K]>>
 
 /** Generic record type for constructor items / Дженерик тип записи для элементов конструктора */
 export type ConstrItem = Record<string, any>

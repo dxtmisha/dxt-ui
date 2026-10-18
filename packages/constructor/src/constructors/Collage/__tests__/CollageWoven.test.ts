@@ -1,12 +1,13 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { CollageElement } from '../CollageElement'
 import { CollageWoven } from '../CollageWoven'
 
 describe('CollageWoven', () => {
   it('should initialize classCompact with class name', () => {
-    const collageWoven = new CollageWoven('d-collage')
+    const collageWoven = new CollageWoven(new DesignName('d.collage'))
 
     expect(collageWoven.classCompact).toBe('d-collageItem--compact')
   })
@@ -19,7 +20,7 @@ describe('CollageWoven', () => {
     }
 
     const item = document.createElement('div')
-    const collageWoven = new TestCollageWoven('d-collage')
+    const collageWoven = new TestCollageWoven(new DesignName('d.collage'))
 
     collageWoven.setCompact(item, true)
     expect(item.classList.contains(collageWoven.classCompact)).toBe(true)
@@ -36,7 +37,7 @@ describe('CollageWoven', () => {
     }
 
     const item = document.createElement('div')
-    const collageWoven = new TestCollageWoven('d-collage')
+    const collageWoven = new TestCollageWoven(new DesignName('d.collage'))
     item.classList.add(collageWoven.classCompact)
 
     collageWoven.resetItem(item)
@@ -52,7 +53,7 @@ describe('CollageWoven', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const collageElement = new CollageElement(element)
-    const collageWoven = new CollageWoven('d-collage', collageElement)
+    const collageWoven = new CollageWoven(new DesignName('d.collage'), collageElement)
 
     item1.classList.add(collageWoven.classCompact)
     item2.classList.add(collageWoven.classCompact)
@@ -93,7 +94,7 @@ describe('CollageWoven', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const collageElement = new CollageElement(element)
-    const collageWoven = new CollageWoven('d-collage', collageElement)
+    const collageWoven = new CollageWoven(new DesignName('d.collage'), collageElement)
 
     const spyRaf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
       cb(0)
@@ -122,7 +123,7 @@ describe('CollageWoven', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const collageElement = new CollageElement(element)
-    const collageWoven = new CollageWoven('d-collage', collageElement)
+    const collageWoven = new CollageWoven(new DesignName('d.collage'), collageElement)
 
     const spyRaf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
       cb(0)
@@ -153,7 +154,7 @@ describe('CollageWoven', () => {
     Object.defineProperty(item2, 'offsetLeft', { value: 0, configurable: true })
     Object.defineProperty(item3, 'offsetLeft', { value: 120, configurable: true })
 
-    const testWoven = new TestCollageWoven('d-collage')
+    const testWoven = new TestCollageWoven(new DesignName('d.collage'))
 
     expect(testWoven.getColumns([item0, item1, item2, item3])).toBe(2)
   })

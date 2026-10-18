@@ -11,6 +11,7 @@ import {
 } from 'vue'
 import {
   type ConstrClassObject,
+  type DesignName,
   toNumber
 } from '@dxtmisha/functional'
 
@@ -47,14 +48,14 @@ export class Skeleton {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly props: SkeletonProps,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
     this.status = inject<ComputedRef<boolean> | undefined>(SKELETON_NAME_STATUS, undefined)
-    this.classesSkeleton = Skeleton.getClassesList(this.className)
+    this.classesSkeleton = Skeleton.getClassesList(this.naming.getName())
     this.visible = ref<boolean>(Boolean(this.isActive() && !toNumber(this.props.delay ?? defaultsSkeleton.delay)))
 
     watch(
@@ -78,8 +79,8 @@ export class Skeleton {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--visible`]: this.visible.value,
-      [`${this.className}--invisible`]: Boolean(this.props.invisible && this.isActive())
+      [this.naming.getStatusClass('visible')]: this.visible.value,
+      [this.naming.getStatusClass('invisible')]: Boolean(this.props.invisible && this.isActive())
     }
   }
 

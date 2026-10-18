@@ -61,16 +61,12 @@ export class AnchorDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -94,7 +90,7 @@ export class AnchorDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label')
+        label: this.naming.getSubClass('label')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -154,7 +150,7 @@ export class AnchorDesign<
   ): VNode[] => {
     const classes = [
       this.classes?.value.main,
-      getClassTagAStatic(this.getDesign())
+      getClassTagAStatic(this.naming.getDesign())
     ]
 
     if (props) {
@@ -193,7 +189,7 @@ export class AnchorDesign<
    */
   readonly renderIcon = (): VNode[] => {
     if (this.item.icon.is()) {
-      return this.components.render('icon', this.item.icon.binds)
+      return this.components?.render('icon', this.item.icon.binds) ?? []
     }
 
     return []

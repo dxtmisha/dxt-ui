@@ -60,16 +60,12 @@ export class BarsDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -91,9 +87,9 @@ export class BarsDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        context: this.getSubClass('context'),
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description')
+        context: this.naming.getSubClass('context'),
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -150,7 +146,7 @@ export class BarsDesign<
     }
 
     return [
-      this.components.renderOne(
+      this.components?.renderOne(
         'button',
         {
           ...this.item.backBinds.value,
@@ -226,7 +222,7 @@ export class BarsDesign<
 
     if (list) {
       list.forEach(
-        item => this.components.renderAdd(children, 'button', item)
+        item => this.components?.renderAdd(children, 'button', item)
       )
     }
 

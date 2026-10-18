@@ -87,14 +87,14 @@ export class ImageUint8Array {
   }
 
   /**
-   * Returns the image value.
+   * Returns the explicit buffer or the source candidate from component properties.
    *
-   * Возвращает значение изображения.
+   * Возвращает явно переданный буфер либо исходное значение из свойств компонента.
    * @param value image / изображение
-   * @returns image value or undefined / значение изображения или undefined
+   * @returns source candidate to validate before decoding / исходное значение для проверки перед декодированием
    */
-  protected getValue(value?: ImageUint8ArrayType): ImageUint8ArrayType | undefined {
-    return value ?? (this.props?.value as ImageUint8ArrayType)
+  protected getValue(value?: ImageUint8ArrayType): ImageProps['value'] {
+    return value ?? this.props?.value
   }
 
   /**

@@ -381,7 +381,7 @@ export class DesignReplace {
           return `${item.index}: '${item.className}'`
         }
 
-        return `${item.index}: this.getSubClass('${item.className}')`
+        return `${item.index}: this.naming.getSubClass('${item.className}')`
       },
       ','
     )

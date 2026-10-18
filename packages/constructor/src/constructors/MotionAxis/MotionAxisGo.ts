@@ -1,6 +1,6 @@
 // ai-none
 
-import { type Ref, ref, type ToRefs, watch } from 'vue'
+import { type Ref, ref, watch } from 'vue'
 
 import { MotionAxisSlides } from './MotionAxisSlides'
 import { MotionAxisStatus } from './MotionAxisStatus'
@@ -26,14 +26,12 @@ export class MotionAxisGo {
    *
    * Конструктор для инициализации элементов управления навигацией по слайдам.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element window element / элемент окна
    * @param slides list of slides / список слайдов
    * @param status class object for managing the active element / объект класса для управления активным элементом
    */
   constructor(
     protected readonly props: Readonly<MotionAxisProps>,
-    protected readonly refs: ToRefs<MotionAxisProps>,
     protected readonly element: Ref<HTMLDivElement | undefined>,
     protected readonly slides: MotionAxisSlides,
     protected readonly status: MotionAxisStatus
@@ -41,8 +39,8 @@ export class MotionAxisGo {
     this.axis.value = props.axis
     this.direction.value = props.direction
 
-    watch([refs.axis], () => this.setAxis(props.axis))
-    watch([refs.direction], () => this.setDirection(props.direction))
+    watch(() => props.axis, () => this.setAxis(props.axis))
+    watch(() => props.direction, () => this.setDirection(props.direction))
   }
 
   /**

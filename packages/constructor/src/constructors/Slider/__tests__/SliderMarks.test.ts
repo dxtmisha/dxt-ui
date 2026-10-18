@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { SliderFocusType } from '../basicTypes'
 import { SliderMarks } from '../SliderMarks'
 import { SliderMarksData } from '../SliderMarksData'
@@ -7,9 +8,9 @@ import type { SliderPropsBasic } from '../props'
 
 function createSliderMarks(props: Partial<SliderPropsBasic> = {}) {
   const fullProps = { ...props } as SliderPropsBasic
-  const className = 'dxt-slider'
-  const marksData = new SliderMarksData(fullProps, className)
-  const marks = new SliderMarks(fullProps, className, marksData)
+  const naming = new DesignName('dxt.slider')
+  const marksData = new SliderMarksData(fullProps, naming)
+  const marks = new SliderMarks(fullProps, naming, marksData)
 
   return { marks, marksData }
 }

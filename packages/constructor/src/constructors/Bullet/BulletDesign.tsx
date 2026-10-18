@@ -59,16 +59,12 @@ export class BulletDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -90,7 +86,7 @@ export class BulletDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item')
+        item: this.naming.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

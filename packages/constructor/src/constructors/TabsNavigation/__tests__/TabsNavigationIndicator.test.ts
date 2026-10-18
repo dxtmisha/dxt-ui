@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { TabsNavigationIndicator } from '../TabsNavigationIndicator'
 
 vi.mock('vue', async () => {
@@ -24,7 +25,6 @@ describe('TabsNavigationIndicator', () => {
 
   it('should initialize and perform selection changes animation', async () => {
     const props = {} as any
-    const refs = {} as any
 
     const mainEl = document.createElement('div')
     const item1 = document.createElement('div')
@@ -45,12 +45,14 @@ describe('TabsNavigationIndicator', () => {
       setActual: vi.fn()
     } as any
 
+    const naming = new DesignName('dxt.tabs')
+    vi.spyOn(naming, 'getDesign').mockReturnValue('dxt-tabs')
+    vi.spyOn(naming, 'getName').mockReturnValue('dxt-tabs-item')
+
     const indicator = new TabsNavigationIndicator(
       props,
-      refs,
       elementRef,
-      'dxt-tabs',
-      'dxt-tabs-item',
+      naming,
       mockSelected
     )
 

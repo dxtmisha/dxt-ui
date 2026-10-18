@@ -1,6 +1,6 @@
 // ai-none
 
-import { computed, ref, watch, type ComputedRef, type Ref, type ToRefs } from 'vue'
+import { computed, ref, watch, type ComputedRef, type Ref } from 'vue'
 import { toNumber, type ConstrEmit } from '@dxtmisha/functional'
 
 import type { CarouselPaginationEmits } from './types'
@@ -23,12 +23,10 @@ export class CarouselPaginationSelected {
   /**
    * Constructor
    * @param props input configuration properties / входные конфигурационные свойства
-   * @param refs reactive references of properties / реактивные ссылки свойств
    * @param emits event emitter callback / функция обратного вызова для генерации событий
    */
   constructor(
     protected readonly props: CarouselPaginationProps,
-    protected readonly refs: ToRefs<CarouselPaginationProps>,
     protected readonly emits?: ConstrEmit<CarouselPaginationEmits>
   ) {
     watch(

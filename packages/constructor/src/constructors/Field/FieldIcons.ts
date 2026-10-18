@@ -1,6 +1,6 @@
 // ai-none
 
-import type { ConstrBind } from '@dxtmisha/functional'
+import type { ConstrBind, DesignName } from '@dxtmisha/functional'
 
 import { type TextInclude } from '../../classes/TextInclude'
 
@@ -20,12 +20,12 @@ export class FieldIcons {
    *
    * Конструктор для инициализации FieldIcons.
    * @param props input properties / входящие свойства
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    * @param text text translations utility / утилита перевода текста
    */
   constructor(
     protected readonly props: FieldProps,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly text: TextInclude
   ) {}
 
@@ -37,7 +37,7 @@ export class FieldIcons {
    */
   get cancelBind(): ConstrBind<IconProps> {
     return {
-      'class': `${this.className}__cancel`,
+      'class': this.naming.getSubClass('cancel'),
       'icon': this.props.iconClose,
       'dynamic': true,
       'data-event-type': 'cancel',
@@ -53,7 +53,7 @@ export class FieldIcons {
    */
   get previousBind(): ConstrBind<IconProps> {
     return {
-      'class': `${this.className}__previous`,
+      'class': this.naming.getSubClass('previous'),
       'icon': this.props.arrowCarousel ? this.props.iconArrowLeft : this.props.iconMinus,
       'disabled': this.props.disabled || this.props.disabledPrevious,
       'dynamic': true,
@@ -70,7 +70,7 @@ export class FieldIcons {
    */
   get nextBind(): ConstrBind<IconProps> {
     return {
-      'class': `${this.className}__next`,
+      'class': this.naming.getSubClass('next'),
       'icon': this.props.arrowCarousel ? this.props.iconArrowRight : this.props.iconPlus,
       'disabled': this.props.disabled || this.props.disabledNext,
       'dynamic': true,

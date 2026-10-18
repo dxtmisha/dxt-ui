@@ -66,16 +66,12 @@ export class ListDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -102,15 +98,15 @@ export class ListDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        space: this.getSubClass('space'),
-        line: this.getSubClass('line'),
-        subtitle: this.getSubClass('subtitle'),
-        html: this.getSubClass('html'),
-        management: this.getSubClass('management'),
-        group: this.getSubClass('group'),
-        menu: this.getSubClass('menu'),
-        filterInput: this.getSubClass('filterInput'),
-        none: this.getSubClass('none')
+        space: this.naming.getSubClass('space'),
+        line: this.naming.getSubClass('line'),
+        subtitle: this.naming.getSubClass('subtitle'),
+        html: this.naming.getSubClass('html'),
+        management: this.naming.getSubClass('management'),
+        group: this.naming.getSubClass('group'),
+        menu: this.naming.getSubClass('menu'),
+        filterInput: this.naming.getSubClass('filterInput'),
+        none: this.naming.getSubClass('none')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -169,7 +165,7 @@ export class ListDesign<
     type: ListType,
     item: ListDataItem
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listItem',
       this.getItemAttrs(type, item)
     ) as VNode
@@ -183,7 +179,7 @@ export class ListDesign<
    * @param props data for working with the group/ данные для работы с группой
    */
   readonly renderItemGroup = (item: ListDataItem, props: ListGroupSlotsPropsInclude): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listItem',
       this.item.getItemManagementFormGroup(item, props)
     ) as VNode
@@ -200,7 +196,7 @@ export class ListDesign<
     item: ListDataItem,
     props: WindowControlItem
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listItem',
       toBinds(
         this.item.getItemManagementFormMenu(item, Boolean(props.open.value)),
@@ -225,7 +221,7 @@ export class ListDesign<
               this.item.windowClasses.get().static
             ]
           },
-          this.components.renderOne(
+          this.components?.renderOne(
             'input',
             toBinds(
               {
@@ -358,7 +354,7 @@ export class ListDesign<
    * @param item selected element/ выбранный элемент
    */
   readonly renderGroup = (item: ListDataItem): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listGroup',
       {
         open: this.item.isOpenGroup(item),
@@ -380,7 +376,7 @@ export class ListDesign<
    * @param first is the first element/ является ли первым элементом
    */
   readonly renderMenu = (item: ListDataItem, first: boolean): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listMenu',
       {
         divider: this.props.divider,

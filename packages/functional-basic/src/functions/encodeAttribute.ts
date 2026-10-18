@@ -1,8 +1,7 @@
-/**
- * List of special characters to encode/
- * Список специальных символов для кодирования
- */
-const list: Record<string, string> = {
+import { toString } from './toString'
+
+/** List of special characters to encode / Список специальных символов для кодирования */
+const SPECIAL_CHARACTERS: Readonly<Record<string, string>> = {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
@@ -18,5 +17,5 @@ const list: Record<string, string> = {
  * @returns encoded text / закодированный текст
  */
 export function encodeAttribute(text: string): string {
-  return String(text).replace(/[&<>"']/g, match => list?.[match] ?? match)
+  return toString(text).replace(/[&<>"']/g, match => SPECIAL_CHARACTERS[match] ?? match)
 }

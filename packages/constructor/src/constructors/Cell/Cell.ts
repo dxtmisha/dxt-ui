@@ -1,8 +1,9 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import {
   type ConstrClass,
   type ConstrEmit,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
@@ -55,10 +56,8 @@ export class Cell {
   /**
    * Constructor
    * @param props input properties / входные свойства
-   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target HTML element / целевой HTML-элемент
-   * @param classDesign design system prefix / префикс дизайн-системы
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
@@ -75,10 +74,8 @@ export class Cell {
    */
   constructor(
     protected readonly props: CellProps,
-    protected readonly refs: ToRefs<CellProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<CellComponents, CellProps>,
     protected readonly slots?: CellSlots,
     protected readonly emits?: ConstrEmit<CellEmits>,
@@ -106,12 +103,12 @@ export class Cell {
       SkeletonConstructor = SkeletonInclude
     } = constructors
 
-    this.progress = new ProgressConstructor(className, props, components, { position: 'bottom' })
-    this.skeleton = new SkeletonConstructor(props, classDesign, ['classTextVariant'])
+    this.progress = new ProgressConstructor(naming, props, components, { position: 'bottom' })
+    this.skeleton = new SkeletonConstructor(props, naming, ['classTextVariant'])
 
     this.label = new LabelConstructor(
       props,
-      className,
+      naming,
       undefined,
       slots,
       undefined,
@@ -119,12 +116,12 @@ export class Cell {
       undefined,
       this.skeleton
     )
-    this.caption = new CaptionConstructor(props, className, slots)
-    this.description = new DescriptionConstructor(props, className, slots, this.skeleton)
+    this.caption = new CaptionConstructor(props, naming, slots)
+    this.description = new DescriptionConstructor(props, naming, slots, this.skeleton)
     this.enabled = new EnabledConstructor(props, this.progress)
 
-    this.icon = new IconConstructor(props, className, components)
-    this.ripple = new RippleConstructor(className, components, this.enabled)
+    this.icon = new IconConstructor(props, naming, components)
+    this.ripple = new RippleConstructor(naming, components, this.enabled)
 
     this.event = new EventConstructor(props, this.enabled, emits)
   }
@@ -136,8 +133,8 @@ export class Cell {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.className}--description`]: this.description.is,
-      [getClassTagAStatic(this.classDesign)]: true
+      [this.naming.getStatusClass('description')]: this.description.is,
+      [getClassTagAStatic(this.naming.getDesign())]: true
     }
   }
 
@@ -148,10 +145,10 @@ export class Cell {
    */
   get classesSub(): CellClassesSub {
     return {
-      label: `${this.className}__label`,
-      description: `${this.className}__description`,
-      caption: `${this.className}__caption`,
-      trailing: `${this.className}__trailing`
+      label: this.naming.getSubClass('label'),
+      description: this.naming.getSubClass('description'),
+      caption: this.naming.getSubClass('caption'),
+      trailing: this.naming.getSubClass('trailing')
     }
   }
 

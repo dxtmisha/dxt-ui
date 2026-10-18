@@ -58,16 +58,12 @@ export class IconDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -138,7 +134,7 @@ export class IconDesign<
    * Рендер основной иконки.
    */
   readonly renderIcon = (): VNode | undefined => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'image',
       this.item.iconBind,
       undefined,
@@ -152,7 +148,7 @@ export class IconDesign<
    * Рендер вторичной иконки.
    */
   readonly renderIconActive = (): VNode | undefined => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'image',
       this.item.iconActiveBind,
       undefined,

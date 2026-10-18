@@ -5,8 +5,10 @@ import { resizeImageByMax } from './resizeImageByMax'
 
 /**
  * Ensures that an image does not exceed the maximum size by resizing it if needed.
+ * If resizing is not required or fails, returns the original image encoded in base64.
  *
  * Гарантирует, что изображение не превышает максимальный размер, изменяя его размер при необходимости.
+ * Если изменение размера не требуется или завершилось сбоем, возвращает исходное изображение в формате base64.
  * @param file image file as Uint8Array / файл изображения в виде Uint8Array
  * @param compress maximum size as a fraction of the original size / максимальный размер в виде доли от оригинального размера
  * @param type image type / тип изображения
@@ -23,29 +25,37 @@ export async function ensureMaxSize(
       return
     }
 
-    const blob = new Blob([file as any], { type })
+    const blob = new Blob([file as BlobPart], { type })
     const data = URL.createObjectURL(blob)
-    const image = getElementImage(data)
+    const image = getElementImage(
+      data,
+      (element) => {
+        try {
+          const value = resizeImageByMax(
+            element,
+            compress * element.naturalWidth,
+            'width',
+            type
+          )
 
-    if (image) {
-      image.onload = () => {
-        const value = resizeImageByMax(
-          image,
-          compress * image.naturalWidth,
-          'width',
-          type
-        )
-
-        resolve(value ?? '')
-        URL.revokeObjectURL(data)
-      }
-
-      image.onerror = () => {
+          if (value) {
+            resolve(value)
+          } else {
+            blobToBase64(blob).then(original => resolve(original ?? ''))
+          }
+        } finally {
+          URL.revokeObjectURL(data)
+        }
+      },
+      () => {
         URL.revokeObjectURL(data)
         resolve('')
       }
-    } else {
-      blobToBase64(blob).then(file => resolve(String(file ?? '')))
+    )
+
+    if (!image) {
+      URL.revokeObjectURL(data)
+      blobToBase64(blob).then(original => resolve(String(original ?? '')))
     }
   })
 }

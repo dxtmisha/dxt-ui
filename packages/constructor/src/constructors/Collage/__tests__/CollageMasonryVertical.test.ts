@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { CollageElement } from '../CollageElement'
 import { CollageGrow } from '../CollageGrow'
 import {
@@ -16,7 +17,7 @@ describe('CollageMasonryVertical', () => {
   it('should not throw on resize without elements', () => {
     const element = ref<HTMLElement | undefined>(undefined)
     const collageElement = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', collageElement)
+    const grow = new CollageGrow(new DesignName('d.collage'), collageElement)
     const masonryVertical = new CollageMasonryVertical(grow, collageElement)
 
     expect(() => masonryVertical.resize()).not.toThrow()
@@ -64,7 +65,7 @@ describe('CollageMasonryVertical', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const collageElement = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', collageElement)
+    const grow = new CollageGrow(new DesignName('d.collage'), collageElement)
     const masonryVertical = new CollageMasonryVertical(grow, collageElement)
 
     const setGrowSpy = vi.spyOn(grow, 'setGrow')

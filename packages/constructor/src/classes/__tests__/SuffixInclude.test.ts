@@ -1,27 +1,28 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { SuffixInclude } from '../SuffixInclude'
 
 describe('SuffixInclude', () => {
   it('should return correct is state', () => {
-    const include = new SuffixInclude({ suffix: 'Suf' }, 'prefix')
+    const include = new SuffixInclude({ suffix: 'Suf' }, new DesignName('prefix'))
     expect(include.is).toBe(true)
 
-    const includeEmpty = new SuffixInclude({}, 'prefix')
+    const includeEmpty = new SuffixInclude({}, new DesignName('prefix'))
     expect(includeEmpty.is).toBe(false)
   })
 
   it('should return correct id and describedby', () => {
-    const include = new SuffixInclude({ suffix: 'Suf', suffixId: 'suf-id' }, 'prefix')
+    const include = new SuffixInclude({ suffix: 'Suf', suffixId: 'suf-id' }, new DesignName('prefix'))
     expect(include.id).toBe('suf-id')
     expect(include.describedby).toBe('suf-id')
 
-    const includeEmpty = new SuffixInclude({}, 'prefix')
+    const includeEmpty = new SuffixInclude({}, new DesignName('prefix'))
     expect(includeEmpty.describedby).toBe('')
   })
 
   it('should render suffix correctly', () => {
-    const include = new SuffixInclude({ suffix: 'Suf', suffixId: 'suf-id' }, 'my-class')
+    const include = new SuffixInclude({ suffix: 'Suf', suffixId: 'suf-id' }, new DesignName('my.class'))
     const nodes = include.render()
     expect(nodes.length).toBe(1)
     expect(nodes[0].type).toBe('div')

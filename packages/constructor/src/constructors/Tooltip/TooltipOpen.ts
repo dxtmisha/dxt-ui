@@ -1,7 +1,7 @@
 // ai-none
 
 import { type ConstrEmit, EventItem } from '@dxtmisha/functional'
-import { nextTick, onMounted, onUnmounted, type ToRefs, watch } from 'vue'
+import { nextTick, onMounted, onUnmounted, watch } from 'vue'
 
 import { TooltipPosition } from './TooltipPosition'
 import { TooltipStatus } from './TooltipStatus'
@@ -30,7 +30,6 @@ export class TooltipOpen {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param style object for working with styles / объект для работы со стилями
    * @param status object for working with statuses / объект для работы со статусами
    * @param position object for working with the position of the element / объект для работы с положением элемента
@@ -38,13 +37,12 @@ export class TooltipOpen {
    */
   constructor(
     protected readonly props: Readonly<TooltipProps>,
-    refs: ToRefs<TooltipProps>,
     protected readonly style: TooltipStyle,
     protected readonly status: TooltipStatus,
     protected readonly position: TooltipPosition,
     protected readonly emits?: ConstrEmit<TooltipEmits>
   ) {
-    watch([refs.open], () => {
+    watch(() => props.open, () => {
       this.toggle(Boolean(this.props.open)).then()
     })
 

@@ -27,7 +27,6 @@ describe('MotionTransformState', () => {
 
     const state = new MotionTransformState(
       { open: true } as any,
-      { open: ref(true) } as any,
       mockElement,
       { updateOldElement: vi.fn(), toggle: vi.fn() } as any,
       { update: vi.fn(), reset: vi.fn() } as any

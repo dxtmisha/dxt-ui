@@ -32,10 +32,8 @@ export class ModalDesign<
   protected initItem(Item?: typeof Modal): Modal {
     return new (Item ?? Modal)(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -52,10 +50,10 @@ export class ModalDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        title: this.getSubClass('title'),
-        header: this.getSubClass('header'),
-        body: this.getSubClass('body'),
-        footer: this.getSubClass('footer')
+        title: this.naming.getSubClass('title'),
+        header: this.naming.getSubClass('header'),
+        body: this.naming.getSubClass('body'),
+        footer: this.naming.getSubClass('footer')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

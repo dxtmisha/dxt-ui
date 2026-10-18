@@ -1,6 +1,6 @@
 // ai-none
 
-import { isArray, type Undefined } from '@dxtmisha/functional'
+import { isArray, isNumber } from '@dxtmisha/functional'
 
 import type { ImageCoordinatorItem, ImageSize } from './basicTypes'
 import type { ImageProps } from './props'
@@ -33,41 +33,21 @@ export class ImageCoordinator {
   }
 
   /**
-   * Returns coordinates normalized to four values.
+   * Returns coordinates normalized to four values between 0 and 100.
    *
-   * Возвращает координаты, нормализованные до четырех значений.
+   * Возвращает координаты, нормализованные до четырех значений в диапазоне от 0 до 100.
    * @returns full coordinates array / массив полных координат
    */
   get coordinator(): ImageCoordinatorItemFull {
-    if (this.is()) {
-      const coordinator: number[] = this.props.coordinator
+    const coordinator = this.props.coordinator
 
-      switch (coordinator.length) {
-        case 1:
-          return [
-            coordinator[0] ?? 0,
-            coordinator[0] ?? 0,
-            coordinator[0] ?? 0,
-            coordinator[0] ?? 0
-          ]
-        case 2:
-          return [
-            coordinator[0] ?? 0,
-            coordinator[1] ?? 0,
-            coordinator[0] ?? 0,
-            coordinator[1] ?? 0
-          ]
+    if (this.is() && coordinator) {
+      const top = this.getValue(coordinator[0])
+      const right = coordinator.length > 1 ? this.getValue(coordinator[1]) : top
+      const bottom = coordinator.length > 2 ? this.getValue(coordinator[2]) : top
+      const left = coordinator.length > 3 ? this.getValue(coordinator[3]) : right
 
-        case 3:
-          return [
-            coordinator[0] ?? 0,
-            coordinator[1] ?? 0,
-            coordinator[2] ?? 0,
-            coordinator[1] ?? 0
-          ]
-        case 4:
-          return coordinator as ImageCoordinatorItemFull
-      }
+      return [top, right, bottom, left]
     }
 
     return [0, 0, 0, 0]
@@ -111,11 +91,22 @@ export class ImageCoordinator {
    * Проверяет, есть ли координаты для вычисления.
    * @returns true if valid coordinates are present / true, если присутствуют валидные координаты
    */
-  is(): this is { coordinator: Exclude<ImageCoordinatorItem, Undefined> } {
+  is(): boolean {
     const coordinator = this.props.coordinator
 
-    return isArray(coordinator)
+    return isArray<ImageCoordinatorItem | unknown[], unknown>(coordinator)
       && coordinator.length > 0
       && coordinator.length < 5
+  }
+
+  /**
+   * Converts a numeric coordinate to the range from 0 to 100, returning 0 for invalid values.
+   *
+   * Приводит числовую координату к диапазону от 0 до 100, возвращая 0 для неподходящих значений.
+   * @param value coordinate value / значение координаты
+   * @returns normalized coordinate / нормализованная координата
+   */
+  protected getValue(value: unknown): number {
+    return isNumber(value) ? Math.min(100, Math.max(0, Number(value))) : 0
   }
 }

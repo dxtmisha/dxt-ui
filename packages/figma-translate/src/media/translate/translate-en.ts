@@ -5,6 +5,7 @@ export default {
   'translate-prefix': 'Prefix',
   'translate-description': 'Description',
   'translate-configuration': 'Configuration',
+  'translate-configuration-ai-key': 'API Key',
   'translate-configuration-storage': 'Storage',
   'translate-configuration-storage-document': 'Save in document',
   'translate-configuration-storage-document_description': 'Store configuration directly in this Figma file to share with team members',

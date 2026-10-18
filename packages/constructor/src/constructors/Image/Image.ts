@@ -1,6 +1,7 @@
-import { computed, type Ref } from 'vue'
+import type { Ref } from 'vue'
 import {
   type ConstrClassObject,
+  type DesignName,
   type ConstrEmit,
   type ConstrStyles,
   isFilled,
@@ -9,6 +10,7 @@ import {
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
+import type { AriaList } from '../../types/ariaTypes'
 
 import { ImageType } from './ImageType'
 import { ImageData } from './ImageData'
@@ -20,7 +22,7 @@ import { ImageBackground } from './ImageBackground'
 import { ImageImg } from './ImageImg'
 import { ImageLazy } from './ImageLazy'
 
-import { ImageTypeValue } from './basicTypes'
+import { type ImageBinds, ImageTypeValue, type ImageValueBinds } from './basicTypes'
 import type { ImageEmits } from './types'
 import type { ImageProps } from './props'
 
@@ -58,10 +60,12 @@ export class Image {
   readonly img: ImageImg
 
   /**
-   * Constructor
+   * Connects the image helpers in dependency order.
+   *
+   * Соединяет помощники изображения в порядке зависимостей.
    * @param props input data/ входные данные
    * @param element input element/ элемент ввода
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors object with classes/ объект с классами
    * @param constructors.ImageAdaptiveItemConstructor class for working with adaptive image item/ класс для работы с адаптивным элементом изображения
@@ -77,7 +81,7 @@ export class Image {
   constructor(
     protected readonly props: ImageProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly emits?: ConstrEmit<ImageEmits>,
     constructors: {
       ImageAdaptiveItemConstructor?: typeof ImageAdaptiveItem
@@ -146,65 +150,49 @@ export class Image {
   }
 
   /**
-   * Values for the text. Text is used for the type of icon that works as a background.
+   * Returns the accessible name or decorative state of the image.
    *
-   * Значения для текста. Текст используется для типа иконки, который работает как фон.
+   * Возвращает доступное имя или декоративное состояние изображения.
+   * @returns image ARIA attributes / ARIA-атрибуты изображения
    */
-  readonly text = computed<string | undefined>(() => {
-    const type = this.type.item.value
-
-    if (type === ImageTypeValue.pdf) {
-      const image = this.data.image.value
-
-      if (isString(image)) {
-        return image
-      }
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role('img'),
+      ...(isFilled(this.props.alt)
+        ? AriaStaticInclude.label(this.props.alt)
+        : AriaStaticInclude.hidden())
     }
+  }
 
-    const value = this.props.value
-
-    if (
-      type === ImageTypeValue.flagCompressed
-      && value
-    ) {
-      return String(value)
-        .replace('f-', '')
-        .toUpperCase()
+  /**
+   * Returns the image root attributes, including accessibility bindings.
+   *
+   * Возвращает атрибуты корневого элемента изображения, включая привязки доступности.
+   * @returns root element bindings / привязки корневого элемента
+   */
+  get binds(): ImageBinds {
+    return {
+      translate: 'no',
+      ...this.aria
     }
-
-    if (
-      type
-      && isString(value)
-      && [
-        'filled',
-        'outlined',
-        'round',
-        'sharp',
-        'two-tone',
-        'material'
-      ].indexOf(type) !== -1
-    ) {
-      return value.replace(/^(filled|outlined|round|sharp|two-tone)-/, '')
-    }
-
-    return undefined
-  })
+  }
 
   /**
    * Values for the class.
    *
    * Значения для класса.
+   * @returns image state and font classes / классы состояния и шрифта изображения
    */
   get classes(): ConstrClassObject {
     const type = this.type.item.value
     const data: ConstrClassObject = {
-      [`${this.className}--type--${type}`]: type !== undefined,
-      [`${this.className}--background`]: this.background.isImage(),
+      [this.naming.getStatusClass(`type--${type}`)]: type !== undefined,
+      [this.naming.getStatusClass('background')]: this.background.isImage(),
       notranslate: true
     }
 
     if (this.img.is()) {
-      data[`${this.className}--img`] = true
+      data[this.naming.getStatusClass('img')] = true
     }
 
     switch (type) {
@@ -229,6 +217,7 @@ export class Image {
    * Calculates all properties for the style of the element.
    *
    * Вычисляет все свойства для стиля элемента.
+   * @returns image styles / стили изображения
    */
   get styles(): ConstrStyles {
     const value = this.props.value
@@ -266,32 +255,12 @@ export class Image {
   }
 
   /**
-   * Computed bindings for the image element.
-   *
-   * Вычисляемые привязки для элемента изображения.
-   */
-  get binds() {
-    if (isFilled(this.props.alt)) {
-      return {
-        translate: 'no',
-        ...AriaStaticInclude.role('img'),
-        ...AriaStaticInclude.label(this.props.alt)
-      }
-    }
-
-    return {
-      translate: 'no',
-      ...AriaStaticInclude.role('img'),
-      ...AriaStaticInclude.hidden()
-    }
-  }
-
-  /**
    * Bindings for the image value.
    *
    * Привязки для значения изображения.
+   * @returns value element bindings / привязки элемента значения
    */
-  get valueBinds() {
+  get valueBinds(): ImageValueBinds {
     return {
       key: 'value',
       data: this.data.image.value

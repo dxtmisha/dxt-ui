@@ -28,14 +28,14 @@ export class ClockPeriodDesign<
   CLASSES extends ClockPeriodClasses,
   P extends ClockPeriodProps
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ClockPeriodEmits,
-  EXPOSE,
-  ClockPeriodSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ClockPeriodEmits,
+    EXPOSE,
+    ClockPeriodSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of the ClockPeriod logic controller / Экземпляр контроллера логики ClockPeriod */
   protected readonly item: ClockPeriod
 
@@ -60,16 +60,12 @@ export class ClockPeriodDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -97,9 +93,9 @@ export class ClockPeriodDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item'),
-        am: this.getSubClass('am'),
-        pm: this.getSubClass('pm')
+        item: this.naming.getSubClass('item'),
+        am: this.naming.getSubClass('am'),
+        pm: this.naming.getSubClass('pm')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -148,19 +144,19 @@ export class ClockPeriodDesign<
     return h(
       'button',
       {
-        key: ClockPeriodType.am,
-        type: 'button',
-        class: {
-          [this.classes?.value.item!]: true,
-          [this.classes?.value[ClockPeriodType.am]!]: true,
-          [this.getStatusClass('selected')]: isSelected
-        },
+        'key': ClockPeriodType.am,
+        'type': 'button',
+        'class': [
+          this.classes?.value.item,
+          this.classes?.value[ClockPeriodType.am],
+          { [this.naming.getStatusClass('selected')]: isSelected }
+        ],
         disabled,
-        tabindex: -1,
-        role: 'radio',
+        'tabindex': -1,
+        'role': 'radio',
         'aria-checked': isSelected ? 'true' : 'false',
         'data-value': ClockPeriodType.am,
-        onClick: this.item.event.onClick
+        'onClick': this.item.event.onClick
       },
       this.item.text.am
     )
@@ -179,19 +175,19 @@ export class ClockPeriodDesign<
     return h(
       'button',
       {
-        key: ClockPeriodType.pm,
-        type: 'button',
-        class: {
-          [this.classes?.value.item!]: true,
-          [this.classes?.value[ClockPeriodType.pm]!]: true,
-          [this.getStatusClass('selected')]: isSelected
-        },
+        'key': ClockPeriodType.pm,
+        'type': 'button',
+        'class': [
+          this.classes?.value.item,
+          this.classes?.value[ClockPeriodType.pm],
+          { [this.naming.getStatusClass('selected')]: isSelected }
+        ],
         disabled,
-        tabindex: -1,
-        role: 'radio',
+        'tabindex': -1,
+        'role': 'radio',
         'aria-checked': isSelected ? 'true' : 'false',
         'data-value': ClockPeriodType.pm,
-        onClick: this.item.event.onClick
+        'onClick': this.item.event.onClick
       },
       this.item.text.pm
     )

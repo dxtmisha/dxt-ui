@@ -1,7 +1,7 @@
 // ai-none
 
 import type { Ref } from 'vue'
-import { getElementId } from '@dxtmisha/functional'
+import { getElementId, type DesignName } from '@dxtmisha/functional'
 
 import type { SelectableAreaClassesList } from './basicTypes'
 
@@ -22,15 +22,13 @@ export class SelectableAreaClassesData {
    *
    * Конструктор.
    * @param element wrapper element reference / ссылка на элемент обертки
-   * @param classDesign design class prefix / префикс класса дизайна
-   * @param className main component class name / имя класса основного компонента
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
-    this.list = SelectableAreaClassesData.getClassesList(classDesign)
+    this.list = SelectableAreaClassesData.getClassesList(naming.getDesign())
   }
 
   /**
@@ -42,7 +40,7 @@ export class SelectableAreaClassesData {
    */
   isMain(target: HTMLElement): boolean {
     return !this.findItem(target)
-      && target.closest(`.${this.className}`) === this.getElement()
+      && target.closest(`.${this.naming.getName()}`) === this.getElement()
   }
 
   /**
@@ -62,7 +60,7 @@ export class SelectableAreaClassesData {
    * @returns component class name / имя класса компонента
    */
   getName(): string {
-    return this.className
+    return this.naming.getName()
   }
 
   /**

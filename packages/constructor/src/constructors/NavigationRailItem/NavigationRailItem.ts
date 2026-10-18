@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrClassObject, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
@@ -45,10 +45,8 @@ export class NavigationRailItem {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -64,10 +62,8 @@ export class NavigationRailItem {
    */
   constructor(
     protected readonly props: NavigationRailItemProps,
-    protected readonly refs: ToRefs<NavigationRailItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<NavigationRailItemComponents, NavigationRailItemProps>,
     protected readonly slots?: NavigationRailItemSlots,
     protected readonly emits?: ConstrEmit<NavigationRailItemEmits>,
@@ -95,11 +91,11 @@ export class NavigationRailItem {
 
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      classDesign,
+      naming,
       ['classTextVariant']
     )
     this.progress = new ProgressIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       {
@@ -108,10 +104,10 @@ export class NavigationRailItem {
     )
     this.enabled = new EnabledIncludeConstructor(props, this.progress)
 
-    this.icon = new IconIncludeConstructor(props, className, components, { isSkeleton: true })
+    this.icon = new IconIncludeConstructor(props, naming, components, { isSkeleton: true })
     this.label = new LabelIncludeConstructor(
       props,
-      className,
+      naming,
       undefined,
       slots,
       undefined,
@@ -120,7 +116,7 @@ export class NavigationRailItem {
       this.skeleton
     )
     this.badge = new BadgeIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       () => ({
@@ -128,7 +124,7 @@ export class NavigationRailItem {
       })
     )
 
-    this.ripple = new RippleIncludeConstructor(className, components, this.enabled)
+    this.ripple = new RippleIncludeConstructor(naming, components, this.enabled)
     this.event = new EventClickIncludeConstructor(props, this.enabled, emits)
   }
 
@@ -148,8 +144,8 @@ export class NavigationRailItem {
   /** Values for the class / Значения для класса */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--selected`]: Boolean(this.props.selected),
-      [getClassTagAStatic(this.classDesign)]: true
+      [this.naming.getStatusClass('selected')]: Boolean(this.props.selected),
+      [getClassTagAStatic(this.naming.getDesign())]: true
     }
   }
 

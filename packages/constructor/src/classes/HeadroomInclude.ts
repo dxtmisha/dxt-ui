@@ -1,5 +1,5 @@
-import { computed, ref, watch, onMounted, onUnmounted, type Ref, type ToRefs, nextTick } from 'vue'
-import { EventItem, getElementOrWindow, type ConstrEmit } from '@dxtmisha/functional'
+import { computed, ref, watch, onMounted, onUnmounted, type Ref, nextTick } from 'vue'
+import { EventItem, type DesignName, getElementOrWindow, type ConstrEmit } from '@dxtmisha/functional'
 import type { ElementOrWindow } from '@dxtmisha/functional-basic'
 
 import type { HeadroomEmitsInclude, HeadroomEventItem, HeadroomExposeInclude, HeadroomPropsInclude } from '../types/headroomTypes'
@@ -47,16 +47,14 @@ export class HeadroomInclude {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
     protected readonly props: HeadroomPropsInclude,
-    protected readonly refs: ToRefs<HeadroomPropsInclude>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string = 'headroom',
+    protected readonly naming: DesignName,
     protected readonly emits?: ConstrEmit<HeadroomEmitsInclude>
   ) {
     onMounted(async () => {
@@ -69,9 +67,9 @@ export class HeadroomInclude {
 
       watch(
         [
-          this.refs.disappears,
-          this.refs.transformThreshold,
-          this.refs.scrollElement
+          () => this.props.disappears,
+          () => this.props.transformThreshold,
+          () => this.props.scrollElement
         ],
         () => this.toggle(),
         { immediate: true }
@@ -362,7 +360,7 @@ export class HeadroomInclude {
       this.disappearsValue.value = this.getDisappearsOffset()
 
       mainElement.style.setProperty(
-        `--${this.className}-sys-top`,
+        this.naming.getStyle('top'),
         `${this.disappearsValue.value}px`
       )
     } else {
@@ -382,10 +380,10 @@ export class HeadroomInclude {
     const mainElement = this.element.value
 
     if (mainElement) {
-      mainElement.style.setProperty(`--${this.className}-sys-threshold`, `${this.transformThreshold}px`)
-      mainElement.style.setProperty(`--${this.className}-sys-value`, `${this.transformValue.value}px`)
-      mainElement.style.setProperty(`--${this.className}-sys-percent`, `${this.transformPercent.value}`)
-      mainElement.style.setProperty(`--${this.className}-sys-difference`, `${this.valueDifference.value}px`)
+      mainElement.style.setProperty(this.naming.getStyle('threshold'), `${this.transformThreshold}px`)
+      mainElement.style.setProperty(this.naming.getStyle('value'), `${this.transformValue.value}px`)
+      mainElement.style.setProperty(this.naming.getStyle('percent'), `${this.transformPercent.value}`)
+      mainElement.style.setProperty(this.naming.getStyle('difference'), `${this.valueDifference.value}px`)
     }
 
     return this

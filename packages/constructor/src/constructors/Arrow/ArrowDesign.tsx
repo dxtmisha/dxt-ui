@@ -69,14 +69,11 @@ export class ArrowDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getName()
+      this.naming
     )
 
-    this.init()
-
-    watch([this.classes], () => {
+    watch(() => this.classes?.value, () => {
       nextTick().then(
         () => requestAnimationFrame(() => {
           this.points.value = this.item.points
@@ -108,12 +105,12 @@ export class ArrowDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        mask: this.getSubClass('mask'),
-        arrow: this.getSubClass('arrow'),
-        arrowLine: this.getSubClass('arrowLine'),
-        arrowArea: this.getSubClass('arrowArea'),
-        border: this.getSubClass('border'),
-        borderHidden: this.getSubClass('borderHidden')
+        mask: this.naming.getSubClass('mask'),
+        arrow: this.naming.getSubClass('arrow'),
+        arrowLine: this.naming.getSubClass('arrowLine'),
+        arrowArea: this.naming.getSubClass('arrowArea'),
+        border: this.naming.getSubClass('border'),
+        borderHidden: this.naming.getSubClass('borderHidden')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

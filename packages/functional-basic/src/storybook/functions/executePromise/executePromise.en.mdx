@@ -9,11 +9,12 @@ A robust utility for safely executing and awaiting results from flexible sources
 Under the hood, it leverages `executeFunction` to resolve callables and then ensures that if the result is a `Promise`, it is properly awaited.
 
 **Parameters:**
-- `callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T` — The source to execute or resolve.
-- `...args: any[]` (optional) — Arguments to pass to the function if `callback` is callable.
+- `callback: ((...args: Args) => PromiseLike<T> | T) | PromiseLike<T> | T` — The source to execute or resolve.
+- `...args: Args` (optional) — Arguments to pass to the function if `callback` is callable.
 
 **Returns:**
-`Promise<T>` — A promise that resolves to the final computed or provided value.
+`Promise<Awaited<T>>` — A promise that resolves to the final computed or provided value.
+
 
 ```typescript
 import { executePromise } from '@dxtmisha/functional-basic'

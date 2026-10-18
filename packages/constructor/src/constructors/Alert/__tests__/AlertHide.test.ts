@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { AlertHide } from '../AlertHide'
 
 describe('AlertHide', () => {
   it('should initialize with default states', () => {
-    const hide = new AlertHide('my-alert')
+    const hide = new AlertHide(new DesignName('my.alert'))
 
     expect(hide.destroy.value).toBe(false)
     expect(hide.hide.value).toBe(false)
@@ -11,7 +12,7 @@ describe('AlertHide', () => {
   })
 
   it('should return correct classes', () => {
-    const hide = new AlertHide('my-alert')
+    const hide = new AlertHide(new DesignName('my.alert'))
     expect(hide.classes).toEqual({
       'my-alert--hide': false
     })
@@ -23,7 +24,7 @@ describe('AlertHide', () => {
   })
 
   it('should set destroy and hide state correctly', () => {
-    const hide = new AlertHide('my-alert')
+    const hide = new AlertHide(new DesignName('my.alert'))
 
     hide.setDestroy(true)
     expect(hide.destroy.value).toBe(true)

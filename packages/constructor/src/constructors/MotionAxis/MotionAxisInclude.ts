@@ -4,6 +4,7 @@ import {
   type ConstrBind,
   type ConstrEmit,
   type DesignComponents,
+  type DesignName,
   executeFunctionRef,
   type RefOrNormalOrFunction
 } from '@dxtmisha/functional'
@@ -49,7 +50,7 @@ export class MotionAxisInclude<
    * Constructor for programmatic inclusion of MotionAxis.
    *
    * Конструктор для программного включения MotionAxis.
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
@@ -58,7 +59,7 @@ export class MotionAxisInclude<
    * @param selected selected element / выбранный элемент
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: Readonly<Props>,
     components?: DesignComponents<MotionAxisComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
@@ -66,7 +67,7 @@ export class MotionAxisInclude<
     protected readonly emits?: ConstrEmit<MotionAxisEmitsInclude>,
     protected readonly selected?: RefOrNormalOrFunction<MotionAxisSelectedValue>
   ) {
-    super(className, props, components, extra, index)
+    super(naming, props, components, extra, index)
   }
 
   /** Selected element / Выбранный элемент */

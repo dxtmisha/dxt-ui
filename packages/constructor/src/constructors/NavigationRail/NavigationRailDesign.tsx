@@ -68,16 +68,12 @@ export class NavigationRailDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -104,11 +100,11 @@ export class NavigationRailDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        space: this.getSubClass('space'),
-        line: this.getSubClass('line'),
-        html: this.getSubClass('html'),
-        management: this.getSubClass('management'),
-        menu: this.getSubClass('menu')
+        space: this.naming.getSubClass('space'),
+        line: this.naming.getSubClass('line'),
+        html: this.naming.getSubClass('html'),
+        management: this.naming.getSubClass('management'),
+        menu: this.naming.getSubClass('menu')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -166,7 +162,7 @@ export class NavigationRailDesign<
     item: ListDataItem,
     inMenu: boolean = false
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       inMenu ? 'navigationItem' : 'navigationRailItem',
       this.getItemAttrs(type, item)
     ) as VNode
@@ -185,7 +181,7 @@ export class NavigationRailDesign<
     props: WindowControlItem,
     inMenu: boolean = false
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       inMenu ? 'navigationItem' : 'navigationRailItem',
       toBinds(
         {
@@ -261,7 +257,7 @@ export class NavigationRailDesign<
     item: ListDataItem,
     inMenu: boolean = false
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listMenu',
       {
         divider: this.props.divider,

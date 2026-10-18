@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { ref, toRefs, nextTick } from 'vue'
-import type { Ref, ToRefs } from 'vue'
+import { ref, nextTick } from 'vue'
+import type { Ref } from 'vue'
 import { TextareaAutosizeValue } from '../TextareaAutosizeValue'
 import { TextareaAutosizeResize } from '../TextareaAutosizeResize'
 import type { TextareaAutosizeProps } from '../props'
@@ -23,10 +23,9 @@ function createTextareaAutosizeResize(
     autosize: true,
     ...initialProperties
   })
-  const references = toRefs(reactiveProperties.value as any) as unknown as ToRefs<TextareaAutosizeProps>
+
   const textareaAutosizeValue = new TextareaAutosizeValue(
-    reactiveProperties.value as unknown as TextareaAutosizeProps,
-    references
+    reactiveProperties.value as unknown as TextareaAutosizeProps
   )
   const textareaAutosizeResize = new TextareaAutosizeResize(
     reactiveProperties.value as unknown as TextareaAutosizeProps,

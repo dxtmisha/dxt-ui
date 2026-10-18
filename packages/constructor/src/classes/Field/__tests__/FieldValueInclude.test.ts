@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { ref, toRefs, nextTick } from 'vue'
+import { effectScope, reactive, ref, nextTick } from 'vue'
 import { FieldValueInclude } from '../FieldValueInclude'
 
 vi.mock('vue', async () => {
@@ -12,10 +12,34 @@ vi.mock('vue', async () => {
 })
 
 describe('FieldValueInclude', () => {
+  it.each(['value', 'modelValue'] as const)('tracks %s added after initialization without a refs map', async (property) => {
+    const scope = effectScope()
+    const props = reactive<{ value?: string, modelValue?: string }>({})
+    const value = scope.run(() => new FieldValueInclude<string>(props))!
+
+    try {
+      expect(value.get()).toBeUndefined()
+      props[property] = 'first'
+      await nextTick()
+      expect(value.get()).toBe('first')
+
+      props[property] = 'second'
+      await nextTick()
+      expect(value.get()).toBe('second')
+
+      scope.stop()
+      props[property] = 'after disposal'
+      await nextTick()
+      expect(value.get()).toBe('second')
+    } finally {
+      scope.stop()
+    }
+  })
+
   it('should initialize and return formatted value string, number, and boolean', () => {
     const props = { value: '123', modelValue: undefined }
-    const refs = toRefs(ref(props).value)
-    const valueInclude = new FieldValueInclude(props, refs)
+
+    const valueInclude = new FieldValueInclude(props)
 
     expect(valueInclude.get()).toBe('123')
     expect(valueInclude.string).toBe('123')
@@ -26,16 +50,16 @@ describe('FieldValueInclude', () => {
 
   it('should format values into arrays', () => {
     const props = { value: 'a', modelValue: undefined }
-    const refs = toRefs(ref(props).value)
-    const valueInclude = new FieldValueInclude(props, refs)
+
+    const valueInclude = new FieldValueInclude(props)
 
     expect(valueInclude.getToArray()).toEqual(['a'])
   })
 
   it('should update value on props modification', async () => {
     const reactiveProps = ref({ value: 'init', modelValue: undefined })
-    const refs = toRefs(reactiveProps.value)
-    const valueInclude = new FieldValueInclude(reactiveProps.value, refs)
+
+    const valueInclude = new FieldValueInclude(reactiveProps.value)
 
     expect(valueInclude.get()).toBe('init')
 
@@ -46,8 +70,8 @@ describe('FieldValueInclude', () => {
 
   it('should clear value and reset states on clear()', () => {
     const props = { value: 'init', modelValue: undefined }
-    const refs = toRefs(ref(props).value)
-    const valueInclude = new FieldValueInclude(props, refs, undefined, undefined)
+
+    const valueInclude = new FieldValueInclude(props, undefined, undefined)
 
     valueInclude.set('new-val')
     valueInclude.setHasEdit(true)
@@ -60,8 +84,8 @@ describe('FieldValueInclude', () => {
 
   it('should set value by event object client target', () => {
     const props = { value: undefined, modelValue: undefined }
-    const refs = toRefs(ref(props).value)
-    const valueInclude = new FieldValueInclude(props, refs)
+
+    const valueInclude = new FieldValueInclude(props)
 
     const targetInput = document.createElement('input')
     targetInput.value = 'event-input'
@@ -72,8 +96,8 @@ describe('FieldValueInclude', () => {
 
   it('should set value via expose().setValue()', () => {
     const props = { value: 'init', modelValue: undefined }
-    const refs = toRefs(ref(props).value)
-    const valueInclude = new FieldValueInclude(props, refs)
+
+    const valueInclude = new FieldValueInclude(props)
 
     const exposed = valueInclude.expose()
     expect(typeof exposed.setValue).toBe('function')
@@ -84,8 +108,8 @@ describe('FieldValueInclude', () => {
 
   it('should clear value via expose().clear()', () => {
     const props = { value: 'init', modelValue: undefined }
-    const refs = toRefs(ref(props).value)
-    const valueInclude = new FieldValueInclude(props, refs)
+
+    const valueInclude = new FieldValueInclude(props)
 
     const exposed = valueInclude.expose()
     expect(typeof exposed.clear).toBe('function')

@@ -62,16 +62,12 @@ export class SelectDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -224,7 +220,7 @@ export class SelectDesign<
     input: FieldControl,
     props: MenuControlItem
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'selectValue',
       toBinds(
         props.binds,

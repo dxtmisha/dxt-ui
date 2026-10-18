@@ -63,16 +63,12 @@ export class AlertLinkDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -96,7 +92,7 @@ export class AlertLinkDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label')
+        label: this.naming.getSubClass('label')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

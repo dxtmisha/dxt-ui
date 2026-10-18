@@ -40,10 +40,8 @@ export class ActionSheetDesign<
   protected initItem(): ActionSheet {
     return new ActionSheet(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -60,12 +58,12 @@ export class ActionSheetDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        title: this.getSubClass('title'),
-        header: this.getSubClass('header'),
-        body: this.getSubClass('body'),
-        footer: this.getSubClass('footer'),
-        touch: this.getSubClass('touch'),
-        tab: this.getSubClass('tab')
+        title: this.naming.getSubClass('title'),
+        header: this.naming.getSubClass('header'),
+        body: this.naming.getSubClass('body'),
+        footer: this.naming.getSubClass('footer'),
+        touch: this.naming.getSubClass('touch'),
+        tab: this.naming.getSubClass('tab')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

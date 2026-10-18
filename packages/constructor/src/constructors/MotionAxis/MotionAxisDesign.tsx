@@ -69,16 +69,12 @@ export class MotionAxisDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -113,7 +109,7 @@ export class MotionAxisDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        slide: this.getSubClass('slide')
+        slide: this.naming.getSubClass('slide')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

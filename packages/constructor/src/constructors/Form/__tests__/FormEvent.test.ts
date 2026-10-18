@@ -19,7 +19,7 @@ describe('FormEvent', () => {
 
     const elements = new FormElements()
     const native = new FormElementsNative(ref(form))
-    const formValue = new FormValue({ native: false }, undefined, elements, native)
+    const formValue = new FormValue({ native: false }, elements, native)
     const emits = vi.fn()
     const formEvent = new FormEvent({ native: false }, formValue, emits)
 
@@ -65,7 +65,7 @@ describe('FormEvent', () => {
 
     const elements = new FormElements()
     const native = new FormElementsNative(ref(form))
-    const formValue = new FormValue({ native: false }, undefined, elements, native)
+    const formValue = new FormValue({ native: false }, elements, native)
     const emits = vi.fn()
     const formEvent = new FormEvent({ native: false }, formValue, emits)
 
@@ -110,7 +110,7 @@ describe('FormEvent', () => {
     form.appendChild(input)
 
     const native = new FormElementsNative(ref(form))
-    const formValue = new FormValue({ native: true }, undefined, undefined, native)
+    const formValue = new FormValue({ native: true }, undefined, native)
     const emits = vi.fn()
     const formEvent = new FormEvent({ native: true }, formValue, emits)
 
@@ -165,7 +165,7 @@ describe('FormEvent', () => {
 
   it('calls model.emit with values on onInput and onChange when model is provided', () => {
     const elements = new FormElements()
-    const formValue = new FormValue({ native: false }, undefined, elements)
+    const formValue = new FormValue({ native: false }, elements)
     const emits = vi.fn()
     const model = new ModelInclude<FormElementsValues>('value', emits)
     const modelEmitSpy = vi.spyOn(model, 'emit')

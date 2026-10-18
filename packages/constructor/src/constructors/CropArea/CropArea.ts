@@ -1,5 +1,5 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -45,10 +45,8 @@ export class CropArea {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -63,10 +61,8 @@ export class CropArea {
    */
   constructor(
     protected readonly props: CropAreaProps,
-    protected readonly refs: ToRefs<CropAreaProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<CropAreaComponents, CropAreaProps>,
     protected readonly slots?: CropAreaSlots,
     protected readonly emits?: ConstrEmit<CropAreaEmits>,
@@ -90,8 +86,8 @@ export class CropArea {
       ModelIncludeConstructor = ModelInclude
     } = constructors
 
-    this.elementItem = new CropAreaElementConstructor(element, className)
-    this.style = new CropAreaStyleConstructor(element, className)
+    this.elementItem = new CropAreaElementConstructor(element, naming)
+    this.style = new CropAreaStyleConstructor(element, naming)
     this.position = new CropAreaPositionConstructor(props, this.style)
     this.emit = new CropAreaEmitConstructor(this.position, emits)
     this.coordinates = new CropAreaCoordinatesConstructor(this.elementItem, this.position, this.emit)

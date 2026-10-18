@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import { Icons, isFilled, isString } from '@dxtmisha/functional'
 
 import { ImagePdf } from './ImagePdf'
+import { ImageSource } from './ImageSource'
 import { ImageUint8Array } from './ImageUint8Array'
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
@@ -23,7 +24,7 @@ const REGEX_FLAG = /^flag-[a-z]{2}$/
 /** Regular expression for checking the compressed flag / Регулярное выражение для проверки сжатого флага */
 const REGEX_FLAG_COMPRESSED = /^f-[a-z]{2}$/
 /** Regular expression for checking the icon type / Регулярное выражение для проверки типа иконки */
-const REGEX_SUB = /^(filled|outlined|round|sharp|two-tone|material)-/
+const REGEX_ICON_TYPE = /^(filled|outlined|round|sharp|two-tone|material)-/
 
 /**
  * Class for working with the image type.
@@ -57,17 +58,21 @@ export class ImageType {
   readonly item = computed<ImageTypeItem>(() => {
     const image = this.props.value
 
+    if (ImageSource.is(image)) {
+      return ImageSource.getType(image)
+    }
+
     if (this.clientOnly.isRender()) {
+      if (ImagePdf.isPdf(image)) {
+        return ImageTypeValue.pdf
+      }
+
       if (image instanceof File) {
         return ImageTypeValue.file
       }
 
       if (ImageUint8Array.is(image)) {
         return ImageTypeValue.array
-      }
-
-      if (ImagePdf.isPdf(image)) {
-        return ImageTypeValue.pdf
       }
     }
 
@@ -99,10 +104,10 @@ export class ImageType {
         return ImageTypeValue.flagCompressed
       }
 
-      const sub = REGEX_SUB.exec(image)
+      const typeMatch = REGEX_ICON_TYPE.exec(image)
 
-      if (sub) {
-        return sub[1] as ImageTypeItem
+      if (typeMatch) {
+        return typeMatch[1] as ImageTypeItem
       }
 
       if (Icons.is(image)) {

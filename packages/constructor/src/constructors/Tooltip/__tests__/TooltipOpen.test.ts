@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { ref, toRefs, nextTick } from 'vue'
-import type { ToRefs } from 'vue'
+import { ref, nextTick } from 'vue'
+
 import { TooltipOpen } from '../TooltipOpen'
 import { TooltipStatus } from '../TooltipStatus'
 import type { TooltipProps } from '../props'
@@ -29,10 +29,9 @@ function createTooltipOpen(
     embedded: false,
     ...initialProperties
   })
-  const references = toRefs(reactiveProperties.value as any) as unknown as ToRefs<TooltipProps>
+
   const tooltipOpen = new TooltipOpen(
     reactiveProperties.value as unknown as TooltipProps,
-    references,
     mockStyle,
     mockStatus,
     mockPosition,

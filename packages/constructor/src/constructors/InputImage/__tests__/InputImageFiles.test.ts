@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { reactive, ref, toRefs } from 'vue'
+import { reactive, ref } from 'vue'
 
 vi.mock('vue', async () => {
   const actual = await vi.importActual<typeof import('vue')>('vue')
@@ -48,9 +48,9 @@ const createHelper = (initialProps: Partial<InputImageProps> = {}) => {
     modelValue: undefined,
     ...initialProps
   }) as InputImageProps
-  const refs = toRefs(props)
+
   const elementItem = new FieldElementInclude(props, ref(undefined))
-  const value = new FieldValueInclude<InputImageItem>(props, refs, elementItem)
+  const value = new FieldValueInclude<InputImageItem>(props, elementItem)
   const files = new InputImageFiles(props, value)
 
   return { props, value, files }

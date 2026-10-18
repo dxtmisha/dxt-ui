@@ -2,6 +2,7 @@
 
 import {
   type DesignComponents,
+  type DesignName,
   executeFunctionRef,
   getElementId,
   isFilled,
@@ -48,7 +49,7 @@ export class FieldMessageInclude<
 
   /**
    * Constructor
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
@@ -57,7 +58,7 @@ export class FieldMessageInclude<
    * @param isCounter whether to display the counter / отображать ли счетчик
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: ComponentIncludeProps<Props>,
     components?: DesignComponents<FieldMessageComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
@@ -65,9 +66,9 @@ export class FieldMessageInclude<
     protected readonly validationMessage?: RefOrNormalOrFunction<string>,
     protected readonly isCounter?: RefOrNormalOrFunction<boolean | undefined>
   ) {
-    super(className, props, components, extra, index)
+    super(naming, props, components, extra, index)
 
-    this.fieldCounter = new FieldCounterInclude(this.className, this.props)
+    this.fieldCounter = new FieldCounterInclude(this.naming, this.props)
   }
 
   /**

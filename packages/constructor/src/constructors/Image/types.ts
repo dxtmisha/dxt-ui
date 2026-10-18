@@ -45,6 +45,7 @@ export interface ImageSlots {
  * Тип, описывающий подклассы.
  */
 export type ImageClasses = {
+  /** Root element classes / Классы корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

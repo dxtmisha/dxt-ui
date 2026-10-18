@@ -1,7 +1,8 @@
-import { type Ref, type ToRefs, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import {
   type ConstrEmit,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { CaptionInclude } from '../../classes/CaptionInclude'
@@ -44,10 +45,8 @@ export class Table {
   /**
    * Constructor
    * @param props input properties / входные свойства
-   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target HTML element / целевой HTML-элемент
-   * @param classDesign design system prefix / префикс дизайн-системы
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
@@ -62,10 +61,8 @@ export class Table {
    */
   constructor(
     protected readonly props: TableProps,
-    protected readonly refs: ToRefs<TableProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<TableComponents, TableProps>,
     protected readonly slots?: TableSlots,
     protected readonly emits?: ConstrEmit<TableEmits>,
@@ -89,7 +86,7 @@ export class Table {
       TableRecordIncludeConstructor = TableRecordInclude
     } = constructors
 
-    this.caption = new CaptionIncludeConstructor(props, className, slots, undefined, this.tagCaption)
+    this.caption = new CaptionIncludeConstructor(props, naming, slots, undefined, this.tagCaption)
     this.columns = new TableColumnsConstructor(props)
 
     this.search = new SearchIncludeConstructor(props, () => this.columns.list)
@@ -97,8 +94,7 @@ export class Table {
     this.pagination = new PaginationIncludeConstructor(props, () => this.sort.getList())
 
     this.tableRecord = new TableRecordIncludeConstructor(
-      classDesign,
-      className,
+      naming,
       props,
       components,
       () => ({ onSort: this.sort.onSort }),
@@ -110,7 +106,7 @@ export class Table {
         stickyScrollBottom: this.props.stickyScrollBottom,
         stickyEnable: this.props.headerTop
       }),
-      className,
+      naming,
       this.headerElement,
       element
     )

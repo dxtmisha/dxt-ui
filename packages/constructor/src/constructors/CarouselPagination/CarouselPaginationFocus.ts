@@ -1,6 +1,7 @@
 // ai-none
 
 import type { Ref } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 
 import { ControlAbstract } from '../../classes/ControlAbstract'
 import type { CarouselPaginationSelected } from './CarouselPaginationSelected'
@@ -16,13 +17,13 @@ export class CarouselPaginationFocus extends ControlAbstract {
    * Constructor
    * @param props input configuration properties / входные конфигурационные свойства
    * @param element main HTML element / главный HTML-элемент
-   * @param className base class name / базовое имя класса
+   * @param naming component naming helper / помощник именования компонента
    * @param selected slide selection manager instance / экземпляр менеджера выбора слайдов
    */
   constructor(
     protected readonly props: CarouselPaginationProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly selected: CarouselPaginationSelected
   ) {
     super(props, element)

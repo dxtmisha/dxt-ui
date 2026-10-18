@@ -63,16 +63,12 @@ export class CollageDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -99,8 +95,8 @@ export class CollageDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        item: this.getSubClass('item')
+        body: this.naming.getSubClass('body'),
+        item: this.naming.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -166,7 +162,7 @@ export class CollageDesign<
 
       if (list) {
         list.forEach((item, key) => {
-          this.components.renderAdd(
+          this.components?.renderAdd(
             children,
             'collageItem',
             toBinds(

@@ -31,14 +31,14 @@ export class InputFileItemDesign<
   CLASSES extends InputFileItemClasses,
   P extends InputFileItemPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  InputFileItemEmits,
-  EXPOSE,
-  InputFileItemSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    InputFileItemEmits,
+    EXPOSE,
+    InputFileItemSlots,
+    CLASSES,
+    P
+  > {
   /** Orchestrator item / Элемент оркестратора */
   protected readonly item: InputFileItem
 
@@ -65,16 +65,12 @@ export class InputFileItemDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -104,15 +100,15 @@ export class InputFileItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        thumbnail: this.getSubClass('thumbnail'),
-        body: this.getSubClass('body'),
-        label: this.getSubClass('label'),
-        caption: this.getSubClass('caption'),
-        progress: this.getSubClass('progress'),
-        actions: this.getSubClass('actions'),
-        buttonCrop: this.getSubClass('buttonCrop'),
-        buttonDelete: this.getSubClass('buttonDelete'),
-        buttonRetry: this.getSubClass('buttonRetry')
+        thumbnail: this.naming.getSubClass('thumbnail'),
+        body: this.naming.getSubClass('body'),
+        label: this.naming.getSubClass('label'),
+        caption: this.naming.getSubClass('caption'),
+        progress: this.naming.getSubClass('progress'),
+        actions: this.naming.getSubClass('actions'),
+        buttonCrop: this.naming.getSubClass('buttonCrop'),
+        buttonDelete: this.naming.getSubClass('buttonDelete'),
+        buttonRetry: this.naming.getSubClass('buttonRetry')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -326,7 +322,7 @@ export class InputFileItemDesign<
   readonly renderDialog = (): VNode[] => {
     if (
       this.item.delete.is()
-      && this.components.is('dialog')
+      && this.components?.is('dialog')
     ) {
       return this.components.render(
         'dialog',
@@ -349,7 +345,7 @@ export class InputFileItemDesign<
   readonly renderDialogCrop = (): VNode[] => {
     if (
       this.item.crop.is()
-      && this.components.is('dialog')
+      && this.components?.is('dialog')
     ) {
       return this.components.render(
         'dialog',

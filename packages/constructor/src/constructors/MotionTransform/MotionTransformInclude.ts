@@ -3,6 +3,7 @@
 import {
   type ConstrBind,
   type DesignComponents,
+  type DesignName,
   type ConstrEmit
 } from '@dxtmisha/functional'
 
@@ -57,7 +58,7 @@ export class MotionTransformInclude<
    * Constructor for initializing MotionTransform properties and inclusion managers.
    *
    * Конструктор для инициализации свойств MotionTransform и включенных менеджеров.
-   * @param className base class name of the parent component / имя базового класса родительского компонента
+   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
    * @param components design components registry / реестр дизайн-компонентов
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
@@ -65,14 +66,14 @@ export class MotionTransformInclude<
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: Readonly<Props>,
     components?: DesignComponents<MotionTransformComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
     protected readonly emits?: ConstrEmit<MotionTransformEmits>
   ) {
-    super(className, props, components, extra, index)
+    super(naming, props, components, extra, index)
   }
 
   /**

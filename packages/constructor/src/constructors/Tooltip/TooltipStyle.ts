@@ -1,6 +1,7 @@
 // ai-none
 
 import { type Ref } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 
 /**
  * Style management class.
@@ -11,11 +12,11 @@ export class TooltipStyle {
   /**
    * Constructor
    * @param element instance of the element itself / экземпляр самого элемента
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
   }
 
@@ -37,10 +38,10 @@ export class TooltipStyle {
     const element = this.element.value
 
     if (element) {
-      element.classList.toggle(`${this.className}--top`, top)
-      element.style.setProperty(`--${this.className}-sys-x`, `${x}px`)
-      element.style.setProperty(`--${this.className}-sys-y`, `${y}px`)
-      element.style.setProperty(`--${this.className}-sys-shift`, `${shift}px`)
+      element.classList.toggle(this.naming.getStatusClass('top'), top)
+      element.style.setProperty(this.naming.getStyle('x'), `${x}px`)
+      element.style.setProperty(this.naming.getStyle('y'), `${y}px`)
+      element.style.setProperty(this.naming.getStyle('shift'), `${shift}px`)
     }
   }
 
@@ -54,7 +55,7 @@ export class TooltipStyle {
     const element = this.element.value
 
     if (element) {
-      element.classList.toggle(`${this.className}--preparation`, status)
+      element.classList.toggle(this.naming.getStatusClass('preparation'), status)
     }
   }
 
@@ -68,7 +69,7 @@ export class TooltipStyle {
     const element = this.element.value
 
     if (element) {
-      element.classList.toggle(`${this.className}--show`, status)
+      element.classList.toggle(this.naming.getStatusClass('show'), status)
 
       if (!status) {
         this.setMove(status)
@@ -86,7 +87,7 @@ export class TooltipStyle {
     const element = this.element.value
 
     if (element) {
-      element.classList.toggle(`${this.className}--move`, status)
+      element.classList.toggle(this.naming.getStatusClass('move'), status)
     }
   }
 
@@ -99,13 +100,13 @@ export class TooltipStyle {
     const element = this.element.value
 
     if (element) {
-      element.classList.remove(`${this.className}--top`)
-      element.classList.remove(`${this.className}--preparation`)
-      element.classList.remove(`${this.className}--show`)
+      element.classList.remove(this.naming.getStatusClass('top'))
+      element.classList.remove(this.naming.getStatusClass('preparation'))
+      element.classList.remove(this.naming.getStatusClass('show'))
 
-      element.style.removeProperty(`--${this.className}-sys-x`)
-      element.style.removeProperty(`--${this.className}-sys-y`)
-      element.style.removeProperty(`--${this.className}-sys-shift`)
+      element.style.removeProperty(this.naming.getStyle('x'))
+      element.style.removeProperty(this.naming.getStyle('y'))
+      element.style.removeProperty(this.naming.getStyle('shift'))
     }
   }
 
@@ -118,8 +119,8 @@ export class TooltipStyle {
     const element = this.element.value
 
     if (element) {
-      element.classList.remove(`${this.className}--preparation`)
-      element.classList.remove(`${this.className}--show`)
+      element.classList.remove(this.naming.getStatusClass('preparation'))
+      element.classList.remove(this.naming.getStatusClass('show'))
     }
   }
 }

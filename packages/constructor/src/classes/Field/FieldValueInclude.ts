@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, type ToRefs, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import {
   anyToString,
   getLength,
@@ -39,7 +39,6 @@ export class FieldValueInclude<Value = any> {
    *
    * Конструктор для FieldValueInclude.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element object for working with the input element / объект для работы с элементом ввода
    * @param original original values / оригинальные значения
    * @param isMultiple flag enabling multiple selection handling in setValues / флаг включения множественного выбора в setValues
@@ -47,7 +46,6 @@ export class FieldValueInclude<Value = any> {
    */
   constructor(
     protected readonly props: FieldValueProps<Value> & { valueVariant?: NumberOrStringOrBoolean },
-    protected readonly refs: ToRefs<FieldValueProps<Value>>,
     protected readonly element?: FieldElementInclude,
     protected readonly original?: RefOrNormal<Value>,
     protected readonly isMultiple: boolean = true,
@@ -57,8 +55,8 @@ export class FieldValueInclude<Value = any> {
 
     onMounted(() => {
       watch([
-        refs.value,
-        refs.modelValue
+        () => props.value,
+        () => props.modelValue
       ], this.update)
     })
   }

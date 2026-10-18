@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { ArrowElement } from '../ArrowElement'
 
 describe('ArrowElement', () => {
@@ -20,14 +21,14 @@ describe('ArrowElement', () => {
   })
 
   it('should return correct width and height from styles', () => {
-    const arrow = new ArrowElement(ref(element), 'my-arrow')
+    const arrow = new ArrowElement(ref(element), new DesignName('my.arrow'))
     expect(arrow.is()).toBe(true)
     expect(arrow.width).toBe(12)
     expect(arrow.height).toBe(8)
   })
 
   it('should return 0 width and height if element is undefined', () => {
-    const arrow = new ArrowElement(ref(undefined), 'my-arrow')
+    const arrow = new ArrowElement(ref(undefined), new DesignName('my.arrow'))
     expect(arrow.is()).toBe(false)
     expect(arrow.width).toBe(0)
     expect(arrow.height).toBe(0)
@@ -42,7 +43,7 @@ describe('ArrowElement', () => {
     arrowLineEl.className = 'my-arrow__arrowLine'
     element.appendChild(arrowLineEl)
 
-    const arrow = new ArrowElement(ref(element), 'my-arrow')
+    const arrow = new ArrowElement(ref(element), new DesignName('my.arrow'))
 
     const mockRect = { top: 10, bottom: 20, left: 10, right: 30 } as any
     vi.spyOn(element, 'getBoundingClientRect').mockReturnValue(mockRect)

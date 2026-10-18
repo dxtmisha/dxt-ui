@@ -2,6 +2,7 @@
 
 import {
   type DesignComponents,
+  type DesignName,
   eventStopPropagation,
   isEnter
 } from '@dxtmisha/functional'
@@ -41,7 +42,7 @@ export class FieldInclude extends ComponentIncludeAbstract<
    * Constructor for FieldInclude helper class.
    *
    * Конструктор для вспомогательного класса FieldInclude.
-   * @param className base class name / имя базового класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input data / входные данные
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
@@ -55,7 +56,7 @@ export class FieldInclude extends ComponentIncludeAbstract<
    * @param onPrevious Previous arrow click handler / Обработчик клика по предыдущей стрелке
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: ComponentIncludeProps<FieldPropsInclude & FieldArrowProps>,
     components?: DesignComponents<FieldComponentInclude, FieldPropsInclude & FieldArrowProps>,
     extra?: ComponentIncludeExtra<FieldPropsBasic>,
@@ -69,7 +70,7 @@ export class FieldInclude extends ComponentIncludeAbstract<
     protected readonly onPrevious?: () => void
   ) {
     super(
-      className,
+      naming,
       props,
       components,
       extra,

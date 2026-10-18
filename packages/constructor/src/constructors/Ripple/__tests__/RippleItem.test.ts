@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { RippleItem } from '../RippleItem'
 
 describe('RippleItem', () => {
@@ -8,7 +9,7 @@ describe('RippleItem', () => {
     const props = { disabled: true }
     const container = document.createElement('span')
     const elementRef = ref<HTMLSpanElement>(container)
-    const ripple = new RippleItem(props, elementRef, 'd1-ripple')
+    const ripple = new RippleItem(props, elementRef, new DesignName('d1.ripple'))
 
     ripple.add({ x: 50, y: 100 })
 
@@ -19,7 +20,7 @@ describe('RippleItem', () => {
     const props = { disabled: false }
     const container = document.createElement('span')
     const elementRef = ref<HTMLSpanElement>(container)
-    const ripple = new RippleItem(props, elementRef, 'd1-ripple')
+    const ripple = new RippleItem(props, elementRef, new DesignName('d1.ripple'))
 
     ripple.add({ x: 50, y: 100 })
 
@@ -36,7 +37,7 @@ describe('RippleItem', () => {
     const props = { disabled: false }
     const container = document.createElement('span')
     const elementRef = ref<HTMLSpanElement>(container)
-    const ripple = new RippleItem(props, elementRef, 'd1-ripple')
+    const ripple = new RippleItem(props, elementRef, new DesignName('d1.ripple'))
 
     ripple.add({ x: 10, y: 20 })
     const child = container.children[0] as HTMLSpanElement
@@ -66,7 +67,7 @@ describe('RippleItem', () => {
     Object.defineProperty(container, 'offsetWidth', { configurable: true, value: 200 })
     Object.defineProperty(container, 'offsetHeight', { configurable: true, value: 100 })
     const elementRef = ref<HTMLSpanElement>(container)
-    const ripple = new RippleItem(props, elementRef, 'd1-ripple')
+    const ripple = new RippleItem(props, elementRef, new DesignName('d1.ripple'))
 
     ripple.add()
 
@@ -82,7 +83,7 @@ describe('RippleItem', () => {
     Object.defineProperty(container, 'offsetWidth', { configurable: true, value: 200 })
     Object.defineProperty(container, 'offsetHeight', { configurable: true, value: 100 })
     const elementRef = ref<HTMLSpanElement>(container)
-    const ripple = new RippleItem(props, elementRef, 'd1-ripple')
+    const ripple = new RippleItem(props, elementRef, new DesignName('d1.ripple'))
 
     ripple.addCenter()
 

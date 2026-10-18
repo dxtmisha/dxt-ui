@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -36,10 +36,8 @@ export class MenuButton extends SelectAbstract {
    *
    * Инициализирует все необходимые суб-контроллеры и включения для компонента MenuButton.
    * @param props input properties / входные свойства
-   * @param refs reactive references of the input properties / реактивные ссылки на входные свойства
    * @param element reference to the root HTML element / ссылка на корневой HTML-элемент
-   * @param classDesign design style class name / имя класса стилевого оформления
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components sub-components configuration object / объект конфигурации субкомпонентов
    * @param slots slot rendering functions / функции рендеринга слотов
    * @param emits event emission function / функция отправки событий
@@ -57,10 +55,8 @@ export class MenuButton extends SelectAbstract {
    */
   constructor(
     protected readonly props: MenuButtonProps,
-    protected readonly refs: ToRefs<MenuButtonProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<MenuButtonComponents, MenuButtonProps>,
     protected readonly slots?: MenuButtonSlots,
     protected readonly emits?: ConstrEmit<MenuButtonEmits>,
@@ -79,10 +75,8 @@ export class MenuButton extends SelectAbstract {
   ) {
     super(
       props,
-      refs,
       element,
-      classDesign,
-      className,
+      naming,
       components,
       slots,
       emits,
@@ -94,7 +88,7 @@ export class MenuButton extends SelectAbstract {
     } = constructors
 
     this.button = new ButtonConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       () => ({

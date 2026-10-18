@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrClassObject, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { FieldCounterInclude } from '../FieldCounter'
 import { FieldMessageMessage } from './FieldMessageMessage'
@@ -29,10 +29,8 @@ export class FieldMessage {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -43,10 +41,8 @@ export class FieldMessage {
    */
   constructor(
     protected readonly props: FieldMessageProps,
-    protected readonly refs: ToRefs<FieldMessageProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<FieldMessageComponents, FieldMessageProps>,
     protected readonly slots?: FieldMessageSlots,
     protected readonly emits?: ConstrEmit<FieldMessageEmits>,
@@ -62,9 +58,9 @@ export class FieldMessage {
       SkeletonIncludeConstructor = SkeletonInclude
     } = constructors
 
-    this.fieldCounter = new FieldCounterIncludeConstructor(className, props, components)
+    this.fieldCounter = new FieldCounterIncludeConstructor(naming, props, components)
     this.message = new FieldMessageMessageConstructor(props, slots)
-    this.skeleton = new SkeletonIncludeConstructor(props, classDesign, ['classTextVariant'])
+    this.skeleton = new SkeletonIncludeConstructor(props, naming, ['classTextVariant'])
   }
 
   /**
@@ -75,7 +71,7 @@ export class FieldMessage {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--validation`]: this.message.isValidation()
+      [this.naming.getStatusClass('validation')]: this.message.isValidation()
     }
   }
 

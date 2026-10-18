@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { reactive, ref, toRefs } from 'vue'
+import { reactive, ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 
 import { CarouselPagination } from '../CarouselPagination'
 import type { CarouselPaginationProps } from '../props'
@@ -12,22 +13,20 @@ describe('CarouselPagination', () => {
       selected: 1,
       ...customProps
     })
-    const refs = toRefs(props)
+
     const element = ref<HTMLDivElement>()
     const emits = vi.fn()
 
     const instance = new CarouselPagination(
       props,
-      refs,
       element,
-      'test-design',
-      'test-pagination',
+      new DesignName('test.pagination'),
       undefined,
       undefined,
       emits
     )
 
-    return { instance, props, refs, element, emits }
+    return { instance, props, element, emits }
   }
 
   it('should be focusable by default when bullets/lines', () => {

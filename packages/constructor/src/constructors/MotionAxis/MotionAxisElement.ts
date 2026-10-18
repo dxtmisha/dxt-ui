@@ -1,6 +1,7 @@
 // ai-none
 
 import { type Ref, ref } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 
 import type { MotionAxisClassStatus } from './basicTypes'
 
@@ -24,11 +25,11 @@ export class MotionAxisElement {
    *
    * Конструктор для инициализации менеджеров элементов.
    * @param element window element / элемент окна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected element: Ref<HTMLDivElement | undefined>,
-    protected className: string | string[]
+    protected readonly naming: DesignName
   ) {
     this.classStatus = {
       main: this.getClassStatusItem(),
@@ -197,7 +198,7 @@ export class MotionAxisElement {
    * @returns formatted CSS class string / строка отформатированного CSS-класса
    */
   protected getClassStatusItem(status?: string): string {
-    return `${this.className}__slide${status ? `--${status}` : ''}`
+    return this.naming.getSubClass(`slide${status ? `--${status}` : ''}`)
   }
 
   /**
@@ -207,7 +208,7 @@ export class MotionAxisElement {
    * @returns CSS class name / имя CSS-класса
    */
   protected getClassScroll(): string {
-    return `${this.className}__scroll`
+    return this.naming.getSubClass('scroll')
   }
 
   /**
@@ -217,7 +218,7 @@ export class MotionAxisElement {
    * @returns CSS class name / имя CSS-класса
    */
   protected getClassScrollHidden(): string {
-    return `${this.className}__scroll--hidden`
+    return this.naming.getSubClass('scroll--hidden')
   }
 
   /**

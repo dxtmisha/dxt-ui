@@ -63,16 +63,12 @@ export class ImageCropDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -96,10 +92,10 @@ export class ImageCropDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        image: this.getSubClass('image'),
-        cropArea: this.getSubClass('cropArea'),
-        loading: this.getSubClass('loading')
+        body: this.naming.getSubClass('body'),
+        image: this.naming.getSubClass('image'),
+        cropArea: this.naming.getSubClass('cropArea'),
+        loading: this.naming.getSubClass('loading')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

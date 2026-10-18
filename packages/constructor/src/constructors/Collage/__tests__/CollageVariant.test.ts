@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { ref, toRefs } from 'vue'
+import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { CollageVariant } from '../CollageVariant'
 import { CollageElement } from '../CollageElement'
 import { CollageMasonryHorizontal } from '../CollageMasonryHorizontal'
@@ -15,13 +16,13 @@ describe('CollageVariant', () => {
     const props: CollageProps = {
       variant: 'standard'
     }
-    const refs = toRefs(props)
+
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
-    const variant = new CollageVariant(props, refs, elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variant = new CollageVariant(props, elementItem, woven, masonryHorizontal, masonryVertical, grow)
 
     expect(typeof variant.update).toBe('function')
     expect(typeof variant.updateByTime).toBe('function')
@@ -37,13 +38,13 @@ describe('CollageVariant', () => {
     const props: CollageProps = {
       variant: 'woven'
     }
-    const refs = toRefs(props)
+
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
-    const variant = new CollageVariant(props, refs, elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variant = new CollageVariant(props, elementItem, woven, masonryHorizontal, masonryVertical, grow)
 
     expect(() => variant.update()).not.toThrow()
   })
@@ -59,13 +60,13 @@ describe('CollageVariant', () => {
     const props: CollageProps = {
       variant: 'masonryHorizontal'
     }
-    const refs = toRefs(props)
+
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
-    const variant = new CollageVariant(props, refs, elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variant = new CollageVariant(props, elementItem, woven, masonryHorizontal, masonryVertical, grow)
 
     expect(() => variant.update()).not.toThrow()
   })
@@ -81,13 +82,13 @@ describe('CollageVariant', () => {
     const props: CollageProps = {
       variant: 'masonryVertical'
     }
-    const refs = toRefs(props)
+
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
-    const variant = new CollageVariant(props, refs, elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variant = new CollageVariant(props, elementItem, woven, masonryHorizontal, masonryVertical, grow)
 
     expect(() => variant.update()).not.toThrow()
   })
@@ -101,21 +102,21 @@ describe('CollageVariant', () => {
 
     const element = ref<HTMLElement | undefined>(undefined)
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
 
     const propsWoven: CollageProps = { variant: 'woven' }
-    const variantWoven = new TestCollageVariant(propsWoven, toRefs(propsWoven), elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variantWoven = new TestCollageVariant(propsWoven, elementItem, woven, masonryHorizontal, masonryVertical, grow)
     expect(variantWoven.isResize()).toBe(true)
 
     const propsHorizontal: CollageProps = { variant: 'masonryHorizontal' }
-    const variantHorizontal = new TestCollageVariant(propsHorizontal, toRefs(propsHorizontal), elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variantHorizontal = new TestCollageVariant(propsHorizontal, elementItem, woven, masonryHorizontal, masonryVertical, grow)
     expect(variantHorizontal.isResize()).toBe(true)
 
     const propsVertical: CollageProps = { variant: 'masonryVertical' }
-    const variantVertical = new TestCollageVariant(propsVertical, toRefs(propsVertical), elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variantVertical = new TestCollageVariant(propsVertical, elementItem, woven, masonryHorizontal, masonryVertical, grow)
     expect(variantVertical.isResize()).toBe(true)
   })
 
@@ -128,21 +129,21 @@ describe('CollageVariant', () => {
 
     const element = ref<HTMLElement | undefined>(undefined)
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
 
     const propsStandard: CollageProps = { variant: 'standard' }
-    const variantStandard = new TestCollageVariant(propsStandard, toRefs(propsStandard), elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variantStandard = new TestCollageVariant(propsStandard, elementItem, woven, masonryHorizontal, masonryVertical, grow)
     expect(variantStandard.isResize()).toBe(false)
 
     const propsQuilted: CollageProps = { variant: 'quilted' }
-    const variantQuilted = new TestCollageVariant(propsQuilted, toRefs(propsQuilted), elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variantQuilted = new TestCollageVariant(propsQuilted, elementItem, woven, masonryHorizontal, masonryVertical, grow)
     expect(variantQuilted.isResize()).toBe(false)
 
     const propsUndefined: CollageProps = {}
-    const variantUndefined = new TestCollageVariant(propsUndefined, toRefs(propsUndefined), elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variantUndefined = new TestCollageVariant(propsUndefined, elementItem, woven, masonryHorizontal, masonryVertical, grow)
     expect(variantUndefined.isResize()).toBe(false)
   })
 
@@ -154,13 +155,13 @@ describe('CollageVariant', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
 
     const props: CollageProps = { variant: 'woven' }
-    const variant = new CollageVariant(props, toRefs(props), elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variant = new CollageVariant(props, elementItem, woven, masonryHorizontal, masonryVertical, grow)
 
     expect(() => variant.updateByTime()).not.toThrow()
   })
@@ -174,13 +175,13 @@ describe('CollageVariant', () => {
 
     const element = ref<HTMLElement | undefined>(undefined)
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
 
     const props: CollageProps = { variant: 'standard' }
-    const variant = new TestCollageVariant(props, toRefs(props), elementItem, woven, masonryHorizontal, masonryVertical, grow)
+    const variant = new TestCollageVariant(props, elementItem, woven, masonryHorizontal, masonryVertical, grow)
     const resetGrowSpy = vi.spyOn(grow, 'resetGrow')
 
     variant.triggerResize()

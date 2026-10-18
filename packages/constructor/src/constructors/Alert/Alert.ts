@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp, getBind } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName, getBind } from '@dxtmisha/functional'
 
 import { ActionsInclude } from '../Actions'
 import { AlertLinkInclude } from '../AlertLink'
@@ -54,10 +54,8 @@ export class Alert {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -75,10 +73,8 @@ export class Alert {
    */
   constructor(
     protected readonly props: AlertProps,
-    protected readonly refs: ToRefs<AlertProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<AlertComponents, AlertProps>,
     protected readonly slots?: AlertSlots,
     protected readonly emits?: ConstrEmit<AlertEmits>,
@@ -108,23 +104,23 @@ export class Alert {
       TextIncludeConstructor = TextInclude
     } = constructors
 
-    this.hide = new AlertHideConstructor(className)
+    this.hide = new AlertHideConstructor(naming)
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
     this.alertEvent = new AlertEventConstructor(this.hide, emits)
 
-    this.icon = new IconTrailingIncludeConstructor(props, className, components)
-    this.label = new LabelIncludeConstructor(props, className, undefined, slots)
-    this.description = new DescriptionIncludeConstructor(props, className, slots)
+    this.icon = new IconTrailingIncludeConstructor(props, naming, components)
+    this.label = new LabelIncludeConstructor(props, naming, undefined, slots)
+    this.description = new DescriptionIncludeConstructor(props, naming, slots)
 
     this.button = new ButtonIncludeConstructor(
-      className,
+      naming,
       undefined,
       components,
       () => getBind(props.button, 'label')
     )
     this.buttonClose = new ButtonIncludeConstructor(
-      className,
+      naming,
       undefined,
       components,
       () => ({
@@ -135,7 +131,7 @@ export class Alert {
     )
 
     this.actions = new ActionsIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       undefined,
@@ -143,7 +139,7 @@ export class Alert {
       emits
     )
     this.link = new AlertLinkIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       emits

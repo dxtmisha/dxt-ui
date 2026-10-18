@@ -64,16 +64,12 @@ export class FieldMessageDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -97,9 +93,9 @@ export class FieldMessageDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        info: this.getSubClass('info'),
-        error: this.getSubClass('error'),
-        fieldCounter: this.getSubClass('fieldCounter')
+        info: this.naming.getSubClass('info'),
+        error: this.naming.getSubClass('error'),
+        fieldCounter: this.naming.getSubClass('fieldCounter')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

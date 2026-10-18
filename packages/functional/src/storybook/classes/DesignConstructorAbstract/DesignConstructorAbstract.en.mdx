@@ -51,7 +51,6 @@ class ButtonDesign extends DesignConstructorAbstract<
 > {
   constructor(name: string, props: MyProps) {
     super(name, props)
-    this.init()
   }
 
   // Required methods to implement
@@ -70,11 +69,13 @@ class ButtonDesign extends DesignConstructorAbstract<
 
 ## Naming Helpers
 
-- `getName(): string` — Returns the full component name (e.g., `button-large`).
-- `getDesign(): string` — Returns the base design name (the first part of the name).
-- `getSubClass(name: string | string[]): string` — Generates a BEM-style sub-element class name (`__`).
-- `getStatusClass(name: string | string[]): string` — Generates a BEM-style status class name (`--`).
-- `getStyle(name: string | string[]): string` — Generates a system CSS variable name.
+Naming helpers are available in subclasses through the protected `naming` instance (`DesignName`).
+
+- `naming.getName(): string` — Returns the full component name (e.g., `button-large`).
+- `naming.getDesign(): string` — Returns the base design name (the first part of the name).
+- `naming.getSubClass(name: string | string[]): string` — Generates a BEM-style sub-element class name (`__`).
+- `naming.getStatusClass(name: string | string[]): string` — Generates a BEM-style status class name (`--`).
+- `naming.getStyle(name: string | string[]): string` — Generates a system CSS variable name.
 
 ## Component Data
 

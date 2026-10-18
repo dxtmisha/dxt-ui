@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { reactive, ref, toRefs } from 'vue'
+import { reactive, ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 
 import { ImageCrop } from '../ImageCrop'
 import type { ImageCropProps } from '../props'
@@ -14,15 +15,12 @@ describe('ImageCrop', () => {
       disabled: false
     }) as ImageCropProps
 
-    const refs = toRefs(props)
     const emits = vi.fn()
 
     const imageCrop = new ImageCrop(
       props,
-      refs,
       elementRef,
-      'd1',
-      'd1-image-crop',
+      new DesignName('d1.imageCrop'),
       undefined,
       undefined,
       emits
@@ -44,15 +42,12 @@ describe('ImageCrop', () => {
       disabled: false
     }) as ImageCropProps
 
-    const refs = toRefs(props)
     const emits = vi.fn()
 
     const imageCrop = new ImageCrop(
       props,
-      refs,
       elementRef,
-      'd1',
-      'd1-image-crop',
+      new DesignName('d1.imageCrop'),
       undefined,
       undefined,
       emits
@@ -71,9 +66,9 @@ describe('ImageCrop', () => {
     })
 
     expect(imageCrop.cropImage.styles).toEqual({
-      '--d1-image-crop-sys-aspect-ratio': '1920 / 1080',
-      '--d1-image-crop-sys-width': 'auto',
-      '--d1-image-crop-sys-height': 'auto'
+      '--d1-imageCrop-sys-aspect-ratio': '1920 / 1080',
+      '--d1-imageCrop-sys-width': 'auto',
+      '--d1-imageCrop-sys-height': 'auto'
     })
     expect(emits).toHaveBeenCalledWith('load', expect.any(Object))
   })
@@ -86,8 +81,7 @@ describe('ImageCrop', () => {
       disabled: true
     }) as ImageCropProps
 
-    const refs = toRefs(props)
-    const imageCrop = new ImageCrop(props, refs, elementRef, 'd1', 'd1-image-crop')
+    const imageCrop = new ImageCrop(props, elementRef, new DesignName('d1.imageCrop'))
 
     expect(imageCrop.aria).toEqual({ 'aria-disabled': 'true' })
   })
@@ -100,15 +94,12 @@ describe('ImageCrop', () => {
       disabled: false
     }) as ImageCropProps
 
-    const refs = toRefs(props)
     const emits = vi.fn()
 
     const imageCrop = new ImageCrop(
       props,
-      refs,
       elementRef,
-      'd1',
-      'd1-image-crop',
+      new DesignName('d1.imageCrop'),
       undefined,
       undefined,
       emits

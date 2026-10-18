@@ -1,8 +1,9 @@
 // ai-none
 
-import { onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
+import { onMounted, onUnmounted, type Ref, watch } from 'vue'
 import {
   type ConstrEmit,
+  type DesignName,
   EventItem
 } from '@dxtmisha/functional'
 
@@ -40,24 +41,22 @@ export class ScrollbarBorder {
    *
    * Конструктор класса ScrollbarBorder.
    * @param props properties / свойства
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
     protected readonly props: ScrollbarProps,
-    refs: ToRefs<ScrollbarProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly emits?: ConstrEmit<ScrollbarEmits>
   ) {
     watch([
       this.element,
-      refs.divider,
-      refs.dividerTop,
-      refs.dividerBottom,
-      refs.inverse
+      () => props.divider,
+      () => props.dividerTop,
+      () => props.dividerBottom,
+      () => props.inverse
     ], this.reset)
 
     onMounted(this.reset)

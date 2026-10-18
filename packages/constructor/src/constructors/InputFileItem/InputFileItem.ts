@@ -1,7 +1,8 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import {
   type ConstrEmit,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -108,10 +109,8 @@ export class InputFileItem {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -137,10 +136,8 @@ export class InputFileItem {
    */
   constructor(
     protected readonly props: InputFileItemProps,
-    protected readonly refs: ToRefs<InputFileItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<InputFileItemComponents, InputFileItemProps>,
     protected readonly slots?: InputFileItemSlots,
     protected readonly emits?: ConstrEmit<InputFileItemEmits>,
@@ -227,7 +224,7 @@ export class InputFileItem {
     )
 
     this.buttonCrop = new ButtonIncludeConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       () => this.button.crop,
@@ -235,7 +232,7 @@ export class InputFileItem {
     )
 
     this.buttonDelete = new ButtonIncludeConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       () => this.button.delete,
@@ -243,7 +240,7 @@ export class InputFileItem {
     )
 
     this.buttonRetry = new ButtonIncludeConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       () => this.button.retry,
@@ -252,7 +249,7 @@ export class InputFileItem {
 
     this.caption = new CaptionIncludeConstructor(
       {},
-      this.className
+      this.naming
     )
 
     this.iconStatus = new IconIncludeConstructor(
@@ -265,12 +262,12 @@ export class InputFileItem {
           error: this.status.isError()
         }
       }),
-      this.className,
+      this.naming,
       this.components
     )
 
     this.image = new ImageIncludeConstructor(
-      this.className,
+      this.naming,
       () => ({
         ...this.props,
         image: this.file.image,
@@ -283,7 +280,7 @@ export class InputFileItem {
     )
 
     this.imageCrop = new ImageCropIncludeConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       () => ({
@@ -295,11 +292,11 @@ export class InputFileItem {
 
     this.label = new LabelIncludeConstructor(
       () => ({ label: this.file.name }),
-      this.className
+      this.naming
     )
 
     this.progress = new ProgressIncludeConstructor(
-      this.className,
+      this.naming,
       () => ({
         ...this.props,
         loading: this.props.loading ?? this.status.isUploading()
@@ -310,7 +307,7 @@ export class InputFileItem {
 
     this.skeleton = new SkeletonIncludeConstructor(
       this.props,
-      this.classDesign,
+      this.naming,
       ['classBackground']
     )
   }

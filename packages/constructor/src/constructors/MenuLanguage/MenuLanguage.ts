@@ -1,4 +1,4 @@
-import { type ComputedRef } from 'vue'
+import { toRef, type ComputedRef } from 'vue'
 import { type GeoFlagNational, GeoFlagRef } from '@dxtmisha/functional'
 
 import { MenuCountry } from '../MenuCountry/MenuCountry'
@@ -21,6 +21,6 @@ export class MenuLanguage extends MenuCountry {
    * @returns reactive list of national flag items / реактивный список элементов национальных флагов
    */
   protected override initFlagList(): ComputedRef<GeoFlagNational[]> {
-    return new GeoFlagRef(this.refs.language).getNationalLanguage(this.refs.list)
+    return new GeoFlagRef(toRef(this.props, 'language')).getNationalLanguage(toRef(this.props, 'list'))
   }
 }

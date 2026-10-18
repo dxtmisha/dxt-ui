@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrClass, getExp, isFilled } from '@dxtmisha/functional'
+import { type ConstrClass, type DesignName, getExp, isFilled } from '@dxtmisha/functional'
 
 import { LabelInclude } from './LabelInclude'
 import { SkeletonInclude } from '../constructors/Skeleton'
@@ -19,7 +19,7 @@ export class LabelHighlightInclude extends LabelInclude {
    *
    * Конструктор для класса LabelHighlightInclude.
    * @param props input property / входное свойство
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param classesExtra additional classes / дополнительные классы
    * @param slots object for working with slots / объект для работы со слотами
    * @param elementsExtra additional elements / дополнительные элементы
@@ -27,7 +27,7 @@ export class LabelHighlightInclude extends LabelInclude {
    */
   constructor(
     protected readonly props: Readonly<LabelHighlightProps>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly classesExtra?: ConstrClass,
     protected readonly slots?: LabelHighlightSlots,
     protected readonly elementsExtra?: () => VNode[],
@@ -35,7 +35,7 @@ export class LabelHighlightInclude extends LabelInclude {
   ) {
     super(
       props,
-      className,
+      naming,
       classesExtra,
       slots,
       elementsExtra,
@@ -95,7 +95,7 @@ export class LabelHighlightInclude extends LabelInclude {
       && props.highlight.length >= this.getLengthStart()
       && props.label
     ) {
-      const className = `${this.className}__highlight`
+      const className = this.naming.getSubClass('highlight')
       const label = props.label.toString()
       const exp = getExp(props.highlight, 'i')
 

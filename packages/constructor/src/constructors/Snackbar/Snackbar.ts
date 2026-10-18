@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { TextInclude } from '../../classes/TextInclude'
@@ -30,10 +30,8 @@ export class Snackbar {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -44,10 +42,8 @@ export class Snackbar {
    */
   constructor(
     protected readonly props: SnackbarProps,
-    protected readonly refs: ToRefs<SnackbarProps>,
     protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<SnackbarComponents, SnackbarProps>,
     protected readonly slots?: SnackbarSlots,
     protected readonly emits?: ConstrEmit<SnackbarEmits>,
@@ -68,7 +64,7 @@ export class Snackbar {
     this.data = new DataConstructor(
       props,
       element as any,
-      className,
+      naming,
       this.event
     )
 

@@ -1,7 +1,7 @@
 // ai-none
 
-import { nextTick, onMounted, type ToRefs, watch } from 'vue'
-import { executeFunctionRef, type ListSelectedList, type RefOrNormalOrFunction } from '@dxtmisha/functional'
+import { nextTick, onMounted, watch } from 'vue'
+import { executeFunctionRef, type DesignName, type ListSelectedList, type RefOrNormalOrFunction } from '@dxtmisha/functional'
 
 import { TabsNavigationSelected } from './TabsNavigationSelected'
 
@@ -18,18 +18,14 @@ export class TabsNavigationIndicator {
    *
    * Конструктор для инициализации отслеживания анимации индикатора выбора.
    * @param props input configuration properties / входные конфигурационные свойства
-   * @param refs reactive references of properties / реактивные ссылки свойств
    * @param element main scrollable HTML element or getter function / главный прокручиваемый HTML-элемент или функция-геттер
-   * @param classDesign design class token name / имя токена класса дизайна
-   * @param className base class name of the component / базовое имя класса компонента
+   * @param naming component naming helper / помощник именования компонента
    * @param selected selection state manager instance / экземпляр менеджера состояния выделения
    */
   constructor(
     protected readonly props: TabsNavigationProps,
-    protected readonly refs: ToRefs<TabsNavigationProps>,
     protected readonly element: RefOrNormalOrFunction<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly selected: TabsNavigationSelected
   ) {
     watch(
@@ -93,8 +89,8 @@ export class TabsNavigationIndicator {
    */
   readonly reset = (item: HTMLElement) => {
     setTimeout(() => {
-      item.style.removeProperty(`--${this.className}-sys-left`)
-      item.style.removeProperty(`--${this.className}-sys-width`)
+      item.style.removeProperty(this.naming.getStyle('left'))
+      item.style.removeProperty(this.naming.getStyle('width'))
     }, 384)
   }
 
@@ -115,7 +111,7 @@ export class TabsNavigationIndicator {
    * @returns tab item class name suffix / суффикс имени класса вкладки
    */
   protected getItemClassName(): string {
-    return `${this.classDesign}-item`
+    return `${this.naming.getDesign()}-item`
   }
 
   /**

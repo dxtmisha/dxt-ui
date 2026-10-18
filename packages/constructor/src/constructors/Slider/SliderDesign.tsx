@@ -62,16 +62,12 @@ export class SliderDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -102,15 +98,15 @@ export class SliderDesign<
       },
       ...{
         // :classes [!] System label / Системная метка
-        rail: this.getSubClass('rail'),
-        thumb: this.getSubClass('thumb'),
-        thumbMin: this.getSubClass('thumbMin'),
-        thumbMax: this.getSubClass('thumbMax'),
-        track: this.getSubClass('track'),
-        marks: this.getSubClass('marks'),
-        mark: this.getSubClass('mark'),
-        label: this.getSubClass('label'),
-        select: this.getSubClass('select')
+        rail: this.naming.getSubClass('rail'),
+        thumb: this.naming.getSubClass('thumb'),
+        thumbMin: this.naming.getSubClass('thumbMin'),
+        thumbMax: this.naming.getSubClass('thumbMax'),
+        track: this.naming.getSubClass('track'),
+        marks: this.naming.getSubClass('marks'),
+        mark: this.naming.getSubClass('mark'),
+        label: this.naming.getSubClass('label'),
+        select: this.naming.getSubClass('select')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -347,7 +343,7 @@ export class SliderDesign<
   readonly renderRipple = (): VNode[] => {
     return this.components?.render('ripple', {
       visible: this.item.isRipple()
-    })
+    }) ?? []
   }
 
   /**

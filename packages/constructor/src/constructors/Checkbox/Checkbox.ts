@@ -1,5 +1,5 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
@@ -89,10 +89,8 @@ export class Checkbox {
    *
    * Конструктор для компонента Checkbox.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -116,10 +114,8 @@ export class Checkbox {
    */
   constructor(
     protected readonly props: CheckboxProps,
-    protected readonly refs: ToRefs<CheckboxProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<CheckboxComponents, CheckboxProps>,
     protected readonly slots?: CheckboxSlots,
     protected readonly emits?: ConstrEmit<CheckboxEmits>,
@@ -161,9 +157,9 @@ export class Checkbox {
       SkeletonConstructor = SkeletonInclude
     } = constructors
 
-    this.skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classText'])
+    this.skeleton = new SkeletonConstructor(this.props, this.naming, ['classText'])
     this.progress = new ProgressConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       {
@@ -184,7 +180,6 @@ export class Checkbox {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.refs,
       this.elementItem,
       undefined,
       false,
@@ -214,7 +209,7 @@ export class Checkbox {
     )
 
     this.message = new FieldMessageConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       undefined,
@@ -225,7 +220,7 @@ export class Checkbox {
     this.icon = new CheckboxIconConstructor(this.props, this.value)
     this.label = new LabelConstructor(
       props,
-      className,
+      naming,
       undefined,
       slots,
       undefined,
@@ -235,21 +230,20 @@ export class Checkbox {
     )
     this.description = new DescriptionConstructor(
       props,
-      className,
+      naming,
       slots,
       this.skeleton
     )
 
     new CheckboxSelected(
       this.props,
-      this.refs,
       this.value,
       this.emits
     )
 
     this.enabled = new EnabledConstructor(props, this.progress)
 
-    this.ripple = new RippleConstructor(className, components, this.enabled)
+    this.ripple = new RippleConstructor(naming, components, this.enabled)
   }
 
   /**

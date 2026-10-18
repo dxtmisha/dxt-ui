@@ -1,7 +1,8 @@
-import { onMounted, ref, watch, type Ref, type ToRefs } from 'vue'
+import { onMounted, ref, watch, type Ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   executeFunctionRef,
   getElementId
 } from '@dxtmisha/functional'
@@ -41,10 +42,8 @@ export abstract class ModalAbstract {
    *
    * Конструктор для инициализации всех подкомпонентов модального окна.
    * @param props input data / входные данные
-   * @param refs input data references / ссылки на входные данные
    * @param element element / элемент
-   * @param classDesign class design / дизайн класса
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots slots / слоты
    * @param emits the function called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -58,10 +57,8 @@ export abstract class ModalAbstract {
    */
   protected constructor(
     protected readonly props: ModalProps,
-    protected readonly refs: ToRefs<ModalProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ModalComponents, ModalProps>,
     protected readonly slots?: ModalSlots,
     protected readonly emits?: ConstrEmit<ModalEmits>,
@@ -88,7 +85,7 @@ export abstract class ModalAbstract {
     this.model = new ModelIncludeConstructor('open', emits, this.open)
 
     this.window = new WindowConstructor(
-      className,
+      naming,
       props,
       components,
       () => ({
@@ -103,7 +100,7 @@ export abstract class ModalAbstract {
     )
 
     this.bars = new BarsConstructor(
-      className,
+      naming,
       props,
       components,
       () => executeFunctionRef(extraBars),
@@ -114,7 +111,7 @@ export abstract class ModalAbstract {
     )
 
     this.actions = new ActionsConstructor(
-      className,
+      naming,
       props,
       components,
       () => executeFunctionRef(extraActions),
@@ -122,7 +119,7 @@ export abstract class ModalAbstract {
       emits
     )
 
-    watch([refs.open], this.update)
+    watch(() => props.open, this.update)
     onMounted(this.update)
   }
 

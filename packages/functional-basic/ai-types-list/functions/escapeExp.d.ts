@@ -1,3 +1,3 @@
-// md5:c5379aee0d714f4a094c94a17b3a2504 true
-/** Escapes special regex characters in a string for safe use in a RegExp. @keywords regex, escape, sanitize, regexp */
+// md5:e227e7dada3d8c968a41202ed77f1758 true
+/** Escapes special regex characters in a string for safe use in RegExp. @keywords regex, regexp, escape, sanitize */
 export declare function escapeExp(value: string): string;

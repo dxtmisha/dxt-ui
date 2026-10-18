@@ -60,16 +60,12 @@ export class CheckboxDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -94,13 +90,13 @@ export class CheckboxDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        input: this.getSubClass('input'),
-        body: this.getSubClass('body'),
-        item: this.getSubClass('item'),
-        icon: this.getSubClass('icon'),
-        loading: this.getSubClass('loading'),
-        info: this.getSubClass('info'),
-        label: this.getSubClass('label')
+        input: this.naming.getSubClass('input'),
+        body: this.naming.getSubClass('body'),
+        item: this.naming.getSubClass('item'),
+        icon: this.naming.getSubClass('icon'),
+        loading: this.naming.getSubClass('loading'),
+        info: this.naming.getSubClass('info'),
+        label: this.naming.getSubClass('label')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -218,7 +214,7 @@ export class CheckboxDesign<
               ]
             },
             [
-              this.components.renderOne(
+              this.components?.renderOne(
                 'image',
                 this.item.icon.item
               )

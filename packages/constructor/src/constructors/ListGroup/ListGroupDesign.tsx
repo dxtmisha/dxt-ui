@@ -60,16 +60,12 @@ export class ListGroupDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -93,8 +89,8 @@ export class ListGroupDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        head: this.getSubClass('head'),
-        list: this.getSubClass('list')
+        head: this.naming.getSubClass('head'),
+        list: this.naming.getSubClass('list')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -134,7 +130,7 @@ export class ListGroupDesign<
    * Рендер элемента трансформации.
    */
   readonly renderTransform = (): VNode[] => {
-    return this.components.render(
+    return this.components?.render(
       'motionTransform',
       {
         ...this.item.transformBinds(),
@@ -144,7 +140,7 @@ export class ListGroupDesign<
         head: this.renderHead,
         body: this.renderList
       }
-    )
+    ) ?? []
   }
 
   /**

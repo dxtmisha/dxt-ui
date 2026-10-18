@@ -1,3 +1,7 @@
-// md5:bc72fea6c29ddfd44a5db5903cffbe4a true
-/** Encodes special characters in a string for safe use in HTML attributes. @keywords html attribute encode sanitize escape */
+// md5:0feb7fba9ded3bb4c94e7769c66c9792 true
+/**
+ * Encodes basic HTML characters (<, >, &) while preserving quotes.
+ * @remarks Does NOT encode quotes; use `encodeAttribute` for untrusted attribute values.
+ * @keywords html, encode, escape, lite attribute, sanitize
+ */
 export declare function encodeLiteAttribute(text: string): string;

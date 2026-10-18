@@ -1,6 +1,7 @@
 // ai-none
 
 import type { Ref } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 
 import type { CropAreaCoordinator } from './basicTypes'
 
@@ -27,17 +28,17 @@ export class CropAreaStyle {
    *
    * Конструктор.
    * @param element wrapper element reference / ссылка на элемент обертки
-   * @param className main component class name / имя класса основного компонента
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
-    className: string
+    naming: DesignName
   ) {
     this.property = {
-      top: `--${className}-sys-crop-top`,
-      right: `--${className}-sys-crop-right`,
-      bottom: `--${className}-sys-crop-bottom`,
-      left: `--${className}-sys-crop-left`
+      top: naming.getStyle('crop-top'),
+      right: naming.getStyle('crop-right'),
+      bottom: naming.getStyle('crop-bottom'),
+      left: naming.getStyle('crop-left')
     }
   }
 

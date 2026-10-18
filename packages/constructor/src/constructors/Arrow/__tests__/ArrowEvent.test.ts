@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { ref, nextTick } from 'vue'
+import { reactive, ref, nextTick } from 'vue'
 import { ArrowEvent } from '../ArrowEvent'
+import type { ArrowProps } from '../props'
 
 vi.mock('vue', async () => {
   const actual = await vi.importActual('vue') as any
@@ -16,7 +17,6 @@ describe('ArrowEvent', () => {
   let mockElementTarget: any
   let mockParent: any
   let mockPosition: any
-  let mockRefs: any
 
   beforeEach(() => {
     mockElementTarget = {
@@ -28,9 +28,6 @@ describe('ArrowEvent', () => {
     mockPosition = {
       update: vi.fn()
     }
-    mockRefs = {
-      position: ref('top')
-    }
     vi.clearAllMocks()
   })
 
@@ -38,7 +35,6 @@ describe('ArrowEvent', () => {
     const elementRef = ref(document.createElement('div'))
     const event = new ArrowEvent(
       { position: 'auto' },
-      mockRefs,
       elementRef,
       mockElementTarget,
       mockParent,
@@ -53,14 +49,14 @@ describe('ArrowEvent', () => {
     expect(mockPosition.update).toHaveBeenCalled()
   })
 
-  it('should trigger update on ref change', async () => {
+  it('should update on initialization and reactive props changes', async () => {
     mockElementTarget.is.mockReturnValue(true)
     mockElementTarget.element.value = document.createElement('div')
 
     const elementRef = ref(document.createElement('div'))
+    const props = reactive<ArrowProps>({ position: 'auto' })
     new ArrowEvent(
-      { position: 'auto' },
-      mockRefs,
+      props,
       elementRef,
       mockElementTarget,
       mockParent,
@@ -73,5 +69,14 @@ describe('ArrowEvent', () => {
     await new Promise(resolve => requestAnimationFrame(resolve))
 
     expect(mockPosition.update).toHaveBeenCalled()
+
+    mockPosition.update.mockClear()
+    mockElementTarget.update.mockClear()
+    props.position = 'bottom'
+    await nextTick()
+    await new Promise(resolve => requestAnimationFrame(resolve))
+
+    expect(mockPosition.update).toHaveBeenCalledTimes(1)
+    expect(mockElementTarget.update).not.toHaveBeenCalled()
   })
 })

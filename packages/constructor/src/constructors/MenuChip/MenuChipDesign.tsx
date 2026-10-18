@@ -60,16 +60,12 @@ export class MenuChipDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -95,9 +91,9 @@ export class MenuChipDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        separator: this.getSubClass('separator'),
-        selected: this.getSubClass('selected')
+        label: this.naming.getSubClass('label'),
+        separator: this.naming.getSubClass('separator'),
+        selected: this.naming.getSubClass('selected')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
-import { reactive, toRefs, nextTick } from 'vue'
+import { reactive, nextTick } from 'vue'
 import { PaginationPage } from '../PaginationPage'
 
 describe('PaginationPage', () => {
@@ -14,9 +14,8 @@ describe('PaginationPage', () => {
       visible: 5,
       ends: 2
     }) as any
-    const refs = toRefs(props)
 
-    const page = new PaginationPage(props, refs)
+    const page = new PaginationPage(props)
 
     expect(page.value).toBe(2)
     expect(page.rows).toBe(10)
@@ -43,14 +42,13 @@ describe('PaginationPage', () => {
       modelRows: undefined,
       count: 100
     }) as any
-    const refs = toRefs(props)
 
     // Mock TextInclude
     const textMock = {
       info: 'Showing [item] of [count] items'
     } as any
 
-    const page = new PaginationPage(props, refs, textMock)
+    const page = new PaginationPage(props, textMock)
 
     // page value is 3, rows is 10, so max is 30, start is 21, end is 30.
     expect(page.info.value).toBe('Showing 21-30 of 100 items')
@@ -64,14 +62,13 @@ describe('PaginationPage', () => {
       modelRows: undefined,
       count: 25
     }) as any
-    const refs = toRefs(props)
 
     // Mock TextInclude
     const textMock = {
       info: 'Showing [item] of [count]'
     } as any
 
-    const page = new PaginationPage(props, refs, textMock)
+    const page = new PaginationPage(props, textMock)
 
     // page value is 3, rows is 10, max is 30 but count is 25.
     // start is 21, end is 25.
@@ -86,9 +83,8 @@ describe('PaginationPage', () => {
       modelRows: undefined,
       count: 100
     }) as any
-    const refs = toRefs(props)
 
-    const page = new PaginationPage(props, refs, undefined)
+    const page = new PaginationPage(props, undefined)
     expect(page.info.value).toBe('')
   })
 })

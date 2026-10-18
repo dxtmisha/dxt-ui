@@ -61,17 +61,13 @@ export class BreadcrumbsDesign<
     )
 
     this.item = new ItemConstructor(
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.element,
       this.emits,
       this.props,
-      this.refs,
       this.slots
     )
-
-    this.init()
   }
 
   /**
@@ -95,7 +91,7 @@ export class BreadcrumbsDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item')
+        item: this.naming.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -137,7 +133,7 @@ export class BreadcrumbsDesign<
     const length = (this.props.list?.length ?? 1) - 1
 
     this.props.list?.forEach((item, key) => {
-      this.components.renderAdd(
+      this.components?.renderAdd(
         children,
         'breadcrumbItem',
         toBinds(

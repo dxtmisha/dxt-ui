@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref, type Ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { MaskInclude } from '../MaskInclude'
 import type { MaskPropsInclude } from '../basicTypes'
 import type { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
@@ -30,7 +31,7 @@ describe('MaskInclude', () => {
     } as unknown as FieldTypeInclude
 
     maskInclude = new MaskInclude(
-      'd1-mask',
+      new DesignName('d1.mask'),
       () => mockPropsRef.value,
       undefined,
       undefined,

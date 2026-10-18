@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { EnabledInclude } from '../../../classes/EnabledInclude'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
 import { ClockDialControl } from '../ClockDialControl'
@@ -13,7 +14,7 @@ describe('ClockDialControl', () => {
   function createClockDialControl(props: ClockDialProps = { type: '12' }, initialValue: number = 2) {
     const emitsSpy = vi.fn()
     const enabled = new EnabledInclude(props)
-    const list = new ClockDialList(props, 'd-clock-dial')
+    const list = new ClockDialList(props, new DesignName('d.clock-dial'))
     const model = new ModelValueInclude<number>('value', emitsSpy, undefined, ref(initialValue))
     const valueItem = new ClockDialValue(props, model)
     const emitsItem = new ClockDialEmit(props, list, valueItem, emitsSpy as any)
@@ -92,7 +93,7 @@ describe('ClockDialControl', () => {
     const emitsSpy = vi.fn()
     const props: ClockDialProps = { type: '12' }
     const enabled = new EnabledInclude(props)
-    const list = new ClockDialList(props, 'd-clock-dial')
+    const list = new ClockDialList(props, new DesignName('d.clock-dial'))
     const model = new ModelValueInclude<number>('value', emitsSpy, undefined, ref(undefined as any))
     const valueItem = new ClockDialValue(props, model)
     const emitsItem = new ClockDialEmit(props, list, valueItem, emitsSpy as any)

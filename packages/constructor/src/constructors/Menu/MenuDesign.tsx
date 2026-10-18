@@ -62,16 +62,12 @@ export class MenuDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -104,8 +100,8 @@ export class MenuDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        bars: this.getSubClass('bars'),
-        list: this.getSubClass('list')
+        bars: this.naming.getSubClass('bars'),
+        list: this.naming.getSubClass('list')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -190,7 +186,7 @@ export class MenuDesign<
 
       if (!this.props.hideList) {
         children.push(
-          this.components.render(
+          this.components?.render(
             'list',
             toBinds(
               {
@@ -208,7 +204,7 @@ export class MenuDesign<
               this.props.listAttrs
             ),
             this.slots as RawSlots
-          )
+          ) ?? []
         )
       }
 

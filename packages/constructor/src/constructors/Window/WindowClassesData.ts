@@ -1,6 +1,6 @@
 // ai-none
 
-import { domQuerySelector, getElementId } from '@dxtmisha/functional'
+import { domQuerySelector, type DesignName, getElementId } from '@dxtmisha/functional'
 import { type WindowClassesList, WindowStatusControlItem, WindowStatusItem } from './basicTypes'
 
 /**
@@ -21,12 +21,12 @@ export class WindowClassesData {
 
   /**
    * Constructor
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
-    this.list = WindowClassesData.getClassesList(className, this.id)
+    this.list = WindowClassesData.getClassesList(naming.getName(), this.id)
   }
 
   /**
@@ -38,7 +38,7 @@ export class WindowClassesData {
   isWindow(target?: HTMLElement): boolean {
     return Boolean(
       target
-      && target.classList.contains(this.className)
+      && target.classList.contains(this.naming.getName())
     )
   }
 
@@ -51,7 +51,7 @@ export class WindowClassesData {
   isWindowTeleport(target?: HTMLElement): boolean {
     return Boolean(
       target
-      && target.classList.contains(`${this.className}__teleport`)
+      && target.classList.contains(this.naming.getSubClass('teleport'))
     )
   }
 
@@ -90,7 +90,7 @@ export class WindowClassesData {
    * @param status названия статуса
    */
   getClassStatus(status: WindowStatusItem): string {
-    return `${this.className}[data-status="${status}"]`
+    return `${this.naming.getName()}[data-status="${status}"]`
   }
 
   /**
@@ -109,7 +109,7 @@ export class WindowClassesData {
    * @param target selected item/ выбранный элемент
    */
   findMain<T extends HTMLElement>(target: HTMLElement): T | undefined {
-    return target?.closest<T>(`.${this.className}`) ?? undefined
+    return target?.closest<T>(`.${this.naming.getName()}`) ?? undefined
   }
 
   /**
@@ -141,7 +141,7 @@ export class WindowClassesData {
    * Поиск и возврат элемента тела окна для текущего компонента.
    */
   findBody(): HTMLDivElement | undefined {
-    return domQuerySelector<HTMLDivElement>(`.${this.className}.${this.id} .${this.className}__body`)
+    return domQuerySelector<HTMLDivElement>(`.${this.naming.getName()}.${this.id} .${this.naming.getSubClass('body')}`)
   }
 
   /**
@@ -150,7 +150,7 @@ export class WindowClassesData {
    * Поиск и возврат элемента контекста тела окна для текущего компонента.
    */
   findBodyContext(): HTMLDivElement | undefined {
-    return domQuerySelector<HTMLDivElement>(`.${this.className}.${this.id} .${this.className}__body__context`)
+    return domQuerySelector<HTMLDivElement>(`.${this.naming.getName()}.${this.id} .${this.naming.getSubClass('body__context')}`)
   }
 
   /**
@@ -165,7 +165,7 @@ export class WindowClassesData {
   findBodyOther(selectors: string, status: WindowStatusItem = WindowStatusItem.open): HTMLDivElement | undefined {
     if (status === WindowStatusItem.open) {
       const element = domQuerySelector<HTMLDivElement>(
-        `.${this.className}:not(.${this.id})[data-status="${WindowStatusItem.flash}"] .${this.className}__body ${selectors}`
+        `.${this.naming.getName()}:not(.${this.id})[data-status="${WindowStatusItem.flash}"] .${this.naming.getSubClass('body')} ${selectors}`
       )
 
       if (element) {
@@ -174,7 +174,7 @@ export class WindowClassesData {
     }
 
     return domQuerySelector<HTMLDivElement>(
-      `.${this.className}:not(.${this.id})[data-status="${status}"] .${this.className}__body ${selectors}`
+      `.${this.naming.getName()}:not(.${this.id})[data-status="${status}"] .${this.naming.getSubClass('body')} ${selectors}`
     )
   }
 

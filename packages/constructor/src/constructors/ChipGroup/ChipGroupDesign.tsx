@@ -61,16 +61,12 @@ export class ChipGroupDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -92,7 +88,7 @@ export class ChipGroupDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item')
+        item: this.naming.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -146,7 +142,7 @@ export class ChipGroupDesign<
    * @param item selected element/ выбранный элемент
    */
   readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'chip',
       toBinds(
         {

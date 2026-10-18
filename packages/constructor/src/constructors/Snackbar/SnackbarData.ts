@@ -2,6 +2,7 @@
 
 import { type Ref, shallowRef } from 'vue'
 import { isElementVisible, ResumableTimer } from '@dxtmisha/functional-basic'
+import type { DesignName } from '@dxtmisha/functional'
 
 import { SnackbarEvent } from './SnackbarEvent'
 
@@ -22,13 +23,13 @@ export class SnackbarData {
    * Constructor
    * @param props input data/ входные данные
    * @param element window element/ элемент окна
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param event event manager for snackbar/ менеджер событий для снекбара
    */
   constructor(
     protected readonly props: Readonly<SnackbarProps>,
     protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly event?: SnackbarEvent
   ) {
   }
@@ -99,7 +100,7 @@ export class SnackbarData {
 
       if (element) {
         element.addEventListener('transitionend', () => this.performHide(value))
-        element.classList.add(`${this.className}--hide`)
+        element.classList.add(this.naming.getStatusClass('hide'))
         setTimeout(() => this.performHide(value), 512)
       } else {
         this.performHide(value)

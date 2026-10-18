@@ -161,8 +161,8 @@ export type ButtonPropsInclude<
 Encapsulates all state, reactivity, and business logic. **Must contain zero rendering code.**
 
 ```ts
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrClass, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
@@ -188,10 +188,8 @@ export class Button {
 
   constructor(
     protected readonly props: ButtonPropsBasic,
-    protected readonly refs: ToRefs<ButtonPropsBasic>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ButtonComponents, ButtonPropsBasic>,
     protected readonly slots?: ButtonSlots,
     protected readonly emits?: ConstrEmit<ButtonEmits>,
@@ -217,12 +215,12 @@ export class Button {
     } = constructors
 
     // 2. Initialize in strict dependency order
-    this.progress = new ProgressConstructor(className, props, components, { circular: true })
-    this.label = new LabelConstructor(props, className, undefined, slots)
+    this.progress = new ProgressConstructor(naming, props, components, { circular: true })
+    this.label = new LabelConstructor(props, naming, undefined, slots)
     this.enabled = new EnabledConstructor(props, this.progress)
-    this.icon = new IconConstructor(props, className, components)
-    this.ripple = new RippleConstructor(className, components, this.enabled)
-    this.skeleton = new SkeletonConstructor(props, classDesign, ['classBackground'])
+    this.icon = new IconConstructor(props, naming, components)
+    this.ripple = new RippleConstructor(naming, components, this.enabled)
+    this.skeleton = new SkeletonConstructor(props, naming, ['classBackground'])
     this.event = new EventConstructor(props, this.enabled, emits)
   }
 
@@ -295,17 +293,12 @@ export class ButtonDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    // MUST call this.init() as the last statement
-    this.init()
   }
 
   protected initExpose(): EXPOSE {
@@ -319,10 +312,10 @@ export class ButtonDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        icon: this.getSubClass('icon'),
-        trailing: this.getSubClass('trailing'),
-        loading: this.getSubClass('loading')
+        label: this.naming.getSubClass('label'),
+        icon: this.naming.getSubClass('icon'),
+        trailing: this.naming.getSubClass('trailing'),
+        loading: this.naming.getSubClass('loading')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -353,7 +346,7 @@ export class ButtonDesign<
 ```
 
 #### Rules
-- Always call `this.init()` at the very end of the constructor.
+- `initExpose()` is invoked by `expose()` after the design instance is constructed.
 - `initRender()` returns `VNode` or `VNode[]`.
 - Use `this.initSlot('slotName', undefined, props)` to render slots.
 - For complex views, extract sub-renderers into `readonly renderPart = (): VNode[] => {}`.
@@ -560,8 +553,8 @@ export abstract class ModalDesignAbstract<
 export class ModalDesign<...> extends ModalDesignAbstract<Modal, ...> {
   protected initItem(Item?: typeof Modal): Modal {
     return new (Item ?? Modal)(
-      this.props, this.refs, this.element,
-      this.getDesign(), this.getName(),
+      this.props, this.element,
+      this.naming,
       this.components, this.slots, this.emits
     )
   }
@@ -577,7 +570,7 @@ Used when one component conditionally renders another:
 ```tsx
 // 1. In Parent Logic Class
 this.button = new ButtonInclude(
-  className,
+  this.naming,
   props,
   components,
   () => ({ label: props.buttonLabel, icon: props.buttonIcon })
@@ -626,11 +619,11 @@ export class MyModal {
   readonly open = ref<boolean>(false)
   readonly model: ModelInclude<boolean>
 
-  constructor(props, refs, ..., emits) {
+  constructor(props, ..., emits) {
     this.model = new ModelInclude('open', emits, this.open)
 
     onMounted(() => {
-      watch([refs.open], () => {
+      watch(() => props.open, () => {
         this.open.value = Boolean(props.open)
       }, { immediate: true })
     })
@@ -644,16 +637,17 @@ export class MyModal {
 
 | Method / Property | Return Type | Description |
 |---|---|---|
-| `this.getName()` | `string` | Component name in kebab-case |
-| `this.getDesign()` | `string` | Design system prefix (e.g. `d1`) |
-| `this.getSubClass('el')` | `string` | Sub-element class name (`ComponentName__el`) |
+| `this.naming.getName()` | `string` | Component name in kebab-case |
+| `this.naming.getDesign()` | `string` | Design system prefix (e.g. `d1`) |
+| `this.naming.getSubClass('el')` | `string` | Sub-element class name (`ComponentName__el`) |
+| `this.naming.getStatusClass('active')` | `string` | State class name (`ComponentName--active`) |
+| `this.naming.getStyle('width')` | `string` | CSS custom property name (`--ComponentName-sys-width`) |
 | `this.getAttrs()` | `Record<string, any>` | External bound attributes |
 | `this.initSlot('name', fallback, props)` | `VNode[]` | Render named slot |
-| `this.init()` | `void` | Final initialization (must be called last in constructor) |
+| `this.expose()` | `ConstrExpose` | Public API from `initExpose()` with the root element reference |
 | `this.classes?.value.main` | `ConstrClass` | Reactive root element class object |
 | `this.styles?.value` | `ConstrStyles` | Reactive root element inline styles |
-| `this.props` | `Readonly<P>` | Input props proxy |
-| `this.refs` | `ToRefs<P>` | Reactive property refs |
+| `this.props` | `Readonly<P>` | Input props proxy; use getters for watch sources and `toRef(props, 'key')` when a dependency requires a Ref |
 | `this.element` | `Ref<HTMLElement>` | Root DOM element reference |
 | `this.components` | `DesignComp` | Child component renderer helper |
 | `this.slots` | `Slots` | Component slots object |
@@ -686,22 +680,6 @@ export class MyModal {
 ---
 
 ## 6. Common Pitfalls & Anti-Patterns
-
-### ❌ Omitting `this.init()` in Design Class
-```ts
-// ❌ WRONG: this.init() omitted
-constructor(...) {
-  super(name, props, options)
-  this.item = new Button(...)
-}
-
-// ✅ CORRECT: this.init() called last
-constructor(...) {
-  super(name, props, options)
-  this.item = new Button(...)
-  this.init()
-}
-```
 
 ### ❌ Incorrect Include Dependency Order
 ```ts
@@ -768,7 +746,7 @@ constructor(props, ..., constructors: {
 - [ ] `properties.json`: Tokens, states, sub-elements (`#`), modifiers (`~`)
 - [ ] `style.scss`: `mixin<Name>` with `@use "@dxtmisha/styles/properties" as ui;`
 - [ ] `<Name>.ts`: Logic class with DI `constructors` parameter
-- [ ] `<Name>Design.tsx`: Extends `DesignConstructorAbstract`, `this.init()` at constructor end
+- [ ] `<Name>Design.tsx`: Extends `DesignConstructorAbstract` and implements `initExpose()`
 - [ ] `<Name>Include.ts`: *(Optional)* If embedded into parent components
 - [ ] `index.ts`: Re-export all entities
 - [ ] Register constructor in package root `index.ts`

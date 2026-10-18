@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type Ref } from 'vue'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
@@ -52,10 +52,8 @@ export class Tooltip {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -73,10 +71,8 @@ export class Tooltip {
    */
   constructor(
     protected readonly props: TooltipProps,
-    protected readonly refs: ToRefs<TooltipProps>,
     protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<TooltipComponents, TooltipProps>,
     protected readonly slots?: TooltipSlots,
     protected readonly emits?: ConstrEmit<TooltipEmits>,
@@ -106,8 +102,8 @@ export class Tooltip {
       TooltipStyleConstructor = TooltipStyle
     } = constructors
 
-    this.classes = new TooltipClassesConstructor(this.className)
-    this.style = new TooltipStyleConstructor(this.element, this.className)
+    this.classes = new TooltipClassesConstructor(this.naming)
+    this.style = new TooltipStyleConstructor(this.element, this.naming)
     this.status = new TooltipStatusConstructor(this.props, this.slots)
     this.position = new TooltipPositionConstructor(
       this.props,
@@ -117,7 +113,6 @@ export class Tooltip {
     )
     this.open = new TooltipOpenConstructor(
       this.props,
-      this.refs,
       this.style,
       this.status,
       this.position,
@@ -132,7 +127,7 @@ export class Tooltip {
     )
 
     this.arrow = new ArrowIncludeConstructor(
-      this.className,
+      this.naming,
       this.props,
       this.components,
       undefined,
@@ -142,13 +137,13 @@ export class Tooltip {
 
     this.label = new LabelIncludeConstructor(
       this.props,
-      this.className,
+      this.naming,
       undefined,
       this.slots
     )
     this.description = new DescriptionIncludeConstructor(
       this.props,
-      this.className,
+      this.naming,
       this.slots
     )
 

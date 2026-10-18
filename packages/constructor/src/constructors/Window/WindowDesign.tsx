@@ -59,16 +59,12 @@ export class WindowDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -99,13 +95,13 @@ export class WindowDesign<
       main: this.item.classesList,
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        bodyGroup: this.getSubClass('body__group'),
-        bodyContext: this.getSubClass('body__context'),
-        control: this.getSubClass('control'),
-        image: this.getSubClass('image'),
-        close: this.getSubClass('close'),
-        teleport: this.getSubClass('teleport')
+        body: this.naming.getSubClass('body'),
+        bodyGroup: this.naming.getSubClass('body__group'),
+        bodyContext: this.naming.getSubClass('body__context'),
+        control: this.naming.getSubClass('control'),
+        image: this.naming.getSubClass('image'),
+        close: this.naming.getSubClass('close'),
+        teleport: this.naming.getSubClass('teleport')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -187,10 +183,10 @@ export class WindowDesign<
       {
         key: 'body',
         ...this.getAttrs(),
-        class: {
-          [String(this.classes?.value.body)]: true,
-          ...this.toClass(this.attrs?.class)
-        }
+        class: [
+          this.classes?.value.body,
+          this.attrs?.class
+        ]
       },
       [
         ...this.renderBodyImage(),
@@ -251,7 +247,7 @@ export class WindowDesign<
    */
   readonly renderBodyClose = (): VNode[] => {
     if (this.props.closeButton) {
-      return this.components.render(
+      return this.components?.render(
         'button',
         {
           key: 'button-close',
@@ -262,7 +258,7 @@ export class WindowDesign<
           icon: this.props.iconClose,
           ...AriaStaticInclude.label(this.item.text.close)
         }
-      )
+      ) ?? []
     }
 
     return []

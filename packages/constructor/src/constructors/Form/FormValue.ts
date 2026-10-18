@@ -1,6 +1,6 @@
 // ai-none
 
-import { onMounted, watch, type ToRefs } from 'vue'
+import { onMounted, watch } from 'vue'
 
 import type { FormElements } from './FormElements'
 import type { FormElementsNative } from './FormElementsNative'
@@ -22,13 +22,11 @@ export class FormValue {
   /**
    * Constructor
    * @param props incoming form properties / входящие свойства формы
-   * @param refs reactive references to incoming form properties / реактивные ссылки на входящие свойства формы
    * @param elements object for managing child elements / объект для управления дочерними элементами
    * @param native object for working with native form elements / объект для работы с нативными элементами формы
    */
   constructor(
     protected readonly props?: FormPropsBasic,
-    protected readonly refs?: ToRefs<FormPropsBasic>,
     protected readonly elements?: FormElements,
     protected readonly native?: FormElementsNative
   ) {
@@ -38,16 +36,13 @@ export class FormValue {
       this.cache = { ...this.props.modelValue }
     }
 
-    if (this.refs?.value) {
-      watch(this.refs.value, (value) => {
+    if (this.props) {
+      watch(() => this.props?.value, (value) => {
         if (value) {
           this.setValuesAll(value)
         }
       })
-    }
-
-    if (this.refs?.modelValue) {
-      watch(this.refs.modelValue, (value) => {
+      watch(() => this.props?.modelValue, (value) => {
         if (value) {
           this.setValuesAll(value)
         }

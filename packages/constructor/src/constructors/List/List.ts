@@ -1,6 +1,6 @@
 import {
+  toRef,
   type Ref,
-  type ToRefs,
   computed,
   onMounted,
   nextTick,
@@ -10,6 +10,7 @@ import {
   type ConstrBind,
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   ListDataRef,
   type ListDataItem,
   type ListList,
@@ -58,10 +59,8 @@ export class List {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
@@ -77,10 +76,8 @@ export class List {
    */
   constructor(
     protected readonly props: ListProps,
-    protected readonly refs: ToRefs<ListProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ListComponents, ListProps>,
     protected readonly slots?: ListSlots,
     protected readonly emits?: ConstrEmit<ListEmits>,
@@ -111,17 +108,17 @@ export class List {
     this.text = new TextIncludeConstructor(this.props)
 
     this.data = new ListDataRefConstructor(
-      this.refs.list,
+      toRef(this.props, 'list'),
       this.focus.focus,
       this.search.highlight,
-      this.refs.highlightLengthStart,
-      this.refs.filterMode,
-      this.refs.selected,
-      this.refs.keyValue,
-      this.refs.keyLabel,
-      this.refs.liteThreshold,
+      toRef(this.props, 'highlightLengthStart'),
+      toRef(this.props, 'filterMode'),
+      toRef(this.props, 'selected'),
+      toRef(this.props, 'keyValue'),
+      toRef(this.props, 'keyLabel'),
+      toRef(this.props, 'liteThreshold'),
       undefined,
-      this.refs.max
+      toRef(this.props, 'max')
     )
 
     this.go = new ListGoConstructor(
@@ -140,7 +137,7 @@ export class List {
     )
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
-    this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
+    this.windowClasses = new WindowClassesIncludeConstructor(naming.getDesign())
 
     if (this.props.control) {
       watch(this.search.item, () => this.go.toHighlight())
@@ -172,8 +169,8 @@ export class List {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.className}--highlightActive`]: Boolean(this.props.filterMode) && this.data.isHighlight(),
-      [`${this.className}--searchActive`]: Boolean(this.props.filterMode) && this.search.is()
+      [this.naming.getStatusClass('highlightActive')]: Boolean(this.props.filterMode) && this.data.isHighlight(),
+      [this.naming.getStatusClass('searchActive')]: Boolean(this.props.filterMode) && this.search.is()
     }
   }
 
@@ -243,7 +240,7 @@ export class List {
       item,
       {
         key: item.value,
-        class: `${this.className}__group`
+        class: this.naming.getSubClass('group')
       }
     )
   }
@@ -263,7 +260,7 @@ export class List {
       item,
       {
         key: item.value,
-        class: `${this.className}__menu`
+        class: this.naming.getSubClass('menu')
       }
     )
   }
@@ -343,7 +340,7 @@ export class List {
       item,
       {
         'class': [
-          `${this.className}__management`,
+          this.naming.getSubClass('management'),
           this.windowClasses.get().static
         ],
         'focus': item?.index === this.focus.focus.value,

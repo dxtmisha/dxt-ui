@@ -58,16 +58,12 @@ export class CarouselItemDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -95,8 +91,8 @@ export class CarouselItemDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        image: this.getSubClass('image')
+        body: this.naming.getSubClass('body'),
+        image: this.naming.getSubClass('image')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -7,7 +7,7 @@ import {
 
 import { Image } from './Image'
 
-import { ImageTypeValue } from './basicTypes'
+import { type ImageEventItem, type ImageRootAttrs, type ImageTypeItem, ImageTypeValue } from './basicTypes'
 import {
   type ImagePropsBasic
 } from './props'
@@ -20,7 +20,11 @@ import {
 } from './types'
 
 /**
- * ImageDesign
+ * Assembles image, icon and PDF markup from the Image logic constructor.
+ * Exposes the image API and connects reactive bindings to the rendered elements.
+ *
+ * Собирает разметку изображений, иконок и PDF на основе логического конструктора Image.
+ * Предоставляет API изображения и связывает реактивные привязки с элементами разметки.
  */
 export class ImageDesign<
   COMP extends ImageComponents,
@@ -36,14 +40,17 @@ export class ImageDesign<
     CLASSES,
     P
   > {
+  /** Image logic constructor / Логический конструктор изображения */
   protected readonly item: Image
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor image item class/ класс элемента изображения
+   * Creates the image logic and initializes rendering and the exposed API.
+   *
+   * Создаёт логику изображения и инициализирует рендеринг и публичный API.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor image item class / класс элемента изображения
    */
   constructor(
     name: string,
@@ -60,52 +67,31 @@ export class ImageDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getName(),
+      this.naming,
       this.emits
     )
-
-    this.init()
   }
 
-  /**
-   * Properties for the image tag.
-   *
-   * Свойства для тега image.
-   */
-  readonly propsImage = computed<any>(() => ({
+  /** Shared image element bindings / Общие привязки элемента изображения */
+  readonly propsImage = computed<ImageRootAttrs>(() => ({
     ...this.getAttrs(),
     ref: this.element,
     key: 'image',
     class: this.classes?.value.main
   }))
 
-  /**
-   * Main properties.
-   *
-   * Основные свойства.
-   */
-  readonly propsMain = computed<any>(() => ({
+  /** Root image bindings with styles and accessibility / Корневые привязки изображения со стилями и доступностью */
+  readonly propsMain = computed<ImageRootAttrs>(() => ({
     ...this.propsImage.value,
     ...this.item.binds,
     style: this.styles?.value
   }))
 
   /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  protected initExpose(): EXPOSE {
-    return {
-      getType: () => this.item.type.item.value,
-      getData: () => this.item.data.image.value
-    } as EXPOSE
-  }
-
-  /**
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns image classes / классы изображения
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -118,18 +104,23 @@ export class ImageDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Exposes the current image type and loaded data.
    *
-   * Доработка полученного списка стилей.
+   * Предоставляет текущий тип изображения и загруженные данные.
+   * @returns public image API / публичный API изображения
    */
-  protected initStyles(): ConstrStyles {
-    return this.item.styles
+  protected initExpose(): EXPOSE {
+    return {
+      getType: (): ImageTypeItem => this.item.type.item.value,
+      getData: (): ImageEventItem => this.item.data.image.value
+    } as EXPOSE
   }
 
   /**
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered image root / отрендеренный корневой элемент изображения
    */
   protected initRender(): VNode {
     if (this.item.img.isPicture()) {
@@ -148,12 +139,42 @@ export class ImageDesign<
   }
 
   /**
+   * Refinement of the received list of styles.
+   *
+   * Доработка полученного списка стилей.
+   * @returns image styles / стили изображения
+   */
+  protected initStyles(): ConstrStyles {
+    return this.item.styles
+  }
+
+  /**
+   * Rendering the img tag.
+   *
+   * Рендеринг тега img.
+   * @returns rendered img VNode / отрендеренный VNode img
+   */
+  protected readonly renderImg = (): VNode => {
+    return h('span', this.propsImage.value, this.renderImgItem())
+  }
+
+  /**
+   * Rendering the img item.
+   *
+   * Рендеринг элемента img.
+   * @returns rendered img item VNode / отрендеренный VNode элемента img
+   */
+  protected readonly renderImgItem = (): VNode => {
+    return h('img', this.item.img.binds.value)
+  }
+
+  /**
    * Rendering the picture tag.
    *
    * Рендеринг тега picture.
    * @returns rendered picture VNode / отрендеренный VNode picture
    */
-  protected renderPicture(): VNode {
+  protected readonly renderPicture = (): VNode => {
     const list = this.item.img.picture.value
     const children: VNode[] = []
 
@@ -169,32 +190,12 @@ export class ImageDesign<
   }
 
   /**
-   * Rendering the img tag.
-   *
-   * Рендеринг тега img.
-   * @returns rendered img VNode / отрендеренный VNode img
-   */
-  protected renderImg(): VNode {
-    return h('span', this.propsImage.value, this.renderImgItem())
-  }
-
-  /**
-   * Rendering the img item.
-   *
-   * Рендеринг элемента img.
-   * @returns rendered img item VNode / отрендеренный VNode элемента img
-   */
-  protected renderImgItem(): VNode {
-    return h('img', this.item.img.binds.value)
-  }
-
-  /**
    * Rendering the value for the component.
    *
    * Рендеринг значения для компонента.
    * @returns rendered value / отрендеренное значение
    */
-  protected renderValue(): string | VNode | undefined {
+  protected readonly renderValue = (): string | VNode | undefined => {
     if (this.item.type.item.value === ImageTypeValue.pdf) {
       return h(
         'object',
@@ -207,10 +208,10 @@ export class ImageDesign<
     ) {
       return h(
         'span',
-        { class: `ui-sys-flags ui-sys-flags--${this.item.text.value}` }
+        { class: `ui-sys-flags ui-sys-flags--${this.item.data.text.value}` }
       )
     }
 
-    return this.item.text.value
+    return this.item.data.text.value
   }
 }

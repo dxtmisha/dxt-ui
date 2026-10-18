@@ -2,11 +2,11 @@ import {
   onMounted,
   onUnmounted,
   ref,
-  type ToRefs,
   watch
 } from 'vue'
 import {
   type ConstrClassObject,
+  type DesignName,
   type ConstrStyles,
   toNumber
 } from '@dxtmisha/functional'
@@ -45,14 +45,12 @@ export class Progress {
    *
    * Конструктор для управления прогрессом.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param constructors object with helper classes / объект с вспомогательными классами
    */
   constructor(
     protected readonly props: ProgressProps,
-    protected readonly refs: ToRefs<ProgressProps>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     constructors: {
       TextIncludeConstructor?: typeof TextInclude
       ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
@@ -67,7 +65,7 @@ export class Progress {
     this.text = new TextIncludeConstructor(this.props)
 
     watch(
-      [refs.visible],
+      () => props.visible,
       this.switch
     )
     onMounted(this.switch)
@@ -171,10 +169,10 @@ export class Progress {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--hide`]: this.hide.value,
-      [`${this.className}--visible`]: this.visible.value,
-      [`${this.className}--value`]: this.isValue(),
-      [`${this.className}--clientOnly`]: !this.clientOnly.isRender()
+      [this.naming.getStatusClass('hide')]: this.hide.value,
+      [this.naming.getStatusClass('visible')]: this.visible.value,
+      [this.naming.getStatusClass('value')]: this.isValue(),
+      [this.naming.getStatusClass('clientOnly')]: !this.clientOnly.isRender()
     }
   }
 
@@ -186,7 +184,7 @@ export class Progress {
    */
   get styles(): ConstrStyles {
     return {
-      [`--${this.className}-sys-value`]: this.valueInPercent
+      [this.naming.getStyle('value')]: this.valueInPercent
     }
   }
 

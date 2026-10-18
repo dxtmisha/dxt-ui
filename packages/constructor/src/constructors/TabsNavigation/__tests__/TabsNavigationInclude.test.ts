@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { TabsNavigationInclude } from '../TabsNavigationInclude'
 
 describe('TabsNavigationInclude', () => {
@@ -8,7 +9,7 @@ describe('TabsNavigationInclude', () => {
       ids: vi.fn().mockReturnValue({ 'tab-1': 'some-id-1' })
     } as any
 
-    const include = new TabsNavigationInclude('my-tabs', {})
+    const include = new TabsNavigationInclude(new DesignName('my.tabs'), {})
     include['element'].value = mockExpose
 
     expect(include.ids).toEqual({ 'tab-1': 'some-id-1' })
@@ -16,7 +17,7 @@ describe('TabsNavigationInclude', () => {
   })
 
   it('should fallback to empty object if element is undefined for ids getter', () => {
-    const include = new TabsNavigationInclude('my-tabs', {})
+    const include = new TabsNavigationInclude(new DesignName('my.tabs'), {})
     expect(include.ids).toEqual({})
   })
 
@@ -30,7 +31,7 @@ describe('TabsNavigationInclude', () => {
       }
     } as any
 
-    const include = new TabsNavigationInclude('my-tabs', props)
+    const include = new TabsNavigationInclude(new DesignName('my.tabs'), props)
 
     // @ts-expect-error accessing protected method
     const extra = include.getExtra()

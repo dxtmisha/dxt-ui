@@ -55,7 +55,7 @@ export class ProgressInclude extends ComponentIncludeAbstract<
    * @returns BEM-formatted class name / имя класса в формате BEM
    */
   protected override getClassName(): string {
-    return `${this.className}__loading`
+    return this.naming.getSubClass('loading')
   }
 
   /**

@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/hasKey - Check if object has own property key'/>
+
+# `hasKey`
+
+Checks whether the specified property is an own property of the object or function using a safe `Object.prototype.hasOwnProperty.call` invocation.
+
+The function provides robust protection against **Prototype Pollution** and prevents false positives on prototype chain properties (such as `toString`, `valueOf`, `constructor`, `__proto__`, `hasOwnProperty`). It is safe to use with `null`, `undefined`, primitive values, and objects without a prototype (`Object.create(null)`). In TypeScript, it acts as a type guard, automatically narrowing the object type for safe property access.
+
+**Parameters:**
+- `object: unknown` — the object, function, or value of any type to check.
+- `key: PropertyKey` — the property key to look for (`string | number | symbol`).
+
+**Returns:**
+`boolean` — `true` if the property exists and belongs directly to the object (own property), otherwise `false`.
+
+```typescript
+import { hasKey } from '@dxtmisha/functional-basic'
+
+const user = { name: 'Alice', age: 30 }
+console.log(hasKey(user, 'name')) // true
+console.log(hasKey(user, 'email')) // false
+
+// Prototype pollution protection:
+console.log(hasKey({}, 'toString')) // false
+console.log(hasKey({ toString: 'custom' }, 'toString')) // true
+
+// Safe with null, undefined, and primitives:
+console.log(hasKey(null, 'foo')) // false
+console.log(hasKey(123, 'foo')) // false
+
+// Objects without prototypes (Object.create(null)):
+const dict = Object.create(null)
+dict.item = 'value'
+console.log(hasKey(dict, 'item')) // true
+console.log(hasKey(dict, 'toString')) // false
+
+// TypeScript type narrowing (Type Guard):
+const data: unknown = { id: 1, title: 'DXT' }
+if (hasKey(data, 'title')) {
+  console.log(data.title) // data is narrowed to include title
+}
+```

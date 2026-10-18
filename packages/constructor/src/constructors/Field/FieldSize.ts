@@ -1,7 +1,7 @@
 // ai-none
 
 import { onMounted, onUnmounted, onUpdated, type Ref, watch } from 'vue'
-import { EventItem } from '@dxtmisha/functional'
+import { EventItem, type DesignName } from '@dxtmisha/functional'
 
 /**
  * Class for managing dynamic margins and padding of the input field based on accessory elements (prefix, suffix, space).
@@ -28,11 +28,11 @@ export class FieldSize {
    *
    * Конструктор для инициализации FieldSize.
    * @param element main HTML element / главный HTML-элемент
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly element: Ref<HTMLLabelElement | undefined>,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
     watch(element, () => this.update())
 
@@ -81,7 +81,7 @@ export class FieldSize {
    * @returns space DOM element / элемент DOM разделителя
    */
   protected getElementSpace(): HTMLDivElement | undefined {
-    return this.element.value?.querySelector(`.${this.className}__body__scoreboard__space`) ?? undefined
+    return this.element.value?.querySelector(`.${this.naming.getSubClass('body__scoreboard__space')}`) ?? undefined
   }
 
   /**
@@ -91,7 +91,7 @@ export class FieldSize {
    * @returns prefix DOM element / элемент DOM префикса
    */
   protected getElementPrefix(): HTMLDivElement | undefined {
-    return this.element.value?.querySelector(`.${this.className}__prefix`) ?? undefined
+    return this.element.value?.querySelector(`.${this.naming.getSubClass('prefix')}`) ?? undefined
   }
 
   /**
@@ -103,12 +103,12 @@ export class FieldSize {
     const element = this.element.value
 
     if (element) {
-      element.style.setProperty(`--${this.className}-sys-left`, `${this.left}px`)
-      element.style.setProperty(`--${this.className}-sys-right`, `${this.right}px`)
-      element.style.setProperty(`--${this.className}-sys-title`, `${this.title}px`)
+      element.style.setProperty(this.naming.getStyle('left'), `${this.left}px`)
+      element.style.setProperty(this.naming.getStyle('right'), `${this.right}px`)
+      element.style.setProperty(this.naming.getStyle('title'), `${this.title}px`)
 
-      if (!element.classList.contains(`${this.className}--show`)) {
-        requestAnimationFrame(() => element.classList.add(`${this.className}--show`))
+      if (!element.classList.contains(this.naming.getStatusClass('show'))) {
+        requestAnimationFrame(() => element.classList.add(this.naming.getStatusClass('show')))
       }
     }
   }

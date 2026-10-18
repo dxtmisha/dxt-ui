@@ -1,5 +1,7 @@
 // ai-none
 
+import type { DesignName } from '@dxtmisha/functional'
+
 import type { CollageElement } from './CollageElement'
 
 /**
@@ -13,14 +15,14 @@ export class CollageGrow {
   /**
    * Constructor for CollageGrow. /
    * Конструктор для CollageGrow.
-   * @param className base class name of the component / базовое имя класса компонента
+   * @param naming component naming helper / помощник именования компонента
    * @param element manager for container DOM elements / менеджер DOM-элементов контейнера
    */
   constructor(
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly element?: CollageElement
   ) {
-    this.propertyGrow = `--${className}-sys-item-grow`
+    this.propertyGrow = naming.getStyle('item-grow')
   }
 
   /**

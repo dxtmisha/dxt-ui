@@ -1,3 +1,3 @@
-// md5:0b1ea608450f9f7d064400d8fb4cec7c true
-/** Splits a string into segments to highlight search matches. @keywords highlight, match, search, split, text */
+// md5:7b3a53b57b93df5747fc92a0d7886110 true
+/** Splits a string into an array of text segments highlighting search matches. @keywords highlight match, string split, text search, regex */
 export declare function getArrayHighlightMatch(value: string, search?: string | RegExp): HighlightMatchItem[];

@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { reactive, ref, toRefs } from 'vue'
+import { reactive, ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { CropArea } from '../CropArea'
 import type { CropAreaProps } from '../props'
 
@@ -14,15 +15,12 @@ describe('CropArea', () => {
       tag: 'section'
     }) as CropAreaProps
 
-    const refs = toRefs(props)
     const emits = vi.fn()
 
     const cropArea = new CropArea(
       props,
-      refs,
       elementRef,
-      'd1',
-      'd1-crop-area',
+      new DesignName('d1.cropArea'),
       undefined,
       undefined,
       emits
@@ -43,8 +41,7 @@ describe('CropArea', () => {
       disabled: true
     }) as CropAreaProps
 
-    const refs = toRefs(props)
-    const cropArea = new CropArea(props, refs, elementRef, 'd1', 'd1-crop-area')
+    const cropArea = new CropArea(props, elementRef, new DesignName('d1.cropArea'))
 
     expect(cropArea.aria).toEqual({ 'aria-disabled': 'true' })
     expect(cropArea.binds.tabindex).toBeUndefined()

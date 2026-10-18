@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { DraggableWrapperClassesData } from '../DraggableWrapperClassesData'
 
 describe('DraggableWrapperClassesData', () => {
@@ -12,16 +13,16 @@ describe('DraggableWrapperClassesData', () => {
 
   it('should initialize and provide identification states', () => {
     const mockWrapper = document.createElement('div')
-    const classes = new DraggableWrapperClassesData(ref(mockWrapper), 'dxt', 'draggable')
+    const classes = new DraggableWrapperClassesData(ref(mockWrapper), new DesignName('dxt.draggableWrapper'))
 
     expect(classes.getId()).toContain('draggable-wrapper--')
-    expect(classes.getName()).toBe('draggable')
+    expect(classes.getName()).toBe('dxt-draggableWrapper')
     expect(classes.getElement()).toBe(mockWrapper)
   })
 
   it('should correctly check classes check methods', () => {
     const mockWrapper = document.createElement('div')
-    const classes = new DraggableWrapperClassesData(ref(mockWrapper), 'dxt', 'draggable')
+    const classes = new DraggableWrapperClassesData(ref(mockWrapper), new DesignName('dxt.draggableWrapper'))
 
     const mockItem = document.createElement('div')
 
@@ -44,7 +45,7 @@ describe('DraggableWrapperClassesData', () => {
 
   it('should set body selection block status', () => {
     const mockWrapper = document.createElement('div')
-    const classes = new DraggableWrapperClassesData(ref(mockWrapper), 'dxt', 'draggable')
+    const classes = new DraggableWrapperClassesData(ref(mockWrapper), new DesignName('dxt.draggableWrapper'))
 
     classes.setBlockSelection(true)
     expect(document.body.classList.contains(classes.list.body)).toBe(true)

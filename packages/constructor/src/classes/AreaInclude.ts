@@ -1,4 +1,4 @@
-import { toRefs, watch } from 'vue'
+import { watch } from 'vue'
 import { setAreaValue } from '../functions/setAreaValue'
 import type { AreaPropsInclude } from '../types/areaTypes'
 
@@ -17,9 +17,7 @@ export class AreaInclude {
   constructor(
     protected readonly props: AreaPropsInclude
   ) {
-    const { area } = toRefs(props)
-
-    watch([area], this.updateValue, { immediate: true })
+    watch(() => props.area, this.updateValue, { immediate: true })
   }
 
   /**

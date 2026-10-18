@@ -66,16 +66,12 @@ export class ActionsDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -99,10 +95,10 @@ export class ActionsDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item'),
-        list: this.getSubClass('list'),
-        secondary: this.getSubClass('secondary'),
-        spacer: this.getSubClass('spacer')
+        item: this.naming.getSubClass('item'),
+        list: this.naming.getSubClass('list'),
+        secondary: this.naming.getSubClass('secondary'),
+        spacer: this.naming.getSubClass('spacer')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -151,7 +147,7 @@ export class ActionsDesign<
     if (this.item.isList()) {
       if (this.props.list) {
         this.props.list.forEach((item, key) => {
-          this.components.renderAdd(
+          this.components?.renderAdd(
             children,
             'button',
             toBinds(
@@ -189,7 +185,7 @@ export class ActionsDesign<
     if (this.item.isSecondary()) {
       if (this.props.listSecondary) {
         this.props.listSecondary.forEach((item, key) => {
-          this.components.renderAdd(
+          this.components?.renderAdd(
             children,
             'button',
             toBinds(

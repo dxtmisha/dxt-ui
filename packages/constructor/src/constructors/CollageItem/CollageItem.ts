@@ -1,9 +1,10 @@
 import {
   type ConstrClassObject,
   type ConstrEmit,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
@@ -41,10 +42,8 @@ export class CollageItem {
    *
    * Конструктор для CollageItem.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -57,10 +56,8 @@ export class CollageItem {
    */
   constructor(
     protected readonly props: CollageItemProps,
-    protected readonly refs: ToRefs<CollageItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<CollageItemComponents, CollageItemProps>,
     protected readonly slots?: CollageItemSlots,
     protected readonly emits?: ConstrEmit<CollageItemEmits>,
@@ -80,11 +77,11 @@ export class CollageItem {
       ImageIncludeConstructor = ImageInclude
     } = constructors
 
-    this.dimensions = new DimensionsConstructor(props, className, emits)
+    this.dimensions = new DimensionsConstructor(props, naming, emits)
     this.event = new EventClickIncludeConstructor(props, undefined, emits)
 
     this.image = new ImageIncludeConstructor(
-      className,
+      naming,
       props,
       components,
       () => ({
@@ -101,12 +98,12 @@ export class CollageItem {
       () => ({
         icon: this.props.iconCheck ?? 'check_circle'
       }),
-      className,
+      naming,
       components
     )
 
     this.collageBar = new CollageBarIncludeConstructor(
-      className,
+      naming,
       props,
       components
     )
@@ -122,7 +119,7 @@ export class CollageItem {
       ?? this.props.collageBarAttrs?.position
 
     return {
-      [`${this.className}--collageBarPosition--${position}`]: Boolean(position)
+      [this.naming.getStatusClass(`collageBarPosition--${position}`)]: Boolean(position)
     }
   }
 }

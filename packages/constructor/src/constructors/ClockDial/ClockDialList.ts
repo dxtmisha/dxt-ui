@@ -1,7 +1,7 @@
 // ai-none
 
 import { computed, type ComputedRef } from 'vue'
-import { toNumber } from '@dxtmisha/functional'
+import { toNumber, type DesignName } from '@dxtmisha/functional'
 
 import type { ClockDialMarkItem } from './basicTypes'
 import type { ClockDialProps } from './props'
@@ -43,7 +43,7 @@ export class ClockDialList {
         rotate: valueRotate,
         section,
         style: {
-          [`--${this.className}-sys-valueRotate`]: valueRotate
+          [this.naming.getStyle('valueRotate')]: valueRotate
         },
         value,
         disabled
@@ -56,11 +56,11 @@ export class ClockDialList {
   /**
    * Constructor
    * @param props component input properties / входные свойства компонента
-   * @param className base CSS class name / базовое имя CSS класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly props: ClockDialProps,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) { }
 
   /**

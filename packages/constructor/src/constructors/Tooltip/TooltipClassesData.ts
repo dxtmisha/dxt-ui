@@ -1,6 +1,6 @@
 // ai-none
 
-import { getElementId, isDomRuntime } from '@dxtmisha/functional'
+import { getElementId, type DesignName, isDomRuntime } from '@dxtmisha/functional'
 
 /**
  * Class for working with class names.
@@ -15,10 +15,10 @@ export class TooltipClassesData {
 
   /**
    * Constructor
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
   }
 
@@ -49,7 +49,7 @@ export class TooltipClassesData {
    * @returns control class / класс контроля
    */
   getClassControl(): string {
-    return `${this.className}__control`
+    return this.naming.getSubClass('control')
   }
 
   /**

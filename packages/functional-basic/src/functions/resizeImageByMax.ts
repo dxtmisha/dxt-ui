@@ -6,7 +6,7 @@ import { isDomRuntime } from './isDomRuntime'
  *
  * Тип изменения размера для масштабирования изображения.
  */
-type ResizeImageByMaxType = 'auto' | 'width' | 'height'
+export type ResizeImageByMaxType = 'auto' | 'width' | 'height'
 
 /**
  * Determines if the image should be scaled by width.
@@ -14,11 +14,12 @@ type ResizeImageByMaxType = 'auto' | 'width' | 'height'
  * Определяет, должно ли изображение масштабироваться по ширине.
  * @param image image element / элемент изображения
  * @param type resize type / тип изменения размера
+ * @returns boolean flag indicating if width is the scaling base / флаг, указывающий, масштабировать ли по ширине
  */
 function isByWidth(
   image: HTMLImageElement,
   type: ResizeImageByMaxType = 'auto'
-) {
+): boolean {
   switch (type) {
     case 'auto':
       return image.naturalWidth >= image.naturalHeight
@@ -38,7 +39,27 @@ function isByWidth(
  * @param type resize type (auto, width, height) / тип изменения размера (auto, width, height)
  * @param typeData optional data type for the resulting image /
  * необязательный тип данных для результирующего изображения
- * @returns base64 image string or undefined / строка base64 изображения или undefined
+ * @returns base64 image data URL or undefined if resizing is not needed or impossible /
+ * строка base64 data URL изображения или undefined, если изменение размера не требуется или невозможно
+ *
+ * @remarks
+ * This function is synchronous and requires the image to be fully loaded with valid `naturalWidth` and `naturalHeight`.
+ *
+ * **Why it returns `undefined`:**
+ * The function serves as a low-level transformation operation. It returns a newly generated Base64 Data URL only when the image actually exceeds `maxSize` and is scaled via canvas.
+ * If the image dimensions are already within `maxSize`, or if the image is not loaded / DOM context is unavailable, it intentionally returns `undefined`.
+ * This signals to the caller that no modification occurred, avoiding unnecessary Canvas re-encoding (which wastes CPU/memory, causes lossy compression, and increases payload size).
+ *
+ * For high-level use where you always need an image string with a fallback to the original source, use `resizeImage` instead.
+ *
+ * Функция работает синхронно и ожидает полностью загруженное изображение с известными `naturalWidth` и `naturalHeight`.
+ *
+ * **Почему возвращается `undefined`:**
+ * Функция является низкоуровневой операцией трансформации. Она возвращает сгенерированный Base64 Data URL только тогда, когда изображение действительно превышает `maxSize` и масштабируется через canvas.
+ * Если размеры изображения уже укладываются в `maxSize`, либо если изображение не загружено или отсутствует DOM-окружение, функция намеренно возвращает `undefined`.
+ * Это сообщает вызывающему коду, что модификация не выполнялась, и предотвращает избыточную перекодировку через Canvas (которая расходует ресурсы CPU/памяти, приводит к потерям качества и увеличивает размер данных).
+ *
+ * Для прикладных сценариев, где всегда требуется готовая строка с фолбэком на исходное изображение, используйте функцию `resizeImage`.
  */
 export function resizeImageByMax(
   image: HTMLImageElement | string,
@@ -50,6 +71,7 @@ export function resizeImageByMax(
 
   if (
     isDomRuntime()
+    && maxSize > 0
     && element
     && element.naturalWidth
     && element.naturalHeight
@@ -58,17 +80,24 @@ export function resizeImageByMax(
       || (element.naturalHeight > maxSize && (type === 'auto' || type === 'height'))
     )
   ) {
-    const is = isByWidth(element, type)
-    const canvas = document.createElement('canvas')?.getContext('2d')
+    const isScaledByWidth = isByWidth(element, type)
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')
 
-    if (canvas) {
-      canvas.canvas.width = is ? maxSize : (element.naturalWidth / element.naturalHeight * maxSize)
-      canvas.canvas.height = is ? (element.naturalHeight / element.naturalWidth * maxSize) : maxSize
-      canvas.drawImage(element, 0, 0, canvas.canvas.width, canvas.canvas.height)
+    if (context) {
+      canvas.width = Math.round(
+        isScaledByWidth ? maxSize : (element.naturalWidth / element.naturalHeight) * maxSize
+      )
+      canvas.height = Math.round(
+        isScaledByWidth ? (element.naturalHeight / element.naturalWidth) * maxSize : maxSize
+      )
+      context.drawImage(element, 0, 0, canvas.width, canvas.height)
 
-      return canvas.canvas.toDataURL(typeData)
+      return canvas.toDataURL(typeData)
     }
   }
 
+  // Resizing was not needed (dimensions are within maxSize) or not possible (not loaded / no DOM context)
+  // Изменение размера не требовалось (размеры в пределах maxSize) или невозможно (не загружено / нет DOM-контекста)
   return undefined
 }

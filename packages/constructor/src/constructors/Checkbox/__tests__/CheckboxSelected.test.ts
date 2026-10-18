@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { ref, toRefs, nextTick } from 'vue'
-import type { ToRefs } from 'vue'
+import { ref, nextTick } from 'vue'
+
 import { CheckboxSelected } from '../CheckboxSelected'
 import type { CheckboxProps } from '../props'
 import { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
@@ -23,7 +23,6 @@ function createCheckboxSelected(
     valueVariant: undefined,
     ...initialProps
   })
-  const references = toRefs(reactiveProperties.value as any) as unknown as ToRefs<CheckboxProps>
 
   const mockValue = {
     item: mockValueItem,
@@ -36,7 +35,6 @@ function createCheckboxSelected(
 
   const checkboxSelected = new CheckboxSelected(
     reactiveProperties.value as unknown as CheckboxProps,
-    references,
     mockValue,
     emits
   )
@@ -72,7 +70,7 @@ describe('CheckboxSelected', () => {
     expect((checkboxSelected as any).selected.value).toBe('no')
   })
 
-  it('should watch refs.selected and update state when it changes', async () => {
+  it('should watch props.selected and update state when it changes', async () => {
     const { checkboxSelected, reactiveProperties, mockValue } = createCheckboxSelected({
       selected: 'no',
       valueVariant: 'yes'

@@ -63,16 +63,12 @@ export class SelectableAreaDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -99,8 +95,8 @@ export class SelectableAreaDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item'),
-        square: this.getSubClass('square')
+        item: this.naming.getSubClass('item'),
+        square: this.naming.getSubClass('square')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

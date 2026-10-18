@@ -1,3 +1,3 @@
-// md5:efd1cd45b85b0ccff294d4d1f2ba8514 true
-/** Sets or updates a property value on a DOM element or window. @keywords set element item, update property, dom mutate */
-export declare function setElementItem<E extends ElementOrWindow, K extends keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K, value: V | Record<string, V>): E | undefined;
+// md5:723a6be4e0d4eeeb222c0e669a618bd2 true
+/** Sets or updates a property value on a DOM element or window object by key. @keywords element, set property, update attribute, dom, window */
+export declare function setElementItem<E extends ElementOrWindow, K extends keyof E = keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K | string, value: V | Record<string, V> | unknown): E | undefined;

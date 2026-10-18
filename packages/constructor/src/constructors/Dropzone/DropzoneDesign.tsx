@@ -58,16 +58,12 @@ export class DropzoneDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -94,7 +90,7 @@ export class DropzoneDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        input: this.getSubClass('input')
+        input: this.naming.getSubClass('input')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

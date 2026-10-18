@@ -1,14 +1,12 @@
 // ai-none
 
-import { forEach, isDomRuntime, ServerStorage } from '@dxtmisha/functional'
+import { isDomRuntime, ServerStorage } from '@dxtmisha/functional'
 
-import { ImageAdaptiveItem } from './ImageAdaptiveItem'
+import type { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageCalculationList } from './ImageCalculationList'
 
 /** Storage structure for adaptive group / Структура хранилища для адаптивной группы */
 type ImageAdaptiveGroupStorage = {
-  /** Cache of visible element IDs / Кэш идентификаторов видимых элементов */
-  cache: string[]
   /** List of all tracked adaptive items / Список всех отслеживаемых адаптивных элементов */
   objects: ImageAdaptiveItem[]
   /** List of currently calculated adaptive items / Список рассчитываемых в данный момент адаптивных элементов */
@@ -50,14 +48,15 @@ export class ImageAdaptiveGroup {
   static add(item: ImageAdaptiveItem): void {
     if (!this.is(item)) {
       this.objects.push(item)
-      this.make()
     }
+
+    this.make()
   }
 
   /**
-   * Removes an element from tracking and clears the cache.
+   * Removes an element from tracking and schedules group recalculation.
    *
-   * Удаляет элемент из отслеживания и очищает кэш.
+   * Удаляет элемент из отслеживания и планирует пересчёт группы.
    * @param item object for working with images / объект для работы с изображениями
    */
   static remove(item: ImageAdaptiveItem): void {
@@ -65,18 +64,16 @@ export class ImageAdaptiveGroup {
 
     if (key !== -1) {
       this.objects.splice(key, 1)
-      this.cache = []
       this.make()
     }
   }
 
   /**
-   * Resets all cached data and rereads scaling for all elements.
+   * Recalculates scaling for all tracked elements immediately.
    *
-   * Обнуляет все кэшированные данные и перечитывает масштабирование для всех элементов.
+   * Немедленно пересчитывает масштабирование всех отслеживаемых элементов.
    */
   static reset(): void {
-    this.cache = []
     this.start()
   }
 
@@ -88,7 +85,7 @@ export class ImageAdaptiveGroup {
   static make(): void {
     if (this.objects.length < 1) {
       this.objectsAdaptive = []
-      this.cache = []
+      ImageCalculationList.reset()
       return
     }
 
@@ -109,30 +106,9 @@ export class ImageAdaptiveGroup {
    */
   protected static get storage(): ImageAdaptiveGroupStorage {
     return ServerStorage.get(SERVER_STORAGE_KEY_ADAPTIVE, () => ({
-      cache: [],
       objects: [],
       objectsAdaptive: []
     }))
-  }
-
-  /**
-   * Returns cache of IDs of visible elements.
-   *
-   * Возвращает кэш идентификаторов видимых элементов.
-   * @returns array of element IDs / массив идентификаторов элементов
-   */
-  protected static get cache(): string[] {
-    return this.storage.cache
-  }
-
-  /**
-   * Sets cache of IDs of visible elements.
-   *
-   * Устанавливает кэш идентификаторов видимых элементов.
-   * @param value array of element IDs / массив идентификаторов элементов
-   */
-  protected static set cache(value: string[]) {
-    this.storage.cache = value
   }
 
   /**
@@ -186,37 +162,6 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Checks if there is an active element at the moment.
-   *
-   * Проверяет, есть ли в текущий момент активный элемент.
-   * @returns true if an active element exists / true, если существует активный элемент
-   */
-  protected static isAdaptive(): boolean {
-    return Boolean(this.objects.find(item => item.is()))
-  }
-
-  /**
-   * Checks whether the composition of visible elements has changed.
-   *
-   * Проверяет, изменился ли состав видимых элементов.
-   * @param visible list of IDs of visible elements / список идентификаторов видимых элементов
-   * @returns true if the list of visible elements has changed / true, если список видимых элементов изменился
-   */
-  protected static isCache(visible: string[]): boolean {
-    return this.cache.join('|') !== visible.join('|')
-  }
-
-  /**
-   * Returns a list of elements that are visible or constantly being calculated.
-   *
-   * Возвращает список идентификаторов элементов, которые видны или постоянно вычисляются.
-   * @returns list of IDs / список идентификаторов
-   */
-  protected static getItemIdByVisible(): string[] {
-    return forEach(this.objectsAdaptive, item => item.id)
-  }
-
-  /**
    * Updates the list of elements available for calculation. These are the
    * elements that are close to the border of the visible area.
    *
@@ -266,10 +211,12 @@ export class ImageAdaptiveGroup {
         if (element) {
           const width = calculation.width
           const height = calculation.height
+          const offsetWidth = element.offsetWidth
+          const offsetHeight = element.offsetHeight
 
           item.setPercent(
-            item.width * (width ? 1 / width : 0) * (calculation.offsetWidth / element.offsetWidth),
-            item.height * (height ? 1 / height : 0) * (calculation.offsetHeight / element.offsetHeight)
+            offsetWidth > 0 ? item.width * (width ? 1 / width : 0) * (calculation.offsetWidth / offsetWidth) : 0,
+            offsetHeight > 0 ? item.height * (height ? 1 / height : 0) * (calculation.offsetHeight / offsetHeight) : 0
           )
         }
       })
@@ -290,11 +237,17 @@ export class ImageAdaptiveGroup {
       const element = item.getElement()
 
       if (element) {
-        ImageCalculationList.get(item.group)
+        const calculation = ImageCalculationList.get(item.group)
           .makeWidth(item.width)
           .makeHeight(item.height)
-          .makeOffsetWidth(element.offsetWidth)
-          .makeOffsetHeight(element.offsetHeight)
+
+        if (element.offsetWidth > 0) {
+          calculation.makeOffsetWidth(element.offsetWidth)
+        }
+
+        if (element.offsetHeight > 0) {
+          calculation.makeOffsetHeight(element.offsetHeight)
+        }
       }
     })
   }
@@ -305,18 +258,9 @@ export class ImageAdaptiveGroup {
    * Метод для запуска вычисления масштабирования элементов в списке.
    */
   protected static start(): void {
-    if (this.isAdaptive()) {
-      this.makeAdaptive()
-
-      const visible = this.getItemIdByVisible()
-
-      if (this.isCache(visible)) {
-        this.cache = visible
-
-        this.makeSize()
-        this.makePercent()
-        this.makeFactorMax()
-      }
-    }
+    this.makeAdaptive()
+    this.makeSize()
+    this.makePercent()
+    this.makeFactorMax()
   }
 }

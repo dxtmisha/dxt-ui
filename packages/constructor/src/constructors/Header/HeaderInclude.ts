@@ -3,7 +3,8 @@
 import { type VNode } from 'vue'
 import {
   type ConstrBind,
-  type DesignComponents
+  type DesignComponents,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
@@ -40,7 +41,7 @@ export class HeaderInclude<
   /**
    * Constructor /
    * Конструктор
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
@@ -48,14 +49,14 @@ export class HeaderInclude<
    * @param labelId identifier for the label / идентификатор для метки
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: ComponentIncludeProps<Props>,
     components?: DesignComponents<HeaderComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
     protected readonly labelId?: string
   ) {
-    super(className, props, components, extra, index)
+    super(naming, props, components, extra, index)
   }
 
   /** Checks whether header should be displayed / Проверяет, нужно ли отображать заголовок */
