@@ -9,7 +9,7 @@ import {
  * Gets a list of attributes of an element.
  *
  * Получает список атрибутов у элемента.
- * @param element selectors for matching or an Element / селекторов для сопоставления или Element
+ * @param element selector for matching or an Element / селектор для сопоставления или Element
  * @returns list of attributes / список атрибутов
  */
 export function getAttributes<E extends ElementOrWindow>(
@@ -18,9 +18,9 @@ export function getAttributes<E extends ElementOrWindow>(
   const attributes: Record<string, string | undefined> = {}
   const item = getElement(element)
 
-  if (item) {
-    for (const attribute of item.attributes) {
-      attributes[attribute.name] = (attribute?.value || attribute?.textContent) ?? undefined
+  if (item && 'getAttributeNames' in item) {
+    for (const name of item.getAttributeNames()) {
+      attributes[name] = item.getAttribute(name) ?? undefined
     }
   }
 

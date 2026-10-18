@@ -61,11 +61,11 @@ export class TableFlexHeaderItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.naming.getSubClass('label'),
-        description: this.naming.getSubClass('description'),
-        body: this.naming.getSubClass('body'),
-        sort: this.naming.getSubClass('sort'),
-        tooltip: this.naming.getSubClass('tooltip')
+        label: this.getSubClass('label'),
+        description: this.getSubClass('description'),
+        body: this.getSubClass('body'),
+        sort: this.getSubClass('sort'),
+        tooltip: this.getSubClass('tooltip')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

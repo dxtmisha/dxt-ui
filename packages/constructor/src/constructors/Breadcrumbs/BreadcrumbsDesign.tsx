@@ -91,7 +91,7 @@ export class BreadcrumbsDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.naming.getSubClass('item')
+        item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

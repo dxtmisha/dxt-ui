@@ -94,8 +94,8 @@ export class SelectValueDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        item: this.naming.getSubClass('item'),
-        trailing: this.naming.getSubClass('trailing')
+        item: this.getSubClass('item'),
+        trailing: this.getSubClass('trailing')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

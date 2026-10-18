@@ -91,8 +91,8 @@ export class CarouselItemDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        body: this.naming.getSubClass('body'),
-        image: this.naming.getSubClass('image')
+        body: this.getSubClass('body'),
+        image: this.getSubClass('image')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -58,14 +58,14 @@ export class DialogDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        title: this.naming.getSubClass('title'),
-        header: this.naming.getSubClass('header'),
-        information: this.naming.getSubClass('information'),
-        icon: this.naming.getSubClass('icon'),
-        label: this.naming.getSubClass('label'),
-        description: this.naming.getSubClass('description'),
-        body: this.naming.getSubClass('body'),
-        footer: this.naming.getSubClass('footer')
+        title: this.getSubClass('title'),
+        header: this.getSubClass('header'),
+        information: this.getSubClass('information'),
+        icon: this.getSubClass('icon'),
+        label: this.getSubClass('label'),
+        description: this.getSubClass('description'),
+        body: this.getSubClass('body'),
+        footer: this.getSubClass('footer')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

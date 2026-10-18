@@ -88,7 +88,7 @@ export class TabsDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        slide: this.naming.getSubClass('slide')
+        slide: this.getSubClass('slide')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

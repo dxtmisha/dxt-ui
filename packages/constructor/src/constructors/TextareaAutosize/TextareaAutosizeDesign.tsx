@@ -88,7 +88,7 @@ export class TextareaAutosizeDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        clone: this.naming.getSubClass('clone')
+        clone: this.getSubClass('clone')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

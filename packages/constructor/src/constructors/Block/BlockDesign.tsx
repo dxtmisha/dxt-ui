@@ -90,10 +90,10 @@ export class BlockDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        headline: this.naming.getSubClass('headline'),
-        header: this.naming.getSubClass('header'),
-        description: this.naming.getSubClass('description'),
-        body: this.naming.getSubClass('body')
+        headline: this.getSubClass('headline'),
+        header: this.getSubClass('header'),
+        description: this.getSubClass('description'),
+        body: this.getSubClass('body')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

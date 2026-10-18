@@ -91,9 +91,9 @@ export class MenuChipDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.naming.getSubClass('label'),
-        separator: this.naming.getSubClass('separator'),
-        selected: this.naming.getSubClass('selected')
+        label: this.getSubClass('label'),
+        separator: this.getSubClass('separator'),
+        selected: this.getSubClass('selected')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

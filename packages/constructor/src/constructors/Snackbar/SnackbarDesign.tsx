@@ -91,9 +91,9 @@ export class SnackbarDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.naming.getSubClass('item'),
-        space: this.naming.getSubClass('space'),
-        priority: this.naming.getSubClass('priority')
+        item: this.getSubClass('item'),
+        space: this.getSubClass('space'),
+        priority: this.getSubClass('priority')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

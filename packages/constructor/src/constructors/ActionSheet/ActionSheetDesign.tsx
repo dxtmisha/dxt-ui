@@ -58,12 +58,12 @@ export class ActionSheetDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        title: this.naming.getSubClass('title'),
-        header: this.naming.getSubClass('header'),
-        body: this.naming.getSubClass('body'),
-        footer: this.naming.getSubClass('footer'),
-        touch: this.naming.getSubClass('touch'),
-        tab: this.naming.getSubClass('tab')
+        title: this.getSubClass('title'),
+        header: this.getSubClass('header'),
+        body: this.getSubClass('body'),
+        footer: this.getSubClass('footer'),
+        touch: this.getSubClass('touch'),
+        tab: this.getSubClass('tab')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

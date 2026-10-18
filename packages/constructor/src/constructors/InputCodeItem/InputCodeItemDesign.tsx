@@ -103,8 +103,8 @@ export class InputCodeItemDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        input: this.naming.getSubClass('input'),
-        sub: this.naming.getSubClass('sub')
+        input: this.getSubClass('input'),
+        sub: this.getSubClass('sub')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -50,10 +50,10 @@ export class ModalDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        title: this.naming.getSubClass('title'),
-        header: this.naming.getSubClass('header'),
-        body: this.naming.getSubClass('body'),
-        footer: this.naming.getSubClass('footer')
+        title: this.getSubClass('title'),
+        header: this.getSubClass('header'),
+        body: this.getSubClass('body'),
+        footer: this.getSubClass('footer')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

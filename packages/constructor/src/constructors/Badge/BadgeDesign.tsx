@@ -86,8 +86,8 @@ export class BadgeDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        label: this.naming.getSubClass('label'),
-        icon: this.naming.getSubClass('icon')
+        label: this.getSubClass('label'),
+        icon: this.getSubClass('icon')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -100,15 +100,15 @@ export class InputFileItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        thumbnail: this.naming.getSubClass('thumbnail'),
-        body: this.naming.getSubClass('body'),
-        label: this.naming.getSubClass('label'),
-        caption: this.naming.getSubClass('caption'),
-        progress: this.naming.getSubClass('progress'),
-        actions: this.naming.getSubClass('actions'),
-        buttonCrop: this.naming.getSubClass('buttonCrop'),
-        buttonDelete: this.naming.getSubClass('buttonDelete'),
-        buttonRetry: this.naming.getSubClass('buttonRetry')
+        thumbnail: this.getSubClass('thumbnail'),
+        body: this.getSubClass('body'),
+        label: this.getSubClass('label'),
+        caption: this.getSubClass('caption'),
+        progress: this.getSubClass('progress'),
+        actions: this.getSubClass('actions'),
+        buttonCrop: this.getSubClass('buttonCrop'),
+        buttonDelete: this.getSubClass('buttonDelete'),
+        buttonRetry: this.getSubClass('buttonRetry')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

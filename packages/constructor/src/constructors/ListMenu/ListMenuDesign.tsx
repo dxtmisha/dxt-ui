@@ -88,8 +88,8 @@ export class ListMenuDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        head: this.naming.getSubClass('head'),
-        list: this.naming.getSubClass('list')
+        head: this.getSubClass('head'),
+        list: this.getSubClass('list')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

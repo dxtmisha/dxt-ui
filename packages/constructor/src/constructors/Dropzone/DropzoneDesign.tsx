@@ -90,7 +90,7 @@ export class DropzoneDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        input: this.naming.getSubClass('input')
+        input: this.getSubClass('input')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

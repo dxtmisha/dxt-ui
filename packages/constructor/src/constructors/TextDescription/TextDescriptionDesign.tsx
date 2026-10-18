@@ -85,7 +85,7 @@ export class TextDescriptionDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        description: this.naming.getSubClass('description')
+        description: this.getSubClass('description')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

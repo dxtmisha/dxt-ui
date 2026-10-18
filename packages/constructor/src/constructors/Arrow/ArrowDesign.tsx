@@ -105,12 +105,12 @@ export class ArrowDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        mask: this.naming.getSubClass('mask'),
-        arrow: this.naming.getSubClass('arrow'),
-        arrowLine: this.naming.getSubClass('arrowLine'),
-        arrowArea: this.naming.getSubClass('arrowArea'),
-        border: this.naming.getSubClass('border'),
-        borderHidden: this.naming.getSubClass('borderHidden')
+        mask: this.getSubClass('mask'),
+        arrow: this.getSubClass('arrow'),
+        arrowLine: this.getSubClass('arrowLine'),
+        arrowArea: this.getSubClass('arrowArea'),
+        border: this.getSubClass('border'),
+        borderHidden: this.getSubClass('borderHidden')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -94,10 +94,10 @@ export class ButtonDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        label: this.naming.getSubClass('label'),
-        icon: this.naming.getSubClass('icon'),
-        trailing: this.naming.getSubClass('trailing'),
-        loading: this.naming.getSubClass('loading')
+        label: this.getSubClass('label'),
+        icon: this.getSubClass('icon'),
+        trailing: this.getSubClass('trailing'),
+        loading: this.getSubClass('loading')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -93,9 +93,9 @@ export class ClockPeriodDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.naming.getSubClass('item'),
-        am: this.naming.getSubClass('am'),
-        pm: this.naming.getSubClass('pm')
+        item: this.getSubClass('item'),
+        am: this.getSubClass('am'),
+        pm: this.getSubClass('pm')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

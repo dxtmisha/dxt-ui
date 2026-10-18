@@ -100,10 +100,10 @@ export class CarouselPaginationDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.naming.getSubClass('item'),
-        fraction: this.naming.getSubClass('fraction'),
-        progress: this.naming.getSubClass('progress'),
-        progressBar: this.naming.getSubClass('progressBar')
+        item: this.getSubClass('item'),
+        fraction: this.getSubClass('fraction'),
+        progress: this.getSubClass('progress'),
+        progressBar: this.getSubClass('progressBar')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

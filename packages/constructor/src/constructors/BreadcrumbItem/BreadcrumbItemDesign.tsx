@@ -92,7 +92,7 @@ export class BreadcrumbItemDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        iconArrow: this.naming.getSubClass('iconArrow')
+        iconArrow: this.getSubClass('iconArrow')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

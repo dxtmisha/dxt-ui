@@ -97,7 +97,7 @@ export class DraggableWrapperDesign<
       },
       ...{
         // :classes [!] System label / Системная метка
-        square: this.naming.getSubClass('square')
+        square: this.getSubClass('square')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -94,7 +94,7 @@ export class AvatarDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        label: this.naming.getSubClass('label')
+        label: this.getSubClass('label')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

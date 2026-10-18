@@ -95,8 +95,8 @@ export class CollageDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        body: this.naming.getSubClass('body'),
-        item: this.naming.getSubClass('item')
+        body: this.getSubClass('body'),
+        item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

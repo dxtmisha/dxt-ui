@@ -1,25 +1,25 @@
 import { isDomRuntime } from './isDomRuntime'
 
 /**
- * Cyclically calls requestAnimationFrame until next returns true.
+ * Cyclically calls requestAnimationFrame while next returns true.
  *
  * Циклически вызывает requestAnimationFrame, пока next возвращает true.
  * @param callback the function to call when it's time to update your animation / функция, которая будет вызвана, когда придёт время обновить вашу анимацию
  * @param next function that determines repetition / функция, которая определяет повторность
  * @param end function that is executed if the animation stops / функция, которая выполняется, если останавливается анимация
- * @returns animation ID or undefined / ID анимации или undefined
+ * @returns void / ничего не возвращает
  */
 export function frame(
-  callback: () => void,
-  next?: () => boolean,
+  callback: (timestamp: DOMHighResTimeStamp) => void,
+  next?: (timestamp: DOMHighResTimeStamp) => boolean,
   end?: () => void
-) {
-  const init = () => {
-    callback()
+): void {
+  const init = (timestamp: DOMHighResTimeStamp) => {
+    callback(timestamp)
 
     if (
       isDomRuntime()
-      && next?.()
+      && next?.(timestamp)
     ) {
       frame(callback, next, end)
     } else {
@@ -30,6 +30,6 @@ export function frame(
   if (isDomRuntime()) {
     requestAnimationFrame(init)
   } else {
-    init()
+    init(0)
   }
 }

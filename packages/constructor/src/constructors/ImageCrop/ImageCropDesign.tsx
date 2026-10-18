@@ -92,10 +92,10 @@ export class ImageCropDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        body: this.naming.getSubClass('body'),
-        image: this.naming.getSubClass('image'),
-        cropArea: this.naming.getSubClass('cropArea'),
-        loading: this.naming.getSubClass('loading')
+        body: this.getSubClass('body'),
+        image: this.getSubClass('image'),
+        cropArea: this.getSubClass('cropArea'),
+        loading: this.getSubClass('loading')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

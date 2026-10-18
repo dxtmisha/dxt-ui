@@ -95,18 +95,18 @@ export class ClockDialDesign<
       },
       ...{
         // :classes [!] System label / Системная метка
-        list: this.naming.getSubClass('list'),
-        value: this.naming.getSubClass('value'),
-        name: this.naming.getSubClass('name'),
-        info: this.naming.getSubClass('info'),
-        arrow: this.naming.getSubClass('arrow'),
-        arrowHour: this.naming.getSubClass('arrowHour'),
-        arrowMinute: this.naming.getSubClass('arrowMinute'),
-        arrowSecond: this.naming.getSubClass('arrowSecond'),
-        arrowSelect: this.naming.getSubClass('arrowSelect'),
-        point: this.naming.getSubClass('point'),
-        dial: this.naming.getSubClass('dial'),
-        censor: this.naming.getSubClass('censor')
+        list: this.getSubClass('list'),
+        value: this.getSubClass('value'),
+        name: this.getSubClass('name'),
+        info: this.getSubClass('info'),
+        arrow: this.getSubClass('arrow'),
+        arrowHour: this.getSubClass('arrowHour'),
+        arrowMinute: this.getSubClass('arrowMinute'),
+        arrowSecond: this.getSubClass('arrowSecond'),
+        arrowSelect: this.getSubClass('arrowSelect'),
+        point: this.getSubClass('point'),
+        dial: this.getSubClass('dial'),
+        censor: this.getSubClass('censor')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -1,3 +1,3 @@
-// md5:118ea242ff02d4c5d826c8e457dfca83 true
-/** Replaces template placeholder keys in square or curly brackets with values from a replacement object or array. @keywords template, string interpolation, placeholder, replace */
-export declare const applyTemplate: (text: string, replacement?: Record<string, string | number | boolean> | string[]) => string;
+// md5:3160607b95e02764443fe431debcb7d3 true
+/** Replaces placeholder keys like [key] or {key} in text with corresponding values from an object or array. @keywords template, interpolate, format, placeholder, replace */
+export declare function applyTemplate(text: string, replacement?: Record<string, unknown> | readonly unknown[]): string;

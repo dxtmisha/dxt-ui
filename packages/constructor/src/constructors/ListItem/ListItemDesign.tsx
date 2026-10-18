@@ -94,17 +94,17 @@ export class ListItemDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        body: this.naming.getSubClass('body'),
-        context: this.naming.getSubClass('context'),
-        label: this.naming.getSubClass('label'),
-        highlight: this.naming.getSubClass('highlight'),
-        prefix: this.naming.getSubClass('prefix'),
-        caption: this.naming.getSubClass('caption'),
-        description: this.naming.getSubClass('description'),
-        icon: this.naming.getSubClass('icon'),
-        trailing: this.naming.getSubClass('trailing'),
-        control: this.naming.getSubClass('control'),
-        badge: this.naming.getSubClass('badge')
+        body: this.getSubClass('body'),
+        context: this.getSubClass('context'),
+        label: this.getSubClass('label'),
+        highlight: this.getSubClass('highlight'),
+        prefix: this.getSubClass('prefix'),
+        caption: this.getSubClass('caption'),
+        description: this.getSubClass('description'),
+        icon: this.getSubClass('icon'),
+        trailing: this.getSubClass('trailing'),
+        control: this.getSubClass('control'),
+        badge: this.getSubClass('badge')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

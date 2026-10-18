@@ -92,9 +92,9 @@ export class TooltipDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.naming.getSubClass('label'),
-        description: this.naming.getSubClass('description'),
-        body: this.naming.getSubClass('body')
+        label: this.getSubClass('label'),
+        description: this.getSubClass('description'),
+        body: this.getSubClass('body')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

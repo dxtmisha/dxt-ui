@@ -103,12 +103,12 @@ export class MotionTransformDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        context: this.naming.getSubClass('context'),
-        head: this.naming.getSubClass('head'),
-        body: this.naming.getSubClass('body'),
-        backdrop: this.naming.getSubClass('backdrop'),
-        scrim: this.naming.getSubClass('scrim'),
-        clickNone: this.naming.getSubClass('clickNone')
+        context: this.getSubClass('context'),
+        head: this.getSubClass('head'),
+        body: this.getSubClass('body'),
+        backdrop: this.getSubClass('backdrop'),
+        scrim: this.getSubClass('scrim'),
+        clickNone: this.getSubClass('clickNone')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

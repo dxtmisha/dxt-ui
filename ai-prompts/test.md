@@ -29,10 +29,15 @@ Tests in this repository must **never be superficial smoke checks**. They must s
      ```
    - 100% test pass rate is strictly required (0 errors, 0 failures, 0 uncaught exceptions, and 0 framework/Vue warnings).
    - Never commit `it.only`, `it.skip`, or commented-out assertions.
-5. **Context & Purpose Awareness (Anti-Overengineering Guard / Учёт среды использования и назначения)**:
-   - Tests must evaluate the entity strictly in the context of its **actual environment, real consumers, and intended purpose**.
-   - **Ban on "All-Life-Cases" Paranoia (Запрет тестов «на все случаи жизни»)**: Do NOT write tests for absurd, impossible, or contrived edge cases that never occur in real usage. Forcing production code to accommodate unrealistic scenarios causes **code bloat, unnecessary defensive checks, performance degradation, and over-engineering (`избыточный код / оверинжиниринг`)**.
-   - **Pragmatic Contract Verification**: Focus on real contracts and valid domain boundaries (such as `0`, `false`, `null`, empty strings, Unicode diacritics, XSS where HTML is generated, lifecycle disposal). If an entity is an internal helper or strictly typed utility, do not write tests demanding runtime defenses against impossible or out-of-scope inputs.
+5. **Context, Purpose & Semantic Reason (Reasonable Bounds)**:
+   - Tests must evaluate the entity thoroughly and cover diverse real-world scenarios, but **strictly within reasonable bounds and within the permissible domain of the entity itself and its contract**.
+   - **Pragmatic Contract Verification**: Thoroughly test genuine domain boundaries (such as `0`, `false`, `null`, empty strings, Unicode diacritics, XSS where HTML is generated, boundary thresholds, and lifecycle disposal). Do not invent absurd, artificial edge cases that contradict the entity's core definition.
+
+6. **Strict Prohibition: Never Mutate the Entity in Favor of Tests**:
+   - **Never corrupt the entity's signature, contracts, or architecture just to satisfy contrived tests**:
+     - **No Weakening of Required Arguments**: It is **strictly forbidden to make mandatory parameters optional** (e.g., turning `column: K` into `column?: K` in `getColumn` just so a test can invoke `getColumn()` with no arguments). If a parameter defines the fundamental purpose of the method, it MUST remain mandatory.
+     - **Tests Serve the Contract, Never the Reverse**: The role of a test suite is to verify that the entity fulfills its contract, NOT to force the entity into over-engineering or architectural degradation.
+     - **No Code Bloat for Out-of-Scope Inputs**: Never add defensive guards or fallback branches to production code for scenarios that contradict TypeScript types and the semantic essence of the method. Tests must conform to the entity's contract, not break the entity in favor of tests.
 
 ---
 
@@ -103,7 +108,9 @@ describe('myFunction', () => {
 ## 4. Mandatory Edge Cases Checklist
 
 > [!IMPORTANT]
-> **Pragmatic Application (No Code Bloat / Без избыточного кода)**: Apply this checklist strictly through the lens of the entity's **actual purpose and usage environment**. Do NOT blindly test every conceivable permutation or invent paranoid edge cases outside the entity's scope, as doing so forces production code to become bloated and over-engineered.
+> **Reasonable Bounds & Entity Integrity**:
+> Apply this checklist thoroughly to cover all realistic scenarios, but **strictly within the permissible domain and actual purpose of the entity**.
+> **NEVER alter, weaken, or corrupt the entity's signature or contract in favor of tests** (for example, it is strictly forbidden to make mandatory function parameters optional or pollute production logic with redundant defensive boilerplate just so a test can pass empty or nonsensical input). Tests must conform to the entity's contract; the entity must never be broken to satisfy tests.
 
 Every unit test suite MUST thoroughly evaluate the following boundary conditions:
 

@@ -96,8 +96,8 @@ export class InputPhoneDialCodeDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        button: this.naming.getSubClass('button'),
-        menuCountry: this.naming.getSubClass('menuCountry')
+        button: this.getSubClass('button'),
+        menuCountry: this.getSubClass('menuCountry')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

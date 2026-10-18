@@ -7,14 +7,15 @@ import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 import stylistic from '@stylistic/eslint-plugin'
 
-export default [
+export default tseslint.config(
   {
     ignores: [
       '**/dist/**',
       '**/node_modules/**',
       '**/.output/**',
       '**/coverage/**',
-      '**/*.d.ts'
+      '**/*.d.ts',
+      '**/storybook-static/**'
     ]
   },
   {
@@ -39,11 +40,13 @@ export default [
   },
   stylistic.configs['disable-legacy'],
   stylistic.configs.customize({
+    arrowParens: false,
     blockSpacing: true,
     braceStyle: '1tbs',
     commaDangle: 'never',
     indent: 2,
-    quotes: 'single'
+    quotes: 'single',
+    semi: false
   }),
   {
     rules: {
@@ -64,4 +67,4 @@ export default [
     }
   },
   ...storybook.configs['flat/recommended']
-]
+)
