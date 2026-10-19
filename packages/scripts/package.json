@@ -101,13 +101,13 @@
     "@dxtmisha/functional": ">=1.15.18",
     "@dxtmisha/functional-basic": ">=1.11.2",
     "@dxtmisha/media": ">=0.8.1",
-    "sass": ">=1.105.1",
+    "sass": ">=1.105.2",
     "typescript": ">=6.0.3",
     "vite-node": ">=6.0.0",
-    "vue": ">=3.5.43"
+    "vue": ">=3.5.44"
   },
   "devDependencies": {
-    "puppeteer": ">=25.13.0"
+    "puppeteer": ">=25.14.0"
   },
   "peerDependencies": {
     "@ai-sdk/xai": ">=5.0.20",

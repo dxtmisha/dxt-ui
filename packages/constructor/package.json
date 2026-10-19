@@ -602,8 +602,8 @@
     "@dxtmisha/functional-basic": ">=1.11.2",
     "@dxtmisha/media": ">=0.8.1",
     "@dxtmisha/styles": ">=1.0.13",
-    "rollup": ">=4.64.3",
-    "vue": ">=3.5.43",
+    "rollup": ">=4.64.10",
+    "vue": ">=3.5.44",
     "vue-router": ">=5.4.0"
   },
   "sideEffects": false,

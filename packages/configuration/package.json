@@ -112,13 +112,13 @@
     "typescript": ">=6.0.3",
     "vite": ">=8.3.4",
     "vite-plugin-dts": ">=5.1.2",
-    "vite-plugin-singlefile": ">=2.3.3"
+    "vite-plugin-singlefile": ">=2.3.4"
   },
   "optionalDependencies": {
     "@vitejs/plugin-react": ">=6.1.2",
-    "@vitejs/plugin-vue": ">=6.0.9",
+    "@vitejs/plugin-vue": ">=6.0.10",
     "@vue/tsconfig": ">=0.9.1",
-    "purgecss": ">=7.0.0"
+    "purgecss": ">=8.0.0"
   },
   "peerDependencies": {
     "@vitejs/plugin-react": ">=6.1.2",
