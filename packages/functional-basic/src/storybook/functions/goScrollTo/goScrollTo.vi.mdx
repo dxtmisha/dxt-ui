@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `goScrollTo`
 
-Thực thi hiệu ứng cuộn bên trong một phần tử vùng chứa (container) để đảm bảo rằng mục tiêu bên trong rơi vào vùng dễ nhìn. Hàm thực hiện trích xuất `getBoundingClientRect` từ cả hai thành phần và kích hoạt phương thức `scrollBy` để di chuyển khoảng bù trục toạ độ cho phù hợp.
+Thực thi hiệu ứng cuộn bên trong một phần tử vùng chứa (container) để đảm bảo rằng mục tiêu bên trong rơi vào vùng dễ nhìn. Hàm thực hiện trích xuất `getBoundingClientRect` từ cả hai thành phần, tính đến đường viền hộp chứa (`clientTop` và `clientLeft`), và kích hoạt phương thức `scrollBy` (có cơ chế dự phòng tự động sang `scrollTop` / `scrollLeft` nếu không hỗ trợ).
 
 Khác với `goScrollSmooth` (cuộn cửa sổ màn hình hoặc uỷ thác cho `scrollIntoView`), `goScrollTo` chủ động canh chỉnh lề thao tác trong không gian đo lường tĩnh của hộp chứa rõ ràng được cấp vào.
 
 **Tham số:**
-- `element: HTMLElement | undefined` — Phần tử vùng chứa đóng cuộn với con lăn.
-- `elementTo: HTMLElement | undefined` — Mục tiêu nằm phía trong (đích nhắm) cần quan sát được.
+- `container?: HTMLElement | Element | null` — Phần tử vùng chứa cuộn. Xử lý an toàn khi nhận `null` và `undefined`.
+- `elementTo?: HTMLElement | Element | null` — Mục tiêu nằm phía trong (đích nhắm) cần quan sát được.
 - `behavior: ScrollBehavior` — (Tùy chọn) Chỉnh sửa loại chuỗi ảnh chuyển động, mặc định cho hiệu ứng mượt `'smooth'`.
 
 **Trả về:**

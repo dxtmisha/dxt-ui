@@ -7,6 +7,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Kiểm tra xem một phần tử có hiển thị hay không (không bị ẩn bởi CSS và có trong DOM).
 Một phần tử có thể nằm ngoài màn hình và vẫn được coi là hiển thị.
 
+Khi được trình duyệt hỗ trợ, hàm sử dụng API gốc có hiệu năng cao `checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })`. Trong môi trường không hỗ trợ, hàm sẽ dùng cơ chế dự phòng để kiểm tra computed styles (`display`, `visibility`, `opacity`) và kích thước layout (`offsetWidth`, `offsetHeight`).
+
 **Tham số:**
 - `elementSelectors: ElementOrString<E>` — bộ chọn để khớp hoặc một Element.
 

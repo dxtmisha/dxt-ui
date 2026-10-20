@@ -3,6 +3,7 @@
 import { getRequestString } from '../functions/getRequestString'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isFilled } from '../functions/isFilled'
+import { isObject } from '../functions/isObject'
 import { isOnLine } from '../functions/isOnLine'
 import { isString } from '../functions/isString'
 import { random } from '../functions/random'
@@ -220,7 +221,7 @@ export class ApiInstance {
     request: ApiFetch['request'] = {},
     method: ApiMethod = ApiMethodItem.get
   ): string | FormData | undefined {
-    if (request instanceof FormData) {
+    if (typeof FormData !== 'undefined' && request instanceof FormData) {
       return request
     }
 
@@ -254,7 +255,10 @@ export class ApiInstance {
   ): string {
     if (method === ApiMethodItem.get) {
       const type = path.match(/\?/) ? '&' : '?'
-      const body = typeof request === 'object' ? getRequestString(request) : request
+      const isFormData = typeof FormData !== 'undefined' && request instanceof FormData
+      const body = isObject(request) && !isFormData
+        ? getRequestString(request as Record<string, unknown>)
+        : (isString(request) ? request : '')
 
       if (isFilled(body)) {
         return `${type}${body}`

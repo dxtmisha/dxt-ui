@@ -8,7 +8,8 @@ Là một tiện ích đa năng để xét duyệt xem giá trị truyền vào 
 
 Khác với hàm xét nhánh điều kiện truthy (`if (value)`), `isFilled` sở hữu những ngoại lệ:
 - Quét các mảng (array) trả kết quả trống rỗng (`false`) nếu tham số `.length` của nó hiển thị bằng 0.
-- Xét diện đối tượng (object) là trống (`false`) khi tất cả các định danh nội trú bị gán ngược bằng `null`.
+- Xét các tập hợp (`Map`, `Set`) là rỗng (`false`) nếu thuộc tính `.size` bằng 0.
+- Xét diện đối tượng (object) là trống (`false`) khi không có thuộc tính riêng hoặc tất cả các giá trị của thuộc tính đều là `null` hoặc `undefined`.
 - Tách bóc các thẻ định nghĩa ảo cấu tạo bằng lớp màng kiểu string ví dụ như `'undefined'`, `'null'`, `'false'`, `'[]'` và coi nó đều là trống.
 - Kể cả chuỗi `'0'` mặc định coi là rỗng hụt trừ khi có cấu hình thông báo ngoại lệ lọt qua nhờ tham số `zeroTrue`.
 

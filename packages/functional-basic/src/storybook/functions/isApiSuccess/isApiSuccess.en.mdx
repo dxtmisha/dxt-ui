@@ -6,14 +6,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Checks if the API response is successful.
 
-The check is performed according to the following rules:
-- If the data is an array, it is considered a success.
-- If the data is an object, the success is determined by the `status === 'success'` or `success === true` fields.
-- If the `statusObject` field is present, the success is determined by the HTTP status code (starts with 2).
-- If none of the fields are present, the success is determined by the global API status.
+The check is performed according to the following strict priority rules:
+1. If the data is an array, it is considered a success (`true`).
+2. If the data is null, undefined, or not an object, it returns `false`.
+3. **Explicit Failure Priority:** If explicit failure indicators are present (`success === false`, `status === 'error'`, `status === 'warning'`, or `errorObject`), the function returns `false` (even if the HTTP status is 200).
+4. If explicit success indicators are present (`status === 'success'` or `success === true`), it returns `true`.
+5. If the `statusObject` field is present, success is determined by the HTTP status code (2xx range: 200 to 299).
+6. If none of the status fields are present, success is determined by the global API status (`Api.getStatus().getStatus()`).
 
 **Parameters:**
-- `data: ApiData<T>` — API response data.
+- `data?: ApiData<T> | unknown` — API response data (object, array, or unknown input).
 
 **Returns:**
 `boolean` — `true` if the response is successful, otherwise `false`.
@@ -21,7 +23,19 @@ The check is performed according to the following rules:
 ```typescript
 import { isApiSuccess } from '@dxtmisha/functional-basic'
 
+// Arrays and explicit success
+console.log(isApiSuccess([])) // true
 console.log(isApiSuccess({ status: 'success' })) // true
 console.log(isApiSuccess({ success: true })) // true
-console.log(isApiSuccess([])) // true
+
+// Successful HTTP 2xx status in statusObject
+console.log(isApiSuccess({ statusObject: { status: 200 } })) // true
+
+// Failure priority over HTTP 200 status
+console.log(isApiSuccess({ success: false, statusObject: { status: 200 } })) // false
+console.log(isApiSuccess({ status: 'error', statusObject: { status: 200 } })) // false
+
+// Invalid / empty values
+console.log(isApiSuccess(null)) // false
+console.log(isApiSuccess(undefined)) // false
 ```

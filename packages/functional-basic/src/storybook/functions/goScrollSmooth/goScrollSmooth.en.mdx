@@ -9,7 +9,7 @@ Provides a smooth scrolling experience navigating the browser window or containe
 The function first verifies whether the target element supports the native `scrollIntoView` method. If it does, and no `shift` (offset) parameter is given, it relies on the browser's native implementation. Conversely, when a `shift` is required (for instance, to clear a fixed header), the function calculates the offset using `getBoundingClientRect` and delegates the scrolling to `window.scrollTo`.
 
 **Parameters:**
-- `element: E` — The target element (`HTMLElement`) to scroll to.
+- `element?: HTMLElement | Element | null` — The target element (`HTMLElement` or `Element`) to scroll to. Safely handles `null` and `undefined`.
 - `options: ScrollIntoViewOptions` — (Optional) Configuration options forwarded to `scrollIntoView` (e.g., `behavior`, `block`, `inline`).
 - `shift: number` — (Optional) Top margin offset (in pixels) applied to prevent the targeted element from being obscured by sticky/fixed navigation components. Defaults to `0`.
 

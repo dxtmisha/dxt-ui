@@ -6,10 +6,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Tiện ích chuyên biệt có khả năng nhìn thấu vấn đề liệu một yếu tố đưa qua phân tích trần định có hoàn toàn được cấu trúc dưới tư cách một bảng mạch thể loại con số chuẩn xác hay không.
 
-Tính năng hoạt động tương thích hoàn hảo kiểu loại cấu thành `typeof value === 'number'` nên mặc định cho qua các con số dương, số âm và kể cả thông số dị dạng toán học như `NaN`. Phi thường hơn, nó nhận thu và xử lý tốt ngay cả những xâu chuỗi văn bản thông qua thuật toán giải mã RegEx để bóc xem phần tử chuỗi truyền vào thực sự mang cấu trúc định dạng chuẩn số hay không (ủng hộ cả số âm và số có phần thập phân).
+Tính năng hoạt động tương thích hoàn hảo kiểu loại cấu thành `typeof value === 'number'` (loại trừ `NaN` và `Infinity`), hỗ trợ kiểu `bigint`, và xử lý tốt ngay cả những xâu chuỗi văn bản thông qua thuật toán RegEx để kiểm tra phần tử chuỗi có mang cấu trúc định dạng chuẩn số hay không (ủng hộ cả dấu `+`, `-` và số có phần thập phân).
 
 **Tham số:**
-- `value: any` — Mức giá trị thập cẩm bất kỳ để khảo sát.
+- `value: unknown` — Mức giá trị bất kỳ để khảo sát.
 
 **Trả về:**
 `boolean` — Giải phóng biến kiểm tra `true` nếu nguồn căn thuộc thể trạng chữ số lý thuyết hay hệ thống dải văn bản cấu tạo chỉ bởi số liệu đơn thuần. Sẽ cho ra `false` khi có bất trắc nào dính lẫn kí tự ngoại vi ngoài chữ số.

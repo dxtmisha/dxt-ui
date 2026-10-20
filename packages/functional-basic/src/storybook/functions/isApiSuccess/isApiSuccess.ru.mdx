@@ -6,14 +6,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Проверяет, является ли ответ API успешным.
 
-Проверка выполняется по следующим правилам:
-- Если данные являются массивом, это считается успехом.
-- Если данные являются объектом, успех определяется полями `status === 'success'` или `success === true`.
-- Если присутствует поле `statusObject`, успех определяется кодом статуса HTTP (начинается с 2).
-- Если ни одно из полей не присутствует, успех определяется глобальным статусом API.
+Проверка выполняется по следующим правилам с учетом строгого приоритета:
+1. Если данные являются массивом, это считается успехом (`true`).
+2. Если данные не переданы (`null`, `undefined`) или не являются объектом, возвращается `false`.
+3. **Приоритет явных ошибок:** Если присутствуют флаги `success === false`, `status === 'error'`, `status === 'warning'` или объект `errorObject`, функция возвращает `false` (даже если HTTP-статус равен 200).
+4. Если указаны явные флаги успеха `status === 'success'` или `success === true`, возвращается `true`.
+5. Если присутствует объект `statusObject`, успех определяется кодом HTTP-статуса (диапазон 2xx: от 200 до 299).
+6. Если ни одно из статусных полей не присутствует в объекте, успех определяется глобальным статусом API (`Api.getStatus().getStatus()`).
 
 **Параметры:**
-- `data: ApiData<T>` — данные ответа API.
+- `data?: ApiData<T> | unknown` — данные ответа API (объект, массив или неизвестные входные данные).
 
 **Возвращает:**
 `boolean` — `true`, если ответ успешен, иначе `false`.
@@ -21,7 +23,19 @@ import { Meta } from '@storybook/addon-docs/blocks'
 ```typescript
 import { isApiSuccess } from '@dxtmisha/functional-basic'
 
+// Массивы и явный успех
+console.log(isApiSuccess([])) // true
 console.log(isApiSuccess({ status: 'success' })) // true
 console.log(isApiSuccess({ success: true })) // true
-console.log(isApiSuccess([])) // true
+
+// Успешный HTTP-статус 2xx в statusObject
+console.log(isApiSuccess({ statusObject: { status: 200 } })) // true
+
+// Приоритет ошибки над кодом HTTP 200
+console.log(isApiSuccess({ success: false, statusObject: { status: 200 } })) // false
+console.log(isApiSuccess({ status: 'error', statusObject: { status: 200 } })) // false
+
+// Некорректные значения
+console.log(isApiSuccess(null)) // false
+console.log(isApiSuccess(undefined)) // false
 ```

@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `goScrollTo`
 
-Executes scrolling within a defined container element to ensure that the designated child target element falls into the visible area. The function retrieves the bounding client rects (`getBoundingClientRect`) of both elements and engages the `scrollBy` method based on relative coordinate offsets.
+Executes scrolling within a defined container element to ensure that the designated child target element falls into the visible area. The function retrieves the bounding client rects (`getBoundingClientRect`) of both elements, accounts for container borders (`clientTop` and `clientLeft`), and applies the `scrollBy` method (with an automatic fallback to `scrollTop` / `scrollLeft` if unavailable).
 
 Unlike `goScrollSmooth` (which scrolls the general window or delegates to `scrollIntoView`), `goScrollTo` operates through deliberate margins calculating exact inner distances within an explicitly provided container framework.
 
 **Parameters:**
-- `element: HTMLElement | undefined` — The parent scroll container element.
-- `elementTo: HTMLElement | undefined` — The targeted goal element (normally nestled within the container parent) needing focus.
+- `container?: HTMLElement | Element | null` — The parent scroll container element. Safely handles `null` and `undefined`.
+- `elementTo?: HTMLElement | Element | null` — The targeted goal element (normally nestled within the container parent) needing focus.
 - `behavior: ScrollBehavior` — (Optional) Adjusts the scroll animation style, defers to `'smooth'` automatically.
 
 **Returns:**

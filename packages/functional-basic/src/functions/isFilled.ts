@@ -6,8 +6,8 @@ import { type EmptyValue } from '../types/basicTypes'
  * Checks if the field is filled.
  *
  * Проверяет, заполнено ли поле.
- * @param value input value/ входное значение
- * @param zeroTrue if true, '0' is considered filled/ если true, то '0' считается заполненным
+ * @param value input value / входное значение
+ * @param zeroTrue if true, '0' is considered filled / если true, то '0' считается заполненным
  * @returns true if filled / true, если заполнено
  */
 export function isFilled<T>(
@@ -42,7 +42,16 @@ export function isFilled<T>(
           return value.size > 0
         }
 
-        return Object.values(value).some(item => !isNull(item))
+        for (const key in value) {
+          if (
+            Object.prototype.hasOwnProperty.call(value, key)
+            && !isNull((value as Record<string, unknown>)[key])
+          ) {
+            return true
+          }
+        }
+
+        return false
       case 'string':
         return !['', 'undefined', 'null', '0', 'false', '[]'].includes(value.trim())
       default:

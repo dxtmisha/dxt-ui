@@ -11,8 +11,8 @@ import {
  *
  * Проверяет, является ли элемент видимым (не скрыт через CSS и находится в DOM).
  * Элемент может находиться за пределами экрана и при этом считаться видимым.
- * @param elementSelectors selectors for matching or an Element/ селекторов для сопоставления или Element
- * @returns true if the element is visible, otherwise false/ true, если элемент является видимым, иначе false
+ * @param elementSelectors selectors for matching or an Element / селекторы для сопоставления или Element
+ * @returns true if the element is visible, otherwise false / true, если элемент является видимым, иначе false
  */
 export function isElementVisible<E extends ElementOrWindow>(
   elementSelectors?: ElementOrString<E>
@@ -34,10 +34,22 @@ export function isElementVisible<E extends ElementOrWindow>(
     return false
   }
 
+  if (typeof (element as Element).checkVisibility === 'function') {
+    return (element as Element).checkVisibility({
+      checkOpacity: true,
+      checkVisibilityCSS: true
+    })
+  }
+
   const style = window.getComputedStyle(element)
+
+  if (!style) {
+    return false
+  }
 
   return style.display !== 'none'
     && style.visibility !== 'hidden'
+    && style.visibility !== 'collapse'
     && style.opacity !== '0'
     && element.offsetWidth !== 0
     && element.offsetHeight !== 0

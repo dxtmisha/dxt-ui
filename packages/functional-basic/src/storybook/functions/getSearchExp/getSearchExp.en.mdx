@@ -13,7 +13,7 @@ Each word is split by spaces, escaped, and wrapped in a positive lookahead `(?=.
 - `limit: number` (optional, default: `128`) — The maximum allowed length of the search string.
 
 **Returns:**
-`RegExp` — A regular expression with the `i` flag (case-insensitive).
+`RegExp` — A regular expression with the `is` flags (case-insensitive and dotAll for multiline text).
 - If the `search` string is empty, not a string, or exceeds the `limit`, it returns `/^/` (matching the start of any string).
 
 ```typescript

@@ -4,19 +4,23 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # `isEnter`
 
-Checks if the pressed key is `Enter` or `Space`. This function is useful for handling keyboard events when you need to react to action confirmation or element activation, while supporting accessibility (a11y) and older browsers.
+Checks if the pressed key is `Enter` or `Space` (WAI-ARIA action key) outside of text input elements. This function is designed for keyboard activation of interactive controls (buttons, links, cards).
+
+If focus is inside an input field (`input`, `textarea`, `select`, `contenteditable`), the function returns `false` to avoid interfering with regular text entry, unless explicitly overridden by `isInputElement`.
 
 **Parameters:**
 - `event: KeyboardEvent` — the keyboard event object.
+- `isInputElement?: boolean` — explicit override flag: `true` to treat target as an input (returns `false`), `false` to allow activation even inside input elements. If omitted, determined automatically via `isInput(event.target)`.
 
 **Returns:**
-`boolean` — `true` if the `Enter` or `Space` key is pressed, otherwise `false`.
+`boolean` — `true` if `Enter` or `Space` is pressed outside of an input element (or when explicitly allowed), otherwise `false`.
 
 **Supported event properties:**
-The function checks the following event properties for maximum compatibility:
-- `code`: `'Enter'`, `'Space'`
+The function checks the following event properties:
 - `key`: `'Enter'`, `' '`, `'Spacebar'`
+- `code`: `'Enter'`, `'NumpadEnter'`, `'Space'`
 - `keyCode`: `13`, `32`
+- IME composition guard: if `event.isComposing === true`, the function always returns `false`.
 
 ```typescript
 import { isEnter } from '@dxtmisha/functional-basic'

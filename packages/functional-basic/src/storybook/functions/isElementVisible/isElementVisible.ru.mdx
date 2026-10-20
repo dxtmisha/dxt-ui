@@ -7,8 +7,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Проверяет, является ли элемент видимым (не скрыт через CSS и находится в DOM).
 Элемент может находиться за пределами экрана и при этом считаться видимым.
 
+При наличии поддержки в браузере функция использует высокопроизводительный нативный метод `checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })`. В средах без его поддержки выполняется фолбэк с проверкой стилей (`display`, `visibility`, `opacity`) и геометрических размеров элемента (`offsetWidth`, `offsetHeight`).
+
 **Параметры:**
-- `elementSelectors: ElementOrString<E>` — селекторов для сопоставления или Element.
+- `elementSelectors: ElementOrString<E>` — селекторы для сопоставления или Element.
 
 **Возвращает:**
 `boolean` — `true`, если элемент является видимым, иначе `false`.

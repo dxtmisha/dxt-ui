@@ -1,47 +1,70 @@
 import { isDomRuntime } from './isDomRuntime'
 
-const INDENT = 0
-
 /**
  * Quick change of scroll at the element to the required element.
  *
  * Быстрое изменение скролла у элемента к нужному элементу.
- * @param selector the selected an element, the scroll position of which needs to be changed/
- * выбранный элемент, положение скролла которого надо изменить
- * @param elementTo the element to which you need to scroll/ элемент, до которого надо проскроллить
- * @param elementCenter the element that needs to be centered/ элемент, который надо центрировать
+ * @param target the container element or selector whose scroll position needs to be changed /
+ * элемент контейнера или селектор, положение скролла которого надо изменить
+ * @param elementTo the element to which you need to scroll /
+ * элемент, до которого надо проскроллить
+ * @param elementCenter the reference element to center against /
+ * элемент, относительно которого надо центрировать
+ * @param indent optional padding indent from boundary /
+ * дополнительный отступ от границы
+ * @returns void / ничего не возвращает
  */
 export function goScroll(
-  selector: string,
-  elementTo: HTMLElement | undefined,
-  elementCenter?: HTMLElement
-) {
-  if (!isDomRuntime()) {
+  target: string | HTMLElement,
+  elementTo?: HTMLElement | null,
+  elementCenter?: HTMLElement | null,
+  indent: number = 0
+): void {
+  if (!isDomRuntime() || !elementTo) {
     return
   }
 
-  const element = elementTo?.closest<HTMLElement>(selector)
+  const container = typeof target === 'string'
+    ? elementTo.closest<HTMLElement>(target)
+    : target
+
+  const containerHeight = container ? (container.clientHeight || container.offsetHeight) : 0
 
   if (
-    elementTo
-    && element
-    && element.scrollHeight !== element.offsetHeight
+    !container
+    || container.scrollHeight <= containerHeight
   ) {
-    const rect = element.getBoundingClientRect()
-    const to = elementTo.getBoundingClientRect()
+    return
+  }
 
-    if (elementCenter) {
-      const center = elementCenter.getBoundingClientRect()
+  const containerRect = container.getBoundingClientRect()
+  const targetRect = elementTo.getBoundingClientRect()
+  const containerClientTop = containerRect.top + (container.clientTop || 0)
 
-      element.scrollTop = elementTo.offsetTop - (center.top - rect.top) - ((center.height / 2) - (to.height / 2))
+  if (elementCenter) {
+    const centerRect = elementCenter.getBoundingClientRect()
+    const targetMiddle = targetRect.top + (targetRect.height / 2)
+    const centerMiddle = centerRect.top + (centerRect.height / 2)
+    const delta = targetMiddle - centerMiddle
 
-      if (element.scrollTop + element.offsetHeight < elementTo.offsetTop + elementTo.offsetHeight) {
-        element.scrollTop = elementTo.offsetTop + elementTo.offsetHeight - element.offsetHeight
-      }
-    } else if (element.scrollTop > elementTo.offsetTop) {
-      element.scrollTop = (to.top - rect.top) - INDENT
-    } else if (element.scrollTop + element.offsetHeight < elementTo.offsetTop + elementTo.offsetHeight) {
-      element.scrollTop = (to.top - rect.top) + to.height - rect.height + INDENT
+    container.scrollTop += delta
+
+    const maxBottom = containerClientTop + containerHeight
+    const currentBottom = targetRect.bottom - delta
+
+    if (currentBottom > maxBottom) {
+      container.scrollTop += currentBottom - maxBottom
     }
+
+    return
+  }
+
+  const topDelta = targetRect.top - containerClientTop
+  const bottomDelta = targetRect.bottom - (containerClientTop + containerHeight)
+
+  if (topDelta < 0) {
+    container.scrollTop += topDelta - indent
+  } else if (bottomDelta > 0) {
+    container.scrollTop += bottomDelta + indent
   }
 }

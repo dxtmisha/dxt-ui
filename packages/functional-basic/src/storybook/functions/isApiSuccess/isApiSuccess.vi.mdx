@@ -6,14 +6,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Kiểm tra xem phản hồi API có thành công hay không.
 
-Việc kiểm tra được thực hiện theo các quy tắc sau:
-- Nếu dữ liệu là một mảng, nó được coi là thành công.
-- Nếu dữ liệu là một đối tượng, sự thành công được xác định bởi các trường `status === 'success'` hoặc `success === true`.
-- Nếu trường `statusObject` có mặt, sự thành công được xác định bởi mã trạng thái HTTP (bắt đầu bằng 2).
-- Nếu không có trường nào có mặt, sự thành công được xác định bởi trạng thái API toàn cục.
+Việc kiểm tra được thực hiện theo các quy tắc ưu tiên nghiêm ngặt sau:
+1. Nếu dữ liệu là một mảng, nó được coi là thành công (`true`).
+2. Nếu dữ liệu là null, undefined, hoặc không phải là đối tượng, hàm trả về `false`.
+3. **Ưu tiên lỗi rõ ràng:** Nếu có các cờ báo lỗi (`success === false`, `status === 'error'`, `status === 'warning'` hoặc đối tượng `errorObject`), hàm sẽ trả về `false` (ngay cả khi mã trạng thái HTTP là 200).
+4. Nếu có các cờ thành công rõ ràng (`status === 'success'` hoặc `success === true`), hàm trả về `true`.
+5. Nếu trường `statusObject` có mặt, sự thành công được xác định bởi mã trạng thái HTTP (phạm vi 2xx: từ 200 đến 299).
+6. Nếu không có trường trạng thái nào có mặt, sự thành công được xác định bởi trạng thái API toàn cục (`Api.getStatus().getStatus()`).
 
 **Tham số:**
-- `data: ApiData<T>` — dữ liệu phản hồi API.
+- `data?: ApiData<T> | unknown` — dữ liệu phản hồi API (đối tượng, mảng hoặc dữ liệu đầu vào không xác định).
 
 **Trả về:**
 `boolean` — `true` nếu phản hồi thành công, ngược lại là `false`.
@@ -21,7 +23,19 @@ Việc kiểm tra được thực hiện theo các quy tắc sau:
 ```typescript
 import { isApiSuccess } from '@dxtmisha/functional-basic'
 
+// Mảng và thành công rõ ràng
+console.log(isApiSuccess([])) // true
 console.log(isApiSuccess({ status: 'success' })) // true
 console.log(isApiSuccess({ success: true })) // true
-console.log(isApiSuccess([])) // true
+
+// Mã trạng thái HTTP 2xx thành công trong statusObject
+console.log(isApiSuccess({ statusObject: { status: 200 } })) // true
+
+// Ưu tiên cờ lỗi hơn mã HTTP 200
+console.log(isApiSuccess({ success: false, statusObject: { status: 200 } })) // false
+console.log(isApiSuccess({ status: 'error', statusObject: { status: 200 } })) // false
+
+// Giá trị không hợp lệ / rỗng
+console.log(isApiSuccess(null)) // false
+console.log(isApiSuccess(undefined)) // false
 ```

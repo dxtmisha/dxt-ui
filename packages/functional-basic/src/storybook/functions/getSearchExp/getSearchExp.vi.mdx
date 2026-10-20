@@ -13,7 +13,7 @@ Mỗi từ được tách bởi khoảng trắng, escape và bọc trong positiv
 - `limit: number` (tùy chọn, mặc định: `128`) — Độ dài tối đa cho phép của chuỗi tìm kiếm.
 
 **Trả về:**
-`RegExp` — Biểu thức chính quy với cờ `i` (không phân biệt chữ hoa/thường).
+`RegExp` — Biểu thức chính quy với các cờ `is` (không phân biệt chữ hoa/thường và hỗ trợ chuỗi nhiều dòng).
 - Nếu chuỗi `search` trống, không phải là chuỗi hoặc vượt quá `limit`, nó trả về `/^/` (khớp với vị trí bắt đầu của bất kỳ chuỗi nào).
 
 ```typescript

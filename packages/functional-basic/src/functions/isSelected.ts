@@ -3,30 +3,42 @@ import { isNumber } from './isNumber'
 import { toNumber } from './toNumber'
 
 /**
- * Checks if value is in the array selected or if value equals selected, if selected is a string.
+ * Checks if a value is selected, comparing against a single target or an array of selected items.
+ * Supports intelligent numeric equivalence for numbers and numeric strings.
  *
- * Проверяет, есть ли value в массиве selected или равен ли value selected, если selected - строка.
- * @param value input value/ входное значение
- * @param selected array or string for comparison/ массив или строка для сравнения
+ * Проверяет, выбрано ли значение, сравнивая его с целевым значением или массивом выбранных элементов.
+ * Поддерживает интеллектуальное числовое сравнение для чисел и числовых строк.
+ *
+ * @param value input value to check / проверяемое входное значение
+ * @param selected target value or array of selected values / целевое значение или массив выбранных значений
  * @returns true if selected / true, если выбрано
  */
-export function isSelected<T, S>(
+export function isSelected<T>(
   value: T,
-  selected: T | T[] | S
+  selected?: unknown
 ): boolean {
   if (isNull(value)) {
     return false
   }
 
   if (Array.isArray(selected)) {
-    return selected.includes(value)
+    if (selected.includes(value)) {
+      return true
+    }
+
+    if (isNumber(value)) {
+      const numericValue = toNumber(value)
+      return selected.some(item => isNumber(item) && toNumber(item) === numericValue)
+    }
+
+    return false
   }
 
   if (
     isNumber(value)
     && isNumber(selected)
   ) {
-    return toNumber(value as number) === toNumber(selected as number)
+    return toNumber(value) === toNumber(selected)
   }
 
   return value === selected

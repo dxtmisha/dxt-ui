@@ -1,83 +1,154 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { isElementVisible } from '../isElementVisible'
 
 describe('isElementVisible', () => {
-  it('should return true if an element is visible', () => {
-    const div = document.createElement('div')
-    Object.defineProperty(div, 'offsetWidth', { value: 100 })
-    Object.defineProperty(div, 'offsetHeight', { value: 100 })
-    document.body.appendChild(div)
-    expect(isElementVisible(div)).toBe(true)
-    document.body.removeChild(div)
+  let container: HTMLDivElement
+
+  beforeEach(() => {
+    container = document.createElement('div')
+    document.body.appendChild(container)
   })
 
-  it('should return false if an element is NOT in the DOM', () => {
-    const div = document.createElement('div')
-    expect(isElementVisible(div)).toBe(false)
+  afterEach(() => {
+    container.remove()
+    vi.restoreAllMocks()
   })
 
-  it('should return false if an element has dimensions of 0', () => {
-    const div = document.createElement('div')
-    Object.defineProperty(div, 'offsetWidth', { value: 0 })
-    Object.defineProperty(div, 'offsetHeight', { value: 0 })
-    document.body.appendChild(div)
-    expect(isElementVisible(div)).toBe(false)
-    document.body.removeChild(div)
+  describe('Standard functional requirements (Happy path)', () => {
+    it('should return true if an element is in DOM, has dimensions, and has visible styles', () => {
+      const div = document.createElement('div')
+      Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 50, configurable: true })
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(true)
+    })
+
+    it('should return true if the selector finds a visible element', () => {
+      const div = document.createElement('div')
+      div.id = 'test-visible-box'
+      Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
+      container.appendChild(div)
+
+      expect(isElementVisible('#test-visible-box')).toBe(true)
+    })
+
+    it('should return true if an element is off-screen (remains visible in layout)', () => {
+      const div = document.createElement('div')
+      div.style.position = 'absolute'
+      div.style.left = '-1000px'
+      Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(true)
+    })
   })
 
-  it('should return false if an element has display: none', () => {
-    const div = document.createElement('div')
-    Object.defineProperty(div, 'offsetWidth', { value: 100 })
-    Object.defineProperty(div, 'offsetHeight', { value: 100 })
-    div.style.display = 'none'
-    document.body.appendChild(div)
-    expect(isElementVisible(div)).toBe(false)
-    document.body.removeChild(div)
+  describe('CSS hidden properties (display, visibility, opacity)', () => {
+    it('should return false if an element has display: none', () => {
+      const div = document.createElement('div')
+      Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
+      div.style.display = 'none'
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(false)
+    })
+
+    it('should return false if an element has visibility: hidden', () => {
+      const div = document.createElement('div')
+      Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
+      div.style.visibility = 'hidden'
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(false)
+    })
+
+    it('should return false if an element has visibility: collapse', () => {
+      const div = document.createElement('div')
+      Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
+      div.style.visibility = 'collapse'
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(false)
+    })
+
+    it('should return false if an element has opacity: 0', () => {
+      const div = document.createElement('div')
+      Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
+      div.style.opacity = '0'
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(false)
+    })
+
+    it('should return false if dimensions are 0 (offsetWidth === 0 or offsetHeight === 0)', () => {
+      const div = document.createElement('div')
+      Object.defineProperty(div, 'offsetWidth', { value: 0, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 0, configurable: true })
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(false)
+    })
   })
 
-  it('should return false if an element has visibility: hidden', () => {
-    const div = document.createElement('div')
-    Object.defineProperty(div, 'offsetWidth', { value: 100 })
-    Object.defineProperty(div, 'offsetHeight', { value: 100 })
-    div.style.visibility = 'hidden'
-    document.body.appendChild(div)
-    expect(isElementVisible(div)).toBe(false)
-    document.body.removeChild(div)
+  describe('DOM connectivity and nullish inputs', () => {
+    it('should return false if an element is NOT connected to the DOM', () => {
+      const div = document.createElement('div')
+      expect(isElementVisible(div)).toBe(false)
+    })
+
+    it('should return false when input is undefined or null', () => {
+      expect(isElementVisible(undefined)).toBe(false)
+      expect(isElementVisible(null as any)).toBe(false)
+    })
+
+    it('should return false if the selector does not match any element', () => {
+      expect(isElementVisible('#non-existent-element-id')).toBe(false)
+    })
   })
 
-  it('should return false if an element has opacity: 0', () => {
-    const div = document.createElement('div')
-    Object.defineProperty(div, 'offsetWidth', { value: 100 })
-    Object.defineProperty(div, 'offsetHeight', { value: 100 })
-    div.style.opacity = '0'
-    document.body.appendChild(div)
-    expect(isElementVisible(div)).toBe(false)
-    document.body.removeChild(div)
+  describe('Native W3C checkVisibility integration', () => {
+    it('should use checkVisibility when available and return true if visible', () => {
+      const div = document.createElement('div')
+      const checkVisibilitySpy = vi.fn().mockReturnValue(true)
+      div.checkVisibility = checkVisibilitySpy
+      container.appendChild(div)
+
+      const result = isElementVisible(div)
+
+      expect(checkVisibilitySpy).toHaveBeenCalledWith({
+        checkOpacity: true,
+        checkVisibilityCSS: true
+      })
+      expect(result).toBe(true)
+    })
+
+    it('should return false when native checkVisibility returns false (e.g. hidden ancestor)', () => {
+      const div = document.createElement('div')
+      div.checkVisibility = vi.fn().mockReturnValue(false)
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(false)
+    })
   })
 
-  it('should return true if an element is off-screen', () => {
-    const div = document.createElement('div')
-    Object.defineProperty(div, 'offsetWidth', { value: 100 })
-    Object.defineProperty(div, 'offsetHeight', { value: 100 })
-    div.style.position = 'absolute'
-    div.style.left = '-1000px'
-    document.body.appendChild(div)
-    expect(isElementVisible(div)).toBe(true)
-    document.body.removeChild(div)
-  })
+  describe('Fallback safety when getComputedStyle returns null', () => {
+    it('should return false gracefully if getComputedStyle returns null', () => {
+      const div = document.createElement('div')
+      Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
+      container.appendChild(div)
 
-  it('should return true if the selector finds a visible element', () => {
-    const div = document.createElement('div')
-    Object.defineProperty(div, 'offsetWidth', { value: 100 })
-    Object.defineProperty(div, 'offsetHeight', { value: 100 })
-    div.id = 'test-visible'
-    document.body.appendChild(div)
-    expect(isElementVisible('#test-visible')).toBe(true)
-    document.body.removeChild(div)
-  })
+      vi.spyOn(window, 'getComputedStyle').mockReturnValue(null as any)
 
-  it('should return false if the selector does not find an element', () => {
-    expect(isElementVisible('#non-existent')).toBe(false)
+      expect(isElementVisible(div)).toBe(false)
+    })
   })
 })

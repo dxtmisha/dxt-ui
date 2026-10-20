@@ -4,19 +4,23 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # `isEnter`
 
-Kiểm tra xem phím được nhấn có phải là `Enter` hoặc `Space` hay không. Hàm này hữu ích để xử lý các sự kiện bàn phím khi bạn cần phản ứng với việc xác nhận hành động hoặc kích hoạt phần tử, đồng thời hỗ trợ khả năng truy cập (a11y) và các trình duyệt cũ.
+Kiểm tra xem phím được nhấn có phải là `Enter` hoặc `Space` (phím kích hoạt WAI-ARIA) bên ngoài các phần tử nhập văn bản hay không. Hàm được thiết kế để kích hoạt bằng bàn phím cho các phần tử tương tác (nút bấm, liên kết, thẻ).
+
+Nếu tiêu điểm nằm bên trong một trường nhập liệu (`input`, `textarea`, `select`, `contenteditable`), hàm sẽ trả về `false` để tránh xung đột với thao tác nhập văn bản thông thường, trừ khi được ghi đè rõ ràng bằng tham số `isInputElement`.
 
 **Tham số:**
 - `event: KeyboardEvent` — đối tượng sự kiện bàn phím.
+- `isInputElement?: boolean` — cờ ghi đè rõ ràng: `true` để coi là trường nhập liệu (trả về `false`), `false` để cho phép kích hoạt ngay cả bên trong phần tử nhập liệu. Nếu bỏ qua, sẽ tự động xác định qua `isInput(event.target)`.
 
 **Trả về:**
-`boolean` — `true` nếu phím `Enter` hoặc `Space` được nhấn, ngược lại là `false`.
+`boolean` — `true` nếu phím `Enter` hoặc `Space` được nhấn bên ngoài trường nhập liệu (hoặc khi được cho phép rõ ràng), ngược lại là `false`.
 
 **Các thuộc tính sự kiện được hỗ trợ:**
-Hàm kiểm tra các thuộc tính sự kiện sau để đảm bảo khả năng tương thích tối đa:
-- `code`: `'Enter'`, `'Space'`
+Hàm kiểm tra các thuộc tính sự kiện sau:
 - `key`: `'Enter'`, `' '`, `'Spacebar'`
+- `code`: `'Enter'`, `'NumpadEnter'`, `'Space'`
 - `keyCode`: `13`, `32`
+- Bảo vệ khi đang gõ IME: nếu `event.isComposing === true`, hàm luôn trả về `false`.
 
 ```typescript
 import { isEnter } from '@dxtmisha/functional-basic'

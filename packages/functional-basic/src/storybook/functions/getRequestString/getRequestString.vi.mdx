@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Chuyển đổi một đối tượng từ điển thành một chuỗi định dạng kiểu URL (mặc định là chuỗi truy vấn cho tham số GET), trong đó các khóa và giá trị được nối với nhau bằng các dấu phân cách quy định. Trước khi tạo chuỗi, tất cả các giá trị đều được đưa về kiểu chuỗi, cắt khoảng trắng dư thừa và đưa qua hàm `encodeURIComponent` để đảm bảo an toàn khi truyền qua URL. Các khóa sẽ được sắp xếp theo thứ tự bảng chữ cái.
 
 **Tham số:**
-- `request: Record<string, any>` — Đối tượng dữ liệu cần chuyển đổi.
+- `request: Record<string, unknown> | readonly unknown[]` — Đối tượng hoặc mảng dữ liệu cần chuyển đổi.
 - `sign: string` — (Tùy chọn) Ký tự kết nối giữa khóa và giá trị. Mặc định là `=`.
 - `separator: string` — (Tùy chọn) Ký tự phân tách các cặp khóa-giá trị. Mặc định là `&`.
 

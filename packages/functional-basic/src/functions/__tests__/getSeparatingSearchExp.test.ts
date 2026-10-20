@@ -387,4 +387,21 @@ describe('getSeparatingSearchExp', () => {
       expect(regex.test('Send to user@example.com')).toBe(true)
     })
   })
+
+  describe('Advanced edge cases & refinements for getSeparatingSearchExp', () => {
+    it('should deduplicate words case-insensitively to prevent redundant regex branches', () => {
+      const regex = getSeparatingSearchExp('apple Apple APPLE')
+      expect(regex.source).toBe('(apple)')
+      expect(regex.test('apple')).toBe(true)
+      regex.lastIndex = 0
+      expect(regex.test('APPLE')).toBe(true)
+    })
+
+    it('should return /(?!)/ for empty RegExp input new RegExp("")', () => {
+      const emptyRegExp = new RegExp('')
+      const regex = getSeparatingSearchExp(emptyRegExp)
+      expect(regex.toString()).toBe('/(?!)/')
+      expect(regex.test('any text')).toBe(false)
+    })
+  })
 })

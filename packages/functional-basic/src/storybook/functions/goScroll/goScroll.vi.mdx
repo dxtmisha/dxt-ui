@@ -4,18 +4,29 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `goScroll`
 
-Thay đổi nhanh vị trí cuộn tại phần tử đến phần tử yêu cầu.
+Nhanh chóng cuộn vùng chứa đến phần tử mục tiêu nếu phần tử nằm ngoài vùng nhìn thấy (scroll-into-view), hoặc căn giữa phần tử mục tiêu so với một phần tử tham chiếu. Thao tác cuộn được cô lập trong phạm vi vùng chứa và không ảnh hưởng đến cuộn trang của cửa sổ bên ngoài.
 
 **Tham số:**
-- `selector: string` — phần tử được chọn, vị trí cuộn của nó cần được thay đổi.
-- `elementTo: HTMLElement | undefined` — phần tử mà bạn cần cuộn đến.
-- `elementCenter: HTMLElement` — phần tử cần được căn giữa.
+- `target: string | HTMLElement` — Bộ chọn CSS để tìm phần tử vùng chứa tổ tiên gần nhất qua `closest` hoặc trực tiếp phần tử vùng chứa có thanh cuộn.
+- `elementTo?: HTMLElement | null` — Phần tử mục tiêu cần cuộn đến để hiển thị.
+- `elementCenter?: HTMLElement | null` — (Tùy chọn) Phần tử tham chiếu để căn giữa phần tử mục tiêu.
+- `indent: number` — (Tùy chọn) Khoảng đệm bổ sung tính bằng pixel từ đường biên. Mặc định là `0`.
+
+**Trả về:**
+`void` — Thực hiện hành động cuộn và không trả về giá trị.
 
 ```typescript
 import { goScroll } from '@dxtmisha/functional-basic'
 
-const container = document.querySelector('.container')
-const target = document.querySelector('.target')
+const container = document.querySelector<HTMLElement>('.container')
+const target = document.querySelector<HTMLElement>('.target')
 
+// Cách 1: Tìm vùng chứa qua bộ chọn CSS bằng closest
 goScroll('.container', target)
+
+// Cách 2: Truyền trực tiếp phần tử vùng chứa cùng với khoảng đệm
+if (container && target) {
+  goScroll(container, target, null, 16)
+}
 ```
+

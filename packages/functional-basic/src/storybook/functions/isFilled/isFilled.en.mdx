@@ -8,7 +8,8 @@ A versatile utility for confirming whether a given variable is meaningfully "fil
 
 Unlike the generic truthy check (`if (value)`), `isFilled`:
 - Resolves arrays as empty (`false`) if their `.length` equals 0.
-- Assesses objects as empty (`false`) when all of their mapped values strictly result to `null`.
+- Assesses collections (`Map`, `Set`) as empty (`false`) if their `.size` equals 0.
+- Assesses objects as empty (`false`) when they have no own properties or all own values are `null` or `undefined`.
 - Flags definitive string placeholders like `'undefined'`, `'null'`, `'false'`, `'[]'` as entirely empty.
 - Out of the box, treats the string `'0'` as empty, although this is modularly configurable via the secondary `zeroTrue` prop.
 

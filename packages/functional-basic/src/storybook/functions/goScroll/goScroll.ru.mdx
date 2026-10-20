@@ -4,18 +4,29 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `goScroll`
 
-Быстрое изменение скролла у элемента к нужному элементу.
+Выполняет быструю прокрутку контейнера к целевому элементу, если он выходит за пределы видимости (scroll-into-view), либо центрирует его относительно контрольного элемента. Прокрутка изолирована рамками контейнера и не затрагивает родительские окна страницы.
 
 **Параметры:**
-- `selector: string` — выбранный элемент, положение скролла которого надо изменить.
-- `elementTo: HTMLElement | undefined` — элемент, до которого надо проскроллить.
-- `elementCenter: HTMLElement` — элемент, который надо центрировать.
+- `target: string | HTMLElement` — CSS-селектор для поиска ближайшего контейнера предка или сам элемент-контейнер со скроллом.
+- `elementTo?: HTMLElement | null` — Целевой элемент, до которого необходимо выполнить прокрутку.
+- `elementCenter?: HTMLElement | null` — (Необязательно) Опорный элемент, относительно центра которого нужно отцентрировать целевой элемент.
+- `indent: number` — (Необязательно) Дополнительный отступ в пикселях от границы видимости. По умолчанию `0`.
+
+**Возвращает:**
+`void` — функция выполняет прокрутку контейнера и ничего не возвращает.
 
 ```typescript
 import { goScroll } from '@dxtmisha/functional-basic'
 
-const container = document.querySelector('.container')
-const target = document.querySelector('.target')
+const container = document.querySelector<HTMLElement>('.container')
+const target = document.querySelector<HTMLElement>('.target')
 
+// Вариант 1: поиск контейнера по селектору через closest
 goScroll('.container', target)
+
+// Вариант 2: передача контейнера напрямую с дополнительным отступом
+if (container && target) {
+  goScroll(container, target, null, 16)
+}
 ```
+

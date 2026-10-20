@@ -4,18 +4,29 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `goScroll`
 
-Quick change of scroll at the element to the required element.
+Quickly scrolls a container to bring a target element into view (scroll-into-view) if it is outside the visible boundary, or centers it relative to a reference element. Scrolling is confined strictly to the container and does not affect outer window scrolling.
 
 **Parameters:**
-- `selector: string` — the selected an element, the scroll position of which needs to be changed.
-- `elementTo: HTMLElement | undefined` — the element to which you need to scroll.
-- `elementCenter: HTMLElement` — the element that needs to be centered.
+- `target: string | HTMLElement` — CSS selector to resolve the nearest ancestor container or the scrollable container element itself.
+- `elementTo?: HTMLElement | null` — The target element to scroll into view.
+- `elementCenter?: HTMLElement | null` — (Optional) Reference element to center the target element against.
+- `indent: number` — (Optional) Additional padding indent in pixels from the boundary. Defaults to `0`.
+
+**Returns:**
+`void` — Performs the scroll side-effect and returns nothing.
 
 ```typescript
 import { goScroll } from '@dxtmisha/functional-basic'
 
-const container = document.querySelector('.container')
-const target = document.querySelector('.target')
+const container = document.querySelector<HTMLElement>('.container')
+const target = document.querySelector<HTMLElement>('.target')
 
+// Option 1: Find container via selector through closest
 goScroll('.container', target)
+
+// Option 2: Pass container element directly with optional indent
+if (container && target) {
+  goScroll(container, target, null, 16)
+}
 ```
+

@@ -4,16 +4,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isDifferent`
 
-Performs an assessment to determine if two provided objects differ from each other. 
+Performs a shallow comparison to determine if two provided objects differ from each other. 
 
-The function operates by initially comparing the total number of keys (properties) in each object. If those values match, it proceeds to execute a rigid value comparison of those keys through the internal `forEach` utility loop.
+The function first executes a fast referential equality check $O(1)$. If the references differ, it compares the number of own keys in both objects. If the key counts match, it verifies key ownership in the comparison object and checks property equality using `Object.is` semantics (handling `NaN` correctly and distinguishing missing keys from `undefined` values).
 
 **Parameters:**
 - `value: ObjectItem<T>` — The current (new) object or data entity being evaluated.
 - `old: ObjectItem<T>` — The previous (old) reference object to compare against.
 
 **Returns:**
-`boolean` — Returns `true` if there are any differences detected between the objects (either by property count mismatch or strict value inequality), or `false` if they are entirely identical.
+`boolean` — Returns `true` if differences are detected between the objects (by property count, key presence, or value inequality), or `false` if they are identical.
 
 ```typescript
 import { isDifferent } from '@dxtmisha/functional-basic'

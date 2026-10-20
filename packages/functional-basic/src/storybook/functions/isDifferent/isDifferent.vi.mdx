@@ -4,16 +4,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isDifferent`
 
-Tiến hành đánh giá xem hai đối tượng được cung cấp có khác biệt với nhau hay không.
+Tiến hành so sánh nông (shallow comparison) để xác định xem hai đối tượng được cung cấp có khác biệt với nhau hay không.
 
-Hàm hoạt động thông qua việc so sánh đếm tổng số lượng khóa (thuộc tính) trong mỗi đối tượng. Khi mà số lượng khóa trên cả hai khớp nhau, hàm sẽ tiếp nối chạy một chuỗi theo dõi nghiêm ngặt giá trị trong các khóa thông qua vòng lặp tiện ích nội bộ `forEach` để biết chính xác có lệch lạc số liệu hay không.
+Hàm trước tiên thực hiện kiểm tra nhanh tính đồng nhất tham chiếu $O(1)$. Nếu các tham chiếu khác nhau, hàm sẽ so sánh số lượng khóa thuộc sở hữu riêng (own keys) của hai đối tượng. Khi số lượng khóa khớp nhau, hàm kiểm tra sự tồn tại của từng khóa và đối chiếu giá trị theo ngữ nghĩa `Object.is` (xử lý chính xác giá trị `NaN` và phân biệt rõ giữa khóa bị thiếu với giá trị `undefined`).
 
 **Tham số:**
 - `value: ObjectItem<T>` — Đối tượng chính (dữ liệu mới) được đem ra làm chủ thể xác nhận.
 - `old: ObjectItem<T>` — Đối tượng tham chiếu (yếu tố lấy dữ liệu cũ).
 
 **Trả về:**
-`boolean` — Trả về `true` nếu tìm ra sự sai khác giữa hai mẫu phân tích đối tượng (có thể ở lượng phân bổ khóa hoặc có thuộc tính khác xa với cấu trúc của mẫu bên cạnh), hoặc `false` nếu chúng đồng nhất chuẩn mực hoàn toàn.
+`boolean` — Trả về `true` nếu tìm thấy sự khác biệt giữa hai đối tượng (về số lượng khóa, sự hiện diện của khóa hoặc giá trị của thuộc tính), hoặc `false` nếu chúng giống nhau.
 
 ```typescript
 import { isDifferent } from '@dxtmisha/functional-basic'
