@@ -1,4 +1,4 @@
-import { getCurrentInstance, onUnmounted } from 'vue'
+import { watch } from 'vue'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 import { useLazyRef } from './useLazyRef'
 import type { RefType } from '../../types/refTypes'
@@ -44,17 +44,22 @@ const getItemByMargin = (rootMargin: string): ReturnType<typeof useLazyRef> => {
  * Hook for initializing the tracking of an element's appearance on the screen by margin.
  *
  * Хук для инициализации отслеживания появления элемента на экране по отступу.
- * @param element element for tracking/ элемента для отслеживания
- * @param rootMargin root margin for IntersectionObserver/ отступ для IntersectionObserver
- * @param unmounted whether to remove tracking when component is unmounted / нужно ли удалять отслеживание при размонтировании компонента
+ * @param element element for tracking / элемент для отслеживания
+ * @param rootMargin root margin for IntersectionObserver / отступ для IntersectionObserver
  */
 export const useLazyItemByMarginRef = (
   element: RefType<HTMLElement | undefined>,
-  rootMargin: string = '128px 0px',
-  unmounted: boolean = true
+  rootMargin: string = '128px 0px'
 ) => {
   const observer = getItemByMargin(rootMargin)
   const status = observer.addLazyItem(element)
+  let currentElement = element.value
+
+  watch(element, (newElement) => {
+    if (newElement) {
+      currentElement = newElement
+    }
+  })
 
   /**
    * Removing an element from tracking.
@@ -62,20 +67,12 @@ export const useLazyItemByMarginRef = (
    * Удаление элемента из отслеживания.
    */
   const removeLazyItem = (): void => {
-    observer.removeLazyItem(element.value)
-  }
-
-  if (
-    unmounted
-    && getCurrentInstance()
-  ) {
-    onUnmounted(() => {
-      removeLazyItem()
-    })
+    observer.removeLazyItem(element.value ?? currentElement)
+    currentElement = undefined
   }
 
   return {
-    /** Lazy item status/ Статус ленивого элемента */
+    /** Lazy item status / Статус ленивого элемента */
     lazyItemStatus: status,
 
     /**

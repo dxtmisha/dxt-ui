@@ -69,11 +69,24 @@ export class ImageInclude extends ComponentIncludeAbstract<
    * Разрешает и возвращает свойства дизайна, привязанные именно к изображению.
    * @returns resolved image properties or undefined / разрешенные свойства изображения или undefined
    */
-  protected getExtra(): ImageProps | undefined {
+  protected override getExtra(): ImageProps | undefined {
     return getBind(
       this.getProps().image,
       super.getExtra(),
       'value'
     ) as ImageProps
+  }
+
+  /**
+   * Builds and resolves all HTML attributes and classes for binding.
+   *
+   * Создает и разрешает все HTML-атрибуты и классы для привязки.
+   * @returns resolved bindings / разрешенные привязки
+   */
+  protected override toBinds() {
+    return {
+      ...super.toBinds(),
+      onLoad: this.onLoad
+    }
   }
 }

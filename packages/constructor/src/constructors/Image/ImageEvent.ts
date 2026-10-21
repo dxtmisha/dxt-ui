@@ -1,7 +1,7 @@
 // ai-none
 
 import { watch } from 'vue'
-import type { ConstrEmit } from '@dxtmisha/functional'
+import { isObject, type ConstrEmit } from '@dxtmisha/functional'
 
 import type { ImageData } from './ImageData'
 import type { ImageType } from './ImageType'
@@ -15,7 +15,9 @@ import type { ImageEmits } from './types'
  */
 export class ImageEvent {
   /**
-   * Constructor
+   * Constructor for initializing image load event watching.
+   *
+   * Конструктор для инициализации отслеживания события загрузки изображения.
    * @param type function returning ImageType object / функция, возвращающая объект ImageType
    * @param data function returning ImageData object / функция, возвращающая объект ImageData
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -36,7 +38,7 @@ export class ImageEvent {
   readonly onLoad = (): void => {
     const image = this.data().image.value
 
-    if (typeof image === 'object') {
+    if (isObject(image)) {
       this.emits?.('load', {
         type: this.type().get(),
         image

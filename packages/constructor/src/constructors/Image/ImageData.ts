@@ -5,19 +5,20 @@ import {
   computedAsync,
   ErrorCenter,
   Icons,
+  inArray,
   isString,
   skipFrame
 } from '@dxtmisha/functional'
 
 import { ImageFile } from './ImageFile'
-import type { ImageLazy } from './ImageLazy'
+import { ImageLazy } from './ImageLazy'
 import { ImagePdf } from './ImagePdf'
 import { ImageSource } from './ImageSource'
 import type { ImageType } from './ImageType'
 import type { ImageUint8Array } from './ImageUint8Array'
 
 import { CONSTRUCTOR_ERROR_GROUP } from '../../types/errorTypes'
-import { type ImageEventItem, type ImageItem, ImageTypeValue } from './basicTypes'
+import { type ImageEventItem, type ImageItem, type ImageTypeItem, ImageTypeValue } from './basicTypes'
 import { type ImageProps } from './props'
 
 /**
@@ -26,11 +27,34 @@ import { type ImageProps } from './props'
  * Класс для получения данных изображения или иконки.
  */
 export class ImageData {
+  /**
+   * Checks if the image type can produce an ImageItem object.
+   *
+   * Проверяет, может ли тип изображения создать объект ImageItem.
+   * @param type image type / тип изображения
+   * @returns true if type supports ImageItem / true, если тип поддерживает ImageItem
+   */
+  static isImage(type?: ImageTypeItem): boolean {
+    return Boolean(
+      type
+      && inArray(
+        [
+          ImageTypeValue.file,
+          ImageTypeValue.image,
+          ImageTypeValue.array
+        ],
+        type
+      )
+    )
+  }
+
   /** Image data / Данные изображения */
   readonly image: ComputedRef<ImageEventItem>
 
   /**
-   * Constructor
+   * Constructor for initializing reactive image data resolution.
+   *
+   * Конструктор для инициализации реактивного получения данных изображения.
    * @param props input data / входные данные
    * @param isMounted whether the component is mounted / смонтирован ли компонент
    * @param lazy function returning ImageLazy object / функция, возвращающая объект ImageLazy
@@ -61,16 +85,6 @@ export class ImageData {
   }
 
   /**
-   * Checks if the value is a link, that is, a type of string.
-   *
-   * Проверяет, является ли значение ссылкой, то есть видом строки.
-   * @returns true if the value is a string link / true, если значение является строковой ссылкой
-   */
-  isLink(): this is { readonly image: ComputedRef<string> } {
-    return isString(this.image.value)
-  }
-
-  /**
    * Checks if the value is an image object.
    *
    * Проверяет, является ли значение объектом изображения.
@@ -78,6 +92,16 @@ export class ImageData {
    */
   isImage(): this is { readonly image: ComputedRef<ImageItem> } {
     return this.is() && !isString(this.image.value)
+  }
+
+  /**
+   * Checks if the value is a link, that is, a type of string.
+   *
+   * Проверяет, является ли значение ссылкой, то есть видом строки.
+   * @returns true if the value is a string link / true, если значение является строковой ссылкой
+   */
+  isLink(): this is { readonly image: ComputedRef<string> } {
+    return isString(this.image.value)
   }
 
   /**
@@ -105,7 +129,10 @@ export class ImageData {
           try {
             if (
               !this.isMounted.value
-              || this.lazy().isLazy()
+              || (
+                ImageLazy.is(this.props)
+                && this.lazy().isLazy()
+              )
             ) {
               return this.initSsr()
             }

@@ -82,4 +82,15 @@ describe('useLazyItemByMarginRef', () => {
     removeLazyItem()
     expect(mockLazyRef.removeLazyItem).toHaveBeenCalledWith(element.value)
   })
+
+  it('should remove the previously tracked element even after element ref is cleared on unmount', () => {
+    const target = document.createElement('div')
+    const element = ref<HTMLElement | undefined>(target)
+    const { removeLazyItem } = useLazyItemByMarginRef(element, '50px')
+
+    element.value = undefined
+    removeLazyItem()
+
+    expect(mockLazyRef.removeLazyItem).toHaveBeenCalledWith(target)
+  })
 })

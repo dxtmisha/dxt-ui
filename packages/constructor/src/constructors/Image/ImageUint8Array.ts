@@ -1,5 +1,6 @@
 // ai-none
 
+import { watch } from 'vue'
 import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 
 import type { ImageItem, ImageUint8ArrayType } from './basicTypes'
@@ -40,6 +41,12 @@ export class ImageUint8Array extends DesignLifecycleAbstract {
     protected readonly props: ImageProps
   ) {
     super()
+
+    watch(() => this.props.value, (value) => {
+      if (!ImageUint8Array.is(value)) {
+        this.reset()
+      }
+    })
   }
 
   /**

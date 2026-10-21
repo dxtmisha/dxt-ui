@@ -1,12 +1,12 @@
 // ai-none
 
 import { computed } from 'vue'
-import { isString } from '@dxtmisha/functional'
+import { inArray, isString } from '@dxtmisha/functional'
 
 import type { ImageData } from './ImageData'
 import type { ImageType } from './ImageType'
 
-import { ImageTypeValue } from './basicTypes'
+import { type ImageTypeItem, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
 
 /** Regular expression for removing the font icon prefix / Регулярное выражение для удаления префикса шрифтовой иконки */
@@ -19,7 +19,46 @@ const REGEX_ICON_PREFIX = /^(?:(?:filled|outlined|round|sharp|two-tone|material)
  */
 export class ImageText {
   /**
-   * Constructor
+   * Checks if the image type has a text representation.
+   *
+   * Проверяет, имеет ли тип изображения текстовое представление.
+   * @param type image type / тип изображения
+   * @returns true if text representation is used / true, если используется текстовое представление
+   */
+  static is(type?: ImageTypeItem): boolean {
+    return ImageText.isIcon(type)
+      || type === ImageTypeValue.flagCompressed
+      || type === ImageTypeValue.pdf
+  }
+
+  /**
+   * Checks if the image type is a text-based font icon.
+   *
+   * Проверяет, является ли тип изображения текстовой шрифтовой иконкой.
+   * @param type image type / тип изображения
+   * @returns true if type is a font icon / true, если тип является шрифтовой иконкой
+   */
+  static isIcon(type?: ImageTypeItem): boolean {
+    return Boolean(
+      type
+      && inArray(
+        [
+          ImageTypeValue.filled,
+          ImageTypeValue.outlined,
+          ImageTypeValue.round,
+          ImageTypeValue.sharp,
+          ImageTypeValue.twoTone,
+          ImageTypeValue.material
+        ],
+        type
+      )
+    )
+  }
+
+  /**
+   * Constructor for initializing text representation resolution.
+   *
+   * Конструктор для инициализации получения текстового представления.
    * @param props input data / входные данные
    * @param type function returning ImageType object / функция, возвращающая объект ImageType
    * @param data function returning ImageData object / функция, возвращающая объект ImageData
@@ -84,16 +123,8 @@ export class ImageText {
     const value = this.props.value
 
     if (
-      type
+      ImageText.isIcon(type)
       && isString(value)
-      && [
-        'filled',
-        'outlined',
-        'round',
-        'sharp',
-        'two-tone',
-        'material'
-      ].indexOf(type) !== -1
     ) {
       return value.replace(REGEX_ICON_PREFIX, '')
     }

@@ -1,12 +1,13 @@
 // ai-none
 
 import { computed } from 'vue'
-import { isFilled, isString, type NumberOrString } from '@dxtmisha/functional'
+import { inArray, isFilled, isString, type NumberOrString } from '@dxtmisha/functional'
 
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageCoordinator } from './ImageCoordinator'
 import type { ImageData } from './ImageData'
 
+import { type ImageTypeItem, ImageTypeValue } from './basicTypes'
 import { type ImageProps } from './props'
 
 /** Regular expression to detect a percentage suffix / Регулярное выражение для определения суффикса процента */
@@ -23,7 +24,33 @@ const REGEXP_PERCENT = /%$/
  */
 export class ImageBackground {
   /**
-   * Constructor
+   * Checks whether background image calculation is applicable for the given type.
+   *
+   * Проверяет, применим ли расчёт фонового изображения для указанного типа.
+   * @param type image type / тип изображения
+   * @returns true if background is used / true, если используется фон
+   */
+  static is(type?: ImageTypeItem): boolean {
+    return Boolean(
+      type
+      && inArray(
+        [
+          ImageTypeValue.file,
+          ImageTypeValue.image,
+          ImageTypeValue.array,
+          ImageTypeValue.icon,
+          ImageTypeValue.flag,
+          ImageTypeValue.public
+        ],
+        type
+      )
+    )
+  }
+
+  /**
+   * Constructor for initializing background style calculations.
+   *
+   * Конструктор для инициализации вычислений стилей фона.
    * @param props input data / входные данные
    * @param data function returning ImageData object / функция, возвращающая объект ImageData
    * @param coordinator function returning ImageCoordinator object / функция, возвращающая объект ImageCoordinator

@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, onMounted, onUnmounted, reactive } from 'vue'
+import { nextTick, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { ServerStorage } from '@dxtmisha/functional'
 
-import { ClientOnlyInclude } from '../../../classes/ClientOnlyInclude'
 import { ImageAdaptiveGroup } from '../ImageAdaptiveGroup'
 import { ImageAdaptiveItem } from '../ImageAdaptiveItem'
 import { ImageBackground } from '../ImageBackground'
@@ -66,16 +65,17 @@ function mountAdaptiveUnit(
   const dimensions: ImageSize = { ...initialDimensions }
 
   return mountHelper((element) => {
-    const clientOnly = new ClientOnlyInclude({ clientOnly: true })
+    const isMounted = ref(false)
     const lazy = new ImageLazy(props, element)
-    const type = new ImageType(props, clientOnly.isMounted)
+    const type = new ImageType(props, isMounted)
     const uint8Array = new ImageUint8Array(props)
-    const data = new ImageData(props, clientOnly.isMounted, () => lazy, () => type, () => uint8Array)
+    const data = new ImageData(props, isMounted, () => lazy, () => type, () => uint8Array)
     const coordinator = new ImageCoordinator(props)
-    const adaptive = new ImageAdaptiveItem(props, element, clientOnly.isMounted, () => data)
+    const adaptive = new ImageAdaptiveItem(props, element, isMounted, () => data)
     const background = new ImageBackground(props, () => data, () => coordinator, () => adaptive)
 
     onMounted(() => {
+      isMounted.value = true
       bindElementDimensions(element.value, dimensions)
       adaptive.onMounted()
     })

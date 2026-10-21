@@ -6,6 +6,8 @@ import {
 } from '@dxtmisha/functional'
 
 import { Image } from './Image'
+import { ImageImg } from './ImageImg'
+import { ImageText } from './ImageText'
 
 import {
   type ImageEventItem,
@@ -128,14 +130,16 @@ export class ImageDesign<
    * @returns rendered image root / отрендеренный корневой элемент изображения
    */
   protected initRender(): VNode {
-    const img = this.item.i('img')
+    if (ImageImg.is(this.props)) {
+      const img = this.item.i('img')
 
-    if (img.isPicture()) {
-      return this.renderPicture()
-    }
+      if (img.isPicture()) {
+        return this.renderPicture()
+      }
 
-    if (img.is()) {
-      return this.renderImg()
+      if (img.is()) {
+        return this.renderImg()
+      }
     }
 
     return h(
@@ -203,22 +207,26 @@ export class ImageDesign<
    * @returns rendered value / отрендеренное значение
    */
   protected readonly renderValue = (): string | VNode | undefined => {
-    if (this.item.i('type').get() === ImageTypeValue.pdf) {
+    const type = this.item.i('type').get()
+
+    if (type === ImageTypeValue.pdf) {
       return h(
         'object',
         this.item.valueBinds
       )
     }
 
-    if (
-      this.item.i('type').get() === ImageTypeValue.flagCompressed
-    ) {
+    if (type === ImageTypeValue.flagCompressed) {
       return h(
         'span',
         { class: `ui-sys-flags ui-sys-flags--${this.item.i('text').get()}` }
       )
     }
 
-    return this.item.i('text').get()
+    if (ImageText.is(type)) {
+      return this.item.i('text').get()
+    }
+
+    return undefined
   }
 }

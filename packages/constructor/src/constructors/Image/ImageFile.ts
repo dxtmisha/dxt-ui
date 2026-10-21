@@ -1,6 +1,6 @@
 // ai-none
 
-import { ErrorCenter, resizeImageByMax } from '@dxtmisha/functional'
+import { ErrorCenter, isString, resizeImageByMax } from '@dxtmisha/functional'
 
 import type { ImageItem } from './basicTypes'
 import { CONSTRUCTOR_ERROR_GROUP } from '../../types/errorTypes'
@@ -41,9 +41,9 @@ export class ImageFile {
    * Возвращает undefined для пустых источников или ошибок загрузки изображения.
    * Отклоняет промис, если подготовка источника или обработка изображения выбрасывает исключение.
    * @param src file or link / файл или ссылка
-   * @returns image item, source string, or undefined / элемент изображения, строка источника или undefined
+   * @returns image item or undefined / элемент изображения или undefined
    */
-  static async createImage(src: string | File): Promise<ImageItem | string | undefined> {
+  static async createImage(src: string | File): Promise<ImageItem | undefined> {
     if (!src) {
       return undefined
     }
@@ -112,7 +112,7 @@ export class ImageFile {
 
       reader.onerror = () => resolve(this.onError(reader.error))
       reader.onabort = () => resolve(this.onError(reader.error))
-      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '')
+      reader.onload = () => resolve(isString(reader.result) ? reader.result : '')
       reader.readAsDataURL(file)
     })
   }

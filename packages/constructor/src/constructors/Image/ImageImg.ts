@@ -2,19 +2,19 @@
 
 import {
   computed,
-  type CSSProperties,
-  type Ref
+  type CSSProperties
 } from 'vue'
 import {
   forEach,
   isArray,
-  isNumber
+  isNumber,
+  isString
 } from '@dxtmisha/functional'
 
-import { ImageBackground } from './ImageBackground'
-import type { ImageLazy } from './ImageLazy'
-import { ImagePosition } from './ImagePosition'
-import { ImageType } from './ImageType'
+import { ImageLazy } from './ImageLazy'
+import type { ImageBackground } from './ImageBackground'
+import type { ImagePosition } from './ImagePosition'
+import type { ImageType } from './ImageType'
 
 import { type ImageAttrs, type ImagePictureItem, type ImagePictureList, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
@@ -28,11 +28,33 @@ import type { ImageProps } from './props'
  */
 export class ImageImg {
   /**
+   * Determines whether to use the img tag based on properties.
+   *
+   * Определяет, использовать ли тег img на основе свойств.
+   * @param props input data / входные данные
+   * @returns true if tag is used / true, если тег используется
+   */
+  static is(props?: ImageProps): boolean {
+    return Boolean(props?.tagImg)
+  }
+
+  /**
+   * Determines whether to use the picture tag based on properties.
+   *
+   * Определяет, использовать ли тег picture на основе свойств.
+   * @param props input data / входные данные
+   * @returns true if picture tag is used / true, если тег picture используется
+   */
+  static isPicture(props?: ImageProps): boolean {
+    return ImageImg.is(props)
+      && Boolean(props?.picture)
+  }
+
+  /**
    * Constructor for creating a manager for the img tag.
    *
    * Конструктор для создания менеджера для тега img.
    * @param props input data / входные данные
-   * @param element image element / элемент изображения
    * @param type class for working with types / класс для работы с типами
    * @param position class for working with position / класс для работы с позицией
    * @param background class for working with background / класс для работы с фоном
@@ -40,11 +62,10 @@ export class ImageImg {
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly type: ImageType,
-    protected readonly position: ImagePosition,
-    protected readonly background: ImageBackground,
-    protected readonly lazy: ImageLazy
+    protected readonly type: () => ImageType,
+    protected readonly position: () => ImagePosition,
+    protected readonly background: () => ImageBackground,
+    protected readonly lazy: () => ImageLazy
   ) {
   }
 
@@ -61,7 +82,7 @@ export class ImageImg {
       }
 
       if (this.is()) {
-        attrs.src = this.background.imageSrc
+        attrs.src = this.background().imageSrc
         attrs.alt = this.props.alt ?? ''
         attrs.width = '100%'
         attrs.height = '100%'
@@ -71,8 +92,8 @@ export class ImageImg {
           attrs.fetchPriority = this.props.fetchPriority
         }
 
-        if (this.props.lazy) {
-          attrs.loading = this.lazy.isLazy() ? 'lazy' : 'auto'
+        if (ImageLazy.is(this.props)) {
+          attrs.loading = this.lazy().isLazy() ? 'lazy' : 'auto'
         }
 
         if (this.props.srcset) {
@@ -118,10 +139,11 @@ export class ImageImg {
    * @returns styles object / объект стилей
    */
   get styles(): CSSProperties {
+    const position = this.position()
     const styles: CSSProperties = {
-      'object-position': `${this.position.x} ${this.position.y}`,
-      '--sys-transform-originX': this.position.x,
-      '--sys-transform-originY': this.position.y
+      'object-position': `${position.x} ${position.y}`,
+      '--sys-transform-originX': position.x,
+      '--sys-transform-originY': position.y
     }
 
     if (this.isSize()) {
@@ -138,7 +160,7 @@ export class ImageImg {
    * @returns true if tag is used / true, если тег используется
    */
   is(): boolean {
-    return Boolean(this.props.tagImg)
+    return ImageImg.is(this.props)
       && this.isType()
   }
 
@@ -149,7 +171,20 @@ export class ImageImg {
    * @returns true if picture tag is used / true, если тег picture используется
    */
   isPicture(): boolean {
-    return this.is() && Boolean(this.props.picture)
+    return this.is()
+      && Boolean(this.props.picture)
+  }
+
+  /**
+   * Checks if the background size is a custom percentage or compound scale value.
+   *
+   * Проверяет, является ли размер фона пользовательским процентным или составным значением масштаба.
+   * @returns true if size contains a scale value / true, если размер содержит значение масштаба
+   */
+  protected isSize(): boolean {
+    const size = this.background().size.value
+
+    return Boolean(size && /[% ]/.test(size))
   }
 
   /**
@@ -159,22 +194,11 @@ export class ImageImg {
    * @returns true if type matches / true, если тип совпадает
    */
   protected isType(): boolean {
-    const type = this.type.get()
+    const type = this.type().get()
+
     return type === ImageTypeValue.file
       || type === ImageTypeValue.image
       || type === ImageTypeValue.array
-  }
-
-  /**
-   * Checks if the size is contained or cover.
-   *
-   * Проверяет, является ли размер contain или cover.
-   * @returns true if size matches / true, если размер совпадает
-   */
-  protected isSize(): boolean {
-    const size = this.background.size.value
-
-    return Boolean(size && size.match('[% ]'))
   }
 
   /**
@@ -184,7 +208,7 @@ export class ImageImg {
    * @returns scale value / значение масштаба
    */
   protected getSize(): string | undefined {
-    return this.background.size.value
+    return this.background().size.value
       ?.replace('auto', '')
       ?.trim()
   }
@@ -200,7 +224,7 @@ export class ImageImg {
       return undefined
     }
 
-    if (typeof this.props.srcset === 'string') {
+    if (isString(this.props.srcset)) {
       return this.props.srcset
     }
 

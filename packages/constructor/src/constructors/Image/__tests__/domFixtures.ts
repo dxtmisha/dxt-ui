@@ -2,7 +2,6 @@ import './testWarnings'
 import { afterEach, beforeEach, expect, vi } from 'vitest'
 import { createApp, h, nextTick, onMounted, onUnmounted, ref, type Ref, type VNodeChild } from 'vue'
 import { DesignLifecycleAbstract, ServerStorage, type ConstrEmit } from '@dxtmisha/functional'
-import { ClientOnlyInclude } from '../../../classes/ClientOnlyInclude'
 import { ImageAdaptiveItem } from '../ImageAdaptiveItem'
 import { ImageBackground } from '../ImageBackground'
 import { ImageCoordinator } from '../ImageCoordinator'
@@ -31,8 +30,8 @@ export interface MountedHelper<Item> {
 
 /** Real image helper dependencies / Реальные зависимости помощников изображения */
 export interface ImageGraph {
-  /** Client readiness / Готовность клиента */
-  clientOnly: ClientOnlyInclude
+  /** Whether the component is mounted / Смонтирован ли компонент */
+  isMounted: Ref<boolean>
   /** Source classification / Классификация источника */
   type: ImageType
   /** Lazy loading / Ленивая загрузка */
@@ -234,13 +233,13 @@ export function mountImageGraph(
 ): MountedHelper<ImageGraph> {
   Object.assign(props, { lazy: props.lazy ?? false, preloadOffset: props.preloadOffset ?? '1024px' })
   return mountHelper((element) => {
-    const clientOnly = new ClientOnlyInclude({ clientOnly: true })
+    const isMounted = ref(false)
     const lazy = new ImageLazy(props, element)
-    const type = new ImageType(props, clientOnly.isMounted)
+    const type = new ImageType(props, isMounted)
     const uint8Array = new ImageUint8Array(props)
     const data = new ImageData(
       props,
-      clientOnly.isMounted,
+      isMounted,
       () => lazy,
       () => type,
       () => uint8Array
@@ -252,12 +251,13 @@ export function mountImageGraph(
     )
     const coordinator = new ImageCoordinator(props)
     const position = new ImagePosition(props, () => coordinator)
-    const adaptive = new ImageAdaptiveItem(props, element, clientOnly.isMounted, () => data)
+    const adaptive = new ImageAdaptiveItem(props, element, isMounted, () => data)
     const background = new ImageBackground(props, () => data, () => coordinator, () => adaptive)
-    const img = new ImageImg(props, element, type, position, background, lazy)
+    const img = new ImageImg(props, () => type, () => position, () => background, () => lazy)
     const text = new ImageText(props, () => type, () => data)
 
     onMounted(() => {
+      isMounted.value = true
       lazy.onMounted?.()
     })
 
@@ -266,7 +266,7 @@ export function mountImageGraph(
       uint8Array.onUnmounted()
     })
 
-    return { clientOnly, lazy, type, data, event, coordinator, position, adaptive, background, img, text, uint8Array }
+    return { isMounted, lazy, type, data, event, coordinator, position, adaptive, background, img, text, uint8Array }
   }, render)
 }
 

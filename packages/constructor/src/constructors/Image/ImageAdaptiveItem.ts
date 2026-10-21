@@ -36,7 +36,7 @@ enum ImageAdaptiveItemType {
 }
 
 /** Basic group name / Базовое название группы */
-const GROUP_BASIC = 'main'
+const GROUP_BASIC = 'basic'
 
 /**
  * The value in pixels indicating when an element is still considered active,
@@ -65,34 +65,6 @@ export class ImageAdaptiveItem extends DesignLifecycleAbstract {
    */
   static is(props?: ImageProps): boolean {
     return Boolean(props?.adaptive)
-  }
-
-  /** Callback after component mounting / Обработчик после монтирования компонента */
-  override readonly onMounted = (): void => {
-    watch(
-      () => [
-        this.is(),
-        this.width,
-        this.height,
-        this.group,
-        this.props.adaptiveAlways,
-        this.element.value,
-        this.data().image.value
-      ] as const,
-      () => {
-        if (this.is()) {
-          this.add()
-        } else {
-          this.remove()
-        }
-      },
-      { immediate: true }
-    )
-  }
-
-  /** Callback after component unmounting / Обработчик после демонтирования компонента */
-  override readonly onUnmounted = (): void => {
-    this.remove()
   }
 
   /** Scaling percentages / Проценты масштабирования */
@@ -135,6 +107,34 @@ export class ImageAdaptiveItem extends DesignLifecycleAbstract {
     protected readonly data: () => ImageData
   ) {
     super()
+  }
+
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    watch(
+      () => [
+        this.is(),
+        this.width,
+        this.height,
+        this.group,
+        this.props.adaptiveAlways,
+        this.element.value,
+        (this.width || this.height) ? this.data().image.value : undefined
+      ] as const,
+      () => {
+        if (this.is()) {
+          this.add()
+        } else {
+          this.remove()
+        }
+      },
+      { immediate: true }
+    )
+  }
+
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.remove()
   }
 
   /**

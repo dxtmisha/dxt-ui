@@ -23,6 +23,17 @@ import type { ImageProps } from './props'
  * и контролирует состояния отложенной загрузки ресурсов.
  */
 export class ImageLazy extends DesignLifecycleAbstract {
+  /**
+   * Determines whether lazy loading is enabled based on properties.
+   *
+   * Определяет, включена ли ленивая загрузка на основе свойств.
+   * @param props input data / входные данные
+   * @returns true if lazy loading is enabled / true, если ленивая загрузка включена
+   */
+  static is(props?: ImageProps): boolean {
+    return Boolean(props?.lazy)
+  }
+
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {
     this.update()
@@ -69,7 +80,7 @@ export class ImageLazy extends DesignLifecycleAbstract {
    * @returns true if lazy loading is enabled / true, если ленивая загрузка включена
    */
   isLazy(): boolean {
-    return Boolean(this.props.lazy) && !this.init.value
+    return ImageLazy.is(this.props) && !this.init.value
   }
 
   /**
@@ -79,7 +90,7 @@ export class ImageLazy extends DesignLifecycleAbstract {
    */
   update(): void {
     if (
-      this.props.lazy
+      ImageLazy.is(this.props)
       && this.element.value
     ) {
       this.make()
@@ -106,7 +117,8 @@ export class ImageLazy extends DesignLifecycleAbstract {
   make(): void {
     this.reset()
 
-    this.item = useLazyItemByMarginRef(this.element, `${this.props.preloadOffset} 0px`)
+    const preloadOffset = this.props.preloadOffset ?? '256px'
+    this.item = useLazyItemByMarginRef(this.element, `${preloadOffset} 0px`)
     this.status = watch(this.item.lazyItemStatus, (status) => {
       if (status) {
         this.init.value = true

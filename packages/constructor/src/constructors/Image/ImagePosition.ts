@@ -11,9 +11,11 @@ import type { ImageProps } from './props'
  */
 export class ImagePosition {
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param coordinator coordinates for margins/ координаты для отступов
+   * Constructor for initializing background position calculations.
+   *
+   * Конструктор для инициализации вычислений позиции фона.
+   * @param props input data / входные данные
+   * @param coordinator coordinates for margins / координаты для отступов
    */
   constructor(
     protected readonly props: ImageProps,

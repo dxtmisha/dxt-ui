@@ -221,233 +221,282 @@ async function createAdaptive(overrides: Partial<ImageProps> = {}): Promise<Adap
 }
 
 describe('ImageAdaptiveItem', () => {
-  it.each([
-    [200, undefined, 0, 100],
-    [undefined, 100, 100, 0]
-  ] as const)('keeps scaling finite with physical %s by %s and intrinsic %s by %s', async (objectWidth, objectHeight, width, height) => {
-    const fixture = await createAdaptive({ objectWidth, objectHeight })
-    fixture.image.value = { image: document.createElement('img'), src: '/zero.png', width, height }
-    await flushCalculations()
-    expect(fixture.item.size.value).toBe(0)
-    expect(fixture.item.factor.value).toBe(1)
-    expect(fixture.background.size.value).not.toMatch(/NaN|Infinity/)
+  describe('Standard functional requirements (Happy path)', () => {
+    it('should expose identity, group, and physical dimensions without losing numeric precision', async () => {
+      const fixture = await createAdaptive({ objectWidth: '200.5', objectHeight: '100.25' })
+
+      expect(fixture.item.getElement()).toBe(fixture.element.value)
+      expect(fixture.item.id).not.toBe('')
+      expect(fixture.item.group).toBe('gallery')
+      expect(fixture.item.isGroup('gallery')).toBe(true)
+      expect(fixture.item.isGroup('other')).toBe(false)
+      expect([fixture.item.width, fixture.item.height]).toEqual([200.5, 100.25])
+      expect(fixture.item.setPercent(1, 1)).toBe(fixture.item)
+
+      fixture.props.objectWidth = undefined
+      fixture.props.objectHeight = undefined
+      await flushCalculations()
+
+      expect(fixture.item.active).toBe(false)
+      expect(fixture.item.type).toBeUndefined()
+      expect(fixture.item.size.value).toBe(0)
+    })
+
+    it('should register active images and calculate their initial sizes', async () => {
+      const fixture = await createAdaptive()
+
+      expect(ImageAdaptiveGroup.is(fixture.item)).toBe(true)
+      expect(fixture.item.resizeEvent?.isActive()).toBe(true)
+      expect(fixture.item.isBeyond()).toBe(true)
+      expect(fixture.item.size.value).toBe(100)
+      expect(fixture.item.factor.value).toBe(1)
+      expect(fixture.element.value?.style.backgroundSize).toBe('100%')
+    })
+
+    it('should recalculate physical widths while the visible element list stays the same', async () => {
+      const fixture = await createAdaptive()
+      const smaller = await createAdaptive({ objectWidth: 100, objectHeight: 50 })
+      expect(smaller.background.size.value).toBe('50% auto')
+
+      fixture.props.objectWidth = 400
+      await flushCalculations()
+
+      expect(ImageCalculationList.get('gallery').width).toBe(400)
+      expect(smaller.element.value?.style.backgroundSize).toBe('25%')
+    })
+
+    it('should recalculate physical heights when scaling along the Y axis', async () => {
+      const fixture = await createAdaptive({ objectWidth: undefined })
+      const smaller = await createAdaptive({ objectWidth: undefined, objectHeight: 50 })
+      expect(smaller.background.size.value).toBe('auto 25%')
+
+      fixture.props.objectHeight = 200
+      await flushCalculations()
+
+      expect(ImageCalculationList.get('gallery').height).toBe(200)
+      expect(smaller.element.value?.style.backgroundSize).toBe('auto 12.5%')
+    })
   })
 
-  it('exposes identity, group and physical dimensions without losing numeric precision', async () => {
-    const fixture = await createAdaptive({ objectWidth: '200.5', objectHeight: '100.25' })
-    expect(fixture.item.getElement()).toBe(fixture.element.value)
-    expect(fixture.item.id).not.toBe('')
-    expect(fixture.item.group).toBe('gallery')
-    expect(fixture.item.isGroup('gallery')).toBe(true)
-    expect(fixture.item.isGroup('other')).toBe(false)
-    expect([fixture.item.width, fixture.item.height]).toEqual([200.5, 100.25])
-    expect(fixture.item.setPercent(1, 1)).toBe(fixture.item)
-    fixture.props.objectWidth = undefined
-    fixture.props.objectHeight = undefined
-    await flushCalculations()
-    expect(fixture.item.active).toBe(false)
-    expect(fixture.item.type).toBeUndefined()
-    expect(fixture.item.size.value).toBe(0)
+  describe('Boundary values and zero dimensions', () => {
+    it.each([
+      [200, undefined, 0, 100],
+      [undefined, 100, 100, 0]
+    ] as const)('should keep scaling finite with physical %s by %s and intrinsic %s by %s', async (objectWidth, objectHeight, width, height) => {
+      const fixture = await createAdaptive({ objectWidth, objectHeight })
+      fixture.image.value = { image: document.createElement('img'), src: '/zero.png', width, height }
+      await flushCalculations()
+
+      expect(fixture.item.size.value).toBe(0)
+      expect(fixture.item.factor.value).toBe(1)
+      expect(fixture.background.size.value).not.toMatch(/NaN|Infinity/)
+    })
+
+    it('should recover from zero DOM dimensions without invalid percentages', async () => {
+      const fixture = await createAdaptive()
+      fixture.dimensions.width = 0
+      fixture.dimensions.height = 0
+      notifyResize(fixture.element.value)
+      await flushCalculations()
+
+      expect(fixture.item.size.value).toBe(0)
+      expect(fixture.item.factor.value).toBe(1)
+      expect(fixture.background.size.value).toBeNull()
+
+      fixture.dimensions.width = 300
+      fixture.dimensions.height = 200
+      notifyResize(fixture.element.value)
+      await flushCalculations()
+
+      expect(fixture.item.size.value).toBe(150)
+      expect(fixture.background.size.value).toBe('100% auto')
+    })
+
+    it('should evaluate static is(props), default group fallback, detached DOM state, and state reset on remove()', async () => {
+      expect(ImageAdaptiveItem.is(undefined)).toBe(false)
+      expect(ImageAdaptiveItem.is({ adaptive: false })).toBe(false)
+      expect(ImageAdaptiveItem.is({ adaptive: true })).toBe(true)
+
+      const fixture = await createAdaptive({ adaptiveGroup: undefined })
+      expect(fixture.item.group).toBe('basic')
+      expect(fixture.item.isGroup('basic')).toBe(true)
+      expect(fixture.item.isBeyond()).toBe(true)
+      expect(fixture.item.type).toBe('x')
+      expect(fixture.item.backgroundSize).toBe('100% auto')
+
+      fixture.item.remove()
+      expect(fixture.item.isBeyond()).toBe(false)
+      expect(fixture.item.type).toBeUndefined()
+      expect(fixture.item.size.value).toBe(0)
+      expect(fixture.item.factor.value).toBe(1)
+      expect(fixture.item.backgroundSize).toBeNull()
+
+      fixture.element.value?.remove()
+      expect(fixture.item.is()).toBe(false)
+    })
   })
 
-  it('registers active images and calculates their initial sizes', async () => {
-    const fixture = await createAdaptive()
-    expect(ImageAdaptiveGroup.is(fixture.item)).toBe(true)
-    expect(fixture.item.resizeEvent?.isActive()).toBe(true)
-    expect(fixture.item.isBeyond()).toBe(true)
-    expect(fixture.item.size.value).toBe(100)
-    expect(fixture.item.factor.value).toBe(1)
-    expect(fixture.element.value?.style.backgroundSize).toBe('100%')
+  describe('Reactive state transitions, DOM resize, and group updates', () => {
+    it('should recalculate visibility when adaptiveAlways changes', async () => {
+      const fixture = await createAdaptive()
+      fixture.props.adaptiveAlways = false
+      await flushCalculations()
+
+      expect(fixture.item.isBeyond()).toBe(false)
+      expect(ImageCalculationList.get('gallery').width).toBe(0)
+
+      fixture.props.adaptiveAlways = true
+      await flushCalculations()
+
+      expect(fixture.item.isBeyond()).toBe(true)
+      expect(ImageCalculationList.get('gallery').width).toBe(200)
+    })
+
+    it('should remove unloaded image data and reactivate after loading', async () => {
+      const fixture = await createAdaptive()
+      fixture.image.value = undefined
+      await flushCalculations()
+
+      expect(ImageAdaptiveGroup.is(fixture.item)).toBe(false)
+      expect(observations.every(observation => !observation.element)).toBe(true)
+
+      fixture.image.value = {
+        image: document.createElement('img'),
+        src: '/loaded.png',
+        width: 400,
+        height: 100
+      }
+      await flushCalculations()
+
+      expect(ImageAdaptiveGroup.is(fixture.item)).toBe(true)
+      expect(fixture.item.size.value).toBe(50)
+    })
+
+    it('should recalculate both groups after an image changes its adaptiveGroup', async () => {
+      const fixture = await createAdaptive()
+      const smaller = await createAdaptive({ objectWidth: 100, objectHeight: 50 })
+      fixture.props.adaptiveGroup = 'other'
+      await flushCalculations()
+
+      expect(ImageCalculationList.get('gallery').width).toBe(100)
+      expect(ImageCalculationList.get('other').width).toBe(200)
+      expect(smaller.element.value?.style.backgroundSize).toBe('100%')
+    })
+
+    it('should recalculate the group factor when loaded image dimensions change', async () => {
+      const fixture = await createAdaptive()
+      fixture.image.value = {
+        image: document.createElement('img'),
+        src: '/portrait.png',
+        width: 200,
+        height: 400
+      }
+      await flushCalculations()
+
+      expect(fixture.item.size.value).toBe(400)
+      expect(ImageCalculationList.get('gallery').factorMax).toBe(0.5)
+      expect(fixture.background.size.value).toBe('50% auto')
+      expect(fixture.element.value?.style.backgroundSize).toBe('50%')
+    })
+
+    it('should invalidate cached computed dimensions after a DOM resize', async () => {
+      const fixture = await createAdaptive()
+      expect(fixture.item.size.value).toBe(100)
+
+      fixture.dimensions.width = 300
+      notifyResize(fixture.element.value)
+      await flushCalculations()
+
+      expect(ImageCalculationList.get('gallery').offsetWidth).toBe(300)
+      expect(fixture.item.size.value).toBe(150)
+    })
+
+    it('should update other backgrounds when one element changes the group limiting factor', async () => {
+      const fixture = await createAdaptive()
+      const other = await createAdaptive()
+
+      fixture.dimensions.height = 50
+      notifyResize(fixture.element.value)
+      await flushCalculations()
+
+      expect(fixture.item.factor.value).toBe(0.5)
+      expect(other.background.size.value).toBe('50% auto')
+      expect(other.element.value?.style.backgroundSize).toBe('50%')
+    })
+
+    it('should batch property changes and resize notifications into a single animation frame', async () => {
+      const fixture = await createAdaptive()
+      vi.mocked(requestAnimationFrame).mockClear()
+
+      fixture.props.objectWidth = 400
+      fixture.props.objectHeight = 200
+      fixture.dimensions.width = 300
+      notifyResize(fixture.element.value)
+      notifyResize(fixture.element.value)
+      await nextTick()
+
+      expect(requestAnimationFrame).toHaveBeenCalledTimes(1)
+      await flushCalculations()
+      expect(ImageCalculationList.get('gallery').width).toBe(400)
+      expect(fixture.item.size.value).toBe(150)
+    })
   })
 
-  it('keeps disabled adaptation out of the group and stops tracking', async () => {
-    const fixture = await createAdaptive({ adaptive: false })
-    expect(fixture.item.is()).toBe(false)
-    expect(ImageAdaptiveGroup.is(fixture.item)).toBe(false)
-    expect(observations).toHaveLength(0)
-    expect(fixture.item.resizeEvent).toBeUndefined()
-  })
+  describe('Statefulness, element retargeting, and lifecycle cleanup', () => {
+    it('should keep disabled adaptation out of the group and avoid creating observers', async () => {
+      const fixture = await createAdaptive({ adaptive: false })
 
-  it('recalculates physical widths while the visible element list stays the same', async () => {
-    const fixture = await createAdaptive()
-    const smaller = await createAdaptive({ objectWidth: 100, objectHeight: 50 })
-    expect(smaller.background.size.value).toBe('50% auto')
+      expect(fixture.item.is()).toBe(false)
+      expect(ImageAdaptiveGroup.is(fixture.item)).toBe(false)
+      expect(observations).toHaveLength(0)
+      expect(fixture.item.resizeEvent).toBeUndefined()
+    })
 
-    fixture.props.objectWidth = 400
-    await flushCalculations()
+    it('should retarget resize observation when Vue replaces the DOM element', async () => {
+      const fixture = await createAdaptive()
+      const previousElement = fixture.element.value
+      const previousObservation = observations.find(observation => observation.element === previousElement)
 
-    expect(ImageCalculationList.get('gallery').width).toBe(400)
-    expect(smaller.element.value?.style.backgroundSize).toBe('25%')
-  })
+      fixture.elementKey.value++
+      await nextTick()
+      fixture.dimensions.width = 300
+      setDimensions(fixture.element.value, fixture.dimensions)
+      notifyResize(fixture.element.value)
+      await flushCalculations()
 
-  it('recalculates physical heights when scaling along the Y axis', async () => {
-    const fixture = await createAdaptive({ objectWidth: undefined })
-    const smaller = await createAdaptive({ objectWidth: undefined, objectHeight: 50 })
-    expect(smaller.background.size.value).toBe('auto 25%')
-    fixture.props.objectHeight = 200
-    await flushCalculations()
+      expect(fixture.element.value).not.toBe(previousElement)
+      expect(previousObservation?.observer.disconnect).toHaveBeenCalled()
+      expect(observations.some(observation => observation.element === fixture.element.value)).toBe(true)
+      expect(fixture.item.size.value).toBe(150)
+    })
 
-    expect(ImageCalculationList.get('gallery').height).toBe(200)
-    expect(smaller.element.value?.style.backgroundSize).toBe('auto 12.5%')
-  })
+    it('should disconnect resize observers on disabling, reactivation, and unmount', async () => {
+      const fixture = await createAdaptive()
+      const resize = fixture.item.resizeEvent
+      const previousElement = fixture.element.value
+      const observation = observations.find(observation => observation.element === fixture.element.value)
 
-  it('recalculates visibility when adaptiveAlways changes', async () => {
-    const fixture = await createAdaptive()
-    fixture.props.adaptiveAlways = false
-    await flushCalculations()
-    expect(fixture.item.isBeyond()).toBe(false)
-    expect(ImageCalculationList.get('gallery').width).toBe(0)
+      fixture.props.adaptive = false
+      await flushCalculations()
+      expect(observation?.observer.disconnect).toHaveBeenCalled()
+      expect(ImageAdaptiveGroup.is(fixture.item)).toBe(false)
+      expect(fixture.item.resizeEvent).toBeUndefined()
 
-    fixture.props.adaptiveAlways = true
-    await flushCalculations()
-    expect(fixture.item.isBeyond()).toBe(true)
-    expect(ImageCalculationList.get('gallery').width).toBe(200)
-  })
+      fixture.elementKey.value++
+      await nextTick()
+      setDimensions(fixture.element.value, fixture.dimensions)
+      expect(resize?.getElement()).toBe(previousElement)
 
-  it('removes unloaded image data and reactivates after loading', async () => {
-    const fixture = await createAdaptive()
-    fixture.image.value = undefined
-    await flushCalculations()
-    expect(ImageAdaptiveGroup.is(fixture.item)).toBe(false)
-    expect(observations.every(observation => !observation.element)).toBe(true)
+      fixture.props.adaptive = true
+      await flushCalculations()
+      expect(ImageAdaptiveGroup.is(fixture.item)).toBe(true)
+      expect(fixture.item.resizeEvent).not.toBe(resize)
+      expect(fixture.item.resizeEvent?.isActive()).toBe(true)
 
-    fixture.image.value = {
-      image: document.createElement('img'),
-      src: '/loaded.png',
-      width: 400,
-      height: 100
-    }
-    await flushCalculations()
-    expect(ImageAdaptiveGroup.is(fixture.item)).toBe(true)
-    expect(fixture.item.size.value).toBe(50)
-  })
-
-  it('recalculates both groups after an image changes its group', async () => {
-    const fixture = await createAdaptive()
-    const smaller = await createAdaptive({ objectWidth: 100, objectHeight: 50 })
-    fixture.props.adaptiveGroup = 'other'
-    await flushCalculations()
-
-    expect(ImageCalculationList.get('gallery').width).toBe(100)
-    expect(ImageCalculationList.get('other').width).toBe(200)
-    expect(smaller.element.value?.style.backgroundSize).toBe('100%')
-  })
-
-  it('recalculates the group factor when loaded image dimensions change', async () => {
-    const fixture = await createAdaptive()
-    fixture.image.value = {
-      image: document.createElement('img'),
-      src: '/portrait.png',
-      width: 200,
-      height: 400
-    }
-    await flushCalculations()
-
-    expect(fixture.item.size.value).toBe(400)
-    expect(ImageCalculationList.get('gallery').factorMax).toBe(0.5)
-    expect(fixture.background.size.value).toBe('50% auto')
-    expect(fixture.element.value?.style.backgroundSize).toBe('50%')
-  })
-
-  it('invalidates cached computed dimensions after a DOM resize', async () => {
-    const fixture = await createAdaptive()
-    expect(fixture.item.size.value).toBe(100)
-    fixture.dimensions.width = 300
-    notifyResize(fixture.element.value)
-    await flushCalculations()
-
-    expect(ImageCalculationList.get('gallery').offsetWidth).toBe(300)
-    expect(fixture.item.size.value).toBe(150)
-  })
-
-  it('updates other backgrounds when one element changes the group limiting factor', async () => {
-    const fixture = await createAdaptive()
-    const other = await createAdaptive()
-    fixture.dimensions.height = 50
-    notifyResize(fixture.element.value)
-    await flushCalculations()
-
-    expect(fixture.item.factor.value).toBe(0.5)
-    expect(other.background.size.value).toBe('50% auto')
-    expect(other.element.value?.style.backgroundSize).toBe('50%')
-  })
-
-  it('recovers from zero DOM dimensions without invalid percentages', async () => {
-    const fixture = await createAdaptive()
-    fixture.dimensions.width = 0
-    fixture.dimensions.height = 0
-    notifyResize(fixture.element.value)
-    await flushCalculations()
-
-    expect(fixture.item.size.value).toBe(0)
-    expect(fixture.item.factor.value).toBe(1)
-    expect(fixture.background.size.value).toBeNull()
-
-    fixture.dimensions.width = 300
-    fixture.dimensions.height = 200
-    notifyResize(fixture.element.value)
-    await flushCalculations()
-    expect(fixture.item.size.value).toBe(150)
-    expect(fixture.background.size.value).toBe('100% auto')
-  })
-
-  it('retargets resize observation when Vue replaces the element', async () => {
-    const fixture = await createAdaptive()
-    const previousElement = fixture.element.value
-    const previousObservation = observations.find(observation => observation.element === previousElement)
-    fixture.elementKey.value++
-    await nextTick()
-    fixture.dimensions.width = 300
-    setDimensions(fixture.element.value, fixture.dimensions)
-    notifyResize(fixture.element.value)
-    await flushCalculations()
-
-    expect(fixture.element.value).not.toBe(previousElement)
-    expect(previousObservation?.observer.disconnect).toHaveBeenCalled()
-    expect(observations.some(observation => observation.element === fixture.element.value)).toBe(true)
-    expect(fixture.item.size.value).toBe(150)
-  })
-
-  it('disconnects resize observers on disabling, reactivation and unmount', async () => {
-    const fixture = await createAdaptive()
-    const resize = fixture.item.resizeEvent
-    const previousElement = fixture.element.value
-    const observation = observations.find(observation => observation.element === fixture.element.value)
-    fixture.props.adaptive = false
-    await flushCalculations()
-    expect(observation?.observer.disconnect).toHaveBeenCalled()
-    expect(ImageAdaptiveGroup.is(fixture.item)).toBe(false)
-    expect(fixture.item.resizeEvent).toBeUndefined()
-
-    fixture.elementKey.value++
-    await nextTick()
-    setDimensions(fixture.element.value, fixture.dimensions)
-    expect(resize?.getElement()).toBe(previousElement)
-
-    fixture.props.adaptive = true
-    await flushCalculations()
-    expect(ImageAdaptiveGroup.is(fixture.item)).toBe(true)
-    expect(fixture.item.resizeEvent).not.toBe(resize)
-    expect(fixture.item.resizeEvent?.isActive()).toBe(true)
-    fixture.unmount()
-    expect(ImageAdaptiveGroup.is(fixture.item)).toBe(false)
-    expect(observations.every(observation => !observation.element)).toBe(true)
-    expect(fixture.item.resizeEvent).toBeUndefined()
-  })
-
-  it('batches property changes and resize notifications into one frame', async () => {
-    const fixture = await createAdaptive()
-    vi.mocked(requestAnimationFrame).mockClear()
-    fixture.props.objectWidth = 400
-    fixture.props.objectHeight = 200
-    fixture.dimensions.width = 300
-    notifyResize(fixture.element.value)
-    notifyResize(fixture.element.value)
-    await nextTick()
-
-    expect(requestAnimationFrame).toHaveBeenCalledTimes(1)
-    await flushCalculations()
-    expect(ImageCalculationList.get('gallery').width).toBe(400)
-    expect(fixture.item.size.value).toBe(150)
+      fixture.unmount()
+      expect(ImageAdaptiveGroup.is(fixture.item)).toBe(false)
+      expect(observations.every(item => !item.element)).toBe(true)
+      expect(fixture.item.resizeEvent).toBeUndefined()
+    })
   })
 })

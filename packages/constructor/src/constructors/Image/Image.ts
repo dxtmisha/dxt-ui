@@ -27,22 +27,29 @@ import { type ImageBinds, ImageTypeValue, type ImageValueBinds } from './basicTy
 import type { ImageProps } from './props'
 import type { ImageComponents, ImageEmits, ImageSlots } from './types'
 
-/**
- * Image dependency constructors type.
- *
- * Тип конструкторов зависимостей изображения.
- */
+/** Image dependency constructors type / Тип конструкторов зависимостей изображения */
 export type ImageConstructors = {
+  /** Adaptive item constructor / Конструктор адаптивного элемента */
   adaptiveItem: typeof ImageAdaptiveItem
+  /** Background constructor / Конструктор фона */
   background: typeof ImageBackground
+  /** Coordinator constructor / Конструктор координатора */
   coordinator: typeof ImageCoordinator
+  /** Data constructor / Конструктор данных */
   data: typeof ImageData
+  /** Event constructor / Конструктор событий */
   event: typeof ImageEvent
+  /** Img tag constructor / Конструктор тега img */
   img: typeof ImageImg
+  /** Lazy loading constructor / Конструктор ленивой загрузки */
   lazy: typeof ImageLazy
+  /** Position constructor / Конструктор позиции */
   position: typeof ImagePosition
+  /** Text constructor / Конструктор текста */
   text: typeof ImageText
+  /** Type constructor / Конструктор типа */
   type: typeof ImageType
+  /** Uint8Array constructor / Конструктор Uint8Array */
   uint8Array: typeof ImageUint8Array
 }
 
@@ -105,11 +112,10 @@ export class Image extends DesignLogicAbstract<
       item: ImageImg,
       parameters: () => [
         this.props,
-        this.element,
-        this.i('type'),
-        this.i('position'),
-        this.i('background'),
-        this.i('lazy')
+        () => this.i('type'),
+        () => this.i('position'),
+        () => this.i('background'),
+        () => this.i('lazy')
       ]
     },
     lazy: {
@@ -157,7 +163,7 @@ export class Image extends DesignLogicAbstract<
     )
 
     watch(
-      () => this.i('data').isImage(),
+      () => ImageData.isImage(this.i('type').get()) && this.i('data').isImage(),
       (isImage) => {
         if (isImage) {
           this.i('event')
@@ -214,22 +220,22 @@ export class Image extends DesignLogicAbstract<
     const type = this.i('type').get()
     const data: ConstrClassObject = {
       [this.naming.getStatusClass(['type', String(type)])]: Boolean(type),
-      [this.naming.getStatusClass('background')]: this.i('background').isImage(),
-      [this.naming.getStatusClass('img')]: this.i('img').is(),
+      [this.naming.getStatusClass('background')]: ImageBackground.is(type) && this.i('background').isImage(),
+      [this.naming.getStatusClass('img')]: ImageImg.is(this.props) && this.i('img').is(),
       notranslate: true
     }
 
     switch (type) {
-      case 'outlined':
+      case ImageTypeValue.outlined:
         data['material-symbols-outlined'] = true
         break
-      case 'round':
+      case ImageTypeValue.round:
         data['material-symbols-rounded'] = true
         break
-      case 'sharp':
+      case ImageTypeValue.sharp:
         data['material-symbols-sharp'] = true
         break
-      case 'material':
+      case ImageTypeValue.material:
         data['material-icons'] = true
         break
     }
