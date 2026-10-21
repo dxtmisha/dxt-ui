@@ -4,20 +4,24 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `secondToTime`
 
-Chuyển đổi số giây được cung cấp thành chuỗi định dạng thời gian `MM:SS`.
+Chuyển đổi số giây được cung cấp thành chuỗi định dạng thời gian `MM:SS` (hoặc `HH:MM:SS` nếu bật tham số `hasHour`). Phần thập phân của giây được cắt bỏ an toàn.
 
-Nếu giá trị số giây nhỏ hơn hoặc bằng 0, hoặc không được cung cấp, hàm sẽ trả về giá trị mặc định là `00:00`.
+Nếu giá trị số giây nhỏ hơn hoặc bằng 0, hoặc không được cung cấp, hàm sẽ trả về giá trị mặc định (`00:00`, hoặc `00:00:00` khi `hasHour = true`).
 
 **Tham số:**
-- `second: number | string | undefined` — Tổng số giây (hỗ trợ cả kiểu số nguyên và kiểu chuỗi biểu diễn số).
+- `second: number | string | undefined` — Tổng số giây (hỗ trợ số nguyên, số thực và chuỗi biểu diễn số).
+- `hasHour?: boolean` — Cờ bắt buộc định dạng có giờ (`HH:MM:SS`).
 
 **Trả về:**
-`string` — Một chuỗi được định dạng với số phút và số giây tương ứng (ví dụ: `12:34`).
+`string` — Chuỗi thời gian đã định dạng (ví dụ: `02:05` hoặc `01:01:05`).
 
 ```typescript
 import { secondToTime } from '@dxtmisha/functional-basic'
 
 console.log(secondToTime(125)) // '02:05'
-console.log(secondToTime('65')) // '01:05'
+console.log(secondToTime(65.4)) // '01:05' (phần thập phân bị cắt bỏ)
+console.log(secondToTime(3665, true)) // '01:01:05'
+console.log(secondToTime(125, true)) // '00:02:05'
+console.log(secondToTime(0, true)) // '00:00:00'
 console.log(secondToTime()) // '00:00'
 ```

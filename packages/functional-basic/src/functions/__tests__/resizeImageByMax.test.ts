@@ -294,5 +294,41 @@ describe('resizeImageByMax', () => {
         'toDataURL'
       ])
     })
+
+    it('should return undefined if canvas.toDataURL throws SecurityError (Tainted Canvas)', () => {
+      activeMockCanvas = createMockCanvas()
+      activeMockCanvas.toDataURLSpy.mockImplementation(() => {
+        throw new Error('SecurityError: Tainted canvas')
+      })
+
+      expect(resizeImageByMax(mockImage, 500)).toBeUndefined()
+    })
+
+    it('should guarantee minimum 1px dimension for extreme aspect ratios', () => {
+      activeMockCanvas = createMockCanvas()
+      Object.defineProperty(mockImage, 'naturalWidth', { value: 10000, configurable: true })
+      Object.defineProperty(mockImage, 'naturalHeight', { value: 2, configurable: true })
+
+      resizeImageByMax(mockImage, 1000, 'auto')
+
+      expect(activeMockCanvas.getHeight()).toBeGreaterThanOrEqual(1)
+    })
+
+    it('should configure imageSmoothingEnabled and imageSmoothingQuality high', () => {
+      activeMockCanvas = createMockCanvas()
+
+      resizeImageByMax(mockImage, 500)
+
+      expect(activeMockCanvas.context.imageSmoothingEnabled).toBe(true)
+      expect(activeMockCanvas.context.imageSmoothingQuality).toBe('high')
+    })
+
+    it('should pass quality parameter to toDataURL when specified', () => {
+      activeMockCanvas = createMockCanvas()
+
+      resizeImageByMax(mockImage, 500, 'auto', 'image/jpeg', 0.85)
+
+      expect(activeMockCanvas.toDataURLSpy).toHaveBeenCalledWith('image/jpeg', 0.85)
+    })
   })
 })

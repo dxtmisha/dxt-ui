@@ -1,9 +1,9 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { skipFrame } from '../skipFrame'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import * as domRuntime from '../isDomRuntime'
+import { skipFrame } from '../skipFrame'
 
 describe('skipFrame', () => {
   let mockRequestAnimationFrame: ReturnType<typeof vi.spyOn>

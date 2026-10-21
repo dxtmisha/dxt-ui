@@ -4,11 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `replaceTemplate`
 
-Tìm kiếm các điểm đánh dấu có dạng `[pattern]` trong chuỗi gốc và thay thế chúng bằng các giá trị tương ứng từ đối tượng được cung cấp. Nếu giá trị của điểm đánh dấu là một hàm, hàm đó sẽ tự động được gọi và kết quả của nó sẽ được chèn vào chuỗi.
+Phiên bản tạo mẫu đơn giản hóa cho một kiểu thay thế duy nhất — các điểm đánh dấu có dạng `[pattern]`. Khác với hàm `applyTemplate` toàn diện vốn hỗ trợ thẻ khối (`[tag]nội dung[/tag]`) và macro danh sách theo vị trí (`%d`..`%v`), `replaceTemplate` tập trung vào việc thay thế nhanh chóng, trực tiếp các giá trị và kết quả hàm từ một từ điển khóa.
+
+Nếu giá trị của điểm đánh dấu là một hàm, hàm đó sẽ tự động được gọi và kết quả của nó sẽ được chèn an toàn vào chuỗi mà không làm thay đổi các ký tự thay thế đặc biệt.
 
 **Tham số:**
 - `value: string` — Chuỗi mẫu chứa các điểm đánh dấu (ví dụ: `[name]`).
-- `replaces: Record<string, string | FunctionReturn<string>>` — Một đối tượng chứa dữ liệu thay thế, trong đó khóa là tên của điểm đánh dấu bên trong ngoặc vuông, và giá trị là một chuỗi hoặc một hàm trả về chuỗi.
+- `replaces: Record<string, FunctionOr<string | number | boolean>>` — Một đối tượng chứa dữ liệu thay thế, trong đó khóa là tên của điểm đánh dấu bên trong ngoặc vuông, và giá trị là chuỗi, số, giá trị boolean hoặc một hàm trả về giá trị.
 
 **Trả về:**
 `string` — Một chuỗi mới với các giá trị đã được thay thế.
@@ -16,12 +18,13 @@ Tìm kiếm các điểm đánh dấu có dạng `[pattern]` trong chuỗi gốc
 ```typescript
 import { replaceTemplate } from '@dxtmisha/functional-basic'
 
-const template = 'Xin chào, [name]! Số dư của bạn: [balance].'
+const template = 'Xin chào, [name]! Trang: [page]. Số dư của bạn: [balance].'
 const data = {
   name: 'John',
-  balance: () => '$100' // Hàm được thực thi trong quá trình thay thế
+  page: 1,
+  balance: () => '$100' // Hàm được thực thi trong quá trình thay thế, ký tự $ được bảo toàn
 }
 
 console.log(replaceTemplate(template, data)) 
-// 'Xin chào, John! Số dư của bạn: $100.'
+// 'Xin chào, John! Trang: 1. Số dư của bạn: $100.'
 ```

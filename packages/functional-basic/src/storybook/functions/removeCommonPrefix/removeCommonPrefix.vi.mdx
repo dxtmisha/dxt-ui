@@ -4,18 +4,21 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `removeCommonPrefix`
 
-Xóa tiền tố chung khỏi phần đầu của chuỗi chính. Nếu chuỗi chính bắt đầu bằng tiền tố được chỉ định, hàm sẽ cắt bỏ nó và trả về chuỗi đã được loại bỏ khoảng trắng dư thừa ở hai đầu.
+Xóa tiền tố chung khỏi phần đầu của chuỗi chính. Nếu chuỗi chính bắt đầu bằng tiền tố được chỉ định, hàm sẽ loại bỏ nó và tùy chọn loại bỏ khoảng trắng ở hai đầu.
 
 **Tham số:**
-- `mainStr: string` — Chuỗi chính.
+- `mainString: string` — Chuỗi chính.
 - `prefix: string` — Chuỗi tiền tố cần xóa.
+- `trim: boolean = true` — Nếu `true`, loại bỏ khoảng trắng ở đầu và cuối chuỗi kết quả.
 
 **Trả về:**
-`string` — Một chuỗi mới không có tiền tố và đã được loại bỏ khoảng trắng thừa.
+`string` — Một chuỗi mới không có tiền tố chung.
 
 ```typescript
 import { removeCommonPrefix } from '@dxtmisha/functional-basic'
 
 console.log(removeCommonPrefix('Xin chào, thế giới!', 'Xin chào, ')) // 'thế giới!'
 console.log(removeCommonPrefix('user_name', 'user_')) // 'name'
+console.log(removeCommonPrefix('prefix   suffix   ', 'prefix', false)) // '   suffix   '
 ```
+

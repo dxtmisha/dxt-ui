@@ -13,6 +13,7 @@ This function is useful for compressing images on the fly before uploading to a 
 - `maxSize: number` — The maximum allowed size in pixels (for width or height).
 - `type: ResizeImageByMaxType` — The scaling strategy: `'auto'`, `'width'`, or `'height'`. Defaults to `'auto'`.
 - `typeData?: string` — Optional MIME type for the resulting Data URL (e.g., `'image/jpeg'`). Defaults to `'image/png'`.
+- `quality?: number` — Optional quality factor between 0 and 1 for lossy compression formats (`'image/jpeg'`, `'image/webp'`).
 
 **Returns:**
 `string | undefined` — A Data URL string containing the resized image, or `undefined` if the image could not be processed or is already smaller than or equal to `maxSize`.

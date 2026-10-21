@@ -4,20 +4,24 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `secondToTime`
 
-Converts a given number of seconds into a time format string `MM:SS`.
+Converts a given number of seconds into a formatted time string `MM:SS` (or `HH:MM:SS` when `hasHour` is enabled). Fractional seconds are safely truncated.
 
-If the value of seconds is less than or equal to zero, or is not provided, the default value `00:00` is returned.
+If the value of seconds is less than or equal to zero, or is not provided, the default value (`00:00`, or `00:00:00` when `hasHour = true`) is returned.
 
 **Parameters:**
-- `second: number | string | undefined` — The total number of seconds (both numbers and string representations of numbers are supported).
+- `second: number | string | undefined` — The total number of seconds (numbers, floating-point numbers, and string representations are supported).
+- `hasHour?: boolean` — Whether to force the hours format (`HH:MM:SS`).
 
 **Returns:**
-`string` — A formatted string with minutes and seconds (e.g., `12:34`).
+`string` — A formatted time string (e.g., `02:05` or `01:01:05`).
 
 ```typescript
 import { secondToTime } from '@dxtmisha/functional-basic'
 
 console.log(secondToTime(125)) // '02:05'
-console.log(secondToTime('65')) // '01:05'
+console.log(secondToTime(65.4)) // '01:05' (subseconds are truncated)
+console.log(secondToTime(3665, true)) // '01:01:05'
+console.log(secondToTime(125, true)) // '00:02:05'
+console.log(secondToTime(0, true)) // '00:00:00'
 console.log(secondToTime()) // '00:00'
 ```

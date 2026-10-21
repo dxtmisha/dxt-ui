@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toPascalCase - Chuyển đổi chuỗi sang PascalCase'/>
+
+# `toPascalCase`
+
+Chuyển đổi một chuỗi văn bản sang định dạng `PascalCase` (CamelCase với chữ cái đầu viết hoa). Hàm sử dụng nội bộ `toCamelCase` để xử lý các dấu phân cách và ký tự đặc biệt.
+
+**Tham số:**
+- `value: string` — Chuỗi gốc cần chuyển đổi.
+
+**Trả về:**
+`string` — Chuỗi định dạng `PascalCase`.
+
+```typescript
+import { toPascalCase } from '@dxtmisha/functional-basic'
+
+console.log(toPascalCase('hello world')) // 'HelloWorld'
+console.log(toPascalCase('user-name')) // 'UserName'
+```

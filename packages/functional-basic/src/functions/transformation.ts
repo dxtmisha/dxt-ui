@@ -1,64 +1,80 @@
 import { isDomRuntime } from './isDomRuntime'
 import { ErrorCenter } from '../classes/ErrorCenter'
-import { type FunctionArgs } from '../types/basicTypes'
 
 /**
- * Преобразует строку в соответствующий тип данных.
- * В зависимости от содержания строки, она может быть преобразована в
- * `undefined`, `null`, `true`, `false`, объект, число или функцию.
- *
- * Transforms a string into the corresponding data type.
- * Based on the string content, it may be transformed into `undefined`,
- * `null`, `true`, `false`, object, number, or function.
- *
- * @param value - Значение, которое необходимо преобразовать
- *
- * The value to be transformed
- * @param isFunction - Флаг, который указывает, необходимо ли проверять функцию
- * в глобальном объекте window
- *
- * A flag that indicates whether to check for a function in the global window object
- * @returns Преобразованное значение
- *
- * The transformed value
+ * Matches floating-point numbers /
+ * Регулярное выражение для сопоставления чисел с плавающей точкой
  */
-export function transformation(value: any, isFunction = false): any {
-  if (typeof value === 'string') {
-    const item = value.trim()
+const REGEXP_FLOAT = /^-?\d+\.\d+$/
 
-    switch (item) {
+/**
+ * Matches integer numbers /
+ * Регулярное выражение для сопоставления целых чисел
+ */
+const REGEXP_INT = /^-?\d+$/
+
+/**
+ * Transforms a string into the corresponding data type.
+ * Based on the string content, it may be transformed into undefined, null, boolean, object, number, or function.
+ *
+ * Преобразует строку в соответствующий тип данных.
+ * В зависимости от содержания строки, она может быть преобразована в undefined, null, boolean, объект, число или функцию.
+ * @param value input value to transform / входное значение для преобразования
+ * @param isFunction flag to check for function in global window / флаг проверки функции в объекте window
+ * @returns transformed value / преобразованное значение
+ *
+ * @example
+ * transformation('true') // true
+ * transformation('12.5') // 12.5
+ * transformation('{"a":1}') // { a: 1 }
+ * transformation('null') // null
+ */
+export function transformation<T = unknown>(value: unknown, isFunction: boolean = false): T {
+  if (typeof value === 'string') {
+    const stringValue = value.trim()
+
+    switch (stringValue) {
       case 'undefined':
-        return undefined
+        return undefined as T
       case 'null':
-        return null
+        return null as T
       case 'true':
-        return true
+        return true as T
       case 'false':
-        return false
-      default:
-        if (/^[{[]/.exec(item)) {
+        return false as T
+      default: {
+        const isJsonCandidate = (
+          (stringValue.startsWith('{') && stringValue.endsWith('}'))
+          || (stringValue.startsWith('[') && stringValue.endsWith(']'))
+        )
+
+        if (isJsonCandidate) {
           try {
-            return JSON.parse(item)
-          } catch (e) {
+            return JSON.parse(stringValue) as T
+          } catch (error) {
             ErrorCenter.on({
               group: 'transformation',
               code: 'error',
-              details: e
+              details: error
             })
           }
-        } else if (/^-?[0-9]+\.[0-9]+$/.exec(item)) {
-          return parseFloat(item)
-        } else if (/^-?[0-9]+$/.exec(item)) {
-          return parseInt(item, 10)
-        } else if (
-          isFunction
-          && isDomRuntime()
-          && typeof window?.[item as any] === 'function'
-        ) {
-          return window[item as any] as any as FunctionArgs<any, any>
+        } else if (REGEXP_FLOAT.test(stringValue)) {
+          return parseFloat(stringValue) as T
+        } else if (REGEXP_INT.test(stringValue)) {
+          return parseInt(stringValue, 10) as T
+        } else if (isFunction && isDomRuntime()) {
+          const windowRecord = window as unknown as Record<string, unknown>
+
+          if (
+            Object.prototype.hasOwnProperty.call(windowRecord, stringValue)
+            && typeof windowRecord[stringValue] === 'function'
+          ) {
+            return windowRecord[stringValue] as T
+          }
         }
+      }
     }
   }
 
-  return value
+  return value as T
 }

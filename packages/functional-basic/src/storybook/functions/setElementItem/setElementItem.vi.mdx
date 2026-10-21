@@ -4,15 +4,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `setElementItem`
 
-Thay đổi giá trị của một thuộc tính hoặc attribute của phần tử DOM được xác định bởi bộ chọn (selector) hoặc được truyền trực tiếp. Nếu thuộc tính là một đối tượng, hàm sẽ thực hiện hợp nhất với dữ liệu mới.
+Thay đổi giá trị thuộc tính hoặc thuộc tính DOM của phần tử được tìm thấy theo bộ chọn hoặc được truyền trực tiếp. Nếu thuộc tính mục tiêu là một đối tượng (và không phải là mảng), hàm sẽ thực hiện gộp với dữ liệu mới.
+
+Hàm cung cấp khả năng bảo vệ mạnh mẽ chống lại **Prototype Pollution** (bỏ qua `__proto__`, `constructor`, `prototype`), hỗ trợ biến tùy chỉnh CSS (`--*`) và các thuộc tính kebab-case trong đối tượng kiểu dáng, loại bỏ kiểu dáng sạch sẽ khi truyền `null` / `undefined`, đồng thời định dạng chính xác các thuộc tính boolean và trạng thái ARIA.
 
 **Tham số:**
-- `element: ElementOrString<E>` — Phần tử mục tiêu, đối tượng `window` hoặc bộ chọn CSS.
-- `index: K` — Khóa thuộc tính hoặc tên attribute.
-- `value: V | Record<string, V>` — Giá trị mới hoặc một đối tượng để hợp nhất.
+- `element: ElementOrString<E>` — Phần tử, đối tượng `window` hoặc bộ chọn CSS.
+- `index: K | string` — Khóa thuộc tính, tên thuộc tính HTML hoặc khóa kiểu dáng.
+- `value: V | Record<string, V> | unknown` — Giá trị mới hoặc đối tượng để gộp.
 
-**Trả về:**
-`E | undefined` — Phần tử đã được sửa đổi, hoặc `undefined` nếu không tìm thấy.
+**Giá trị trả về:**
+`E | undefined` — Phần tử đã được chỉnh sửa, hoặc `undefined` nếu không tìm thấy phần tử hoặc truyền khóa prototype nguy hiểm.
 
 ```typescript
 import { setElementItem } from '@dxtmisha/functional-basic'
@@ -20,9 +22,22 @@ import { setElementItem } from '@dxtmisha/functional-basic'
 // Thay đổi nội dung văn bản
 setElementItem('#my-div', 'textContent', 'Văn bản mới')
 
-// Hợp nhất các kiểu (styles)
-setElementItem(document.body, 'style', { backgroundColor: 'red', color: 'white' })
+// Gộp kiểu dáng bao gồm kebab-case và biến CSS
+setElementItem(document.body, 'style', {
+  backgroundColor: 'red',
+  'font-size': '16px',
+  '--brand-color': '#0055ff'
+})
 
-// Thiết lập attribute (nếu thuộc tính không tồn tại trong đối tượng)
+// Xóa kiểu dáng hoặc biến CSS bằng null / undefined
+setElementItem(document.body, 'style', {
+  backgroundColor: null,
+  '--brand-color': undefined
+})
+
+// Đặt thuộc tính (nếu thuộc tính không tồn tại trên phần tử)
 setElementItem('input', 'placeholder', 'Nhập dữ liệu...')
+
+// Đặt thuộc tính ARIA ('true' / 'false')
+setElementItem('button', 'aria-expanded', true)
 ```

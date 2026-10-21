@@ -1,17 +1,21 @@
 /**
- * Convert a String to Camel Case (upper).
+ * Converts a string to camelCase.
  *
- * Преобразование строки в Camel Case (upper).
- * @param value input value/ входное значение
- * @returns camel case string/ строка в camel case
+ * Преобразует строку в camelCase.
+ * @param value input value / входное значение
+ * @returns camel case string / строка в camel case
  */
-export function toCamelCase(value: string): string {
+export function toCamelCase(value?: string): string {
+  if (!value) {
+    return ''
+  }
+
   return value
-    .toString()
     .trim()
     .replace(/[^\w-. ]+/g, '')
-    .replace(/[ .]+/g, '-')
-    .replace(/(?<=[A-Z])([A-Z])/g, char => `${char.toLowerCase()}`)
-    .replace(/-+([a-zA-Z0-9])/g, (...char: string[]) => `${String(char[1]).toUpperCase()}`)
-    .replace(/^([A-Z])/, char => `${char.toLowerCase()}`)
+    .replace(/[ ._]+/g, '-')
+    .replace(/(?<=[A-Z])([A-Z])/g, char => char.toLowerCase())
+    .replace(/-+([a-zA-Z0-9])/g, (_, character: string) => character.toUpperCase())
+    .replace(/^([A-Z])/, char => char.toLowerCase())
+    .replace(/-+$/, '')
 }

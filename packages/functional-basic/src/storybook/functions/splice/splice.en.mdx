@@ -4,25 +4,27 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `splice`
 
-Copies and recursively merges properties from one object into another. Supports inserting new properties starting from a specific key or index.
+Copies and recursively merges properties from one object into another. Supports replacing properties starting from a specific key or element value while preserving the order of surrounding properties.
 
 **Parameters:**
-- `array: ObjectItem<I>` — The target object or array.
+- `array: ObjectItem<I>` — The target object.
 - `replacement?: ObjectItem<I> | I` — The source object containing new data.
-- `indexStart?: string` — The key or element value from which the insertion will begin.
+- `indexStart?: string` — The key or element value from which the replacement will begin.
 
 **Returns:**
-`ObjectItem<I>` — A new object or array with the changes applied.
+`ObjectItem<I>` — A new object with the changes applied.
 
 ```typescript
 import { splice } from '@dxtmisha/functional-basic'
 
-const target = { first: 1, last: 3 }
-const source = { second: 2 }
+const target = { first: 1, middle: 2, last: 3 }
+const replacement = { middleNew: 20 }
 
-// Simple insertion
-console.log(splice(target, source)) // { first: 1, last: 3, second: 2 }
+// Simple merge without indexStart
+console.log(splice(target, replacement))
+// { first: 1, middle: 2, last: 3, middleNew: 20 }
 
-// Insertion after a specific key
-console.log(splice(target, source, 'first')) // { first: 1, second: 2, last: 3 }
+// Replace a property by key while preserving order of remaining fields
+console.log(splice(target, replacement, 'middle'))
+// { first: 1, middleNew: 20, last: 3 }
 ```

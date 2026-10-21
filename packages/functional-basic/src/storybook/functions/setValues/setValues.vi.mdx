@@ -8,12 +8,12 @@ Xử lý việc cập nhật các giá trị đã chọn dựa trên chế độ
 
 **Tham số:**
 - `selected: T | T[] | undefined` — Các giá trị hiện đang được chọn.
-- `value: any` — Giá trị mới cần xử lý.
-- `options` — Một đối tượng chứa các thiết lập:
-    - `multiple: boolean` — Chế độ đa lựa chọn (mặc định là `false`).
-    - `maxlength: number` — Số lượng phần tử tối đa cho chế độ đa lựa chọn (mặc định là `0` — không giới hạn).
-    - `alwaysChange: boolean` — Cờ ép buộc thay thế giá trị (mặc định là `true`).
-    - `notEmpty: boolean` — Ngăn không cho danh sách bị xóa sạch hoàn toàn (mặc định là `false`).
+- `value: T` — Giá trị mới cần xử lý.
+- `options?: SetValuesOptions` — Một đối tượng chứa các thiết lập:
+    - `multiple?: boolean` — Chế độ đa lựa chọn (mặc định là `false`).
+    - `maxlength?: number` — Số lượng phần tử tối đa cho chế độ đa lựa chọn (mặc định là `0` — không giới hạn).
+    - `alwaysChange?: boolean` — Cờ ép buộc thay thế giá trị (mặc định là `true`).
+    - `notEmpty?: boolean` — Ngăn không cho danh sách bị xóa sạch hoàn toàn (mặc định là `false`).
 
 **Trả về:**
 `T | T[] | undefined` — Trạng thái mới của các giá trị đã chọn.
@@ -22,7 +22,7 @@ Xử lý việc cập nhật các giá trị đã chọn dựa trên chế độ
 import { setValues } from '@dxtmisha/functional-basic'
 
 // Lựa chọn đơn
-console.log(setValues(1, 2, {})) // 2
+console.log(setValues(1, 2)) // 2
 
 // Đa lựa chọn (bật/tắt)
 let list = [1, 2]

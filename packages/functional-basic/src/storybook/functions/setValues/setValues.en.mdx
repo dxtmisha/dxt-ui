@@ -8,12 +8,12 @@ Handles updating selected values based on the selection mode (single or multiple
 
 **Parameters:**
 - `selected: T | T[] | undefined` — The current selected values.
-- `value: any` — The new value to process.
-- `options` — An object with settings:
-    - `multiple: boolean` — Multiple selection mode (defaults to `false`).
-    - `maxlength: number` — Maximum number of elements for multiple selection (defaults to `0` — unlimited).
-    - `alwaysChange: boolean` — Forced value replacement flag (defaults to `true`).
-    - `notEmpty: boolean` — Prevents the list from being completely cleared (defaults to `false`).
+- `value: T` — The new value to process.
+- `options?: SetValuesOptions` — An object with settings:
+    - `multiple?: boolean` — Multiple selection mode (defaults to `false`).
+    - `maxlength?: number` — Maximum number of elements for multiple selection (defaults to `0` — unlimited).
+    - `alwaysChange?: boolean` — Forced value replacement flag (defaults to `true`).
+    - `notEmpty?: boolean` — Prevents the list from being completely cleared (defaults to `false`).
 
 **Returns:**
 `T | T[] | undefined` — The new state of selected values.
@@ -22,7 +22,7 @@ Handles updating selected values based on the selection mode (single or multiple
 import { setValues } from '@dxtmisha/functional-basic'
 
 // Single selection
-console.log(setValues(1, 2, {})) // 2
+console.log(setValues(1, 2)) // 2
 
 // Multiple selection (toggle)
 let list = [1, 2]

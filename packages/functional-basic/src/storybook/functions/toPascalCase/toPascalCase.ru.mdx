@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toPascalCase - Преобразование строки в PascalCase'/>
+
+# `toPascalCase`
+
+Преобразует текстовую строку в формат `PascalCase` (CamelCase с первой заглавной буквой). Внутри использует `toCamelCase` для обработки разделителей и спецсимволов.
+
+**Параметры:**
+- `value: string` — Исходная строка для преобразования.
+
+**Возвращает:**
+`string` — Строка в формате `PascalCase`.
+
+```typescript
+import { toPascalCase } from '@dxtmisha/functional-basic'
+
+console.log(toPascalCase('hello world')) // 'HelloWorld'
+console.log(toPascalCase('user-name')) // 'UserName'
+```

@@ -29,6 +29,34 @@ describe('setElementItem', () => {
     expect(customContainer.custom.a).toBe(1)
   })
 
+  it('should replace array properties without merging them as dictionary objects', () => {
+    const customContainer = element as unknown as { list: string[] }
+    customContainer.list = ['initial-1', 'initial-2']
+    setElementItem(element, 'list', ['replaced-1'])
+    expect(customContainer.list).toEqual(['replaced-1'])
+  })
+
+  it('should protect against prototype pollution and ignore dangerous keys', () => {
+    const originalProtoToString = Object.prototype.toString
+
+    const resultProto = setElementItem(element, '__proto__', { polluted: true })
+    const resultConstructor = setElementItem(element, 'constructor', { polluted: true })
+    const resultPrototype = setElementItem(element, 'prototype', { polluted: true })
+
+    expect(resultProto).toBe(element)
+    expect(resultConstructor).toBe(element)
+    expect(resultPrototype).toBe(element)
+
+    setElementItem(element, 'style', {
+      __proto__: { polluted: true },
+      constructor: { polluted: true },
+      prototype: { polluted: true }
+    })
+
+    expect(({} as Record<string, unknown>).polluted).toBeUndefined()
+    expect(Object.prototype.toString).toBe(originalProtoToString)
+  })
+
   it('should handle function values', () => {
     const fn = () => 'test'
     setElementItem(element, 'onclick', () => fn)
@@ -77,6 +105,33 @@ describe('setElementItem', () => {
     expect(element.style.getPropertyValue('--test-custom-var')).toBe('24px')
   })
 
+  it('should handle both camelCase and kebab-case CSS properties via setProperty', () => {
+    setElementItem(element, 'style', {
+      'font-size': '18px',
+      'backgroundColor': 'blue',
+      'zIndex': '10'
+    })
+    expect(element.style.fontSize).toBe('18px')
+    expect(element.style.backgroundColor).toBe('blue')
+    expect(element.style.zIndex).toBe('10')
+  })
+
+  it('should cleanly remove CSS properties and custom variables when null or undefined is passed', () => {
+    setElementItem(element, 'style', {
+      'color': 'red',
+      '--test-var': '10px'
+    })
+    expect(element.style.color).toBe('red')
+    expect(element.style.getPropertyValue('--test-var')).toBe('10px')
+
+    setElementItem(element, 'style', {
+      'color': null,
+      '--test-var': undefined
+    })
+    expect(element.style.color).toBe('')
+    expect(element.style.getPropertyValue('--test-var')).toBe('')
+  })
+
   it('should handle boolean non-aria attributes by adding or removing attribute', () => {
     setElementItem(element, 'custom-active', true)
     expect(element.hasAttribute('custom-active')).toBe(true)
@@ -84,5 +139,10 @@ describe('setElementItem', () => {
 
     setElementItem(element, 'custom-active', false)
     expect(element.hasAttribute('custom-active')).toBe(false)
+  })
+
+  it('should return undefined gracefully when element does not exist or selector is invalid', () => {
+    const result = setElementItem('#non-existent-selector', 'id', 'test')
+    expect(result).toBeUndefined()
   })
 })

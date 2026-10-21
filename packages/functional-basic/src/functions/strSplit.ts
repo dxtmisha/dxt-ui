@@ -6,14 +6,14 @@ import { anyToString } from './anyToString'
  *
  * Разделяет строку по разделителю, ограничивая количество элементов.
  * Если указан лимит, последний элемент будет содержать остаток строки.
- * @param value input value/ входное значение
- * @param separator separator/ разделитель
- * @param limit limit/ лимит
- * @returns split array/ разделенный массив
+ * @param value input value / входное значение
+ * @param separator separator / разделитель
+ * @param limit limit / лимит
+ * @returns split array / разделенный массив
  */
 export function strSplit(
-  value: number | string,
-  separator: string,
+  value?: unknown,
+  separator: string = '',
   limit?: number
 ): string[] {
   const stringValue = anyToString(value)
@@ -22,17 +22,18 @@ export function strSplit(
     return stringValue.split(separator)
   }
 
-  const data = stringValue.split(separator, limit)
-  const dataFull = stringValue.split(separator)
-
-  if (data.length === dataFull.length) {
-    return data
+  if (limit === 1) {
+    return [stringValue]
   }
 
-  data.pop()
+  const parts = stringValue.split(separator)
+
+  if (parts.length <= limit) {
+    return parts
+  }
 
   return [
-    ...data,
-    dataFull.slice(limit - 1).join(separator)
+    ...parts.slice(0, limit - 1),
+    parts.slice(limit - 1).join(separator)
   ]
 }

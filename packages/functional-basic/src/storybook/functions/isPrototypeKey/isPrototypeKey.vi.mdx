@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isPrototypeKey - Kiểm tra khóa gây ô nhiễm prototype'/>
+
+# `isPrototypeKey`
+
+Kiểm tra xem khóa thuộc tính có thuộc các khóa gây nguy hiểm **Prototype Pollution** hay không (`__proto__`, `constructor`, `prototype`).
+
+Được sử dụng để bảo vệ các đối tượng JavaScript khỏi việc thay đổi chuỗi prototype khi gộp đệ quy, gán động thuộc tính phần tử DOM hoặc phân tích cú pháp dữ liệu bên ngoài.
+
+**Tham số:**
+- `key: unknown` — khóa thuộc tính cần kiểm tra.
+
+**Giá trị trả về:**
+`boolean` — `true` nếu khóa là `'__proto__'`, `'constructor'`, hoặc `'prototype'`, ngược lại trả về `false`.
+
+```typescript
+import { isPrototypeKey } from '@dxtmisha/functional-basic'
+
+isPrototypeKey('__proto__') // true
+isPrototypeKey('constructor') // true
+isPrototypeKey('prototype') // true
+
+isPrototypeKey('id') // false
+isPrototypeKey('toString') // false
+isPrototypeKey(123) // false
+
+// Mẫu thiết lập thuộc tính an toàn:
+function safeSet(target: Record<string, unknown>, key: string, value: unknown) {
+  if (isPrototypeKey(key)) {
+    return
+  }
+
+  target[key] = value
+}
+```

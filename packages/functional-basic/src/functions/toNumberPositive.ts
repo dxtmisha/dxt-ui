@@ -1,4 +1,5 @@
-import { isFilled } from './isFilled'
+import type { NumberOrString } from '../types/basicTypes'
+import { toNumber } from './toNumber'
 
 /**
  * Converts a value to a positive finite number (> 0), or returns default value (0) if invalid.
@@ -7,18 +8,18 @@ import { isFilled } from './isFilled'
  * @param value input value / входное значение
  * @param defaultValue default fallback value if invalid / значение по умолчанию, если невалидно
  * @returns parsed positive number or defaultValue / распарсенное положительное число или defaultValue
+ *
+ * @example
+ * toNumberPositive(15) // 15
+ * toNumberPositive('10') // 10
+ * toNumberPositive(-5) // 0
+ * toNumberPositive('invalid', 1) // 1
  */
 export function toNumberPositive(
-  value?: number | string | null,
+  value?: NumberOrString | null,
   defaultValue: number = 0
 ): number {
-  if (isFilled(value)) {
-    const number = Number(value)
+  const numericValue = toNumber(value ?? undefined)
 
-    if (Number.isFinite(number) && number > 0) {
-      return number
-    }
-  }
-
-  return defaultValue
+  return numericValue > 0 ? numericValue : defaultValue
 }

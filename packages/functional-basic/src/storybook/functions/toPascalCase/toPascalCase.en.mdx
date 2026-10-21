@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toPascalCase - Converting a string to PascalCase'/>
+
+# `toPascalCase`
+
+Converts a text string to `PascalCase` format (CamelCase with first letter capitalized). Internally uses `toCamelCase` to handle delimiters and special characters.
+
+**Parameters:**
+- `value: string` — The original string to convert.
+
+**Returns:**
+`string` — The string in `PascalCase` format.
+
+```typescript
+import { toPascalCase } from '@dxtmisha/functional-basic'
+
+console.log(toPascalCase('hello world')) // 'HelloWorld'
+console.log(toPascalCase('user-name')) // 'UserName'
+```

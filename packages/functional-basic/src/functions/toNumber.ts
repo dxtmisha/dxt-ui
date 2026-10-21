@@ -53,8 +53,8 @@ const REGEXP_DOT = /[.]/g
  * Обрабатывает различные разделители (пробелы, запятые, точки) и удаляет нечисловые символы.
  * Безопасно для использования в SSR (Server-Side Rendering) средах.
  *
- * @param value - The input value to convert / Входное значение для преобразования
- * @returns The parsed number or 0 if conversion fails / Распарсенное число или 0, если конвертация не удалась
+ * @param value input value to convert / входное значение для преобразования
+ * @returns parsed number or 0 if conversion fails / распарсенное число или 0, если конвертация не удалась
  *
  * @example
  * toNumber("1 234,56") // 1234.56
@@ -67,26 +67,26 @@ export function toNumber(value?: NumberOrString): number {
   }
 
   if (
-    isFilled(value)
-    && isString(value)
+    isString(value)
+    && isFilled(value)
   ) {
-    let number = value.replace(REGEXP_FILTER, '')
+    let preparedValue = value.replace(REGEXP_FILTER, '')
 
-    if (REGEXP_SPACE_THOUSANDS.test(number)) {
-      number = number
+    if (REGEXP_SPACE_THOUSANDS.test(preparedValue)) {
+      preparedValue = preparedValue
         .replace(REGEXP_SPACE, '')
         .replace(REGEXP_COMMA, '.')
-    } else if (REGEXP_COMMA_THOUSANDS.test(number)) {
-      number = number.replace(REGEXP_COMMA, '')
-    } else if (REGEXP_DOT_THOUSANDS.test(number)) {
-      number = number
+    } else if (REGEXP_COMMA_THOUSANDS.test(preparedValue)) {
+      preparedValue = preparedValue.replace(REGEXP_COMMA, '')
+    } else if (REGEXP_DOT_THOUSANDS.test(preparedValue)) {
+      preparedValue = preparedValue
         .replace(REGEXP_DOT, '')
         .replace(REGEXP_COMMA, '.')
     } else {
-      number = number.replace(REGEXP_COMMA, '.')
+      preparedValue = preparedValue.replace(REGEXP_COMMA, '.')
     }
 
-    return parseFloat(number) || 0
+    return parseFloat(preparedValue) || 0
   }
 
   return 0
