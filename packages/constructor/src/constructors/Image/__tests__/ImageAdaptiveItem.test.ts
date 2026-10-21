@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { createApp, h, nextTick, reactive, ref, shallowRef, type Ref, type ShallowRef, type VNode } from 'vue'
+import { createApp, h, nextTick, onMounted, onUnmounted, reactive, ref, shallowRef, type Ref, type ShallowRef, type VNode } from 'vue'
 import { type EventRef, isString, ServerStorage } from '@dxtmisha/functional'
-import { ClientOnlyInclude } from '../../../classes/ClientOnlyInclude'
 import { ImageAdaptiveItem } from '../ImageAdaptiveItem'
 import { ImageAdaptiveGroup } from '../ImageAdaptiveGroup'
 import { ImageBackground } from '../ImageBackground'
@@ -185,8 +184,17 @@ async function createAdaptive(overrides: Partial<ImageProps> = {}): Promise<Adap
   document.body.append(host)
   const application = createApp({
     setup(): () => VNode {
-      item = new ImageAdaptiveItemFixture(props, new ClientOnlyInclude({ clientOnly: false }), data, element)
-      background = new ImageBackground(props, data, new ImageCoordinator(props), item)
+      const isMounted = ref(false)
+      item = new ImageAdaptiveItemFixture(props, element, isMounted, () => data)
+      const coordinator = new ImageCoordinator(props)
+      background = new ImageBackground(props, () => data, () => coordinator, () => item!)
+      onMounted(() => {
+        isMounted.value = true
+        item?.onMounted()
+      })
+      onUnmounted(() => {
+        item?.onUnmounted()
+      })
       return () => h('div', {
         key: elementKey.value,
         ref: element,

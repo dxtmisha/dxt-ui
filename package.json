@@ -84,6 +84,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "overrides": {
+    "@microsoft/api-extractor": "^7.59.4"
+  },
   "dependencies": {
     "@dxtmisha/configuration": ">=1.2.0",
     "@dxtmisha/constructor": ">=0.118.3",
@@ -119,6 +122,7 @@
     "@figma/plugin-typings": "^1.142.0",
     "@google/genai": "^2.30.0",
     "@mdx-js/rollup": "^3.1.1",
+    "@microsoft/api-extractor": "^7.59.4",
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@napi-rs/canvas": "^1.0.11",
     "@storybook/addon-a11y": "^10.6.2",

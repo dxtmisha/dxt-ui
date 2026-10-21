@@ -134,14 +134,4 @@ describe('ImageFile', () => {
     await rejection
     expect(functional.ErrorCenter.on).toHaveBeenCalledWith(expect.objectContaining({ details: failure }))
   })
-
-  it('returns a decoded path and settles missing paths as an empty string', async () => {
-    const pending = ImageFile.getPath('/photo.png')
-    loadImage(browser.images[0]!)
-    expect(await pending).toBe(browser.images[0]!.src)
-    expect(await ImageFile.getPath('')).toBe('')
-    const broken = ImageFile.getPath('/broken.png')
-    browser.images[1]!.dispatchEvent(new Event('error'))
-    expect(await broken).toBe('')
-  })
 })

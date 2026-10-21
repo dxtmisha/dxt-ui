@@ -33,8 +33,12 @@ class ServerLogic extends DesignLogicAbstract<
   ConstrItem,
   { dependency: typeof ServerDependency }
 > {
-  /** Dependency argument factory / Фабрика аргументов зависимости */
-  protected readonly constructorArguments = { dependency: (): [] => [] }
+  /** Dependency item configuration / Конфигурация элемента зависимости */
+  protected readonly constructorItems = {
+    dependency: {
+      parameters: (): [] => []
+    }
+  }
 
   /**
    * Registers the server-rendered dependency.
@@ -49,14 +53,6 @@ class ServerLogic extends DesignLogicAbstract<
 
   /** Observable mount state / Наблюдаемое состояние монтирования */
   declare readonly isMounted: Ref<boolean>
-
-  /**
-   * Leaves initialization empty.
-   *
-   * Оставляет инициализацию пустой.
-   */
-  protected override make(): void {
-  }
 }
 
 describe('DesignLogicAbstract in Node SSR', () => {

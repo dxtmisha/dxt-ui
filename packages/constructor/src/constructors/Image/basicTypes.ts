@@ -1,8 +1,11 @@
 import type { HTMLAttributes, ImgHTMLAttributes, SourceHTMLAttributes, VNodeProps } from 'vue'
 import type { ConstrBind, ConstrClass, ConstrStyles, Undefined } from '@dxtmisha/functional'
 import type { AriaList } from '../../types/ariaTypes'
+import type { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import type { ImageEmits } from './types'
 import type { ImagePropsBasic } from './props'
+
+// --- Values & Types / Типы значений и классификация источников ---
 
 /** Enumeration of image types / Перечисление типов изображений */
 export enum ImageTypeValue {
@@ -38,6 +41,96 @@ export enum ImageTypeValue {
   icon = 'icon'
 }
 
+/** Image type item / Элемент типа изображения */
+export type ImageTypeItem = ImageTypeValue | Undefined
+
+/** Image value type / Тип значения изображения */
+export type ImageValue<
+  Image extends ImagePropsBasic = ImagePropsBasic
+> = string | ConstrBind<Image> | null
+
+// --- Dimensions & Coordinates / Размеры и координаты ---
+
+/** Image coordinator item type / Тип элемента координат изображения */
+export type ImageCoordinatorItem
+  = readonly [number]
+    | readonly [number, number]
+    | readonly [number, number, number]
+    | readonly [number, number, number, number]
+    | Undefined
+
+/** Image size type / Тип размера изображения */
+export type ImageSize<T = number> = {
+  /** Width/ Ширина */
+  width: T
+  /** Height/ Высота */
+  height: T
+}
+
+// --- Adaptive Group / Адаптивная группа ---
+
+/** Storage structure for adaptive group / Структура хранилища для адаптивной группы */
+export type ImageAdaptiveGroupStorage = {
+  /** List of all tracked adaptive items / Список всех отслеживаемых адаптивных элементов */
+  objects: ImageAdaptiveItem[]
+  /** List of currently calculated adaptive items / Список рассчитываемых в данный момент адаптивных элементов */
+  objectsAdaptive: ImageAdaptiveItem[]
+  /** Flag for tracking frame calculation time / Флаг отслеживания времени вычисления кадра */
+  time?: boolean
+}
+
+// --- Image Items & Events / Элементы изображения и данные событий ---
+
+/** Parameters for the uploaded image or the one available by a direct link / Параметры для загруженного изображения или доступного по прямой ссылке */
+export type ImageItem
+  = ImageSize
+    & {
+    /** Image element/ Элемент изображения */
+      image: HTMLImageElement
+      /** Source URL/ URL-источник */
+      src: string
+    }
+
+/** Image event item type / Тип элемента события изображения */
+export type ImageEventItem = ImageItem | string | undefined
+
+/** Image event type / Тип события изображения */
+export type ImageEventType = {
+  /** Event type/ Тип события */
+  type: ImageTypeItem
+}
+
+/** Image event data type / Тип данных события изображения */
+export type ImageEventData
+  = ImageEventType
+    & {
+    /** Image event data/ Данные события изображения */
+      image: ImageEventItem
+    }
+
+// --- Binary Buffers / Буферы данных Uint8Array ---
+
+/** Image Uint8Array type / Тип Image Uint8Array */
+export type ImageUint8ArrayType = Uint8Array<ArrayBuffer> | ArrayBuffer
+
+// --- Picture & Multi-source Elements / Элементы Picture и списки источников ---
+
+/** Picture source attributes and virtual node key / Атрибуты источника picture и ключ виртуального узла */
+export interface ImagePictureItem extends Pick<SourceHTMLAttributes, 'media' | 'sizes' | 'src' | 'srcset' | 'type'>, Pick<VNodeProps, 'key'> {
+  /** Source image width / Ширина изображения источника */
+  width?: ImgHTMLAttributes['width']
+  /** Source image height / Высота изображения источника */
+  height?: ImgHTMLAttributes['height']
+}
+
+/** List of image picture items / Список элементов изображения picture */
+export type ImagePictureList = ImagePictureItem[]
+
+/** Image picture type / Тип изображения picture */
+export type ImagePicture = Record<string, string> | ImagePictureList
+
+// --- Elements & DOM Bindings / Элементы разметки и привязки DOM ---
+
 /** Image element type / Тип элемента изображения */
 export type ImageElement = HTMLElement | undefined
 
@@ -59,68 +152,6 @@ export interface ImageRootAttrs extends Omit<HTMLAttributes, keyof AriaList | 'c
   style?: ConstrStyles
 }
 
-/** Image coordinator item type / Тип элемента координат изображения */
-export type ImageCoordinatorItem
-  = readonly [number]
-    | readonly [number, number]
-    | readonly [number, number, number]
-    | readonly [number, number, number, number]
-    | Undefined
-
-/** Image size type / Тип размера изображения */
-export type ImageSize<T = number> = {
-  /** Width/ Ширина */
-  width: T
-  /** Height/ Высота */
-  height: T
-}
-
-/** Picture source attributes and virtual node key / Атрибуты источника picture и ключ виртуального узла */
-export interface ImagePictureItem extends Pick<SourceHTMLAttributes, 'media' | 'sizes' | 'src' | 'srcset' | 'type'>, Pick<VNodeProps, 'key'> {
-  /** Source image width / Ширина изображения источника */
-  width?: ImgHTMLAttributes['width']
-  /** Source image height / Высота изображения источника */
-  height?: ImgHTMLAttributes['height']
-}
-
-/** List of image picture items / Список элементов изображения picture */
-export type ImagePictureList = ImagePictureItem[]
-
-/** Image picture type / Тип изображения picture */
-export type ImagePicture = Record<string, string> | ImagePictureList
-
-/** Image Uint8Array type / Тип Image Uint8Array */
-export type ImageUint8ArrayType = Uint8Array<ArrayBuffer> | ArrayBuffer
-/** Image Uint8Array item / Элемент Image Uint8Array */
-export type ImageUint8ArrayItem = {
-  /** Data buffer/ Буфер данных */
-  item: ImageUint8ArrayType
-  /** MIME type/ MIME-тип */
-  type: string
-  /** Source URL/ URL-источник */
-  src: string
-  /** Image item / Элемент изображения */
-  image?: ImageItem
-}
-/** Image Uint8Array cache / Кэш Image Uint8Array */
-export type ImageUint8ArrayCache = ImageUint8ArrayItem[]
-
-/** Parameters for the uploaded image or the one available by a direct link / Параметры для загруженного изображения или доступного по прямой ссылке */
-export type ImageItem
-  = ImageSize
-    & {
-    /** Image element/ Элемент изображения */
-      image: HTMLImageElement
-      /** Source URL/ URL-источник */
-      src: string
-    }
-
-/** Image type item / Элемент типа изображения */
-export type ImageTypeItem = ImageTypeValue | Undefined
-
-/** Image event item type / Тип элемента события изображения */
-export type ImageEventItem = ImageItem | string | undefined
-
 /** Image root bindings / Привязки корневого элемента изображения */
 export type ImageBinds = AriaList & {
   /** Automatic translation policy / Правило автоматического перевода */
@@ -135,24 +166,7 @@ export type ImageValueBinds = {
   data: ImageEventItem
 }
 
-/** Image event type / Тип события изображения */
-export type ImageEventType = {
-  /** Event type/ Тип события */
-  type: ImageTypeItem
-}
-
-/** Image event data type / Тип данных события изображения */
-export type ImageEventData
-  = ImageEventType
-    & {
-    /** Image event data/ Данные события изображения */
-      image: ImageEventItem
-    }
-
-/** Image value type / Тип значения изображения */
-export type ImageValue<
-  Image extends ImagePropsBasic = ImagePropsBasic
-> = string | ConstrBind<Image> | null
+// --- Component Inclusion / Типы включения компонента ---
 
 /** Image component inclusion type / Тип включения компонента изображения */
 export type ImageComponentInclude = {

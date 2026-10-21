@@ -29,6 +29,7 @@ describe('ImageCoordinator', () => {
   it.each([undefined, null, [], [1, 2, 3, 4, 5], {}, '10'].map(value => ({ value })))('rejects an invalid shape %j', ({ value }) => {
     // Exercise runtime input from untyped callers / Проверяем входные данные нетипизированных потребителей
     const coordinator = new ImageCoordinator({ coordinator: value } as ImageProps)
+    expect(ImageCoordinator.is({ coordinator: value } as ImageProps)).toBe(false)
     expect(coordinator.is()).toBe(false)
     expect(coordinator.coordinator).toEqual([0, 0, 0, 0])
     expect(coordinator.size).toEqual({ width: 100, height: 100 })

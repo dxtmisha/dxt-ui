@@ -13,7 +13,7 @@ describe('ImageData', () => {
     const fixture = mountImageGraph(reactive({ value } as ImageProps))
     await flushUpdates()
     expect(fixture.item.data.image.value).toBeUndefined()
-    expect(fixture.item.data.text.value).toBeUndefined()
+    expect(fixture.item.text.get()).toBeUndefined()
     expect(fixture.item.data.is()).toBe(false)
     expect(fixture.item.data.isImage()).toBe(false)
     expect(fixture.item.data.isLink()).toBe(false)
@@ -136,10 +136,10 @@ describe('ImageData', () => {
 
   it('replaces the initial PDF URL with the prepared viewer source', async () => {
     const fixture = mountImageGraph(reactive({ value: '/document.pdf?token=test#page=2' }))
-    expect(fixture.item.data.text.value).toBe('/document.pdf?token=test#page=2')
+    expect(fixture.item.text.get()).toBe('/document.pdf?token=test#page=2')
     await flushUpdates()
-    expect(fixture.item.type.item.value).toBe(ImageTypeValue.pdf)
-    expect(fixture.item.data.text.value).toBe('/document.pdf?token=test#page=2&toolbar=0&scrollbar=1')
+    expect(fixture.item.type.get()).toBe(ImageTypeValue.pdf)
+    expect(fixture.item.text.get()).toBe('/document.pdf?token=test#page=2&toolbar=0&scrollbar=1')
     expect(browser.images).toHaveLength(0)
   })
 
@@ -149,7 +149,7 @@ describe('ImageData', () => {
     }))
     await flushUpdates()
     await vi.waitFor(() => {
-      expect(fixture.item.data.text.value).toBe('data:application/pdf;base64,cGRm#toolbar=0&scrollbar=1')
+      expect(fixture.item.text.get()).toBe('data:application/pdf;base64,cGRm#toolbar=0&scrollbar=1')
     })
   })
 
@@ -170,19 +170,19 @@ describe('ImageData', () => {
     ['home', 'home'], ['f-vn', 'VN']
   ])('prepares display text %s as %s', (value, expected) => {
     const fixture = mountImageGraph(reactive({ value }))
-    expect(fixture.item.data.text.value).toBe(expected)
+    expect(fixture.item.text.get()).toBe(expected)
   })
 
   it('invalidates display text when the reactive source changes type', async () => {
     const props = reactive<ImageProps>({ value: '$home' })
     const fixture = mountImageGraph(props)
-    expect(fixture.item.data.text.value).toBe('home')
+    expect(fixture.item.text.get()).toBe('home')
     props.value = 'material-account_circle'
-    expect(fixture.item.data.text.value).toBe('account_circle')
+    expect(fixture.item.text.get()).toBe('account_circle')
     props.value = 'f-vn'
-    expect(fixture.item.data.text.value).toBe('VN')
+    expect(fixture.item.text.get()).toBe('VN')
     props.value = '#fff'
-    expect(fixture.item.data.text.value).toBeUndefined()
+    expect(fixture.item.text.get()).toBeUndefined()
     await flushUpdates()
   })
 
@@ -202,8 +202,7 @@ describe('ImageData', () => {
   it('ignores public onLoad calls for string and absent data', () => {
     const emits = vi.fn()
     const fixture = mountImageGraph(reactive({}), emits)
-    fixture.item.data.onLoad('/photo.png')
-    fixture.item.data.onLoad(undefined)
+    fixture.item.event.onLoad()
     expect(emits).not.toHaveBeenCalled()
   })
 })

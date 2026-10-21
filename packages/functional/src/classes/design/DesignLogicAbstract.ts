@@ -6,7 +6,9 @@ import type { DesignComponents } from './DesignComponents'
 import type { DesignName } from './DesignName'
 
 import type {
+  ConstrItems,
   ConstrComponent,
+  ConstrConstructor,
   ConstrConstructors,
   ConstrEmit,
   ConstrInstance,
@@ -34,10 +36,8 @@ export abstract class DesignLogicAbstract<
   /** Current effect scope / Текущая область реактивности */
   protected readonly scope = getCurrentScope()
 
-  /** Argument factories by constructor name / Фабрики аргументов по имени конструктора */
-  protected abstract readonly constructorArguments: {
-    [K in keyof CONSTRUCTORS & string]-?: () => ConstrParameters<CONSTRUCTORS, K>
-  }
+  /** Item configurations and default constructors by dependency name / Конфигурации элементов и конструкторы по умолчанию по имени зависимости */
+  protected abstract readonly constructorItems: ConstrItems<CONSTRUCTORS>
 
   /** Cached dependency instances without inherited properties / Сохраненные экземпляры зависимостей без унаследованных свойств */
   protected readonly instances: {
@@ -46,7 +46,6 @@ export abstract class DesignLogicAbstract<
 
   /** Callback after dependency mount callbacks / Обработчик после обработчиков монтирования зависимостей */
   protected readonly onMounted?: () => void
-
   /** Callback after dependency cleanup callbacks / Обработчик после обработчиков очистки зависимостей */
   protected readonly onUnmounted?: () => void
 
@@ -62,17 +61,15 @@ export abstract class DesignLogicAbstract<
    * @param emits event emitter / функция отправки событий
    * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
-  protected constructor(
+  constructor(
     protected readonly props: Readonly<P>,
     protected readonly element: Ref<E | undefined>,
     protected readonly naming: DesignName,
     protected readonly components?: DesignComponents<COMP, P>,
     protected readonly slots?: SLOTS,
     protected readonly emits?: ConstrEmit<EMITS>,
-    protected readonly constructors: Partial<CONSTRUCTORS> = {}
+    protected readonly constructors?: Partial<CONSTRUCTORS>
   ) {
-    this.make()
-
     if (getCurrentInstance()) {
       onMounted(() => {
         const instances = Object.values(this.instances)
@@ -101,30 +98,45 @@ export abstract class DesignLogicAbstract<
    *
    * Возвращает экземпляр зависимости, создавая его при первом обращении в сохраненной активной области реактивности.
    * @param name string constructor name / строковое имя конструктора
-   * @returns dependency instance or undefined if the constructor or active scope is unavailable / экземпляр зависимости или undefined, если конструктор или активная область недоступны
+   * @returns dependency instance / экземпляр зависимости
    */
-  getInstance<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K> | undefined {
-    if (
-      !this.instances[name]
-      && Object.hasOwn(this.constructors, name)
-    ) {
-      const Constructor = this.constructors[name] as
-        (new (...parameters: ConstrParameters<CONSTRUCTORS, K>) => ConstrInstance<CONSTRUCTORS, K>)
-        | undefined
+  getInstance<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K> {
+    let instance = this.instances[name]
 
-      if (Constructor && this.scope?.active) {
+    if (!instance) {
+      const Constructor = this.getConstructor(name)
+
+      if (
+        Constructor
+        && this.scope?.active
+      ) {
         this.scope.run(() => {
-          const instance = new Constructor(...this.constructorArguments[name]())
+          const parameters = this.constructorItems[name]?.parameters?.() ?? []
+          instance = new Constructor(...(parameters as ConstrParameters<CONSTRUCTORS, K>))
           this.instances[name] = instance
 
-          if (this.isMounted.value && this.isLifecycle(instance)) {
+          if (
+            this.isMounted.value
+            && this.isLifecycle(instance)
+          ) {
             this.callLifecycle('onMounted', [instance])
           }
         })
       }
     }
 
-    return this.instances[name]
+    return instance as ConstrInstance<CONSTRUCTORS, K>
+  }
+
+  /**
+   * Short alias for {@link getInstance}.
+   *
+   * Короткий псевдоним для {@link getInstance}.
+   * @param name string constructor name / строковое имя конструктора
+   * @returns dependency instance / экземпляр зависимости
+   */
+  i<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K> {
+    return this.getInstance(name)
   }
 
   /**
@@ -136,6 +148,21 @@ export abstract class DesignLogicAbstract<
    */
   protected isLifecycle(instance: unknown): instance is DesignLifecycleAbstract {
     return instance instanceof DesignLifecycleAbstract
+  }
+
+  /**
+   * Returns the constructor for the specified dependency name.
+   *
+   * Возвращает конструктор для указанного имени зависимости.
+   * @param name dependency constructor name / имя конструктора зависимости
+   * @returns dependency constructor / конструктор зависимости
+   */
+  protected getConstructor<K extends keyof CONSTRUCTORS & string>(name: K): ConstrConstructor<CONSTRUCTORS, K> {
+    if (this.constructors?.[name]) {
+      return this.constructors[name] as ConstrConstructor<CONSTRUCTORS, K>
+    }
+
+    return this.constructorItems[name]?.item as ConstrConstructor<CONSTRUCTORS, K>
   }
 
   /**
@@ -165,13 +192,4 @@ export abstract class DesignLogicAbstract<
       throw error
     }
   }
-
-  /**
-   * Initializes component logic before lifecycle hooks are registered.
-   * Derived field initializers have not run at this point.
-   *
-   * Инициализирует логику компонента до регистрации обработчиков жизненного цикла.
-   * Инициализаторы полей наследника в этот момент еще не выполнены.
-   */
-  protected abstract make(): void
 }

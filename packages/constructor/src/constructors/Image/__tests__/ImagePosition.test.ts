@@ -1,5 +1,5 @@
 import './testWarnings'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { reactive } from 'vue'
 import { ImagePosition } from '../ImagePosition'
 import { ImageCoordinator } from '../ImageCoordinator'
@@ -13,13 +13,16 @@ describe('ImagePosition', () => {
     [{ x: '25%', y: '80%' }, '25%', '80%'],
     [{ x: '', y: '' }, 'center', 'center']
   ])('resolves explicit or default positions for %j', (props, expectedX, expectedY) => {
-    const position = new ImagePosition(props, new ImageCoordinator(props))
+    const coordinatorGetter = vi.fn(() => new ImageCoordinator(props))
+    const position = new ImagePosition(props, coordinatorGetter)
     expect([position.x, position.y]).toEqual([expectedX, expectedY])
+    expect(coordinatorGetter).not.toHaveBeenCalled()
   })
 
   it('gives crop coordinates priority and updates after in-place changes', () => {
     const props = reactive<ImageProps>({ coordinator: [10, 20, 30, 40], x: 'left', y: 'top' })
-    const position = new ImagePosition(props, new ImageCoordinator(props))
+    const coordinator = new ImageCoordinator(props)
+    const position = new ImagePosition(props, () => coordinator)
     expect([position.x, position.y]).toEqual(['60%', '40%'])
     props.coordinator = [0, 10]
     expect([position.x, position.y]).toEqual(['50%', '50%'])

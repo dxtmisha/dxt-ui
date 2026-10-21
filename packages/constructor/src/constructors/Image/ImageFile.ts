@@ -1,6 +1,6 @@
 // ai-none
 
-import { ErrorCenter, isString, resizeImageByMax } from '@dxtmisha/functional'
+import { ErrorCenter, resizeImageByMax } from '@dxtmisha/functional'
 
 import type { ImageItem } from './basicTypes'
 import { CONSTRUCTOR_ERROR_GROUP } from '../../types/errorTypes'
@@ -78,18 +78,6 @@ export class ImageFile {
       this.onError(error)
       throw error
     }
-  }
-
-  /**
-   * Returns a link to the image.
-   *
-   * Возвращает ссылку на изображение.
-   * @param src file or link / файл или ссылка
-   * @returns link to the image / ссылка на изображение
-   */
-  static async getPath(src: string | File): Promise<string> {
-    const item = await this.createImage(src)
-    return isString(item) ? item : (item?.src ?? '')
   }
 
   /**

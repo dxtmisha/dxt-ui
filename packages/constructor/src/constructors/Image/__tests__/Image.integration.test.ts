@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest'
-import { computed, reactive } from 'vue'
+import { computed, reactive, type VNodeChild } from 'vue'
 import type { ConstrEmit } from '@dxtmisha/functional'
 import { ImageDesign } from '../ImageDesign'
 import { ImageTypeValue } from '../basicTypes'
@@ -21,12 +21,17 @@ function mountImage(
   emits?: ConstrEmit<ImageEmits>
 ): MountedHelper<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>> {
   Object.assign(props, { lazy: props.lazy ?? false, preloadOffset: props.preloadOffset ?? '1024px' })
+  let renderFn: (() => VNodeChild) | undefined
   return mountHelper(
-    () => new ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>('test.image', props, {
-      emits,
-      classes: computed(() => ({ main: 'test-image' }))
-    }),
-    design => design.render()()
+    () => {
+      const design = new ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>('test.image', props, {
+        emits,
+        classes: computed(() => ({ main: 'test-image' }))
+      })
+      renderFn = design.render() as () => VNodeChild
+      return design
+    },
+    () => renderFn?.()
   )
 }
 

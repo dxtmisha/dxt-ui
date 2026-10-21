@@ -1,5 +1,7 @@
 // ai-none
 
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+
 import type { ImageItem, ImageUint8ArrayType } from './basicTypes'
 import type { ImageProps } from './props'
 
@@ -8,7 +10,7 @@ import type { ImageProps } from './props'
  *
  * Класс для работы с изображением в формате Uint8Array.
  */
-export class ImageUint8Array {
+export class ImageUint8Array extends DesignLifecycleAbstract {
   /**
    * Check if the value is an image in Uint8Array or ArrayBuffer format.
    *
@@ -20,19 +22,9 @@ export class ImageUint8Array {
     return value instanceof Uint8Array || value instanceof ArrayBuffer
   }
 
-  /**
-   * Convert an image to a Uint8Array.
-   *
-   * Преобразует изображение в Uint8Array.
-   * @param value image / изображение
-   * @returns image as a Uint8Array / изображение в формате Uint8Array
-   */
-  static toUint8Array(value: ImageUint8ArrayType): Uint8Array<ArrayBuffer> {
-    if (value instanceof ArrayBuffer) {
-      return new Uint8Array(value)
-    }
-
-    return value
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.reset()
   }
 
   /** Active object URL / Активный URL объекта */
@@ -45,33 +37,19 @@ export class ImageUint8Array {
    * @param props input data / входные данные
    */
   constructor(
-    protected readonly props?: ImageProps
-  ) {}
+    protected readonly props: ImageProps
+  ) {
+    super()
+  }
 
   /**
-   * Create an image from a Uint8Array or ArrayBuffer.
+   * Check if the value is an image in Uint8Array or ArrayBuffer format.
    *
-   * Создает изображение из Uint8Array или ArrayBuffer.
-   * @param value image / изображение
-   * @param type image type / тип изображения
-   * @returns image object or undefined / объект изображения или undefined
+   * Проверяет, является ли значение изображением в формате Uint8Array или ArrayBuffer.
+   * @returns true if the value is a Uint8Array or ArrayBuffer / true, если значение является Uint8Array или ArrayBuffer
    */
-  async createImage(
-    value?: ImageUint8ArrayType,
-    type: string = 'image/jpeg'
-  ): Promise<ImageItem | undefined> {
-    const targetValue = this.getValue(value)
-
-    if (!ImageUint8Array.is(targetValue)) {
-      return undefined
-    }
-
-    this.reset()
-
-    const blob = new Blob([ImageUint8Array.toUint8Array(targetValue)], { type })
-    this.src = URL.createObjectURL(blob)
-
-    return this.initImage(this.src)
+  is(): boolean {
+    return ImageUint8Array.is(this.getValue())
   }
 
   /**
@@ -87,14 +65,34 @@ export class ImageUint8Array {
   }
 
   /**
-   * Returns the explicit buffer or the source candidate from component properties.
+   * Create an image from a Uint8Array or ArrayBuffer.
    *
-   * Возвращает явно переданный буфер либо исходное значение из свойств компонента.
-   * @param value image / изображение
+   * Создает изображение из Uint8Array или ArrayBuffer.
+   * @returns image object or undefined / объект изображения или undefined
+   */
+  async createImage(): Promise<ImageItem | undefined> {
+    this.reset()
+
+    const value = this.toUint8Array()
+
+    if (!value) {
+      return undefined
+    }
+
+    const blob = new Blob([value], { type: 'image/jpeg' })
+    this.src = URL.createObjectURL(blob)
+
+    return this.initImage(this.src)
+  }
+
+  /**
+   * Returns the source candidate from component properties.
+   *
+   * Возвращает исходное значение из свойств компонента.
    * @returns source candidate to validate before decoding / исходное значение для проверки перед декодированием
    */
-  protected getValue(value?: ImageUint8ArrayType): ImageProps['value'] {
-    return value ?? this.props?.value
+  protected getValue(): ImageProps['value'] {
+    return this.props.value
   }
 
   /**
@@ -120,5 +118,25 @@ export class ImageUint8Array {
 
       image.src = src
     })
+  }
+
+  /**
+   * Convert an image to a Uint8Array.
+   *
+   * Преобразует изображение в Uint8Array.
+   * @returns image as a Uint8Array or undefined / изображение в формате Uint8Array или undefined
+   */
+  protected toUint8Array(): Uint8Array<ArrayBuffer> | undefined {
+    const value = this.getValue()
+
+    if (value instanceof ArrayBuffer) {
+      return new Uint8Array(value)
+    }
+
+    if (value instanceof Uint8Array) {
+      return value
+    }
+
+    return undefined
   }
 }

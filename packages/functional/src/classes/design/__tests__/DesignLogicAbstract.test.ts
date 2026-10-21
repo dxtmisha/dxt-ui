@@ -105,17 +105,25 @@ class TestLogic extends DesignLogicAbstract<
   /** Lifecycle argument factory calls / Вызовы фабрики аргументов зависимости с жизненным циклом */
   readonly onLifecycleArguments = vi.fn()
 
-  protected readonly constructorArguments = {
-    DependencyConstructor: (): ConstructorParameters<typeof TestDependency> => {
-      this.onArguments(getCurrentScope())
-      return [this.props.label, this.value]
+  protected readonly constructorItems = {
+    DependencyConstructor: {
+      parameters: (): ConstructorParameters<typeof TestDependency> => {
+        this.onArguments(getCurrentScope())
+        return [this.props.label, this.value]
+      }
     },
-    CountConstructor: (): ConstructorParameters<typeof CountDependency> => [this.value.value],
-    LifecycleConstructor: (): [] => {
-      this.onLifecycleArguments(getCurrentScope())
-      return []
+    CountConstructor: {
+      parameters: (): ConstructorParameters<typeof CountDependency> => [this.value.value]
     },
-    EmptyLifecycleConstructor: (): [] => []
+    LifecycleConstructor: {
+      parameters: (): [] => {
+        this.onLifecycleArguments(getCurrentScope())
+        return []
+      }
+    },
+    EmptyLifecycleConstructor: {
+      parameters: (): [] => []
+    }
   }
 
   /**
@@ -138,14 +146,6 @@ class TestLogic extends DesignLogicAbstract<
   declare readonly isMounted: Ref<boolean>
 
   readonly value = ref(0)
-
-  /**
-   * Implements the initialization hook for the test fixture.
-   *
-   * Реализует метод инициализации тестового класса.
-   */
-  protected override make(): void {
-  }
 }
 
 /**
@@ -162,11 +162,11 @@ class PrototypeKeyLogic extends DesignLogicAbstract<
   Record<string, typeof LifecycleDependency | undefined>
 > {
   /** Argument factories for prototype property names / Фабрики аргументов для имен свойств прототипа */
-  protected readonly constructorArguments = {
-    constructor: (): [] => [],
-    toString: (): [] => [],
-    hasOwnProperty: (): [] => [],
-    ['__proto__']: (): [] => []
+  protected readonly constructorItems = {
+    constructor: { parameters: (): [] => [] },
+    toString: { parameters: (): [] => [] },
+    hasOwnProperty: { parameters: (): [] => [] },
+    ['__proto__']: { parameters: (): [] => [] }
   }
 
   /**
@@ -177,14 +177,6 @@ class PrototypeKeyLogic extends DesignLogicAbstract<
    */
   constructor(constructors: Record<string, typeof LifecycleDependency | undefined> = {}) {
     super({ label: 'test' }, ref<HTMLElement>(), new DesignName('d1.test'), undefined, undefined, undefined, constructors)
-  }
-
-  /**
-   * Implements the initialization hook for the test fixture.
-   *
-   * Реализует метод инициализации тестового класса.
-   */
-  protected override make(): void {
   }
 }
 
@@ -278,14 +270,16 @@ describe('DesignLogicAbstract', () => {
 
     const dependency = logic.getInstance('DependencyConstructor')
     const count = logic.getInstance('CountConstructor')
-    expectTypeOf(dependency).toEqualTypeOf<TestDependency | undefined>()
-    expectTypeOf(count).toEqualTypeOf<CountDependency | undefined>()
+    expectTypeOf(dependency).toEqualTypeOf<TestDependency>()
+    expectTypeOf(count).toEqualTypeOf<CountDependency>()
     expect(dependency).toBeInstanceOf(TestDependency)
-    expect(dependency?.label).toBe('test')
-    expect(dependency?.value).toBe(logic.value)
-    expect(count?.count).toBe(3)
+    expect(dependency.label).toBe('test')
+    expect(dependency.value).toBe(logic.value)
+    expect(count.count).toBe(3)
     expect(logic.getInstance('DependencyConstructor')).toBe(dependency)
+    expect(logic.i('DependencyConstructor')).toBe(dependency)
     expect(logic.getInstance('CountConstructor')).toBe(count)
+    expect(logic.i('CountConstructor')).toBe(count)
     expect(logic.onArguments).toHaveBeenCalledTimes(1)
   })
 
@@ -295,17 +289,9 @@ describe('DesignLogicAbstract', () => {
     assert(logic)
 
     const dependency = logic.getInstance(name)
-    expectTypeOf(dependency).toEqualTypeOf<LifecycleDependency | undefined>()
+    expectTypeOf(dependency).toEqualTypeOf<LifecycleDependency>()
     expect(dependency).toBeInstanceOf(LifecycleDependency)
     expect(logic.getInstance(name)).toBe(dependency)
-  })
-
-  it.each(['constructor', 'toString', 'hasOwnProperty', '__proto__'])('ignores an inherited constructor named %s', (name) => {
-    const scope = createScope()
-    const logic = scope.run(() => new PrototypeKeyLogic())
-    assert(logic)
-
-    expect(logic.getInstance(name)).toBeUndefined()
   })
 
   it('creates dependencies in the captured scope and disposes their effects with it', () => {
@@ -1057,5 +1043,58 @@ describe('DesignLogicAbstract', () => {
     expect(events).toEqual(['dependency-mounted', 'logic-mounted', 'dependency-unmounted', 'logic-unmounted'])
     expect(contexts).toEqual([logic, logic])
     expect(states).toEqual([true, true])
+  })
+
+  it('resolves dependency constructors from constructor overrides or constructorItems via getConstructor', () => {
+    class CustomDependency {
+      constructor(readonly tag: string) {}
+    }
+
+    interface DefaultTestConstructors {
+      first?: typeof TestDependency
+      second?: typeof CountDependency
+      custom?: typeof CustomDependency
+    }
+
+    class DefaultTestLogic extends DesignLogicAbstract<
+      HTMLElement,
+      ConstrComponent,
+      ConstrItem,
+      ConstrItem,
+      ConstrItem,
+      DefaultTestConstructors
+    > {
+      protected readonly constructorItems = {
+        first: {
+          item: TestDependency,
+          parameters: (): [string, Ref<number>] => ['default-first', ref(1)]
+        },
+        second: {
+          item: CountDependency,
+          parameters: (): [number] => [42]
+        },
+        custom: {
+          parameters: (): [string] => ['custom-tag']
+        }
+      }
+
+      constructor(constructors?: DefaultTestConstructors) {
+        super({}, ref<HTMLElement>(), new DesignName('d1.default-test'), undefined, undefined, undefined, constructors)
+      }
+    }
+
+    const scope = effectScope()
+    const logic = scope.run(() => new DefaultTestLogic({ second: undefined, custom: CustomDependency }))
+    assert(logic)
+
+    const first = logic.getInstance('first')
+    expect(first).toBeInstanceOf(TestDependency)
+    expect(first.label).toBe('default-first')
+
+    const custom = logic.getInstance('custom')
+    expect(custom).toBeInstanceOf(CustomDependency)
+    expect(custom.tag).toBe('custom-tag')
+
+    scope.stop()
   })
 })

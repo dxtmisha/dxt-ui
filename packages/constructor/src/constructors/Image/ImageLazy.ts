@@ -1,14 +1,15 @@
 // ai-none
 
 import {
-  onBeforeUnmount,
-  onMounted,
   type Ref,
   ref,
   type WatchHandle,
   watch
 } from 'vue'
-import { useLazyItemByMarginRef } from '@dxtmisha/functional'
+import {
+  DesignLifecycleAbstract,
+  useLazyItemByMarginRef
+} from '@dxtmisha/functional'
 
 import type { ImageProps } from './props'
 
@@ -21,7 +22,17 @@ import type { ImageProps } from './props'
  * Отслеживает видимость элемента через IntersectionObserver, управляет отступами предзагрузки
  * и контролирует состояния отложенной загрузки ресурсов.
  */
-export class ImageLazy {
+export class ImageLazy extends DesignLifecycleAbstract {
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    this.update()
+  }
+
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.reset()
+  }
+
   /** Initialization status / Статус инициализации */
   protected readonly init = ref<boolean>(false)
 
@@ -42,14 +53,13 @@ export class ImageLazy {
     protected readonly props: ImageProps,
     protected readonly element: Ref<HTMLElement | undefined>
   ) {
+    super()
+
     watch([
       element,
       () => props.lazy,
       () => props.preloadOffset
     ], () => this.update())
-
-    onMounted(() => this.update())
-    onBeforeUnmount(() => this.reset())
   }
 
   /**
@@ -60,6 +70,32 @@ export class ImageLazy {
    */
   isLazy(): boolean {
     return Boolean(this.props.lazy) && !this.init.value
+  }
+
+  /**
+   * Updates lazy loading status and listener based on element and props.
+   *
+   * Обновляет статус и слушатель ленивой загрузки на основе элемента и свойств.
+   */
+  update(): void {
+    if (
+      this.props.lazy
+      && this.element.value
+    ) {
+      this.make()
+    } else {
+      this.reset()
+    }
+  }
+
+  /**
+   * Resets lazy loading status and stops the active watcher.
+   *
+   * Сбрасывает статус ленивой загрузки и останавливает активный наблюдатель.
+   */
+  reset(): void {
+    this.init.value = false
+    this.stop()
   }
 
   /**
@@ -80,16 +116,6 @@ export class ImageLazy {
   }
 
   /**
-   * Resets lazy loading status and stops the active watcher.
-   *
-   * Сбрасывает статус ленивой загрузки и останавливает активный наблюдатель.
-   */
-  reset(): void {
-    this.init.value = false
-    this.stop()
-  }
-
-  /**
    * Stops lazy tracking and active watcher.
    *
    * Останавливает отслеживание ленивой загрузки и активный наблюдатель.
@@ -103,22 +129,6 @@ export class ImageLazy {
     if (this.item) {
       this.item.removeLazyItem()
       this.item = undefined
-    }
-  }
-
-  /**
-   * Updates lazy loading status and listener based on element and props.
-   *
-   * Обновляет статус и слушатель ленивой загрузки на основе элемента и свойств.
-   */
-  update(): void {
-    if (
-      this.props.lazy
-      && this.element.value
-    ) {
-      this.make()
-    } else {
-      this.reset()
     }
   }
 }

@@ -159,7 +159,7 @@ export class ImageImg {
    * @returns true if type matches / true, если тип совпадает
    */
   protected isType(): boolean {
-    const type = this.type.item.value
+    const type = this.type.get()
     return type === ImageTypeValue.file
       || type === ImageTypeValue.image
       || type === ImageTypeValue.array

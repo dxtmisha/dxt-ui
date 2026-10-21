@@ -5,15 +5,7 @@ import { isDomRuntime, ServerStorage } from '@dxtmisha/functional'
 import type { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageCalculationList } from './ImageCalculationList'
 
-/** Storage structure for adaptive group / Структура хранилища для адаптивной группы */
-type ImageAdaptiveGroupStorage = {
-  /** List of all tracked adaptive items / Список всех отслеживаемых адаптивных элементов */
-  objects: ImageAdaptiveItem[]
-  /** List of currently calculated adaptive items / Список рассчитываемых в данный момент адаптивных элементов */
-  objectsAdaptive: ImageAdaptiveItem[]
-  /** Flag for tracking frame calculation time / Флаг отслеживания времени вычисления кадра */
-  time?: boolean
-}
+import type { ImageAdaptiveGroupStorage } from './basicTypes'
 
 /** Server storage key for image adaptive group / Ключ серверного хранилища для адаптивной группы изображений */
 const SERVER_STORAGE_KEY_ADAPTIVE = '__ui:image-adaptive-group__'
@@ -36,7 +28,7 @@ export class ImageAdaptiveGroup {
    * @returns true if the element is present in the list / true, если элемент присутствует в списке
    */
   static is(item: ImageAdaptiveItem): boolean {
-    return this.objects.findIndex(itemValue => itemValue === item) !== -1
+    return this.objects.includes(item)
   }
 
   /**
@@ -60,10 +52,10 @@ export class ImageAdaptiveGroup {
    * @param item object for working with images / объект для работы с изображениями
    */
   static remove(item: ImageAdaptiveItem): void {
-    const key = this.objects.findIndex(itemValue => itemValue === item)
+    const index = this.objects.indexOf(item)
 
-    if (key !== -1) {
-      this.objects.splice(key, 1)
+    if (index !== -1) {
+      this.objects.splice(index, 1)
       this.make()
     }
   }
@@ -93,22 +85,12 @@ export class ImageAdaptiveGroup {
       this.time = true
       requestAnimationFrame(() => {
         this.time = false
-        this.start()
+
+        if (this.objects.length > 0) {
+          this.start()
+        }
       })
     }
-  }
-
-  /**
-   * Returns a request-isolated storage object from ServerStorage.
-   *
-   * Возвращает изолированный в рамках запроса объект хранилища из ServerStorage.
-   * @returns storage object / объект хранилища
-   */
-  protected static get storage(): ImageAdaptiveGroupStorage {
-    return ServerStorage.get(SERVER_STORAGE_KEY_ADAPTIVE, () => ({
-      objects: [],
-      objectsAdaptive: []
-    }))
   }
 
   /**
@@ -139,6 +121,19 @@ export class ImageAdaptiveGroup {
    */
   protected static set objectsAdaptive(value: ImageAdaptiveItem[]) {
     this.storage.objectsAdaptive = value
+  }
+
+  /**
+   * Returns a request-isolated storage object from ServerStorage.
+   *
+   * Возвращает изолированный в рамках запроса объект хранилища из ServerStorage.
+   * @returns storage object / объект хранилища
+   */
+  protected static get storage(): ImageAdaptiveGroupStorage {
+    return ServerStorage.get(SERVER_STORAGE_KEY_ADAPTIVE, () => ({
+      objects: [],
+      objectsAdaptive: []
+    }))
   }
 
   /**
@@ -215,8 +210,8 @@ export class ImageAdaptiveGroup {
           const offsetHeight = element.offsetHeight
 
           item.setPercent(
-            offsetWidth > 0 ? item.width * (width ? 1 / width : 0) * (calculation.offsetWidth / offsetWidth) : 0,
-            offsetHeight > 0 ? item.height * (height ? 1 / height : 0) * (calculation.offsetHeight / offsetHeight) : 0
+            offsetWidth > 0 && width > 0 ? (item.width / width) * (calculation.offsetWidth / offsetWidth) : 0,
+            offsetHeight > 0 && height > 0 ? (item.height / height) * (calculation.offsetHeight / offsetHeight) : 0
           )
         }
       })

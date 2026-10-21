@@ -1,17 +1,17 @@
 import type { Ref, PropType, ComputedRef } from 'vue'
 import type { Undefined } from '@dxtmisha/functional-basic'
 
-import type { DesignLifecycleAbstract } from '../classes/design/DesignLifecycleAbstract'
-
 import type {
   RefOrNormal,
   RefType
 } from './refTypes'
 
+// --- Dependency Injection & Constructors / Внедрение зависимостей и конструкторы ---
+
 /** Optional constructors with string names / Необязательные конструкторы со строковыми именами */
 export type ConstrConstructors<T extends object> = Partial<Record<
   keyof T & string,
-  new (...parameters: never[]) => object | DesignLifecycleAbstract
+  new (...parameters: never[]) => unknown
 >>
 
 /** Constructor arguments for a named dependency / Аргументы конструктора зависимости по имени */
@@ -19,6 +19,28 @@ export type ConstrParameters<T extends ConstrConstructors<T>, K extends keyof T 
 
 /** Instance type for a named dependency / Тип экземпляра зависимости по имени */
 export type ConstrInstance<T extends ConstrConstructors<T>, K extends keyof T & string> = InstanceType<NonNullable<T[K]>>
+
+/** Constructor function for a named dependency / Функция-конструктор зависимости по имени */
+export type ConstrConstructor<T extends ConstrConstructors<T>, K extends keyof T & string>
+  = new (...parameters: ConstrParameters<T, K>) => ConstrInstance<T, K>
+
+/** Single constructor item configuration for a named dependency / Конфигурация отдельного элемента конструктора для зависимости по имени */
+export type ConstrItemsItem<
+  T extends ConstrConstructors<T>,
+  K extends keyof T & string
+> = {
+  /** Constructor class or element / Класс конструктора или элемент */
+  item?: T[K]
+  /** Constructor parameters factory / Фабрика параметров конструктора */
+  parameters?: () => ConstrParameters<T, K>
+}
+
+/** Constructor items configurations by dependency name / Конфигурации элементов конструкторов по имени зависимости */
+export type ConstrItems<T extends ConstrConstructors<T>> = {
+  [K in keyof T & string]-?: ConstrItemsItem<T, K>
+}
+
+// --- Basic Items & Components / Базовые элементы и компоненты ---
 
 /** Generic record type for constructor items / Дженерик тип записи для элементов конструктора */
 export type ConstrItem = Record<string, any>
@@ -46,6 +68,8 @@ export type ConstrExpose<E extends Element, EXPOSE extends ConstrItem> = EXPOSE 
   elementHtml?: ComputedRef<E | undefined>
 }
 
+// --- Events & Emits / События и эмиты ---
+
 /** Utility type to convert union types to intersection types / Утилитарный тип для преобразования объединенных типов в пересеченные */
 export type UnionToIntersection<U> = (U extends unknown ? (value: U) => void : never) extends (value: infer I) => void ? I : never
 
@@ -59,6 +83,8 @@ export type ConstrEmitItem<T extends ConstrItem> = T[keyof T]
 export type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToIntersection<ConstrEmitItem<{
   [K in keyof T]: (event: K, ...args: T[K]) => void
 }>>
+
+// --- Classes & Styles / CSS классы и стили ---
 
 /** Object type for CSS class names with boolean values / Тип объекта для CSS классов с булевыми значениями */
 export type ConstrClassObject = Record<string, boolean | undefined>
@@ -86,6 +112,8 @@ export type ConstrStylesItem = string | number | null | Undefined
  * Тип стилей конструктора, поддерживающий объекты и массивы определений стилей
  */
 export type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[]
+
+// --- Component Options & Setup / Опции и настройка компонентов ---
 
 /**
  * Constructor options interface for component configuration /
@@ -150,6 +178,8 @@ export type ConstrBind<T = ConstrItem>
       /** Optional styles / Опциональные стили */
       style?: ConstrStyles
     }
+
+// --- Props & Attributes / Свойства и атрибуты (Props) ---
 
 /** Constructor prop item options for Vue prop definitions / Опции элемента prop конструктора для определений Vue prop */
 export type ConstrPropItemOptions<T = any> = {

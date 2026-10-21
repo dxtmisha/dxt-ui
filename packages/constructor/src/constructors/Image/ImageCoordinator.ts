@@ -22,6 +22,21 @@ type ImageCoordinatorItemFull = [number, number, number, number]
  */
 export class ImageCoordinator {
   /**
+   * Checks if there are coordinates for calculation.
+   *
+   * Проверяет, есть ли координаты для вычисления.
+   * @param props input data / входные данные
+   * @returns true if valid coordinates are present / true, если присутствуют валидные координаты
+   */
+  static is(props?: ImageProps): boolean {
+    const coordinator = props?.coordinator
+
+    return isArray<ImageCoordinatorItem | unknown[], unknown>(coordinator)
+      && coordinator.length > 0
+      && coordinator.length < 5
+  }
+
+  /**
    * Constructor for creating a coordinate calculation manager.
    *
    * Конструктор для создания менеджера вычисления координат.
@@ -92,11 +107,7 @@ export class ImageCoordinator {
    * @returns true if valid coordinates are present / true, если присутствуют валидные координаты
    */
   is(): boolean {
-    const coordinator = this.props.coordinator
-
-    return isArray<ImageCoordinatorItem | unknown[], unknown>(coordinator)
-      && coordinator.length > 0
-      && coordinator.length < 5
+    return ImageCoordinator.is(this.props)
   }
 
   /**

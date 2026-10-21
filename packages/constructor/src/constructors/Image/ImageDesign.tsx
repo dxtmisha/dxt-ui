@@ -7,10 +7,12 @@ import {
 
 import { Image } from './Image'
 
-import { type ImageEventItem, type ImageRootAttrs, type ImageTypeItem, ImageTypeValue } from './basicTypes'
 import {
-  type ImagePropsBasic
-} from './props'
+  type ImageEventItem,
+  type ImageRootAttrs,
+  type ImageTypeItem,
+  ImageTypeValue
+} from './basicTypes'
 import {
   type ImageClasses,
   type ImageComponents,
@@ -18,6 +20,7 @@ import {
   type ImageExpose,
   type ImageSlots
 } from './types'
+import type { ImagePropsBasic } from './props'
 
 /**
  * Assembles image, icon and PDF markup from the Image logic constructor.
@@ -68,6 +71,8 @@ export class ImageDesign<
       this.props,
       this.element,
       this.naming,
+      this.components,
+      this.slots,
       this.emits
     )
   }
@@ -111,8 +116,8 @@ export class ImageDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getType: (): ImageTypeItem => this.item.type.item.value,
-      getData: (): ImageEventItem => this.item.data.image.value
+      getType: (): ImageTypeItem => this.item.i('type').get(),
+      getData: (): ImageEventItem => this.item.i('data').image.value
     } as EXPOSE
   }
 
@@ -123,11 +128,13 @@ export class ImageDesign<
    * @returns rendered image root / отрендеренный корневой элемент изображения
    */
   protected initRender(): VNode {
-    if (this.item.img.isPicture()) {
+    const img = this.item.i('img')
+
+    if (img.isPicture()) {
       return this.renderPicture()
     }
 
-    if (this.item.img.is()) {
+    if (img.is()) {
       return this.renderImg()
     }
 
@@ -165,7 +172,7 @@ export class ImageDesign<
    * @returns rendered img item VNode / отрендеренный VNode элемента img
    */
   protected readonly renderImgItem = (): VNode => {
-    return h('img', this.item.img.binds.value)
+    return h('img', this.item.i('img').binds.value)
   }
 
   /**
@@ -175,7 +182,7 @@ export class ImageDesign<
    * @returns rendered picture VNode / отрендеренный VNode picture
    */
   protected readonly renderPicture = (): VNode => {
-    const list = this.item.img.picture.value
+    const list = this.item.i('img').picture.value
     const children: VNode[] = []
 
     if (list) {
@@ -196,7 +203,7 @@ export class ImageDesign<
    * @returns rendered value / отрендеренное значение
    */
   protected readonly renderValue = (): string | VNode | undefined => {
-    if (this.item.type.item.value === ImageTypeValue.pdf) {
+    if (this.item.i('type').get() === ImageTypeValue.pdf) {
       return h(
         'object',
         this.item.valueBinds
@@ -204,14 +211,14 @@ export class ImageDesign<
     }
 
     if (
-      this.item.type.item.value === ImageTypeValue.flagCompressed
+      this.item.i('type').get() === ImageTypeValue.flagCompressed
     ) {
       return h(
         'span',
-        { class: `ui-sys-flags ui-sys-flags--${this.item.data.text.value}` }
+        { class: `ui-sys-flags ui-sys-flags--${this.item.i('text').get()}` }
       )
     }
 
-    return this.item.data.text.value
+    return this.item.i('text').get()
   }
 }

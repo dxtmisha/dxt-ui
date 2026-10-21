@@ -6,23 +6,19 @@ import { reactive, ref } from 'vue'
 import { ImageType } from '../ImageType'
 import { ImageTypeValue } from '../basicTypes'
 import type { ImageProps } from '../props'
-import type { ClientOnlyInclude } from '../../../classes/ClientOnlyInclude'
-
-/** Client rendering dependency for type classification / Зависимость клиентского рендеринга для определения типа */
-const clientOnly = {
-  isRender: (): boolean => true
-} as unknown as ClientOnlyInclude
+/** Component mounted state for type classification / Состояние монтирования компонента для определения типа */
+const isMounted = ref(true)
 
 describe('ImageType', () => {
   it.each([undefined, null, '', ' ', 0, false, {}, [], 'image:', 'image: '].map(value => ({ value })))('rejects unsupported or empty input %j', ({ value }) => {
     // Exercise runtime input from untyped callers / Проверяем входные данные нетипизированных потребителей
-    expect(new ImageType({ value } as ImageProps, clientOnly).item.value).toBeUndefined()
+    expect(new ImageType({ value } as ImageProps, isMounted).get()).toBeUndefined()
   })
 
   it('respects registered icons before the default font type', () => {
     vi.spyOn(Icons, 'is').mockImplementation(value => value === 'registered_home')
-    expect(new ImageType({ value: 'registered_home' }, clientOnly).item.value).toBe(ImageTypeValue.public)
-    expect(new ImageType({ value: 'unknown_home' }, clientOnly).item.value).toBe(ImageTypeValue.outlined)
+    expect(new ImageType({ value: 'registered_home' }, isMounted).get()).toBe(ImageTypeValue.public)
+    expect(new ImageType({ value: 'unknown_home' }, isMounted).get()).toBe(ImageTypeValue.outlined)
   })
 
   it.each([
@@ -40,7 +36,7 @@ describe('ImageType', () => {
     ['@home', ImageTypeValue.public],
     ['f-vn', ImageTypeValue.flagCompressed]
   ])('preserves the classification of %s', (value, expected) => {
-    expect(new ImageType({ value }, clientOnly).item.value).toBe(expected)
+    expect(new ImageType({ value }, isMounted).get()).toBe(expected)
   })
 
   it.each([
@@ -50,28 +46,28 @@ describe('ImageType', () => {
     'image:outlined-home',
     'image:document.pdf'
   ])('recognizes an explicitly marked image source: %s', (value) => {
-    expect(new ImageType({ value }, clientOnly).item.value).toBe(ImageTypeValue.image)
+    expect(new ImageType({ value }, isMounted).get()).toBe(ImageTypeValue.image)
   })
 
   it('recognizes an explicit image source before client rendering is ready', () => {
-    const client = { isRender: (): boolean => false } as unknown as ClientOnlyInclude
-    expect(new ImageType({ value: 'image:photo.png' }, client).item.value).toBe(ImageTypeValue.image)
+    const mounted = ref(false)
+    expect(new ImageType({ value: 'image:photo.png' }, mounted).get()).toBe(ImageTypeValue.image)
   })
 
   it('does not treat an empty explicit image source as an image or icon', () => {
-    expect(new ImageType({ value: 'image:' }, clientOnly).item.value).toBeUndefined()
+    expect(new ImageType({ value: 'image:' }, isMounted).get()).toBeUndefined()
   })
 
   it('classifies PDF files before generic files', () => {
     const file = new File([], 'document.pdf', { type: 'application/pdf' })
 
-    expect(new ImageType({ value: file }, clientOnly).item.value).toBe(ImageTypeValue.pdf)
+    expect(new ImageType({ value: file }, isMounted).get()).toBe(ImageTypeValue.pdf)
   })
 
   it('preserves the generic type of image files', () => {
     const file = new File([], 'photo.png', { type: 'image/png' })
 
-    expect(new ImageType({ value: file }, clientOnly).item.value).toBe(ImageTypeValue.file)
+    expect(new ImageType({ value: file }, isMounted).get()).toBe(ImageTypeValue.file)
   })
 
   it.each([
@@ -80,36 +76,39 @@ describe('ImageType', () => {
     '/document.pdf#page=2',
     'https://example.test/document.PDF?token=test#page=2'
   ])('classifies PDF links with viewer or query parameters: %s', (value) => {
-    expect(new ImageType({ value }, clientOnly).item.value).toBe(ImageTypeValue.pdf)
+    expect(new ImageType({ value }, isMounted).get()).toBe(ImageTypeValue.pdf)
   })
 
   it('does not interpret PDF names in an image query as a PDF source', () => {
-    expect(new ImageType({ value: '/photo.png?file=document.pdf' }, clientOnly).item.value)
+    expect(new ImageType({ value: '/photo.png?file=document.pdf' }, isMounted).get())
       .toBe(ImageTypeValue.image)
   })
 
   it('preserves binary buffer classification', () => {
-    expect(new ImageType({ value: new Uint8Array([1]) }, clientOnly).item.value).toBe(ImageTypeValue.array)
-    expect(new ImageType({ value: new ArrayBuffer(1) }, clientOnly).item.value).toBe(ImageTypeValue.array)
+    expect(new ImageType({ value: new Uint8Array([1]) }, isMounted).get()).toBe(ImageTypeValue.array)
+    expect(new ImageType({ value: new ArrayBuffer(1) }, isMounted).get()).toBe(ImageTypeValue.array)
   })
 
   it('updates the type when the reactive source changes from a PDF to an image', () => {
     const props = reactive<ImageProps>({ value: new File([], 'document.pdf', { type: 'application/pdf' }) })
-    const type = new ImageType(props, clientOnly)
+    const type = new ImageType(props, isMounted)
 
-    expect(type.item.value).toBe(ImageTypeValue.pdf)
+    expect(type.get()).toBe(ImageTypeValue.pdf)
     props.value = '/photo.png'
-    expect(type.item.value).toBe(ImageTypeValue.image)
+    expect(type.get()).toBe(ImageTypeValue.image)
   })
 
-  it('defers PDF File classification until client rendering is ready', () => {
-    const isClientReady = ref(false)
-    const client = { isRender: (): boolean => isClientReady.value } as unknown as ClientOnlyInclude
-    const file = new File([], 'document.pdf', { type: 'application/pdf' })
-    const type = new ImageType({ value: file }, client)
+  it.each([
+    ['PDF File', new File([], 'document.pdf', { type: 'application/pdf' }), ImageTypeValue.pdf],
+    ['image File', new File([], 'photo.png', { type: 'image/png' }), ImageTypeValue.file],
+    ['Uint8Array', new Uint8Array([1]), ImageTypeValue.array],
+    ['ArrayBuffer', new ArrayBuffer(1), ImageTypeValue.array]
+  ] as const)('defers %s classification until client rendering is ready', (_, value, expected) => {
+    const mounted = ref(false)
+    const type = new ImageType({ value }, mounted)
 
-    expect(type.item.value).toBeUndefined()
-    isClientReady.value = true
-    expect(type.item.value).toBe(ImageTypeValue.pdf)
+    expect(type.get()).toBeUndefined()
+    mounted.value = true
+    expect(type.get()).toBe(expected)
   })
 })

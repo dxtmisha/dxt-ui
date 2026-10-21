@@ -1,12 +1,11 @@
 // ai-none
 
-import { computed } from 'vue'
+import { computed, type Ref } from 'vue'
 import { Icons, isFilled, isString } from '@dxtmisha/functional'
 
 import { ImagePdf } from './ImagePdf'
 import { ImageSource } from './ImageSource'
 import { ImageUint8Array } from './ImageUint8Array'
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
 import { type ImageTypeItem, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
@@ -41,28 +40,31 @@ export class ImageType {
    *
    * Конструктор для работы с типом изображения.
    * @param props input data / входные данные
-   * @param clientOnly class for working with ClientOnly / класс для работы с ClientOnly
+   * @param isMounted whether the component is mounted / смонтирован ли компонент
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly clientOnly: ClientOnlyInclude
+    protected readonly isMounted: Ref<boolean>
   ) {
   }
 
   /**
-   * Get the image type.
+   * Computed image type.
    *
-   * Получение типа изображения.
-   * @returns image type / тип изображения
+   * Вычисляемый тип изображения.
    */
-  readonly item = computed<ImageTypeItem>(() => {
+  protected readonly item = computed<ImageTypeItem>(() => {
     const image = this.props.value
+
+    if (!image) {
+      return undefined
+    }
 
     if (ImageSource.is(image)) {
       return ImageSource.getType(image)
     }
 
-    if (this.clientOnly.isRender()) {
+    if (this.isMounted.value) {
       if (ImagePdf.isPdf(image)) {
         return ImageTypeValue.pdf
       }
@@ -119,4 +121,14 @@ export class ImageType {
 
     return undefined
   })
+
+  /**
+   * Get the image type.
+   *
+   * Получение типа изображения.
+   * @returns image type / тип изображения
+   */
+  get(): ImageTypeItem {
+    return this.item.value
+  }
 }
