@@ -14,10 +14,10 @@ import {
  *
  * Метод используется для копирования значений всех перечисляемых свойств одного объекта в другой.
  * В приоритете по списку обработки.
- * @param array the target object/ целевой объект
- * @param replacement the source object/ исходные объекты
- * @param indexStart index at which to start changing the array/ индекс, по которому начинает изменять массив
- * @returns modified array/ измененный массив
+ * @param array the target object / целевой объект
+ * @param replacement the source object / исходные объекты
+ * @param indexStart index at which to start changing the array / индекс, по которому начинает изменять массив
+ * @returns modified array / измененный массив
  */
 export function splice<I>(
   array: ObjectItem<I>,
@@ -30,30 +30,28 @@ export function splice<I>(
   ) {
     if (indexStart) {
       let returnData: ObjectItem<I> = {}
-      let init = false
+      let isInitialized = false
 
       forEach<I, void>(array, (item, index) => {
         if (
-          !init && (
+          !isInitialized && (
             indexStart === index
             || indexStart === item
           )
         ) {
-          init = true
+          isInitialized = true
           returnData = replaceRecursive(returnData, replacement as ObjectOrArray)
-        } else if (init) {
+        } else if (isInitialized) {
           returnData = replaceRecursive(returnData, { [index]: item })
         } else {
           returnData[index] = isObject(item) ? copyObject(item) : item
         }
       })
 
-      return init ? returnData : replaceRecursive(array, replacement as ObjectOrArray)
+      return isInitialized ? returnData : replaceRecursive(array, replacement as ObjectOrArray)
     }
 
-    if (isObject(replacement)) {
-      return replaceRecursive(array, replacement as ObjectOrArray)
-    }
+    return replaceRecursive(array, replacement as ObjectOrArray)
   }
 
   return copyObject(array)

@@ -1,28 +1,45 @@
 /**
+ * Trims the string if the trim flag is enabled.
+ *
+ * Обрезает строку, если включен флаг trim.
+ * @param value string value / строковое значение
+ * @param trim if true, trims the string / если true, обрезает строку
+ * @returns processed string / обработанная строка
+ */
+function toTrimmed(
+  value: string,
+  trim: boolean
+): string {
+  return trim ? value.trim() : value
+}
+
+/**
  * Removes the common prefix from the main string.
  *
  * Убирает общий префикс из основной строки.
- * @param mainStr - The main string / Основная строка
- * @param prefix - The prefix string to remove / Строка префикса для удаления
- * @returns string without prefix / строка без префикса
+ * @param mainString main string / основная строка
+ * @param prefix prefix string to remove / строка префикса для удаления
+ * @param trim if true, then the resulting string will be trimmed / если true, то результирующая строка будет обрезана
+ * @returns string without common prefix / строка без общего префикса
  */
 export function removeCommonPrefix(
-  mainStr: string,
-  prefix: string
-) {
-  if (mainStr.startsWith(prefix)) {
-    return mainStr.slice(prefix.length).trim()
+  mainString: string,
+  prefix: string,
+  trim: boolean = true
+): string {
+  if (mainString.startsWith(prefix)) {
+    return toTrimmed(mainString.slice(prefix.length), trim)
   }
 
-  let i = 0
+  let characterIndex = 0
 
   while (
-    mainStr[i] === prefix[i]
-    && i < mainStr.length
-    && i < prefix.length
+    characterIndex < mainString.length
+    && characterIndex < prefix.length
+    && mainString[characterIndex] === prefix[characterIndex]
   ) {
-    i++
+    characterIndex++
   }
 
-  return mainStr.slice(i).trim()
+  return toTrimmed(mainString.slice(characterIndex), trim)
 }

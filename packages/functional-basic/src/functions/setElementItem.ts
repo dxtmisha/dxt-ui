@@ -1,10 +1,13 @@
 import { executeFunction } from './executeFunction'
 import { forEach } from './forEach'
 import { getElement } from './getElement'
-import { getElementItem } from './getElementItem'
+import { isFunction } from './isFunction'
 import { isNull } from './isNull'
 import { isObject } from './isObject'
+import { isObjectNotArray } from './isObjectNotArray'
+import { isPrototypeKey } from './isPrototypeKey'
 import { isString } from './isString'
+import { toKebabCase } from './toKebabCase'
 
 import {
   type ElementOrString,
@@ -12,31 +15,65 @@ import {
 } from '../types/basicTypes'
 
 /**
- * Sets a property on a nested target object, supporting CSS custom properties if applicable.
+ * Checks if the target object is a CSSStyleDeclaration.
  *
- * Устанавливает свойство во вложенный целевой объект с поддержкой пользовательских свойств CSS, если применимо.
+ * Проверяет, является ли целевой объект объектом CSSStyleDeclaration.
+ * @param targetData checked object / проверяемый объект
+ * @returns true if targetData is CSSStyleDeclaration / true, если targetData является CSSStyleDeclaration
+ */
+function isStyleDeclaration(targetData: unknown): targetData is CSSStyleDeclaration {
+  return isObject(targetData)
+    && 'setProperty' in targetData
+    && isFunction((targetData as CSSStyleDeclaration).setProperty)
+}
+
+/**
+ * Sets style properties or CSS custom properties on a CSSStyleDeclaration via setProperty.
+ *
+ * Устанавливает свойства стиля или переменные CSS в CSSStyleDeclaration через setProperty.
+ * @param targetData target CSSStyleDeclaration to modify / целевой CSSStyleDeclaration для изменения
+ * @param styles styles object / объект стилей
+ */
+function setElementItemStyle(
+  targetData: CSSStyleDeclaration,
+  styles: Record<string, unknown>
+): void {
+  forEach(styles, (propertyValue, propertyKey) => {
+    if (isPrototypeKey(propertyKey)) {
+      return
+    }
+
+    const computedPropertyValue = executeFunction(propertyValue)
+    const normalizedPropertyKey = propertyKey.startsWith('--')
+      ? propertyKey
+      : toKebabCase(propertyKey)
+
+    if (isNull(computedPropertyValue)) {
+      targetData.removeProperty(normalizedPropertyKey)
+    } else {
+      targetData.setProperty(normalizedPropertyKey, String(computedPropertyValue))
+    }
+  })
+}
+
+/**
+ * Sets properties on a target object with prototype pollution protection.
+ *
+ * Устанавливает свойства в целевой объект с защитой от загрязнения прототипа.
  * @param targetData target object to modify / целевой объект для изменения
- * @param propertyKey property name or CSS variable / имя свойства или переменная CSS
- * @param propertyValue property value to set / устанавливаемое значение свойства
+ * @param properties properties object / объект свойств
  */
 function setElementItemProperty(
   targetData: Record<string, unknown>,
-  propertyKey: string,
-  propertyValue: unknown
+  properties: Record<string, unknown>
 ): void {
-  const computedPropertyValue = executeFunction(propertyValue)
+  forEach(properties, (propertyValue, propertyKey) => {
+    if (isPrototypeKey(propertyKey)) {
+      return
+    }
 
-  if (
-    propertyKey.startsWith('--')
-    && typeof targetData.setProperty === 'function'
-  ) {
-    (targetData as unknown as CSSStyleDeclaration).setProperty(
-      propertyKey,
-      String(computedPropertyValue ?? '')
-    )
-  } else {
-    targetData[propertyKey] = computedPropertyValue
-  }
+    targetData[propertyKey] = executeFunction(propertyValue)
+  })
 }
 
 /**
@@ -65,10 +102,10 @@ function setElementItemBoolean(
  * Modifies the value of an element identified by its key.
  *
  * Изменяет значение элемента, определенного ключом.
- * @param element checked element/ проверяемый элемент
- * @param index index at which we retrieve values/ индекс, по которому получаем значения
- * @param value new value/ новое значение
- * @returns modified element/ измененный элемент
+ * @param element checked element / проверяемый элемент
+ * @param index property name, attribute, or style key / имя свойства, атрибута или ключа стилей
+ * @param value new value / новое значение
+ * @returns modified element / измененный элемент
  */
 export function setElementItem<
   E extends ElementOrWindow,
@@ -81,40 +118,62 @@ export function setElementItem<
 ): E | undefined {
   const item = getElement(element)
 
-  if (item) {
-    const data = getElementItem(item, index)
+  if (
+    isPrototypeKey(index)
+    || !item
+  ) {
+    return item
+  }
 
-    if (
-      isObject(data)
-      && isObject(value)
-    ) {
-      const targetData = data as Record<string, unknown>
+  const data = Reflect.get(item, index) as unknown
 
-      forEach(value as Record<string, unknown>, (propertyValue, propertyKey) => {
-        setElementItemProperty(targetData, propertyKey, propertyValue)
-      })
+  if (
+    isObjectNotArray(data)
+    && isObjectNotArray(value)
+  ) {
+    if (isStyleDeclaration(data)) {
+      setElementItemStyle(data, value)
     } else {
-      const newValue = executeFunction(value)
+      setElementItemProperty(data, value)
+    }
 
-      if (index === 'style' && isString(newValue) && 'style' in item) {
-        (item as HTMLElement).style.cssText = newValue
-      } else if ('setAttribute' in item && !(index in item)) {
-        const attributeName = index.toString()
+    return item
+  }
 
-        if (isNull(newValue)) {
-          item.removeAttribute(attributeName)
-        } else if (typeof newValue === 'boolean') {
-          setElementItemBoolean(item as Element, attributeName, newValue)
-        } else if (typeof newValue === 'number' || isString(newValue)) {
-          item.setAttribute(attributeName, newValue.toString())
-        } else {
-          Reflect.set(item, index, newValue)
-        }
-      } else {
-        Reflect.set(item, index, newValue)
-      }
+  const newValue = executeFunction(value)
+
+  if (
+    index === 'style'
+    && isString(newValue)
+    && 'style' in item
+  ) {
+    (item as HTMLElement).style.cssText = newValue
+    return item
+  }
+
+  if (
+    'setAttribute' in item
+    && !(index in item)
+  ) {
+    const attributeName = index.toString()
+
+    if (isNull(newValue)) {
+      item.removeAttribute(attributeName)
+      return item
+    }
+
+    if (typeof newValue === 'boolean') {
+      setElementItemBoolean(item as Element, attributeName, newValue)
+      return item
+    }
+
+    if (typeof newValue === 'number' || isString(newValue)) {
+      item.setAttribute(attributeName, newValue.toString())
+      return item
     }
   }
+
+  Reflect.set(item, index, newValue)
 
   return item
 }

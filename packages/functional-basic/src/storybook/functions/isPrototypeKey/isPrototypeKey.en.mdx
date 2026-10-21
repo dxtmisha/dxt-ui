@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isPrototypeKey - Prototype pollution key check'/>
+
+# `isPrototypeKey`
+
+Checks whether a property key belongs to dangerous **Prototype Pollution** keys (`__proto__`, `constructor`, `prototype`).
+
+Used to protect JavaScript objects from prototype tampering during deep merging, dynamic DOM element property assignment, or parsing untrusted data structures.
+
+**Parameters:**
+- `key: unknown` — property key to check.
+
+**Returns:**
+`boolean` — `true` if key is `'__proto__'`, `'constructor'`, or `'prototype'`, otherwise `false`.
+
+```typescript
+import { isPrototypeKey } from '@dxtmisha/functional-basic'
+
+isPrototypeKey('__proto__') // true
+isPrototypeKey('constructor') // true
+isPrototypeKey('prototype') // true
+
+isPrototypeKey('id') // false
+isPrototypeKey('toString') // false
+isPrototypeKey(123) // false
+
+// Safe property assignment pattern:
+function safeSet(target: Record<string, unknown>, key: string, value: unknown) {
+  if (isPrototypeKey(key)) {
+    return
+  }
+
+  target[key] = value
+}
+```

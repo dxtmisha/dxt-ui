@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `sortList`
 
-Một tiện ích sắp xếp một mảng các đối tượng hoặc phần tử theo một hoặc nhiều đường dẫn thuộc tính cột, hướng sắp xếp (`'asc'` hoặc `'desc'`), hoặc một hàm so sánh tùy chỉnh. Tiện ích thực hiện so sánh chuỗi theo ngữ cảnh địa phương bằng `Intl.Collator` với tùy chọn so sánh số và không phân biệt chữ hoa chữ thường, đồng thời đưa các giá trị `null` hoặc `undefined` về cuối danh sách đã sắp xếp.
+Một tiện ích sắp xếp một mảng các đối tượng hoặc phần tử theo một hoặc nhiều đường dẫn thuộc tính cột, hướng sắp xếp (`'asc'` hoặc `'desc'`), hoặc một hàm so sánh tùy chỉnh. Tiện ích thực hiện so sánh chuỗi theo ngữ cảnh địa phương bằng `Intl.Collator` đã được lưu vào bộ nhớ đệm với tùy chọn so sánh số và không phân biệt chữ hoa chữ thường, hỗ trợ xử lý đúng các kiểu số, boolean, ngày tháng (Date), đồng thời đưa các giá trị `null` hoặc `undefined` về cuối danh sách đã sắp xếp.
 
 **Tham số:**
 - `list: T[]` — Mảng các phần tử đầu vào cần sắp xếp.
@@ -12,16 +12,16 @@ Một tiện ích sắp xếp một mảng các đối tượng hoặc phần t�
 - `customSort?: SortFunction<T>` — Hàm so sánh tùy chỉnh (không bắt buộc).
 
 **Trả về:**
-`T[]` — Mảng các phần tử mới đã được sắp xếp (hoặc mảng ban đầu nếu `sortColumns` rỗng hoặc độ dài danh sách nhỏ hơn 2).
+`T[]` — Mảng các phần tử mới đã được sắp xếp (luôn trả về một bản sao nông mới).
 
 ```typescript
 import { sortList } from '@dxtmisha/functional-basic'
 
 const users = [
-  { id: 3, category: 'A', name: 'Charlie', age: 30 },
-  { id: 1, category: 'B', name: 'Alice', age: 25 },
-  { id: 4, category: 'A', name: 'Alice', age: 20 },
-  { id: 2, category: 'B', name: 'Bob', age: 35 }
+  { id: 3, category: 'A', name: 'Charlie', age: 30, createdAt: new Date('2023-01-01') },
+  { id: 1, category: 'B', name: 'Alice', age: 25, createdAt: new Date('2024-05-15') },
+  { id: 4, category: 'A', name: 'Alice', age: 20, createdAt: new Date('2023-08-10') },
+  { id: 2, category: 'B', name: 'Bob', age: 35, createdAt: new Date('2022-12-01') }
 ]
 
 // Sắp xếp theo danh mục tăng dần, sau đó theo tuổi giảm dần

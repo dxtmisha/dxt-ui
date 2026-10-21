@@ -4,15 +4,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `setElementItem`
 
-Изменяет значение свойства или атрибута DOM-элемента, найденного по селектору или переданного напрямую. Если свойство является объектом, выполняется слияние с новыми данными.
+Изменяет значение свойства или атрибута DOM-элемента, найденного по селектору или переданного напрямую. Если свойство является объектом (и не массивом), выполняется слияние с новыми данными.
+
+Функция обеспечивает защиту от **Prototype Pollution** (игнорирует ключи `__proto__`, `constructor`, `prototype`), поддерживает CSS-переменные (`--*`) и kebab-case свойства в объекте стилей, а также корректно форматирует boolean-атрибуты и ARIA-состояния.
 
 **Параметры:**
 - `element: ElementOrString<E>` — Элемент, объект `window` или CSS-селектор.
-- `index: K` — Ключ свойства или имя атрибута.
-- `value: V | Record<string, V>` — Новое значение или объект для слияния.
+- `index: K | string` — Ключ свойства, имя атрибута или стиля.
+- `value: V | Record<string, V> | unknown` — Новое значение или объект для слияния.
 
 **Возвращает:**
-`E | undefined` — Модифицированный элемент или `undefined`, если элемент не найден.
+`E | undefined` — Модифицированный элемент или `undefined`, если элемент не найден или передан опасный ключ прототипа.
 
 ```typescript
 import { setElementItem } from '@dxtmisha/functional-basic'
@@ -20,9 +22,22 @@ import { setElementItem } from '@dxtmisha/functional-basic'
 // Изменение текстового содержимого
 setElementItem('#my-div', 'textContent', 'Новый текст')
 
-// Слияние стилей
-setElementItem(document.body, 'style', { backgroundColor: 'red', color: 'white' })
+// Слияние стилей, включая kebab-case и CSS custom properties
+setElementItem(document.body, 'style', {
+  backgroundColor: 'red',
+  'font-size': '16px',
+  '--brand-color': '#0055ff'
+})
+
+// Очистка стиля или переменной через null / undefined
+setElementItem(document.body, 'style', {
+  backgroundColor: null,
+  '--brand-color': undefined
+})
 
 // Установка атрибута (если свойства нет в объекте)
 setElementItem('input', 'placeholder', 'Введите данные...')
+
+// Установка ARIA атрибутов ('true' / 'false')
+setElementItem('button', 'aria-expanded', true)
 ```

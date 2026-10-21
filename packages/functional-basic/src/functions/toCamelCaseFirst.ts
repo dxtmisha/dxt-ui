@@ -1,13 +1,12 @@
-import { toCamelCase } from './toCamelCase'
+import { toPascalCase } from './toPascalCase'
 
 /**
- * Convert a String to Camel Case (+ first letter).
+ * Converts a string to PascalCase (CamelCase with first letter capitalized).
  *
- * Преобразование строки в Camel Case (+ первая буква).
- * @param value input value/ входное значение
- * @returns camel case string with first letter uppercase / строка в camel case с первой заглавной буквой
+ * Преобразует строку в формат PascalCase (CamelCase с первой заглавной буквой).
+ * @param value input value / входное значение
+ * @returns PascalCase string / строка в формате PascalCase
  */
-export function toCamelCaseFirst(value: string): string {
-  return toCamelCase(value)
-    .replace(/^([a-z])/, char => `${char.toUpperCase()}`)
+export function toCamelCaseFirst(value?: string): string {
+  return toPascalCase(value)
 }

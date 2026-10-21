@@ -39,6 +39,8 @@ function isByWidth(
  * @param type resize type (auto, width, height) / тип изменения размера (auto, width, height)
  * @param typeData optional data type for the resulting image /
  * необязательный тип данных для результирующего изображения
+ * @param quality optional quality factor between 0 and 1 for lossy formats (JPEG/WebP) /
+ * необязательный коэффициент качества от 0 до 1 для форматов с потерями (JPEG/WebP)
  * @returns base64 image data URL or undefined if resizing is not needed or impossible /
  * строка base64 data URL изображения или undefined, если изменение размера не требуется или невозможно
  *
@@ -65,7 +67,8 @@ export function resizeImageByMax(
   image: HTMLImageElement | string,
   maxSize: number,
   type: ResizeImageByMaxType = 'auto',
-  typeData?: string
+  typeData?: string,
+  quality?: number
 ): string | undefined {
   const element = getElementImage(image)
 
@@ -73,8 +76,8 @@ export function resizeImageByMax(
     isDomRuntime()
     && maxSize > 0
     && element
-    && element.naturalWidth
-    && element.naturalHeight
+    && element.naturalWidth > 0
+    && element.naturalHeight > 0
     && (
       (element.naturalWidth > maxSize && (type === 'auto' || type === 'width'))
       || (element.naturalHeight > maxSize && (type === 'auto' || type === 'height'))
@@ -85,15 +88,26 @@ export function resizeImageByMax(
     const context = canvas.getContext('2d')
 
     if (context) {
-      canvas.width = Math.round(
-        isScaledByWidth ? maxSize : (element.naturalWidth / element.naturalHeight) * maxSize
+      canvas.width = Math.max(
+        1,
+        Math.round(isScaledByWidth ? maxSize : (element.naturalWidth / element.naturalHeight) * maxSize)
       )
-      canvas.height = Math.round(
-        isScaledByWidth ? (element.naturalHeight / element.naturalWidth) * maxSize : maxSize
+      canvas.height = Math.max(
+        1,
+        Math.round(isScaledByWidth ? (element.naturalHeight / element.naturalWidth) * maxSize : maxSize)
       )
+
+      context.imageSmoothingEnabled = true
+      context.imageSmoothingQuality = 'high'
       context.drawImage(element, 0, 0, canvas.width, canvas.height)
 
-      return canvas.toDataURL(typeData)
+      try {
+        return quality !== undefined
+          ? canvas.toDataURL(typeData, quality)
+          : canvas.toDataURL(typeData)
+      } catch {
+        return undefined
+      }
     }
   }
 

@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isPrototypeKey - Проверка ключей загрязнения прототипа'/>
+
+# `isPrototypeKey`
+
+Проверяет, относится ли переданный ключ свойства к потенциально опасным ключам **Prototype Pollution** (`__proto__`, `constructor`, `prototype`).
+
+Используется для защиты объектов от модификации цепочки прототипов при рекурсивном слиянии, динамической установке свойств в DOM-элементы или разборе внешних структур данных.
+
+**Параметры:**
+- `key: unknown` — проверяемый ключ свойства.
+
+**Возвращает:**
+`boolean` — `true`, если ключ равен `'__proto__'`, `'constructor'` или `'prototype'`, иначе `false`.
+
+```typescript
+import { isPrototypeKey } from '@dxtmisha/functional-basic'
+
+isPrototypeKey('__proto__') // true
+isPrototypeKey('constructor') // true
+isPrototypeKey('prototype') // true
+
+isPrototypeKey('id') // false
+isPrototypeKey('toString') // false
+isPrototypeKey(123) // false
+
+// Пример безопасного назначения свойств:
+function safeSet(target: Record<string, unknown>, key: string, value: unknown) {
+  if (isPrototypeKey(key)) {
+    return
+  }
+
+  target[key] = value
+}
+```

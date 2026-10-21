@@ -4,15 +4,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `setElementItem`
 
-Modifies the property or attribute value of a DOM element identified by a selector or passed directly. If the property is an object, it performs a merge with the new data.
+Modifies the property value or attribute of a DOM element resolved by selector or passed directly. If the target property is an object (and not an array), merges with the new data.
+
+The function provides robust protection against **Prototype Pollution** (ignoring `__proto__`, `constructor`, `prototype`), supports CSS custom properties (`--*`) and kebab-case keys in style objects, cleanly removes styles when `null` / `undefined` is passed, and accurately formats boolean attributes and ARIA states.
 
 **Parameters:**
-- `element: ElementOrString<E>` — The target element, `window` object, or CSS selector.
-- `index: K` — The property key or attribute name.
-- `value: V | Record<string, V>` — The new value or an object for merging.
+- `element: ElementOrString<E>` — Element, `window`, or CSS selector.
+- `index: K | string` — Property key, attribute name, or style key.
+- `value: V | Record<string, V> | unknown` — New value or object to merge.
 
 **Returns:**
-`E | undefined` — The modified element, or `undefined` if not found.
+`E | undefined` — Modified element, or `undefined` if element is not found or a prototype pollution key was passed.
 
 ```typescript
 import { setElementItem } from '@dxtmisha/functional-basic'
@@ -20,9 +22,22 @@ import { setElementItem } from '@dxtmisha/functional-basic'
 // Modifying text content
 setElementItem('#my-div', 'textContent', 'New text')
 
-// Merging styles
-setElementItem(document.body, 'style', { backgroundColor: 'red', color: 'white' })
+// Merging styles including kebab-case and CSS variables
+setElementItem(document.body, 'style', {
+  backgroundColor: 'red',
+  'font-size': '16px',
+  '--brand-color': '#0055ff'
+})
 
-// Setting an attribute (if the property does not exist on the object)
+// Removing styles or CSS variables via null / undefined
+setElementItem(document.body, 'style', {
+  backgroundColor: null,
+  '--brand-color': undefined
+})
+
+// Setting an attribute (if property does not exist on element)
 setElementItem('input', 'placeholder', 'Enter data...')
+
+// Setting ARIA attributes ('true' / 'false')
+setElementItem('button', 'aria-expanded', true)
 ```

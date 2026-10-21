@@ -29,19 +29,43 @@ export async function resizeImage(
   if (
     typeof image !== 'string'
     && image.complete
-    && image.naturalWidth
+    && image.naturalWidth > 0
+    && image.naturalHeight > 0
   ) {
-    return resizeImageByMax(image, maxSize, 'auto', typeData) ?? src
+    try {
+      return resizeImageByMax(image, maxSize, 'auto', typeData) ?? src
+    } catch {
+      return src
+    }
   }
 
   return new Promise<string>((resolve) => {
-    const img = new Image()
+    const imageElement = new Image()
 
-    img.onerror = () => resolve(src)
-    img.onload = () => {
-      resolve(resizeImageByMax(img, maxSize, 'auto', typeData) ?? src)
+    if (!src.startsWith('data:')) {
+      imageElement.crossOrigin = 'anonymous'
     }
 
-    img.src = src
+    const cleanup = () => {
+      imageElement.onload = null
+      imageElement.onerror = null
+    }
+
+    imageElement.onerror = () => {
+      cleanup()
+      resolve(src)
+    }
+
+    imageElement.onload = () => {
+      try {
+        resolve(resizeImageByMax(imageElement, maxSize, 'auto', typeData) ?? src)
+      } catch {
+        resolve(src)
+      } finally {
+        cleanup()
+      }
+    }
+
+    imageElement.src = src
   })
 }

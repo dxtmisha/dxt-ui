@@ -8,12 +8,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `selected: T | T[] | undefined` — Текущие выбранные значения.
-- `value: any` — Новое значение для обработки.
-- `options` — Объект с настройками:
-    - `multiple: boolean` — Режим множественного выбора (по умолчанию `false`).
-    - `maxlength: number` — Максимальное количество элементов для множественного выбора (по умолчанию `0` — без ограничений).
-    - `alwaysChange: boolean` — Флаг принудительной замены значения (по умолчанию `true`).
-    - `notEmpty: boolean` — Запрет на полное очищение списка (по умолчанию `false`).
+- `value: T` — Новое значение для обработки.
+- `options?: SetValuesOptions` — Объект с настройками:
+    - `multiple?: boolean` — Режим множественного выбора (по умолчанию `false`).
+    - `maxlength?: number` — Максимальное количество элементов для множественного выбора (по умолчанию `0` — без ограничений).
+    - `alwaysChange?: boolean` — Флаг принудительной замены значения (по умолчанию `true`).
+    - `notEmpty?: boolean` — Запрет на полное очищение списка (по умолчанию `false`).
 
 **Возвращает:**
 `T | T[] | undefined` — Новое состояние выбранных значений.
@@ -22,7 +22,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 import { setValues } from '@dxtmisha/functional-basic'
 
 // Одиночный выбор
-console.log(setValues(1, 2, {})) // 2
+console.log(setValues(1, 2)) // 2
 
 // Множественный выбор (переключение)
 let list = [1, 2]

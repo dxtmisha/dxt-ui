@@ -4,11 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `replaceTemplate`
 
-Searches the original string for markers in the form `[pattern]` and replaces them with corresponding values from the provided object. If the marker's value is a function, it is automatically called, and its result is substituted into the string.
+A simplified templating utility designed for a single type of replacement — `[pattern]` markers. Unlike the comprehensive `applyTemplate` function, which handles block tags (`[tag]content[/tag]`) and positional list macros (`%d`..`%v`), `replaceTemplate` focuses on fast, direct substitution of values and function returns from a key dictionary.
+
+If the marker's value is a function, it is automatically called, and its result is safely substituted into the string without modifying special replacement tokens.
 
 **Parameters:**
 - `value: string` — The template string containing markers (e.g., `[name]`).
-- `replaces: Record<string, string | FunctionReturn<string>>` — An object containing replacement data, where the key is the marker name inside brackets, and the value is a string or a function returning a string.
+- `replaces: Record<string, FunctionOr<string | number | boolean>>` — An object containing replacement data, where the key is the marker name inside brackets, and the value is a string, number, boolean, or a function returning a value.
 
 **Returns:**
 `string` — A new string with the substituted values.
@@ -16,12 +18,13 @@ Searches the original string for markers in the form `[pattern]` and replaces th
 ```typescript
 import { replaceTemplate } from '@dxtmisha/functional-basic'
 
-const template = 'Hello, [name]! Your balance: [balance].'
+const template = 'Hello, [name]! Page: [page]. Your balance: [balance].'
 const data = {
   name: 'John',
-  balance: () => '$100' // The function is evaluated during substitution
+  page: 1,
+  balance: () => '$100' // The function is evaluated during substitution, literal $ is preserved
 }
 
 console.log(replaceTemplate(template, data)) 
-// 'Hello, John! Your balance: $100.'
+// 'Hello, John! Page: 1. Your balance: $100.'
 ```

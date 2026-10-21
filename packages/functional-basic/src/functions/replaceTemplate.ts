@@ -1,23 +1,38 @@
 import { executeFunction } from './executeFunction'
-import { forEach } from './forEach'
-import { getExp } from './getExp'
+import { hasKey } from './hasKey'
+import { isObject } from './isObject'
 
-import { type FunctionReturn } from '../types/basicTypes'
+import { type FunctionOr } from '../types/basicTypes'
+
+/** Regular expression for matching placeholder keys / Регулярное выражение для сопоставления ключей подстановки */
+const EXP_KEY = /\[([^\]]+)\]/g
 
 /**
- * Replacing the value from replaces in value.
+ * A simplified template replacement function for substituting values or function results into `[key]` placeholders.
  *
- * Замена значения из replaces в value.
- * @param value template string/ строка шаблона
- * @param replaces object with data for replacement/ объект с данными для замены
- * @returns replaced string/ замененная строка
+ * Упрощенная функция замены шаблонов для подстановки значений или результатов функций в плейсхолдеры `[key]`.
+ * @param value template string / строка шаблона
+ * @param replaces object with data for replacement / объект с данными для замены
+ * @returns replaced string / замененная строка
  */
-export function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string {
-  let data = value
+export function replaceTemplate(
+  value: string,
+  replaces: Record<string, FunctionOr<string | number | boolean>>
+): string {
+  if (
+    !isObject(replaces)
+    || typeof value !== 'string'
+    || !value.includes('[')
+  ) {
+    return value
+  }
 
-  forEach(replaces, (replacement, pattern) => {
-    data = data.replace(getExp(`[${pattern}]`), executeFunction(replacement))
+  return value.replace(EXP_KEY, (match, key: string) => {
+    if (hasKey(replaces, key)) {
+      const replacement = executeFunction(replaces[key])
+      return replacement !== undefined && replacement !== null ? String(replacement) : ''
+    }
+
+    return match
   })
-
-  return data
 }

@@ -11,9 +11,9 @@ import { isDomRuntime } from './isDomRuntime'
  * @param count number of frames to skip / количество кадров для пропуска
  * @returns promise resolving on the animation frame / промис, разрешающийся на кадре анимации
  */
-export async function skipFrame<T = void>(
+export function skipFrame<T = void>(
   callback?: () => T | Promise<T>,
-  count: number = 1
+  count = 1
 ): Promise<T | void> {
   const init = () => executePromise(callback)
 
@@ -21,7 +21,7 @@ export async function skipFrame<T = void>(
     return new Promise<T | void>((resolve, reject) => {
       let current = 0
 
-      const next = () => {
+      const next = (): void => {
         requestAnimationFrame(async () => {
           try {
             current++

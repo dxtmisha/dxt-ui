@@ -4,25 +4,27 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `splice`
 
-Выполняет копирование и рекурсивное слияние свойств из одного объекта в другой. Поддерживает вставку новых свойств начиная с определенного ключа или индекса.
+Выполняет копирование и рекурсивное слияние свойств из одного объекта в другой. Поддерживает замену свойств начиная с определенного ключа или значения элемента с сохранением порядка следования остальных полей.
 
 **Параметры:**
-- `array: ObjectItem<I>` — Целевой объект или массив.
+- `array: ObjectItem<I>` — Целевой объект.
 - `replacement?: ObjectItem<I> | I` — Исходный объект с новыми данными.
-- `indexStart?: string` — Ключ или значение элемента, начиная с которого будет выполнена вставка.
+- `indexStart?: string` — Ключ или значение элемента, начиная с которого будет выполнена замена.
 
 **Возвращает:**
-`ObjectItem<I>` — Новый объект или массив с примененными изменениями.
+`ObjectItem<I>` — Новый объект с примененными изменениями.
 
 ```typescript
 import { splice } from '@dxtmisha/functional-basic'
 
-const target = { first: 1, last: 3 }
-const source = { second: 2 }
+const target = { first: 1, middle: 2, last: 3 }
+const replacement = { middleNew: 20 }
 
-// Простая вставка
-console.log(splice(target, source)) // { first: 1, last: 3, second: 2 }
+// Простое слияние без indexStart
+console.log(splice(target, replacement))
+// { first: 1, middle: 2, last: 3, middleNew: 20 }
 
-// Вставка после определенного ключа
-console.log(splice(target, source, 'first')) // { first: 1, second: 2, last: 3 }
+// Замена свойства по ключу с сохранением порядка остальных полей
+console.log(splice(target, replacement, 'middle'))
+// { first: 1, middleNew: 20, last: 3 }
 ```

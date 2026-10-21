@@ -19,7 +19,7 @@ export type SortColumnItem = {
  * Custom sort function signature. /
  * Сигнатура пользовательской функции сортировки.
  */
-export type SortFunction<T = any> = (
+export type SortFunction<T = Record<string, unknown>> = (
   a: T,
   b: T,
   column?: string,
