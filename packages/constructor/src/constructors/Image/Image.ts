@@ -9,7 +9,6 @@ import {
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageBackground } from './ImageBackground'
@@ -36,7 +35,6 @@ import type { ImageComponents, ImageEmits, ImageSlots } from './types'
 export type ImageConstructors = {
   adaptiveItem: typeof ImageAdaptiveItem
   background: typeof ImageBackground
-  clientOnly: typeof ClientOnlyInclude
   coordinator: typeof ImageCoordinator
   data: typeof ImageData
   event: typeof ImageEvent
@@ -80,10 +78,6 @@ export class Image extends DesignLogicAbstract<
         () => this.i('coordinator'),
         () => this.i('adaptiveItem')
       ]
-    },
-    clientOnly: {
-      item: ClientOnlyInclude,
-      parameters: () => [{ clientOnly: true }]
     },
     coordinator: {
       item: ImageCoordinator,
