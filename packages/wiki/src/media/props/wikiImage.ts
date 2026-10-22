@@ -95,6 +95,19 @@ export const wikiImage: StorybookArgsToList = {
       }
     }
   },
+  'image.decoding': {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: ['async', 'auto', 'sync'],
+      description: {
+        en: 'Provides an image decoding hint to the browser',
+        ru: 'Задаёт подсказку браузеру для декодирования изображения'
+      }
+    },
+    hide: true
+  },
   'image.fetchPriority': {
     type: StorybookControl.select,
     options: {

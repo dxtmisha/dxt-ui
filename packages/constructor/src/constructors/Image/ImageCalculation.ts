@@ -149,10 +149,10 @@ export class ImageCalculation {
   }
 
   /**
-   * Changes the multiplier value if it is greater than the checked value.
+   * Updates the multiplier value if the passed value is less than the current one.
    *
-   * Изменяет значение множителя, если оно больше проверяемого значения.
-   * @param value values for verification / значения для проверки
+   * Обновляет значение множителя, если переданное значение меньше текущего.
+   * @param value value for verification / значение для проверки
    * @returns instance of this class / экземпляр этого класса
    */
   makeFactorMax(value: number): this {
@@ -164,9 +164,9 @@ export class ImageCalculation {
   }
 
   /**
-   * Updating offset.width, if it is larger than the selected value.
+   * Updates offset.width if the passed width is less than the current one.
    *
-   * Обновление offset.width, если она больше выбранного значения.
+   * Обновляет offset.width, если переданная ширина меньше текущей.
    * @param width value of the selected width / значение выбранной ширины
    * @returns instance of this class / экземпляр этого класса
    */
@@ -179,9 +179,9 @@ export class ImageCalculation {
   }
 
   /**
-   * Updating offset.height, if it is larger than the selected value.
+   * Updates offset.height if the passed height is less than the current one.
    *
-   * Обновление offset.height, если она больше выбранного значения.
+   * Обновляет offset.height, если переданная высота меньше текущей.
    * @param height value of the selected height / значение выбранной высоты
    * @returns instance of this class / экземпляр этого класса
    */
@@ -194,9 +194,9 @@ export class ImageCalculation {
   }
 
   /**
-   * Updating size.width, if it is less than the selected value.
+   * Updates size.width if the passed width is greater than the current one.
    *
-   * Обновление size.width, если она меньше выбранного значения.
+   * Обновляет size.width, если переданная ширина больше текущей.
    * @param width value of the selected width / значение выбранной ширины
    * @returns instance of this class / экземпляр этого класса
    */
@@ -209,9 +209,9 @@ export class ImageCalculation {
   }
 
   /**
-   * Updating size.height, if it is less than the selected value.
+   * Updates size.height if the passed height is greater than the current one.
    *
-   * Обновление size.height, если она меньше выбранного значения.
+   * Обновляет size.height, если переданная высота больше текущей.
    * @param height value of the selected height / значение выбранной высоты
    * @returns instance of this class / экземпляр этого класса
    */

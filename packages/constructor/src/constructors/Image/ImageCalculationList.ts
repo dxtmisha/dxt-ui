@@ -4,7 +4,7 @@ import { ServerStorage } from '@dxtmisha/functional'
 import { ImageCalculation } from './ImageCalculation'
 
 /** Server storage key for image calculation list / Ключ серверного хранилища для списка вычислений изображений */
-const SERVER_STORAGE_KEY_CALC = '__ui:image-calculation-list__'
+const SERVER_STORAGE_KEY_CALCULATION = '__ui:image-calculation-list__'
 
 /**
  * Class for managing all ImageCalculation objects.
@@ -19,7 +19,7 @@ export class ImageCalculationList {
    * @returns true if sizes are present / true, если размеры присутствуют
    */
   static isSize(): boolean {
-    return this.items.find(item => item.isSize()) !== undefined
+    return this.items.some(item => item.isSize())
   }
 
   /**
@@ -49,7 +49,7 @@ export class ImageCalculationList {
    * @returns list of ImageCalculation objects / список объектов ImageCalculation
    */
   protected static get items(): ImageCalculation[] {
-    return ServerStorage.get(SERVER_STORAGE_KEY_CALC, () => [])
+    return ServerStorage.get(SERVER_STORAGE_KEY_CALCULATION, () => [])
   }
 
   /**

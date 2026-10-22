@@ -58,7 +58,7 @@
         @include ui.justifyContent(#{flex-start});
         
         & > .d1-button__icon {
-          --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
         }
         
         & > *:not(.d1-button__icon) {
@@ -79,7 +79,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -93,7 +93,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -107,7 +107,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -121,7 +121,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -135,7 +135,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -149,7 +149,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -163,7 +163,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -177,7 +177,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -191,7 +191,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -205,7 +205,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -221,7 +221,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -235,7 +235,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -249,7 +249,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -263,7 +263,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -277,7 +277,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -291,7 +291,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -305,7 +305,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -319,7 +319,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -333,7 +333,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {
@@ -347,7 +347,7 @@
           @include ui.justifyContent(#{flex-start});
           
           & > .d1-button__icon {
-            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-iconWidth)) / 2) !important;
           }
           
           & > *:not(.d1-button__icon) {

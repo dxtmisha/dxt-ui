@@ -1,151 +1,175 @@
-import type { Ref } from 'vue'
+import { watch } from 'vue'
 import {
   type ConstrClassObject,
-  type DesignName,
-  type ConstrEmit,
+  type ConstrItems,
   type ConstrStyles,
+  DesignLogicAbstract,
   isFilled,
   isString
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
-import type { AriaList } from '../../types/ariaTypes'
 
-import { ImageType } from './ImageType'
-import { ImageData } from './ImageData'
-
-import { ImageCoordinator } from './ImageCoordinator'
-import { ImagePosition } from './ImagePosition'
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageBackground } from './ImageBackground'
+import { ImageCoordinator } from './ImageCoordinator'
+import { ImageData } from './ImageData'
+import { ImageEvent } from './ImageEvent'
 import { ImageImg } from './ImageImg'
 import { ImageLazy } from './ImageLazy'
+import { ImagePosition } from './ImagePosition'
+import { ImageText } from './ImageText'
+import { ImageType } from './ImageType'
+import { ImageUint8Array } from './ImageUint8Array'
 
+import type { AriaList } from '../../types/ariaTypes'
 import { type ImageBinds, ImageTypeValue, type ImageValueBinds } from './basicTypes'
-import type { ImageEmits } from './types'
 import type { ImageProps } from './props'
+import type { ImageComponents, ImageEmits, ImageSlots } from './types'
+
+/** Image dependency constructors type / Тип конструкторов зависимостей изображения */
+export type ImageConstructors = {
+  /** Adaptive item constructor / Конструктор адаптивного элемента */
+  adaptiveItem: typeof ImageAdaptiveItem
+  /** Background constructor / Конструктор фона */
+  background: typeof ImageBackground
+  /** Coordinator constructor / Конструктор координатора */
+  coordinator: typeof ImageCoordinator
+  /** Data constructor / Конструктор данных */
+  data: typeof ImageData
+  /** Event constructor / Конструктор событий */
+  event: typeof ImageEvent
+  /** Img tag constructor / Конструктор тега img */
+  img: typeof ImageImg
+  /** Lazy loading constructor / Конструктор ленивой загрузки */
+  lazy: typeof ImageLazy
+  /** Position constructor / Конструктор позиции */
+  position: typeof ImagePosition
+  /** Text constructor / Конструктор текста */
+  text: typeof ImageText
+  /** Type constructor / Конструктор типа */
+  type: typeof ImageType
+  /** Uint8Array constructor / Конструктор Uint8Array */
+  uint8Array: typeof ImageUint8Array
+}
 
 /**
  * Base class for working with images and icons.
  *
  * Базовый класс для работы с изображениями и иконками.
  */
-export class Image {
-  /** Object for working with client-side rendering / Объект для работы с рендерингом на стороне клиента */
-  readonly clientOnly: ClientOnlyInclude
+export class Image extends DesignLogicAbstract<
+  HTMLElement,
+  ImageComponents,
+  ImageEmits,
+  ImageSlots,
+  ImageProps,
+  ImageConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ImageConstructors> = {
+    adaptiveItem: {
+      item: ImageAdaptiveItem,
+      parameters: () => [
+        this.props,
+        this.element,
+        this.isMounted,
+        () => this.i('data')
+      ]
+    },
+    background: {
+      item: ImageBackground,
+      parameters: () => [
+        this.props,
+        () => this.i('data'),
+        () => this.i('coordinator'),
+        () => this.i('adaptiveItem')
+      ]
+    },
+    coordinator: {
+      item: ImageCoordinator,
+      parameters: () => [this.props]
+    },
+    data: {
+      item: ImageData,
+      parameters: () => [
+        this.props,
+        this.isMounted,
+        () => this.i('lazy'),
+        () => this.i('type'),
+        () => this.i('uint8Array')
+      ]
+    },
+    event: {
+      item: ImageEvent,
+      parameters: () => [
+        () => this.i('type'),
+        () => this.i('data'),
+        this.emits
+      ]
+    },
+    img: {
+      item: ImageImg,
+      parameters: () => [
+        this.props,
+        () => this.i('type'),
+        () => this.i('position'),
+        () => this.i('background'),
+        () => this.i('lazy')
+      ]
+    },
+    lazy: {
+      item: ImageLazy,
+      parameters: () => [
+        this.props,
+        this.element
+      ]
+    },
+    position: {
+      item: ImagePosition,
+      parameters: () => [
+        this.props,
+        () => this.i('coordinator')
+      ]
+    },
+    text: {
+      item: ImageText,
+      parameters: () => [
+        this.props,
+        () => this.i('type'),
+        () => this.i('data')
+      ]
+    },
+    type: {
+      item: ImageType,
+      parameters: () => [this.props, this.isMounted]
+    },
+    uint8Array: {
+      item: ImageUint8Array,
+      parameters: () => [this.props]
+    }
+  }
 
-  /** Image type manager / Менеджер типа изображения */
-  readonly type: ImageType
-
-  /** Image data manager / Менеджер данных изображения */
-  readonly data: ImageData
-
-  /** Image coordinates manager / Менеджер координат изображения */
-  readonly coordinator: ImageCoordinator
-
-  /** Image position manager / Менеджер позиции изображения */
-  readonly position: ImagePosition
-
-  /** Adaptive image item manager / Менеджер адаптивного элемента изображения */
-  readonly adaptiveItem: ImageAdaptiveItem
-
-  /** Image background manager / Менеджер фона изображения */
-  readonly background: ImageBackground
-
-  /** Image lazy loading manager / Менеджер ленивой загрузки изображения */
-  readonly lazy: ImageLazy
-
-  /** Image tag manager / Менеджер тега изображения */
-  readonly img: ImageImg
-
-  /**
-   * Connects the image helpers in dependency order.
-   *
-   * Соединяет помощники изображения в порядке зависимостей.
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.ImageAdaptiveItemConstructor class for working with adaptive image item/ класс для работы с адаптивным элементом изображения
-   * @param constructors.ImageBackgroundConstructor class for working with image background/ класс для работы с фоном изображения
-   * @param constructors.ImageCoordinatorConstructor class for working with image coordinates/ класс для работы с координатами изображения
-   * @param constructors.ImageDataConstructor class for working with image data/ класс для работы с данными изображения
-   * @param constructors.ImageImgConstructor class for working with image tag/ класс для работы с тегом изображения
-   * @param constructors.ImageLazyConstructor class for working with image lazy loading / класс для работы с ленивой загрузкой изображения
-   * @param constructors.ImagePositionConstructor class for working with image position/ класс для работы с позицией изображения
-   * @param constructors.ImageTypeConstructor class for working with image type/ класс для работы с типом изображения
-   * @param constructors.ClientOnlyConstructor class for working with ClientOnly / класс для работы с ClientOnly
-   */
-  constructor(
-    protected readonly props: ImageProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly emits?: ConstrEmit<ImageEmits>,
-    constructors: {
-      ImageAdaptiveItemConstructor?: typeof ImageAdaptiveItem
-      ImageBackgroundConstructor?: typeof ImageBackground
-      ImageCoordinatorConstructor?: typeof ImageCoordinator
-      ImageDataConstructor?: typeof ImageData
-      ImageImgConstructor?: typeof ImageImg
-      ImageLazyConstructor?: typeof ImageLazy
-      ImagePositionConstructor?: typeof ImagePosition
-      ImageTypeConstructor?: typeof ImageType
-      ClientOnlyConstructor?: typeof ClientOnlyInclude
-    } = {}
-  ) {
-    const {
-      ImageAdaptiveItemConstructor = ImageAdaptiveItem,
-      ImageBackgroundConstructor = ImageBackground,
-      ImageCoordinatorConstructor = ImageCoordinator,
-      ImageDataConstructor = ImageData,
-      ImageImgConstructor = ImageImg,
-      ImageLazyConstructor = ImageLazy,
-      ImagePositionConstructor = ImagePosition,
-      ImageTypeConstructor = ImageType,
-      ClientOnlyConstructor = ClientOnlyInclude
-    } = constructors
-
-    this.clientOnly = new ClientOnlyConstructor({ clientOnly: true })
-    this.lazy = new ImageLazyConstructor(
-      props,
-      element
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  protected override readonly onMounted = (): void => {
+    watch(
+      () => ImageAdaptiveItem.is(this.props),
+      (isAdaptive) => {
+        if (isAdaptive) {
+          this.i('adaptiveItem')
+        }
+      },
+      { immediate: true }
     )
 
-    this.type = new ImageTypeConstructor(props, this.clientOnly)
-    this.data = new ImageDataConstructor(
-      props,
-      this.clientOnly,
-      this.type,
-      this.lazy,
-      this.emits
-    )
-
-    this.coordinator = new ImageCoordinatorConstructor(props)
-    this.position = new ImagePositionConstructor(props, this.coordinator)
-
-    this.adaptiveItem = new ImageAdaptiveItemConstructor(
-      props,
-      this.clientOnly,
-      this.data,
-      element
-    )
-
-    this.background = new ImageBackgroundConstructor(
-      props,
-      this.data,
-      this.coordinator,
-      this.adaptiveItem
-    )
-
-    this.img = new ImageImgConstructor(
-      this.props,
-      element,
-      this.type,
-      this.position,
-      this.background,
-      this.lazy
+    watch(
+      () => ImageData.isImage(this.i('type').get()) && this.i('data').isImage(),
+      (isImage) => {
+        if (isImage) {
+          this.i('event')
+        }
+      },
+      { immediate: true }
     )
   }
 
@@ -156,11 +180,20 @@ export class Image {
    * @returns image ARIA attributes / ARIA-атрибуты изображения
    */
   get aria(): AriaList {
+    const data: AriaList = {
+      ...AriaStaticInclude.role('img')
+    }
+
+    if (isFilled(this.props.alt)) {
+      return {
+        ...data,
+        ...AriaStaticInclude.label(this.props.alt)
+      }
+    }
+
     return {
-      ...AriaStaticInclude.role('img'),
-      ...(isFilled(this.props.alt)
-        ? AriaStaticInclude.label(this.props.alt)
-        : AriaStaticInclude.hidden())
+      ...data,
+      ...AriaStaticInclude.hidden()
     }
   }
 
@@ -184,29 +217,30 @@ export class Image {
    * @returns image state and font classes / классы состояния и шрифта изображения
    */
   get classes(): ConstrClassObject {
-    const type = this.type.item.value
+    const type = this.i('type').get()
     const data: ConstrClassObject = {
-      [this.naming.getStatusClass(`type--${type}`)]: type !== undefined,
-      [this.naming.getStatusClass('background')]: this.background.isImage(),
+      [this.naming.getStatusClass(['type', String(type)])]: Boolean(type),
+      [this.naming.getStatusClass('background')]: ImageBackground.is(type) && this.i('background').isImage(),
+      [this.naming.getStatusClass('img')]: ImageImg.is(this.props) && this.i('img').is(),
       notranslate: true
     }
 
-    if (this.img.is()) {
-      data[this.naming.getStatusClass('img')] = true
-    }
-
     switch (type) {
-      case 'outlined':
+      case ImageTypeValue.outlined:
         data['material-symbols-outlined'] = true
         break
-      case 'round':
+      case ImageTypeValue.round:
         data['material-symbols-rounded'] = true
         break
-      case 'sharp':
+      case ImageTypeValue.sharp:
         data['material-symbols-sharp'] = true
         break
-      case 'material':
+      case ImageTypeValue.filled:
+      case ImageTypeValue.material:
         data['material-icons'] = true
+        break
+      case ImageTypeValue.twoTone:
+        data['material-icons-two-tone'] = true
         break
     }
 
@@ -223,27 +257,27 @@ export class Image {
     const value = this.props.value
 
     if (value) {
-      switch (this.type.item.value) {
+      switch (this.i('type').get()) {
         case ImageTypeValue.file:
         case ImageTypeValue.image:
         case ImageTypeValue.array:
           return {
-            'background-image': this.background.image,
-            'background-size': this.background.size.value,
-            'background-position-x': this.position.x,
-            'background-position-y': this.position.y
+            'background-image': this.i('background').image,
+            'background-size': this.i('background').size.value,
+            'background-position-x': this.i('position').x,
+            'background-position-y': this.i('position').y
           }
         case ImageTypeValue.icon:
           return {
-            'background-image': this.background.image
+            'background-image': this.i('background').image
           }
         case ImageTypeValue.flag:
           return {
-            'background-image': this.background.image,
+            'background-image': this.i('background').image,
             'background-size': 'contain'
           }
         case ImageTypeValue.public:
-          return { 'mask-image': this.background.image }
+          return { 'mask-image': this.i('background').image }
         case ImageTypeValue.color:
           if (isString(value)) {
             return { 'background-color': value }
@@ -263,7 +297,7 @@ export class Image {
   get valueBinds(): ImageValueBinds {
     return {
       key: 'value',
-      data: this.data.image.value
+      data: this.i('data').image.value
     }
   }
 }

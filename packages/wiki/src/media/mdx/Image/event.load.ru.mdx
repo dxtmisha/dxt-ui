@@ -5,17 +5,17 @@ import { Source } from '@storybook/addon-docs/blocks';
 Событие срабатывает после загрузки изображения.
 
 **Параметры:**
-- `image: ImageEventData` — объект с данными изображения
+- `image: ImageEventData` — объект с данными загруженного изображения
 
 **Структура ImageEventData:**
-- `type: ImageTypeItem` — тип изображения (`'image'`, `'icon'`, `'pdf'`, `'file'`, `'flag'`, `'color'` и др.)
-- `image: ImageEventItem` — данные изображения (объект `ImageItem`, строка URL или `undefined`)
+- `type: ImageTypeItem` — тип изображения (`'image'`, `'file'`, `'array'`)
+- `image: ImageItem` — объект с метаданными и DOM-элементом загруженного изображения
 
-**Структура ImageItem (если image - объект):**
-- `width: number` — ширина изображения
-- `height: number` — высота изображения
-- `image: HTMLImageElement` — DOM элемент изображения
-- `src: string` — источник изображения (URL)
+**Структура ImageItem:**
+- `width: number` — натуральная ширина изображения
+- `height: number` — натуральная высота изображения
+- `image: HTMLImageElement` — DOM-элемент изображения
+- `src: string` — URL-источник или blob URI
 
 <Source
     code={`
@@ -27,15 +27,14 @@ const handleLoad = (data) => {
     console.log('Ширина:', data.image.width)
     console.log('Высота:', data.image.height)
     console.log('URL:', data.image.src)
-  } else {
-    console.log('URL изображения:', data.image)
+    console.log('HTMLImageElement:', data.image.image)
   }
 }
 </script>
 
 <template>
   <Image
-    src="/path/to/image.jpg"
+    value="/path/to/image.jpg"
     @load="handleLoad"
   />
 </template>

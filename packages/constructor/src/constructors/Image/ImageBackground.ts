@@ -1,12 +1,13 @@
 // ai-none
 
 import { computed } from 'vue'
-import { isFilled, type NumberOrString } from '@dxtmisha/functional'
+import { inArray, isFilled, isString, type NumberOrString } from '@dxtmisha/functional'
 
-import { ImageData } from './ImageData'
-import { ImageCoordinator } from './ImageCoordinator'
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
+import { ImageCoordinator } from './ImageCoordinator'
+import type { ImageData } from './ImageData'
 
+import { type ImageTypeItem, ImageTypeValue } from './basicTypes'
 import { type ImageProps } from './props'
 
 /** Regular expression to detect a percentage suffix / Регулярное выражение для определения суффикса процента */
@@ -23,17 +24,43 @@ const REGEXP_PERCENT = /%$/
  */
 export class ImageBackground {
   /**
-   * Constructor
+   * Checks whether background image calculation is applicable for the given type.
+   *
+   * Проверяет, применим ли расчёт фонового изображения для указанного типа.
+   * @param type image type / тип изображения
+   * @returns true if background is used / true, если используется фон
+   */
+  static is(type?: ImageTypeItem): boolean {
+    return Boolean(
+      type
+      && inArray(
+        [
+          ImageTypeValue.file,
+          ImageTypeValue.image,
+          ImageTypeValue.array,
+          ImageTypeValue.icon,
+          ImageTypeValue.flag,
+          ImageTypeValue.public
+        ],
+        type
+      )
+    )
+  }
+
+  /**
+   * Constructor for initializing background style calculations.
+   *
+   * Конструктор для инициализации вычислений стилей фона.
    * @param props input data / входные данные
-   * @param data image data / данные изображения
-   * @param coordinator object for working with coordinates / объект для работы с координатами
-   * @param adaptive an object for working with adapted scaling / объект для работы с адаптированным масштабированием
+   * @param data function returning ImageData object / функция, возвращающая объект ImageData
+   * @param coordinator function returning ImageCoordinator object / функция, возвращающая объект ImageCoordinator
+   * @param adaptive function returning ImageAdaptiveItem object / функция, возвращающая объект ImageAdaptiveItem
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly data: ImageData,
-    protected readonly coordinator: ImageCoordinator,
-    protected readonly adaptive: ImageAdaptiveItem
+    protected readonly data: () => ImageData,
+    protected readonly coordinator: () => ImageCoordinator,
+    protected readonly adaptive: () => ImageAdaptiveItem
   ) {
   }
 
@@ -45,12 +72,15 @@ export class ImageBackground {
    * Приоритет: координатор → адаптивный → размер из props.
    */
   readonly size = computed<string | null>(() => {
-    if (this.coordinator.is()) {
+    if (ImageCoordinator.is(this.props)) {
       return this.getSizeByCoordinator()
     }
 
-    if (this.adaptive.is()) {
-      const size = this.adaptive.backgroundSize
+    if (
+      ImageAdaptiveItem.is(this.props)
+      && this.adaptive().is()
+    ) {
+      const size = this.adaptive().backgroundSize
 
       if (size) {
         return size
@@ -87,17 +117,10 @@ export class ImageBackground {
    * @returns image source string or null / строка источника изображения или null
    */
   get imageSrc(): string | null {
-    const image = this.data.image.value
+    const image = this.data().image.value
 
     if (image) {
-      switch (typeof image) {
-        case 'string':
-          return image
-        case 'object':
-          return image.src
-        default:
-          return null
-      }
+      return isString(image) ? image : image.src
     }
 
     return null
@@ -127,12 +150,11 @@ export class ImageBackground {
     width: NumberOrString,
     height: NumberOrString
   ): string | null {
-    const image = this.data.image.value
+    const data = this.data()
 
-    if (
-      image
-      && typeof image === 'object'
-    ) {
+    if (data.isImage()) {
+      const image = data.image.value
+
       return image.height < image.width ? `auto ${height}` : `${width} auto`
     }
 
@@ -149,7 +171,7 @@ export class ImageBackground {
     const {
       width,
       height
-    } = this.coordinator.backgroundSize
+    } = this.coordinator().backgroundSize
 
     return this.getSize(width, height)
   }

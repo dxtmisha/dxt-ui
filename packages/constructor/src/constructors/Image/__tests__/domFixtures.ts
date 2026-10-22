@@ -1,16 +1,18 @@
 import './testWarnings'
 import { afterEach, beforeEach, expect, vi } from 'vitest'
-import { createApp, h, nextTick, ref, type Ref, type VNodeChild } from 'vue'
-import { ServerStorage, type ConstrEmit } from '@dxtmisha/functional'
-import { ClientOnlyInclude } from '../../../classes/ClientOnlyInclude'
+import { createApp, h, nextTick, onMounted, onUnmounted, ref, type Ref, type VNodeChild } from 'vue'
+import { DesignLifecycleAbstract, ServerStorage, type ConstrEmit } from '@dxtmisha/functional'
 import { ImageAdaptiveItem } from '../ImageAdaptiveItem'
 import { ImageBackground } from '../ImageBackground'
 import { ImageCoordinator } from '../ImageCoordinator'
 import { ImageData } from '../ImageData'
+import { ImageEvent } from '../ImageEvent'
 import { ImageImg } from '../ImageImg'
 import { ImageLazy } from '../ImageLazy'
 import { ImagePosition } from '../ImagePosition'
+import { ImageText } from '../ImageText'
 import { ImageType } from '../ImageType'
+import { ImageUint8Array } from '../ImageUint8Array'
 import type { ImageEmits } from '../types'
 import type { ImageProps } from '../props'
 
@@ -28,14 +30,16 @@ export interface MountedHelper<Item> {
 
 /** Real image helper dependencies / Реальные зависимости помощников изображения */
 export interface ImageGraph {
-  /** Client readiness / Готовность клиента */
-  clientOnly: ClientOnlyInclude
+  /** Whether the component is mounted / Смонтирован ли компонент */
+  isMounted: Ref<boolean>
   /** Source classification / Классификация источника */
   type: ImageType
   /** Lazy loading / Ленивая загрузка */
   lazy: ImageLazy
   /** Loaded data / Загруженные данные */
   data: ImageData
+  /** Event manager / Менеджер событий */
+  event: ImageEvent
   /** Crop coordinates / Координаты кадрирования */
   coordinator: ImageCoordinator
   /** Position / Позиция */
@@ -46,6 +50,10 @@ export interface ImageGraph {
   background: ImageBackground
   /** Native image bindings / Привязки нативного изображения */
   img: ImageImg
+  /** Text representation / Текстовое представление */
+  text: ImageText
+  /** Manager for images in Uint8Array format / Менеджер для изображений в формате Uint8Array */
+  uint8Array: ImageUint8Array
 }
 
 /** Controlled intersection observer / Управляемый наблюдатель пересечений */
@@ -181,6 +189,13 @@ export function mountHelper<Item>(
   const application = createApp({
     setup() {
       item = factory(element)
+
+      if (item instanceof DesignLifecycleAbstract) {
+        const lifecycle = item as DesignLifecycleAbstract
+        onMounted(() => lifecycle.onMounted?.())
+        onUnmounted(() => lifecycle.onUnmounted?.())
+      }
+
       return () => h('div', { ref: element }, render ? [render(item)] : undefined)
     }
   })
@@ -188,6 +203,11 @@ export function mountHelper<Item>(
   const unmount = (): void => {
     if (mounted) {
       mounted = false
+
+      if (item instanceof DesignLifecycleAbstract) {
+        (item as DesignLifecycleAbstract).onUnmounted?.()
+      }
+
       application.unmount()
       host.remove()
     }
@@ -213,16 +233,40 @@ export function mountImageGraph(
 ): MountedHelper<ImageGraph> {
   Object.assign(props, { lazy: props.lazy ?? false, preloadOffset: props.preloadOffset ?? '1024px' })
   return mountHelper((element) => {
-    const clientOnly = new ClientOnlyInclude({ clientOnly: true })
+    const isMounted = ref(false)
     const lazy = new ImageLazy(props, element)
-    const type = new ImageType(props, clientOnly)
-    const data = new ImageData(props, clientOnly, type, lazy, emits)
+    const type = new ImageType(props, isMounted)
+    const uint8Array = new ImageUint8Array(props)
+    const data = new ImageData(
+      props,
+      isMounted,
+      () => lazy,
+      () => type,
+      () => uint8Array
+    )
+    const event = new ImageEvent(
+      () => type,
+      () => data,
+      emits
+    )
     const coordinator = new ImageCoordinator(props)
-    const position = new ImagePosition(props, coordinator)
-    const adaptive = new ImageAdaptiveItem(props, clientOnly, data, element)
-    const background = new ImageBackground(props, data, coordinator, adaptive)
-    const img = new ImageImg(props, element, type, position, background, lazy)
-    return { clientOnly, lazy, type, data, coordinator, position, adaptive, background, img }
+    const position = new ImagePosition(props, () => coordinator)
+    const adaptive = new ImageAdaptiveItem(props, element, isMounted, () => data)
+    const background = new ImageBackground(props, () => data, () => coordinator, () => adaptive)
+    const img = new ImageImg(props, () => type, () => position, () => background, () => lazy)
+    const text = new ImageText(props, () => type, () => data)
+
+    onMounted(() => {
+      isMounted.value = true
+      lazy.onMounted?.()
+    })
+
+    onUnmounted(() => {
+      lazy.onUnmounted?.()
+      uint8Array.onUnmounted()
+    })
+
+    return { isMounted, lazy, type, data, event, coordinator, position, adaptive, background, img, text, uint8Array }
   }, render)
 }
 

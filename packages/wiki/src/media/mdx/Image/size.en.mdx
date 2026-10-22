@@ -7,30 +7,30 @@ The `size`, `coordinator`, `x`, and `y` properties allow you to precisely contro
 **Properties:**
 
 - `size` — scaling and fill mode of the image (`auto`, `contain`, `cover`)
-- `coordinator` — array of coordinates for cropping the display area `[left, top, right, bottom]` in percentages
-- `x` — horizontal offset of the image (pixels, percentages)
-- `y` — vertical offset of the image (pixels, percentages)
+- `coordinator` — array of coordinates for cropping the display area `[top, right, bottom, left]` in percentages (supports 1 to 4 values following the CSS box model)
+- `x` — horizontal offset of the image (pixels, percentages, e.g. `'20%'`, `'10px'`)
+- `y` — vertical offset of the image (pixels, percentages, e.g. `'-10%'`, `'5px'`)
 
-Properties work together or individually. The `size` value defines the scaling mode: `auto` uses the original size, `contain` fits the image completely, `cover` fills the container with possible cropping. The `coordinator` property sets the visible area by cropping the image at specified coordinates. The `x` and `y` parameters shift the image relative to the container for precise positioning.
+Properties work together or individually. The `size` value defines the scaling mode: `auto` uses the original size, `contain` fits the image completely, `cover` fills the container with possible cropping. The `coordinator` property sets the visible crop area using normalized coordinates `[top, right, bottom, left]` in percentages (1 value applies to all sides, 2 values specify `[vertical, horizontal]`, 3 values specify `[top, horizontal, bottom]`, and 4 values specify all four sides). The `x` and `y` parameters shift the image relative to the container for precise positioning.
 
 <Source
     code={`
 <!-- Scaling mode -->
-<Image value="image.png" size="contain" />
+<Image value="/images/photo.jpg" size="contain" />
 
-<!-- Cropping by coordinates -->
-<Image value="image.png" :coordinator="[10, 20, 100, 80]" />
+<!-- Cropping by coordinates [top, right, bottom, left] -->
+<Image value="/images/photo.jpg" :coordinator="[10, 20, 10, 20]" />
 
-<!-- Position offset -->
-<Image value="image.png" x="15" y="-10" />
+<!-- Position offset with CSS units -->
+<Image value="/images/photo.jpg" x="15%" y="-10%" />
 
 <!-- Combined parameters -->
 <Image
-  value="image.png"
+  value="/images/photo.jpg"
   size="cover"
-  :coordinator="[0, 0, 100, 50]"
-  x="10"
-  y="5"
+  :coordinator="[0, 10, 20, 10]"
+  x="10%"
+  y="5%"
 />
   `}
     language="html"

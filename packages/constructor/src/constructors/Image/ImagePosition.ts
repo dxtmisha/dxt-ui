@@ -11,13 +11,15 @@ import type { ImageProps } from './props'
  */
 export class ImagePosition {
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param coordinator coordinates for margins/ координаты для отступов
+   * Constructor for initializing background position calculations.
+   *
+   * Конструктор для инициализации вычислений позиции фона.
+   * @param props input data / входные данные
+   * @param coordinator coordinates for margins / координаты для отступов
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly coordinator: ImageCoordinator
+    protected readonly coordinator: () => ImageCoordinator
   ) {
   }
 
@@ -28,8 +30,10 @@ export class ImagePosition {
    * @returns horizontal position / горизонтальная позиция
    */
   get x(): string {
-    if (this.coordinator.is()) {
-      return `${this.coordinator.coordinator[3] + (this.coordinator.size.width / 2)}%`
+    if (ImageCoordinator.is(this.props)) {
+      const coordinator = this.coordinator()
+
+      return `${coordinator.coordinator[3] + (coordinator.size.width / 2)}%`
     }
 
     return this.props.x?.toString() || 'center'
@@ -42,8 +46,10 @@ export class ImagePosition {
    * @returns vertical position / вертикальная позиция
    */
   get y(): string {
-    if (this.coordinator.is()) {
-      return `${this.coordinator.coordinator[0] + (this.coordinator.size.height / 2)}%`
+    if (ImageCoordinator.is(this.props)) {
+      const coordinator = this.coordinator()
+
+      return `${coordinator.coordinator[0] + (coordinator.size.height / 2)}%`
     }
 
     return this.props.y?.toString() || 'center'

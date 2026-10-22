@@ -15,7 +15,7 @@ export type ImageComponents = {}
  * Тип, описывающий доступные события.
  */
 export type ImageEmits = {
-  /** Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения */
+  /** Event triggered when the image is loaded / Событие, срабатывающее при загрузке изображения */
   load: [image: ImageEventData]
 }
 
@@ -25,9 +25,9 @@ export type ImageEmits = {
  * Тип, описывающий доступные свойства.
  */
 export type ImageExpose = {
-  /** Current image type/ Текущий тип изображения */
+  /** Current image type / Текущий тип изображения */
   getType: () => ImageTypeItem
-  /** Current image data/ Текущие данные изображения */
+  /** Current image data / Текущие данные изображения */
   getData: () => ImageEventItem
 }
 

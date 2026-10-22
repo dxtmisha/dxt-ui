@@ -41,9 +41,9 @@ export class ImageFile {
    * Возвращает undefined для пустых источников или ошибок загрузки изображения.
    * Отклоняет промис, если подготовка источника или обработка изображения выбрасывает исключение.
    * @param src file or link / файл или ссылка
-   * @returns image item, source string, or undefined / элемент изображения, строка источника или undefined
+   * @returns image item or undefined / элемент изображения или undefined
    */
-  static async createImage(src: string | File): Promise<ImageItem | string | undefined> {
+  static async createImage(src: string | File): Promise<ImageItem | undefined> {
     if (!src) {
       return undefined
     }
@@ -81,18 +81,6 @@ export class ImageFile {
   }
 
   /**
-   * Returns a link to the image.
-   *
-   * Возвращает ссылку на изображение.
-   * @param src file or link / файл или ссылка
-   * @returns link to the image / ссылка на изображение
-   */
-  static async getPath(src: string | File): Promise<string> {
-    const item = await this.createImage(src)
-    return isString(item) ? item : (item?.src ?? '')
-  }
-
-  /**
    * Asynchronously reads the image file and returns its content as a Data URL (Base64).
    * Returns an empty string if the file is not an image.
    *
@@ -124,7 +112,7 @@ export class ImageFile {
 
       reader.onerror = () => resolve(this.onError(reader.error))
       reader.onabort = () => resolve(this.onError(reader.error))
-      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '')
+      reader.onload = () => resolve(isString(reader.result) ? reader.result : '')
       reader.readAsDataURL(file)
     })
   }

@@ -4,21 +4,18 @@ import {
   computed,
   effectScope,
   type EffectScope,
-  onMounted,
-  onUnmounted,
   type Ref,
   ref,
   watch,
   type WatchHandle
 } from 'vue'
 import {
+  DesignLifecycleAbstract,
   EventRef,
   getElementId,
   toNumber,
   useLazyItemByMarginRef
 } from '@dxtmisha/functional'
-
-import type { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
 import { ImageAdaptiveGroup } from './ImageAdaptiveGroup'
 import { ImageCalculationList } from './ImageCalculationList'
@@ -39,7 +36,7 @@ enum ImageAdaptiveItemType {
 }
 
 /** Basic group name / Базовое название группы */
-const GROUP_BASIC = 'main'
+const GROUP_BASIC = 'basic'
 
 /**
  * The value in pixels indicating when an element is still considered active,
@@ -58,7 +55,18 @@ export const MAX_BEYOND = 512
  * Вычисляет пропорции объекта и определяет необходимый размер изображения
  * для поддержания визуальной целостности внутри группы.
  */
-export class ImageAdaptiveItem {
+export class ImageAdaptiveItem extends DesignLifecycleAbstract {
+  /**
+   * Checks if adaptivity is enabled in properties.
+   *
+   * Проверяет, включена ли адаптивность в свойствах.
+   * @param props input data / входные данные
+   * @returns true if adaptivity is enabled / true, если адаптивность включена
+   */
+  static is(props?: ImageProps): boolean {
+    return Boolean(props?.adaptive)
+  }
+
   /** Scaling percentages / Проценты масштабирования */
   protected readonly percent = ref<ImageSize>({
     width: 0,
@@ -80,7 +88,7 @@ export class ImageAdaptiveItem {
   /** Watch handle for lazy loading / Дескриптор наблюдения за ленивой загрузкой */
   protected lazyStatus?: WatchHandle
 
-  /** Checks if the element is beyond the screen / Проверяет, вышел ли элемент за экран */
+  /** Checks if the element is within the active calculation area / Проверяет, находится ли элемент в активной зоне вычисления */
   protected beyond: boolean = false
 
   /**
@@ -88,39 +96,45 @@ export class ImageAdaptiveItem {
    *
    * Конструктор для создания менеджера масштабирования элемента.
    * @param props input data / входные данные
-   * @param clientOnly class for working with ClientOnly / класс для работы с ClientOnly
-   * @param data image data / данные изображения
    * @param element image element for scaling / элемент изображения для масштабирования
+   * @param isMounted whether the component is mounted / смонтирован ли компонент
+   * @param data function returning ImageData object / функция, возвращающая объект ImageData
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly clientOnly: ClientOnlyInclude,
-    protected readonly data: ImageData,
-    protected readonly element: Ref<ImageElement>
+    protected readonly element: Ref<ImageElement>,
+    protected readonly isMounted: Ref<boolean>,
+    protected readonly data: () => ImageData
   ) {
-    onMounted(() => {
-      watch(
-        () => [
-          this.is(),
-          this.width,
-          this.height,
-          this.group,
-          this.props.adaptiveAlways,
-          this.element.value,
-          this.data.image.value
-        ] as const,
-        ([isAdaptive]) => {
-          if (isAdaptive) {
-            this.add()
-          } else {
-            this.remove()
-          }
-        },
-        { immediate: true }
-      )
-    })
+    super()
+  }
 
-    onUnmounted(this.remove)
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    watch(
+      () => [
+        this.is(),
+        this.width,
+        this.height,
+        this.group,
+        this.props.adaptiveAlways,
+        this.element.value,
+        (this.width || this.height) ? this.data().image.value : undefined
+      ] as const,
+      () => {
+        if (this.is()) {
+          this.add()
+        } else {
+          this.remove()
+        }
+      },
+      { immediate: true }
+    )
+  }
+
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.remove()
   }
 
   /**
@@ -130,25 +144,27 @@ export class ImageAdaptiveItem {
    * @returns base size in pixels / базовый размер в пикселях
    */
   readonly size = computed<number>(() => {
+    const data = this.data()
+
     if (
       this.element.value
-      && this.data.isImage()
+      && data.isImage()
     ) {
-      const data = this.data.image.value
+      const item = data.image.value
 
       switch (this.type) {
         case ImageAdaptiveItemType.x:
-          if (!data.width) {
+          if (!item.width) {
             return 0
           }
 
-          return data.height * (this.elementSize.value.width * this.percent.value.width / data.width)
+          return item.height * (this.elementSize.value.width * this.percent.value.width / item.width)
         case ImageAdaptiveItemType.y:
-          if (!data.height) {
+          if (!item.height) {
             return 0
           }
 
-          return data.width * (this.elementSize.value.height * this.percent.value.height / data.height)
+          return item.width * (this.elementSize.value.height * this.percent.value.height / item.height)
       }
     }
 
@@ -192,11 +208,11 @@ export class ImageAdaptiveItem {
    */
   get active(): boolean {
     return Boolean(
-      this.props.adaptive
-      && this.clientOnly.isRender()
+      ImageAdaptiveItem.is(this.props)
+      && this.isMounted.value
       && (this.width || this.height)
     )
-    && this.data.isImage()
+    && this.data().isImage()
   }
 
   /**
@@ -279,13 +295,13 @@ export class ImageAdaptiveItem {
    * @returns physical height / физическая высота
    */
   get height(): number {
-    return toNumber(this.props?.objectHeight ?? 0)
+    return toNumber(this.props.objectHeight ?? 0)
   }
 
   /**
    * Checks if the element’s conditions are suitable for scaling.
    *
-   * Проверяет, подходить ли у элемента условия для масштабирования.
+   * Проверяет, подходят ли условия элемента для масштабирования.
    * @returns true if conditions are suitable for scaling / true, если условия подходят для масштабирования
    */
   is(): boolean {
@@ -293,10 +309,10 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Is it available for calculation.
+   * Checks if the element is available for group calculation (visible or within the preload margin).
    *
-   * Доступен ли для вычисления.
-   * @returns true if element is beyond the screen area / true, если элемент находится за пределами области экрана
+   * Проверяет, доступен ли элемент для группового вычисления (видим или в пределах отступа предзагрузки).
+   * @returns true if the element is available for calculation / true, если элемент доступен для вычисления
    */
   isBeyond(): boolean {
     return this.beyond
@@ -367,6 +383,8 @@ export class ImageAdaptiveItem {
    * @returns instance of this class / экземпляр этого класса
    */
   readonly remove = (): this => {
+    this.beyond = false
+    this.setPercent(0, 0)
     this.resetLazy()
     this.resetResize()
     ImageAdaptiveGroup.remove(this)
@@ -383,43 +401,6 @@ export class ImageAdaptiveItem {
   readonly update = (): this => {
     this.setElementSize()
     ImageAdaptiveGroup.make()
-
-    return this
-  }
-
-  /**
-   * Resets lazy tracking and stops the active watcher.
-   *
-   * Сбрасывает ленивое отслеживание и останавливает активный наблюдатель.
-   * @returns instance of this class / экземпляр этого класса
-   */
-  resetLazy(): this {
-    if (this.lazyStatus) {
-      this.lazyStatus()
-      this.lazyStatus = undefined
-    }
-
-    if (this.lazy) {
-      this.lazy.removeLazyItem()
-      this.lazy = undefined
-    }
-
-    return this
-  }
-
-  /**
-   * Initializes lazy tracking if needed.
-   *
-   * Инициализирует ленивое отслеживание при необходимости.
-   * @returns instance of this class / экземпляр этого класса
-   */
-  initLazy(): this {
-    if (!this.lazy) {
-      this.lazy = useLazyItemByMarginRef(this.element, `${MAX_BEYOND}px 0px`)
-      this.lazyStatus = watch(this.lazy.lazyItemStatus, () => {
-        ImageAdaptiveGroup.make()
-      })
-    }
 
     return this
   }
@@ -465,6 +446,26 @@ export class ImageAdaptiveItem {
   }
 
   /**
+   * Resets lazy tracking and stops the active watcher.
+   *
+   * Сбрасывает ленивое отслеживание и останавливает активный наблюдатель.
+   * @returns instance of this class / экземпляр этого класса
+   */
+  protected resetLazy(): this {
+    if (this.lazyStatus) {
+      this.lazyStatus()
+      this.lazyStatus = undefined
+    }
+
+    if (this.lazy) {
+      this.lazy.removeLazyItem()
+      this.lazy = undefined
+    }
+
+    return this
+  }
+
+  /**
    * Stops resize tracking, disposes its reactive watchers and clears the manager.
    *
    * Останавливает отслеживание resize, освобождает его реактивные наблюдатели и очищает менеджер.
@@ -475,6 +476,23 @@ export class ImageAdaptiveItem {
     this.resizeScope?.stop()
     this.resize = undefined
     this.resizeScope = undefined
+
+    return this
+  }
+
+  /**
+   * Initializes lazy tracking if needed.
+   *
+   * Инициализирует ленивое отслеживание при необходимости.
+   * @returns instance of this class / экземпляр этого класса
+   */
+  protected initLazy(): this {
+    if (!this.lazy) {
+      this.lazy = useLazyItemByMarginRef(this.element, `${MAX_BEYOND}px 0px`)
+      this.lazyStatus = watch(this.lazy.lazyItemStatus, () => {
+        ImageAdaptiveGroup.make()
+      })
+    }
 
     return this
   }

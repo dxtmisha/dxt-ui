@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ## [1.5.6] - 2026-10-14
 
 ### Added
+- **Prohibition of Hacks & Workarounds in AI Prompts (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`)**:
+  - Added Rule 14 prohibiting "crutches", ad-hoc shims, makeshift backward-compatibility branches (e.g., `isLegacy = isFunction(...)`), and superficial patches, mandating that all architectural, interface, and type issues be resolved at their root cause in the foundation.
+  - Added Stop & Ask Guard requiring AI to immediately stop and consult the developer when resolving an issue fundamentally would require extensive refactoring, touching multiple external files, or modifying global contracts.
 - **Mockup Layout Guard in AI Prompts (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`)**:
   - Added Step 3 to the AI prompt initialization workflow requiring thorough inspection of visual screenshots (`ai-screenshot/`) and component metadata (`screenshot.json`) before planning or authoring UI code from mockups or designs.
   - Added mandatory blocking check in Rule 9 prohibiting custom component or style creation when building from mockups without checking and reusing existing library components.

@@ -46,7 +46,7 @@
     &--public {
       -webkit-mask-position: center;
       -webkit-mask-repeat: no-repeat;
-      -webkit-mask-size: contain;
+      -webkit-mask-size: ui.v('??publicMaskSize', contain);
       mask-position: center;
       mask-repeat: no-repeat;
       mask-size: ui.v('??publicMaskSize', contain);
@@ -60,12 +60,14 @@
       background-size: cover;
     }
 
+    &--array,
     &--color,
     &--file,
-    &--image,
-    &--flag-compressed {
+    &--flag,
+    &--flag-compressed,
+    &--image {
       @include ui.disabled(ui.$designsClassName) {
-        filter: grayscale(1) opacity(#{var(--sys-color-opacity, ui.v('??color.opacity', 1))});
+        filter: grayscale(1) opacity(#{var(--sys-color-opacity, ui.v('??colorOpacity', 1))});
       }
     }
 
@@ -138,6 +140,7 @@
   }
 
   &.material-icons,
+  &.material-icons-two-tone,
   &.material-symbols-outlined,
   &.material-symbols-rounded,
   &.material-symbols-sharp {

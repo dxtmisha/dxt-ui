@@ -1,32 +1,25 @@
 // ai-none
 
-import { computed, type ComputedRef, onUnmounted, watch } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import {
   computedAsync,
-  type ConstrEmit,
   ErrorCenter,
   Icons,
+  inArray,
   isString,
   skipFrame
 } from '@dxtmisha/functional'
 
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
-
 import { ImageFile } from './ImageFile'
-import type { ImageLazy } from './ImageLazy'
+import { ImageLazy } from './ImageLazy'
 import { ImagePdf } from './ImagePdf'
 import { ImageSource } from './ImageSource'
 import type { ImageType } from './ImageType'
-import { ImageUint8Array } from './ImageUint8Array'
-
-import { type ImageEventItem, type ImageItem, ImageTypeValue } from './basicTypes'
-import { type ImageEmits } from './types'
-import { type ImageProps } from './props'
+import type { ImageUint8Array } from './ImageUint8Array'
 
 import { CONSTRUCTOR_ERROR_GROUP } from '../../types/errorTypes'
-
-/** Regular expression for removing the font icon prefix / Регулярное выражение для удаления префикса шрифтовой иконки */
-const REGEX_ICON_PREFIX = /^(?:(?:filled|outlined|round|sharp|two-tone|material)-|\$)/
+import { type ImageEventItem, type ImageItem, type ImageTypeItem, ImageTypeValue } from './basicTypes'
+import { type ImageProps } from './props'
 
 /**
  * A class for obtaining image or icon data.
@@ -34,81 +27,52 @@ const REGEX_ICON_PREFIX = /^(?:(?:filled|outlined|round|sharp|two-tone|material)
  * Класс для получения данных изображения или иконки.
  */
 export class ImageData {
+  /**
+   * Checks if the image type can produce an ImageItem object.
+   *
+   * Проверяет, может ли тип изображения создать объект ImageItem.
+   * @param type image type / тип изображения
+   * @returns true if type supports ImageItem / true, если тип поддерживает ImageItem
+   */
+  static isImage(type?: ImageTypeItem): boolean {
+    return Boolean(
+      type
+      && inArray(
+        [
+          ImageTypeValue.file,
+          ImageTypeValue.image,
+          ImageTypeValue.array
+        ],
+        type
+      )
+    )
+  }
+
   /** Image data / Данные изображения */
   readonly image: ComputedRef<ImageEventItem>
 
-  /** Manager for working with images in Uint8Array format / Менеджер для работы с изображениями в формате Uint8Array */
-  protected uint8Array?: ImageUint8Array
-
   /**
-   * Constructor
+   * Constructor for initializing reactive image data resolution.
+   *
+   * Конструктор для инициализации реактивного получения данных изображения.
    * @param props input data / входные данные
-   * @param clientOnly class for working with ClientOnly / класс для работы с ClientOnly
-   * @param type image type / тип изображения
-   * @param lazy class for working with lazy loading / класс для работы с ленивой загрузкой
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param isMounted whether the component is mounted / смонтирован ли компонент
+   * @param lazy function returning ImageLazy object / функция, возвращающая объект ImageLazy
+   * @param type function returning ImageType object / функция, возвращающая объект ImageType
+   * @param uint8Array function returning ImageUint8Array object / функция, возвращающая объект ImageUint8Array
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly clientOnly: ClientOnlyInclude,
-    protected readonly type: ImageType,
-    protected readonly lazy: ImageLazy,
-    protected readonly emits?: ConstrEmit<ImageEmits>
+    protected readonly isMounted: Ref<boolean>,
+    protected readonly lazy: () => ImageLazy,
+    protected readonly type: () => ImageType,
+    protected readonly uint8Array: () => ImageUint8Array
   ) {
     this.image = computedAsync<ImageEventItem>(
       () => this.init(),
       () => this.initSsr()
     )
-
-    watch(this.image, this.onLoad)
-
-    onUnmounted(() => this.uint8Array?.reset())
   }
-
-  /**
-   * Text for font icons and compressed flags, or the loaded source for a PDF.
-   *
-   * Текст для шрифтовых иконок и сжатых флагов либо загруженный источник PDF.
-   */
-  readonly text = computed<string | undefined>(() => {
-    const type = this.type.item.value
-
-    if (type === ImageTypeValue.pdf) {
-      const image = this.image.value
-
-      if (isString(image)) {
-        return image
-      }
-    }
-
-    const value = this.props.value
-
-    if (
-      type === ImageTypeValue.flagCompressed
-      && value
-    ) {
-      return String(value)
-        .replace('f-', '')
-        .toUpperCase()
-    }
-
-    if (
-      type
-      && isString(value)
-      && [
-        'filled',
-        'outlined',
-        'round',
-        'sharp',
-        'two-tone',
-        'material'
-      ].indexOf(type) !== -1
-    ) {
-      return value.replace(REGEX_ICON_PREFIX, '')
-    }
-
-    return undefined
-  })
 
   /**
    * Checks if there are values.
@@ -121,52 +85,23 @@ export class ImageData {
   }
 
   /**
-   * Checks if the value is a link, that is, a type of string.
-   *
-   * Проверяет, является ли значение ссылкой, то есть видом строки.
-   * @returns true if the value is a string link / true, если значение является строковой ссылкой
-   */
-  isLink(): this is { readonly image: ComputedRef<string> } {
-    return this.is() && typeof this.image.value === 'string'
-  }
-
-  /**
    * Checks if the value is an image object.
    *
    * Проверяет, является ли значение объектом изображения.
    * @returns true if the value is an image object / true, если значение является объектом изображения
    */
   isImage(): this is { readonly image: ComputedRef<ImageItem> } {
-    return this.is() && typeof this.image.value !== 'string'
+    return this.is() && !isString(this.image.value)
   }
 
   /**
-   * Emits load event when image data is loaded.
+   * Checks if the value is a link, that is, a type of string.
    *
-   * Вызывает событие load при загрузке данных изображения.
-   * @param image image event item / элемент события изображения
+   * Проверяет, является ли значение ссылкой, то есть видом строки.
+   * @returns true if the value is a string link / true, если значение является строковой ссылкой
    */
-  readonly onLoad = (image: ImageEventItem = this.image.value): void => {
-    if (typeof image === 'object') {
-      this.emits?.('load', {
-        type: this.type.item.value,
-        image
-      })
-    }
-  }
-
-  /**
-   * Getting the instance for working with Uint8Array images.
-   *
-   * Получение экземпляра для работы с изображениями Uint8Array.
-   * @returns ImageUint8Array instance / экземпляр ImageUint8Array
-   */
-  protected getUint8Array(): ImageUint8Array {
-    if (!this.uint8Array) {
-      this.uint8Array = new ImageUint8Array(this.props)
-    }
-
-    return this.uint8Array
+  isLink(): this is { readonly image: ComputedRef<string> } {
+    return isString(this.image.value)
   }
 
   /**
@@ -179,7 +114,7 @@ export class ImageData {
     const image = this.props.value
 
     if (image) {
-      switch (this.type.item.value) {
+      switch (this.type().get()) {
         case ImageTypeValue.pdf:
           if (isString(image) || image instanceof File) {
             await skipFrame()
@@ -188,17 +123,16 @@ export class ImageData {
 
           break
         case ImageTypeValue.array:
-          if (ImageUint8Array.is(image)) {
-            return await this.getUint8Array().createImage(image)
-          }
-
-          break
+          return await this.uint8Array().createImage()
         case ImageTypeValue.image:
         case ImageTypeValue.file:
           try {
             if (
-              !this.clientOnly.isRender()
-              || this.lazy.isLazy()
+              !this.isMounted.value
+              || (
+                ImageLazy.is(this.props)
+                && this.lazy().isLazy()
+              )
             ) {
               return this.initSsr()
             }
@@ -239,7 +173,7 @@ export class ImageData {
     const image = this.props.value
 
     if (image) {
-      switch (this.type.item.value) {
+      switch (this.type().get()) {
         case ImageTypeValue.image:
         case ImageTypeValue.file:
           if (isString(image) && (!this.props.lazy || this.props.tagImg)) {
