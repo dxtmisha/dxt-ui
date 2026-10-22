@@ -8,14 +8,14 @@ Event fires after the image is loaded.
 - `image: ImageEventData` — object with image data
 
 **ImageEventData structure:**
-- `type: ImageTypeItem` — image type (`'image'`, `'icon'`, `'pdf'`, `'file'`, `'flag'`, `'color'`, etc.)
-- `image: ImageEventItem` — image data (`ImageItem` object, URL string, or `undefined`)
+- `type: ImageTypeItem` — image type (`'image'`, `'file'`, `'array'`)
+- `image: ImageItem` — resolved image metadata and element
 
-**ImageItem structure (when image is an object):**
-- `width: number` — image width
-- `height: number` — image height
+**ImageItem structure:**
+- `width: number` — natural width of the image
+- `height: number` — natural height of the image
 - `image: HTMLImageElement` — image DOM element
-- `src: string` — image source (URL)
+- `src: string` — image source URL or blob URI
 
 <Source
     code={`
@@ -35,7 +35,7 @@ const handleLoad = (data) => {
 
 <template>
   <Image
-    src="/path/to/image.jpg"
+    value="/path/to/image.jpg"
     @load="handleLoad"
   />
 </template>

@@ -6,23 +6,35 @@ The `value` property defines the image content. This universal property supports
 
 **Supported types:**
 
-- **Icon name** — built-in or custom icon from the design system
-- **Image URL** — direct link to file (PNG, JPG, SVG, GIF, WebP, etc.)
-- **File object** — JavaScript File object obtained from `<input type="file">`
-- **PDF document** — direct link to PDF file with automatic display
+- **Icon name** — Material icon (`home`, `filled-home`, `outlined-home`, `$home`), or registered public icon
+- **Image URL or path** — direct URL or path containing `/` (PNG, JPG, SVG, WebP, etc.), or explicit `image:filename.png` prefix
+- **File object** — JavaScript `File` object from `<input type="file">` or dropzone
+- **Binary buffer** — `Uint8Array` or `ArrayBuffer` data rendered via temporary object URL
+- **PDF document** — URL to a PDF file with automatic preview rendering
+- **Country flag** — ISO 3166-1 alpha-2 standard (`flag-us`) or compressed (`f-de`) flag
+- **Solid color** — HEX color string (`#4CAF50`) for a plain colored surface
 
-The component automatically detects the source type and selects the optimal display method. When passing a File object, the content is read and previewed. The property is reactive and supports dynamic updates.
+The component automatically detects the source type and selects the optimal display method. When passing a `File` or `Uint8Array`, the content is read and previewed. The component also accepts an optional `url` prop to define the base path for asynchronous icon retrieval via `Icons.get(name, url)`.
 
 <Source
     code={`
 <!-- Icon by name -->
-<Image value="icon-user" />
+<Image value="filled-home" />
 
 <!-- Image by URL -->
 <Image value="https://example.com/image.png" />
 
-<!-- User file -->
+<!-- Explicit image prefix -->
+<Image value="image:photo.jpg" />
+
+<!-- Country flag -->
+<Image value="flag-us" />
+
+<!-- User file or binary buffer -->
 <Image :value="fileFromInput" />
+
+<!-- Solid color fill -->
+<Image value="#2196F3" />
   `}
     language="html"
 />

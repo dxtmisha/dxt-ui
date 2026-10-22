@@ -86,6 +86,8 @@ describe('Image (complete component)', () => {
     })
 
     it.each([
+      ['filled-home', 'home', 'material-icons', ImageTypeValue.filled],
+      ['two-tone-home', 'home', 'material-icons-two-tone', ImageTypeValue.twoTone],
       ['$home', 'home', 'material-icons', ImageTypeValue.material],
       ['material-account_circle', 'account_circle', 'material-icons', ImageTypeValue.material],
       ['outlined-home', 'home', 'material-symbols-outlined', ImageTypeValue.outlined],
@@ -100,6 +102,31 @@ describe('Image (complete component)', () => {
       expect(root.getAttribute('aria-label')).toBe('Home')
       expect(root.hasAttribute('aria-hidden')).toBe(false)
       expect(fixture.item.expose().getType()).toBe(type)
+    })
+
+    it('should update the icon font when switching between filled, two-tone and outlined values', async () => {
+      const props = reactive<ImageProps>({ value: 'filled-home' })
+      const fixture = mountImage(props)
+      const root = fixture.host.querySelector('.test-image')!
+
+      expect(root.classList.contains('material-icons')).toBe(true)
+      expect(root.textContent).toBe('home')
+
+      props.value = 'two-tone-account_circle'
+      await flushUpdates()
+
+      expect(root.classList.contains('material-icons')).toBe(false)
+      expect(root.classList.contains('material-icons-two-tone')).toBe(true)
+      expect(root.textContent).toBe('account_circle')
+      expect(fixture.item.expose().getType()).toBe(ImageTypeValue.twoTone)
+
+      props.value = 'outlined-search'
+      await flushUpdates()
+
+      expect(root.classList.contains('material-icons-two-tone')).toBe(false)
+      expect(root.classList.contains('material-symbols-outlined')).toBe(true)
+      expect(root.textContent).toBe('search')
+      expect(fixture.item.expose().getType()).toBe(ImageTypeValue.outlined)
     })
 
     it('should render eager native attributes and reactive srcset through the real renderer', async () => {
@@ -140,6 +167,25 @@ describe('Image (complete component)', () => {
       await flushUpdates()
       expect(fixture.host.querySelector('picture')).toBeNull()
       expect(fixture.host.querySelector('img')).not.toBeNull()
+    })
+
+    it.each([
+      [768, '(width >= 768px)'],
+      ['1024', '(width >= 1024px)'],
+      [767.5, '(width >= 767.5px)'],
+      [0, '(width >= 0px)'],
+      ['600px', '(width >= 600px)'],
+      ['48rem', '(width >= 48rem)']
+    ] as const)('should render the picture breakpoint %s with valid length units', (breakpoint, media) => {
+      const fixture = mountImage(reactive({
+        value: '/photo.png',
+        tagImg: true,
+        picture: { [breakpoint]: '/wide.png' }
+      }))
+      const source = fixture.host.querySelector('picture > source')!
+
+      expect(source.getAttribute('media')).toBe(media)
+      expect(source.getAttribute('srcset')).toBe('/wide.png')
     })
 
     it('should render a PDF object with preserved viewer parameters and expose its prepared source', async () => {

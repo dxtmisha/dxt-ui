@@ -3,23 +3,29 @@ import type { StorybookComponentsDescriptionItem } from '../../types/storybookTy
 export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
   name: 'Image',
   description: {
-    en: 'Component for displaying images and icons. Based on `ImageDesign` and supports working with files, links, and icon names.',
-    ru: 'Компонент для отображения изображений и иконок. Основан на `ImageDesign` и поддерживает работу с файлами, ссылками и именами икон'
+    en: 'Universal component for displaying images, icons, country flags, and PDF documents. Supports files, binary buffers, direct URLs, and Material symbols.',
+    ru: 'Универсальный компонент для отображения изображений, иконок, флагов стран и PDF-документов. Поддерживает работу с файлами, бинарными буферами, прямыми ссылками и именами иконок.'
   },
   possibilities: {
     en: [
-      'support for various source types: string, `File`, image or PDF address',
-      'adaptive sizing with `adaptive`, `objectWidth`, `objectHeight`',
-      'cropping and positioning via `coordinator`, `x`, `y`',
-      'rotation or hiding the component with properties `turn`, `hide`, `disabled`',
-      'mode selection for filling (`size`: `auto`, `contain`, `cover`)'
+      'support for various source types: URL, `File`, binary buffer (`Uint8Array`), PDF, country flags, and Material icons',
+      'rendering via CSS background or semantic `<img>` and `<picture>` elements (`tagImg`, `picture`, `srcset`, `alt`)',
+      'lazy loading and fetch priority management (`lazy`, `preloadOffset`, `fetchPriority`)',
+      'display modes (`size`: `auto`, `contain`, `cover`) and coordinate-based cropping (`coordinator`)',
+      'precise positioning via `x` and `y` offsets',
+      'adaptive scaling with physical object size synchronization (`adaptive`, `objectWidth`, `objectHeight`)',
+      'visual state transformations via `turn`, `hide`, and `disabled`',
+      'lifecycle tracking via `load` event and programmatic inspection via `getType()` and `getData()`'
     ],
     ru: [
-      'поддержка различных типов исходников: строка, `File`, адрес картинки или PDF',
-      'адаптивное измерение с помощью `adaptive`, `objectWidth`, `objectHeight`',
-      'обрезка и позиционирование через `coordinator`, `x`, `y`',
-      'поворот или скрытие компонента свойствами `turn`, `hide`, `disabled`',
-      'выбор режима заполнения (`size`: `auto`, `contain`, `cover`)'
+      'поддержка множества типов источников: URL, `File`, бинарный буфер (`Uint8Array`), PDF, флаги стран и Material-иконки',
+      'рендеринг через CSS-фон или семантические элементы `<img>` и `<picture>` (`tagImg`, `picture`, `srcset`, `alt`)',
+      'ленивая загрузка и управление приоритетом получения (`lazy`, `preloadOffset`, `fetchPriority`)',
+      'режимы заполнения (`size`: `auto`, `contain`, `cover`) и кадрирование по координатам (`coordinator`)',
+      'точное позиционирование с помощью смещений `x` и `y`',
+      'адаптивное масштабирование с синхронизацией физических размеров объектов (`adaptive`, `objectWidth`, `objectHeight`)',
+      'визуальные трансформации состояния с помощью `turn`, `hide` и `disabled`',
+      'отслеживание жизненного цикла через событие `load` и программный доступ через `getType()` и `getData()`'
     ]
   },
   render: `
@@ -48,6 +54,10 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
           <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg">
             <div class="wiki-storybook-item__label">Icon</div>
             <DesignComponent value="home"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg">
+            <div class="wiki-storybook-item__label">Flag</div>
+            <DesignComponent value="flag-us"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg">
             <div class="wiki-storybook-item__label">Image/ contain</div>
@@ -189,9 +199,9 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Universal component for displaying graphic content, including images, Material icons, and PDF files. Automatically detects the content type based on the value string or File object provided.
-Features multiple display modes (contain, cover, auto), adaptive scaling (objectWidth/Height), and standard img tag support for SEO and lazy loading. Includes advanced positioning via coordinator and x/y props.
-Controlled via the value prop and various sizing/rendering flags. Use for avatars, product photos, system icons, or embedded PDF documents requiring specific cropping and aspect ratio control.
+Universal component for displaying graphic content, including images, Material icons, country flags, binary buffers, and PDF files. Automatically detects the content type based on the value string, File object, or Uint8Array provided.
+Features multiple display modes (contain, cover, auto), adaptive scaling (objectWidth/Height), semantic img/picture tag support for SEO and lazy loading, and advanced positioning via coordinator and x/y props.
+Emits load event with image dimensions upon loading and exposes getType() and getData() methods.
     `
   }
 }

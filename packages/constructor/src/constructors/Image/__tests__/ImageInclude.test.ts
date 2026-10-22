@@ -28,7 +28,7 @@ describe('ImageInclude', () => {
 
     it('should resolve string and object image props alongside imageAttrs and extra in binds', () => {
       const naming = new DesignName('d1.card')
-      const props = reactive<ImagePropsInclude>({
+      const props: ImagePropsInclude = reactive({
         image: '/photo.png',
         imageAttrs: { alt: 'Banner', tagImg: true }
       })
@@ -77,8 +77,33 @@ describe('ImageInclude', () => {
       expect(emits).toHaveBeenCalledExactlyOnceWith('load', payload)
     })
 
+    it('should allow extra or imageAttrs onLoad to override the default onLoad handler', () => {
+      const emits = vi.fn()
+      const customOnLoad = vi.fn()
+      const props: ImagePropsInclude = reactive({
+        image: '/photo.png'
+      })
+
+      const include = new ImageInclude(
+        new DesignName('d1.card'),
+        props,
+        undefined,
+        () => ({ onLoad: customOnLoad }),
+        emits
+      )
+
+      const payload: ImageEventData = {
+        type: ImageTypeValue.image,
+        image: '/photo.png'
+      }
+
+      expect(include.binds.value.onLoad).toBe(customOnLoad)
+      include.binds.value.onLoad?.(payload)
+      expect(customOnLoad).toHaveBeenCalledExactlyOnceWith(payload)
+    })
+
     it('should render the registered image component when is is true and return an empty array when false', () => {
-      const props = reactive<ImagePropsInclude>({ image: '/photo.png' })
+      const props: ImagePropsInclude = reactive({ image: '/photo.png' })
       const components = new DesignComponents<ImageComponentInclude, ImagePropsInclude>(
         {
           image: {

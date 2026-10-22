@@ -2,7 +2,7 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 ## Using the img tag
 
-The `tagImg`, `srcset`, `picture`, `alt`, `lazy`, `preloadOffset` and `fetchPriority` properties are designed to control the image display mode using the HTML `<img>` tag instead of a background image.
+The `tagImg`, `srcset`, `picture`, `alt`, `lazy`, `preloadOffset`, `fetchPriority`, and `decoding` properties are designed to control the image display mode using the HTML `<img>` tag instead of a background image.
 
 **Properties:**
 
@@ -13,6 +13,7 @@ The `tagImg`, `srcset`, `picture`, `alt`, `lazy`, `preloadOffset` and `fetchPrio
 - `lazy` — enables lazy loading of the image
 - `preloadOffset` — offset for image preloading (default `1024px`)
 - `fetchPriority` — image loading priority (`low`, `high`, `auto`)
+- `decoding` — image decoding hint for the browser (`async`, `auto`, `sync`)
 
 The properties work together: if `tagImg` is not set or equals `false`, the image is displayed as a CSS background via `background-image`. When `tagImg` is activated (value `true`), the component uses the semantic HTML `<img>` tag, providing better accessibility and SEO optimization. The `alt` property defines alternative text that is displayed when the image is unavailable and is used by screen readers for people with disabilities.
 
@@ -25,6 +26,8 @@ The `lazy` property activates native browser lazy loading via the `loading="lazy
 The `preloadOffset` property defines the pixel offset for preloading images when using lazy loading. The default value is `1024px`, which means the image starts loading 1024 pixels before it enters the visible area. This ensures smooth image loading without delays during scrolling. You can specify either a numeric value or a string with a unit of measurement.
 
 The `fetchPriority` property allows you to control the browser's image loading priority. It accepts three values: `high` — high priority for critical images (such as hero images or main banners), `low` — low priority for secondary images, `auto` — the browser determines the priority automatically (default value). Proper use of this property helps optimize page loading by ensuring fast loading of important content.
+
+The `decoding` property provides an image decoding hint to the browser via the HTML `decoding` attribute. Supported values include `async` (decodes the image asynchronously off the main thread to prevent jank), `sync` (decodes synchronously with other presentation updates), and `auto` (lets the browser choose the optimal decoding strategy).
 
 <Source
     code={`

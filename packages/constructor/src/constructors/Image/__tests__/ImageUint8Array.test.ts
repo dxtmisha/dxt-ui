@@ -52,6 +52,28 @@ describe('ImageUint8Array', () => {
       helper.reset()
       expect(URL.revokeObjectURL).toHaveBeenCalledExactlyOnceWith('blob:image-1')
     })
+
+    it.each([
+      { name: 'PNG', bytes: [0x89, 0x50, 0x4E, 0x47], mime: 'image/png' },
+      { name: 'GIF', bytes: [0x47, 0x49, 0x46, 0x38], mime: 'image/gif' },
+      { name: 'WebP', bytes: [0x52, 0x49, 0x46, 0x46, 0, 0, 0, 0, 0x57, 0x45, 0x42, 0x50], mime: 'image/webp' },
+      { name: 'AVIF', bytes: [0, 0, 0, 0, 0x66, 0x74, 0x79, 0x70, 0x61, 0x76, 0x69, 0x66], mime: 'image/avif' },
+      { name: 'SVG (<svg)', bytes: [0x3C, 0x73, 0x76, 0x67], mime: 'image/svg+xml' },
+      { name: 'SVG (<?xml)', bytes: [0x3C, 0x3F, 0x78, 0x6D, 0x6C], mime: 'image/svg+xml' },
+      { name: 'BMP', bytes: [0x42, 0x4D], mime: 'image/bmp' },
+      { name: 'ICO', bytes: [0x00, 0x00, 0x01, 0x00], mime: 'image/x-icon' },
+      { name: 'JPEG (default)', bytes: [0xFF, 0xD8, 0xFF], mime: 'image/jpeg' }
+    ])('should detect $name MIME type ($mime) from magic bytes', async ({ bytes, mime }) => {
+      const value = new Uint8Array(bytes)
+      const helper = new ImageUint8Array({ value })
+
+      const pending = helper.createImage()
+      expect(URL.createObjectURL).toHaveBeenCalledWith(expect.objectContaining({ size: value.byteLength, type: mime }))
+
+      loadImage(browser.images[0]!, 100, 100)
+      await pending
+      helper.reset()
+    })
   })
 
   describe('Empty, unsupported, and error conditions', () => {

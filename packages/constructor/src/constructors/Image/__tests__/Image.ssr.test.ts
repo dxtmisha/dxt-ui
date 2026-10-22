@@ -43,6 +43,17 @@ describe('Image (SSR)', () => {
       expect(typeof Image).toBe('undefined')
     })
 
+    it.each([
+      ['filled-home', 'material-icons'],
+      ['two-tone-home', 'material-icons-two-tone']
+    ])('should render %s with its icon font class in SSR', async (value, fontClass) => {
+      const html = await renderImage({ value, alt: 'Home' })
+
+      expect(html).toContain(fontClass)
+      expect(html).toContain('>home</span>')
+      expect(html).toContain('aria-label="Home"')
+    })
+
     it('should strip the explicit source marker in native server HTML', async () => {
       const html = await renderImage({ value: 'image:photo.png', tagImg: true, alt: 'Photo' })
       expect(html).toContain('src="photo.png"')

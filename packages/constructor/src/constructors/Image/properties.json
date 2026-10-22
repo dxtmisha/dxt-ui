@@ -5,6 +5,9 @@
   "color-opacity": {
     "_type": "var"
   },
+  "public-mask-size": {
+    "_type": "var"
+  },
   "~turn": {},
   "~disabled": {},
   "~hide": {},

@@ -9,35 +9,35 @@ import type { ImagePropsBasic } from './props'
 
 /** Enumeration of image types / Перечисление типов изображений */
 export enum ImageTypeValue {
-  /** PDF file/ PDF файл */
+  /** PDF file / PDF файл */
   pdf = 'pdf',
-  /** Generic file/ Файл общего вида */
+  /** Generic file / Файл общего вида */
   file = 'file',
-  /** Array of values/ Массив значений */
+  /** Array of values / Массив значений */
   array = 'array',
-  /** Direct link to an image/ Прямая ссылка на изображение */
+  /** Direct link to an image / Прямая ссылка на изображение */
   image = 'image',
-  /** Flag icon/ Иконка флага */
+  /** Flag icon / Иконка флага */
   flag = 'flag',
-  /** Compressed flag icon/ Сжатая иконка флага */
+  /** Compressed flag icon / Сжатая иконка флага */
   flagCompressed = 'flag-compressed',
-  /** Solid color/ Сплошной цвет */
+  /** Solid color / Сплошной цвет */
   color = 'color',
-  /** Publicly available link/ Публично доступная ссылка */
+  /** Publicly available link / Публично доступная ссылка */
   public = 'public',
-  /** Filled style/ Заполненный стиль */
+  /** Filled style / Заполненный стиль */
   filled = 'filled',
-  /** Outlined style/ Контурный стиль */
+  /** Outlined style / Контурный стиль */
   outlined = 'outlined',
-  /** Rounded style/ Закругленный стиль */
+  /** Rounded style / Закругленный стиль */
   round = 'round',
-  /** Sharp style/ Острый стиль */
+  /** Sharp style / Острый стиль */
   sharp = 'sharp',
-  /** Two-tone style/ Двухцветный стиль */
+  /** Two-tone style / Двухцветный стиль */
   twoTone = 'two-tone',
-  /** Material design icon/ Иконка Material Design */
+  /** Material design icon / Иконка Material Design */
   material = 'material',
-  /** Generic icon/ Иконка общего вида */
+  /** Generic icon / Иконка общего вида */
   icon = 'icon'
 }
 
@@ -61,9 +61,9 @@ export type ImageCoordinatorItem
 
 /** Image size type / Тип размера изображения */
 export type ImageSize<T = number> = {
-  /** Width/ Ширина */
+  /** Width / Ширина */
   width: T
-  /** Height/ Высота */
+  /** Height / Высота */
   height: T
 }
 
@@ -85,9 +85,9 @@ export type ImageAdaptiveGroupStorage = {
 export type ImageItem
   = ImageSize
     & {
-    /** Image element/ Элемент изображения */
+    /** Image element / Элемент изображения */
       image: HTMLImageElement
-      /** Source URL/ URL-источник */
+      /** Source URL / URL-источник */
       src: string
     }
 
@@ -96,7 +96,7 @@ export type ImageEventItem = ImageItem | string | undefined
 
 /** Image event type / Тип события изображения */
 export type ImageEventType = {
-  /** Event type/ Тип события */
+  /** Event type / Тип события */
   type: ImageTypeItem
 }
 
@@ -104,7 +104,7 @@ export type ImageEventType = {
 export type ImageEventData
   = ImageEventType
     & {
-    /** Image event data/ Данные события изображения */
+    /** Image event data / Данные события изображения */
       image: ImageEventItem
     }
 
@@ -170,7 +170,7 @@ export type ImageValueBinds = {
 
 /** Image component inclusion type / Тип включения компонента изображения */
 export type ImageComponentInclude = {
-  /** Image component configuration/ Конфигурация компонента изображения */
+  /** Image component configuration / Конфигурация компонента изображения */
   image?: object
 }
 
@@ -179,9 +179,9 @@ export type ImageEmitsInclude = ImageEmits
 
 /** Image props inclusion type / Тип включения свойств изображения */
 export type ImagePropsInclude<Image extends ImagePropsBasic = ImagePropsBasic> = {
-  /** Image value or attributes/ Значение или атрибуты изображения */
+  /** Image value or attributes / Значение или атрибуты изображения */
   image?: string | ConstrBind<Image>
 
-  /** Additional image parameters/ Дополнительные параметры изображения */
+  /** Additional image parameters / Дополнительные параметры изображения */
   imageAttrs?: ConstrBind<Image>
 }

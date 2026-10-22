@@ -71,7 +71,7 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'load', description: `Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения`, properties: [{ name: 'image', type: 'ImageEventData' }] },
+  { name: 'load', description: `Event triggered when the image is loaded / Событие, срабатывающее при загрузке изображения`, properties: [{ name: 'image', type: 'ImageEventData' }] },
   { name: 'scrollbarBottom', description: `Event triggered when reaching the bottom / Событие при достижении низа`, properties: [{ name: 'isBottom', type: 'boolean' }] },
   { name: 'scrollbarEdge', description: `Event triggered when reaching any edge / Событие при достижении любого края`, properties: [{ name: 'isTop', type: 'boolean' }, { name: 'isBottom', type: 'boolean' }, { name: 'edge', type: 'ScrollbarEdgeType' }] },
   { name: 'scrollbarLeaveBottom', description: `Event triggered when leaving the bottom position / Событие при уходе с нижней позиции` },

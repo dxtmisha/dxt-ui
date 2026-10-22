@@ -91,6 +91,15 @@ describe('ImageImg', () => {
       expect(fixture.item.img.binds.value).not.toHaveProperty('loading')
     })
 
+    it.each(['async', 'sync', 'auto'] as const)('should preserve decoding=%s for native images and omit it when undefined', (decoding) => {
+      const props = reactive<ImageProps>({ value: '/photo.png', tagImg: true, decoding })
+      const fixture = mountImageGraph(props)
+      expect(fixture.item.img.binds.value.decoding).toBe(decoding)
+
+      props.decoding = undefined
+      expect(fixture.item.img.binds.value).not.toHaveProperty('decoding')
+    })
+
     it('should omit an absent priority and switch loading from lazy to auto after intersection', async () => {
       const props = reactive<ImageProps>({ value: '/photo.png', tagImg: true, lazy: true })
       const fixture = mountImageGraph(props)

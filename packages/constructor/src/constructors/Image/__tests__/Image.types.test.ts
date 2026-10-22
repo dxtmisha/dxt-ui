@@ -22,10 +22,13 @@ describe('Image (contracts checked by TypeScript)', () => {
       expectTypeOf<{ value: { name: string } }>().not.toExtend<ImageProps>()
     })
 
-    it('should limit fetch priority to the supported native values', () => {
+    it('should limit fetch priority and decoding to the supported native values', () => {
       expectTypeOf<ImageProps['fetchPriority']>().toEqualTypeOf<'high' | 'low' | 'auto' | undefined>()
       expectTypeOf<{ fetchPriority: 'urgent' }>().not.toExtend<ImageProps>()
       expectTypeOf<{ fetchPriority: number }>().not.toExtend<ImageProps>()
+      expectTypeOf<ImageProps['decoding']>().toEqualTypeOf<'async' | 'auto' | 'sync' | undefined>()
+      expectTypeOf<{ decoding: 'deferred' }>().not.toExtend<ImageProps>()
+      expectTypeOf<{ decoding: boolean }>().not.toExtend<ImageProps>()
     })
 
     it('should type picture descriptors and keys while rejecting invalid attribute values', () => {

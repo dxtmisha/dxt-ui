@@ -34,16 +34,6 @@ export class ImageLazy extends DesignLifecycleAbstract {
     return Boolean(props?.lazy)
   }
 
-  /** Callback after component mounting / Обработчик после монтирования компонента */
-  override readonly onMounted = (): void => {
-    this.update()
-  }
-
-  /** Callback after component unmounting / Обработчик после демонтирования компонента */
-  override readonly onUnmounted = (): void => {
-    this.reset()
-  }
-
   /** Initialization status / Статус инициализации */
   protected readonly init = ref<boolean>(false)
 
@@ -71,6 +61,16 @@ export class ImageLazy extends DesignLifecycleAbstract {
       () => props.lazy,
       () => props.preloadOffset
     ], () => this.update())
+  }
+
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    this.update()
+  }
+
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.reset()
   }
 
   /**

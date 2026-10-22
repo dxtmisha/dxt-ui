@@ -1,6 +1,6 @@
 // ai-none
 
-import { type ConstrEmit, type DesignComponents, type DesignName, getBind } from '@dxtmisha/functional'
+import { type ConstrBind, type ConstrEmit, type DesignComponents, type DesignName, getBind } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
@@ -36,15 +36,17 @@ export class ImageInclude extends ComponentIncludeAbstract<
    * @param components registry of design components / реестр дизайн-компонентов
    * @param extra additional design attributes or settings / дополнительные дизайн-атрибуты или настройки
    * @param emits constructor emitter for component events / конструктор событий для событий компонента
+   * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
     naming: DesignName,
     props: ComponentIncludeProps<ImagePropsInclude>,
     components?: DesignComponents<ImageComponentInclude, ImagePropsInclude>,
     extra?: ComponentIncludeExtra<ImageProps>,
-    protected readonly emits?: ConstrEmit<ImageEmitsInclude>
+    protected readonly emits?: ConstrEmit<ImageEmitsInclude>,
+    index?: string
   ) {
-    super(naming, props, components, extra)
+    super(naming, props, components, extra, index)
   }
 
   /**
@@ -83,10 +85,12 @@ export class ImageInclude extends ComponentIncludeAbstract<
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<ImageProps>> {
+    const binds = super.toBinds()
+
     return {
-      ...super.toBinds(),
-      onLoad: this.onLoad
+      ...binds,
+      onLoad: binds.onLoad ?? this.onLoad
     }
   }
 }

@@ -92,6 +92,10 @@ export class ImageImg {
           attrs.fetchPriority = this.props.fetchPriority
         }
 
+        if (this.props.decoding) {
+          attrs.decoding = this.props.decoding
+        }
+
         if (ImageLazy.is(this.props)) {
           attrs.loading = this.lazy().isLazy() ? 'lazy' : 'auto'
         }
@@ -126,7 +130,7 @@ export class ImageImg {
         return {
           key: media,
           srcset: value,
-          media: `(width >= ${media})`
+          media: `(width >= ${isNumber(media) ? `${media}px` : media})`
         }
       }
     )

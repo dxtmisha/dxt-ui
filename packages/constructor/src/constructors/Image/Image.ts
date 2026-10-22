@@ -235,8 +235,12 @@ export class Image extends DesignLogicAbstract<
       case ImageTypeValue.sharp:
         data['material-symbols-sharp'] = true
         break
+      case ImageTypeValue.filled:
       case ImageTypeValue.material:
         data['material-icons'] = true
+        break
+      case ImageTypeValue.twoTone:
+        data['material-icons-two-tone'] = true
         break
     }
 

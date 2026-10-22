@@ -21,56 +21,58 @@ export type ImagePropsBasic = {
    */
   value?: string | File | ImageUint8ArrayType | null
 
-  /** Image URL/ URL изображения */
+  /** Image URL / URL изображения */
   url?: string
 
   // Adaptive
   /**
-   * Adaptive group (e.g. for different resolutions)/
+   * Adaptive group (e.g. for different resolutions) /
    * Группа адаптивности (например, для разных разрешений)
    */
   adaptiveGroup?: string
-  /** Always use adaptivity/ Всегда использовать адаптивность */
+  /** Always use adaptivity / Всегда использовать адаптивность */
   adaptiveAlways?: boolean
-  /** Image object width/ Ширина объекта изображения */
+  /** Image object width / Ширина объекта изображения */
   objectWidth?: string | number
-  /** Image object height/ Высота объекта изображения */
+  /** Image object height / Высота объекта изображения */
   objectHeight?: string | number
 
   // Style
   /**
-   * Image coordinates (e.g. for cropping or positioning)/
+   * Image coordinates (e.g. for cropping or positioning) /
    * Координаты изображения (например, для обрезки или позиционирования)
    */
   coordinator?: ImageCoordinatorItem
-  /** X position/ Позиция по оси X */
+  /** X position / Позиция по оси X */
   x?: string | number
-  /** Y position/ Позиция по оси Y */
+  /** Y position / Позиция по оси Y */
   y?: string | number
 
   /**
-   * Use <img> tag instead of background image/
+   * Use <img> tag instead of background image /
    * Использовать тег <img> вместо фонового изображения
    */
   tagImg?: boolean
   /**
-   * Image source set for different resolutions/
+   * Image source set for different resolutions /
    * Набор источников изображения для разных разрешений
    */
   srcset?: string | Record<string, string>
   /**
-   * Picture sources for different resolutions using <picture> tag/
+   * Picture sources for different resolutions using <picture> tag /
    * Источники для разных разрешений с использованием тега <picture>
    */
   picture?: ImagePicture
-  /** Alt text/ Текст alt */
+  /** Alt text / Текст alt */
   alt?: string
-  /** Lazy loading/ Ленивя загрузка */
+  /** Lazy loading / Ленивая загрузка */
   lazy?: boolean
-  /** Preload offset/ Смещение для предзагрузки */
+  /** Preload offset / Смещение для предзагрузки */
   preloadOffset?: string
-  /** Image fetch priority (low, high, auto)/ Приоритет загрузки изображения (low, high, auto) */
+  /** Image fetch priority (low, high, auto) / Приоритет загрузки изображения (low, high, auto) */
   fetchPriority?: ImageAttrs['fetchPriority']
+  /** Image decoding hint (sync, async, auto) / Подсказка декодирования изображения (sync, async, auto) */
+  decoding?: ImageAttrs['decoding']
 }
 
 /**

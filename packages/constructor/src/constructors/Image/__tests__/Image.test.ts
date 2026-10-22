@@ -74,6 +74,8 @@ describe('Image', () => {
     })
 
     it.each([
+      ['filled-home', ImageTypeValue.filled, 'material-icons'],
+      ['two-tone-home', ImageTypeValue.twoTone, 'material-icons-two-tone'],
       ['outlined-home', ImageTypeValue.outlined, 'material-symbols-outlined'],
       ['round-home', ImageTypeValue.round, 'material-symbols-rounded'],
       ['sharp-home', ImageTypeValue.sharp, 'material-symbols-sharp'],
@@ -96,8 +98,6 @@ describe('Image', () => {
     })
 
     it.each([
-      ['filled-home', ImageTypeValue.filled],
-      ['two-tone-home', ImageTypeValue.twoTone],
       ['f-vn', ImageTypeValue.flagCompressed],
       ['#ff0000', ImageTypeValue.color]
     ] as const)('should compute classes without material font classes for %s', (value, expectedType) => {
@@ -311,7 +311,9 @@ describe('Image', () => {
 
       expect(image.i('position')).toBeInstanceOf(CustomPosition)
       expect(image.i('background')).toBeInstanceOf(CustomBackground)
-      expect(image.styles['background-position-x']).toBe('15%')
+      expect(image.styles).toEqual(expect.objectContaining({
+        'background-position-x': '15%'
+      }))
 
       scope.stop()
     })
