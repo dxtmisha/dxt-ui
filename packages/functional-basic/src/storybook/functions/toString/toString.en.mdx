@@ -7,7 +7,7 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 A utility for converting a value to a string. Returns an empty string if the value is null or undefined.
 
 **Parameters:**
-- `value: string | null | undefined` — The value for conversion.
+- `value: T` — The value for conversion.
 
 **Returns:**
 `string` — The string representation of the value.
@@ -21,8 +21,8 @@ A utility for converting a value to a string. Returns an empty string if the val
 import { toString } from '@dxtmisha/functional-basic'
 
 toString('Hello')         // 'Hello'
+toString(123)             // '123'
 toString(null)            // ''
 toString(undefined)       // ''
-
   `}
 />

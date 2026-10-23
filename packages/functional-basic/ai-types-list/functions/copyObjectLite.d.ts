@@ -1,3 +1,3 @@
-// md5:18d19d06c798fe1a1738bf11a1756eab true
-/** Copies a simple object with optional additional source properties. @keywords copy, clone, shallow copy, object clone */
-export declare function copyObjectLite<T, R = T>(value: T, source?: any): R;
+// md5:ff3d0b817d08153e9c2c306da9b351e8 true
+/** Creates a simple copy of an object with optional additional properties. @keywords copy, clone, shallow copy, object clone */
+export declare function copyObjectLite<T, R = T>(value: T, source?: Record<PropertyKey, unknown> | null): R;

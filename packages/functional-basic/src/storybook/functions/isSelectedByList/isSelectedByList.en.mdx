@@ -4,29 +4,29 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isSelectedByList`
 
-An advanced utility explicitly extending the boundaries of the elementary `isSelected` functionality. It serves precisely to evaluate whether **all underlying elements** within a submitted list array (`values`) effectively align with the outlined verification goal (`selected`).
+Extends the `isSelected` check to an entire list of values. It verifies whether **all elements** in `values` match the selection criteria `selected`.
 
-If presented with a solitary value instead of an array collection, the program seamlessly delegates the heavy routing straight back to `isSelected`. Yet, if a mapped array array enters the fray (`values`), the software executes a holistic `.every()` iterator technique to solidly assure that **each discrete component** independently triumphs over the isolated `isSelected(item, selected)` test parameter.
+If `values` is a single item rather than an array, the function delegates directly to `isSelected(values, selected)`. If `values` is an array, it uses `.every()` to ensure that every element satisfies `isSelected(item, selected)`.
 
 **Parameters:**
-- `values: T | T[]` — The single payload or a bundled array array collection mandating cross-checking.
-- `selected: T | T[]` — The target anchor point criteria (could be a string, numeral, or a mapped payload collection representing allowed terms).
+- `values: T | T[]` — A single value or an array of values to check.
+- `selected: T | T[]` — The target value or array of selected values for comparison.
 
 **Returns:**
-`boolean` — Commits to returning `true` exclusively when completely all distributed variables simultaneously conquer the testing perimeter hurdle.
+`boolean` — `true` if all provided values in `values` are selected, otherwise `false`.
 
 ```typescript
 import { isSelectedByList } from '@dxtmisha/functional-basic'
 
-// Blanket success spanning the full bulk mapped uniformly against one specific key
+// Validating a list against a single target value
 console.log(isSelectedByList(['apple', 'apple'], 'apple')) // true
 
-// Overwhelming validation granted since every item from values nests safely inside the selected pool bounds
+// Validating that every item in values is present in the selected array
 console.log(isSelectedByList(['apple', 'cherry'], ['banana', 'apple', 'cherry'])) // true
 
-// Failure detected. 'date' is absent from the permissions block (selected array). Outputs false through .every() mechanics. 
+// Returns false because 'date' is not in the selected array
 console.log(isSelectedByList(['apple', 'date'], ['banana', 'apple', 'cherry'])) // false
 
-// Upon dropping a single index, inherently collapses into acting purely like isSelected
+// Single value behaves identically to isSelected
 console.log(isSelectedByList('apple', 'apple')) // true
 ```

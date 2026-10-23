@@ -1,16 +1,18 @@
-// md5:f3a9a9a523e6d0c2a38f3e53ffbaa669 true
-/** Static interface for managing URL hash state via HashInstance. @keywords url hash, router state, hash params */
+// md5:1e556e5e65ef71a12904afd7193b7706 true
+/** Static class managing data stored in the URL hash via HashInstance delegation. @keywords hash url state navigation routing */
 export declare class Hash {
-    /** Returns a request-isolated HashInstance. @keywords instance, singleton, context */
+    /** Returns a request-isolated HashInstance instance. @keywords hash instance isolate get */
     static getItem(): HashInstance;
-    /** Retrieves a value from the URL hash. @keywords hash get, read url param */
+    /** Retrieves a stored value by name from the URL hash with an optional default. @keywords get hash value read query */
     static get<T>(name: string, defaultValue?: T | (() => T)): T;
-    /** Sets or updates a value in the URL hash. @keywords hash set, update url param */
+    /** Sets or updates a value in the URL hash. @keywords set hash value update write */
     static set<T>(name: string, callback: T | (() => T)): void;
-    /** Subscribes a listener callback to changes for a specific hash variable. @keywords watch, subscribe, listener, observe */
+    /** Subscribes a listener callback to changes for a specific hash variable. @keywords watch listener subscribe observe change */
     static addWatch<T>(name: string, callback: (value: T) => void): void;
-    /** Unsubscribes a listener callback from hash variable changes. @keywords unwatch, unsubscribe, remove listener */
+    /** Unsubscribes a listener callback from changes for a specific hash variable. @keywords unwatch unsubscribe remove listener */
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
-    /** Reloads and synchronizes hash variables from the current URL string. @keywords reload, refresh, sync url */
+    /** Synchronizes hash variables by reparsing the current URL string. @keywords reload sync refresh parse */
     static reload(): void;
+    /** Resets the instance, clears state, and removes all active listeners. @keywords reset destroy clear teardown */
+    static reset(): void;
 }

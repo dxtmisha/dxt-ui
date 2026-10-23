@@ -85,4 +85,13 @@ export class Query {
   static reload(): void {
     this.getItem().reload()
   }
+
+  /**
+   * Reset / destroy instance and remove listeners.
+   *
+   * Сброс / уничтожение экземпляра и удаление слушателей.
+   */
+  static reset(): void {
+    this.getItem().destroy()
+  }
 }

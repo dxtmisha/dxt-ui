@@ -11,10 +11,10 @@ The function relies on `isDomRuntime()` to verify the presence of a DOM environm
 > **Warning (SSR):** When running on the server, the function always returns `undefined`. If you use it within a component's rendering logic, it may lead to hydration mismatches. It is recommended to call this function only inside lifecycle hooks that run exclusively on the client (e.g., `onMounted` in Vue or `useEffect` in React).
 
 **Parameters:**
-- `parentElement?: HTMLElement` — The parent element into which the new node will be inserted.
+- `parentElement?: Element | DocumentFragment` — The parent DOM node (`Element` or `DocumentFragment`) into which the new node will be inserted.
 - `tagName: string = 'div'` — A string specifying the type of element to create (defaults to `'div'`).
-- `options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void)` — An object containing attributes and properties for the element (e.g., `id`, `className`, event listeners), or a callback function for custom processing of the element.
-- `referenceElement?: HTMLElement` — The node before which the new `element` is inserted. If omitted (or `null`), the element is appended as the last child of the parent (`appendChild`).
+- `options?: Partial<T> | Record<string, unknown> | ((element: T) => void)` — An object containing attributes and properties for the element (e.g., `id`, `className`, event listeners), or a callback function for custom processing of the element.
+- `referenceElement?: Node | null` — The node before which the new `element` is inserted. If omitted (or `null`), the element is appended as the last child of the parent (`appendChild`).
 
 **Returns:**
 `T | undefined` — The created HTML element, or `undefined` if the DOM is not available.

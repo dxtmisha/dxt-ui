@@ -10,7 +10,7 @@ Kiểm tra xem các giá trị có phải là mảng hay không.
 - `value: T` — giá trị đầu vào.
 
 **Trả về:**
-`boolean` — `true` nếu giá trị là mảng, ngược lại là `false`.
+`boolean` (`value is Extract<T, R[]>`) — `true` nếu giá trị là mảng, ngược lại là `false`. Đóng vai trò là type guard trong TypeScript giúp thu hẹp kiểu về `Extract<T, R[]>`.
 
 ```typescript
 import { isArray } from '@dxtmisha/functional-basic'

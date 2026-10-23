@@ -187,8 +187,8 @@ describe('getSeparatingSearchExp', () => {
     })
 
     it('should return /(?!)/ for null and undefined', () => {
-      const regexNull = getSeparatingSearchExp(null as any)
-      const regexUndefined = getSeparatingSearchExp(undefined as any)
+      const regexNull = getSeparatingSearchExp(null as unknown as string)
+      const regexUndefined = getSeparatingSearchExp(undefined as unknown as string)
 
       expect(regexNull.toString()).toBe('/(?!)/')
       expect(regexUndefined.toString()).toBe('/(?!)/')
@@ -244,7 +244,7 @@ describe('getSeparatingSearchExp', () => {
 
   describe('Non-string inputs (numbers, booleans, objects)', () => {
     it('should safely handle number 0 as search query', () => {
-      const regex = getSeparatingSearchExp(0 as any)
+      const regex = getSeparatingSearchExp(0 as unknown as string)
       expect(regex.source).toBe('(0)')
       expect(regex.test('Room 0')).toBe(true)
       regex.lastIndex = 0
@@ -252,16 +252,16 @@ describe('getSeparatingSearchExp', () => {
     })
 
     it('should safely handle positive and negative integers', () => {
-      const regexPositive = getSeparatingSearchExp(12345 as any)
-      const regexNegative = getSeparatingSearchExp(-42 as any)
+      const regexPositive = getSeparatingSearchExp(12345 as unknown as string)
+      const regexNegative = getSeparatingSearchExp(-42 as unknown as string)
 
       expect(regexPositive.test('ID: 12345')).toBe(true)
       expect(regexNegative.test('Temp: -42')).toBe(true)
     })
 
     it('should safely handle boolean values', () => {
-      const regexFalse = getSeparatingSearchExp(false as any)
-      const regexTrue = getSeparatingSearchExp(true as any)
+      const regexFalse = getSeparatingSearchExp(false as unknown as string)
+      const regexTrue = getSeparatingSearchExp(true as unknown as string)
 
       expect(regexFalse.source).toBe('(false)')
       expect(regexTrue.source).toBe('(true)')
@@ -274,7 +274,7 @@ describe('getSeparatingSearchExp', () => {
         toString: () => 'custom search query'
       }
 
-      const regex = getSeparatingSearchExp(customObject as any)
+      const regex = getSeparatingSearchExp(customObject as unknown as string)
       expect(regex.test('custom')).toBe(true)
       regex.lastIndex = 0
       expect(regex.test('search')).toBe(true)

@@ -97,7 +97,7 @@ import {
 export class EventItem<
   E extends ElementOrWindow,
   O extends Event,
-  D extends Record<string, any> = Record<string, any>
+  D extends Record<string, unknown> = Record<string, unknown>
 > {
   /** Target element / Целевой элемент */
   protected element?: E
@@ -245,8 +245,13 @@ export class EventItem<
    * @returns this instance / текущий экземпляр
    */
   setOptions(options?: EventOptions): this {
-    this.options = options
-    this.reset()
+    if (this.activity) {
+      this.stop()
+      this.options = options
+      this.start()
+    } else {
+      this.options = options
+    }
 
     return this
   }
@@ -331,11 +336,13 @@ export class EventItem<
         if (observer) {
           observer.disconnect()
         } else if (listener) {
-          element?.removeEventListener(type, listener as EventListener)
+          element?.removeEventListener(type, listener as EventListener, this.options)
         } else {
-          element?.removeEventListener(type, this.listenerRecent as EventListener)
+          element?.removeEventListener(type, this.listenerRecent as EventListener, this.options)
         }
       })
+
+      this.activityItems = []
     }
 
     return this
@@ -345,7 +352,7 @@ export class EventItem<
    * Toggling event handler state.
    *
    * Переключение состояния работы события.
-   * @param activity event activation/ активация события
+   * @param activity event activation / активация события
    * @returns this instance / текущий экземпляр
    */
   toggle(activity: boolean): this {
@@ -358,7 +365,7 @@ export class EventItem<
    * Перегружает события прослушивания (останавливает и запускает заново, если активно).
    * @returns this instance / текущий экземпляр
    */
-  reset() {
+  reset(): this {
     if (this.activity) {
       this.stop()
       this.start()
@@ -371,6 +378,7 @@ export class EventItem<
    * Checks if the ResizeObserver object exists.
    *
    * Проверяет, существует ли объект ResizeObserver.
+   * @returns true if ResizeObserver is supported / true, если ResizeObserver поддерживается
    */
   protected isObserver(): boolean {
     return isDomRuntime() && 'ResizeObserver' in window
@@ -380,12 +388,12 @@ export class EventItem<
    * The implementation of the resize event for an element.
    *
    * Реализация события изменения размера для элемента.
+   * @returns true if ResizeObserver was attached / true, если ResizeObserver был подключен
    */
   protected makeResize(): boolean {
     if (
       this.element
       && this.element instanceof HTMLElement
-      && this.element !== document.body
       && this.isObserver()
     ) {
       const observer = new ResizeObserver(
@@ -410,6 +418,7 @@ export class EventItem<
    * Implementation of the scroll event for an element.
    *
    * Реализация события изменения положения скролла для элемента.
+   * @returns true if scroll-sync listeners were attached / true, если слушатели scroll-sync были подключены
    */
   protected makeScroll(): boolean {
     if (this.element) {
@@ -418,7 +427,9 @@ export class EventItem<
         if (!go) {
           go = true
           requestAnimationFrame(() => {
-            this.listenerRecent(event)
+            if (this.activity) {
+              this.listenerRecent(event)
+            }
             go = false
           })
         }

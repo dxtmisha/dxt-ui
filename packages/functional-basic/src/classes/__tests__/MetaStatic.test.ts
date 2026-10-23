@@ -10,15 +10,12 @@ import { ServerStorage } from '../ServerStorage'
 
 describe('MetaStatic', () => {
   beforeEach(() => {
-    // Clear DOM before each test
     document.head.innerHTML = ''
     document.title = ''
-    // Reset storage so each test works with a clean instance
     ServerStorage.set('__ui:meta-instance__', () => new Meta())
   })
 
   afterEach(() => {
-    // Clear after tests
     document.head.innerHTML = ''
     document.title = ''
   })
@@ -80,11 +77,16 @@ describe('MetaStatic', () => {
       expect(MetaStatic.getTwitter().getImage()).toBe(imageUrl)
     })
 
-    it('should correctly handle canonical', () => {
+    it('should correctly handle canonical as <link rel="canonical">', () => {
       const url = 'https://example.com/canonical'
       MetaStatic.setCanonical(url)
       expect(MetaStatic.getCanonical()).toBe(url)
       expect(MetaStatic.getOg().getUrl()).toBe(url)
+      expect(MetaStatic.getTwitter().getUrl()).toBe(url)
+
+      const canonicalLink = document.querySelector('link[rel="canonical"]')
+      expect(canonicalLink?.getAttribute('href')).toBe(url)
+      expect(MetaStatic.html()).toContain(`<link rel="canonical" href="${url}">`)
     })
 
     it('should correctly handle robots', () => {
@@ -124,17 +126,24 @@ describe('MetaStatic', () => {
   })
 
   describe('Method chaining', () => {
-    it('should support chaining', () => {
+    it('should support chaining all static setters', () => {
       const result = MetaStatic
         .setTitle('Page')
-        .setDescription('Desc')
+        .setDescription('Description')
+        .setKeywords(['one', 'two'])
+        .setImage('https://example.com/image.png')
+        .setCanonical('https://example.com/page')
+        .setRobots(MetaRobots.indexFollow)
+        .setSiteName('Site Name')
+        .setLocale('en_US')
         .setSuffix('Suffix')
         .setAuthor('Author')
 
       expect(result).toBe(MetaStatic)
       expect(MetaStatic.getTitle()).toBe('Page')
-      expect(MetaStatic.getDescription()).toBe('Desc')
+      expect(MetaStatic.getDescription()).toBe('Description')
       expect(MetaStatic.getAuthor()).toBe('Author')
+      expect(document.title).toBe('Page - Suffix')
     })
   })
 })

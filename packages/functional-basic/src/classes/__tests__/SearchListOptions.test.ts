@@ -36,11 +36,12 @@ describe('SearchListOptions', () => {
     expect(options.getClassName()).toBe('custom-class')
   })
 
-  it('should update options correctly', () => {
+  it('should update options correctly and return this for chaining', () => {
     const options = new SearchListOptions()
 
-    options.setOptions({ limit: 4, delay: 100 })
+    const returnValue = options.setOptions({ limit: 4, delay: 100 })
 
+    expect(returnValue).toBe(options)
     expect(options.getLimit()).toBe(4)
     expect(options.getDelay()).toBe(100)
     expect(options.getReturnEverything()).toBe(false)

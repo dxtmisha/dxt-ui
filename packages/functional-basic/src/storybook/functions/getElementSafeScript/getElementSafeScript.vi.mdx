@@ -6,11 +6,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Một tiện ích để tạo thẻ `<script type="application/json">` an toàn, được sử dụng để chuyển dữ liệu từ máy chủ sang máy khách (hydration).
 
-Hàm này tự động tuần tự hóa dữ liệu thành JSON và thoát các thẻ đóng `</script>`, ngăn chặn các cuộc tấn công XSS và lỗi phân tích cú pháp HTML khi nhúng dữ liệu.
+Hàm này tự động tuần tự hóa dữ liệu thành JSON (mặc định là `'null'` nếu `JSON.stringify` trả về `undefined`), thoát các dấu ngoặc kép (`"` thành `&quot;`) trong thuộc tính `id`, và thoát các thẻ đóng `</script>` (`<\\/script`), ngăn chặn các cuộc tấn công XSS và lỗi phân tích cú pháp HTML khi nhúng dữ liệu.
 
 **Tham số:**
 - `id: string` — Mã định danh duy nhất (ID) cho thẻ script.
-- `data: any` — Dữ liệu cần được tuần tự hóa và lưu trữ trong thẻ.
+- `data: T` — Dữ liệu cần được tuần tự hóa và lưu trữ trong thẻ (`<T = unknown>`).
 
 **Trả về:**
 `string` — Một chuỗi chứa thẻ script HTML đã sẵn sàng.

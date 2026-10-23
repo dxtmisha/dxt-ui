@@ -1,15 +1,16 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach, type MockInstance } from 'vitest'
 import { BroadcastMessage } from '../BroadcastMessage'
-import { ErrorCenter } from '../ErrorCenter'
-import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 import { DataStorage } from '../DataStorage'
+import { ErrorCenter } from '../ErrorCenter'
+import { ErrorCenterInstance } from '../ErrorCenterInstance'
+import { ServerStorage } from '../ServerStorage'
+import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 
-// Mock BroadcastChannel since jsdom might not have it or we need strict control
 class MockBroadcastChannel {
   name: string
-  onmessage: ((ev: MessageEvent) => any) | null = null
-  onmessageerror: ((ev: MessageEvent) => any) | null = null
+  onmessage: ((event: MessageEvent) => unknown) | null = null
+  onmessageerror: ((event: MessageEvent) => unknown) | null = null
 
   constructor(name: string) {
     this.name = name
@@ -20,26 +21,18 @@ class MockBroadcastChannel {
 }
 
 describe('BroadcastMessage', () => {
-  let isDomRuntimeSpy: any
-  let errorCenterSpy: any
+  let isDomRuntimeSpy: MockInstance<() => boolean>
+  let errorCenterSpy: MockInstance
 
   beforeEach(() => {
+    localStorage.clear()
+    sessionStorage.clear()
+    ServerStorage.reset()
+    DataStorage.setPrefix('ui-storage')
+
     vi.stubGlobal('BroadcastChannel', MockBroadcastChannel)
     isDomRuntimeSpy = vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
-    errorCenterSpy = vi.spyOn(ErrorCenter.getItem(), 'on').mockImplementation(() => undefined as any)
-
-    // Mock DataStorage.prototype.get and set to prevent localStorage errors in JSDOM
-    // We mock the constructor to bypass the localStorage item creation that might be happening
-    vi.spyOn(DataStorage.prototype, 'get').mockImplementation(function (this: any, callback: any) {
-      if (typeof callback === 'function') {
-        return callback()
-      }
-      return 'name_1234567'
-    })
-    vi.spyOn(DataStorage.prototype, 'set').mockReturnValue({} as any)
-
-    // Also mock the helper function getBroadcastName if it's imported or used
-    // Actually, getBroadcastName is private to the file, so we have to ensure DataStorage is mocked correctly.
+    errorCenterSpy = vi.spyOn(ErrorCenter.getItem(), 'on').mockImplementation(() => undefined)
   })
 
   afterEach(() => {
@@ -47,150 +40,231 @@ describe('BroadcastMessage', () => {
     vi.restoreAllMocks()
   })
 
-  it('should initialize BroadcastChannel with prefixed name when in DOM runtime', () => {
-    const callback = vi.fn()
-    const errorCallback = vi.fn()
+  describe('initialization and deterministic channel naming', () => {
+    it('should initialize BroadcastChannel with deterministic browser prefix when in DOM runtime', () => {
+      const messageCallback = vi.fn()
+      const errorCallback = vi.fn()
 
-    // Clear mock calls just in case
-    errorCenterSpy.mockClear()
+      const broadcast = new BroadcastMessage('test_channel', messageCallback, errorCallback)
 
-    const broadcast = new BroadcastMessage('test_channel', callback, errorCallback)
+      expect(errorCenterSpy).not.toHaveBeenCalled()
 
-    // Check if error was reported
-    const calls = errorCenterSpy.mock.calls
-    if (calls.length > 0) {
-      console.error('Error reported to ErrorCenter:', JSON.stringify(calls[0][0], null, 2))
-    }
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+      expect(channel).toBeDefined()
+      expect(channel.name).toMatch(/^name_\d+__test_channel$/)
+      expect(channel.onmessage).toBeTypeOf('function')
+      expect(channel.onmessageerror).toBeTypeOf('function')
+    })
 
-    // If it's undefined, it likely caught an error
-    expect(errorCenterSpy).not.toHaveBeenCalled()
+    it('should generate consistent deterministic channel name for the same browser and persist it in DataStorage', () => {
+      const broadcastFirst = new BroadcastMessage('shared_channel')
+      const broadcastSecond = new BroadcastMessage('shared_channel')
 
-    const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
-    expect(channel).toBeDefined()
-    // The name might be random if mocking is incomplete, let's check pattern if exact match fails
-    expect(channel.name).toMatch(/name_\d+__test_channel/)
-    expect(channel.onmessage).toBeDefined()
-    expect(channel.onmessageerror).toBeDefined()
-  })
+      const channelFirst = broadcastFirst.getChannel() as unknown as MockBroadcastChannel
+      const channelSecond = broadcastSecond.getChannel() as unknown as MockBroadcastChannel
 
-  it('should NOT initialize BroadcastChannel when NOT in DOM runtime', () => {
-    isDomRuntimeSpy.mockReturnValue(false)
-    const broadcast = new BroadcastMessage('test_none')
+      expect(channelFirst.name).toBe(channelSecond.name)
+      expect(channelFirst.name).toMatch(/^name_\d+__shared_channel$/)
 
-    expect(broadcast.getChannel()).toBeUndefined()
-  })
+      const storedBroadcastName = new DataStorage<string>('__ui:broadcast-name__').get()
+      expect(storedBroadcastName).toMatch(/^name_\d+$/)
+      expect(channelFirst.name).toBe(`${storedBroadcastName}__shared_channel`)
+    })
 
-  it('should report to ErrorCenter if BroadcastChannel initialization fails', () => {
-    // Stub it specifically for this test to throw
-    const ThrowingChannel = class {
-      constructor() {
-        throw new Error('Init failure')
+    it('should compute different browser numbers for different userAgent strings when storage is fresh', () => {
+      const userAgentSpy = vi.spyOn(navigator, 'userAgent', 'get')
+
+      userAgentSpy.mockReturnValue('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)')
+      const broadcastMac = new BroadcastMessage('env_channel')
+      const channelMac = broadcastMac.getChannel() as unknown as MockBroadcastChannel
+
+      localStorage.clear()
+      ServerStorage.reset()
+
+      userAgentSpy.mockReturnValue('Mozilla/5.0 (Windows NT 10.0; Win64; x64)')
+      const broadcastWindows = new BroadcastMessage('env_channel')
+      const channelWindows = broadcastWindows.getChannel() as unknown as MockBroadcastChannel
+
+      expect(channelMac.name).not.toBe(channelWindows.name)
+    })
+
+    it('should handle empty navigator.userAgent gracefully with hash 0', () => {
+      vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('')
+
+      const broadcast = new BroadcastMessage('empty_ua')
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+
+      expect(channel.name).toBe('name_0__empty_ua')
+    })
+
+    it('should fallback to 1000000 when navigator is undefined', () => {
+      vi.stubGlobal('navigator', undefined)
+
+      const broadcast = new BroadcastMessage('no_navigator')
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+
+      expect(channel.name).toBe('name_1000000__no_navigator')
+    })
+
+    it('should NOT initialize BroadcastChannel when NOT in DOM runtime (SSR safety)', () => {
+      isDomRuntimeSpy.mockReturnValue(false)
+      const broadcast = new BroadcastMessage('ssr_channel')
+
+      expect(broadcast.getChannel()).toBeUndefined()
+    })
+
+    it('should report to default ErrorCenter if BroadcastChannel initialization throws', () => {
+      const ThrowingChannel = class {
+        constructor() {
+          throw new Error('Channel initialization failure')
+        }
       }
-    }
-    vi.stubGlobal('BroadcastChannel', ThrowingChannel)
+      vi.stubGlobal('BroadcastChannel', ThrowingChannel)
 
-    const broadcast = new BroadcastMessage('fail_test')
+      const broadcast = new BroadcastMessage('fail_channel')
 
-    expect(broadcast.getChannel()).toBeUndefined()
-    expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({
-      group: 'broadcast',
-      code: 'error',
-      details: expect.any(Error)
-    }))
+      expect(broadcast.getChannel()).toBeUndefined()
+      expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({
+        group: 'broadcast',
+        code: 'error',
+        details: expect.any(Error)
+      }))
+    })
+
+    it('should report to custom ErrorCenterInstance if provided when initialization throws', () => {
+      const customErrorCenter = new ErrorCenterInstance()
+      const customErrorSpy = vi.spyOn(customErrorCenter, 'on').mockImplementation(() => undefined)
+      const initializationError = new Error('Custom channel failure')
+
+      const ThrowingChannel = class {
+        constructor() {
+          throw initializationError
+        }
+      }
+      vi.stubGlobal('BroadcastChannel', ThrowingChannel)
+
+      const broadcast = new BroadcastMessage('custom_fail', undefined, undefined, customErrorCenter)
+
+      expect(broadcast.getChannel()).toBeUndefined()
+      expect(customErrorSpy).toHaveBeenCalledWith({
+        group: 'broadcast',
+        code: 'error',
+        details: initializationError
+      })
+    })
   })
 
-  it('should post message to channel', () => {
-    const broadcast = new BroadcastMessage('post_test')
-    const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+  describe('messaging and callbacks', () => {
+    it('should post message to channel and return this for chaining', () => {
+      const broadcast = new BroadcastMessage<{ key: string }>('post_test')
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
 
-    broadcast.post({ key: 'value' })
-    expect(channel.postMessage).toHaveBeenCalledWith({ key: 'value' })
+      const returnValue = broadcast.post({ key: 'value' })
+
+      expect(returnValue).toBe(broadcast)
+      expect(channel.postMessage).toHaveBeenCalledWith({ key: 'value' })
+    })
+
+    it('should not throw on post if channel is undefined and still return this', () => {
+      isDomRuntimeSpy.mockReturnValue(false)
+      const broadcast = new BroadcastMessage<{ key: string }>('undefined_post_test')
+
+      expect(() => {
+        const returnValue = broadcast.post({ key: 'value' })
+        expect(returnValue).toBe(broadcast)
+      }).not.toThrow()
+    })
+
+    it('should invoke initial callback when onmessage triggers', () => {
+      const messageCallback = vi.fn()
+      const broadcast = new BroadcastMessage<string>('message_test', messageCallback)
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+
+      const messageEvent = new MessageEvent('message', { data: 'hello' })
+      channel.onmessage?.(messageEvent)
+
+      expect(messageCallback).toHaveBeenCalledTimes(1)
+      expect(messageCallback).toHaveBeenCalledWith(messageEvent)
+    })
+
+    it('should not throw when onmessage triggers without a registered callback', () => {
+      const broadcast = new BroadcastMessage<string>('no_callback_test')
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+
+      const messageEvent = new MessageEvent('message', { data: 'ignored' })
+      expect(() => channel.onmessage?.(messageEvent)).not.toThrow()
+    })
+
+    it('should update the message handler via setCallback and return this', () => {
+      const broadcast = new BroadcastMessage<string>('set_callback_test')
+      const updatedCallback = vi.fn()
+
+      const returnValue = broadcast.setCallback(updatedCallback)
+      expect(returnValue).toBe(broadcast)
+
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+      const messageEvent = new MessageEvent('message', { data: 'updated payload' })
+      channel.onmessage?.(messageEvent)
+
+      expect(updatedCallback).toHaveBeenCalledWith(messageEvent)
+    })
+
+    it('should invoke initial callbackError when onmessageerror triggers', () => {
+      const errorCallback = vi.fn()
+      const broadcast = new BroadcastMessage<string>('error_message_test', undefined, errorCallback)
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+
+      const errorEvent = new MessageEvent('messageerror', { data: 'error data' })
+      channel.onmessageerror?.(errorEvent)
+
+      expect(errorCallback).toHaveBeenCalledTimes(1)
+      expect(errorCallback).toHaveBeenCalledWith(errorEvent)
+    })
+
+    it('should not throw when onmessageerror triggers without a registered error callback', () => {
+      const broadcast = new BroadcastMessage<string>('no_error_callback_test')
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+
+      const errorEvent = new MessageEvent('messageerror', { data: 'ignored error' })
+      expect(() => channel.onmessageerror?.(errorEvent)).not.toThrow()
+    })
+
+    it('should update the error handler via setCallbackError and return this', () => {
+      const broadcast = new BroadcastMessage<string>('set_callback_error_test')
+      const updatedErrorCallback = vi.fn()
+
+      const returnValue = broadcast.setCallbackError(updatedErrorCallback)
+      expect(returnValue).toBe(broadcast)
+
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+      const errorEvent = new MessageEvent('messageerror', { data: 'updated error' })
+      channel.onmessageerror?.(errorEvent)
+
+      expect(updatedErrorCallback).toHaveBeenCalledWith(errorEvent)
+    })
   })
 
-  it('should not throw on post if channel is undefined', () => {
-    isDomRuntimeSpy.mockReturnValue(false)
-    const broadcast = new BroadcastMessage('undefined_test')
+  describe('destroy', () => {
+    it('should close channel, clear channel reference, and return this on destroy', () => {
+      const broadcast = new BroadcastMessage('destroy_test')
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
 
-    expect(() => broadcast.post({ key: 'value' })).not.toThrow()
-  })
+      const returnValue = broadcast.destroy()
 
-  it('should handle onmessage callback correctly', () => {
-    const callback = vi.fn()
-    const broadcast = new BroadcastMessage('msg_test', callback)
-    const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+      expect(returnValue).toBe(broadcast)
+      expect(channel.close).toHaveBeenCalledTimes(1)
+      expect(broadcast.getChannel()).toBeUndefined()
+    })
 
-    const mockEvent = new MessageEvent('message', { data: 'hello' })
+    it('should not throw on destroy if channel is already undefined', () => {
+      isDomRuntimeSpy.mockReturnValue(false)
+      const broadcast = new BroadcastMessage('destroy_undefined_test')
 
-    // Simulate incoming message
-    if (channel.onmessage) {
-      channel.onmessage(mockEvent)
-    }
-
-    expect(callback).toHaveBeenCalledWith(mockEvent)
-  })
-
-  it('should handle setCallback updating the message handler', () => {
-    const broadcast = new BroadcastMessage('set_cb_test')
-    const newCallback = vi.fn()
-
-    broadcast.setCallback(newCallback)
-
-    const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
-    const mockEvent = new MessageEvent('message', { data: 'updated' })
-
-    if (channel.onmessage) {
-      channel.onmessage(mockEvent)
-    }
-
-    expect(newCallback).toHaveBeenCalledWith(mockEvent)
-  })
-
-  it('should handle onmessageerror callback correctly', () => {
-    const errorCallback = vi.fn()
-    const broadcast = new BroadcastMessage('err_msg_test', undefined, errorCallback)
-    const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
-
-    const mockEvent = new MessageEvent('messageerror', { data: 'error' })
-
-    // Simulate incoming error
-    if (channel.onmessageerror) {
-      channel.onmessageerror(mockEvent)
-    }
-
-    expect(errorCallback).toHaveBeenCalledWith(mockEvent)
-  })
-
-  it('should handle setCallbackError updating the error handler', () => {
-    const broadcast = new BroadcastMessage('set_cberr_test')
-    const newErrorCallback = vi.fn()
-
-    broadcast.setCallbackError(newErrorCallback)
-
-    const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
-    const mockEvent = new MessageEvent('messageerror', { data: 'updated error' })
-
-    if (channel.onmessageerror) {
-      channel.onmessageerror(mockEvent)
-    }
-
-    expect(newErrorCallback).toHaveBeenCalledWith(mockEvent)
-  })
-
-  it('should close channel on destroy', () => {
-    const broadcast = new BroadcastMessage('destroy_test')
-    const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
-
-    broadcast.destroy()
-
-    expect(channel.close).toHaveBeenCalled()
-    expect(broadcast.getChannel()).toBeUndefined()
-  })
-
-  it('should not throw on destroy if channel is undefined', () => {
-    isDomRuntimeSpy.mockReturnValue(false)
-    const broadcast = new BroadcastMessage('destroy_undef_test')
-
-    expect(() => broadcast.destroy()).not.toThrow()
-    expect(broadcast.getChannel()).toBeUndefined()
+      expect(() => {
+        const returnValue = broadcast.destroy()
+        expect(returnValue).toBe(broadcast)
+      }).not.toThrow()
+      expect(broadcast.getChannel()).toBeUndefined()
+    })
   })
 })

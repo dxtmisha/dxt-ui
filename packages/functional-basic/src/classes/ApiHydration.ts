@@ -27,7 +27,7 @@ export class ApiHydration {
    * @param response API response / ответ API
    * @returns void / ничего не возвращает
    */
-  initResponse(response: ApiResponse) {
+  initResponse(response: ApiResponse): void {
     if (isDomRuntime()) {
       response.add(this.getListByClient())
     }
@@ -72,6 +72,7 @@ export class ApiHydration {
    * Returns a string representation of the hydration data for the client.
    *
    * Возвращает строковое представление данных гидратации для клиента.
+   * @returns hydration script HTML string / HTML-строка скрипта гидратации
    */
   toString(): string {
     return getElementSafeScript(API_HYDRATION_ID, this.list)
@@ -81,6 +82,7 @@ export class ApiHydration {
    * Returns the list of API responses for the client.
    *
    * Возвращает список ответов API для клиента.
+   * @returns hydration data list / список данных гидратации
    */
   protected getListByClient(): ApiHydrationList {
     return getHydrationData<ApiHydrationList>(API_HYDRATION_ID, [])

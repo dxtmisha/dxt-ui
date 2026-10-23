@@ -10,7 +10,7 @@ Một tiện ích đơn giản kiểm tra xem giá trị được cung cấp có
 - `value: T` — Bất kỳ giá trị nào, thường mong đợi đây là một đối tượng.
 
 **Trả về:**
-`T & Record<string, any>` — Chính đối tượng ban đầu nếu kiểu dữ liệu đúng; ngược lại, trả về đối tượng rỗng `{}`.
+`T & Record<string, unknown>` — Chính đối tượng ban đầu nếu kiểu dữ liệu đúng; ngược lại, trả về đối tượng rỗng `{}`.
 
 ```typescript
 import { getObjectOrNone } from '@dxtmisha/functional-basic'

@@ -39,26 +39,33 @@ describe('getObjectNoUndefined', () => {
       const data = { title: '', description: 'Some text', subtitle: '' }
       expect(getObjectNoUndefined(data, '')).toEqual({ description: 'Some text' })
     })
+
+    it('should remove properties matching a specific object reference exception', () => {
+      const sentinel = { marker: true }
+      const keptObject = { marker: true }
+      const data = { a: sentinel, b: keptObject, c: sentinel }
+      expect(getObjectNoUndefined(data, sentinel)).toEqual({ b: keptObject })
+    })
   })
 
   describe('Preservation of valid falsy values with default exception', () => {
     it('should preserve null, 0, -0, false, empty strings, and NaN when default exception is used', () => {
       const data = {
-        nullVal: null,
+        nullValue: null,
         zero: 0,
-        negZero: -0,
-        bool: false,
-        emptyStr: '',
-        nan: Number.NaN,
-        undef: undefined
+        negativeZero: -0,
+        booleanValue: false,
+        emptyString: '',
+        notANumber: Number.NaN,
+        undefinedValue: undefined
       }
       expect(getObjectNoUndefined(data)).toEqual({
-        nullVal: null,
+        nullValue: null,
         zero: 0,
-        negZero: -0,
-        bool: false,
-        emptyStr: '',
-        nan: Number.NaN
+        negativeZero: -0,
+        booleanValue: false,
+        emptyString: '',
+        notANumber: Number.NaN
       })
     })
   })

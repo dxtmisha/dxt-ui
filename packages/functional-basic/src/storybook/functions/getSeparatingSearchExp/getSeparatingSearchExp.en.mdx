@@ -4,29 +4,27 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getSeparatingSearchExp`
 
-A utility that builds a case-insensitive global `RegExp` for searching strings containing **any** of the words from the search string (separated by spaces).
+A utility that builds a case-insensitive global `RegExp` for searching strings containing **any** of the words from the search string (separated by spaces), or clones a provided `RegExp` preserving its pattern and flags.
 
-Each word is split by spaces, escaped, and joined with the OR operator `|`. This is useful when you want to find a match for at least one of the entered words.
+Unique words are split by whitespace, sorted by length in descending order, escaped, and joined with the OR operator `|` inside a capturing group `(...)`. This is useful for finding or highlighting matches for any of the entered words.
 
 **Parameters:**
 - `search: string | RegExp` — A search string consisting of one or more space-separated words, or a `RegExp` object.
-- `limit: number = 128` — The maximum allowed length of the search string (ignored if a `RegExp` is passed).
+- `limit?: number` — (Optional) The maximum allowed length of the search string (ignored if a `RegExp` is passed). Defaults to `128`.
 
 **Returns:**
-`RegExp` — A regular expression with flags `ig` (global, case-insensitive). If the search string is empty or exceeds the limit, a regex that matches nothing is returned.
+`RegExp` — A regular expression with flags `ig` (case-insensitive, global) for string queries, or a cloned `RegExp` if a `RegExp` was passed. If the search string is empty, `limit <= 0`, exceeds `limit`, or an empty `RegExp` (`/(?:)/`) is passed, it returns `/(?!)/` (a regex that never matches anything).
 
 ```typescript
 import { getSeparatingSearchExp } from '@dxtmisha/functional-basic'
 
 const regex = getSeparatingSearchExp('foo bar')
 
-regex.test('foo')          // true
-regex.test('bar')          // true
-regex.test('foo bar baz')  // true
-regex.test('something')    // false
+'foo bar baz'.match(regex) // ['foo', 'bar']
+'bar'.match(regex)         // ['bar']
+'something'.match(regex)   // null
 
 // Special characters are escaped automatically
 const regex2 = getSeparatingSearchExp('$10 .')
-regex2.test('$10') // true
-regex2.test('.')   // true
+'$10 .'.match(regex2) // ['$10', '.']
 ```

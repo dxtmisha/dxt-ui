@@ -1,22 +1,22 @@
-// md5:45267e5c36855193a8504f2d380010cd true
-/** Formats a list or single data item based on provided column formatting options. @keywords format, list, data, options */
+// md5:f4d99d927cfe90883dcdb7cc2047d549 true
+/** Formats a dataset or single item using configured options. @keywords formatters, list format, data formatting */
 export declare class Formatters<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp, Item extends FormattersItemProp<List> = FormattersItemProp<List>> {
-    /** Initializes the formatters instance with options and optional list data. @keywords constructor, init, setup */
+    /** Initializes formatter options and dataset. @keywords constructor, initialize */
     constructor(options: Options, list?: List | undefined);
-    /** Checks if the list data is set. @keywords check, is set, exists */
+    /** Checks whether the dataset is defined. @keywords is, has data, exists */
     is(): boolean;
-    /** Type guard checking if the list data is an array. @keywords isArray, type guard */
+    /** Type guard checking whether the dataset is an array. @keywords isArray, type guard, array */
     isArray(): this is this & {
         list: FormattersList<Item>;
     };
-    /** Returns the number of records in the list. @keywords count, length, size */
-    length(): number;
-    /** Returns the current list of items as an array. @keywords getList, items, array */
+    /** Returns current dataset normalized as an array. @keywords getList, list, array */
     getList(): FormattersList<Item>;
-    /** Returns the current formatting options configuration. @keywords getOptions, configuration, settings */
+    /** Returns current formatting options configuration. @keywords getOptions, options, config */
     getOptions(): Options;
-    /** Sets the list of data to be formatted. @keywords setList, update, list */
+    /** Sets or updates the dataset to format. @keywords setList, update, dataset */
     setList(list?: List): this;
-    /** Formats the entire list or single item, appending formatted values with 'Format' suffixes. @keywords to, format, transform */
+    /** Returns the record count in the dataset. @keywords length, count, size */
+    length(): number;
+    /** Formats the dataset or single item and appends formatted values with 'Format' suffix. @keywords to, format, transform */
     to(): FormattersReturn<List, Options>;
 }

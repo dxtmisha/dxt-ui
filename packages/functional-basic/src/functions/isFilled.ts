@@ -1,3 +1,5 @@
+import { hasKey } from './hasKey'
+import { isArray } from './isArray'
 import { isNull } from './isNull'
 
 import { type EmptyValue } from '../types/basicTypes'
@@ -27,7 +29,7 @@ export function isFilled<T>(
       case 'symbol':
         return true
       case 'object':
-        if (Array.isArray(value)) {
+        if (isArray(value)) {
           return value.length > 0
         }
 
@@ -44,8 +46,8 @@ export function isFilled<T>(
 
         for (const key in value) {
           if (
-            Object.prototype.hasOwnProperty.call(value, key)
-            && !isNull((value as Record<string, unknown>)[key])
+            hasKey(value, key)
+            && !isNull(value[key])
           ) {
             return true
           }

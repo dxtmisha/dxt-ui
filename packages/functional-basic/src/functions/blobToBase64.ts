@@ -1,6 +1,14 @@
 import { isDomRuntime } from './isDomRuntime'
 
 /**
+ * Buffer type for converting ArrayBuffer /
+ * Тип Buffer для преобразования ArrayBuffer
+ */
+type BufferType = {
+  from(arrayBuffer: ArrayBuffer): { toString(encoding: string): string }
+}
+
+/**
  * Matches the Data URL prefix up to base64 content /
  * Регулярное выражение для поиска префикса Data URL до содержимого base64
  */
@@ -20,7 +28,11 @@ const isBuffer = (): boolean => typeof getBuffer() !== 'undefined'
  * Получает Buffer из globalThis.
  * @returns Buffer / Буфер
  */
-const getBuffer = () => (globalThis as any)?.Buffer
+const getBuffer = (): BufferType | undefined => (
+  globalThis as unknown as {
+    Buffer?: BufferType
+  }
+)?.Buffer
 
 /**
  * Get base64 from Blob using FileReader.
@@ -63,8 +75,8 @@ const getDataByFileReader = async (blob: Blob): Promise<string | undefined> => {
  * @returns base64 string / строка base64
  */
 const getDataByBuffer = (arrayBuffer: ArrayBuffer): string => {
-  const buffer = (globalThis as any)?.Buffer
-  return buffer.from(arrayBuffer).toString('base64')
+  const buffer = getBuffer()
+  return buffer ? buffer.from(arrayBuffer).toString('base64') : ''
 }
 
 /**

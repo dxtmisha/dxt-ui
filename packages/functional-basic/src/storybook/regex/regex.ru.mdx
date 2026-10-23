@@ -13,7 +13,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ```javascript
 import { escapeExp, getExp } from '@dxtmisha/functional-basic'
 
-// 1. Экранирование спецсимволов (.*+?^${}()|[\]\)
+// 1. Экранирование спецсимволов (.*+?^${}()|[\]\/-)
 const safeText = escapeExp('price block ($)') // 'price block \(\$\)'
 
 // 2. Быстрое создание объекта RegExp с флагами
@@ -38,8 +38,8 @@ const searchAll = getSearchExp('красная машина')
 // 2. Поиск "хотя бы одно слово" (через ИЛИ)
 const searchAny = getSeparatingSearchExp('apple orange') // (apple|orange)
 
-// 3. Точное совпадение слова целиком
-const exact = getExactSearchExp('React') // Найдет 'React', но не 'Reactions'
+// 3. Точное совпадение фразы без учёта регистра
+const exact = getExactSearchExp('React Router') // Найдет 'React Router', но не 'React и Router'
 ```
 
 ## Практический пример

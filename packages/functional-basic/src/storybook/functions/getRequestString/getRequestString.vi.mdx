@@ -4,15 +4,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getRequestString`
 
-Chuyển đổi một đối tượng từ điển thành một chuỗi định dạng kiểu URL (mặc định là chuỗi truy vấn cho tham số GET), trong đó các khóa và giá trị được nối với nhau bằng các dấu phân cách quy định. Trước khi tạo chuỗi, tất cả các giá trị đều được đưa về kiểu chuỗi, cắt khoảng trắng dư thừa và đưa qua hàm `encodeURIComponent` để đảm bảo an toàn khi truyền qua URL. Các khóa sẽ được sắp xếp theo thứ tự bảng chữ cái.
+Chuyển đổi một đối tượng hoặc mảng thành một chuỗi định dạng kiểu URL (mặc định là chuỗi truy vấn cho tham số GET), trong đó các khóa và giá trị được nối với nhau bằng các dấu phân cách quy định. Các khóa được cắt khoảng trắng ở hai đầu và mã hóa qua `encodeURIComponent`, các giá trị được chuyển thành chuỗi và mã hóa qua `encodeURIComponent`, các đối tượng và mảng lồng nhau được tuần tự hóa đệ quy bằng ký pháp ngoặc vuông (`key[subKey]` hoặc `key[]`), và các cặp kết quả được sắp xếp theo thứ tự bảng chữ cái.
 
 **Tham số:**
 - `request: Record<string, unknown> | readonly unknown[]` — Đối tượng hoặc mảng dữ liệu cần chuyển đổi.
-- `sign: string` — (Tùy chọn) Ký tự kết nối giữa khóa và giá trị. Mặc định là `=`.
-- `separator: string` — (Tùy chọn) Ký tự phân tách các cặp khóa-giá trị. Mặc định là `&`.
+- `sign?: string` — (Tùy chọn) Ký tự kết nối giữa khóa và giá trị. Mặc định là `'='`.
+- `separator?: string` — (Tùy chọn) Ký tự phân tách các cặp khóa-giá trị. Mặc định là `'&'`.
+- `subKey?: string` — (Tùy chọn) Khóa cha dùng để định dạng các thuộc tính đối tượng lồng nhau hoặc các phần tử mảng.
 
 **Trả về:**
-`string` — Một chuỗi kí tự đã được định dạng và sắp xếp.
+`string` — Một chuỗi truy vấn đã được định dạng và sắp xếp (hoặc `''` nếu `request` không phải là đối tượng hoặc mảng).
 
 ```typescript
 import { getRequestString } from '@dxtmisha/functional-basic'

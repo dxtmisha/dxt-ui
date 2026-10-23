@@ -12,7 +12,7 @@ Tính năng hoạt động tương thích hoàn hảo kiểu loại cấu thành
 - `value: unknown` — Mức giá trị bất kỳ để khảo sát.
 
 **Trả về:**
-`boolean` — Giải phóng biến kiểm tra `true` nếu nguồn căn thuộc thể trạng chữ số lý thuyết hay hệ thống dải văn bản cấu tạo chỉ bởi số liệu đơn thuần. Sẽ cho ra `false` khi có bất trắc nào dính lẫn kí tự ngoại vi ngoài chữ số.
+`boolean` (`value is number | string`) — Giải phóng biến kiểm tra `true` nếu nguồn căn thuộc thể trạng chữ số lý thuyết hay hệ thống dải văn bản cấu tạo chỉ bởi số liệu đơn thuần. Sẽ cho ra `false` khi có bất trắc nào dính lẫn kí tự ngoại vi ngoài chữ số. Đóng vai trò là type guard trong TypeScript giúp thu hẹp kiểu về `number | string`.
 
 ```typescript
 import { isNumber } from '@dxtmisha/functional-basic'

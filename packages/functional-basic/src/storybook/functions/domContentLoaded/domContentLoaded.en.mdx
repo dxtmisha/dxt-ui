@@ -6,10 +6,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Executes a callback function when the `DOMContentLoaded` event is fired.
 
-If the DOM is already loaded (`document.readyState` is `'interactive'` or `'complete'`) or if executing in a non-DOM environment (such as SSR), the callback function is executed immediately.
+If the DOM is already loaded (`document.readyState` is `'interactive'` or `'complete'`) or if executing in a non-DOM environment (such as SSR, when `isServer` is `true`), the callback function is executed immediately. Can also be called without arguments to simply await DOM readiness.
 
 **Parameters:**
-- `callback: () => T | Promise<T>` — The callback function to execute when the DOM is loaded.
+- `callback?: () => T | Promise<T>` — Optional callback function to execute when the DOM is loaded.
+- `isServer: boolean = true` — Whether to execute the callback in non-DOM/SSR environments (defaults to `true`).
 
 **Returns:**
 `Promise<T>` — A promise that resolves with the return value of the callback function.
@@ -28,4 +29,7 @@ const data = await domContentLoaded(async () => {
   const element = document.querySelector('#content')
   return element?.textContent
 })
+
+// 3. Awaiting DOM readiness without a callback
+await domContentLoaded()
 ```

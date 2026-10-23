@@ -2,9 +2,12 @@ import { describe, it, expect, vi } from 'vitest'
 import { Cache } from '../Cache'
 
 describe('Cache', () => {
-  it('should create an instance', () => {
-    const cache = new Cache()
-    expect(cache).toBeInstanceOf(Cache)
+  it('should create an independent instance', () => {
+    const cacheFirst = new Cache()
+    const cacheSecond = new Cache()
+
+    expect(cacheFirst).toBeInstanceOf(Cache)
+    expect(cacheFirst).not.toBe(cacheSecond)
   })
 
   describe('get', () => {
@@ -29,16 +32,22 @@ describe('Cache', () => {
       expect(callback).toHaveBeenCalledTimes(1)
     })
 
-    it('should store different values for different keys', () => {
-      const cache = new Cache()
-      const cb1 = vi.fn().mockReturnValue('data1')
-      const cb2 = vi.fn().mockReturnValue('data2')
+    it('should store different values for different keys and isolate separate Cache instances', () => {
+      const cacheFirst = new Cache()
+      const cacheSecond = new Cache()
+      const callbackFirst = vi.fn().mockReturnValue('data1')
+      const callbackSecond = vi.fn().mockReturnValue('data2')
+      const callbackIsolated = vi.fn().mockReturnValue('isolatedData')
 
-      const res1 = cache.get('key1', cb1)
-      const res2 = cache.get('key2', cb2)
+      const resultFirst = cacheFirst.get('key1', callbackFirst)
+      const resultSecond = cacheFirst.get('key2', callbackSecond)
+      const resultIsolated = cacheSecond.get('key1', callbackIsolated)
 
-      expect(res1).toBe('data1')
-      expect(res2).toBe('data2')
+      expect(resultFirst).toBe('data1')
+      expect(resultSecond).toBe('data2')
+      expect(resultIsolated).toBe('isolatedData')
+      expect(callbackFirst).toHaveBeenCalledTimes(1)
+      expect(callbackIsolated).toHaveBeenCalledTimes(1)
     })
 
     it('should recalculate if a comparison array changes for the same key', () => {
@@ -46,12 +55,24 @@ describe('Cache', () => {
       let counter = 0
       const callback = vi.fn().mockImplementation(() => ++counter)
 
-      const res1 = cache.get('myKey', callback, [1])
-      const res2 = cache.get('myKey', callback, [2])
+      const resultFirst = cache.get('myKey', callback, [1])
+      const resultSecond = cache.get('myKey', callback, [2])
 
-      expect(res1).toBe(1)
-      expect(res2).toBe(2)
+      expect(resultFirst).toBe(1)
+      expect(resultSecond).toBe(2)
       expect(callback).toHaveBeenCalledTimes(2)
+    })
+
+    it('should not recalculate if comparison array is identical across calls', () => {
+      const cache = new Cache()
+      const callback = vi.fn().mockReturnValue('cachedResult')
+
+      const resultFirst = cache.get('myKey', callback, ['dep1', 42])
+      const resultSecond = cache.get('myKey', callback, ['dep1', 42])
+
+      expect(resultFirst).toBe('cachedResult')
+      expect(resultSecond).toBe('cachedResult')
+      expect(callback).toHaveBeenCalledTimes(1)
     })
 
     it('should not recalculate if comparison array is undefined and called again', () => {
@@ -63,6 +84,19 @@ describe('Cache', () => {
 
       expect(result).toBe('data')
       expect(callback).toHaveBeenCalledTimes(1)
+    })
+
+    it('should distinguish between undefined and null in comparison array', () => {
+      const cache = new Cache()
+      let counter = 0
+      const callback = vi.fn().mockImplementation(() => ++counter)
+
+      const resultFirst = cache.get('key', callback, [undefined])
+      const resultSecond = cache.get('key', callback, [null])
+
+      expect(resultFirst).toBe(1)
+      expect(resultSecond).toBe(2)
+      expect(callback).toHaveBeenCalledTimes(2)
     })
   })
 
@@ -93,25 +127,22 @@ describe('Cache', () => {
       let counter = 0
       const callback = vi.fn().mockImplementation(async () => ++counter)
 
-      const res1 = await cache.getAsync('myKeyAsync', callback, ['a'])
-      const res2 = await cache.getAsync('myKeyAsync', callback, ['b'])
+      const resultFirst = await cache.getAsync('myKeyAsync', callback, ['a'])
+      const resultSecond = await cache.getAsync('myKeyAsync', callback, ['b'])
 
-      expect(res1).toBe(1)
-      expect(res2).toBe(2)
+      expect(resultFirst).toBe(1)
+      expect(resultSecond).toBe(2)
       expect(callback).toHaveBeenCalledTimes(2)
     })
 
-    it('should work with undefined and null in comparison', async () => {
+    it('should handle synchronous return values inside getAsync', async () => {
       const cache = new Cache()
-      let counter = 0
-      const callback = vi.fn().mockImplementation(() => ++counter)
+      const callback = vi.fn().mockReturnValue('sync value in async')
 
-      const res1 = cache.get('key', callback, [undefined])
-      const res2 = cache.get('key', callback, [null])
+      const result = await cache.getAsync('syncInAsync', callback)
 
-      expect(res1).toBe(1)
-      expect(res2).toBe(2)
-      expect(callback).toHaveBeenCalledTimes(2)
+      expect(result).toBe('sync value in async')
+      expect(callback).toHaveBeenCalledTimes(1)
     })
   })
 })

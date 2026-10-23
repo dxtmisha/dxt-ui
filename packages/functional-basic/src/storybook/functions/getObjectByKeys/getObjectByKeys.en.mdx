@@ -4,14 +4,14 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getObjectByKeys`
 
-Creates and returns a new object containing only the properties corresponding to the specified keys from the source object. Properties that do not exist or have a value strictly equal to `undefined` are ignored during copying.
+Creates and returns a new object containing only the own properties (`hasKey`) corresponding to the specified keys from the source object. Prototype pollution keys (`__proto__`, `constructor`, `prototype`), non-existent properties, and properties whose value is strictly equal to `undefined` are ignored during copying.
 
 **Parameters:**
-- `data: Record<string, any>` — The source object containing the initial data.
-- `keys: string[]` — An array of string keys to extract from the source.
+- `data: T` — The source object containing the initial data (where `T extends Record<string, unknown>`).
+- `keys: K[]` — An array of keys to extract from the source object (where `K extends keyof T`).
 
 **Returns:**
-`Record<string, any>` — A new object containing only the successfully extracted properties. If a property is `undefined` in the source, it will not be included in the result.
+`Pick<T, K>` — A new object containing only the selected own properties whose values are not `undefined`.
 
 ```typescript
 import { getObjectByKeys } from '@dxtmisha/functional-basic'
@@ -24,6 +24,6 @@ const user = {
   active: true
 }
 
-const result = getObjectByKeys(user, ['id', 'name', 'age', 'token'])
+const result = getObjectByKeys(user, ['id', 'name', 'age'])
 console.log(result) // { id: 1, name: 'Ivan' }
 ```

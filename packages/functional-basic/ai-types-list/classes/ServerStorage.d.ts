@@ -1,26 +1,26 @@
-// md5:3f251242ad4d24b9eb0b0e9152d1444e true
+// md5:861cb8ab3016d494b853cc12e5fe1d29 true
 type ServerStorageItem = {
-    value: any;
+    value: unknown;
     hydration: boolean;
 };
 type ServerStorageList = Record<string, ServerStorageItem>;
-/** Manages isolated data storage during SSR across parallel requests. @keywords ssr, storage, isolation, context */
+/** Manages isolated data storage during server-side rendering (SSR). @keywords ssr server storage request isolation */
 export declare class ServerStorage {
-    /** Initializes storage with a request context listener function. @keywords init, context, ssr */
-    static init(listener: () => Record<string, any> | undefined): typeof ServerStorage;
-    /** Resets the storage state. @keywords reset, clear */
-    static reset(): void;
-    /** Checks if a value exists in storage by key. @keywords has, exists, key */
+    /** Retrieves a stored value or initializes it using the default value factory. @keywords get retrieve cache default */
+    static get<T = unknown>(key: string, defaultValue?: () => T, hydration?: boolean): T;
+    /** Stores a value produced by a factory function. @keywords set save store cache */
+    static set<T = unknown>(key: string, value: () => T, hydration?: boolean, storageList?: ServerStorageList): T;
+    /** Checks if a key exists in the storage. @keywords has exists contains key */
     static has(key: string): boolean;
-    /** Retrieves a value or creates it using a factory function with optional hydration. @keywords get, hydration, cache */
-    static get<T = any>(key: string, defaultValue?: () => T, hydration?: boolean): T;
-    /** Stores a value from a factory function with optional hydration. @keywords set, store, hydration */
-    static set<T = any>(key: string, value: () => T, hydration?: boolean, storageList?: ServerStorageList): T;
-    /** Sets whether error messages should be hidden or shown. @keywords error, status, logging */
+    /** Configures whether error messages should be suppressed. @keywords error status visibility hide */
     static setErrorStatus(hide: boolean): void;
-    /** Removes a value from storage by key. @keywords remove, delete */
+    /** Removes a specific item from storage by key. @keywords remove delete clear key */
     static remove(key: string): void;
-    /** Serializes the hydration storage into an executable script tag string. @keywords hydration, serialize, toString */
+    /** Clears all stored values from the current storage context. @keywords reset clear purge */
+    static reset(): void;
+    /** Initializes storage with a context resolver for request isolation. @keywords init initialize context ssr */
+    static init(listener: () => Record<string, unknown> | undefined): typeof ServerStorage;
+    /** Serializes storage state into a script tag string for client hydration. @keywords toString hydration serialize script */
     static toString(): string;
 }
 export {};

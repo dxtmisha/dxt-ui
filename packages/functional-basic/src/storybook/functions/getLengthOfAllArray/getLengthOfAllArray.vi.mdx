@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getLengthOfAllArray`
 
-Tạo và trả về một mảng mới chỉ bao gồm độ dài (thuộc tính `.length`) của tất cả các phần tử trong mảng chuỗi được cung cấp.
+Tạo và trả về một mảng mới bao gồm độ dài (thuộc tính `.length`) của tất cả các phần tử trong mảng hoặc đối tượng chuỗi được cung cấp.
 
 **Tham số:**
-- `value: ObjectOrArray<string>` — Mảng chuỗi đầu vào. Nếu truyền vào một chuỗi đơn, hàm sẽ xử lý nó như một mảng chứa một phần tử.
+- `value: ObjectOrArray<string>` — Mảng hoặc đối tượng chuỗi đầu vào.
 
 **Trả về:**
-`number[]` — Một mảng các số, trong đó mỗi số tương ứng với độ dài của chuỗi trong mảng nguồn ở cùng vị trí đó.
+`number[]` — Một mảng các số, trong đó mỗi số tương ứng với độ dài của chuỗi trong tập hợp nguồn (hoặc `0` nếu phần tử không xác định hoặc rỗng).
 
 ```typescript
 import { getLengthOfAllArray } from '@dxtmisha/functional-basic'

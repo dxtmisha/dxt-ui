@@ -1,3 +1,3 @@
-// md5:c3414dfe6cab6a7932857942675a797a true
-/** Checks if the value is a callable function. @keywords isFunction, callback, function, type guard, callable */
-export declare function isFunction<T>(callback: T): callback is Extract<T, FunctionArgs<any, any>>;
+// md5:c38df1a0043bc8094a4a4b14595f64de true
+/** Checks if a value is a function. @keywords isFunction, function, callback, type guard */
+export declare function isFunction<T>(callback: T): callback is Extract<T, FunctionAnyType>;

@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getMinLengthAllArray`
 
-Một tiện ích tìm chuỗi ngắn nhất trong mảng đã cung cấp và trả về độ dài của nó (dưới dạng một số). Hàm sử dụng hàm dựng sẵn `Math.min` kết hợp với `getLengthOfAllArray`.
+Một tiện ích tìm chuỗi ngắn nhất trong mảng hoặc đối tượng đã cung cấp và trả về độ dài của nó (dưới dạng một số). Hàm sử dụng `Math.min` kết hợp với `getLengthOfAllArray` (tự động chuyển sang `.reduce()` đối với tập hợp lớn hơn 10.000 phần tử để tránh tràn ngăn xếp lệnh gọi).
 
 **Tham số:**
-- `data: ObjectOrArray<string>` — Mảng chuỗi đầu vào.
+- `data: ObjectOrArray<string>` — Mảng hoặc đối tượng chuỗi đầu vào.
 
 **Trả về:**
-`number` — Độ dài của chuỗi ngắn nhất trong mảng. Nếu truyền vào mảng rỗng, hàm sẽ trả về `Infinity`.
+`number` — Độ dài của chuỗi ngắn nhất trong tập hợp. Nếu truyền vào mảng hoặc đối tượng rỗng, hàm sẽ trả về `0`.
 
 ```typescript
 import { getMinLengthAllArray } from '@dxtmisha/functional-basic'

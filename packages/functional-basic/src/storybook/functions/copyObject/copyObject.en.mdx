@@ -6,6 +6,8 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 Creates a deep copy of an object for independent data management. The goal of the method is to obtain a completely separate instance of the data to prevent unintended mutations in the original object.
 
+Under the hood, the function uses the native `structuredClone` API when available, and automatically falls back to `JSON.parse(JSON.stringify(value))` if `structuredClone` is not supported or fails (e.g., when the object contains non-cloneable properties).
+
 **Parameters:**
 - `value: T` — The object or array to be copied.
 

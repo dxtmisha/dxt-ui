@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getMinLengthAllArray`
 
-A utility that finds the shortest string in the provided array and returns its length (as a number). The function uses built-in `Math.min` combined with `getLengthOfAllArray`.
+A utility that finds the shortest string in the provided array or object and returns its length (as a number). The function uses `Math.min` combined with `getLengthOfAllArray` (falling back to `.reduce()` for collections larger than 10,000 elements to prevent call stack overflow).
 
 **Parameters:**
-- `data: ObjectOrArray<string>` — The input array of strings.
+- `data: ObjectOrArray<string>` — The input array or object of strings.
 
 **Returns:**
-`number` — The length of the shortest string in the array. If an empty array is passed, it returns `Infinity`.
+`number` — The length of the shortest string in the collection. If an empty array or object is passed, it returns `0`.
 
 ```typescript
 import { getMinLengthAllArray } from '@dxtmisha/functional-basic'

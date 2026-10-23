@@ -1,4 +1,6 @@
 import { isDomRuntime } from './isDomRuntime'
+import { isFunction } from './isFunction'
+import { isObject } from './isObject'
 
 /**
  * Returns the numeric client property value from an element or 0 if unavailable.
@@ -33,17 +35,15 @@ export function goScrollTo(
 ): void {
   if (
     !isDomRuntime()
-    || !container
-    || !elementTo
-    || typeof container !== 'object'
-    || typeof elementTo !== 'object'
+    || !isObject(container)
+    || !isObject(elementTo)
   ) {
     return
   }
 
   if (
-    typeof container.getBoundingClientRect !== 'function'
-    || typeof elementTo.getBoundingClientRect !== 'function'
+    !isFunction(container.getBoundingClientRect)
+    || !isFunction(elementTo.getBoundingClientRect)
   ) {
     return
   }
@@ -57,7 +57,7 @@ export function goScrollTo(
   const deltaTop = targetRect.top - (containerRect.top + clientTop)
   const deltaLeft = targetRect.left - (containerRect.left + clientLeft)
 
-  if (typeof container.scrollBy === 'function') {
+  if (isFunction(container.scrollBy)) {
     container.scrollBy({
       top: deltaTop,
       left: deltaLeft,

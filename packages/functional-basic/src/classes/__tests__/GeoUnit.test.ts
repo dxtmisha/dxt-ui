@@ -4,79 +4,108 @@ import { GeoUnit } from '../GeoUnit'
 
 describe('GeoUnit', () => {
   beforeEach(() => {
-    // Reset to default location
     Geo.set('en-US')
   })
 
-  it('should return request-isolated or cached instances via getInstance', () => {
-    const instance1 = GeoUnit.getInstance('en-US')
-    const instance2 = GeoUnit.getInstance('en-US')
-    expect(instance1).toBe(instance2)
+  it('should return cached instances via getInstance and constructor and expose getLocation()', () => {
+    const firstInstance = GeoUnit.getInstance('en-US')
+    const secondInstance = GeoUnit.getInstance('en-US')
+    const thirdInstance = new GeoUnit('en-US')
+
+    expect(firstInstance).toBe(secondInstance)
+    expect(firstInstance).toBe(thirdInstance)
+    expect(firstInstance.getLocation()).toBe('en-US')
+
+    const frenchInstance = GeoUnit.getInstance('fr-FR')
+    expect(frenchInstance.getLocation()).toBe('fr-FR')
   })
 
-  it('should format metric unit without conversion for metric countries (e.g. ru-RU)', () => {
+  it('should format all metric units without conversion for metric countries (ru-RU)', () => {
     Geo.set('ru-RU')
-    const geoUnit = new GeoUnit()
+    const geoUnit = new GeoUnit('ru-RU')
 
-    // 1000 grams should format to 1 000 g (or 1000 g)
-    const formatted = geoUnit.gram(1000)
-    expect(formatted).toContain('1 000')
-    expect(formatted).toContain('г')
+    expect(geoUnit.millimeter(10)).toContain('10')
+    expect(geoUnit.centimeter(10)).toContain('10')
+    expect(geoUnit.meter(10)).toContain('10')
+    expect(geoUnit.kilometer(10)).toContain('10')
+    expect(geoUnit.squareMeter(10)).toContain('10')
+    expect(geoUnit.hectare(10)).toContain('10')
+    expect(geoUnit.gram(1000)).toContain('1\u00A0000')
+    expect(geoUnit.kilogram(10)).toContain('10')
+    expect(geoUnit.tonne(10)).toContain('10')
+    expect(geoUnit.milliliter(10)).toContain('10')
+    expect(geoUnit.liter(10)).toContain('10')
+    expect(geoUnit.celsius(0)).toContain('0')
+    expect(geoUnit.kilometerPerHour(100)).toContain('100')
   })
 
-  it('should convert and format unit for non-metric countries (e.g. en-US)', () => {
+  it('should convert and format distance, area, weight, volume, temperature, and speed units for non-metric countries (en-US)', () => {
     Geo.set('en-US')
-    const geoUnit = new GeoUnit()
+    const geoUnit = new GeoUnit('en-US')
 
-    // 1000 grams should convert to ~35.274 ounces
-    const formatted = geoUnit.gram(1000)
-    expect(formatted).toContain('35.274')
-    expect(formatted).toContain('oz')
+    // Distance
+    expect(geoUnit.millimeter(100)).toContain('3.937')
+    expect(geoUnit.millimeter(100)).toContain('in')
+
+    expect(geoUnit.centimeter(10)).toContain('3.937')
+    expect(geoUnit.centimeter(10)).toContain('in')
+
+    expect(geoUnit.meter(100)).toContain('328.084')
+    expect(geoUnit.meter(100)).toContain('ft')
+
+    expect(geoUnit.kilometer(100)).toContain('62.137')
+    expect(geoUnit.kilometer(100)).toContain('mi')
+
+    // Area
+    expect(geoUnit.squareMeter(10)).toContain('107.639')
+
+    expect(geoUnit.hectare(10)).toContain('24.711')
+    expect(geoUnit.hectare(10)).toContain('ac')
+
+    // Weight
+    expect(geoUnit.gram(1000)).toContain('35.274')
+    expect(geoUnit.gram(1000)).toContain('oz')
+
+    expect(geoUnit.kilogram(10)).toContain('22.046')
+    expect(geoUnit.kilogram(10)).toContain('lb')
+
+    expect(geoUnit.tonne(10)).toContain('11.023')
+
+    // Volume
+    expect(geoUnit.milliliter(100)).toContain('3.381')
+    expect(geoUnit.milliliter(100)).toContain('fl oz')
+
+    expect(geoUnit.liter(10)).toContain('2.642')
+    expect(geoUnit.liter(10)).toContain('gal')
+
+    // Temperature
+    expect(geoUnit.celsius(0)).toContain('32')
+    expect(geoUnit.celsius(0)).toContain('F')
+
+    // Speed
+    expect(geoUnit.kilometerPerHour(100)).toContain('62.137')
+    expect(geoUnit.kilometerPerHour(100)).toContain('mph')
   })
 
-  it('should convert and format temperature for en-US', () => {
+  it('should format all supported units via the general format() method and fallback for unknown units', () => {
     Geo.set('en-US')
-    const geoUnit = new GeoUnit()
+    const geoUnit = new GeoUnit('en-US')
 
-    // 0 celsius should be 32 fahrenheit
-    const formatted = geoUnit.celsius(0)
-    expect(formatted).toContain('32')
-    expect(formatted).toContain('F')
-  })
+    expect(geoUnit.format(100, 'millimeter')).toContain('in')
+    expect(geoUnit.format(10, 'centimeter')).toContain('in')
+    expect(geoUnit.format(100, 'meter')).toContain('ft')
+    expect(geoUnit.format(100, 'kilometer')).toContain('mi')
+    expect(geoUnit.format(10, 'square-meter')).toContain('107.639')
+    expect(geoUnit.format(10, 'hectare')).toContain('ac')
+    expect(geoUnit.format(1000, 'gram')).toContain('oz')
+    expect(geoUnit.format(10, 'kilogram')).toContain('lb')
+    expect(geoUnit.format(10, 'tonne')).toContain('11.023')
+    expect(geoUnit.format(100, 'milliliter')).toContain('fl oz')
+    expect(geoUnit.format(10, 'liter')).toContain('gal')
+    expect(geoUnit.format(0, 'celsius')).toContain('32')
+    expect(geoUnit.format(100, 'kilometer-per-hour')).toContain('mph')
 
-  it('should convert and format speed for en-US', () => {
-    Geo.set('en-US')
-    const geoUnit = new GeoUnit()
-
-    // 100 km/h should be ~62.137 mph
-    const formatted = geoUnit.kilometerPerHour(100)
-    expect(formatted).toContain('62.137')
-    expect(formatted).toContain('mph')
-  })
-
-  it('should convert and format length for en-US', () => {
-    Geo.set('en-US')
-    const geoUnit = new GeoUnit()
-
-    // 100 meters should be ~328.084 ft
-    const formatted = geoUnit.meter(100)
-    expect(formatted).toContain('328.084')
-    expect(formatted).toContain('ft')
-  })
-
-  it('should format via the general format() method', () => {
-    Geo.set('en-US')
-    const geoUnit = new GeoUnit()
-
-    const formattedGram = geoUnit.format(1000, 'gram')
-    expect(formattedGram).toContain('35.274')
-    expect(formattedGram).toContain('oz')
-
-    const formattedTemp = geoUnit.format(0, 'celsius')
-    expect(formattedTemp).toContain('32')
-    expect(formattedTemp).toContain('F')
-
-    // fallback for unknown unit
+    // Fallback for unknown unit
     expect(geoUnit.format(100, 'unknown-unit')).toBe('100')
   })
 })

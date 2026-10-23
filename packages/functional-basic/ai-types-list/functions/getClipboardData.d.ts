@@ -1,3 +1,3 @@
-// md5:204938e2de22e040bcc6bff70202f223 true
-/** Retrieves text data from a clipboard event or the clipboard. @keywords clipboard, paste, copy, read text */
+// md5:0bf7033e702083c437c1621c40fe2b0a true
+/** Retrieves string data from the clipboard event or returns an empty string. @keywords clipboard, paste, copy, read, getClipboardData */
 export declare function getClipboardData(event?: ClipboardEvent): Promise<string>;

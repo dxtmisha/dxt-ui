@@ -13,17 +13,18 @@ export class ErrorCenter {
   protected static item?: ErrorCenterInstance
 
   /**
-   * Returns a request-isolated instance of ErrorCenterInstance.
+   * Gets a specific error cause by code and group.
    *
-   * Возвращает изолированный в рамках запроса экземпляр ErrorCenterInstance.
-   * @returns ErrorCenterInstance instance / экземпляр ErrorCenterInstance
+   * Получает конкретную причину ошибки по коду и группе.
+   * @param code error code / код ошибки
+   * @param group error group / группа ошибки
+   * @returns error cause item or undefined / элемент причины ошибки или undefined
    */
-  static getItem(): ErrorCenterInstance {
-    if (!this.item) {
-      this.item = new ErrorCenterInstance(errorCauseList)
-    }
-
-    return this.item
+  static get(
+    code: string,
+    group?: string
+  ): ErrorCenterCauseItem | undefined {
+    return this.getItem().get(code, group)
   }
 
   /**
@@ -42,18 +43,29 @@ export class ErrorCenter {
   }
 
   /**
-   * Gets a specific error cause by code and group.
+   * Returns the global singleton instance of ErrorCenterInstance.
    *
-   * Получает конкретную причину ошибки по коду и группе.
-   * @param code error code / код ошибки
-   * @param group error group / группа ошибки
-   * @returns error cause item or undefined / элемент причины ошибки или undefined
+   * Возвращает глобальный экземпляр синглтона ErrorCenterInstance.
+   * @returns ErrorCenterInstance instance / экземпляр ErrorCenterInstance
    */
-  static get(
-    code: string,
-    group?: string
-  ): ErrorCenterCauseItem | undefined {
-    return this.getItem().get(code, group)
+  static getItem(): ErrorCenterInstance {
+    if (!this.item) {
+      this.item = new ErrorCenterInstance(errorCauseList)
+    }
+
+    return this.item
+  }
+
+  /**
+   * Sets console output flag or filter function.
+   *
+   * Устанавливает флаг или функцию фильтрации вывода в консоль.
+   * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
+   */
+  static setIsConsole(
+    isConsole: ErrorCenterHandlerIsConsole
+  ): void {
+    this.getItem().setIsConsole(isConsole)
   }
 
   /**
@@ -67,13 +79,15 @@ export class ErrorCenter {
   }
 
   /**
-   * Adds a list of error causes to the storage.
+   * Adds a callback to be executed on any error.
    *
-   * Добавляет список причин ошибок в хранилище.
-   * @param causes error causes list / список причин ошибок
+   * Добавляет обратный вызов, который будет выполняться при любой ошибке.
+   * @param callback callback function / функция обратного вызова
    */
-  static addList(causes: ErrorCenterCauseList): void {
-    this.getItem().addList(causes)
+  static addCallback(
+    callback: ErrorCenterHandlerCallback
+  ): void {
+    this.getItem().addCallback(callback)
   }
 
   /**
@@ -101,27 +115,13 @@ export class ErrorCenter {
   }
 
   /**
-   * Adds a callback to be executed on any error.
+   * Adds a list of error causes to the storage.
    *
-   * Добавляет обратный вызов, который будет выполняться при любой ошибке.
-   * @param callback callback function / функция обратного вызова
+   * Добавляет список причин ошибок в хранилище.
+   * @param causes error causes list / список причин ошибок
    */
-  static addCallback(
-    callback: ErrorCenterHandlerCallback
-  ): void {
-    this.getItem().addCallback(callback)
-  }
-
-  /**
-   * Sets console output flag or filter function.
-   *
-   * Устанавливает флаг или функцию фильтрации вывода в консоль.
-   * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
-   */
-  static setIsConsole(
-    isConsole: ErrorCenterHandlerIsConsole
-  ): void {
-    this.getItem().setIsConsole(isConsole)
+  static addList(causes: ErrorCenterCauseList): void {
+    this.getItem().addList(causes)
   }
 
   /**

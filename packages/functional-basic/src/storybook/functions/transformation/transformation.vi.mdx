@@ -4,14 +4,14 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `transformation`
 
-Chuyển đổi một giá trị chuỗi thành kiểu dữ liệu tương ứng (boolean, số, đối tượng hoặc `null`/`undefined`). Nếu cờ `isFunction` được bật, hàm sẽ kiểm tra sự tồn tại của một hàm có tên đó trong đối tượng toàn cục `window`.
+Chuyển đổi một giá trị chuỗi thành kiểu dữ liệu tương ứng (boolean, số, đối tượng/mảng JSON hoặc `null`/`undefined`). Lỗi phân tích cú pháp JSON được chuyển qua `ErrorCenter` (thuộc nhóm `'transformation'`). Nếu cờ `isFunctionCheck` được bật và đang chạy trong môi trường DOM, hàm sẽ kiểm tra sự tồn tại của một hàm có tên đó trong đối tượng toàn cục `window`. Các giá trị không phải chuỗi hoặc chuỗi không khớp với bất kỳ quy tắc chuyển đổi nào sẽ được trả về nguyên trạng.
 
 **Tham số:**
-- `value: any` — Giá trị cần chuyển đổi.
-- `isFunction: boolean` — Cờ tìm kiếm hàm trong `window` (mặc định là `false`).
+- `value: unknown` — Giá trị đầu vào cần chuyển đổi.
+- `isFunctionCheck: boolean = false` — Cờ kiểm tra hàm trong đối tượng toàn cục `window` (mặc định là `false`).
 
 **Trả về:**
-`any` — Giá trị đã được chuyển đổi.
+`T` — Giá trị đã được chuyển đổi (`T = unknown`).
 
 ```typescript
 import { transformation } from '@dxtmisha/functional-basic'

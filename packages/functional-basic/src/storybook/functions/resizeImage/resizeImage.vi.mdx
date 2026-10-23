@@ -8,7 +8,7 @@ Tải và thay đổi kích thước hình ảnh một cách bất đồng bộ 
 
 **Tham số:**
 - `image: HTMLImageElement | string` — Phần tử hình ảnh hoặc nguồn chuỗi (URL, Data URL).
-- `maxSize: number` — Kích thước tối đa cho phép tính bằng pixel (mặc định là `1280`).
+- `maxSize?: number = 1280` — Kích thước tối đa cho phép tính bằng pixel (mặc định là `1280`).
 - `typeData?: string` — Loại MIME tùy chọn cho Data URL kết quả (ví dụ: `'image/jpeg'`).
 
 **Trả về:**
@@ -23,5 +23,7 @@ console.log(resizedDataUrl)
 
 // Sử dụng với phần tử <img>
 const img = document.querySelector('img')
-const result = await resizeImage(img, 800, 'image/jpeg')
+if (img) {
+  const result = await resizeImage(img, 800, 'image/jpeg')
+}
 ```

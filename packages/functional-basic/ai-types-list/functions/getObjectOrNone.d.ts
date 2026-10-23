@@ -1,3 +1,3 @@
-// md5:5f6c7371f59236c5890d3ab698f2d412 true
-/** Returns the object if its values are defined, otherwise an empty object. @keywords object fallback default getObjectOrNone */
-export declare function getObjectOrNone<T>(value: T): T & Record<string, any>;
+// md5:415ac93c0f293aa65492fa7a713eebc6 true
+/** Returns the object if its values are set, or an empty object. @keywords object fallback empty validate */
+export declare function getObjectOrNone<T>(value: T): T & Record<string, unknown>;

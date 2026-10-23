@@ -162,7 +162,7 @@ export class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
    * @param siteName site name / название сайта
    * @returns current instance / текущий экземпляр
    */
-  setSiteName(siteName: string) {
+  setSiteName(siteName: string): this {
     return this.set(MetaOpenGraphTag.siteName, siteName)
   }
 }

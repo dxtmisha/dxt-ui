@@ -1,62 +1,65 @@
-// md5:365bf67642d1ddaeddd3d17c886f6762 true
-/** Internationalization and localization utility providing language-sensitive formatting and comparison. @keywords intl localization i18n formatter */
+// md5:14979f62a08b8a5c572b411dac78eea5 true
+/** Internationalization and localization utility wrapper for ECMAScript Intl API. @keywords intl, i18n, l10n, localization, format */
 export declare class GeoIntl {
-    /** Checks if an instance exists for the specified country or locale code. @keywords localization check locale */
-    static isItem(code?: string): boolean;
-    /** Resolves and returns the standard location/locale code. @keywords locale location standard code */
-    static getLocation(code?: string): string;
-    /** Returns a cached or new GeoIntl instance for the specified locale code. @keywords singleton instance factory */
-    static getInstance(code?: string): GeoIntl;
-    /** Creates a new GeoIntl instance for internationalization formatting. @keywords intl constructor init */
+    /** Creates a GeoIntl instance for a given country or locale code. @keywords constructor, locale, init */
     constructor(code?: string, errorCenter?: ErrorCenterInstance);
-    /** Gets the current country and language locale code. @keywords locale location code */
-    getLocation(): string;
-    /** Returns the first day of the week for the current locale. @keywords first day week calendar */
+    /** Checks whether an instance exists for the specified country or locale code. @keywords exists, cache, check */
+    static isItem(code?: string): boolean;
+    /** Returns a cached or new GeoIntl instance for the specified code. @keywords singleton, instance, factory */
+    static getInstance(code?: string): GeoIntl;
+    /** Returns the standard location code for a given country/locale. @keywords location, locale, code */
+    static getLocation(code?: string): string;
+    /** Returns the first day of the week for the locale. @keywords first day, week, start day */
     getFirstDay(): string;
-    /** Formats display names for languages, regions, scripts, or currencies. @keywords display names translation region */
+    /** Returns the current country and language locale code. @keywords location, locale, code */
+    getLocation(): string;
+    /** Translates language, region, or script display names. @keywords display, translate, intl */
     display(value?: string, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): string;
-    /** Gets the localized display name of a language. @keywords language name locale */
+    /** Returns localized display name of a language code. @keywords language, display name */
     languageName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
-    /** Gets the localized display name of a country or region. @keywords country name region */
+    /** Returns localized display name of a region or country code. @keywords country, region, name */
     countryName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
-    /** Formats a full person name according to locale conventions. @keywords person full name formatting */
+    /** Returns a formatted full name according to locale rules. @keywords fullName, person, format */
     fullName(last: string, first: string, surname?: string, short?: boolean): string;
-    /** Formats numbers, strings, or bigints with localized numeric formatting. @keywords number format numeric */
+    /** Formats a number, bigint, or string value according to locale rules. @keywords number, format, digits */
     number(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Gets the localized decimal separator symbol. @keywords decimal separator point */
+    /** Returns the decimal point separator symbol for the locale. @keywords decimal, point, separator */
     decimal(): string;
-    /** Formats numbers as localized currency strings. @keywords currency money format */
+    /** Formats a numerical value as currency. @keywords currency, money, format */
     currency(value: NumberOrString, currencyOptions?: string | Intl.NumberFormatOptions, numberOnly?: boolean): string;
-    /** Returns the currency symbol or code for a given currency. @keywords currency symbol sign */
+    /** Returns the currency symbol or currency code. @keywords currencySymbol, currency, sign */
     currencySymbol(currency: string, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): string;
-    /** Formats a number with localized measurement units. @keywords unit measure format */
+    /** Formats a value with a specific measurement unit. @keywords unit, measurement, format */
     unit(value: NumberOrString, unitOptions?: string | Intl.NumberFormatOptions): string;
-    /** Formats digital file sizes into localized unit strings. @keywords file size byte format */
+    /** Returns a localized formatted file size string. @keywords sizeFile, bytes, file size */
     sizeFile(value: NumberOrString, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): string;
-    /** Formats a ratio value (e.g. 0.5) as a localized percentage. @keywords percent percentage format */
+    /** Formats a number as a percentage. @keywords percent, percentage, ratio */
     percent(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats a 0-100 numeric value as a localized percentage. @keywords percentage percent 100 */
+    /** Formats a fraction (0-1) as a percentage (0-100%). @keywords percentBy100, percentage, ratio */
     percentBy100(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats pluralized words matching locale rules (format: one|two|few|many|other|zero). @keywords plural pluralization words */
+    /** Applies plural-sensitive formatting and returns the appropriate word form. @keywords plural, rules, grammar */
     plural(value: NumberOrString, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): string;
-    /** Formats date and time values according to locale rules. @keywords date time format */
+    /** Formats date and time according to locale rules. @keywords date, time, format */
     date(value: NumberOrStringOrDate, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): string;
-    /** Formats language-sensitive relative time strings (e.g. 'yesterday', 'in 2 days'). @keywords relative time format ago */
+    /** Formats relative time from a given date. @keywords relative, time, ago */
     relative(value: NumberOrStringOrDate, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): string;
-    /** Formats relative time with a day limit, falling back to absolute date formatting. @keywords relative limit fallback time */
+    /** Formats relative time within a limit, otherwise falls back to standard date format. @keywords relativeLimit, relative, limit */
     relativeLimit(value: NumberOrStringOrDate, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): string;
-    /** Formats an explicit numeric difference and time unit into relative time. @keywords relative by value time unit */
+    /** Formats elapsed relative time for an explicit time unit. @keywords relativeByValue, relative, elapsed */
     relativeByValue(value: NumberOrString, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): string;
-    /** Gets the localized month name for a given date. @keywords month name calendar */
+    /** Returns the localized month name for a given date. @keywords month, name */
     month(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['month']): string;
-    /** Returns an array of localized month names (1-12). @keywords months list options select */
+    /** Returns a localized list of all months. @keywords months, list, select */
     months(style?: Intl.DateTimeFormatOptions['month']): ItemValue<number | undefined>[];
-    /** Gets the localized weekday name for a given date. @keywords weekday name day */
+    /** Returns the localized day-of-week name for a given date. @keywords weekday, day, name */
     weekday(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['weekday']): string;
-    /** Returns an array of localized weekday names (0-6). @keywords weekdays list options select */
+    /** Returns a localized list of all days of the week. @keywords weekdays, list, select */
     weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ItemValue<number | undefined>[];
-    /** Formats the time portion of a date according to locale conventions. @keywords time format clock */
+    /** Formats the time portion of a date. @keywords time, clock, format */
     time(value: NumberOrStringOrDate): string;
-    /** Sorts string items or objects locale-sensitively using Intl.Collator. @keywords sort collator locale */
-    sort<T>(data: T[], compareFn?: (a: T, b: T) => [string, string]): T[];
+    /** Sorts an array of items using locale-sensitive string comparison. @keywords sort, collator, compare */
+    sort<T>(data: T[], compareFn?: (itemA: T, itemB: T) => [
+        string,
+        string
+    ]): T[];
 }

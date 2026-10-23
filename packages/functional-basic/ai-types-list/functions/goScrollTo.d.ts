@@ -1,3 +1,3 @@
-// md5:0057a233c49d0b3fbdbbdb2760d8278e true
-/** Scrolls the container to make the target element visible. @keywords scroll, scrollTo, scrollIntoView, dom */
-export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;
+// md5:e50c84b2e0d3ed98432566da80b06c4c true
+/** Scrolls a container to make the target element visible. @keywords scroll, scrollTo, container, element, view */
+export declare function goScrollTo(container?: HTMLElement | Element | null, elementTo?: HTMLElement | Element | null, behavior?: ScrollBehavior): void;

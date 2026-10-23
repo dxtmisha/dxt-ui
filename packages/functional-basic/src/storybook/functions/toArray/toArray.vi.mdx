@@ -10,7 +10,7 @@ Chuyển đổi một giá trị thành một mảng. Nếu giá trị đã là 
 - `value: T` — Giá trị cần chuyển đổi thành mảng.
 
 **Trả về:**
-`T[]` — Một mảng chứa giá trị được cung cấp.
+`T extends unknown[] ? T : [T]` — Một mảng chứa giá trị được cung cấp.
 
 ```typescript
 import { toArray } from '@dxtmisha/functional-basic'

@@ -1,4 +1,5 @@
 import { isDomRuntime } from './isDomRuntime'
+import { isString } from './isString'
 
 /**
  * Quick change of scroll at the element to the required element.
@@ -24,7 +25,7 @@ export function goScroll(
     return
   }
 
-  const container = typeof target === 'string'
+  const container = isString(target)
     ? elementTo.closest<HTMLElement>(target)
     : target
 

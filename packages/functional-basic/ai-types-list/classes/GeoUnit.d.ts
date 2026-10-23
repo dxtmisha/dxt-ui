@@ -1,38 +1,38 @@
-// md5:6caf5ace19c7b0cb7292ad5b1b383656 true
-/** Localized unit formatting and automatic conversions based on locale. @keywords unit measurement locale conversion format */
+// md5:f4c46e1f682593b0830366abe8757d1d true
+/** Localized unit formatting and automatic conversions for metric and regional units. @keywords unit, localization, conversion, measurement, geo */
 export declare class GeoUnit {
-    /** Gets an isolated or cached GeoUnit instance by country or language code. @keywords instance singleton cache factory */
-    static getInstance(code?: string): GeoUnit;
-    /** Creates a GeoUnit instance for a country or language code. @keywords constructor init */
+    /** Creates a GeoUnit instance for a locale or country code. @keywords constructor, locale */
     constructor(code?: string);
-    /** Gets the standard location code. @keywords location locale country */
+    /** Gets a cached GeoUnit instance for the specified locale code. @keywords cache, instance, factory */
+    static getInstance(code?: string): GeoUnit;
+    /** Returns the resolved standard location code. @keywords location, country, locale */
     getLocation(): string;
-    /** Formats millimeter value, converting to inches for imperial locales. @keywords millimeter mm inch */
+    /** Formats millimeters, converting to inches if configured by locale. @keywords millimeter, length, distance, inch */
     millimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats centimeter value, converting to inches for imperial locales. @keywords centimeter cm inch */
+    /** Formats centimeters, converting to inches if configured by locale. @keywords centimeter, length, distance, inch */
     centimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats meter value, converting to feet for imperial locales. @keywords meter m foot feet */
+    /** Formats meters, converting to feet if configured by locale. @keywords meter, length, distance, foot */
     meter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats kilometer value, converting to miles for imperial locales. @keywords kilometer km mile */
+    /** Formats kilometers, converting to miles if configured by locale. @keywords kilometer, distance, mile */
     kilometer(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats square meter value, converting to square feet for imperial locales. @keywords square meter m2 sqft */
+    /** Formats square meters, converting to square feet if configured by locale. @keywords square meter, area, square foot */
     squareMeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats hectare value, converting to acres for imperial locales. @keywords hectare ha acre */
+    /** Formats hectares, converting to acres if configured by locale. @keywords hectare, area, acre */
     hectare(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats gram value, converting to ounces for imperial locales. @keywords gram g ounce oz */
+    /** Formats grams, converting to ounces if configured by locale. @keywords gram, weight, mass, ounce */
     gram(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats kilogram value, converting to pounds for imperial locales. @keywords kilogram kg pound lb */
+    /** Formats kilograms, converting to pounds if configured by locale. @keywords kilogram, weight, mass, pound */
     kilogram(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats metric tonne value, converting to short tons for imperial locales. @keywords tonne ton */
+    /** Formats tonnes, converting to short tons if configured by locale. @keywords tonne, metric ton, mass, ton */
     tonne(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats milliliter value, converting to fluid ounces for imperial locales. @keywords milliliter ml floz */
+    /** Formats milliliters, converting to fluid ounces if configured by locale. @keywords milliliter, volume, fluid ounce */
     milliliter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats liter value, converting to gallons for imperial locales. @keywords liter l gallon gal */
+    /** Formats liters, converting to gallons if configured by locale. @keywords liter, volume, gallon */
     liter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats Celsius value, converting to Fahrenheit for imperial locales. @keywords celsius fahrenheit temperature */
+    /** Formats celsius, converting to fahrenheit if configured by locale. @keywords celsius, temperature, fahrenheit */
     celsius(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats speed in km/h, converting to mph for imperial locales. @keywords kmh mph speed */
+    /** Formats kilometers per hour, converting to miles per hour if configured by locale. @keywords speed, kilometer per hour, mph */
     kilometerPerHour(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Formats a numeric value for the specified unit according to locale settings. @keywords format unit locale convert */
+    /** Formats a numeric value for the specified unit according to locale rules. @keywords format, unit, conversion */
     format(value: NumberOrString, unit: string, options?: Intl.NumberFormatOptions): string;
 }

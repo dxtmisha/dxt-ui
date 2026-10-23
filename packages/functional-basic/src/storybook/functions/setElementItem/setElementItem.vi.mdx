@@ -6,15 +6,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Thay đổi giá trị thuộc tính hoặc thuộc tính DOM của phần tử được tìm thấy theo bộ chọn hoặc được truyền trực tiếp. Nếu thuộc tính mục tiêu là một đối tượng (và không phải là mảng), hàm sẽ thực hiện gộp với dữ liệu mới.
 
-Hàm cung cấp khả năng bảo vệ mạnh mẽ chống lại **Prototype Pollution** (bỏ qua `__proto__`, `constructor`, `prototype`), hỗ trợ biến tùy chỉnh CSS (`--*`) và các thuộc tính kebab-case trong đối tượng kiểu dáng, loại bỏ kiểu dáng sạch sẽ khi truyền `null` / `undefined`, đồng thời định dạng chính xác các thuộc tính boolean và trạng thái ARIA.
+Hàm cung cấp khả năng bảo vệ mạnh mẽ chống lại **Prototype Pollution** thông qua `isPrototypeKey` (bỏ qua `__proto__`, `constructor`, `prototype`), hỗ trợ biến tùy chỉnh CSS (`--*`) và các thuộc tính kebab-case trong đối tượng kiểu dáng, loại bỏ kiểu dáng hoặc thuộc tính khi truyền `null` / `undefined`, đồng thời tuần tự hóa các thuộc tính boolean `aria-*` thành chuỗi `"true"` / `"false"` (trong khi đặt `""` hoặc xóa thuộc tính đối với các thuộc tính boolean tiêu chuẩn).
 
 **Tham số:**
 - `element: ElementOrString<E>` — Phần tử, đối tượng `window` hoặc bộ chọn CSS.
 - `index: K | string` — Khóa thuộc tính, tên thuộc tính HTML hoặc khóa kiểu dáng.
-- `value: V | Record<string, V> | unknown` — Giá trị mới hoặc đối tượng để gộp.
+- `value: V | Record<string, V> | unknown` — Giá trị mới, hàm trả về giá trị, hoặc đối tượng để gộp.
 
-**Giá trị trả về:**
-`E | undefined` — Phần tử đã được chỉnh sửa, hoặc `undefined` nếu không tìm thấy phần tử hoặc truyền khóa prototype nguy hiểm.
+**Trả về:**
+`E | undefined` — Phần tử đích (đã được chỉnh sửa, hoặc giữ nguyên nếu truyền khóa gây ô nhiễm prototype), hoặc `undefined` nếu không tìm thấy phần tử.
 
 ```typescript
 import { setElementItem } from '@dxtmisha/functional-basic'

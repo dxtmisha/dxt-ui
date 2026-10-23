@@ -4,24 +4,24 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isObjectNotArray`
 
-Выполняет расширенную проверку значения, чтобы убедиться, что оно является классическим объектом `{}` (Record) и при этом **гарантированно не является массивом**.
+Проверяет, является ли переданное значение объектом (Record) и при этом **не является массивом**.
 
-Поскольку функция базовая утилита `isObject` возвращает `true` даже для массивов (согласно специфике типов JavaScript), данная функция решает эту проблему, комбинируя оригинальную логику `isObject(value)` со строгой проверкой `!Array.isArray(value)`. 
+Поскольку базовая утилита `isObject` возвращает `true` даже для массивов (согласно специфике `typeof` в JavaScript), `isObjectNotArray` комбинирует проверку `isObject(value)` с `!isArray(value)` для строгого исключения массивов.
 
 **Параметры:**
 - `value: T` — Проверяемое значение.
 
 **Возвращает:**
-`boolean` — Вернет `true` исключительно для истинных объектов `{ key: 'value' }`. Вернет `false` для массивов `[]`, null, функций и всех примитивных типов данных. Выступает в качестве защитника типа (type guard), извлекая тип формы объекта и исключая возможные массивы или пустые значения (null/undefined).
+`value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null>` (`boolean`) — Возвращает `true` исключительно для не-null объектов, не являющихся массивами (например, `{ key: 'value' }`), и `false` для массивов `[]`, `null`, `undefined`, функций и всех примитивных типов данных. Выступает в качестве защитника типа (type guard) в TypeScript, сужая `T` до `ObjectItem` и исключая массивы, `undefined` и `null`.
 
 ```typescript
 import { isObjectNotArray } from '@dxtmisha/functional-basic'
 
-// Успешная валидация
+// Успешная валидация объекта
 console.log(isObjectNotArray({ id: 1, name: 'Test' })) // true
 
-// Типичные сценарии, где функция отфильтрует "ненужные" объекты
-console.log(isObjectNotArray([1, 2, 3])) // false (Защита от массивов работает!)
+// Значения, которые не проходят проверку
+console.log(isObjectNotArray([1, 2, 3])) // false (массивы исключаются)
 console.log(isObjectNotArray(null)) // false
 console.log(isObjectNotArray('string')) // false
 ```

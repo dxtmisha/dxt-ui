@@ -78,8 +78,8 @@ describe('addTagHighlightMatch', () => {
     })
 
     it('should safely handle null and undefined input values', () => {
-      expect(addTagHighlightMatch(null as any, 'test')).toBe('')
-      expect(addTagHighlightMatch(undefined as any, 'test')).toBe('')
+      expect(addTagHighlightMatch(null as unknown as string, 'test')).toBe('')
+      expect(addTagHighlightMatch(undefined as unknown as string, 'test')).toBe('')
     })
   })
 
@@ -95,7 +95,7 @@ describe('addTagHighlightMatch', () => {
     })
 
     it('should handle numeric values by converting to string', () => {
-      const result = addTagHighlightMatch(12345 as any, '23')
+      const result = addTagHighlightMatch(12345 as unknown as string, '23')
       expect(result).toBe('1<span class="sys-highlight-match">23</span>45')
     })
 
@@ -134,6 +134,15 @@ describe('addTagHighlightMatch', () => {
     it('should escape whole string when shouldEscape is true and no search match', () => {
       const result = addTagHighlightMatch('<b>bold</b>', 'none', 'sys-highlight-match', true)
       expect(result).toBe('&lt;b&gt;bold&lt;/b&gt;')
+    })
+
+    it('should escape whole string when shouldEscape is true and search is empty or undefined', () => {
+      expect(addTagHighlightMatch('<b>bold & "quoted"</b>', '', 'sys-highlight-match', true))
+        .toBe('&lt;b&gt;bold &amp; &quot;quoted&quot;&lt;/b&gt;')
+      expect(addTagHighlightMatch('<b>bold</b>', undefined, 'sys-highlight-match', true))
+        .toBe('&lt;b&gt;bold&lt;/b&gt;')
+      expect(addTagHighlightMatch('<b>bold</b>', '   ', 'sys-highlight-match', true))
+        .toBe('&lt;b&gt;bold&lt;/b&gt;')
     })
 
     it('should handle special characters in search and escape them correctly when shouldEscape is true', () => {

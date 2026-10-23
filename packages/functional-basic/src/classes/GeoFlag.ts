@@ -20,7 +20,7 @@ export const GEO_FLAG_ICON_NAME = 'f'
  */
 export class GeoFlag {
   /**
-   * Mapping of country codes to flag icon names/
+   * Mapping of country codes to flag icon names /
    * Словарь соответствия кодов стран названиям иконок флагов
    */
   static flags: Record<string, string> = {
@@ -367,7 +367,7 @@ export class GeoFlag {
     const list = forEach(this.getCodes(codes), code => this.get(code)) as GeoFlagItem[]
 
     if (sort) {
-      return new GeoIntl().sort(list, (a: any, b: any) => [a.label, b.label])
+      return this.getLocation().sort(list, (itemA, itemB) => [itemA.label, itemB.label])
     }
 
     return list
@@ -400,7 +400,7 @@ export class GeoFlag {
     })
 
     if (sort) {
-      return new GeoIntl().sort(list, (a: any, b: any) => [a.label, b.label])
+      return this.getLocation().sort(list, (itemA, itemB) => [itemA.label, itemB.label])
     }
 
     return list
@@ -427,7 +427,7 @@ export class GeoFlag {
     }) as GeoFlagNational[]
 
     if (sort) {
-      return new GeoIntl().sort(list, (a: any, b: any) => [a.label, b.label])
+      return this.getLocation().sort(list, (itemA, itemB) => [itemA.label, itemB.label])
     }
 
     return list
@@ -454,7 +454,7 @@ export class GeoFlag {
     }) as GeoFlagNational[]
 
     if (sort) {
-      return new GeoIntl().sort(list, (a: any, b: any) => [a.label, b.label])
+      return this.getLocation().sort(list, (itemA, itemB) => [itemA.label, itemB.label])
     }
 
     return list
@@ -479,7 +479,7 @@ export class GeoFlag {
    * @protected
    * @returns GeoIntl instance / экземпляр GeoIntl
    */
-  protected getLocation() {
+  protected getLocation(): GeoIntl {
     return new GeoIntl(this.code)
   }
 
@@ -499,7 +499,8 @@ export class GeoFlag {
    * Getting the name of the language.
    *
    * Получение названия языка.
-   * @param data object with information of data/ объект с информацией данных
+   * @param data object with information of data / объект с информацией данных
+   * @returns language name / название языка
    */
   protected getLanguageName(data: GeoItemFull): string {
     return this.getLocation().languageName(data.language)
@@ -509,7 +510,8 @@ export class GeoFlag {
    * Getting the name of the country.
    *
    * Получение названия страны.
-   * @param data object with information of data/ объект с информацией данных
+   * @param data object with information of data / объект с информацией данных
+   * @returns country name / название страны
    */
   protected getCountry(data: GeoItemFull): string {
     return this.getLocation().countryName(data.country)

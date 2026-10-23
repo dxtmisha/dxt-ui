@@ -157,6 +157,18 @@ describe('blobToBase64', () => {
       const result = await blobToBase64(slicedBlob)
       expect(result).toBeUndefined()
     })
+
+    it('should safely return undefined when null or undefined is passed instead of a Blob', async () => {
+      vi.stubGlobal('window', undefined)
+      vi.stubGlobal('Buffer', {
+        from: (_: ArrayBuffer) => ({
+          toString: () => 'data'
+        })
+      })
+
+      expect(await blobToBase64(null as unknown as Blob)).toBeUndefined()
+      expect(await blobToBase64(undefined as unknown as Blob)).toBeUndefined()
+    })
   })
 
   describe('Multilingual and Unicode support', () => {

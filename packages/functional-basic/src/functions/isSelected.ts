@@ -1,3 +1,4 @@
+import { isArray } from './isArray'
 import { isNull } from './isNull'
 import { isNumber } from './isNumber'
 import { toNumber } from './toNumber'
@@ -21,7 +22,7 @@ export function isSelected<T>(
     return false
   }
 
-  if (Array.isArray(selected)) {
+  if (isArray(selected)) {
     if (selected.includes(value)) {
       return true
     }

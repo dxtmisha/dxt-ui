@@ -8,7 +8,7 @@ Asynchronously loads and resizes an image if its width or height exceeds the spe
 
 **Parameters:**
 - `image: HTMLImageElement | string` — The image element or string source (URL, Data URL).
-- `maxSize: number` — The maximum allowed size in pixels (defaults to `1280`).
+- `maxSize?: number = 1280` — The maximum allowed size in pixels (defaults to `1280`).
 - `typeData?: string` — Optional MIME type for the resulting Data URL (e.g., `'image/jpeg'`).
 
 **Returns:**
@@ -23,5 +23,7 @@ console.log(resizedDataUrl)
 
 // Usage with an <img> element
 const img = document.querySelector('img')
-const result = await resizeImage(img, 800, 'image/jpeg')
+if (img) {
+  const result = await resizeImage(img, 800, 'image/jpeg')
+}
 ```

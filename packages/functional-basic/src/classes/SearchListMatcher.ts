@@ -6,7 +6,7 @@ import { getSearchExp } from '../functions/getSearchExp'
 import type { SearchListItem } from './SearchListItem'
 import type { SearchListOptions } from './SearchListOptions'
 
-import type { SearchCacheItem } from '../types/searchTypes'
+import type { SearchCacheItem, SearchItem } from '../types/searchTypes'
 
 /**
  * Class responsible for matching search values against the search list data using regular expressions.
@@ -21,8 +21,8 @@ export class SearchListMatcher {
    * Constructor for SearchListMatcher.
    *
    * Конструктор для SearchListMatcher.
-   * @param item search item containing the current value/ элемент поиска, содержащий текущее значение
-   * @param options search options/ опции поиска
+   * @param item search item containing the current value / элемент поиска, содержащий текущее значение
+   * @param options search options / опции поиска
    */
   constructor(
     protected item: SearchListItem,
@@ -35,7 +35,7 @@ export class SearchListMatcher {
    * Checks if the matcher is initialized.
    *
    * Проверяет, инициализирован ли сопоставитель.
-   * @returns boolean/ логическое значение
+   * @returns boolean / логическое значение
    */
   is(): boolean {
     return Boolean(this.matcher)
@@ -45,10 +45,10 @@ export class SearchListMatcher {
    * Checks if the given value matches the current search expression.
    *
    * Проверяет, соответствует ли данное значение текущему поисковому выражению.
-   * @param value value to check/ проверяемое значение
-   * @returns boolean indicating a match/ логическое значение, указывающее на совпадение
+   * @param value value to check / проверяемое значение
+   * @returns boolean indicating a match / логическое значение, указывающее на совпадение
    */
-  isSelection(value: SearchCacheItem<any>['value']): boolean {
+  isSelection(value: SearchCacheItem<SearchItem>['value']): boolean {
     if (!this.matcher) {
       return false
     }
@@ -60,7 +60,7 @@ export class SearchListMatcher {
    * Returns the current regular expression matcher.
    *
    * Возвращает текущий сопоставитель регулярных выражений.
-   * @returns RegExp or undefined/ RegExp или undefined
+   * @returns RegExp or undefined / RegExp или undefined
    */
   get(): RegExp | undefined {
     return this.matcher

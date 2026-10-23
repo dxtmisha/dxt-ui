@@ -260,12 +260,12 @@ describe('goScroll', () => {
     })
 
     it('should clamp scroll to container bottom if centered target exceeds container bottom', () => {
-      container.scrollTop = 100
+      container.scrollTop = 200
 
       const centerElement = document.createElement('div')
       container.appendChild(centerElement)
 
-      // Container visible area: [100, 300]
+      // Container visible area: [100, 300], maxBottom = 300
       vi.spyOn(container, 'getBoundingClientRect').mockReturnValue({
         top: 100,
         bottom: 300,
@@ -278,39 +278,38 @@ describe('goScroll', () => {
         toJSON: () => {}
       })
 
-      // Center is near top of container
+      // Center is near bottom of container: centerMiddle = 260
       vi.spyOn(centerElement, 'getBoundingClientRect').mockReturnValue({
-        top: 110,
-        bottom: 130,
-        height: 20,
+        top: 240,
+        bottom: 280,
+        height: 40,
         left: 0,
         right: 100,
         width: 100,
         x: 0,
-        y: 110,
+        y: 240,
         toJSON: () => {}
       })
 
-      // Target is tall and below center
+      // Target has height 120: targetMiddle = 160
+      // delta = 160 - 260 = -100
+      // currentBottom = 220 - (-100) = 320 > maxBottom (300)
+      // scrollTop: 200 + (-100) + (320 - 300) = 120
       vi.spyOn(elementTo, 'getBoundingClientRect').mockReturnValue({
-        top: 150,
-        bottom: 400,
-        height: 250,
+        top: 100,
+        bottom: 220,
+        height: 120,
         left: 0,
         right: 100,
         width: 100,
         x: 0,
-        y: 150,
+        y: 100,
         toJSON: () => {}
       })
 
       goScroll('.scroll-container', elementTo, centerElement)
 
-      // centerMiddle = 120, targetMiddle = 275, delta = 155
-      // currentBottom = 400 - 155 = 245 > maxBottom (300) is false, wait!
-      // maxBottom = 100 + 200 = 300.
-      // If target bottom is 500:
-      expect(container.scrollTop).toBeGreaterThan(100)
+      expect(container.scrollTop).toBe(120)
     })
   })
 

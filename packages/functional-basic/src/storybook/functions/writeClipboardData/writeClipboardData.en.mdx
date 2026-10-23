@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `writeClipboardData`
 
-Writes a text string to the user's clipboard. It uses the modern `navigator.clipboard API`, falling back to `document.execCommand` if the former is unavailable.
+Writes a text string to the user's clipboard in a DOM environment. It uses the modern `navigator.clipboard.writeText(text)` API, falling back to a temporary hidden `<textarea>` and `document.execCommand('copy')` while reporting the error via `ErrorCenter` (under group `'clipboard'`) if the modern API fails.
 
 **Parameters:**
 - `text: string` — The text to write.

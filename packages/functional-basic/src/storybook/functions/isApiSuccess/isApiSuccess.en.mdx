@@ -15,7 +15,7 @@ The check is performed according to the following strict priority rules:
 6. If none of the status fields are present, success is determined by the global API status (`Api.getStatus().getStatus()`).
 
 **Parameters:**
-- `data?: ApiData<T> | unknown` — API response data (object, array, or unknown input).
+- `data?: ApiData<T>` — API response data (object or array).
 
 **Returns:**
 `boolean` — `true` if the response is successful, otherwise `false`.

@@ -1,3 +1,4 @@
+import { isString } from './isString'
 import { toString } from './toString'
 
 import { Geo } from '../classes/Geo'
@@ -22,7 +23,7 @@ export function capitalize<T extends string = string>(
     const restText = text.slice(charLength)
 
     if (locale) {
-      const localeCode = typeof locale === 'string' ? locale : Geo.getLocation()
+      const localeCode = isString(locale) ? locale : Geo.getLocation()
       return (firstChar.toLocaleUpperCase(localeCode) + restText) as Capitalize<T>
     }
 

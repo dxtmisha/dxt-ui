@@ -11,7 +11,7 @@ This function is useful for compressing images on the fly before uploading to a 
 **Parameters:**
 - `image: HTMLImageElement | string` — The image element or URL.
 - `maxSize: number` — The maximum allowed size in pixels (for width or height).
-- `type: ResizeImageByMaxType` — The scaling strategy: `'auto'`, `'width'`, or `'height'`. Defaults to `'auto'`.
+- `type?: ResizeImageByMaxType = 'auto'` — The scaling strategy: `'auto'`, `'width'`, or `'height'`. Defaults to `'auto'`.
 - `typeData?: string` — Optional MIME type for the resulting Data URL (e.g., `'image/jpeg'`). Defaults to `'image/png'`.
 - `quality?: number` — Optional quality factor between 0 and 1 for lossy compression formats (`'image/jpeg'`, `'image/webp'`).
 
@@ -22,8 +22,10 @@ This function is useful for compressing images on the fly before uploading to a 
 import { resizeImageByMax } from '@dxtmisha/functional-basic'
 
 const imgElement = document.querySelector('img')
-const resizedDataUrl = resizeImageByMax(imgElement, 800)
+if (imgElement) {
+  const resizedDataUrl = resizeImageByMax(imgElement, 800)
 
-console.log(resizedDataUrl) 
-// 'data:image/png;base64,iVBORw0KGgo...'
+  console.log(resizedDataUrl)
+  // 'data:image/png;base64,iVBORw0KGgo...'
+}
 ```

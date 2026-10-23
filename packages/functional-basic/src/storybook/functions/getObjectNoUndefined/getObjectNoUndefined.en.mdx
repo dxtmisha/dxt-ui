@@ -9,11 +9,11 @@ Creates and returns a new object containing only the properties from the source 
 This function is useful for cleaning up data before sending it to a server or for object normalization. When an array is passed, its indices will be converted into string keys in the resulting object.
 
 **Parameters:**
-- `data: T` — The source object or array (where `T extends Record<string | number, any>`).
-- `exception: any` — The value used as criteria for removal. Defaults to `undefined`.
+- `data: T | readonly V[]` — The source object or array (where `T extends Record<PropertyKey, unknown>`).
+- `exception?: unknown` — (Optional) The value used as criteria for removal (compared via `Object.is` and strict inequality). Defaults to `undefined`.
 
 **Returns:**
-`T` — A new object devoid of properties containing the specified exception value.
+`T | Record<number, V>` — A new object devoid of properties containing the specified exception value.
 
 ```typescript
 import { getObjectNoUndefined } from '@dxtmisha/functional-basic'

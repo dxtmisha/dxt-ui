@@ -11,7 +11,7 @@ Kiểm tra xem phần tử có phải là trường nhập liệu (`input`, `tex
 - `includeDisabled?: boolean` — (Tùy chọn) nếu `true`, không kiểm tra các thuộc tính `readOnly` và `disabled` (trả về `true` ngay cả đối với các trường nhập liệu bị vô hiệu hóa hoặc chỉ đọc).
 
 **Trả về:**
-`boolean` — `true` nếu phần tử là trường nhập liệu hoặc có thể chỉnh sửa, ngược lại là `false`.
+`boolean` (`element is HTMLElement`) — `true` nếu phần tử là trường nhập liệu hoặc có thể chỉnh sửa, ngược lại là `false`. Đóng vai trò là type guard trong TypeScript giúp thu hẹp kiểu của `element` về `HTMLElement`.
 
 ```typescript
 import { isInput } from '@dxtmisha/functional-basic'

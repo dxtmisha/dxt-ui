@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `uint8ArrayToBase64`
 
-Converts a `Uint8Array` of binary data into a Base64 encoded string. Supports both browser environments (via `btoa`) and Node.js environments (via `Buffer`).
+Converts a `Uint8Array` of binary data into a Base64 encoded string. Supports Node.js environments (via `Buffer`), modern ECMAScript (`Uint8Array.prototype.toBase64`), and browsers/workers (via chunked `btoa`). Returns an empty string (`''`) if `bytes` is `null`, `undefined`, or empty.
 
 **Parameters:**
-- `bytes: Uint8Array` — The binary data.
+- `bytes?: Uint8Array | null` — The binary data as a `Uint8Array`.
 
 **Returns:**
 `string` — The Base64 encoded string.

@@ -7,11 +7,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Делает первую букву строки заглавной. Возвращает ту же строку, если она пуста. Функция устойчива к некорректным входным данным и безопасно обрабатывает не-строковые значения.
 
 **Параметры:**
-- `value: string` — Исходная строка для капитализации.
-- `isLocale: boolean` (опционально) — Если `true`, использует текущую глобальную локаль (через `Geo.getLocation()`) для правил капитализации.
+- `value?: T` — Исходная строка для капитализации.
+- `locale: boolean | string = false` — Если `true`, использует текущую глобальную локаль (через `Geo.getLocation()`); если передана строка, использует её как явный код локали (например, `'tr-TR'`).
 
 **Возвращает:**
-`string` — Строка с заглавной первой буквой.
+`Capitalize<T>` — Строка с заглавной первой буквой.
 
 ```typescript
 import { capitalize, Geo } from '@dxtmisha/functional-basic'
@@ -19,7 +19,10 @@ import { capitalize, Geo } from '@dxtmisha/functional-basic'
 console.log(capitalize('hello')) // 'Hello'
 console.log(capitalize('123'))   // '123'
 
-// Капитализация с учетом локали (например, для турецкого 'i' -> 'İ')
+// Капитализация с учетом глобальной локали через Geo
 Geo.set('tr-TR')
 console.log(capitalize('i', true)) // 'İ'
+
+// Капитализация с явным указанием кода локали
+console.log(capitalize('i', 'tr-TR')) // 'İ'
 ```

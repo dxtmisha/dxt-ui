@@ -1,24 +1,24 @@
-// md5:0fcb140838dcf0dbdcdf3e3ae0714c06 true
-/** Manages error storage, registry, and handling. @keywords error center, error handling, error storage */
+// md5:91137859854f3aa65c8725235370b81b true
+/** Error storage and centralized handling manager. @keywords error, center, manager, storage, handling */
 export declare class ErrorCenter {
-    /** Returns a request-isolated instance of ErrorCenterInstance. @keywords get item, instance, request isolated */
-    static getItem(): ErrorCenterInstance;
-    /** Checks if an error cause exists by code and group. @keywords has error, check cause, exists */
-    static has(code: string, group?: string): boolean;
-    /** Retrieves an error cause item by code and group. @keywords get error cause, find error */
+    /** Retrieves an error cause by code and optional group. @keywords get, error cause, lookup, code, group */
     static get(code: string, group?: string): ErrorCenterCauseItem | undefined;
-    /** Adds an error cause item to storage. @keywords add error cause, register error */
-    static add(cause: ErrorCenterCauseItem): void;
-    /** Adds a list of error causes to storage. @keywords add error cause list, batch register */
-    static addList(causes: ErrorCenterCauseList): void;
-    /** Registers a handler callback for a specific error group. @keywords add error handler, register group handler */
-    static addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void;
-    /** Registers a list of error handlers. @keywords add handler list, register handlers */
-    static addHandlerList(handlers: ErrorCenterHandlerList): void;
-    /** Adds a global callback to execute on any error event. @keywords add callback, global error listener */
-    static addCallback(callback: ErrorCenterHandlerCallback): void;
-    /** Configures console output logging flag or filter predicate. @keywords set is console, console output, error logging */
+    /** Checks whether an error cause exists by code and optional group. @keywords has, exists, check, error cause */
+    static has(code: string, group?: string): boolean;
+    /** Returns the global singleton instance of ErrorCenterInstance. @keywords singleton, instance, error center */
+    static getItem(): ErrorCenterInstance;
+    /** Configures console logging behavior or custom filter for errors. @keywords console, logging, debug, filter */
     static setIsConsole(isConsole: ErrorCenterHandlerIsConsole): void;
-    /** Triggers error handling and dispatches handlers for a cause. @keywords trigger error, dispatch error, on error */
+    /** Registers a single error cause in storage. @keywords add, register, error cause */
+    static add(cause: ErrorCenterCauseItem): void;
+    /** Registers a global callback executed on any triggered error. @keywords callback, listener, global, on error */
+    static addCallback(callback: ErrorCenterHandlerCallback): void;
+    /** Registers an error handler callback for a specific group. @keywords handler, group, error listener */
+    static addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void;
+    /** Registers multiple group-specific error handlers. @keywords handler list, batch register, error handlers */
+    static addHandlerList(handlers: ErrorCenterHandlerList): void;
+    /** Registers a list of error causes in storage. @keywords batch add, error cause list, register */
+    static addList(causes: ErrorCenterCauseList): void;
+    /** Triggers error handling workflow for the specified error cause. @keywords trigger, dispatch, handle, error */
     static on(cause: ErrorCenterCauseItem): void;
 }

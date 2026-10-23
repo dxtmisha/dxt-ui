@@ -11,6 +11,9 @@ import { UrlInstanceAbstract } from './UrlInstanceAbstract'
  * Класс для работы с данными, сохранёнными в хеше URL.
  */
 export class HashInstance extends UrlInstanceAbstract {
+  /** Hash change listener / Слушатель изменения хэша */
+  protected readonly listener = (): this => this.reload()
+
   /**
    * Initializes hash data and registers the hashchange listener.
    *
@@ -21,26 +24,41 @@ export class HashInstance extends UrlInstanceAbstract {
     this.initData()
 
     if (isDomRuntime()) {
-      addEventListener('hashchange', () => this.reload())
+      addEventListener('hashchange', this.listener)
     }
 
     return this
   }
 
   /**
+   * Removes window event listeners.
+   *
+   * Удаляет слушатели событий окна.
+   */
+  protected removeListener(): void {
+    if (isDomRuntime()) {
+      removeEventListener('hashchange', this.listener)
+    }
+  }
+
+  /**
    * Obtaining data from the URL string.
    *
    * Получение данных из строки URL.
-   * @returns Record<string, any> hash data / данные хэша
+   * @returns Record<string, unknown> hash data / данные хэша
    */
-  protected getLocation(): Record<string, any> {
-    const hash: Record<string, any> = {}
+  protected getLocation(): Record<string, unknown> {
+    const hash: Record<string, unknown> = {}
 
     if (isDomRuntime()) {
-      const matches = location.hash.matchAll(/([\w-]+)[:=]([^;]+)/ig)
+      const matches = location.hash.matchAll(/([^#;:=]+)[:=]([^;]+)/ig)
 
       for (const match of matches) {
-        hash[match[1]] = transformation(match[2])
+        try {
+          hash[decodeURIComponent(match[1])] = transformation(decodeURIComponent(match[2]))
+        } catch {
+          hash[match[1]] = transformation(match[2])
+        }
       }
     }
 

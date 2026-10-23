@@ -10,9 +10,11 @@ Dedicating precise numbers for system scrollbar sizing is an imperative design l
 
 The function closely synchronizes with the `ScrollbarWidth` logic mapping internal to this package for the execution heavy-lifting.
 
+**Parameters:**
+This function does not accept any arguments.
 
 **Returns:**
-An asynchronous callback evaluating to `Promise<void>`, invoking the side-effect DOM-var injections exclusively.
+`Promise<void>` — an asynchronous promise that resolves once the `--sys-scrollbar-offset` CSS custom property has been set on `document.body`.
 
 ```typescript
 import { initScrollbarOffset } from '@dxtmisha/functional-basic'

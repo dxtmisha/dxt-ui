@@ -11,7 +11,7 @@ Checks if the element is an input field (`input`, `textarea`, `select`) or an el
 - `includeDisabled?: boolean` — (Optional) if `true`, does not check `readOnly` and `disabled` properties (returns `true` even for disabled or readonly input elements).
 
 **Returns:**
-`boolean` — `true` if the element is an input field or editable, otherwise `false`.
+`boolean` (`element is HTMLElement`) — `true` if the element is an input field or editable, otherwise `false`. Acts as a TypeScript type guard narrowing `element` to `HTMLElement`.
 
 ```typescript
 import { isInput } from '@dxtmisha/functional-basic'

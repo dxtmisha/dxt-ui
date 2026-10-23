@@ -8,20 +8,10 @@ import { ServerStorage } from './ServerStorage'
  */
 export class CookieBlock {
   /**
-   * Returns a request-isolated instance of CookieBlockInstance.
-   *
-   * Возвращает изолированный в рамках запроса экземпляр CookieBlockInstance.
-   * @returns CookieBlockInstance instance / экземпляр CookieBlockInstance
-   */
-  static getItem(): CookieBlockInstance {
-    return ServerStorage.get('__ui:cookie-block__', () => new CookieBlockInstance())
-  }
-
-  /**
    * Obtaining status.
    *
    * Получение статуса.
-   * @returns boolean current block status/ текущий статус блокировки
+   * @returns boolean current block status / текущий статус блокировки
    */
   static get(): boolean {
     return this.getItem().get()
@@ -31,10 +21,20 @@ export class CookieBlock {
    * Changing status.
    *
    * Изменение статуса.
-   * @param value value to be changed/ значение, на которое будет изменен
+   * @param value value to be changed / значение, на которое будет изменен
    * @returns void / ничего не возвращает
    */
   static set(value: boolean): void {
     this.getItem().set(value)
+  }
+
+  /**
+   * Returns a request-isolated instance of CookieBlockInstance.
+   *
+   * Возвращает изолированный в рамках запроса экземпляр CookieBlockInstance.
+   * @returns CookieBlockInstance instance / экземпляр CookieBlockInstance
+   */
+  static getItem(): CookieBlockInstance {
+    return ServerStorage.get('__ui:cookie-block__', () => new CookieBlockInstance())
   }
 }

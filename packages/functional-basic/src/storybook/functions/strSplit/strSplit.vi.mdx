@@ -7,8 +7,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Chia một chuỗi thành một mảng các chuỗi con bằng cách sử dụng dấu phân cách được chỉ định. Khác với `String.prototype.split` tiêu chuẩn, khi chỉ định giới hạn (limit), phần còn lại của chuỗi sẽ được giữ lại trong phần tử cuối cùng của mảng (tương tự như hàm `explode` trong PHP).
 
 **Tham số:**
-- `value: number | string` — Giá trị gốc.
-- `separator: string` — Dấu phân cách.
+- `value?: unknown` — Giá trị đầu vào cần chuyển thành chuỗi và chia tách.
+- `separator: string = ''` — Chuỗi phân cách (mặc định là `''`).
 - `limit?: number` — Số lượng phần tử tối đa. Nếu có nhiều phần tử hơn giới hạn, phần tử cuối cùng sẽ chứa toàn bộ phần còn lại của chuỗi.
 
 **Trả về:**

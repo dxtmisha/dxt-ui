@@ -7,33 +7,33 @@ import { ServerStorage } from './ServerStorage'
  */
 export class Global {
   /**
+   * Returns the value by its name.
+   *
+   * Возвращает значение по его имени.
+   * @param name property name / название свойства
+   */
+  static get<R = unknown>(name: string): R {
+    return this.getItem()?.[name] as R
+  }
+
+  /**
    * Returns the instance of the class.
    *
    * Возвращает инстанс класса.
    * @returns global data storage / хранилище глобальных данных
    */
-  static getItem() {
-    return ServerStorage.get('__ui:global-instance__', () => ({} as Record<string, any>))
-  }
-
-  /**
-   * Returns the value by its name.
-   *
-   * Возвращает значение по его имени.
-   * @param name property name/ название свойства
-   */
-  static get<R = any>(name: string): R {
-    return this.getItem()?.[name]
+  static getItem(): Record<string, unknown> {
+    return ServerStorage.get('__ui:global-instance__', () => ({} as Record<string, unknown>))
   }
 
   /**
    * Adds data, this method works only once.
    *
    * Добавляет данные, этот метод работает только 1 раз.
-   * @param data global data/ глобальные данные
+   * @param data global data / глобальные данные
    * @returns void / ничего не возвращает
    */
-  static add(data: Record<string, any>) {
+  static add(data: Record<string, unknown>): void {
     const dataStorage = this.getItem()
 
     if (Object.keys(dataStorage).length > 0) {

@@ -6,10 +6,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Выполняет функцию обратного вызова при наступлении события `DOMContentLoaded`.
 
-Если DOM уже загружен (`document.readyState` равен `'interactive'` или `'complete'`) или код выполняется вне браузера (например, при SSR), функция обратного вызова выполняется немедленно.
+Если DOM уже загружен (`document.readyState` равен `'interactive'` или `'complete'`) или код выполняется вне браузера (например, при SSR и `isServer: true`), функция обратного вызова выполняется немедленно. Может также вызываться без аргументов для простого ожидания готовности DOM.
 
 **Параметры:**
-- `callback: () => T | Promise<T>` — Функция обратного вызова для выполнения при загрузке DOM.
+- `callback?: () => T | Promise<T>` — Опциональная функция обратного вызова для выполнения при загрузке DOM.
+- `isServer: boolean = true` — Выполнять ли функцию обратного вызова в среде без DOM / SSR (по умолчанию `true`).
 
 **Возвращает:**
 `Promise<T>` — Промис, разрешающийся результатом выполнения функции обратного вызова.
@@ -28,4 +29,7 @@ const data = await domContentLoaded(async () => {
   const element = document.querySelector('#content')
   return element?.textContent
 })
+
+// 3. Ожидание готовности DOM без колбэка
+await domContentLoaded()
 ```

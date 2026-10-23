@@ -6,6 +6,8 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 Tạo bản sao sâu của đối tượng để quản lý dữ liệu độc lập. Mục tiêu của phương thức là có được một phiên bản riêng biệt hoàn toàn mới của dữ liệu để tránh các thay đổi ngoài ý muốn đối với đối tượng gốc.
 
+Bên dưới, hàm sử dụng API gốc `structuredClone` khi khả dụng và tự động chuyển sang phương pháp dự phòng `JSON.parse(JSON.stringify(value))` nếu `structuredClone` không được hỗ trợ hoặc gặp lỗi (ví dụ: khi đối tượng chứa các thuộc tính không thể sao chép).
+
 **Tham số:**
 - `value: T` — Đối tượng hoặc mảng cần sao chép.
 

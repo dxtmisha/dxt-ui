@@ -15,7 +15,7 @@ export function skipFrame<T = void>(
   callback?: () => T | Promise<T>,
   count = 1
 ): Promise<T | void> {
-  const init = () => executePromise(callback)
+  const init = (): Promise<T | void> => executePromise(callback)
 
   if (isDomRuntime() && count > 0) {
     return new Promise<T | void>((resolve, reject) => {

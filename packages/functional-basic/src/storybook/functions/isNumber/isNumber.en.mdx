@@ -12,7 +12,7 @@ This evaluation effortlessly handles the native numeric typing (`typeof value ==
 - `value: unknown` — The arbitrary data item to screen.
 
 **Returns:**
-`boolean` — Emits `true` if the subject naturally belongs to the quantitative number type or if it's a completely digital string structure. Displays `false` in every alternative state.
+`boolean` (`value is number | string`) — Emits `true` if the subject naturally belongs to the quantitative number type or if it's a completely digital string structure. Displays `false` in every alternative state. Acts as a TypeScript type guard narrowing the value to `number | string`.
 
 ```typescript
 import { isNumber } from '@dxtmisha/functional-basic'

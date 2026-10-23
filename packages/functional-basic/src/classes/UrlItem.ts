@@ -16,16 +16,6 @@ export class UrlItem {
   private url!: URL
 
   /**
-   * Returns a request-isolated instance of UrlItem.
-   *
-   * Возвращает изолированный в рамках запроса экземпляр UrlItem.
-   * @returns UrlItem instance / экземпляр UrlItem
-   */
-  static getInstance(): UrlItem {
-    return ServerStorage.get('__ui:url-item__', () => new UrlItem())
-  }
-
-  /**
    * Constructs a new Url instance.
    *
    * Создает новый экземпляр Url.
@@ -96,44 +86,6 @@ export class UrlItem {
   }
 
   /**
-   * Checks if the specified query parameter exists.
-   *
-   * Проверяет, существует ли указанный параметр запроса.
-   * @param name parameter name / имя параметра
-   * @returns check result / результат проверки
-   */
-  hasParam(name: string): boolean {
-    return this.url.searchParams.has(name)
-  }
-
-  /**
-   * Returns the value of a query parameter.
-   *
-   * Возвращает значение параметра запроса.
-   * @param name parameter name / имя параметра
-   * @returns parameter value or undefined if not found / значение параметра или undefined, если не найдено
-   */
-  getParam(name: string): string | undefined {
-    return this.url.searchParams.get(name) ?? undefined
-  }
-
-  /**
-   * Returns all query parameters as an object with transformed types.
-   *
-   * Возвращает все параметры запроса в виде объекта с преобразованными типами.
-   * @returns Record<string, any> object of parameters / объект параметров
-   */
-  getParams(): Record<string, any> {
-    const params: Record<string, any> = {}
-
-    this.url.searchParams.forEach((value, key) => {
-      params[key] = transformation(value)
-    })
-
-    return params
-  }
-
-  /**
    * Updates the URL value.
    *
    * Обновляет значение URL.
@@ -165,6 +117,54 @@ export class UrlItem {
   }
 
   /**
+   * Checks if the specified query parameter exists.
+   *
+   * Проверяет, существует ли указанный параметр запроса.
+   * @param name parameter name / имя параметра
+   * @returns check result / результат проверки
+   */
+  hasParam(name: string): boolean {
+    return this.url.searchParams.has(name)
+  }
+
+  /**
+   * Returns a request-isolated instance of UrlItem.
+   *
+   * Возвращает изолированный в рамках запроса экземпляр UrlItem.
+   * @returns UrlItem instance / экземпляр UrlItem
+   */
+  static getInstance(): UrlItem {
+    return ServerStorage.get('__ui:url-item__', () => new UrlItem())
+  }
+
+  /**
+   * Returns the value of a query parameter.
+   *
+   * Возвращает значение параметра запроса.
+   * @param name parameter name / имя параметра
+   * @returns parameter value or undefined if not found / значение параметра или undefined, если не найдено
+   */
+  getParam(name: string): string | undefined {
+    return this.url.searchParams.get(name) ?? undefined
+  }
+
+  /**
+   * Returns all query parameters as an object with transformed types.
+   *
+   * Возвращает все параметры запроса в виде объекта с преобразованными типами.
+   * @returns Record<string, unknown> object of parameters / объект параметров
+   */
+  getParams(): Record<string, unknown> {
+    const params: Record<string, unknown> = {}
+
+    this.url.searchParams.forEach((value, key) => {
+      params[key] = transformation(value)
+    })
+
+    return params
+  }
+
+  /**
    * Sets the value of a query parameter.
    *
    * Устанавливает значение параметра запроса.
@@ -184,7 +184,7 @@ export class UrlItem {
    * @param params parameters to set / параметры для установки
    * @returns this UrlItem instance / текущий экземпляр UrlItem
    */
-  setParams(params: Record<string, any>): this {
+  setParams(params: Record<string, unknown>): this {
     const keys = Array.from(this.url.searchParams.keys())
     keys.forEach(key => this.deleteParam(key))
 

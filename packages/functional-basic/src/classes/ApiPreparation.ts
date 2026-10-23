@@ -18,6 +18,30 @@ export class ApiPreparation {
   protected loading = false
 
   /**
+   * Modifies the function to be called before the request.
+   *
+   * Изменяет функцию для вызова перед запросом.
+   * @param callback function to call before request / функция для вызова перед запросом
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
+   */
+  set(callback: (apiFetch: ApiFetch) => Promise<void>): this {
+    this.callback = callback
+    return this
+  }
+
+  /**
+   * Modifies the function to be called after the request.
+   *
+   * Изменяет функцию для вызова после запроса.
+   * @param callback function to call after request / функция для вызова после запроса
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
+   */
+  setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this {
+    this.callbackEnd = callback
+    return this
+  }
+
+  /**
    * Executes preparation before the request.
    *
    * Выполняет подготовку перед выполнением запроса.
@@ -25,7 +49,7 @@ export class ApiPreparation {
    * @param apiFetch request options / опции запроса
    * @returns Promise<void> / Promise без возвращаемого значения
    */
-  async make(active: boolean, apiFetch: ApiFetch) {
+  async make(active: boolean, apiFetch: ApiFetch): Promise<void> {
     if (
       active
       && this.callback
@@ -56,30 +80,6 @@ export class ApiPreparation {
   }
 
   /**
-   * Modifies the function to be called before the request.
-   *
-   * Изменяет функцию для вызова перед запросом.
-   * @param callback function to call before request / функция для вызова перед запросом
-   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-   */
-  set(callback: (apiFetch: ApiFetch) => Promise<void>): this {
-    this.callback = callback
-    return this
-  }
-
-  /**
-   * Modifies the function to be called after the request.
-   *
-   * Изменяет функцию для вызова после запроса.
-   * @param callback function to call after request / функция для вызова после запроса
-   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-   */
-  setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this {
-    this.callbackEnd = callback
-    return this
-  }
-
-  /**
    * To execute preparation.
    *
    * Выполнить подготовку.
@@ -87,7 +87,7 @@ export class ApiPreparation {
    * @param limit limit of retry attempts / лимит попыток повтора
    * @returns Promise<void> / Promise без возвращаемого значения
    */
-  protected async go(apiFetch: ApiFetch, limit: number = 32) {
+  protected async go(apiFetch: ApiFetch, limit: number = 32): Promise<void> {
     return new Promise<void>((resolve) => {
       if (
         this.loading

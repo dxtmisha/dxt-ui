@@ -4,12 +4,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `removeCommonPrefix`
 
-Removes a common prefix from the beginning of the main string. If the main string starts with the specified prefix, the function removes it and optionally trims leading and trailing whitespaces.
+Removes the common prefix from the beginning of the main string. If `mainString` starts with the full `prefix` or shares a partial leading character sequence with `prefix`, the matching leading characters are stripped, and the result is optionally trimmed.
 
 **Parameters:**
 - `mainString: string` — The main string.
 - `prefix: string` — The prefix string to remove.
-- `trim: boolean = true` — If `true`, trims leading and trailing whitespace from the result.
+- `trim?: boolean = true` — If `true`, trims leading and trailing whitespace from the resulting string (defaults to `true`).
 
 **Returns:**
 `string` — A new string without the common prefix.

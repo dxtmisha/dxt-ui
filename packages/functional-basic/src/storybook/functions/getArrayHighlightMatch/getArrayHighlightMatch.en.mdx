@@ -8,10 +8,10 @@ A utility for splitting a string into an array of objects for highlighting match
 
 **Parameters:**
 - `value: string` — The initial string to process.
-- `search?: string` — The search string (supports space-separated multi-word search).
+- `search?: string | RegExp` — The search string (supports space-separated multi-word search) or regular expression.
 
 **Returns:**
-`{ text: string, isMatch: boolean }[]` — An array of text segments with match status.
+`HighlightMatchItem[]` (`{ text: string, isMatch: boolean }[]`) — An array of text segments with match status.
 
 <Source
   language='typescript'

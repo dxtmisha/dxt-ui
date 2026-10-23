@@ -1,22 +1,22 @@
-// md5:abe9d7a2652056a2160ade213aa198f7 true
-/** Manages storage callback lists and execution state. @keywords storage callback subscriber listener */
-export declare class StorageCallback<T = any, Callback = (value: T) => void | Promise<void>> {
-    /** Gets a StorageCallback singleton instance by name and group. @keywords singleton instance storage */
-    static getInstance<T>(name: string, group?: string): StorageCallback<T, (value: T) => void | Promise<void>>;
-    /** Initializes a new StorageCallback instance. @keywords constructor init */
+// md5:3765be7d636b69bd10eed837ccf48894 true
+/** Manages storage callback lists and execution state. @keywords storage, callbacks, listeners */
+export declare class StorageCallback<T = unknown, Callback = (value: T) => void | Promise<void>> {
+    /** Initializes a storage callback manager. @keywords constructor, init */
     constructor(name: string, group?: string);
-    /** Checks whether storage is currently in a loading state. @keywords loading state check */
+    /** Checks whether callbacks or storage are currently loading. @keywords loading, state, status */
     isLoading(): boolean;
-    /** Gets the storage identifier name. @keywords name identifier */
-    getName(): string;
-    /** Gets the current loading state value. @keywords loading status */
+    /** Returns or creates an instance by storage name and group. @keywords singleton, instance, lookup */
+    static getInstance<T>(name: string, group?: string): StorageCallback<T>;
+    /** Returns the current loading state. @keywords loading, state */
     getLoading(): boolean;
-    /** Subscribes a callback function to storage events. @keywords subscribe listener add once */
+    /** Returns the storage name identifier. @keywords name, identifier */
+    getName(): string;
+    /** Registers a callback listener to the list. @keywords add, listener, callback, subscribe */
     addCallback(callback: Callback, isOnce?: boolean): this;
-    /** Unsubscribes a callback function from storage events. @keywords unsubscribe listener remove */
+    /** Removes a callback listener from the list. @keywords remove, unsubscribe, callback */
     removeCallback(callback: Callback): this;
-    /** Prepares storage callback state prior to execution. @keywords prepare init state */
+    /** Prepares state and data before execution. @keywords prepare, setup, init */
     preparation(): this;
-    /** Executes all registered callbacks asynchronously with the provided value. @keywords trigger emit execute dispatch */
+    /** Executes all registered callbacks with the provided storage value. @keywords run, execute, notify, trigger */
     run(value: T): Promise<this>;
 }

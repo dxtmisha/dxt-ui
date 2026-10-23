@@ -11,9 +11,9 @@ describe('frame', () => {
 
   beforeEach(() => {
     mockTime = 1000
-    mockRequestAnimationFrame = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb: FrameRequestCallback) => {
+    mockRequestAnimationFrame = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((frameCallback: FrameRequestCallback) => {
       mockTime += 16.66
-      cb(mockTime)
+      frameCallback(mockTime)
       return 1
     })
   })
@@ -25,69 +25,69 @@ describe('frame', () => {
 
   describe('Standard functional requirements (Happy path)', () => {
     it('should call callback and requestAnimationFrame once when next is not provided in DOM', () => {
-      const callbackFn = vi.fn()
+      const callback = vi.fn()
       vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
 
-      frame(callbackFn)
+      frame(callback)
 
       expect(mockRequestAnimationFrame).toHaveBeenCalledTimes(1)
-      expect(callbackFn).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledTimes(1)
     })
 
     it('should loop repeatedly while next returns true', () => {
       vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
-      const callbackFn = vi.fn()
+      const callback = vi.fn()
       let count = 0
-      const nextFn = vi.fn(() => {
+      const nextCallback = vi.fn(() => {
         count++
         return count < 3
       })
-      const endFn = vi.fn()
+      const endCallback = vi.fn()
 
-      frame(callbackFn, nextFn, endFn)
+      frame(callback, nextCallback, endCallback)
 
       expect(mockRequestAnimationFrame).toHaveBeenCalledTimes(3)
-      expect(callbackFn).toHaveBeenCalledTimes(3)
-      expect(nextFn).toHaveBeenCalledTimes(3)
-      expect(endFn).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledTimes(3)
+      expect(nextCallback).toHaveBeenCalledTimes(3)
+      expect(endCallback).toHaveBeenCalledTimes(1)
     })
 
     it('should stop looping and call end callback as soon as next returns false', () => {
       vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
-      const callbackFn = vi.fn()
-      const nextFn = vi.fn(() => false)
-      const endFn = vi.fn()
+      const callback = vi.fn()
+      const nextCallback = vi.fn(() => false)
+      const endCallback = vi.fn()
 
-      frame(callbackFn, nextFn, endFn)
+      frame(callback, nextCallback, endCallback)
 
       expect(mockRequestAnimationFrame).toHaveBeenCalledTimes(1)
-      expect(callbackFn).toHaveBeenCalledTimes(1)
-      expect(nextFn).toHaveBeenCalledTimes(1)
-      expect(endFn).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledTimes(1)
+      expect(nextCallback).toHaveBeenCalledTimes(1)
+      expect(endCallback).toHaveBeenCalledTimes(1)
     })
 
     it('should complete gracefully without end callback when next returns false', () => {
       vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
-      const callbackFn = vi.fn()
+      const callback = vi.fn()
 
       expect(() => {
-        frame(callbackFn, () => false)
+        frame(callback, () => false)
       }).not.toThrow()
 
-      expect(callbackFn).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('Frame timestamp precision and propagation', () => {
     it('should pass DOMHighResTimeStamp to callback and next in DOM', () => {
       vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
-      const callbackFn = vi.fn()
-      const nextFn = vi.fn(() => false)
+      const callback = vi.fn()
+      const nextCallback = vi.fn(() => false)
 
-      frame(callbackFn, nextFn)
+      frame(callback, nextCallback)
 
-      expect(callbackFn).toHaveBeenCalledWith(expect.any(Number))
-      expect(nextFn).toHaveBeenCalledWith(expect.any(Number))
+      expect(callback).toHaveBeenCalledWith(expect.any(Number))
+      expect(nextCallback).toHaveBeenCalledWith(expect.any(Number))
     })
 
     it('should pass increasing timestamps across consecutive frames', () => {
@@ -111,51 +111,68 @@ describe('frame', () => {
 
   describe('SSR safety and non-DOM execution', () => {
     it('should call callback immediately and not use requestAnimationFrame if not in DOM', () => {
-      const callbackFn = vi.fn()
+      const callback = vi.fn()
       vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(false)
 
-      frame(callbackFn)
+      frame(callback)
 
       expect(mockRequestAnimationFrame).not.toHaveBeenCalled()
-      expect(callbackFn).toHaveBeenCalledTimes(1)
-      expect(callbackFn).toHaveBeenCalledWith(0)
+      expect(callback).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledWith(0)
     })
 
     it('should not loop in SSR even if next returns true', () => {
-      const callbackFn = vi.fn()
-      const nextFn = vi.fn(() => true)
-      const endFn = vi.fn()
+      const callback = vi.fn()
+      const nextCallback = vi.fn(() => true)
+      const endCallback = vi.fn()
       vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(false)
 
-      frame(callbackFn, nextFn, endFn)
+      frame(callback, nextCallback, endCallback)
 
       expect(mockRequestAnimationFrame).not.toHaveBeenCalled()
-      expect(callbackFn).toHaveBeenCalledTimes(1)
-      expect(nextFn).not.toHaveBeenCalled()
-      expect(endFn).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledTimes(1)
+      expect(nextCallback).not.toHaveBeenCalled()
+      expect(endCallback).toHaveBeenCalledTimes(1)
+    })
+
+    it('should stop looping and invoke end callback if DOM runtime becomes unavailable mid-loop', () => {
+      const domRuntimeSpy = vi.spyOn(domRuntime, 'isDomRuntime')
+        .mockReturnValueOnce(true)
+        .mockReturnValueOnce(false)
+
+      const callback = vi.fn()
+      const nextCallback = vi.fn(() => true)
+      const endCallback = vi.fn()
+
+      frame(callback, nextCallback, endCallback)
+
+      expect(domRuntimeSpy).toHaveBeenCalledTimes(2)
+      expect(callback).toHaveBeenCalledTimes(1)
+      expect(nextCallback).not.toHaveBeenCalled()
+      expect(endCallback).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('Concurrency and isolation', () => {
     it('should allow multiple independent frame loops to run concurrently without interference', () => {
       vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
-      const loop1Calls: number[] = []
-      const loop2Calls: number[] = []
-      let count1 = 0
-      let count2 = 0
+      const firstLoopCalls: number[] = []
+      const secondLoopCalls: number[] = []
+      let firstCount = 0
+      let secondCount = 0
 
       frame(
-        timestamp => loop1Calls.push(timestamp),
-        () => ++count1 < 2
+        timestamp => firstLoopCalls.push(timestamp),
+        () => ++firstCount < 2
       )
 
       frame(
-        timestamp => loop2Calls.push(timestamp),
-        () => ++count2 < 4
+        timestamp => secondLoopCalls.push(timestamp),
+        () => ++secondCount < 4
       )
 
-      expect(loop1Calls).toHaveLength(2)
-      expect(loop2Calls).toHaveLength(4)
+      expect(firstLoopCalls).toHaveLength(2)
+      expect(secondLoopCalls).toHaveLength(4)
     })
   })
 })

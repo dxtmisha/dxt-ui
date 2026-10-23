@@ -43,7 +43,7 @@ export class LoadingInstance {
 
   /**
    * Constructor
-   * @param eventName name of the event for tracking loading/ название события для отслеживания загрузки
+   * @param eventName name of the event for tracking loading / название события для отслеживания загрузки
    */
   constructor(
     protected eventName: string = LOADING_EVENT_NAME
@@ -54,23 +54,23 @@ export class LoadingInstance {
   }
 
   /**
-   * Check if the loader is active now.
-   *
-   * Проверить, активен ли сейчас загрузчик.
-   * @returns returns true if the loader is active/ возвращает true, если загрузчик активен
-   */
-  is(): boolean {
-    return this.value > 0
-  }
-
-  /**
    * Get current loading value.
    *
    * Получить текущее значение загрузки.
-   * @returns returns the current loading value/ возвращает текущее значение загрузки
+   * @returns returns the current loading value / возвращает текущее значение загрузки
    */
   get(): number {
     return this.value
+  }
+
+  /**
+   * Check if the loader is active now.
+   *
+   * Проверить, активен ли сейчас загрузчик.
+   * @returns returns true if the loader is active / возвращает true, если загрузчик активен
+   */
+  is(): boolean {
+    return this.value > 0
   }
 
   /**
@@ -108,8 +108,10 @@ export class LoadingInstance {
   registrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
     element?: ElementOrString<HTMLElement>
-  ) {
+  ): void {
     if (isDomRuntime()) {
+      this.pruneRegistrationList()
+
       const item = new EventItem(window, this.eventName, listener)
         .setElementControl(element)
         .start()
@@ -133,7 +135,7 @@ export class LoadingInstance {
   unregistrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
     element?: ElementOrString<HTMLElement>
-  ) {
+  ): void {
     this.registrationList = this.registrationList.filter((item) => {
       if (
         item.listener === listener
@@ -143,7 +145,7 @@ export class LoadingInstance {
         return false
       }
 
-      return true
+      return item.item.isActive()
     })
   }
 
@@ -154,5 +156,15 @@ export class LoadingInstance {
    */
   protected dispatch(): void {
     this.event?.dispatch({ loading: this.is() } as LoadingDetail)
+    this.pruneRegistrationList()
+  }
+
+  /**
+   * Prunes inactive event items from the registration list.
+   *
+   * Удаляет неактивные элементы событий из списка регистрации.
+   */
+  protected pruneRegistrationList(): void {
+    this.registrationList = this.registrationList.filter(item => item.item.isActive())
   }
 }

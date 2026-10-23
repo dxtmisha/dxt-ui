@@ -1,14 +1,36 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { CacheStatic } from '../CacheStatic'
 import { ServerStorage } from '../ServerStorage'
 
 describe('CacheStatic', () => {
+  beforeEach(() => {
+    ServerStorage.reset()
+    ServerStorage.setErrorStatus(true)
+  })
+
   describe('getItem', () => {
-    it('should use ServerStorage to retrieve the instance', () => {
-      const spy = vi.spyOn(ServerStorage, 'get')
+    it('should use ServerStorage to retrieve the Cache instance', () => {
+      const serverStorageSpy = vi.spyOn(ServerStorage, 'get')
+
       CacheStatic.get('testServerStorage', () => 'value')
-      expect(spy).toHaveBeenCalledWith('__ui:cache-static__', expect.any(Function))
-      spy.mockRestore()
+
+      expect(serverStorageSpy).toHaveBeenCalledWith('__ui:cache-static__', expect.any(Function))
+      serverStorageSpy.mockRestore()
+    })
+
+    it('should isolate cached values when ServerStorage is reset', () => {
+      const callback = vi.fn()
+        .mockReturnValueOnce('firstContextValue')
+        .mockReturnValueOnce('secondContextValue')
+
+      expect(CacheStatic.get('isolatedKey', callback)).toBe('firstContextValue')
+      expect(CacheStatic.get('isolatedKey', callback)).toBe('firstContextValue')
+      expect(callback).toHaveBeenCalledTimes(1)
+
+      ServerStorage.reset()
+
+      expect(CacheStatic.get('isolatedKey', callback)).toBe('secondContextValue')
+      expect(callback).toHaveBeenCalledTimes(2)
     })
   })
 
@@ -36,11 +58,11 @@ describe('CacheStatic', () => {
       let counter = 0
       const callback = vi.fn().mockImplementation(() => ++counter)
 
-      const res1 = CacheStatic.get('staticKeyMulti', callback, [1])
-      const res2 = CacheStatic.get('staticKeyMulti', callback, [2])
+      const resultFirst = CacheStatic.get('staticKeyMulti', callback, [1])
+      const resultSecond = CacheStatic.get('staticKeyMulti', callback, [2])
 
-      expect(res1).toBe(1)
-      expect(res2).toBe(2)
+      expect(resultFirst).toBe(1)
+      expect(resultSecond).toBe(2)
       expect(callback).toHaveBeenCalledTimes(2)
     })
   })
@@ -69,11 +91,11 @@ describe('CacheStatic', () => {
       let counter = 0
       const callback = vi.fn().mockImplementation(async () => ++counter)
 
-      const res1 = await CacheStatic.getAsync('asyncKeyMulti', callback, [1])
-      const res2 = await CacheStatic.getAsync('asyncKeyMulti', callback, [2])
+      const resultFirst = await CacheStatic.getAsync('asyncKeyMulti', callback, [1])
+      const resultSecond = await CacheStatic.getAsync('asyncKeyMulti', callback, [2])
 
-      expect(res1).toBe(1)
-      expect(res2).toBe(2)
+      expect(resultFirst).toBe(1)
+      expect(resultSecond).toBe(2)
       expect(callback).toHaveBeenCalledTimes(2)
     })
   })

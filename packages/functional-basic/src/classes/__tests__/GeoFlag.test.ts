@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach } from 'vitest'
-import { GeoFlag } from '../GeoFlag'
+import { GeoFlag, GEO_FLAG_ICON_NAME } from '../GeoFlag'
 import { Geo } from '../Geo'
 
 describe('GeoFlag', () => {
@@ -8,16 +8,24 @@ describe('GeoFlag', () => {
     Geo.set('en-US')
   })
 
-  it('should return the flag item to the default locale', () => {
+  it('should return the flag item for the default locale and expose getCode()', () => {
     const flag = new GeoFlag('en-US')
+    expect(flag.getCode()).toBe('en-US')
+
     const item = flag.get()
 
     expect(item).toBeDefined()
     expect(item?.value).toBe('US')
     expect(item?.countryCode).toBe('US')
     expect(item?.languageCode).toBe('en')
-    expect(item?.icon).toBe('f-us')
+    expect(item?.icon).toBe(`${GEO_FLAG_ICON_NAME}-us`)
     expect(item?.standard).toContain('US')
+  })
+
+  it('should fall back to Geo.getLocation() in getCode() when code is empty string', () => {
+    Geo.set('fr-FR')
+    const flag = new GeoFlag('')
+    expect(flag.getCode()).toBe('fr-FR')
   })
 
   it('should return the flag item for a specific country code', () => {
@@ -35,24 +43,15 @@ describe('GeoFlag', () => {
     const flag = new GeoFlag()
     const item = flag.get('ZZ')
 
-    // Geo.find() returns the first country in the list as fallback
     expect(item).toBeDefined()
     expect(item?.icon).toBeTruthy()
   })
 
-  it('should return the flag icon for a code', () => {
-    const flag = new GeoFlag()
-    const icon = flag.getFlag('FR')
-
-    expect(icon).toBe('f-fr')
-  })
-
-  it('should return the fallback flag icon for unknown code', () => {
-    const flag = new GeoFlag()
-    const icon = flag.getFlag('ZZ')
-
-    // Geo.find() returns the first country in the list as fallback
-    expect(icon).toBeTruthy()
+  it('should return the flag icon for a code or default code via getFlag()', () => {
+    const flag = new GeoFlag('fr-FR')
+    expect(flag.getFlag()).toBe('f-fr')
+    expect(flag.getFlag('DE')).toBe('f-de')
+    expect(flag.getFlag('ZZ')).toBeTruthy()
   })
 
   it('should return a list of all countries when no codes provided', () => {
@@ -75,7 +74,7 @@ describe('GeoFlag', () => {
     expect(list[0]).toHaveProperty('value')
   })
 
-  it('should remove duplicate languages', () => {
+  it('should remove duplicate languages in getListLanguage()', () => {
     const flag = new GeoFlag('en-US')
     const list = flag.getListLanguage(['US', 'GB'])
 
@@ -83,86 +82,92 @@ describe('GeoFlag', () => {
     expect(list[0]?.value).toBe('en')
   })
 
-  it('should return a filtered list by codes', () => {
+  it('should return a filtered list by codes with or without sorting', () => {
     const flag = new GeoFlag('en-US')
-    const list = flag.getList(['US', 'FR', 'DE'])
+    const sortedList = flag.getList(['US', 'FR', 'DE'], true)
+    expect(sortedList.map(item => item.value)).toEqual(['FR', 'DE', 'US'])
 
-    expect(list).toHaveLength(3)
-    const codes = list.map(item => item.value)
-    expect(codes).toContain('US')
-    expect(codes).toContain('FR')
-    expect(codes).toContain('DE')
+    const unsortedList = flag.getList(['US', 'FR', 'DE'], false)
+    expect(unsortedList.map(item => item.value)).toEqual(['US', 'FR', 'DE'])
   })
 
-  it('should return a filtered list of languages by codes', () => {
+  it('should return a filtered list of languages by codes with or without sorting', () => {
     const flag = new GeoFlag('en-US')
-    const list = flag.getListLanguage(['US', 'FR', 'DE'])
+    const sortedLanguages = flag.getListLanguage(['RU', 'DE', 'FR'], true)
+    // English names: German (de), French (fr), Russian (ru) -> French, German, Russian
+    expect(sortedLanguages.map(item => item.value)).toEqual(['fr', 'de', 'ru'])
 
-    expect(list).toHaveLength(3)
-    const codes = list.map(item => item.value)
-    expect(codes).toContain('en')
-    expect(codes).toContain('fr')
-    expect(codes).toContain('de')
+    const unsortedLanguages = flag.getListLanguage(['RU', 'DE', 'FR'], false)
+    expect(unsortedLanguages.map(item => item.value)).toEqual(['ru', 'de', 'fr'])
   })
 
-  it('should return national names for countries', () => {
+  it('should return national names for countries with or without sorting', () => {
     const flag = new GeoFlag('en-US')
-    const national = flag.getNational(['RU', 'VN'])
+    const nationalSorted = flag.getNational(['VN', 'RU'], true)
 
-    expect(national).toHaveLength(2)
+    expect(nationalSorted).toHaveLength(2)
+    expect(nationalSorted[0]?.value).toBe('RU')
+    expect(nationalSorted[0]?.country).toBe('Russia')
+    expect(nationalSorted[0]?.nationalCountry).toBe('Россия')
+    expect(nationalSorted[0]?.nationalLanguage).toBe('русский')
 
-    // RU check
-    expect(national[0]?.value).toBe('RU')
-    expect(national[0]?.country).toBe('Russia') // in en-US
-    expect(national[0]?.nationalCountry).toBe('Россия') // in ru-RU (standard for RU)
-    expect(national[0]?.nationalLanguage).toBe('русский')
+    expect(nationalSorted[1]?.value).toBe('VN')
+    expect(nationalSorted[1]?.nationalCountry).toBe('Việt Nam')
+    expect(nationalSorted[1]?.nationalLanguage).toBe('Tiếng Việt')
 
-    // VN check
-    expect(national[1]?.value).toBe('VN')
-    expect(national[1]?.nationalCountry).toBe('Việt Nam')
-    expect(national[1]?.nationalLanguage).toBe('Tiếng Việt')
+    const nationalUnsorted = flag.getNational(['VN', 'RU'], false)
+    expect(nationalUnsorted.map(item => item.value)).toEqual(['VN', 'RU'])
   })
 
-  it('should return national names for languages', () => {
+  it('should return national names for languages with or without sorting', () => {
     const flag = new GeoFlag('en-US')
-    const national = flag.getNationalLanguage(['RU', 'VN'])
+    const nationalSorted = flag.getNationalLanguage(['VN', 'RU'], true)
 
-    expect(national).toHaveLength(2)
+    expect(nationalSorted).toHaveLength(2)
+    expect(nationalSorted[0]?.value).toBe('ru')
+    expect(nationalSorted[0]?.label).toBe('Russian')
+    expect(nationalSorted[0]?.description).toBe('русский')
+    expect(nationalSorted[0]?.nationalLanguage).toBe('русский')
+    expect(nationalSorted[0]?.nationalCountry).toBe('Россия')
 
-    // RU check
-    expect(national[0]?.value).toBe('ru')
-    expect(national[0]?.label).toBe('Russian') // in en-US
-    expect(national[0]?.description).toBe('русский') // in ru-RU
-    expect(national[0]?.nationalLanguage).toBe('русский')
-    expect(national[0]?.nationalCountry).toBe('Россия')
+    expect(nationalSorted[1]?.value).toBe('vi')
+    expect(nationalSorted[1]?.label).toBe('Vietnamese')
+    expect(nationalSorted[1]?.description).toBe('Tiếng Việt')
+    expect(nationalSorted[1]?.nationalLanguage).toBe('Tiếng Việt')
+    expect(nationalSorted[1]?.nationalCountry).toBe('Việt Nam')
 
-    // VN check
-    expect(national[1]?.value).toBe('vi')
-    expect(national[1]?.label).toBe('Vietnamese') // in en-US
-    expect(national[1]?.description).toBe('Tiếng Việt') // in vi-VN
-    expect(national[1]?.nationalLanguage).toBe('Tiếng Việt')
-    expect(national[1]?.nationalCountry).toBe('Việt Nam')
+    const nationalUnsorted = flag.getNationalLanguage(['VN', 'RU'], false)
+    expect(nationalUnsorted.map(item => item.value)).toEqual(['vi', 'ru'])
   })
 
-  it('should update code via setCode', () => {
+  it('should update code via setCode and return this for chaining', () => {
     const flag = new GeoFlag('en-US')
-    flag.setCode('ru-RU')
+    expect(flag.setCode('ru-RU')).toBe(flag)
 
     const item = flag.get()
     expect(item?.value).toBe('RU')
   })
 
-  it('should return the flag item with language as label and value', () => {
-    const flag = new GeoFlag('en-US')
-    const item = flag.getLanguage('ru-RU')
+  it('should sort lists using instance locale via getLocation().sort(...)', () => {
+    const flag = new GeoFlag('ru-RU')
+    // In ru-RU: DE = Германия, FR = Франция, US = Соединенные Штаты -> Г, С, Ф -> DE, US, FR
+    const list = flag.getList(['US', 'FR', 'DE'])
+    expect(list.map(item => item.value)).toEqual(['DE', 'US', 'FR'])
+  })
 
-    expect(item).toBeDefined()
-    expect(item?.value).toBe('ru')
-    expect(item?.languageCode).toBe('ru')
-    expect(item?.countryCode).toBe('RU')
-    expect(item?.label).toBe('Russian')
-    expect(item?.country).toBe('Russia')
-    expect(item?.icon).toBe('f-ru')
+  it('should return the flag item with language as label and value via getLanguage()', () => {
+    const flag = new GeoFlag('en-US')
+    const defaultLanguageItem = flag.getLanguage()
+    expect(defaultLanguageItem?.value).toBe('en')
+
+    const russianItem = flag.getLanguage('ru-RU')
+    expect(russianItem).toBeDefined()
+    expect(russianItem?.value).toBe('ru')
+    expect(russianItem?.languageCode).toBe('ru')
+    expect(russianItem?.countryCode).toBe('RU')
+    expect(russianItem?.label).toBe('Russian')
+    expect(russianItem?.country).toBe('Russia')
+    expect(russianItem?.icon).toBe('f-ru')
   })
 
   it('flags dictionary should have standard entries', () => {

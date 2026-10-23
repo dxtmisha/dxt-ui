@@ -1,14 +1,16 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { getElementItem } from '../getElementItem'
+import * as domRuntimeModule from '../isDomRuntime'
 
 describe('getElementItem', () => {
   let element: HTMLElement
   let inputElement: HTMLInputElement
 
   beforeEach(() => {
+    vi.restoreAllMocks()
     element = document.createElement('div')
     element.id = 'test-id'
     element.className = 'test-class'
@@ -23,6 +25,7 @@ describe('getElementItem', () => {
   })
 
   afterEach(() => {
+    vi.restoreAllMocks()
     element.remove()
     inputElement.remove()
     document.body.removeAttribute('id')
@@ -208,8 +211,8 @@ describe('getElementItem', () => {
     })
 
     it('should retrieve function references from elements', () => {
-      const clickFn = getElementItem(element, 'click')
-      expect(typeof clickFn).toBe('function')
+      const clickMethod = getElementItem(element, 'click')
+      expect(typeof clickMethod).toBe('function')
     })
   })
 
@@ -230,9 +233,9 @@ describe('getElementItem', () => {
     })
 
     it('should return numeric properties from custom objects', () => {
-      const customObj = { count: 42, zero: 0 } as unknown as HTMLElement
-      expect(getElementItem(customObj, 'count' as keyof HTMLElement)).toBe(42)
-      expect(getElementItem(customObj, 'zero' as keyof HTMLElement, 100)).toBe(0)
+      const customObject = { count: 42, zero: 0 } as unknown as HTMLElement
+      expect(getElementItem(customObject, 'count' as keyof HTMLElement)).toBe(42)
+      expect(getElementItem(customObject, 'zero' as keyof HTMLElement, 100)).toBe(0)
     })
   })
 
@@ -265,13 +268,26 @@ describe('getElementItem', () => {
       expect(getElementItem(element, 'textContent')).toBe('Xin chào thế giới')
     })
 
+    it('should resolve properties on elements with CJK and Emoji textContent', () => {
+      element.textContent = '你好 世界 🚀 ✨'
+      expect(getElementItem(element, 'textContent')).toBe('你好 世界 🚀 ✨')
+    })
+
     it('should query elements with Cyrillic IDs', () => {
       element.id = 'тестовый-блок'
       expect(getElementItem('#тестовый-блок', 'tagName')).toBe('DIV')
     })
   })
 
-  describe('Statefulness, isolation, and immutability', () => {
+  describe('Statefulness, SSR safety, isolation, and immutability', () => {
+    it('should return defaultValue or undefined in SSR environment (isDomRuntime === false) when querying by selector or window', () => {
+      vi.spyOn(domRuntimeModule, 'isDomRuntime').mockReturnValue(false)
+
+      expect(getElementItem('#test-id', 'className', 'ssr-fallback')).toBe('ssr-fallback')
+      expect(getElementItem('#test-id', 'className')).toBeUndefined()
+      expect(getElementItem(window, 'tagName', 'SSR_BODY')).toBe('SSR_BODY')
+    })
+
     it('should not mutate element when retrieving properties', () => {
       const originalId = element.id
       const originalClass = element.className

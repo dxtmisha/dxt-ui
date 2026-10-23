@@ -1,4 +1,5 @@
 import { forEach } from '../functions/forEach'
+import { isArray } from '../functions/isArray'
 import { isFilled } from '../functions/isFilled'
 import { toArray } from '../functions/toArray'
 
@@ -24,17 +25,36 @@ export class GeoPhone {
    * Getting an object with information about the phone code and country.
    *
    * Получение объекта с информацией о телефонном коде и стране.
-   * @param code country and language code/ код страны и языка
+   * @param code country and language code / код страны и языка
+   * @returns phone mask item or undefined / объект маски телефона или undefined
    */
   static get(code: string): GeoPhoneValue | undefined {
     return this.getList().find(item => code === item.value)
   }
 
   /**
+   * Retrieves complete mask data by country code.
+   *
+   * Получает полные данные о маске по коду страны.
+   * @param code country and language code / код страны и языка
+   * @returns phone mask map item or undefined / элемент карты маски телефона или undefined
+   */
+  static getByCode(code: string): GeoPhoneMap | undefined {
+    const item = this.get(code)
+
+    if (item) {
+      return this.getByPhone(item.phone.toString())?.item
+    }
+
+    return undefined
+  }
+
+  /**
    * Getting information by phone.
    *
    * Получение информации по телефону.
-   * @param phone phone number/ номер телефон
+   * @param phone phone number / номер телефон
+   * @returns phone mask info / информация о маске телефона
    */
   static getByPhone(phone: string): GeoPhoneMapInfo {
     const fullPhone = this.toNumber(phone)
@@ -76,25 +96,10 @@ export class GeoPhone {
   }
 
   /**
-   * Retrieves complete mask data by country code.
-   *
-   * Получает полные данные о маске по коду страны.
-   * @param code country and language code/ код страны и языка
-   */
-  static getByCode(code: string): GeoPhoneMap | undefined {
-    const item = this.get(code)
-
-    if (item) {
-      return this.getByPhone(item.phone.toString())?.item
-    }
-
-    return undefined
-  }
-
-  /**
    * We get an array from a list of all phone numbers.
    *
    * Получаем массив из списка всех телефонных кодов.
+   * @returns list of phone masks / список масок телефонов
    */
   static getList(): GeoPhoneValue[] {
     if (!this.list) {
@@ -108,6 +113,7 @@ export class GeoPhone {
    * We get a map of a tree, sorted by its code.
    *
    * Получаем карту дерева, отсортированную по его коду.
+   * @returns phone codes tree map / карта дерева телефонных кодов
    */
   static getMap(): Record<string, GeoPhoneMap> {
     if (!this.map) {
@@ -118,11 +124,29 @@ export class GeoPhone {
   }
 
   /**
+   * Deletes the country code from the input number.
+   *
+   * Удаляет код страны по входному номеру.
+   * @param phone phone number / номер телефон
+   * @returns phone number without leading zero or country prefix / номер телефона без ведущего нуля или префикса страны
+   */
+  static removeZero(phone: string): string {
+    if (phone.match(/^0/)) {
+      return phone.replace(/^0/, '')
+    } else if (phone.match(/^89/)) {
+      return phone.replace(/^8/, '')
+    }
+
+    return phone
+  }
+
+  /**
    * Convert to phone mask.
    *
    * Преобразовать в маску телефона.
-   * @param phone phone number/ номер телефон
-   * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
+   * @param phone phone number / номер телефон
+   * @param masks a mask to transform a phone number / маска для преобразования номер телефон
+   * @returns masked phone string or undefined / отформатированный по маске номер телефона или undefined
    */
   static toMask(
     phone: string,
@@ -130,7 +154,7 @@ export class GeoPhone {
   ): string | undefined {
     if (
       isFilled(phone)
-      && Array.isArray(masks)
+      && isArray(masks)
       && masks.length > 0
     ) {
       const value = this.removeZero(phone)
@@ -147,26 +171,22 @@ export class GeoPhone {
   }
 
   /**
-   * Deletes the country code from the input number.
+   * Deletes all characters that do not belong to the mask.
    *
-   * Удаляет код страны по входному номеру.
-   * @param phone phone number/ номер телефон
+   * Удаляет все символы, не относящиеся к маске.
+   * @param mask A mask to transform a phone number / маска для преобразования номер телефон
+   * @returns count of mask placeholder characters / количество символов-заполнителей маски
    */
-  static removeZero(phone: string): string {
-    if (phone.match(/^0/)) {
-      return phone.replace(/^0/, '')
-    } else if (phone.match(/^89/)) {
-      return phone.replace(/^8/, '')
-    }
-
-    return phone
+  protected static getUnnecessaryLength(mask: string): number {
+    return mask.match(/\*/g)?.length ?? 0
   }
 
   /**
    * Returns the symbol by the internal country code.
    *
    * Возвращает символ по коду внутри страны.
-   * @param within internal country code/ код внутри страны
+   * @param within internal country code / код внутри страны
+   * @returns internal country code symbol / символ кода внутри страны
    */
   protected static getWithinSymbol(within: number | string): string {
     switch (within) {
@@ -182,19 +202,10 @@ export class GeoPhone {
   }
 
   /**
-   * Deletes all characters that do not belong to the mask.
-   *
-   * Удаляет все символы, не относящиеся к маске.
-   * @param mask A mask to transform a phone number/ маска для преобразования номер телефон
-   */
-  protected static getUnnecessaryLength(mask: string): number {
-    return mask.match(/\*/g)?.length ?? 0
-  }
-
-  /**
    * Creating a list for the map.
    *
    * Формирование списка данных.
+   * @returns void / ничего не возвращает
    */
   protected static makeList(): void {
     const list = forEach(Geo.getList(), (item) => {
@@ -210,13 +221,14 @@ export class GeoPhone {
       return undefined
     }) as GeoPhoneValue[]
 
-    this.list = list.sort((a, b) => (a.phone - b.phone))
+    this.list = list.sort((itemA, itemB) => (itemA.phone - itemB.phone))
   }
 
   /**
    * Creating a map for search.
    *
    * Создание карты для поиска.
+   * @returns void / ничего не возвращает
    */
   protected static makeMap(): void {
     this.map = {}
@@ -262,8 +274,8 @@ export class GeoPhone {
    * The method parses a string argument and returns an array of numbers as strings.
    *
    * Метод принимает строку в качестве аргумента и возвращает массив цифр в виде строк.
-   * @param value the value to parse/ текстовая строка
-   * @returns array of numbers/ массив цифр
+   * @param value the value to parse / текстовая строка
+   * @returns array of numbers / массив цифр
    */
   protected static toNumber(value: string): string[] {
     return value
@@ -275,8 +287,9 @@ export class GeoPhone {
    * Converts the phone to a standard.
    *
    * Преобразовывает телефон в стандарт.
-   * @param phone phone number/ номер телефон
-   * @param mask a mask to transform a phone number/ маска для преобразования номер телефон
+   * @param phone phone number / номер телефон
+   * @param mask a mask to transform a phone number / маска для преобразования номер телефон
+   * @returns standardized phone string / стандартизированная строка телефона
    */
   protected static toStandard(phone: string, mask: string): string {
     let character = 0
@@ -287,8 +300,9 @@ export class GeoPhone {
    * Replaces the first character with the internal country code
    *
    * Заменяет первый символ на код внутри страны.
-   * @param mask a mask to transform a phone number/ маска для преобразования номер телефон
-   * @param within internal country code/ код внутри страны
+   * @param mask a mask to transform a phone number / маска для преобразования номер телефон
+   * @param within internal country code / код внутри страны
+   * @returns mask with internal country code symbol / маска с символом кода внутри страны
    */
   protected static toWithin(mask: string, within: number | string): string {
     return mask.replace(/\*/, this.getWithinSymbol(within))

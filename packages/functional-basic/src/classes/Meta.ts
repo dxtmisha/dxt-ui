@@ -14,6 +14,8 @@ import { MetaRobots, MetaTag } from '../types/metaTypes'
  * Унифицированный класс для управления всеми типами мета-тегов (стандартные HTML, Open Graph, Twitter Card).
  */
 export class Meta extends MetaManager<MetaTag[]> {
+  /** Raw page title without suffix / Исходный заголовок страницы без суффикса */
+  protected rawTitle?: string
   /** Page title suffix / Суффикс заголовка страницы */
   protected suffix?: string
 
@@ -38,6 +40,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the MetaOg instance for advanced Open Graph operations.
    *
    * Получает экземпляр MetaOg для расширенных операций с Open Graph.
+   * @returns MetaOg instance / экземпляр MetaOg
    */
   getOg(): MetaOg {
     return this.og
@@ -47,6 +50,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the MetaTwitter instance for advanced Twitter Card operations.
    *
    * Получает экземпляр MetaTwitter для расширенных операций с Twitter Card.
+   * @returns MetaTwitter instance / экземпляр MetaTwitter
    */
   getTwitter(): MetaTwitter {
     return this.twitter
@@ -56,9 +60,13 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the page title without suffix.
    *
    * Получает заголовок страницы без суффикса.
-   * @returns title without suffix/ заголовок без суффикса
+   * @returns title without suffix / заголовок без суффикса
    */
   getTitle(): string {
+    if (this.rawTitle !== undefined) {
+      return this.rawTitle
+    }
+
     let title = this.get(MetaTag.title)
 
     if (
@@ -68,16 +76,23 @@ export class Meta extends MetaManager<MetaTag[]> {
       title = document.title
     }
 
-    return title
-      .replace(this.getSuffix(), '')
-      .trim()
+    const suffix = this.getSuffix()
+
+    if (
+      suffix
+      && title.endsWith(suffix)
+    ) {
+      return title.slice(0, -suffix.length).trim()
+    }
+
+    return title.trim()
   }
 
   /**
    * Gets the keywords meta tag.
    *
    * Получает мета-тег keywords.
-   * @returns keywords content/ содержимое keywords
+   * @returns keywords content / содержимое keywords
    */
   getKeywords(): string {
     return this.get(MetaTag.keywords)
@@ -117,7 +132,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the robots meta tag value.
    *
    * Получает значение мета-тега robots.
-   * @returns robots directive/ директива robots
+   * @returns robots directive / директива robots
    */
   getRobots(): MetaRobots {
     return this.get(MetaTag.robots) as MetaRobots
@@ -158,8 +173,11 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает заголовок страницы (с суффиксом) и обновляет заголовки Open Graph и Twitter Card.
    * @param title page title / заголовок страницы
+   * @returns current instance / текущий экземпляр
    */
   setTitle(title: string): this {
+    this.rawTitle = title
+
     const fullTitle = isFilled(title)
       ? `${title}${this.getSuffix()}`
       : this.suffix
@@ -182,6 +200,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает мета-тег keywords.
    * @param keywords keywords as string or array / ключевые слова в виде строки или массива
+   * @returns current instance / текущий экземпляр
    */
   setKeywords(keywords: string | string[]): this {
     this.set(MetaTag.keywords, toArray(keywords).join(', '))
@@ -193,6 +212,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает мета-тег description.
    * @param description page description / описание страницы
+   * @returns current instance / текущий экземпляр
    */
   setDescription(description: string): this {
     this.set(MetaTag.description, description)
@@ -204,6 +224,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает изображение для Open Graph и Twitter Card.
    * @param image image URL / URL изображения
+   * @returns current instance / текущий экземпляр
    */
   setImage(image: string): this {
     this.og.setImage(image)
@@ -216,6 +237,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает канонический URL и обновляет URL для Open Graph и Twitter Card.
    * @param canonical canonical URL / канонический URL
+   * @returns current instance / текущий экземпляр
    */
   setCanonical(canonical: string): this {
     this.set(MetaTag.canonical, canonical)
@@ -229,6 +251,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает мета-тег robots.
    * @param robots robots directive / директива robots
+   * @returns current instance / текущий экземпляр
    */
   setRobots(robots: MetaRobots): this {
     this.set(MetaTag.robots, robots)
@@ -240,6 +263,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает мета-тег author.
    * @param author author name / имя автора
+   * @returns current instance / текущий экземпляр
    */
   setAuthor(author: string): this {
     this.set(MetaTag.author, author)
@@ -251,6 +275,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает название сайта для Open Graph и Twitter Card.
    * @param siteName site name / название сайта
+   * @returns current instance / текущий экземпляр
    */
   setSiteName(siteName: string): this {
     this.og.setSiteName(siteName)
@@ -263,6 +288,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает локаль для Open Graph.
    * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
+   * @returns current instance / текущий экземпляр
    */
   setLocale(locale: string): this {
     this.og.setLocale(locale)
@@ -274,17 +300,23 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает суффикс для добавления к заголовку страницы.
    * @param suffix title suffix (e.g. 'My Site') / суффикс заголовка (например, 'Мой Сайт')
-   * @returns void / ничего не возвращает
+   * @returns current instance / текущий экземпляр
    */
-  setSuffix(suffix?: string) {
+  setSuffix(suffix?: string): this {
     this.suffix = suffix
+
+    if (this.rawTitle !== undefined) {
+      this.setTitle(this.rawTitle)
+    }
+
+    return this
   }
 
   /**
    * Generates the complete HTML for all meta-tags including Open Graph and Twitter Card.
    *
    * Генерирует полный HTML для всех мета-тегов, включая Open Graph и Twitter Card.
-   * @returns complete HTML string/ полная HTML-строка
+   * @returns complete HTML string / полная HTML-строка
    */
   html(): string {
     return `${super.html()}${this.og.html()}${this.twitter.html()}`
@@ -304,6 +336,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the formatted suffix with separator.
    *
    * Получает отформатированный суффикс с разделителем.
+   * @returns formatted suffix string / отформатированная строка суффикса
    */
   protected getSuffix(): string {
     if (isFilled(this.suffix)) {

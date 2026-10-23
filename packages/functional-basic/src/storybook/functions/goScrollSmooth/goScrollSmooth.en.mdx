@@ -10,11 +10,11 @@ The function first verifies whether the target element supports the native `scro
 
 **Parameters:**
 - `element?: HTMLElement | Element | null` — The target element (`HTMLElement` or `Element`) to scroll to. Safely handles `null` and `undefined`.
-- `options: ScrollIntoViewOptions` — (Optional) Configuration options forwarded to `scrollIntoView` (e.g., `behavior`, `block`, `inline`).
-- `shift: number` — (Optional) Top margin offset (in pixels) applied to prevent the targeted element from being obscured by sticky/fixed navigation components. Defaults to `0`.
+- `options?: ScrollIntoViewOptions` — (Optional) Configuration options forwarded to `scrollIntoView` (e.g., `behavior`, `block`, `inline`).
+- `shift?: number` — (Optional) Top margin offset (in pixels) applied to prevent the targeted element from being obscured by sticky/fixed navigation components. Defaults to `0`.
 
 **Returns:**
-The function does not return a value (`void`).
+`void` — The function does not return a value.
 
 ```typescript
 import { goScrollSmooth } from '@dxtmisha/functional-basic'

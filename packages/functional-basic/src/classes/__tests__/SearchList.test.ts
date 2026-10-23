@@ -5,14 +5,15 @@ type MockProduct = {
   id: string
   name: string
   category: string
+  stock?: number
   tags?: string[]
 }
 
 describe('SearchList', () => {
   const mockProducts: MockProduct[] = [
-    { id: '1', name: 'Laptop Pro', category: 'Electronics', tags: ['work', 'fast'] },
-    { id: '2', name: 'Gaming Mouse', category: 'Electronics', tags: ['gaming'] },
-    { id: '3', name: 'Mechanical Keyboard', category: 'Accessories', tags: ['work', 'gaming'] }
+    { id: '1', name: 'Laptop Pro', category: 'Electronics', stock: 0, tags: ['work', 'fast'] },
+    { id: '2', name: 'Gaming Mouse', category: 'Electronics', stock: 15, tags: ['gaming'] },
+    { id: '3', name: 'Mechanical Keyboard', category: 'Accessories', stock: 8, tags: ['work', 'gaming'] }
   ]
 
   it('should initialize and expose getter methods', () => {
@@ -30,47 +31,65 @@ describe('SearchList', () => {
   it('should filter items correctly based on search value', () => {
     const searchList = new SearchList(mockProducts, ['name', 'category'])
 
-    // Empty search should return all items formatted without an active search flag
     const initialResult = searchList.to()
     expect(initialResult.length).toBe(3)
-    expect(initialResult[0]?.searchActive).toBe(false) // No active search highlighting
+    expect(initialResult[0]?.searchActive).toBe(false)
 
-    // Search for "gaming"
-    searchList.setValue('gaming')
+    expect(searchList.setValue('gaming')).toBe(searchList)
     const gamingResult = searchList.to()
 
-    // The columns are ['name', 'category'].
-    // Mouse name = 'Gaming Mouse', category = 'Electronics' -> Match
-    // Keyboard name = 'Mechanical Keyboard', category = 'Accessories' -> No Match
     expect(gamingResult.length).toBe(1)
     expect(gamingResult[0]?.id).toBe('2')
     expect(gamingResult[0]?.searchActive).toBe(true)
-
-    // The searchActive flag should trigger HTML marks in the result
     expect(gamingResult[0]?.nameSearch).toContain('<span class="sys-search-selection">')
   })
 
-  it('it should allow modifying a list and columns dynamically', () => {
+  it('should not re-update matcher when setValue is called with the same value', () => {
+    const searchList = new SearchList(mockProducts, ['name'], 'mouse')
+    const returnValue = searchList.setValue('mouse')
+
+    expect(returnValue).toBe(searchList)
+    expect(searchList.to().length).toBe(1)
+  })
+
+  it('should treat whitespace-only queries as inactive and return all items unhighlighted', () => {
+    const searchList = new SearchList(mockProducts, ['name', 'category'], '   ')
+
+    const results = searchList.to()
+    expect(results.length).toBe(3)
+    expect(results.every(item => item.searchActive === false)).toBe(true)
+  })
+
+  it('should allow modifying list and columns dynamically', () => {
     const searchList = new SearchList(mockProducts, ['name'])
     searchList.setValue('gaming')
 
-    expect(searchList.to().length).toBe(1) // Gaming Mouse
+    expect(searchList.to().length).toBe(1)
 
-    // Add tags to searchable columns
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    searchList.setColumns(['name', 'tags.0', 'tags.1'])
-    // 'Mechanical Keyboard' has 'gaming' as tags.1
-    const newResult = searchList.to()
-    expect(newResult.length).toBe(2)
+    // @ts-expect-error: Testing nested array index paths in setColumns
+    expect(searchList.setColumns(['name', 'tags.0', 'tags.1'])).toBe(searchList)
+    const updatedColumnResults = searchList.to()
+    expect(updatedColumnResults.length).toBe(2)
+
+    const replacementProducts: MockProduct[] = [
+      { id: '10', name: 'Gaming Monitor', category: 'Displays' }
+    ]
+    expect(searchList.setList(replacementProducts)).toBe(searchList)
+    expect(searchList.getList()).toEqual(replacementProducts)
+    expect(searchList.to().length).toBe(1)
+    expect(searchList.to()[0]?.id).toBe('10')
+  })
+
+  it('should return empty array when list is undefined', () => {
+    const searchList = new SearchList<MockProduct, ['name']>(undefined, ['name'])
+    expect(searchList.to()).toEqual([])
   })
 
   it('should handle the returnEverything option correctly', () => {
-    // With returnEverything = true, all elements are returned, but non-matching ones have searchActive = false
     const searchList = new SearchList(mockProducts, ['name'], 'keyboard', { returnEverything: true })
 
     const results = searchList.to()
-    expect(results.length).toBe(3) // All elements returned
+    expect(results.length).toBe(3)
 
     const matchingItem = results.find(item => item.id === '3')
     const nonMatchingItem = results.find(item => item.id === '1')
@@ -79,33 +98,44 @@ describe('SearchList', () => {
     expect(nonMatchingItem?.searchActive).toBe(false)
   })
 
-  it('should return all items if no columns are provided (no filtering capability)', () => {
+  it('should return empty list when active search has no columns provided and returnEverything is false', () => {
     const searchList = new SearchList(mockProducts, undefined, 'Laptop')
 
     const results = searchList.to()
-    // It should just return the whole list because there are no columns to verify against
-    // But since the value 'Laptop' is set, does it consider them matched or no?
-    // Actually without columns, cache value is empty, so regex test against "" will fail unless empty search.
-    // Let's check what it returns
-    // The iteration uses forEach over a list, without columns, isSelection is false for all,
-    // but if options.returnEverything is false, it returns nothing?
-    // Ah, wait. If options.returnEverything is false:
-    // Since item length > limit, it calls callbackToSelection.
-    // matcher.test('') is false.
-    // So it returns undefined, the result is an empty list.
     expect(results.length).toBe(0)
   })
 
-  it('should update options correctly', () => {
-    const searchList = new SearchList(mockProducts, ['name'], 'lap')
+  it('should update options correctly and support custom classSearchName and numeric 0 search', () => {
+    const searchList = new SearchList(mockProducts, ['name', 'stock'], 'lap')
 
-    // the limit is natively 2. 'lap' length is 3, so it triggers search
-    expect(searchList.to().length).toBe(1) // Laptop Pro
+    expect(searchList.to().length).toBe(1)
 
-    // Update limit to 4
-    searchList.setOptions({ limit: 4 })
-    // 'lap' is length 3, so now it behaves as if no search is active
-    const newResults = searchList.to()
-    expect(newResults.length).toBe(3) // All items returned without highlighting
+    expect(searchList.setOptions({ limit: 4 })).toBe(searchList)
+    const unsearchedResults = searchList.to()
+    expect(unsearchedResults.length).toBe(3)
+
+    searchList.setOptions({ limit: 1, classSearchName: 'custom-highlight' })
+    searchList.setValue('Laptop 0')
+    const zeroResults = searchList.to()
+    expect(zeroResults.length).toBe(1)
+    expect(zeroResults[0]?.id).toBe('1')
+    expect(zeroResults[0]?.stockSearch).toBe('<span class="custom-highlight">0</span>')
+  })
+
+  it('should support Unicode, Cyrillic, and regex special characters in search', () => {
+    const unicodeProducts: MockProduct[] = [
+      { id: '1', name: 'Клавиатура [Pro+]', category: 'Периферия' },
+      { id: '2', name: 'Мышь (Игровая)', category: 'Периферия' }
+    ]
+
+    const searchList = new SearchList(unicodeProducts, ['name', 'category'], '[Pro+]')
+    const bracketResults = searchList.to()
+    expect(bracketResults.length).toBe(1)
+    expect(bracketResults[0]?.id).toBe('1')
+
+    searchList.setValue('игровая')
+    const cyrillicResults = searchList.to()
+    expect(cyrillicResults.length).toBe(1)
+    expect(cyrillicResults[0]?.id).toBe('2')
   })
 })

@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { intersectKey } from '../intersectKey'
 
 describe('intersectKey', () => {
-  describe('Standard object intersection', () => {
+  describe('Standard object intersection (Happy path)', () => {
     it('should return properties of data that exist in comparison', () => {
       const data = { a: 1, b: 2, c: 3 }
       const comparison = { b: 'x', c: 'y', d: 'z' }
@@ -26,22 +26,26 @@ describe('intersectKey', () => {
 
     it('should preserve values of different types correctly without mutation', () => {
       const data = {
-        str: 'hello',
-        num: 42,
-        bool: true,
-        arr: [1, 2, 3],
-        obj: { nested: 'value' },
-        nil: null,
-        undef: undefined
+        text: 'hello',
+        numberValue: 42,
+        zeroValue: 0,
+        booleanTrue: true,
+        booleanFalse: false,
+        arrayValue: [1, 2, 3],
+        objectValue: { nested: 'value' },
+        nullValue: null,
+        undefinedValue: undefined
       }
       const comparison = {
-        str: null,
-        num: null,
-        bool: null,
-        arr: null,
-        obj: null,
-        nil: null,
-        undef: null
+        text: null,
+        numberValue: 0,
+        zeroValue: false,
+        booleanTrue: '',
+        booleanFalse: undefined,
+        arrayValue: null,
+        objectValue: null,
+        nullValue: null,
+        undefinedValue: null
       }
 
       expect(intersectKey(data, comparison)).toEqual(data)
@@ -57,9 +61,8 @@ describe('intersectKey', () => {
         constructor: 'should-not-leak',
         hasOwnProperty: 'should-not-leak'
       }
-      const comparison = { a: 'target' } // Does not have own toString, valueOf, etc.
+      const comparison = { a: 'target' }
 
-      // Only 'a' must be matched, prototype properties in comparison must be ignored
       expect(intersectKey(data, comparison)).toEqual({ a: 1 })
     })
 
@@ -87,7 +90,13 @@ describe('intersectKey', () => {
     })
   })
 
-  describe('Null, undefined and invalid input safety', () => {
+  describe('Empty, nullish, and invalid input safety', () => {
+    it('should return an empty object when either or both objects are empty', () => {
+      expect(intersectKey({}, { a: 1 })).toEqual({})
+      expect(intersectKey({ a: 1 }, {})).toEqual({})
+      expect(intersectKey({}, {})).toEqual({})
+    })
+
     it('should return an empty object if data is undefined or null', () => {
       const comparison = { a: 1 }
       expect(intersectKey(undefined, comparison)).toEqual({})
@@ -98,6 +107,7 @@ describe('intersectKey', () => {
       const data = { a: 1 }
       expect(intersectKey(data, undefined)).toEqual({})
       expect(intersectKey(data, null)).toEqual({})
+      expect(intersectKey()).toEqual({})
     })
 
     it('should return an empty object if either argument is a primitive value', () => {
@@ -112,12 +122,50 @@ describe('intersectKey', () => {
     })
 
     it('should work with objects without prototypes (Object.create(null))', () => {
-      const data = Object.create(null)
+      const data = Object.create(null) as Record<string, string>
       data.key = 'value'
-      const comparison = Object.create(null)
+      const comparison = Object.create(null) as Record<string, string>
       comparison.key = 'compare'
 
       expect(intersectKey(data, comparison)).toEqual({ key: 'value' })
+    })
+  })
+
+  describe('Multilingual keys and immutability', () => {
+    it('should intersect Cyrillic, Vietnamese, CJK, and emoji keys', () => {
+      const data = {
+        'ключ': 'ru',
+        'khóa': 'vi',
+        '鍵': 'jp',
+        '🔑': 'emoji',
+        'extra': 'ignored'
+      }
+      const comparison = {
+        'ключ': true,
+        'khóa': true,
+        '鍵': true,
+        '🔑': true
+      }
+
+      expect(intersectKey(data, comparison)).toEqual({
+        'ключ': 'ru',
+        'khóa': 'vi',
+        '鍵': 'jp',
+        '🔑': 'emoji'
+      })
+    })
+
+    it('should return a new object and not mutate data or comparison', () => {
+      const data = { alpha: 1, beta: 2 }
+      const comparison = { beta: 20, gamma: 30 }
+
+      const result = intersectKey(data, comparison)
+
+      expect(result).toEqual({ beta: 2 })
+      expect(result).not.toBe(data)
+      expect(result).not.toBe(comparison)
+      expect(data).toEqual({ alpha: 1, beta: 2 })
+      expect(comparison).toEqual({ beta: 20, gamma: 30 })
     })
   })
 })

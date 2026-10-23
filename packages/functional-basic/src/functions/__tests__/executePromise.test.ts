@@ -4,14 +4,14 @@ import { executePromise } from '../executePromise'
 describe('executePromise', () => {
   describe('Standard functional requirements (Functions, Promises, and values)', () => {
     it('should execute an async function returning a Promise and resolve it', async () => {
-      const fn = async () => 'async result'
-      const result = await executePromise(fn)
+      const callback = async () => 'async result'
+      const result = await executePromise(callback)
       expect(result).toBe('async result')
     })
 
     it('should execute a synchronous function returning a value and wrap it in a Promise', async () => {
-      const fn = () => 'sync result'
-      const result = await executePromise(fn)
+      const callback = () => 'sync result'
+      const result = await executePromise(callback)
       expect(result).toBe('sync result')
     })
 
@@ -27,42 +27,42 @@ describe('executePromise', () => {
     })
 
     it('should handle async functions that return complex objects', async () => {
-      const fn = async () => ({ key: 'value', nested: { prop: 123 } })
-      const result = await executePromise(fn)
-      expect(result).toEqual({ key: 'value', nested: { prop: 123 } })
+      const callback = async () => ({ key: 'value', nested: { property: 123 } })
+      const result = await executePromise(callback)
+      expect(result).toEqual({ key: 'value', nested: { property: 123 } })
     })
 
     it('should handle async functions that return arrays', async () => {
-      const fn = async () => [1, 2, 3, 4, 5]
-      const result = await executePromise(fn)
+      const callback = async () => [1, 2, 3, 4, 5]
+      const result = await executePromise(callback)
       expect(result).toEqual([1, 2, 3, 4, 5])
     })
 
     it('should handle a function returning an inner function without invoking it', async () => {
-      const innerFn = (value: number) => value * 2
-      const fn = () => innerFn
-      const result = await executePromise(fn)
-      expect(result).toBe(innerFn)
+      const innerCallback = (value: number) => value * 2
+      const outerCallback = () => innerCallback
+      const result = await executePromise(outerCallback)
+      expect(result).toBe(innerCallback)
       expect(result(5)).toBe(10)
     })
   })
 
   describe('Argument passing and generic parameter inference', () => {
     it('should execute async function with multiple arguments', async () => {
-      const fn = async (a: number, b: number, c: string) => `${a + b} ${c}`
-      const result = await executePromise(fn, 2, 3, 'test')
+      const callback = async (first: number, second: number, label: string) => `${first + second} ${label}`
+      const result = await executePromise(callback, 2, 3, 'test')
       expect(result).toBe('5 test')
     })
 
     it('should execute async function with a single argument', async () => {
-      const fn = async (value: string) => value.toUpperCase()
-      const result = await executePromise(fn, 'hello')
+      const callback = async (value: string) => value.toUpperCase()
+      const result = await executePromise(callback, 'hello')
       expect(result).toBe('HELLO')
     })
 
     it('should execute sync function with arguments', async () => {
-      const fn = (a: number, b: number) => a * b
-      const result = await executePromise(fn, 5, 6)
+      const callback = (first: number, second: number) => first * second
+      const result = await executePromise(callback, 5, 6)
       expect(result).toBe(30)
     })
 
@@ -70,25 +70,30 @@ describe('executePromise', () => {
       interface User {
         name: string
       }
-      const fn = async (user: User) => user.name.toUpperCase()
-      const result = await executePromise(fn, { name: 'test' })
+      const callback = async (user: User) => user.name.toUpperCase()
+      const result = await executePromise(callback, { name: 'test' })
       expect(result).toBe('TEST')
     })
 
     it('should handle array argument with sum calculation', async () => {
-      const fn = async (arr: number[]) => {
-        return arr.reduce((sum, num) => sum + num, 0)
+      const callback = async (numbers: number[]) => {
+        return numbers.reduce((total, current) => total + current, 0)
       }
-      const result = await executePromise(fn, [1, 2, 3, 4, 5])
+      const result = await executePromise(callback, [1, 2, 3, 4, 5])
       expect(result).toBe(15)
     })
 
     it('should not mutate the arguments array passed into the callback', async () => {
-      const originalArgs = [10, 20, 30]
-      const fn = (a: number, b: number, c: number) => a + b + c
-      const result = await executePromise(fn, originalArgs[0], originalArgs[1], originalArgs[2])
+      const originalArguments = [10, 20, 30]
+      const callback = (first: number, second: number, third: number) => first + second + third
+      const result = await executePromise(
+        callback,
+        originalArguments[0],
+        originalArguments[1],
+        originalArguments[2]
+      )
       expect(result).toBe(60)
-      expect(originalArgs).toEqual([10, 20, 30])
+      expect(originalArguments).toEqual([10, 20, 30])
     })
   })
 
@@ -153,31 +158,31 @@ describe('executePromise', () => {
     })
 
     it('should handle BigInt values', async () => {
-      const big = BigInt(9007199254740991)
-      expect(await executePromise(big)).toBe(big)
-      expect(await executePromise(() => big)).toBe(big)
+      const bigNumber = BigInt(9007199254740991)
+      expect(await executePromise(bigNumber)).toBe(bigNumber)
+      expect(await executePromise(() => bigNumber)).toBe(bigNumber)
     })
 
     it('should handle Symbol values', async () => {
-      const sym = Symbol('test')
-      expect(await executePromise(sym)).toBe(sym)
-      expect(await executePromise(() => sym)).toBe(sym)
+      const symbolValue = Symbol('test')
+      expect(await executePromise(symbolValue)).toBe(symbolValue)
+      expect(await executePromise(() => symbolValue)).toBe(symbolValue)
     })
   })
 
   describe('Error handling and rejected promises', () => {
     it('should properly reject when an async function throws', async () => {
-      const fn = async () => {
+      const callback = async () => {
         throw new Error('Async error')
       }
-      await expect(executePromise(fn)).rejects.toThrow('Async error')
+      await expect(executePromise(callback)).rejects.toThrow('Async error')
     })
 
     it('should properly reject when a synchronous function throws', async () => {
-      const fn = () => {
+      const callback = () => {
         throw new Error('Sync error')
       }
-      await expect(executePromise(fn)).rejects.toThrow('Sync error')
+      await expect(executePromise(callback)).rejects.toThrow('Sync error')
     })
 
     it('should properly reject when a raw rejected Promise is passed', async () => {
@@ -189,10 +194,10 @@ describe('executePromise', () => {
       class CustomError extends Error {
         code = 'CUSTOM_CODE'
       }
-      const fn = async () => {
+      const callback = async () => {
         throw new CustomError('Specific domain failure')
       }
-      await expect(executePromise(fn)).rejects.toThrow('Specific domain failure')
+      await expect(executePromise(callback)).rejects.toThrow('Specific domain failure')
     })
   })
 
@@ -208,7 +213,7 @@ describe('executePromise', () => {
     })
 
     it('should properly await a function returning a Thenable object', async () => {
-      const fn = () => {
+      const callback = () => {
         const thenable: PromiseLike<number> = {
           then(onfulfilled, onrejected) {
             return Promise.resolve(42).then(onfulfilled, onrejected)
@@ -216,7 +221,7 @@ describe('executePromise', () => {
         }
         return thenable
       }
-      const result = await executePromise(fn)
+      const result = await executePromise(callback)
       expect(result).toBe(42)
     })
 
@@ -252,7 +257,7 @@ describe('executePromise', () => {
     it('should safely execute multiple concurrent promises without interference', async () => {
       const tasks = [
         executePromise(async () => {
-          await new Promise(r => setTimeout(r, 10))
+          await new Promise(resolve => setTimeout(resolve, 10))
           return 1
         }),
         executePromise(() => 2),

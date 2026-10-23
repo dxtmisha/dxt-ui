@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { isDifferent } from '../isDifferent'
+import type { ObjectItem } from '../../types/basicTypes'
 
 describe('isDifferent', () => {
   describe('Standard functional requirements (Happy path)', () => {
@@ -43,74 +44,79 @@ describe('isDifferent', () => {
     })
   })
 
-  describe('Edge cases: undefined, nullish, and NaN', () => {
+  describe('Edge cases: undefined, nullish, and Object.is semantics (NaN, +0/-0)', () => {
     it('should return true when properties have different keys even if values are both undefined', () => {
-      // Critical regression test: { a: undefined } and { b: undefined } must not be considered identical
-      const firstObject = { a: undefined, common: 1 }
-      const secondObject = { b: undefined, common: 1 }
+      const firstObject: ObjectItem = { a: undefined, common: 1 }
+      const secondObject: ObjectItem = { b: undefined, common: 1 }
       expect(isDifferent(firstObject, secondObject)).toBe(true)
     })
 
     it('should return false when both objects have matching keys with undefined values', () => {
-      const firstObject = { a: undefined, common: 1 }
-      const secondObject = { a: undefined, common: 1 }
+      const firstObject: ObjectItem = { a: undefined, common: 1 }
+      const secondObject: ObjectItem = { a: undefined, common: 1 }
       expect(isDifferent(firstObject, secondObject)).toBe(false)
     })
 
     it('should return false for identical NaN values using Object.is semantics', () => {
-      const firstObject = { value: NaN }
-      const secondObject = { value: NaN }
+      const firstObject = { value: Number.NaN }
+      const secondObject = { value: Number.NaN }
       expect(isDifferent(firstObject, secondObject)).toBe(false)
     })
 
+    it('should return true when comparing +0 and -0 using Object.is semantics', () => {
+      const firstObject = { value: +0 }
+      const secondObject = { value: -0 }
+      expect(isDifferent(firstObject, secondObject)).toBe(true)
+    })
+
     it('should return false if both arguments are the same nullish reference', () => {
-      expect(isDifferent(null as any, null as any)).toBe(false)
-      expect(isDifferent(undefined as any, undefined as any)).toBe(false)
+      expect(isDifferent(null as unknown as ObjectItem, null as unknown as ObjectItem)).toBe(false)
+      expect(isDifferent(undefined as unknown as ObjectItem, undefined as unknown as ObjectItem)).toBe(false)
     })
 
     it('should return true when comparing an object with null or undefined', () => {
-      const validObject = { a: 1 }
-      expect(isDifferent(validObject, null as any)).toBe(true)
-      expect(isDifferent(null as any, validObject)).toBe(true)
-      expect(isDifferent(validObject, undefined as any)).toBe(true)
-      expect(isDifferent(undefined as any, validObject)).toBe(true)
+      const validObject: ObjectItem = { a: 1 }
+      expect(isDifferent(validObject, null as unknown as ObjectItem)).toBe(true)
+      expect(isDifferent(null as unknown as ObjectItem, validObject)).toBe(true)
+      expect(isDifferent(validObject, undefined as unknown as ObjectItem)).toBe(true)
+      expect(isDifferent(undefined as unknown as ObjectItem, validObject)).toBe(true)
+      expect(isDifferent(null as unknown as ObjectItem, undefined as unknown as ObjectItem)).toBe(true)
     })
 
     it('should distinguish between different falsy values (0, false, empty string, null, undefined)', () => {
-      expect(isDifferent({ val: 0 }, { val: false as any })).toBe(true)
-      expect(isDifferent({ val: 0 }, { val: '' as any })).toBe(true)
-      expect(isDifferent({ val: false }, { val: '' as any })).toBe(true)
-      expect(isDifferent({ val: null }, { val: undefined as any })).toBe(true)
+      expect(isDifferent<unknown>({ value: 0 }, { value: false })).toBe(true)
+      expect(isDifferent<unknown>({ value: 0 }, { value: '' })).toBe(true)
+      expect(isDifferent<unknown>({ value: false }, { value: '' })).toBe(true)
+      expect(isDifferent<unknown>({ value: null }, { value: undefined })).toBe(true)
     })
   })
 
   describe('Prototype chain isolation', () => {
     it('should only compare own enumerable properties and ignore inherited prototype properties', () => {
       const prototypeObject = { inheritedKey: 'prototypeValue' }
-      const firstObject = Object.create(prototypeObject)
+      const firstObject = Object.create(prototypeObject) as ObjectItem
       firstObject.ownKey = 100
 
-      const secondObject = { ownKey: 100 }
+      const secondObject: ObjectItem = { ownKey: 100 }
       expect(isDifferent(firstObject, secondObject)).toBe(false)
     })
 
     it('should detect difference when an object owns a property that exists only on the prototype of another', () => {
       const prototypeObject = { sharedKey: 'value' }
-      const firstObject = { sharedKey: 'value' }
-      const secondObject = Object.create(prototypeObject)
-      // secondObject does NOT own sharedKey, so keys length differs (1 !== 0)
+      const firstObject: ObjectItem = { sharedKey: 'value' }
+      const secondObject = Object.create(prototypeObject) as ObjectItem
       expect(isDifferent(firstObject, secondObject)).toBe(true)
     })
   })
 
   describe('Non-standard data types, arrays, and functions', () => {
     it('should work with arrays representing list items', () => {
-      const firstArray = [1, 2, 3]
-      const secondArray = [1, 2, 3]
-      const thirdArray = [1, 2, 4]
+      const firstArray = [1, 2, 3] as unknown as ObjectItem
+      const secondArray = [1, 2, 3] as unknown as ObjectItem
+      const thirdArray = [1, 2, 4] as unknown as ObjectItem
 
-      expect(isDifferent(firstArray as any, secondArray as any)).toBe(false)
-      expect(isDifferent(firstArray as any, thirdArray as any)).toBe(true)
+      expect(isDifferent(firstArray, secondArray)).toBe(false)
+      expect(isDifferent(firstArray, thirdArray)).toBe(true)
     })
 
     it('should compare function properties by reference', () => {

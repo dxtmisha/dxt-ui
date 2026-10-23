@@ -7,7 +7,7 @@ import { ScrollbarWidth } from '../classes/ScrollbarWidth'
  * Инициализация данных для управления скроллом.
  * @returns promise without return value / промис без возвращаемого значения
  */
-export async function initScrollbarOffset() {
+export async function initScrollbarOffset(): Promise<void> {
   if (isDomRuntime()) {
     const width = await ScrollbarWidth.get()
     document.body.style.setProperty('--sys-scrollbar-offset', `${width}px`)

@@ -4,12 +4,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `forEach`
 
-The function performs the specified function once for each element in the object. And returns an array with the results of executing the function.
+The function performs the specified function once for each element in the collection (`Array`, `Object`, `Map`, `Set`) and returns an array with the results of executing the function (omitting `undefined` values unless `saveUndefined` is `true`).
 
 **Parameters:**
-- `data: D` — object for iteration.
-- `callback: (item: T, key: K, dataMain: typeof data) => R` — a function to execute for each element in the array.
-- `saveUndefined?: boolean` — if `true`, the function returns an array including `undefined` values (filtered by default).
+- `data: D & ForEachData<T>` — Object or collection for iteration (`readonly T[] | Record<string, T> | Map<unknown, T> | Set<T>`, including typed `Record<string, unknown>` objects).
+- `callback: (item: T, key: K, collection: D) => R` — A function to execute for each element in the collection.
+- `saveUndefined?: boolean` — If `true`, the function returns an array including `undefined` values (filtered by default).
 
 **Returns:**
 `R[]` — an array with the results of executing the function.

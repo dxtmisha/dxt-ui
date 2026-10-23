@@ -137,6 +137,7 @@ export class MetaStatic {
    *
    * Устанавливает заголовок страницы (с суффиксом) и обновляет заголовки Open Graph и Twitter Card.
    * @param title page title / заголовок страницы
+   * @returns MetaStatic class / класс MetaStatic
    */
   static setTitle(title: string): typeof MetaStatic {
     this.getItem().setTitle(title)
@@ -148,6 +149,7 @@ export class MetaStatic {
    *
    * Устанавливает мета-тег keywords.
    * @param keywords keywords as string or array / ключевые слова в виде строки или массива
+   * @returns MetaStatic class / класс MetaStatic
    */
   static setKeywords(keywords: string | string[]): typeof MetaStatic {
     this.getItem().setKeywords(keywords)
@@ -159,6 +161,7 @@ export class MetaStatic {
    *
    * Устанавливает мета-тег description.
    * @param description page description / описание страницы
+   * @returns MetaStatic class / класс MetaStatic
    */
   static setDescription(description: string): typeof MetaStatic {
     this.getItem().setDescription(description)
@@ -170,6 +173,7 @@ export class MetaStatic {
    *
    * Устанавливает изображение для Open Graph и Twitter Card.
    * @param image image URL / URL изображения
+   * @returns MetaStatic class / класс MetaStatic
    */
   static setImage(image: string): typeof MetaStatic {
     this.getItem().setImage(image)
@@ -181,6 +185,7 @@ export class MetaStatic {
    *
    * Устанавливает канонический URL и обновляет URL для Open Graph и Twitter Card.
    * @param canonical canonical URL / канонический URL
+   * @returns MetaStatic class / класс MetaStatic
    */
   static setCanonical(canonical: string): typeof MetaStatic {
     this.getItem().setCanonical(canonical)
@@ -192,6 +197,7 @@ export class MetaStatic {
    *
    * Устанавливает мета-тег robots.
    * @param robots robots directive / директива robots
+   * @returns MetaStatic class / класс MetaStatic
    */
   static setRobots(robots: MetaRobots): typeof MetaStatic {
     this.getItem().setRobots(robots)
@@ -203,6 +209,7 @@ export class MetaStatic {
    *
    * Устанавливает мета-тег author.
    * @param author author name / имя автора
+   * @returns MetaStatic class / класс MetaStatic
    */
   static setAuthor(author: string): typeof MetaStatic {
     this.getItem().setAuthor(author)
@@ -214,6 +221,7 @@ export class MetaStatic {
    *
    * Устанавливает название сайта для Open Graph и Twitter Card.
    * @param siteName site name / название сайта
+   * @returns MetaStatic class / класс MetaStatic
    */
   static setSiteName(siteName: string): typeof MetaStatic {
     this.getItem().setSiteName(siteName)
@@ -225,6 +233,7 @@ export class MetaStatic {
    *
    * Устанавливает локаль для Open Graph.
    * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
+   * @returns MetaStatic class / класс MetaStatic
    */
   static setLocale(locale: string): typeof MetaStatic {
     this.getItem().setLocale(locale)
@@ -236,6 +245,7 @@ export class MetaStatic {
    *
    * Устанавливает суффикс для добавления к заголовку страницы.
    * @param suffix title suffix (e.g. 'My Site') / суффикс заголовка (например, 'Мой Сайт')
+   * @returns MetaStatic class / класс MetaStatic
    */
   static setSuffix(suffix?: string): typeof MetaStatic {
     this.getItem().setSuffix(suffix)

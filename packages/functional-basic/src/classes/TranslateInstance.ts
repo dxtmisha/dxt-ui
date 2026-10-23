@@ -3,6 +3,7 @@
 import { applyTemplate } from '../functions/applyTemplate'
 import { forEach } from '../functions/forEach'
 import { isApiSuccess } from '../functions/isApiSuccess'
+import { isArray } from '../functions/isArray'
 import { isFilled } from '../functions/isFilled'
 import { isString } from '../functions/isString'
 import { toArray } from '../functions/toArray'
@@ -25,28 +26,28 @@ import {
  * Класс для получения переведенного текста.
  */
 export class TranslateInstance {
-  /** List of translations/ Список переводов */
+  /** List of translations / Список переводов */
   protected readonly data: Record<string, string> = {}
 
-  /** Cache of codes to get/ Кэш кодов для получения */
+  /** Cache of codes to get / Кэш кодов для получения */
   protected cache: string[] = []
 
-  /** List of resolves for promises/ Список разрешений для промисов */
+  /** List of resolves for promises / Список разрешений для промисов */
   protected resolveList: (() => void)[] = []
 
-  /** Timeout for getting translations/ Таймаут для получения переводов */
-  protected timeout?: any
+  /** Timeout for getting translations / Таймаут для получения переводов */
+  protected timeout?: ReturnType<typeof setTimeout>
 
-  /** Flag indicating whether to read from the API/ Флаг, указывающий, нужно ли читать из API */
+  /** Flag indicating whether to read from the API / Флаг, указывающий, нужно ли читать из API */
   protected isReadApi: boolean = true
 
   /**
    * Creates an instance of the class.
    *
    * Создает экземпляр класса.
-   * @param url URL for getting translations/ URL для получения переводов
-   * @param propsName Property name for getting translations/ Имя свойства для получения переводов
-   * @param files List of files with translations/ Список файлов с переводами
+   * @param url URL for getting translations / URL для получения переводов
+   * @param propsName Property name for getting translations / Имя свойства для получения переводов
+   * @param files List of files with translations / Список файлов с переводами
    */
   constructor(
     protected url: string = '/api/translate',
@@ -58,8 +59,8 @@ export class TranslateInstance {
    * Getting the translation text by its code.
    *
    * Получение текста перевода по его коду.
-   * @param name code name/ название кода
-   * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
+   * @param name code name / название кода
+   * @param replacement If set, replaces the text with the specified values / если установлено, заменяет текст на указанные значения
    * @returns translation text / текст перевода
    */
   async get(
@@ -76,52 +77,37 @@ export class TranslateInstance {
       await this.add(name)
     }
 
-    return this.replacement(this.getText(name) ?? name)
-  }
-
-  /**
-   * Getting the translation text by its code (Sync).
-   *
-   * Получение текста перевода по его коду (Sync).
-   * @param name code name/ название кода
-   * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
-   * @param replacement If set, replaces the text with the specified values / если установлено, заменяет текст на указанные значения
-   * @returns translation text / текст перевода
-   */
-  getSync(
-    name: string,
-    first: boolean = false,
-    replacement?: string[] | Record<string, string | number>
-  ): string {
-    const text = this.getText(name)
-
-    if (text) {
-      return this.replacement(text, replacement)
-    }
-
-    return first ? ' ' : name
+    return this.replacement(this.getText(name) ?? name, replacement)
   }
 
   /**
    * Getting a list of translations by an array of text codes.
    *
    * Получение списка переводов по массиву кодов текста.
-   * @param names list of codes to get translations/ список кодов для получения переводов
+   * @param names list of codes to get translations / список кодов для получения переводов
    * @returns object with translations / объект с переводами
    */
   getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>> {
+    if (names.length === 0) {
+      return Promise.resolve({} as TranslateList<T>)
+    }
+
     return new Promise((resolve) => {
       const list: Record<string, string> = {}
       let end = 0
 
       for (const name of names) {
-        const code = (Array.isArray(name) ? name[0] : name) as string
-        const replacement = Array.isArray(name) ? name.slice(1) : undefined
+        const code = (isArray(name) ? name[0] : name) as string
+        const replacement = isArray(name) ? name.slice(1) : undefined
 
         this.get(code, replacement)
           .then((text) => {
             list[code] = text
-
+          })
+          .catch(() => {
+            list[code] = code
+          })
+          .finally(() => {
             if (++end >= names.length) {
               resolve(list as TranslateList<T>)
             }
@@ -142,8 +128,8 @@ export class TranslateInstance {
     const list: Record<string, string> = {}
 
     for (const name of names) {
-      const code = (Array.isArray(name) ? name[0] : name) as string
-      const replacement = Array.isArray(name) ? name.slice(1) : undefined
+      const code = (isArray(name) ? name[0] : name) as string
+      const replacement = isArray(name) ? name.slice(1) : undefined
 
       list[code] = this.getSync(code, first, replacement)
     }
@@ -152,10 +138,66 @@ export class TranslateInstance {
   }
 
   /**
+   * Getting the translation text by its code (Sync).
+   *
+   * Получение текста перевода по его коду (Sync).
+   * @param name code name / название кода
+   * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
+   * @param replacement If set, replaces the text with the specified values / если установлено, заменяет текст на указанные значения
+   * @returns translation text / текст перевода
+   */
+  getSync(
+    name: string,
+    first: boolean = false,
+    replacement?: string[] | Record<string, string | number>
+  ): string {
+    const text = this.getText(name)
+
+    if (text) {
+      return this.replacement(text, replacement)
+    }
+
+    return first ? ' ' : name
+  }
+
+  /**
+   * Change the name of the property to get the translation.
+   *
+   * Изменить имя свойства для получения перевода.
+   * @param name property name / имя свойства
+   */
+  setPropsName(name: string): this {
+    this.propsName = name
+    return this
+  }
+
+  /**
+   * Change the read mode from the API.
+   *
+   * Изменить режим чтения из API.
+   * @param value read mode / режим чтения
+   */
+  setReadApi(value: boolean): this {
+    this.isReadApi = value
+    return this
+  }
+
+  /**
+   * Change the path to the script for obtaining the translation.
+   *
+   * Изменить путь к скрипту для получения перевода.
+   * @param url path to the script / путь к скрипту
+   */
+  setUrl(url: string): this {
+    this.url = url
+    return this
+  }
+
+  /**
    * Added a list of translated texts.
    *
    * Добавлен список переведенных текстов.
-   * @param names list of codes to get translations/ список кодов для получения переводов
+   * @param names list of codes to get translations / список кодов для получения переводов
    * @returns promise resolving when translations are added / промис, разрешающийся после добавления переводов
    */
   add(names: string | string[]): Promise<void> {
@@ -163,7 +205,11 @@ export class TranslateInstance {
       const list = this.getNamesNone(names)
 
       if (list.length > 0) {
-        this.cache.push(...list)
+        list.forEach((name) => {
+          if (!this.cache.includes(name)) {
+            this.cache.push(name)
+          }
+        })
         this.resolveList.push(resolve)
 
         if (this.timeout) {
@@ -171,11 +217,24 @@ export class TranslateInstance {
         }
 
         this.timeout = setTimeout(() => {
+          const cache = this.cache
+          const resolves = this.resolveList
+
+          this.cache = []
+          this.resolveList = []
           this.timeout = undefined
-          this.make().then(() => {
-            this.resolveList.forEach(resolve => resolve())
-            this.resolveList = []
-          })
+
+          this.make(cache)
+            .catch((error) => {
+              ErrorCenter.on({
+                group: 'translate',
+                code: 'error',
+                details: error
+              })
+            })
+            .finally(() => {
+              resolves.forEach(item => item())
+            })
         }, TRANSLATE_TIME_OUT)
       } else {
         resolve()
@@ -184,27 +243,10 @@ export class TranslateInstance {
   }
 
   /**
-   * Adds texts in sync mode.
-   *
-   * Добавляет тексты в режиме синхронизации.
-   * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
-   */
-  addSync(data: Record<string, string>): void {
-    forEach(data, (text, key) => {
-      if (
-        isString(text)
-        && isFilled(text)
-      ) {
-        this.data[this.getName(key)] = text
-      }
-    })
-  }
-
-  /**
    * Adding data in the form of a query or directly, depending on the execution environment.
    *
    * Добавление данных в виде запроса или напрямую, в зависимости от среды выполнения.
-   * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
+   * @param data list of texts in the form of key-value / список текстов в виде ключ-значение
    * @returns promise / промис
    */
   async addNormalOrSync(data: Record<string, string>): Promise<void> {
@@ -222,10 +264,37 @@ export class TranslateInstance {
   }
 
   /**
+   * Adds texts in sync mode.
+   *
+   * Добавляет тексты в режиме синхронизации.
+   * @param data list of texts in the form of key-value / список текстов в виде ключ-значение
+   */
+  addSync(data: Record<string, string>): void {
+    forEach(data, (text, key) => {
+      if (
+        isString(text)
+        && isFilled(text)
+      ) {
+        this.data[this.getName(key)] = text
+      }
+    })
+  }
+
+  /**
+   * Adds texts synchronously from the file.
+   *
+   * Добавляет тексты синхронно из файла.
+   * @param data file with translations / файл с переводами
+   */
+  addSyncByFile(data: TranslateDataFile): void {
+    this.files.add(data)
+  }
+
+  /**
    * Adds texts synchronously by location.
    *
    * Добавляет тексты синхронно по местоположению.
-   * @param data list of texts by location/ список текстов по местоположению
+   * @param data list of texts by location / список текстов по местоположению
    */
   addSyncByLocation(data: Record<string, Record<string, string>>): void {
     forEach(
@@ -244,53 +313,10 @@ export class TranslateInstance {
   }
 
   /**
-   * Adds texts synchronously from the file.
-   *
-   * Добавляет тексты синхронно из файла.
-   * @param data file with translations/ файл с переводами
-   */
-  addSyncByFile(data: TranslateDataFile): void {
-    this.files.add(data)
-  }
-
-  /**
-   * Change the path to the script for obtaining the translation.
-   *
-   * Изменить путь к скрипту для получения перевода.
-   * @param url path to the script/ путь к скрипту
-   */
-  setUrl(url: string): this {
-    this.url = url
-    return this
-  }
-
-  /**
-   * Change the name of the property to get the translation.
-   *
-   * Изменить имя свойства для получения перевода.
-   * @param name property name/ имя свойства
-   */
-  setPropsName(name: string): this {
-    this.propsName = name
-    return this
-  }
-
-  /**
-   * Change the read mode from the API.
-   *
-   * Изменить режим чтения из API.
-   * @param value read mode/ режим чтения
-   */
-  setReadApi(value: boolean): this {
-    this.isReadApi = value
-    return this
-  }
-
-  /**
    * Checks for translation by code, taking into account fallback options.
    *
    * Проверяет наличие перевода по коду с учетом запасных вариантов.
-   * @param name code name/ название кода
+   * @param name code name / название кода
    * @returns boolean / логическое значение
    */
   protected hasName(name: string): boolean {
@@ -303,25 +329,25 @@ export class TranslateInstance {
    * Retrieves translation text by code, returning the first matching fallback.
    *
    * Получает текст перевода по коду, возвращая первое совпадение из запасных вариантов.
-   * @param name code name/ название кода
+   * @param name code name / название кода
    * @returns translation text or undefined / текст перевода или undefined
    */
   protected getText(name: string): string | undefined {
     const fullName = this.getName(name)
 
-    if (fullName in this.data) {
+    if (this.data[fullName]) {
       return this.data[fullName]
     }
 
     const nameByLanguage = this.getNameByLanguage(name)
 
-    if (nameByLanguage in this.data) {
+    if (this.data[nameByLanguage]) {
       return this.data[nameByLanguage]
     }
 
     const nameByGlobal = this.getNameByGlobal(name)
 
-    if (nameByGlobal in this.data) {
+    if (this.data[nameByGlobal]) {
       return this.data[nameByGlobal]
     }
 
@@ -332,7 +358,7 @@ export class TranslateInstance {
    * Getting the full title for translation.
    *
    * Получение полного названия для перевода.
-   * @param name code name/ название кода
+   * @param name code name / название кода
    * @returns full title / полное название
    */
   protected getName(name: string): string {
@@ -343,7 +369,7 @@ export class TranslateInstance {
    * Getting the title for translation by language.
    *
    * Получение названия для перевода по языку.
-   * @param name code name/ название кода
+   * @param name code name / название кода
    * @returns title by language / название по языку
    */
   protected getNameByLanguage(name: string): string {
@@ -354,7 +380,7 @@ export class TranslateInstance {
    * Getting the title for translation globally.
    *
    * Получение названия для перевода глобально.
-   * @param name code name/ название кода
+   * @param name code name / название кода
    * @returns global title / глобальное название
    */
   protected getNameByGlobal(name: string): string {
@@ -365,7 +391,7 @@ export class TranslateInstance {
    * Returns a list of names that are not yet in the list.
    *
    * Возвращает список имен, которых еще нет в списке.
-   * @param names list of codes to get translations/ список кодов для получения переводов
+   * @param names list of codes to get translations / список кодов для получения переводов
    * @returns list of missing names / список отсутствующих имен
    */
   protected getNamesNone(names: string | string[]): string[] {
@@ -390,12 +416,12 @@ export class TranslateInstance {
    * Получение списка переводов с сервера.
    * @returns promise with record of translations / промис с записью переводов
    */
-  protected async getResponse(): Promise<Record<string, string>> {
+  protected async getResponse(cache: string[] = this.cache): Promise<Record<string, string>> {
     const data = (await Api.get<Record<string, string>>({
       api: false,
       path: this.url,
       request: {
-        [this.propsName]: this.cache
+        [this.propsName]: cache
       },
       toData: true,
       timeout: 12_000,
@@ -417,14 +443,14 @@ export class TranslateInstance {
    * Replaces the text with the specified values.
    *
    * Заменяет текст на указанные значения.
-   * @param text text to replace/ текст для замены
-   * @param replacement values for replacement/ значения для замены
+   * @param text text to replace / текст для замены
+   * @param replacement values for replacement / значения для замены
    * @returns replaced text / замененный текст
    */
   protected replacement(
     text: string,
     replacement?: string[] | Record<string, string | number>
-  ): any {
+  ): string {
     if (replacement) {
       return applyTemplate(text, replacement)
     }
@@ -436,19 +462,20 @@ export class TranslateInstance {
    * Adding translation data from the server.
    *
    * Добавление данных по переводу с сервера.
+   * @param cache list of codes to fetch / список кодов для загрузки
    * @returns promise / промис
    */
-  protected async make(): Promise<void> {
+  protected async make(cache: string[] = this.cache): Promise<void> {
     let list: Record<string, string> | undefined
 
     if (this.files.isFile()) {
       list = await this.files.getList()
     } else if (this.isReadApi) {
-      list = await this.getResponse()
+      list = await this.getResponse(cache)
     }
 
     if (list) {
-      this.makeList(list)
+      this.makeList(list, cache)
     }
   }
 
@@ -456,13 +483,19 @@ export class TranslateInstance {
    * Adding translation data from the list.
    *
    * Добавление данных по переводу из списка.
-   * @param list list of translations/ список переводов
+   * @param list list of translations / список переводов
+   * @param cache list of requested codes / список запрошенных кодов
    */
-  protected makeList(list: Record<string, string>): void {
-    this.cache.forEach((name) => {
+  protected makeList(
+    list: Record<string, string>,
+    cache: string[] = this.cache
+  ): void {
+    cache.forEach((name) => {
       this.data[this.getName(name)] = list?.[name] ?? ''
     })
 
-    this.cache = []
+    if (cache === this.cache) {
+      this.cache = []
+    }
   }
 }

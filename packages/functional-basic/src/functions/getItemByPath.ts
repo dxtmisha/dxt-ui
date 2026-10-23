@@ -11,7 +11,7 @@ import { strSplit } from './strSplit'
  * @returns data by path or undefined / данные по пути или undefined
  */
 export function getItemByPath<
-  T extends Record<string, any>,
+  T extends Record<string, unknown>,
   R = string
 >(item: T, path: string): R | undefined {
   if (!isFilled(path, true)) {
@@ -27,12 +27,12 @@ export function getItemByPath<
     && isObject(item[column])
     && paths?.[1]
   ) {
-    return getItemByPath(item[column], paths[1])
+    return getItemByPath(item[column] as Record<string, unknown>, paths[1])
   }
 
   if (paths?.[1]) {
     return undefined
   }
 
-  return item?.[column]
+  return item?.[column] as R | undefined
 }

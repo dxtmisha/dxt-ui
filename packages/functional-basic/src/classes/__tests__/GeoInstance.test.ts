@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { GeoInstance } from '../GeoInstance'
+import { GeoInstance, UI_GEO_COOKIE_KEY } from '../GeoInstance'
 import { ServerStorage } from '../ServerStorage'
 import { CookieStorage } from '../CookieStorage'
 import { isDomRuntime } from '../../functions/isDomRuntime'
@@ -18,13 +18,8 @@ vi.mock('../../functions/isDomData', () => ({
  * Temporarily set isDomRuntime=false so ServerStorage uses the SSR path
  * (listener-based context) and the DOM-based static cache is never populated.
  * This guarantees a fully clean DataStorage registry for each test.
- *
- * Вспомогательная функция: сброс всех синглтонов и состояния документа.
- * Временно устанавливаем isDomRuntime=false, чтобы ServerStorage использовал
- * SSR-путь и статический кэш DOM не накапливался между тестами.
  */
 function resetSingletons(): void {
-  // Force SSR mode so ServerStorage uses the listener context, not the static DOM cache
   vi.mocked(isDomRuntime).mockReturnValue(false)
 
   ServerStorage.reset()
@@ -45,9 +40,6 @@ describe('GeoInstance', () => {
     vi.clearAllMocks()
   })
 
-  // ---------------------------------------------------------------------------
-  // findLocationDom — DOM branch
-  // ---------------------------------------------------------------------------
   describe('findLocationDom (DOM branch)', () => {
     it('returns "en-GB" when not in DOM runtime (SSR, no Cookie)', () => {
       vi.mocked(isDomRuntime).mockReturnValue(false)
@@ -57,7 +49,6 @@ describe('GeoInstance', () => {
 
     describe('DOM fallbacks (no stored value)', () => {
       beforeEach(() => {
-        // Ensure DataStorage has no cached value for this group
         resetSingletons()
       })
 
@@ -69,7 +60,7 @@ describe('GeoInstance', () => {
         expect(geo.getLocation()).toBe('fr-FR')
       })
 
-      it('falls back to navigator.language when lang attr is empty', () => {
+      it('falls back to navigator.language when lang attribute is empty', () => {
         vi.mocked(isDomRuntime).mockReturnValue(true)
         vi.spyOn(window.navigator, 'language', 'get').mockReturnValue('it-IT')
 
@@ -91,27 +82,20 @@ describe('GeoInstance', () => {
       it('picks up value previously stored via set(code, true)', () => {
         vi.mocked(isDomRuntime).mockReturnValue(true)
 
-        // First instance saves the location
         const seed = new GeoInstance()
         seed.set('ru-RU', true)
 
-        // A second instance (same context) must read the saved value
         const geo = new GeoInstance()
         expect(geo.getLocation()).toBe('ru-RU')
       })
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // Cookie fallback branch (non-DOM runtime)
-  // ---------------------------------------------------------------------------
   describe('Cookie fallback branch', () => {
     it('reads location from Cookie via CookieStorage custom listener (SSR)', () => {
       vi.mocked(isDomRuntime).mockReturnValue(false)
 
-      // In SSR, document.cookie is not parsed automatically.
-      // Inject the value directly via CookieStorage.init getListener.
-      CookieStorage.init((key: string) => key === 'ui-geo-code' ? 'ja-JP' : undefined)
+      CookieStorage.init((key: string) => key === UI_GEO_COOKIE_KEY ? 'ja-JP' : undefined)
 
       const geo = new GeoInstance()
       expect(geo.getLocation()).toBe('ja-JP')
@@ -124,9 +108,23 @@ describe('GeoInstance', () => {
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // getByCode
-  // ---------------------------------------------------------------------------
+  describe('setValueDefault', () => {
+    it('uses string or callback default value when no cookie or DOM location is set', () => {
+      vi.mocked(isDomRuntime).mockReturnValue(false)
+      const geo = new GeoInstance()
+
+      geo.setValueDefault('es-ES')
+      expect(geo.getLocation()).toBe('es-ES')
+      expect(geo.getCountry()).toBe('ES')
+      expect(geo.getLanguage()).toBe('es')
+
+      geo.setValueDefault(() => 'vi-VN')
+      expect(geo.getLocation()).toBe('vi-VN')
+      expect(geo.getCountry()).toBe('VN')
+      expect(geo.getLanguage()).toBe('vi')
+    })
+  })
+
   describe('getByCode', () => {
     let geo: GeoInstance
 
@@ -135,42 +133,39 @@ describe('GeoInstance', () => {
     })
 
     it('finds item by full "language-country" code', () => {
-      const res = geo.getByCode('ru-RU')
-      expect(res.language).toBe('ru')
-      expect(res.country).toBe('RU')
-      expect(res.standard).toBe('ru-RU')
+      const result = geo.getByCode('ru-RU')
+      expect(result.language).toBe('ru')
+      expect(result.country).toBe('RU')
+      expect(result.standard).toBe('ru-RU')
     })
 
     it('finds item by reversed "country-language" code', () => {
-      const res = geo.getByCode('RU-ru')
-      expect(res.country).toBe('RU')
-      expect(res.language).toBe('ru')
+      const result = geo.getByCode('RU-ru')
+      expect(result.country).toBe('RU')
+      expect(result.language).toBe('ru')
     })
 
     it('finds item by country-only uppercase code', () => {
-      const res = geo.getByCode('US')
-      expect(res.country).toBe('US')
+      const result = geo.getByCode('US')
+      expect(result.country).toBe('US')
     })
 
     it('finds item by language-only lowercase code', () => {
-      const res = geo.getByCode('fr')
-      expect(res.language).toBe('fr')
+      const result = geo.getByCode('fr')
+      expect(result.language).toBe('fr')
     })
 
     it('returns the first list item for an unrecognised code', () => {
-      const res = geo.getByCode('invalid')
-      expect(res.standard).toBe('en-US')
+      const result = geo.getByCode('invalid')
+      expect(result.standard).toBe('en-US')
     })
 
     it('returns the first list item when code is undefined', () => {
-      const res = geo.getByCode(undefined)
-      expect(res.standard).toBe('en-US')
+      const result = geo.getByCode(undefined)
+      expect(result.standard).toBe('en-US')
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // getByCodeFull
-  // ---------------------------------------------------------------------------
   describe('getByCodeFull', () => {
     let geo: GeoInstance
 
@@ -196,9 +191,6 @@ describe('GeoInstance', () => {
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // getByCountry
-  // ---------------------------------------------------------------------------
   describe('getByCountry', () => {
     let geo: GeoInstance
 
@@ -206,10 +198,13 @@ describe('GeoInstance', () => {
       geo = new GeoInstance()
     })
 
-    it('finds item by primary country code', () => {
+    it('finds item by primary country code or countryAlternative', () => {
       const item = geo.getByCountry('DE')
       expect(item).toBeDefined()
       expect(item?.country).toBe('DE')
+
+      geo.add('DE', { countryAlternative: ['DD'] })
+      expect(geo.getByCountry('DD')?.country).toBe('DE')
     })
 
     it('returns undefined for an unknown country code', () => {
@@ -217,9 +212,6 @@ describe('GeoInstance', () => {
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // getByLanguage
-  // ---------------------------------------------------------------------------
   describe('getByLanguage', () => {
     let geo: GeoInstance
 
@@ -227,10 +219,13 @@ describe('GeoInstance', () => {
       geo = new GeoInstance()
     })
 
-    it('finds item by primary language code', () => {
+    it('finds item by primary language code or languageAlternative', () => {
       const item = geo.getByLanguage('ru')
       expect(item).toBeDefined()
       expect(item?.language).toBe('ru')
+
+      geo.add('RU', { languageAlternative: ['rus'] })
+      expect(geo.getByLanguage('rus')?.country).toBe('RU')
     })
 
     it('returns undefined for an unknown language code', () => {
@@ -238,33 +233,27 @@ describe('GeoInstance', () => {
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // find (alias for getByCode)
-  // ---------------------------------------------------------------------------
-  describe('find', () => {
+  describe('find (alias for getByCode)', () => {
     it('delegates to getByCode and returns GeoItemFull', () => {
       const geo = new GeoInstance()
-      const res = geo.find('de-DE')
-      expect(res.country).toBe('DE')
-      expect(res.language).toBe('de')
-      expect(res.standard).toBe('de-DE')
+      const result = geo.find('de-DE')
+      expect(result.country).toBe('DE')
+      expect(result.language).toBe('de')
+      expect(result.standard).toBe('de-DE')
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // toStandard
-  // ---------------------------------------------------------------------------
   describe('toStandard', () => {
-    it('formats a GeoItem as "language-country"', () => {
+    it('formats a GeoItem as "language-country" and supports optional language override', () => {
       const geo = new GeoInstance()
-      const item = geo.getByLanguage('en')!
-      expect(geo.toStandard(item)).toBe(`${item.language}-${item.country}`)
+      const item = geo.getByCountry('VN')!
+      expect(geo.toStandard(item)).toBe('vi-VN')
+      expect(geo.toStandard(item, 'en')).toBe('en-VN')
+      // Unknown language override falls back to item.language
+      expect(geo.toStandard(item, 'zz')).toBe('vi-VN')
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // getList
-  // ---------------------------------------------------------------------------
   describe('getList', () => {
     it('returns a non-empty array of GeoItems', () => {
       const geo = new GeoInstance()
@@ -274,9 +263,6 @@ describe('GeoInstance', () => {
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // getFirstDay
-  // ---------------------------------------------------------------------------
   describe('getFirstDay', () => {
     it('returns a non-empty string for the current location', () => {
       const geo = new GeoInstance()
@@ -288,54 +274,47 @@ describe('GeoInstance', () => {
     it('always has a value — defaults to "Mo" when source data has none', () => {
       const geo = new GeoInstance()
       geo.set('en-GB')
-      // toFull() guarantees 'Mo' as the default; any known code returns a valid value
       expect(['Mo', 'Su']).toContain(geo.getFirstDay())
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // Timezone
-  // ---------------------------------------------------------------------------
   describe('Timezone', () => {
     it('getTimezone() returns a number', () => {
       const geo = new GeoInstance()
       expect(typeof geo.getTimezone()).toBe('number')
     })
 
-    it('formats UTC+3 correctly (offset -180 → "+03:00")', () => {
+    it('formats UTC+3 correctly (offset -180 -> "+03:00")', () => {
       const geo = new GeoInstance()
       geo.setTimezone(-180)
       expect(geo.getTimezoneFormat()).toBe('+03:00')
     })
 
-    it('formats UTC-5 correctly (offset 300 → "-05:00")', () => {
+    it('formats UTC-5 correctly (offset 300 -> "-05:00")', () => {
       const geo = new GeoInstance()
       geo.setTimezone(300)
       expect(geo.getTimezoneFormat()).toBe('-05:00')
     })
 
-    it('formats UTC+5:30 correctly (offset -330 → "+05:30")', () => {
+    it('formats UTC+5:30 correctly (offset -330 -> "+05:30")', () => {
       const geo = new GeoInstance()
       geo.setTimezone(-330)
       expect(geo.getTimezoneFormat()).toBe('+05:30')
     })
 
-    it('formats UTC+0 correctly (offset 0 → "-00:00")', () => {
+    it('formats UTC+0 correctly (offset 0 -> "+00:00")', () => {
       const geo = new GeoInstance()
       geo.setTimezone(0)
-      expect(geo.getTimezoneFormat()).toBe('-00:00')
+      expect(geo.getTimezoneFormat()).toBe('+00:00')
     })
 
-    it('setTimezone updates the stored value', () => {
+    it('setTimezone updates the stored value and returns this', () => {
       const geo = new GeoInstance()
-      geo.setTimezone(0)
+      expect(geo.setTimezone(0)).toBe(geo)
       expect(geo.getTimezone()).toBe(0)
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // set
-  // ---------------------------------------------------------------------------
   describe('set', () => {
     it('updates location, item, and language', () => {
       const geo = new GeoInstance()
@@ -350,28 +329,23 @@ describe('GeoInstance', () => {
       const geo = new GeoInstance()
       geo.set('it-IT', true)
 
-      // Another instance in the same context must see the persisted location
-      const geo2 = new GeoInstance()
-      expect(geo2.getLocation()).toBe('it-IT')
+      const secondGeo = new GeoInstance()
+      expect(secondGeo.getLocation()).toBe('it-IT')
     })
 
     it('does NOT persist when save is omitted — a fresh context returns default', () => {
       vi.mocked(isDomRuntime).mockReturnValue(true)
       const geo = new GeoInstance()
-      geo.set('ko-KR') // no `save`
+      geo.set('ko-KR')
 
-      // Reset context to simulate a fresh request
       resetSingletons()
       vi.mocked(isDomRuntime).mockReturnValue(false)
 
-      const geo2 = new GeoInstance()
-      expect(geo2.getLocation()).toBe('en-GB')
+      const secondGeo = new GeoInstance()
+      expect(secondGeo.getLocation()).toBe('en-GB')
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // Data accessors
-  // ---------------------------------------------------------------------------
   describe('Data Accessors', () => {
     it('get() returns the raw GeoItemFull', () => {
       const geo = new GeoInstance()
@@ -424,18 +398,13 @@ describe('GeoInstance', () => {
       expect(geo.getLanguage()).toBe('zh')
     })
 
-    it('getCountry() returns the country from resolved GeoItem, not raw code', () => {
+    it('getCountry() returns the country from resolved GeoItem', () => {
       const geo = new GeoInstance()
-      geo.set('en-VN') // Vietnam with English: resolves to first "en" match
-      // The assertion mirrors the actual lookup behaviour
-      expect(typeof geo.getCountry()).toBe('string')
-      expect(geo.getCountry()).toHaveLength(2)
+      geo.set('en-VN')
+      expect(geo.getCountry()).toBe('VN')
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // add and addList
-  // ---------------------------------------------------------------------------
   describe('add and addList', () => {
     it('creates a new country entry when country does not exist in the list', () => {
       const geo = new GeoInstance()
@@ -466,20 +435,24 @@ describe('GeoInstance', () => {
       const updated = geo.getByCountry('US')
       expect(updated?.firstDay).toBe('Mo')
       expect(updated?.phoneWithin).toBe('9')
-      expect(updated?.language).toBe('en') // preserves existing language
+      expect(updated?.language).toBe('en')
       expect(updated?.country).toBe('US')
     })
 
-    it('merges unit configurations for existing countries', () => {
+    it('deep-merges nested unit configurations for existing countries without wiping existing units', () => {
       const geo = new GeoInstance()
-      geo.add('FR', {
+      const originalKilometer = geo.getByCountry('US')?.unit?.kilometer
+      expect(originalKilometer).toBe('mile')
+
+      geo.add('US', {
         unit: {
           meter: 'm_custom'
         }
       })
 
-      const item = geo.getByCountry('FR')
+      const item = geo.getByCountry('US')
       expect(item?.unit?.meter).toBe('m_custom')
+      expect(item?.unit?.kilometer).toBe(originalKilometer)
     })
 
     it('updates current item when the modified country is the active country', () => {

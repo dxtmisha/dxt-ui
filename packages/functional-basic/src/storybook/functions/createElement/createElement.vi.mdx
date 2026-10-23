@@ -8,13 +8,13 @@ Trong môi trường trình duyệt, tạo một phần tử HTML mới với th
 
 Hàm này kiểm tra sự tồn tại của môi trường DOM thông qua `isDomRuntime()`. Nếu mã không chạy trong trình duyệt (ví dụ: trên máy chủ trong quá trình SSR), hàm sẽ trả về `undefined`.
 
-> **Cảnh báo (SSR):** Khi chạy trên máy chủ, hàm luôn trả về `undefined`. Nếu bạn sử dụng nó trong logic hiển thị của component, nó có thể dẫn đến lỗi không khớp hyradtion (hydration mismatch). Bạn nên gọi hàm này trong các hook vòng đời chỉ chạy trên client (ví dụ: `onMounted` trong Vue hoặc `useEffect` trong React).
+> **Cảnh báo (SSR):** Khi chạy trên máy chủ, hàm luôn trả về `undefined`. Nếu bạn sử dụng nó trong logic hiển thị của component, nó có thể dẫn đến lỗi không khớp hydration (hydration mismatch). Bạn nên gọi hàm này trong các hook vòng đời chỉ chạy trên client (ví dụ: `onMounted` trong Vue hoặc `useEffect` trong React).
 
 **Tham số:**
-- `parentElement?: HTMLElement` — Phần tử mẹ sẽ chứa nút DOM mới.
+- `parentElement?: Element | DocumentFragment` — Nút DOM cha (`Element` hoặc `DocumentFragment`) sẽ chứa nút DOM mới.
 - `tagName: string = 'div'` — Chuỗi xác định loại phần tử sẽ được tạo (mặc định là `'div'`).
-- `options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void)` — Một đối tượng chứa các thuộc tính cho phần tử (ví dụ: `id`, `className`, trình xử lý sự kiện), hoặc một hàm callback để tùy chỉnh cấu hình cho phần tử.
-- `referenceElement?: HTMLElement` — Phần tử mà phía trước nó sẽ chèn phần tử mới. Nếu không được đặt (hoặc truyền `null`), phần tử sẽ được chèn vào cuối các nút con của thẻ mẹ (`appendChild`).
+- `options?: Partial<T> | Record<string, unknown> | ((element: T) => void)` — Một đối tượng chứa các thuộc tính cho phần tử (ví dụ: `id`, `className`, trình xử lý sự kiện), hoặc một hàm callback để tùy chỉnh cấu hình cho phần tử.
+- `referenceElement?: Node | null` — Nút mà phía trước nó sẽ chèn phần tử mới. Nếu không được đặt (hoặc truyền `null`), phần tử sẽ được chèn vào cuối các nút con của thẻ mẹ (`appendChild`).
 
 **Trả về:**
 `T | undefined` — Phần tử HTML đã được tạo, hoặc `undefined` nếu môi trường DOM không khả dụng.

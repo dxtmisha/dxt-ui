@@ -9,8 +9,8 @@ A flexible utility designed to handle arguments that can be either a static valu
 This pattern is highly effective for implementing lazy evaluation, dynamic default values, or configuration properties that can be either fixed or computed.
 
 **Parameters:**
-- `callback: T | ((...args: any[]) => T)` — The value to process. Can be a literal value or a function returning type `T`.
-- `...args: any[]` (optional) — Arguments to pass to the function if `callback` is callable.
+- `callback: T | FunctionArgs<never, T> | ((...args: Args) => T)` — The value to process. Can be a literal value or a function returning type `T`.
+- `...args: Args` — Arguments to pass to the function if `callback` is callable.
 
 **Returns:**
 `T` — The result of the function execution or the raw value.

@@ -1,4 +1,4 @@
-import { type FunctionArgs } from '../types/basicTypes'
+import { type FunctionAnyType } from '../types/basicTypes'
 
 /**
  * Checks if the function is a callback function.
@@ -7,6 +7,6 @@ import { type FunctionArgs } from '../types/basicTypes'
  * @param callback the value being checked/ проверяемое значение
  * @returns true if function / true, если функция
  */
-export function isFunction<T>(callback: T): callback is Extract<T, FunctionArgs<any, any>> {
+export function isFunction<T>(callback: T): callback is Extract<T, FunctionAnyType> {
   return callback instanceof Function || typeof callback === 'function'
 }

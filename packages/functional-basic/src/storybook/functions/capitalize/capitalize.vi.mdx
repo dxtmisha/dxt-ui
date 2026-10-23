@@ -7,11 +7,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Viết hoa chữ cái đầu tiên của một chuỗi. Trả về cùng một chuỗi nếu nó trống. Hàm này mạnh mẽ và an toàn cho các đầu vào không phải chuỗi.
 
 **Tham số:**
-- `value: string` — Chuỗi gốc cần viết hoa.
-- `isLocale: boolean` (tùy chọn) — Nếu là `true`, sử dụng địa phương (locale) toàn cục hiện tại (thông qua `Geo.getLocation()`) cho các quy tắc viết hoa.
+- `value?: T` — Chuỗi gốc cần viết hoa.
+- `locale: boolean | string = false` — Nếu là `true`, sử dụng địa phương (locale) toàn cục hiện tại (thông qua `Geo.getLocation()`); nếu truyền một chuỗi, sử dụng chuỗi đó làm mã locale cụ thể (ví dụ: `'tr-TR'`).
 
 **Trả về:**
-`string` — Chuỗi với chữ cái đầu tiên được viết hoa.
+`Capitalize<T>` — Chuỗi với chữ cái đầu tiên được viết hoa.
 
 ```typescript
 import { capitalize, Geo } from '@dxtmisha/functional-basic'
@@ -19,7 +19,10 @@ import { capitalize, Geo } from '@dxtmisha/functional-basic'
 console.log(capitalize('hello')) // 'Hello'
 console.log(capitalize('123'))   // '123'
 
-// Viết hoa theo ngữ cảnh địa phương (ví dụ: đối với tiếng Thổ Nhĩ Kỳ 'i' -> 'İ')
+// Viết hoa theo ngữ cảnh địa phương toàn cục qua Geo
 Geo.set('tr-TR')
 console.log(capitalize('i', true)) // 'İ'
+
+// Viết hoa với mã locale được chỉ định trực tiếp
+console.log(capitalize('i', 'tr-TR')) // 'İ'
 ```

@@ -1,3 +1,5 @@
+import { type ObjectItem } from '../types/basicTypes'
+
 /**
  * Checks if a value is an object.
  *
@@ -5,6 +7,6 @@
  * @param value input value/ входное значение
  * @returns true if object/ true, если объект
  */
-export function isObject<T>(value: T): value is Extract<T, Record<any, any>> {
+export function isObject<T>(value: T): value is Extract<T, ObjectItem> {
   return Boolean(value && typeof value === 'object')
 }

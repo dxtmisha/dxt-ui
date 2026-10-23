@@ -1,3 +1,3 @@
-// md5:27a5502cddee2ff3d51a8a2c0f65457f true
-/** Scrolls a container element to a target element with optional centering. @keywords scroll, scroll-to, element, center */
-export declare function goScroll(selector: string, elementTo: HTMLElement | undefined, elementCenter?: HTMLElement): void;
+// md5:1abf4917bb3e49aaa2c80fce8d1ffb35 true
+/** Quickly scrolls a container element or selector to the specified target element with optional centering and indent offset. @keywords scroll, scrollTo, goScroll, container scroll, scroll into view */
+export declare function goScroll(target: string | HTMLElement, elementTo?: HTMLElement | null, elementCenter?: HTMLElement | null, indent?: number): void;

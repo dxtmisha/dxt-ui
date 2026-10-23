@@ -1,10 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ErrorCenterHandler } from '../ErrorCenterHandler'
+import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 import type { ErrorCenterCauseItem, ErrorCenterHandlerList } from '../../types/errorCenterTypes'
 
 describe('ErrorCenterHandler', () => {
   let handler: ErrorCenterHandler
-  let consoleErrorSpy: any
+  let consoleErrorSpy: ReturnType<typeof vi.spyOn>
 
   beforeEach(() => {
     handler = new ErrorCenterHandler()
@@ -12,18 +13,45 @@ describe('ErrorCenterHandler', () => {
     consoleErrorSpy.mockClear()
   })
 
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('should initialize with optional handlers and isConsole flag in constructor', () => {
+    const groupCallback = vi.fn()
+    const customHandler = new ErrorCenterHandler(
+      [{ group: 'initial', handlers: [groupCallback] }],
+      false
+    )
+
+    expect(customHandler.has('initial')).toBe(true)
+
+    const cause: ErrorCenterCauseItem = { code: 'INIT_ERR', group: 'initial' }
+    customHandler.on(cause)
+
+    expect(groupCallback).toHaveBeenCalledWith(cause)
+    expect(consoleErrorSpy).not.toHaveBeenCalled()
+  })
+
   it('should add a handler and check if it exists', () => {
-    handler.add('group1', () => {})
+    const returnValue = handler.add('group1', () => {})
+    expect(returnValue).toBe(handler)
     expect(handler.has('group1')).toBe(true)
     expect(handler.has('group2')).toBe(false)
   })
 
-  it('should get a handler item', () => {
-    const callback = () => {}
-    handler.add('group1', callback)
+  it('should append multiple handlers to an existing group', () => {
+    const firstCallback = vi.fn()
+    const secondCallback = vi.fn()
+
+    handler.add('group1', firstCallback)
+    handler.add('group1', secondCallback)
+
     const item = handler.get('group1')
     expect(item?.group).toBe('group1')
-    expect(item?.handlers).toContain(callback)
+    expect(item?.handlers).toHaveLength(2)
+    expect(item?.handlers).toContain(firstCallback)
+    expect(item?.handlers).toContain(secondCallback)
   })
 
   it('should add multiple handlers using addList', () => {
@@ -31,21 +59,42 @@ describe('ErrorCenterHandler', () => {
       { group: 'group1', handlers: [() => {}] },
       { group: 'group2', handlers: [() => {}] }
     ]
-    handler.addList(list)
+    const returnValue = handler.addList(list)
+    expect(returnValue).toBe(handler)
     expect(handler.has('group1')).toBe(true)
     expect(handler.has('group2')).toBe(true)
   })
 
-  it('should trigger handlers on "on" call', () => {
+  it('should trigger handlers on "on" call and log details to console', () => {
     const callback = vi.fn()
-    const cause: ErrorCenterCauseItem = { code: 'ERR001', group: 'group1', message: 'Test error' }
+    const cause: ErrorCenterCauseItem = {
+      code: 'ERR001',
+      group: 'group1',
+      message: 'Test error',
+      details: { reason: 'timeout' }
+    }
 
     handler.add('group1', callback)
-    handler.on(cause)
+    const returnValue = handler.on(cause)
 
+    expect(returnValue).toBe(handler)
     expect(callback).toHaveBeenCalledWith(cause)
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center: ERR001')
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center/message: ', 'Test error')
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center/details: ', { reason: 'timeout' })
+  })
+
+  it('should log stack trace in non-DOM runtime and omit trace in DOM runtime', () => {
+    const cause: ErrorCenterCauseItem = { code: 'SSR_ERR', message: 'Server error' }
+
+    vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
+    handler.on(cause)
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center/trace: ', expect.any(String))
+
+    consoleErrorSpy.mockClear()
+    vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
+    handler.on(cause)
+    expect(consoleErrorSpy).not.toHaveBeenCalledWith('Error Center/trace: ', expect.anything())
   })
 
   it('should still log to the console if no handlers exist', () => {
@@ -66,29 +115,29 @@ describe('ErrorCenterHandler', () => {
   })
 
   it('should trigger registered global callbacks on every error', () => {
-    const callback1 = vi.fn()
-    const callback2 = vi.fn()
+    const firstCallback = vi.fn()
+    const secondCallback = vi.fn()
     const groupCallback = vi.fn()
 
-    handler.addCallback(callback1)
-    handler.addCallback(callback2)
+    expect(handler.addCallback(firstCallback)).toBe(handler)
+    handler.addCallback(secondCallback)
     handler.add('group1', groupCallback)
 
-    const cause1: ErrorCenterCauseItem = { code: 'ERR001', group: 'group1', message: 'Group 1 error' }
-    const cause2: ErrorCenterCauseItem = { code: 'ERR002', group: 'group2', message: 'Group 2 error' }
+    const firstCause: ErrorCenterCauseItem = { code: 'ERR001', group: 'group1', message: 'Group 1 error' }
+    const secondCause: ErrorCenterCauseItem = { code: 'ERR002', group: 'group2', message: 'Group 2 error' }
 
-    handler.on(cause1)
-    expect(callback1).toHaveBeenCalledWith(cause1)
-    expect(callback2).toHaveBeenCalledWith(cause1)
-    expect(groupCallback).toHaveBeenCalledWith(cause1)
+    handler.on(firstCause)
+    expect(firstCallback).toHaveBeenCalledWith(firstCause)
+    expect(secondCallback).toHaveBeenCalledWith(firstCause)
+    expect(groupCallback).toHaveBeenCalledWith(firstCause)
 
-    handler.on(cause2)
-    expect(callback1).toHaveBeenCalledWith(cause2)
-    expect(callback2).toHaveBeenCalledWith(cause2)
+    handler.on(secondCause)
+    expect(firstCallback).toHaveBeenCalledWith(secondCause)
+    expect(secondCallback).toHaveBeenCalledWith(secondCause)
   })
 
   it('should not log to console when isConsole is false', () => {
-    handler.setIsConsole(false)
+    expect(handler.setIsConsole(false)).toBe(handler)
     const cause: ErrorCenterCauseItem = { code: 'ERR_SILENT', message: 'Silent error' }
     handler.on(cause)
 
@@ -98,13 +147,13 @@ describe('ErrorCenterHandler', () => {
   it('should filter console logging using a function for isConsole', () => {
     handler.setIsConsole(cause => cause.code !== 'IGNORE_ME')
 
-    const cause1: ErrorCenterCauseItem = { code: 'IGNORE_ME', message: 'Ignore' }
-    const cause2: ErrorCenterCauseItem = { code: 'LOG_ME', message: 'Log' }
+    const ignoredCause: ErrorCenterCauseItem = { code: 'IGNORE_ME', message: 'Ignore' }
+    const loggedCause: ErrorCenterCauseItem = { code: 'LOG_ME', message: 'Log' }
 
-    handler.on(cause1)
+    handler.on(ignoredCause)
     expect(consoleErrorSpy).not.toHaveBeenCalled()
 
-    handler.on(cause2)
+    handler.on(loggedCause)
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center: LOG_ME')
   })
 })

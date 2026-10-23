@@ -218,33 +218,33 @@ describe('escapeExp', () => {
     })
 
     it('should safely return empty string for null and undefined', () => {
-      expect(escapeExp(null as any)).toBe('')
-      expect(escapeExp(undefined as any)).toBe('')
+      expect(escapeExp(null as unknown as string)).toBe('')
+      expect(escapeExp(undefined as unknown as string)).toBe('')
     })
 
     it('should safely handle number 0 without returning empty string', () => {
-      expect(escapeExp(0 as any)).toBe('0')
+      expect(escapeExp(0 as unknown as string)).toBe('0')
     })
 
     it('should safely handle positive and negative integers', () => {
-      expect(escapeExp(12345 as any)).toBe('12345')
-      expect(escapeExp(-42 as any)).toBe('\\-42')
+      expect(escapeExp(12345 as unknown as string)).toBe('12345')
+      expect(escapeExp(-42 as unknown as string)).toBe('\\-42')
     })
 
     it('should safely handle floating point numbers', () => {
-      expect(escapeExp(3.14159 as any)).toBe('3\\.14159')
+      expect(escapeExp(3.14159 as unknown as string)).toBe('3\\.14159')
     })
 
     it('should safely handle boolean values', () => {
-      expect(escapeExp(false as any)).toBe('false')
-      expect(escapeExp(true as any)).toBe('true')
+      expect(escapeExp(false as unknown as string)).toBe('false')
+      expect(escapeExp(true as unknown as string)).toBe('true')
     })
 
     it('should safely handle objects with custom toString implementation', () => {
       const customObject = {
         toString: () => 'price: $100.00 (discount -20%)'
       }
-      expect(escapeExp(customObject as any)).toBe(
+      expect(escapeExp(customObject as unknown as string)).toBe(
         'price: \\$100\\.00 \\(discount \\-20%\\)'
       )
     })

@@ -9,10 +9,10 @@ Trả về ngày hiện tại theo định dạng được chỉ định. Hàm n
 > **Cảnh báo (SSR):** Việc sử dụng hàm này để render trong SSR có thể dẫn đến lỗi hydration mismatch vì thời gian hoặc múi giờ trên máy chủ có thể khác với thời gian trên máy khách. Khuyến khích chỉ sử dụng hàm này bên trong các hook phía máy khách (ví dụ: `onMounted` trong Vue hoặc `useEffect` trong React).
 
 **Tham số:**
-- `format: GeoDate` — loại định dạng ngày đầu ra (mặc định là `'datetime'`). Hỗ trợ các giá trị: `'date'`, `'time'`, `'datetime'`, `'full'` và các giá trị khác.
+- `format?: GeoDate` — loại định dạng ngày đầu ra (mặc định là `'datetime'`). Hỗ trợ các giá trị: `'date'`, `'time'`, `'datetime'`, `'full'` và các giá trị khác.
 
 **Trả về:**
-Ngày hiện tại dưới dạng chuỗi.
+`string` — Ngày hiện tại theo định dạng được chỉ định.
 
 ```typescript
 import { getCurrentDate } from '@dxtmisha/functional-basic'

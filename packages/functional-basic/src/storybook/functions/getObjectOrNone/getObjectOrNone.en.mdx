@@ -10,7 +10,7 @@ A simple utility that checks whether the passed value is an actual object (not `
 - `value: T` — Any value, usually expected to be an object.
 
 **Returns:**
-`T & Record<string, any>` — The original object if the check passes; otherwise, an empty object `{}`.
+`T & Record<string, unknown>` — The original object if the check passes; otherwise, an empty object `{}`.
 
 ```typescript
 import { getObjectOrNone } from '@dxtmisha/functional-basic'

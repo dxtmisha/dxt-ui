@@ -84,21 +84,21 @@ describe('capitalize', () => {
 
   describe('Type coercion and non-string inputs (via toString)', () => {
     it('should safely convert and capitalize numbers', () => {
-      expect(capitalize(0 as any)).toBe('0')
-      expect(capitalize(123 as any)).toBe('123')
-      expect(capitalize(-42 as any)).toBe('-42')
-      expect(capitalize(3.14 as any)).toBe('3.14')
-      expect(capitalize(NaN as any)).toBe('NaN')
-      expect(capitalize(Infinity as any)).toBe('Infinity')
+      expect(capitalize(0 as unknown as string)).toBe('0')
+      expect(capitalize(123 as unknown as string)).toBe('123')
+      expect(capitalize(-42 as unknown as string)).toBe('-42')
+      expect(capitalize(3.14 as unknown as string)).toBe('3.14')
+      expect(capitalize(NaN as unknown as string)).toBe('NaN')
+      expect(capitalize(Infinity as unknown as string)).toBe('Infinity')
     })
 
     it('should safely convert and capitalize booleans', () => {
-      expect(capitalize(true as any)).toBe('True')
-      expect(capitalize(false as any)).toBe('False')
+      expect(capitalize(true as unknown as string)).toBe('True')
+      expect(capitalize(false as unknown as string)).toBe('False')
     })
 
     it('should return empty string for null, undefined, or empty invocation', () => {
-      expect(capitalize(null as any)).toBe('')
+      expect(capitalize(null as unknown as string)).toBe('')
       expect(capitalize(undefined)).toBe('')
       expect(capitalize()).toBe('')
     })
@@ -107,7 +107,7 @@ describe('capitalize', () => {
       const customObject = {
         toString: () => 'custom'
       }
-      expect(capitalize(customObject as any)).toBe('Custom')
+      expect(capitalize(customObject as unknown as string)).toBe('Custom')
     })
   })
 

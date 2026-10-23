@@ -10,7 +10,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `value: T` — Значение, которое необходимо преобразовать в массив.
 
 **Возвращает:**
-`T[]` — Массив, содержащий переданное значение.
+`T extends unknown[] ? T : [T]` — Массив, содержащий переданное значение.
 
 ```typescript
 import { toArray } from '@dxtmisha/functional-basic'

@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getOnlyText`
 
-Một tiện ích giúp trích xuất chỉ các chữ cái, con số và dấu cách từ bất kỳ dữ liệu đầu vào nào, loại bỏ các dấu câu, ký tự đặc biệt và các ký hiệu khác.
+Một tiện ích giúp trích xuất chỉ các chữ cái (Unicode), dấu phụ, con số và dấu cách từ bất kỳ dữ liệu đầu vào nào, loại bỏ các dấu câu, ký tự đặc biệt cùng khoảng trắng ở hai đầu chuỗi.
 
 Điều này rất hữu ích để làm sạch dữ liệu nhập từ người dùng hoặc chuẩn bị văn bản để xử lý đơn giản hơn khi chỉ cần nội dung chữ và số.
 
@@ -12,13 +12,13 @@ Một tiện ích giúp trích xuất chỉ các chữ cái, con số và dấu 
 - `text: unknown` — Giá trị cần xử lý.
 
 **Trả về:**
-`string` — Một chuỗi chỉ chứa các ký tự là chữ cái, số hoặc dấu cách.
+`string` — Một chuỗi đã cắt khoảng trắng hai đầu và chỉ chứa các ký tự là chữ cái, dấu phụ, số hoặc dấu cách.
 
 ```typescript
 import { getOnlyText } from '@dxtmisha/functional-basic'
 
 console.log(getOnlyText('Hello, World!')) // 'Hello World'
-console.log(getOnlyText('Giá: 100.000đ')) // 'Giá 100000'
+console.log(getOnlyText('Giá: 100.000đ')) // 'Giá 100000đ'
 console.log(getOnlyText('Văn bản với ký tự: #@!%')) // 'Văn bản với ký tự'
 console.log(getOnlyText(12345)) // '12345'
 console.log(getOnlyText(null)) // ''

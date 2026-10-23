@@ -32,9 +32,12 @@ describe('forEach', () => {
       expect(result).toEqual([11, 21])
     })
 
-    it('should return an empty array for an empty input array', () => {
-      const result = forEach([], () => 'test')
+    it('should return an empty array for an empty input array without calling callback', () => {
+      const callback = vi.fn(() => 'test')
+      const result = forEach([], callback)
+
       expect(result).toEqual([])
+      expect(callback).not.toHaveBeenCalled()
     })
   })
 
@@ -52,8 +55,9 @@ describe('forEach', () => {
       const data = { alpha: 100 }
       const keys: string[] = []
 
-      forEach(data, (_, key) => {
+      forEach(data, (_, key, collection) => {
         keys.push(key)
+        expect(collection).toBe(data)
       })
 
       expect(keys).toEqual(['alpha'])
@@ -61,7 +65,7 @@ describe('forEach', () => {
 
     it('should not iterate over inherited prototype properties', () => {
       const prototype = { inherited: 999 }
-      const data = Object.create(prototype)
+      const data = Object.create(prototype) as Record<string, number>
       data.own = 1
 
       const result = forEach(data, item => item)
@@ -69,7 +73,7 @@ describe('forEach', () => {
     })
 
     it('should handle Object.create(null) safely', () => {
-      const data = Object.create(null)
+      const data = Object.create(null) as Record<string, string>
       data.key = 'value'
 
       const result = forEach(data, item => item)
@@ -88,12 +92,12 @@ describe('forEach', () => {
     })
 
     it('should correctly support non-string Map keys (number, object, symbol)', () => {
-      const objKey = { id: 1 }
-      const symKey = Symbol('test')
+      const objectKey = { id: 1 }
+      const symbolKey = Symbol('test')
       const data = new Map<number | object | symbol, string>([
         [42, 'answer'],
-        [objKey, 'objectValue'],
-        [symKey, 'symbolValue']
+        [objectKey, 'objectValue'],
+        [symbolKey, 'symbolValue']
       ])
 
       const receivedKeys: Array<number | object | symbol> = []
@@ -104,7 +108,7 @@ describe('forEach', () => {
       })
 
       expect(result).toEqual(['answer', 'objectValue', 'symbolValue'])
-      expect(receivedKeys).toEqual([42, objKey, symKey])
+      expect(receivedKeys).toEqual([42, objectKey, symbolKey])
     })
   })
 
@@ -157,7 +161,7 @@ describe('forEach', () => {
     })
 
     it('should NOT filter out other falsy values (0, false, "", null, NaN)', () => {
-      const data = [0, false, '', null, NaN]
+      const data = [0, false, '', null, Number.NaN]
       const result = forEach(data, item => item)
 
       expect(result).toHaveLength(5)
@@ -171,15 +175,15 @@ describe('forEach', () => {
 
   describe('Empty collections and boundary conditions', () => {
     it('should return an empty array for an empty Object', () => {
-      expect(forEach({}, () => 'val')).toEqual([])
+      expect(forEach({}, () => 'value')).toEqual([])
     })
 
     it('should return an empty array for an empty Map', () => {
-      expect(forEach(new Map(), () => 'val')).toEqual([])
+      expect(forEach(new Map(), () => 'value')).toEqual([])
     })
 
     it('should return an empty array for an empty Set', () => {
-      expect(forEach(new Set(), () => 'val')).toEqual([])
+      expect(forEach(new Set(), () => 'value')).toEqual([])
     })
 
     it('should iterate over sparse arrays and filter out undefined results unless saveUndefined is true', () => {
@@ -219,20 +223,31 @@ describe('forEach', () => {
     })
   })
 
-  describe('Invalid or non-object inputs', () => {
+  describe('Invalid or non-object inputs and immutability', () => {
     it('should return an empty array if data is null or undefined', () => {
-      expect(forEach(null as any, () => {})).toEqual([])
-      expect(forEach(undefined as any, () => {})).toEqual([])
+      expect(forEach(null as unknown as Record<string, unknown>, () => {})).toEqual([])
+      expect(forEach(undefined as unknown as Record<string, unknown>, () => {})).toEqual([])
     })
 
     it('should return an empty array if data is a primitive (number, string, boolean)', () => {
-      expect(forEach(123 as any, () => {})).toEqual([])
-      expect(forEach('string' as any, () => {})).toEqual([])
-      expect(forEach(true as any, () => {})).toEqual([])
+      expect(forEach(123 as unknown as Record<string, unknown>, () => {})).toEqual([])
+      expect(forEach('string' as unknown as Record<string, unknown>, () => {})).toEqual([])
+      expect(forEach(true as unknown as Record<string, unknown>, () => {})).toEqual([])
     })
 
     it('should return an empty array if data is a function', () => {
-      expect(forEach((() => {}) as any, () => {})).toEqual([])
+      expect(forEach((() => {}) as unknown as Record<string, unknown>, () => {})).toEqual([])
+    })
+
+    it('should not mutate the original collection during iteration', () => {
+      const originalArray = [1, 2, 3]
+      const originalObject = { first: 10, second: 20 }
+
+      forEach(originalArray, item => item * 10)
+      forEach(originalObject, item => item * 10)
+
+      expect(originalArray).toEqual([1, 2, 3])
+      expect(originalObject).toEqual({ first: 10, second: 20 })
     })
   })
 })

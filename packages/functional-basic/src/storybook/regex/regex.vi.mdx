@@ -13,7 +13,7 @@ Sử dụng chuỗi bên trong biểu thức chính quy một cách an toàn mà
 ```javascript
 import { escapeExp, getExp } from '@dxtmisha/functional-basic'
 
-// 1. Thoát các ký tự đặc biệt (.*+?^${}()|[\]\)
+// 1. Thoát các ký tự đặc biệt (.*+?^${}()|[\]\/-)
 const safeText = escapeExp('price block ($)') // 'price block \(\$\)'
 
 // 2. Tạo đối tượng RegExp nhanh chóng với các cờ
@@ -38,8 +38,8 @@ const searchAll = getSearchExp('xe đỏ')
 // 2. Tìm kiếm "chứa bất kỳ từ nào" (dựa trên OR)
 const searchAny = getSeparatingSearchExp('apple orange') // (apple|orange)
 
-// 3. Khớp từ chính xác
-const exact = getExactSearchExp('React') // Khớp 'React', nhưng không khớp 'Reactions'
+// 3. Khớp cụm từ chính xác (không phân biệt chữ hoa chữ thường)
+const exact = getExactSearchExp('React Router') // Khớp 'React Router', nhưng không khớp 'React và Router'
 ```
 
 ## Ví dụ thực tế

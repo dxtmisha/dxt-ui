@@ -4,29 +4,27 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getSeparatingSearchExp`
 
-Tiện ích tạo một `RegExp` toàn cục, không phân biệt chữ hoa/thường để tìm kiếm các chuỗi chứa **bất kỳ** từ nào từ chuỗi tìm kiếm (phân tách bằng dấu cách).
+Tiện ích tạo một `RegExp` toàn cục, không phân biệt chữ hoa/thường để tìm kiếm các chuỗi chứa **bất kỳ** từ nào từ chuỗi tìm kiếm (phân tách bằng dấu cách), hoặc sao chép một `RegExp` được truyền vào mà vẫn giữ nguyên mẫu và cờ của nó.
 
-Mỗi từ được tách bởi dấu cách, escape và nối với nhau bằng toán tử OR `|`. Điều này hữu ích khi bạn muốn tìm kết quả khớp với ít nhất một trong các từ đã nhập.
+Các từ duy nhất được tách bởi khoảng trắng, sắp xếp theo độ dài giảm dần, escape và nối với nhau bằng toán tử OR `|` bên trong một nhóm bắt giữ `(...)`. Điều này rất hữu ích khi bạn muốn tìm hoặc làm nổi bật (highlight) các kết quả khớp với bất kỳ từ nào đã nhập.
 
 **Tham số:**
 - `search: string | RegExp` — Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi dấu cách, hoặc đối tượng `RegExp`.
-- `limit: number = 128` — Độ dài tối đa cho phép của chuỗi tìm kiếm (bị bỏ qua nếu một `RegExp` được truyền vào).
+- `limit?: number` — (Tùy chọn) Độ dài tối đa cho phép của chuỗi tìm kiếm (bị bỏ qua nếu một `RegExp` được truyền vào). Mặc định là `128`.
 
 **Trả về:**
-`RegExp` — Biễu thức chính quy với cờ `ig` (toàn cục, không phân biệt chữ hoa/thường). Nếu chuỗi tìm kiếm trống hoặc vượt quá giới hạn, một regex không khớp với bất kỳ thứ gì sẽ được trả về.
+`RegExp` — Biểu thức chính quy với cờ `ig` (không phân biệt chữ hoa/thường, toàn cục) đối với truy vấn chuỗi, hoặc một bản sao `RegExp` nếu truyền vào `RegExp`. Nếu chuỗi tìm kiếm trống, `limit <= 0`, vượt quá `limit` hoặc truyền vào `RegExp` rỗng (`/(?:)/`), hàm sẽ trả về `/(?!)/` (một biểu thức chính quy không khớp với bất kỳ thứ gì).
 
 ```typescript
 import { getSeparatingSearchExp } from '@dxtmisha/functional-basic'
 
 const regex = getSeparatingSearchExp('foo bar')
 
-regex.test('foo')          // true
-regex.test('bar')          // true
-regex.test('foo bar baz')  // true
-regex.test('something')    // false
+'foo bar baz'.match(regex) // ['foo', 'bar']
+'bar'.match(regex)         // ['bar']
+'something'.match(regex)   // null
 
 // Các ký tự đặc biệt được escape tự động
 const regex2 = getSeparatingSearchExp('$10 .')
-regex2.test('$10') // true
-regex2.test('.')   // true
+'$10 .'.match(regex2) // ['$10', '.']
 ```

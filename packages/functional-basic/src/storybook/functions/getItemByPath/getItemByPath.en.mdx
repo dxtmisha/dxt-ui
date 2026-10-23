@@ -9,7 +9,7 @@ A utility that safely retrieves a value from a deeply nested object using a path
 **Note:** The function allows specifying a generic return type `R` (which defaults to `string`). It supports accessing array items by using a stringified index in the path (e.g., `"list.0.name"`).
 
 **Parameters:**
-- `item: T` — The target object or array to inspect.
+- `item: T` — The target object (`T extends Record<string, unknown>`) to inspect.
 - `path: string` — The dot-separated property path (e.g., `"user.address.city"` or `"list.1.id"`).
 
 **Returns:**

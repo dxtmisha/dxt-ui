@@ -4,22 +4,22 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getExactSearchExp`
 
-A utility that builds a case-insensitive `RegExp` for an exact match of the given string.
+A utility that builds a case-insensitive `RegExp` for an exact phrase match (without `^` and `$` anchors).
 
-Unlike `getSearchExp`, this function matches the entire string (with special characters escaped) without splitting it into separate words.
+Unlike `getSearchExp`, this function matches the entire phrase as a single contiguous substring (with special characters escaped) without splitting it into separate words.
 
 **Parameters:**
-- `search: string` — The search string for exact matching.
+- `search: string` — The search string for exact phrase matching.
 
 **Returns:**
-`RegExp` — A regular expression with the `i` flag (case-insensitive).
+`RegExp` — A regular expression with the `i` flag (case-insensitive) and pattern `(:value)`.
 
 ```typescript
 import { getExactSearchExp } from '@dxtmisha/functional-basic'
 
-const regex = getExactSearchExp('hello')
+const regex = getExactSearchExp('hello world')
 
-regex.test('hello')       // true
-regex.test('HELLO')       // true
-regex.test('hello world') // false — not an exact match
+regex.test('say hello world!')      // true — contains the exact phrase
+regex.test('HELLO WORLD')           // true — case-insensitive
+regex.test('hello beautiful world') // false — words are separated
 ```

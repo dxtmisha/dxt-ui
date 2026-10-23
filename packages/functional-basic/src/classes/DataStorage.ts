@@ -1,4 +1,3 @@
-import { encodeLiteAttribute } from '../functions/encodeLiteAttribute'
 import { executeFunction } from '../functions/executeFunction'
 import { isDomData } from '../functions/isDomData'
 import { isDomRuntime } from '../functions/isDomRuntime'
@@ -15,7 +14,7 @@ type DataStorageValue<T> = {
 }
 
 /**
- * Default prefix for storage keys/
+ * Default prefix for storage keys /
  * Префикс по умолчанию для ключей хранилища
  */
 let prefix: string = 'ui-storage'
@@ -24,8 +23,9 @@ let prefix: string = 'ui-storage'
  * Returns a list of active DataStorage instances for the current request context.
  *
  * Возвращает список активных экземпляров DataStorage для контекста текущего запроса.
+ * @returns dictionary of active DataStorage instances / словарь активных экземпляров DataStorage
  */
-const getItems = () => {
+const getItems = (): Record<string, DataStorage<unknown>> => {
   return ServerStorage.get<Record<string, DataStorage<unknown>>>(
     '__ui:data-storage__',
     () => ({})
@@ -41,24 +41,13 @@ const getItems = () => {
  */
 export class DataStorage<T> {
   /**
-   * Changing the prefix in key names. Should be called at the beginning of the code.
-   *
-   * Изменение префикса в названиях ключей. Вызывать нужно в начале кода.
-   * @param newPrefix new prefix/ новый префикс
-   * @returns void / ничего не возвращает
-   */
-  static setPrefix(newPrefix: string): void {
-    prefix = newPrefix
-  }
-
-  /**
-   * The current value stored in memory/
+   * The current value stored in memory /
    * Текущее значение, хранящееся в памяти
    */
   private value?: T
 
   /**
-   * The timestamp of when the value was last saved/
+   * The timestamp of when the value was last saved /
    * Временная метка последнего сохранения значения
    */
   private age?: number
@@ -68,8 +57,8 @@ export class DataStorage<T> {
    *
    * Конструктор.
    * @param name value name / название значения
-   * @param isSession should we use a session/ использовать ли сессию
-   * @param errorCenter error center instance/ экземпляр центра ошибок
+   * @param isSession should we use a session / использовать ли сессию
+   * @param errorCenter error center instance / экземпляр центра ошибок
    */
   constructor(
     private name: string,
@@ -125,23 +114,39 @@ export class DataStorage<T> {
     this.value = executeFunction(value)
     this.age = Date.now()
 
-    if (this.value === undefined) {
+    if (isNull(this.value)) {
       this.remove()
     } else {
-      this.getMethod()
-        ?.setItem(
-          this.getIndex(),
-          encodeLiteAttribute(
+      try {
+        this.getMethod()
+          ?.setItem(
+            this.getIndex(),
             JSON
               .stringify({
                 value: this.value,
                 age: this.age
               } as DataStorageValue<T>)
           )
-        )
+      } catch (error) {
+        this.errorCenter.on({
+          group: 'storage',
+          code: 'error',
+          details: error
+        })
+      }
     }
 
     return this.value
+  }
+
+  /**
+   * Changing the prefix in key names. Should be called at the beginning of the code.
+   *
+   * Изменение префикса в названиях ключей. Вызывать нужно в начале кода.
+   * @param newPrefix new prefix / новый префикс
+   */
+  static setPrefix(newPrefix: string): void {
+    prefix = newPrefix
   }
 
   /**
@@ -154,7 +159,15 @@ export class DataStorage<T> {
     this.value = undefined
     this.age = undefined
 
-    this.getMethod()?.removeItem(this.getIndex())
+    try {
+      this.getMethod()?.removeItem(this.getIndex())
+    } catch (error) {
+      this.errorCenter.on({
+        group: 'storage',
+        code: 'error',
+        details: error
+      })
+    }
 
     return this
   }
@@ -177,34 +190,11 @@ export class DataStorage<T> {
    * @param cache cache time in seconds / время кэширования в секундах
    * @returns true if data is valid / true, если данные актуальны
    */
-  private isCache(cache?: number) {
-    return isNull(cache) || (
+  private isCache(cache?: number): boolean {
+    return isNull(cache) || Boolean(
       this.age
       && this.age + (cache * 1000) >= Date.now()
     )
-  }
-
-  /**
-   * Returns an object for working with storage (localStorage or sessionStorage).
-   *
-   * Возвращает объект для работы с хранилищем (localStorage или sessionStorage).
-   * @returns Storage object or undefined / объект Storage или undefined
-   */
-  private getMethod(): Storage | undefined {
-    if (
-      isDomRuntime()
-      && !isDomData()
-    ) {
-      const storage = this.isSession
-        ? window?.sessionStorage
-        : window?.localStorage
-
-      if (storage) {
-        return storage
-      }
-    }
-
-    return undefined
   }
 
   /**
@@ -218,25 +208,56 @@ export class DataStorage<T> {
   }
 
   /**
+   * Returns an object for working with storage (localStorage or sessionStorage).
+   *
+   * Возвращает объект для работы с хранилищем (localStorage или sessionStorage).
+   * @returns Storage object or undefined / объект Storage или undefined
+   */
+  private getMethod(): Storage | undefined {
+    if (
+      isDomRuntime()
+      && !isDomData()
+    ) {
+      try {
+        const storage = this.isSession
+          ? window?.sessionStorage
+          : window?.localStorage
+
+        if (storage) {
+          return storage
+        }
+      } catch (error) {
+        this.errorCenter.on({
+          group: 'storage',
+          code: 'error',
+          details: error
+        })
+      }
+    }
+
+    return undefined
+  }
+
+  /**
    * Getting raw data from storage.
    *
    * Получение "сырых" данных из хранилища.
    * @returns parsed data or undefined / распарсенные данные или undefined
    */
   private getValue(): DataStorageValue<T> | undefined {
-    const value = this.getMethod()
-      ?.getItem?.(this.getIndex())
+    try {
+      const value = this.getMethod()
+        ?.getItem?.(this.getIndex())
 
-    if (value) {
-      try {
+      if (value) {
         return JSON.parse(value)
-      } catch (e) {
-        this.errorCenter.on({
-          group: 'storage',
-          code: 'error',
-          details: e
-        })
       }
+    } catch (error) {
+      this.errorCenter.on({
+        group: 'storage',
+        code: 'error',
+        details: error
+      })
     }
 
     return undefined

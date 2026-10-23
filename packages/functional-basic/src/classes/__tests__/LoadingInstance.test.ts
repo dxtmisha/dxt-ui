@@ -141,13 +141,13 @@ describe('LoadingInstance', () => {
 
       dispatchSpy.mockClear()
 
-      loading.hide() // value: 2
+      loading.hide()
       expect(dispatchSpy).toHaveBeenCalledWith({ loading: true })
 
-      loading.hide() // value: 1
+      loading.hide()
       expect(dispatchSpy).toHaveBeenCalledWith({ loading: true })
 
-      loading.hide() // value: 0
+      loading.hide()
       expect(dispatchSpy).toHaveBeenCalledWith({ loading: false })
     })
 
@@ -352,29 +352,24 @@ describe('LoadingInstance', () => {
       const element1 = document.createElement('div')
       const element2 = document.createElement('div')
 
-      // Add elements to DOM for proper event handling
       document.body.appendChild(element1)
       document.body.appendChild(element2)
 
       loading.registrationEvent(listener, element1)
       loading.registrationEvent(listener, element2)
 
-      // Verify both registrations are present
       // @ts-expect-error: Accessing protected member for testing purposes
       expect(loading.registrationList).toHaveLength(2)
 
       loading.unregistrationEvent(listener, element1)
 
-      // Verify only one registration remains
       // @ts-expect-error: Accessing protected member for testing purposes
       expect(loading.registrationList).toHaveLength(1)
 
       loading.show()
 
-      // The listener should still be called because element2 registration is still active
       expect(listener).toHaveBeenCalled()
 
-      // Clean up
       document.body.removeChild(element1)
       document.body.removeChild(element2)
     })
@@ -439,7 +434,7 @@ describe('LoadingInstance', () => {
       loading.show()
 
       expect(listener).toHaveBeenCalled()
-      const event = listener.mock.calls[0][0]
+      const event = listener.mock.calls[0]?.[0]
       expect(event.type).toBe('ui-loading')
       expect(event.detail.loading).toBe(true)
     })
@@ -484,7 +479,7 @@ describe('LoadingInstance', () => {
 
   describe('Edge cases', () => {
     it('should handle large number of show() calls', () => {
-      for (let i = 0; i < 1000; i++) {
+      for (let index = 0; index < 1000; index++) {
         loading.show()
       }
       expect(loading.get()).toBe(1000)
@@ -492,10 +487,10 @@ describe('LoadingInstance', () => {
     })
 
     it('should handle large number of hide() calls', () => {
-      for (let i = 0; i < 1000; i++) {
+      for (let index = 0; index < 1000; index++) {
         loading.show()
       }
-      for (let i = 0; i < 1000; i++) {
+      for (let index = 0; index < 1000; index++) {
         loading.hide()
       }
       expect(loading.get()).toBe(0)
@@ -514,7 +509,7 @@ describe('LoadingInstance', () => {
     })
 
     it('should maintain correct state with rapid show/hide calls', () => {
-      for (let i = 0; i < 100; i++) {
+      for (let index = 0; index < 100; index++) {
         loading.show()
         loading.hide()
       }
@@ -562,9 +557,30 @@ describe('LoadingInstance', () => {
       expect(listener1).toHaveBeenCalledTimes(1)
       expect(listener2).toHaveBeenCalledTimes(1)
 
-      // Verify the events have the correct details
-      expect(listener1.mock.calls[0][0].detail.loading).toBe(true)
-      expect(listener2.mock.calls[0][0].detail.loading).toBe(true)
+      expect(listener1.mock.calls[0]?.[0].detail.loading).toBe(true)
+      expect(listener2.mock.calls[0]?.[0].detail.loading).toBe(true)
+    })
+
+    it('should prune inactive listeners when element is removed from DOM', () => {
+      const container = document.createElement('div')
+      document.body.appendChild(container)
+
+      const listener = vi.fn()
+      loading.registrationEvent(listener, container)
+
+      // @ts-expect-error: inspecting protected registrationList
+      expect(loading.registrationList.length).toBe(1)
+
+      loading.show()
+      expect(listener).toHaveBeenCalledTimes(1)
+      // @ts-expect-error: inspecting protected registrationList
+      expect(loading.registrationList.length).toBe(1)
+
+      document.body.removeChild(container)
+
+      loading.hide()
+      // @ts-expect-error: inspecting protected registrationList
+      expect(loading.registrationList.length).toBe(0)
     })
   })
 })

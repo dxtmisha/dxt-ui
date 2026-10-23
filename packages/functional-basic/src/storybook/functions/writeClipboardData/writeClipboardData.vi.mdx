@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `writeClipboardData`
 
-Ghi một chuỗi văn bản vào bộ nhớ tạm của người dùng. Hàm sử dụng `navigator.clipboard API` hiện đại và sẽ chuyển sang sử dụng `document.execCommand` nếu API trên không khả dụng.
+Ghi một chuỗi văn bản vào bộ nhớ tạm của người dùng trong môi trường DOM. Hàm sử dụng API `navigator.clipboard.writeText(text)` hiện đại, và nếu xảy ra lỗi sẽ chuyển sang phương thức dự phòng sử dụng phần tử `<textarea>` ẩn tạm thời cùng với `document.execCommand('copy')`, đồng thời báo cáo lỗi qua `ErrorCenter` (nhóm `'clipboard'`).
 
 **Tham số:**
 - `text: string` — Văn bản cần ghi.

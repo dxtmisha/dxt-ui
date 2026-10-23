@@ -18,7 +18,7 @@ export class CookieBlockInstance {
    * Obtaining status.
    *
    * Получение статуса.
-   * @returns boolean current block status/ текущий статус блокировки
+   * @returns boolean current block status / текущий статус блокировки
    */
   get(): boolean {
     return this.storage.get() ?? false
@@ -28,7 +28,7 @@ export class CookieBlockInstance {
    * Changing status.
    *
    * Изменение статуса.
-   * @param value value to be changed/ значение, на которое будет изменен
+   * @param value value to be changed / значение, на которое будет изменен
    * @returns void / ничего не возвращает
    */
   set(value: boolean): void {

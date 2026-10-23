@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getHydrationData - Retrieve hydration data from a script tag'/>
+
+# `getHydrationData`
+
+A utility for retrieving and parsing JSON data from a `<script>` tag in the DOM by its `id` (typically generated on the server via `getElementSafeScript`).
+
+In a browser environment (`isDomRuntime()`), the function locates the `<script>` element by `id`, parses its `textContent` as JSON, and optionally removes the `<script>` element from the DOM (`remove = true` by default). If the element is not found, is not a `<script>` tag, is called in an SSR environment, or if JSON parsing fails (which is reported via `ErrorCenter` under `group: 'hydration'`, `code: 'error'`), the function safely returns `defaultValue`.
+
+**Parameters:**
+- `id: string` — The unique identifier (ID) of the script tag.
+- `defaultValue: T` — Default value returned if the script tag is not found or its content is invalid.
+- `remove?: boolean` — Whether to remove the script element from the DOM after reading (default: `true`).
+
+**Returns:**
+`T` — The parsed data from the script tag, or `defaultValue`.
+
+```typescript
+import { getHydrationData } from '@dxtmisha/functional-basic'
+
+// Given in DOM:
+// <script id="hydration-data" type="application/json">{"user":"Misha"}</script>
+
+const data = getHydrationData('hydration-data', { user: 'Guest' })
+console.log(data) // { user: 'Misha' }
+// The <script id="hydration-data"> tag is automatically removed from the DOM
+```

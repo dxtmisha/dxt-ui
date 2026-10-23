@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ApiCache } from '../ApiCache'
-import { ApiMethodItem } from '../../types/apiTypes'
+import { type ApiCacheItem, type ApiFetch, ApiMethodItem } from '../../types/apiTypes'
 import { ErrorCenter } from '../ErrorCenter'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 
@@ -8,7 +8,7 @@ describe('ApiCache', () => {
   beforeEach(() => {
     ApiCache.reset()
     vi.useFakeTimers()
-    vi.spyOn(ErrorCenter, 'on').mockImplementation(() => undefined as any)
+    vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
   })
 
   afterEach(() => {
@@ -16,150 +16,210 @@ describe('ApiCache', () => {
     vi.useRealTimers()
   })
 
-  it('should set and get values from local memory cache', async () => {
+  it('should set and get values from in-memory cache', async () => {
     await ApiCache.set('test-key', { data: 123 }, 60)
-    const result = await ApiCache.get('test-key')
+    const result = await ApiCache.get<{ data: number }>('test-key')
+
     expect(result).toEqual({ data: 123 })
   })
 
-  it('should ignore expired cache items', async () => {
-    await ApiCache.set('test-exp', 'expired', 1) // 1 second cache
-
-    vi.advanceTimersByTime(1100) // advance 1.1s
-
-    const result = await ApiCache.get('test-exp')
+  it('should return undefined for non-existent keys', async () => {
+    const result = await ApiCache.get('missing-key')
     expect(result).toBeUndefined()
   })
 
-  it('should use custom listeners if provided', async () => {
-    const getSpy = vi.fn().mockResolvedValue({ value: 'listened-val', age: 60, cacheAge: Date.now() })
-    const setSpy = vi.fn().mockResolvedValue(true)
-    const removeSpy = vi.fn().mockResolvedValue(true)
+  it('should expire items after their age in seconds has elapsed', async () => {
+    await ApiCache.set('expiring-key', 'temporary-value', 1)
 
-    ApiCache.init(getSpy, setSpy, removeSpy)
+    vi.advanceTimersByTime(1100)
 
-    await ApiCache.set('key', 'new-val', 10)
-    expect(setSpy).toHaveBeenCalledWith('key', expect.objectContaining({ value: 'new-val' }))
-
-    const result = await ApiCache.get('key')
-    expect(getSpy).toHaveBeenCalledWith('key')
-    expect(result).toBe('listened-val')
-
-    await ApiCache.remove('key')
-    expect(removeSpy).toHaveBeenCalledWith('key')
-  })
-
-  it('should set without value in memory if setListener returns true', async () => {
-    const setSpy = vi.fn().mockResolvedValue(true)
-    ApiCache.init(undefined as any, setSpy, undefined as any)
-
-    await ApiCache.set('memory-test', 'save-me')
-    // Local memory should have undefined value because listener supposedly handled it
-    // Note: get() uses getting logic, but since we didn't mock getListener, it falls back to memory.
-    const result = await ApiCache.get('memory-test')
+    const result = await ApiCache.get<string>('expiring-key')
     expect(result).toBeUndefined()
   })
 
-  it('should set with value in memory if setListener returns false', async () => {
-    const setSpy = vi.fn().mockResolvedValue(false)
-    ApiCache.init(undefined as any, setSpy, undefined as any)
+  it('should treat items with age 0 as non-expiring', async () => {
+    await ApiCache.set('permanent-key', 'forever', 0)
 
-    await ApiCache.set('memory-test', 'save-me')
-    const result = await ApiCache.get('memory-test')
-    expect(result).toBe('save-me')
+    vi.advanceTimersByTime(100_000_000)
+
+    const result = await ApiCache.get<string>('permanent-key')
+    expect(result).toBe('forever')
   })
 
-  it('should generate key based on limited fetch parameters', async () => {
+  it('should remove an item from in-memory cache via remove()', async () => {
+    await ApiCache.set('removable-key', 'to-be-removed', 60)
+    expect(await ApiCache.get<string>('removable-key')).toBe('to-be-removed')
+
+    await ApiCache.remove('removable-key')
+    expect(await ApiCache.get<string>('removable-key')).toBeUndefined()
+  })
+
+  it('should delegate get, set, and remove to custom listeners when initialized', async () => {
+    const getListener = vi.fn(async (_key: string): Promise<ApiCacheItem | undefined> => ({
+      value: 'listener-value',
+      age: 60,
+      cacheAge: Date.now()
+    }))
+    const setListener = vi.fn(async (_key: string, _value: ApiCacheItem): Promise<boolean> => true)
+    const removeListener = vi.fn(async (_key: string): Promise<boolean> => true)
+
+    ApiCache.init(getListener, setListener, removeListener)
+
+    await ApiCache.set('custom-key', 'new-value', 10)
+    expect(setListener).toHaveBeenCalledWith(
+      'custom-key',
+      expect.objectContaining({ value: 'new-value', age: 10 })
+    )
+
+    const result = await ApiCache.get<string>('custom-key')
+    expect(getListener).toHaveBeenCalledWith('custom-key')
+    expect(result).toBe('listener-value')
+
+    await ApiCache.remove('custom-key')
+    expect(removeListener).toHaveBeenCalledWith('custom-key')
+  })
+
+  it('should omit value from in-memory fallback when setListener returns true', async () => {
+    const noopGet = undefined as unknown as (key: string) => Promise<ApiCacheItem | undefined>
+    const setListener = vi.fn(async (): Promise<boolean> => true)
+    const noopRemove = undefined as unknown as (key: string) => Promise<boolean>
+
+    ApiCache.init(noopGet, setListener, noopRemove)
+
+    await ApiCache.set('external-key', 'stored-externally')
+    const result = await ApiCache.get<string>('external-key')
+
+    expect(result).toBeUndefined()
+  })
+
+  it('should retain value in in-memory fallback when setListener returns false', async () => {
+    const noopGet = undefined as unknown as (key: string) => Promise<ApiCacheItem | undefined>
+    const setListener = vi.fn(async (): Promise<boolean> => false)
+    const noopRemove = undefined as unknown as (key: string) => Promise<boolean>
+
+    ApiCache.init(noopGet, setListener, noopRemove)
+
+    await ApiCache.set('fallback-key', 'stored-in-memory')
+    const result = await ApiCache.get<string>('fallback-key')
+
+    expect(result).toBe('stored-in-memory')
+  })
+
+  it('should cache and retrieve by fetch options in SSR (non-DOM runtime)', async () => {
     vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
 
-    // Setup fetching logic
-    const fetchObj = {
-      path: '/api/v1',
+    const fetchOptions: ApiFetch = {
+      path: '/api/v1/items',
       method: ApiMethodItem.get,
-      cache: 60
+      request: { page: 1 },
+      cache: 60,
+      cacheId: 'group-1'
     }
 
-    await ApiCache.setByFetch(fetchObj, 'fetched-val')
-    const result = await ApiCache.getByFetch(fetchObj)
+    await ApiCache.setByFetch(fetchOptions, 'cached-payload')
+    const result = await ApiCache.getByFetch<string>(fetchOptions)
 
-    expect(result).toBe('fetched-val')
+    expect(result).toBe('cached-payload')
   })
 
-  it('should bypass cache logic if cache option is missing or disabled in browser', async () => {
-    vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true) // Browser
+  it('should generate distinct keys for different cacheId or request parameters, while ignoring unrelated options', async () => {
+    vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
 
-    // no cache property
+    const baseFetch: ApiFetch = {
+      path: '/api/v1/resource',
+      method: ApiMethodItem.get,
+      cache: 60,
+      cacheId: 'v1'
+    }
+
+    await ApiCache.setByFetch(baseFetch, 'first-payload')
+
+    // Different timeout/headers should still hit the same cache entry
+    const sameKeyFetch: ApiFetch = {
+      ...baseFetch,
+      timeout: 5000,
+      headers: { 'X-Test': '1' }
+    }
+    expect(await ApiCache.getByFetch<string>(sameKeyFetch)).toBe('first-payload')
+
+    // Different cacheId should miss
+    const differentCacheIdFetch: ApiFetch = {
+      ...baseFetch,
+      cacheId: 'v2'
+    }
+    expect(await ApiCache.getByFetch<string>(differentCacheIdFetch)).toBeUndefined()
+  })
+
+  it('should disable client-side caching in DOM runtime unless enableClientCache is true', async () => {
+    vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
+
     expect(await ApiCache.getByFetch({ path: 'test' })).toBeUndefined()
 
-    // cache property, but enableClientCache is false (default)
+    await ApiCache.setByFetch({ path: 'test', cache: 60 }, 'should-not-cache')
     expect(await ApiCache.getByFetch({ path: 'test', cache: 60 })).toBeUndefined()
 
-    // enableClientCache is true
-    await ApiCache.setByFetch({ path: 'test', cache: 60, enableClientCache: true }, 'browser-cache')
-    expect(await ApiCache.getByFetch({ path: 'test', cache: 60, enableClientCache: true })).toBe('browser-cache')
+    const clientCacheFetch: ApiFetch = {
+      path: 'test',
+      cache: 60,
+      enableClientCache: true
+    }
+
+    await ApiCache.setByFetch(clientCacheFetch, 'browser-cached-value')
+    expect(await ApiCache.getByFetch<string>(clientCacheFetch)).toBe('browser-cached-value')
   })
 
-  it('should clear old cache after reaching cacheStepAgeClearOld', async () => {
-    // Init with low step size to easily trigger clearOld
-    ApiCache.init(undefined as any, undefined as any, undefined as any, 2)
+  it('should automatically clean up expired items after stepAgeClearOld retrievals', async () => {
+    const noopGet = undefined as unknown as (key: string) => Promise<ApiCacheItem | undefined>
+    const noopSet = undefined as unknown as (key: string, value: ApiCacheItem) => Promise<boolean>
+    const removeListener = vi.fn(async (): Promise<boolean> => true)
 
-    await ApiCache.set('old-key', '1', 1)
-    await ApiCache.set('new-key', '2', 60)
+    ApiCache.init(noopGet, noopSet, removeListener, 1)
 
-    vi.advanceTimersByTime(1500) // old-key expires
+    await ApiCache.set('expired-item', 'old', 1)
+    await ApiCache.set('valid-item', 'fresh', 60)
 
-    // Step 2 -> 1
-    await ApiCache.get('new-key')
+    vi.advanceTimersByTime(1500)
 
-    // Check if memory still has 'old-key'. We can do this implicitly or by trying to get it directly
-    // Step 1 -> 0 -> triggering clearOld here but since we use microtasks it might trigger after
-    await ApiCache.get('old-key')
+    // First get: stepAgeClearOld 1 -> 0 (does not clear yet)
+    await ApiCache.get('valid-item')
+    expect(removeListener).not.toHaveBeenCalled()
 
-    // We await for internal promise to finish
-    await vi.runAllTimersAsync()
+    // Second get: stepAgeClearOld 0 -> -1 (triggers cleanup)
+    await ApiCache.get('valid-item')
 
-    // Now if we mock a listener, we can see if remove was called...
-    // Let's reset and test specifically with listener
-    ApiCache.reset()
-    const removeSpy = vi.fn().mockResolvedValue(true)
-    ApiCache.init(undefined as any, undefined as any, removeSpy, 1) // step 1
-
-    await ApiCache.set('old-key2', '1', 1)
-    vi.advanceTimersByTime(1100)
-
-    // Trigger clearOld -> step 1 -> 0
-    await ApiCache.get('any')
-    // Trigger clearOld -> step 0 -> -1 (activates)
-    await ApiCache.get('any')
-
-    // Wait for microtasks
     await Promise.resolve()
     await Promise.resolve()
-    await Promise.resolve()
-    expect(removeSpy).toHaveBeenCalledWith('old-key2')
+
+    expect(removeListener).toHaveBeenCalledWith('expired-item')
+    expect(removeListener).not.toHaveBeenCalledWith('valid-item')
   })
 
-  it('should catch error in clearOld and report to ErrorCenter', async () => {
-    const removeSpy = vi.fn().mockRejectedValue(new Error('Clear Error'))
-    const errorSpy = vi.spyOn(ErrorCenter, 'on')
+  it('should catch errors thrown during clearOld and forward them to ErrorCenter', async () => {
+    const noopGet = undefined as unknown as (key: string) => Promise<ApiCacheItem | undefined>
+    const noopSet = undefined as unknown as (key: string, value: ApiCacheItem) => Promise<boolean>
+    const removeListener = vi.fn(async (): Promise<boolean> => {
+      throw new Error('Storage removal failure')
+    })
+    const errorCenterSpy = vi.spyOn(ErrorCenter, 'on')
 
-    ApiCache.init(undefined as any, undefined as any, removeSpy, 1)
+    ApiCache.init(noopGet, noopSet, removeListener, 1)
 
-    await ApiCache.set('old-key', '1', 1)
-    vi.advanceTimersByTime(1100)
+    await ApiCache.set('expired-key', 'value', 1)
+    vi.advanceTimersByTime(1200)
 
-    // Trigger clearOld
-    await ApiCache.get('any')
-    await ApiCache.get('any')
+    await ApiCache.get('any-key')
+    await ApiCache.get('any-key')
 
-    // Wait for microtasks
     await Promise.resolve()
     await Promise.resolve()
     await Promise.resolve()
-    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({
-      group: 'api',
-      code: 'cacheClear',
-      details: expect.any(Error)
-    }))
+
+    expect(errorCenterSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        group: 'api',
+        code: 'cacheClear',
+        details: expect.any(Error)
+      })
+    )
   })
 })

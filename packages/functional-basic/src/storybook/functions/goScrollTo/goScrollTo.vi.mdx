@@ -11,10 +11,10 @@ Khác với `goScrollSmooth` (cuộn cửa sổ màn hình hoặc uỷ thác cho
 **Tham số:**
 - `container?: HTMLElement | Element | null` — Phần tử vùng chứa cuộn. Xử lý an toàn khi nhận `null` và `undefined`.
 - `elementTo?: HTMLElement | Element | null` — Mục tiêu nằm phía trong (đích nhắm) cần quan sát được.
-- `behavior: ScrollBehavior` — (Tùy chọn) Chỉnh sửa loại chuỗi ảnh chuyển động, mặc định cho hiệu ứng mượt `'smooth'`.
+- `behavior?: ScrollBehavior` — (Tùy chọn) Chỉnh sửa loại chuỗi ảnh chuyển động, mặc định cho hiệu ứng mượt `'smooth'`.
 
 **Trả về:**
-Tuỳ biến việc thay đổi thanh cuộn ngay trong trang hiện tại với giá trị đầu ra rỗng (`void`).
+`void` — Thực hiện thay đổi thanh cuộn và không trả về giá trị.
 
 ```typescript
 import { goScrollTo } from '@dxtmisha/functional-basic'

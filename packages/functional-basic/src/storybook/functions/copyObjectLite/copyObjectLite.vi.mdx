@@ -10,7 +10,7 @@ Tạo một bản sao nông (shallow copy) của một đối tượng đơn gi�
 
 **Tham số:**
 - `value: T` — Đối tượng cần sao chép.
-- `source?: any` — Các thuộc tính bổ sung để hợp nhất với đối tượng `value`. Các thuộc tính từ `source` sẽ ghi đè các thuộc tính từ `value` nếu chúng có cùng khóa (key).
+- `source?: Record<PropertyKey, unknown> | null` — Các thuộc tính bổ sung để hợp nhất với đối tượng `value`. Các thuộc tính từ `source` sẽ ghi đè các thuộc tính từ `value` nếu chúng có cùng khóa (key).
 
 **Trả về:**
 `R` (mặc định là `T`) — Bản sao nông mới của đối tượng.
@@ -20,7 +20,7 @@ import { copyObjectLite } from '@dxtmisha/functional-basic'
 
 const original = { a: 1, b: { c: 2 } }
 
-// Sao chép nông đợn giản
+// Sao chép nông đơn giản
 const copy = copyObjectLite(original)
 console.log(copy.b === original.b) // true (tham chiếu đến cùng một đối tượng lồng nhau)
 

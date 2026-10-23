@@ -4,14 +4,14 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getObjectByKeys`
 
-Создает и возвращает новый объект, в который копируются только свойства с указанными ключами из исходного объекта. Свойства, которых нет в исходном объекте или значение которых равно `undefined`, игнорируются при копировании.
+Создает и возвращает новый объект, в который копируются только собственные свойства (`hasKey`) с указанными ключами из исходного объекта. Ключи прототипа (`__proto__`, `constructor`, `prototype`), отсутствующие свойства и свойства со значением `undefined` игнорируются при копировании.
 
 **Параметры:**
-- `data: Record<string, any>` — Исходный объект с данными.
-- `keys: string[]` — Массив строковых ключей, которые необходимо извлечь.
+- `data: T` — Исходный объект с данными (где `T extends Record<string, unknown>`).
+- `keys: K[]` — Массив ключей, которые необходимо извлечь (где `K extends keyof T`).
 
 **Возвращает:**
-`Record<string, any>` — Новый объект, содержащий только найденные выбранные свойства. Одноименные значения, равные `undefined`, не попадут в результат.
+`Pick<T, K>` — Новый объект, содержащий только найденные собственные свойства со значениями, отличными от `undefined`.
 
 ```typescript
 import { getObjectByKeys } from '@dxtmisha/functional-basic'
@@ -24,6 +24,6 @@ const user = {
   active: true
 }
 
-const result = getObjectByKeys(user, ['id', 'name', 'age', 'token'])
+const result = getObjectByKeys(user, ['id', 'name', 'age'])
 console.log(result) // { id: 1, name: 'Ivan' }
 ```

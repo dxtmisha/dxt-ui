@@ -12,9 +12,11 @@ import { type FunctionArgs } from '../types/basicTypes'
  * @param args arguments of the function / аргументы функции
  * @returns result of the execution or the value itself / результат выполнения или само значение
  */
-export function executeFunction<T>(
-  callback: T | FunctionArgs<any, T>,
-  ...args: any[]
+export function executeFunction<T, Args extends unknown[] = unknown[]>(
+  callback: T | FunctionArgs<never, T> | ((...args: Args) => T),
+  ...args: Args
 ): T {
-  return isFunction(callback) ? callback(...args) : callback
+  return isFunction(callback)
+    ? (callback as (...args: Args) => T)(...args)
+    : callback
 }

@@ -9,10 +9,10 @@ describe('SearchListItem', () => {
 
     expect(item.get()).toBe('test')
     expect(item.is()).toBe(true)
-    expect(item.isSearch()).toBe(true) // length 4 >= limit 2
+    expect(item.isSearch()).toBe(true)
   })
 
-  it('should handle empty or undefined values', () => {
+  it('should handle empty, undefined, or whitespace-only values as inactive', () => {
     const options = new SearchListOptions()
     let item = new SearchListItem(undefined, options)
 
@@ -24,22 +24,39 @@ describe('SearchListItem', () => {
     expect(item.get()).toBe('')
     expect(item.is()).toBe(false)
     expect(item.isSearch()).toBe(false)
-  })
 
-  it('should correctly evaluate isSearch based on the options limit', () => {
-    const options = new SearchListOptions({ limit: 4 })
-    const item = new SearchListItem('abc', options)
+    item = new SearchListItem('   ', options)
+    expect(item.get()).toBe('   ')
+    expect(item.is()).toBe(false)
+    expect(item.isSearch()).toBe(false)
 
-    // Length 3 < limit 4
-    expect(item.is()).toBe(true)
+    item = new SearchListItem('\t\n ', options)
+    expect(item.is()).toBe(false)
     expect(item.isSearch()).toBe(false)
   })
 
-  it('should update value correctly', () => {
+  it('should evaluate isSearch based on trimmed value length against options limit', () => {
+    const options = new SearchListOptions({ limit: 4 })
+    const item = new SearchListItem('abc', options)
+
+    expect(item.is()).toBe(true)
+    expect(item.isSearch()).toBe(false)
+
+    item.set('  abc  ')
+    expect(item.is()).toBe(true)
+    expect(item.isSearch()).toBe(false)
+
+    item.set('  abcd  ')
+    expect(item.is()).toBe(true)
+    expect(item.isSearch()).toBe(true)
+  })
+
+  it('should update value correctly and return this for chaining', () => {
     const options = new SearchListOptions()
     const item = new SearchListItem('test', options)
 
-    item.set('new')
+    const returnValue = item.set('new')
+    expect(returnValue).toBe(item)
     expect(item.get()).toBe('new')
 
     item.set(undefined)

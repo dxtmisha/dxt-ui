@@ -4,35 +4,35 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isSelected`
 
-A multi-purpose utility dedicated to verifying if a particular reference value matches the desired selection criteria. This function accommodates multiple dynamic comparison strategies based heavily on the architectural structure of the `selected` argument:
+Checks whether a given value is selected by comparing it against a single target value or an array of selected items. Supports intelligent numeric comparison for numbers and numeric strings:
 
-1. **Prohibit Nuances:** If the incoming test variable (`value`) manifests as `null` or `undefined`, the function safely terminates with a flat `false`.
-2. **Array Validations:** In instances where the `selected` payload arrives configured as an array `[]`, the algorithm checks for direct inclusion via `.includes(value)`, and applies smart numeric matching for numbers and numeric strings.
-3. **Smart Numeric Casting:** If both target variables theoretically align as numbers (determined via the `isNumber()` sub-function), the engine actively homogenizes them parsing them strictly to digit comparisons irrespective of their exact string origins (e.g., `'5'` translates safely into matching pure integer `5`).
-4. **Failsafe Comparison:** Absent any of the conditions outlined above, it retreats to standard strict equality `value === selected` matching.
+1. **Null / Undefined Guard:** If `value` is `null` or `undefined` (checked via `isNull(value)`), the function immediately returns `false`.
+2. **Array Comparison:** If `selected` is an array `[]`, the function checks direct inclusion via `.includes(value)` and, for numeric values (`isNumber(value)`), checks numeric equivalence against numeric elements in the array via `toNumber()`.
+3. **Numeric Comparison:** If both `value` and `selected` are numeric (`isNumber(value) && isNumber(selected)`), they are converted via `toNumber()` and compared numerically (e.g., `'5'` matches `5`).
+4. **Strict Equality:** In all other cases, the function compares `value === selected`.
 
 **Parameters:**
-- `value: T` — The active element or context payload waiting for confirmation.
-- `selected?: unknown` — The benchmark reference acting as the target check marker (`T | T[] | unknown`).
+- `value: T` — The input value to check.
+- `selected?: unknown` — The target value or array of selected values.
 
 **Returns:**
-`boolean` — Renders `true` assuming the initial argument perfectly corresponds to the requested target data boundary, projecting `false` otherwise.
+`boolean` — `true` if `value` matches `selected`, otherwise `false`.
 
 ```typescript
 import { isSelected } from '@dxtmisha/functional-basic'
 
-// Standard discrete checks
+// Single value comparisons
 console.log(isSelected('apple', 'apple')) // true
 console.log(isSelected('apple', 'banana')) // false
 
-// Validating inclusion against a data array collection
+// Comparing against an array
 console.log(isSelected(2, [1, 2, 3])) // true
 console.log(isSelected('5', [1, 2, 5])) // true
 console.log(isSelected('dog', ['cat', 'mouse'])) // false
 
-// Intelligent Cross-type Casted Number matching (string against raw ints)
+// Intelligent numeric comparison (string vs number)
 console.log(isSelected('5', 5)) // true
 
-// Safety checks
+// Null / undefined check
 console.log(isSelected(null, 1)) // false
 ```

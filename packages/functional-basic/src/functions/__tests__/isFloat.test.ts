@@ -140,4 +140,21 @@ describe('isFloat', () => {
       expect(isFloat(0n)).toBe(false)
     })
   })
+
+  describe('Alternative number bases, scientific notation, and Unicode strings', () => {
+    it('should return false for scientific notation and alternative base strings', () => {
+      expect(isFloat('1e5')).toBe(false)
+      expect(isFloat('1.5e-3')).toBe(false)
+      expect(isFloat('0x10')).toBe(false)
+      expect(isFloat('0b101')).toBe(false)
+      expect(isFloat('0o77')).toBe(false)
+    })
+
+    it('should return false for strings containing localized text, non-ASCII numerals, or emojis', () => {
+      expect(isFloat('123.45 руб')).toBe(false)
+      expect(isFloat('Số 12.5')).toBe(false)
+      expect(isFloat('１２３.４５')).toBe(false)
+      expect(isFloat('12.5🚀')).toBe(false)
+    })
+  })
 })

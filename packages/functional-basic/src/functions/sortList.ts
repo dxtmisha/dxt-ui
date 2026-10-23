@@ -6,6 +6,7 @@ import { toNumber } from './toNumber'
 
 import type { SortColumnItem, SortFunction } from '../types/sortTypes'
 
+/** Cached Intl.Collator instance for natural string comparison / Кэшированный экземпляр Intl.Collator для естественного сравнения строк */
 let cachedCollator: Intl.Collator | undefined
 
 /**
@@ -118,12 +119,12 @@ export function sortList<T = Record<string, unknown>>(
         }
       }
 
-      const strFirst = String(valueFirst)
-      const strSecond = String(valueSecond)
+      const stringFirst = String(valueFirst)
+      const stringSecond = String(valueSecond)
 
       const compareResult = collator
-        ? collator.compare(strFirst, strSecond)
-        : strFirst.localeCompare(strSecond)
+        ? collator.compare(stringFirst, stringSecond)
+        : stringFirst.localeCompare(stringSecond)
 
       return compareResult * factor
     }

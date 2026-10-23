@@ -10,11 +10,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `element?: HTMLElement | Element | null` — Целевой элемент (`HTMLElement` или `Element`), до которого нужно прокрутить страницу. Безопасно обрабатывает `null` и `undefined`.
-- `options: ScrollIntoViewOptions` — (Необязательно) Параметры прокрутки, передаваемые в `scrollIntoView` (например, `behavior`, `block`, `inline`).
-- `shift: number` — (Необязательно) Значение отступа (в пикселях) сверху от целевого элемента до верха окна. Полезно для избежания перекрытия элемента фиксированным меню навигации. По умолчанию `0`.
+- `options?: ScrollIntoViewOptions` — (Необязательно) Параметры прокрутки, передаваемые в `scrollIntoView` (например, `behavior`, `block`, `inline`).
+- `shift?: number` — (Необязательно) Значение отступа (в пикселях) сверху от целевого элемента до верха окна. Полезно для избежания перекрытия элемента фиксированным меню навигации. По умолчанию `0`.
 
 **Возвращает:**
-Функция ничего не возвращает (`void`).
+`void` — Функция ничего не возвращает.
 
 ```typescript
 import { goScrollSmooth } from '@dxtmisha/functional-basic'

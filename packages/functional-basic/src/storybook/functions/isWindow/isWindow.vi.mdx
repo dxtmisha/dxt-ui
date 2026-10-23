@@ -4,24 +4,24 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isWindow`
 
-Loại hình hệ mã thiết kế đặc trị dành cho công cuộc xác minh trực thuộc xem biến tham số đẩy vào có đích thị nhắm trúng đối tượng bản chất chủ đề toàn cục trình duyệt `window` hay không.
+Kiểm tra xem phần tử hoặc giá trị được truyền vào có phải là đối tượng `window` toàn cục của trình duyệt hay không.
 
-Phác đồ sẽ đi đường vòng chạy qua quy định môi trường `isDomRuntime()` thu nhặt đảm bảo tiến trình ko bị tai biến ngắt mạch sập mạng nếu lỡ sơ suất ngóc đầu trên chốn kết xuất máy chủ Server-Side (SSR). Sau khi được bật đèn thẻ xanh, nó thẳng tay cắm cân đo `===` gắt gao giữa thứ bạn mới chèn nộp kề sát với chóp bu toàn cục `window` mặc định.
+Trước tiên hàm kiểm tra qua `isDomRuntime()` để đảm bảo mã đang chạy trong môi trường DOM (ngăn ngừa lỗi trong quá trình Server-Side Rendering - SSR), sau đó so sánh `element === window`.
 
 **Tham số:**
-- `element: E` — Mọi đối thủ nút Node hay thứ tạp pí lù gì đem ra để thi thố khớp lệnh.
+- `element: E` — Phần tử hoặc giá trị cần kiểm tra.
 
 **Trả về:**
-`boolean` — Trả thù lao báo giá chốt `true` đặc quyền dành duy cho ứng viên nào tham chiếu sống sót hoàn hảo trong trình duyệt và y xì là cụ tổ đối tượng `window`. Đặc công đóng ấn hàm Type Guard (bảo bộ định danh gốc) thu mình ép xác cho cái kiểu kia vỏn vẹn trong áo choàng `Window`.
+`element is Extract<E, Window>` (`boolean`) — Trả về `true` nếu đang chạy trong môi trường trình duyệt và `element` bằng nghiêm ngặt với `window`, ngược lại là `false`. Đóng vai trò là bộ bảo vệ kiểu (type guard) trong TypeScript, thu hẹp `E` thành `Extract<E, Window>`.
 
 ```typescript
 import { isWindow } from '@dxtmisha/functional-basic'
 
-// Đặc cách điểm vinh quang
+// Đối tượng window hợp lệ
 console.log(isWindow(window)) // true
 console.log(isWindow(globalThis.window)) // true
 
-// Khối lượng tạp dân xô bồ DOM bị dập vùi false
+// Các nút DOM và giá trị khác
 console.log(isWindow(document)) // false
 console.log(isWindow(document.body)) // false
 console.log(isWindow({})) // false

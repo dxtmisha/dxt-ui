@@ -10,7 +10,8 @@ import {
  * Returns window or element.
  *
  * Возвращает окно или элемент.
- * @param element selectors for matching or an Element/ селекторов для сопоставления или Element
+ * @param element selectors for matching or an Element / селектор для сопоставления или Element
+ * @returns window or DOM element, or undefined / окно или DOM-элемент, либо undefined
  */
 export function getElementOrWindow<E extends ElementOrWindow>(
   element?: ElementOrString<E>

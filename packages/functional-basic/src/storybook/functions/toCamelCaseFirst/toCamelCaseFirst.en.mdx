@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `toCamelCaseFirst`
 
-Converts a text string to `CamelCase` format (PascalCase), where the first letter of the string is always capitalized. Internally uses `toCamelCase` to handle delimiters and special characters.
+Converts a text string to `CamelCase` format (PascalCase), where the first letter of the string is always capitalized. Internally delegates to `toPascalCase` (which uses `toCamelCase` to handle delimiters and special characters).
 
 **Parameters:**
-- `value: string` — The original string to convert.
+- `value?: string` — The original string to convert.
 
 **Returns:**
 `string` — The string in `CamelCase` format with the first letter capitalized.

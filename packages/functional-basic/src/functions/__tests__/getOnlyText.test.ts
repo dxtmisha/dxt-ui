@@ -170,7 +170,7 @@ describe('getOnlyText', () => {
     })
 
     it('should handle plain key-value objects (JSON structure stripped)', () => {
-      expect(getOnlyText({ key: 'val' })).toBe('keyval')
+      expect(getOnlyText({ key: 'value' })).toBe('keyvalue')
       expect(getOnlyText({ id: 100, name: 'DXT' })).toBe('id100nameDXT')
     })
   })
@@ -197,7 +197,7 @@ describe('getOnlyText', () => {
       const input = 'Sample Text #1 with Punctuation!'
       const expected = 'Sample Text 1 with Punctuation'
 
-      for (let i = 0; i < 10; i++) {
+      for (let index = 0; index < 10; index++) {
         expect(getOnlyText(input)).toBe(expected)
       }
     })

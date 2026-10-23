@@ -35,6 +35,17 @@ export class ErrorCenterHandler {
   }
 
   /**
+   * Gets handlers for a group.
+   *
+   * Получает обработчики для группы.
+   * @param group error group / группа ошибки
+   * @returns handler item or undefined / элемент обработчика или undefined
+   */
+  get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined {
+    return this.handlers.find(cause => cause.group === group)
+  }
+
+  /**
    * Checks if handlers exist for a group.
    *
    * Проверяет наличие обработчиков для группы.
@@ -46,14 +57,17 @@ export class ErrorCenterHandler {
   }
 
   /**
-   * Gets handlers for a group.
+   * Sets console output flag or filter function.
    *
-   * Получает обработчики для группы.
-   * @param group error group / группа ошибки
-   * @returns handler item or undefined / элемент обработчика или undefined
+   * Устанавливает флаг или функцию фильтрации вывода в консоль.
+   * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
+   * @returns this instance / текущий экземпляр
    */
-  get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined {
-    return this.handlers.find(cause => cause.group === group)
+  setIsConsole(
+    isConsole: ErrorCenterHandlerIsConsole
+  ): this {
+    this.isConsole = isConsole
+    return this
   }
 
   /**
@@ -83,24 +97,6 @@ export class ErrorCenterHandler {
   }
 
   /**
-   * Adds a list of group-based handlers.
-   *
-   * Добавляет список обработчиков по группам.
-   * @param handlers handlers list / список обработчиков
-   * @returns this instance / текущий экземпляр
-   */
-  addList(
-    handlers: ErrorCenterHandlerList
-  ): this {
-    handlers.forEach(
-      handlerGroup => handlerGroup.handlers.forEach(
-        handler => this.add(handlerGroup.group, handler)
-      )
-    )
-    return this
-  }
-
-  /**
    * Adds a callback to be executed on any error.
    *
    * Добавляет обратный вызов, который будет выполняться при любой ошибке.
@@ -115,16 +111,20 @@ export class ErrorCenterHandler {
   }
 
   /**
-   * Sets console output flag or filter function.
+   * Adds a list of group-based handlers.
    *
-   * Устанавливает флаг или функцию фильтрации вывода в консоль.
-   * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
+   * Добавляет список обработчиков по группам.
+   * @param handlers handlers list / список обработчиков
    * @returns this instance / текущий экземпляр
    */
-  setIsConsole(
-    isConsole: ErrorCenterHandlerIsConsole
+  addList(
+    handlers: ErrorCenterHandlerList
   ): this {
-    this.isConsole = isConsole
+    handlers.forEach(
+      handlerGroup => handlerGroup.handlers.forEach(
+        handler => this.add(handlerGroup.group, handler)
+      )
+    )
     return this
   }
 

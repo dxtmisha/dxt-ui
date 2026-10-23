@@ -16,8 +16,7 @@ const mockLocation = {
   origin: 'http://localhost'
 }
 const mockHistory = {
-  replaceState: vi.fn((_state, _title, url) => {
-    // Sync mockLocation components from url
+  replaceState: vi.fn((_state: unknown, _title: string, url: string) => {
     const parsed = new URL(url, 'http://localhost')
     mockLocation.pathname = parsed.pathname
     mockLocation.search = parsed.search
@@ -28,7 +27,8 @@ const mockHistory = {
 vi.stubGlobal('location', mockLocation)
 vi.stubGlobal('history', mockHistory)
 vi.stubGlobal('addEventListener', vi.fn())
-vi.stubGlobal('requestAnimationFrame', (cb: () => void) => cb())
+vi.stubGlobal('removeEventListener', vi.fn())
+vi.stubGlobal('requestAnimationFrame', (callback: () => void) => callback())
 
 describe('QueryInstance', () => {
   let queryInstance: QueryInstance
@@ -59,6 +59,12 @@ describe('QueryInstance', () => {
     expect(value).toBe('funcValue')
   })
 
+  it('should accept falsy defaultValue such as 0, false, or empty string', () => {
+    expect(queryInstance.get('zeroKey', 0)).toBe(0)
+    expect(queryInstance.get('falseKey', false)).toBe(false)
+    expect(queryInstance.get('emptyKey', '')).toBe('')
+  })
+
   it('should set and return a value', () => {
     queryInstance.set('myKey', 'myValue')
     expect(queryInstance.get('myKey')).toBe('myValue')
@@ -71,17 +77,16 @@ describe('QueryInstance', () => {
   })
 
   it('should call handlers when value changes (watch)', () => {
-    const callback1 = vi.fn()
-    const callback2 = vi.fn()
+    const firstCallback = vi.fn()
+    const secondCallback = vi.fn()
 
-    queryInstance.addWatch('watchKey', callback1)
-    queryInstance.addWatch('watchKey', callback2)
+    queryInstance.addWatch('watchKey', firstCallback)
+    queryInstance.addWatch('watchKey', secondCallback)
 
-    // Simulate query change from outside
     mockLocation.search = '?watchKey=newValue'
     queryInstance.reload()
-    expect(callback1).toHaveBeenCalledWith('newValue')
-    expect(callback2).toHaveBeenCalledWith('newValue')
+    expect(firstCallback).toHaveBeenCalledWith('newValue')
+    expect(secondCallback).toHaveBeenCalledWith('newValue')
   })
 
   it('should not call removed handlers', () => {
@@ -89,17 +94,16 @@ describe('QueryInstance', () => {
     queryInstance.addWatch('removeKey', callback)
     queryInstance.removeWatch('removeKey', callback)
 
-    // Simulate query change from outside
     mockLocation.search = '?removeKey=value2'
     queryInstance.reload()
     expect(callback).not.toHaveBeenCalled()
   })
 
   it('chaining should work correctly', () => {
-    const cb = () => {}
-    expect(queryInstance.set('a', 1)).toBe(queryInstance)
-    expect(queryInstance.addWatch('a', cb)).toBe(queryInstance)
-    expect(queryInstance.removeWatch('a', cb)).toBe(queryInstance)
+    const callback = () => {}
+    expect(queryInstance.set('alpha', 1)).toBe(queryInstance)
+    expect(queryInstance.addWatch('alpha', callback)).toBe(queryInstance)
+    expect(queryInstance.removeWatch('alpha', callback)).toBe(queryInstance)
     expect(queryInstance.reload()).toBe(queryInstance)
   })
 
@@ -117,7 +121,7 @@ describe('QueryInstance', () => {
     expect(mockHistory.replaceState).not.toHaveBeenCalled()
   })
 
-  it('should correctly handle the timer in the update method', async () => {
+  it('should correctly handle the timer in the update method', () => {
     vi.useFakeTimers()
     queryInstance.set('key1', 'value1')
     expect(mockHistory.replaceState).toHaveBeenCalled()
@@ -128,22 +132,41 @@ describe('QueryInstance', () => {
     vi.useRealTimers()
   })
 
-  it('reload should wait if block === true', async () => {
+  it('reload should wait if block === true', () => {
     vi.useFakeTimers()
-    queryInstance.set('key', 'val') // sets block = true for 120ms
+    queryInstance.set('key', 'value')
 
-    const initSpy = vi.spyOn(queryInstance as any, 'initData')
+    const watcher = vi.fn()
+    queryInstance.addWatch('key', watcher)
+    mockLocation.search = '?key=updatedValue'
+
     queryInstance.reload()
 
-    expect(initSpy).not.toHaveBeenCalled()
+    expect(watcher).not.toHaveBeenCalled()
 
     vi.advanceTimersByTime(32)
-    expect(initSpy).not.toHaveBeenCalled()
+    expect(watcher).not.toHaveBeenCalled()
 
     vi.advanceTimersByTime(120)
     vi.advanceTimersByTime(32)
 
-    expect(initSpy).toHaveBeenCalled()
+    expect(watcher).toHaveBeenCalledWith('updatedValue')
+
+    vi.useRealTimers()
+  })
+
+  it('destroy should remove event listener and cancel pending reload timer', () => {
+    vi.useFakeTimers()
+    queryInstance.set('key', 'value')
+    queryInstance.reload()
+
+    // @ts-expect-error: inspecting protected reloadTimer
+    expect(queryInstance.reloadTimer).toBeDefined()
+
+    queryInstance.destroy()
+    expect(removeEventListener).toHaveBeenCalledWith('popstate', expect.any(Function))
+    // @ts-expect-error: inspecting protected reloadTimer
+    expect(queryInstance.reloadTimer).toBeUndefined()
 
     vi.useRealTimers()
   })

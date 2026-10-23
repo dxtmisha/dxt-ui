@@ -4,15 +4,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getRequestString`
 
-Transforms a dictionary object into a URL-style formatted string (by default, a query string for GET parameters) where keys and values are joined by designated delimiters. Before string construction, all values are cast to strings, trimmed of whitespace, and passed through `encodeURIComponent` to ensure safe URL transmission. Keys are sorted alphabetically.
+Transforms an object or array into a URL-style formatted string (by default, a query string for GET parameters) where keys and values are joined by designated delimiters. Keys are trimmed and URL-encoded via `encodeURIComponent`, values are converted to strings and URL-encoded, nested objects and arrays are recursively serialized using bracket notation (`key[subKey]` or `key[]`), and resulting entries are sorted alphabetically.
 
 **Parameters:**
 - `request: Record<string, unknown> | readonly unknown[]` — The data object or array to convert.
-- `sign: string` — (Optional) The character linking a key to its value. Defaults to `=`.
-- `separator: string` — (Optional) The character separating pairs. Defaults to `&`.
+- `sign?: string` — (Optional) The character linking a key to its value. Defaults to `'='`.
+- `separator?: string` — (Optional) The character separating key-value pairs. Defaults to `'&'`.
+- `subKey?: string` — (Optional) Parent key prefix used for formatting nested object properties or array elements.
 
 **Returns:**
-`string` — A formatted and sorted string.
+`string` — A formatted and sorted query string (or `''` if `request` is not an object or array).
 
 ```typescript
 import { getRequestString } from '@dxtmisha/functional-basic'

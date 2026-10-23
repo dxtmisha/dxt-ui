@@ -26,20 +26,20 @@ describe('arrFill', () => {
     })
 
     it('should create an array filled with functions', () => {
-      const fn = () => 'test'
-      const result = arrFill(fn, 2)
+      const callback = () => 'test'
+      const result = arrFill(callback, 2)
       expect(result).toHaveLength(2)
-      expect(result[0]).toBe(fn)
-      expect(result[1]).toBe(fn)
+      expect(result[0]).toBe(callback)
+      expect(result[1]).toBe(callback)
       expect(result[0]()).toBe('test')
     })
 
     it('should create an array filled with symbols', () => {
-      const sym = Symbol('unique')
-      const result = arrFill(sym, 3)
-      expect(result).toEqual([sym, sym, sym])
-      expect(result[0]).toBe(sym)
-      expect(result[1]).toBe(sym)
+      const symbolValue = Symbol('unique')
+      const result = arrFill(symbolValue, 3)
+      expect(result).toEqual([symbolValue, symbolValue, symbolValue])
+      expect(result[0]).toBe(symbolValue)
+      expect(result[1]).toBe(symbolValue)
     })
   })
 
@@ -106,11 +106,11 @@ describe('arrFill', () => {
     })
 
     it('should handle empty arrays and empty objects as fill values', () => {
-      const emptyArr = arrFill([], 2)
-      expect(emptyArr).toEqual([[], []])
+      const emptyArray = arrFill([], 2)
+      expect(emptyArray).toEqual([[], []])
 
-      const emptyObj = arrFill({}, 2)
-      expect(emptyObj).toEqual([{}, {}])
+      const emptyObject = arrFill({}, 2)
+      expect(emptyObject).toEqual([{}, {}])
     })
   })
 
@@ -120,9 +120,9 @@ describe('arrFill', () => {
       expect(resultZero).toEqual([0, 0, 0])
       expect(Object.is(resultZero[0], 0)).toBe(true)
 
-      const resultNegZero = arrFill(-0, 2)
-      expect(resultNegZero).toEqual([-0, -0])
-      expect(Object.is(resultNegZero[0], -0)).toBe(true)
+      const resultNegativeZero = arrFill(-0, 2)
+      expect(resultNegativeZero).toEqual([-0, -0])
+      expect(Object.is(resultNegativeZero[0], -0)).toBe(true)
     })
 
     it('should handle negative numbers and float numbers as values', () => {
@@ -217,10 +217,10 @@ describe('arrFill', () => {
       })
       expect(visitedCount).toBe(3)
 
-      const mapped = result.map((val, idx) => `${val}-${idx}`)
+      const mapped = result.map((value, index) => `${value}-${index}`)
       expect(mapped).toEqual(['item-0', 'item-1', 'item-2'])
 
-      const filtered = result.filter(val => val === 'item')
+      const filtered = result.filter(value => value === 'item')
       expect(filtered).toHaveLength(3)
     })
 

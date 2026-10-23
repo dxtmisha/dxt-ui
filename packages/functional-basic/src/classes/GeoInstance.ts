@@ -16,7 +16,7 @@ import {
 } from '../types/geoTypes'
 
 /**
- * Cookie key for storing the geo code/
+ * Cookie key for storing the geo code /
  * Ключ куки для хранения кода гео
  */
 export const UI_GEO_COOKIE_KEY = 'ui-geo-code'
@@ -32,43 +32,43 @@ const STORAGE_NAME_CODE = '__ui:geo-code__'
  */
 export class GeoInstance {
   /**
-   * List of available countries/
+   * List of available countries /
    * Список доступных стран
    */
   private list: GeoItem[] = [...geo]
 
   /**
-   * Data storage instance for geo code/
+   * Data storage instance for geo code /
    * Экземпляр хранилища данных для гео-кода
    */
   private storage = new DataStorage<string>(STORAGE_NAME_CODE)
 
   /**
-   * Current location code (e.g., 'en-GB')/
+   * Current location code (e.g., 'en-GB') /
    * Текущий код локации (например, 'en-GB')
    */
   private location: string
 
   /**
-   * Value by default for the country code/
+   * Value by default for the country code /
    * Значение по умолчанию для кода страны
    */
   private valueDefault?: string | (() => string)
 
   /**
-   * Detailed data about the current country/
+   * Detailed data about the current country /
    * Детальные данные о текущей стране
    */
   private item: GeoItemFull
 
   /**
-   * Current language code/
+   * Current language code /
    * Текущий код языка
    */
   private language: string
 
   /**
-   * Current time zone offset in minutes/
+   * Current time zone offset in minutes /
    * Текущее смещение часового пояса в минутах
    */
   private timezone: number = new Date().getTimezoneOffset()
@@ -98,93 +98,22 @@ export class GeoInstance {
   }
 
   /**
-   * Getting the current country code.
+   * Updates the current location and related data.
    *
-   * Получение текущего кода страны.
-   * @returns country code / код страны
+   * Обновляет текущее местоположение и связанные с ним данные.
+   * @param code location code (e.g., 'en-GB') / код локации (например, 'en-GB')
+   * @param save whether to save the location in storage / нужно ли сохранять местоположение в хранилище
    */
-  getCountry(): string {
-    return this.item.country
-  }
+  set(code: string, save?: boolean): void {
+    this.location = code
 
-  /**
-   * Getting the current language code.
-   *
-   * Получение текущего кода языка.
-   * @returns language code / код языка
-   */
-  getLanguage(): string {
-    return this.language
-  }
+    this.item = this.getByCode(this.location)
+    this.language = this.findLanguage(this.location)
 
-  /**
-   * Getting the full format according to the standard (language-country).
-   *
-   * Получение полного формата согласно стандарту (язык-страна).
-   * @returns standard string / строка стандарта
-   */
-  getStandard(): string {
-    return this.getItem().standard
-  }
-
-  /**
-   * Getting the first day of the week for the current country.
-   *
-   * Получение первого дня недели для текущей страны.
-   * @returns first day of the week / первый день недели
-   */
-  getFirstDay(): string {
-    return this.item.firstDay
-  }
-
-  /**
-   * Getting the current location string.
-   *
-   * Получение строки текущего местоположения.
-   * @returns location string / строка местоположения
-   */
-  getLocation(): string {
-    return this.location
-  }
-
-  /**
-   * Getting the country code from the location.
-   *
-   * Получение кода страны из местоположения.
-   * @returns country code / код страны
-   */
-  getLocationCountry(): string {
-    return this.toCountry(this.getLocation())
-  }
-
-  /**
-   * Getting the language code from the location.
-   *
-   * Получение кода языка из местоположения.
-   * @returns language code / код языка
-   */
-  getLocationLanguage(): string {
-    return this.toLanguage(this.getLocation())
-  }
-
-  /**
-   * Getting processed data including the current language.
-   *
-   * Получение обработанных данных, включая текущий язык.
-   * @returns full geo item data / полные данные гео-объекта
-   */
-  getItem(): GeoItemFull {
-    return this.item
-  }
-
-  /**
-   * Returns the full list of available countries.
-   *
-   * Возвращает полный список доступных стран.
-   * @returns list of geo items / список гео-объектов
-   */
-  getList(): GeoItem[] {
-    return this.list
+    if (save) {
+      this.storage.set(this.location)
+      this.getCookie().set(this.location)
+    }
   }
 
   /**
@@ -262,6 +191,96 @@ export class GeoInstance {
   }
 
   /**
+   * Getting the current country code.
+   *
+   * Получение текущего кода страны.
+   * @returns country code / код страны
+   */
+  getCountry(): string {
+    return this.item.country
+  }
+
+  /**
+   * Getting the first day of the week for the current country.
+   *
+   * Получение первого дня недели для текущей страны.
+   * @returns first day of the week / первый день недели
+   */
+  getFirstDay(): string {
+    return this.item.firstDay
+  }
+
+  /**
+   * Getting processed data including the current language.
+   *
+   * Получение обработанных данных, включая текущий язык.
+   * @returns full geo item data / полные данные гео-объекта
+   */
+  getItem(): GeoItemFull {
+    return this.item
+  }
+
+  /**
+   * Getting the current language code.
+   *
+   * Получение текущего кода языка.
+   * @returns language code / код языка
+   */
+  getLanguage(): string {
+    return this.language
+  }
+
+  /**
+   * Returns the full list of available countries.
+   *
+   * Возвращает полный список доступных стран.
+   * @returns list of geo items / список гео-объектов
+   */
+  getList(): GeoItem[] {
+    return this.list
+  }
+
+  /**
+   * Getting the current location string.
+   *
+   * Получение строки текущего местоположения.
+   * @returns location string / строка местоположения
+   */
+  getLocation(): string {
+    return this.location
+  }
+
+  /**
+   * Getting the country code from the location.
+   *
+   * Получение кода страны из местоположения.
+   * @returns country code / код страны
+   */
+  getLocationCountry(): string {
+    return this.toCountry(this.getLocation())
+  }
+
+  /**
+   * Getting the language code from the location.
+   *
+   * Получение кода языка из местоположения.
+   * @returns language code / код языка
+   */
+  getLocationLanguage(): string {
+    return this.toLanguage(this.getLocation())
+  }
+
+  /**
+   * Getting the full format according to the standard (language-country).
+   *
+   * Получение полного формата согласно стандарту (язык-страна).
+   * @returns standard string / строка стандарта
+   */
+  getStandard(): string {
+    return this.getItem().standard
+  }
+
+  /**
    * Returns the current time zone offset in minutes.
    *
    * Возвращает текущее смещение часового пояса в минутах.
@@ -281,7 +300,7 @@ export class GeoInstance {
     const hours = Math.abs(Math.trunc(this.timezone / 60)).toString().padStart(2, '0')
     const minutes = Math.abs(this.timezone % 60).toString().padStart(2, '0')
 
-    if (this.timezone >= 0) {
+    if (this.timezone > 0) {
       return `-${hours}:${minutes}`
     }
 
@@ -289,66 +308,15 @@ export class GeoInstance {
   }
 
   /**
-   * Finds the country data by its code or name.
-   *
-   * Ищет данные о стране по ее коду или названию.
-   * @param code country code / код страны
-   * @returns full geo data / полные гео-данные
-   */
-  find(code: string): GeoItemFull {
-    return this.getByCode(code)
-  }
-
-  /**
-   * Converts a geo item to its standard string representation (language-country).
-   *
-   * Преобразует гео-объект в его стандартное строковое представление (язык-страна).
-   * @param item geo item data / данные гео-объекта
-   * @param language optional language override / опциональное переопределение языка
-   * @returns standard code string / строка стандартного кода
-   */
-  toStandard(
-    item: GeoItem,
-    language?: string
-  ) {
-    if (language) {
-      const standardLanguage = this.getByLanguage(language)?.language
-
-      if (standardLanguage) {
-        return `${standardLanguage}-${item.country}`
-      }
-    }
-
-    return `${item.language}-${item.country}`
-  }
-
-  /**
-   * Updates the current location and related data.
-   *
-   * Обновляет текущее местоположение и связанные с ним данные.
-   * @param code location code (e.g., 'en-GB') / код локации (например, 'en-GB')
-   * @param save whether to save the location in storage / нужно ли сохранять местоположение в хранилище
-   */
-  set(code: string, save?: boolean): void {
-    this.location = code
-
-    this.item = this.getByCode(this.location)
-    this.language = this.findLanguage(this.location)
-
-    if (save) {
-      this.storage.set(this.location)
-      this.getCookie().set(this.location)
-    }
-  }
-
-  /**
    * Updates the default time zone offset.
    *
    * Обновляет смещение часового пояса по умолчанию.
    * @param timezone new time zone offset / новое смещение часового пояса
+   * @returns current instance / текущий экземпляр
    */
-  setTimezone(timezone: number) {
+  setTimezone(timezone: number): this {
     this.timezone = timezone
+    return this
   }
 
   /**
@@ -357,7 +325,7 @@ export class GeoInstance {
    * Устанавливает значение по умолчанию для кода страны.
    * @param code default code value / значение кода по умолчанию
    */
-  setValueDefault(code?: string | (() => string)) {
+  setValueDefault(code?: string | (() => string)): void {
     this.valueDefault = code
 
     this.location = this.findLocation()
@@ -385,10 +353,17 @@ export class GeoInstance {
 
     if (index !== -1) {
       const current = this.list[index]
+      const unit = current.unit || item.unit
+        ? {
+            ...current.unit,
+            ...item.unit
+          }
+        : undefined
 
       this.list[index] = {
         ...current,
-        ...item
+        ...item,
+        ...(unit ? { unit } : {})
       }
     } else {
       this.list.push({
@@ -424,6 +399,40 @@ export class GeoInstance {
     })
 
     return this
+  }
+
+  /**
+   * Finds the country data by its code or name.
+   *
+   * Ищет данные о стране по ее коду или названию.
+   * @param code country code / код страны
+   * @returns full geo data / полные гео-данные
+   */
+  find(code: string): GeoItemFull {
+    return this.getByCode(code)
+  }
+
+  /**
+   * Converts a geo item to its standard string representation (language-country).
+   *
+   * Преобразует гео-объект в его стандартное строковое представление (язык-страна).
+   * @param item geo item data / данные гео-объекта
+   * @param language optional language override / опциональное переопределение языка
+   * @returns standard code string / строка стандартного кода
+   */
+  toStandard(
+    item: GeoItem,
+    language?: string
+  ): string {
+    if (language) {
+      const standardLanguage = this.getByLanguage(language)?.language
+
+      if (standardLanguage) {
+        return `${standardLanguage}-${item.country}`
+      }
+    }
+
+    return `${item.language}-${item.country}`
   }
 
   /**

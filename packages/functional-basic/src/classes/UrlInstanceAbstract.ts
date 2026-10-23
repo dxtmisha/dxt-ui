@@ -10,13 +10,15 @@ import { forEach } from '../functions/forEach'
  */
 export abstract class UrlInstanceAbstract {
   /** URL state data record / Запись данных состояния URL */
-  protected data?: Record<string, any>
+  protected data?: Record<string, unknown>
   /** Watchers map for URL state variables / Карта слушателей для переменных состояния URL */
-  protected watch: Record<string, ((value: any) => void)[]> = {}
+  protected watch: Record<string, ((value: unknown) => void)[]> = {}
   /** Update block flag / Флаг блокировки обновления */
   protected block = false
   /** Debounce timer instance / Экземпляр таймера задержки */
-  protected time?: any
+  protected time?: ReturnType<typeof setTimeout>
+  /** Reload debounce timer instance / Экземпляр таймера перезагрузки */
+  protected reloadTimer?: ReturnType<typeof setTimeout>
 
   /**
    * Get data.
@@ -34,12 +36,12 @@ export abstract class UrlInstanceAbstract {
 
     if (
       !(name in data)
-      && defaultValue
+      && defaultValue !== undefined
     ) {
       this.set(name, defaultValue)
     }
 
-    return data[name]
+    return data[name] as T
   }
 
   /**
@@ -77,9 +79,9 @@ export abstract class UrlInstanceAbstract {
     callback: (value: T) => void
   ): this {
     if (name in this.watch) {
-      this.watch[name]?.push(callback)
+      this.watch[name]?.push(callback as (value: unknown) => void)
     } else {
-      this.watch[name] = [callback]
+      this.watch[name] = [callback as (value: unknown) => void]
     }
 
     return this
@@ -114,10 +116,31 @@ export abstract class UrlInstanceAbstract {
    */
   reload(): this {
     if (this.block) {
-      setTimeout(() => this.reload(), 32)
+      clearTimeout(this.reloadTimer)
+      this.reloadTimer = setTimeout(() => {
+        this.reloadTimer = undefined
+        this.reload()
+      }, 32)
     } else {
+      clearTimeout(this.reloadTimer)
+      this.reloadTimer = undefined
       this.initData()
     }
+
+    return this
+  }
+
+  /**
+   * Destroys instance, clears timers and listeners.
+   *
+   * Уничтожает экземпляр, очищает таймеры и слушатели.
+   * @returns this instance / текущий экземпляр
+   */
+  destroy(): this {
+    clearTimeout(this.time)
+    clearTimeout(this.reloadTimer)
+    this.reloadTimer = undefined
+    this.removeListener()
 
     return this
   }
@@ -126,9 +149,9 @@ export abstract class UrlInstanceAbstract {
    * Returns the query/hash data object, initializing if needed.
    *
    * Возвращает объект данных, инициализируя при необходимости.
-   * @returns Record<string, any> data object / объект данных
+   * @returns Record<string, unknown> data object / объект данных
    */
-  protected getData(): Record<string, any> {
+  protected getData(): Record<string, unknown> {
     if (!this.data) {
       this.init()
     }
@@ -158,7 +181,7 @@ export abstract class UrlInstanceAbstract {
    * @param location fresh data / свежие данные
    * @returns this instance / текущий экземпляр
    */
-  protected makeWatch(location: Record<string, any>): this {
+  protected makeWatch(location: Record<string, unknown>): this {
     forEach(this.watch, (item, name) => {
       if (this.data?.[name] !== location?.[name]) {
         item.forEach(callback => callback(location[name]))
@@ -172,6 +195,7 @@ export abstract class UrlInstanceAbstract {
    * Initializes data and event listeners.
    *
    * Инициализирует данные и слушатели событий.
+   * @returns this instance / текущий экземпляр
    */
   protected abstract init(): this
 
@@ -179,13 +203,23 @@ export abstract class UrlInstanceAbstract {
    * Obtaining data from the URL string.
    *
    * Получение данных из строки URL.
+   * @returns parsed URL data object / разобранный объект данных URL
    */
-  protected abstract getLocation(): Record<string, any>
+  protected abstract getLocation(): Record<string, unknown>
 
   /**
    * Update string in URL.
    *
    * Обновление строки в URL.
+   * @returns this instance / текущий экземпляр
    */
   protected abstract update(): this
+
+  /**
+   * Removes window event listeners.
+   *
+   * Удаляет слушатели событий окна.
+   * @returns void / ничего не возвращает
+   */
+  protected abstract removeListener(): void
 }

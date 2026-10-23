@@ -4,9 +4,12 @@ import { Loading } from '../Loading'
 
 describe('Loading', () => {
   beforeEach(() => {
-    // Reset internal state before each test
     // @ts-expect-error: Accessing protected member for testing purposes
     Loading.getItem().value = 0
+    // @ts-expect-error: Accessing protected member for testing purposes
+    Loading.getItem().registrationList.forEach(registration => registration.item.stop())
+    // @ts-expect-error: Accessing protected member for testing purposes
+    Loading.getItem().registrationList = []
     vi.restoreAllMocks()
   })
 
@@ -235,6 +238,23 @@ describe('Loading', () => {
       expect(listener2).not.toHaveBeenCalled()
       expect(listener3).toHaveBeenCalled()
     })
+
+    it('should prune inactive listeners when associated DOM element is disconnected', () => {
+      const container = document.createElement('div')
+      document.body.appendChild(container)
+
+      const listener = vi.fn()
+      Loading.registrationEvent(listener, container)
+
+      Loading.show()
+      expect(listener).toHaveBeenCalledTimes(1)
+
+      document.body.removeChild(container)
+      Loading.hide()
+
+      // @ts-expect-error: Accessing protected registrationList
+      expect(Loading.getItem().registrationList).toHaveLength(0)
+    })
   })
 
   describe('Integration with ServerStorage', () => {
@@ -301,7 +321,7 @@ describe('Loading', () => {
     })
 
     it('should handle rapid successive show() calls', () => {
-      for (let i = 0; i < 100; i++) {
+      for (let index = 0; index < 100; index++) {
         Loading.show()
       }
       expect(Loading.get()).toBe(100)
@@ -309,10 +329,10 @@ describe('Loading', () => {
     })
 
     it('should handle rapid successive hide() calls', () => {
-      for (let i = 0; i < 50; i++) {
+      for (let index = 0; index < 50; index++) {
         Loading.show()
       }
-      for (let i = 0; i < 50; i++) {
+      for (let index = 0; index < 50; index++) {
         Loading.hide()
       }
       expect(Loading.get()).toBe(0)
@@ -368,22 +388,22 @@ describe('Loading', () => {
       Loading.registrationEvent(listener)
 
       Loading.show()
-      expect(listener.mock.calls[0][0].detail.loading).toBe(true)
+      expect(listener.mock.calls[0]?.[0].detail.loading).toBe(true)
 
       Loading.hide()
-      expect(listener.mock.calls[1][0].detail.loading).toBe(false)
+      expect(listener.mock.calls[1]?.[0].detail.loading).toBe(false)
     })
 
     it('should trigger events with correct loading state transitions', () => {
       const listener = vi.fn()
       Loading.registrationEvent(listener)
 
-      Loading.show() // loading: true
-      Loading.show() // loading: true
-      Loading.show() // loading: true
-      Loading.hide() // loading: true
-      Loading.hide() // loading: true
-      Loading.hide() // loading: false
+      Loading.show()
+      Loading.show()
+      Loading.show()
+      Loading.hide()
+      Loading.hide()
+      Loading.hide()
 
       const details = listener.mock.calls.map(call => call[0].detail)
       expect(details).toEqual([
@@ -441,11 +461,11 @@ describe('Loading', () => {
 
     it('should handle event registration with null element', () => {
       const listener = vi.fn()
-      Loading.registrationEvent(listener, null as any)
+      // @ts-expect-error: Testing runtime null element fallback
+      Loading.registrationEvent(listener, null)
 
       Loading.show()
 
-      // The event should still work since it uses window as default
       expect(listener).toHaveBeenCalled()
     })
 
@@ -466,17 +486,17 @@ describe('Loading', () => {
     })
 
     it('should maintain consistency with large number of operations', () => {
-      for (let i = 0; i < 1000; i++) {
+      for (let index = 0; index < 1000; index++) {
         Loading.show()
       }
       expect(Loading.get()).toBe(1000)
 
-      for (let i = 0; i < 500; i++) {
+      for (let index = 0; index < 500; index++) {
         Loading.hide()
       }
       expect(Loading.get()).toBe(500)
 
-      for (let i = 0; i < 500; i++) {
+      for (let index = 0; index < 500; index++) {
         Loading.hide()
       }
       expect(Loading.get()).toBe(0)

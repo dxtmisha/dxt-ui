@@ -4,15 +4,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `replaceRecursive`
 
-Performs a deep (recursive) merge of the target object or array with data from a replacement object/array. If the `isMerge` parameter is enabled, arrays are concatenated with duplicates removed; otherwise, arrays from the replacement overwrite the original ones.
+Performs a deep (recursive) merge of the target object with data from a replacement object or array. When `isMerge` is enabled (`true` by default), arrays at matching keys are concatenated with duplicates removed via `uniqueArray`; otherwise, arrays from `replacement` overwrite the target arrays.
+
+Includes built-in **Prototype Pollution** protection via `isPrototypeKey`, automatically skipping dangerous keys (`__proto__`, `constructor`, `prototype`) during traversal.
 
 **Parameters:**
-- `target: ObjectItem<I>` — The target object whose elements will be replaced/merged.
+- `target: ObjectItem<I>` — The target object whose elements will be replaced or merged.
 - `replacement?: ObjectOrArray<I>` — Object or array from which elements will be extracted for replacement.
-- `isMerge: boolean = true` — Flag to merge arrays (defaults to `true`). If `false`, arrays from the replacement overwrite the original ones.
+- `isMerge?: boolean = true` — Flag to merge arrays (defaults to `true`). If `false`, arrays from `replacement` overwrite the original ones.
 
 **Returns:**
-`ObjectItem<I>` — A new object or array that is the result of the merge. The original object is not mutated.
+`ObjectItem<I>` — A new merged object without mutating `target`. If `target` is not an object, returns a copy of `replacement` (if it is an object) or `{}`.
 
 ```typescript
 import { replaceRecursive } from '@dxtmisha/functional-basic'

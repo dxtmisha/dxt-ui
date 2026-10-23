@@ -1,4 +1,5 @@
 import { getColumn } from '../functions/getColumn'
+import { inArray } from '../functions/inArray'
 import { isString } from '../functions/isString'
 import { toDate } from '../functions/toDate'
 import { toNumber } from '../functions/toNumber'
@@ -30,58 +31,13 @@ import {
  * языка-зависимых функций
  */
 export class GeoIntl {
-  /**
-   * Checks if an instance of the class exists for the specified country code.
-   *
-   * Проверяет, существует ли экземпляр класса для указанного кода страны.
-   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
-   */
-  static isItem(
-    code: string = Geo.getLocation()
-  ): boolean {
-    const location = this.getLocation(code)
-    return location in items
-  }
-
-  /**
-   * Returns the standard location code.
-   *
-   * Возвращает стандартный код местоположения.
-   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
-   */
-  static getLocation(code: string = Geo.getLocation()) {
-    if (code in locations) {
-      return locations[code]
-    }
-
-    const geo = Geo.find(code)
-    locations[code] = geo.standard
-    return geo.standard
-  }
-
-  /**
-   * Returns an instance of the class according to the specified country code.
-   *
-   * Возвращает экземпляр класса по указанному коду страны.
-   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
-   */
-  static getInstance(code: string = Geo.getLocation()) {
-    const location = this.getLocation(code)
-
-    if (location in items) {
-      return items[location]
-    }
-
-    return new GeoIntl(code)
-  }
-
   /** Full geo item data / Полные данные гео-объекта */
   private readonly geo: GeoItemFull
 
   /**
    * Constructor
    * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
-   * @param errorCenter error center instance/ экземпляр центра ошибок
+   * @param errorCenter error center instance / экземпляр центра ошибок
    */
   constructor(
     code: string = Geo.getLocation(),
@@ -99,21 +55,71 @@ export class GeoIntl {
   }
 
   /**
-   * Returns country code and language.
+   * Checks if an instance of the class exists for the specified country code.
    *
-   * Возвращает код страны и языка.
+   * Проверяет, существует ли экземпляр класса для указанного кода страны.
+   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
+   * @returns true if instance exists / true, если экземпляр существует
    */
-  getLocation(): string {
-    return this.geo.standard
+  static isItem(
+    code: string = Geo.getLocation()
+  ): boolean {
+    const location = this.getLocation(code)
+    return location in items
+  }
+
+  /**
+   * Returns an instance of the class according to the specified country code.
+   *
+   * Возвращает экземпляр класса по указанному коду страны.
+   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
+   * @returns GeoIntl instance / экземпляр GeoIntl
+   */
+  static getInstance(code: string = Geo.getLocation()): GeoIntl {
+    const location = this.getLocation(code)
+
+    if (location in items) {
+      return items[location]
+    }
+
+    return new GeoIntl(code)
+  }
+
+  /**
+   * Returns the standard location code.
+   *
+   * Возвращает стандартный код местоположения.
+   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
+   * @returns standard location code / стандартный код местоположения
+   */
+  static getLocation(code: string = Geo.getLocation()): string {
+    if (code in locations) {
+      return locations[code]
+    }
+
+    const geo = Geo.find(code)
+    locations[code] = geo.standard
+    return geo.standard
   }
 
   /**
    * Returns the first day of the week.
    *
    * Возвращает первый день недели.
+   * @returns first day of the week / первый день недели
    */
   getFirstDay(): string {
     return this.geo.firstDay
+  }
+
+  /**
+   * Returns country code and language.
+   *
+   * Возвращает код страны и языка.
+   * @returns standard location code / стандартный код местоположения
+   */
+  getLocation(): string {
+    return this.geo.standard
   }
 
   /**
@@ -122,6 +128,7 @@ export class GeoIntl {
    * Последовательный перевод отображаемых названий языка, региона и скрипта.
    * @param value the code to provide depends on the type / предоставляемый код зависит от типа
    * @param typeOptions an object with some or all of the following properties / объект с некоторыми или всеми из следующих свойств
+   * @returns translated display name / переведенное отображаемое название
    */
   display(
     value?: string,
@@ -131,7 +138,7 @@ export class GeoIntl {
     let text
 
     if (typeOptions) {
-      if (typeof typeOptions === 'string') {
+      if (isString(typeOptions)) {
         options.type = typeOptions
       } else {
         options = {
@@ -151,11 +158,11 @@ export class GeoIntl {
           text = new Intl.DisplayNames(this.getLocation(), options).of(this.geo.country)
         }
       }
-    } catch (e) {
+    } catch (error) {
       this.errorCenter.on({
         group: 'intl',
         code: 'display',
-        details: e
+        details: error
       })
     }
 
@@ -166,9 +173,9 @@ export class GeoIntl {
    * Get display names of language.
    *
    * Получить отображаемые имена языка.
-   * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
-   * @param style the formatting style to display names/ используемый стиль отображения имен
-   * @returns display name of language/ отображаемое имя языка
+   * @param value the code to provide depends on the type / предоставляемый код зависит от типа
+   * @param style the formatting style to display names / используемый стиль отображения имен
+   * @returns display name of language / отображаемое имя языка
    */
   languageName(
     value?: string,
@@ -186,9 +193,9 @@ export class GeoIntl {
    * Get display names of region.
    *
    * Получить отображаемые имена региона.
-   * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
-   * @param style the formatting style to display names/ используемый стиль отображения имен
-   * @returns display name of region/ отображаемое имя региона
+   * @param value the code to provide depends on the type / предоставляемый код зависит от типа
+   * @param style the formatting style to display names / используемый стиль отображения имен
+   * @returns display name of region / отображаемое имя региона
    */
   countryName(
     value?: string,
@@ -206,10 +213,11 @@ export class GeoIntl {
    * The method returns a string containing the full name in a specific format.
    *
    * Метод возвращает строку, содержащую полное имя в определённом формате.
-   * @param last last name/ фамилию
-   * @param first first name/ имя
-   * @param surname surname middle name (optional)/ отчество
-   * @param short shorten the names/ сократить названия
+   * @param last last name / фамилию
+   * @param first first name / имя
+   * @param surname surname middle name (optional) / отчество
+   * @param short shorten the names / сократить названия
+   * @returns formatted full name / отформатированное полное имя
    */
   fullName(
     last: string,
@@ -218,8 +226,8 @@ export class GeoIntl {
     short?: boolean
   ): string {
     const nameFormat = this.geo?.nameFormat ?? 'fl'
-    const firstText = short ? first[0].toUpperCase() + '.' : first
-    const surnameText = short ? surname?.[0].toUpperCase() + '.' : surname
+    const firstText = short && first ? `${first[0].toUpperCase()}.` : first
+    const surnameText = short && surname ? `${surname[0].toUpperCase()}.` : surname
 
     let fullName
 
@@ -245,9 +253,9 @@ export class GeoIntl {
    * In basic use without specifying a locale, a formatted string.
    *
    * При обычном использовании без указания локали форматированная строка.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param options an object with some or all properties/ объект с некоторыми
-   * или всеми свойствами
+   * @param value a number, bigint, or string, to format / число для форматирования
+   * @param options an object with some or all properties / объект с некоторыми или всеми свойствами
+   * @returns formatted number string / отформатированная строка числа
    */
   number(
     value: NumberOrString,
@@ -260,6 +268,7 @@ export class GeoIntl {
    * Decimal point symbol.
    *
    * Символ десятичной точки.
+   * @returns decimal point symbol / символ десятичной точки
    */
   decimal(): string {
     return this.numberObject()
@@ -274,6 +283,7 @@ export class GeoIntl {
    * @param value a number, bigint, or string, to format / число для форматирования
    * @param currencyOptions the currency to use in currency formatting / валюта для использования в форматировании валюты
    * @param numberOnly do not display the currency symbol / не выводить значок валюты
+   * @returns formatted currency string / отформатированная строка валюты
    */
   currency(
     value: NumberOrString,
@@ -283,7 +293,7 @@ export class GeoIntl {
     const options: Intl.NumberFormatOptions = ({
       style: 'currency',
       currencyDisplay: 'symbol',
-      ...(typeof currencyOptions === 'string' ? { currency: currencyOptions } : currencyOptions || {})
+      ...(isString(currencyOptions) ? { currency: currencyOptions } : currencyOptions || {})
     })
 
     const number: string = value
@@ -298,7 +308,7 @@ export class GeoIntl {
       if (object) {
         return getColumn(
           object.formatToParts(toNumber(value))
-            .filter(item => ['literal', 'currency'].indexOf(item.type) === -1),
+            .filter(item => !inArray(['literal', 'currency'], item.type)),
           'value'
         )
           .join('')
@@ -327,6 +337,7 @@ export class GeoIntl {
    * Возвращает символ для валюты, если он есть, или сам код валюты.
    * @param currency the currency to use in currency formatting / валюта для использования в форматировании валюты
    * @param currencyDisplay how to display the currency in currency formatting / как отобразить валюту в формате валюты
+   * @returns currency symbol or code / символ или код валюты
    */
   currencySymbol(
     currency: string,
@@ -346,9 +357,9 @@ export class GeoIntl {
    * If the style is 'unit', a unit property must be provided.
    *
    * Форматирование юнитов.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param unitOptions the unit to use in unit formatting/ блок для использования
-   * в форматировании блока
+   * @param value a number, bigint, or string, to format / число для форматирования
+   * @param unitOptions the unit to use in unit formatting / блок для использования в форматировании блока
+   * @returns formatted unit string / отформатированная строка единицы измерения
    */
   unit(
     value: NumberOrString,
@@ -356,7 +367,7 @@ export class GeoIntl {
   ): string {
     const options: Intl.NumberFormatOptions = ({
       style: 'unit',
-      ...(typeof unitOptions === 'string' ? { unit: unitOptions } : unitOptions || {})
+      ...(isString(unitOptions) ? { unit: unitOptions } : unitOptions || {})
     })
 
     const number: string = value
@@ -370,10 +381,12 @@ export class GeoIntl {
   }
 
   /**
-   * Возвращает отформатированный размер файла
-   * @param value a number, bigint, or string, to format /<br>число для форматирования
-   * @param unitOptions the unit to use in unit formatting /<br>блок для использования
-   * в форматировании блока
+   * Returns the formatted file size.
+   *
+   * Возвращает отформатированный размер файла.
+   * @param value a number, bigint, or string, to format / число для форматирования
+   * @param unitOptions the unit to use in unit formatting / блок для использования в форматировании блока
+   * @returns formatted file size string / отформатированная строка размера файла
    */
   sizeFile(
     value: NumberOrString,
@@ -413,8 +426,9 @@ export class GeoIntl {
    * Number as a percentage.
    *
    * Число в виде процента.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param options an object with some or all properties/ объект с некоторыми или всеми свойствами
+   * @param value a number, bigint, or string, to format / число для форматирования
+   * @param options an object with some or all properties / объект с некоторыми или всеми свойствами
+   * @returns formatted percentage string / отформатированная строка процента
    */
   percent(
     value: NumberOrString,
@@ -432,6 +446,7 @@ export class GeoIntl {
    * Число в виде процента (единица).
    * @param value a number, bigint, or string, to format / число для форматирования
    * @param options an object with some or all properties / объект с некоторыми или всеми свойствами
+   * @returns formatted percentage string / отформатированная строка процента
    */
   percentBy100(
     value: NumberOrString,
@@ -441,11 +456,14 @@ export class GeoIntl {
   }
 
   /**
-   * Применять форматирование, учитывающее множественное число, и языковые правила, связанные с множественным числом
+   * Applies plural-sensitive formatting and language rules related to plurals.
+   *
+   * Применяет форматирование, учитывающее множественное число, и языковые правила, связанные с множественным числом.
    * @param value a number, bigint, or string, to format / число для форматирования
    * @param words list of words for formatting (in the format one|two|few|many|other|zero) / список слов для форматирования (в формате `one|two|few|many|other|zero`)
-   * @param options Property for PluralRules/ свойство для PluralRules
-   * @param optionsNumber an object with some or all properties/ объект с некоторыми или всеми свойствами
+   * @param options Property for PluralRules / свойство для PluralRules
+   * @param optionsNumber an object with some or all properties / объект с некоторыми или всеми свойствами
+   * @returns formatted string with plural word / отформатированная строка со словом во множественном числе
    */
   plural(
     value: NumberOrString,
@@ -492,11 +510,11 @@ export class GeoIntl {
 
           return `${this.number(number, optionsNumber)} ${wordsFormat ?? ''}`.trim()
         }
-      } catch (e) {
+      } catch (error) {
         this.errorCenter.on({
           group: 'intl',
           code: 'plural',
-          details: e
+          details: error
         })
       }
     }
@@ -508,11 +526,11 @@ export class GeoIntl {
    * Enables language-sensitive date and time formatting.
    *
    * Конструктором объектов, включающих языка-зависимое форматирование даты и времени.
-   * @param value the date to format/ дата для форматирования
-   * @param type type of data format/ тип формата data
-   * @param styleOptions the representation of the month/ представление месяца
-   * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
-   * @returns formatted date and time/ отформатированная дата и время
+   * @param value the date to format / дата для форматирования
+   * @param type type of data format / тип формата data
+   * @param styleOptions the representation of the month / представление месяца
+   * @param hour24 whether to use 12-hour time / использовать ли 12-часовое время
+   * @returns formatted date and time / отформатированная дата и время
    */
   date(
     value: NumberOrStringOrDate,
@@ -522,7 +540,7 @@ export class GeoIntl {
   ): string {
     const date = toDate(value)
 
-    const isDisplay = typeof styleOptions === 'string'
+    const isDisplay = isString(styleOptions)
     const options = this.dateOptions(type, isDisplay ? styleOptions : 'short')
 
     if (hour24) {
@@ -542,8 +560,8 @@ export class GeoIntl {
    * Включает форматирование относительного времени с учетом языка.
    * @param value a number, bigint, or string, to format / число для форматирования
    * @param styleOptions the length of the internationalized message / длина интернационализированного сообщения
-   * @param todayValue current day/ текущий день
-   * @returns formatted relative time/ отформатированное относительное время
+   * @param todayValue current day / текущий день
+   * @returns formatted relative time / отформатированное относительное время
    */
   relative(
     value: NumberOrStringOrDate,
@@ -554,7 +572,7 @@ export class GeoIntl {
     const today = todayValue || new Date()
     const options: Intl.RelativeTimeFormatOptions = ({
       numeric: 'auto',
-      ...(typeof styleOptions === 'string' ? { style: styleOptions } : styleOptions || {})
+      ...(isString(styleOptions) ? { style: styleOptions } : styleOptions || {})
     })
 
     let unit: Intl.RelativeTimeFormatUnit = 'second'
@@ -600,9 +618,10 @@ export class GeoIntl {
    * @param limit values that determine the output limit (values per day) / значения, по которым определяем предел вывода (значения в день)
    * @param todayValue current day / текущий день
    * @param relativeOptions the length of the internationalized message / длина интернационализированного сообщения
-   * @param dateOptions the representation of the month/ представление месяца
-   * @param type type of data format/ тип формата data
-   * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
+   * @param dateOptions the representation of the month / представление месяца
+   * @param type type of data format / тип формата data
+   * @param hour24 whether to use 12-hour time / использовать ли 12-часовое время
+   * @returns formatted relative or standard date string / отформатированная относительная или стандартная строка даты
    */
   relativeLimit(
     value: NumberOrStringOrDate,
@@ -641,10 +660,13 @@ export class GeoIntl {
   }
 
   /**
-   * Возвращает отформатированное значение времени, прошедшего с момента события
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param unit time unit/ единица времени
-   * @param styleOptions additional option or formatting style/ дополнительная опция или стиль форматирования
+   * Returns the formatted time value elapsed since the event.
+   *
+   * Возвращает отформатированное значение времени, прошедшего с момента события.
+   * @param value a number, bigint, or string, to format / число для форматирования
+   * @param unit time unit / единица времени
+   * @param styleOptions additional option or formatting style / дополнительная опция или стиль форматирования
+   * @returns formatted relative time string / отформатированная строка относительного времени
    */
   relativeByValue(
     value: NumberOrString,
@@ -653,7 +675,7 @@ export class GeoIntl {
   ): string {
     const options: Intl.RelativeTimeFormatOptions = ({
       numeric: 'auto',
-      ...(typeof styleOptions === 'string' ? { style: styleOptions } : styleOptions || {})
+      ...(isString(styleOptions) ? { style: styleOptions } : styleOptions || {})
     })
 
     try {
@@ -663,11 +685,11 @@ export class GeoIntl {
       ) {
         return new Intl.RelativeTimeFormat(this.getLocation(), options).format(Math.round(toNumber(value)), unit)
       }
-    } catch (e) {
+    } catch (error) {
       this.errorCenter.on({
         group: 'intl',
         code: 'relative',
-        details: e
+        details: error
       })
     }
 
@@ -678,9 +700,9 @@ export class GeoIntl {
    * Names of months.
    *
    * Названия месяцев.
-   * @param value the date to format/ дата для форматирования
-   * @param style the representation of the month/ представление месяца
-   * @returns month name/ название месяца
+   * @param value the date to format / дата для форматирования
+   * @param style the representation of the month / представление месяца
+   * @returns month name / название месяца
    */
   month(
     value?: NumberOrStringOrDate,
@@ -691,11 +713,11 @@ export class GeoIntl {
         return Intl.DateTimeFormat(this.getLocation(), { month: style || 'long' })
           .format(toDate(value))
       }
-    } catch (e) {
+    } catch (error) {
       this.errorCenter.on({
         group: 'intl',
         code: 'datetime',
-        details: e
+        details: error
       })
     }
 
@@ -706,8 +728,8 @@ export class GeoIntl {
    * Array to list of months.
    *
    * Массив в список месяцев.
-   * @param style the representation of the month/ представление месяца
-   * @returns list of months (1-12)/ список месяцев (1-12)
+   * @param style the representation of the month / представление месяца
+   * @returns list of months (1-12) / список месяцев (1-12)
    */
   months(
     style?: Intl.DateTimeFormatOptions['month']
@@ -719,23 +741,23 @@ export class GeoIntl {
 
     try {
       if (this.hasIntlDateTimeFormat()) {
-        const date = new Date()
+        const date = new Date(2000, 0, 1)
         const format = new Intl.DateTimeFormat(this.getLocation(), { month: style || 'long' })
 
-        for (let i = 0; i < 12; i++) {
-          date.setMonth(i)
+        for (let index = 0; index < 12; index++) {
+          date.setMonth(index)
           list.push({
             label: format.format(date)
               .replace(/^./, character => character.toUpperCase()),
-            value: i + 1
+            value: index + 1
           })
         }
       }
-    } catch (e) {
+    } catch (error) {
       this.errorCenter.on({
         group: 'intl',
         code: 'datetime',
-        details: e
+        details: error
       })
     }
 
@@ -746,9 +768,9 @@ export class GeoIntl {
    * Returns names of days of the week.
    *
    * Возвращает названия дней недели.
-   * @param value the date to format/ дата для форматирования
-   * @param style the representation of the weekday/ представление о дне недели
-   * @returns weekday name/ название дня недели
+   * @param value the date to format / дата для форматирования
+   * @param style the representation of the weekday / представление о дне недели
+   * @returns weekday name / название дня недели
    */
   weekday(
     value?: NumberOrStringOrDate,
@@ -759,11 +781,11 @@ export class GeoIntl {
         return new Intl.DateTimeFormat(this.getLocation(), { weekday: style || 'long' })
           .format(toDate(value))
       }
-    } catch (e) {
+    } catch (error) {
       this.errorCenter.on({
         group: 'intl',
         code: 'datetime',
-        details: e
+        details: error
       })
     }
 
@@ -774,8 +796,8 @@ export class GeoIntl {
    * Array of the list of names of the days of the week.
    *
    * Массив из списка названий дней недели.
-   * @param style the representation of the weekday/ представление о дне недели
-   * @returns list of weekdays (0-6)/ список дней недели (0-6)
+   * @param style the representation of the weekday / представление о дне недели
+   * @returns list of weekdays (0-6) / список дней недели (0-6)
    */
   weekdays(
     style?: Intl.DateTimeFormatOptions['weekday']
@@ -787,13 +809,13 @@ export class GeoIntl {
 
     try {
       if (this.hasIntlDateTimeFormat()) {
-        const date = new Date()
+        const date = new Date(2000, 0, 2)
         const format = new Intl.DateTimeFormat(this.getLocation(), { weekday: style || 'long' })
-        const current = date.getDay() + (this.geo.firstDay === 'Mo' ? -1 : 1)
+        const firstDayOffset = this.geo.firstDay === 'Mo' ? 1 : this.geo.firstDay === 'Sa' ? -1 : 0
 
-        date.setDate(date.getDate() - current)
+        date.setDate(date.getDate() + firstDayOffset)
 
-        for (let i = 0; i < 7; i++) {
+        for (let index = 0; index < 7; index++) {
           list.push({
             label: format
               .format(date)
@@ -804,11 +826,11 @@ export class GeoIntl {
           date.setDate(date.getDate() + 1)
         }
       }
-    } catch (e) {
+    } catch (error) {
       this.errorCenter.on({
         group: 'intl',
         code: 'datetime',
-        details: e
+        details: error
       })
     }
 
@@ -819,8 +841,8 @@ export class GeoIntl {
    * Time.
    *
    * Время.
-   * @param value the date to format/ дата для форматирования
-   * @returns formatted time/ отформатированное время
+   * @param value the date to format / дата для форматирования
+   * @returns formatted time / отформатированное время
    */
   time(value: NumberOrStringOrDate): string {
     return this.date(value, 'time')
@@ -830,30 +852,31 @@ export class GeoIntl {
    * Sorts strings taking into account the characteristics of countries.
    *
    * Сортирует строки с учетом особенностей стран.
-   * @param data an array with data/ массив с данными
-   * @param compareFn a function for sorting/ функция для сортировки
-   * @returns sorted array/ отсортированный массив
+   * @param data an array with data / массив с данными
+   * @param compareFn a function for sorting / функция для сортировки
+   * @returns sorted array / отсортированный массив
    */
   sort<T>(
     data: T[],
-    compareFn: (a: T, b: T) => [string, string] = (a, b) => [a as string, b as string]
-  ) {
+    compareFn: (itemA: T, itemB: T) => [string, string] = (itemA, itemB) => [itemA as string, itemB as string]
+  ): T[] {
     if (
       this.hasIntl()
       && typeof Intl.Collator !== 'undefined'
     ) {
       const collator = new Intl.Collator(this.getLocation())
 
-      return data.sort((a, b) => collator.compare(...compareFn(a, b)))
+      return [...data].sort((itemA, itemB) => collator.compare(...compareFn(itemA, itemB)))
     }
 
-    return data
+    return [...data]
   }
 
   /**
    * Checks if the Intl object is available.
    *
    * Проверяет доступность объекта Intl.
+   * @returns true if Intl is available / true, если объект Intl доступен
    */
   private hasIntl(): boolean {
     return typeof Intl !== 'undefined'
@@ -863,6 +886,7 @@ export class GeoIntl {
    * Checks if the Intl.DateTimeFormat object is available.
    *
    * Проверяет доступность объекта Intl.DateTimeFormat.
+   * @returns true if Intl.DateTimeFormat is available / true, если объект Intl.DateTimeFormat доступен
    */
   private hasIntlDateTimeFormat(): boolean {
     return this.hasIntl()
@@ -874,6 +898,7 @@ export class GeoIntl {
    *
    * Объект включает форматирование чисел с учетом языка.
    * @param options an object with some or all properties / объект с некоторыми или всеми свойствами
+   * @returns Intl.NumberFormat instance or undefined / экземпляр Intl.NumberFormat или undefined
    */
   private numberObject(options?: Intl.NumberFormatOptions): Intl.NumberFormat | undefined {
     try {
@@ -883,11 +908,11 @@ export class GeoIntl {
       ) {
         return new Intl.NumberFormat(this.getLocation(), options)
       }
-    } catch (e) {
+    } catch (error) {
       this.errorCenter.on({
         group: 'intl',
         code: 'number',
-        details: e
+        details: error
       })
     }
 
@@ -898,8 +923,9 @@ export class GeoIntl {
    * Returns options for data according to its type.
    *
    * Возвращает options для data по его типу.
-   * @param type type of data format/ тип формата data
-   * @param display the representation of the month/ представление месяца
+   * @param type type of data format / тип формата data
+   * @param display the representation of the month / представление месяца
+   * @returns Intl.DateTimeFormatOptions object / объект Intl.DateTimeFormatOptions
    */
   private dateOptions(
     type?: GeoDate,
@@ -907,28 +933,28 @@ export class GeoIntl {
   ): Intl.DateTimeFormatOptions {
     const options: Intl.DateTimeFormatOptions = {}
 
-    if (['full', 'datetime', 'date', undefined, 'year-month', 'year'].indexOf(type) !== -1) {
+    if (inArray(['full', 'datetime', 'date', undefined, 'year-month', 'year'], type)) {
       options.year = 'numeric'
     }
 
-    if (['full', 'datetime', 'date', undefined, 'year-month', 'month', 'day-month'].indexOf(type) !== -1) {
+    if (inArray(['full', 'datetime', 'date', undefined, 'year-month', 'month', 'day-month'], type)) {
       options.month = display
     }
 
-    if (['full', 'datetime', 'date', undefined, 'day', 'day-month'].indexOf(type) !== -1) {
+    if (inArray(['full', 'datetime', 'date', undefined, 'day', 'day-month'], type)) {
       options.day = '2-digit'
     }
 
     if (type !== undefined) {
-      if (['full', 'datetime', 'time', 'hour-minute', 'hour'].indexOf(type) !== -1) {
+      if (inArray(['full', 'datetime', 'time', 'hour-minute', 'hour'], type)) {
         options.hour = '2-digit'
       }
 
-      if (['full', 'datetime', 'time', 'hour-minute', 'minute'].indexOf(type) !== -1) {
+      if (inArray(['full', 'datetime', 'time', 'hour-minute', 'minute'], type)) {
         options.minute = '2-digit'
       }
 
-      if (['full', 'time', 'second'].indexOf(type) !== -1) {
+      if (inArray(['full', 'time', 'second'], type)) {
         options.second = '2-digit'
       }
     }

@@ -1,129 +1,178 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { ErrorCenter } from '../ErrorCenter'
+import { ServerStorage } from '../ServerStorage'
 import { StorageCallback } from '../StorageCallback'
 
 describe('StorageCallback', () => {
   beforeEach(() => {
-    // Clear the internal items map if possible, but since it's a private constant in the module,
-    // we should use different names for each test if they need isolated state.
+    ServerStorage.reset()
+    ServerStorage.setErrorStatus(true)
   })
 
-  it('should create an instance', () => {
-    const storage = new StorageCallback('test-storage')
-    expect(storage).toBeInstanceOf(StorageCallback)
-    expect(storage.getName()).toBe('test-storage')
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
-  it('should return the same instance for the same name and group (singleton behavior)', () => {
-    const s1 = new StorageCallback('singleton', 'group1')
-    const s2 = new StorageCallback('singleton', 'group1')
-    const s3 = StorageCallback.getInstance('singleton', 'group1')
-
-    expect(s1).toBe(s2)
-    expect(s1).toBe(s3)
-  })
-
-  it('should return different instances for the same name but different groups', () => {
-    const s1 = new StorageCallback('resource', 'group1')
-    const s2 = new StorageCallback('resource', 'group2')
-
-    expect(s1).not.toBe(s2)
-  })
-
-  it('should use "main" as the default group', () => {
-    const s1 = new StorageCallback('default')
-    const s2 = new StorageCallback('default', 'main')
-    const s3 = StorageCallback.getInstance('default')
-
-    expect(s1).toBe(s2)
-    expect(s1).toBe(s3)
-  })
-
-  it('should return current loading state (isLoading and getLoading)', () => {
-    const storage = new StorageCallback('loading-check')
-    expect(storage.isLoading()).toBe(false)
-    expect(storage.getLoading()).toBe(false)
-
-    storage.preparation()
-    expect(storage.isLoading()).toBe(true)
-    expect(storage.getLoading()).toBe(true)
-  })
-
-  it('should manage callbacks correctly', async () => {
-    const storage = new StorageCallback('callback-test')
-    const cb1 = vi.fn()
-    const cb2 = vi.fn()
-
-    storage.addCallback(cb1)
-    storage.addCallback(cb2)
-
-    // Internal callbacks are protected, so we test behavior via run
-    await storage.run('data')
-    expect(cb1).toHaveBeenCalledWith('data')
-    expect(cb2).toHaveBeenCalledWith('data')
-
-    storage.removeCallback(cb1)
-    await storage.run('new-data')
-    expect(cb1).toHaveBeenCalledTimes(1)
-    expect(cb2).toHaveBeenCalledWith('new-data')
-  })
-
-  it('should handle loading state correctly', async () => {
-    const storage = new StorageCallback('loading-test')
-    let resolveCb: any
-    const promise = new Promise<void>((resolve) => {
-      resolveCb = resolve
+  describe('instantiation and singleton behavior', () => {
+    it('should create an instance and return its name via getName()', () => {
+      const storage = new StorageCallback('test-storage')
+      expect(storage).toBeInstanceOf(StorageCallback)
+      expect(storage.getName()).toBe('test-storage')
     })
 
-    storage.addCallback(async () => {
-      await promise
+    it('should return the same instance for the same name and group', () => {
+      const storageFirst = new StorageCallback('singleton', 'group1')
+      const storageSecond = new StorageCallback('singleton', 'group1')
+      const storageThird = StorageCallback.getInstance('singleton', 'group1')
+
+      expect(storageFirst).toBe(storageSecond)
+      expect(storageFirst).toBe(storageThird)
     })
 
-    expect(storage.isLoading()).toBe(false)
+    it('should return different instances for the same name but different groups', () => {
+      const storageFirst = new StorageCallback('resource', 'group1')
+      const storageSecond = new StorageCallback('resource', 'group2')
 
-    // Now preparation must be called manually before run
-    storage.preparation()
-    expect(storage.isLoading()).toBe(true)
+      expect(storageFirst).not.toBe(storageSecond)
+    })
 
-    const runPromise = storage.run('test')
-    // Run clears loading immediately at the start in the current implementation
-    expect(storage.isLoading()).toBe(false)
+    it('should use "main" as the default group', () => {
+      const storageFirst = new StorageCallback('default')
+      const storageSecond = new StorageCallback('default', 'main')
+      const storageThird = StorageCallback.getInstance('default')
 
-    resolveCb()
-    await runPromise
-    expect(storage.isLoading()).toBe(false)
+      expect(storageFirst).toBe(storageSecond)
+      expect(storageFirst).toBe(storageThird)
+    })
+
+    it('should isolate instances across ServerStorage resets', () => {
+      const storageFirst = StorageCallback.getInstance('isolated')
+      ServerStorage.reset()
+      const storageSecond = StorageCallback.getInstance('isolated')
+
+      expect(storageFirst).not.toBe(storageSecond)
+    })
   })
 
-  it('should execute callbacks sequentially and wait for promises', async () => {
-    const storage = new StorageCallback('sequence-test')
-    const results: number[] = []
+  describe('loading state and preparation', () => {
+    it('should return current loading state via isLoading() and getLoading(), and set it via preparation()', () => {
+      const storage = new StorageCallback('loading-check')
+      expect(storage.isLoading()).toBe(false)
+      expect(storage.getLoading()).toBe(false)
 
-    storage.addCallback(async () => {
-      await new Promise(r => setTimeout(r, 10))
-      results.push(1)
-    })
-    storage.addCallback(() => {
-      results.push(2)
+      const returnValue = storage.preparation()
+      expect(returnValue).toBe(storage)
+      expect(storage.isLoading()).toBe(true)
+      expect(storage.getLoading()).toBe(true)
     })
 
-    await storage.run('any')
-    expect(results).toEqual([1, 2])
+    it('should keep loading true while async callbacks are executing and set loading to false when completed', async () => {
+      const storage = new StorageCallback<string>('loading-async-test')
+      let resolvePendingCallback: (() => void) | undefined
+      const pendingPromise = new Promise<void>((resolve) => {
+        resolvePendingCallback = resolve
+      })
+
+      storage.addCallback(async () => {
+        await pendingPromise
+      })
+
+      expect(storage.isLoading()).toBe(false)
+
+      storage.preparation()
+      expect(storage.isLoading()).toBe(true)
+
+      const runPromise = storage.run('test-payload')
+      expect(storage.isLoading()).toBe(true)
+      expect(storage.getLoading()).toBe(true)
+
+      resolvePendingCallback?.()
+      const runResult = await runPromise
+
+      expect(runResult).toBe(storage)
+      expect(storage.isLoading()).toBe(false)
+      expect(storage.getLoading()).toBe(false)
+    })
   })
 
-  it('should handle isOnce correctly', async () => {
-    const storage = new StorageCallback('once-test')
-    const cbOnce = vi.fn()
-    const cbRegular = vi.fn()
+  describe('callback management and execution', () => {
+    it('should add and remove callbacks and return this for chaining', async () => {
+      const storage = new StorageCallback<string>('callback-test')
+      const callbackFirst = vi.fn()
+      const callbackSecond = vi.fn()
 
-    storage.addCallback(cbOnce, true)
-    storage.addCallback(cbRegular)
+      expect(storage.addCallback(callbackFirst)).toBe(storage)
+      expect(storage.addCallback(callbackSecond)).toBe(storage)
 
-    await storage.run('first')
-    expect(cbOnce).toHaveBeenCalledWith('first')
-    expect(cbRegular).toHaveBeenCalledWith('first')
+      await storage.run('data')
+      expect(callbackFirst).toHaveBeenCalledWith('data')
+      expect(callbackSecond).toHaveBeenCalledWith('data')
 
-    await storage.run('second')
-    expect(cbOnce).toHaveBeenCalledTimes(1) // Should not be called again
-    expect(cbRegular).toHaveBeenCalledWith('second')
-    expect(cbRegular).toHaveBeenCalledTimes(2)
+      expect(storage.removeCallback(callbackFirst)).toBe(storage)
+      await storage.run('new-data')
+      expect(callbackFirst).toHaveBeenCalledTimes(1)
+      expect(callbackSecond).toHaveBeenCalledWith('new-data')
+    })
+
+    it('should execute callbacks sequentially and wait for promises before finishing', async () => {
+      const storage = new StorageCallback<string>('sequence-test')
+      const executionOrder: number[] = []
+
+      storage.addCallback(async () => {
+        await new Promise(resolve => setTimeout(resolve, 10))
+        executionOrder.push(1)
+      })
+      storage.addCallback(() => {
+        executionOrder.push(2)
+      })
+
+      await storage.run('any')
+      expect(executionOrder).toEqual([1, 2])
+    })
+
+    it('should handle isOnce callbacks by removing them after their first execution', async () => {
+      const storage = new StorageCallback<string>('once-test')
+      const callbackOnce = vi.fn()
+      const callbackRegular = vi.fn()
+
+      storage.addCallback(callbackOnce, true)
+      storage.addCallback(callbackRegular)
+
+      await storage.run('first')
+      expect(callbackOnce).toHaveBeenCalledWith('first')
+      expect(callbackRegular).toHaveBeenCalledWith('first')
+
+      await storage.run('second')
+      expect(callbackOnce).toHaveBeenCalledTimes(1)
+      expect(callbackRegular).toHaveBeenCalledWith('second')
+      expect(callbackRegular).toHaveBeenCalledTimes(2)
+    })
+
+    it('should catch callback errors via ErrorCenter, remove failing isOnce callback in finally, and continue executing remaining callbacks', async () => {
+      const errorSpy = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
+      const storage = new StorageCallback<string>('error-test')
+      const callbackError = new Error('Callback failed')
+
+      const failingOnceCallback = vi.fn().mockRejectedValue(callbackError)
+      const subsequentCallback = vi.fn()
+
+      storage.addCallback(failingOnceCallback, true)
+      storage.addCallback(subsequentCallback)
+      storage.preparation()
+
+      await expect(storage.run('payload')).resolves.toBe(storage)
+
+      expect(errorSpy).toHaveBeenCalledWith({
+        group: 'storage',
+        code: 'error',
+        details: callbackError
+      })
+      expect(subsequentCallback).toHaveBeenCalledWith('payload')
+      expect(storage.isLoading()).toBe(false)
+
+      await storage.run('second-payload')
+      expect(failingOnceCallback).toHaveBeenCalledTimes(1)
+      expect(subsequentCallback).toHaveBeenCalledTimes(2)
+    })
   })
 })

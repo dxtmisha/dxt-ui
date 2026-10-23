@@ -13,23 +13,23 @@ import {
  */
 export class Loading {
   /**
-   * Check if the loader is active now.
-   *
-   * Проверить, активен ли сейчас загрузчик.
-   * @returns boolean/ логическое значение
-   */
-  static is(): boolean {
-    return this.getItem().is()
-  }
-
-  /**
    * Get current loading value.
    *
    * Получить текущее значение загрузки.
-   * @returns current loading value/ текущее значение загрузки
+   * @returns current loading value / текущее значение загрузки
    */
   static get(): number {
     return this.getItem().get()
+  }
+
+  /**
+   * Check if the loader is active now.
+   *
+   * Проверить, активен ли сейчас загрузчик.
+   * @returns boolean / логическое значение
+   */
+  static is(): boolean {
+    return this.getItem().is()
   }
 
   /**
@@ -73,7 +73,7 @@ export class Loading {
   static registrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
     element?: ElementOrString<HTMLElement>
-  ) {
+  ): void {
     this.getItem().registrationEvent(listener, element)
   }
 
@@ -88,7 +88,7 @@ export class Loading {
   static unregistrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
     element?: ElementOrString<HTMLElement>
-  ) {
+  ): void {
     this.getItem().unregistrationEvent(listener, element)
   }
 }

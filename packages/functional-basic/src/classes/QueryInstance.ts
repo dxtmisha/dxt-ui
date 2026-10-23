@@ -10,6 +10,12 @@ import { UrlItem } from './UrlItem'
  * Класс для работы с данными, сохранёнными в query-параметрах URL.
  */
 export class QueryInstance extends UrlInstanceAbstract {
+  /** Popstate event listener / Слушатель события popstate */
+  protected readonly listener = (): void => {
+    UrlItem.getInstance().set()
+    this.reload()
+  }
+
   /**
    * Initializes query data and registers the popstate listener.
    *
@@ -18,10 +24,7 @@ export class QueryInstance extends UrlInstanceAbstract {
    */
   protected init(): this {
     if (isDomRuntime()) {
-      addEventListener('popstate', () => {
-        UrlItem.getInstance().set()
-        this.reload()
-      })
+      addEventListener('popstate', this.listener)
     }
 
     this.initData()
@@ -29,12 +32,23 @@ export class QueryInstance extends UrlInstanceAbstract {
   }
 
   /**
+   * Removes window event listeners.
+   *
+   * Удаляет слушатели событий окна.
+   */
+  protected removeListener(): void {
+    if (isDomRuntime()) {
+      removeEventListener('popstate', this.listener)
+    }
+  }
+
+  /**
    * Obtaining data from the URL string.
    *
    * Получение данных из строки URL.
-   * @returns Record<string, any> query data / данные query-параметров
+   * @returns Record<string, unknown> query data / данные query-параметров
    */
-  protected getLocation(): Record<string, any> {
+  protected getLocation(): Record<string, unknown> {
     if (isDomRuntime()) {
       UrlItem.getInstance().set()
     }

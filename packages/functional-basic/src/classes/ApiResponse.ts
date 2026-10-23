@@ -34,14 +34,14 @@ export class ApiResponse {
   protected readonly response: ApiResponseItem[] = []
 
   /** Loading instance / Экземпляр загрузки */
-  protected loading?: any
+  protected loading?: ReturnType<typeof setTimeout>
 
   /** Developer mode flag / Флаг режима разработчика */
   protected devMode: boolean = false
 
   /**
    * Constructor
-   * @param requestDefault default request class/ класс запросов по умолчанию
+   * @param requestDefault default request class / класс запросов по умолчанию
    */
   constructor(
     protected readonly requestDefault: ApiDefault
@@ -88,22 +88,10 @@ export class ApiResponse {
    * Returns a list of cached API responses (excluding global responses).
    *
    * Возвращает список кешированных ответов API (исключая глобальные ответы).
+   * @returns list of cached API responses / список кешированных ответов API
    */
-  getList(): (ApiResponseItem & Record<string, any>)[] {
+  getList(): (ApiResponseItem & Record<string, unknown>)[] {
     return this.response.filter(item => item.isForGlobal !== true)
-  }
-
-  /**
-   * Adds cached requests.
-   *
-   * Добавляет кешированные запросы.
-   * @param response data for caching / данные для кеширования
-   */
-  add(
-    response: ApiResponseItem | ApiResponseItem[]
-  ): this {
-    this.response.push(...toArray(response) as ApiResponseItem[])
-    return this
   }
 
   /**
@@ -115,6 +103,20 @@ export class ApiResponse {
    */
   setDevMode(devMode: boolean): this {
     this.devMode = devMode
+    return this
+  }
+
+  /**
+   * Adds cached requests.
+   *
+   * Добавляет кешированные запросы.
+   * @param response data for caching / данные для кеширования
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
+   */
+  add(
+    response: ApiResponseItem | ApiResponseItem[]
+  ): this {
+    this.response.push(...toArray(response) as ApiResponseItem[])
     return this
   }
 
@@ -259,7 +261,10 @@ export class ApiResponse {
    * @param apiFetch fetch configuration / конфигурация запроса
    * @returns object with response and request data or undefined / объект с данными ответа и запроса или undefined
    */
-  protected readData(apiFetch: ApiFetch) {
+  protected readData(apiFetch: ApiFetch): {
+    response: ApiResponseItem
+    request: ApiFetch['request']
+  } | undefined {
     if (!isDomRuntime()) {
       return undefined
     }
@@ -303,7 +308,7 @@ export class ApiResponse {
   ): Promise<T> {
     this.startResponseLoading()
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       executePromise(
         isFunction(response.response)
           ? response.response(request)
@@ -322,6 +327,9 @@ export class ApiResponse {
           this.stopResponseLoading()
           resolve(data)
         }
+      }).catch((error) => {
+        this.stopResponseLoading()
+        reject(error)
       })
     })
   }
@@ -341,8 +349,9 @@ export class ApiResponse {
    * Enables loading for request emulation.
    *
    * Включает загрузку для эмуляции запроса.
+   * @returns void / ничего не возвращает
    */
-  protected startResponseLoading() {
+  protected startResponseLoading(): void {
     if (this.loading) {
       clearTimeout(this.loading)
     }
@@ -356,8 +365,9 @@ export class ApiResponse {
    * Disables loading for request emulation.
    *
    * Отключает загрузку для эмуляции запроса.
+   * @returns void / ничего не возвращает
    */
-  protected stopResponseLoading() {
+  protected stopResponseLoading(): void {
     if (isDomRuntime()) {
       this.loading = setTimeout(() => {
         this.loading = undefined

@@ -8,6 +8,12 @@ const SPECIAL_CHARACTERS_LITE: Readonly<Record<string, string>> = {
 }
 
 /**
+ * Matches basic HTML special characters (<, >, &) /
+ * Регулярное выражение для поиска базовых специальных символов HTML (<, >, &)
+ */
+const REGEXP_SPECIAL_CHARACTERS_LITE = /[<>&]/g
+
+/**
  * Encodes basic HTML special characters (<, >, &) in a string while preserving quotes.
  * Commonly used for HTML title tags and light text formatting.
  *
@@ -25,5 +31,5 @@ const SPECIAL_CHARACTERS_LITE: Readonly<Record<string, string>> = {
  * внутри HTML-атрибутов используйте `encodeAttribute` во избежание уязвимостей инъекции атрибутов.
  */
 export function encodeLiteAttribute(text: string): string {
-  return toString(text).replace(/[<>&]/g, match => SPECIAL_CHARACTERS_LITE[match] ?? match)
+  return toString(text).replace(REGEXP_SPECIAL_CHARACTERS_LITE, match => SPECIAL_CHARACTERS_LITE[match] ?? match)
 }

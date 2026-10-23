@@ -11,7 +11,7 @@ Hàm này hữu ích để nén hình ảnh trực tiếp (on the fly) trước 
 **Tham số:**
 - `image: HTMLImageElement | string` — Phần tử hình ảnh hoặc đường dẫn URL.
 - `maxSize: number` — Kích thước pixel tối đa cho phép (đối với chiều rộng hoặc chiều cao).
-- `type: ResizeImageByMaxType` — Chiến lược mở rộng/thu nhỏ: `'auto'`, `'width'`, hoặc `'height'`. Mặc định là `'auto'`.
+- `type?: ResizeImageByMaxType = 'auto'` — Chiến lược mở rộng/thu nhỏ: `'auto'`, `'width'`, hoặc `'height'`. Mặc định là `'auto'`.
 - `typeData?: string` — Loại MIME tùy chọn cho chuỗi Data URL trả về (ví dụ, `'image/jpeg'`). Mặc định là `'image/png'`.
 - `quality?: number` — Hệ số chất lượng tùy chọn từ 0 đến 1 cho các định dạng nén có mất dữ liệu (`'image/jpeg'`, `'image/webp'`).
 
@@ -22,8 +22,10 @@ Hàm này hữu ích để nén hình ảnh trực tiếp (on the fly) trước 
 import { resizeImageByMax } from '@dxtmisha/functional-basic'
 
 const imgElement = document.querySelector('img')
-const resizedDataUrl = resizeImageByMax(imgElement, 800)
+if (imgElement) {
+  const resizedDataUrl = resizeImageByMax(imgElement, 800)
 
-console.log(resizedDataUrl) 
-// 'data:image/png;base64,iVBORw0KGgo...'
+  console.log(resizedDataUrl)
+  // 'data:image/png;base64,iVBORw0KGgo...'
+}
 ```

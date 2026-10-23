@@ -8,11 +8,11 @@ A utility for replacing markers in text with values from an object or an array.
 
 **Parameters:**
 - `text: string` — The original text containing template markers.
-- `replacement: Record<string, string | number | boolean> | string[]` — An object or array containing values.
+- `replacement: Record<string, unknown> | readonly unknown[] = {}` — An object or array containing key-value pairs or items for replacement.
 
 **Replacement formats (replacement)**
-- **Array**: Used for positional markers like `%d`, `%e`, `%f`, and so on (alphabetically).
-- **Object**: Used for named markers in brackets `[key]` or `{key}`, as well as paired tags `[tag]text[/tag]`.
+- **Array**: Used for positional markers from `%d` to `%v` (alphabetically).
+- **Object**: Used for named markers in brackets `[key]` or `{key}`, as well as paired tags `[tag]text[/tag]` or `{tag}text{/tag}` (using `[content]` or `{content}` inside the replacement string).
 
 **Returns:**
 `string` — The text with substituted values.

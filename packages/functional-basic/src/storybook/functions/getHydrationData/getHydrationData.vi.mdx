@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getHydrationData - Truy xuất dữ liệu hydration từ thẻ script'/>
+
+# `getHydrationData`
+
+Một tiện ích để truy xuất và phân tích cú pháp dữ liệu JSON từ thẻ `<script>` trong DOM theo `id` (thường được tạo trên máy chủ thông qua `getElementSafeScript`).
+
+Trong môi trường trình duyệt (`isDomRuntime()`), hàm tìm phần tử `<script>` theo `id`, phân tích cú pháp `textContent` của nó dưới dạng JSON và tùy chọn xóa thẻ `<script>` khỏi DOM (mặc định `remove = true`). Nếu không tìm thấy phần tử, không phải là thẻ `<script>`, được gọi trong môi trường SSR, hoặc nếu phân tích cú pháp JSON thất bại (được báo cáo qua `ErrorCenter` với `group: 'hydration'`, `code: 'error'`), hàm sẽ trả về `defaultValue` một cách an toàn.
+
+**Tham số:**
+- `id: string` — Mã định danh duy nhất (ID) của thẻ script.
+- `defaultValue: T` — Giá trị mặc định trả về nếu không tìm thấy thẻ script hoặc dữ liệu không hợp lệ.
+- `remove?: boolean` — Có xóa phần tử script khỏi DOM sau khi đọc hay không (mặc định: `true`).
+
+**Trả về:**
+`T` — Dữ liệu đã phân tích cú pháp từ thẻ script, hoặc `defaultValue`.
+
+```typescript
+import { getHydrationData } from '@dxtmisha/functional-basic'
+
+// Giả sử trong DOM có:
+// <script id="hydration-data" type="application/json">{"user":"Misha"}</script>
+
+const data = getHydrationData('hydration-data', { user: 'Guest' })
+console.log(data) // { user: 'Misha' }
+// Thẻ <script id="hydration-data"> tự động bị xóa khỏi DOM
+```

@@ -4,12 +4,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElementId`
 
-Returns the `id` of a specified DOM element. If the element exists but does not have an `id` attribute, the function will automatically generate a unique identifier, assign it to the element, and return it.
+Returns the `id` of a specified DOM element. If the element exists but does not have an `id` attribute, the function will automatically generate a unique identifier, assign it to the element, and return it. When the `Window` object is passed, the identifier is retrieved from or assigned to `document.body`.
 
 Additionally, the function allows appending a CSS selector to the returned string, so you can immediately use the result as a compound selector (e.g., `"#id-123456 .child-class"`).
 
 **Parameters:**
-- `element?: ElementOrString<E>` — A DOM element or selector from which to obtain the ID.
+- `element?: ElementOrString<E>` — A DOM element, `Window` object, or selector from which to obtain the ID.
 - `selector?: string` — An optional string that will be appended to the returned ID (like pseudo-classes or descendant selectors).
 
 **Returns:**
@@ -33,14 +33,17 @@ console.log(selector) // '#id-100000 > span.active'
 
 ## `initGetElementId`
 
-Initializes the function for use in an SSR environment. This is necessary to ensure synchronization of generated IDs between the server and the client.
+Initializes the function for use in an SSR environment with a custom ID generator listener (`newListener: () => string | number`). This is necessary to ensure synchronization of generated IDs between the server and the client. If no listener is registered, an isolated counter via `ServerStorage` (`id-100000`) is used.
 
 When using **Vue 3.5+**, it is recommended to use the built-in `useId()` function.
 
 ```typescript
 import { useId } from 'vue'
-import { initGetElementId } from '@dxtmisha/functional-basic'
+import { initGetElementId, resetGetElementId } from '@dxtmisha/functional-basic'
 
 // Initialization (e.g., in a plugin or root component)
 initGetElementId(() => useId())
+
+// Resetting the listener when needed (e.g., in tests)
+resetGetElementId()
 ```

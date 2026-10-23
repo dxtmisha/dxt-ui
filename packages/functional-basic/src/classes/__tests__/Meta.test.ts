@@ -10,7 +10,6 @@ describe('Meta', () => {
   let meta: Meta
 
   beforeEach(() => {
-    // Clear DOM before each test
     document.head.innerHTML = ''
     document.title = ''
 
@@ -18,7 +17,6 @@ describe('Meta', () => {
   })
 
   afterEach(() => {
-    // Clear after tests
     document.head.innerHTML = ''
     document.title = ''
   })
@@ -74,6 +72,22 @@ describe('Meta', () => {
 
       expect(meta.getTitle()).toBe('No Suffix Title')
       expect(document.title).toBe('No Suffix Title')
+    })
+
+    it('should preserve title when it contains suffix text in the middle', () => {
+      meta.setSuffix('App')
+      meta.setTitle('Dashboard - App Settings')
+
+      expect(meta.getTitle()).toBe('Dashboard - App Settings')
+      expect(document.title).toBe('Dashboard - App Settings - App')
+    })
+
+    it('should strip suffix only from the end when reading initial document.title', () => {
+      document.title = 'Dashboard - App Settings - App'
+      const initialMeta = new Meta()
+      initialMeta.setSuffix('App')
+
+      expect(initialMeta.getTitle()).toBe('Dashboard - App Settings')
     })
   })
 
@@ -178,6 +192,14 @@ describe('Meta', () => {
       expect(document.title).toBe('Page Title - Site Name')
     })
 
+    it('should use suffix alone when title is empty and suffix is set', () => {
+      meta.setSuffix('Site Name')
+      meta.setTitle('')
+
+      expect(document.title).toBe('Site Name')
+      expect(meta.getTitle()).toBe('')
+    })
+
     it('should update Open Graph title with suffix', () => {
       meta.setSuffix('My Site')
       meta.setTitle('OG Test')
@@ -249,7 +271,6 @@ describe('Meta', () => {
     it('should not sync description to OG or Twitter automatically', () => {
       meta.setDescription('Standard description')
 
-      // setDescription does not sync with OG and Twitter
       expect(meta.getDescription()).toBe('Standard description')
       expect(meta.getOg().getDescription()).toBe('')
       expect(meta.getTwitter().getDescription()).toBe('')
@@ -297,6 +318,19 @@ describe('Meta', () => {
     it('should return this for chaining', () => {
       const result = meta.setCanonical('https://example.com')
       expect(result).toBe(meta)
+    })
+
+    it('should render canonical as <link rel="canonical" href="..."> in DOM and SSR HTML', () => {
+      meta.setCanonical('https://example.com/canonical-page')
+
+      const linkElement = document.querySelector('link[rel="canonical"]')
+      expect(linkElement).toBeTruthy()
+      expect(linkElement?.getAttribute('href')).toBe('https://example.com/canonical-page')
+      expect(document.querySelector('meta[name="canonical"]')).toBeNull()
+
+      const html = meta.html()
+      expect(html).toContain('<link rel="canonical" href="https://example.com/canonical-page">')
+      expect(html).not.toContain('name="canonical"')
     })
   })
 
@@ -408,8 +442,14 @@ describe('Meta', () => {
       expect(document.title).toBe('Title - First')
 
       meta.setSuffix('Second')
-      meta.setTitle('Title')
       expect(document.title).toBe('Title - Second')
+      expect(meta.getOg().getTitle()).toBe('Title - Second')
+      expect(meta.getTwitter().getTitle()).toBe('Title - Second')
+      expect(meta.getTitle()).toBe('Title')
+    })
+
+    it('should return this for chaining', () => {
+      expect(meta.setSuffix('Chained')).toBe(meta)
     })
   })
 
@@ -466,7 +506,6 @@ describe('Meta', () => {
 
       const html = meta.html()
 
-      // Should contain tags from Meta, MetaOg and MetaTwitter
       expect(html).toContain('name="description"')
       expect(html).toContain('property="og:image"')
       expect(html).toContain('name="twitter:image"')
@@ -585,38 +624,32 @@ describe('Meta', () => {
 
   describe('DOM synchronization', () => {
     it('should update existing meta tags', () => {
-      // Create initial tag
       const initialMeta = document.createElement('meta')
       initialMeta.setAttribute('name', 'description')
       initialMeta.setAttribute('content', 'Initial content')
       document.head.appendChild(initialMeta)
 
-      // Create new Meta instance
       const newMeta = new Meta()
       newMeta.setDescription('Updated content')
 
-      // Should update existing tag instead of creating a new one
       const metaTags = document.querySelectorAll('meta[name="description"]')
       expect(metaTags.length).toBe(1)
       expect(metaTags?.[0]?.getAttribute('content')).toBe('Updated content')
     })
 
     it('should read existing meta tags on initialization', () => {
-      // Set tags in DOM
-      const descMeta = document.createElement('meta')
-      descMeta.setAttribute('name', 'description')
-      descMeta.setAttribute('content', 'Existing description')
-      document.head.appendChild(descMeta)
+      const descriptionMeta = document.createElement('meta')
+      descriptionMeta.setAttribute('name', 'description')
+      descriptionMeta.setAttribute('content', 'Existing description')
+      document.head.appendChild(descriptionMeta)
 
       const keywordsMeta = document.createElement('meta')
       keywordsMeta.setAttribute('name', 'keywords')
       keywordsMeta.setAttribute('content', 'existing, keywords')
       document.head.appendChild(keywordsMeta)
 
-      // Create new instance
       const newMeta = new Meta()
 
-      // Should read existing tags
       expect(newMeta.getDescription()).toBe('Existing description')
       expect(newMeta.getKeywords()).toBe('existing, keywords')
     })
@@ -633,10 +666,7 @@ describe('Meta', () => {
 
       const html = meta.html()
 
-      // HTML should be valid
       expect(html).toMatch(/<meta [^>]+>/g)
-
-      // Should contain all necessary attributes
       expect(html).toContain('name="description"')
       expect(html).toContain('name="keywords"')
       expect(html).toContain('property="og:image"')

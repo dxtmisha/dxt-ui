@@ -10,9 +10,11 @@ Con số thiết thực từ độ rộng phần cuốn này được chứng mi
 
 Chức năng chính phối hợp trực tiếp kèm thư viện class rẽ hướng `ScrollbarWidth` phụ đính bên cấu trúc hệ điều hành gói functional.
 
+**Tham số:**
+Hàm này không tiếp nhận bất kỳ đối số nào.
 
 **Trả về:**
-Luồng bất đồng bộ kích thích trả biến `Promise<void>` ghi nhớ điểm đổi CSS bên thẻ nền DOM layout.
+`Promise<void>` — promise bất đồng bộ hoàn tất sau khi thiết lập biến CSS `--sys-scrollbar-offset` trên `document.body`.
 
 ```typescript
 import { initScrollbarOffset } from '@dxtmisha/functional-basic'

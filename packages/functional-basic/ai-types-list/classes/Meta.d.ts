@@ -1,52 +1,52 @@
-// md5:21a81095e4f8eef8d979333c30970526 true
-/** Unified manager for standard HTML, Open Graph, and Twitter Card meta tags. @keywords meta, tags, head, html, seo */
+// md5:d7240cd52d793b7a4c6a357d4c3f2544 true
+/** Unified manager for standard HTML, Open Graph, and Twitter Card meta tags. @keywords meta, seo, open graph, twitter card, head */
 export declare class Meta extends MetaManager<MetaTag[]> {
-    /** Creates an instance of Meta with integrated Open Graph and Twitter Card support. @keywords constructor, init */
+    /** Initializes Meta manager with integrated Open Graph and Twitter Card support. @keywords constructor, init */
     constructor();
-    /** Gets the MetaOg instance for Open Graph operations. @keywords og, opengraph */
+    /** Gets the MetaOg instance for Open Graph operations. @keywords og, open graph */
     getOg(): MetaOg;
-    /** Gets the MetaTwitter instance for Twitter Card operations. @keywords twitter, card */
+    /** Gets the MetaTwitter instance for Twitter Card operations. @keywords twitter, twitter card */
     getTwitter(): MetaTwitter;
-    /** Gets the page title without suffix. @keywords title, get */
+    /** Gets the page title without suffix. @keywords title, get title */
     getTitle(): string;
-    /** Gets the keywords meta tag content. @keywords keywords, get */
+    /** Gets the keywords meta tag content. @keywords keywords, seo */
     getKeywords(): string;
-    /** Gets the description meta tag content. @keywords description, get */
+    /** Gets the description meta tag content. @keywords description, seo */
     getDescription(): string;
-    /** Gets the Open Graph image URL. @keywords image, og, get */
+    /** Gets the Open Graph image URL. @keywords image, og image */
     getImage(): string;
-    /** Gets the canonical URL. @keywords canonical, url, get */
+    /** Gets the canonical URL. @keywords canonical, url */
     getCanonical(): string;
-    /** Gets the robots meta tag directive. @keywords robots, crawler, get */
+    /** Gets the robots meta tag directive. @keywords robots, indexing, seo */
     getRobots(): MetaRobots;
-    /** Gets the author meta tag content. @keywords author, get */
+    /** Gets the author meta tag content. @keywords author */
     getAuthor(): string;
-    /** Gets the Open Graph site name. @keywords site_name, og, get */
+    /** Gets the Open Graph site name. @keywords site name, og */
     getSiteName(): string;
-    /** Gets the Open Graph locale. @keywords locale, og, get */
+    /** Gets the Open Graph locale. @keywords locale, og */
     getLocale(): string;
-    /** Sets the page title with suffix and updates Open Graph and Twitter Card titles. @keywords title, set */
+    /** Sets the page title with suffix and updates Open Graph and Twitter Card titles. @keywords set title, og title, twitter title */
     setTitle(title: string): this;
-    /** Sets the keywords meta tag. @keywords keywords, set */
+    /** Sets the keywords meta tag from a string or string array. @keywords keywords, set keywords */
     setKeywords(keywords: string | string[]): this;
-    /** Sets the description meta tag. @keywords description, set */
+    /** Sets the description meta tag. @keywords description, set description */
     setDescription(description: string): this;
-    /** Sets the image for Open Graph and Twitter Card. @keywords image, og, twitter, set */
+    /** Sets the image URL for Open Graph and Twitter Card. @keywords image, og image, twitter image */
     setImage(image: string): this;
-    /** Sets the canonical URL and updates Open Graph and Twitter Card URLs. @keywords canonical, url, set */
+    /** Sets the canonical URL and updates Open Graph and Twitter Card URLs. @keywords canonical, url */
     setCanonical(canonical: string): this;
-    /** Sets the robots meta tag directive. @keywords robots, indexing, set */
+    /** Sets the robots meta directive tag. @keywords robots, indexing, crawler */
     setRobots(robots: MetaRobots): this;
-    /** Sets the author meta tag. @keywords author, set */
+    /** Sets the author meta tag. @keywords author */
     setAuthor(author: string): this;
-    /** Sets the site name for Open Graph and Twitter Card. @keywords site_name, og, set */
+    /** Sets the site name for Open Graph and Twitter Card. @keywords site name, og */
     setSiteName(siteName: string): this;
-    /** Sets the Open Graph locale. @keywords locale, og, set */
+    /** Sets the locale for Open Graph. @keywords locale, og locale */
     setLocale(locale: string): this;
-    /** Sets the suffix to append to page title. @keywords suffix, title, set */
-    setSuffix(suffix?: string): void;
-    /** Generates the complete HTML string for all meta tags. @keywords html, render, serialize */
+    /** Sets the suffix to append to the page title. @keywords suffix, title suffix */
+    setSuffix(suffix?: string): this;
+    /** Generates the complete HTML string for all meta tags. @keywords html, render, tags */
     html(): string;
-    /** Generates the title as an HTML-safe string. @keywords title, html, render */
+    /** Generates the HTML-safe page title string. @keywords html title, render title */
     htmlTitle(): string;
 }

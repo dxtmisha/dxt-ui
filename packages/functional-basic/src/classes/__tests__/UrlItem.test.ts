@@ -6,7 +6,9 @@ import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 describe('UrlItem', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
-    vi.spyOn(ServerStorage, 'get').mockImplementation((_, cb) => cb ? cb() : undefined)
+    vi.spyOn(ServerStorage, 'get').mockImplementation((_, defaultValue) => {
+      return typeof defaultValue === 'function' ? defaultValue() : undefined
+    })
   })
 
   describe('Constructor and Set Method', () => {
@@ -21,12 +23,12 @@ describe('UrlItem', () => {
     })
 
     it('should wrap a standard URL object', () => {
-      const stdUrl = new URL('https://example.com/path')
-      const url = new UrlItem(stdUrl)
+      const standardUrl = new URL('https://example.com/path')
+      const url = new UrlItem(standardUrl)
       expect(url.href).toBe('https://example.com/path')
     })
 
-    it('should fallback to window.location.href in browser runtime', () => {
+    it('should fallback to window.location.href in browser runtime when url is omitted or relative', () => {
       vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
       const originalWindow = globalThis.window
 
@@ -36,27 +38,34 @@ describe('UrlItem', () => {
           origin: 'https://browser.com'
         },
         document: {}
-      } as any
+      } as unknown as Window & typeof globalThis
 
       try {
-        const url = new UrlItem('relative-path')
-        expect(url.href).toBe('https://browser.com/relative-path')
+        const defaultUrl = new UrlItem()
+        expect(defaultUrl.href).toBe('https://browser.com/current-page')
+
+        const relativeUrl = new UrlItem('relative-path')
+        expect(relativeUrl.href).toBe('https://browser.com/relative-path')
       } finally {
         globalThis.window = originalWindow
       }
     })
 
-    it('should fallback to http://localhost in SSR runtime', () => {
+    it('should fallback to http://localhost in SSR runtime when url is omitted or relative', () => {
       vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
-      const url = new UrlItem('relative-path')
-      expect(url.href).toBe('http://localhost/relative-path')
+      const emptyUrl = new UrlItem()
+      expect(emptyUrl.href).toBe('http://localhost/')
+
+      const relativeUrl = new UrlItem('relative-path')
+      expect(relativeUrl.href).toBe('http://localhost/relative-path')
     })
 
     it('should update the URL when calling set()', () => {
       const url = new UrlItem('https://example.com/first')
       expect(url.pathname).toBe('/first')
 
-      url.set('https://another.org/second?query=2')
+      const returnValue = url.set('https://another.org/second?query=2')
+      expect(returnValue).toBe(url)
       expect(url.hostname).toBe('another.org')
       expect(url.pathname).toBe('/second')
       expect(url.search).toBe('?query=2')
@@ -96,7 +105,6 @@ describe('UrlItem', () => {
       firstInstance.set('https://example.com/first')
       expect(firstInstance.pathname).toBe('/first')
 
-      // Mock ServerStorage to return the already created instance
       vi.spyOn(ServerStorage, 'get').mockReturnValue(firstInstance)
 
       const secondInstance = UrlItem.getInstance()
@@ -110,31 +118,25 @@ describe('UrlItem', () => {
     it('should correctly check, get, set, and delete query parameters', () => {
       const url = new UrlItem('https://example.com/path?initial=1')
 
-      // hasParam
       expect(url.hasParam('initial')).toBe(true)
       expect(url.hasParam('not-found')).toBe(false)
 
-      // getParam
       expect(url.getParam('initial')).toBe('1')
       expect(url.getParam('not-found')).toBeUndefined()
 
-      // setParam
-      url.setParam('new', 'value')
+      expect(url.setParam('new', 'value')).toBe(url)
       expect(url.getParam('new')).toBe('value')
       expect(url.href).toBe('https://example.com/path?initial=1&new=value')
 
-      // deleteParam
-      url.deleteParam('initial')
+      expect(url.deleteParam('initial')).toBe(url)
       expect(url.hasParam('initial')).toBe(false)
       expect(url.href).toBe('https://example.com/path?new=value')
 
-      // getParams
       const params = url.getParams()
       expect(params).toEqual({ new: 'value' })
 
-      // setParams
-      url.setParams({ a: 1, b: 'two', c: '', d: null, e: undefined })
-      expect(url.getParams()).toEqual({ a: 1, b: 'two' })
+      expect(url.setParams({ alpha: 1, beta: 'two', gamma: '', delta: null, epsilon: undefined })).toBe(url)
+      expect(url.getParams()).toEqual({ alpha: 1, beta: 'two' })
     })
   })
 

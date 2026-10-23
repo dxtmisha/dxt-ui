@@ -1,3 +1,3 @@
-// md5:48c00141aa6369e3e2d83d0f46655f1d true
-/** Returns the lengths of all string elements in an array or object. @keywords length, count, elements, array, string length */
+// md5:b012760097b2626a0da00f52493a15ee true
+/** Returns the lengths of all string elements in an array or object. @keywords length, elements, string length, count */
 export declare function getLengthOfAllArray(value: ObjectOrArray<string>): number[];

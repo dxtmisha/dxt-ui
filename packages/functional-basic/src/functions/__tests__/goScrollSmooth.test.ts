@@ -73,9 +73,15 @@ describe('goScrollSmooth', () => {
     })
 
     it('should not throw if element lacks both scrollIntoView and getBoundingClientRect', () => {
-      const mockObj = {} as unknown as HTMLElement
-      expect(() => goScrollSmooth(mockObj)).not.toThrow()
+      const mockObject = {} as unknown as HTMLElement
+      expect(() => goScrollSmooth(mockObject)).not.toThrow()
       expect(window.scrollTo).not.toHaveBeenCalled()
+    })
+
+    it('should not throw if window.scrollTo is unavailable when shift is provided', () => {
+      // @ts-expect-error testing missing window.scrollTo fallback safety
+      window.scrollTo = undefined
+      expect(() => goScrollSmooth(element, undefined, 20)).not.toThrow()
     })
   })
 

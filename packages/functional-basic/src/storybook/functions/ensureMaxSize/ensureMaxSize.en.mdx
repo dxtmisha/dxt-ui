@@ -4,14 +4,14 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `ensureMaxSize`
 
-Ensures that an image does not exceed the maximum size by resizing it if needed. It returns the image as a Base64 string.
+Ensures that an image does not exceed the maximum size by resizing it if needed. If resizing is not required or fails, returns the original image encoded in Base64. In non-DOM environments (SSR) or on load error, it resolves with an empty string `''`.
 
 This function is useful for optimizing images before uploading them to a server, reducing bandwidth usage and storage requirements.
 
 **Parameters:**
 - `file: Uint8Array` — The image file as a `Uint8Array`.
-- `compress: number` (optional, default: `0.56`) — The maximum size as a fraction of the original size.
-- `type: string` (optional, default: `'image/jpeg'`) — The MIME type of the output image.
+- `compress: number = 0.56` — The maximum size as a fraction of the original size.
+- `type: string = 'image/jpeg'` — The MIME type of the output image.
 
 **Returns:**
 `Promise<string>` — Returns a promise that resolves with the Base64 string of the resized image.

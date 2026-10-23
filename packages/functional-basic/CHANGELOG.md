@@ -2,6 +2,134 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.0] - 2026-10-23
+
+### Added
+- **`isPrototypeKey`**:
+  - Added `isPrototypeKey(key: string): boolean` utility function to detect prototype pollution keys (`'__proto__'`, `'constructor'`, `'prototype'`).
+  - Exported `isPrototypeKey` in public library exports (`src/library.ts`).
+  - Added comprehensive unit test suite in `src/functions/__tests__/isPrototypeKey.test.ts`.
+  - Added multilingual Storybook documentation in English, Russian, and Vietnamese.
+  - Generated AI type definitions in `ai-types-list/functions/isPrototypeKey.d.ts`.
+- **`toPascalCase`**:
+  - Added `toPascalCase(value?: string): string` utility function to convert kebab-case, snake_case, or camelCase strings to PascalCase.
+  - Exported `toPascalCase` in public library exports (`src/library.ts`).
+  - Added comprehensive unit test suite in `src/functions/__tests__/toPascalCase.test.ts`.
+  - Added multilingual Storybook documentation in English, Russian, and Vietnamese.
+  - Generated AI type definitions in `ai-types-list/functions/toPascalCase.d.ts`.
+- **`UrlInstanceAbstract` Test Suite**:
+  - Added comprehensive unit test suite covering URL abstraction methods, query parsing, and pathname manipulation in `src/classes/__tests__/UrlInstanceAbstract.test.ts`.
+- **Documentation**:
+  - Added multilingual Storybook documentation for `encodeLiteAttribute`, `getHydrationData`, `isPrototypeKey`, and `toPascalCase` across English, Russian, and Vietnamese (`src/storybook/functions/`).
+  - Synchronized default component and function parameters across all Storybook stories (`.en.mdx`, `.ru.mdx`, `.vi.mdx`).
+
+### Changed
+- **`uint8ArrayToBase64`**:
+  - Optimized conversion with Node.js `Buffer.from()` fast-path.
+  - Added `globalThis.btoa` fallback for Web Workers and isolated runtime environments.
+  - Implemented 32KB chunking (`CHUNK_SIZE = 0x8000`) for large arrays to avoid call stack limits in `String.fromCharCode.apply`.
+  - Added modern runtime support for native `Uint8Array.prototype.toBase64` when available.
+  - Extracted local `BufferType` interface and eliminated all `any` usages.
+- **`transformation`**:
+  - Added generic type parameter inference: `transformation<T = unknown>(value: unknown, isFunctionCheck?: boolean): T`.
+  - Added balanced JSON bracket validation (`{...}`, `[...]`) before parsing to prevent unnecessary exceptions on non-JSON strings.
+  - Integrated prototype pollution guard via `isPrototypeKey`, skipping dangerous keys (`__proto__`, `constructor`, `prototype`).
+  - Renamed parameter `isFunction` to `isFunctionCheck` and modernized window lookup using `hasKey`, `isString`, and `isFunction`.
+- **`copyObject`**:
+  - Added modern fast-path using native `globalThis.structuredClone` with safe fallback to `JSON.parse(JSON.stringify(value))` for non-cloneable objects.
+- **`writeClipboardData`**:
+  - Added robust fallback `copyByExecCommand` using a hidden temporary `textarea` element created via `createElement` when `navigator.clipboard` is unavailable or fails.
+  - Integrated centralized error logging via `ErrorCenter.on` (`group: 'clipboard'`, `code: 'error'`).
+- **`toDate`**:
+  - Normalized ISO-8601 UTC date formatting (`YYYY-MM-DDTHH:mm:ss.sssZ`).
+  - Precompiled static regular expressions for date parts to eliminate regex compilation overhead.
+  - Hardened string date parsing with bounds validation and fallback handling.
+- **`toCamelCase` / `toCamelCaseFirst` / `toKebabCase`**:
+  - Precompiled regular expressions into static constants (`REGEXP_INVALID_CHARS`, `REGEXP_SEPARATORS`, `REGEXP_ACRONYMS`, `REGEXP_CAMEL_BOUNDARY`, `REGEXP_FIRST_CHAR`, `REGEXP_TRAILING_DASHES`).
+  - Added support for `snake_case` word boundaries, dots, and acronym normalization.
+  - Hardened nullish boundary checks for `null` and `undefined`.
+- **`encodeAttribute` / `encodeLiteAttribute`**:
+  - Precompiled static regular expressions (`REGEXP_SPECIAL_CHARACTERS`, `REGEXP_SPECIAL_CHARACTERS_LITE`).
+  - Replaced `String(text)` with `toString(text)` helper for safe nullish coercion.
+  - Standardized constants naming to `SPECIAL_CHARACTERS` and `SPECIAL_CHARACTERS_LITE`.
+- **`escapeExp`**:
+  - Precompiled static regular expression `REGEXP_SPECIAL_CHARS`.
+  - Guaranteed escaping of hyphen (`-`) characters in character class expressions.
+- **`executeFunction`**:
+  - Modernized signature with generic argument inference: `executeFunction<T, Args extends unknown[] = unknown[]>(callback: T | FunctionArgs<never, T> | ((...args: Args) => T), ...args: Args): T`, eliminating all `any` types.
+- **`getObjectByKeys`**:
+  - Protected against prototype pollution using `!isPrototypeKey(key) && hasKey(data, key)` before copying properties.
+  - Replaced `Record<string, any>` with `Record<string, unknown>`.
+- **`getItemByPath`**:
+  - Hardened nested path resolution when intermediate properties are missing or undefined.
+  - Replaced `Record<string, any>` with `Record<string, unknown>`.
+- **`toArray`**:
+  - Replaced `Array.isArray` with `isArray` helper and refined generic signature to `T extends unknown[] ? T : [T]`.
+- **`isFunction` / `isObject` / `isObjectNotArray`**:
+  - Replaced `any` with strongly typed constructs: `FunctionAnyType` and `ObjectItem`.
+  - Replaced `Array.isArray` with `isArray` helper in `isObjectNotArray`.
+- **`isString`**:
+  - Streamlined type predicate parameter: `isString(value: unknown): value is string`.
+- **`isSelected` / `isSelectedByList`**:
+  - Supported intelligent numeric string comparison in arrays (matching numeric strings like `'42'` with number `42`).
+  - Cleaned up redundant type assertions and replaced `Array.isArray` with `isArray`.
+- **`isNumber`**:
+  - Refined return type predicate to `value is number | string`.
+  - Enhanced regular expression with sign support (`[+-]?`) and trimmed input whitespace.
+- **`isInput`**:
+  - Added isomorphic SSR guard via `isDomRuntime()`.
+  - Added `includeDisabled?: boolean` option to optionally include disabled and readonly form elements.
+  - Refined type predicate to `target is HTMLElement`.
+- **`isFloat`**:
+  - Implemented finite float regular expression validation and accepted `value: unknown`.
+- **`isFilled`**:
+  - Replaced `Object.keys()` with `for...in` loop and `hasKey` check, optimizing performance and memory footprint.
+  - Replaced `Array.isArray` with `isArray`.
+- **`isEnter`**:
+  - Modernized keyboard event key check and added SSR safety with `isDomRuntime()`.
+- **`isElementVisible`**:
+  - Improved DOM visibility detection with `isDomRuntime()` check and computed styles verification.
+- **`isDifferent`**:
+  - Enhanced deep equality comparisons across complex nested structures and primitives.
+  - Replaced `forEach` with a fast breakable `for...in` loop.
+- **`goScroll` / `goScrollSmooth` / `goScrollTo`**:
+  - Added isomorphic SSR guards (`isDomRuntime()`).
+  - Replaced manual `typeof === 'object'` and `typeof === 'function'` checks with `isObject` and `isFunction` helpers.
+  - Improved smooth scrolling fallback logic and bounding rect calculations.
+- **`replaceComponentName`**:
+  - Converted to standard function declaration with explicit `string | undefined` return type.
+- **`ApiInstance`**:
+  - Ensured SSR safety when handling `FormData` with `typeof FormData !== 'undefined'` in `getBody` and `getBodyForGet`.
+  - Enhanced `getBodyForGet` to distinguish between `FormData` and object query parameters.
+- **`apiTypes`**:
+  - Documented global caching behavior in `ApiFetch` (`cache`, `enableClientCache`, `cacheId`) clarifying user-independent request scope.
+  - Expanded `ApiErrorStorageItem.code` type from `string | undefined` to `string | number | undefined`.
+- **`getElementSafeScript`**:
+  - Precompiled static regular expressions `REGEXP_DOUBLE_QUOTE` and `REGEXP_CLOSING_SCRIPT`.
+- **Local Type Extraction**:
+  - Extracted inline types to scoped local types across all utility functions (`blobToBase64`, `copyObject`, `encodeAttribute`, `escapeExp`, `executeFunction`, `forEach`, `getElementSafeScript`, `getObjectByKeys`, `getRandomText`, `goScrollSmooth`, `goScrollTo`, `isDomRuntime`, `isFilled`, `isObjectNotArray`, `isSelectedByList`, `replaceComponentName`, `sortList`, `splice`, `strSplit`, `toArray`, `toCamelCase`, `transformation`, `uint8ArrayToBase64`, `writeClipboardData`) maintaining clean encapsulation without leaking unexported types.
+- **Tests & AI Documentation**:
+  - Comprehensive unit test expansion across all 185 test suites (3271 tests passing with 100% coverage).
+  - Synchronized bilingual Storybook documentation across English, Russian, and Vietnamese.
+  - Refreshed AI type definitions and search keywords in `ai-types-list/`.
+
+### Fixed
+- **`toNumberByMax`**:
+  - Fixed falsy max value bug: correctly handles `max = 0` instead of falling back to default max value.
+- **`toNumberPositive`**:
+  - Delegated number parsing to `toNumber` and enforced `> 0` check with fallback.
+- **`toNumber`**:
+  - Eliminated variable shadowing and improved numeric parsing for edge cases.
+- **`setElementItem`**:
+  - Prevented prototype pollution by validating property keys against `isPrototypeKey`.
+  - Fixed boolean and ARIA attribute handling: formatted `aria-*` attributes as `'true'`/`'false'`, set empty string for true boolean attributes, and removed attributes when value is `false` or `null`.
+- **`sortTypes`**:
+  - Eliminated `any` in `SortFunction` by replacing with `Record<string, unknown>`.
+- **`ApiStatus`**:
+  - Replaced `in` operator checks with `hasKey` helper in `setLastResponse` to prevent `TS2638` type narrowing errors.
+- **`BroadcastMessage`**:
+  - Added fallback in `getBroadcastName` to guarantee `string` return type (`TS2322`).
+
 ## [1.13.0] - 2026-10-18
 
 ### Added

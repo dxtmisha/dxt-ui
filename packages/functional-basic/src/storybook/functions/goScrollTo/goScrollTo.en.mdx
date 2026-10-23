@@ -11,10 +11,10 @@ Unlike `goScrollSmooth` (which scrolls the general window or delegates to `scrol
 **Parameters:**
 - `container?: HTMLElement | Element | null` — The parent scroll container element. Safely handles `null` and `undefined`.
 - `elementTo?: HTMLElement | Element | null` — The targeted goal element (normally nestled within the container parent) needing focus.
-- `behavior: ScrollBehavior` — (Optional) Adjusts the scroll animation style, defers to `'smooth'` automatically.
+- `behavior?: ScrollBehavior` — (Optional) Adjusts the scroll animation style, defers to `'smooth'` automatically.
 
 **Returns:**
-Commits the side-effect scroll adjustment safely returning `void`.
+`void` — Commits the side-effect scroll adjustment and returns nothing.
 
 ```typescript
 import { goScrollTo } from '@dxtmisha/functional-basic'

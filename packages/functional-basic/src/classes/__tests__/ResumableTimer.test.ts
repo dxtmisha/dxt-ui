@@ -21,14 +21,25 @@ describe('ResumableTimer', () => {
     expect(callback).toHaveBeenCalledTimes(1)
   })
 
-  it('it should not start immediately if blockStart is true', () => {
+  it('should use default delay of 320ms when delay is omitted', () => {
+    const callback = vi.fn()
+    new ResumableTimer(callback)
+
+    vi.advanceTimersByTime(319)
+    expect(callback).not.toHaveBeenCalled()
+
+    vi.advanceTimersByTime(1)
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
+  it('should not start immediately if blockStart is true', () => {
     const callback = vi.fn()
     const timer = new ResumableTimer(callback, 1000, true)
 
     vi.advanceTimersByTime(1000)
     expect(callback).not.toHaveBeenCalled()
 
-    timer.resume()
+    expect(timer.resume()).toBe(timer)
     vi.advanceTimersByTime(1000)
     expect(callback).toHaveBeenCalledTimes(1)
   })
@@ -38,7 +49,7 @@ describe('ResumableTimer', () => {
     const timer = new ResumableTimer(callback, 1000)
 
     vi.advanceTimersByTime(500)
-    timer.pause()
+    expect(timer.pause()).toBe(timer)
 
     vi.advanceTimersByTime(1000)
     expect(callback).not.toHaveBeenCalled()
@@ -51,6 +62,17 @@ describe('ResumableTimer', () => {
     expect(callback).toHaveBeenCalledTimes(1)
   })
 
+  it('should ignore redundant resume() while timer is already running', () => {
+    const callback = vi.fn()
+    const timer = new ResumableTimer(callback, 1000)
+
+    vi.advanceTimersByTime(400)
+    timer.resume()
+
+    vi.advanceTimersByTime(600)
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
   it('should call callback immediately if the remaining time is 0 or less during resume', () => {
     const callback = vi.fn()
     const timer = new ResumableTimer(callback, 1000)
@@ -58,22 +80,30 @@ describe('ResumableTimer', () => {
     vi.advanceTimersByTime(500)
     timer.pause()
 
-    // Case 1: time passed beyond delay while paused
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+    // @ts-expect-error: Setting protected remaining property for edge case testing
     timer.remaining = 0
     timer.resume()
     expect(callback).toHaveBeenCalledTimes(1)
 
-    // Case 2: remaining set to less than 0
     callback.mockClear()
     timer.clear()
-    const timer2 = new ResumableTimer(callback, 1000, true)
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    timer2.remaining = -50
-    timer2.resume()
+    const secondTimer = new ResumableTimer(callback, 1000, true)
+    // @ts-expect-error: Setting protected remaining property for edge case testing
+    secondTimer.remaining = -50
+    secondTimer.resume()
     expect(callback).toHaveBeenCalledTimes(1)
+  })
+
+  it('should clamp remaining time to 0 if elapsed time exceeds delay on pause()', () => {
+    const callback = vi.fn()
+    const timer = new ResumableTimer(callback, 500)
+
+    // @ts-expect-error: Setting startTime into the past to simulate lag before pause
+    timer.startTime = Date.now() - 1000
+    timer.pause()
+
+    // @ts-expect-error: Reading protected remaining property
+    expect(timer.remaining).toBe(0)
   })
 
   it('should reset correctly', () => {
@@ -81,7 +111,7 @@ describe('ResumableTimer', () => {
     const timer = new ResumableTimer(callback, 1000)
 
     vi.advanceTimersByTime(500)
-    timer.reset()
+    expect(timer.reset()).toBe(timer)
 
     vi.advanceTimersByTime(500)
     expect(callback).not.toHaveBeenCalled()
@@ -95,7 +125,7 @@ describe('ResumableTimer', () => {
     const timer = new ResumableTimer(callback, 1000)
 
     vi.advanceTimersByTime(500)
-    timer.clear()
+    expect(timer.clear()).toBe(timer)
 
     vi.advanceTimersByTime(1000)
     expect(callback).not.toHaveBeenCalled()
@@ -117,13 +147,13 @@ describe('ResumableTimer', () => {
     const callback = vi.fn()
     const timer = new ResumableTimer(callback, 1000)
 
-    vi.advanceTimersByTime(200) // 800 left
+    vi.advanceTimersByTime(200)
     timer.pause()
 
     vi.advanceTimersByTime(500)
-    timer.resume() // Start with 800
+    timer.resume()
 
-    vi.advanceTimersByTime(300) // 500 left
+    vi.advanceTimersByTime(300)
     timer.pause()
 
     vi.advanceTimersByTime(1000)

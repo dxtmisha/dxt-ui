@@ -4,14 +4,14 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getObjectByKeys`
 
-Tạo và trả về một đối tượng mới chỉ bao gồm các thuộc tính có khóa tương ứng nằm trong danh sách truyền vào. Các thuộc tính không tồn tại trong đối tượng gốc hoặc có giá trị bằng `undefined` sẽ bị bỏ qua khi sao chép.
+Tạo và trả về một đối tượng mới chỉ bao gồm các thuộc tính riêng (`hasKey`) có khóa tương ứng nằm trong danh sách truyền vào từ đối tượng nguồn. Các khóa prototype (`__proto__`, `constructor`, `prototype`), các thuộc tính không tồn tại hoặc có giá trị bằng `undefined` sẽ bị bỏ qua khi sao chép.
 
 **Tham số:**
-- `data: Record<string, any>` — Đối tượng nguồn chứa dữ liệu ban đầu.
-- `keys: string[]` — Mảng các chuỗi đại diện cho khóa cần trích xuất.
+- `data: T` — Đối tượng nguồn chứa dữ liệu ban đầu (trong đó `T extends Record<string, unknown>`).
+- `keys: K[]` — Mảng các khóa cần trích xuất từ đối tượng nguồn (trong đó `K extends keyof T`).
 
 **Trả về:**
-`Record<string, any>` — Một đối tượng mới chỉ chứa các thuộc tính đã được chọn. Các giá trị `undefined` sẽ không được thêm vào kết quả trả về.
+`Pick<T, K>` — Một đối tượng mới chỉ chứa các thuộc tính riêng đã chọn có giá trị khác `undefined`.
 
 ```typescript
 import { getObjectByKeys } from '@dxtmisha/functional-basic'
@@ -24,6 +24,6 @@ const user = {
   active: true
 }
 
-const result = getObjectByKeys(user, ['id', 'name', 'age', 'token'])
+const result = getObjectByKeys(user, ['id', 'name', 'age'])
 console.log(result) // { id: 1, name: 'Ivan' }
 ```

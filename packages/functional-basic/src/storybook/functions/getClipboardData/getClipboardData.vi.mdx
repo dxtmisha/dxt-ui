@@ -8,6 +8,8 @@ Trích xuất bất đồng bộ văn bản từ khay nhớ tạm (clipboard).
 
 Hàm này chủ yếu cố gắng lấy dữ liệu văn bản từ sự kiện `ClipboardEvent` được cung cấp (ví dụ: khi xử lý sự kiện `paste`). Nếu sự kiện không được cung cấp hoặc không chứa dữ liệu, nó sẽ chuyển sang cách đọc trực tiếp từ khay nhớ tạm hệ thống bằng `navigator.clipboard.readText()`.
 
+Nếu xảy ra lỗi khi đọc khay nhớ tạm, lỗi sẽ được ghi nhận thông qua `ErrorCenter` (`group: 'clipboard'`, `code: 'error'`) và hàm trả về chuỗi rỗng `''` một cách an toàn. Trong môi trường không có DOM (ví dụ: SSR), hàm trả về ngay `''`.
+
 > Lưu ý: Việc sử dụng `navigator.clipboard.readText()` yêu cầu ngữ cảnh an toàn (HTTPS) và có thể yêu cầu người dùng cấp quyền đọc khay nhớ tạm rõ ràng trong một số trình duyệt.
 
 **Tham số:**

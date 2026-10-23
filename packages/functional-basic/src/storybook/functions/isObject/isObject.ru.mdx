@@ -12,7 +12,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `value: T` — Проверяемое значение.
 
 **Возвращает:**
-`boolean` — Вернет `true`, когда значение является экземпляром объекта (в том числе массивом). Вернет `false` для любых примитивов, `null`, `undefined` и функций. Выступает в качестве защитника типа (type guard), сужая тип до `Record<any, any>`.
+`boolean` (`value is Extract<T, ObjectItem>`) — Вернет `true`, когда значение является экземпляром объекта (в том числе массивом). Вернет `false` для любых примитивов, `null`, `undefined` и функций. Выступает в качестве защитника типа (type guard), сужая тип до `Extract<T, ObjectItem>`.
 
 ```typescript
 import { isObject } from '@dxtmisha/functional-basic'

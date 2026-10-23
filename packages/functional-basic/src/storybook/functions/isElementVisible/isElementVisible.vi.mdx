@@ -10,7 +10,7 @@ Một phần tử có thể nằm ngoài màn hình và vẫn được coi là h
 Khi được trình duyệt hỗ trợ, hàm sử dụng API gốc có hiệu năng cao `checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })`. Trong môi trường không hỗ trợ, hàm sẽ dùng cơ chế dự phòng để kiểm tra computed styles (`display`, `visibility`, `opacity`) và kích thước layout (`offsetWidth`, `offsetHeight`).
 
 **Tham số:**
-- `elementSelectors: ElementOrString<E>` — bộ chọn để khớp hoặc một Element.
+- `elementSelectors?: ElementOrString<E>` — bộ chọn để khớp hoặc một Element.
 
 **Trả về:**
 `boolean` — `true` nếu phần tử có hiển thị, ngược lại là `false`.

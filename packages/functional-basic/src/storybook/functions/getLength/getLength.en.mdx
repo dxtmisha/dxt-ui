@@ -7,10 +7,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Returns the length or size of various data types including Arrays, Objects, Maps, Sets, and Strings. If the value is null, undefined, or an unsupported type (such as number or boolean), it returns `0`.
 
 **Parameters:**
-- `value: any` — The input value to measure.
+- `value: unknown` — The input value to measure.
 
 **Returns:**
-- `number` — The length or size of the value.
+`number` — The length or size of the value.
 
 ```typescript
 import { getLength } from '@dxtmisha/functional-basic'

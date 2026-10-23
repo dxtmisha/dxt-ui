@@ -10,7 +10,7 @@ An element can be off-screen and still be considered visible.
 When supported by the browser, the function utilizes the high-performance native `checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })` API. In environments where it is not available, a fallback evaluates computed styles (`display`, `visibility`, `opacity`) and layout dimensions (`offsetWidth`, `offsetHeight`).
 
 **Parameters:**
-- `elementSelectors: ElementOrString<E>` — selectors for matching or an Element.
+- `elementSelectors?: ElementOrString<E>` — selectors for matching or an Element.
 
 **Returns:**
 `boolean` — `true` if the element is visible, otherwise `false`.

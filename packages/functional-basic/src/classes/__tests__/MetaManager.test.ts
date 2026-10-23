@@ -10,15 +10,15 @@ describe('MetaManager', () => {
   const metaTags = ['description', 'keywords', 'author'] as const
 
   beforeEach(() => {
-    // Clear DOM before each test
     document.head.innerHTML = ''
+    document.title = ''
 
     manager = new MetaManager(metaTags)
   })
 
   afterEach(() => {
-    // Clear after tests
     document.head.innerHTML = ''
+    document.title = ''
   })
 
   describe('constructor', () => {
@@ -33,24 +33,27 @@ describe('MetaManager', () => {
       expect(items.author).toBe('')
     })
 
-    it('should read existing meta tags from DOM on initialization', () => {
-      // Create meta tags in DOM before initialization
-      const descMeta = document.createElement('meta')
-      descMeta.setAttribute('name', 'description')
-      descMeta.setAttribute('content', 'Existing description')
-      document.head.appendChild(descMeta)
+    it('should read existing meta tags and canonical link from DOM on initialization', () => {
+      const descriptionMeta = document.createElement('meta')
+      descriptionMeta.setAttribute('name', 'description')
+      descriptionMeta.setAttribute('content', 'Existing description')
+      document.head.appendChild(descriptionMeta)
 
       const keywordsMeta = document.createElement('meta')
       keywordsMeta.setAttribute('name', 'keywords')
       keywordsMeta.setAttribute('content', 'existing, keywords')
       document.head.appendChild(keywordsMeta)
 
-      // Create new instance
-      const newManager = new MetaManager(metaTags)
+      const canonicalLink = document.createElement('link')
+      canonicalLink.setAttribute('rel', 'canonical')
+      canonicalLink.setAttribute('href', 'https://example.com/initial-canonical')
+      document.head.appendChild(canonicalLink)
 
-      // Should read existing tags
+      const newManager = new MetaManager(['description', 'keywords', 'canonical'] as const)
+
       expect(newManager.get('description')).toBe('Existing description')
       expect(newManager.get('keywords')).toBe('existing, keywords')
+      expect(newManager.get('canonical')).toBe('https://example.com/initial-canonical')
     })
 
     it('should use "name" attribute by default', () => {
@@ -85,7 +88,7 @@ describe('MetaManager', () => {
 
     it('should return readonly array', () => {
       const list = manager.getListMeta()
-      expect(list).toBe(metaTags) // Should be the same reference
+      expect(list).toBe(metaTags)
     })
   })
 
@@ -158,18 +161,33 @@ describe('MetaManager', () => {
     })
 
     it('should update existing meta tag in DOM', () => {
-      // First installation
       manager.set('description', 'First value')
 
       const firstElements = document.querySelectorAll('meta[name="description"]')
       expect(firstElements.length).toBe(1)
 
-      // Update
       manager.set('description', 'Second value')
 
       const secondElements = document.querySelectorAll('meta[name="description"]')
-      expect(secondElements.length).toBe(1) // Should not create duplicate
+      expect(secondElements.length).toBe(1)
       expect(secondElements?.[0]?.getAttribute('content')).toBe('Second value')
+    })
+
+    it('should manage canonical tag as <link rel="canonical"> in DOM and update href on changes', () => {
+      const canonicalManager = new MetaManager(['canonical', 'title'] as const)
+
+      canonicalManager.set('canonical', 'https://example.com/first')
+      const firstLinks = document.querySelectorAll('link[rel="canonical"]')
+      expect(firstLinks.length).toBe(1)
+      expect(firstLinks[0]?.getAttribute('href')).toBe('https://example.com/first')
+
+      canonicalManager.set('canonical', 'https://example.com/second')
+      const secondLinks = document.querySelectorAll('link[rel="canonical"]')
+      expect(secondLinks.length).toBe(1)
+      expect(secondLinks[0]?.getAttribute('href')).toBe('https://example.com/second')
+
+      canonicalManager.set('title', 'Custom Document Title')
+      expect(document.title).toBe('Custom Document Title')
     })
 
     it('should return this for chaining', () => {
@@ -231,7 +249,7 @@ describe('MetaManager', () => {
       })
 
       expect(manager.get('description')).toBe('Updated')
-      expect(manager.get('keywords')).toBe('Initial keys') // Should not change
+      expect(manager.get('keywords')).toBe('Initial keys')
     })
 
     it('should return this for chaining', () => {
@@ -262,12 +280,14 @@ describe('MetaManager', () => {
     })
 
     it('should return title as simple string when toHtmlTitle is called', () => {
-      const result = (manager as any).toHtmlTitle('Test Title')
+      // @ts-expect-error: Testing protected method toHtmlTitle
+      const result = manager.toHtmlTitle('Test Title')
       expect(result).toBe('Test Title')
     })
 
     it('should escape special characters in toHtmlTitle', () => {
-      const result = (manager as any).toHtmlTitle('Title with "quotes" & <tags>')
+      // @ts-expect-error: Testing protected method toHtmlTitle
+      const result = manager.toHtmlTitle('Title with "quotes" & <tags>')
       expect(result).toBe('Title with "quotes" &amp; &lt;tags&gt;')
     })
 
@@ -276,6 +296,18 @@ describe('MetaManager', () => {
 
       const html = manager.html()
       expect(html).toContain('<meta name="description" content="Test description">')
+    })
+
+    it('should render canonical as <link rel="canonical" href="..."> and omit title in html()', () => {
+      const specialManager = new MetaManager(['title', 'canonical', 'description'] as const)
+      specialManager.set('title', 'Ignored in meta html')
+      specialManager.set('canonical', 'https://example.com/canonical')
+      specialManager.set('description', 'Visible meta')
+
+      const html = specialManager.html()
+      expect(html).toContain('<link rel="canonical" href="https://example.com/canonical">')
+      expect(html).toContain('<meta name="description" content="Visible meta">')
+      expect(html).not.toContain('name="title"')
     })
 
     it('should generate HTML for multiple meta tags', () => {
@@ -335,12 +367,14 @@ describe('MetaManager', () => {
 
   describe('getAttributeName', () => {
     it('should return "name" by default', () => {
-      expect(manager['getAttributeName']()).toBe('name')
+      // @ts-expect-error: Testing protected method getAttributeName
+      expect(manager.getAttributeName()).toBe('name')
     })
 
     it('should return "property" when isProperty is true', () => {
       const propertyManager = new MetaManager(['og:title'] as const, true)
-      expect(propertyManager['getAttributeName']()).toBe('property')
+      // @ts-expect-error: Testing protected method getAttributeName
+      expect(propertyManager.getAttributeName()).toBe('property')
     })
   })
 
@@ -351,7 +385,8 @@ describe('MetaManager', () => {
       meta.setAttribute('content', 'Test')
       document.head.appendChild(meta)
 
-      const found = (manager as any).findMetaElement('description')
+      // @ts-expect-error: Testing protected method findMetaElement
+      const found = manager.findMetaElement('description')
 
       expect(found).toBeTruthy()
       expect(found?.getAttribute('content')).toBe('Test')
@@ -365,14 +400,16 @@ describe('MetaManager', () => {
       meta.setAttribute('content', 'Title')
       document.head.appendChild(meta)
 
-      const found = (propertyManager as any).findMetaElement('og:title')
+      // @ts-expect-error: Testing protected method findMetaElement
+      const found = propertyManager.findMetaElement('og:title')
 
       expect(found).toBeTruthy()
       expect(found?.getAttribute('content')).toBe('Title')
     })
 
     it('should return undefined when element not found', () => {
-      const found = (manager as any).findMetaElement('nonexistent')
+      // @ts-expect-error: Testing protected method findMetaElement
+      const found = manager.findMetaElement('nonexistent')
 
       expect(found).toBeUndefined()
     })
@@ -407,13 +444,12 @@ describe('MetaManager', () => {
     })
 
     it('should handle multiple consecutive updates', () => {
-      for (let i = 0; i < 100; i++) {
-        manager.set('description', `Value ${i}`)
+      for (let index = 0; index < 100; index++) {
+        manager.set('description', `Value ${index}`)
       }
 
       expect(manager.get('description')).toBe('Value 99')
 
-      // Should be only one element in DOM
       const elements = document.querySelectorAll('meta[name="description"]')
       expect(elements.length).toBe(1)
     })
@@ -440,13 +476,11 @@ describe('MetaManager', () => {
     })
 
     it('should not create duplicate tags', () => {
-      // Create existing tag
       const existingMeta = document.createElement('meta')
       existingMeta.setAttribute('name', 'description')
       existingMeta.setAttribute('content', 'Existing')
       document.head.appendChild(existingMeta)
 
-      // Create manager and update
       const newManager = new MetaManager(metaTags)
       newManager.set('description', 'Updated')
 
@@ -465,10 +499,7 @@ describe('MetaManager', () => {
 
       const html = manager.html()
 
-      // HTML should be valid
       expect(html).toMatch(/<meta [^>]+>/g)
-
-      // Should contain all tags
       expect(html.split('<meta').length - 1).toBe(3)
     })
 
@@ -477,14 +508,12 @@ describe('MetaManager', () => {
 
       const html = manager.html()
 
-      // HTML should be safe
       expect(html).toContain('content="Test &quot;quotes&quot; &amp; &lt;html&gt; entities"')
     })
   })
 
   describe('TypeScript types', () => {
     it('should only allow setting defined meta tags', () => {
-      // These should work
       manager.set('description', 'test')
       manager.set('keywords', 'test')
       manager.set('author', 'test')
@@ -509,16 +538,13 @@ describe('MetaManager', () => {
 
   describe('integration scenarios', () => {
     it('should work with complex real-world scenario', () => {
-      // Initialization with existing tags
-      const initialDesc = document.createElement('meta')
-      initialDesc.setAttribute('name', 'description')
-      initialDesc.setAttribute('content', 'Initial page description')
-      document.head.appendChild(initialDesc)
+      const initialDescription = document.createElement('meta')
+      initialDescription.setAttribute('name', 'description')
+      initialDescription.setAttribute('content', 'Initial page description')
+      document.head.appendChild(initialDescription)
 
-      // Manager creation
       const pageManager = new MetaManager(['description', 'keywords', 'author', 'robots'] as const)
 
-      // Bulk update
       pageManager.setByList({
         description: 'Updated description',
         keywords: 'web, development, javascript',
@@ -526,52 +552,46 @@ describe('MetaManager', () => {
         robots: 'index, follow'
       })
 
-      // Internal state check
       expect(pageManager.get('description')).toBe('Updated description')
       expect(pageManager.get('keywords')).toBe('web, development, javascript')
 
-      // DOM check
       expect(document.querySelector('meta[name="description"]')?.getAttribute('content'))
         .toBe('Updated description')
 
-      // HTML generation for SSR
       const html = pageManager.html()
       expect(html).toContain('name="description"')
       expect(html).toContain('name="keywords"')
       expect(html).toContain('name="author"')
       expect(html).toContain('name="robots"')
 
-      // Tag count in DOM should match
-      const metaTags = document.querySelectorAll('meta[name]')
-      expect(metaTags.length).toBe(4)
+      const metaTagsElements = document.querySelectorAll('meta[name]')
+      expect(metaTagsElements.length).toBe(4)
     })
   })
 
   describe('SSR environment (without DOM)', () => {
-    it('should work without DOM runtime', () => {
-      // Save original global objects
-      const originalDocument = globalThis.document
-      const originalWindow = globalThis.window
+    const globalRecord = globalThis as Record<string, unknown>
 
-      // Remove document and window to emulate SSR environment
-      delete (globalThis as any).document
-      delete (globalThis as any).window
+    it('should work without DOM runtime', () => {
+      const originalDocument = globalRecord.document
+      const originalWindow = globalRecord.window
+
+      Reflect.deleteProperty(globalRecord, 'document')
+      Reflect.deleteProperty(globalRecord, 'window')
 
       try {
-        // Manager creation without DOM
-        const ssrManager = new MetaManager(['description', 'keywords', 'author'] as const)
+        const ssrManager = new MetaManager(['description', 'keywords', 'author', 'canonical'] as const)
 
-        // Setting values should work
         ssrManager.set('description', 'SSR Description')
         ssrManager.set('keywords', 'ssr, test, server')
         ssrManager.set('author', 'SSR Author')
+        ssrManager.set('canonical', 'https://example.com/ssr-canonical')
 
-        // Internal state should be updated
         expect(ssrManager.get('description')).toBe('SSR Description')
         expect(ssrManager.get('keywords')).toBe('ssr, test, server')
         expect(ssrManager.get('author')).toBe('SSR Author')
+        expect(ssrManager.get('canonical')).toBe('https://example.com/ssr-canonical')
 
-        // Bulk update should work
         ssrManager.setByList({
           description: 'Updated SSR Description',
           keywords: 'updated, ssr'
@@ -580,7 +600,6 @@ describe('MetaManager', () => {
         expect(ssrManager.get('description')).toBe('Updated SSR Description')
         expect(ssrManager.get('keywords')).toBe('updated, ssr')
 
-        // HTML generation should work
         const html = ssrManager.html()
         expect(html).toBeTruthy()
         expect(html).toContain('name="description"')
@@ -589,20 +608,20 @@ describe('MetaManager', () => {
         expect(html).toContain('content="updated, ssr"')
         expect(html).toContain('name="author"')
         expect(html).toContain('content="SSR Author"')
+        expect(html).toContain('<link rel="canonical" href="https://example.com/ssr-canonical">')
       } finally {
-        // Restore global objects
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
         if (originalWindow) {
-          (globalThis as any).window = originalWindow
+          globalRecord.window = originalWindow
         }
       }
     })
 
     it('should generate valid HTML in SSR mode', () => {
-      const originalDocument = globalThis.document
-      delete (globalThis as any).document
+      const originalDocument = globalRecord.document
+      Reflect.deleteProperty(globalRecord, 'document')
 
       try {
         const ssrManager = new MetaManager(['description', 'keywords', 'robots'] as const)
@@ -615,27 +634,24 @@ describe('MetaManager', () => {
 
         const html = ssrManager.html()
 
-        // Check HTML validity
         expect(html).toMatch(/<meta name="[^"]+" content="[^"]+">/)
 
-        // Check tag count
         const metaTagsCount = (html.match(/<meta/g) || []).length
         expect(metaTagsCount).toBe(3)
 
-        // Check each tag structure
         expect(html).toContain('<meta name="description" content="Server-side rendered page">')
         expect(html).toContain('<meta name="keywords" content="ssr, node, server">')
         expect(html).toContain('<meta name="robots" content="index, follow">')
       } finally {
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
       }
     })
 
     it('should handle special characters in SSR mode', () => {
-      const originalDocument = globalThis.document
-      delete (globalThis as any).document
+      const originalDocument = globalRecord.document
+      Reflect.deleteProperty(globalRecord, 'document')
 
       try {
         const ssrManager = new MetaManager(['description'] as const)
@@ -644,25 +660,23 @@ describe('MetaManager', () => {
 
         const html = ssrManager.html()
 
-        // Should escape special characters
         expect(html).toContain('&quot;')
         expect(html).toContain('&amp;')
         expect(html).toContain('&lt;')
         expect(html).toContain('&gt;')
 
-        // Should not contain unescaped characters
         expect(html).not.toContain('"quotes"')
         expect(html).not.toContain('& <html>')
       } finally {
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
       }
     })
 
     it('should support property attribute in SSR mode', () => {
-      const originalDocument = globalThis.document
-      delete (globalThis as any).document
+      const originalDocument = globalRecord.document
+      Reflect.deleteProperty(globalRecord, 'document')
 
       try {
         const ogManager = new MetaManager(['og:title', 'og:description'] as const, true)
@@ -672,49 +686,44 @@ describe('MetaManager', () => {
 
         const html = ogManager.html()
 
-        // Should use property instead of name
         expect(html).toContain('property="og:title"')
         expect(html).toContain('property="og:description"')
         expect(html).not.toContain('name="og:title"')
 
-        // Check content
         expect(html).toContain('content="Open Graph Title"')
         expect(html).toContain('content="Open Graph Description"')
       } finally {
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
       }
     })
 
     it('should not break when trying to update DOM in SSR', () => {
-      const originalDocument = globalThis.document
-      delete (globalThis as any).document
+      const originalDocument = globalRecord.document
+      Reflect.deleteProperty(globalRecord, 'document')
 
       try {
         const ssrManager = new MetaManager(['description'] as const)
 
-        // Should not throw an error
         expect(() => {
           ssrManager.set('description', 'Test')
         }).not.toThrow()
 
-        // Internal state should update
         expect(ssrManager.get('description')).toBe('Test')
 
-        // HTML should be generated
         const html = ssrManager.html()
         expect(html).toContain('content="Test"')
       } finally {
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
       }
     })
 
     it('should work with getItems in SSR mode', () => {
-      const originalDocument = globalThis.document
-      delete (globalThis as any).document
+      const originalDocument = globalRecord.document
+      Reflect.deleteProperty(globalRecord, 'document')
 
       try {
         const ssrManager = new MetaManager(['description', 'keywords'] as const)
@@ -732,19 +741,18 @@ describe('MetaManager', () => {
         })
       } finally {
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
       }
     })
 
     it('should initialize with empty values in SSR mode', () => {
-      const originalDocument = globalThis.document
-      delete (globalThis as any).document
+      const originalDocument = globalRecord.document
+      Reflect.deleteProperty(globalRecord, 'document')
 
       try {
         const ssrManager = new MetaManager(['description', 'keywords', 'author'] as const)
 
-        // All should be empty on initialization
         expect(ssrManager.get('description')).toBe('')
         expect(ssrManager.get('keywords')).toBe('')
         expect(ssrManager.get('author')).toBe('')
@@ -755,14 +763,14 @@ describe('MetaManager', () => {
         expect(items.author).toBe('')
       } finally {
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
       }
     })
 
     it('should support chaining in SSR mode', () => {
-      const originalDocument = globalThis.document
-      delete (globalThis as any).document
+      const originalDocument = globalRecord.document
+      Reflect.deleteProperty(globalRecord, 'document')
 
       try {
         const ssrManager = new MetaManager(['description', 'keywords', 'author'] as const)
@@ -778,22 +786,20 @@ describe('MetaManager', () => {
         expect(ssrManager.get('author')).toBe('Chain Author')
       } finally {
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
       }
     })
 
     it('should handle complete SSR workflow', () => {
-      const originalDocument = globalThis.document
-      delete (globalThis as any).document
+      const originalDocument = globalRecord.document
+      Reflect.deleteProperty(globalRecord, 'document')
 
       try {
-        // Manager creation on server
         const ssrManager = new MetaManager(
           ['description', 'keywords', 'author', 'robots', 'viewport'] as const
         )
 
-        // Meta tag configuration
         ssrManager.setByList({
           description: 'Complete SSR page description',
           keywords: 'ssr, server, node, express',
@@ -802,27 +808,23 @@ describe('MetaManager', () => {
           viewport: 'width=device-width, initial-scale=1'
         })
 
-        // HTML generation for template insertion
-        const metaTags = ssrManager.html()
+        const metaTagsHtml = ssrManager.html()
 
-        // Check that HTML is ready for SSR
-        expect(metaTags).toBeTruthy()
-        expect(typeof metaTags).toBe('string')
+        expect(metaTagsHtml).toBeTruthy()
+        expect(typeof metaTagsHtml).toBe('string')
 
-        // Check for presence of all tags
-        expect(metaTags).toContain('name="description"')
-        expect(metaTags).toContain('name="keywords"')
-        expect(metaTags).toContain('name="author"')
-        expect(metaTags).toContain('name="robots"')
-        expect(metaTags).toContain('name="viewport"')
+        expect(metaTagsHtml).toContain('name="description"')
+        expect(metaTagsHtml).toContain('name="keywords"')
+        expect(metaTagsHtml).toContain('name="author"')
+        expect(metaTagsHtml).toContain('name="robots"')
+        expect(metaTagsHtml).toContain('name="viewport"')
 
-        // Check if it can be inserted into HTML template
         const htmlTemplate = `
           <!DOCTYPE html>
           <html>
             <head>
               <meta charset="UTF-8">
-              ${metaTags}
+              ${metaTagsHtml}
               <title>SSR Page</title>
             </head>
             <body>
@@ -835,7 +837,7 @@ describe('MetaManager', () => {
         expect(htmlTemplate).toContain('Complete SSR page description')
       } finally {
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
       }
     })

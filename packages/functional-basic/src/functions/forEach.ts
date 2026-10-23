@@ -2,7 +2,7 @@ import { isArray } from './isArray'
 import { isObject } from './isObject'
 
 /** Type of collection supported for iteration / Тип коллекции, поддерживаемой для перебора */
-export type ForEachData<T> = readonly T[] | Record<string, T> | Map<any, T> | Set<T>
+export type ForEachData<T> = readonly T[] | Record<string, T> | Map<unknown, T> | Set<T>
 
 /** Type of key based on the collection structure / Тип ключа в зависимости от структуры коллекции */
 export type ForEachKey<D> = D extends readonly unknown[]
@@ -31,7 +31,7 @@ export function forEach<K, V, R>(
   saveUndefined?: boolean
 ): R[]
 
-export function forEach<T, R, D extends Record<string, any> = Record<string, T>>(
+export function forEach<T, R, D extends Record<string, unknown> = Record<string, T>>(
   data: D & Record<string, T>,
   callback: (item: T, key: string, collection: D) => R,
   saveUndefined?: boolean
@@ -82,7 +82,7 @@ export function forEach<
      * Добавляет значение в возвращаемый массив, если оно определено или включен saveUndefined.
      * @param value callback execution result / результат выполнения функции обратного вызова
      */
-    const push = (value: R) => {
+    const push = (value: R): void => {
       if (
         saveUndefined
         || value !== undefined

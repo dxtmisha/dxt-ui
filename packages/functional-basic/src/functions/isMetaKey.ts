@@ -5,6 +5,6 @@
  * @param event event object / объект события
  * @returns true if modifier key pressed / true, если нажата клавиша-модификатор
  */
-export const isMetaKey = (event: KeyboardEvent): boolean => {
+export function isMetaKey(event: KeyboardEvent): boolean {
   return Boolean(event.metaKey || event.altKey || event.ctrlKey)
 }

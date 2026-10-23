@@ -1,8 +1,18 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import { afterEach, beforeEach, describe, it, expect } from 'vitest'
 import { isInput } from '../isInput'
 
 describe('isInput', () => {
+  let originalWindow: typeof window
+
+  beforeEach(() => {
+    originalWindow = globalThis.window
+  })
+
+  afterEach(() => {
+    globalThis.window = originalWindow
+  })
+
   describe('Standard functional requirements (Happy path)', () => {
     it('should return true for standard input elements', () => {
       const input = document.createElement('input')
@@ -31,7 +41,7 @@ describe('isInput', () => {
       expect(isInput(select)).toBe(true)
     })
 
-    it('should return true for contenteditable elements', () => {
+    it('should return true for contenteditable elements (via attribute, property, or isContentEditable)', () => {
       const div = document.createElement('div')
       div.setAttribute('contenteditable', 'true')
       expect(isInput(div)).toBe(true)
@@ -43,6 +53,10 @@ describe('isInput', () => {
       const article = document.createElement('article')
       article.contentEditable = 'true'
       expect(isInput(article)).toBe(true)
+
+      const span = document.createElement('span')
+      Object.defineProperty(span, 'isContentEditable', { value: true, configurable: true })
+      expect(isInput(span)).toBe(true)
     })
   })
 
@@ -136,7 +150,7 @@ describe('isInput', () => {
     })
   })
 
-  describe('Nullish, undefined, and non-HTMLElement values', () => {
+  describe('Nullish, undefined, non-HTMLElement values, and SSR safety', () => {
     it('should return false for null and undefined', () => {
       expect(isInput(null)).toBe(false)
       expect(isInput(undefined)).toBe(false)
@@ -155,15 +169,22 @@ describe('isInput', () => {
     })
 
     it('should return false for plain objects and duck-typed objects', () => {
-      expect(isInput({} as any)).toBe(false)
-      expect(isInput({ tagName: 'input' } as any)).toBe(false)
-      expect(isInput({ tagName: 'INPUT', isContentEditable: true } as any)).toBe(false)
+      expect(isInput({} as unknown as EventTarget)).toBe(false)
+      expect(isInput({ tagName: 'input' } as unknown as EventTarget)).toBe(false)
+      expect(isInput({ tagName: 'INPUT', isContentEditable: true } as unknown as EventTarget)).toBe(false)
     })
 
     it('should return false for primitive types', () => {
-      expect(isInput('input' as any)).toBe(false)
-      expect(isInput(123 as any)).toBe(false)
-      expect(isInput(true as any)).toBe(false)
+      expect(isInput('input' as unknown as EventTarget)).toBe(false)
+      expect(isInput(123 as unknown as EventTarget)).toBe(false)
+      expect(isInput(true as unknown as EventTarget)).toBe(false)
+    })
+
+    it('should return false when executed in a non-DOM / SSR environment', () => {
+      const input = document.createElement('input')
+      Reflect.deleteProperty(globalThis, 'window')
+
+      expect(isInput(input)).toBe(false)
     })
   })
 })

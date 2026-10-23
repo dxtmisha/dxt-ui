@@ -15,7 +15,7 @@ Khác với hàm xét nhánh điều kiện truthy (`if (value)`), `isFilled` s�
 
 **Tham số:**
 - `value: T` — Mẫu giá trị bất kỳ được truyền đến để chèn thử nghiệm rà soát.
-- `zeroTrue: boolean` — (Tùy chọn) Nếu được áp bằng `true`, giá trị chuỗi `'0'` đó sẽ đột nhiên vượt cấp được hệ thống thâu nhận là có chữa dữ liệu (hoàn trả `true`).
+- `zeroTrue?: boolean` — (Tùy chọn) Nếu được áp bằng `true`, giá trị chuỗi `'0'` đó sẽ đột nhiên vượt cấp được hệ thống thâu nhận là có chữa dữ liệu (hoàn trả `true`).
 
 **Trả về:**
 `boolean` (`value is Exclude<T, EmptyValue>`) — Kết suất gởi trả về `true` chừng nào mẫu số đang có mang dữ liệu thông tin, hoặc `false` nếu trắng tinh. Cánh cổng hàm hoạt động song song chức năng khóa loại chặt kiểu TypeScript `EmptyValue`.

@@ -1,16 +1,16 @@
-// md5:b016a41a0d993e0dd36149d7c4ad7e83 true
-/** Manages cross-context messaging using the BroadcastChannel API. @keywords broadcast channel, messaging, cross-tab, communication */
-export declare class BroadcastMessage<Message = any> {
-    /** Initializes the broadcast channel with handlers. @keywords broadcast, channel, init */
+// md5:b83ac3bf8a4bef842f3d839b5ae3df91 true
+/** Manages inter-context communication via BroadcastChannel API. @keywords broadcast channel, messaging, cross-tab, ipc */
+export declare class BroadcastMessage<Message = unknown> {
+    /** Initializes the broadcast channel with optional message/error handlers. @keywords broadcast, channel, init, listener */
     constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined, errorCenter?: ErrorCenterInstance);
-    /** Gets the underlying BroadcastChannel instance if available. @keywords broadcast channel, instance */
+    /** Returns the active BroadcastChannel instance if available in the environment. @keywords channel instance, dom, get */
     getChannel(): BroadcastChannel | undefined;
-    /** Sends a message through the broadcast channel. @keywords post message, broadcast, send */
-    post(message: Message): this;
-    /** Sets the message reception callback handler. @keywords onmessage, listener, callback */
+    /** Sets the callback executed when a message is received. @keywords onmessage, listener, handler, callback */
     setCallback(callback: (event: MessageEvent<Message>) => void): this;
-    /** Sets the message error callback handler. @keywords onmessageerror, error handler */
+    /** Sets the callback executed on message errors. @keywords messageerror, error handler, callback */
     setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
-    /** Closes the broadcast channel and stops listening for messages. @keywords destroy, close, cleanup */
+    /** Sends a message to all listening contexts on the channel. @keywords send, postMessage, emit, publish */
+    post(message: Message): this;
+    /** Closes the channel and stops listening for messages. @keywords close, cleanup, unbind, destroy */
     destroy(): this;
 }

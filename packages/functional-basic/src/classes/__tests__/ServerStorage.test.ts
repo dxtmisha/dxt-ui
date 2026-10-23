@@ -1,5 +1,5 @@
 /** @vitest-environment jsdom */
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi, afterEach, type MockInstance } from 'vitest'
 import { ServerStorage } from '../ServerStorage'
 import { ErrorCenter } from '../ErrorCenter'
 import { isDomRuntime } from '../../functions/isDomRuntime'
@@ -10,17 +10,18 @@ vi.mock('../../functions/isDomRuntime', () => ({
 
 describe('ServerStorage', () => {
   const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-  let errorCenterSpy: ReturnType<typeof vi.spyOn>
-  const ssrContext: Record<string, any> = {}
+  let errorCenterSpy: MockInstance
+  const ssrContext: Record<string, unknown> = {}
 
   beforeEach(() => {
-    // Spy on the default ErrorCenter instance's on method
     errorCenterSpy = vi.spyOn(ErrorCenter.getItem(), 'on')
 
     ServerStorage.reset()
+    ServerStorage.setErrorStatus(false)
 
-    // Clear SSR context
-    for (const key in ssrContext) delete ssrContext[key]
+    for (const key in ssrContext) {
+      delete ssrContext[key]
+    }
 
     consoleErrorSpy.mockClear()
     if (typeof document !== 'undefined' && document.body) {
@@ -38,14 +39,16 @@ describe('ServerStorage', () => {
     })
 
     it('should set and get values correctly', () => {
-      const value = { a: 1 }
+      const value = { count: 1 }
       ServerStorage.set('test', () => value)
       expect(ServerStorage.get('test')).toBe(value)
     })
 
     it('should set value without hydration by default', () => {
       ServerStorage.set('noHydrate', () => 'data')
-      expect((ServerStorage as any).getStorage().noHydrate.hydration).toBe(false)
+      // @ts-expect-error: intentionally inspecting protected static getStorage
+      const storage = ServerStorage.getStorage()
+      expect(storage.noHydrate?.hydration).toBe(false)
     })
 
     it('should identify existing keys with has()', () => {
@@ -54,11 +57,14 @@ describe('ServerStorage', () => {
       expect(ServerStorage.has('not-exists')).toBe(false)
     })
 
-    it('should remove values correctly', () => {
+    it('should remove values correctly and ignore removing non-existent keys', () => {
       ServerStorage.set('to-be-removed', () => 'value')
       expect(ServerStorage.has('to-be-removed')).toBe(true)
+
       ServerStorage.remove('to-be-removed')
       expect(ServerStorage.has('to-be-removed')).toBe(false)
+
+      expect(() => ServerStorage.remove('non-existent')).not.toThrow()
     })
 
     it('should use default value factory in get() if key is missing', () => {
@@ -68,11 +74,11 @@ describe('ServerStorage', () => {
       const result = ServerStorage.get('missing', factory)
 
       expect(result).toBe(defaultValue)
-      expect(factory).toHaveBeenCalled()
+      expect(factory).toHaveBeenCalledTimes(1)
       expect(ServerStorage.get('missing')).toBe(defaultValue)
     })
 
-    it('should return undefined if key missing and no factory provided', () => {
+    it('should return undefined if key is missing and no factory is provided', () => {
       expect(ServerStorage.get('missing-no-factory')).toBeUndefined()
     })
   })
@@ -82,23 +88,26 @@ describe('ServerStorage', () => {
       const firstListener = vi.fn()
       const secondListener = vi.fn()
 
-      const res1 = ServerStorage.init(firstListener)
-      const res2 = ServerStorage.init(secondListener)
+      const resultFirst = ServerStorage.init(firstListener)
+      const resultSecond = ServerStorage.init(secondListener)
 
-      expect(res1).toBe(ServerStorage)
-      expect(res2).toBe(ServerStorage)
+      expect(resultFirst).toBe(ServerStorage)
+      expect(resultSecond).toBe(ServerStorage)
 
-      expect((ServerStorage as any).listener).toBe(firstListener)
+      // @ts-expect-error: intentionally testing protected static listener property
+      expect(ServerStorage.listener).toBe(firstListener)
     })
 
     it('should clear all data and listeners on reset()', () => {
       ServerStorage.init(() => ({}))
-      ServerStorage.set('test', () => 'val')
+      ServerStorage.set('test', () => 'storedValue')
 
       ServerStorage.reset()
 
-      expect((ServerStorage as any).listener).toBeUndefined()
-      expect((ServerStorage as any).storage).toBeUndefined()
+      // @ts-expect-error: intentionally testing protected static listener property
+      expect(ServerStorage.listener).toBeUndefined()
+      // @ts-expect-error: intentionally testing protected static storage property
+      expect(ServerStorage.storage).toBeUndefined()
     })
   })
 
@@ -113,7 +122,8 @@ describe('ServerStorage', () => {
 
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({
         group: 'storage',
-        code: 'context'
+        code: 'context',
+        details: { status: 'get:missing-context-test' }
       }))
     })
 
@@ -129,24 +139,32 @@ describe('ServerStorage', () => {
 
     it('should update error status via setErrorStatus()', () => {
       ServerStorage.setErrorStatus(true)
-      expect((ServerStorage as any).hideError).toBe(true)
+      // @ts-expect-error: intentionally testing protected static hideError property
+      expect(ServerStorage.hideError).toBe(true)
 
       ServerStorage.setErrorStatus(false)
-      expect((ServerStorage as any).hideError).toBe(false)
+      // @ts-expect-error: intentionally testing protected static hideError property
+      expect(ServerStorage.hideError).toBe(false)
+    })
+
+    it('should not initialize fallback storage on has() when context is missing', () => {
+      ServerStorage.setErrorStatus(true)
+      expect(ServerStorage.has('any-key')).toBe(false)
+      // @ts-expect-error: intentionally testing protected static storage property
+      expect(ServerStorage.storage).toBeUndefined()
     })
   })
 
   describe('Hydration & Security', () => {
     beforeEach(() => {
-      // Setup SSR context for hydration generation tests
       ServerStorage.init(() => ssrContext)
     })
 
     it('should generate hydration script via toString()', () => {
       vi.mocked(isDomRuntime).mockReturnValue(false)
 
-      ServerStorage.set('theme', () => 'dark', true) // Hydration enabled
-      ServerStorage.set('secret', () => 'hidden', false) // Hydration disabled
+      ServerStorage.set('theme', () => 'dark', true)
+      ServerStorage.set('secret', () => 'hidden', false)
 
       const html = ServerStorage.toString()
       expect(html).toContain('type="application/json"')
@@ -168,10 +186,9 @@ describe('ServerStorage', () => {
 
     it('should restore data on client via getStorageDom()', () => {
       vi.mocked(isDomRuntime).mockReturnValue(true)
-      // Reset listener to simulate fresh client load
-      ;(ServerStorage as any).listener = undefined
+      // @ts-expect-error: intentionally resetting protected static listener to simulate client load
+      ServerStorage.listener = undefined
 
-      // Simulate hydrated script in DOM
       const script = document.createElement('script')
       script.id = '__ui:server:storage:id__'
       script.type = 'application/json'
@@ -184,8 +201,8 @@ describe('ServerStorage', () => {
 
     it('should handle JSON parse errors gracefully in hydration', () => {
       vi.mocked(isDomRuntime).mockReturnValue(true)
-      // Force reset to ensure getStorageDom is called
-      ;(ServerStorage as any).storage = undefined
+      // @ts-expect-error: intentionally resetting protected static storage
+      ServerStorage.storage = undefined
 
       const script = document.createElement('script')
       script.id = '__ui:server:storage:id__'
@@ -195,7 +212,6 @@ describe('ServerStorage', () => {
 
       const value = ServerStorage.get('test', () => 'fallback')
       expect(value).toBe('fallback')
-      // Check that ErrorCenter was notified of the hydration error
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({
         group: 'hydration',
         code: 'error'
@@ -209,29 +225,29 @@ describe('ServerStorage', () => {
     })
 
     it('should isolate data per context listener', () => {
-      const context1 = {}
-      const context2 = {}
-      let currentContext = context1
+      const contextFirst: Record<string, unknown> = {}
+      const contextSecond: Record<string, unknown> = {}
+      let currentContext = contextFirst
 
       ServerStorage.init(() => currentContext)
 
       ServerStorage.set('token', () => 'user1-token')
 
-      currentContext = context2
+      currentContext = contextSecond
       expect(ServerStorage.get('token')).toBeUndefined()
       ServerStorage.set('token', () => 'user2-token')
 
-      currentContext = context1
+      currentContext = contextFirst
       expect(ServerStorage.get('token')).toBe('user1-token')
 
-      currentContext = context2
+      currentContext = contextSecond
       expect(ServerStorage.get('token')).toBe('user2-token')
     })
 
-    it('should warn and return empty object if context is missing', () => {
+    it('should warn and use fallback storage if context is missing', () => {
       ServerStorage.setErrorStatus(false)
-      const res = ServerStorage.get('anything', () => 'value')
-      expect(res).toBe('value')
+      const result = ServerStorage.get('anything', () => 'value')
+      expect(result).toBe('value')
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({
         group: 'storage',
         code: 'context'

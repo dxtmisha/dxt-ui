@@ -2,15 +2,16 @@
  * Replaces the component name in the text.
  *
  * Заменяет имя компонента в тексте.
- * @param text text/ текст
- * @param name component name/ имя компонента
- * @param componentName new component name/ новое имя компонента
+ * @param text text / текст
+ * @param name component name / имя компонента
+ * @param componentName new component name / новое имя компонента
+ * @returns text with replaced component name or undefined / текст с заменённым именем компонента или undefined
  */
-export const replaceComponentName = (
+export function replaceComponentName(
   text: string | undefined,
   name: string,
   componentName: string
-): string | undefined => {
+): string | undefined {
   return text
     ?.replace(new RegExp(`<${name}`, 'ig'), `<${componentName}`)
     ?.replace(new RegExp(`</${name}`, 'ig'), `</${componentName}`)

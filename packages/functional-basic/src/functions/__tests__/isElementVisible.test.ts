@@ -4,13 +4,16 @@ import { isElementVisible } from '../isElementVisible'
 
 describe('isElementVisible', () => {
   let container: HTMLDivElement
+  let originalWindow: typeof window
 
   beforeEach(() => {
+    originalWindow = globalThis.window
     container = document.createElement('div')
     document.body.appendChild(container)
   })
 
   afterEach(() => {
+    globalThis.window = originalWindow
     container.remove()
     vi.restoreAllMocks()
   })
@@ -47,7 +50,7 @@ describe('isElementVisible', () => {
     })
   })
 
-  describe('CSS hidden properties (display, visibility, opacity)', () => {
+  describe('CSS hidden properties and zero dimensions (display, visibility, opacity, offsetWidth/offsetHeight)', () => {
     it('should return false if an element has display: none', () => {
       const div = document.createElement('div')
       Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
@@ -88,9 +91,27 @@ describe('isElementVisible', () => {
       expect(isElementVisible(div)).toBe(false)
     })
 
-    it('should return false if dimensions are 0 (offsetWidth === 0 or offsetHeight === 0)', () => {
+    it('should return false if both offsetWidth and offsetHeight are 0', () => {
       const div = document.createElement('div')
       Object.defineProperty(div, 'offsetWidth', { value: 0, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 0, configurable: true })
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(false)
+    })
+
+    it('should return false if offsetWidth is 0 while offsetHeight is positive', () => {
+      const div = document.createElement('div')
+      Object.defineProperty(div, 'offsetWidth', { value: 0, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(false)
+    })
+
+    it('should return false if offsetHeight is 0 while offsetWidth is positive', () => {
+      const div = document.createElement('div')
+      Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
       Object.defineProperty(div, 'offsetHeight', { value: 0, configurable: true })
       container.appendChild(div)
 
@@ -104,9 +125,10 @@ describe('isElementVisible', () => {
       expect(isElementVisible(div)).toBe(false)
     })
 
-    it('should return false when input is undefined or null', () => {
+    it('should return false when input is omitted, undefined, or null', () => {
+      expect(isElementVisible()).toBe(false)
       expect(isElementVisible(undefined)).toBe(false)
-      expect(isElementVisible(null as any)).toBe(false)
+      expect(isElementVisible(null as unknown as HTMLElement)).toBe(false)
     })
 
     it('should return false if the selector does not match any element', () => {
@@ -139,14 +161,22 @@ describe('isElementVisible', () => {
     })
   })
 
-  describe('Fallback safety when getComputedStyle returns null', () => {
+  describe('Fallback safety and SSR environment', () => {
     it('should return false gracefully if getComputedStyle returns null', () => {
       const div = document.createElement('div')
       Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
       Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
       container.appendChild(div)
 
-      vi.spyOn(window, 'getComputedStyle').mockReturnValue(null as any)
+      vi.spyOn(window, 'getComputedStyle').mockReturnValue(null as unknown as CSSStyleDeclaration)
+
+      expect(isElementVisible(div)).toBe(false)
+    })
+
+    it('should return false when executed in a non-DOM / SSR environment', () => {
+      const div = document.createElement('div')
+      container.appendChild(div)
+      Reflect.deleteProperty(globalThis, 'window')
 
       expect(isElementVisible(div)).toBe(false)
     })

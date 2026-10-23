@@ -32,9 +32,57 @@ export class ResumableTimer {
   }
 
   /**
+   * Resets and restarts the timer with the original delay.
+   *
+   * Сбрасывает и перезапускает таймер с исходной задержкой.
+   * @returns this instance / текущий экземпляр
+   */
+  reset(): this {
+    this.clear()
+      .resume()
+
+    return this
+  }
+
+  /**
+   * Completely clears the timer and resets its state.
+   *
+   * Полностью очищает таймер и сбрасывает его состояние.
+   * @returns this instance / текущий экземпляр
+   */
+  clear(): this {
+    this.stop()
+
+    this.startTime = undefined
+    this.remaining = undefined
+    this.completed = false
+
+    return this
+  }
+
+  /**
+   * Pauses the timer and calculates the remaining time.
+   *
+   * Приостанавливает таймер и вычисляет оставшееся время.
+   * @returns this instance / текущий экземпляр
+   */
+  pause(): this {
+    if (
+      this.timerId
+      && !this.completed
+    ) {
+      this.stop()
+        .updateRemaining()
+    }
+
+    return this
+  }
+
+  /**
    * Resumes the timer if it was paused or starts it for the first time.
    *
    * Возобновляет таймер, если он был приостановлен, или запускает его впервые.
+   * @returns this instance / текущий экземпляр
    */
   resume(): this {
     if (
@@ -57,53 +105,10 @@ export class ResumableTimer {
   }
 
   /**
-   * Pauses the timer and calculates the remaining time.
-   *
-   * Приостанавливает таймер и вычисляет оставшееся время.
-   */
-  pause(): this {
-    if (
-      this.timerId
-      && !this.completed
-    ) {
-      this.stop()
-        .updateRemaining()
-    }
-
-    return this
-  }
-
-  /**
-   * Resets and restarts the timer with the original delay.
-   *
-   * Сбрасывает и перезапускает таймер с исходной задержкой.
-   */
-  reset(): this {
-    this.clear()
-      .resume()
-
-    return this
-  }
-
-  /**
-   * Completely clears the timer and resets its state.
-   *
-   * Полностью очищает таймер и сбрасывает его состояние.
-   */
-  clear(): this {
-    this.stop()
-
-    this.startTime = undefined
-    this.remaining = undefined
-    this.completed = false
-
-    return this
-  }
-
-  /**
    * Returns the remaining time or the initial delay.
    *
    * Возвращает оставшееся время или начальную задержку.
+   * @returns remaining time in milliseconds / оставшееся время в миллисекундах
    */
   protected getRemaining(): number {
     return this.remaining ?? this.delay
@@ -113,29 +118,17 @@ export class ResumableTimer {
    * Returns the time when the timer was started or the current time.
    *
    * Возвращает время запуска таймера или текущее время.
+   * @returns start timestamp in milliseconds / метка времени запуска в миллисекундах
    */
   protected getStartTime(): number {
     return this.startTime ?? Date.now()
   }
 
   /**
-   * Executes the callback and marks the timer as completed.
-   *
-   * Выполняет колбэк и отмечает таймер как завершенный.
-   */
-  protected go(): this {
-    this.callback()
-
-    this.timerId = undefined
-    this.completed = true
-
-    return this
-  }
-
-  /**
    * Updates the remaining time based on the elapsed time.
    *
    * Обновляет оставшееся время на основе прошедшего времени.
+   * @returns this instance / текущий экземпляр
    */
   protected updateRemaining(): this {
     if (this.completed) {
@@ -159,6 +152,7 @@ export class ResumableTimer {
    * Sets the current time as the start time.
    *
    * Устанавливает текущее время как время начала.
+   * @returns this instance / текущий экземпляр
    */
   protected updateStartTime(): this {
     this.startTime = Date.now()
@@ -166,9 +160,25 @@ export class ResumableTimer {
   }
 
   /**
+   * Executes the callback and marks the timer as completed.
+   *
+   * Выполняет колбэк и отмечает таймер как завершенный.
+   * @returns this instance / текущий экземпляр
+   */
+  protected go(): this {
+    this.callback()
+
+    this.timerId = undefined
+    this.completed = true
+
+    return this
+  }
+
+  /**
    * Stops the timer and clears the timeout ID.
    *
    * Останавливает таймер и очищает идентификатор таймаута.
+   * @returns this instance / текущий экземпляр
    */
   protected stop(): this {
     if (this.timerId) {

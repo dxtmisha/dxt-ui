@@ -12,7 +12,7 @@ Thoát ly hẳn hoàn toàn ra khỏi cách phủ định falsy phổ cập đi 
 - `value: T` — Giá trị bất luận loại nào được bệ lên bàn mổ soi thử độ tồn tại.
 
 **Trả về:**
-`boolean` — Gõ thông điệp `true` bất cứ kì khoảnh khắc nào đối diện bằng nhãn trúng tâm phác hoạ `null` hay mã `undefined`. Trợ thủ siêu phàm này cùng đút túi chức năng bộ bảo vệ type guard TypeScript để cắt chặt giới hạn ép khuôn theo cấu kiện `Undefined` (`null | undefined`).
+`boolean` (`value is Extract<T, Undefined>`) — Gõ thông điệp `true` bất cứ kì khoảnh khắc nào đối diện bằng nhãn trúng tâm phác hoạ `null` hay mã `undefined`. Trợ thủ siêu phàm này cùng đút túi chức năng bộ bảo vệ type guard TypeScript để cắt chặt giới hạn ép khuôn theo cấu kiện `Extract<T, Undefined>` (`null | undefined`).
 
 ```typescript
 import { isNull } from '@dxtmisha/functional-basic'

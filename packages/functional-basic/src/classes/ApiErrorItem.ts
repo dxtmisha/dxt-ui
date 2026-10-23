@@ -1,6 +1,6 @@
 // ai-none
 
-import { executeFunction } from '../library'
+import { executeFunction } from '../functions/executeFunction'
 import type { ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes'
 
 /**
@@ -13,9 +13,6 @@ import type { ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes'
  * предоставляя единые методы для получения кодов ошибок, сообщений и статуса.
  */
 export class ApiErrorItem {
-  /** Cached JSON response body / Кэшированное тело ответа JSON */
-  protected jsonResponse: any | undefined
-
   /**
    * Constructor for ApiErrorItem.
    *
@@ -29,6 +26,38 @@ export class ApiErrorItem {
     protected readonly response: Response,
     protected readonly error: ApiErrorStorageItem
   ) { }
+
+  /**
+   * Retrieves the error code from storage or the response body.
+   *
+   * Получает код ошибки из хранилища или тела ответа.
+   * @returns error code or undefined / код ошибки или undefined
+   */
+  getCode(): string | number | undefined {
+    return this.error?.code
+  }
+
+  /**
+   * Returns the identified error item from storage if it exists.
+   *
+   * Возвращает идентифицированный элемент ошибки из хранилища, если он существует.
+   * @returns error item or undefined / элемент ошибки или undefined
+   */
+  getError(): ApiErrorStorageItem {
+    return this.error
+  }
+
+  /**
+   * Asynchronously retrieves the error message.
+   * Checks the identified error item, the response body, or falls back to status text.
+   *
+   * Асинхронно получает сообщение об ошибке.
+   * Проверяет идентифицированный элемент ошибки, тело ответа или использует текст статуса.
+   * @returns error message or undefined / сообщение об ошибке или undefined
+   */
+  getMessage(): string | undefined {
+    return executeFunction(this.error?.message, this.getResponse())
+  }
 
   /**
    * Returns the HTTP method used for the request.
@@ -48,38 +77,6 @@ export class ApiErrorItem {
    */
   getResponse(): Response {
     return this.response
-  }
-
-  /**
-   * Returns the identified error item from storage if it exists.
-   *
-   * Возвращает идентифицированный элемент ошибки из хранилища, если он существует.
-   * @returns error item or undefined / элемент ошибки или undefined
-   */
-  getError(): ApiErrorStorageItem {
-    return this.error
-  }
-
-  /**
-   * Asynchronously retrieves the error code from storage or the response body.
-   *
-   * Асинхронно получает код ошибки из хранилища или тела ответа.
-   * @returns error code or undefined / код ошибки или undefined
-   */
-  getCode(): string | undefined {
-    return this.error?.code
-  }
-
-  /**
-   * Asynchronously retrieves the error message.
-   * Checks the identified error item, the response body, or falls back to status text.
-   *
-   * Асинхронно получает сообщение об ошибке.
-   * Проверяет идентифицированный элемент ошибки, тело ответа или использует текст статуса.
-   * @returns error message or undefined / сообщение об ошибке или undefined
-   */
-  getMessage(): string | undefined {
-    return executeFunction(this.error?.message, this.getResponse())
   }
 
   /**

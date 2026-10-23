@@ -1,5 +1,6 @@
 import { getImageSrc } from './getImageSrc'
 import { isDomRuntime } from './isDomRuntime'
+import { isString } from './isString'
 import { resizeImageByMax } from './resizeImageByMax'
 
 /**
@@ -27,7 +28,7 @@ export async function resizeImage(
   }
 
   if (
-    typeof image !== 'string'
+    !isString(image)
     && image.complete
     && image.naturalWidth > 0
     && image.naturalHeight > 0
@@ -46,7 +47,7 @@ export async function resizeImage(
       imageElement.crossOrigin = 'anonymous'
     }
 
-    const cleanup = () => {
+    const cleanup = (): void => {
       imageElement.onload = null
       imageElement.onerror = null
     }

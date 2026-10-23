@@ -10,6 +10,12 @@ const SPECIAL_CHARACTERS: Readonly<Record<string, string>> = {
 }
 
 /**
+ * Matches special HTML attribute characters (&, <, >, ", ') /
+ * Регулярное выражение для поиска специальных символов HTML-атрибутов (&, <, >, ", ')
+ */
+const REGEXP_SPECIAL_CHARACTERS = /[&<>"']/g
+
+/**
  * Encodes special characters in a string for safe use in HTML attributes.
  *
  * Кодирует специальные символы в строке для безопасного использования в HTML-атрибутах.
@@ -17,5 +23,5 @@ const SPECIAL_CHARACTERS: Readonly<Record<string, string>> = {
  * @returns encoded text / закодированный текст
  */
 export function encodeAttribute(text: string): string {
-  return toString(text).replace(/[&<>"']/g, match => SPECIAL_CHARACTERS[match] ?? match)
+  return toString(text).replace(REGEXP_SPECIAL_CHARACTERS, match => SPECIAL_CHARACTERS[match] ?? match)
 }

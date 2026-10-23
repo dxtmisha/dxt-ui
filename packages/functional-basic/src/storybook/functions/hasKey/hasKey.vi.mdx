@@ -10,10 +10,10 @@ Hàm cung cấp khả năng bảo vệ mạnh mẽ chống lại **Prototype Pol
 
 **Tham số:**
 - `object: unknown` — đối tượng, hàm hoặc giá trị bất kỳ cần kiểm tra.
-- `key: PropertyKey` — khóa thuộc tính cần tìm (`string | number | symbol`).
+- `key: K` — khóa thuộc tính cần tìm (`K extends PropertyKey`: `string | number | symbol`).
 
 **Trả về:**
-`boolean` — `true` nếu thuộc tính tồn tại và thuộc trực tiếp về đối tượng (thuộc tính riêng), ngược lại là `false`.
+`boolean` (`object is T & Record<K, unknown>`) — `true` nếu thuộc tính tồn tại và thuộc trực tiếp về đối tượng (thuộc tính riêng), ngược lại là `false`.
 
 ```typescript
 import { hasKey } from '@dxtmisha/functional-basic'

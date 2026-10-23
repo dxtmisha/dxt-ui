@@ -7,7 +7,7 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 Утилита для преобразования значения в строку. Возвращает пустую строку, если значение равно null или undefined.
 
 **Параметры:**
-- `value: string | null | undefined` — Значение для преобразования.
+- `value: T` — Значение для преобразования.
 
 **Возвращает:**
 `string` — Строковое представление значения.
@@ -21,8 +21,8 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 import { toString } from '@dxtmisha/functional-basic'
 
 toString('Привет')        // 'Привет'
+toString(123)             // '123'
 toString(null)            // ''
 toString(undefined)       // ''
-
   `}
 />

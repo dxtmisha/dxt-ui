@@ -4,12 +4,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `removeCommonPrefix`
 
-Xóa tiền tố chung khỏi phần đầu của chuỗi chính. Nếu chuỗi chính bắt đầu bằng tiền tố được chỉ định, hàm sẽ loại bỏ nó và tùy chọn loại bỏ khoảng trắng ở hai đầu.
+Xóa tiền tố chung khỏi phần đầu của chuỗi chính. Nếu `mainString` bắt đầu bằng toàn bộ `prefix` hoặc có chuỗi ký tự đầu trùng khớp một phần với `prefix`, các ký tự trùng khớp ở đầu sẽ bị loại bỏ và kết quả được tùy chọn cắt bỏ khoảng trắng ở hai đầu.
 
 **Tham số:**
 - `mainString: string` — Chuỗi chính.
 - `prefix: string` — Chuỗi tiền tố cần xóa.
-- `trim: boolean = true` — Nếu `true`, loại bỏ khoảng trắng ở đầu và cuối chuỗi kết quả.
+- `trim?: boolean = true` — Nếu `true`, loại bỏ khoảng trắng ở đầu và cuối chuỗi kết quả (mặc định là `true`).
 
 **Trả về:**
 `string` — Một chuỗi mới không có tiền tố chung.

@@ -2,9 +2,9 @@
 
 import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
+import { executeFunction } from '../functions/executeFunction'
 
 import type { ApiFetch, ApiHeadersValue } from '../types/apiTypes'
-import { executeFunction } from '../functions/executeFunction'
 
 /**
  * Class for managing HTTP request headers.
@@ -31,19 +31,25 @@ export class ApiHeaders {
       return undefined
     }
 
-    const headers = { ...executeFunction(this.headers) }
-
-    if (isObjectNotArray(value)) {
-      for (const key in value) {
-        headers[key.toLowerCase()] = value[key]
-      }
-    }
+    const headers = this.toHeaders(this.headers, value)
 
     if (isFilled(type)) {
       headers['content-type'] = type
     }
 
     return headers
+  }
+
+  /**
+   * Sets the default headers.
+   *
+   * Устанавливает заголовки по умолчанию.
+   * @param headers list of default headers / список заголовков по умолчанию
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
+   */
+  set(headers: ApiHeadersValue): this {
+    this.headers = headers
+    return this
   }
 
   /**
@@ -68,14 +74,27 @@ export class ApiHeaders {
   }
 
   /**
-   * Sets the default headers.
+   * Converts sources into a headers object, normalizing keys to lower case.
    *
-   * Устанавливает заголовки по умолчанию.
-   * @param headers list of default headers/ список заголовков по умолчанию
-   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
+   * Преобразует источники в объект заголовков, нормализуя ключи в нижний регистр.
+   * @param sources source headers objects or functions / исходные объекты или функции заголовков
+   * @returns merged headers object / объединенный объект заголовков
    */
-  set(headers: ApiHeadersValue): this {
-    this.headers = headers
-    return this
+  protected toHeaders(
+    ...sources: (ApiHeadersValue | undefined | null)[]
+  ): Record<string, string> {
+    const headers: Record<string, string> = {}
+
+    for (const source of sources) {
+      const item = executeFunction(source)
+
+      if (isObjectNotArray(item)) {
+        for (const key in item) {
+          headers[key.toLowerCase()] = item[key]
+        }
+      }
+    }
+
+    return headers
   }
 }

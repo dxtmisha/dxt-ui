@@ -1,3 +1,3 @@
-// md5:7ef9fa84f97dd296240f8ee247d48419 true
-/** Converts a string to kebab-case format by lowercasing letters and replacing delimiters with hyphens. @keywords kebab-case, slugify, string, transform, dashes */
-export declare function toKebabCase(value: string): string;
+// md5:2e03a3807cf95a24f0ea20fc88c8b7bc true
+/** Converts a string to kebab-case format by replacing spaces and separators with hyphens. @keywords kebab-case, dash-case, slugify, string */
+export declare function toKebabCase(value?: string): string;

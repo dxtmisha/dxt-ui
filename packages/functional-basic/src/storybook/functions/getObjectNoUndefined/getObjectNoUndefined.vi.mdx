@@ -9,11 +9,11 @@ Tạo và trả về một đối tượng mới bao gồm các thuộc tính t�
 Hàm này thường được dùng để dọn dẹp dữ liệu trước khi gửi tới máy chủ hoặc để chuẩn hóa các đối tượng. Khi bạn truyền vào một mảng, các chỉ số của mảng sẽ được chuyển dạng thành khóa (key) kiểu chuỗi trong kết quả trả về.
 
 **Tham số:**
-- `data: T` — Đối tượng hoặc mảng nguồn (nơi `T extends Record<string | number, any>`).
-- `exception: any` — Giá trị sẽ khiến thuộc tính mang nó bị loại bỏ. Mặc định là `undefined`.
+- `data: T | readonly V[]` — Đối tượng hoặc mảng nguồn (trong đó `T extends Record<PropertyKey, unknown>`).
+- `exception?: unknown` — (Tùy chọn) Giá trị sẽ khiến thuộc tính mang nó bị loại bỏ (so sánh qua `Object.is` và so sánh khác nghiêm ngặt). Mặc định là `undefined`.
 
 **Trả về:**
-`T` — Một đối tượng mới đã được dọn dẹp các thuộc tính chứa giá trị đã bị loại trừ.
+`T | Record<number, V>` — Một đối tượng mới đã được loại bỏ các thuộc tính chứa giá trị ngoại lệ được chỉ định.
 
 ```typescript
 import { getObjectNoUndefined } from '@dxtmisha/functional-basic'

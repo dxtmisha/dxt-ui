@@ -1,12 +1,14 @@
 import { executePromise } from '../functions/executePromise'
+import { ErrorCenter } from './ErrorCenter'
 import { ServerStorage } from './ServerStorage'
 
 /**
  * Returns a list of active StorageCallback instances for the current request context.
  *
  * Возвращает список активных экземпляров StorageCallback для контекста текущего запроса.
+ * @returns dictionary of active StorageCallback instances / словарь активных экземпляров StorageCallback
  */
-const getItems = () => {
+const getItems = (): Record<string, StorageCallback> => {
   return ServerStorage.get<Record<string, StorageCallback>>(
     '__ui:storage-callback__',
     () => ({})
@@ -19,26 +21,12 @@ const getItems = () => {
  * Класс для работы со списками обратных вызовов для хранилища.
  */
 export class StorageCallback<
-  T = any,
+  T = unknown,
   Callback = (value: T) => void | Promise<void>
 > {
-  /**
-   * Returns an instance of the class by name.
-   *
-   * Возвращает экземпляр класса по названию.
-   * @param name storage name/ название хранилища
-   * @param group storage group/ группа хранилища
-   * @returns StorageCallback instance / экземпляр StorageCallback
-   */
-  static getInstance<T>(
-    name: string,
-    group: string = 'main'
-  ) {
-    return new StorageCallback<T>(name, group)
-  }
-
   /** List of registered callbacks / Список зарегистрированных колбэков */
   protected callbacks: { callback: Callback, isOnce?: boolean }[] = []
+
   /** Loading state / Состояние загрузки */
   protected loading: boolean = false
 
@@ -46,8 +34,8 @@ export class StorageCallback<
    * Constructor for initialization.
    *
    * Конструктор для инициализации.
-   * @param name storage name/ название хранилища
-   * @param group storage group/ группа хранилища
+   * @param name storage name / название хранилища
+   * @param group storage group / группа хранилища
    */
   constructor(
     protected name: string,
@@ -57,10 +45,10 @@ export class StorageCallback<
     const items = getItems()
 
     if (key in items) {
-      return items[key] as StorageCallback<T, Callback>
+      return items[key] as unknown as StorageCallback<T, Callback>
     }
 
-    items[key] = this as StorageCallback
+    items[key] = this as unknown as StorageCallback
   }
 
   /**
@@ -70,6 +58,31 @@ export class StorageCallback<
    * @returns loading state / состояние загрузки
    */
   isLoading(): boolean {
+    return this.loading
+  }
+
+  /**
+   * Returns an instance of the class by name.
+   *
+   * Возвращает экземпляр класса по названию.
+   * @param name storage name / название хранилища
+   * @param group storage group / группа хранилища
+   * @returns StorageCallback instance / экземпляр StorageCallback
+   */
+  static getInstance<T>(
+    name: string,
+    group: string = 'main'
+  ): StorageCallback<T> {
+    return new StorageCallback<T>(name, group)
+  }
+
+  /**
+   * Returns the loading state.
+   *
+   * Возвращает состояние загрузки.
+   * @returns loading state / состояние загрузки
+   */
+  getLoading(): boolean {
     return this.loading
   }
 
@@ -84,21 +97,11 @@ export class StorageCallback<
   }
 
   /**
-   * Returns the loading state.
-   *
-   * Возвращает состояние загрузки.
-   * @returns loading state / состояние загрузки
-   */
-  getLoading(): boolean {
-    return this.loading
-  }
-
-  /**
    * Adds a callback to the list.
    *
    * Добавляет обратный вызов в список.
-   * @param callback function for callbacks/ функция для обратных вызовов
-   * @param isOnce whether the callback should only be called once/ является ли колбэк одноразовым
+   * @param callback function for callbacks / функция для обратных вызовов
+   * @param isOnce whether the callback should only be called once / является ли колбэк одноразовым
    * @returns this instance / текущий экземпляр
    */
   addCallback(
@@ -116,7 +119,7 @@ export class StorageCallback<
    * Removes a callback from the list.
    *
    * Удаляет обратный вызов из списка.
-   * @param callback function for callbacks/ функция для обратных вызовов
+   * @param callback function for callbacks / функция для обратных вызовов
    * @returns this instance / текущий экземпляр
    */
   removeCallback(callback: Callback): this {
@@ -139,19 +142,27 @@ export class StorageCallback<
    * Execution of all callbacks.
    *
    * Выполнение всех обратных вызовов.
-   * @param value storage data/ данные хранилища
+   * @param value storage data / данные хранилища
    * @returns this instance / текущий экземпляр
    */
   async run(value: T): Promise<this> {
-    this.loading = false
-
-    for (const { callback, isOnce } of this.callbacks) {
-      await executePromise(callback, value)
-
-      if (isOnce) {
-        this.removeCallback(callback)
+    for (const { callback, isOnce } of [...this.callbacks]) {
+      try {
+        await executePromise(callback, value)
+      } catch (error) {
+        ErrorCenter.on({
+          group: 'storage',
+          code: 'error',
+          details: error
+        })
+      } finally {
+        if (isOnce) {
+          this.removeCallback(callback)
+        }
       }
     }
+
+    this.loading = false
 
     return this
   }

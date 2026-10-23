@@ -13,7 +13,7 @@ In non-DOM environments (such as SSR), `requestAnimationFrame` is not used. The 
 
 **Parameters:**
 - `callback?: () => T | Promise<T>` — Optional callback function to execute on the target animation frame.
-- `count = 1` — The number of animation frames to skip (default is `1`).
+- `count?: number = 1` — The number of animation frames to skip (default is `1`).
 
 **Returns:**
 `Promise<T | void>` — A promise resolving on the animation frame with the callback result (or `undefined` if no callback was provided).

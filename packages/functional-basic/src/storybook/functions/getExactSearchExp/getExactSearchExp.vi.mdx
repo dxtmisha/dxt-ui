@@ -4,22 +4,22 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getExactSearchExp`
 
-Tiện ích tạo một `RegExp` không phân biệt chữ hoa/thường để khớp chính xác với chuỗi đã cho.
+Tiện ích tạo một `RegExp` không phân biệt chữ hoa/thường để khớp chính xác cụm từ đã cho (không có ký tự neo `^` và `$`).
 
-Khác với `getSearchExp`, hàm này khớp với toàn bộ chuỗi (với các ký tự đặc biệt được escape) mà không tách nó thành các từ riêng biệt.
+Khác với `getSearchExp`, hàm này khớp với toàn bộ cụm từ dưới dạng một chuỗi con liền mạch (với các ký tự đặc biệt được escape) mà không tách nó thành các từ riêng biệt.
 
 **Tham số:**
-- `search: string` — Chuỗi tìm kiếm để khớp chính xác.
+- `search: string` — Chuỗi tìm kiếm để khớp chính xác cụm từ.
 
 **Trả về:**
-`RegExp` — Biểu thức chính quy với cờ `i` (không phân biệt chữ hoa/thường).
+`RegExp` — Biểu thức chính quy với cờ `i` (không phân biệt chữ hoa/thường) và mẫu `(:value)`.
 
 ```typescript
 import { getExactSearchExp } from '@dxtmisha/functional-basic'
 
-const regex = getExactSearchExp('hello')
+const regex = getExactSearchExp('hello world')
 
-regex.test('hello')       // true
-regex.test('HELLO')       // true
-regex.test('hello world') // false — không phải khớp chính xác
+regex.test('say hello world!')      // true — chứa chính xác cụm từ
+regex.test('HELLO WORLD')           // true — không phân biệt chữ hoa/thường
+regex.test('hello beautiful world') // false — các từ bị tách rời
 ```

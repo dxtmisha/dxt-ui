@@ -7,10 +7,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Chuyển đổi giá trị đầu vào (ngày, số hoặc chuỗi) thành đối tượng `Date`. Hỗ trợ nhiều định dạng chuỗi khác nhau, bao gồm các chuỗi giống ISO không có dấu phân cách, cũng như tự động thay thế múi giờ.
 
 **Tham số:**
-- `value?: T` — Giá trị đầu vào (đối tượng `Date`, dấu thời gian tính bằng mili giây hoặc chuỗi ngày tháng).
+- `value?: T` — Giá trị đầu vào (`T extends Date | number | string`: đối tượng `Date`, dấu thời gian tính bằng mili giây hoặc chuỗi ngày tháng).
 
 **Trả về:**
-`Date` — Đối tượng ngày tháng kết quả. Nếu giá trị không được cung cấp hoặc là `null`, ngày hiện tại sẽ được trả về.
+`(T & Date) | Date` — Đối tượng ngày tháng kết quả. Nếu giá trị không được cung cấp hoặc là `null`, ngày hiện tại sẽ được trả về.
 
 ```typescript
 import { toDate } from '@dxtmisha/functional-basic'

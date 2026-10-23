@@ -1,5 +1,8 @@
 import { isObjectNotArray } from '../functions/isObjectNotArray'
+import type { ApiHydration } from './ApiHydration'
 import { ApiInstance } from './ApiInstance'
+import type { ApiResponse } from './ApiResponse'
+import type { ApiStatus } from './ApiStatus'
 import { ServerStorage } from './ServerStorage'
 
 import {
@@ -46,7 +49,7 @@ export class Api {
    * Возвращает статус последнего запроса.
    * @returns ApiStatus instance / экземпляр ApiStatus
    */
-  static getStatus() {
+  static getStatus(): ApiStatus {
     return this.getItem().getStatus()
   }
 
@@ -56,7 +59,7 @@ export class Api {
    * Получает обработчик ответа.
    * @returns ApiResponse instance / экземпляр ApiResponse
    */
-  static getResponse() {
+  static getResponse(): ApiResponse {
     return this.getItem().getResponse()
   }
 
@@ -66,7 +69,7 @@ export class Api {
    * Получает обработчик гидратации.
    * @returns ApiHydration instance / экземпляр ApiHydration
    */
-  static getHydration() {
+  static getHydration(): ApiHydration {
     return this.getItem().getHydration()
   }
 

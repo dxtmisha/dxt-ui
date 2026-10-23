@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElement`
 
-Trả về một `Element` (nút HTML) từ tài liệu. Tiện ích này nhận vào một chuỗi bộ chọn CSS, đối tượng `Window` hoặc một `Element` có sẵn và trả về nút DOM tương ứng nếu được thực thi trong môi trường trình duyệt. Trong các môi trường không có DOM (ví dụ: SSR), nó trả về `undefined`.
+Trả về một `Element` (nút HTML) từ tài liệu. Tiện ích này nhận vào một chuỗi bộ chọn CSS, đối tượng `Window` hoặc một `Element` có sẵn và trả về nút DOM tương ứng nếu được thực thi trong môi trường trình duyệt. Trong các môi trường không có DOM (ví dụ: SSR), nó trả về `undefined` đối với chuỗi bộ chọn hoặc trả về nguyên tham chiếu phần tử được truyền vào.
 
 **Tham số:**
 - `element?: ElementOrString<E>` — Bộ chọn CSS (ví dụ: `'.btn'`), đối tượng `Window`, hoặc một nút `Element` đã có.

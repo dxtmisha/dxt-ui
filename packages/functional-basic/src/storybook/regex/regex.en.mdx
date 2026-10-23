@@ -13,7 +13,7 @@ Safely use strings inside regular expressions without the risk of syntax errors.
 ```javascript
 import { escapeExp, getExp } from '@dxtmisha/functional-basic'
 
-// 1. Escaping special characters (.*+?^${}()|[\]\)
+// 1. Escaping special characters (.*+?^${}()|[\]\/-)
 const safeText = escapeExp('price block ($)') // 'price block \(\$\)'
 
 // 2. Quick RegExp object creation with flags
@@ -38,8 +38,8 @@ const searchAll = getSearchExp('red car')
 // 2. "Contains any word" search (OR-based)
 const searchAny = getSeparatingSearchExp('apple orange') // (apple|orange)
 
-// 3. Exact word match
-const exact = getExactSearchExp('React') // Matches 'React', but not 'Reactions'
+// 3. Exact phrase match (case-insensitive)
+const exact = getExactSearchExp('React Router') // Matches 'React Router', but not 'React and Router'
 ```
 
 ## Practical Example

@@ -3,15 +3,26 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { ErrorCenter } from '../ErrorCenter'
 import { TranslateFile } from '../TranslateFile'
 import { Geo } from '../Geo'
-import { TRANSLATE_GLOBAL_PREFIX } from '../../types/translateTypes'
+import { TRANSLATE_GLOBAL_PREFIX, type TranslateDataFile } from '../../types/translateTypes'
+
+class TestableTranslateFile extends TranslateFile {
+  getFilesMap(): TranslateDataFile {
+    return this.files
+  }
+
+  getResolvedIndex(): string | undefined {
+    return this.getIndex()
+  }
+}
 
 describe('TranslateFile', () => {
-  let translateFile: TranslateFile
+  let translateFile: TestableTranslateFile
 
   beforeEach(() => {
-    translateFile = new TranslateFile()
+    translateFile = new TestableTranslateFile()
     vi.spyOn(Geo, 'getLocation').mockReturnValue('en-US')
     vi.spyOn(Geo, 'getLanguage').mockReturnValue('en')
   })
@@ -25,8 +36,7 @@ describe('TranslateFile', () => {
       const mockFile = vi.fn().mockResolvedValue({ hello: 'world' })
       translateFile.add({ 'en-US': mockFile })
 
-      const anyFile = translateFile as any
-      expect(anyFile.files['en-US']).toBe(mockFile)
+      expect(translateFile.getFilesMap()['en-US']).toBe(mockFile)
     })
 
     it('should return true if files exist for the current location', () => {
@@ -41,21 +51,40 @@ describe('TranslateFile', () => {
   })
 
   describe('getList and caching', () => {
+    it('should return undefined when no matching file exists for current location', async () => {
+      translateFile.add({ 'fr-FR': vi.fn().mockResolvedValue({ bonjour: 'monde' }) })
+      expect(await translateFile.getList()).toBeUndefined()
+    })
+
     it('should fetch data from a file function and cache it', async () => {
       const mockData = { hello: 'world' }
       const mockFile = vi.fn().mockResolvedValue(mockData)
 
       translateFile.add({ 'en-US': mockFile })
 
-      // First call - should call mockFile
-      const result1 = await translateFile.getList()
-      expect(result1).toEqual(mockData)
+      const firstResult = await translateFile.getList()
+      expect(firstResult).toEqual(mockData)
       expect(mockFile).toHaveBeenCalledTimes(1)
 
-      // Second call - should use cache, not call mockFile
-      const result2 = await translateFile.getList()
-      expect(result2).toEqual(mockData)
+      const secondResult = await translateFile.getList()
+      expect(secondResult).toEqual(mockData)
       expect(mockFile).toHaveBeenCalledTimes(1)
+    })
+
+    it('should catch file loading errors and report to ErrorCenter', async () => {
+      const errorSpy = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
+      const loadError = new Error('Failed to load dictionary')
+      const mockFile = vi.fn().mockRejectedValue(loadError)
+
+      translateFile.add({ 'en-US': mockFile })
+
+      const result = await translateFile.getList()
+      expect(result).toBeUndefined()
+      expect(errorSpy).toHaveBeenCalledWith({
+        group: 'translate',
+        code: 'error',
+        details: loadError
+      })
     })
   })
 
@@ -71,28 +100,28 @@ describe('TranslateFile', () => {
         [TRANSLATE_GLOBAL_PREFIX]: mockGlobal
       })
 
-      const anyFile = translateFile as any
-      expect(anyFile.getIndex()).toBe('en-US')
+      expect(translateFile.getResolvedIndex()).toBe('en-US')
 
-      // Remove location - should pick a language
-      delete anyFile.files['en-US']
-      expect(anyFile.getIndex()).toBe('en')
+      delete translateFile.getFilesMap()['en-US']
+      expect(translateFile.getResolvedIndex()).toBe('en')
 
-      // Remove language - should pick global
-      delete anyFile.files['en']
-      expect(anyFile.getIndex()).toBe(TRANSLATE_GLOBAL_PREFIX)
+      delete translateFile.getFilesMap()['en']
+      expect(translateFile.getResolvedIndex()).toBe(TRANSLATE_GLOBAL_PREFIX)
     })
   })
 
   describe('constructor options', () => {
-    it('should accept custom language and location getters', () => {
+    it('should accept initial data and custom language and location getters', async () => {
+      const mockFrenchLoader = vi.fn().mockResolvedValue({ greeting: 'Bonjour' })
       const customFile = new TranslateFile(
-        {},
+        { 'fr-FR': mockFrenchLoader },
         () => 'fr',
         () => 'fr-FR'
       )
       expect(customFile.getLanguage()).toBe('fr')
       expect(customFile.getLocation()).toBe('fr-FR')
+      expect(customFile.isFile()).toBe(true)
+      expect(await customFile.getList()).toEqual({ greeting: 'Bonjour' })
     })
   })
 })

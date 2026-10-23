@@ -9,8 +9,8 @@ Một tiện ích linh hoạt được thiết kế để xử lý các đối s
 Mô hình này rất hiệu quả để triển khai tính toán lười biếng (lazy evaluation), các giá trị mặc định động hoặc các thuộc tính cấu hình có thể cố định hoặc được tính toán.
 
 **Tham số:**
-- `callback: T | ((...args: any[]) => T)` — Giá trị cần xử lý. Có thể là một giá trị cụ thể hoặc một hàm trả về kiểu `T`.
-- `...args: any[]` (tùy chọn) — Các đối số được truyền vào hàm nếu `callback` có thể gọi được.
+- `callback: T | FunctionArgs<never, T> | ((...args: Args) => T)` — Giá trị cần xử lý. Có thể là một giá trị cụ thể hoặc một hàm trả về kiểu `T`.
+- `...args: Args` — Các đối số được truyền vào hàm nếu `callback` có thể gọi được.
 
 **Trả về:**
 `T` — Kết quả của việc thực thi hàm hoặc chính giá trị ban đầu.

@@ -8,10 +8,10 @@ Tiện ích để chia một chuỗi thành một mảng các đối tượng đ
 
 **Tham số:**
 - `value: string` — Chuỗi ban đầu để xử lý.
-- `search?: string` — Chuỗi tìm kiếm (hỗ trợ tìm kiếm nhiều từ phân tách bằng dấu cách).
+- `search?: string | RegExp` — Chuỗi tìm kiếm (hỗ trợ tìm kiếm nhiều từ phân tách bằng dấu cách) hoặc biểu thức chính quy.
 
 **Trả về:**
-`{ text: string, isMatch: boolean }[]` — Một mảng các đoạn văn bản với trạng thái khớp.
+`HighlightMatchItem[]` (`{ text: string, isMatch: boolean }[]`) — Một mảng các đoạn văn bản với trạng thái khớp.
 
 <Source
   language='typescript'

@@ -1,7 +1,7 @@
-// md5:33d98f75fd15920a1f6df5a5ee33b8a5 true
+// md5:61edbc09cf709625350fc93762da2b2e true
 export type CookieSameSite = 'strict' | 'lax';
 
-/** Options for setting and configuring cookies. @keywords cookie, options, samesite, secure */
+/** Cookie configuration options @keywords cookie, options, settings */
 export type CookieOptions = {
     age?: number;
     sameSite?: CookieSameSite;
@@ -13,18 +13,18 @@ export type CookieOptions = {
     arguments?: string[] | Record<string, string | number | boolean>;
 };
 
-/** Manages cookie storage with custom listeners across DOM and SSR environments. @keywords cookie, storage, ssr, browser, persistence */
+/** Universal cookie storage manager supporting custom listeners for DOM and SSR environments @keywords cookie, storage, ssr, persistence */
 export declare class CookieStorage {
-    /** Initializes cookie storage with custom getter and setter listeners. @keywords init, listener, ssr */
-    static init(getListener?: (key: string) => any | undefined, getListenerRaw?: () => string, setListener?: (key: string, value: any, cookie: string, options?: CookieOptions) => void): void;
-    /** Resets the storage by clearing all in-memory items and resetting listeners. @keywords reset, clear */
-    static reset(): void;
-    /** Retrieves a typed cookie value from storage or returns a default fallback. @keywords get, read, retrieve */
+    /** Retrieves data from cookie storage with optional fallback @keywords cookie, get, read */
     static get<T>(name: string, defaultValue?: T | (() => T)): T | undefined;
-    /** Saves a value to cookie storage with configurable options. @keywords set, write, store */
+    /** Stores a value in cookies with configurable options @keywords cookie, set, write, save */
     static set<T>(name: string, value: T | (() => T), options?: CookieOptions): T;
-    /** Removes a cookie by name from storage. @keywords remove, delete, clear */
+    /** Removes a cookie by name from storage @keywords cookie, remove, delete */
     static remove(name: string): void;
-    /** Synchronizes and updates in-memory storage cache from current cookies. @keywords update, sync, refresh */
+    /** Synchronizes and updates data from current cookies @keywords cookie, update, sync, refresh */
     static update(): void;
+    /** Clears all in-memory items and resets registered listeners @keywords cookie, reset, clear */
+    static reset(): void;
+    /** Initializes storage listeners for custom cookie retrieval and persistence @keywords cookie, init, setup, listeners */
+    static init(getListener?: (key: string) => unknown, getListenerRaw?: () => string, setListener?: (key: string, value: string, cookie: string, options?: CookieOptions) => void): void;
 }

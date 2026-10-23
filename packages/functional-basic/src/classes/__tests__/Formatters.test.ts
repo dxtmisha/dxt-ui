@@ -1,8 +1,21 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach } from 'vitest'
 import { Formatters } from '../Formatters'
-import { FormattersType } from '../../types/formattersTypes'
+import { FormattersType, type FormattersOptionsList } from '../../types/formattersTypes'
 import { Geo } from '../Geo'
+
+interface TestRecord extends Record<string, unknown> {
+  price?: number
+  currency?: string
+  birthday?: string
+  firstName?: string
+  lastName?: string
+  surname?: string
+  count?: number
+  apples?: number
+  weight?: number
+  custom?: string | number | boolean
+}
 
 describe('Formatters', () => {
   beforeEach(() => {
@@ -23,11 +36,11 @@ describe('Formatters', () => {
       options: { unit: 'kilogram' }
     },
     custom: {
-      transformation: (val: any) => `custom-${val}`
+      transformation: (value: unknown) => `custom-${String(value)}`
     }
-  }
+  } satisfies FormattersOptionsList
 
-  const list = [
+  const sampleList: TestRecord[] = [
     {
       price: 100,
       currency: 'USD',
@@ -43,34 +56,34 @@ describe('Formatters', () => {
 
   describe('Initialization and Basic Methods', () => {
     it('should initialize with options and list', () => {
-      const formatters = new Formatters(options, list)
+      const formatters = new Formatters(options, sampleList)
       expect(formatters.getOptions()).toBe(options)
-      expect(formatters.getList()).toEqual(list)
+      expect(formatters.getList()).toEqual(sampleList)
     })
 
     it('should check if list is set using is()', () => {
-      const formatters = new Formatters(options)
+      const formatters = new Formatters<typeof options, TestRecord[]>(options)
       expect(formatters.is()).toBe(false)
-      formatters.setList(list)
+      formatters.setList(sampleList)
       expect(formatters.is()).toBe(true)
     })
 
     it('should check if a list is an array using isArray()', () => {
-      const formattersArray = new Formatters(options, list)
+      const formattersArray = new Formatters(options, sampleList)
       expect(formattersArray.isArray()).toBe(true)
 
-      const formattersSingle = new Formatters(options, list[0])
+      const formattersSingle = new Formatters(options, sampleList[0])
       expect(formattersSingle.isArray()).toBe(false)
     })
 
     it('should return the correct count of records using length()', () => {
-      const formattersEmpty = new Formatters(options)
+      const formattersEmpty = new Formatters<typeof options, TestRecord[]>(options)
       expect(formattersEmpty.length()).toBe(0)
 
-      const formattersArray = new Formatters(options, list)
-      expect(formattersArray.length()).toBe(list.length)
+      const formattersArray = new Formatters(options, sampleList)
+      expect(formattersArray.length()).toBe(sampleList.length)
 
-      const formattersSingle = new Formatters(options, list[0])
+      const formattersSingle = new Formatters(options, sampleList[0])
       expect(formattersSingle.length()).toBe(1)
 
       formattersArray.setList([])
@@ -80,64 +93,96 @@ describe('Formatters', () => {
       expect(formattersArray.length()).toBe(0)
     })
 
-    it('should allow setting and getting the list', () => {
-      const formatters = new Formatters(options)
+    it('should allow setting and getting the list with chaining', () => {
+      const formatters = new Formatters<typeof options, TestRecord[]>(options)
       expect(formatters.getList()).toEqual([])
-      const result = formatters.setList(list)
-      expect(formatters.getList()).toEqual(list)
-      expect(result).toBe(formatters) // Check chaining
+      const chainedResult = formatters.setList(sampleList)
+      expect(formatters.getList()).toEqual(sampleList)
+      expect(chainedResult).toBe(formatters)
     })
   })
 
   describe('Formatting with to()', () => {
     it('should format an array of data correctly', () => {
-      const formatters = new Formatters(options, list)
+      const formatters = new Formatters(options, sampleList)
       const result = formatters.to()
-      const item = result[0]!
+      const firstItem = result[0]!
 
-      expect(item.priceFormat).toContain('$100.00')
-      expect(typeof item.birthdayFormat).toBe('string')
-      expect(item.nameFormat).toBe('John Doe')
-      expect(item.countFormat).toBe('1,234.56')
-      expect(item.applesFormat).toBe('5 apples')
-      expect(item.weightFormat).toBe('10 kg')
-      expect(item.customFormat).toBe('custom-value')
+      expect(firstItem.priceFormat).toContain('$100.00')
+      expect(typeof firstItem.birthdayFormat).toBe('string')
+      expect(firstItem.nameFormat).toBe('John Doe')
+      expect(firstItem.countFormat).toBe('1,234.56')
+      expect(firstItem.applesFormat).toBe('5 apples')
+      expect(firstItem.weightFormat).toBe('10 kg')
+      expect(firstItem.customFormat).toBe('custom-value')
     })
 
     it('should update formatted output when list is changed via setList', () => {
-      const formatters = new Formatters(options, list)
-      expect((formatters.to()[0] as any).priceFormat).toContain('$100.00')
+      const formatters = new Formatters(options, sampleList)
+      expect(formatters.to()[0]?.priceFormat).toContain('$100.00')
 
-      formatters.setList([{ ...list[0], price: 200 } as any])
-      expect((formatters.to()[0] as any).priceFormat).toContain('$200.00')
+      formatters.setList([{ ...sampleList[0], price: 200 }])
+      expect(formatters.to()[0]?.priceFormat).toContain('$200.00')
     })
 
     it('should format a single item correctly', () => {
-      const formatters = new Formatters(options, list[0])
-      const item = formatters.to()
+      const formatters = new Formatters(options, sampleList[0])
+      const formattedItem = formatters.to()
 
-      expect(item?.priceFormat).toContain('$100.00')
-      expect(item?.nameFormat).toBe('John Doe')
+      expect(formattedItem?.priceFormat).toContain('$100.00')
+      expect(formattedItem?.nameFormat).toBe('John Doe')
     })
 
     it('should return undefined if a list is missing', () => {
-      const formatters = new Formatters(options)
+      const formatters = new Formatters<typeof options, TestRecord>(options)
       expect(formatters.to()).toBeUndefined()
     })
 
-    it('should handle missing values by returning empty strings or defaults', () => {
-      const incompleteList = [{}]
-      const formatters = new Formatters(options, incompleteList as any)
+    it('should handle missing values by returning empty strings', () => {
+      const incompleteList: TestRecord[] = [{}]
+      const formatters = new Formatters(options, incompleteList)
       const result = formatters.to()
-      const item = result![0]!
+      const firstItem = result[0]!
 
-      expect(item.priceFormat).toBe('')
-      expect(item.birthdayFormat).toBe('')
-      expect(item.nameFormat).toBe('')
-      expect(item.countFormat).toBe('')
-      expect(item.applesFormat).toBe('')
-      expect(item.weightFormat).toBe('')
-      expect(item.customFormat).toBe('')
+      expect(firstItem.priceFormat).toBe('')
+      expect(firstItem.birthdayFormat).toBe('')
+      expect(firstItem.nameFormat).toBe('')
+      expect(firstItem.countFormat).toBe('')
+      expect(firstItem.applesFormat).toBe('')
+      expect(firstItem.weightFormat).toBe('')
+      expect(firstItem.customFormat).toBe('')
+    })
+
+    it('should handle 0, "0", false, and truthy values according to isFilled semantics', () => {
+      const edgeOptions = {
+        zeroNumber: { type: FormattersType.number },
+        zeroString: { type: FormattersType.number },
+        positiveNumber: { type: FormattersType.number },
+        zeroCustom: {
+          transformation: (value: unknown) => `val:${String(value)}`
+        },
+        falseCustom: {
+          transformation: (value: unknown) => `bool:${String(value)}`
+        }
+      } satisfies FormattersOptionsList
+
+      const edgeItem = {
+        zeroNumber: 0,
+        zeroString: '0',
+        positiveNumber: 7,
+        zeroCustom: 0,
+        falseCustom: false
+      }
+
+      const formatters = new Formatters(edgeOptions, edgeItem)
+      const formatted = formatters.to()
+
+      // isFilled(0), isFilled('0'), and isFilled(false) are false by default
+      expect(formatted?.zeroNumberFormat).toBe('')
+      expect(formatted?.zeroStringFormat).toBe('')
+      expect(formatted?.positiveNumberFormat).toBe('7')
+      expect(formatted?.zeroCustomFormat).toBe('')
+      expect(formatted?.falseCustomFormat).toBe('')
     })
   })
 
@@ -148,10 +193,10 @@ describe('Formatters', () => {
           type: FormattersType.currency,
           options: { currencyPropName: 'myCurrency' }
         }
-      }
+      } satisfies FormattersOptionsList
       const customList = [{ price: 50, myCurrency: 'EUR' }]
       const formatters = new Formatters(customOptions, customList)
-      expect(formatters.to()![0]!.priceFormat).toContain('€50.00')
+      expect(formatters.to()[0]?.priceFormat).toContain('€50.00')
     })
 
     it('should handle a currency numberOnly option', () => {
@@ -160,31 +205,49 @@ describe('Formatters', () => {
           type: FormattersType.currency,
           options: { numberOnly: true }
         }
-      }
+      } satisfies FormattersOptionsList
       const customList = [{ price: 100, currency: 'USD' }]
       const formatters = new Formatters(customOptions, customList)
-      expect(formatters.to()![0]!.priceFormat).toBe('100.00')
+      expect(formatters.to()[0]?.priceFormat).toBe('100.00')
     })
 
-    it('should handle name formatting with custom property names', () => {
+    it('should handle date formatting with custom type, options, and hour24', () => {
+      const dateOptions = {
+        eventAt: {
+          type: FormattersType.date,
+          options: {
+            type: 'datetime',
+            options: 'long',
+            hour24: true
+          }
+        }
+      } satisfies FormattersOptionsList
+      const dateList = [{ eventAt: '2025-03-15T15:30:00' }]
+      const formatters = new Formatters(dateOptions, dateList)
+      const formattedDate = formatters.to()[0]?.eventAtFormat
+      expect(formattedDate).toContain('March')
+      expect(formattedDate).toContain('15:30')
+    })
+
+    it('should handle name formatting with custom property names and short flag', () => {
       const nameOptions = {
         user: {
           type: FormattersType.name,
           options: {
-            firstPropName: 'fName',
-            lastPropName: 'lName',
-            surname: 'sName'
+            firstPropName: 'givenName',
+            lastPropName: 'familyName',
+            surname: 'middleName',
+            short: true
           }
         }
-      }
-      const nameList = [{ fName: 'Ivan', lName: 'Ivanov', sName: 'Ivanovich' }]
+      } satisfies FormattersOptionsList
+      const nameList = [{ givenName: 'Ivan', familyName: 'Ivanov', middleName: 'Ivanovich' }]
       const formatters = new Formatters(nameOptions, nameList)
-      const result = formatters.to()![0]!.userFormat
-      expect(result).toContain('Ivan')
-      expect(result).toContain('Ivanov')
+      const result = formatters.to()[0]?.userFormat
+      expect(result).toBe('I. Ivanov')
     })
 
-    it('should handle plural with options and optionsNumber', () => {
+    it('should handle plural with options and optionsNumber, and fallback when words are missing', () => {
       const pluralOptions = {
         items: {
           type: FormattersType.plural,
@@ -192,45 +255,65 @@ describe('Formatters', () => {
             words: 'item|items',
             optionsNumber: { minimumFractionDigits: 1 }
           }
+        },
+        noWords: {
+          type: FormattersType.plural
         }
-      }
-      const pluralList = [{ items: 1 }]
+      } satisfies FormattersOptionsList
+      const pluralList = [{ items: 1, noWords: 42 }]
       const formatters = new Formatters(pluralOptions, pluralList)
-      expect(formatters.to()![0]!.itemsFormat).toBe('1.0 item')
+      expect(formatters.to()[0]?.itemsFormat).toBe('1.0 item')
+      expect(formatters.to()[0]?.noWordsFormat).toBe('42')
     })
 
-    it('should handle unit formatting', () => {
+    it('should handle unit formatting and fallback when unit option is missing', () => {
       const unitOptions = {
-        m: {
+        distance: {
           type: FormattersType.unit,
           options: { unit: 'meter' }
+        },
+        rawUnit: {
+          type: FormattersType.unit
         }
-      }
-      const unitList = [{ m: 5 }]
+      } satisfies FormattersOptionsList
+      const unitList = [{ distance: 5, rawUnit: 12 }]
       const formatters = new Formatters(unitOptions, unitList)
-      expect(formatters.to()![0]!.mFormat).toBe('5 m')
+      expect(formatters.to()[0]?.distanceFormat).toBe('5 m')
+      expect(formatters.to()[0]?.rawUnitFormat).toBe('12')
     })
 
-    it('should handle dot notation in keys', () => {
-      const dotOptions = {
-        'user.name': { type: FormattersType.name }
-      }
+    it('should stringify value when type is omitted in options', () => {
+      const untypedOptions = {
+        label: {}
+      } satisfies FormattersOptionsList
+      const untypedList = [{ label: 999 }]
+      const formatters = new Formatters(untypedOptions, untypedList)
+      expect(formatters.to()[0]?.labelFormat).toBe('999')
+    })
 
-      // We need to provide firstName/lastName at the path context where it's being looked up
-      // Or we can mock the behavior by providing the expected properties at the root
-      // since the current implementation looks for firstName/lastName relative to the item root
-      const dotListCorrected = [
+    it('should handle dot notation in keys and convert format key to camelCase', () => {
+      const dotOptions = {
+        'user.name': { type: FormattersType.name },
+        'order.total.amount': { type: FormattersType.number }
+      } satisfies FormattersOptionsList
+
+      const dotList: Record<string, unknown>[] = [
         {
           firstName: 'John',
-          lastName: 'Doe'
+          lastName: 'Doe',
+          order: {
+            total: {
+              amount: 2500
+            }
+          }
         }
       ]
 
-      const formatters = new Formatters(dotOptions, dotListCorrected as any)
-      const result = formatters.to()![0]!
+      const formatters = new Formatters(dotOptions, dotList)
+      const firstResult = formatters.to()[0]!
 
-      // 'user.name' -> userNameFormat
-      expect(result.userNameFormat).toBe('John Doe')
+      expect(firstResult.userNameFormat).toBe('John Doe')
+      expect(firstResult.orderTotalAmountFormat).toBe('2,500')
     })
   })
 })

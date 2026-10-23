@@ -153,7 +153,7 @@ export class ApiInstance {
    * Возвращает статус последнего запроса.
    * @returns ApiStatus instance / экземпляр ApiStatus
    */
-  getStatus() {
+  getStatus(): ApiStatus {
     return this.status
   }
 
@@ -163,7 +163,7 @@ export class ApiInstance {
    * Получает обработчик ответа.
    * @returns ApiResponse instance / экземпляр ApiResponse
    */
-  getResponse() {
+  getResponse(): ApiResponse {
     return this.response
   }
 
@@ -173,7 +173,7 @@ export class ApiInstance {
    * Получает обработчик гидратации.
    * @returns ApiHydration instance / экземпляр ApiHydration
    */
-  getHydration() {
+  getHydration(): ApiHydration {
     return this.hydration
   }
 
@@ -283,6 +283,7 @@ export class ApiInstance {
    *
    * Изменяет данные заголовка по умолчанию.
    * @param headers default headers / заголовки по умолчанию
+   * @returns this instance / текущий экземпляр
    */
   setHeaders(headers: ApiHeadersValue): this {
     this.headers.set(headers)
@@ -294,6 +295,7 @@ export class ApiInstance {
    *
    * Изменяет данные запроса по умолчанию.
    * @param request default request data / данные запроса по умолчанию
+   * @returns this instance / текущий экземпляр
    */
   setRequestDefault(request: ApiDefaultValue): this {
     this.requestDefault.set(request)
@@ -305,6 +307,7 @@ export class ApiInstance {
    *
    * Изменяет базовый путь к скрипту.
    * @param url path to the script / путь к скрипту
+   * @returns this instance / текущий экземпляр
    */
   setUrl(url: string): this {
     this.url = url
@@ -316,6 +319,7 @@ export class ApiInstance {
    *
    * Изменяет функцию для вызова перед запросом.
    * @param callback function to call before request / функция для вызова перед запросом
+   * @returns this instance / текущий экземпляр
    */
   setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this {
     this.preparation.set(callback)
@@ -327,6 +331,7 @@ export class ApiInstance {
    *
    * Изменяет функцию для вызова после запроса.
    * @param callback function to call after request / функция для вызова после запроса
+   * @returns this instance / текущий экземпляр
    */
   setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this {
     this.preparation.setEnd(callback)
@@ -338,6 +343,7 @@ export class ApiInstance {
    *
    * Изменяет таймаут запроса в миллисекундах.
    * @param timeout timeout in milliseconds / таймаут в миллисекундах
+   * @returns this instance / текущий экземпляр
    */
   setTimeout(timeout: number): this {
     this.timeout = timeout
@@ -349,6 +355,7 @@ export class ApiInstance {
    *
    * Изменяет источник (протокол и домен) для базового URL.
    * @param origin protocol and domain / протокол и домен
+   * @returns this instance / текущий экземпляр
    */
   setOrigin(origin: string): this {
     this.origin = origin
@@ -360,6 +367,7 @@ export class ApiInstance {
    *
    * Устанавливает функцию-обертку для запросов.
    * @param wrapper wrapper function / функция-обертка
+   * @returns this instance / текущий экземпляр
    */
   setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): this {
     this.wrapper = wrapper
@@ -475,6 +483,7 @@ export class ApiInstance {
    * Выполнить запрос API с поддержкой повторов.
    * @param apiFetch fetch configuration / конфигурация запроса
    * @param retryCount current retry count / текущий счетчик повторов
+   * @returns Promise with response data / Promise с данными ответа
    */
   protected async fetch<T>(
     apiFetch: ApiFetch,
@@ -509,6 +518,10 @@ export class ApiInstance {
       return cache
     }
 
+    if (retryCount === 0) {
+      this.status.reset()
+    }
+
     const status = new ApiStatus()
     let dataReturn: ApiDataReturn<T>
     let dataError: ApiErrorItem | undefined
@@ -532,19 +545,8 @@ export class ApiInstance {
       this.status.setStatus(query.status, query.statusText)
 
       if (
-        !hideError
-        && query.status >= 400
-      ) {
-        if (initError) {
-          dataError = await ApiError.getItem(method as ApiMethodItem, query)
-        }
-
-        this.makeErrorQuery(dataError ?? query)
-      }
-
-      if (
         (end?.reset && retryCount < endResetLimit)
-        || retryCount < retry
+        || (query.status >= 400 && retryCount < retry)
       ) {
         await sleep(this.getRetryDelay(retryCount, retryDelay))
 
@@ -555,21 +557,32 @@ export class ApiInstance {
         return await this.fetch(apiFetch, retryCount + 1)
       }
 
-      dataReturn = new ApiDataReturn(apiFetch, query, end, dataError)
-      await dataReturn.init()
-    } catch (e) {
-      if (!hideError) {
-        this.makeError(e as { name: string })
+      if (
+        !hideError
+        && query.status >= 400
+      ) {
+        if (initError) {
+          dataError = await ApiError.getItem(method as ApiMethodItem, query)
+        }
+
+        this.makeErrorQuery(dataError ?? query)
       }
 
-      status.setError(String(e))
-      this.status.setError(String(e))
+      dataReturn = new ApiDataReturn(apiFetch, query, end, dataError)
+      await dataReturn.init()
+    } catch (error) {
+      if (!hideError) {
+        this.makeError(error as Record<string, unknown> & { name: string })
+      }
+
+      status.setError(String(error))
+      this.status.setError(String(error))
 
       if (!hideLoading) {
         this.loading.hide()
       }
 
-      throw e
+      throw error
     }
 
     status.setLastResponse(dataReturn.getData())
@@ -598,7 +611,7 @@ export class ApiInstance {
   protected async makeQuery(
     apiFetch: ApiFetch,
     pathToApi: string
-  ): Promise<{ query: Response, timeoutId: any }> {
+  ): Promise<{ query: Response, timeoutId: ReturnType<typeof setTimeout> | undefined }> {
     const request: ApiFetch['request'] = this.requestDefault.request(apiFetch.request)
     const {
       pathFull = undefined,
@@ -626,9 +639,17 @@ export class ApiInstance {
 
     const timeoutId = this.initController(apiFetch, fetchInit)
 
-    return {
-      query: await fetch(url, fetchInit),
-      timeoutId
+    try {
+      return {
+        query: await fetch(url, fetchInit),
+        timeoutId
+      }
+    } catch (error) {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+
+      throw error
     }
   }
 
@@ -638,9 +659,10 @@ export class ApiInstance {
    * Обработка ошибки.
    * @param error error object / объект ошибки
    * @param group error group for error center (default: 'api') / группа ошибки для центра ошибок (по умолчанию: 'api')
+   * @returns void / ничего не возвращает
    */
   protected makeError(
-    error: Record<string, any> & { name: string },
+    error: Record<string, unknown> & { name: string },
     group: string = 'api'
   ): void {
     switch (error.name) {
@@ -663,6 +685,7 @@ export class ApiInstance {
    *
    * Обрабатывает ошибку ответа.
    * @param error error details / данные ошибки
+   * @returns void / ничего не возвращает
    */
   protected makeErrorQuery(error: ApiErrorItem | Response): void {
     const status = error instanceof Response
@@ -706,7 +729,7 @@ export class ApiInstance {
   protected initController(
     apiFetch: ApiFetch,
     fetchInit: RequestInit
-  ): any {
+  ): ReturnType<typeof setTimeout> | undefined {
     const {
       timeout = this.timeout,
       controller

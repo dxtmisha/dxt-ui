@@ -38,49 +38,14 @@ export class MetaManager<
   }
 
   /**
-   * Returns the list of meta tag names.
-   *
-   * Возвращает список имен мета-тегов.
-   * @returns list of meta tag names/ список имен мета-тегов
-   */
-  getListMeta(): T {
-    return this.listMeta
-  }
-
-  /**
    * Get the content of a meta tag by name.
    *
    * Получает содержимое мета-тега по имени.
    * @param name meta tag name / имя мета-тега
-   * @returns meta tag content/ содержимое мета-тега
+   * @returns meta tag content / содержимое мета-тега
    */
   get(name: Key): string {
     return this.items[name] ?? ''
-  }
-
-  /**
-   * Returns all meta tags.
-   *
-   * Возвращает все мета-теги.
-   * @returns object with all meta tags/ объект со всеми мета-тегами
-   */
-  getItems(): MetaList<T> {
-    return this.items
-  }
-
-  /**
-   * Returns all meta tags as HTML string.
-   *
-   * Возвращает все мета-теги в виде HTML-строки.
-   * @returns HTML string/ HTML-строка
-   */
-  html(): string {
-    const code = forEach(
-      this.listMeta as any,
-      name => this.toHtmlString(name as any as Key)
-    )
-
-    return code.join('')
   }
 
   /**
@@ -101,6 +66,26 @@ export class MetaManager<
   }
 
   /**
+   * Returns all meta tags.
+   *
+   * Возвращает все мета-теги.
+   * @returns object with all meta tags / объект со всеми мета-тегами
+   */
+  getItems(): MetaList<T> {
+    return this.items
+  }
+
+  /**
+   * Returns the list of meta tag names.
+   *
+   * Возвращает список имен мета-тегов.
+   * @returns list of meta tag names / список имен мета-тегов
+   */
+  getListMeta(): T {
+    return this.listMeta
+  }
+
+  /**
    * Sets multiple meta tags from an object.
    *
    * Устанавливает несколько мета-тегов из объекта.
@@ -110,10 +95,25 @@ export class MetaManager<
     forEach(
       metaList,
       (content, name) =>
-        this.set(name as any as Key, String(content))
+        this.set(name as unknown as Key, String(content))
     )
 
     return this
+  }
+
+  /**
+   * Returns all meta tags as HTML string.
+   *
+   * Возвращает все мета-теги в виде HTML-строки.
+   * @returns HTML string / HTML-строка
+   */
+  html(): string {
+    const code = forEach(
+      this.listMeta as readonly string[],
+      name => this.toHtmlString(name as unknown as Key)
+    )
+
+    return code.join('')
   }
 
   /**
@@ -124,23 +124,6 @@ export class MetaManager<
    */
   protected getAttributeName(): string {
     return this.isProperty ? 'property' : 'name'
-  }
-
-  /**
-   * Finds a meta element in the DOM.
-   *
-   * Находит мета-элемент в DOM.
-   * @param name meta tag name / имя мета-тега
-   * @returns meta element if found, or undefined / мета-элемент, если найден, иначе undefined
-   */
-  protected findMetaElement(name: string): HTMLMetaElement | undefined {
-    if (!isDomRuntime()) {
-      return undefined
-    }
-
-    const selector = `meta[${this.getAttributeName()}="${name}"]`
-
-    return document.querySelector<HTMLMetaElement>(selector) || undefined
   }
 
   /**
@@ -175,6 +158,21 @@ export class MetaManager<
       return this
     }
 
+    if (name === 'canonical') {
+      const link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+
+      if (link) {
+        link.setAttribute('href', content)
+      } else {
+        createElement(document.head, 'link', {
+          rel: 'canonical',
+          href: content
+        })
+      }
+
+      return this
+    }
+
     const element = this.findMetaElement(name)
 
     if (element) {
@@ -196,6 +194,43 @@ export class MetaManager<
   }
 
   /**
+   * Updates meta tags data from the DOM.
+   *
+   * Обновляет данные мета-тегов из DOM.
+   * @returns current instance / текущий экземпляр
+   */
+  protected update(): this {
+    this.listMeta.forEach((name) => {
+      if (name === 'canonical') {
+        this.items[name as unknown as Key] = isDomRuntime()
+          ? (document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.getAttribute('href') ?? '')
+          : ''
+      } else {
+        this.items[name as unknown as Key] = this.findMetaElement(name)?.content ?? ''
+      }
+    })
+
+    return this
+  }
+
+  /**
+   * Finds a meta element in the DOM.
+   *
+   * Находит мета-элемент в DOM.
+   * @param name meta tag name / имя мета-тега
+   * @returns meta element if found, or undefined / мета-элемент, если найден, иначе undefined
+   */
+  protected findMetaElement(name: string): HTMLMetaElement | undefined {
+    if (!isDomRuntime()) {
+      return undefined
+    }
+
+    const selector = `meta[${this.getAttributeName()}="${encodeAttribute(name)}"]`
+
+    return document.querySelector<HTMLMetaElement>(selector) || undefined
+  }
+
+  /**
    * Converts meta tag to HTML string.
    *
    * Преобразует мета-тег в HTML-строку.
@@ -212,6 +247,10 @@ export class MetaManager<
     const content = encodeAttribute(value)
 
     if (content) {
+      if (name === 'canonical') {
+        return `<link rel="canonical" href="${content}">`
+      }
+
       return `<meta ${this.getAttributeName()}="${name}" content="${content}">`
     }
 
@@ -227,19 +266,5 @@ export class MetaManager<
    */
   protected toHtmlTitle(title: string): string {
     return encodeLiteAttribute(title)
-  }
-
-  /**
-   * Updates meta tags data from the DOM.
-   *
-   * Обновляет данные мета-тегов из DOM.
-   * @returns current instance / текущий экземпляр
-   */
-  protected update(): this {
-    this.listMeta.forEach((name) => {
-      this.items[name as any as Key] = this.findMetaElement(name)?.content ?? ''
-    })
-
-    return this
   }
 }

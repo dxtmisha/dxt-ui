@@ -52,7 +52,7 @@ describe('getHydrationData', () => {
     })
 
     it('should handle arrays and nested objects', () => {
-      const data = { arr: [1, 2, 3], nested: { valid: true } }
+      const data = { items: [1, 2, 3], nested: { valid: true } }
       createScript(testId, JSON.stringify(data))
 
       const result = getHydrationData(testId, {})
@@ -60,11 +60,11 @@ describe('getHydrationData', () => {
     })
 
     it('should handle empty objects and arrays', () => {
-      createScript('obj-empty', '{}')
-      expect(getHydrationData('obj-empty', null)).toEqual({})
+      createScript('object-empty', '{}')
+      expect(getHydrationData('object-empty', null)).toEqual({})
 
-      createScript('arr-empty', '[]')
-      expect(getHydrationData('arr-empty', null)).toEqual([])
+      createScript('array-empty', '[]')
+      expect(getHydrationData('array-empty', null)).toEqual([])
     })
   })
 
@@ -228,7 +228,7 @@ describe('getHydrationData', () => {
       )
     })
 
-    it('should dispatch error to ErrorCenter.on when script has empty content', () => {
+    it('should dispatch error to ErrorCenter.on when script has empty or null textContent', () => {
       const spy = vi.spyOn(ErrorCenter, 'on')
       createScript(testId, '')
 
@@ -244,6 +244,13 @@ describe('getHydrationData', () => {
           details: expect.objectContaining({ id: testId })
         })
       )
+
+      const nullScript = createScript('null-content-id', '')
+      vi.spyOn(nullScript, 'textContent', 'get').mockReturnValue(null)
+
+      const nullResult = getHydrationData('null-content-id', defaultValue)
+      expect(nullResult).toEqual(defaultValue)
+      expect(spy).toHaveBeenCalledTimes(2)
     })
   })
 

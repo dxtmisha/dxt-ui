@@ -25,10 +25,10 @@ export class SearchListData<
    * Constructor for SearchListData.
    *
    * Конструктор для SearchListData.
-   * @param list original list of items/ исходный список элементов
-   * @param columns columns to search in/ столбцы для поиска
-   * @param item current search item state/ текущее состояние элемента поиска
-   * @param options search options/ опции поиска
+   * @param list original list of items / исходный список элементов
+   * @param columns columns to search in / столбцы для поиска
+   * @param item current search item state / текущее состояние элемента поиска
+   * @param options search options / опции поиска
    */
   constructor(
     protected list: SearchListValue<T>,
@@ -42,7 +42,7 @@ export class SearchListData<
    * Checks if both list and columns are provided.
    *
    * Проверяет, предоставлены ли и список, и столбцы.
-   * @returns boolean indicating if ready for column-based search/ логическое значение, указывающее на готовность к поиску по столбцам
+   * @returns boolean indicating if ready for column-based search / логическое значение, указывающее на готовность к поиску по столбцам
    */
   is(): this is this & { list: T[], columns: string[] } {
     return Boolean(
@@ -55,66 +55,38 @@ export class SearchListData<
    * Checks if the list is provided.
    *
    * Проверяет, предоставлен ли список.
-   * @returns boolean/ логическое значение
+   * @returns boolean / логическое значение
    */
   isList(): this is this & { list: T[] } {
     return Boolean(this.list)
   }
 
   /**
-   * Returns the original list.
-   *
-   * Возвращает исходный список.
-   * @returns list value/ значение списка
-   */
-  getList(): SearchListValue<T> {
-    return this.list
-  }
-
-  /**
    * Returns the search columns.
    *
    * Возвращает столбцы поиска.
-   * @returns columns or undefined/ столбцы или undefined
+   * @returns columns or undefined / столбцы или undefined
    */
   getColumns(): K | undefined {
     return this.columns
   }
 
   /**
-   * Gets the search cache, initializing it if necessary.
+   * Returns the original list.
    *
-   * Получает кэш поиска, инициализируя его при необходимости.
-   * @returns search cache/ кэш поиска
+   * Возвращает исходный список.
+   * @returns list value / значение списка
    */
-  protected getCache(): SearchCache<T> {
-    if (!this.listCache) {
-      this.initCache()
-    }
-
-    return this.listCache ?? []
-  }
-
-  /**
-   * Sets a new list and regenerates the cache.
-   *
-   * Устанавливает новый список и регенерирует кэш.
-   * @param list new list/ новый список
-   * @returns this instance/ данный экземпляр
-   */
-  setList(list: SearchListValue<T>): this {
-    this.list = list
-    this.resetCache()
-
-    return this
+  getList(): SearchListValue<T> {
+    return this.list
   }
 
   /**
    * Sets new search columns and regenerates the cache.
    *
    * Устанавливает новые столбцы поиска и регенерирует кэш.
-   * @param columns new columns/ новые столбцы
-   * @returns this instance/ данный экземпляр
+   * @param columns new columns / новые столбцы
+   * @returns this instance / данный экземпляр
    */
   setColumns(columns?: SearchColumns<T>): this {
     this.columns = columns as K
@@ -124,11 +96,25 @@ export class SearchListData<
   }
 
   /**
+   * Sets a new list and regenerates the cache.
+   *
+   * Устанавливает новый список и регенерирует кэш.
+   * @param list new list / новый список
+   * @returns this instance / данный экземпляр
+   */
+  setList(list: SearchListValue<T>): this {
+    this.list = list
+    this.resetCache()
+
+    return this
+  }
+
+  /**
    * Finds a cached item corresponding to the given original item.
    *
    * Находит кэшированный элемент, соответствующий данному исходному элементу.
-   * @param item original item/ исходный элемент
-   * @returns cache item or undefined/ кэшированный элемент или undefined
+   * @param item original item / исходный элемент
+   * @returns cache item or undefined / кэшированный элемент или undefined
    */
   findCacheItem(item: T): SearchCacheItem<T> | undefined {
     return this.getCache().find(cache => cache.item === item)
@@ -138,8 +124,8 @@ export class SearchListData<
    * Iterates over the cached list and executes a callback for each item.
    *
    * Перебирает кэшированный список и выполняет обратный вызов для каждого элемента.
-   * @param callback function to execute for each item/ функция для выполнения для каждого элемента
-   * @returns formatted list/ отформатированный список
+   * @param callback function to execute for each item / функция для выполнения для каждого элемента
+   * @returns formatted list / отформатированный список
    */
   forEach(
     callback: (
@@ -169,9 +155,9 @@ export class SearchListData<
    * Converts a single item to a formatted item with highlighted matches if selected.
    *
    * Преобразует один элемент в отформатированный элемент с выделенными совпадениями, если он выбран.
-   * @param item original item/ исходный элемент
-   * @param selection whether the item matches the search and should be highlighted/ совпадает ли элемент с поиском и должен ли он быть выделен
-   * @returns formatted item/ отформатированный элемент
+   * @param item original item / исходный элемент
+   * @param selection whether the item matches the search and should be highlighted / совпадает ли элемент с поиском и должен ли он быть выделен
+   * @returns formatted item / отформатированный элемент
    */
   toFormatItem(
     item: T,
@@ -184,7 +170,7 @@ export class SearchListData<
         const name = this.getColumnName(column)
         const value = getItemByPath(item, column)
 
-        format[name] = isFilled(value) && selection
+        format[name] = this.isFilled(value) && selection
           ? this.addTag(value)
           : anyToString(value)
       })
@@ -198,11 +184,36 @@ export class SearchListData<
   }
 
   /**
+   * Checks if the value is filled, including numeric and string 0.
+   *
+   * Проверяет, заполнено ли значение, включая числовой и строковый 0.
+   * @param value value to check / проверяемое значение
+   * @returns boolean indicating if the value is filled / логическое значение, указывающее, заполнено ли значение
+   */
+  protected isFilled(value: unknown): boolean {
+    return value === 0 || isFilled(value, true)
+  }
+
+  /**
+   * Gets the search cache, initializing it if necessary.
+   *
+   * Получает кэш поиска, инициализируя его при необходимости.
+   * @returns search cache / кэш поиска
+   */
+  protected getCache(): SearchCache<T> {
+    if (!this.listCache) {
+      this.initCache()
+    }
+
+    return this.listCache ?? []
+  }
+
+  /**
    * Formats a column path to a camelCase property name with a 'Search' suffix.
    *
    * Форматирует путь к столбцу в имя свойства camelCase с суффиксом 'Search'.
-   * @param column column path/ путь к столбцу
-   * @returns property name/ имя свойства
+   * @param column column path / путь к столбцу
+   * @returns property name / имя свойства
    */
   protected getColumnName(column: string): string {
     return column.replace(
@@ -215,10 +226,10 @@ export class SearchListData<
    * Adds highlight tags to the given value based on the current search value.
    *
    * Добавляет теги выделения к данному значению на основе текущего значения поиска.
-   * @param value value to highlight/ значение для выделения
-   * @returns highlighted string/ выделенная строка
+   * @param value value to highlight / значение для выделения
+   * @returns highlighted string / выделенная строка
    */
-  protected addTag(value: any): string {
+  protected addTag(value: unknown): string {
     return addTagHighlightMatch(
       anyToString(value),
       this.item.get(),
@@ -227,10 +238,20 @@ export class SearchListData<
   }
 
   /**
+   * Resets the search cache.
+   *
+   * Сбрасывает кэш поиска.
+   * @returns void / ничего не возвращает
+   */
+  protected resetCache(): void {
+    this.listCache = undefined
+  }
+
+  /**
    * Generates a search cache for the current list and columns.
    *
    * Генерирует кэш поиска для текущего списка и столбцов.
-   * @returns search cache/ кэш поиска
+   * @returns search cache / кэш поиска
    */
   protected generateCache(): SearchCache<T> {
     if (!this.isList()) {
@@ -246,7 +267,7 @@ export class SearchListData<
         for (const column of this.columns) {
           const value = getItemByPath(item, column)
 
-          if (isFilled(value)) {
+          if (this.isFilled(value)) {
             valueAll += ` ${anyToString(value)}`
           }
         }
@@ -269,15 +290,5 @@ export class SearchListData<
    */
   protected initCache(): void {
     this.listCache = this.generateCache()
-  }
-
-  /**
-   * Resets the search cache.
-   *
-   * Сбрасывает кэш поиска.
-   * @returns void / ничего не возвращает
-   */
-  protected resetCache(): void {
-    this.listCache = undefined
   }
 }

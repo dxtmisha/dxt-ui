@@ -17,6 +17,22 @@ import type { ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes'
  */
 export class ApiError {
   /**
+   * Creates an ApiErrorItem by matching the response against stored error criteria.
+   *
+   * Создает ApiErrorItem путем сопоставления ответа с сохраненными критериями ошибок.
+   * @param method HTTP method of the request / HTTP-метод запроса
+   * @param response raw Fetch response / сырой ответ Fetch
+   * @returns structured error item / структурированный элемент ошибки
+   */
+  static async getItem(
+    method: ApiMethodItem,
+    response: Response
+  ): Promise<ApiErrorItem> {
+    const error = await this.getStorage().find(method, response)
+    return new ApiErrorItem(method, response, error)
+  }
+
+  /**
    * Retrieves the singleton instance of the API error storage.
    *
    * Возвращает синглтон-экземпляр хранилища ошибок API.
@@ -43,21 +59,5 @@ export class ApiError {
     method?: ApiMethodItem
   ): void {
     this.getStorage().add(item, url, method)
-  }
-
-  /**
-   * Creates an ApiErrorItem by matching the response against stored error criteria.
-   *
-   * Создает ApiErrorItem путем сопоставления ответа с сохраненными критериями ошибок.
-   * @param method HTTP method of the request / HTTP-метод запроса
-   * @param response raw Fetch response / сырой ответ Fetch
-   * @returns structured error item / структурированный элемент ошибки
-   */
-  static async getItem(
-    method: ApiMethodItem,
-    response: Response
-  ): Promise<ApiErrorItem> {
-    const error = await this.getStorage().find(method, response)
-    return new ApiErrorItem(method, response, error)
   }
 }

@@ -9,10 +9,10 @@ Returns the current date in the specified format. The function is a wrapper arou
 > **Warning (SSR):** Using this function for rendering in SSR may lead to hydration mismatches because the time or time zone on the server may differ from the time on the client. It is recommended to use this function inside client-side hooks only (e.g., `onMounted` in Vue or `useEffect` in React).
 
 **Parameters:**
-- `format: GeoDate` — type of date format for output (default `'datetime'`). Supports values: `'date'`, `'time'`, `'datetime'`, `'full'`, and others.
+- `format?: GeoDate` — type of date format for output (default `'datetime'`). Supports values: `'date'`, `'time'`, `'datetime'`, `'full'`, and others.
 
 **Returns:**
-Current date as a string.
+`string` — Current date in the specified format.
 
 ```typescript
 import { getCurrentDate } from '@dxtmisha/functional-basic'

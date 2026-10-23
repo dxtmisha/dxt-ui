@@ -10,7 +10,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `event: KeyboardEvent` — Событие клавиатуры (возникающее при `keydown`, `keyup` или `keypress`).
 
 **Возвращает:**
-`string` — Название или код нажатой клавиши (например, `'Enter'`, `'Escape'`, `'A'`).
+`string | number | undefined` — Название или код нажатой клавиши (например, `'Enter'`, `'Escape'`, `'A'`), либо `undefined`, если значение недоступно.
 
 ```typescript
 import { getKey } from '@dxtmisha/functional-basic'

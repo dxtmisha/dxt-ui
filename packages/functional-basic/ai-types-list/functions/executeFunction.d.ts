@@ -1,3 +1,3 @@
-// md5:bc1b686c90cb5158141f2a43e0944bda true
-/** Executes callback with args if it is a function, otherwise returns value as is. @keywords execute, invoke, call, callback, function, resolve */
-export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>, ...args: any[]): T;
+// md5:bc1ac217e11da7d0ba59f5635c2e2fc2 true
+/** Executes a callback with arguments if callable, or returns the value as is. @keywords execute, invoke, call, callback, function or value */
+export declare function executeFunction<T, Args extends unknown[] = unknown[]>(callback: T | FunctionArgs<never, T> | ((...args: Args) => T), ...args: Args): T;

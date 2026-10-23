@@ -4,16 +4,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `replaceRecursive`
 
-Thực hiện hợp nhất sâu (đệ quy) một đối tượng hoặc mảng đích với dữ liệu từ một đối tượng/mảng thay thế. Nếu tham số `isMerge` được bật, các mảng sẽ được nối lại với nhau và loại bỏ các phần tử trùng lặp; nếu không, các mảng từ đối tượng thay thế sẽ ghi đè lên các mảng ban đầu.
+Thực hiện hợp nhất sâu (đệ quy) đối tượng đích với dữ liệu từ một đối tượng hoặc mảng thay thế. Khi bật tham số `isMerge` (mặc định là `true`), các mảng ở cùng khóa sẽ được nối lại và loại bỏ phần tử trùng lặp qua `uniqueArray`; ngược lại, mảng từ `replacement` sẽ ghi đè mảng ban đầu.
+
+Tích hợp sẵn cơ chế bảo vệ chống **Prototype Pollution** thông qua `isPrototypeKey`, tự động bỏ qua các khóa nguy hiểm (`__proto__`, `constructor`, `prototype`) trong quá trình duyệt.
 
 **Tham số:**
-- `target: ObjectItem<I>` — Đối tượng đích mà các phần tử sẽ được thay thế/hợp nhất.
+- `target: ObjectItem<I>` — Đối tượng đích mà các phần tử sẽ được thay thế hoặc hợp nhất.
 - `replacement?: ObjectOrArray<I>` — Đối tượng hoặc mảng chứa các phần tử được sử dụng để thay thế.
-- `isMerge: boolean = true` — Cờ để hợp nhất các mảng cùng tên (mặc định là `true`). Nếu là `false`, các mảng sẽ bị ghi đè hoàn toàn.
-
+- `isMerge?: boolean = true` — Cờ hợp nhất các mảng cùng tên (mặc định là `true`). Nếu là `false`, các mảng từ `replacement` sẽ ghi đè hoàn toàn.
 
 **Trả về:**
-`ObjectItem<I>` — Một đối tượng hoặc mảng mới là kết quả của việc hợp nhất. Đối tượng ban đầu không bị biến đổi (mutate).
+`ObjectItem<I>` — Một đối tượng mới là kết quả hợp nhất mà không làm biến đổi (mutate) `target`. Nếu `target` không phải là đối tượng, trả về bản sao của `replacement` (nếu là đối tượng) hoặc `{}`.
 
 ```typescript
 import { replaceRecursive } from '@dxtmisha/functional-basic'

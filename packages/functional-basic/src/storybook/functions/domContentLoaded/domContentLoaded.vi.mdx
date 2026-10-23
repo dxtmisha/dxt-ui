@@ -6,10 +6,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Thực thi một hàm callback khi sự kiện `DOMContentLoaded` được kích hoạt.
 
-Nếu DOM đã được tải xong (`document.readyState` là `'interactive'` hoặc `'complete'`) hoặc khi thực thi trong môi trường không có DOM (như SSR), hàm callback sẽ được thực thi ngay lập tức.
+Nếu DOM đã được tải xong (`document.readyState` là `'interactive'` hoặc `'complete'`) hoặc khi thực thi trong môi trường không có DOM (như SSR khi `isServer` là `true`), hàm callback sẽ được thực thi ngay lập tức. Cũng có thể được gọi mà không cần đối số để đơn giản chờ DOM sẵn sàng.
 
 **Tham số:**
-- `callback: () => T | Promise<T>` — Hàm callback được thực thi khi DOM được tải xong.
+- `callback?: () => T | Promise<T>` — Hàm callback tùy chọn được thực thi khi DOM được tải xong.
+- `isServer: boolean = true` — Có thực thi hàm callback trong môi trường không có DOM/SSR hay không (mặc định là `true`).
 
 **Trả về:**
 `Promise<T>` — Một promise giải quyết với kết quả trả về của hàm callback.
@@ -28,4 +29,7 @@ const data = await domContentLoaded(async () => {
   const element = document.querySelector('#content')
   return element?.textContent
 })
+
+// 3. Chờ DOM sẵn sàng mà không cần callback
+await domContentLoaded()
 ```

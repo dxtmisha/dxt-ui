@@ -12,7 +12,7 @@ Cuộc điều kiểm này tuân lệnh vận hành dưới phép kiểm tra chu
 - `callback: T` — Biến cần được định chuẩn.
 
 **Trả về:**
-`boolean` — Hồi báo kết quả `true` chỉ khi thông số truyền đúng thật là định dạng một hàm. Đóng luôn vai trò rào chắn kiểu bảo hộ TypeScript nhằm rẽ gọn biến xuống riêng diện mạo `FunctionArgs<any, any>`.
+`boolean` (`callback is Extract<T, FunctionAnyType>`) — Hồi báo kết quả `true` chỉ khi thông số truyền đúng thật là định dạng một hàm, ngược lại trả về `false`. Đóng luôn vai trò rào chắn kiểu bảo hộ TypeScript nhằm rẽ gọn biến xuống riêng diện mạo `Extract<T, FunctionAnyType>`.
 
 ```typescript
 import { isFunction } from '@dxtmisha/functional-basic'

@@ -8,7 +8,7 @@ import { CacheItem } from './CacheItem'
  */
 export class Cache {
   /** Map of cached items / Карта кэшированных элементов */
-  private cache: Record<string, CacheItem<any>> = {}
+  private cache: Record<string, CacheItem<unknown>> = {}
 
   /**
    * Returns a cached value for the given name. If not cached, executes the callback and stores the result.
@@ -22,7 +22,7 @@ export class Cache {
   get<T>(
     name: string,
     callback: () => T,
-    comparison?: any[]
+    comparison?: unknown[]
   ): T {
     return this.getCacheItem(name, callback).getCache(comparison ?? [])
   }
@@ -39,7 +39,7 @@ export class Cache {
   async getAsync<T>(
     name: string,
     callback: () => T,
-    comparison?: any[]
+    comparison?: unknown[]
   ): Promise<T> {
     return await this.getCacheItem(name, callback).getCacheAsync(comparison ?? [])
   }
@@ -57,7 +57,7 @@ export class Cache {
     callback: () => T
   ): CacheItem<T> {
     if (!(name in this.cache)) {
-      this.cache[name] = new CacheItem(callback)
+      this.cache[name] = new CacheItem(callback) as CacheItem<unknown>
     }
 
     return this.cache[name] as CacheItem<T>

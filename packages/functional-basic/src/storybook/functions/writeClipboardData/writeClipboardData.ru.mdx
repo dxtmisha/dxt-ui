@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `writeClipboardData`
 
-Записывает текстовую строку в буфер обмена пользователя. Использует современный `navigator.clipboard API`, а при его недоступности переключается на `document.execCommand`.
+Записывает текстовую строку в буфер обмена пользователя в DOM-окружении. Использует современный API `navigator.clipboard.writeText(text)`, а в случае ошибки переключается на резервный метод со скрытым временным элементом `<textarea>` и `document.execCommand('copy')`, передавая ошибку в `ErrorCenter` (группа `'clipboard'`).
 
 **Параметры:**
 - `text: string` — Текст для записи.

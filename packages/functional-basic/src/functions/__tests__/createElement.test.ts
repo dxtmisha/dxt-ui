@@ -2,132 +2,220 @@
  * @vitest-environment jsdom
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import * as domRuntime from '../isDomRuntime'
 import { createElement } from '../createElement'
 
 describe('createElement', () => {
   let parentElement: HTMLElement
 
   beforeEach(() => {
-    // Basic DOM setup for testing
     parentElement = document.createElement('div')
     document.body.appendChild(parentElement)
   })
 
   afterEach(() => {
-    document.body.removeChild(parentElement)
+    if (parentElement.parentNode) {
+      parentElement.parentNode.removeChild(parentElement)
+    }
+    vi.restoreAllMocks()
   })
 
-  it('should create an element with the correct tag name', () => {
-    const el = createElement(parentElement, 'span')
+  describe('Standard functional requirements (Happy path)', () => {
+    it('should create a div element by default when tagName is omitted', () => {
+      const element = createElement(parentElement)
 
-    expect(el).toBeInstanceOf(HTMLSpanElement)
-    expect(el?.tagName.toLowerCase()).toBe('span')
-  })
-
-  it('should create a div element by default', () => {
-    const el = createElement(parentElement)
-
-    expect(el).toBeInstanceOf(HTMLDivElement)
-    expect(el?.tagName.toLowerCase()).toBe('div')
-  })
-
-  it('should apply properties from the options object', () => {
-    const el = createElement(parentElement, 'div', {
-      id: 'test-id',
-      className: 'test-class',
-      title: 'test title'
+      expect(element).toBeInstanceOf(HTMLDivElement)
+      expect(element?.tagName.toLowerCase()).toBe('div')
+      expect(parentElement.lastElementChild).toBe(element)
     })
 
-    expect(el?.id).toBe('test-id')
-    expect(el?.className).toBe('test-class')
-    expect(el?.title).toBe('test title')
-  })
+    it('should create an element with the specified HTML tag name', () => {
+      const spanElement = createElement<HTMLSpanElement>(parentElement, 'span')
+      const buttonElement = createElement<HTMLButtonElement>(parentElement, 'button')
+      const sectionElement = createElement<HTMLElement>(parentElement, 'section')
 
-  it('should handle boolean aria-* and numeric attributes via options object', () => {
-    const element = createElement(parentElement, 'div', {
-      'aria-hidden': true,
-      'aria-expanded': false,
-      'data-count': 0
+      expect(spanElement).toBeInstanceOf(HTMLSpanElement)
+      expect(spanElement?.tagName.toLowerCase()).toBe('span')
+
+      expect(buttonElement).toBeInstanceOf(HTMLButtonElement)
+      expect(buttonElement?.tagName.toLowerCase()).toBe('button')
+
+      expect(sectionElement).toBeInstanceOf(HTMLElement)
+      expect(sectionElement?.tagName.toLowerCase()).toBe('section')
     })
 
-    expect(element?.getAttribute('aria-hidden')).toBe('true')
-    expect(element?.getAttribute('aria-expanded')).toBe('false')
-    expect(element?.getAttribute('data-count')).toBe('0')
-  })
+    it('should create an element without appending when parentElement is undefined', () => {
+      const element = createElement<HTMLSpanElement>(undefined, 'span')
 
-  it('should invoke the options function for custom processing', () => {
-    const mockOptionsFn = vi.fn((el: HTMLElement) => {
-      el.id = 'processed-id'
+      expect(element).toBeInstanceOf(HTMLSpanElement)
+      expect(element?.tagName.toLowerCase()).toBe('span')
+      expect(element?.parentElement).toBeNull()
+      expect(parentElement.children).toHaveLength(0)
     })
 
-    const el = createElement<HTMLDivElement>(parentElement, 'div', mockOptionsFn)
+    it('should create a default div element when called with no arguments', () => {
+      const element = createElement()
 
-    expect(mockOptionsFn).toHaveBeenCalledWith(el)
-    expect(el?.id).toBe('processed-id')
-  })
-
-  it('should append the element directly to the parent by default', () => {
-    const el = createElement(parentElement, 'p')
-
-    expect(parentElement.lastElementChild).toBe(el)
-  })
-
-  it('should insert the element before the reference element', () => {
-    const refElement = document.createElement('div')
-    parentElement.appendChild(refElement)
-
-    const el = createElement(parentElement, 'span', undefined, refElement)
-
-    expect(parentElement.firstElementChild).toBe(el)
-    expect(parentElement.lastElementChild).toBe(refElement)
-    expect(el?.nextElementSibling).toBe(refElement)
-  })
-
-  it('should work correctly with no parentElement', () => {
-    const el = createElement(undefined, 'span')
-
-    expect(el).toBeInstanceOf(HTMLSpanElement)
-    expect(el?.tagName.toLowerCase()).toBe('span')
-  })
-
-  it('should work correctly with no options', () => {
-    const el = createElement(parentElement, 'div')
-
-    expect(el).toBeInstanceOf(HTMLDivElement)
-    expect(el?.id).toBe('')
-    expect(el?.className).toBe('')
-    expect(el?.innerHTML).toBe('')
-  })
-
-  it('should handle function options with no parentElement', () => {
-    const mockOptionsFn = vi.fn((element: HTMLElement) => {
-      element.id = 'no-parent-id'
+      expect(element).toBeInstanceOf(HTMLDivElement)
+      expect(element?.tagName.toLowerCase()).toBe('div')
+      expect(element?.parentElement).toBeNull()
     })
 
-    const element = createElement<HTMLDivElement>(undefined, 'div', mockOptionsFn)
+    it('should support appending to a DocumentFragment container', () => {
+      const fragment = document.createDocumentFragment()
+      const element = createElement(fragment, 'div', { id: 'fragment-child' })
 
-    expect(mockOptionsFn).toHaveBeenCalledWith(element)
-    expect(element?.id).toBe('no-parent-id')
+      expect(element).toBeInstanceOf(HTMLDivElement)
+      expect(fragment.contains(element!)).toBe(true)
+
+      parentElement.appendChild(fragment)
+      expect(parentElement.querySelector('#fragment-child')).toBe(element)
+    })
   })
 
-  it('should support appending to a DocumentFragment container', () => {
-    const fragment = document.createDocumentFragment()
-    const element = createElement(fragment, 'div', { id: 'fragment-child' })
+  describe('Options configuration (Object & Function)', () => {
+    it('should apply standard DOM properties from the options object', () => {
+      const element = createElement(parentElement, 'div', {
+        id: 'test-id',
+        className: 'test-class',
+        title: 'test title',
+        textContent: 'Hello Content'
+      })
 
-    expect(element).toBeInstanceOf(HTMLDivElement)
-    expect(fragment.contains(element!)).toBe(true)
+      expect(element?.id).toBe('test-id')
+      expect(element?.className).toBe('test-class')
+      expect(element?.title).toBe('test title')
+      expect(element?.textContent).toBe('Hello Content')
+    })
 
-    parentElement.appendChild(fragment)
-    expect(parentElement.querySelector('#fragment-child')).toBe(element)
+    it('should handle boolean aria-* and numeric data-* attributes including falsy 0 and false', () => {
+      const element = createElement(parentElement, 'div', {
+        'aria-hidden': true,
+        'aria-expanded': false,
+        'data-count': 0,
+        'data-label': ''
+      })
+
+      expect(element?.getAttribute('aria-hidden')).toBe('true')
+      expect(element?.getAttribute('aria-expanded')).toBe('false')
+      expect(element?.getAttribute('data-count')).toBe('0')
+      expect(element?.getAttribute('data-label')).toBe('')
+    })
+
+    it('should invoke the options callback function for custom element initialization', () => {
+      const optionsCallback = vi.fn((element: HTMLDivElement) => {
+        element.id = 'processed-id'
+        element.setAttribute('data-custom', 'configured')
+      })
+
+      const element = createElement<HTMLDivElement>(parentElement, 'div', optionsCallback)
+
+      expect(optionsCallback).toHaveBeenCalledTimes(1)
+      expect(optionsCallback).toHaveBeenCalledWith(element)
+      expect(element?.id).toBe('processed-id')
+      expect(element?.getAttribute('data-custom')).toBe('configured')
+    })
+
+    it('should invoke the options callback function when parentElement is undefined', () => {
+      const optionsCallback = vi.fn((element: HTMLDivElement) => {
+        element.id = 'no-parent-id'
+      })
+
+      const element = createElement<HTMLDivElement>(undefined, 'div', optionsCallback)
+
+      expect(optionsCallback).toHaveBeenCalledTimes(1)
+      expect(optionsCallback).toHaveBeenCalledWith(element)
+      expect(element?.id).toBe('no-parent-id')
+    })
+
+    it('should safely ignore undefined, null, or array passed as options', () => {
+      const elementUndefined = createElement(parentElement, 'div', undefined)
+      expect(elementUndefined?.id).toBe('')
+      expect(elementUndefined?.className).toBe('')
+      expect(elementUndefined?.innerHTML).toBe('')
+
+      const elementNull = createElement(parentElement, 'div', null as unknown as Record<string, unknown>)
+      expect(elementNull).toBeInstanceOf(HTMLDivElement)
+      expect(elementNull?.attributes).toHaveLength(0)
+
+      const elementArray = createElement(parentElement, 'div', ['invalid'] as unknown as Record<string, unknown>)
+      expect(elementArray).toBeInstanceOf(HTMLDivElement)
+      expect(elementArray?.attributes).toHaveLength(0)
+    })
   })
 
-  it('should insert before a comment anchor node', () => {
-    const commentAnchor = document.createComment('template-anchor')
-    parentElement.appendChild(commentAnchor)
+  describe('Reference node insertion (referenceElement)', () => {
+    it('should append the element at the end of parentElement when referenceElement is omitted or null', () => {
+      const firstChild = createElement(parentElement, 'span', { id: 'first' })
+      const secondChild = createElement(parentElement, 'p', { id: 'second' }, undefined)
+      const thirdChild = createElement(parentElement, 'a', { id: 'third' }, null)
 
-    const element = createElement(parentElement, 'span', undefined, commentAnchor)
+      expect(parentElement.children[0]).toBe(firstChild)
+      expect(parentElement.children[1]).toBe(secondChild)
+      expect(parentElement.children[2]).toBe(thirdChild)
+    })
 
-    expect(parentElement.firstChild).toBe(element)
-    expect(element?.nextSibling).toBe(commentAnchor)
+    it('should insert the new element directly before the specified referenceElement', () => {
+      const referenceNode = document.createElement('div')
+      referenceNode.id = 'reference-node'
+      parentElement.appendChild(referenceNode)
+
+      const insertedElement = createElement(parentElement, 'span', { id: 'inserted-before' }, referenceNode)
+
+      expect(parentElement.firstElementChild).toBe(insertedElement)
+      expect(parentElement.lastElementChild).toBe(referenceNode)
+      expect(insertedElement?.nextElementSibling).toBe(referenceNode)
+    })
+
+    it('should insert before a comment anchor node', () => {
+      const commentAnchor = document.createComment('template-anchor')
+      parentElement.appendChild(commentAnchor)
+
+      const element = createElement(parentElement, 'span', undefined, commentAnchor)
+
+      expect(parentElement.firstChild).toBe(element)
+      expect(element?.nextSibling).toBe(commentAnchor)
+    })
+  })
+
+  describe('Multilingual and Unicode support', () => {
+    it('should accurately apply Cyrillic, Vietnamese, CJK, and Emoji content and attributes', () => {
+      const element = createElement(parentElement, 'div', {
+        'title': 'Привет Мир & Học tiếng Việt',
+        'textContent': '你好世界 🚀 🔥 ✨',
+        'data-locale': 'Tiếng Việt / Русский'
+      })
+
+      expect(element?.title).toBe('Привет Мир & Học tiếng Việt')
+      expect(element?.textContent).toBe('你好世界 🚀 🔥 ✨')
+      expect(element?.getAttribute('data-locale')).toBe('Tiếng Việt / Русский')
+    })
+  })
+
+  describe('SSR and non-DOM environment safety', () => {
+    it('should return undefined and not call document.createElement when isDomRuntime() is false', () => {
+      vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(false)
+      const createElementSpy = vi.spyOn(document, 'createElement')
+      const optionsCallback = vi.fn()
+
+      const result = createElement(parentElement, 'div', optionsCallback)
+
+      expect(result).toBeUndefined()
+      expect(createElementSpy).not.toHaveBeenCalled()
+      expect(optionsCallback).not.toHaveBeenCalled()
+      expect(parentElement.children).toHaveLength(0)
+    })
+  })
+
+  describe('Statefulness, isolation, and DOM integrity', () => {
+    it('should create independent DOM nodes across sequential calls', () => {
+      const firstElement = createElement(parentElement, 'div', { id: 'item-1' })
+      const secondElement = createElement(parentElement, 'div', { id: 'item-2' })
+
+      expect(firstElement).not.toBe(secondElement)
+      expect(firstElement?.id).toBe('item-1')
+      expect(secondElement?.id).toBe('item-2')
+      expect(parentElement.children).toHaveLength(2)
+    })
   })
 })

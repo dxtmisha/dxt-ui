@@ -8,11 +8,11 @@ Tiện ích để thay thế các thẻ đánh dấu trong văn bản bằng cá
 
 **Tham số:**
 - `text: string` — Văn bản gốc có mẫu.
-- `replacement: Record<string, string | number | boolean> | string[]` — Đối tượng hoặc mảng có các giá trị.
+- `replacement: Record<string, unknown> | readonly unknown[] = {}` — Đối tượng hoặc mảng chứa các cặp khóa-giá trị hoặc phần tử để thay thế.
 
 **Định dạng thay thế (replacement)**
-- **Mảng**: Được sử dụng cho các thẻ vị trí như `%d`, `%e`, `%f`, v.v. (theo thứ tự bảng chữ cái).
-- **Đối tượng**: Được sử dụng cho các thẻ có tên trong ngoặc `[key]` hoặc `{key}`, cũng như các thẻ cặp `[tag]nội dung[/tag]`.
+- **Mảng**: Được sử dụng cho các thẻ vị trí từ `%d` đến `%v` (theo thứ tự bảng chữ cái).
+- **Đối tượng**: Được sử dụng cho các thẻ có tên trong ngoặc `[key]` hoặc `{key}`, cũng như các thẻ cặp `[tag]nội dung[/tag]` hoặc `{tag}nội dung{/tag}` (sử dụng `[content]` hoặc `{content}` bên trong chuỗi thay thế).
 
 **Trả về:**
 `string` — Văn bản với các giá trị đã được thay thế.
@@ -31,7 +31,7 @@ applyTemplate('Xin chào, %d %e!', ['John', 'Doe']) // 'Xin chào, John Doe!'
 applyTemplate('Giá: [price] {currency}', { price: 100, currency: 'USD' }) // 'Giá: 100 USD'
 
 // 3. Xử lý 0 và false
-applyTemplate('Giá trị: [val]', { val: 0 })      // // 'Giá trị: 0'
+applyTemplate('Giá trị: [val]', { val: 0 })      // 'Giá trị: 0'
 applyTemplate('Trạng thái: [val]', { val: false }) // 'Trạng thái: false'
 
 // 4. Bỏ qua các khóa bị thiếu

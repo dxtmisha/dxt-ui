@@ -1,3 +1,3 @@
-// md5:d954a1f963584d22cc58fc403b005ea4 true
-/** Checks if an API response is successful. @keywords api, response, success, check, validate */
-export declare const isApiSuccess: <T>(data: ApiData<T>) => boolean;
+// md5:bd4a7ae29c85fa6b2806c367529f6c2b true
+/** Checks if the API response indicates success. @keywords api, response, success, status, check */
+export declare function isApiSuccess<T>(data?: ApiData<T>): boolean;

@@ -312,6 +312,14 @@ describe('resizeImageByMax', () => {
       resizeImageByMax(mockImage, 1000, 'auto')
 
       expect(activeMockCanvas.getHeight()).toBeGreaterThanOrEqual(1)
+
+      activeMockCanvas = createMockCanvas()
+      Object.defineProperty(mockImage, 'naturalWidth', { value: 2, configurable: true })
+      Object.defineProperty(mockImage, 'naturalHeight', { value: 10000, configurable: true })
+
+      resizeImageByMax(mockImage, 1000, 'auto')
+
+      expect(activeMockCanvas.getWidth()).toBeGreaterThanOrEqual(1)
     })
 
     it('should configure imageSmoothingEnabled and imageSmoothingQuality high', () => {
@@ -323,12 +331,18 @@ describe('resizeImageByMax', () => {
       expect(activeMockCanvas.context.imageSmoothingQuality).toBe('high')
     })
 
-    it('should pass quality parameter to toDataURL when specified', () => {
+    it('should pass quality parameter to toDataURL when specified including 0 and 1', () => {
       activeMockCanvas = createMockCanvas()
-
       resizeImageByMax(mockImage, 500, 'auto', 'image/jpeg', 0.85)
-
       expect(activeMockCanvas.toDataURLSpy).toHaveBeenCalledWith('image/jpeg', 0.85)
+
+      activeMockCanvas = createMockCanvas()
+      resizeImageByMax(mockImage, 500, 'auto', 'image/jpeg', 0)
+      expect(activeMockCanvas.toDataURLSpy).toHaveBeenCalledWith('image/jpeg', 0)
+
+      activeMockCanvas = createMockCanvas()
+      resizeImageByMax(mockImage, 500, 'auto', 'image/webp', 1)
+      expect(activeMockCanvas.toDataURLSpy).toHaveBeenCalledWith('image/webp', 1)
     })
   })
 })

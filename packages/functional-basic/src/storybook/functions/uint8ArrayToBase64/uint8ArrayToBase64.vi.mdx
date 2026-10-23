@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `uint8ArrayToBase64`
 
-Chuyển đổi một mảng dữ liệu nhị phân `Uint8Array` thành một chuỗi được mã hóa Base64. Hỗ trợ cả môi trường trình duyệt (thông qua `btoa`) và môi trường Node.js (thông qua `Buffer`).
+Chuyển đổi một mảng dữ liệu nhị phân `Uint8Array` thành một chuỗi được mã hóa Base64. Hỗ trợ môi trường Node.js (thông qua `Buffer`), ECMAScript hiện đại (`Uint8Array.prototype.toBase64`), và trình duyệt/worker (thông qua `btoa` theo từng khối). Trả về chuỗi rỗng (`''`) nếu `bytes` là `null`, `undefined` hoặc rỗng.
 
 **Tham số:**
-- `bytes: Uint8Array` — Dữ liệu nhị phân.
+- `bytes?: Uint8Array | null` — Dữ liệu nhị phân dưới dạng `Uint8Array`.
 
 **Trả về:**
 `string` — Chuỗi định dạng Base64.

@@ -141,6 +141,13 @@ describe('getSearchExp', () => {
       expect(getSearchExp('\t\n\r').test('anything')).toBe(true)
     })
 
+    it('should allow a search string exactly at the default limit (128)', () => {
+      const exactQuery = 'a'.repeat(128)
+      const regex = getSearchExp(exactQuery)
+      expect(regex.source).toBe(`^(?=.*?${exactQuery})`)
+      expect(regex.test(exactQuery)).toBe(true)
+    })
+
     it('should return /^/ when search string exceeds the limit', () => {
       const longQuery = 'a'.repeat(129)
       const regex = getSearchExp(longQuery)
@@ -148,15 +155,19 @@ describe('getSearchExp', () => {
       expect(regex.test('anything')).toBe(true)
     })
 
-    it('should respect custom limit parameter', () => {
+    it('should respect custom limit parameter including zero and negative limits', () => {
       const query = 'abcdef'
       expect(getSearchExp(query, 5).source).toBe('^')
       expect(getSearchExp(query, 6).source).toBe('^(?=.*?abcdef)')
+      expect(getSearchExp(query, 0).source).toBe('^')
+      expect(getSearchExp(query, -1).source).toBe('^')
     })
 
     it('should safely return /^/ for non-string inputs', () => {
       expect(getSearchExp(null as unknown as string).test('anything')).toBe(true)
       expect(getSearchExp(undefined as unknown as string).test('anything')).toBe(true)
+      expect(getSearchExp(0 as unknown as string).test('anything')).toBe(true)
+      expect(getSearchExp(false as unknown as string).test('anything')).toBe(true)
       expect(getSearchExp(123 as unknown as string).test('anything')).toBe(true)
       expect(getSearchExp({} as unknown as string).test('anything')).toBe(true)
     })
@@ -167,7 +178,7 @@ describe('getSearchExp', () => {
       const regex = getSearchExp('test word')
       const target = 'This is a test word string'
 
-      for (let i = 0; i < 10; i++) {
+      for (let index = 0; index < 10; index++) {
         expect(regex.test(target)).toBe(true)
       }
     })

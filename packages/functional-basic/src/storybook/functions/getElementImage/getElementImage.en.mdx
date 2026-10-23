@@ -8,8 +8,8 @@ Used to safely retrieve an `HTMLImageElement` node. If a string (an image URL) i
 
 **Parameters:**
 - `image?: HTMLImageElement | string` — An image element or a string source (URL / Base64 / Blob URL).
-- `onload?: (image: HTMLImageElement, event?: Event | string) => void` — Optional callback invoked on successful image loading.
-- `onerror?: (image: HTMLImageElement, event?: Event | string) => void` — Optional callback invoked on image load error.
+- `onload?: GetElementImageCallback` (`(image: HTMLImageElement, event?: Event | string) => void`) — Optional callback invoked on successful image loading.
+- `onerror?: GetElementImageCallback` (`(image: HTMLImageElement, event?: Event | string) => void`) — Optional callback invoked on image load error.
 
 **Returns:**
 `HTMLImageElement | undefined` — A ready-to-use `<img>` tag, or `undefined` if the environment does not allow its creation (e.g., SSR) or if `image` was omitted.

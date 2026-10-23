@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElement`
 
-Returns an `Element` (HTML node) from the document. The utility accepts a CSS selector string, a `Window` object, or an existing `Element`, and returns the corresponding DOM node if executed in a browser environment. In non-DOM environments (e.g., SSR), it returns `undefined`.
+Returns an `Element` (HTML node) from the document. The utility accepts a CSS selector string, a `Window` object, or an existing `Element`, and returns the corresponding DOM node if executed in a browser environment. In non-DOM environments (e.g., SSR), it returns `undefined` for selector strings or returns the provided element reference as-is.
 
 **Parameters:**
 - `element?: ElementOrString<E>` — A CSS selector (e.g., `'.btn'`), the `Window` object, or an existing `Element` node.

@@ -14,7 +14,7 @@ export function frame(
   next?: (timestamp: DOMHighResTimeStamp) => boolean,
   end?: () => void
 ): void {
-  const init = (timestamp: DOMHighResTimeStamp) => {
+  const init = (timestamp: DOMHighResTimeStamp): void => {
     callback(timestamp)
 
     if (

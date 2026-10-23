@@ -9,7 +9,7 @@ import type { ApiErrorItem } from './ApiErrorItem'
 import type { ApiData, ApiFetch, ApiPreparationEnd } from '../types/apiTypes'
 
 /**
- * A list of additional keys to be extracted from the API response and added to the final data object/
+ * A list of additional keys to be extracted from the API response and added to the final data object /
  * Перечень дополнительных ключей, которые будут извлечены из ответа API и добавлены в итоговый объект данных
  */
 const API_DATA_RETURN_KEY_ADD: string[] = [
@@ -25,15 +25,15 @@ const API_DATA_RETURN_KEY_ADD: string[] = [
  *
  * Класс для обработки и подготовки данных, полученных в результате запроса к API.
  */
-export class ApiDataReturn<T = any> {
+export class ApiDataReturn<T = unknown> {
   /**
-   * Raw data received from the API/
+   * Raw data received from the API /
    * Исходные данные, полученные от API
    */
   protected data?: ApiData<T>
 
   /**
-   * Processed data ready for use/
+   * Processed data ready for use /
    * Обработанные данные, готовые к использованию
    */
   protected dataMod?: ApiData<T>
@@ -56,19 +56,10 @@ export class ApiDataReturn<T = any> {
   }
 
   /**
-   * Initializes the class by reading data from the response.
-   *
-   * Инициализирует класс, считывая данные из ответа.
-   */
-  async init(): Promise<this> {
-    this.data = await this.readData()
-    return this
-  }
-
-  /**
    * Returns processed data.
    *
    * Возвращает обработанные данные.
+   * @returns processed API data / обработанные данные API
    */
   get(): ApiData<T> {
     if (!this.dataMod) {
@@ -83,6 +74,7 @@ export class ApiDataReturn<T = any> {
    *
    * Возвращает обработанные данные вместе с объектом статуса.
    * @param status API status instance / экземпляр статуса API
+   * @returns processed API data with status / обработанные данные API со статусом
    */
   getAndStatus(
     status: ApiStatus
@@ -107,43 +99,28 @@ export class ApiDataReturn<T = any> {
    * Returns raw data received from the API.
    *
    * Возвращает исходные данные, полученные от API.
+   * @returns raw API data or undefined / исходные данные API или undefined
    */
   getData(): ApiData<T> | undefined {
     return this.data
   }
 
   /**
-   * Reads and parses data from the response.
+   * Initializes the class by reading data from the response.
    *
-   * Считывает и анализирует данные из ответа.
+   * Инициализирует класс, считывая данные из ответа.
+   * @returns this instance / текущий экземпляр
    */
-  protected async readData<T>(): Promise<ApiData<T>> {
-    const { queryReturn } = this.apiFetch
-    const query = this.query
-
-    if (queryReturn) {
-      return await queryReturn(query)
-    }
-
-    if ('data' in this.end) {
-      return this.end.data
-    }
-
-    const headers = query.headers.get('Content-Type') ?? ''
-
-    if (headers.includes('application/json')) {
-      return await query.json()
-    }
-
-    return {
-      data: await query.text()
-    } as ApiData<T>
+  async init(): Promise<this> {
+    this.data = await this.readData()
+    return this
   }
 
   /**
    * Prepares and formats the raw data.
    *
    * Подготавливает и форматирует исходные данные.
+   * @returns prepared API data / подготовленные данные API
    */
   protected initData(): ApiData<T> {
     const { toData = true } = this.apiFetch
@@ -173,7 +150,7 @@ export class ApiDataReturn<T = any> {
       return data.data as ApiData<T>
     }
 
-    return this.initItem(data)
+    return this.initItem(data as Record<string, unknown>)
   }
 
   /**
@@ -184,28 +161,62 @@ export class ApiDataReturn<T = any> {
    * @returns initialized data with metadata / инициализированные данные с метаданными
    */
   protected initItem(
-    data: Record<string, any>
+    data: Record<string, unknown>
   ): ApiData<T> {
-    const item: ApiData<T & Record<string, any>>
-      = { ...data.data } as ApiData<T & Record<string, any>>
+    const item: ApiData<T & Record<string, unknown>>
+      = { ...(data.data as Record<string, unknown>) } as ApiData<T & Record<string, unknown>>
 
     API_DATA_RETURN_KEY_ADD.forEach((key) => {
       if (
         key in data
         && !(key in item)
       ) {
-        item[key] = data[key]
+        ;(item as Record<string, unknown>)[key] = data[key]
 
         if (
           key === 'error'
           && isObjectNotArray(data[key])
         ) {
-          item.code = data[key]?.code ?? data.code
-          item.message = data[key]?.message ?? data.message
+          const error = data[key] as Record<string, unknown>
+          item.code = (error?.code ?? data.code) as string | number | undefined
+          item.message = (error?.message ?? data.message) as string | undefined
         }
       }
     })
 
     return item
+  }
+
+  /**
+   * Reads and parses data from the response.
+   *
+   * Считывает и анализирует данные из ответа.
+   * @returns parsed API data / обработанные данные API
+   */
+  protected async readData<T>(): Promise<ApiData<T>> {
+    const { queryReturn } = this.apiFetch
+    const query = this.query
+
+    if (queryReturn) {
+      return await queryReturn(query)
+    }
+
+    if ('data' in this.end) {
+      return this.end.data
+    }
+
+    const headers = query.headers.get('Content-Type') ?? ''
+
+    if (headers.includes('application/json')) {
+      try {
+        return await query.json()
+      } catch {
+        return {} as ApiData<T>
+      }
+    }
+
+    return {
+      data: await query.text()
+    } as ApiData<T>
   }
 }

@@ -10,14 +10,12 @@ describe('MetaTwitter', () => {
   let metaTwitter: MetaTwitter
 
   beforeEach(() => {
-    // Clear DOM before each test
     document.head.innerHTML = ''
 
     metaTwitter = new MetaTwitter()
   })
 
   afterEach(() => {
-    // Clear after tests
     document.head.innerHTML = ''
   })
 
@@ -39,21 +37,18 @@ describe('MetaTwitter', () => {
     })
 
     it('should read existing Twitter tags from DOM on initialization', () => {
-      // Create Twitter tags in DOM
       const titleMeta = document.createElement('meta')
       titleMeta.setAttribute('name', 'twitter:title')
       titleMeta.setAttribute('content', 'Existing Twitter Title')
       document.head.appendChild(titleMeta)
 
-      const descMeta = document.createElement('meta')
-      descMeta.setAttribute('name', 'twitter:description')
-      descMeta.setAttribute('content', 'Existing Twitter Description')
-      document.head.appendChild(descMeta)
+      const descriptionMeta = document.createElement('meta')
+      descriptionMeta.setAttribute('name', 'twitter:description')
+      descriptionMeta.setAttribute('content', 'Existing Twitter Description')
+      document.head.appendChild(descriptionMeta)
 
-      // Create new instance
       const newMetaTwitter = new MetaTwitter()
 
-      // Should read existing tags
       expect(newMetaTwitter.getTitle()).toBe('Existing Twitter Title')
       expect(newMetaTwitter.getDescription()).toBe('Existing Twitter Description')
     })
@@ -316,9 +311,9 @@ describe('MetaTwitter', () => {
     })
 
     it('should handle long descriptions', () => {
-      const longDesc = 'A'.repeat(200)
-      metaTwitter.setDescription(longDesc)
-      expect(metaTwitter.getDescription()).toBe(longDesc)
+      const longDescription = 'A'.repeat(200)
+      metaTwitter.setDescription(longDescription)
+      expect(metaTwitter.getDescription()).toBe(longDescription)
     })
 
     it('should return this for chaining', () => {
@@ -403,11 +398,11 @@ describe('MetaTwitter', () => {
       metaTwitter.setImage('https://example.com/image.jpg')
 
       const titleElement = document.querySelector('meta[name="twitter:title"]')
-      const descElement = document.querySelector('meta[name="twitter:description"]')
+      const descriptionElement = document.querySelector('meta[name="twitter:description"]')
       const imageElement = document.querySelector('meta[name="twitter:image"]')
 
       expect(titleElement?.parentElement).toBe(document.head)
-      expect(descElement?.parentElement).toBe(document.head)
+      expect(descriptionElement?.parentElement).toBe(document.head)
       expect(imageElement?.parentElement).toBe(document.head)
     })
 

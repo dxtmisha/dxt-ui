@@ -88,11 +88,11 @@ describe('getLength', () => {
     })
 
     it('should return 0 for functions instead of leaking function arity', () => {
-      const fn = (a: number, b: number, c: number) => a + b + c
-      expect(getLength(fn)).toBe(0)
+      const calculateSum = (a: number, b: number, c: number) => a + b + c
+      expect(getLength(calculateSum)).toBe(0)
 
-      const emptyFn = () => {}
-      expect(getLength(emptyFn)).toBe(0)
+      const emptyCallback = () => {}
+      expect(getLength(emptyCallback)).toBe(0)
     })
   })
 
@@ -110,12 +110,12 @@ describe('getLength', () => {
     })
 
     it('should ignore Symbol keys on objects according to Object.keys specification', () => {
-      const symKey = Symbol('sym')
-      const obj = {
-        [symKey]: 'hidden',
+      const symbolKey = Symbol('symbol')
+      const targetObject = {
+        [symbolKey]: 'hidden',
         visible: 'yes'
       }
-      expect(getLength(obj)).toBe(1)
+      expect(getLength(targetObject)).toBe(1)
     })
   })
 
@@ -155,15 +155,15 @@ describe('getLength', () => {
     })
 
     it('should not mutate the input array or object', () => {
-      const arr = [1, 2, 3]
-      const arrCopy = [...arr]
-      getLength(arr)
-      expect(arr).toEqual(arrCopy)
+      const array = [1, 2, 3]
+      const arrayCopy = [...array]
+      getLength(array)
+      expect(array).toEqual(arrayCopy)
 
-      const obj = { a: 1, b: 2 }
-      const objCopy = { ...obj }
-      getLength(obj)
-      expect(obj).toEqual(objCopy)
+      const targetObject = { a: 1, b: 2 }
+      const objectCopy = { ...targetObject }
+      getLength(targetObject)
+      expect(targetObject).toEqual(objectCopy)
     })
   })
 

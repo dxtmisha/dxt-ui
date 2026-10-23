@@ -1,6 +1,4 @@
 import { isDomRuntime } from '../functions/isDomRuntime'
-import { random } from '../functions/random'
-
 import { DataStorage } from './DataStorage'
 import { ErrorCenter } from './ErrorCenter'
 import type { ErrorCenterInstance } from './ErrorCenterInstance'
@@ -10,9 +8,33 @@ import type { ErrorCenterInstance } from './ErrorCenterInstance'
  *
  * Класс для работы с сообщениями BroadcastChannel.
  */
-export class BroadcastMessage<Message = any> {
+export class BroadcastMessage<Message = unknown> {
   /** BroadcastChannel instance / Экземпляр BroadcastChannel */
   protected channel?: BroadcastChannel
+
+  /**
+   * Updates state when a message is received.
+   *
+   * Обновляет состояние при получении сообщения.
+   * @param event message event object / объект события сообщения
+   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
+   */
+  protected readonly update = (event: MessageEvent<Message>): this => {
+    this.callback?.(event)
+    return this
+  }
+
+  /**
+   * Updates error state when a message error occurs.
+   *
+   * Обновляет состояние ошибки при возникновении ошибки сообщения.
+   * @param event message error event object / объект события ошибки сообщения
+   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
+   */
+  protected readonly updateError = (event: MessageEvent<Message>): this => {
+    this.callbackError?.(event)
+    return this
+  }
 
   /**
    * Constructor that initializes the broadcast channel with event handlers.
@@ -34,11 +56,11 @@ export class BroadcastMessage<Message = any> {
         this.channel = new BroadcastChannel(`${getBroadcastName()}__${name}`)
         this.channel.onmessage = this.update
         this.channel.onmessageerror = this.updateError
-      } catch (e) {
+      } catch (error) {
         errorCenter.on({
           group: 'broadcast',
           code: 'error',
-          details: e
+          details: error
         })
       }
     }
@@ -52,18 +74,6 @@ export class BroadcastMessage<Message = any> {
    */
   getChannel(): BroadcastChannel | undefined {
     return this.channel
-  }
-
-  /**
-   * Sends a message through the broadcast channel.
-   *
-   * Отправляет сообщение через канал вещания.
-   * @param message message data to send / данные сообщения для отправки
-   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
-   */
-  post(message: Message): this {
-    this.channel?.postMessage(message)
-    return this
   }
 
   /**
@@ -91,6 +101,18 @@ export class BroadcastMessage<Message = any> {
   }
 
   /**
+   * Sends a message through the broadcast channel.
+   *
+   * Отправляет сообщение через канал вещания.
+   * @param message message data to send / данные сообщения для отправки
+   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
+   */
+  post(message: Message): this {
+    this.channel?.postMessage(message)
+    return this
+  }
+
+  /**
    * Closes the broadcast channel and stops listening for messages.
    *
    * Закрывает канал вещания и прекращает прослушивание сообщений.
@@ -102,42 +124,38 @@ export class BroadcastMessage<Message = any> {
 
     return this
   }
-
-  /**
-   * Updates state when a message is received.
-   *
-   * Обновляет состояние при получении сообщения.
-   * @param event message event object / объект события сообщения
-   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
-   */
-  protected readonly update = (event: MessageEvent<Message>): this => {
-    this.callback?.(event)
-    return this
-  }
-
-  /**
-   * Updates error state when a message error occurs.
-   *
-   * Обновляет состояние ошибки при возникновении ошибки сообщения.
-   * @param event message error event object / объект события ошибки сообщения
-   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
-   */
-  protected readonly updateError = (event: MessageEvent<Message>): this => {
-    this.callbackError?.(event)
-    return this
-  }
 }
 
 /**
- * Generates a persistent random name for the broadcast channel.
+ * Calculates a numeric identifier based on the browser environment.
  *
- * Генерирует постоянное случайное имя для канала вещания.
- * BroadcastChannel requires unique channel names across the same origin.
- * This utility ensures each broadcast instance gets a unique channel name.
- *
- * BroadcastChannel требует уникальные имена каналов в рамках одного источника.
- * Эта утилита обеспечивает, что каждый экземпляр вещания получает уникальное имя канала.
- * @returns generated unique channel name / сгенерированное уникальное имя канала
+ * Вычисляет числовой идентификатор на основе окружения браузера.
+ * @returns numeric browser identifier / числовой идентификатор браузера
  */
-const getBroadcastName = () => new DataStorage('__ui:broadcast-name__')
-  .get(() => `name_${random(1_000_000, 9_999_999)}`)
+const getBrowserNumber = (): number => {
+  if (typeof navigator === 'undefined') {
+    return 1_000_000
+  }
+
+  const userAgent = navigator.userAgent || ''
+  let hash = 0
+
+  for (let index = 0; index < userAgent.length; index++) {
+    hash = ((hash << 5) - hash + userAgent.charCodeAt(index)) | 0
+  }
+
+  return Math.abs(hash)
+}
+
+/**
+ * Generates a persistent name for the broadcast channel based on the browser.
+ *
+ * Генерирует постоянное имя для канала вещания в зависимости от браузера.
+ * @returns generated channel name / сгенерированное имя канала
+ */
+const getBroadcastName = (): string => {
+  const defaultName = `name_${getBrowserNumber()}`
+
+  return new DataStorage<string>('__ui:broadcast-name__')
+    .get(() => defaultName) ?? defaultName
+}

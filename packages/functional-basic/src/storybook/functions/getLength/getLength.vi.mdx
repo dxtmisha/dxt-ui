@@ -7,10 +7,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Trả về độ dài hoặc kích thước của các kiểu dữ liệu khác nhau bao gồm Mảng, Đối tượng (Object), Map, Set và Chuỗi. Nếu giá trị là null, undefined hoặc kiểu không được hỗ trợ (như số hoặc boolean), hàm trả về `0`.
 
 **Tham số:**
-- `value: any` — Giá trị đầu vào cần đo độ dài/kích thước.
+- `value: unknown` — Giá trị đầu vào cần đo độ dài/kích thước.
 
 **Trả về:**
-- `number` — Độ dài hoặc kích thước của giá trị.
+`number` — Độ dài hoặc kích thước của giá trị.
 
 ```typescript
 import { getLength } from '@dxtmisha/functional-basic'

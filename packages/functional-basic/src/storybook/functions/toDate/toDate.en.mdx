@@ -7,10 +7,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Converts the input value (date, number, or string) into a `Date` object. Supports various string formats, including ISO-like strings without delimiters, as well as automatic timezone substitution.
 
 **Parameters:**
-- `value?: T` — The input value (a `Date` object, timestamp in milliseconds, or a date string).
+- `value?: T` — The input value (`T extends Date | number | string`: a `Date` object, timestamp in milliseconds, or a date string).
 
 **Returns:**
-`Date` — The resulting date object. If the value is not provided or is `null`, the current date is returned.
+`(T & Date) | Date` — The resulting date object. If the value is not provided or is `null`, the current date is returned.
 
 ```typescript
 import { toDate } from '@dxtmisha/functional-basic'

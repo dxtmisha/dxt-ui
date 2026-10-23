@@ -1,3 +1,3 @@
-// md5:33d12dd19986edde4fc887649dc8daa6 true
-/** Checks if a keyboard event has active modifier or meta keys pressed. @keywords keyboard, event, modifier, meta, ctrl, alt, shift, cmd */
-export declare const isMetaKey: (event: KeyboardEvent) => boolean;
+// md5:5cb6cd1420b888ffb6dec80f9c9cdfae true
+/** Checks if a keyboard event contains active modifier or meta keys. @keywords meta key, modifier, keyboard event, ctrl, alt, shift, cmd */
+export declare function isMetaKey(event: KeyboardEvent): boolean;

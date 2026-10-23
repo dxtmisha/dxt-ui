@@ -9,7 +9,7 @@ Một tiện ích giúp trích xuất giá trị an toàn từ một đối tư�
 **Lưu ý:** Hàm này hỗ trợ truyền vào một kiểu generic `R` (mặc định là `string`) cho giá trị trả về. Hàm hỗ trợ tìm kiếm phần tử của mảng bằng cách sử dụng các chỉ mục chuỗi số ở trong đường dẫn (ví dụ: `"list.0.name"`).
 
 **Tham số:**
-- `item: T` — Đối tượng hoặc mảng cần duyệt giá trị.
+- `item: T` — Đối tượng mục tiêu (`T extends Record<string, unknown>`) cần duyệt giá trị.
 - `path: string` — Đường dẫn để tìm thuộc tính phân tách bằng dấu chấm (`.` - ví dụ: `"user.address.city"` hoặc `"list.1.id"`).
 
 **Trả về:**

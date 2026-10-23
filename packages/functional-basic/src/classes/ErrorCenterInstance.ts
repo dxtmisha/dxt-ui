@@ -28,21 +28,6 @@ export class ErrorCenterInstance {
   }
 
   /**
-   * Checks if a cause with specific code exists.
-   *
-   * Проверяет наличие причины с конкретным кодом.
-   * @param code error code / код ошибки
-   * @param group error group / группа ошибки
-   * @returns true if cause exists / true, если причина существует
-   */
-  has(
-    code: string,
-    group?: string
-  ): boolean {
-    return Boolean(this.get(code, group))
-  }
-
-  /**
    * Gets a specific error cause by code and group.
    *
    * Получает конкретную причину ошибки по коду и группе.
@@ -60,6 +45,35 @@ export class ErrorCenterInstance {
   }
 
   /**
+   * Checks if a cause with specific code exists.
+   *
+   * Проверяет наличие причины с конкретным кодом.
+   * @param code error code / код ошибки
+   * @param group error group / группа ошибки
+   * @returns true if cause exists / true, если причина существует
+   */
+  has(
+    code: string,
+    group?: string
+  ): boolean {
+    return Boolean(this.get(code, group))
+  }
+
+  /**
+   * Sets console output flag or filter function for the handler.
+   *
+   * Устанавливает флаг или функцию фильтрации вывода в консоль для обработчика.
+   * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
+   * @returns this instance / текущий экземпляр
+   */
+  setIsConsole(
+    isConsole: ErrorCenterHandlerIsConsole
+  ): this {
+    this.handler.setIsConsole(isConsole)
+    return this
+  }
+
+  /**
    * Adds an error cause to the storage.
    *
    * Добавляет причину ошибки в хранилище.
@@ -72,14 +86,16 @@ export class ErrorCenterInstance {
   }
 
   /**
-   * Adds a list of error causes to the storage.
+   * Adds a callback to be executed on any error.
    *
-   * Добавляет список причин ошибок в хранилище.
-   * @param causes error causes list / список причин ошибок
+   * Добавляет обратный вызов, который будет выполняться при любой ошибке.
+   * @param callback callback function / функция обратного вызова
    * @returns this instance / текущий экземпляр
    */
-  addList(causes: ErrorCenterCauseList): this {
-    this.causes.unshift(...causes)
+  addCallback(
+    callback: ErrorCenterHandlerCallback
+  ): this {
+    this.handler.addCallback(callback)
     return this
   }
 
@@ -112,30 +128,14 @@ export class ErrorCenterInstance {
   }
 
   /**
-   * Adds a callback to be executed on any error.
+   * Adds a list of error causes to the storage.
    *
-   * Добавляет обратный вызов, который будет выполняться при любой ошибке.
-   * @param callback callback function / функция обратного вызова
+   * Добавляет список причин ошибок в хранилище.
+   * @param causes error causes list / список причин ошибок
    * @returns this instance / текущий экземпляр
    */
-  addCallback(
-    callback: ErrorCenterHandlerCallback
-  ): this {
-    this.handler.addCallback(callback)
-    return this
-  }
-
-  /**
-   * Sets console output flag or filter function for the handler.
-   *
-   * Устанавливает флаг или функцию фильтрации вывода в консоль для обработчика.
-   * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
-   * @returns this instance / текущий экземпляр
-   */
-  setIsConsole(
-    isConsole: ErrorCenterHandlerIsConsole
-  ): this {
-    this.handler.setIsConsole(isConsole)
+  addList(causes: ErrorCenterCauseList): this {
+    this.causes.unshift(...causes)
     return this
   }
 
@@ -158,7 +158,7 @@ export class ErrorCenterInstance {
    * @param cause input cause / входная причина
    * @returns merged error cause / объединенная причина ошибки
    */
-  protected assign(cause: ErrorCenterCauseItem) {
+  protected assign(cause: ErrorCenterCauseItem): ErrorCenterCauseItem {
     const causeMain = this.get(cause.code, cause.group)
 
     if (causeMain) {

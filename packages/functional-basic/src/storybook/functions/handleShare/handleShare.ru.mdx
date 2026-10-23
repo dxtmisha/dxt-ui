@@ -4,14 +4,14 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `handleShare`
 
-Вызывает встроенный механизм обмена данными мобильного устройства или операционной системы через Web Share API.
-Рекомендуется проверять поддержку с помощью `isShare` перед вызовом.
+Вызывает встроенный механизм обмена данными мобильного устройства или операционной системы через Web Share API (`navigator.share`).
+Внутри автоматически проверяет поддержку через `isShare()` и `navigator.canShare(data)` перед вызовом `navigator.share(data)`. При возникновении ошибки событие передается в `ErrorCenter` (`group: 'share'`, `code: 'error'`).
 
 **Параметры:**
-- `data: ShareData` — объект, содержащий данные для обмена (заголовок, текст, ссылка).
+- `data: ShareData` — Объект, содержащий данные для обмена (`title`, `text`, `url`, `files`).
 
 **Возвращает:**
-`Promise<boolean>` — `true`, если данные были успешно переданы, иначе `false`.
+`Promise<boolean>` — `true`, если данные были успешно переданы, иначе `false` (если API не поддерживается, данные невалидны или отправка отменена/завершилась ошибкой).
 
 ```typescript
 import { handleShare, isShare } from '@dxtmisha/functional-basic'

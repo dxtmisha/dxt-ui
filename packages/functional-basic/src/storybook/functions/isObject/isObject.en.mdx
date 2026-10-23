@@ -12,7 +12,7 @@ In pure JavaScript logic, `typeof null` fundamentally yields the notorious `'obj
 - `value: T` — Any inclusive subject evaluation target variable.
 
 **Returns:**
-`boolean` — Yields `true` solely if the entity demonstrates fundamental object classification (including collections like arrays). Defaults to generating `false` outputs across null bindings, isolated variables, primitives, and actionable functions. Acts simultaneously as a strict TypeGuard reducing typings to `Record<any, any>`.
+`boolean` (`value is Extract<T, ObjectItem>`) — Yields `true` solely if the entity demonstrates fundamental object classification (including collections like arrays). Defaults to generating `false` outputs across null bindings, isolated variables, primitives, and actionable functions. Acts simultaneously as a strict TypeGuard reducing typings to `Extract<T, ObjectItem>`.
 
 ```typescript
 import { isObject } from '@dxtmisha/functional-basic'

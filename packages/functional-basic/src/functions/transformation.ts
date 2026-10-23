@@ -1,4 +1,7 @@
+import { hasKey } from './hasKey'
 import { isDomRuntime } from './isDomRuntime'
+import { isFunction } from './isFunction'
+import { isString } from './isString'
 import { ErrorCenter } from '../classes/ErrorCenter'
 
 /**
@@ -20,7 +23,7 @@ const REGEXP_INT = /^-?\d+$/
  * Преобразует строку в соответствующий тип данных.
  * В зависимости от содержания строки, она может быть преобразована в undefined, null, boolean, объект, число или функцию.
  * @param value input value to transform / входное значение для преобразования
- * @param isFunction flag to check for function in global window / флаг проверки функции в объекте window
+ * @param isFunctionCheck flag to check for function in global window / флаг проверки функции в объекте window
  * @returns transformed value / преобразованное значение
  *
  * @example
@@ -29,8 +32,8 @@ const REGEXP_INT = /^-?\d+$/
  * transformation('{"a":1}') // { a: 1 }
  * transformation('null') // null
  */
-export function transformation<T = unknown>(value: unknown, isFunction: boolean = false): T {
-  if (typeof value === 'string') {
+export function transformation<T = unknown>(value: unknown, isFunctionCheck: boolean = false): T {
+  if (isString(value)) {
     const stringValue = value.trim()
 
     switch (stringValue) {
@@ -62,12 +65,12 @@ export function transformation<T = unknown>(value: unknown, isFunction: boolean 
           return parseFloat(stringValue) as T
         } else if (REGEXP_INT.test(stringValue)) {
           return parseInt(stringValue, 10) as T
-        } else if (isFunction && isDomRuntime()) {
+        } else if (isFunctionCheck && isDomRuntime()) {
           const windowRecord = window as unknown as Record<string, unknown>
 
           if (
-            Object.prototype.hasOwnProperty.call(windowRecord, stringValue)
-            && typeof windowRecord[stringValue] === 'function'
+            hasKey(windowRecord, stringValue)
+            && isFunction(windowRecord[stringValue])
           ) {
             return windowRecord[stringValue] as T
           }

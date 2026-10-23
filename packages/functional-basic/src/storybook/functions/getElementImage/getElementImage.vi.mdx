@@ -8,8 +8,8 @@ Dùng để lấy nút `HTMLImageElement` một cách an toàn. Nếu truyền v
 
 **Tham số:**
 - `image?: HTMLImageElement | string` — Phần tử hình ảnh hoặc nguồn chuỗi (URL / Base64 / Blob URL).
-- `onload?: (image: HTMLImageElement, event?: Event | string) => void` — Hàm callback tùy chọn khi tải hình ảnh thành công.
-- `onerror?: (image: HTMLImageElement, event?: Event | string) => void` — Hàm callback tùy chọn khi xảy ra lỗi tải hình ảnh.
+- `onload?: GetElementImageCallback` (`(image: HTMLImageElement, event?: Event | string) => void`) — Hàm callback tùy chọn khi tải hình ảnh thành công.
+- `onerror?: GetElementImageCallback` (`(image: HTMLImageElement, event?: Event | string) => void`) — Hàm callback tùy chọn khi xảy ra lỗi tải hình ảnh.
 
 **Trả về:**
 `HTMLImageElement | undefined` — Một thẻ `<img>` đã sẵn sàng để sử dụng, hoặc `undefined` nếu môi trường không cho phép tạo (ví dụ: trong SSR) hoặc nếu không truyền tham số `image`.

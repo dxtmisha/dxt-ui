@@ -6,15 +6,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Modifies the property value or attribute of a DOM element resolved by selector or passed directly. If the target property is an object (and not an array), merges with the new data.
 
-The function provides robust protection against **Prototype Pollution** (ignoring `__proto__`, `constructor`, `prototype`), supports CSS custom properties (`--*`) and kebab-case keys in style objects, cleanly removes styles when `null` / `undefined` is passed, and accurately formats boolean attributes and ARIA states.
+The function provides robust protection against **Prototype Pollution** via `isPrototypeKey` (ignoring `__proto__`, `constructor`, `prototype`), supports CSS custom properties (`--*`) and kebab-case keys in style objects, cleanly removes styles or attributes when `null` / `undefined` is passed, and serializes boolean `aria-*` attributes to `"true"` / `"false"` (while setting `""` or removing the attribute for standard boolean attributes).
 
 **Parameters:**
 - `element: ElementOrString<E>` — Element, `window`, or CSS selector.
 - `index: K | string` — Property key, attribute name, or style key.
-- `value: V | Record<string, V> | unknown` — New value or object to merge.
+- `value: V | Record<string, V> | unknown` — New value, function returning a value, or object to merge.
 
 **Returns:**
-`E | undefined` — Modified element, or `undefined` if element is not found or a prototype pollution key was passed.
+`E | undefined` — The target element (modified, or unchanged if a prototype pollution key was passed), or `undefined` if the element is not found.
 
 ```typescript
 import { setElementItem } from '@dxtmisha/functional-basic'

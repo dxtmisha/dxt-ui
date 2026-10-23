@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getOnlyText`
 
-A utility that extracts only letters, numbers, and spaces from any given input, removing punctuation, special characters, and other symbols.
+A utility that extracts only Unicode letters, diacritical marks, numbers, and spaces from any given input, removing punctuation, special characters, and other symbols, and trims leading and trailing whitespace.
 
 This is useful for cleaning up user input or preparing text for simplified processing where only alphanumeric content and basic spacing are required.
 
@@ -12,7 +12,7 @@ This is useful for cleaning up user input or preparing text for simplified proce
 - `text: unknown` — The value to process.
 
 **Returns:**
-`string` — A string containing only the characters that are letters, numbers, or spaces.
+`string` — A trimmed string containing only letters, diacritical marks, numbers, or spaces.
 
 ```typescript
 import { getOnlyText } from '@dxtmisha/functional-basic'

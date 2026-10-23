@@ -8,7 +8,7 @@
  */
 export function copyObjectLite<T, R = T>(
   value: T,
-  source?: any
+  source?: Record<PropertyKey, unknown> | null
 ): R {
   return Object.assign({}, value, source) as R
 }

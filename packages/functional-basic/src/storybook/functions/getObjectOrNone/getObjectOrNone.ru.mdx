@@ -10,7 +10,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `value: T` — Любое значение, которое предполагается быть объектом.
 
 **Возвращает:**
-`T & Record<string, any>` — Исходный объект, либо пустой объект `{}`, если исходное значение не прошло проверку.
+`T & Record<string, unknown>` — Исходный объект, либо пустой объект `{}`, если исходное значение не прошло проверку.
 
 ```typescript
 import { getObjectOrNone } from '@dxtmisha/functional-basic'

@@ -11,7 +11,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `includeDisabled?: boolean` — (Необязательно) если `true`, не проверять свойства `readOnly` и `disabled` (вернёт `true` даже для заблокированных полей ввода).
 
 **Возвращает:**
-`boolean` — `true`, если элемент является полем ввода или редактируемым, иначе `false`.
+`boolean` (`element is HTMLElement`) — `true`, если элемент является полем ввода или редактируемым, иначе `false`. Выступает в качестве защитника типа (type guard) TypeScript, сужая `element` до `HTMLElement`.
 
 ```typescript
 import { isInput } from '@dxtmisha/functional-basic'

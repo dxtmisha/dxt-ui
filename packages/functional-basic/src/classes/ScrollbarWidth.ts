@@ -12,11 +12,14 @@ export class ScrollbarWidth {
   /** Calculation state flag / Флаг состояния вычисления */
   private static calculate: boolean = false
 
+  /** Active calculation promise / Активный промис вычисления */
+  private static item?: Promise<number>
+
   /**
    * Checks whether to enable scroll hiding.
    *
    * Проверяет, надо ли включить скрытие скролла.
-   * @returns boolean indicating if scroll hiding is enabled/ логическое значение, указывающее, включено ли скрытие скролла
+   * @returns boolean indicating if scroll hiding is enabled / логическое значение, указывающее, включено ли скрытие скролла
    */
   static async is(): Promise<boolean> {
     const width = await this.get()
@@ -28,7 +31,7 @@ export class ScrollbarWidth {
    * Returns the width of the scroll.
    *
    * Возвращает ширину скролла.
-   * @returns scrollbar width in pixels/ ширина скролла в пикселях
+   * @returns scrollbar width in pixels / ширина скролла в пикселях
    */
   static async get(): Promise<number> {
     if (!isDomRuntime()) {
@@ -37,14 +40,20 @@ export class ScrollbarWidth {
 
     const width = this.getStorage().get() ?? -1
 
-    if (
-      !this.calculate
-      && width === -1
-    ) {
-      const newWidth = await this.init()
+    if (width === -1) {
+      if (this.item) {
+        return this.item
+      }
 
-      this.getStorage().set(newWidth)
-      return newWidth
+      if (!this.calculate) {
+        this.item = this.init().then((newWidth) => {
+          this.getStorage().set(newWidth)
+          this.item = undefined
+          return newWidth
+        })
+
+        return this.item
+      }
     }
 
     return width
@@ -54,7 +63,7 @@ export class ScrollbarWidth {
    * Returns the storage for scroll width.
    *
    * Возвращает хранилище для ширины скролла.
-   * @returns DataStorage instance/ экземпляр DataStorage
+   * @returns DataStorage instance / экземпляр DataStorage
    */
   static getStorage(): DataStorage<number> {
     return new DataStorage<number>('__ui:scrollbar__', true)
@@ -64,7 +73,7 @@ export class ScrollbarWidth {
    * Returns the calculate flag, indicating if width calculation is in progress.
    *
    * Возвращает флаг вычисления, указывающий, идет ли расчет ширины.
-   * @returns calculation flag/ флаг вычисления
+   * @returns calculation flag / флаг вычисления
    */
   static getCalculate(): boolean {
     return this.calculate
@@ -108,6 +117,7 @@ export class ScrollbarWidth {
           this.calculate = false
         })
       } else {
+        this.calculate = false
         resolve(0)
       }
     })

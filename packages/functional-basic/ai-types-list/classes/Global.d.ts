@@ -1,10 +1,10 @@
-// md5:3092649fdf8dca8dd4aca9e7545e1c50 true
-/** Static utility class for storing and retrieving application-wide global data. @keywords global state storage data */
+// md5:3140f4e4ee8f0c79032b7a879069fe38 true
+/** Static utility class for storing and retrieving application-wide global data. @keywords global state, storage, registry */
 export declare class Global {
-    /** Returns global data storage instance. @keywords global storage data */
-    static getItem(): Record<string, any>;
-    /** Returns a value by its property name. @keywords get global value property */
-    static get<R = any>(name: string): R;
-    /** Adds global data (works only once). @keywords add set global data init */
-    static add(data: Record<string, any>): void;
+    /** Retrieves a global value by property name. @keywords get, lookup, retrieve, state */
+    static get<R = unknown>(name: string): R;
+    /** Returns the entire global data storage record. @keywords storage, state, get all, dictionary */
+    static getItem(): Record<string, unknown>;
+    /** Initializes global data once. @keywords add, initialize, set global */
+    static add(data: Record<string, unknown>): void;
 }

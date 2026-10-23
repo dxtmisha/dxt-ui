@@ -6,6 +6,7 @@ import { ErrorCenter } from '../classes/ErrorCenter'
  * If the drag operation does not include data, this method returns an empty string.
  *
  * Метод извлекает данные перетаскивания (в виде строки) для указанного типа.
+ * Если операция перетаскивания не содержит данных, этот метод возвращает пустую строку.
  * @param event the ClipboardEvent interface / интерфейс ClipboardEvent
  * @returns data from the clipboard / данные из буфера обмена
  */

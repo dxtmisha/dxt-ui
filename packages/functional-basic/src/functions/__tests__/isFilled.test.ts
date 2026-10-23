@@ -49,7 +49,7 @@ describe('isFilled', () => {
     })
 
     it('should return true for populated Map and Set instances', () => {
-      expect(isFilled(new Map([['key', 'val']]))).toBe(true)
+      expect(isFilled(new Map([['key', 'value']]))).toBe(true)
       expect(isFilled(new Set([1, 2, 3]))).toBe(true)
     })
   })
@@ -117,11 +117,13 @@ describe('isFilled', () => {
 
     it('should treat "0" as filled when zeroTrue is true', () => {
       expect(isFilled('0', true)).toBe(true)
+      expect(isFilled(' 0 ', true)).toBe(false)
     })
 
-    it('should treat numeric 0 as empty', () => {
+    it('should treat numeric 0 as empty regardless of zeroTrue', () => {
       expect(isFilled(0)).toBe(false)
       expect(isFilled(-0)).toBe(false)
+      expect(isFilled(0, true)).toBe(false)
     })
   })
 

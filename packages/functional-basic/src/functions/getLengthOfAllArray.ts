@@ -6,7 +6,8 @@ import { type ObjectOrArray } from '../types/basicTypes'
  * Returns the length of all elements in an array.
  *
  * Возвращает длину всех элементов в виде массива.
- * @param value input value/ входное значение
+ * @param value input value / входное значение
+ * @returns array of string lengths / массив длин строк
  */
 export function getLengthOfAllArray(value: ObjectOrArray<string>): number[] {
   return forEach<string, number>(value, item => item?.length ?? 0)

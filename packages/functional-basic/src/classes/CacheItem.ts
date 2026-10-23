@@ -12,7 +12,7 @@ export class CacheItem<T> {
   /** Previous cached value / Предыдущее кэшированное значение */
   private cacheOld?: T
   /** Dependency comparison array / Массив сравнения зависимостей */
-  private comparisons: any[] = []
+  private comparisons: unknown[] = []
 
   /**
    * Creates a new CacheItem instance.
@@ -32,10 +32,26 @@ export class CacheItem<T> {
    * @param comparison - Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
    * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
    */
-  getCache(comparison: any[]): T {
+  getCache(comparison: unknown[]): T {
     if (this.isUpdate(comparison)) {
       this.cacheOld = this.cache
       this.setCache()
+    }
+
+    return this.cache as T
+  }
+
+  /**
+   * Asynchronously returns the cached value. Recomputes if the comparison array has changed.
+   *
+   * Асинхронно возвращает кэшированное значение. Пересчитывает, если массив comparison изменился.
+   * @param comparison - Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
+   * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
+   */
+  async getCacheAsync(comparison: unknown[]): Promise<T> {
+    if (this.isUpdate(comparison)) {
+      this.cacheOld = this.cache
+      await this.setCacheAsync()
     }
 
     return this.cache as T
@@ -52,19 +68,23 @@ export class CacheItem<T> {
   }
 
   /**
-   * Asynchronously returns the cached value. Recomputes if the comparison array has changed.
+   * Determines if the cache should be updated based on comparison array changes.
    *
-   * Асинхронно возвращает кэшированное значение. Пересчитывает, если массив comparison изменился.
-   * @param comparison - Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
-   * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
+   * Определяет, следует ли обновить кэш на основе изменений в массиве comparison.
+   * @param comparison - New comparison array to compare against / Новый массив comparison для сравнения
+   * @returns True if cache should be updated, false otherwise / True, если кэш нужно обновить, иначе false
    */
-  async getCacheAsync(comparison: any[]): Promise<T> {
-    if (this.isUpdate(comparison)) {
-      this.cacheOld = this.cache
-      await this.setCacheAsync()
+  private isUpdate(comparison: unknown[]): boolean {
+    if (
+      this.cache === undefined
+      || this.comparisons.length !== comparison.length
+      || this.comparisons.findIndex((value, index) => value !== comparison[index]) >= 0
+    ) {
+      this.comparisons = [...comparison]
+      return true
     }
 
-    return this.cache as T
+    return false
   }
 
   /**
@@ -83,25 +103,5 @@ export class CacheItem<T> {
    */
   private async setCacheAsync(): Promise<void> {
     this.cache = await this.callback()
-  }
-
-  /**
-   * Determines if the cache should be updated based on comparison array changes.
-   *
-   * Определяет, следует ли обновить кэш на основе изменений в массиве comparison.
-   * @param comparison - New comparison array to compare against / Новый массив comparison для сравнения
-   * @returns True if cache should be updated, false otherwise / True, если кэш нужно обновить, иначе false
-   */
-  private isUpdate(comparison: any[]): boolean {
-    if (
-      this.cache === undefined
-      || this.comparisons.length !== comparison.length
-      || this.comparisons.findIndex((value, index) => value !== comparison[index]) >= 0
-    ) {
-      this.comparisons = [...comparison]
-      return true
-    }
-
-    return false
   }
 }

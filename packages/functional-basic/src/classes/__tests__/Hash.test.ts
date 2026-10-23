@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { Hash } from '../Hash'
 import { HashInstance } from '../HashInstance'
@@ -6,46 +7,73 @@ import { ServerStorage } from '../ServerStorage'
 describe('Hash', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
-    vi.spyOn(ServerStorage, 'get').mockImplementation((_, cb) => cb ? cb() : undefined)
+    ServerStorage.remove('__ui:hash-instance__')
   })
 
-  it('should return a HashInstance via ServerStorage', () => {
+  it('should return a HashInstance via ServerStorage and reuse it across calls', () => {
     const storageSpy = vi.spyOn(ServerStorage, 'get')
-    const instance = Hash.getItem()
-    expect(instance).toBeInstanceOf(HashInstance)
+    const firstInstance = Hash.getItem()
+    const secondInstance = Hash.getItem()
+
+    expect(firstInstance).toBeInstanceOf(HashInstance)
+    expect(firstInstance).toBe(secondInstance)
     expect(storageSpy).toHaveBeenCalledWith('__ui:hash-instance__', expect.any(Function))
   })
 
-  it('facade methods should correctly delegate calls to HashInstance', () => {
-    const instance = Hash.getItem()
-    vi.spyOn(ServerStorage, 'get').mockReturnValue(instance)
+  it('should isolate instances across different SSR contexts in ServerStorage', () => {
+    const firstContextInstance = new HashInstance()
+    const secondContextInstance = new HashInstance()
 
-    // Intercept instance methods
+    const storageSpy = vi.spyOn(ServerStorage, 'get')
+      .mockReturnValueOnce(firstContextInstance)
+      .mockReturnValueOnce(secondContextInstance)
+
+    expect(Hash.getItem()).toBe(firstContextInstance)
+    expect(Hash.getItem()).toBe(secondContextInstance)
+    expect(firstContextInstance).not.toBe(secondContextInstance)
+
+    storageSpy.mockRestore()
+  })
+
+  it('should delegate get() and set() calls to HashInstance', () => {
+    const instance = Hash.getItem()
     const getSpy = vi.spyOn(instance, 'get').mockReturnValue('mockedValue')
     const setSpy = vi.spyOn(instance, 'set').mockReturnThis()
-    const addWatchSpy = vi.spyOn(instance, 'addWatch').mockReturnThis()
-    const removeWatchSpy = vi.spyOn(instance, 'removeWatch').mockReturnThis()
-    const reloadSpy = vi.spyOn(instance, 'reload').mockReturnThis()
 
-    // Check get
-    const result = Hash.get('testKey', 'default')
-    expect(getSpy).toHaveBeenCalledWith('testKey', 'default')
+    const result = Hash.get('testKey', 'defaultValue')
+    expect(getSpy).toHaveBeenCalledWith('testKey', 'defaultValue')
     expect(result).toBe('mockedValue')
 
-    // Check set
     Hash.set('testKey', 'newValue')
     expect(setSpy).toHaveBeenCalledWith('testKey', 'newValue')
+  })
 
-    // Check watchers
-    const cb = () => {}
-    Hash.addWatch('testKey', cb)
-    expect(addWatchSpy).toHaveBeenCalledWith('testKey', cb)
+  it('should delegate addWatch() and removeWatch() calls to HashInstance', () => {
+    const instance = Hash.getItem()
+    const addWatchSpy = vi.spyOn(instance, 'addWatch').mockReturnThis()
+    const removeWatchSpy = vi.spyOn(instance, 'removeWatch').mockReturnThis()
 
-    Hash.removeWatch('testKey', cb)
-    expect(removeWatchSpy).toHaveBeenCalledWith('testKey', cb)
+    const callback = vi.fn()
+    Hash.addWatch('watchedKey', callback)
+    expect(addWatchSpy).toHaveBeenCalledWith('watchedKey', callback)
 
-    // Check reload
+    Hash.removeWatch('watchedKey', callback)
+    expect(removeWatchSpy).toHaveBeenCalledWith('watchedKey', callback)
+  })
+
+  it('should delegate reload() to HashInstance', () => {
+    const instance = Hash.getItem()
+    const reloadSpy = vi.spyOn(instance, 'reload').mockReturnThis()
+
     Hash.reload()
-    expect(reloadSpy).toHaveBeenCalled()
+    expect(reloadSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('should delegate reset() to HashInstance.destroy()', () => {
+    const instance = Hash.getItem()
+    const destroySpy = vi.spyOn(instance, 'destroy').mockReturnThis()
+
+    Hash.reset()
+    expect(destroySpy).toHaveBeenCalledTimes(1)
   })
 })

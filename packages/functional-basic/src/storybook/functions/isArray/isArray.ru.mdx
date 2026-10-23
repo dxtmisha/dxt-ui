@@ -10,7 +10,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `value: T` — входное значение.
 
 **Возвращает:**
-`boolean` — `true`, если значение является массивом, иначе `false`.
+`boolean` (`value is Extract<T, R[]>`) — `true`, если значение является массивом, иначе `false`. Выступает в качестве защитника типа (type guard) TypeScript, сужая тип до `Extract<T, R[]>`.
 
 ```typescript
 import { isArray } from '@dxtmisha/functional-basic'

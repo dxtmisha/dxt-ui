@@ -8,6 +8,8 @@ Asynchronously extracts text from the clipboard.
 
 This function primarily attempts to retrieve text data from the provided `ClipboardEvent` (e.g., when handling a `paste` event). If the event is omitted or contains no data, it falls back to reading directly from the system clipboard using `navigator.clipboard.readText()`.
 
+If an error occurs while reading the clipboard, it is reported via `ErrorCenter` (`group: 'clipboard'`, `code: 'error'`) and the function safely resolves to an empty string `''`. In non-DOM environments (e.g., SSR), it immediately returns `''`.
+
 > Note: Using `navigator.clipboard.readText()` requires a secure context (HTTPS) and may require the user to explicitly grant clipboard reading permissions in some browsers.
 
 **Parameters:**

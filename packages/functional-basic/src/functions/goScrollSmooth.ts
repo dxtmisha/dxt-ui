@@ -1,4 +1,6 @@
 import { isDomRuntime } from './isDomRuntime'
+import { isFunction } from './isFunction'
+import { isObject } from './isObject'
 
 /**
  * Calculates the vertical element offset based on the block alignment option.
@@ -51,8 +53,7 @@ export function goScrollSmooth(
 ): void {
   if (
     !isDomRuntime()
-    || !element
-    || typeof element !== 'object'
+    || !isObject(element)
   ) {
     return
   }
@@ -61,7 +62,7 @@ export function goScrollSmooth(
 
   if (
     !shift
-    && typeof element.scrollIntoView === 'function'
+    && isFunction(element.scrollIntoView)
   ) {
     element.scrollIntoView({
       behavior,
@@ -73,8 +74,8 @@ export function goScrollSmooth(
   }
 
   if (
-    typeof element.getBoundingClientRect === 'function'
-    && typeof window.scrollTo === 'function'
+    isFunction(element.getBoundingClientRect)
+    && isFunction(window.scrollTo)
   ) {
     const currentScrollY = window.scrollY ?? window.pageYOffset ?? 0
     const rect = element.getBoundingClientRect()

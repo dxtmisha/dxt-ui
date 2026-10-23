@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/encodeLiteAttribute - Mã hóa các ký tự HTML cơ bản'/>
+
+# `encodeLiteAttribute`
+
+Mã hóa các ký tự đặc biệt cơ bản của HTML trong chuỗi (`<`, `>`, `&`) thành các thực thể HTML tương ứng (`&lt;`, `&gt;`, `&amp;`), đồng thời giữ nguyên dấu ngoặc kép và ngoặc đơn (`"` và `'`). Thường được sử dụng cho thẻ tiêu đề HTML và định dạng văn bản nhẹ.
+
+> **Lưu ý:** Hàm này chủ đích KHÔNG mã hóa dấu ngoặc kép và ngoặc đơn (`"` và `'`). Để mã hóa dữ liệu đầu vào của người dùng bên trong các thuộc tính HTML, hãy sử dụng `encodeAttribute` để ngăn chặn lỗ hổng chèn thuộc tính.
+
+**Tham số:**
+- `text: string` — Chuỗi cần được mã hóa.
+
+**Trả về:**
+`string` — Chuỗi đã được mã hóa.
+
+```typescript
+import { encodeLiteAttribute } from '@dxtmisha/functional-basic'
+
+const input = 'Title "Hello & <World>"'
+const encoded = encodeLiteAttribute(input)
+
+console.log(encoded)
+// 'Title "Hello &amp; &lt;World&gt;"'
+```

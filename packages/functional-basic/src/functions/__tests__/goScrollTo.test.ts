@@ -190,5 +190,32 @@ describe('goScrollTo', () => {
       expect(container.scrollTop).toBe(190)
       expect(container.scrollLeft).toBe(190)
     })
+
+    it('should default clientTop and clientLeft to 0 if they are missing or non-numeric on custom Element', () => {
+      const customContainer = {
+        getBoundingClientRect: vi.fn(() => ({ top: 40, left: 30 } as DOMRect)),
+        scrollBy: vi.fn()
+      } as unknown as Element
+      const elementTo = document.createElement('div')
+      elementTo.getBoundingClientRect = vi.fn(() => ({ top: 100, left: 90 } as DOMRect))
+
+      goScrollTo(customContainer, elementTo)
+
+      expect(customContainer.scrollBy).toHaveBeenCalledWith({
+        top: 60,
+        left: 60,
+        behavior: 'smooth'
+      })
+    })
+
+    it('should safely do nothing if neither scrollBy nor scrollTop/scrollLeft exist on container', () => {
+      const minimalContainer = {
+        getBoundingClientRect: vi.fn(() => ({ top: 0, left: 0 } as DOMRect))
+      } as unknown as Element
+      const elementTo = document.createElement('div')
+      elementTo.getBoundingClientRect = vi.fn(() => ({ top: 50, left: 50 } as DOMRect))
+
+      expect(() => goScrollTo(minimalContainer, elementTo)).not.toThrow()
+    })
   })
 })

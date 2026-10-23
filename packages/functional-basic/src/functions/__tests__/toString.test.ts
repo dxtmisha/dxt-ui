@@ -158,15 +158,15 @@ describe('toString', () => {
 
   describe('Functions', () => {
     it('should convert named function to string containing function definition', () => {
-      function sampleFunc() {
+      function sampleFunction() {
         return 42
       }
-      expect(toString(sampleFunc)).toContain('function sampleFunc')
+      expect(toString(sampleFunction)).toContain('function sampleFunction')
     })
 
     it('should convert arrow function to string', () => {
-      const arrowFunc = () => 'test'
-      expect(toString(arrowFunc)).toContain('() =>')
+      const arrowFunction = () => 'test'
+      expect(toString(arrowFunction)).toContain('() =>')
     })
   })
 

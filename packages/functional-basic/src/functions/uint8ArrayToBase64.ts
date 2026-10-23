@@ -1,3 +1,5 @@
+import { isFunction } from './isFunction'
+
 /**
  * Maximum chunk size for String.fromCharCode spread to prevent call stack overflow /
  * Максимальный размер порции для String.fromCharCode для предотвращения переполнения стека
@@ -37,11 +39,13 @@ export function uint8ArrayToBase64(bytes?: Uint8Array | null): string {
     return bufferConstructor.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString('base64')
   }
 
-  if (typeof (bytes as unknown as { toBase64?: () => string }).toBase64 === 'function') {
-    return (bytes as unknown as { toBase64: () => string }).toBase64()
+  const toBase64 = (bytes as unknown as { toBase64?: () => string }).toBase64
+
+  if (isFunction(toBase64)) {
+    return toBase64.call(bytes)
   }
 
-  if (typeof globalThis.btoa === 'function') {
+  if (isFunction(globalThis.btoa)) {
     let binary = ''
 
     for (let index = 0; index < bytes.length; index += CHUNK_SIZE) {

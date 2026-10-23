@@ -10,14 +10,12 @@ describe('MetaOg', () => {
   let metaOg: MetaOg
 
   beforeEach(() => {
-    // Clear DOM before each test
     document.head.innerHTML = ''
 
     metaOg = new MetaOg()
   })
 
   afterEach(() => {
-    // Clear after tests
     document.head.innerHTML = ''
   })
 
@@ -48,21 +46,18 @@ describe('MetaOg', () => {
     })
 
     it('should read existing OG tags from DOM on initialization', () => {
-      // Create OG tags in DOM
       const titleMeta = document.createElement('meta')
       titleMeta.setAttribute('property', 'og:title')
       titleMeta.setAttribute('content', 'Existing Title')
       document.head.appendChild(titleMeta)
 
-      const descMeta = document.createElement('meta')
-      descMeta.setAttribute('property', 'og:description')
-      descMeta.setAttribute('content', 'Existing Description')
-      document.head.appendChild(descMeta)
+      const descriptionMeta = document.createElement('meta')
+      descriptionMeta.setAttribute('property', 'og:description')
+      descriptionMeta.setAttribute('content', 'Existing Description')
+      document.head.appendChild(descriptionMeta)
 
-      // Create new instance
       const newMetaOg = new MetaOg()
 
-      // Should read existing tags
       expect(newMetaOg.getTitle()).toBe('Existing Title')
       expect(newMetaOg.getDescription()).toBe('Existing Description')
     })
@@ -312,9 +307,9 @@ describe('MetaOg', () => {
     })
 
     it('should handle long descriptions', () => {
-      const longDesc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(10)
-      metaOg.setDescription(longDesc)
-      expect(metaOg.getDescription()).toBe(longDesc)
+      const longDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(10)
+      metaOg.setDescription(longDescription)
+      expect(metaOg.getDescription()).toBe(longDescription)
     })
 
     it('should return this for chaining', () => {
@@ -474,8 +469,8 @@ describe('MetaOg', () => {
     })
 
     it('should handle multiple consecutive updates', () => {
-      for (let i = 0; i < 100; i++) {
-        metaOg.setTitle(`Title ${i}`)
+      for (let index = 0; index < 100; index++) {
+        metaOg.setTitle(`Title ${index}`)
       }
 
       expect(metaOg.getTitle()).toBe('Title 99')
@@ -521,9 +516,11 @@ describe('MetaOg', () => {
   })
 
   describe('SSR compatibility', () => {
+    const globalRecord = globalThis as Record<string, unknown>
+
     it('should work without DOM runtime', () => {
-      const originalDocument = globalThis.document
-      delete (globalThis as any).document
+      const originalDocument = globalRecord.document
+      Reflect.deleteProperty(globalRecord, 'document')
 
       try {
         const ssrMetaOg = new MetaOg()
@@ -547,14 +544,14 @@ describe('MetaOg', () => {
         expect(html).toContain('property="og:url"')
       } finally {
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
       }
     })
 
     it('should generate valid HTML for SSR', () => {
-      const originalDocument = globalThis.document
-      delete (globalThis as any).document
+      const originalDocument = globalRecord.document
+      Reflect.deleteProperty(globalRecord, 'document')
 
       try {
         const ssrMetaOg = new MetaOg()
@@ -571,7 +568,7 @@ describe('MetaOg', () => {
         expect(html).toContain('property="og:description" content="SSR Page Description"')
       } finally {
         if (originalDocument) {
-          (globalThis as any).document = originalDocument
+          globalRecord.document = originalDocument
         }
       }
     })

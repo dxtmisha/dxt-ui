@@ -12,7 +12,7 @@ The check operates primarily via the `instanceof Function` operator, with a fall
 - `callback: T` — The variable to be tested.
 
 **Returns:**
-`boolean` — Yields `true` when the argument is a valid function, returning `false` otherwise. Functions as a dedicated TypeScript type guard narrowing the type specifically down to `FunctionArgs<any, any>`.
+`boolean` (`callback is Extract<T, FunctionAnyType>`) — Yields `true` when the argument is a valid function, returning `false` otherwise. Functions as a dedicated TypeScript type guard narrowing the type specifically down to `Extract<T, FunctionAnyType>`.
 
 ```typescript
 import { isFunction } from '@dxtmisha/functional-basic'

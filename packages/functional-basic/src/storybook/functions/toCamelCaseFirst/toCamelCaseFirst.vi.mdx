@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `toCamelCaseFirst`
 
-Chuyển đổi một chuỗi văn bản sang định dạng `CamelCase` (PascalCase), trong đó chữ cái đầu tiên của chuỗi luôn được viết hoa. Hàm sử dụng nội bộ `toCamelCase` để xử lý các dấu phân cách và ký tự đặc biệt.
+Chuyển đổi một chuỗi văn bản sang định dạng `CamelCase` (PascalCase), trong đó chữ cái đầu tiên của chuỗi luôn được viết hoa. Hàm ủy quyền nội bộ cho `toPascalCase` (sử dụng `toCamelCase` để xử lý các dấu phân cách và ký tự đặc biệt).
 
 **Tham số:**
-- `value: string` — Chuỗi gốc cần chuyển đổi.
+- `value?: string` — Chuỗi gốc cần chuyển đổi.
 
 **Trả về:**
 `string` — Chuỗi định dạng `CamelCase` với chữ cái đầu tiên được viết hoa.

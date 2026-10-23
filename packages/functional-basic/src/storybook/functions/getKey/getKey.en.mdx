@@ -10,7 +10,7 @@ Returns the code or name of the key that was pressed, based on the `KeyboardEven
 - `event: KeyboardEvent` — The keyboard event object (triggered by `keydown`, `keyup`, or `keypress`).
 
 **Returns:**
-`string` — The name or code of the pressed key (e.g., `'Enter'`, `'Escape'`, `'A'`).
+`string | number | undefined` — The name or code of the pressed key (e.g., `'Enter'`, `'Escape'`, `'A'`), or `undefined` if unavailable.
 
 ```typescript
 import { getKey } from '@dxtmisha/functional-basic'

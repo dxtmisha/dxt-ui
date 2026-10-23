@@ -13,7 +13,7 @@ Trong các môi trường không có DOM (chẳng hạn như SSR), `requestAnima
 
 **Tham số:**
 - `callback?: () => T | Promise<T>` — Hàm callback tùy chọn để thực thi tại khung hình hoạt ảnh đích.
-- `count = 1` — Số lượng khung hình hoạt ảnh cần bỏ qua (mặc định là `1`).
+- `count?: number = 1` — Số lượng khung hình hoạt ảnh cần bỏ qua (mặc định là `1`).
 
 **Trả về:**
 `Promise<T | void>` — Một promise giải quyết tại khung hình hoạt ảnh với kết quả của callback (hoặc `undefined` nếu không cung cấp callback).

@@ -8,7 +8,8 @@ const mockHistory = { replaceState: vi.fn() }
 vi.stubGlobal('location', mockLocation)
 vi.stubGlobal('history', mockHistory)
 vi.stubGlobal('addEventListener', vi.fn())
-vi.stubGlobal('requestAnimationFrame', (cb: () => void) => cb())
+vi.stubGlobal('removeEventListener', vi.fn())
+vi.stubGlobal('requestAnimationFrame', (callback: () => void) => callback())
 
 describe('HashInstance', () => {
   let hashInstance: HashInstance
@@ -37,6 +38,28 @@ describe('HashInstance', () => {
     expect(value).toBe('funcValue')
   })
 
+  it('should accept falsy defaultValue such as 0, false, or empty string', () => {
+    expect(hashInstance.get('zeroKey', 0)).toBe(0)
+    expect(hashInstance.get('falseKey', false)).toBe(false)
+    expect(hashInstance.get('emptyKey', '')).toBe('')
+  })
+
+  it('should decode URL-encoded hash values and support non-word characters in keys', () => {
+    mockLocation.hash = '#query=hello%20world;filter[type]=admin;encoded%5Bkey%5D=123'
+    hashInstance.reload()
+
+    expect(hashInstance.get('query')).toBe('hello world')
+    expect(hashInstance.get('filter[type]')).toBe('admin')
+    expect(hashInstance.get('encoded[key]')).toBe(123)
+  })
+
+  it('should gracefully handle malformed URI sequences in hash', () => {
+    mockLocation.hash = '#badKey=%E0%A4%A'
+    hashInstance.reload()
+
+    expect(hashInstance.get('badKey')).toBe('%E0%A4%A')
+  })
+
   it('should set and return a value', () => {
     hashInstance.set('myKey', 'myValue')
     expect(hashInstance.get('myKey')).toBe('myValue')
@@ -49,17 +72,16 @@ describe('HashInstance', () => {
   })
 
   it('should call handlers when value changes (watch)', () => {
-    const callback1 = vi.fn()
-    const callback2 = vi.fn()
+    const firstCallback = vi.fn()
+    const secondCallback = vi.fn()
 
-    hashInstance.addWatch('watchKey', callback1)
-    hashInstance.addWatch('watchKey', callback2)
+    hashInstance.addWatch('watchKey', firstCallback)
+    hashInstance.addWatch('watchKey', secondCallback)
 
-    // Simulate hash change from outside
     mockLocation.hash = '#watchKey=newValue'
     hashInstance.reload()
-    expect(callback1).toHaveBeenCalledWith('newValue')
-    expect(callback2).toHaveBeenCalledWith('newValue')
+    expect(firstCallback).toHaveBeenCalledWith('newValue')
+    expect(secondCallback).toHaveBeenCalledWith('newValue')
   })
 
   it('should not call removed handlers', () => {
@@ -67,17 +89,16 @@ describe('HashInstance', () => {
     hashInstance.addWatch('removeKey', callback)
     hashInstance.removeWatch('removeKey', callback)
 
-    // Simulate hash change from outside
     mockLocation.hash = '#removeKey=value2'
     hashInstance.reload()
     expect(callback).not.toHaveBeenCalled()
   })
 
   it('chaining should work correctly', () => {
-    const cb = () => {}
-    expect(hashInstance.set('a', 1)).toBe(hashInstance)
-    expect(hashInstance.addWatch('a', cb)).toBe(hashInstance)
-    expect(hashInstance.removeWatch('a', cb)).toBe(hashInstance)
+    const callback = () => {}
+    expect(hashInstance.set('alpha', 1)).toBe(hashInstance)
+    expect(hashInstance.addWatch('alpha', callback)).toBe(hashInstance)
+    expect(hashInstance.removeWatch('alpha', callback)).toBe(hashInstance)
     expect(hashInstance.reload()).toBe(hashInstance)
   })
 
@@ -94,46 +115,52 @@ describe('HashInstance', () => {
     expect(mockHistory.replaceState).not.toHaveBeenCalled()
   })
 
-  it('should correctly handle the timer in the update method', async () => {
+  it('should correctly handle the timer in the update method', () => {
     vi.useFakeTimers()
     hashInstance.set('key1', 'value1')
     expect(mockHistory.replaceState).toHaveBeenCalled()
-    // block should be true
 
     hashInstance.set('key2', 'value2')
-    // block is still true, update should not be called again immediately (although it's called in code, it's blocked by the timer)
-    // Actually the update method calls clearTimeout(this.time) and sets block = true
 
     vi.advanceTimersByTime(120)
-    // block should be false
     vi.useRealTimers()
   })
 
-  it('reload should wait if block === true', async () => {
+  it('reload should wait if block === true', () => {
     vi.useFakeTimers()
-    hashInstance.set('key', 'val') // sets block = true for 120ms
+    hashInstance.set('key', 'value')
 
-    const initSpy = vi.spyOn(hashInstance as any, 'initData')
+    const watcher = vi.fn()
+    hashInstance.addWatch('key', watcher)
+    mockLocation.hash = '#key=updatedValue'
+
     hashInstance.reload()
 
-    expect(initSpy).not.toHaveBeenCalled()
+    expect(watcher).not.toHaveBeenCalled()
 
-    // Need to run timers so setTimeout in reload triggers
     vi.advanceTimersByTime(32)
-    // After 32ms setTimeout calls reload() again.
-    // At this point block is still true (as only 32ms of 120ms passed).
-    // So reload() will call setTimeout(..., 32) again.
-
-    expect(initSpy).not.toHaveBeenCalled()
+    expect(watcher).not.toHaveBeenCalled()
 
     vi.advanceTimersByTime(120)
-    // Now > 120ms passed, block should become false by the timer from update.
-    // But the timer from update itself should also trigger.
-
-    // Wait a bit more for the next setTimeout from reload to trigger
     vi.advanceTimersByTime(32)
 
-    expect(initSpy).toHaveBeenCalled()
+    expect(watcher).toHaveBeenCalledWith('updatedValue')
+
+    vi.useRealTimers()
+  })
+
+  it('destroy should remove event listener and cancel pending reload timer', () => {
+    vi.useFakeTimers()
+    hashInstance.set('key', 'value')
+    hashInstance.reload()
+
+    // @ts-expect-error: inspecting protected reloadTimer
+    expect(hashInstance.reloadTimer).toBeDefined()
+
+    hashInstance.destroy()
+    expect(removeEventListener).toHaveBeenCalledWith('hashchange', expect.any(Function))
+    // @ts-expect-error: inspecting protected reloadTimer
+    expect(hashInstance.reloadTimer).toBeUndefined()
 
     vi.useRealTimers()
   })

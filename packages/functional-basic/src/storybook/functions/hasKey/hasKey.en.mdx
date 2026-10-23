@@ -10,10 +10,10 @@ The function provides robust protection against **Prototype Pollution** and prev
 
 **Parameters:**
 - `object: unknown` — the object, function, or value of any type to check.
-- `key: PropertyKey` — the property key to look for (`string | number | symbol`).
+- `key: K` — the property key to look for (`K extends PropertyKey`: `string | number | symbol`).
 
 **Returns:**
-`boolean` — `true` if the property exists and belongs directly to the object (own property), otherwise `false`.
+`boolean` (`object is T & Record<K, unknown>`) — `true` if the property exists and belongs directly to the object (own property), otherwise `false`.
 
 ```typescript
 import { hasKey } from '@dxtmisha/functional-basic'

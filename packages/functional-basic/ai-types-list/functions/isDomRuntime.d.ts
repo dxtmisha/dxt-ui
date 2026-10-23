@@ -1,3 +1,3 @@
-// md5:d1d6bc1fc6dd80128693d8b6967f971a true
-/** Checks if the code is running in a DOM / browser environment where the `window` object is available. @keywords dom runtime browser window environment check */
+// md5:d32f51578c38c7d0dc3af1c1958de9bf true
+/** Checks whether code is running in a browser environment with `window` available. @keywords dom, browser, runtime, window, client */
 export declare function isDomRuntime(): boolean;

@@ -2,6 +2,7 @@ import { hasKey } from './hasKey'
 import { isArray } from './isArray'
 import { isObjectNotArray } from './isObjectNotArray'
 
+/** Supported positional macro letters (%d..%v) / Список поддерживаемых букв позиционных макросов (%d..%v) */
 const LIST_NAME = [
   'd',
   'e',

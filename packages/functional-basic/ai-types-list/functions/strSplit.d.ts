@@ -1,3 +1,3 @@
-// md5:3c1fb44f47604d44b124a22e61b4be31 true
-/** Splits a string by separator, placing the remainder in the last element if limit is set. @keywords string, split, separator, limit */
-export declare function strSplit(value: number | string, separator: string, limit?: number): string[];
+// md5:c8e84d8c4a036ba137e943996d6654d9 true
+/** Splits a string by a separator with a limit where the last element retains the remainder. @keywords string split, separator, limit, remainder, tokenize */
+export declare function strSplit(value?: unknown, separator?: string, limit?: number): string[];

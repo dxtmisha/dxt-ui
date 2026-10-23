@@ -4,24 +4,24 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isObjectNotArray`
 
-Executes an advanced screening operation directly ensuring the tested item constitutes a textbook plain object structure `{}` (Record) while being **assuredly devoid of any array traits**.
+Checks if the provided value is a plain object (Record) and **not an array**.
 
-Following the intrinsic principle that the elementary `isObject` utility registers `true` inherently when probing arrays (due to JavaScript's rudimentary heritage), this precise function rectifies that quirk. By fusing foundational `isObject(value)` authentication mechanics with a robust `!Array.isArray(value)` safeguard mechanism, arrays are systematically disqualified.
+Since the base `isObject` utility returns `true` for arrays as well (in accordance with JavaScript's `typeof` behavior), `isObjectNotArray` combines `isObject(value)` with `!isArray(value)` to strictly exclude arrays.
 
 **Parameters:**
-- `value: T` — Any element waiting for inspection.
+- `value: T` — The value to check.
 
 **Returns:**
-`boolean` — Generates `true` solely corresponding to authentic objects structured as `{ key: 'value' }`. Yields `false` automatically when combating arrays `[]`, elusive nulls, functional instances, or standard primitive values. Employs reliable type guarding capabilities that carefully extract the pure Object Record architecture while discarding intersecting null, undefined or array overlaps.
+`value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null>` (`boolean`) — Returns `true` only for non-null, non-array objects (such as `{ key: 'value' }`), and `false` for arrays `[]`, `null`, `undefined`, functions, and primitives. Acts as a TypeScript type guard narrowing `T` to `ObjectItem` while excluding arrays, `undefined`, and `null`.
 
 ```typescript
 import { isObjectNotArray } from '@dxtmisha/functional-basic'
 
-// Successful validation boundaries
+// Valid object
 console.log(isObjectNotArray({ id: 1, name: 'Test' })) // true
 
-// Scenarios safely bypassed without tripping false positives
-console.log(isObjectNotArray([1, 2, 3])) // false (Array defense shield actively rejects arrays!)
+// Filtered out values
+console.log(isObjectNotArray([1, 2, 3])) // false (arrays are excluded)
 console.log(isObjectNotArray(null)) // false
 console.log(isObjectNotArray('string')) // false
 ```

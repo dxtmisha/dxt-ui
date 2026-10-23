@@ -10,7 +10,7 @@ Each word is split by spaces, escaped, and wrapped in a positive lookahead `(?=.
 
 **Parameters:**
 - `search: string` — A search string consisting of one or more space-separated words.
-- `limit: number` (optional, default: `128`) — The maximum allowed length of the search string.
+- `limit?: number` — (Optional) The maximum allowed length of the search string. Defaults to `128`.
 
 **Returns:**
 `RegExp` — A regular expression with the `is` flags (case-insensitive and dotAll for multiline text).

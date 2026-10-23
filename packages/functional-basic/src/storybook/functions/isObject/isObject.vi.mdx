@@ -12,7 +12,7 @@ Vì đặc thù lạ lùng của mã JavaScript, câu lệnh `typeof null` luôn
 - `value: T` — Giá trị đưa tới thực nghiệm khảo lược thông số.
 
 **Trả về:**
-`boolean` — Phát nhượng hồi thư `true` nếu thể xác định đúng khớp đối tượng hoặc mảng liên kết (arrays). Đáp số lại chỉ toàn `false` văng vào mặt nhóm tham số kiểu vô ngã `null`, đơn nguyên primitives, hay khối định luật functions. Cùng vận hành làm bức thành rào cản Type Guard khoanh thu vùng định loại xuống `Record<any, any>`.
+`boolean` (`value is Extract<T, ObjectItem>`) — Phát nhượng hồi thư `true` nếu thể xác định đúng khớp đối tượng hoặc mảng liên kết (arrays). Đáp số lại chỉ toàn `false` văng vào mặt nhóm tham số kiểu vô ngã `null`, đơn nguyên primitives, hay khối định luật functions. Cùng vận hành làm bức thành rào cản Type Guard khoanh thu vùng định loại xuống `Extract<T, ObjectItem>`.
 
 ```typescript
 import { isObject } from '@dxtmisha/functional-basic'

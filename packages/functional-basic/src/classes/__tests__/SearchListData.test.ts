@@ -7,6 +7,7 @@ type MockUser = {
   id: number
   name: string
   role: string
+  score?: number | string
   address?: {
     city: string
   }
@@ -30,18 +31,22 @@ describe('SearchListData', () => {
     expect(data.getColumns()).toEqual(['name', 'role'])
   })
 
-  it('should handle undefined columns safely', () => {
+  it('should handle undefined list and undefined columns safely', () => {
     const options = new SearchListOptions()
     const item = new SearchListItem('test', options)
-    const data = new SearchListData(mockList, undefined, item, options)
+    const dataWithoutColumns = new SearchListData(mockList, undefined, item, options)
 
-    expect(data.isList()).toBe(true)
-    expect(data.is()).toBe(false) // Columns are missing
+    expect(dataWithoutColumns.isList()).toBe(true)
+    expect(dataWithoutColumns.is()).toBe(false)
 
-    // Testing cache generation without columns
-    const cacheItem = data.findCacheItem(mockList[0] as MockUser)
+    const cacheItem = dataWithoutColumns.findCacheItem(mockList[0] as MockUser)
     expect(cacheItem).toBeDefined()
-    expect(cacheItem?.value).toBe('') // Value string is empty if no columns
+    expect(cacheItem?.value).toBe('')
+
+    const dataWithoutList = new SearchListData<MockUser, ['name']>(undefined, ['name'], item, options)
+    expect(dataWithoutList.isList()).toBe(false)
+    expect(dataWithoutList.is()).toBe(false)
+    expect(dataWithoutList.forEach(() => undefined)).toEqual([])
   })
 
   it('should rebuild the cache when a list or columns change', () => {
@@ -53,32 +58,30 @@ describe('SearchListData', () => {
     expect(initialCache?.value).toContain('Alice')
     expect(initialCache?.value).not.toContain('admin')
 
-    // Update columns
-    data.setColumns(['name', 'role'])
+    expect(data.setColumns(['name', 'role'])).toBe(data)
     const updatedCacheColumns = data.findCacheItem(mockList[0] as MockUser)
     expect(updatedCacheColumns?.value).toContain('Alice')
     expect(updatedCacheColumns?.value).toContain('admin')
 
-    // Update list
     const newList = [{ id: 4, name: 'Diana', role: 'admin' }]
-    data.setList(newList)
+    expect(data.setList(newList)).toBe(data)
     const newCache = data.findCacheItem(newList[0] as MockUser)
     expect(newCache?.value).toContain('Diana')
   })
 
-  it('should accurately format item values with nested keys', () => {
+  it('should accurately format item values with nested keys and unhighlighted state', () => {
     const options = new SearchListOptions()
     const item = new SearchListItem('New York', options)
     const data = new SearchListData(mockList, ['address.city'], item, options)
 
-    const formattedItem = data.toFormatItem(mockList[0] as MockUser, true)
+    const highlightedItem = data.toFormatItem(mockList[0] as MockUser, true)
+    expect(highlightedItem.addressCitySearch).toBeDefined()
+    expect(highlightedItem.searchActive).toBe(true)
+    expect(highlightedItem.addressCitySearch).toContain('<span class="sys-search-selection">')
 
-    // Should extract nested field and format name to camelCase + Search
-    expect(formattedItem.addressCitySearch).toBeDefined()
-    expect(formattedItem.searchActive).toBe(true)
-
-    // Since 'New York' is the search value and selection is true, it should contain the HTML tag
-    expect(formattedItem.addressCitySearch).toContain('<span class="sys-search-selection">')
+    const unhighlightedItem = data.toFormatItem(mockList[0] as MockUser, false)
+    expect(unhighlightedItem.addressCitySearch).toBe('New York')
+    expect(unhighlightedItem.searchActive).toBe(false)
   })
 
   it('should invoke callback through forEach with valid items', () => {
@@ -89,16 +92,40 @@ describe('SearchListData', () => {
     let iterations = 0
     const result = data.forEach(() => {
       iterations++
-      return undefined // Drop all items
+      return undefined
     })
 
     expect(iterations).toBe(3)
     expect(result.length).toBe(0)
 
-    const resultAll = data.forEach((origItem, _) => {
-      return data.toFormatItem(origItem, false)
+    const resultAll = data.forEach((originalItem) => {
+      return data.toFormatItem(originalItem, false)
     })
 
     expect(resultAll.length).toBe(3)
+  })
+
+  it('should include numeric 0 and string "0" in generated cache and format item with highlight', () => {
+    const options = new SearchListOptions({ limit: 1 })
+    const item = new SearchListItem('0', options)
+    const listWithZero: MockUser[] = [
+      { id: 0, name: 'ZeroNumeric', role: 'guest', score: 0 },
+      { id: 1, name: 'ZeroString', role: 'guest', score: '0' }
+    ]
+    const data = new SearchListData(listWithZero, ['id', 'score'], item, options)
+
+    const numericCacheItem = data.findCacheItem(listWithZero[0]!)
+    expect(numericCacheItem).toBeDefined()
+    expect(numericCacheItem?.value).toContain('0')
+
+    const formattedNumeric = data.toFormatItem(listWithZero[0]!, true)
+    expect(formattedNumeric.idSearch).toContain('<span class="sys-search-selection">0</span>')
+    expect(formattedNumeric.scoreSearch).toContain('<span class="sys-search-selection">0</span>')
+
+    const stringCacheItem = data.findCacheItem(listWithZero[1]!)
+    expect(stringCacheItem?.value).toContain('0')
+
+    const formattedString = data.toFormatItem(listWithZero[1]!, true)
+    expect(formattedString.scoreSearch).toContain('<span class="sys-search-selection">0</span>')
   })
 })

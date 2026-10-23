@@ -10,7 +10,7 @@ Creates a shallow copy of a simple object using `Object.assign`. It can optional
 
 **Parameters:**
 - `value: T` — The object to be copied.
-- `source?: any` — Additional properties to merge with the base `value`. Properties from `source` will overwrite those from `value` if their keys match.
+- `source?: Record<PropertyKey, unknown> | null` — Additional properties to merge with the base `value`. Properties from `source` will overwrite those from `value` if their keys match.
 
 **Returns:**
 `R` (defaults to `T`) — A new shallow copy of the object.

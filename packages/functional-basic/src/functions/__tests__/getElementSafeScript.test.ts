@@ -33,10 +33,10 @@ describe('getElementSafeScript', () => {
     })
 
     it('should handle arrays and nested objects', () => {
-      const data = { arr: [1, 2, 3], nested: { valid: true } }
+      const data = { items: [1, 2, 3], nested: { valid: true } }
       const result = getElementSafeScript('nested-data', data)
       expect(result).toBe(
-        '<script id="nested-data" type="application/json">{"arr":[1,2,3],"nested":{"valid":true}}</script>'
+        '<script id="nested-data" type="application/json">{"items":[1,2,3],"nested":{"valid":true}}</script>'
       )
     })
 
@@ -108,9 +108,33 @@ describe('getElementSafeScript', () => {
       )
     })
 
+    it('should serialize special numeric values (NaN, Infinity, -Infinity) to null per JSON specification', () => {
+      expect(getElementSafeScript('nan-id', NaN)).toBe(
+        '<script id="nan-id" type="application/json">null</script>'
+      )
+      expect(getElementSafeScript('inf-id', Infinity)).toBe(
+        '<script id="inf-id" type="application/json">null</script>'
+      )
+      expect(getElementSafeScript('neg-inf-id', -Infinity)).toBe(
+        '<script id="neg-inf-id" type="application/json">null</script>'
+      )
+    })
+
     it('should handle empty string ID', () => {
-      const result = getElementSafeScript('', { val: 1 })
-      expect(result).toBe('<script id="" type="application/json">{"val":1}</script>')
+      const result = getElementSafeScript('', { value: 1 })
+      expect(result).toBe('<script id="" type="application/json">{"value":1}</script>')
+    })
+
+    it('should respect custom toJSON method on serialized objects', () => {
+      const customSerializable = {
+        secret: 'hidden',
+        toJSON() {
+          return { exposed: 'safe-value' }
+        }
+      }
+      expect(getElementSafeScript('custom-json', customSerializable)).toBe(
+        '<script id="custom-json" type="application/json">{"exposed":"safe-value"}</script>'
+      )
     })
   })
 
@@ -217,9 +241,10 @@ describe('getElementSafeScript', () => {
       expect(result).toContain('안녕하세요')
     })
 
-    it('should preserve multibyte Emojis in serialized data', () => {
+    it('should preserve multibyte Emojis in serialized data and ID', () => {
       const data = { emoji: '🚀 🔥 ✨ 🎉' }
-      const result = getElementSafeScript('emoji-test', data)
+      const result = getElementSafeScript('emoji-id-🚀', data)
+      expect(result).toContain('id="emoji-id-🚀"')
       expect(result).toContain('🚀 🔥 ✨ 🎉')
     })
   })
@@ -258,16 +283,16 @@ describe('getElementSafeScript', () => {
   describe('Statefulness, isolation, and determinism', () => {
     it('should produce identical deterministic output on repeated invocations', () => {
       const data = { id: 10, label: 'fixed' }
-      const res1 = getElementSafeScript('det', data)
-      const res2 = getElementSafeScript('det', data)
-      const res3 = getElementSafeScript('det', data)
+      const firstResult = getElementSafeScript('deterministic', data)
+      const secondResult = getElementSafeScript('deterministic', data)
+      const thirdResult = getElementSafeScript('deterministic', data)
 
-      expect(res1).toBe(res2)
-      expect(res2).toBe(res3)
+      expect(firstResult).toBe(secondResult)
+      expect(secondResult).toBe(thirdResult)
     })
 
     it('should not mutate the input data object', () => {
-      const original = { a: 1, b: '</script>' }
+      const original = { firstKey: 1, secondKey: '</script>' }
       const copy = { ...original }
 
       getElementSafeScript('no-mutation', original)

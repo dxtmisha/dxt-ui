@@ -10,7 +10,7 @@ Converts a value to an array. If the value is already an array, it returns it as
 - `value: T` — The value to be converted into an array.
 
 **Returns:**
-`T[]` — An array containing the provided value.
+`T extends unknown[] ? T : [T]` — An array containing the provided value.
 
 ```typescript
 import { toArray } from '@dxtmisha/functional-basic'

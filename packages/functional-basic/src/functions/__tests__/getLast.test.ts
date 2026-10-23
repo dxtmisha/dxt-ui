@@ -47,11 +47,11 @@ describe('getLast', () => {
       expect(getLast(false)).toBe(false)
       expect(getLast(0)).toBe(0)
 
-      const sym = Symbol('test')
-      expect(getLast(sym)).toBe(sym)
+      const symbolValue = Symbol('test')
+      expect(getLast(symbolValue)).toBe(symbolValue)
 
-      const fn = () => 'result'
-      expect(getLast(fn)).toBe(fn)
+      const callback = () => 'result'
+      expect(getLast(callback)).toBe(callback)
     })
   })
 
@@ -107,22 +107,22 @@ describe('getLast', () => {
 
   describe('Object key ordering and indexing', () => {
     it('should respect integer key ordering according to ES specification', () => {
-      const objWithIntKeys = {
+      const objectWithIntegerKeys = {
         10: 'ten',
         2: 'two',
         1: 'one'
       }
       // Integer keys are iterated in ascending order: 1, 2, 10
-      expect(getLast(objWithIntKeys)).toBe('ten')
+      expect(getLast(objectWithIntegerKeys)).toBe('ten')
     })
 
     it('should respect string key insertion order', () => {
-      const obj = {
+      const targetObject = {
         z: 'lastInserted',
         a: 'firstInserted',
         m: 'middleInserted'
       }
-      expect(getLast(obj)).toBe('middleInserted')
+      expect(getLast(targetObject)).toBe('middleInserted')
     })
   })
 
@@ -164,10 +164,10 @@ describe('getLast', () => {
     })
 
     it('should produce deterministic output across repeated calls', () => {
-      const arr = ['a', 'b', 'c']
-      expect(getLast(arr)).toBe('c')
-      expect(getLast(arr)).toBe('c')
-      expect(getLast(arr)).toBe('c')
+      const items = ['a', 'b', 'c']
+      expect(getLast(items)).toBe('c')
+      expect(getLast(items)).toBe('c')
+      expect(getLast(items)).toBe('c')
     })
   })
 })

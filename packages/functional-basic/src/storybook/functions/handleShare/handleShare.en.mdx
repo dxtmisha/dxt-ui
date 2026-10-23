@@ -4,14 +4,14 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `handleShare`
 
-Invokes the native sharing mechanism of the device as part of the Web Share API.
-Check support with `isShare` before calling.
+Invokes the native sharing mechanism of the device via the Web Share API (`navigator.share`).
+Internally verifies support using `isShare()` and `navigator.canShare(data)` before invoking `navigator.share(data)`. Any error thrown during sharing is routed through `ErrorCenter` (`group: 'share'`, `code: 'error'`).
 
 **Parameters:**
-- `data: ShareData` — an object containing data to share (title, text, url).
+- `data: ShareData` — An object containing data to share (`title`, `text`, `url`, `files`).
 
 **Returns:**
-`Promise<boolean>` — `true` if the data was shared successfully, otherwise `false`.
+`Promise<boolean>` — `true` if the data was shared successfully, otherwise `false` (if unsupported, invalid, or cancelled/failed).
 
 ```typescript
 import { handleShare, isShare } from '@dxtmisha/functional-basic'

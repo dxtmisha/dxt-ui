@@ -1,5 +1,5 @@
-// md5:5c3073633b3309dbad6d81d1d8060097 true
-/** HTTP methods for API requests @keywords http method get post put patch delete */
+// md5:e88dcaf1a0f244447c3c840f0ed808ba true
+/** HTTP request methods. @keywords http, method, rest, verb */
 export declare enum ApiMethodItem {
     delete = "DELETE",
     get = "GET",
@@ -7,14 +7,14 @@ export declare enum ApiMethodItem {
     put = "PUT",
     patch = "PATCH"
 }
-/** Cached API response entry @keywords cache store item */
+/** Cached API response structure. @keywords cache, response, ttl, storage */
 export type ApiCacheItem<T = any> = {
     value: T;
     age?: number;
     cacheAge: number;
 };
 export type ApiCacheList = Record<string, ApiCacheItem>;
-/** Global API client configuration options @keywords api config options fetch */
+/** Configuration options for the API client. @keywords api, config, options, client */
 export type ApiConfig = {
     urlRoot?: string;
     origin?: string;
@@ -27,7 +27,7 @@ export type ApiConfig = {
     wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
 };
 export type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>;
-/** API response validation result structure @keywords validation response status */
+/** API response validation metadata. @keywords validation, response, status, error */
 export type ApiDataValidation = {
     status?: ApiStatusType;
     code?: string | number;
@@ -37,7 +37,7 @@ export type ApiDataValidation = {
         message?: string;
     };
 };
-/** API response payload and metadata wrapper @keywords response payload data */
+/** Unified API response payload wrapped with status and error metadata. @keywords response, wrapper, payload, data */
 export type ApiDataItem<T = any> = T & ApiDataValidation & {
     data?: T;
     success?: boolean;
@@ -46,7 +46,7 @@ export type ApiDataItem<T = any> = T & ApiDataValidation & {
 };
 export type ApiHeadersValue = Record<string, string> | (() => Record<string, string>);
 export type ApiDefaultValue = Record<string, any> | (() => Record<string, any>);
-/** API request execution options and parameters @keywords fetch request options query */
+/** Parameters and execution options for API fetch requests. @keywords fetch, request, options, http */
 export type ApiFetch = {
     api?: boolean;
     path?: string;
@@ -76,7 +76,7 @@ export type ApiFetch = {
     endResetLimit?: number;
     wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
 };
-/** Preloaded hydration data for API response matching @keywords hydration preload ssr */
+/** SSR hydration record for matching and preloading API responses. @keywords hydration, ssr, match */
 export type ApiHydrationItem = {
     path: string;
     method: ApiMethod;
@@ -84,23 +84,23 @@ export type ApiHydrationItem = {
     response: any;
 };
 export type ApiHydrationList = ApiHydrationItem[];
-/** API error mapping and interception configuration @keywords error storage interceptor */
+/** Error matching rule descriptor for API error management. @keywords error, handler, matcher, storage */
 export type ApiErrorStorageItem = Record<string, any> & {
     url: string | RegExp;
     method: ApiMethodItem;
-    code?: string;
+    code?: string | number;
     status?: number;
     validation?: (response: Response) => boolean;
     message?: string | ((response?: Response) => string);
 };
 export type ApiErrorStorageList = ApiErrorStorageItem[];
 export type ApiMethod = string | ApiMethodItem;
-/** Global preparation and teardown hook execution result @keywords hook lifecycle reset */
+/** Hook return value containing state reset flag and payload data. @keywords hook, lifecycle, reset */
 export type ApiPreparationEnd = {
     reset?: boolean;
     data?: any;
 };
-/** Mock API response descriptor and matching rules @keywords mock response stub */
+/** Mock API response rule descriptor. @keywords mock, response, test, stub */
 export type ApiResponseItem = {
     path: string | RegExp;
     method: ApiMethod;
@@ -110,7 +110,7 @@ export type ApiResponseItem = {
     isForGlobal?: boolean;
     lag?: any;
 };
-/** API request status and error tracking descriptor @keywords status tracker state */
+/** Execution status state and metadata for the last API request. @keywords status, error, response, state */
 export type ApiStatusItem = {
     status?: number;
     statusText?: string;

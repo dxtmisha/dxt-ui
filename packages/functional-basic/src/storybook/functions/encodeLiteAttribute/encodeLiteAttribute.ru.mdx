@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/encodeLiteAttribute - Базовое кодирование символов HTML'/>
+
+# `encodeLiteAttribute`
+
+Кодирует базовые специальные символы HTML в строке (`<`, `>`, `&`) в соответствующие HTML-сущности (`&lt;`, `&gt;`, `&amp;`), сохраняя кавычки (`"` и `'`) без изменений. Обычно используется для тегов заголовков HTML и облегченного форматирования текста.
+
+> **Примечание:** Эта функция намеренно НЕ экранирует кавычки (`"` и `'`). Для экранирования пользовательского ввода внутри HTML-атрибутов используйте `encodeAttribute` во избежание уязвимостей инъекции атрибутов.
+
+**Параметры:**
+- `text: string` — Строка, которую необходимо закодировать.
+
+**Возвращает:**
+`string` — Закодированная строка.
+
+```typescript
+import { encodeLiteAttribute } from '@dxtmisha/functional-basic'
+
+const input = 'Title "Hello & <World>"'
+const encoded = encodeLiteAttribute(input)
+
+console.log(encoded)
+// 'Title "Hello &amp; &lt;World&gt;"'
+```

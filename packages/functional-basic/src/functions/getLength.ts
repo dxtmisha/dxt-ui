@@ -1,5 +1,7 @@
 import { isArray } from './isArray'
+import { isNull } from './isNull'
 import { isObject } from './isObject'
+import { isString } from './isString'
 
 /**
  * Returns the length or size of various data types including Arrays, Objects, Maps, Sets, and Strings.
@@ -11,11 +13,11 @@ import { isObject } from './isObject'
  * @returns the length or size of the value / длина или размер значения
  */
 export function getLength(value: unknown): number {
-  if (value === null || value === undefined) {
+  if (isNull(value)) {
     return 0
   }
 
-  if (typeof value === 'string' || isArray(value)) {
+  if (isString(value) || isArray(value)) {
     return value.length
   }
 

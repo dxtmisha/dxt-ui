@@ -12,7 +12,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `value: unknown` — Проверяемое значение любого типа.
 
 **Возвращает:**
-`boolean` — Вернет `true`, если объект данных относится к математическим числам либо если строка состоит только из цифр. В противном случае вернет `false`.
+`boolean` (`value is number | string`) — Вернет `true`, если объект данных относится к математическим числам либо если строка состоит только из цифр. В противном случае вернет `false`. Выступает в качестве защитника типа (type guard) TypeScript, сужая тип значения до `number | string`.
 
 ```typescript
 import { isNumber } from '@dxtmisha/functional-basic'

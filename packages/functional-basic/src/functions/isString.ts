@@ -5,6 +5,6 @@
  * @param value input value/ входное значение
  * @returns true if string / true, если строка
  */
-export function isString<T>(value: T): value is Extract<T, string> {
+export function isString(value: unknown): value is string {
   return typeof value === 'string'
 }

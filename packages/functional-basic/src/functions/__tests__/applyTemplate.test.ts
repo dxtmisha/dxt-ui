@@ -138,16 +138,16 @@ describe('applyTemplate', () => {
     })
 
     it('should safely convert non-string text inputs to string', () => {
-      expect(applyTemplate(12345 as any, {})).toBe('12345')
-      expect(applyTemplate(null as any, {})).toBe('null')
-      expect(applyTemplate(undefined as any, {})).toBe('undefined')
-      expect(applyTemplate(true as any, {})).toBe('true')
+      expect(applyTemplate(12345 as unknown as string, {})).toBe('12345')
+      expect(applyTemplate(null as unknown as string, {})).toBe('null')
+      expect(applyTemplate(undefined as unknown as string, {})).toBe('undefined')
+      expect(applyTemplate(true as unknown as string, {})).toBe('true')
     })
 
     it('should safely handle non-string text input with array replacement without throwing', () => {
-      expect(applyTemplate(100 as any, ['val'])).toBe('100')
-      expect(applyTemplate(null as any, ['val'])).toBe('null')
-      expect(applyTemplate(undefined as any, ['val'])).toBe('undefined')
+      expect(applyTemplate(100 as unknown as string, ['value'])).toBe('100')
+      expect(applyTemplate(null as unknown as string, ['value'])).toBe('null')
+      expect(applyTemplate(undefined as unknown as string, ['value'])).toBe('undefined')
     })
   })
 
@@ -219,9 +219,9 @@ describe('applyTemplate', () => {
     })
 
     it('should work correctly with Object.create(null) dictionary objects', () => {
-      const dict = Object.create(null)
-      dict.title = 'Hello Null Proto'
-      expect(applyTemplate('Title: [title] (missing: [missing])', dict))
+      const dictionary = Object.create(null) as Record<string, unknown>
+      dictionary.title = 'Hello Null Proto'
+      expect(applyTemplate('Title: [title] (missing: [missing])', dictionary))
         .toBe('Title: Hello Null Proto (missing: [missing])')
     })
 
@@ -312,15 +312,15 @@ describe('applyTemplate', () => {
 
     it('should be strictly deterministic across repeated invocations', () => {
       const template = 'Item: [id] - %d'
-      const obj = { id: 'item_1' }
-      const arr = ['first']
+      const replacementObject = { id: 'item_1' }
+      const replacementArray = ['first']
 
-      const result1 = applyTemplate(template, obj)
-      const result2 = applyTemplate(template, obj)
+      const result1 = applyTemplate(template, replacementObject)
+      const result2 = applyTemplate(template, replacementObject)
       expect(result1).toBe(result2)
 
-      const result3 = applyTemplate(template, arr)
-      const result4 = applyTemplate(template, arr)
+      const result3 = applyTemplate(template, replacementArray)
+      const result4 = applyTemplate(template, replacementArray)
       expect(result3).toBe(result4)
     })
 

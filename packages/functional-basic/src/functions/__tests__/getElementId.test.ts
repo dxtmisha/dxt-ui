@@ -1,8 +1,9 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { ServerStorage } from '../../classes/ServerStorage'
+import * as domRuntimeModule from '../isDomRuntime'
 import {
   getElementId,
   initGetElementId,
@@ -13,6 +14,7 @@ describe('getElementId', () => {
   let element: HTMLElement
 
   beforeEach(() => {
+    vi.restoreAllMocks()
     ServerStorage.reset()
     resetGetElementId()
     element = document.createElement('div')
@@ -20,6 +22,7 @@ describe('getElementId', () => {
   })
 
   afterEach(() => {
+    vi.restoreAllMocks()
     element.remove()
     document.body.removeAttribute('id')
     resetGetElementId()
@@ -264,10 +267,10 @@ describe('getElementId', () => {
     })
 
     it('should treat HTML and script-like tags in selector as literal string concatenation', () => {
-      element.id = 'safe-elem'
+      element.id = 'safe-element'
       const dangerousSelector = ' <script>alert(1)</script>'
       const result = getElementId(element, dangerousSelector)
-      expect(result).toBe('#safe-elem <script>alert(1)</script>')
+      expect(result).toBe('#safe-element <script>alert(1)</script>')
     })
   })
 
@@ -292,13 +295,18 @@ describe('getElementId', () => {
       expect(getElementId(element, ' .dữ-liệu')).toBe('#bảng .dữ-liệu')
     })
 
+    it('should preserve CJK and Emoji characters in existing element ID and selector', () => {
+      element.id = '组件-🚀'
+      expect(getElementId(element, ' .子元素-✨')).toBe('#组件-🚀 .子元素-✨')
+    })
+
     it('should handle listener returning multilingual strings', () => {
       initGetElementId(() => 'phần-tử-123')
       expect(getElementId()).toBe('phần-tử-123')
     })
   })
 
-  describe('Statefulness, isolation, and lifecycle cleanup', () => {
+  describe('Statefulness, SSR safety, isolation, and lifecycle cleanup', () => {
     it('should use ID returned by the registered listener', () => {
       initGetElementId(() => 'custom-context-id')
       expect(getElementId()).toBe('custom-context-id')
@@ -314,6 +322,28 @@ describe('getElementId', () => {
       initGetElementId(() => '')
       const id = getElementId()
       expect(id).toMatch(/^id-\d+$/)
+    })
+
+    it('should fall back to ServerStorage if listener returns undefined or null at runtime', () => {
+      // @ts-expect-error Testing runtime fallback when listener returns undefined (e.g. Vue useId outside setup)
+      initGetElementId(() => undefined)
+      expect(getElementId()).toBe('id-100000')
+
+      resetGetElementId()
+      // @ts-expect-error Testing runtime fallback when listener returns null
+      initGetElementId(() => null)
+      expect(getElementId()).toBe('id-100001')
+    })
+
+    it('should fall back to generating a new ID in SSR environment (isDomRuntime === false) when selector or undefined is passed', () => {
+      const ssrContext: Record<string, unknown> = {}
+      ServerStorage.init(() => ssrContext)
+      vi.spyOn(domRuntimeModule, 'isDomRuntime').mockReturnValue(false)
+      element.id = 'existing-dom-id'
+      element.className = 'ssr-target'
+
+      expect(getElementId('.ssr-target')).toBe('id-100000')
+      expect(getElementId(undefined, ' .child')).toBe('id-100001')
     })
 
     it('should completely clear the listener when resetGetElementId is invoked', () => {

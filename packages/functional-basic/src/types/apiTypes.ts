@@ -201,12 +201,22 @@ export type ApiFetch = {
   /** AbortController for canceling the request/ AbortController для отмены запроса */
   controller?: AbortController
 
-  /** Cache age in seconds/ Возраст кэша в секундах */
+  /**
+   * Global cache age in seconds (for public, user-independent requests only) /
+   * Возраст глобального кэша в секундах (только для публичных, не зависящих от пользователя запросов)
+   */
   cache?: number
 
+  /**
+   * Enable global response caching on the client side (browser) /
+   * Включить глобальное кэширование ответов на стороне клиента (в браузере)
+   */
   enableClientCache?: boolean
 
-  /** Cache ID for grouping/ ID кэша для группировки */
+  /**
+   * Custom cache ID for grouping or segmenting global cache keys /
+   * Пользовательский ID кэша для группировки или сегментации глобальных ключей кэша
+   */
   cacheId?: number | string
 
   /** Limit of end reset/ Лимит сброса end */
@@ -244,7 +254,7 @@ export type ApiErrorStorageItem = Record<string, any> & {
   /** HTTP method/ HTTP метод */
   method: ApiMethodItem
   /** Error code/ Код ошибки */
-  code?: string
+  code?: string | number
   /** HTTP status code/ Код статуса HTTP */
   status?: number
   /** Validation function/ Функция валидации */

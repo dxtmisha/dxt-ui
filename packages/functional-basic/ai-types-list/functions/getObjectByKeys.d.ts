@@ -1,3 +1,3 @@
-// md5:59d72b901ef4f143e9488deb98be00ba true
-/** Creates a new object containing only the specified keys from the source object. @keywords pick, filter keys, subset, extract properties */
-export declare function getObjectByKeys<T extends Record<string, any>, K extends keyof T>(data: T, keys: K[]): Pick<T, K>;
+// md5:25e213798f7f181d3a1b68a4f0269f8c true
+/** Creates a new object composed of the picked keys from the source object. @keywords pick, subset, filter keys, extract */
+export declare function getObjectByKeys<T extends Record<string, unknown>, K extends keyof T>(data: T, keys: K[]): Pick<T, K>;

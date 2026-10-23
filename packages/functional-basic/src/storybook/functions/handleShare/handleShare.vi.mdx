@@ -4,14 +4,14 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `handleShare`
 
-Triệu hồi cơ chế chia sẻ tự nhiên của thiết bị như một phần của Web Share API.
-Nên kiểm tra hỗ trợ bằng `isShare` trước khi gọi.
+Triệu hồi cơ chế chia sẻ tự nhiên của thiết bị thông qua Web Share API (`navigator.share`).
+Bên trong hàm tự động kiểm tra hỗ trợ bằng `isShare()` và `navigator.canShare(data)` trước khi gọi `navigator.share(data)`. Nếu xảy ra lỗi trong quá trình chia sẻ, lỗi sẽ được chuyển tiếp tới `ErrorCenter` (`group: 'share'`, `code: 'error'`).
 
 **Tham số:**
-- `data: ShareData` — một đối tượng chứa dữ liệu để chia sẻ (tiêu đề, văn bản, đường dẫn).
+- `data: ShareData` — Một đối tượng chứa dữ liệu để chia sẻ (`title`, `text`, `url`, `files`).
 
 **Trả về:**
-`Promise<boolean>` — `true` nếu dữ liệu được chia sẻ thành công, ngược lại là `false`.
+`Promise<boolean>` — `true` nếu dữ liệu được chia sẻ thành công, ngược lại là `false` (nếu không được hỗ trợ, dữ liệu không hợp lệ hoặc bị hủy/lỗi).
 
 ```typescript
 import { handleShare, isShare } from '@dxtmisha/functional-basic'

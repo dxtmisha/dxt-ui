@@ -15,7 +15,7 @@ Unlike the generic truthy check (`if (value)`), `isFilled`:
 
 **Parameters:**
 - `value: T` — The targeted input value of any type anticipating validation.
-- `zeroTrue: boolean` — (Optional) When flagged as `true`, interprets the explicit string `'0'` as meaningfully filled (returns `true`), avoiding its traditional falsy deduction.
+- `zeroTrue?: boolean` — (Optional) When flagged as `true`, interprets the explicit string `'0'` as meaningfully filled (returns `true`), avoiding its traditional falsy deduction.
 
 **Returns:**
 `boolean` (`value is Exclude<T, EmptyValue>`) — Emits `true` if the variable is populated, or `false` when empty. This acts as a TypeScript type guard narrowing out `EmptyValue` definitions.

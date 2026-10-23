@@ -16,6 +16,28 @@ export class ApiDefault {
   protected value?: ApiDefaultValue
 
   /**
+   * Gets the default request data.
+   *
+   * Получает данные запроса по умолчанию.
+   * @returns default request data or undefined / данные запроса по умолчанию или undefined
+   */
+  get(): Record<string, unknown> | undefined {
+    return executeFunction(this.value)
+  }
+
+  /**
+   * Sets the default request data.
+   *
+   * Устанавливает данные запроса по умолчанию.
+   * @param request default request data / данные запроса по умолчанию
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
+   */
+  set(request: ApiDefaultValue): this {
+    this.value = request
+    return this
+  }
+
+  /**
    * Checks if default request data exists.
    *
    * Проверяет, существуют ли данные запроса по умолчанию.
@@ -23,16 +45,6 @@ export class ApiDefault {
    */
   is(): boolean {
     return Boolean(this.value)
-  }
-
-  /**
-   * Gets the default request data.
-   *
-   * Получает данные запроса по умолчанию.
-   * @returns default request data or undefined / данные запроса по умолчанию или undefined
-   */
-  get(): Record<string, any> | undefined {
-    return executeFunction(this.value)
   }
 
   /**
@@ -50,7 +62,7 @@ export class ApiDefault {
     if (isFilled(value)) {
       if (request instanceof FormData) {
         this.addByFormData(request, value)
-      } else if (isObjectNotArray(request)) {
+      } else if (request === undefined || isObjectNotArray(request)) {
         return {
           ...value,
           ...request
@@ -59,18 +71,6 @@ export class ApiDefault {
     }
 
     return request
-  }
-
-  /**
-   * Sets the default request data.
-   *
-   * Устанавливает данные запроса по умолчанию.
-   * @param request default request data / данные запроса по умолчанию
-   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-   */
-  set(request: ApiDefaultValue): this {
-    this.value = request
-    return this
   }
 
   /**

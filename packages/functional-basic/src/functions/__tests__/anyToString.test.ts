@@ -115,26 +115,26 @@ describe('anyToString', () => {
   describe('Objects and JSON serialization', () => {
     it('should return stringified JSON for standard plain objects', () => {
       expect(anyToString({ a: 1 })).toBe('{"a":1}')
-      expect(anyToString({ key: 'val', num: 42, active: true })).toBe('{"key":"val","num":42,"active":true}')
+      expect(anyToString({ key: 'value', count: 42, active: true })).toBe('{"key":"value","count":42,"active":true}')
       expect(anyToString({})).toBe('{}')
     })
 
     it('should handle prototype-less objects created via Object.create(null)', () => {
-      const nullObj = Object.create(null)
-      nullObj.key = 'value'
-      expect(anyToString(nullObj)).toBe('{"key":"value"}')
+      const nullPrototypeObject = Object.create(null) as Record<string, unknown>
+      nullPrototypeObject.key = 'value'
+      expect(anyToString(nullPrototypeObject)).toBe('{"key":"value"}')
     })
 
     it('should handle circular references in standard objects by falling back to String()', () => {
-      const obj: any = { a: 1 }
-      obj.self = obj
-      expect(anyToString(obj)).toBe('[object Object]')
+      const circularObject: Record<string, unknown> = { a: 1 }
+      circularObject.self = circularObject
+      expect(anyToString(circularObject)).toBe('[object Object]')
     })
 
     it('should safely handle circular references in prototype-less objects (Object.create(null)) without throwing', () => {
-      const circularNullObj: any = Object.create(null)
-      circularNullObj.self = circularNullObj
-      expect(anyToString(circularNullObj)).toBe('[object Object]')
+      const circularNullObject = Object.create(null) as Record<string, unknown>
+      circularNullObject.self = circularNullObject
+      expect(anyToString(circularNullObject)).toBe('[object Object]')
     })
 
     it('should respect custom toJSON methods on objects', () => {
@@ -154,19 +154,19 @@ describe('anyToString', () => {
     })
 
     it('should handle Symbol values', () => {
-      const sym = Symbol('test')
-      expect(anyToString(sym)).toBe('Symbol(test)')
+      const symbolValue = Symbol('test')
+      expect(anyToString(symbolValue)).toBe('Symbol(test)')
       expect(anyToString(Symbol())).toBe('Symbol()')
     })
 
     it('should handle function expressions and arrow functions', () => {
-      const fn = () => 'test'
-      expect(anyToString(fn)).toContain('() =>')
+      const callback = () => 'test'
+      expect(anyToString(callback)).toContain('() =>')
 
-      function namedFn() {
+      function namedFunction() {
         return 42
       }
-      expect(anyToString(namedFn)).toContain('function namedFn()')
+      expect(anyToString(namedFunction)).toContain('function namedFunction()')
     })
 
     it('should serialize Date objects via JSON.stringify with quotes', () => {

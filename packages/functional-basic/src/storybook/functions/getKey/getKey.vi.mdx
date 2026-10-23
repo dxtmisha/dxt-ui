@@ -10,7 +10,7 @@ Trả về mã số hoặc tên của phím vừa được bấm dựa trên đ�
 - `event: KeyboardEvent` — Đối tượng sự kiện của bàn phím (được kích hoạt từ sự kiện `keydown`, `keyup` hoặc `keypress`).
 
 **Trả về:**
-`string` — Mã hoặc tên của phím bấm vừa bị kích bằng số hay chuỗi (ví dụ: `'Enter'`, `'Escape'`, `'A'`).
+`string | number | undefined` — Mã hoặc tên của phím bấm vừa bị kích bằng số hay chuỗi (ví dụ: `'Enter'`, `'Escape'`, `'A'`), hoặc `undefined` nếu không có.
 
 ```typescript
 import { getKey } from '@dxtmisha/functional-basic'

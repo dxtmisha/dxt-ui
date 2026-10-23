@@ -1,16 +1,16 @@
-// md5:5f564da41884cba134b95c6bf368cd58 true
-/** Storage wrapper for localStorage and sessionStorage with prefix, TTL expiration, and SSR isolation. @keywords storage, localStorage, sessionStorage, cache, ssr */
+// md5:c8faeea2a4c38a1a5a073b1d42a5b3d2 true
+/** Storage manager for localStorage and sessionStorage with prefix, TTL expiration, and SSR isolation support. @keywords localstorage, sessionstorage, storage, cache, ssr */
 export declare class DataStorage<T> {
-    /** Sets global key prefix for storage items. @keywords prefix, key, storage */
-    static setPrefix(newPrefix: string): void;
-    /** Initializes storage instance for a named key. @keywords storage, constructor, session */
+    /** Initializes storage key, storage type, and optional error handler. @keywords constructor, init, storage */
     constructor(name: string, isSession?: boolean, errorCenter?: ErrorCenterInstance);
-    /** Retrieves stored item value or fallback default value with optional cache expiration. @keywords get, retrieve, cache, ttl */
+    /** Retrieves stored value with optional fallback and cache expiration in seconds. @keywords get, read, retrieve, cache */
     get(defaultValue?: T | (() => T), cache?: number): T | undefined;
-    /** Sets or updates stored item value. @keywords set, save, update, store */
+    /** Updates stored value using a direct value or resolver function. @keywords set, write, update, store */
     set(value?: T | (() => T)): T | undefined;
-    /** Removes item from storage. @keywords remove, delete, clear */
+    /** Configures global storage key prefix. @keywords setPrefix, prefix, namespace */
+    static setPrefix(newPrefix: string): void;
+    /** Removes stored item from storage. @keywords remove, delete, clear */
     remove(): this;
-    /** Synchronizes data from underlying storage. @keywords update, sync, refresh */
+    /** Synchronizes data from storage into instance. @keywords update, sync, refresh */
     update(): this;
 }

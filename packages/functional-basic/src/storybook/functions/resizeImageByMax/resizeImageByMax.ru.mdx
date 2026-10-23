@@ -11,7 +11,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 **Параметры:**
 - `image: HTMLImageElement | string` — Элемент изображения или URL-адрес.
 - `maxSize: number` — Максимальный допустимый размер в пикселях (для ширины или высоты).
-- `type: ResizeImageByMaxType` — Стратегия масштабирования: `'auto'`, `'width'`, или `'height'`. По умолчанию `'auto'`.
+- `type?: ResizeImageByMaxType = 'auto'` — Стратегия масштабирования: `'auto'`, `'width'`, или `'height'`. По умолчанию `'auto'`.
 - `typeData?: string` — Опциональный MIME-тип для результирующего Data URL (например, `'image/jpeg'`). По умолчанию `'image/png'`.
 - `quality?: number` — Опциональный коэффициент качества от 0 до 1 для форматов сжатия с потерями (`'image/jpeg'`, `'image/webp'`).
 
@@ -22,8 +22,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 import { resizeImageByMax } from '@dxtmisha/functional-basic'
 
 const imgElement = document.querySelector('img')
-const resizedDataUrl = resizeImageByMax(imgElement, 800)
+if (imgElement) {
+  const resizedDataUrl = resizeImageByMax(imgElement, 800)
 
-console.log(resizedDataUrl) 
-// 'data:image/png;base64,iVBORw0KGgo...'
+  console.log(resizedDataUrl)
+  // 'data:image/png;base64,iVBORw0KGgo...'
+}
 ```

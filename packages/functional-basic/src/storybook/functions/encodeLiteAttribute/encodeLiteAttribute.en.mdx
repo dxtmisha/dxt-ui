@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/encodeLiteAttribute - Encode basic HTML characters'/>
+
+# `encodeLiteAttribute`
+
+Encodes basic HTML special characters in a string (`<`, `>`, `&`) into their corresponding HTML entities (`&lt;`, `&gt;`, `&amp;`) while preserving quotes (`"` and `'`). Commonly used for HTML title tags and light text formatting.
+
+> **Note:** This function intentionally does NOT encode quotes (`"` and `'`). For encoding untrusted user input inside HTML attributes, use `encodeAttribute` instead to prevent attribute injection vulnerabilities.
+
+**Parameters:**
+- `text: string` — The string to encode.
+
+**Returns:**
+`string` — The encoded string.
+
+```typescript
+import { encodeLiteAttribute } from '@dxtmisha/functional-basic'
+
+const input = 'Title "Hello & <World>"'
+const encoded = encodeLiteAttribute(input)
+
+console.log(encoded)
+// 'Title "Hello &amp; &lt;World&gt;"'
+```

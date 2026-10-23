@@ -4,72 +4,82 @@ import { ApiDefault } from '../ApiDefault'
 describe('ApiDefault', () => {
   it('should initialize without default value', () => {
     const apiDefault = new ApiDefault()
+
     expect(apiDefault.is()).toBe(false)
     expect(apiDefault.get()).toBeUndefined()
   })
 
-  it('should set and get default values', () => {
+  it('should set and get static default values and support method chaining', () => {
     const apiDefault = new ApiDefault()
-    apiDefault.set({ token: '123' })
+    const returnedInstance = apiDefault.set({ token: '123' })
+
+    expect(returnedInstance).toBe(apiDefault)
     expect(apiDefault.is()).toBe(true)
     expect(apiDefault.get()).toEqual({ token: '123' })
   })
 
-  it('should support function as default value', () => {
+  it('should evaluate function when default value is a factory function', () => {
     const apiDefault = new ApiDefault()
-    apiDefault.set(() => ({ token: 'dynamic' }))
+    let counter = 0
+
+    apiDefault.set(() => {
+      counter += 1
+      return { token: `dynamic-${counter}` }
+    })
+
     expect(apiDefault.is()).toBe(true)
-    expect(apiDefault.get()).toEqual({ token: 'dynamic' })
+    expect(apiDefault.get()).toEqual({ token: 'dynamic-1' })
+    expect(apiDefault.get()).toEqual({ token: 'dynamic-2' })
   })
 
-  it('should merge default object into request object', () => {
+  it('should merge default object into request object and allow request properties to override defaults', () => {
     const apiDefault = new ApiDefault()
-    apiDefault.set({ globalParam: 'yes' })
+    apiDefault.set({ globalParam: 'yes', sharedParam: 'default' })
 
-    // Passing standard object
-    const result = apiDefault.request({ customParam: 'no' })
-    expect(result).toEqual({
+    const mergedResult = apiDefault.request({ customParam: 'no', sharedParam: 'override' })
+    expect(mergedResult).toEqual({
       globalParam: 'yes',
+      sharedParam: 'override',
       customParam: 'no'
     })
 
-    // Request overrides default
-    const resultOverride = apiDefault.request({ globalParam: 'no' })
-    expect(resultOverride).toEqual({
-      globalParam: 'no'
+    const undefinedRequestResult = apiDefault.request(undefined)
+    expect(undefinedRequestResult).toEqual({
+      globalParam: 'yes',
+      sharedParam: 'default'
     })
   })
 
-  it('should merge defaults into FormData', () => {
+  it('should merge defaults into FormData without overwriting existing FormData keys', () => {
     const apiDefault = new ApiDefault()
-    apiDefault.set({ globalParam: 'yes', existingParam: 'new' })
+    apiDefault.set({ globalParam: 'yes', existingParam: 'new-default' })
 
-    const form = new FormData()
-    form.append('existingParam', 'old')
+    const formData = new FormData()
+    formData.append('existingParam', 'preserved-value')
 
-    const result = apiDefault.request(form) as FormData
+    const result = apiDefault.request(formData)
 
-    // Default should be added if not exists
-    expect(result.get('globalParam')).toBe('yes')
-
-    // Existing should NOT be overridden by default
-    expect(result.get('existingParam')).toBe('old')
+    expect(result).toBe(formData)
+    expect((result as FormData).get('globalParam')).toBe('yes')
+    expect((result as FormData).get('existingParam')).toBe('preserved-value')
   })
 
-  it('should return request as is if it is a string or array when value is set', () => {
+  it('should return request unchanged when request is a string or an array', () => {
     const apiDefault = new ApiDefault()
     apiDefault.set({ defaultParam: 1 })
 
-    // String
-    expect(apiDefault.request('string_request')).toBe('string_request')
-
-    // Array
-    expect(apiDefault.request(['array_item'])).toEqual(['array_item'])
+    expect(apiDefault.request('raw-string-body')).toBe('raw-string-body')
+    expect(apiDefault.request(['array-item'])).toEqual(['array-item'])
   })
 
-  it('should return request as is if no defaults exist', () => {
+  it('should return request unchanged when no defaults are set or defaults are empty', () => {
     const apiDefault = new ApiDefault()
-    expect(apiDefault.request({ a: 1 })).toEqual({ a: 1 })
+
+    expect(apiDefault.request({ key: 1 })).toEqual({ key: 1 })
+    expect(apiDefault.request(undefined)).toBeUndefined()
+
+    apiDefault.set({})
+    expect(apiDefault.request({ key: 2 })).toEqual({ key: 2 })
     expect(apiDefault.request(undefined)).toBeUndefined()
   })
 })

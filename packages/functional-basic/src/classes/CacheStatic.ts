@@ -11,16 +11,6 @@ import { ServerStorage } from './ServerStorage'
  */
 export class CacheStatic {
   /**
-   * Retrieves the Cache instance from ServerStorage.
-   *
-   * Получает экземпляр Cache из ServerStorage.
-   * @returns Cache instance for static caching / Экземпляр Cache для статического кэширования
-   */
-  protected static getItem(): Cache {
-    return ServerStorage.get('__ui:cache-static__', () => new Cache())
-  }
-
-  /**
    * Returns a cached value for the given name. If not cached, executes the callback and stores the result.
    *
    * Возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
@@ -32,7 +22,7 @@ export class CacheStatic {
   static get<T>(
     name: string,
     callback: () => T,
-    comparison?: any[]
+    comparison?: unknown[]
   ): T {
     return this.getItem().get(name, callback, comparison)
   }
@@ -49,8 +39,18 @@ export class CacheStatic {
   static async getAsync<T>(
     name: string,
     callback: () => T,
-    comparison?: any[]
+    comparison?: unknown[]
   ): Promise<T> {
     return await this.getItem().getAsync(name, callback, comparison)
+  }
+
+  /**
+   * Retrieves the Cache instance from ServerStorage.
+   *
+   * Получает экземпляр Cache из ServerStorage.
+   * @returns Cache instance for static caching / Экземпляр Cache для статического кэширования
+   */
+  protected static getItem(): Cache {
+    return ServerStorage.get('__ui:cache-static__', () => new Cache())
   }
 }

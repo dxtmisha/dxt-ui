@@ -6,7 +6,6 @@ describe('isDomRuntime', () => {
   let originalWindow: typeof window | undefined
 
   beforeEach(() => {
-    // Save the original window if it exists (e.g. if we are somehow in jsdom already)
     originalWindow = globalThis.window
   })
 
@@ -14,24 +13,58 @@ describe('isDomRuntime', () => {
     if (originalWindow !== undefined) {
       globalThis.window = originalWindow
     } else {
-      delete (globalThis as any).window
+      Reflect.deleteProperty(globalThis, 'window')
     }
   })
 
-  it('should return false when window is undefined (e.g., in typical Node.js)', () => {
-    delete (globalThis as any).window
-    expect(isDomRuntime()).toBe(false)
+  describe('Standard functional requirements (Browser vs SSR)', () => {
+    it('should return true when both window and window.document are defined', () => {
+      globalThis.window = {
+        document: {}
+      } as unknown as Window & typeof globalThis
+
+      expect(isDomRuntime()).toBe(true)
+    })
+
+    it('should return false when window is undefined (Node.js / SSR environment)', () => {
+      Reflect.deleteProperty(globalThis, 'window')
+      expect(isDomRuntime()).toBe(false)
+    })
   })
 
-  it('should return false when window is defined but window.document is undefined', () => {
-    ; (globalThis as any).window = {}
-    expect(isDomRuntime()).toBe(false)
-  })
+  describe('Partial and non-standard global window environments', () => {
+    it('should return false when window is defined as an empty object without document', () => {
+      globalThis.window = {} as unknown as Window & typeof globalThis
+      expect(isDomRuntime()).toBe(false)
+    })
 
-  it('should return true when both window and window.document are defined', () => {
-    ; (globalThis as any).window = {
-      document: {}
-    }
-    expect(isDomRuntime()).toBe(true)
+    it('should return false when window.document is null or undefined', () => {
+      globalThis.window = {
+        document: undefined
+      } as unknown as Window & typeof globalThis
+      expect(isDomRuntime()).toBe(false)
+
+      globalThis.window = {
+        document: null
+      } as unknown as Window & typeof globalThis
+      expect(isDomRuntime()).toBe(false)
+    })
+
+    it('should return false when window.document is a falsy primitive (false, 0, empty string)', () => {
+      globalThis.window = {
+        document: false
+      } as unknown as Window & typeof globalThis
+      expect(isDomRuntime()).toBe(false)
+
+      globalThis.window = {
+        document: 0
+      } as unknown as Window & typeof globalThis
+      expect(isDomRuntime()).toBe(false)
+
+      globalThis.window = {
+        document: ''
+      } as unknown as Window & typeof globalThis
+      expect(isDomRuntime()).toBe(false)
+    })
   })
 })

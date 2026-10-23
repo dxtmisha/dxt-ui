@@ -60,7 +60,7 @@ describe('ensureMaxSize', () => {
   describe('Standard functional requirements (Image resizing & Base64 generation)', () => {
     it('should resize image using default parameters (compress = 0.56, type = "image/jpeg")', async () => {
       const mockImage = createMockImage(1000)
-      const spyGetElementImage = vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, onload) => {
+      const spyGetElementImage = vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
         onload?.(mockImage)
         return mockImage
       })
@@ -86,7 +86,7 @@ describe('ensureMaxSize', () => {
 
     it('should resize image using custom compress factor and custom MIME type', async () => {
       const mockImage = createMockImage(2000)
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, onload) => {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
         onload?.(mockImage)
         return mockImage
       })
@@ -105,7 +105,7 @@ describe('ensureMaxSize', () => {
 
     it('should handle asynchronous image load event properly', async () => {
       const mockImage = createMockImage(1200)
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, onload) => {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
         setTimeout(() => onload?.(mockImage), 5)
         return mockImage
       })
@@ -119,7 +119,7 @@ describe('ensureMaxSize', () => {
 
     it('should pass created Blob with correct Uint8Array content and MIME type', async () => {
       const mockImage = createMockImage(800)
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, onload) => {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
         onload?.(mockImage)
         return mockImage
       })
@@ -133,10 +133,37 @@ describe('ensureMaxSize', () => {
     })
   })
 
+  describe('Boundary values and edge cases', () => {
+    it('should handle compress = 0 and compress = 1 boundary thresholds', async () => {
+      const mockImage = createMockImage(1000)
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
+        onload?.(mockImage)
+        return mockImage
+      })
+      const spyResizeImageByMax = vi.spyOn(resizeImageByMaxRef, 'resizeImageByMax').mockReturnValue('data:image/jpeg;base64,boundary')
+
+      await ensureMaxSize(sampleFile, 0)
+      expect(spyResizeImageByMax).toHaveBeenCalledWith(mockImage, 0, 'width', 'image/jpeg')
+
+      await ensureMaxSize(sampleFile, 1)
+      expect(spyResizeImageByMax).toHaveBeenCalledWith(mockImage, 1000, 'width', 'image/jpeg')
+    })
+
+    it('should handle empty Uint8Array(0) gracefully', async () => {
+      const emptyFile = new Uint8Array(0)
+      vi.spyOn(getElementImageRef, 'getElementImage').mockReturnValue(undefined)
+      vi.spyOn(blobToBase64Ref, 'blobToBase64').mockResolvedValue(undefined)
+
+      const result = await ensureMaxSize(emptyFile)
+      expect(result).toBe('')
+      expect(createdBlobs[0].size).toBe(0)
+    })
+  })
+
   describe('Fallback mechanisms (When resizing is not required or produces no result)', () => {
     it('should fallback to blobToBase64 when resizeImageByMax returns undefined', async () => {
       const mockImage = createMockImage(1000)
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, onload) => {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
         onload?.(mockImage)
         return mockImage
       })
@@ -153,7 +180,7 @@ describe('ensureMaxSize', () => {
 
     it('should resolve to empty string when resizeImageByMax returns undefined and blobToBase64 resolves undefined', async () => {
       const mockImage = createMockImage(1000)
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, onload) => {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
         onload?.(mockImage)
         return mockImage
       })
@@ -192,7 +219,7 @@ describe('ensureMaxSize', () => {
   describe('Error handling and failed image loads', () => {
     it('should resolve to empty string when getElementImage triggers onerror callback', async () => {
       const mockImage = createMockImage(1000)
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, _onload, onerror) => {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, _onload, onerror) => {
         onerror?.(mockImage)
         return mockImage
       })
@@ -208,7 +235,7 @@ describe('ensureMaxSize', () => {
 
     it('should revoke object URL even if resizeImageByMax throws an exception', async () => {
       const mockImage = createMockImage(1000)
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, onload) => {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
         onload?.(mockImage)
         return mockImage
       })
@@ -225,7 +252,7 @@ describe('ensureMaxSize', () => {
   describe('Resource lifecycle and memory management (URL.revokeObjectURL)', () => {
     it('should revoke object URL exactly once on successful resize', async () => {
       const mockImage = createMockImage(1000)
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, onload) => {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
         onload?.(mockImage)
         return mockImage
       })
@@ -240,7 +267,7 @@ describe('ensureMaxSize', () => {
 
     it('should revoke object URL exactly once on fallback when resizeImageByMax returns undefined', async () => {
       const mockImage = createMockImage(1000)
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, onload) => {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
         onload?.(mockImage)
         return mockImage
       })
@@ -267,7 +294,7 @@ describe('ensureMaxSize', () => {
 
     it('should revoke object URL exactly once when onerror callback is triggered', async () => {
       const mockImage = createMockImage(1000)
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_src, _onload, onerror) => {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, _onload, onerror) => {
         onerror?.(mockImage)
         return mockImage
       })
@@ -301,12 +328,12 @@ describe('ensureMaxSize', () => {
       const mockImage1 = createMockImage(1000)
       const mockImage2 = createMockImage(2000)
 
-      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((src, onload) => {
-        if (src === 'blob:mock-url-1') {
+      vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((source, onload) => {
+        if (source === 'blob:mock-url-1') {
           setTimeout(() => onload?.(mockImage1), 5)
           return mockImage1
         }
-        if (src === 'blob:mock-url-2') {
+        if (source === 'blob:mock-url-2') {
           setTimeout(() => onload?.(mockImage2), 10)
           return mockImage2
         }

@@ -246,7 +246,7 @@ describe('getRequestString', () => {
       const data = { search: 'test', page: 1, filter: { status: 'active', tags: ['a', 'b'] } }
       const firstRun = getRequestString(data)
 
-      for (let i = 0; i < 5; i++) {
+      for (let index = 0; index < 5; index++) {
         expect(getRequestString(data)).toBe(firstRun)
       }
     })

@@ -12,6 +12,19 @@ const updated = await Api.post<User>({ path: 'profile', request: { name: 'New' }
 await ApiCache.set('k', { a: 1 }, 60000); const cache = await ApiCache.get<{a: number}>('k');
 ```
 
+### Global Response Caching (`ApiCache` & `ApiFetch.cache`)
+- **Intentional Global Scope (User-Independent)**: `ApiCache` (and the `cache?: number` option in `ApiFetch`) is **intentionally a global, shared cache** across the application process (and across all SSR requests when backed by memory or Nitro storage via `initPluginApiCache`).
+- **Use Case**: Enable `cache` (TTL in seconds) **only for public, user-independent requests** (e.g., reference dictionaries, static configurations, public catalogs) whose responses do not depend on the current user or session.
+- **Warning**: Do **NOT** use `cache` on personalized or user-specific endpoints. If a public endpoint varies by external context (e.g., locale or tenant) not present in `request`, pass an explicit `cacheId` in `ApiFetch` to segment the cache key:
+```typescript
+const countries = await Api.get({
+  path: 'public/countries',
+  cache: 3600, // Cached globally for 1 hour (in seconds)
+  cacheId: Geo.getLocation(), // Optional custom discriminator for global cache key
+  enableClientCache: true // Optional: also enable in browser runtime (SSR is enabled by default when `cache` is set)
+});
+```
+
 ### Error Responses & Return Types (`ApiData<T>`)
 
 When an error occurs during an API call, `Api` behaves differently depending on whether it is an HTTP response error or a network/runtime failure:

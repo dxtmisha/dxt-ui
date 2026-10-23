@@ -32,7 +32,7 @@ export function replaceRecursive<I>(
   const returnData: ObjectItem<I> = copyObject(target)
 
   if (isObject(replacement)) {
-    forEach<I, void>(
+    forEach(
       replacement,
       (item, index) => {
         if (isPrototypeKey(index)) {

@@ -10,10 +10,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `object: unknown` — проверяемый объект, функция или значение любого типа.
-- `key: PropertyKey` — ключ свойства (`string | number | symbol`).
+- `key: K` — ключ свойства (`K extends PropertyKey`: `string | number | symbol`).
 
 **Возвращает:**
-`boolean` — `true`, если свойство существует и принадлежит непосредственно данному объекту (собственное свойство), иначе `false`.
+`boolean` (`object is T & Record<K, unknown>`) — `true`, если свойство существует и принадлежит непосредственно данному объекту (собственное свойство), иначе `false`.
 
 ```typescript
 import { hasKey } from '@dxtmisha/functional-basic'

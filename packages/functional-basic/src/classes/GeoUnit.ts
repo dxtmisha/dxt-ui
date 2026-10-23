@@ -37,23 +37,6 @@ export class GeoUnit {
   protected readonly geo: GeoItemFull
 
   /**
-   * Returns a request-isolated instance of GeoUnit or cached instance.
-   *
-   * Возвращает изолированный в рамках запроса экземпляр GeoUnit или кэшированный экземпляр.
-   * @param code country or language code / код страны или языка
-   * @returns GeoUnit instance / экземпляр GeoUnit
-   */
-  static getInstance(code: string = Geo.getLocation()): GeoUnit {
-    const location = Geo.find(code).standard
-
-    if (location in instances) {
-      return instances[location]
-    }
-
-    return new GeoUnit(code)
-  }
-
-  /**
    * Constructor.
    * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
    */
@@ -66,6 +49,23 @@ export class GeoUnit {
     }
 
     instances[location] = this
+  }
+
+  /**
+   * Returns a cached instance of GeoUnit for the specified locale.
+   *
+   * Возвращает кэшированный экземпляр GeoUnit для указанной локали.
+   * @param code country or language code / код страны или языка
+   * @returns GeoUnit instance / экземпляр GeoUnit
+   */
+  static getInstance(code: string = Geo.getLocation()): GeoUnit {
+    const location = Geo.find(code).standard
+
+    if (location in instances) {
+      return instances[location]
+    }
+
+    return new GeoUnit(code)
   }
 
   /**

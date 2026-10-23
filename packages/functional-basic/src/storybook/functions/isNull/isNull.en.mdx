@@ -12,7 +12,7 @@ Distinguished from a conventional negative falsy check like `!value` (which inte
 - `value: T` — Any inclusive subject variable requested to be verified.
 
 **Returns:**
-`boolean` — Returns `true` uniformly whenever confronted with a raw `null` or an isolated `undefined` marker. It likewise fulfills the responsibility as a TypeScript type guard, securely minimizing the scope to `Undefined` (`null | undefined`).
+`boolean` (`value is Extract<T, Undefined>`) — Returns `true` uniformly whenever confronted with a raw `null` or an isolated `undefined` marker. It likewise fulfills the responsibility as a TypeScript type guard, securely minimizing the scope to `Extract<T, Undefined>` (`null | undefined`).
 
 ```typescript
 import { isNull } from '@dxtmisha/functional-basic'
