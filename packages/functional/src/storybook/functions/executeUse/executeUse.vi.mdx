@@ -12,19 +12,19 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 ### Giới hạn Generics (Generic Constraints)
 
-- `R` — kiểu đối tượng được trả về bởi hàm khởi tạo (`callback`).
-- `O extends any[]` — kiểu của các tham số đầu vào cho `callback`.
+- `R extends object | void` — đối tượng chứa thông thường do hàm khởi tạo trả về, hoặc `void` khi không cần kết quả.
+- `O extends unknown[]` — kiểu của các tham số đầu vào cho `callback`.
 - `RI extends ExecuteUseReturn<R>` — kiểu kết quả của singleton, bao gồm các phương thức quản lý.
 
 ```typescript
-function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R>>(
+function executeUse<R extends object | void, O extends unknown[], RI extends ExecuteUseReturn<R>>(
   callback: (...args: O) => R,
   type: ExecuteUseType = ExecuteUseType.provide
 ): (...args: O) => RI
 
-function executeUseGlobal<R>(callback: () => R): () => ExecuteUseReturn<R>
-function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): (...args: O) => ExecuteUseReturn<R>
-function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): (...args: O) => ExecuteUseReturn<R>
+function executeUseGlobal<R extends object | void>(callback: () => R): () => ExecuteUseReturn<R>
+function executeUseProvide<R extends object | void, O extends unknown[]>(callback: (...args: O) => R): (...args: O) => ExecuteUseReturn<R>
+function executeUseLocal<R extends object | void, O extends unknown[]>(callback: (...args: O) => R): (...args: O) => ExecuteUseReturn<R>
 ```
 
 **Tham số:**
@@ -34,6 +34,32 @@ function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): (...a
 **Trả về:** `ExecuteUseReturn<R>` — đối tượng đóng băng mở rộng `R` với các phương thức:
 - `init(): Readonly<R>` — trả về kết quả gốc của `callback` mà không có các phương thức quản lý (`init`, `destroyExecute`).
 - `destroyExecute?(): void` — chỉ có ở `local` và `global`. Đặt lại cache, cho phép tạo lại đối tượng ở lần gọi tiếp theo.
+
+### Instance của class bên trong đối tượng chứa
+
+Trả về đối tượng thông thường với các thuộc tính riêng có thể liệt kê, hoặc `void` nếu factory chỉ dùng để khởi tạo. Lớp quản lý sao chép các trường của đối tượng chứa. Trả trực tiếp instance của class không được hỗ trợ: kiểm tra khi chạy ném `TypeError` để tránh âm thầm làm mất phương thức prototype.
+
+Kiểu của đối tượng chứa có thể được khai báo bằng interface có tên mà không cần chữ ký chỉ mục. TypeScript sử dụng kiểu cấu trúc, nên yêu cầu đối tượng thông thường được kiểm tra khi chạy.
+
+Đặt instance của class bên trong đối tượng chứa. Chỉ đối tượng chứa được đóng băng nông: instance lồng bên trong giữ nguyên danh tính, phương thức prototype, accessor, trường riêng tư và trạng thái có thể thay đổi. Quy tắc này áp dụng cho `executeUse`, `executeUseGlobal`, `executeUseLocal` và `executeUseProvide`.
+
+```typescript
+import { executeUseLocal } from '@dxtmisha/functional'
+
+class Service {
+  #value = 'ready'
+
+  read(): string {
+    return this.#value
+  }
+}
+
+export const useService = /*#__PURE__*/ executeUseLocal(() => ({ service: new Service() }))
+
+// Cả hai cách truy cập đều trả về cùng instance gốc của class.
+useService().service.read()
+useService().init().service.read()
+```
 
 ### Hàm Khởi Tạo (`callback`) và Tham Số Đầu Vào (`...args: O`)
 

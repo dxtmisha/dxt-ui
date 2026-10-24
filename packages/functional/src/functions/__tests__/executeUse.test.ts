@@ -2,199 +2,346 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createApp, defineComponent, effectScope, getCurrentScope, h, nextTick, onScopeDispose, ref, watch, type App, type EffectScope, type VNode } from 'vue'
 
-let elementIdCounter = 0
+/** Fresh factory module used by the current test / Новый модуль фабрик для текущего теста */
+let factories: typeof import('../executeUse')
+/** Storage belonging to the current factory module / Хранилище текущего модуля фабрик */
+let storage: typeof import('@dxtmisha/functional-basic').ServerStorage
+/** Applications requiring teardown / Приложения, требующие завершения работы */
+const applications = /* #__PURE__ */ new Set<App>()
+/** Effect scopes requiring teardown / Области эффектов, требующие завершения работы */
+const scopes = /* #__PURE__ */ new Set<EffectScope>()
 
-vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const actual = await importOriginal() as any
-  return {
-    ...actual,
-    getElementId: () => `mock-id-${++elementIdCounter}`,
-    random: (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
+/**
+ * Tracks the scope selected by a factory for cleanup after the test.
+ *
+ * Сохраняет выбранную фабрикой область для очистки после теста.
+ */
+function captureScope(): void {
+  const scope = getCurrentScope()
+
+  if (scope) {
+    scopes.add(scope)
+  }
+}
+
+/**
+ * Mounts an application in a detached container and registers its cleanup.
+ *
+ * Монтирует приложение в отдельный контейнер и регистрирует его очистку.
+ * @param application application to mount / монтируемое приложение
+ */
+function mountApplication(application: App): void {
+  applications.add(application)
+  application.mount(document.createElement('div'))
+}
+
+beforeEach(async () => {
+  vi.resetModules()
+  storage = (await import('@dxtmisha/functional-basic')).ServerStorage
+  factories = await import('../executeUse')
+  storage.init(() => undefined)
+  storage.reset()
+  vi.spyOn(console, 'warn')
+})
+
+afterEach(() => {
+  try {
+    applications.forEach(application => application.unmount())
+    scopes.forEach(scope => scope.stop())
+    expect(console.warn).not.toHaveBeenCalled()
+  } finally {
+    applications.clear()
+    scopes.clear()
+    storage.reset()
+    vi.restoreAllMocks()
   }
 })
 
-vi.spyOn(console, 'warn').mockImplementation(() => {
-})
-
-const {
-  ExecuteUseType,
-  executeUse,
-  executeUseGlobal,
-  executeUseProvide,
-  executeUseLocal,
-  executeUseGlobalInit
-} = await import('../executeUse')
-
 describe('executeUse', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
+  describe('Local initialization and arguments', () => {
+    it('creates one instance lazily and reuses it on repeated calls', () => {
+      const initialize = vi.fn(() => {
+        captureScope()
+        return { name: 'shared' }
+      })
+      const useService = factories.executeUse(initialize, factories.ExecuteUseType.local)
 
-  describe('Core Functionality', () => {
-    it('returns a factory function that produces a singleton instance (local)', () => {
-      const useSharedState = executeUse(() => ({
-        timestamp: Date.now(),
-        uuid: Math.random().toString(36)
-      }), ExecuteUseType.local)
+      expect(initialize).not.toHaveBeenCalled()
+      const first = useService()
 
-      const firstCall = useSharedState()
-      const secondCall = useSharedState()
-
-      expect(firstCall).toBe(secondCall)
-      expect(Object.isFrozen(firstCall)).toBe(true)
+      expect(first.name).toBe('shared')
+      expect(useService()).toBe(first)
+      expect(initialize).toHaveBeenCalledTimes(1)
     })
 
-    it('passes arguments to the initializer only on the first call', () => {
-      const initializer = vi.fn((prefix: string) => ({
-        id: `${prefix}_${Math.random()}`
-      }))
+    it('uses arguments only for the first initialization', () => {
+      const initialize = vi.fn((prefix: string, identifier: number) => {
+        captureScope()
+        return { identifier: `${prefix}:${identifier}` }
+      })
+      const useProfile = factories.executeUseLocal(initialize)
+      const first = useProfile('user', 123)
+      const second = useProfile('ignored', 456)
 
-      const useProfile = executeUse(initializer, ExecuteUseType.local)
-
-      const p1 = useProfile('user_123')
-      const p2 = useProfile('ignored')
-
-      expect(initializer).toHaveBeenCalledTimes(1)
-      expect(initializer).toHaveBeenCalledWith('user_123')
-      expect(p1.id).toContain('user_123')
-      expect(p1).toBe(p2)
-    })
-  })
-
-  describe('Singleton Modes', () => {
-    it('creates instance once for a local type', () => {
-      let instancesCreated = 0
-      const useLocal = executeUse(() => {
-        instancesCreated++
-        return { type: 'local' }
-      }, ExecuteUseType.local)
-
-      useLocal()
-      useLocal()
-
-      expect(instancesCreated).toBe(1)
+      expect(first.identifier).toBe('user:123')
+      expect(second).toBe(first)
+      expect(initialize).toHaveBeenCalledExactlyOnceWith('user', 123)
     })
 
-    it('registers global methods for batch initialization', () => {
-      const globalInitSpy = vi.fn(() => ({ status: 'ready' }))
-      const useConfig = executeUse(globalInitSpy, ExecuteUseType.global)
+    it('keeps separate factory definitions isolated', () => {
+      const useFirst = factories.executeUseLocal(() => {
+        captureScope()
+        return { count: ref(0) }
+      })
+      const useSecond = factories.executeUseLocal(() => {
+        captureScope()
+        return { count: ref(0) }
+      })
+      const first = useFirst()
+      const second = useSecond()
 
-      // Should not be called until executeUseGlobalInit is invoked
-      expect(globalInitSpy).not.toHaveBeenCalled()
+      first.count.value = 2
 
-      executeUseGlobalInit()
-
-      expect(globalInitSpy).toHaveBeenCalledTimes(1)
-      expect(useConfig().status).toBe('ready')
-    })
-  })
-
-  describe('Structural Marker: init()', () => {
-    it('provides an init() method that returns the raw frozen data', () => {
-      const rawData = { apiEndpoint: 'https://api.example.com', version: 'v1' }
-      const useData = executeUse(() => rawData, ExecuteUseType.local)
-
-      const managed = useData()
-      const unwrapped = managed.init()
-
-      expect(unwrapped).toEqual(rawData)
-      expect(Object.isFrozen(unwrapped)).toBe(true)
-      expect((unwrapped as any).init).toBeUndefined()
-    })
-  })
-
-  describe('destroyExecute', () => {
-    it('resets cached singleton allowing re-initialization (local)', () => {
-      let callCount = 0
-      const useItem = executeUse(() => {
-        callCount++
-        return { value: callCount }
-      }, ExecuteUseType.local)
-
-      const first = useItem()
-      expect(first.value).toBe(1)
-      expect(callCount).toBe(1)
-
-      // Destroy the cached instance
-      first.destroyExecute?.()
-
-      // The next call should re-initialize
-      const second = useItem()
-      expect(second.value).toBe(2)
-      expect(callCount).toBe(2)
-      expect(first).not.toBe(second)
+      expect(second).not.toBe(first)
+      expect(second.count.value).toBe(0)
+      expect(useFirst()).toBe(first)
+      expect(useSecond()).toBe(second)
     })
 
-    it('is present on local/global items', () => {
-      const useLocal = executeUse(() => ({ v: 1 }), ExecuteUseType.local)
-      const localItem = useLocal()
-      expect(typeof localItem.destroyExecute).toBe('function')
-    })
-  })
+    it('allows retrying after an initializer throws', () => {
+      const failure = new Error('Initialization failed')
+      let attempts = 0
+      const useService = factories.executeUseLocal(() => {
+        captureScope()
+        attempts++
 
-  describe('Lifecycle and Safety', () => {
-    it('correctly handles global initialization stack cleaning', () => {
-      const spy1 = vi.fn(() => ({}))
-      const spy2 = vi.fn(() => ({}))
+        if (attempts === 1) {
+          throw failure
+        }
 
-      executeUse(spy1, ExecuteUseType.global)
-      executeUse(spy2, ExecuteUseType.global)
-
-      executeUseGlobalInit()
-      expect(spy1).toHaveBeenCalled()
-      expect(spy2).toHaveBeenCalled()
-
-      // The second call should not re-init because the stack was cleared
-      executeUseGlobalInit()
-      expect(spy1).toHaveBeenCalledTimes(1)
-    })
-
-    it('freezes the returned item so it cannot be mutated', () => {
-      const useData = executeUse(() => ({ count: 0, name: 'test' }), ExecuteUseType.local)
-      const item = useData()
-
-      expect(Object.isFrozen(item)).toBe(true)
-      expect(() => {
-        (item as any).count = 42
-      }).toThrow()
-    })
-  })
-
-  describe('Aliases', () => {
-    it('executeUseLocal works as an alias for type local', () => {
-      let created = 0
-      const useItem = executeUseLocal(() => {
-        created++
-        return { ok: true }
+        return { ready: true }
       })
 
-      useItem()
-      useItem()
-      expect(created).toBe(1)
-      expect(useItem().destroyExecute).toBeDefined()
+      expect(() => useService()).toThrow(failure)
+      const managed = useService()
+
+      expect(managed.ready).toBe(true)
+      expect(useService()).toBe(managed)
+      expect(attempts).toBe(2)
+    })
+  })
+
+  describe('Readonly containers and init()', () => {
+    it('returns the original frozen result without adding management methods to it', () => {
+      const original = { endpoint: '/api', version: 'v1' }
+      const useService = factories.executeUseLocal(() => {
+        captureScope()
+        return original
+      })
+      const managed = useService()
+
+      expect(managed.init()).toBe(original)
+      expect(managed).not.toBe(original)
+      expect(Object.isFrozen(managed)).toBe(true)
+      expect(Object.isFrozen(original)).toBe(true)
+      expect(Object.hasOwn(original, 'init')).toBe(false)
+      expect(Object.hasOwn(original, 'destroyExecute')).toBe(false)
     })
 
-    it('executeUseGlobal works as an alias for type global', () => {
-      const spy = vi.fn(() => ({ data: 'global' }))
-      const useShared = executeUseGlobal(spy)
+    it('prevents replacing container properties while preserving mutable refs', () => {
+      const count = ref(0)
+      const useService = factories.executeUseLocal(() => {
+        captureScope()
+        return { count, name: 'original' }
+      })
+      const managed = useService()
 
-      expect(spy).not.toHaveBeenCalled()
-      executeUseGlobalInit()
-      expect(spy).toHaveBeenCalledTimes(1)
-      expect(useShared().data).toBe('global')
+      expect(Reflect.set(managed, 'name', 'changed')).toBe(false)
+      expect(managed.name).toBe('original')
+      managed.count.value = 3
+      expect(managed.init().count.value).toBe(3)
+      expect(managed.count).toBe(count)
+    })
+  })
+
+  describe('Local cache reset and effect ownership', () => {
+    it('reinitializes with new arguments after the local cache is reset', () => {
+      const initialize = vi.fn((name: string) => {
+        captureScope()
+        return { name }
+      })
+      const useService = factories.executeUseLocal(initialize)
+      const first = useService('first')
+
+      expect(first.destroyExecute).toEqual(expect.any(Function))
+      first.destroyExecute?.()
+      const second = useService('second')
+
+      expect(second).not.toBe(first)
+      expect(second.name).toBe('second')
+      expect(first.name).toBe('first')
+      expect(useService('ignored')).toBe(second)
+      expect(initialize.mock.calls).toEqual([['first'], ['second']])
     })
 
-    it('executeUseProvide works as an alias for type provide (via default behavior check)', () => {
-      // Since it uses provide/inject, we just check it doesn't have destroyExecute
-      // and behaves like a provided type in a simple context.
-      // Returns the same if cached locally in this test context?
-      // actually provide type in test without a provider will just re-init if not handled, but usually we just check the structure.
-      const useItem = executeUseProvide(() => ({ val: 1 }))
-      const item = useItem()
-      expect(item.val).toBe(1)
-      expect(item.destroyExecute).toBeUndefined()
+    it('keeps local effects active after the calling scope stops', async () => {
+      const source = ref(0)
+      const changed = vi.fn()
+      const disposed = vi.fn()
+      const owner = effectScope()
+      scopes.add(owner)
+      const useService = factories.executeUseLocal(() => {
+        captureScope()
+        watch(source, changed)
+        onScopeDispose(disposed)
+        return { source }
+      })
+
+      owner.run(() => useService())
+      owner.stop()
+      source.value = 1
+      await nextTick()
+
+      expect(changed).toHaveBeenCalledExactlyOnceWith(1, 0, expect.any(Function))
+      expect(disposed).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('Global initialization registry', () => {
+    it('reuses initialized instances and discovers registrations made after startup', () => {
+      const firstInitialize = vi.fn(() => {
+        captureScope()
+        return { name: 'first' }
+      })
+      const useFirst = factories.executeUseGlobal(firstInitialize)
+
+      expect(firstInitialize).not.toHaveBeenCalled()
+      factories.executeUseGlobalInit()
+      const first = useFirst()
+      const secondInitialize = vi.fn(() => {
+        captureScope()
+        return { name: 'second' }
+      })
+      const useSecond = factories.executeUseGlobal(secondInitialize)
+      factories.executeUseGlobalInit()
+      factories.executeUseGlobalInit()
+
+      expect(useFirst()).toBe(first)
+      expect(useSecond().name).toBe('second')
+      expect(firstInitialize).toHaveBeenCalledTimes(1)
+      expect(secondInitialize).toHaveBeenCalledTimes(1)
+    })
+
+    it('preserves registrations when batch initialization fails and retries them later', () => {
+      const failure = new Error('Startup failed')
+      let attempts = 0
+      const useFirst = factories.executeUseGlobal(() => {
+        captureScope()
+        attempts++
+
+        if (attempts === 1) {
+          throw failure
+        }
+
+        return { ready: true }
+      })
+      const secondInitialize = vi.fn(() => {
+        captureScope()
+        return { ready: true }
+      })
+      const useSecond = factories.executeUseGlobal(secondInitialize)
+
+      expect(() => factories.executeUseGlobalInit()).toThrow(failure)
+      expect(secondInitialize).not.toHaveBeenCalled()
+      factories.executeUseGlobalInit()
+
+      expect(useFirst().ready).toBe(true)
+      expect(useSecond().ready).toBe(true)
+      expect(attempts).toBe(2)
+      expect(secondInitialize).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('Provided component state and lifecycle', () => {
+    it('defaults to provide and shares an instance between owner and descendants', () => {
+      const initialize = vi.fn(() => ({ count: ref(0) }))
+      const useService = factories.executeUse(initialize)
+      const received: ReturnType<typeof useService>[] = []
+      const child = defineComponent({
+        setup(): () => null {
+          received.push(useService())
+          return () => null
+        }
+      })
+      mountApplication(createApp({
+        setup(): () => VNode {
+          const managed = useService()
+          received.push(managed, useService())
+          managed.count.value = 4
+          return () => h(child)
+        }
+      }))
+
+      expect(received).toHaveLength(3)
+      expect(received[1]).toBe(received[0])
+      expect(received[2]).toBe(received[0])
+      expect(received[2]?.count.value).toBe(4)
+      expect(received[0]?.destroyExecute).toBeUndefined()
+      expect(initialize).toHaveBeenCalledTimes(1)
+    })
+
+    it('creates independent instances in independent component trees', () => {
+      const initialize = vi.fn(() => ({ count: ref(0) }))
+      const useService = factories.executeUseProvide(initialize)
+      const received: ReturnType<typeof useService>[] = []
+      const root = defineComponent({
+        setup(): () => null {
+          received.push(useService())
+          return () => null
+        }
+      })
+
+      mountApplication(createApp(root))
+      mountApplication(createApp(root))
+
+      expect(received).toHaveLength(2)
+      expect(received[1]).not.toBe(received[0])
+      expect(received[0]).toBeDefined()
+      received[0]!.count.value = 2
+      expect(received[1]?.count.value).toBe(0)
+      expect(initialize).toHaveBeenCalledTimes(2)
+    })
+
+    it('stops provided effects when the component that created them unmounts', async () => {
+      const source = ref(0)
+      const changed = vi.fn()
+      const disposed = vi.fn()
+      const useService = factories.executeUseProvide(() => {
+        watch(source, changed)
+        onScopeDispose(disposed)
+        return { source }
+      })
+      const application = createApp({
+        setup(): () => null {
+          useService()
+          return () => null
+        }
+      })
+      mountApplication(application)
+      source.value = 1
+      await nextTick()
+      expect(changed).toHaveBeenCalledTimes(1)
+
+      applications.delete(application)
+      application.unmount()
+      source.value = 2
+      await nextTick()
+
+      expect(changed).toHaveBeenCalledTimes(1)
+      expect(disposed).toHaveBeenCalledTimes(1)
     })
   })
 })

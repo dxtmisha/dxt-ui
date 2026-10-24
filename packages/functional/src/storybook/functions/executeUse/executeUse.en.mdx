@@ -12,19 +12,19 @@ To ensure unique identifiers, a combination of an internal global code and the `
 
 ### Generic Constraints
 
-- `R` — the type of object returned by the initializer function (`callback`).
-- `O extends any[]` — the types of arguments accepted by `callback`.
+- `R extends object | void` — a plain object container returned by the initializer, or `void` for initialization without a result.
+- `O extends unknown[]` — the types of arguments accepted by `callback`.
 - `RI extends ExecuteUseReturn<R>` — the resulting singleton type, including management methods.
 
 ```typescript
-function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R>>(
+function executeUse<R extends object | void, O extends unknown[], RI extends ExecuteUseReturn<R>>(
   callback: (...args: O) => R,
   type: ExecuteUseType = ExecuteUseType.provide
 ): (...args: O) => RI
 
-function executeUseGlobal<R>(callback: () => R): () => ExecuteUseReturn<R>
-function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): (...args: O) => ExecuteUseReturn<R>
-function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): (...args: O) => ExecuteUseReturn<R>
+function executeUseGlobal<R extends object | void>(callback: () => R): () => ExecuteUseReturn<R>
+function executeUseProvide<R extends object | void, O extends unknown[]>(callback: (...args: O) => R): (...args: O) => ExecuteUseReturn<R>
+function executeUseLocal<R extends object | void, O extends unknown[]>(callback: (...args: O) => R): (...args: O) => ExecuteUseReturn<R>
 ```
 
 **Parameters:**
@@ -34,6 +34,32 @@ function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): (...a
 **Returns:** `ExecuteUseReturn<R>` — a frozen object extending `R` with the following methods:
 - `init(): Readonly<R>` — returns the raw result of `callback` without any management methods (`init`, `destroyExecute`).
 - `destroyExecute?(): void` — only on `local` and `global`. Resets the cache, allowing the object to be re-created on the next call.
+
+### Class instances inside a container
+
+Return a plain object with own enumerable properties, or `void` for a factory used only for initialization. The management shell copies the container's fields. Returning a class instance directly is unsupported: runtime validation throws `TypeError` before prototype methods can be silently lost.
+
+The container's type can be declared through a named interface; no index signature is required. TypeScript uses structural typing, so the plain-object requirement is checked at runtime.
+
+Put class instances inside the container. Only the container is shallowly frozen: the nested instance retains its identity, prototype methods, accessors, private fields and mutable state. This applies to `executeUse`, `executeUseGlobal`, `executeUseLocal` and `executeUseProvide`.
+
+```typescript
+import { executeUseLocal } from '@dxtmisha/functional'
+
+class Service {
+  #value = 'ready'
+
+  read(): string {
+    return this.#value
+  }
+}
+
+export const useService = /*#__PURE__*/ executeUseLocal(() => ({ service: new Service() }))
+
+// Both access paths return the same original class instance.
+useService().service.read()
+useService().init().service.read()
+```
 
 ### The Initializer Function (`callback`) and its Arguments (`...args: O`)
 

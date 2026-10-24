@@ -6,6 +6,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Creates a computed property that is computed on demand and cached. The value is updated automatically when dependencies change, but only if it has been accessed at least once. The watcher remains active throughout the application's lifecycle. This is particularly useful for properties that should persist globally after the first access.
 
+When asynchronous evaluations overlap, only the latest evaluation can update the value. Results from older evaluations are ignored, even if they complete later. While the latest evaluation is pending, the previous value or `initialState` is retained.
+
 **Parameters:**
 - `getter: () => Promise<T> | T` — A function that returns the value to be computed (can be synchronous or asynchronous).
 - `initialState?: T` — The initial value of the result.

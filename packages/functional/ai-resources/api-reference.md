@@ -7,6 +7,10 @@ Guidance and usage patterns for REST API management and scope-isolated singleton
 - **`executeUseLocal`**: Lazily creates an instance in `ServerStorage`. With an initialized SSR request context, each request gets its own instance; browser calls reuse the cached instance.
 - **`executeUseProvide`**: Scope-bound singleton bound to a specific component subtree via Vue `provide` / `inject`.
 
+### Factory result contract
+
+Return a plain object container with own enumerable properties, or `void` for initialization without a result. Put class instances inside the container: `executeUseLocal(() => ({ service: new Service() }))`. The shallowly frozen container preserves the nested service's identity, prototype methods, accessors, private fields and mutable state. Named interfaces are supported without requiring an index signature. TypeScript uses structural typing, so direct class results are rejected by runtime validation instead of silently losing prototype methods.
+
 ### SSR warnings for global singletons
 
 - Define global factories once at module scope. Do not register them inside request handlers or components.

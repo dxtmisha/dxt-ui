@@ -1,4 +1,6 @@
-/** @vitest-environment jsdom */
+/**
+ * @vitest-environment jsdom
+ */
 import { describe, expect, it, vi } from 'vitest'
 import { createApp, defineComponent, h, nextTick, onMounted, onUnmounted, ref, type VNode } from 'vue'
 
@@ -76,6 +78,8 @@ describe('render: stable node identity', () => {
       application.unmount()
       container.remove()
     }
+
+    expect(unmounted).toHaveBeenCalledTimes(1)
   })
 
   it('still replaces a node when its explicit key changes', async () => {

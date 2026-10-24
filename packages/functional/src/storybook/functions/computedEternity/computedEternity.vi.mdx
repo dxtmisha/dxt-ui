@@ -6,6 +6,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Tạo một thuộc tính tính toán được tính toán theo yêu cầu và được lưu vào bộ nhớ đệm. Giá trị được cập nhật tự động khi các phụ thuộc thay đổi, nhưng chỉ khi nó đã được truy cập ít nhất một lần. Watcher vẫn hoạt động trong suốt vòng đời của ứng dụng. Điều này đặc biệt hữu ích cho các thuộc tính cần tồn tại trên toàn cầu sau lần truy cập đầu tiên.
 
+Khi các lần tính toán bất đồng bộ chồng lấp nhau, chỉ lần tính toán mới nhất có thể cập nhật giá trị. Kết quả từ các lần tính toán cũ bị bỏ qua, ngay cả khi chúng hoàn tất muộn hơn. Trong khi chờ lần tính toán mới nhất, giá trị trước đó hoặc `initialState` được giữ nguyên.
+
 **Các tham số:**
 - `getter: () => Promise<T> | T` — Một hàm trả về giá trị cần tính toán (có thể là đồng bộ hoặc bất đồng bộ).
 - `initialState?: T` — Giá trị ban đầu của kết quả.
