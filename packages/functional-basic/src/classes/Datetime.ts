@@ -289,14 +289,16 @@ export class Datetime {
   }
 
   /**
-   * To change the location.
+   * Changes the location and notifies the watcher.
    *
-   * Изменить местоположение.
+   * Изменяет местоположение и уведомляет наблюдателя.
    * @param code country and language code / код страны и языка
    * @returns this instance / текущий экземпляр
    */
   setCode(code: string): this {
     this.code = code
+    this.update()
+
     return this
   }
 

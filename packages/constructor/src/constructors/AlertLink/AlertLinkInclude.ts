@@ -109,7 +109,7 @@ export class AlertLinkInclude<
               this.getPropsAttrs(),
               link,
               {
-                class: this.naming.getSubClass('links__item'),
+                class: this.naming.getSubClass('links', 'item'),
                 onClick: this.onLink
               }
             ),

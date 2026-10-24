@@ -19,9 +19,9 @@ import type {
 } from '../../types/constructorTypes'
 
 /**
- * Class for working with connected components in Vue.
+ * Typed registry of connected Vue components. It resolves components by name, caches computed modification maps, merges props, and creates VNodes with consistent keys.
  *
- * Класс для работы с подключенными компонентами во Vue.
+ * Типизированный реестр подключённых компонентов Vue. Находит компоненты по имени, кэширует вычисляемые модификации, объединяет свойства и создаёт VNode с согласованными ключами.
  */
 export class DesignComponents<
   COMP extends ConstrComponent,
@@ -31,9 +31,11 @@ export class DesignComponents<
   protected caching: Record<string, ComputedRef<ConstrItem>> = {}
 
   /**
-   * Constructor
-   * @param components list of connected components / список подключенных компонентов
-   * @param modification data for modification / данные для модификации
+   * Initializes DesignComponents with the supplied configuration.
+   *
+   * Инициализирует DesignComponents с переданными настройками.
+   * @param components Connected component registry. / Реестр подключённых компонентов.
+   * @param modification Per-index default prop maps, optionally reactive. / Карты свойств по умолчанию по индексам, могут быть реактивными.
    */
   constructor(
     protected readonly components: COMP = {} as COMP,
@@ -42,34 +44,34 @@ export class DesignComponents<
   }
 
   /**
-   * Check the presence of the component.
+   * Checks whether a registry entry contains a component.
    *
-   * Проверить наличие компонента.
-   * @param name name of the component / названия компонента
-   * @returns true if the component is connected / true, если компонент подключён
+   * Проверяет наличие компонента в записи реестра.
+   * @param name Connected component registry key. / Ключ подключённого компонента в реестре.
+   * @returns Whether the described condition is satisfied. / Выполнено ли описанное условие.
    */
   is<K extends keyof COMP>(name: K): name is K {
     return Boolean(this.components?.[name])
   }
 
   /**
-   * Getting the object of the component.
+   * Returns the registry entry without creating a VNode.
    *
-   * Получение объекта компонента.
-   * @param name name of the component / названия компонента
-   * @returns component / компонент
+   * Возвращает запись реестра без создания VNode.
+   * @param name Connected component registry key. / Ключ подключённого компонента в реестре.
+   * @returns Connected component registry entry. / Запись реестра подключённых компонентов.
    */
   get<K extends keyof COMP>(name: K): COMP[K] {
     return this.components?.[name]
   }
 
   /**
-   * Returns the modified input data of the connected components.
+   * Caches the computed defaults for an index and merges explicit props using `toBinds`. Without a nonempty index, returns the supplied props unchanged.
    *
-   * Возвращает модифицированные входные данные у подключенных компонентов.
-   * @param index the name of this / название данного
-   * @param props basic data / базовые данные
-   * @returns modified properties / модифицированные свойства
+   * Кэширует вычисляемые значения по индексу и объединяет явные свойства через `toBinds`. Без непустого индекса возвращает исходные свойства без изменений.
+   * @param index Entry or modification index. / Индекс записи либо модификации.
+   * @param props Input properties. / Входные свойства.
+   * @returns Merged prop map or the unchanged props when no index is supplied. / Объединённая карта свойств либо исходные свойства без индекса.
    */
   getModification<K extends keyof P>(
     index?: K & string | string,
@@ -95,14 +97,14 @@ export class DesignComponents<
   }
 
   /**
-   * Rendering a component by its name and returning an array with one component.
+   * Wraps the rendered VNode in an array; returns an empty array for a missing component.
    *
-   * Рендеринг компонента по его имени и возвращение массива с одним компонентом.
-   * @param name name of the component / названия компонента
-   * @param props property of the component / свойство компонента
-   * @param children sub-elements of the component / под элементы компонента
-   * @param index the name of the key / названия ключа
-   * @returns array with rendered component or empty array / массив с отрендеренным компонентом или пустой массив
+   * Оборачивает VNode в массив; возвращает пустой массив для отсутствующего компонента.
+   * @param name Connected component registry key. / Ключ подключённого компонента в реестре.
+   * @param props Input properties. / Входные свойства.
+   * @param children Child content or an optional VNode accumulator. / Дочернее содержимое либо необязательный массив VNode.
+   * @param index Entry or modification index. / Индекс записи либо модификации.
+   * @returns Single-VNode array or an empty array. / Массив из одного VNode либо пустой массив.
    */
   render<
     K extends keyof COMP,
@@ -128,14 +130,14 @@ export class DesignComponents<
   }
 
   /**
-   * Rendering a component by its name.
+   * Creates one VNode with merged props and children. Returns `undefined` for a missing component.
    *
-   * Рендеринг компонента по его имени.
-   * @param name name of the component / названия компонента
-   * @param props property of the component / свойство компонента
-   * @param children sub-elements of the component / под элементы компонента
-   * @param index the name of the key / названия ключа
-   * @returns rendered element or undefined / отрендеренный элемент или undefined
+   * Создаёт один VNode с объединёнными свойствами и дочерними элементами. Возвращает `undefined` для отсутствующего компонента.
+   * @param name Connected component registry key. / Ключ подключённого компонента в реестре.
+   * @param props Input properties. / Входные свойства.
+   * @param children Child content or an optional VNode accumulator. / Дочернее содержимое либо необязательный массив VNode.
+   * @param index Entry or modification index. / Индекс записи либо модификации.
+   * @returns Rendered VNode, or undefined when the component is missing. / Отрендеренный VNode либо undefined при отсутствии компонента.
    */
   renderOne<
     K extends keyof COMP,
@@ -161,16 +163,15 @@ export class DesignComponents<
   }
 
   /**
-   * Rendering the component by its name and adding it to the array.
+   * Appends rendered nodes to an existing array and returns the same registry for chaining.
    *
-   * Рендеринг компонента по его имени и добавление его в массив.
-   * @param item an array to which the rendered object will be added /
-   * массив, по которому будет добавлять объект
-   * @param name name of the component / названия компонента
-   * @param props property of the component / свойство компонента
-   * @param children sub-elements of the component / под элементы компонента
-   * @param index the name of the key / названия ключа
-   * @returns current instance / текущий экземпляр
+   * Добавляет отрендеренные узлы в существующий массив и возвращает тот же реестр для цепочек вызовов.
+   * @param item Existing array to append rendered nodes to. / Существующий массив для добавления отрендеренных узлов.
+   * @param name Connected component registry key. / Ключ подключённого компонента в реестре.
+   * @param props Input properties. / Входные свойства.
+   * @param children Child content or an optional VNode accumulator. / Дочернее содержимое либо необязательный массив VNode.
+   * @param index Entry or modification index. / Индекс записи либо модификации.
+   * @returns The current instance for chaining. / Текущий экземпляр для цепочек вызовов.
    */
   renderAdd<
     K extends keyof COMP,

@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/DesignName'/>
+
+# Lớp DesignName
+
+Tiện ích đặt tên BEM cho thành phần thiết kế. Hàm khởi tạo lấy hai phần đầu của `design.component`, chuẩn hóa từng phần và lưu tên thiết kế cùng tên lớp thành phần.
+
+## Tính năng chính
+
+- **Tên được lưu** — trạng thái độc lập cho từng đối tượng.
+- **Tiện ích BEM** — biến thể dùng `--`, phần tử dùng `__`.
+- **Biến CSS** — thuộc tính hệ thống chứa phần `-sys-`.
+
+## Khởi tạo
+
+`constructor(name: string)`
+
+**Tham số:**
+
+- `name: string` — Tên thành phần có tiền tố thiết kế, như d1.button.
+
+## Hành vi và vòng đời
+
+Các phần tên có thể chứa số và `undefined`. Phép nối giữ `0`, chuyển `undefined` thành phần rỗng và giữ hậu tố phân cách khi không có phần tên. Mỗi phần nguồn dùng `toCamelCase`; ví dụ `d1.buttonGroup` trở thành `d1-buttonGroup`.
+
+## Cách dùng
+
+```typescript
+import { DesignName } from '@dxtmisha/functional'
+
+const naming = /*#__PURE__*/ new DesignName('d1.buttonGroup')
+naming.getName() // 'd1-buttonGroup'
+naming.getStatusClass('size', 0) // 'd1-buttonGroup--size--0'
+naming.getSubClass('label') // 'd1-buttonGroup__label'
+naming.getStyle('width') // '--d1-buttonGroup-sys-width'
+```
+
+## Phương thức
+
+### Tên cơ sở
+
+- `getDesign(): string` — Trả về phần tên đầu tiên đã chuẩn hóa.
+
+- `getName(): string` — Trả về tên lớp thành phần đã chuẩn hóa.
+
+### BEM và biến CSS
+
+- `getStatusClass(...names: (string | number | undefined)[]): string` — Nối các phần biến thể bằng `--` sau tên thành phần.
+
+- `getSubClass(...names: (string | number | undefined)[]): string` — Nối các phần phần tử bằng `__` sau tên thành phần.
+
+- `getStyle(...names: (string | number | undefined)[]): string` — Tạo tên biến CSS với tiền tố `--` và không gian tên `-sys-`.

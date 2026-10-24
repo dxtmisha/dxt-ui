@@ -134,7 +134,7 @@ const { count, isPositive, increment } = useMyService().init()
 </template>
 ```
 
-If for some reason you need to forcefully reset the state (e.g., upon user logout), simply call the built-in reset method:
+To reset a shared service, call the built-in reset method. For `global` in SSR, this reset affects the entire server process:
 ```typescript
 const service = useMyService()
 if (service.destroyExecute) {
@@ -178,43 +178,43 @@ const theme = useTheme()
 const theme2 = useTheme()
 ```
 
-### `global` (application-wide singleton)
+### `global` (runtime-wide singleton)
 
-This is a classic Singleton architectural pattern, existing as a strictly unique instance throughout the entire lifetime of your application (from initialization to closing the browser tab). It provides a global point of access to state from literally anywhere in the code.
+The factory registry and each `global` instance are shared by the entire JavaScript runtime. In a browser, the instance lives within the loaded module. In SSR, **all requests handled by the same server process use the same instance**. Separate processes, workers, replicas, and the browser have their own instances.
 
 **When to use:**
-- For storing global application state: authentication, current user profile, language settings, global shopping cart.
-- When the same data needs to be accessed from completely distinct, unrelated parts of the application (or even outside Vue components, such as in the router).
-- As a lightweight replacement for Vuex / Pinia for simple state management tasks.
+- For public configuration, reference data, or services whose state does not depend on a user, session, tenant, or request.
+- When independent parts of the application need the same process-wide service.
 
 **How it works:**
-The initializer function is **not executed when called**. Instead, it is added to a special internal queue (`globalMethods`). Full initialization of all global objects only occurs upon explicitly calling `executeUseGlobalInit()`, which is typically placed in `main.ts` before the app is mounted. Thereafter, all components receive the same cached object from memory.
+`executeUseGlobal(callback)` registers a factory without executing it. The first call to the returned hook or to `executeUseGlobalInit()` creates the instance in its own detached effect scope. Subsequent calls reuse it across SSR request contexts. The shared registry is retained, so later initialization calls also discover factories registered after startup.
+
+> **SSR warnings:**
+> - Do not store authentication, tokens, cookies, user profiles, shopping carts, or request-specific locale/tenant state in a global instance: another request can read the same state.
+> - Do not capture request-scoped dependencies such as request headers, the current router, or an `Api` instance obtained from the current request. The singleton retains the dependencies from its first initialization.
+> - Declare the factory once at module scope, not inside a request handler or component. For per-request state, use `executeUseLocal` with a configured `ServerStorage` request context, or `executeUseProvide` inside a component tree.
+> - `destroyExecute()` resets the singleton for the entire process and stops its effects. The next hook access or initialization call creates a new shared instance; references previously returned to callers still point to the old object. Server and browser instances are separate; this helper does not automatically hydrate their state.
 
 ```typescript
 import { executeUseGlobal, executeUseGlobalInit } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-const useAuth = executeUseGlobal(() => {
-  const user = ref<string | null>(null)
-  const login = (name: string) => { user.value = name }
-  const logout = () => { user.value = null }
-  return { user, login, logout }
+// Public configuration shared by every request in the server process.
+export const usePublicConfig = /*#__PURE__*/ executeUseGlobal(() => {
+  const apiVersion = ref('v1')
+  return { apiVersion }
 })
 
-// In main.ts — strictly BEFORE mounting the app (app.mount()):
 executeUseGlobalInit()
 
-// In any component, utility, or router:
-const auth = useAuth()
-auth.login('Alice')
-
-// If you need to forcefully reset the state (recreate the state from scratch):
-auth.destroyExecute?.() 
+const configuration = /*#__PURE__*/ usePublicConfig()
+// Changes are visible to all consumers in this runtime.
+configuration.apiVersion.value = 'v2'
 ```
 
-### `local` (closure-cached singleton)
+### `local` (lazy context-scoped singleton)
 
-This is an independent singleton that relies on the lexical closure mechanism (`closure caching`) in JavaScript. Instead of using the Vue context or the global scope, it preserves the once-generated result directly inside its own function memory, instantly returning it on all subsequent calls.
+This is a lazily initialized singleton stored through `ServerStorage`. In a browser, calls reuse its cached instance. During SSR, an initialized request context gives each request its own instance.
 
 **When to use:**
 - For utilities, factories, or services not coupled to Vue (`provide`/`inject` only function inside a component's `setup`).
@@ -222,8 +222,7 @@ This is an independent singleton that relies on the lexical closure mechanism (`
 - For caching the results of heavy mathematical calculations or configuration transformations.
 
 **How it works:**
-It does not use Vue mechanisms. On the very first call, the initializer function is executed with the provided arguments. The result is strictly frozen (`Object.freeze`) and stored in a variable inside the `executeUse` closure. On all subsequent calls (even if you pass different arguments), the function instantly returns the already saved object from the variable. 
-The `destroyExecute()` method nullifies this internal variable, allowing the initialization algorithm to run again on the next call.
+The first call runs the initializer with the supplied arguments, freezes the result (`Object.freeze`), and caches it in `ServerStorage`. Later calls in the same context return that instance and ignore new arguments. `destroyExecute()` removes the cache entry in the current context. SSR isolation requires a configured `ServerStorage` request context; without one, the storage fallback is not request-isolated.
 
 ```typescript
 import { executeUseLocal } from '@dxtmisha/functional'
@@ -254,7 +253,7 @@ const newConfig = useHeavyConfig('prod') // Initialization will run again
 function executeUseGlobalInit(): void
 ```
 
-Calls all registered global initializers (`ExecuteUseType.global`) and clears the queue. Calling it again does not re-initialize already created singletons. Should be called **once** at app startup — before mounting the root component.
+Initializes all registered global singletons (`ExecuteUseType.global`) and retains their shared registry. Repeated calls reuse existing instances and initialize newly registered or explicitly reset factories. Import service modules before calling it. In SSR, the plugin may call it for each application/request, while each global instance remains shared by the server process.
 
 ```typescript
 import { createApp } from 'vue'

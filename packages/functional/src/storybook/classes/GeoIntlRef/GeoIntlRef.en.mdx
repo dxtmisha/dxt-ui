@@ -4,248 +4,298 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # GeoIntlRef Class
 
-A reactive class for managing the formatting of numbers, dates, currencies, and relative time. Ensures formatted strings automatically update when the locale changes.
+Reactive `GeoIntl` facade for numbers, money, dates, names and locale-aware sorting. Methods return computed refs that track supported value refs and the explicit locale or `GeoRef` fallback. Use the nonreactive GeoIntl class when computed updates are unnecessary.
 
 ## Key Features
 
-- **Reactivity** — automatic formatted string updates when the locale `Ref` changes.
-- **Internationalization** — full support for `Intl` standards for numbers, dates, currencies, and units.
-- **Relative Time** — convenient methods for displaying time as "2 days ago" with limit support.
-- **Lists and Sorting** — built-in methods for retrieving month names, weekdays, and locale-aware sorting.
+- **Saved computations** — read results through `.value`.
+- **Intl integration** — number, date, display-name and relative-time options.
+- **Immutable sorting** — input arrays are copied.
 
 ## Initialization
 
-### `constructor`
-
-Creates a new `GeoIntlRef` instance for reactive formatting management. The class acts as a wrapper around `GeoIntl` and ensures all computed values automatically update when the locale code changes.
+`constructor(code?: RefOrNormal<string>)`
 
 **Parameters:**
-- `code?: RefOrNormal<string>` — locale code (e.g., `'en-US'`, `'fr-FR'`). Can be a regular string or a reactive `ref` object. If not provided, the current language from `GeoRef` is used.
+
+- `code?: RefOrNormal<string>` — Locale, country or language code; a ref is supported where declared.
+
+## Behavior and lifecycle
+
+Use plain `GeoIntl` when reactivity is unnecessary. `RefOrNormal<T>` accepts a value or Vue ref/computed, not a getter function. Options are ordinary objects unless their signature explicitly uses `RefOrNormal`. Relative results are computed when dependencies change; they do not run a timer. Supply `todayValue` for a fixed reference date. Month and weekday lists start with `{ label: "", value: undefined }`; months then use 1–12 and weekdays use native day codes in locale order. File-size unit promotion occurs above 1024, not at 1024. Numeric formatting delegates coercion and fallback behavior to `GeoIntl`.
+
+## Usage
 
 ```typescript
 import { GeoIntlRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-// 1. Initialization with a reactive locale
-const code = ref('en-US')
-const geoIntl = new GeoIntlRef(code)
-
-// 2. Using reactive formatting
-const price = geoIntl.currency(1000, 'USD') // ComputedRef: '$1,000.00'
-
-// 3. Automatic update
-code.value = 'de-DE' // price will update automatically
+const locale = /*#__PURE__*/ ref('en-US')
+const amount = /*#__PURE__*/ ref(0)
+const formatter = /*#__PURE__*/ new GeoIntlRef(locale)
+const formatted = /*#__PURE__*/ formatter.currency(amount, ref('USD'))
+amount.value = 1234.5
+locale.value = 'vi-VN'
 ```
 
-## Display Names
+## Methods
 
-### `display`
-Returns the translated name of a language, region, or script.
+### Display names
 
-**Parameters:**
-- `value?: RefOrNormal<string>` — the code to translate (e.g., 'fr-FR').
-- `typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions` — display type options.
+- `display( value?: RefOrNormal<string>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions ): ComputedRef<string>` — Returns a localized display name for the requested Intl type.
 
-**Returns:** `ComputedRef<string>`
+- `languageName( value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle ): ComputedRef<string>` — Returns the localized language name.
 
-### `languageName`
-Returns the display name of a language.
+- `countryName( value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle ): ComputedRef<string>` — Returns the localized region name.
 
-**Parameters:**
-- `value?: RefOrNormal<string>` — language code.
-- `style?: Intl.RelativeTimeFormatStyle` — formatting style.
+### Numbers
 
-**Returns:** `ComputedRef<string>`
+#### `number`
 
-### `countryName`
-Returns the display name of a region (country).
+`number( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>`
+
+Formats a numeric value or numeric string using locale rules and number options.
 
 **Parameters:**
-- `value?: RefOrNormal<string>` — country code.
-- `style?: Intl.RelativeTimeFormatStyle` — formatting style.
 
-**Returns:** `ComputedRef<string>`
+- `value: RefOrNormal<NumberOrString>` — Value to format; a ref is supported where declared.
+- `options?: Intl.NumberFormatOptions` — Configuration options.
 
-## Number Formatting
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
 
-### `number`
-Formats a number according to locale rules.
+```typescript
+const number = /*#__PURE__*/ formatter.number(amount, { maximumFractionDigits: 2 })
+```
 
-**Parameters:**
-- `value: RefOrNormal<NumberOrString>` — value to format.
-- `options?: Intl.NumberFormatOptions` — formatting options.
+#### `percent`
 
-**Returns:** `ComputedRef<string>`
+`percent( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>`
 
-### `decimal`
-Returns the decimal separator symbol for the current locale.
-
-**Returns:** `ComputedRef<string>`
-
-### `percent`
-Formats a value as a percentage.
+Formats a ratio as a percentage: 0.25 becomes 25%.
 
 **Parameters:**
-- `value: RefOrNormal<NumberOrString>` — input value (0.25 -> 25%).
-- `options?: Intl.NumberFormatOptions` — formatting options.
 
-**Returns:** `ComputedRef<string>`
+- `value: RefOrNormal<NumberOrString>` — Value to format; a ref is supported where declared.
+- `options?: Intl.NumberFormatOptions` — Configuration options.
 
-### `percentBy100`
-Formats a value as a percentage after dividing it by 100.
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
 
-**Parameters:**
-- `value: RefOrNormal<NumberOrString>` — input value (25 -> 25%).
-- `options?: Intl.NumberFormatOptions` — formatting options.
+```typescript
+const percent = /*#__PURE__*/ formatter.percent(0.25)
+```
 
-**Returns:** `ComputedRef<string>`
+#### `percentBy100`
 
-### `plural`
-Selects the correct plural form for a word based on a numeric value.
+`percentBy100( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>`
 
-**Parameters:**
-- `value: RefOrNormal<NumberOrString>` — numeric value.
-- `words: string` — pipes-separated list of words (e.g., 'apple|apples').
-- `options?: Intl.PluralRulesOptions` — plural rules options.
-- `optionsNumber?: Intl.NumberFormatOptions` — numeric formatting options.
-
-**Returns:** `ComputedRef<string>`
-
-## Currencies and Units
-
-### `currency`
-Formats a numeric value as a currency string.
+Divides by 100 before percentage formatting: 25 becomes 25%.
 
 **Parameters:**
-- `value: RefOrNormal<NumberOrString>` — amount.
-- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>` — currency code or options.
-- `numberOnly?: boolean` — if `true`, returns only the number without the currency symbol.
 
-**Returns:** `ComputedRef<string>`
+- `value: RefOrNormal<NumberOrString>` — Value to format; a ref is supported where declared.
+- `options?: Intl.NumberFormatOptions` — Configuration options.
 
-### `currencySymbol`
-Returns the currency symbol for a given currency code.
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
 
-**Parameters:**
-- `currency: RefOrNormal<string>` — currency code (e.g., 'EUR').
-- `currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry` — how to display the currency.
+```typescript
+const percent = /*#__PURE__*/ formatter.percentBy100(25)
+```
 
-**Returns:** `ComputedRef<string>`
+#### `plural`
 
-### `unit`
-Formats a number with a specific unit.
+`plural( value: RefOrNormal<NumberOrString>, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions ): ComputedRef<string>`
+
+Selects a plural word form and formats its count. Pass pipe-separated word variants supported by `GeoIntl`.
 
 **Parameters:**
-- `value: RefOrNormal<NumberOrString>` — numeric value.
-- `unitOptions?: string | Intl.NumberFormatOptions` — unit name or options.
 
-**Returns:** `ComputedRef<string>`
+- `value: RefOrNormal<NumberOrString>` — Value to format; a ref is supported where declared.
+- `words: string` — Pipe-separated plural word forms.
+- `options?: Intl.PluralRulesOptions` — Configuration options.
+- `optionsNumber?: Intl.NumberFormatOptions` — Number formatting options for the count.
 
-### `sizeFile`
-Formats a file size into a human-readable format (bytes, KB, MB, etc.).
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
 
-**Parameters:**
-- `value: RefOrNormal<NumberOrString>` — size in bytes.
-- `unitOptions?: string | Intl.NumberFormatOptions` — starting unit or options.
+```typescript
+const label = /*#__PURE__*/ formatter.plural(amount, 'item|items')
+```
 
-**Returns:** `ComputedRef<string>`
+### Decimal separator
 
-## Dates and Time
+- `decimal(): ComputedRef<string>` — Returns the locale decimal separator.
 
-### `date`
-Formats a date according to the locale.
+### Money and units
 
-**Parameters:**
-- `value: RefOrNormal<NumberOrStringOrDate>` — input date.
-- `type?: GeoDate` — format type ('date', 'time', 'datetime', etc.).
-- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — display style.
-- `hour24?: boolean` — whether to use a 24-hour clock.
+#### `currency`
 
-**Returns:** `ComputedRef<string>`
+`currency( value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>, numberOnly = false ): ComputedRef<string>`
 
-### `time`
-Formats a time value.
+Formats money with a currency code or reactive option object. `numberOnly` omits the currency representation.
 
 **Parameters:**
-- `value: RefOrNormal<NumberOrStringOrDate>` — input date/time.
 
-**Returns:** `ComputedRef<string>`
+- `value: RefOrNormal<NumberOrString>` — Value to format; a ref is supported where declared.
+- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>` — Currency code or Intl number options.
+- `numberOnly = false` — Omit the currency representation; defaults to false.
 
-### `month`
-Returns the name of a specific month.
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
 
-**Parameters:**
-- `value?: RefOrNormal<NumberOrStringOrDate>` — input date.
-- `style?: Intl.DateTimeFormatOptions['month']` — formatting style (long, short, narrow).
+```typescript
+const money = /*#__PURE__*/ formatter.currency(amount, ref('USD'), false)
+```
 
-**Returns:** `ComputedRef<string>`
+#### `unit`
 
-### `months`
-Returns a list of all month names.
+`unit( value: RefOrNormal<NumberOrString>, unitOptions?: string | Intl.NumberFormatOptions ): ComputedRef<string>`
 
-**Parameters:**
-- `style?: Intl.DateTimeFormatOptions['month']` — formatting style.
-
-**Returns:** `ComputedRef<ItemValue<number | undefined>[]>`
-
-### `weekday`
-Returns the name of a specific weekday.
+Formats a numeric value with an Intl unit; it does not perform regional unit conversion.
 
 **Parameters:**
-- `value?: RefOrNormal<NumberOrStringOrDate>` — input date.
-- `style?: Intl.DateTimeFormatOptions['weekday']` — formatting style.
 
-**Returns:** `ComputedRef<string>`
+- `value: RefOrNormal<NumberOrString>` — Value to format; a ref is supported where declared.
+- `unitOptions?: string | Intl.NumberFormatOptions` — Unit identifier or Intl number options.
 
-### `weekdays`
-Returns a list of all weekday names.
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
 
-**Parameters:**
-- `style?: Intl.DateTimeFormatOptions['weekday']` — formatting style.
+```typescript
+const distance = /*#__PURE__*/ formatter.unit(amount, 'meter')
+```
 
-**Returns:** `ComputedRef<ItemValue<number | undefined>[]>`
+#### `sizeFile`
 
-## Relative Time
+`sizeFile( value: RefOrNormal<NumberOrString>, unitOptions: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions = 'byte' ): ComputedRef<string>`
 
-### `relative`
-Formats a date as relative time (e.g., "2 days ago").
+Formats a file size starting with the supplied unit. String units are promoted when the value exceeds 1024; an options object is passed to unit formatting.
 
 **Parameters:**
-- `value: RefOrNormal<NumberOrStringOrDate>` — input date.
-- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — formatting style.
-- `todayValue?: Date` — reference date for "today".
 
-**Returns:** `ComputedRef<string>`
+- `value: RefOrNormal<NumberOrString>` — Value to format; a ref is supported where declared.
+- `unitOptions: 'byte'
+      | 'kilobyte'
+      | 'megabyte'
+      | 'gigabyte'
+      | 'terabyte'
+      | 'petabyte'
+      | Intl.NumberFormatOptions = 'byte'` — Unit identifier or Intl number options.
 
-### `relativeLimit`
-Formats relative time with an automatic switch to standard date formatting if a limit is reached.
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
 
-**Parameters:**
-- `value: RefOrNormal<NumberOrStringOrDate>` — input date.
-- `limit: number` — limit in days.
-- `todayValue?: Date` — reference date for "today".
-- `relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — relative formatting options.
-- `dateOptions?: Intl.DateTimeFormatOptions` — standard date options.
+```typescript
+const size = /*#__PURE__*/ formatter.sizeFile(2048, 'byte')
+```
 
-**Returns:** `ComputedRef<string>`
+### Currency symbols
 
-### `relativeByValue`
-Formats a numeric interval as relative time.
+- `currencySymbol( currency: RefOrNormal<string>, currencyDisplay: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry = 'symbol' ): ComputedRef<string>` — Returns the requested currency representation, falling back to its code.
 
-**Parameters:**
-- `value: RefOrNormal<NumberOrString>` — quantity.
-- `unit: Intl.RelativeTimeFormatUnit` — time unit (day, month, hour, etc.).
-- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — formatting style.
+### Date formatting
 
-**Returns:** `ComputedRef<string>`
+#### `date`
 
-## Lists and Sorting
+`date( value: RefOrNormal<NumberOrStringOrDate>, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean ): ComputedRef<string>`
 
-### `sort`
-Sorts an array of strings or objects based on locale rules.
+Formats a date with a Geo format type, date options and an optional 24-hour clock override.
 
 **Parameters:**
-- `data: RefOrNormal<T[]>` — data array.
-- `compareFn?: (a: T, b: T) => [string, string]` — mapper function to extract sortable strings.
 
-**Returns:** `ComputedRef<T[]>`
+- `value: RefOrNormal<NumberOrStringOrDate>` — Value to format; a ref is supported where declared.
+- `type?: GeoDate` — Output format or event type(s), according to the signature.
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — Intl style or formatting options.
+- `hour24?: boolean` — Whether to use a 24-hour clock.
+
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
+
+```typescript
+const date = /*#__PURE__*/ formatter.date(ref('2025-01-01'), 'date', 'long')
+```
+
+### Calendar names and time
+
+- `month( value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['month'] ): ComputedRef<string>` — Returns the month name for the supplied date.
+
+- `months( style?: Intl.DateTimeFormatOptions['month'] ): ComputedRef<ItemValue<number | undefined>[]>` — Returns the placeholder followed by 12 month entries numbered 1–12.
+
+- `weekday( value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['weekday'] ): ComputedRef<string>` — Returns the weekday name for the supplied date.
+
+- `weekdays( style?: Intl.DateTimeFormatOptions['weekday'] ): ComputedRef<ItemValue<number | undefined>[]>` — Returns the placeholder followed by seven weekday entries in locale order.
+
+- `time(value: RefOrNormal<NumberOrStringOrDate>): ComputedRef<string>` — Formats the supplied date as local time.
+
+### Relative time
+
+#### `relative`
+
+`relative( value: RefOrNormal<NumberOrStringOrDate>, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date ): ComputedRef<string>`
+
+Formats a date relative to the reference date using GeoIntl’s unit selection.
+
+**Parameters:**
+
+- `value: RefOrNormal<NumberOrStringOrDate>` — Value to format; a ref is supported where declared.
+- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — Intl style or formatting options.
+- `todayValue?: Date` — Reference date; omitted values use the current date when evaluated.
+
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
+
+```typescript
+const relative = /*#__PURE__*/ formatter.relative('2025-01-03', 'long', new Date(2025, 0, 1))
+```
+
+#### `relativeLimit`
+
+`relativeLimit( value: RefOrNormal<NumberOrStringOrDate>, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean ): ComputedRef<string>`
+
+Uses relative formatting inside the inclusive ±limit-day interval. Outside that interval, delegates to date formatting with all supplied date options.
+
+**Parameters:**
+
+- `value: RefOrNormal<NumberOrStringOrDate>` — Value to format; a ref is supported where declared.
+- `limit: number` — Inclusive relative-time limit in days.
+- `todayValue?: Date` — Reference date; omitted values use the current date when evaluated.
+- `relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — Relative-time style or Intl options.
+- `dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — Date style or Intl date options for values outside the limit.
+- `type?: GeoDate` — Output format or event type(s), according to the signature.
+- `hour24?: boolean` — Whether to use a 24-hour clock.
+
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
+
+```typescript
+const label = /*#__PURE__*/ formatter.relativeLimit('2025-01-05', 2, new Date(2025, 0, 1), 'long', 'long', 'date', true)
+```
+
+#### `relativeByValue`
+
+`relativeByValue( value: RefOrNormal<NumberOrString>, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions ): ComputedRef<string>`
+
+Formats an explicit signed interval using the supplied relative-time unit.
+
+**Parameters:**
+
+- `value: RefOrNormal<NumberOrString>` — Value to format; a ref is supported where declared.
+- `unit: Intl.RelativeTimeFormatUnit` — Unit identifier.
+- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — Intl style or formatting options.
+
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
+
+```typescript
+const relative = /*#__PURE__*/ formatter.relativeByValue(-5, 'minute')
+```
+
+### Locale sorting
+
+#### `sort`
+
+`sort<T>( data: RefOrNormal<T[]>, compareFn: (a: T, b: T) => [string, string] = (a, b) => [a as string, b as string] ): ComputedRef<T[]>`
+
+Returns a sorted copy using locale collation. For object arrays, provide a mapper returning the two comparison strings.
+
+**Parameters:**
+
+- `data: RefOrNormal<T[]>` — Input array; it is not mutated.
+- `compareFn: (a: T, b: T) => [string, string] = (a, b) => [a as string, b as string]` — Maps two entries to the two strings compared by Intl.Collator.
+
+**Returns:** `ComputedRef<T[]>` — Computed result; read it through .value.
+
+```typescript
+const sorted = /*#__PURE__*/ formatter.sort(ref([{ label: 'café' }, { label: 'apple' }]), (first, second) => [first.label, second.label])
+```

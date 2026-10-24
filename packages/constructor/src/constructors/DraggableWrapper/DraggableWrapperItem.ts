@@ -17,57 +17,17 @@ export class DraggableWrapperItem {
    * Constructor.
    *
    * Конструктор.
-   * @param focus focused element helper / помощник по сфокусированному элементу
-   * @param active active item helper / помощник по активному элементу
-   * @param selection selected items helper / помощник по выбранным элементам
-   * @param go drop position target helper / помощник по целевой позиции сброса
+   * @param active active item helper factory / фабрика помощника по активному элементу
+   * @param focus focused element helper factory / фабрика помощника по сфокусированному элементу
+   * @param go drop position target helper factory / фабрика помощника по целевой позиции сброса
+   * @param selection selected items helper factory / фабрика помощника по выбранным элементам
    */
   constructor(
-    protected readonly focus: DraggableWrapperItemFocus,
-    protected readonly active: DraggableWrapperItemActive,
-    protected readonly selection: DraggableWrapperItemSelection,
-    protected readonly go: DraggableWrapperItemGo
+    protected readonly active: () => DraggableWrapperItemActive,
+    protected readonly focus: () => DraggableWrapperItemFocus,
+    protected readonly go: () => DraggableWrapperItemGo,
+    protected readonly selection: () => DraggableWrapperItemSelection
   ) {
-  }
-
-  /**
-   * Returns the focused item helper.
-   *
-   * Возвращает помощник по сфокусированному элементу.
-   * @returns focused item helper / помощник по сфокусированному элементу
-   */
-  getFocus(): DraggableWrapperItemFocus {
-    return this.focus
-  }
-
-  /**
-   * Returns the active item helper.
-   *
-   * Возвращает помощник по активному элементу.
-   * @returns active item helper / помощник по активному элементу
-   */
-  getActive(): DraggableWrapperItemActive {
-    return this.active
-  }
-
-  /**
-   * Returns the selected items helper.
-   *
-   * Возвращает помощник по выбранным элементам.
-   * @returns selected items helper / помощник по выбранным элементам
-   */
-  getSelection(): DraggableWrapperItemSelection {
-    return this.selection
-  }
-
-  /**
-   * Returns the target drop position helper.
-   *
-   * Возвращает помощник по целевой позиции сброса.
-   * @returns target drop position helper / помощник по целевой позиции сброса
-   */
-  getGo(): DraggableWrapperItemGo {
-    return this.go
   }
 
   /**
@@ -77,19 +37,59 @@ export class DraggableWrapperItem {
    * @returns array of HTML elements / массив HTML-элементов
    */
   get(): HTMLElement[] {
-    const selection = this.selection.get()
+    const selection = this.selection().get()
 
     if (selection) {
       return selection
     }
 
-    const active = this.active.get()
+    const active = this.active().get()
 
     if (active) {
       return [active]
     }
 
     return []
+  }
+
+  /**
+   * Returns the active item helper.
+   *
+   * Возвращает помощник по активному элементу.
+   * @returns active item helper / помощник по активному элементу
+   */
+  getActive(): DraggableWrapperItemActive {
+    return this.active()
+  }
+
+  /**
+   * Returns the focused item helper.
+   *
+   * Возвращает помощник по сфокусированному элементу.
+   * @returns focused item helper / помощник по сфокусированному элементу
+   */
+  getFocus(): DraggableWrapperItemFocus {
+    return this.focus()
+  }
+
+  /**
+   * Returns the target drop position helper.
+   *
+   * Возвращает помощник по целевой позиции сброса.
+   * @returns target drop position helper / помощник по целевой позиции сброса
+   */
+  getGo(): DraggableWrapperItemGo {
+    return this.go()
+  }
+
+  /**
+   * Returns the selected items helper.
+   *
+   * Возвращает помощник по выбранным элементам.
+   * @returns selected items helper / помощник по выбранным элементам
+   */
+  getSelection(): DraggableWrapperItemSelection {
+    return this.selection()
   }
 
   /**
@@ -109,10 +109,10 @@ export class DraggableWrapperItem {
    * @returns this instance / текущий экземпляр класса
    */
   reset(): this {
-    this.focus.reset()
-    this.active.reset()
-    this.selection.reset()
-    this.go.reset()
+    this.focus().reset()
+    this.active().reset()
+    this.selection().reset()
+    this.go().reset()
 
     return this
   }

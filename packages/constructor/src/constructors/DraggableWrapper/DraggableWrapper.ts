@@ -1,167 +1,189 @@
-import { type Ref } from 'vue'
 import {
-  type ConstrEmit,
-  type DesignComp,
-  type DesignName
+  type ConstrClassObject,
+  type ConstrItems,
+  DesignLogicAbstract
 } from '@dxtmisha/functional'
 
-import type { DraggableWrapperComponents, DraggableWrapperEmits, DraggableWrapperSlots } from './types'
-import type { DraggableWrapperProps } from './props'
-import type { DraggableWrapperEventParameters } from './basicTypes'
-
-import { DraggableWrapperSquare } from './DraggableWrapperSquare'
-import { DraggableWrapperSelection } from './DraggableWrapperSelection'
-import { DraggableWrapperPosition } from './DraggableWrapperPosition'
-import { DraggableWrapperClient } from './DraggableWrapperClient'
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
-import { DraggableWrapperItemFocus } from './DraggableWrapperItemFocus'
-import { DraggableWrapperItem } from './DraggableWrapperItem'
-import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
-import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
-import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
-import { DraggableWrapperEvents } from './DraggableWrapperEvents'
+import { DraggableWrapperClient } from './DraggableWrapperClient'
 import { DraggableWrapperDelay } from './DraggableWrapperDelay'
 import { DraggableWrapperEmit } from './DraggableWrapperEmit'
+import { DraggableWrapperEvents } from './DraggableWrapperEvents'
+import { DraggableWrapperItem } from './DraggableWrapperItem'
+import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
+import { DraggableWrapperItemFocus } from './DraggableWrapperItemFocus'
+import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
+import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
+import { DraggableWrapperPosition } from './DraggableWrapperPosition'
+import { DraggableWrapperSelection } from './DraggableWrapperSelection'
+import { DraggableWrapperSquare } from './DraggableWrapperSquare'
+
+import type { DraggableWrapperEventParameters } from './basicTypes'
+import type { DraggableWrapperProps } from './props'
+import type {
+  DraggableWrapperComponents,
+  DraggableWrapperEmits,
+  DraggableWrapperSlots
+} from './types'
+
+/** DraggableWrapper dependency constructors type / Тип конструкторов зависимостей DraggableWrapper */
+export type DraggableWrapperConstructors = {
+  /** Classes helper constructor / Конструктор помощника по классам */
+  classesData: typeof DraggableWrapperClassesData
+  /** Client coordinates manager constructor / Конструктор менеджера клиентских координат */
+  client: typeof DraggableWrapperClient
+  /** Drag start delay constructor / Конструктор задержки начала перетаскивания */
+  delay: typeof DraggableWrapperDelay
+  /** Event emit constructor / Конструктор вызова событий */
+  emit: typeof DraggableWrapperEmit
+  /** Event validator constructor / Конструктор валидатора событий */
+  events: typeof DraggableWrapperEvents
+  /** Aggregated item helper constructor / Конструктор агрегированного помощника по элементам */
+  item: typeof DraggableWrapperItem
+  /** Active item helper constructor / Конструктор помощника по активному элементу */
+  itemActive: typeof DraggableWrapperItemActive
+  /** Focused item helper constructor / Конструктор помощника по сфокусированному элементу */
+  itemFocus: typeof DraggableWrapperItemFocus
+  /** Drop position target helper constructor / Конструктор помощника по целевой позиции сброса */
+  itemGo: typeof DraggableWrapperItemGo
+  /** Item selection helper constructor / Конструктор помощника по выделению элементов */
+  itemSelection: typeof DraggableWrapperItemSelection
+  /** Coordinate position helper constructor / Конструктор помощника позиционирования */
+  position: typeof DraggableWrapperPosition
+  /** Multiselection helper constructor / Конструктор помощника множественного выбора */
+  selection: typeof DraggableWrapperSelection
+  /** Spacer placeholder manager constructor / Конструктор менеджера элемента-заполнителя */
+  square: typeof DraggableWrapperSquare
+}
 
 /**
  * Orchestrator class for managing draggable reordering logic.
  *
  * Класс-оркестратор для управления логикой изменения порядка перетаскиванием.
  */
-export class DraggableWrapper {
-  /** Classes helper instance / Экземпляр помощника по классам */
-  readonly classes: DraggableWrapperClassesData
-  /** Drag start delay helper class / Вспомогательный класс задержки начала перетаскивания */
-  readonly delay: DraggableWrapperDelay
-
-  /** Aggregated item helper / Агрегированный помощник по элементам */
-  readonly item: DraggableWrapperItem
-
-  /** Client coordinates manager / Менеджер клиентских координат */
-  readonly client: DraggableWrapperClient
-  /** Spacer placeholder manager / Менеджер элемента-заполнителя */
-  readonly square: DraggableWrapperSquare
-
-  /** Event emit helper class / Вспомогательный класс вызова событий */
-  readonly emit: DraggableWrapperEmit
-
-  /** Multiselection helper class / Вспомогательный класс множественного выбора */
-  readonly selection: DraggableWrapperSelection
-  /** Coordinate position helper class / Вспомогательный класс позиционирования */
-  readonly position: DraggableWrapperPosition
-
-  /** Event validator / Валидатор событий */
-  readonly events: DraggableWrapperEvents
+export class DraggableWrapper extends DesignLogicAbstract<
+  HTMLElement,
+  DraggableWrapperComponents,
+  DraggableWrapperEmits,
+  DraggableWrapperSlots,
+  DraggableWrapperProps,
+  DraggableWrapperConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<DraggableWrapperConstructors> = {
+    classesData: {
+      item: DraggableWrapperClassesData,
+      parameters: () => [
+        this.element,
+        this.naming
+      ]
+    },
+    client: {
+      item: DraggableWrapperClient,
+      parameters: () => [
+        this.naming,
+        () => this.i('classesData')
+      ]
+    },
+    delay: {
+      item: DraggableWrapperDelay,
+      parameters: () => [this.props]
+    },
+    emit: {
+      item: DraggableWrapperEmit,
+      parameters: () => [
+        () => this.i('client'),
+        () => this.i('item'),
+        () => this.i('square'),
+        this.emits
+      ]
+    },
+    events: {
+      item: DraggableWrapperEvents,
+      parameters: () => [
+        this.props,
+        () => this.i('classesData'),
+        () => this.i('client'),
+        () => this.i('delay'),
+        () => this.i('item'),
+        () => this.i('position'),
+        () => this.i('selection'),
+        () => this.i('square')
+      ]
+    },
+    item: {
+      item: DraggableWrapperItem,
+      parameters: () => [
+        () => this.i('itemActive'),
+        () => this.i('itemFocus'),
+        () => this.i('itemGo'),
+        () => this.i('itemSelection')
+      ]
+    },
+    itemActive: {
+      item: DraggableWrapperItemActive,
+      parameters: () => [
+        this.naming,
+        () => this.i('classesData')
+      ]
+    },
+    itemFocus: {
+      item: DraggableWrapperItemFocus
+    },
+    itemGo: {
+      item: DraggableWrapperItemGo
+    },
+    itemSelection: {
+      item: DraggableWrapperItemSelection
+    },
+    position: {
+      item: DraggableWrapperPosition,
+      parameters: () => [
+        () => this.i('classesData'),
+        () => this.i('client'),
+        () => this.i('emit'),
+        () => this.i('item'),
+        () => this.i('square')
+      ]
+    },
+    selection: {
+      item: DraggableWrapperSelection,
+      parameters: () => [
+        this.naming,
+        () => this.i('classesData'),
+        () => this.i('item')
+      ]
+    },
+    square: {
+      item: DraggableWrapperSquare,
+      parameters: () => [
+        this.props,
+        this.naming,
+        () => this.i('classesData')
+      ]
+    }
+  }
 
   /**
-   * Constructor.
+   * Returns values for the class.
    *
-   * Конструктор.
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.DraggableWrapperClassesConstructor class for working with classes / класс для работы с классами
-   * @param constructors.DraggableWrapperClientConstructor class for working with coordinates / класс для работы с координатами
-   * @param constructors.DraggableWrapperDelayConstructor class for working with delay / класс для работы с задержкой
-   * @param constructors.DraggableWrapperEmitConstructor class for working with emits / класс для работы с событиями
-   * @param constructors.DraggableWrapperEventsConstructor class for working with events / класс для работы с событиями
-   * @param constructors.DraggableWrapperItemActiveConstructor class for working with active item / класс для работы с активным элементом
-   * @param constructors.DraggableWrapperItemConstructor class for working with items / класс для работы с элементами
-   * @param constructors.DraggableWrapperItemFocusConstructor class for working with focused item / класс для работы со сфокусированным элементом
-   * @param constructors.DraggableWrapperItemGoConstructor class for working with navigation / класс для работы с навигацией
-   * @param constructors.DraggableWrapperItemSelectionConstructor class for working with item selection / класс для работы с выделением элементов
-   * @param constructors.DraggableWrapperPositionConstructor class for working with positioning / класс для работы с позиционированием
-   * @param constructors.DraggableWrapperSelectionConstructor class for working with multi-selection / класс для работы со множественным выбором
-   * @param constructors.DraggableWrapperSquareConstructor class for working with selection square / класс для работы с квадратом выделения
+   * Возвращает значения для класса.
+   * @returns classes values / значения классов
    */
-  constructor(
-    protected readonly props: DraggableWrapperProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<DraggableWrapperComponents, DraggableWrapperProps>,
-    protected readonly slots?: DraggableWrapperSlots,
-    protected readonly emits?: ConstrEmit<DraggableWrapperEmits>,
-    constructors: {
-      DraggableWrapperClassesConstructor?: typeof DraggableWrapperClassesData
-      DraggableWrapperClientConstructor?: typeof DraggableWrapperClient
-      DraggableWrapperDelayConstructor?: typeof DraggableWrapperDelay
-      DraggableWrapperEmitConstructor?: typeof DraggableWrapperEmit
-      DraggableWrapperEventsConstructor?: typeof DraggableWrapperEvents
-      DraggableWrapperItemActiveConstructor?: typeof DraggableWrapperItemActive
-      DraggableWrapperItemConstructor?: typeof DraggableWrapperItem
-      DraggableWrapperItemFocusConstructor?: typeof DraggableWrapperItemFocus
-      DraggableWrapperItemGoConstructor?: typeof DraggableWrapperItemGo
-      DraggableWrapperItemSelectionConstructor?: typeof DraggableWrapperItemSelection
-      DraggableWrapperPositionConstructor?: typeof DraggableWrapperPosition
-      DraggableWrapperSelectionConstructor?: typeof DraggableWrapperSelection
-      DraggableWrapperSquareConstructor?: typeof DraggableWrapperSquare
-    } = {}
-  ) {
-    const {
-      DraggableWrapperClassesConstructor = DraggableWrapperClassesData,
-      DraggableWrapperClientConstructor = DraggableWrapperClient,
-      DraggableWrapperDelayConstructor = DraggableWrapperDelay,
-      DraggableWrapperEmitConstructor = DraggableWrapperEmit,
-      DraggableWrapperEventsConstructor = DraggableWrapperEvents,
-      DraggableWrapperItemActiveConstructor = DraggableWrapperItemActive,
-      DraggableWrapperItemConstructor = DraggableWrapperItem,
-      DraggableWrapperItemFocusConstructor = DraggableWrapperItemFocus,
-      DraggableWrapperItemGoConstructor = DraggableWrapperItemGo,
-      DraggableWrapperItemSelectionConstructor = DraggableWrapperItemSelection,
-      DraggableWrapperPositionConstructor = DraggableWrapperPosition,
-      DraggableWrapperSelectionConstructor = DraggableWrapperSelection,
-      DraggableWrapperSquareConstructor = DraggableWrapperSquare
-    } = constructors
+  get classes(): ConstrClassObject {
+    return {
+      [this.naming.getStatusClass('disabled')]: this.props.disabled === true
+    }
+  }
 
-    this.classes = new DraggableWrapperClassesConstructor(
-      this.element,
-      this.naming
-    )
-    this.delay = new DraggableWrapperDelayConstructor(props)
-
-    this.item = new DraggableWrapperItemConstructor(
-      new DraggableWrapperItemFocusConstructor(),
-      new DraggableWrapperItemActiveConstructor(this.classes),
-      new DraggableWrapperItemSelectionConstructor(),
-      new DraggableWrapperItemGoConstructor()
-    )
-
-    this.client = new DraggableWrapperClientConstructor(this.classes)
-    this.square = new DraggableWrapperSquareConstructor(
-      props,
-      this.classes
-    )
-
-    this.emit = new DraggableWrapperEmitConstructor(
-      this.item,
-      this.client,
-      this.square,
-      this.emits
-    )
-
-    this.selection = new DraggableWrapperSelectionConstructor(this.classes.getId(), this.classes, this.item)
-    this.position = new DraggableWrapperPositionConstructor(
-      this.classes,
-      this.item,
-      this.client,
-      this.square,
-      this.emit
-    )
-
-    this.events = new DraggableWrapperEventsConstructor(
-      props,
-      this.delay,
-      this.classes,
-      this.item,
-      this.client,
-      this.square,
-      this.selection,
-      this.position
-    )
+  /**
+   * Tag name.
+   *
+   * Название тега.
+   * @returns tag name / название тега
+   */
+  get tag(): string {
+    return this.props.tag ?? 'div'
   }
 
   /**
@@ -172,11 +194,11 @@ export class DraggableWrapper {
    * @param parameters event parameters from the drop event / параметры события сброса
    * @returns new reordered array / новый переупорядоченный массив
    */
-  toNewPosition<T extends { value?: any }>(
+  readonly toNewPosition = <T extends { value?: any }>(
     values: T[],
     parameters: DraggableWrapperEventParameters
-  ): T[] {
+  ): T[] => {
     const { valueTo, valueSelection, before } = parameters
-    return this.item.toNewPosition(values, valueTo, valueSelection, before)
+    return this.i('item').toNewPosition(values, valueTo, valueSelection, before)
   }
 }

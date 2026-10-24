@@ -54,6 +54,7 @@ export interface ScrollbarSlots {
  * Тип, описывающий подклассы.
  */
 export type ScrollbarClasses = {
+  /** Root element classes / Классы корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

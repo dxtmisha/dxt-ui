@@ -4,253 +4,269 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс ListDataRef
 
-Реактивный класс для управления списками данных любой сложности. Поддерживает фильтрацию, выделение (selection), фокус и вложенные структуры (группы и меню). Класс преобразует входные данные в стандартизированный формат и предоставляет обширный набор методов для навигации, поиска и управления состоянием элементов.
+Реактивная модель списка: нормализация, вложенные группы, выбор, фокус и поиск. Предоставляет вычисляемые верхнеуровневые и плоские представления, не рисуя UI и не изменяя входное выделение.
 
 ## Ключевые особенности
 
-- **Реактивность** — автоматическое обновление вычисляемых свойств при изменении исходных данных (Vue ref) или параметров управления.
-- **Стандартизация** — приведение любых входных форматов (массив строк, объектов) к единому интерфейсу `ListDataItem`.
-- **Глубокая вложенность** — поддержка древовидных структур с автоматическим управлением подписками через `getSubList`.
-- **Умная навигация** — встроенные методы для перемещения по списку с учетом фильтрации и типа элементов.
-- **Облегченный режим** — оптимизация отрисовки больших списков через `liteData`.
-- **Управление выбором** — контроль за количеством выбранных элементов (min/max) и их состоянием.
+- **Нормализация** — принимает массивы названий, массивы объектов и словари.
+- **Вложенные группы** — `group` и `menu` раскрываются через кэшированные подсписки.
+- **Реактивное состояние** — ссылки управляют выбором, фокусом, поиском и лимитами.
 
 ## Инициализация
 
-Создает новый экземпляр `ListDataRef` для управления данными списка. Класс обеспечивает стандартизацию входных данных, управление фокусом, выделением и поиском. Поддерживает реактивное обновление при изменении исходного списка или параметров управления.
+`constructor( list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined>, highlight?: RefType<string | undefined>, highlightLengthStart?: RefType<number | undefined>, filterMode?: RefType<boolean | undefined>, selected?: RefType<ListSelectedList | undefined>, keyValue?: RefType<string | undefined>, keyLabel?: RefType<string | undefined>, lite?: RefType<number | undefined>, min: RefOrNormal<number | string | undefined> = 0, max: RefOrNormal<number | string | undefined> = 9_999_999, parent?: string )`
 
 **Параметры:**
 
-- `list: RefOrNormal<ListListInput | undefined>` — реактивный или обычный список данных.
-- `focus?: RefType<ListSelectedItem | undefined>` — идентификатор элемента в фокусе (Vue ref).
-- `highlight?: RefType<string | undefined>` — текст для поиска и выделения (Vue ref).
-- `highlightLengthStart?: RefType<number | undefined>` — минимальное количество символов для начала поиска (Vue ref).
-- `filterMode?: RefType<boolean | undefined>` — режим фильтрации (Vue ref).
-- `selected?: RefType<ListSelectedList | undefined>` — список выбранных идентификаторов (Vue ref).
-- `keyValue?: RefType<string | undefined>` — название поля для значения (по умолчанию `'value'`).
-- `keyLabel?: RefType<string | undefined>` — название поля для метки (по умолчанию `'label'`).
-- `lite?: RefType<number | undefined>` — порог количества элементов для включения режима Lite (Vue ref).
-- `min: RefOrNormal<number | string | undefined> = 0` — минимально допустимое количество выделений.
-- `max: RefOrNormal<number | string | undefined> = 9_999_999` — максимально допустимое количество выделений.
-- `parent?: string` — идентификатор родительского элемента (используется для подсписков).
+- `list: RefOrNormal<ListListInput | undefined>` — Входной список либо словарь, может быть реактивным.
+- `focus?: RefType<ListSelectedItem | undefined>` — Ссылка на индекс фокуса.
+- `highlight?: RefType<string | undefined>` — Ссылка на поисковый запрос.
+- `highlightLengthStart?: RefType<number | undefined>` — Ссылка на минимальную длину поиска; при отсутствии 2.
+- `filterMode?: RefType<boolean | undefined>` — Ссылка на режим фильтра, копируемый в fullData.
+- `selected?: RefType<ListSelectedList | undefined>` — Ссылка на один выбранный идентификатор либо массив.
+- `keyValue?: RefType<string | undefined>` — Ссылка на имя поля значения; по умолчанию value.
+- `keyLabel?: RefType<string | undefined>` — Ссылка на имя поля метки; по умолчанию label.
+- `lite?: RefType<number | undefined>` — Ссылка на порог упрощённого списка.
+- `min: RefOrNormal<number | string | undefined> = 0` — Минимум выбора; по умолчанию 0.
+- `max: RefOrNormal<number | string | undefined> = 9_999_999` — Максимум выбора; по умолчанию 9_999_999.
+- `parent?: string` — Индекс родителя либо undefined для корневого уровня.
+
+## Поведение и жизненный цикл
+
+Только `list`, `min` и `max` принимают обычные значения либо ссылки; фокус, поиск, выбор, имена ключей, порог lite и режим фильтра передаются ссылками. Массивы названий используют строковые позиции как индексы и числовые позиции как значения. Объекты предпочитают явный `index`, затем примитивное `value`. `map` раскрывает `item`, `group` и `menu`; `mapItems` содержит только конечные элементы. Навигация за границу возвращает первый или последний элемент. Лимиты влияют на вычисляемое состояние; класс не изменяет выбор. Флаг минимума означает достижение минимума. `getFocusItem()` ищет только на текущем уровне. Замена ссылки списка очищает кэш подсписков; замена источника группы пересоздаёт её подсписок. Для очистки наблюдателя списка используйте область эффектов.
+
+## Использование
 
 ```typescript
 import { ListDataRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-const list = ref([
-  { label: 'Пункт 1', value: 'item-1' },
-  { label: 'Группа 1', type: 'group', value: [
-    { label: 'Подпункт 1.1', value: 'sub-1.1' }
-  ]}
-])
-
-const focus = ref(undefined)
-const selected = ref(['item-1'])
-
-const listData = new ListDataRef(
-  list, 
-  focus, 
-  undefined, // highlight
-  undefined, // highlightLengthStart
-  undefined, // filterMode
-  selected
+const selected = /*#__PURE__*/ ref(['a'])
+const focus = /*#__PURE__*/ ref('a')
+const highlight = /*#__PURE__*/ ref('Ap')
+const list = /*#__PURE__*/ new ListDataRef(
+  [{ label: 'Apple', value: 'a' }, { label: 'Banana', value: 'b' }],
+  focus, highlight, ref(2), ref(false), selected
 )
+list.selectedNames.value // ['Apple']
+list.getSelectedNext() // 'b'
+selected.value = ['b']
 ```
 
 ## Свойства
 
-### Данные
-
-- `data: Computed<ListList>` — Основной стандартизированный список данных текущего уровня.
-- `liteData: Computed<ListList>` — Упрощенная версия списка для быстрой отрисовки (активируется, если длина `data` превышает порог `lite`).
-- `fullData: Computed<ListDataFull>` — Расширенный список данных, где для каждого элемента рассчитаны флаги `focus`, `selected`, `disabled` и активный `highlight`.
-- `map: Computed<ListList>` — Плоский список абсолютно всех элементов дерева (включая группы и меню), развернутый в один массив.
-- `mapItems: Computed<ListList>` — Плоский список только конечных выбираемых элементов (тип `item`). Используется для основной навигации.
-- `items: Computed<ListList>` — Плоский список элементов, которые могут иметь интерактивное состояние (типы `item`, `group`, `menu`).
-
-### Выбор и Состояние
-
-- `isSelected: Computed<boolean>` — Возвращает `true`, если в дереве `mapItems` выбран хотя бы один элемент.
-- `isSelectedMin: Computed<boolean>` — Возвращает `true`, если количество выбранных элементов в текущей группе достигло или превысило `min`.
-- `isSelectedMax: Computed<boolean>` — Возвращает `true`, если количество выбранных элементов в текущей группе достигло порога `max`.
-- `selectedList: Computed<ListList>` — Список всех объектов `ListDataItem`, выбранных во всем дереве (на основе `mapItems`).
-- `selectedListInGroup: Computed<ListList>` — Список объектов, выбранных только на текущем уровне вложенности (`data`).
-- `selectedNames: Computed<ListNames>` — Массив строк с метками (`label`) всех выбранных элементов дерева.
-- `selectedValues: Computed<any[]>` — Массив значений (`value`) всех выбранных элементов дерева.
-
-### Поиск
-
-- `highlightFirstItem: Computed<number>` — Индекс первого элемента в `map`, текст которого совпадает с `highlight` (с учетом `highlightLengthStart`). Возвращает `-1`, если совпадений нет.
+- `data: ComputedRef<ListList>` — Нормализованные записи текущего уровня.
+- `liteData: ComputedRef<ListList>` — Сокращённые записи при превышении порога lite; иначе нормализованные данные целиком.
+- `fullData: ComputedRef<ListDataFull>` — Записи текущего уровня с focus, highlight, filterMode, selected и disabled. Явное disabled имеет приоритет.
+- `map: ComputedRef<ListList>` — Плоские записи item/group/menu с сохранением заголовков групп.
+- `mapItems: ComputedRef<ListList>` — Конечные item из плоской карты.
+- `items: ComputedRef<ListList>` — Записи item/group/menu из плоской карты.
+- `highlightFirstItem: ComputedRef<number>` — Позиция первого совпадения в карте либо -1 при отсутствии совпадения или коротком запросе. Проверяет label, index и search.
+- `isSelected: ComputedRef<boolean>` — Совпадает ли хотя бы один конечный элемент с входным выбором.
+- `isSelectedMin: ComputedRef<boolean>` — Истина при достижении положительного минимума выбранными элементами текущей группы.
+- `isSelectedMax: ComputedRef<boolean>` — Истина при достижении положительного максимума выбранными элементами текущей группы. Ложное значение максимума использует лимит по умолчанию.
+- `selectedList: ComputedRef<ListList>` — Выбранные конечные элементы всей плоской карты.
+- `selectedListInGroup: ComputedRef<ListList>` — Выбранные записи текущего уровня.
+- `selectedNames: ComputedRef<ListNames>` — Метки выбранных конечных элементов.
+- `selectedValues: ComputedRef<Array<ListDataItem['value']>>` — Значения выбранных конечных элементов с сохранением нуля и false.
 
 ## Методы
 
-### Статус и Проверки
+### Проверки состояния
 
-- `isLite(): boolean` — Возвращает `true`, если включен режим оптимизации (длина списка > `lite`).
-- `isFocus(): boolean` — Проверяет, совпадает ли значение `focus` с каким-либо элементом в текущем `map`.
-- `isHighlight(): boolean` — Возвращает `true`, если поиск нашел хотя бы одно совпадение.
-- `isHighlightActive(): boolean` — Проверяет, активен ли процесс поиска (длина строки достаточна и есть результаты).
-- `getLength(): number` — Общее количество элементов на текущем уровне (`data`).
-- `getLengthByMap(): number` — Общее количество всех элементов в дереве (`map`).
-- `getLengthByItems(): number` — Количество конечных элементов во всем дереве (`mapItems`).
+- `isLite(): boolean` — Истина, если длина текущего уровня превышает ненулевой порог lite.
 
-### Получение значений
+- `isFocus(): boolean` — Проверяет индекс фокуса в плоской карте.
 
-- `getFocus(): ListSelectedItem | undefined` — Текущее значение идентификатора в фокусе.
-- `getHighlight(): string | undefined` — Текущая строка поиска.
-- `getHighlightLengthStart(): number` — Минимальная длина строки для срабатывания поиска (по умолчанию `2`).
-- `getSelected(): ListSelectedList | undefined` — текущий список выбранных идентификаторов.
+- `isHighlight(): boolean` — Сообщает, найдено ли совпадение в карте.
 
-### Навигация и Поиск
+- `isHighlightActive(): boolean` — Истина, если запрос короче порога либо найдено хотя бы одно совпадение.
 
-- `getSelectedByStep(step): ListSelectedItem | undefined` — поиск соседа относительно выделения.
-- `getSelectedNext(): ListSelectedItem | undefined` — следующий элемент от выделения.
-- `getSelectedPrev(): ListSelectedItem | undefined` — предыдущий элемент от выделения.
-- `getItemByStep(item, step): ListDataItem | undefined` — поиск соседа относительно элемента.
-- `getItemNext(item): ListDataItem | undefined` — следующий от элемента.
-- `getItemPrev(item): ListDataItem | undefined` — предыдущий от элемента.
-- `getIndexByStep(index, step): ListDataItem | undefined` — поиск соседа относительно индекса.
-- `getIndexNext(index): ListDataItem | undefined` — следующий от индекса.
-- `getIndexPrev(index): ListDataItem | undefined` — предыдущий от индекса.
-- `getItemByIndex(index): { key, item } | undefined` — поиск элемента по индексу.
-- `getItemByKey(key): ListDataItem | undefined` — возвращает элемент по ключу в map.
-- `getFirstItemByParent(parent): ListDataItem | undefined` — первый интерактивный элемент родителя.
-- `getLastItemByParent(parent): ListDataItem | undefined` — последний интерактивный элемент родителя.
-- `getSubList(item): ListDataRef` — создает/возвращает инстанс подсписка.
+### Количество и значения состояния
 
-## Типы данных
+- `getLength(): number` — Возвращает количество записей текущего уровня.
 
-Класс использует стандартизированные структуры для предсказуемой работы с любыми форматами данных.
+- `getLengthByMap(): number` — Возвращает размер плоской карты, включая группы и меню.
 
-### `ListType`
+- `getLengthByItems(): number` — Возвращает количество item/group/menu в плоской карте.
 
-Определяет роль элемента:
-- `item` — основной интерактивный элемент для выбора и фокуса.
-- `group` / `menu` — контейнеры для вложенных списков (`value`).
-- `subtitle` — текстовый заголовок внутри списка.
-- `html` — элемент для вставки произвольного HTML.
-- `line` / `space` — визуальные разделители.
+- `getFocus(): ListSelectedItem | undefined` — Возвращает переданное значение фокуса.
 
-### `ListDataItem`
+- `getFocusItem(): ListDataItem | undefined` — Ищет запись в фокусе только на текущем уровне.
 
-Объект, в который преобразуются все входные данные:
-- `index: string` — уникальный идентификатор (генерируется автоматически).
-- `type: ListType` — тип элемента (по умолчанию `item`).
-- `label?: string | number` — текст в интерфейсе.
-- `value?: any` — значение элемента.
-- `parent?: string` — идентификатор родителя.
+- `getHighlight(): string | undefined` — Возвращает текст поиска.
 
-### `ListDataFullItem`
+- `getHighlightLengthStart(): number` — Возвращает минимальную длину поиска, по умолчанию 2.
 
-Расширенная версия `ListDataItem` для `fullData`:
-- `focus: boolean` — `true`, если в фокусе.
-- `selected: boolean` — `true`, если выбран.
-- `disabled: boolean` — `true`, если выбор заблокирован (лимит `max`).
-- `highlight?: string` — строка поиска, если есть совпадение.
+- `getSelected(): ListSelectedList | undefined` — Возвращает переданное одиночное выделение либо массив выделений.
 
-### `ListListInput`
+### Поиск элементов
 
-Форматы данных для конструктора:
-- `string[]` — массив строк (метки).
-- `Record<string, string>` — объект `value: label`.
-- `ListDataBasic[]` — массив объектов с полями `label`, `value`, `type` и др.
+- `getItemByIndex(index?: string): { key: number, item: ListDataItem } | undefined` — Ищет запись в плоской карте и возвращает ключ карты и элемент.
 
-## Управление выбором (Selection)
+- `getItemByKey(key: number): ListDataItem | undefined` — Возвращает запись по позиции плоской карты либо undefined.
 
-Класс поддерживает одиночный и множественный выбор с ограничениями.
+- `getFirstItemByParent(parent: string | undefined): ListDataItem | undefined` — Возвращает первую запись item/group/menu с указанным родителем.
 
-### Ключевые параметры
+- `getLastItemByParent(parent: string | undefined): ListDataItem | undefined` — Возвращает последнюю запись item/group/menu с указанным родителем.
 
-- `selected` — Vue `ref` с массивом идентификаторов.
-- `min` / `max` — лимиты выбора на текущем уровне.
+### Навигация
 
-### Глобальный vs Групповой выбор
+#### `getSelectedByStep`
 
-- **selectedList** — все выбранные `item` во всем дереве.
-- **selectedListInGroup** — выбранные элементы только в текущей группе (`data`). На основе этого списка работают `min` и `max`.
+`getSelectedByStep(step: number): ListSelectedItem | undefined`
 
-### Автоматическое состояние disabled
+Перемещается от первого выделенного конечного элемента на указанный шаг. Без выделенного элемента возвращает индекс первого. Для пустого списка возвращает `undefined`.
 
-При достижении `max` (`isSelectedMax`), остальные невыбранные элементы в `fullData` получают `disabled: true`.
+**Параметры:**
 
-## Управление фокусом
+- `step: number` — Шаг навигации со знаком.
 
-Реализовано через внешнюю переменную `ref`, общую для всего дерева.
+**Возвращает:** `ListSelectedItem | undefined` — Запрошенное значение либо объект согласно сигнатуре.
 
-### Особенности
-
-- **Общее состояние** — подсписки используют тот же `ref` фокуса.
-- **Реактивность** — `fullData` рассчитывает `focus: true` по совпадению `index`.
-- **Ручное управление** — класс не меняет фокус сам. Навигация лишь возвращает объект.
-
-```javascript
-const next = listData.getItemNext(currentItem)
-if (next) {
-    focus.value = next.index
-}
+```typescript
+const index = /*#__PURE__*/ list.getSelectedByStep(1)
 ```
 
-## Поиск и Подсветка (Highlight)
+#### `getSelectedNext`
 
-### Параметры
+`getSelectedNext(): ListSelectedItem | undefined`
 
-- `highlight` — строка запроса.
-- `highlightLengthStart` — порог активации (по умолчанию `2`).
+Возвращает следующий индекс конечного элемента относительно выбора с переходом через границу.
 
-### Механика
+**Возвращает:** `ListSelectedItem | undefined` — Запрошенное значение либо объект согласно сигнатуре.
 
-1. **Regex** — автоматическое создание регулярного выражения.
-2. **Поля** — поиск по `label`, `index` и `search`.
-3. **fullData** — передача `highlight` в элементы для подсветки в UI.
-4. **Результат** — `highlightFirstItem` возвращает индекс первого совпадения в `map`.
-
-### Состояния
-
-- `isHighlight()` — есть совпадения.
-- `isHighlightActive()` — длина строки достигла порога.
-
-## Режим фильтрации (filterMode)
-
-Флаг для UI о необходимости скрыть не подходящие под поиск элементы. Значение наследуется подсписками.
-
-## Облегченный режим (Lite Mode)
-
-Оптимизация производительности для больших списков. Если количество элементов в `data` > `lite`, активируется `liteData` с упрощенной структурой.
-
-## Примеры
-
-### Рендеринг дерева
-
-```vue
-<template>
-  <ul>
-    <li v-for="item in listData.data.value" :key="item.index">
-      {{ item.label }}
-      <ul v-if="item.type === 'group'">
-        <li v-for="sub in listData.getSubList(item).data.value" :key="sub.index">
-           {{ sub.label }}
-        </li>
-      </ul>
-    </li>
-  </ul>
-</template>
-
-<script setup>
-const listData = new ListDataRef(props.list)
-</script>
+```typescript
+const result = /*#__PURE__*/ list.getSelectedNext()
 ```
 
-## Работа с навигацией
+#### `getSelectedPrev`
 
-### Плоская циклическая навигация
+`getSelectedPrev(): ListSelectedItem | undefined`
 
-Методы `getItemNext/Prev` и `getIndexNext/Prev` работают через `mapItems` (только `item`). Навигация сквозная по всему дереву и циклическая.
+Возвращает предыдущий индекс конечного элемента относительно выбора с переходом через границу.
 
-### Навигация по выделению
+**Возвращает:** `ListSelectedItem | undefined` — Запрошенное значение либо объект согласно сигнатуре.
 
-`getSelectedNext/Prev` ищут соседа относительно первого выбранного элемента.
+```typescript
+const result = /*#__PURE__*/ list.getSelectedPrev()
+```
 
-### Контекстная навигация
+#### `getItemByStep`
 
-`getFirstItemByParent` и `getLastItemByParent` ищут границы текущей группы.
+`getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined`
+
+Перемещается по карте конечных элементов. Положительный шаг за границу возвращает первый, отрицательный — последний элемент. Нулевой шаг сохраняет найденный элемент.
+
+**Параметры:**
+
+- `item: ListDataItem` — Текущая запись списка.
+- `step: number` — Шаг навигации со знаком.
+
+**Возвращает:** `ListDataItem | undefined` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+const current = /*#__PURE__*/ list.getItemByIndex('a')
+const next = current && list.getItemByStep(current.item, 1)
+```
+
+#### `getItemNext`
+
+`getItemNext(item: ListDataItem): ListDataItem | undefined`
+
+Возвращает следующий конечный элемент, с переходом к первому.
+
+**Параметры:**
+
+- `item: ListDataItem` — Элемент либо выходной массив согласно сигнатуре.
+
+**Возвращает:** `ListDataItem | undefined` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+const result = /*#__PURE__*/ list.getItemNext(list.data.value[0]!)
+```
+
+#### `getItemPrev`
+
+`getItemPrev(item: ListDataItem): ListDataItem | undefined`
+
+Возвращает предыдущий конечный элемент, с переходом к последнему.
+
+**Параметры:**
+
+- `item: ListDataItem` — Элемент либо выходной массив согласно сигнатуре.
+
+**Возвращает:** `ListDataItem | undefined` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+const result = /*#__PURE__*/ list.getItemPrev(list.data.value[0]!)
+```
+
+#### `getIndexByStep`
+
+`getIndexByStep(index: string, step: number): ListDataItem | undefined`
+
+Находит индекс в карте, затем выполняет навигацию по конечным элементам. Неизвестный индекс возвращает `undefined`.
+
+**Параметры:**
+
+- `index: string` — Индекс записи либо модификации.
+- `step: number` — Шаг навигации со знаком.
+
+**Возвращает:** `ListDataItem | undefined` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+const next = /*#__PURE__*/ list.getIndexByStep('a', 1)
+```
+
+#### `getIndexNext`
+
+`getIndexNext(index: string): ListDataItem | undefined`
+
+Находит индекс и возвращает следующий конечный элемент.
+
+**Параметры:**
+
+- `index: string` — Индекс записи либо модификации.
+
+**Возвращает:** `ListDataItem | undefined` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+const result = /*#__PURE__*/ list.getIndexNext('a')
+```
+
+#### `getIndexPrev`
+
+`getIndexPrev(index: string): ListDataItem | undefined`
+
+Находит индекс и возвращает предыдущий конечный элемент.
+
+**Параметры:**
+
+- `index: string` — Индекс записи либо модификации.
+
+**Возвращает:** `ListDataItem | undefined` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+const result = /*#__PURE__*/ list.getIndexPrev('a')
+```
+
+### Вложенные списки
+
+#### `getSubList`
+
+`getSubList(item: ListDataItem): ListDataRef`
+
+Возвращает кэшированную дочернюю модель с общими ссылками состояния и лимитами. Пересоздаёт её при замене источника группы; родитель — индекс группы.
+
+**Параметры:**
+
+- `item: ListDataItem` — Элемент либо выходной массив согласно сигнатуре.
+
+**Возвращает:** `ListDataRef` — Кэшированная дочерняя модель списка.
+
+```typescript
+const grouped = /*#__PURE__*/ new ListDataRef([{ type: 'group', index: 'fruit', label: 'Fruit', value: ['Apple'] }])
+const group = grouped.data.value[0]
+const children = group && grouped.getSubList(group)
+```

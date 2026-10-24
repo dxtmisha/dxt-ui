@@ -19,15 +19,15 @@ export class DraggableWrapperEmit {
    * Constructor.
    *
    * Конструктор.
-   * @param item item helper instance / экземпляр помощника по элементам
-   * @param client client coordinates manager / менеджер клиентских координат
-   * @param square square placeholder manager / менеджер элемента-заполнителя
+   * @param client client coordinates manager factory / фабрика менеджера клиентских координат
+   * @param item item helper instance factory / фабрика экземпляра помощника по элементам
+   * @param square square placeholder manager factory / фабрика менеджера элемента-заполнителя
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    */
   constructor(
-    protected readonly item: DraggableWrapperItem,
-    protected readonly client: DraggableWrapperClient,
-    protected readonly square: DraggableWrapperSquare,
+    protected readonly client: () => DraggableWrapperClient,
+    protected readonly item: () => DraggableWrapperItem,
+    protected readonly square: () => DraggableWrapperSquare,
     protected readonly emits?: ConstrEmit<DraggableWrapperEmits>
   ) {
   }
@@ -38,8 +38,9 @@ export class DraggableWrapperEmit {
    * Вызывает события сброса и изменения положения.
    */
   on(): void {
-    const activeElement = this.item.getActive().get()
-    const goElement = this.item.getGo().get()
+    const item = this.item()
+    const activeElement = item.getActive().get()
+    const goElement = item.getGo().get()
 
     if (
       activeElement
@@ -47,19 +48,19 @@ export class DraggableWrapperEmit {
     ) {
       const valueActive = activeElement.dataset?.value
       const valueGo = goElement.dataset?.value
-      const eventName = this.client.hasDrop() ? 'drop' : 'position'
+      const eventName = this.client().hasDrop() ? 'drop' : 'position'
 
       const parameters: DraggableWrapperEventParameters = {
         active: activeElement,
+        selection: item.getSelection().get(),
         to: goElement,
-        selection: this.item.getSelection().get(),
 
         value: [valueActive, valueGo],
         valueActive,
+        valueSelection: item.getValues(),
         valueTo: valueGo,
-        valueSelection: this.item.getValues(),
 
-        before: this.square.isBefore()
+        before: this.square().isBefore()
       }
 
       setTimeout(() => this.emits?.(eventName as never, parameters), 240)

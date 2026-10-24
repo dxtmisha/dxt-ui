@@ -60,13 +60,13 @@ export class ImageText {
    *
    * Конструктор для инициализации получения текстового представления.
    * @param props input data / входные данные
-   * @param type function returning ImageType object / функция, возвращающая объект ImageType
    * @param data function returning ImageData object / функция, возвращающая объект ImageData
+   * @param type function returning ImageType object / функция, возвращающая объект ImageType
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly type: () => ImageType,
-    protected readonly data: () => ImageData
+    protected readonly data: () => ImageData,
+    protected readonly type: () => ImageType
   ) {
   }
 

@@ -1,0 +1,130 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/DesignComp'/>
+
+# DesignComp Class
+
+Exported subclass of `DesignComponents<COMP, P>`. It adds no members or behavior; registry lookup, reactive modifications and VNode rendering are inherited unchanged.
+
+## Key Features
+
+- **Registry** — `COMP` determines valid component names.
+- **Reactive defaults** — modification maps and individual values may be refs.
+- **Prop composition** — explicit props override defaults; classes and styles are merged.
+
+## Initialization
+
+`constructor( components: COMP = {} as COMP, modification?: ConstrComponentMod<P> )`
+
+**Parameters:**
+
+- `components: COMP = {} as COMP` — Connected component registry.
+- `modification?: ConstrComponentMod<P>` — Per-index default prop maps, optionally reactive.
+
+## Behavior and lifecycle
+
+The constructor and methods below are inherited from `DesignComponents`. `COMP` describes the registry and `P` describes component props.
+
+## Usage
+
+```typescript
+import { DesignComp } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const disabled = /*#__PURE__*/ ref(false)
+const components = /*#__PURE__*/ new DesignComp(
+  { button: 'button' },
+  { button: { disabled, class: 'base' } }
+)
+const node = /*#__PURE__*/ components.renderOne('button', { title: 'Save' })
+disabled.value = true
+const updatedNode = /*#__PURE__*/ components.renderOne('button')
+```
+
+## Methods
+
+### Registry lookup
+
+- `is<K extends keyof COMP>(name: K): name is K` — Checks whether a registry entry contains a component.
+
+- `get<K extends keyof COMP>(name: K): COMP[K]` — Returns the registry entry without creating a VNode.
+
+### Prop modifications
+
+#### `getModification`
+
+`getModification<K extends keyof P>( index?: K & string | string, props?: P[K] | ConstrItem ): ConstrItem | undefined`
+
+Caches the computed defaults for an index and merges explicit props using `toBinds`. Without a nonempty index, returns the supplied props unchanged.
+
+**Parameters:**
+
+- `index?: K & string | string` — Entry or modification index.
+- `props?: P[K] | ConstrItem` — Input properties.
+
+**Returns:** `ConstrItem | undefined` — Merged prop map or the unchanged props when no index is supplied.
+
+```typescript
+const props = /*#__PURE__*/ components.getModification('button', { disabled: false })
+```
+
+### Rendering
+
+#### `renderOne`
+
+`renderOne< K extends keyof COMP, PK extends keyof P >( name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): VNode | undefined`
+
+Creates one VNode with merged props and children. Returns `undefined` for a missing component.
+
+**Parameters:**
+
+- `name: K & string` — Connected component registry key.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Input properties.
+- `children?: RawChildren | RawSlots` — Child content or an optional VNode accumulator.
+- `index?: PK & string | string` — Entry or modification index.
+
+**Returns:** `VNode | undefined` — Rendered VNode, or undefined when the component is missing.
+
+```typescript
+const node = /*#__PURE__*/ components.renderOne('button', { title: 'Save' })
+```
+
+#### `render`
+
+`render< K extends keyof COMP, PK extends keyof P >( name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): VNode[]`
+
+Wraps the rendered VNode in an array; returns an empty array for a missing component.
+
+**Parameters:**
+
+- `name: K & string` — Connected component registry key.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Input properties.
+- `children?: RawChildren | RawSlots` — Child content or an optional VNode accumulator.
+- `index?: PK & string | string` — Entry or modification index.
+
+**Returns:** `VNode[]` — Single-VNode array or an empty array.
+
+```typescript
+const nodes = /*#__PURE__*/ components.render('button')
+```
+
+#### `renderAdd`
+
+`renderAdd< K extends keyof COMP, PK extends keyof P >( item: unknown[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): this`
+
+Appends rendered nodes to an existing array and returns the same registry for chaining.
+
+**Parameters:**
+
+- `item: unknown[]` — Item or output array as specified by the signature.
+- `name: K & string` — Connected component registry key.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Input properties.
+- `children?: RawChildren | RawSlots` — Child content or an optional VNode accumulator.
+- `index?: PK & string | string` — Entry or modification index.
+
+**Returns:** `this` — The current instance for chaining.
+
+```typescript
+const nodes: unknown[] = []
+components.renderAdd(nodes, 'button')
+```

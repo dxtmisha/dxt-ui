@@ -1,73 +1,84 @@
-import { describe, expect, it, vi } from 'vitest'
-import { ServerStorage, Cookie } from '@dxtmisha/functional-basic'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { Cookie, Geo, ServerStorage } from '@dxtmisha/functional-basic'
 import { GeoRef } from '../GeoRef'
 
-vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@dxtmisha/functional-basic')>()
-  return {
-    ...original,
-    isDomRuntime: vi.fn(() => false)
-  }
-})
-
 describe('GeoRef', () => {
-  it('should return initial values', () => {
-    const item = GeoRef.get()
-    expect(item.value).toBeDefined()
-    expect(item.value.country).toBeDefined()
-    expect(item.value.language).toBeDefined()
-  })
-
-  it('should return computed values', () => {
-    expect(GeoRef.getCountry().value).toBe(GeoRef.get().value.country)
-    expect(GeoRef.getLanguage().value).toBe(GeoRef.get().value.language)
-    expect(GeoRef.getStandard().value).toBe(GeoRef.get().value.standard)
-    expect(GeoRef.getFirstDay().value).toBe(GeoRef.get().value.firstDay)
-    expect(GeoRef.getLocation().value).toBe(GeoRef.get().value.location)
-    expect(GeoRef.getLocationCountry().value).toBe(GeoRef.get().value.locationCountry)
-    expect(GeoRef.getLocationLanguage().value).toBe(GeoRef.get().value.locationLanguage)
-  })
-
-  it('should update values when set is called', () => {
+  beforeEach(() => {
+    const context: Record<string, unknown> = {}
+    ServerStorage.reset()
+    ServerStorage.init(() => context)
     GeoRef.set('en-US')
-    expect(GeoRef.getCountry().value).toBe('US')
-    expect(GeoRef.getLanguage().value).toBe('en')
-    expect(GeoRef.getStandard().value).toBe('en-US')
-    expect(GeoRef.getLocation().value).toBe('en-US')
-    expect(GeoRef.getLocationCountry().value).toBe('US')
-    expect(GeoRef.getLocationLanguage().value).toBe('en')
-
-    GeoRef.set('en-VN')
-    expect(GeoRef.getCountry().value).toBe('VN')
-    expect(GeoRef.getLanguage().value).toBe('vi')
-    expect(GeoRef.getStandard().value).toBe('en-VN')
-    expect(GeoRef.getLocation().value).toBe('en-VN')
-    expect(GeoRef.getLocationCountry().value).toBe('VN')
-    expect(GeoRef.getLocationLanguage().value).toBe('en')
-
-    GeoRef.set('ru-RU')
-    expect(GeoRef.getCountry().value).toBe('RU')
-    expect(GeoRef.getLanguage().value).toBe('ru')
-    expect(GeoRef.getStandard().value).toBe('ru-RU')
-    expect(GeoRef.getLocation().value).toBe('ru-RU')
-    expect(GeoRef.getLocationCountry().value).toBe('RU')
-    expect(GeoRef.getLocationLanguage().value).toBe('ru')
   })
 
-  it('should maintain reactivity', () => {
-    GeoRef.set('en-GB')
-    const country = GeoRef.getCountry()
-    expect(country.value).toBe('GB')
-
-    GeoRef.set('vi-VN')
-    expect(country.value).toBe('VN')
+  afterEach(() => {
+    ServerStorage.reset()
   })
 
-  it('should set default value via setValueDefault', () => {
-    Cookie.getInstance('ui-geo-code').remove()
-    ServerStorage.remove('__ui:geo-instance__')
+  describe('Cached reactive projections', () => {
+    it('reuses the main ref and each computed within a request', () => {
+      expect(GeoRef.get()).toBe(GeoRef.get())
+      expect(GeoRef.get().value).toEqual(Geo.getItem())
+      const projections = [
+        [GeoRef.getCountry(), 'country'], [GeoRef.getLanguage(), 'language'],
+        [GeoRef.getStandard(), 'standard'], [GeoRef.getFirstDay(), 'firstDay'],
+        [GeoRef.getLocation(), 'location'], [GeoRef.getLocationCountry(), 'locationCountry'],
+        [GeoRef.getLocationLanguage(), 'locationLanguage']
+      ] as const
+      for (const [projection, key] of projections) {
+        expect(projection.value).toBe(GeoRef.get().value[key])
+      }
+      expect(GeoRef.getCountry()).toBe(GeoRef.getCountry())
+      expect(GeoRef.getLanguage()).toBe(GeoRef.getLanguage())
+      expect(GeoRef.getStandard()).toBe(GeoRef.getStandard())
+      expect(GeoRef.getFirstDay()).toBe(GeoRef.getFirstDay())
+      expect(GeoRef.getLocation()).toBe(GeoRef.getLocation())
+      expect(GeoRef.getLocationCountry()).toBe(GeoRef.getLocationCountry())
+      expect(GeoRef.getLocationLanguage()).toBe(GeoRef.getLocationLanguage())
+    })
 
-    GeoRef.setValueDefault('de-DE')
-    expect(GeoRef.getStandard().value).toBe('de-DE')
+    it.each([
+      ['en-US', 'US', 'en', 'en', 'Su'],
+      ['en-VN', 'VN', 'vi', 'en', 'Mo'],
+      ['ru-RU', 'RU', 'ru', 'ru', 'Mo']
+    ])('updates all saved projections for %s', (code, country, language, locationLanguage, firstDay) => {
+      const countryRef = GeoRef.getCountry()
+      const languageRef = GeoRef.getLanguage()
+      const standardRef = GeoRef.getStandard()
+      const firstDayRef = GeoRef.getFirstDay()
+      const locationRef = GeoRef.getLocation()
+      const locationCountryRef = GeoRef.getLocationCountry()
+      const locationLanguageRef = GeoRef.getLocationLanguage()
+      GeoRef.set(code)
+      expect([
+        countryRef.value, languageRef.value, standardRef.value, firstDayRef.value,
+        locationRef.value, locationCountryRef.value, locationLanguageRef.value
+      ]).toEqual([country, language, code, firstDay, code, country, locationLanguage])
+    })
+  })
+
+  describe('Defaults and server isolation', () => {
+    it.each(['de-DE', () => 'vi-VN'])('accepts a default locale or its factory', (code) => {
+      Cookie.getInstance('ui-geo-code').remove()
+      ServerStorage.remove('__ui:geo-instance__')
+      GeoRef.setValueDefault(code)
+      expect(GeoRef.getStandard().value).toBe(typeof code === 'string' ? code : code())
+    })
+
+    it('isolates cached refs and locale state between server contexts', () => {
+      let context: Record<string, unknown> = {}
+      ServerStorage.reset()
+      ServerStorage.init(() => context)
+      GeoRef.set('ru-RU')
+      const first = GeoRef.get()
+      const firstCountry = GeoRef.getCountry()
+      expect(firstCountry.value).toBe('RU')
+      context = {}
+      GeoRef.set('vi-VN')
+      expect(GeoRef.get()).not.toBe(first)
+      expect(GeoRef.getCountry()).not.toBe(firstCountry)
+      expect(GeoRef.getCountry().value).toBe('VN')
+      expect(firstCountry.value).toBe('RU')
+      expect(first.value.country).toBe('RU')
+    })
   })
 })

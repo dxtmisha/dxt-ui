@@ -1,4 +1,4 @@
-import { getCurrentInstance, inject, provide } from 'vue'
+import { effectScope, type EffectScope, getCurrentInstance, inject, provide } from 'vue'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 
 import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
@@ -7,11 +7,11 @@ import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
  * Types of initialization for a singleton/ Типы инициализации для синглтона
  */
 export enum ExecuteUseType {
-  /** A single instance for the entire application/ Единственный экземпляр на всё приложение */
+  /** One instance per runtime, shared by all SSR requests / Один экземпляр на среду выполнения, общий для всех SSR-запросов */
   global = 'global',
   /** Shared via provide/inject in the component tree/ Разделяется через provide/inject в дереве компонентов */
   provide = 'provide',
-  /** A single instance within the closure/ Единственный экземпляр в замыкании */
+  /** A lazily created instance per storage context / Лениво создаваемый экземпляр на контекст хранилища */
   local = 'local'
 }
 
@@ -40,23 +40,23 @@ let globalId: number = 1
 /** The unique identifier of the component/ Уникальный идентификатор компонента */
 const getId = () => `__execute_use::${globalId++}`
 
-/** The global callbacks/ Глобальные callback */
-const getGlobalMethods = () => ServerStorage.get<(() => any)[]>('__ui:execute-use-global__', () => [])
+/** Global factory registry shared by every SSR request / Общий для всех SSR-запросов реестр глобальных фабрик */
+const globalMethods: (() => unknown)[] = []
 
 /**
  * Creates a managed singleton that encapsulates initialization logic and access mode.
  *
  * It supports three initialization strategies:
- * - `global`: A single instance for the entire application.
+ * - `global`: A single instance per runtime, shared by all SSR requests in the server process.
  * - `provide`: Shared via provide/inject in the component tree (standard for Vue 3).
- * - `local`: A single instance within the closure of the returned function.
+ * - `local`: A lazily created instance per ServerStorage context.
  *
  * Создает управляемый синглтон, который инкапсулирует логику инициализации и режим доступа.
  *
  * Поддерживает три стратегии инициализации:
- * - `global`: Единственный экземпляр на всё приложение.
+ * - `global`: Единственный экземпляр на среду выполнения, общий для всех SSR-запросов серверного процесса.
  * - `provide`: Разделяется через provide/inject в дереве компонентов (стандарт для Vue 3).
- * - `local`: Единственный экземпляр в замыкании возвращаемой функции.
+ * - `local`: Лениво создаваемый экземпляр на контекст ServerStorage.
  *
  * @template R return type of the factory function / тип данных, возвращаемых фабрикой
  * @template O argument types for the factory function / типы аргументов фабричной функции
@@ -80,9 +80,15 @@ const getGlobalMethods = () => ServerStorage.get<(() => any)[]>('__ui:execute-us
  * - **Общее состояние:** Для совместного использования реактивного состояния в дереве компонентов с помощью стратегии `provide`.
  * - **Внешние SDK:** Инициализация сторонних библиотек (аналитика, карты, графики), которые должны быть синглтонами.
  *
+ * Global factories must not capture request-scoped services or store user-specific data during SSR.
+ * Use the local strategy with an initialized ServerStorage request context for request-specific state.
+ *
+ * Глобальные фабрики не должны захватывать сервисы запроса или хранить пользовательские данные при SSR.
+ * Для состояния конкретного запроса используйте local с инициализированным контекстом ServerStorage.
+ *
  * @example
- * // 1. Global API singleton (useApiGet)/ Глобальный синглтон API (useApiGet)
- * export const useUserApi = executeUseGlobal(() => {
+ * // 1. Request-scoped API singleton (SSR)/ Синглтон API в контексте запроса (SSR)
+ * export const useUserApi = executeUseLocal(() => {
  *   return useApiGet('/api/user');
  * });
  *
@@ -103,7 +109,7 @@ const getGlobalMethods = () => ServerStorage.get<(() => any)[]>('__ui:execute-us
  *
  * @example
  * // 4. Complex API Service (useApiManagementRef)/ Комплексный API-сервис (useApiManagementRef)
- * export const useUserManagement = executeUseGlobal(() => {
+ * export const useUserManagement = executeUseLocal(() => {
  *   return useApiManagementRef(
  *     { path: '/api/users' },                 // GET setup
  *     { date: (v) => new Date(v).toLocaleString() }, // Formatters
@@ -127,6 +133,10 @@ export function executeUse<
 ): ((...args: O) => RI) | (() => RI) {
   /** The unique identifier of the component/ Уникальный идентификатор компонента */
   const id: string = getId()
+  /** Process-wide singleton owned by this factory / Общий для процесса синглтон этой фабрики */
+  let globalItem: RI | undefined
+  /** Detached effects owned by the global singleton / Отсоединённая область эффектов глобального синглтона */
+  let globalScope: EffectScope | undefined
 
   /**
    * Performs the base initialization of the object and wraps it in a management shell.
@@ -166,12 +176,47 @@ export function executeUse<
   const initItem = (args: O): RI => {
     const newItem = initCallback(args)
 
-    return Object.freeze({
+    const item = Object.freeze({
       ...newItem,
       destroyExecute(): void {
-        ServerStorage.remove(id)
+        if (type === ExecuteUseType.global) {
+          if (globalItem === item) {
+            const scope = globalScope
+            globalItem = undefined
+            globalScope = undefined
+            scope?.stop()
+          }
+        } else {
+          ServerStorage.remove(id)
+        }
       }
     })
+
+    return item
+  }
+
+  /**
+   * Initializes the global singleton within a detached effect scope.
+   *
+   * Инициализирует глобальный синглтон внутри отсоединённой области эффектов.
+   * @param args Arguments for the initializer / Аргументы для инициализатора
+   * @returns Global singleton instance / Экземпляр глобального синглтона
+   */
+  const initGlobal = (args: O): RI => {
+    if (!globalItem) {
+      const scope = effectScope(true)
+
+      try {
+        globalItem = scope.run<RI>(() => initItem(args)) as RI
+        globalScope = scope
+      } finally {
+        if (!globalItem) {
+          scope.stop()
+        }
+      }
+    }
+
+    return globalItem
   }
 
   /**
@@ -200,31 +245,38 @@ export function executeUse<
       return initProvide(args)
     }
 
+    if (type === ExecuteUseType.global) {
+      return initGlobal(args)
+    }
+
     return ServerStorage.get<RI>(id, () => {
       return EffectScopeGlobal.run<RI>(() => initItem(args)) as RI
     })
   }
 
   if (type === ExecuteUseType.global) {
-    getGlobalMethods().push(method)
+    globalMethods.push(method)
   }
 
   return method
 }
 
 /**
- * Creates a global singleton.
+ * Creates a runtime-wide singleton shared by all SSR requests in the server process.
  *
- * Создает глобальный синглтон.
+ * Создаёт синглтон среды выполнения, общий для всех SSR-запросов серверного процесса.
  *
  * @remarks
  * See {@link executeUse} for more details.
  *
  * Подробнее см. {@link executeUse}.
+ * Do not store user-specific state or capture request-scoped dependencies during SSR.
+ * Не храните пользовательское состояние и не захватывайте зависимости конкретного запроса при SSR.
  *
  * @param callback Initialization function/ Функция инициализации
+ * @returns accessor for the shared singleton / функция доступа к общему синглтону
  */
-export function executeUseGlobal<R>(callback: () => R) {
+export function executeUseGlobal<R>(callback: () => R): () => ExecuteUseReturn<R> {
   return executeUse(callback, ExecuteUseType.global)
 }
 
@@ -265,12 +317,12 @@ export function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R)
 }
 
 /**
- * Initializes all global callbacks.
+ * Initializes every registered global singleton without clearing the shared registry.
+ * Repeated calls reuse existing instances and initialize factories registered later.
  *
- * Инициализирует все глобальные callback.
+ * Инициализирует все зарегистрированные глобальные синглтоны, сохраняя общий реестр.
+ * Повторные вызовы используют готовые экземпляры и инициализируют фабрики, добавленные позднее.
  */
-export function executeUseGlobalInit() {
-  const globalMethods = getGlobalMethods()
-
+export function executeUseGlobalInit(): void {
   globalMethods.forEach(method => method())
 }

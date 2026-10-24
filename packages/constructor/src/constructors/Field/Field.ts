@@ -217,13 +217,13 @@ export class Field {
    */
   get control(): FieldControl {
     const id = this.fieldElement.id
-    const className = `${this.naming.getSubClass('body__input')} ${this.skeleton.classesSkeleton.classText}`
+    const className = `${this.naming.getSubClass('body', 'input')} ${this.skeleton.classesSkeleton.classText}`
 
     return {
       id,
       className,
-      classHidden: this.naming.getSubClass('body__hidden'),
-      classForFocus: this.naming.getSubClass('body__focus'),
+      classHidden: this.naming.getSubClass('body', 'hidden'),
+      classForFocus: this.naming.getSubClass('body', 'focus'),
       binds: {
         'id': id,
         'class': className,

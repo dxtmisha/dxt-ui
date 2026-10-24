@@ -40,6 +40,7 @@ export type DraggableWrapperClasses = {
   /** Main root CSS class / Основной класс CSS */
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  item: string
   square: string
   // :classes [!] System label / Системная метка
 }

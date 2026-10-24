@@ -1,5 +1,7 @@
 // ai-none
 
+import type { DesignName } from '@dxtmisha/functional'
+
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import { DraggableWrapperItem } from './DraggableWrapperItem'
 
@@ -23,21 +25,19 @@ export class DraggableWrapperSelection {
    * Constructor.
    *
    * Конструктор.
-   * @param id unique component identifier / уникальный идентификатор компонента
-   * @param classes classes helper instance / экземпляр помощника по классам
-   * @param item item helper instance / экземпляр помощника по элементам
+   * @param naming component naming helper / помощник именования компонента
+   * @param classes classes helper instance factory / фабрика экземпляра помощника по классам
+   * @param item item helper instance factory / фабрика экземпляра помощника по элементам
    */
   constructor(
-    protected readonly id: string,
-    protected readonly classes: DraggableWrapperClassesData,
-    protected readonly item: DraggableWrapperItem
+    protected readonly naming: DesignName,
+    protected readonly classes: () => DraggableWrapperClassesData,
+    protected readonly item: () => DraggableWrapperItem
   ) {
-    const className = this.classes.getName()
-
     this.property = {
-      width: `--${className}-sys-item-width`,
-      height: `--${className}-sys-item-height`,
-      rotate: `--${className}-sys-item-rotate`
+      width: this.naming.getStyle('item', 'width'),
+      height: this.naming.getStyle('item', 'height'),
+      rotate: this.naming.getStyle('item', 'rotate')
     }
   }
 
@@ -47,13 +47,15 @@ export class DraggableWrapperSelection {
    * Подготавливает стили и стек выбранных элементов множественного выбора.
    */
   prepare(): void {
-    const active = this.item.getActive().get()
-    const selection = this.classes.findSelection()
+    const item = this.item()
+    const classes = this.classes()
+    const active = item.getActive().get()
+    const selection = classes.findSelection()
 
     if (
       !selection
       || !active
-      || !this.classes.isSelected(active)
+      || !classes.isSelected(active)
     ) {
       return
     }
@@ -62,19 +64,19 @@ export class DraggableWrapperSelection {
     const deg = 4
     const max = 4
 
-    this.item.getSelection().set([...selection])
+    item.getSelection().set([...selection])
 
-    selection.forEach((item) => {
-      if (item !== active) {
-        const rect = item.getBoundingClientRect()
+    selection.forEach((element) => {
+      if (element !== active) {
+        const rect = element.getBoundingClientRect()
         const rotate: number = max * deg - shift * deg
 
-        this.updateItemStyles(item, rect, rotate)
+        this.updateItemStyles(element, rect, rotate)
 
         if (shift < max) {
           shift++
         } else {
-          item.classList.add(this.classes.list.selectionMore)
+          element.classList.add(classes.getList().selectionMore)
         }
       }
     })
@@ -86,7 +88,8 @@ export class DraggableWrapperSelection {
    * Сбрасывает стили всех выбранных элементов в стеке.
    */
   stop(): void {
-    const selection = this.item.getSelection().get()
+    const selection = this.item().getSelection().get()
+    const classes = this.classes()
 
     if (selection) {
       selection.forEach((item) => {
@@ -95,9 +98,9 @@ export class DraggableWrapperSelection {
         item.style.removeProperty(this.property.rotate)
 
         item.classList.remove(
-          this.classes.list.active,
-          this.classes.list.selection,
-          this.classes.list.selectionMore
+          classes.getList().active,
+          classes.getList().selection,
+          classes.getList().selectionMore
         )
       })
     }
@@ -120,9 +123,11 @@ export class DraggableWrapperSelection {
     item.style.setProperty(this.property.height, `${rect.height}px`)
     item.style.setProperty(this.property.rotate, `-${rotate}deg`)
 
+    const classes = this.classes()
+
     item.classList.add(
-      this.classes.list.active,
-      this.classes.list.selection
+      classes.getList().active,
+      classes.getList().selection
     )
   }
 }

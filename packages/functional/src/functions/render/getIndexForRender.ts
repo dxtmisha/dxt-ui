@@ -1,13 +1,13 @@
 import { isString, type ItemList } from '@dxtmisha/functional-basic'
-import { getClassName } from './getClassName'
 
 /**
- * Returns or generates a new element.
+ * Builds a render key from the component name, indexes and id, ignoring presentation properties.
  *
- * Возвращает или генерирует новый элемент.
+ * Формирует ключ рендеринга из имени компонента, индексов и id, игнорируя свойства оформления.
  * @param name name of the component/ названия компонента
  * @param props property of the component/ свойство компонента
  * @param index the name of the key/ названия ключа
+ * @returns generated key or undefined when identifiers are absent / ключ или undefined при отсутствии идентификаторов
  */
 export function getIndexForRender<T extends ItemList>(
   name: string | any,
@@ -16,7 +16,6 @@ export function getIndexForRender<T extends ItemList>(
 ): string | undefined {
   const id = props?.id
   const indexProp = props?.index
-  const className = getClassName(props)
   let result = ''
 
   if (isString(name)) {
@@ -29,10 +28,6 @@ export function getIndexForRender<T extends ItemList>(
 
   if (indexProp && isString(indexProp)) {
     result += `.${indexProp}`
-  }
-
-  if (className) {
-    result += `.${className}`
   }
 
   if (id) {

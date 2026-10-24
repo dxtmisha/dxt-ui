@@ -1,11 +1,15 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { Datetime } from '../Datetime'
 import { ErrorCenter } from '../ErrorCenter'
+import { ServerStorage } from '../ServerStorage'
 
 describe('Datetime', () => {
   let baseDate: Date
 
   beforeEach(() => {
+    const context: Record<string, unknown> = {}
+    ServerStorage.reset()
+    ServerStorage.init(() => context)
     baseDate = new Date('2024-03-15T10:30:00Z')
     vi.useFakeTimers()
     vi.setSystemTime(baseDate)
@@ -14,6 +18,7 @@ describe('Datetime', () => {
   afterEach(() => {
     vi.restoreAllMocks()
     vi.useRealTimers()
+    ServerStorage.reset()
   })
 
   describe('Initialization', () => {
@@ -525,6 +530,19 @@ describe('Datetime', () => {
   })
 
   describe('Watch Functionality', () => {
+    it('notifies the watcher after changing the locale code without replacing the date', () => {
+      const datetime = new Datetime('2024-06-15T12:00:00', 'datetime', 'en-US')
+      const date = datetime.getDate()
+      const watchCallback = vi.fn(() => datetime.getIntl().getLocation())
+      datetime.setWatch(watchCallback)
+
+      expect(datetime.setCode('en-GB')).toBe(datetime)
+
+      expect(watchCallback).toHaveBeenCalledExactlyOnceWith(date, 'datetime', false)
+      expect(watchCallback).toHaveReturnedWith('en-GB')
+      expect(datetime.getDate()).toBe(date)
+    })
+
     it('should call watch callback on updates with date, type, and hour24', () => {
       const datetime = new Datetime('2024-06-15T12:00:00')
       const watchCallback = vi.fn()

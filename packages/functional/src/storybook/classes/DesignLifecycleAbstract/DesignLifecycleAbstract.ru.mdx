@@ -1,0 +1,42 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Classes/DesignLifecycleAbstract'/>
+
+# Класс DesignLifecycleAbstract
+
+Абстрактный базовый класс зависимостей с синхронными обработчиками жизненного цикла. `DesignLogicAbstract` вызывает эти обработчики только у экземпляров, наследующих этот класс.
+
+## Ключевые особенности
+
+- **Необязательные обработчики** — любой обработчик можно не реализовывать.
+- **Синхронный контракт** — обработчики возвращают `void`.
+- **Явный вызов** — создание зависимости не запускает обработчики.
+
+## Инициализация
+
+Наследуйте абстрактный класс; не создавайте его напрямую.
+
+## Поведение и жизненный цикл
+
+У класса нет публичных методов. Подклассы реализуют readonly-свойства `onMounted?: () => void` и `onUnmounted?: () => void`. Асинхронную работу и её очистку организует подкласс.
+
+## Использование
+
+```typescript
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+
+class Dependency extends DesignLifecycleAbstract {
+  mounted = false
+  override readonly onMounted = (): void => { this.mounted = true }
+  override readonly onUnmounted = (): void => { this.mounted = false }
+}
+```
+
+## Свойства
+
+- `onMounted: (() => void) | undefined` — Необязательный синхронный обработчик монтирования.
+- `onUnmounted: (() => void) | undefined` — Необязательный синхронный обработчик очистки.
+
+## Методы
+
+Публичных методов нет; используйте описанные выше свойства.

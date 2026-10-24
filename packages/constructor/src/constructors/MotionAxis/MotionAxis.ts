@@ -138,8 +138,8 @@ export class MotionAxis {
    */
   get classes(): ConstrClassObject {
     return {
-      [this.naming.getStatusClass(`axis--${this.go.axis.value}`)]: true,
-      [this.naming.getStatusClass(`direction--${this.go.direction.value}`)]: true,
+      [this.naming.getStatusClass('axis', this.go.axis.value)]: true,
+      [this.naming.getStatusClass('direction', this.go.direction.value)]: true,
       [this.naming.getStatusClass('start')]: this.elementItem.getStart() && Boolean(this.props.animationHeight),
       [this.naming.getStatusClass('move')]: this.elementItem.getMove() && Boolean(this.props.animationHeight)
     }

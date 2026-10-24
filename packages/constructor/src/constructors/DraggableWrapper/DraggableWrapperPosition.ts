@@ -1,6 +1,6 @@
 // ai-none
 
-import type { ImageCoordinator } from '@dxtmisha/functional-basic'
+import { domElementsFromPoint, type ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import { DraggableWrapperClient } from './DraggableWrapperClient'
@@ -18,18 +18,18 @@ export class DraggableWrapperPosition {
    * Constructor.
    *
    * Конструктор.
-   * @param classes classes helper instance / экземпляр помощника по классам
-   * @param item item helper instance / экземпляр помощника по элементам
-   * @param client client coordinates manager / менеджер клиентских координат
-   * @param square square placeholder manager / менеджер элемента-заполнителя
-   * @param emit event emit helper class / вспомогательный класс вызова событий
+   * @param classes classes helper instance factory / фабрика экземпляра помощника по классам
+   * @param client client coordinates manager factory / фабрика менеджера клиентских координат
+   * @param emit event emit helper class factory / фабрика вспомогательного класса вызова событий
+   * @param item item helper instance factory / фабрика экземпляра помощника по элементам
+   * @param square square placeholder manager factory / фабрика менеджера элемента-заполнителя
    */
   constructor(
-    protected readonly classes: DraggableWrapperClassesData,
-    protected readonly item: DraggableWrapperItem,
-    protected readonly client: DraggableWrapperClient,
-    protected readonly square: DraggableWrapperSquare,
-    protected readonly emit: DraggableWrapperEmit
+    protected readonly classes: () => DraggableWrapperClassesData,
+    protected readonly client: () => DraggableWrapperClient,
+    protected readonly emit: () => DraggableWrapperEmit,
+    protected readonly item: () => DraggableWrapperItem,
+    protected readonly square: () => DraggableWrapperSquare
   ) {
   }
 
@@ -40,8 +40,9 @@ export class DraggableWrapperPosition {
    * @param client coordinate tracker / трекер координат
    */
   update(client: ImageCoordinator): void {
-    const points = this.classes.findElementsFromPoint(client)
-    const find = this.classes.findItemByPoints(client)
+    const classes = this.classes()
+    const points = domElementsFromPoint(client)
+    const find = classes.findItemByPoints(client)
 
     if (find) {
       this.updateDropTarget(find)
@@ -49,7 +50,7 @@ export class DraggableWrapperPosition {
       return
     }
 
-    const mainElement = this.classes.getElement()
+    const mainElement = classes.getElement()
 
     this.resetDrop()
 
@@ -68,40 +69,41 @@ export class DraggableWrapperPosition {
    * @param go force emit reorder logic / принудительно запустить логику изменения порядка
    */
   reset(go = false): void {
-    const active = this.item.getActive().get()
+    const item = this.item()
+    const active = item.getActive().get()
+    const classes = this.classes()
 
     if (
       active
       && (
-        this.classes.isReturn(active)
+        classes.isReturn(active)
         || go
       )
     ) {
-      if (this.item.getGo().is()) {
-        this.emit.on()
+      if (item.getGo().is()) {
+        this.emit().on()
 
         if (
           !go
-          && !this.client.hasDrop()
+          && !this.client().hasDrop()
         ) {
           this.insert()
         }
       }
 
-      this.square.prepare()
+      this.square().prepare()
 
-      for (const item of this.item.get()) {
-        item.classList.remove(
-          this.classes.list.active,
-          this.classes.list.go,
-          this.classes.list.selection,
-          this.classes.list.selectionMore,
-          this.classes.list.return
+      for (const element of item.get()) {
+        element.classList.remove(
+          classes.getList().active,
+          classes.getList().selection,
+          classes.getList().selectionMore,
+          classes.getList().return
         )
       }
 
-      this.item.reset()
-      this.client.reset()
+      item.reset()
+      this.client().reset()
     }
   }
 
@@ -111,21 +113,23 @@ export class DraggableWrapperPosition {
    * Останавливает перетаскивание, проверяя цель сброса или возвращая элемент.
    */
   stop(): void {
+    const item = this.item()
+
     if (
-      !this.item.getActive().is()
+      !item.getActive().is()
     ) {
       return
     }
 
     if (
-      !this.item.getGo().is()
+      !item.getGo().is()
     ) {
       this.returnActive()
       return
     }
 
-    if (this.client.hasDrop()) {
-      this.emit.on()
+    if (this.client().hasDrop()) {
+      this.emit().on()
       this.resetDrop()
       this.reset(true)
     } else {
@@ -139,16 +143,83 @@ export class DraggableWrapperPosition {
    * Вставляет перетаскиваемые элементы перед элементом-заполнителем в DOM.
    */
   protected insert(): void {
-    const squareElement = this.square.getElement()
+    const squareElement = this.square().getElement()
     const parentElement = squareElement?.parentElement
 
     if (
       squareElement
       && parentElement
     ) {
-      for (const item of this.item.get()) {
+      for (const item of this.item().get()) {
         parentElement.insertBefore(item, squareElement)
       }
+    }
+  }
+
+  /**
+   * Resets active target drop area status and styles.
+   *
+   * Сбрасывает статус и стили активной целевой области сброса.
+   */
+  protected resetDrop(): void {
+    const itemHelper = this.item()
+    const goElement = itemHelper.getGo().get()
+    const classes = this.classes()
+
+    if (
+      goElement
+      && classes.isDrop(goElement)
+    ) {
+      goElement.classList.remove(classes.getList().dropActive)
+
+      itemHelper.getGo().reset()
+      this.client().setDrop(false)
+    }
+  }
+
+  /**
+   * Resets placeholder position indicator status.
+   *
+   * Сбрасывает состояние индикатора позиции элемента-заполнителя.
+   */
+  protected resetPosition(): void {
+    const itemHelper = this.item()
+    const activeElement = itemHelper.getActive().get()
+
+    this.square().prepare(activeElement, true)
+
+    if (!this.client().hasDrop()) {
+      itemHelper.getGo().reset()
+    }
+  }
+
+  /**
+   * Starts item return back transition.
+   *
+   * Запускает переход возврата элемента на место.
+   */
+  protected returnActive(): void {
+    const classes = this.classes()
+    const element = classes.getElement()
+    const activeElement = this.item().getActive().get()
+    const squareElement = this.square().getElement()
+
+    if (
+      element
+      && activeElement
+      && squareElement
+    ) {
+      const rectElement = element.getBoundingClientRect()
+      const rectSquare = squareElement.getBoundingClientRect()
+
+      this.client()
+        .set(0, 0)
+        .update(
+          rectSquare.left - rectElement.left,
+          rectSquare.top - rectElement.top
+        )
+
+      activeElement.classList.add(classes.getList().return)
     }
   }
 
@@ -161,15 +232,18 @@ export class DraggableWrapperPosition {
   protected updateDropTarget(item: HTMLElement): void {
     this.resetDrop()
 
-    if (
-      this.classes.isDrop(item)
-      && this.item.getGo().isByItem(item)
-    ) {
-      item.classList.add(this.classes.list.dragged)
-      this.square.prepare()
+    const classes = this.classes()
+    const itemHelper = this.item()
 
-      this.item.getGo().set(item)
-      this.client.setDrop(true)
+    if (
+      classes.isDrop(item)
+      && itemHelper.getGo().isByItem(item)
+    ) {
+      item.classList.add(classes.getList().dropActive)
+      this.square().prepare()
+
+      itemHelper.getGo().set(item)
+      this.client().setDrop(true)
     }
   }
 
@@ -180,76 +254,13 @@ export class DraggableWrapperPosition {
    * @param item HTML element defining the position / HTML-элемент, определяющий позицию
    */
   protected updatePositionTarget(item: HTMLElement): void {
-    if (this.classes.isPosition(item)) {
-      this.square.prepare(item)
-      this.item.getGo().set(item)
+    if (this.classes().isPosition(item)) {
+      this.square().prepare(item)
+      this.item().getGo().set(item)
 
       return
     }
 
     this.resetPosition()
-  }
-
-  /**
-   * Resets active target drop area status and styles.
-   *
-   * Сбрасывает статус и стили активной целевой области сброса.
-   */
-  protected resetDrop(): void {
-    const goElement = this.item.getGo().get()
-
-    if (
-      goElement
-      && this.classes.isDrop(goElement)
-    ) {
-      goElement.classList.remove(this.classes.list.dragged)
-
-      this.item.getGo().reset()
-      this.client.setDrop(false)
-    }
-  }
-
-  /**
-   * Resets placeholder position indicator status.
-   *
-   * Сбрасывает состояние индикатора позиции элемента-заполнителя.
-   */
-  protected resetPosition(): void {
-    const activeElement = this.item.getActive().get()
-
-    this.square.prepare(activeElement, true)
-
-    if (!this.client.hasDrop()) {
-      this.item.getGo().reset()
-    }
-  }
-
-  /**
-   * Starts item return back transition.
-   *
-   * Запускает переход возврата элемента на место.
-   */
-  protected returnActive(): void {
-    const element = this.classes.getElement()
-    const activeElement = this.item.getActive().get()
-    const squareElement = this.square.getElement()
-
-    if (
-      element
-      && activeElement
-      && squareElement
-    ) {
-      const rectElement = element.getBoundingClientRect()
-      const rectSquare = squareElement.getBoundingClientRect()
-
-      this.client
-        .set(0, 0)
-        .update(
-          rectSquare.left - rectElement.left,
-          rectSquare.top - rectElement.top
-        )
-
-      activeElement.classList.add(this.classes.list.return)
-    }
   }
 }

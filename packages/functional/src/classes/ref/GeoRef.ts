@@ -11,16 +11,16 @@ import {
 } from '@dxtmisha/functional-basic'
 
 /**
- * Reactive class for working with geographic data.
+ * Static reactive facade for the current geographic context. It caches a shallow ref to `Geo.getItem()` and computed projections through `ServerStorage`.
  *
- * Реактивный класс для работы с географическими данными.
+ * Статический реактивный фасад текущего географического контекста. Кэширует поверхностную ссылку на `Geo.getItem()` и вычисляемые проекции через `ServerStorage`.
  */
 export class GeoRef {
   /**
-   * Information about the current country.
+   * Returns the cached geographic item ref.
    *
-   * Информация об текущей стране.
-   * @returns reactive object with full geographic information/ реактивный объект с полной географической информацией
+   * Возвращает кэшированную ссылку на географические данные.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   static get(): Ref<GeoItemFull> {
     return ServerStorage.get(
@@ -30,10 +30,10 @@ export class GeoRef {
   }
 
   /**
-   * Current country.
+   * Returns the country code.
    *
-   * Текущая страна.
-   * @returns reactive string with the current country code/ реактивная строка с кодом текущей страны
+   * Возвращает код страны.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   static getCountry(): ComputedRef<string> {
     return ServerStorage.get(
@@ -43,10 +43,10 @@ export class GeoRef {
   }
 
   /**
-   * Current language.
+   * Returns the country metadata language.
    *
-   * Текущий язык.
-   * @returns reactive string with the current language code/ реактивная строка с кодом текущего языка
+   * Возвращает язык из данных страны.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   static getLanguage(): ComputedRef<string> {
     return ServerStorage.get(
@@ -56,11 +56,10 @@ export class GeoRef {
   }
 
   /**
-   * Full format according to the standard.
+   * Returns the standard locale code.
    *
-   * Полный формат согласно стандарту.
-   * @returns reactive string with the full standard locale format/
-   * реактивная строка с полным форматом стандарта локали
+   * Возвращает стандартный код локали.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   static getStandard(): ComputedRef<string> {
     return ServerStorage.get(
@@ -70,11 +69,10 @@ export class GeoRef {
   }
 
   /**
-   * Returns the first day of the week.
+   * Returns the first-weekday token from country metadata.
    *
-   * Возвращает первый день недели.
-   * @returns reactive string representing the first day of the week/
-   * реактивная строка, представляющая первый день недели
+   * Возвращает обозначение первого дня недели из данных страны.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   static getFirstDay(): ComputedRef<string> {
     return ServerStorage.get(
@@ -84,10 +82,10 @@ export class GeoRef {
   }
 
   /**
-   * Current location string.
+   * Returns the current location locale.
    *
-   * Текущее местоположение.
-   * @returns reactive string with the current location/ реактивная строка с текущим местоположением
+   * Возвращает текущую локаль местоположения.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   static getLocation(): ComputedRef<string> {
     return ServerStorage.get(
@@ -97,10 +95,10 @@ export class GeoRef {
   }
 
   /**
-   * Current country code from the location.
+   * Returns the country segment of the requested location.
    *
-   * Текущий код страны из местоположения.
-   * @returns reactive string with the current country code from location/ реактивная строка с кодом текущей страны из местоположения
+   * Возвращает сегмент страны запрошенного местоположения.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   static getLocationCountry(): ComputedRef<string> {
     return ServerStorage.get(
@@ -110,10 +108,10 @@ export class GeoRef {
   }
 
   /**
-   * Current language code from the location.
+   * Returns the language segment of the requested location.
    *
-   * Текущий код языка из местоположения.
-   * @returns reactive string with the current language code from location/ реактивная строка с кодом текущего языка из местоположения
+   * Возвращает языковой сегмент запрошенного местоположения.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   static getLocationLanguage(): ComputedRef<string> {
     return ServerStorage.get(
@@ -123,11 +121,11 @@ export class GeoRef {
   }
 
   /**
-   * Changes the data by the full code.
+   * Sets the current Geo locale with persistence enabled and replaces the reactive item.
    *
-   * Изменяет данные по полному коду.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * Устанавливает текущую локаль Geo с сохранением и заменяет реактивные данные.
+   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+   * @returns No return value. / Нет возвращаемого значения.
    */
   static set(code: string): void {
     Geo.set(code, true)
@@ -135,10 +133,11 @@ export class GeoRef {
   }
 
   /**
-   * Sets the default value for the country code.
+   * Sets the Geo fallback code or factory and refreshes the reactive item from Geo.
    *
-   * Устанавливает значение по умолчанию для кода страны.
-   * @param code default code value / значение кода по умолчанию
+   * Устанавливает резервный код Geo либо фабрику и обновляет реактивные данные из Geo.
+   * @param code Fallback locale code or factory. / Резервный код локали либо фабрика.
+   * @returns No return value. / Нет возвращаемого значения.
    */
   static setValueDefault(code?: string | (() => string)): void {
     Geo.setValueDefault(code)

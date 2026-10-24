@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/DesignName'/>
+
+# DesignName Class
+
+BEM naming helper for design components. The constructor splits `design.component` at the first two segments, normalizes each segment, and caches the design and component class names.
+
+## Key Features
+
+- **Cached names** — independent naming state for each instance.
+- **BEM helpers** — modifiers use `--`; elements use `__`.
+- **CSS variables** — system custom properties use the `-sys-` segment.
+
+## Initialization
+
+`constructor(name: string)`
+
+**Parameters:**
+
+- `name: string` — Design-prefixed component name, such as d1.button.
+
+## Behavior and lifecycle
+
+Name arguments may include numbers and `undefined`. They are joined without filtering; `0` is retained and `undefined` produces an empty segment. With no segments, the separator suffix remains. Each source segment uses `toCamelCase`; for example, `d1.buttonGroup` becomes `d1-buttonGroup`.
+
+## Usage
+
+```typescript
+import { DesignName } from '@dxtmisha/functional'
+
+const naming = /*#__PURE__*/ new DesignName('d1.buttonGroup')
+naming.getName() // 'd1-buttonGroup'
+naming.getStatusClass('size', 0) // 'd1-buttonGroup--size--0'
+naming.getSubClass('label') // 'd1-buttonGroup__label'
+naming.getStyle('width') // '--d1-buttonGroup-sys-width'
+```
+
+## Methods
+
+### Base names
+
+- `getDesign(): string` — Returns the first normalized name segment.
+
+- `getName(): string` — Returns the normalized component class name.
+
+### BEM and CSS variables
+
+- `getStatusClass(...names: (string | number | undefined)[]): string` — Joins modifier segments using `--` after the component name.
+
+- `getSubClass(...names: (string | number | undefined)[]): string` — Joins element segments using `__` after the component name.
+
+- `getStyle(...names: (string | number | undefined)[]): string` — Builds a CSS custom property name with the `--` prefix and `-sys-` namespace.

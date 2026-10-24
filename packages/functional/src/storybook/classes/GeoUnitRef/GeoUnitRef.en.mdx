@@ -1,0 +1,93 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/GeoUnitRef'/>
+
+# GeoUnitRef Class
+
+Reactive wrapper for `GeoUnit` that formats metric source values using regional units. Locale and numeric refs update saved computed results without recreating the wrapper.
+
+## Key Features
+
+- **Regional conversion** — source units convert according to country settings.
+- **Reactive inputs** — values, locale and the general `format()` unit can be refs.
+- **Formatting options** — accepts `Intl.NumberFormatOptions`.
+
+## Initialization
+
+`constructor(code?: RefOrNormal<string>)`
+
+**Parameters:**
+
+- `code?: RefOrNormal<string>` — Locale, country or language code; a ref is supported where declared.
+
+## Behavior and lifecycle
+
+Without an explicit locale, follows `GeoRef.getLocation()`. Explicit locale refs replace that fallback. Numeric strings are accepted. `format()` uses identifiers such as `square-meter` and `kilometer-per-hour`; unknown identifiers return the input as text. Options are ordinary objects rather than ref parameters.
+
+## Usage
+
+```typescript
+import { GeoUnitRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const locale = /*#__PURE__*/ ref('vi-VN')
+const value = /*#__PURE__*/ ref(0)
+const units = /*#__PURE__*/ new GeoUnitRef(locale)
+const temperature = /*#__PURE__*/ units.celsius(value)
+locale.value = 'en-US'
+const generic = /*#__PURE__*/ units.format(value, ref('celsius'))
+```
+
+## Methods
+
+### Location
+
+- `getLocation(): ComputedRef<string>` — Returns the resolved standard locale as a computed ref.
+
+### General conversion
+
+#### `format`
+
+`format( value: RefOrNormal<NumberOrString>, unit: RefOrNormal<string>, options?: Intl.NumberFormatOptions ): ComputedRef<string>`
+
+Selects the metric source unit reactively and delegates conversion and formatting to `GeoUnit`.
+
+**Parameters:**
+
+- `value: RefOrNormal<NumberOrString>` — Value to format; a ref is supported where declared.
+- `unit: RefOrNormal<string>` — Unit identifier.
+- `options?: Intl.NumberFormatOptions` — Configuration options.
+
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
+
+```typescript
+const formatted = /*#__PURE__*/ units.format(value, ref('meter'), { maximumFractionDigits: 2 })
+```
+
+### Unit shortcuts
+
+- `millimeter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats millimeters; converts to `inch` where regional settings require it.
+
+- `centimeter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats centimeters; converts to `inch` where regional settings require it.
+
+- `meter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats meters; converts to `foot` where regional settings require it.
+
+- `kilometer( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats kilometers; converts to `mile` where regional settings require it.
+
+- `squareMeter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats square meters; converts to `square-foot` where regional settings require it.
+
+- `hectare( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats hectares; converts to `acre` where regional settings require it.
+
+- `gram( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats grams; converts to `ounce` where regional settings require it.
+
+- `kilogram( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats kilograms; converts to `pound` where regional settings require it.
+
+- `tonne( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats tonnes; converts to `ton` where regional settings require it.
+
+- `milliliter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats milliliters; converts to `fluid-ounce` where regional settings require it.
+
+- `liter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats liters; converts to `gallon` where regional settings require it.
+
+- `celsius( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats degrees Celsius; converts to `fahrenheit` where regional settings require it.
+
+- `kilometerPerHour( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Formats kilometers per hour; converts to `mile-per-hour` where regional settings require it.

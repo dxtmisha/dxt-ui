@@ -26,7 +26,7 @@ describe('ImageText', () => {
       image: computed(() => imageValue)
     } as unknown as ImageData
 
-    return new ImageText(props, () => type, () => mockData)
+    return new ImageText(props, () => mockData, () => type)
   }
 
   describe('Static type guards (is and isIcon)', () => {
@@ -120,7 +120,7 @@ describe('ImageText', () => {
       const props = reactive<ImageProps>({ value: '$home' })
       const type = new ImageType(props, isMounted)
       const mockData = { image: computed(() => undefined) } as unknown as ImageData
-      const helper = new ImageText(props, () => type, () => mockData)
+      const helper = new ImageText(props, () => mockData, () => type)
 
       expect(helper.get()).toBe('home')
 

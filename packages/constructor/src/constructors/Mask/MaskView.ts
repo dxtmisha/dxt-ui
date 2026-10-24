@@ -49,7 +49,7 @@ export class MaskView {
     protected readonly validation: MaskValidation,
     naming: DesignName
   ) {
-    this.classNameItem = naming.getSubClass('character__item')
+    this.classNameItem = naming.getSubClass('character', 'item')
   }
 
   /** View items list/ Список данных для отображения */

@@ -4,77 +4,107 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # DatetimeRef Class
 
-A class for working with dates and times in a reactive way. It provides a high-level wrapper around the `Datetime` utility, ensuring automatic synchronization of date data with Vue reactive properties and locales.
+Reactive wrapper around `Datetime`. It synchronizes input date refs with a working `Date`, exposes computed calendar fields, and refreshes those fields after mutations through `getDatetime()`.
 
 ## Key Features
 
-- **Reactivity** — integration with Vue `ref` and `computed`. Automatically tracks input data changes and updates all related date components.
-- **Synchronization** — internal binding to the `Datetime` class. Any date manipulations via the base object (`getDatetime()`) are instantly reflected in reactive properties.
-- **Localization** — automatic support for international date and time formats via `Geo` and `GeoIntl`.
-- **Convenient Accessors** — quick access to date components (year, month, day, etc.) via computed properties.
+- **Required date** — accepts a date string, timestamp or `Date`, directly or as a ref.
+- **Calendar fields** — months are numbered from 1 to 12.
+- **Formatting** — localized and standard output are computed refs.
 
 ## Initialization
 
-Creates a new `DatetimeRef` instance. The class automatically synchronizes with the provided reactive data. If no parameters are passed, default values (current date and locale) are used.
+`constructor( date: RefOrNormal<NumberOrStringOrDate>, type: RefOrNormal<GeoDate> = 'date', code: RefOrNormal<string> = Geo.getLocation() )`
 
 **Parameters:**
-- `date: RefOrNormal<NumberOrStringOrDate>` — date for initialization (ISO string, timestamp, `Date` object, or a `ref` to them).
-- `type: RefOrNormal<GeoDate> = 'date'` — default output format (reactive or normal).
-- `code: RefOrNormal<string> = Geo.getLocation()` — locale code (reactive or normal, e.g., 'en-US').
+
+- `date: RefOrNormal<NumberOrStringOrDate>` — Required input date, timestamp or date string.
+- `type: RefOrNormal<GeoDate> = 'date'` — Date output format; the constructor defaults to date.
+- `code: RefOrNormal<string> = Geo.getLocation()` — Locale, country or language code; a ref is supported where declared.
+
+## Behavior and lifecycle
+
+The default locale is captured from `Geo.getLocation()` at construction. Pass a locale ref to track later changes. Input/type/locale watchers follow Vue scheduling; await `nextTick()` after updating those refs. Mutations through `getDatetime()` notify synchronously. `getItem()` retains the original input ref and is not rewritten by base-class mutations. Use an effect scope to dispose watchers. Assign a new `Date` to `getDate().value` or mutate through `getDatetime()`; native in-place `Date` changes do not trigger Vue by themselves.
+
+## Usage
 
 ```typescript
 import { DatetimeRef } from '@dxtmisha/functional'
-import { ref } from 'vue'
+import { effectScope, nextTick, ref } from 'vue'
 
-// 1. Initialization with a reactive string
-const date = ref('2023-10-27')
-const dt = new DatetimeRef(date, 'date', 'en-US')
-
-// 2. Current time (default)
-const now = new DatetimeRef()
-
-// 3. Using a reactive locale
-const locale = ref('fr-FR')
-const dtLocale = new DatetimeRef(new Date(), 'datetime', locale)
+const source = /*#__PURE__*/ ref('2024-02-29T12:00:00')
+const code = /*#__PURE__*/ ref('en-US')
+const scope = /*#__PURE__*/ effectScope()
+const datetime = /*#__PURE__*/ scope.run(() => new DatetimeRef(source, 'date', code))
+const formatted = /*#__PURE__*/ datetime?.locale()
+source.value = '2025-01-01T00:00:00'
+await nextTick()
+code.value = 'vi-VN'
+await nextTick()
+scope.stop()
 ```
 
-## Methods and Parameters
+## Methods
 
-- `getItem(): Ref<NumberOrStringOrDate>` — Returns a reactive reference to the original date value.
-- `getDate(): Ref<Date>` — Returns a reactive reference to the internal `Date` object. Used for synchronization with the base class.
-- `getDatetime(): Datetime` — Returns an instance of the `Datetime` utility. Allows using navigation methods (`moveBy...`, `clone...`) while maintaining reactivity.
-- `getHoursType(): ComputedRef<GeoHours>` — Determines the time format (12 or 24-hour) based on current locale and settings.
-- `getFirstDayCode(): ComputedRef<GeoFirstDay>` — Returns the code for the first day of the week (0 for Sunday, 1 for Monday) according to the locale.
-- `getMaxDay(): ComputedRef<number>` — Returns the number of days in the current month (considering leap years).
+### Underlying state
 
-## Date Components
+- `getItem(): Ref<NumberOrStringOrDate>` — Returns the original input ref.
 
-These methods return `ComputedRef` properties that update automatically when the state changes:
+- `getDate(): Ref<Date>` — Returns the working Date ref synchronized with the base class.
 
-- `getYear(): ComputedRef<number>` — Returns the full year.
-- `getMonth(): ComputedRef<number>` — Returns the month (1–12).
-- `getDay(): ComputedRef<number>` — Returns the day of the month (1-31).
-- `getHour(): ComputedRef<number>` — Returns the hours for the current date.
-- `getMinute(): ComputedRef<number>` — Returns the minutes.
-- `getSecond(): ComputedRef<number>` — Returns the seconds.
+- `getDatetime(): Datetime` — Returns the mutable base utility for calendar operations.
 
-## Formatting
+### Calendar fields
 
-### `locale`
+- `getYear(): ComputedRef<number>` — Returns the full local year.
 
-Returns a localized date string formatted according to the locale and settings.
+- `getMonth(): ComputedRef<number>` — Returns the local month, numbered 1–12.
+
+- `getDay(): ComputedRef<number>` — Returns the local day of the month.
+
+- `getHour(): ComputedRef<number>` — Returns the local hour, 0–23.
+
+- `getMinute(): ComputedRef<number>` — Returns local minutes, 0–59.
+
+- `getSecond(): ComputedRef<number>` — Returns local seconds, 0–59.
+
+- `getMaxDay(): ComputedRef<number>` — Returns the number of days in the current month, including leap years.
+
+- `getHoursType(): ComputedRef<GeoHours>` — Returns the locale clock format, `12` or `24` as a string.
+
+- `getFirstDayCode(): ComputedRef<GeoFirstDay>` — Returns the locale first weekday code: Sunday is 0.
+
+### Formatting
+
+#### `locale`
+
+`locale( type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions ): ComputedRef<string>`
+
+Returns localized output using the current format type unless an explicit type is supplied.
 
 **Parameters:**
-- `type: GeoDate` — format type ('date', 'time', 'datetime', 'month', 'year', etc.). Defaults to the type from the constructor.
-- `styleOptions?: object` — additional `Intl.DateTimeFormat` formatting options.
 
-**Returns:** `ComputedRef<string>`
+- `type?: GeoDate` — Date output format; the constructor defaults to date.
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — Intl style or formatting options.
 
-### `standard`
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
 
-Returns a standardized ISO date string.
+```typescript
+const formatted = /*#__PURE__*/ datetime?.locale('date', 'long')
+```
+
+#### `standard`
+
+`standard(timeZone = true as boolean): ComputedRef<string>`
+
+Returns the base utility’s standard representation for the current type. `timeZone` controls timezone output where that format includes time.
 
 **Parameters:**
-- `timeZone: boolean` — whether to include time zone information. Default: `true`.
 
-**Returns:** `ComputedRef<string>`
+- `timeZone = true as boolean` — Whether to include timezone information; defaults to true.
+
+**Returns:** `ComputedRef<string>` — Computed result; read it through .value.
+
+```typescript
+const standard = /*#__PURE__*/ datetime?.standard(false)
+```

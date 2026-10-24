@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-10-23
+
+### Added
+- **`Image` Decoding & Binary MIME Sniffing**:
+  - Added `decoding` property support (`async`, `sync`, `auto`) across `Image` props, `basicTypes.ts`, and `ImageImg`.
+  - Implemented binary magic byte sniffing in `ImageUint8Array` for PNG, GIF, WebP, AVIF, SVG, BMP, ICO, and fallback JPEG.
+  - Ensured valid length units in picture breakpoint media queries and added icon font support for filled and two-tone styles.
+  - Preserved `onLoad` bind override in `ImageInclude` and expanded comprehensive test suites.
+- **`DraggableWrapper` Comprehensive Test Suite**:
+  - Added complete unit test suites across all 15 classes and sub-constructors: `DraggableWrapper.test.ts`, `DraggableWrapperDesign.test.ts`, `DraggableWrapperClassesData.test.ts`, `DraggableWrapperClient.test.ts`, `DraggableWrapperDelay.test.ts`, `DraggableWrapperEmit.test.ts`, `DraggableWrapperEvents.test.ts`, `DraggableWrapperItem.test.ts`, `DraggableWrapperItemActive.test.ts`, `DraggableWrapperItemFocus.test.ts`, `DraggableWrapperItemGo.test.ts`, `DraggableWrapperItemSelection.test.ts`, `DraggableWrapperPosition.test.ts`, `DraggableWrapperSelection.test.ts`, and `DraggableWrapperSquare.test.ts` (121 passing tests).
+- **`Scrollbar` & `Ripple` Test Suites**:
+  - Added unit test suites for `Scrollbar`, `ScrollbarDesign`, `ScrollbarInclude`, `ScrollbarBorder`, `Ripple`, and `RippleItem`.
+- **Bilingual JSDoc Documentation**:
+  - Added full bilingual JSDoc (English and Russian) adhering to project standards across `DraggableWrapper` classes, methods, properties, and auxiliary types.
+
+### Changed
+- **`DraggableWrapperEvents` Lifecycle Orchestration**:
+  - Refactored `DraggableWrapperEvents` to inherit `DesignLifecycleAbstract` with automatic global event listener cleanup on component unmount (`onUnmounted`).
+- **Alphabetical Dependency Injection**:
+  - Sorted constructor dependencies in alphabetical order across `DraggableWrapper`, `Image`, `Ripple`, and `Scrollbar` orchestrator classes.
+- **`DesignName` Rest Parameters Migration**:
+  - Updated all constructor naming calls (`getStatusClass`, `getStyle`, `getSubClass`) to use rest arguments (`...names: (string | number | undefined)[]`) instead of array parameters.
+- **Code Style Refactoring**:
+  - Replaced abbreviated and temporary variable names (`dx`, `temp`, `val`, `el`) with descriptive identifiers in `DraggableWrapperSquare`.
+
+### Fixed
+- **Type Instantiation & TS Compatibility**:
+  - Made `item?: FieldMasks` parameter optional in `FieldPatternItemOrFunction` to support `executeFunction(pattern)` invocations in `FieldInputCheckInclude`.
+  - Fixed `isArray` generic type arguments in `ImageCoordinator`.
+  - Resolved `TS2589` (infinite type instantiation recursion) in `DraggableWrapperDesign`, `ScrollbarDesign`, and `ScrollbarInclude` test suites by eliminating recursive reactive wrapper unwrapping.
+
 ## [1.0.0] - 2026-10-18
 
 ### Added

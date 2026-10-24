@@ -1,6 +1,9 @@
 // ai-none
 
-import { getMouseClient } from '@dxtmisha/functional'
+import {
+  DesignLifecycleAbstract,
+  getMouseClient
+} from '@dxtmisha/functional'
 
 import type { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import type { DraggableWrapperClient } from './DraggableWrapperClient'
@@ -17,30 +20,41 @@ import type { DraggableWrapperProps } from './props'
  *
  * Класс, управляющий валидацией и фильтрами событий перетаскивания.
  */
-export class DraggableWrapperEvents {
+export class DraggableWrapperEvents extends DesignLifecycleAbstract {
+  /** Active listener flag / Флаг активности слушателей */
+  protected isListeners = false
+
   /**
    * Constructor.
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param delay drag start delay helper class / вспомогательный класс задержки начала перетаскивания
-   * @param classes classes helper instance / экземпляр помощника по классам
-   * @param item item helper instance / экземпляр помощника по элементам
-   * @param client client coordinates manager / менеджер клиентских координат
-   * @param square square placeholder manager / менеджер элемента-заполнителя
-   * @param selection multiselection helper class / вспомогательный класс множественного выбора
-   * @param position coordinate position helper class / вспомогательный класс позиционирования
+   * @param classes classes helper instance factory / фабрика экземпляра помощника по классам
+   * @param client client coordinates manager factory / фабрика менеджера клиентских координат
+   * @param delay drag start delay helper factory / фабрика вспомогательного класса задержки начала перетаскивания
+   * @param item item helper instance factory / фабрика экземпляра помощника по элементам
+   * @param position coordinate position helper factory / фабрика вспомогательного класса позиционирования
+   * @param selection multiselection helper factory / фабрика вспомогательного класса множественного выбора
+   * @param square square placeholder manager factory / фабрика менеджера элемента-заполнителя
    */
   constructor(
     protected readonly props: DraggableWrapperProps,
-    protected readonly delay: DraggableWrapperDelay,
-    protected readonly classes: DraggableWrapperClassesData,
-    protected readonly item: DraggableWrapperItem,
-    protected readonly client: DraggableWrapperClient,
-    protected readonly square: DraggableWrapperSquare,
-    protected readonly selection: DraggableWrapperSelection,
-    protected readonly position: DraggableWrapperPosition
+    protected readonly classes: () => DraggableWrapperClassesData,
+    protected readonly client: () => DraggableWrapperClient,
+    protected readonly delay: () => DraggableWrapperDelay,
+    protected readonly item: () => DraggableWrapperItem,
+    protected readonly position: () => DraggableWrapperPosition,
+    protected readonly selection: () => DraggableWrapperSelection,
+    protected readonly square: () => DraggableWrapperSquare
   ) {
+    super()
+  }
+
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    if (this.isListeners) {
+      this.stop()
+    }
   }
 
   /**
@@ -92,7 +106,7 @@ export class DraggableWrapperEvents {
       return
     }
 
-    const item = this.classes.findClick(event.target as HTMLElement)
+    const item = this.classes().findClick(event.target as HTMLElement)
 
     if (!item) {
       return
@@ -104,15 +118,15 @@ export class DraggableWrapperEvents {
       event.preventDefault()
     }
 
-    this.item.getFocus().set(item)
+    this.item().getFocus().set(item)
 
-    this.delay.start(() => {
+    this.delay().start(() => {
       const client = getMouseClient(event)
 
-      this.client.prepare(item, client)
-      this.item.getActive().prepare(item, client)
-      this.square.prepare(item)
-      this.selection.prepare()
+      this.client().prepare(item, client)
+      this.item().getActive().prepare(item, client)
+      this.square().prepare(item)
+      this.selection().prepare()
     })
 
     this.addListeners()
@@ -129,7 +143,7 @@ export class DraggableWrapperEvents {
       event.propertyName === 'transform'
       || event.propertyName === 'left'
     ) {
-      this.position.reset()
+      this.position().reset()
     }
   }
 
@@ -149,38 +163,24 @@ export class DraggableWrapperEvents {
     }
 
     if (
-      this.item.getActive().is()
+      this.item().getActive().is()
     ) {
       event.stopPropagation()
 
       const client = getMouseClient(event)
 
-      this.client.move(client)
-      this.position.update(client)
+      this.client().move(client)
+      this.position().update(client)
     } else {
-      const item = this.classes.findClick(event.target as HTMLElement)
+      const item = this.classes().findClick(event.target as HTMLElement)
 
       if (
         !item
-        || item !== this.item.getFocus().get()
+        || item !== this.item().getFocus().get()
       ) {
         this.stop()
       }
     }
-  }
-
-  /**
-   * Stops the drag process and cleans up event listeners.
-   *
-   * Останавливает процесс перетаскивания и очищает слушатели событий.
-   */
-  protected stop(): void {
-    if (!this.delay.stop()) {
-      this.position.stop()
-      this.selection.stop()
-    }
-
-    this.removeListeners()
   }
 
   /**
@@ -189,6 +189,8 @@ export class DraggableWrapperEvents {
    * Добавляет слушатели событий перетаскивания к окну.
    */
   protected addListeners(): void {
+    this.isListeners = true
+
     window.addEventListener('mousemove', this.handleMove)
     window.addEventListener('mouseup', this.handleMove)
     window.addEventListener('touchmove', this.handleMove, { passive: false })
@@ -202,10 +204,26 @@ export class DraggableWrapperEvents {
    * Удаляет слушатели событий перетаскивания окна.
    */
   protected removeListeners(): void {
+    this.isListeners = false
+
     window.removeEventListener('mousemove', this.handleMove)
     window.removeEventListener('mouseup', this.handleMove)
     window.removeEventListener('touchmove', this.handleMove)
     window.removeEventListener('touchend', this.handleMove)
     window.removeEventListener('touchcancel', this.handleMove)
+  }
+
+  /**
+   * Stops the drag process and cleans up event listeners.
+   *
+   * Останавливает процесс перетаскивания и очищает слушатели событий.
+   */
+  protected stop(): void {
+    if (!this.delay().stop()) {
+      this.position().stop()
+      this.selection().stop()
+    }
+
+    this.removeListeners()
   }
 }

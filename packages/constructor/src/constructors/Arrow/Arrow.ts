@@ -132,7 +132,7 @@ export class Arrow {
   /** Classes for the component / Классы для компонента */
   get classes(): ConstrClassObject {
     return {
-      [this.naming.getStatusClass(`direction--${this.direction}`)]: Boolean(this.direction)
+      [this.naming.getStatusClass('direction', this.direction)]: Boolean(this.direction)
     }
   }
 

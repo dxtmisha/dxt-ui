@@ -8,9 +8,9 @@ export declare class DesignName {
     /** Returns the base BEM component class name. @keywords component, class name */
     getName(): string;
     /** Generates a modifier or status class name. @keywords status class, modifier */
-    getStatusClass(name: string | string[]): string;
+    getStatusClass(...names: (string | number | undefined)[]): string;
     /** Generates a CSS custom property name. @keywords css variable, custom property, style */
-    getStyle(name: string | string[]): string;
+    getStyle(...names: (string | number | undefined)[]): string;
     /** Generates a BEM sub-element class name. @keywords sub-element, element class, bem */
-    getSubClass(name: string | string[]): string;
+    getSubClass(...names: (string | number | undefined)[]): string;
 }

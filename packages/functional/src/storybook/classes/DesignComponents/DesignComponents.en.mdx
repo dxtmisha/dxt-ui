@@ -4,91 +4,127 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # DesignComponents Class
 
-A base class for working with connected components and managing their rendering logic within a design system. It allows for component registration, modification of their default properties, and flexible VNode generation.
+Typed registry of connected Vue components. It resolves components by name, caches computed modification maps, merges props, and creates VNodes with consistent keys.
 
 ## Key Features
 
-- **Component Management** — centralized registration and retrieval of Vue components.
-- **Dynamic Modifications** — supports applying global or specific property modifications to components before rendering.
-- **Flexible Rendering** — provides multiple methods (`render`, `renderOne`, `renderAdd`) for generating Vue VNodes with automatic property binding.
-- **Performance Optimization** — uses internal caching with Vue `computed` properties for property modifications.
+- **Registry** — `COMP` determines valid component names.
+- **Reactive defaults** — modification maps and individual values may be refs.
+- **Prop composition** — explicit props override defaults; classes and styles are merged.
 
 ## Initialization
 
-Creates a new `DesignComponents` instance. The class combines components and their modifications into a single rendering management mechanism.
-
-### Generic Constraints
-
-The class uses generics to ensure flexible rendering type configuration:
-- `COMP extends ConstrComponent` — An object with a list of available components. Defines the structure by which `DesignComponents` will look up and return components for rendering.
-- `P extends ConstrItem` — The property (props) type used for typing modifications and data passed during rendering.
+`constructor( components: COMP = {} as COMP, modification?: ConstrComponentMod<P> )`
 
 **Parameters:**
-- `components: COMP = {}` — a list of connected components (an object where keys are names and values are Vue components).
-- `modification?: ConstrComponentMod<P>` — a modification object that allows overriding props for each component.
+
+- `components: COMP = {} as COMP` — Connected component registry.
+- `modification?: ConstrComponentMod<P>` — Per-index default prop maps, optionally reactive.
+
+## Behavior and lifecycle
+
+`P` describes component props. A missing component returns `undefined` from `renderOne()` and an empty array from `render()`. The default modification index is the component name. Explicit VNode keys are preserved.
+
+## Usage
 
 ```typescript
 import { DesignComponents } from '@dxtmisha/functional'
-import MyButton from './MyButton.vue'
-import MyInput from './MyInput.vue'
+import { ref } from 'vue'
 
-// 1. Component registration
-const components = {
-  button: MyButton,
-  input: MyInput
-}
-
-// 2. Defining modifications (default props)
-const modification = {
-  button: { size: 'large', color: 'primary' },
-  input: { focus: true }
-}
-
-const design = new DesignComponents(components, modification)
+const disabled = /*#__PURE__*/ ref(false)
+const components = /*#__PURE__*/ new DesignComponents(
+  { button: 'button' },
+  { button: { disabled, class: 'base' } }
+)
+const node = /*#__PURE__*/ components.renderOne('button', { title: 'Save' })
+disabled.value = true
+const updatedNode = /*#__PURE__*/ components.renderOne('button')
 ```
 
+## Methods
 
-## Rendering Methods
+### Registry lookup
 
-### `render`
+- `is<K extends keyof COMP>(name: K): name is K` — Checks whether a registry entry contains a component.
 
-Renders a component by its name and returns an array containing a single `VNode`. This is useful for Vue, which often expects arrays of nodes.
+- `get<K extends keyof COMP>(name: K): COMP[K]` — Returns the registry entry without creating a VNode.
 
-**Parameters:**
-- `name: string` — The name of the registered component.
-- `props: object` — Properties passed to the component.
-- `children: any` — Sub-elements or slots of the component.
-- `index: string` — The key for the VNode.
+### Prop modifications
 
-**Returns:** `VNode[]` — An array containing the generated VNode.
+#### `getModification`
 
-### `renderOne`
+`getModification<K extends keyof P>( index?: K & string | string, props?: P[K] | ConstrItem ): ConstrItem | undefined`
 
-Renders a single component and returns the `VNode` object directly. If the component is not found, it returns `undefined`.
+Caches the computed defaults for an index and merges explicit props using `toBinds`. Without a nonempty index, returns the supplied props unchanged.
 
 **Parameters:**
-- `name: string` — The name of the registered component.
-- `props: object` — Properties for the component.
-- `children: any` — Sub-elements of the component.
-- `index: string` — The key for the VNode.
 
-**Returns:** `VNode | undefined` — The VNode object or `undefined`.
+- `index?: K & string | string` — Entry or modification index.
+- `props?: P[K] | ConstrItem` — Input properties.
 
-### `renderAdd`
+**Returns:** `ConstrItem | undefined` — Merged prop map or the unchanged props when no index is supplied.
 
-Renders a component and pushes the resulting `VNode` into a provided array. This allows for collecting multiple nodes in a single pass.
+```typescript
+const props = /*#__PURE__*/ components.getModification('button', { disabled: false })
+```
+
+### Rendering
+
+#### `renderOne`
+
+`renderOne< K extends keyof COMP, PK extends keyof P >( name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): VNode | undefined`
+
+Creates one VNode with merged props and children. Returns `undefined` for a missing component.
 
 **Parameters:**
-- `item: any[]` — The array to which the rendering result will be added.
-- `name: string` — The name of the component.
-- `props: object` — Properties for the component.
-- `children: any` — Sub-elements of the component.
-- `index: string` — The key for the VNode.
 
-**Returns:** `this` — A reference to the current instance for method chaining.
+- `name: K & string` — Connected component registry key.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Input properties.
+- `children?: RawChildren | RawSlots` — Child content or an optional VNode accumulator.
+- `index?: PK & string | string` — Entry or modification index.
 
-## Additional Methods
+**Returns:** `VNode | undefined` — Rendered VNode, or undefined when the component is missing.
 
-- `is(name: string): boolean` — Checks if a specific component is registered.
-- `get(name: string): COMP[K]` — Returns the registered component object by its name.
-- `getModification(index?: string, props?: object): object | undefined` — Returns modified input data for connected components.
+```typescript
+const node = /*#__PURE__*/ components.renderOne('button', { title: 'Save' })
+```
+
+#### `render`
+
+`render< K extends keyof COMP, PK extends keyof P >( name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): VNode[]`
+
+Wraps the rendered VNode in an array; returns an empty array for a missing component.
+
+**Parameters:**
+
+- `name: K & string` — Connected component registry key.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Input properties.
+- `children?: RawChildren | RawSlots` — Child content or an optional VNode accumulator.
+- `index?: PK & string | string` — Entry or modification index.
+
+**Returns:** `VNode[]` — Single-VNode array or an empty array.
+
+```typescript
+const nodes = /*#__PURE__*/ components.render('button')
+```
+
+#### `renderAdd`
+
+`renderAdd< K extends keyof COMP, PK extends keyof P >( item: unknown[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): this`
+
+Appends rendered nodes to an existing array and returns the same registry for chaining.
+
+**Parameters:**
+
+- `item: unknown[]` — Existing array to append rendered nodes to.
+- `name: K & string` — Connected component registry key.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Input properties.
+- `children?: RawChildren | RawSlots` — Child content or an optional VNode accumulator.
+- `index?: PK & string | string` — Entry or modification index.
+
+**Returns:** `this` — The current instance for chaining.
+
+```typescript
+const nodes: unknown[] = []
+components.renderAdd(nodes, 'button')
+```

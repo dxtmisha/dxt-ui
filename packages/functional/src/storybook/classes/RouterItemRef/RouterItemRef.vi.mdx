@@ -4,104 +4,110 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp RouterItemRef
 
-Lõi tĩnh để làm việc với Vue Router trong lớp chức năng (functional layer). Nó cung cấp một điểm truy cập duy nhất vào router, cho phép tạo liên kết, điều hướng và chuẩn hóa đường dẫn mà không phụ thuộc trực tiếp vào ngữ cảnh của thành phần (component context).
+Facade tĩnh cho Vue Router đã đăng ký qua `ServerStorage`. Phân giải tuyến có tên thành thuộc tính href và thực hiện điều hướng.
 
-Điều này cho phép sử dụng các khả năng của router trong các lớp và tiện ích nơi các hook `useRouter` hoặc `useRoute` không khả dụng.
+## Tính năng chính
 
-## Các tính năng chính
+- **Liên kết có tên** — giữ params, query, hash và đường dẫn cơ sở của router.
+- **Đăng ký** — `set()` thay thế, `setOneTime()` chỉ đặt khi chưa có.
+- **Router tùy chọn** — chưa đăng ký cho liên kết undefined hoặc thuộc tính href rỗng.
 
-- **Truy cập Toàn cầu** — lưu trữ thực thể router để truy cập từ bất kỳ đâu trong ứng dụng.
-- **Tạo Liên kết An toàn** — các phương thức để tạo liên kết bằng tên route với các tham số.
-- **Chuẩn hóa** — chuyển đổi các định dạng đường dẫn khác nhau thành các thuộc tính `href` tiêu chuẩn.
+## Hành vi và vòng đời
 
-## Sử dụng (Thiết lập)
+`rawToHref()` chỉ xử lý đối tượng có `name` kiểu chuỗi; đối tượng path và chuỗi URL trả `{}`. Tên tuyến không biết có thể gây lỗi Vue Router. `push()` trả `void`, không trả promise điều hướng; dùng router trực tiếp khi cần chờ hoặc xử lý lỗi. Khởi tạo lưu trữ yêu cầu trước SSR.
 
-Vì `RouterItemRef` là một lớp tĩnh, nó phải được khởi tạo một lần khi tạo ứng dụng (thường là trong `main.ts` hoặc trong một plugin).
+## Cách dùng
 
 ```typescript
 import { RouterItemRef } from '@dxtmisha/functional'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createMemoryHistory, createRouter } from 'vue-router'
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [...]
+const router = /*#__PURE__*/ createRouter({
+  history: createMemoryHistory('/app/'),
+  routes: [{ path: '/users/:id', name: 'user', component: { render: () => null } }]
 })
-
-// Thiết lập router để sử dụng toàn cầu
 RouterItemRef.set(router)
+const href = /*#__PURE__*/ RouterItemRef.getHref('user', { id: 0 }, { page: 1 }, '#details')
 ```
 
-## Quản lý thực thể
+## Phương thức
 
-- `static get(): Router | undefined` — Trả về thực thể router hiện đang được thiết lập.
-- `static set(router: Router): void` — Thiết lập thực thể router.
-- `static setOneTime(router: Router): void` — Thiết lập thực thể router chỉ khi nó chưa được thiết lập. Hữu ích để ngăn chặn việc ghi đè vô tình trong các plugin.
+### Đăng ký
 
-## Điều hướng và Liên kết
+- `get(): Router` — Trả router đã đăng ký; lúc chạy có thể chưa có.
 
-Nhóm các phương thức quản lý lịch sử điều hướng và tạo URL.
+- `set(router: Router): void` — Lưu hoặc thay router trong ngữ cảnh hiện tại.
 
-### `push`
+- `setOneTime(router: Router): void` — Chỉ đăng ký router khi chưa lưu router nào.
 
-Thực hiện điều hướng theo lập trình đến route được chỉ định. Đây là một trình bao bọc an toàn cho `router.push`. Nếu router chưa được thiết lập, hành động sẽ bị bỏ qua.
+### Liên kết và điều hướng
 
-**Tham số:**
-- `to: string | RouteLocationRaw` — đường dẫn đích hoặc đối tượng vị trí route.
+#### `getLink`
 
-### `getLink`
+`getLink( name: string, params?: RouteParamsRawGeneric, query?: LocationQueryRaw, hash?: string ): string | undefined`
 
-Tạo và trả về một chuỗi URL (href) cho một route dựa trên tên và các tham số của nó. Sử dụng phương thức `router.resolve`.
+Phân giải vị trí có tên thành `router.resolve(...).href`; trả `undefined` nếu chưa có router.
 
 **Tham số:**
-- `name: string` — tên route duy nhất.
-- `params?: any` — các tham số đường dẫn động (params).
-- `query?: any` — các tham số chuỗi truy vấn (query).
 
-**Trả về:** `string | undefined` — URL được tạo hoặc `undefined` nếu router chưa được khởi tạo.
+- `name: string` — Tên tuyến đã đăng ký.
+- `params?: RouteParamsRawGeneric` — Tham số tuyến có tên.
+- `query?: LocationQueryRaw` — Tham số truy vấn tuyến.
+- `hash?: string` — Phân đoạn tuyến gồm dấu # đầu.
 
-### `getHref`
-
-Trả về một đối tượng thuộc tính liên kết được chuẩn hóa. Hữu ích để truyền vào các thành phần mong đợi `ConstrHrefProps`.
-
-**Tham số:**
-- `name?: string` — tên route.
-- `params?: any` — tham số đường dẫn.
-- `query?: any` — tham số truy vấn.
-
-**Trả về:** `ConstrHrefProps` — một đối tượng `{ href: string }` hoặc `{}` (đối tượng trống) nếu không có tên nào được cung cấp.
-
-### `rawToHref`
-
-Một phương thức chuẩn hóa đặc biệt. Chuyển đổi một đối tượng vị trí (nếu nó chứa `name`) thành một đối tượng thuộc tính liên kết.
-
-**Tham số:**
-- `to?: string | RouteLocationRaw` — dữ liệu route thô.
-
-**Trả về:** `ConstrHrefProps` — kết quả của `getHref` hoặc `{}`.
-
-## Ví dụ
-
-### Tạo liên kết trong mã
+**Trả về:** `string | undefined` — Chuỗi được yêu cầu hoặc undefined khi không có.
 
 ```typescript
-import { RouterItemRef } from '@dxtmisha/functional'
-
-// Lấy URL cho trang hồ sơ người dùng
-const userUrl = RouterItemRef.getLink('user-profile', { id: 123 })
-// Kết quả: '/user/123' (tùy thuộc vào cấu hình router)
-
-// Sử dụng cho các thuộc tính thành phần
-const linkProps = RouterItemRef.getHref('catalog', undefined, { category: 'electronics' })
-// Kết quả: { href: '/catalog?category=electronics' }
+const link = /*#__PURE__*/ RouterItemRef.getLink('user', { id: 0 }, { page: 1 }, '#details')
 ```
 
-### Điều hướng theo lập trình
+#### `getHref`
+
+`getHref( name?: string, params?: RouteParamsRawGeneric, query?: LocationQueryRaw, hash?: string ): ConstrHrefProps`
+
+Trả `{ href }` cho liên kết phân giải không rỗng, ngược lại `{}`.
+
+**Tham số:**
+
+- `name?: string` — Tên tuyến đã đăng ký.
+- `params?: RouteParamsRawGeneric` — Tham số tuyến có tên.
+- `query?: LocationQueryRaw` — Tham số truy vấn tuyến.
+- `hash?: string` — Phân đoạn tuyến gồm dấu # đầu.
+
+**Trả về:** `ConstrHrefProps` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
 
 ```typescript
-import { RouterItemRef } from '@dxtmisha/functional'
+const props = /*#__PURE__*/ RouterItemRef.getHref('user', { id: 0 })
+```
 
-const logout = () => {
-    // Điều hướng đến trang chủ sau khi đăng xuất
-    RouterItemRef.push({ name: 'home' })
-}
+#### `rawToHref`
+
+`rawToHref( to?: string | RouteLocationRaw ): ConstrHrefProps`
+
+Chuyển vị trí thô có tên thành thuộc tính href, giữ params, query và hash.
+
+**Tham số:**
+
+- `to?: string | RouteLocationRaw` — Vị trí tuyến thô.
+
+**Trả về:** `ConstrHrefProps` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const props = /*#__PURE__*/ RouterItemRef.rawToHref({ name: 'user', params: { id: 0 }, hash: '#details' })
+```
+
+#### `push`
+
+`push(to: string | RouteLocationRaw): void`
+
+Bắt đầu điều hướng khi router đã đăng ký.
+
+**Tham số:**
+
+- `to: string | RouteLocationRaw` — Vị trí tuyến thô.
+
+**Trả về:** `void` — Không có giá trị trả về.
+
+```typescript
+RouterItemRef.push({ name: 'user', params: { id: 0 } })
 ```

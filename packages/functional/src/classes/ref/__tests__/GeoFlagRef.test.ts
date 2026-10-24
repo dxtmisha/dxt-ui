@@ -1,5 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { GeoFlag, ServerStorage } from '@dxtmisha/functional-basic'
 import { GeoFlagRef } from '../GeoFlagRef'
+import { GeoRef } from '../GeoRef'
 import { ref, nextTick } from 'vue'
 
 describe('GeoFlagRef', () => {
@@ -7,7 +9,14 @@ describe('GeoFlagRef', () => {
   const initialCode = 'RU'
 
   beforeEach(() => {
+    const context: Record<string, unknown> = {}
+    ServerStorage.reset()
+    ServerStorage.init(() => context)
     geoFlagRef = new GeoFlagRef(initialCode)
+  })
+
+  afterEach(() => {
+    ServerStorage.reset()
   })
 
   describe('initialization and reactivity', () => {
@@ -17,21 +26,109 @@ describe('GeoFlagRef', () => {
 
     it('initializes correctly with a ref code', () => {
       const codeRef = ref('EN')
-      const gr = new GeoFlagRef(codeRef)
-      expect(gr.getCode()).toBe('EN')
+      const flags = new GeoFlagRef(codeRef)
+      expect(flags.getCode()).toBe('EN')
     })
 
     it('updates when the code ref changes', async () => {
       const codeRef = ref('RU')
-      const gr = new GeoFlagRef(codeRef)
-      expect(gr.getCode()).toBe('RU')
+      const flags = new GeoFlagRef(codeRef)
+      expect(flags.getCode()).toBe('RU')
 
       codeRef.value = 'US'
       await nextTick()
 
-      expect(gr.getCode()).toBe('US')
+      expect(flags.getCode()).toBe('US')
       // Check if the derived flag data also updates
-      expect(gr.getFlag().value).toBeDefined()
+      expect(flags.getFlag().value).toBeDefined()
+    })
+  })
+
+  describe.each(['get', 'getLanguage', 'getFlag'] as const)('%s code reactivity', (method) => {
+    it('updates saved computed values with omitted or undefined code when the constructor ref changes', () => {
+      const code = ref('ru-RU')
+      const flags = new GeoFlagRef(code)
+      const result = flags[method]()
+      const explicitUndefined = flags[method](undefined)
+      const initialResult = result.value
+      expect(initialResult).toEqual(new GeoFlag('ru-RU')[method]())
+      expect(explicitUndefined.value).toEqual(initialResult)
+
+      code.value = 'en-US'
+
+      const expected = new GeoFlag('en-US')[method]()
+      expect(flags.getCode()).toBe('en-US')
+      expect(result.value).toEqual(expected)
+      expect(explicitUndefined.value).toEqual(expected)
+      expect(result.value).not.toEqual(initialResult)
+
+      code.value = 'ru-RU'
+
+      expect(result.value).toEqual(initialResult)
+      expect(explicitUndefined.value).toEqual(initialResult)
+    })
+
+    it('updates a saved computed value when the default GeoRef location changes', () => {
+      GeoRef.set('ru-RU')
+      const flags = new GeoFlagRef()
+      const result = flags[method]()
+      const initialResult = result.value
+      expect(initialResult).toEqual(new GeoFlag('ru-RU')[method]())
+
+      GeoRef.set('en-US')
+
+      expect(flags.getCode()).toBe('en-US')
+      expect(result.value).toEqual(new GeoFlag('en-US')[method]())
+      expect(result.value).not.toEqual(initialResult)
+    })
+
+    it('preserves an explicit string code when the constructor code changes', () => {
+      const code = ref('ru-RU')
+      const flags = new GeoFlagRef(code)
+      const result = flags[method]('FR')
+      expect(result.value).toEqual(new GeoFlag('ru-RU')[method]('FR'))
+
+      code.value = 'en-US'
+
+      expect(result.value).toEqual(new GeoFlag('en-US')[method]('FR'))
+      expect(result.value).not.toEqual(new GeoFlag('en-US')[method]())
+    })
+
+    it('tracks an explicit ref code and preserves its priority when the constructor code changes', () => {
+      const code = ref('ru-RU')
+      const explicitCode = ref('FR')
+      const flags = new GeoFlagRef(code)
+      const result = flags[method](explicitCode)
+      expect(result.value).toEqual(new GeoFlag('ru-RU')[method]('FR'))
+
+      explicitCode.value = 'DE'
+
+      expect(result.value).toEqual(new GeoFlag('ru-RU')[method]('DE'))
+
+      code.value = 'en-US'
+
+      expect(result.value).toEqual(new GeoFlag('en-US')[method]('DE'))
+      expect(result.value).not.toEqual(new GeoFlag('en-US')[method]())
+    })
+  })
+
+  describe.each(['getList', 'getListLanguage', 'getNational', 'getNationalLanguage'] as const)('%s list boundaries', (method) => {
+    it('reacts to code-list replacement and accepts an empty list', () => {
+      const codes = ref<string[]>(['VN', 'RU'])
+      const result = geoFlagRef[method](codes)
+      expect(result.value).toEqual(new GeoFlag(initialCode)[method](['VN', 'RU']))
+      expect(result.value).toHaveLength(2)
+      codes.value = ['US']
+      expect(result.value).toEqual(new GeoFlag(initialCode)[method](['US']))
+      expect(result.value).toHaveLength(1)
+      codes.value = []
+      expect(result.value).toEqual([])
+    })
+
+    it('uses the full base catalog when codes are omitted', () => {
+      const result = geoFlagRef[method]()
+      expect(result.value).toEqual(new GeoFlag(initialCode)[method]())
+      expect(result.value.length).toBeGreaterThan(0)
     })
   })
 

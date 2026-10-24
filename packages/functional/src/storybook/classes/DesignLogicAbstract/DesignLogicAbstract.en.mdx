@@ -1,0 +1,80 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/DesignLogicAbstract'/>
+
+# DesignLogicAbstract Class
+
+Abstract orchestrator for component logic dependencies. It captures the current Vue effect scope, stores shared constructor inputs, and lazily creates and caches dependency instances by string key.
+
+## Key Features
+
+- **Lazy construction** — parameter factories run only on first creation.
+- **Scope ownership** — dependency effects belong to the captured active scope.
+- **Lifecycle dispatch** — synchronous callbacks are recognized through `DesignLifecycleAbstract`.
+
+## Initialization
+
+`constructor( props: Readonly<P>, element: Ref<E | undefined>, naming: DesignName, components?: DesignComponents<COMP, P>, slots?: SLOTS, emits?: ConstrEmit<EMITS>, constructors?: Partial<CONSTRUCTORS>, hasLifecycle: boolean = true )`
+
+**Parameters:**
+
+- `props: Readonly<P>` — Input properties.
+- `element: Ref<E | undefined>` — Root element ref.
+- `naming: DesignName` — Shared DesignName helper.
+- `components?: DesignComponents<COMP, P>` — Connected component registry.
+- `slots?: SLOTS` — Named slot registry.
+- `emits?: ConstrEmit<EMITS>` — Component event emitter.
+- `constructors?: Partial<CONSTRUCTORS>` — Dependency constructor overrides.
+- `hasLifecycle: boolean = true` — Whether to register component lifecycle hooks; defaults to true.
+
+## Behavior and lifecycle
+
+Generics: E is the root element, COMP the component registry, EMITS the events, SLOTS the slots, P the props, and CONSTRUCTORS the dependency constructor map. Construct during `setup()` or inside an active `effectScope()`. Without an active captured scope or an available constructor, lookup produces `undefined` at runtime despite the declared instance return type. Overrides in `constructors` take precedence over `constructorItems[name].item`. Conditions are watched on component mount; a truthy condition creates a dependency and a false condition does not destroy it. Only mounted Vue components register lifecycle hooks, and `hasLifecycle = false` disables registration. SSR does not invoke client callbacks. Mount callbacks run for existing dependencies, then condition initialization, then the logic callback. Late dependencies mount immediately. Dependency callback failures are collected, sent to `ErrorCenter` and rethrown as `AggregateError` after all callbacks in that dispatch run; subsequent logic callbacks are not reached on that failure path.
+
+## Usage
+
+```typescript
+import { DesignLogicAbstract, DesignName } from '@dxtmisha/functional'
+import { effectScope, ref } from 'vue'
+
+class Dependency {}
+
+class Logic extends DesignLogicAbstract<
+  HTMLElement, {}, {}, {}, {}, { dependency: typeof Dependency }
+> {
+  protected readonly constructorItems = { dependency: { item: Dependency } }
+
+  constructor() {
+    super({}, ref<HTMLElement>(), new DesignName('d1.example'))
+  }
+}
+
+const scope = /*#__PURE__*/ effectScope()
+const logic = /*#__PURE__*/ scope.run(() => new Logic())
+const dependency = /*#__PURE__*/ logic?.getInstance('dependency')
+scope.stop()
+```
+
+## Methods
+
+### Dependency access
+
+#### `getInstance`
+
+`getInstance<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K>`
+
+Returns a cached dependency or creates it inside the captured active scope. Constructor arguments come from the optional `parameters()` factory. A failed constructor is not cached and can be retried.
+
+**Parameters:**
+
+- `name: K` — String key of a dependency constructor.
+
+**Returns:** `ConstrInstance<CONSTRUCTORS, K>` — Cached or newly created dependency instance.
+
+```typescript
+const dependency = /*#__PURE__*/ logic?.getInstance('dependency')
+```
+
+### Shorthand access
+
+- `i<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K>` — Delegates to `getInstance()` with the same key and result.

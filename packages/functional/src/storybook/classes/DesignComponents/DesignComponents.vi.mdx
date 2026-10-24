@@ -4,91 +4,127 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp DesignComponents
 
-Lớp cơ sở để làm việc với các thành phần kết nối (connected components) và quản lý logic render của chúng trong hệ thống thiết kế. Nó cho phép đăng ký thành phần, sửa đổi các thuộc tính mặc định và tạo VNode một cách linh hoạt.
+Bộ đăng ký thành phần Vue có kiểu. Lớp tra cứu theo tên, lưu các cấu hình hiệu chỉnh dạng computed, hợp nhất thuộc tính và tạo VNode với khóa nhất quán.
 
-## Các tính năng chính
+## Tính năng chính
 
-- **Quản lý thành phần** — đăng ký và truy xuất các thành phần Vue một cách tập trung.
-- **Sửa đổi động** — hỗ trợ áp dụng các sửa đổi thuộc tính toàn cục hoặc cụ thể cho các thành phần trước khi render.
-- **Render linh hoạt** — cung cấp nhiều phương thức (`render`, `renderOne`, `renderAdd`) để tạo Vue VNode với tính năng tự động liên kết thuộc tính (binding).
-- **Tối ưu hóa hiệu suất** — sử dụng bộ nhớ đệm nội bộ với các thuộc tính `computed` của Vue cho các sửa đổi thuộc tính.
+- **Bộ đăng ký** — `COMP` xác định tên thành phần hợp lệ.
+- **Giá trị mặc định phản ứng** — bản đồ và từng giá trị hiệu chỉnh có thể là ref.
+- **Hợp nhất thuộc tính** — thuộc tính trực tiếp ghi đè mặc định; lớp CSS và kiểu được hợp nhất.
 
 ## Khởi tạo
 
-Tạo một thực thể `DesignComponents` mới. Lớp này kết hợp các thành phần và các sửa đổi của chúng vào một cơ chế quản lý hiển thị duy nhất.
-
-### Ràng buộc Generic (Generic Constraints)
-
-Lớp này sử dụng các generic để đảm bảo cấu hình kiểu render linh hoạt:
-- `COMP extends ConstrComponent` — Một đối tượng chứa danh sách các thành phần có sẵn. Xác định cấu trúc mà `DesignComponents` sẽ sử dụng để tìm kiếm và trả về các thành phần để render.
-- `P extends ConstrItem` — Kiểu thuộc tính (props) được sử dụng để định kiểu cho các sửa đổi và dữ liệu được truyền trong quá trình render.
+`constructor( components: COMP = {} as COMP, modification?: ConstrComponentMod<P> )`
 
 **Tham số:**
-- `components: COMP = {}` — danh sách các thành phần được kết nối (một đối tượng trong đó khóa là tên và giá trị là các thành phần Vue).
-- `modification?: ConstrComponentMod<P>` — một đối tượng sửa đổi cho phép ghi đè các thuộc tính (props) cho mỗi thành phần.
+
+- `components: COMP = {} as COMP` — Bộ đăng ký thành phần kết nối.
+- `modification?: ConstrComponentMod<P>` — Bản đồ thuộc tính mặc định theo chỉ mục, có thể phản ứng.
+
+## Hành vi và vòng đời
+
+`P` mô tả thuộc tính thành phần. Thành phần không tồn tại trả về `undefined` từ `renderOne()` và mảng rỗng từ `render()`. Chỉ mục hiệu chỉnh mặc định là tên thành phần. Khóa VNode trực tiếp được giữ nguyên.
+
+## Cách dùng
 
 ```typescript
 import { DesignComponents } from '@dxtmisha/functional'
-import MyButton from './MyButton.vue'
-import MyInput from './MyInput.vue'
+import { ref } from 'vue'
 
-// 1. Đăng ký thành phần
-const components = {
-  button: MyButton,
-  input: MyInput
-}
-
-// 2. Xác định các sửa đổi (props mặc định)
-const modification = {
-  button: { size: 'large', color: 'primary' },
-  input: { focus: true }
-}
-
-const design = new DesignComponents(components, modification)
+const disabled = /*#__PURE__*/ ref(false)
+const components = /*#__PURE__*/ new DesignComponents(
+  { button: 'button' },
+  { button: { disabled, class: 'base' } }
+)
+const node = /*#__PURE__*/ components.renderOne('button', { title: 'Save' })
+disabled.value = true
+const updatedNode = /*#__PURE__*/ components.renderOne('button')
 ```
 
+## Phương thức
 
-## Các phương thức Render
+### Tra cứu bộ đăng ký
 
-### `render`
+- `is<K extends keyof COMP>(name: K): name is K` — Kiểm tra mục đăng ký có chứa thành phần hay không.
 
-Render một thành phần theo tên và trả về một mảng chứa một `VNode` duy nhất. Điều này hữu ích cho Vue, nơi thường yêu cầu các mảng nút.
+- `get<K extends keyof COMP>(name: K): COMP[K]` — Trả về mục đăng ký mà không tạo VNode.
 
-**Tham số:**
-- `name: string` — Tên của thành phần đã đăng ký.
-- `props: object` — Các thuộc tính được truyền cho thành phần.
-- `children: any` — Các phần tử con hoặc slot của thành phần.
-- `index: string` — Khóa (key) cho VNode.
+### Hiệu chỉnh thuộc tính
 
-**Trả về:** `VNode[]` — Một mảng chứa VNode đã được tạo.
+#### `getModification`
 
-### `renderOne`
+`getModification<K extends keyof P>( index?: K & string | string, props?: P[K] | ConstrItem ): ConstrItem | undefined`
 
-Render một thành phần duy nhất và trả về đối tượng `VNode` trực tiếp. Nếu không tìm thấy thành phần, nó sẽ trả về `undefined`.
+Lưu giá trị computed theo chỉ mục và hợp nhất thuộc tính trực tiếp qua `toBinds`. Khi chỉ mục rỗng hoặc bị bỏ qua, trả nguyên thuộc tính đầu vào.
 
 **Tham số:**
-- `name: string` — Tên của thành phần đã đăng ký.
-- `props: object` — Các thuộc tính cho thành phần.
-- `children: any` — Các phần tử con của thành phần.
-- `index: string` — Khóa (key) cho VNode.
 
-**Trả về:** `VNode | undefined` — Đối tượng VNode hoặc `undefined`.
+- `index?: K & string | string` — Chỉ mục mục hoặc hiệu chỉnh.
+- `props?: P[K] | ConstrItem` — Thuộc tính đầu vào.
 
-### `renderAdd`
+**Trả về:** `ConstrItem | undefined` — Bản đồ thuộc tính hợp nhất hoặc thuộc tính gốc khi không truyền chỉ mục.
 
-Render một thành phần và đẩy `VNode` kết quả vào một mảng được cung cấp. Điều này cho phép thu thập nhiều nút trong một lần thực thi.
+```typescript
+const props = /*#__PURE__*/ components.getModification('button', { disabled: false })
+```
+
+### Kết xuất
+
+#### `renderOne`
+
+`renderOne< K extends keyof COMP, PK extends keyof P >( name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): VNode | undefined`
+
+Tạo một VNode với thuộc tính và nội dung con đã hợp nhất. Trả về `undefined` nếu thiếu thành phần.
 
 **Tham số:**
-- `item: any[]` — Mảng mà kết quả render sẽ được thêm vào.
-- `name: string` — Tên của thành phần.
-- `props: object` — Các thuộc tính cho thành phần.
-- `children: any` — Các phần tử con của thành phần.
-- `index: string` — Khóa (key) cho VNode.
 
-**Trả về:** `this` — Một tham chiếu đến instance hiện tại để thực hiện chuỗi lệnh (chaining).
+- `name: K & string` — Khóa thành phần kết nối trong bộ đăng ký.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Thuộc tính đầu vào.
+- `children?: RawChildren | RawSlots` — Nội dung con hoặc mảng tích lũy VNode tùy chọn.
+- `index?: PK & string | string` — Chỉ mục mục hoặc hiệu chỉnh.
 
-## Các phương thức bổ sung
+**Trả về:** `VNode | undefined` — VNode kết xuất hoặc undefined nếu thiếu thành phần.
 
-- `is(name: string): boolean` — Kiểm tra xem một thành phần có được đăng ký hay không.
-- `get(name: string): COMP[K]` — Trả về đối tượng thành phần đã đăng ký theo tên.
-- `getModification(index?: string, props?: object): object | undefined` — Trả về dữ liệu đầu vào đã sửa đổi cho các thành phần kết nối.
+```typescript
+const node = /*#__PURE__*/ components.renderOne('button', { title: 'Save' })
+```
+
+#### `render`
+
+`render< K extends keyof COMP, PK extends keyof P >( name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): VNode[]`
+
+Đưa VNode vào mảng; trả mảng rỗng nếu thiếu thành phần.
+
+**Tham số:**
+
+- `name: K & string` — Khóa thành phần kết nối trong bộ đăng ký.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Thuộc tính đầu vào.
+- `children?: RawChildren | RawSlots` — Nội dung con hoặc mảng tích lũy VNode tùy chọn.
+- `index?: PK & string | string` — Chỉ mục mục hoặc hiệu chỉnh.
+
+**Trả về:** `VNode[]` — Mảng một VNode hoặc mảng rỗng.
+
+```typescript
+const nodes = /*#__PURE__*/ components.render('button')
+```
+
+#### `renderAdd`
+
+`renderAdd< K extends keyof COMP, PK extends keyof P >( item: unknown[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): this`
+
+Thêm các nút vào mảng hiện có và trả cùng bộ đăng ký để gọi nối tiếp.
+
+**Tham số:**
+
+- `item: unknown[]` — Mảng hiện có để thêm nút kết xuất.
+- `name: K & string` — Khóa thành phần kết nối trong bộ đăng ký.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Thuộc tính đầu vào.
+- `children?: RawChildren | RawSlots` — Nội dung con hoặc mảng tích lũy VNode tùy chọn.
+- `index?: PK & string | string` — Chỉ mục mục hoặc hiệu chỉnh.
+
+**Trả về:** `this` — Đối tượng hiện tại để gọi nối tiếp.
+
+```typescript
+const nodes: unknown[] = []
+components.renderAdd(nodes, 'button')
+```

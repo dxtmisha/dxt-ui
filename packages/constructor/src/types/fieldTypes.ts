@@ -61,7 +61,7 @@ export type FieldPatternElement = Partial<HTMLInputElement>
 /** Pattern string or element/ Строка шаблона или элемент */
 export type FieldPatternItem = string | FieldPatternElement
 /** Pattern or factory function/ Шаблон или функция‑генератор */
-export type FieldPatternItemOrFunction = FieldPatternItem | ((item: FieldMasks) => FieldPatternItem)
+export type FieldPatternItemOrFunction = FieldPatternItem | ((item?: FieldMasks) => FieldPatternItem)
 /** Named pattern list/ Список именованных шаблонов */
 export type FieldPatternList = Record<string, FieldPatternItemOrFunction>
 

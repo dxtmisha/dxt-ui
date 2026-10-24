@@ -4,84 +4,38 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp ScrollbarWidthRef
 
-Một lớp vỏ phản hồi bao quanh tiện ích cơ bản để xác định các thông số của thanh cuộn. Lớp này cho phép theo dõi cả sự hiện diện của thanh cuộn (loại của nó) và chiều rộng thực tế của nó tính bằng pixel. Điều này rất quan trọng để ngăn chặn tình trạng thay đổi bố cục (layout shift) khi thanh cuộn bị ẩn hoặc hiện, chẳng hạn như khi mở các cửa sổ modal.
+Lớp bọc phản ứng cho phép đo thanh cuộn bất đồng bộ. Trong môi trường DOM, lớp yêu cầu cờ và chiều rộng pixel độc lập qua `ScrollbarWidth`.
 
-## Các đặc điểm chính
+## Tính năng chính
 
-- **Tính phản hồi** — tự động cập nhật các giá trị `item` và `width` khi nhận được dữ liệu từ trình duyệt.
-- **Tính toán tự động** — lớp tự động khởi tạo việc đo chiều rộng thanh cuộn ngay sau khi tạo phiên bản.
-- **Trạng thái sẵn sàng** — sự tồn tại của thuộc tính tính toán `is` cho phép sử dụng dữ liệu an toàn chỉ sau khi khởi tạo.
-- **Đa nền tảng** — xác định chính xác các thanh cuộn "mảnh" và tự động ẩn (macOS, thiết bị di động).
+- **Trạng thái ban đầu** — `item` là undefined, `width` là 0.
+- **Kết quả độc lập** — cờ và chiều rộng có thể hoàn tất theo thứ tự bất kỳ.
+- **An toàn SSR** — không yêu cầu đo trình duyệt ngoài môi trường DOM.
 
 ## Khởi tạo
 
-Tạo một phiên bản mới của `ScrollbarWidthRef` và bắt đầu quá trình không đồng bộ để đo chiều rộng thanh cuộn.
+`constructor()`
 
-**Tham số:**
-- `Không có`
+## Hành vi và vòng đời
 
-```typescript
-import { ScrollbarWidthRef } from '@dxtmisha/functional'
+`is` cho biết cờ đã có giá trị: cả `true` và `false` đều làm trạng thái sẵn sàng thành true. Điều này không đảm bảo promise chiều rộng độc lập đã hoàn tất. Lớp đo một lần khi tạo, không đăng ký resize. Không có phương thức công khai ngoài hàm dựng.
 
-const scrollbar = new ScrollbarWidthRef()
-```
-
-## Các thuộc tính
-
-### Trạng thái
-
-- `item: Ref<boolean | undefined>` — Cờ xác định kết quả kiểm tra `ScrollbarWidth.is()`. Trả về `true` nếu thanh cuộn được coi là "đặc biệt" (ví dụ: tự động ẩn trong macOS hoặc di động, nơi chiều rộng thường `<= 8px`).
-- `width: Ref<number>` — Chiều rộng thực tế của thanh cuộn tính bằng pixel. Mặc định là `0`. Được cập nhật không đồng bộ sau khi đo.
-- `is: Computed<boolean>` — Trả về `true` khi việc tính toán chiều rộng hoàn tất và các giá trị `item` và `width` đã được cập nhật.
-
-## Ví dụ
-
-### Bù đắp cuộn động trong CSS
-
-Sử dụng chiều rộng phản hồi để tạo biến CSS bù đắp cho khoảng cách khi thanh cuộn bị chặn.
-
-```vue
-<template>
-  <div :style="style" class="container">
-    Nội dung với bù đắp động
-  </div>
-</template>
-
-<script setup>
-import { computed } from 'vue'
-import { ScrollbarWidthRef } from '@dxtmisha/functional'
-
-const scrollbar = new ScrollbarWidthRef()
-
-// Chỉ tính toán biến sau khi chiều rộng đã được xác định
-const style = computed(() => ({
-  '--scrollbar-width': scrollbar.is.value ? `${scrollbar.width.value}px` : '0px'
-}))
-</script>
-
-<style scoped>
-.container {
-  /* Ví dụ sử dụng cho lề phải */
-  padding-right: var(--scrollbar-width);
-}
-</style>
-```
-
-### Theo dõi loại thanh cuộn
+## Cách dùng
 
 ```typescript
-import { watch } from 'vue'
 import { ScrollbarWidthRef } from '@dxtmisha/functional'
 
-const scrollbar = new ScrollbarWidthRef()
-
-watch(() => scrollbar.is.value, (ready) => {
-  if (ready) {
-    if (scrollbar.item.value) {
-      console.log('Thanh cuộn hệ thống/tự động ẩn đang được sử dụng')
-    } else {
-      console.log(`Thanh cuộn tiêu chuẩn với chiều rộng ${scrollbar.width.value}px`)
-    }
-  }
-})
+const scrollbar = /*#__PURE__*/ new ScrollbarWidthRef()
+const ready = scrollbar.is
+const width = scrollbar.width
 ```
+
+## Thuộc tính
+
+- `item: Ref<boolean | undefined>` — Kết quả ScrollbarWidth.is(): true khi chiều rộng đo được khác -1 và không quá 8 pixel; ban đầu undefined.
+- `width: Ref<number>` — Chiều rộng pixel; ban đầu 0, cập nhật độc lập.
+- `is: ComputedRef<boolean>` — Đúng khi item có giá trị, không phụ thuộc giá trị cờ hoặc chiều rộng đã sẵn sàng.
+
+## Phương thức
+
+Không có phương thức công khai; sử dụng các thuộc tính được mô tả ở trên.

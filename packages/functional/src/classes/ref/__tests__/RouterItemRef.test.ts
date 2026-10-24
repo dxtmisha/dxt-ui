@@ -1,19 +1,24 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
+import { createMemoryHistory, createRouter, type Router } from 'vue-router'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 import { RouterItemRef } from '../RouterItemRef'
-import type { Router } from 'vue-router'
 
 describe('RouterItemRef', () => {
-  let mockRouter: any
+  let mockRouter: { resolve: ReturnType<typeof vi.fn>, push: ReturnType<typeof vi.fn> }
 
   beforeEach(() => {
-    ServerStorage.setErrorStatus(true)
-    ServerStorage.remove('__ui:router-item-ref__')
+    const context: Record<string, unknown> = {}
+    ServerStorage.reset()
+    ServerStorage.init(() => context)
 
     mockRouter = {
       resolve: vi.fn(),
       push: vi.fn().mockResolvedValue(undefined)
     }
+  })
+
+  afterEach(() => {
+    ServerStorage.reset()
   })
 
   describe('set and get', () => {
@@ -22,8 +27,15 @@ describe('RouterItemRef', () => {
       expect(RouterItemRef.get()).toBe(mockRouter)
     })
 
+    it('should replace the router when set is called again', () => {
+      const secondRouter = createRouter({ history: createMemoryHistory(), routes: [] })
+      RouterItemRef.set(mockRouter as unknown as Router)
+      RouterItemRef.set(secondRouter)
+      expect(RouterItemRef.get()).toBe(secondRouter)
+    })
+
     it('should setOneTime only once', () => {
-      const secondRouter = { id: 'second' } as any
+      const secondRouter = createRouter({ history: createMemoryHistory(), routes: [] })
       RouterItemRef.setOneTime(mockRouter as unknown as Router)
       RouterItemRef.setOneTime(secondRouter)
       expect(RouterItemRef.get()).toBe(mockRouter)
@@ -39,9 +51,21 @@ describe('RouterItemRef', () => {
       expect(mockRouter.resolve).toHaveBeenCalledWith({
         name: 'test-name',
         params: { id: 1 },
-        query: { q: '123' }
+        query: { q: '123' },
+        hash: undefined
       })
       expect(result).toBe('/test-path')
+    })
+
+    it('should resolve params, query and hash with the router base', () => {
+      const router = createRouter({
+        history: createMemoryHistory('/app/'),
+        routes: [{ path: '/users/:id', name: 'user', component: { render: () => null } }]
+      })
+      RouterItemRef.set(router)
+
+      expect(RouterItemRef.getLink('user', { id: 42 }, { search: 'hello' }, '#details'))
+        .toBe('/app/users/42?search=hello#details')
     })
 
     it('should return undefined if router is not set', () => {
@@ -57,6 +81,17 @@ describe('RouterItemRef', () => {
 
       const result = RouterItemRef.getHref('test-name')
       expect(result).toEqual({ href: '/test-href' })
+    })
+
+    it('should preserve params, query and hash in href properties', () => {
+      const router = createRouter({
+        history: createMemoryHistory('/app/'),
+        routes: [{ path: '/users/:id', name: 'user', component: { render: () => null } }]
+      })
+      RouterItemRef.set(router)
+
+      expect(RouterItemRef.getHref('user', { id: 42 }, { search: 'hello' }, '#details'))
+        .toEqual({ href: '/app/users/42?search=hello#details' })
     })
 
     it('should return empty object if name is missing', () => {
@@ -95,6 +130,48 @@ describe('RouterItemRef', () => {
       expect(result).toEqual({ href: '/raw-href' })
     })
 
+    it.each([
+      { id: 42, expectedHref: '/app/users/42?search=hello#details' },
+      { id: 0, expectedHref: '/app/users/0?search=hello#details' },
+      { id: 'Alice Smith', expectedHref: '/app/users/Alice%20Smith?search=hello#details' }
+    ])('should preserve params, query and hash for route parameter $id', ({ id, expectedHref }) => {
+      const router = createRouter({
+        history: createMemoryHistory('/app/'),
+        routes: [{ path: '/users/:id', name: 'user', component: { render: () => null } }]
+      })
+      RouterItemRef.set(router)
+
+      expect(RouterItemRef.rawToHref({
+        name: 'user',
+        params: { id },
+        query: { search: 'hello' },
+        hash: '#details'
+      })).toEqual({ href: expectedHref })
+    })
+
+    it('should preserve query and hash without route params', () => {
+      const router = createRouter({
+        history: createMemoryHistory(),
+        routes: [{ path: '/home', name: 'home', component: { render: () => null } }]
+      })
+      RouterItemRef.set(router)
+
+      expect(RouterItemRef.rawToHref({
+        name: 'home',
+        query: { search: 'hello', page: 0 },
+        hash: '#details'
+      })).toEqual({ href: '/home?search=hello&page=0#details' })
+    })
+
+    it('should return empty object if router is not set', () => {
+      expect(RouterItemRef.rawToHref({
+        name: 'user',
+        params: { id: 42 },
+        query: { search: 'hello' },
+        hash: '#details'
+      })).toEqual({})
+    })
+
     it('should return empty object if to is string', () => {
       const result = RouterItemRef.rawToHref('/home')
       expect(result).toEqual({})
@@ -102,11 +179,11 @@ describe('RouterItemRef', () => {
 
     it('should return empty object if to is null or undefined', () => {
       expect(RouterItemRef.rawToHref()).toEqual({})
-      expect(RouterItemRef.rawToHref(null as any)).toEqual({})
+      expect(RouterItemRef.rawToHref('')).toEqual({})
     })
 
     it('should return empty object if to object has no name', () => {
-      expect(RouterItemRef.rawToHref({ path: '/home' } as any)).toEqual({})
+      expect(RouterItemRef.rawToHref({ path: '/home' })).toEqual({})
     })
   })
 })

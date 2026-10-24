@@ -4,80 +4,162 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp DesignConstructorAbstract
 
-Một lớp cơ sở trừu tượng cung cấp cấu trúc tiêu chuẩn hóa cho logic constructor của thành phần. Nó giúp quản lý dữ liệu thành phần, kiểu dáng và các sửa đổi dựa trên trạng thái.
+Hàm dựng kết xuất Vue trừu tượng kết hợp đặt tên, ref phần tử gốc, thành phần kết nối tùy chọn, thuộc tính, slot, dữ liệu công khai và computed lớp CSS/kiểu. Tạo lớp con cụ thể trong `setup()` thành phần.
 
-## Các tính năng chính
+## Tính năng chính
 
-- **Cấu trúc dữ liệu tiêu chuẩn hóa** — xử lý các thuộc tính, lớp và kiểu dáng của thành phần.
-- **Tích hợp trạng thái** — cập nhật phản ứng dựa trên trạng thái của thành phần.
-- **Mở rộng linh hoạt** — nền tảng để tạo các specialized constructors.
+- **Kết hợp** — lớp CSS gốc hợp nhất logic, tùy chọn và thuộc tính ngoài.
+- **Kiểu** — hợp nhất theo độ ưu tiên: logic, tùy chọn, kiểu từ bên ngoài.
+- **Slot** — fragment có khóa giữ nhóm slot và theo dõi thay đổi slot.
 
 ## Khởi tạo
 
-`DesignConstructorAbstract` là một lớp cơ sở trừu tượng và không thể được khởi tạo trực tiếp. Nó phục vụ như một nền tảng để tạo ra các hàm khởi tạo thành phần chức năng, kết hợp quản lý phong cách (styles), lớp (classes), thành phần và hiển thị (rendering).
+`constructor( name: string, props: Readonly<P>, options?: ConstrOptions<COMP, EMITS, P> )`
 
-### Ràng buộc Generic (Generic Constraints)
+**Tham số:**
 
-Lớp này sử dụng một hệ thống generic phức tạp để đảm bảo định kiểu đầy đủ cho thành phần:
-- `E extends Element` — Kiểu của phần tử HTML gốc (ví dụ: `HTMLElement`).
-- `COMP extends ConstrComponent` — Danh sách các thành phần phụ được kết nối.
-- `EMITS extends ConstrItem` — Định kiểu cho các sự kiện (emits) do thành phần tạo ra.
-- `EXPOSE extends ConstrItem` — Cấu trúc dữ liệu được xuất ra môi trường bên ngoài thông qua `expose`.
-- `SLOTS extends ConstrItem` — Các slot hiện có của thành phần.
-- `CLASSES extends ConstrClasses` — Đối tượng lớp CSS kết quả.
-- `P extends ConstrItem` — Các thuộc tính (props) của thành phần.
+- `name: string` — Tên thành phần, phụ thuộc, slot hoặc tuyến theo phương thức.
+- `props: Readonly<P>` — Thuộc tính đầu vào.
+- `options?: ConstrOptions<COMP, EMITS, P>` — Tùy chọn cấu hình.
 
-**Tham số hàm khởi tạo:**
-- `name: string` — tên thành phần cơ sở (được sử dụng để tạo tên lớp và kiểu dáng).
-- `props: Readonly<P>` — một đối tượng chứa các thuộc tính của thành phần.
-- `options?: ConstrOptions<COMP, EMITS, P>` — các tham số bổ sung (thành phần, sửa đổi, trình xử lý sự kiện, ghi đè kiểu dáng và lớp).
+## Hành vi và vòng đời
+
+Tham số kiểu: `E` là phần tử gốc; `COMP` là bộ đăng ký; `EMITS` là sự kiện; `EXPOSE` là dữ liệu công khai; `SLOTS` là slot; `CLASSES` là bản đồ lớp CSS; `P` là thuộc tính. Triển khai `initExpose`, `initClasses`, `initStyles` và `initRender`. Hàm dựng khởi tạo trạng thái ngay; gọi `render()` một lần trong `setup()` để lấy hàm kết xuất. `getAttrs()` loại `class` và `style`. Mục lớp CSS từ tùy chọn ghi đè mục logic cùng tên, trừ `main` được chuẩn hóa từ cả ba nguồn. `expose()` luôn thêm ref gốc dưới tên `elementHtml`.
+
+## Cách dùng
 
 ```typescript
 import { DesignConstructorAbstract } from '@dxtmisha/functional'
+import { defineComponent, h, type VNode } from 'vue'
 
-// 1. Xác định giao diện thành phần
-interface MyProps { size?: 'small' | 'medium' }
-interface MyClasses { main: { [key: string]: boolean } }
-
-// 2. Triển khai hàm khởi tạo
-class ButtonDesign extends DesignConstructorAbstract<
-  HTMLButtonElement, // E
-  {},                // COMP
-  {},                // EMITS
-  {},                // EXPOSE
-  {},                // SLOTS
-  MyClasses,         // CLASSES
-  MyProps            // P
+class ExampleDesign extends DesignConstructorAbstract<
+  HTMLElement, {}, {}, {}, {}, { main: string }, {}
 > {
-  constructor(name: string, props: MyProps) {
-    super(name, props)
+  constructor() { super('d1.example', {}) }
+  protected initExpose(): {} { return {} }
+  protected initClasses(): { main: string } { return { main: 'd1-example' } }
+  protected initStyles(): {} { return {} }
+  protected initRender(): VNode {
+    return h('div', {
+      ...this.getAttrs(),
+      ref: this.element,
+      class: this.classes?.value.main,
+      style: this.styles?.value
+    })
   }
-
-  // Các phương thức bắt buộc phải triển khai
-  protected initExpose() { return {} }
-  protected initClasses() { return { main: { active: true } } }
-  protected initStyles() { return {} }
-  protected initRender() { return h('button', this.getAttrs(), this.slots.default?.()) }
 }
+
+const Example = /*#__PURE__*/ defineComponent({
+  inheritAttrs: false,
+  setup(_props, context) {
+    const design = new ExampleDesign()
+    context.expose(design.expose())
+    return design.render()
+  }
+})
 ```
 
-## Các phương thức Vòng đời & Render
+## Phương thức
 
-- `init(): this` — Khởi tạo instance, chuẩn bị trạng thái nội bộ, lớp và kiểu dáng.
-- `render(): Function` — Trả về hàm render để sử dụng trong `setup()` của thành phần Vue.
-- `setup(): void` — Thực thi trình tự thiết lập chính cho logic thành phần.
+### Thuộc tính và đặt tên
 
-## Các phương thức Hỗ trợ Đặt tên
+- `getAttrs(): ConstrItem` — Trả đối tượng thuộc tính mới không có `class` và `style`.
 
-Các phương thức đặt tên có thể được sử dụng trong lớp con thông qua thuộc tính protected `naming` (`DesignName`).
+- `getKeyClass<K extends keyof CLASSES>(name: K & string)` — Trả khóa phần tử con và lớp CSS computed hiện tại.
 
-- `naming.getName(): string` — Trả về tên đầy đủ của thành phần (ví dụ: `button-large`).
-- `naming.getDesign(): string` — Trả về tên thiết kế cơ sở (phần đầu tiên của tên).
-- `naming.getSubClass(name: string | string[]): string` — Tạo tên lớp cho phần tử con theo phong cách BEM (`__`).
-- `naming.getStatusClass(name: string | string[]): string` — Tạo tên lớp trạng thái theo phong cách BEM (`--`).
-- `naming.getStyle(name: string | string[]): string` — Tạo tên biến CSS hệ thống.
+- `getNaming(): DesignName` — Trả đối tượng `DesignName` của hàm dựng này.
 
-## Dữ liệu Thành phần
+### Kết xuất và công khai
 
-- `getAttrs(): object` — Trả về đối tượng thuộc tính, loại trừ các thuộc tính `class` và `style` đã được bảo lưu.
-- `expose(): object` — Trả về dữ liệu và tham chiếu để xuất thông qua `expose` của Vue.
+#### `render`
+
+`render(): () => VNode | VNode[] | undefined`
+
+Đăng ký theo dõi thay slot và trả hàm kết xuất qua `initRender()`.
+
+**Trả về:** `() => VNode | VNode[] | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const render = /*#__PURE__*/ design.render()
+```
+
+#### `expose`
+
+`expose(): ConstrExpose<E, EXPOSE>`
+
+Kết hợp dữ liệu `initExpose()` với ref gốc `elementHtml`.
+
+**Trả về:** `ConstrExpose<E, EXPOSE>` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+context.expose(design.expose())
+```
+
+### Điểm mở rộng được bảo vệ
+
+#### `initExpose`
+
+`initExpose(): EXPOSE`
+
+Triển khai trong lớp con để trả dữ liệu công khai.
+
+**Trả về:** `EXPOSE` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+protected initExpose(): {} { return {} }
+```
+
+#### `initClasses`
+
+`initClasses(): Partial<CLASSES>`
+
+Triển khai trong lớp con để trả bản đồ lớp CSS logic trước khi hợp nhất.
+
+**Trả về:** `Partial<CLASSES>` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+protected initClasses(): { main: string } { return { main: 'd1-example' } }
+```
+
+#### `initStyles`
+
+`initStyles(): ConstrStyles`
+
+Triển khai trong lớp con để trả kiểu trước khi áp dụng tùy chọn và thuộc tính ngoài.
+
+**Trả về:** `ConstrStyles` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+protected initStyles(): {} { return {} }
+```
+
+#### `initRender`
+
+`initRender(): VNode | VNode[] | undefined`
+
+Triển khai cây VNode. Kết quả có thể là một nút, mảng hoặc `undefined`.
+
+**Trả về:** `VNode | VNode[] | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+protected initRender(): VNode { return h('div', { ref: this.element }) }
+```
+
+#### `initSlot`
+
+`initSlot<K extends keyof SLOTS>( name: K, children?: VNode[], props: ConstrItem = {} ): VNode | undefined`
+
+Kết xuất slot có tên thành fragment có khóa và tùy chọn thêm fragment vào `children`. Slot thiếu trả `undefined` và không đổi mảng.
+
+**Tham số:**
+
+- `name: K` — Khóa slot có tên.
+- `children?: VNode[]` — Nội dung con hoặc mảng tích lũy VNode tùy chọn.
+- `props: ConstrItem = {}` — Thuộc tính slot có phạm vi; mặc định đối tượng rỗng.
+
+**Trả về:** `VNode | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const children: VNode[] = []
+this.initSlot('default', children, { value: 0 })
+```

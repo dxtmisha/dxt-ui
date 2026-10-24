@@ -1,4 +1,12 @@
-import { getCurrentInstance, getCurrentScope, onMounted, onUnmounted, ref, type Ref } from 'vue'
+import {
+  getCurrentInstance,
+  getCurrentScope,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+  type Ref
+} from 'vue'
 import { ErrorCenter, forEach } from '@dxtmisha/functional-basic'
 
 import { DesignLifecycleAbstract } from './DesignLifecycleAbstract'
@@ -6,24 +14,21 @@ import type { DesignComponents } from './DesignComponents'
 import type { DesignName } from './DesignName'
 
 import type {
-  ConstrItems,
   ConstrComponent,
   ConstrConstructor,
   ConstrConstructors,
   ConstrEmit,
   ConstrInstance,
   ConstrItem,
+  ConstrItems,
+  ConstrItemsItem,
   ConstrParameters
 } from '../../types/constructorTypes'
 
 /**
- * Base class for main component logic orchestrators.
- * Stores shared dependencies and lazily creates dependency instances within the captured effect scope.
- * Invokes lifecycle callbacks synchronously; subclasses manage their own asynchronous work.
+ * Abstract orchestrator for component logic dependencies. It captures the current Vue effect scope, stores shared constructor inputs, and lazily creates and caches dependency instances by string key.
  *
- * Базовый класс для основных классов логики компонентов.
- * Хранит общие зависимости и лениво создает их экземпляры в сохраненной области реактивности.
- * Вызывает обработчики жизненного цикла синхронно; подклассы самостоятельно управляют асинхронной работой.
+ * Абстрактный координатор зависимостей логики компонента. Сохраняет текущую область эффектов Vue и общие входные данные, лениво создаёт и кэширует зависимости по строковому ключу.
  */
 export abstract class DesignLogicAbstract<
   E extends Element,
@@ -33,9 +38,6 @@ export abstract class DesignLogicAbstract<
   P extends ConstrItem,
   CONSTRUCTORS extends ConstrConstructors<CONSTRUCTORS> = object
 > {
-  /** Current effect scope / Текущая область реактивности */
-  protected readonly scope = getCurrentScope()
-
   /** Item configurations and default constructors by dependency name / Конфигурации элементов и конструкторы по умолчанию по имени зависимости */
   protected abstract readonly constructorItems: ConstrItems<CONSTRUCTORS>
 
@@ -49,17 +51,21 @@ export abstract class DesignLogicAbstract<
   /** Callback after dependency cleanup callbacks / Обработчик после обработчиков очистки зависимостей */
   protected readonly onUnmounted?: () => void
 
+  /** Current effect scope / Текущая область реактивности */
+  protected readonly scope = getCurrentScope()
+
   /**
-   * Initializes shared dependencies and registers component lifecycle callbacks.
+   * Initializes DesignLogicAbstract with the supplied configuration.
    *
-   * Инициализирует общие зависимости и регистрирует обработчики жизненного цикла компонента.
-   * @param props component properties / свойства компонента
-   * @param element root element reference / ссылка на корневой элемент
-   * @param naming component naming helper / помощник именования компонента
-   * @param components connected components / подключенные компоненты
-   * @param slots component slots / слоты компонента
-   * @param emits event emitter / функция отправки событий
-   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
+   * Инициализирует DesignLogicAbstract с переданными настройками.
+   * @param props Input properties. / Входные свойства.
+   * @param element Root element ref. / Ссылка на корневой элемент.
+   * @param naming Shared DesignName helper. / Общий помощник DesignName.
+   * @param components Connected component registry. / Реестр подключённых компонентов.
+   * @param slots Named slot registry. / Реестр именованных слотов.
+   * @param emits Component event emitter. / Функция событий компонента.
+   * @param constructors Dependency constructor overrides. / Переопределения конструкторов зависимостей.
+   * @param hasLifecycle Whether to register component lifecycle hooks; defaults to true. / Регистрировать ли хуки компонента; по умолчанию true.
    */
   constructor(
     protected readonly props: Readonly<P>,
@@ -68,9 +74,13 @@ export abstract class DesignLogicAbstract<
     protected readonly components?: DesignComponents<COMP, P>,
     protected readonly slots?: SLOTS,
     protected readonly emits?: ConstrEmit<EMITS>,
-    protected readonly constructors?: Partial<CONSTRUCTORS>
+    protected readonly constructors?: Partial<CONSTRUCTORS>,
+    hasLifecycle: boolean = true
   ) {
-    if (getCurrentInstance()) {
+    if (
+      hasLifecycle
+      && getCurrentInstance()
+    ) {
       onMounted(() => {
         const instances = Object.values(this.instances)
         this.isMounted.value = true
@@ -78,6 +88,7 @@ export abstract class DesignLogicAbstract<
         if (this.scope?.active) {
           this.scope.run(() => {
             this.callLifecycle('onMounted', instances)
+            this.initConditions()
             this.onMounted?.()
           })
         }
@@ -94,11 +105,11 @@ export abstract class DesignLogicAbstract<
   protected readonly isMounted = ref(false)
 
   /**
-   * Gets a dependency instance, creating it on first access within the captured active effect scope.
+   * Returns a cached dependency or creates it inside the captured active scope. Constructor arguments come from the optional `parameters()` factory. A failed constructor is not cached and can be retried.
    *
-   * Возвращает экземпляр зависимости, создавая его при первом обращении в сохраненной активной области реактивности.
-   * @param name string constructor name / строковое имя конструктора
-   * @returns dependency instance / экземпляр зависимости
+   * Возвращает кэшированную зависимость или создаёт её в сохранённой активной области. Аргументы берутся из необязательной фабрики `parameters()`. Ошибка конструктора не кэшируется и допускает повторную попытку.
+   * @param name String key of a dependency constructor. / Строковый ключ конструктора зависимости.
+   * @returns Cached or newly created dependency instance. / Кэшированный либо созданный экземпляр зависимости.
    */
   getInstance<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K> {
     let instance = this.instances[name]
@@ -129,11 +140,11 @@ export abstract class DesignLogicAbstract<
   }
 
   /**
-   * Short alias for {@link getInstance}.
+   * Delegates to `getInstance()` with the same key and result.
    *
-   * Короткий псевдоним для {@link getInstance}.
-   * @param name string constructor name / строковое имя конструктора
-   * @returns dependency instance / экземпляр зависимости
+   * Вызывает `getInstance()` с тем же ключом и результатом.
+   * @param name String key of a dependency constructor. / Строковый ключ конструктора зависимости.
+   * @returns Cached or newly created dependency instance. / Кэшированный либо созданный экземпляр зависимости.
    */
   i<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K> {
     return this.getInstance(name)
@@ -172,6 +183,7 @@ export abstract class DesignLogicAbstract<
    * @param name lifecycle callback name / имя обработчика жизненного цикла
    * @param instances dependency instances / экземпляры зависимостей
    * @throws AggregateError collected callback errors after all callbacks run / собранные ошибки после выполнения всех обработчиков
+   * @returns no return value / нет возвращаемого значения
    */
   protected callLifecycle(name: keyof DesignLifecycleAbstract, instances: unknown[] = Object.values(this.instances)): void {
     const failures: unknown[] = []
@@ -191,5 +203,27 @@ export abstract class DesignLogicAbstract<
       ErrorCenter.on({ group: 'design', code: name, details: error })
       throw error
     }
+  }
+
+  /**
+   * Initializes condition watchers for dependencies with defined conditions.
+   *
+   * Инициализирует наблюдатели условий для зависимостей с заданными условиями.
+   * @returns calculated result / вычисленный результат
+   */
+  protected initConditions(): void {
+    forEach(this.constructorItems, (item: ConstrItemsItem<CONSTRUCTORS, any>, name) => {
+      if (item?.conditions) {
+        watch(
+          item.conditions,
+          (active) => {
+            if (active) {
+              this.getInstance(name as keyof CONSTRUCTORS & string)
+            }
+          },
+          { immediate: true }
+        )
+      }
+    })
   }
 }

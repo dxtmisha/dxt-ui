@@ -4,254 +4,269 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp ListDataRef
 
-Một lớp phản ứng (reactive) để quản lý danh sách dữ liệu với bất kỳ độ phức tạp nào. Hỗ trợ lọc, lựa chọn (selection), tiêu điểm (focus) và cấu trúc lồng nhau (nhóm và menu). Lớp này chuyển đổi dữ liệu đầu vào thành định dạng chuẩn hóa và cung cấp một bộ phương thức phong phú để điều hướng, tìm kiếm và quản lý trạng thái của các phần tử.
+Mô hình danh sách phản ứng để chuẩn hóa, xử lý nhóm lồng, lựa chọn, tiêu điểm và tìm kiếm. Cung cấp các dạng computed cấp trên và phẳng mà không kết xuất giao diện hoặc sửa lựa chọn đầu vào.
 
-## Các tính năng chính
+## Tính năng chính
 
-- **Tính phản ứng (Reactivity)** — tự động cập nhật các thuộc tính tính toán (computed properties) khi dữ liệu nguồn (Vue ref) hoặc tham số điều khiển thay đổi.
-- **Chuẩn hóa** — chuyển đổi bất kỳ định dạng đầu vào nào (mảng chuỗi, đối tượng) thành một giao diện `ListDataItem` thống nhất.
-- **Lồng nhau sâu** — hỗ trợ cấu trúc dạng cây với việc quản lý danh sách con tự động thông qua `getSubList`.
-- **Điều hướng thông minh** — các phương thức tích hợp sẵn để di chuyển trong danh sách, có tính đến việc lọc và loại phần tử.
-- **Chế độ Lite** — tối ưu hóa việc hiển thị cho danh sách lớn bằng cách sử dụng `liteData`.
-- **Quản lý lựa chọn** — kiểm soát số lượng phần tử được chọn (tối thiểu/tối đa) và trạng thái của chúng.
+- **Chuẩn hóa** — nhận mảng nhãn, mảng đối tượng và bản ghi.
+- **Nhóm lồng** — `group` và `menu` duyệt đệ quy qua danh sách con đã lưu.
+- **Trạng thái phản ứng** — ref điều khiển lựa chọn, tiêu điểm, tìm kiếm và giới hạn.
 
 ## Khởi tạo
 
-Tạo một thực thực thể `ListDataRef` mới để quản lý dữ liệu danh sách. Lớp này cung cấp khả năng chuẩn hóa dữ liệu đầu vào, quản lý tiêu điểm, lựa chọn và tìm kiếm. Hỗ trợ cập nhật phản ứng khi danh sách nguồn hoặc các tham số điều khiển thay đổi.
+`constructor( list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined>, highlight?: RefType<string | undefined>, highlightLengthStart?: RefType<number | undefined>, filterMode?: RefType<boolean | undefined>, selected?: RefType<ListSelectedList | undefined>, keyValue?: RefType<string | undefined>, keyLabel?: RefType<string | undefined>, lite?: RefType<number | undefined>, min: RefOrNormal<number | string | undefined> = 0, max: RefOrNormal<number | string | undefined> = 9_999_999, parent?: string )`
 
 **Tham số:**
 
-- `list: RefOrNormal<ListListInput | undefined>` — danh sách dữ liệu phản ứng hoặc thông thường.
-- `focus?: RefType<ListSelectedItem | undefined>` — mã định danh phần tử đang được lấy tiêu điểm (Vue ref).
-- `highlight?: RefType<string | undefined>` — văn bản tìm kiếm để làm nổi bật (Vue ref).
-- `highlightLengthStart?: RefType<number | undefined>` — số ký tự tối thiểu để bắt đầu tìm kiếm (Vue ref).
-- `filterMode?: RefType<boolean | undefined>` — chế độ lọc (Vue ref).
-- `selected?: RefType<ListSelectedList | undefined>` — danh sách các mã định danh đã chọn (Vue ref).
-- `keyValue?: RefType<string | undefined>` — tên trường cho giá trị (mặc định là `'value'`).
-- `keyLabel?: RefType<string | undefined>` — tên trường cho nhãn (mặc định là `'label'`).
-- `lite?: RefType<number | undefined>` — ngưỡng số lượng phần tử để kích hoạt chế độ Lite (Vue ref).
-- `min: RefOrNormal<number | string | undefined> = 0` — số lượng lựa chọn tối thiểu được phép.
-- `max: RefOrNormal<number | string | undefined> = 9_999_999` — số lượng lựa chọn tối đa được phép.
-- `parent?: string` — mã định danh cha (được sử dụng cho danh sách con).
+- `list: RefOrNormal<ListListInput | undefined>` — Danh sách hoặc bản ghi đầu vào, có thể phản ứng.
+- `focus?: RefType<ListSelectedItem | undefined>` — Ref chỉ mục tiêu điểm.
+- `highlight?: RefType<string | undefined>` — Ref truy vấn tìm kiếm.
+- `highlightLengthStart?: RefType<number | undefined>` — Ref độ dài tìm kiếm tối thiểu; bỏ qua thì mặc định 2.
+- `filterMode?: RefType<boolean | undefined>` — Ref chế độ lọc, được sao vào fullData.
+- `selected?: RefType<ListSelectedList | undefined>` — Ref chứa mã được chọn đơn hoặc mảng.
+- `keyValue?: RefType<string | undefined>` — Ref tên trường giá trị; mặc định value.
+- `keyLabel?: RefType<string | undefined>` — Ref tên trường nhãn; mặc định label.
+- `lite?: RefType<number | undefined>` — Ref ngưỡng danh sách rút gọn.
+- `min: RefOrNormal<number | string | undefined> = 0` — Mức lựa chọn tối thiểu; mặc định 0.
+- `max: RefOrNormal<number | string | undefined> = 9_999_999` — Mức lựa chọn tối đa; mặc định 9_999_999.
+- `parent?: string` — Chỉ mục cha hoặc undefined ở cấp gốc.
+
+## Hành vi và vòng đời
+
+Chỉ `list`, `min` và `max` nhận giá trị thường hoặc ref; tiêu điểm, tìm kiếm, lựa chọn, tên khóa, ngưỡng lite và chế độ lọc nhận ref. Mảng nhãn dùng vị trí chuỗi làm chỉ mục, vị trí số làm giá trị. Mục đối tượng ưu tiên `index` trực tiếp rồi `value` nguyên thủy. `map` làm phẳng `item`, `group`, `menu`; `mapItems` chỉ chứa mục lá. Điều hướng vượt biên trở về mục đầu hoặc cuối. Giới hạn ảnh hưởng trạng thái computed; lớp không sửa lựa chọn. Cờ tối thiểu cho biết đã đạt mức tối thiểu. `getFocusItem()` chỉ tìm ở cấp hiện tại. Thay ref danh sách xóa bộ nhớ đệm danh sách con; thay nguồn nhóm tạo lại danh sách con đã lưu. Dùng phạm vi hiệu ứng để dọn watcher danh sách.
+
+## Cách dùng
 
 ```typescript
 import { ListDataRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-const list = ref([
-  { label: 'Mục 1', value: 'item-1' },
-  { label: 'Nhóm 1', type: 'group', value: [
-    { label: 'Mục con 1.1', value: 'sub-1.1' }
-  ]}
-])
-
-const focus = ref(undefined)
-const selected = ref(['item-1'])
-
-const listData = new ListDataRef(
-  list, 
-  focus, 
-  undefined, // highlight
-  undefined, // highlightLengthStart
-  undefined, // filterMode
-  selected
+const selected = /*#__PURE__*/ ref(['a'])
+const focus = /*#__PURE__*/ ref('a')
+const highlight = /*#__PURE__*/ ref('Ap')
+const list = /*#__PURE__*/ new ListDataRef(
+  [{ label: 'Apple', value: 'a' }, { label: 'Banana', value: 'b' }],
+  focus, highlight, ref(2), ref(false), selected
 )
+list.selectedNames.value // ['Apple']
+list.getSelectedNext() // 'b'
+selected.value = ['b']
 ```
 
 ## Thuộc tính
 
-### Dữ liệu
-
-- `data: Computed<ListList>` — danh sách dữ liệu chuẩn hóa cốt lõi cho cấp độ hiện tại.
-- `liteData: Computed<ListList>` — phiên bản danh sách đơn giản hóa để hiển thị nhanh (chế độ Lite).
-- `fullData: Computed<ListDataFull>` — danh sách dữ liệu mở rộng với các cờ `focus`, `selected`, `disabled` và `highlight`.
-- `map: Computed<ListList>` — danh sách phẳng của tất cả các phần tử trong cây (bao gồm cả vùng chứa).
-- `mapItems: Computed<ListList>` — danh sách phẳng chỉ chứa các phần tử được chọn cuối cùng (`item`).
-- `items: Computed<ListList>` — danh sách phẳng các phần tử tương tác (`item`, `group`, `menu`).
-
-### Lựa chọn và Trạng thái
-
-- `isSelected: Computed<boolean>` — trả về `true` nếu có ít nhất một mục được chọn trong toàn bộ cây.
-- `isSelectedMin: Computed<boolean>` — `true` nếu số lượng mục được chọn đạt mức tối thiểu `min`.
-- `isSelectedMax: Computed<boolean>` — `true` nếu số lượng mục được chọn đạt ngưỡng `max`.
-- `selectedList: Computed<ListList>` — danh sách tất cả các đối tượng được chọn trên toàn bộ cây.
-- `selectedListInGroup: Computed<ListList>` — danh sách các đối tượng được chọn ở cấp độ hiện tại.
-- `selectedNames: Computed<ListNames>` — mảng các nhãn (`label`) cho tất cả các mục được chọn.
-- `selectedValues: Computed<any[]>` — mảng các giá trị (`value`) cho tất cả các mục được chọn.
-
-### Tìm kiếm
-
-- `highlightFirstItem: Computed<number>` — chỉ số của phần tử đầu tiên khớp với tìm kiếm trong `map`.
+- `data: ComputedRef<ListList>` — Mục đã chuẩn hóa ở cấp hiện tại.
+- `liteData: ComputedRef<ListList>` — Mục rút gọn khi vượt ngưỡng lite; ngược lại là dữ liệu chuẩn hóa đầy đủ.
+- `fullData: ComputedRef<ListDataFull>` — Mục cấp hiện tại thêm focus, highlight, filterMode, selected và disabled. Giá trị disabled trực tiếp được ưu tiên.
+- `map: ComputedRef<ListList>` — Mục item/group/menu phẳng, giữ tiêu đề nhóm.
+- `mapItems: ComputedRef<ListList>` — Mục lá item từ bản đồ phẳng.
+- `items: ComputedRef<ListList>` — Mục item/group/menu từ bản đồ phẳng.
+- `highlightFirstItem: ComputedRef<number>` — Vị trí khớp đầu trong bản đồ, hoặc -1 khi không khớp hay truy vấn dưới ngưỡng. Tìm trong label, index hoặc search.
+- `isSelected: ComputedRef<boolean>` — Có ít nhất một lá khớp lựa chọn đầu vào hay không.
+- `isSelectedMin: ComputedRef<boolean>` — Đúng khi số lựa chọn nhóm hiện tại đạt mức tối thiểu dương.
+- `isSelectedMax: ComputedRef<boolean>` — Đúng khi số lựa chọn nhóm hiện tại đạt mức tối đa dương. Giá trị tối đa falsy dùng giới hạn mặc định.
+- `selectedList: ComputedRef<ListList>` — Lá được chọn trên toàn bản đồ phẳng.
+- `selectedListInGroup: ComputedRef<ListList>` — Mục được chọn ở cấp hiện tại.
+- `selectedNames: ComputedRef<ListNames>` — Nhãn của lá được chọn.
+- `selectedValues: ComputedRef<Array<ListDataItem['value']>>` — Giá trị của lá được chọn, giữ 0 và false.
 
 ## Phương thức
 
-### Trạng thái và Kiểm tra
-
-- `isLite(): boolean` — trả về `true` nếu chế độ tối ưu hóa đang hoạt động.
-- `isFocus(): boolean` — kiểm tra xem có tiêu điểm trong `map` hiện tại hay không.
-- `isHighlight(): boolean` — trả về `true` nếu tìm kiếm thấy kết quả khớp.
-- `isHighlightActive(): boolean` — kiểm tra xem quá trình tìm kiếm có đang hoạt động hay không.
-- `getLength(): number` — tổng số phần tử ở cấp độ hiện tại.
-- `getLengthByMap(): number` — tổng số phần tử trong toàn bộ cây.
-- `getLengthByItems(): number` — số lượng phần tử cuối cùng trong toàn bộ cây.
-
-### Lấy giá trị
-
-- `getFocus(): ListSelectedItem | undefined` — mã định danh đang được lấy tiêu điểm hiện tại.
-- `getHighlight(): string | undefined` — chuỗi tìm kiếm hiện tại.
-- `getHighlightLengthStart(): number` — độ dài chuỗi tối thiểu để kích hoạt tìm kiếm (mặc định là `2`).
-- `getSelected(): ListSelectedList | undefined` — danh sách các mã định danh đã chọn hiện tại.
-
-### Điều hướng và Tìm kiếm
-
-- `getSelectedByStep(step): ListSelectedItem | undefined` — tìm phần tử lân cận so với lựa chọn.
-- `getSelectedNext(): ListSelectedItem | undefined` — tiếp theo từ lựa chọn.
-- `getSelectedPrev(): ListSelectedItem | undefined` — trước đó từ lựa chọn.
-- `getItemByStep(item, step): ListDataItem | undefined` — tìm phần tử lân cận so với phần tử.
-- `getItemNext(item): ListDataItem | undefined` — tiếp theo từ phần tử.
-- `getItemPrev(item): ListDataItem | undefined` — trước đó từ phần tử.
-- `getIndexByStep(index, step): ListDataItem | undefined` — tìm phần tử lân cận so với chỉ số.
-- `getIndexNext(index): ListDataItem | undefined` — tiếp theo từ chỉ số.
-- `getIndexPrev(index): ListDataItem | undefined` — trước đó từ chỉ số.
-- `getItemByIndex(index): { key, item } | undefined` — tìm phần tử theo chỉ số.
-- `getItemByKey(key): ListDataItem | undefined` — trả về phần tử theo khóa trong map.
-- `getFirstItemByParent(parent): ListDataItem | undefined` — phần tử tương tác đầu tiên của cha.
-- `getLastItemByParent(parent): ListDataItem | undefined` — phần tử tương tác cuối cùng của cha.
-- `getSubList(item): ListDataRef` — tạo/trả về thực thể danh sách con.
-
-## Các kiểu dữ liệu
-
-Lớp sử dụng các cấu trúc chuẩn hóa để đảm bảo hành vi có thể dự đoán được với bất kỳ định dạng dữ liệu đầu vào nào.
-
-### `ListType`
-
-Xác định vai trò chức năng của một mục trong danh sách:
-- `item` — phần tử tương tác chính có sẵn để lựa chọn và lấy tiêu điểm.
-- `group` / `menu` — các vùng chứa các danh sách lồng nhau (`value`).
-- `subtitle` — một tiêu đề văn bản trong danh sách.
-- `html` — phần tử để chèn mã HTML tùy ý.
-- `line` / `space` — các vạch ngăn cách và khoảng cách trực quan.
-
-### `ListDataItem`
-
-Đối tượng mà tất cả dữ liệu đầu vào được chuyển đổi sau khi chuẩn hóa:
-- `index: string` — mã định danh duy nhất (tự động tạo nếu không được cung cấp).
-- `type: ListType` — loại mục (mặc định là `item`).
-- `label?: string | number` — văn bản hiển thị trong giao diện.
-- `value?: any` — một giá trị tùy ý được liên kết với mục.
-- `parent?: string` — mã định danh của mục cha.
-
-### `ListDataFullItem`
-
-Phiên bản mở rộng của `ListDataItem` cho `fullData`:
-- `focus: boolean` — `true` nếu mục đang được lấy tiêu điểm.
-- `selected: boolean` — `true` nếu mục được chọn.
-- `disabled: boolean` — `true` nếu mục bị vô hiệu hóa (ví dụ: khi đạt đến giới hạn `max`).
-- `highlight?: string` — chuỗi tìm kiếm hiện tại nếu nó khớp với văn bản của mục.
-
-### `ListListInput`
-
-Các định dạng dữ liệu được hỗ trợ cho hàm khởi tạo:
-- `string[]` — mảng chuỗi đơn giản (nhãn).
-- `Record<string, string>` — đối tượng `value: label`.
-- `ListDataBasic[]` — mảng các đối tượng với các trường như `label`, `value`, `type`, v.v.
-
-
-## Quản lý lựa chọn (Selection)
-
-Lớp cung cấp các công cụ mạnh mẽ để kiểm soát trạng thái lựa chọn trong danh sách, hỗ trợ lựa chọn đơn và nhiều lựa chọn với các ràng buộc.
-
-### Các tham số lựa chọn cốt lõi
-
-- `selected` — biến phản ứng (Vue `ref`) lưu trữ một mảng các mã định danh.
-- `min` / `max` — các ràng buộc về số lượng mục được chọn trên cấp độ hiện tại.
-
-### Lựa chọn Toàn cầu vs Cấp độ Nhóm
-
-- **selectedList** — trả về tất cả các mục đã chọn loại `item` từ toàn bộ cây.
-- **selectedListInGroup** — trả về các mục đã chọn chỉ từ cấp độ hiện tại (`data`). Các ràng buộc `min` và `max` làm việc dựa trên danh sách này.
-
-### Trạng thái disabled tự động
-
-Khi đạt đến giới hạn `max` (`isSelectedMax`), lớp sẽ tự động đánh dấu các mục chưa được chọn còn lại trong `fullData` là `disabled: true`.
-
-## Quản lý tiêu điểm (Focus)
-
-Trạng thái tiêu điểm được triển khai thông qua một biến phản ứng bên ngoài (Vue `ref`).
-
-### Các tính năng chính
-
-- **Trạng thái dùng chung** — các danh sách con sử dụng cùng một `ref` tiêu điểm.
-- **Tính phản ứng** — `fullData` tự động tính toán `focus: true` bằng cách so sánh `index` với biến tiêu điểm.
-- **Điều khiển thủ công** — lớp không tự thay đổi trạng thái tiêu điểm. Các phương thức điều hướng chỉ trả về đối tượng đích.
-
-```javascript
-const next = listData.getItemNext(currentItem)
-if (next) {
-    focus.value = next.index 
-}
-```
-
-## Tìm kiếm và Làm nổi bật (Highlight)
-
-### Các tham số cốt lõi
-
-- `highlight` — chuỗi phản ứng chứa truy vấn tìm kiếm.
-- `highlightLengthStart` — ngưỡng kích hoạt (mặc định là `2`). 
-
-### Cách thức hoạt động
-
-1. **Regex** — tự động tạo biểu thức chính quy khi chuỗi tìm kiếm thay đổi.
-2. **Các trường** — tìm kiếm trên `label`, `index` và trường `search`.
-3. **fullData** — mỗi mục nhận giá trị `highlight` để hiển thị trong UI.
-4. **Kết quả khớp đầu tiên** — `highlightFirstItem` trả về chỉ số của mục đầu tiên tìm thấy trong mảng `map`.
-
 ### Kiểm tra trạng thái
 
-- `isHighlight()` — có ít nhất một mục khớp.
-- `isHighlightActive()` — chuỗi tìm kiếm đã đạt đến độ dài yêu cầu.
+- `isLite(): boolean` — Đúng khi số mục cấp hiện tại vượt ngưỡng lite khác 0.
 
-## Chế độ lọc (filterMode)
+- `isFocus(): boolean` — Kiểm tra chỉ mục tiêu điểm trong bản đồ phẳng.
 
-Tham số `filterMode` là một cờ trạng thái hướng dẫn UI có nên ẩn các mục không khớp hay không. Cờ này được kế thừa bởi các danh sách con.
+- `isHighlight(): boolean` — Cho biết tìm kiếm có khớp mục trong bản đồ hay không.
 
-## Chế độ Lite (Lite Mode)
+- `isHighlightActive(): boolean` — Đúng khi truy vấn ngắn hơn ngưỡng hoặc có ít nhất một kết quả khớp.
 
-Tối ưu hóa hiệu suất cho danh sách lớn. Nếu số lượng phần tử > `lite`, thuộc tính `liteData` với cấu trúc đơn giản sẽ được kích hoạt.
+### Số lượng và giá trị trạng thái
 
-## Ví dụ sử dụng
+- `getLength(): number` — Trả số mục ở cấp hiện tại.
 
-### Hiển thị cây nhóm
+- `getLengthByMap(): number` — Trả số mục bản đồ phẳng, gồm nhóm và menu.
 
-```vue
-<template>
-  <ul>
-    <li v-for="item in listData.data.value" :key="item.index">
-      {{ item.label }}
-      <ul v-if="item.type === 'group'">
-        <li v-for="sub in listData.getSubList(item).data.value" :key="sub.index">
-           {{ sub.label }}
-        </li>
-      </ul>
-    </li>
-  </ul>
-</template>
+- `getLengthByItems(): number` — Trả số item/group/menu trong bản đồ phẳng.
 
-<script setup>
-const listData = new ListDataRef(props.list)
-</script>
+- `getFocus(): ListSelectedItem | undefined` — Trả giá trị tiêu điểm đầu vào.
+
+- `getFocusItem(): ListDataItem | undefined` — Chỉ tìm mục tiêu điểm ở cấp hiện tại.
+
+- `getHighlight(): string | undefined` — Trả văn bản tìm kiếm.
+
+- `getHighlightLengthStart(): number` — Trả ngưỡng độ dài tìm kiếm, mặc định 2.
+
+- `getSelected(): ListSelectedList | undefined` — Trả lựa chọn đơn hoặc mảng lựa chọn đầu vào.
+
+### Tra cứu
+
+- `getItemByIndex(index?: string): { key: number, item: ListDataItem } | undefined` — Tra mục trong bản đồ phẳng và trả khóa bản đồ cùng mục.
+
+- `getItemByKey(key: number): ListDataItem | undefined` — Trả mục tại vị trí bản đồ phẳng hoặc undefined.
+
+- `getFirstItemByParent(parent: string | undefined): ListDataItem | undefined` — Trả mục item/group/menu đầu tiên có cha được truyền.
+
+- `getLastItemByParent(parent: string | undefined): ListDataItem | undefined` — Trả mục item/group/menu cuối cùng có cha được truyền.
+
+### Điều hướng
+
+#### `getSelectedByStep`
+
+`getSelectedByStep(step: number): ListSelectedItem | undefined`
+
+Di chuyển từ lá được chọn đầu tiên theo bước truyền vào. Nếu chưa chọn lá, trả chỉ mục lá đầu. Danh sách rỗng trả `undefined`.
+
+**Tham số:**
+
+- `step: number` — Bước điều hướng có dấu.
+
+**Trả về:** `ListSelectedItem | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const index = /*#__PURE__*/ list.getSelectedByStep(1)
 ```
 
-## Làm việc với điều hướng
+#### `getSelectedNext`
 
-### Điều hướng phẳng vòng lặp
+`getSelectedNext(): ListSelectedItem | undefined`
 
-Các phương thức `getItemNext/Prev` và `getIndexNext/Prev` hoạt động thông qua `mapItems` (chỉ các phần tử loại `item`). Điều hướng xuyên suốt cây dữ liệu và có tính vòng lặp.
+Trả chỉ mục lá kế tiếp so với lựa chọn, có quay vòng ở biên.
 
-### Điều hướng dựa trên lựa chọn
+**Trả về:** `ListSelectedItem | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
 
-`getSelectedNext/Prev` tìm phần tử lân cận so với phần tử được chọn đầu tiên.
+```typescript
+const result = /*#__PURE__*/ list.getSelectedNext()
+```
 
-### Điều hướng theo ngữ cảnh (Parent)
+#### `getSelectedPrev`
 
-`getFirstItemByParent` và `getLastItemByParent` tìm ranh giới của cấp độ lồng nhau hiện tại bằng mã định danh cha.
+`getSelectedPrev(): ListSelectedItem | undefined`
+
+Trả chỉ mục lá trước so với lựa chọn, có quay vòng ở biên.
+
+**Trả về:** `ListSelectedItem | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const result = /*#__PURE__*/ list.getSelectedPrev()
+```
+
+#### `getItemByStep`
+
+`getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined`
+
+Di chuyển trong bản đồ chỉ chứa lá. Bước dương vượt biên trả lá đầu; bước âm trả lá cuối. Bước 0 giữ mục đã tìm thấy.
+
+**Tham số:**
+
+- `item: ListDataItem` — Mục danh sách hiện tại.
+- `step: number` — Bước điều hướng có dấu.
+
+**Trả về:** `ListDataItem | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const current = /*#__PURE__*/ list.getItemByIndex('a')
+const next = current && list.getItemByStep(current.item, 1)
+```
+
+#### `getItemNext`
+
+`getItemNext(item: ListDataItem): ListDataItem | undefined`
+
+Trả mục lá sau một mục, quay về mục đầu khi cần.
+
+**Tham số:**
+
+- `item: ListDataItem` — Mục hoặc mảng đầu ra theo chữ ký.
+
+**Trả về:** `ListDataItem | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const result = /*#__PURE__*/ list.getItemNext(list.data.value[0]!)
+```
+
+#### `getItemPrev`
+
+`getItemPrev(item: ListDataItem): ListDataItem | undefined`
+
+Trả mục lá trước một mục, quay về mục cuối khi cần.
+
+**Tham số:**
+
+- `item: ListDataItem` — Mục hoặc mảng đầu ra theo chữ ký.
+
+**Trả về:** `ListDataItem | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const result = /*#__PURE__*/ list.getItemPrev(list.data.value[0]!)
+```
+
+#### `getIndexByStep`
+
+`getIndexByStep(index: string, step: number): ListDataItem | undefined`
+
+Tra chỉ mục trong bản đồ rồi điều hướng qua lá. Chỉ mục không tồn tại trả `undefined`.
+
+**Tham số:**
+
+- `index: string` — Chỉ mục mục hoặc hiệu chỉnh.
+- `step: number` — Bước điều hướng có dấu.
+
+**Trả về:** `ListDataItem | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const next = /*#__PURE__*/ list.getIndexByStep('a', 1)
+```
+
+#### `getIndexNext`
+
+`getIndexNext(index: string): ListDataItem | undefined`
+
+Tra chỉ mục rồi trả mục lá kế tiếp.
+
+**Tham số:**
+
+- `index: string` — Chỉ mục mục hoặc hiệu chỉnh.
+
+**Trả về:** `ListDataItem | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const result = /*#__PURE__*/ list.getIndexNext('a')
+```
+
+#### `getIndexPrev`
+
+`getIndexPrev(index: string): ListDataItem | undefined`
+
+Tra chỉ mục rồi trả mục lá trước.
+
+**Tham số:**
+
+- `index: string` — Chỉ mục mục hoặc hiệu chỉnh.
+
+**Trả về:** `ListDataItem | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+
+```typescript
+const result = /*#__PURE__*/ list.getIndexPrev('a')
+```
+
+### Danh sách lồng
+
+#### `getSubList`
+
+`getSubList(item: ListDataItem): ListDataRef`
+
+Trả mô hình con đã lưu, dùng chung ref trạng thái và giới hạn. Tạo lại khi nguồn nhóm thay đổi; cha là chỉ mục nhóm.
+
+**Tham số:**
+
+- `item: ListDataItem` — Mục hoặc mảng đầu ra theo chữ ký.
+
+**Trả về:** `ListDataRef` — Mô hình danh sách con đã lưu.
+
+```typescript
+const grouped = /*#__PURE__*/ new ListDataRef([{ type: 'group', index: 'fruit', label: 'Fruit', value: ['Apple'] }])
+const group = grouped.data.value[0]
+const children = group && grouped.getSubList(group)
+```

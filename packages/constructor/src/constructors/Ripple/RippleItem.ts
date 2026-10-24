@@ -9,11 +9,11 @@ import type { RippleProps } from './props'
 /**
  * Class for managing ripple wave elements.
  * Imperatively creates a span for each press, positions it via CSS variables
- * and removes it after the end animation (or by a fallback timeout).
+ * and removes it after the end animation.
  *
  * Класс для управления элементами волны (ripple).
  * Императивно создаёт span на каждое нажатие, позиционирует его через CSS-переменные
- * и удаляет после завершающей анимации (или по резервному таймауту).
+ * и удаляет после завершающей анимации.
  */
 export class RippleItem {
   /** CSS class name for the ripple item element / CSS-класс для элемента эффекта */
@@ -64,13 +64,8 @@ export class RippleItem {
       const y = coordinator?.y ?? element.offsetHeight / 2
 
       createElement<HTMLSpanElement>(element, 'span', (item) => {
-        const timeout = setTimeout(() => item.parentElement?.removeChild(item), 1000)
-
         item.onanimationend = () => item.classList.add(this.classEnd)
-        item.ontransitionend = () => {
-          clearTimeout(timeout)
-          item.parentElement?.removeChild(item)
-        }
+        item.ontransitionend = () => item.parentElement?.removeChild(item)
 
         item.style.setProperty(this.styleX, `${x}px`)
         item.style.setProperty(this.styleY, `${y}px`)

@@ -54,8 +54,8 @@ export class TableFlexRecordLazy {
 
     return {
       [this.naming.getStatusClass('lazy')]: isLazy,
-      [this.naming.getStatusClass('lazy--visible')]: isLazy && isVisible,
-      [this.naming.getStatusClass('lazy--hidden')]: isLazy && !isVisible
+      [this.naming.getStatusClass('lazy', 'visible')]: isLazy && isVisible,
+      [this.naming.getStatusClass('lazy', 'hidden')]: isLazy && !isVisible
     }
   }
 

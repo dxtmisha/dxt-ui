@@ -4,104 +4,110 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # RouterItemRef Class
 
-The static core for working with Vue Router in the functional layer. It provides a single entry point to the router, allowing for link generation, navigation, and path normalization without direct dependency on the component context.
-
-This enables the use of router capabilities in classes and utilities where `useRouter` or `useRoute` hooks are not available.
+Static facade for an installed Vue Router instance stored through `ServerStorage`. It resolves named routes to href properties and dispatches navigation.
 
 ## Key Features
 
-- **Global Access** — saves the router instance for access from anywhere in the application.
-- **Safe Generation** — methods for creating links by route names with parameters.
-- **Normalization** — converts various path formats into standard `href` properties.
+- **Named links** — preserves params, query, hash and router history base.
+- **Registration** — `set()` replaces, `setOneTime()` initializes only if absent.
+- **Optional router** — absent registration gives undefined links or empty href props.
 
-## Usage (Setup)
+## Behavior and lifecycle
 
-Since `RouterItemRef` is a static class, it must be initialized once during application creation (usually in `main.ts` or in a plugin).
+`rawToHref()` accepts only object locations with a string `name`; path objects and URL strings return `{}`. Unknown registered route names may throw from Vue Router. `push()` returns `void` and does not expose the navigation promise; use the router directly when awaiting navigation or handling failures. Initialize request storage before SSR use.
+
+## Usage
 
 ```typescript
 import { RouterItemRef } from '@dxtmisha/functional'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createMemoryHistory, createRouter } from 'vue-router'
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [...]
+const router = /*#__PURE__*/ createRouter({
+  history: createMemoryHistory('/app/'),
+  routes: [{ path: '/users/:id', name: 'user', component: { render: () => null } }]
 })
-
-// Set the router for global use
 RouterItemRef.set(router)
+const href = /*#__PURE__*/ RouterItemRef.getHref('user', { id: 0 }, { page: 1 }, '#details')
 ```
 
-## Instance Management
+## Methods
 
-- `static get(): Router | undefined` — Returns the currently set router instance.
-- `static set(router: Router): void` — Sets the router instance.
-- `static setOneTime(router: Router): void` — Sets the router instance only if it hasn't been set yet. Useful for preventing accidental overwrites in plugins.
+### Registration
 
-## Navigation and Links
+- `get(): Router` — Returns the registered router; it may be absent at runtime.
 
-A group of methods for managing navigation history and URL generation.
+- `set(router: Router): void` — Stores or replaces the router in the current context.
 
-### `push`
+- `setOneTime(router: Router): void` — Registers the router only if no router has been stored.
 
-Performs programmatic navigation to the specified route. It is a safe wrapper over `router.push`. If the router is not yet set, the action will be ignored.
+### Links and navigation
 
-**Parameters:**
-- `to: string | RouteLocationRaw` — target path or route location object.
+#### `getLink`
 
-### `getLink`
+`getLink( name: string, params?: RouteParamsRawGeneric, query?: LocationQueryRaw, hash?: string ): string | undefined`
 
-Generates and returns a string URL (href) for a route based on its name and parameters. Uses the `router.resolve` method.
+Resolves a named location to `router.resolve(...).href`, or returns `undefined` without a router.
 
 **Parameters:**
-- `name: string` — unique route name.
-- `params?: any` — dynamic path parameters (params).
-- `query?: any` — query string parameters (query).
 
-**Returns:** `string | undefined` — the generated URL or `undefined` if the router is not initialized.
+- `name: string` — Registered route name.
+- `params?: RouteParamsRawGeneric` — Named-route parameters.
+- `query?: LocationQueryRaw` — Route query parameters.
+- `hash?: string` — Route fragment including its leading #.
 
-### `getHref`
-
-Returns a standardized link properties object. Useful for passing to components expecting `ConstrHrefProps`.
-
-**Parameters:**
-- `name?: string` — route name.
-- `params?: any` — path parameters.
-- `query?: any` — query parameters.
-
-**Returns:** `ConstrHrefProps` — an `{ href: string }` object or `{}` (empty object) if no name is provided.
-
-### `rawToHref`
-
-A special normalization method. Converts a location object (if it contains a `name`) into a link properties object.
-
-**Parameters:**
-- `to?: string | RouteLocationRaw` — raw route data.
-
-**Returns:** `ConstrHrefProps` — the result of `getHref` or `{}`.
-
-## Examples
-
-### Generating a Link in Code
+**Returns:** `string | undefined` — Requested string, or undefined when unavailable.
 
 ```typescript
-import { RouterItemRef } from '@dxtmisha/functional'
-
-// Get URL for user profile page
-const userUrl = RouterItemRef.getLink('user-profile', { id: 123 })
-// Result: '/user/123' (depending on router configuration)
-
-// Use for component properties
-const linkProps = RouterItemRef.getHref('catalog', undefined, { category: 'electronics' })
-// Result: { href: '/catalog?category=electronics' }
+const link = /*#__PURE__*/ RouterItemRef.getLink('user', { id: 0 }, { page: 1 }, '#details')
 ```
 
-### Programmatic Navigation
+#### `getHref`
+
+`getHref( name?: string, params?: RouteParamsRawGeneric, query?: LocationQueryRaw, hash?: string ): ConstrHrefProps`
+
+Returns `{ href }` for a nonempty resolved link, otherwise `{}`.
+
+**Parameters:**
+
+- `name?: string` — Registered route name.
+- `params?: RouteParamsRawGeneric` — Named-route parameters.
+- `query?: LocationQueryRaw` — Route query parameters.
+- `hash?: string` — Route fragment including its leading #.
+
+**Returns:** `ConstrHrefProps` — The requested value or object as declared in the signature.
 
 ```typescript
-import { RouterItemRef } from '@dxtmisha/functional'
+const props = /*#__PURE__*/ RouterItemRef.getHref('user', { id: 0 })
+```
 
-const logout = () => {
-    // Navigate to the home page after logout
-    RouterItemRef.push({ name: 'home' })
-}
+#### `rawToHref`
+
+`rawToHref( to?: string | RouteLocationRaw ): ConstrHrefProps`
+
+Converts a named raw location to href props, retaining params, query and hash.
+
+**Parameters:**
+
+- `to?: string | RouteLocationRaw` — Raw route location.
+
+**Returns:** `ConstrHrefProps` — The requested value or object as declared in the signature.
+
+```typescript
+const props = /*#__PURE__*/ RouterItemRef.rawToHref({ name: 'user', params: { id: 0 }, hash: '#details' })
+```
+
+#### `push`
+
+`push(to: string | RouteLocationRaw): void`
+
+Starts router navigation when a router is registered.
+
+**Parameters:**
+
+- `to: string | RouteLocationRaw` — Raw route location.
+
+**Returns:** `void` — No return value.
+
+```typescript
+RouterItemRef.push({ name: 'user', params: { id: 0 } })
 ```

@@ -1,0 +1,93 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Classes/GeoUnitRef'/>
+
+# Класс GeoUnitRef
+
+Реактивная обёртка `GeoUnit`, форматирующая исходные метрические значения в региональных единицах. Ссылки на локаль и число обновляют сохранённые вычисляемые результаты без пересоздания обёртки.
+
+## Ключевые особенности
+
+- **Региональная конвертация** — исходные единицы преобразуются согласно настройкам страны.
+- **Реактивные входы** — значения, локаль и единица общего `format()` могут быть ссылками.
+- **Опции форматирования** — принимает `Intl.NumberFormatOptions`.
+
+## Инициализация
+
+`constructor(code?: RefOrNormal<string>)`
+
+**Параметры:**
+
+- `code?: RefOrNormal<string>` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+
+## Поведение и жизненный цикл
+
+Без явной локали следует `GeoRef.getLocation()`. Явная ссылка на локаль заменяет этот резервный источник. Принимает числовые строки. `format()` использует идентификаторы `square-meter`, `kilometer-per-hour` и подобные; неизвестный идентификатор возвращает вход как текст. Опции передаются обычным объектом, а не ссылкой.
+
+## Использование
+
+```typescript
+import { GeoUnitRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const locale = /*#__PURE__*/ ref('vi-VN')
+const value = /*#__PURE__*/ ref(0)
+const units = /*#__PURE__*/ new GeoUnitRef(locale)
+const temperature = /*#__PURE__*/ units.celsius(value)
+locale.value = 'en-US'
+const generic = /*#__PURE__*/ units.format(value, ref('celsius'))
+```
+
+## Методы
+
+### Местоположение
+
+- `getLocation(): ComputedRef<string>` — Возвращает разрешённую стандартную локаль вычисляемой ссылкой.
+
+### Общая конвертация
+
+#### `format`
+
+`format( value: RefOrNormal<NumberOrString>, unit: RefOrNormal<string>, options?: Intl.NumberFormatOptions ): ComputedRef<string>`
+
+Реактивно выбирает исходную метрическую единицу и делегирует преобразование и форматирование `GeoUnit`.
+
+**Параметры:**
+
+- `value: RefOrNormal<NumberOrString>` — Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+- `unit: RefOrNormal<string>` — Идентификатор единицы.
+- `options?: Intl.NumberFormatOptions` — Параметры настройки.
+
+**Возвращает:** `ComputedRef<string>` — Вычисляемый результат; читайте через .value.
+
+```typescript
+const formatted = /*#__PURE__*/ units.format(value, ref('meter'), { maximumFractionDigits: 2 })
+```
+
+### Методы единиц измерения
+
+- `millimeter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует миллиметры; преобразует в `inch`, если это задано настройками региона.
+
+- `centimeter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует сантиметры; преобразует в `inch`, если это задано настройками региона.
+
+- `meter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует метры; преобразует в `foot`, если это задано настройками региона.
+
+- `kilometer( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует километры; преобразует в `mile`, если это задано настройками региона.
+
+- `squareMeter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует квадратные метры; преобразует в `square-foot`, если это задано настройками региона.
+
+- `hectare( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует гектары; преобразует в `acre`, если это задано настройками региона.
+
+- `gram( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует граммы; преобразует в `ounce`, если это задано настройками региона.
+
+- `kilogram( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует килограммы; преобразует в `pound`, если это задано настройками региона.
+
+- `tonne( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует тонны; преобразует в `ton`, если это задано настройками региона.
+
+- `milliliter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует миллилитры; преобразует в `fluid-ounce`, если это задано настройками региона.
+
+- `liter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует литры; преобразует в `gallon`, если это задано настройками региона.
+
+- `celsius( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует градусы Цельсия; преобразует в `fahrenheit`, если это задано настройками региона.
+
+- `kilometerPerHour( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Форматирует километры в час; преобразует в `mile-per-hour`, если это задано настройками региона.

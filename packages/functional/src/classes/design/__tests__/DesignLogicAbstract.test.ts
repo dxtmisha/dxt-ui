@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, assert, describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { createApp, createSSRApp, effectScope, getCurrentInstance, getCurrentScope, h, onErrorCaptured, onMounted, onScopeDispose, ref, watch, type ComponentPublicInstance, type EffectScope, type Ref, type VNode } from 'vue'
+import { createApp, createSSRApp, effectScope, getCurrentInstance, getCurrentScope, h, nextTick, onErrorCaptured, onMounted, onScopeDispose, reactive, ref, watch, type ComponentPublicInstance, type EffectScope, type Ref, type VNode } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
 
@@ -204,9 +204,9 @@ function createScope(): EffectScope {
 }
 
 /** Mounted logic fixture / Тестовый экземпляр логики смонтированного компонента */
-export interface MountedTestLogic {
+export interface MountedTestLogic<T = TestLogic> {
   /** Component logic / Логика компонента */
-  readonly logic: TestLogic
+  readonly logic: T
   /** Owner component cleanup / Демонтирование компонента */
   readonly unmount: () => void
 }
@@ -219,11 +219,11 @@ export interface MountedTestLogic {
  * @param onError component error handler / обработчик ошибок компонента
  * @returns mounted logic and cleanup callback / смонтированная логика и функция очистки
  */
-function mountLogic(
-  createLogic: () => TestLogic,
+function mountLogic<T = TestLogic>(
+  createLogic: () => T,
   onError?: (error: unknown, instance: ComponentPublicInstance | null, info: string) => void
-): MountedTestLogic {
-  let logic: TestLogic | undefined
+): MountedTestLogic<T> {
+  let logic: T | undefined
   let isMounted = false
   const application = createApp({
     setup(): () => null {
@@ -1096,5 +1096,122 @@ describe('DesignLogicAbstract', () => {
     expect(custom.tag).toBe('custom-tag')
 
     scope.stop()
+  })
+
+  it('automatically instantiates dependencies with satisfied conditions on mount using consolidated watcher', () => {
+    interface ConditionalTestConstructors {
+      single?: typeof CountDependency
+      multiple?: typeof TestDependency
+      inactive?: typeof CountDependency
+    }
+
+    class ConditionalTestLogic extends DesignLogicAbstract<
+      HTMLElement,
+      ConstrComponent,
+      ConstrItem,
+      ConstrItem,
+      { enabledSingle: boolean, condA: boolean, condB: boolean },
+      ConditionalTestConstructors
+    > {
+      protected readonly constructorItems = {
+        single: {
+          item: CountDependency,
+          conditions: () => this.props.enabledSingle,
+          parameters: (): [number] => [1]
+        },
+        multiple: {
+          item: TestDependency,
+          conditions: () => this.props.condA && this.props.condB,
+          parameters: (): [string, Ref<number>] => ['multi', ref(2)]
+        },
+        inactive: {
+          item: CountDependency,
+          conditions: () => false,
+          parameters: (): [number] => [3]
+        }
+      }
+
+      constructor(props: { enabledSingle: boolean, condA: boolean, condB: boolean }) {
+        super(props, ref<HTMLElement>(), new DesignName('d1.conditional-test'), undefined, undefined, undefined, {
+          single: CountDependency,
+          multiple: TestDependency,
+          inactive: CountDependency
+        })
+      }
+
+      get instantiatedItems(): Partial<Record<keyof ConditionalTestConstructors, unknown>> {
+        return this.instances
+      }
+    }
+
+    const props = reactive({ enabledSingle: true, condA: true, condB: true })
+    const { logic, unmount } = mountLogic(() => new ConditionalTestLogic(props))
+
+    expect(logic.instantiatedItems.single).toBeInstanceOf(CountDependency)
+    expect(logic.instantiatedItems.multiple).toBeInstanceOf(TestDependency)
+    expect(logic.instantiatedItems.inactive).toBeUndefined()
+
+    unmount()
+  })
+
+  it('dynamically instantiates dependencies when their conditions become satisfied after mount', async () => {
+    interface DynamicTestConstructors {
+      single?: typeof CountDependency
+      multi?: typeof CountDependency
+    }
+
+    class DynamicTestLogic extends DesignLogicAbstract<
+      HTMLElement,
+      ConstrComponent,
+      ConstrItem,
+      ConstrItem,
+      { flag: boolean, a: boolean, b: boolean },
+      DynamicTestConstructors
+    > {
+      protected readonly constructorItems = {
+        single: {
+          item: CountDependency,
+          conditions: () => this.props.flag,
+          parameters: (): [number] => [10]
+        },
+        multi: {
+          item: CountDependency,
+          conditions: () => this.props.a && this.props.b,
+          parameters: (): [number] => [20]
+        }
+      }
+
+      constructor(props: { flag: boolean, a: boolean, b: boolean }) {
+        super(props, ref<HTMLElement>(), new DesignName('d1.dynamic-test'), undefined, undefined, undefined, {
+          single: CountDependency,
+          multi: CountDependency
+        })
+      }
+
+      get instantiatedItems(): Partial<Record<keyof DynamicTestConstructors, unknown>> {
+        return this.instances
+      }
+    }
+
+    const props = reactive({ flag: false, a: false, b: false })
+    const { logic, unmount } = mountLogic(() => new DynamicTestLogic(props))
+
+    expect(logic.instantiatedItems.single).toBeUndefined()
+    expect(logic.instantiatedItems.multi).toBeUndefined()
+
+    props.flag = true
+    await nextTick()
+    expect(logic.instantiatedItems.single).toBeInstanceOf(CountDependency)
+    expect(logic.instantiatedItems.multi).toBeUndefined()
+
+    props.a = true
+    await nextTick()
+    expect(logic.instantiatedItems.multi).toBeUndefined()
+
+    props.b = true
+    await nextTick()
+    expect(logic.instantiatedItems.multi).toBeInstanceOf(CountDependency)
+
+    unmount()
   })
 })

@@ -14,7 +14,7 @@ const PATTERN_FOR_DATE: FieldPatternList = {
     min: '1',
     max: '12'
   },
-  D: (item: FieldMasks): FieldPatternElement => {
+  D: (item?: FieldMasks): FieldPatternElement => {
     const date = new Datetime(`${item?.Y?.value ?? '2000'}-${item?.M?.value ?? '01'}-01`)
 
     return {

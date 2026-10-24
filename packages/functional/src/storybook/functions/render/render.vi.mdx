@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `render`
 
-Một bản bọc (wrapper) cho hàm `h` (hyperscript) của Vue, cung cấp khả năng tự động tạo key cho các thành phần. Nó đảm bảo rằng các thành phần có key duy nhất để render hiệu quả và xử lý các chuyển đổi (transitions), đặc biệt là khi làm việc với danh sách hoặc các phần tử động.
+Hàm bao bọc `h` (hyperscript) của Vue, tự động tạo key cho component từ các định danh ổn định.
 
 **Tham số:**
 - `name: string | any` — Tên hoặc thẻ của thành phần cần render.
@@ -20,21 +20,20 @@ import { render } from '@dxtmisha/functional'
 
 // Render một div với key được tạo tự động
 const vnode = render('div', { class: 'container' }, 'Chào thế giới')
-// key => '.div.container'
+// key => 'div'
 
 // Render một thành phần với index cụ thể để tạo key
 const item = render('my-component', { data: itemData }, null, 'item-1')
-// key => '.my-component.item-1'
+// key => 'my-component.item-1'
 ```
 
 ### Cách tạo Key
 
-Key (`key`) cho Vue component được hình thành theo phương thức **cộng dồn (additive)**. Nó luôn bắt đầu bằng một dấu chấm theo sau là tên thành phần (`.name`), sau đó nối thêm các giá trị sau bằng dấu chấm (nếu chúng tồn tại):
+Giá trị `props.key` được chỉ định sẽ được giữ nguyên. Nếu không có, key được tạo từ các định danh sau theo thứ tự: tên component dạng chuỗi không có dấu chấm ở đầu, các định danh tiếp theo được nối bằng dấu chấm:
 
-1.  **`.name`** — nếu `name` là một chuỗi.
-2.  **.index** — từ tham số thứ ba của hàm `render`.
-3.  **.props.index** — nếu có trong đối tượng thuộc tính và là một chuỗi.
-4.  **.className** — nếu class được chỉ định trong `props`.
-5.  **.props.id** — nếu ID được chỉ định trong `props`.
+1.  **`name`** — nếu `name` là chuỗi.
+2.  **`.index`** — từ tham số thứ tư của `render`.
+3.  **`.props.index`** — nếu được truyền dưới dạng chuỗi.
+4.  **`.props.id`** — nếu ID được chỉ định trong `props`.
 
-Điều này đảm bảo tính duy nhất của key ngay cả khi tên các thành phần giống nhau.
+CSS class không ảnh hưởng đến key tự động, nên thay đổi class giữ nguyên DOM node và trạng thái component. Thay đổi có chủ ý đối với `props.key` vẫn có thể thay thế node. Với các phần tử cùng cấp trong danh sách, cung cấp key hoặc định danh ổn định duy nhất; chỉ tên component không đảm bảo tính duy nhất.

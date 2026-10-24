@@ -31,6 +31,8 @@ export type ConstrItemsItem<
 > = {
   /** Constructor class or element / Класс конструктора или элемент */
   item?: T[K]
+  /** Condition for lazy instantiation / Условие для ленивого создания */
+  conditions?: () => boolean
   /** Constructor parameters factory / Фабрика параметров конструктора */
   parameters?: () => ConstrParameters<T, K>
 }

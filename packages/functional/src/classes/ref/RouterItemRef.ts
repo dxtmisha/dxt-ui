@@ -1,4 +1,4 @@
-import type { RouteLocationRaw, Router } from 'vue-router'
+import type { LocationQueryRaw, RouteLocationRaw, RouteParamsRawGeneric, Router } from 'vue-router'
 import { isObjectNotArray, isString, ServerStorage } from '@dxtmisha/functional-basic'
 
 import type { ConstrHrefProps } from '../../types/constructorTypes'
@@ -7,51 +7,58 @@ import type { ConstrHrefProps } from '../../types/constructorTypes'
 const ROUTER_ITEM_REF_KEY = '__ui:router-item-ref__'
 
 /**
- * Router management class.
+ * Static facade for an installed Vue Router instance stored through `ServerStorage`. It resolves named routes to href properties and dispatches navigation.
  *
- * Класс управления роутером.
+ * Статический фасад установленного Vue Router, сохранённого через `ServerStorage`. Разрешает именованные маршруты в свойства href и запускает навигацию.
  */
 export class RouterItemRef {
   /**
-   * Get router instance.
+   * Returns the registered router; it may be absent at runtime.
    *
-   * Получить экземпляр роутера.
+   * Возвращает зарегистрированный роутер; фактически он может отсутствовать.
+   * @returns Registered router, or undefined when none is installed. / Зарегистрированный роутер либо undefined при его отсутствии.
    */
   static get() {
     return ServerStorage.get<Router>(ROUTER_ITEM_REF_KEY)
   }
 
   /**
-   * Returns the link by name.
+   * Resolves a named location to `router.resolve(...).href`, or returns `undefined` without a router.
    *
-   * Возвращает ссылку по имени.
-   * @param name route name/ имя маршрута
-   * @param params route parameters/ параметры маршрута
-   * @param query route query/ запрос маршрута
+   * Разрешает именованное местоположение в `router.resolve(...).href`; без роутера возвращает `undefined`.
+   * @param name Registered route name. / Имя зарегистрированного маршрута.
+   * @param params Named-route parameters. / Параметры именованного маршрута.
+   * @param query Route query parameters. / Параметры строки запроса маршрута.
+   * @param hash Route fragment including its leading #. / Фрагмент маршрута с начальным #.
+   * @returns Requested string, or undefined when unavailable. / Запрошенная строка либо undefined при отсутствии.
    */
   static getLink(
     name: string,
-    params?: any,
-    query?: any
+    params?: RouteParamsRawGeneric,
+    query?: LocationQueryRaw,
+    hash?: string
   ): string | undefined {
-    return this.get()?.resolve({ name, params, query }).href
+    return this.get()?.resolve({ name, params, query, hash }).href
   }
 
   /**
-   * Returns the link property by name.
+   * Returns `{ href }` for a nonempty resolved link, otherwise `{}`.
    *
-   * Возвращает свойство ссылки по имени.
-   * @param name route name/ имя маршрута
-   * @param params route parameters/ параметры маршрута
-   * @param query route query/ запрос маршрута
+   * Возвращает `{ href }` для непустой разрешённой ссылки, иначе `{}`.
+   * @param name Registered route name. / Имя зарегистрированного маршрута.
+   * @param params Named-route parameters. / Параметры именованного маршрута.
+   * @param query Route query parameters. / Параметры строки запроса маршрута.
+   * @param hash Route fragment including its leading #. / Фрагмент маршрута с начальным #.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   static getHref(
     name?: string,
-    params?: any,
-    query?: any
+    params?: RouteParamsRawGeneric,
+    query?: LocationQueryRaw,
+    hash?: string
   ): ConstrHrefProps {
     if (name) {
-      const href = this.getLink(name, params, query)
+      const href = this.getLink(name, params, query, hash)
 
       if (href) {
         return { href }
@@ -62,10 +69,11 @@ export class RouterItemRef {
   }
 
   /**
-   * Site path change.
+   * Starts router navigation when a router is registered.
    *
-   * Изменение пути сайта.
-   * @param to new path/ новый путь
+   * Запускает навигацию при наличии зарегистрированного роутера.
+   * @param to Raw route location. / Необработанное местоположение маршрута.
+   * @returns No return value. / Нет возвращаемого значения.
    */
   static push(to: string | RouteLocationRaw) {
     const router = this.get()
@@ -76,20 +84,22 @@ export class RouterItemRef {
   }
 
   /**
-   * Set router instance.
+   * Stores or replaces the router in the current context.
    *
-   * Установить экземпляр роутера.
-   * @param router router instance/ экземпляр роутера
+   * Сохраняет или заменяет роутер текущего контекста.
+   * @param router Vue Router instance to register. / Регистрируемый экземпляр Vue Router.
+   * @returns No return value. / Нет возвращаемого значения.
    */
   static set(router: Router) {
     ServerStorage.set<Router>(ROUTER_ITEM_REF_KEY, () => router)
   }
 
   /**
-   * Set router instance only once.
+   * Registers the router only if no router has been stored.
    *
-   * Установить экземпляр роутера только один раз.
-   * @param router router instance/ экземпляр роутера
+   * Регистрирует роутер только при отсутствии сохранённого.
+   * @param router Vue Router instance to register. / Регистрируемый экземпляр Vue Router.
+   * @returns No return value. / Нет возвращаемого значения.
    */
   static setOneTime(router: Router) {
     if (!this.get()) {
@@ -98,10 +108,11 @@ export class RouterItemRef {
   }
 
   /**
-   * Converts the raw route location to href properties.
+   * Converts a named raw location to href props, retaining params, query and hash.
    *
-   * Преобразует необработанное местоположение маршрута в свойства href.
-   * @param to raw route location/ необработанное местоположение маршрута
+   * Преобразует именованное местоположение в href-свойства, сохраняя параметры, query и hash.
+   * @param to Raw route location. / Необработанное местоположение маршрута.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   static rawToHref(
     to?: string | RouteLocationRaw
@@ -111,7 +122,7 @@ export class RouterItemRef {
       && 'name' in to
       && isString(to?.name)
     ) {
-      return this.getHref(to.name)
+      return this.getHref(to.name, to.params, to.query, to.hash)
     }
 
     return {}

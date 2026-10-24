@@ -1,0 +1,130 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/DesignComp'/>
+
+# Lớp DesignComp
+
+Lớp con được xuất của `DesignComponents<COMP, P>`. Không thêm thành viên hoặc hành vi; tra cứu, hiệu chỉnh phản ứng và kết xuất VNode được kế thừa nguyên vẹn.
+
+## Tính năng chính
+
+- **Bộ đăng ký** — `COMP` xác định tên thành phần hợp lệ.
+- **Giá trị mặc định phản ứng** — bản đồ và từng giá trị hiệu chỉnh có thể là ref.
+- **Hợp nhất thuộc tính** — thuộc tính trực tiếp ghi đè mặc định; lớp CSS và kiểu được hợp nhất.
+
+## Khởi tạo
+
+`constructor( components: COMP = {} as COMP, modification?: ConstrComponentMod<P> )`
+
+**Tham số:**
+
+- `components: COMP = {} as COMP` — Bộ đăng ký thành phần kết nối.
+- `modification?: ConstrComponentMod<P>` — Bản đồ thuộc tính mặc định theo chỉ mục, có thể phản ứng.
+
+## Hành vi và vòng đời
+
+Hàm khởi tạo và các phương thức bên dưới được kế thừa từ `DesignComponents`. `COMP` mô tả bộ đăng ký, `P` mô tả thuộc tính thành phần.
+
+## Cách dùng
+
+```typescript
+import { DesignComp } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const disabled = /*#__PURE__*/ ref(false)
+const components = /*#__PURE__*/ new DesignComp(
+  { button: 'button' },
+  { button: { disabled, class: 'base' } }
+)
+const node = /*#__PURE__*/ components.renderOne('button', { title: 'Save' })
+disabled.value = true
+const updatedNode = /*#__PURE__*/ components.renderOne('button')
+```
+
+## Phương thức
+
+### Tra cứu bộ đăng ký
+
+- `is<K extends keyof COMP>(name: K): name is K` — Kiểm tra mục đăng ký có chứa thành phần hay không.
+
+- `get<K extends keyof COMP>(name: K): COMP[K]` — Trả về mục đăng ký mà không tạo VNode.
+
+### Hiệu chỉnh thuộc tính
+
+#### `getModification`
+
+`getModification<K extends keyof P>( index?: K & string | string, props?: P[K] | ConstrItem ): ConstrItem | undefined`
+
+Lưu giá trị computed theo chỉ mục và hợp nhất thuộc tính trực tiếp qua `toBinds`. Khi chỉ mục rỗng hoặc bị bỏ qua, trả nguyên thuộc tính đầu vào.
+
+**Tham số:**
+
+- `index?: K & string | string` — Chỉ mục mục hoặc hiệu chỉnh.
+- `props?: P[K] | ConstrItem` — Thuộc tính đầu vào.
+
+**Trả về:** `ConstrItem | undefined` — Bản đồ thuộc tính hợp nhất hoặc thuộc tính gốc khi không truyền chỉ mục.
+
+```typescript
+const props = /*#__PURE__*/ components.getModification('button', { disabled: false })
+```
+
+### Kết xuất
+
+#### `renderOne`
+
+`renderOne< K extends keyof COMP, PK extends keyof P >( name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): VNode | undefined`
+
+Tạo một VNode với thuộc tính và nội dung con đã hợp nhất. Trả về `undefined` nếu thiếu thành phần.
+
+**Tham số:**
+
+- `name: K & string` — Khóa thành phần kết nối trong bộ đăng ký.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Thuộc tính đầu vào.
+- `children?: RawChildren | RawSlots` — Nội dung con hoặc mảng tích lũy VNode tùy chọn.
+- `index?: PK & string | string` — Chỉ mục mục hoặc hiệu chỉnh.
+
+**Trả về:** `VNode | undefined` — VNode kết xuất hoặc undefined nếu thiếu thành phần.
+
+```typescript
+const node = /*#__PURE__*/ components.renderOne('button', { title: 'Save' })
+```
+
+#### `render`
+
+`render< K extends keyof COMP, PK extends keyof P >( name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): VNode[]`
+
+Đưa VNode vào mảng; trả mảng rỗng nếu thiếu thành phần.
+
+**Tham số:**
+
+- `name: K & string` — Khóa thành phần kết nối trong bộ đăng ký.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Thuộc tính đầu vào.
+- `children?: RawChildren | RawSlots` — Nội dung con hoặc mảng tích lũy VNode tùy chọn.
+- `index?: PK & string | string` — Chỉ mục mục hoặc hiệu chỉnh.
+
+**Trả về:** `VNode[]` — Mảng một VNode hoặc mảng rỗng.
+
+```typescript
+const nodes = /*#__PURE__*/ components.render('button')
+```
+
+#### `renderAdd`
+
+`renderAdd< K extends keyof COMP, PK extends keyof P >( item: unknown[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): this`
+
+Thêm các nút vào mảng hiện có và trả cùng bộ đăng ký để gọi nối tiếp.
+
+**Tham số:**
+
+- `item: unknown[]` — Mục hoặc mảng đầu ra theo chữ ký.
+- `name: K & string` — Khóa thành phần kết nối trong bộ đăng ký.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Thuộc tính đầu vào.
+- `children?: RawChildren | RawSlots` — Nội dung con hoặc mảng tích lũy VNode tùy chọn.
+- `index?: PK & string | string` — Chỉ mục mục hoặc hiệu chỉnh.
+
+**Trả về:** `this` — Đối tượng hiện tại để gọi nối tiếp.
+
+```typescript
+const nodes: unknown[] = []
+components.renderAdd(nodes, 'button')
+```

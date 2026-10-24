@@ -19,25 +19,21 @@ import { GeoRef } from './GeoRef'
 import type { RefOrNormal } from '../../types/refTypes'
 
 /**
- * Reactive class for managing the formatting of numbers and dates.
+ * Reactive `GeoIntl` facade for numbers, money, dates, names and locale-aware sorting. Methods return computed refs that track supported value refs and the explicit locale or `GeoRef` fallback. Use the nonreactive GeoIntl class when computed updates are unnecessary.
  *
- * Реактивный класс для управления форматированием чисел и дат.
- *
- * @remarks
- * Avoid using this reactive class if reactive updates are not required.
- * For non-reactive formatting, use the standard `GeoIntl` class from `@dxtmisha/functional-basic`.
- *
- * Старайтесь избегать этого класса, если не требуется реактивная переменная.
- * Для нереактивного форматирования используйте обычный `GeoIntl` из `@dxtmisha/functional-basic`.
+ * Реактивный фасад `GeoIntl` для чисел, валют, дат, названий и сортировки с учётом локали. Методы возвращают вычисляемые ссылки, отслеживающие поддерживаемые входные ссылки и явную локаль либо резервную локаль `GeoRef`. Используйте нереактивный GeoIntl, если вычисляемые обновления не нужны.
  */
 export class GeoIntlRef {
+  /** Explicit locale ref or undefined for GeoRef fallback / Явная ссылка на локаль либо undefined для локали GeoRef */
   private location: Ref<string | undefined>
+  /** Locale-dependent formatting utility / Утилита форматирования текущей локали */
   private intl: ComputedRef<GeoIntl>
 
   /**
-   * Constructor
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * Initializes GeoIntlRef with the supplied configuration.
+   *
+   * Инициализирует GeoIntlRef с переданными настройками.
+   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
    */
   constructor(code?: RefOrNormal<string>) {
     this.location = toRefItem(code)
@@ -45,12 +41,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * The consistent translation of language, region and script display names.
+   * Returns a localized display name for the requested Intl type.
    *
-   * Последовательный перевод отображаемых названий языка, региона и скрипта.
-   * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
-   * @param typeOptions an object with some or all of the following properties/
-   * объект с некоторыми или всеми из следующих свойств
+   * Возвращает локализованное название для указанного типа Intl.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param typeOptions Intl display-name type or options. / Тип отображаемого названия Intl либо опции.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   display(
     value?: RefOrNormal<string>,
@@ -60,11 +56,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * Get display names of language.
+   * Returns the localized language name.
    *
-   * Получить отображаемые имена языка.
-   * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
-   * @param style the formatting style to use/ используемый стиль форматирования
+   * Возвращает локализованное название языка.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param style Intl display style. / Стиль отображения Intl.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   languageName(
     value?: RefOrNormal<string>,
@@ -74,11 +71,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * Get display names of region.
+   * Returns the localized region name.
    *
-   * Получить отображаемые имена региона.
-   * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
-   * @param style the formatting style to use/ используемый стиль форматирования
+   * Возвращает локализованное название региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param style Intl display style. / Стиль отображения Intl.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   countryName(
     value?: RefOrNormal<string>,
@@ -88,13 +86,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * In basic use without specifying a locale, a formatted string.
+   * Formats a numeric value or numeric string using locale rules and number options.
    *
-   * При обычном использовании без указания локали форматированная строка
-   *
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param options an object with some or all properties/ объект с некоторыми
-   * или всеми свойствами
+   * Форматирует число или числовую строку по правилам локали и числовым опциям.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   number(
     value: RefOrNormal<NumberOrString>,
@@ -104,22 +101,23 @@ export class GeoIntlRef {
   }
 
   /**
-   * Decimal point symbol.
+   * Returns the locale decimal separator.
    *
-   * Символ десятичной точки.
+   * Возвращает десятичный разделитель локали.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   decimal(): ComputedRef<string> {
     return computed(() => this.intl.value.decimal())
   }
 
   /**
-   * Currency formatting.
+   * Formats money with a currency code or reactive option object. `numberOnly` omits the currency representation.
    *
-   * Форматирование валюты.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param currencyOptions the currency to use in currency formatting/
-   * валюта для использования в форматировании валюты
-   * @param numberOnly do not display the currency symbol/ не выводить значок валюты
+   * Форматирует сумму с кодом валюты или реактивным объектом опций. `numberOnly` убирает обозначение валюты.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param currencyOptions Currency code or Intl number options. / Код валюты либо числовые опции Intl.
+   * @param numberOnly Omit the currency representation; defaults to false. / Убрать обозначение валюты; по умолчанию false.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   currency(
     value: RefOrNormal<NumberOrString>,
@@ -136,13 +134,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * Returns the currency symbol if it exists, otherwise the currency code.
+   * Returns the requested currency representation, falling back to its code.
    *
-   * Возвращает символ для валюты, если он есть, или сам код валюты.
-   * @param currency the currency to use in currency formatting/
-   * валюта для использования в форматировании валюты
-   * @param currencyDisplay how to display the currency in currency formatting/
-   * как отобразить валюту в формате валюты
+   * Возвращает запрошенное представление валюты с резервным возвратом кода.
+   * @param currency Currency code. / Код валюты.
+   * @param currencyDisplay Currency representation; defaults to symbol. / Представление валюты; по умолчанию symbol.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   currencySymbol(
     currency: RefOrNormal<string>,
@@ -152,13 +149,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * Unit formatting.
-   * If the style is 'unit', a unit property must be provided.
+   * Formats a numeric value with an Intl unit; it does not perform regional unit conversion.
    *
-   * Форматирование юнитов.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param unitOptions the unit to use in unit formatting/ блок для использования
-   * в форматировании блока
+   * Форматирует число с единицей Intl; не выполняет региональную конвертацию единиц.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param unitOptions Unit identifier or Intl number options. / Идентификатор единицы либо числовые опции Intl.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   unit(
     value: RefOrNormal<NumberOrString>,
@@ -168,10 +164,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * Возвращает отформатированный размер файла
-   * @param value a number, bigint, or string, to format /<br>число для форматирования
-   * @param unitOptions the unit to use in unit formatting /<br>блок для использования
-   * в форматировании блока
+   * Formats a file size starting with the supplied unit. String units are promoted when the value exceeds 1024; an options object is passed to unit formatting.
+   *
+   * Форматирует размер файла начиная с переданной единицы. Строковые единицы повышаются при значении больше 1024; объект опций передаётся форматированию единиц.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param unitOptions Unit identifier or Intl number options. / Идентификатор единицы либо числовые опции Intl.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   sizeFile(
     value: RefOrNormal<NumberOrString>,
@@ -188,11 +186,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * Number as a percentage.
+   * Formats a ratio as a percentage: 0.25 becomes 25%.
    *
-   * Число в виде процента.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param options an object with some or all properties/ объект с некоторыми или всеми свойствами
+   * Форматирует долю в проценты: 0.25 превращается в 25%.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   percent(
     value: RefOrNormal<NumberOrString>,
@@ -202,12 +201,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * Number as a percentage (unit).
+   * Divides by 100 before percentage formatting: 25 becomes 25%.
    *
-   * Число в виде процента (единица).
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param options an object with some or all properties/
-   * объект с некоторыми или всеми свойствами
+   * Делит на 100 перед форматированием процентов: 25 превращается в 25%.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   percentBy100(
     value: RefOrNormal<NumberOrString>,
@@ -217,12 +216,14 @@ export class GeoIntlRef {
   }
 
   /**
-   * Применять форматирование, учитывающее множественное число, и языковые правила, связанные с множественным числом
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param words list of words for formatting (in the format one|two|few|many|other|zero)/
-   * список слов для форматирования (в формате `one|two|few|many|other|zero`)
-   * @param options Property for PluralRules/ свойство для PluralRules
-   * @param optionsNumber an object with some or all properties/ объект с некоторыми или всеми свойствами
+   * Selects a plural word form and formats its count. Pass pipe-separated word variants supported by `GeoIntl`.
+   *
+   * Выбирает форму множественного числа и форматирует количество. Передавайте варианты слов через вертикальную черту по правилам `GeoIntl`.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param words Pipe-separated plural word forms. / Формы слова через вертикальную черту.
+   * @param options Configuration options. / Параметры настройки.
+   * @param optionsNumber Number formatting options for the count. / Опции форматирования числового количества.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   plural(
     value: RefOrNormal<NumberOrString>,
@@ -234,13 +235,14 @@ export class GeoIntlRef {
   }
 
   /**
-   * Enables language-sensitive date and time formatting.
+   * Formats a date with a Geo format type, date options and an optional 24-hour clock override.
    *
-   * Конструктором объектов, включающих языка-зависимое форматирование даты и времени.
-   * @param value the date to format/ дата для форматирования
-   * @param type type of data format/ тип формата data
-   * @param styleOptions the representation of the month/ представление месяца
-   * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
+   * Форматирует дату с типом Geo, опциями даты и необязательным переключением на 24-часовые часы.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param type Output format or event type(s), according to the signature. / Формат вывода либо типы событий согласно сигнатуре.
+   * @param styleOptions Intl style or formatting options. / Стиль Intl либо параметры форматирования.
+   * @param hour24 Whether to use a 24-hour clock. / Использовать ли 24-часовые часы.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   date(
     value: RefOrNormal<NumberOrStringOrDate>,
@@ -252,13 +254,13 @@ export class GeoIntlRef {
   }
 
   /**
-   * Enables language-sensitive relative time formatting.
+   * Formats a date relative to the reference date using GeoIntl’s unit selection.
    *
-   * Включает форматирование относительного времени с учетом языка.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param styleOptions the length of the internationalized message/
-   * длина интернационализированного сообщения
-   * @param todayValue current day/ текущий день
+   * Форматирует дату относительно точки отсчёта с выбором единицы по правилам GeoIntl.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param styleOptions Intl style or formatting options. / Стиль Intl либо параметры форматирования.
+   * @param todayValue Reference date; omitted values use the current date when evaluated. / Дата отсчёта; при отсутствии используется текущая дата в момент вычисления.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   relative(
     value: RefOrNormal<NumberOrStringOrDate>,
@@ -269,22 +271,17 @@ export class GeoIntlRef {
   }
 
   /**
-   * Enables language-sensitive relative time formatting
-   * Including the ability to add a limit to output the standard time format if the value
-   * exceeds the allowable limit.
+   * Uses relative formatting inside the inclusive ±limit-day interval. Outside that interval, delegates to date formatting with all supplied date options.
    *
-   * Включает форматирование относительного времени с учетом языка.
-   * Включая возможность добавления лимита, чтобы выводить уже стандартный формат времени,
-   * если значение вышло за пределы допустимого.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param limit values that determine the output limit (values per day)/
-   * значения, по которым определяем предел вывода (значения в день)
-   * @param todayValue current day/ текущий день
-   * @param relativeOptions the length of the internationalized message/
-   * длина интернационализированного сообщения
-   * @param dateOptions the representation of the month/ представление месяца
-   * @param type type of data format/ тип формата data
-   * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
+   * Использует относительное время внутри включительного интервала ±limit дней. Снаружи форматирует дату со всеми переданными опциями даты.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param limit Inclusive relative-time limit in days. / Включительный лимит относительного времени в днях.
+   * @param todayValue Reference date; omitted values use the current date when evaluated. / Дата отсчёта; при отсутствии используется текущая дата в момент вычисления.
+   * @param relativeOptions Relative-time style or Intl options. / Стиль либо опции Intl относительного времени.
+   * @param dateOptions Date style or Intl date options for values outside the limit. / Стиль либо опции Intl даты за пределами лимита.
+   * @param type Output format or event type(s), according to the signature. / Формат вывода либо типы событий согласно сигнатуре.
+   * @param hour24 Whether to use a 24-hour clock. / Использовать ли 24-часовые часы.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   relativeLimit(
     value: RefOrNormal<NumberOrStringOrDate>,
@@ -307,10 +304,13 @@ export class GeoIntlRef {
   }
 
   /**
-   * Возвращает отформатированное значение времени, прошедшего с момента события
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param unit time unit/ единица времени
-   * @param styleOptions additional option or formatting style/ дополнительная опция или стиль форматирования
+   * Formats an explicit signed interval using the supplied relative-time unit.
+   *
+   * Форматирует явный интервал со знаком в переданной единице относительного времени.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param unit Unit identifier. / Идентификатор единицы.
+   * @param styleOptions Intl style or formatting options. / Стиль Intl либо параметры форматирования.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   relativeByValue(
     value: RefOrNormal<NumberOrString>,
@@ -321,11 +321,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * Names of months.
+   * Returns the month name for the supplied date.
    *
-   * Названия месяцев.
-   * @param value the date to format/ дата для форматирования
-   * @param style the representation of the month/ представление месяца
+   * Возвращает название месяца переданной даты.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param style Intl display style. / Стиль отображения Intl.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   month(
     value?: RefOrNormal<NumberOrStringOrDate>,
@@ -335,10 +336,11 @@ export class GeoIntlRef {
   }
 
   /**
-   * Array to list of months.
+   * Returns the placeholder followed by 12 month entries numbered 1–12.
    *
-   * Массив в список месяцев.
-   * @param style the representation of the month/ представление месяца
+   * Возвращает пустую запись и 12 месяцев с номерами 1–12.
+   * @param style Intl display style. / Стиль отображения Intl.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   months(
     style?: Intl.DateTimeFormatOptions['month']
@@ -347,11 +349,12 @@ export class GeoIntlRef {
   }
 
   /**
-   * Returns names of days of the week.
+   * Returns the weekday name for the supplied date.
    *
-   * Возвращает названия дней недели.
-   * @param value the date to format/ дата для форматирования
-   * @param style the representation of the weekday/ представление о дне недели
+   * Возвращает название дня недели переданной даты.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param style Intl display style. / Стиль отображения Intl.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   weekday(
     value?: RefOrNormal<NumberOrStringOrDate>,
@@ -361,10 +364,11 @@ export class GeoIntlRef {
   }
 
   /**
-   * An array of the list of names of the days of the week.
+   * Returns the placeholder followed by seven weekday entries in locale order.
    *
-   * Массив из списка названий дней недели.
-   * @param style the representation of the weekday/ представление о дне недели
+   * Возвращает пустую запись и семь дней недели в порядке локали.
+   * @param style Intl display style. / Стиль отображения Intl.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   weekdays(
     style?: Intl.DateTimeFormatOptions['weekday']
@@ -373,21 +377,23 @@ export class GeoIntlRef {
   }
 
   /**
-   * Time.
+   * Formats the supplied date as local time.
    *
-   * Время.
-   * @param value the date to format/ дата для форматирования
+   * Форматирует переданную дату как местное время.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   time(value: RefOrNormal<NumberOrStringOrDate>): ComputedRef<string> {
     return computed(() => this.intl.value.time(getRef(value)))
   }
 
   /**
-   * Sorts strings taking into account the characteristics of countries.
+   * Returns a sorted copy using locale collation. For object arrays, provide a mapper returning the two comparison strings.
    *
-   * Сортирует строки с учетом особенностей стран.
-   * @param data an array with data/ массив с данными
-   * @param compareFn a function for sorting/ функция для сортировки
+   * Возвращает отсортированную копию по правилам локали. Для массива объектов передайте функцию, возвращающую две сравниваемые строки.
+   * @param data Input array; it is not mutated. / Входной массив; не изменяется.
+   * @param compareFn Maps two entries to the two strings compared by Intl.Collator. / Преобразует две записи в две строки для сравнения Intl.Collator.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   sort<T>(
     data: RefOrNormal<T[]>,

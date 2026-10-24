@@ -1,6 +1,7 @@
 // ai-none
 
 import { ref } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
@@ -32,19 +33,19 @@ export class DraggableWrapperItemActive {
    * Constructor.
    *
    * Конструктор.
-   * @param classes classes helper instance / экземпляр помощника по классам
+   * @param naming component naming helper / помощник именования компонента
+   * @param classes classes helper instance factory / фабрика экземпляра помощника по классам
    */
   constructor(
-    protected readonly classes: DraggableWrapperClassesData
+    protected readonly naming: DesignName,
+    protected readonly classes: () => DraggableWrapperClassesData
   ) {
-    const className = this.classes.getName()
-
     this.property = {
-      width: `--${className}-sys-item-width`,
-      height: `--${className}-sys-item-height`,
-      rotate: `--${className}-sys-item-rotate`,
-      shiftX: `--${className}-sys-item-shift-x`,
-      shiftY: `--${className}-sys-item-shift-y`
+      width: this.naming.getStyle('item', 'width'),
+      height: this.naming.getStyle('item', 'height'),
+      rotate: this.naming.getStyle('item', 'rotate'),
+      shiftX: this.naming.getStyle('item', 'shift', 'x'),
+      shiftY: this.naming.getStyle('item', 'shift', 'y')
     }
   }
 
@@ -104,10 +105,7 @@ export class DraggableWrapperItemActive {
     item.style.setProperty(this.property.shiftX, `${shiftX}px`)
     item.style.setProperty(this.property.shiftY, `${shiftY}px`)
 
-    item.classList.add(
-      this.classes.list.active,
-      this.classes.list.go
-    )
+    item.classList.add(this.classes().getList().active)
 
     return this.set(item)
   }
@@ -128,6 +126,7 @@ export class DraggableWrapperItemActive {
    * Removes custom CSS property coordinates and styles from the item.
    *
    * Удаляет координаты пользовательских свойств CSS и стилей с элемента.
+   * @returns this instance / текущий экземпляр класса
    */
   resetItemStyles(): this {
     const item = this.get()

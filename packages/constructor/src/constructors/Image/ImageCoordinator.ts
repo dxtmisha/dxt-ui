@@ -31,7 +31,7 @@ export class ImageCoordinator {
   static is(props?: ImageProps): boolean {
     const coordinator = props?.coordinator
 
-    return isArray<ImageCoordinatorItem | unknown[], unknown>(coordinator)
+    return isArray<ImageCoordinatorItem | unknown[]>(coordinator)
       && coordinator.length > 0
       && coordinator.length < 5
   }

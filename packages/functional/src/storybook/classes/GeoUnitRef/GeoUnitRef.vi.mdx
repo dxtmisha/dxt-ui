@@ -1,0 +1,93 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/GeoUnitRef'/>
+
+# Lớp GeoUnitRef
+
+Lớp bọc phản ứng cho `GeoUnit`, định dạng giá trị nguồn hệ mét theo đơn vị khu vực. Ref locale và số cập nhật computed đã lưu mà không cần tạo lại lớp bọc.
+
+## Tính năng chính
+
+- **Chuyển đổi khu vực** — đơn vị nguồn chuyển theo cấu hình quốc gia.
+- **Đầu vào phản ứng** — giá trị, locale và đơn vị của `format()` có thể là ref.
+- **Tùy chọn định dạng** — nhận `Intl.NumberFormatOptions`.
+
+## Khởi tạo
+
+`constructor(code?: RefOrNormal<string>)`
+
+**Tham số:**
+
+- `code?: RefOrNormal<string>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
+
+## Hành vi và vòng đời
+
+Không có locale cụ thể thì theo `GeoRef.getLocation()`. Ref locale cụ thể thay nguồn dự phòng này. Hỗ trợ chuỗi số. `format()` dùng mã như `square-meter` và `kilometer-per-hour`; mã không biết trả đầu vào dạng văn bản. Tùy chọn là đối tượng thường, không phải ref.
+
+## Cách dùng
+
+```typescript
+import { GeoUnitRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const locale = /*#__PURE__*/ ref('vi-VN')
+const value = /*#__PURE__*/ ref(0)
+const units = /*#__PURE__*/ new GeoUnitRef(locale)
+const temperature = /*#__PURE__*/ units.celsius(value)
+locale.value = 'en-US'
+const generic = /*#__PURE__*/ units.format(value, ref('celsius'))
+```
+
+## Phương thức
+
+### Vị trí
+
+- `getLocation(): ComputedRef<string>` — Trả locale chuẩn đã phân giải dưới dạng computed ref.
+
+### Chuyển đổi tổng quát
+
+#### `format`
+
+`format( value: RefOrNormal<NumberOrString>, unit: RefOrNormal<string>, options?: Intl.NumberFormatOptions ): ComputedRef<string>`
+
+Chọn đơn vị nguồn hệ mét theo phản ứng và giao chuyển đổi, định dạng cho `GeoUnit`.
+
+**Tham số:**
+
+- `value: RefOrNormal<NumberOrString>` — Giá trị để định dạng; hỗ trợ ref theo chữ ký.
+- `unit: RefOrNormal<string>` — Mã đơn vị.
+- `options?: Intl.NumberFormatOptions` — Tùy chọn cấu hình.
+
+**Trả về:** `ComputedRef<string>` — Kết quả computed; đọc qua .value.
+
+```typescript
+const formatted = /*#__PURE__*/ units.format(value, ref('meter'), { maximumFractionDigits: 2 })
+```
+
+### Phương thức đơn vị
+
+- `millimeter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng milimét; đổi sang `inch` khi cấu hình khu vực yêu cầu.
+
+- `centimeter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng xentimét; đổi sang `inch` khi cấu hình khu vực yêu cầu.
+
+- `meter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng mét; đổi sang `foot` khi cấu hình khu vực yêu cầu.
+
+- `kilometer( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng kilômét; đổi sang `mile` khi cấu hình khu vực yêu cầu.
+
+- `squareMeter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng mét vuông; đổi sang `square-foot` khi cấu hình khu vực yêu cầu.
+
+- `hectare( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng hecta; đổi sang `acre` khi cấu hình khu vực yêu cầu.
+
+- `gram( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng gam; đổi sang `ounce` khi cấu hình khu vực yêu cầu.
+
+- `kilogram( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng kilôgam; đổi sang `pound` khi cấu hình khu vực yêu cầu.
+
+- `tonne( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng tấn; đổi sang `ton` khi cấu hình khu vực yêu cầu.
+
+- `milliliter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng mililít; đổi sang `fluid-ounce` khi cấu hình khu vực yêu cầu.
+
+- `liter( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng lít; đổi sang `gallon` khi cấu hình khu vực yêu cầu.
+
+- `celsius( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng độ C; đổi sang `fahrenheit` khi cấu hình khu vực yêu cầu.
+
+- `kilometerPerHour( value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions ): ComputedRef<string>` — Định dạng kilômét/giờ; đổi sang `mile-per-hour` khi cấu hình khu vực yêu cầu.

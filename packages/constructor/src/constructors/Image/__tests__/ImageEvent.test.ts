@@ -21,7 +21,7 @@ describe('ImageEvent', () => {
         image: imageRef
       } as unknown as ImageData
 
-      const eventHelper = new ImageEvent(() => typeMock, () => dataMock, emits)
+      const eventHelper = new ImageEvent(() => dataMock, () => typeMock, emits)
 
       expect(emits).toHaveBeenCalledExactlyOnceWith('load', {
         type: ImageTypeValue.image,
@@ -49,7 +49,7 @@ describe('ImageEvent', () => {
         image: imageRef
       } as unknown as ImageData
 
-      const helper = new ImageEvent(() => typeMock, () => dataMock, emits)
+      const helper = new ImageEvent(() => dataMock, () => typeMock, emits)
       expect(helper).toBeDefined()
       expect(emits).not.toHaveBeenCalled()
 
@@ -94,7 +94,7 @@ describe('ImageEvent', () => {
         image: imageRef
       } as unknown as ImageData
 
-      const eventHelper = new ImageEvent(typeGetter, () => dataMock, emits)
+      const eventHelper = new ImageEvent(() => dataMock, typeGetter, emits)
       eventHelper.onLoad()
 
       expect(emits).not.toHaveBeenCalled()
@@ -114,7 +114,7 @@ describe('ImageEvent', () => {
         image: imageRef
       } as unknown as ImageData
 
-      const eventHelper = new ImageEvent(() => typeMock, () => dataMock, undefined)
+      const eventHelper = new ImageEvent(() => dataMock, () => typeMock, undefined)
 
       expect(() => eventHelper.onLoad()).not.toThrow()
     })

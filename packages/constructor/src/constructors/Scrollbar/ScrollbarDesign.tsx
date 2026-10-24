@@ -37,6 +37,7 @@ export class ScrollbarDesign<
     CLASSES,
     P
   > {
+  /** Scrollbar logic class instance / Экземпляр класса логики Scrollbar */
   protected readonly item: Scrollbar
 
   /**
@@ -74,6 +75,7 @@ export class ScrollbarDesign<
    * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / открытые свойства
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -83,6 +85,7 @@ export class ScrollbarDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -98,6 +101,7 @@ export class ScrollbarDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -107,14 +111,16 @@ export class ScrollbarDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual node of the root element / виртуальный узел корневого элемента
    */
   protected initRender(): VNode {
     return h(
-      this.props.tag ?? 'div',
+      this.item.tag,
       {
         ...this.getAttrs(),
         ref: this.element,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        style: this.styles?.value
       },
       this.initSlot('default')
     )

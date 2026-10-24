@@ -1,0 +1,80 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Classes/DesignLogicAbstract'/>
+
+# Класс DesignLogicAbstract
+
+Абстрактный координатор зависимостей логики компонента. Сохраняет текущую область эффектов Vue и общие входные данные, лениво создаёт и кэширует зависимости по строковому ключу.
+
+## Ключевые особенности
+
+- **Ленивое создание** — фабрики параметров вызываются при первом создании.
+- **Владение эффектами** — эффекты зависимостей принадлежат сохранённой активной области.
+- **Жизненный цикл** — синхронные обработчики распознаются через `DesignLifecycleAbstract`.
+
+## Инициализация
+
+`constructor( props: Readonly<P>, element: Ref<E | undefined>, naming: DesignName, components?: DesignComponents<COMP, P>, slots?: SLOTS, emits?: ConstrEmit<EMITS>, constructors?: Partial<CONSTRUCTORS>, hasLifecycle: boolean = true )`
+
+**Параметры:**
+
+- `props: Readonly<P>` — Входные свойства.
+- `element: Ref<E | undefined>` — Ссылка на корневой элемент.
+- `naming: DesignName` — Общий помощник DesignName.
+- `components?: DesignComponents<COMP, P>` — Реестр подключённых компонентов.
+- `slots?: SLOTS` — Реестр именованных слотов.
+- `emits?: ConstrEmit<EMITS>` — Функция событий компонента.
+- `constructors?: Partial<CONSTRUCTORS>` — Переопределения конструкторов зависимостей.
+- `hasLifecycle: boolean = true` — Регистрировать ли хуки компонента; по умолчанию true.
+
+## Поведение и жизненный цикл
+
+Параметры типов: E — корневой элемент, COMP — реестр компонентов, EMITS — события, SLOTS — слоты, P — свойства, CONSTRUCTORS — карта конструкторов зависимостей. Создавайте объект в `setup()` или активной `effectScope()`. Без сохранённой активной области или доступного конструктора поиск фактически возвращает `undefined`, несмотря на объявленный тип экземпляра. Переопределения `constructors` имеют приоритет над `constructorItems[name].item`. Условия начинают отслеживаться при монтировании: истинное условие создаёт зависимость, ложное не уничтожает её. Хуки регистрируются только в компонентах Vue; `hasLifecycle = false` отключает регистрацию. SSR не вызывает клиентские обработчики. При монтировании сначала вызываются обработчики существующих зависимостей, затем инициализируются условия и вызывается обработчик логики. Поздние зависимости монтируются сразу. Ошибки обработчиков зависимостей собираются, передаются в `ErrorCenter` и выбрасываются как `AggregateError` после обхода всех обработчиков; последующие обработчики логики на этом пути не вызываются.
+
+## Использование
+
+```typescript
+import { DesignLogicAbstract, DesignName } from '@dxtmisha/functional'
+import { effectScope, ref } from 'vue'
+
+class Dependency {}
+
+class Logic extends DesignLogicAbstract<
+  HTMLElement, {}, {}, {}, {}, { dependency: typeof Dependency }
+> {
+  protected readonly constructorItems = { dependency: { item: Dependency } }
+
+  constructor() {
+    super({}, ref<HTMLElement>(), new DesignName('d1.example'))
+  }
+}
+
+const scope = /*#__PURE__*/ effectScope()
+const logic = /*#__PURE__*/ scope.run(() => new Logic())
+const dependency = /*#__PURE__*/ logic?.getInstance('dependency')
+scope.stop()
+```
+
+## Методы
+
+### Доступ к зависимостям
+
+#### `getInstance`
+
+`getInstance<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K>`
+
+Возвращает кэшированную зависимость или создаёт её в сохранённой активной области. Аргументы берутся из необязательной фабрики `parameters()`. Ошибка конструктора не кэшируется и допускает повторную попытку.
+
+**Параметры:**
+
+- `name: K` — Строковый ключ конструктора зависимости.
+
+**Возвращает:** `ConstrInstance<CONSTRUCTORS, K>` — Кэшированный либо созданный экземпляр зависимости.
+
+```typescript
+const dependency = /*#__PURE__*/ logic?.getInstance('dependency')
+```
+
+### Сокращённый доступ
+
+- `i<K extends keyof CONSTRUCTORS & string>(name: K): ConstrInstance<CONSTRUCTORS, K>` — Вызывает `getInstance()` с тем же ключом и результатом.

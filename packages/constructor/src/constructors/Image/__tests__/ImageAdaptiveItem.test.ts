@@ -187,7 +187,7 @@ async function createAdaptive(overrides: Partial<ImageProps> = {}): Promise<Adap
       const isMounted = ref(false)
       item = new ImageAdaptiveItemFixture(props, element, isMounted, () => data)
       const coordinator = new ImageCoordinator(props)
-      background = new ImageBackground(props, () => data, () => coordinator, () => item!)
+      background = new ImageBackground(props, () => item!, () => coordinator, () => data)
       onMounted(() => {
         isMounted.value = true
         item?.onMounted()

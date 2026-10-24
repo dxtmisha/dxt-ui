@@ -72,7 +72,7 @@ function mountAdaptiveUnit(
     const data = new ImageData(props, isMounted, () => lazy, () => type, () => uint8Array)
     const coordinator = new ImageCoordinator(props)
     const adaptive = new ImageAdaptiveItem(props, element, isMounted, () => data)
-    const background = new ImageBackground(props, () => data, () => coordinator, () => adaptive)
+    const background = new ImageBackground(props, () => adaptive, () => coordinator, () => data)
 
     onMounted(() => {
       isMounted.value = true

@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `render`
 
-A wrapper around Vue's `h` (hyperscript) function that provides automatic key generation for components. It ensures that components have unique keys for efficient rendering and transition handling, especially when dealing with lists or dynamic elements.
+A wrapper around Vue's `h` (hyperscript) function that automatically generates component keys from stable identifiers.
 
 **Parameters:**
 - `name: string | any` — The name or tag of the component to render.
@@ -20,21 +20,20 @@ import { render } from '@dxtmisha/functional'
 
 // Renders a div with an automatically generated key
 const vnode = render('div', { class: 'container' }, 'Hello World')
-// key => '.div.container'
+// key => 'div'
 
 // Renders a component with a specific index for key generation
 const item = render('my-component', { data: itemData }, null, 'item-1')
-// key => '.my-component.item-1'
+// key => 'my-component.item-1'
 ```
 
 ### Key Generation
 
-The key (`key`) for the Vue component is formed **additively** (by sequential appending). It always starts with a dot followed by the component name (`.name`), and other values are appended with dots (if they exist):
+An explicit `props.key` is preserved. Otherwise, the key is generated from these identifiers in order; a string component name has no leading dot, and subsequent identifiers are appended with dots:
 
-1.  **`.name`** — if `name` is a string.
-2.  **.index** — from the third argument of the `render` function.
-3.  **.props.index** — if provided in the properties object and is a string.
-4.  **.className** — if a class is specified in `props`.
-5.  **.props.id** — if an ID is specified in `props`.
+1.  **`name`** — if `name` is a string.
+2.  **`.index`** — from the fourth argument of `render`.
+3.  **`.props.index`** — if provided as a string.
+4.  **`.props.id`** — if an ID is specified in `props`.
 
-This ensures key uniqueness even when component names are identical.
+CSS classes do not affect the generated key, so changing them preserves the DOM node and component state. An intentional change to an explicit `props.key` can still replace the node. Supply unique stable keys or identifiers for sibling list items; the component name alone does not guarantee uniqueness.

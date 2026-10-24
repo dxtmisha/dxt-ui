@@ -4,39 +4,48 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # EffectScopeGlobal Class
 
-A utility class that provides a global, detached Vue `effectScope`. This allows running reactive effects (watchers, computed properties) that are not tied to any specific component lifecycle, ensuring they aren't automatically disposed of when a component unmounts.
-
-The scope is initialized lazily upon the first call to `run`, and it is created as a "detached" scope (`effectScope(true)`), meaning it will not be captured by any parent scope.
+Static entry point for running effects in a lazily created detached Vue scope. The scope is cached through `ServerStorage`, so SSR ownership follows the initialized request context.
 
 ## Key Features
 
-- **Global Persistence** — effects live as long as the application does.
-- **Detached Scope** — created with `effectScope(true)`, preventing accidental disposal by parent scopes.
-- **Lazy Initialization** — the internal scope is created only when first needed.
-- **Scope Management** — groups global reactive effects together for organized disposal if needed (via the internal scope).
-- **Ease of Use** — simple static method to run any reactive function.
+- **Lazy scope** — created on the first `run()`.
+- **Detached lifetime** — stopping a calling component scope does not stop these effects.
+- **Return preservation** — callback results and thrown errors propagate to the caller.
 
-## Actions
+## Behavior and lifecycle
 
-### `run`
+Initialize `ServerStorage` with the current request context before SSR use. This class exposes no stop method; callbacks should return cleanup handles when the caller needs individual teardown. It does not make asynchronous callback work part of the scope after an `await`.
 
-Executes the provided function within the global effect scope.
-
-**Parameters:**
-- `fn: () => T` — the function to execute (typically containing reactive logic like `watch` or `computed`).
-
-**Returns:** `T | undefined`
+## Usage
 
 ```typescript
 import { EffectScopeGlobal } from '@dxtmisha/functional'
-import { watch, ref } from 'vue'
+import { ref, watch } from 'vue'
 
-const globalState = ref(0)
+const source = /*#__PURE__*/ ref(0)
+const observed = /*#__PURE__*/ ref(0)
+const stop = /*#__PURE__*/ EffectScopeGlobal.run(() => watch(source, value => {
+  observed.value = value
+}))
+stop?.()
+```
 
-// This watcher will persist even if the component that created it is unmounted
-EffectScopeGlobal.run(() => {
-  watch(globalState, (val) => {
-    console.log('Global state changed:', val)
-  })
-})
+## Methods
+
+### Effect execution
+
+#### `run`
+
+`run<T>(fn: () => T): T | undefined`
+
+Runs the callback synchronously inside the cached detached effect scope and returns its result.
+
+**Parameters:**
+
+- `fn: () => T` — Callback to execute inside the detached scope.
+
+**Returns:** `T | undefined` — Callback result, or undefined when the stored scope is inactive.
+
+```typescript
+const result = /*#__PURE__*/ EffectScopeGlobal.run(() => 0)
 ```

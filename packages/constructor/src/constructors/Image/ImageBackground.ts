@@ -52,15 +52,15 @@ export class ImageBackground {
    *
    * Конструктор для инициализации вычислений стилей фона.
    * @param props input data / входные данные
-   * @param data function returning ImageData object / функция, возвращающая объект ImageData
-   * @param coordinator function returning ImageCoordinator object / функция, возвращающая объект ImageCoordinator
    * @param adaptive function returning ImageAdaptiveItem object / функция, возвращающая объект ImageAdaptiveItem
+   * @param coordinator function returning ImageCoordinator object / функция, возвращающая объект ImageCoordinator
+   * @param data function returning ImageData object / функция, возвращающая объект ImageData
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly data: () => ImageData,
+    protected readonly adaptive: () => ImageAdaptiveItem,
     protected readonly coordinator: () => ImageCoordinator,
-    protected readonly adaptive: () => ImageAdaptiveItem
+    protected readonly data: () => ImageData
   ) {
   }
 

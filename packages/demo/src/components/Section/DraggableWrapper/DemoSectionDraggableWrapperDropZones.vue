@@ -105,7 +105,7 @@ const onDrop = (parameters: DraggableWrapperEventParameters) => {
     border-radius: ui.v('?sys.rounded.md');
     transition: background-color 0.2s ease, border-color 0.2s ease;
 
-    &.d1-draggableWrapper__item--dragged {
+    &.d1-draggableWrapper__drop--active {
       @include ui.borderColor(ui.v('?sys.palette.primary'), ui.v('?sys.opacity.primary'));
     }
   }

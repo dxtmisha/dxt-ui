@@ -1,14 +1,12 @@
 /**
- * Base class declaring optional lifecycle callbacks for component logic helpers.
- * Subclasses provide synchronous callbacks and manage any asynchronous work themselves.
+ * Abstract marker class for dependencies with synchronous component lifecycle callbacks. `DesignLogicAbstract` invokes these callbacks only on instances derived from this class.
  *
- * Базовый класс, объявляющий необязательные обработчики жизненного цикла для помощников логики компонента.
- * Подклассы реализуют синхронные обработчики и самостоятельно управляют асинхронной работой.
+ * Абстрактный базовый класс зависимостей с синхронными обработчиками жизненного цикла. `DesignLogicAbstract` вызывает эти обработчики только у экземпляров, наследующих этот класс.
  */
 export abstract class DesignLifecycleAbstract {
-  /** Callback after component mounting / Обработчик после монтирования компонента */
+  /** Optional synchronous mount callback. / Необязательный синхронный обработчик монтирования. */
   readonly onMounted?: () => void
 
-  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  /** Optional synchronous cleanup callback. / Необязательный синхронный обработчик очистки. */
   readonly onUnmounted?: () => void
 }

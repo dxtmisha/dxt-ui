@@ -4,104 +4,110 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс RouterItemRef
 
-Статическое ядро для работы с Vue Router в функциональном слое. Обеспечивает единую точку доступа к роутеру, позволяя генерировать ссылки, выполнять переходы и нормализовать пути без прямой зависимости от контекста компонента.
-
-Это позволяет использовать возможности роутера в классах и утилитах, где недоступны хуки `useRouter` или `useRoute`.
+Статический фасад установленного Vue Router, сохранённого через `ServerStorage`. Разрешает именованные маршруты в свойства href и запускает навигацию.
 
 ## Ключевые особенности
 
-- **Глобальный доступ** — сохранение экземпляра роутера для доступа из любого места приложения.
-- **Безопасная генерация** — методы для создания ссылок по именам маршрутов с параметрами.
-- **Нормализация** — преобразование различных форматов путей в стандартные свойства `href`.
+- **Именованные ссылки** — сохраняет параметры, query, hash и базу истории.
+- **Регистрация** — `set()` заменяет, `setOneTime()` устанавливает только при отсутствии.
+- **Необязательный роутер** — без регистрации возвращает undefined для ссылки либо пустые href-свойства.
 
-## Использование (Настройка)
+## Поведение и жизненный цикл
 
-Поскольку `RouterItemRef` является статическим классом, его необходимо инициализировать один раз при создании приложения (обычно в `main.ts` или в плагине).
+`rawToHref()` обрабатывает только объекты со строковым `name`; объекты path и URL-строки возвращают `{}`. Неизвестное имя маршрута может вызвать ошибку Vue Router. `push()` возвращает `void`, не предоставляя Promise навигации; для ожидания и обработки ошибок используйте роутер напрямую. Перед SSR инициализируйте хранилище запроса.
+
+## Использование
 
 ```typescript
 import { RouterItemRef } from '@dxtmisha/functional'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createMemoryHistory, createRouter } from 'vue-router'
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [...]
+const router = /*#__PURE__*/ createRouter({
+  history: createMemoryHistory('/app/'),
+  routes: [{ path: '/users/:id', name: 'user', component: { render: () => null } }]
 })
-
-// Установка роутера для глобального использования
 RouterItemRef.set(router)
+const href = /*#__PURE__*/ RouterItemRef.getHref('user', { id: 0 }, { page: 1 }, '#details')
 ```
 
-## Управление экземпляром
+## Методы
 
-- `static get(): Router | undefined` — Возвращает текущий установленный экземпляр роутера.
-- `static set(router: Router): void` — Устанавливает экземпляр роутера.
-- `static setOneTime(router: Router): void` — Устанавливает экземпляр роутера только в том случае, если он еще не был установлен. Полезно для предотвращения случайной перезаписи в плагинах.
+### Регистрация
 
-## Навигация и Ссылки
+- `get(): Router` — Возвращает зарегистрированный роутер; фактически он может отсутствовать.
 
-Группа методов для управления историей переходов и генерации URL.
+- `set(router: Router): void` — Сохраняет или заменяет роутер текущего контекста.
 
-### `push`
+- `setOneTime(router: Router): void` — Регистрирует роутер только при отсутствии сохранённого.
 
-Выполняет программный переход на указанный маршрут. Является безопасной оберткой над `router.push`. Если роутер еще не установлен, действие будет проигнорировано.
+### Ссылки и навигация
 
-**Параметры:**
-- `to: string | RouteLocationRaw` — целевой путь или объект местоположения маршрута.
+#### `getLink`
 
-### `getLink`
+`getLink( name: string, params?: RouteParamsRawGeneric, query?: LocationQueryRaw, hash?: string ): string | undefined`
 
-Генерирует и возвращает строковый URL (href) для маршрута на основе его имени и параметров. Использует метод `router.resolve`.
+Разрешает именованное местоположение в `router.resolve(...).href`; без роутера возвращает `undefined`.
 
 **Параметры:**
-- `name: string` — уникальное имя маршрута.
-- `params?: any` — динамические параметры пути (params).
-- `query?: any` — параметры запроса (query string).
 
-**Возвращает:** `string | undefined` — готовый URL или `undefined`, если роутер не инициализирован.
+- `name: string` — Имя зарегистрированного маршрута.
+- `params?: RouteParamsRawGeneric` — Параметры именованного маршрута.
+- `query?: LocationQueryRaw` — Параметры строки запроса маршрута.
+- `hash?: string` — Фрагмент маршрута с начальным #.
 
-### `getHref`
-
-Возвращает стандартизированный объект свойств ссылки. Удобно для передачи в компоненты, ожидающие `ConstrHrefProps`.
-
-**Параметры:**
-- `name?: string` — имя маршрута.
-- `params?: any` — параметры пути.
-- `query?: any` — параметры запроса.
-
-**Возвращает:** `ConstrHrefProps` — объект `{ href: string }` или `{}` (пустой объект), если имя не передано.
-
-### `rawToHref`
-
-Специальный метод для нормализации. Преобразует объект местоположения (если в нем указано `name`) в объект свойств ссылки.
-
-**Параметры:**
-- `to?: string | RouteLocationRaw` — необработанные данные маршрута.
-
-**Возвращает:** `ConstrHrefProps` — результат работы `getHref` или `{}`.
-
-## Примеры
-
-### Генерация ссылки в коде
+**Возвращает:** `string | undefined` — Запрошенная строка либо undefined при отсутствии.
 
 ```typescript
-import { RouterItemRef } from '@dxtmisha/functional'
-
-// Получение URL для страницы пользователя
-const userUrl = RouterItemRef.getLink('user-profile', { id: 123 })
-// Результат: '/user/123' (в зависимости от настроек роутера)
-
-// Использование для свойств компонентов
-const linkProps = RouterItemRef.getHref('catalog', undefined, { category: 'electronics' })
-// Результат: { href: '/catalog?category=electronics' }
+const link = /*#__PURE__*/ RouterItemRef.getLink('user', { id: 0 }, { page: 1 }, '#details')
 ```
 
-### Программный переход
+#### `getHref`
+
+`getHref( name?: string, params?: RouteParamsRawGeneric, query?: LocationQueryRaw, hash?: string ): ConstrHrefProps`
+
+Возвращает `{ href }` для непустой разрешённой ссылки, иначе `{}`.
+
+**Параметры:**
+
+- `name?: string` — Имя зарегистрированного маршрута.
+- `params?: RouteParamsRawGeneric` — Параметры именованного маршрута.
+- `query?: LocationQueryRaw` — Параметры строки запроса маршрута.
+- `hash?: string` — Фрагмент маршрута с начальным #.
+
+**Возвращает:** `ConstrHrefProps` — Запрошенное значение либо объект согласно сигнатуре.
 
 ```typescript
-import { RouterItemRef } from '@dxtmisha/functional'
+const props = /*#__PURE__*/ RouterItemRef.getHref('user', { id: 0 })
+```
 
-const logout = () => {
-    // Выполняем переход на главную страницу после выхода
-    RouterItemRef.push({ name: 'home' })
-}
+#### `rawToHref`
+
+`rawToHref( to?: string | RouteLocationRaw ): ConstrHrefProps`
+
+Преобразует именованное местоположение в href-свойства, сохраняя параметры, query и hash.
+
+**Параметры:**
+
+- `to?: string | RouteLocationRaw` — Необработанное местоположение маршрута.
+
+**Возвращает:** `ConstrHrefProps` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+const props = /*#__PURE__*/ RouterItemRef.rawToHref({ name: 'user', params: { id: 0 }, hash: '#details' })
+```
+
+#### `push`
+
+`push(to: string | RouteLocationRaw): void`
+
+Запускает навигацию при наличии зарегистрированного роутера.
+
+**Параметры:**
+
+- `to: string | RouteLocationRaw` — Необработанное местоположение маршрута.
+
+**Возвращает:** `void` — Нет возвращаемого значения.
+
+```typescript
+RouterItemRef.push({ name: 'user', params: { id: 0 } })
 ```

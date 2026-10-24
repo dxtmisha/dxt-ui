@@ -1,119 +1,118 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { computed, h, reactive, ref, type VNode } from 'vue'
 import { DesignComponents } from '../DesignComponents'
 
-// Mocking the internal helper functions
-vi.mock('../../functions/ref/render', () => ({
-  render: vi.fn((comp, props, children, index) => ({ type: comp, props, children, key: index }))
-}))
+/** Component fixture registry / Реестр тестовых компонентов */
+const components = {
+  button: { render: (): VNode => h('button') },
+  missing: undefined
+}
 
-vi.mock('../../functions/ref/getRef', () => ({
-  getRef: vi.fn(val => (val && typeof val === 'object' && 'value' in val ? val.value : val))
-}))
-
-vi.mock('../../functions/toBinds', () => ({
-  toBinds: vi.fn((mod, props) => ({ ...mod, ...props }))
-}))
-
-// Subclass to access protected members
-class TestDesignComponents extends DesignComponents<any, any> {
-  public getCaching() {
-    return this.caching
-  }
+/** Component input properties / Входные свойства компонентов */
+export interface ComponentProps {
+  button: { label?: string }
 }
 
 describe('DesignComponents', () => {
-  const mockComponent = { name: 'MockComp' }
-  const components = { button: mockComponent }
-  const modification = { button: { size: 'large' } }
-
-  let design: TestDesignComponents
+  let design: DesignComponents<typeof components, ComponentProps>
 
   beforeEach(() => {
-    vi.clearAllMocks()
-    design = new TestDesignComponents(components, modification)
+    design = new DesignComponents(components, { button: { size: 'large' } })
   })
 
-  describe('is()', () => {
-    it('returns true for registered components', () => {
+  describe('Registry lookup and empty inputs', () => {
+    it('returns registered components and rejects empty entries', () => {
       expect(design.is('button')).toBe(true)
+      expect(design.get('button')).toBe(components.button)
+      expect(design.is('missing')).toBe(false)
+      expect(design.get('missing')).toBeUndefined()
+      const empty = new DesignComponents()
+      expect(empty.is('button')).toBe(false)
+      expect(empty.get('button')).toBeUndefined()
     })
 
-    it('returns false for unregistered components', () => {
-      expect(design.is('none' as any)).toBe(false)
-    })
-  })
-
-  describe('get()', () => {
-    it('returns the component object', () => {
-      expect(design.get('button')).toBe(mockComponent)
-    })
-
-    it('returns undefined for non-existent components', () => {
-      expect(design.get('none' as any)).toBeUndefined()
-    })
-  })
-
-  describe('getModification()', () => {
-    it('returns props if no index is provided', () => {
-      const props = { color: 'red' }
+    it('preserves props identity without a modification index', () => {
+      const props = { label: 'Привет tiếng Việt 🚀' }
       expect(design.getModification(undefined, props)).toBe(props)
+      expect(design.getModification('', props)).toBe(props)
+      expect(design.getModification()).toBeUndefined()
     })
 
-    it('returns modified props through cache/computed', () => {
-      const props = { color: 'blue' }
-      const result = design.getModification('button', props)
-
-      expect(result).toEqual({ size: 'large', color: 'blue' })
-    })
-
-    it('caches the computed modification', () => {
-      design.getModification('button')
-      const cacheBefore = { ...design.getCaching() }
-      expect(cacheBefore.button).toBeDefined()
-
-      design.getModification('button')
-      const cacheAfter = design.getCaching()
-
-      // Should reuse the same computed object
-      expect(cacheBefore.button).toBe(cacheAfter.button)
+    it('uses an empty modification when the index has no configuration', () => {
+      expect(design.getModification('unknown')).toEqual({})
+      expect(design.getModification('unknown', { disabled: false, count: 0 })).toEqual({ disabled: false, count: 0 })
     })
   })
 
-  describe('renderOne()', () => {
-    it('returns a VNode for valid component', () => {
+  describe('Reactive modifications and instance isolation', () => {
+    it('unwraps nested refs and computed modification maps in a saved cache entry', () => {
+      const size = ref('large')
+      const active = ref(false)
+      const modifications = computed(() => ({ size, active, count: 0 }))
+      const registry = new DesignComponents(components, { button: modifications })
+      const initial = registry.getModification('button')
+      expect(initial).toEqual({ size: 'large', active: false, count: 0 })
+      expect(registry.getModification('button')).toBe(initial)
+      size.value = 'small'
+      active.value = true
+      expect(registry.getModification('button')).toEqual({ size: 'small', active: true, count: 0 })
+    })
+
+    it('merges classes and styles while props override ordinary defaults without mutations', () => {
+      const defaults = { class: 'base', style: { color: 'red', padding: '1px' }, label: 'default' }
+      const props = { class: 'external', style: { color: 'blue' }, label: 'explicit' }
+      const registry = new DesignComponents(components, { button: defaults })
+      expect(registry.getModification('button', props)).toEqual({
+        class: ['base', 'external'], style: [defaults.style, props.style], label: 'explicit'
+      })
+      expect(defaults.label).toBe('default')
+      expect(defaults.style.color).toBe('red')
+      expect(props.class).toBe('external')
+    })
+
+    it('tracks replacement maps and keeps caches separate for each instance', () => {
+      const modification = reactive({ button: { label: 'first' } })
+      const first = new DesignComponents(components, modification)
+      const second = new DesignComponents(components, { button: { label: 'second' } })
+      expect(first.getModification('button')).toEqual({ label: 'first' })
+      modification.button = { label: 'updated' }
+      expect(first.getModification('button')).toEqual({ label: 'updated' })
+      expect(second.getModification('button')).toEqual({ label: 'second' })
+    })
+  })
+
+  describe('VNode rendering and accumulation', () => {
+    it('renders real VNodes with modified props and default keys', () => {
       const node = design.renderOne('button', { label: 'Click' })
-      expect(node).toBeDefined()
-      expect(node?.type).toBe(mockComponent)
-      expect(node?.props).toEqual({ size: 'large', label: 'Click', key: '.button' })
+      expect(node?.type).toBe(components.button)
+      expect(node?.key).toBe('.button')
+      expect(node?.props).toMatchObject({ size: 'large', label: 'Click' })
     })
 
-    it('returns undefined for invalid component', () => {
-      const node = design.renderOne('none' as any)
-      expect(node).toBeUndefined()
+    it('uses an explicit index for modifications and respects an explicit VNode key', () => {
+      const registry = new DesignComponents(components, { alternate: { disabled: true } })
+      const children = { default: () => [h('span', 'child')] }
+      const node = registry.renderOne('button', { key: 'custom' }, children, 'alternate')
+      expect(node?.key).toBe('custom')
+      expect(node?.props?.disabled).toBe(true)
+      expect(node?.children).toMatchObject(children)
     })
-  })
 
-  describe('render()', () => {
-    it('returns an array with VNode for a valid component', () => {
+    it('returns a one-node array or an empty array for missing entries', () => {
       const nodes = design.render('button')
-      expect(Array.isArray(nodes)).toBe(true)
       expect(nodes).toHaveLength(1)
-      expect(nodes[0]?.type).toBe(mockComponent)
+      expect(nodes[0]?.type).toBe(components.button)
+      expect(design.renderOne('missing')).toBeUndefined()
+      expect(design.render('missing')).toEqual([])
     })
 
-    it('returns an empty array for an invalid component', () => {
-      const nodes = design.render('none' as any)
-      expect(nodes).toEqual([])
-    })
-  })
-
-  describe('renderAdd()', () => {
-    it('pushes VNode to a provided array and returns this', () => {
-      const list: any[] = []
-      const result = design.renderAdd(list, 'button')
-
-      expect(list).toHaveLength(1)
-      expect(result).toBe(design)
+    it('appends without replacing existing children and supports chaining for missing entries', () => {
+      const first = h('span', 'retained')
+      const children: VNode[] = [first]
+      expect(design.renderAdd(children, 'button').renderAdd(children, 'missing')).toBe(design)
+      expect(children).toHaveLength(2)
+      expect(children[0]).toBe(first)
+      expect(children[1]?.type).toBe(components.button)
     })
   })
 })

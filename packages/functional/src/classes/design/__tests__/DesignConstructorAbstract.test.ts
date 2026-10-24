@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { createApp, createSSRApp, defineComponent, h, isVNode, nextTick, onUnmounted, ref, shallowRef, type App, type Slots, type StyleValue, type VNode } from 'vue'
+import { afterEach, assert, describe, expect, it, vi } from 'vitest'
+import { createApp, createSSRApp, defineComponent, h, isVNode, nextTick, onUnmounted, ref, shallowRef, type App, type Ref, type Slots, type StyleValue, type VNode } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 
 import { DesignConstructorAbstract } from '../DesignConstructorAbstract'
-import type { ConstrClasses, ConstrItem, ConstrOptions, ConstrStyles } from '../../../types/constructorTypes'
+import type { ConstrClass, ConstrClasses, ConstrItem, ConstrOptions, ConstrStyles } from '../../../types/constructorTypes'
 
 /** Slot fixture properties / Свойства тестового компонента со слотами */
 interface SlotProps {
@@ -124,6 +124,42 @@ class StyleDesign extends SlotDesign {
   }
 }
 
+/**
+ * Applies merged classes to a nested element without automatic attribute inheritance.
+ *
+ * Применяет объединённые классы к вложенному элементу без автоматического наследования атрибутов.
+ */
+class ClassDesign extends SlotDesign {
+  /**
+   * Returns root and sub-element classes from the design logic.
+   *
+   * Возвращает классы корня и подэлементов из логики дизайна.
+   * @returns class map / карта классов
+   */
+  protected override initClasses(): Partial<ConstrClasses> {
+    return {
+      main: ['base', { active: true, inactive: false }],
+      label: 'base-label',
+      content: 'base-content'
+    }
+  }
+
+  /**
+   * Renders root and sub-element classes inside a separate wrapper.
+   *
+   * Рендерит классы корня и подэлементов внутри отдельной обёртки.
+   * @returns fixture root / корень тестового компонента
+   */
+  protected override initRender(): VNode {
+    return h('main', [
+      h('span', { ...this.getAttrs(), class: this.classes?.value.main }, [
+        h('b', this.getKeyClass('label'), 'label'),
+        h('i', this.getKeyClass('content'), 'content')
+      ])
+    ])
+  }
+}
+
 /** Mounted application cleanup callbacks / Обработчики очистки смонтированных приложений */
 const applications: App[] = []
 
@@ -194,6 +230,106 @@ describe('DesignConstructorAbstract external styles', () => {
     expect(element.style.padding).toBe('2px')
     expect(element.style.display).toBe('block')
     expect(element.style.getPropertyValue('--external-style')).toBe('')
+  })
+})
+
+describe('DesignConstructorAbstract external classes', () => {
+  describe.each(['omitted options', 'empty options', 'token classes'] as const)('%s', (configuration) => {
+    it.each<{ name: string, initial: ConstrClass, updated: ConstrClass }>([
+      { name: 'string', initial: 'first shared', updated: 'second shared' },
+      {
+        name: 'object',
+        initial: { first: true, shared: true, ignored: false },
+        updated: { first: false, second: true, shared: true }
+      },
+      {
+        name: 'nested array',
+        initial: ['first', ['shared', { ignored: false }]],
+        updated: [['second'], { shared: true, first: false }]
+      }
+    ])('merges, updates and removes $name classes with inheritAttrs disabled', async ({ initial, updated }) => {
+      const externalClass = shallowRef<ConstrClass | undefined>(initial)
+      const classesToken = shallowRef<ConstrClasses>({
+        main: ['token', { 'token-active': true, 'token-inactive': false }],
+        label: 'token-label'
+      })
+      const options = configuration === 'omitted options'
+        ? undefined
+        : configuration === 'empty options' ? {} : { classes: classesToken }
+      const host = defineComponent({
+        inheritAttrs: false,
+        setup() {
+          const render = new ClassDesign({}, options).render()
+          return (): VNode => h(render)
+        }
+      })
+      const container = mountApplication(createApp({
+        setup: () => () => h(host, { class: externalClass.value, title: 'retained' })
+      }))
+      const element = container.querySelector('span')
+      if (!element) throw new Error('The class fixture element was not mounted')
+      const expectedClasses = configuration === 'token classes'
+        ? ['base', 'active', 'token', 'token-active']
+        : ['base', 'active']
+
+      expect(Array.from(element.classList)).toEqual([...expectedClasses, 'first', 'shared'])
+      expect(container.querySelector('main')?.className).toBe('')
+      expect(element.title).toBe('retained')
+      expect(element.querySelector('b')?.className)
+        .toBe(configuration === 'token classes' ? 'token-label' : 'base-label')
+      expect(element.querySelector('i')?.className).toBe('base-content')
+
+      externalClass.value = updated
+      await nextTick()
+
+      expect(Array.from(element.classList)).toEqual([...expectedClasses, 'second', 'shared'])
+
+      externalClass.value = undefined
+      await nextTick()
+
+      expect(Array.from(element.classList)).toEqual(expectedClasses)
+      expect(element.title).toBe('retained')
+    })
+  })
+
+  it('updates token classes while preserving logic and external classes', async () => {
+    const classesToken = shallowRef<ConstrClasses>({ main: 'token-first', label: 'token-label' })
+    const host = defineComponent({
+      inheritAttrs: false,
+      setup() {
+        return new ClassDesign({}, { classes: classesToken }).render()
+      }
+    })
+    const container = mountApplication(createApp({
+      setup: () => () => h(host, { class: 'external' })
+    }))
+    const element = container.querySelector('span')
+    if (!element) throw new Error('The class fixture element was not mounted')
+    expect(Array.from(element.classList)).toEqual(['base', 'active', 'token-first', 'external'])
+    expect(element.querySelector('b')?.className).toBe('token-label')
+
+    classesToken.value = { main: { 'token-second': true }, label: 'next-label' }
+    await nextTick()
+
+    expect(Array.from(element.classList)).toEqual(['base', 'active', 'token-second', 'external'])
+    expect(element.querySelector('b')?.className).toBe('next-label')
+    expect(element.querySelector('i')?.className).toBe('base-content')
+  })
+
+  it('includes external classes during server rendering without options', async () => {
+    const host = defineComponent({
+      inheritAttrs: false,
+      setup() {
+        return new ClassDesign().render()
+      }
+    })
+    const markup = await renderToString(createSSRApp({
+      setup: () => () => h(host, { class: ['server', { external: true }] })
+    }))
+
+    expect(markup).toContain('<span class="base active server external">')
+    expect(markup).toContain('<b class="base-label">label</b>')
+    expect(markup).toContain('<i class="base-content">content</i>')
   })
 })
 
@@ -391,5 +527,105 @@ describe('DesignConstructorAbstract slot rendering', () => {
     expect(markup).toContain('<b>header</b>')
     expect(markup).toContain('<span>server</span><i>tail</i>')
     expect(markup.indexOf('<b>')).toBeLessThan(markup.indexOf('<span>'))
+  })
+})
+
+/** Exposed test state / Экспортируемое тестовое состояние */
+export interface ExposedState {
+  /** Reactive test value / Реактивное тестовое значение */
+  value: Ref<number>
+}
+
+/**
+ * Concrete constructor for testing the public expose contract.
+ *
+ * Конкретный конструктор для проверки публичного контракта expose.
+ */
+class ExposeDesign extends DesignConstructorAbstract<HTMLElement, {}, {}, ExposedState, {}, { main: string }, {}> {
+  /** Reactive exposed value / Экспортируемое реактивное значение */
+  readonly value = ref(0)
+
+  /**
+   * Initializes the expose fixture during component setup.
+   *
+   * Инициализирует тестовый конструктор во время setup компонента.
+   */
+  constructor() {
+    super('d1.expose', {})
+  }
+
+  /**
+   * Returns the exposed ref without unwrapping it.
+   *
+   * Возвращает экспортируемую ссылку без распаковки.
+   * @returns exposed state / экспортируемое состояние
+   */
+  protected initExpose(): ExposedState {
+    return { value: this.value }
+  }
+
+  /**
+   * Returns the root class.
+   *
+   * Возвращает класс корня.
+   * @returns root class map / карта классов корня
+   */
+  protected initClasses(): { main: string } {
+    return { main: 'd1-expose' }
+  }
+
+  /**
+   * Returns empty fixture styles.
+   *
+   * Возвращает пустые стили тестового компонента.
+   * @returns styles / стили
+   */
+  protected initStyles(): ConstrStyles {
+    return {}
+  }
+
+  /**
+   * Renders the element assigned to the exposed root ref.
+   *
+   * Рендерит элемент, присваиваемый экспортируемой ссылке корня.
+   * @returns root VNode / корневой VNode
+   */
+  protected initRender(): VNode {
+    return h('main', { ref: this.element })
+  }
+}
+
+describe('DesignConstructorAbstract public state', () => {
+  it('exposes custom refs and the actual root element while retaining naming identity', () => {
+    let design: ExposeDesign | undefined
+    const container = mountApplication(createApp({
+      setup() {
+        design = new ExposeDesign()
+        return design.render()
+      }
+    }))
+    assert(design)
+    const exposed = design.expose()
+    assert(exposed.elementHtml)
+    expect(exposed.elementHtml.value).toBe(container.querySelector('main'))
+    expect(exposed.value).toBe(design.value)
+    design.value.value = 42
+    expect(exposed.value.value).toBe(42)
+    expect(design.expose().elementHtml).toBe(exposed.elementHtml)
+    expect(design.getNaming()).toBe(design.getNaming())
+    expect(design.getNaming().getName()).toBe('d1-expose')
+  })
+
+  it('strips only class and style attrs while preserving zero and false attribute values', () => {
+    let design: ExposeDesign | undefined
+    mountApplication(createApp({
+      inheritAttrs: false,
+      setup() {
+        design = new ExposeDesign()
+        return design.render()
+      }
+    }, { 'id': 'fixture', 'class': 'external', 'style': 'color:red', 'data-zero': 0, 'data-active': false }))
+    assert(design)
+    expect(design.getAttrs()).toEqual({ 'id': 'fixture', 'data-zero': 0, 'data-active': false })
   })
 })

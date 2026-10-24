@@ -4,76 +4,101 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # GeoFlagRef Class
 
-A class for working with country flags in a reactive way. Ensures flag data stays synchronized with a reactive country code.
+Reactive wrapper around `GeoFlag` for country and language metadata and flag icon identifiers. The internal base instance follows the supplied code ref or the current `GeoRef` location.
 
 ## Key Features
 
-- **Reactivity** — automatic data updates when the country code changes.
-- **Multiple Country Support** — retrieve information for multiple countries at once.
-- **National Names** — get country names in their native language.
+- **Reactive code** — saved computed results follow code changes.
+- **Explicit lookup** — method code arguments override the constructor’s lookup code.
+- **Catalogs** — filtered lists and national-language lists are available.
 
 ## Initialization
 
-Creates a new `GeoFlagRef` instance for working with country flags. The class acts as a reactive wrapper around `GeoFlag` and automatically updates data when the provided country code changes.
+`constructor( code?: RefOrNormal<string | undefined> )`
 
 **Parameters:**
-- `code: RefOrNormal<string>` — the country code (e.g., `'RU'`, `'US'`). Can be a regular string or a reactive `ref` object. Defaults to the current location via `Geo.getLocation()`.
+
+- `code?: RefOrNormal<string | undefined>` — Locale, country or language code; a ref is supported where declared.
+
+## Behavior and lifecycle
+
+`getCode()` returns a plain string snapshot. Other getters return computed refs. `getFlag()` returns an icon identifier such as `f-vn`, not an image URL. An omitted codes array requests the base catalog; an empty array returns an empty list. Catalog ordering and unknown-code handling are delegated to `GeoFlag`.
+
+## Usage
 
 ```typescript
 import { GeoFlagRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-// 1. Initialization with a reactive code
-const code = ref('US')
-const geoFlag = new GeoFlagRef(code)
-
-// 2. Using flag data
-const flagIcon = geoFlag.getFlag() // ComputedRef with the icon for 'US'
-
-// 3. Automatic update
-code.value = 'FR' // flagIcon will update automatically
+const code = /*#__PURE__*/ ref('vi-VN')
+const flags = /*#__PURE__*/ new GeoFlagRef(code)
+const icon = /*#__PURE__*/ flags.getFlag()
+const countries = /*#__PURE__*/ flags.getList(ref(['VN', 'US']))
+code.value = 'en-US'
 ```
 
-## State
+## Methods
 
-- `getCode(): string` — Returns the currently set country code.
+### Current code
 
-## Data Retrieval
+- `getCode(): string` — Returns the current base code as a string.
 
-All data retrieval methods return `ComputedRef`, ensuring automatic synchronization with the current country code.
+### Single lookup
 
-- `get(code?: string): ComputedRef<GeoFlagItem | undefined>` — Returns comprehensive information about a country: name, icon, and other metadata. If `code` is not provided, the current code from the state is used.
-- `getFlag(code?: string): ComputedRef<string | undefined>` — Returns the flag icon path or identifier for the specified country.
-- `getList(codes?: string[]): ComputedRef<GeoFlagItem[]>` — Returns an array of flag data for a list of codes.
-- `getNational(codes?: string[]): ComputedRef<GeoFlagNational[]>` — Returns a list of countries with names in their national languages.
+#### `get`
 
-## Working with Lists: getList vs getNational
+`get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>`
 
-The class provides two methods for retrieving country lists, which differ in how the data is localized.
+Returns the country metadata for the explicit code or current base code.
 
-### `getList` (Local List)
-Returns a list of countries where all names and labels are translated into the language of the **current `GeoFlagRef` instance**.
-- **When to use:** when you need to display a list of countries in the UI in the user's language (e.g., in a country selector).
-- **Result:** if `GeoFlagRef` is set to English (`EN`), you will get "Russia" for the code `RU`.
+**Parameters:**
 
-### `getNational` (National List)
-Returns a list where information about each country is presented in its **native (national) language**.
-- **When to use:** when you need to show country names as they are called by the residents of those countries, or add a description in the native language.
-- **Result:** for the code `US`, you will get "United States" (in English), and for `VN`, you will get "Việt Nam" (in Vietnamese), regardless of the language set in `GeoFlagRef`.
+- `code?: RefOrNormal<string>` — Locale, country or language code; a ref is supported where declared.
 
-## Types
+**Returns:** `ComputedRef<GeoFlagItem | undefined>` — Computed result; read it through .value.
 
-### GeoFlagItem
-An object containing basic information about a country and its flag.
-- `language: string` — Language name.
-- `country: string` — Country name.
-- `standard: string` — Standard locale code.
-- `icon?: string` — Flag icon identifier.
-- `label: string` — Display label (usually the country name).
-- `value: string` — Selection value (usually the country code).
+```typescript
+const result = /*#__PURE__*/ flags.get(code)
+```
 
-### GeoFlagNational
-An extended object with national language information (inherits all fields from `GeoFlagItem`).
-- `description: string` — Description in the national language.
-- `nationalLanguage: string` — Language name in its native language.
-- `nationalCountry: string` — Country name in its native language.
+#### `getLanguage`
+
+`getLanguage(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>`
+
+Returns language metadata for the explicit code or current base code.
+
+**Parameters:**
+
+- `code?: RefOrNormal<string>` — Locale, country or language code; a ref is supported where declared.
+
+**Returns:** `ComputedRef<GeoFlagItem | undefined>` — Computed result; read it through .value.
+
+```typescript
+const result = /*#__PURE__*/ flags.getLanguage(code)
+```
+
+#### `getFlag`
+
+`getFlag(code?: RefOrNormal<string>): ComputedRef<string | undefined>`
+
+Returns the flag icon identifier for the explicit code or current base code.
+
+**Parameters:**
+
+- `code?: RefOrNormal<string>` — Locale, country or language code; a ref is supported where declared.
+
+**Returns:** `ComputedRef<string | undefined>` — Computed result; read it through .value.
+
+```typescript
+const result = /*#__PURE__*/ flags.getFlag(code)
+```
+
+### Catalogs
+
+- `getList(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]>` — Returns country flag items, optionally filtered by reactive codes.
+
+- `getListLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]>` — Returns language flag items, optionally filtered by reactive codes.
+
+- `getNational(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>` — Returns country names in national languages.
+
+- `getNationalLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>` — Returns language names in national languages.

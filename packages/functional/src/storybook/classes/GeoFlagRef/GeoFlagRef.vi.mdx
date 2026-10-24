@@ -4,76 +4,101 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp GeoFlagRef
 
-Một lớp để làm việc với cờ quốc gia theo cách phản ứng. Đảm bảo dữ liệu cờ luôn được đồng bộ với mã quốc gia phản ứng.
+Lớp bọc phản ứng cho `GeoFlag`, cung cấp dữ liệu quốc gia, ngôn ngữ và mã biểu tượng cờ. Đối tượng cơ sở theo ref mã được truyền hoặc vị trí `GeoRef` hiện tại.
 
-## Các tính năng chính
+## Tính năng chính
 
-- **Tính phản ứng** — tự động cập nhật dữ liệu khi mã quốc gia thay đổi.
-- **Hỗ trợ nhiều quốc gia** — lấy thông tin cho nhiều quốc gia cùng một lúc.
-- **Tên quốc gia bản ngữ** — lấy tên quốc gia bằng ngôn ngữ bản địa của họ.
+- **Mã phản ứng** — kết quả computed đã lưu theo thay đổi mã.
+- **Tra cứu cụ thể** — mã truyền cho phương thức ưu tiên hơn mã tra cứu của hàm dựng.
+- **Danh mục** — hỗ trợ danh sách lọc và tên bằng ngôn ngữ bản địa.
 
 ## Khởi tạo
 
-Tạo một thực thể `GeoFlagRef` mới để làm việc với cờ quốc gia. Lớp này hoạt động như một lớp vỏ bọc phản ứng (reactive wrapper) xung quanh `GeoFlag` và tự động cập nhật dữ liệu khi mã quốc gia được cung cấp thay đổi.
+`constructor( code?: RefOrNormal<string | undefined> )`
 
 **Tham số:**
-- `code: RefOrNormal<string>` — mã quốc gia (ví dụ: `'VN'`, `'US'`). Có thể là một chuỗi thông thường hoặc một đối tượng `ref` phản ứng. Mặc định là vị trí hiện tại thông qua `Geo.getLocation()`.
+
+- `code?: RefOrNormal<string | undefined>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
+
+## Hành vi và vòng đời
+
+`getCode()` trả chuỗi tại thời điểm gọi. Getter khác trả computed ref. `getFlag()` trả mã biểu tượng như `f-vn`, không phải URL ảnh. Bỏ qua mảng mã sẽ lấy danh mục cơ sở; mảng rỗng cho danh sách rỗng. Thứ tự danh mục và xử lý mã không biết do `GeoFlag` quyết định.
+
+## Cách dùng
 
 ```typescript
 import { GeoFlagRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-// 1. Khởi tạo với mã phản ứng
-const code = ref('VN')
-const geoFlag = new GeoFlagRef(code)
-
-// 2. Sử dụng dữ liệu cờ
-const flagIcon = geoFlag.getFlag() // ComputedRef với biểu tượng cho 'VN'
-
-// 3. Tự động cập nhật
-code.value = 'JP' // flagIcon sẽ tự động cập nhật
+const code = /*#__PURE__*/ ref('vi-VN')
+const flags = /*#__PURE__*/ new GeoFlagRef(code)
+const icon = /*#__PURE__*/ flags.getFlag()
+const countries = /*#__PURE__*/ flags.getList(ref(['VN', 'US']))
+code.value = 'en-US'
 ```
 
-## Trạng thái
+## Phương thức
 
-- `getCode(): string` — Trả về mã quốc gia hiện đang được thiết lập.
+### Mã hiện tại
 
-## Truy xuất dữ liệu
+- `getCode(): string` — Trả mã cơ sở hiện tại dưới dạng chuỗi.
 
-Tất cả các phương thức truy xuất dữ liệu đều trả về `ComputedRef`, đảm bảo đồng bộ hóa tự động với mã quốc gia hiện tại.
+### Tra cứu một mục
 
-- `get(code?: string): ComputedRef<GeoFlagItem | undefined>` — Trả về thông tin chi tiết về một quốc gia: tên, biểu tượng và các siêu dữ liệu khác. Nếu không cung cấp `code`, mã hiện tại từ trạng thái sẽ được sử dụng.
-- `getFlag(code?: string): ComputedRef<string | undefined>` — Trả về đường dẫn hoặc định danh biểu tượng cờ cho quốc gia được chỉ định.
-- `getList(codes?: string[]): ComputedRef<GeoFlagItem[]>` — Trả về một mảng dữ liệu cờ cho danh sách các mã.
-- `getNational(codes?: string[]): ComputedRef<GeoFlagNational[]>` — Trả về danh sách các quốc gia với tên bằng ngôn ngữ bản địa của họ.
+#### `get`
 
-## Làm việc với danh sách: getList vs getNational
+`get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>`
 
-Lớp cung cấp hai phương thức để lấy danh sách các quốc gia, chúng khác nhau ở cách bản địa hóa dữ liệu.
+Trả dữ liệu quốc gia cho mã cụ thể hoặc mã cơ sở hiện tại.
 
-### `getList` (Danh sách địa phương)
-Trả về danh sách các quốc gia trong đó tất cả các tên và nhãn được dịch sang ngôn ngữ của **thực thể `GeoFlagRef` hiện tại**.
-- **Khi nào nên sử dụng:** khi bạn cần hiển thị danh sách các quốc gia trong giao diện người dùng bằng ngôn ngữ của người dùng (ví dụ: trong bộ chọn quốc gia).
-- **Kết quả:** nếu `GeoFlagRef` được thiết lập là tiếng Việt (`VN`), bạn sẽ nhận được "Nga" cho mã `RU`.
+**Tham số:**
 
-### `getNational` (Danh sách quốc gia)
-Trả về danh sách trong đó thông tin về mỗi quốc gia được trình bày bằng **ngôn ngữ bản địa (quốc gia) của quốc gia đó**.
-- **Khi nào nên sử dụng:** khi bạn cần hiển thị tên các quốc gia theo cách gọi của cư dân các quốc gia đó, hoặc thêm mô tả bằng ngôn ngữ bản địa.
-- **Kết quả:** cho mã `US`, bạn sẽ nhận được "United States" (bằng tiếng Anh) và cho mã `VN`, bạn sẽ nhận được "Việt Nam" (bằng tiếng Việt), bất kể ngôn ngữ được thiết lập trong `GeoFlagRef`.
+- `code?: RefOrNormal<string>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
 
-## Các kiểu
+**Trả về:** `ComputedRef<GeoFlagItem | undefined>` — Kết quả computed; đọc qua .value.
 
-### GeoFlagItem
-Một đối tượng chứa thông tin cơ bản về một quốc gia và cờ của quốc gia đó.
-- `language: string` — Tên ngôn ngữ.
-- `country: string` — Tên quốc gia.
-- `standard: string` — Mã locale tiêu chuẩn.
-- `icon?: string` — Định danh biểu tượng cờ.
-- `label: string` — Nhãn hiển thị (thường là tên quốc gia).
-- `value: string` — Giá trị để lựa chọn (thường là mã quốc gia).
+```typescript
+const result = /*#__PURE__*/ flags.get(code)
+```
 
-### GeoFlagNational
-Một đối tượng mở rộng với thông tin ngôn ngữ bản địa (kế thừa tất cả các trường từ `GeoFlagItem`).
-- `description: string` — Mô tả bằng ngôn ngữ bản địa.
-- `nationalLanguage: string` — Tên ngôn ngữ bằng chính ngôn ngữ đó.
-- `nationalCountry: string` — Tên quốc gia bằng chính ngôn ngữ đó.
+#### `getLanguage`
+
+`getLanguage(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>`
+
+Trả dữ liệu ngôn ngữ cho mã cụ thể hoặc mã cơ sở hiện tại.
+
+**Tham số:**
+
+- `code?: RefOrNormal<string>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
+
+**Trả về:** `ComputedRef<GeoFlagItem | undefined>` — Kết quả computed; đọc qua .value.
+
+```typescript
+const result = /*#__PURE__*/ flags.getLanguage(code)
+```
+
+#### `getFlag`
+
+`getFlag(code?: RefOrNormal<string>): ComputedRef<string | undefined>`
+
+Trả mã biểu tượng cờ cho mã cụ thể hoặc mã cơ sở hiện tại.
+
+**Tham số:**
+
+- `code?: RefOrNormal<string>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
+
+**Trả về:** `ComputedRef<string | undefined>` — Kết quả computed; đọc qua .value.
+
+```typescript
+const result = /*#__PURE__*/ flags.getFlag(code)
+```
+
+### Danh mục
+
+- `getList(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]>` — Trả mục cờ quốc gia, có thể lọc bằng mã phản ứng.
+
+- `getListLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]>` — Trả mục cờ ngôn ngữ, có thể lọc bằng mã phản ứng.
+
+- `getNational(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>` — Trả tên quốc gia bằng ngôn ngữ bản địa.
+
+- `getNationalLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>` — Trả tên ngôn ngữ bằng ngôn ngữ bản địa.

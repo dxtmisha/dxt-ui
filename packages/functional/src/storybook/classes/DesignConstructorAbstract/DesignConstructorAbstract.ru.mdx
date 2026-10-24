@@ -4,80 +4,162 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс DesignConstructorAbstract
 
-Абстрактный базовый класс, предоставляющий стандартизированную структуру для логики конструктора компонентов. Он облегчает управление данными компонентов, стилями и модификациями на основе состояния.
+Абстрактный конструктор рендеринга Vue: объединяет именование, ссылку на корневой элемент, подключённые компоненты, атрибуты, слоты, экспортируемые данные и вычисляемые классы/стили. Создавайте конкретный подкласс в `setup()` компонента.
 
 ## Ключевые особенности
 
-- **Стандартизированная структура данных** — обработка свойств, классов и стилей.
-- **Интеграция с состоянием** — реактивные обновления на основе состояния компонента.
-- **Гибкие расширения** — основа для создания специализированных конструкторов.
+- **Композиция** — классы корня объединяют логику, опции и внешние атрибуты.
+- **Стили** — объединяются в порядке приоритета: логика, опции, внешние стили.
+- **Слоты** — фрагменты с ключами сохраняют группы слотов и отслеживают замену слотов.
 
 ## Инициализация
 
-`DesignConstructorAbstract` является абстрактным базовым классом и не может быть инициализирован напрямую. Он служит основой для создания конструкторов функциональных компонентов, объединяя управление стилями, классами, компонентами и рендерингом.
+`constructor( name: string, props: Readonly<P>, options?: ConstrOptions<COMP, EMITS, P> )`
 
-### Ограничения дженериков (Generic Constraints)
+**Параметры:**
 
-Класс использует сложную систему дженериков для обеспечения полной типизации компонента:
-- `E extends Element` — Тип корневого HTML-элемента (например, `HTMLElement`).
-- `COMP extends ConstrComponent` — Список подключенных подкомпонентов.
-- `EMITS extends ConstrItem` — Типизация событий (emits), генерируемых компонентом.
-- `EXPOSE extends ConstrItem` — Структура данных, экспортируемых во внешнюю среду через `expose`.
-- `SLOTS extends ConstrItem` — Доступные слоты компонента.
-- `CLASSES extends ConstrClasses` — Результирующий объект классов CSS.
-- `P extends ConstrItem` — Свойства (props) компонента.
+- `name: string` — Имя компонента, зависимости, слота или маршрута согласно методу.
+- `props: Readonly<P>` — Входные свойства.
+- `options?: ConstrOptions<COMP, EMITS, P>` — Параметры настройки.
 
-**Параметры конструктора:**
-- `name: string` — базовое название компонента (используется для генерации имен классов и стилей).
-- `props: Readonly<P>` — объект свойств компонента.
-- `options?: ConstrOptions<COMP, EMITS, P>` — дополнительные параметры (компоненты, модификации, обработчики событий, переопределения стилей и классов).
+## Поведение и жизненный цикл
+
+Параметры типов: `E` — корневой элемент; `COMP` — реестр компонентов; `EMITS` — события; `EXPOSE` — экспортируемые данные; `SLOTS` — слоты; `CLASSES` — карта классов; `P` — свойства. Реализуйте `initExpose`, `initClasses`, `initStyles` и `initRender`. Конструктор сразу инициализирует состояние; вызовите `render()` один раз в `setup()`, чтобы получить функцию рендеринга. `getAttrs()` исключает `class` и `style`. Записи классов опций, кроме `main`, заменяют одноимённые записи логики; `main` нормализуется из всех трёх источников. `expose()` всегда добавляет ссылку на корень как `elementHtml`.
+
+## Использование
 
 ```typescript
 import { DesignConstructorAbstract } from '@dxtmisha/functional'
+import { defineComponent, h, type VNode } from 'vue'
 
-// 1. Определение интерфейсов компонента
-interface MyProps { size?: 'small' | 'medium' }
-interface MyClasses { main: { [key: string]: boolean } }
-
-// 2. Реализация конструктора
-class ButtonDesign extends DesignConstructorAbstract<
-  HTMLButtonElement, // E
-  {},                // COMP
-  {},                // EMITS
-  {},                // EXPOSE
-  {},                // SLOTS
-  MyClasses,         // CLASSES
-  MyProps            // P
+class ExampleDesign extends DesignConstructorAbstract<
+  HTMLElement, {}, {}, {}, {}, { main: string }, {}
 > {
-  constructor(name: string, props: MyProps) {
-    super(name, props)
+  constructor() { super('d1.example', {}) }
+  protected initExpose(): {} { return {} }
+  protected initClasses(): { main: string } { return { main: 'd1-example' } }
+  protected initStyles(): {} { return {} }
+  protected initRender(): VNode {
+    return h('div', {
+      ...this.getAttrs(),
+      ref: this.element,
+      class: this.classes?.value.main,
+      style: this.styles?.value
+    })
   }
-
-  // Обязательные методы для реализации
-  protected initExpose() { return {} }
-  protected initClasses() { return { main: { active: true } } }
-  protected initStyles() { return {} }
-  protected initRender() { return h('button', this.getAttrs(), this.slots.default?.()) }
 }
+
+const Example = /*#__PURE__*/ defineComponent({
+  inheritAttrs: false,
+  setup(_props, context) {
+    const design = new ExampleDesign()
+    context.expose(design.expose())
+    return design.render()
+  }
+})
 ```
 
-## Методы жизненного цикла и рендеринга
+## Методы
 
-- `init(): this` — Инициализирует экземпляр, подготавливает внутреннее состояние, классы и стили.
-- `render(): Function` — Возвращает функцию рендеринга для использования в `setup()` Vue-компонента.
-- `setup(): void` — Выполняет основную последовательность настройки логики компонента.
+### Атрибуты и именование
 
-## Вспомогательные методы именования
+- `getAttrs(): ConstrItem` — Возвращает новый объект атрибутов без `class` и `style`.
 
-Методы именования доступны в наследниках через защищённое поле `naming` (`DesignName`).
+- `getKeyClass<K extends keyof CLASSES>(name: K & string)` — Возвращает ключ подэлемента и его текущее вычисляемое значение класса.
 
-- `naming.getName(): string` — Возвращает полное название компонента (например, `button-large`).
-- `naming.getDesign(): string` — Возвращает базовое название дизайна (первая часть названия).
-- `naming.getSubClass(name: string | string[]): string` — Генерирует название класса для подэлемента (BEM: `__`).
-- `naming.getStatusClass(name: string | string[]): string` — Генерирует название класса состояния (BEM: `--`).
-- `naming.getStyle(name: string | string[]): string` — Генерирует название системной CSS-переменной.
+- `getNaming(): DesignName` — Возвращает экземпляр `DesignName` этого конструктора.
 
-## Данные компонента
+### Рендеринг и внешний API
 
-- `getAttrs(): object` — Возвращает атрибуты, исключая зарезервированные `class` и `style`.
-- `expose(): object` — Возвращает данные и ссылки для экспорта через `expose` Vue.
+#### `render`
+
+`render(): () => VNode | VNode[] | undefined`
+
+Регистрирует отслеживание замены слотов и возвращает функцию, делегирующую рендеринг `initRender()`.
+
+**Возвращает:** `() => VNode | VNode[] | undefined` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+const render = /*#__PURE__*/ design.render()
+```
+
+#### `expose`
+
+`expose(): ConstrExpose<E, EXPOSE>`
+
+Объединяет данные `initExpose()` со ссылкой на корень `elementHtml`.
+
+**Возвращает:** `ConstrExpose<E, EXPOSE>` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+context.expose(design.expose())
+```
+
+### Защищённые точки расширения
+
+#### `initExpose`
+
+`initExpose(): EXPOSE`
+
+Реализуйте в подклассе для получения внешнего API.
+
+**Возвращает:** `EXPOSE` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+protected initExpose(): {} { return {} }
+```
+
+#### `initClasses`
+
+`initClasses(): Partial<CLASSES>`
+
+Реализуйте в подклассе для получения карты классов логики перед объединением.
+
+**Возвращает:** `Partial<CLASSES>` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+protected initClasses(): { main: string } { return { main: 'd1-example' } }
+```
+
+#### `initStyles`
+
+`initStyles(): ConstrStyles`
+
+Реализуйте в подклассе для получения стилей до применения опций и атрибутов.
+
+**Возвращает:** `ConstrStyles` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+protected initStyles(): {} { return {} }
+```
+
+#### `initRender`
+
+`initRender(): VNode | VNode[] | undefined`
+
+Реализуйте дерево VNode. Результат — один узел, массив или `undefined`.
+
+**Возвращает:** `VNode | VNode[] | undefined` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+protected initRender(): VNode { return h('div', { ref: this.element }) }
+```
+
+#### `initSlot`
+
+`initSlot<K extends keyof SLOTS>( name: K, children?: VNode[], props: ConstrItem = {} ): VNode | undefined`
+
+Рендерит именованный слот как фрагмент с ключом и при необходимости добавляет фрагмент в `children`. Отсутствующий слот возвращает `undefined`, не меняя массив.
+
+**Параметры:**
+
+- `name: K` — Ключ именованного слота.
+- `children?: VNode[]` — Дочернее содержимое либо необязательный массив VNode.
+- `props: ConstrItem = {}` — Свойства scoped-слота; по умолчанию пустой объект.
+
+**Возвращает:** `VNode | undefined` — Запрошенное значение либо объект согласно сигнатуре.
+
+```typescript
+const children: VNode[] = []
+this.initSlot('default', children, { value: 0 })
+```

@@ -1,9 +1,23 @@
 // ai-none
 
 import { h, type VNode } from 'vue'
-import { type ConstrEmit, type DesignComponents, type DesignName, toBinds } from '@dxtmisha/functional'
+import {
+  type ConstrEmit,
+  type DesignComponents,
+  type DesignName,
+  executeFunction,
+  type RawChildren,
+  type RawSlots,
+  toBinds
+} from '@dxtmisha/functional'
 
-import type { ScrollbarComponentInclude, ScrollbarEmitsInclude, ScrollbarPropsInclude, ScrollbarEdgeType } from './basicTypes'
+import type {
+  ScrollbarComponentInclude,
+  ScrollbarEdgeType,
+  ScrollbarEmitsInclude,
+  ScrollbarEventList,
+  ScrollbarPropsInclude
+} from './basicTypes'
 
 /**
  * ScrollbarInclude class provides functionality for conditionally rendering scrollbar components
@@ -26,7 +40,7 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
   /**
    * Event handlers for scrollbar / Обработчики событий для скроллбара
    */
-  protected readonly scrollbarEvents: Record<string, (...args: any[]) => void>
+  protected readonly scrollbarEvents: ScrollbarEventList
 
   /**
    * Constructor for ScrollbarInclude class.
@@ -66,7 +80,7 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
   render(
     tag: string,
     props?: Record<string, unknown>,
-    children?: any
+    children?: RawChildren | RawSlots
   ): VNode[] {
     if (this.components) {
       const scrollbar = this.components.renderOne(
@@ -88,6 +102,6 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
       }
     }
 
-    return [h(tag, props as any, children)]
+    return [h(tag, props, executeFunction(children) as RawChildren)]
   }
 }

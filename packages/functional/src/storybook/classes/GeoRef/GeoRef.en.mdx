@@ -4,65 +4,80 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # GeoRef Class
 
-A static reactive class for managing global geographic data. It provides centralized access to information such as the current country, language, standard locale, and the first day of the week, ensuring that any changes are reflected across the application.
+Static reactive facade for the current geographic context. It caches a shallow ref to `Geo.getItem()` and computed projections through `ServerStorage`.
 
 ## Key Features
 
-- **Global Reactivity** — uses a shared reactive state for geographic data.
-- **Centralized Management** — single point of truth for country and language settings.
-- **Static Access** — methods can be called directly on the class without instantiation.
+- **Shared refs** — repeated getters reuse cached refs in the current context.
+- **Locale updates** — `set()` replaces the geographic item and refreshes projections.
+- **SSR context** — cache ownership follows `ServerStorage`.
 
-## Global Usage
+## Behavior and lifecycle
 
-Since `GeoRef` is a static class, its methods are called directly without creating an instance. It serves as a single access point for the application's geographic settings.
+Country metadata and requested locale are distinct: `en-VN` has country language `vi` and location language `en`. `getFirstDay()` returns a weekday token such as `Mo` or `Su`, not a numeric code. `setValueDefault()` configures the fallback; an existing locale cookie can take precedence. Initialize request storage before SSR use and read refs within their owning request context.
+
+## Usage
 
 ```typescript
 import { GeoRef } from '@dxtmisha/functional'
-import { watch } from 'vue'
 
-// 1. Getting a reactive value
-const country = GeoRef.getCountry()
-console.log('Current country:', country.value)
-
-// 2. Tracking changes
-watch(GeoRef.getLanguage(), (lang) => {
-  console.log('Language changed to:', lang)
-})
-
-// 3. Global location change
-GeoRef.set('en-US') 
-// All calls to getCountry, getLanguage, etc., will update automatically
+const country = /*#__PURE__*/ GeoRef.getCountry()
+const language = /*#__PURE__*/ GeoRef.getLocationLanguage()
+GeoRef.set('en-VN')
+country.value // 'VN'
+language.value // 'en'
 ```
 
-## State and Data Retrieval
+## Methods
 
-- `get(): Ref<GeoItemFull>` — returns a reactive object containing the full geographical information.
-- `getCountry(): ComputedRef<string>` — current country code (e.g., `'US'`).
-- `getLanguage(): ComputedRef<string>` — current language code (e.g., `'en'`).
-- `getStandard(): ComputedRef<string>` — full standard locale format (e.g., `'en-US'`).
-- `getFirstDay(): ComputedRef<string>` — first day of the week (e.g., `'monday'`).
+### Current context
 
-## Actions
+- `get(): Ref<GeoItemFull>` — Returns the cached geographic item ref.
 
-### `set`
-Changes the global geographic data based on the provided code. This action instantly updates all reactive dependencies of `GeoRef` across the entire application.
+- `getCountry(): ComputedRef<string>` — Returns the country code.
+
+- `getLanguage(): ComputedRef<string>` — Returns the country metadata language.
+
+- `getStandard(): ComputedRef<string>` — Returns the standard locale code.
+
+- `getFirstDay(): ComputedRef<string>` — Returns the first-weekday token from country metadata.
+
+- `getLocation(): ComputedRef<string>` — Returns the current location locale.
+
+- `getLocationCountry(): ComputedRef<string>` — Returns the country segment of the requested location.
+
+- `getLocationLanguage(): ComputedRef<string>` — Returns the language segment of the requested location.
+
+### Locale configuration
+
+#### `set`
+
+`set(code: string): void`
+
+Sets the current Geo locale with persistence enabled and replaces the reactive item.
 
 **Parameters:**
-- `code: string` — country code, full form language-country (e.g., "en-US"), or one of them.
 
-**Returns:** `void`
+- `code: string` — Locale, country or language code; a ref is supported where declared.
 
-## Types
+**Returns:** `void` — No return value.
 
-### GeoItemFull
-Object structure with full geographical information.
+```typescript
+GeoRef.set('vi-VN')
+```
 
-- `country: string` — current country code.
-- `language: string` — current language code.
-- `standard: string` — standard locale code.
-- `firstDay: string` — first day of the week.
-- `countryAlternative?: string[]` — list of alternative country codes.
-- `languageAlternative?: string[]` — list of alternative language codes.
-- `zone?: string | null` — current timezone.
-- `phoneCode?: string` — phone country code.
-- `phoneMask?: string | string[]` — typical phone number mask.
+#### `setValueDefault`
+
+`setValueDefault(code?: string | (() => string)): void`
+
+Sets the Geo fallback code or factory and refreshes the reactive item from Geo.
+
+**Parameters:**
+
+- `code?: string | (() => string)` — Fallback locale code or factory.
+
+**Returns:** `void` — No return value.
+
+```typescript
+GeoRef.setValueDefault(() => 'vi-VN')
+```

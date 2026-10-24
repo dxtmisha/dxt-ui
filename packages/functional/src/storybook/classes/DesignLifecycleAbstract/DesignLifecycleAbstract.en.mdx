@@ -1,0 +1,42 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/DesignLifecycleAbstract'/>
+
+# DesignLifecycleAbstract Class
+
+Abstract marker class for dependencies with synchronous component lifecycle callbacks. `DesignLogicAbstract` invokes these callbacks only on instances derived from this class.
+
+## Key Features
+
+- **Optional callbacks** — either callback may be omitted.
+- **Synchronous contract** — callbacks return `void`.
+- **Explicit invocation** — constructing a dependency does not run callbacks.
+
+## Initialization
+
+Extend this abstract class; do not instantiate it directly.
+
+## Behavior and lifecycle
+
+This class has no public methods. Subclasses supply readonly `onMounted?: () => void` and `onUnmounted?: () => void` properties. Asynchronous work and its cleanup belong to the subclass.
+
+## Usage
+
+```typescript
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+
+class Dependency extends DesignLifecycleAbstract {
+  mounted = false
+  override readonly onMounted = (): void => { this.mounted = true }
+  override readonly onUnmounted = (): void => { this.mounted = false }
+}
+```
+
+## Properties
+
+- `onMounted: (() => void) | undefined` — Optional synchronous mount callback.
+- `onUnmounted: (() => void) | undefined` — Optional synchronous cleanup callback.
+
+## Methods
+
+No public methods; use the properties described above.

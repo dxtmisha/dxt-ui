@@ -4,91 +4,127 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс DesignComponents
 
-Базовый класс для работы с подключенными компонентами и управления логикой их рендеринга в рамках дизайн-системы. Позволяет регистрировать компоненты, модифицировать их свойства по умолчанию и гибко генерировать VNode.
+Типизированный реестр подключённых компонентов Vue. Находит компоненты по имени, кэширует вычисляемые модификации, объединяет свойства и создаёт VNode с согласованными ключами.
 
 ## Ключевые особенности
 
-- **Управление компонентами** — централизованная регистрация и получение Vue-компонентов.
-- **Динамические модификации** — поддержка применения глобальных или специфических модификаций свойств к компонентам перед рендерингом.
-- **Гибкий рендеринг** — предоставляет несколько методов (`render`, `renderOne`, `renderAdd`) для генерации Vue VNode с автоматической привязкой свойств.
-- **Оптимизация производительности** — использует внутреннее кэширование с помощью вычисляемых свойств Vue (`computed`) для модификаций свойств.
+- **Реестр** — `COMP` определяет допустимые имена компонентов.
+- **Реактивные значения по умолчанию** — карты модификаций и отдельные значения могут быть ссылками.
+- **Объединение свойств** — явные свойства заменяют значения по умолчанию; классы и стили объединяются.
 
 ## Инициализация
 
-Создает новый экземпляр `DesignComponents`. Класс позволяет объединять компоненты и их модификации в единый механизм управления рендерингом.
-
-### Ограничения дженериков (Generic Constraints)
-
-Класс использует дженерики для обеспечения гибкой настройки типов рендеринга:
-- `COMP extends ConstrComponent` — Объект со списком доступных компонентов. Определяет структуру, по которой `DesignComponents` будет искать и возвращать компоненты для рендеринга.
-- `P extends ConstrItem` — Тип свойств (props), который используется для типизации модификаций и передаваемых данных при рендеринге.
+`constructor( components: COMP = {} as COMP, modification?: ConstrComponentMod<P> )`
 
 **Параметры:**
-- `components: COMP = {}` — список подключаемых компонентов (объект, где ключи — названия, а значения — Vue-компоненты).
-- `modification?: ConstrComponentMod<P>` — объект модификаций, позволяющий переопределять свойства (props) для каждого компонента.
+
+- `components: COMP = {} as COMP` — Реестр подключённых компонентов.
+- `modification?: ConstrComponentMod<P>` — Карты свойств по умолчанию по индексам, могут быть реактивными.
+
+## Поведение и жизненный цикл
+
+`P` описывает свойства компонентов. Для отсутствующего компонента `renderOne()` возвращает `undefined`, а `render()` — пустой массив. Индекс модификации по умолчанию совпадает с именем компонента. Явный ключ VNode сохраняется.
+
+## Использование
 
 ```typescript
 import { DesignComponents } from '@dxtmisha/functional'
-import MyButton from './MyButton.vue'
-import MyInput from './MyInput.vue'
+import { ref } from 'vue'
 
-// 1. Регистрация компонентов
-const components = {
-  button: MyButton,
-  input: MyInput
-}
-
-// 2. Определение модификаций (props по умолчанию)
-const modification = {
-  button: { size: 'large', color: 'primary' },
-  input: { focus: true }
-}
-
-const design = new DesignComponents(components, modification)
+const disabled = /*#__PURE__*/ ref(false)
+const components = /*#__PURE__*/ new DesignComponents(
+  { button: 'button' },
+  { button: { disabled, class: 'base' } }
+)
+const node = /*#__PURE__*/ components.renderOne('button', { title: 'Save' })
+disabled.value = true
+const updatedNode = /*#__PURE__*/ components.renderOne('button')
 ```
 
+## Методы
 
-## Методы рендеринга
+### Поиск в реестре
 
-### `render`
+- `is<K extends keyof COMP>(name: K): name is K` — Проверяет наличие компонента в записи реестра.
 
-Рендерит компонент по его имени и возвращает массив, содержащий один `VNode`. Это полезно для Vue, где часто требуются массивы узлов.
+- `get<K extends keyof COMP>(name: K): COMP[K]` — Возвращает запись реестра без создания VNode.
 
-**Параметры:**
-- `name: string` — Название зарегистрированного компонента.
-- `props: object` — Свойства, передаваемые компоненту.
-- `children: any` — Дочерние элементы или слоты.
-- `index: string` — Ключ (key) для VNode.
+### Модификация свойств
 
-**Возвращает:** `VNode[]` — Массив, содержащий сгенерированный VNode.
+#### `getModification`
 
-### `renderOne`
+`getModification<K extends keyof P>( index?: K & string | string, props?: P[K] | ConstrItem ): ConstrItem | undefined`
 
-Рендерит один компонент и возвращает объект `VNode` напрямую. Если компонент не найден, возвращает `undefined`.
+Кэширует вычисляемые значения по индексу и объединяет явные свойства через `toBinds`. Без непустого индекса возвращает исходные свойства без изменений.
 
 **Параметры:**
-- `name: string` — Название зарегистрированного компонента.
-- `props: object` — Свойства для компонента.
-- `children: any` — Дочерние элементы.
-- `index: string` — Ключ (key) для VNode.
 
-**Возвращает:** `VNode | undefined` — Объект VNode или `undefined`.
+- `index?: K & string | string` — Индекс записи либо модификации.
+- `props?: P[K] | ConstrItem` — Входные свойства.
 
-### `renderAdd`
+**Возвращает:** `ConstrItem | undefined` — Объединённая карта свойств либо исходные свойства без индекса.
 
-Рендерит компонент и добавляет полученный `VNode` в предоставленный массив. Позволяет собирать список узлов в один проход.
+```typescript
+const props = /*#__PURE__*/ components.getModification('button', { disabled: false })
+```
+
+### Рендеринг
+
+#### `renderOne`
+
+`renderOne< K extends keyof COMP, PK extends keyof P >( name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): VNode | undefined`
+
+Создаёт один VNode с объединёнными свойствами и дочерними элементами. Возвращает `undefined` для отсутствующего компонента.
 
 **Параметры:**
-- `item: any[]` — Массив, в который будет добавлен результат рендеринга.
-- `name: string` — Название компонента.
-- `props: object` — Свойства для компонента.
-- `children: any` — Дочерние элементы.
-- `index: string` — Ключ (key) для VNode.
 
-**Возвращает:** `this` — Ссылка на текущий экземпляр для цепочки вызовов.
+- `name: K & string` — Ключ подключённого компонента в реестре.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Входные свойства.
+- `children?: RawChildren | RawSlots` — Дочернее содержимое либо необязательный массив VNode.
+- `index?: PK & string | string` — Индекс записи либо модификации.
 
-## Дополнительные методы
+**Возвращает:** `VNode | undefined` — Отрендеренный VNode либо undefined при отсутствии компонента.
 
-- `is(name: string): boolean` — Проверяет наличие зарегистрированного компонента.
-- `get(name: string): COMP[K]` — Возвращает объект зарегистрированного компонента по его имени.
-- `getModification(index?: string, props?: object): object | undefined` — Возвращает модифицированные входные данные для подключенных компонентов.
+```typescript
+const node = /*#__PURE__*/ components.renderOne('button', { title: 'Save' })
+```
+
+#### `render`
+
+`render< K extends keyof COMP, PK extends keyof P >( name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): VNode[]`
+
+Оборачивает VNode в массив; возвращает пустой массив для отсутствующего компонента.
+
+**Параметры:**
+
+- `name: K & string` — Ключ подключённого компонента в реестре.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Входные свойства.
+- `children?: RawChildren | RawSlots` — Дочернее содержимое либо необязательный массив VNode.
+- `index?: PK & string | string` — Индекс записи либо модификации.
+
+**Возвращает:** `VNode[]` — Массив из одного VNode либо пустой массив.
+
+```typescript
+const nodes = /*#__PURE__*/ components.render('button')
+```
+
+#### `renderAdd`
+
+`renderAdd< K extends keyof COMP, PK extends keyof P >( item: unknown[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string ): this`
+
+Добавляет отрендеренные узлы в существующий массив и возвращает тот же реестр для цепочек вызовов.
+
+**Параметры:**
+
+- `item: unknown[]` — Существующий массив для добавления отрендеренных узлов.
+- `name: K & string` — Ключ подключённого компонента в реестре.
+- `props?: P[PK] & ConstrItem | ConstrItem` — Входные свойства.
+- `children?: RawChildren | RawSlots` — Дочернее содержимое либо необязательный массив VNode.
+- `index?: PK & string | string` — Индекс записи либо модификации.
+
+**Возвращает:** `this` — Текущий экземпляр для цепочек вызовов.
+
+```typescript
+const nodes: unknown[] = []
+components.renderAdd(nodes, 'button')
+```

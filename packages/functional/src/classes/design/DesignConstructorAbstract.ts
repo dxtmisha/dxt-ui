@@ -28,13 +28,9 @@ import type {
 } from '../../types/constructorTypes'
 
 /**
- * Base class for collecting all functional components and managing reactive state in Vue.
- * It integrates connected subcomponents, reactive refs, computed classes, styles,
- * slots, attributes, and external expose data, delegating DOM rendering to `initRender`.
+ * Abstract Vue rendering constructor combining naming, a root element ref, optional connected components, attrs, slots, exposed data, and computed class/style composition. Instantiate a concrete subclass during component `setup()`.
  *
- * Базовый класс для сбора всех функциональных компонентов и управления реактивным состоянием во Vue.
- * Объединяет подключенные подкомпоненты, реактивные ссылки, вычисляемые классы, стили,
- * слоты, атрибуты и экспортируемые данные, делегируя построение DOM-дерева методу `initRender`.
+ * Абстрактный конструктор рендеринга Vue: объединяет именование, ссылку на корневой элемент, подключённые компоненты, атрибуты, слоты, экспортируемые данные и вычисляемые классы/стили. Создавайте конкретный подкласс в `setup()` компонента.
  */
 export abstract class DesignConstructorAbstract<
   E extends Element,
@@ -67,10 +63,12 @@ export abstract class DesignConstructorAbstract<
   protected slots?: SLOTS
 
   /**
-   * Constructor
-   * @param name class name / название класса
-   * @param props properties / свойства
-   * @param options list of additional parameters / список дополнительных параметров
+   * Initializes DesignConstructorAbstract with the supplied configuration.
+   *
+   * Инициализирует DesignConstructorAbstract с переданными настройками.
+   * @param name Component, dependency, slot or route name according to the method. / Имя компонента, зависимости, слота или маршрута согласно методу.
+   * @param props Input properties. / Входные свойства.
+   * @param options Configuration options. / Параметры настройки.
    */
   protected constructor(
     name: string,
@@ -92,10 +90,10 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * Getting additional parameters.
+   * Returns a new attribute object without `class` and `style`.
    *
-   * Получение дополнительных параметров.
-   * @returns additional attributes / дополнительные атрибуты
+   * Возвращает новый объект атрибутов без `class` и `style`.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   getAttrs(): ConstrItem {
     const { class: _class, style: _style, ...attrs } = this.attrs ?? {}
@@ -104,11 +102,11 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * Getting key and class attributes for a sub-element.
+   * Returns a sub-element key and its current computed class entry.
    *
-   * Получение атрибутов key и class для подэлемента.
-   * @param name element class/key name / имя класса/ключа элемента
-   * @returns key and class attributes / атрибуты key и class
+   * Возвращает ключ подэлемента и его текущее вычисляемое значение класса.
+   * @param name Sub-element class-map key. / Ключ подэлемента в карте классов.
+   * @returns Object containing the key and computed class entry. / Объект с ключом и вычисляемым значением класса.
    */
   getKeyClass<K extends keyof CLASSES>(name: K & string) {
     return {
@@ -118,20 +116,20 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * Returns the component naming helper.
+   * Returns this constructor’s `DesignName` instance.
    *
-   * Возвращает помощник именования компонента.
-   * @returns current naming helper instance / текущий экземпляр помощника именования
+   * Возвращает экземпляр `DesignName` этого конструктора.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   getNaming(): DesignName {
     return this.naming
   }
 
   /**
-   * List of available external variables.
+   * Combines `initExpose()` data with the root ref under `elementHtml`.
    *
-   * Список доступных переменных извне.
-   * @returns exposed external variables / список доступных переменных извне
+   * Объединяет данные `initExpose()` со ссылкой на корень `elementHtml`.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   expose(): ConstrExpose<E, EXPOSE> {
     return {
@@ -141,10 +139,10 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * Creates a render function that tracks changes to slot names and functions.
+   * Registers slot-change tracking and returns a function delegating rendering to `initRender()`.
    *
-   * Создает функцию рендеринга, отслеживающую изменения имен и функций слотов.
-   * @returns render function / функция рендеринга
+   * Регистрирует отслеживание замены слотов и возвращает функцию, делегирующую рендеринг `initRender()`.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   render(): () => VNode | VNode[] | undefined {
     const slotsState = shallowRef<Record<string, unknown>>({
@@ -165,46 +163,45 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * Initialization of all the necessary properties for work.
+   * Implement in a subclass to return the externally exposed data.
    *
-   * Инициализация всех необходимых свойств для работы.
-   * @returns exposed data / экспортируемые данные
+   * Реализуйте в подклассе для получения внешнего API.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   protected abstract initExpose(): EXPOSE
 
   /**
-   * Improvement of the obtained list of classes.
+   * Implement in a subclass to return the logic class map before merging.
    *
-   * Доработка полученного списка классов.
-   * @returns partial list of classes / частичный список классов
+   * Реализуйте в подклассе для получения карты классов логики перед объединением.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   protected abstract initClasses(): Partial<CLASSES>
 
   /**
-   * Refinement of the received list of styles.
+   * Implement in a subclass to return styles before options and attrs are applied.
    *
-   * Доработка полученного списка стилей.
-   * @returns styles object / объект стилей
+   * Реализуйте в подклассе для получения стилей до применения опций и атрибутов.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   protected abstract initStyles(): ConstrStyles
 
   /**
-   * Rendering method returning VNode tree.
+   * Implement the VNode tree. The result may be one node, an array, or `undefined`.
    *
-   * Метод рендеринга, возвращающий дерево VNode.
-   * @returns rendered element / отрендеренный элемент
+   * Реализуйте дерево VNode. Результат — один узел, массив или `undefined`.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   protected abstract initRender(): VNode | VNode[] | undefined
 
   /**
-   * Initializes the named slot as a keyed fragment and optionally appends it to children.
+   * Renders a named slot as a keyed fragment and optionally appends that fragment to `children`. Missing slots return `undefined` without modifying the array.
    *
-   * Инициализирует именованный слот как фрагмент с ключом и при необходимости добавляет его в дочерние элементы.
-   * @param name slot name / название слота
-   * @param children if you pass this element, the slot will be added to it /
-   * если передать этот элемент, то слот добавится в него
-   * @param props property for the slot / свойство для слота
-   * @returns rendered slot fragment / отрендеренный фрагмент слота
+   * Рендерит именованный слот как фрагмент с ключом и при необходимости добавляет фрагмент в `children`. Отсутствующий слот возвращает `undefined`, не меняя массив.
+   * @param name Named slot key. / Ключ именованного слота.
+   * @param children Child content or an optional VNode accumulator. / Дочернее содержимое либо необязательный массив VNode.
+   * @param props Scoped-slot properties; defaults to an empty object. / Свойства scoped-слота; по умолчанию пустой объект.
+   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   protected initSlot<K extends keyof SLOTS>(
     name: K,
@@ -238,28 +235,15 @@ export abstract class DesignConstructorAbstract<
     const classes = this.initClasses()
     const classesProps = this.options?.classes?.value
 
-    if (
-      classes
-      && classesProps
-    ) {
-      return {
-        ...classes,
-        ...classesProps,
-        main: normalizeClass([
-          classes?.main,
-          classesProps?.main,
-          this.attrs?.class
-        ])
-      } as CLASSES
-    }
-
-    return (
-      classesProps
-      ?? classes
-      ?? {
-        main: {}
-      }
-    ) as CLASSES
+    return {
+      ...classes,
+      ...classesProps,
+      main: normalizeClass([
+        classes?.main,
+        classesProps?.main,
+        this.attrs?.class
+      ])
+    } as CLASSES
   }
 
   /**

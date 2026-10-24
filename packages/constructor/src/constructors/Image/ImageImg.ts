@@ -55,17 +55,17 @@ export class ImageImg {
    *
    * Конструктор для создания менеджера для тега img.
    * @param props input data / входные данные
-   * @param type class for working with types / класс для работы с типами
-   * @param position class for working with position / класс для работы с позицией
    * @param background class for working with background / класс для работы с фоном
    * @param lazy class for working with lazy loading / класс для работы с ленивой загрузкой
+   * @param position class for working with position / класс для работы с позицией
+   * @param type class for working with types / класс для работы с типами
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly type: () => ImageType,
-    protected readonly position: () => ImagePosition,
     protected readonly background: () => ImageBackground,
-    protected readonly lazy: () => ImageLazy
+    protected readonly lazy: () => ImageLazy,
+    protected readonly position: () => ImagePosition,
+    protected readonly type: () => ImageType
   ) {
   }
 

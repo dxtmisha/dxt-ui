@@ -15,21 +15,29 @@ describe('getIndexForRender', () => {
     expect(getIndexForRender('button', { index: 'prop-1' })).toBe('button.prop-1')
   })
 
-  it('should append class from props', () => {
-    expect(getIndexForRender('span', { class: 'red-text' })).toBe('span.red-text')
+  it.each([undefined, '', 'red-text', ['red-text'], { active: true }])(
+    'should ignore presentation classes %j',
+    (className) => {
+      expect(getIndexForRender('span', { class: className })).toBe('span')
+      expect(getIndexForRender('span', { class: className, id: 'item' }, 'entry')).toBe('span.entry.item')
+    }
+  )
+
+  it('should not generate an identifier from a component class alone', () => {
+    expect(getIndexForRender({}, { class: 'red-text' })).toBeUndefined()
   })
 
   it('should append id from props', () => {
     expect(getIndexForRender('input', { id: 'x-field' })).toBe('input.x-field')
   })
 
-  it('should combine all identifiers in the correct order: name.indexArg.indexProp.class.id', () => {
+  it('should combine all identifiers in the correct order: name.indexArg.indexProp.id', () => {
     const props = {
       index: 'p-idx',
       class: 'my-class',
       id: 'my-id'
     }
-    expect(getIndexForRender('comp', props, 'a-idx')).toBe('comp.a-idx.p-idx.my-class.my-id')
+    expect(getIndexForRender('comp', props, 'a-idx')).toBe('comp.a-idx.p-idx.my-id')
   })
 
   it('should ignore non-string index in props', () => {
@@ -39,7 +47,7 @@ describe('getIndexForRender', () => {
 
   it('should handle partial combinations correctly', () => {
     expect(getIndexForRender('div', { id: 'id1' }, 'arg1')).toBe('div.arg1.id1')
-    expect(getIndexForRender('div', { class: 'c1' }, 'arg1')).toBe('div.arg1.c1')
+    expect(getIndexForRender('div', { class: 'c1' }, 'arg1')).toBe('div.arg1')
     expect(getIndexForRender('div', { index: 'idx1', id: 'id1' })).toBe('div.idx1.id1')
   })
 

@@ -2,15 +2,38 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it, expect } from 'vitest'
-import { ref, nextTick } from 'vue'
+import { afterEach, assert, beforeEach, describe, it, expect } from 'vitest'
+import { effectScope, reactive, ref, shallowRef, nextTick, type EffectScope } from 'vue'
 import { ListDataRef } from '../ListDataRef'
+import type { ListListInput, ListSelectedList } from '../../../types/listTypes'
+
+/** Effect scopes owned by list fixtures / Области эффектов тестовых списков */
+const fixtureScopes: EffectScope[] = []
+
+/**
+ * Creates a list in a disposable effect scope.
+ *
+ * Создает список в области эффектов с обязательной очисткой.
+ * @param parameters list constructor arguments / аргументы конструктора списка
+ * @returns scoped list instance / экземпляр списка в области эффектов
+ */
+function createListData(...parameters: ConstructorParameters<typeof ListDataRef>): ListDataRef {
+  const scope = effectScope()
+  fixtureScopes.push(scope)
+  const list = scope.run(() => new ListDataRef(...parameters))
+  assert(list)
+  return list
+}
+
+afterEach(() => {
+  fixtureScopes.splice(0).forEach(scope => scope.stop())
+})
 
 describe('ListDataRef', () => {
   describe('Constructor and basic initialization', () => {
     it('should create an instance with a simple array', () => {
       const list = ['Apple', 'Banana', 'Cherry']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData).toBeInstanceOf(ListDataRef)
       expect(listData.data.value).toHaveLength(3)
@@ -21,7 +44,7 @@ describe('ListDataRef', () => {
         { label: 'Item 1', value: 'value1' },
         { label: 'Item 2', value: 'value2' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.data.value).toHaveLength(2)
       expect(listData.data.value[0]!.label).toBe('Item 1')
@@ -29,7 +52,7 @@ describe('ListDataRef', () => {
 
     it('should create an instance with reactive ref', async () => {
       const list = ref(['Apple', 'Banana'])
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.data.value).toHaveLength(2)
 
@@ -40,14 +63,14 @@ describe('ListDataRef', () => {
     })
 
     it('should handle an undefined list', () => {
-      const listData = new ListDataRef(undefined)
+      const listData = createListData(undefined)
 
       expect(listData.data.value).toHaveLength(0)
     })
 
     it('should create an instance with a parent identifier', () => {
       const list = ['Item 1']
-      const listData = new ListDataRef(list, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'parent1')
+      const listData = createListData(list, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'parent1')
 
       expect(listData.data.value[0]!.parent).toBe('parent1')
     })
@@ -56,7 +79,7 @@ describe('ListDataRef', () => {
   describe('data computed property', () => {
     it('should transform a simple array to list data items', () => {
       const list = ['Apple', 'Banana', 'Cherry']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const data = listData.data.value
 
@@ -80,7 +103,7 @@ describe('ListDataRef', () => {
         { label: 'First', value: 'val1', icon: 'star' },
         { label: 'Second', value: 'val2', icon: 'check' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const data = listData.data.value
 
@@ -99,7 +122,7 @@ describe('ListDataRef', () => {
         { name: 'Apple', id: 'apple1' },
         { name: 'Banana', id: 'banana1' }
       ]
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -124,7 +147,7 @@ describe('ListDataRef', () => {
         { label: 'Subtitle', value: 'sub1', type: 'subtitle' },
         { label: 'Item', value: 'item1', type: 'item' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const data = listData.data.value
 
@@ -137,7 +160,7 @@ describe('ListDataRef', () => {
         { label: 'Item 1', value: 'val1', index: 'custom-index-1' },
         { label: 'Item 2', value: 'val2', index: 'custom-index-2' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const data = listData.data.value
 
@@ -149,7 +172,7 @@ describe('ListDataRef', () => {
   describe('liteData computed property', () => {
     it('should return full data when a lite threshold is not reached', () => {
       const list = ['Apple', 'Banana', 'Cherry']
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -170,7 +193,7 @@ describe('ListDataRef', () => {
         { label: 'Item 2', value: 'val2', icon: 'check', custom: 'data' },
         { label: 'Item 3', value: 'val3', icon: 'home', custom: 'data' }
       ]
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -196,7 +219,7 @@ describe('ListDataRef', () => {
         { label: 'Item 2', value: 'val2', description: 'Description 2' },
         { label: 'Item 3', value: 'val3', description: 'Description 3' }
       ]
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -221,7 +244,7 @@ describe('ListDataRef', () => {
       const highlight = ref('Ban')
       const selected = ref<string>('2')
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         focus,
         highlight,
@@ -247,7 +270,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['val1', 'val2'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -272,7 +295,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana']
       const filterMode = ref(true)
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -289,7 +312,7 @@ describe('ListDataRef', () => {
   describe('map computed property', () => {
     it('should return a flat list for simple items', () => {
       const list = ['Apple', 'Banana', 'Cherry']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const map = listData.map.value
 
@@ -307,7 +330,7 @@ describe('ListDataRef', () => {
         },
         { label: 'Item 2', value: 'val2' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const map = listData.map.value
 
@@ -328,7 +351,7 @@ describe('ListDataRef', () => {
           ]
         }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const map = listData.map.value
 
@@ -346,7 +369,7 @@ describe('ListDataRef', () => {
         { label: 'Item 2', value: 'val2', type: 'item' },
         { label: 'Line', value: 'line', type: 'line' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const mapItems = listData.mapItems.value
 
@@ -363,7 +386,7 @@ describe('ListDataRef', () => {
         { label: 'Menu', value: [], type: 'menu' },
         { label: 'Subtitle', value: 'sub', type: 'subtitle' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const items = listData.items.value
 
@@ -377,7 +400,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const highlight = ref<string>()
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.highlightFirstItem.value).toBe(-1)
     })
@@ -387,7 +410,7 @@ describe('ListDataRef', () => {
       const highlight = ref('A')
       const highlightLengthStart = ref(2)
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         highlight,
@@ -401,7 +424,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const highlight = ref('Ban')
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.highlightFirstItem.value).toBe(1)
     })
@@ -410,7 +433,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const highlight = ref('CHERRY')
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.highlightFirstItem.value).toBe(2)
     })
@@ -422,7 +445,7 @@ describe('ListDataRef', () => {
       ]
       const highlight = ref('custom-2')
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.highlightFirstItem.value).toBe(1)
     })
@@ -434,7 +457,7 @@ describe('ListDataRef', () => {
       ]
       const highlight = ref('searchable')
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.highlightFirstItem.value).toBe(0)
     })
@@ -443,7 +466,7 @@ describe('ListDataRef', () => {
   describe('isSelected computed property', () => {
     it('should return false when no selection', () => {
       const list = ['Apple', 'Banana', 'Cherry']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.isSelected.value).toBe(false)
     })
@@ -455,7 +478,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref('apple')
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -474,7 +497,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['apple', 'banana'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -487,10 +510,122 @@ describe('ListDataRef', () => {
     })
   })
 
+  describe('Zero-valued selection and focus', () => {
+    it.each(['primitive', 'object'] as const)('should retain a single selected zero in a %s list', (format) => {
+      const list = format === 'primitive'
+        ? ['Zero', 'One']
+        : [{ label: 'Zero', value: 0 }, { label: 'One', value: 1 }]
+      const listData = createListData(
+        list, undefined, undefined, undefined, undefined, ref(0),
+        undefined, undefined, undefined, 1, 1
+      )
+
+      expect(listData.fullData.value[0]!.selected).toBe(true)
+      expect(listData.isSelected.value).toBe(true)
+      expect(listData.selectedList.value).toHaveLength(1)
+      expect(listData.selectedListInGroup.value).toHaveLength(1)
+      expect(listData.selectedNames.value).toEqual(['Zero'])
+      expect(listData.selectedValues.value).toEqual([0])
+      expect(listData.isSelectedMin.value).toBe(true)
+      expect(listData.isSelectedMax.value).toBe(true)
+      expect(listData.fullData.value[1]!.disabled).toBe(true)
+    })
+
+    it.each([
+      { selectedItem: { label: 'Zero', value: 0 }, expectedValue: 0 },
+      { selectedItem: { label: 'Zero', index: 0, value: 'zero' }, expectedValue: 'zero' }
+    ])('should preserve a zero identifier after another item ($expectedValue)', ({ selectedItem, expectedValue }) => {
+      const listData = createListData(
+        [{ label: 'One', value: 1 }, selectedItem], ref(0),
+        undefined, undefined, undefined, ref(0)
+      )
+
+      expect(listData.fullData.value[1]).toMatchObject({ index: 0, selected: true, focus: true })
+      expect(listData.isSelected.value).toBe(true)
+      expect(listData.isFocus()).toBe(true)
+      expect(listData.selectedNames.value).toEqual(['Zero'])
+      expect(listData.selectedValues.value).toEqual([expectedValue])
+    })
+
+    it('should recognize zero selection and focus inside a group', () => {
+      const focus = ref(0)
+      const selected = ref(0)
+      const listData = createListData([{
+        index: 'group', type: 'group', label: 'Group',
+        value: [{ label: 'Zero', value: 0 }]
+      }], focus, undefined, undefined, undefined, selected)
+      const subList = listData.getSubList(listData.data.value[0]!)
+
+      expect(subList.fullData.value[0]).toMatchObject({ focus: true, selected: true })
+      expect(subList.isFocus()).toBe(true)
+      expect(listData.isFocus()).toBe(true)
+      expect(subList.isSelected.value).toBe(true)
+      expect(listData.isSelected.value).toBe(true)
+      expect(subList.selectedListInGroup.value).toHaveLength(1)
+      expect(listData.selectedNames.value).toEqual(['Zero'])
+      expect(listData.selectedValues.value).toEqual([0])
+    })
+
+    it('should react to zero, nonzero, array and absent selection values', () => {
+      const focus = ref<number | undefined>(0)
+      const selected = ref<number | number[] | undefined>(0)
+      const listData = createListData(
+        [{ label: 'Zero', value: 0 }, { label: 'One', value: 1 }],
+        focus, undefined, undefined, undefined, selected,
+        undefined, undefined, undefined, 1, 1
+      )
+      const selectedNames = listData.selectedNames
+      expect(selectedNames.value).toEqual(['Zero'])
+      expect(listData.isFocus()).toBe(true)
+
+      selected.value = 1
+      focus.value = 1
+      expect(selectedNames.value).toEqual(['One'])
+      expect(listData.isFocus()).toBe(true)
+
+      selected.value = [0]
+      expect(selectedNames.value).toEqual(['Zero'])
+      expect(listData.selectedValues.value).toEqual([0])
+
+      selected.value = []
+      focus.value = undefined
+      expect(listData.isSelected.value).toBe(false)
+      expect(listData.isFocus()).toBe(false)
+      expect(selectedNames.value).toEqual([])
+
+      selected.value = undefined
+      expect(listData.isSelected.value).toBe(false)
+      expect(listData.selectedValues.value).toEqual([])
+      expect(listData.selectedListInGroup.value).toEqual([])
+      expect(listData.isSelectedMin.value).toBe(false)
+      expect(listData.isSelectedMax.value).toBe(false)
+
+      selected.value = 0
+      focus.value = 0
+      expect(selectedNames.value).toEqual(['Zero'])
+      expect(listData.isFocus()).toBe(true)
+      expect(listData.fullData.value[0]).toMatchObject({ focus: true, selected: true })
+    })
+
+    it('should not recognize zero when no corresponding item exists', () => {
+      const listData = createListData(
+        [{ label: 'One', value: 1 }], ref(0),
+        undefined, undefined, undefined, ref(0)
+      )
+
+      expect(listData.isSelected.value).toBe(false)
+      expect(listData.isFocus()).toBe(false)
+      expect(listData.selectedList.value).toEqual([])
+      expect(listData.selectedListInGroup.value).toEqual([])
+      expect(listData.selectedNames.value).toEqual([])
+      expect(listData.selectedValues.value).toEqual([])
+    })
+  })
+
   describe('isSelectedMin computed property', () => {
     it('should return false when min is 0', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 0)
+      const listData = createListData(list, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 0)
 
       expect(listData.isSelectedMin.value).toBe(false)
     })
@@ -502,7 +637,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['apple'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -526,7 +661,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['apple', 'banana', 'cherry'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -551,7 +686,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['apple'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -576,7 +711,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['apple', 'banana'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -597,7 +732,7 @@ describe('ListDataRef', () => {
   describe('selectedList computed property', () => {
     it('should return an empty array when no selection', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.selectedList.value).toEqual([])
     })
@@ -610,7 +745,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['apple', 'cherry'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -633,7 +768,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['item1', 'sub'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -657,7 +792,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['val1'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -680,7 +815,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['apple', 'cherry'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -696,7 +831,7 @@ describe('ListDataRef', () => {
 
     it('should return an empty array when no selection', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.selectedNames.value).toEqual([])
     })
@@ -711,7 +846,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref(['apple', 'cherry'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -727,7 +862,7 @@ describe('ListDataRef', () => {
 
     it('should return an empty array when no selection', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.selectedValues.value).toEqual([])
     })
@@ -736,14 +871,14 @@ describe('ListDataRef', () => {
   describe('isLite method', () => {
     it('should return false when lite is not set', () => {
       const list = ['Apple', 'Banana', 'Cherry']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.isLite()).toBe(false)
     })
 
     it('should return false when the list length is below a threshold', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -760,7 +895,7 @@ describe('ListDataRef', () => {
 
     it('should return true when the list length exceeds a threshold', () => {
       const list = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry']
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -779,7 +914,7 @@ describe('ListDataRef', () => {
   describe('isFocus method', () => {
     it('should return false when no focus is set', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.isFocus()).toBe(false)
     })
@@ -791,7 +926,7 @@ describe('ListDataRef', () => {
       ]
       const focus = ref<string>('apple')
 
-      const listData = new ListDataRef(list, focus)
+      const listData = createListData(list, focus)
 
       expect(listData.isFocus()).toBe(true)
     })
@@ -803,7 +938,7 @@ describe('ListDataRef', () => {
       ]
       const focus = ref<string>('cherry')
 
-      const listData = new ListDataRef(list, focus)
+      const listData = createListData(list, focus)
 
       expect(listData.isFocus()).toBe(false)
     })
@@ -814,7 +949,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana']
       const highlight = ref('xyz')
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.isHighlight()).toBe(false)
     })
@@ -823,7 +958,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana']
       const highlight = ref('App')
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.isHighlight()).toBe(true)
     })
@@ -834,7 +969,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana']
       const highlight = ref('A')
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.isHighlightActive()).toBe(true)
     })
@@ -843,7 +978,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana']
       const highlight = ref('App')
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.isHighlightActive()).toBe(true)
     })
@@ -852,7 +987,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana']
       const highlight = ref('xyz')
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.isHighlightActive()).toBe(false)
     })
@@ -861,13 +996,13 @@ describe('ListDataRef', () => {
   describe('getLength method', () => {
     it('should return the number of items in data', () => {
       const list = ['Apple', 'Banana', 'Cherry']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getLength()).toBe(3)
     })
 
     it('should return 0 for an empty list', () => {
-      const listData = new ListDataRef([])
+      const listData = createListData([])
 
       expect(listData.getLength()).toBe(0)
     })
@@ -883,7 +1018,7 @@ describe('ListDataRef', () => {
           ], type: 'group'
         }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getLengthByMap()).toBeGreaterThan(1)
     })
@@ -896,7 +1031,7 @@ describe('ListDataRef', () => {
         { label: 'Subtitle', value: 'sub', type: 'subtitle' },
         { label: 'Item 2', value: 'val2', type: 'item' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getLengthByItems()).toBe(2)
     })
@@ -905,7 +1040,7 @@ describe('ListDataRef', () => {
   describe('getFocus method', () => {
     it('should return undefined when no focus', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getFocus()).toBeUndefined()
     })
@@ -914,7 +1049,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana']
       const focus = ref<string>('1')
 
-      const listData = new ListDataRef(list, focus)
+      const listData = createListData(list, focus)
 
       expect(listData.getFocus()).toBe('1')
     })
@@ -923,7 +1058,7 @@ describe('ListDataRef', () => {
   describe('getHighlight method', () => {
     it('should return undefined when no highlight', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getHighlight()).toBeUndefined()
     })
@@ -932,7 +1067,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana']
       const highlight = ref('App')
 
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.getHighlight()).toBe('App')
     })
@@ -941,7 +1076,7 @@ describe('ListDataRef', () => {
   describe('getHighlightLengthStart method', () => {
     it('should return the default value of 2', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getHighlightLengthStart()).toBe(2)
     })
@@ -950,7 +1085,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana']
       const highlightLengthStart = ref(5)
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -964,7 +1099,7 @@ describe('ListDataRef', () => {
   describe('getSelected method', () => {
     it('should return undefined when no selection', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getSelected()).toBeUndefined()
     })
@@ -973,7 +1108,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana']
       const selected = ref('0')
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -989,7 +1124,7 @@ describe('ListDataRef', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const selected = ref(['0', '2'])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -1008,7 +1143,7 @@ describe('ListDataRef', () => {
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getSelectedByStep(0)).toBe('apple')
     })
@@ -1021,7 +1156,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref('apple')
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -1042,7 +1177,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref('cherry')
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -1062,7 +1197,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref('apple')
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -1081,7 +1216,7 @@ describe('ListDataRef', () => {
       ]
       const selected = ref('banana')
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -1097,7 +1232,7 @@ describe('ListDataRef', () => {
   describe('getItemByIndex method', () => {
     it('should return undefined for non-existent index', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getItemByIndex('999')).toBeUndefined()
     })
@@ -1107,7 +1242,7 @@ describe('ListDataRef', () => {
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const result = listData.getItemByIndex('apple')
 
@@ -1126,7 +1261,7 @@ describe('ListDataRef', () => {
           type: 'group'
         }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const result = listData.getItemByIndex('nested')
 
@@ -1138,14 +1273,14 @@ describe('ListDataRef', () => {
   describe('getItemByKey method', () => {
     it('should return undefined for an out-of-bounds key', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getItemByKey(999)).toBeUndefined()
     })
 
     it('should return item by key', () => {
       const list = ['Apple', 'Banana', 'Cherry']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const item = listData.getItemByKey(1)
 
@@ -1157,7 +1292,7 @@ describe('ListDataRef', () => {
   describe('getFirstItemByParent method', () => {
     it('should return undefined when no items with parent', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getFirstItemByParent('nonexistent')).toBeUndefined()
     })
@@ -1174,7 +1309,7 @@ describe('ListDataRef', () => {
           index: 'group1'
         }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const firstItem = listData.getFirstItemByParent('group1')
 
@@ -1186,7 +1321,7 @@ describe('ListDataRef', () => {
   describe('getLastItemByParent method', () => {
     it('should return undefined when no items with parent', () => {
       const list = ['Apple', 'Banana']
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getLastItemByParent('nonexistent')).toBeUndefined()
     })
@@ -1203,7 +1338,7 @@ describe('ListDataRef', () => {
           index: 'group1'
         }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const lastItem = listData.getLastItemByParent('group1')
 
@@ -1224,7 +1359,7 @@ describe('ListDataRef', () => {
           index: 'group1'
         }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const groupItem = listData.data.value[0]
       const subList = listData.getSubList(groupItem!)
@@ -1242,7 +1377,7 @@ describe('ListDataRef', () => {
           index: 'group1'
         }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const groupItem = listData.data.value[0]
       const subList1 = listData.getSubList(groupItem!)
@@ -1266,7 +1401,7 @@ describe('ListDataRef', () => {
         }
       ]
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         focus,
         undefined,
@@ -1283,10 +1418,83 @@ describe('ListDataRef', () => {
     })
   })
 
+  describe('Prototype property names as group indexes', () => {
+    let scope: EffectScope
+
+    beforeEach(() => {
+      scope = effectScope()
+    })
+
+    afterEach(() => {
+      scope.stop()
+    })
+
+    it.each(['constructor', 'toString', '__proto__', 'hasOwnProperty', 'valueOf'])(
+      'should create and cache an empty group with index %s', (index) => {
+        const listData = scope.run(() => createListData([{
+          index, type: 'group', label: 'Empty group'
+        }]))
+        assert(listData)
+
+        expect(listData.map.value.map(item => item.index)).toEqual([index])
+        const group = listData.data.value[0]!
+        const subList = listData.getSubList(group)
+        expect(subList).toBeInstanceOf(ListDataRef)
+        expect(subList.data.value).toEqual([])
+        expect(listData.getSubList(group)).toBe(subList)
+      }
+    )
+
+    it.each(['constructor', 'toString', '__proto__'])(
+      'should support index %s after clearing and repopulating the cache', async (index) => {
+        const list = shallowRef<ListListInput>([{
+          index, type: 'group', label: 'Group',
+          value: [{ label: 'Old child', value: 'old' }]
+        }])
+        const listData = scope.run(() => createListData(list))
+        assert(listData)
+        expect(listData.map.value.map(item => item.index)).toEqual([index, 'old'])
+
+        list.value = [{ index, type: 'group', label: 'Empty group' }]
+        await nextTick()
+
+        expect(listData.map.value.map(item => item.index)).toEqual([index])
+        expect(listData.getSubList(listData.data.value[0]!).data.value).toEqual([])
+
+        list.value = [{
+          index, type: 'group', label: 'Updated group',
+          value: [{ label: 'New child', value: 'new' }]
+        }]
+        await nextTick()
+
+        expect(listData.map.value.map(item => item.index)).toEqual([index, 'new'])
+        expect(listData.getItemByIndex('old')).toBeUndefined()
+      }
+    )
+
+    it('should keep sublists with prototype property names independent', () => {
+      const indexes = ['__proto__', 'constructor', 'toString']
+      const listData = scope.run(() => createListData(indexes.map(index => ({
+        index, type: 'group', label: index,
+        value: [{ label: `${index} child`, value: `${index}-child` }]
+      }))))
+      assert(listData)
+
+      expect(listData.mapItems.value.map(item => item.index)).toEqual(indexes.map(index => `${index}-child`))
+      const sublists = listData.data.value.map(item => listData.getSubList(item))
+      expect(new Set(sublists).size).toBe(indexes.length)
+      sublists.forEach((subList, index) => {
+        expect(subList.data.value[0]).toMatchObject({
+          parent: indexes[index], index: `${indexes[index]}-child`
+        })
+      })
+    })
+  })
+
   describe('Reactive updates', () => {
     it('should update data when the list ref changes', async () => {
       const list = ref(['Apple', 'Banana'])
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.getLength()).toBe(2)
 
@@ -1299,7 +1507,7 @@ describe('ListDataRef', () => {
     it('should update fullData when focus changes', async () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const focus = ref<string>('0')
-      const listData = new ListDataRef(list, focus)
+      const listData = createListData(list, focus)
 
       expect(listData.fullData.value[0]!.focus).toBe(true)
 
@@ -1316,7 +1524,7 @@ describe('ListDataRef', () => {
         { label: 'Banana', value: 'banana' }
       ]
       const selected = ref<string>('apple')
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -1337,7 +1545,7 @@ describe('ListDataRef', () => {
     it('should update highlight when highlight ref changes?', async () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const highlight = ref('App')
-      const listData = new ListDataRef(list, undefined, highlight)
+      const listData = createListData(list, undefined, highlight)
 
       expect(listData.highlightFirstItem.value).toBe(0)
 
@@ -1348,7 +1556,7 @@ describe('ListDataRef', () => {
     })
 
     it('should clear the sublist cache when the list changes', async () => {
-      const list = ref<any>([
+      const list = shallowRef<ListListInput>([
         {
           label: 'Group',
           value: [{ label: 'Item 1', value: 'val1' }],
@@ -1357,7 +1565,7 @@ describe('ListDataRef', () => {
         }
       ])
 
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const groupItem1 = listData.data.value[0]
       const subList1 = listData.getSubList(groupItem1!)
@@ -1384,10 +1592,125 @@ describe('ListDataRef', () => {
     })
   })
 
+  describe('Sublist source changes', () => {
+    let scope: EffectScope
+
+    beforeEach(() => {
+      scope = effectScope()
+    })
+
+    afterEach(() => {
+      scope.stop()
+    })
+
+    it.each(['group', 'menu'] as const)('should refresh %s children and retain shared state', async (type) => {
+      const list = ref([
+        {
+          index: 'target', type, label: 'Target',
+          value: [{ label: 'Old', value: 'old' }]
+        },
+        {
+          index: 'stable', type, label: 'Stable',
+          value: [{ label: 'Other', value: 'other' }]
+        }
+      ])
+      const focus = ref('new')
+      const highlight = ref('New')
+      const selected = ref('new')
+      const listData = scope.run(() => createListData(
+        list, focus, highlight, undefined, undefined, selected
+      ))
+      assert(listData)
+      const stableSubList = listData.getSubList(listData.data.value[1]!)
+      expect(listData.map.value.map(item => item.index)).toEqual(['target', 'old', 'stable', 'other'])
+
+      list.value[0]!.value = [{ label: 'New', value: 'new' }]
+      await nextTick()
+
+      const updatedSubList = listData.getSubList(listData.data.value[0]!)
+      expect(listData.getSubList(listData.data.value[1]!)).toBe(stableSubList)
+      expect(listData.map.value.map(item => item.index)).toEqual(['target', 'new', 'stable', 'other'])
+      expect(listData.getItemByIndex('old')).toBeUndefined()
+      expect(updatedSubList.fullData.value[0]).toMatchObject({
+        index: 'new', parent: 'target', focus: true, selected: true, highlight: 'New'
+      })
+      expect(listData.selectedNames.value).toEqual(['New'])
+
+      focus.value = 'other'
+      selected.value = 'other'
+      expect(updatedSubList.fullData.value[0]).toMatchObject({ focus: false, selected: false })
+      expect(stableSubList.fullData.value[0]).toMatchObject({ focus: true, selected: true })
+    })
+
+    it('should refresh children when a group with the same index is replaced', async () => {
+      const list = ref([{
+        index: 'group', type: 'group', label: 'Group',
+        value: [{ label: 'Old', value: 'old' }]
+      }])
+      const listData = scope.run(() => createListData(list))
+      assert(listData)
+      expect(listData.map.value.map(item => item.index)).toEqual(['group', 'old'])
+
+      list.value.splice(0, 1, {
+        index: 'group', type: 'group', label: 'Updated group',
+        value: [{ label: 'New', value: 'new' }]
+      })
+      await nextTick()
+
+      expect(listData.map.value.map(item => item.index)).toEqual(['group', 'new'])
+      expect(listData.getItemByIndex('old')).toBeUndefined()
+    })
+
+    it('should refresh children of a reactive list without an outer ref', () => {
+      const list = reactive([{
+        index: 'group', type: 'group', label: 'Group',
+        value: [{ label: 'Old', value: 'old' }]
+      }])
+      const listData = scope.run(() => createListData(list))
+      assert(listData)
+      expect(listData.map.value.map(item => item.index)).toEqual(['group', 'old'])
+
+      list[0]!.value = [{ label: 'New', value: 'new' }]
+
+      expect(listData.map.value.map(item => item.index)).toEqual(['group', 'new'])
+    })
+
+    it('should retain the cached sublist when the existing children array is mutated', () => {
+      const list = ref([{
+        index: 'group', type: 'group', label: 'Group',
+        value: [{ label: 'First', value: 'first' }]
+      }])
+      const listData = scope.run(() => createListData(list))
+      assert(listData)
+      const subList = listData.getSubList(listData.data.value[0]!)
+      expect(listData.map.value.map(item => item.index)).toEqual(['group', 'first'])
+
+      list.value[0]!.value.push({ label: 'Second', value: 'second' })
+
+      expect(listData.getSubList(listData.data.value[0]!)).toBe(subList)
+      expect(listData.map.value.map(item => item.index)).toEqual(['group', 'first', 'second'])
+    })
+
+    it('should retain the cached sublist when only group metadata changes', () => {
+      const list = ref([{
+        index: 'group', type: 'group', label: 'Group',
+        value: [{ label: 'Child', value: 'child' }]
+      }])
+      const listData = scope.run(() => createListData(list))
+      assert(listData)
+      const subList = listData.getSubList(listData.data.value[0]!)
+
+      list.value[0]!.label = 'Renamed group'
+
+      expect(listData.data.value[0]!.label).toBe('Renamed group')
+      expect(listData.getSubList(listData.data.value[0]!)).toBe(subList)
+    })
+  })
+
   describe('Edge cases', () => {
     it('should handle empty string as a label', () => {
       const list = [{ label: '', value: 'empty' }]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.data.value[0]!.label).toBe('')
     })
@@ -1397,7 +1720,7 @@ describe('ListDataRef', () => {
         { label: 123, value: 'num1' },
         { label: 456, value: 'num2' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.data.value[0]!.label).toBe(123)
       expect(listData.data.value[1]!.label).toBe(456)
@@ -1408,7 +1731,7 @@ describe('ListDataRef', () => {
         { label: 'True', value: true },
         { label: 'False', value: false }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.data.value[0]!.value).toBe(true)
       expect(listData.data.value[1]!.value).toBe(false)
@@ -1419,7 +1742,7 @@ describe('ListDataRef', () => {
         { label: 'Null', value: null },
         { label: 'Undefined', value: undefined }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.data.value[0]!.value).toBe(null)
       expect(listData.data.value[1]!.value).toBe(undefined)
@@ -1441,7 +1764,7 @@ describe('ListDataRef', () => {
           ]
         }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       const map = listData.map.value
 
@@ -1455,7 +1778,7 @@ describe('ListDataRef', () => {
         { label: 'Line', value: 'line', type: 'line' },
         { label: 'Space', value: 'space', type: 'space' }
       ]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.data.value).toHaveLength(4)
       expect(listData.data.value.map(i => i.type)).toEqual(['item', 'subtitle', 'line', 'space'])
@@ -1463,7 +1786,7 @@ describe('ListDataRef', () => {
 
     it('should handle an object with no label or value', () => {
       const list = [{ custom: 'data' }]
-      const listData = new ListDataRef(list)
+      const listData = createListData(list)
 
       expect(listData.data.value).toHaveLength(1)
       expect(listData.data.value[0]).toHaveProperty('type', 'item')
@@ -1475,9 +1798,9 @@ describe('ListDataRef', () => {
         { label: 'Number', value: 123 },
         { label: 'Boolean', value: true }
       ]
-      const selected = ref<any>([123, true])
+      const selected = ref<ListSelectedList>([123, true])
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         list,
         undefined,
         undefined,
@@ -1509,7 +1832,7 @@ describe('ListDataRef', () => {
       const highlight = ref<string>('')
       const filterMode = ref(false)
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         options,
         focus,
         highlight,
@@ -1555,7 +1878,7 @@ describe('ListDataRef', () => {
       const selected = ref(['apple', 'carrot'])
       const max = ref(2)
 
-      const listData = new ListDataRef(
+      const listData = createListData(
         menuData,
         undefined,
         undefined,

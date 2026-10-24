@@ -4,101 +4,134 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # EventRef Class
 
-A reactive event listener manager that simplifies attaching and detaching events to DOM elements or the `window` object. It automatically updates subscriptions when the target element (provided as a Vue `Ref`) changes.
-
-Includes automatic re-binding of listeners during dynamic element changes and full integration with the Vue lifecycle.
+Reactive extension of `EventItem` for DOM or window listeners. Constructor target and control refs are watched for changes; an owning Vue effect scope stops listeners on disposal.
 
 ## Key Features
 
-- **Reactivity** — automatic updates when the element `Ref` changes.
-- **Multi-type Support** — listen to multiple event types simultaneously.
-- **Automatic Cleanup** — efficient memory management via the reactivity system.
+- **Target rebinding** — active listeners move when the target ref changes.
+- **Explicit start** — construction alone does not enable listening.
+- **Inherited controls** — chaining, multiple event types and custom detail are provided by `EventItem`.
 
 ## Initialization
 
-Creates a new `EventRef` instance. The class automatically synchronizes event listeners with the state of the passed Vue `ref`. If the target element changes, `DesignConstructorAbstract` automatically rebinds the event.
-
-### Generic Constraints
-
-- `E extends ElementOrWindow` — type of the target element (e.g., `HTMLElement`, `Window`, or `Document`).
-- `O extends Event` — type of the event object (e.g., `MouseEvent`, `KeyboardEvent`).
-- `D extends Record<string, any>` — type of custom data (`detail`) associated with the event.
+`constructor( elementSelector?: RefOrNormal<ElementOrString<E> | undefined>, elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>, type: string | string[] = ['click'], listener?: EventListenerDetail<O, D>, options?: EventOptions, detail?: D )`
 
 **Parameters:**
-- `elementSelector?: RefOrNormal<ElementOrString<E> | undefined>` — target element or selector (can be reactive).
-- `elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>` — control element. If it is removed from the DOM, listening stops.
-- `type: string | string[] = ['click']` — event type or array of types.
-- `listener?: EventListenerDetail<O, D>` — handler function.
-- `options?: EventOptions` — listener options (`capture`, `passive`, `once`).
-- `detail?: D` — additional event data.
+
+- `elementSelector?: RefOrNormal<ElementOrString<E> | undefined>` — Target element or selector.
+- `elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>` — Optional control element or selector for DOM presence checks.
+- `type: string | string[] = ['click']` — Event type or array; defaults to click.
+- `listener?: EventListenerDetail<O, D>` — Event callback receiving event and stored detail.
+- `options?: EventOptions` — Configuration options.
+- `detail?: D` — Custom event data.
+
+## Behavior and lifecycle
+
+`E` is the target type, `O` the event type and `D` custom detail. Only the constructor target/control inputs accept refs; inherited setters accept unwrapped values. Watchers rebind after Vue’s next update. Outside an effect scope, call `stop()` manually. Control-element removal is checked when an event is handled. `resize` uses `ResizeObserver`; `scroll-sync` uses animation-frame scheduling.
+
+## Usage
 
 ```typescript
 import { EventRef } from '@dxtmisha/functional'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { effectScope, ref } from 'vue'
 
-// 1. Simple initialization with Ref
-const buttonRef = ref<HTMLButtonElement>()
-const event = new EventRef(buttonRef, undefined, 'click', (e) => {
-  console.log('Button clicked:', e.target)
-})
-
-// 2. Using multiple events and options
-const scrollEvent = new EventRef(
-  window, 
-  undefined, 
-  ['scroll', 'resize'], 
-  () => console.log('Window changed'),
-  { passive: true }
-)
-
-onMounted(() => {
-  event.start()
-  scrollEvent.start()
-})
-
-onUnmounted(() => {
-  event.stop()
-  scrollEvent.stop()
-})
+const target = /*#__PURE__*/ ref<HTMLElement>()
+const clicks = /*#__PURE__*/ ref(0)
+const scope = /*#__PURE__*/ effectScope()
+const listener = /*#__PURE__*/ scope.run(() => new EventRef(
+  target, undefined, 'click', () => { clicks.value++ }
+).start())
+scope.stop()
 ```
 
-## Lifecycle & Control
+## Methods
 
-Methods for controlling the activity of listeners.
+### Listener control (inherited)
 
-- `start(): this` — Activates event listening. If the target element (`ref`) is not yet mounted, the listeners will be added automatically as soon as it appears.
-- `stop(): this` — Deactivates listening and removes all handlers from the current element.
-- `toggle(activity: boolean): this` — Enables or disables listening based on the provided value.
-- `reset(): this` — Restarts listening. It is automatically called when key parameters (event type, options, etc.) change.
+#### `start`
 
-## State & Data Acquisition
+`start(): this`
 
-Methods for checking the object's current status.
+Enables listening; repeated calls do not duplicate subscriptions.
 
-- `isActive(): boolean` — Returns `true` if event listening is currently active.
-- `getElement(): E | undefined` — Returns the current DOM element or object on which the listeners are set.
+**Returns:** `this` — The current instance for chaining.
 
-## Configuration (Setters)
+```typescript
+listener?.start()
+```
 
-All methods in this group support method chaining and automatically update active listeners.
+#### `stop`
 
-- `setElement(element: ElementOrString): this` — Dynamically changes the target element. When used in `EventRef`, it also supports reactive `ref`.
-- `setElementControl(element: ElementOrString): this` — Sets a control element. If this element is removed from the DOM, event listening on the main element is automatically stopped (protection against memory leaks).
-- `setType(type: string | string[]): this` — Updates the types of listened events (e.g., changes `click` to `dblclick`).
-- `setListener(listener: Function): this` — Changes the event handler function without restarting the entire cycle.
-- `setOptions(options: EventOptions): this` — Updates the listener options (`capture`, `passive`, `once`).
-- `setDetail(detail: object): this` — Updates the custom data available within the handler.
+`stop(): this`
 
-## Actions
+Removes active listeners and observers; repeated calls are safe.
 
-- `dispatch(detail?: object): this` — Programmatically triggers an event on the target element. If data is passed in `detail`, it will take precedence over those set via `setDetail`.
+**Returns:** `this` — The current instance for chaining.
 
-## Special Events
+```typescript
+listener?.stop()
+```
 
-`EventRef` (via the base class `EventItem`) provides enhanced handling for certain event types:
+#### `toggle`
 
-### `resize`
-Unlike the standard `resize` event, which only works on the `window` object, here it uses `ResizeObserver`. This allows tracking dimension changes for any specific DOM element.
+`toggle(activity: boolean): this`
 
-### `scroll-sync`
-An optimized version of the scroll event. It uses `requestAnimationFrame` to synchronize the handler call with the screen refresh rate, preventing "lag" during heavy calculations during scrolling.
+Starts or stops according to the boolean argument.
+
+**Parameters:**
+
+- `activity: boolean` — Requested listening state.
+
+**Returns:** `this` — The current instance for chaining.
+
+```typescript
+listener?.toggle(false)
+```
+
+#### `reset`
+
+`reset(): this`
+
+Rebinds an active listener and leaves an inactive listener stopped.
+
+**Returns:** `this` — The current instance for chaining.
+
+```typescript
+listener?.reset()
+```
+
+### State and configuration (inherited)
+
+- `isActive(): boolean` — Reports whether listening is enabled.
+
+- `getElement(): E | undefined` — Returns the current resolved target.
+
+- `setElement(elementSelector?: ElementOrString<E>): this` — Changes the target and resets active listeners.
+
+- `setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this` — Changes the element checked for DOM presence.
+
+- `setType(type: string | string[]): this` — Changes event types and resets active listeners.
+
+- `setListener(listener: EventListenerDetail<O, D>): this` — Replaces the callback.
+
+- `setOptions(options?: EventOptions): this` — Replaces listener options, rebinding if active.
+
+- `setDetail(detail?: D): this` — Replaces the detail passed as the callback’s second argument.
+
+### Dispatch (inherited)
+
+#### `dispatch`
+
+`dispatch(detail: D | undefined = this.detail): this`
+
+Dispatches a CustomEvent for each configured type. Supplied detail becomes event.detail; the callback second argument remains the stored listener detail.
+
+**Parameters:**
+
+- `detail: D | undefined = this.detail` — Custom event data.
+
+**Returns:** `this` — The current instance for chaining.
+
+```typescript
+listener?.dispatch({ source: 'manual' })
+```

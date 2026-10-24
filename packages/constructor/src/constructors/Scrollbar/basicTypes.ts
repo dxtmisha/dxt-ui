@@ -10,6 +10,27 @@ import type { ScrollbarEmits } from './types'
 export type ScrollbarEdgeType = 'top' | 'bottom'
 
 /**
+ * Type describing event listener callbacks for scrollbar inclusion /
+ * Тип, описывающий функции-обработчики событий для включения скроллбара
+ */
+export type ScrollbarEventList = {
+  /** Handler for top boundary state change / Обработчик изменения состояния верхней границы */
+  onTop: (isTop: boolean) => void
+  /** Handler for reaching top boundary / Обработчик достижения верхней границы */
+  onReachTop: () => void
+  /** Handler for leaving top boundary / Обработчик ухода с верхней границы */
+  onLeaveTop: () => void
+  /** Handler for bottom boundary state change / Обработчик изменения состояния нижней границы */
+  onBottom: (isBottom: boolean) => void
+  /** Handler for reaching bottom boundary / Обработчик достижения нижней границы */
+  onReachBottom: () => void
+  /** Handler for leaving bottom boundary / Обработчик ухода с нижней границы */
+  onLeaveBottom: () => void
+  /** Handler for reaching or leaving any edge / Обработчик достижения или ухода с любого края */
+  onEdge: (isTop: boolean, isBottom: boolean, edge: ScrollbarEdgeType) => void
+}
+
+/**
  * Interface for describing which components need to be connected for work /
  * Интерфейс для описания, какие компоненты надо подключить для работы
  */

@@ -84,8 +84,8 @@ export class RippleDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      add: coordinator => this.item.item.add(coordinator),
-      addCenter: () => this.item.item.addCenter()
+      add: coordinator => this.item.i('item').add(coordinator),
+      addCenter: () => this.item.i('item').addCenter()
     } as EXPOSE
   }
 

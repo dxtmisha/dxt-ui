@@ -21,29 +21,42 @@ import { toRefItem } from '../../functions/ref/toRefItem'
 import type { RefOrNormal } from '../../types/refTypes'
 
 /**
- * A class for working with dates.
+ * Reactive wrapper around `Datetime`. It synchronizes input date refs with a working `Date`, exposes computed calendar fields, and refreshes those fields after mutations through `getDatetime()`.
  *
- * Класс для работы с датами.
+ * Реактивная обёртка над `Datetime`. Синхронизирует входную дату с рабочим `Date`, предоставляет вычисляемые поля календаря и обновляет их после изменений через `getDatetime()`.
  */
 export class DatetimeRef {
+  /** Original input date ref / Исходная ссылка на входную дату */
   protected item: Ref<NumberOrStringOrDate>
+  /** Output format ref / Ссылка на формат вывода */
   protected type: Ref<GeoDate>
+  /** Locale code ref / Ссылка на код локали */
   protected code: Ref<string>
+  /** Working Date ref / Ссылка на рабочий Date */
   protected date: Ref<Date>
+  /** Mutable calendar utility / Изменяемая календарная утилита */
   protected datetime: Datetime
 
+  /** Local year / Год по местному времени */
   protected year = ref<number>(2000)
+  /** Local month from 1 to 12 / Месяц по местному времени от 1 до 12 */
   protected month = ref<number>(1)
+  /** Local day of month / День месяца по местному времени */
   protected day = ref<number>(1)
+  /** Local hour / Час по местному времени */
   protected hour = ref<number>(1)
+  /** Local minute / Минута по местному времени */
   protected minute = ref<number>(1)
+  /** Local second / Секунда по местному времени */
   protected second = ref<number>(1)
 
   /**
-   * Constructor
-   * @param date date for processing. дата для обработки
-   * @param type type of date format for output. тип формата даты вывода
-   * @param code country and language code. код страны и языка
+   * Initializes DatetimeRef with the supplied configuration.
+   *
+   * Инициализирует DatetimeRef с переданными настройками.
+   * @param date Required input date, timestamp or date string. / Обязательная дата, временная метка либо строка даты.
+   * @param type Date output format; the constructor defaults to date. / Формат вывода даты; конструктор использует date по умолчанию.
+   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
    */
   constructor(
     date: RefOrNormal<NumberOrStringOrDate>,
@@ -66,144 +79,157 @@ export class DatetimeRef {
 
     watch(this.type, type => this.datetime.setType(type))
     watch(this.code, code => this.datetime.setCode(code))
-    watch(this.date, (value) => {
-      this.datetime.setDate(value)
-      this.updateDate()
-    })
+    watch(this.date, value => this.datetime.setDate(value))
 
-    this.datetime.setWatch(() => triggerRef(this.date))
+    this.datetime.setWatch((date) => {
+      this.date.value = date
+      this.updateDate()
+      triggerRef(this.date)
+    })
     this.updateDate()
   }
 
   /**
-   * Returns the basic data for the date.
+   * Returns the original input ref.
    *
-   * Возвращает основные данные для даты.
+   * Возвращает исходную входную ссылку.
+   * @returns Original input date ref. / Исходная ссылка на входную дату.
    */
   getItem(): Ref<NumberOrStringOrDate> {
     return this.item
   }
 
   /**
-   * Returns a Date object.
+   * Returns the working Date ref synchronized with the base class.
    *
-   * Возвращает объект Date.
+   * Возвращает ссылку на рабочий Date, синхронизированную с базовым классом.
+   * @returns Working Date ref. / Ссылка на рабочий Date.
    */
   getDate(): Ref<Date> {
     return this.date
   }
 
   /**
-   * Obtaining an object of the basic Datetime class.
+   * Returns the mutable base utility for calendar operations.
    *
-   * Получение объекта основного класса Datetime.
+   * Возвращает изменяемую базовую утилиту для календарных операций.
+   * @returns Mutable Datetime utility synchronized with this wrapper. / Изменяемая утилита Datetime, синхронизированная с обёрткой.
    */
   getDatetime(): Datetime {
     return this.datetime
   }
 
   /**
-   * Returns the format of hours.
+   * Returns the locale clock format, `12` or `24` as a string.
    *
-   * Возвращает формат часов.
+   * Возвращает формат часов локали: строку `12` или `24`.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getHoursType(): ComputedRef<GeoHours> {
     return computed(() => this.date.value && this.datetime.getHoursType())
   }
 
   /**
-   * Returns the code of the first day of the week.
+   * Returns the locale first weekday code: Sunday is 0.
    *
-   * Возвращает код первого дня недели.
+   * Возвращает код первого дня недели локали: воскресенье — 0.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getFirstDayCode(): ComputedRef<GeoFirstDay> {
     return computed(() => this.date.value && this.datetime.getFirstDayCode())
   }
 
   /**
-   * The method returns the year of the specified date according to local time.
+   * Returns the full local year.
    *
-   * Метод возвращает год указанной даты по местному времени.
+   * Возвращает полный год по местному времени.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getYear(): ComputedRef<number> {
     return computed(() => this.year.value)
   }
 
   /**
-   * The method returns the month in the specified date according to local time,
-   * as a zero-based value.
+   * Returns the local month, numbered 1–12.
    *
-   * Метод возвращает месяц указанной даты по местному времени, нумерация
-   * месяцев начинается с нуля для первого месяца в году.
+   * Возвращает месяц по местному времени, от 1 до 12.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getMonth(): ComputedRef<number> {
     return computed(() => this.month.value)
   }
 
   /**
-   * The method returns the day of the month for the specified date according to local time.
+   * Returns the local day of the month.
    *
-   * Метод возвращает день месяца указанной даты по местному времени.
+   * Возвращает день месяца по местному времени.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getDay(): ComputedRef<number> {
     return computed(() => this.day.value)
   }
 
   /**
-   * The method returns the hour for the specified date, according to local time.
+   * Returns the local hour, 0–23.
    *
-   * Метод возвращает часы указанной даты по местному времени.
+   * Возвращает час по местному времени, от 0 до 23.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getHour(): ComputedRef<number> {
     return computed(() => this.hour.value)
   }
 
   /**
-   * The method returns the minutes in the specified date according to local time.
+   * Returns local minutes, 0–59.
    *
-   * Метод возвращает минуты указанной даты по местному времени.
+   * Возвращает минуты по местному времени, от 0 до 59.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getMinute(): ComputedRef<number> {
     return computed(() => this.minute.value)
   }
 
   /**
-   * The method returns the seconds in the specified date according to local time.
+   * Returns local seconds, 0–59.
    *
-   * Метод возвращает секунды указанной даты по местному времени.
+   * Возвращает секунды по местному времени, от 0 до 59.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getSecond(): ComputedRef<number> {
     return computed(() => this.second.value)
   }
 
   /**
-   * Returns the last day of the week.
+   * Returns the number of days in the current month, including leap years.
    *
-   * Возвращает последний день недели.
+   * Возвращает число дней текущего месяца с учётом високосного года.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getMaxDay(): ComputedRef<number> {
     return computed(() => this.date.value && this.datetime.getMaxDay())
   }
 
   /**
-   * Enables language-sensitive date and time formatting.
+   * Returns localized output using the current format type unless an explicit type is supplied.
    *
-   * Конструктором объектов, включающих языка-зависимое форматирование даты и времени.
-   * @param type type of date format for output. тип формата даты вывода
-   * @param styleOptions the representation of the month. представление месяца
+   * Возвращает локализованный вывод текущего типа формата, если тип не указан явно.
+   * @param type Date output format; the constructor defaults to date. / Формат вывода даты; конструктор использует date по умолчанию.
+   * @param styleOptions Intl style or formatting options. / Стиль Intl либо параметры форматирования.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   locale(
-    type: GeoDate = this.type.value,
+    type?: GeoDate,
     styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions
   ): ComputedRef<string> {
     return computed(() => this.date.value && this.datetime.locale(type, styleOptions))
   }
 
   /**
-   * Output of standard data.
+   * Returns the base utility’s standard representation for the current type. `timeZone` controls timezone output where that format includes time.
    *
-   * Вывод стандартных данных.
-   * @param timeZone add time zone. добавить временную зону
+   * Возвращает стандартное представление базовой утилиты для текущего типа. `timeZone` управляет выводом часового пояса в форматах со временем.
+   * @param timeZone Whether to include timezone information; defaults to true. / Выводить ли часовой пояс; по умолчанию true.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   standard(timeZone = true as boolean): ComputedRef<string> {
     return computed(() => this.date.value && this.datetime.standard(timeZone))
@@ -213,6 +239,7 @@ export class DatetimeRef {
    * Updates all reactive date values.
    *
    * Обновляет все реактивные значения даты.
+   * @returns current instance / текущий экземпляр
    */
   protected updateDate(): this {
     this.year.value = this.datetime.getYear()

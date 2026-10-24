@@ -6,7 +6,6 @@ import {
 } from '@dxtmisha/functional'
 
 import { DraggableWrapper } from './DraggableWrapper'
-import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 
 import {
   type DraggableWrapperPropsBasic
@@ -92,11 +91,10 @@ export class DraggableWrapperDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {
-        [this.naming.getStatusClass('disabled')]: this.props.disabled === true
-      },
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
+        item: this.naming.getSubClass('item'),
         square: this.naming.getSubClass('square')
         // :classes [!] System label / Системная метка
       }
@@ -120,22 +118,17 @@ export class DraggableWrapperDesign<
    * @returns virtual node / виртуальный узел
    */
   protected initRender(): VNode {
-    const classesList = DraggableWrapperClassesData.getClassesList(this.naming.getDesign())
     return h(
-      this.props.tag || 'div',
+      this.item.tag,
       {
         ...this.getAttrs(),
-        ...this.item.events.binds,
+        ...this.item.i('events').binds,
         ref: this.element,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        style: this.styles?.value
       },
       [
-        this.slots?.default?.({
-          className: `${this.naming.getSubClass('item')} ${this.item.classes.getId()}`,
-          classClick: classesList.click,
-          classDrop: classesList.drop,
-          classPosition: classesList.position
-        }),
+        this.slots?.default?.(this.item.i('classesData').getControl(this.classes?.value.item)),
         this.renderSquare()
       ]
     )
@@ -149,10 +142,10 @@ export class DraggableWrapperDesign<
    */
   protected renderSquare(): VNode {
     return h('div', {
-      ref: this.item.square.squareElement,
+      ref: this.item.i('square').squareElement,
       class: [
         this.classes?.value.square,
-        this.item.classes.getId()
+        this.item.i('classesData').getId()
       ]
     })
   }

@@ -14,19 +14,19 @@ import { getRef } from '../../functions/ref/getRef'
 import type { RefOrNormal } from '../../types/refTypes'
 
 /**
- * Class for working with Flags.
+ * Reactive wrapper around `GeoFlag` for country and language metadata and flag icon identifiers. The internal base instance follows the supplied code ref or the current `GeoRef` location.
  *
- * Класс для работы с Флагами.
+ * Реактивная обёртка над `GeoFlag` для данных стран, языков и идентификаторов иконок флагов. Базовый экземпляр следует переданной ссылке на код либо текущему местоположению `GeoRef`.
  */
 export class GeoFlagRef {
   /** Instance for working with flags / Экземпляр для работы с флагами */
   protected flag: ComputedRef<GeoFlag>
 
   /**
-   * Constructor.
+   * Initializes GeoFlagRef with the supplied configuration.
    *
-   * Конструктор.
-   * @param code country and language code / код страны и языка
+   * Инициализирует GeoFlagRef с переданными настройками.
+   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
    */
   constructor(
     code?: RefOrNormal<string | undefined>
@@ -35,87 +35,87 @@ export class GeoFlagRef {
   }
 
   /**
-   * Getting the country code.
+   * Returns the current base code as a string.
    *
-   * Получение кода страны.
-   * @returns country code / код страны
+   * Возвращает текущий базовый код строкой.
+   * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
    */
   getCode(): string {
     return this.flag.value.getCode()
   }
 
   /**
-   * Returns information about the country and its flag.
+   * Returns the country metadata for the explicit code or current base code.
    *
-   * Возвращает информацию о стране и её флаге.
-   * @param code country code / код страны
-   * @returns reactive object with country information / реактивный объект с информацией о стране
+   * Возвращает данные страны по явному либо текущему базовому коду.
+   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  get(code: RefOrNormal<string> = this.getCode()): ComputedRef<GeoFlagItem | undefined> {
+  get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined> {
     return computed(() => this.flag.value.get(getRef(code)))
   }
 
   /**
-   * Returns information about the language and its flag.
+   * Returns language metadata for the explicit code or current base code.
    *
-   * Возвращает информацию о языке и его флаге.
-   * @param code country code / код страны
-   * @returns reactive object with language information / реактивный объект с информацией о языке
+   * Возвращает данные языка по явному либо текущему базовому коду.
+   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  getLanguage(code: RefOrNormal<string> = this.getCode()): ComputedRef<GeoFlagItem | undefined> {
+  getLanguage(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined> {
     return computed(() => this.flag.value.getLanguage(getRef(code)))
   }
 
   /**
-   * Getting a link to the flag.
+   * Returns the flag icon identifier for the explicit code or current base code.
    *
-   * Получение ссылки на флаг.
-   * @param code country code / код страны
-   * @returns reactive link to the flag / реактивная ссылка на флаг
+   * Возвращает идентификатор флага по явному либо текущему базовому коду.
+   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  getFlag(code: RefOrNormal<string> = this.getCode()): ComputedRef<string | undefined> {
+  getFlag(code?: RefOrNormal<string>): ComputedRef<string | undefined> {
     return computed(() => this.flag.value.getFlag(getRef(code)))
   }
 
   /**
-   * Getting a list of countries by an array of codes.
+   * Returns country flag items, optionally filtered by reactive codes.
    *
-   * Получение списка стран по массиву с кодами.
-   * @param codes list of country codes / список кодов стран
-   * @returns reactive list of country flag items / реактивный список элементов флагов стран
+   * Возвращает флаги стран с необязательной фильтрацией реактивным списком кодов.
+   * @param codes Optional list of country/language codes. / Необязательный список кодов стран/языков.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getList(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]> {
     return computed(() => this.flag.value.getList(getRef(codes)))
   }
 
   /**
-   * Getting a list of languages by an array of codes.
+   * Returns language flag items, optionally filtered by reactive codes.
    *
-   * Получение списка языков по массиву с кодами.
-   * @param codes list of country codes / список кодов стран
-   * @returns reactive list of language flag items / реактивный список элементов флагов языков
+   * Возвращает флаги языков с необязательной фильтрацией реактивным списком кодов.
+   * @param codes Optional list of country/language codes. / Необязательный список кодов стран/языков.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getListLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]> {
     return computed(() => this.flag.value.getListLanguage(getRef(codes)))
   }
 
   /**
-   * Getting a list of countries by an array of codes in national language.
+   * Returns country names in national languages.
    *
-   * Получение списка стран по массиву с кодами на национальном языке.
-   * @param codes list of country codes / список кодов стран
-   * @returns reactive list of country flag items in national language / реактивный список элементов флагов стран на национальном языке
+   * Возвращает названия стран на национальных языках.
+   * @param codes Optional list of country/language codes. / Необязательный список кодов стран/языков.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getNational(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]> {
     return computed(() => this.flag.value.getNational(getRef(codes)))
   }
 
   /**
-   * Getting a list of languages by an array of codes in national language.
+   * Returns language names in national languages.
    *
-   * Получение списка языков по массиву с кодами на национальном языке.
-   * @param codes list of country codes / список кодов стран
-   * @returns reactive list of language flag items in national language / реактивный список элементов флагов языков на национальном языке
+   * Возвращает названия языков на национальных языках.
+   * @param codes Optional list of country/language codes. / Необязательный список кодов стран/языков.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getNationalLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]> {
     return computed(() => this.flag.value.getNationalLanguage(getRef(codes)))

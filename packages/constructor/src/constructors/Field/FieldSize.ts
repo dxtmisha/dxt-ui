@@ -81,7 +81,7 @@ export class FieldSize {
    * @returns space DOM element / элемент DOM разделителя
    */
   protected getElementSpace(): HTMLDivElement | undefined {
-    return this.element.value?.querySelector(`.${this.naming.getSubClass('body__scoreboard__space')}`) ?? undefined
+    return this.element.value?.querySelector(`.${this.naming.getSubClass('body', 'scoreboard', 'space')}`) ?? undefined
   }
 
   /**

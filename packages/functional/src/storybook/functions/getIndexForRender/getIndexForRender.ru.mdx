@@ -4,11 +4,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getIndexForRender`
 
-Утилитарная функция, используемая для генерации уникального ключа (`key`) компонента. Ключ формируется **аддитивно**: все идентифицированные части (включая имя компонента) соединяются через точку.
+Формирует составной ключ (`key`) компонента из его имени, индексов и id. Идентификаторы добавляются через точку; CSS-классы игнорируются.
 
 ### Параметры:
 - `name: string | any` — Имя или тег компонента (база ключа).
-- `props?: T` — Свойства компонента (используются для извлечения `index`, `class` и `id`).
+- `props?: T` — Свойства компонента (используются для извлечения `index` и `id`; `class` не влияет на ключ).
 - `index?: string` — Необязательный внешний индекс.
 
 ### Возвращает:
@@ -21,19 +21,19 @@ import { getIndexForRender } from '@dxtmisha/functional'
 
 // 1. Только имя
 getIndexForRender('li') 
-// => '.li'
+// => 'li'
 
 // 2. Имя + внешний индекс
 getIndexForRender('div', {}, 'row-1') 
-// => '.div.row-1'
+// => 'div.row-1'
 
-// 3. Имя + индекс из props + класс + id
+// 3. Имя + индекс из props + id (класс игнорируется)
 getIndexForRender('button', { 
   index: 'primary', 
   class: 'btn-large', 
   id: 'submit-01' 
 }) 
-// => '.button.primary.btn-large.submit-01'
+// => 'button.primary.submit-01'
 
 // 4. Полный набор (внешний аргумент + всё из props)
 getIndexForRender('span', { 
@@ -41,7 +41,7 @@ getIndexForRender('span', {
   class: 'text-red', 
   id: 'id-99' 
 }, 'arg-idx') 
-// => '.span.arg-idx.p-idx.text-red.id-99'
+// => 'span.arg-idx.p-idx.id-99'
 
 // 5. Пустой случай
 getIndexForRender(undefined)
@@ -51,8 +51,9 @@ getIndexForRender(undefined)
 ### Логика сборки ключа
 
 Ключ собирается по цепочке:
-1.  **`.name`** (если `name` является строкой)
+1.  **`name`** (если `name` является строкой, без точки в начале)
 2.  `+ .index` (если передан аргумент `index`)
 3.  `+ .props.index` (если есть в свойствах и является строкой)
-4.  `+ .className` (если есть в свойствах)
-5.  `+ .props.id` (if present in properties)
+4.  `+ .props.id` (если есть в свойствах)
+
+CSS-классы и стили не участвуют в формировании ключа. Изменение оформления должно сохранять идентичность узла, фокус и состояние компонента. Для соседних элементов списка передавайте разные стабильные идентификаторы через `props.key`, `index` или `props.id`.

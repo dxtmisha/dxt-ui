@@ -18,13 +18,13 @@ export class ImageEvent {
    * Constructor for initializing image load event watching.
    *
    * Конструктор для инициализации отслеживания события загрузки изображения.
-   * @param type function returning ImageType object / функция, возвращающая объект ImageType
    * @param data function returning ImageData object / функция, возвращающая объект ImageData
+   * @param type function returning ImageType object / функция, возвращающая объект ImageType
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly type: () => ImageType,
     protected readonly data: () => ImageData,
+    protected readonly type: () => ImageType,
     protected readonly emits?: ConstrEmit<ImageEmits>
   ) {
     watch(this.data().image, this.onLoad, { immediate: true })

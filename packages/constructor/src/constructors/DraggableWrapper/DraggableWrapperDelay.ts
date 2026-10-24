@@ -1,25 +1,38 @@
 // ai-none
 
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 import type { DraggableWrapperProps } from './props'
 
 /**
- * Helper class for managing the start delay timeout of draggable sorting /
- * Вспомогательный класс для управления таймером задержки начала перетаскивания
+ * Helper class for managing the start delay timeout of draggable sorting.
+ *
+ * Вспомогательный класс для управления таймером задержки начала перетаскивания.
  */
-export class DraggableWrapperDelay {
+export class DraggableWrapperDelay extends DesignLifecycleAbstract {
+  /** Active delay timeout timer / Активный таймер задержки */
   protected timeout?: ReturnType<typeof setTimeout>
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input data / входные данные
    */
   constructor(
     protected readonly props: DraggableWrapperProps
-  ) { }
+  ) {
+    super()
+  }
+
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.stop()
+  }
 
   /**
-   * Returns the drag delay value /
-   * Возвращает значение задержки перетаскивания
+   * Returns the drag delay value.
+   *
+   * Возвращает значение задержки перетаскивания.
    * @returns delay in milliseconds / задержка в миллисекундах
    */
   get delay(): number {
@@ -27,8 +40,9 @@ export class DraggableWrapperDelay {
   }
 
   /**
-   * Checks if a delay timeout is currently active /
-   * Проверяет, активен ли в данный момент таймер задержки
+   * Checks if a delay timeout is currently active.
+   *
+   * Проверяет, активен ли в данный момент таймер задержки.
    * @returns check result / результат проверки
    */
   is(): boolean {
@@ -36,8 +50,9 @@ export class DraggableWrapperDelay {
   }
 
   /**
-   * Starts the delay timeout for drag-and-drop initiation /
-   * Запускает таймер задержки для начала перетаскивания
+   * Starts the delay timeout for drag-and-drop initiation.
+   *
+   * Запускает таймер задержки для начала перетаскивания.
    * @param callback function to execute after the delay / функция для выполнения после задержки
    */
   start(callback: () => void): void {
@@ -49,8 +64,9 @@ export class DraggableWrapperDelay {
   }
 
   /**
-   * Stops/clears the delay timeout if it is active /
-   * Останавливает/очищает таймер задержки, если он активен
+   * Stops/clears the delay timeout if it is active.
+   *
+   * Останавливает/очищает таймер задержки, если он активен.
    * @returns true if an active timer was stopped / true, если активный таймер был остановлен
    */
   stop(): boolean {

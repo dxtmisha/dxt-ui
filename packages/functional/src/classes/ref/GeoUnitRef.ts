@@ -16,9 +16,9 @@ import { GeoRef } from './GeoRef'
 import type { RefOrNormal } from '../../types/refTypes'
 
 /**
- * Reactive class for managing localized unit formatting and automatic conversions.
+ * Reactive wrapper for `GeoUnit` that formats metric source values using regional units. Locale and numeric refs update saved computed results without recreating the wrapper.
  *
- * Реактивный класс для управления локализованным форматированием единиц измерения и автоматической конвертацией.
+ * Реактивная обёртка `GeoUnit`, форматирующая исходные метрические значения в региональных единицах. Ссылки на локаль и число обновляют сохранённые вычисляемые результаты без пересоздания обёртки.
  */
 export class GeoUnitRef {
   /** Location reference / Ссылка на локацию */
@@ -28,8 +28,10 @@ export class GeoUnitRef {
   protected unitInstance: ComputedRef<GeoUnit>
 
   /**
-   * Constructor.
-   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
+   * Initializes GeoUnitRef with the supplied configuration.
+   *
+   * Инициализирует GeoUnitRef с переданными настройками.
+   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
    */
   constructor(code?: RefOrNormal<string>) {
     this.location = toRefItem(code)
@@ -37,22 +39,22 @@ export class GeoUnitRef {
   }
 
   /**
-   * Returns the standard location code.
+   * Returns the resolved standard locale as a computed ref.
    *
-   * Возвращает стандартный код местоположения.
-   * @returns standard location code / стандартный код местоположения
+   * Возвращает разрешённую стандартную локаль вычисляемой ссылкой.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   getLocation(): ComputedRef<string> {
     return computed(() => this.unitInstance.value.getLocation())
   }
 
   /**
-   * Formats millimeter value, converting to inches if overridden by locale unit settings.
+   * Formats millimeters; converts to `inch` where regional settings require it.
    *
-   * Форматирует значение в миллиметрах, конвертируя в дюймы, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует миллиметры; преобразует в `inch`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   millimeter(
     value: RefOrNormal<NumberOrString>,
@@ -62,12 +64,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats centimeter value, converting to inches if overridden by locale unit settings.
+   * Formats centimeters; converts to `inch` where regional settings require it.
    *
-   * Форматирует значение в сантиметрах, конвертируя в дюймы, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует сантиметры; преобразует в `inch`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   centimeter(
     value: RefOrNormal<NumberOrString>,
@@ -77,12 +79,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats meter value, converting to feet if overridden by locale unit settings.
+   * Formats meters; converts to `foot` where regional settings require it.
    *
-   * Форматирует значение в метрах, конвертируя в футы, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует метры; преобразует в `foot`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   meter(
     value: RefOrNormal<NumberOrString>,
@@ -92,12 +94,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats kilometer value, converting to miles if overridden by locale unit settings.
+   * Formats kilometers; converts to `mile` where regional settings require it.
    *
-   * Форматирует значение в километрах, конвертируя в мили, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует километры; преобразует в `mile`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   kilometer(
     value: RefOrNormal<NumberOrString>,
@@ -107,12 +109,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats square meter value, converting to square feet if overridden by locale unit settings.
+   * Formats square meters; converts to `square-foot` where regional settings require it.
    *
-   * Форматирует значение в квадратных метрах, конвертируя в квадратные футы, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует квадратные метры; преобразует в `square-foot`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   squareMeter(
     value: RefOrNormal<NumberOrString>,
@@ -122,12 +124,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats hectare value, converting to acres if overridden by locale unit settings.
+   * Formats hectares; converts to `acre` where regional settings require it.
    *
-   * Форматирует значение в гектарах, конвертируя в акры, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует гектары; преобразует в `acre`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   hectare(
     value: RefOrNormal<NumberOrString>,
@@ -137,12 +139,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats gram value, converting to ounces if overridden by locale unit settings.
+   * Formats grams; converts to `ounce` where regional settings require it.
    *
-   * Форматирует значение в граммах, конвертируя в унции, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует граммы; преобразует в `ounce`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   gram(
     value: RefOrNormal<NumberOrString>,
@@ -152,12 +154,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats kilogram value, converting to pounds if overridden by locale unit settings.
+   * Formats kilograms; converts to `pound` where regional settings require it.
    *
-   * Форматирует значение в килограммах, конвертируя в фунты, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует килограммы; преобразует в `pound`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   kilogram(
     value: RefOrNormal<NumberOrString>,
@@ -167,12 +169,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats tonne value, converting to short tons if overridden by locale unit settings.
+   * Formats tonnes; converts to `ton` where regional settings require it.
    *
-   * Форматирует значение в тоннах, конвертируя в короткие тонны, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует тонны; преобразует в `ton`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   tonne(
     value: RefOrNormal<NumberOrString>,
@@ -182,12 +184,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats milliliter value, converting to fluid ounces if overridden by locale unit settings.
+   * Formats milliliters; converts to `fluid-ounce` where regional settings require it.
    *
-   * Форматирует значение в миллилитрах, конвертируя в жидкие унции, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует миллилитры; преобразует в `fluid-ounce`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   milliliter(
     value: RefOrNormal<NumberOrString>,
@@ -197,12 +199,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats liter value, converting to gallons if overridden by locale unit settings.
+   * Formats liters; converts to `gallon` where regional settings require it.
    *
-   * Форматирует значение в литрах, конвертируя в галлоны, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует литры; преобразует в `gallon`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   liter(
     value: RefOrNormal<NumberOrString>,
@@ -212,12 +214,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats celsius value, converting to fahrenheit if overridden by locale unit settings.
+   * Formats degrees Celsius; converts to `fahrenheit` where regional settings require it.
    *
-   * Форматирует значение в градусах Цельсия, конвертируя в градусы Фаренгейта, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует градусы Цельсия; преобразует в `fahrenheit`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   celsius(
     value: RefOrNormal<NumberOrString>,
@@ -227,12 +229,12 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats kilometer per hour value, converting to miles per hour if overridden by locale unit settings.
+   * Formats kilometers per hour; converts to `mile-per-hour` where regional settings require it.
    *
-   * Форматирует значение в километрах в час, конвертируя в мили в час, если это переопределено настройками локали.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Форматирует километры в час; преобразует в `mile-per-hour`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   kilometerPerHour(
     value: RefOrNormal<NumberOrString>,
@@ -242,13 +244,13 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats the value for the specified unit reactively, converting and formatting it according to the locale.
+   * Selects the metric source unit reactively and delegates conversion and formatting to `GeoUnit`.
    *
-   * Форматирует значение для указанной единицы измерения реактивно, преобразуя и форматируя его в соответствии с локалью.
-   * @param value numeric value to format / числовое значение для форматирования
-   * @param unit unit of measurement / единица измерения
-   * @param options formatting options / параметры форматирования
-   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   * Реактивно выбирает исходную метрическую единицу и делегирует преобразование и форматирование `GeoUnit`.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param unit Unit identifier. / Идентификатор единицы.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   format(
     value: RefOrNormal<NumberOrString>,

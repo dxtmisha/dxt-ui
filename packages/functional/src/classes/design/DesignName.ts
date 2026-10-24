@@ -1,15 +1,12 @@
 import {
   forEach,
-  isString,
   toCamelCase
 } from '@dxtmisha/functional-basic'
 
 /**
- * Stores the design component name and generates class names and CSS custom property names.
- * Normalizes the design and component segments and uses them for BEM naming.
+ * BEM naming helper for design components. The constructor splits `design.component` at the first two segments, normalizes each segment, and caches the design and component class names.
  *
- * Хранит имя компонента дизайна и формирует имена классов и пользовательских CSS-свойств.
- * Нормализует сегменты дизайна и компонента и использует их для именования по БЭМ.
+ * Помощник именования компонентов по БЭМ. Конструктор берёт первые два сегмента `design.component`, нормализует их и сохраняет названия дизайна и класса компонента.
  */
 export class DesignName {
   /** Component name split by levels / Название компонента, разбитое по уровням */
@@ -20,10 +17,10 @@ export class DesignName {
   protected readonly designName: string
 
   /**
-   * Creates a naming helper for a design component.
+   * Initializes DesignName with the supplied configuration.
    *
-   * Создает помощник для именования компонента дизайна.
-   * @param name component name with the design prefix / имя компонента с префиксом дизайна
+   * Инициализирует DesignName с переданными настройками.
+   * @param name Design-prefixed component name, such as d1.button. / Имя компонента с префиксом дизайна, например d1.button.
    */
   constructor(name: string) {
     this.name = this.initName(name)
@@ -32,56 +29,56 @@ export class DesignName {
   }
 
   /**
-   * Getting the design name.
+   * Returns the first normalized name segment.
    *
-   * Получение названия дизайна.
-   * @returns design name / название дизайна
+   * Возвращает первый нормализованный сегмент имени.
+   * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
    */
   getDesign(): string {
     return this.designName
   }
 
   /**
-   * Getting the class name.
+   * Returns the normalized component class name.
    *
-   * Получение названия класса.
-   * @returns class name / название класса
+   * Возвращает нормализованное имя класса компонента.
+   * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
    */
   getName(): string {
     return this.className
   }
 
   /**
-   * Getting the class name for the status.
+   * Joins modifier segments using `--` after the component name.
    *
-   * Получение названия класса для статуса.
-   * @param name list of class names by levels / список названий классов по уровням
-   * @returns status class name / название класса для статуса
+   * Объединяет сегменты модификатора через `--` после имени компонента.
+   * @param names Name segments, joined in the supplied order. / Сегменты имени в порядке передачи.
+   * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
    */
-  getStatusClass(name: string | string[]): string {
-    return `${this.getName()}--${isString(name) ? name : name.join('--')}`
+  getStatusClass(...names: (string | number | undefined)[]): string {
+    return `${this.getName()}--${names.flat().join('--')}`
   }
 
   /**
-   * Getting the property name for the style.
+   * Builds a CSS custom property name with the `--` prefix and `-sys-` namespace.
    *
-   * Получение названия свойства для стиля.
-   * @param name list of class names by levels / список названий классов по уровням
-   * @returns CSS custom property name / название CSS-переменной
+   * Формирует имя CSS-переменной с префиксом `--` и пространством имён `-sys-`.
+   * @param names Name segments, joined in the supplied order. / Сегменты имени в порядке передачи.
+   * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
    */
-  getStyle(name: string | string[]): string {
-    return `--${this.getName()}-sys-${isString(name) ? name : name.join('-')}`
+  getStyle(...names: (string | number | undefined)[]): string {
+    return `--${this.getName()}-sys-${names.flat().join('-')}`
   }
 
   /**
-   * Getting the class name of a sub-element.
+   * Joins element segments using `__` after the component name.
    *
-   * Получение названия класса подэлемента.
-   * @param name list of class names by levels / список названий классов по уровням
-   * @returns sub-element class name / название класса подэлемента
+   * Объединяет сегменты элемента через `__` после имени компонента.
+   * @param names Name segments, joined in the supplied order. / Сегменты имени в порядке передачи.
+   * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
    */
-  getSubClass(name: string | string[]): string {
-    return `${this.getName()}__${isString(name) ? name : name.join('__')}`
+  getSubClass(...names: (string | number | undefined)[]): string {
+    return `${this.getName()}__${names.flat().join('__')}`
   }
 
   /**

@@ -2,19 +2,21 @@ import { computed, ref } from 'vue'
 import { isDomRuntime, ScrollbarWidth } from '@dxtmisha/functional-basic'
 
 /**
- * Class for getting the scroll width as a reactive item.
+ * Reactive wrapper for asynchronous scrollbar measurement. In a DOM runtime it requests the scrollbar flag and pixel width independently through `ScrollbarWidth`.
  *
- * Класс для получения ширины скролла в виде реактивного элемента.
+ * Реактивная обёртка асинхронного измерения полосы прокрутки. В DOM-среде независимо запрашивает флаг и ширину в пикселях через `ScrollbarWidth`.
  */
 export class ScrollbarWidthRef {
-  /** Reactive item/ Реактивный элемент */
+  /** Result of ScrollbarWidth.is(): true for a measured width other than -1 that is at most 8 pixels; initially undefined. / Результат ScrollbarWidth.is(): true для измеренной ширины не равной -1 и не больше 8 пикселей; изначально undefined. */
   readonly item = ref<boolean>()
 
-  /** Reactive width/ Реактивная ширина */
+  /** Width in pixels; initially 0 and updated independently. / Ширина в пикселях; изначально 0, обновляется независимо. */
   readonly width = ref<number>(0)
 
   /**
-   * Constructor
+   * Initializes ScrollbarWidthRef with the supplied configuration.
+   *
+   * Инициализирует ScrollbarWidthRef с переданными настройками.
    */
   constructor() {
     if (isDomRuntime()) {
@@ -28,10 +30,6 @@ export class ScrollbarWidthRef {
     }
   }
 
-  /**
-   * Checks whether the scroll width is defined.
-   *
-   * Проверяет, определена ли ширина скролла.
-   */
+  /** True once item is defined, regardless of the flag value or width readiness. / Истина после определения item независимо от значения флага и готовности ширины. */
   readonly is = computed<boolean>(() => this.item.value !== undefined)
 }

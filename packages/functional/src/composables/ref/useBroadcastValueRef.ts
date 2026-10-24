@@ -37,7 +37,7 @@ export function useBroadcastValueRef<T>(
   const item = ref<BroadcastValueItem<T>>(executeFunction(defaultValue))
 
   if (isDomRuntime()) {
-    const broadcast = new BroadcastMessage(
+    const broadcast = new BroadcastMessage<{ message: BroadcastValueItem<T> }>(
       fullName,
       (event) => {
         if (item.value !== event.data.message) {

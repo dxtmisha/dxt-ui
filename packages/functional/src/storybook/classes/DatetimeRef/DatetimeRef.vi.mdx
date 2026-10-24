@@ -4,77 +4,107 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp DatetimeRef
 
-Một lớp để làm việc với ngày và giờ theo cách phản ứng (reactive). Nó cung cấp một lớp bọc cấp cao xung quanh tiện ích `Datetime`, đảm bảo tự động đồng bộ hóa dữ liệu ngày tháng với các thuộc tính phản ứng của Vue và ngôn ngữ (locales).
+Lớp bọc phản ứng cho `Datetime`. Đồng bộ ref ngày đầu vào với `Date` đang dùng, cung cấp trường lịch computed và cập nhật sau thay đổi qua `getDatetime()`.
 
-## Các tính năng chính
+## Tính năng chính
 
-- **Tính phản ứng** — tích hợp với Vue `ref` và `computed`. Tự động theo dõi các thay đổi dữ liệu đầu vào và cập nhật tất cả các thành phần ngày tháng liên quan.
-- **Tính đồng bộ** — liên kết nội bộ với lớp `Datetime`. Bất kỳ thao tác ngày tháng nào qua đối tượng cơ sở (`getDatetime()`) đều được phản ánh ngay lập tức trong các thuộc tính phản ứng.
-- **Bản địa hóa** — hỗ trợ tự động định dạng ngày giờ quốc tế thông qua `Geo` và `GeoIntl`.
-- **Accessor thuận tiện** — truy cập nhanh các thành phần ngày (năm, tháng, ngày, v.v.) qua các thuộc tính computed.
+- **Ngày bắt buộc** — nhận chuỗi ngày, dấu thời gian hoặc `Date`, trực tiếp hoặc qua ref.
+- **Trường lịch** — tháng được đánh số từ 1 đến 12.
+- **Định dạng** — kết quả địa phương hóa và chuẩn đều là computed ref.
 
 ## Khởi tạo
 
-Tạo một thực thể `DatetimeRef` mới. Lớp này tự động đồng bộ hóa với dữ liệu phản ứng được cung cấp. Nếu không có tham số nào được truyền vào, các giá trị mặc định (ngày hiện tại và ngôn ngữ hệ thống) sẽ được sử dụng.
+`constructor( date: RefOrNormal<NumberOrStringOrDate>, type: RefOrNormal<GeoDate> = 'date', code: RefOrNormal<string> = Geo.getLocation() )`
 
 **Tham số:**
-- `date: RefOrNormal<NumberOrStringOrDate>` — ngày để khởi tạo (chuỗi ISO, timestamp, đối tượng `Date`, hoặc một `ref` trỏ đến chúng).
-- `type: RefOrNormal<GeoDate> = 'date'` — định dạng đầu ra mặc định (phản ứng hoặc thông thường).
-- `code: RefOrNormal<string> = Geo.getLocation()` — mã ngôn ngữ (phản ứng hoặc thông thường, ví dụ: 'vi-VN').
+
+- `date: RefOrNormal<NumberOrStringOrDate>` — Ngày, dấu thời gian hoặc chuỗi ngày bắt buộc.
+- `type: RefOrNormal<GeoDate> = 'date'` — Kiểu đầu ra ngày; hàm dựng mặc định date.
+- `code: RefOrNormal<string> = Geo.getLocation()` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
+
+## Hành vi và vòng đời
+
+Locale mặc định được lấy từ `Geo.getLocation()` lúc tạo. Truyền ref locale để theo dõi thay đổi về sau. Watcher ngày, kiểu và locale dùng lịch Vue; chờ `nextTick()` sau khi đổi ref. Thay đổi qua `getDatetime()` thông báo đồng bộ. `getItem()` giữ ref đầu vào gốc và không bị ghi lại bởi thay đổi lớp cơ sở. Dùng phạm vi hiệu ứng để dọn watcher. Gán `Date` mới cho `getDate().value` hoặc sửa qua `getDatetime()`; sửa trực tiếp bên trong `Date` không tự thông báo Vue.
+
+## Cách dùng
 
 ```typescript
 import { DatetimeRef } from '@dxtmisha/functional'
-import { ref } from 'vue'
+import { effectScope, nextTick, ref } from 'vue'
 
-// 1. Khởi tạo với một chuỗi phản ứng
-const date = ref('2023-10-27')
-const dt = new DatetimeRef(date, 'date', 'vi-VN')
-
-// 2. Thời gian hiện tại (mặc định)
-const now = new DatetimeRef()
-
-// 3. Sử dụng một ngôn ngữ phản ứng
-const locale = ref('en-US')
-const dtLocale = new DatetimeRef(new Date(), 'datetime', locale)
+const source = /*#__PURE__*/ ref('2024-02-29T12:00:00')
+const code = /*#__PURE__*/ ref('en-US')
+const scope = /*#__PURE__*/ effectScope()
+const datetime = /*#__PURE__*/ scope.run(() => new DatetimeRef(source, 'date', code))
+const formatted = /*#__PURE__*/ datetime?.locale()
+source.value = '2025-01-01T00:00:00'
+await nextTick()
+code.value = 'vi-VN'
+await nextTick()
+scope.stop()
 ```
 
-## Phương thức và Tham số
+## Phương thức
 
-- `getItem(): Ref<NumberOrStringOrDate>` — Trả về tham chiếu phản ứng đến giá trị ngày tháng ban đầu.
-- `getDate(): Ref<Date>` — Trả về tham chiếu phản ứng đến đối tượng `Date` nội bộ. Dùng để đồng bộ với lớp cơ sở.
-- `getDatetime(): Datetime` — Trả về thực thể của tiện ích `Datetime`. Cho phép dùng các phương thức điều hướng (`moveBy...`, `clone...`) trong khi vẫn giữ tính phản ứng.
-- `getHoursType(): ComputedRef<GeoHours>` — Xác định định dạng giờ (12 hoặc 24 giờ) dựa trên ngôn ngữ và cài đặt hiện tại.
-- `getFirstDayCode(): ComputedRef<GeoFirstDay>` — Trả về mã cho ngày đầu tiên của tuần (0 cho Chủ Nhật, 1 cho Thứ Hai) theo ngôn ngữ.
-- `getMaxDay(): ComputedRef<number>` — Trả về số ngày trong tháng hiện tại (có tính đến năm nhuận).
+### Trạng thái bên dưới
 
-## Các thành phần ngày tháng
+- `getItem(): Ref<NumberOrStringOrDate>` — Trả ref đầu vào ban đầu.
 
-Các phương thức này trả về các thuộc tính `ComputedRef` tự động cập nhật khi trạng thái đối tượng thay đổi:
+- `getDate(): Ref<Date>` — Trả ref Date đang dùng, đồng bộ với lớp cơ sở.
 
-- `getYear(): ComputedRef<number>` — Trả về năm đầy đủ.
-- `getMonth(): ComputedRef<number>` — Trả về tháng (1–12).
-- `getDay(): ComputedRef<number>` — Trả về ngày trong tháng (1-31).
-- `getHour(): ComputedRef<number>` — Trả về giờ của ngày hiện tại.
-- `getMinute(): ComputedRef<number>` — Trả về phút.
-- `getSecond(): ComputedRef<number>` — Trả về giây.
+- `getDatetime(): Datetime` — Trả tiện ích cơ sở có thể thay đổi để thao tác lịch.
 
-## Định dạng
+### Trường lịch
 
-### `locale`
+- `getYear(): ComputedRef<number>` — Trả năm đầy đủ theo giờ địa phương.
 
-Trả về một chuỗi ngày tháng được bản địa hóa và định dạng theo ngôn ngữ và cài đặt.
+- `getMonth(): ComputedRef<number>` — Trả tháng địa phương từ 1 đến 12.
+
+- `getDay(): ComputedRef<number>` — Trả ngày trong tháng theo giờ địa phương.
+
+- `getHour(): ComputedRef<number>` — Trả giờ địa phương từ 0 đến 23.
+
+- `getMinute(): ComputedRef<number>` — Trả phút địa phương từ 0 đến 59.
+
+- `getSecond(): ComputedRef<number>` — Trả giây địa phương từ 0 đến 59.
+
+- `getMaxDay(): ComputedRef<number>` — Trả số ngày trong tháng hiện tại, có tính năm nhuận.
+
+- `getHoursType(): ComputedRef<GeoHours>` — Trả định dạng đồng hồ locale dưới dạng chuỗi `12` hoặc `24`.
+
+- `getFirstDayCode(): ComputedRef<GeoFirstDay>` — Trả mã ngày đầu tuần theo locale: Chủ nhật là 0.
+
+### Định dạng
+
+#### `locale`
+
+`locale( type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions ): ComputedRef<string>`
+
+Trả định dạng địa phương theo kiểu hiện tại trừ khi truyền kiểu cụ thể.
 
 **Tham số:**
-- `type: GeoDate` — loại định dạng ('date', 'time', 'datetime', 'month', 'year', v.v.). Mặc định là loại từ hàm khởi tạo.
-- `styleOptions?: object` — các tùy chọn định dạng `Intl.DateTimeFormat` bổ sung.
 
-**Trả về:** `ComputedRef<string>`
+- `type?: GeoDate` — Kiểu đầu ra ngày; hàm dựng mặc định date.
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — Kiểu Intl hoặc tùy chọn định dạng.
 
-### `standard`
+**Trả về:** `ComputedRef<string>` — Kết quả computed; đọc qua .value.
 
-Trả về chuỗi ngày tháng ISO tiêu chuẩn.
+```typescript
+const formatted = /*#__PURE__*/ datetime?.locale('date', 'long')
+```
+
+#### `standard`
+
+`standard(timeZone = true as boolean): ComputedRef<string>`
+
+Trả biểu diễn chuẩn của tiện ích cơ sở cho kiểu hiện tại. `timeZone` điều khiển phần múi giờ khi định dạng có thời gian.
 
 **Tham số:**
-- `timeZone: boolean` — có bao gồm thông tin múi giờ hay không. Mặc định: `true`.
 
-**Trả về:** `ComputedRef<string>`
+- `timeZone = true as boolean` — Có thêm thông tin múi giờ; mặc định true.
+
+**Trả về:** `ComputedRef<string>` — Kết quả computed; đọc qua .value.
+
+```typescript
+const standard = /*#__PURE__*/ datetime?.standard(false)
+```

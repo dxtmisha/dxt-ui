@@ -1,8 +1,9 @@
 // ai-none
 
 import { ref } from 'vue'
-import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
+import type { DesignName } from '@dxtmisha/functional'
 
+import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import type { DraggableWrapperProps } from './props'
 
 /**
@@ -43,34 +44,32 @@ export class DraggableWrapperSquare {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param classes classes helper instance / экземпляр помощника по классам
+   * @param naming component naming helper / помощник именования компонента
+   * @param classes classes helper instance factory / фабрика экземпляра помощника по классам
    */
   constructor(
     protected readonly props: DraggableWrapperProps,
-    protected readonly classes: DraggableWrapperClassesData
+    protected readonly naming: DesignName,
+    protected readonly classes: () => DraggableWrapperClassesData
   ) {
-    const className = this.classes.getName()
-
     this.property = {
-      width: `--${className}-sys-square-width`,
-      height: `--${className}-sys-square-height`,
-      marginTop: `--${className}-sys-square-margin-top`,
-      marginRight: `--${className}-sys-square-margin-right`,
-      marginBottom: `--${className}-sys-square-margin-bottom`,
-      marginLeft: `--${className}-sys-square-margin-left`
+      width: this.naming.getStyle('square', 'width'),
+      height: this.naming.getStyle('square', 'height'),
+      marginTop: this.naming.getStyle('square', 'margin', 'top'),
+      marginRight: this.naming.getStyle('square', 'margin', 'right'),
+      marginBottom: this.naming.getStyle('square', 'margin', 'bottom'),
+      marginLeft: this.naming.getStyle('square', 'margin', 'left')
     }
   }
 
   /**
-   * Checks if the square placeholder is currently shown.
+   * Returns the square placeholder element.
    *
-   * Проверяет, отображается ли в данный момент элемент-заполнитель.
-   * @returns check result / результат проверки
+   * Возвращает элемент-заполнитель.
+   * @returns square placeholder element or undefined / элемент-заполнитель или undefined
    */
-  isShow(): boolean {
-    return Boolean(
-      this.squareElement.value?.classList.contains(this.classes.list.show)
-    )
+  getElement(): HTMLElement | undefined {
+    return this.squareElement.value
   }
 
   /**
@@ -84,13 +83,15 @@ export class DraggableWrapperSquare {
   }
 
   /**
-   * Returns the square placeholder element.
+   * Checks if the square placeholder is currently shown.
    *
-   * Возвращает элемент-заполнитель.
-   * @returns square placeholder element or undefined / элемент-заполнитель или undefined
+   * Проверяет, отображается ли в данный момент элемент-заполнитель.
+   * @returns check result / результат проверки
    */
-  getElement(): HTMLElement | undefined {
-    return this.squareElement.value
+  isShow(): boolean {
+    return Boolean(
+      this.squareElement.value?.classList.contains(this.classes().getList().squareShow)
+    )
   }
 
   /**
@@ -136,8 +137,8 @@ export class DraggableWrapperSquare {
       item.parentElement.insertBefore(squareElement, child)
     }
 
-    squareElement.classList.add(this.classes.list.show)
-    this.classes.setBlockSelection(true)
+    squareElement.classList.add(this.classes().getList().squareShow)
+    this.classes().setBlockSelection(true)
   }
 
   /**
@@ -149,18 +150,35 @@ export class DraggableWrapperSquare {
     const squareElement = this.squareElement.value
 
     if (squareElement) {
-      this.classes.setBlockSelection(false)
-      squareElement.classList.remove(this.classes.list.show)
+      this.classes().setBlockSelection(false)
+      squareElement.classList.remove(this.classes().getList().squareShow)
 
       this.resetClasses()
       this.resetStyles()
 
-      const element = this.classes.getElement()
+      const element = this.classes().getElement()
 
       if (element) {
         element.insertBefore(squareElement, null)
       }
     }
+  }
+
+  /**
+   * Filters component internal/identifier classes from item classes list.
+   *
+   * Фильтрует внутренние классы и идентификаторы компонента из списка классов элемента.
+   * @param classes input classes array / массив входящих классов
+   * @returns filtered classes array / массив отфильтрованных классов
+   */
+  protected filterItemClasses(classes: string[]): string[] {
+    const name = this.classes().getName()
+    const id = this.classes().getId()
+
+    return classes.filter((classItem) => {
+      return !classItem.startsWith(name)
+        && !classItem.startsWith(id)
+    })
   }
 
   /**
@@ -171,7 +189,7 @@ export class DraggableWrapperSquare {
    * @returns check result / результат проверки
    */
   protected getBefore(item: HTMLElement): boolean {
-    const items = this.classes.findItems()
+    const items = this.classes().findItems()
 
     if (items) {
       for (const el of items) {
@@ -213,20 +231,55 @@ export class DraggableWrapperSquare {
   }
 
   /**
-   * Filters component internal/identifier classes from item classes list.
+   * Resets and cleans all applied classes.
    *
-   * Фильтрует внутренние классы и идентификаторы компонента из списка классов элемента.
-   * @param classes input classes array / массив входящих классов
-   * @returns filtered classes array / массив отфильтрованных классов
+   * Сбрасывает и очищает все примененные классы.
    */
-  protected filterItemClasses(classes: string[]): string[] {
-    const name = this.classes.getName()
-    const id = this.classes.getId()
+  protected resetClasses(): void {
+    const squareElement = this.squareElement.value
 
-    return classes.filter((classItem) => {
-      return !classItem.startsWith(name)
-        && !classItem.startsWith(id)
-    })
+    if (
+      squareElement
+      && this.cachedClasses.length > 0
+    ) {
+      squareElement.classList.remove(...this.cachedClasses)
+      this.cachedClasses = []
+    }
+  }
+
+  /**
+   * Resets and removes CSS style property variables.
+   *
+   * Сбрасывает и удаляет переменные свойств стилей CSS.
+   */
+  protected resetStyles(): void {
+    const element = this.squareElement.value
+
+    if (element) {
+      element.style.removeProperty(this.property.width)
+      element.style.removeProperty(this.property.height)
+      element.style.removeProperty(this.property.marginTop)
+      element.style.removeProperty(this.property.marginRight)
+      element.style.removeProperty(this.property.marginBottom)
+      element.style.removeProperty(this.property.marginLeft)
+    }
+  }
+
+  /**
+   * Caches styles declaration properties.
+   *
+   * Кэширует свойства объявления стилей.
+   * @param style CSS declaration properties / свойства объявления CSS
+   */
+  protected updateCached(style: Partial<CSSStyleDeclaration>): void {
+    this.cached = {
+      width: style.width,
+      height: style.height,
+      marginTop: style.marginTop,
+      marginRight: style.marginRight,
+      marginBottom: style.marginBottom,
+      marginLeft: style.marginLeft
+    }
   }
 
   /**
@@ -262,58 +315,6 @@ export class DraggableWrapperSquare {
       squareElement.style.setProperty(this.property.marginRight, style.marginRight || 'unset')
       squareElement.style.setProperty(this.property.marginBottom, style.marginBottom || 'unset')
       squareElement.style.setProperty(this.property.marginLeft, style.marginLeft || 'unset')
-    }
-  }
-
-  /**
-   * Caches styles declaration properties.
-   *
-   * Кэширует свойства объявления стилей.
-   * @param style CSS declaration properties / свойства объявления CSS
-   */
-  protected updateCached(style: Partial<CSSStyleDeclaration>): void {
-    this.cached = {
-      width: style.width,
-      height: style.height,
-      marginTop: style.marginTop,
-      marginRight: style.marginRight,
-      marginBottom: style.marginBottom,
-      marginLeft: style.marginLeft
-    }
-  }
-
-  /**
-   * Resets and cleans all applied classes.
-   *
-   * Сбрасывает и очищает все примененные классы.
-   */
-  protected resetClasses(): void {
-    const squareElement = this.squareElement.value
-
-    if (
-      squareElement
-      && this.cachedClasses.length > 0
-    ) {
-      squareElement.classList.remove(...this.cachedClasses)
-      this.cachedClasses = []
-    }
-  }
-
-  /**
-   * Resets and removes CSS style property variables.
-   *
-   * Сбрасывает и удаляет переменные свойств стилей CSS.
-   */
-  protected resetStyles(): void {
-    const element = this.squareElement.value
-
-    if (element) {
-      element.style.removeProperty(this.property.width)
-      element.style.removeProperty(this.property.height)
-      element.style.removeProperty(this.property.marginTop)
-      element.style.removeProperty(this.property.marginRight)
-      element.style.removeProperty(this.property.marginBottom)
-      element.style.removeProperty(this.property.marginLeft)
     }
   }
 }

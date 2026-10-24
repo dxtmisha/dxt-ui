@@ -1,4 +1,3 @@
-import { watch } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrItems,
@@ -70,6 +69,7 @@ export class Image extends DesignLogicAbstract<
   protected override readonly constructorItems: ConstrItems<ImageConstructors> = {
     adaptiveItem: {
       item: ImageAdaptiveItem,
+      conditions: () => ImageAdaptiveItem.is(this.props),
       parameters: () => [
         this.props,
         this.element,
@@ -81,9 +81,9 @@ export class Image extends DesignLogicAbstract<
       item: ImageBackground,
       parameters: () => [
         this.props,
-        () => this.i('data'),
+        () => this.i('adaptiveItem'),
         () => this.i('coordinator'),
-        () => this.i('adaptiveItem')
+        () => this.i('data')
       ]
     },
     coordinator: {
@@ -102,9 +102,10 @@ export class Image extends DesignLogicAbstract<
     },
     event: {
       item: ImageEvent,
+      conditions: () => ImageData.isImage(this.i('type').get()) && this.i('data').isImage(),
       parameters: () => [
-        () => this.i('type'),
         () => this.i('data'),
+        () => this.i('type'),
         this.emits
       ]
     },
@@ -112,10 +113,10 @@ export class Image extends DesignLogicAbstract<
       item: ImageImg,
       parameters: () => [
         this.props,
-        () => this.i('type'),
-        () => this.i('position'),
         () => this.i('background'),
-        () => this.i('lazy')
+        () => this.i('lazy'),
+        () => this.i('position'),
+        () => this.i('type')
       ]
     },
     lazy: {
@@ -136,8 +137,8 @@ export class Image extends DesignLogicAbstract<
       item: ImageText,
       parameters: () => [
         this.props,
-        () => this.i('type'),
-        () => this.i('data')
+        () => this.i('data'),
+        () => this.i('type')
       ]
     },
     type: {
@@ -148,29 +149,6 @@ export class Image extends DesignLogicAbstract<
       item: ImageUint8Array,
       parameters: () => [this.props]
     }
-  }
-
-  /** Callback after component mounting / Обработчик после монтирования компонента */
-  protected override readonly onMounted = (): void => {
-    watch(
-      () => ImageAdaptiveItem.is(this.props),
-      (isAdaptive) => {
-        if (isAdaptive) {
-          this.i('adaptiveItem')
-        }
-      },
-      { immediate: true }
-    )
-
-    watch(
-      () => ImageData.isImage(this.i('type').get()) && this.i('data').isImage(),
-      (isImage) => {
-        if (isImage) {
-          this.i('event')
-        }
-      },
-      { immediate: true }
-    )
   }
 
   /**
@@ -219,7 +197,7 @@ export class Image extends DesignLogicAbstract<
   get classes(): ConstrClassObject {
     const type = this.i('type').get()
     const data: ConstrClassObject = {
-      [this.naming.getStatusClass(['type', String(type)])]: Boolean(type),
+      [this.naming.getStatusClass('type', String(type))]: Boolean(type),
       [this.naming.getStatusClass('background')]: ImageBackground.is(type) && this.i('background').isImage(),
       [this.naming.getStatusClass('img')]: ImageImg.is(this.props) && this.i('img').is(),
       notranslate: true

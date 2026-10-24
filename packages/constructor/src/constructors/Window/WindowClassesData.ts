@@ -150,7 +150,7 @@ export class WindowClassesData {
    * Поиск и возврат элемента контекста тела окна для текущего компонента.
    */
   findBodyContext(): HTMLDivElement | undefined {
-    return domQuerySelector<HTMLDivElement>(`.${this.naming.getName()}.${this.id} .${this.naming.getSubClass('body__context')}`)
+    return domQuerySelector<HTMLDivElement>(`.${this.naming.getName()}.${this.id} .${this.naming.getSubClass('body', 'context')}`)
   }
 
   /**

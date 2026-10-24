@@ -1,10 +1,18 @@
-import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { RippleItem } from './RippleItem'
 
-import type { RippleComponents, RippleEmits, RippleSlots } from './types'
 import type { RippleProps } from './props'
+import type { RippleComponents, RippleEmits, RippleSlots } from './types'
+
+/** Ripple dependency constructors type / Тип конструкторов зависимостей Ripple */
+export type RippleConstructors = {
+  /** Ripple item constructor / Конструктор элемента волны */
+  item: typeof RippleItem
+}
 
 /**
  * Base Ripple logic class (orchestrator).
@@ -15,55 +23,41 @@ import type { RippleProps } from './props'
  * Обрабатывает нажатия указателя на контейнере эффекта и делегирует создание
  * элементов волны вспомогательному классу RippleItem.
  */
-export class Ripple {
-  /** Ripple item manager instance / Экземпляр менеджера элементов волны */
-  readonly item: RippleItem
-
-  /**
-   * Constructor for creating a ripple instance.
-   *
-   * Конструктор для создания экземпляра эффекта волны (ripple).
-   * @param props input properties / входные свойства
-   * @param element target element where ripples are rendered / целевой элемент, в котором рендерятся волны
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
-   * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
-   * @param constructors.RippleItemConstructor class constructor for the ripple item / конструктор класса элемента волны
-   */
-  constructor(
-    protected readonly props: RippleProps,
-    protected readonly element: Ref<HTMLSpanElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<RippleComponents, RippleProps>,
-    protected readonly slots?: RippleSlots,
-    protected readonly emits?: ConstrEmit<RippleEmits>,
-    constructors: {
-      RippleItemConstructor?: typeof RippleItem
-    } = {}
-  ) {
-    const {
-      RippleItemConstructor = RippleItem
-    } = constructors
-
-    this.item = new RippleItemConstructor(props, element, naming)
+export class Ripple extends DesignLogicAbstract<
+  HTMLSpanElement,
+  RippleComponents,
+  RippleEmits,
+  RippleSlots,
+  RippleProps,
+  RippleConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<RippleConstructors> = {
+    item: {
+      item: RippleItem,
+      parameters: () => [
+        this.props,
+        this.element,
+        this.naming
+      ]
+    }
   }
 
   /**
    * Pointer press handler that adds a new ripple effect element at the cursor coordinates.
-   * Only the main button of the primary pointer triggers the effect.
+   * Only the main button of the primary pointer triggers the effect when not disabled.
    *
    * Обработчик нажатия указателя, который добавляет новый элемент эффекта волны по координатам курсора.
-   * Эффект запускается только основной кнопкой основного указателя.
+   * Эффект запускается только основной кнопкой основного указателя, если компонент не отключён.
    * @param event pointer press event / событие нажатия указателя
    */
   readonly onPointerdown = (event: PointerEvent): void => {
     if (
-      event.button === 0
+      !this.props.disabled
+      && event.button === 0
       && event.isPrimary
     ) {
-      this.item.add({
+      this.i('item').add({
         x: event.offsetX,
         y: event.offsetY
       })

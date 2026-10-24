@@ -1,8 +1,9 @@
 // ai-none
 
+import type { DesignName } from '@dxtmisha/functional'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
-import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
+import type { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 
 /**
  * Class managing client interaction coordinates and dragging states.
@@ -35,16 +36,16 @@ export class DraggableWrapperClient {
    * Constructor.
    *
    * Конструктор.
-   * @param classes class data / данные классов
+   * @param naming component naming helper / помощник именования компонента
+   * @param classes class data factory / фабрика данных классов
    */
   constructor(
-    protected readonly classes: DraggableWrapperClassesData
+    protected readonly naming: DesignName,
+    protected readonly classes: () => DraggableWrapperClassesData
   ) {
-    const className = this.classes.getName()
-
     this.property = {
-      x: `--${className}-sys-client-x`,
-      y: `--${className}-sys-client-y`
+      x: this.naming.getStyle('client', 'x'),
+      y: this.naming.getStyle('client', 'y')
     }
   }
 
@@ -89,6 +90,18 @@ export class DraggableWrapperClient {
   }
 
   /**
+   * Sets active drop status.
+   *
+   * Устанавливает активный статус сброса.
+   * @param drop active drop status / активный статус сброса
+   * @returns this instance / текущий экземпляр класса
+   */
+  setDrop(drop: boolean): this {
+    this.drop = drop
+    return this
+  }
+
+  /**
    * Sets offset X coordinate.
    *
    * Устанавливает координату смещения X.
@@ -109,18 +122,6 @@ export class DraggableWrapperClient {
    */
   setY(y: number): this {
     this.y = y
-    return this
-  }
-
-  /**
-   * Sets active drop status.
-   *
-   * Устанавливает активный статус сброса.
-   * @param drop active drop status / активный статус сброса
-   * @returns this instance / текущий экземпляр класса
-   */
-  setDrop(drop: boolean): this {
-    this.drop = drop
     return this
   }
 
@@ -172,7 +173,7 @@ export class DraggableWrapperClient {
    * @param y coordinate Y / координата Y
    */
   update(x: number, y: number): void {
-    const element = this.classes.getElement()
+    const element = this.classes().getElement()
 
     if (element) {
       element.style.setProperty(this.property.x, `${x - this.x}px`)
@@ -201,8 +202,9 @@ export class DraggableWrapperClient {
    * Вычисляет и обновляет стили на элементе обертки.
    */
   protected updateStyle(): void {
-    const element = this.classes.getElement()
-    const rect = this.classes.getRect()
+    const classes = this.classes()
+    const element = classes.getElement()
+    const rect = classes.getRect()
 
     if (
       !element

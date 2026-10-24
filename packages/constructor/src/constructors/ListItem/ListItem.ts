@@ -176,7 +176,7 @@ export class ListItem {
     return {
       [this.naming.getStatusClass('selected')]: this.props.selected && this.props.selectionStyle === 'none',
       [this.naming.getStatusClass('selectionStyle')]: this.props.selectionStyle !== 'none',
-      [this.naming.getStatusClass(`selectionStyle--${this.props.selectionStyle}`)]: Boolean(this.props.selectionStyle),
+      [this.naming.getStatusClass('selectionStyle', this.props.selectionStyle)]: Boolean(this.props.selectionStyle),
       [this.naming.getStatusClass('description')]: this.description.is,
       [getClassTagAStatic(this.naming.getDesign())]: true
     }

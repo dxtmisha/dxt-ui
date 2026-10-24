@@ -4,77 +4,107 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс DatetimeRef
 
-Класс для реактивной работы с датами и временем. Он предоставляет высокоуровневую обертку над утилитой `Datetime`, обеспечивая автоматическую синхронизацию данных о дате с реактивными пропсами Vue и локалями.
+Реактивная обёртка над `Datetime`. Синхронизирует входную дату с рабочим `Date`, предоставляет вычисляемые поля календаря и обновляет их после изменений через `getDatetime()`.
 
 ## Ключевые особенности
 
-- **Реактивность** — интеграция с Vue `ref` и `computed`. Автоматически отслеживает изменения входных данных и обновляет все связанные компоненты даты.
-- **Синхронизация** — внутренняя привязка к классу `Datetime`. Любые манипуляции с датой через базовый объект (`getDatetime()`) мгновенно отражаются в реактивных свойствах.
-- **Локализация** — автоматическая поддержка международных форматов даты и времени через `Geo` и `GeoIntl`.
-- **Удобные аксессоры** — быстрый доступ к компонентам даты (год, месяц, день и т.д.) через вычисляемые свойства.
+- **Обязательная дата** — строка, временная метка или `Date`, напрямую либо в ссылке.
+- **Календарные поля** — месяцы нумеруются от 1 до 12.
+- **Форматирование** — локализованный и стандартный вывод представлены вычисляемыми ссылками.
 
 ## Инициализация
 
-Создает новый экземпляр `DatetimeRef`. Класс автоматически синхронизируется с переданными реактивными данными. Если параметры не переданы, используются значения по умолчанию (текущая дата и локаль).
+`constructor( date: RefOrNormal<NumberOrStringOrDate>, type: RefOrNormal<GeoDate> = 'date', code: RefOrNormal<string> = Geo.getLocation() )`
 
 **Параметры:**
-- `date: RefOrNormal<NumberOrStringOrDate>` — дата для инициализации (ISO строка, timestamp, объект `Date` или `ref` на них).
-- `type: RefOrNormal<GeoDate> = 'date'` — формат вывода по умолчанию (реактивный или обычный).
-- `code: RefOrNormal<string> = Geo.getLocation()` — код локали (реактивный или обычный, например, 'ru-RU').
+
+- `date: RefOrNormal<NumberOrStringOrDate>` — Обязательная дата, временная метка либо строка даты.
+- `type: RefOrNormal<GeoDate> = 'date'` — Формат вывода даты; конструктор использует date по умолчанию.
+- `code: RefOrNormal<string> = Geo.getLocation()` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+
+## Поведение и жизненный цикл
+
+Локаль по умолчанию берётся из `Geo.getLocation()` при создании. Для последующих изменений передайте ссылку на локаль. Наблюдатели даты, типа и локали используют планировщик Vue: после изменения ссылок дождитесь `nextTick()`. Изменения через `getDatetime()` уведомляют синхронно. `getItem()` сохраняет исходную ссылку и не перезаписывается изменениями базового класса. Для очистки наблюдателей используйте область эффектов. Присваивайте новый `Date` в `getDate().value` либо меняйте дату через `getDatetime()`: встроенные мутации `Date` сами не уведомляют Vue.
+
+## Использование
 
 ```typescript
 import { DatetimeRef } from '@dxtmisha/functional'
-import { ref } from 'vue'
+import { effectScope, nextTick, ref } from 'vue'
 
-// 1. Инициализация с реактивной строкой
-const date = ref('2023-10-27')
-const dt = new DatetimeRef(date, 'date', 'ru-RU')
-
-// 2. Текущее время (по умолчанию)
-const now = new DatetimeRef()
-
-// 3. С использованием реактивной локали
-const locale = ref('en-US')
-const dtLocale = new DatetimeRef(new Date(), 'datetime', locale)
+const source = /*#__PURE__*/ ref('2024-02-29T12:00:00')
+const code = /*#__PURE__*/ ref('en-US')
+const scope = /*#__PURE__*/ effectScope()
+const datetime = /*#__PURE__*/ scope.run(() => new DatetimeRef(source, 'date', code))
+const formatted = /*#__PURE__*/ datetime?.locale()
+source.value = '2025-01-01T00:00:00'
+await nextTick()
+code.value = 'vi-VN'
+await nextTick()
+scope.stop()
 ```
 
-## Методы и параметры
+## Методы
 
-- `getItem(): Ref<NumberOrStringOrDate>` — Возвращает реактивную ссылку на исходное значение даты, переданное в конструктор.
-- `getDate(): Ref<Date>` — Возвращает реактивную ссылку на внутренний объект `Date`. Используется для синхронизации с базовым классом.
-- `getDatetime(): Datetime` — Возвращает экземпляр утилиты `Datetime`. Позволяет использовать методы навигации (`moveBy...`, `clone...`), сохраняя реактивность.
-- `getHoursType(): ComputedRef<GeoHours>` — Определяет формат времени (12 или 24 часа) на основе текущей локали и настроек.
-- `getFirstDayCode(): ComputedRef<GeoFirstDay>` — Возвращает код первого дня недели (0 для воскресенья, 1 для понедельника) согласно локали.
-- `getMaxDay(): ComputedRef<number>` — Возвращает количество дней в текущем месяце (с учетом високосных лет).
+### Исходное состояние
 
-## Компоненты даты
+- `getItem(): Ref<NumberOrStringOrDate>` — Возвращает исходную входную ссылку.
 
-Эти методы возвращают `ComputedRef`, которые автоматически обновляются при изменении даты:
+- `getDate(): Ref<Date>` — Возвращает ссылку на рабочий Date, синхронизированную с базовым классом.
 
-- `getYear(): ComputedRef<number>` — Возвращает полный год.
-- `getMonth(): ComputedRef<number>` — Возвращает месяц (1–12).
-- `getDay(): ComputedRef<number>` — Возвращает число месяца (1-31).
-- `getHour(): ComputedRef<number>` — Возвращает часы текущей даты.
-- `getMinute(): ComputedRef<number>` — Возвращает минуты.
-- `getSecond(): ComputedRef<number>` — Возвращает секунды.
+- `getDatetime(): Datetime` — Возвращает изменяемую базовую утилиту для календарных операций.
 
-## Форматирование
+### Календарные поля
 
-### `locale`
+- `getYear(): ComputedRef<number>` — Возвращает полный год по местному времени.
 
-Возвращает строку даты, отформатированную в соответствии с локалью и настройками.
+- `getMonth(): ComputedRef<number>` — Возвращает месяц по местному времени, от 1 до 12.
+
+- `getDay(): ComputedRef<number>` — Возвращает день месяца по местному времени.
+
+- `getHour(): ComputedRef<number>` — Возвращает час по местному времени, от 0 до 23.
+
+- `getMinute(): ComputedRef<number>` — Возвращает минуты по местному времени, от 0 до 59.
+
+- `getSecond(): ComputedRef<number>` — Возвращает секунды по местному времени, от 0 до 59.
+
+- `getMaxDay(): ComputedRef<number>` — Возвращает число дней текущего месяца с учётом високосного года.
+
+- `getHoursType(): ComputedRef<GeoHours>` — Возвращает формат часов локали: строку `12` или `24`.
+
+- `getFirstDayCode(): ComputedRef<GeoFirstDay>` — Возвращает код первого дня недели локали: воскресенье — 0.
+
+### Форматирование
+
+#### `locale`
+
+`locale( type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions ): ComputedRef<string>`
+
+Возвращает локализованный вывод текущего типа формата, если тип не указан явно.
 
 **Параметры:**
-- `type: GeoDate` — тип формата ('date', 'time', 'datetime', 'month', 'year' и др.). По умолчанию используется тип из конструктора.
-- `styleOptions?: object` — дополнительные опции форматирования `Intl.DateTimeFormat`.
 
-**Возвращает:** `ComputedRef<string>`
+- `type?: GeoDate` — Формат вывода даты; конструктор использует date по умолчанию.
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — Стиль Intl либо параметры форматирования.
 
-### `standard`
+**Возвращает:** `ComputedRef<string>` — Вычисляемый результат; читайте через .value.
 
-Возвращает стандартную ISO-строку даты.
+```typescript
+const formatted = /*#__PURE__*/ datetime?.locale('date', 'long')
+```
+
+#### `standard`
+
+`standard(timeZone = true as boolean): ComputedRef<string>`
+
+Возвращает стандартное представление базовой утилиты для текущего типа. `timeZone` управляет выводом часового пояса в форматах со временем.
 
 **Параметры:**
-- `timeZone: boolean` — включать ли информацию о временной зоне. По умолчанию: `true`.
 
-**Возвращает:** `ComputedRef<string>`
+- `timeZone = true as boolean` — Выводить ли часовой пояс; по умолчанию true.
+
+**Возвращает:** `ComputedRef<string>` — Вычисляемый результат; читайте через .value.
+
+```typescript
+const standard = /*#__PURE__*/ datetime?.standard(false)
+```

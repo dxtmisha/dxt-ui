@@ -119,7 +119,7 @@ export class CollageItem {
       ?? this.props.collageBarAttrs?.position
 
     return {
-      [this.naming.getStatusClass(`collageBarPosition--${position}`)]: Boolean(position)
+      [this.naming.getStatusClass('collageBarPosition', position)]: Boolean(position)
     }
   }
 }

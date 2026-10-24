@@ -1,0 +1,42 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/DesignLifecycleAbstract'/>
+
+# Lớp DesignLifecycleAbstract
+
+Lớp cơ sở trừu tượng cho phụ thuộc có callback vòng đời đồng bộ. `DesignLogicAbstract` chỉ gọi các callback này trên đối tượng kế thừa lớp này.
+
+## Tính năng chính
+
+- **Callback tùy chọn** — có thể bỏ qua một hoặc cả hai callback.
+- **Hợp đồng đồng bộ** — callback trả về `void`.
+- **Gọi tường minh** — khởi tạo phụ thuộc không tự chạy callback.
+
+## Khởi tạo
+
+Kế thừa lớp trừu tượng này; không khởi tạo trực tiếp.
+
+## Hành vi và vòng đời
+
+Lớp không có phương thức công khai. Lớp con cung cấp các thuộc tính readonly `onMounted?: () => void` và `onUnmounted?: () => void`. Lớp con quản lý tác vụ bất đồng bộ và dọn dẹp.
+
+## Cách dùng
+
+```typescript
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+
+class Dependency extends DesignLifecycleAbstract {
+  mounted = false
+  override readonly onMounted = (): void => { this.mounted = true }
+  override readonly onUnmounted = (): void => { this.mounted = false }
+}
+```
+
+## Thuộc tính
+
+- `onMounted: (() => void) | undefined` — Callback gắn đồng bộ tùy chọn.
+- `onUnmounted: (() => void) | undefined` — Callback dọn dẹp đồng bộ tùy chọn.
+
+## Phương thức
+
+Không có phương thức công khai; sử dụng các thuộc tính được mô tả ở trên.

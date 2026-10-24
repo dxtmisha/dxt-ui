@@ -4,39 +4,48 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp EffectScopeGlobal
 
-Một lớp tiện ích cung cấp `effectScope` Vue toàn cục và tách biệt (detached). Điều này cho phép chạy các hiệu ứng phản ứng (watchers, computed properties) không bị ràng buộc vào vòng đời của bất kỳ thành phần cụ thể nào, đảm bảo chúng không tự động bị hủy khi một thành phần bị gỡ bỏ (unmount).
+Điểm truy cập tĩnh để chạy hiệu ứng trong phạm vi Vue tách rời được tạo lười. Phạm vi được lưu qua `ServerStorage`; quyền sở hữu SSR phụ thuộc ngữ cảnh yêu cầu đã khởi tạo.
 
-Phạm vi được khởi tạo lười biếng (lazy) khi gọi `run` lần đầu tiên và được tạo dưới dạng phạm vi "tách biệt" (`effectScope(true)`), có nghĩa là nó sẽ không bị nắm giữ bởi bất kỳ phạm vi cha nào.
+## Tính năng chính
 
-## Các tính năng chính
+- **Phạm vi lười** — tạo khi gọi `run()` lần đầu.
+- **Vòng đời tách rời** — dừng phạm vi thành phần gọi không dừng các hiệu ứng này.
+- **Giữ kết quả** — kết quả và lỗi callback được chuyển về bên gọi.
 
-- **Sự tồn tại toàn cục** — các hiệu ứng tồn tại cùng với ứng dụng.
-- **Phạm vi tách biệt** — được tạo với `effectScope(true)`, ngăn chặn việc bị hủy vô tình bởi các phạm vi cha.
-- **Khởi tạo lười biếng** — phạm vi nội bộ chỉ được tạo khi cần thiết lần đầu tiên.
-- **Quản lý phạm vi** — nhóm các hiệu ứng phản ứng toàn cục lại với nhau để quản lý có tổ chức.
-- **Dễ sử dụng** — phương thức tĩnh đơn giản để chạy bất kỳ hàm phản ứng nào.
+## Hành vi và vòng đời
 
-## Hành động
+Khởi tạo `ServerStorage` bằng ngữ cảnh yêu cầu hiện tại trước khi dùng SSR. Lớp không có phương thức dừng; callback nên trả hàm dọn dẹp khi bên gọi cần dừng riêng. Công việc bất đồng bộ sau `await` không tự thuộc phạm vi.
 
-### `run`
-
-Thực thi hàm được cung cấp trong phạm vi hiệu ứng toàn cục.
-
-**Tham số:**
-- `fn: () => T` — hàm cần thực thi (thường chứa logic phản ứng như `watch` hoặc `computed`).
-
-**Giá trị trả về:** `T | undefined`
+## Cách dùng
 
 ```typescript
 import { EffectScopeGlobal } from '@dxtmisha/functional'
-import { watch, ref } from 'vue'
+import { ref, watch } from 'vue'
 
-const globalState = ref(0)
+const source = /*#__PURE__*/ ref(0)
+const observed = /*#__PURE__*/ ref(0)
+const stop = /*#__PURE__*/ EffectScopeGlobal.run(() => watch(source, value => {
+  observed.value = value
+}))
+stop?.()
+```
 
-// Trình theo dõi (watcher) này sẽ tồn tại ngay cả khi thành phần tạo ra nó được gỡ bỏ
-EffectScopeGlobal.run(() => {
-  watch(globalState, (val) => {
-    console.log('Trạng thái toàn cục thay đổi:', val)
-  })
-})
+## Phương thức
+
+### Thực thi hiệu ứng
+
+#### `run`
+
+`run<T>(fn: () => T): T | undefined`
+
+Chạy callback đồng bộ trong phạm vi hiệu ứng tách rời đã lưu và trả kết quả.
+
+**Tham số:**
+
+- `fn: () => T` — Callback chạy trong phạm vi tách rời.
+
+**Trả về:** `T | undefined` — Kết quả callback hoặc undefined khi phạm vi đã lưu không hoạt động.
+
+```typescript
+const result = /*#__PURE__*/ EffectScopeGlobal.run(() => 0)
 ```

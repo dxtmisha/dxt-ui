@@ -4,65 +4,80 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp GeoRef
 
-Một lớp tĩnh (static) có tính phản ứng để quản lý dữ liệu địa lý toàn cục. Nó cung cấp quyền truy cập tập trung vào các thông tin như quốc gia hiện tại, ngôn ngữ, locale tiêu chuẩn và ngày đầu tiên của tuần, đảm bảo rằng mọi thay đổi đều được phản ánh trong toàn bộ ứng dụng.
+Facade phản ứng tĩnh cho ngữ cảnh địa lý hiện tại. Lưu shallow ref tới `Geo.getItem()` và các phép chiếu computed qua `ServerStorage`.
 
-## Các tính năng chính
+## Tính năng chính
 
-- **Tính phản ứng toàn cục** — sử dụng trạng thái phản ứng chung cho dữ liệu địa lý.
-- **Quản lý tập trung** — là "điểm tin cậy duy nhất" (single point of truth) cho các cài đặt quốc gia và ngôn ngữ.
-- **Truy cập tĩnh** — các phương thức có thể được gọi trực tiếp trên lớp mà không cần khởi tạo instance.
+- **Ref dùng chung** — getter dùng lại ref đã lưu trong ngữ cảnh hiện tại.
+- **Cập nhật locale** — `set()` thay mục địa lý và cập nhật phép chiếu.
+- **Ngữ cảnh SSR** — quyền sở hữu bộ nhớ đệm theo `ServerStorage`.
 
-## Sử dụng Toàn cục
+## Hành vi và vòng đời
 
-Vì `GeoRef` là một lớp tĩnh (static class), các phương thức của nó được gọi trực tiếp mà không cần tạo một instance. Nó phục vụ như một điểm truy cập duy nhất cho các cài đặt địa lý của ứng dụng.
+Dữ liệu quốc gia khác locale được yêu cầu: `en-VN` có ngôn ngữ quốc gia `vi` và ngôn ngữ vị trí `en`. `getFirstDay()` trả ký hiệu như `Mo` hoặc `Su`, không phải mã số. `setValueDefault()` cấu hình dự phòng; cookie locale hiện có có thể được ưu tiên. Khởi tạo lưu trữ yêu cầu trước SSR và đọc ref trong ngữ cảnh sở hữu.
+
+## Cách dùng
 
 ```typescript
 import { GeoRef } from '@dxtmisha/functional'
-import { watch } from 'vue'
 
-// 1. Lấy giá trị phản ứng
-const country = GeoRef.getCountry()
-console.log('Quốc gia hiện tại:', country.value)
-
-// 2. Theo dõi các thay đổi
-watch(GeoRef.getLanguage(), (lang) => {
-  console.log('Ngôn ngữ đã thay đổi thành:', lang)
-})
-
-// 3. Thay đổi vị trí toàn cục
-GeoRef.set('vi-VN') 
-// Tất cả các lệnh gọi getCountry, getLanguage, v.v., sẽ tự động cập nhật
+const country = /*#__PURE__*/ GeoRef.getCountry()
+const language = /*#__PURE__*/ GeoRef.getLocationLanguage()
+GeoRef.set('en-VN')
+country.value // 'VN'
+language.value // 'en'
 ```
 
-## Trạng thái và Truy xuất Dữ liệu
+## Phương thức
 
-- `get(): Ref<GeoItemFull>` — trả về một đối tượng phản ứng chứa thông tin địa lý đầy đủ.
-- `getCountry(): ComputedRef<string>` — mã quốc gia hiện tại (ví dụ: `'VN'`).
-- `getLanguage(): ComputedRef<string>` — mã ngôn ngữ hiện tại (ví dụ: `'vi'`).
-- `getStandard(): ComputedRef<string>` — định dạng locale tiêu chuẩn đầy đủ (ví dụ: `'vi-VN'`).
-- `getFirstDay(): ComputedRef<string>` — ngày đầu tiên của tuần (ví dụ: `'monday'`).
+### Ngữ cảnh hiện tại
 
-## Hành động
+- `get(): Ref<GeoItemFull>` — Trả ref mục địa lý đã lưu.
 
-### `set`
-Thay đổi dữ liệu địa lý toàn cục dựa trên mã được cung cấp. Hành động này cập nhật ngay lập tức tất cả các phụ thuộc phản ứng của `GeoRef` trong toàn bộ ứng dụng.
+- `getCountry(): ComputedRef<string>` — Trả mã quốc gia.
+
+- `getLanguage(): ComputedRef<string>` — Trả ngôn ngữ trong dữ liệu quốc gia.
+
+- `getStandard(): ComputedRef<string>` — Trả mã locale chuẩn.
+
+- `getFirstDay(): ComputedRef<string>` — Trả ký hiệu ngày đầu tuần từ dữ liệu quốc gia.
+
+- `getLocation(): ComputedRef<string>` — Trả locale vị trí hiện tại.
+
+- `getLocationCountry(): ComputedRef<string>` — Trả phần quốc gia của vị trí được yêu cầu.
+
+- `getLocationLanguage(): ComputedRef<string>` — Trả phần ngôn ngữ của vị trí được yêu cầu.
+
+### Cấu hình locale
+
+#### `set`
+
+`set(code: string): void`
+
+Đặt locale Geo hiện tại có lưu trữ và thay mục phản ứng.
 
 **Tham số:**
-- `code: string` — mã quốc gia, dạng đầy đủ ngôn ngữ-quốc gia (ví dụ: "vi-VN") hoặc một trong hai.
 
-**Trả về:** `void`
+- `code: string` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
 
-## Các kiểu
+**Trả về:** `void` — Không có giá trị trả về.
 
-### GeoItemFull
-Cấu trúc đối tượng chứa thông tin địa lý đầy đủ.
+```typescript
+GeoRef.set('vi-VN')
+```
 
-- `country: string` — mã quốc gia hiện tại.
-- `language: string` — mã ngôn ngữ hiện tại.
-- `standard: string` — mã locale tiêu chuẩn.
-- `firstDay: string` — ngày đầu tiên của tuần.
-- `countryAlternative?: string[]` — danh sách các mã quốc gia thay thế.
-- `languageAlternative?: string[]` — danh sách các mã ngôn ngữ thay thế.
-- `zone?: string | null` — múi giờ hiện tại.
-- `phoneCode?: string` — mã điện thoại quốc gia.
-- `phoneMask?: string | string[]` — mặt nạ số điện thoại điển hình.
+#### `setValueDefault`
+
+`setValueDefault(code?: string | (() => string)): void`
+
+Đặt mã hoặc hàm dự phòng Geo và làm mới mục phản ứng từ Geo.
+
+**Tham số:**
+
+- `code?: string | (() => string)` — Mã locale dự phòng hoặc hàm tạo mã.
+
+**Trả về:** `void` — Không có giá trị trả về.
+
+```typescript
+GeoRef.setValueDefault(() => 'vi-VN')
+```
