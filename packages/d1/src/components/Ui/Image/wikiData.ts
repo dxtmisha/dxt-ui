@@ -10,6 +10,7 @@ const propsNames: StorybookProps = [
   { name: 'adaptiveGroup', type: 'string' },
   { name: 'alt', type: 'string' },
   { name: 'coordinator', type: 'ImageCoordinatorItem' },
+  { name: 'decoding', type: 'string', option: ['auto', 'async', 'sync'] },
   { name: 'disabled', type: 'boolean' },
   { name: 'fetchPriority', type: 'string', option: ['auto', 'high', 'low'] },
   { name: 'hide', type: 'boolean' },

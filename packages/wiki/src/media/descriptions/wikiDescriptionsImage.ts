@@ -40,7 +40,8 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
     `,
   import: [
     'import { ref } from \'vue\'',
-    'import { demoPdf, image1, image2, phone1, phone2, phone3 } from \'@dxtmisha/wiki/media\''
+    'import { demoPdf, image1, image2, phone1, phone2, phone3 } from \'@dxtmisha/wiki/media\'',
+    'import type { ImageEventData } from \'@dxtmisha/constructor/Image\''
   ],
   stories: [
     {
@@ -405,7 +406,7 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
       const currentSource = ref(image1)
       const loadEventInfo = ref('Waiting for load...')
 
-      const onLoad = (event) => {
+      const onLoad = (event: ImageEventData) => {
         const dimensions = typeof event.image === 'object' && event.image
           ? \`\${event.image.width}x\${event.image.height}\`
           : String(event.image ?? '')

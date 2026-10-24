@@ -5,7 +5,6 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'clientOnly', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
   { name: 'dividerBottom', type: 'boolean' },
   { name: 'dividerHide', type: 'boolean' },
