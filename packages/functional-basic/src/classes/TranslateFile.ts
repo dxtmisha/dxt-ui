@@ -40,14 +40,16 @@ export class TranslateFile {
   }
 
   /**
-   * Checks if there are files for the current location or language.
+   * Checks if there are files for the specified location or language.
    *
-   * Проверяет, есть ли файлы для текущего местоположения или языка.
+   * Проверяет, есть ли файлы для указанного местоположения или языка.
+   * @param location location, current by default / регион, по умолчанию текущий
+   * @param language language, current by default / язык, по умолчанию текущий
    * @returns boolean / логическое значение
    */
-  isFile(): boolean {
+  isFile(location: string = this.getLocation(), language: string = this.getLanguage()): boolean {
     return Object.keys(this.files).length > 0
-      && this.getIndex() !== undefined
+      && this.getIndex(location, language) !== undefined
   }
 
   /**
@@ -71,13 +73,18 @@ export class TranslateFile {
   }
 
   /**
-   * Returns a list of translations from the file for the current location.
+   * Returns translations for a fixed location and language, preserving them across asynchronous loading.
    *
-   * Возвращает список переводов из файла для текущего местоположения.
+   * Возвращает переводы для заданных региона и языка, сохраняя их при асинхронной загрузке.
+   * @param location location, current by default / регион, по умолчанию текущий
+   * @param language language, current by default / язык, по умолчанию текущий
    * @returns promise with list of translations / промис со списком переводов
    */
-  async getList(): Promise<TranslateDataFileList | undefined> {
-    const index = this.getIndex()
+  async getList(
+    location: string = this.getLocation(),
+    language: string = this.getLanguage()
+  ): Promise<TranslateDataFileList | undefined> {
+    const index = this.getIndex(location, language)
 
     if (index) {
       return this.getByData(index)
@@ -146,19 +153,17 @@ export class TranslateFile {
   }
 
   /**
-   * Returns the key for the current location from the list of files.
+   * Returns the file key for the specified location and language.
    *
-   * Возвращает ключ для текущего местоположения из списка файлов.
+   * Возвращает ключ файла для указанных региона и языка.
+   * @param location location, current by default / регион, по умолчанию текущий
+   * @param language language, current by default / язык, по умолчанию текущий
    * @returns file key or undefined / ключ файла или undefined
    */
-  protected getIndex(): string | undefined {
-    const location = this.getLocation()
-
+  protected getIndex(location: string = this.getLocation(), language: string = this.getLanguage()): string | undefined {
     if (location in this.files) {
       return location
     }
-
-    const language = this.getLanguage()
 
     if (language in this.files) {
       return language

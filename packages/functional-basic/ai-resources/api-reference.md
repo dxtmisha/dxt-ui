@@ -104,6 +104,9 @@ const srv = ServerStorage.get('svc', () => new Svc()); // SSR isolated
 ```
 
 ## Geolocation, Formatting & Localization
+
+`TranslateInstance` groups queued translation codes by the language, location, and resolved API path captured when they were requested. API URL placeholders are resolved before the batching delay. File selection, cache writes, and asynchronous results retain that locale even if it changes during the delay or loading. `TranslateFile.getList(location?, language?)` and `isFile(location?, language?)` accept an explicit locale; omitted values use the current providers. File lookup still prefers location, then language, then `global`.
+
 ```typescript
 import { Geo, GeoIntl, GeoFlag, GeoPhone } from '@dxtmisha/functional-basic';
 const country = Geo.getCountry(); const lang = Geo.getLanguage(); Geo.set('en-US');

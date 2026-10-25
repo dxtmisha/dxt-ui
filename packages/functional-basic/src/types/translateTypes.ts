@@ -49,6 +49,20 @@ export type TranslateDataFileItem = () => Promise<TranslateDataFileList>
  */
 export type TranslateDataFile = Record<string, TranslateDataFileItem>
 
+/** Translation batch bound to its original locale / Партия переводов, привязанная к исходной локали */
+export interface TranslateBatch {
+  /** Requested location / Запрошенный регион */
+  readonly location: string
+  /** Requested language / Запрошенный язык */
+  readonly language: string
+  /** API path resolved when queued / API-путь, вычисленный при добавлении в очередь */
+  readonly path: string
+  /** Unique requested codes / Уникальные запрошенные коды */
+  readonly codes: string[]
+  /** Callbacks waiting for this batch / Колбэки, ожидающие завершения партии */
+  readonly resolves: (() => void)[]
+}
+
 /**
  * Prefix for global translations/
  * Префикс для глобальных переводов

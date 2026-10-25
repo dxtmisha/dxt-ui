@@ -18,6 +18,14 @@ export type TranslateDataFileList = Record<string, string>;
 export type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
 /** Mapping of locale identifiers to translation file loaders @keywords i18n, locale, dictionary */
 export type TranslateDataFile = Record<string, TranslateDataFileItem>;
+/** Translation batch bound to its original language and location @keywords i18n, batch, locale, cache */
+export interface TranslateBatch {
+    readonly location: string;
+    readonly language: string;
+    readonly path: string;
+    readonly codes: string[];
+    readonly resolves: (() => void)[];
+}
 /** Prefix identifier for global translations @keywords i18n, global, prefix */
 export declare const TRANSLATE_GLOBAL_PREFIX = "global";
 /** Batch loading request timeout in milliseconds @keywords i18n, timeout, batch */

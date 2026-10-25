@@ -22,6 +22,7 @@ describe('TranslateInstance', () => {
 
     mockApiGet = vi.spyOn(Api, 'get').mockResolvedValue({})
     mockIsLocalhost = vi.spyOn(Api, 'isLocalhost').mockReturnValue(true)
+    vi.spyOn(Api.getStatus(), 'getStatus').mockReturnValue(200)
 
     vi.spyOn(mockFile, 'getLocation').mockReturnValue('en-US')
     vi.spyOn(mockFile, 'getLanguage').mockReturnValue('en')
