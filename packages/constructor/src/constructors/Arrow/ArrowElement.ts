@@ -1,7 +1,10 @@
 // ai-none
 
 import { type Ref } from 'vue'
-import type { DesignName } from '@dxtmisha/functional'
+import {
+  type DesignName,
+  toNumber
+} from '@dxtmisha/functional'
 
 /**
  * Class for working with the arrow element.
@@ -12,37 +15,45 @@ import type { DesignName } from '@dxtmisha/functional'
  */
 export class ArrowElement {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param element input element / элемент ввода
    * @param naming component naming helper / помощник именования компонента
    */
   constructor(
-    protected readonly element: Ref<HTMLElement | undefined>,
+    readonly element: Ref<HTMLElement | undefined>,
     protected readonly naming: DesignName
   ) {
   }
 
   /**
-   * Gets the width of the arrow. / Получает ширину стрелки.
+   * Gets the width of the arrow.
+   *
+   * Получает ширину стрелки.
+   * @returns arrow width in pixels / ширина стрелки в пикселях
    */
-  get width() {
+  get width(): number {
     const size = this.getStyleArrowWidth()
 
     if (size) {
-      return parseFloat(size)
+      return toNumber(size)
     }
 
     return 0
   }
 
   /**
-   * Gets the height of the arrow. / Получает высоту стрелки.
+   * Gets the height of the arrow.
+   *
+   * Получает высоту стрелки.
+   * @returns arrow height in pixels / высота стрелки в пикселях
    */
-  get height() {
+  get height(): number {
     const size = this.getStyleArrowHeight()
 
     if (size) {
-      return parseFloat(size)
+      return toNumber(size)
     }
 
     return 0
@@ -69,14 +80,14 @@ export class ArrowElement {
   }
 
   /**
-   * Gets the bounding rectangle of the border element.
+   * Gets the bounding rectangle of the arrow line element.
    *
-   * Получает ограничивающий прямоугольник элемента границы.
+   * Получает ограничивающий прямоугольник элемента линии стрелки.
    * @returns bounding rectangle or undefined / ограничивающий прямоугольник или undefined
    */
-  getRectBorder(): DOMRect | undefined {
+  getRectArrowLine(): DOMRect | undefined {
     return this.element.value
-      ?.querySelector(`.${this.naming.getSubClass('border')}`)
+      ?.querySelector(`.${this.naming.getSubClass('arrowLine')}`)
       ?.getBoundingClientRect()
   }
 
@@ -86,9 +97,9 @@ export class ArrowElement {
    * Получает ограничивающий прямоугольник элемента границы.
    * @returns bounding rectangle or undefined / ограничивающий прямоугольник или undefined
    */
-  getRectArrowLine(): DOMRect | undefined {
+  getRectBorder(): DOMRect | undefined {
     return this.element.value
-      ?.querySelector(`.${this.naming.getSubClass('arrowLine')}`)
+      ?.querySelector(`.${this.naming.getSubClass('border')}`)
       ?.getBoundingClientRect()
   }
 

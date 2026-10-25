@@ -1,13 +1,12 @@
-import { type Ref } from 'vue'
 import {
   type ConstrClassObject,
-  type DesignName,
+  type ConstrItem,
+  type ConstrItems,
   type ConstrStyles,
-  isFilled
+  DesignLogicAbstract
 } from '@dxtmisha/functional'
 
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
-
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ArrowElement } from './ArrowElement'
 import { ArrowElementTarget } from './ArrowElementTarget'
 import { ArrowEvent } from './ArrowEvent'
@@ -16,6 +15,25 @@ import { ArrowPosition } from './ArrowPosition'
 
 import { ArrowDirection } from './basicTypes'
 import type { ArrowProps } from './props'
+import type {
+  ArrowComponents,
+  ArrowEmits,
+  ArrowSlots
+} from './types'
+
+/** Arrow dependency constructors type / Тип конструкторов зависимостей Arrow */
+export type ArrowConstructors = {
+  /** Arrow element constructor / Конструктор элемента стрелки */
+  element: typeof ArrowElement
+  /** Target element constructor / Конструктор целевого элемента */
+  elementTarget: typeof ArrowElementTarget
+  /** Arrow event constructor / Конструктор событий стрелки */
+  event: typeof ArrowEvent
+  /** Parent element constructor / Конструктор родительского элемента */
+  parent: typeof ArrowParent
+  /** Arrow position constructor / Конструктор позиции стрелки */
+  position: typeof ArrowPosition
+}
 
 /**
  * Arrow.
@@ -26,83 +44,104 @@ import type { ArrowProps } from './props'
  * Основной класс для управления логикой компонента стрелки.
  * Координирует работу всех подклассов (элементы, позиция, события).
  */
-export class Arrow {
-  /** Class for working with the arrow element / Класс для работы с элементом стрелки */
-  readonly elementItem: ArrowElement
-
-  /** Class for working with the target element / Класс для работы с целевым элементом */
-  readonly elementTarget: ArrowElementTarget
-
-  /** Class for working with the parent element / Класс для работы с родительским элементом */
-  readonly parent: ArrowParent
-
-  /** Class for calculating position / Класс для вычисления позиции */
-  readonly position: ArrowPosition
-
-  /** Class for managing events / Класс для управления событиями */
-  readonly event: ArrowEvent
-
-  /** Class for managing client-only rendering / Класс для управления рендерингом только на клиенте */
-  readonly clientOnly: ClientOnlyInclude
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param constructors object with classes / объект с классами
-   * @param constructors.ArrowElementConstructor class for working with the arrow element / класс для работы с элементом стрелки
-   * @param constructors.ArrowElementTargetConstructor class for working with the target element of the arrow / класс для работы с целевым элементом стрелки
-   * @param constructors.ArrowEventConstructor class for working with arrow events / класс для работы с событиями стрелки
-   * @param constructors.ArrowParentConstructor class for working with the parent element of the arrow / класс для работы с родительским элементом стрелки
-   * @param constructors.ArrowPositionConstructor class for working with the position of the arrow / класс для работы с позицией стрелки
-   */
-  constructor(
-    protected readonly props: ArrowProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    constructors: {
-      ArrowElementConstructor?: typeof ArrowElement
-      ArrowElementTargetConstructor?: typeof ArrowElementTarget
-      ArrowEventConstructor?: typeof ArrowEvent
-      ArrowParentConstructor?: typeof ArrowParent
-      ArrowPositionConstructor?: typeof ArrowPosition
-    } = {}
-  ) {
-    const {
-      ArrowElementConstructor = ArrowElement,
-      ArrowElementTargetConstructor = ArrowElementTarget,
-      ArrowEventConstructor = ArrowEvent,
-      ArrowParentConstructor = ArrowParent,
-      ArrowPositionConstructor = ArrowPosition
-    } = constructors
-
-    this.clientOnly = new ClientOnlyInclude(props)
-
-    this.elementItem = new ArrowElementConstructor(element, naming)
-    this.elementTarget = new ArrowElementTargetConstructor(props)
-    this.parent = new ArrowParentConstructor(element, naming, this.elementItem)
-
-    this.position = new ArrowPositionConstructor(
-      props,
-      this.elementItem,
-      this.elementTarget,
-      this.parent
-    )
-
-    this.event = new ArrowEventConstructor(
-      props,
-      element,
-      this.elementTarget,
-      this.parent,
-      this.position
-    )
+export class Arrow extends DesignLogicAbstract<
+  HTMLDivElement,
+  ArrowComponents,
+  ArrowEmits,
+  ArrowSlots,
+  ArrowProps,
+  ArrowConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ArrowConstructors> = {
+    element: {
+      item: ArrowElement,
+      parameters: () => [
+        this.element,
+        this.naming
+      ]
+    },
+    elementTarget: {
+      item: ArrowElementTarget,
+      parameters: () => [this.props]
+    },
+    event: {
+      item: ArrowEvent,
+      conditions: () => ArrowEvent.is(this.props),
+      parameters: () => [
+        this.props,
+        this.element,
+        () => this.i('elementTarget'),
+        () => this.i('parent'),
+        () => this.i('position')
+      ]
+    },
+    parent: {
+      item: ArrowParent,
+      parameters: () => [
+        this.element,
+        this.naming,
+        () => this.i('element')
+      ]
+    },
+    position: {
+      item: ArrowPosition,
+      parameters: () => [
+        this.props,
+        () => this.i('element'),
+        () => this.i('elementTarget'),
+        () => this.i('parent')
+      ]
+    }
   }
 
-  /** Direction of the arrow / Направление стрелки */
+  /**
+   * ARIA attributes for the arrow element.
+   *
+   * ARIA-атрибуты для элемента стрелки.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
+   */
+  get aria(): ConstrItem {
+    return AriaStaticInclude.hidden()
+  }
+
+  /**
+   * Root element bindings.
+   *
+   * Привязки корневого элемента.
+   * @returns bindings object / объект привязок
+   */
+  get binds(): ConstrItem {
+    return {
+      ...this.aria
+    }
+  }
+
+  /**
+   * Values for the class.
+   *
+   * Значения для класса.
+   * @returns classes values / значения классов
+   */
+  get classes(): ConstrClassObject {
+    return {
+      [this.naming.getStatusClass('direction', this.direction)]: Boolean(this.direction)
+    }
+  }
+
+  /**
+   * Direction of the arrow.
+   *
+   * Направление стрелки.
+   * @returns arrow direction / направление стрелки
+   */
   get direction(): ArrowDirection {
-    if (isFilled(this.props.position)) {
-      const directionPosition = this.position.direction.value
+    if (ArrowPosition.is(this.props)) {
+      if (!ArrowPosition.isAuto(this.props)) {
+        return this.props.position as ArrowDirection
+      }
+
+      const directionPosition = this.i('position').direction.value
 
       if (directionPosition) {
         return directionPosition
@@ -112,10 +151,16 @@ export class Arrow {
     return ArrowDirection.HIDE
   }
 
-  /** Gets the points for the arrow / Получает точки для стрелки */
+  /**
+   * Gets the points for the arrow.
+   *
+   * Получает точки для стрелки.
+   * @returns SVG points string / строка точек SVG
+   */
   get points(): string {
-    const width = this.elementItem.width
-    const height = this.elementItem.height
+    const element = this.i('element')
+    const width = element.width
+    const height = element.height
 
     switch (this.direction) {
       case ArrowDirection.BOTTOM:
@@ -129,36 +174,46 @@ export class Arrow {
     }
   }
 
-  /** Classes for the component / Классы для компонента */
-  get classes(): ConstrClassObject {
-    return {
-      [this.naming.getStatusClass('direction', this.direction)]: Boolean(this.direction)
-    }
-  }
-
-  /** Styles for the component / Стили для компонента */
+  /**
+   * Styles for the component.
+   *
+   * Стили для компонента.
+   * @returns styles object / объект стилей
+   */
   get styles(): ConstrStyles {
-    const styles = {
-      [this.naming.getStyle('background')]: this.parent.background,
-      [this.naming.getStyle('borderWidth')]: this.parent.borderWidth,
-      [this.naming.getStyle('borderColor')]: this.parent.borderColor,
-      [this.naming.getStyle('borderRadius')]: this.parent.borderRadius
+    const parent = this.i('parent')
+
+    const styles: ConstrStyles = {
+      [this.naming.getStyle('background')]: parent.background,
+      [this.naming.getStyle('borderWidth')]: parent.borderWidth,
+      [this.naming.getStyle('borderColor')]: parent.borderColor,
+      [this.naming.getStyle('borderRadius')]: parent.borderRadius
     }
 
     if (
-      this.parent.isBorder()
-      && this.position.clipPath.value
+      parent.isBorder()
+      && this.i('position').clipPath.value
     ) {
-      styles[this.naming.getStyle('clipPath')] = this.position.clipPath.value
+      styles[this.naming.getStyle('clipPath')] = this.i('position').clipPath.value
     }
 
     if (
-      this.elementTarget.is()
-      && this.position.shift.value
+      ArrowElementTarget.is(this.props)
+      && this.i('elementTarget').is()
+      && this.i('position').shift.value
     ) {
-      styles[this.naming.getStyle('shift')] = this.position.shift.value
+      styles[this.naming.getStyle('shift')] = this.i('position').shift.value
     }
 
     return styles
+  }
+
+  /**
+   * Updates the position of the arrow.
+   *
+   * Обновляет позицию стрелки.
+   */
+  readonly update = (): void => {
+    this.i('position').update()
   }
 }

@@ -10,50 +10,42 @@ export enum ArrowDirection {
   HIDE = 'hide'
 }
 
-/** Arrow border offsets/ Отступы границ стрелки */
+/** Arrow border offsets / Отступы границ стрелки */
 export type ArrowBorder = {
-  /** Top offset/ Отступ сверху */
+  /** Top offset / Отступ сверху */
   top: number
-  /** Bottom offset/ Отступ снизу */
+  /** Bottom offset / Отступ снизу */
   bottom: number
-  /** Left offset/ Отступ слева */
+  /** Left offset / Отступ слева */
   left: number
-  /** Right offset/ Отступ справа */
+  /** Right offset / Отступ справа */
   right: number
 }
 
-/** Arrow center coordinates/ Координаты центра стрелки */
-export type ArrowCenter = {
-  /** X coordinate/ Координата X */
-  x: number
-  /** Y coordinate/ Координата Y */
-  y: number
-}
-
 /**
- * Component map for including the Arrow component/
+ * Component map for including the Arrow component /
  * Карта компонентов для подключения компонента Arrow
  */
 export type ArrowComponentInclude = {
-  /** Arrow component configuration/ Конфигурация компонента стрелки */
+  /** Arrow component configuration / Конфигурация компонента стрелки */
   arrow?: object
 }
 
 /**
- * Props used to include and configure the Arrow component/
+ * Props used to include and configure the Arrow component /
  * Свойства для подключения и настройки компонента Arrow
  */
 export type ArrowPropsInclude<
   Arrow extends ArrowProps = ArrowProps
 > = {
   // Status
-  /** Show arrow/ Показать стрелку */
+  /** Show arrow / Показать стрелку */
   arrowShow?: boolean
 
-  /** Arrow position/ Позиция стрелки */
+  /** Arrow position / Позиция стрелки */
   arrowPosition?: ArrowProps['position']
 
   // Style
-  /** Additional attributes for Arrow component/ Дополнительные атрибуты для компонента Arrow */
+  /** Additional attributes for Arrow component / Дополнительные атрибуты для компонента Arrow */
   arrowAttrs?: ConstrBind<Arrow>
 }

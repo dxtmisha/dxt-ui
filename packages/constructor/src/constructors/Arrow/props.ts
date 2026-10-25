@@ -1,15 +1,14 @@
-import type { ClientOnlyPropsInclude } from '../../types/clientOnlyTypes'
 
-/** Arrow position and direction tokens/ Токены позиционирования и направления стрелки */
+/** Arrow position and direction tokens / Токены позиционирования и направления стрелки */
 export type ArrowPropsToken = {
   // :type [!] System label / Системная метка
   position?: 'auto' | 'top' | 'bottom' | 'left' | 'right'
   // :type [!] System label / Системная метка
 }
 
-/** Basic properties of the arrow component/ Основные свойства компонента стрелки */
-export type ArrowPropsBasic = ClientOnlyPropsInclude & {
-  /** The HTML element or its selector that the arrow points to/ HTML-элемент или его селектор, на который указывает стрелка */
+/** Basic properties of the arrow component / Основные свойства компонента стрелки */
+export type ArrowPropsBasic = {
+  /** The HTML element or its selector that the arrow points to / HTML-элемент или его селектор, на который указывает стрелка */
   elementTarget?: HTMLElement | string
 }
 

@@ -1,11 +1,17 @@
-import { h, nextTick, ref, type VNode, watch } from 'vue'
+import {
+  h,
+  nextTick,
+  onMounted,
+  ref,
+  type VNode,
+  watch
+} from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Arrow } from './Arrow'
 
 import {
@@ -49,7 +55,9 @@ export class ArrowDesign<
   protected readonly points = ref<string>('')
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -70,16 +78,21 @@ export class ArrowDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.naming
+      this.naming,
+      this.components,
+      this.slots,
+      this.emits
     )
 
-    watch(() => this.classes?.value, () => {
-      nextTick().then(
-        () => requestAnimationFrame(() => {
-          this.points.value = this.item.points
-        })
-      )
-    }, { immediate: true })
+    onMounted(() => {
+      watch(() => this.classes?.value, () => {
+        nextTick().then(
+          () => requestAnimationFrame(() => {
+            this.points.value = this.item.points
+          })
+        )
+      }, { immediate: true })
+    })
   }
 
   /**
@@ -90,7 +103,7 @@ export class ArrowDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      update: this.item.position.update
+      update: this.item.update
     } as EXPOSE
   }
 
@@ -135,15 +148,15 @@ export class ArrowDesign<
    * @returns VNode or undefined / VNode или undefined
    */
   protected initRender(): VNode | undefined {
-    if (!this.item.clientOnly.isRender()) {
+    if (!this.item.isMounted.value) {
       return undefined
     }
 
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderArrow()
     ]
 
-    if (this.item.parent.isBorder()) {
+    if (this.item.i('parent').isBorder()) {
       children.push(...this.renderBorder())
     }
 
@@ -151,7 +164,8 @@ export class ArrowDesign<
       ref: this.element,
       class: this.classes?.value.main,
       style: this.styles?.value,
-      ...AriaStaticInclude.hidden()
+      ...this.getAttrs(),
+      ...this.item.binds
     }, children)
   }
 
@@ -161,7 +175,7 @@ export class ArrowDesign<
    * Метод для рендеринга стрелки.
    * @returns list of nodes / список узлов
    */
-  readonly renderArrow = (): VNode[] => {
+  protected readonly renderArrow = (): VNode[] => {
     return [
       h(
         'svg',
@@ -197,7 +211,7 @@ export class ArrowDesign<
    * Метод для рендеринга границы.
    * @returns list of nodes / список узлов
    */
-  readonly renderBorder = (): VNode[] => {
+  protected readonly renderBorder = (): VNode[] => {
     return [
       h('div', this.getKeyClass('border'))
     ]

@@ -1,7 +1,13 @@
 // ai-none
 
 import { ref } from 'vue'
-import { isFilled, isString } from '@dxtmisha/functional'
+import {
+  getElement,
+  isFilled,
+  isString
+} from '@dxtmisha/functional'
+
+import { ArrowPosition } from './ArrowPosition'
 
 import type { ArrowProps } from './props'
 
@@ -17,7 +23,25 @@ export class ArrowElementTarget {
   readonly element = ref<HTMLElement | undefined>()
 
   /**
-   * Constructor
+   * Checks whether target tracking is required.
+   *
+   * Проверяет, требуется ли отслеживание целевого элемента.
+   * @param props properties / свойства
+   * @returns true if target tracking is active / true, если отслеживание целевого элемента активно
+   */
+  static is(props?: ArrowProps): boolean {
+    const target = props?.elementTarget
+
+    return Boolean(
+      ArrowPosition.isAuto(props)
+      && (isString(target) ? isFilled(target) : Boolean(target))
+    )
+  }
+
+  /**
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input properties / входящие свойства
    */
   constructor(
@@ -61,17 +85,8 @@ export class ArrowElementTarget {
    * @returns target element or undefined / целевой элемент или undefined
    */
   protected initElement(): HTMLElement | undefined {
-    const elementTarget = this.props.elementTarget
-
-    if (
-      this.props.position === 'auto'
-      && isFilled(elementTarget)
-    ) {
-      if (isString(elementTarget)) {
-        return document.querySelector<HTMLElement>(elementTarget) ?? undefined
-      }
-
-      return elementTarget
+    if (ArrowElementTarget.is(this.props)) {
+      return getElement<HTMLElement>(this.props.elementTarget)
     }
 
     return undefined

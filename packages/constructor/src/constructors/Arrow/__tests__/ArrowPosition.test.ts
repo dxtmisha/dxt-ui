@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ArrowPosition } from '../ArrowPosition'
 import { ArrowDirection } from '../basicTypes'
 
@@ -26,9 +26,9 @@ describe('ArrowPosition', () => {
   it('should resolve direction and shift statically if position is not auto', () => {
     const position = new ArrowPosition(
       { position: 'bottom' },
-      mockElementItem,
-      mockElementTarget,
-      mockParent
+      () => mockElementItem,
+      () => mockElementTarget,
+      () => mockParent
     )
 
     position.update()
@@ -41,9 +41,9 @@ describe('ArrowPosition', () => {
   it('should resolve position auto direction correctly', () => {
     const position = new ArrowPosition(
       { position: 'auto' },
-      mockElementItem,
-      mockElementTarget,
-      mockParent
+      () => mockElementItem,
+      () => mockElementTarget,
+      () => mockParent
     )
 
     position.update()
@@ -54,9 +54,9 @@ describe('ArrowPosition', () => {
   it('should calculate clip path correctly', async () => {
     const position = new ArrowPosition(
       { position: 'top' },
-      mockElementItem,
-      mockElementTarget,
-      mockParent
+      () => mockElementItem,
+      () => mockElementTarget,
+      () => mockParent
     )
 
     position.update()
@@ -70,9 +70,9 @@ describe('ArrowPosition', () => {
   it('should resolve left and right directions correctly', () => {
     const positionLeft = new ArrowPosition(
       { position: 'left' },
-      mockElementItem,
-      mockElementTarget,
-      mockParent
+      () => mockElementItem,
+      () => mockElementTarget,
+      () => mockParent
     )
 
     positionLeft.update()
@@ -83,9 +83,9 @@ describe('ArrowPosition', () => {
 
     const positionRight = new ArrowPosition(
       { position: 'right' },
-      mockElementItem,
-      mockElementTarget,
-      mockParent
+      () => mockElementItem,
+      () => mockElementTarget,
+      () => mockParent
     )
 
     positionRight.update()
@@ -98,9 +98,9 @@ describe('ArrowPosition', () => {
   it('should calculate clip path correctly for left and right directions', async () => {
     const positionLeft = new ArrowPosition(
       { position: 'left' },
-      mockElementItem,
-      mockElementTarget,
-      mockParent
+      () => mockElementItem,
+      () => mockElementTarget,
+      () => mockParent
     )
 
     positionLeft.update()
@@ -112,9 +112,9 @@ describe('ArrowPosition', () => {
 
     const positionRight = new ArrowPosition(
       { position: 'right' },
-      mockElementItem,
-      mockElementTarget,
-      mockParent
+      () => mockElementItem,
+      () => mockElementTarget,
+      () => mockParent
     )
 
     positionRight.update()
@@ -123,5 +123,48 @@ describe('ArrowPosition', () => {
 
     expect(positionRight.clipPath.value).toBeDefined()
     expect(positionRight.clipPath.value).toContain('path(')
+  })
+
+  it('should evaluate static is() and isAuto() properly', () => {
+    expect(ArrowPosition.is({ position: 'top' })).toBe(true)
+    expect(ArrowPosition.is({ position: 'auto' })).toBe(true)
+    expect(ArrowPosition.is({ position: undefined })).toBe(false)
+    expect(ArrowPosition.is(undefined)).toBe(false)
+
+    expect(ArrowPosition.isAuto({ position: 'auto' })).toBe(true)
+    expect(ArrowPosition.isAuto({ position: 'top' })).toBe(false)
+    expect(ArrowPosition.isAuto({ position: undefined })).toBe(false)
+    expect(ArrowPosition.isAuto(undefined)).toBe(false)
+  })
+
+  it('should automatically compute clipPath on onMounted for static position', async () => {
+    const position = new ArrowPosition(
+      { position: 'bottom' },
+      () => mockElementItem,
+      () => mockElementTarget,
+      () => mockParent
+    )
+
+    position.onMounted()
+    await new Promise(resolve => requestAnimationFrame(resolve))
+
+    expect(position.direction.value).toBe(ArrowDirection.BOTTOM)
+    expect(position.clipPath.value).toBeDefined()
+    expect(position.clipPath.value).toContain('path(')
+  })
+
+  it('should cancel pending animation frame on onUnmounted', () => {
+    const cancelSpy = vi.spyOn(window, 'cancelAnimationFrame')
+    const position = new ArrowPosition(
+      { position: 'top' },
+      () => mockElementItem,
+      () => mockElementTarget,
+      () => mockParent
+    )
+
+    position.onMounted()
+    position.onUnmounted()
+
+    expect(cancelSpy).toHaveBeenCalled()
   })
 })

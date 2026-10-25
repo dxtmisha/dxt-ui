@@ -102,7 +102,7 @@ export abstract class DesignLogicAbstract<
   }
 
   /** Whether the component mount hook has run / Выполнен ли обработчик монтирования компонента */
-  protected readonly isMounted = ref(false)
+  readonly isMounted = ref(false)
 
   /**
    * Returns a cached dependency or creates it inside the captured active scope. Constructor arguments come from the optional `parameters()` factory. A failed constructor is not cached and can be retried.

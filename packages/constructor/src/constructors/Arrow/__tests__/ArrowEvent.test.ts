@@ -36,9 +36,9 @@ describe('ArrowEvent', () => {
     const event = new ArrowEvent(
       { position: 'auto' },
       elementRef,
-      mockElementTarget,
-      mockParent,
-      mockPosition
+      () => mockElementTarget,
+      () => mockParent,
+      () => mockPosition
     )
 
     event.update()
@@ -49,19 +49,29 @@ describe('ArrowEvent', () => {
     expect(mockPosition.update).toHaveBeenCalled()
   })
 
+  it('should evaluate static is() properly', () => {
+    expect(ArrowEvent.is({ position: 'auto' })).toBe(true)
+    expect(ArrowEvent.is({ position: 'auto', elementTarget: '#target' })).toBe(true)
+    expect(ArrowEvent.is({ position: 'bottom', elementTarget: '#target' })).toBe(false)
+    expect(ArrowEvent.is({ position: 'bottom' })).toBe(false)
+    expect(ArrowEvent.is(undefined)).toBe(false)
+  })
+
   it('should update on initialization and reactive props changes', async () => {
     mockElementTarget.is.mockReturnValue(true)
     mockElementTarget.element.value = document.createElement('div')
 
     const elementRef = ref(document.createElement('div'))
     const props = reactive<ArrowProps>({ position: 'auto' })
-    new ArrowEvent(
+    const event = new ArrowEvent(
       props,
       elementRef,
-      mockElementTarget,
-      mockParent,
-      mockPosition
+      () => mockElementTarget,
+      () => mockParent,
+      () => mockPosition
     )
+
+    await event.onMounted()
 
     // Wait for setup tick, immediate watch trigger, and animation frame
     await nextTick()
@@ -78,5 +88,32 @@ describe('ArrowEvent', () => {
 
     expect(mockPosition.update).toHaveBeenCalledTimes(1)
     expect(mockElementTarget.update).not.toHaveBeenCalled()
+
+    event.onUnmounted()
+  })
+
+  it('should clean up listeners and cancel pending animation frame on onUnmounted()', async () => {
+    const cancelSpy = vi.spyOn(window, 'cancelAnimationFrame')
+    mockElementTarget.is.mockReturnValue(true)
+    mockElementTarget.element.value = document.createElement('div')
+
+    const elementRef = ref(document.createElement('div'))
+    const props = reactive<ArrowProps>({ position: 'auto' })
+    const event = new ArrowEvent(
+      props,
+      elementRef,
+      () => mockElementTarget,
+      () => mockParent,
+      () => mockPosition
+    )
+
+    event.onMounted()
+    // Schedule an update that sets a pending frameId
+    event.update()
+
+    event.onUnmounted()
+    expect(cancelSpy).toHaveBeenCalled()
+
+    cancelSpy.mockRestore()
   })
 })

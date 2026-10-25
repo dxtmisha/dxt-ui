@@ -24,9 +24,6 @@ describe('ArrowElementTarget', () => {
   })
 
   it('should return element object directly when passed directly and position is auto', () => {
-    // Add dummy property so isFilled(targetElement) returns true (since isFilled checks Object.keys)
-    ;(targetElement as any).dummy = true
-
     const target = new ArrowElementTarget({ position: 'auto', elementTarget: targetElement })
     target.update()
 
@@ -42,9 +39,15 @@ describe('ArrowElementTarget', () => {
     expect(target.element.value).toBeUndefined()
   })
 
-  it('should return bounding rect correctly', () => {
-    ;(targetElement as any).dummy = true
+  it('should return false for is when elementTarget is empty string or undefined', () => {
+    expect(ArrowElementTarget.is({ position: 'auto', elementTarget: '' })).toBe(false)
+    expect(ArrowElementTarget.is({ position: 'auto', elementTarget: '   ' })).toBe(false)
+    expect(ArrowElementTarget.is({ position: 'auto', elementTarget: undefined })).toBe(false)
+    expect(ArrowElementTarget.is({ position: 'auto', elementTarget: targetElement })).toBe(true)
+    expect(ArrowElementTarget.is({ position: 'auto', elementTarget: '#target-id' })).toBe(true)
+  })
 
+  it('should return bounding rect correctly', () => {
     const target = new ArrowElementTarget({ position: 'auto', elementTarget: targetElement })
     target.update()
 

@@ -1,13 +1,17 @@
 // ai-none
 
 import {
+  type ConstrBind,
   type DesignComponents,
   type DesignName
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ComponentIncludeExtra } from '../../types/componentInclude'
+import type {
+  ComponentIncludeExtra,
+  ComponentIncludeProps
+} from '../../types/componentInclude'
 import type { ArrowComponentInclude, ArrowPropsInclude } from './basicTypes'
 import type { ArrowProps } from './props'
 import type { ArrowExpose, ArrowSlots } from './types'
@@ -30,10 +34,12 @@ export class ArrowInclude<
     ArrowExpose,
     ArrowSlots
   > {
+  /** Determines whether to initialize the element reference during binding / Определяет, нужно ли инициализировать ссылку на элемент при привязке */
+  protected override readonly hasInitElement: boolean = false
   /** Component name / Имя компонента */
-  protected name = 'arrow'
+  protected override readonly name = 'arrow'
   /** Attribute name for props / Имя атрибута для свойств */
-  protected propsAttrsName = 'arrowAttrs'
+  protected override readonly propsAttrsName = 'arrowAttrs'
 
   /**
    * Constructor for ArrowInclude
@@ -48,7 +54,7 @@ export class ArrowInclude<
    */
   constructor(
     naming: DesignName,
-    props: Readonly<Props>,
+    props: ComponentIncludeProps<Props>,
     components?: DesignComponents<ArrowComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
@@ -60,6 +66,7 @@ export class ArrowInclude<
   /**
    * Checks whether arrow should be displayed /
    * Проверяет, нужно ли отображать стрелку
+   * @returns true if arrow should be shown / true, если стрелка должна отображаться
    */
   override get is(): boolean {
     return Boolean(this.getProps().arrowShow)
@@ -71,16 +78,14 @@ export class ArrowInclude<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<PropsExtra>> {
     const props = this.getProps()
     const binds = super.toBinds()
 
     return {
-      ...binds,
-
       position: props.arrowPosition,
-
-      elementTarget: this.elementTarget
+      elementTarget: this.elementTarget,
+      ...binds
     }
   }
 }

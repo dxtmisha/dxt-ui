@@ -4,7 +4,6 @@
   @include ui.initByCustom('arrowWidth', 8px);
   @include ui.initByCustom('arrowHeight', 8px);
 
-  @include ui.initByCustom('sys.url.markBorder', unset);
   @include ui.initByCustom('sys.background', transparent);
   @include ui.initByCustom('sys.borderWidth', 0px);
   @include ui.initByCustom('sys.borderColor', transparent);
@@ -71,14 +70,6 @@
     clip-path: ui.v('??sys.clipPath');
   }
 
-  &__borderHidden {
-    width: ui.v('??arrowWidth');
-    height: ui.v('??arrowHeight');
-
-    @include ui.translateX(ui.v('??sys.arrow.translateX'));
-    @include ui.translateY(ui.v('??sys.arrow.translateY'));
-  }
-
   &--direction {
     &--top {
       @include ui.initByCustom('sys.arrow.translateX', calc(ui.v('??sys.arrow.translateShift') - #{ui.v('??arrowWidth')} / 2));
@@ -109,25 +100,7 @@
 
   &--position {
     &--auto {
-      @include ui.initByCustom('sys.arrow.translateShift.basic', #{calc(#{ui.v('??sys.shift')} + #{ui.v('??arrowHeight')})});
-      @include ui.initByCustom('sys.arrow.translateShift.max', max(#{ui.v('??sys.arrow.translateShift.basic')}, #{ui.v('??sys.borderRadius')}));
-      @include ui.initByCustom('sys.arrow.translateShift', ui.v('??sys.arrow.translateShift.basic'));
-
-      @include ui.state('direction') {
-        &--top,
-        &--bottom {
-          @include ui.subclass('borderHidden') {
-            @include ui.translateX(calc(#{ui.v('??sys.arrow.translateX')} - #{ui.v('??arrowHeight')}));
-          }
-        }
-
-        &--left,
-        &--right {
-          @include ui.subclass('borderHidden') {
-            @include ui.translateY(calc(#{ui.v('??sys.arrow.translateY')} - #{ui.v('??arrowHeight')}));
-          }
-        }
-      }
+      @include ui.initByCustom('sys.arrow.translateShift', #{calc(#{ui.v('??sys.shift')} + #{ui.v('??arrowHeight')})});
     }
   }
 }

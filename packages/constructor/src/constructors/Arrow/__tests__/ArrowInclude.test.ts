@@ -27,4 +27,25 @@ describe('ArrowInclude', () => {
     expect(binds.position).toBe('bottom')
     expect(binds.elementTarget).toBe(targetElement)
   })
+
+  it('should allow arrowAttrs to override position or elementTarget', () => {
+    const targetElement = document.createElement('div')
+    const customTarget = document.createElement('span')
+    const arrow = new ArrowInclude(
+      new DesignName('my.class'),
+      {
+        arrowShow: true,
+        arrowPosition: 'bottom',
+        arrowAttrs: { position: 'top', elementTarget: customTarget }
+      },
+      undefined,
+      undefined,
+      undefined,
+      targetElement
+    )
+
+    const binds = (arrow as any).toBinds()
+    expect(binds.position).toBe('top')
+    expect(binds.elementTarget).toBe(customTarget)
+  })
 })
