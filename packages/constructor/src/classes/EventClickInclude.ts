@@ -6,7 +6,7 @@ import {
   RouterItemRef
 } from '@dxtmisha/functional'
 
-import { EnabledInclude } from './EnabledInclude'
+import type { EnabledInclude } from './EnabledInclude'
 
 import type {
   EventClickEmits,
@@ -28,12 +28,12 @@ export class EventClickInclude {
    *
    * Конструктор для инициализации EventClickInclude.
    * @param props input properties / входные свойства
-   * @param enabled object for activity status management / объект для управления статусом активности
+   * @param enabled callback returning object for activity status management / функция обратного вызова, возвращающая объект для управления статусом активности
    * @param emits callback function for triggering events / функция обратного вызова для вызова событий
    */
   constructor(
     protected readonly props?: EventClickProps,
-    protected readonly enabled?: EnabledInclude,
+    protected readonly enabled?: () => EnabledInclude | undefined,
     protected readonly emits?: ConstrEmit<EventClickEmits>
   ) {
   }
@@ -99,18 +99,22 @@ export class EventClickInclude {
     options?: EventClickValue
   ) => {
     if (this.emits) {
+      const enabled = this.getEnabled()
+
       if (options) {
-        this.emit(event, options)
+        if (!enabled || enabled.isEnabled) {
+          this.emit(event, options)
+        }
       } else if (this.toRouter()) {
         event.preventDefault()
-      } else if (this.enabled) {
+      } else if (enabled) {
         const optionsItem = this.getOptions(event)
 
         if (
-          this.enabled.isEnabled
+          enabled.isEnabled
           || (
             optionsItem.type === 'icon-trailing'
-            && !this.enabled.isDisabled
+            && !enabled.isDisabled
           )
         ) {
           this.emit(event, optionsItem)
@@ -136,6 +140,16 @@ export class EventClickInclude {
       this.onClick(event as unknown as MouseEvent, options)
       event.preventDefault()
     }
+  }
+
+  /**
+   * Returns the enabled state manager if provided.
+   *
+   * Возвращает менеджер состояния активности, если он предоставлен.
+   * @returns enabled state manager or undefined / менеджер состояния активности или undefined
+   */
+  protected getEnabled(): EnabledInclude | undefined {
+    return this.enabled?.()
   }
 
   /**
@@ -176,7 +190,9 @@ export class EventClickInclude {
    * @returns true if navigation was handled by the router, false otherwise / true, если навигация была обработана роутером, иначе false
    */
   protected toRouter(): boolean {
-    if (this.props?.to) {
+    const enabled = this.getEnabled()
+
+    if (this.props?.to && (!enabled || enabled.isEnabled)) {
       RouterItemRef.push(this.props?.to)
       return true
     }

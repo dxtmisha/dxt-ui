@@ -6,6 +6,11 @@ import iconRu from './icon.ru.mdx'
 import exposeIsActiveEn from './expose.isActive.en.mdx'
 import exposeIsActiveRu from './expose.isActive.ru.mdx'
 
+/**
+ * MDX files for Icon component
+ *
+ * MDX файлы для компонента Icon
+ */
 export const wikiMdxIcon: StorybookComponentsMdxItem = {
   name: 'Icon',
   descriptions: {

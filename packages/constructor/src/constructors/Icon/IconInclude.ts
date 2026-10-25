@@ -70,7 +70,7 @@ export class IconInclude<
         ...toBinds(
           this.getExtra(),
           props.iconAttrs,
-          this.getClasses(props.iconAttrs?.class)
+          this.getClasses('icon')
         ),
         ...this.getEventType()
       },

@@ -24,9 +24,7 @@ export type IconEmits = ImageEmitsInclude & EventClickEmits
  * Тип, описывающий доступные свойства.
  */
 export interface IconExpose extends EventClickExpose {
-  /**
-   * Whether the icon is currently active / Активна ли иконка в данный момент
-   */
+  /** Whether the icon is currently active / Активна ли иконка в данный момент */
   isActive(): boolean
 }
 
@@ -36,8 +34,8 @@ export interface IconExpose extends EventClickExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface IconSlots {
-  /** Slot for custom icon content/ Слот для пользовательского контента иконки */
-  default?(props: any): any
+  /** Slot for custom icon content / Слот для пользовательского контента иконки */
+  default?(props: unknown): unknown
 }
 
 /**
@@ -46,6 +44,7 @@ export interface IconSlots {
  * Тип, описывающий подклассы.
  */
 export type IconClasses = {
+  /** Root element classes / Классы корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

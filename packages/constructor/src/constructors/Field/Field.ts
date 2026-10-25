@@ -165,7 +165,11 @@ export class Field {
     )
 
     this.enabled = new EnabledIncludeConstructor(props, this.progress)
-    this.event = new EventClickIncludeConstructor(props, this.enabled, emits)
+    this.event = new EventClickIncludeConstructor(
+      props,
+      () => this.enabled,
+      emits
+    )
 
     this.icons = new FieldIconsConstructor(props, naming, this.text)
     this.size = new FieldSizeConstructor(element, naming)

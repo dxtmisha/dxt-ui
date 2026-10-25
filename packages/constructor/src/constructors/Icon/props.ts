@@ -5,6 +5,11 @@ import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 import type { RoleType } from '../../types/roleTypes'
 
+/**
+ * Component token properties.
+ *
+ * Токен-свойства компонента.
+ */
 export type IconPropsToken = {
   // :type [!] System label / Системная метка
   turn?: boolean
@@ -22,6 +27,11 @@ export type IconPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic properties for the icon component.
+ *
+ * Базовые свойства для компонента иконки.
+ */
 export type IconPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic
 > = SkeletonPropsInclude
@@ -29,19 +39,19 @@ export type IconPropsBasic<
   & EventClickProps
   & {
     // Status
-    /** Активное состояние иконки/ Active state of the icon */
+    /** Active state of the icon / Активное состояние иконки */
     active?: boolean
 
     // Icon
-    /** Value of the main icon/ Значение основной иконки */
+    /** Value of the main icon / Значение основной иконки */
     icon?: ImageValue<Image>
-    /** Value of the active icon/ Значение активной иконки */
+    /** Value of the active icon / Значение активной иконки */
     iconActive?: ImageValue<Image>
 
     // ARIA
-    /** ARIA role for the icon/ ARIA-роль для иконки */
+    /** ARIA role for the icon / ARIA-роль для иконки */
     role?: RoleType
-    /** Tab index for keyboard navigation/ Индекс табуляции для навигации с клавиатуры */
+    /** Tab index for keyboard navigation / Индекс табуляции для навигации с клавиатуры */
     tabindex?: number | string
   }
 

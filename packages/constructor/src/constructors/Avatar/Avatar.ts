@@ -113,7 +113,11 @@ export class Avatar {
       { overlap: 'circular' }
     )
 
-    this.event = new EventClickIncludeConstructor(props, this.enabled, emits)
+    this.event = new EventClickIncludeConstructor(
+      props,
+      () => this.enabled,
+      emits
+    )
   }
 
   /** Tag type / Тип тега */

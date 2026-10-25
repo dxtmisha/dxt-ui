@@ -72,7 +72,7 @@
 
       @include ui.state('hide') {
         clip-path: inset(0 100% 0 0);
-        margin: 0 calc(#{ui.v('??_width')} * -1) 0 0 !important;
+        @include ui.marginRight(calc(#{ui.v('??_width')} * -1) !important);
         opacity: 1;
 
         transition-duration: ui.v('d.sys.transitionDuration.fade.exit');

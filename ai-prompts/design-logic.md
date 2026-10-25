@@ -26,6 +26,7 @@ The component logic layer in `dxt-ui` isolates business logic, accessibility (`A
 4. **Declarative Conditions (`conditions`)**:
    - `constructorItems` can declare a reactive condition `conditions: () => boolean`.
    - On component mount, `initConditions()` establishes a `watch(item.conditions, (active) => { if (active) this.getInstance(name) }, { immediate: true })`, automatically activating dependencies when conditions are met.
+   - **Crucial Rule on Explicit Call Sites**: If a subordinate class is already explicitly accessed in code via `this.getInstance(...)` or `this.i(...)` under a condition (e.g., `this.props.isSkeleton ? this.i('skeleton').classes : {}` or `this.props.dynamic ? this.i('event').binds : ...`), **do NOT define `conditions`**. `conditions` is strictly for autonomous or background dependencies (such as lifecycle listeners, scroll monitors, or DOM observers extending `DesignLifecycleAbstract`) that must activate reactively on mount without any explicit call site in getters or templates. Adding `conditions` when an explicit call site already exists is redundant and forces premature instantiation on mount via `watch`.
 5. **Full Dependency Injection (DI)**:
    - All sub-constructors can be overridden via the `constructors?: Partial<CONSTRUCTORS>` parameter, enabling comprehensive unit testing and subclass extension without mocking modules.
 
@@ -38,12 +39,13 @@ A standard orchestrator consists of:
 2. **`<Component>Constructors` Type**: Declared and exported directly in `[Component].ts` (not in `basicTypes.ts`, to prevent circular dependencies and type pollution).
 3. **Orchestrator Class**: Extends `DesignLogicAbstract<Element, Components, Emits, Slots, Props, Constructors>`.
 4. **`constructorItems`**: Alphabetically sorted map defining constructors, factories (`parameters`), and reactive guards (`conditions`).
-5. **Public API (Getters & Methods)**: Aggregated getters (`classes`, `binds`, `aria`, `tag`) accessing dependencies via `this.i(name)`.
+5. **Public API (Getters & Methods)**: Aggregated getters (`classes`, `binds`, `aria`, `tag`) accessing dependencies via `this.i(name)`. For internal properties and element bindings that do not leave the component boundary, reuse general ecosystem types (`ConstrBind`, `ConstrClassObject`, `ConstrStyles`) instead of creating redundant strict types.
 
 ### Orchestrator Template:
 
 ```typescript
 import {
+  type ConstrBind,
   type ConstrClassObject,
   type ConstrItems,
   DesignLogicAbstract
@@ -107,6 +109,19 @@ export class MyComponent extends DesignLogicAbstract<
       parameters: () => [
         () => this.i('b') // Never pass this.i('b') directly!
       ]
+    }
+  }
+
+  /**
+   * Computed bindings for the element.
+   *
+   * Вычисляемые привязки для элемента.
+   * @returns element bindings / привязки элемента
+   */
+  get binds(): ConstrBind {
+    return {
+      key: 'myComponent',
+      ...this.i('a').binds
     }
   }
 
@@ -185,23 +200,25 @@ When helper class `B` depends on helper class `A`:
 3. **CRITICAL RULE**: Sub-class constructors must **never** call `this.a()` eagerly in their constructor body. Call `this.a()` strictly inside methods or computed properties.
 
 ### Step 4: Conditional Instantiation (`conditions`)
-If a dependency is only relevant for specific props:
-1. Add a static guard method in the sub-class:
-   ```typescript
-   export class MyComponentBorder extends DesignLifecycleAbstract {
-     static is(props?: MyComponentProps): boolean {
-       return Boolean(props?.divider || props?.border)
+Use `conditions` **ONLY** for autonomous background or lifecycle dependencies (such as classes extending `DesignLifecycleAbstract`) that need to start or attach listeners when specific props change without being explicitly called from template getters:
+1. **Rule of Explicit Call Sites**: If a sub-class is called explicitly in code via `this.i(name)` behind a condition (e.g., `this.props.isSkeleton ? this.i('skeleton').classes : {}` or `this.props.dynamic ? this.i('event').binds : ...`), **NEVER specify `conditions`**. The on-demand call `this.i(...)` already provides true lazy instantiation. Specifying `conditions` in this case is an anti-pattern that creates redundant watchers and prematurely instantiates the instance on mount.
+2. If a dependency is purely autonomous (e.g., `border` observing scroll, or `adaptiveItem` watching screen width):
+   - Add a static guard method in the sub-class:
+     ```typescript
+     export class MyComponentBorder extends DesignLifecycleAbstract {
+       static is(props?: MyComponentProps): boolean {
+         return Boolean(props?.divider || props?.border)
+       }
      }
-   }
-   ```
-2. In `constructorItems`, attach `conditions`:
-   ```typescript
-   border: {
-     item: MyComponentBorder,
-     conditions: () => MyComponentBorder.is(this.props),
-     parameters: () => [this.props, this.element]
-   }
-   ```
+     ```
+   - In `constructorItems`, attach `conditions`:
+     ```typescript
+     border: {
+       item: MyComponentBorder,
+       conditions: () => MyComponentBorder.is(this.props),
+       parameters: () => [this.props, this.element]
+     }
+     ```
 `DesignLogicAbstract.initConditions()` will automatically observe this condition with Vue's `watch(..., { immediate: true })`.
 
 ### Step 5: Connect to the Design Class (`[Name]Design.tsx`)
@@ -233,6 +250,20 @@ export class MyComponentDesign<...> extends DesignConstructorAbstract<...> {
       main: this.item.classes,
       ...
     } as Partial<CLASSES>
+  }
+
+  protected initRender = (): VNode => {
+    return h(
+      'div',
+      {
+        ...this.getAttrs(),
+        ref: this.element, // Binds root DOM element to this.element and expose().elementHtml
+        ...this.item.binds,
+        class: this.classes?.value.main,
+        style: this.styles?.value
+      },
+      this.initSlot('default')
+    )
   }
 }
 ```
@@ -285,3 +316,19 @@ See [`Ripple.ts`](file:///Volumes/T7/development/dxt-ui/packages/constructor/src
 6. **Strict Types & Zero `any`**:
    - Use generics and exact interfaces. Avoid `any`.
    - When writing unit tests with `reactive<PropsInclude>`, avoid passing reactive objects with recursive constructor types into test constructors to prevent `TS2589` infinite type instantiation.
+7. **No `conditions` for Explicitly Called Dependencies**:
+   - If a subordinate class is called explicitly anywhere in the orchestrator or design via `this.i('name')` (e.g., `this.props.isSkeleton ? this.i('skeleton').classes : {}` or in template binds/methods), DO NOT declare `conditions` in `constructorItems`.
+   - Use `conditions` strictly for autonomous, lifecycle-driven dependencies (`DesignLifecycleAbstract`) that have no explicit call site in getters or templates.
+8. **No Overly Strict Types for Internal Elements (Component Boundary Rule)**:
+   - For properties, element bindings, and helpers that do **not** escape beyond the component boundary (e.g., `get binds(): ConstrBind`, internal helper objects, DOM event properties), do **NOT** declare redundant, over-specialized strict types (such as custom `[Name]Binds` in `basicTypes.ts`).
+   - Use standard general ecosystem types from `@dxtmisha/functional` (`ConstrBind` for element binds, `ConstrClassObject` for classes, `ConstrStyles` for styles, `ConstrItem` for generic items).
+   - Strict specialized interfaces are strictly for external/public component boundaries: `Props`, `Emits`, `Expose`, `Slots`, `Components`, and inclusion interfaces (`*PropsInclude`).
+   - **Правило границ компонента**: Для элементов и привязок, которые не выходят за пределы компонента (внутренние бинды корневого элемента `get binds(): ConstrBind`, промежуточные объекты и свойства), не нужно объявлять строгие типы (такие как кастомные `*Binds` в `basicTypes.ts`). Используйте общие типы экосистемы (`ConstrBind`, `ConstrClassObject`, `ConstrStyles`). Строгие интерфейсы требуются исключительно для внешнего публичного контракта компонента (`Props`, `Emits`, `Expose`, `Slots`, `*PropsInclude`).
+9. **Root Element DOM Ref Binding (`ref: this.element` & `elementHtml`)**:
+   - In `[Name]Design.tsx`, `this.element` is automatically initialized by `DesignConstructorAbstract` and exposed via `expose().elementHtml`.
+   - **Mandatory Binding**: In `initRender()`, always bind `ref: this.element` to the root element (`h('div', { ...this.getAttrs(), ref: this.element, ...this.item.binds, ... })`) if:
+     1. The logic orchestrator (`DesignLogicAbstract`) or any subordinate helper class (`*Coordinator`, `*Events`, `*Lazy`, `*Client`, `*Scroll`, etc.) accepts `this.element` and accesses it for DOM measurements, event listeners, observers (`ResizeObserver`, `IntersectionObserver`), or coordinate calculations.
+     2. External components or include helpers access the root element via `.elementHtml` (e.g., `scroll.elementHtml`, `field.elementHtml`).
+   - **Permissible Omission**: For pure leaf visual primitives (such as `Icon`) where neither the internal logic class (`Icon.ts`) nor external consumers/parent components ever query or interact with the DOM element or `elementHtml`, omitting `ref: this.element` does not break runtime behavior and is completely safe.
+   - **Code Review Standard**: Do NOT classify missing `ref: this.element` as a critical bug (P0/P1) unless `this.element` is actually required and used by the logic class or by consumers. If `this.element` is unused everywhere, missing `ref: this.element` is benign and has no functional impact.
+   - **Привязка ссылки на корневой DOM-элемент (`ref: this.element`)**: В методе `initRender()` класса `[Name]Design.tsx` привязка `ref: this.element` на корневой VNode (`h('div', { ref: this.element, ... })`) обязательна только тогда, когда логика компонента (`DesignLogicAbstract` и его классы-помощники) использует DOM-элемент для вычислений, слушателей или обсерверов, либо если внешние потребители обращаются к `.elementHtml`. Если компонент является чистым визуальным листовым примитивом (как `Icon`) и ни логика, ни внешние компоненты не используют ссылку на DOM, отсутствие `ref: this.element` абсолютно безопасно и не является функциональным дефектом («всё норм»).

@@ -2,6 +2,8 @@
   "width": {
     "_type": "var"
   },
+  "#icon": {},
+  "#iconActive": {},
   "~turn": {},
   "~disabled": {},
   "~hide": {},

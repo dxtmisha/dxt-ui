@@ -69,7 +69,7 @@ export class SelectValue {
     this.enabled = new EnabledConstructor(this.props)
     this.event = new EventConstructor(
       this.props,
-      this.enabled,
+      () => this.enabled,
       this.emits
     )
 

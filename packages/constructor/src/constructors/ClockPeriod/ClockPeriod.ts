@@ -96,7 +96,7 @@ export class ClockPeriod {
 
     this.eventClick = new EventClickIncludeConstructor(
       undefined,
-      this.enabled,
+      () => this.enabled,
       emits
     )
     this.model = new ModelValueIncludeConstructor(

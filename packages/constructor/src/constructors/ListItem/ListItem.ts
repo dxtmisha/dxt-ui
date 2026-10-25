@@ -155,7 +155,11 @@ export class ListItem {
     this.skeleton = skeleton
 
     this.enabled = enabled
-    this.event = new EventClickIncludeConstructor(props, enabled, emits)
+    this.event = new EventClickIncludeConstructor(
+      props,
+      () => this.enabled,
+      emits
+    )
   }
 
   /** Tag type / Тип тега */

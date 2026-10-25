@@ -109,7 +109,7 @@ export class TabItem {
     this.ripple = new RippleIncludeConstructor(this.naming, this.components, this.enabled)
     this.event = new EventClickIncludeConstructor(
       this.props,
-      this.enabled,
+      () => this.enabled,
       this.emits
     )
   }

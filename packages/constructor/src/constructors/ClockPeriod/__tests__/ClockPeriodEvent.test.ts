@@ -41,7 +41,7 @@ describe('ClockPeriodEvent', () => {
     const emitsSpy = vi.fn()
     const props: ClockPeriodProps = { value: ClockPeriodType.am }
     const enabled = new EnabledInclude(props)
-    const eventClick = new EventClickInclude(undefined, enabled, emitsSpy)
+    const eventClick = new EventClickInclude(undefined, () => enabled, emitsSpy)
     const value = new ClockPeriodValue(props)
     const model = mountModel(() => new ModelValueInclude<ClockPeriodType>('value', emitsSpy, eventClick, value.value))
     const eventManager = new ClockPeriodEvent(enabled, value, eventClick)
@@ -75,7 +75,7 @@ describe('ClockPeriodEvent', () => {
     const emitsSpy = vi.fn()
     const props: ClockPeriodProps = { value: ClockPeriodType.am }
     const enabled = new EnabledInclude(props)
-    const eventClick = new EventClickInclude(undefined, enabled, emitsSpy)
+    const eventClick = new EventClickInclude(undefined, () => enabled, emitsSpy)
     const value = new ClockPeriodValue(props)
     const eventManager = new ClockPeriodEvent(enabled, value, eventClick)
 
@@ -95,7 +95,7 @@ describe('ClockPeriodEvent', () => {
     const emitsSpy = vi.fn()
     const props: ClockPeriodProps = { value: ClockPeriodType.am }
     const enabled = new EnabledInclude(props)
-    const eventClick = new EventClickInclude(undefined, enabled, emitsSpy)
+    const eventClick = new EventClickInclude(undefined, () => enabled, emitsSpy)
     const value = new ClockPeriodValue(props)
     const eventManager = new ClockPeriodEvent(enabled, value, eventClick)
 
@@ -117,7 +117,7 @@ describe('ClockPeriodEvent', () => {
     const emitsSpy = vi.fn()
     const props: ClockPeriodProps = { value: ClockPeriodType.am }
     const enabled = new EnabledInclude(props)
-    const eventClick = new EventClickInclude(undefined, enabled, emitsSpy)
+    const eventClick = new EventClickInclude(undefined, () => enabled, emitsSpy)
     const value = new ClockPeriodValue(props)
     const model = mountModel(() => new ModelValueInclude<ClockPeriodType>('value', emitsSpy, eventClick, value.value))
     const eventManager = new ClockPeriodEvent(enabled, value, eventClick)

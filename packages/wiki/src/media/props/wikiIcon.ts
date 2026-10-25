@@ -4,6 +4,11 @@ import {
   StorybookControl
 } from '../../types/storybookTypes'
 
+/**
+ * Props for the Icon component in Storybook
+ *
+ * Свойства для компонента Icon в Storybook
+ */
 export const wikiIcon: StorybookArgsToList = {
   // Status
   'icon.active': {

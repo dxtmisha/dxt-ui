@@ -8,7 +8,8 @@ import {
   type DesignName,
   executeFunction,
   executeFunctionRef,
-  getBind
+  getBind,
+  toBinds
 } from '@dxtmisha/functional'
 
 import type { ComponentIncludeExtra } from '../../types/componentInclude'
@@ -44,11 +45,11 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
   get iconBind(): ConstrBind<IconPropsBasic> {
     return getBind(
       this.getProps().icon,
-      {
-        ...this.getExtra(),
-        ...this.getClasses(),
-        ...this.getEventType()
-      },
+      toBinds(
+        this.getExtra(),
+        this.getClasses(),
+        this.getEventType()
+      ),
       'icon'
     )
   }
@@ -99,7 +100,7 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
    * Возвращает дополнительные свойства.
    * @returns additional properties / дополнительные свойства
    */
-  protected getExtra() {
+  protected getExtra(): ConstrBind<IconPropsBasic> | undefined {
     return executeFunctionRef(this.extra)
   }
 
@@ -107,27 +108,14 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
    * Returns a list of classes.
    *
    * Возвращает список классов.
-   * @param classesUser list of additional classes / список дополнительных классов
    * @param name class name / название класса
    * @returns object with classes / объект с классами
    */
   protected getClasses(
-    classesUser?: ConstrClass,
     name: string = 'icon'
   ): { class: ConstrClass } {
-    const classes: ConstrClass = [this.naming.getSubClass(name)]
-    const classesExtra = this.getExtra()?.class
-
-    if (classesExtra) {
-      classes.push(classesExtra)
-    }
-
-    if (classesUser) {
-      classes.push(classesUser)
-    }
-
     return {
-      class: classes
+      class: [this.naming.getSubClass(name)]
     }
   }
 

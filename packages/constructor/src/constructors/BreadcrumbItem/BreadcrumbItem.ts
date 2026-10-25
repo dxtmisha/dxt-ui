@@ -96,7 +96,7 @@ export class BreadcrumbItem {
 
     this.event = new EventClickIncludeConstructor(
       props,
-      this.enabled,
+      () => this.enabled,
       emits
     )
   }

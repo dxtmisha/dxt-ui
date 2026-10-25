@@ -125,7 +125,11 @@ export class NavigationRailItem {
     )
 
     this.ripple = new RippleIncludeConstructor(naming, components, this.enabled)
-    this.event = new EventClickIncludeConstructor(props, this.enabled, emits)
+    this.event = new EventClickIncludeConstructor(
+      props,
+      () => this.enabled,
+      emits
+    )
   }
 
   /** Tag type / Тип тега */

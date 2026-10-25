@@ -1,25 +1,34 @@
 import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
 
+/**
+ * Descriptions for Icon component properties
+ *
+ * Описания свойств компонента Icon
+ */
 export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
   name: 'Icon',
   description: {
-    en: 'A component for displaying vector icons with support for state management, automatic directionality adaptation, and design system styling.',
-    ru: 'Компонент для отображения векторных иконок с поддержкой управления состоянием, автоматической адаптацией направления и стилизацией дизайн-системы.'
+    en: 'Component for displaying vector icons with support for state management, interactive accessibility, automatic directionality adaptation, and design system styling.',
+    ru: 'Компонент для отображения векторных иконок с поддержкой управления состоянием, интерактивной доступностью, автоматической адаптацией направления и стилизацией дизайн-системы.'
   },
   possibilities: {
     en: [
-      'rendering icons by identifier',
-      'toggling between two icons based on the active state',
-      'automatic mirroring for RTL languages',
-      'integration with the color palette and inverse mode',
-      'displaying a skeleton loader placeholder'
+      'rendering icons by identifier or `Image` property bindings',
+      'toggling between primary (`icon`) and active (`iconActive`) icons based on the `active` state',
+      'interactive mode (`dynamic`) with `@click` / `@clickLite` events, keyboard navigation (`tabindex`), and automatic ARIA attributes (`role`, `ariaLabel`, `aria-disabled`)',
+      'visual state transformations via 180-degree rotation (`turn`), automatic RTL mirroring (`dir`), `hide`, and `disabled`',
+      'integration with the color palette (`asPalette`) and background substrate (`overlay`)',
+      'displaying a skeleton loader placeholder (`isSkeleton`)',
+      'forwarding image `load` events (`@load`) and programmatic state inspection via `isActive()`, `getValue()`, and `getDetail()`'
     ],
     ru: [
-      'рендеринг иконок по идентификатору',
-      'переключение между двумя иконками в зависимости от активного состояния',
-      'автоматическое зеркалирование для RTL языков',
-      'интеграция с цветовой палитрой и инверсный режим',
-      'отображение заполнителя (скелетона) при загрузке'
+      'рендеринг иконок по идентификатору или объекту свойств `Image`',
+      'переключение между основной (`icon`) и активной (`iconActive`) иконками в зависимости от состояния `active`',
+      'интерактивный режим (`dynamic`) с событиями `@click` / `@clickLite`, навигацией с клавиатуры (`tabindex`) и автоматическими ARIA-атрибутами (`role`, `ariaLabel`, `aria-disabled`)',
+      'визуальные трансформации состояния с помощью поворота на 180 градусов (`turn`), автоматического зеркалирования для RTL (`dir`), `hide` и `disabled`',
+      'интеграция с цветовой палитрой (`asPalette`) и фоновой подложкой (`overlay`)',
+      'отображение заполнителя (скелетона) при загрузке (`isSkeleton`)',
+      'проксирование события загрузки изображения (`@load`) и программный доступ к состоянию через `isActive()`, `getValue()` и `getDetail()`'
     ]
   },
   import: [],
@@ -72,15 +81,15 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Basic</div>
-            <DesignComponent icon="home" size="lg"/>
+            <DesignComponent icon="home"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Palette</div>
-            <DesignComponent icon="home" size="lg" asPalette/>
+            <DesignComponent icon="home" asPalette/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Inverse</div>
-            <DesignComponent icon="home" size="lg" asPalette inverse/>
+            <div class="wiki-storybook-item__label">Overlay</div>
+            <DesignComponent icon="home" asPalette overlay/>
           </div>
         </div>
       `
@@ -94,11 +103,10 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
       components: ['Skeleton'],
       template: `
         <DesignSkeleton :active="true">
-          <DesignComponent isSkeleton icon="home" rounded="md"/>
+          <DesignComponent isSkeleton icon="home"/>
         </DesignSkeleton>
       `
     }
-
   ],
   documentation: {
     body: `
@@ -128,10 +136,15 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
     `
   },
   ai: {
+    render: `
+<div :class="classDemo.item">
+  <Icon icon="home" v-bind="args"/>
+</div>
+    `,
     description: `
-Vector icon component, typically utilizing the Material Symbols library. Supports dynamic state management, automatic mirroring for RTL languages, and deep integration with the design system's palette.
-Features toggle-able states (active/inactive) with specific icons for each, built-in skeleton loading (isSkeleton), and directionality adaptation. Customizing via size, palette, and inverse props ensures visual consistency across all themes.
-Controlled via the icon and iconActive props and various styling flags. Use for navigation links, action buttons, status indicators, or any UI element requiring concise visual representation.
+Vector icon orchestrator component that renders icons, images, and flags via the underlying Image component. Supports dynamic state switching between primary (icon) and active (iconActive) representations, 180-degree rotation (turn), automatic RTL mirroring (dir), background substrate (overlay), and color palette inheritance (asPalette).
+Operates as a decorative element (aria-hidden="true") by default, or as an accessible interactive control with role="button", keyboard navigation (tabindex, Enter/Space), and @click/@clickLite events when dynamic is enabled. Integrates with Skeleton via isSkeleton and forwards @load events from child images.
+Controlled via icon, iconActive, active, dynamic, turn, dir, and disabled props, and exposes isActive(), getValue(), and getDetail() methods. Use standalone or within composite components (Button, Chip, Field, Cell) for navigation, actions, and status indicators.
     `
   }
 }

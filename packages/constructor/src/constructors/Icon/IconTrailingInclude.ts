@@ -60,10 +60,8 @@ export class IconTrailingInclude<
         ...toBinds(
           this.getExtra(),
           props.iconAttrs,
-          {
-            ...this.getClasses(props.iconAttrs?.class, 'trailing'),
-            ...this.getEventType('icon-trailing')
-          }
+          this.getClasses('trailing'),
+          this.getEventType('icon-trailing')
         )
       },
       'icon'

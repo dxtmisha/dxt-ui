@@ -117,7 +117,7 @@ export class Button {
 
     this.event = new EventConstructor(
       props,
-      this.enabled,
+      () => this.enabled,
       emits
     )
   }

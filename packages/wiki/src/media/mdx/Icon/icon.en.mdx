@@ -1,77 +1,72 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Icon State Management
+Component for displaying vector icons and graphic symbols with support for active state switching, interactive accessibility, visual transformations, and skeleton integration.
 
-A component for displaying icons with support for active state, rotation, loading, and skeleton integration.
+Icon provides a unified orchestrator interface on top of the `Image` component, managing both a primary icon (`icon`) and an alternative active icon (`iconActive`). By default, the component renders as a decorative element (`aria-hidden="true"`). When the `dynamic` mode is enabled, it automatically attaches keyboard navigation (`tabindex`, `Enter`, `Space`), click handlers (`EventClickInclude`), enabled/disabled state tracking (`EnabledInclude`), and semantic ARIA attributes (`role="button"`, `aria-label`, `aria-disabled`). It also integrates with `SkeletonInclude` via `isSkeleton` to display loading placeholders.
 
-Icon provides a unified interface for working with icons in the design system, supporting both the main icon and an alternative for the active state. The component automatically manages switching between icons, handles loading events, and integrates with the skeleton system to display loading states.
+**Key features:**
 
-**Key Features:**
+- Dual-icon state management with smooth transition animations (`icon`, `iconActive`, `active`, `animationType`, `animationShow`)
+- Interactive mode (`dynamic`) with click events (`@click`, `@clickLite`), keyboard navigation (`tabindex`), and automatic ARIA attributes (`role`, `ariaLabel`, `aria-disabled`)
+- Decorative mode by default (`aria-hidden="true"`) without extraneous ARIA attributes
+- Visual transformations including 180-degree rotation (`turn`), automatic RTL mirroring (`dir`), background substrate (`overlay`), and color palette inheritance (`asPalette`)
+- Flex layout ordering and elevation modifiers (`start`, `end`, `high`)
+- Visibility and interaction control via `hide` and `disabled` states
+- Forwarding of underlying image `@load` events and programmatic state inspection via `isActive()`, `getValue()`, and `getDetail()`
+- Built-in skeleton loading placeholder support (`isSkeleton`) and seamless composition in parent components via `IconLiteInclude`, `IconInclude`, and `IconTrailingInclude`
 
-- Display of main and active icons with smooth transitions
-- Icon rotation at a specified angle
-- Disabled and hide states for visibility control
-- Image loading events for icons
-- Integration with Skeleton for loading states
-- Support within other components (Button, Cell, Chip, Field)
+**Common use cases:**
 
-**Typical Use Cases:**
-
-- Icons in buttons and navigation elements
-- Interactive icons with state changes
-- State indicators in forms and lists
-- Decorative interface elements with animation
-
-### Properties
-
-- **`icon`** — The main icon displayed by default.
-- **`iconActive`** — The icon that is displayed when the component is in an active state (`active` = `true`).
-- **`active`** — A boolean property that toggles the component's state between normal and active.
-
-### Description
-
-- The `icon` property is essential for displaying the icon.
-- If `iconActive` is not provided, there will be no visual change when the `active` state changes.
-- When `active` is set to `true`, the component will attempt to display the icon specified in `iconActive`.
-- The `active` property can be used to create toggles, indicators, and other interactive elements.
-
-### Recommendations
-
-- Use `iconActive` to provide visual feedback upon user interaction (e.g., on click or selection).
-- Ensure that `icon` and `iconActive` are visually distinct enough for the user to easily identify the state change.
-
-### Usage Example
+- Leading and trailing icons inside buttons, chips, inputs, and list items
+- Interactive toggle buttons such as password visibility switches, bookmark/favorite toggles, and expand/collapse chevrons
+- Directional navigation indicators with automatic adaptation for RTL languages (`dir`)
+- Standalone accessible icon actions with custom `value` and `detail` payloads (`dynamic`)
+- Status indicators and decorative interface symbols with palette inheritance (`asPalette`) and overlay substrates (`overlay`)
 
 <Source
     code={`
 <script setup>
 import { ref } from 'vue'
-import { D1Icon } from '@dxtmisha/d1'
+import { Icon } from '@dxtmisha/constructor'
 
-const isActive = ref(false)
+const isFavorite = ref(false)
+const isVisible = ref(false)
+const isExpanded = ref(false)
+
+const onIconLoad = (event) => {
+  console.log('Icon loaded:', event)
+}
 </script>
 
 <template>
-  <!-- Normal icon -->
-  <D1Icon icon="home" />
+  <!-- Decorative static icon (renders with aria-hidden="true") -->
+  <Icon icon="home" />
 
-  <!-- Active icon -->
-  <!-- \`favorite\` will be displayed because active=true -->
-  <D1Icon icon="favorite_border" icon-active="favorite" :active="true" />
+  <!-- State-driven icon switching (displays "favorite" when active is true) -->
+  <Icon
+    icon="favorite_border"
+    icon-active="favorite"
+    :active="isFavorite"
+  />
 
-  <!-- Dynamic state toggle -->
-  <D1Icon
+  <!-- Interactive accessible toggle icon (dynamic mode enables click, keyboard, and ARIA) -->
+  <Icon
     icon="visibility"
     icon-active="visibility_off"
     :active="isVisible"
+    dynamic
+    aria-label="Toggle password visibility"
+    value="toggle-visibility"
     @click="isVisible = !isVisible"
   />
 
-  <D1Icon
-    icon="home"
-    icon-active="favorite"
-    :active="isActive"
-    turn="90"
+  <!-- Visual transformations: 180° rotation, RTL mirroring, palette inheritance, and load event -->
+  <Icon
+    icon="expand_more"
+    :turn="isExpanded"
+    dir
+    as-palette
+    overlay
     @load="onIconLoad"
   />
 </template>
@@ -79,4 +74,4 @@ const isActive = ref(false)
     language="html"
 />
 
-> The Icon component can be used both standalone and as part of other UI components through the `icon`, `icon-trailing`, and `icon-active` properties.
+> The Icon component can be used both as a standalone decorative or interactive element and as an embedded icon primitive within other UI components through the `icon`, `icon-active`, and `icon-trailing` properties.

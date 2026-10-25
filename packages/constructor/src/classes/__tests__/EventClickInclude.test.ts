@@ -71,7 +71,7 @@ describe('EventClickInclude', () => {
   it('should check enabled state and emit options correctly on click', () => {
     const emits = vi.fn()
     const enabledMock = { isEnabled: true, isDisabled: false } as any
-    const include = new EventClickInclude({ value: 'val', detail: { d: 1 } }, enabledMock, emits)
+    const include = new EventClickInclude({ value: 'val', detail: { d: 1 } }, () => enabledMock, emits)
     const targetElement = document.createElement('div')
     targetElement.setAttribute('data-event-type', 'button')
     const event = { target: targetElement } as any
@@ -80,6 +80,18 @@ describe('EventClickInclude', () => {
     const expectedPayload = { type: 'button', value: 'val', detail: { d: 1 } }
     expect(emits).toHaveBeenCalledWith('click', event, expectedPayload)
     expect(emits).toHaveBeenCalledWith('clickLite', expectedPayload)
+  })
+
+  it('should not emit if enabled callback returns isEnabled: false', () => {
+    const emits = vi.fn()
+    const enabledMock = { isEnabled: false, isDisabled: true } as any
+    const include = new EventClickInclude({ value: 'val' }, () => enabledMock, emits)
+    const targetElement = document.createElement('div')
+    targetElement.setAttribute('data-event-type', 'button')
+    const event = { target: targetElement } as any
+
+    include.onClick(event)
+    expect(emits).not.toHaveBeenCalled()
   })
 
   it('should trigger click on Keydown if Enter key is pressed', () => {

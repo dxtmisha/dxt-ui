@@ -19,7 +19,9 @@ import {
 } from './types'
 
 /**
- * IconDesign
+ * IconDesign rendering and composition class.
+ *
+ * Класс рендеринга и композиции IconDesign.
  */
 export class IconDesign<
   COMP extends IconComponents,
@@ -27,7 +29,7 @@ export class IconDesign<
   CLASSES extends IconClasses,
   P extends IconPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLSpanElement,
     COMP,
     IconEmits,
     EXPOSE,
@@ -35,14 +37,17 @@ export class IconDesign<
     CLASSES,
     P
   > {
+  /** Icon logic class instance / Экземпляр класса логики Icon */
   protected readonly item: Icon
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor icon item class/ класс элемента иконки
+   * Constructor for creating an IconDesign instance.
+   *
+   * Конструктор для создания экземпляра дизайна иконки.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor icon item class / класс элемента иконки
    */
   constructor(
     name: string,
@@ -67,19 +72,24 @@ export class IconDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work<br>
+   * Initialization of all the necessary properties for work.
+   *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / открытые свойства
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose,
+      getDetail: () => this.item.i('event').expose.getDetail?.(),
+      getValue: () => this.item.i('event').expose.getValue?.(),
       isActive: this.item.isActive
     } as EXPOSE
   }
 
   /**
-   * Improvement of the obtained list of classes.<br>
+   * Improvement of the obtained list of classes.
+   *
    * Доработка полученного списка классов.
+   * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -92,8 +102,10 @@ export class IconDesign<
   }
 
   /**
-   * Refinement of the received list of styles.<br>
+   * Refinement of the received list of styles.
+   *
    * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -103,18 +115,27 @@ export class IconDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual node of the root element / виртуальный узел корневого элемента
    */
   protected initRender(): VNode {
-    const children: any[] = []
+    const children: VNode[] = []
 
     this.initSlot('default', children)
 
     if (this.props.icon) {
-      children.push(this.renderIcon())
+      const iconNode = this.renderIcon()
+
+      if (iconNode) {
+        children.push(iconNode)
+      }
     }
 
     if (this.props.iconActive) {
-      children.push(this.renderIconActive())
+      const activeIconNode = this.renderIconActive()
+
+      if (activeIconNode) {
+        children.push(activeIconNode)
+      }
     }
 
     return h(
@@ -122,7 +143,8 @@ export class IconDesign<
       {
         ...this.getAttrs(),
         ...this.item.binds,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        style: this.styles?.value
       },
       children
     )
@@ -132,6 +154,7 @@ export class IconDesign<
    * Render the main icon.
    *
    * Рендер основной иконки.
+   * @returns rendered icon virtual node / отрендеренный виртуальный узел иконки
    */
   readonly renderIcon = (): VNode | undefined => {
     return this.components?.renderOne(
@@ -146,6 +169,7 @@ export class IconDesign<
    * Render the secondary icon.
    *
    * Рендер вторичной иконки.
+   * @returns rendered active icon virtual node / отрендеренный виртуальный узел активной иконки
    */
   readonly renderIconActive = (): VNode | undefined => {
     return this.components?.renderOne(

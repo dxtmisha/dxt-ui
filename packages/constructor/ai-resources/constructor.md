@@ -221,7 +221,7 @@ export class Button {
     this.icon = new IconConstructor(props, naming, components)
     this.ripple = new RippleConstructor(naming, components, this.enabled)
     this.skeleton = new SkeletonConstructor(props, naming, ['classBackground'])
-    this.event = new EventConstructor(props, this.enabled, emits)
+    this.event = new EventConstructor(props, () => this.enabled, emits)
   }
 
   // Getters for Design class consumption
