@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable để lấy các bản dịch phản ứng dựa trên các khóa hoặc một mảng các khóa. Nó tự động cập nhật khi ngôn ngữ của ứng dụng thay đổi.
 
+Các cập nhật ref lỗi thời bị bỏ qua sau khi đổi ngôn ngữ. `TranslateInstance` cũng giữ ngôn ngữ và vị trí ban đầu của mỗi lần tải: tập tin đến muộn của ngôn ngữ trước không thể ghi đè bộ nhớ đệm của mã vùng hiện tại, kể cả với các hook mới tạo.
+
 **Tham số:**
 - `names: (string | string[])[]` — một chuỗi hoặc một mảng các khóa để dịch.
 

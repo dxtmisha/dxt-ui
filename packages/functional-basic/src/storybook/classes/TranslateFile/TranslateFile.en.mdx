@@ -46,8 +46,8 @@ const customFiles = new TranslateFile(
 
 ### Data Retrieval
 
-- `async getList(): Promise<TranslateDataFileList | undefined>` — Returns a list of translations for the current location. It first checks the internal cache, then tries to load from the registered file loaders.
-- `isFile(): boolean` — Checks if there are any registered file loaders applicable to the current location or language.
+- `async getList(location?: string, language?: string): Promise<TranslateDataFileList | undefined>` — Returns translations for the specified location and language. Omitted arguments use the current providers. It checks the internal cache before loading the file.
+- `isFile(location?: string, language?: string): boolean` — Checks for a file matching the specified location and language; omitted arguments use the current values.
 - `getLocation(): string` — Returns the current location string (executes the provider if it's a function).
 - `getLanguage(): string` — Returns the current language string (executes the provider if it's a function).
 
@@ -68,6 +68,8 @@ A simple key-value record of translations: `Record<string, string>`.
 ## Examples
 
 ### Integration with TranslateInstance
+
+`TranslateInstance` captures the language and location when a request is queued. Locale placeholders in the API path are also resolved at that point. Different locales use separate batches; file selection and cache keys retain the original locale after asynchronous loading. A late response for a previous language stays in that language's cache.
 
 ```javascript
 import { TranslateFile, TranslateInstance } from '@dxtmisha/functional-basic'

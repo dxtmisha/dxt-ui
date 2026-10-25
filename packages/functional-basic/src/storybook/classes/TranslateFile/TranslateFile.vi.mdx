@@ -46,8 +46,8 @@ const customFiles = new TranslateFile(
 
 ### Lấy Dữ liệu
 
-- `async getList(): Promise<TranslateDataFileList | undefined>` — Trả về danh sách các bản dịch cho vị trí hiện tại. Nó kiểm tra bộ nhớ đệm trước, sau đó thử tải từ các trình tải tập tin đã đăng ký.
-- `isFile(): boolean` — Kiểm tra xem có trình tải tập tin nào phù hợp với vị trí hoặc ngôn ngữ hiện tại hay không.
+- `async getList(location?: string, language?: string): Promise<TranslateDataFileList | undefined>` — Trả về bản dịch cho vị trí và ngôn ngữ được chỉ định. Nếu bỏ qua tham số, dùng các trình cung cấp hiện tại. Kiểm tra bộ nhớ đệm trước khi tải tập tin.
+- `isFile(location?: string, language?: string): boolean` — Kiểm tra tập tin phù hợp với vị trí và ngôn ngữ được chỉ định; nếu bỏ qua tham số, dùng giá trị hiện tại.
 - `getLocation(): string` — Trả về chuỗi vị trí hiện tại (phụ thuộc vào trình cung cấp nếu nó là một hàm).
 - `getLanguage(): string` — Trả về chuỗi ngôn ngữ hiện tại (phụ thuộc vào trình cung cấp nếu nó là một hàm).
 
@@ -68,6 +68,8 @@ Một bản ghi khóa-giá trị đơn giản của các bản dịch: `Record<s
 ## Ví dụ
 
 ### Tích hợp với TranslateInstance
+
+`TranslateInstance` ghi lại ngôn ngữ và vị trí khi đưa yêu cầu vào hàng đợi. Các biến mã vùng trong đường dẫn API cũng được thay thế tại thời điểm đó. Các mã vùng khác nhau dùng các nhóm riêng; tập tin được chọn và khóa bộ nhớ đệm giữ nguyên mã vùng ban đầu sau khi tải bất đồng bộ. Phản hồi đến muộn của ngôn ngữ trước vẫn được lưu trong bộ nhớ đệm của ngôn ngữ đó.
 
 ```javascript
 import { TranslateFile, TranslateInstance } from '@dxtmisha/functional-basic'
