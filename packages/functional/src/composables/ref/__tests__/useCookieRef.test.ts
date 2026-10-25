@@ -71,6 +71,17 @@ describe('useCookieRef', () => {
     expect(cookieMocks.set).toHaveBeenCalledWith(name, 'new-value', undefined)
   })
 
+  it('should keep browser cookie writes batched', async () => {
+    cookieMocks.get.mockReturnValue('initial')
+    const item = useCookieRef('test-cookie-batching')
+    item.value = 'intermediate'
+    item.value = 'final'
+    expect(cookieMocks.set).not.toHaveBeenCalled()
+
+    await nextTick()
+    expect(cookieMocks.set).toHaveBeenCalledExactlyOnceWith('test-cookie-batching', 'final', undefined)
+  })
+
   it('should implement a singleton pattern per cookie name', () => {
     const name = 'test-cookie-single'
 

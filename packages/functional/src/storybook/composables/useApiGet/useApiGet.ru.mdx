@@ -9,7 +9,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 **Параметры:**
 - `setup: UseApiGetSetup` — Объект настроек запроса:
   - `path?: RefOrNormal<string | undefined>` — Путь к endpoint API (может быть реактивным).
-  - `action?: (data: Return | undefined) => Promise<void> | void` — Действие (коллбэк), выполняемое после успешного завершения запроса.
+  - `action?: (data: Return | undefined) => Promise<void> | void` — Колбэк после получения и обработки данных ответа, независимо от успешности.
+  - `actionSuccess?: (data: Return) => Promise<void> | void` — Колбэк для успешного ответа по проверке `isApiSuccess`.
+  - `actionError?: (data: Return | undefined, error?: unknown) => Promise<void> | void` — Колбэк для ошибочного ответа или результата валидации. При ошибке сети передаются `(undefined, error)`.
   - `transformation?: (data: T) => Return` — Функция трансформации ответа от сервера перед возвращением или передачей в `action`.
   - `validateRequestContract?: (data: Request) => ApiDataValidation & Return` — Функция валидации контракта отправляемого запроса.
   - `validateResponseContract?: (data: T) => ApiDataValidation & Return` — Функция валидации контракта полученного ответа.
@@ -20,8 +22,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 **Возвращает:**
 Объект со следующими свойствами:
-- `loading: Ref<boolean>` — Реактивное состояние загрузки. Принимает значение `true` во время выполнения запроса и `false` после его завершения или ошибки.
-- `send(request?: Request): Promise<Return | undefined>` — Асинхронный метод для отправки `GET`-запроса. Он автоматически управляет состоянием `loading`, проверяет контракты валидации запроса и ответа, применяет функцию трансформации к ответам, вызывает коллбэк `action` при успехе и безопасно обрабатывает ошибки.
+- `loading: Ref<boolean>` — `true`, пока выполняется хотя бы один вызов `send`, включая валидацию и ожидаемые колбэки. Параллельные вызовы разрешены; `false` устанавливается после завершения всех вызовов.
+- `send(request?: Request): Promise<Return | undefined>` — Проверяет контракты запроса и ответа, применяет трансформацию и при получении данных ответа ожидает `action`, затем соответствующий колбэк результата. При ошибке валидации запроса вызывается только `actionError`; при ошибке сети вызывается `actionError(undefined, error)`, а метод возвращает `undefined`.
 
 ```typescript
 import { useApiGet } from '@dxtmisha/functional'

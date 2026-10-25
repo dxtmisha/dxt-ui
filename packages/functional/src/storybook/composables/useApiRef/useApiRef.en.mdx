@@ -46,9 +46,13 @@ Methods:
 
 Requests and watching mechanisms **are not started** immediately when `useApiRef` is called. They are activated only when accessing `data`, `item`, or calling `init()`. This optimizes the performance of setup scripts.
 
-## Global Conditions
+## Shared Reload Source
 
-`setApiRefGlobalConditions(conditions)` — sets a global condition for all `useApiRef` instances. Only works on the first call.
+`setApiRefGlobalWatchSource(source)` registers an additional ref or computed once, before request initialization. In the browser, source changes reload `useApiRef`, including with `reactivity: false`.
+
+The source value is not an execution condition: `false`, `0`, `undefined`, and other values do not block requests, cache recovery, or SSR. The request's local `conditions` and a non-empty `path` determine whether it can run.
+
+The old name `setApiRefGlobalConditions` remains available for compatibility and is marked `@deprecated`. Use `setApiRefGlobalWatchSource`.
 
 ## SSR (Server-Side Rendering)
 
@@ -91,13 +95,13 @@ To avoid calling `initSsr()` manually, you can use the asynchronous version — 
 
 ```typescript
 import { ref } from 'vue'
-import { useApiRef, setApiRefGlobalConditions } from '@dxtmisha/functional'
+import { useApiRef, setApiRefGlobalWatchSource } from '@dxtmisha/functional'
 
 const userId = ref('123')
-const isAuthenticated = ref(true)
+const refreshVersion = ref(0)
 
-// Global condition (all requests only run if authenticated)
-setApiRefGlobalConditions(isAuthenticated)
+// Changing the counter reloads all initialized requests
+setApiRefGlobalWatchSource(refreshVersion)
 
 const {
   data: user,

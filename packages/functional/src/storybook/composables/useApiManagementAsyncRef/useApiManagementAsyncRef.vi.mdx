@@ -20,8 +20,12 @@ Các tham số giống hệt với [`useApiManagementRef`](./useApiManagementRef
 - `formattersOptions?: FormattersOptions` — quy tắc định dạng.
 - `searchOptions?: ApiManagementSearch<Item, Columns>` — cài đặt tìm kiếm.
 - `postRequest / putRequest / deleteRequest` — cài đặt mutation.
-- `action?: (data: any) => Promise<void> | void` — callback chung để thực thi sau bất kỳ mutation nào thành công.
+- `action?: () => Promise<void> | void` — Callback chung sau khi nhận bất kỳ phản hồi mutation nào, bất kể thành công hay lỗi.
 - `apiInstance?: ApiInstance` — instance của API.
+
+Cấu hình riêng `action`, `actionSuccess` và `actionError` trong `postRequest`, `putRequest` và `deleteRequest`.
+
+Các phương thức `sendPost`, `sendPut` và `sendDelete` chờ `action` riêng của mutation, rồi chờ `action` chung. Trạng thái loading của mutation vẫn bật trong khi các callback chạy. Sau callback chung, phản hồi thành công sẽ bắt đầu làm mới GET ở chế độ nền; các phương thức `send` không chờ GET này hoàn tất. Nếu callback chung ném lỗi hoặc trả về Promise bị từ chối, `send` trả về `undefined` và kết thúc lời gọi đó. Loading vẫn bật khi còn các lời gọi song song khác đang thực thi.
 
 ## Giá trị trả về
 Trả về một đối tượng quản lý API. Cấu trúc đối tượng trả về giống hệt với [`useApiManagementRef`](./useApiManagementRef.vi.mdx):

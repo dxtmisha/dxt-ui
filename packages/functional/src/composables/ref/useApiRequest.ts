@@ -33,13 +33,22 @@ export interface UseApiRequestSetup<
   method?: ApiMethodItem
 
   /**
-   * Action/callback to perform after the request has successfully completed.
+   * Callback invoked after receiving and processing response data, regardless of success.
    * Can return a Promise for asynchronous operations.
    *
-   * Действие/колбэк, выполняемое после успешного завершения запроса.
+   * Колбэк после получения и обработки данных ответа, независимо от успешности.
    * Может возвращать Promise для асинхронных операций.
    */
   action?: (data: Return | undefined) => Promise<void> | void
+
+  /** Callback for a successful response / Колбэк для успешного ответа */
+  actionSuccess?: (data: Return) => Promise<void> | void
+
+  /**
+   * Callback for an error response or validation failure; transport errors pass undefined and the exception /
+   * Колбэк для ошибочного ответа или результата валидации; при ошибке сети передаются undefined и исключение
+   */
+  actionError?: (data: Return | undefined, error?: unknown) => Promise<void> | void
 
   /**
    * Transformation function that modifies the raw response data before returning it.
@@ -120,6 +129,8 @@ export function useApiRequest<
     path,
     method = ApiMethodItem.post,
     action,
+    actionSuccess,
+    actionError,
     transformation,
     validateRequestContract,
     validateResponseContract,
@@ -129,8 +140,11 @@ export function useApiRequest<
     apiInstance = Api.getItem()
   }: UseApiRequestSetup<T, Request, Return>
 ) {
-  /** Loading state / Состояние загрузки */
+  /** Whether any send call is active / Выполняется ли хотя бы один вызов send */
   const loading = ref<boolean>(false)
+
+  /** Number of active send calls, including validation and callbacks / Число активных вызовов send, включая валидацию и колбэки */
+  let activeRequestCount = 0
 
   /** Ref item options / Опции ссылочного элемента */
   const requestOptions = toRefItem(getOptions(options))
@@ -144,19 +158,22 @@ export function useApiRequest<
   }
 
   return {
-    /** Loading state / Состояние загрузки */
+    /** Whether any send call is active / Выполняется ли хотя бы один вызов send */
     loading,
 
     /**
-     * Send request.
+     * Sends a request and awaits callbacks; loading covers all active send calls.
      *
-     * Отправка запроса.
+     * Отправляет запрос и ожидает колбэки; loading учитывает все активные вызовы send.
      * @param request Request data / Данные запроса
      * @returns Response data / Данные ответа
      */
     async send(request?: Request): Promise<Return | undefined> {
       /** Response data / Данные ответа */
       let data: Return | undefined
+
+      activeRequestCount++
+      loading.value = true
 
       try {
         if (
@@ -170,19 +187,22 @@ export function useApiRequest<
             validateRequestResult
             && !isApiSuccess(validateRequestResult)
           ) {
+            await actionError?.(validateRequestResult)
             return validateRequestResult
           }
         }
 
-        loading.value = true
-
-        data = await apiInstance.request<Return | undefined>({
-          path: getRef(path),
-          method,
-          request,
-          toData,
-          ...requestOptions.value
-        })
+        try {
+          data = await apiInstance.request<Return | undefined>({
+            path: getRef(path),
+            method,
+            request,
+            toData,
+            ...requestOptions.value
+          })
+        } catch (error) {
+          await actionError?.(undefined, error)
+        }
 
         if (data) {
           if (
@@ -207,20 +227,20 @@ export function useApiRequest<
             data = transformation(data)
           }
 
-          if (action) {
-            /** Action result / Результат действия */
-            const result = action(data)
+          await action?.(data)
 
-            if (result instanceof Promise) {
-              await result
-            }
+          if (isApiSuccess(data)) {
+            await actionSuccess?.(data)
+          } else {
+            await actionError?.(data)
           }
         }
       } catch (_) {
         data = undefined
+      } finally {
+        activeRequestCount--
+        loading.value = activeRequestCount > 0
       }
-
-      loading.value = false
 
       return data
     }

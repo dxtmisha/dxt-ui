@@ -2,7 +2,7 @@ import {
   type Ref,
   watch
 } from 'vue'
-import { Cookie, type CookieOptions, ServerStorage } from '@dxtmisha/functional-basic'
+import { Cookie, type CookieOptions, isDomRuntime, ServerStorage } from '@dxtmisha/functional-basic'
 
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 import { useBroadcastValueRef } from './useBroadcastValueRef'
@@ -21,8 +21,12 @@ const getItems = () => {
 
 /**
  * Creates a reactive variable to manage cookies.
+ * Changes, including nested objects and arrays, are persisted synchronously during SSR.
+ * Browser writes are batched on the next Vue update cycle.
  *
  * Создает реактивную переменную для управления cookie.
+ * Изменения, включая вложенные объекты и массивы, сохраняются синхронно при SSR.
+ * В браузере записи объединяются в следующем цикле обновления Vue.
  * @param name cookie name / название cookie
  * @param defaultValue value or function to change data / значение или функция для изменения данных
  * @param options additional parameters / дополнительные параметры
@@ -47,6 +51,9 @@ export function useCookieRef<T>(
   EffectScopeGlobal.run(() => {
     watch(item, (value) => {
       cookie.set(value as T, options)
+    }, {
+      deep: true,
+      flush: isDomRuntime() ? 'pre' : 'sync'
     })
   })
 

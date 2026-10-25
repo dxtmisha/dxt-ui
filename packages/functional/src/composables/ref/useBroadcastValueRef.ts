@@ -1,4 +1,4 @@
-import { ref, type Ref, watch } from 'vue'
+import { ref, type Ref, toRaw, watch } from 'vue'
 import { BroadcastMessage, executeFunction, isDomRuntime, ServerStorage } from '@dxtmisha/functional-basic'
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 
@@ -37,17 +37,27 @@ export function useBroadcastValueRef<T>(
   const item = ref<BroadcastValueItem<T>>(executeFunction(defaultValue))
 
   if (isDomRuntime()) {
+    /** Last sent or received value used to prevent message echoes / Последнее отправленное или полученное значение для предотвращения обратной отправки */
+    let synchronizedValue = item.value
+
     const broadcast = new BroadcastMessage<{ message: BroadcastValueItem<T> }>(
       fullName,
       (event) => {
         if (item.value !== event.data.message) {
           item.value = event.data.message
         }
+
+        synchronizedValue = item.value
       }
     )
 
     EffectScopeGlobal.run(() => {
-      watch(item, value => broadcast.post({ message: value }))
+      watch(item, (value) => {
+        if (value !== synchronizedValue) {
+          synchronizedValue = value
+          broadcast.post({ message: toRaw(value) })
+        }
+      })
     })
   }
 

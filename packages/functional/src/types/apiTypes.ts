@@ -38,8 +38,8 @@ export type ApiManagementGet<
   validateResponseContract?: (data: Type) => ApiDataValidation
   /** Storage of response error contracts / Хранилище контрактов ошибок ответа */
   errorContract?: ApiErrorStorageList
-  /** Validation function or class constructor for data / Функция валидации или конструктор класса для данных */
-  typeData?: ((data: Return) => boolean) | any
+  /** Data validation function returning a boolean / Функция проверки данных, возвращающая boolean */
+  typeData?: (data: Return) => boolean
   /** Whether to clear data when the component is unmounted / Удалять ли данные при размонтировании компонента */
   unmounted?: boolean
   /** Function to provide skeleton data during loading / Функция, предоставляющая данные-заглушки во время загрузки */
@@ -75,8 +75,12 @@ export type ApiManagementRequest<
 > = {
   /** Target API endpoint path / Целевой путь к API */
   path?: RefOrNormal<string | undefined>
-  /** Action to perform after a successful request / Действие после успешного выполнения запроса */
+  /** Callback after receiving response data, regardless of success / Колбэк после получения данных ответа, независимо от успешности */
   action?: (data: Return | undefined) => Promise<void> | void
+  /** Callback for a successful response / Колбэк для успешного ответа */
+  actionSuccess?: (data: Return) => Promise<void> | void
+  /** Callback for error data or a transport exception / Колбэк для ошибочных данных или исключения при передаче запроса */
+  actionError?: (data: Return | undefined, error?: unknown) => Promise<void> | void
   /** Transformation before sending data / Трансформация перед отправкой данных */
   transformation?: (data: T) => Return
   /** Request contract validation function / Функция валидации контракта запроса */

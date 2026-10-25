@@ -9,7 +9,9 @@ Returns an object with a loading state and a `send` method for executing API `DE
 **Parameters:**
 - `setup: UseApiDeleteSetup` — Configuration setup object:
   - `path?: RefOrNormal<string | undefined>` — Path to the API endpoint (can be reactive).
-  - `action?: (data: Return | undefined) => Promise<void> | void` — Callback action to perform after the request completes successfully.
+  - `action?: (data: Return | undefined) => Promise<void> | void` — Callback after receiving and processing response data, regardless of success.
+  - `actionSuccess?: (data: Return) => Promise<void> | void` — Callback for a successful response, checked with `isApiSuccess`.
+  - `actionError?: (data: Return | undefined, error?: unknown) => Promise<void> | void` — Callback for an error response or validation failure. Transport errors pass `(undefined, error)`.
   - `transformation?: (data: T) => Return` — Function to transform the response data before it is returned or passed to the `action`.
   - `validateRequestContract?: (data: Request) => ApiDataValidation & Return` — Request contract validation function.
   - `validateResponseContract?: (data: T) => ApiDataValidation & Return` — Response contract validation function.
@@ -20,8 +22,8 @@ Returns an object with a loading state and a `send` method for executing API `DE
 
 **Returns:**
 An object with the following properties:
-- `loading: Ref<boolean>` — Reactive loading state. It becomes `true` while the request is in progress and `false` after it completes or fails.
-- `send(request?: Request): Promise<Return | undefined>` — An asynchronous method for sending the `DELETE` request. It automatically manages the `loading` state, validates the request and response contracts, applies the transformation function to the response, executes the `action` callback on success, and safely handles errors by logging them to the console.
+- `loading: Ref<boolean>` — `true` while at least one `send` call is active, including validation and awaited callbacks. Parallel calls are supported; it becomes `false` after all calls finish.
+- `send(request?: Request): Promise<Return | undefined>` — Validates the request and response, applies transformation, and awaits `action` followed by the matching status callback when response data is returned. Request validation failures call only `actionError`; transport errors call `actionError(undefined, error)` and return `undefined`.
 
 ```typescript
 import { useApiDelete } from '@dxtmisha/functional'

@@ -6,6 +6,8 @@ import {
   type FormattersReturn
 } from '@dxtmisha/functional-basic'
 
+import { GeoRef } from '../../classes/ref/GeoRef'
+
 import type { RefType } from '../../types/refTypes'
 
 /**
@@ -24,6 +26,9 @@ export function useFormattersRef<
   const item = new Formatters<Options, List>(options)
 
   const listFormat = computed<FormattersReturn<List, Options>>(() => {
+    /** Track the locale used internally by Formatters / Отслеживание локали, используемой внутри Formatters */
+    GeoRef.getLocation().value
+
     return item
       .setList(list.value)
       .to()

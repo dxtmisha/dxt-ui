@@ -6,14 +6,16 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable để khởi tạo việc theo dõi sự xuất hiện của một phần tử trên màn hình bằng cách sử dụng `IntersectionObserver`.
 
+Có thể đăng ký cùng một phần tử nhiều lần. Mỗi đăng ký có trạng thái và cơ chế dọn dẹp riêng; đăng ký mới nhận ngay trạng thái giao nhau mới nhất. Việc quan sát chỉ bắt đầu một lần và kết thúc khi đăng ký cuối cùng bị xóa.
+
 **Tham số:**
 - `options?: IntersectionObserverInit` — cài đặt cho `IntersectionObserver`. Mặc định: `{ rootMargin: '128px 0px' }`.
 
 **Trả về:**
 - `intersectionObserver: IntersectionObserver | undefined` — thực thể `IntersectionObserver`.
-- `getItem(element: HTMLElement): LazyItem | undefined` — lấy dữ liệu của phần tử đang được theo dõi.
+- `getItem(element?: HTMLElement, status?: ShallowRef<boolean>): LazyItem | undefined` — chọn đăng ký bằng ref trạng thái được trả về từ `addLazyItem`; nếu không có `status`, trả về đăng ký đang hoạt động đầu tiên của phần tử.
 - `addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean>` — thêm một phần tử để theo dõi (trả về ref trạng thái hiển thị).
-- `removeLazyItem(element?: HTMLElement): void` — xóa một phần tử khỏi việc theo dõi.
+- `removeLazyItem(element?: HTMLElement): void` — xóa tất cả đăng ký theo dõi của phần tử được chỉ định.
 - `disconnectLazy(): void` — dừng tất cả việc theo dõi và ngắt kết nối bộ quan sát.
 
 ## Ví dụ sử dụng

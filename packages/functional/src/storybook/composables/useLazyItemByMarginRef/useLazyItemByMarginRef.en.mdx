@@ -6,15 +6,16 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable for tracking the appearance of an element on the screen using `IntersectionObserver`. It is optimized by using a single observer instance for the same `rootMargin` values.
 
+Multiple calls for the same element and margin create independent registrations. `lazyItem` belongs to the current registration, and `removeLazyItem()` removes only that registration. It is also released when the scope that owns the hook stops. The element remains observed while at least one registration is active.
+
 **Parameters:**
 - `element: RefType<HTMLElement | undefined>` — reactive reference to the tracked HTML element.
 - `rootMargin: string` — margin for `IntersectionObserver` (e.g., `'100px 0px'`). Defaults to `'128px 0px'`.
-- `unmounted: boolean` — whether to automatically remove tracking when component is unmounted. Defaults to `true`.
 
 **Returns:**
 - `lazyItemStatus: ShallowRef<boolean>` — element visibility status (whether it intersects the area considering `rootMargin`).
 - `lazyItem: LazyItem | undefined` — (getter) object with detailed tracking information (ratio, entry, etc.).
-- `removeLazyItem: () => void` — remove element from tracking.
+- `removeLazyItem: () => void` — removes only the current registration from tracking.
 
 ## Usage Example
 

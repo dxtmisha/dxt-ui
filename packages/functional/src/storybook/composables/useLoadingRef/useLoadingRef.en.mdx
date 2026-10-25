@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable for obtaining the global loading status.
 
+The listener is removed automatically when the component unmounts or the current `effectScope` stops. Outside a component, create the composable inside an `effectScope` and call `scope.stop()` when the subscription is no longer needed.
+
 **Returns:**
 - `ShallowRef<boolean>` — a reactive reference to the current loading status.
 

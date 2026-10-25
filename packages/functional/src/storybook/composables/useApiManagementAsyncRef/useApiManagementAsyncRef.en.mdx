@@ -20,8 +20,12 @@ Parameters are identical to [`useApiManagementRef`](./useApiManagementRef.en.mdx
 - `formattersOptions?: FormattersOptions` — formatting rules.
 - `searchOptions?: ApiManagementSearch<Item, Columns>` — search settings.
 - `postRequest / putRequest / deleteRequest` — mutation settings.
-- `action?: (data: any) => Promise<void> | void` — a common callback to perform after any successful mutation.
+- `action?: () => Promise<void> | void` — Common callback after receiving any mutation response, regardless of success.
 - `apiInstance?: ApiInstance` — API instance.
+
+Configure `action`, `actionSuccess`, and `actionError` separately in `postRequest`, `putRequest`, and `deleteRequest`.
+
+The `sendPost`, `sendPut`, and `sendDelete` methods await the mutation-specific `action`, then the common `action`. Mutation loading stays active while these callbacks run. After the common callback, a successful response starts a background GET refresh; mutation sends do not wait for that GET to finish. If the common callback throws or rejects, `send` returns `undefined` and releases that call. Loading stays active while other parallel calls are pending.
 
 ## Returns
 Returns an API management object. The return object structure is identical to [`useApiManagementRef`](./useApiManagementRef.en.mdx):

@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable để quản lý phản ứng các thẻ meta (HTML, Open Graph, Twitter Card) với khả năng tự động đồng bộ hóa DOM. Sử dụng pattern singleton - tất cả các component đều chia sẻ cùng một trạng thái meta.
 
+Nên sử dụng `setTitle()`, `setDescription()` và các phương thức `set…` khác để thay đổi giá trị. Vẫn hỗ trợ gán trực tiếp vào các ref công khai: metadata được cập nhật đồng bộ khi SSR, còn các thay đổi trong trình duyệt được gộp thành một lần cập nhật.
+
 **Trả về:**
 - `title: Ref<string>` — tiêu đề trang phản ứng (không có hậu tố).
 - `description: Ref<string>` — thẻ meta description phản ứng.
@@ -16,6 +18,14 @@ Composable để quản lý phản ứng các thẻ meta (HTML, Open Graph, Twit
 - `author: Ref<string>` — thẻ meta author phản ứng.
 - `siteName: Ref<string>` — tên trang web phản ứng.
 - `getHtmlMeta(): string` — tạo chuỗi HTML cho tất cả các thẻ meta (hữu ích cho SSR).
+- `setTitle(value: string): void` — thiết lập tiêu đề trang.
+- `setKeywords(value: string): void` — thiết lập từ khóa.
+- `setDescription(value: string): void` — thiết lập mô tả trang.
+- `setImage(value: string): void` — thiết lập URL hình ảnh.
+- `setCanonical(value: string): void` — thiết lập URL canonical.
+- `setRobots(value: MetaRobots): void` — thiết lập chỉ thị robots.
+- `setAuthor(value: string): void` — thiết lập tác giả.
+- `setSiteName(value: string): void` — thiết lập tên trang web.
 - `setSuffix(suffix: string): void` — thiết lập hậu tố cho tiêu đề trang.
 - `meta: Meta` — thực thể `Meta` cơ sở.
 
@@ -24,8 +34,8 @@ Composable để quản lý phản ứng các thẻ meta (HTML, Open Graph, Twit
 ```typescript
 import { useMeta } from '@dxtmisha/functional'
 
-const { title, description } = useMeta()
+const { setTitle, setDescription } = useMeta()
 
-title.value = 'Tiêu đề trang của tôi'
-description.value = 'Mô tả về trang web tuyệt vời của tôi'
+setTitle('Tiêu đề trang của tôi')
+setDescription('Mô tả về trang web tuyệt vời của tôi')
 ```

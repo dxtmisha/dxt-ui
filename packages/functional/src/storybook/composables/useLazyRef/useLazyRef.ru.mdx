@@ -6,14 +6,16 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable для инициализации отслеживания появления элемента на экране с использованием `IntersectionObserver`.
 
+Один элемент можно зарегистрировать несколько раз. Каждая регистрация получает собственное состояние и очистку; новое состояние сразу учитывает последнее событие пересечения. Наблюдение начинается один раз и прекращается после удаления последней регистрации.
+
 **Параметры:**
 - `options?: IntersectionObserverInit` — настройки для `IntersectionObserver`. По умолчанию: `{ rootMargin: '128px 0px' }`.
 
 **Возвращает:**
 - `intersectionObserver: IntersectionObserver | undefined` — экземпляр `IntersectionObserver`.
-- `getItem(element: HTMLElement): LazyItem | undefined` — получение данных отслеживаемого элемента.
+- `getItem(element?: HTMLElement, status?: ShallowRef<boolean>): LazyItem | undefined` — получение регистрации по ref статуса из `addLazyItem`; без `status` возвращает первую активную регистрацию элемента.
 - `addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean>` — добавление элемента для отслеживания (возвращает статус видимости).
-- `removeLazyItem(element?: HTMLElement): void` — удаление элемента из отслеживания.
+- `removeLazyItem(element?: HTMLElement): void` — удаление всех регистраций указанного элемента из отслеживания.
 - `disconnectLazy(): void` — прекращение отслеживания и отключение наблюдателя.
 
 ## Пример использования

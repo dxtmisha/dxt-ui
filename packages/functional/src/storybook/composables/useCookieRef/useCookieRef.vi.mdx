@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Một composable để làm việc với Cookie trình duyệt. Nó cho phép tạo các biến phản ứng tự động đồng bộ hóa với Cookie. Ngoài ra, nó cũng hỗ trợ đồng bộ hóa giữa các tab trình duyệt thông qua `BroadcastChannel`.
 
+Trong trình duyệt, các thay đổi giá trị, đối tượng lồng nhau và mảng được gộp để lưu trong chu kỳ cập nhật Vue tiếp theo. Khi SSR, việc ghi diễn ra đồng bộ, kể cả thay đổi trong `setup()`. Phần tích hợp máy chủ cung cấp hàm ghi cookie vào phản hồi HTTP thông qua `CookieStorage.init`.
+
 **Tham số:**
 - `name: string` — Tên cookie.
 - `defaultValue?: T | string | (() => (T | string))` — Giá trị mặc định. Có thể là một giá trị tĩnh hoặc một hàm.

@@ -13,8 +13,12 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `postRequest?: ApiManagementRequest<Post>` — опциональные настройки для POST-запроса создания.
 - `putRequest?: ApiManagementRequest<Put>` — опциональные настройки для PUT-запроса обновления.
 - `deleteRequest?: ApiManagementRequest<Delete>` — опциональные настройки для DELETE-запроса удаления.
-- `action?: function` — общий коллбэк для выполнения после любой успешной мутации.
+- `action?: () => Promise<void> | void` — Общий колбэк после получения любого ответа на мутацию, независимо от успешности.
 - `apiInstance?: ApiInstance` — Экземпляр API, используемый для выполнения запроса. По умолчанию `Api.getItem()`.
+
+Колбэки `action`, `actionSuccess` и `actionError` настраиваются отдельно в `postRequest`, `putRequest` и `deleteRequest`.
+
+Методы `sendPost`, `sendPut` и `sendDelete` ожидают сначала `action` конкретной мутации, затем общий `action`. Пока колбэки выполняются, loading мутации остаётся активным. После общего колбэка успешный ответ запускает фоновое обновление GET; завершения этого GET методы `send` не ожидают. Если общий колбэк выбрасывает ошибку или возвращает отклонённый Promise, `send` возвращает `undefined` и завершает свой вызов. Loading остаётся активным, пока выполняются другие параллельные вызовы.
 
 ## Возвращает
 - `isValid: ComputedRef<boolean>` — `true`, если данные прошли проверку `typeData`.
@@ -90,7 +94,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>` — функция трансформации данных после получения.
 - `validateResponseContract?: (data: Type) => ApiDataValidation` — функция для проверки контракта данных ответа.
 - `errorContract?: ApiErrorStorageList` — хранилище контрактов ошибок ответа.
-- `typeData?: ((data: Return) => boolean) | any` — функция проверки данных или конструктор (например, `Array`).
+- `typeData?: (data: Return) => boolean` — функция проверки данных, возвращающая boolean.
 - `unmounted?: boolean` — очищать ли данные после размонтирования компонента.
 - `skeleton?: () => Return` — функция, возвращающая данные-заглушки во время загрузки.
 
@@ -101,7 +105,9 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### `ApiManagementRequest<T, Return>`
 - `path?: string | Ref<string>` — путь для запроса мутации.
-- `action?: (data: Return | undefined) => Promise<void> | void` — коллбэк, вызываемый после выполнения запроса.
+- `action?: (data: Return | undefined) => Promise<void> | void` — Колбэк после получения и обработки данных ответа, независимо от успешности.
+- `actionSuccess?: (data: Return) => Promise<void> | void` — Колбэк для успешного ответа по проверке `isApiSuccess`.
+- `actionError?: (data: Return | undefined, error?: unknown) => Promise<void> | void` — Колбэк для ошибочного ответа или результата валидации. При ошибке сети передаются `(undefined, error)`.
 - `transformation?: (data: T) => Return` — трансформация данных перед отправкой.
 - `validateRequestContract?: (data: Request) => ApiDataValidation & Return` — функция валидации контракта запроса.
 - `validateResponseContract?: (data: T) => ApiDataValidation & Return` — функция валидации контракта ответа.

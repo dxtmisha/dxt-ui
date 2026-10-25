@@ -16,8 +16,10 @@ const getItems = () => {
 
 /**
  * Creates a reactive variable to manage a local storage.
+ * Nested object and array changes are persisted on the next Vue update cycle.
  *
  * Создает реактивный переменный для управления локальным хранилищем.
+ * Вложенные изменения объектов и массивов сохраняются в следующем цикле обновления Vue.
  * @param name value name/ название значения
  * @param defaultValue default value/ значение по умолчанию
  * @param cache cache time/ время кэширования
@@ -37,7 +39,7 @@ export function useStorageRef<T>(
   const item = ref<T | undefined>(storage.get(defaultValue, cache))
 
   EffectScopeGlobal.run(() => {
-    watch(item, value => storage.set(value as T))
+    watch(item, value => storage.set(value as T), { deep: true })
   })
 
   if (isDomRuntime()) {

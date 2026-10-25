@@ -20,8 +20,12 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `formattersOptions?: FormattersOptions` — правила форматирования.
 - `searchOptions?: ApiManagementSearch<Item, Columns>` — настройки поиска.
 - `postRequest / putRequest / deleteRequest` — настройки мутаций.
-- `action?: (data: any) => Promise<void> | void` — общий коллбэк, выполняемый после любой успешной мутации.
+- `action?: () => Promise<void> | void` — Общий колбэк после получения любого ответа на мутацию, независимо от успешности.
 - `apiInstance?: ApiInstance` — экземпляр API.
+
+Колбэки `action`, `actionSuccess` и `actionError` настраиваются отдельно в `postRequest`, `putRequest` и `deleteRequest`.
+
+Методы `sendPost`, `sendPut` и `sendDelete` ожидают сначала `action` конкретной мутации, затем общий `action`. Пока колбэки выполняются, loading мутации остаётся активным. После общего колбэка успешный ответ запускает фоновое обновление GET; завершения этого GET методы `send` не ожидают. Если общий колбэк выбрасывает ошибку или возвращает отклонённый Promise, `send` возвращает `undefined` и завершает свой вызов. Loading остаётся активным, пока выполняются другие параллельные вызовы.
 
 ## Возвращаемое значение
 Возвращает объект управления API. Состав возвращаемого значения полностью идентичен [`useApiManagementRef`](./useApiManagementRef.ru.mdx):

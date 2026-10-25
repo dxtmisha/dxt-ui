@@ -48,9 +48,13 @@ Composable для удобной работы с API-запросами во Vue
 
 Запрос и механизмы слежения за изменениями **не запускаются** непосредственно при вызове `useApiRef`. Они активируются только при обращении к `data`, `item` или вызове `init()`. Это позволяет оптимизировать производительность setup-скриптов.
 
-## Глобальные условия
+## Общий источник перезагрузки запросов
 
-`setApiRefGlobalConditions(conditions)` — устанавливает глобальное условие для всех экземпляров `useApiRef`. Работает только один раз.
+`setApiRefGlobalWatchSource(source)` однократно регистрирует дополнительный ref или computed до инициализации запросов. В браузере изменения этого источника перезапускают `useApiRef`, в том числе при `reactivity: false`.
+
+Значение источника не используется как условие: `false`, `0`, `undefined` и другие значения не блокируют запрос, кеш или SSR. Разрешение запроса определяется его локальным `conditions` и наличием `path`.
+
+Старое имя `setApiRefGlobalConditions` сохранено для совместимости и помечено `@deprecated`. Используйте `setApiRefGlobalWatchSource`.
 
 ## SSR (Server-Side Rendering)
 
@@ -93,13 +97,13 @@ initSsr()
 
 ```typescript
 import { ref } from 'vue'
-import { useApiRef, setApiRefGlobalConditions } from '@dxtmisha/functional'
+import { useApiRef, setApiRefGlobalWatchSource } from '@dxtmisha/functional'
 
 const userId = ref('123')
-const isAuthenticated = ref(true)
+const refreshVersion = ref(0)
 
-// Глобальное условие (все запросы выполняются только если аутентифицированы)
-setApiRefGlobalConditions(isAuthenticated)
+// Изменение счётчика перезапускает все инициализированные запросы
+setApiRefGlobalWatchSource(refreshVersion)
 
 const {
   data: user,

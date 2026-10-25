@@ -7,8 +7,12 @@ export interface UseApiRequestSetup<T, Request extends ApiFetch['request'] = Api
     path?: RefOrNormal<string | undefined>;
     /** HTTP method. Defaults to POST. */
     method?: ApiMethodItem;
-    /** Callback executed upon successful request completion. */
+    /** Callback after receiving response data, regardless of success / Колбэк после получения данных ответа, независимо от успешности */
     action?: (data: Return | undefined) => Promise<void> | void;
+    /** Callback for a successful response / Колбэк для успешного ответа */
+    actionSuccess?: (data: Return) => Promise<void> | void;
+    /** Callback for error data or a transport exception / Колбэк для ошибочных данных или исключения при передаче запроса */
+    actionError?: (data: Return | undefined, error?: unknown) => Promise<void> | void;
     /** Transforms raw response data before returning. */
     transformation?: (data: T) => Return;
     /** Validates request payload contract. */
@@ -26,8 +30,8 @@ export interface UseApiRequestSetup<T, Request extends ApiFetch['request'] = Api
 }
 
 /** Composable for managing and executing API requests with loading state. @keywords api, request, fetch, composable */
-export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>({ path, method, action, transformation, validateRequestContract, validateResponseContract, errorContract, toData, options, apiInstance }: UseApiRequestSetup<T, Request, Return>): {
-    /** Reactive loading state indicator. */
+export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>({ path, method, action, actionSuccess, actionError, transformation, validateRequestContract, validateResponseContract, errorContract, toData, options, apiInstance }: UseApiRequestSetup<T, Request, Return>): {
+    /** True while any send call, validation or callback is active / True, пока активен хотя бы один вызов send, его валидация или колбэк */
     loading: import("vue").Ref<boolean, boolean>;
     /** Executes the API request. @keywords send, execute, call */
     send(request?: Request): Promise<Return | undefined>;

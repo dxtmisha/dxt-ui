@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable để lấy trạng thái tải toàn cục.
 
+Trình lắng nghe được tự động gỡ bỏ khi component bị unmount hoặc `effectScope` hiện tại dừng. Bên ngoài component, hãy tạo composable bên trong một `effectScope` và gọi `scope.stop()` khi không còn cần đăng ký nữa.
+
 **Trả về:**
 - `ShallowRef<boolean>` — một tham chiếu phản ứng đến trạng thái tải hiện tại.
 

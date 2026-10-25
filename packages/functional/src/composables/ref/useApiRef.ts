@@ -8,7 +8,8 @@ import {
   type Ref,
   ref,
   watch,
-  type WatchHandle
+  type WatchHandle,
+  type WatchSource
 } from 'vue'
 import {
   Api,
@@ -134,8 +135,8 @@ export interface UseApiRef<R> {
   abort(): void
 }
 
-/** Global conditions / Глобальные условия */
-let globalConditions: RefType<any>
+/** Additional shared source that triggers request reloads / Дополнительный общий источник, запускающий перезагрузку запросов */
+let globalWatchSource: RefType<unknown> | undefined
 
 /**
  * Main reactive composable for working with API requests in Vue.
@@ -233,6 +234,9 @@ export function useApiRef<
   /** Abort controller / Контроллер отмены */
   let abortController: AbortController | undefined = undefined
 
+  /** Request version used to ignore superseded responses / Версия запроса для игнорирования устаревших ответов */
+  let requestVersion: number = 0
+
   /** Initial flag / Флаг инициализации */
   let first: boolean = true
 
@@ -266,19 +270,38 @@ export function useApiRef<
   }
 
   /**
+   * Updates validation and reactive data from a raw API response.
+   *
+   * Обновляет результат валидации и реактивные данные из исходного ответа API.
+   * @param response raw API response / исходный ответ API
+   */
+  const setResponse = (response: unknown): void => {
+    responseValidationResult.value = validateResponseContract?.(response as T)
+
+    if (transformation) {
+      item.value = transformation(
+        response as T,
+        responseValidationResult.value
+      )
+    } else {
+      item.value = response as ApiData<R>
+    }
+  }
+
+  /**
    * Recovers data from cache synchronously if available.
    *
    * Восстанавливает данные из кеша синхронно, если они доступны.
    */
-  const recovery = () => {
+  const recovery = (): void => {
     if (
       isDomRuntime()
       && isConditions()
     ) {
-      const data = apiInstance.getResponse().emulatorAsync<ApiData<R>>(getApiFetch())
+      const data = apiInstance.getResponse().emulatorAsync<unknown>(getApiFetch())
 
       if (data) {
-        item.value = data
+        setResponse(data)
       }
     }
   }
@@ -288,58 +311,70 @@ export function useApiRef<
    *
    * Перезагрузка данных.
    */
-  const reset = async () => {
+  const reset = async (): Promise<void> => {
     if (first) {
       return
     }
 
-    if (abortController) {
+    const currentRequestVersion = ++requestVersion
+    const nextAbortController = request.value.controller || new AbortController()
+
+    if (
+      abortController
+      && abortController !== nextAbortController
+    ) {
       abortController.abort()
     }
 
-    abortController = request.value.controller
-      || new AbortController()
+    abortController = nextAbortController
 
     if (isConditions()) {
       loading.value = true
       reading.value = true
 
       try {
-        const response = await apiInstance.request<Record<string, any>>({
+        const response = await apiInstance.request<unknown>({
           controller: abortController,
           ...getApiFetch()
         })
 
-        if (response) {
-          responseValidationResult.value = validateResponseContract?.(response as T)
+        if (currentRequestVersion !== requestVersion) {
+          return
+        }
 
-          if (transformation) {
-            item.value = transformation(
-              response as T,
-              responseValidationResult.value
-            )
-          } else {
-            item.value = response as ApiData<R>
-          }
+        if (response) {
+          setResponse(response)
         }
       } catch (_) {
-        item.value = undefined
+        if (currentRequestVersion === requestVersion) {
+          item.value = undefined
+        }
+      } finally {
+        if (currentRequestVersion === requestVersion) {
+          loading.value = false
+        }
       }
-
+    } else {
       loading.value = false
-    } else if (item.value !== undefined) {
       item.value = undefined
     }
   }
 
   /**
-   * Stop request.
+   * Stops reactive updates, cancels the active request, and clears its state.
    *
-   * Остановка запроса.
+   * Останавливает реактивные обновления, отменяет текущий запрос и очищает его состояние.
    */
-  const stop = () => {
+  const stop = (): void => {
+    requestVersion++
     watchEnd?.()
+    watchEnd = undefined
+    abortController?.abort()
+    abortController = undefined
     item.value = undefined
+    responseValidationResult.value = undefined
+    loading.value = false
+    reading.value = false
     first = true
   }
 
@@ -408,8 +443,8 @@ export function useApiRef<
    *
    * Инициализация наблюдения.
    */
-  const initWatch = () => {
-    const reactivityList: any[] = []
+  const initWatch = (): void => {
+    const reactivityList: WatchSource[] = []
 
     if (reactivity) {
       reactivityList.push(request)
@@ -423,16 +458,12 @@ export function useApiRef<
       reactivityList.push(conditions)
     }
 
-    if (globalConditions) {
-      reactivityList.push(globalConditions)
+    if (globalWatchSource) {
+      reactivityList.push(globalWatchSource)
     }
 
     if (reactivityList.length > 0) {
-      watchEnd = watch(reactivityList, async () => {
-        if (!loading.value) {
-          await reset()
-        }
-      })
+      watchEnd = watch(reactivityList, reset)
     }
   }
 
@@ -556,13 +587,26 @@ export function useApiRef<
 }
 
 /**
- * Defines global conditions for the API request.
+ * Registers an additional shared watch source once, before request initialization.
+ * Changes to the source trigger reloads even with reactivity disabled.
+ * Its value does not control whether a request is allowed; local conditions and path do.
  *
- * Определяет глобальные условия для API запроса.
- * @param conditions conditions for executing the request/ условия выполнения запроса
+ * Однократно регистрирует дополнительный общий источник наблюдения до инициализации запросов.
+ * Изменения источника запускают перезагрузку даже при отключённой реактивности.
+ * Его значение не разрешает и не запрещает запрос; за это отвечают локальное условие и путь.
+ * @param source reactive source whose changes trigger request reloads / реактивный источник, изменения которого перезапускают запросы
+ * @returns nothing / ничего не возвращает
  */
-export const setApiRefGlobalConditions = (conditions: RefType<any>) => {
-  if (!globalConditions) {
-    globalConditions = conditions
+export const setApiRefGlobalWatchSource = (source: RefType<unknown>): void => {
+  if (!globalWatchSource) {
+    globalWatchSource = source
   }
 }
+
+/**
+ * Compatibility name for registering the shared request reload source.
+ *
+ * Совместимое имя для регистрации общего источника перезагрузки запросов.
+ * @deprecated Use setApiRefGlobalWatchSource / Используйте setApiRefGlobalWatchSource
+ */
+export const setApiRefGlobalConditions = setApiRefGlobalWatchSource

@@ -2,7 +2,7 @@
 import { Meta, MetaRobots } from '@dxtmisha/functional-basic';
 import { Ref } from 'vue';
 
-/** Reactive meta tag management composable with automatic DOM synchronization. @keywords useMeta, meta, seo, head, open graph */
+/** Reactive meta tag management. Prefer setTitle(), setDescription(), and other set methods; writable refs update synchronously in SSR and are batched in the browser. @keywords useMeta, meta, seo, head, open graph */
 export declare const useMeta: () => Readonly<{
     meta: Meta;
     title: Ref<string, string>;

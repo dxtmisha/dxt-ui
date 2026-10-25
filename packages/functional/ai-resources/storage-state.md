@@ -9,6 +9,8 @@ Composable wrappers for persistent and synchronized browser state management.
 - **`useBroadcastValueRef<T>(channel, defaultVal)`**: Reactive cross-tab broadcast messaging using `BroadcastChannel`.
 - **`useHashRef<T>(key, defaultVal)`**: Reactive synchronization with URL hash fragments.
 
+`useStorageRef`, `useSessionRef`, and `useCookieRef` persist nested object and array mutations as well as whole-value replacements. In the browser, writes use Vue's default watcher batching: multiple synchronous mutations are saved together on the next update cycle. During SSR, `useCookieRef` persists changes synchronously, including writes made in component setup; the server integration supplies the response writer through `CookieStorage.init`.
+
 ### Example
 ```typescript
 import {

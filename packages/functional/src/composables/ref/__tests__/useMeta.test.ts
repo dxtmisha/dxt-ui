@@ -76,6 +76,22 @@ describe('useMeta', () => {
     expect(mockMeta.setDescription).toHaveBeenCalledWith('updated description')
   })
 
+  it('should batch browser ref changes into one update', async () => {
+    const { title, description } = useMeta()
+    await nextTick()
+    vi.clearAllMocks()
+
+    title.value = 'batched title'
+    description.value = 'batched description'
+    title.value = 'final batched title'
+    expect(mockMeta.setTitle).not.toHaveBeenCalled()
+    expect(mockMeta.setDescription).not.toHaveBeenCalled()
+
+    await nextTick()
+    expect(mockMeta.setTitle).toHaveBeenCalledExactlyOnceWith('final batched title')
+    expect(mockMeta.setDescription).toHaveBeenCalledExactlyOnceWith('batched description')
+  })
+
   it('should return html meta via getHtmlMeta', () => {
     const { getHtmlMeta } = useMeta()
     expect(getHtmlMeta()).toBe('<meta ...>')

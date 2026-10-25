@@ -128,18 +128,31 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
 
   /**
    * Synchronizes all reactive values with the current state of MetaStatic.
+   * Reads every field before ref assignments can trigger synchronous updates.
    *
    * Синхронизирует все реактивные значения с текущим состоянием MetaStatic.
+   * Читает все поля до присваивания refs, которое может вызвать синхронное обновление.
    */
-  const sync = () => {
-    title.value = meta.getTitle()
-    keyword.value = meta.getKeywords()
-    description.value = meta.getDescription()
-    image.value = meta.getImage()
-    canonical.value = meta.getCanonical()
-    robots.value = meta.getRobots()
-    author.value = meta.getAuthor()
-    siteName.value = meta.getSiteName()
+  const sync = (): void => {
+    const values = {
+      title: meta.getTitle(),
+      keyword: meta.getKeywords(),
+      description: meta.getDescription(),
+      image: meta.getImage(),
+      canonical: meta.getCanonical(),
+      robots: meta.getRobots(),
+      author: meta.getAuthor(),
+      siteName: meta.getSiteName()
+    }
+
+    title.value = values.title
+    keyword.value = values.keyword
+    description.value = values.description
+    image.value = values.image
+    canonical.value = values.canonical
+    robots.value = values.robots
+    author.value = values.author
+    siteName.value = values.siteName
   }
 
   /**
@@ -170,8 +183,18 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
   }
 
   watch(
-    [title, keyword, description, image, canonical, robots, author, siteName],
-    () => update()
+    [
+      title,
+      keyword,
+      description,
+      image,
+      canonical,
+      robots,
+      author,
+      siteName
+    ],
+    () => update(),
+    { flush: isDomRuntime() ? 'pre' : 'sync' }
   )
 
   return {
@@ -299,8 +322,12 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
 /**
  * Vue composable for reactive meta tags management with automatic DOM synchronization.
  * Uses singleton pattern - all components share the same meta state.
+ * Prefer setTitle(), setDescription(), and the other set methods for changes.
+ * Direct ref writes remain supported; SSR updates are synchronous, browser updates are batched.
  *
  * Vue композабл для реактивного управления мета-тегами с автоматической синхронизацией DOM.
  * Использует паттерн singleton - все компоненты используют одно состояние мета-тегов.
+ * Для изменений предпочтительно использовать setTitle(), setDescription() и остальные set-методы.
+ * Прямая запись в refs поддерживается; SSR обновляется синхронно, изменения в браузере объединяются.
  */
 export const useMeta = () => item()

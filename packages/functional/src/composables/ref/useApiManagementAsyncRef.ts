@@ -41,7 +41,9 @@ import type {
  * @param postRequest optional POST mutation settings / настройки для POST-запроса создания
  * @param putRequest optional PUT mutation settings / настройки для PUT-запроса обновления
  * @param deleteRequest optional DELETE mutation settings / настройки для DELETE-запроса удаления
- * @param action common callback executed after any successful mutation / общий коллбэк после любой успешной мутации
+ * @param action common callback awaited after receiving any mutation response / общий коллбэк, ожидаемый после получения любого ответа на мутацию
+ * @param actionSuccess common callback awaited after receiving a successful mutation response / общий коллбэк, ожидаемый после получения успешного ответа на мутацию
+ * @param actionError common callback awaited after receiving an error mutation response / общий коллбэк, ожидаемый после получения ошибочного ответа на мутацию
  * @param apiInstance API instance for requests (defaults to Api.getItem()) / экземпляр API для выполнения запроса
  */
 export function useApiManagementAsyncRef<
@@ -62,6 +64,8 @@ export function useApiManagementAsyncRef<
   putRequest?: ApiManagementRequest<Put>,
   deleteRequest?: ApiManagementRequest<Delete>,
   action?: () => Promise<void> | void,
+  actionSuccess?: () => Promise<void> | void,
+  actionError?: () => Promise<void> | void,
   apiInstance?: ApiInstance
 ) {
   const item = useApiManagementRef<
@@ -82,6 +86,8 @@ export function useApiManagementAsyncRef<
     putRequest,
     deleteRequest,
     action,
+    actionSuccess,
+    actionError,
     apiInstance
   )
 

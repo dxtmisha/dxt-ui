@@ -47,9 +47,13 @@ Phương thức:
 
 Yêu cầu và cơ chế theo dõi thay đổi **không được bắt đầu** ngay lập tức khi gọi `useApiRef`. Chúng chỉ được kích hoạt khi truy cập `data`, `item` hoặc gọi `init()`. Điều này tối ưu hóa hiệu suất của các script setup.
 
-## Điều kiện toàn cục
+## Nguồn kích hoạt tải lại dùng chung
 
-`setApiRefGlobalConditions(conditions)` — thiết lập điều kiện toàn cục cho tất cả các instance `useApiRef`. Chỉ có hiệu lực một lần.
+`setApiRefGlobalWatchSource(source)` đăng ký thêm một ref hoặc computed một lần, trước khi khởi tạo yêu cầu. Trong trình duyệt, mỗi thay đổi của nguồn này sẽ tải lại `useApiRef`, kể cả khi `reactivity: false`.
+
+Giá trị của nguồn không phải điều kiện thực thi: `false`, `0`, `undefined` và các giá trị khác không chặn yêu cầu, khôi phục cache hay SSR. `conditions` cục bộ và `path` không rỗng của yêu cầu quyết định việc thực thi.
+
+Tên cũ `setApiRefGlobalConditions` được giữ lại để tương thích và được đánh dấu `@deprecated`. Hãy dùng `setApiRefGlobalWatchSource`.
 
 ## SSR (Server-Side Rendering)
 
@@ -92,13 +96,13 @@ initSsr()
 
 ```typescript
 import { ref } from 'vue'
-import { useApiRef, setApiRefGlobalConditions } from '@dxtmisha/functional'
+import { useApiRef, setApiRefGlobalWatchSource } from '@dxtmisha/functional'
 
 const userId = ref('123')
-const isAuthenticated = ref(true)
+const refreshVersion = ref(0)
 
-// Điều kiện toàn cục (tất cả yêu cầu chỉ chạy nếu đã xác thực)
-setApiRefGlobalConditions(isAuthenticated)
+// Thay đổi bộ đếm sẽ tải lại tất cả yêu cầu đã khởi tạo
+setApiRefGlobalWatchSource(refreshVersion)
 
 const {
   data: user,

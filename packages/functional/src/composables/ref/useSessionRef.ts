@@ -16,8 +16,10 @@ const getItems = () => {
 
 /**
  * Creates a reactive variable to manage session storage.
+ * Nested object and array changes are persisted on the next Vue update cycle.
  *
  * Создает реактивную переменную для управления сессией хранения.
+ * Вложенные изменения объектов и массивов сохраняются в следующем цикле обновления Vue.
  * @param name value name/ название значения
  * @param defaultValue default value/ значение по умолчанию
  */
@@ -35,7 +37,7 @@ export function useSessionRef<T>(
   const item = ref<T | undefined>(storage.get(defaultValue))
 
   EffectScopeGlobal.run(() => {
-    watch(item, value => storage.set(value as T))
+    watch(item, value => storage.set(value as T), { deep: true })
   })
 
   items[name] = item

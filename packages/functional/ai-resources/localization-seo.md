@@ -9,6 +9,10 @@ Locale-aware formatting, translation primitives, and reactive HTML document meta
 - **`useMeta()`**: Reactive manager for HTML document title, meta tags, and open graph social tags.
 - **`ScrollbarWidthRef`**: Helper to measure dynamic scrollbar width for fixed overlay calculations.
 
+### Updating metadata
+
+Prefer `useMeta().setTitle()`, `setDescription()`, and the other `set…` methods when changing metadata. Public refs remain writable: changes update metadata synchronously during SSR and are batched in the browser. `sync()` reads all current `MetaStatic` fields before assigning them to refs.
+
 ### Example
 ```typescript
 import {

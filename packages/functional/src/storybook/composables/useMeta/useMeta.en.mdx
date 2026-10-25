@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable for reactive management of meta tags (HTML, Open Graph, Twitter Card) with automatic DOM synchronization. Uses a singleton pattern where all components share the same meta state.
 
+Prefer `setTitle()`, `setDescription()`, and the other `set…` methods when changing values. Direct writes to public refs are also supported: SSR metadata updates are synchronous, while browser changes are batched into one update.
+
 **Returns:**
 - `title: Ref<string>` — reactive page title (without suffix).
 - `description: Ref<string>` — reactive description meta tag.
@@ -16,6 +18,14 @@ Composable for reactive management of meta tags (HTML, Open Graph, Twitter Card)
 - `author: Ref<string>` — reactive author meta tag.
 - `siteName: Ref<string>` — reactive site name.
 - `getHtmlMeta(): string` — generates an HTML string for all meta tags (useful for SSR).
+- `setTitle(value: string): void` — sets the page title.
+- `setKeywords(value: string): void` — sets the keywords.
+- `setDescription(value: string): void` — sets the page description.
+- `setImage(value: string): void` — sets the image URL.
+- `setCanonical(value: string): void` — sets the canonical URL.
+- `setRobots(value: MetaRobots): void` — sets the robots directive.
+- `setAuthor(value: string): void` — sets the author.
+- `setSiteName(value: string): void` — sets the site name.
 - `setSuffix(suffix: string): void` — sets the suffix for the page title.
 - `meta: Meta` — the underlying `Meta` instance.
 
@@ -24,8 +34,8 @@ Composable for reactive management of meta tags (HTML, Open Graph, Twitter Card)
 ```typescript
 import { useMeta } from '@dxtmisha/functional'
 
-const { title, description } = useMeta()
+const { setTitle, setDescription } = useMeta()
 
-title.value = 'My Page Title'
-description.value = 'Description of my cool page'
+setTitle('My Page Title')
+setDescription('Description of my cool page')
 ```

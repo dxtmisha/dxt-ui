@@ -6,15 +6,16 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable để theo dõi sự xuất hiện của một phần tử trên màn hình bằng cách sử dụng `IntersectionObserver`. Được tối ưu hóa bằng cách sử dụng một thực thể quan sát duy nhất cho các giá trị `rootMargin` giống nhau.
 
+Nhiều lần gọi cho cùng phần tử và lề tạo ra các đăng ký độc lập. `lazyItem` thuộc đăng ký hiện tại và `removeLazyItem()` chỉ xóa đăng ký đó. Đăng ký cũng được giải phóng khi scope chứa hook kết thúc. Phần tử vẫn được quan sát khi còn ít nhất một đăng ký hoạt động.
+
 **Tham số:**
 - `element: RefType<HTMLElement | undefined>` — tham chiếu phản ứng đến phần tử HTML được theo dõi.
 - `rootMargin: string` — lề cho `IntersectionObserver` (ví dụ: `'100px 0px'`). Mặc định: `'128px 0px'`.
-- `unmounted: boolean` — tự động xóa phần tử khỏi theo dõi khi component bị hủy (unmounted). Mặc định: `true`.
 
 **Trả về:**
 - `lazyItemStatus: ShallowRef<boolean>` — trạng thái hiển thị của phần tử (liệu nó có cắt vùng quan sát dựa trên `rootMargin` hay không).
 - `lazyItem: LazyItem | undefined` — (getter) đối tượng chứa thông tin theo dõi chi tiết (tỷ lệ, mục nhập, v.v.).
-- `removeLazyItem: () => void` — xóa phần tử khỏi theo dõi.
+- `removeLazyItem: () => void` — chỉ xóa đăng ký theo dõi hiện tại.
 
 ## Ví dụ sử dụng
 

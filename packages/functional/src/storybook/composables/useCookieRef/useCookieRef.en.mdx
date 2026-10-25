@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A composable for working with browser cookies. It allows creating reactive variables that automatically synchronize with cookies. It also supports cross-tab synchronization via `BroadcastChannel`.
 
+In the browser, changes to values, nested objects, and arrays are batched on the next Vue update cycle. During SSR, writes are synchronous, including changes made in `setup()`. The server integration provides the cookie response writer through `CookieStorage.init`.
+
 **Parameters:**
 - `name: string` — Cookie name.
 - `defaultValue?: T | string | (() => (T | string))` — Default value. Can be a static value or a function.

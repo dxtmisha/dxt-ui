@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable для реактивного управления мета-тегами (HTML, Open Graph, Twitter Card) с автоматической синхронизацией DOM. Использует паттерн singleton — все компоненты используют одно состояние мета-тегов.
 
+Для изменения значений предпочтительно использовать `setTitle()`, `setDescription()` и остальные `set…` методы. Прямая запись в публичные refs также поддерживается: при SSR метаданные обновляются синхронно, в браузере несколько изменений объединяются в одно обновление.
+
 **Возвращает:**
 - `title: Ref<string>` — реактивный заголовок страницы (без суффикса).
 - `description: Ref<string>` — реактивный мета-тег description.
@@ -16,6 +18,14 @@ Composable для реактивного управления мета-тега�
 - `author: Ref<string>` — реактивный мета-тег author.
 - `siteName: Ref<string>` — реактивное название сайта.
 - `getHtmlMeta(): string` — генерирует HTML-строку для всех мета-тегов (полезно для SSR).
+- `setTitle(value: string): void` — устанавливает заголовок страницы.
+- `setKeywords(value: string): void` — устанавливает ключевые слова.
+- `setDescription(value: string): void` — устанавливает описание страницы.
+- `setImage(value: string): void` — устанавливает URL изображения.
+- `setCanonical(value: string): void` — устанавливает канонический URL.
+- `setRobots(value: MetaRobots): void` — устанавливает директиву robots.
+- `setAuthor(value: string): void` — устанавливает автора.
+- `setSiteName(value: string): void` — устанавливает название сайта.
 - `setSuffix(suffix: string): void` — устанавливает суффикс для заголовка страницы.
 - `meta: Meta` — базовый экземпляр `Meta`.
 
@@ -24,8 +34,8 @@ Composable для реактивного управления мета-тега�
 ```typescript
 import { useMeta } from '@dxtmisha/functional'
 
-const { title, description } = useMeta()
+const { setTitle, setDescription } = useMeta()
 
-title.value = 'Заголовок страницы'
-description.value = 'Описание моей крутой страницы'
+setTitle('Заголовок страницы')
+setDescription('Описание моей крутой страницы')
 ```

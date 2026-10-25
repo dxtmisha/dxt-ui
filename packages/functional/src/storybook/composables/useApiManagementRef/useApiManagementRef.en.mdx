@@ -13,8 +13,12 @@ A powerful composable for comprehensive API request orchestration. It manages da
 - `postRequest?: ApiManagementRequest<Post>` — optional config for a POST creation request.
 - `putRequest?: ApiManagementRequest<Put>` — optional config for a PUT update request.
 - `deleteRequest?: ApiManagementRequest<Delete>` — optional config for a DELETE removal request.
-- `action?: function` — a common callback to perform after any successful mutation.
+- `action?: () => Promise<void> | void` — Common callback after receiving any mutation response, regardless of success.
 - `apiInstance?: ApiInstance` — API instance to use for the request. Defaults to `Api.getItem()`.
+
+Configure `action`, `actionSuccess`, and `actionError` separately in `postRequest`, `putRequest`, and `deleteRequest`.
+
+The `sendPost`, `sendPut`, and `sendDelete` methods await the mutation-specific `action`, then the common `action`. Mutation loading stays active while these callbacks run. After the common callback, a successful response starts a background GET refresh; mutation sends do not wait for that GET to finish. If the common callback throws or rejects, `send` returns `undefined` and releases that call. Loading stays active while other parallel calls are pending.
 
 ## Returns
 - `isValid: ComputedRef<boolean>` — `true` if data matches `typeData` check.
@@ -90,7 +94,7 @@ If you are using the standard `useApiManagementRef`, you can manually include it
 - `transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>` — function to transform data after fetching.
 - `validateResponseContract?: (data: Type) => ApiDataValidation` — function to validate the response data contract.
 - `errorContract?: ApiErrorStorageList` — storage of response error contracts.
-- `typeData?: ((data: Return) => boolean) | any` — data validation function or constructor (e.g., `Array`).
+- `typeData?: (data: Return) => boolean` — data validation function returning a boolean.
 - `unmounted?: boolean` — whether to clear data after component unmount.
 - `skeleton?: () => Return` — function returning placeholder data during loading.
 
@@ -101,7 +105,9 @@ If you are using the standard `useApiManagementRef`, you can manually include it
 
 ### `ApiManagementRequest<T, Return>`
 - `path?: string | Ref<string>` — path for the mutation request.
-- `action?: (data: Return | undefined) => Promise<void> | void` — callback after request execution.
+- `action?: (data: Return | undefined) => Promise<void> | void` — Callback after receiving and processing response data, regardless of success.
+- `actionSuccess?: (data: Return) => Promise<void> | void` — Callback for a successful response, checked with `isApiSuccess`.
+- `actionError?: (data: Return | undefined, error?: unknown) => Promise<void> | void` — Callback for an error response or validation failure. Transport errors pass `(undefined, error)`.
 - `transformation?: (data: T) => Return` — data transformation before sending.
 - `validateRequestContract?: (data: Request) => ApiDataValidation & Return` — request contract validation function.
 - `validateResponseContract?: (data: T) => ApiDataValidation & Return` — response contract validation function.

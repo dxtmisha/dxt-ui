@@ -6,14 +6,16 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Composable for initializing the tracking of an element's appearance on the screen using `IntersectionObserver`.
 
+The same element can be registered multiple times. Each registration has independent state and cleanup; a new registration immediately receives the latest intersection state. Native observation starts once and ends when the last registration is removed.
+
 **Parameters:**
 - `options?: IntersectionObserverInit` — options for `IntersectionObserver`. Default: `{ rootMargin: '128px 0px' }`.
 
 **Returns:**
 - `intersectionObserver: IntersectionObserver | undefined` — the `IntersectionObserver` instance.
-- `getItem(element: HTMLElement): LazyItem | undefined` — returns a tracked element's data.
+- `getItem(element?: HTMLElement, status?: ShallowRef<boolean>): LazyItem | undefined` — selects a registration by the status ref returned from `addLazyItem`; without `status`, returns the element's first active registration.
 - `addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean>` — adds an element for tracking and returns its visibility status ref.
-- `removeLazyItem(element?: HTMLElement): void` — removes an element from tracking.
+- `removeLazyItem(element?: HTMLElement): void` — removes all registrations of the specified element from tracking.
 - `disconnectLazy(): void` — stops all tracking and disconnects the observer.
 
 ## Usage Example

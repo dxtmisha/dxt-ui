@@ -1,6 +1,6 @@
-import { watch } from 'vue'
+import { effectScope } from 'vue'
 import { ServerStorage } from '@dxtmisha/functional-basic'
-import { useLazyRef } from './useLazyRef'
+import { useLazyRef, type LazyItem } from './useLazyRef'
 import type { RefType } from '../../types/refTypes'
 
 export type LazyItemByMargin = {
@@ -42,8 +42,10 @@ const getItemByMargin = (rootMargin: string): ReturnType<typeof useLazyRef> => {
 
 /**
  * Hook for initializing the tracking of an element's appearance on the screen by margin.
+ * Multiple registrations of the same element share the observer and are released independently.
  *
  * Хук для инициализации отслеживания появления элемента на экране по отступу.
+ * Несколько регистраций одного элемента используют общий observer и освобождаются независимо.
  * @param element element for tracking / элемент для отслеживания
  * @param rootMargin root margin for IntersectionObserver / отступ для IntersectionObserver
  */
@@ -52,23 +54,16 @@ export const useLazyItemByMarginRef = (
   rootMargin: string = '128px 0px'
 ) => {
   const observer = getItemByMargin(rootMargin)
-  const status = observer.addLazyItem(element)
-  let currentElement = element.value
-
-  watch(element, (newElement) => {
-    if (newElement) {
-      currentElement = newElement
-    }
-  })
+  const scope = effectScope()
+  const status = scope.run(() => observer.addLazyItem(element))!
 
   /**
-   * Removing an element from tracking.
+   * Releases only this registration from tracking.
    *
-   * Удаление элемента из отслеживания.
+   * Освобождает только текущую регистрацию из отслеживания.
    */
   const removeLazyItem = (): void => {
-    observer.removeLazyItem(element.value ?? currentElement)
-    currentElement = undefined
+    scope.stop()
   }
 
   return {
@@ -76,18 +71,19 @@ export const useLazyItemByMarginRef = (
     lazyItemStatus: status,
 
     /**
-     * Getting a tracked lazy item.
+     * Gets the tracking state owned by this registration.
      *
-     * Получение отслеживаемого ленивого элемента.
+     * Получает состояние отслеживания текущей регистрации.
+     * @returns owned active registration / собственная активная регистрация
      */
-    get lazyItem() {
-      return observer.getItem(element.value)
+    get lazyItem(): LazyItem | undefined {
+      return observer.getItem(element.value, status)
     },
 
     /**
-     * Removing an element from tracking.
+     * Releases only this registration from tracking.
      *
-     * Удаление элемента из отслеживания.
+     * Освобождает только текущую регистрацию из отслеживания.
      */
     removeLazyItem
   }

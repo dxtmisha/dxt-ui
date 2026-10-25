@@ -53,7 +53,9 @@ import type {
  * @param postRequest optional POST mutation settings / настройки для POST-запроса создания
  * @param putRequest optional PUT mutation settings / настройки для PUT-запроса обновления
  * @param deleteRequest optional DELETE mutation settings / настройки для DELETE-запроса удаления
- * @param action common callback executed after any successful mutation / общий коллбэк после любой успешной мутации
+ * @param action common callback awaited after receiving any mutation response / общий коллбэк, ожидаемый после получения любого ответа на мутацию
+ * @param actionSuccess common callback awaited after receiving a successful mutation response / общий коллбэк, ожидаемый после получения успешного ответа на мутацию
+ * @param actionError common callback awaited after receiving an error mutation response / общий коллбэк, ожидаемый после получения ошибочного ответа на мутацию
  * @param apiInstance API instance for requests (defaults to Api.getItem()) / экземпляр API для выполнения запроса
  *
  * @returns reactive API management interface / реактивный интерфейс управления API
@@ -118,6 +120,8 @@ export function useApiManagementRef<
   putRequest?: ApiManagementRequest<Put>,
   deleteRequest?: ApiManagementRequest<Delete>,
   action?: () => Promise<void> | void,
+  actionSuccess?: () => Promise<void> | void,
+  actionError?: () => Promise<void> | void,
   apiInstance?: ApiInstance
 ) {
   const {
@@ -164,19 +168,15 @@ export function useApiManagementRef<
       return true
     }
 
-    if (request.isStarting()) {
-      return false
-    }
+    const data = request.getItem()
 
-    if (isFunction(typeData)) {
-      return typeData(request.data.value)
-    }
-
-    return request.data.value instanceof typeData
+    return data !== undefined && typeData(data)
   })
 
   /** Reactive data with fallback to skeleton / Реактивные данные с фолбеком на скелетон */
   const data = computed(() => {
+    request.init()
+
     if (
       request.isStarting()
       && skeleton
@@ -220,18 +220,23 @@ export function useApiManagementRef<
     || deleteRequest
   ) {
     /**
-     * Common action to perform after mutation.
+     * Awaits common mutation callbacks, then starts a background GET refresh on success.
      *
-     * Общее действие после мутации.
+     * Ожидает общие колбэки мутации, затем при успехе запускает фоновое обновление GET.
      * @param data response data / данные ответа
+     * @returns callback completion / завершение колбэка
      */
-    const actionRequest = (data: ApiData) => {
-      action?.()
+    const actionRequest = async (data: ApiData): Promise<void> => {
+      await action?.()
 
       if (isApiSuccess(data)) {
+        await actionSuccess?.()
+
         request
           .reset()
           .then()
+      } else {
+        await actionError?.()
       }
     }
 
@@ -249,7 +254,7 @@ export function useApiManagementRef<
           await executePromise(action(data))
         }
 
-        actionRequest(data)
+        return actionRequest(data)
       }
     }
 

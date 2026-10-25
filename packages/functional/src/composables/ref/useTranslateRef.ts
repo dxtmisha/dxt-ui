@@ -11,6 +11,7 @@ import { GeoRef } from '../../classes/ref/GeoRef'
  * Getting the translated text by an array of keys or a string with a key.
  *
  * It returns a `ShallowRef` that automatically updates when the global language changes.
+ * Pending updates are invalidated on language changes and scope disposal.
  * Use `as const` for arrays to ensure proper TypeScript key inference.
  *
  * ---
@@ -18,6 +19,7 @@ import { GeoRef } from '../../classes/ref/GeoRef'
  * Получение переведенного текста по массиву ключей или пункту с ключом.
  *
  * Возвращает `ShallowRef`, который автоматически обновляется при смене глобального языка.
+ * Незавершённые обновления теряют актуальность при смене языка и завершении scope.
  * Используйте `as const` для массивов, чтобы обеспечить корректный вывод типов ключей в TypeScript.
  *
  * ### Examples / Примеры использования:
@@ -43,27 +45,33 @@ export function useTranslateRef<
    */
   const translate = shallowRef<TranslateList<T>>(translateInstance.getListSync(names, true))
 
-  /**
-   * Updating translations for the current list.
-   *
-   * Обновление переводов для текущего списка.
-   */
-  const update = async () => {
-    translate.value = { ...await translateInstance.getList(names) }
-  }
-
   if (isDomRuntime()) {
-    watch(GeoRef.getLanguage(), update)
+    /** Whether missing translations require an initial update / Требуют ли отсутствующие переводы начального обновления */
+    let immediate = false
 
     for (const key in translate.value) {
       if (
         translate.value[key] === key
         || translate.value[key] === ' '
       ) {
-        update().then()
+        immediate = true
         break
       }
     }
+
+    watch(GeoRef.getLanguage(), async (_language, _previousLanguage, onCleanup): Promise<void> => {
+      let active = true
+
+      onCleanup(() => {
+        active = false
+      })
+
+      const data = await translateInstance.getList(names)
+
+      if (active) {
+        translate.value = { ...data }
+      }
+    }, { immediate, flush: 'sync' })
   }
 
   return translate

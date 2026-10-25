@@ -52,8 +52,18 @@ export interface UseApiRef<R> {
 export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>, validateResponseContract?: (data: T) => ApiDataValidation, errorContract?: ApiErrorStorageList, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
 
 /**
- * Defines global conditions for executing API requests.
- * @keywords api, global, conditions
- * @param conditions Conditions evaluated before request execution
+ * Registers an additional shared source whose changes trigger request reloads, independently of its value.
+ *
+ * Регистрирует дополнительный общий источник, изменения которого перезапускают запросы независимо от его значения.
+ * @keywords api, global, watch source, reload
+ * @param source Reactive source registered once before request initialization / Реактивный источник, регистрируемый однократно до инициализации запросов
  */
-export declare const setApiRefGlobalConditions: (conditions: RefType<any>) => void;
+export declare const setApiRefGlobalWatchSource: (source: RefType<unknown>) => void;
+
+/**
+ * Compatibility name for registering the shared request reload source.
+ *
+ * Совместимое имя для регистрации общего источника перезагрузки запросов.
+ * @deprecated Use setApiRefGlobalWatchSource / Используйте setApiRefGlobalWatchSource
+ */
+export declare const setApiRefGlobalConditions: typeof setApiRefGlobalWatchSource;
