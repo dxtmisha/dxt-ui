@@ -7,7 +7,11 @@ import { isFunction } from '../functions/isFunction'
 import { ErrorCenter } from './ErrorCenter'
 import { Geo } from './Geo'
 
-import { TRANSLATE_GLOBAL_PREFIX, type TranslateDataFile, type TranslateDataFileList } from '../types/translateTypes'
+import {
+  TRANSLATE_GLOBAL_PREFIX,
+  type TranslateDataFile,
+  type TranslateDataFileList
+} from '../types/translateTypes'
 
 /**
  * Class for working with translation files.
@@ -16,10 +20,10 @@ import { TRANSLATE_GLOBAL_PREFIX, type TranslateDataFile, type TranslateDataFile
  */
 export class TranslateFile {
   /** List of files with translations / Список файлов с переводами */
-  protected files: TranslateDataFile = {}
+  protected files: TranslateDataFile = Object.create(null)
 
   /** Data from files / Данные из файлов */
-  protected data: Record<string, TranslateDataFileList> = {}
+  protected data: Record<string, TranslateDataFileList> = Object.create(null)
 
   /**
    * Creates an instance of the class.
@@ -47,7 +51,10 @@ export class TranslateFile {
    * @param language language, current by default / язык, по умолчанию текущий
    * @returns boolean / логическое значение
    */
-  isFile(location: string = this.getLocation(), language: string = this.getLanguage()): boolean {
+  isFile(
+    location: string = this.getLocation(),
+    language: string = this.getLanguage()
+  ): boolean {
     return Object.keys(this.files).length > 0
       && this.getIndex(location, language) !== undefined
   }
@@ -160,7 +167,10 @@ export class TranslateFile {
    * @param language language, current by default / язык, по умолчанию текущий
    * @returns file key or undefined / ключ файла или undefined
    */
-  protected getIndex(location: string = this.getLocation(), language: string = this.getLanguage()): string | undefined {
+  protected getIndex(
+    location: string = this.getLocation(),
+    language: string = this.getLanguage()
+  ): string | undefined {
     if (location in this.files) {
       return location
     }
