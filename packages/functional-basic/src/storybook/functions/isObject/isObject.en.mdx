@@ -9,10 +9,11 @@ A foundational utility explicitly formulated for performing safe, immediate chec
 In pure JavaScript logic, `typeof null` fundamentally yields the notorious `'object'` string result, inadvertently instigating phantom bugs. `isObject` expertly navigates around this notorious quirk by initiating a truthy checkpoint (`Boolean(value)`) completely shielding execution paths from `null` or undefined pitfalls prior to affirming the exact object type condition. Take caution to realize that structural arrays (`[]`) count as standard objects under JS protocols, so they successfully yield `true` here.
 
 **Parameters:**
-- `value: T` — Any inclusive subject evaluation target variable.
+- `value: unknown` — Any subject evaluation target value of any type.
+- `<T = unknown>` — Optional generic to define value typing in the returned `ObjectItem<T>`.
 
 **Returns:**
-`boolean` (`value is Extract<T, ObjectItem>`) — Yields `true` solely if the entity demonstrates fundamental object classification (including collections like arrays). Defaults to generating `false` outputs across null bindings, isolated variables, primitives, and actionable functions. Acts simultaneously as a strict TypeGuard reducing typings to `Extract<T, ObjectItem>`.
+`value is ObjectItem<T>` (`boolean`) — Yields `true` solely if the entity demonstrates fundamental object classification (`typeof value === 'object'` and non-null, including arrays). Returns `false` for primitives, `null`, `undefined`, and functions. Acts as a TypeScript TypeGuard narrowing the checked value to `ObjectItem<T>` (`Record<string, T>`).
 
 ```typescript
 import { isObject } from '@dxtmisha/functional-basic'

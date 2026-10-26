@@ -1,39 +1,58 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional-basic/Functions/forEach - Lặp qua đối tượng hoặc mảng'/>
+<Meta title='@dxtmisha/vi/functional-basic/Functions/forEach - Lặp qua tập hợp (Array, Object, Map, Set)'/>
 
 # `forEach`
 
 Hàm thực hiện chức năng được chỉ định một lần cho mỗi phần tử trong tập hợp (`Array`, `Object`, `Map`, `Set`) và trả về một mảng chứa kết quả thực thi hàm (bỏ qua các giá trị `undefined` trừ khi `saveUndefined` là `true`).
 
 **Tham số:**
-- `data: D & ForEachData<T>` — Đối tượng hoặc tập hợp để lặp (`readonly T[] | Record<string, T> | Map<unknown, T> | Set<T>`, bao gồm các đối tượng `Record<string, unknown>` có định kiểu).
-- `callback: (item: T, key: K, collection: D) => R` — Một hàm để thực thi cho mỗi phần tử trong tập hợp.
-- `saveUndefined?: boolean` — Nếu `true`, hàm sẽ trả về một mảng bao gồm cả các giá trị `undefined` (mặc định sẽ bị lọc bỏ).
+- `data: D` — Đối tượng hoặc tập hợp để lặp (`D extends ForEachData<T> = readonly T[] | Record<string, T> | Map<unknown, T> | Set<T>`).
+- `callback: (item: T, key: K, collection: D) => R` — Một hàm callback được thực thi cho mỗi phần tử (`key` có kiểu `number` cho mảng, `string` cho đối tượng, `K` cho `Map`, và `S` cho `Set`).
+- `saveUndefined?: S` — Nếu `true`, hàm sẽ giữ lại các giá trị `undefined` trong mảng kết quả (mặc định sẽ bị lọc bỏ).
 
 **Trả về:**
-`R[]` — một mảng với kết quả thực thi hàm.
+`ForEachReturn<R, S>` (`(S extends true ? R : Exclude<R, undefined>)[]`) — một mảng với kết quả thực thi hàm. Khi `saveUndefined: false` (hoặc mặc định), kiểu dữ liệu tự động loại trừ `undefined` (`Exclude<R, undefined>[]`). Khi `saveUndefined: true`, kiểu trả về giữ lại `undefined` (`(R | undefined)[]`).
 
 ## Cơ chế hoạt động
 
-Hàm này là một công cụ vạn năng để lặp qua các cấu trúc dữ liệu khác nhau và thu thập kết quả vào một mảng.
+Hàm này là một công cụ vạn năng để lặp, biến đổi và lọc nhiều cấu trúc dữ liệu khác nhau cùng một lúc trong một lượt duyệt duy nhất O(N).
 
 **Tính năng:**
-- **Hỗ trợ kiểu dữ liệu** — hoạt động với `Array`, `Map`, `Set` và các đối tượng thông thường (`Object`).
-- **Thu thập kết quả** — khác với `forEach` tiêu chuẩn, hàm này thu thập các giá trị được trả về từ `callback` vào một mảng mới.
-- **Lọc undefined** — theo mặc định, tất cả các giá trị `undefined` (ví dụ: nếu callback không trả về gì cho một phần tử) sẽ bị lọc bỏ khỏi mảng kết quả.
+- **Hỗ trợ tập hợp đa dạng** — hoạt động trực tiếp với `Array`, `Map`, `Set` và các đối tượng từ điển (`Record<string, T>`).
+- **Thu thập kết quả (filterMap / compactMap)** — khác với `Array.prototype.forEach` tiêu chuẩn, hàm này thu thập các giá trị trả về vào một mảng mới tương tự `map`, nhưng không tạo các mảng phân bổ trung gian.
+- **Lọc thông minh undefined** — theo mặc định, tất cả các giá trị `undefined` (ví dụ: nếu callback không trả về gì hoặc trả về `undefined`) sẽ bị lọc bỏ khỏi mảng kết quả, và kiểu dữ liệu trả về được thu hẹp về `Exclude<R, undefined>[]`.
 - **Tham số saveUndefined** — nếu truyền `true` làm đối số thứ ba, mảng sẽ giữ lại tất cả các kết quả, bao gồm cả `undefined`.
+- **Hợp đồng đối số thống nhất** — tất cả các hàm callback đều nhận `(item, key, collection)`. Đối với `Set`, phần tử chính nó được truyền làm khóa (`item`), hoàn toàn ăn khớp với tiêu chuẩn ECMAScript.
+- **Bảo vệ chống biến đổi độ dài** — đối với mảng, độ dài được lưu vào biến trước vòng lặp, ngăn ngừa việc lặp vô hạn nếu các phần tử được thêm vào trong quá trình lặp.
+- **An toàn đối tượng** — duyệt qua các thuộc tính đối tượng bằng `for...in` kết hợp kiểm tra `Object.hasOwn`, loại bỏ các thuộc tính kế thừa từ prototype và tránh tạo mảng khóa tạm thời.
 
 ## Ví dụ
 
 ```typescript
 import { forEach } from '@dxtmisha/functional-basic'
 
-const data = [1, 2, 3]
+// 1. Mảng (Array)
+const numbers = [1, 2, 3, 4]
+const evens = forEach(numbers, item => (item % 2 === 0 ? item * 10 : undefined))
+// [20, 40]
 
-// Giá trị undefined bị lọc bỏ theo mặc định
-forEach(data, (item) => item % 2 === 0 ? item : undefined) // [2]
+// 2. Đối tượng (Object / Record)
+const user = { name: 'Alice', role: 'admin', age: 25 }
+const pairs = forEach(user, (value, key) => `${key}=${value}`)
+// ['name=Alice', 'role=admin', 'age=25']
 
-// Với saveUndefined: true
-forEach(data, (item) => item % 2 === 0 ? item : undefined, true) // [undefined, 2, undefined]
+// 3. Bản đồ (Map)
+const map = new Map([['first', 10], ['second', 20]])
+const mapResults = forEach(map, (value, key) => `${key}:${value}`)
+// ['first:10', 'second:20']
+
+// 4. Tập hợp (Set)
+const set = new Set(['apple', 'banana'])
+const setUpper = forEach(set, item => item.toUpperCase())
+// ['APPLE', 'BANANA']
+
+// 5. Giữ lại undefined (saveUndefined: true)
+const withUndefined = forEach([1, 2, 3], item => (item % 2 === 0 ? item : undefined), true)
+// [undefined, 2, undefined]
 ```

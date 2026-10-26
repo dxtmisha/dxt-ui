@@ -1,5 +1,10 @@
 import { describe, it, expect, vi } from 'vitest'
-import { forEach } from '../forEach'
+import {
+  forEach,
+  type ForEachData,
+  type ForEachKey,
+  type ForEachReturn
+} from '../forEach'
 
 describe('forEach', () => {
   describe('Array iteration', () => {
@@ -39,6 +44,22 @@ describe('forEach', () => {
       expect(result).toEqual([])
       expect(callback).not.toHaveBeenCalled()
     })
+
+    it('should not enter infinite loop if elements are pushed to array inside callback', () => {
+      const data = [1, 2]
+      let callCount = 0
+
+      const result = forEach(data, (item) => {
+        callCount++
+        if (callCount <= 2) {
+          data.push(99)
+        }
+        return item * 10
+      })
+
+      expect(callCount).toBe(2)
+      expect(result).toEqual([10, 20])
+    })
   })
 
   describe('Object iteration', () => {
@@ -70,6 +91,23 @@ describe('forEach', () => {
 
       const result = forEach(data, item => item)
       expect(result).toEqual([1])
+    })
+
+    it('should not iterate over non-enumerable properties on objects', () => {
+      const data = { visible: 'yes' }
+      Object.defineProperty(data, 'hidden', {
+        value: 'no',
+        enumerable: false
+      })
+
+      const keys: string[] = []
+      const result = forEach(data, (value, key) => {
+        keys.push(key)
+        return value
+      })
+
+      expect(keys).toEqual(['visible'])
+      expect(result).toEqual(['yes'])
     })
 
     it('should handle Object.create(null) safely', () => {
@@ -110,6 +148,14 @@ describe('forEach', () => {
       expect(result).toEqual(['answer', 'objectValue', 'symbolValue'])
       expect(receivedKeys).toEqual([42, objectKey, symbolKey])
     })
+
+    it('should return an empty array for an empty Map without calling callback', () => {
+      const callback = vi.fn(() => 'value')
+      const result = forEach(new Map(), callback)
+
+      expect(result).toEqual([])
+      expect(callback).not.toHaveBeenCalled()
+    })
   })
 
   describe('Set iteration', () => {
@@ -145,19 +191,52 @@ describe('forEach', () => {
 
       expect(numberKeys).toEqual([100, 200])
     })
+
+    it('should return an empty array for an empty Set without calling callback', () => {
+      const callback = vi.fn(() => 'value')
+      const result = forEach(new Set(), callback)
+
+      expect(result).toEqual([])
+      expect(callback).not.toHaveBeenCalled()
+    })
   })
 
-  describe('Undefined handling and falsy values', () => {
-    it('should filter out undefined results by default', () => {
+  describe('Undefined handling and ForEachReturn type inference', () => {
+    it('should filter out undefined results by default and exclude undefined from return type', () => {
       const data = [1, 2, 3]
       const result = forEach(data, item => (item % 2 === 0 ? item : undefined))
-      expect(result).toEqual([2])
+      const typedNumbers: number[] = result
+      const returnCheck: ForEachReturn<number | undefined> = result
+
+      expect(typedNumbers).toEqual([2])
+      expect(returnCheck).toEqual([2])
     })
 
-    it('should include undefined results if saveUndefined is true', () => {
+    it('should filter out undefined results when saveUndefined is explicitly false', () => {
+      const data = [1, 2, 3]
+      const result = forEach(data, item => (item % 2 === 0 ? item : undefined), false)
+      const typedNumbers: number[] = result
+
+      expect(typedNumbers).toEqual([2])
+    })
+
+    it('should include undefined results if saveUndefined is true and preserve undefined in return type', () => {
       const data = [1, 2, 3]
       const result = forEach(data, item => (item % 2 === 0 ? item : undefined), true)
-      expect(result).toEqual([undefined, 2, undefined])
+      const typedWithUndefined: Array<number | undefined> = result
+      const returnCheck: ForEachReturn<number | undefined, true> = result
+
+      expect(typedWithUndefined).toEqual([undefined, 2, undefined])
+      expect(returnCheck).toEqual([undefined, 2, undefined])
+    })
+
+    it('should preserve type when saveUndefined is a dynamic boolean', () => {
+      const data = [1, 2, 3]
+      const flag = Boolean(Math.random() > -1)
+      const result = forEach(data, item => (item % 2 === 0 ? item : undefined), flag)
+      const typedDynamic: Array<number | undefined> = result
+
+      expect(typedDynamic.length).toBeGreaterThan(0)
     })
 
     it('should NOT filter out other falsy values (0, false, "", null, NaN)', () => {
@@ -174,16 +253,22 @@ describe('forEach', () => {
   })
 
   describe('Empty collections and boundary conditions', () => {
-    it('should return an empty array for an empty Object', () => {
-      expect(forEach({}, () => 'value')).toEqual([])
+    it('should return an empty array for an empty Object without calling callback', () => {
+      const callback = vi.fn(() => 'value')
+      expect(forEach({}, callback)).toEqual([])
+      expect(callback).not.toHaveBeenCalled()
     })
 
-    it('should return an empty array for an empty Map', () => {
-      expect(forEach(new Map(), () => 'value')).toEqual([])
+    it('should return an empty array for an empty Map without calling callback', () => {
+      const callback = vi.fn(() => 'value')
+      expect(forEach(new Map(), callback)).toEqual([])
+      expect(callback).not.toHaveBeenCalled()
     })
 
-    it('should return an empty array for an empty Set', () => {
-      expect(forEach(new Set(), () => 'value')).toEqual([])
+    it('should return an empty array for an empty Set without calling callback', () => {
+      const callback = vi.fn(() => 'value')
+      expect(forEach(new Set(), callback)).toEqual([])
+      expect(callback).not.toHaveBeenCalled()
     })
 
     it('should iterate over sparse arrays and filter out undefined results unless saveUndefined is true', () => {
@@ -194,6 +279,44 @@ describe('forEach', () => {
 
       const resultWithUndefined = forEach(sparseArray, item => item, true)
       expect(resultWithUndefined).toEqual([10, undefined, 30])
+    })
+  })
+
+  describe('Collection reference and callback contract', () => {
+    it('should provide the exact same collection reference across all collection types', () => {
+      const array = [1]
+      const map = new Map([['key', 1]])
+      const set = new Set([1])
+      const object = { a: 1 }
+
+      forEach(array, (_, __, collection) => expect(collection).toBe(array))
+      forEach(map, (_, __, collection) => expect(collection).toBe(map))
+      forEach(set, (_, __, collection) => expect(collection).toBe(set))
+      forEach(object, (_, __, collection) => expect(collection).toBe(object))
+    })
+  })
+
+  describe('TypeScript exported type tests', () => {
+    it('should properly type ForEachData and ForEachKey', () => {
+      const arrayData: ForEachData<number> = [1, 2]
+      const objectData: ForEachData<string> = { a: 'hello' }
+      const mapData: ForEachData<boolean> = new Map([['x', true]])
+      const setData: ForEachData<number> = new Set([1])
+
+      type ArrayKey = ForEachKey<typeof arrayData>
+      type ObjectKey = ForEachKey<typeof objectData>
+      type MapKey = ForEachKey<typeof mapData>
+      type SetKey = ForEachKey<typeof setData>
+
+      const numberKey: ArrayKey = 0
+      const stringKey: ObjectKey = 'a'
+      const inferredMapKey: MapKey = 'x'
+      const setItemKey: SetKey = 1
+
+      expect(typeof numberKey).toBe('number')
+      expect(typeof stringKey).toBe('string')
+      expect(typeof inferredMapKey).toBe('string')
+      expect(typeof setItemKey).toBe('number')
     })
   })
 

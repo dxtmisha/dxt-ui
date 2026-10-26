@@ -7,10 +7,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Kiểm tra xem các giá trị có phải là mảng hay không.
 
 **Tham số:**
-- `value: T` — giá trị đầu vào.
+- `value: unknown` — giá trị đầu vào cần kiểm tra thuộc bất kỳ kiểu nào.
+- `<T = unknown>` — generic tùy chọn để chỉ định kiểu của phần tử trong mảng kết quả `T[]`.
 
 **Trả về:**
-`boolean` (`value is Extract<T, R[]>`) — `true` nếu giá trị là mảng, ngược lại là `false`. Đóng vai trò là type guard trong TypeScript giúp thu hẹp kiểu về `Extract<T, R[]>`.
+`value is T[]` (`boolean`) — `true` nếu giá trị là mảng (`Array.isArray(value)`), ngược lại là `false`. Đóng vai trò là type guard trong TypeScript giúp thu hẹp kiểu của giá trị về `T[]`.
 
 ```typescript
 import { isArray } from '@dxtmisha/functional-basic'

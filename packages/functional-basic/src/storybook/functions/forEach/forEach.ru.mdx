@@ -1,39 +1,58 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/functional-basic/Functions/forEach - Перебор объекта или массива'/>
+<Meta title='@dxtmisha/ru/functional-basic/Functions/forEach - Перебор коллекции (Array, Object, Map, Set)'/>
 
 # `forEach`
 
 Функция выполняет указанную функцию один раз для каждого элемента в коллекции (`Array`, `Object`, `Map`, `Set`) и возвращает массив с результатами выполнения функции (пропуская значения `undefined`, если `saveUndefined` не равен `true`).
 
 **Параметры:**
-- `data: D & ForEachData<T>` — Объект или коллекция для перебора (`readonly T[] | Record<string, T> | Map<unknown, T> | Set<T>`, включая типизированные объекты `Record<string, unknown>`).
-- `callback: (item: T, key: K, collection: D) => R` — Функция, которая будет вызвана для каждого элемента коллекции.
-- `saveUndefined?: boolean` — Если `true`, функция вернет массив, включая `undefined` значения (по умолчанию фильтруются).
+- `data: D` — Объект или коллекция для перебора (`D extends ForEachData<T> = readonly T[] | Record<string, T> | Map<unknown, T> | Set<T>`).
+- `callback: (item: T, key: K, collection: D) => R` — Функция обратного вызова, выполняемая для каждого элемента (`key` имеет тип `number` для массивов, `string` для объектов, `K` для `Map` и `S` для `Set`).
+- `saveUndefined?: S` — Если `true`, сохраняет возвращаемые значения `undefined` в результирующем массиве (по умолчанию `undefined` отфильтровываются).
 
 **Возвращает:**
-`R[]` — массив с результатами выполнения функции.
+`ForEachReturn<R, S>` (`(S extends true ? R : Exclude<R, undefined>)[]`) — массив с результатами выполнения функции. При `saveUndefined: false` (или по умолчанию) тип автоматически исключает `undefined` (`Exclude<R, undefined>[]`). При `saveUndefined: true` тип сохраняет `undefined` (`(R | undefined)[]`).
 
 ## Как это работает
 
-Функция является универсальным инструментом для перебора различных структур данных и сбора результатов в массив.
+Функция является универсальным инструментом для одновременного перебора, трансформации и фильтрации различных структур данных в один проход O(N).
 
 **Особенности:**
-- **Поддержка типов** — работает с `Array`, `Map`, `Set` и обычными объектами (`Object`).
-- **Сбор результатов** — в отличие от стандартного `forEach`, эта функция собирает значения, возвращаемые из `callback`, в новый массив.
-- **Фильтрация undefined** — по умолчанию все значения `undefined` (например, если callback ничего не вернул для элемента) отфильтровываются из итогового массива.
+- **Поддержка коллекций** — нативно работает с `Array`, `Map`, `Set` и объектами-словарями (`Record<string, T>`).
+- **Сбор результатов (filterMap / compactMap)** — в отличие от стандартного `Array.prototype.forEach`, функция возвращает массив собранных значений аналогично `map`, но без создания промежуточных аллокаций.
+- **Интеллектуальная фильтрация undefined** — по умолчанию все значения `undefined` (например, если callback ничего не вернул или вернул `undefined`) отфильтровываются из итогового массива, а возвращаемый тип сужается до `Exclude<R, undefined>[]`.
 - **Параметр saveUndefined** — если передать `true` третьим аргументом, массив сохранит все результаты, включая `undefined`.
+- **Единый контракт аргументов** — во все callback-функции передаётся `(item, key, collection)`. Для `Set` в качестве ключа передаётся сам элемент (`item`), что согласуется со стандартом ECMAScript.
+- **Защита от мутаций длины** — для массивов длина фиксируется до начала цикла, предотвращая зацикливание при добавлении элементов во время итерации.
+- **Безопасность объектов** — обход свойств объекта выполняется через `for...in` с нативной проверкой `Object.hasOwn`, исключая свойства прототипа и избегая создания лишних промежуточных массивов ключей.
 
-## Пример
+## Примеры
 
 ```typescript
 import { forEach } from '@dxtmisha/functional-basic'
 
-const data = [1, 2, 3]
+// 1. Массив (Array)
+const numbers = [1, 2, 3, 4]
+const evens = forEach(numbers, item => (item % 2 === 0 ? item * 10 : undefined))
+// [20, 40]
 
-// По умолчанию undefined фильтруются
-forEach(data, (item) => item % 2 === 0 ? item : undefined) // [2]
+// 2. Объект (Object / Record)
+const user = { name: 'Alice', role: 'admin', age: 25 }
+const pairs = forEach(user, (value, key) => `${key}=${value}`)
+// ['name=Alice', 'role=admin', 'age=25']
 
-// С сохранением undefined
-forEach(data, (item) => item % 2 === 0 ? item : undefined, true) // [undefined, 2, undefined]
+// 3. Отображение (Map)
+const map = new Map([['first', 10], ['second', 20]])
+const mapResults = forEach(map, (value, key) => `${key}:${value}`)
+// ['first:10', 'second:20']
+
+// 4. Множество (Set)
+const set = new Set(['apple', 'banana'])
+const setUpper = forEach(set, item => item.toUpperCase())
+// ['APPLE', 'BANANA']
+
+// 5. Сохранение undefined (saveUndefined: true)
+const withUndefined = forEach([1, 2, 3], item => (item % 2 === 0 ? item : undefined), true)
+// [undefined, 2, undefined]
 ```

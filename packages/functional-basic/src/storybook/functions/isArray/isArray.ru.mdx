@@ -7,10 +7,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Проверяет, являются ли значения массивами.
 
 **Параметры:**
-- `value: T` — входное значение.
+- `value: unknown` — проверяемое входное значение любого типа.
+- `<T = unknown>` — опциональный дженерик для указания типа элементов результирующего массива `T[]`.
 
 **Возвращает:**
-`boolean` (`value is Extract<T, R[]>`) — `true`, если значение является массивом, иначе `false`. Выступает в качестве защитника типа (type guard) TypeScript, сужая тип до `Extract<T, R[]>`.
+`value is T[]` (`boolean`) — `true`, если значение является массивом (`Array.isArray(value)`), иначе `false`. Выступает в качестве защитника типа (type guard) TypeScript, сужая тип проверяемого значения до `T[]`.
 
 ```typescript
 import { isArray } from '@dxtmisha/functional-basic'

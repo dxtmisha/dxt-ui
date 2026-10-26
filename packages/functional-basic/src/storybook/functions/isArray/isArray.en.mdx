@@ -7,10 +7,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Checks if the values are arrays.
 
 **Parameters:**
-- `value: T` — input value.
+- `value: unknown` — input target value of any type.
+- `<T = unknown>` — optional generic specifying the item type of the resultant array `T[]`.
 
 **Returns:**
-`boolean` (`value is Extract<T, R[]>`) — `true` if the value is an array, otherwise `false`. Acts as a TypeScript type guard narrowing the type to `Extract<T, R[]>`.
+`value is T[]` (`boolean`) — `true` if the value is an array (`Array.isArray(value)`), otherwise `false`. Acts as a TypeScript type guard narrowing the checked value to `T[]`.
 
 ```typescript
 import { isArray } from '@dxtmisha/functional-basic'

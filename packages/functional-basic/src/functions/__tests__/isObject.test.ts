@@ -34,6 +34,12 @@ describe('isObject', () => {
       expect(isObject(new Error('message'))).toBe(true)
       expect(isObject(new Uint8Array(4))).toBe(true)
     })
+
+    it('should return true for primitive wrapper objects', () => {
+      expect(isObject(new String('test'))).toBe(true)
+      expect(isObject(new Number(123))).toBe(true)
+      expect(isObject(new Boolean(true))).toBe(true)
+    })
   })
 
   describe('Nullish and falsy primitive values', () => {
@@ -69,6 +75,41 @@ describe('isObject', () => {
       expect(isObject(true)).toBe(false)
       expect(isObject(Symbol('foo'))).toBe(false)
       expect(isObject(100n)).toBe(false)
+    })
+  })
+
+  describe('Multilingual, Unicode, and Symbol properties', () => {
+    it('should return true for objects with Cyrillic, Vietnamese, and emoji keys', () => {
+      expect(isObject({ привет: 'мир' })).toBe(true)
+      expect(isObject({ 'tiếng việt': 'chào bạn' })).toBe(true)
+      expect(isObject({ '🚀': 'space' })).toBe(true)
+    })
+
+    it('should return true for objects with Symbol keys', () => {
+      const symbolKey = Symbol('key')
+      expect(isObject({ [symbolKey]: 'value' })).toBe(true)
+    })
+  })
+
+  describe('TypeScript type narrowing and generic parameter', () => {
+    it('should correctly narrow unknown type to ObjectItem', () => {
+      const data: unknown = { key: 'value' }
+
+      if (isObject(data)) {
+        expect(data.key).toBe('value')
+      } else {
+        expect.unreachable('Should have narrowed to ObjectItem')
+      }
+    })
+
+    it('should support explicit generic type parameter for value type narrowing', () => {
+      const data: unknown = { count: 42 }
+
+      if (isObject<number>(data)) {
+        expect(data.count.toFixed(0)).toBe('42')
+      } else {
+        expect.unreachable('Should have narrowed to ObjectItem<number>')
+      }
     })
   })
 })
