@@ -8,10 +8,12 @@ Lớp `MediaFileIcon` là một **Lớp chính tĩnh (Static)** được thiết
 
 ## Các tính năng chính
 
-- **Sổ đăng ký tĩnh** — duy trì từ điển lưu trữ mã SVG tùy chỉnh trong bộ nhớ gắn với các mã tệp đã chuẩn hóa.
-- **Chuẩn hóa mã tệp** — tự động loại bỏ khoảng trắng và chuyển về chữ thường (`toCode`), đảm bảo tra cứu không phân biệt chữ hoa chữ thường.
-- **Đăng ký đơn lẻ và hàng loạt** — cung cấp các phương thức thuận tiện để đăng ký từng biểu tượng (`add`) hoặc nhập một từ điển biểu tượng hàng loạt (`addList`).
-- **Bổ sung siêu dữ liệu liền mạch** — gán biểu tượng tùy chỉnh một cách an toàn vào đối tượng cấu hình `MediaFileItem` thông qua phương thức `toItem`.
+- **Sổ đăng ký tĩnh** — duy trì từ điển lưu trữ mã SVG tùy chỉnh độc lập với prototype trong bộ nhớ (`Object.create(null)`), gắn với các mã tệp đã chuẩn hóa.
+- **Chuỗi phương thức linh hoạt (Fluent Chaining)** — các phương thức `add`, `addList` và `reset` trả về lớp `typeof MediaFileIcon`, hỗ trợ gọi chuỗi thuận tiện.
+- **Chuẩn hóa mã toàn diện** — tự động loại bỏ khoảng trắng và dấu chấm ở hai đầu, lược bỏ các tham số MIME (sau dấu `;`) và chuyển về chữ thường (`toCode`).
+- **Đăng ký đơn lẻ và hàng loạt** — cung cấp các phương thức thuận tiện để đăng ký từng biểu tượng với tính năng tự động cắt tỉa khoảng trắng (`add`) hoặc nhập một từ điển hàng loạt (`addList`).
+- **Bổ sung siêu dữ liệu an toàn** — tạo bản sao phòng vệ của đối tượng `MediaFileItem` kèm sao chép mảng `extensions` và áp dụng biểu tượng tùy chỉnh qua phương thức `toItem`.
+- **Tối ưu hóa thoát nhanh** — cờ nội bộ `hasCustomIcons` đảm bảo độ phức tạp O(1) khi sổ đăng ký trống mà không gây hao tốn hiệu năng.
 - **Không có phụ thuộc runtime** — hoàn toàn thao tác trên chuỗi và từ điển dữ liệu, hỗ trợ môi trường isomorphic và SSR an toàn.
 
 ## Khởi tạo
@@ -22,15 +24,18 @@ Lớp là tĩnh và không yêu cầu khởi tạo thực thể. Tất cả các
 
 ### Quản lý sổ đăng ký
 
+- `static get icons(): Readonly<MediaFileIcons>` — trả về bản sao từ điển chỉ đọc của tất cả biểu tượng tùy chỉnh đã đăng ký (không chứa thuộc tính từ `Object.prototype`).
 - `static has(code: string): boolean` — kiểm tra xem biểu tượng tùy chỉnh đã được đăng ký cho mã tệp hoặc phần mở rộng đã chỉ định hay chưa.
 - `static get(code: string): string | undefined` — trả về chuỗi biểu tượng SVG tùy chỉnh cho mã hoặc phần mở rộng cụ thể, hoặc `undefined` nếu chưa đăng ký.
-- `static add(code: string, icon: string): void` — đăng ký chuỗi biểu tượng SVG tùy chỉnh cho một mã tệp hoặc phần mở rộng cụ thể.
-- `static addList(icons: MediaFileIcons): void` — đăng ký hàng loạt nhiều biểu tượng SVG tùy chỉnh từ một từ điển.
+- `static add(code: string, icon: string): typeof MediaFileIcon` — đăng ký chuỗi biểu tượng SVG tùy chỉnh (tự động cắt tỉa khoảng trắng thừa) cho mã tệp hoặc phần mở rộng. Trả về lớp để hỗ trợ gọi chuỗi.
+- `static addList(icons: MediaFileIcons): typeof MediaFileIcon` — đăng ký hàng loạt nhiều biểu tượng SVG tùy chỉnh từ một từ điển. Trả về lớp để hỗ trợ gọi chuỗi.
+- `static remove(code: string): boolean` — xóa biểu tượng tùy chỉnh theo mã tệp hoặc phần mở rộng, trả về `true` nếu biểu tượng tồn tại và đã được xóa.
+- `static reset(): typeof MediaFileIcon` — xóa toàn bộ và đặt lại tất cả các biểu tượng tùy chỉnh đã đăng ký trong sổ đăng ký. Trả về lớp để hỗ trợ gọi chuỗi.
 
 ### Chuẩn hóa và chuyển đổi phần tử
 
-- `static toCode(code: string): string` — chuẩn hóa mã tệp hoặc phần mở rộng bằng cách cắt tỉa khoảng trắng và chuyển sang chữ thường.
-- `static toItem(item?: MediaFileItem): MediaFileItem | undefined` — nhân bản đối tượng tệp và áp dụng biểu tượng tùy chỉnh nếu đã đăng ký, hoặc trả về đối tượng gốc nếu chưa đăng ký.
+- `static toCode(code: string): string` — chuẩn hóa mã tệp hoặc phần mở rộng bằng cách cắt tỉa khoảng trắng, dấu chấm ở hai đầu, lược bỏ tham số MIME sau dấu `;` và chuyển sang chữ thường.
+- `static toItem<T extends MediaFileItem | undefined = undefined>(item?: T): MediaFileItemReturn<T>` — tạo bản sao phòng vệ của phần tử tệp và mảng phần mở rộng, áp dụng biểu tượng tùy chỉnh theo thứ tự ưu tiên phân tầng (`code` -> `extensions` -> `mime` -> `category`).
 
 ## Các kiểu dữ liệu
 
@@ -48,19 +53,23 @@ Lớp là tĩnh và không yêu cầu khởi tạo thực thể. Tất cả các
 - `category?: MediaFileCategoryValue` — danh mục phân loại cấp cao của tệp.
 - `group?: MediaFileGroupValue` — nhóm phân loại (`neutral`, `category`, `standard`).
 
+### MediaFileItemReturn<T>
+
+- `T extends MediaFileItem ? MediaFileItem : undefined` — kiểu dữ liệu có điều kiện phản ánh sự hiện diện của phần tử đầu vào.
+
 ## Ví dụ sử dụng
 
 ```typescript
 import { MediaFileIcon } from '@dxtmisha/media'
 
-// Đăng ký một biểu tượng SVG tùy chỉnh
-MediaFileIcon.add('sketch', '<svg class="icon-sketch">...</svg>')
-
-// Đăng ký nhiều biểu tượng hàng loạt
-MediaFileIcon.addList({
-  psd: '<svg class="icon-psd">...</svg>',
-  ai: '<svg class="icon-ai">...</svg>'
-})
+// Đăng ký biểu tượng thông qua chuỗi phương thức (method chaining)
+MediaFileIcon
+  .reset()
+  .add('sketch', '<svg class="icon-sketch">...</svg>')
+  .addList({
+    psd: '<svg class="icon-psd">...</svg>',
+    ai: '<svg class="icon-ai">...</svg>'
+  })
 
 // Kiểm tra sự tồn tại và lấy biểu tượng
 if (MediaFileIcon.has('sketch')) {
@@ -68,6 +77,17 @@ if (MediaFileIcon.has('sketch')) {
   console.log(iconMarkup)
 }
 
-// Chuẩn hóa chuỗi mã tệp
-console.log(MediaFileIcon.toCode('  .DOCX  ')) // '.docx'
+// Lấy bản sao từ điển của tất cả biểu tượng đã đăng ký
+const allIcons = MediaFileIcon.icons
+console.log(allIcons.sketch)
+
+// Chuẩn hóa chuỗi mã tệp (loại bỏ khoảng trắng, dấu chấm hai đầu và tham số MIME)
+console.log(MediaFileIcon.toCode('  ..DOCX..  ')) // 'docx'
+console.log(MediaFileIcon.toCode('text/plain; charset=utf-8')) // 'text/plain'
+
+// Xóa một biểu tượng cụ thể
+MediaFileIcon.remove('sketch')
+
+// Đặt lại toàn bộ các biểu tượng tùy chỉnh đã đăng ký
+MediaFileIcon.reset()
 ```

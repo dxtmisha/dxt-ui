@@ -210,7 +210,7 @@ export const fileList: MediaFileList = [
   {
     code: 'csv',
     name: 'CSV Spreadsheet',
-    extensions: ['csv'],
+    extensions: ['csv', 'tsv'],
     mime: 'text/csv',
     category: 'table',
     group: 'standard'
@@ -288,8 +288,6 @@ export const fileList: MediaFileList = [
   {
     code: 'folder-zip',
     name: 'Compressed Folder',
-    extensions: ['zip'],
-    mime: 'application/zip',
     category: 'folder',
     group: 'standard'
   },
@@ -345,14 +343,6 @@ export const fileList: MediaFileList = [
     code: 'jpeg',
     name: 'JPEG Image',
     extensions: ['jpeg', 'jpg'],
-    mime: 'image/jpeg',
-    category: 'image',
-    group: 'standard'
-  },
-  {
-    code: 'jpg',
-    name: 'JPG Image',
-    extensions: ['jpg', 'jpeg'],
     mime: 'image/jpeg',
     category: 'image',
     group: 'standard'
@@ -534,8 +524,6 @@ export const fileList: MediaFileList = [
   {
     code: 'spreadsheet',
     name: 'Spreadsheet',
-    extensions: ['xlsx', 'xls'],
-    mime: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     category: 'table',
     group: 'standard'
   },
@@ -553,14 +541,6 @@ export const fileList: MediaFileList = [
     extensions: ['svg', 'svgz'],
     mime: 'image/svg+xml',
     category: 'image',
-    group: 'standard'
-  },
-  {
-    code: 'table',
-    name: 'Data Table',
-    extensions: ['csv', 'tsv'],
-    mime: 'text/csv',
-    category: 'table',
     group: 'standard'
   },
   {
@@ -593,14 +573,6 @@ export const fileList: MediaFileList = [
     extensions: ['ts', 'mts', 'cts'],
     mime: 'text/typescript',
     category: 'code',
-    group: 'standard'
-  },
-  {
-    code: 'txt',
-    name: 'Text File',
-    extensions: ['txt', 'text'],
-    mime: 'text/plain',
-    category: 'text',
     group: 'standard'
   },
   {

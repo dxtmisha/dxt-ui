@@ -20,14 +20,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 ## Методы
 
-### Проверка путей
+### Проверка путей и типов
 
-- `static isLink(path: string): boolean` — проверяет, является ли указанная строка путем к файлу или веб-ссылкой (наличие слешей `/`, `\` или протоколов `http://`, `https://`).
+- `static isLink(path: string): boolean` — проверяет, является ли указанная строка путем к файлу или веб-ссылкой (наличие слешей `/`, `\`, исключая MIME-типы).
+- `static isMime(mime: string): boolean` — проверяет, является ли указанное значение зарегистрированным MIME-типом.
 
 ### Поиск и реестр
 
 - `static get(code: string): MediaFileItem | undefined` — возвращает элемент метаданных файла по расширению или коду, с запасным поиском по MIME-типу или нейтральному элементу по умолчанию, с учетом кастомных иконок.
-- `static getByCategory(category: MediaFileCategory | MediaFileCategoryValue | string): MediaFileItem | undefined` — возвращает нейтральный элемент конфигурации файла для заданной категории или кода файла.
+- `static getByCategory(category: MediaFileCategoryOrCode): MediaFileItem | undefined` — возвращает нейтральный элемент конфигурации файла для заданной категории или кода файла.
 - `static getByMime(mime: string): MediaFileItem | undefined` — возвращает элемент метаданных файла по его MIME-типу с учетом кастомных иконок.
 - `static getList(): MediaFileList` — возвращает полный массив всех поддерживаемых элементов конфигураций файлов.
 - `static getNeutral(): MediaFileItem | undefined` — возвращает стандартный нейтральный элемент файла с примененной кастомной иконкой при ее наличии.

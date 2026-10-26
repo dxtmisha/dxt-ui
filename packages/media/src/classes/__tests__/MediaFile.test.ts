@@ -6,10 +6,7 @@ import { MediaFileIcon } from '../MediaFileIcon'
 
 describe('MediaFile', () => {
   beforeEach(() => {
-    // Reset custom icons registry before each test to avoid test pollution
-    for (const key in MediaFileIcon.icons) {
-      delete MediaFileIcon.icons[key]
-    }
+    MediaFileIcon.reset()
   })
 
   describe('name and baseName', () => {
@@ -258,7 +255,7 @@ describe('MediaFile', () => {
       const file = new MediaFile('upload-file', 'image/jpeg')
 
       expect(file.name).toBe('upload-file')
-      expect(file.extension).toBe('jpg')
+      expect(file.extension).toBe('jpeg')
       expect(file.mime).toBe('image/jpeg')
       expect(file.isImage()).toBe(true)
       expect(file.category).toBe(MediaFileCategory.image)

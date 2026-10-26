@@ -20,14 +20,15 @@ Lớp là tĩnh và không yêu cầu khởi tạo thực thể. Tất cả các
 
 ## Các phương thức
 
-### Kiểm tra đường dẫn
+### Kiểm tra đường dẫn và kiểu dữ liệu
 
-- `static isLink(path: string): boolean` — xác định xem chuỗi được chỉ định có phải là đường dẫn hệ thống tệp hoặc liên kết URL hay không (kiểm tra dấu gạch chéo `/`, `\` hoặc tiền tố `http://`, `https://`).
+- `static isLink(path: string): boolean` — xác định xem chuỗi được chỉ định có phải là đường dẫn hệ thống tệp hoặc liên kết URL hay không (kiểm tra dấu gạch chéo `/`, `\`, loại trừ kiểu MIME).
+- `static isMime(mime: string): boolean` — kiểm tra xem chuỗi được chỉ định có phải là kiểu MIME đã đăng ký hay không.
 
 ### Tra cứu và sổ đăng ký
 
 - `static get(code: string): MediaFileItem | undefined` — truy xuất cấu hình tệp theo phần mở rộng hoặc mã tệp, tự động tìm kiếm theo MIME type hoặc mục mặc định nếu không khớp, có áp dụng biểu tượng tùy chỉnh.
-- `static getByCategory(category: MediaFileCategory | MediaFileCategoryValue | string): MediaFileItem | undefined` — trả về cấu hình biểu tượng trung tính cấp danh mục phù hợp với danh mục hoặc mã tệp đã chỉ định.
+- `static getByCategory(category: MediaFileCategoryOrCode): MediaFileItem | undefined` — trả về cấu hình biểu tượng trung tính cấp danh mục phù hợp với danh mục hoặc mã tệp đã chỉ định.
 - `static getByMime(mime: string): MediaFileItem | undefined` — trả về cấu hình tệp phù hợp với kiểu MIME đã chỉ định, có áp dụng biểu tượng tùy chỉnh.
 - `static getList(): MediaFileList` — trả về toàn bộ mảng gồm tất cả các mục cấu hình tệp được hỗ trợ.
 - `static getNeutral(): MediaFileItem | undefined` — trả về mục cấu hình tệp trung tính mặc định, có áp dụng biểu tượng tùy chỉnh nếu tồn tại.

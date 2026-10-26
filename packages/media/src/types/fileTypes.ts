@@ -39,6 +39,9 @@ export enum MediaFileCategory {
 /** Type of file category value / Тип значения категории файла */
 export type MediaFileCategoryValue = `${MediaFileCategory}` | MediaFileCategory
 
+/** Type of file category or file code / Тип категории файла или кода файла */
+export type MediaFileCategoryOrCode = MediaFileCategory | MediaFileCategoryValue | string
+
 /**
  * File item group types / Типы групп элементов файлов
  */
@@ -74,6 +77,14 @@ export type MediaFileItem = {
   /** Item group classification / Классификация группы элемента */
   group?: MediaFileGroupValue
 }
+
+/**
+ * Resulting file item type depending on input item presence /
+ * Результирующий тип элемента файла в зависимости от наличия входного элемента
+ */
+export type MediaFileItemReturn<T extends MediaFileItem | undefined = MediaFileItem | undefined> = T extends MediaFileItem
+  ? MediaFileItem
+  : undefined
 
 /** List of file configurations / Список конфигураций файлов */
 export type MediaFileList = MediaFileItem[]

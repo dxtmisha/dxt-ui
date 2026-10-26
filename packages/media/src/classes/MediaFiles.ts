@@ -3,7 +3,7 @@ import { MediaFileIcon } from './MediaFileIcon'
 import {
   MediaFileCategory,
   MediaFileGroup,
-  type MediaFileCategoryValue,
+  type MediaFileCategoryOrCode,
   type MediaFileItem,
   type MediaFileList
 } from '../types/fileTypes'
@@ -17,6 +17,13 @@ import { fileList } from '../media/fileList'
  */
 export class MediaFiles {
   /**
+   * Protected constructor.
+   *
+   * Защищенный конструктор.
+   */
+  protected constructor() {}
+
+  /**
    * Checks whether the specified path is a link or path to a file.
    *
    * Проверяет, является ли указанный путь ссылкой или путем к файлу.
@@ -24,10 +31,21 @@ export class MediaFiles {
    * @returns true if path or link / true, если путь или ссылка
    */
   static isLink(path: string): boolean {
-    return path.includes('/')
+    return (
+      path.includes('/')
       || path.includes('\\')
-      || path.startsWith('http://')
-      || path.startsWith('https://')
+    ) && !this.isMime(path)
+  }
+
+  /**
+   * Checks whether the specified value is a MIME type.
+   *
+   * Проверяет, является ли указанное значение MIME-типом.
+   * @param mime MIME type to check / проверяемый MIME-тип
+   * @returns true if MIME type / true, если MIME-тип
+   */
+  static isMime(mime: string): boolean {
+    return Boolean(this.getByMime(mime))
   }
 
   /**
@@ -37,11 +55,8 @@ export class MediaFiles {
    * @param code file code or extension / код файла или расширение
    * @returns file metadata item or undefined / элемент метаданных файла или undefined
    */
-  static get(code: string): MediaFileItem | undefined {
-    const itemCode = MediaFileIcon.toCode(code)
-    const item = this.find(itemCode)
-
-    return MediaFileIcon.toItem(item)
+  static get(code: string): MediaFileItem {
+    return MediaFileIcon.toItem(this.find(MediaFileIcon.toCode(code)))
   }
 
   /**
@@ -51,10 +66,8 @@ export class MediaFiles {
    * @param category category, category value, or file code/extension / категория, значение категории или код/расширение файла
    * @returns category neutral file item or undefined / нейтральный элемент файла категории или undefined
    */
-  static getByCategory(category: MediaFileCategory | MediaFileCategoryValue | string): MediaFileItem | undefined {
-    const item = this.findByCategory(category)
-
-    return MediaFileIcon.toItem(item)
+  static getByCategory(category: MediaFileCategoryOrCode): MediaFileItem | undefined {
+    return MediaFileIcon.toItem(this.findByCategory(MediaFileIcon.toCode(category)))
   }
 
   /**
@@ -65,9 +78,7 @@ export class MediaFiles {
    * @returns file metadata item or undefined / элемент метаданных файла или undefined
    */
   static getByMime(mime: string): MediaFileItem | undefined {
-    const item = this.findByMime(mime)
-
-    return MediaFileIcon.toItem(item)
+    return MediaFileIcon.toItem(this.findByMime(MediaFileIcon.toCode(mime)))
   }
 
   /**
@@ -77,7 +88,7 @@ export class MediaFiles {
    * @returns list of file items / список элементов файлов
    */
   static getList(): MediaFileList {
-    return fileList
+    return fileList.map(item => MediaFileIcon.toItem(item))
   }
 
   /**
@@ -87,22 +98,18 @@ export class MediaFiles {
    * @returns default neutral file item or undefined / нейтральный элемент файла по умолчанию или undefined
    */
   static getNeutral(): MediaFileItem | undefined {
-    const item = this.findNeutral()
-
-    return MediaFileIcon.toItem(item)
+    return MediaFileIcon.toItem(this.findNeutral())
   }
 
   /**
    * Finds a file metadata item by its code or extension, or returns the default neutral item.
    *
    * Находит элемент метаданных файла по коду или расширению, либо возвращает нейтральный элемент по умолчанию.
-   * @param code file code or extension / код файла или расширение
+   * @param code normalized file code or extension / нормализованный код файла или расширение
    * @returns file metadata item or undefined / элемент метаданных файла или undefined
    */
-  protected static find(code: string): MediaFileItem | undefined {
-    const itemCode = MediaFileIcon.toCode(code)
-
-    return fileList.find(element => element.code === itemCode || element.extensions?.includes(itemCode))
+  protected static find(code: string): MediaFileItem {
+    return this.findByCode(code)
       ?? this.findByMime(code)
       ?? this.findNeutral()
   }
@@ -111,52 +118,55 @@ export class MediaFiles {
    * Finds a category neutral file item by category or file code/extension.
    *
    * Находит нейтральный элемент файла категории по категории или коду/расширению файла.
-   * @param category category, category value, or file code/extension / категория, значение категории или код/расширение файла
+   * @param category normalized category or file code / нормализованная категория или код файла
    * @returns category neutral file item or undefined / нейтральный элемент файла категории или undefined
    */
-  protected static findByCategory(category: MediaFileCategory | MediaFileCategoryValue | string): MediaFileItem | undefined {
-    const normalized = MediaFileIcon.toCode(category)
+  protected static findByCategory(category: string): MediaFileItem | undefined {
+    const mime = category.endsWith('/*') ? category : `${category}/*`
 
     const categoryItem = fileList.find(
       element => element.group === MediaFileGroup.category
-        && (element.code === normalized || element.category === normalized)
+        && (
+          element.category === category
+          || element.code === category
+          || element.mime === mime
+        )
     )
 
     if (categoryItem) {
       return categoryItem
     }
 
-    if (normalized === MediaFileCategory.system || normalized === 'file') {
+    if (
+      category === MediaFileCategory.system
+      || category === 'file'
+    ) {
       return this.findNeutral()
-    }
-
-    const fileItem = fileList.find(element => element.code === normalized)
-
-    if (fileItem?.category) {
-      if (fileItem.category === MediaFileCategory.system) {
-        return this.findNeutral()
-      }
-
-      return fileList.find(
-        element => element.group === MediaFileGroup.category
-          && element.category === fileItem.category
-      )
     }
 
     return undefined
   }
 
   /**
+   * Finds a file metadata item by its code or extension.
+   *
+   * Находит элемент метаданных файла по его коду или расширению.
+   * @param code normalized file code or extension / нормализованный код файла или расширение
+   * @returns file metadata item or undefined / элемент метаданных файла или undefined
+   */
+  protected static findByCode(code: string): MediaFileItem | undefined {
+    return fileList.find(element => element.code === code)
+  }
+
+  /**
    * Finds a file metadata item by its MIME type.
    *
    * Находит элемент метаданных файла по его MIME-типу.
-   * @param mime MIME type / MIME-тип
+   * @param mime normalized MIME type / нормализованный MIME-тип
    * @returns file metadata item or undefined / элемент метаданных файла или undefined
    */
   protected static findByMime(mime: string): MediaFileItem | undefined {
-    const normalized = MediaFileIcon.toCode(mime)
-
-    return fileList.find(element => element.mime === normalized)
+    return fileList.find(element => element.mime === mime)
   }
 
   /**
@@ -165,7 +175,7 @@ export class MediaFiles {
    * Находит нейтральный элемент файла по умолчанию.
    * @returns default neutral file item or undefined / нейтральный элемент файла по умолчанию или undefined
    */
-  protected static findNeutral(): MediaFileItem | undefined {
-    return fileList.find(element => element.group === MediaFileGroup.neutral)
+  protected static findNeutral(): MediaFileItem {
+    return fileList.find(element => element.group === MediaFileGroup.neutral)!
   }
 }

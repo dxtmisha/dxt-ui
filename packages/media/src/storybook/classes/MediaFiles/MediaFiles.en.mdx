@@ -20,14 +20,15 @@ The class is static and does not require instantiation. All methods are invoked 
 
 ## Methods
 
-### Path Inspection
+### Path & Type Inspection
 
-- `static isLink(path: string): boolean` — determines whether the specified string is a file system path or a web URL (checks for `/`, `\`, `http://`, `https://`).
+- `static isLink(path: string): boolean` — determines whether the specified string is a file system path or a web URL (checks for `/` or `\`, excluding MIME types).
+- `static isMime(mime: string): boolean` — checks whether the specified string is a registered MIME type.
 
 ### Lookup & Registry
 
 - `static get(code: string): MediaFileItem | undefined` — retrieves the file metadata item by its extension or code, falling back to MIME matching or the default neutral item, with custom icons applied.
-- `static getByCategory(category: MediaFileCategory | MediaFileCategoryValue | string): MediaFileItem | undefined` — returns a category-level neutral file configuration item matching the specified category or file code.
+- `static getByCategory(category: MediaFileCategoryOrCode): MediaFileItem | undefined` — returns a category-level neutral file configuration item matching the specified category or file code.
 - `static getByMime(mime: string): MediaFileItem | undefined` — retrieves a file metadata item matching the given MIME type with custom icons applied.
 - `static getList(): MediaFileList` — returns the complete array of all supported file configuration items.
 - `static getNeutral(): MediaFileItem | undefined` — returns the universal default neutral file item with any registered custom icon applied.

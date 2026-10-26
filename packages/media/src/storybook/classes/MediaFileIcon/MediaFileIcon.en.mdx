@@ -8,10 +8,12 @@ The `MediaFileIcon` class is a **Primary Class (Static)** designed for managing 
 
 ## Key Features
 
-- **Static Registry** — maintains an in-memory dictionary of custom SVG markup mapped to normalized file codes.
-- **Code Normalization** — trims whitespace and converts codes to lowercase (`toCode`) ensuring case-insensitive lookups.
-- **Single & Batch Registration** — provides convenient methods for registering individual icons (`add`) or importing dictionaries in bulk (`addList`).
-- **Seamless Item Enrichment** — safely attaches custom icons to `MediaFileItem` metadata objects via `toItem`.
+- **Static Registry** — maintains a prototype-isolated in-memory dictionary (`Object.create(null)`) of custom SVG markup mapped to normalized file codes.
+- **Fluent Method Chaining** — `add`, `addList`, and `reset` return `typeof MediaFileIcon`, allowing expressive call chaining.
+- **Comprehensive Code Normalization** — automatically strips boundary dots and whitespace, removes MIME parameters (after `;`), and converts codes to lowercase (`toCode`) for reliable case-insensitive lookups.
+- **Single & Batch Registration** — provides convenient methods for registering individual icons with automatic whitespace trimming (`add`) or importing dictionaries in bulk (`addList`).
+- **Defensive Item Enrichment** — safely clones `MediaFileItem` metadata objects and their `extensions` array, overriding the `icon` property via `toItem`.
+- **Fast Bailout Optimization** — internal `hasCustomIcons` presence flag guarantees O(1) fast return with zero performance overhead when the registry is empty.
 - **Zero Runtime Dependencies** — pure string and dictionary operations, fully isomorphic and safe for SSR.
 
 ## Initialization
@@ -22,15 +24,18 @@ The class is static and does not require instantiation. All methods are invoked 
 
 ### Registry & Management
 
+- `static get icons(): Readonly<MediaFileIcons>` — returns a prototype-less snapshot dictionary of all registered custom icons for read-only access.
 - `static has(code: string): boolean` — checks whether a custom icon is registered for the specified file code or extension.
 - `static get(code: string): string | undefined` — returns the custom SVG icon string for the specified code or extension, or `undefined` if not registered.
-- `static add(code: string, icon: string): void` — registers a custom SVG icon string for a specific file code or extension.
-- `static addList(icons: MediaFileIcons): void` — registers multiple custom SVG icons in batch from a dictionary.
+- `static add(code: string, icon: string): typeof MediaFileIcon` — registers a custom SVG icon string (with automatic whitespace trimming) for a specific file code or extension. Returns the class constructor for method chaining.
+- `static addList(icons: MediaFileIcons): typeof MediaFileIcon` — registers multiple custom SVG icons in batch from a dictionary. Returns the class constructor for method chaining.
+- `static remove(code: string): boolean` — removes a custom icon by file code or extension, returning `true` if it existed and was removed.
+- `static reset(): typeof MediaFileIcon` — resets and clears all registered custom icons from the registry. Returns the class constructor for method chaining.
 
 ### Normalization & Item Transform
 
-- `static toCode(code: string): string` — normalizes a file code or extension by trimming whitespace and converting to lowercase.
-- `static toItem(item?: MediaFileItem): MediaFileItem | undefined` — clones the provided file item and overrides its `icon` property with the custom icon if registered.
+- `static toCode(code: string): string` — normalizes a file code or extension by stripping boundary dots and whitespace, removing MIME parameters after `;`, and converting to lowercase.
+- `static toItem<T extends MediaFileItem | undefined = undefined>(item?: T): MediaFileItemReturn<T>` — defensively clones the file item and its extensions array, applying the custom icon by cascading priority (`code` -> `extensions` -> `mime` -> `category`).
 
 ## Types
 
@@ -48,26 +53,41 @@ The class is static and does not require instantiation. All methods are invoked 
 - `category?: MediaFileCategoryValue` — high-level file category.
 - `group?: MediaFileGroupValue` — classification group (`neutral`, `category`, `standard`).
 
+### MediaFileItemReturn<T>
+
+- `T extends MediaFileItem ? MediaFileItem : undefined` — conditional return type reflecting whether the input item was provided.
+
 ## Usage Example
 
 ```typescript
 import { MediaFileIcon } from '@dxtmisha/media'
 
-// Register a single custom SVG icon
-MediaFileIcon.add('sketch', '<svg class="icon-sketch">...</svg>')
+// Register icons with fluent method chaining
+MediaFileIcon
+  .reset()
+  .add('sketch', '<svg class="icon-sketch">...</svg>')
+  .addList({
+    psd: '<svg class="icon-psd">...</svg>',
+    ai: '<svg class="icon-ai">...</svg>'
+  })
 
-// Register multiple icons in batch
-MediaFileIcon.addList({
-  psd: '<svg class="icon-psd">...</svg>',
-  ai: '<svg class="icon-ai">...</svg>'
-})
-
-// Check if an icon exists
+// Check if an icon exists and retrieve it
 if (MediaFileIcon.has('sketch')) {
   const iconMarkup = MediaFileIcon.get('sketch')
   console.log(iconMarkup)
 }
 
-// Normalize a code string
-console.log(MediaFileIcon.toCode('  .DOCX  ')) // '.docx'
+// Retrieve snapshot of all registered icons
+const allIcons = MediaFileIcon.icons
+console.log(allIcons.sketch)
+
+// Normalize code strings (strips boundary dots, whitespace, and MIME parameters)
+console.log(MediaFileIcon.toCode('  ..DOCX..  ')) // 'docx'
+console.log(MediaFileIcon.toCode('text/plain; charset=utf-8')) // 'text/plain'
+
+// Remove a specific icon
+MediaFileIcon.remove('sketch')
+
+// Reset all registered custom icons
+MediaFileIcon.reset()
 ```
