@@ -12,17 +12,18 @@ Khác với các công cụ tĩnh (static utilities), `TranslateFile` là một 
 
 - **Tải chậm (Lazy Loading)** — Hỗ trợ tải bất đồng bộ các tập tin dịch chỉ khi cần thiết cho mã vùng hiện tại.
 - **Bộ nhớ đệm thông minh** — Tự động lưu trữ nội dung các tập tin đã tải, ngăn chặn việc đọc tập tin lặp lại hoặc các yêu cầu mạng không cần thiết.
+- **Khử trùng lặp yêu cầu (Deduplication)** — Các yêu cầu đồng thời cho cùng một mã vùng sẽ dùng chung một promise đang thực thi được theo dõi bằng mã định danh duy nhất.
 - **Ưu tiên Mã vùng** — Tự động chọn tập tin phù hợp nhất dựa trên vị trí (Vị trí > Ngôn ngữ > Toàn cầu).
 - **Ngữ cảnh Linh hoạt** — Hỗ trợ các trình cung cấp vị trí và ngôn ngữ tùy chỉnh, mặc định sử dụng thiết lập toàn cục của `Geo`.
 
 ## Khởi tạo
 
-Để khởi tạo đối tượng, hãy gọi hàm tạo `TranslateFile(data, language, location)`.
+Để khởi tạo đối tượng, hãy gọi hàm tạo `TranslateFile(data, location, language)`.
 
 **Tham số:**
 - `data?: TranslateDataFile` — ánh xạ ban đầu của mã vùng và các trình tải tập tin.
-- `language: string | (() => string) = () => Geo.getLanguage()` — ngôn ngữ hiện tại hoặc một hàm trả về giá trị đó.
 - `location: string | (() => string) = () => Geo.getLocation()` — vị trí hiện tại hoặc một hàm trả về giá trị đó.
+- `language: string | (() => string) = () => Geo.getLanguage()` — ngôn ngữ hiện tại hoặc một hàm trả về giá trị đó.
 
 ```javascript
 import { TranslateFile, Geo } from '@dxtmisha/functional-basic'
@@ -37,8 +38,8 @@ const files = new TranslateFile({
 // 2. Sử dụng các trình cung cấp ngữ cảnh tùy chỉnh
 const customFiles = new TranslateFile(
   {}, 
-  () => 'fr', 
-  () => 'fr-FR'
+  () => 'fr-FR', 
+  () => 'fr'
 )
 ```
 
@@ -54,6 +55,7 @@ const customFiles = new TranslateFile(
 ### Quản lý Dữ liệu
 
 - `add(data: TranslateDataFile): void` — Thêm ánh xạ mã vùng vào các trình tải tập tin dịch tương ứng (các hàm trả về Promise).
+- `reset(): this` — Đặt lại bộ nhớ đệm của dữ liệu dịch đã tải và các promise đang hoạt động.
 
 ## Các Kiểu Dữ liệu
 
@@ -64,6 +66,11 @@ Một tập hợp các hàm tải bất đồng bộ được lập chỉ mục 
 
 ### `TranslateDataFileList`
 Một bản ghi khóa-giá trị đơn giản của các bản dịch: `Record<string, string>`.
+
+### `TranslatePromiseItem`
+Phần tử dùng để theo dõi các promise tải bản dịch đang hoạt động:
+- `id: number` — Mã định danh số duy nhất của yêu cầu.
+- `promise: Promise<TranslateDataFileList | undefined>` — Promise tải đang hoạt động.
 
 ## Ví dụ
 

@@ -49,6 +49,17 @@ export type TranslateDataFileItem = () => Promise<TranslateDataFileList>
  */
 export type TranslateDataFile = Record<string, TranslateDataFileItem>
 
+/**
+ * Item for tracking active translation loading promises /
+ * Элемент для отслеживания активных промисов загрузки переводов
+ */
+export type TranslatePromiseItem = {
+  /** Unique request identifier / Уникальный идентификатор запроса */
+  id: number
+  /** Loading promise / Промис загрузки */
+  promise: Promise<TranslateDataFileList | undefined>
+}
+
 /** Translation batch bound to its original locale / Партия переводов, привязанная к исходной локали */
 export interface TranslateBatch {
   /** Requested location / Запрошенный регион */

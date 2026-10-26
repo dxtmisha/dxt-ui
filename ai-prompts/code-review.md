@@ -1,13 +1,13 @@
 ---
 name: code-review
-description: Conduct a rigorous read-only code review assessing architecture, dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, design quality, SSR compatibility & isomorphism, memory leak prevention & resource cleanup, and test suite completeness, with all findings, refactorings, and proposed test suites saved exclusively as an AI artifact (strictly prohibiting any workspace file modifications until explicitly instructed by the developer), in the language specified by wikiLanguage in ./design.config.json.
+description: Conduct a rigorous read-only code review assessing architecture, security & vulnerabilities (XSS, injection, prototype pollution, ReDoS, sensitive data exposure), dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, design quality, SSR compatibility & isomorphism, memory leak prevention & resource cleanup, and test suite completeness, with all findings, refactorings, and proposed test suites saved exclusively as an AI artifact (strictly prohibiting any workspace file modifications until explicitly instructed by the developer), in the language specified by wikiLanguage in ./design.config.json.
 ---
 
 # Task: Strict Architectural and Quality Code Review
 
 Act as an elite Principal Software Architect and Senior Code Reviewer. Your goal is to conduct an uncompromising, deep-dive code review of the specified files, components, classes, functions, or composables/hooks.
 
-Your analysis must not be a superficial lint check. You must evaluate architectural soundness, dependency health, real-world usage across the codebase, technological relevance vs obsolete patterns, code flaws and subtle bugs, adherence to strict project conventions, full SSR compatibility and memory leak prevention, and benchmark the implementation against industry-leading state-of-the-art standards.
+Your analysis must not be a superficial lint check. You must evaluate architectural soundness, security vulnerabilities and safe data handling, dependency health, real-world usage across the codebase, technological relevance vs obsolete patterns, code flaws and subtle bugs, adherence to strict project conventions, full SSR compatibility and memory leak prevention, and benchmark the implementation against industry-leading state-of-the-art standards.
 
 ---
 
@@ -121,6 +121,11 @@ Evaluate the target according to its specific entity type:
 - **Memory Safety & Resource Cleanup**:
   - Event listener cleanup: All manual event listeners attached to `window`, `document`, or external targets must be explicitly removed in `onUnmounted` or `onScopeDispose` (or use managed composables like `useEventListener`).
   - Observer & Timer disposal: Disconnect `ResizeObserver`, `IntersectionObserver`, `MutationObserver`, and clear all `setTimeout`, `setInterval`, and `requestAnimationFrame` before component unmount.
+- **Security & Content Injection Guards**:
+  - `v-html` audit: Avoid `v-html` whenever possible. If raw HTML rendering is strictly necessary, ensure input is sanitized against XSS (no script execution, `onerror`/`onload` attributes, or dangerous protocols).
+  - Dynamic SVG security: SVGs rendered dynamically from user input or external URLs must be sanitized (no embedded `<script>`, external entity injection, or event handlers).
+  - Safe URL attributes: `href`, `src`, and `action` bindings must guard against malicious protocols (`javascript:`, `data:` URLs executing scripts).
+  - Safe external navigation: External links (`target="_blank"`) must always declare `rel="noopener noreferrer"`.
 
 ### B. TypeScript Classes (`class`)
 - **Structure & Ordering**:
@@ -140,6 +145,10 @@ Evaluate the target according to its specific entity type:
 - **Memory Management & Teardown Lifecycle**:
   - Explicit destruction contract: Any class holding subscriptions, listeners, DOM elements, or caches must implement an explicit `destroy()` / `dispose()` / `reset()` method to release memory references.
   - Cache size & retention guards: Internal registries, caches, and event listener arrays must prevent unbounded growth and detached memory retention.
+- **Security & Data Sanitization**:
+  - Prototype pollution guards: Deep merge, cloning, object property setters by path (`set(obj, path, val)`), or configuration merging must explicitly guard against modifying `__proto__`, `constructor`, or `prototype`.
+  - ReDoS prevention: Regular expressions must avoid catastrophic exponential backtracking on maliciously crafted inputs.
+  - Safe error serialization: Do not log or expose raw credentials, auth tokens, or private customer data in error messages or ErrorCenter details.
 
 ### C. Functions & Utilities (`function`)
 - **Purity & Determinism**:
@@ -150,6 +159,10 @@ Evaluate the target according to its specific entity type:
   - Well-defined error boundaries without silent failure.
 - **Signature Ergonomics**:
   - Clean parameter lists: Use typed options objects with sensible defaults for functions with 3+ parameters.
+- **Defensive Security & Regular Expressions**:
+  - ReDoS safety: Regular expressions must be crafted without ambiguous nested quantifiers (e.g. `(a+)+`, `(a|aa)+`).
+  - Dynamic RegExp escaping: When constructing `new RegExp(...)` from dynamic user input or search queries, characters with special regex meaning must be escaped (using `escapeExp` / `RegExp.escape`).
+  - Safe parsing: Ensure `JSON.parse` or numeric parsers are guarded against throwing unhandled exceptions or accepting non-primitive inputs.
 
 ### D. Composables & Hooks (`use*` / `executeUse*`)
 - **Reactivity Preservation**:
@@ -166,6 +179,10 @@ Evaluate the target according to its specific entity type:
   - Safe browser API access guarded strictly by `isDomRuntime()`.
   - Zero request-leaking global state: Never share mutable request/user state across requests in SSR via module-level refs or globals. Use `executeUseLocal`, `executeUseProvide`, or `ServerStorage`.
   - Isomorphic reactivity: Avoid running client-only asynchronous side effects (e.g. continuous polling, timer intervals) during server-side execution.
+- **Security, Messaging & Storage Isolation**:
+  - Origin verification: Handlers for `window.addEventListener('message', ...)` and `BroadcastChannel` must validate message origins and payload schemas before processing.
+  - URL parameter & state sanitization: Query parameters, hashes, and route parameters must be treated as untrusted user input, validated and sanitized before assigning to reactive state or DOM.
+  - Cookie security: When setting cookies via `useCookieRef` or cookie utilities, ensure proper flags (`SameSite`, `Secure`, `HttpOnly` where applicable) to prevent CSRF and session hijacking.
 
 ---
 
@@ -199,7 +216,47 @@ Rigorously search for subtle defects, including:
 
 ---
 
-## 4. Strict Project Rules & Conventions Compliance
+## 4. Security & Vulnerability Audit (Анализ безопасности и поиск уязвимостей)
+
+Conduct a systematic security assessment to identify vulnerabilities, injection vectors, and data leak risks:
+
+1. **XSS (Cross-Site Scripting) & Markup Injection**:
+   - Usage of `v-html` or `innerHTML` without robust sanitization.
+   - Dynamic SVG rendering containing malicious script tags, event handlers (`onload`, `onerror`), or XML entity attacks.
+   - Dynamic evaluation or script execution (`eval()`, `new Function()`, `setTimeout(string)`).
+   - Unsanitized URL bindings in `href`, `src`, `formaction`, or window redirects (allowing `javascript:`, `vbscript:`, or unapproved `data:` URI execution).
+   - External links with `target="_blank"` missing `rel="noopener noreferrer"` (tabnabbing vulnerability).
+
+2. **Prototype Pollution & Object Integrity**:
+   - Recursive object merging, deep cloning, query parameter hydration, or dot-notation path traversal (e.g., `set(target, path, value)`) without filtering sensitive property names (`__proto__`, `constructor`, `prototype`).
+   - Object creation without a prototype (`Object.create(null)`) vs plain objects when storing arbitrary dictionary keys from external sources.
+
+3. **ReDoS (Regular Expression Denial of Service)**:
+   - Vulnerable regular expressions with nested quantifiers or overlapping alternation branches prone to catastrophic polynomial/exponential backtracking when processing adversarial inputs.
+   - Unescaped strings in dynamic regular expression constructors (`new RegExp(untrustedPattern)`).
+
+4. **Sensitive Data Exposure & Information Leakage**:
+   - Secrets, API keys, private tokens, passwords, or authentication credentials hardcoded in source code or client bundles.
+   - Accidental logging of authorization headers, session cookies, tokens, or PII (Personally Identifiable Information) to console, `ErrorCenter`, query strings, or client error monitors.
+   - Leaking server-side environment variables or private configs through SSR state hydration objects or public client manifests.
+
+5. **Cross-Origin & Messaging Security**:
+   - Insecure cross-window communication: `window.addEventListener('message', ...)` lacking strict `event.origin` verification.
+   - Unauthenticated `BroadcastChannel` listeners that trust foreign messages without payload validation.
+   - Open redirect vulnerabilities: redirecting or navigating to unvalidated user-supplied URLs without checking domain whitelist or relative path safety.
+
+6. **SSR & Request Isolation Security**:
+   - SSRF (Server-Side Request Forgery): server-side data prefetching or API proxy utilities accepting user-controlled destination URLs without strict IP/domain allowlists.
+   - Cross-request cache poisoning or session bleeding: sharing mutable user- or request-specific data in module-level singletons or static variables in Nitro/Node.js SSR environments.
+   - Insecure cookie configurations: missing `Secure`, `SameSite=Lax/Strict`, or `HttpOnly` attributes on sensitive cookies.
+
+7. **Input Validation & Schema Integrity**:
+   - Blind trust in external API responses, query parameters, cookies, or localStorage data without schema validation (e.g. `@effect/schema` or strict type guards).
+   - Insecure deserialization: executing or evaluating untrusted data extracted from cookies, storage, or URLs.
+
+---
+
+## 5. Strict Project Rules & Conventions Compliance
 
 Check compliance against the core rules of `dxt-ui`:
 - **Strict TypeScript**:
@@ -227,6 +284,11 @@ Check compliance against the core rules of `dxt-ui`:
   - Mandatory ARIA support for interactive, graphical, and informative UI components.
   - Proper use of `AriaStaticInclude` (`role()`, `label()`, `hidden()`, etc.) and dedicated `aria` getters in component constructor classes.
   - Correct role assignments and state synchronization (`role="img"`, `role="button"`, `role="dialog"`, etc.).
+- **Security Standards**:
+  - Zero unescaped user HTML or dangerous URL protocol bindings (`javascript:`).
+  - Mandatory prototype pollution guards on recursive object utilities.
+  - Safe ReDoS-resistant regular expressions with escaped dynamic patterns.
+  - No secrets, credentials, or PII exposed in logs, client bundles, or state hydration.
 - **SSR Safety & Isomorphic Standards**:
   - Fully isomorphic code across all packages.
   - Never store request state in globals or module-level singletons.
@@ -242,7 +304,7 @@ Check compliance against the core rules of `dxt-ui`:
 
 ---
 
-## 5. Review Output Format
+## 6. Review Output Format
 
 ### A. Delivery & Language Requirements
 1. **Output Language (Strict `wikiLanguage` from `./design.config.json`)**:
@@ -270,6 +332,7 @@ Document the review in the artifact markdown file with the following sections (t
   | **Dependencies & Usages (Impact & Graph)** | Clean & Decoupled / Tight Coupling / Breaking Risks | ... |
   | **Modernity vs Legacy Patterns** | Modern / Outdated / Mixed | ... |
   | **Component / Class / Hook Design** | Excellent / Good / Needs Improvement / Poor | ... |
+  | **Security & Vulnerabilities** | Secure / Minor Risks / High Vulnerabilities (XSS, ReDoS, Leaks) | ... |
   | **Accessibility & ARIA (A11y)** | Fully Accessible / Minor Gaps / Inaccessible | ... |
   | **SSR Compatibility & Isomorphism** | Safe & Isomorphic / Hydration Risks / Leaking Server State | ... |
   | **Memory Safety & Leak Prevention** | Zero Leaks & Clean Disposal / Lingering Listeners or Timers / Critical Memory Leaks | ... |
@@ -285,8 +348,8 @@ Document the review in the artifact markdown file with the following sections (t
   - **Inbound Usages & Blast Radius**: Comprehensive scan and list of where the entity is used across the codebase, analysis of caller patterns, potential breaking change risks, and suggestions for caller refactoring.
 
 #### 3. Detailed Findings & Bugs (Categorized by Severity)
-- **Critical (P0 / Blocker)**: Bugs causing runtime crashes, data loss, memory leaks, SSR breaking issues / cross-request leaks, or reactivity breakage.
-- **Major (P1 / Architecture & Modernity)**: Outdated techniques, violation of single responsibility, suboptimal paradigms, missing cleanup / potential leak risks, SSR hydration mismatches.
+- **Critical (P0 / Blocker)**: Security vulnerabilities (exploitable XSS, code/attribute injection, prototype pollution, sensitive credential exposure, ReDoS in public endpoints), bugs causing runtime crashes, data loss, memory leaks, SSR breaking issues / cross-request leaks, or reactivity breakage.
+- **Major (P1 / Architecture & Modernity)**: Latent security weaknesses (missing `rel="noopener noreferrer"`, unvalidated external URLs, insecure cookie flags), outdated techniques, violation of single responsibility, suboptimal paradigms, missing cleanup / potential leak risks, SSR hydration mismatches.
 - **Minor (P2 / Conventions & Typing)**: Naming abbreviations, missing `/*#__PURE__*/`, missing or malformed bilingual JSDoc, missing explicit return types.
 - **Nit / Suggestion (P3)**: Minor stylistic polish, code ergonomics, micro-optimizations.
 

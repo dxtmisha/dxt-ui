@@ -1,7 +1,7 @@
 // ai-none
 
-import { forEach } from '../functions/forEach'
 import { executeFunction } from '../functions/executeFunction'
+import { forEach } from '../functions/forEach'
 import { isFunction } from '../functions/isFunction'
 
 import { ErrorCenter } from './ErrorCenter'
@@ -10,13 +10,16 @@ import { Geo } from './Geo'
 import {
   TRANSLATE_GLOBAL_PREFIX,
   type TranslateDataFile,
-  type TranslateDataFileList
+  type TranslateDataFileList,
+  type TranslatePromiseItem
 } from '../types/translateTypes'
 
 /**
- * Class for working with translation files.
+ * Class for managing and loading translation files with hierarchical locale resolution and caching.
+ * Resolves translation files using the fallback chain: location -> language -> global prefix.
  *
- * Класс для работы с файлами перевода.
+ * Класс для управления и загрузки файлов перевода с иерархическим разрешением локалей и кэшированием.
+ * Разрешает файлы перевода по цепочке отката: регион (location) -> язык (language) -> глобальный префикс (global).
  */
 export class TranslateFile {
   /** List of files with translations / Список файлов с переводами */
@@ -25,18 +28,24 @@ export class TranslateFile {
   /** Data from files / Данные из файлов */
   protected data: Record<string, TranslateDataFileList> = Object.create(null)
 
+  /** Active loading promises for deduplication / Активные промисы загрузки для дедупликации */
+  protected promises: Record<string, TranslatePromiseItem> = Object.create(null)
+
+  /** Counter for generating unique request identifiers / Счетчик для генерации уникальных идентификаторов запросов */
+  protected id: number = 0
+
   /**
    * Creates an instance of the class.
    *
    * Создает экземпляр класса.
    * @param data list of files / список файлов
-   * @param language language / язык
    * @param location location / местоположение
+   * @param language language / язык
    */
   constructor(
     data?: TranslateDataFile,
-    protected language: string | (() => string) = () => Geo.getLanguage(),
-    protected location: string | (() => string) = () => Geo.getLocation()
+    protected location: string | (() => string) = () => Geo.getLocation(),
+    protected language: string | (() => string) = () => Geo.getLanguage()
   ) {
     if (data) {
       this.add(data)
@@ -49,14 +58,13 @@ export class TranslateFile {
    * Проверяет, есть ли файлы для указанного местоположения или языка.
    * @param location location, current by default / регион, по умолчанию текущий
    * @param language language, current by default / язык, по умолчанию текущий
-   * @returns boolean / логическое значение
+   * @returns true if matching file exists / true, если подходящий файл существует
    */
   isFile(
     location: string = this.getLocation(),
     language: string = this.getLanguage()
   ): boolean {
-    return Object.keys(this.files).length > 0
-      && this.getIndex(location, language) !== undefined
+    return this.getIndex(location, language) !== undefined
   }
 
   /**
@@ -93,7 +101,7 @@ export class TranslateFile {
   ): Promise<TranslateDataFileList | undefined> {
     const index = this.getIndex(location, language)
 
-    if (index) {
+    if (index !== undefined) {
       return this.getByData(index)
         ?? await this.getByFile(index)
     }
@@ -102,17 +110,32 @@ export class TranslateFile {
   }
 
   /**
-   * Adds a list of files with translations.
+   * Adds a list of files with translations and clears stale cache for updated keys.
    *
-   * Добавляет список файлов с переводами.
+   * Добавляет список файлов с переводами и очищает устаревший кэш для обновляемых ключей.
    * @param data list of files / список файлов
    */
   add(data: TranslateDataFile): void {
     forEach(data, (file, key) => {
       if (isFunction(file)) {
         this.files[key] = file
+        delete this.data[key]
+        delete this.promises[key]
       }
     })
+  }
+
+  /**
+   * Resets the cache of loaded translation data and active promises.
+   *
+   * Сбрасывает кэш загруженных данных переводов и активные промисы.
+   * @returns current instance / текущий экземпляр
+   */
+  reset(): this {
+    this.data = Object.create(null)
+    this.promises = Object.create(null)
+
+    return this
   }
 
   /**
@@ -131,18 +154,30 @@ export class TranslateFile {
   }
 
   /**
-   * Returns a list of translations from the file and caches the result.
+   * Returns a list of translations from the file, deduplicating concurrent loads and caching the result.
    *
-   * Возвращает список переводов из файла и кэширует результат.
+   * Возвращает список переводов из файла, дедуплицируя параллельные загрузки и кэшируя результат.
    * @param index file key / ключ файла
    * @returns promise with list of translations or undefined / промис со списком переводов или undefined
    */
   protected async getByFile(index: string): Promise<TranslateDataFileList | undefined> {
-    if (index in this.files) {
+    if (!(index in this.files)) {
+      return undefined
+    }
+
+    if (index in this.promises) {
+      return this.promises[index].promise
+    }
+
+    const id = ++this.id
+    const promise = (async () => {
       try {
         const data = await executeFunction(this.files[index])
 
-        if (data) {
+        if (
+          data
+          && this.promises[index]?.id === id
+        ) {
           this.data[index] = data
         }
 
@@ -153,10 +188,21 @@ export class TranslateFile {
           code: 'error',
           details: error
         })
+
+        return undefined
       }
+    })().finally(() => {
+      if (this.promises[index]?.id === id) {
+        delete this.promises[index]
+      }
+    })
+
+    this.promises[index] = {
+      id,
+      promise
     }
 
-    return undefined
+    return promise
   }
 
   /**

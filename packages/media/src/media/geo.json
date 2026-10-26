@@ -11,6 +11,7 @@
     "firstDay": "Su",
     "zone": "America/New_York",
     "phoneCode": "1",
+    "phoneWithin": "1",
     "phoneMask": [
       "+1-***-***-****"
     ],
@@ -115,6 +116,7 @@
     "firstDay": "Mo",
     "zone": "Europe/Minsk",
     "phoneCode": "375",
+    "phoneWithin": "8",
     "phoneMask": "+375-**-***-**-**"
   },
   {
@@ -271,6 +273,7 @@
   {
     "country": "HU",
     "phoneCode": "36",
+    "phoneWithin": "06",
     "zone": "Europe/Budapest",
     "language": "hu",
     "firstDay": "Mo",
@@ -388,6 +391,7 @@
   {
     "country": "KZ",
     "phoneCode": "7",
+    "phoneWithin": "8",
     "zone": "Asia/Almaty",
     "language": "kk",
     "firstDay": "Mo",
@@ -443,6 +447,7 @@
   {
     "country": "MH",
     "phoneCode": "692",
+    "phoneWithin": "1",
     "zone": "Pacific/Majuro",
     "language": "mh",
     "firstDay": null,
@@ -667,6 +672,7 @@
   {
     "country": "TM",
     "phoneCode": "993",
+    "phoneWithin": "8",
     "zone": "Asia/Ashgabat",
     "language": "tk",
     "firstDay": null,
@@ -789,6 +795,7 @@
     "firstDay": null,
     "zone": "America/Antigua",
     "phoneCode": "1-268",
+    "phoneWithin": "1",
     "phoneMask": [
       "+1-268-***-****"
     ]
@@ -799,6 +806,7 @@
     "firstDay": null,
     "zone": "America/Port_of_Spain",
     "phoneCode": "1-264",
+    "phoneWithin": "1",
     "phoneMask": [
       "+1-264-***-****"
     ]
@@ -850,6 +858,7 @@
     "firstDay": null,
     "zone": "Pacific/Pago_Pago",
     "phoneCode": "1-684",
+    "phoneWithin": "1",
     "phoneMask": [
       "+1-684-***-****"
     ]
@@ -891,6 +900,7 @@
     "firstDay": null,
     "zone": "America/Barbados",
     "phoneCode": "1-246",
+    "phoneWithin": "1",
     "phoneMask": "+1-246-***-****"
   },
   {
@@ -946,6 +956,7 @@
     "firstDay": null,
     "zone": "Atlantic/Bermuda",
     "phoneCode": "1-441",
+    "phoneWithin": "1",
     "phoneMask": "+1-441-***-****"
   },
   {
@@ -981,6 +992,7 @@
     "firstDay": null,
     "zone": "America/Nassau",
     "phoneCode": "1-242",
+    "phoneWithin": "1",
     "phoneMask": "+1-242-***-****"
   },
   {
@@ -1002,6 +1014,7 @@
   {
     "country": "CA",
     "phoneCode": "1",
+    "phoneWithin": "1",
     "zone": "America/Toronto",
     "language": "en",
     "firstDay": "Su",
@@ -1200,6 +1213,7 @@
   {
     "country": "DM",
     "phoneCode": "1-767",
+    "phoneWithin": "1",
     "zone": "America/Port_of_Spain",
     "language": "en",
     "firstDay": null,
@@ -1208,6 +1222,7 @@
   {
     "country": "DO",
     "phoneCode": "1-809",
+    "phoneWithin": "1",
     "zone": "North America",
     "language": "America/Santo_Domingo",
     "firstDay": "Su",
@@ -1296,6 +1311,7 @@
   {
     "country": "GD",
     "phoneCode": "1-473",
+    "phoneWithin": "1",
     "zone": "America/Port_of_Spain",
     "language": "en",
     "firstDay": null,
@@ -1375,6 +1391,7 @@
   {
     "country": "GU",
     "phoneCode": "1-671",
+    "phoneWithin": "1",
     "zone": "Pacific/Guam",
     "language": "en",
     "firstDay": null,
@@ -1468,6 +1485,7 @@
   {
     "country": "JM",
     "phoneCode": "1-876",
+    "phoneWithin": "1",
     "zone": "America/Jamaica",
     "language": "en",
     "firstDay": "Su",
@@ -1508,6 +1526,7 @@
   {
     "country": "KN",
     "phoneCode": "1-869",
+    "phoneWithin": "1",
     "zone": "America/Port_of_Spain",
     "language": "en",
     "firstDay": null,
@@ -1524,6 +1543,7 @@
   {
     "country": "KY",
     "phoneCode": "1-345",
+    "phoneWithin": "1",
     "zone": "America/Cayman",
     "language": "en",
     "firstDay": null,
@@ -1543,6 +1563,7 @@
   {
     "country": "LC",
     "phoneCode": "1-758",
+    "phoneWithin": "1",
     "zone": "America/Port_of_Spain",
     "language": "en",
     "firstDay": null,
@@ -1667,6 +1688,7 @@
   {
     "country": "MP",
     "phoneCode": "1-670",
+    "phoneWithin": "1",
     "zone": "Pacific/Saipan",
     "language": "fil",
     "firstDay": null,
@@ -1691,6 +1713,7 @@
   {
     "country": "MS",
     "phoneCode": "1-664",
+    "phoneWithin": "1",
     "zone": "America/Port_of_Spain",
     "language": "en",
     "firstDay": null,
@@ -1871,6 +1894,7 @@
   {
     "country": "PR",
     "phoneCode": "1-787",
+    "phoneWithin": "1",
     "zone": "San Juan",
     "language": "Dollar",
     "firstDay": "Su"
@@ -2035,6 +2059,7 @@
   {
     "country": "SX",
     "phoneCode": "1-721",
+    "phoneWithin": "1",
     "zone": "America/Curacao",
     "language": "nl",
     "firstDay": null,
@@ -2059,6 +2084,7 @@
   {
     "country": "TC",
     "phoneCode": "1-649",
+    "phoneWithin": "1",
     "zone": "America/Grand_Turk",
     "language": "en",
     "firstDay": null,
@@ -2111,6 +2137,7 @@
   {
     "country": "TT",
     "phoneCode": "1-868",
+    "phoneWithin": "1",
     "zone": "America/Port_of_Spain",
     "language": "en",
     "firstDay": null,
@@ -2157,6 +2184,7 @@
   {
     "country": "VC",
     "phoneCode": "1-784",
+    "phoneWithin": "1",
     "zone": "America/Port_of_Spain",
     "language": "en",
     "firstDay": null,
@@ -2176,11 +2204,13 @@
     "firstDay": null,
     "zone": "America/Port_of_Spain",
     "phoneCode": "1-284",
+    "phoneWithin": "1",
     "phoneMask": "+1-284-***-****"
   },
   {
     "country": "VI",
     "phoneCode": "1-340",
+    "phoneWithin": "1",
     "zone": "America/Port_of_Spain",
     "language": "en",
     "firstDay": null,

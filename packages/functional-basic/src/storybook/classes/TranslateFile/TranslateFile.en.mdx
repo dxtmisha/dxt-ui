@@ -12,17 +12,18 @@ Unlike static utilities, `TranslateFile` is an instantiable class, allowing for 
 
 - **Lazy Loading** — Supports asynchronous loading of translation files only when they are needed for the current locale.
 - **Smart Caching** — Automatically caches the content of loaded files, preventing repetitive file reads or network requests.
+- **Request Deduplication** — Concurrent requests for the same locale share a single in-flight promise tracked by a unique identifier.
 - **Locale Prioritization** — Intelligently selects the best-matching file based on location (Location > Language > Global).
 - **Flexible Context** — Supports custom location and language providers, defaulting to the global `Geo` settings.
 
 ## Initialization
 
-To initialize the object, call the `TranslateFile(data, language, location)` constructor.
+To initialize the object, call the `TranslateFile(data, location, language)` constructor.
 
 **Parameters:**
 - `data?: TranslateDataFile` — initial mapping of locales to file loaders.
-- `language: string | (() => string) = () => Geo.getLanguage()` — current language or a function returning it.
 - `location: string | (() => string) = () => Geo.getLocation()` — current location or a function returning it.
+- `language: string | (() => string) = () => Geo.getLanguage()` — current language or a function returning it.
 
 ```javascript
 import { TranslateFile, Geo } from '@dxtmisha/functional-basic'
@@ -37,8 +38,8 @@ const files = new TranslateFile({
 // 2. Custom context providers
 const customFiles = new TranslateFile(
   {}, 
-  () => 'fr', 
-  () => 'fr-FR'
+  () => 'fr-FR', 
+  () => 'fr'
 )
 ```
 
@@ -54,6 +55,7 @@ const customFiles = new TranslateFile(
 ### Data Management
 
 - `add(data: TranslateDataFile): void` — Adds a mapping of locales to their respective translation file loaders (functions returning a Promise).
+- `reset(): this` — Resets the cache of loaded translation data and active promises.
 
 ## Types
 
@@ -64,6 +66,11 @@ A collection of asynchronous loader functions indexed by locale/region strings:
 
 ### `TranslateDataFileList`
 A simple key-value record of translations: `Record<string, string>`.
+
+### `TranslatePromiseItem`
+An item for tracking active translation loading promises:
+- `id: number` — Unique numeric request identifier.
+- `promise: Promise<TranslateDataFileList | undefined>` — Active loading promise.
 
 ## Examples
 

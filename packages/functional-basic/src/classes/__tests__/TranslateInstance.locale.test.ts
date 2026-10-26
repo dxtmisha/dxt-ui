@@ -47,7 +47,7 @@ describe('TranslateInstance locale isolation', () => {
    */
   function createTranslate(loaders: TranslateDataFile = {}): TranslateInstance {
     return new TranslateInstance('/unused', 'list', new TranslateFile(
-      loaders, () => language, () => location
+      loaders, () => location, () => language
     ))
   }
 
