@@ -194,6 +194,11 @@ describe('escapeExp', () => {
       expect(escapeExp('🚀 🔥 ✨')).toBe('🚀 🔥 ✨')
       expect(escapeExp('Status: 👨‍👩‍👧‍👦 (family)')).toBe('Status: 👨‍👩‍👧‍👦 \\(family\\)')
     })
+
+    it('should preserve zero-width spaces and Unicode control characters', () => {
+      expect(escapeExp('\u200B\u200C\u200D\uFEFF')).toBe('\u200B\u200C\u200D\uFEFF')
+      expect(escapeExp('foo\u200Bbar')).toBe('foo\u200Bbar')
+    })
   })
 
   describe('Whitespace and control characters', () => {
@@ -218,21 +223,28 @@ describe('escapeExp', () => {
     })
 
     it('should safely return empty string for null and undefined', () => {
-      expect(escapeExp(null as unknown as string)).toBe('')
-      expect(escapeExp(undefined as unknown as string)).toBe('')
+      expect(escapeExp(null)).toBe('')
+      expect(escapeExp(undefined)).toBe('')
+      expect(escapeExp()).toBe('')
     })
 
     it('should safely handle number 0 without returning empty string', () => {
-      expect(escapeExp(0 as unknown as string)).toBe('0')
+      expect(escapeExp(0)).toBe('0')
     })
 
     it('should safely handle positive and negative integers', () => {
-      expect(escapeExp(12345 as unknown as string)).toBe('12345')
-      expect(escapeExp(-42 as unknown as string)).toBe('\\-42')
+      expect(escapeExp(12345)).toBe('12345')
+      expect(escapeExp(-42)).toBe('\\-42')
     })
 
     it('should safely handle floating point numbers', () => {
-      expect(escapeExp(3.14159 as unknown as string)).toBe('3\\.14159')
+      expect(escapeExp(3.14159)).toBe('3\\.14159')
+    })
+
+    it('should safely handle special numeric values (NaN, Infinity, -Infinity)', () => {
+      expect(escapeExp(NaN)).toBe('NaN')
+      expect(escapeExp(Infinity)).toBe('Infinity')
+      expect(escapeExp(-Infinity)).toBe('\\-Infinity')
     })
 
     it('should safely handle boolean values', () => {
@@ -339,6 +351,19 @@ describe('escapeExp', () => {
       const digitRegex = new RegExp(`^${escapeExp('\\d+')}$`)
       expect(digitRegex.test('\\d+')).toBe(true)
       expect(digitRegex.test('123')).toBe(false)
+    })
+  })
+
+  describe('Statefulness, isolation, and re-entrancy', () => {
+    it('should be completely re-entrant and deterministic across repeated interleaved calls', () => {
+      for (let i = 0; i < 20; i++) {
+        expect(escapeExp('.')).toBe('\\.')
+        expect(escapeExp('/')).toBe('\\/')
+        expect(escapeExp('\\')).toBe('\\\\')
+        expect(escapeExp('-')).toBe('\\-')
+        expect(escapeExp('^')).toBe('\\^')
+        expect(escapeExp('$')).toBe('\\$')
+      }
     })
   })
 })

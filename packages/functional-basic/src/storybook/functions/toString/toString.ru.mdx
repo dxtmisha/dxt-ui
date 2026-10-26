@@ -4,14 +4,19 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `toString`
 
-Утилита для преобразования значения в строку. Возвращает пустую строку, если значение равно null или undefined.
+Утилита для безопасного преобразования любого значения в строку. Возвращает пустую строку `''`, если переданное значение равно `null` или `undefined`.
+
+В отличие от наивных подходов (например, `value || ''` или шаблонных строк `${value}`):
+- Falsy-значения (`0`, `-0`, `false`, `0n`) корректно сохраняются и превращаются в `'0'`, `'false'`, а не заменяются на пустую строку.
+- Символы (`Symbol(...)`) безопасно преобразуются в `'Symbol(...)'` без выбрасывания исключения `TypeError` (в отличие от конкатенации `value + ''`).
+- `null` и `undefined` безопасно превращаются в `''` без ошибок.
+- Поддерживает пользовательские методы `toString()` и `Symbol.toPrimitive` у объектов.
 
 **Параметры:**
 - `value: T` — Значение для преобразования.
 
 **Возвращает:**
-`string` — Строковое представление значения.
-
+`string` — Строковое представление значения либо пустая строка для `null` / `undefined`.
 
 ## Примеры
 
@@ -20,9 +25,28 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
   code={`
 import { toString } from '@dxtmisha/functional-basic'
 
-toString('Привет')        // 'Привет'
-toString(123)             // '123'
-toString(null)            // ''
-toString(undefined)       // ''
+// Базовые строки и примитивы
+toString('Привет')             // 'Привет'
+toString(123)                  // '123'
+toString(true)                 // 'true'
+
+// Корректная обработка falsy-значений (не заменяются на пустую строку)
+toString(0)                    // '0'
+toString(-0)                   // '0'
+toString(false)                // 'false'
+toString(0n)                   // '0'
+
+// Nullish-значения
+toString(null)                 // ''
+toString(undefined)            // ''
+
+// Символы (не вызывают TypeError)
+toString(Symbol('id'))         // 'Symbol(id)'
+
+// Массивы и объекты
+toString([1, 2, 3])            // '1,2,3'
+toString([])                   // ''
+toString({ a: 1 })             // '[object Object]'
+toString({ toString: () => 'custom' }) // 'custom'
   `}
 />

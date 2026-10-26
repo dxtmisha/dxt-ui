@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isRegExp - Проверка на регулярное выражение'/>
+
+# `isRegExp`
+
+Проверяет, является ли переданное значение объектом регулярного выражения (`RegExp`), включая межконтекстные экземпляры (из `iframe`, Web Workers или отдельных контекстов `node:vm`).
+
+Функция объединяет стандартную проверку `value instanceof RegExp` и проверку тега прототипа `Object.prototype.toString.call(value) === '[object RegExp]'`. Это гарантирует корректную работу в архитектурах с изолированными контекстами (таких как UI плагинов Figma или модульные микрофронтенды), где `instanceof` возвращает `false` из-за различия прототипов глобальных объектов.
+
+**Параметры:**
+- `value: unknown` — Проверяемое значение любого типа.
+
+**Возвращает:**
+`value is RegExp` (`boolean`) — Возвращает `true`, если переданное значение является объектом регулярного выражения, иначе `false`. Выступает в роли защитника типа (type guard) TypeScript, автоматически сужая тип переменной до `RegExp`.
+
+```typescript
+import { isRegExp } from '@dxtmisha/functional-basic'
+
+// Регулярные выражения
+console.log(isRegExp(/^[a-z]+$/i)) // true
+console.log(isRegExp(new RegExp('test'))) // true
+
+// Межконтекстные регулярные выражения (например, из iframe)
+console.log(isRegExp(iframeWindow.RegExp('foo'))) // true
+
+// Не являющиеся регулярными выражениями типы
+console.log(isRegExp('/^[a-z]+$/')) // false (это строка, а не RegExp)
+console.log(isRegExp({ source: 'test', flags: 'i' })) // false
+console.log(isRegExp(null)) // false
+console.log(isRegExp(undefined)) // false
+```

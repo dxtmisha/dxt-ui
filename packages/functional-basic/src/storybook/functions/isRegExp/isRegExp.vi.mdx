@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isRegExp - Kiểm tra dữ liệu biểu thức chính quy'/>
+
+# `isRegExp`
+
+Kiểm tra xem giá trị được cung cấp có phải là đối tượng biểu thức chính quy (`RegExp`) hay không, bao gồm cả các thể hiện đa ngữ cảnh (cross-realm từ `iframe`, Web Workers hoặc ngữ cảnh `node:vm` riêng biệt).
+
+Hàm kết hợp phép kiểm tra `value instanceof RegExp` cùng với thẻ nguyên mẫu `Object.prototype.toString.call(value) === '[object RegExp]'`. Điều này đảm bảo nhận diện chính xác trong các môi trường biệt lập (chẳng hạn như giao diện plugin Figma hoặc micro-frontends), nơi toán tử `instanceof` trả về `false` do nguyên mẫu toàn cục khác nhau.
+
+**Tham số:**
+- `value: unknown` — Giá trị đầu vào thuộc bất kỳ kiểu dữ liệu nào cần kiểm tra.
+
+**Trả về:**
+`value is RegExp` (`boolean`) — Trả về `true` nếu `value` là một biểu thức chính quy, ngược lại là `false`. Đóng vai trò là bộ bảo vệ kiểu (type guard) trong TypeScript, thu hẹp kiểu biến thành `RegExp`.
+
+```typescript
+import { isRegExp } from '@dxtmisha/functional-basic'
+
+// Các thể hiện biểu thức chính quy
+console.log(isRegExp(/^[a-z]+$/i)) // true
+console.log(isRegExp(new RegExp('test'))) // true
+
+// Các thể hiện từ ngữ cảnh khác (ví dụ từ iframe)
+console.log(isRegExp(iframeWindow.RegExp('foo'))) // true
+
+// Các kiểu không phải RegExp
+console.log(isRegExp('/^[a-z]+$/')) // false (chuỗi ký tự, không phải RegExp)
+console.log(isRegExp({ source: 'test', flags: 'i' })) // false
+console.log(isRegExp(null)) // false
+console.log(isRegExp(undefined)) // false
+```

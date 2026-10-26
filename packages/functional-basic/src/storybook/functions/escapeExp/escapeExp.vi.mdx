@@ -4,25 +4,50 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `escapeExp`
 
-Tiện ích thực hiện "thoát" (escape) tất cả các ký tự đặc biệt của biểu thức chính quy trong một chuỗi (`.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\` `/` `-`), để chuỗi đó có thể được sử dụng an toàn bên trong `RegExp`.
+Tiện ích thực hiện "thoát" (escape) tất cả các ký tự đặc biệt của biểu thức chính quy trong một chuỗi (`.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\` `/` `-`), để chuỗi đó có thể được sử dụng an toàn bên trong mẫu `RegExp` hoặc bên trong lớp ký tự (`[...]`).
 
-Hữu ích khi chuỗi đến từ người dùng hoặc nguồn bên ngoài và có thể chứa các ký tự mang ý nghĩa đặc biệt trong biểu thức chính quy.
+Rất hữu ích khi từ khóa tìm kiếm, truy vấn hoặc chuỗi đến từ người dùng hoặc nguồn bên ngoài và có thể chứa các ký tự mang ý nghĩa đặc biệt trong biểu thức chính quy.
+
+### Các tính năng chính:
+- **Thoát toàn diện 16 ký tự đặc biệt**: Escape tất cả các ký tự cú pháp regex tiêu chuẩn (`.` `*` `+` `?` `^` `$` `{}` `()` `|` `[]` `\`) cùng với dấu gạch chéo (`/`) và dấu gạch nối (`-`).
+- **An toàn trong lớp ký tự (`[...]`)**: Escape dấu gạch nối (`-`) thành `\-`, ngăn chặn việc vô tình mở rộng phạm vi ký tự (ví dụ: `[0-9]`) hoặc lỗi cú pháp `SyntaxError: Range out of order in character class` khi nội suy các chuỗi có thứ tự ngược (ví dụ: `[z-a]`).
+- **Ép kiểu an toàn**: Chấp nhận chuỗi, số (bao gồm cả số `0` và số âm), `null`, và `undefined`, xử lý an toàn mà không gây ra ngoại lệ thời gian chạy.
+- **An toàn trước ReDoS**: Hoạt động với độ phức tạp tuyến tính xác định $O(N)$, không bị lỗi backtracking thảm khốc.
+- **Tương thích Isomorphic & SSR**: Hàm thuần túy không có tác dụng phụ, không phụ thuộc vào các đối tượng toàn cục của trình duyệt (`window` hoặc `document`).
 
 **Tham số:**
-- `value: string` — Chuỗi cần escape.
+- `value?: string | number | null` — Chuỗi hoặc số cần escape.
 
 **Trả về:**
-`string` — Chuỗi đã được escape tất cả các ký tự đặc biệt, an toàn để dùng trong `RegExp`.
+`string` — Chuỗi đã được escape tất cả các ký tự đặc biệt, an toàn để dùng trong `RegExp`. Trả về chuỗi rỗng `''` nếu là `null` hoặc `undefined`.
 
 ```typescript
 import { escapeExp } from '@dxtmisha/functional-basic'
 
-// Escape các ký tự đặc biệt
+// 1. Escape các ký tự đặc biệt của RegExp
 console.log(escapeExp('user.name[0]')) // 'user\\.name\\[0\\]'
 console.log(escapeExp('price $10.00')) // 'price \\$10\\.00'
+console.log(escapeExp('C++ & C#'))     // 'C\\+\\+ & C#'
+console.log(escapeExp('path/to/*.log')) // 'path\\/to\\/\\*\\.log'
 
-// Sử dụng an toàn trong RegExp
-const regex = new RegExp(escapeExp('user.name[0]'))
-regex.test('user.name[0]') // true
-regex.test('userXname0')   // false
+// 2. Sử dụng an toàn trong hàm khởi tạo RegExp
+const userInput = '[VIP] (Special) *promo*'
+const regex = new RegExp(`^${escapeExp(userInput)}$`, 'i')
+regex.test('[VIP] (Special) *promo*') // true
+regex.test('VIP Special promo')       // false
+
+// 3. An toàn bên trong lớp ký tự ([...])
+// Escape dấu gạch nối giúp tránh lỗi Range out of order
+const reversedRange = 'z-a'
+const safeBracketRegex = new RegExp(`[${escapeExp(reversedRange)}]`)
+safeBracketRegex.test('z') // true
+safeBracketRegex.test('-') // true
+safeBracketRegex.test('a') // true
+
+// 4. Xử lý an toàn cho số và giá trị nullish
+escapeExp(0)         // '0'
+escapeExp(12345)     // '12345'
+escapeExp(-42)       // '\\-42'
+escapeExp(null)      // ''
+escapeExp(undefined) // ''
 ```

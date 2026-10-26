@@ -4,27 +4,69 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getSeparatingSearchExp`
 
-A utility that builds a case-insensitive global `RegExp` for searching strings containing **any** of the words from the search string (separated by spaces), or clones a provided `RegExp` preserving its pattern and flags.
+A utility that builds a case-insensitive global `RegExp` for searching strings containing **any** of the words from the search query (separated by whitespace), or clones a provided `RegExp` preserving its pattern and flags.
 
-Unique words are split by whitespace, sorted by length in descending order, escaped, and joined with the OR operator `|` inside a capturing group `(...)`. This is useful for finding or highlighting matches for any of the entered words.
+Unique words are split by whitespace, sorted by length in descending order, escaped against regex metacharacters, and joined with the alternation operator `|` inside a capturing group `(...)`. This is essential for search filtering, tokenization, and highlight matching.
+
+### Key Features:
+- **Multi-Word Disjunction Search (OR Logic)**: Splits queries by any whitespace characters (`/\s+/`) and joins words with `|` inside a capturing group `(word1|word2)`.
+- **Prefix Shadowing Protection**: Automatically sorts words by length descending so longer compound words take precedence over prefixes in the regular expression (`caterpillar` matches completely rather than being truncated to `cat`).
+- **Case-Insensitive Deduplication**: Removes duplicate words case-insensitively before generating alternation branches, keeping the regex compact (e.g., `apple Apple APPLE` becomes a single `(apple)` token with the `ig` flags).
+- **Comprehensive Metacharacter Escaping**: Automatically escapes all regex metacharacters via `escapeExp` (`.`, `*`, `+`, `?`, `$`, `[`, `]`, `(`, `)`, `|`, etc.), preventing syntax errors and ReDoS vulnerabilities from untrusted user input.
+- **Safe RegExp Cloning**: When an existing `RegExp` instance is passed, it creates a fresh clone with `lastIndex = 0`, eliminating cross-call state contamination and race conditions.
+- **Deterministic Safe Fallback `/(?!)/`**: For empty queries, whitespace-only strings, exceeded length limits, or empty regular expressions (`/(?:)/` or `new RegExp('')`), it returns the negative lookahead pattern `/(?!)/`, which is guaranteed never to match anything and prevents infinite loops.
+- **Isomorphic & SSR Safe**: Pure function with zero dependencies on browser globals (`window` or `document`).
 
 **Parameters:**
 - `search: string | RegExp` — A search string consisting of one or more space-separated words, or a `RegExp` object.
 - `limit?: number` — (Optional) The maximum allowed length of the search string (ignored if a `RegExp` is passed). Defaults to `128`.
 
 **Returns:**
-`RegExp` — A regular expression with flags `ig` (case-insensitive, global) for string queries, or a cloned `RegExp` if a `RegExp` was passed. If the search string is empty, `limit <= 0`, exceeds `limit`, or an empty `RegExp` (`/(?:)/`) is passed, it returns `/(?!)/` (a regex that never matches anything).
+`RegExp` — A regular expression with flags `ig` (case-insensitive, global) for string queries, or a cloned `RegExp` if a `RegExp` was passed. If the search string is empty, `limit <= 0`, exceeds `limit`, or an empty `RegExp` (`/(?:)/` or `new RegExp('')`) is passed, it returns `/(?!)/` (a regex that never matches anything).
 
 ```typescript
 import { getSeparatingSearchExp } from '@dxtmisha/functional-basic'
 
-const regex = getSeparatingSearchExp('foo bar')
+// 1. Standard multi-word search (OR logic)
+const searchExpression = getSeparatingSearchExp('apple banana')
 
-'foo bar baz'.match(regex) // ['foo', 'bar']
-'bar'.match(regex)         // ['bar']
-'something'.match(regex)   // null
+console.log('an apple and banana'.match(searchExpression)) 
+// ['apple', 'banana']
 
-// Special characters are escaped automatically
-const regex2 = getSeparatingSearchExp('$10 .')
-'$10 .'.match(regex2) // ['$10', '.']
+// 2. Prefix shadowing prevention (sorted by descending length)
+// 'caterpillar' is evaluated before 'cat'
+const prefixExpression = getSeparatingSearchExp('cat caterpillar')
+const matchedWord = 'caterpillar'.match(prefixExpression)?.[0]
+console.log(matchedWord) // 'caterpillar'
+
+// 3. Automatic metacharacter escaping
+const symbolsExpression = getSeparatingSearchExp('C++ $10 .')
+console.log(symbolsExpression.test('Code in C++')) // true
+console.log(symbolsExpression.test('Total: $10'))  // true
+
+// 4. Cloning existing RegExp with lastIndex isolation
+const originalRegExp = /match/g
+originalRegExp.lastIndex = 3
+
+const clonedExpression = getSeparatingSearchExp(originalRegExp)
+console.log(clonedExpression.lastIndex) // 0
+console.log(originalRegExp.lastIndex)   // 3 (original remains unchanged)
+
+// 5. Safe handling of empty strings and limits
+getSeparatingSearchExp('').toString()      // '/(?!)/' (never matches)
+getSeparatingSearchExp('   ').toString()   // '/(?!)/'
+getSeparatingSearchExp('text', 0)          // '/(?!)/'
+
+// 6. Text highlighting and tokenization
+const highlightExpression = getSeparatingSearchExp('vue vite')
+const sourceText = 'Awesome vue and vite setup'
+
+const highlightedHtml = sourceText.replace(
+  highlightExpression,
+  matchedText => `<mark>${matchedText}</mark>`
+)
+// 'Awesome <mark>vue</mark> and <mark>vite</mark> setup'
+
+const tokens = sourceText.split(highlightExpression)
+// ['Awesome ', 'vue', ' and ', 'vite', ' setup']
 ```

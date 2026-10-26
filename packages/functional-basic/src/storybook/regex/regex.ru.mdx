@@ -11,13 +11,16 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Безопасное использование строк внутри регулярных выражений без риска синтаксических ошибок.
 
 ```javascript
-import { escapeExp, getExp } from '@dxtmisha/functional-basic'
+import { escapeExp, getExp, isRegExp } from '@dxtmisha/functional-basic'
 
 // 1. Экранирование спецсимволов (.*+?^${}()|[\]\/-)
 const safeText = escapeExp('price block ($)') // 'price block \(\$\)'
 
 // 2. Быстрое создание объекта RegExp с флагами
 const regex = getExp('search-term', 'ig') 
+
+// 3. Проверка на регулярное выражение (включая cross-realm)
+const isPattern = isRegExp(regex) // true
 ```
 
 ## Поисковые паттерны

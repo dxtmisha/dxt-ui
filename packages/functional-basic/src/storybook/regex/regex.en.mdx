@@ -11,13 +11,16 @@ A set of utilities for simplifying work with regular expressions. Includes metho
 Safely use strings inside regular expressions without the risk of syntax errors.
 
 ```javascript
-import { escapeExp, getExp } from '@dxtmisha/functional-basic'
+import { escapeExp, getExp, isRegExp } from '@dxtmisha/functional-basic'
 
 // 1. Escaping special characters (.*+?^${}()|[\]\/-)
 const safeText = escapeExp('price block ($)') // 'price block \(\$\)'
 
 // 2. Quick RegExp object creation with flags
 const regex = getExp('search-term', 'ig') 
+
+// 3. Regular expression verification (including cross-realm)
+const isPattern = isRegExp(regex) // true
 ```
 
 ## Search Patterns

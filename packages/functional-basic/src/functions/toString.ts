@@ -5,7 +5,6 @@
  * @param value value for conversion / значение для преобразования
  * @returns string representation of the value / строковое представление значения
  */
-
 export function toString<T>(value: T): string {
   return String(value ?? '')
 }

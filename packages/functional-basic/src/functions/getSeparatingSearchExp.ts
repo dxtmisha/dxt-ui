@@ -1,4 +1,5 @@
 import { escapeExp } from './escapeExp'
+import { isRegExp } from './isRegExp'
 import { toString } from './toString'
 
 /**
@@ -9,7 +10,7 @@ const REGEXP_WHITESPACE = /\s+/
 
 /**
  * Fallback regular expression that never matches any string /
- * Регулярное выражение-заглушка, которое никогда ничего не совпадает
+ * Регулярное выражение-заглушка, которое никогда ни с чем не совпадает
  */
 const REGEXP_NEVER = /(?!)/
 
@@ -27,8 +28,11 @@ export function getSeparatingSearchExp(
   search: string | RegExp,
   limit: number = 128
 ): RegExp {
-  if (search instanceof RegExp) {
-    if (search.source === '(?:)' || search.source === '') {
+  if (isRegExp(search)) {
+    if (
+      search.source === '(?:)'
+      || search.source === ''
+    ) {
       return REGEXP_NEVER
     }
 
@@ -45,8 +49,10 @@ export function getSeparatingSearchExp(
     return REGEXP_NEVER
   }
 
-  const words = Array.from(new Set(normalizedSearch.toLowerCase().split(REGEXP_WHITESPACE)))
-    .sort((a, b) => b.length - a.length)
+  const words = Array.from(
+    new Set(normalizedSearch.toLowerCase().split(REGEXP_WHITESPACE))
+  )
+    .sort((firstWord, secondWord) => secondWord.length - firstWord.length)
     .map(escapeExp)
 
   if (words.length === 0) {

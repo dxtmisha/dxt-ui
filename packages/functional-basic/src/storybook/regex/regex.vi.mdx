@@ -11,13 +11,16 @@ Bộ tiện ích để đơn giản hóa công việc với biểu thức chính
 Sử dụng chuỗi bên trong biểu thức chính quy một cách an toàn mà không có nguy cơ lỗi cú pháp.
 
 ```javascript
-import { escapeExp, getExp } from '@dxtmisha/functional-basic'
+import { escapeExp, getExp, isRegExp } from '@dxtmisha/functional-basic'
 
 // 1. Thoát các ký tự đặc biệt (.*+?^${}()|[\]\/-)
 const safeText = escapeExp('price block ($)') // 'price block \(\$\)'
 
 // 2. Tạo đối tượng RegExp nhanh chóng với các cờ
 const regex = getExp('search-term', 'ig') 
+
+// 3. Kiểm tra biểu thức chính quy (bao gồm cả cross-realm)
+const isPattern = isRegExp(regex) // true
 ```
 
 ## Mẫu Tìm kiếm

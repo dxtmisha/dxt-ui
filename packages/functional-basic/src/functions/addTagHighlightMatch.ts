@@ -36,12 +36,17 @@ const getTagEnd = (): string => '</span>'
  * @param search search string or RegExp / строка поиска или регулярное выражение
  * @returns true if search is valid / true, если поиск валиден
  */
-const isSearchValid = (
-  search?: string | RegExp
-): search is string | RegExp =>
-  search instanceof RegExp
-    ? search.source.length > 0
-    : isString(search) && search.trim().length > 0
+function isSearchValid(search?: unknown): search is string | RegExp {
+  if (search instanceof RegExp) {
+    return search.source.length > 0
+  }
+
+  if (isString(search)) {
+    return search.trim().length > 0
+  }
+
+  return false
+}
 
 /**
  * Adds a tag to highlight the match in the string.

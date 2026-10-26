@@ -4,27 +4,69 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getSeparatingSearchExp`
 
-Tiện ích tạo một `RegExp` toàn cục, không phân biệt chữ hoa/thường để tìm kiếm các chuỗi chứa **bất kỳ** từ nào từ chuỗi tìm kiếm (phân tách bằng dấu cách), hoặc sao chép một `RegExp` được truyền vào mà vẫn giữ nguyên mẫu và cờ của nó.
+Tiện ích tạo một `RegExp` toàn cục, không phân biệt chữ hoa/thường để tìm kiếm các chuỗi chứa **bất kỳ** từ nào từ chuỗi truy vấn (phân tách bởi khoảng trắng), hoặc sao chép một `RegExp` được truyền vào mà vẫn giữ nguyên mẫu và các cờ của nó.
 
-Các từ duy nhất được tách bởi khoảng trắng, sắp xếp theo độ dài giảm dần, escape và nối với nhau bằng toán tử OR `|` bên trong một nhóm bắt giữ `(...)`. Điều này rất hữu ích khi bạn muốn tìm hoặc làm nổi bật (highlight) các kết quả khớp với bất kỳ từ nào đã nhập.
+Các từ duy nhất được phân tách bằng khoảng trắng, sắp xếp theo độ dài giảm dần, tự động escape các ký tự đặc biệt của regex, và nối với nhau bằng toán tử `|` bên trong một nhóm bắt giữ `(...)`. Tiện ích này cần thiết cho việc lọc tìm kiếm, tokenization và làm nổi bật kết quả khớp (highlighting).
+
+### Các tính năng chính:
+- **Tìm kiếm nhiều từ theo phép tuyển (OR-logic)**: Tách chuỗi theo bất kỳ ký tự khoảng trắng nào (`/\s+/`) và kết hợp các từ bằng `|` bên trong nhóm bắt giữ `(từ1|từ2)`.
+- **Ngăn ngừa hiện tượng Prefix Shadowing**: Tự động sắp xếp các từ theo thứ tự độ dài giảm dần, đảm bảo từ ghép dài hơn luôn được ưu tiên so với tiền tố ngắn hơn (`caterpillar` khớp trọn vẹn thay vì bị cắt ngắn thành `cat`).
+- **Khử trùng lặp không phân biệt hoa/thường**: Loại bỏ các từ trùng lặp bất kể chữ hoa hay thường trước khi tạo nhánh biểu thức chính quy (ví dụ: `apple Apple APPLE` chỉ tạo một token `(apple)` với cờ `ig`).
+- **Escape toàn diện các ký tự đặc biệt**: Tự động escape tất cả các siêu ký tự regex qua `escapeExp` (`.`, `*`, `+`, `?`, `$`, `[`, `]`, `(`, `)`, `|`, v.v.), bảo vệ ứng dụng khỏi lỗi cú pháp và lỗ hổng ReDoS khi người dùng nhập dữ liệu không an toàn.
+- **Sao chép RegExp an toàn**: Khi truyền vào một đối tượng `RegExp` có sẵn, hàm tạo một bản sao độc lập với `lastIndex = 0`, ngăn chặn sai lệch trạng thái và race condition giữa các lần gọi liên tiếp.
+- **Fallback an toàn `/(?!)/`**: Khi truy vấn tìm kiếm trống, chỉ chứa khoảng trắng, vượt quá độ dài giới hạn hoặc truyền `RegExp` rỗng (`/(?:)/` hoặc `new RegExp('')`), hàm trả về mẫu phủ định `/(?!)/` đảm bảo không bao giờ khớp với bất kỳ thứ gì và ngăn chặn vòng lặp vô hạn.
+- **Tương thích SSR & Isomorphic**: Hàm thuần túy (pure function) không có tác dụng phụ, không phụ thuộc vào môi trường trình duyệt (`window` hay `document`).
 
 **Tham số:**
 - `search: string | RegExp` — Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi dấu cách, hoặc đối tượng `RegExp`.
 - `limit?: number` — (Tùy chọn) Độ dài tối đa cho phép của chuỗi tìm kiếm (bị bỏ qua nếu một `RegExp` được truyền vào). Mặc định là `128`.
 
 **Trả về:**
-`RegExp` — Biểu thức chính quy với cờ `ig` (không phân biệt chữ hoa/thường, toàn cục) đối với truy vấn chuỗi, hoặc một bản sao `RegExp` nếu truyền vào `RegExp`. Nếu chuỗi tìm kiếm trống, `limit <= 0`, vượt quá `limit` hoặc truyền vào `RegExp` rỗng (`/(?:)/`), hàm sẽ trả về `/(?!)/` (một biểu thức chính quy không khớp với bất kỳ thứ gì).
+`RegExp` — Biểu thức chính quy với cờ `ig` (không phân biệt chữ hoa/thường, toàn cục) đối với truy vấn chuỗi, hoặc một bản sao `RegExp` nếu truyền vào `RegExp`. Nếu chuỗi tìm kiếm trống, `limit <= 0`, vượt quá `limit` hoặc truyền vào `RegExp` rỗng (`/(?:)/` hoặc `new RegExp('')`), hàm sẽ trả về `/(?!)/` (một biểu thức chính quy không bao giờ khớp với bất kỳ thứ gì).
 
 ```typescript
 import { getSeparatingSearchExp } from '@dxtmisha/functional-basic'
 
-const regex = getSeparatingSearchExp('foo bar')
+// 1. Tìm kiếm nhiều từ tiêu chuẩn (OR logic)
+const searchExpression = getSeparatingSearchExp('apple banana')
 
-'foo bar baz'.match(regex) // ['foo', 'bar']
-'bar'.match(regex)         // ['bar']
-'something'.match(regex)   // null
+console.log('an apple and banana'.match(searchExpression)) 
+// ['apple', 'banana']
 
-// Các ký tự đặc biệt được escape tự động
-const regex2 = getSeparatingSearchExp('$10 .')
-'$10 .'.match(regex2) // ['$10', '.']
+// 2. Ngăn ngừa che khuất tiền tố (sắp xếp giảm dần theo độ dài)
+// 'caterpillar' được kiểm tra trước 'cat'
+const prefixExpression = getSeparatingSearchExp('cat caterpillar')
+const matchedWord = 'caterpillar'.match(prefixExpression)?.[0]
+console.log(matchedWord) // 'caterpillar'
+
+// 3. Tự động escape các ký tự đặc biệt
+const symbolsExpression = getSeparatingSearchExp('C++ $10 .')
+console.log(symbolsExpression.test('Code in C++')) // true
+console.log(symbolsExpression.test('Total: $10'))  // true
+
+// 4. Sao chép RegExp có sẵn với cô lập lastIndex
+const originalRegExp = /match/g
+originalRegExp.lastIndex = 3
+
+const clonedExpression = getSeparatingSearchExp(originalRegExp)
+console.log(clonedExpression.lastIndex) // 0
+console.log(originalRegExp.lastIndex)   // 3 (đối tượng gốc không bị thay đổi)
+
+// 5. Xử lý an toàn chuỗi trống và giới hạn độ dài
+getSeparatingSearchExp('').toString()      // '/(?!)/' (không bao giờ khớp)
+getSeparatingSearchExp('   ').toString()   // '/(?!)/'
+getSeparatingSearchExp('text', 0)          // '/(?!)/'
+
+// 6. Highlight văn bản và tách token
+const highlightExpression = getSeparatingSearchExp('vue vite')
+const sourceText = 'Awesome vue and vite setup'
+
+const highlightedHtml = sourceText.replace(
+  highlightExpression,
+  matchedText => `<mark>${matchedText}</mark>`
+)
+// 'Awesome <mark>vue</mark> and <mark>vite</mark> setup'
+
+const tokens = sourceText.split(highlightExpression)
+// ['Awesome ', 'vue', ' and ', 'vite', ' setup']
 ```

@@ -4,20 +4,39 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `encodeAttribute`
 
-Encodes special characters in a string (`&`, `<`, `>`, `"`, `'`) into their corresponding HTML entities (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`). This is essential for safely inserting user or dynamic text into HTML attributes to prevent XSS attacks.
+Encodes special characters in a string (`&`, `<`, `>`, `"`, `'`) into their corresponding HTML entities (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`). This is essential for safely inserting dynamic values or user input into HTML attributes to prevent Cross-Site Scripting (XSS) and attribute breakout injection attacks.
+
+> **Tip:** If you only need to escape basic HTML characters (`<`, `>`, `&`) without altering quotes (for example, inside HTML `<title>` tags or element body text), use `encodeLiteAttribute` instead.
+
+### Key Features:
+- **Comprehensive Attribute Safety**: Encodes both double (`"`) and single (`'`) quotes, ampersand (`&`), and brackets (`<`, `>`).
+- **High Performance (Fast-Path)**: Employs an instant pre-check before string replacement, returning the input immediately if no special characters are found.
+- **Type Coercion & Null Safety**: Safely handles strings, numbers (including `0` and negative values), `null`, and `undefined` without throwing runtime exceptions.
+- **Whitespace Preservation**: Preserves spaces, tabs, and newlines exactly as entered without unsolicited trimming.
 
 **Parameters:**
-- `text: string` — The string to encode.
+- `text?: string | number | null` — The value to encode (string, number, or nullish value).
 
 **Returns:**
-`string` — The encoded string.
+`string` — The encoded string, or an empty string `''` if `null` or `undefined` is provided.
 
 ```typescript
 import { encodeAttribute } from '@dxtmisha/functional-basic'
 
-const unsafeInput = ' <script>alert("XSS")</script> '
+// 1. Preventing attribute breakout and XSS injections
+const unsafeInput = '<script>alert("XSS")</script>'
 const safeAttr = encodeAttribute(unsafeInput)
-
 console.log(safeAttr)
 // '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+
+// Safely interpolating into HTML attributes
+const userInput = '"><img src=x onerror=alert(1)>'
+const html = `<input type="text" name="query" value="${encodeAttribute(userInput)}">`
+// '<input type="text" name="query" value="&quot;&gt;&lt;img src=x onerror=alert(1)&gt;">'
+
+// 2. Safe coercion of numbers and nullish values
+encodeAttribute(0)         // '0'
+encodeAttribute(123)       // '123'
+encodeAttribute(null)      // ''
+encodeAttribute(undefined) // ''
 ```

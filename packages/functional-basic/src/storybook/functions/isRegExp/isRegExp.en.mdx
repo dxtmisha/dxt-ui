@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isRegExp - Check if value is a regular expression'/>
+
+# `isRegExp`
+
+Checks whether the provided value is a regular expression object (`RegExp`), including cross-realm instances (from `iframe`, Web Workers, or separate `node:vm` contexts).
+
+The function combines `value instanceof RegExp` with prototype tag verification `Object.prototype.toString.call(value) === '[object RegExp]'`. This guarantees accurate type narrowing across isolated execution environments (such as Figma plugin UIs or modular micro-frontends), where `instanceof` evaluates to `false` due to different global prototypes.
+
+**Parameters:**
+- `value: unknown` — The input value of any type to check.
+
+**Returns:**
+`value is RegExp` (`boolean`) — Returns `true` if `value` is a regular expression, otherwise `false`. Acts as a TypeScript type guard narrowing `value` to `RegExp`.
+
+```typescript
+import { isRegExp } from '@dxtmisha/functional-basic'
+
+// Regular expression instances
+console.log(isRegExp(/^[a-z]+$/i)) // true
+console.log(isRegExp(new RegExp('test'))) // true
+
+// Cross-realm instances (e.g. from an iframe)
+console.log(isRegExp(iframeWindow.RegExp('foo'))) // true
+
+// Non-RegExp types
+console.log(isRegExp('/^[a-z]+$/')) // false (string literal, not RegExp)
+console.log(isRegExp({ source: 'test', flags: 'i' })) // false
+console.log(isRegExp(null)) // false
+console.log(isRegExp(undefined)) // false
+```
