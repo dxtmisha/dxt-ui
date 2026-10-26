@@ -217,6 +217,10 @@ export type StorybookComponentsDescriptionStory = {
    * Название свойства компонента, которому принадлежит описание
    */
   propsName?: string | string[]
+  /** Play function or test for the story / Play-функция или тест для истории */
+  play?: string
+  /** Test code for the story (alias for play) / Код теста для истории (синоним для play) */
+  test?: string
 }
 
 /** Represents the description of a component for Storybook / Представляет описание компонента для Storybook */
@@ -230,6 +234,10 @@ export type StorybookComponentsDescriptionItem = {
 
   /** Example of rendering the component / Пример рендеринга компонента */
   render?: string
+  /** Play function or test for the main story / Play-функция или тест для главной истории */
+  play?: string
+  /** Test code for the main story (alias for play) / Код теста для главной истории (синоним для play) */
+  test?: string
   /** Additional information for import / Дополнительная информация для импорта */
   import?: string[]
   /** Additional examples of component usage / Дополнительные примеры использования компонента */

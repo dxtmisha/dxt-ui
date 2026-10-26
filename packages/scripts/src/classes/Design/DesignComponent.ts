@@ -737,9 +737,64 @@ export class DesignComponent extends DesignCommand {
     const fullName = this.getStructure().getFullComponentName()
 
     return code
-      .replace(/DesignComponent/g, fullName).trim()
-      .replace(/design-component/g, `${toCamelCase(design)}-${toCamelCase(name)}`).trim()
+      .replace(/DesignComponent/g, fullName)
+      .replace(/design-component/g, `${toCamelCase(design)}-${toCamelCase(name)}`)
       .replace(/<(\/?)Design/g, `<$1${design}`)
+  }
+
+  /**
+   * Converts the play or test code into Storybook play function lines.
+   *
+   * Преобразует код play или test в строки play-функции Storybook.
+   * @param play play or test code string / строка кода play или test
+   * @param indent initial line indentation / начальный отступ строки
+   * @returns array of formatted lines / массив отформатированных строк
+   */
+  private toPlayStories(play: string, indent = ''): string[] {
+    const componentPlay = this.toComponentName(play)
+    const rawLines = componentPlay.split(/\r?\n/)
+
+    while (rawLines.length > 0 && rawLines[0].trim().length === 0) {
+      rawLines.shift()
+    }
+    while (rawLines.length > 0 && rawLines[rawLines.length - 1].trim().length === 0) {
+      rawLines.pop()
+    }
+
+    const minIndent = rawLines
+      .filter(line => line.trim().length > 0)
+      .reduce((min, line) => {
+        const match = line.match(/^(\s*)/)
+        const len = match ? match[1].length : 0
+        return Math.min(min, len)
+      }, Infinity)
+
+    const normalizedLines = rawLines.map(line =>
+      line.trim().length > 0 ? line.slice(minIndent) : ''
+    )
+
+    const fullPlay = normalizedLines.join('\n')
+
+    if (fullPlay.startsWith('async') || fullPlay.startsWith('(') || fullPlay.startsWith('function')) {
+      return normalizedLines.map((line, index) =>
+        index === 0 ? `${indent}play: ${line}` : `${indent}${line}`
+      )
+    }
+
+    const params: string[] = []
+    if (/\bcanvasElement\b/.test(fullPlay)) {
+      params.push('canvasElement')
+    }
+    if (/\bstep\b/.test(fullPlay)) {
+      params.push('step')
+    }
+    const paramStr = params.length > 0 ? `{ ${params.join(', ')} }` : 'context'
+
+    return [
+      `${indent}play: async (${paramStr}) => {`,
+      ...normalizedLines.map(line => (line.length > 0 ? `${indent}  ${line}` : '')),
+      `${indent}}`
+    ]
   }
 
   /**
@@ -756,19 +811,23 @@ export class DesignComponent extends DesignCommand {
   ): this {
     if (description.render) {
       const name = this.getStructure().getFullComponentName()
+      const play = description.play ?? description.test
 
-      sample.replaceMark(
-        'story-main',
-        [
-          'render: (args: any) => ({',
-          `  components: { ${name} },`,
-          '  setup: () => ({ args }),',
-          '  template: `',
-          `    ${this.toComponentName(description.render.trim())}`,
-          '  `',
-          '})'
-        ]
-      )
+      const renders = [
+        'render: (args: any) => ({',
+        `  components: { ${name} },`,
+        '  setup: () => ({ args }),',
+        '  template: `',
+        `    ${this.toComponentName(description.render.trim())}`,
+        '  `',
+        `})${play ? ',' : ''}`
+      ]
+
+      if (play) {
+        renders.push(...this.toPlayStories(play))
+      }
+
+      sample.replaceMark('story-main', renders)
     }
 
     return this
@@ -796,6 +855,47 @@ export class DesignComponent extends DesignCommand {
 
     if (description.import) {
       imports.push(...description.import)
+    }
+
+    const playList: string[] = []
+    if (description.play) {
+      playList.push(description.play)
+    }
+    if (description.test) {
+      playList.push(description.test)
+    }
+    if (description.stories) {
+      description.stories.forEach((story) => {
+        if (story.play) {
+          playList.push(story.play)
+        }
+        if (story.test) {
+          playList.push(story.test)
+        }
+      })
+    }
+
+    if (playList.length > 0) {
+      const hasTestImport = description.import?.some(item => item.includes('storybook/test'))
+      if (!hasTestImport) {
+        const allPlayCode = playList.join('\n')
+        const availableSymbols = [
+          'expect',
+          'within',
+          'userEvent',
+          'waitFor',
+          'fireEvent',
+          'fn',
+          'spyOn'
+        ]
+        const usedSymbols = availableSymbols.filter(symbol =>
+          new RegExp(`\\b${symbol}\\b`).test(allPlayCode)
+        )
+
+        if (usedSymbols.length > 0) {
+          imports.push(`import { ${usedSymbols.join(', ')} } from 'storybook/test'`)
+        }
+      }
     }
 
     sample.replaceMark('story-import', imports)
@@ -834,6 +934,7 @@ export class DesignComponent extends DesignCommand {
 
         const components = story.components && forEach(story.components, component => `${design}${component}`)
         const template = this.toComponentName(story.template)
+        const play = story.play ?? story.test
 
         stories.push(`export const ${story.id}: Story = {`)
 
@@ -853,7 +954,12 @@ export class DesignComponent extends DesignCommand {
         stories.push(`    template: \``)
         stories.push(`        ${template}`)
         stories.push(`    \``)
-        stories.push(`  })`)
+        stories.push(`  })${play ? ',' : ''}`)
+
+        if (play) {
+          stories.push(...this.toPlayStories(play, '  '))
+        }
+
         stories.push(`}`)
       })
 

@@ -1,7 +1,13 @@
 // export:none
 
 import { isArray, isObject, toCamelCaseFirst } from '@dxtmisha/functional-basic'
-import type { WikiDataItem, WikiStorybook, WikiStorybookProp } from '@dxtmisha/wiki'
+import type {
+  StorybookProp,
+  StorybookSlot,
+  WikiDataItem,
+  WikiStorybook,
+  WikiStorybookProp
+} from '@dxtmisha/wiki'
 import ts from 'typescript'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
@@ -327,9 +333,9 @@ export class DesignWikiStormItem {
 
           this.dataComponent = {
             component,
-            props: isArray(props) ? props : [],
-            slots: isArray(slots) ? slots : [],
-            events: isArray(events) ? events : [],
+            props: isArray<StorybookProp>(props) ? props : [],
+            slots: isArray<StorybookSlot>(slots) ? slots : [],
+            events: isArray<StorybookSlot>(events) ? events : [],
             defaults,
             wikiDesign
           }

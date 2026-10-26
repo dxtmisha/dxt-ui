@@ -74,12 +74,30 @@
       "types": "./dist/functional.d.ts"
     },
     "./media": {
-      "import": "./dist/media.js",
-      "types": "./dist/media.d.ts"
+      "types": "./dist/library/media.d.ts",
+      "default": "./dist/library/media.js"
     },
-    "./style.css": "./dist/style.css",
+    "./style.css": "./dist/styles/Ui/main.css",
     "./scss": "./src/style.scss",
-    "./types/*": "./dist/*"
+    "./types/*": "./dist/*",
+    "./UiImage": {
+      "types": "./dist/library/UiImage.d.ts",
+      "default": "./dist/library/UiImage.js"
+    },
+    ".": {
+      "types": "./dist/library/types.d.ts",
+      "default": "./dist/library/types.js"
+    },
+    "./plugin": {
+      "types": "./dist/library/plugin.d.ts",
+      "default": "./dist/library/plugin.js"
+    },
+    "./style/ui.scss": "./src/styles/Ui/main.scss",
+    "./ui-properties": {
+      "sass": "./ui-properties.scss",
+      "default": "./ui-properties.scss"
+    },
+    "./types.d.ts": "./dist/library/types.d.ts"
   },
   "workspaces": [
     "packages/*"
@@ -135,6 +153,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "@vitejs/plugin-vue": "^6.0.10",
+    "@vitest/coverage-v8": "^5.0.5",
     "@vue/language-core": "^3.3.13",
     "@vue/tsconfig": "^0.9.1",
     "ai": "^7.0.143",
@@ -166,5 +185,15 @@
     "vue-eslint-parser": "^10.4.1",
     "vue-tsc": "^3.3.13",
     "zod": "^4.6.7"
-  }
+  },
+  "web-types": "./dist/web-types.json",
+  "main": "./dist/library/types.js",
+  "module": "./dist/library/types.js",
+  "types": "./dist/library/types.d.ts",
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "**/*.css",
+    "**/*.scss"
+  ]
 }

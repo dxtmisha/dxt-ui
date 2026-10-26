@@ -23,15 +23,21 @@ import {ImageWikiStorybook} from './wiki'
 <StorybookDescriptions componentName={'Image'} type={'value'}/>
 <StorybookDescriptions componentName={'Image'} type={'flag'}/>
 <Canvas of={Image.ImageType}/>
+<Canvas of={Image.ImageIcons}/>
+<Canvas of={Image.ImageFlagsAndColors}/>
+<Canvas of={Image.ImageBinaryAndFile}/>
 
 <StorybookDescriptions componentName={'Image'} type={'img-tag'}/>
 <Canvas of={Image.ImageTagImg}/>
+<Canvas of={Image.ImagePictureAndLoading}/>
 
 <StorybookDescriptions componentName={'Image'} type={'size'}/>
 <Canvas of={Image.ImageSize}/>
+<Canvas of={Image.ImageBackground}/>
 
 <StorybookDescriptions componentName={'Image'} type={'adaptive'}/>
 <Canvas of={Image.ImageAdaptive}/>
+<Canvas of={Image.ImageStates}/>
     
 [//]: # (:documentation-body [!] System label / Системная метка)
 
@@ -39,6 +45,7 @@ import {ImageWikiStorybook} from './wiki'
 ## Events
 
 <StorybookDescriptions componentName={'Image'} type={'event.load'}/>
+<Canvas of={Image.ImageLoadAndExpose}/>
     
 [//]: # (:documentation-events [!] System label / Системная метка)
 

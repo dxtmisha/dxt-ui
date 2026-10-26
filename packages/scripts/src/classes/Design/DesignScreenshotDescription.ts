@@ -251,18 +251,17 @@ export class DesignScreenshotDescription {
         const cleaned = response.replace(/```json|```/g, '').trim()
         const parsed = JSON.parse(cleaned)
 
-        if (isArray(parsed) && parsed.length > 0) {
-          const first = parsed[0]
-          if (isObject(first) && isString(first.description) && isFilled(first.description)) {
+        const items = isArray<Record<string, unknown>>(parsed)
+          ? parsed
+          : (isObject<Record<string, unknown>>(parsed) ? [parsed] : [])
+
+        if (items.length > 0) {
+          const first = items[0]
+          if (isString(first.description) && isFilled(first.description)) {
             return {
               name: fileName,
               description: first.description.trim()
             }
-          }
-        } else if (isObject(parsed) && isString(parsed.description) && isFilled(parsed.description)) {
-          return {
-            name: fileName,
-            description: parsed.description.trim()
           }
         }
       } catch (error) {
