@@ -152,9 +152,9 @@ MediaFiles.isLink('archive.zip')                   // false
 
 // Получение метаданных формата по расширению
 const item = MediaFiles.get('xlsx')
-console.log(item?.name)       // 'Excel'
-console.log(item?.category)   // 'table'
-console.log(item?.extensions) // ['xls', 'xlsx']
+console.log(item.name)       // 'Excel'
+console.log(item.category)   // 'table'
+console.log(item.extensions) // ['xls', 'xlsx']
 
 // Получение общей нейтральной иконки категории (например, для неизвестных изображений)
 const categoryNeutral = MediaFiles.getByCategory(MediaFileCategory.image)

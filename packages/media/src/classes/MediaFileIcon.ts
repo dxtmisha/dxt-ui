@@ -8,9 +8,15 @@ import type {
 const REGEX_TRIM_DOTS = /^[\s.]+|[\s.]+$/g
 
 /**
- * Class for storing and managing custom file icons.
+ * Class for storing, managing, and resolving custom file vector icons.
+ * Maintains a prototype-isolated in-memory registry of custom SVG markup,
+ * provides fluent method chaining for registration and reset operations,
+ * and defensively applies icons to file metadata items with hierarchical fallback.
  *
- * Класс для хранения и управления кастомными иконками файлов.
+ * Класс для хранения, управления и разрешения пользовательских векторных иконок файлов.
+ * Поддерживает изолированный от прототипа реестр SVG-разметки в памяти,
+ * предоставляет цепочечные вызовы методов для регистрации и сброса,
+ * а также безопасно применяет иконки к метаданным файлов с иерархическим фолбэком.
  */
 export class MediaFileIcon {
   /** Custom icons registry / Реестр кастомных иконок */

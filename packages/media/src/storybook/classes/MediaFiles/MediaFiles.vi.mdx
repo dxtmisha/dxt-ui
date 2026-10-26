@@ -27,11 +27,11 @@ Lớp là tĩnh và không yêu cầu khởi tạo thực thể. Tất cả các
 
 ### Tra cứu và sổ đăng ký
 
-- `static get(code: string): MediaFileItem | undefined` — truy xuất cấu hình tệp theo phần mở rộng hoặc mã tệp, tự động tìm kiếm theo MIME type hoặc mục mặc định nếu không khớp, có áp dụng biểu tượng tùy chỉnh.
+- `static get(code: string): MediaFileItem` — truy xuất cấu hình tệp theo phần mở rộng hoặc mã tệp, tự động tìm kiếm theo MIME type hoặc mục mặc định nếu không khớp, có áp dụng biểu tượng tùy chỉnh.
 - `static getByCategory(category: MediaFileCategoryOrCode): MediaFileItem | undefined` — trả về cấu hình biểu tượng trung tính cấp danh mục phù hợp với danh mục hoặc mã tệp đã chỉ định.
 - `static getByMime(mime: string): MediaFileItem | undefined` — trả về cấu hình tệp phù hợp với kiểu MIME đã chỉ định, có áp dụng biểu tượng tùy chỉnh.
 - `static getList(): MediaFileList` — trả về toàn bộ mảng gồm tất cả các mục cấu hình tệp được hỗ trợ.
-- `static getNeutral(): MediaFileItem | undefined` — trả về mục cấu hình tệp trung tính mặc định, có áp dụng biểu tượng tùy chỉnh nếu tồn tại.
+- `static getNeutral(): MediaFileItem` — trả về mục cấu hình tệp trung tính mặc định, có áp dụng biểu tượng tùy chỉnh nếu tồn tại.
 
 ## Các kiểu dữ liệu
 
@@ -71,8 +71,8 @@ MediaFiles.isLink('report.pdf') // false
 
 // Tra cứu siêu dữ liệu theo phần mở rộng hoặc mã định dạng
 const pdf = MediaFiles.get('pdf')
-console.log(pdf?.name) // 'PDF'
-console.log(pdf?.category) // 'document'
+console.log(pdf.name) // 'PDF Document'
+console.log(pdf.category) // 'document'
 
 // Lấy biểu tượng trung tính của danh mục
 const imageCategory = MediaFiles.getByCategory(MediaFileCategory.image)
@@ -84,4 +84,5 @@ console.log(jsonFile?.code) // 'json'
 
 // Biểu tượng trung tính mặc định
 const neutral = MediaFiles.getNeutral()
+console.log(neutral.code) // 'file'
 ```

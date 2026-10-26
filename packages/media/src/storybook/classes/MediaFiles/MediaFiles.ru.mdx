@@ -27,11 +27,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 ### Поиск и реестр
 
-- `static get(code: string): MediaFileItem | undefined` — возвращает элемент метаданных файла по расширению или коду, с запасным поиском по MIME-типу или нейтральному элементу по умолчанию, с учетом кастомных иконок.
+- `static get(code: string): MediaFileItem` — возвращает элемент метаданных файла по расширению или коду, с запасным поиском по MIME-типу или нейтральному элементу по умолчанию, с учетом кастомных иконок.
 - `static getByCategory(category: MediaFileCategoryOrCode): MediaFileItem | undefined` — возвращает нейтральный элемент конфигурации файла для заданной категории или кода файла.
 - `static getByMime(mime: string): MediaFileItem | undefined` — возвращает элемент метаданных файла по его MIME-типу с учетом кастомных иконок.
 - `static getList(): MediaFileList` — возвращает полный массив всех поддерживаемых элементов конфигураций файлов.
-- `static getNeutral(): MediaFileItem | undefined` — возвращает стандартный нейтральный элемент файла с примененной кастомной иконкой при ее наличии.
+- `static getNeutral(): MediaFileItem` — возвращает стандартный нейтральный элемент файла с примененной кастомной иконкой при ее наличии.
 
 ## Типы
 
@@ -71,8 +71,8 @@ MediaFiles.isLink('report.pdf') // false
 
 // Поиск конфигурации по расширению или коду
 const pdf = MediaFiles.get('pdf')
-console.log(pdf?.name) // 'PDF'
-console.log(pdf?.category) // 'document'
+console.log(pdf.name) // 'PDF Document'
+console.log(pdf.category) // 'document'
 
 // Получение нейтральной иконки категории
 const imageCategory = MediaFiles.getByCategory(MediaFileCategory.image)
@@ -84,4 +84,5 @@ console.log(jsonFile?.code) // 'json'
 
 // Базовая нейтральная иконка
 const neutral = MediaFiles.getNeutral()
+console.log(neutral.code) // 'file'
 ```

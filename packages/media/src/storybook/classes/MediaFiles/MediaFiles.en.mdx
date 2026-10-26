@@ -27,11 +27,11 @@ The class is static and does not require instantiation. All methods are invoked 
 
 ### Lookup & Registry
 
-- `static get(code: string): MediaFileItem | undefined` — retrieves the file metadata item by its extension or code, falling back to MIME matching or the default neutral item, with custom icons applied.
+- `static get(code: string): MediaFileItem` — retrieves the file metadata item by its extension or code, falling back to MIME matching or the default neutral item, with custom icons applied.
 - `static getByCategory(category: MediaFileCategoryOrCode): MediaFileItem | undefined` — returns a category-level neutral file configuration item matching the specified category or file code.
 - `static getByMime(mime: string): MediaFileItem | undefined` — retrieves a file metadata item matching the given MIME type with custom icons applied.
 - `static getList(): MediaFileList` — returns the complete array of all supported file configuration items.
-- `static getNeutral(): MediaFileItem | undefined` — returns the universal default neutral file item with any registered custom icon applied.
+- `static getNeutral(): MediaFileItem` — returns the universal default neutral file item with any registered custom icon applied.
 
 ## Types
 
@@ -71,8 +71,8 @@ MediaFiles.isLink('report.pdf') // false
 
 // Find metadata by extension or format code
 const pdf = MediaFiles.get('pdf')
-console.log(pdf?.name) // 'PDF'
-console.log(pdf?.category) // 'document'
+console.log(pdf.name) // 'PDF Document'
+console.log(pdf.category) // 'document'
 
 // Retrieve a generic category icon item
 const imageCategory = MediaFiles.getByCategory(MediaFileCategory.image)
@@ -84,4 +84,5 @@ console.log(jsonFile?.code) // 'json'
 
 // Universal neutral fallback
 const neutral = MediaFiles.getNeutral()
+console.log(neutral.code) // 'file'
 ```

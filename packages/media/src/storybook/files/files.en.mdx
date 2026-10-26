@@ -152,9 +152,9 @@ MediaFiles.isLink('archive.zip')                   // false
 
 // Get metadata configuration item by extension
 const item = MediaFiles.get('xlsx')
-console.log(item?.name)       // 'Excel'
-console.log(item?.category)   // 'table'
-console.log(item?.extensions) // ['xls', 'xlsx']
+console.log(item.name)       // 'Excel'
+console.log(item.category)   // 'table'
+console.log(item.extensions) // ['xls', 'xlsx']
 
 // Retrieve a generic category icon (e.g. for unknown images or tables)
 const categoryNeutral = MediaFiles.getByCategory(MediaFileCategory.image)

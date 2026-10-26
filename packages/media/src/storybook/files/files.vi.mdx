@@ -152,9 +152,9 @@ MediaFiles.isLink('archive.zip')                   // false
 
 // Lấy thông tin cấu hình theo phần mở rộng
 const item = MediaFiles.get('xlsx')
-console.log(item?.name)       // 'Excel'
-console.log(item?.category)   // 'table'
-console.log(item?.extensions) // ['xls', 'xlsx']
+console.log(item.name)       // 'Excel'
+console.log(item.category)   // 'table'
+console.log(item.extensions) // ['xls', 'xlsx']
 
 // Lấy biểu tượng trung tính của danh mục (ví dụ cho ảnh hoặc bảng chưa rõ định dạng)
 const categoryNeutral = MediaFiles.getByCategory(MediaFileCategory.image)
