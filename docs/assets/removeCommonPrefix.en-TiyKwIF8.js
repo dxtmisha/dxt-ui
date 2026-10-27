@@ -1,0 +1,17 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-CeTLcoZk.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{f as i,s as a}from"./blocks-DoUQMcLv.js";function o(e){let t={code:`code`,h1:`h1`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`@dxtmisha/en/functional-basic/Functions/removeCommonPrefix - Remove common prefix`}),`
+`,(0,c.jsx)(t.h1,{id:`removecommonprefix`,children:(0,c.jsx)(t.code,{children:`removeCommonPrefix`})}),`
+`,(0,c.jsxs)(t.p,{children:[`Removes the common prefix from the beginning of the main string. If `,(0,c.jsx)(t.code,{children:`mainString`}),` starts with the full `,(0,c.jsx)(t.code,{children:`prefix`}),` or shares a partial leading character sequence with `,(0,c.jsx)(t.code,{children:`prefix`}),`, the matching leading characters are stripped, and the result is optionally trimmed.`]}),`
+`,(0,c.jsx)(t.p,{children:(0,c.jsx)(t.strong,{children:`Parameters:`})}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`mainString: string`}),` — The main string.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`prefix: string`}),` — The prefix string to remove.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`trim?: boolean = true`}),` — If `,(0,c.jsx)(t.code,{children:`true`}),`, trims leading and trailing whitespace from the resulting string (defaults to `,(0,c.jsx)(t.code,{children:`true`}),`).`]}),`
+`]}),`
+`,(0,c.jsxs)(t.p,{children:[(0,c.jsx)(t.strong,{children:`Returns:`}),`
+`,(0,c.jsx)(t.code,{children:`string`}),` — A new string without the common prefix.`]}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-typescript`,children:`import { removeCommonPrefix } from '@dxtmisha/functional-basic'
+
+console.log(removeCommonPrefix('Hello, world!', 'Hello, ')) // 'world!'
+console.log(removeCommonPrefix('user_name', 'user_')) // 'name'
+console.log(removeCommonPrefix('prefix   suffix   ', 'prefix', false)) // '   suffix   '
+`})})]})}function s(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,c.jsx)(t,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;function l(){return(l=e((()=>{c=r(),t(),i()})))()}l();export{s as default};

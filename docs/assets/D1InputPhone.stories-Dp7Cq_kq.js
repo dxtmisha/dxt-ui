@@ -1,0 +1,73 @@
+import{n as e,r as t}from"./rolldown-runtime-DkW27tQK.js";import{$t as n,At as r,Ft as i,Ht as a,It as o,Jt as s,Pt as c,Rt as l,c as u,mn as d,o as f,un as p}from"./library-ByXZ2YPj.js";import{N as m,_ as h,a as g,d as _,f as v,k as y,n as ee,p as te,s as ne,t as re}from"./wiki-CfN0XtvQ.js";import{n as ie,t as b}from"./ComponentIncludeAbstract-CwPk6byu-B8vlefjC.js";import{a as ae,c as oe,i as se,n as ce,o as x,r as S,s as C,t as le}from"./FieldEventInclude-BEzUXSC7-DQCg0EbD.js";import{n as ue,t as de}from"./FieldElementInclude-DtbsjT9i-DFR3iNr_.js";import{i as fe,n as pe,r as me,t as he}from"./Field-DsCcuhLh.js";import{i as ge,n as _e,r as ve,t as ye}from"./Mask-CxOoDJnI.js";import{n as be,t as xe}from"./D1InputPhoneDialCode-DiSWFW8T.js";var w;function T(){return(T=e((()=>{b(),w=class extends ie{name=`inputPhoneDialCode`;propsAttrsName=`inputPhoneDialCodeAttrs`;toBinds(){return{...super.toBinds(),disabled:this.getProps().disabled}}}})))()}var E,D,O,k,A,j;function M(){return(M=e((()=>{ae(),ue(),me(),ge(),T(),r(),y(),E=class{props;value;event;country=p(f.getCountry());constructor(e,t,r){this.props=e,this.value=t,this.event=r,this.props.countryDefault&&(this.country.value=this.props.countryDefault),this.value?.set(this.toPhone(this.country.value)),n(this.valueItem,()=>this.updateCountry())}item=c(()=>this.valueItem.value??u.getByCode(this.country.value));valueItem=c(()=>{if(!this.props.countryBlock&&this.value?.item.value)return u.getByPhone(this.value.item.value)?.item});valueDefault=c(()=>this.toPhone(this.country.value));onInput=(e,t)=>{this.event?.onInput(e,{...t,value:this.toPhone(t?.value)})};onCountry=(e,t)=>{this.country.value=t?.value,this.event?.onValue(this.toPhone(t?.value))};toPhone(e){return(u.get(e)?.phone??1).toString()}updateCountry(){this.valueItem.value&&(this.country.value=this.valueItem.value.value??f.getCountry())}},D={$:{match:/[123567890]/,pattern:`[123567890]+`},"~":{match:/[123456790]/,pattern:`[123456790]+`},"=":{match:/[123456789]/,pattern:`[123456789]+`},"*":{match:/[0-9]/}},O=class{props;data;value;constructor(e,t,n){this.props=e,this.data=t,this.value=n}get mask(){let e=this.data.item.value?.[this.props.countryBlock?`mask`:`maskFull`];return e&&e.length>0?e:`+************`}get maskProps(){let e=this.mask;return{modelValue:this.props.modelValue,value:this.value?.item.value??this.data.valueDefault.value,mask:{mask:e,visiblePartly:!0,groupSave:!1,special:D,check:`.{7,}`},maskVisible:e.length<2,maskAttrs:this.props.maskAttrs}}},k=class{props;element;naming;components;slots;emits;change;attributes;elementItem;value;code;validation;form;event;dialCode;field;mask;data;phoneMask;constructor(e,t,n,r,i,a,o={}){this.props=e,this.element=t,this.naming=n,this.components=r,this.slots=i,this.emits=a;let{FieldAttributesIncludeConstructor:s=oe,FieldChangeIncludeConstructor:c=se,FieldCodeIncludeConstructor:l=C,FieldElementIncludeConstructor:u=de,FieldEventIncludeConstructor:d=S,FieldFormIncludeConstructor:f=x,FieldIncludeConstructor:p=fe,FieldValidationIncludeConstructor:m=ce,FieldValueIncludeConstructor:h=le,InputPhoneDataConstructor:g=E,InputPhoneMaskConstructor:_=O,InputPhoneDialCodeIncludeConstructor:v=w,MaskIncludeConstructor:y=ve}=o;this.change=new c(this.props),this.attributes=new s(this.props),this.elementItem=new u(this.props,this.element),this.value=new h(this.props,this.elementItem),this.code=new l(this.props),this.validation=new m(this.props,this.attributes,this.value,this.change,this.code),this.form=new f(this.props,this.value,this.validation),this.event=new d(this.props,this.change,this.value,this.validation,this.emits,this.form),this.data=new g(e,this.value,this.event),this.phoneMask=new _(e,this.data,this.value),this.field=new p(this.naming,this.props,this.components,void 0,void 0,this.value,this.event),this.mask=new y(this.naming,()=>this.phoneMask.maskProps,this.components,void 0,void 0,this.value,this.data.valueDefault),this.dialCode=new v(this.naming,this.props,this.components,()=>({value:this.data.country.value,onClick:this.data.onCountry}))}},A={},j=class extends h{item;constructor(e,t,n,r=k){super(e,t,n),this.item=new r(this.props,this.element,this.naming,this.components,this.slots,this.emits)}initExpose(){return{...this.item.value.expose(),...this.item.validation.expose()}}initClasses(){return{main:{}}}initStyles(){return{}}initRender(){return this.item.field.render({default:this.renderMask,leading:this.renderDialCode},{...this.getAttrs(),class:this.classes?.value.main,validationMessage:this.item.validation.message})}renderMask=e=>this.props.disabled||this.props.readonly?[l(`input`,{value:this.item.value.item.value,disabled:this.props.disabled,readonly:this.props.readonly,class:e.className})]:this.item.mask.render(void 0,{ref:this.element,class:e.className,align:this.props.align,inputAttrs:m(this.item.attributes.listForInput,e.binds,{inputMode:`tel`},this.props.inputAttrs),onBlur:this.item.event.onBlur,onInput:this.item.event.onInput});renderDialCode=()=>this.props.countryBlock?[]:this.item.dialCode.render()}})))()}var N;function P(){return(P=e((()=>{be(),N=xe})))()}var F;function I(){return(I=e((()=>{M(),F={...A}})))()}var L;function R(){return(R=e((()=>{r(),M(),pe(),P(),_e(),I(),L=o({name:`D1InputPhone`,__name:`D1InputPhone`,props:a({disabled:{type:Boolean},inputPhoneDialCodeAttrs:{},icon:{},selected:{type:Boolean},iconTurn:{type:Boolean},iconHide:{type:Boolean},iconDir:{type:Boolean},iconPalette:{type:Boolean},iconAttrs:{},iconTrailing:{},iconTrailingTurnOnly:{type:Boolean},iconTrailingDirOnly:{type:Boolean},iconTrailingPalette:{type:Boolean},prefix:{},prefixId:{},suffix:{},suffixId:{},captionDecorative:{type:Boolean},label:{},labelId:{},counterId:{},fieldCounterAttrs:{},required:{type:Boolean},fieldLabelAttrs:{},forceShowMessage:{type:Boolean},hasHtmlCode:{type:Boolean},helperMessage:{},validationMessage:{},fieldMessageAttrs:{},helperId:{},validationId:{},loading:{type:[Boolean,Object]},readonly:{type:Boolean},href:{},detail:{},index:{},isSkeleton:{type:Boolean},textCancel:{type:[String,Function]},id:{},focus:{type:Boolean},align:{},cancel:{},fieldAttrs:{},modelValue:{},"onUpdate:value":{type:Function},"onUpdate:modelValue":{type:Function},placeholder:{},value:{},type:{},name:{},autofocus:{type:Boolean},tabindex:{},form:{},validationCode:{},inputAttrs:{},pattern:{},countryDefault:{},countryBlock:{type:Boolean},maskAttrs:{}},F),emits:[`update:value`,`update:modelValue`,`input`,`inputLite`,`change`,`changeLite`],setup(e,{expose:t,emit:n}){let r=n,a=e,o=c(()=>({main:{"d1-inputPhone":!0}})),l=c(()=>({})),u=new j(`d1.inputPhone`,a,{emits:r,classes:o,styles:l,components:{mask:ye,inputPhoneDialCode:N,field:he}}),f=u.render();return t(u.expose()),(e,t)=>(s(),i(d(f)))}})})))()}var z;function B(){return(B=e((()=>{R(),z=L,L.__docgenInfo=Object.assign({displayName:L.name??L.__name},{name:`D1InputPhone`,exportName:`default`,displayName:`D1InputPhone`,description:``,tags:{},sourceFiles:[`/Users/tung/Documents/GitHub/dxt-ui/packages/d1/src/components/Ui/InputPhone/D1InputPhone.vue`]})})))()}var V,H,U,W;function G(){return(G=e((()=>{re(),I(),V=[{name:`align`,type:`string`,option:[`center`,`right`,`left`]},{name:`autofocus`,type:`boolean`},{name:`cancel`,type:`string`,option:[`none`,`auto`,`always`]},{name:`captionDecorative`,type:`boolean`},{name:`counterId`,type:`string`},{name:`countryBlock`,type:`boolean`},{name:`countryDefault`,type:`string`},{name:`detail`,type:`Record<string, any>`},{name:`disabled`,type:`boolean`},{name:`fieldAttrs`,type:`ConstrBind<FieldProps>`},{name:`fieldCounterAttrs`,type:`ConstrBind<FieldCounterProps>`},{name:`fieldLabelAttrs`,type:`ConstrBind<FieldLabelProps>`},{name:`fieldMessageAttrs`,type:`ConstrBind<FieldMessageProps>`},{name:`focus`,type:`boolean`},{name:`forceShowMessage`,type:`boolean`},{name:`form`,type:`string`},{name:`hasHtmlCode`,type:`boolean`},{name:`helperId`,type:`string`},{name:`helperMessage`,type:`string`},{name:`href`,type:`string`},{name:`icon`,type:`IconValue<IconProps>`},{name:`iconAttrs`,type:`ConstrBind<IconProps>`},{name:`iconDir`,type:`boolean`},{name:`iconHide`,type:`boolean`},{name:`iconPalette`,type:`boolean`},{name:`iconTrailing`,type:`IconValue<IconProps>`},{name:`iconTrailingDirOnly`,type:`boolean`},{name:`iconTrailingPalette`,type:`boolean`},{name:`iconTrailingTurnOnly`,type:`boolean`},{name:`iconTurn`,type:`boolean`},{name:`id`,type:`string | number`},{name:`index`,type:`string | number`},{name:`inputAttrs`,type:`Record<string, any>`},{name:`inputPhoneDialCodeAttrs`,type:`ConstrBind<InputPhoneDialCodeProps>`},{name:`isSkeleton`,type:`boolean`},{name:`label`,type:`NumberOrString`},{name:`labelId`,type:`string`},{name:`loading`,type:`boolean | ConstrBind<ProgressProps>`},{name:`maskAttrs`,type:`ConstrBind<MaskProps>`},{name:`modelValue`,type:`string`},{name:`name`,type:`string`},{name:`onUpdate:modelValue`,type:`((value: string) => void)`},{name:`onUpdate:value`,type:`((value: string) => void)`},{name:`pattern`,type:`string`},{name:`placeholder`,type:`string`},{name:`prefix`,type:`string | number`},{name:`prefixId`,type:`string`},{name:`readonly`,type:`boolean`},{name:`required`,type:`boolean`},{name:`selected`,type:`boolean`},{name:`suffix`,type:`string | number`},{name:`suffixId`,type:`string`},{name:`tabindex`,type:`number`},{name:`textCancel`,type:`TextValue`},{name:`type`,type:`string`,option:[`number`,`checkbox`,`radio`,`search`,`text`,`number-format`,`currency`,`email`,`password`,`datetime`,`date`,`year-month`,`time`,`hour-minute`,`tel`,`url`]},{name:`validationCode`,type:`FieldValidityCode`},{name:`validationId`,type:`string`},{name:`validationMessage`,type:`string`},{name:`value`,type:`string`}],H=[{name:`caption`,description:`Caption slot/ Слот заголовка`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`label`,description:`Label slot content/ Содержимое слота метки`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`leading`,description:`Slot for displaying content before the input area/ Слот для отображения контента перед областью ввода`,properties:[{name:`props`,type:`(FieldControl) | undefined`}]},{name:`prefix`,description:`Prefix slot/ Слот префикса`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`suffix`,description:`Suffix slot/ Слот суффикса`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`trailing`,description:`Slot for displaying content after the input area/ Слот для отображения контента после области ввода`,properties:[{name:`props`,type:`(FieldControl) | undefined`}]}],U=[{name:`change`,description:`Emitted when value is committed (blur/confirm)/
+Эмит при подтверждении значения (blur/confirm): [event, value]`,properties:[{name:`event`,type:`InputEvent | Event`},{name:`value`,type:`FieldValidationItem<any>`}]},{name:`changeLite`,description:`Lightweight change emit without DOM event/
+Лёгкий эмит подтверждения без события: [value]`,properties:[{name:`value`,type:`FieldValidationItem<any>`}]},{name:`input`,description:`Emitted on input events (every change while typing)/
+Эмит при вводе (каждое изменение): [event, value]`,properties:[{name:`event`,type:`InputEvent | Event`},{name:`value`,type:`FieldValidationItem<any>`}]},{name:`inputLite`,description:`Lightweight input emit without DOM event/
+Лёгкий эмит ввода без DOM-события: [value]`,properties:[{name:`value`,type:`FieldValidationItem<any>`}]},{name:`update:modelValue`,description:`Update model value event/ Событие обновления значения модели`,properties:[{name:`value`,type:`any`}]},{name:`update:value`,description:`Update value event/ Событие обновления значения`,properties:[{name:`value`,type:`any`}]}],W={component:`InputPhone`,props:V,slots:H,events:U,defaults:F,wikiDesign:ee}})))()}var K;function q(){return(q=e((()=>{v(),ne(),G(),K=new _(W.component,W.props,W.defaults,W.wikiDesign,g,te)})))()}var Se=t({InputPhone:()=>Y,InputPhoneCountryBlock:()=>Z,InputPhoneVModel:()=>X,__namedExportsOrder:()=>Q,default:()=>J}),J,Y,X,Z,Q;function $(){return($=e((()=>{B(),q(),r(),J={title:`Ui/InputPhone`,component:z,parameters:{design:`d1`,docs:{description:{component:K.getDescription()}}},argTypes:K.getWiki(),args:K.getValues()},Y={},X={name:`Двусторонняя привязка (v-model)`,render:()=>({components:{D1InputPhone:z},setup(){return{phone:p(``)}},template:`
+        <div class="wiki-storybook-flex-column">
+          <D1InputPhone
+            v-model:value="phone"
+            label="Phone Number"
+            placeholder="Enter phone number"
+          />
+          <div>Entered phone: {{ phone || '—' }}</div>
+        </div>
+    `})},Z={name:`Блокировка страны`,render:()=>({components:{D1InputPhone:z},template:`
+        <div class="wiki-storybook-flex-column">
+          <D1InputPhone
+            country-default="DE"
+            :country-block="false"
+            label="Dynamic Country Detection (DE default)"
+          />
+          <D1InputPhone
+            country-default="DE"
+            :country-block="true"
+            label="Locked Country (DE)"
+          />
+        </div>
+    `})},Q=[`InputPhone`,`InputPhoneVModel`,`InputPhoneCountryBlock`],Y.parameters={...Y.parameters,docs:{...Y.parameters?.docs,source:{originalSource:`{
+  // :story-main [!] System label / Системная метка
+  // :story-main [!] System label / Системная метка
+}`,...Y.parameters?.docs?.source}}},X.parameters={...X.parameters,docs:{...X.parameters?.docs,source:{originalSource:`{
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: {
+      D1InputPhone
+    },
+    setup() {
+      return {
+        phone: ref('')
+      };
+    },
+    template: \`
+        <div class="wiki-storybook-flex-column">
+          <D1InputPhone
+            v-model:value="phone"
+            label="Phone Number"
+            placeholder="Enter phone number"
+          />
+          <div>Entered phone: {{ phone || '—' }}</div>
+        </div>
+    \`
+  })
+}`,...X.parameters?.docs?.source}}},Z.parameters={...Z.parameters,docs:{...Z.parameters?.docs,source:{originalSource:`{
+  name: 'Блокировка страны',
+  render: () => ({
+    components: {
+      D1InputPhone
+    },
+    template: \`
+        <div class="wiki-storybook-flex-column">
+          <D1InputPhone
+            country-default="DE"
+            :country-block="false"
+            label="Dynamic Country Detection (DE default)"
+          />
+          <D1InputPhone
+            country-default="DE"
+            :country-block="true"
+            label="Locked Country (DE)"
+          />
+        </div>
+    \`
+  })
+}`,...Z.parameters?.docs?.source}}}})))()}export{$ as a,T as c,X as i,Y as n,K as o,Z as r,q as s,Se as t};

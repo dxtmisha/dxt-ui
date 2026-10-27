@@ -1,0 +1,71 @@
+import{n as e,r as t}from"./rolldown-runtime-DkW27tQK.js";import{At as n,Dt as r,Ft as i,Ht as a,It as o,Jt as s,Pt as c,Rt as l,mn as u,un as d}from"./library-ByXZ2YPj.js";import{t as f}from"./MediaSocial-CjNsAN2J-BJAYoK_T.js";import{N as p,_ as m,a as h,d as g,f as ee,k as te,n as ne,p as re,s as ie,t as ae}from"./wiki-CfN0XtvQ.js";import{a as oe,c as _,i as se,n as v,o as y,r as b,s as x,t as S}from"./FieldEventInclude-BEzUXSC7-DQCg0EbD.js";import{n as C,t as w}from"./FieldElementInclude-DtbsjT9i-DFR3iNr_.js";import{i as T,n as E,r as D,t as O}from"./Field-DsCcuhLh.js";import{i as k,n as ce,r as le,t as ue}from"./Mask-CxOoDJnI.js";var A,j,M;function N(){return(N=e((()=>{oe(),C(),D(),k(),n(),te(),r(),A=class{props;element;naming;components;slots;emits;attributes;elementItem;change;value;code;validation;form;event;field;mask;constructor(e,t,n,r,i,a,o={}){this.props=e,this.element=t,this.naming=n,this.components=r,this.slots=i,this.emits=a;let{FieldAttributesIncludeConstructor:s=_,FieldChangeIncludeConstructor:c=se,FieldCodeIncludeConstructor:l=x,FieldElementIncludeConstructor:u=w,FieldEventIncludeConstructor:d=b,FieldFormIncludeConstructor:f=y,FieldIncludeConstructor:p=T,FieldValidationIncludeConstructor:m=v,FieldValueIncludeConstructor:h=S,MaskIncludeConstructor:g=le}=o;this.change=new c(this.props),this.attributes=new s(this.props),this.elementItem=new u(this.props,this.element),this.value=new h(this.props,this.elementItem),this.code=new l(this.props),this.validation=new m(this.props,this.attributes,this.value,this.change,this.code,void 0),this.form=new f(this.props,this.value,this.validation),this.event=new d(this.props,this.change,this.value,this.validation,this.emits,this.form),this.field=new p(this.naming,this.props,this.components,void 0,void 0,this.value,this.event),this.mask=new g(this.naming,()=>this.bindsMask,this.components,void 0,void 0,this.value,`-`)}data=c(()=>this.props.socialType&&f.get(this.props.socialType)||void 0);get label(){return this.data.value?.name}get prefix(){return this.data.value?.prefix}get suffix(){return this.data.value?.suffix}get icon(){return this.props.socialType&&this.props.socialIcons?this.props.socialIcons[this.props.socialType]:this.data.value?.icon}get binds(){return{...this.attributes.listForInput,value:this.value.item.value,onBlur:this.event.onBlur,onInput:this.event.onInput,onChange:this.event.onChange}}get bindsMask(){return{...this.props,mask:this.data.value?.mask,maskVisible:!1}}},j={type:`text`,autocomplete:`off`,maskVisible:!0},M=class extends m{item;constructor(e,t,n,r=A){super(e,t,n),this.item=new r(this.props,this.element,this.naming,this.components,this.slots,this.emits)}initExpose(){return{...this.item.value.expose(),...this.item.validation.expose()}}initClasses(){return{main:{}}}initStyles(){return{}}initRender(){return this.item.field.render({default:this.renderInput},{...this.getAttrs(),class:this.classes?.value.main,validationMessage:this.item.validation.message,icon:this.item.icon,label:this.item.label,prefix:this.item.prefix,suffix:this.item.suffix})}renderInput=e=>this.item.mask.is?this.renderMask(e):[l(`input`,p(this.item.binds,e.binds,{ref:this.element}))];renderMask=e=>this.item.mask.render(void 0,{ref:this.element,class:e.className,align:this.props.align,inputAttrs:p(this.item.attributes.listForInput,e.binds),onBlur:this.item.event.onBlur,onInput:this.item.event.onInput})}})))()}var P;function F(){return(F=e((()=>{N(),P={...j}})))()}var I;function L(){return(L=e((()=>{n(),N(),ce(),E(),F(),I=o({name:`D1InputSocial`,__name:`D1InputSocial`,props:a({modelValue:{},"onUpdate:value":{type:Function},"onUpdate:modelValue":{type:Function},name:{},value:{},mask:{},maskVisible:{type:Boolean},maskNone:{type:Boolean},currency:{},currencyHide:{type:Boolean},fraction:{type:[String,Boolean,Number]},maskAttrs:{},icon:{},selected:{type:Boolean},iconTurn:{type:Boolean},iconHide:{type:Boolean},iconDir:{type:Boolean},iconPalette:{type:Boolean},iconAttrs:{},iconTrailing:{},iconTrailingTurnOnly:{type:Boolean},iconTrailingDirOnly:{type:Boolean},iconTrailingPalette:{type:Boolean},prefix:{},prefixId:{},suffix:{},suffixId:{},caption:{},captionDecorative:{type:Boolean},label:{},labelId:{},counterShow:{type:Boolean},counterId:{},fieldCounterAttrs:{},required:{type:Boolean},fieldLabelAttrs:{},forceShowMessage:{type:Boolean},hasHtmlCode:{type:Boolean},disabled:{type:Boolean},helperMessage:{},validationMessage:{},fieldMessageAttrs:{},helperId:{},validationId:{},loading:{type:[Boolean,Object]},readonly:{type:Boolean},href:{},detail:{},index:{},isSkeleton:{type:Boolean},textCancel:{type:[String,Function]},id:{},focus:{type:Boolean},align:{},cancel:{},fieldAttrs:{},placeholder:{},type:{},autofocus:{type:Boolean},tabindex:{},form:{},validationCode:{},inputAttrs:{},autocomplete:{},socialType:{},socialIcons:{}},P),emits:[`update:value`,`update:modelValue`,`input`,`inputLite`,`change`,`changeLite`],setup(e,{expose:t,emit:n}){let r=n,a=e,o=c(()=>({main:{"d1-inputSocial":!0}})),l=c(()=>({})),d=new M(`d1.inputSocial`,a,{emits:r,classes:o,styles:l,components:{mask:ue,field:O}}),f=d.render();return t(d.expose()),(e,t)=>(s(),i(u(f)))}})})))()}var R;function z(){return(z=e((()=>{L(),R=I,I.__docgenInfo=Object.assign({displayName:I.name??I.__name},{name:`D1InputSocial`,exportName:`default`,displayName:`D1InputSocial`,description:``,tags:{},sourceFiles:[`/Users/tung/Documents/GitHub/dxt-ui/packages/d1/src/components/Ui/InputSocial/D1InputSocial.vue`]})})))()}var B,V,H,U;function W(){return(W=e((()=>{ae(),F(),B=[{name:`align`,type:`string`,option:[`center`,`right`,`left`]},{name:`autocomplete`,type:`string`},{name:`autofocus`,type:`boolean`},{name:`cancel`,type:`string`,option:[`auto`,`always`,`none`]},{name:`caption`,type:`string | number`},{name:`captionDecorative`,type:`boolean`},{name:`counterId`,type:`string`},{name:`counterShow`,type:`boolean`},{name:`currency`,type:`string`},{name:`currencyHide`,type:`boolean`},{name:`detail`,type:`Record<string, any>`},{name:`disabled`,type:`boolean`},{name:`fieldAttrs`,type:`ConstrBind<FieldProps>`},{name:`fieldCounterAttrs`,type:`ConstrBind<FieldCounterProps>`},{name:`fieldLabelAttrs`,type:`ConstrBind<FieldLabelProps>`},{name:`fieldMessageAttrs`,type:`ConstrBind<FieldMessageProps>`},{name:`focus`,type:`boolean`},{name:`forceShowMessage`,type:`boolean`},{name:`form`,type:`string`},{name:`fraction`,type:`MaskFractionItem`},{name:`hasHtmlCode`,type:`boolean`},{name:`helperId`,type:`string`},{name:`helperMessage`,type:`string`},{name:`href`,type:`string`},{name:`icon`,type:`IconValue<IconProps>`},{name:`iconAttrs`,type:`ConstrBind<IconProps>`},{name:`iconDir`,type:`boolean`},{name:`iconHide`,type:`boolean`},{name:`iconPalette`,type:`boolean`},{name:`iconTrailing`,type:`IconValue<IconProps>`},{name:`iconTrailingDirOnly`,type:`boolean`},{name:`iconTrailingPalette`,type:`boolean`},{name:`iconTrailingTurnOnly`,type:`boolean`},{name:`iconTurn`,type:`boolean`},{name:`id`,type:`string | number`},{name:`index`,type:`string | number`},{name:`inputAttrs`,type:`Record<string, any>`},{name:`isSkeleton`,type:`boolean`},{name:`label`,type:`NumberOrString`},{name:`labelId`,type:`string`},{name:`loading`,type:`boolean | ConstrBind<ProgressProps>`},{name:`mask`,type:`string | ConstrBind<MaskProps>`},{name:`maskAttrs`,type:`ConstrBind<MaskProps>`},{name:`maskNone`,type:`boolean`},{name:`maskVisible`,type:`boolean`},{name:`modelValue`,type:`string`},{name:`name`,type:`string`},{name:`onUpdate:modelValue`,type:`((value: string) => void)`},{name:`onUpdate:value`,type:`((value: string) => void)`},{name:`placeholder`,type:`string`},{name:`prefix`,type:`string | number`},{name:`prefixId`,type:`string`},{name:`readonly`,type:`boolean`},{name:`required`,type:`boolean`},{name:`selected`,type:`boolean`},{name:`socialIcons`,type:`Record<InputSocialTypeValue, string>`},{name:`socialType`,type:`string`,option:`alipay.baidu.dingtalk.discord.douyin.dzen.facebook.github.gitlab.habr.instagram.line.linkedin.medium.messenger.ok.pinterest.qq.reddit.skype.snapchat.telegram.tiktok.tumblr.twitter.viber.vk.wechat.weibo.whatsapp.x.xiaohongshu.youtube.zalo.zhihu.alipay.baidu.dingtalk.discord.douyin.dzen.facebook.github.gitlab.habr.instagram.line.linkedin.medium.messenger.ok.pinterest.qq.reddit.skype.snapchat.telegram.tiktok.tumblr.twitter.viber.vk.wechat.weibo.whatsapp.x.xiaohongshu.youtube.zalo.zhihu`.split(`.`)},{name:`suffix`,type:`string | number`},{name:`suffixId`,type:`string`},{name:`tabindex`,type:`number`},{name:`textCancel`,type:`TextValue`},{name:`type`,type:`string`,option:[`number`,`text`,`search`,`number-format`,`currency`,`email`,`password`,`datetime`,`date`,`year-month`,`time`,`hour-minute`,`tel`,`url`,`checkbox`,`radio`]},{name:`validationCode`,type:`FieldValidityCode`},{name:`validationId`,type:`string`},{name:`validationMessage`,type:`string`},{name:`value`,type:`string`}],V=[{name:`caption`,description:`Caption slot/ Слот заголовка`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`label`,description:`Label slot content/ Содержимое слота метки`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`leading`,description:`Slot for displaying content before the input area/ Слот для отображения контента перед областью ввода`,properties:[{name:`props`,type:`(FieldControl) | undefined`}]},{name:`prefix`,description:`Prefix slot/ Слот префикса`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`suffix`,description:`Suffix slot/ Слот суффикса`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`trailing`,description:`Slot for displaying content after the input area/ Слот для отображения контента после области ввода`,properties:[{name:`props`,type:`(FieldControl) | undefined`}]}],H=[{name:`change`,description:`Emitted when value is committed (blur/confirm)/
+Эмит при подтверждении значения (blur/confirm): [event, value]`,properties:[{name:`event`,type:`InputEvent | Event`},{name:`value`,type:`FieldValidationItem<any>`}]},{name:`changeLite`,description:`Lightweight change emit without DOM event/
+Лёгкий эмит подтверждения без события: [value]`,properties:[{name:`value`,type:`FieldValidationItem<any>`}]},{name:`input`,description:`Emitted on input events (every change while typing)/
+Эмит при вводе (каждое изменение): [event, value]`,properties:[{name:`event`,type:`InputEvent | Event`},{name:`value`,type:`FieldValidationItem<any>`}]},{name:`inputLite`,description:`Lightweight input emit without DOM event/
+Лёгкий эмит ввода без DOM-события: [value]`,properties:[{name:`value`,type:`FieldValidationItem<any>`}]},{name:`update:modelValue`,description:`Update model value event/ Событие обновления значения модели`,properties:[{name:`value`,type:`any`}]},{name:`update:value`,description:`Update value event/ Событие обновления значения`,properties:[{name:`value`,type:`any`}]}],U={component:`InputSocial`,props:B,slots:V,events:H,defaults:P,wikiDesign:ne}})))()}var G;function K(){return(K=e((()=>{ee(),ie(),W(),G=new g(U.component,U.props,U.defaults,U.wikiDesign,h,re)})))()}var q=t({InputSocial:()=>Y,InputSocialTypes:()=>X,InputSocialVModel:()=>Z,__namedExportsOrder:()=>Q,default:()=>J}),J,Y,X,Z,Q;function $(){return($=e((()=>{z(),K(),n(),J={title:`Ui/InputSocial`,component:R,parameters:{design:`d1`,docs:{description:{component:G.getDescription()}}},argTypes:G.getWiki(),args:G.getValues()},Y={},X={name:`Типы социальных сетей`,render:()=>({components:{D1InputSocial:R},template:`
+        <div class="wiki-storybook-flex-column">
+          <D1InputSocial social-type="telegram" label="Telegram" />
+          <D1InputSocial social-type="whatsapp" label="WhatsApp" />
+          <D1InputSocial social-type="instagram" label="Instagram" />
+          <D1InputSocial social-type="vk" label="VK" />
+        </div>
+    `})},Z={name:`Двусторонняя привязка (v-model)`,render:()=>({components:{D1InputSocial:R},setup(){return{value:d(``)}},template:`
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <span>Current value: {{ value }}</span>
+            <button class="wiki-storybook-button" @click="value = 'my_name'">Set text</button>
+            <button class="wiki-storybook-button wiki-storybook-button-warning" @click="value = ''">Clear</button>
+          </div>
+          <D1InputSocial
+            v-model:value="value"
+            social-type="telegram"
+            label="Telegram"
+            placeholder="Username"
+          />
+        </div>
+    `})},Q=[`InputSocial`,`InputSocialTypes`,`InputSocialVModel`],Y.parameters={...Y.parameters,docs:{...Y.parameters?.docs,source:{originalSource:`{
+  // :story-main [!] System label / Системная метка
+  // :story-main [!] System label / Системная метка
+}`,...Y.parameters?.docs?.source}}},X.parameters={...X.parameters,docs:{...X.parameters?.docs,source:{originalSource:`{
+  name: 'Типы социальных сетей',
+  render: () => ({
+    components: {
+      D1InputSocial
+    },
+    template: \`
+        <div class="wiki-storybook-flex-column">
+          <D1InputSocial social-type="telegram" label="Telegram" />
+          <D1InputSocial social-type="whatsapp" label="WhatsApp" />
+          <D1InputSocial social-type="instagram" label="Instagram" />
+          <D1InputSocial social-type="vk" label="VK" />
+        </div>
+    \`
+  })
+}`,...X.parameters?.docs?.source}}},Z.parameters={...Z.parameters,docs:{...Z.parameters?.docs,source:{originalSource:`{
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: {
+      D1InputSocial
+    },
+    setup() {
+      return {
+        value: ref('')
+      };
+    },
+    template: \`
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <span>Current value: {{ value }}</span>
+            <button class="wiki-storybook-button" @click="value = 'my_name'">Set text</button>
+            <button class="wiki-storybook-button wiki-storybook-button-warning" @click="value = ''">Clear</button>
+          </div>
+          <D1InputSocial
+            v-model:value="value"
+            social-type="telegram"
+            label="Telegram"
+            placeholder="Username"
+          />
+        </div>
+    \`
+  })
+}`,...Z.parameters?.docs?.source}}}})))()}export{$ as a,Z as i,Y as n,G as o,X as r,K as s,q as t};

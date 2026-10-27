@@ -12,7 +12,7 @@
 - **Metadata Resolution**: Automatically resolve file name, extensionless base name, lowercase extension, MIME type, category, group, and SVG icon.
 - **Multiple Input Types**: Accepts file paths, URLs (with automatic query/hash stripping), extension codes, or native browser `File` objects.
 - **MIME & Extension Aliases**: Resolves canonical IANA MIME types and multi-extension formats (e.g. `docx`/`dotx`, `jpg`/`jpeg`, `js`/`mjs`/`cjs`, `ts`/`mts`/`cts`).
-- **Boolean Type Checkers**: Methods for quick category verification — `isDocument()`, `isImage()`, `isArchive()`, `isVideo()`, `isAudio()`, `isCode()`, `isTable()`, `isPresentation()`, `isNeutral()`, `isCategory()`, `isStandard()`.
+- **Boolean Type Checkers**: Methods for quick category verification — `isArchive()`, `isAudio()`, `isCategoryGroup()`, `isCode()`, `isConfig()`, `isDatabase()`, `isDocument()`, `isExecutable()`, `isFolder()`, `isFont()`, `isImage()`, `isNeutral()`, `isPresentation()`, `isStandard()`, `isSystem()`, `isTable()`, `isText()`, `isVector()`, `isVideo()`.
 - **Custom Icons Registry**: Manage and override SVG icons dynamically with `MediaFileIcon`.
 
 ### 2. Social Media Management (`MediaSocial`)

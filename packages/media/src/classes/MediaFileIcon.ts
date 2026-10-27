@@ -19,11 +19,11 @@ const REGEX_TRIM_DOTS = /^[\s.]+|[\s.]+$/g
  * а также безопасно применяет иконки к метаданным файлов с иерархическим фолбэком.
  */
 export class MediaFileIcon {
-  /** Custom icons registry / Реестр кастомных иконок */
-  protected static iconList: MediaFileIcons = /* #__PURE__ */ Object.create(null)
-
   /** Indicator whether custom icons are registered / Признак наличия зарегистрированных иконок */
   protected static hasCustomIcons: boolean = false
+
+  /** Custom icons registry / Реестр кастомных иконок */
+  protected static iconList: MediaFileIcons = /* #__PURE__ */ Object.create(null)
 
   /**
    * Protected constructor.

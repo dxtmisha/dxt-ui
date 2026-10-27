@@ -39,29 +39,45 @@ const fileFromInput = new MediaFile(uploadedFile)
 ### Properties & Attributes
 
 - `baseName: string` — returns the filename without its extension (e.g. `'archive.tar'` for `'archive.tar.gz'`).
+- `blob: Blob | undefined` — returns the underlying `Blob` or `File` object if the instance was created with one.
 - `category: MediaFileCategory | undefined` — returns the file category enum value (e.g. `'image'`, `'video'`, `'document'`).
-- `extension: string` — returns the normalized lowercase file extension without a dot (e.g. `'png'`, `'pdf'`).
-- `extensions: string[] | undefined` — returns the list of supported extensions associated with the file format.
+- `extension: string` — returns the normalized lowercase file extension without a dot (e.g. `'png'`, `'pdf'`). **Note:** if initialized with a plain type or category code without a dot (e.g. `'archive'` or `'file'`), this code is retained in `extension` for backward compatibility (for paths without an extension, links such as `https://example.com/download`, or category MIME types like `audio/*`, returns an empty string `''`).
+- `extensions: string[] | undefined` — returns the list of supported extensions associated with the file format (for standard formats, all catalog extensions like `['docx', 'dotx']`; for plain codes without dots, `[extension]`; for links and paths without an extension, `undefined`).
 - `file: File | undefined` — returns the underlying browser `File` object if the instance was created with one.
 - `group: MediaFileGroup | undefined` — returns the classification group of the file item (`neutral`, `category`, `standard`).
 - `icon: string` — returns the resolved SVG icon markup string.
-- `item: MediaFileItem | undefined` — returns the complete metadata item from the file catalog.
-- `mime: string | undefined` — returns the detected or explicit MIME type.
-- `name: string` — returns the full filename extracted from the path or URL (stripped of query parameters and hash fragments).
+- `item: MediaFileItem` — returns the complete metadata item from the file catalog (falls back to the default neutral item).
+- `mime: string | undefined` — returns the detected or explicit MIME type in canonical lowercase.
+- `name: string` — returns the full filename extracted from the path or URL (stripped of query parameters and hash fragments, with URL percent-encoded characters safely decoded).
 
 ### Category & Classification Checks
 
 - `isArchive(): boolean` — returns `true` if the file belongs to the archive category (`zip`, `rar`, `7z`, `tar`, `gz`, etc.).
 - `isAudio(): boolean` — returns `true` if the file belongs to the audio category (`mp3`, `wav`, `flac`, `aac`, `ogg`, etc.).
-- `isCategory(): boolean` — returns `true` if the file represents a category-level neutral icon.
+- `isBlobUrl(): boolean` — returns `true` if the input is a Blob URL (`blob:...`).
+- `isCategoryGroup(): boolean` — returns `true` if the file represents a category-level neutral icon.
 - `isCode(): boolean` — returns `true` if the file is source code or a data file (`ts`, `js`, `json`, `html`, `css`, `py`, etc.).
+- `isConfig(): boolean` — returns `true` if the file is a configuration file (`ini`, `env`, `conf`, `xml`, etc.).
+- `isDatabase(): boolean` — returns `true` if the file is a database file (`sql`, `db`, `sqlite`, etc.).
+- `isDataUrl(): boolean` — returns `true` if the input is an inline Data URL (`data:...`).
 - `isDocument(): boolean` — returns `true` if the file is a document (`pdf`, `doc`, `docx`, `odt`, `rtf`, etc.).
-- `isImage(): boolean` — returns `true` if the file is an image (`png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, etc.).
+- `isExecutable(): boolean` — returns `true` if the file is an executable or installer (`exe`, `dmg`, `apk`, `app`, `iso`, etc.).
+- `isFolder(): boolean` — returns `true` if the file item represents a folder or directory.
+- `isFont(): boolean` — returns `true` if the file is a font file (`ttf`, `otf`, `woff`, `woff2`, etc.).
+- `isImage(): boolean` — returns `true` if the file is a raster or bitmap image (`png`, `jpg`, `jpeg`, `gif`, `webp`, etc.).
 - `isNeutral(): boolean` — returns `true` if the file represents the universal default neutral file icon.
 - `isPresentation(): boolean` — returns `true` if the file is a presentation (`ppt`, `pptx`, `odp`, `presentation`).
 - `isStandard(): boolean` — returns `true` if the file represents a standard specific file format or extension.
+- `isSystem(): boolean` — returns `true` if the file is a system or generic file.
 - `isTable(): boolean` — returns `true` if the file is a spreadsheet or tabular data (`xls`, `xlsx`, `csv`, `ods`, etc.).
+- `isText(): boolean` — returns `true` if the file is plain text or markdown (`txt`, `md`).
+- `isUrl(): boolean` — returns `true` if the input is a remote URL with HTTP or HTTPS protocol.
+- `isVector(): boolean` — returns `true` if the file is vector graphics (`svg`, `ai`, `eps`, etc.).
 - `isVideo(): boolean` — returns `true` if the file is a video (`mp4`, `webm`, `mkv`, `avi`, `mov`, etc.).
+
+### State Management
+
+- `reset(): this` — clears all cached calculations (name, extension, MIME, metadata item) and returns the instance for chaining.
 
 ## Types
 

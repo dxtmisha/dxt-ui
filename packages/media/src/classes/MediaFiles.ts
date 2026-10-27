@@ -55,6 +55,7 @@ export class MediaFiles {
     if (
       typeof path !== 'string'
       || !path
+      || this.isMime(path)
     ) {
       return false
     }
@@ -62,7 +63,7 @@ export class MediaFiles {
     return (
       path.includes('/')
       || path.includes('\\')
-    ) && !this.isMime(path)
+    )
   }
 
   /**

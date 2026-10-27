@@ -1,0 +1,24 @@
+import{n as e,r as t}from"./rolldown-runtime-DkW27tQK.js";import{At as n,D as r,Ft as i,Ht as a,It as o,Jt as s,Pt as c,Rt as l,mn as u}from"./library-ByXZ2YPj.js";import{N as d,_ as f,a as p,d as m,f as h,k as g,n as _,p as v,s as y,t as b}from"./wiki-CfN0XtvQ.js";import{n as x,t as S}from"./EventClickInclude-BePe4mYM-K44ha_OT.js";import{n as C,t as w}from"./Button-CA_Yf8gj.js";import{n as T,t as E}from"./AreaInclude-CqvFyoY2-ClO9HWdH.js";var D,O,k;function A(){return(A=e((()=>{S(),T(),n(),g(),D=class{props;element;naming;components;slots;emits;area;event;constructor(e,t,n,r,i,a,o={}){this.props=e,this.element=t,this.naming=n,this.components=r,this.slots=i,this.emits=a;let{AreaIncludeConstructor:s=E,EventConstructor:c=x}=o;this.area=new s(e),this.event=new c(void 0,void 0,a)}isList(){return!!(this.props.list||this.slots?.default)}},O={area:`button-group`,orientation:`horizontal`},k=class extends f{item;constructor(e,t,n,r=D){super(e,t,n),this.item=new r(this.props,this.element,this.naming,this.components,this.slots,this.emits)}initExpose(){return{}}initClasses(){return{main:{},item:this.naming.getSubClass(`item`)}}initStyles(){return{}}initRender(){return l(`div`,{...this.getAttrs(),class:this.classes?.value.main},this.renderList())}renderList=()=>{let e=[];return this.item.isList()&&(this.props.list&&this.props.list.forEach((t,n)=>{this.components?.renderAdd(e,`button`,d({class:this.classes?.value.item,onClick:this.item.event.onClick},this.props.buttonAttrs,t),void 0,`list-${n}`)}),this.initSlot(`default`,e)),e}}})))()}var j,M;function N(){return(N=e((()=>{A(),j={orientation:[`horizontal`,`vertical`]},M={...O,orientation:`horizontal`}})))()}var P;function F(){return(F=e((()=>{n(),g(),A(),C(),N(),P=o({name:`D1ButtonGroup`,__name:`D1ButtonGroup`,props:a({area:{},list:{},buttonAttrs:{},orientation:{},wrap:{type:Boolean}},M),emits:[`click`,`clickLite`],setup(e,{expose:t,emit:n}){let a=n,o=e,l=c(()=>({main:{"d1-buttonGroup":!0,[`d1-buttonGroup--orientation--${o.orientation}`]:r(j.orientation,o.orientation),"d1-buttonGroup--wrap":o.wrap}})),d=c(()=>({})),f=new k(`d1.buttonGroup`,o,{emits:a,classes:l,styles:d,components:{button:w}}),p=f.render();return t(f.expose()),(e,t)=>(s(),i(u(p)))}})})))()}var I;function L(){return(L=e((()=>{F(),I=P,P.__docgenInfo=Object.assign({displayName:P.name??P.__name},{name:`D1ButtonGroup`,exportName:`default`,displayName:`D1ButtonGroup`,description:``,tags:{},sourceFiles:[`/Users/tung/Documents/GitHub/dxt-ui/packages/d1/src/components/Ui/ButtonGroup/D1ButtonGroup.vue`]})})))()}var R,z,B,V;function H(){return(H=e((()=>{b(),N(),R=[{name:`area`,type:`string`},{name:`buttonAttrs`,type:`ConstrBind<ButtonProps>`},{name:`list`,type:`ConstrBind<ButtonProps>[]`},{name:`orientation`,type:`string`,option:[`horizontal`,`vertical`]},{name:`wrap`,type:`boolean`}],z=[{name:`default`,properties:[{name:`props`,type:`(any) | undefined`}]}],B=[{name:`click`,description:`Full click event with MouseEvent/ Полное событие клика с MouseEvent`,properties:[{name:`event`,type:`MouseEvent`},{name:`value`,type:`EventClickValue`}]},{name:`clickLite`,description:`Lightweight click event/ Упрощённое событие клика`,properties:[{name:`value`,type:`EventClickValue`}]}],V={component:`ButtonGroup`,props:R,slots:z,events:B,defaults:M,wikiDesign:_}})))()}var U;function W(){return(W=e((()=>{h(),y(),H(),U=new m(V.component,V.props,V.defaults,V.wikiDesign,p,v)})))()}var G=t({ButtonGroup:()=>q,ButtonGroupSlots:()=>J,__namedExportsOrder:()=>Y,default:()=>K}),K,q,J,Y;function X(){return(X=e((()=>{L(),W(),K={title:`Ui/ButtonGroup`,component:I,parameters:{design:`d1`,docs:{description:{component:U.getDescription()}}},argTypes:U.getWiki(),args:U.getValues()},q={},J={name:`Использование слотов`,render:()=>({components:{D1ButtonGroup:I},template:`
+        <D1ButtonGroup>
+          <template #default>
+            Default Slot
+          </template>
+        </D1ButtonGroup>
+    `})},Y=[`ButtonGroup`,`ButtonGroupSlots`],q.parameters={...q.parameters,docs:{...q.parameters?.docs,source:{originalSource:`{
+  // :story-main [!] System label / Системная метка
+  // :story-main [!] System label / Системная метка
+}`,...q.parameters?.docs?.source}}},J.parameters={...J.parameters,docs:{...J.parameters?.docs,source:{originalSource:`{
+  name: 'Использование слотов',
+  render: () => ({
+    components: {
+      D1ButtonGroup
+    },
+    template: \`
+        <D1ButtonGroup>
+          <template #default>
+            Default Slot
+          </template>
+        </D1ButtonGroup>
+    \`
+  })
+}`,...J.parameters?.docs?.source}}}})))()}export{U as a,X as i,J as n,W as o,G as r,q as t};

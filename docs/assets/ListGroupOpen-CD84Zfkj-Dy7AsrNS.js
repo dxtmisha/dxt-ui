@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{At as t,un as n}from"./library-ByXZ2YPj.js";var r;function i(){return(i=e((()=>{t(),r=class{props;open=n(!1);constructor(e){this.props=e}is=()=>this.open.value||!!this.props.open;onOpen=({open:e})=>{this.open.value!==e&&(this.open.value=e)}}})))()}export{r as n,i as t};

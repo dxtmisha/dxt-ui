@@ -39,29 +39,45 @@ const fileFromInput = new MediaFile(uploadedFile)
 ### Thuộc tính và đặc tính tệp
 
 - `baseName: string` — trả về tên tệp không bao gồm phần mở rộng (ví dụ: `'archive.tar'` cho `'archive.tar.gz'`).
+- `blob: Blob | undefined` — trả về đối tượng `Blob` hoặc `File` gốc nếu thực thể được khởi tạo bằng một trong hai đối tượng này.
 - `category: MediaFileCategory | undefined` — trả về giá trị enum danh mục tệp (ví dụ: `'image'`, `'video'`, `'document'`).
-- `extension: string` — trả về phần mở rộng tệp viết thường đã được chuẩn hóa không có dấu chấm (ví dụ: `'png'`, `'pdf'`).
-- `extensions: string[] | undefined` — trả về danh sách các phần mở rộng được hỗ trợ liên kết với định dạng tệp.
+- `extension: string` — trả về phần mở rộng tệp viết thường đã được chuẩn hóa không có dấu chấm (ví dụ: `'png'`, `'pdf'`). **Lưu ý:** nếu được khởi tạo bằng mã loại hoặc danh mục đơn giản không có dấu chấm (ví dụ: `'archive'` hoặc `'file'`), mã này được giữ lại trong `extension` để tương thích ngược (đối với đường dẫn không có phần mở rộng, liên kết như `https://example.com/download` hoặc kiểu MIME danh mục như `audio/*`, trả về chuỗi rỗng `''`).
+- `extensions: string[] | undefined` — trả về danh sách các phần mở rộng được hỗ trợ liên kết với định dạng tệp (đối với các định dạng tiêu chuẩn, tất cả phần mở rộng trong danh mục như `['docx', 'dotx']`; đối với mã đơn giản không có dấu chấm, `[extension]`; đối với liên kết và đường dẫn không có phần mở rộng, trả về `undefined`).
 - `file: File | undefined` — trả về đối tượng `File` của trình duyệt nếu thực thể được khởi tạo bằng đối tượng File.
 - `group: MediaFileGroup | undefined` — trả về nhóm phân loại của phần tử tệp (`neutral`, `category`, `standard`).
 - `icon: string` — trả về chuỗi mã SVG của biểu tượng đã được phân giải.
-- `item: MediaFileItem | undefined` — trả về mục siêu dữ liệu hoàn chỉnh từ danh mục tệp.
-- `mime: string | undefined` — trả về kiểu MIME được phát hiện hoặc được chỉ định rõ ràng.
-- `name: string` — trả về tên tệp đầy đủ được trích xuất từ đường dẫn hoặc URL (đã loại bỏ query parameter và hash).
+- `item: MediaFileItem` — trả về mục siêu dữ liệu hoàn chỉnh từ danh mục tệp (mặc định trả về mục tệp trung tính nếu không tìm thấy).
+- `mime: string | undefined` — trả về kiểu MIME được phát hiện hoặc được chỉ định rõ ràng ở dạng chữ thường chuẩn hóa.
+- `name: string` — trả về tên tệp đầy đủ được trích xuất từ đường dẫn hoặc URL (đã loại bỏ query parameter, hash fragment và giải mã ký tự phần trăm URL một cách an toàn).
 
 ### Kiểm tra danh mục và phân loại
 
 - `isArchive(): boolean` — trả về `true` nếu tệp thuộc danh mục lưu trữ (`zip`, `rar`, `7z`, `tar`, `gz`, v.v.).
 - `isAudio(): boolean` — trả về `true` nếu tệp thuộc danh mục âm thanh (`mp3`, `wav`, `flac`, `aac`, `ogg`, v.v.).
-- `isCategory(): boolean` — trả về `true` nếu tệp đại diện cho biểu tượng trung tính cấp danh mục.
+- `isBlobUrl(): boolean` — trả về `true` nếu đầu vào là một Blob URL (`blob:...`).
+- `isCategoryGroup(): boolean` — trả về `true` nếu tệp đại diện cho biểu tượng trung tính cấp danh mục.
 - `isCode(): boolean` — trả về `true` nếu tệp là mã nguồn hoặc tệp dữ liệu (`ts`, `js`, `json`, `html`, `css`, `py`, v.v.).
+- `isConfig(): boolean` — trả về `true` nếu tệp là tệp cấu hình (`ini`, `env`, `conf`, `xml`, v.v.).
+- `isDatabase(): boolean` — trả về `true` nếu tệp là tệp cơ sở dữ liệu (`sql`, `db`, `sqlite`, v.v.).
+- `isDataUrl(): boolean` — trả về `true` nếu đầu vào là một Data URL nội tuyến (`data:...`).
 - `isDocument(): boolean` — trả về `true` nếu tệp là tài liệu văn bản (`pdf`, `doc`, `docx`, `odt`, `rtf`, v.v.).
-- `isImage(): boolean` — trả về `true` nếu tệp là hình ảnh (`png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, v.v.).
+- `isExecutable(): boolean` — trả về `true` nếu tệp là tệp thực thi hoặc bộ cài đặt (`exe`, `dmg`, `apk`, `app`, `iso`, v.v.).
+- `isFolder(): boolean` — trả về `true` nếu mục tệp đại diện cho thư mục.
+- `isFont(): boolean` — trả về `true` nếu tệp là tệp phông chữ (`ttf`, `otf`, `woff`, `woff2`, v.v.).
+- `isImage(): boolean` — trả về `true` nếu tệp là hình ảnh raster/bitmap (`png`, `jpg`, `jpeg`, `gif`, `webp`, v.v.).
 - `isNeutral(): boolean` — trả về `true` nếu tệp đại diện cho biểu tượng tệp trung tính mặc định chung.
 - `isPresentation(): boolean` — trả về `true` nếu tệp là bài thuyết trình (`ppt`, `pptx`, `odp`, `presentation`).
 - `isStandard(): boolean` — trả về `true` nếu tệp đại diện cho định dạng hoặc phần mở rộng tệp tiêu chuẩn cụ thể.
+- `isSystem(): boolean` — trả về `true` nếu tệp là tệp hệ thống.
 - `isTable(): boolean` — trả về `true` nếu tệp là bảng tính hoặc dữ liệu dạng bảng (`xls`, `xlsx`, `csv`, `ods`, v.v.).
+- `isText(): boolean` — trả về `true` nếu tệp là tệp văn bản thuần túy hoặc markdown (`txt`, `md`).
+- `isUrl(): boolean` — trả về `true` nếu đầu vào là một URL từ xa với giao thức HTTP hoặc HTTPS.
+- `isVector(): boolean` — trả về `true` nếu tệp là đồ họa vector (`svg`, `ai`, `eps`, v.v.).
 - `isVideo(): boolean` — trả về `true` nếu tệp là video (`mp4`, `webm`, `mkv`, `avi`, `mov`, v.v.).
+
+### Quản lý trạng thái
+
+- `reset(): this` — xóa toàn bộ bộ đệm đã tính toán (tên, phần mở rộng, MIME, mục siêu dữ liệu) và trả về đối tượng hiện tại để gọi chuỗi.
 
 ## Các kiểu dữ liệu
 
