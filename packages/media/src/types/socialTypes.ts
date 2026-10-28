@@ -78,26 +78,38 @@ export enum InputSocialType {
 export type InputSocialTypeValue = `${InputSocialType}` | InputSocialType
 
 /**
+ * Type of input or profile value for social network methods /
+ * Тип входного значения или значения профиля для методов социальных сетей
+ */
+export type InputSocialValue = string | number | null | undefined
+
+/**
  * Interface describing a social network configuration item /
  * Интерфейс, описывающий элемент конфигурации социальной сети
  */
-export type InputSocialItem<Mask = any> = {
+export type InputSocialItem<Mask = unknown> = {
   /** Social network unique identifier / Уникальный идентификатор социальной сети */
   code: InputSocialType | InputSocialTypeValue
   /** Display name of the social network / Отображаемое название социальной сети */
   name: string
   /** URL prefix for the user profile / Префикс URL для профиля пользователя */
   prefix?: string
+  /** Normalized URL prefix pattern (should start with '^' without 'g'/'y' flags) / Нормализованный шаблон префикса URL (должен начинаться с '^' без флагов 'g'/'y') */
+  prefixClear?: RegExp
   /** URL suffix for the user profile / Суффикс URL для профиля пользователя */
   suffix?: string
   /** Input mask configuration / Настройка маски ввода */
   mask?: Mask
   /** Custom icon name or path / Имя или путь к кастомной иконке */
   icon?: string
+  /** Nickname prefix symbol or string (e.g. '@') / Префикс никнейма в виде символа или строки (например, '@') */
+  nickname?: string
+  /** Pattern to match or clean nickname value / Шаблон для извлечения или очистки никнейма */
+  nicknameClear?: RegExp
 }
 
 /** List of social network configurations / Список конфигураций социальных сетей */
-export type InputSocialList = InputSocialItem[]
+export type InputSocialList<Mask = unknown> = InputSocialItem<Mask>[]
 
 /** List of custom icons for social networks / Список кастомных иконок для социальных сетей */
 export type InputSocialIcons = Partial<Record<InputSocialType, string>>

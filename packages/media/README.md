@@ -89,11 +89,17 @@ const github = MediaSocial.get(InputSocialType.github)
 console.log(github?.name) // 'GitHub'
 
 // Generate and parse URLs
-const profileUrl = MediaSocial.getUrl('dxtmisha', InputSocialType.github)
+const profileUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
 console.log(profileUrl) // 'https://github.com/dxtmisha'
 
-const username = MediaSocial.getValue('https://github.com/dxtmisha', InputSocialType.github)
+const username = MediaSocial.getValue(InputSocialType.github, 'https://github.com/dxtmisha')
 console.log(username) // 'dxtmisha'
+
+const nickname = MediaSocial.getNickname(InputSocialType.instagram, 'https://www.instagram.com/dxtmisha')
+console.log(nickname) // '@dxtmisha'
+
+// Custom icon registration
+MediaSocial.addIcon(InputSocialType.github, '<svg ...>')
 ```
 
 ### Country Flags & Geo Dataset
@@ -120,7 +126,7 @@ To minimize application bundle sizes, heavy SVG assets are isolated in dedicated
 
 | Import Path | Contents |
 |---|---|
-| `@dxtmisha/media` | Core classes (`MediaFile`, `MediaFiles`, `MediaFileIcon`, `MediaSocial`), metadata registries (`fileList`, `socialList`, `geo`), and TypeScript types without bundled SVG strings. |
+| `@dxtmisha/media` | Core classes (`MediaFile`, `MediaFiles`, `MediaFileIcon`, `MediaSocial`, `MediaSocialIcon`), metadata registries (`fileList`, `socialList`, `geo`), and TypeScript types without bundled SVG strings. |
 | `@dxtmisha/media/files` | 85 vector SVG file icons (`fileIcons`) and `registerFileIcons()` helper. |
 | `@dxtmisha/media/socials` | 35 vector SVG social icons (`socialIcons`) and `registerSocialIcons()` helper. |
 | `@dxtmisha/media/flags` | 250+ vector SVG country flags in PascalCase (`UsSvg`, `VnSvg`, etc.). |

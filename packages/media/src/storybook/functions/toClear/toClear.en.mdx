@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Functions/toClear - Clear URL protocol, www prefix, and leading @ symbols'/>
+
+# `toClear`
+
+A utility function for sanitizing and normalizing URLs and usernames. Strips web protocols (`http`, `https`), protocol slashes (`//`, `///`), `www.` subdomains, and leading `@` characters, converting the domain portion to lowercase while strictly preserving the casing of paths, queries, and user handles.
+
+## Overview
+
+When processing user input in social profile fields, users often provide data in various formats: full web links (`https://github.com/dxtmisha`), addresses with subdomains (`www.instagram.com/my_profile`), protocol-relative URLs (`//vk.com/id123`), usernames prefixed with `@` (`@dxtmisha`, `@@user`), or bare usernames (`john_doe`).
+
+`toClear` cleans and standardizes input values into a unified format:
+
+- **Web Prefix Stripping:** Clears `http:`, `https:`, protocol slashes (2 or more, including `//`, `///`), `www.` subdomains, and any chain of leading `@` symbols.
+- **Smart Case Normalization:** Calls [`toLower`](?path=/docs/dxtmisha-en-media-functions-tolower--docs) under the hood to lowercase authority/domain portions per **RFC 3986**, while preserving original casing in paths, queries, and usernames (e.g., `github.com/DxTMiShA` or `@MyProfile`).
+- **Path `@` Preservation:** Retains `@` symbols that appear inside URL path segments after the domain (e.g., `tiktok.com/@CoolUser`).
+- **Single Slash Safety:** Preserves single leading slashes (e.g., `/dxtmisha`), stripping only multiple protocol-relative slashes (2 or more).
+- **Safe Nullish & Numeric Coercion:** Trims surrounding whitespace, safely returns an empty string `''` for `null`, `undefined`, or when invoked without arguments `toClear()`, and cleanly converts numbers to strings (preserving `0` and negative values).
+- **ReDoS Protection & Linear Time ($O(n)$):** Built with non-backtracking regular expressions with no nested quantifiers, guaranteeing complete resilience against Regular Expression Denial of Service attacks.
+- **Pure & Idempotent:** A pure, deterministic utility with zero side-effects (`toClear(toClear(val)) === toClear(val)`).
+
+## Parameters
+
+- `value?: InputSocialValue` — The URL, string, number, `null`, or `undefined` to sanitize.
+
+## Returns
+
+`string` — Sanitized string without protocols, `www.`, and leading `@` symbols, or an empty string `''` if input is nullish.
+
+## Usage Examples
+
+```typescript
+import { toClear } from '@dxtmisha/media'
+
+// Standard web protocols (http / https)
+toClear('https://github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('http://github.com/dxtmisha') // 'github.com/dxtmisha'
+
+// Protocol-relative and multiple leading slashes (2 or more)
+toClear('//github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('///github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('https:////github.com/dxtmisha') // 'github.com/dxtmisha'
+
+// www subdomain with or without protocol
+toClear('www.github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('https://www.github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('//www.github.com/dxtmisha') // 'github.com/dxtmisha'
+
+// Leading @ characters (single or chained)
+toClear('@dxtmisha') // 'dxtmisha'
+toClear('@@dxtmisha') // 'dxtmisha'
+toClear('https://@dxtmisha') // 'dxtmisha'
+toClear('www.@dxtmisha') // 'dxtmisha'
+
+// Domain lowercasing with path and handle casing preserved
+toClear('HTTPS://GITHUB.COM/DxTMiShA') // 'github.com/DxTMiShA'
+toClear('WWW.INSTAGRAM.COM/MyProfile') // 'instagram.com/MyProfile'
+toClear('@CamelCaseUser') // 'CamelCaseUser'
+
+// Retains @ inside URL paths after domain
+toClear('https://www.tiktok.com/@CoolUser') // 'tiktok.com/@CoolUser'
+
+// Strings without clearable prefixes remain untouched
+toClear('dxtmisha') // 'dxtmisha'
+toClear('john_doe') // 'john_doe'
+
+// Non-http schemes are not stripped
+toClear('skype:DxTMiShA') // 'skype:DxTMiShA'
+toClear('mailto:support@example.com') // 'mailto:support@example.com'
+
+// Unicode and Emoji support
+toClear('https://вконтакте.рф/id123') // 'вконтакте.рф/id123'
+toClear('https://zalo.me/nguyễn') // 'zalo.me/nguyễn'
+toClear('https://t.me/🚀channel') // 't.me/🚀channel'
+toClear('@🚀rocket') // '🚀rocket'
+
+// Nullish values, invocation without arguments, and numbers
+toClear() // ''
+toClear(null) // ''
+toClear(undefined) // ''
+toClear('   ') // ''
+toClear(0) // '0'
+toClear(12345) // '12345'
+```
+

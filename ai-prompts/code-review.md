@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Conduct a rigorous read-only code review assessing architecture, security & vulnerabilities (XSS, injection, prototype pollution, ReDoS, sensitive data exposure), dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, design quality, SSR compatibility & isomorphism, memory leak prevention & resource cleanup, and test suite completeness, with all findings, refactorings, and proposed test suites saved exclusively as an AI artifact (strictly prohibiting any workspace file modifications until explicitly instructed by the developer), in the language specified by wikiLanguage in ./design.config.json.
+description: Conduct a rigorous code review assessing architecture, security & vulnerabilities (XSS, injection, prototype pollution, ReDoS, sensitive data exposure), dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, design quality, SSR compatibility & isomorphism, memory leak prevention & resource cleanup, and test suite completeness, with all findings, refactorings, and proposed test suites saved exclusively as an AI artifact (allowing immediate in-place fixes for minor bugs, typing ergonomics, character check unifications, micro-optimizations, typos, and JSDoc, with a mandatory dedicated auto-fix report section in the artifact, while reserving structural/breaking changes for developer approval), in the language specified by wikiLanguage in ./design.config.json.
 ---
 
 # Task: Strict Architectural and Quality Code Review
@@ -11,7 +11,7 @@ Your analysis must not be a superficial lint check. You must evaluate architectu
 
 ---
 
-## 🔴 Mandatory Pre-Review Protocol (Language, Delivery Target, Read-Only Mandate, Usage Graph, Context & Test Coverage)
+## 🔴 Mandatory Pre-Review Protocol (Language, Delivery Target, In-Place Fixes vs Advisory Scope, Usage Graph, Context & Test Coverage)
 
 Before analyzing any code or generating any review text, you MUST execute these six mandatory steps:
 
@@ -32,11 +32,33 @@ Before analyzing any code or generating any review text, you MUST execute these 
 - **Chat Response**:
   - In the chat response, provide **ONLY a concise 1–2 sentence notification** with a clickable link to the generated artifact (e.g., `[code_review_<target>.md](file:///...)`) and an overall rating. Never re-summarize or duplicate the findings in the chat.
 
-### 3. Strict Prohibition of Proactive File Modifications (Read-Only Mandate / Запрет на редактирование файлов)
-- **Strict Read-Only Workflow**: Code review is **STRICTLY a diagnostic, analytical, and advisory task**.
-- **PROHIBITION OF UNSOLICITED CODE MODIFICATIONS**: During code review, the AI agent is **STRICTLY FORBIDDEN to edit, rewrite, refactor, or touch ANY files in the project workspace** (source files, components, classes, tests, documentation, or configurations). Proactive, self-directed code editing during code review is a severe violation.
-- **Artifact-Only Recommendations**: All code fixes, before/after diffs, architectural refactorings, and proposed unit test suites must be documented **EXCLUSIVELY within the AI Artifact report**, NEVER applied directly to the codebase.
-- **Developer-Driven Execution**: The AI agent is authorized to modify, edit, or refactor workspace files **STRICTLY and ONLY when the developer explicitly issues a direct instruction** (e.g., "исправь", "примени фиксы", "исправь замечания", "обнови тесты", etc.). Fix and edit strictly what the developer tells you to fix!
+### 3. Workflow for Code Modifications: Allowed Immediate Fixes vs Architectural Changes (Порядок внесения правок: немедленные исправления vs архитектурные изменения)
+- **Allowed Immediate In-Place Fixes (Разрешено исправлять сразу в кодовой базе)**:
+  Во время код-ревью AI-агент **МОЖЕТ и ДОЛЖЕН сразу исправлять** следующие категории очевидных, безопасных и неломающих дефектов непосредственно в проверяемых файлах (без ожидания отдельной команды разработчика):
+  1. **Опечатки (Typos)**: любые опечатки и грамматические ошибки в комментариях, строковых константах, сообщениях или именах локальных переменных.
+  2. **Оформление и дополнение JSDoc/TSDoc (`jdoc.md`)**: добавление недостающих описаний функций/методов/свойств, приведение к обязательному двуязычному стандарту (English / Русский), оформление тегов `@param` и `@returns`.
+  3. **Очевидные минорные неточности типизации и эргономики (Typing Ergonomics & Quick Wins)**:
+     - Очевидные неточности типов (например, параметр функции объявлен как `string`, но внутри первой же строкой выполняется рантайм-проверка `typeof value !== 'string'` — в таком случае тип параметра сразу расширяется до `unknown` или `string | undefined`).
+     - Удаление избыточных комментариев `// @ts-expect-error` в сопутствующих тестах, ставших ненужными после исправления типа.
+  4. **Избыточные проверки, дублирующие вычисления и мертвый код (Redundant Logic, Dead Code & Micro-Optimizations)**:
+     - Устранение избыточных и дублирующих проверок в логических выражениях (например, когда условие `A || (B && C)` повторно вычисляет внутри `C` проверку `A`, которая в правой части гарантированно ложна: `isControlCharacter(charCode) || (cleanValue.length === 0 && isControlOrSpace(charCode))` упрощается до `isControlCharacter(charCode) || (cleanValue.length === 0 && charCode === 32)`).
+     - Удаление ставших неиспользуемыми приватных вспомогательных микро-функций (хелперов), констант и типов после устранения избыточных условий (например, удаление функции `isControlOrSpace`).
+     - Очистка недостижимых веток, мертвого кода и неиспользуемых локальных импортов/переменных внутри проверяемого файла.
+  5. **Микрооптимизации, устранение повторных строковых вычислений и унификация проверок (Micro-Optimizations & Check Unification)**:
+     - Замена повторного строкового индексирования на уже вычисленные числовые коды символов (например, замена `value[index] === ':'` на `charCode === CHAR_COLON` или `charCode === 58`, если `charCode = value.charCodeAt(index)` уже был извлечен ранее в текущей итерации цикла).
+     - Вынесение магических чисел (числовых кодов символов, граничных констант) в именованные, двуязычно задокументированные константы на уровне модуля (например, `CHAR_SPACE = 32`, `CHAR_COLON = 58`).
+     - Унификация стиля проверок символов (если в одной ветке символ проверяется через числовой код `charCode === 32`, а в соседней — через строковый литерал `value[index] === ':'`, обязательна унификация к общему подходу проверки кодов символов).
+  - **Обязательный отдельный раздел/пункт отчёта об авто-исправлениях (Mandatory Dedicated Auto-Fix Report Section)**:
+    Все автоматически внесенные правки **ОБЯЗАТЕЛЬНО фиксируются в виде отдельного самостоятельного раздела отчёта в AI-артефакте** («Автоматически примененные исправления (Applied Immediate Fixes)»). В этом разделе приводятся:
+    - Список измененных файлов и номеров строк.
+    - Категория исправления (Typo / JSDoc / Typing / Micro-optimization & Check Unification / Dead Code).
+    - Обоснование и польза внесенного изменения.
+    - Сравнительные diff-блоки кода (Before / After).
+    - Подтверждение успешного прогона модульных тестов после внесения изменений.
+    - Если правки не потребовались, в данном пункте явно указывается: *«Автоматические исправления не потребовались (код исходно чист)»*.
+- **Strict Prohibition of Structural & Breaking Modifications (Запрет на самовольные архитектурные и ломающие изменения)**:
+  - Любые крупные архитектурные рефакторинги, переписывание классов или компонентов, изменение логики бизнес-процессов, удаление сущностей или изменение сигнатур публичного API **СТРОГО ЗАПРЕЩЕНЫ** без явной прямой команды разработчика (например, «примени фиксы», «исправь замечания», «обнови тесты» и т.д.).
+  - Все подобные предложения должны быть описаны **исключительно внутри AI-артефакта** в виде рекомендаций и сравнительных diff-блоков (Before/After). Fix and edit strictly what the developer tells you to fix!
 
 ### 4. Mandatory Dependency & Inbound Usage Investigation (Graph & Blast Radius Audit)
 - **Never Review in Isolation**: You must NEVER review a target entity in a vacuum. Code review is incomplete without inspecting its dependencies and all places where it is consumed.
@@ -340,14 +362,23 @@ Document the review in the artifact markdown file with the following sections (t
   | **Unit Tests & Quality** | Comprehensive & High-Quality / Rewritten & Refined / Created from Scratch / Incomplete or Missing | ... |
   | **Project Rules & Conventions** | 100% Compliant / Minor Discrepancies / Non-compliant | ... |
 
-#### 2. Deep Dive: Architectural & Design Quality
+#### 2. Автоматически примененные исправления (Applied Immediate Fixes)
+- **Обязательный самостоятельный раздел отчёта**: Если во время код-ревью в проверяемых файлах были выполнены разрешенные автоматические неломающие исправления (опечатки, стандартизация JSDoc по `jdoc.md`, расширение типов `value: unknown`, микрооптимизации, замена повторного строкового индексирования на `charCode`, вынесение констант кодов символов, удаление мертвого кода и неиспользуемых хелперов), этот раздел ОБЯЗАН содержать полный детализированный отчет:
+  - **Файлы и строки**: точные ссылки на измененные строки (`file.ts#L10-L15`).
+  - **Категория**: `Typo` / `JSDoc` / `Typing Ergonomics` / `Micro-Optimization & Check Unification` / `Dead Code Removal`.
+  - **Обоснование**: техническая причина и польза внесенного изменения (повышение читаемости, производительность, консистентность кода).
+  - **Код до и после (Diff)**: наглядные блоки `diff` с внесенными изменениями.
+  - **Верификация тестами**: статус выполнения модульных тестов после внесения изменений (например, `vitest run: 37 passed`).
+- Если автоматических правок не потребовалось, в этом разделе явно фиксируется статус: *«Автоматические исправления не потребовались (код исходно чист)»*.
+
+#### 3. Deep Dive: Architectural & Design Quality
 - Analysis of decomposition, encapsulation, and scalability.
 - Evaluation of whether the entity is modern or relies on outdated practices compared to top-tier industry libraries.
 - **Dependency & Inbound Usage Audit**:
   - **Outbound Dependencies**: Review of all imported modules, layer compliance (`functional-basic` -> `functional` -> `constructor` -> `d1`), `package.json` declaration, and tree-shakeability.
   - **Inbound Usages & Blast Radius**: Comprehensive scan and list of where the entity is used across the codebase, analysis of caller patterns, potential breaking change risks, and suggestions for caller refactoring.
 
-#### 3. Detailed Findings & Bugs (Categorized by Severity)
+#### 4. Detailed Findings & Bugs (Categorized by Severity)
 - **Critical (P0 / Blocker)**: Security vulnerabilities (exploitable XSS, code/attribute injection, prototype pollution, sensitive credential exposure, ReDoS in public endpoints), bugs causing runtime crashes, data loss, memory leaks, SSR breaking issues / cross-request leaks, or reactivity breakage.
 - **Major (P1 / Architecture & Modernity)**: Latent security weaknesses (missing `rel="noopener noreferrer"`, unvalidated external URLs, insecure cookie flags), outdated techniques, violation of single responsibility, suboptimal paradigms, missing cleanup / potential leak risks, SSR hydration mismatches.
 - **Minor (P2 / Conventions & Typing)**: Naming abbreviations, missing `/* #__PURE__ */`, missing or malformed bilingual JSDoc, missing explicit return types.
@@ -355,19 +386,18 @@ Document the review in the artifact markdown file with the following sections (t
 
 *For each finding, provide: File, line number, explanation of the issue, and the exact reason why it is problematic.*
 
-#### 4. Comparison with Industry Top Solutions
+#### 5. Comparison with Industry Top Solutions
 - Compare the reviewed solution with how leading open-source libraries (e.g., VueUse, Radix, Nuxt, TanStack) solve similar architectural problems.
 - Highlight concrete lessons or patterns that could be adopted to elevate the code to top-tier quality.
 
-#### 5. Actionable Refactoring, Code Fixes & Test Suite (Advisory Proposals)
-- Provide ready-to-use before/after code diffs or refactored code blocks illustrating the recommended improvements as advisory proposals for the developer.
+#### 6. Actionable Refactoring, Advisory Proposals & Test Suite
+- Provide ready-to-use before/after code diffs or refactored code blocks illustrating recommended architectural improvements as advisory proposals for the developer.
 - **Proportional & Lean Fixes (Без оверинжиниринга)**: Ensure refactored code remains lean and focused on the entity's actual purpose and environment. Do NOT introduce over-engineered defensive wrappers or bloated code for contrived "all-life" edge cases.
 - **Unit Test Recommendations & Code Blocks (In Artifact Only)**:
   - If existing tests are incomplete, superficial, or low-quality: provide a complete, copy-paste ready unit test suite covering all branches, edge cases, and lifecycles **strictly within the report artifact**.
   - If no tests exist: author the complete recommended unit test suite inside the artifact.
-- **Strict Prohibition of Proactive Workspace Modifications**:
-  - **STRICTLY FORBIDDEN to modify, edit, or refactor the codebase or test files proactively during code review**.
-  - All refactorings and code fixes remain purely advisory proposals until the developer explicitly instructs to apply them (e.g., "исправь", "примени рекомендации", "исправь пункт 2"). Fix and edit strictly what the developer tells you to fix!
+- **Prohibition of Unsolicited Architectural Modifications**:
+  - Major architectural modifications, class rewrites, and breaking changes remain purely advisory proposals until the developer explicitly instructs to apply them (e.g., "исправь", "примени рекомендации", "исправь пункт 2"). Fix and edit strictly what the developer tells you to fix!
 
 
 

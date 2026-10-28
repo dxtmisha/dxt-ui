@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Functions/isUrlPrefix - Проверка соответствия шаблону префикса URL'/>
+
+# `isUrlPrefix`
+
+Вспомогательная функция, проверяющая, соответствует ли строка или URL указанному шаблону регулярного выражения префикса URL. Безопасно обрабатывает опциональные или неопределённые шаблоны, возвращая строго булево значение.
+
+## Обзор
+
+Функция `isUrlPrefix` применяется при разрешении ссылок социальных сетей и обработке полей ввода, позволяя определить, начинается ли переданный никнейм, ссылка или пользовательский ввод с распознанного префикса домена или схемы перед дальнейшей нормализацией.
+
+- **Безопасная обработка непереданного шаблона:** возвращает `false`, если параметр `prefix` не передан (`undefined`), не вызывая исключений в рантайме.
+- **Проверка регулярным выражением:** использует стандартное сопоставление (`RegExp.test`) для проверки префиксов доменов и схем.
+- **Чистота и детерминированность:** не мутирует входные параметры и не производит побочных эффектов, гарантируя время работы $O(1)$.
+
+## Параметры
+
+- `value: string` — Проверяемая строка или URL.
+- `prefix?: RegExp` — Опциональный шаблон регулярного выражения префикса URL.
+
+## Возвращает
+
+`boolean` — Возвращает `true`, если строка соответствует шаблону префикса, и `false` в противном случае.
+
+## Примеры использования
+
+```typescript
+import { isUrlPrefix } from '@dxtmisha/media'
+
+// Проверка шаблонов доменных префиксов
+const githubPrefix = /^github\.com(?:\/|$)/i
+isUrlPrefix('github.com/dxtmisha', githubPrefix) // true
+isUrlPrefix('github.com', githubPrefix) // true
+isUrlPrefix('github.com/dxtmisha/dxt-ui', githubPrefix) // true
+isUrlPrefix('gitlab.com/dxtmisha', githubPrefix) // false
+isUrlPrefix('mygithub.com', githubPrefix) // false
+
+// Проверка префиксов с протоколом
+const telegramPrefix = /^https?:\/\/t\.me(?:\/|$)/i
+isUrlPrefix('https://t.me/channel', telegramPrefix) // true
+isUrlPrefix('http://t.me/channel', telegramPrefix) // true
+isUrlPrefix('tg://resolve?domain=channel', telegramPrefix) // false
+
+// Неопределённый шаблон префикса
+isUrlPrefix('github.com', undefined) // false
+
+// Поддержка Unicode и диакритических знаков
+const zaloPrefix = /^zalo\.me(?:\/|$)/i
+isUrlPrefix('zalo.me/tiếngviệt', zaloPrefix) // true
+```
+

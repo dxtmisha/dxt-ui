@@ -34,7 +34,7 @@ import socialIconYoutube from './assets/socials/youtube.svg'
 import socialIconZalo from './assets/socials/zalo.svg'
 import socialIconZhihu from './assets/socials/zhihu.svg'
 
-import { MediaSocial } from './classes/MediaSocial'
+import { MediaSocialIcon } from './classes/MediaSocialIcon'
 import type { InputSocialIcons } from './types/socialTypes'
 
 /**
@@ -80,12 +80,12 @@ export const socialIcons: InputSocialIcons = {
 }
 
 /**
- * Registers default social network icons in the MediaSocial registry.
+ * Registers default social network icons in the MediaSocialIcon registry.
  *
- * Регистрирует стандартные иконки социальных сетей в реестре MediaSocial.
+ * Регистрирует стандартные иконки социальных сетей в реестре MediaSocialIcon.
  */
 export function registerSocialIcons(): void {
-  MediaSocial.addIcons(socialIcons)
+  MediaSocialIcon.addList(socialIcons)
 }
 
 export {

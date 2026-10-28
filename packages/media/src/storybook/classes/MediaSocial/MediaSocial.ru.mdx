@@ -11,33 +11,44 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - **Встроенный каталог платформ** — готовые конфигурации для более чем 35 международных и региональных социальных сетей (например, GitHub, Telegram, LinkedIn, X, ВКонтакте, WeChat, Zalo).
 - **Построение ссылок на профили** — автоматическое формирование канонических ссылок из имени пользователя или логина (`getUrl`).
 - **Извлечение имени пользователя** — парсинг полных ссылок на профили для безопасного извлечения логина путем удаления префиксов и суффиксов (`getValue`).
-- **Реестр кастомных иконок** — поддержка регистрации собственных SVG-иконок или имен иконок для отдельных платформ (`addIcon`, `addIcons`).
+- **Поддержка кастомных иконок** — автоматическое обогащение метаданных платформ кастомными векторными иконками через `MediaSocialIcon`.
 - **Статический интерфейс** — выполнение всех операций напрямую через класс без необходимости создания экземпляра.
 
 ## Методы
 
 ### Управление URL и значениями
 
-- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: string): string` — строит полную ссылку на профиль по имени пользователя или частичной строке с использованием настроенного префикса и суффикса платформы. Возвращает значение без изменений, если оно уже начинается с префикса.
-- `static getValue(code: InputSocialType | InputSocialTypeValue, url: string): string` — извлекает чистое имя пользователя или логин из полной ссылки на профиль путем удаления зарегистрированного префикса и суффикса.
+- `static getNickname(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — возвращает отформатированный никнейм с префиксом (например, `'@username'`) или пустую строку, если никнеймы не поддерживаются платформой или значение невалидно.
+- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — строит полную ссылку на профиль по имени пользователя или частичной строке с использованием настроенного префикса и суффикса платформы.
+- `static getValue(code: InputSocialType | InputSocialTypeValue, url: InputSocialValue): string` — извлекает чистое имя пользователя или логин из полной ссылки на профиль путем удаления префиксов, параметров запроса, хэшей и суффиксов.
 
-### Статический реестр и иконки
+### Каталог и получение данных
 
-- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — возвращает конфигурацию социальной сети по ее коду, дополненную кастомной иконкой при ее наличии.
+- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — возвращает конфигурацию социальной сети по ее коду, дополненную кастомной иконкой из `MediaSocialIcon` при ее наличии.
 - `static getList(): InputSocialList` — возвращает полный массив конфигураций всех поддерживаемых социальных сетей.
-- `static addIcon(code: InputSocialTypeValue, icon: string): void` — регистрирует кастомную иконку или SVG-разметку для указанной социальной сети.
-- `static addIcons(icons: InputSocialIcons): void` — пакетно регистрирует несколько кастомных иконок.
+
+### Кастомные иконки
+
+- `static addIcon(code: InputSocialType | InputSocialTypeValue, icon: string): typeof MediaSocial` — регистрирует кастомную строку иконки или SVG-разметку для указанной социальной сети через `MediaSocialIcon`. Возвращает конструктор класса для цепочечных вызовов.
+- `static addIcons(icons: InputSocialIcons): typeof MediaSocial` — регистрирует несколько кастомных иконок пакетом из переданного словаря через `MediaSocialIcon`. Возвращает конструктор класса для цепочечных вызовов.
 
 ## Типы
 
-### InputSocialItem
+### `InputSocialItem<Mask = unknown>`
 
 - `code: InputSocialType | InputSocialTypeValue` — уникальный код-идентификатор социальной сети.
 - `name: string` — отображаемое название социальной сети.
 - `prefix?: string` — префикс URL для ссылки на профиль (например, `'https://github.com/'`).
+- `prefixClear?: RegExp` — нормализованный шаблон регулярного выражения для сопоставления или очистки префикса URL.
 - `suffix?: string` — суффикс URL для ссылки на профиль.
-- `mask?: any` — конфигурация маски ввода для полей формы.
+- `mask?: Mask` — опциональная конфигурация маски ввода для полей формы.
 - `icon?: string` — имя или SVG-разметка иконки.
+- `nickname?: string` — символ или строка префикса никнейма (например, `'@'`).
+- `nicknameClear?: RegExp` — шаблон регулярного выражения для извлечения или очистки никнейма.
+
+### InputSocialIcons
+
+- `Partial<Record<InputSocialType, string>>` — словарь сопоставления кодов социальных сетей со строками разметки или идентификаторами иконок.
 
 ### InputSocialType
 
@@ -56,11 +67,19 @@ const profileUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
 const username = MediaSocial.getValue(InputSocialType.telegram, 'https://t.me/dxtmisha')
 // Результат: 'dxtmisha'
 
+// Форматирование никнейма с префиксом
+const nickname = MediaSocial.getNickname(InputSocialType.instagram, 'dxtmisha')
+// Результат: '@dxtmisha'
+
 // Получение объекта конфигурации
 const githubConfig = MediaSocial.get(InputSocialType.github)
 console.log(githubConfig?.name) // 'GitHub'
 console.log(githubConfig?.prefix) // 'https://github.com/'
 
-// Переопределение или добавление кастомной иконки
-MediaSocial.addIcon(InputSocialType.telegram, '<svg class="custom-tg">...</svg>')
+// Регистрация кастомных иконок напрямую через MediaSocial (делегируется в MediaSocialIcon)
+MediaSocial
+  .addIcon(InputSocialType.telegram, '<svg class="custom-tg">...</svg>')
+  .addIcons({
+    [InputSocialType.github]: '<svg class="custom-gh">...</svg>'
+  })
 ```

@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Functions/replacePrefix - Замена префикса URL для социальной сети'/>
+
+# `replacePrefix`
+
+Заменяет распознанный шаблон префикса домена в строке на полный канонический префикс URL на основе конфигурации социальной сети (`InputSocialItem`). Автоматически удаляет избыточные начальные слэши (`/`) и символы никнейма (`@`) из остатка строки для формирования стандартизированной ссылки на профиль.
+
+## Обзор
+
+При вводе идентификаторов социальных сетей пользователи используют различные форматы: простые никнеймы (`dxtmisha`), никнеймы с префиксом (`@dxtmisha`), домены с лишними слэшами (`github.com///dxtmisha`) или составные ссылки (`github.com/@dxtmisha`). Функция `replacePrefix` нормализует эти вариации в единый канонический URL с использованием свойств `prefixClear` и `prefix`.
+
+- **Нормализация префикса:** заменяет совпавший доменный префикс (`prefixClear`) на полный URL (`prefix`, например `https://github.com/`).
+- **Очистка разделителей и знака @:** удаляет одиночные и множественные начальные слэши и символы `@` (`///`, `@@`, `/@/@`) из оставшейся части пути.
+- **Сохранение вложенных путей и параметров:** полностью сохраняет вложенные пути, параметры запроса (`?tab=repositories`) и фрагменты хэша (`#readme`).
+- **Недеструктивность:** возвращает исходную строку без изменений, если конфигурация `prefixClear` или `prefix` отсутствует, либо если строка не совпадает с шаблоном префикса.
+- **Требования к шаблону:** регулярное выражение `prefixClear` в `InputSocialItem` должно начинаться с якоря `^` и не должно содержать stateful-флаги (`g` или `y`).
+
+## Параметры
+
+- `value: string` — Входной URL, ссылка или строка для форматирования.
+- `item: InputSocialItem` — Конфигурация социальной сети, содержащая `prefix`, `prefixClear` и метаданные.
+
+## Возвращает
+
+`string` — Возвращает отформатированный URL с полным префиксом либо исходную строку, если совпадение не найдено или замена не требуется.
+
+## Примеры использования
+
+```typescript
+import { replacePrefix, InputSocialType, type InputSocialItem } from '@dxtmisha/media'
+
+const githubItem: InputSocialItem = {
+  code: InputSocialType.github,
+  name: 'GitHub',
+  prefixClear: /^github\.com(?:\/|$)/i,
+  prefix: 'https://github.com/'
+}
+
+// Стандартная замена префикса
+replacePrefix('github.com/dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+replacePrefix('github.com', githubItem) // 'https://github.com/'
+
+// Очистка начальных символов @ и повторяющихся слэшей
+replacePrefix('github.com/@dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+replacePrefix('github.com///dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+replacePrefix('github.com/@/@dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+
+// Сохранение вложенных путей, query-параметров и хэшей
+replacePrefix('github.com/dxtmisha/dxt-ui?tab=stars#readme', githubItem)
+// 'https://github.com/dxtmisha/dxt-ui?tab=stars#readme'
+
+// Несовпадающие значения возвращаются без изменений
+replacePrefix('gitlab.com/dxtmisha', githubItem) // 'gitlab.com/dxtmisha'
+replacePrefix('dxtmisha', githubItem) // 'dxtmisha'
+```
+

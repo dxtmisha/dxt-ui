@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Functions/replacePrefix - Thay thế tiền tố URL cho mạng xã hội'/>
+
+# `replacePrefix`
+
+Thay thế mẫu tiền tố tên miền đã được nhận diện trong một chuỗi bằng tiền tố URL đầy đủ chuẩn hóa dựa trên cấu hình mạng xã hội (`InputSocialItem`). Tự động loại bỏ các dấu gạch chéo dư thừa ở đầu (`/`) và ký hiệu tên người dùng (`@`) khỏi phần còn lại để tạo liên kết hồ sơ chuẩn hóa.
+
+## Tổng quan
+
+Khi người dùng nhập tên tài khoản mạng xã hội, dữ liệu thường có nhiều định dạng khác nhau: tên người dùng đơn thuần (`dxtmisha`), tên người dùng có tiền tố `@` (`@dxtmisha`), tên miền chứa nhiều dấu gạch chéo (`github.com///dxtmisha`), hoặc liên kết hỗn hợp (`github.com/@dxtmisha`). Hàm `replacePrefix` chuẩn hóa các biến thể này thành một liên kết chuẩn bằng cách sử dụng các thuộc tính cấu hình `prefixClear` và `prefix`.
+
+- **Chuẩn hóa tiền tố:** Thay thế tiền tố tên miền khớp (`prefixClear`) bằng URL đầy đủ (`prefix`, ví dụ: `https://github.com/`).
+- **Dọn dẹp dấu phân cách và ký hiệu @:** Cắt bỏ các dấu gạch chéo đơn hoặc lặp lại cùng các ký hiệu `@` (`///`, `@@`, `/@/@`) ở đầu chuỗi còn lại.
+- **Bảo toàn đường dẫn con và tham số:** Giữ nguyên các đường dẫn lồng nhau, chuỗi truy vấn (`?tab=repositories`) và định danh thẻ hash (`#readme`).
+- **Không làm hỏng dữ liệu gốc:** Trả về chuỗi ban đầu nếu thiếu `prefixClear`, `prefix` hoặc giá trị không khớp với mẫu tiền tố.
+- **Quy chuẩn mẫu RegExp:** Biểu thức chính quy `prefixClear` trong `InputSocialItem` nên bắt đầu bằng ký tự neo `^` và không được sử dụng các cờ có trạng thái (`g` hoặc `y`).
+
+## Tham số
+
+- `value: string` — Chuỗi URL, liên kết hoặc tên người dùng đầu vào cần định dạng.
+- `item: InputSocialItem` — Cấu hình mạng xã hội chứa `prefix`, `prefixClear` và siêu dữ liệu.
+
+## Trả về
+
+`string` — Trả về URL đã được định dạng với tiền tố đầy đủ, hoặc chuỗi ban đầu nếu không có mẫu nào khớp hoặc không cần thay thế.
+
+## Ví dụ sử dụng
+
+```typescript
+import { replacePrefix, InputSocialType, type InputSocialItem } from '@dxtmisha/media'
+
+const githubItem: InputSocialItem = {
+  code: InputSocialType.github,
+  name: 'GitHub',
+  prefixClear: /^github\.com(?:\/|$)/i,
+  prefix: 'https://github.com/'
+}
+
+// Thay thế tiền tố tiêu chuẩn
+replacePrefix('github.com/dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+replacePrefix('github.com', githubItem) // 'https://github.com/'
+
+// Cắt bỏ ký tự @ và các dấu gạch chéo dư thừa ở đầu
+replacePrefix('github.com/@dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+replacePrefix('github.com///dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+replacePrefix('github.com/@/@dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+
+// Bảo toàn đường dẫn con, tham số truy vấn và thẻ hash
+replacePrefix('github.com/dxtmisha/dxt-ui?tab=stars#readme', githubItem)
+// 'https://github.com/dxtmisha/dxt-ui?tab=stars#readme'
+
+// Giá trị không khớp được giữ nguyên
+replacePrefix('gitlab.com/dxtmisha', githubItem) // 'gitlab.com/dxtmisha'
+replacePrefix('dxtmisha', githubItem) // 'dxtmisha'
+```
+

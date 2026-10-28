@@ -1,0 +1,84 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Functions/toLower - Convert URL protocol and domain to lowercase'/>
+
+# `toLower`
+
+A string and URL normalization utility that converts the protocol and domain portion of a URL to lowercase while strictly preserving the casing of path segments, query parameters, hash fragments, and user handles.
+
+## Overview
+
+According to **RFC 3986**, the URI scheme (`protocol`) and host (`domain`) are case-insensitive, whereas path segments, usernames, and query strings may be case-sensitive depending on the destination server (for example, YouTube video IDs like `/watch?v=B_123AbC` or case-sensitive GitHub usernames).
+
+`toLower` prevents corrupting user profiles and case-sensitive resources by selectively lowercasing only the authority and scheme components.
+
+- **Selective Normalization:** Lowercases only the protocol and domain, leaving paths, queries, and fragments untouched.
+- **Broad Scheme & Pattern Support:** Recognizes absolute schemes (`https:`, `http:`), protocol-relative URLs (`//`), `www.` prefixes, non-slashed protocols (`skype:`, `mailto:`, `tel:`), deep links (`tg:`, `viber:`), and bare domains followed by paths.
+- **Accidental Domain Protection:** Bare domain-like strings without a trailing slash (e.g. `GITHUB.COM` or user handles like `FIRST.LAST`) are left unchanged to avoid misinterpreting plain text as web addresses.
+- **Safe Nullish & Numeric Coercion:** Trims surrounding whitespace, safely returns an empty string `''` for `null`, `undefined`, or empty input, and cleanly converts numbers to strings (preserving `0` and negative values).
+- **ReDoS Protection & Linear Time:** Uses a single, non-backtracking regular expression ($O(n)$) without nested quantifiers, guaranteeing complete resilience against Regular Expression Denial of Service attacks.
+- **Pure & Deterministic:** Stateless and idempotent (`toLower(toLower(url)) === toLower(url)`), without side effects or mutations.
+
+## Parameters
+
+- `value?: InputSocialValue` — The URL, string, number, `null`, or `undefined` to normalize.
+
+## Returns
+
+`string` — Returns the trimmed string with the URL protocol and domain converted to lowercase, or an empty string `''` if the input is nullish.
+
+## Usage Examples
+
+```typescript
+import { toLower } from '@dxtmisha/media'
+
+// Standard web URLs (protocol and domain lowercased, path preserved)
+toLower('HTTPS://GITHUB.COM/DxTMiShA') // 'https://github.com/DxTMiShA'
+toLower('HTTP://VK.COM/MyProfile') // 'http://vk.com/MyProfile'
+toLower('https://INSTAGRAM.COM/p/B_123AbC/') // 'https://instagram.com/p/B_123AbC/'
+
+// Protocol-relative and www-prefixed URLs
+toLower('//CDN.EXAMPLE.COM/Assets/Logo.PNG') // '//cdn.example.com/Assets/Logo.PNG'
+toLower('WWW.GITHUB.COM/DxTMiShA') // 'www.github.com/DxTMiShA'
+toLower('WWW.SITE.COM') // 'www.site.com'
+
+// Bare domains followed by a path
+toLower('GITHUB.COM/DxTMiShA') // 'github.com/DxTMiShA'
+toLower('MY-DOMAIN.ORG/Path/To/Page') // 'my-domain.org/Path/To/Page'
+
+// Bare domain without slash (preserved as text)
+toLower('GITHUB.COM') // 'GITHUB.COM'
+
+// Non-slashed schemes (protocols lowercased, target preserved)
+toLower('SKYPE:DxTMiShA') // 'skype:DxTMiShA'
+toLower('MAILTO:Support@Example.com') // 'mailto:Support@Example.com'
+toLower('TEL:+84987654321') // 'tel:+84987654321'
+
+// Deep links and mobile app schemes
+toLower('TG://resolve?domain=DxTMiShA') // 'tg://resolve?domain=DxTMiShA'
+toLower('VIBER://chat?number=%2B84987654321') // 'viber://chat?number=%2B84987654321'
+
+// URLs with ports, query parameters, and fragments
+toLower('HTTPS://LOCALHOST:3000/ApiPath') // 'https://localhost:3000/ApiPath'
+toLower('HTTPS://GITHUB.COM/Search?Q=TypeScript&Sort=Stars')
+// 'https://github.com/Search?Q=TypeScript&Sort=Stars'
+toLower('HTTPS://GITHUB.COM/dxtmisha#MySection')
+// 'https://github.com/dxtmisha#MySection'
+
+// Non-URL strings and handles (casing preserved)
+toLower('@DxTMiShA') // '@DxTMiShA'
+toLower('userName123') // 'userName123'
+
+// Unicode and diacritic paths
+toLower('HTTPS://VK.COM/Михаил') // 'https://vk.com/Михаил'
+toLower('HTTPS://ZALO.ME/TiếngViệt') // 'https://zalo.me/TiếngViệt'
+
+// Nullish, empty, and numeric values
+toLower(null) // ''
+toLower(undefined) // ''
+toLower() // ''
+toLower('   ') // ''
+toLower(0) // '0'
+toLower(-42) // '-42'
+```
+

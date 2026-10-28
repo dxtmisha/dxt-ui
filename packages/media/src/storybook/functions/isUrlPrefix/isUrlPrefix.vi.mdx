@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Functions/isUrlPrefix - Kiểm tra khớp mẫu tiền tố URL'/>
+
+# `isUrlPrefix`
+
+Hàm tiện ích hỗ trợ kiểm tra xem một chuỗi hoặc URL có khớp với mẫu biểu thức chính quy (RegExp) của tiền tố URL đã chỉ định hay không. Hàm xử lý an toàn các mẫu không bắt buộc hoặc chưa được xác định (`undefined`), trả về kiểu boolean nguyên thủy.
+
+## Tổng quan
+
+`isUrlPrefix` được sử dụng nội bộ trong các bộ xử lý liên kết mạng xã hội và trường nhập liệu để xác minh xem tên người dùng, liên kết hoặc dữ liệu người dùng nhập có bắt đầu bằng tiền tố tên miền hoặc giao thức đã nhận diện trước khi tiến hành chuẩn hóa hay không.
+
+- **Xử lý an toàn khi thiếu mẫu:** Trả về `false` một cách an toàn nếu tham số `prefix` là `undefined` hoặc rỗng mà không gây ra lỗi runtime.
+- **Xác thực bằng biểu thức chính quy:** Sử dụng cơ chế so khớp tiêu chuẩn (`RegExp.test`) để kiểm tra tiền tố tên miền và giao thức.
+- **Hàm thuần túy & Tất định:** Không làm thay đổi giá trị đầu vào, không tạo ra tác dụng phụ (side-effects), duy trì hiệu suất $O(1)$.
+
+## Tham số
+
+- `value: string` — Chuỗi hoặc URL cần kiểm tra.
+- `prefix?: RegExp` — Mẫu biểu thức chính quy của tiền tố URL (tùy chọn).
+
+## Trả về
+
+`boolean` — Trả về `true` nếu chuỗi khớp với mẫu tiền tố, ngược lại trả về `false`.
+
+## Ví dụ sử dụng
+
+```typescript
+import { isUrlPrefix } from '@dxtmisha/media'
+
+// Mẫu tiền tố tên miền
+const githubPrefix = /^github\.com(?:\/|$)/i
+isUrlPrefix('github.com/dxtmisha', githubPrefix) // true
+isUrlPrefix('github.com', githubPrefix) // true
+isUrlPrefix('github.com/dxtmisha/dxt-ui', githubPrefix) // true
+isUrlPrefix('gitlab.com/dxtmisha', githubPrefix) // false
+isUrlPrefix('mygithub.com', githubPrefix) // false
+
+// Tiền tố có chứa giao thức
+const telegramPrefix = /^https?:\/\/t\.me(?:\/|$)/i
+isUrlPrefix('https://t.me/channel', telegramPrefix) // true
+isUrlPrefix('http://t.me/channel', telegramPrefix) // true
+isUrlPrefix('tg://resolve?domain=channel', telegramPrefix) // false
+
+// Trường hợp không truyền mẫu tiền tố
+isUrlPrefix('github.com', undefined) // false
+
+// Hỗ trợ Unicode và dấu tiếng Việt
+const zaloPrefix = /^zalo\.me(?:\/|$)/i
+isUrlPrefix('zalo.me/tiếngviệt', zaloPrefix) // true
+```
+

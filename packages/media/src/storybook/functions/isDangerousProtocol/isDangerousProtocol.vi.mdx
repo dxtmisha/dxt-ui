@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Functions/isDangerousProtocol - Phát hiện các giao thức URL nguy hiểm'/>
+
+# `isDangerousProtocol`
+
+Hàm tiện ích bảo mật được thiết kế để phát hiện các giao thức URL thực thi nguy hiểm (như `javascript:`, `data:` và `vbscript:`). Giúp ngăn chặn hiệu quả các lỗ hổng Cross-Site Scripting (XSS) và tấn công tiêm giao thức độc hại trong các liên kết, dữ liệu người dùng nhập và bộ xử lý hồ sơ mạng xã hội.
+
+## Bảo vệ chống vượt qua bộ lọc (Evasion Protection)
+
+Kẻ tấn công thường che giấu các giao thức nguy hiểm bằng nhiều kỹ thuật vượt kiểm tra (evasion) mà trình duyệt tự động chuẩn hóa trước khi thực thi mã kịch bản. `isDangerousProtocol` vô hiệu hóa các vectơ tấn công này:
+
+- **Loại bỏ khoảng trắng:** Cắt bỏ các ký tự khoảng trắng ASCII ở đầu, tab, ký tự xuống dòng và các dấu phân cách khoảng trắng Unicode (như Non-Breaking Space `\u00A0`, Ideographic Space `\u3000`, khoảng trắng toán học, dấu ngắt dòng và đoạn văn).
+- **Lọc ký tự điều khiển:** Bỏ qua các mã điều khiển ASCII C0 (`0x00–0x1F`, bao gồm byte rỗng `\0`, tab và xuống dòng), ký tự `DEL` (`0x7F`) và các ký tự điều khiển C1 (`0x80–0x9F`) ở bất kỳ vị trí nào bên trong giao thức.
+- **Vô hiệu hóa ký tự độ rộng bằng 0:** Phát hiện và bỏ qua các ký tự định dạng vô hình trong Unicode (Zero-Width Space `\u200B`, Zero-Width Non-Joiner `\u200C`, Zero-Width Joiner `\u200D`, Word Joiner `\u2060` và Byte Order Mark `\uFEFF`).
+- **Khả năng chống tấn công DoS & ReDoS:** Quá trình phân tích cú pháp bị giới hạn bởi bộ đệm độ dài giao thức cố định (`MAX_PROTOCOL_SCHEME_LENGTH = 15`), đảm bảo thời gian chạy $O(1)$ và không cấp phát thêm bộ nhớ cho chuỗi lớn ngay cả khi xử lý chuỗi nhiều megabyte.
+- **Tối ưu hóa thoát sớm:** Hoàn toàn bỏ qua việc thực thi biểu thức chính quy (RegExp) đối với các chuỗi không chứa dấu hai chấm `:`, tối ưu hóa tốc độ tối đa cho các tên người dùng và mã định danh thông thường.
+
+## Tham số
+
+- `value: unknown` — Giá trị cần kiểm tra (chuỗi, URL, tên người dùng hoặc dữ liệu bất kỳ trong runtime).
+
+## Trả về
+
+`boolean` — Trả về `true` nếu giá trị chứa giao thức thực thi nguy hiểm (`javascript:`, `data:` hoặc `vbscript:`), và `false` trong các trường hợp còn lại.
+
+## Ví dụ sử dụng
+
+```typescript
+import { isDangerousProtocol } from '@dxtmisha/media'
+
+// Liên kết trực tiếp chứa giao thức nguy hiểm
+isDangerousProtocol('javascript:alert(1)') // true
+isDangerousProtocol('data:text/html,<script>alert(1)</script>') // true
+isDangerousProtocol('vbscript:msgbox(1)') // true
+
+// Nỗ lực che giấu và vượt qua bộ lọc
+isDangerousProtocol('   javascript:alert(1)') // true (khoảng trắng ở đầu)
+isDangerousProtocol('\u00A0javascript:alert(1)') // true (Unicode NBSP)
+isDangerousProtocol('java\0script:alert(1)') // true (chèn byte rỗng \0)
+isDangerousProtocol('j\u200Ba\uFEFFv\u2060ascript:alert(1)') // true (ký tự độ rộng bằng 0)
+isDangerousProtocol('JAVASCRIPT:void(0)') // true (không phân biệt chữ hoa/thường)
+
+// Các giao thức tiêu chuẩn an toàn, tên miền và tên người dùng
+isDangerousProtocol('https://github.com/dxtmisha') // false
+isDangerousProtocol('mailto:support@example.com') // false
+isDangerousProtocol('tel:+1234567890') // false
+isDangerousProtocol('dxtmisha') // false
+isDangerousProtocol('@dxtmisha') // false
+isDangerousProtocol('/path/to/resource') // false
+
+// Các giá trị không phải chuỗi hoặc rỗng
+isDangerousProtocol(undefined) // false
+isDangerousProtocol(null) // false
+isDangerousProtocol(12345) // false
+```
+

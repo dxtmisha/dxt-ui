@@ -1,0 +1,84 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Functions/toLower - Приведение протокола и домена URL к нижнему регистру'/>
+
+# `toLower`
+
+Вспомогательная функция для нормализации строк и URL-адресов, которая переводит протокол и доменное имя в нижний регистр, строго сохраняя исходный регистр символов в путях, параметрах запроса, хэш-фрагментах и именах пользователей.
+
+## Обзор
+
+Согласно стандарту **RFC 3986**, схема URI (`protocol`) и хост (`domain`) нечувствительны к регистру, тогда как сегменты пути, имена пользователей и строки запроса могут быть чувствительны к регистру в зависимости от целевого веб-сервера (например, идентификаторы видео YouTube `/watch?v=B_123AbC` или чувствительные к регистру никнеймы).
+
+Функция `toLower` исключает повреждение ссылок на профили пользователей и регистрозависимых ресурсов за счёт селективного перевода в нижний регистр только схемы и доменной части URL.
+
+- **Селективная нормализация:** приводит к нижнему регистру только протокол и домен, не затрагивая регистр путей, параметров запроса и хэшей.
+- **Широкая поддержка протоколов и схем:** распознаёт абсолютные схемы (`https:`, `http:`), адреса относительно протокола (`//`), префиксы `www.`, протоколы без слэшей (`skype:`, `mailto:`, `tel:`), диплинки мобильных приложений (`tg:`, `viber:`) и доменные имена со слэшем пути.
+- **Защита обычного текста:** доменные имена без завершающего слэша (например, `GITHUB.COM` или строки вида `FIRST.LAST`) остаются неизменными, предотвращая ошибочное распознавание обычного текста как адреса сайта.
+- **Безопасная обработка null-значений и чисел:** удаляет внешние пробелы, безопасно возвращает пустую строку `''` для `null`, `undefined` и пустых значений, а также корректно преобразует числа в строки (сохраняя `0` и отрицательные значения).
+- **Защита от ReDoS и линейная сложность:** использует одно регулярное выражение линейной сложности ($O(n)$) без вложенных квантификаторов, полностью исключая атаки отказа в обслуживании через регулярные выражения (ReDoS).
+- **Чистота и детерминированность:** функция не содержит внутреннего состояния, является идемпотентной (`toLower(toLower(url)) === toLower(url)`) и не производит побочных эффектов.
+
+## Параметры
+
+- `value?: InputSocialValue` — Нормализуемый URL, строка, число, `null` или `undefined`.
+
+## Возвращает
+
+`string` — Возвращает очищенную строку с протоколом и доменом URL в нижнем регистре, либо пустую строку `''`, если входное значение является null-подобным.
+
+## Примеры использования
+
+```typescript
+import { toLower } from '@dxtmisha/media'
+
+// Стандартные веб-адреса (протокол и домен в нижнем регистре, путь сохранён)
+toLower('HTTPS://GITHUB.COM/DxTMiShA') // 'https://github.com/DxTMiShA'
+toLower('HTTP://VK.COM/MyProfile') // 'http://vk.com/MyProfile'
+toLower('https://INSTAGRAM.COM/p/B_123AbC/') // 'https://instagram.com/p/B_123AbC/'
+
+// Protocol-relative и www-ссылки
+toLower('//CDN.EXAMPLE.COM/Assets/Logo.PNG') // '//cdn.example.com/Assets/Logo.PNG'
+toLower('WWW.GITHUB.COM/DxTMiShA') // 'www.github.com/DxTMiShA'
+toLower('WWW.SITE.COM') // 'www.site.com'
+
+// Доменные имена со слэшем пути
+toLower('GITHUB.COM/DxTMiShA') // 'github.com/DxTMiShA'
+toLower('MY-DOMAIN.ORG/Path/To/Page') // 'my-domain.org/Path/To/Page'
+
+// Домен без слэша (сохраняется как текст)
+toLower('GITHUB.COM') // 'GITHUB.COM'
+
+// Протоколы без слэшей (схема в нижнем регистре, значение сохранено)
+toLower('SKYPE:DxTMiShA') // 'skype:DxTMiShA'
+toLower('MAILTO:Support@Example.com') // 'mailto:Support@Example.com'
+toLower('TEL:+84987654321') // 'tel:+84987654321'
+
+// Диплинки и схемы приложений
+toLower('TG://resolve?domain=DxTMiShA') // 'tg://resolve?domain=DxTMiShA'
+toLower('VIBER://chat?number=%2B84987654321') // 'viber://chat?number=%2B84987654321'
+
+// URL с указанием портов, параметров запроса и хэшей
+toLower('HTTPS://LOCALHOST:3000/ApiPath') // 'https://localhost:3000/ApiPath'
+toLower('HTTPS://GITHUB.COM/Search?Q=TypeScript&Sort=Stars')
+// 'https://github.com/Search?Q=TypeScript&Sort=Stars'
+toLower('HTTPS://GITHUB.COM/dxtmisha#MySection')
+// 'https://github.com/dxtmisha#MySection'
+
+// Обычные строки и никнеймы (регистр сохраняется)
+toLower('@DxTMiShA') // '@DxTMiShA'
+toLower('userName123') // 'userName123'
+
+// Unicode и диакритические знаки в путях
+toLower('HTTPS://VK.COM/Михаил') // 'https://vk.com/Михаил'
+toLower('HTTPS://ZALO.ME/TiếngViệt') // 'https://zalo.me/TiếngViệt'
+
+// Null-подобные, пустые и числовые значения
+toLower(null) // ''
+toLower(undefined) // ''
+toLower() // ''
+toLower('   ') // ''
+toLower(0) // '0'
+toLower(-42) // '-42'
+```
+

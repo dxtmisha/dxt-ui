@@ -11,33 +11,44 @@ The `MediaSocial` class is a **Primary Class (Static)** designed for managing so
 - **Built-in Social Catalog** — preconfigured settings for over 35 global and regional social networks (e.g., GitHub, Telegram, LinkedIn, X, WeChat, Zalo).
 - **Profile URL Construction** — automatically builds canonical profile links from raw usernames or handles (`getUrl`).
 - **Username Extraction** — parses full profile URLs to safely extract handles by stripping prefixes and suffixes (`getValue`).
-- **Custom Icon Registry** — allows registering custom SVG icons or icon names per platform (`addIcon`, `addIcons`).
+- **Custom Icon Support** — seamlessly enriches social metadata items with custom vector icons registered via `MediaSocialIcon`.
 - **Static Interface** — perform all operations directly on the class without manual instantiation.
 
 ## Methods
 
 ### URL and Value Management
 
-- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: string): string` — constructs the full profile URL from a username or partial string using the platform's configured prefix and suffix. Returns the value unchanged if it already includes the prefix.
-- `static getValue(code: InputSocialType | InputSocialTypeValue, url: string): string` — extracts the raw username or profile handle from a full profile URL by removing the registered prefix and suffix.
+- `static getNickname(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — returns formatted nickname with prefix (e.g. `'@username'`) or an empty string if invalid or unsupported.
+- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — constructs the full profile URL from a username or partial string using the platform's configured prefix and suffix.
+- `static getValue(code: InputSocialType | InputSocialTypeValue, url: InputSocialValue): string` — extracts the raw username or profile handle from a full profile URL by removing prefixes, queries, hashes, and suffixes.
 
-### Static Registry & Icons
+### Catalog & Retrieval
 
-- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — returns the social network configuration by its code, merged with any custom icon registered for that platform.
+- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — returns the social network configuration by its code, merged with any custom icon registered for that platform in `MediaSocialIcon`.
 - `static getList(): InputSocialList` — returns the complete array of all supported social network configuration items.
-- `static addIcon(code: InputSocialTypeValue, icon: string): void` — registers a custom icon string or SVG markup for the specified social network.
-- `static addIcons(icons: InputSocialIcons): void` — registers multiple custom icons in batch.
+
+### Custom Icons
+
+- `static addIcon(code: InputSocialType | InputSocialTypeValue, icon: string): typeof MediaSocial` — registers a custom icon string or SVG markup for the specified social network via `MediaSocialIcon`. Returns the class constructor for method chaining.
+- `static addIcons(icons: InputSocialIcons): typeof MediaSocial` — registers multiple custom icons in batch from a dictionary via `MediaSocialIcon`. Returns the class constructor for method chaining.
 
 ## Types
 
-### InputSocialItem
+### `InputSocialItem<Mask = unknown>`
 
 - `code: InputSocialType | InputSocialTypeValue` — unique identifier code for the social network.
 - `name: string` — human-readable display name of the social platform.
 - `prefix?: string` — URL prefix for user profile links (e.g. `'https://github.com/'`).
+- `prefixClear?: RegExp` — normalized URL prefix pattern for stripping or matching profile links.
 - `suffix?: string` — URL suffix for user profile links.
-- `mask?: any` — optional input mask configuration for form controls.
+- `mask?: Mask` — optional input mask configuration for form controls.
 - `icon?: string` — resolved or custom icon markup/name.
+- `nickname?: string` — nickname prefix symbol or string (e.g. `'@'`).
+- `nicknameClear?: RegExp` — pattern to match or clean nickname value.
+
+### InputSocialIcons
+
+- `Partial<Record<InputSocialType, string>>` — dictionary mapping social network codes to icon markup strings or identifiers.
 
 ### InputSocialType
 
@@ -56,11 +67,19 @@ const profileUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
 const username = MediaSocial.getValue(InputSocialType.telegram, 'https://t.me/dxtmisha')
 // Result: 'dxtmisha'
 
+// Format nickname with prefix
+const nickname = MediaSocial.getNickname(InputSocialType.instagram, 'dxtmisha')
+// Result: '@dxtmisha'
+
 // Retrieve configuration item
 const githubConfig = MediaSocial.get(InputSocialType.github)
 console.log(githubConfig?.name) // 'GitHub'
 console.log(githubConfig?.prefix) // 'https://github.com/'
 
-// Override or register a custom icon
-MediaSocial.addIcon(InputSocialType.telegram, '<svg class="custom-tg">...</svg>')
+// Register custom icons directly via MediaSocial (delegates to MediaSocialIcon)
+MediaSocial
+  .addIcon(InputSocialType.telegram, '<svg class="custom-tg">...</svg>')
+  .addIcons({
+    [InputSocialType.github]: '<svg class="custom-gh">...</svg>'
+  })
 ```

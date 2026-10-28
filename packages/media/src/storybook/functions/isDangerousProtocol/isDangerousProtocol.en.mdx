@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Functions/isDangerousProtocol - Detect dangerous URL protocols'/>
+
+# `isDangerousProtocol`
+
+A security utility function that detects dangerous executable URL schemes (such as `javascript:`, `data:`, and `vbscript:`) to prevent Cross-Site Scripting (XSS) and protocol injection vulnerabilities in links, user inputs, and social media profile handlers.
+
+## Security & Evasion Protection
+
+Attackers often obfuscate dangerous protocols using evasion techniques that browsers normalize prior to script execution. `isDangerousProtocol` reliably neutralizes these bypass vectors:
+
+- **Whitespace Stripping:** Removes leading ASCII spaces, tabs, newlines, and Unicode whitespace separators (such as Non-Breaking Space `\u00A0`, Ideographic Space `\u3000`, En/Em Quads, Math Space, and Line/Paragraph separators).
+- **Control Character Filtering:** Ignores ASCII C0 control codes (`0x00–0x1F`, including null bytes `\0`, tabs, and carriage returns), `DEL` (`0x7F`), and C1 control characters (`0x80–0x9F`) anywhere inside the scheme.
+- **Unicode Zero-Width Evasion:** Detects and ignores invisible zero-width formatting characters (Zero-Width Space `\u200B`, Zero-Width Non-Joiner `\u200C`, Zero-Width Joiner `\u200D`, Word Joiner `\u2060`, and Byte Order Mark `\uFEFF`).
+- **DoS & ReDoS Resilience:** Operates with a bounded scheme length buffer (`MAX_PROTOCOL_SCHEME_LENGTH = 15`), ensuring $O(1)$ runtime and eliminating full-string memory allocations even when processing multi-megabyte payloads.
+- **Optimized Early Exit:** Bypasses regular expression execution entirely for strings without a colon `:`, optimizing performance for standard handles and usernames.
+
+## Parameters
+
+- `value: unknown` — The value to inspect (string, URL, username, or arbitrary runtime input).
+
+## Returns
+
+`boolean` — Returns `true` if the value contains a dangerous executable scheme (`javascript:`, `data:`, or `vbscript:`), and `false` otherwise.
+
+## Usage Examples
+
+```typescript
+import { isDangerousProtocol } from '@dxtmisha/media'
+
+// Direct dangerous protocol URLs
+isDangerousProtocol('javascript:alert(1)') // true
+isDangerousProtocol('data:text/html,<script>alert(1)</script>') // true
+isDangerousProtocol('vbscript:msgbox(1)') // true
+
+// Obfuscated and evasion attempts
+isDangerousProtocol('   javascript:alert(1)') // true (leading spaces)
+isDangerousProtocol('\u00A0javascript:alert(1)') // true (Unicode NBSP)
+isDangerousProtocol('java\0script:alert(1)') // true (embedded null byte)
+isDangerousProtocol('j\u200Ba\uFEFFv\u2060ascript:alert(1)') // true (zero-width characters)
+isDangerousProtocol('JAVASCRIPT:void(0)') // true (case-insensitive)
+
+// Safe standard protocols, domains, and usernames
+isDangerousProtocol('https://github.com/dxtmisha') // false
+isDangerousProtocol('mailto:support@example.com') // false
+isDangerousProtocol('tel:+1234567890') // false
+isDangerousProtocol('dxtmisha') // false
+isDangerousProtocol('@dxtmisha') // false
+isDangerousProtocol('/path/to/resource') // false
+
+// Non-string or nullish runtime values
+isDangerousProtocol(undefined) // false
+isDangerousProtocol(null) // false
+isDangerousProtocol(12345) // false
+```
+

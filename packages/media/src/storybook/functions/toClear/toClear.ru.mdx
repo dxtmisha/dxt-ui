@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Functions/toClear - Очистка протокола, префикса www и символов @'/>
+
+# `toClear`
+
+Вспомогательная функция для предварительной очистки и нормализации URL-адресов и никнеймов. Удаляет веб-протоколы (`http`, `https`), относительные слэши (`//`, `///`), префиксы поддомена `www.` и начальные символы `@`, приводя доменную часть к нижнему регистру и строго сохраняя регистр путей, параметров запроса и никнеймов.
+
+## Обзор
+
+При обработке пользовательского ввода в полях профилей социальных сетей пользователи могут вводить значения в самых разных форматах: полную ссылку (`https://github.com/dxtmisha`), адрес с поддоменом (`www.instagram.com/my_profile`), относительный URL (`//vk.com/id123`), никнейм с собачкой (`@dxtmisha`, `@@user`) или обычный логин (`john_doe`).
+
+Функция `toClear` унифицирует входные данные к чистому виду:
+
+- **Удаление веб-префиксов:** убирает протоколы `http:`, `https:`, протокольные слэши (от 2 и более, включая `//`, `///`), префикс `www.` и цепочки символов `@` в начале строки.
+- **Интеллектуальная нормализация регистра:** благодаря вызову [`toLower`](?path=/docs/dxtmisha-ru-media-functions-tolower--docs) приводит доменную часть к нижнему регистру в соответствии с **RFC 3986**, но сохраняет регистр символов в никнеймах, путях и параметрах (например, `github.com/DxTMiShA` или `@MyProfile`).
+- **Сохранение `@` внутри путей:** символы `@`, находящиеся внутри пути после домена (например, `tiktok.com/@CoolUser`), не затрагиваются и сохраняются.
+- **Защита одиночного слэша:** одиночный начальный слэш (например, `/dxtmisha`) не удаляется, так как очищаются только составные протокольные слэши (от 2 и выше).
+- **Безопасная обработка null-подобных значений и чисел:** обрезает внешние пробелы, возвращает пустую строку `''` для `null`, `undefined` и при вызове без аргументов `toClear()`, а также корректно преобразует числа в строки (сохраняя `0` и отрицательные значения).
+- **Защита от ReDoS и линейная сложность ($O(n)$):** регулярное выражение не содержит пересекающихся квантификаторов и выполняется за линейное время, полностью исключая уязвимости регулярных выражений.
+- **Чистота и идемпотентность:** функция является чистой (pure) и идемпотентной (`toClear(toClear(val)) === toClear(val)`).
+
+## Параметры
+
+- `value?: InputSocialValue` — Нормализуемый URL, строка, число, `null` или `undefined`.
+
+## Возвращает
+
+`string` — Очищенная строка без протокола, `www.` и начальных символов `@`, либо пустая строка `''` для null-подобных значений.
+
+## Примеры использования
+
+```typescript
+import { toClear } from '@dxtmisha/media'
+
+// Очистка стандартных веб-протоколов (http / https)
+toClear('https://github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('http://github.com/dxtmisha') // 'github.com/dxtmisha'
+
+// Очистка относительных и множественных слэшей (от 2 и выше)
+toClear('//github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('///github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('https:////github.com/dxtmisha') // 'github.com/dxtmisha'
+
+// Очистка поддомена www с протоколом или без него
+toClear('www.github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('https://www.github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('//www.github.com/dxtmisha') // 'github.com/dxtmisha'
+
+// Очистка лидирующих символов @ (одиночных и множественных)
+toClear('@dxtmisha') // 'dxtmisha'
+toClear('@@dxtmisha') // 'dxtmisha'
+toClear('https://@dxtmisha') // 'dxtmisha'
+toClear('www.@dxtmisha') // 'dxtmisha'
+
+// Приведение домена к нижнему регистру с сохранением регистра пути и никнейма
+toClear('HTTPS://GITHUB.COM/DxTMiShA') // 'github.com/DxTMiShA'
+toClear('WWW.INSTAGRAM.COM/MyProfile') // 'instagram.com/MyProfile'
+toClear('@CamelCaseUser') // 'CamelCaseUser'
+
+// Сохранение @ внутри пути URL после домена
+toClear('https://www.tiktok.com/@CoolUser') // 'tiktok.com/@CoolUser'
+
+// Строки без префиксов остаются без изменений
+toClear('dxtmisha') // 'dxtmisha'
+toClear('john_doe') // 'john_doe'
+
+// Не-http протоколы не удаляются
+toClear('skype:DxTMiShA') // 'skype:DxTMiShA'
+toClear('mailto:support@example.com') // 'mailto:support@example.com'
+
+// Поддержка Unicode и эмодзи
+toClear('https://вконтакте.рф/id123') // 'вконтакте.рф/id123'
+toClear('https://zalo.me/nguyễn') // 'zalo.me/nguyễn'
+toClear('https://t.me/🚀channel') // 't.me/🚀channel'
+toClear('@🚀rocket') // '🚀rocket'
+
+// Null-подобные значения, вызов без аргументов и числа
+toClear() // ''
+toClear(null) // ''
+toClear(undefined) // ''
+toClear('   ') // ''
+toClear(0) // '0'
+toClear(12345) // '12345'
+```
+

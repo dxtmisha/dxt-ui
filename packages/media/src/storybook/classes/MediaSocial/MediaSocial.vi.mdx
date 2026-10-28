@@ -11,33 +11,44 @@ Lớp `MediaSocial` là một **Lớp chính (Tĩnh)** được thiết kế đ�
 - **Danh mục mạng xã hội tích hợp** — hỗ trợ sẵn hơn 35 mạng xã hội toàn cầu và khu vực (như GitHub, Telegram, LinkedIn, X, WeChat, Zalo).
 - **Tạo URL hồ sơ cá nhân** — tự động xây dựng liên kết hồ sơ chuẩn từ tên người dùng hoặc handle (`getUrl`).
 - **Trích xuất tên người dùng** — phân tích liên kết hồ sơ đầy đủ để trích xuất handle một cách an toàn bằng cách loại bỏ tiền tố và hậu tố (`getValue`).
-- **Đăng ký biểu tượng tùy chỉnh** — hỗ trợ đăng ký biểu tượng SVG hoặc tên biểu tượng tùy chỉnh cho từng nền tảng (`addIcon`, `addIcons`).
+- **Hỗ trợ biểu tượng tùy chỉnh** — tự động làm giàu dữ liệu phần tử mạng xã hội với biểu tượng vector tùy chỉnh thông qua `MediaSocialIcon`.
 - **Giao diện tĩnh tiện lợi** — thực thi mọi tác vụ trực tiếp trên lớp mà không cần khởi tạo đối tượng thủ công.
 
 ## Phương thức
 
 ### Quản lý URL và giá trị
 
-- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: string): string` — xây dựng URL hồ sơ đầy đủ từ tên người dùng hoặc chuỗi giá trị dựa trên tiền tố và hậu tố đã cấu hình của nền tảng. Trả về nguyên giá trị nếu nó đã bắt đầu bằng tiền tố.
-- `static getValue(code: InputSocialType | InputSocialTypeValue, url: string): string` — trích xuất tên người dùng hoặc handle gốc từ một URL hồ sơ đầy đủ bằng cách loại bỏ tiền tố và hậu tố đã đăng ký.
+- `static getNickname(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — trả về biệt danh đã định dạng với tiền tố (ví dụ: `'@username'`) hoặc chuỗi rỗng nếu nền tảng không hỗ trợ biệt danh hoặc giá trị không hợp lệ.
+- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — xây dựng URL hồ sơ đầy đủ từ tên người dùng hoặc chuỗi giá trị dựa trên tiền tố và hậu tố đã cấu hình của nền tảng.
+- `static getValue(code: InputSocialType | InputSocialTypeValue, url: InputSocialValue): string` — trích xuất tên người dùng hoặc handle gốc từ một URL hồ sơ đầy đủ bằng cách loại bỏ tiền tố, truy vấn, hash và hậu tố.
 
-### Đăng ký tĩnh và biểu tượng
+### Danh mục & Truy xuất dữ liệu
 
-- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — trả về cấu hình của mạng xã hội theo mã định danh, kết hợp với biểu tượng tùy chỉnh nếu đã đăng ký.
+- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — trả về cấu hình của mạng xã hội theo mã định danh, kết hợp với biểu tượng tùy chỉnh từ `MediaSocialIcon` nếu đã đăng ký.
 - `static getList(): InputSocialList` — trả về mảng đầy đủ cấu hình của tất cả các mạng xã hội được hỗ trợ.
-- `static addIcon(code: InputSocialTypeValue, icon: string): void` — đăng ký một biểu tượng hoặc mã SVG tùy chỉnh cho mạng xã hội cụ thể.
-- `static addIcons(icons: InputSocialIcons): void` — đăng ký hàng loạt nhiều biểu tượng tùy chỉnh cùng lúc.
+
+### Biểu tượng tùy chỉnh
+
+- `static addIcon(code: InputSocialType | InputSocialTypeValue, icon: string): typeof MediaSocial` — đăng ký một chuỗi biểu tượng hoặc mã SVG cho mạng xã hội cụ thể thông qua `MediaSocialIcon`. Trả về lớp để gọi phương thức nối tiếp.
+- `static addIcons(icons: InputSocialIcons): typeof MediaSocial` — đăng ký hàng loạt nhiều biểu tượng tùy chỉnh từ một từ điển thông qua `MediaSocialIcon`. Trả về lớp để gọi phương thức nối tiếp.
 
 ## Kiểu dữ liệu
 
-### InputSocialItem
+### `InputSocialItem<Mask = unknown>`
 
 - `code: InputSocialType | InputSocialTypeValue` — mã định danh duy nhất của mạng xã hội.
 - `name: string` — tên hiển thị trực quan của mạng xã hội.
 - `prefix?: string` — tiền tố URL cho liên kết hồ sơ người dùng (ví dụ: `'https://github.com/'`).
+- `prefixClear?: RegExp` — biểu thức chính quy chuẩn hóa để khớp hoặc xóa tiền tố URL hồ sơ.
 - `suffix?: string` — hậu tố URL cho liên kết hồ sơ người dùng.
-- `mask?: any` — cấu hình mặt nạ nhập liệu (mask) cho trường biểu mẫu nếu có.
+- `mask?: Mask` — cấu hình mặt nạ nhập liệu tùy chọn cho trường biểu mẫu.
 - `icon?: string` — tên biểu tượng hoặc mã SVG của biểu tượng.
+- `nickname?: string` — ký tự hoặc chuỗi tiền tố biệt danh (ví dụ: `'@'`).
+- `nicknameClear?: RegExp` — biểu thức chính quy để trích xuất hoặc làm sạch biệt danh.
+
+### InputSocialIcons
+
+- `Partial<Record<InputSocialType, string>>` — từ điển ánh xạ mã mạng xã hội với chuỗi biểu tượng hoặc định danh biểu tượng.
 
 ### InputSocialType
 
@@ -56,11 +67,19 @@ const profileUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
 const username = MediaSocial.getValue(InputSocialType.telegram, 'https://t.me/dxtmisha')
 // Kết quả: 'dxtmisha'
 
+// Định dạng biệt danh với tiền tố
+const nickname = MediaSocial.getNickname(InputSocialType.instagram, 'dxtmisha')
+// Kết quả: '@dxtmisha'
+
 // Lấy thông tin cấu hình của nền tảng
 const githubConfig = MediaSocial.get(InputSocialType.github)
 console.log(githubConfig?.name) // 'GitHub'
 console.log(githubConfig?.prefix) // 'https://github.com/'
 
-// Thêm hoặc ghi đè biểu tượng tùy chỉnh
-MediaSocial.addIcon(InputSocialType.telegram, '<svg class="custom-tg">...</svg>')
+// Đăng ký biểu tượng tùy chỉnh trực tiếp qua MediaSocial (ủy nhiệm cho MediaSocialIcon)
+MediaSocial
+  .addIcon(InputSocialType.telegram, '<svg class="custom-tg">...</svg>')
+  .addIcons({
+    [InputSocialType.github]: '<svg class="custom-gh">...</svg>'
+  })
 ```

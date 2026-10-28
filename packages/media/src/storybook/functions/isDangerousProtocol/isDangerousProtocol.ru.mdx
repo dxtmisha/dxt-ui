@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Functions/isDangerousProtocol - Обнаружение опасных протоколов URL'/>
+
+# `isDangerousProtocol`
+
+Функция безопасности, предназначенная для обнаружения опасных исполняемых схем URL (таких как `javascript:`, `data:` и `vbscript:`). Позволяет эффективно предотвратить межсайтовый скриптинг (XSS) и атаки внедрения протоколов в ссылках, пользовательском вводе и обработчиках профилей социальных сетей.
+
+## Защита от обходов и безопасность (Evasion Protection)
+
+Злоумышленники часто маскируют опасные протоколы с помощью различных техник обхода, которые браузеры нормализуют перед исполнением скрипта. `isDangerousProtocol` надёжно нейтрализует данные векторы атак:
+
+- **Удаление пробельных символов:** отсекает начальные пробелы ASCII, символы табуляции, переводы строк, а также пробельные разделители Unicode (неразрывный пробел `\u00A0`, идеографический пробел `\u3000`, четвертные пробелы, математические пробелы, разделители строк и абзацев).
+- **Фильтрация управляющих символов:** игнорирует управляющие символы ASCII C0 (`0x00–0x1F`, включая нулевые байты `\0`, табуляцию и возврат каретки), символ `DEL` (`0x7F`) и управляющие символы C1 (`0x80–0x9F`) на любой позиции внутри схемы.
+- **Нейтрализация символов нулевой ширины:** обнаруживает и пропускает невидимые форматирующие символы Unicode (Zero-Width Space `\u200B`, Zero-Width Non-Joiner `\u200C`, Zero-Width Joiner `\u200D`, Word Joiner `\u2060` и Byte Order Mark `\uFEFF`).
+- **Защита от DoS и ReDoS:** парсинг схемы ограничен константным буфером (`MAX_PROTOCOL_SCHEME_LENGTH = 15`), что гарантирует время работы $O(1)$ и исключает аллокацию полноразмерных строк в оперативной памяти даже при обработке многомегабайтных строк.
+- **Оптимизированный ранний выход:** полностью исключает выполнение регулярного выражения для строк, не содержащих двоеточия `:`, обеспечивая максимальную скорость работы для стандартных никнеймов и идентификаторов.
+
+## Параметры
+
+- `value: unknown` — Проверяемое значение (строка, URL, имя пользователя или произвольные данные из рантайма).
+
+## Возвращает
+
+`boolean` — Возвращает `true`, если значение содержит опасную исполняемую схему (`javascript:`, `data:` или `vbscript:`), и `false` в противном случае.
+
+## Примеры использования
+
+```typescript
+import { isDangerousProtocol } from '@dxtmisha/media'
+
+// Прямые ссылки с опасными протоколами
+isDangerousProtocol('javascript:alert(1)') // true
+isDangerousProtocol('data:text/html,<script>alert(1)</script>') // true
+isDangerousProtocol('vbscript:msgbox(1)') // true
+
+// Попытки маскировки и обхода фильтров
+isDangerousProtocol('   javascript:alert(1)') // true (ведущие пробелы)
+isDangerousProtocol('\u00A0javascript:alert(1)') // true (Unicode NBSP)
+isDangerousProtocol('java\0script:alert(1)') // true (встроенный нулевой байт)
+isDangerousProtocol('j\u200Ba\uFEFFv\u2060ascript:alert(1)') // true (символы нулевой ширины)
+isDangerousProtocol('JAVASCRIPT:void(0)') // true (нечувствительно к регистру)
+
+// Безопасные стандартные протоколы, домены и никнеймы
+isDangerousProtocol('https://github.com/dxtmisha') // false
+isDangerousProtocol('mailto:support@example.com') // false
+isDangerousProtocol('tel:+1234567890') // false
+isDangerousProtocol('dxtmisha') // false
+isDangerousProtocol('@dxtmisha') // false
+isDangerousProtocol('/path/to/resource') // false
+
+// Нестроковые или пустые рантайм-значения
+isDangerousProtocol(undefined) // false
+isDangerousProtocol(null) // false
+isDangerousProtocol(12345) // false
+```
+

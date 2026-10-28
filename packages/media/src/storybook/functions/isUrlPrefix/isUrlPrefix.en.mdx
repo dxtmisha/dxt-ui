@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Functions/isUrlPrefix - Match URL prefix pattern'/>
+
+# `isUrlPrefix`
+
+A helper function that checks whether a string or URL matches a specified URL prefix regular expression pattern. It safely handles optional or undefined patterns, returning a strictly boolean primitive.
+
+## Overview
+
+`isUrlPrefix` is used internally across social network URL resolvers and input handlers to verify if an incoming handle, link, or user input already starts with a recognized domain or scheme prefix before further normalization.
+
+- **Safe Optional Pattern:** Gracefully returns `false` if `prefix` is `undefined` or nullish without throwing runtime errors.
+- **Pattern Verification:** Leverages standard regular expression matching (`RegExp.test`) to evaluate anchored prefixes and protocols.
+- **Pure & Deterministic:** Operates without mutating input values or side effects, maintaining $O(1)$ performance.
+
+## Parameters
+
+- `value: string` — The string or URL value to test.
+- `prefix?: RegExp` — The optional URL prefix regular expression pattern.
+
+## Returns
+
+`boolean` — Returns `true` if the string matches the prefix pattern, and `false` otherwise.
+
+## Usage Examples
+
+```typescript
+import { isUrlPrefix } from '@dxtmisha/media'
+
+// Domain prefix patterns
+const githubPrefix = /^github\.com(?:\/|$)/i
+isUrlPrefix('github.com/dxtmisha', githubPrefix) // true
+isUrlPrefix('github.com', githubPrefix) // true
+isUrlPrefix('github.com/dxtmisha/dxt-ui', githubPrefix) // true
+isUrlPrefix('gitlab.com/dxtmisha', githubPrefix) // false
+isUrlPrefix('mygithub.com', githubPrefix) // false
+
+// Protocol prefixes
+const telegramPrefix = /^https?:\/\/t\.me(?:\/|$)/i
+isUrlPrefix('https://t.me/channel', telegramPrefix) // true
+isUrlPrefix('http://t.me/channel', telegramPrefix) // true
+isUrlPrefix('tg://resolve?domain=channel', telegramPrefix) // false
+
+// Undefined or missing pattern
+isUrlPrefix('github.com', undefined) // false
+
+// Unicode and diacritics
+const zaloPrefix = /^zalo\.me(?:\/|$)/i
+isUrlPrefix('zalo.me/tiếngviệt', zaloPrefix) // true
+```
+

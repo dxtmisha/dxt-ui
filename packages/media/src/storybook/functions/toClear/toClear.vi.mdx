@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Functions/toClear - Xóa giao thức URL, tiền tố www và ký tự @ ở đầu'/>
+
+# `toClear`
+
+Hàm tiện ích hỗ trợ làm sạch và chuẩn hóa địa chỉ URL cùng tên người dùng. Thực hiện loại bỏ các giao thức web (`http`, `https`), các dấu gạch chéo giao thức (`//`, `///`), tiền tố tên miền phụ `www.` và các ký tự `@` ở đầu chuỗi, đồng thời chuyển đổi tên miền về chữ thường nhưng vẫn giữ nguyên tuyệt đối định dạng chữ hoa/chữ thường của đường dẫn, tham số truy vấn và tên tài khoản.
+
+## Tổng quan
+
+Khi xử lý dữ liệu nhập từ người dùng trong các trường hồ sơ mạng xã hội, người dùng có thể nhập dưới nhiều định dạng khác nhau: đường dẫn đầy đủ (`https://github.com/dxtmisha`), địa chỉ có tên miền phụ (`www.instagram.com/my_profile`), liên kết tương đối theo giao thức (`//vk.com/id123`), tên tài khoản có tiền tố `@` (`@dxtmisha`, `@@user`) hoặc tên đăng nhập thông thường (`john_doe`).
+
+Hàm `toClear` chuẩn hóa các giá trị đầu vào về một định dạng thống nhất:
+
+- **Loại bỏ tiền tố web:** Xóa các giao thức `http:`, `https:`, các dấu gạch chéo giao thức (từ 2 dấu trở lên, bao gồm `//`, `///`), tiền tố `www.` và chuỗi ký tự `@` ở đầu chuỗi.
+- **Chuẩn hóa chữ thường thông minh:** Tích hợp hàm [`toLower`](?path=/docs/dxtmisha-vi-media-functions-tolower--docs) để chuyển đổi phần tên miền sang chữ thường theo chuẩn **RFC 3986**, nhưng vẫn bảo toàn nguyên vẹn chữ hoa/chữ thường của đường dẫn, tham số truy vấn và tên tài khoản (ví dụ `github.com/DxTMiShA` hoặc `@MyProfile`).
+- **Bảo toàn `@` bên trong đường dẫn:** Các ký tự `@` nằm bên trong đường dẫn sau tên miền (ví dụ `tiktok.com/@CoolUser`) được giữ nguyên vẹn.
+- **Bảo vệ dấu gạch chéo đơn:** Dấu gạch chéo đơn ở đầu (ví dụ `/dxtmisha`) không bị xóa, hàm chỉ loại bỏ các chuỗi gạch chéo kép của giao thức (từ 2 trở lên).
+- **Xử lý an toàn giá trị rỗng và số:** Tự động cắt khoảng trắng thừa ở hai đầu, trả về chuỗi rỗng `''` an toàn cho `null`, `undefined` hoặc khi gọi không truyền tham số `toClear()`, đồng thời chuyển đổi số sang chuỗi chính xác (bảo toàn `0` và số âm).
+- **Chống tấn công ReDoS & Tốc độ tuyến tính ($O(n)$):** Biểu thức chính quy được tối ưu hóa không chứa bộ định lượng lồng nhau, loại bỏ hoàn toàn nguy cơ tấn công từ chối dịch vụ ReDoS.
+- **Thuần túy & Tất định:** Hàm không lưu trạng thái (stateless), không tạo tác dụng phụ và có tính lũy đẳng (`toClear(toClear(val)) === toClear(val)`).
+
+## Tham số
+
+- `value?: InputSocialValue` — URL, chuỗi, số, `null` hoặc `undefined` cần làm sạch.
+
+## Trả về
+
+`string` — Chuỗi đã được làm sạch không còn giao thức, `www.` và các ký tự `@` ở đầu, hoặc chuỗi rỗng `''` nếu giá trị đầu vào là nullish.
+
+## Ví dụ sử dụng
+
+```typescript
+import { toClear } from '@dxtmisha/media'
+
+// Xóa giao thức web chuẩn (http / https)
+toClear('https://github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('http://github.com/dxtmisha') // 'github.com/dxtmisha'
+
+// Xóa dấu gạch chéo tương đối và lặp lại (từ 2 dấu trở lên)
+toClear('//github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('///github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('https:////github.com/dxtmisha') // 'github.com/dxtmisha'
+
+// Xóa tiền tố www có hoặc không có giao thức
+toClear('www.github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('https://www.github.com/dxtmisha') // 'github.com/dxtmisha'
+toClear('//www.github.com/dxtmisha') // 'github.com/dxtmisha'
+
+// Xóa ký tự @ ở đầu (đơn hoặc lặp lại)
+toClear('@dxtmisha') // 'dxtmisha'
+toClear('@@dxtmisha') // 'dxtmisha'
+toClear('https://@dxtmisha') // 'dxtmisha'
+toClear('www.@dxtmisha') // 'dxtmisha'
+
+// Chuyển tên miền về chữ thường, bảo toàn chữ hoa/thường của đường dẫn và tài khoản
+toClear('HTTPS://GITHUB.COM/DxTMiShA') // 'github.com/DxTMiShA'
+toClear('WWW.INSTAGRAM.COM/MyProfile') // 'instagram.com/MyProfile'
+toClear('@CamelCaseUser') // 'CamelCaseUser'
+
+// Giữ nguyên ký tự @ bên trong đường dẫn URL sau tên miền
+toClear('https://www.tiktok.com/@CoolUser') // 'tiktok.com/@CoolUser'
+
+// Chuỗi không có tiền tố cần xóa được giữ nguyên
+toClear('dxtmisha') // 'dxtmisha'
+toClear('john_doe') // 'john_doe'
+
+// Các giao thức không phải http không bị xóa
+toClear('skype:DxTMiShA') // 'skype:DxTMiShA'
+toClear('mailto:support@example.com') // 'mailto:support@example.com'
+
+// Hỗ trợ Unicode và Emoji
+toClear('https://вконтакте.рф/id123') // 'вконтакте.рф/id123'
+toClear('https://zalo.me/nguyễn') // 'zalo.me/nguyễn'
+toClear('https://t.me/🚀channel') // 't.me/🚀channel'
+toClear('@🚀rocket') // '🚀rocket'
+
+// Giá trị rỗng, gọi không tham số và số
+toClear() // ''
+toClear(null) // ''
+toClear(undefined) // ''
+toClear('   ') // ''
+toClear(0) // '0'
+toClear(12345) // '12345'
+```
+

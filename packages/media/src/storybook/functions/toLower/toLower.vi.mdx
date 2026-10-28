@@ -1,0 +1,84 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Functions/toLower - Chuyển đổi giao thức và tên miền URL về chữ thường'/>
+
+# `toLower`
+
+Hàm tiện ích hỗ trợ chuẩn hóa chuỗi và địa chỉ URL, thực hiện chuyển đổi phần giao thức (protocol) và tên miền (domain) về chữ thường, đồng thời giữ nguyên tuyệt đối định dạng chữ hoa/chữ thường của các đoạn đường dẫn, tham số truy vấn, đoạn hash và tên người dùng.
+
+## Tổng quan
+
+Theo tiêu chuẩn **RFC 3986**, lược đồ định danh URI (`protocol`) và máy chủ (`domain`) không phân biệt chữ hoa chữ thường (`case-insensitive`), trong khi các phân đoạn đường dẫn, tên người dùng và chuỗi truy vấn có thể phân biệt chữ hoa chữ thường tùy thuộc vào máy chủ đích (chẳng hạn như mã định danh video YouTube `/watch?v=B_123AbC` hoặc tên tài khoản GitHub).
+
+`toLower` ngăn ngừa việc làm sai lệch liên kết hồ sơ người dùng và các tài nguyên nhạy cảm với chữ hoa chữ thường bằng cách chỉ chuyển đổi có chọn lọc phần lược đồ và tên miền của URL về chữ thường.
+
+- **Chuẩn hóa có chọn lọc:** Chỉ chuyển đổi giao thức và tên miền sang chữ thường, giữ nguyên định dạng của đường dẫn, tham số truy vấn và hash.
+- **Hỗ trợ đa dạng lược đồ và mẫu URL:** Nhận diện các lược đồ tuyệt đối (`https:`, `http:`), URL tương đối theo giao thức (`//`), tiền tố `www.`, giao thức không chứa dấu gạch chéo (`skype:`, `mailto:`, `tel:`), liên kết sâu (deep link ứng dụng như `tg:`, `viber:`) và tên miền đi kèm đường dẫn.
+- **Bảo vệ văn bản thuần túy:** Tên miền không có dấu gạch chéo ở cuối (ví dụ `GITHUB.COM` hoặc chuỗi dạng `FIRST.LAST`) sẽ được giữ nguyên, tránh nhận diện nhầm văn bản thông thường thành địa chỉ trang web.
+- **Xử lý an toàn giá trị rỗng và số:** Tự động cắt bỏ khoảng trắng thừa ở hai đầu, trả về chuỗi rỗng `''` một cách an toàn cho các giá trị `null`, `undefined` hoặc chuỗi rỗng, đồng thời chuyển đổi số sang chuỗi một cách chính xác (bảo toàn `0` và số âm).
+- **Chống tấn công ReDoS & Hiệu suất tuyến tính:** Sử dụng một biểu thức chính quy tuyến tính ($O(n)$) duy nhất không chứa bộ định lượng lồng nhau, loại bỏ hoàn toàn nguy cơ tấn công từ chối dịch vụ (ReDoS).
+- **Thuần túy & Tất định:** Không lưu trạng thái, mang tính lũy đẳng (`toLower(toLower(url)) === toLower(url)`), không tạo ra tác dụng phụ (side-effects).
+
+## Tham số
+
+- `value?: InputSocialValue` — URL, chuỗi, số, `null` hoặc `undefined` cần chuẩn hóa.
+
+## Trả về
+
+`string` — Trả về chuỗi đã được loại bỏ khoảng trắng thừa với giao thức và tên miền URL ở dạng chữ thường, hoặc chuỗi rỗng `''` nếu giá trị đầu vào là null hoặc undefined.
+
+## Ví dụ sử dụng
+
+```typescript
+import { toLower } from '@dxtmisha/media'
+
+// Địa chỉ URL thông thường (giao thức và tên miền chữ thường, giữ nguyên đường dẫn)
+toLower('HTTPS://GITHUB.COM/DxTMiShA') // 'https://github.com/DxTMiShA'
+toLower('HTTP://VK.COM/MyProfile') // 'http://vk.com/MyProfile'
+toLower('https://INSTAGRAM.COM/p/B_123AbC/') // 'https://instagram.com/p/B_123AbC/'
+
+// URL tương đối theo giao thức và tiền tố www
+toLower('//CDN.EXAMPLE.COM/Assets/Logo.PNG') // '//cdn.example.com/Assets/Logo.PNG'
+toLower('WWW.GITHUB.COM/DxTMiShA') // 'www.github.com/DxTMiShA'
+toLower('WWW.SITE.COM') // 'www.site.com'
+
+// Tên miền đi kèm dấu gạch chéo đường dẫn
+toLower('GITHUB.COM/DxTMiShA') // 'github.com/DxTMiShA'
+toLower('MY-DOMAIN.ORG/Path/To/Page') // 'my-domain.org/Path/To/Page'
+
+// Tên miền không có dấu gạch chéo (được bảo toàn như văn bản)
+toLower('GITHUB.COM') // 'GITHUB.COM'
+
+// Giao thức không chứa dấu gạch chéo (chuyển giao thức về chữ thường, giữ nguyên giá trị)
+toLower('SKYPE:DxTMiShA') // 'skype:DxTMiShA'
+toLower('MAILTO:Support@Example.com') // 'mailto:Support@Example.com'
+toLower('TEL:+84987654321') // 'tel:+84987654321'
+
+// Liên kết sâu (deep link) và giao thức ứng dụng
+toLower('TG://resolve?domain=DxTMiShA') // 'tg://resolve?domain=DxTMiShA'
+toLower('VIBER://chat?number=%2B84987654321') // 'viber://chat?number=%2B84987654321'
+
+// URL đi kèm cổng (port), tham số truy vấn và hash
+toLower('HTTPS://LOCALHOST:3000/ApiPath') // 'https://localhost:3000/ApiPath'
+toLower('HTTPS://GITHUB.COM/Search?Q=TypeScript&Sort=Stars')
+// 'https://github.com/Search?Q=TypeScript&Sort=Stars'
+toLower('HTTPS://GITHUB.COM/dxtmisha#MySection')
+// 'https://github.com/dxtmisha#MySection'
+
+// Chuỗi văn bản và tên người dùng thông thường (giữ nguyên chữ hoa chữ thường)
+toLower('@DxTMiShA') // '@DxTMiShA'
+toLower('userName123') // 'userName123'
+
+// Ký tự Unicode và tiếng Việt có dấu trong đường dẫn
+toLower('HTTPS://VK.COM/Михаил') // 'https://vk.com/Михаил'
+toLower('HTTPS://ZALO.ME/TiếngViệt') // 'https://zalo.me/TiếngViệt'
+
+// Giá trị rỗng, null và số
+toLower(null) // ''
+toLower(undefined) // ''
+toLower() // ''
+toLower('   ') // ''
+toLower(0) // '0'
+toLower(-42) // '-42'
+```
+

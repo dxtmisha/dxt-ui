@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Functions/replacePrefix - Replace URL prefix for social network'/>
+
+# `replacePrefix`
+
+Replaces a recognized domain prefix pattern in a string with a canonical full URL prefix based on the social network configuration (`InputSocialItem`). It automatically strips redundant leading slashes (`/`) and handle symbols (`@`) from the remainder to form a standardized profile URL.
+
+## Overview
+
+When users input social network handles, they often enter varying formats: plain usernames (`dxtmisha`), prefixed handles (`@dxtmisha`), domains with extra slashes (`github.com///dxtmisha`), or full URLs (`github.com/@dxtmisha`). `replacePrefix` normalizes these variations into a canonical link using the configured `prefixClear` and `prefix` properties.
+
+- **Prefix Normalization:** Replaces matched domain prefix (`prefixClear`) with the full canonical URL (`prefix`, e.g. `https://github.com/`).
+- **Separator & At-Sign Cleanup:** Strips redundant leading slashes and `@` symbols (`///`, `@@`, `/@/@`) from the remaining handle.
+- **Deep Path & Query Preservation:** Preserves subpaths, query parameters (`?tab=repositories`), and hash fragments (`#readme`).
+- **Non-Destructive:** Returns the input value unchanged if `prefixClear` or `prefix` is missing, or if the string does not match `prefixClear`.
+- **Contract & Pattern Guidelines:** The `prefixClear` regular expression in `InputSocialItem` should start with an anchor `^` and must not use stateful flags (`g` or `y`).
+
+## Parameters
+
+- `value: string` — The input URL, link, or handle to format.
+- `item: InputSocialItem` — Social network configuration containing `prefix`, `prefixClear`, and metadata.
+
+## Returns
+
+`string` — Returns the formatted URL with the full prefix, or the original string if no prefix was matched or replaced.
+
+## Usage Examples
+
+```typescript
+import { replacePrefix, InputSocialType, type InputSocialItem } from '@dxtmisha/media'
+
+const githubItem: InputSocialItem = {
+  code: InputSocialType.github,
+  name: 'GitHub',
+  prefixClear: /^github\.com(?:\/|$)/i,
+  prefix: 'https://github.com/'
+}
+
+// Standard replacement
+replacePrefix('github.com/dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+replacePrefix('github.com', githubItem) // 'https://github.com/'
+
+// Stripping leading @ and multiple slashes
+replacePrefix('github.com/@dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+replacePrefix('github.com///dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+replacePrefix('github.com/@/@dxtmisha', githubItem) // 'https://github.com/dxtmisha'
+
+// Preserving subpaths, query parameters, and fragments
+replacePrefix('github.com/dxtmisha/dxt-ui?tab=stars#readme', githubItem)
+// 'https://github.com/dxtmisha/dxt-ui?tab=stars#readme'
+
+// Non-matching values or missing prefix config returned unchanged
+replacePrefix('gitlab.com/dxtmisha', githubItem) // 'gitlab.com/dxtmisha'
+replacePrefix('dxtmisha', githubItem) // 'dxtmisha'
+```
+

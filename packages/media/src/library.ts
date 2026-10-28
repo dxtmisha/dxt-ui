@@ -9,6 +9,11 @@ export * from './classes/MediaFiles'
 export * from './classes/MediaFileIcon'
 export * from './classes/MediaSocial'
 
+// Functions
+export * from './functions/isDangerousProtocol'
+export * from './functions/toClear'
+export * from './functions/toLower'
+
 // Media
 export * from './media/fileList'
 export * from './media/socialList'
