@@ -7,346 +7,226 @@ description: Conduct a rigorous code review assessing architecture, security & v
 
 Act as an elite Principal Software Architect and Senior Code Reviewer. Your goal is to conduct an uncompromising, deep-dive code review of the specified files, components, classes, functions, or composables/hooks.
 
-Your analysis must not be a superficial lint check. You must evaluate architectural soundness, security vulnerabilities and safe data handling, dependency health, real-world usage across the codebase, technological relevance vs obsolete patterns, code flaws and subtle bugs, adherence to strict project conventions, full SSR compatibility and memory leak prevention, and benchmark the implementation against industry-leading state-of-the-art standards.
+Your analysis must go far beyond a superficial lint check: evaluate architectural soundness, security vulnerabilities and safe data handling, dependency health, real-world usage across the codebase, technological relevance vs obsolete patterns, subtle bugs and edge cases, adherence to strict project conventions, full SSR compatibility, memory leak prevention, and alignment with industry-leading state-of-the-art standards.
 
 ---
 
-## 🔴 Mandatory Pre-Review Protocol (Language, Delivery Target, In-Place Fixes vs Advisory Scope, Usage Graph, Context & Test Coverage)
+## 🔴 Mandatory Pre-Review Protocol
 
 Before analyzing any code or generating any review text, you MUST execute these six mandatory steps:
 
-### 1. Mandatory Language Determination (`design.config.json` -> `wikiLanguage`)
-- **Direct Instruction**: The AI agent **MUST open and inspect `./design.config.json`** to retrieve the `wikiLanguage` property (e.g., `"wikiLanguage": "ru"` or `"wikiLanguage": "en"`).
-- **Explicit Override**: Reading `./design.config.json` specifically to extract `wikiLanguage` is an **explicit, mandatory user directive**. The AI agent must NEVER skip this check, assume English without checking `design.config.json`, or refuse to read the language configuration.
+### 1. Mandatory Language Determination (`./design.config.json` -> `wikiLanguage`)
+- **Direct Instruction & Explicit Override**: Reading `./design.config.json` specifically to extract `wikiLanguage` is an **explicit, mandatory user directive**. You MUST open and inspect `./design.config.json` to retrieve `wikiLanguage` (e.g., `"ru"` or `"en"`). NEVER skip this check, assume English without checking, or refuse to read the language configuration.
 - **Language Enforcement**:
-  - If `wikiLanguage` is `"ru"`, the **entire code review report MUST be written strictly in Russian** (all headings, explanations, findings, summaries, and recommendations in Russian).
-  - If `wikiLanguage` is `"en"`, write in English.
-  - Code snippets, TypeScript type names, variable names, and file paths must always remain untranslated in their original form.
+  - If `wikiLanguage` is `"ru"`, the **entire code review report MUST be written strictly in Russian** (all sections, headings, categories, explanations, bug descriptions, summaries, and recommendations).
+  - If `wikiLanguage` is `"en"` (or if no language property is found), write in English.
+  - Code snippets, TypeScript type names, variable names, technical identifiers, and file paths must always remain untranslated in their original form.
 
-### 2. Artifact Delivery (Do NOT Describe in Chat, Do NOT Pollute Repository)
-- **Zero Chat Dumping**: It is **STRICTLY FORBIDDEN to output the full review, tables, or detailed bug descriptions into the current chat**. Dumping long text into the conversation reduces readability and clutters the session.
-- **Save as an AI Artifact / Temporary Markdown Document**:
-  - The review MUST be saved as an **AI Artifact** (e.g., in `<appDataDir>/brain/<conversation-id>/code_review_<target>.md` or the agent's artifact directory) using the artifact creation tool (`write_to_file` in the artifacts directory).
-  - Artifacts are natively supported by the AI agent interface with a dedicated preview/reading panel, allowing comfortable, structured reading without cluttering the chat.
-  - Do NOT save permanent review files to the project repository root (do not write to `./code-review.md` in the git workspace).
-- **Chat Response**:
-  - In the chat response, provide **ONLY a concise 1–2 sentence notification** with a clickable link to the generated artifact (e.g., `[code_review_<target>.md](file:///...)`) and an overall rating. Never re-summarize or duplicate the findings in the chat.
+### 2. Artifact Delivery (Zero Chat Dumping, Do NOT Pollute Repository)
+- **Zero Chat Dumping**: It is **STRICTLY FORBIDDEN** to output the full review, tables, or detailed bug descriptions into the chat.
+- **Save Exclusively as an AI Artifact**:
+  - Write the full report to an **AI Artifact** (`<appDataDir>/brain/<conversation-id>/code_review_<target>.md`) using the artifact creation tool (`write_file` / `write_to_file` in the artifacts directory).
+  - Do NOT save permanent review files in the project repository root (never create `./code-review.md` in the git workspace).
+- **Minimal Chat Response**:
+  - Output **ONLY a concise 1–2 sentence notification** in the chat containing the overall score/grade and a clickable link to the generated artifact (`[code_review_<target>.md](file:///...)`). Never re-summarize or duplicate findings in the chat.
 
-### 3. Workflow for Code Modifications: Allowed Immediate Fixes vs Architectural Changes (Порядок внесения правок: немедленные исправления vs архитектурные изменения)
-- **Allowed Immediate In-Place Fixes (Разрешено исправлять сразу в кодовой базе)**:
-  Во время код-ревью AI-агент **МОЖЕТ и ДОЛЖЕН сразу исправлять** следующие категории очевидных, безопасных и неломающих дефектов непосредственно в проверяемых файлах (без ожидания отдельной команды разработчика):
-  1. **Опечатки (Typos)**: любые опечатки и грамматические ошибки в комментариях, строковых константах, сообщениях или именах локальных переменных.
-  2. **Оформление и дополнение JSDoc/TSDoc (`jdoc.md`)**: добавление недостающих описаний функций/методов/свойств, приведение к обязательному двуязычному стандарту (English / Русский), оформление тегов `@param` и `@returns`.
-  3. **Очевидные минорные неточности типизации и эргономики (Typing Ergonomics & Quick Wins)**:
-     - Очевидные неточности типов (например, параметр функции объявлен как `string`, но внутри первой же строкой выполняется рантайм-проверка `typeof value !== 'string'` — в таком случае тип параметра сразу расширяется до `unknown` или `string | undefined`).
-     - Удаление избыточных комментариев `// @ts-expect-error` в сопутствующих тестах, ставших ненужными после исправления типа.
-  4. **Избыточные проверки, дублирующие вычисления и мертвый код (Redundant Logic, Dead Code & Micro-Optimizations)**:
-     - Устранение избыточных и дублирующих проверок в логических выражениях (например, когда условие `A || (B && C)` повторно вычисляет внутри `C` проверку `A`, которая в правой части гарантированно ложна: `isControlCharacter(charCode) || (cleanValue.length === 0 && isControlOrSpace(charCode))` упрощается до `isControlCharacter(charCode) || (cleanValue.length === 0 && charCode === 32)`).
-     - Удаление ставших неиспользуемыми приватных вспомогательных микро-функций (хелперов), констант и типов после устранения избыточных условий (например, удаление функции `isControlOrSpace`).
-     - Очистка недостижимых веток, мертвого кода и неиспользуемых локальных импортов/переменных внутри проверяемого файла.
-  5. **Микрооптимизации, устранение повторных строковых вычислений и унификация проверок (Micro-Optimizations & Check Unification)**:
-     - Замена повторного строкового индексирования на уже вычисленные числовые коды символов (например, замена `value[index] === ':'` на `charCode === CHAR_COLON` или `charCode === 58`, если `charCode = value.charCodeAt(index)` уже был извлечен ранее в текущей итерации цикла).
-     - Вынесение магических чисел (числовых кодов символов, граничных констант) в именованные, двуязычно задокументированные константы на уровне модуля (например, `CHAR_SPACE = 32`, `CHAR_COLON = 58`).
-     - Унификация стиля проверок символов (если в одной ветке символ проверяется через числовой код `charCode === 32`, а в соседней — через строковый литерал `value[index] === ':'`, обязательна унификация к общему подходу проверки кодов символов).
-  - **Обязательный отдельный раздел/пункт отчёта об авто-исправлениях (Mandatory Dedicated Auto-Fix Report Section)**:
-    Все автоматически внесенные правки **ОБЯЗАТЕЛЬНО фиксируются в виде отдельного самостоятельного раздела отчёта в AI-артефакте** («Автоматически примененные исправления (Applied Immediate Fixes)»). В этом разделе приводятся:
-    - Список измененных файлов и номеров строк.
-    - Категория исправления (Typo / JSDoc / Typing / Micro-optimization & Check Unification / Dead Code).
-    - Обоснование и польза внесенного изменения.
-    - Сравнительные diff-блоки кода (Before / After).
-    - Подтверждение успешного прогона модульных тестов после внесения изменений.
-    - Если правки не потребовались, в данном пункте явно указывается: *«Автоматические исправления не потребовались (код исходно чист)»*.
-- **Strict Prohibition of Structural & Breaking Modifications (Запрет на самовольные архитектурные и ломающие изменения)**:
-  - Любые крупные архитектурные рефакторинги, переписывание классов или компонентов, изменение логики бизнес-процессов, удаление сущностей или изменение сигнатур публичного API **СТРОГО ЗАПРЕЩЕНЫ** без явной прямой команды разработчика (например, «примени фиксы», «исправь замечания», «обнови тесты» и т.д.).
-  - Все подобные предложения должны быть описаны **исключительно внутри AI-артефакта** в виде рекомендаций и сравнительных diff-блоков (Before/After). Fix and edit strictly what the developer tells you to fix!
+### 3. Workflow for Code Modifications: Allowed Immediate Fixes vs Architectural Changes
+- **Allowed Immediate In-Place Fixes**:
+  During code review, the AI agent **CAN and MUST immediately fix** the following categories of obvious, safe, and non-breaking defects directly within the audited files (without waiting for a separate developer command):
+  1. **Typos**: Any typos or grammatical errors in comments, string constants, messages, or local variable names.
+  2. **JSDoc/TSDoc Formatting & Additions (`jdoc.md`)**: Adding missing descriptions for functions, methods, or properties, enforcing the mandatory bilingual standard (English / Russian), and formatting `@param` and `@returns` tags.
+  3. **Obvious Minor Typing Ergonomics & Quick Wins**:
+     - Widening inaccurate parameter types that contradict immediate runtime checks (e.g., a parameter is typed as `string`, but the first line checks `typeof value !== 'string'` — immediately widen the type to `unknown` or `string | undefined`).
+     - Removing redundant `// @ts-expect-error` directives in associated unit tests that become unnecessary after the type fix.
+  4. **Redundant Logic, Dead Code & Micro-Optimizations**:
+     - Eliminating redundant or duplicate checks in logical expressions (e.g., when `A || (B && C)` re-evaluates `A` inside `C` even though `A` is guaranteed false on the right-hand side: `isControlCharacter(charCode) || (cleanValue.length === 0 && isControlOrSpace(charCode))` simplifies to `isControlCharacter(charCode) || (cleanValue.length === 0 && charCode === 32)`).
+     - Removing private helper micro-functions, constants, and types rendered unused after eliminating redundant conditions (e.g., removing `isControlOrSpace`).
+     - Cleaning up unreachable branches, dead code, and unused local imports or variables inside the audited file.
+  5. **Micro-Optimizations & Check Unification**:
+     - Replacing repeated string indexing with already extracted numeric character codes (e.g., replacing `value[index] === ':'` with `charCode === CHAR_COLON` or `charCode === 58` when `charCode = value.charCodeAt(index)` was already computed in the current loop iteration).
+     - Extracting magic numbers (character codes, boundary constants) into named, bilingually documented module-level constants (e.g., `CHAR_SPACE = 32`, `CHAR_COLON = 58`).
+     - Unifying character check styles (if one branch checks a numeric code `charCode === 32` while an adjacent branch checks a string literal `value[index] === ':'`, unify them to character code checks).
+- **Mandatory Dedicated Auto-Fix Report Section**:
+  All applied in-place fixes **MUST be documented in Section 2 of the AI Artifact** ("Applied Immediate Fixes") with: modified files and line links (`file.ts#L10-L15`), fix category (`Typo` / `JSDoc` / `Typing Ergonomics` / `Micro-Optimization & Check Unification` / `Dead Code Removal`), technical rationale/benefit, Before/After `diff` blocks, and unit test verification status after the changes (e.g., `vitest run: 37 passed`). If no fixes were needed, state explicitly: *"No automated fixes required (code is originally clean)"*.
+- **Strict Prohibition of Structural & Breaking Modifications**:
+  - Large architectural refactorings, class or component rewrites, business logic modifications, entity deletions, or public API signature changes are **STRICTLY FORBIDDEN** without an explicit direct command from the developer (e.g., "apply fixes", "apply recommendations", "fix item 2", "update tests").
+  - Document all structural proposals **exclusively within Section 6 of the AI Artifact** as advisory recommendations with Before/After diff blocks. Fix and edit strictly what the developer tells you to fix!
 
 ### 4. Mandatory Dependency & Inbound Usage Investigation (Graph & Blast Radius Audit)
-- **Never Review in Isolation**: You must NEVER review a target entity in a vacuum. Code review is incomplete without inspecting its dependencies and all places where it is consumed.
+- **Never Review in Isolation**: Always inspect both what the target depends on and every place where it is consumed across the codebase.
 - **Outbound Dependencies Audit (What it depends on)**:
   - Inspect all imports, utilities, classes, and packages used by the target.
-  - Verify layer boundaries: Ensure dependencies flow strictly in the correct architectural direction (`functional-basic` -> `functional` -> `constructor` -> `d1`). A lower-level package must never import from a higher-level package.
-  - Verify `package.json` synchronization: Ensure all imported external or monorepo packages are declared in `package.json` with valid version constraints (`>=`).
-  - Detect redundant, bloated, or circular dependencies.
+  - Verify strict layer boundaries (`functional-basic` -> `functional` -> `constructor` -> `d1`): lower-level packages must never import from higher-level packages.
+  - Verify `package.json` synchronization: all imported external or monorepo packages must be declared in `package.json` with valid version constraints (`>=`).
+  - Detect redundant, bloated, or circular dependencies and verify tree-shakeability.
 - **Inbound Usages Audit (Where and how it is used across the codebase)**:
   - Search and inspect **all call sites, components, composables, and files that import and use the target entity**.
-  - Analyze real-world consumption patterns: How do callers interact with it? Are callers forced to write boilerplate or workarounds due to flaws in the target's API?
-  - **Blast Radius & Backward Compatibility**: Evaluate the exact impact of any proposed changes, refactorings, or type adjustments on existing consumers. Flag any breaking changes.
-  - Identify obsolete, inconsistent, or antipattern usages at call sites that should be refactored alongside the entity.
+  - Analyze real-world consumption patterns: Are callers forced to write boilerplate or workarounds due to flaws in the target's API?
+  - **Blast Radius & Backward Compatibility**: Evaluate the exact impact of any proposed changes, refactorings, or type adjustments on existing consumers and flag breaking changes.
+  - Identify obsolete, inconsistent, or anti-pattern usages at call sites that should be refactored alongside the entity.
 
-### 5. Mandatory Unit Test Audit & Quality Inspection (Audit in Artifact, Do NOT Modify Files Proactively)
-- **Locate and Inspect Tests**: Search for corresponding unit tests in the adjacent or package `__tests__/` directory (e.g., `__tests__/<Entity>.test.ts` or `<name>.test.ts`).
-- **Assess Test Quality & Completeness (Audit)**:
-  - Do not merely check if a test file exists. Critically inspect the quality, depth, and thoroughness of the test suite.
-  - Detect incomplete, superficial, or low-quality tests: superficial smoke tests with only 1 shallow assertion, missing edge cases (empty strings, `null`, `undefined`, 0, negative values, invalid objects), unhandled error branches, untested reactive properties, unverified event emissions, ignored lifecycle hooks (`onMounted`, `onUnmounted`, resource cleanup), or unverified SSR behavior (server-side rendering safety and hydration compatibility).
+### 5. Mandatory Unit Test Audit & Quality Inspection (Audit in Artifact, Do NOT Modify Test Files Proactively)
+- **Locate & Inspect Tests**: Search for corresponding unit tests in the adjacent or package `__tests__/` directory (`__tests__/<Entity>.test.ts` or `<name>.test.ts`).
+- **Assess Test Quality & Completeness**:
+  - Critically inspect test depth: detect superficial smoke tests (e.g., 1 shallow assertion), missing edge cases (`''`, `null`, `undefined`, `0`, negative values, invalid objects), unhandled error branches, untested reactive properties, unverified event emissions, ignored lifecycle hooks (`onMounted`, `onUnmounted`, resource cleanup), or unverified SSR behavior (server-side rendering safety and hydration compatibility).
 - **Read-Only Verification (Run Test Runner)**:
-  - Run tests using the test runner (e.g. `npx vitest run <path-to-test>`) in read-only mode to verify current test status, failure points, and execution coverage.
+  - Execute the test runner (`npx vitest run <path-to-test>`) to verify current pass/fail status, failure points, and execution coverage (and re-run to verify any Immediate In-Place Fixes applied in Step 3).
 - **Formulate Comprehensive Test Suite in the Artifact (Do NOT Modify Test Files)**:
-  - If existing tests are incomplete, shallow, fragile, or missing: author the recommended, robust unit test suite **STRICTLY inside Section 5 of the AI Artifact report**, ready for review and copy-pasting.
-  - **STRICT PROHIBITION**: Do NOT rewrite, overwrite, or create test files in the workspace repository during code review. Modifying or adding test files is permitted **STRICTLY and ONLY upon explicit developer command**.
+  - If existing tests are incomplete, shallow, fragile, or missing, author the complete, copy-paste-ready unit test suite **STRICTLY inside Section 6 of the AI Artifact report**.
+  - **STRICT PROHIBITION**: Do NOT rewrite, overwrite, or create test files in the workspace repository during code review unless explicitly commanded by the developer.
 
-### 6. Context & Purpose Awareness (Anti-Overengineering Guard / Учёт среды использования и назначения)
-- **Evaluate Real-World Context & Purpose**: The reviewer MUST assess the code through the lens of its **actual execution environment, consumer call sites, and intended functional purpose**.
-- **Ban on "All-Life-Cases" Paranoia (Запрет проверок «на все случаи жизни»)**: It is **STRICTLY FORBIDDEN to demand checks, guards, or complex algorithmic layers for absurd, contrived, or statistically impossible hypothetical scenarios**. Demanding defensive code for every conceivable theoretical edge case leads to **code bloat and severe over-engineering (`избыточный код / оверинжиниринг`)**.
-- **Real vs Contrived Boundaries**: Distinguish between genuine production edge cases (e.g., `0`, `false`, `null`, XSS injection in user attributes, SSR hydration mismatches, unhandled promise rejections, lifecycle teardown) and paranoid edge cases that never occur in the real system architecture or that contradict the component's defined scope.
-- **Proportionality & Cleanliness**: Defensive checks must remain strictly proportional to the entity's purpose. If a theoretical scenario requires bloating a simple, focused helper with dozens of lines of redundant defensive code, demanding this in code review is a severe anti-pattern. Keep the code lean, fast, and purposeful.
+### 6. Context & Purpose Awareness (Anti-Overengineering Guard)
+- **Evaluate Real-World Context & Purpose**: Assess code through the lens of its **actual execution environment, consumer call sites, and intended functional purpose**.
+- **Ban on "All-Life-Cases" Paranoia**: It is **STRICTLY FORBIDDEN** to demand checks, guards, or complex algorithmic layers for absurd, contrived, or statistically impossible hypothetical scenarios. Demanding defensive code for every conceivable theoretical edge case causes **code bloat and severe over-engineering**.
+- **Real vs Contrived Boundaries**: Distinguish between genuine production edge cases (`0`, `false`, `null`, XSS injection in user attributes, SSR hydration mismatches, unhandled promise rejections, lifecycle teardown) and paranoid scenarios that never occur in the system architecture or contradict the entity's defined scope.
+- **Proportionality & Cleanliness**: Keep defensive checks strictly proportional to the entity's purpose. Keep code lean, fast, and purposeful.
 
 ---
 
 ## 1. Architectural Integrity & Modernity vs Obsolete Patterns
 
 ### A. Architectural Evaluation
-- **Separation of Concerns (SoC)**: Is business logic strictly separated from UI and presentation? Are responsibilities distributed cleanly across packages (e.g., framework-agnostic logic in `functional-basic`, reactive glue in `functional`, component abstractions in `constructor`, design primitives in `d1`)?
-- **Modularity & Decoupling**: Is the entity self-contained and modular? Are dependencies injected cleanly or tightly coupled?
-- **Single Responsibility & Cohesion**: Does the entity do one thing well, or is it a "Swiss army knife" / God object that needs decomposition?
-- **Scalability & Extensibility**: Can this code be extended without breaking existing contracts (Open/Closed Principle)? Are extension points (inheritance, composition, hooks, slots, events) designed intentionally?
-- **Dependency Graph & Inbound/Outbound Coupling**: Does the entity maintain a clean dependency graph? Are its outbound dependencies minimal and aligned with package layering? Are inbound call sites clean and consistent across the codebase?
+- **Separation of Concerns (SoC)**: Is business logic strictly separated from UI/presentation and distributed cleanly across packages (`functional-basic` framework-agnostic logic -> `functional` reactive glue -> `constructor` component abstractions -> `d1` design primitives)?
+- **Modularity & Decoupling**: Is the entity self-contained and modular with clean dependency injection rather than tight coupling?
+- **Single Responsibility & Cohesion**: Does the entity do one thing well, or is it a "Swiss army knife" / God object that requires decomposition?
+- **Scalability & Extensibility**: Does it adhere to the Open/Closed Principle with intentional extension points (inheritance, composition, hooks, slots, events)?
+- **Dependency Graph & Coupling**: Are outbound dependencies minimal and layer-compliant, and are inbound call sites clean and consistent across the codebase?
 
 ### B. Modern Solutions vs Obsolete Techniques
 - **Outdated Techniques Detection**:
-  - Legacy Vue habits (Options API style patterns, Vue 2 reactivity habits, mutation of props, reliance on global event buses, `$attrs`/`$listeners` anti-patterns).
-  - Outdated TypeScript paradigms (excessive `any`/type assertions instead of type narrowing, utility types, template literal types, `satisfies`, discriminating unions).
+  - Legacy Vue habits (Options API patterns, Vue 2 reactivity workarounds, prop mutation, global event buses, `$attrs`/`$listeners` anti-patterns).
+  - Outdated TypeScript paradigms (excessive `any` or type assertions instead of type narrowing, utility types, template literal types, `satisfies`, discriminated unions).
   - Legacy DOM manipulation (direct element mutations, `querySelector` hacks, manual style manipulation instead of reactive bindings, CSS variables, or standard Web APIs).
-  - Obsolete asynchronous patterns (unhandled promise rejections, lack of AbortController cancellation, callback hell vs async/await, missing race condition guards).
+  - Obsolete asynchronous patterns (unhandled promise rejections, missing `AbortController` cancellation, callback hell vs `async`/`await`, missing race condition guards).
 - **Benchmarking Against Modern Top-Tier Standards**:
-  - How does this implementation compare to state-of-the-art industry benchmarks (e.g., Radix UI, Headless UI, Ark UI, VueUse, Nuxt 3 core, TanStack)?
-  - Does it leverage modern web platform standards (native Popover API, CSS container queries, subgrid, modern IntersectionObserver/ResizeObserver APIs) where appropriate?
-  - Does it maintain optimal tree-shaking characteristics, pure annotations, and minimal runtime overhead?
+  - Compare against state-of-the-art industry benchmarks (Radix UI, Headless UI, Ark UI, VueUse, Nuxt 3 core, TanStack).
+  - Check utilization of modern web platform standards (native Popover API, CSS container queries, subgrid, modern `IntersectionObserver`/`ResizeObserver` APIs) where appropriate.
+  - Verify optimal tree-shaking, `/*#__PURE__*/` annotations, and minimal runtime overhead.
 
 ---
 
 ## 2. Entity-Level Design & Quality Assessment
 
-Evaluate the target according to its specific entity type:
+Evaluate the target according to its specific entity type (in addition to the cross-cutting checks in Sections 3–5):
 
 ### A. Vue Components (`.vue`)
-- **Composition & Atomicity**: Is the component focused and minimal? Is complex logic extracted into composables?
-- **Props & Emits Contract**:
-  - Strictly typed via `defineProps<{ ... }>()` and `defineEmits<{ ... }>()`.
-  - One-way data flow strictly preserved — incoming props are NEVER mutated.
-  - Clear, predictable naming with kebab-case event names.
-- **Template Hygiene**:
-  - Cleanest possible HTML markup.
-  - Zero function calls, complex calculations, or inline styles in templates.
-  - Always unique, non-index `:key` in `v-for`. Never combine `v-if` with `v-for` on the same tag.
-- **Accessibility & ARIA (A11y)**:
-  - Full WAI-ARIA compliance: correct roles (`role="img"`, `role="button"`, `role="dialog"`, etc.), dynamic attributes, and states (`aria-expanded`, `aria-controls`, `aria-selected`, `aria-checked`, `aria-disabled`, `aria-live`, `aria-haspopup`).
-  - Screen reader support: descriptive `aria-label` or `aria-labelledby`, `aria-describedby`, and mandatory hiding of purely decorative elements (`aria-hidden="true"`).
-  - Keyboard accessibility and focus management: logical tab order, focus restoration, focus trapping in modals/dialogs, focus-visible styling, and standard keyboard handlers (Enter, Space, Escape, Arrow keys).
-- **Styles & Design System**:
-  - Strict SCSS mixin usage from `@dxtmisha/styles`.
-  - Zero hardcoded colors, borders, or spacing values.
-  - PurgeCSS compliance: All class names must exist as unbroken string literals (no dynamic string concatenation).
-- **SSR Compatibility & Hydration Safety**:
-  - Browser-only globals (`window`, `document`, `navigator`, `localStorage`, `sessionStorage`, `location`) must NEVER be accessed at root level of `<script setup>` or in `beforeMount`/`created`. They must be guarded by `isDomRuntime()` or deferred to `onMounted`.
-  - Hydration mismatch prevention: Ensure server-rendered and client-rendered initial markup match identically (avoid non-deterministic random IDs, client-only timestamps/dates during initial render, or invalid HTML element nesting like `<p><div>...</div></p>`).
-  - Safe Teleport & ClientOnly: Teleport targets must exist in DOM before mounting; client-only third-party widgets must be encapsulated properly.
-- **Memory Safety & Resource Cleanup**:
-  - Event listener cleanup: All manual event listeners attached to `window`, `document`, or external targets must be explicitly removed in `onUnmounted` or `onScopeDispose` (or use managed composables like `useEventListener`).
-  - Observer & Timer disposal: Disconnect `ResizeObserver`, `IntersectionObserver`, `MutationObserver`, and clear all `setTimeout`, `setInterval`, and `requestAnimationFrame` before component unmount.
-- **Security & Content Injection Guards**:
-  - `v-html` audit: Avoid `v-html` whenever possible. If raw HTML rendering is strictly necessary, ensure input is sanitized against XSS (no script execution, `onerror`/`onload` attributes, or dangerous protocols).
-  - Dynamic SVG security: SVGs rendered dynamically from user input or external URLs must be sanitized (no embedded `<script>`, external entity injection, or event handlers).
-  - Safe URL attributes: `href`, `src`, and `action` bindings must guard against malicious protocols (`javascript:`, `data:` URLs executing scripts).
-  - Safe external navigation: External links (`target="_blank"`) must always declare `rel="noopener noreferrer"`.
+- **Composition & Atomicity**: Minimal, single-purpose component with complex business/state logic extracted into composables.
+- **Props & Emits Contract**: Strictly typed via `defineProps<{ ... }>()` and `defineEmits<{ ... }>()`; strict one-way data flow (never mutate incoming props); predictable naming with `kebab-case` event names.
+- **Template Hygiene**: Cleanest possible semantic HTML; zero function calls, complex calculations, or inline styles in templates; unique non-index `:key` in `v-for`; never combine `v-if` with `v-for` on the same element.
+- **Styles & Design System**: Strict SCSS mixin usage from `@dxtmisha/styles`; zero hardcoded colors, borders, or spacing values; never modify base UI library styles; PurgeCSS compliance (all class names must be unbroken string literals).
+- **Component Lifecycle, SSR & Security**: Safe `Teleport` targets and `ClientOnly` wrappers; deterministic initial markup matching between server and client (no `<p><div>...</div></p>` invalid nesting); full WAI-ARIA roles/states and keyboard focus management; sanitized bindings (avoid `v-html`, sanitize dynamic SVGs and `href`/`src`/`action` URLs, enforce `rel="noopener noreferrer"` on `target="_blank"`).
 
 ### B. TypeScript Classes (`class`)
 - **Structure & Ordering**:
-  - Strict member ordering: Properties (`public` -> `protected` -> `private`) -> `constructor` -> Public Methods -> Protected Methods -> Private Methods.
-  - Strict method ordering within visibility groups: `get` -> `set` -> `is...` -> `has...` -> `get...` -> `set...` -> `add...` -> `remove...` -> `update...` -> `reset...` -> remaining methods (grouped by semantic pairs and alphabetical order).
-- **Encapsulation & Visibility**:
-  - Strict visibility modifiers. Internal implementation details must be `protected` or `private`.
-  - Immutability where possible (`readonly`, `as const`).
-- **Reuse of Project Primitives**:
-  - Use helper primitives from `@dxtmisha/functional-basic` (`isFunction`, `isFilled`, `isObject`, `isArray`, etc.) instead of ad-hoc checks.
-- **Accessibility & ARIA Integration (Constructors & Controllers)**:
-  - ARIA attribute encapsulation: ARIA attributes must be encapsulated within dedicated `aria` getters (e.g. `get aria(): AriaList`) or via `AriaStaticInclude` (`AriaStaticInclude.role()`, `label()`, `hidden()`) inside constructor classes rather than fragmented across inline template bindings.
-  - Automatic decorative asset hiding: automatically assigning `AriaStaticInclude.hidden()` / `aria-hidden="true"` when meaningful text/labels (like `alt` or `label`) are absent.
-- **SSR Request Isolation & State Safety**:
-  - Zero cross-request pollution: Classes must NOT store user- or request-specific state in static properties or module-level singletons. In Node.js/Nitro SSR, module globals persist across concurrent HTTP requests.
-  - Request-isolated singletons: Use `ServerStorage.get('key', () => new Class())` for stateful instances that must be scoped per request rather than shared globally.
-- **Memory Management & Teardown Lifecycle**:
-  - Explicit destruction contract: Any class holding subscriptions, listeners, DOM elements, or caches must implement an explicit `destroy()` / `dispose()` / `reset()` method to release memory references.
-  - Cache size & retention guards: Internal registries, caches, and event listener arrays must prevent unbounded growth and detached memory retention.
-- **Security & Data Sanitization**:
-  - Prototype pollution guards: Deep merge, cloning, object property setters by path (`set(obj, path, val)`), or configuration merging must explicitly guard against modifying `__proto__`, `constructor`, or `prototype`.
-  - ReDoS prevention: Regular expressions must avoid catastrophic exponential backtracking on maliciously crafted inputs.
-  - Safe error serialization: Do not log or expose raw credentials, auth tokens, or private customer data in error messages or ErrorCenter details.
+  - Strict member ordering: Properties (`public` -> `protected` -> `private`) -> `constructor` -> Computed/Reactive Properties (`computed` and reactive fields placed immediately after constructor) -> Public Methods -> Protected Methods -> Private Methods.
+  - Strict method ordering within visibility groups: `get` -> `set` -> `is...` -> `has...` -> `get...` -> `set...` -> `add...` -> `remove...` -> `update...` -> `reset...` -> remaining methods (grouped by semantic pairs such as `min`/`max`, `width`/`height`, then alphabetically).
+- **Encapsulation & Immutability**: Strict visibility modifiers (`protected`/`private` for internals) and immutability (`readonly`, `as const`).
+- **Reuse of Project Primitives**: Use helper primitives from `@dxtmisha/functional-basic` (`isFunction`, `executeFunction`, `isFilled`, `isObject`, `isArray`, `isString`, etc.) instead of custom inline checks.
+- **ARIA Encapsulation (Constructors & Controllers)**: Encapsulate ARIA attributes inside dedicated `aria` getters (`get aria(): AriaList`) or via `AriaStaticInclude` (`AriaStaticInclude.role()`, `label()`, `hidden()`) rather than fragmented template bindings; automatically hide decorative assets (`AriaStaticInclude.hidden()` / `aria-hidden="true"`) when meaningful labels (`alt`/`label`) are absent.
+- **Lifecycle, SSR & Security**: Request-isolated SSR singletons via `ServerStorage.get('key', () => new Class())` (zero mutable static/module state); explicit `destroy()` / `dispose()` / `reset()` teardown methods and bounded internal caches; prototype pollution guards, ReDoS-safe regexes, and credential-safe error serialization.
 
 ### C. Functions & Utilities (`function`)
-- **Purity & Determinism**:
-  - Are pure functions truly side-effect free?
-  - Are top-level module invocations properly annotated with `/* #__PURE__ */` for bundler tree-shaking?
-- **Cyclomatic Complexity**:
-  - Early returns and guard clauses to eliminate nested `if/else` ladders.
-  - Well-defined error boundaries without silent failure.
-- **Signature Ergonomics**:
-  - Clean parameter lists: Use typed options objects with sensible defaults for functions with 3+ parameters.
-- **Defensive Security & Regular Expressions**:
-  - ReDoS safety: Regular expressions must be crafted without ambiguous nested quantifiers (e.g. `(a+)+`, `(a|aa)+`).
-  - Dynamic RegExp escaping: When constructing `new RegExp(...)` from dynamic user input or search queries, characters with special regex meaning must be escaped (using `escapeExp` / `RegExp.escape`).
-  - Safe parsing: Ensure `JSON.parse` or numeric parsers are guarded against throwing unhandled exceptions or accepting non-primitive inputs.
+- **Purity & Determinism**: Side-effect-free pure functions; top-level module invocations annotated with `/*#__PURE__*/` for bundler tree-shaking.
+- **Cyclomatic Complexity**: Early returns and guard clauses instead of nested `if/else` ladders; well-defined error boundaries without silent failures.
+- **Signature Ergonomics**: Clean parameter lists using typed options objects with sensible defaults for functions with 3+ parameters.
+- **Defensive Parsing & RegExp Safety**: ReDoS-free regular expressions; mandatory escaping of dynamic user search/input strings via `escapeExp` / `RegExp.escape` before `new RegExp(...)`; safe `JSON.parse` and numeric parsing guarded against unhandled exceptions or non-primitive inputs.
 
 ### D. Composables & Hooks (`use*` / `executeUse*`)
-- **Reactivity Preservation**:
-  - Correct handling of reactive parameters (`MaybeRefOrGetter`, `toValue`, `toRefs`).
-  - No accidental reactivity breakage (e.g., premature destructuring of reactive objects).
-- **Scope & Singletons**:
-  - Proper lifecycle boundaries: Wrapping in `executeUseGlobal`, `executeUseLocal`, or `executeUseProvide` when dealing with shared or session-scoped state.
-  - Components must never call raw state singletons directly; they consume the wrapped composable hook.
-- **Cleanup & Memory Safety**:
-  - Mandatory `onScopeDispose` cleanup: All side effects, intervals (`setInterval`), timeouts (`setTimeout`), `requestAnimationFrame`, observers (`ResizeObserver`, `IntersectionObserver`), and event listeners must be cleaned up on scope disposal (`onScopeDispose`).
-  - Watcher lifecycle safety: Any `watch` or `watchEffect` created inside composables must be bound to the active effect scope. Watchers created outside setup or in asynchronous callbacks without explicit stopping handles will cause permanent memory leaks.
-  - Unbounded cache prevention: In-memory maps, caches, or event registries must have clear eviction policies or bounds to avoid progressive memory consumption over long sessions.
-- **SSR Safety & Isomorphism**:
-  - Safe browser API access guarded strictly by `isDomRuntime()`.
-  - Zero request-leaking global state: Never share mutable request/user state across requests in SSR via module-level refs or globals. Use `executeUseLocal`, `executeUseProvide`, or `ServerStorage`.
-  - Isomorphic reactivity: Avoid running client-only asynchronous side effects (e.g. continuous polling, timer intervals) during server-side execution.
-- **Security, Messaging & Storage Isolation**:
-  - Origin verification: Handlers for `window.addEventListener('message', ...)` and `BroadcastChannel` must validate message origins and payload schemas before processing.
-  - URL parameter & state sanitization: Query parameters, hashes, and route parameters must be treated as untrusted user input, validated and sanitized before assigning to reactive state or DOM.
-  - Cookie security: When setting cookies via `useCookieRef` or cookie utilities, ensure proper flags (`SameSite`, `Secure`, `HttpOnly` where applicable) to prevent CSRF and session hijacking.
+- **Reactivity Preservation**: Proper handling of reactive inputs (`MaybeRefOrGetter`, `toValue`, `toRefs`); zero accidental reactivity loss (no premature destructuring of reactive objects).
+- **Scope & Singletons**: Shared or session-scoped state wrapped in `executeUseGlobal`, `executeUseLocal`, or `executeUseProvide` inside external service files; Vue components must never call raw `useApi*` / `executeUse*` factories directly in `<script setup>`.
+- **Disposal, SSR & Messaging Security**: Mandatory cleanup via `onScopeDispose`; watchers bound to active `effectScope()` or explicitly stopped; bounded in-memory maps/registries; browser APIs guarded by `isDomRuntime()` with zero client-only polling/intervals running during SSR; strict origin/schema validation for `postMessage` and `BroadcastChannel`, sanitized URL query/hash/route state, and secure cookie flags (`SameSite`, `Secure`, `HttpOnly`) in `useCookieRef`.
 
 ---
 
-## 3. Bugs, Deficiencies & Edge Cases
+## 3. Bugs, Edge Cases, Memory Safety & SSR Isomorphism
 
-Rigorously search for subtle defects, including:
+Rigorously search for subtle runtime and architectural defects across five core areas:
+
 1. **Reactivity & State Bugs**:
-   - Accidental loss of Vue reactivity.
-   - Stale closures in composables, callbacks, or computed getters.
-   - Infinite reactivity loops or un-memoized expensive calculations.
+   - Accidental loss of Vue reactivity, stale closures in composables/callbacks/computed getters, infinite reactivity loops, or un-memoized expensive calculations.
 2. **Asynchronous & Concurrency Issues**:
-   - Race conditions in async data fetches or event debounces.
-   - Unhandled promise rejections or uncancelled pending requests.
-3. **Memory Leaks & Cleanup Failures**:
-   - Missing `removeEventListener` on `window`, `document`, or external DOM elements.
-   - Lingering `setInterval`, `setTimeout`, or `requestAnimationFrame` that continue running after component unmount or scope disposal (especially devastating in SSR where Node processes keep timers alive indefinitely).
-   - Unstopped watchers (`watch`, `watchEffect`) created outside synchronous `setup()` or outside active `effectScope()`.
-   - Detached DOM nodes retained in closures, static arrays, caches, or Map/Set references.
-   - Undisposed observers (`ResizeObserver`, `IntersectionObserver`, `MutationObserver`) or media query listeners (`matchMedia`).
-   - Missing cleanup for subscriptions (`BroadcastChannel`, `WebSocket`, custom event emitters, Rx/Store subscriptions).
-4. **Edge Cases & Boundary Conditions**:
-   - Unhandled `null`, `undefined`, empty string, empty array/object, `NaN`, 0, negative numbers.
-   - Boundary checks, division by zero, off-by-one errors.
-   - **Pragmatic Boundaries vs Code Bloat (Без избыточного кода)**: Evaluate edge cases strictly within the entity's intended purpose and usage environment. Do NOT penalize code or demand defensive layers for absurd, impossible edge cases that bloat the codebase without real benefit.
+   - Race conditions in async data fetches or event debounces, unhandled promise rejections, or uncancelled pending requests (`AbortController`).
+3. **Memory Leaks & Resource Cleanup Failures**:
+   - Missing `removeEventListener` on `window`, `document`, or external DOM elements in `onUnmounted` / `onScopeDispose` (or failure to use managed helpers like `useEventListener`).
+   - Lingering `setInterval`, `setTimeout`, or `requestAnimationFrame` continuing after component unmount or scope disposal (especially critical in SSR where Node processes keep timers alive indefinitely).
+   - Unstopped watchers (`watch`, `watchEffect`) created outside synchronous `setup()` or active `effectScope()`.
+   - Detached DOM nodes retained in closures, static arrays, caches, or `Map`/`Set` references; unbounded caches without eviction policies.
+   - Undisposed observers (`ResizeObserver`, `IntersectionObserver`, `MutationObserver`), media query listeners (`matchMedia`), or subscriptions (`BroadcastChannel`, `WebSocket`, custom event emitters, store subscriptions); missing `destroy()` / `dispose()` / `reset()` methods on stateful classes.
+4. **Edge Cases & Pragmatic Boundaries**:
+   - Unhandled `null`, `undefined`, `''`, `[]`, `{}`, `NaN`, `0`, negative numbers, division by zero, or off-by-one errors.
+   - **Pragmatic Boundaries vs Code Bloat**: Evaluate edge cases strictly within the entity's intended purpose and usage environment (Step 6). Do NOT penalize code or demand defensive layers for absurd, impossible edge cases that bloat the codebase without real benefit.
 5. **SSR Hydration & Isomorphic Flaws**:
-   - Direct execution of `window`, `document`, `navigator`, `localStorage`, `sessionStorage`, or `location` on the server without checking `isDomRuntime()`.
-   - Cross-request state pollution: Storing user or request-dependent data in module-level global variables or shared singletons, leaking sensitive state between concurrent requests in SSR.
-   - Timers or continuous background loops executing during server rendering.
-   - Hydration mismatch risks between server-rendered and client-rendered DOM trees (differing timestamps, random IDs, browser-conditional markup rendered during hydration).
-   - DOM manipulation or measurement during server render (e.g. attempting to read `offsetWidth`, `getBoundingClientRect`, or canvas context on server).
+   - Direct access to browser globals (`window`, `document`, `navigator`, `localStorage`, `sessionStorage`, `location`) on the server without checking `isDomRuntime()` or deferring to `onMounted`.
+   - Cross-request state pollution: storing user- or request-specific data in module-level global variables, shared refs, or static class properties, leaking state across concurrent SSR requests (must use `ServerStorage.get('key', () => new Class())`, `executeUseLocal`, or `executeUseProvide`).
+   - Timers, continuous background polling loops, or DOM measurements (`offsetWidth`, `getBoundingClientRect`, canvas context) executing during server render.
+   - Hydration mismatch risks between server-rendered and client-rendered DOM trees (non-deterministic random IDs, client-only timestamps/dates during initial render, browser-conditional markup during hydration, invalid HTML nesting like `<p><div>...</div></p>`).
 
 ---
 
-## 4. Security & Vulnerability Audit (Анализ безопасности и поиск уязвимостей)
+## 4. Security & Vulnerability Audit
 
 Conduct a systematic security assessment to identify vulnerabilities, injection vectors, and data leak risks:
 
 1. **XSS (Cross-Site Scripting) & Markup Injection**:
    - Usage of `v-html` or `innerHTML` without robust sanitization.
-   - Dynamic SVG rendering containing malicious script tags, event handlers (`onload`, `onerror`), or XML entity attacks.
-   - Dynamic evaluation or script execution (`eval()`, `new Function()`, `setTimeout(string)`).
-   - Unsanitized URL bindings in `href`, `src`, `formaction`, or window redirects (allowing `javascript:`, `vbscript:`, or unapproved `data:` URI execution).
-   - External links with `target="_blank"` missing `rel="noopener noreferrer"` (tabnabbing vulnerability).
-
+   - Dynamic SVG rendering containing malicious `<script>` tags, event handlers (`onload`, `onerror`), or XML entity injection.
+   - Dynamic code evaluation (`eval()`, `new Function()`, `setTimeout(string)`).
+   - Unsanitized URL bindings in `href`, `src`, `action`, `formaction`, or window redirects allowing `javascript:`, `vbscript:`, or unapproved `data:` URI execution.
+   - External links with `target="_blank"` missing `rel="noopener noreferrer"` (reverse tabnabbing vulnerability).
 2. **Prototype Pollution & Object Integrity**:
-   - Recursive object merging, deep cloning, query parameter hydration, or dot-notation path traversal (e.g., `set(target, path, value)`) without filtering sensitive property names (`__proto__`, `constructor`, `prototype`).
-   - Object creation without a prototype (`Object.create(null)`) vs plain objects when storing arbitrary dictionary keys from external sources.
-
+   - Recursive object merging, deep cloning, query parameter hydration, or dot-notation path traversal (`set(target, path, value)`) without filtering `__proto__`, `constructor`, and `prototype`.
+   - Using plain objects instead of prototype-less objects (`Object.create(null)`) when storing arbitrary dictionary keys from external sources.
 3. **ReDoS (Regular Expression Denial of Service)**:
-   - Vulnerable regular expressions with nested quantifiers or overlapping alternation branches prone to catastrophic polynomial/exponential backtracking when processing adversarial inputs.
-   - Unescaped strings in dynamic regular expression constructors (`new RegExp(untrustedPattern)`).
-
+   - Vulnerable regular expressions with ambiguous nested quantifiers (`(a+)+`, `(a|aa)+`) or overlapping alternation branches prone to catastrophic exponential backtracking on adversarial inputs.
+   - Unescaped user strings passed into dynamic `new RegExp(untrustedPattern)` constructors (must escape via `escapeExp` / `RegExp.escape`).
 4. **Sensitive Data Exposure & Information Leakage**:
-   - Secrets, API keys, private tokens, passwords, or authentication credentials hardcoded in source code or client bundles.
-   - Accidental logging of authorization headers, session cookies, tokens, or PII (Personally Identifiable Information) to console, `ErrorCenter`, query strings, or client error monitors.
+   - Hardcoded secrets, API keys, private tokens, passwords, or credentials in source code or client bundles.
+   - Accidental logging of authorization headers, session cookies, tokens, or PII (Personally Identifiable Information) to console, `ErrorCenter`, URL query strings, or client error monitors.
    - Leaking server-side environment variables or private configs through SSR state hydration objects or public client manifests.
-
 5. **Cross-Origin & Messaging Security**:
    - Insecure cross-window communication: `window.addEventListener('message', ...)` lacking strict `event.origin` verification.
-   - Unauthenticated `BroadcastChannel` listeners that trust foreign messages without payload validation.
-   - Open redirect vulnerabilities: redirecting or navigating to unvalidated user-supplied URLs without checking domain whitelist or relative path safety.
-
+   - Unauthenticated `BroadcastChannel` listeners trusting foreign messages without payload schema validation.
+   - Open redirect vulnerabilities: navigating or redirecting to unvalidated user-supplied URLs without domain allowlist or relative-path verification.
 6. **SSR & Request Isolation Security**:
    - SSRF (Server-Side Request Forgery): server-side data prefetching or API proxy utilities accepting user-controlled destination URLs without strict IP/domain allowlists.
-   - Cross-request cache poisoning or session bleeding: sharing mutable user- or request-specific data in module-level singletons or static variables in Nitro/Node.js SSR environments.
-   - Insecure cookie configurations: missing `Secure`, `SameSite=Lax/Strict`, or `HttpOnly` attributes on sensitive cookies.
-
+   - Cross-request cache poisoning or session bleeding via shared module-level singletons in Nitro/Node.js SSR environments.
+   - Insecure cookie configurations (`useCookieRef` or cookie utilities) missing `Secure`, `SameSite=Lax/Strict`, or `HttpOnly` attributes.
 7. **Input Validation & Schema Integrity**:
-   - Blind trust in external API responses, query parameters, cookies, or localStorage data without schema validation (e.g. `@effect/schema` or strict type guards).
-   - Insecure deserialization: executing or evaluating untrusted data extracted from cookies, storage, or URLs.
+   - Blind trust in external API responses, URL query/hash/route parameters, cookies, or `localStorage` data without schema validation (`@effect/schema` or strict type guards) and sanitization.
+   - Insecure deserialization of untrusted data extracted from cookies, storage, or URLs.
 
 ---
 
-## 5. Strict Project Rules & Conventions Compliance
+## 5. Strict Project Rules & Conventions Compliance (`dxt-ui`)
 
-Check compliance against the core rules of `dxt-ui`:
-- **Strict TypeScript**:
-  - Zero `any` (mandatory `unknown` or generics).
-  - Explicit return types on all methods and exported functions.
-  - Use `@ts-expect-error` with comments, never `@ts-ignore`.
-- **Zero Hallucinations & Dependency Integrity**:
-  - Strictly use dependencies declared in `package.json`.
-  - Do not invent non-existent APIs, options, or utilities.
-  - Outbound imports must strictly respect monorepo package hierarchy (`functional-basic` -> `functional` -> `constructor` -> `d1`).
-  - Zero circular dependencies.
+Verify 100% compliance with all core `dxt-ui` engineering standards:
+- **Strict TypeScript**: Zero `any` (use `unknown` or generics); explicit return types on all methods and exported functions; interfaces for all I/O, Props, and Emits; `@ts-expect-error` with explanatory comments (never `@ts-ignore`).
+- **Zero Hallucinations & Dependency Integrity**: Strictly use dependencies declared in `package.json` (`>=`); never invent non-existent APIs or options; respect monorepo package layering (`functional-basic` -> `functional` -> `constructor` -> `d1`); zero circular dependencies.
 - **Bilingual JSDoc/TSDoc (`jdoc.md`)**:
-  - Classes and functions: Multiline English and Russian descriptions with `@param` and `@returns` bilingual comments (`EN / RU`).
-  - Properties, interfaces, types, enums: Compact bilingual lines (`/** English / Russian */`).
-- **Naming Conventions**:
-  - Forbidden abbreviations: `el`, `val`, `temp`, `res`, `err`, `idx`, `cb`, `obj`, etc.
-  - Names must be full, descriptive, and semantically precise.
-- **No Aliases or Duplicate Exports**:
-  - No alias functions, types, or variables (e.g., `useFile = useMediaFile`). One canonical exported name.
-- **Tree-Shaking (`/* #__PURE__ */`)**:
-  - All top-level module function/constructor calls assigned to constants MUST have `/* #__PURE__ */`.
-- **PurgeCSS Compatibility**:
-  - No dynamic CSS class concatenation (`'btn-' + size`). Complete literal strings only.
-- **Accessibility & ARIA Standards (WAI-ARIA & A11y)**:
-  - Mandatory ARIA support for interactive, graphical, and informative UI components.
-  - Proper use of `AriaStaticInclude` (`role()`, `label()`, `hidden()`, etc.) and dedicated `aria` getters in component constructor classes.
-  - Correct role assignments and state synchronization (`role="img"`, `role="button"`, `role="dialog"`, etc.).
-- **Security Standards**:
-  - Zero unescaped user HTML or dangerous URL protocol bindings (`javascript:`).
-  - Mandatory prototype pollution guards on recursive object utilities.
-  - Safe ReDoS-resistant regular expressions with escaped dynamic patterns.
-  - No secrets, credentials, or PII exposed in logs, client bundles, or state hydration.
-- **SSR Safety & Isomorphic Standards**:
-  - Fully isomorphic code across all packages.
-  - Never store request state in globals or module-level singletons.
-  - Mandatory use of `isDomRuntime()` before accessing `window`, `document`, or browser APIs.
-  - Use `ServerStorage.get('key', () => new Class())` for request-isolated singletons in Nitro/Node.js SSR environments.
-- **Memory Leak Prevention & Scope Disposal**:
-  - Mandatory disposal of all listeners, timers, observers, and subscriptions in `onScopeDispose` / `onUnmounted`.
-  - Explicit `destroy()` / `dispose()` methods on stateful classes holding references or subscriptions.
-  - Zero unstopped watchers or detached DOM references.
-- **Mandatory Unit Tests Quality & Coverage (Audit & Artifact Specification)**:
-  - Every entity (constructor class, utility function, composable, helper) must be evaluated against thorough, high-quality testing standards.
-  - Test suites must be critically audited for completeness and quality: if tests are incomplete, superficial, or low-quality, the reviewer must document the gaps and prepare a comprehensive test suite specification **inside the review artifact**. Modifying or creating test files in the workspace is permitted **STRICTLY and ONLY upon explicit instruction from the developer**.
+  - Classes, functions, and methods: multiline descriptions (English on top, Russian on bottom) with bilingual `@param` and `@returns` separated by ` / ` (`EN / RU`).
+  - Interfaces, types, enums, and properties: compact single- or double-line bilingual format (`/** English / Russian */`).
+- **Naming Conventions & No Aliases**:
+  - Forbidden abbreviations: `el`, `val`, `temp`, `res`, `err`, `idx`, `cb`, `obj`, etc. Use full, semantically precise names.
+  - Zero aliases or duplicate exports (e.g., `useFile = useMediaFile` or `inputFileList = fileList` is strictly forbidden — export and use strictly one canonical name).
+- **Tree-Shaking (`/*#__PURE__*/`)**: Every top-level module function call, factory invocation, or constructor (`new Class()`) assigned to a constant/variable MUST be annotated with `/*#__PURE__*/`.
+- **PurgeCSS Compatibility**: Never construct CSS class names dynamically via string concatenation or template literals (`'btn-' + size`, `` `badge-${color}` ``). Always use full, unbroken string literals in object syntax, dictionaries, or ternaries, or wrap external dynamic classes in `/* purgecss start ignore */ ... /* purgecss end ignore */`.
+- **Accessibility & ARIA (WAI-ARIA & A11y)**: Full ARIA support for interactive, graphical, and informative components (`role="img"`, `role="button"`, `role="dialog"`, `aria-expanded`, `aria-controls`, `aria-selected`, `aria-checked`, `aria-disabled`, `aria-live`, `aria-haspopup`, `aria-label`, `aria-labelledby`, `aria-describedby`, `aria-hidden="true"`); proper encapsulation via `AriaStaticInclude` and `get aria(): AriaList` in constructors; full keyboard navigation (`Enter`, `Space`, `Escape`, `Arrow` keys) and focus management.
+- **SSR, Memory, Security & Testing Compliance**: Full compliance with Section 3 (isomorphic `isDomRuntime()` / `ServerStorage.get()`, deterministic hydration, complete listener/timer/observer/watcher disposal), Section 4 (zero XSS/prototype pollution/ReDoS/data leaks), and Pre-Review Step 5 (thorough unit test audit documented in Section 6 of the artifact without modifying workspace test files unless instructed).
 
 ---
 
 ## 6. Review Output Format
 
-### A. Delivery & Language Requirements
-1. **Output Language (Strict `wikiLanguage` from `./design.config.json`)**:
-   - The AI agent MUST open and read `./design.config.json` to extract the `wikiLanguage` property.
-   - If `wikiLanguage` is `'ru'`, the entire review document MUST be written strictly in Russian (все разделы, заголовки, категории, описания багов и рекомендации должны быть написаны на русском языке).
-   - If `wikiLanguage` is `'en'`, write in English.
-   - If no language is found after reading `./design.config.json`, default to English (`'en'`).
-   - Technical identifiers, type names, code snippets, and file paths must always remain untranslated in their original form.
-2. **AI Artifact Delivery (Do NOT Describe in Chat, Do NOT Pollute Repository)**:
-   - Save the full report exclusively as an **AI Artifact** (e.g., in `<appDataDir>/brain/<conversation-id>/code_review_<target>.md` or the agent's artifact directory).
-   - Do NOT output the full report, tables, or detailed findings into the current chat.
-   - In the chat response, provide ONLY a concise 1–2 sentence notification with an overall score and a clickable markdown link to the generated artifact.
-   - Do NOT create permanent review files in the project root (avoid creating `./code-review.md` in the git repository tree).
+### A. Delivery & Language Enforcement
+1. **Language**: Follow Pre-Review Step 1 (`./design.config.json` -> `wikiLanguage`: write the entire report in Russian if `'ru'`, or English if `'en'` / missing; keep code, types, identifiers, and paths untranslated).
+2. **Artifact Only**: Follow Pre-Review Step 2 (save exclusively to `<appDataDir>/brain/<conversation-id>/code_review_<target>.md`; never create `./code-review.md` in the repository; reply in chat with ONLY a 1–2 sentence summary, overall rating, and artifact link).
 
 ### B. Report Structure & Sections
-Document the review in the artifact markdown file with the following sections (translate section titles and contents according to `wikiLanguage`, e.g. in Russian if `wikiLanguage` is `'ru'`):
+Structure the artifact markdown document with the following six sections (translate all section titles, table headers, and prose according to `wikiLanguage`):
 
 #### 1. Executive Summary & Quality Score
-- **Overall Rating**: Grade (e.g., `A`, `B`, `C`, `D`, `F`) or Score (0-100).
-- **Core Verdict**: High-level summary of the implementation's strengths, weaknesses, and readiness for production.
+- **Overall Rating**: Grade (`A`, `B`, `C`, `D`, `F`) and Score (`0–100`).
+- **Core Verdict**: High-level summary of strengths, weaknesses, and production readiness.
 - **Category Scores**:
   | Category | Rating | Summary |
   | :--- | :---: | :--- |
@@ -362,42 +242,38 @@ Document the review in the artifact markdown file with the following sections (t
   | **Unit Tests & Quality** | Comprehensive & High-Quality / Rewritten & Refined / Created from Scratch / Incomplete or Missing | ... |
   | **Project Rules & Conventions** | 100% Compliant / Minor Discrepancies / Non-compliant | ... |
 
-#### 2. Автоматически примененные исправления (Applied Immediate Fixes)
-- **Обязательный самостоятельный раздел отчёта**: Если во время код-ревью в проверяемых файлах были выполнены разрешенные автоматические неломающие исправления (опечатки, стандартизация JSDoc по `jdoc.md`, расширение типов `value: unknown`, микрооптимизации, замена повторного строкового индексирования на `charCode`, вынесение констант кодов символов, удаление мертвого кода и неиспользуемых хелперов), этот раздел ОБЯЗАН содержать полный детализированный отчет:
-  - **Файлы и строки**: точные ссылки на измененные строки (`file.ts#L10-L15`).
-  - **Категория**: `Typo` / `JSDoc` / `Typing Ergonomics` / `Micro-Optimization & Check Unification` / `Dead Code Removal`.
-  - **Обоснование**: техническая причина и польза внесенного изменения (повышение читаемости, производительность, консистентность кода).
-  - **Код до и после (Diff)**: наглядные блоки `diff` с внесенными изменениями.
-  - **Верификация тестами**: статус выполнения модульных тестов после внесения изменений (например, `vitest run: 37 passed`).
-- Если автоматических правок не потребовалось, в этом разделе явно фиксируется статус: *«Автоматические исправления не потребовались (код исходно чист)»*.
+#### 2. Applied Immediate Fixes
+- **Mandatory Standalone Report Section**: If permitted non-breaking fixes were applied in-place during the review (Pre-Review Step 3: typos, bilingual JSDoc per `jdoc.md`, typing ergonomics like `value: unknown`, redundant check removal, replacing repeated string indexing with `charCode`, extracting character code constants, dead code/unused helper removal), provide a detailed report:
+  - **Files and Lines**: Exact links to modified lines (`file.ts#L10-L15`).
+  - **Category**: `Typo` / `JSDoc` / `Typing Ergonomics` / `Micro-Optimization & Check Unification` / `Dead Code Removal`.
+  - **Rationale**: Technical reason and benefit (readability, performance, consistency).
+  - **Code Before and After (Diff)**: Clear `diff` blocks illustrating the applied changes.
+  - **Test Verification**: Unit test execution result after applying the changes (e.g., `vitest run: 37 passed`).
+- If no automated fixes were required, state explicitly: *"No automated fixes required (code is originally clean)"*.
 
 #### 3. Deep Dive: Architectural & Design Quality
-- Analysis of decomposition, encapsulation, and scalability.
-- Evaluation of whether the entity is modern or relies on outdated practices compared to top-tier industry libraries.
+- Analysis of decomposition, encapsulation, separation of concerns, and scalability.
+- Evaluation of modernity vs outdated practices compared to top-tier industry libraries.
 - **Dependency & Inbound Usage Audit**:
-  - **Outbound Dependencies**: Review of all imported modules, layer compliance (`functional-basic` -> `functional` -> `constructor` -> `d1`), `package.json` declaration, and tree-shakeability.
-  - **Inbound Usages & Blast Radius**: Comprehensive scan and list of where the entity is used across the codebase, analysis of caller patterns, potential breaking change risks, and suggestions for caller refactoring.
+  - **Outbound Dependencies**: Review of all imported modules, layer compliance (`functional-basic` -> `functional` -> `constructor` -> `d1`), `package.json` declarations, and tree-shakeability.
+  - **Inbound Usages & Blast Radius**: Comprehensive list of call sites across the codebase, analysis of caller patterns, breaking change risks, and caller refactoring recommendations.
 
 #### 4. Detailed Findings & Bugs (Categorized by Severity)
-- **Critical (P0 / Blocker)**: Security vulnerabilities (exploitable XSS, code/attribute injection, prototype pollution, sensitive credential exposure, ReDoS in public endpoints), bugs causing runtime crashes, data loss, memory leaks, SSR breaking issues / cross-request leaks, or reactivity breakage.
-- **Major (P1 / Architecture & Modernity)**: Latent security weaknesses (missing `rel="noopener noreferrer"`, unvalidated external URLs, insecure cookie flags), outdated techniques, violation of single responsibility, suboptimal paradigms, missing cleanup / potential leak risks, SSR hydration mismatches.
-- **Minor (P2 / Conventions & Typing)**: Naming abbreviations, missing `/* #__PURE__ */`, missing or malformed bilingual JSDoc, missing explicit return types.
+- **Critical (P0 / Blocker)**: Exploitable security vulnerabilities (XSS, code/attribute injection, prototype pollution, credential exposure, ReDoS in public endpoints), runtime crashes, data loss, memory leaks, SSR breaking issues / cross-request state leaks, or reactivity breakage.
+- **Major (P1 / Architecture & Modernity)**: Latent security weaknesses (missing `rel="noopener noreferrer"`, unvalidated external URLs, insecure cookie flags), outdated techniques, single-responsibility violations, suboptimal paradigms, missing cleanup / leak risks, SSR hydration mismatches.
+- **Minor (P2 / Conventions & Typing)**: Naming abbreviations, missing `/*#__PURE__*/`, missing or malformed bilingual JSDoc, missing explicit return types.
 - **Nit / Suggestion (P3)**: Minor stylistic polish, code ergonomics, micro-optimizations.
 
-*For each finding, provide: File, line number, explanation of the issue, and the exact reason why it is problematic.*
+*For each finding, specify: File, line number, detailed explanation of the flaw, and why it is problematic.*
 
 #### 5. Comparison with Industry Top Solutions
-- Compare the reviewed solution with how leading open-source libraries (e.g., VueUse, Radix, Nuxt, TanStack) solve similar architectural problems.
-- Highlight concrete lessons or patterns that could be adopted to elevate the code to top-tier quality.
+- Compare the reviewed implementation with how leading open-source libraries (VueUse, Radix UI, Headless UI, Ark UI, Nuxt, TanStack) solve similar architectural problems.
+- Highlight concrete patterns that could elevate the implementation to state-of-the-art quality.
 
 #### 6. Actionable Refactoring, Advisory Proposals & Test Suite
-- Provide ready-to-use before/after code diffs or refactored code blocks illustrating recommended architectural improvements as advisory proposals for the developer.
-- **Proportional & Lean Fixes (Без оверинжиниринга)**: Ensure refactored code remains lean and focused on the entity's actual purpose and environment. Do NOT introduce over-engineered defensive wrappers or bloated code for contrived "all-life" edge cases.
+- **Advisory Refactoring Diffs**: Provide copy-paste-ready Before/After code diffs illustrating recommended architectural improvements.
+- **Proportional & Lean Fixes (Anti-Overengineering)**: Keep refactored code lean and focused on the entity's actual purpose and environment. Never introduce bloated defensive wrappers for contrived "all-life" edge cases.
 - **Unit Test Recommendations & Code Blocks (In Artifact Only)**:
-  - If existing tests are incomplete, superficial, or low-quality: provide a complete, copy-paste ready unit test suite covering all branches, edge cases, and lifecycles **strictly within the report artifact**.
-  - If no tests exist: author the complete recommended unit test suite inside the artifact.
-- **Prohibition of Unsolicited Architectural Modifications**:
-  - Major architectural modifications, class rewrites, and breaking changes remain purely advisory proposals until the developer explicitly instructs to apply them (e.g., "исправь", "примени рекомендации", "исправь пункт 2"). Fix and edit strictly what the developer tells you to fix!
-
-
-
+  - If existing tests are incomplete, superficial, fragile, or missing, provide a complete, copy-paste-ready unit test suite covering all execution paths, edge cases, reactivity, SSR safety, and lifecycles **strictly within this section of the artifact**.
+- **Prohibition of Unsolicited Structural Modifications**:
+  - All major architectural modifications, class/component rewrites, test file creations/overwrites, and breaking changes remain purely advisory until the developer explicitly commands to apply them (e.g., "apply fixes", "apply recommendations", "fix item 2"). Fix and edit strictly what the developer tells you to fix!
