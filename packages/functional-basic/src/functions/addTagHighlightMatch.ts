@@ -1,16 +1,10 @@
 import { encodeAttribute } from './encodeAttribute'
+import { escapeExp } from './escapeExp'
 import { getSeparatingSearchExp } from './getSeparatingSearchExp'
 import { isString } from './isString'
+import { random } from './random'
+import { removeTag } from './removeTag'
 import { toString } from './toString'
-
-/** Unique start tag for highlighting the match in the string / Уникальный начальный тег для выделения совпадения в строке */
-const TAG_START = '___HIGHLIGHT_START___'
-
-/** Unique end tag for highlighting the match in the string / Уникальный конечный тег для выделения совпадения в строке */
-const TAG_END = '___HIGHLIGHT_END___'
-
-/** Regular expression for matching highlight boundary tags / Регулярное выражение для поиска граничных тегов подсветки */
-const EXP_TAG = /___HIGHLIGHT_START___|___HIGHLIGHT_END___/g
 
 /**
  * Returns the opening span tag for highlighting.
@@ -28,6 +22,30 @@ const getTagStart = (className: string): string => `<span class="${className}">`
  * @returns closing span tag string / строка закрывающего тега span
  */
 const getTagEnd = (): string => '</span>'
+
+/**
+ * Generates unique highlight markers that do not collide with the source text.
+ *
+ * Генерирует уникальные маркеры выделения, которые не конфликтуют с исходным текстом.
+ * @param value initial string to check for collision / исходная строка для проверки коллизий
+ * @returns pair of start and end markers / пара начального и конечного маркеров
+ */
+function getHighlightMarkers(value: string): [startMarker: string, endMarker: string] {
+  let markerIdentifier = ''
+  let startMarker: string
+  let endMarker: string
+
+  do {
+    markerIdentifier += random(0, 0xFFFFFFFF).toString(36)
+    startMarker = `[HIGHLIGHT_START_${markerIdentifier}]`
+    endMarker = `[HIGHLIGHT_END_${markerIdentifier}]`
+  } while (
+    value.includes(startMarker)
+    || value.includes(endMarker)
+  )
+
+  return [startMarker, endMarker]
+}
 
 /**
  * Checks if the search parameter is valid and non-empty.
@@ -56,15 +74,24 @@ function isSearchValid(search?: unknown): search is string | RegExp {
  * @param search search string or RegExp / строка поиска или регулярное выражение
  * @param className highlighting class / класс выделения
  * @param shouldEscape should escape the string / нужно ли экранировать строку
+ * @param shouldRemoveTag should remove existing HTML tags if shouldEscape is false / нужно ли удалять существующие HTML-теги, если shouldEscape равно false
  * @returns string with highlighting / строка с выделением
  */
 export function addTagHighlightMatch(
   value: string,
   search?: string | RegExp,
   className: string = 'sys-highlight-match',
-  shouldEscape: boolean = false
+  shouldEscape: boolean = false,
+  shouldRemoveTag: boolean = true
 ): string {
-  const valueForSearch = toString(value)
+  let valueForSearch = toString(value)
+
+  if (
+    !shouldEscape
+    && shouldRemoveTag
+  ) {
+    valueForSearch = removeTag(valueForSearch)
+  }
 
   if (
     valueForSearch.length > 0
@@ -82,16 +109,19 @@ export function addTagHighlightMatch(
       )
     }
 
+    const [startMarker, endMarker] = getHighlightMarkers(valueForSearch)
+
+    const markerExpression = new RegExp(`${escapeExp(startMarker)}|${escapeExp(endMarker)}`, 'g')
     let text = valueForSearch.replace(
       searchExp,
-      match => `${TAG_START}${match}${TAG_END}`
+      match => `${startMarker}${match}${endMarker}`
     )
 
     text = encodeAttribute(text)
 
     return text.replace(
-      EXP_TAG,
-      tag => tag === TAG_START ? tagStart : tagEnd
+      markerExpression,
+      tag => tag === startMarker ? tagStart : tagEnd
     )
   }
 

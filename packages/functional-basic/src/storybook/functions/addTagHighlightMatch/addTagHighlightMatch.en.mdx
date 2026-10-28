@@ -11,6 +11,7 @@ A utility for highlighting matches in a string by wrapping them in a `<span>` HT
 - `search?: string | RegExp` — The search string (one or more words separated by spaces) or a regular expression.
 - `className: string = 'sys-highlight-match'` — The CSS class to be added to the `<span>` tag.
 - `shouldEscape: boolean = false` — Whether to escape the string before adding highlighting.
+- `shouldRemoveTag: boolean = true` — Whether to strip existing HTML tags from the string when `shouldEscape` is `false`.
 
 **Returns:**
 `string` — The string with HTML tags added for highlighting.
@@ -32,7 +33,15 @@ addTagHighlightMatch('Apple and Banana', 'apple banana')
 addTagHighlightMatch('Test', 'test', 'text-red')
 // '<span class="text-red">Test</span>'
 
-// With escaping
+// Tag removal (default behavior when shouldEscape is false)
+addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world')
+// 'Hello <span class="sys-highlight-match">world</span>'
+
+// Preserving existing HTML tags
+addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world', 'sys-highlight-match', false, false)
+// '<p>Hello <b><span class="sys-highlight-match">world</span></b></p>'
+
+// With escaping (HTML tags are escaped, not removed)
 addTagHighlightMatch('<b>bold</b>', 'bold', 'sys-highlight-match', true)
 // '&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;'
   `}

@@ -11,11 +11,17 @@ Tạo và trả về một số nguyên ngẫu nhiên trong phạm vi được c
 - `max: number` — Giá trị lớn nhất có thể.
 
 **Trả về:**
-`number` — Một số nguyên ngẫu nhiên.
+`number` — Một số nguyên ngẫu nhiên trong phạm vi `[min, max]`.
 
 ```typescript
 import { random } from '@dxtmisha/functional-basic'
 
+// Số nguyên ngẫu nhiên từ 1 đến 10 (bao gồm cả hai giá trị)
 console.log(random(1, 10)) // ví dụ: 7
-console.log(random(50, 100)) // ví dụ: 84
+
+// Phạm vi số âm hoặc qua số 0
+console.log(random(-5, 5)) // ví dụ: -2
+
+// Phạm vi với min và max giống nhau
+console.log(random(42, 42)) // 42
 ```

@@ -1,0 +1,94 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/removeTag - Remove HTML and XML tags from a string'/>
+
+# `removeTag`
+
+A high-performance utility for stripping all HTML/XML tags or specific target tags from a string while preserving inner text content.
+
+## Key Features
+
+- **Full HTML/XML & Structure Support** — Removes standard elements, self-closing void tags (`<br/>`, `<img />`), multiline elements, HTML comments (`<!-- ... -->`, `<!-- ... --!>`), `<!DOCTYPE ...>` (including quoted identifiers with `>`), `<![CDATA[...]]>`, and `<?xml ...?>`.
+- **Targeted Tag Filtering** — Strip only designated tags (e.g. `'b'` or `['b', 'i']`) while keeping the rest of the markup intact.
+- **Minified HTML & Attribute Robustness** — Accurately handles adjacent quoted attributes without whitespace (`<img src="x"onerror="alert(1)">`, `<div class="a"id="b">`) and attributes containing `>` or `/>` inside quotes.
+- **Fast-Path Bailout** — Instantly returns the input string if it contains no `<` character, bypassing regular expression execution entirely.
+- **ReDoS Resilient** — Crafted with mutually disjoint token patterns, ensuring deterministic $O(N)$ linear execution on adversarial or malformed markup.
+- **Replacement Pattern Safe** — Uses a replacer function `() => replacement` to treat special replacement strings (`$&`, `$1`, `$$`) literally, preventing unexpected regex capture insertions.
+- **Compiled Regex Caching** — Automatically memoizes dynamic tag and content tag patterns in bounded caches (up to 128 entries each) with canonical key sorting to avoid recompilation overhead.
+- **Isomorphic & SSR Ready** — Pure function with zero DOM dependencies (`window`/`document`), fully safe for server-side rendering (SSR/SSG).
+- **Search Highlight Cleanup** — Perfectly complements `addTagHighlightMatch` by safely stripping `<span class="sys-highlight-match">` tags.
+
+> **Note:** By default (`removeContent = true`), executable and styling tags (`<script>`, `<style>`, `<noscript>`) or tags specified in `removeContent` are silently removed along with their inner content without applying `replacement`, preventing script code and CSS rules from leaking into plain text. Other formatting and layout tags preserve their inner text, and their tag markup is replaced with `replacement`. When `tag` is specified, only matching tags are processed, but executable tags continue to be stripped with their content unless `removeContent: false` is explicitly set.
+
+**Parameters:**
+- `value?: string | number | null` — The initial string or number to process.
+- `options?: RemoveTagOptions` — Options object to configure tag removal:
+  - `tag?: string | string[]` — Specific tag or list of tags to remove. If omitted (`undefined`), removes all HTML/XML tags.
+  - `replacement?: string` — Replacement string for removed tags (not applied to silently removed content blocks; default is `''`).
+  - `removeContent?: boolean | string | string[]` — Whether to remove the inner content of `<script>`, `<style>`, and `<noscript>` tags (or specific tags). Default is `true`.
+
+**Returns:**
+`string` — Cleaned string without tags. Returns an empty string `''` if `value` is `null` or `undefined`.
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { removeTag } from '@dxtmisha/functional-basic'
+
+// 1. Remove all HTML tags (script and style blocks are removed with content by default)
+removeTag('<p>Hello <b>world</b>!</p><script>alert(1)</script>')
+// => 'Hello world!'
+
+// 2. Remove nested and multiline tags
+removeTag('<div class="card">\n  <span>Content</span>\n</div>')
+// => '\n  Content\n'
+
+// 3. Remove self-closing and void tags
+removeTag('Line 1<br/>Line 2<hr><img src="pic.jpg" alt="photo" />')
+// => 'Line 1Line 2'
+
+// 4. Remove comments, DOCTYPE, and CDATA
+removeTag('<!DOCTYPE html><!-- comment -->Hello <![CDATA[data]]>')
+// => 'Hello '
+
+// 5. Remove only specific tags (single tag or array)
+removeTag('<b>Bold</b> and <i>Italic</i> and <p>Text</p>', { tag: 'b' })
+// => 'Bold and <i>Italic</i> and <p>Text</p>'
+
+removeTag('<b>Bold</b> and <i>Italic</i> and <p>Text</p>', { tag: ['b', 'i'] })
+// => 'Bold and Italic and <p>Text</p>'
+
+// 6. Minified HTML and adjacent quoted attributes without whitespace
+removeTag('<img src="x"onerror="alert(1)">Hello')
+// => 'Hello'
+
+removeTag('<div class="a"id="b">Content</div>', { tag: 'div' })
+// => 'Content'
+
+// 7. Custom replacement string (safe for literal dollar signs)
+removeTag('<p>Hello</p><p>world</p>', { replacement: ' ' })
+// => ' Hello  world '
+
+removeTag('<p>Item</p>', { replacement: '$100' })
+// => '$100Item$100'
+
+// 8. Preserving script/style inner content (removeContent = false)
+removeTag('<p>Hello</p><script>alert(1)</script>', { removeContent: false })
+// => 'Helloalert(1)'
+
+// 9. Removing specific tags with their content (removeContent = 'pre' or array of tags)
+removeTag('<p>Article</p><pre>const x = 10;</pre><code>var y = 20;</code>', { removeContent: 'pre' })
+// => 'Articlevar y = 20;'
+
+// 10. Cleaning search highlight matches
+import { addTagHighlightMatch } from '@dxtmisha/functional-basic'
+
+const highlighted = addTagHighlightMatch('Apple and Banana', 'apple')
+// '<span class="sys-highlight-match">Apple</span> and Banana'
+
+removeTag(highlighted, { tag: 'span' })
+// 'Apple and Banana'
+  `}
+/>

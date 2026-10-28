@@ -11,11 +11,17 @@ Generates and returns a random integer within a specified range from `min` to `m
 - `max: number` — The highest possible value.
 
 **Returns:**
-`number` — A random integer.
+`number` — A random integer within `[min, max]`.
 
 ```typescript
 import { random } from '@dxtmisha/functional-basic'
 
+// Random integer between 1 and 10 (inclusive)
 console.log(random(1, 10)) // e.g., 7
-console.log(random(50, 100)) // e.g., 84
+
+// Negative and zero-crossing ranges
+console.log(random(-5, 5)) // e.g., -2
+
+// Identical min and max
+console.log(random(42, 42)) // 42
 ```

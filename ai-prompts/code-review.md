@@ -153,7 +153,7 @@ Evaluate the target according to its specific entity type:
 ### C. Functions & Utilities (`function`)
 - **Purity & Determinism**:
   - Are pure functions truly side-effect free?
-  - Are top-level module invocations properly annotated with `/*#__PURE__*/` for bundler tree-shaking?
+  - Are top-level module invocations properly annotated with `/* #__PURE__ */` for bundler tree-shaking?
 - **Cyclomatic Complexity**:
   - Early returns and guard clauses to eliminate nested `if/else` ladders.
   - Well-defined error boundaries without silent failure.
@@ -276,8 +276,8 @@ Check compliance against the core rules of `dxt-ui`:
   - Names must be full, descriptive, and semantically precise.
 - **No Aliases or Duplicate Exports**:
   - No alias functions, types, or variables (e.g., `useFile = useMediaFile`). One canonical exported name.
-- **Tree-Shaking (`/*#__PURE__*/`)**:
-  - All top-level module function/constructor calls assigned to constants MUST have `/*#__PURE__*/`.
+- **Tree-Shaking (`/* #__PURE__ */`)**:
+  - All top-level module function/constructor calls assigned to constants MUST have `/* #__PURE__ */`.
 - **PurgeCSS Compatibility**:
   - No dynamic CSS class concatenation (`'btn-' + size`). Complete literal strings only.
 - **Accessibility & ARIA Standards (WAI-ARIA & A11y)**:
@@ -350,7 +350,7 @@ Document the review in the artifact markdown file with the following sections (t
 #### 3. Detailed Findings & Bugs (Categorized by Severity)
 - **Critical (P0 / Blocker)**: Security vulnerabilities (exploitable XSS, code/attribute injection, prototype pollution, sensitive credential exposure, ReDoS in public endpoints), bugs causing runtime crashes, data loss, memory leaks, SSR breaking issues / cross-request leaks, or reactivity breakage.
 - **Major (P1 / Architecture & Modernity)**: Latent security weaknesses (missing `rel="noopener noreferrer"`, unvalidated external URLs, insecure cookie flags), outdated techniques, violation of single responsibility, suboptimal paradigms, missing cleanup / potential leak risks, SSR hydration mismatches.
-- **Minor (P2 / Conventions & Typing)**: Naming abbreviations, missing `/*#__PURE__*/`, missing or malformed bilingual JSDoc, missing explicit return types.
+- **Minor (P2 / Conventions & Typing)**: Naming abbreviations, missing `/* #__PURE__ */`, missing or malformed bilingual JSDoc, missing explicit return types.
 - **Nit / Suggestion (P3)**: Minor stylistic polish, code ergonomics, micro-optimizations.
 
 *For each finding, provide: File, line number, explanation of the issue, and the exact reason why it is problematic.*

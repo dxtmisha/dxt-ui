@@ -1,0 +1,94 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/removeTag - Xóa thẻ HTML và XML khỏi chuỗi'/>
+
+# `removeTag`
+
+Tiện ích hiệu năng cao để xóa tất cả các thẻ HTML/XML hoặc các thẻ cụ thể được chỉ định khỏi chuỗi mà vẫn giữ nguyên nội dung văn bản bên trong.
+
+## Tính năng chính
+
+- **Hỗ trợ đầy đủ HTML/XML và cấu trúc đặc biệt** — Xóa các phần tử tiêu chuẩn, thẻ tự đóng (`<br/>`, `<img />`), các khối nhiều dòng, chú thích HTML (`<!-- ... -->`, `<!-- ... --!>`), `<!DOCTYPE ...>` (bao gồm các định danh đặt trong dấu ngoặc kép có chứa `>`), `<![CDATA[...]]>` và `<?xml ...?>`.
+- **Lọc thẻ mục tiêu cụ thể** — Khả năng chỉ xóa các thẻ được chỉ định (ví dụ: `'b'` hoặc `['b', 'i']`) trong khi vẫn giữ nguyên các thẻ khác.
+- **Hỗ trợ HTML rút gọn & thuộc tính linh hoạt** — Xử lý chính xác các thuộc tính được trích dẫn liền kề nhau mà không có khoảng trắng (`<img src="x"onerror="alert(1)">`, `<div class="a"id="b">`) và các thuộc tính chứa `>` hoặc `/>` trong dấu ngoặc kép.
+- **Thoát nhanh (Fast-Path)** — Trả về ngay chuỗi ban đầu nếu chuỗi không chứa ký tự `<`, bỏ qua hoàn toàn việc thực thi biểu thức chính quy.
+- **Kháng ReDoS an toàn** — Sử dụng các lớp ký tự không giao nhau trong mẫu thuộc tính, đảm bảo độ phức tạp tuyến tính $O(N)$ ngay cả trên mã đánh dấu bị hỏng hoặc độc hại.
+- **An toàn với ký tự thay thế đặc biệt** — Sử dụng hàm replacer `() => replacement`, ngăn chặn việc diễn giải các mẫu thay thế (`$&`, `$1`, `$$`) và chèn chuỗi thay thế theo nghĩa đen.
+- **Bộ nhớ đệm biểu thức đã biên dịch** — Tự động lưu biểu thức chính quy động cho thẻ và thẻ nội dung vào các bộ đệm giới hạn (tối đa 128 mục mỗi bộ đệm) với việc sắp xếp khóa chuẩn hóa để tránh chi phí biên dịch lại.
+- **Tương thích hoàn toàn với SSR** — Hàm thuần túy không phụ thuộc vào các biến toàn cục của trình duyệt (`window`/`document`), an toàn tuyệt đối cho render phía máy chủ (Node.js/Nitro).
+- **Tích hợp với hệ thống làm nổi bật** — Bổ sung hoàn hảo cho `addTagHighlightMatch`, cho phép xóa sạch các thẻ đánh dấu tìm kiếm `<span class="sys-highlight-match">`.
+
+> **Lưu ý:** Theo mặc định (`removeContent = true`), các thẻ thực thi và định kiểu (`<script>`, `<style>`, `<noscript>`) hoặc các thẻ được chỉ định trong `removeContent` sẽ bị xóa âm thầm cùng với nội dung bên trong của chúng mà không áp dụng `replacement`, ngăn mã lập trình và quy tắc CSS rò rỉ vào văn bản thuần túy. Các thẻ định dạng và bố cục khác vẫn giữ lại nội dung văn bản bên trong, và cú pháp thẻ của chúng được thay thế bằng `replacement`. Khi chỉ định bộ lọc `tag`, chỉ các thẻ khớp mới được xử lý, trong khi các thẻ thực thi vẫn tiếp tục bị xóa cùng nội dung trừ khi `removeContent: false` được đặt rõ ràng.
+
+**Tham số:**
+- `value?: string | number | null` — Chuỗi hoặc số ban đầu để xử lý.
+- `options?: RemoveTagOptions` — Đối tượng tùy chọn cấu hình xóa thẻ:
+  - `tag?: string | string[]` — Tên thẻ hoặc mảng các thẻ cần xóa. Nếu bỏ qua (`undefined`), tất cả các thẻ HTML/XML sẽ bị xóa.
+  - `replacement?: string` — Chuỗi thay thế cho các thẻ bị xóa (không áp dụng cho các khối nội dung bị xóa âm thầm; mặc định là chuỗi rỗng `''`).
+  - `removeContent?: boolean | string | string[]` — Có nên xóa nội dung bên trong của các thẻ `<script>`, `<style>`, `<noscript>` (hoặc các thẻ chỉ định) hay không. Mặc định là `true`.
+
+**Trả về:**
+`string` — Chuỗi đã được làm sạch không còn thẻ. Trả về chuỗi rỗng `''` nếu giá trị truyền vào là `null` hoặc `undefined`.
+
+## Ví dụ sử dụng
+
+<Source
+  language='typescript'
+  code={`
+import { removeTag } from '@dxtmisha/functional-basic'
+
+// 1. Xóa tất cả các thẻ HTML (các khối script và style theo mặc định được xóa cùng với nội dung)
+removeTag('<p>Xin chào <b>thế giới</b>!</p><script>alert(1)</script>')
+// => 'Xin chào thế giới!'
+
+// 2. Xóa các thẻ lồng nhau và nhiều dòng
+removeTag('<div class="card">\n  <span>Nội dung</span>\n</div>')
+// => '\n  Nội dung\n'
+
+// 3. Xóa các thẻ tự đóng và void tags
+removeTag('Dòng 1<br/>Dòng 2<hr><img src="pic.jpg" alt="ảnh" />')
+// => 'Dòng 1Dòng 2'
+
+// 4. Xóa chú thích HTML, DOCTYPE và CDATA
+removeTag('<!DOCTYPE html><!-- chú thích -->Xin chào <![CDATA[dữ liệu]]>')
+// => 'Xin chào '
+
+// 5. Chỉ xóa các thẻ được chỉ định (thẻ đơn hoặc mảng)
+removeTag('<b>Đậm</b> và <i>Nghiêng</i> và <p>Văn bản</p>', { tag: 'b' })
+// => 'Đậm và <i>Nghiêng</i> và <p>Văn bản</p>'
+
+removeTag('<b>Đậm</b> và <i>Nghiêng</i> và <p>Văn bản</p>', { tag: ['b', 'i'] })
+// => 'Đậm và Nghiêng và <p>Văn bản</p>'
+
+// 6. HTML rút gọn và các thuộc tính đặt trong dấu ngoặc kép liền kề không có khoảng trắng
+removeTag('<img src="x"onerror="alert(1)">Xin chào')
+// => 'Xin chào'
+
+removeTag('<div class="a"id="b">Nội dung</div>', { tag: 'div' })
+// => 'Nội dung'
+
+// 7. Chuỗi thay thế tùy chỉnh (an toàn với ký hiệu đô la)
+removeTag('<p>Xin chào</p><p>thế giới</p>', { replacement: ' ' })
+// => ' Xin chào  thế giới '
+
+removeTag('<p>Mặt hàng</p>', { replacement: '$100' })
+// => '$100Mặt hàng$100'
+
+// 8. Giữ lại nội dung của script và style (removeContent = false)
+removeTag('<p>Xin chào</p><script>alert(1)</script>', { removeContent: false })
+// => 'Xin chàoalert(1)'
+
+// 9. Xóa thẻ tùy chỉnh cùng với nội dung (removeContent = 'pre' hoặc mảng các thẻ)
+removeTag('<p>Bài viết</p><pre>const x = 10;</pre><code>var y = 20;</code>', { removeContent: 'pre' })
+// => 'Bài viếtvar y = 20;'
+
+// 10. Xóa thẻ đánh dấu kết quả tìm kiếm
+import { addTagHighlightMatch } from '@dxtmisha/functional-basic'
+
+const highlighted = addTagHighlightMatch('Táo và Chuối', 'táo')
+// '<span class="sys-highlight-match">Táo</span> và Chuối'
+
+removeTag(highlighted, { tag: 'span' })
+// 'Táo và Chuối'
+  `}
+/>

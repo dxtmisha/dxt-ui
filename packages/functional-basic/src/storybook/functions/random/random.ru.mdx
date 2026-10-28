@@ -11,11 +11,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `max: number` — Наибольшее возможное значение.
 
 **Возвращает:**
-`number` — Случайное целое число.
+`number` — Случайное целое число в диапазоне `[min, max]`.
 
 ```typescript
 import { random } from '@dxtmisha/functional-basic'
 
+// Случайное целое число от 1 до 10 (включительно)
 console.log(random(1, 10)) // например, 7
-console.log(random(50, 100)) // например, 84
+
+// Отрицательный диапазон или диапазон через ноль
+console.log(random(-5, 5)) // например, -2
+
+// Диапазон с одинаковыми min и max
+console.log(random(42, 42)) // 42
 ```
