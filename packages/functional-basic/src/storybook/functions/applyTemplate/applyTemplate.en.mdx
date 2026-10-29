@@ -4,18 +4,32 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `applyTemplate`
 
-A utility for replacing markers in text with values from an object or an array.
+A high-performance utility for applying templates to text, substituting positional markers (`%d`..`%v`), paired block tags (`[tag]content[/tag]`, `{tag}content{/tag}`), and named placeholders (`[key]`, `{key}`) with values from an object or array.
+
+## Key Features
+
+- **Dual Bracket Syntax** — Interoperably supports both square brackets `[key]` and curly braces `{key}` in the same template string.
+- **Block Tags & Content Substitution** — Supports paired tags (`[tag]content[/tag]` or `{tag}content{/tag}`) with automatic interpolation of inner content via `[content]` or `{content}` macros.
+- **$O(1)$ Positional List Markers** — Directly maps array elements to positional macros `%d` through `%v` (up to 19 positional arguments) via constant-time character code offset arithmetic.
+- **Prototype Pollution Safe** — Uses `hasKey` to strictly verify own object properties, ignoring inherited prototype properties (`toString`, `valueOf`, `constructor`, `__proto__`).
+- **Replacement Token Safe** — Treats dollar signs (`$`) in replacement values and tag content literally without unintended regex capture substitution bugs.
+- **Fast-Path Bailouts** — Bypasses regular expression execution instantly if the template string contains no `%`, brackets `[`/`{`, or tag slashes `/`.
+- **Permissive Type Coercion** — Safely handles any text input (`unknown`) and replacement primitives (`0`, `false`, negative numbers, custom `toString`) without throwing exceptions.
+- **Isomorphic & SSR Ready** — Pure functional implementation without dependencies on browser globals or DOM APIs.
 
 **Parameters:**
-- `text: string` — The original text containing template markers.
-- `replacement: Record<string, unknown> | readonly unknown[] = {}` — An object or array containing key-value pairs or items for replacement.
+- `text: unknown` — The original text or value containing template markers. Automatically coerced to string.
+- `replacement?: Record<string, unknown> | readonly unknown[]` — (Optional) An object or array containing key-value pairs or list items for replacement. Defaults to `{}`.
 
-**Replacement formats (replacement)**
-- **Array**: Used for positional markers from `%d` to `%v` (alphabetically).
-- **Object**: Used for named markers in brackets `[key]` or `{key}`, as well as paired tags `[tag]text[/tag]` or `{tag}text{/tag}` (using `[content]` or `{content}` inside the replacement string).
+**Replacement Formats (`replacement`):**
+- **Array (`readonly unknown[]`)**: Used for positional markers `%d` (index 0) to `%v` (index 18). Missing or out-of-bounds items are replaced with empty strings `''`. Non-matching letters (e.g. `%a`, `%w`, `%D`) and standalone `%` signs are preserved intact.
+- **Object (`Record<string, unknown>`)**: Used for named markers in brackets `[key]` or `{key}`, as well as paired block tags `[tag]content[/tag]` or `{tag}content{/tag}`.
+  - **Block tags**: If the replacement string contains `[content]` or `{content}`, it is replaced with the inner content of the tag. If omitted, the tag and its content are replaced entirely with the value.
+  - **Missing keys**: Keys not present in the object are left unchanged in the template.
+  - **Falsy values**: Numeric `0` and boolean `false` are preserved as `'0'` and `'false'`, while `null` and `undefined` become empty strings `''`.
 
 **Returns:**
-`string` — The text with substituted values.
+`string` — Formatted string with applied template replacements.
 
 ## Examples
 
@@ -24,24 +38,65 @@ A utility for replacing markers in text with values from an object or an array.
   code={`
 import { applyTemplate } from '@dxtmisha/functional-basic'
 
-// 1. Positional markers (array)
-applyTemplate('Hello, %d %e!', ['John', 'Doe']) // 'Hello, John Doe!'
+// 1. Positional markers using an array (%d..%v)
+applyTemplate('Hello, %d %e!', ['John', 'Doe'])
+// => 'Hello, John Doe!'
 
-// 2. Named markers (object)
-applyTemplate('Price: [price] {currency}', { price: 100, currency: 'USD' }) // 'Price: 100 USD'
+applyTemplate('Coordinates: %d, %e, %f', [10, 20, 30])
+// => 'Coordinates: 10, 20, 30'
 
-// 3. Handling 0 and false
-applyTemplate('Value: [val]', { val: 0 })      // 'Value: 0'
-applyTemplate('Status: [val]', { val: false })    // 'Status: false'
+// 2. Named markers using an object ([key] and {key})
+applyTemplate('Price: [price] {currency}', { price: 100, currency: 'USD' })
+// => 'Price: 100 USD'
 
-// 4. Skipping missing keys
-applyTemplate('Missing: [none]', {})           // 'Missing: [none]'
+applyTemplate('User: [name] <{email}>', { name: 'Alice', email: 'alice@example.com' })
+// => 'User: Alice <alice@example.com>'
 
-// 5. Paired tags with content substitution
-const tags = { link: '<a href="https://google.com">[content]</a>' }
-applyTemplate('Click [link]here[/link]', tags)  // 'Click <a href="https://google.com">here</a>'
+// 3. Paired block tags with [content] / {content} macro interpolation
+const tags = {
+  link: '<a href="https://example.com">[content]</a>',
+  bold: '<b>{content}</b>'
+}
+applyTemplate('Click [link]here[/link] or {bold}read more{/bold}.', tags)
+// => 'Click <a href="https://example.com">here</a> or <b>read more</b>.'
 
-// 6. List macros (handling out-of-bounds)
-applyTemplate('Macros: %d, %e, %f', ['A', 'B'])  // 'Macros: A, B, '
+// 4. Block tags without [content] replace the whole tag and its content
+const badges = { badge: '<span class="badge" />' }
+applyTemplate('Item [badge]new[/badge]', badges)
+// => 'Item <span class="badge" />'
+
+// 5. Preserving valid falsy values (0 and false)
+applyTemplate('Count: [count], Active: [active]', { count: 0, active: false })
+// => 'Count: 0, Active: false'
+
+applyTemplate('Offset: %d, Enabled: %e', [0, false])
+// => 'Offset: 0, Enabled: false'
+
+// 6. Handling nullish values and missing keys
+applyTemplate('Missing: [none], Empty: [empty]', { empty: null })
+// => 'Missing: [none], Empty: '
+
+// 7. Out-of-bounds array indices and non-matching markers
+applyTemplate('Items: %d, %e, %f, %g', ['first', 'second'])
+// => 'Items: first, second, , '
+
+applyTemplate('Letters: %a %b %D 100%', ['val'])
+// => 'Letters: %a %b %D 100%'
+
+// 8. Dollar sign ($) safety in values and content
+applyTemplate('Total: [price]', { price: '$500 USD' })
+// => 'Total: $500 USD'
+
+applyTemplate('Cost: [highlight]$100 + $20[/highlight]', {
+  highlight: '<span class="price">[content]</span>'
+})
+// => 'Cost: <span class="price">$100 + $20</span>'
+
+// 9. Multilingual and Unicode support
+applyTemplate('Привет, [имя]! %d новых сообщений 🚀', { имя: 'Алексей' })
+// => 'Привет, Алексей! %d новых сообщений 🚀'
+
+applyTemplate('Xin chào %d, bạn có %e thông báo.', ['Nguyễn', 3])
+// => 'Xin chào Nguyễn, bạn có 3 thông báo.'
   `}
 />

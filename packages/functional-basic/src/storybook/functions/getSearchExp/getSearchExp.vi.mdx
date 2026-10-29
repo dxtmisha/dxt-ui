@@ -4,34 +4,69 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getSearchExp`
 
-Tiện ích tạo một `RegExp` không phân biệt chữ hoa/thường, khớp với chuỗi chứa **tất cả** các từ trong chuỗi tìm kiếm (theo bất kỳ thứ tự nào).
+Tiện ích tạo một biểu thức chính quy `RegExp` không phân biệt chữ hoa/thường để tìm kiếm các chuỗi chứa **tất cả** các từ trong truy vấn tìm kiếm (theo bất kỳ thứ tự nào).
 
-Mỗi từ được tách bởi khoảng trắng, escape và bọc trong positive lookahead `(?=.*?từ)`. Rất phù hợp để xây dựng tính năng tìm kiếm trực tiếp hoặc lọc theo nhiều từ.
+Mỗi từ trong truy vấn được tách bởi khoảng trắng, loại bỏ trùng lặp, escape các ký tự đặc biệt của regex và bọc trong điều kiện positive lookahead `(?=.*?từ)`. Rất phù hợp để xây dựng tính năng tìm kiếm trực tiếp (live search), lọc danh sách hoặc bảng dữ liệu theo nhiều trường cùng lúc.
+
+### Tính năng chính:
+- **Tìm kiếm "VÀ" không phụ thuộc thứ tự từ (AND Logic)**: Chuỗi khớp nếu chứa đầy đủ các từ trong truy vấn, bất kể thứ tự xuất hiện (ví dụ: truy vấn `"xe đỏ"` sẽ khớp cả `"xe rất đẹp màu đỏ"` và `"đỏ là màu của xe"`).
+- **Khớp chuỗi con bên trong từ**: Tìm từ ở bất kỳ vị trí nào (ví dụ: truy vấn `"cat dog"` sẽ khớp `"caterpillar hotdog"`).
+- **Tìm kiếm nhiều dòng không phân biệt hoa/thường (cờ `is`)**: Thiết lập cờ `i` (bỏ qua hoa/thường) và `s` (dotAll — dấu `.` khớp với ký tự xuống dòng `\n`), cho phép tìm kiếm xuyên qua nhiều đoạn văn bản.
+- **Tự động loại bỏ từ trùng lặp**: Tự động loại bỏ các từ lặp lại trong truy vấn thông qua `Set`, tránh tạo ra các nhóm lookahead dư thừa.
+- **Tự động escape ký tự đặc biệt**: Escape an toàn các ký tự regex thông qua `escapeExp` (`.`, `*`, `+`, `?`, `$`, `^`, `[`, `]`, `(`, `)`, `|`, `\`, `/`), ngăn chặn lỗi cú pháp và lỗ hổng ReDoS khi người dùng nhập dữ liệu bất kỳ.
+- **Giá trị mặc định an toàn `/^/`**: Nếu chuỗi tìm kiếm trống, chỉ chứa khoảng trắng, không phải chuỗi hoặc vượt quá giới hạn độ dài, hàm trả về `/^/` (khớp với vị trí bắt đầu của bất kỳ chuỗi nào). Điều này giúp bộ lọc hiển thị đầy đủ danh sách khi ô tìm kiếm bị xóa rỗng.
+- **Đẳng hình & An toàn với SSR**: Hàm thuần túy, hoàn toàn không phụ thuộc vào các đối tượng toàn cục của trình duyệt.
 
 **Tham số:**
-- `search: string` — Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi khoảng trắng.
+- `search?: unknown` — (Tùy chọn) Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi khoảng trắng, hoặc bất kỳ giá trị truy vấn nào.
 - `limit?: number` — (Tùy chọn) Độ dài tối đa cho phép của chuỗi tìm kiếm. Mặc định là `128`.
 
 **Trả về:**
-`RegExp` — Biểu thức chính quy với các cờ `is` (không phân biệt chữ hoa/thường và hỗ trợ chuỗi nhiều dòng).
-- Nếu chuỗi `search` trống, không phải là chuỗi hoặc vượt quá `limit`, nó trả về `/^/` (khớp với vị trí bắt đầu của bất kỳ chuỗi nào).
+`RegExp` — Biểu thức chính quy với các cờ `is`. Nếu `search` trống, không phải chuỗi hoặc vượt quá `limit`, hàm trả về `/^/` (khớp với mọi chuỗi).
 
 ```typescript
 import { getSearchExp } from '@dxtmisha/functional-basic'
 
-// Cách dùng cơ bản
+// 1. Tìm kiếm "VÀ" nhiều từ cơ bản (thứ tự không quan trọng)
 const regex = getSearchExp('foo bar')
 
-regex.test('foo bar baz')  // true  — chứa cả hai từ
-regex.test('bar foo')      // true  — thứ tự không quan trọng
-regex.test('foo only')     // false — thiếu từ "bar"
+console.log(regex.test('foo bar baz'))  // true  — chứa cả hai từ
+console.log(regex.test('bar foo'))      // true  — thứ tự không quan trọng
+console.log(regex.test('foo only'))     // false — thiếu từ "bar"
 
-// Các ký tự đặc biệt được escape tự động
-const regex2 = getSearchExp('giá $10.00')
-regex2.test('giá $10.00') // true
-regex2.test('giá X10Y00') // false
+// 2. Tìm kiếm nhiều dòng với cờ s (dotAll)
+const multilineRegex = getSearchExp('tiêu đề mô tả')
+const targetText = 'Tiêu đề: Thẻ sản phẩm\nMô tả: Chất lượng tuyệt vời'
+console.log(multilineRegex.test(targetText)) // true
 
-// Sử dụng giới hạn tùy chỉnh
-const regex3 = getSearchExp('một chuỗi tìm kiếm rất dài', 10)
-regex3.test('bất kỳ chuỗi nào') // true — trả về /^/ vì độ dài tìm kiếm > 10
+// 3. Ký tự đặc biệt của regex được escape tự động
+const priceRegex = getSearchExp('giá $10.00')
+console.log(priceRegex.test('Tổng giá $10.00 mỗi cái')) // true
+console.log(priceRegex.test('Tổng giá X10Y00 mỗi cái')) // false
+
+// 4. Loại bỏ từ trùng lặp trong truy vấn
+const deduplicatedRegex = getSearchExp('táo táo táo')
+console.log(deduplicatedRegex.source) // '^(?=.*?táo)'
+
+// 5. Xử lý an toàn chuỗi rỗng, kiểu không phải chuỗi và giới hạn độ dài
+getSearchExp('').source             // '^' (khớp với mọi phần tử)
+getSearchExp('   ').source          // '^'
+getSearchExp(null).source           // '^'
+getSearchExp(undefined).source      // '^'
+getSearchExp('chuỗi dài', 4).source // '^' (vượt quá giới hạn 4)
+
+// 6. Ví dụ thực tế: lọc mảng dữ liệu
+const searchInput = 'lập trình viên senior'
+const searchPattern = getSearchExp(searchInput)
+
+const employees = [
+  { name: 'Nguyễn Văn A', position: 'Senior Frontend lập trình viên' },
+  { name: 'Trần Văn B', position: 'Junior lập trình viên' },
+  { name: 'Lê Văn C', position: 'Senior Product Manager' }
+]
+
+const matchedEmployees = employees.filter(employee =>
+  searchPattern.test(`${employee.name} ${employee.position}`)
+)
+// Kết quả: [ { name: 'Nguyễn Văn A', position: 'Senior Frontend lập trình viên' } ]
 ```

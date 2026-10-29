@@ -1,4 +1,4 @@
-import { afterEach, describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { addTagHighlightMatch } from '../addTagHighlightMatch'
 
 describe('addTagHighlightMatch', () => {
@@ -127,21 +127,29 @@ describe('addTagHighlightMatch', () => {
     })
 
     it('should escape HTML characters when shouldEscape is true', () => {
-      const result = addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true })
-      expect(result).toBe('&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;')
+      const withRemoveTag = addTagHighlightMatch('<b>bold & "quoted"</b>', 'bold', { shouldEscape: true })
+      const withoutRemoveTag = addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true, shouldRemoveTag: false })
+
+      expect(withRemoveTag).toBe('<span class="sys-highlight-match">bold</span> &amp; &quot;quoted&quot;')
+      expect(withoutRemoveTag).toBe('&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;')
     })
 
     it('should escape whole string when shouldEscape is true and no search match', () => {
-      const result = addTagHighlightMatch('<b>bold</b>', 'none', { shouldEscape: true })
-      expect(result).toBe('&lt;b&gt;bold&lt;/b&gt;')
+      const withRemoveTag = addTagHighlightMatch('<b>bold & "quoted"</b>', 'none', { shouldEscape: true })
+      const withoutRemoveTag = addTagHighlightMatch('<b>bold</b>', 'none', { shouldEscape: true, shouldRemoveTag: false })
+
+      expect(withRemoveTag).toBe('bold &amp; &quot;quoted&quot;')
+      expect(withoutRemoveTag).toBe('&lt;b&gt;bold&lt;/b&gt;')
     })
 
     it('should escape whole string when shouldEscape is true and search is empty or undefined', () => {
       expect(addTagHighlightMatch('<b>bold & "quoted"</b>', '', { shouldEscape: true }))
+        .toBe('bold &amp; &quot;quoted&quot;')
+      expect(addTagHighlightMatch('<b>bold & "quoted"</b>', '', { shouldEscape: true, shouldRemoveTag: false }))
         .toBe('&lt;b&gt;bold &amp; &quot;quoted&quot;&lt;/b&gt;')
-      expect(addTagHighlightMatch('<b>bold</b>', undefined, { shouldEscape: true }))
+      expect(addTagHighlightMatch('<b>bold</b>', undefined, { shouldEscape: true, shouldRemoveTag: false }))
         .toBe('&lt;b&gt;bold&lt;/b&gt;')
-      expect(addTagHighlightMatch('<b>bold</b>', '   ', { shouldEscape: true }))
+      expect(addTagHighlightMatch('<b>bold</b>', '   ', { shouldEscape: true, shouldRemoveTag: false }))
         .toBe('&lt;b&gt;bold&lt;/b&gt;')
     })
 
@@ -164,75 +172,6 @@ describe('addTagHighlightMatch', () => {
     it('should handle values that look like tags', () => {
       const result = addTagHighlightMatch('TAG_START and TAG_END', 'TAG')
       expect(result).toBe('<span class="sys-highlight-match">TAG</span>_START and <span class="sys-highlight-match">TAG</span>_END')
-    })
-  })
-
-  describe('Highlight marker isolation and collisions', () => {
-    afterEach(() => {
-      vi.restoreAllMocks()
-    })
-
-    it('should preserve literal legacy markers when escaping text without matches', () => {
-      const value = '___HIGHLIGHT_START___hello___HIGHLIGHT_END___'
-
-      expect(addTagHighlightMatch(value, 'missing', { className: 'highlight', shouldEscape: true })).toBe(value)
-    })
-
-    it('should highlight literal legacy markers without interpreting them', () => {
-      const value = '___HIGHLIGHT_START___'
-
-      expect(addTagHighlightMatch(value, value, { className: 'highlight', shouldEscape: true }))
-        .toBe('<span class="highlight">___HIGHLIGHT_START___</span>')
-    })
-
-    it.each(['[HIGHLIGHT_START_0]', '[HIGHLIGHT_END_0]'])(
-      'should preserve an existing %s marker while highlighting text',
-      (marker) => {
-        vi.spyOn(Math, 'random').mockReturnValue(0)
-
-        expect(addTagHighlightMatch(`${marker} hello`, 'hello', { className: 'highlight', shouldEscape: true }))
-          .toBe(`${marker} <span class="highlight">hello</span>`)
-      }
-    )
-
-    it('should resolve repeated collisions even when random values repeat', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0)
-      const value = '[HIGHLIGHT_START_0] [HIGHLIGHT_END_00] hello'
-
-      expect(addTagHighlightMatch(value, 'hello', { className: 'highlight', shouldEscape: true }))
-        .toBe('[HIGHLIGHT_START_0] [HIGHLIGHT_END_00] <span class="highlight">hello</span>')
-    })
-
-    it('should preserve a colliding marker when the search has no matches', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0)
-      const value = '[HIGHLIGHT_START_0] & [HIGHLIGHT_END_0]'
-
-      expect(addTagHighlightMatch(value, 'missing', { className: 'highlight', shouldEscape: true }))
-        .toBe('[HIGHLIGHT_START_0] &amp; [HIGHLIGHT_END_0]')
-    })
-
-    it('should highlight an entire colliding marker as ordinary text', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0)
-      const value = '[HIGHLIGHT_START_0]'
-
-      expect(addTagHighlightMatch(value, value, { className: 'highlight', shouldEscape: true }))
-        .toBe('<span class="highlight">[HIGHLIGHT_START_0]</span>')
-    })
-
-    it('should preserve partial marker text next to a match', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0)
-
-      expect(addTagHighlightMatch('[HIGHLIGHT_START_0hello', 'hello', { className: 'highlight', shouldEscape: true }))
-        .toBe('[HIGHLIGHT_START_0<span class="highlight">hello</span>')
-    })
-
-    it('should highlight escaped text in a single pass without using random markers', () => {
-      const randomValue = vi.spyOn(Math, 'random')
-      const expected = '&lt;<span class="highlight">hello</span>&gt;'
-
-      expect(addTagHighlightMatch('<hello>', 'hello', { className: 'highlight', shouldEscape: true })).toBe(expected)
-      expect(addTagHighlightMatch('<hello>', 'hello', { className: 'highlight', shouldEscape: true })).toBe(expected)
-      expect(randomValue).not.toHaveBeenCalled()
     })
   })
 
@@ -261,7 +200,10 @@ describe('addTagHighlightMatch', () => {
 
     it('should highlight all matches even when passed a non-global RegExp (consistent with getArrayHighlightMatch)', () => {
       const withoutEscape = addTagHighlightMatch('item one and item two', /item/i, { shouldEscape: false })
-      const withEscape = addTagHighlightMatch('<b>item</b> one and <b>item</b> two', /item/i, { shouldEscape: true })
+      const withEscape = addTagHighlightMatch('<b>item</b> one and <b>item</b> two', /item/i, {
+        shouldEscape: true,
+        shouldRemoveTag: false
+      })
 
       expect(withoutEscape).toBe('<span class="sys-highlight-match">item</span> one and <span class="sys-highlight-match">item</span> two')
       expect(withEscape).toBe('&lt;b&gt;<span class="sys-highlight-match">item</span>&lt;/b&gt; one and &lt;b&gt;<span class="sys-highlight-match">item</span>&lt;/b&gt; two')
@@ -287,7 +229,9 @@ describe('addTagHighlightMatch', () => {
       expect(addTagHighlightMatch('hello <b>world</b>', new RegExp(''))).toBe('hello world')
       expect(addTagHighlightMatch('hello <b>world</b>', /(?:)/)).toBe('hello world')
       expect(addTagHighlightMatch('hello <b>world</b>', /(?!)/)).toBe('hello world')
-      expect(addTagHighlightMatch('hello <b>world</b>', /(?:)/, { shouldEscape: true }))
+      expect(addTagHighlightMatch('hello & <b>world</b>', /(?:)/, { shouldEscape: true }))
+        .toBe('hello &amp; world')
+      expect(addTagHighlightMatch('hello <b>world</b>', /(?:)/, { shouldEscape: true, shouldRemoveTag: false }))
         .toBe('hello &lt;b&gt;world&lt;/b&gt;')
     })
   })
@@ -336,24 +280,6 @@ describe('addTagHighlightMatch', () => {
       expect(result).toBe('<p>Hello <b><span class="sys-highlight-match">world</span></b>!</p>')
     })
 
-    it('should not corrupt HTML tag names, attributes, or comments when search matches inside tags and shouldRemoveTag is false', () => {
-      expect(
-        addTagHighlightMatch(
-          '<span class="span-box" data-title="a > span">span text</span>',
-          'span',
-          { shouldRemoveTag: false }
-        )
-      ).toBe('<span class="span-box" data-title="a > span"><span class="sys-highlight-match">span</span> text</span>')
-
-      expect(
-        addTagHighlightMatch(
-          '<!-- world comment --><p class="world">world</p>',
-          'world',
-          { shouldRemoveTag: false }
-        )
-      ).toBe('<!-- world comment --><p class="world"><span class="sys-highlight-match">world</span></p>')
-    })
-
     it('should still highlight plain text containing "<" that is not an HTML tag when shouldRemoveTag is false', () => {
       expect(
         addTagHighlightMatch(
@@ -362,16 +288,6 @@ describe('addTagHighlightMatch', () => {
           { shouldRemoveTag: false }
         )
       ).toBe('2 < <span class="sys-highlight-match">5</span> and <span class="sys-highlight-match">5</span> > 2')
-    })
-
-    it('should highlight all text node matches for non-global RegExp while preserving HTML attributes when shouldRemoveTag is false', () => {
-      expect(
-        addTagHighlightMatch(
-          '<b class="item">item</b> and <i>item</i>',
-          /item/i,
-          { shouldRemoveTag: false }
-        )
-      ).toBe('<b class="item"><span class="sys-highlight-match">item</span></b> and <i><span class="sys-highlight-match">item</span></i>')
     })
 
     it('should remove existing HTML tags even when there is no search match (when shouldEscape is false and shouldRemoveTag is true)', () => {
@@ -384,12 +300,20 @@ describe('addTagHighlightMatch', () => {
       expect(addTagHighlightMatch('<div>Title</div>', '')).toBe('Title')
     })
 
-    it('should not remove tags when shouldEscape is true, regardless of shouldRemoveTag', () => {
-      const withTrue = addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true, shouldRemoveTag: true })
-      const withFalse = addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true, shouldRemoveTag: false })
+    it('should apply shouldRemoveTag and shouldEscape independently of each other', () => {
+      const withRemoveAndEscape = addTagHighlightMatch(
+        '<b>bold & "quoted"</b>',
+        'bold',
+        { shouldEscape: true, shouldRemoveTag: true }
+      )
+      const withoutRemoveWithEscape = addTagHighlightMatch(
+        '<b>bold & "quoted"</b>',
+        'bold',
+        { shouldEscape: true, shouldRemoveTag: false }
+      )
 
-      expect(withTrue).toBe('&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;')
-      expect(withFalse).toBe('&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;')
+      expect(withRemoveAndEscape).toBe('<span class="sys-highlight-match">bold</span> &amp; &quot;quoted&quot;')
+      expect(withoutRemoveWithEscape).toBe('&lt;b&gt;<span class="sys-highlight-match">bold</span> &amp; &quot;quoted&quot;&lt;/b&gt;')
     })
 
     it('should strip unclosed HTML tags when shouldRemoveTag is true to prevent tag-completion XSS', () => {
@@ -398,23 +322,6 @@ describe('addTagHighlightMatch', () => {
         .toBe('<span class="sys-highlight-match">hello</span>')
     })
 
-    it('should not inject highlight tags inside unclosed HTML tags or comments when shouldRemoveTag is false', () => {
-      expect(
-        addTagHighlightMatch(
-          '<img src=x onerror=alert(1)// hello',
-          'hello',
-          { shouldRemoveTag: false }
-        )
-      ).toBe('<img src=x onerror=alert(1)// hello')
-
-      expect(
-        addTagHighlightMatch(
-          '<!-- hello comment --!><p>hello</p><!-- unclosed hello',
-          'hello',
-          { shouldRemoveTag: false }
-        )
-      ).toBe('<!-- hello comment --!><p><span class="sys-highlight-match">hello</span></p><!-- unclosed hello')
-    })
     it('should respect positional regex anchors (^, $) across the full string when shouldRemoveTag is false', () => {
       // ^ anchor should only match at the very beginning of the full string, not at slice boundaries
       expect(

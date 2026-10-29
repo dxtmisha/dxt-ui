@@ -12,7 +12,7 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 - `options: AddTagHighlightMatchOptions = {}` — Объект опций:
   - `className?: string` — CSS-класс, который будет добавлен к тегу `<span>` (по умолчанию `'sys-highlight-match'`).
   - `shouldEscape?: boolean` — Нужно ли экранировать строку перед добавлением подсветки (по умолчанию `false`).
-  - `shouldRemoveTag?: boolean` — Нужно ли удалять существующие HTML-теги из строки, если `shouldEscape` равно `false` (по умолчанию `true`).
+  - `shouldRemoveTag?: boolean` — Нужно ли удалять существующие HTML-теги из строки (по умолчанию `true`).
 
 **Возвращает:**
 `string` — Строка с добавленными HTML-тегами для подсветки.
@@ -34,7 +34,7 @@ addTagHighlightMatch('Apple and Banana', 'apple banana')
 addTagHighlightMatch('Test', 'test', { className: 'text-red' })
 // '<span class="text-red">Test</span>'
 
-// Удаление тегов (поведение по умолчанию при shouldEscape = false)
+// Удаление тегов (поведение по умолчанию)
 addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world')
 // 'Hello <span class="sys-highlight-match">world</span>'
 
@@ -42,8 +42,8 @@ addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world')
 addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world', { shouldRemoveTag: false })
 // '<p>Hello <b><span class="sys-highlight-match">world</span></b></p>'
 
-// С экранированием (теги экранируются, а не удаляются)
-addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true })
+// С экранированием и сохранением HTML-тегов как текста
+addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true, shouldRemoveTag: false })
 // '&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;'
   `}
 />

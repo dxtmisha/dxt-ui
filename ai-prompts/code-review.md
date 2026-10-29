@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Conduct a rigorous code review assessing architecture, security & vulnerabilities (XSS, injection, prototype pollution, ReDoS, sensitive data exposure), dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, design quality, SSR compatibility & isomorphism, memory leak prevention & resource cleanup, and test suite completeness, with all findings, refactorings, and proposed test suites saved exclusively as an AI artifact (allowing immediate in-place fixes for minor bugs, typing ergonomics, character check unifications, micro-optimizations, typos, and JSDoc, with a mandatory dedicated auto-fix report section in the artifact, while reserving structural/breaking changes for developer approval), in the language specified by wikiLanguage in ./design.config.json.
+description: Conduct a rigorous code review assessing architecture, security & vulnerabilities (XSS, injection, prototype pollution, ReDoS, sensitive data exposure), dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, practical bugs and real-world edge cases (strictly filtering out hypothetical non-crash/non-security remarks), adherence to project rules, accessibility & ARIA compliance, design quality, SSR compatibility & isomorphism, memory leak prevention & resource cleanup, and test suite completeness, with all findings, refactorings, and proposed test suites saved exclusively as an AI artifact (allowing immediate in-place fixes for minor bugs, typing ergonomics, character check unifications, micro-optimizations, typos, and JSDoc, with a mandatory dedicated auto-fix report section in the artifact, while reserving structural/breaking changes for developer approval), in the language specified by wikiLanguage in ./design.config.json.
 ---
 
 # Task: Strict Architectural and Quality Code Review
@@ -35,17 +35,20 @@ Before analyzing any code or generating any review text, you MUST execute these 
   During code review, the AI agent **CAN and MUST immediately fix** the following categories of obvious, safe, and non-breaking defects directly within the audited files (without waiting for a separate developer command):
   1. **Typos**: Any typos or grammatical errors in comments, string constants, messages, or local variable names.
   2. **JSDoc/TSDoc Formatting & Additions (`jdoc.md`)**: Adding missing descriptions for functions, methods, or properties, enforcing the mandatory bilingual standard (English / Russian), and formatting `@param` and `@returns` tags.
-  3. **Obvious Minor Typing Ergonomics & Quick Wins**:
-     - Widening inaccurate or overly narrow parameter types that contradict immediate runtime checks or normalization helpers (e.g., if a parameter is typed as `string`, but the first line checks `typeof value !== 'string'` or normalizes it via `toString(value)` — immediately widen the type to `unknown`, `string | undefined`, or `value?: string | number | null` to match runtime behavior and sibling utilities).
-     - Removing redundant `// @ts-expect-error` directives or type casts (e.g., `as unknown as string`) in associated unit tests that become unnecessary after the type fix.
+  3. **Obvious Minor Typing Ergonomics, Narrow Parameter Types & Quick Wins (Mandatory Auto-Fix)**:
+     - **Discrepancy Between Narrow Typing and All-Inclusive Runtime Coercion**: If an input parameter is typed too narrowly or rigidly (e.g. `param: string`, `param: string | RegExp`, non-optional `param`), while runtime checks, normalization helpers, or fallback logic safely handle all values (`toString(param)`, `isFilled(param)`, `isRegExp(param)`, `typeof param !== '...'`, `Boolean(param)`, or `String(param ?? '')`) — **you MUST automatically widen and make the parameter optional/permissive in-place** (e.g., to `param?: unknown`, `param?: string | RegExp | number | boolean | null`, or `param?: string | undefined`) to eliminate needless type assertions (`as unknown as string`, `as any`), unblock callers from passing optional values, and align TypeScript types with actual runtime flexibility.
+     - **Test Assertion Cleanup**: Removing redundant `// @ts-expect-error` directives or type casts (e.g., `as unknown as string`, `as any`) in associated unit tests that become unnecessary after the type fix.
   4. **Redundant Logic, Dead Code & Micro-Optimizations**:
      - Eliminating redundant or duplicate checks in logical expressions (e.g., when `A || (B && C)` re-evaluates `A` inside `C` even though `A` is guaranteed false on the right-hand side: `isControlCharacter(charCode) || (cleanValue.length === 0 && isControlOrSpace(charCode))` simplifies to `isControlCharacter(charCode) || (cleanValue.length === 0 && charCode === 32)`).
      - Removing private helper micro-functions, constants, and types rendered unused after eliminating redundant conditions (e.g., removing `isControlOrSpace`).
      - Cleaning up unreachable branches, dead code, and unused local imports or variables inside the audited file.
-  5. **Micro-Optimizations & Check Unification**:
+  5. **Micro-Optimizations, Loop Safeguards & Check Unification**:
+     - Caching collection lengths in loops (e.g., `const length = array.length` or `data.length` before indexed iterations) to eliminate repetitive property access overhead and guarantee termination against infinite loops caused by mutations in callbacks.
+     - Early boundary exits for empty collections (`if (length === 0) return ...` / `if (data.size === 0) return ...`) to skip redundant loop setup.
      - Replacing repeated string indexing with already extracted numeric character codes (e.g., replacing `value[index] === ':'` with `charCode === CHAR_COLON` or `charCode === 58` when `charCode = value.charCodeAt(index)` was already computed in the current loop iteration).
      - Extracting magic numbers (character codes, boundary constants) into named, bilingually documented module-level constants (e.g., `CHAR_SPACE = 32`, `CHAR_COLON = 58`).
      - Unifying character check styles (if one branch checks a numeric code `charCode === 32` while an adjacent branch checks a string literal `value[index] === ':'`, unify them to character code checks).
+     - Any similar minor, safe, and non-breaking algorithmic micro-optimizations, loop invariant hoists, and performance guards can and should be applied automatically in-place.
 - **Mandatory Dedicated Auto-Fix Report Section**:
   All applied in-place fixes **MUST be documented in Section 2 of the AI Artifact** ("Applied Immediate Fixes") with: modified files and line links (`file.ts#L10-L15`), fix category (`Typo` / `JSDoc` / `Typing Ergonomics` / `Micro-Optimization & Check Unification` / `Dead Code Removal`), technical rationale/benefit, Before/After `diff` blocks, and unit test verification status after the changes (e.g., `vitest run: 37 passed`). If no fixes were needed, state explicitly: *"No automated fixes required (code is originally clean)"*.
 - **Strict Prohibition of Structural & Breaking Modifications**:
@@ -73,13 +76,19 @@ Before analyzing any code or generating any review text, you MUST execute these 
   - Execute the test runner (`npx vitest run <path-to-test>`) to verify current pass/fail status, failure points, and execution coverage (and re-run to verify any Immediate In-Place Fixes applied in Step 3).
 - **Formulate Comprehensive Test Suite in the Artifact (Do NOT Modify Test Files)**:
   - If existing tests are incomplete, shallow, fragile, or missing, author the complete, copy-paste-ready unit test suite **STRICTLY inside Section 6 of the AI Artifact report**.
+  - **No Contrived Hypothetical Tests**: Apply Step 6 strictly — never penalize existing tests or add test cases for speculative, non-practical inputs (such as internal marker collisions like `___HIGHLIGHT_START___`) that cause neither crashes nor security vulnerabilities.
   - **STRICT PROHIBITION**: Do NOT rewrite, overwrite, or create test files in the workspace repository during code review unless explicitly commanded by the developer.
 
-### 6. Context & Purpose Awareness (Anti-Overengineering Guard)
-- **Evaluate Real-World Context & Purpose**: Assess code through the lens of its **actual execution environment, consumer call sites, and intended functional purpose**.
-- **Ban on "All-Life-Cases" Paranoia**: It is **STRICTLY FORBIDDEN** to demand checks, guards, or complex algorithmic layers for absurd, contrived, or statistically impossible hypothetical scenarios. Demanding defensive code for every conceivable theoretical edge case causes **code bloat and severe over-engineering**.
-- **Real vs Contrived Boundaries**: Distinguish between genuine production edge cases (`0`, `false`, `null`, XSS injection in user attributes, SSR hydration mismatches, unhandled promise rejections, lifecycle teardown) and paranoid scenarios that never occur in the system architecture or contradict the entity's defined scope.
-- **Proportionality & Cleanliness**: Keep defensive checks strictly proportional to the entity's purpose. Keep code lean, fast, and purposeful.
+### 6. Practical Usage & Impact Filter (Strict Ban on Hypothetical Findings & Over-Engineering)
+- **Ground Every Finding in Practical Usage (Zero Speculative Hypotheses)**: Assess code strictly through **practical real-world usage, actual consumer call sites, and intended functional purpose**. It is **STRICTLY FORBIDDEN** to raise remarks, deduct score points, or propose defensive code based on artificial, speculative "what-if" hypotheses detached from real user behavior.
+- **Mandatory Two-Step Practicality & Consequence Gate**: Before flagging any edge case, internal marker/delimiter collision, or unusual input, you MUST pass it through two questions:
+  1. **Practical Likelihood**: Will a real user or caller actually do or encounter this in normal, practical operation?
+  2. **Actual Consequence (Crash & Security vs Self-Inflicted Layout Glitch)**: Even if someone deliberately enters that contrived input, what actually happens?
+     - **Valid Finding (Report)**: Causes a **runtime crash / unhandled exception**, **infinite loop / ReDoS freeze**, **data loss or corruption**, **memory leak**, **SSR cross-request state leak**, or an **exploitable security/attack vulnerability** (XSS script execution, attribute breakout, injection, prototype pollution).
+     - **Irrelevant Quirk (Strictly Ignore)**: Causes **no crash** and **no security vulnerability** — and at worst only distorts visual markup/layout for the very user who deliberately typed an unnatural string.
+- **Concrete Calibration Example (`___HIGHLIGHT_START___`)**: If a highlighting utility uses a static internal marker such as `___HIGHLIGHT_START___` and replaces it with `<span class="...">` (with an already-sanitized class attribute), **NEVER** report *"if a user types `___HIGHLIGHT_START___`, everything breaks"*. Real users do not type `___HIGHLIGHT_START___` in practice; even if someone enters it intentionally, there is zero crash and zero XSS/attack vector — at worst, only that user's local text markup renders an extra harmless `<span>`. Flagging this or proposing `random()` collision-avoidance loops or custom HTML parsers is **strictly forbidden**.
+- **Real vs Contrived Boundaries**: Distinguish genuine production edge cases (`0`, `false`, `null`, `undefined`, `''`, whitespace, real user inputs with regex metacharacters like `$10` or `C++`, real XSS payloads like `<img onerror=...>` or unescaped attributes, SSR shared global state, unhandled promise rejections, lifecycle teardown) from paranoid "all-life-cases" scenarios that bloat code without practical value.
+- **Proportionality & Cleanliness**: Keep defensive checks strictly proportional to real risks. Keep code lean, fast, readable, and purposeful.
 
 ---
 
@@ -153,8 +162,8 @@ Rigorously search for subtle runtime and architectural defects across five core 
    - Detached DOM nodes retained in closures, static arrays, caches, or `Map`/`Set` references; unbounded caches without eviction policies.
    - Undisposed observers (`ResizeObserver`, `IntersectionObserver`, `MutationObserver`), media query listeners (`matchMedia`), or subscriptions (`BroadcastChannel`, `WebSocket`, custom event emitters, store subscriptions); missing `destroy()` / `dispose()` / `reset()` methods on stateful classes.
 4. **Edge Cases & Pragmatic Boundaries**:
-   - Unhandled `null`, `undefined`, `''`, `[]`, `{}`, `NaN`, `0`, negative numbers, division by zero, or off-by-one errors.
-   - **Pragmatic Boundaries vs Code Bloat**: Evaluate edge cases strictly within the entity's intended purpose and usage environment (Step 6). Do NOT penalize code or demand defensive layers for absurd, impossible edge cases that bloat the codebase without real benefit.
+   - Unhandled `null`, `undefined`, `''`, `[]`, `{}`, `NaN`, `0`, negative numbers, division by zero, or off-by-one errors in realistic inputs.
+   - **Practical Impact Filter (Step 6)**: Evaluate edge cases strictly through practical usage and real consequences. Do NOT flag contrived scenarios (such as a user deliberately typing internal sentinel markers like `___HIGHLIGHT_START___`) when they cause neither a runtime crash nor a security/XSS vulnerability and at worst only affect local visual markup for that user.
 5. **SSR Hydration & Isomorphic Flaws**:
    - Direct access to browser globals (`window`, `document`, `navigator`, `localStorage`, `sessionStorage`, `location`) on the server without checking `isDomRuntime()` or deferring to `onMounted`.
    - Cross-request state pollution: storing user- or request-specific data in module-level global variables, shared refs, or static class properties, leaking state across concurrent SSR requests (must use `ServerStorage.get('key', () => new Class())`, `executeUseLocal`, or `executeUseProvide`).
@@ -261,8 +270,11 @@ Structure the artifact markdown document with the following six sections (transl
 #### 4. Detailed Findings & Bugs (Categorized by Severity)
 - **Critical (P0 / Blocker)**: Exploitable security vulnerabilities (XSS, code/attribute injection, prototype pollution, credential exposure, ReDoS in public endpoints), runtime crashes, data loss, memory leaks, SSR breaking issues / cross-request state leaks, or reactivity breakage.
 - **Major (P1 / Architecture & Modernity)**: Latent security weaknesses (missing `rel="noopener noreferrer"`, unvalidated external URLs, insecure cookie flags), outdated techniques, single-responsibility violations, suboptimal paradigms, missing cleanup / leak risks, SSR hydration mismatches.
-- **Minor (P2 / Conventions & Typing)**: Naming abbreviations, missing `/*#__PURE__*/`, missing or malformed bilingual JSDoc, missing explicit return types.
+- **Minor (P2 / Conventions & Typing)**: Naming abbreviations, missing `/*#__PURE__*/`, missing or malformed bilingual JSDoc, missing explicit return types, overly narrow parameter types in permissive runtime functions.
+  - *Mandatory In-Place Auto-Fix*: All minor typing defects (such as narrow parameter types contradicting runtime coercion, missing optional modifiers, typos, JSDoc omissions, or dead code branches) **MUST NOT remain unaddressed in the codebase** — they MUST be fixed immediately in-place during the review (Pre-Review Step 3), documented in Section 2 ("Applied Immediate Fixes"), and marked as resolved in Section 4.
 - **Nit / Suggestion (P3)**: Minor stylistic polish, code ergonomics, micro-optimizations.
+
+*Strict Hypothetical Filter (Pre-Review Step 6)*: Speculative "what-if" scenarios that do not occur in practical usage and produce **no runtime crash, no data loss, and no security/attack vulnerability** (e.g., an artificial input colliding with an internal marker like `___HIGHLIGHT_START___` whose worst-case effect is a harmless local layout/markup glitch for that user) are **STRICTLY EXCLUDED from all severity tiers (including P2 and P3/Nit)** and must never lower the review score.
 
 *For each finding, specify: File, line number, detailed explanation of the flaw, and why it is problematic.*
 

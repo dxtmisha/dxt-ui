@@ -4,34 +4,69 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getSearchExp`
 
-A utility that builds a case-insensitive `RegExp` matching strings that contain **all** words from the search string (in any order).
+A utility that builds a case-insensitive regular expression `RegExp` matching strings that contain **all** words from the search query (in any order).
 
-Each word is split by spaces, escaped, and wrapped in a positive lookahead `(?=.*?word)`. This makes it ideal for live search or multi-word filtering UIs.
+Each word in the search query is split by whitespace, deduplicated, escaped against special regex metacharacters, and wrapped in a positive lookahead assertion `(?=.*?word)`. This makes it ideal for live data filtering, search bars, and multi-field table lookups.
+
+### Key Features:
+- **Order-Independent "AND" Search**: Matches text containing every query token regardless of the sequence in which words appear (e.g., query `"red car"` matches both `"red fast car"` and `"car is red"`).
+- **Substring Matching**: Looks for each word as a substring anywhere within tokens (e.g., `"cat dog"` matches `"caterpillar hotdog"`).
+- **Multiline & Case-Insensitive Matching (`is` flags)**: Configures the `i` (ignore case) and `s` (dotAll, allowing `.` to match newlines) flags, ensuring matches span across multiline paragraphs.
+- **Word Deduplication**: Automatically deduplicates identical words in the query using `Set` to prevent redundant lookahead groups.
+- **Automatic Metacharacter Escaping**: Safely escapes special regex symbols via `escapeExp` (`.`, `*`, `+`, `?`, `$`, `^`, `[`, `]`, `(`, `)`, `|`, `\`, `/`), preventing ReDoS attacks and regex syntax errors from user input.
+- **Deterministic Safe Fallback `/^/`**: If the query is empty, whitespace-only, not a string, or exceeds the length limit, it returns `/^/` (matching the start of any string). This allows list filters to return all items when the search input is cleared.
+- **Isomorphic & SSR Safe**: Pure functional implementation with zero dependencies on browser globals.
 
 **Parameters:**
-- `search: string` — A search string consisting of one or more space-separated words.
+- `search?: unknown` — (Optional) A search string consisting of one or more space-separated words, or any query value.
 - `limit?: number` — (Optional) The maximum allowed length of the search string. Defaults to `128`.
 
 **Returns:**
-`RegExp` — A regular expression with the `is` flags (case-insensitive and dotAll for multiline text).
-- If the `search` string is empty, not a string, or exceeds the `limit`, it returns `/^/` (matching the start of any string).
+`RegExp` — A regular expression with the `is` flags. If `search` is empty, not a string, or exceeds `limit`, it returns `/^/` (matching any string).
 
 ```typescript
 import { getSearchExp } from '@dxtmisha/functional-basic'
 
-// Basic usage
+// 1. Basic multi-word "AND" search (order-independent)
 const regex = getSearchExp('foo bar')
 
-regex.test('foo bar baz')  // true  — contains both words
-regex.test('bar foo')      // true  — order doesn't matter
-regex.test('foo only')     // false — word "bar" is missing
+console.log(regex.test('foo bar baz'))  // true  — contains both words
+console.log(regex.test('bar foo'))      // true  — order doesn't matter
+console.log(regex.test('foo only'))     // false — word "bar" is missing
 
-// Special characters are escaped automatically
-const regex2 = getSearchExp('price $10.00')
-regex2.test('price $10.00') // true
-regex2.test('price X10Y00') // false
+// 2. Multiline matching with dotAll (s flag)
+const multilineRegex = getSearchExp('title description')
+const targetText = 'Title: Product Card\nDescription: Excellent quality'
+console.log(multilineRegex.test(targetText)) // true
 
-// Using a custom limit
-const regex3 = getSearchExp('very long search string', 10)
-regex3.test('any string')   // true — returns /^/ because search length > 10
+// 3. Special regex characters are escaped automatically
+const priceRegex = getSearchExp('price $10.00')
+console.log(priceRegex.test('The price $10.00 is final')) // true
+console.log(priceRegex.test('The price X10Y00 is final')) // false
+
+// 4. Word deduplication in search query
+const deduplicatedRegex = getSearchExp('apple apple apple')
+console.log(deduplicatedRegex.source) // '^(?=.*?apple)'
+
+// 5. Safe handling of empty queries, non-strings, and limits
+getSearchExp('').source             // '^' (matches all items)
+getSearchExp('   ').source          // '^'
+getSearchExp(null).source           // '^'
+getSearchExp(undefined).source      // '^'
+getSearchExp('long text', 4).source // '^' (exceeds limit 4)
+
+// 6. Practical example: filtering an array of items
+const searchInput = 'developer senior'
+const searchPattern = getSearchExp(searchInput)
+
+const employees = [
+  { name: 'Alice Smith', position: 'Senior Frontend Developer' },
+  { name: 'Bob Jones', position: 'Junior Developer' },
+  { name: 'Charlie Brown', position: 'Senior Product Manager' }
+]
+
+const matchedEmployees = employees.filter(employee =>
+  searchPattern.test(`${employee.name} ${employee.position}`)
+)
+// Result: [ { name: 'Alice Smith', position: 'Senior Frontend Developer' } ]
 ```

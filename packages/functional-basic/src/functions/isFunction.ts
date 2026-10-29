@@ -4,9 +4,9 @@ import { type FunctionAnyType } from '../types/basicTypes'
  * Checks if the function is a callback function.
  *
  * Проверяет, является ли функция обратного вызова.
- * @param callback the value being checked/ проверяемое значение
+ * @param callback the value being checked / проверяемое значение
  * @returns true if function / true, если функция
  */
 export function isFunction<T>(callback: T): callback is Extract<T, FunctionAnyType> {
-  return callback instanceof Function || typeof callback === 'function'
+  return typeof callback === 'function' || callback instanceof Function
 }

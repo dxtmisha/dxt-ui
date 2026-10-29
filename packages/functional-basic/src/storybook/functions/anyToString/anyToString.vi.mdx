@@ -4,22 +4,30 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `anyToString`
 
-Tiện ích để chuyển đổi an toàn bất kỳ dữ liệu đầu vào nào thành kiểu chuỗi.
+Tiện ích để chuyển đổi an toàn bất kỳ giá trị đầu vào nào thành kiểu chuỗi theo các quy tắc chuyển đổi xác định.
+
+### Tính năng chính:
+- **An toàn & Bền bỉ**: Không bao giờ ném lỗi runtime khi gặp `null`, `undefined`, tham chiếu vòng trong đối tượng, `Symbol` hoặc `BigInt`.
+- **Quy chuẩn Boolean của Design System**: Chuyển đổi `true` thành `'1'` và `false` thành `'0'` để tuần tự hóa nhất quán trong các thuộc tính form HTML và query param.
+- **Tuần tự hóa mảng linh hoạt**: Mặc định nối các phần tử mảng nguyên thủy bằng dấu phẩy, hoặc tuần tự hóa thành JSON khi có đối tượng lồng nhau hoặc khi tắt `isArrayString`.
+- **Bảo vệ chống tham chiếu vòng**: Tự động chuyển hướng an toàn sang `String()` hoặc `Object.prototype.toString` nếu `JSON.stringify` thất bại do tham chiếu vòng.
+- **Đẳng hình & An toàn với SSR**: Hàm thuần túy, hoàn toàn không phụ thuộc vào các đối tượng toàn cục của trình duyệt hay DOM API.
 
 **Tham số:**
-- `value: V` — Giá trị cần chuyển đổi.
-- `isArrayString: boolean = true` — Nếu `true`, các mảng nguyên thủy sẽ được nối với nhau bằng dấu phẩy.
-- `trim: boolean = true` — Nếu `true`, loại bỏ khoảng trắng dư thừa (chỉ dành cho chuỗi).
+- `value?: V` — (Tùy chọn) Giá trị cần chuyển đổi.
+- `isArrayString: boolean = true` — (Tùy chọn) Nếu `true`, các mảng phẳng không chứa đối tượng sẽ được nối bằng dấu phẩy; nếu `false`, tuần tự hóa thành chuỗi JSON.
+- `trim: boolean = true` — (Tùy chọn) Nếu `true`, chuỗi kết quả sẽ được loại bỏ khoảng trắng thừa ở hai đầu (áp dụng cho giá trị chuỗi).
 
 **Quy tắc chuyển đổi:**
-- **Chuỗi**: Trả về nguyên bản (có `trim` nếu được bật).
-- **Mảng**: Nếu `isArrayString: true` và không có đối tượng trong mảng, các phần tử sẽ được nối bằng dấu phẩy. Ngược lại — chuyển thành chuỗi JSON.
-- **Đối tượng**: Chuyển đổi thành JSON. Trong trường hợp lỗi (ví dụ: tham chiếu vòng), trả về `toString()` tiêu chuẩn.
-- **Boolean**: `true` chuyển thành `'1'`, `false` thành `'0'`.
-- **Các kiểu khác**: `null` và `undefined` trả về chuỗi rỗng. Các kiểu khác gọi `toString()`.
+- **Chuỗi**: Trả về nguyên bản (được cắt tỉa khoảng trắng nếu `trim = true`).
+- **Giá trị rỗng**: `null` và `undefined` trả về chuỗi rỗng `''`.
+- **Mảng**: Nếu `isArrayString = true` và mảng không chứa đối tượng, các phần tử được nối bằng dấu phẩy. Ngược lại được tuần tự hóa thành JSON.
+- **Đối tượng**: Chuyển đổi thành JSON thông qua `JSON.stringify`. Trong trường hợp có tham chiếu vòng hoặc lỗi tuần tự hóa, trả về `String()` hoặc `Object.prototype.toString`.
+- **Boolean**: `true` chuyển thành `'1'`, `false` chuyển thành `'0'`.
+- **Các kiểu khác**: Số, BigInt, Symbol, hàm, v.v. được chuyển đổi thông qua `.toString()`.
 
 **Trả về:**
-`string` — Biểu diễn chuỗi của giá trị.
+`string` — Biểu diễn chuỗi của giá trị truyền vào.
 
 ## Ví dụ
 
@@ -28,24 +36,37 @@ Tiện ích để chuyển đổi an toàn bất kỳ dữ liệu đầu vào n�
   code={`
 import { anyToString } from '@dxtmisha/functional-basic'
 
-// 1. Chuỗi (Strings)
+// 1. Chuỗi và cắt tỉa khoảng trắng
 anyToString('  Hello  ')               // 'Hello'
 anyToString('  Hello  ', true, false)  // '  Hello  '
+anyToString('')                        // ''
 
-// 2. Mảng (Arrays)
-anyToString([1, 2, 3])                 // '1,2,3'
-anyToString([1, 2, 3], false)          // '[1,2,3]'
+// 2. Giá trị rỗng và bỏ qua tham số
+anyToString(null)                      // ''
+anyToString(undefined)                 // ''
+anyToString()                          // ''
 
-// 3. Đối tượng (Objects)
-anyToString({ a: 1 })                  // '{"a":1}'
-
-// 4. Giá trị Boolean (chuyển đổi thành 1/0)
+// 3. Giá trị Boolean (quy chuẩn 1/0)
 anyToString(true)                      // '1'
 anyToString(false)                     // '0'
 
-// 5. Giá trị rỗng và các kiểu khác
-anyToString(null)                      // ''
+// 4. Mảng
+anyToString([1, 2, 3])                 // '1,2,3'
+anyToString([1, 2, 3], false)          // '[1,2,3]'
+anyToString([{ a: 1 }, 2])             // '[{"a":1},2]'
+anyToString([])                        // ''
+
+// 5. Đối tượng và khả năng phục hồi khi có tham chiếu vòng
+anyToString({ a: 1 })                  // '{"a":1}'
+
+const circular: Record<string, unknown> = { id: 1 }
+circular.self = circular
+anyToString(circular)                  // '[object Object]'
+
+// 6. Số, BigInt và các kiểu đặc biệt
 anyToString(123)                       // '123'
+anyToString(0)                         // '0'
+anyToString(BigInt(42))                // '42'
 anyToString(Symbol('test'))            // 'Symbol(test)'
   `}
 />

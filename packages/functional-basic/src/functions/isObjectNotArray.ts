@@ -4,7 +4,7 @@ import { isObject } from './isObject'
 import { type ObjectItem } from '../types/basicTypes'
 
 /**
- * Checks if the value is an object or not an array.
+ * Checks if the value is an object and not an array.
  *
  * Проверяет, является ли значение объектом и не является массивом.
  * @param value input value / входное значение

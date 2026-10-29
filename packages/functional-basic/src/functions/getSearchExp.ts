@@ -16,12 +16,12 @@ const REGEXP_WHITESPACE = /\s+/
  * Строит регистро-независимое `RegExp` для поиска "содержит все слова".
  * Каждое слово из строки поиска экранируется и оборачивается в lookahead `(?=.*?слово)`,
  * поэтому результат совпадает только если строка содержит все слова (в любом порядке).
- * @param search search string with one or more space-separated words / строка поиска с одним или несколькими словами через пробел
+ * @param search search string with one or more space-separated words or query value / строка поиска с одним или несколькими словами через пробел или значение запроса
  * @param limit maximum search string length / максимальная длина строки поиска
  * @returns regular expression for multi-word search / регулярное выражение для поиска по всем словам
  */
 export function getSearchExp(
-  search: string,
+  search?: unknown,
   limit: number = 128
 ): RegExp {
   if (

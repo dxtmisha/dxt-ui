@@ -1,44 +1,80 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/hasKey - Check if object has own property key'/>
 
 # `hasKey`
 
-Checks whether the specified property is an own property of the object or function using a safe `Object.prototype.hasOwnProperty.call` invocation.
+A high-performance type guard utility that determines whether a specified property exists directly on an object or function as an own property.
 
-The function provides robust protection against **Prototype Pollution** and prevents false positives on prototype chain properties (such as `toString`, `valueOf`, `constructor`, `__proto__`, `hasOwnProperty`). It is safe to use with `null`, `undefined`, primitive values, and objects without a prototype (`Object.create(null)`). In TypeScript, it acts as a type guard, automatically narrowing the object type for safe property access.
+## Key Features
+
+- **Prototype Pollution Defense** — Strictly checks own properties via native `Object.hasOwn`, preventing false positives on prototype chain properties (`toString`, `valueOf`, `constructor`, `__proto__`, `hasOwnProperty`).
+- **Null-Prototype Object Support** — Completely safe with dictionaries created via `Object.create(null)`, which do not inherit `Object.prototype.hasOwnProperty`.
+- **Falsy & Primitive Safe** — Never throws runtime exceptions on `null`, `undefined`, strings, numbers, booleans, symbols, or BigInt values, returning `false` instead.
+- **Comprehensive Key Types** — Supports string keys, numeric indices, symbols, and Unicode/multilingual property names.
+- **TypeScript Type Guard** — Narrows candidate objects at compile time via `object is T & Record<K, unknown>`, enabling safe property access without type assertions.
+- **Functions & Complex Objects** — Correctly verifies custom properties attached to functions, class instances, frozen objects, and non-enumerable properties.
+- **Pure & Isomorphic** — Stateless, side-effect-free, and safe for server-side rendering (SSR/SSG).
 
 **Parameters:**
-- `object: unknown` — the object, function, or value of any type to check.
-- `key: K` — the property key to look for (`K extends PropertyKey`: `string | number | symbol`).
+- `object: unknown` — The object, function, or value of any type to check.
+- `key: K` (`K extends PropertyKey = PropertyKey`) — The property key to verify (`string | number | symbol`).
 
 **Returns:**
-`boolean` (`object is T & Record<K, unknown>`) — `true` if the property exists and belongs directly to the object (own property), otherwise `false`.
+`boolean` (`object is T & Record<K, unknown>`) — Returns `true` if the key is an own property directly attached to the target object; otherwise `false`. Acts as a TypeScript type guard narrowing the target type.
 
-```typescript
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { hasKey } from '@dxtmisha/functional-basic'
 
+// 1. Basic object property check
 const user = { name: 'Alice', age: 30 }
-console.log(hasKey(user, 'name')) // true
-console.log(hasKey(user, 'email')) // false
+hasKey(user, 'name')                   // true
+hasKey(user, 'email')                  // false
 
-// Prototype pollution protection:
-console.log(hasKey({}, 'toString')) // false
-console.log(hasKey({ toString: 'custom' }, 'toString')) // true
+// 2. Prototype pollution guard (inherited properties return false)
+hasKey({}, 'toString')                 // false
+hasKey({}, 'valueOf')                  // false
+hasKey({}, 'constructor')              // false
+hasKey({}, '__proto__')                // false
 
-// Safe with null, undefined, and primitives:
-console.log(hasKey(null, 'foo')) // false
-console.log(hasKey(123, 'foo')) // false
+// Explicitly overridden own properties return true
+hasKey({ toString: 'custom' }, 'toString') // true
 
-// Objects without prototypes (Object.create(null)):
+// 3. Null-prototype dictionaries (Object.create(null))
 const dict = Object.create(null)
 dict.item = 'value'
-console.log(hasKey(dict, 'item')) // true
-console.log(hasKey(dict, 'toString')) // false
+hasKey(dict, 'item')                   // true
+hasKey(dict, 'missing')                // false
+hasKey(dict, 'toString')               // false
 
-// TypeScript type narrowing (Type Guard):
-const data: unknown = { id: 1, title: 'DXT' }
-if (hasKey(data, 'title')) {
-  console.log(data.title) // data is narrowed to include title
+// 4. Safe against nullish values and primitives
+hasKey(null, 'foo')                    // false
+hasKey(undefined, 'foo')               // false
+hasKey(123, 'toString')                // false
+hasKey('string', 0)                    // false
+hasKey(false, 'valueOf')               // false
+
+// 5. Symbol keys and numeric array indices
+const sym = Symbol('secret')
+hasKey({ [sym]: 42 }, sym)             // true
+hasKey(['a', 'b', 'c'], 0)             // true
+hasKey(['a', 'b', 'c'], 10)            // false
+hasKey(['a', 'b', 'c'], 'length')      // true
+
+// 6. Non-enumerable own properties and frozen objects
+const target = Object.freeze({ key: 'val' })
+hasKey(target, 'key')                  // true
+
+// 7. TypeScript type narrowing (Type Guard)
+function processData(data: unknown) {
+  if (hasKey(data, 'title')) {
+    // TypeScript safely narrows data to include title
+    console.log(data.title)
+  }
 }
-```
+  `}
+/>

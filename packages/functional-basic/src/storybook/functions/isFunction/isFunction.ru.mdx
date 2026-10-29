@@ -1,25 +1,76 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/functional-basic/Functions/isFunction - Проверка на функцию'/>
 
 # `isFunction`
 
-Определяет, является ли переданное значение исполняемой функцией (включая стрелочные, асинхронные функции и функции-генераторы).
+Высокопроизводительная утилита-защитник типа (type guard), определяющая, является ли переданное значение исполняемой функцией: поддерживает стандартные функции, стрелочные функции, асинхронные генераторы, ES6-классы, конструкторы и кросс-контекстные функции (из iframe и VM-изоляций).
 
-Проверка осуществляется с использованием оператора `instanceof Function`, а также запасной проверки `typeof callback === 'function'`.
+## Ключевые возможности
+
+- **Быстрое выполнение $O(1)$** — Приоритетно выполняет проверку `typeof callback === 'function'` на уровне опкодов V8 без обхода цепочки прототипов.
+- **Поддержка кросс-контекстов (Cross-Realm & Iframe)** — Корректно определяет функции из соседних фреймов (iframe), отдельных окон и изолированных контекстов Node.js VM, где стандартный `instanceof Function` завершается с `false` из-за разных экземпляров прототипов.
+- **Полный охват исполняемых сущностей** — Распознает все виды функций: обычные объявления, стрелочные функции, асинхронные функции (`async`), функции-генераторы (`function*`), ES6-классы, встроенные конструкторы (`Date`, `Array`, `Function`), связанные функции (`bind`) и обернутые через `Proxy`.
+- **Сужение типов в TypeScript** — Служит предикатом типа `callback is Extract<T, FunctionAnyType>`, позволяя компилятору автоматически сужать объединения типов (union types) без необходимости принудительного каста.
+- **Безопасность к ложным и неисполняемым значениям** — Возвращает `false` для `null`, `undefined`, `0`, `false`, `NaN`, пустых строк, массивов, регулярных выражений и объектов с псевдо-методами `call`/`apply`.
+- **Изоморфность и SSR** — Чистая функция без побочных эффектов, не зависящая от специфики браузера или DOM.
 
 **Параметры:**
-- `callback: T` — Значение для проверки.
+- `callback: T` — Проверяемое значение.
 
 **Возвращает:**
-`boolean` (`callback is Extract<T, FunctionAnyType>`) — Вернет `true`, если аргумент является функцией, и `false` в противном случае. Также работает как защитник типа (type guard), сужая тип до `Extract<T, FunctionAnyType>`.
+`boolean` (`callback is Extract<T, FunctionAnyType>`) — Возвращает `true`, если аргумент является функцией, иначе `false`. Выступает в роли TypeScript type guard, сужая тип `T` до `FunctionAnyType`.
 
-```typescript
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
 import { isFunction } from '@dxtmisha/functional-basic'
 
-const myLogger = () => console.log('Hi!')
+// 1. Стандартные, стрелочные и асинхронные функции
+isFunction(function regular() {})        // true
+isFunction(() => 'arrow')                // true
+isFunction(async () => 'async')          // true
+isFunction(function* generator() {})     // true
 
-console.log(isFunction(myLogger)) // true
-console.log(isFunction({ myLogger })) // false
-console.log(isFunction('myLogger')) // false
-```
+// 2. ES6-классы и встроенные конструкторы
+class MyService {}
+isFunction(MyService)                    // true
+isFunction(Date)                         // true
+isFunction(Array)                        // true
+isFunction(Math.max)                     // true
+
+// 3. Связанные функции и прокси-обертки
+const greet = (name: string) => \`Привет, \${name}!\`
+const boundGreet = greet.bind(null, 'Алексей')
+const proxiedGreet = new Proxy(greet, {})
+
+isFunction(boundGreet)                   // true
+isFunction(proxiedGreet)                 // true
+
+// 4. Неисполняемые объекты, массивы и экземпляры классов
+isFunction({})                           // false
+isFunction(new MyService())              // false
+isFunction([() => {}])                   // false
+isFunction(/regex/)                      // false
+isFunction({ call: () => {} })           // false
+
+// 5. Примитивы и ложные значения
+isFunction(null)                         // false
+isFunction(undefined)                    // false
+isFunction(0)                            // false
+isFunction(false)                        // false
+isFunction('function() {}')              // false
+
+// 6. Сужение типов в TypeScript
+function execute(handler: string | (() => number)): number {
+  if (isFunction(handler)) {
+    // TypeScript сужает handler до () => number
+    return handler()
+  }
+
+  return Number(handler)
+}
+  `}
+/>

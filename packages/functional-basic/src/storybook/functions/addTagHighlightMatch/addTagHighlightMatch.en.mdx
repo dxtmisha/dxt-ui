@@ -12,7 +12,7 @@ A utility for highlighting matches in a string by wrapping them in a `<span>` HT
 - `options: AddTagHighlightMatchOptions = {}` — Configuration options:
   - `className?: string` — The CSS class to be added to the `<span>` tag (default: `'sys-highlight-match'`).
   - `shouldEscape?: boolean` — Whether to escape the string before adding highlighting (default: `false`).
-  - `shouldRemoveTag?: boolean` — Whether to strip existing HTML tags from the string when `shouldEscape` is `false` (default: `true`).
+  - `shouldRemoveTag?: boolean` — Whether to strip existing HTML tags from the string (default: `true`).
 
 **Returns:**
 `string` — The string with HTML tags added for highlighting.
@@ -34,7 +34,7 @@ addTagHighlightMatch('Apple and Banana', 'apple banana')
 addTagHighlightMatch('Test', 'test', { className: 'text-red' })
 // '<span class="text-red">Test</span>'
 
-// Tag removal (default behavior when shouldEscape is false)
+// Tag removal (default behavior)
 addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world')
 // 'Hello <span class="sys-highlight-match">world</span>'
 
@@ -42,8 +42,8 @@ addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world')
 addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world', { shouldRemoveTag: false })
 // '<p>Hello <b><span class="sys-highlight-match">world</span></b></p>'
 
-// With escaping (HTML tags are escaped, not removed)
-addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true })
+// With escaping while preserving raw HTML tags as text
+addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true, shouldRemoveTag: false })
 // '&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;'
   `}
 />

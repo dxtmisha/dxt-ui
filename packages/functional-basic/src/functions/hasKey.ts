@@ -9,12 +9,15 @@ import { isObject } from './isObject'
  * @param key property key / ключ свойства
  * @returns true if the object has the own property / true, если у объекта есть собственное свойство
  */
-export function hasKey<K extends PropertyKey, T extends object = Record<K, unknown>>(
+export function hasKey<
+  K extends PropertyKey = PropertyKey,
+  T extends object = Record<K, unknown>
+>(
   object: unknown,
   key: K
 ): object is T & Record<K, unknown> {
   return Boolean(
     (isObject(object) || isFunction(object))
-    && Object.prototype.hasOwnProperty.call(object, key)
+    && Object.hasOwn(object, key)
   )
 }

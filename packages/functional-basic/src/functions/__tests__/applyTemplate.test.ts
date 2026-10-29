@@ -84,6 +84,14 @@ describe('applyTemplate', () => {
       expect(applyTemplate('%a %b %c %w %x %y %z', ['val'])).toBe('%a %b %c %w %x %y %z')
     })
 
+    it('should ignore uppercase positional markers (%D, %E, %V)', () => {
+      expect(applyTemplate('%D %E %V', ['A', 'B', 'C'])).toBe('%D %E %V')
+    })
+
+    it('should preserve percent signs that are not positional markers', () => {
+      expect(applyTemplate('Discount: 100% and 50%% bonus', ['ignored'])).toBe('Discount: 100% and 50%% bonus')
+    })
+
     it('should handle positional markers with no separating whitespace (%d%e%f)', () => {
       expect(applyTemplate('%d%e%f', ['A', 'B', 'C'])).toBe('ABC')
     })
@@ -138,16 +146,24 @@ describe('applyTemplate', () => {
     })
 
     it('should safely convert non-string text inputs to string', () => {
-      expect(applyTemplate(12345 as unknown as string, {})).toBe('12345')
-      expect(applyTemplate(null as unknown as string, {})).toBe('null')
-      expect(applyTemplate(undefined as unknown as string, {})).toBe('undefined')
-      expect(applyTemplate(true as unknown as string, {})).toBe('true')
+      expect(applyTemplate(12345, {})).toBe('12345')
+      expect(applyTemplate(0, {})).toBe('0')
+      expect(applyTemplate(false, {})).toBe('false')
+      expect(applyTemplate(null, {})).toBe('null')
+      expect(applyTemplate(undefined, {})).toBe('undefined')
+      expect(applyTemplate(true, {})).toBe('true')
+    })
+
+    it('should safely return original text when replacement is a primitive or null', () => {
+      expect(applyTemplate('Hello [name] and %d', null as unknown as Record<string, unknown>)).toBe('Hello [name] and %d')
+      expect(applyTemplate('Hello [name] and %d', 42 as unknown as Record<string, unknown>)).toBe('Hello [name] and %d')
+      expect(applyTemplate('Hello [name] and %d', 'string' as unknown as Record<string, unknown>)).toBe('Hello [name] and %d')
     })
 
     it('should safely handle non-string text input with array replacement without throwing', () => {
-      expect(applyTemplate(100 as unknown as string, ['value'])).toBe('100')
-      expect(applyTemplate(null as unknown as string, ['value'])).toBe('null')
-      expect(applyTemplate(undefined as unknown as string, ['value'])).toBe('undefined')
+      expect(applyTemplate(100, ['value'])).toBe('100')
+      expect(applyTemplate(null, ['value'])).toBe('null')
+      expect(applyTemplate(undefined, ['value'])).toBe('undefined')
     })
   })
 

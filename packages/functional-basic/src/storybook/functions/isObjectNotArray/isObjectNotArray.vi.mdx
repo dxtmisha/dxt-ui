@@ -1,27 +1,70 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/isObjectNotArray - Phân định đối tượng loại trừ mảng'/>
 
 # `isObjectNotArray`
 
-Kiểm tra xem giá trị được cung cấp có phải là một đối tượng (Record) và **không phải là mảng** hay không.
+Tiện ích bảo vệ kiểu (type guard) hiệu năng cao, xác định xem một giá trị được cung cấp có phải là một đối tượng hay không, đồng thời loại trừ nghiêm ngặt các mảng JavaScript.
 
-Vì tiện ích cơ bản `isObject` trả về `true` cho cả mảng (theo đặc tả `typeof` của JavaScript), `isObjectNotArray` kết hợp `isObject(value)` với `!isArray(value)` để loại trừ hoàn toàn các mảng.
+## Tính năng chính
+
+- **Loại trừ mảng nghiêm ngặt** — Kết hợp `isObject(value)` với `!isArray(value)` để loại trừ mảng, giải quyết hạn chế của JavaScript khi `typeof [] === 'object'`.
+- **Hỗ trợ đa dạng đối tượng** — Nhận diện chính xác đối tượng thông thường (`{}`), từ điển không có prototype (`Object.create(null)`), thể hiện của lớp và đối tượng tích hợp (`Date`, `RegExp`, `Map`, `Set`, `Error`).
+- **Xử lý đối tượng dạng mảng & TypedArray** — Phân loại các đối tượng dạng mảng (như `arguments` hoặc `{ length: 2 }`) và `TypedArray` (`Uint8Array`) là đối tượng, vì chúng không phải là thể hiện của mảng JavaScript chuẩn.
+- **Tương thích với Proxy** — Trả về `true` cho `Proxy` bọc đối tượng và `false` cho `Proxy` bọc mảng theo đúng đặc tả ECMAScript Proxy.
+- **Rào chắn kiểu trong TypeScript** — Thu hẹp các kiểu hợp nhất tại thời điểm biên dịch thông qua `value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null>`, loại trừ kiểu mảng, `null` và `undefined`.
+- **An toàn trước giá trị falsy & nguyên thủy** — Trả về `false` an toàn cho `null`, `undefined`, `0`, `false`, `NaN`, chuỗi rỗng, số, boolean, symbol và hàm.
+- **Đẳng hình & Sẵn sàng cho SSR** — Hàm thuần túy không có tác dụng phụ, hoàn toàn an toàn cho server-side rendering (SSR/SSG).
 
 **Tham số:**
 - `value: T` — Giá trị cần kiểm tra.
 
 **Trả về:**
-`value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null>` (`boolean`) — Chỉ trả về `true` đối với các đối tượng khác `null` và không phải mảng (như `{ key: 'value' }`), và trả về `false` đối với mảng `[]`, `null`, `undefined`, hàm và các kiểu nguyên thủy. Đóng vai trò là bộ bảo vệ kiểu (type guard) trong TypeScript, thu hẹp `T` thành `ObjectItem` đồng thời loại trừ mảng, `undefined` và `null`.
+`value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null>` (`boolean`) — Chỉ trả về `true` đối với các đối tượng khác `null` và không phải mảng; ngược lại trả về `false`.
 
-```typescript
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
 import { isObjectNotArray } from '@dxtmisha/functional-basic'
 
-// Đối tượng hợp lệ
-console.log(isObjectNotArray({ id: 1, name: 'Test' })) // true
+// 1. Đối tượng thông thường và từ điển không có prototype
+isObjectNotArray({ id: 1, name: 'Alice' })  // true
+isObjectNotArray(Object.create(null))       // true
 
-// Các giá trị bị loại trừ
-console.log(isObjectNotArray([1, 2, 3])) // false (mảng bị loại trừ)
-console.log(isObjectNotArray(null)) // false
-console.log(isObjectNotArray('string')) // false
-```
+// 2. Thể hiện của lớp và đối tượng tích hợp
+class User {}
+isObjectNotArray(new User())                // true
+isObjectNotArray(new Date())                // true
+isObjectNotArray(new Map())                 // true
+isObjectNotArray(/regex/)                   // true
+
+// 3. Loại trừ mảng nghiêm ngặt (mảng trả về false)
+isObjectNotArray([])                        // false
+isObjectNotArray([1, 2, 3])                 // false
+isObjectNotArray(new Array(5))              // false
+
+// 4. Giá trị nguyên thủy, nullish và falsy
+isObjectNotArray(null)                      // false
+isObjectNotArray(undefined)                 // false
+isObjectNotArray(0)                         // false
+isObjectNotArray(false)                     // false
+isObjectNotArray('')                        // false
+isObjectNotArray('chuỗi')                   // false
+isObjectNotArray(123)                       // false
+
+// 5. Hàm bị loại trừ
+isObjectNotArray(() => {})                  // false
+isObjectNotArray(function named() {})       // false
+isObjectNotArray(User)                      // false
+
+// 6. Thu hẹp kiểu trong TypeScript (Type Guard)
+function processItem(item: string | number[] | { title: string }) {
+  if (isObjectNotArray(item)) {
+    // TypeScript thu hẹp item thành { title: string } an toàn
+    console.log(item.title)
+  }
+}
+  `}
+/>

@@ -2,28 +2,8 @@ import { hasKey } from './hasKey'
 import { isArray } from './isArray'
 import { isObjectNotArray } from './isObjectNotArray'
 
-/** Supported positional macro letters (%d..%v) / Список поддерживаемых букв позиционных макросов (%d..%v) */
-const LIST_NAME = [
-  'd',
-  'e',
-  'f',
-  'g',
-  'h',
-  'i',
-  'j',
-  'k',
-  'l',
-  'm',
-  'n',
-  'o',
-  'p',
-  'q',
-  'r',
-  's',
-  't',
-  'u',
-  'v'
-] as const
+/** ASCII code of character 'd' (base character for %d positional macro) / ASCII-код символа 'd' (базовый символ для позиционного макроса %d) */
+const CHAR_CODE_D = 100
 
 /** Regular expression for matching list macros / Регулярное выражение для сопоставления макросов списка */
 const EXP_LIST_MACROS = /%([d-v])/g
@@ -49,8 +29,8 @@ const EXP_CONTENT_MACROS = /[[{]content[\]}]/g
  * отформатированная строка с примененными заменами шаблона
  */
 export function applyTemplate(
-  text: string,
-  replacement: Record<string, unknown> | readonly unknown[] = {}
+  text: unknown,
+  replacement?: Record<string, unknown> | readonly unknown[]
 ): string {
   let content = String(text)
 
@@ -60,22 +40,21 @@ export function applyTemplate(
     isArray(replacement)
     && content.includes('%')
   ) {
-    content = content.replace(EXP_LIST_MACROS, (all, key) => {
-      const index = LIST_NAME.indexOf(key as typeof LIST_NAME[number])
-
-      // If the macro exists in the supported letter list, replace it with the item by index /
-      // Если макрос есть в списке поддерживаемых букв, заменяем его элементом по индексу
-      if (index !== -1) {
-        return String(replacement?.[index] ?? '')
-      }
-
-      return all
+    content = content.replace(EXP_LIST_MACROS, (_all, key) => {
+      const index = key.charCodeAt(0) - CHAR_CODE_D
+      return String(replacement[index] ?? '')
     })
   }
 
   // Replacing named placeholders and tags using an object /
   // Замена именованных плейсхолдеров и тегов значениями из объекта
-  if (isObjectNotArray(replacement) && (content.includes('[') || content.includes('{'))) {
+  if (
+    isObjectNotArray(replacement)
+    && (
+      content.includes('[')
+      || content.includes('{')
+    )
+  ) {
     // Processing block tags [tag]content[/tag] when a closing tag slash is present /
     // Обработка блочных тегов [tag]content[/tag] при наличии слэша закрывающего тега
     if (content.includes('/')) {

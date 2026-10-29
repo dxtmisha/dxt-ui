@@ -20,12 +20,12 @@ const REGEXP_NEVER = /(?!)/
  *
  * Создает регулярное выражение для поиска по словам (разделение пробелом).
  * Возвращает регистронезависимое и глобальное `RegExp` для строковых запросов или клонирует переданный `RegExp` с сохранением его шаблона и флагов.
- * @param search search string or RegExp / строка поиска или регулярное выражение
+ * @param search search string, RegExp, or query value / строка поиска, регулярное выражение или значение запроса
  * @param limit maximum search string length / максимальная длина строки поиска
  * @returns `RegExp` for search / регулярное выражение для поиска
  */
 export function getSeparatingSearchExp(
-  search: string | RegExp,
+  search?: unknown,
   limit: number = 128
 ): RegExp {
   if (isRegExp(search)) {
@@ -54,10 +54,6 @@ export function getSeparatingSearchExp(
   )
     .sort((firstWord, secondWord) => secondWord.length - firstWord.length)
     .map(escapeExp)
-
-  if (words.length === 0) {
-    return REGEXP_NEVER
-  }
 
   return new RegExp(`(${words.join('|')})`, 'ig')
 }

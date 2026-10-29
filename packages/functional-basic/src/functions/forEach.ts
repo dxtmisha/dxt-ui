@@ -2,7 +2,18 @@ import { isArray } from './isArray'
 import { isObject } from './isObject'
 
 /** Type of collection supported for iteration / Тип коллекции, поддерживаемой для перебора */
-export type ForEachData<T> = readonly T[] | Record<string, T> | Map<unknown, T> | Set<T>
+export type ForEachData<T = any> = readonly T[] | Record<PropertyKey, T> | Map<unknown, T> | Set<T> | object
+
+/** Type of item based on collection structure / Тип элемента в зависимости от структуры коллекции */
+export type ForEachItem<D> = D extends readonly (infer T)[]
+  ? T
+  : D extends Set<infer S>
+    ? S
+    : D extends Map<unknown, infer V>
+      ? V
+      : D extends object
+        ? D[keyof D]
+        : unknown
 
 /** Type of key based on the collection structure / Тип ключа в зависимости от структуры коллекции */
 export type ForEachKey<D> = D extends readonly unknown[]
@@ -49,14 +60,14 @@ function push<R>(
  * @returns an array with the results of executing the function / массив с результатами выполнения функции
  */
 export function forEach<
-  T,
-  R,
+  T = any,
+  R = any,
   D extends ForEachData<T> = ForEachData<T>,
   K = ForEachKey<D>,
   S extends boolean = false
 >(
   data: D,
-  callback: (item: T, key: K, collection: D) => R,
+  callback: (item: D extends object ? ForEachItem<D> : T, key: K, collection: D) => R,
   saveUndefined?: S
 ): ForEachReturn<R, S> {
   if (!isObject(data)) {
@@ -73,7 +84,7 @@ export function forEach<
     }
 
     for (let index = 0; index < length; index++) {
-      push(returnData, callback(data[index] as T, index as unknown as K, data), saveUndefined)
+      push(returnData, callback(data[index] as any, index as unknown as K, data), saveUndefined)
     }
   } else if (data instanceof Map) {
     if (data.size === 0) {
@@ -81,7 +92,7 @@ export function forEach<
     }
 
     for (const [key, item] of data as Map<K, T>) {
-      push(returnData, callback(item, key, data), saveUndefined)
+      push(returnData, callback(item as any, key, data), saveUndefined)
     }
   } else if (data instanceof Set) {
     if (data.size === 0) {
@@ -89,12 +100,12 @@ export function forEach<
     }
 
     for (const item of data) {
-      push(returnData, callback(item, item, data), saveUndefined)
+      push(returnData, callback(item as any, item as unknown as K, data), saveUndefined)
     }
   } else {
     for (const key in data) {
       if (Object.hasOwn(data, key)) {
-        push(returnData, callback(data[key], key as unknown as K, data), saveUndefined)
+        push(returnData, callback((data as any)[key], key as unknown as K, data), saveUndefined)
       }
     }
   }

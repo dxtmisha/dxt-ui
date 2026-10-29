@@ -297,6 +297,26 @@ describe('forEach', () => {
   })
 
   describe('TypeScript exported type tests', () => {
+    it('should support interfaces and custom typed objects', () => {
+      interface User {
+        id: string
+        name: string
+      }
+      const user: User = { id: '100', name: 'Alice' }
+      const values = forEach(user, value => value)
+      expect(values).toEqual(['100', 'Alice'])
+    })
+
+    it('should support numeric keys and PropertyKey in Record objects', () => {
+      const data: Record<PropertyKey, string> = {
+        0: 'zero',
+        1: 'one',
+        alpha: 'first'
+      }
+      const values = forEach(data, value => value)
+      expect(values).toEqual(['zero', 'one', 'first'])
+    })
+
     it('should properly type ForEachData and ForEachKey', () => {
       const arrayData: ForEachData<number> = [1, 2]
       const objectData: ForEachData<string> = { a: 'hello' }
@@ -317,6 +337,11 @@ describe('forEach', () => {
       expect(typeof stringKey).toBe('string')
       expect(typeof inferredMapKey).toBe('string')
       expect(typeof setItemKey).toBe('number')
+
+      expect(forEach(arrayData, item => item)).toEqual([1, 2])
+      expect(forEach(objectData, item => item)).toEqual(['hello'])
+      expect(forEach(mapData, item => item)).toEqual([true])
+      expect(forEach(setData, item => item)).toEqual([1])
     })
   })
 

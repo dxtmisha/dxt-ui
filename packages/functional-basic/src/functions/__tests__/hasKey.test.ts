@@ -74,6 +74,30 @@ describe('hasKey', () => {
       expect(hasKey(instance, 'ownField')).toBe(true)
       expect(hasKey(instance, 'inheritedMethod')).toBe(false)
     })
+
+    it('should return true for non-enumerable own properties', () => {
+      const target = {}
+      Object.defineProperty(target, 'hiddenProp', {
+        value: 'secret',
+        enumerable: false,
+        configurable: true
+      })
+
+      expect(hasKey(target, 'hiddenProp')).toBe(true)
+    })
+
+    it('should work correctly with frozen, sealed, and non-extensible objects', () => {
+      const frozen = Object.freeze({ a: 1 })
+      const sealed = Object.seal({ b: 2 })
+      const nonExtensible = Object.preventExtensions({ c: 3 })
+
+      expect(hasKey(frozen, 'a')).toBe(true)
+      expect(hasKey(frozen, 'missing')).toBe(false)
+      expect(hasKey(sealed, 'b')).toBe(true)
+      expect(hasKey(sealed, 'missing')).toBe(false)
+      expect(hasKey(nonExtensible, 'c')).toBe(true)
+      expect(hasKey(nonExtensible, 'missing')).toBe(false)
+    })
   })
 
   describe('Key types (Symbols, Numbers, Arrays, and Unicode)', () => {
@@ -90,6 +114,15 @@ describe('hasKey', () => {
       expect(hasKey(['a', 'b', 'c'], 1)).toBe(true)
       expect(hasKey(['a', 'b', 'c'], 10)).toBe(false)
       expect(hasKey(['a', 'b', 'c'], 'length')).toBe(true)
+    })
+
+    it('should return false for unassigned elements in sparse arrays', () => {
+      const sparseArray = new Array(3)
+      sparseArray[1] = 'assigned'
+
+      expect(hasKey(sparseArray, 0)).toBe(false)
+      expect(hasKey(sparseArray, 1)).toBe(true)
+      expect(hasKey(sparseArray, 2)).toBe(false)
     })
 
     it('should support multilingual, Unicode, and empty string keys', () => {

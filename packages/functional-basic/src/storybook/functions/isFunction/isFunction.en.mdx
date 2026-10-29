@@ -1,25 +1,76 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/isFunction - Check if value is a function'/>
 
 # `isFunction`
 
-Determines whether the provided value is an executable function (including arrow functions, asynchronous functions, and generator functions).
+A high-performance type guard utility that determines whether a provided value is a callable function, supporting standard functions, arrow functions, async/generator functions, ES6 classes, constructors, and cross-realm functions.
 
-The check operates primarily via the `instanceof Function` operator, with a fallback safety check against `typeof callback === 'function'`.
+## Key Features
+
+- **Fast-Path $O(1)$ Execution** — Prioritizes `typeof callback === 'function'` for instant opcode-level evaluation without walking prototype chains.
+- **Cross-Realm & Iframe Support** — Accurately identifies functions originating from separate window realms, iframes, and VM contexts where `instanceof Function` would otherwise fail due to distinct prototype trees.
+- **Comprehensive Callable Support** — Recognizes all executable constructs: standard functions, arrow functions, async functions, generator functions, ES6 classes, built-in constructors (`Date`, `Array`, `Function`), bound functions, and Proxy-wrapped callables.
+- **TypeScript Type Guard** — Narrows candidate union types at compile time via `callback is Extract<T, FunctionAnyType>`, preserving specific argument and return type contracts.
+- **Safe Against Falsy & Non-Callable Inputs** — Gracefully returns `false` for `null`, `undefined`, `0`, `false`, `NaN`, empty strings, arrays, regexes, plain objects, and objects with callable mimics.
+- **Pure & Isomorphic** — Stateless, side-effect-free, and safe for server-side rendering (SSR/SSG).
 
 **Parameters:**
-- `callback: T` — The variable to be tested.
+- `callback: T` — The value to be checked.
 
 **Returns:**
-`boolean` (`callback is Extract<T, FunctionAnyType>`) — Yields `true` when the argument is a valid function, returning `false` otherwise. Functions as a dedicated TypeScript type guard narrowing the type specifically down to `Extract<T, FunctionAnyType>`.
+`boolean` (`callback is Extract<T, FunctionAnyType>`) — Returns `true` if the value is a callable function; otherwise `false`. Acts as a TypeScript type guard narrowing `T` to `FunctionAnyType`.
 
-```typescript
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { isFunction } from '@dxtmisha/functional-basic'
 
-const myLogger = () => console.log('Hi!')
+// 1. Standard, arrow, and async functions
+isFunction(function regular() {})        // true
+isFunction(() => 'arrow')                // true
+isFunction(async () => 'async')          // true
+isFunction(function* generator() {})     // true
 
-console.log(isFunction(myLogger)) // true
-console.log(isFunction({ myLogger })) // false
-console.log(isFunction('myLogger')) // false
-```
+// 2. ES6 classes and built-in constructors
+class MyService {}
+isFunction(MyService)                    // true
+isFunction(Date)                         // true
+isFunction(Array)                        // true
+isFunction(Math.max)                     // true
+
+// 3. Bound functions and Proxy wrappers
+const greet = (name: string) => \`Hello, \${name}!\`
+const boundGreet = greet.bind(null, 'Alice')
+const proxiedGreet = new Proxy(greet, {})
+
+isFunction(boundGreet)                   // true
+isFunction(proxiedGreet)                 // true
+
+// 4. Non-callable objects, arrays, and class instances
+isFunction({})                           // false
+isFunction(new MyService())              // false
+isFunction([() => {}])                   // false
+isFunction(/regex/)                      // false
+isFunction({ call: () => {} })           // false
+
+// 5. Primitives and falsy values
+isFunction(null)                         // false
+isFunction(undefined)                    // false
+isFunction(0)                            // false
+isFunction(false)                        // false
+isFunction('function() {}')              // false
+
+// 6. TypeScript type narrowing
+function execute(handler: string | (() => number)): number {
+  if (isFunction(handler)) {
+    // TypeScript narrows handler to () => number
+    return handler()
+  }
+
+  return Number(handler)
+}
+  `}
+/>

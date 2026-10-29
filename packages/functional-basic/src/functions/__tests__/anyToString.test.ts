@@ -37,6 +37,10 @@ describe('anyToString', () => {
     it('should return an empty string for undefined', () => {
       expect(anyToString(undefined)).toBe('')
     })
+
+    it('should return an empty string when called without arguments', () => {
+      expect(anyToString()).toBe('')
+    })
   })
 
   describe('Booleans (Design System rules)', () => {
@@ -143,6 +147,15 @@ describe('anyToString', () => {
         toJSON: () => ({ serializedId: 10 })
       }
       expect(anyToString(customJson)).toBe('{"serializedId":10}')
+    })
+
+    it('should safely fall back to Object.prototype.toString when JSON.stringify and String() both throw', () => {
+      const throwingCircular: Record<string, unknown> = {}
+      throwingCircular.self = throwingCircular
+      throwingCircular.toString = () => {
+        throw new Error('toString failure')
+      }
+      expect(anyToString(throwingCircular)).toBe('[object Object]')
     })
   })
 

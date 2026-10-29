@@ -1,44 +1,80 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/hasKey - Kiểm tra khóa thuộc tính riêng của đối tượng'/>
 
 # `hasKey`
 
-Kiểm tra xem thuộc tính được chỉ định có phải là thuộc tính riêng của đối tượng hoặc hàm hay không bằng cách gọi an toàn `Object.prototype.hasOwnProperty.call`.
+Tiện ích bảo vệ kiểu (type guard) hiệu năng cao, xác định xem thuộc tính được chỉ định có tồn tại trực tiếp trên một đối tượng hoặc hàm dưới dạng thuộc tính riêng hay không.
 
-Hàm cung cấp khả năng bảo vệ mạnh mẽ chống lại **Prototype Pollution** và loại bỏ các trường hợp nhận diện nhầm các thuộc tính kế thừa từ chuỗi prototype (chẳng hạn như `toString`, `valueOf`, `constructor`, `__proto__`, `hasOwnProperty`). Hàm an toàn khi làm việc với `null`, `undefined`, các giá trị nguyên thủy và các đối tượng không có prototype (`Object.create(null)`). Trong TypeScript, hàm hoạt động như một type guard, tự động thu hẹp kiểu đối tượng để truy cập an toàn.
+## Tính năng chính
+
+- **Bảo vệ chống Prototype Pollution** — Kiểm tra nghiêm ngặt các thuộc tính riêng thông qua `Object.hasOwn` gốc, loại bỏ các kết quả dương tính giả từ chuỗi prototype (`toString`, `valueOf`, `constructor`, `__proto__`, `hasOwnProperty`).
+- **Hỗ trợ đối tượng không có Prototype** — Hoàn toàn an toàn với các từ điển tạo bởi `Object.create(null)` không kế thừa `hasOwnProperty`.
+- **An toàn với giá trị nguyên thủy & Falsy** — Không bao giờ gây lỗi ngoại lệ khi truyền `null`, `undefined`, số, chuỗi, boolean, symbol hoặc BigInt, trả về `false` một cách an toàn.
+- **Hỗ trợ đầy đủ các kiểu khóa** — Hoạt động với chuỗi ký tự, chỉ mục số, `Symbol` và tên thuộc tính đa ngôn ngữ Unicode.
+- **Rào chắn kiểu trong TypeScript** — Hoạt động như một type guard `object is T & Record<K, unknown>`, cho phép truy cập thuộc tính an toàn mà không cần ép kiểu.
+- **Hàm và cấu trúc phức tạp** — Xác định chính xác các thuộc tính riêng trên hàm, thể hiện của lớp, đối tượng đóng băng (`Object.freeze`) và thuộc tính không thể liệt kê (non-enumerable).
+- **Đẳng hình & Sẵn sàng cho SSR** — Hàm thuần túy không có tác dụng phụ, hoàn toàn an toàn cho server-side rendering (SSR/SSG).
 
 **Tham số:**
-- `object: unknown` — đối tượng, hàm hoặc giá trị bất kỳ cần kiểm tra.
-- `key: K` — khóa thuộc tính cần tìm (`K extends PropertyKey`: `string | number | symbol`).
+- `object: unknown` — Đối tượng, hàm hoặc giá trị bất kỳ cần kiểm tra.
+- `key: K` (`K extends PropertyKey = PropertyKey`) — Khóa thuộc tính cần xác minh (`string | number | symbol`).
 
 **Trả về:**
-`boolean` (`object is T & Record<K, unknown>`) — `true` nếu thuộc tính tồn tại và thuộc trực tiếp về đối tượng (thuộc tính riêng), ngược lại là `false`.
+`boolean` (`object is T & Record<K, unknown>`) — Trả về `true` nếu thuộc tính tồn tại và thuộc trực tiếp về đối tượng; ngược lại trả về `false`.
 
-```typescript
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
 import { hasKey } from '@dxtmisha/functional-basic'
 
+// 1. Kiểm tra thuộc tính đối tượng cơ bản
 const user = { name: 'Alice', age: 30 }
-console.log(hasKey(user, 'name')) // true
-console.log(hasKey(user, 'email')) // false
+hasKey(user, 'name')                   // true
+hasKey(user, 'email')                  // false
 
-// Bảo vệ chống prototype pollution:
-console.log(hasKey({}, 'toString')) // false
-console.log(hasKey({ toString: 'custom' }, 'toString')) // true
+// 2. Bảo vệ chống Prototype Pollution (thuộc tính kế thừa trả về false)
+hasKey({}, 'toString')                 // false
+hasKey({}, 'valueOf')                  // false
+hasKey({}, 'constructor')              // false
+hasKey({}, '__proto__')                // false
 
-// An toàn với null, undefined và kiểu nguyên thủy:
-console.log(hasKey(null, 'foo')) // false
-console.log(hasKey(123, 'foo')) // false
+// Thuộc tính riêng được ghi đè rõ ràng sẽ trả về true
+hasKey({ toString: 'custom' }, 'toString') // true
 
-// Đối tượng không có prototype (Object.create(null)):
+// 3. Từ điển không có prototype (Object.create(null))
 const dict = Object.create(null)
-dict.item = 'value'
-console.log(hasKey(dict, 'item')) // true
-console.log(hasKey(dict, 'toString')) // false
+dict.item = 'giá trị'
+hasKey(dict, 'item')                   // true
+hasKey(dict, 'missing')                // false
+hasKey(dict, 'toString')               // false
 
-// Thu hẹp kiểu trong TypeScript (Type Guard):
-const data: unknown = { id: 1, title: 'DXT' }
-if (hasKey(data, 'title')) {
-  console.log(data.title) // data được thu hẹp kiểu để truy cập an toàn thuộc tính title
+// 4. An toàn với null, undefined và kiểu nguyên thủy
+hasKey(null, 'foo')                    // false
+hasKey(undefined, 'foo')               // false
+hasKey(123, 'toString')                // false
+hasKey('chuỗi', 0)                     // false
+hasKey(false, 'valueOf')               // false
+
+// 5. Khóa Symbol và chỉ mục số của mảng
+const sym = Symbol('secret')
+hasKey({ [sym]: 42 }, sym)             // true
+hasKey(['a', 'b', 'c'], 0)             // true
+hasKey(['a', 'b', 'c'], 10)            // false
+hasKey(['a', 'b', 'c'], 'length')      // true
+
+// 6. Thuộc tính không thể liệt kê và đối tượng đóng băng
+const target = Object.freeze({ key: 'val' })
+hasKey(target, 'key')                  // true
+
+// 7. Thu hẹp kiểu trong TypeScript (Type Guard)
+function processData(data: unknown) {
+  if (hasKey(data, 'title')) {
+    // TypeScript tự động thu hẹp data để truy cập thuộc tính title
+    console.log(data.title)
+  }
 }
-```
+  `}
+/>

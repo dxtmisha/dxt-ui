@@ -12,7 +12,7 @@ Tiện ích để làm nổi bật các kết quả khớp trong một chuỗi b
 - `options: AddTagHighlightMatchOptions = {}` — Tùy chọn cấu hình:
   - `className?: string` — Class CSS sẽ được thêm vào thẻ `<span>` (mặc định: `'sys-highlight-match'`).
   - `shouldEscape?: boolean` — Có nên thoát chuỗi trước khi thêm làm nổi bật hay không (mặc định: `false`).
-  - `shouldRemoveTag?: boolean` — Có nên xóa các thẻ HTML hiện có khỏi chuỗi khi `shouldEscape` là `false` hay không (mặc định: `true`).
+  - `shouldRemoveTag?: boolean` — Có nên xóa các thẻ HTML hiện có khỏi chuỗi hay không (mặc định: `true`).
 
 **Trả về:**
 `string` — Chuỗi với các thẻ HTML được thêm vào để làm nổi bật.
@@ -34,7 +34,7 @@ addTagHighlightMatch('Apple and Banana', 'apple banana')
 addTagHighlightMatch('Test', 'test', { className: 'text-red' })
 // '<span class="text-red">Test</span>'
 
-// Xóa thẻ (hành vi mặc định khi shouldEscape = false)
+// Xóa thẻ (hành vi mặc định)
 addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world')
 // 'Hello <span class="sys-highlight-match">world</span>'
 
@@ -42,8 +42,8 @@ addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world')
 addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world', { shouldRemoveTag: false })
 // '<p>Hello <b><span class="sys-highlight-match">world</span></b></p>'
 
-// Với thoát chuỗi (thẻ HTML được escape chứ không bị xóa)
-addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true })
+// Với thoát chuỗi và giữ thẻ HTML dưới dạng văn bản
+addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true, shouldRemoveTag: false })
 // '&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;'
   `}
 />

@@ -163,13 +163,21 @@ describe('getSearchExp', () => {
       expect(getSearchExp(query, -1).source).toBe('^')
     })
 
-    it('should safely return /^/ for non-string inputs', () => {
-      expect(getSearchExp(null as unknown as string).test('anything')).toBe(true)
-      expect(getSearchExp(undefined as unknown as string).test('anything')).toBe(true)
-      expect(getSearchExp(0 as unknown as string).test('anything')).toBe(true)
-      expect(getSearchExp(false as unknown as string).test('anything')).toBe(true)
-      expect(getSearchExp(123 as unknown as string).test('anything')).toBe(true)
-      expect(getSearchExp({} as unknown as string).test('anything')).toBe(true)
+    it('should safely return /^/ for non-string inputs and empty invocation', () => {
+      expect(getSearchExp().source).toBe('^')
+      expect(getSearchExp().test('anything')).toBe(true)
+      expect(getSearchExp(null).source).toBe('^')
+      expect(getSearchExp(null).test('anything')).toBe(true)
+      expect(getSearchExp(undefined).source).toBe('^')
+      expect(getSearchExp(undefined).test('anything')).toBe(true)
+      expect(getSearchExp(0).source).toBe('^')
+      expect(getSearchExp(0).test('anything')).toBe(true)
+      expect(getSearchExp(false).source).toBe('^')
+      expect(getSearchExp(false).test('anything')).toBe(true)
+      expect(getSearchExp(123).source).toBe('^')
+      expect(getSearchExp(123).test('anything')).toBe(true)
+      expect(getSearchExp({}).source).toBe('^')
+      expect(getSearchExp({}).test('anything')).toBe(true)
     })
   })
 

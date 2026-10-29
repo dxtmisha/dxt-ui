@@ -4,18 +4,32 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `applyTemplate`
 
-Tiện ích để thay thế các thẻ đánh dấu trong văn bản bằng các giá trị từ một đối tượng hoặc mảng.
+Tiện ích hiệu năng cao để áp dụng mẫu cho văn bản, thay thế các điểm đánh dấu vị trí (`%d`..`%v`), thẻ khối ghép cặp (`[tag]nội dung[/tag]`, `{tag}nội dung{/tag}`) và các điểm đánh dấu có tên (`[key]`, `{key}`) bằng các giá trị từ đối tượng hoặc mảng.
+
+## Tính năng chính
+
+- **Cú pháp dấu ngoặc kép** — Hỗ trợ linh hoạt cả dấu ngoặc vuông `[key]` và dấu ngoặc nhọn `{key}` trong cùng một chuỗi mẫu.
+- **Thẻ khối & thay thế nội dung** — Hỗ trợ các thẻ ghép đôi (`[tag]nội dung[/tag]` hoặc `{tag}nội dung{/tag}`) với khả năng tự động chèn nội dung bên trong thông qua macro `[content]` hoặc `{content}`.
+- **Điểm đánh dấu vị trí $O(1)$** — Ánh xạ trực tiếp các phần tử mảng vào các macro vị trí từ `%d` đến `%v` (tối đa 19 đối số vị trí) thông qua phép tính độ lệch mã ký tự trong thời gian hằng số mà không cần duyệt mảng.
+- **An toàn trước Prototype Pollution** — Sử dụng `hasKey` để kiểm tra nghiêm ngặt các thuộc tính riêng của đối tượng, bỏ qua các thuộc tính kế thừa từ prototype (`toString`, `valueOf`, `constructor`, `__proto__`).
+- **An toàn với ký tự thay thế đặc biệt** — Xử lý ký tự đô la (`$`) trong giá trị và nội dung thẻ dưới dạng chuỗi ký tự thuần túy, ngăn ngừa lỗi chèn nhóm chụp regex ngoài ý muốn.
+- **Bỏ qua sớm (Fast-Path Bailouts)** — Bỏ qua việc thực thi biểu thức chính quy ngay lập tức nếu chuỗi mẫu không chứa ký tự `%`, dấu ngoặc `[`/`{` hoặc dấu gạch chéo thẻ `/`.
+- **Ép kiểu linh hoạt và an toàn** — Xử lý an toàn mọi kiểu văn bản đầu vào (`unknown`) và các kiểu nguyên thủy của giá trị (`0`, `false`, số âm, `toString` tùy chỉnh) mà không gây ra ngoại lệ khi chạy.
+- **Đẳng hình & Sẵn sàng cho SSR** — Hàm thuần túy không có tác dụng phụ, không phụ thuộc vào các biến toàn cục của trình duyệt hoặc DOM API.
 
 **Tham số:**
-- `text: string` — Văn bản gốc có mẫu.
-- `replacement: Record<string, unknown> | readonly unknown[] = {}` — Đối tượng hoặc mảng chứa các cặp khóa-giá trị hoặc phần tử để thay thế.
+- `text: unknown` — Văn bản hoặc giá trị gốc chứa mẫu. Tự động chuyển đổi thành chuỗi.
+- `replacement?: Record<string, unknown> | readonly unknown[]` — (Tùy chọn) Đối tượng hoặc mảng chứa các cặp khóa-giá trị hoặc phần tử danh sách để thay thế. Mặc định là `{}`.
 
-**Định dạng thay thế (replacement)**
-- **Mảng**: Được sử dụng cho các thẻ vị trí từ `%d` đến `%v` (theo thứ tự bảng chữ cái).
-- **Đối tượng**: Được sử dụng cho các thẻ có tên trong ngoặc `[key]` hoặc `{key}`, cũng như các thẻ cặp `[tag]nội dung[/tag]` hoặc `{tag}nội dung{/tag}` (sử dụng `[content]` hoặc `{content}` bên trong chuỗi thay thế).
+**Định dạng thay thế (`replacement`):**
+- **Mảng (`readonly unknown[]`)**: Được sử dụng cho các điểm đánh dấu vị trí từ `%d` (chỉ mục 0) đến `%v` (chỉ mục 18). Các phần tử bị thiếu sẽ được thay thế bằng chuỗi rỗng `''`. Các chữ cái ngoài phạm vi (ví dụ: `%a`, `%w`, `%D`) và dấu `%` đứng riêng lẻ được giữ nguyên.
+- **Đối tượng (`Record<string, unknown>`)**: Được sử dụng cho các thẻ có tên trong ngoặc `[key]` hoặc `{key}`, cũng như các thẻ khối ghép cặp `[tag]nội dung[/tag]` hoặc `{tag}nội dung{/tag}`.
+  - **Thẻ khối**: Nếu chuỗi thay thế chứa `[content]` hoặc `{content}`, macro sẽ được thay thế bằng nội dung bên trong thẻ. Nếu không có, thẻ và nội dung của nó sẽ được thay thế hoàn toàn bằng giá trị đã cho.
+  - **Khóa bị thiếu**: Các khóa không có trong đối tượng sẽ được giữ nguyên trong mẫu.
+  - **Giá trị falsy hợp lệ**: Số `0` và boolean `false` được giữ nguyên dưới dạng `'0'` và `'false'`, trong khi `null` và `undefined` trở thành chuỗi rỗng `''`.
 
 **Trả về:**
-`string` — Văn bản với các giá trị đã được thay thế.
+`string` — Chuỗi đã định dạng với các thay thế mẫu được áp dụng.
 
 ## Ví dụ
 
@@ -24,24 +38,65 @@ Tiện ích để thay thế các thẻ đánh dấu trong văn bản bằng cá
   code={`
 import { applyTemplate } from '@dxtmisha/functional-basic'
 
-// 1. Điểm đánh dấu vị trí (mảng)
-applyTemplate('Xin chào, %d %e!', ['John', 'Doe']) // 'Xin chào, John Doe!'
+// 1. Điểm đánh dấu vị trí bằng mảng (%d..%v)
+applyTemplate('Xin chào, %d %e!', ['John', 'Doe'])
+// => 'Xin chào, John Doe!'
 
-// 2. Điểm đánh dấu có tên (đối tượng)
-applyTemplate('Giá: [price] {currency}', { price: 100, currency: 'USD' }) // 'Giá: 100 USD'
+applyTemplate('Tọa độ: %d, %e, %f', [10, 20, 30])
+// => 'Tọa độ: 10, 20, 30'
 
-// 3. Xử lý 0 và false
-applyTemplate('Giá trị: [val]', { val: 0 })      // 'Giá trị: 0'
-applyTemplate('Trạng thái: [val]', { val: false }) // 'Trạng thái: false'
+// 2. Điểm đánh dấu có tên bằng đối tượng ([key] và {key})
+applyTemplate('Giá: [price] {currency}', { price: 100, currency: 'USD' })
+// => 'Giá: 100 USD'
 
-// 4. Bỏ qua các khóa bị thiếu
-applyTemplate('Thiếu: [none]', {})              // 'Thiếu: [none]'
+applyTemplate('Người dùng: [name] <{email}>', { name: 'Alice', email: 'alice@example.com' })
+// => 'Người dùng: Alice <alice@example.com>'
 
-// 5. Các thẻ cặp với thay thế nội dung
-const tags = { link: '<a href="https://google.com">[content]</a>' }
-applyTemplate('Nhấp vào [link]đây[/link]', tags) // 'Nhấp vào <a href="https://google.com">đây</a>'
+// 3. Thẻ khối ghép đôi với chèn nội dung qua [content] / {content}
+const tags = {
+  link: '<a href="https://example.com">[content]</a>',
+  bold: '<b>{content}</b>'
+}
+applyTemplate('Nhấp [link]vào đây[/link] hoặc {bold}đọc thêm{/bold}.', tags)
+// => 'Nhấp <a href="https://example.com">vào đây</a> hoặc <b>đọc thêm</b>.'
 
-// 6. Macro danh sách (vượt quá giới hạn)
-applyTemplate('Macros: %d, %e, %f', ['A', 'B'])  // 'Macros: A, B, '
+// 4. Thẻ khối không có [content] sẽ thay thế toàn bộ thẻ và nội dung
+const badges = { badge: '<span class="badge" />' }
+applyTemplate('Mục [badge]mới[/badge]', badges)
+// => 'Mục <span class="badge" />'
+
+// 5. Bảo toàn các giá trị falsy hợp lệ (0 và false)
+applyTemplate('Số lượng: [count], Hoạt động: [active]', { count: 0, active: false })
+// => 'Số lượng: 0, Hoạt động: false'
+
+applyTemplate('Độ lệch: %d, Kích hoạt: %e', [0, false])
+// => 'Độ lệch: 0, Kích hoạt: false'
+
+// 6. Xử lý giá trị rỗng và khóa bị thiếu
+applyTemplate('Thiếu: [none], Trống: [empty]', { empty: null })
+// => 'Thiếu: [none], Trống: '
+
+// 7. Vượt quá giới hạn mảng và các điểm đánh dấu không khớp
+applyTemplate('Danh sách: %d, %e, %f, %g', ['thứ nhất', 'thứ hai'])
+// => 'Danh sách: thứ nhất, thứ hai, , '
+
+applyTemplate('Ký tự: %a %b %D 100%', ['val'])
+// => 'Ký tự: %a %b %D 100%'
+
+// 8. An toàn với ký hiệu đô la ($) trong giá trị và nội dung
+applyTemplate('Tổng cộng: [price]', { price: '$500 USD' })
+// => 'Tổng cộng: $500 USD'
+
+applyTemplate('Chi phí: [highlight]$100 + $20[/highlight]', {
+  highlight: '<span class="price">[content]</span>'
+})
+// => 'Chi phí: <span class="price">$100 + $20</span>'
+
+// 9. Hỗ trợ đa ngôn ngữ và Unicode
+applyTemplate('Привет, [имя]! %d новых уведомлений 🚀', { имя: 'Алексей' })
+// => 'Привет, Алексей! %d новых уведомлений 🚀'
+
+applyTemplate('Xin chào %d, bạn có %e thông báo mới.', ['Nguyễn', 3])
+// => 'Xin chào Nguyễn, bạn có 3 thông báo mới.'
   `}
 />

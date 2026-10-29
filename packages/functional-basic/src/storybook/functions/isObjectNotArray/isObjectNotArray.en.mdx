@@ -1,27 +1,70 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/isObjectNotArray - Strict object verification'/>
 
 # `isObjectNotArray`
 
-Checks if the provided value is a plain object (Record) and **not an array**.
+A high-performance type guard utility that determines whether a provided value is an object while strictly excluding JavaScript arrays.
 
-Since the base `isObject` utility returns `true` for arrays as well (in accordance with JavaScript's `typeof` behavior), `isObjectNotArray` combines `isObject(value)` with `!isArray(value)` to strictly exclude arrays.
+## Key Features
+
+- **Strict Array Exclusion** — Combines `isObject(value)` with `!isArray(value)` to filter out arrays, overcoming the JavaScript limitation where `typeof [] === 'object'`.
+- **Broad Object Support** — Accurately identifies plain objects (`{}`), null-prototype dictionaries (`Object.create(null)`), class instances, and built-in objects (`Date`, `RegExp`, `Map`, `Set`, `Error`).
+- **Array-like & TypedArray Handling** — Recognizes array-like objects (such as `arguments` or `{ length: 2 }`) and `TypedArray` instances (`Uint8Array`) as objects, since they are not true JavaScript Array instances.
+- **Proxy Robustness** — Correctly treats `Proxy` around objects as `true` and `Proxy` around arrays as `false` in compliance with ECMAScript Proxy standards.
+- **TypeScript Type Guard** — Narrows candidate union types at compile time via `value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null>`, safely excluding array, `null`, and `undefined` types.
+- **Safe Against Falsy & Primitive Inputs** — Gracefully returns `false` for `null`, `undefined`, `0`, `false`, `NaN`, empty strings, numbers, booleans, symbols, and functions.
+- **Pure & Isomorphic** — Stateless, side-effect-free, and safe for server-side rendering (SSR/SSG).
 
 **Parameters:**
 - `value: T` — The value to check.
 
 **Returns:**
-`value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null>` (`boolean`) — Returns `true` only for non-null, non-array objects (such as `{ key: 'value' }`), and `false` for arrays `[]`, `null`, `undefined`, functions, and primitives. Acts as a TypeScript type guard narrowing `T` to `ObjectItem` while excluding arrays, `undefined`, and `null`.
+`value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null>` (`boolean`) — Returns `true` only for non-null, non-array objects; otherwise `false`. Acts as a TypeScript type guard narrowing `T` to `ObjectItem` while excluding arrays, `undefined`, and `null`.
 
-```typescript
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { isObjectNotArray } from '@dxtmisha/functional-basic'
 
-// Valid object
-console.log(isObjectNotArray({ id: 1, name: 'Test' })) // true
+// 1. Plain objects and null-prototype dictionaries
+isObjectNotArray({ id: 1, name: 'Alice' }) // true
+isObjectNotArray(Object.create(null))       // true
 
-// Filtered out values
-console.log(isObjectNotArray([1, 2, 3])) // false (arrays are excluded)
-console.log(isObjectNotArray(null)) // false
-console.log(isObjectNotArray('string')) // false
-```
+// 2. Class instances and built-in objects
+class User {}
+isObjectNotArray(new User())                // true
+isObjectNotArray(new Date())                // true
+isObjectNotArray(new Map())                 // true
+isObjectNotArray(/regex/)                   // true
+
+// 3. Strict array exclusion (arrays return false)
+isObjectNotArray([])                        // false
+isObjectNotArray([1, 2, 3])                 // false
+isObjectNotArray(new Array(5))              // false
+
+// 4. Primitives, nullish, and falsy values
+isObjectNotArray(null)                      // false
+isObjectNotArray(undefined)                 // false
+isObjectNotArray(0)                         // false
+isObjectNotArray(false)                     // false
+isObjectNotArray('')                        // false
+isObjectNotArray('string')                  // false
+isObjectNotArray(123)                       // false
+
+// 5. Functions are excluded
+isObjectNotArray(() => {})                  // false
+isObjectNotArray(function named() {})       // false
+isObjectNotArray(User)                      // false
+
+// 6. TypeScript type narrowing (Type Guard)
+function processItem(item: string | number[] | { title: string }) {
+  if (isObjectNotArray(item)) {
+    // TypeScript safely narrows item to { title: string }
+    console.log(item.title)
+  }
+}
+  `}
+/>

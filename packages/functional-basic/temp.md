@@ -1,0 +1,13 @@
+forEach
+isArray
+isObject
+encodeAttribute
+getSearchExp
+removeTag
+toString
+addTagHighlightMatch
+anyToString
+applyTemplate
+isFunction
+hasKey
+isObjectNotArray
