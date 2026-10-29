@@ -1,0 +1,87 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Classes/MediaSocialIcon - Реестр пользовательских векторных иконок'/>
+
+# Класс MediaSocialIcon
+
+Класс `MediaSocialIcon` представляет собой **основной класс (статический)**, предназначенный для управления регистрацией, хранением, разрешением и применением пользовательских векторных SVG-иконок для социальных сетей. Он выступает в роли централизованного реестра иконок, используемого классами `MediaSocials` и `MediaSocial` для переопределения стандартных иконок платформы в дизайн-системе.
+
+## Ключевые возможности
+
+- **Изолированный от прототипа реестр** — хранит кастомные SVG-иконки в словаре на базе `Object.create(null)`, что полностью исключает уязвимости загрязнения прототипа (`__proto__`, `constructor`, `prototype`).
+- **Цепочечные вызовы (Method Chaining)** — методы `add`, `addList` и `reset` возвращают `typeof MediaSocialIcon`, обеспечивая выразительный вызов нескольких операций подряд.
+- **Одиночная и пакетная регистрация** — поддерживает добавление отдельных иконок с автоматической обрезкой пробелов (`add`) или массовый импорт словарей (`addList`).
+- **Обогащение элементов** — прозрачно подставляет зарегистрированные векторные иконки в объекты конфигурации социальных сетей через метод `toItem()`.
+- **Нулевые накладные расходы** — внутренний флаг `hasCustomIcons` гарантирует возврат за O(1) без лишних вычислений, когда реестр пуст.
+- **Безопасное управление состоянием** — поддерживает точечное удаление иконки для конкретной сети (`remove`) и полный сброс реестра (`reset`).
+- **Отсутствие внешних зависимостей** — полностью изоморфный код, безопасный для серверного рендеринга (SSR).
+
+## Методы
+
+### Реестр и управление
+
+- `static get icons(): Readonly<InputSocialIcons>` — возвращает снимок словаря всех зарегистрированных кастомных иконок только для чтения.
+- `static has(code: InputSocialTypeValue): boolean` — проверяет, зарегистрирована ли кастомная иконка для указанного кода социальной сети.
+- `static get(code: InputSocialTypeValue): string | undefined` — возвращает кастомную SVG-иконку по коду социальной сети, либо `undefined`, если иконка не зарегистрирована.
+- `static add(code: InputSocialTypeValue, icon: string): typeof MediaSocialIcon` — регистрирует пользовательскую векторную иконку (с автоматической очисткой концевых пробелов). Возвращает конструктор класса для цепочечных вызовов.
+- `static addList(icons: InputSocialIcons): typeof MediaSocialIcon` — регистрирует пакет иконок из переданного словаря. Возвращает конструктор класса для цепочечных вызовов.
+- `static remove(code: InputSocialTypeValue): boolean` — удаляет кастомную иконку по коду сети, возвращая `true`, если иконка присутствовала и была удалена.
+- `static reset(): typeof MediaSocialIcon` — полностью очищает реестр пользовательских иконок. Возвращает конструктор класса для цепочечных вызовов.
+
+### Преобразование элементов
+
+- `static toItem<Mask = unknown>(item: InputSocialItem<Mask>): InputSocialItem<Mask>` — безопасно обогащает конфигурационный элемент социальной сети зарегистрированной векторной иконкой, возвращая поверхностную копию объекта.
+
+## Типы
+
+### InputSocialIcons
+
+- `Partial<Record<InputSocialType, string>>` — словарь, сопоставляющий коды социальных сетей со строками SVG-разметки или именами иконок.
+
+### `InputSocialItem<Mask = unknown>`
+
+- `code: InputSocialTypeValue` — уникальный код-идентификатор социальной сети.
+- `name: string` — отображаемое название платформы.
+- `icon?: string` — разрешенная или кастомная разметка иконки.
+- `prefix?: string` — URL-префикс профиля пользователя.
+- `prefixClear?: RegExp` — нормализованный шаблон регулярного выражения для поиска префикса.
+- `suffix?: string` — URL-суффикс профиля пользователя.
+- `mask?: Mask` — конфигурация маски ввода.
+- `nickname?: string` — префикс или символ никнейма.
+- `nicknameClear?: RegExp` — шаблон для очистки или извлечения никнейма.
+
+### InputSocialType
+
+Перечисление поддерживаемых кодов социальных сетей: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+## Пример использования
+
+```typescript
+import { MediaSocialIcon, InputSocialType } from '@dxtmisha/media'
+
+// Регистрация кастомных иконок с цепочечными вызовами
+MediaSocialIcon
+  .reset()
+  .add(InputSocialType.github, '<svg class="custom-gh">...</svg>')
+  .addList({
+    [InputSocialType.telegram]: '<svg class="custom-tg">...</svg>',
+    [InputSocialType.instagram]: '<svg class="custom-ig">...</svg>'
+  })
+
+// Проверка наличия и получение иконки
+if (MediaSocialIcon.has(InputSocialType.github)) {
+  const iconMarkup = MediaSocialIcon.get(InputSocialType.github)
+  console.log(iconMarkup)
+}
+
+// Получение снимка всех зарегистрированных кастомных иконок
+const allIcons = MediaSocialIcon.icons
+console.log(Object.keys(allIcons))
+
+// Удаление конкретной иконки
+MediaSocialIcon.remove(InputSocialType.github)
+
+// Сброс всех зарегистрированных иконок
+MediaSocialIcon.reset()
+```
+

@@ -1,0 +1,87 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Classes/MediaSocialIcon - Sổ đăng ký biểu tượng véc-tơ mạng xã hội tùy chỉnh'/>
+
+# Lớp MediaSocialIcon
+
+Lớp `MediaSocialIcon` là một **Lớp chính (Tĩnh)** được thiết kế để quản lý việc đăng ký, lưu trữ, giải quyết và áp dụng các biểu tượng véc-tơ SVG tùy chỉnh cho mạng xã hội. Lớp này đóng vai trò như một sổ đăng ký biểu tượng tập trung được `MediaSocials` và `MediaSocial` sử dụng để ghi đè các biểu tượng mặc định của nền tảng trong toàn bộ hệ thống thiết kế.
+
+## Tính năng chính
+
+- **Sổ đăng ký cách ly nguyên mẫu** — lưu trữ các biểu tượng SVG tùy chỉnh trong từ điển được khởi tạo bằng `Object.create(null)`, giúp loại trừ hoàn toàn các lỗ hổng ô nhiễm nguyên mẫu (`__proto__`, `constructor`, `prototype`).
+- **Gọi chuỗi phương thức (Method Chaining)** — các phương thức `add`, `addList` và `reset` trả về `typeof MediaSocialIcon`, cho phép thực hiện nhiều thao tác nối tiếp một cách ngắn gọn.
+- **Đăng ký đơn lẻ và hàng loạt** — hỗ trợ thêm từng biểu tượng với tính năng tự động cắt tỉa khoảng trắng (`add`) hoặc nhập toàn bộ từ điển biểu tượng cùng lúc (`addList`).
+- **Làm phong phú mục dữ liệu** — tự động gán biểu tượng véc-tơ đã đăng ký vào các đối tượng cấu hình mạng xã hội thông qua phương thức `toItem()`.
+- **Tối ưu hóa không chi phí** — cờ trạng thái nội bộ `hasCustomIcons` đảm bảo thời gian trả về O(1) tức thì mà không gây hao phí tài nguyên khi sổ đăng ký còn trống.
+- **Quản lý trạng thái an toàn** — hỗ trợ xóa biểu tượng của một mạng xã hội cụ thể (`remove`) và đặt lại toàn bộ sổ đăng ký (`reset`).
+- **Không có phụ thuộc bên ngoài** — mã thuần đồng hình (isomorphic), an toàn 100% khi kết xuất phía máy chủ (SSR).
+
+## Phương thức
+
+### Sổ đăng ký & Quản lý
+
+- `static get icons(): Readonly<InputSocialIcons>` — trả về bản sao từ điển chỉ đọc của tất cả các biểu tượng tùy chỉnh đã đăng ký.
+- `static has(code: InputSocialTypeValue): boolean` — kiểm tra xem biểu tượng tùy chỉnh đã được đăng ký cho mã mạng xã hội tương ứng hay chưa.
+- `static get(code: InputSocialTypeValue): string | undefined` — trả về chuỗi mã biểu tượng SVG tùy chỉnh theo mã mạng xã hội, hoặc `undefined` nếu chưa đăng ký.
+- `static add(code: InputSocialTypeValue, icon: string): typeof MediaSocialIcon` — đăng ký biểu tượng véc-tơ tùy chỉnh (với tính năng tự động cắt tỉa khoảng trắng). Trả về hàm khởi tạo của lớp để hỗ trợ gọi chuỗi phương thức.
+- `static addList(icons: InputSocialIcons): typeof MediaSocialIcon` — đăng ký hàng loạt biểu tượng từ một từ điển. Trả về hàm khởi tạo của lớp để hỗ trợ gọi chuỗi phương thức.
+- `static remove(code: InputSocialTypeValue): boolean` — xóa biểu tượng tùy chỉnh theo mã mạng xã hội, trả về `true` nếu biểu tượng tồn tại và đã được xóa.
+- `static reset(): typeof MediaSocialIcon` — đặt lại và xóa toàn bộ các biểu tượng tùy chỉnh đã đăng ký. Trả về hàm khởi tạo của lớp để hỗ trợ gọi chuỗi phương thức.
+
+### Chuyển đổi mục dữ liệu
+
+- `static toItem<Mask = unknown>(item: InputSocialItem<Mask>): InputSocialItem<Mask>` — làm phong phú đối tượng cấu hình mạng xã hội bằng biểu tượng véc-tơ tùy chỉnh đã đăng ký, trả về một bản sao nông của đối tượng.
+
+## Kiểu dữ liệu
+
+### InputSocialIcons
+
+- `Partial<Record<InputSocialType, string>>` — từ điển ánh xạ các mã mạng xã hội tới chuỗi mã SVG hoặc tên biểu tượng.
+
+### `InputSocialItem<Mask = unknown>`
+
+- `code: InputSocialTypeValue` — mã định danh duy nhất của mạng xã hội.
+- `name: string` — tên hiển thị của mạng xã hội.
+- `icon?: string` — mã biểu tượng đã giải quyết hoặc tùy chỉnh.
+- `prefix?: string` — tiền tố URL liên kết hồ sơ người dùng.
+- `prefixClear?: RegExp` — mẫu biểu thức chính quy chuẩn hóa để tìm tiền tố.
+- `suffix?: string` — hậu tố URL liên kết hồ sơ người dùng.
+- `mask?: Mask` — cấu hình mặt nạ nhập liệu tùy chọn.
+- `nickname?: string` — tiền tố hoặc ký hiệu biệt danh.
+- `nicknameClear?: RegExp` — mẫu để làm sạch hoặc trích xuất biệt danh.
+
+### InputSocialType
+
+Enum các mã mạng xã hội được hỗ trợ: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+## Ví dụ sử dụng
+
+```typescript
+import { MediaSocialIcon, InputSocialType } from '@dxtmisha/media'
+
+// Đăng ký các biểu tượng tùy chỉnh với chuỗi phương thức
+MediaSocialIcon
+  .reset()
+  .add(InputSocialType.github, '<svg class="custom-gh">...</svg>')
+  .addList({
+    [InputSocialType.telegram]: '<svg class="custom-tg">...</svg>',
+    [InputSocialType.instagram]: '<svg class="custom-ig">...</svg>'
+  })
+
+// Kiểm tra sự tồn tại và lấy chuỗi biểu tượng
+if (MediaSocialIcon.has(InputSocialType.github)) {
+  const iconMarkup = MediaSocialIcon.get(InputSocialType.github)
+  console.log(iconMarkup)
+}
+
+// Lấy ảnh chụp bản sao của toàn bộ các biểu tượng tùy chỉnh đã đăng ký
+const allIcons = MediaSocialIcon.icons
+console.log(Object.keys(allIcons))
+
+// Xóa một biểu tượng cụ thể
+MediaSocialIcon.remove(InputSocialType.github)
+
+// Đặt lại toàn bộ biểu tượng đã đăng ký
+MediaSocialIcon.reset()
+```
+

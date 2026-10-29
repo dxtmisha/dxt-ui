@@ -1,0 +1,84 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Classes/MediaSocialNickname - Định dạng biệt danh và handle hồ sơ mạng xã hội'/>
+
+# Lớp MediaSocialNickname
+
+Lớp `MediaSocialNickname` là một **Lớp Chính (Tĩnh)** được thiết kế để định dạng và giải quyết biệt danh (nickname) hoặc handle mạng xã hội với tiền tố đặc thù của từng nền tảng (chẳng hạn như `'@'` hoặc `'u/'`) cho hơn 35 dịch vụ được hỗ trợ.
+
+## Tính năng chính
+
+- **Định dạng biệt danh chuẩn** — chuyển đổi tên người dùng hoặc liên kết URL hồ sơ thành handle chuẩn của nền tảng với tiền tố tương ứng (ví dụ: `'@dxtmisha'`, `'u/dxtmisha'`).
+- **Xác thực handle** — kiểm tra tính hợp lệ của biệt danh theo biểu thức chính quy (`nicknameClear`) và dọn dẹp các đường dẫn con thừa.
+- **Ngăn chặn trùng lặp tiền tố** — xử lý an toàn các giá trị đầu vào đã chứa sẵn ký tự `@` đơn lẻ hoặc lặp lại.
+- **Trích xuất handle từ URL** — trích xuất tên người dùng thuần túy trực tiếp từ URL hồ sơ đầy đủ, loại bỏ tham số truy vấn, hash và tên miền thông qua `MediaSocialValue`.
+- **Phòng chống tiêm giao thức độc hại** — ngăn chặn triệt để các giao thức nguy hiểm (`javascript:`, `data:`, `vbscript:`), lập tức trả về chuỗi rỗng để ngăn chặn XSS.
+- **Không phụ thuộc thư viện ngoài** — các phép biến đổi chuỗi thuần túy, an toàn 100% trong môi trường SSR và tối ưu hóa hoàn toàn cho tree-shaking.
+
+## Phương thức
+
+### `get`
+
+Phương thức chính để định dạng biệt danh mạng xã hội theo mã nền tảng và tên người dùng hoặc giá trị nhập vào.
+
+**Tham số:**
+- `code: InputSocialTypeValue` — mã định danh mạng xã hội (ví dụ: `'github'`, `'telegram'`).
+- `value: InputSocialValue` — tên người dùng, liên kết URL, chuỗi giá trị, số, null hoặc undefined.
+
+**Giá trị trả về:** `string` — biệt danh đã định dạng với tiền tố (ví dụ: `'@username'`), hoặc chuỗi rỗng nếu không hợp lệ hoặc nền tảng không hỗ trợ.
+
+```typescript
+import { MediaSocialNickname, InputSocialType } from '@dxtmisha/media'
+
+const nickname = MediaSocialNickname.get(InputSocialType.telegram, 'dxtmisha')
+// Kết quả: '@dxtmisha'
+```
+
+### Phương thức bổ trợ nội bộ
+
+- `protected static toClean(value: string, nicknameClear?: RegExp): string` — làm sạch và kiểm tra giá trị biệt danh dựa trên biểu thức chính quy.
+
+## Kiểu dữ liệu
+
+### InputSocialValue
+
+- `string | number | null | undefined` — các kiểu giá trị đầu vào được hỗ trợ (tên người dùng, liên kết URL, chuỗi giá trị).
+
+### InputSocialType
+
+Enum các mã mạng xã hội được hỗ trợ: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — kiểu kết hợp chuỗi hoặc enum của các mã mạng xã hội được hỗ trợ.
+
+## Ví dụ sử dụng
+
+```typescript
+import { MediaSocialNickname, InputSocialType } from '@dxtmisha/media'
+
+// Định dạng biệt danh với tiền tố @
+MediaSocialNickname.get(InputSocialType.instagram, 'dxtmisha')
+// -> '@dxtmisha'
+
+// Trích xuất biệt danh trực tiếp từ URL hồ sơ đầy đủ
+MediaSocialNickname.get(InputSocialType.telegram, 'https://t.me/dxtmisha')
+// -> '@dxtmisha'
+
+// Xử lý tiền tố đặc thù theo nền tảng (Reddit sử dụng 'u/')
+MediaSocialNickname.get(InputSocialType.reddit, 'dxtmisha')
+// -> 'u/dxtmisha'
+
+// Ngăn ngừa trùng lặp ký hiệu @
+MediaSocialNickname.get(InputSocialType.telegram, '@dxtmisha')
+// -> '@dxtmisha'
+
+// Trả về chuỗi rỗng cho các nền tảng không hỗ trợ biệt danh
+MediaSocialNickname.get(InputSocialType.whatsapp, '+1234567890')
+// -> ''
+
+// Ngăn chặn các giao thức nguy hiểm
+MediaSocialNickname.get(InputSocialType.instagram, 'javascript:alert(1)')
+// -> ''
+```
+

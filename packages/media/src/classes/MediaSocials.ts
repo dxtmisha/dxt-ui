@@ -3,7 +3,6 @@ import { MediaSocialIcon } from './MediaSocialIcon'
 import type {
   InputSocialItem,
   InputSocialList,
-  InputSocialType,
   InputSocialTypeValue
 } from '../types/socialTypes'
 
@@ -36,7 +35,7 @@ export class MediaSocials {
    * @param code social network code / код социальной сети
    * @returns social network configuration or undefined / конфигурация социальной сети или undefined
    */
-  static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined {
+  static get(code: InputSocialTypeValue): InputSocialItem | undefined {
     const item = this.find(code)
 
     if (item) {
@@ -63,7 +62,7 @@ export class MediaSocials {
    * @param code social network code / код социальной сети
    * @returns social network configuration or undefined / конфигурация социальной сети или undefined
    */
-  protected static find(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined {
+  protected static find(code: InputSocialTypeValue): InputSocialItem | undefined {
     if (!code) {
       return undefined
     }

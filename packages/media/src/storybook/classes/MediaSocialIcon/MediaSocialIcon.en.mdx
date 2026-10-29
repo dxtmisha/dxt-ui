@@ -1,0 +1,87 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Classes/MediaSocialIcon - Custom Social Vector Icons Registry'/>
+
+# MediaSocialIcon Class
+
+The `MediaSocialIcon` class is a **Primary Class (Static)** designed for managing the registration, storage, resolution, and application of custom SVG vector icons for social networks. It serves as the centralized icon registry utilized by `MediaSocials` and `MediaSocial` to override default platform icons across the design system.
+
+## Key Features
+
+- **Prototype-Isolated Registry** — maintains an in-memory dictionary created with `Object.create(null)` that strictly protects against prototype pollution attacks (`__proto__`, `constructor`, `prototype`).
+- **Fluent Method Chaining** — methods `add`, `addList`, and `reset` return `typeof MediaSocialIcon`, enabling expressive chained invocations.
+- **Single & Batch Registration** — supports registering individual icons with automatic whitespace trimming (`add`) or importing full dictionaries in bulk (`addList`).
+- **Item Enrichment** — seamlessly applies registered vector icons to social item configurations via `toItem()`.
+- **Zero-Cost Bailout** — internal `hasCustomIcons` presence flag guarantees O(1) instant return without overhead when no custom icons are registered.
+- **Safe State Management** — supports targeted single-network icon removal (`remove`) and full registry clearance (`reset`).
+- **Zero Runtime Dependencies** — purely isomorphic, framework-agnostic, and 100% safe for server-side rendering (SSR).
+
+## Methods
+
+### Registry & Management
+
+- `static get icons(): Readonly<InputSocialIcons>` — returns a prototype-less snapshot dictionary of all registered custom icons for read-only access.
+- `static has(code: InputSocialTypeValue): boolean` — checks whether a custom icon is registered for the specified social network code.
+- `static get(code: InputSocialTypeValue): string | undefined` — returns the custom SVG icon string for the specified social network, or `undefined` if not registered.
+- `static add(code: InputSocialTypeValue, icon: string): typeof MediaSocialIcon` — registers a custom vector icon string (with automatic whitespace trimming) for a specific social network. Returns the class constructor for method chaining.
+- `static addList(icons: InputSocialIcons): typeof MediaSocialIcon` — registers multiple custom vector icons in batch from a dictionary. Returns the class constructor for method chaining.
+- `static remove(code: InputSocialTypeValue): boolean` — removes a custom icon by social network code, returning `true` if it existed and was removed.
+- `static reset(): typeof MediaSocialIcon` — resets and clears all registered custom icons from the registry. Returns the class constructor for method chaining.
+
+### Item Transformation
+
+- `static toItem<Mask = unknown>(item: InputSocialItem<Mask>): InputSocialItem<Mask>` — safely enriches a social network configuration item with its registered custom vector icon, returning a shallow clone.
+
+## Types
+
+### InputSocialIcons
+
+- `Partial<Record<InputSocialType, string>>` — dictionary mapping social network codes to SVG markup strings or icon names.
+
+### `InputSocialItem<Mask = unknown>`
+
+- `code: InputSocialTypeValue` — unique social network identifier code.
+- `name: string` — display name of the social platform.
+- `icon?: string` — resolved or custom icon markup.
+- `prefix?: string` — URL prefix for user profile links.
+- `prefixClear?: RegExp` — normalized URL prefix pattern for matching or stripping.
+- `suffix?: string` — URL suffix for user profile links.
+- `mask?: Mask` — optional input mask configuration.
+- `nickname?: string` — nickname prefix symbol or string.
+- `nicknameClear?: RegExp` — pattern to match or clean nickname value.
+
+### InputSocialType
+
+Enum of supported social network codes: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+## Usage Example
+
+```typescript
+import { MediaSocialIcon, InputSocialType } from '@dxtmisha/media'
+
+// Register custom icons with fluent method chaining
+MediaSocialIcon
+  .reset()
+  .add(InputSocialType.github, '<svg class="custom-gh">...</svg>')
+  .addList({
+    [InputSocialType.telegram]: '<svg class="custom-tg">...</svg>',
+    [InputSocialType.instagram]: '<svg class="custom-ig">...</svg>'
+  })
+
+// Check if a custom icon exists
+if (MediaSocialIcon.has(InputSocialType.github)) {
+  const iconMarkup = MediaSocialIcon.get(InputSocialType.github)
+  console.log(iconMarkup)
+}
+
+// Retrieve snapshot of all registered custom icons
+const allIcons = MediaSocialIcon.icons
+console.log(Object.keys(allIcons))
+
+// Remove a specific icon
+MediaSocialIcon.remove(InputSocialType.github)
+
+// Reset all icons
+MediaSocialIcon.reset()
+```
+

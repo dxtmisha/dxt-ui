@@ -18,25 +18,25 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 ### Управление URL и значениями
 
-- `static getNickname(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — возвращает отформатированный никнейм с префиксом (например, `'@username'`) или пустую строку, если никнеймы не поддерживаются платформой или значение невалидно.
-- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — строит полную ссылку на профиль по имени пользователя или частичной строке с использованием настроенного префикса и суффикса платформы.
-- `static getValue(code: InputSocialType | InputSocialTypeValue, url: InputSocialValue): string` — извлекает чистое имя пользователя или логин из полной ссылки на профиль путем удаления префиксов, параметров запроса, хэшей и суффиксов.
+- `static getNickname(code: InputSocialTypeValue, value: InputSocialValue): string` — возвращает отформатированный никнейм с префиксом (например, `'@username'`) или пустую строку, если никнеймы не поддерживаются платформой или значение невалидно.
+- `static getUrl(code: InputSocialTypeValue, value: InputSocialValue): string` — строит полную ссылку на профиль по имени пользователя или частичной строке с использованием настроенного префикса и суффикса платформы.
+- `static getValue(code: InputSocialTypeValue, url: InputSocialValue): string` — извлекает чистое имя пользователя или логин из полной ссылки на профиль путем удаления префиксов, параметров запроса, хэшей и суффиксов.
 
 ### Каталог и получение данных
 
-- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — возвращает конфигурацию социальной сети по ее коду, дополненную кастомной иконкой из `MediaSocialIcon` при ее наличии.
+- `static get(code: InputSocialTypeValue): InputSocialItem | undefined` — возвращает конфигурацию социальной сети по ее коду, дополненную кастомной иконкой из `MediaSocialIcon` при ее наличии.
 - `static getList(): InputSocialList` — возвращает полный массив конфигураций всех поддерживаемых социальных сетей.
 
 ### Кастомные иконки
 
-- `static addIcon(code: InputSocialType | InputSocialTypeValue, icon: string): typeof MediaSocial` — регистрирует кастомную строку иконки или SVG-разметку для указанной социальной сети через `MediaSocialIcon`. Возвращает конструктор класса для цепочечных вызовов.
+- `static addIcon(code: InputSocialTypeValue, icon: string): typeof MediaSocial` — регистрирует кастомную строку иконки или SVG-разметку для указанной социальной сети через `MediaSocialIcon`. Возвращает конструктор класса для цепочечных вызовов.
 - `static addIcons(icons: InputSocialIcons): typeof MediaSocial` — регистрирует несколько кастомных иконок пакетом из переданного словаря через `MediaSocialIcon`. Возвращает конструктор класса для цепочечных вызовов.
 
 ## Типы
 
 ### `InputSocialItem<Mask = unknown>`
 
-- `code: InputSocialType | InputSocialTypeValue` — уникальный код-идентификатор социальной сети.
+- `code: InputSocialTypeValue` — уникальный код-идентификатор социальной сети.
 - `name: string` — отображаемое название социальной сети.
 - `prefix?: string` — префикс URL для ссылки на профиль (например, `'https://github.com/'`).
 - `prefixClear?: RegExp` — нормализованный шаблон регулярного выражения для сопоставления или очистки префикса URL.

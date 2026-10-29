@@ -1,0 +1,110 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Classes/MediaSocialValue - Парсер ссылок профилей и извлечение юзернеймов'/>
+
+# Класс MediaSocialValue
+
+Класс `MediaSocialValue` представляет собой **основной класс (статический)**, предназначенный для разбора ссылок на профили социальных сетей и пользовательского ввода, удаления параметров запроса, хешей, протоколов, префиксов и суффиксов для извлечения чистого имени пользователя (handle) для более чем 35 поддерживаемых платформ.
+
+## Ключевые возможности
+
+- **Безопасное извлечение юзернейма** — очищает домены, схемы протоколов, префиксы www, номера портов и завершающие слэши.
+- **Очистка параметров и хешей** — автоматически удаляет параметры запроса (`?query=...`) и якорные фрагменты (`#hash`).
+- **Защита от инъекций протоколов** — немедленно блокирует опасные схемы URL (`javascript:`, `data:`, `vbscript:`), возвращая пустую строку.
+- **Платформенная нормализация** — применяет индивидуальные регулярные выражения сетей (`prefixClear`) и суффиксы профилей (`suffix`).
+- **Статический и изоморфный интерфейс** — чистые функции с нулевыми внешними зависимостями, 100% SSR-совместимость и полная поддержка tree-shaking.
+
+## Методы
+
+### `get`
+
+Основной метод для извлечения чистого имени пользователя или дескриптора профиля из полного URL или пользовательского ввода.
+
+**Параметры:**
+- `code: InputSocialTypeValue` — идентификатор социальной сети (например, `'github'`, `'telegram'`).
+- `url: InputSocialValue` — полная ссылка на профиль, строка никнейма, число, null или undefined.
+
+**Возвращает:** `string` — извлеченное чистое имя пользователя или значение, либо пустая строка при некорректных или опасных данных.
+
+```typescript
+import { MediaSocialValue, InputSocialType } from '@dxtmisha/media'
+
+const username = MediaSocialValue.get(InputSocialType.github, 'https://github.com/dxtmisha')
+// Результат: 'dxtmisha'
+```
+
+### `getByItem`
+
+Извлекает чистое имя пользователя напрямую с использованием уже найденного объекта конфигурации платформы (без повторного поиска по коду).
+
+**Параметры:**
+- `item: InputSocialItem | undefined` — объект конфигурации социальной сети.
+- `url: InputSocialValue` — полная ссылка на профиль, строка никнейма, число, null или undefined.
+
+**Возвращает:** `string` — извлеченное чистое имя пользователя или значение.
+
+```typescript
+import { MediaSocialValue, MediaSocials, InputSocialType } from '@dxtmisha/media'
+
+const item = MediaSocials.get(InputSocialType.github)
+const username = MediaSocialValue.getByItem(item, 'https://github.com/dxtmisha')
+// Результат: 'dxtmisha'
+```
+
+### Внутренний конвейер обработки
+
+- `protected static toAt(value: string): string` — удаляет начальные символы `@` из значения.
+- `protected static toClearUrl(url: InputSocialValue): string` — удаляет протокол, www, порты, параметры запроса и хеши, защищает от опасных протоколов.
+- `protected static toPrefix(value: string, prefixClear?: RegExp): string` — удаляет префикс URL платформы с использованием настроенного регулярного выражения.
+- `protected static toQueryOrHash(value: string): string` — удаляет параметры URL-запроса (`?`) и хеш-фрагменты (`#`).
+- `protected static toSlash(value: string): string` — удаляет завершающие слэши из значения.
+- `protected static toSuffix(value: string, suffix?: string): string` — удаляет суффикс платформы из конца строки, если он присутствует.
+
+## Типы
+
+### InputSocialValue
+
+- `string | number | null | undefined` — поддерживаемые типы входных данных для ссылок на профили или введенных значений.
+
+### InputSocialType
+
+Перечисление поддерживаемых кодов социальных сетей: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — строковое объединение или тип перечисления поддерживаемых кодов социальных сетей.
+
+## Пример использования
+
+```typescript
+import { MediaSocialValue, InputSocialType } from '@dxtmisha/media'
+
+// Извлечение никнейма из стандартного URL профиля
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/dxtmisha')
+// -> 'dxtmisha'
+
+// Удаление параметров запроса и якорных хешей
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/dxtmisha?tab=repositories#readme')
+// -> 'dxtmisha'
+
+// Обработка ссылок с указанием порта
+MediaSocialValue.get(InputSocialType.github, 'https://github.com:443/dxtmisha')
+// -> 'dxtmisha'
+
+// Удаление начальных символов @
+MediaSocialValue.get(InputSocialType.telegram, '@dxtmisha')
+// -> 'dxtmisha'
+
+// Сохранение регистра символов для платформ, поддерживающих его
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/DxTMiShA')
+// -> 'DxTMiShA'
+
+// Блокировка потенциально опасных протоколов
+MediaSocialValue.get(InputSocialType.github, 'javascript:alert(1)')
+// -> ''
+
+// Возврат пустой строки при передаче только домена
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/')
+// -> ''
+```
+

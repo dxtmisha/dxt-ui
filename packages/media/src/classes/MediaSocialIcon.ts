@@ -47,7 +47,7 @@ export class MediaSocialIcon {
    * @param code social network code / код социальной сети
    * @returns true if custom icon exists / true, если кастомная иконка существует
    */
-  static has(code: InputSocialType | InputSocialTypeValue): boolean {
+  static has(code: InputSocialTypeValue): boolean {
     return Object.hasOwn(this.iconList, code)
   }
 
@@ -58,7 +58,7 @@ export class MediaSocialIcon {
    * @param code social network code / код социальной сети
    * @returns custom icon string or undefined / кастомная строка иконки или undefined
    */
-  static get(code: InputSocialType | InputSocialTypeValue): string | undefined {
+  static get(code: InputSocialTypeValue): string | undefined {
     return Object.hasOwn(this.iconList, code) ? this.iconList[code as InputSocialType] : undefined
   }
 
@@ -70,7 +70,7 @@ export class MediaSocialIcon {
    * @param icon icon name or path / имя или путь к иконке
    * @returns class constructor for method chaining / конструктор класса для цепочечных вызовов
    */
-  static add(code: InputSocialType | InputSocialTypeValue, icon: string): typeof MediaSocialIcon {
+  static add(code: InputSocialTypeValue, icon: string): typeof MediaSocialIcon {
     if (this.is(code, icon)) {
       this.iconList[code] = icon.trim()
       this.hasCustomIcons = true
@@ -105,7 +105,7 @@ export class MediaSocialIcon {
    * @param code social network code / код социальной сети
    * @returns true if icon was removed / true, если иконка была удалена
    */
-  static remove(code: InputSocialType | InputSocialTypeValue): boolean {
+  static remove(code: InputSocialTypeValue): boolean {
     if (Object.hasOwn(this.iconList, code)) {
       delete this.iconList[code]
       this.hasCustomIcons = this.isFilled()

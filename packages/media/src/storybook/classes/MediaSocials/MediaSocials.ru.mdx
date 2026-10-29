@@ -1,0 +1,75 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Classes/MediaSocials - Каталог метаданных и поиск социальных сетей'/>
+
+# Класс MediaSocials
+
+Класс `MediaSocials` представляет собой **основной класс (статический)**, отвечающий за хранение, индексацию и предоставление каталога конфигураций социальных сетей. Он обеспечивает централизованный поиск по коду сети с ленивым `Map`-индексированием и интегрируется с `MediaSocialIcon` для автоматического обогащения элементов пользовательскими иконками.
+
+## Ключевые возможности
+
+- **Централизованный каталог** — содержит полные конфигурации метаданных для более чем 35 глобальных и региональных социальных сетей (GitHub, Telegram, Instagram, WeChat, Zalo и др.).
+- **Ленивое Map-индексирование** — строит индекс `Map` в памяти при первом запросе для мгновенного поиска за O(1) по коду сети.
+- **Обогащение кастомными иконками** — автоматически применяет зарегистрированные векторные иконки из `MediaSocialIcon` к возвращаемым элементам.
+- **Защитная неизменяемость** — возвращает поверхностные копии элементов конфигурации для предотвращения случайных мутаций исходного каталога.
+- **Статический интерфейс** — все операции вызываются непосредственно у класса без создания экземпляров.
+
+## Методы
+
+### Каталог и поиск
+
+- `static get(code: InputSocialTypeValue): InputSocialItem | undefined` — возвращает конфигурацию социальной сети по ее коду, обогащенную кастомной иконкой из `MediaSocialIcon`, либо `undefined`, если элемент не найден.
+- `static getList(): InputSocialList` — возвращает полный массив всех конфигураций социальных сетей с примененными кастомными иконками.
+
+### Внутренние вспомогательные методы
+
+- `protected static find(code: InputSocialTypeValue): InputSocialItem | undefined` — выполняет ленивую инициализацию `Map` и извлекает сырой элемент метаданных по коду.
+
+## Типы
+
+### `InputSocialItem<Mask = unknown>`
+
+- `code: InputSocialTypeValue` — уникальный код-идентификатор социальной сети.
+- `name: string` — отображаемое название платформы.
+- `prefix?: string` — URL-префикс профиля пользователя (например, `'https://github.com/'`).
+- `prefixClear?: RegExp` — нормализованный шаблон регулярного выражения для удаления или поиска префикса.
+- `suffix?: string` — URL-суффикс профиля пользователя.
+- `mask?: Mask` — опциональная настройка маски ввода для полей форм.
+- `icon?: string` — имя или SVG-разметка иконки.
+- `nickname?: string` — символ или префикс никнейма (например, `'@'`).
+- `nicknameClear?: RegExp` — шаблон для очистки или извлечения никнейма.
+
+### InputSocialList
+
+- `InputSocialItem[]` — массив элементов конфигураций социальных сетей.
+
+### InputSocialType
+
+Перечисление поддерживаемых кодов социальных сетей: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — строковое объединение или тип перечисления поддерживаемых кодов социальных сетей.
+
+## Пример использования
+
+```typescript
+import { MediaSocials, InputSocialType } from '@dxtmisha/media'
+
+// Получение конфигурации конкретной социальной сети
+const github = MediaSocials.get(InputSocialType.github)
+if (github) {
+  console.log(github.name) // 'GitHub'
+  console.log(github.prefix) // 'https://github.com/'
+  console.log(github.nickname) // '@'
+}
+
+// Получение полного списка всех поддерживаемых сетей
+const socialList = MediaSocials.getList()
+console.log(`Количество поддерживаемых сетей: ${socialList.length}`)
+
+// Безопасный запрос для неизвестного кода
+const unknownNetwork = MediaSocials.get('unknown' as any)
+console.log(unknownNetwork) // undefined
+```
+

@@ -18,25 +18,25 @@ The `MediaSocial` class is a **Primary Class (Static)** designed for managing so
 
 ### URL and Value Management
 
-- `static getNickname(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — returns formatted nickname with prefix (e.g. `'@username'`) or an empty string if invalid or unsupported.
-- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — constructs the full profile URL from a username or partial string using the platform's configured prefix and suffix.
-- `static getValue(code: InputSocialType | InputSocialTypeValue, url: InputSocialValue): string` — extracts the raw username or profile handle from a full profile URL by removing prefixes, queries, hashes, and suffixes.
+- `static getNickname(code: InputSocialTypeValue, value: InputSocialValue): string` — returns formatted nickname with prefix (e.g. `'@username'`) or an empty string if invalid or unsupported.
+- `static getUrl(code: InputSocialTypeValue, value: InputSocialValue): string` — constructs the full profile URL from a username or partial string using the platform's configured prefix and suffix.
+- `static getValue(code: InputSocialTypeValue, url: InputSocialValue): string` — extracts the raw username or profile handle from a full profile URL by removing prefixes, queries, hashes, and suffixes.
 
 ### Catalog & Retrieval
 
-- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — returns the social network configuration by its code, merged with any custom icon registered for that platform in `MediaSocialIcon`.
+- `static get(code: InputSocialTypeValue): InputSocialItem | undefined` — returns the social network configuration by its code, merged with any custom icon registered for that platform in `MediaSocialIcon`.
 - `static getList(): InputSocialList` — returns the complete array of all supported social network configuration items.
 
 ### Custom Icons
 
-- `static addIcon(code: InputSocialType | InputSocialTypeValue, icon: string): typeof MediaSocial` — registers a custom icon string or SVG markup for the specified social network via `MediaSocialIcon`. Returns the class constructor for method chaining.
+- `static addIcon(code: InputSocialTypeValue, icon: string): typeof MediaSocial` — registers a custom icon string or SVG markup for the specified social network via `MediaSocialIcon`. Returns the class constructor for method chaining.
 - `static addIcons(icons: InputSocialIcons): typeof MediaSocial` — registers multiple custom icons in batch from a dictionary via `MediaSocialIcon`. Returns the class constructor for method chaining.
 
 ## Types
 
 ### `InputSocialItem<Mask = unknown>`
 
-- `code: InputSocialType | InputSocialTypeValue` — unique identifier code for the social network.
+- `code: InputSocialTypeValue` — unique identifier code for the social network.
 - `name: string` — human-readable display name of the social platform.
 - `prefix?: string` — URL prefix for user profile links (e.g. `'https://github.com/'`).
 - `prefixClear?: RegExp` — normalized URL prefix pattern for stripping or matching profile links.

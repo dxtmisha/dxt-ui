@@ -162,7 +162,7 @@ describe('MediaSocialIcon', () => {
       MediaSocialIcon.addList(maliciousPayload)
 
       expect(MediaSocialIcon.has(InputSocialType.github)).toBe(true)
-      expect(Object.prototype.hasOwnProperty('polluted')).toBe(false)
+      expect(Object.hasOwn(Object.prototype, 'polluted')).toBe(false)
       expect((MediaSocialIcon.icons as Record<string, string>)['__proto__']).toBeUndefined()
     })
 
@@ -285,8 +285,8 @@ describe('MediaSocialIcon', () => {
       const enriched = MediaSocialIcon.toItem(itemWithMask)
 
       expect(enriched.icon).toBe('<svg class="tg"></svg>')
-      expect(enriched.mask.pattern).toBe('+7 (###) ###-##-##')
-      expect(enriched.mask.tokens['#']).toEqual(/\d/)
+      expect(enriched.mask?.pattern).toBe('+7 (###) ###-##-##')
+      expect(enriched.mask?.tokens['#']).toEqual(/\d/)
     })
 
     it('should leave icon undefined when hasCustomIcons is true but code does not match', () => {
@@ -341,4 +341,3 @@ describe('MediaSocialIcon', () => {
     })
   })
 })
-

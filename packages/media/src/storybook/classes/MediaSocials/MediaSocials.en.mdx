@@ -1,0 +1,75 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Classes/MediaSocials - Social Networks Metadata Catalog and Lookup'/>
+
+# MediaSocials Class
+
+The `MediaSocials` class is a **Primary Class (Static)** responsible for storing, indexing, and serving social network configurations and metadata catalog items. It provides centralized lookup by network code with lazy indexing and integrates with `MediaSocialIcon` to automatically enrich returned items with custom icons.
+
+## Key Features
+
+- **Centralized Social Catalog** — contains complete metadata definitions for over 35 global and regional social networks (e.g., GitHub, Telegram, Instagram, WeChat, Zalo).
+- **Lazy Map Indexing** — constructs an in-memory `Map` index on the first lookup for efficient O(1) retrieval by network code.
+- **Custom Icon Enrichment** — automatically merges registered custom vector icons from `MediaSocialIcon` into returned item objects.
+- **Defensive Immutability** — returns shallow copies of configuration items to protect internal catalog integrity against unintended mutations.
+- **Static Interface** — all operations are accessed directly on the class with zero instantiation required.
+
+## Methods
+
+### Catalog & Lookup
+
+- `static get(code: InputSocialTypeValue): InputSocialItem | undefined` — returns the social network configuration by its code, enriched with custom icons if registered in `MediaSocialIcon`, or `undefined` if not found.
+- `static getList(): InputSocialList` — returns an array of all social network configurations, each enriched with custom icons where applicable.
+
+### Internal Helpers
+
+- `protected static find(code: InputSocialTypeValue): InputSocialItem | undefined` — performs lazy `Map` initialization and retrieves raw metadata items by code.
+
+## Types
+
+### `InputSocialItem<Mask = unknown>`
+
+- `code: InputSocialTypeValue` — unique social network identifier code.
+- `name: string` — display name of the social platform.
+- `prefix?: string` — URL prefix for user profile links (e.g. `'https://github.com/'`).
+- `prefixClear?: RegExp` — normalized URL prefix pattern for matching or stripping profile links.
+- `suffix?: string` — URL suffix for user profile links.
+- `mask?: Mask` — optional input mask configuration for form inputs.
+- `icon?: string` — resolved or custom icon markup.
+- `nickname?: string` — nickname prefix symbol or string (e.g. `'@'`).
+- `nicknameClear?: RegExp` — pattern to match or clean nickname value.
+
+### InputSocialList
+
+- `InputSocialItem[]` — array of social network configuration items.
+
+### InputSocialType
+
+Enum of supported social network codes: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — string union or enum type of supported social network codes.
+
+## Usage Example
+
+```typescript
+import { MediaSocials, InputSocialType } from '@dxtmisha/media'
+
+// Retrieve a specific social network configuration
+const github = MediaSocials.get(InputSocialType.github)
+if (github) {
+  console.log(github.name) // 'GitHub'
+  console.log(github.prefix) // 'https://github.com/'
+  console.log(github.nickname) // '@'
+}
+
+// Retrieve the full list of all supported social networks
+const socialList = MediaSocials.getList()
+console.log(`Supported networks count: ${socialList.length}`)
+
+// Safe lookup with unknown or non-existent code
+const unknownNetwork = MediaSocials.get('unknown' as any)
+console.log(unknownNetwork) // undefined
+```
+

@@ -89,7 +89,7 @@ export type InputSocialValue = string | number | null | undefined
  */
 export type InputSocialItem<Mask = unknown> = {
   /** Social network unique identifier / Уникальный идентификатор социальной сети */
-  code: InputSocialType | InputSocialTypeValue
+  code: InputSocialTypeValue
   /** Display name of the social network / Отображаемое название социальной сети */
   name: string
   /** URL prefix for the user profile / Префикс URL для профиля пользователя */

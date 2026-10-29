@@ -1,18 +1,16 @@
+import { MediaSocialIcon } from './MediaSocialIcon'
+import { MediaSocialNickname } from './MediaSocialNickname'
+import { MediaSocials } from './MediaSocials'
+import { MediaSocialUrl } from './MediaSocialUrl'
+import { MediaSocialValue } from './MediaSocialValue'
+
 import type {
   InputSocialIcons,
   InputSocialItem,
   InputSocialList,
-  InputSocialType,
   InputSocialTypeValue,
   InputSocialValue
 } from '../types/socialTypes'
-import { isDangerousProtocol } from '../functions/isDangerousProtocol'
-import { isUrlPrefix } from '../functions/isUrlPrefix'
-import { replacePrefix } from '../functions/replacePrefix'
-import { toClear } from '../functions/toClear'
-import { toLower } from '../functions/toLower'
-import { MediaSocialIcon } from './MediaSocialIcon'
-import { MediaSocials } from './MediaSocials'
 
 /**
  * Class for working with social network configurations.
@@ -36,7 +34,7 @@ export class MediaSocial {
    * @param code social network code / код социальной сети
    * @returns social network configuration or undefined / конфигурация социальной сети или undefined
    */
-  static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined {
+  static get(code: InputSocialTypeValue): InputSocialItem | undefined {
     return MediaSocials.get(code)
   }
 
@@ -61,55 +59,10 @@ export class MediaSocial {
    * @returns formatted nickname with prefix or empty string / отформатированный никнейм с префиксом или пустая строка
    */
   static getNickname(
-    code: InputSocialType | InputSocialTypeValue,
+    code: InputSocialTypeValue,
     value: InputSocialValue
   ): string {
-    const item = this.get(code)
-
-    if (
-      !item
-      || (
-        item.nickname === undefined
-        && item.nicknameClear === undefined
-      )
-    ) {
-      return ''
-    }
-
-    const itemValue = toClear(value)
-
-    if (
-      !itemValue
-      || isDangerousProtocol(itemValue)
-    ) {
-      return ''
-    }
-
-    let cleanValue = this.getValue(code, value)
-
-    if (item.nickname && cleanValue.startsWith(item.nickname)) {
-      cleanValue = cleanValue.substring(item.nickname.length)
-    }
-
-    if (!cleanValue) {
-      return ''
-    }
-
-    if (item.nicknameClear) {
-      const match = cleanValue.match(item.nicknameClear)
-
-      if (!match) {
-        return ''
-      }
-
-      cleanValue = match[0]
-    }
-
-    if (!cleanValue) {
-      return ''
-    }
-
-    return `${item.nickname ?? ''}${cleanValue}`
+    return MediaSocialNickname.get(code, value)
   }
 
   /**
@@ -121,37 +74,10 @@ export class MediaSocial {
    * @returns full profile URL or string / полная ссылка на профиль или строка
    */
   static getUrl(
-    code: InputSocialType | InputSocialTypeValue,
+    code: InputSocialTypeValue,
     value: InputSocialValue
   ): string {
-    const itemValue = toClear(value)
-
-    if (
-      !itemValue
-      || isDangerousProtocol(itemValue)
-    ) {
-      return ''
-    }
-
-    const item = this.get(code)
-
-    if (
-      item
-      && (item.prefix || item.suffix)
-    ) {
-      if (isUrlPrefix(itemValue, item.prefixClear)) {
-        return replacePrefix(itemValue, item)
-      }
-
-      const {
-        prefix = '',
-        suffix = ''
-      } = item
-
-      return `${prefix}${itemValue}${suffix}`
-    }
-
-    return toLower(value)
+    return MediaSocialUrl.get(code, value)
   }
 
   /**
@@ -163,43 +89,10 @@ export class MediaSocial {
    * @returns raw username or value / чистое имя пользователя или значение
    */
   static getValue(
-    code: InputSocialType | InputSocialTypeValue,
+    code: InputSocialTypeValue,
     url: InputSocialValue
   ): string {
-    const item = this.get(code)
-
-    if (!item) {
-      return toLower(url)
-    }
-
-    const { prefixClear, suffix = '' } = item
-    let value = toClear(url)
-
-    const queryOrHashIndex = value.search(/[?#]/)
-
-    if (queryOrHashIndex !== -1) {
-      value = value.substring(0, queryOrHashIndex)
-    }
-
-    if (
-      prefixClear
-      && isUrlPrefix(value, prefixClear)
-    ) {
-      value = value
-        .replace(prefixClear, '')
-        .replace(/^[/@]+/, '')
-    }
-
-    if (
-      suffix
-      && value.endsWith(suffix)
-    ) {
-      value = value.substring(0, value.length - suffix.length)
-    }
-
-    return value
-      .replace(/\/+$/, '')
-      .replace(/^@+/, '')
+    return MediaSocialValue.get(code, url)
   }
 
   /**
@@ -211,7 +104,7 @@ export class MediaSocial {
    * @returns class constructor for method chaining / конструктор класса для цепочечных вызовов
    */
   static addIcon(
-    code: InputSocialType | InputSocialTypeValue,
+    code: InputSocialTypeValue,
     icon: string
   ): typeof MediaSocial {
     MediaSocialIcon.add(code, icon)

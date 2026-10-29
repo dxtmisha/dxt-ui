@@ -1,0 +1,88 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Classes/MediaSocialUrl - Trình tạo và định dạng URL hồ sơ mạng xã hội'/>
+
+# Lớp MediaSocialUrl
+
+Lớp `MediaSocialUrl` là một **Lớp chính (Tĩnh)** được thiết kế để tạo và định dạng các liên kết hồ sơ mạng xã hội chuẩn tắc từ tên người dùng, định danh từng phần hoặc chuỗi người dùng nhập cho hơn 35 nền tảng được hỗ trợ.
+
+## Tính năng chính
+
+- **Tạo URL chuẩn tắc** — tự động xây dựng các liên kết hồ sơ hợp lệ, đầy đủ từ tên người dùng hoặc định danh thô.
+- **Ngăn ngừa trùng lặp tiền tố** — phát hiện an toàn nếu chuỗi đầu vào đã chứa tên miền, giao thức (`http`, `https`) hoặc `www`, tự động chuẩn hóa mà không lặp lại tiền tố thông qua `replacePrefix`.
+- **Phòng chống chèn giao thức độc hại** — chặn nghiêm ngặt các lược đồ nguy hiểm (`javascript:`, `data:`, `vbscript:`), ngay lập tức trả về chuỗi rỗng để ngăn chặn tấn công XSS.
+- **Làm sạch dữ liệu đầu vào** — tự động loại bỏ ký tự `@` ở đầu và cắt tỉa các khoảng trắng thừa xung quanh.
+- **Tích hợp hậu tố** — tự động bổ sung hậu tố đường dẫn nếu được cấu hình theo nền tảng.
+- **Không có phụ thuộc bên ngoài** — các thao tác xử lý chuỗi thuần đồng hình, an toàn 100% khi kết xuất phía máy chủ (SSR), hỗ trợ đầy đủ tree-shaking.
+
+## Phương thức
+
+### `get`
+
+Phương thức chính để xây dựng URL hồ sơ hoàn chỉnh từ mã mạng xã hội và tên người dùng/giá trị đầu vào.
+
+**Tham số:**
+- `code: InputSocialTypeValue` — mã định danh mạng xã hội (ví dụ: `'github'`, `'telegram'`).
+- `value: InputSocialValue` — tên người dùng, chuỗi từng phần, số, null hoặc undefined.
+
+**Trả về:** `string` — chuỗi URL hồ sơ đầy đủ, hoặc chuỗi rỗng nếu giá trị đầu vào trống hoặc chứa các lược đồ nguy hiểm.
+
+```typescript
+import { MediaSocialUrl, InputSocialType } from '@dxtmisha/media'
+
+const profileUrl = MediaSocialUrl.get(InputSocialType.github, 'dxtmisha')
+// Kết quả: 'https://github.com/dxtmisha'
+```
+
+### Phương thức bổ trợ nội bộ
+
+- `protected static toPrefix(value: string, item?: InputSocialItem): string | undefined` — định dạng chuỗi URL bằng cách sử dụng cấu hình tiền tố và biểu thức chính quy prefixClear của mục dữ liệu nếu tiền tố được xác định.
+- `protected static toSuffix(value: string, suffix?: string): string` — thêm hậu tố của nền tảng vào chuỗi URL nếu chuỗi chưa kết thúc bằng hậu tố đó.
+
+## Kiểu dữ liệu
+
+### InputSocialValue
+
+- `string | number | null | undefined` — các kiểu dữ liệu đầu vào được hỗ trợ đại diện cho tên người dùng hoặc chuỗi URL từng phần.
+
+### InputSocialType
+
+Enum các mã mạng xã hội được hỗ trợ: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — kiểu kết hợp chuỗi hoặc enum của các mã mạng xã hội được hỗ trợ.
+
+## Ví dụ sử dụng
+
+```typescript
+import { MediaSocialUrl, InputSocialType } from '@dxtmisha/media'
+
+// Xây dựng URL hồ sơ từ tên người dùng thuần
+MediaSocialUrl.get(InputSocialType.github, 'dxtmisha')
+// -> 'https://github.com/dxtmisha'
+
+// Tự động loại bỏ ký tự @ ở đầu
+MediaSocialUrl.get(InputSocialType.telegram, '@dxtmisha')
+// -> 'https://t.me/dxtmisha'
+
+// Tránh lặp lại tiền tố khi truyền URL đầy đủ
+MediaSocialUrl.get(InputSocialType.github, 'https://github.com/dxtmisha')
+// -> 'https://github.com/dxtmisha'
+
+MediaSocialUrl.get(InputSocialType.github, 'github.com/dxtmisha')
+// -> 'https://github.com/dxtmisha'
+
+// Giữ nguyên kiểu chữ hoa/thường của tên người dùng
+MediaSocialUrl.get(InputSocialType.github, 'DxTMiShA')
+// -> 'https://github.com/DxTMiShA'
+
+// Chặn các giao thức URL nguy hiểm
+MediaSocialUrl.get(InputSocialType.github, 'javascript:alert(1)')
+// -> ''
+
+// Trả về chuỗi rỗng khi đầu vào rỗng
+MediaSocialUrl.get(InputSocialType.github, '')
+// -> ''
+```
+

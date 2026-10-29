@@ -2,7 +2,8 @@ import { describe, expect, it, beforeEach } from 'vitest'
 import { registerSocialIcons, socialIcons } from '../../socials'
 import { MediaSocial } from '../MediaSocial'
 import { MediaSocialIcon } from '../MediaSocialIcon'
-import { InputSocialType, type InputSocialValue } from '../../types/socialTypes'
+import { MediaSocials } from '../MediaSocials'
+import { InputSocialType } from '../../types/socialTypes'
 
 describe('MediaSocial', () => {
   beforeEach(() => {
@@ -145,11 +146,11 @@ describe('MediaSocial', () => {
 
     it('should return username as is if prefix is not defined', () => {
       // Mocking custom item to have no prefix
-      const origGet = MediaSocial.get
-      MediaSocial.get = (code) => {
-        const item = origGet.call(MediaSocial, code)
+      const origGet = MediaSocials.get
+      MediaSocials.get = (code) => {
+        const item = origGet.call(MediaSocials, code)
         if (item) {
-          return { ...item, prefix: undefined }
+          return { ...item, prefix: undefined, prefixClear: undefined }
         }
         return item
       }
@@ -158,7 +159,7 @@ describe('MediaSocial', () => {
         const url = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
         expect(url).toBe('dxtmisha')
       } finally {
-        MediaSocial.get = origGet
+        MediaSocials.get = origGet
       }
     })
 
@@ -289,9 +290,9 @@ describe('MediaSocial', () => {
 
     it('should extract username and handle suffix correctly if suffix is present', () => {
       // Mock item to have prefix and suffix
-      const origGet = MediaSocial.get
-      MediaSocial.get = (code) => {
-        const item = origGet.call(MediaSocial, code)
+      const origGet = MediaSocials.get
+      MediaSocials.get = (code) => {
+        const item = origGet.call(MediaSocials, code)
         if (item) {
           return { ...item, prefix: 'https://example.com/', prefixClear: /^example\.com(?:\/|$)/i, suffix: '/edit' }
         }
@@ -302,7 +303,7 @@ describe('MediaSocial', () => {
         const val = MediaSocial.getValue(InputSocialType.github, 'https://example.com/dxtmisha/edit')
         expect(val).toBe('dxtmisha')
       } finally {
-        MediaSocial.get = origGet
+        MediaSocials.get = origGet
       }
     })
 
@@ -418,14 +419,14 @@ describe('MediaSocial', () => {
     })
 
     it('should support custom nickname prefix and custom nicknameClear with capture group', () => {
-      const origGet = MediaSocial.get
-      MediaSocial.get = (code) => {
+      const origGet = MediaSocials.get
+      MediaSocials.get = (code) => {
         if (code === ('custom' as any)) {
           return {
             code: 'custom' as any,
             name: 'Custom',
             nickname: '~',
-            nicknameClear: /^([a-z0-9]+)/i
+            nicknameClear: /^~*([a-z0-9]+)/i
           }
         }
         if (code === ('no-prefix' as any)) {
@@ -435,7 +436,7 @@ describe('MediaSocial', () => {
             nicknameClear: /^[a-z0-9]+/i
           }
         }
-        return origGet.call(MediaSocial, code)
+        return origGet.call(MediaSocials, code)
       }
 
       try {
@@ -443,7 +444,7 @@ describe('MediaSocial', () => {
         expect(MediaSocial.getNickname('custom' as any, '~myUser')).toBe('~myUser')
         expect(MediaSocial.getNickname('no-prefix' as any, 'rawName')).toBe('rawName')
       } finally {
-        MediaSocial.get = origGet
+        MediaSocials.get = origGet
       }
     })
   })

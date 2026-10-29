@@ -1,0 +1,88 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Classes/MediaSocialUrl - Построитель и форматирование ссылок на профили'/>
+
+# Класс MediaSocialUrl
+
+Класс `MediaSocialUrl` представляет собой **основной класс (статический)**, предназначенный для формирования и форматирования канонических ссылок на профили социальных сетей из имен пользователей, частичных дескрипторов или введенных строк для более чем 35 поддерживаемых платформ.
+
+## Ключевые возможности
+
+- **Построение канонического URL** — автоматически создает корректные полные ссылки на профили из сырых юзернеймов или дескрипторов.
+- **Предотвращение дублирования префиксов** — безопасно определяет, если переданная строка уже содержит домен, протокол (`http`, `https`) или префикс `www`, исключая дублирование префиксов с помощью `replacePrefix`.
+- **Защита от инъекций протоколов** — строго блокирует опасные протоколы (`javascript:`, `data:`, `vbscript:`), мгновенно возвращая пустую строку для защиты от XSS.
+- **Очистка входящих данных** — автоматически удаляет начальные символы `@` и обрезает окружающие пробелы.
+- **Интеграция суффиксов** — добавляет суффиксы путей, если они предусмотрены конфигурацией платформы.
+- **Отсутствие внешних зависимостей** — чистые строковые преобразования, 100% изоморфизм, безопасность для SSR и полная поддержка tree-shaking.
+
+## Методы
+
+### `get`
+
+Основной метод для построения полной ссылки на профиль по коду социальной сети и переданному имени пользователя или значению.
+
+**Параметры:**
+- `code: InputSocialTypeValue` — код-идентификатор социальной сети (например, `'github'`, `'telegram'`).
+- `value: InputSocialValue` — имя пользователя, частичная строка, число, null или undefined.
+
+**Возвращает:** `string` — полная строка ссылки на профиль, либо пустая строка, если входное значение пустое или содержит опасные протоколы.
+
+```typescript
+import { MediaSocialUrl, InputSocialType } from '@dxtmisha/media'
+
+const profileUrl = MediaSocialUrl.get(InputSocialType.github, 'dxtmisha')
+// Результат: 'https://github.com/dxtmisha'
+```
+
+### Внутренние вспомогательные методы
+
+- `protected static toPrefix(value: string, item?: InputSocialItem): string | undefined` — форматирует строку URL с использованием префикса и шаблона prefixClear из конфигурации элемента, если префикс задан.
+- `protected static toSuffix(value: string, suffix?: string): string` — добавляет суффикс платформы к строке URL, если она им еще не заканчивается.
+
+## Типы
+
+### InputSocialValue
+
+- `string | number | null | undefined` — поддерживаемые типы входных данных для имен пользователей или ссылок.
+
+### InputSocialType
+
+Перечисление поддерживаемых кодов социальных сетей: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — строковое объединение или тип перечисления поддерживаемых кодов социальных сетей.
+
+## Пример использования
+
+```typescript
+import { MediaSocialUrl, InputSocialType } from '@dxtmisha/media'
+
+// Построение ссылки из чистого имени пользователя
+MediaSocialUrl.get(InputSocialType.github, 'dxtmisha')
+// -> 'https://github.com/dxtmisha'
+
+// Автоматическое удаление начального символа @
+MediaSocialUrl.get(InputSocialType.telegram, '@dxtmisha')
+// -> 'https://t.me/dxtmisha'
+
+// Исключение дублирования префикса, если передан полный URL
+MediaSocialUrl.get(InputSocialType.github, 'https://github.com/dxtmisha')
+// -> 'https://github.com/dxtmisha'
+
+MediaSocialUrl.get(InputSocialType.github, 'github.com/dxtmisha')
+// -> 'https://github.com/dxtmisha'
+
+// Сохранение регистра символов имени пользователя
+MediaSocialUrl.get(InputSocialType.github, 'DxTMiShA')
+// -> 'https://github.com/DxTMiShA'
+
+// Блокировка опасных протоколов URL
+MediaSocialUrl.get(InputSocialType.github, 'javascript:alert(1)')
+// -> ''
+
+// Возврат пустой строки для пустых входных данных
+MediaSocialUrl.get(InputSocialType.github, '')
+// -> ''
+```
+

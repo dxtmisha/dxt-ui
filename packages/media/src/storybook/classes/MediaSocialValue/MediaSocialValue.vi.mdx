@@ -1,0 +1,110 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Classes/MediaSocialValue - Trình phân tích URL hồ sơ và trích xuất tên người dùng'/>
+
+# Lớp MediaSocialValue
+
+Lớp `MediaSocialValue` là một **Lớp chính (Tĩnh)** được thiết kế để phân tích các liên kết hồ sơ mạng xã hội và dữ liệu người dùng nhập vào, loại bỏ tham số truy vấn, mã băm (hash), giao thức, tiền tố và hậu tố nhằm trích xuất tên người dùng (handle) chuẩn xác cho hơn 35 nền tảng được hỗ trợ.
+
+## Tính năng chính
+
+- **Trích xuất handle an toàn** — loại bỏ tên miền, lược đồ giao thức, tiền tố www, cổng mạng (port) và dấu gạch chéo cuối.
+- **Làm sạch tham số và hash** — tự động loại bỏ tham số truy vấn URL (`?query=...`) và đoạn neo (`#hash`).
+- **Phòng chống chèn giao thức độc hại** — ngay lập tức chặn các giao thức URL nguy hiểm (`javascript:`, `data:`, `vbscript:`), trả về chuỗi rỗng.
+- **Chuẩn hóa theo nền tảng** — áp dụng biểu thức chính quy (`prefixClear`) và hậu tố hồ sơ (`suffix`) riêng biệt của từng mạng xã hội.
+- **Tĩnh và đồng hình (Isomorphic)** — các hàm thuần túy không có phụ thuộc bên ngoài, an toàn 100% khi kết xuất phía máy chủ (SSR), hỗ trợ đầy đủ tree-shaking.
+
+## Phương thức
+
+### `get`
+
+Phương thức chính để trích xuất tên người dùng hoặc định danh hồ sơ từ URL đầy đủ hoặc chuỗi người dùng nhập.
+
+**Tham số:**
+- `code: InputSocialTypeValue` — mã định danh mạng xã hội (ví dụ: `'github'`, `'telegram'`).
+- `url: InputSocialValue` — URL hồ sơ đầy đủ, chuỗi tên người dùng, số, null hoặc undefined.
+
+**Trả về:** `string` — tên người dùng hoặc giá trị đã được làm sạch, hoặc chuỗi rỗng nếu không hợp lệ hoặc chứa mã nguy hiểm.
+
+```typescript
+import { MediaSocialValue, InputSocialType } from '@dxtmisha/media'
+
+const username = MediaSocialValue.get(InputSocialType.github, 'https://github.com/dxtmisha')
+// Kết quả: 'dxtmisha'
+```
+
+### `getByItem`
+
+Trích xuất tên người dùng sạch trực tiếp bằng cách sử dụng đối tượng cấu hình nền tảng đã tìm thấy (tránh tìm kiếm lặp lại theo mã).
+
+**Tham số:**
+- `item: InputSocialItem | undefined` — đối tượng cấu hình mạng xã hội.
+- `url: InputSocialValue` — URL hồ sơ đầy đủ, chuỗi tên người dùng, số, null hoặc undefined.
+
+**Trả về:** `string` — tên người dùng hoặc giá trị đã được làm sạch.
+
+```typescript
+import { MediaSocialValue, MediaSocials, InputSocialType } from '@dxtmisha/media'
+
+const item = MediaSocials.get(InputSocialType.github)
+const username = MediaSocialValue.getByItem(item, 'https://github.com/dxtmisha')
+// Kết quả: 'dxtmisha'
+```
+
+### Quy trình xử lý nội bộ
+
+- `protected static toAt(value: string): string` — loại bỏ các ký tự `@` ở đầu chuỗi.
+- `protected static toClearUrl(url: InputSocialValue): string` — loại bỏ giao thức, www, cổng mạng, tham số truy vấn, hash và chặn các giao thức độc hại.
+- `protected static toPrefix(value: string, prefixClear?: RegExp): string` — loại bỏ tiền tố URL của nền tảng dựa trên mẫu biểu thức chính quy đã cấu hình.
+- `protected static toQueryOrHash(value: string): string` — loại bỏ tham số truy vấn (`?`) và đoạn băm (`#`) khỏi URL.
+- `protected static toSlash(value: string): string` — loại bỏ các dấu gạch chéo ở cuối chuỗi.
+- `protected static toSuffix(value: string, suffix?: string): string` — loại bỏ hậu tố đặc thù của nền tảng ở cuối chuỗi nếu khớp.
+
+## Kiểu dữ liệu
+
+### InputSocialValue
+
+- `string | number | null | undefined` — các kiểu dữ liệu đầu vào được hỗ trợ đại diện cho URL hồ sơ hoặc tên người dùng.
+
+### InputSocialType
+
+Enum các mã mạng xã hội được hỗ trợ: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — kiểu kết hợp chuỗi hoặc enum của các mã mạng xã hội được hỗ trợ.
+
+## Ví dụ sử dụng
+
+```typescript
+import { MediaSocialValue, InputSocialType } from '@dxtmisha/media'
+
+// Trích xuất tên người dùng từ URL hồ sơ tiêu chuẩn
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/dxtmisha')
+// -> 'dxtmisha'
+
+// Loại bỏ tham số truy vấn và đoạn neo
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/dxtmisha?tab=repositories#readme')
+// -> 'dxtmisha'
+
+// Xử lý các liên kết có chứa số cổng
+MediaSocialValue.get(InputSocialType.github, 'https://github.com:443/dxtmisha')
+// -> 'dxtmisha'
+
+// Làm sạch ký tự @ ở đầu
+MediaSocialValue.get(InputSocialType.telegram, '@dxtmisha')
+// -> 'dxtmisha'
+
+// Giữ nguyên kiểu chữ hoa/thường cho các nền tảng phân biệt
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/DxTMiShA')
+// -> 'DxTMiShA'
+
+// Chặn các giao thức URL nguy hiểm
+MediaSocialValue.get(InputSocialType.github, 'javascript:alert(1)')
+// -> ''
+
+// Trả về chuỗi rỗng khi chỉ cung cấp tên miền
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/')
+// -> ''
+```
+

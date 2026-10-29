@@ -204,28 +204,28 @@ export const inputSocialList: InputSocialList = [
     code: 'baidu',
     name: 'Baidu',
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskId
   },
   {
     code: 'dingtalk',
     name: 'DingTalk',
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskId
   },
   {
     code: 'discord',
     name: 'Discord',
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.]+/i,
+    nicknameClear: /^@*([a-z0-9_.]+)/i,
     mask: maskUsername
   },
   {
     code: 'douyin',
     name: 'Douyin',
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskId
   },
   {
@@ -234,7 +234,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://dzen.ru/',
     prefixClear: /^dzen\.ru(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskId
   },
   {
@@ -243,7 +243,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://www.facebook.com/',
     prefixClear: /^facebook\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9.]+/i,
+    nicknameClear: /^@*([a-z0-9.]+)/i,
     mask: maskFacebook
   },
   {
@@ -252,7 +252,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://github.com/',
     prefixClear: /^github\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9-]+/i,
+    nicknameClear: /^@*([a-z0-9-]+)/i,
     mask: maskHyphenIdStartAlphaNum
   },
   {
@@ -261,7 +261,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://gitlab.com/',
     prefixClear: /^gitlab\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskHyphenIdStartAlphaNum
   },
   {
@@ -270,7 +270,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://habr.com/ru/users/',
     prefixClear: /^habr\.com\/ru\/users(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskId
   },
   {
@@ -279,14 +279,14 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://www.instagram.com/',
     prefixClear: /^instagram\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.]+/i,
+    nicknameClear: /^@*([a-z0-9_.]+)/i,
     mask: maskUsername
   },
   {
     code: 'line',
     name: 'Line',
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskId
   },
   {
@@ -295,7 +295,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://www.linkedin.com/in/',
     prefixClear: /^linkedin\.com\/in(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_-]+/i,
+    nicknameClear: /^@*([a-z0-9_-]+)/i,
     mask: maskHyphenIdStartAlphaNum
   },
   {
@@ -304,7 +304,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://medium.com/@',
     prefixClear: /^medium\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: { mask: '@*', special: specialId }
   },
   {
@@ -313,7 +313,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://m.me/',
     prefixClear: /^m\.me(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9.]+/i,
+    nicknameClear: /^@*([a-z0-9.]+)/i,
     mask: maskFacebook
   },
   {
@@ -322,7 +322,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://ok.ru/',
     prefixClear: /^ok\.ru(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.]+/i,
+    nicknameClear: /^@*([a-z0-9_.]+)/i,
     mask: maskId
   },
   {
@@ -331,7 +331,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://www.pinterest.com/',
     prefixClear: /^pinterest\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.]+/i,
+    nicknameClear: /^@*([a-z0-9_.]+)/i,
     mask: maskId
   },
   {
@@ -345,7 +345,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://www.reddit.com/user/',
     prefixClear: /^reddit\.com\/user(?:\/|$)/i,
     nickname: 'u/',
-    nicknameClear: /^[a-z0-9_-]+/i,
+    nicknameClear: /^(?:u\/)*(?!$|u\/)([a-z0-9_-]+)/i,
     mask: maskUnderHyphenId
   },
   {
@@ -367,7 +367,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://www.snapchat.com/add/',
     prefixClear: /^snapchat\.com\/add(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.]+/i,
+    nicknameClear: /^@*([a-z0-9_.]+)/i,
     mask: maskSnapchatStartLetter
   },
   {
@@ -376,7 +376,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://t.me/',
     prefixClear: /^(?:t|telegram)\.me(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_]+/i,
+    nicknameClear: /^@*([a-z0-9_]+)/i,
     mask: maskUsernameStrictStartLetter
   },
   {
@@ -385,7 +385,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://www.tiktok.com/@',
     prefixClear: /^tiktok\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.]+/i,
+    nicknameClear: /^@*([a-z0-9_.]+)/i,
     mask: maskUsername
   },
   {
@@ -394,7 +394,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://www.tumblr.com/',
     prefixClear: /^tumblr\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskFacebook
   },
   {
@@ -403,7 +403,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://twitter.com/',
     prefixClear: /^(?:twitter|x)\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_]+/i,
+    nicknameClear: /^@*([a-z0-9_]+)/i,
     mask: maskUsernameStrict
   },
   {
@@ -417,14 +417,14 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://vk.com/',
     prefixClear: /^vk\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.]+/i,
+    nicknameClear: /^@*([a-z0-9_.]+)/i,
     mask: maskVkStartLetter
   },
   {
     code: 'wechat',
     name: 'WeChat',
     nickname: '@',
-    nicknameClear: /^[a-z0-9_-]+/i,
+    nicknameClear: /^@*([a-z0-9_-]+)/i,
     mask: maskWechatStartLetter
   },
   {
@@ -433,7 +433,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://weibo.com/',
     prefixClear: /^weibo\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskId
   },
   {
@@ -449,14 +449,14 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://x.com/',
     prefixClear: /^(?:x|twitter)\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_]+/i,
+    nicknameClear: /^@*([a-z0-9_]+)/i,
     mask: maskUsernameStrict
   },
   {
     code: 'xiaohongshu',
     name: 'Xiaohongshu',
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskId
   },
   {
@@ -465,7 +465,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://www.youtube.com/@',
     prefixClear: /^youtube\.com(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskId
   },
   {
@@ -481,7 +481,7 @@ export const inputSocialList: InputSocialList = [
     prefix: 'https://www.zhihu.com/people/',
     prefixClear: /^zhihu\.com\/people(?:\/|$)/i,
     nickname: '@',
-    nicknameClear: /^[a-z0-9_.-]+/i,
+    nicknameClear: /^@*([a-z0-9_.-]+)/i,
     mask: maskId
   }
 ]

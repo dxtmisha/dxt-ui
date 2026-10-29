@@ -253,4 +253,44 @@ describe('replacePrefix', () => {
       expect(replacePrefix(value, githubItem)).toBe('https://github.com/dxtmisha')
     })
   })
+
+  describe('isMatched parameter', () => {
+    it('should bypass internal isUrlPrefix check and apply prefix replacement when isMatched is explicitly true', () => {
+      const itemWithStrictPrefixClear: InputSocialItem = {
+        code: InputSocialType.github,
+        name: 'GitHub',
+        prefixClear: /^custom-domain\.org(?:\/|$)/i,
+        prefix: 'https://github.com/'
+      }
+      // Value does not match prefixClear, but isMatched is true
+      expect(replacePrefix('myuser', itemWithStrictPrefixClear, true)).toBe('https://github.com/myuser')
+      expect(replacePrefix('github.com/dxtmisha', githubItem, true)).toBe('https://github.com/dxtmisha')
+    })
+
+    it('should return value unchanged when isMatched is explicitly false even if pattern matches', () => {
+      expect(replacePrefix('github.com/dxtmisha', githubItem, false)).toBe('github.com/dxtmisha')
+      expect(replacePrefix('t.me/durov', telegramItem, false)).toBe('t.me/durov')
+    })
+
+    it('should evaluate isUrlPrefix when isMatched is undefined', () => {
+      expect(replacePrefix('github.com/dxtmisha', githubItem, undefined)).toBe('https://github.com/dxtmisha')
+      expect(replacePrefix('dxtmisha', githubItem, undefined)).toBe('dxtmisha')
+    })
+
+    it('should safely return original value if prefix or prefixClear is missing even when isMatched is true', () => {
+      const itemWithoutPrefix: InputSocialItem = {
+        code: InputSocialType.github,
+        name: 'GitHub',
+        prefixClear: /^github\.com(?:\/|$)/i
+      }
+      const itemWithoutPrefixClear: InputSocialItem = {
+        code: InputSocialType.github,
+        name: 'GitHub',
+        prefix: 'https://github.com/'
+      }
+
+      expect(replacePrefix('github.com/dxtmisha', itemWithoutPrefix, true)).toBe('github.com/dxtmisha')
+      expect(replacePrefix('github.com/dxtmisha', itemWithoutPrefixClear, true)).toBe('github.com/dxtmisha')
+    })
+  })
 })

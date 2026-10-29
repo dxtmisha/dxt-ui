@@ -20,6 +20,7 @@ When users input social network handles, they often enter varying formats: plain
 
 - `value: string` — The input URL, link, or handle to format.
 - `item: InputSocialItem` — Social network configuration containing `prefix`, `prefixClear`, and metadata.
+- `isMatched?: boolean` — Optional flag indicating whether the `prefixClear` pattern was already matched (bypasses internal RegExp check for performance optimization).
 
 ## Returns
 

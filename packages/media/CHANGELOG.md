@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2026-10-29
+
+### Added
+- **`MediaSocialNickname` Class**:
+  - Implemented static utility class for formatting and resolving social network nicknames and platform handles (`MediaSocialNickname.get`).
+  - Added support for platform-specific prefix handles (e.g. `'@username'` for Telegram/Instagram, `'u/username'` for Reddit).
+  - Added extraction and sanitization of handles from full profile URLs, raw usernames, partial paths, or numeric values.
+  - Added automated prevention of duplicate prefix symbols and strict filtering of dangerous protocol schemes (`javascript:`, `data:`, `vbscript:`).
+  - Added protected `toClean(value, nicknameClear)` method using capture groups and regular expressions.
+- **`MediaSocialUrl` Class**:
+  - Implemented static utility class for generating canonical social profile URLs from usernames or partial handles (`MediaSocialUrl.get`).
+  - Added `replacePrefix` integration avoiding duplicated domain prefixes when input already contains full URLs.
+  - Added support for platform suffixes, query parameters, and hash fragments preservation.
+- **`MediaSocialValue` Class**:
+  - Implemented static utility class for parsing profile URLs and inputs to extract clean usernames (`MediaSocialValue.get`).
+  - Added `getByItem(item, url)` method for direct value extraction using an already resolved configuration item to eliminate duplicate lookup overhead.
+  - Added stripping of protocols, domains, ports, query parameters, hash fragments, prefix patterns (`prefixClear`), suffixes, trailing slashes, and leading `@` symbols.
+- **`MediaSocials` Class**:
+  - Implemented centralized metadata catalog and lookup utility (`get`, `getList`, `find`).
+  - Added lazy in-memory `Map` cache indexing by social network code for fast O(1) retrieval.
+  - Added automatic enrichment of returned items with registered custom icons via `MediaSocialIcon`.
+- **`MediaSocialIcon` Class**:
+  - Implemented prototype-isolated in-memory registry (`Object.create(null)`) for custom social SVG icons (`icons`, `has`, `get`, `add`, `addList`, `remove`, `reset`, `toItem`).
+  - Added fluent method chaining for `add`, `addList`, and `reset`.
+  - Added fast-path O(1) check using `hasCustomIcons`.
+- **Standalone Utility Functions**:
+  - `isDangerousProtocol`: detects and rejects dangerous URL schemes (`javascript:`, `data:`, `vbscript:`).
+  - `isUrlPrefix`: tests whether a URL string starts with a configured prefix pattern.
+  - `replacePrefix`: safely replaces URL prefixes without duplicate protocol or domain prefixes.
+  - `toClear`: safely cleans and trims string inputs with nullish guards.
+  - `toLower`: normalizes URL protocol and domain to lowercase while preserving user case in path and handle.
+- **Metadata & Types**:
+  - Added `nickname?: string` and `nicknameClear?: RegExp` fields to `InputSocialItem` in `socialTypes.ts`.
+  - Added platform-specific `nicknameClear` regular expressions for 29 social network configurations in `socialList.ts`.
+- **Storybook Documentation**:
+  - Added comprehensive multilingual MDX documentation in English, Russian, and Vietnamese for all new classes (`MediaSocial`, `MediaSocialIcon`, `MediaSocialNickname`, `MediaSocialUrl`, `MediaSocialValue`, `MediaSocials`) and utility functions (`isDangerousProtocol`, `isUrlPrefix`, `replacePrefix`, `toClear`, `toLower`).
+- **Unit Tests**:
+  - Added complete unit test suites covering all branches, edge cases, and SSR compatibility for all new classes and utility functions (571 tests total).
+
+### Changed
+- **`MediaSocial` Architecture Decomposition**:
+  - Decomposed monolithic social logic into dedicated single-responsibility classes: `MediaSocials` (catalog), `MediaSocialIcon` (custom icons), `MediaSocialNickname` (handles), `MediaSocialUrl` (profile URLs), and `MediaSocialValue` (handle extraction).
+  - Re-exported facade methods on `MediaSocial`: `getNickname`, `getUrl`, `getValue`, `get`, `getList`, `addIcon`, and `addIcons`.
+  - Re-exported `MediaSocialNickname`, `MediaSocialUrl`, and `MediaSocialValue` from `src/library.ts` (keeping `MediaSocials` and `MediaSocialIcon` internal to the package).
+
 ## [0.8.1] - 2026-10-04
 
 ### Added

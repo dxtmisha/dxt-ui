@@ -4,31 +4,25 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
 
-`@dxtmisha/media` is a lightweight media resources, vector icon libraries, and geographical dataset library for DXT UI. It provides file classification and detection (`MediaFile`), social media configurations (`MediaSocial`), country flags (250+ countries), and structured ISO 3166-1 country metadata. Framework-agnostic, tree-shakeable, and zero dependencies.
+`@dxtmisha/media` is a foundational media resources, vector icon libraries, and geographical dataset library for modern web development. It's framework-agnostic, tree-shakeable, zero-dependency, and can be used in any TypeScript project — whether Vue, React, Nuxt, or plain browser code.
 
-## What is included?
+## Why this library?
 
-### 1. File Type Detection & Management (`MediaFile`, `MediaFiles`, `MediaFileIcon`)
-- **Metadata Resolution**: Automatically resolve file name, extensionless base name, lowercase extension, MIME type, category, group, and SVG icon.
-- **Multiple Input Types**: Accepts file paths, URLs (with automatic query/hash stripping), extension codes, or native browser `File` objects.
-- **MIME & Extension Aliases**: Resolves canonical IANA MIME types and multi-extension formats (e.g. `docx`/`dotx`, `jpg`/`jpeg`, `js`/`mjs`/`cjs`, `ts`/`mts`/`cts`).
-- **Boolean Type Checkers**: Methods for quick category verification — `isArchive()`, `isAudio()`, `isCategoryGroup()`, `isCode()`, `isConfig()`, `isDatabase()`, `isDocument()`, `isExecutable()`, `isFolder()`, `isFont()`, `isImage()`, `isNeutral()`, `isPresentation()`, `isStandard()`, `isSystem()`, `isTable()`, `isText()`, `isVector()`, `isVideo()`.
-- **Custom Icons Registry**: Manage and override SVG icons dynamically with `MediaFileIcon`.
+Every web application eventually faces the same recurring requirements: handling file uploads and displaying file-type icons, validating and formatting social media profiles and user handles, and rendering localized country flags or phone number input masks. Typically, projects solve these with fragmented SVG snippets, ad-hoc regular expressions, bloated icon fonts, and copy-pasted country datasets that quickly become obsolete and needlessly inflate production bundles.
 
-### 2. Social Media Management (`MediaSocial`)
-- **35 Supported Networks**: Comprehensive configurations for GitHub, Discord, Telegram, LinkedIn, Facebook, Zalo, WeChat, X (Twitter), YouTube, etc.
-- **URL & Handle Helpers**: Generate full profile URLs with `getUrl()` or parse profile handles from URLs with `getValue()`.
-- **Input Masks & Validation**: Built-in input mask rules and profile link prefixes for form inputs.
+`@dxtmisha/media` brings all these solutions together in one place — thoughtful, tested, and ready to use. Heavy SVG assets are completely decoupled from core metadata registries, allowing you to import only what you need and keep client-side bundles minimal.
 
-### 3. Vector SVG Asset Libraries (Tree-shakeable)
-- **`@dxtmisha/media/files`**: 85 vector SVG file icons with `registerFileIcons()` initialization helper.
-- **`@dxtmisha/media/socials`**: 35 official vector SVG social icons with `registerSocialIcons()` initialization helper.
-- **`@dxtmisha/media/flags`**: 250+ vector SVG country flags in PascalCase (`UsSvg`, `FrSvg`, `DeSvg`, `VnSvg`, etc.).
+## What does it do?
 
-### 4. Geographical Dataset (`geo`)
-- **ISO 3166-1 Country Metadata**: Phone codes, input masks, primary timezones, default languages, first day of the week, and non-metric unit overrides.
+For **file handling and classification** — `MediaFile` unifies heterogeneous inputs (native browser `File` or `Blob` objects, Data URLs, Blob URLs, remote URLs, filesystem paths, MIME types, or extension codes) into a standardized interface. It resolves filenames, extensionless base names, normalized extensions, canonical MIME types, categories across 16 media classifications (`image`, `video`, `document`, `archive`, `table`, etc.), and 22 built-in boolean checkers (`isImage()`, `isDocument()`, `isArchive()`, etc.).
 
----
+For **file catalog and custom icons** — `MediaFiles` provides centralized lookup by code, extension, or MIME type with lazy in-memory `Map` indexing for instant O(1) retrieval, while `MediaFileIcon` provides a prototype-isolated in-memory registry to override or inject custom SVG icons dynamically with fluent method chaining.
+
+For **social media networks and handles** — comprehensive metadata for 35+ global and regional networks (GitHub, Telegram, Instagram, X/Twitter, WeChat, Reddit, Zalo, etc.). `MediaSocialNickname` formats platform-specific handles (`@dxtmisha`, `u/dxtmisha`), `MediaSocialUrl` constructs canonical profile links with duplicate prefix protection, and `MediaSocialValue` extracts clean usernames while stripping query parameters, ports, and dangerous protocols.
+
+For **country flags and geographical data** — 250+ vector SVG country flags in PascalCase (`UsSvg`, `VnSvg`, `FrSvg`, etc.) and a structured ISO 3166-1 country dataset (`geo.json`) covering international phone codes, input masks, primary timezones, default languages, first day of the week, and non-metric unit overrides.
+
+For **isomorphic security and string utilities** — safe protocol verification (`isDangerousProtocol`) protecting against XSS attacks (`javascript:`, `data:`, `vbscript:`), URL prefix replacement (`replacePrefix`), and case-preserving URL normalization (`toLower`).
 
 ## Installation
 
@@ -36,119 +30,71 @@
 npm install @dxtmisha/media
 ```
 
----
-
 ## Quick Start
 
-### File Handling with `MediaFile`
-
 ```typescript
-import { MediaFile } from '@dxtmisha/media'
+import { MediaFile, MediaFiles, MediaSocial, InputSocialType, geo } from '@dxtmisha/media'
 import { registerFileIcons } from '@dxtmisha/media/files'
-
-// Register standard SVG file icons
-registerFileIcons()
-
-// 1. From a URL or file path
-const file = new MediaFile('https://example.com/assets/annual-report.2026.pdf?v=2#page=1')
-
-console.log(file.name) // 'annual-report.2026.pdf'
-console.log(file.baseName) // 'annual-report.2026'
-console.log(file.extension) // 'pdf'
-console.log(file.mime) // 'application/pdf'
-console.log(file.isDocument()) // true
-console.log(file.isImage()) // false
-console.log(file.icon) // '<svg ...'
-
-// 2. From a native browser File object with MIME detection
-const upload = new MediaFile(new File(['...'], 'blob', { type: 'image/png' }))
-
-console.log(upload.extension) // 'png'
-console.log(upload.mime) // 'image/png'
-console.log(upload.isImage()) // true
-
-// 3. Static lookups with MediaFiles
-import { MediaFiles } from '@dxtmisha/media'
-
-const item = MediaFiles.getByMime('application/pdf')
-console.log(item?.code) // 'pdf'
-console.log(MediaFiles.isLink('https://example.com/doc.pdf')) // true
-```
-
-### Social Media with `MediaSocial`
-
-```typescript
-import { MediaSocial, InputSocialType } from '@dxtmisha/media'
 import { registerSocialIcons } from '@dxtmisha/media/socials'
+import { UsSvg, VnSvg } from '@dxtmisha/media/flags'
 
-// Register standard SVG social icons
+// Register standard SVG file & social icons
+registerFileIcons()
 registerSocialIcons()
 
-// Query platform configuration
-const github = MediaSocial.get(InputSocialType.github)
-console.log(github?.name) // 'GitHub'
+// 1. File inspection & classification
+const file = new MediaFile('https://example.com/assets/annual-report.2026.pdf?v=2#page=1')
+file.name         // 'annual-report.2026.pdf'
+file.baseName     // 'annual-report.2026'
+file.extension    // 'pdf'
+file.mime         // 'application/pdf'
+file.isDocument() // true
+file.isImage()    // false
+file.icon         // '<svg ...'
 
-// Generate and parse URLs
-const profileUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
-console.log(profileUrl) // 'https://github.com/dxtmisha'
+// 2. Static catalog lookups
+const pdfItem = MediaFiles.getByMime('application/pdf')
+MediaFiles.isLink('https://example.com/doc.pdf') // true
 
-const username = MediaSocial.getValue(InputSocialType.github, 'https://github.com/dxtmisha')
-console.log(username) // 'dxtmisha'
+// 3. Social media URLs and handles
+MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')                       // 'https://github.com/dxtmisha'
+MediaSocial.getValue(InputSocialType.github, 'https://github.com/dxtmisha') // 'dxtmisha'
+MediaSocial.getNickname(InputSocialType.telegram, 'dxtmisha')                // '@dxtmisha'
+MediaSocial.getNickname(InputSocialType.reddit, 'dxtmisha')                  // 'u/dxtmisha'
 
-const nickname = MediaSocial.getNickname(InputSocialType.instagram, 'https://www.instagram.com/dxtmisha')
-console.log(nickname) // '@dxtmisha'
-
-// Custom icon registration
-MediaSocial.addIcon(InputSocialType.github, '<svg ...>')
+// 4. Country flags & geographical data
+const us = geo.find(item => item.country === 'US')
+us?.phoneCode // '1'
+us?.phoneMask // '(...) ...-....'
+UsSvg         // '<svg ...'
+VnSvg         // '<svg ...'
 ```
-
-### Country Flags & Geo Dataset
-
-```typescript
-import { geo } from '@dxtmisha/media'
-import { UsSvg, VnSvg, FrSvg } from '@dxtmisha/media/flags'
-
-// Search country metadata
-const us = geo.find(c => c.country === 'US')
-console.log(us?.phoneCode) // '1'
-console.log(us?.phoneMask) // '(...) ...-....'
-
-// Tree-shakeable SVG flags
-console.log(UsSvg) // '<svg ...'
-console.log(VnSvg) // '<svg ...'
-```
-
----
 
 ## Subpath Exports
 
 To minimize application bundle sizes, heavy SVG assets are isolated in dedicated subpath entry points:
 
 | Import Path | Contents |
-|---|---|
-| `@dxtmisha/media` | Core classes (`MediaFile`, `MediaFiles`, `MediaFileIcon`, `MediaSocial`, `MediaSocialIcon`), metadata registries (`fileList`, `socialList`, `geo`), and TypeScript types without bundled SVG strings. |
-| `@dxtmisha/media/files` | 85 vector SVG file icons (`fileIcons`) and `registerFileIcons()` helper. |
-| `@dxtmisha/media/socials` | 35 vector SVG social icons (`socialIcons`) and `registerSocialIcons()` helper. |
-| `@dxtmisha/media/flags` | 250+ vector SVG country flags in PascalCase (`UsSvg`, `VnSvg`, etc.). |
+| :--- | :--- |
+| `@dxtmisha/media` | Core classes (`MediaFile`, `MediaFiles`, `MediaFileIcon`, `MediaSocial`, `MediaSocialNickname`, `MediaSocialUrl`, `MediaSocialValue`), metadata registries (`fileList`, `socialList`, `geo`), utility functions, and TypeScript types without bundled SVG strings. |
+| `@dxtmisha/media/files` | 85 vector SVG file icons (`fileIcons`) and `registerFileIcons()` initialization helper. |
+| `@dxtmisha/media/socials` | 35 vector SVG social media icons (`socialIcons`) and `registerSocialIcons()` initialization helper. |
+| `@dxtmisha/media/flags` | 250+ vector SVG country flags in PascalCase (`UsSvg`, `VnSvg`, `FrSvg`, etc.). |
 
----
+## Principles
 
-## Architecture & Principles
-
-- **Zero external dependencies** — standalone SVG vector assets, typed classes, and JSON datasets.
-- **Tree-shaking optimized** — core metadata contains zero SVG strings; assets are imported on-demand.
-- **TypeScript-first** — 100% typed with `.d.ts` declarations and type guards.
-- **Framework-agnostic** — works with Vue, React, Svelte, Nuxt, Angular, Node.js, or plain JavaScript.
-
----
+- **Zero external dependencies** — standalone SVG vector assets, typed classes, and JSON datasets with zero third-party dependencies.
+- **Tree-shaking optimized** — core metadata contains zero SVG strings; vector assets are imported on-demand via dedicated subpaths.
+- **TypeScript-first** — strict typing, explicit interfaces, and autocomplete out of the box with zero `any`.
+- **Clean API** — predictable method chaining, single-responsibility classes, and intuitive naming.
+- **Isomorphic & SSR-safe** — safe for Node.js, Nitro, Nuxt, Next.js, and client-side runtimes without DOM leaks or window dependencies.
+- **Test coverage** — every class, utility, and edge case ships with comprehensive unit tests (570+ tests).
 
 ## Documentation
 
-Full API reference, guides, and interactive Storybook examples:
+Full API reference, examples, and guides:
 
-**[📖 https://dxtmisha.github.io/dxt-ui/](https://dxtmisha.github.io/dxt-ui/)**
-
----
+**[📖 https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-media-about-the-library--docs](https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-media-about-the-library--docs)**
 
 ## License
 

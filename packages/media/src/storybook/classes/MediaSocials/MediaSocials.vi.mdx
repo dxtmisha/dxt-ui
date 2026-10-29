@@ -1,0 +1,75 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Classes/MediaSocials - Danh mục siêu dữ liệu và tra cứu mạng xã hội'/>
+
+# Lớp MediaSocials
+
+Lớp `MediaSocials` là một **Lớp chính (Tĩnh)** chịu trách nhiệm lưu trữ, lập chỉ mục và cung cấp danh mục cấu hình các mạng xã hội. Lớp này hỗ trợ tra cứu tập trung theo mã định danh với cơ chế lập chỉ mục `Map` lười (lazy indexing) và tích hợp với `MediaSocialIcon` để tự động làm phong phú các mục trả về bằng biểu tượng tùy chỉnh.
+
+## Tính năng chính
+
+- **Danh mục tập trung** — lưu trữ định nghĩa siêu dữ liệu đầy đủ cho hơn 35 mạng xã hội toàn cầu và khu vực (GitHub, Telegram, Instagram, WeChat, Zalo, v.v.).
+- **Lập chỉ mục Map lười** — tự động xây dựng chỉ mục `Map` trong bộ nhớ ở lần tra cứu đầu tiên giúp truy xuất O(1) tức thì theo mã mạng xã hội.
+- **Làm phong phú bằng biểu tượng tùy chỉnh** — tự động gộp các biểu tượng véc-tơ tùy chỉnh đã đăng ký trong `MediaSocialIcon` vào đối tượng cấu hình trả về.
+- **Bất biến phòng thủ** — trả về các bản sao nông (shallow copy) của phần tử cấu hình để bảo vệ tính toàn vẹn của danh mục gốc khỏi các đột biến ngoài ý muốn.
+- **Giao diện tĩnh** — tất cả các thao tác được gọi trực tiếp trên lớp mà không cần khởi tạo thực thể.
+
+## Phương thức
+
+### Danh mục & Tra cứu
+
+- `static get(code: InputSocialTypeValue): InputSocialItem | undefined` — trả về cấu hình mạng xã hội theo mã định danh, được làm phong phú bằng biểu tượng tùy chỉnh nếu đã đăng ký trong `MediaSocialIcon`, hoặc `undefined` nếu không tìm thấy.
+- `static getList(): InputSocialList` — trả về mảng danh sách tất cả các cấu hình mạng xã hội với biểu tượng tùy chỉnh đã được áp dụng.
+
+### Phương thức bổ trợ nội bộ
+
+- `protected static find(code: InputSocialTypeValue): InputSocialItem | undefined` — thực hiện khởi tạo `Map` lười và tra cứu phần tử siêu dữ liệu thô theo mã.
+
+## Kiểu dữ liệu
+
+### `InputSocialItem<Mask = unknown>`
+
+- `code: InputSocialTypeValue` — mã định danh duy nhất của mạng xã hội.
+- `name: string` — tên hiển thị trực quan của mạng xã hội.
+- `prefix?: string` — tiền tố URL liên kết hồ sơ người dùng (ví dụ: `'https://github.com/'`).
+- `prefixClear?: RegExp` — mẫu biểu thức chính quy chuẩn hóa để khớp hoặc loại bỏ tiền tố liên kết hồ sơ.
+- `suffix?: string` — hậu tố URL liên kết hồ sơ người dùng.
+- `mask?: Mask` — cấu hình mặt nạ nhập liệu tùy chọn cho các ô nhập.
+- `icon?: string` — mã biểu tượng đã được giải quyết hoặc tùy chỉnh.
+- `nickname?: string` — ký hiệu tiền tố của biệt danh (ví dụ: `'@'`).
+- `nicknameClear?: RegExp` — mẫu để làm sạch hoặc trích xuất giá trị biệt danh.
+
+### InputSocialList
+
+- `InputSocialItem[]` — mảng các mục cấu hình mạng xã hội.
+
+### InputSocialType
+
+Enum các mã mạng xã hội được hỗ trợ: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — kiểu kết hợp chuỗi hoặc enum của các mã mạng xã hội được hỗ trợ.
+
+## Ví dụ sử dụng
+
+```typescript
+import { MediaSocials, InputSocialType } from '@dxtmisha/media'
+
+// Tra cứu cấu hình của một mạng xã hội cụ thể
+const github = MediaSocials.get(InputSocialType.github)
+if (github) {
+  console.log(github.name) // 'GitHub'
+  console.log(github.prefix) // 'https://github.com/'
+  console.log(github.nickname) // '@'
+}
+
+// Lấy danh sách toàn bộ các mạng xã hội được hỗ trợ
+const socialList = MediaSocials.getList()
+console.log(`Số lượng mạng xã hội hỗ trợ: ${socialList.length}`)
+
+// Tra cứu an toàn với mã không tồn tại
+const unknownNetwork = MediaSocials.get('unknown' as any)
+console.log(unknownNetwork) // undefined
+```
+

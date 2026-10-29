@@ -1,0 +1,84 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Classes/MediaSocialNickname - Форматирование никнеймов и хэндлов социальных сетей'/>
+
+# Класс MediaSocialNickname
+
+Класс `MediaSocialNickname` является **Основным Классом (Статическим)**, предназначенным для форматирования и разрешения никнеймов и пользовательских хэндлов социальных сетей со специфическими для каждой платформы префиксами (такими как `'@'` или `'u/'`) для более чем 35 поддерживаемых сервисов.
+
+## Ключевые возможности
+
+- **Каноническое форматирование никнеймов** — приводит имена пользователей и URL-ссылки профилей к стандартному формату хэндлов платформы с соответствующими префиксами (например, `'@dxtmisha'`, `'u/dxtmisha'`).
+- **Валидация хэндлов** — проверяет никнеймы на соответствие шаблонам регулярных выражений (`nicknameClear`) и очищает посторонние вложенные пути.
+- **Предотвращение дублирования префиксов** — корректно обрабатывает значения, уже содержащие одиночные или повторяющиеся символы `@`.
+- **Извлечение хэндлов из URL** — извлекает чистый логин напрямую из полных ссылок на профили, отсекая параметры запроса, хэши и домены с помощью `MediaSocialValue`.
+- **Защита от инъекций опасных протоколов** — блокирует потенциально опасные схемы (`javascript:`, `data:`, `vbscript:`), возвращая пустую строку для защиты от XSS.
+- **Нулевые внешние зависимости** — чистые строковые изоморфные преобразования, 100% безопасность в SSR и полная поддержка tree-shaking.
+
+## Методы
+
+### `get`
+
+Основной метод для форматирования никнейма социальной сети по коду платформы и значению/имени пользователя.
+
+**Параметры:**
+- `code: InputSocialTypeValue` — код-идентификатор социальной сети (например, `'github'`, `'telegram'`).
+- `value: InputSocialValue` — имя пользователя, ссылка, частичное значение, число, null или undefined.
+
+**Возвращает:** `string` — отформатированный никнейм с префиксом (например, `'@username'`) или пустую строку, если никнеймы не поддерживаются платформой или значение невалидно.
+
+```typescript
+import { MediaSocialNickname, InputSocialType } from '@dxtmisha/media'
+
+const nickname = MediaSocialNickname.get(InputSocialType.telegram, 'dxtmisha')
+// Результат: '@dxtmisha'
+```
+
+### Внутренние вспомогательные методы
+
+- `protected static toClean(value: string, nicknameClear?: RegExp): string` — очищает и проверяет значение никнейма на соответствие шаблону регулярного выражения.
+
+## Типы
+
+### InputSocialValue
+
+- `string | number | null | undefined` — поддерживаемые типы входных данных (имена пользователей, ссылки, числовые идентификаторы).
+
+### InputSocialType
+
+Перечисление поддерживаемых кодов социальных сетей: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — строковое объединение или тип перечисления поддерживаемых кодов социальных сетей.
+
+## Примеры использования
+
+```typescript
+import { MediaSocialNickname, InputSocialType } from '@dxtmisha/media'
+
+// Форматирование никнейма с префиксом @
+MediaSocialNickname.get(InputSocialType.instagram, 'dxtmisha')
+// -> '@dxtmisha'
+
+// Извлечение никнейма напрямую из полной ссылки на профиль
+MediaSocialNickname.get(InputSocialType.telegram, 'https://t.me/dxtmisha')
+// -> '@dxtmisha'
+
+// Специфические префиксы платформ (Reddit использует 'u/')
+MediaSocialNickname.get(InputSocialType.reddit, 'dxtmisha')
+// -> 'u/dxtmisha'
+
+// Предотвращение дублирования символов @
+MediaSocialNickname.get(InputSocialType.telegram, '@dxtmisha')
+// -> '@dxtmisha'
+
+// Возврат пустой строки для платформ без поддержки никнеймов
+MediaSocialNickname.get(InputSocialType.whatsapp, '+1234567890')
+// -> ''
+
+// Блокировка опасных протоколов
+MediaSocialNickname.get(InputSocialType.instagram, 'javascript:alert(1)')
+// -> ''
+```
+

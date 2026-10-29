@@ -1,0 +1,110 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Classes/MediaSocialValue - Social Profile URL Parser and Handle Extractor'/>
+
+# MediaSocialValue Class
+
+The `MediaSocialValue` class is a **Primary Class (Static)** designed for parsing social network profile URLs and user inputs, removing query parameters, hashes, protocols, prefixes, and suffixes to extract clean platform handles and usernames across 35+ supported platforms.
+
+## Key Features
+
+- **Safe Handle Extraction** — removes domains, protocol schemes, www prefixes, ports, and trailing slashes.
+- **Query & Hash Sanitization** — automatically strips URL query parameters and anchor fragments.
+- **Protocol Injection Defense** — immediately blocks dangerous URL schemes (`javascript:`, `data:`, `vbscript:`) returning an empty string.
+- **Platform Normalization** — leverages platform-specific regex patterns (`prefixClear`) and custom profile suffixes (`suffix`).
+- **Static & Isomorphic** — pure functions with zero runtime dependencies, 100% SSR-safe, and fully tree-shakeable.
+
+## Methods
+
+### `get`
+
+Primary method for extracting the raw username or profile handle from a full URL or user input.
+
+**Parameters:**
+- `code: InputSocialTypeValue` — social network identifier code (e.g. `'github'`, `'telegram'`).
+- `url: InputSocialValue` — full profile URL, username string, number, null, or undefined.
+
+**Returns:** `string` — the extracted clean username or value, or an empty string if invalid or dangerous.
+
+```typescript
+import { MediaSocialValue, InputSocialType } from '@dxtmisha/media'
+
+const username = MediaSocialValue.get(InputSocialType.github, 'https://github.com/dxtmisha')
+// Result: 'dxtmisha'
+```
+
+### `getByItem`
+
+Extracts the clean username directly using an already resolved social network configuration item (avoiding redundant lookup by code).
+
+**Parameters:**
+- `item: InputSocialItem | undefined` — social network configuration item.
+- `url: InputSocialValue` — full profile URL, username string, number, null, or undefined.
+
+**Returns:** `string` — the extracted clean username or value.
+
+```typescript
+import { MediaSocialValue, MediaSocials, InputSocialType } from '@dxtmisha/media'
+
+const item = MediaSocials.get(InputSocialType.github)
+const username = MediaSocialValue.getByItem(item, 'https://github.com/dxtmisha')
+// Result: 'dxtmisha'
+```
+
+### Internal Processing Pipeline
+
+- `protected static toAt(value: string): string` — strips leading `@` symbols from the value.
+- `protected static toClearUrl(url: InputSocialValue): string` — strips protocol, www, ports, query parameters, and hashes, and guards against dangerous protocols.
+- `protected static toPrefix(value: string, prefixClear?: RegExp): string` — removes the platform URL prefix using the network's configured pattern.
+- `protected static toQueryOrHash(value: string): string` — removes URL query parameters (`?`) and hash fragments (`#`).
+- `protected static toSlash(value: string): string` — removes trailing slashes from the value.
+- `protected static toSuffix(value: string, suffix?: string): string` — removes the platform-specific suffix from the end of the value.
+
+## Types
+
+### InputSocialValue
+
+- `string | number | null | undefined` — supported input types representing profile URLs or user handles.
+
+### InputSocialType
+
+Enum of supported social network codes: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — string union or enum type of supported social network codes.
+
+## Usage Example
+
+```typescript
+import { MediaSocialValue, InputSocialType } from '@dxtmisha/media'
+
+// Extract username from standard profile URL
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/dxtmisha')
+// -> 'dxtmisha'
+
+// Strips query parameters and hash fragments
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/dxtmisha?tab=repositories#readme')
+// -> 'dxtmisha'
+
+// Handles URLs with port numbers
+MediaSocialValue.get(InputSocialType.github, 'https://github.com:443/dxtmisha')
+// -> 'dxtmisha'
+
+// Cleans leading @ symbols
+MediaSocialValue.get(InputSocialType.telegram, '@dxtmisha')
+// -> 'dxtmisha'
+
+// Preserves casing for platforms that support it
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/DxTMiShA')
+// -> 'DxTMiShA'
+
+// Guards against dangerous URL protocols
+MediaSocialValue.get(InputSocialType.github, 'javascript:alert(1)')
+// -> ''
+
+// Returns empty string when only domain is provided
+MediaSocialValue.get(InputSocialType.github, 'https://github.com/')
+// -> ''
+```
+

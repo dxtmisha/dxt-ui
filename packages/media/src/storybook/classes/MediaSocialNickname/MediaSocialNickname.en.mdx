@@ -1,0 +1,84 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Classes/MediaSocialNickname - Social Profile Nickname and Handle Formatter'/>
+
+# MediaSocialNickname Class
+
+The `MediaSocialNickname` class is a **Primary Class (Static)** designed for formatting and resolving social network handles and nicknames with platform-specific prefixes (such as `'@'` or `'u/'`) across 35+ supported platforms.
+
+## Key Features
+
+- **Canonical Nickname Formatting** — formats raw usernames or profile URLs into standard platform handles with appropriate prefixes (e.g. `'@dxtmisha'`, `'u/dxtmisha'`).
+- **Handle Validation** — validates handles against platform-specific regex patterns (`nicknameClear`) and strips redundant subpaths.
+- **Prefix Collision Prevention** — safely handles inputs that already include single or multiple `@` symbols without duplicating prefixes.
+- **URL Handle Extraction** — extracts clean handles directly from full profile URLs, stripping query parameters, hashes, and domains via `MediaSocialValue`.
+- **Protocol Injection Defense** — strictly blocks dangerous schemes (`javascript:`, `data:`, `vbscript:`), immediately returning an empty string to prevent XSS.
+- **Zero Runtime Dependencies** — pure isomorphic string manipulation, 100% SSR-safe, and fully tree-shakeable.
+
+## Methods
+
+### `get`
+
+Primary method for formatting a social network nickname by platform code and username/value.
+
+**Parameters:**
+- `code: InputSocialTypeValue` — social network identifier code (e.g. `'github'`, `'telegram'`).
+- `value: InputSocialValue` — username, URL, partial value, number, null, or undefined.
+
+**Returns:** `string` — formatted nickname with prefix (e.g. `'@username'`), or an empty string if invalid or unsupported.
+
+```typescript
+import { MediaSocialNickname, InputSocialType } from '@dxtmisha/media'
+
+const nickname = MediaSocialNickname.get(InputSocialType.telegram, 'dxtmisha')
+// Result: '@dxtmisha'
+```
+
+### Internal Helpers
+
+- `protected static toClean(value: string, nicknameClear?: RegExp): string` — cleans and validates the nickname value against the regular expression pattern.
+
+## Types
+
+### InputSocialValue
+
+- `string | number | null | undefined` — supported input types representing profile usernames, URLs, or partial handles.
+
+### InputSocialType
+
+Enum of supported social network codes: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — string union or enum type of supported social network codes.
+
+## Usage Example
+
+```typescript
+import { MediaSocialNickname, InputSocialType } from '@dxtmisha/media'
+
+// Format nickname with @ prefix
+MediaSocialNickname.get(InputSocialType.instagram, 'dxtmisha')
+// -> '@dxtmisha'
+
+// Extract handle directly from full profile URL
+MediaSocialNickname.get(InputSocialType.telegram, 'https://t.me/dxtmisha')
+// -> '@dxtmisha'
+
+// Handle platform-specific prefixes (Reddit uses 'u/')
+MediaSocialNickname.get(InputSocialType.reddit, 'dxtmisha')
+// -> 'u/dxtmisha'
+
+// Prevent double @ symbols
+MediaSocialNickname.get(InputSocialType.telegram, '@dxtmisha')
+// -> '@dxtmisha'
+
+// Returns empty string for platforms without nickname support
+MediaSocialNickname.get(InputSocialType.whatsapp, '+1234567890')
+// -> ''
+
+// Blocks dangerous URL protocols
+MediaSocialNickname.get(InputSocialType.instagram, 'javascript:alert(1)')
+// -> ''
+```
+

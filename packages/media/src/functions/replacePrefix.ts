@@ -17,18 +17,20 @@ const REGEX_LEADING_TRIM = /^[/@]+/
  *
  * @param value URL or string / ссылка или строка
  * @param item social network item configuration / конфигурация элемента социальной сети
+ * @param isMatched whether the prefixClear pattern was already matched (bypasses RegExp check) / совпадает ли уже шаблон prefixClear (пропускает проверку RegExp)
  * @returns URL with full prefix / ссылка с полным префиксом
  */
 export function replacePrefix(
   value: string,
-  item: InputSocialItem
+  item: InputSocialItem,
+  isMatched?: boolean
 ): string {
   const { prefixClear, prefix } = item
 
   if (
     prefixClear
     && prefix
-    && isUrlPrefix(value, prefixClear)
+    && (isMatched ?? isUrlPrefix(value, prefixClear))
   ) {
     const restValue = value
       .replace(prefixClear, '')

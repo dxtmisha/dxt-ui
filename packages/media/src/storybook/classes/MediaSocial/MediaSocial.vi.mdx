@@ -18,25 +18,25 @@ Lớp `MediaSocial` là một **Lớp chính (Tĩnh)** được thiết kế đ�
 
 ### Quản lý URL và giá trị
 
-- `static getNickname(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — trả về biệt danh đã định dạng với tiền tố (ví dụ: `'@username'`) hoặc chuỗi rỗng nếu nền tảng không hỗ trợ biệt danh hoặc giá trị không hợp lệ.
-- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: InputSocialValue): string` — xây dựng URL hồ sơ đầy đủ từ tên người dùng hoặc chuỗi giá trị dựa trên tiền tố và hậu tố đã cấu hình của nền tảng.
-- `static getValue(code: InputSocialType | InputSocialTypeValue, url: InputSocialValue): string` — trích xuất tên người dùng hoặc handle gốc từ một URL hồ sơ đầy đủ bằng cách loại bỏ tiền tố, truy vấn, hash và hậu tố.
+- `static getNickname(code: InputSocialTypeValue, value: InputSocialValue): string` — trả về biệt danh đã định dạng với tiền tố (ví dụ: `'@username'`) hoặc chuỗi rỗng nếu nền tảng không hỗ trợ biệt danh hoặc giá trị không hợp lệ.
+- `static getUrl(code: InputSocialTypeValue, value: InputSocialValue): string` — xây dựng URL hồ sơ đầy đủ từ tên người dùng hoặc chuỗi giá trị dựa trên tiền tố và hậu tố đã cấu hình của nền tảng.
+- `static getValue(code: InputSocialTypeValue, url: InputSocialValue): string` — trích xuất tên người dùng hoặc handle gốc từ một URL hồ sơ đầy đủ bằng cách loại bỏ tiền tố, truy vấn, hash và hậu tố.
 
 ### Danh mục & Truy xuất dữ liệu
 
-- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — trả về cấu hình của mạng xã hội theo mã định danh, kết hợp với biểu tượng tùy chỉnh từ `MediaSocialIcon` nếu đã đăng ký.
+- `static get(code: InputSocialTypeValue): InputSocialItem | undefined` — trả về cấu hình của mạng xã hội theo mã định danh, kết hợp với biểu tượng tùy chỉnh từ `MediaSocialIcon` nếu đã đăng ký.
 - `static getList(): InputSocialList` — trả về mảng đầy đủ cấu hình của tất cả các mạng xã hội được hỗ trợ.
 
 ### Biểu tượng tùy chỉnh
 
-- `static addIcon(code: InputSocialType | InputSocialTypeValue, icon: string): typeof MediaSocial` — đăng ký một chuỗi biểu tượng hoặc mã SVG cho mạng xã hội cụ thể thông qua `MediaSocialIcon`. Trả về lớp để gọi phương thức nối tiếp.
+- `static addIcon(code: InputSocialTypeValue, icon: string): typeof MediaSocial` — đăng ký một chuỗi biểu tượng hoặc mã SVG cho mạng xã hội cụ thể thông qua `MediaSocialIcon`. Trả về lớp để gọi phương thức nối tiếp.
 - `static addIcons(icons: InputSocialIcons): typeof MediaSocial` — đăng ký hàng loạt nhiều biểu tượng tùy chỉnh từ một từ điển thông qua `MediaSocialIcon`. Trả về lớp để gọi phương thức nối tiếp.
 
 ## Kiểu dữ liệu
 
 ### `InputSocialItem<Mask = unknown>`
 
-- `code: InputSocialType | InputSocialTypeValue` — mã định danh duy nhất của mạng xã hội.
+- `code: InputSocialTypeValue` — mã định danh duy nhất của mạng xã hội.
 - `name: string` — tên hiển thị trực quan của mạng xã hội.
 - `prefix?: string` — tiền tố URL cho liên kết hồ sơ người dùng (ví dụ: `'https://github.com/'`).
 - `prefixClear?: RegExp` — biểu thức chính quy chuẩn hóa để khớp hoặc xóa tiền tố URL hồ sơ.

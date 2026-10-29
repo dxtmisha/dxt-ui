@@ -1,0 +1,88 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Classes/MediaSocialUrl - Social Profile URL Builder and Formatter'/>
+
+# MediaSocialUrl Class
+
+The `MediaSocialUrl` class is a **Primary Class (Static)** designed for constructing and formatting canonical social network profile URLs from usernames, partial handles, or raw input strings across 35+ supported platforms.
+
+## Key Features
+
+- **Canonical URL Construction** — automatically builds valid, fully qualified profile URLs from raw usernames or handles.
+- **Prefix Collision Prevention** — safely detects if the input already contains a domain, protocol (`http`, `https`), or `www`, replacing or normalizing without duplicating prefixes.
+- **Protocol Injection Defense** — strictly blocks dangerous schemes (`javascript:`, `data:`, `vbscript:`), immediately returning an empty string to prevent XSS.
+- **Input Cleaning** — strips leading `@` symbols and trims surrounding whitespace.
+- **Suffix Integration** — appends platform-specific path suffixes where configured.
+- **Zero Runtime Dependencies** — pure isomorphic string manipulation, 100% SSR-safe, and fully tree-shakeable.
+
+## Methods
+
+### `get`
+
+Primary method for constructing a complete profile URL from a social network code and username/value.
+
+**Parameters:**
+- `code: InputSocialTypeValue` — social network identifier code (e.g. `'github'`, `'telegram'`).
+- `value: InputSocialValue` — username, partial string, number, null, or undefined.
+
+**Returns:** `string` — full profile URL string, or an empty string if value is empty or contains dangerous schemes.
+
+```typescript
+import { MediaSocialUrl, InputSocialType } from '@dxtmisha/media'
+
+const profileUrl = MediaSocialUrl.get(InputSocialType.github, 'dxtmisha')
+// Result: 'https://github.com/dxtmisha'
+```
+
+### Internal Helpers
+
+- `protected static toPrefix(value: string, item?: InputSocialItem): string | undefined` — formats the URL string using the item's prefix and prefixClear regex configuration when present.
+- `protected static toSuffix(value: string, suffix?: string): string` — appends the platform suffix to the URL string if it does not already end with it.
+
+## Types
+
+### InputSocialValue
+
+- `string | number | null | undefined` — supported input types representing profile usernames or partial URL strings.
+
+### InputSocialType
+
+Enum of supported social network codes: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+### InputSocialTypeValue
+
+- `${InputSocialType} | InputSocialType` — string union or enum type of supported social network codes.
+
+## Usage Example
+
+```typescript
+import { MediaSocialUrl, InputSocialType } from '@dxtmisha/media'
+
+// Build profile URL from raw username
+MediaSocialUrl.get(InputSocialType.github, 'dxtmisha')
+// -> 'https://github.com/dxtmisha'
+
+// Strip leading @ symbol automatically
+MediaSocialUrl.get(InputSocialType.telegram, '@dxtmisha')
+// -> 'https://t.me/dxtmisha'
+
+// Avoid duplicating prefix when full URL is supplied
+MediaSocialUrl.get(InputSocialType.github, 'https://github.com/dxtmisha')
+// -> 'https://github.com/dxtmisha'
+
+MediaSocialUrl.get(InputSocialType.github, 'github.com/dxtmisha')
+// -> 'https://github.com/dxtmisha'
+
+// Preserves username casing
+MediaSocialUrl.get(InputSocialType.github, 'DxTMiShA')
+// -> 'https://github.com/DxTMiShA'
+
+// Blocks dangerous URL protocols
+MediaSocialUrl.get(InputSocialType.github, 'javascript:alert(1)')
+// -> ''
+
+// Returns empty string for empty inputs
+MediaSocialUrl.get(InputSocialType.github, '')
+// -> ''
+```
+

@@ -8,11 +8,12 @@ export * from './classes/MediaFile'
 export * from './classes/MediaFiles'
 export * from './classes/MediaFileIcon'
 export * from './classes/MediaSocial'
+export * from './classes/MediaSocialNickname'
+export * from './classes/MediaSocialUrl'
+export * from './classes/MediaSocialValue'
 
 // Functions
 export * from './functions/isDangerousProtocol'
-export * from './functions/toClear'
-export * from './functions/toLower'
 
 // Media
 export * from './media/fileList'
