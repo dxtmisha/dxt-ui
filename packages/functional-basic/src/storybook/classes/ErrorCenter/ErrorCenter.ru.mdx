@@ -13,19 +13,23 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ### Действие
 - `on(cause: ErrorCenterCauseItem): void` — Запускает процесс обработки. Ищет данные в реестре, объединяет их и вызывает нужные функции обратного вызова.
 
-### Проверка
-- `has(code: string, group?: string): boolean` — Проверяет, зарегистрирована ли ошибка.
-- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Возвращает данные ошибки из реестра.
+### Проверка и доступ
+- `has(code: string, group?: ErrorCenterGroup): boolean` — Проверяет, зарегистрирована ли ошибка.
+- `get(code: string, group?: ErrorCenterGroup): ErrorCenterCauseItem | undefined` — Возвращает данные ошибки из реестра.
+- `getHandler(): ErrorCenterHandler` — Возвращает диспетчер обработчиков.
+- `getItem(): ErrorCenterInstance` — Возвращает внутренний экземпляр класса.
 
-### Конфигурация
+### Конфигурация и жизненный цикл
 - `add(cause: ErrorCenterCauseItem): void` — Добавляет одну причину ошибки.
 - `addList(causes: ErrorCenterCauseList): void` — Добавляет список ошибок (массовая регистрация).
+- `addCallback(callback: ErrorCenterHandlerCallback): void` — Регистрирует глобальный обратный вызов при любой ошибке.
 - `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Регистрирует реакцию на группу ошибок.
 - `addHandlerList(handlers: ErrorCenterHandlerList): void` — Пакетная регистрация нескольких обработчиков.
+- `remove(code: string, group?: ErrorCenterGroup): void` — Удаляет причину ошибки из реестра.
+- `removeHandler(group?: ErrorCenterGroup, handler?: ErrorCenterHandlerCallback): void` — Удаляет обработчик или группу обработчиков.
+- `removeCallback(callback: ErrorCenterHandlerCallback): void` — Удаляет глобальный обратный вызов.
+- `reset(): void` — Сбрасывает зарегистрированные обработчики и глобальные обратные вызовы.
 - `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): void` — Устанавливает флаг или функцию фильтрации вывода в консоль.
-
-### Вспомогательные
-- `getItem(): ErrorCenterInstance` — Возвращает внутренний экземпляр класса.
 
 ## Типы
 

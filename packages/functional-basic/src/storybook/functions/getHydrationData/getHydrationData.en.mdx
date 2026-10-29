@@ -1,28 +1,63 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/getHydrationData - Retrieve hydration data from a script tag'/>
 
 # `getHydrationData`
 
-A utility for retrieving and parsing JSON data from a `<script>` tag in the DOM by its `id` (typically generated on the server via `getElementSafeScript`).
+Retrieves, deserializes, and validates JSON state payloads embedded in DOM `<script type="application/json">` elements, providing seamless state hydration from SSR to client-side runtimes.
 
-In a browser environment (`isDomRuntime()`), the function locates the `<script>` element by `id`, parses its `textContent` as JSON, and optionally removes the `<script>` element from the DOM (`remove = true` by default). If the element is not found, is not a `<script>` tag, is called in an SSR environment, or if JSON parsing fails (which is reported via `ErrorCenter` under `group: 'hydration'`, `code: 'error'`), the function safely returns `defaultValue`.
+## Key Features
+
+- **SSR-Safe & Isomorphic** — Guarded by `isDomRuntime()`, ensuring safe execution during Server-Side Rendering (Node.js, Nitro, Bun, Cloudflare Workers) by immediately returning `defaultValue` without touching undefined browser globals.
+- **Strict DOM Tag Verification** — Confirms that the target DOM element is genuinely a `<script>` tag (`script.tagName === 'SCRIPT'`), ignoring spoofed inputs or arbitrary DOM nodes with conflicting IDs.
+- **Automatic Lifecycle DOM Cleanup** — By default (`remove = true`), safely removes the `<script>` element from the DOM inside a `finally` block once read, freeing memory and eliminating stale state retention.
+- **Centralized Error Dispatch** — Any JSON parsing syntax errors or empty script content issues are intercepted and reported directly to `ErrorCenter` under `group: 'hydration'`, `code: 'error'`, avoiding uncaught runtime crashes.
+- **Support for Numeric & String IDs** — Accepts both `string` and `number` identifiers, maintaining symmetry with server-side generation via `getElementSafeScript`.
+- **Fail-Safe Fallback Contract** — Always returns a predictable value of type `T` (either the parsed payload or `defaultValue`), never returning unexpected `undefined`.
 
 **Parameters:**
-- `id: string` — The unique identifier (ID) of the script tag.
-- `defaultValue: T` — Default value returned if the script tag is not found or its content is invalid.
-- `remove?: boolean` — Whether to remove the script element from the DOM after reading (default: `true`).
+- `id: string | number` — The unique ID attribute of the target `<script>` element in the DOM.
+- `defaultValue: T` — The fallback value returned when the script is missing, not a script tag, executed in SSR, or fails JSON parsing.
+- `remove: boolean = true` — Whether to remove the `<script>` element from the DOM after reading.
 
 **Returns:**
-`T` — The parsed data from the script tag, or `defaultValue`.
+`T` — The deserialized state object, or `defaultValue`.
 
-```typescript
-import { getHydrationData } from '@dxtmisha/functional-basic'
+## Examples
 
-// Given in DOM:
-// <script id="hydration-data" type="application/json">{"user":"Misha"}</script>
+<Source
+  language='typescript'
+  code={`
+import { getHydrationData, getElementSafeScript } from '@dxtmisha/functional-basic'
 
-const data = getHydrationData('hydration-data', { user: 'Guest' })
-console.log(data) // { user: 'Misha' }
-// The <script id="hydration-data"> tag is automatically removed from the DOM
-```
+// 1. Basic client-side hydration
+// Suppose the server embedded:
+// <script id="app-config" type="application/json">{"theme":"dark","version":2}</script>
+
+interface AppConfig {
+  theme: string
+  version: number
+}
+
+const config = getHydrationData<AppConfig>('app-config', {
+  theme: 'light',
+  version: 1
+})
+console.log(config.theme) // 'dark'
+// The <script id="app-config"> element is now removed from the DOM
+
+// 2. Preserving the script tag in the DOM
+const preserved = getHydrationData('static-data', { active: false }, false)
+console.log(preserved)
+// The <script id="static-data"> remains in the DOM because remove = false
+
+// 3. Fallback on missing or invalid script tag
+const fallback = getHydrationData('missing-id', { status: 'idle' })
+console.log(fallback) // { status: 'idle' }
+
+// 4. Safe round-trip with getElementSafeScript
+document.body.innerHTML = getElementSafeScript('sync-token', { token: 'xyz123' })
+const credentials = getHydrationData('sync-token', { token: '' })
+console.log(credentials.token) // 'xyz123'
+  `}
+/>

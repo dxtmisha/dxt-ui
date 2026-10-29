@@ -112,6 +112,11 @@ describe('getHydrationData', () => {
       const defaultValue = 'empty-id-fallback'
       expect(getHydrationData('', defaultValue)).toBe(defaultValue)
     })
+
+    it('should support numeric script tag IDs', () => {
+      createScript('12345', '{"numeric":true}')
+      expect(getHydrationData(12345, null)).toEqual({ numeric: true })
+    })
   })
 
   describe('DOM element validation and tag filtering', () => {
@@ -246,7 +251,7 @@ describe('getHydrationData', () => {
       )
 
       const nullScript = createScript('null-content-id', '')
-      vi.spyOn(nullScript, 'textContent', 'get').mockReturnValue(null)
+      vi.spyOn(nullScript, 'textContent', 'get').mockReturnValue(null as unknown as string)
 
       const nullResult = getHydrationData('null-content-id', defaultValue)
       expect(nullResult).toEqual(defaultValue)

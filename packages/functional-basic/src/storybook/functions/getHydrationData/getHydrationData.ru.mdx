@@ -1,28 +1,63 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/functional-basic/Functions/getHydrationData - Извлечение данных гидратации из тега скрипта'/>
 
 # `getHydrationData`
 
-Утилита для извлечения и парсинга JSON-данных из тега `<script>` в DOM по его `id` (обычно сгенерированного на сервере с помощью `getElementSafeScript`).
+Извлекает, десериализует и валидирует данные состояния в формате JSON, встроенные в DOM-элемент `<script type="application/json">`, обеспечивая бесшовную гидратацию состояния при переходе от SSR к клиентскому приложению.
 
-В браузерном окружении (`isDomRuntime()`) функция находит элемент `<script>` по `id`, парсит его `textContent` как JSON и опционально удаляет тег `<script>` из DOM (по умолчанию `remove = true`). Если элемент не найден, не является тегом `<script>`, функция вызвана в SSR-окружении или произошла ошибка парсинга JSON (которая регистрируется через `ErrorCenter` с `group: 'hydration'`, `code: 'error'`), функция безопасно возвращает `defaultValue`.
+## Ключевые возможности
+
+- **Безопасность для SSR и изоморфизм** — Защищена вызовом `isDomRuntime()`, что гарантирует безопасное выполнение в среде Server-Side Rendering (Node.js, Nitro, Bun, Cloudflare Workers): функция сразу возвращает `defaultValue` без обращения к глобальному объекту `document`.
+- **Строгая проверка тега DOM** — Проверяет имя тега найденного элемента (`script.tagName === 'SCRIPT'`), предотвращая случайное считывание данных из чужих элементов интерфейса (например, `<div>`, `<input>` с совпадающим ID).
+- **Автоматическая очистка DOM (Lifecycle Cleanup)** — По умолчанию (`remove = true`) удаляет тег `<script>` из DOM-дерева в блоке `finally` сразу после считывания, освобождая память браузера и исключая повторное чтение устаревших данных.
+- **Централизованная диспетчеризация ошибок** — Ошибки парсинга поврежденного JSON перехватываются и регистрируются в `ErrorCenter` под кодом `group: 'hydration'`, `code: 'error'`, предотвращая необработанные сбои (unhandled exceptions) приложения.
+- **Поддержка строковых и числовых ID** — Принимает идентификаторы типов `string | number`, сохраняя полную симметрию с серверной утилитой `getElementSafeScript`.
+- **Гарантированный типобезопасный контракт** — Всегда возвращает значение типа `T` (распарсенные данные либо значение по умолчанию `defaultValue`), исключая непредвиденные `undefined`.
 
 **Параметры:**
-- `id: string` — Уникальный идентификатор (ID) тега скрипта.
-- `defaultValue: T` — Значение по умолчанию, если тег скрипта не найден или данные невалидны.
-- `remove?: boolean` — Удалять ли элемент скрипта из DOM после чтения (по умолчанию `true`).
+- `id: string | number` — Уникальный атрибут ID целевого тега `<script>` в DOM.
+- `defaultValue: T` — Значение по умолчанию, возвращаемое при отсутствии тега, несоответствии типа тега, выполнении на сервере или ошибке парсинга JSON.
+- `remove: boolean = true` — Удалять ли элемент `<script>` из DOM после чтения.
 
 **Возвращает:**
-`T` — Распарсенные данные из тега скрипта или `defaultValue`.
+`T` — Десериализованный объект состояния или `defaultValue`.
 
-```typescript
-import { getHydrationData } from '@dxtmisha/functional-basic'
+## Примеры
 
-// В DOM присутствует:
-// <script id="hydration-data" type="application/json">{"user":"Misha"}</script>
+<Source
+  language='typescript'
+  code={`
+import { getHydrationData, getElementSafeScript } from '@dxtmisha/functional-basic'
 
-const data = getHydrationData('hydration-data', { user: 'Guest' })
-console.log(data) // { user: 'Misha' }
-// Тег <script id="hydration-data"> автоматически удаляется из DOM
-```
+// 1. Базовая клиентская гидратация
+// Предположим, сервер встроил разметку:
+// <script id="app-config" type="application/json">{"theme":"dark","version":2}</script>
+
+interface AppConfig {
+  theme: string
+  version: number
+}
+
+const config = getHydrationData<AppConfig>('app-config', {
+  theme: 'light',
+  version: 1
+})
+console.log(config.theme) // 'dark'
+// Элемент <script id="app-config"> теперь автоматически удален из DOM
+
+// 2. Сохранение тега в DOM (remove = false)
+const preserved = getHydrationData('static-data', { active: false }, false)
+console.log(preserved)
+// Тег <script id="static-data"> остается в DOM
+
+// 3. Безопасный возврат значения по умолчанию при отсутствии тега
+const fallback = getHydrationData('missing-id', { status: 'idle' })
+console.log(fallback) // { status: 'idle' }
+
+// 4. Симметричный раунд-трип с getElementSafeScript
+document.body.innerHTML = getElementSafeScript('sync-token', { token: 'xyz123' })
+const credentials = getHydrationData('sync-token', { token: '' })
+console.log(credentials.token) // 'xyz123'
+  `}
+/>

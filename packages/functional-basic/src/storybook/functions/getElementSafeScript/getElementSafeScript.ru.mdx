@@ -1,31 +1,58 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/functional-basic/Functions/getElementSafeScript - Генерация безопасного скрипта для гидратации'/>
 
 # `getElementSafeScript`
 
-Утилита для генерации безопасного тега `<script type="application/json">`, который используется для передачи данных с сервера на клиент (гидратации).
+Генерирует безопасную строку HTML-элемента `<script type="application/json">`, предназначенную для гидратации данных (SSR-to-client), межпроцессной синхронизации состояния и безопасного встраивания сериализованных данных в DOM.
 
-Эта функция автоматически сериализует данные в JSON (подставляя `'null'`, если `JSON.stringify` возвращает `undefined`), экранирует двойные кавычки (`"` в `&quot;`) в атрибуте `id` и экранирует закрывающие теги `</script>` (`<\\/script`), предотвращая XSS-атаки и ошибки парсинга HTML при встраивании данных.
+## Ключевые возможности
+
+- **Защита от XSS и инъекций закрывающего тега** — Нейтрализует атаки на преждевременное закрытие скрипта, экранируя все варианты тега `</script>` в последовательность `<\\/script>` (включая разный регистр `</Script>`, хвостовые пробелы `</script >`, слеши `</script/>` и теги с атрибутами `</script attr="...">`), предотвращая переключение парсера HTML в режим обычного скрипта.
+- **Надежное экранирование атрибута `id`** — Использует утилиту `encodeAttribute` для полного экранирования специальных символов (`"`, `<`, `>`, `&`, `'`) в идентификаторе, исключая выход из атрибута и внедрение тегов.
+- **Безопасная сериализация JSON** — Корректно обрабатывает значения `undefined`, функции, символы и `null`, безопасно преобразуя их в `'null'` при сериализации в JSON.
+- **Поддержка Юникода и эмодзи** — Прозрачно сохраняет кириллицу, вьетнамскую диакритику, символы CJK и символы астральной плоскости Юникода (многобайтовые эмодзи и суррогатные пары) без искажений.
+- **Симметричная интеграция с `getHydrationData`** — Разработана как парная серверная часть к клиентской функции `getHydrationData`, обеспечивая целостное восстановление сложных структур состояния.
+- **Изоморфность и производительность** — Чистая функция со сложностью сериализации $O(n)$, не зависящая от наличия DOM и готовая к работе в Node.js, Nitro, Bun, Cloudflare Workers и браузере.
 
 **Параметры:**
-- `id: string` — Уникальный идентификатор (ID) тега скрипта.
-- `data: T` — Данные, которые необходимо сериализовать и сохранить в теге (`<T = unknown>`).
+- `id: string | number` — Уникальный DOM-идентификатор тега скрипта. Специальные HTML-символы автоматически экранируются.
+- `data?: T` — Данные для сериализации в JSON (`<T = unknown>`). Если данные опущены или равны `undefined`, записывается `'null'`.
 
 **Возвращает:**
-`string` — Готовая строка с HTML-тегом скрипта.
+`string` — Готовая строка безопасного HTML-тега `<script>` для встраивания в SSR-разметку.
 
-```typescript
-import { getElementSafeScript } from '@dxtmisha/functional-basic'
+## Примеры
 
-const data = { 
-  user: 'Misha', 
-  content: '</script><script>alert(1)</script>' 
+<Source
+  language='typescript'
+  code={`
+import { getElementSafeScript, getHydrationData } from '@dxtmisha/functional-basic'
+
+// 1. Базовая гидратация состояния при SSR
+const appState = {
+  theme: 'dark',
+  user: { id: 42, role: 'admin' },
+  counts: [10, 20, 30]
 }
+const htmlScript = getElementSafeScript('app-state', appState)
+console.log(htmlScript)
+// <script id="app-state" type="application/json">{"theme":"dark","user":{"id":42,"role":"admin"},"counts":[10,20,30]}</script>
 
-console.log(getElementSafeScript('hydration-data', data))
-// Результат:
-// <script id="hydration-data" type="application/json">
-//   {"user":"Misha","content":"<\\/script><script>alert(1)<\\/script>"}
-// </script>
-```
+// 2. Нейтрализация XSS-инъекций (экранирование закрывающего тега скрипта)
+const untrustedPayload = {
+  comment: '</script><script>alert("XSS")</script>'
+}
+console.log(getElementSafeScript('safe-comment', untrustedPayload))
+// <script id="safe-comment" type="application/json">{"comment":"<\\/script><script>alert(\\"XSS\\")<\\/script>"}</script>
+
+// 3. Экранирование атрибута ID
+console.log(getElementSafeScript('user" onfocus="alert(1)', { ok: true }))
+// <script id="user&quot; onfocus=&quot;alert(1)" type="application/json">{"ok":true}</script>
+
+// 4. Симметричный раунд-трип восстановления данных на клиенте
+document.body.innerHTML = getElementSafeScript('sync-data', { counter: 100 })
+const restored = getHydrationData<{ counter: number }>('sync-data', { counter: 0 })
+console.log(restored.counter) // 100
+  `}
+/>

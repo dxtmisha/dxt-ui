@@ -34,15 +34,21 @@ const myErrorCenter = new ErrorCenterInstance([
 ### Hành động
 - `on(cause: ErrorCenterCauseItem): this` — Bắt đầu quá trình xử lý. Hợp nhất dữ liệu từ sổ đăng ký với dữ liệu đầu vào và chuyển nó cho trình xử lý.
 
-### Xác minh
-- `has(code: string, group?: string): boolean` — Tìm kiếm trong sổ đăng ký cục bộ.
-- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Truy xuất dữ liệu từ sổ đăng ký.
+### Xác minh và Truy cập
+- `has(code: string, group?: ErrorCenterGroup): boolean` — Kiểm tra xem lỗi có tồn tại trong sổ đăng ký cục bộ không.
+- `get(code: string, group?: ErrorCenterGroup): ErrorCenterCauseItem | undefined` — Lấy dữ liệu lỗi từ sổ đăng ký.
+- `getHandler(): ErrorCenterHandler` — Trả về thực thể trình xử lý nội bộ.
 
-### Cấu hình
-- `add(cause: ErrorCenterCauseItem): this` — Thêm một lỗi vào sổ đăng ký cục bộ.
-- `addList(causes: ErrorCenterCauseList): this` — Thêm lỗi hàng loạt.
-- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Đăng ký một phản ứng cho nhóm.
-- `addHandlerList(handlers: ErrorCenterHandlerList): this` — Đăng ký hàng loạt các phản ứng.
+### Cấu hình và Vòng đời
+- `add(cause: ErrorCenterCauseItem): this` — Thêm lỗi vào sổ đăng ký cục bộ.
+- `addList(causes: ErrorCenterCauseList): this` — Thêm hàng loạt lỗi.
+- `addCallback(callback: ErrorCenterHandlerCallback): this` — Đăng ký callback toàn cục cho mọi lỗi.
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Đăng ký phản ứng cho nhóm lỗi.
+- `addHandlerList(handlers: ErrorCenterHandlerList): this` — Đăng ký hàng loạt phản ứng.
+- `remove(code: string, group?: ErrorCenterGroup): this` — Xóa nguyên nhân lỗi khỏi sổ đăng ký.
+- `removeHandler(group?: ErrorCenterGroup, handler?: ErrorCenterHandlerCallback): this` — Xóa trình xử lý hoặc toàn bộ nhóm trình xử lý.
+- `removeCallback(callback: ErrorCenterHandlerCallback): this` — Xóa callback toàn cục.
+- `reset(): this` — Đặt lại toàn bộ trình xử lý và callback đã đăng ký.
 - `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this` — Thiết lập cờ hoặc hàm lọc xuất console.
 
 ## Các kiểu dữ liệu

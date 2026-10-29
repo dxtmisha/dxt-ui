@@ -1,28 +1,59 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/capitalize - Viết hoa chữ cái đầu tiên của một chuỗi'/>
 
 # `capitalize`
 
-Viết hoa chữ cái đầu tiên của một chuỗi. Trả về cùng một chuỗi nếu nó trống. Hàm này mạnh mẽ và an toàn cho các đầu vào không phải chuỗi.
+Chuyển đổi ký tự đầu tiên của chuỗi được cung cấp thành chữ hoa trong khi vẫn giữ nguyên trạng thái viết hoa/thường của tất cả các ký tự phía sau. Hoàn toàn đẳng hình (isomorphic), hỗ trợ ngữ cảnh địa phương (locale) và an toàn tuyệt đối với các ký tự thuộc bình diện Unicode mở rộng (astral plane).
+
+## Tính năng chính
+
+- **Hỗ trợ ký tự Astral Plane & Emoji** — Xử lý chính xác các ký tự vượt ngoài phạm vi Basic Multilingual Plane (BMP, mã điểm Unicode > `0xFFFF`, bao gồm các cặp đại diện surrogate pairs, bảng chữ cái SMP và biểu tượng cảm xúc emoji), tránh việc cắt đôi byte UTF-16 làm hỏng chuỗi.
+- **Viết hoa theo ngữ cảnh địa phương (Locale-Aware)** — Hỗ trợ chính xác các quy tắc ngữ cảnh ngôn ngữ (ví dụ chữ `'i'` có dấu chấm trong tiếng Thổ Nhĩ Kỳ `'i'` -> `'İ'` thay vì `'I'`) thông qua mã thẻ BCP 47 trực tiếp (ví dụ `'tr-TR'`) hoặc thông qua cài đặt toàn cục lấy từ `Geo.getLocation()`.
+- **Bảo toàn kiểu literal trong TypeScript** — Tích hợp kiểu tiện ích `Capitalize<T>` nguyên bản của TypeScript cho các chuỗi cố định (`'user'` -> `'User'`), mang lại khả năng suy luận kiểu và tự động hoàn thiện mã chặt chẽ cho tên sự kiện, lớp CSS hoặc khóa thuộc tính.
+- **Ép kiểu an toàn, chống crash ứng dụng** — Tận dụng `toString()` để chuyển đổi an toàn các kiểu dữ liệu không phải chuỗi, bao gồm số (`0`, `-42`), boolean (`false`, `true`), `null` và `undefined` mà không phát sinh ngoại lệ runtime.
+- **Thuần túy, tất định và tương thích SSR** — Hàm thuần túy không có tác dụng phụ, không phụ thuộc vào DOM, thực thi với độ phức tạp $O(1)$ trên môi trường Node.js, Nitro, Bun và trình duyệt.
 
 **Tham số:**
-- `value?: T` — Chuỗi gốc cần viết hoa.
-- `locale: boolean | string = false` — Nếu là `true`, sử dụng địa phương (locale) toàn cục hiện tại (thông qua `Geo.getLocation()`); nếu truyền một chuỗi, sử dụng chuỗi đó làm mã locale cụ thể (ví dụ: `'tr-TR'`).
+- `value?: T | unknown` — Chuỗi hoặc giá trị đầu vào cần viết hoa ký tự đầu. Nếu bỏ trống hoặc là nullish, chuỗi rỗng sẽ được trả về.
+- `locale: boolean | string = false` — Nếu là `true`, sử dụng địa phương toàn cục hiện tại từ `Geo.getLocation()`; nếu là một chuỗi, sử dụng chuỗi đó làm thẻ locale BCP 47 cụ thể (ví dụ: `'tr-TR'`).
 
 **Trả về:**
-`Capitalize<T>` — Chuỗi với chữ cái đầu tiên được viết hoa.
+`Capitalize<T> | string` — Chuỗi với chữ cái đầu tiên đã được viết hoa.
 
-```typescript
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
 import { capitalize, Geo } from '@dxtmisha/functional-basic'
 
-console.log(capitalize('hello')) // 'Hello'
-console.log(capitalize('123'))   // '123'
+// 1. Viết hoa cơ bản
+console.log(capitalize('hello'))     // 'Hello'
+console.log(capitalize('helloWorld')) // 'HelloWorld' (giữ nguyên phần còn lại của chuỗi)
+console.log(capitalize('A'))          // 'A'
+console.log(capitalize(''))           // ''
 
-// Viết hoa theo ngữ cảnh địa phương toàn cục qua Geo
+// 2. Viết hoa theo ngữ cảnh ngôn ngữ (tiếng Thổ Nhĩ Kỳ)
+console.log(capitalize('istanbul', false))     // 'Istanbul'
+console.log(capitalize('istanbul', 'tr-TR'))   // 'İstanbul'
+
+// Sử dụng locale toàn cục thông qua Geo
 Geo.set('tr-TR')
-console.log(capitalize('i', true)) // 'İ'
+console.log(capitalize('i', true))             // 'İ'
 
-// Viết hoa với mã locale được chỉ định trực tiếp
-console.log(capitalize('i', 'tr-TR')) // 'İ'
-```
+// 3. Ký tự Unicode mở rộng và cặp đại diện (> 0xFFFF)
+console.log(capitalize('𐐨abc'))                // '𐐀abc' (chữ Deseret 'ee' -> 'Ee')
+console.log(capitalize('🚀rocket'))             // '🚀rocket' (emoji được bảo toàn nguyên vẹn)
+
+// 4. Ép kiểu an toàn cho các giá trị không phải chuỗi
+console.log(capitalize(0))                     // '0'
+console.log(capitalize(false))                 // 'False'
+console.log(capitalize(null))                  // ''
+console.log(capitalize(undefined))             // ''
+
+// 5. Suy luận kiểu literal trong TypeScript
+const status = capitalize('active' as const)
+// Kiểu của status chính xác là 'Active'
+  `}
+/>

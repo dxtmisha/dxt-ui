@@ -13,19 +13,23 @@ Lớp này hoạt động như một vỏ bọc tĩnh (Static Bridge), chuyển 
 ### Hành động
 - `on(cause: ErrorCenterCauseItem): void` — Bắt đầu quá trình xử lý. Tìm kiếm dữ liệu trong sổ đăng ký, hợp nhất chúng và gọi các callback thích hợp.
 
-### Xác minh
-- `has(code: string, group?: string): boolean` — Kiểm tra xem lỗi đã được đăng ký chưa.
-- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Trả về dữ liệu lỗi từ sổ đăng ký.
+### Xác minh và Truy cập
+- `has(code: string, group?: ErrorCenterGroup): boolean` — Kiểm tra xem lỗi đã được đăng ký chưa.
+- `get(code: string, group?: ErrorCenterGroup): ErrorCenterCauseItem | undefined` — Trả về dữ liệu lỗi từ sổ đăng ký.
+- `getHandler(): ErrorCenterHandler` — Trả về bộ điều phối trình xử lý nội bộ.
+- `getItem(): ErrorCenterInstance` — Trả về thực thể nội bộ của lớp.
 
-### Cấu hình
+### Cấu hình và Vòng đời
 - `add(cause: ErrorCenterCauseItem): void` — Thêm một nguyên nhân lỗi.
 - `addList(causes: ErrorCenterCauseList): void` — Thêm một danh sách lỗi (đăng ký hàng loạt).
+- `addCallback(callback: ErrorCenterHandlerCallback): void` — Đăng ký callback toàn cục cho mọi lỗi.
 - `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Đăng ký phản ứng cho một nhóm lỗi.
 - `addHandlerList(handlers: ErrorCenterHandlerList): void` — Đăng ký hàng loạt nhiều trình xử lý.
+- `remove(code: string, group?: ErrorCenterGroup): void` — Xóa nguyên nhân lỗi khỏi sổ đăng ký.
+- `removeHandler(group?: ErrorCenterGroup, handler?: ErrorCenterHandlerCallback): void` — Xóa trình xử lý hoặc một nhóm trình xử lý.
+- `removeCallback(callback: ErrorCenterHandlerCallback): void` — Xóa callback toàn cục.
+- `reset(): void` — Đặt lại toàn bộ trình xử lý và callback đã đăng ký.
 - `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): void` — Thiết lập cờ hoặc hàm lọc xuất console.
-
-### Bổ trợ
-- `getItem(): ErrorCenterInstance` — Trả về thực thể nội bộ của lớp.
 
 ## Các kiểu dữ liệu
 

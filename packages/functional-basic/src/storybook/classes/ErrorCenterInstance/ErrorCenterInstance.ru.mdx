@@ -34,15 +34,21 @@ const myErrorCenter = new ErrorCenterInstance([
 ### Действие
 - `on(cause: ErrorCenterCauseItem): this` — Запускает процесс обработки. Склеивает данные из реестра с входными данными и передает их обработчику.
 
-### Проверка
-- `has(code: string, group?: string): boolean` — Поиск в локальном реестре.
-- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Получение данных из реестра.
+### Проверка и доступ
+- `has(code: string, group?: ErrorCenterGroup): boolean` — Проверяет наличие ошибки в локальном реестре.
+- `get(code: string, group?: ErrorCenterGroup): ErrorCenterCauseItem | undefined` — Получает данные ошибки из реестра.
+- `getHandler(): ErrorCenterHandler` — Возвращает внутренний экземпляр обработчика.
 
-### Конфигурация
+### Конфигурация и управление
 - `add(cause: ErrorCenterCauseItem): this` — Добавление ошибки в локальный реестр.
 - `addList(causes: ErrorCenterCauseList): this` — Пакетное добавление ошибок.
-- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Регистрация реакции на группу.
-- `addHandlerList(handlers: ErrorCenterHandlerList): this` — Пакетная регистрация реакций.
+- `addCallback(callback: ErrorCenterHandlerCallback): this` — Регистрация глобального обратного вызова при любой ошибке.
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Регистрация реакции на группу ошибок.
+- `addHandlerList(handlers: ErrorCenterHandlerList): this` — Пакетная регистрация реакций на группы.
+- `remove(code: string, group?: ErrorCenterGroup): this` — Удаление причины ошибки из реестра.
+- `removeHandler(group?: ErrorCenterGroup, handler?: ErrorCenterHandlerCallback): this` — Удаление обработчика или всей группы обработчиков.
+- `removeCallback(callback: ErrorCenterHandlerCallback): this` — Удаление глобального обратного вызова.
+- `reset(): this` — Сброс всех зарегистрированных обработчиков и глобальных обратных вызовов.
 - `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this` — Устанавливает флаг или функцию фильтрации вывода в консоль.
 
 ## Типы

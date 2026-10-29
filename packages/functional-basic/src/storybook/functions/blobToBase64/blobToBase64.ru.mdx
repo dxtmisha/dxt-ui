@@ -4,19 +4,23 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `blobToBase64`
 
-Асинхронно преобразует объекты `Blob` или `File` в строку формата Base64 (Data URL).
+Асинхронная изоморфная утилита для преобразования бинарных объектов `Blob` или `File` в строки Base64 с поддержкой готовых Data URL и чистого содержимого Base64 в браузере и на сервере (SSR).
+
+## Ключевые возможности
+
+- **Двухдвижковая изоморфная архитектура** — Автоматически определяет среду через `isDomRuntime()`: использует нативный браузерный `FileReader` на клиенте и Node.js `Buffer` вместе с `blob.arrayBuffer()` в среде SSR/сервера.
+- **Гибкий формат вывода** — По умолчанию формирует готовые RFC 2397 Data URL (например, `data:image/png;base64,...`) для привязки к атрибуту `src` изображений, либо возвращает чистый Base64 при флаге `clean = true` для отправки в JSON API.
+- **Безопасная обработка пустых и null-значений** — Корректно возвращает `undefined` для `null`, `undefined`, пустых `new Blob([])` и срезов нулевой длины без выброса необработанных исключений.
+- **Сохранение MIME-типа** — Точно сохраняет оригинальный `blob.type` в схеме Data URL.
+- **Поддержка Unicode и бинарных данных** — Корректно кодирует любые символы UTF-8 (кириллица, вьетнамские диакритики, CJK, Emoji) и произвольные бинарные байтовые массивы без искажений.
+- **Отказоустойчивость** — Все операции обернуты в `try...catch`, защищая приложение от сбоев чтения поврежденных файлов или отсутствия глобальных интерфейсов.
 
 **Параметры:**
-- `blob: Blob` — Объект `Blob` (или `File`) для преобразования.
-- `clean: boolean = false` — Если `true`, удаляет префикс Data URL (например, `data:image/png;base64,`).
-
-**Среда выполнения:**
-Утилита автоматически определяет доступный метод конвертации:
-- **Браузер**: Использует `FileReader` для чтения содержимого.
-- **Сервер (SSR)**: Использует `Buffer` и асинхронный метод `blob.arrayBuffer()`.
+- `blob?: Blob | null` — Объект `Blob` или `File` для преобразования. Возвращает `undefined`, если аргумент не передан или пуст.
+- `clean: boolean = false` — Если `true`, удаляет префикс схемы Data URL (`data:<mime>;base64,`) и возвращает только строку Base64.
 
 **Возвращает:**
-`Promise<string | undefined>` — Строка Base64 или `undefined`, если конвертация невозможна.
+`Promise<string | undefined>` — Промис, разрешающийся в строку Base64 / Data URL или `undefined`, если входные данные пусты или произошла ошибка чтения.
 
 ## Примеры
 
@@ -25,18 +29,28 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
   code={`
 import { blobToBase64 } from '@dxtmisha/functional-basic'
 
-// 1. По умолчанию (возвращает Data URL)
-const dataUrl = await blobToBase64(file)
-// 'data:image/png;base64,iVBORw0KGgo...'
+// 1. Создание превью изображения для атрибута src (Data URL)
+const fileInput = document.querySelector<HTMLInputElement>('#avatar')
+const file = fileInput?.files?.[0]
 
-// 2. Чистый Base64 (без префикса)
-const rawBase64 = await blobToBase64(file, true)
-// 'iVBORw0KGgo...'
-
-// 3. Обработка случая недоступности API
-const result = await blobToBase64(blob)
-if (result) {
-  // работа со строкой
+const previewUrl = await blobToBase64(file)
+if (previewUrl) {
+  // Готово для привязки к <img :src="previewUrl" />
+  console.log(previewUrl) // 'data:image/png;base64,iVBORw0KGgo...'
 }
+
+// 2. Чистая строка Base64 для отправки в REST API
+const rawBase64 = await blobToBase64(file, true)
+if (rawBase64) {
+  await fetch('/api/upload', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fileData: rawBase64 })
+  })
+}
+
+// 3. Безопасность при передаче null или undefined
+const emptyResult = await blobToBase64(null)
+console.log(emptyResult) // undefined
   `}
 />

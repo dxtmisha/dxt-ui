@@ -1,28 +1,56 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/isDomRuntime - Xác định ngữ cảnh chạy trên trình duyệt'/>
 
 # `isDomRuntime`
 
-Xác định xem mã hiện được thực thi có nằm trong bối cảnh chạy của một trình duyệt web (browser) hay không.
+Tiện ích bảo vệ môi trường thực thi đẳng hình (isomorphic) nhanh chóng và đáng tin cậy, xác định xem mã hiện tại có đang chạy trong môi trường DOM trình duyệt hợp lệ nơi cả `window` và `document` đều khả dụng hay không.
 
-Hoạt động kiểm tra này nhắm đến sự tồn tại của đối tượng toàn cục `window` cũng như thuộc tính song song `window.document`. Tích hợp giải pháp này là cách thức thông dụng để đảm bảo hệ thống gọi các hàm thực thi DOM-API riêng biệt (như điều chỉnh thanh kéo trượt, bắt sự kiện, điều hướng thẻ Element) sẽ không tạo lỗi sập quá trình (crash) đối với kịch bản Kết xuất Phía máy chủ (Server-Side Rendering — SSR) hay trên các bộ lọc Node.js đóng gói.
+## Tính năng chính
+
+- **Xác thực kép an toàn** — Kiểm tra đồng thời cả `typeof window !== 'undefined'` và `Boolean(window.document)`, ngăn chặn báo nhận sai trong môi trường có đối tượng `window` giả lập mà không có cây DOM thực sự.
+- **An toàn tuyệt đối cho SSR & SSG** — Ngăn chặn sập ứng dụng (crash) trong quá trình Kết xuất Phía máy chủ (Nuxt, Next.js, Nitro, Node.js) và tạo trang tĩnh bằng cách bao bọc an toàn các API phụ thuộc DOM như `document.querySelector`, `window.localStorage`, `IntersectionObserver` và bộ lắng nghe sự kiện.
+- **Thực thi $O(1)$ cực nhanh** — Vận hành ở mức độ opcodes cơ bản của engine mà không cấp phát bộ nhớ hay duyệt chuỗi prototype, an toàn cho các lệnh gọi tần suất cao trong lifecycle hook và trạng thái bảo vệ.
+- **Tương thích với Web Worker & Edge Worker** — Trả về `false` chính xác trong môi trường Web Worker, Service Worker và Cloudflare Workers nơi đối tượng toàn cục `self` tồn tại nhưng không hỗ trợ thao tác DOM.
+- **Thuần túy & Không có tác dụng phụ** — Hàm kiểm tra thuần túy, không làm thay đổi trạng thái toàn cục và không gây rò rỉ bộ nhớ.
 
 **Tham số:**
-Cấu trúc lập trình này vận hành hoàn toàn không cần cấp ghép tham số.
+Hàm không nhận bất kỳ tham số nào.
 
 **Trả về:**
-`boolean` — Nhận `true` nếu đoạn mã thi công trong trình duyệt (có biểu thị đối tượng `window` và `document`). Nó chuyển lại `false` nếu kích chạy ở mạn máy chủ (ví dụ quy trình của Node.js hay xây dựng tĩnh — static generation).
+`boolean` — Trả về `true` nếu mã thực thi trong môi trường trình duyệt có hỗ trợ DOM; ngược lại trả về `false` (trong Node.js, SSR hoặc Web Worker).
 
-```typescript
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
 import { isDomRuntime } from '@dxtmisha/functional-basic'
 
+// 1. Thao tác an toàn với DOM và API trình duyệt
 if (isDomRuntime()) {
-  // Tương tác cực kì an toàn đến cửa sổ window.localStorage hay hàm DOM
-  window.localStorage.setItem('visited', 'yes')
-  document.body.classList.add('client-rendered')
+  document.body.classList.add('hydrated')
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 } else {
-  // Xử lý dữ liệu định tuyến logic dành riêng cho máy chủ (SSR)
-  console.log('Rendering on server...')
+  // Xử lý an toàn phía máy chủ
+  console.log('Đang thực thi trong ngữ cảnh Server-Side Rendering (SSR)')
 }
-```
+
+// 2. Truy cập an toàn vào kho lưu trữ cục bộ
+function getStoredTheme(): string {
+  if (isDomRuntime()) {
+    return window.localStorage.getItem('theme') ?? 'light'
+  }
+  return 'light'
+}
+
+// 3. Đăng ký sự kiện cửa sổ có điều kiện
+export function setupWindowResize(handler: () => void): () => void {
+  if (isDomRuntime()) {
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }
+  return () => {}
+}
+  `}
+/>

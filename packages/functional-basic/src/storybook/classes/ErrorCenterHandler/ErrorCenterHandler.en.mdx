@@ -41,12 +41,16 @@ const handlers = new ErrorCenterHandler(
 - `on(cause: ErrorCenterCauseItem): this` — Triggers the chain of handlers and logs to the console if enabled.
 
 ### Verification
-- `has(group: ErrorCenterGroup): boolean` — Checks if there are handlers for a group.
-- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Returns a list of functions for a group.
+- `has(group?: ErrorCenterGroup): boolean` — Checks if there are handlers for a group.
+- `get(group?: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Returns a list of functions for a group.
 
-### Configuration
+### Configuration & Lifecycle
 - `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Adds a single function to a group.
+- `addCallback(callback: ErrorCenterHandlerCallback): this` — Adds a global callback to be executed on any error.
 - `addList(handlers: ErrorCenterHandlerList): this` — Batch registration of handlers.
+- `remove(group?: ErrorCenterGroup, handler?: ErrorCenterHandlerCallback): this` — Removes a specific handler or an entire group of handlers.
+- `removeCallback(callback: ErrorCenterHandlerCallback): this` — Removes a global callback.
+- `reset(): this` — Resets all registered handlers and global callbacks.
 - `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this` — Sets the console output flag or filter function.
 
 ## Types

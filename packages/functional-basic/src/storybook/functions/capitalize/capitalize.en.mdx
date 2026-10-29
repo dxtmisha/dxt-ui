@@ -1,28 +1,59 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/capitalize - Capitalizing the first letter of a string'/>
 
 # `capitalize`
 
-Capitalizes the first letter of a string. Returns the same string if it is empty. The function is robust and safe for non-string inputs.
+Transforms the first character of a given string to uppercase while leaving the remainder of the string unchanged. Fully isomorphic, locale-sensitive, and Unicode astral-plane resilient.
+
+## Key Features
+
+- **Astral Plane & Emoji Resilience** — Accurately handles characters beyond the Basic Multilingual Plane (BMP, code points > `0xFFFF`, such as SMP alphabets, emojis, and surrogate pairs) without slicing high and low surrogates or producing corrupt Unicode sequences.
+- **Locale-Aware Capitalization** — Seamlessly respects language-specific casing rules (such as Turkish/Azerbaijani dotted `'i'` converting to `'İ'` instead of `'I'`) through either an explicit BCP 47 language tag (e.g., `'tr-TR'`) or the ambient global application locale retrieved dynamically via `Geo.getLocation()`.
+- **Compile-Time Literal Type Preservation** — Injects TypeScript's native `Capitalize<T>` utility type for string literals (`'user'` -> `'User'`), enabling robust compile-time autocomplete and type safety for event names, CSS classes, and object property keys.
+- **Permissive & Crash-Proof Input Coercion** — Employs `toString()` to safely handle non-string primitives, numbers (`0`, `-42`), booleans (`false`, `true`), `null`, and `undefined` without throwing runtime exceptions.
+- **Deterministic, Pure & SSR-Safe** — A pure, side-effect-free function with zero DOM dependencies and no mutable module state, executing with $O(1)$ complexity across Node.js, Nitro, Bun, and browser runtimes.
 
 **Parameters:**
-- `value?: T` — The original string to capitalize.
-- `locale: boolean | string = false` — If `true`, uses the current global locale (via `Geo.getLocation()`); if a string is provided, uses it as an explicit locale tag (e.g., `'tr-TR'`).
+- `value?: T | unknown` — The input string or value to capitalize. If omitted or nullish, an empty string is returned.
+- `locale: boolean | string = false` — When set to `true`, uses the current global ambient locale from `Geo.getLocation()`; when a string is provided, uses it as an explicit BCP 47 locale tag (e.g., `'tr-TR'`).
 
 **Returns:**
-`Capitalize<T>` — The string with the first letter capitalized.
+`Capitalize<T> | string` — The capitalized string.
 
-```typescript
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { capitalize, Geo } from '@dxtmisha/functional-basic'
 
-console.log(capitalize('hello')) // 'Hello'
-console.log(capitalize('123'))   // '123'
+// 1. Basic capitalization
+console.log(capitalize('hello'))     // 'Hello'
+console.log(capitalize('helloWorld')) // 'HelloWorld' (preserves casing of the remainder)
+console.log(capitalize('A'))          // 'A'
+console.log(capitalize(''))           // ''
 
-// Locale-aware capitalization using global Geo location
+// 2. Locale-aware capitalization (Turkish dotted 'i')
+console.log(capitalize('istanbul', false))     // 'Istanbul'
+console.log(capitalize('istanbul', 'tr-TR'))   // 'İstanbul'
+
+// Using global ambient Geo locale
 Geo.set('tr-TR')
-console.log(capitalize('i', true)) // 'İ'
+console.log(capitalize('i', true))             // 'İ'
 
-// Locale-aware capitalization using an explicit locale code
-console.log(capitalize('i', 'tr-TR')) // 'İ'
-```
+// 3. Astral plane Unicode characters & surrogate pairs (> 0xFFFF)
+console.log(capitalize('𐐨abc'))                // '𐐀abc' (Deseret small 'ee' -> capital 'ee')
+console.log(capitalize('🚀rocket'))             // '🚀rocket' (emoji preserved intact)
+
+// 4. Safe coercion of non-string values
+console.log(capitalize(0))                     // '0'
+console.log(capitalize(false))                 // 'False'
+console.log(capitalize(null))                  // ''
+console.log(capitalize(undefined))             // ''
+
+// 5. TypeScript compile-time literal inference
+const status = capitalize('active' as const)
+// Type of status is strictly 'Active'
+  `}
+/>

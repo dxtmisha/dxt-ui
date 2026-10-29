@@ -162,4 +162,35 @@ describe('ErrorCenterInstance', () => {
 
     expect(callback).toHaveBeenCalledWith(cause)
   })
+
+  it('should remove handlers and global callbacks via removeHandler, removeCallback, and reset', () => {
+    const handlerFn = vi.fn()
+    const globalFn = vi.fn()
+
+    instance.addHandler('G1', handlerFn)
+    instance.addCallback(globalFn)
+
+    expect(instance.removeHandler('G1', handlerFn)).toBe(instance)
+    expect(instance.removeCallback(globalFn)).toBe(instance)
+
+    instance.on({ code: 'ERR', group: 'G1' })
+    expect(handlerFn).not.toHaveBeenCalled()
+    expect(globalFn).not.toHaveBeenCalled()
+
+    instance.addHandler('G2', handlerFn)
+    expect(instance.reset()).toBe(instance)
+
+    instance.on({ code: 'ERR', group: 'G2' })
+    expect(handlerFn).not.toHaveBeenCalled()
+  })
+
+  it('should return handler instance via getHandler() and remove registered causes via remove()', () => {
+    expect(instance.getHandler()).toBeDefined()
+
+    instance.add({ code: 'DYNAMIC_CAUSE', group: 'DYN', label: 'Dynamic' })
+    expect(instance.has('DYNAMIC_CAUSE', 'DYN')).toBe(true)
+
+    expect(instance.remove('DYNAMIC_CAUSE', 'DYN')).toBe(instance)
+    expect(instance.has('DYNAMIC_CAUSE', 'DYN')).toBe(false)
+  })
 })

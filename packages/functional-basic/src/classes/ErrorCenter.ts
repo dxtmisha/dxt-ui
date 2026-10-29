@@ -1,7 +1,15 @@
 import { ErrorCenterInstance } from './ErrorCenterInstance'
 import { errorCauseList } from '../media/errorCauseList'
 
-import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerIsConsole, ErrorCenterHandlerList } from '../types/errorCenterTypes'
+import type { ErrorCenterHandler } from './ErrorCenterHandler'
+import type {
+  ErrorCenterCauseItem,
+  ErrorCenterCauseList,
+  ErrorCenterGroup,
+  ErrorCenterHandlerCallback,
+  ErrorCenterHandlerIsConsole,
+  ErrorCenterHandlerList
+} from '../types/errorCenterTypes'
 
 /**
  * Class for managing error storage and handling.
@@ -22,9 +30,19 @@ export class ErrorCenter {
    */
   static get(
     code: string,
-    group?: string
+    group?: ErrorCenterGroup
   ): ErrorCenterCauseItem | undefined {
     return this.getItem().get(code, group)
+  }
+
+  /**
+   * Returns the handler instance.
+   *
+   * Возвращает экземпляр обработчика.
+   * @returns handler instance / экземпляр обработчика
+   */
+  static getHandler(): ErrorCenterHandler {
+    return this.getItem().getHandler()
   }
 
   /**
@@ -37,7 +55,7 @@ export class ErrorCenter {
    */
   static has(
     code: string,
-    group?: string
+    group?: ErrorCenterGroup
   ): boolean {
     return this.getItem().has(code, group)
   }
@@ -122,6 +140,55 @@ export class ErrorCenter {
    */
   static addList(causes: ErrorCenterCauseList): void {
     this.getItem().addList(causes)
+  }
+
+  /**
+   * Removes a cause from the storage by code and group.
+   *
+   * Удаляет причину ошибки из хранилища по коду и группе.
+   * @param code error code / код ошибки
+   * @param group error group / группа ошибки
+   */
+  static remove(
+    code: string,
+    group?: ErrorCenterGroup
+  ): void {
+    this.getItem().remove(code, group)
+  }
+
+  /**
+   * Removes a handler or all handlers for a group.
+   *
+   * Удаляет обработчик или все обработчики для группы.
+   * @param group target group / целевая группа
+   * @param handler handler callback / обратный вызов обработчика
+   */
+  static removeHandler(
+    group?: ErrorCenterGroup,
+    handler?: ErrorCenterHandlerCallback
+  ): void {
+    this.getItem().removeHandler(group, handler)
+  }
+
+  /**
+   * Removes a global callback.
+   *
+   * Удаляет глобальный обратный вызов.
+   * @param callback callback function to remove / функция обратного вызова для удаления
+   */
+  static removeCallback(
+    callback: ErrorCenterHandlerCallback
+  ): void {
+    this.getItem().removeCallback(callback)
+  }
+
+  /**
+   * Resets registered handlers and callbacks.
+   *
+   * Сбрасывает зарегистрированные обработчики и обратные вызовы.
+   */
+  static reset(): void {
+    this.getItem().reset()
   }
 
   /**

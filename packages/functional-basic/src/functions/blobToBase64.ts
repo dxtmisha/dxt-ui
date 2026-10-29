@@ -90,9 +90,13 @@ const getDataByBuffer = (arrayBuffer: ArrayBuffer): string => {
  * @returns Promise with the base64 string or undefined if empty / Промис со строкой base64 или undefined, если Blob пустой
  */
 export async function blobToBase64(
-  blob: Blob,
+  blob?: Blob | null,
   clean: boolean = false
 ): Promise<string | undefined> {
+  if (!blob) {
+    return undefined
+  }
+
   try {
     const base64: string | undefined = isDomRuntime()
       ? (await getDataByFileReader(blob))

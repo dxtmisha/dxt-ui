@@ -1,28 +1,63 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/getHydrationData - Truy xuất dữ liệu hydration từ thẻ script'/>
 
 # `getHydrationData`
 
-Một tiện ích để truy xuất và phân tích cú pháp dữ liệu JSON từ thẻ `<script>` trong DOM theo `id` (thường được tạo trên máy chủ thông qua `getElementSafeScript`).
+Truy xuất, giải tuần tự hóa (deserialize) và xác thực dữ liệu trạng thái định dạng JSON được nhúng trong phần tử DOM `<script type="application/json">`, hỗ trợ quá trình hydration trạng thái mượt mà từ máy chủ SSR sang môi trường máy khách.
 
-Trong môi trường trình duyệt (`isDomRuntime()`), hàm tìm phần tử `<script>` theo `id`, phân tích cú pháp `textContent` của nó dưới dạng JSON và tùy chọn xóa thẻ `<script>` khỏi DOM (mặc định `remove = true`). Nếu không tìm thấy phần tử, không phải là thẻ `<script>`, được gọi trong môi trường SSR, hoặc nếu phân tích cú pháp JSON thất bại (được báo cáo qua `ErrorCenter` với `group: 'hydration'`, `code: 'error'`), hàm sẽ trả về `defaultValue` một cách an toàn.
+## Tính năng chính
+
+- **An toàn cho SSR & Đẳng hình (Isomorphic)** — Được bảo vệ bởi `isDomRuntime()`, đảm bảo an toàn tuyệt đối khi thực thi trong môi trường Server-Side Rendering (Node.js, Nitro, Bun, Cloudflare Workers): hàm trả về ngay `defaultValue` mà không gây lỗi tham chiếu biến toàn cục `document`.
+- **Xác thực thẻ DOM nghiêm ngặt** — Kiểm tra chính xác tên thẻ của phần tử tìm thấy (`script.tagName === 'SCRIPT'`), loại trừ trường hợp đọc nhầm dữ liệu từ các phần tử giao diện khác có cùng ID (như `<div>`, `<input>`).
+- **Tự động dọn dẹp DOM (Lifecycle Cleanup)** — Mặc định (`remove = true`), hàm tự động xóa thẻ `<script>` khỏi cây DOM trong khối `finally` ngay sau khi đọc, giải phóng bộ nhớ và ngăn chặn việc đọc lặp lại dữ liệu cũ.
+- **Điều phối lỗi tập trung qua ErrorCenter** — Mọi sự cố phân tích cú pháp JSON hỏng đều được bắt giữ và gửi tới `ErrorCenter` theo mã `group: 'hydration'`, `code: 'error'`, ngăn chặn crash ứng dụng không mong muốn.
+- **Hỗ trợ định danh dạng số và chuỗi** — Chấp nhận ID kiểu `string | number`, duy trì tính đối xứng đồng bộ với tiện ích phía server `getElementSafeScript`.
+- **Hợp đồng kiểu dữ liệu an toàn** — Luôn trả về kiểu `T` có thể dự đoán được (hoặc dữ liệu đã giải mã, hoặc `defaultValue`), không bao giờ trả về `undefined` bất ngờ.
 
 **Tham số:**
-- `id: string` — Mã định danh duy nhất (ID) của thẻ script.
-- `defaultValue: T` — Giá trị mặc định trả về nếu không tìm thấy thẻ script hoặc dữ liệu không hợp lệ.
-- `remove?: boolean` — Có xóa phần tử script khỏi DOM sau khi đọc hay không (mặc định: `true`).
+- `id: string | number` — Thuộc tính ID duy nhất của thẻ `<script>` đích trong DOM.
+- `defaultValue: T` — Giá trị mặc định trả về khi không tìm thấy thẻ, không đúng loại thẻ script, chạy trong môi trường SSR hoặc phân tích cú pháp JSON thất bại.
+- `remove: boolean = true` — Có xóa phần tử script khỏi DOM sau khi đọc xong hay không.
 
 **Trả về:**
-`T` — Dữ liệu đã phân tích cú pháp từ thẻ script, hoặc `defaultValue`.
+`T` — Đối tượng trạng thái đã được giải tuần tự hóa, hoặc `defaultValue`.
 
-```typescript
-import { getHydrationData } from '@dxtmisha/functional-basic'
+## Ví dụ
 
-// Giả sử trong DOM có:
-// <script id="hydration-data" type="application/json">{"user":"Misha"}</script>
+<Source
+  language='typescript'
+  code={`
+import { getHydrationData, getElementSafeScript } from '@dxtmisha/functional-basic'
 
-const data = getHydrationData('hydration-data', { user: 'Guest' })
-console.log(data) // { user: 'Misha' }
-// Thẻ <script id="hydration-data"> tự động bị xóa khỏi DOM
-```
+// 1. Hydration cơ bản phía client
+// Giả sử phía máy chủ đã nhúng:
+// <script id="app-config" type="application/json">{"theme":"dark","version":2}</script>
+
+interface AppConfig {
+  theme: string
+  version: number
+}
+
+const config = getHydrationData<AppConfig>('app-config', {
+  theme: 'light',
+  version: 1
+})
+console.log(config.theme) // 'dark'
+// Thẻ <script id="app-config"> lúc này đã tự động được xóa khỏi DOM
+
+// 2. Giữ lại thẻ script trong DOM (remove = false)
+const preserved = getHydrationData('static-data', { active: false }, false)
+console.log(preserved)
+// Thẻ <script id="static-data"> vẫn tồn tại trong DOM
+
+// 3. Trả về giá trị mặc định khi thẻ script không tồn tại
+const fallback = getHydrationData('missing-id', { status: 'idle' })
+console.log(fallback) // { status: 'idle' }
+
+// 4. Khôi phục trạng thái từ getElementSafeScript
+document.body.innerHTML = getElementSafeScript('sync-token', { token: 'xyz123' })
+const credentials = getHydrationData('sync-token', { token: '' })
+console.log(credentials.token) // 'xyz123'
+  `}
+/>

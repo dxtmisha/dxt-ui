@@ -166,8 +166,8 @@ describe('blobToBase64', () => {
         })
       })
 
-      expect(await blobToBase64(null as unknown as Blob)).toBeUndefined()
-      expect(await blobToBase64(undefined as unknown as Blob)).toBeUndefined()
+      expect(await blobToBase64(null)).toBeUndefined()
+      expect(await blobToBase64(undefined)).toBeUndefined()
     })
   })
 

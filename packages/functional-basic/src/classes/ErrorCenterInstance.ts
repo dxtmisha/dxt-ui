@@ -2,7 +2,14 @@
 
 import { ErrorCenterHandler } from './ErrorCenterHandler'
 
-import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerIsConsole, ErrorCenterHandlerList } from '../types/errorCenterTypes'
+import type {
+  ErrorCenterCauseItem,
+  ErrorCenterCauseList,
+  ErrorCenterGroup,
+  ErrorCenterHandlerCallback,
+  ErrorCenterHandlerIsConsole,
+  ErrorCenterHandlerList
+} from '../types/errorCenterTypes'
 
 /**
  * Class for managing error storage and handling within an instance.
@@ -14,7 +21,9 @@ export class ErrorCenterInstance {
   protected causes: ErrorCenterCauseList = []
 
   /**
-   * Constructor
+   * Constructor for ErrorCenterInstance.
+   *
+   * Конструктор ErrorCenterInstance.
    * @param causes initial list of error causes / начальный список причин ошибок
    * @param handler handler instance / экземпляр обработчика
    */
@@ -37,11 +46,21 @@ export class ErrorCenterInstance {
    */
   get(
     code: string,
-    group?: string
+    group?: ErrorCenterGroup
   ): ErrorCenterCauseItem | undefined {
     return this.causes.find(
       cause => cause.group === group && cause.code === code
     )
+  }
+
+  /**
+   * Returns the handler instance.
+   *
+   * Возвращает экземпляр обработчика.
+   * @returns handler instance / экземпляр обработчика
+   */
+  getHandler(): ErrorCenterHandler {
+    return this.handler
   }
 
   /**
@@ -54,7 +73,7 @@ export class ErrorCenterInstance {
    */
   has(
     code: string,
-    group?: string
+    group?: ErrorCenterGroup
   ): boolean {
     return Boolean(this.get(code, group))
   }
@@ -136,6 +155,65 @@ export class ErrorCenterInstance {
    */
   addList(causes: ErrorCenterCauseList): this {
     this.causes.unshift(...causes)
+    return this
+  }
+
+  /**
+   * Removes a cause from the storage by code and group.
+   *
+   * Удаляет причину ошибки из хранилища по коду и группе.
+   * @param code error code / код ошибки
+   * @param group error group / группа ошибки
+   * @returns this instance / текущий экземпляр
+   */
+  remove(
+    code: string,
+    group?: ErrorCenterGroup
+  ): this {
+    this.causes = this.causes.filter(
+      cause => !(cause.code === code && cause.group === group)
+    )
+    return this
+  }
+
+  /**
+   * Removes a handler or all handlers for a group.
+   *
+   * Удаляет обработчик или все обработчики для группы.
+   * @param group target group / целевая группа
+   * @param handler handler callback / обратный вызов обработчика
+   * @returns this instance / текущий экземпляр
+   */
+  removeHandler(
+    group?: ErrorCenterGroup,
+    handler?: ErrorCenterHandlerCallback
+  ): this {
+    this.handler.remove(group, handler)
+    return this
+  }
+
+  /**
+   * Removes a global callback.
+   *
+   * Удаляет глобальный обратный вызов.
+   * @param callback callback function to remove / функция обратного вызова для удаления
+   * @returns this instance / текущий экземпляр
+   */
+  removeCallback(
+    callback: ErrorCenterHandlerCallback
+  ): this {
+    this.handler.removeCallback(callback)
+    return this
+  }
+
+  /**
+   * Resets registered handlers and callbacks.
+   *
+   * Сбрасывает зарегистрированные обработчики и обратные вызовы.
+   * @returns this instance / текущий экземпляр
+   */
+  reset(): this {
+    this.handler.reset()
     return this
   }
 

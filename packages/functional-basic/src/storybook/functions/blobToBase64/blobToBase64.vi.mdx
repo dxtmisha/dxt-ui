@@ -4,19 +4,23 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `blobToBase64`
 
-Chuyển đổi bất đồng bộ các đối tượng `Blob` hoặc `File` thành chuỗi định dạng Base64 (Data URL).
+Tiện ích đẳng hình (isomorphic) bất đồng bộ giúp chuyển đổi các đối tượng nhị phân `Blob` hoặc `File` thành chuỗi mã hóa Base64, hỗ trợ cả định dạng Data URL lẫn chuỗi Base64 thô trên cả trình duyệt và máy chủ (SSR).
+
+## Tính năng chính
+
+- **Kiến trúc đẳng hình hai cơ chế** — Tự động nhận diện môi trường qua `isDomRuntime()`: sử dụng `FileReader` trên trình duyệt và `Buffer` của Node.js kết hợp `blob.arrayBuffer()` trong môi trường máy chủ/SSR.
+- **Định dạng dữ liệu linh hoạt** — Mặc định tạo Data URL chuẩn RFC 2397 (ví dụ `data:image/png;base64,...`) để gán trực tiếp vào thẻ ảnh `src`, hoặc trả về chuỗi Base64 thuần túy khi truyền `clean = true` phục vụ truyền tải qua JSON API.
+- **Xử lý an toàn giá trị rỗng & null** — Trả về `undefined` một cách an toàn cho `null`, `undefined`, `new Blob([])` rỗng và mảng nhị phân 0 byte mà không gây sập ứng dụng.
+- **Bảo toàn MIME Type** — Giữ nguyên định dạng `blob.type` ban đầu trong chuỗi Data URL được tạo.
+- **Hỗ trợ Unicode và dữ liệu nhị phân toàn diện** — Mã hóa chuẩn xác các ký tự UTF-8 (tiếng Việt có dấu, ký tự Cyrillic, CJK, Emoji) cũng như mảng byte nhị phân tùy ý mà không làm sai lệch dữ liệu.
+- **Khả năng chịu lỗi cao** — Đóng gói toàn bộ quá trình đọc trong khối `try...catch`, ngăn ngừa ngoại lệ khi file lỗi hoặc thiếu API môi trường.
 
 **Tham số:**
-- `blob: Blob` — Đối tượng `Blob` (hoặc `File`) cần chuyển đổi.
-- `clean: boolean = false` — Nếu `true`, loại bỏ tiền tố Data URL (ví dụ: `data:image/png;base64,`).
-
-**Môi trường thực thi:**
-Tiện ích tự động xác định phương pháp chuyển đổi khả dụng:
-- **Trình duyệt**: Sử dụng `FileReader` để đọc nội dung.
-- **Máy chủ (SSR)**: Sử dụng `Buffer` và phương thức bất đồng bộ `blob.arrayBuffer()`.
+- `blob?: Blob | null` — Đối tượng `Blob` hoặc `File` cần chuyển đổi. Trả về `undefined` nếu không truyền hoặc rỗng.
+- `clean: boolean = false` — Nếu `true`, loại bỏ tiền tố sơ đồ Data URL (`data:<mime>;base64,`) và chỉ trả về chuỗi mã hóa Base64.
 
 **Trả về:**
-`Promise<string | undefined>` — Chuỗi Base64 hoặc `undefined` nếu không thể chuyển đổi.
+`Promise<string | undefined>` — Promise chứa chuỗi Base64 / Data URL hoặc `undefined` nếu dữ liệu rỗng hoặc chuyển đổi thất bại.
 
 ## Ví dụ
 
@@ -25,18 +29,28 @@ Tiện ích tự động xác định phương pháp chuyển đổi khả dụn
   code={`
 import { blobToBase64 } from '@dxtmisha/functional-basic'
 
-// 1. Mặc định (trả về Data URL)
-const dataUrl = await blobToBase64(file)
-// 'data:image/png;base64,iVBORw0KGgo...'
+// 1. Tạo liên kết xem trước ảnh cho thẻ src (Data URL)
+const fileInput = document.querySelector<HTMLInputElement>('#avatar')
+const file = fileInput?.files?.[0]
 
-// 2. Base64 thô (không có tiền tố)
-const rawBase64 = await blobToBase64(file, true)
-// 'iVBORw0KGgo...'
-
-// 3. Xử lý trường hợp API không khả dụng
-const result = await blobToBase64(blob)
-if (result) {
-  // làm việc với chuỗi
+const previewUrl = await blobToBase64(file)
+if (previewUrl) {
+  // Gán trực tiếp vào <img :src="previewUrl" />
+  console.log(previewUrl) // 'data:image/png;base64,iVBORw0KGgo...'
 }
+
+// 2. Chuỗi Base64 thuần túy gửi lên REST API
+const rawBase64 = await blobToBase64(file, true)
+if (rawBase64) {
+  await fetch('/api/upload', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fileData: rawBase64 })
+  })
+}
+
+// 3. An toàn khi dữ liệu truyền vào là null hoặc undefined
+const emptyResult = await blobToBase64(null)
+console.log(emptyResult) // undefined
   `}
 />

@@ -1,8 +1,4 @@
-/**
- * Matches double quote characters for HTML attribute escaping /
- * Регулярное выражение для поиска двойных кавычек при экранировании HTML-атрибута
- */
-const REGEXP_DOUBLE_QUOTE = /"/g
+import { encodeAttribute } from './encodeAttribute'
 
 /**
  * Matches closing script tags to prevent premature script termination /
@@ -14,12 +10,12 @@ const REGEXP_CLOSING_SCRIPT = /<\/(script)/gi
  * Generates a safe script tag for data hydration.
  *
  * Генерирует безопасный тег скрипта для гидратации данных.
- * @param id script tag ID / ID тега скрипта
+ * @param id script tag ID / идентификатор тега скрипта
  * @param data data to be stored / данные для хранения
- * @returns generated script tag string / сгенерированная строка тега скрипта
+ * @returns generated script tag string / сгенерированная HTML-строка тега скрипта
  */
-export function getElementSafeScript<T = unknown>(id: string, data: T): string {
-  const safeId = id.replace(REGEXP_DOUBLE_QUOTE, '&quot;')
+export function getElementSafeScript<T = unknown>(id: string | number, data?: T): string {
+  const safeId = encodeAttribute(id)
   const json = JSON.stringify(data)?.replace(REGEXP_CLOSING_SCRIPT, '<\\/$1') ?? 'null'
 
   return `<script id="${safeId}" type="application/json">${json}</script>`

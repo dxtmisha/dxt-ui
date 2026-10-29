@@ -1,31 +1,54 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/executeFunction - Execute function or return value'/>
 
 # `executeFunction`
 
-A flexible utility designed to handle arguments that can be either a static value or a function. If the provided argument is a function, `executeFunction` invokes it with the specified arguments and returns the result. Otherwise, it returns the argument itself.
+A foundational isomorphic utility that conditionally executes a value if it is a function, or returns it directly as-is if it is a static value.
 
-This pattern is highly effective for implementing lazy evaluation, dynamic default values, or configuration properties that can be either fixed or computed.
+## Key Features
+
+- **Polymorphic Value Resolution** — Seamlessly resolves values that can be either statically defined or dynamically computed via callbacks (`T | (() => T)`), eliminating repetitive `typeof value === 'function'` branches.
+- **Arbitrary Argument Forwarding** — Supports passing any number of typed arguments (`...args: Args`) to the callback function with full TypeScript parameter inference and zero type assertions.
+- **Non-Function Value Preservation** — Returns primitives (including `0`, `false`, `""`, `null`, `undefined`), objects, arrays, Maps, Sets, and class instances untouched by reference when they are not callable.
+- **Single-Execution Guarantee** — If the callback returns another function, only the outer function is executed, ensuring deterministic one-level evaluation without unintended recursive invocation.
+- **Zero-Dependency & SSR Safe** — Pure isomorphic utility executing with $O(1)$ overhead and zero DOM requirements across Node.js, Nitro, Bun, Cloudflare Workers, and browser environments.
 
 **Parameters:**
-- `callback: T | FunctionArgs<never, T> | ((...args: Args) => T)` — The value to process. Can be a literal value or a function returning type `T`.
-- `...args: Args` — Arguments to pass to the function if `callback` is callable.
+- `callback: T | FunctionArgs<never, T> | ((...args: Args) => T)` — The value to resolve. Can be a static value or a callable function returning type `T`.
+- `...args: Args` — Arguments forwarded to the function if `callback` is callable.
 
 **Returns:**
-`T` — The result of the function execution or the raw value.
+`T` — The returned value from function execution, or the original static value.
 
-```typescript
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { executeFunction } from '@dxtmisha/functional-basic'
 
-// 1. Static value handling
+// 1. Static primitive and object values
 console.log(executeFunction('Hello')) // 'Hello'
+console.log(executeFunction(42))      // 42
+console.log(executeFunction(false))   // false
 
-// 2. Dynamic execution
-const getLabel = (prefix: string) => `${prefix}: Dynamic Label`
-console.log(executeFunction(getLabel, 'Admin')) // 'Admin: Dynamic Label'
+const config = { theme: 'dark' }
+console.log(executeFunction(config) === config) // true (same reference)
 
-// 3. Conditional logic in caller
-const value = Math.random() > 0.5 ? 'Static' : () => 'Computed'
-console.log(executeFunction(value)) // either 'Static' or 'Computed'
-```
+// 2. Zero-argument function (lazy evaluation)
+const computeExpensiveDefault = () => 100 * 2
+console.log(executeFunction(computeExpensiveDefault)) // 200
+
+// 3. Dynamic callback with forwarded arguments
+const formatGreeting = (name: string, role: string) => \`\${role} \${name}\`
+console.log(executeFunction(formatGreeting, 'Alice', 'Engineer')) // 'Engineer Alice'
+
+// 4. Handling polymorphic component props (static value or getter)
+function resolveProp<T>(prop: T | (() => T)): T {
+  return executeFunction(prop)
+}
+console.log(resolveProp('static title')) // 'static title'
+console.log(resolveProp(() => 'dynamic title')) // 'dynamic title'
+  `}
+/>

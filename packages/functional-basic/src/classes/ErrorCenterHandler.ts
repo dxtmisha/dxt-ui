@@ -2,7 +2,14 @@
 
 import { executeFunction } from '../functions/executeFunction'
 import { isDomRuntime } from '../functions/isDomRuntime'
-import type { ErrorCenterCauseItem, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerIsConsole, ErrorCenterHandlerItem, ErrorCenterHandlerList } from '../types/errorCenterTypes'
+import type {
+  ErrorCenterCauseItem,
+  ErrorCenterGroup,
+  ErrorCenterHandlerCallback,
+  ErrorCenterHandlerIsConsole,
+  ErrorCenterHandlerItem,
+  ErrorCenterHandlerList
+} from '../types/errorCenterTypes'
 
 /**
  * Class for managing and triggering error handlers.
@@ -20,7 +27,9 @@ export class ErrorCenterHandler {
   protected isConsole: ErrorCenterHandlerIsConsole = true
 
   /**
-   * Constructor
+   * Constructor for ErrorCenterHandler.
+   *
+   * Конструктор ErrorCenterHandler.
    * @param handlers initial handlers list / начальный список обработчиков
    * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
    */
@@ -41,7 +50,7 @@ export class ErrorCenterHandler {
    * @param group error group / группа ошибки
    * @returns handler item or undefined / элемент обработчика или undefined
    */
-  get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined {
+  get(group?: ErrorCenterGroup): ErrorCenterHandlerItem | undefined {
     return this.handlers.find(cause => cause.group === group)
   }
 
@@ -52,7 +61,7 @@ export class ErrorCenterHandler {
    * @param group error group / группа ошибки
    * @returns true if handlers exist / true, если обработчики существуют
    */
-  has(group: ErrorCenterGroup): boolean {
+  has(group?: ErrorCenterGroup): boolean {
     return Boolean(this.get(group))
   }
 
@@ -125,6 +134,61 @@ export class ErrorCenterHandler {
         handler => this.add(handlerGroup.group, handler)
       )
     )
+    return this
+  }
+
+  /**
+   * Removes a handler or all handlers for a group.
+   *
+   * Удаляет обработчик или все обработчики для группы.
+   * @param group error group / группа ошибки
+   * @param handler callback function to remove / функция обратного вызова для удаления
+   * @returns this instance / текущий экземпляр
+   */
+  remove(
+    group?: ErrorCenterGroup,
+    handler?: ErrorCenterHandlerCallback
+  ): this {
+    if (handler) {
+      const item = this.get(group)
+
+      if (item) {
+        item.handlers = item.handlers.filter(current => current !== handler)
+
+        if (item.handlers.length === 0) {
+          this.handlers = this.handlers.filter(current => current !== item)
+        }
+      }
+    } else {
+      this.handlers = this.handlers.filter(item => item.group !== group)
+    }
+
+    return this
+  }
+
+  /**
+   * Removes a global callback.
+   *
+   * Удаляет глобальный обратный вызов.
+   * @param callback callback function to remove / функция обратного вызова для удаления
+   * @returns this instance / текущий экземпляр
+   */
+  removeCallback(
+    callback: ErrorCenterHandlerCallback
+  ): this {
+    this.callbacks = this.callbacks.filter(current => current !== callback)
+    return this
+  }
+
+  /**
+   * Resets all registered handlers and callbacks.
+   *
+   * Сбрасывает все зарегистрированные обработчики и обратные вызовы.
+   * @returns this instance / текущий экземпляр
+   */
+  reset(): this {
+    this.handlers = []
+    this.callbacks = []
     return this
   }
 

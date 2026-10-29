@@ -1,31 +1,54 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/executeFunction - Thực thi hàm hoặc trả về giá trị'/>
 
 # `executeFunction`
 
-Một tiện ích linh hoạt được thiết kế để xử lý các đối số có thể là giá trị tĩnh hoặc hàm. Nếu đối số được cung cấp là một hàm, `executeFunction` sẽ gọi hàm đó với các đối số đã chỉ định và trả về kết quả. Nếu không, nó sẽ trả về chính đối số đó.
+Tiện ích đẳng hình (isomorphic) nền tảng giúp thực thi một giá trị nếu nó là hàm, hoặc trả về trực tiếp giá trị đó nếu nó là giá trị tĩnh hoặc đối tượng.
 
-Mô hình này rất hiệu quả để triển khai tính toán lười biếng (lazy evaluation), các giá trị mặc định động hoặc các thuộc tính cấu hình có thể cố định hoặc được tính toán.
+## Tính năng chính
+
+- **Giải quyết giá trị đa hình** — Xử lý đồng nhất các giá trị có thể được định nghĩa tĩnh hoặc được tính toán động thông qua hàm callback (`T | (() => T)`), loại bỏ các đoạn mã kiểm tra thủ công `typeof value === 'function'`.
+- **Chuyển tiếp đối số tùy ý** — Hỗ trợ truyền bất kỳ số lượng đối số có kiểu dữ liệu (`...args: Args`) vào hàm callback với khả năng suy luận tham số TypeScript hoàn chỉnh mà không cần ép kiểu.
+- **Bảo toàn các giá trị không thể gọi** — Giữ nguyên vẹn các giá trị nguyên thủy (bao gồm `0`, `false`, `""`, `null`, `undefined`), đối tượng, mảng, Map, Set và các thể hiện lớp theo tham chiếu gốc khi chúng không phải là hàm.
+- **Đảm bảo thực thi một cấp** — Nếu callback trả về một hàm khác, chỉ hàm bên ngoài được gọi, đảm bảo tính tất định và không bị gọi đệ quy ngoài ý muốn.
+- **Không phụ thuộc & An toàn cho SSR** — Hàm thuần túy với chi phí thực thi $O(1)$, hoàn toàn độc lập với DOM và chạy ổn định trên Node.js, Nitro, Bun, Cloudflare Workers và trình duyệt.
 
 **Tham số:**
-- `callback: T | FunctionArgs<never, T> | ((...args: Args) => T)` — Giá trị cần xử lý. Có thể là một giá trị cụ thể hoặc một hàm trả về kiểu `T`.
-- `...args: Args` — Các đối số được truyền vào hàm nếu `callback` có thể gọi được.
+- `callback: T | FunctionArgs<never, T> | ((...args: Args) => T)` — Giá trị cần xử lý. Có thể là giá trị tĩnh, đối tượng hoặc một hàm trả về kiểu `T`.
+- `...args: Args` — Các đối số được chuyển tiếp vào hàm nếu `callback` là hàm có thể gọi.
 
 **Trả về:**
-`T` — Kết quả của việc thực thi hàm hoặc chính giá trị ban đầu.
+`T` — Kết quả từ việc thực thi hàm, hoặc chính giá trị ban đầu.
 
-```typescript
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
 import { executeFunction } from '@dxtmisha/functional-basic'
 
-// 1. Xử lý giá trị tĩnh
+// 1. Giá trị nguyên thủy và đối tượng tĩnh
 console.log(executeFunction('Xin chào')) // 'Xin chào'
+console.log(executeFunction(42))         // 42
+console.log(executeFunction(false))      // false
 
-// 2. Thực thi động
-const getLabel = (prefix: string) => `${prefix}: Nhãn động`
-console.log(executeFunction(getLabel, 'Admin')) // 'Admin: Nhãn động'
+const config = { theme: 'dark' }
+console.log(executeFunction(config) === config) // true (cùng tham chiếu)
 
-// 3. Logic điều kiện trong cuộc gọi
-const value = Math.random() > 0.5 ? 'Tĩnh' : () => 'Đã tính toán'
-console.log(executeFunction(value)) // 'Tĩnh' hoặc 'Đã tính toán'
-```
+// 2. Hàm không có đối số (tính toán lười biếng)
+const computeExpensiveDefault = () => 100 * 2
+console.log(executeFunction(computeExpensiveDefault)) // 200
+
+// 3. Callback động với đối số được chuyển tiếp
+const formatGreeting = (name: string, role: string) => \`\${role} \${name}\`
+console.log(executeFunction(formatGreeting, 'Alice', 'Kỹ sư')) // 'Kỹ sư Alice'
+
+// 4. Xử lý prop đa hình trong component (giá trị tĩnh hoặc getter)
+function resolveProp<T>(prop: T | (() => T)): T {
+  return executeFunction(prop)
+}
+console.log(resolveProp('tiêu đề tĩnh')) // 'tiêu đề tĩnh'
+console.log(resolveProp(() => 'tiêu đề động')) // 'tiêu đề động'
+  `}
+/>

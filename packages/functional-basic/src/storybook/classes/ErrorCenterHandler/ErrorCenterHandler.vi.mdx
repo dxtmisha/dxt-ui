@@ -41,12 +41,16 @@ const handlers = new ErrorCenterHandler(
 - `on(cause: ErrorCenterCauseItem): this` — Kích hoạt chuỗi trình xử lý và ghi log ra console nếu được bật.
 
 ### Xác minh
-- `has(group: ErrorCenterGroup): boolean` — Kiểm tra xem có trình xử lý cho một nhóm không.
-- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Trả về danh sách các hàm cho một nhóm.
+- `has(group?: ErrorCenterGroup): boolean` — Kiểm tra xem có trình xử lý cho một nhóm không.
+- `get(group?: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Trả về danh sách các hàm cho một nhóm.
 
-### Cấu hình
+### Cấu hình và Vòng đời
 - `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Thêm một hàm vào một nhóm.
+- `addCallback(callback: ErrorCenterHandlerCallback): this` — Thêm một callback toàn cục thực thi trên bất kỳ lỗi nào.
 - `addList(handlers: ErrorCenterHandlerList): this` — Đăng ký hàng loạt các trình xử lý.
+- `remove(group?: ErrorCenterGroup, handler?: ErrorCenterHandlerCallback): this` — Xóa một trình xử lý cụ thể hoặc toàn bộ nhóm trình xử lý.
+- `removeCallback(callback: ErrorCenterHandlerCallback): this` — Xóa callback toàn cục.
+- `reset(): this` — Đặt lại toàn bộ trình xử lý và callback đã đăng ký.
 - `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this` — Thiết lập cờ hoặc hàm lọc xuất console.
 
 ## Các kiểu dữ liệu

@@ -1,31 +1,58 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/getElementSafeScript - Tạo một script an toàn cho hydration'/>
 
 # `getElementSafeScript`
 
-Một tiện ích để tạo thẻ `<script type="application/json">` an toàn, được sử dụng để chuyển dữ liệu từ máy chủ sang máy khách (hydration).
+Tạo chuỗi phần tử HTML `<script type="application/json">` an toàn chống chèn mã độc (injection-safe), được tối ưu hóa cho quá trình truyền dữ liệu từ máy chủ sang máy khách (SSR-to-client hydration), đồng bộ hóa trạng thái và nhúng dữ liệu được tuần tự hóa.
 
-Hàm này tự động tuần tự hóa dữ liệu thành JSON (mặc định là `'null'` nếu `JSON.stringify` trả về `undefined`), thoát các dấu ngoặc kép (`"` thành `&quot;`) trong thuộc tính `id`, và thoát các thẻ đóng `</script>` (`<\\/script`), ngăn chặn các cuộc tấn công XSS và lỗi phân tích cú pháp HTML khi nhúng dữ liệu.
+## Tính năng chính
+
+- **Ngăn chặn XSS & Đóng thẻ script sớm** — Vô hiệu hóa các cuộc tấn công phá vỡ ngữ cảnh script HTML bằng cách thoát toàn bộ các biến thể của thẻ đóng `</script>` thành `<\\/script>` (bao gồm chữ hoa/thường `</Script>`, khoảng trắng cuối `</script >`, dấu gạch chéo cuối `</script/>` và thẻ có thuộc tính `</script attr="...">`), ngăn parser HTML của trình duyệt đóng script trước thời hạn.
+- **Thoát ký tự thuộc tính `id` mạnh mẽ** — Tận dụng tiện ích `encodeAttribute` để thoát toàn diện các ký tự đặc biệt (`"`, `<`, `>`, `&`, `'`) trong thuộc tính định danh, loại bỏ hoàn toàn nguy cơ thoát thuộc tính và tiêm thẻ HTML.
+- **Tuần tự hóa JSON an toàn** — Chuyển đổi an toàn các giá trị `undefined`, hàm, symbol và `null` thành chuỗi `'null'`, đảm bảo đầu ra JSON luôn hợp lệ.
+- **Bảo toàn Unicode & Ký tự đa ngôn ngữ** — Giữ nguyên vẹn văn bản tiếng Việt có dấu, chữ Cyrillic, ký tự CJK và các biểu tượng cảm xúc emoji đa byte (thuộc bình diện mở rộng astral plane) mà không bị lỗi font hay hỏng mã hóa.
+- **Tích hợp đồng bộ với `getHydrationData`** — Được thiết kế để làm việc đối xứng với tiện ích `getHydrationData` phía client, bảo đảm khôi phục dữ liệu nguyên vẹn không mất mát.
+- **Thuần túy & Đẳng hình (Isomorphic)** — Hàm thuần túy không có tác dụng phụ, không phụ thuộc vào DOM, thực thi với hiệu năng $O(n)$ trên Node.js, Nitro, Bun, Cloudflare Workers và trình duyệt.
 
 **Tham số:**
-- `id: string` — Mã định danh duy nhất (ID) cho thẻ script.
-- `data: T` — Dữ liệu cần được tuần tự hóa và lưu trữ trong thẻ (`<T = unknown>`).
+- `id: string | number` — Định danh DOM duy nhất cho thẻ script. Các ký tự HTML đặc biệt được tự động mã hóa an toàn.
+- `data?: T` — Dữ liệu cần tuần tự hóa sang JSON (`<T = unknown>`). Nếu bỏ trống hoặc là `undefined`, `'null'` sẽ được lưu trữ.
 
 **Trả về:**
-`string` — Một chuỗi chứa thẻ script HTML đã sẵn sàng.
+`string` — Chuỗi thẻ HTML `<script>` an toàn, sẵn sàng để nhúng vào mã nguồn SSR.
 
-```typescript
-import { getElementSafeScript } from '@dxtmisha/functional-basic'
+## Ví dụ
 
-const data = { 
-  user: 'Misha', 
-  content: '</script><script>alert(1)</script>' 
+<Source
+  language='typescript'
+  code={`
+import { getElementSafeScript, getHydrationData } from '@dxtmisha/functional-basic'
+
+// 1. Hydration trạng thái ứng dụng SSR cơ bản
+const appState = {
+  theme: 'dark',
+  user: { id: 42, role: 'admin' },
+  counts: [10, 20, 30]
 }
+const htmlScript = getElementSafeScript('app-state', appState)
+console.log(htmlScript)
+// <script id="app-state" type="application/json">{"theme":"dark","user":{"id":42,"role":"admin"},"counts":[10,20,30]}</script>
 
-console.log(getElementSafeScript('hydration-data', data))
-// Kết quả:
-// <script id="hydration-data" type="application/json">
-//   {"user":"Misha","content":"<\\/script><script>alert(1)<\\/script>"}
-// </script>
-```
+// 2. Vô hiệu hóa XSS (thoát thẻ đóng script)
+const untrustedPayload = {
+  comment: '</script><script>alert("XSS")</script>'
+}
+console.log(getElementSafeScript('safe-comment', untrustedPayload))
+// <script id="safe-comment" type="application/json">{"comment":"<\\/script><script>alert(\\"XSS\\")<\\/script>"}</script>
+
+// 3. Thoát thuộc tính ID an toàn
+console.log(getElementSafeScript('user" onfocus="alert(1)', { ok: true }))
+// <script id="user&quot; onfocus=&quot;alert(1)" type="application/json">{"ok":true}</script>
+
+// 4. Khôi phục dữ liệu hoàn chỉnh phía máy khách
+document.body.innerHTML = getElementSafeScript('sync-data', { counter: 100 })
+const restored = getHydrationData<{ counter: number }>('sync-data', { counter: 0 })
+console.log(restored.counter) // 100
+  `}
+/>

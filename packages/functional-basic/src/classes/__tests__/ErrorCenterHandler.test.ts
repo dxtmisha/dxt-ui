@@ -156,4 +156,83 @@ describe('ErrorCenterHandler', () => {
     handler.on(loggedCause)
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center: LOG_ME')
   })
+
+  it('should remove a specific handler from a group', () => {
+    const callback1 = vi.fn()
+    const callback2 = vi.fn()
+
+    handler.add('api', callback1)
+    handler.add('api', callback2)
+
+    expect(handler.remove('api', callback1)).toBe(handler)
+
+    const cause: ErrorCenterCauseItem = { code: 'API_ERR', group: 'api' }
+    handler.on(cause)
+
+    expect(callback1).not.toHaveBeenCalled()
+    expect(callback2).toHaveBeenCalledWith(cause)
+    expect(handler.has('api')).toBe(true)
+
+    handler.remove('api', callback2)
+    expect(handler.has('api')).toBe(false)
+  })
+
+  it('should remove all handlers for a group when no handler argument is passed', () => {
+    const callback1 = vi.fn()
+    const callback2 = vi.fn()
+
+    handler.add('auth', callback1)
+    handler.add('auth', callback2)
+    expect(handler.has('auth')).toBe(true)
+
+    expect(handler.remove('auth')).toBe(handler)
+    expect(handler.has('auth')).toBe(false)
+
+    const cause: ErrorCenterCauseItem = { code: 'AUTH_ERR', group: 'auth' }
+    handler.on(cause)
+
+    expect(callback1).not.toHaveBeenCalled()
+    expect(callback2).not.toHaveBeenCalled()
+  })
+
+  it('should remove a global callback using removeCallback', () => {
+    const callback1 = vi.fn()
+    const callback2 = vi.fn()
+
+    handler.addCallback(callback1)
+    handler.addCallback(callback2)
+
+    expect(handler.removeCallback(callback1)).toBe(handler)
+
+    const cause: ErrorCenterCauseItem = { code: 'ERR_ALL' }
+    handler.on(cause)
+
+    expect(callback1).not.toHaveBeenCalled()
+    expect(callback2).toHaveBeenCalledWith(cause)
+  })
+
+  it('should reset all handlers and callbacks on reset()', () => {
+    const groupCallback = vi.fn()
+    const globalCallback = vi.fn()
+
+    handler.add('api', groupCallback)
+    handler.addCallback(globalCallback)
+
+    expect(handler.has('api')).toBe(true)
+    expect(handler.reset()).toBe(handler)
+
+    expect(handler.has('api')).toBe(false)
+
+    const cause: ErrorCenterCauseItem = { code: 'RESET_TEST', group: 'api' }
+    handler.on(cause)
+
+    expect(groupCallback).not.toHaveBeenCalled()
+    expect(globalCallback).not.toHaveBeenCalled()
+  })
+
+  it('should handle remove on non-existent group gracefully', () => {
+    const fn = vi.fn()
+    expect(handler.remove('unknown', fn)).toBe(handler)
+    expect(handler.remove('unknown')).toBe(handler)
+  })
 })

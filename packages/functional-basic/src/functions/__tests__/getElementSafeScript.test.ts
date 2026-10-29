@@ -97,6 +97,9 @@ describe('getElementSafeScript', () => {
       expect(getElementSafeScript('undef', undefined)).toBe(
         '<script id="undef" type="application/json">null</script>'
       )
+      expect(getElementSafeScript('omitted-data')).toBe(
+        '<script id="omitted-data" type="application/json">null</script>'
+      )
     })
 
     it('should serialize functions and symbols safely to null', () => {
@@ -144,6 +147,17 @@ describe('getElementSafeScript', () => {
       const result = getElementSafeScript(maliciousId, { ok: true })
       expect(result).toContain('id="payload&quot; onfocus=&quot;alert(1)"')
       expect(result.startsWith('<script id="payload&quot; onfocus=&quot;alert(1)"')).toBe(true)
+    })
+
+    it('should escape angle brackets in script ID to prevent tag injection', () => {
+      const tagBreakoutId = 'bad<script>tag>'
+      const result = getElementSafeScript(tagBreakoutId, { ok: true })
+      expect(result).toContain('id="bad&lt;script&gt;tag&gt;"')
+    })
+
+    it('should safely support numeric script IDs', () => {
+      const result = getElementSafeScript(12345, { count: 1 })
+      expect(result).toBe('<script id="12345" type="application/json">{"count":1}</script>')
     })
 
     it('should escape multiple consecutive double quotes in ID', () => {
@@ -274,7 +288,7 @@ describe('getElementSafeScript', () => {
       const scriptHtml = getElementSafeScript('xss-sync', originalData)
       document.body.innerHTML = scriptHtml
 
-      const restoredData = getHydrationData('xss-sync', null)
+      const restoredData = getHydrationData<{ content: string } | null>('xss-sync', null)
       expect(restoredData).toEqual(originalData)
       expect(restoredData?.content).toBe('</script><script>alert("payload")</script>')
     })

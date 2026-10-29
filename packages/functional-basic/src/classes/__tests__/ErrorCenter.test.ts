@@ -82,10 +82,8 @@ describe('ErrorCenter', () => {
     const result = ErrorCenter.addHandlerList(list)
     expect(result).toBeUndefined()
 
-    // @ts-expect-error: Accessing protected member to verify registered handlers
-    expect(ErrorCenter.getItem().handler.has('G1')).toBe(true)
-    // @ts-expect-error: Accessing protected member to verify registered handlers
-    expect(ErrorCenter.getItem().handler.has('G2')).toBe(true)
+    expect(ErrorCenter.getHandler().has('G1')).toBe(true)
+    expect(ErrorCenter.getHandler().has('G2')).toBe(true)
   })
 
   it('should register a global callback that runs on every error via static addCallback()', () => {
@@ -112,5 +110,32 @@ describe('ErrorCenter', () => {
 
     ErrorCenter.on({ code: 'ALLOWED', message: 'Allowed' })
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center: ALLOWED')
+  })
+
+  it('should remove handlers and callbacks via static removeHandler, removeCallback, and reset', () => {
+    const handlerFn = vi.fn()
+    const globalFn = vi.fn()
+
+    ErrorCenter.addHandler('TEMP_G', handlerFn)
+    ErrorCenter.addCallback(globalFn)
+
+    ErrorCenter.removeHandler('TEMP_G', handlerFn)
+    ErrorCenter.removeCallback(globalFn)
+
+    ErrorCenter.on({ code: 'TEST', group: 'TEMP_G' })
+    expect(handlerFn).not.toHaveBeenCalled()
+    expect(globalFn).not.toHaveBeenCalled()
+
+    ErrorCenter.addHandler('TEMP_G2', handlerFn)
+    ErrorCenter.reset()
+
+    ErrorCenter.on({ code: 'TEST', group: 'TEMP_G2' })
+    expect(handlerFn).not.toHaveBeenCalled()
+
+    ErrorCenter.add({ code: 'STATIC_CAUSE', group: 'TEMP_G', label: 'Static Cause' })
+    expect(ErrorCenter.has('STATIC_CAUSE', 'TEMP_G')).toBe(true)
+
+    ErrorCenter.remove('STATIC_CAUSE', 'TEMP_G')
+    expect(ErrorCenter.has('STATIC_CAUSE', 'TEMP_G')).toBe(false)
   })
 })

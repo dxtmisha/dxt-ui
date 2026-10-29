@@ -1,23 +1,60 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/arrFill - Tạo mảng được điền giá trị'/>
 
 # `arrFill`
 
-Định hình và trả về một mảng có kích thước được chỉ định, chứa toàn các giá trị giống nhau.
+Tiện ích hiệu năng cao giúp tạo và trả về một mảng đặc (dense array) với kích thước được chỉ định, chứa toàn bộ các giá trị hoặc tham chiếu giống nhau.
 
-Điều này hữu ích cho việc nhanh chóng tạo các bộ khung (skeletons) chờ tải trang, khởi tạo trạng thái ban đầu hoặc danh sách mặc định.
+## Tính năng chính
+
+- **Cấp phát bộ nhớ gốc $O(n)$ nhanh chóng** — Tận dụng trực tiếp phương thức `Array(count).fill(value)` của engine JavaScript để cấp phát bộ nhớ liên tục và khởi tạo phần tử tức thì.
+- **Đảm bảo mảng đặc (Dense Array)** — Khác với `new Array(count)` tạo mảng thưa chứa các ô trống (holes) bị bỏ qua khi duyệt, `arrFill` tạo mảng đặc với mọi chỉ mục được khởi tạo đầy đủ, đảm bảo duyệt qua được bởi `.map()`, `.filter()`, `.forEach()` và vòng lặp `for...of`.
+- **Chia sẻ tham chiếu (Reference Sharing)** — Khi điền các đối tượng phức tạp (đối tượng, mảng, hàm), mọi vị trí trong mảng đều trỏ tới cùng một thể hiện bộ nhớ, giúp tối ưu hóa dung lượng khi tạo skeleton, placeholder hoặc dữ liệu mặc định.
+- **Bảo toàn kiểu TypeScript nghiêm ngặt** — Giữ nguyên tham số kiểu tổng quát `T`, trả về mảng có kiểu rõ ràng `T[]` mà không làm mở rộng kiểu hoặc yêu cầu ép kiểu thủ công.
+- **Xử lý an toàn giá trị biên** — Trả về mảng rỗng `[]` khi `count === 0`, và tuân thủ đặc tả ECMAScript khi ném ngoại lệ `RangeError` chuẩn nếu độ dài không hợp lệ (số âm, số thập phân, `NaN`, `Infinity`).
+- **Đẳng hình & Sẵn sàng cho SSR** — Hàm thuần túy không có tác dụng phụ, không phụ thuộc vào DOM hoặc trình duyệt, an toàn tuyệt đối cho Server-Side Rendering (SSR/SSG).
 
 **Tham số:**
-- `value: T` — giá trị để điền vào mảng.
-- `count: number` — số lượng phần tử trong mảng đó.
+- `value: T` — Giá trị hoặc tham chiếu đối tượng để điền vào từng phần tử của mảng.
+- `count: number` — Số lượng phần tử của mảng cần tạo.
 
 **Trả về:**
-`T[]` — một mảng được điền với giá trị đã chỉ định.
+`T[]` — Mảng đặc có độ dài `count` chứa giá trị được chỉ định ở mỗi phần tử.
 
-```typescript
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
 import { arrFill } from '@dxtmisha/functional-basic'
 
-const array = arrFill('a', 3)
-console.log(array) // ['a', 'a', 'a']
-```
+// 1. Giá trị nguyên thủy (chuỗi, số, boolean)
+const tags = arrFill('badge', 3)
+console.log(tags) // ['badge', 'badge', 'badge']
+
+const counters = arrFill(0, 4)
+console.log(counters) // [0, 0, 0, 0]
+
+const flags = arrFill(false, 2)
+console.log(flags) // [false, false]
+
+// 2. Tạo phần tử giữ chỗ (skeleton loading)
+const skeletonItems = arrFill({ loading: true }, 5)
+console.log(skeletonItems.length) // 5
+
+// 3. Duyệt mảng đặc so với mảng thưa
+const denseArray = arrFill('item', 3)
+const mapped = denseArray.map((item, index) => \`\${item}-\${index}\`)
+console.log(mapped) // ['item-0', 'item-1', 'item-2']
+
+// 4. Chia sẻ tham chiếu đối tượng
+const initialConfig = { theme: 'dark' }
+const configList = arrFill(initialConfig, 2)
+console.log(configList[0] === configList[1]) // true (cùng một tham chiếu)
+
+// 5. Trường hợp biên
+const emptyList = arrFill('none', 0)
+console.log(emptyList) // []
+  `}
+/>

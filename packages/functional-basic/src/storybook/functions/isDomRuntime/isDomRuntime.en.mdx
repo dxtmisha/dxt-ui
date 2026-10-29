@@ -1,28 +1,56 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/isDomRuntime - Check for browser runtime'/>
 
 # `isDomRuntime`
 
-Determines whether the current code is being executed within a browser environment.
+A fast and reliable isomorphic runtime guard that determines whether code is currently executing in an active browser DOM environment where both `window` and `document` are available.
 
-This check asserts the availability of the global `window` object alongside its `window.document` property. Utilizing this utility is a standard approach to guarantee that DOM-specific API invocations (like scroll adjustments, event listeners, or element querying) will not trigger crash errors during Server-Side Rendering (SSR) phases or within isolated Node.js environments.
+## Key Features
+
+- **Dual-Verification Guard** — Validates both `typeof window !== 'undefined'` and `Boolean(window.document)`, preventing false positives in environments where a partial global `window` object is defined without an actual DOM.
+- **SSR & SSG Safety** — Protects against runtime crashes during Server-Side Rendering (Nuxt, Next.js, Nitro, Node.js) and static site generation by guarding DOM-dependent APIs like `document.querySelector`, `window.localStorage`, `IntersectionObserver`, and event listeners.
+- **Fast-Path $O(1)$ Evaluation** — Executes in negligible CPU cycles without memory allocation or prototype traversal, making it safe for high-frequency calls in lifecycle hooks and state guards.
+- **Web Worker & Edge Worker Resilience** — Correctly returns `false` in Web Workers, Service Workers, and Cloudflare Edge Workers where `self` is defined but DOM tree operations are unavailable.
+- **Pure & Side-Effect-Free** — Pure inspection utility that never mutates global state or creates memory retention.
 
 **Parameters:**
-This functionality operates without requiring any defined parameters.
+This function does not accept any parameters.
 
 **Returns:**
-`boolean` — Returns `true` if the code runs in the browser (where `window` and `document` are present). It produces `false` if executed on the server side (such as Node.js instances or static generation builds).
+`boolean` — Returns `true` if executing within a DOM-enabled browser environment; otherwise `false` (in Node.js, SSR, or Web Workers).
 
-```typescript
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { isDomRuntime } from '@dxtmisha/functional-basic'
 
+// 1. Guarding DOM manipulation and browser APIs
 if (isDomRuntime()) {
-  // Safely interface with window.localStorage or the DOM
-  window.localStorage.setItem('visited', 'yes')
-  document.body.classList.add('client-rendered')
+  document.body.classList.add('hydrated')
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 } else {
-  // Manage server-side (SSR) routing and data logic
-  console.log('Rendering on server...')
+  // Safe fallback for SSR rendering
+  console.log('Executing in Server-Side Rendering (SSR) context')
 }
-```
+
+// 2. Safe client-side storage access
+function getStoredTheme(): string {
+  if (isDomRuntime()) {
+    return window.localStorage.getItem('theme') ?? 'light'
+  }
+  return 'light'
+}
+
+// 3. Conditional event listener attachment
+export function setupWindowResize(handler: () => void): () => void {
+  if (isDomRuntime()) {
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }
+  return () => {}
+}
+  `}
+/>

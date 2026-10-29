@@ -1,23 +1,60 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/arrFill - Create an array filled with a value'/>
 
 # `arrFill`
 
-Builds and returns an array of a specified size filled with identical values.
+A high-performance utility that generates and returns a dense array of a specified size populated with identical values or references.
 
-This is useful for quickly creating placeholders (skeletons), initializing states, or default lists.
+## Key Features
+
+- **Fast-Path $O(n)$ Native Allocation** — Utilizes the engine's built-in `Array(count).fill(value)` for instantaneous contiguous memory allocation and population.
+- **Dense Array Guarantee** — Unlike `new Array(count)` which produces sparse "holey" arrays that skip callback execution, `arrFill` guarantees a dense array where every slot is initialized and iterated by `.map()`, `.filter()`, `.forEach()`, and `for...of`.
+- **Reference Sharing** — When populated with non-primitive types (objects, arrays, functions), all slots reference the same underlying instance, minimizing memory overhead for static placeholders, skeletons, and mock datasets.
+- **Strict TypeScript Typing** — Preserves the generic type parameter `T`, returning a strongly-typed `T[]` without widening or requiring manual type casting.
+- **Boundary & Validation Safety** — Cleanly returns an empty array `[]` when `count === 0`, and strictly adheres to ECMAScript standard `RangeError` on invalid lengths (negative numbers, floats, `NaN`, `Infinity`).
+- **Pure & Isomorphic** — Completely side-effect-free, stateless, and safe for server-side rendering (SSR/SSG).
 
 **Parameters:**
-- `value: T` — value to fill the array with.
-- `count: number` — the number of elements in that array.
+- `value: T` — The value or object reference to fill each slot of the array with.
+- `count: number` — The number of elements to populate in the resulting array.
 
 **Returns:**
-`T[]` — an array filled with the specified value.
+`T[]` — A dense array of length `count` containing the specified value in every element.
 
-```typescript
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { arrFill } from '@dxtmisha/functional-basic'
 
-const array = arrFill('a', 3)
-console.log(array) // ['a', 'a', 'a']
-```
+// 1. Primitive values (strings, numbers, booleans)
+const tags = arrFill('badge', 3)
+console.log(tags) // ['badge', 'badge', 'badge']
+
+const counters = arrFill(0, 4)
+console.log(counters) // [0, 0, 0, 0]
+
+const flags = arrFill(false, 2)
+console.log(flags) // [false, false]
+
+// 2. Generating UI skeleton placeholders
+const skeletonItems = arrFill({ loading: true }, 5)
+console.log(skeletonItems.length) // 5
+
+// 3. Dense iteration vs sparse arrays
+const denseArray = arrFill('item', 3)
+const mapped = denseArray.map((item, index) => \`\${item}-\${index}\`)
+console.log(mapped) // ['item-0', 'item-1', 'item-2']
+
+// 4. Object reference sharing
+const initialConfig = { theme: 'dark' }
+const configList = arrFill(initialConfig, 2)
+console.log(configList[0] === configList[1]) // true (same reference)
+
+// 5. Boundary cases
+const emptyList = arrFill('none', 0)
+console.log(emptyList) // []
+  `}
+/>

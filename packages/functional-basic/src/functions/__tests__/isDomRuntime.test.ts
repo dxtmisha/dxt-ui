@@ -67,4 +67,21 @@ describe('isDomRuntime', () => {
       expect(isDomRuntime()).toBe(false)
     })
   })
+
+  describe('Purity, determinism, and idempotency', () => {
+    it('should return consistent results across multiple consecutive invocations', () => {
+      globalThis.window = {
+        document: {}
+      } as unknown as Window & typeof globalThis
+
+      expect(isDomRuntime()).toBe(true)
+      expect(isDomRuntime()).toBe(true)
+      expect(isDomRuntime()).toBe(true)
+    })
+
+    it('should safely identify Web Worker environments (where self exists but window does not)', () => {
+      Reflect.deleteProperty(globalThis, 'window')
+      expect(isDomRuntime()).toBe(false)
+    })
+  })
 })

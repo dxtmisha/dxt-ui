@@ -34,15 +34,21 @@ const myErrorCenter = new ErrorCenterInstance([
 ### Action
 - `on(cause: ErrorCenterCauseItem): this` — Starts the processing. Merges data from the registry with input data and passes it to the handler.
 
-### Verification
-- `has(code: string, group?: string): boolean` — Search in the local registry.
-- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Retrieve data from the registry.
+### Verification & Access
+- `has(code: string, group?: ErrorCenterGroup): boolean` — Checks if an error exists in the local registry.
+- `get(code: string, group?: ErrorCenterGroup): ErrorCenterCauseItem | undefined` — Retrieves error data from the registry.
+- `getHandler(): ErrorCenterHandler` — Returns the internal handler instance.
 
-### Configuration
-- `add(cause: ErrorCenterCauseItem): this` — Add an error to the local registry.
+### Configuration & Lifecycle
+- `add(cause: ErrorCenterCauseItem): this` — Adds an error to the local registry.
 - `addList(causes: ErrorCenterCauseList): this` — Batch addition of errors.
-- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Register a reaction to a group.
+- `addCallback(callback: ErrorCenterHandlerCallback): this` — Registers a global callback on any error.
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Registers a reaction to an error group.
 - `addHandlerList(handlers: ErrorCenterHandlerList): this` — Batch registration of reactions.
+- `remove(code: string, group?: ErrorCenterGroup): this` — Removes an error cause from the registry.
+- `removeHandler(group?: ErrorCenterGroup, handler?: ErrorCenterHandlerCallback): this` — Removes a handler or an entire group of handlers.
+- `removeCallback(callback: ErrorCenterHandlerCallback): this` — Removes a global callback.
+- `reset(): this` — Resets all registered handlers and global callbacks.
 - `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this` — Sets the console output flag or filter function.
 
 ## Types

@@ -4,19 +4,23 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `blobToBase64`
 
-Asynchronously converts `Blob` or `File` objects into a Base64 string (Data URL).
+An asynchronous isomorphic utility that converts binary `Blob` or `File` instances into Base64-encoded strings, supporting both formatted Data URLs and raw Base64 payloads across browser and server environments.
+
+## Key Features
+
+- **Isomorphic Dual-Engine Architecture** — Automatically determines runtime environment via `isDomRuntime()`: utilizes browser `FileReader` in client contexts and Node.js `Buffer` alongside `blob.arrayBuffer()` in SSR/server contexts.
+- **Flexible Payload Formatting** — Generates complete RFC 2397 Data URLs (e.g. `data:image/png;base64,...`) by default for direct image `src` binding, or extracts clean Base64 payloads via `clean = true` for network API payloads.
+- **Permissive Nullish Guard** — Gracefully handles `null`, `undefined`, empty Blobs (`new Blob([])`), and zero-byte slices by returning `undefined` instead of throwing unhandled exceptions.
+- **MIME Type Preservation** — Faithfully retains the original Blob MIME type (`blob.type`) in the formatted Data URL scheme.
+- **Comprehensive Multilingual & Binary Support** — Accurately encodes UTF-8 Unicode characters (Cyrillic, Vietnamese, CJK, Emoji) and arbitrary raw binary buffers without data corruption.
+- **Safe & Non-Crashing** — Fully encapsulated in `try...catch` blocks to protect against aborted reads or missing environment APIs.
 
 **Parameters:**
-- `blob: Blob` — The `Blob` (or `File`) object to be converted.
-- `clean: boolean = false` — If `true`, removes the Data URL prefix (e.g., `data:image/png;base64,`).
-
-**Environment Support:**
-The utility automatically detects the environment:
-- **Browser**: Uses `FileReader` to read the content.
-- **Server (SSR)**: Uses `Buffer` and the asynchronous `blob.arrayBuffer()` method.
+- `blob?: Blob | null` — The `Blob` or `File` object to convert. Safely returns `undefined` if nullish or empty.
+- `clean: boolean = false` — When set to `true`, strips the leading Data URL scheme (`data:<mime>;base64,`) and returns only the Base64-encoded string.
 
 **Returns:**
-`Promise<string | undefined>` — Base64 string or `undefined` if conversion is not possible.
+`Promise<string | undefined>` — A Promise resolving to the Base64 string or Data URL, or `undefined` if the input is empty or conversion fails.
 
 ## Examples
 
@@ -25,18 +29,28 @@ The utility automatically detects the environment:
   code={`
 import { blobToBase64 } from '@dxtmisha/functional-basic'
 
-// 1. Default (returns Data URL)
-const dataUrl = await blobToBase64(file)
-// 'data:image/png;base64,iVBORw0KGgo...'
+// 1. Image preview binding (Data URL)
+const fileInput = document.querySelector<HTMLInputElement>('#avatar')
+const file = fileInput?.files?.[0]
 
-// 2. Raw Base64 (without prefix)
-const rawBase64 = await blobToBase64(file, true)
-// 'iVBORw0KGgo...'
-
-// 3. Handling API unavailability
-const result = await blobToBase64(blob)
-if (result) {
-  // work with string
+const previewUrl = await blobToBase64(file)
+if (previewUrl) {
+  // Directly bindable to <img :src="previewUrl" />
+  console.log(previewUrl) // 'data:image/png;base64,iVBORw0KGgo...'
 }
+
+// 2. Clean Base64 payload for JSON REST API
+const rawBase64 = await blobToBase64(file, true)
+if (rawBase64) {
+  await fetch('/api/upload', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fileData: rawBase64 })
+  })
+}
+
+// 3. Permissive nullish handling (no runtime crashes)
+const emptyResult = await blobToBase64(null)
+console.log(emptyResult) // undefined
   `}
 />

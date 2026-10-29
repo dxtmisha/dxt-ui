@@ -13,19 +13,23 @@ The class acts as a static bridge (Static Bridge), directing all requests to a s
 ### Action
 - `on(cause: ErrorCenterCauseItem): void` — Starts the processing. Searches the registry, merges data, and calls the appropriate callbacks.
 
-### Verification
-- `has(code: string, group?: string): boolean` — Checks if an error is registered.
-- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Returns error data from the registry.
+### Verification & Access
+- `has(code: string, group?: ErrorCenterGroup): boolean` — Checks if an error is registered.
+- `get(code: string, group?: ErrorCenterGroup): ErrorCenterCauseItem | undefined` — Returns error data from the registry.
+- `getHandler(): ErrorCenterHandler` — Returns the internal handler dispatcher.
+- `getItem(): ErrorCenterInstance` — Returns the internal instance of the class.
 
-### Configuration
+### Configuration & Lifecycle
 - `add(cause: ErrorCenterCauseItem): void` — Adds a single error cause.
 - `addList(causes: ErrorCenterCauseList): void` — Adds a list of errors (batch registration).
+- `addCallback(callback: ErrorCenterHandlerCallback): void` — Registers a global callback on any error.
 - `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Registers a reaction to a group of errors.
 - `addHandlerList(handlers: ErrorCenterHandlerList): void` — Batch registration of several handlers.
+- `remove(code: string, group?: ErrorCenterGroup): void` — Removes an error cause from the registry.
+- `removeHandler(group?: ErrorCenterGroup, handler?: ErrorCenterHandlerCallback): void` — Removes a handler or an entire group of handlers.
+- `removeCallback(callback: ErrorCenterHandlerCallback): void` — Removes a global callback.
+- `reset(): void` — Resets registered handlers and global callbacks.
 - `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): void` — Sets the console output flag or filter function.
-
-### Auxiliary
-- `getItem(): ErrorCenterInstance` — Returns the internal instance of the class.
 
 ## Types
 

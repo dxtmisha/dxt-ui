@@ -41,12 +41,16 @@ const handlers = new ErrorCenterHandler(
 - `on(cause: ErrorCenterCauseItem): this` — Запускает цепочку обработчиков и выводит ошибку в консоль, если включено.
 
 ### Проверка
-- `has(group: ErrorCenterGroup): boolean` — Проверяет, есть ли обработчики для группы.
-- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Возвращает список функций для группы.
+- `has(group?: ErrorCenterGroup): boolean` — Проверяет, есть ли обработчики для группы.
+- `get(group?: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Возвращает список функций для группы.
 
-### Конфигурация
+### Конфигурация и управление
 - `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Добавляет одну функцию в группу.
+- `addCallback(callback: ErrorCenterHandlerCallback): this` — Добавляет глобальный обратный вызов, выполняемый при любой ошибке.
 - `addList(handlers: ErrorCenterHandlerList): this` — Пакетная регистрация обработчиков.
+- `remove(group?: ErrorCenterGroup, handler?: ErrorCenterHandlerCallback): this` — Удаляет конкретный обработчик или всю группу обработчиков.
+- `removeCallback(callback: ErrorCenterHandlerCallback): this` — Удаляет глобальный обратный вызов.
+- `reset(): this` — Сбрасывает все зарегистрированные обработчики и глобальные обратные вызовы.
 - `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this` — Устанавливает флаг или функцию фильтрации вывода в консоль.
 
 ## Типы

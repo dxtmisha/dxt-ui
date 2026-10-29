@@ -11,3 +11,13 @@ applyTemplate
 isFunction
 hasKey
 isObjectNotArray
+arrFill
+isDomRuntime
+blobToBase64
+capitalize
+getElementSafeScript
+getHydrationData
+executeFunction
+ErrorCenterHandler
+ErrorCenterInstance
+ErrorCenter
