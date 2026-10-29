@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getObjectNull - Создание объекта без прототипа'/>
+
+# `getObjectNull`
+
+Создает и возвращает объект без прототипа (`Object.create(null)`). Это полностью исключает наследование свойств от `Object.prototype`, надежно защищая словари и реестры от атак загрязнения прототипа (prototype pollution) и случайных коллизий ключей со встроенными свойствами, такими как `toString`, `valueOf` или `constructor`. Если передан опциональный объект с начальными данными, его собственные свойства копируются в создаваемый объект без прототипа.
+
+**Параметры:**
+- `data?: Record<string, T>` — Необязательные начальные данные объекта для копирования свойств.
+
+**Возвращает:**
+- `Record<string, T>` — Чистый объект без прототипа.
+
+```typescript
+import { getObjectNull } from '@dxtmisha/functional-basic'
+
+// 1. Создание пустого объекта без прототипа
+const registry = getObjectNull<number>()
+
+// Свойства вроде toString, valueOf, constructor отсутствуют в цепочке прототипов
+console.log('toString' in registry) // false
+console.log('valueOf' in registry)  // false
+
+// Безопасное использование любых ключей
+registry.toString = 42
+console.log(registry.toString)      // 42
+
+// 2. Создание объекта без прототипа с начальными данными
+const config = getObjectNull({ port: 3000, host: 'localhost' })
+console.log(config.port) // 3000
+console.log(Object.getPrototypeOf(config)) // null
+```

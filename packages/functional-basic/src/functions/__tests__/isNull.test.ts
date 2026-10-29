@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, expectTypeOf } from 'vitest'
 import { isNull } from '../isNull'
 
 describe('isNull', () => {
@@ -64,6 +64,18 @@ describe('isNull', () => {
       expect(isNull(/regex/)).toBe(false)
       expect(isNull(new Map())).toBe(false)
       expect(isNull(new Set())).toBe(false)
+    })
+  })
+
+  describe('TypeScript type narrowing verification', () => {
+    it('should narrow union types correctly in conditional branches', () => {
+      const value: string | null | undefined = 'sample' as string | null | undefined
+
+      if (isNull(value)) {
+        expectTypeOf(value).toEqualTypeOf<null | undefined>()
+      } else {
+        expectTypeOf(value).toEqualTypeOf<string>()
+      }
     })
   })
 })

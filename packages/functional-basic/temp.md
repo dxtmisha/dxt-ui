@@ -21,3 +21,6 @@ executeFunction
 ErrorCenterHandler
 ErrorCenterInstance
 ErrorCenter
+ServerStorage
+isNull
+isDomData

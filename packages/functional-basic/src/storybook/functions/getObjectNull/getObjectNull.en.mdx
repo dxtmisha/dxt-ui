@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getObjectNull - Prototype-less object creation'/>
+
+# `getObjectNull`
+
+Creates and returns a prototype-less object (`Object.create(null)`). It completely eliminates inheritance from `Object.prototype`, protecting dictionaries and key-value registries against prototype pollution and key collisions with built-in properties like `toString`, `valueOf`, or `constructor`. If an optional initial data object is provided, its own properties are copied into the new prototype-less object.
+
+**Parameters:**
+- `data?: Record<string, T>` — Optional initial object data to copy properties from.
+
+**Returns:**
+- `Record<string, T>` — A clean prototype-less object.
+
+```typescript
+import { getObjectNull } from '@dxtmisha/functional-basic'
+
+// 1. Create an empty prototype-less object
+const registry = getObjectNull<number>()
+
+// Properties like toString, valueOf, constructor do not exist on the prototype
+console.log('toString' in registry) // false
+console.log('valueOf' in registry)  // false
+
+// Safe assignment of arbitrary keys
+registry.toString = 42
+console.log(registry.toString)      // 42
+
+// 2. Create a prototype-less object with initial data
+const config = getObjectNull({ port: 3000, host: 'localhost' })
+console.log(config.port) // 3000
+console.log(Object.getPrototypeOf(config)) // null
+```

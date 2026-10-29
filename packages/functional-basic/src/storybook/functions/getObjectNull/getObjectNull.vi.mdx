@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getObjectNull - Tạo đối tượng không có prototype'/>
+
+# `getObjectNull`
+
+Tạo và trả về một đối tượng không có prototype (`Object.create(null)`). Hàm này loại bỏ hoàn toàn việc kế thừa từ `Object.prototype`, bảo vệ an toàn các từ điển và sổ đăng ký lưu trữ khỏi tấn công ô nhiễm nguyên mẫu (prototype pollution) cũng như xung đột khóa với các thuộc tính tích hợp như `toString`, `valueOf` hoặc `constructor`. Nếu đối số dữ liệu ban đầu tùy chọn được cung cấp, các thuộc tính của nó sẽ được sao chép vào đối tượng mới.
+
+**Tham số:**
+- `data?: Record<string, T>` — Dữ liệu đối tượng ban đầu tùy chọn để sao chép thuộc tính.
+
+**Trả về:**
+- `Record<string, T>` — Đối tượng sạch không có prototype.
+
+```typescript
+import { getObjectNull } from '@dxtmisha/functional-basic'
+
+// 1. Tạo đối tượng rỗng không có prototype
+const registry = getObjectNull<number>()
+
+// Các thuộc tính như toString, valueOf, constructor không tồn tại trên prototype
+console.log('toString' in registry) // false
+console.log('valueOf' in registry)  // false
+
+// Thiết lập khóa tùy ý một cách an toàn
+registry.toString = 42
+console.log(registry.toString)      // 42
+
+// 2. Tạo đối tượng không có prototype với dữ liệu ban đầu
+const config = getObjectNull({ port: 3000, host: 'localhost' })
+console.log(config.port) // 3000
+console.log(Object.getPrototypeOf(config)) // null
+```

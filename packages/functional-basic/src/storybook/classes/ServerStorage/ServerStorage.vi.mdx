@@ -24,38 +24,58 @@ ServerStorage.set('theme', () => 'dark', true)
 const theme = ServerStorage.get('theme') // 'dark'
 ```
 
-## Các phương thức truy cập dữ liệu
+## Các phương thức
 
-### `get`
+### Truy cập dữ liệu
 
-Truy xuất giá trị theo khóa. Nếu không tìm thấy, nó sẽ tạo giá trị mới bằng cách sử dụng factory giá trị mặc định.
+#### `get`
+
+Truy xuất giá trị theo khóa. Nếu không tìm thấy, nó sẽ tạo giá trị mới bằng cách sử dụng factory giá trị mặc định hoặc giá trị trực tiếp.
 
 **Tham số:**
 - `key: string` — khóa lưu trữ duy nhất.
-- `defaultValue?: () => T` — hàm trả về giá trị mặc định nếu không tìm thấy.
+- `defaultValue?: (() => T) | T` — giá trị mặc định hoặc hàm trả về giá trị mặc định nếu không tìm thấy.
 - `hydration: boolean` — nếu là `true`, giá trị sẽ được bao gồm trong JSON cho máy khách (mặc định: `false`).
 
-**Trả về:** `T`
+**Trả về:** `T` — giá trị được lưu trữ.
 
-### `set`
+```typescript
+const user = ServerStorage.get('user', () => ({ id: 1, name: 'Alice' }), true)
+```
+
+#### `set`
 
 Lưu một giá trị vào kho lưu trữ.
 
 **Tham số:**
 - `key: string` — khóa lưu trữ duy nhất.
-- `value: () => T` — hàm trả về giá trị để lưu.
+- `value: (() => T) | T` — giá trị hoặc hàm trả về giá trị để lưu.
 - `hydration: boolean` — nếu là `true`, giá trị sẽ được bao gồm trong JSON cho máy khách (mặc định: `false`).
+- `storageList?: ServerStorageList` — danh sách kho lưu trữ tùy chọn.
 
-**Trả về:** `T`
+**Trả về:** `T` — giá trị đã lưu.
 
-## Các phương thức tiện ích và vòng đời
+```typescript
+ServerStorage.set('theme', 'dark', true)
+```
 
-- `init(listener: () => Record<string, any>): typeof ServerStorage` — Khởi tạo kho lưu trữ với bộ lắng nghe ngữ cảnh. Trên máy chủ, bộ lắng nghe này sẽ trả về một đối tượng duy nhất cho mỗi yêu cầu.
-- `has(key: string): boolean` — Kiếm tra sự tồn tại của một khóa trong ngữ cảnh hiện tại.
+### Tiện ích và vòng đời
+
+- `has(key: string): boolean` — Kiểm tra sự tồn tại của một khóa trong ngữ cảnh hiện tại.
+- `setErrorStatus(hide: boolean): void` — Thiết lập việc ẩn lỗi thiếu ngữ cảnh trong `ErrorCenter`.
 - `remove(key: string): void` — Xóa một giá trị theo khóa khỏi kho lưu trữ.
-- `setErrorStatus(hide: boolean): void` — Thiết lập việc ẩn lỗi thiếu ngữ cảnh trong bảng điều khiển hoặc trung tâm lỗi.
 - `reset(): void` — Đặt lại kho lưu trữ, xóa tất cả dữ liệu đã lưu và bộ lắng nghe. Hữu ích cho việc dọn dẹp.
+- `init(listener: () => Record<string, unknown> | undefined): typeof ServerStorage` — Khởi tạo kho lưu trữ với bộ lắng nghe ngữ cảnh. Trên máy chủ, bộ lắng nghe này sẽ trả về một đối tượng duy nhất cho mỗi yêu cầu.
 - `toString(): string` — Tạo một thẻ HTML `<script type="application/json">` chứa tất cả dữ liệu được đánh dấu để hydration.
+
+## Các kiểu dữ liệu (Types)
+
+### `ServerStorageItem`
+- `value: unknown` — Giá trị được lưu trữ.
+- `hydration: boolean` — Giá trị có được bao gồm trong quá trình hydration phía máy khách hay không.
+
+### `ServerStorageList`
+- `Record<string, ServerStorageItem>` — Bản đồ các phần tử lưu trữ phía máy chủ.
 
 ## Cách ly trong SSR
 
@@ -73,7 +93,7 @@ Cách được khuyến nghị cho Node.js là sử dụng `AsyncLocalStorage` �
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 
-const als = new AsyncLocalStorage<Record<string, any>>()
+const als = new AsyncLocalStorage<Record<string, unknown>>()
 
 // Khởi tạo
 ServerStorage.init(() => als.getStore() || {})

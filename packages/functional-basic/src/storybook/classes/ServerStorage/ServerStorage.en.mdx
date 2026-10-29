@@ -24,38 +24,58 @@ ServerStorage.set('theme', () => 'dark', true)
 const theme = ServerStorage.get('theme') // 'dark'
 ```
 
-## Data Access Methods
+## Methods
 
-### `get`
+### Data Access
 
-Retrieves a value by key. If it doesn't exist, creates it using the default value factory.
+#### `get`
+
+Retrieves a value by key. If it doesn't exist, creates it using the default value factory or direct value.
 
 **Parameters:**
 - `key: string` — unique storage key.
-- `defaultValue?: () => T` — function that returns the default value if not found.
+- `defaultValue?: (() => T) | T` — default value or function that returns the default value if not found.
 - `hydration: boolean` — if `true`, the value will be included in the JSON for the client (default: `false`).
 
-**Returns:** `T`
+**Returns:** `T` — stored value.
 
-### `set`
+```typescript
+const user = ServerStorage.get('user', () => ({ id: 1, name: 'Alice' }), true)
+```
+
+#### `set`
 
 Saves a value to the storage.
 
 **Parameters:**
 - `key: string` — unique storage key.
-- `value: () => T` — function that returns the value to save.
+- `value: (() => T) | T` — value or function that returns the value to save.
 - `hydration: boolean` — if `true`, the value will be included in the JSON for the client (default: `false`).
+- `storageList?: ServerStorageList` — optional storage list instance.
 
-**Returns:** `T`
+**Returns:** `T` — saved value.
 
-## Utility & Lifecycle Methods
+```typescript
+ServerStorage.set('theme', 'dark', true)
+```
 
-- `init(listener: () => Record<string, any>): typeof ServerStorage` — Initializes the storage with a context listener. On the server, this listener should return an object unique to each request.
+### Utility & Lifecycle
+
 - `has(key: string): boolean` — Checks for the existence of a key in the current context.
+- `setErrorStatus(hide: boolean): void` — Sets whether to hide context missing errors in `ErrorCenter`.
 - `remove(key: string): void` — Removes a value by key from the storage.
-- `setErrorStatus(hide: boolean): void` — Sets whether to hide context missing errors in the console/error center.
 - `reset(): void` — Resets the storage, clearing all stored data and the listener. Useful for performing cleanup.
+- `init(listener: () => Record<string, unknown> | undefined): typeof ServerStorage` — Initializes the storage with a context listener. On the server, this listener should return an object unique to each request.
 - `toString(): string` — Generates an HTML `<script type="application/json">` tag containing all data marked for hydration.
+
+## Types
+
+### `ServerStorageItem`
+- `value: unknown` — Stored value.
+- `hydration: boolean` — Whether the value is included in client hydration.
+
+### `ServerStorageList`
+- `Record<string, ServerStorageItem>` — Map of server storage items.
 
 ## Isolation in SSR
 
@@ -73,7 +93,7 @@ The recommended way for Node.js is to use `AsyncLocalStorage` to store context t
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 
-const als = new AsyncLocalStorage<Record<string, any>>()
+const als = new AsyncLocalStorage<Record<string, unknown>>()
 
 // Initialization
 ServerStorage.init(() => als.getStore() || {})

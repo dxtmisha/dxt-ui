@@ -1,17 +1,21 @@
-import { forEach } from '../functions/forEach'
+import { executeFunction } from '../functions/executeFunction'
 import { getElementSafeScript } from '../functions/getElementSafeScript'
 import { getHydrationData } from '../functions/getHydrationData'
+import { getObjectNull } from '../functions/getObjectNull'
 import { isDomRuntime } from '../functions/isDomRuntime'
+import { isObjectNotArray } from '../functions/isObjectNotArray'
 
 import { ErrorCenter } from './ErrorCenter'
 
 /** Item stored in the server storage / Элемент, хранящийся в серверном хранилище */
-type ServerStorageItem = {
+export type ServerStorageItem = {
+  /** Stored value / Сохраненное значение */
   value: unknown
+  /** Whether the value is included in client hydration / Включено ли значение в клиентскую гидратацию */
   hydration: boolean
 }
 /** Map of server storage items / Карта элементов серверного хранилища */
-type ServerStorageList = Record<string, ServerStorageItem>
+export type ServerStorageList = Record<string, ServerStorageItem>
 
 /** Server storage key / Ключ серверного хранилища */
 const SERVER_STORAGE_KEY = '__ui:server-storage__'
@@ -35,26 +39,39 @@ export class ServerStorage {
   protected static hideError?: boolean
 
   /**
-   * Retrieves a value from storage. If it doesn't exist, creates it using the default value factory.
+   * Checks if a value exists in storage.
    *
-   * Извлекает значение из хранилища. Если оно не существует, создает его с помощью фабрики значений по умолчанию.
+   * Проверяет наличие значения в хранилище.
    * @param key unique storage key / уникальный ключ хранилища
-   * @param defaultValue function that returns the default value if not found / функция, возвращающая значение по умолчанию, если оно не найдено
+   * @returns true if key exists, false otherwise / true, если ключ существует, иначе false
+   */
+  static has(key: string): boolean {
+    const storage = this.getStorage(false, `has:${key}`)
+
+    return key in storage
+  }
+
+  /**
+   * Retrieves a value from storage. If it doesn't exist, creates it using the default value factory or value.
+   *
+   * Извлекает значение из хранилища. Если оно не существует, создает его с помощью фабрики значений по умолчанию или значения.
+   * @param key unique storage key / уникальный ключ хранилища
+   * @param defaultValue default value or function that returns the default value if not found / значение по умолчанию или функция, возвращающая значение по умолчанию, если оно не найдено
    * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
    * @returns stored value / сохраненное значение
    */
   static get<T = unknown>(
     key: string,
-    defaultValue?: () => T,
+    defaultValue?: (() => T) | T,
     hydration: boolean = false
   ): T {
-    const storage = this.getStorage(undefined, `get:${key}`)
+    const storage = this.getStorage(defaultValue !== undefined, `get:${key}`)
 
     if (key in storage) {
       return storage[key].value as T
     }
 
-    if (defaultValue) {
+    if (defaultValue !== undefined) {
       return this.set<T>(key, defaultValue, hydration, storage)
     }
 
@@ -66,38 +83,25 @@ export class ServerStorage {
    *
    * Сохраняет значение в хранилище.
    * @param key unique storage key / уникальный ключ хранилища
-   * @param value function that returns the value to save / функция, возвращающая значение для сохранения
+   * @param value value or function that returns the value to save / значение или функция, возвращающая значение для сохранения
    * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
    * @param storageList optional storage list / необязательный список хранилища
    * @returns saved value / сохраненное значение
    */
   static set<T = unknown>(
     key: string,
-    value: () => T,
+    value: (() => T) | T,
     hydration: boolean = false,
     storageList?: ServerStorageList
   ): T {
-    const storage = storageList || this.getStorage(undefined, `set:${key}`)
-    const newValue = value()
+    const storage = storageList ?? this.getStorage(true, `set:${key}`)
+    const newValue = executeFunction(value)
 
     storage[key] = {
       value: newValue,
       hydration
     }
     return newValue
-  }
-
-  /**
-   * Checks if a value exists in storage.
-   *
-   * Проверяет наличие значения в хранилище.
-   * @param key unique storage key / уникальный ключ хранилища
-   * @returns boolean / логическое значение
-   */
-  static has(key: string): boolean {
-    const storage = this.getStorage(false, `has:${key}`)
-
-    return key in storage
   }
 
   /**
@@ -117,7 +121,7 @@ export class ServerStorage {
    * @param key unique storage key / уникальный ключ хранилища
    */
   static remove(key: string): void {
-    const storage = this.getStorage()
+    const storage = this.getStorage(false, `remove:${key}`)
 
     if (key in storage) {
       delete storage[key]
@@ -139,7 +143,7 @@ export class ServerStorage {
    *
    * Инициализирует хранилище слушателем контекста.
    * @param listener function that returns the current request context / функция, возвращающая контекст текущего запроса
-   * @returns this instance / текущий класс
+   * @returns ServerStorage class / класс ServerStorage
    */
   static init(listener: () => Record<string, unknown> | undefined): typeof ServerStorage {
     if (!this.listener) {
@@ -166,14 +170,14 @@ export class ServerStorage {
    * @returns record of hydration data / запись данных гидратации
    */
   protected static getDataForHydration(): Record<string, unknown> {
-    const storage = this.getStorage(undefined, 'hydration')
-    const dataForHydration: Record<string, unknown> = {}
+    const storage = this.getStorage(false, 'hydration')
+    const dataForHydration: Record<string, unknown> = getObjectNull()
 
-    forEach(storage, (item, key) => {
-      if (item.hydration) {
-        dataForHydration[key] = item.value
+    for (const key in storage) {
+      if (storage[key].hydration) {
+        dataForHydration[key] = storage[key].value
       }
-    })
+    }
 
     return dataForHydration
   }
@@ -194,14 +198,26 @@ export class ServerStorage {
       return this.getStorageDom()
     }
 
-    const context = this.listener?.()
+    let context: Record<string, unknown> | undefined
+    let contextError: unknown
+
+    if (this.listener) {
+      try {
+        context = this.listener()
+      } catch (error) {
+        contextError = error
+      }
+    }
 
     if (!context) {
       if (!this.hideError) {
         ErrorCenter.on({
           group: 'storage',
           code: 'context',
-          details: { status }
+          details: {
+            status,
+            error: contextError
+          }
         })
       }
 
@@ -209,14 +225,18 @@ export class ServerStorage {
         isInit
         && !this.storage
       ) {
-        this.storage = {}
+        this.storage = getObjectNull()
       }
 
-      return this.storage ?? {}
+      return this.storage ?? getObjectNull()
     }
 
     if (!(SERVER_STORAGE_KEY in context)) {
-      context[SERVER_STORAGE_KEY] = {}
+      if (!isInit) {
+        return getObjectNull()
+      }
+
+      context[SERVER_STORAGE_KEY] = getObjectNull()
     }
 
     return context[SERVER_STORAGE_KEY] as ServerStorageList
@@ -231,15 +251,20 @@ export class ServerStorage {
   protected static getStorageDom(): ServerStorageList {
     if (!this.storage) {
       const data = getHydrationData<Record<string, unknown>>(SERVER_STORAGE_ID, {})
+      const storage: ServerStorageList = getObjectNull()
 
-      this.storage = {}
-
-      forEach(data, (value, name) => {
-        this.storage![name] = {
-          value,
-          hydration: true
+      if (isObjectNotArray(data)) {
+        for (const name in data) {
+          if (Object.hasOwn(data, name)) {
+            storage[name] = {
+              value: data[name],
+              hydration: true
+            }
+          }
         }
-      })
+      }
+
+      this.storage = storage
     }
 
     return this.storage
