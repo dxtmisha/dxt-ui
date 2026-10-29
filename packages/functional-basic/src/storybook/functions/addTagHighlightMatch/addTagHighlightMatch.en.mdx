@@ -7,11 +7,12 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 A utility for highlighting matches in a string by wrapping them in a `<span>` HTML tag with a specified class. It uses `getSeparatingSearchExp` to support multi-word search (space-separated).
 
 **Parameters:**
-- `value: string` — The initial string to process.
+- `value?: string | number | null` — The initial value to process.
 - `search?: string | RegExp` — The search string (one or more words separated by spaces) or a regular expression.
-- `className: string = 'sys-highlight-match'` — The CSS class to be added to the `<span>` tag.
-- `shouldEscape: boolean = false` — Whether to escape the string before adding highlighting.
-- `shouldRemoveTag: boolean = true` — Whether to strip existing HTML tags from the string when `shouldEscape` is `false`.
+- `options: AddTagHighlightMatchOptions = {}` — Configuration options:
+  - `className?: string` — The CSS class to be added to the `<span>` tag (default: `'sys-highlight-match'`).
+  - `shouldEscape?: boolean` — Whether to escape the string before adding highlighting (default: `false`).
+  - `shouldRemoveTag?: boolean` — Whether to strip existing HTML tags from the string when `shouldEscape` is `false` (default: `true`).
 
 **Returns:**
 `string` — The string with HTML tags added for highlighting.
@@ -30,7 +31,7 @@ addTagHighlightMatch('Apple and Banana', 'apple banana')
 // '<span class="sys-highlight-match">Apple</span> and <span class="sys-highlight-match">Banana</span>'
 
 // Custom class
-addTagHighlightMatch('Test', 'test', 'text-red')
+addTagHighlightMatch('Test', 'test', { className: 'text-red' })
 // '<span class="text-red">Test</span>'
 
 // Tag removal (default behavior when shouldEscape is false)
@@ -38,11 +39,11 @@ addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world')
 // 'Hello <span class="sys-highlight-match">world</span>'
 
 // Preserving existing HTML tags
-addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world', 'sys-highlight-match', false, false)
+addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world', { shouldRemoveTag: false })
 // '<p>Hello <b><span class="sys-highlight-match">world</span></b></p>'
 
 // With escaping (HTML tags are escaped, not removed)
-addTagHighlightMatch('<b>bold</b>', 'bold', 'sys-highlight-match', true)
+addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true })
 // '&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;'
   `}
 />

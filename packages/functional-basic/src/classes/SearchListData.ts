@@ -233,7 +233,7 @@ export class SearchListData<
     return addTagHighlightMatch(
       anyToString(value),
       this.item.get(),
-      this.options.getClassName()
+      { className: this.options.getClassName() }
     )
   }
 

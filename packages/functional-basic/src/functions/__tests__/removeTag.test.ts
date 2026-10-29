@@ -235,21 +235,21 @@ describe('removeTag', () => {
     })
 
     it('should strip custom tags added by addTagHighlightMatch', () => {
-      const highlighted = addTagHighlightMatch('Search query', 'query', 'custom-highlight-class')
+      const highlighted = addTagHighlightMatch('Search query', 'query', { className: 'custom-highlight-class' })
       expect(highlighted).toBe('Search <span class="custom-highlight-class">query</span>')
 
       expect(removeTag(highlighted)).toBe('Search query')
     })
   })
 
-  describe('ReDoS resilience', () => {
-    it('should process long unclosed tags with repeated attributes in linear time without catastrophic backtracking', () => {
+  describe('ReDoS resilience and unclosed tags', () => {
+    it('should remove long unclosed tags with repeated attributes in linear time without catastrophic backtracking', () => {
       const input = '<p ' + ' a'.repeat(100)
       const start = performance.now()
       const result = removeTag(input)
       const duration = performance.now() - start
 
-      expect(result).toBe(input)
+      expect(result).toBe('')
       expect(duration).toBeLessThan(50)
     })
 
@@ -259,18 +259,30 @@ describe('removeTag', () => {
       const result = removeTag(input, { tag: 'b' })
       const duration = performance.now() - start
 
-      expect(result).toBe(input)
+      expect(result).toBe('')
       expect(duration).toBeLessThan(50)
     })
 
-    it('should process long unclosed tags with repeated adjacent quoted attributes in linear time', () => {
+    it('should remove long unclosed tags with repeated adjacent quoted attributes in linear time', () => {
       const input = '<div ' + 'data-x="1"'.repeat(100)
       const start = performance.now()
       const result = removeTag(input)
       const duration = performance.now() - start
 
-      expect(result).toBe(input)
+      expect(result).toBe('')
       expect(duration).toBeLessThan(50)
+    })
+
+    it('should remove unclosed tags, comments, CDATA, XML declarations, and script blocks to prevent tag-completion XSS', () => {
+      expect(removeTag('<img src=x onerror=alert(1)// hello')).toBe('')
+      expect(removeTag('<img src=x onerror=alert(1) <p>Hello</p>')).toBe('Hello')
+      expect(removeTag('<div title="unclosed <p>Hello</p>')).toBe('Hello')
+      expect(removeTag('Hello <!-- unclosed comment')).toBe('Hello ')
+      expect(removeTag('Hello <![CDATA[unclosed cdata')).toBe('Hello ')
+      expect(removeTag('Hello <?xml unclosed')).toBe('Hello ')
+      expect(removeTag('Hello <!DOCTYPE html unclosed')).toBe('Hello ')
+      expect(removeTag('Hello <script>alert(1)')).toBe('Hello ')
+      expect(removeTag('Hello <script src=x onerror=alert(1)')).toBe('Hello ')
     })
   })
 

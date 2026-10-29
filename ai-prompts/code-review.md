@@ -36,8 +36,8 @@ Before analyzing any code or generating any review text, you MUST execute these 
   1. **Typos**: Any typos or grammatical errors in comments, string constants, messages, or local variable names.
   2. **JSDoc/TSDoc Formatting & Additions (`jdoc.md`)**: Adding missing descriptions for functions, methods, or properties, enforcing the mandatory bilingual standard (English / Russian), and formatting `@param` and `@returns` tags.
   3. **Obvious Minor Typing Ergonomics & Quick Wins**:
-     - Widening inaccurate parameter types that contradict immediate runtime checks (e.g., a parameter is typed as `string`, but the first line checks `typeof value !== 'string'` — immediately widen the type to `unknown` or `string | undefined`).
-     - Removing redundant `// @ts-expect-error` directives in associated unit tests that become unnecessary after the type fix.
+     - Widening inaccurate or overly narrow parameter types that contradict immediate runtime checks or normalization helpers (e.g., if a parameter is typed as `string`, but the first line checks `typeof value !== 'string'` or normalizes it via `toString(value)` — immediately widen the type to `unknown`, `string | undefined`, or `value?: string | number | null` to match runtime behavior and sibling utilities).
+     - Removing redundant `// @ts-expect-error` directives or type casts (e.g., `as unknown as string`) in associated unit tests that become unnecessary after the type fix.
   4. **Redundant Logic, Dead Code & Micro-Optimizations**:
      - Eliminating redundant or duplicate checks in logical expressions (e.g., when `A || (B && C)` re-evaluates `A` inside `C` even though `A` is guaranteed false on the right-hand side: `isControlCharacter(charCode) || (cleanValue.length === 0 && isControlOrSpace(charCode))` simplifies to `isControlCharacter(charCode) || (cleanValue.length === 0 && charCode === 32)`).
      - Removing private helper micro-functions, constants, and types rendered unused after eliminating redundant conditions (e.g., removing `isControlOrSpace`).

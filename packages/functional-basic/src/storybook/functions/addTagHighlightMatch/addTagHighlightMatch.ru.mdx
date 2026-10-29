@@ -7,11 +7,12 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 Утилита для выделения совпадений в строке путём оборачивания их в HTML-тег `<span>` с заданным классом. Использует `getSeparatingSearchExp` для поддержки поиска по нескольким словам (через пробел).
 
 **Параметры:**
-- `value: string` — Исходная строка для обработки.
+- `value?: string | number | null` — Исходное значение для обработки.
 - `search?: string | RegExp` — Строка поиска (одно или несколько слов через пробел) или регулярное выражение.
-- `className: string = 'sys-highlight-match'` — CSS-класс, который будет добавлен к тегу `<span>`.
-- `shouldEscape: boolean = false` — Нужно ли экранировать строку перед добавлением подсветки.
-- `shouldRemoveTag: boolean = true` — Нужно ли удалять существующие HTML-теги из строки, если `shouldEscape` равно `false`.
+- `options: AddTagHighlightMatchOptions = {}` — Объект опций:
+  - `className?: string` — CSS-класс, который будет добавлен к тегу `<span>` (по умолчанию `'sys-highlight-match'`).
+  - `shouldEscape?: boolean` — Нужно ли экранировать строку перед добавлением подсветки (по умолчанию `false`).
+  - `shouldRemoveTag?: boolean` — Нужно ли удалять существующие HTML-теги из строки, если `shouldEscape` равно `false` (по умолчанию `true`).
 
 **Возвращает:**
 `string` — Строка с добавленными HTML-тегами для подсветки.
@@ -30,7 +31,7 @@ addTagHighlightMatch('Apple and Banana', 'apple banana')
 // '<span class="sys-highlight-match">Apple</span> and <span class="sys-highlight-match">Banana</span>'
 
 // Кастомный класс
-addTagHighlightMatch('Test', 'test', 'text-red')
+addTagHighlightMatch('Test', 'test', { className: 'text-red' })
 // '<span class="text-red">Test</span>'
 
 // Удаление тегов (поведение по умолчанию при shouldEscape = false)
@@ -38,11 +39,11 @@ addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world')
 // 'Hello <span class="sys-highlight-match">world</span>'
 
 // Сохранение существующих HTML-тегов
-addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world', 'sys-highlight-match', false, false)
+addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world', { shouldRemoveTag: false })
 // '<p>Hello <b><span class="sys-highlight-match">world</span></b></p>'
 
 // С экранированием (теги экранируются, а не удаляются)
-addTagHighlightMatch('<b>bold</b>', 'bold', 'sys-highlight-match', true)
+addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true })
 // '&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;'
   `}
 />

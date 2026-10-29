@@ -9,20 +9,23 @@ const CACHE_MAX_SIZE = 128
 const DEFAULT_CONTENT_TAGS = ['script', 'style', 'noscript'] as const
 
 /** Pattern matching tag attributes without closing bracket / Шаблон для сопоставления атрибутов тега без закрывающей скобки */
-const PATTERN_ATTRIBUTES = '(?=[\\s/>])(?:(?:[\\s/]+|(?<=["\']))[^\\s"\'<>=/]+(?:\\s*=\\s*(?:"[^"]*"|\'[^\']*\'|[^\\s"\'<>`=]+))?)*\\s*'
+const PATTERN_ATTRIBUTES = '(?=[\\s/>]|<|$)(?:(?:[\\s/]+|(?<=["\']))[^\\s"\'<>=/]+(?:\\s*=\\s*(?:"[^"]*"|\'[^\']*\'|[^\\s"\'<>`=]+))?)*\\s*'
 
-/** Pattern matching tag attributes and closing bracket / Шаблон для сопоставления атрибутов тега и закрывающей скобки */
-const PATTERN_TAG_ATTRIBUTES = `${PATTERN_ATTRIBUTES}(?:/\\s*)?>`
+/** Pattern matching tag attributes and closing bracket or unclosed tag end / Шаблон для сопоставления атрибутов тега и закрывающей скобки или конца незакрытого тега */
+const PATTERN_TAG_ATTRIBUTES = `${PATTERN_ATTRIBUTES}(?:(?:/\\s*)?>|[^<>]*>?)`
+
+/** Pattern matching the body and closing tag of content tags / Шаблон для сопоставления тела и закрывающего тега для тегов с содержимым */
+const PATTERN_CONTENT_TAG_BODY = `${PATTERN_ATTRIBUTES}(?:/\\s*>|[^<>]*>[\\s\\S]*?(?:<\\/\\1${PATTERN_TAG_ATTRIBUTES}|$)|[^<>]*)`
 
 /** Regular expression matching default tags with content (script, style, noscript) / Регулярное выражение для поиска тегов по умолчанию с их содержимым */
 const REGEXP_DEFAULT_CONTENT_TAGS = /* #__PURE__ */ new RegExp(
-  `<(${DEFAULT_CONTENT_TAGS.join('|')})${PATTERN_ATTRIBUTES}(?:/\\s*>|>[\\s\\S]*?<\\/\\1${PATTERN_TAG_ATTRIBUTES})`,
+  `<(${DEFAULT_CONTENT_TAGS.join('|')})${PATTERN_CONTENT_TAG_BODY}`,
   'gi'
 )
 
 /** Regular expression matching all HTML/XML tags, comments, DOCTYPE, and CDATA / Регулярное выражение для поиска всех HTML/XML тегов, комментариев, DOCTYPE и CDATA */
 const REGEXP_ALL_TAGS = /* #__PURE__ */ new RegExp(
-  `<!--[\\s\\S]*?--!?>|<!DOCTYPE\\b(?:[^>"']|"[^"]*"|'[^']*')*>|<!\\[CDATA\\[[\\s\\S]*?\\]\\]>|<\\?[\\s\\S]*?\\?>|</?[a-z\\p{L}][a-z0-9:_\\p{L}\\p{N}.-]*${PATTERN_TAG_ATTRIBUTES}`,
+  `<!--[\\s\\S]*?(?:--!?>|$)|<!DOCTYPE\\b(?:[^>"']|"[^"]*"|'[^']*')*(?:>|[^<>]*>?)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>|$)|<\\?[\\s\\S]*?(?:\\?>|$)|</?[a-z\\p{L}][a-z0-9:_\\p{L}\\p{N}.-]*${PATTERN_TAG_ATTRIBUTES}`,
   'giu'
 )
 
@@ -132,7 +135,7 @@ function getCachedContentExpression(cacheKey: string): RegExp {
   }
 
   const expression = new RegExp(
-    `<(${cacheKey})${PATTERN_ATTRIBUTES}(?:/\\s*>|>[\\s\\S]*?<\\/\\1${PATTERN_TAG_ATTRIBUTES})`,
+    `<(${cacheKey})${PATTERN_CONTENT_TAG_BODY}`,
     'gi'
   )
 

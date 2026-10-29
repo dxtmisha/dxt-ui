@@ -7,11 +7,12 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 Tiện ích để làm nổi bật các kết quả khớp trong một chuỗi bằng cách bọc chúng trong thẻ HTML `<span>` với một class được chỉ định. Nó sử dụng `getSeparatingSearchExp` để hỗ trợ tìm kiếm nhiều từ (phân tách bằng dấu cách).
 
 **Tham số:**
-- `value: string` — Chuỗi ban đầu để xử lý.
+- `value?: string | number | null` — Giá trị ban đầu để xử lý.
 - `search?: string | RegExp` — Chuỗi tìm kiếm (một hoặc nhiều từ phân tách bằng dấu cách) hoặc biểu thức chính quy.
-- `className: string = 'sys-highlight-match'` — Class CSS sẽ được thêm vào thẻ `<span>`.
-- `shouldEscape: boolean = false` — Có nên thoát chuỗi trước khi thêm làm nổi bật hay không.
-- `shouldRemoveTag: boolean = true` — Có nên xóa các thẻ HTML hiện có khỏi chuỗi khi `shouldEscape` là `false` hay không.
+- `options: AddTagHighlightMatchOptions = {}` — Tùy chọn cấu hình:
+  - `className?: string` — Class CSS sẽ được thêm vào thẻ `<span>` (mặc định: `'sys-highlight-match'`).
+  - `shouldEscape?: boolean` — Có nên thoát chuỗi trước khi thêm làm nổi bật hay không (mặc định: `false`).
+  - `shouldRemoveTag?: boolean` — Có nên xóa các thẻ HTML hiện có khỏi chuỗi khi `shouldEscape` là `false` hay không (mặc định: `true`).
 
 **Trả về:**
 `string` — Chuỗi với các thẻ HTML được thêm vào để làm nổi bật.
@@ -30,7 +31,7 @@ addTagHighlightMatch('Apple and Banana', 'apple banana')
 // '<span class="sys-highlight-match">Apple</span> and <span class="sys-highlight-match">Banana</span>'
 
 // Class tùy chỉnh
-addTagHighlightMatch('Test', 'test', 'text-red')
+addTagHighlightMatch('Test', 'test', { className: 'text-red' })
 // '<span class="text-red">Test</span>'
 
 // Xóa thẻ (hành vi mặc định khi shouldEscape = false)
@@ -38,11 +39,11 @@ addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world')
 // 'Hello <span class="sys-highlight-match">world</span>'
 
 // Giữ lại các thẻ HTML hiện có
-addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world', 'sys-highlight-match', false, false)
+addTagHighlightMatch('<p>Hello <b>world</b></p>', 'world', { shouldRemoveTag: false })
 // '<p>Hello <b><span class="sys-highlight-match">world</span></b></p>'
 
 // Với thoát chuỗi (thẻ HTML được escape chứ không bị xóa)
-addTagHighlightMatch('<b>bold</b>', 'bold', 'sys-highlight-match', true)
+addTagHighlightMatch('<b>bold</b>', 'bold', { shouldEscape: true })
 // '&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;'
   `}
 />
