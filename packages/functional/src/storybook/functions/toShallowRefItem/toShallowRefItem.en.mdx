@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/toShallowRefItem - Shallow Reactive Ref Normalization'/>
+
+# `toShallowRefItem`
+
+A utility function that ensures a value is a shallow reactive `ShallowRef`. If the input is already a `Ref` or `ShallowRef`, it is returned as is. If the input is an ordinary value, it is wrapped in a new `shallowRef` without deep proxying of nested object properties.
+
+**Parameters:**
+- `item?: RefOrNormal<T>` — A reactive variable (`Ref`), shallow reactive reference (`ShallowRef`), or an ordinary value.
+
+**Returns:**
+`ShallowRef<T>` — A shallow reactive reference containing the value.
+
+```typescript
+import { shallowRef } from 'vue'
+import { toShallowRefItem } from '@dxtmisha/functional'
+
+const existingShallow = shallowRef({ count: 1 })
+const largeDataset = { items: [1, 2, 3], meta: { total: 3 } }
+
+const normalized1 = toShallowRefItem(existingShallow) // Returns original shallowRef
+const normalized2 = toShallowRefItem(largeDataset)    // Returns new shallowRef without deep proxying
+
+// Triggering reactivity only occurs on root value replacement:
+normalized2.value = { items: [1, 2, 3, 4], meta: { total: 4 } }
+```
+

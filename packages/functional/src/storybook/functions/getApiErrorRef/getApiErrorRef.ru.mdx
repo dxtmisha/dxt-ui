@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/getApiErrorRef - Извлечение ошибки API'/>
+
+# `getApiErrorRef`
+
+Возвращает вычисляемую ссылку (`ComputedRef`) на объект ошибки `ApiErrorItem` из реактивного ответа API. Если ответ API завершился успешно или данные отсутствуют, возвращает `undefined`.
+
+**Параметры:**
+- `data: RefType<ApiData<R> | undefined> | { readonly value: unknown }` — Реактивные данные ответа API (`Ref` или `ComputedRef`).
+
+**Возвращает:**
+`ComputedRef<ApiErrorItem | undefined>` — Вычисляемая ссылка на элемент ошибки `ApiErrorItem` или `undefined`.
+
+```typescript
+import { ref } from 'vue'
+import { getApiErrorRef } from '@dxtmisha/functional'
+
+const apiData = ref({
+  status: 'error',
+  errorObject: {
+    getCode: () => 'AUTH_REQUIRED',
+    getMessage: () => 'Authentication is required',
+    getStatus: () => 401
+  }
+})
+
+const error = getApiErrorRef(apiData)
+console.log(error.value?.getCode())    // 'AUTH_REQUIRED'
+console.log(error.value?.getMessage()) // 'Authentication is required'
+```
+

@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/getApiErrorRef - API Error Extraction'/>
+
+# `getApiErrorRef`
+
+A utility function that returns a computed reference (`ComputedRef`) to the `ApiErrorItem` from a reactive API response data wrapper. If the API response was successful or data is missing, it returns `undefined`.
+
+**Parameters:**
+- `data: RefType<ApiData<R> | undefined> | { readonly value: unknown }` — Reactive API response data (`Ref` or `ComputedRef`).
+
+**Returns:**
+`ComputedRef<ApiErrorItem | undefined>` — A computed reference to the `ApiErrorItem` or `undefined`.
+
+```typescript
+import { ref } from 'vue'
+import { getApiErrorRef } from '@dxtmisha/functional'
+
+const apiData = ref({
+  status: 'error',
+  errorObject: {
+    getCode: () => 'AUTH_REQUIRED',
+    getMessage: () => 'Authentication is required',
+    getStatus: () => 401
+  }
+})
+
+const error = getApiErrorRef(apiData)
+console.log(error.value?.getCode())    // 'AUTH_REQUIRED'
+console.log(error.value?.getMessage()) // 'Authentication is required'
+```
+

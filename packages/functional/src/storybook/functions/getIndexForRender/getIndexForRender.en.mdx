@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Generates a composite component `key` from its name, indexes, and id. Identifiers are appended with dots; CSS classes are ignored.
 
 ### Parameters:
-- `name: string | any` — Component name or tag (the key base).
+- `name?: unknown` — Component name or tag (the key base).
 - `props?: T` — Component properties (used to extract `index` and `id`; `class` does not affect the key).
 - `index?: string` — An optional external index.
 

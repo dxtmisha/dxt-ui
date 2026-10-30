@@ -10,9 +10,10 @@ Phiên bản phản ứng của hàm [`getBind`](../getBind/getBind.vi.mdx) đ�
 - `value: RefOrNormal<T | R> | undefined` — Giá trị đầu vào. Có thể là một ref phản ứng hoặc một đối tượng bình thường chứa nhiều thuộc tính.
 - `nameExtra: RefOrNormal<ItemList> | string = {}` — Các tham số bổ sung hoặc tên thuộc tính sẽ được hợp nhất vào đối tượng liên kết cuối cùng.
 - `name: string = 'value'` — Tên thuộc tính sẽ sử dụng cho giá trị chính (mặc định là `'value'`).
+- `except: boolean = false` — Nếu true, bỏ qua kiểm tra bắt buộc có khóa chính trong đối tượng `value`.
 
 **Trả về:**
-`ComputedRef<R>` — Một computed ref phản ứng chứa đối tượng các thuộc tính đã được hợp nhất, sẵn sàng để liên kết (ví dụ: thông qua `v-bind`).
+`ComputedRef<ConstrBind<R>>` — Một computed ref phản ứng chứa đối tượng các thuộc tính đã được hợp nhất, sẵn sàng để liên kết (ví dụ: thông qua `v-bind`).
 
 ```typescript
 import { ref } from 'vue'

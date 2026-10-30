@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/toShallowRefItem - Нормализация поверхностной реактивной переменной ShallowRef'/>
+
+# `toShallowRefItem`
+
+Утилитарная функция, которая гарантирует, что значение является поверхностной реактивной переменной `ShallowRef`. Если входное значение уже является `Ref` или `ShallowRef`, оно возвращается как есть. Если входное значение является обычным значением, оно оборачивается в новый `shallowRef` без глубокого проксирования вложенных свойств объекта.
+
+**Параметры:**
+- `item?: RefOrNormal<T>` — Реактивная переменная (`Ref`), поверхностная ссылка (`ShallowRef`) или обычное значение.
+
+**Возвращает:**
+`ShallowRef<T>` — Поверхностная реактивная переменная, содержащая значение.
+
+```typescript
+import { shallowRef } from 'vue'
+import { toShallowRefItem } from '@dxtmisha/functional'
+
+const existingShallow = shallowRef({ count: 1 })
+const largeDataset = { items: [1, 2, 3], meta: { total: 3 } }
+
+const normalized1 = toShallowRefItem(existingShallow) // Возвращает исходный shallowRef
+const normalized2 = toShallowRefItem(largeDataset)    // Возвращает новый shallowRef без глубокого проксирования
+
+// Реактивность срабатывает только при замене корневого значения .value:
+normalized2.value = { items: [1, 2, 3, 4], meta: { total: 4 } }
+```
+

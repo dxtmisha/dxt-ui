@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/toShallowRefItem - Chuẩn hóa ShallowRef phản ứng'/>
+
+# `toShallowRefItem`
+
+Một hàm tiện ích đảm bảo một giá trị là một biến phản ứng nông `ShallowRef`. Nếu đầu vào đã là một `Ref` hoặc `ShallowRef`, nó sẽ được trả về nguyên trạng. Nếu đầu vào là một giá trị thông thường, nó sẽ được bao bọc trong một `shallowRef` mới mà không tạo proxy sâu cho các thuộc tính đối tượng lồng nhau.
+
+**Tham số:**
+- `item?: RefOrNormal<T>` — Một biến phản ứng (`Ref`), tham chiếu nông (`ShallowRef`) hoặc một giá trị thông thường.
+
+**Trả về:**
+`ShallowRef<T>` — Một biến phản ứng nông chứa giá trị.
+
+```typescript
+import { shallowRef } from 'vue'
+import { toShallowRefItem } from '@dxtmisha/functional'
+
+const existingShallow = shallowRef({ count: 1 })
+const largeDataset = { items: [1, 2, 3], meta: { total: 3 } }
+
+const normalized1 = toShallowRefItem(existingShallow) // Trả về shallowRef gốc
+const normalized2 = toShallowRefItem(largeDataset)    // Trả về shallowRef mới mà không tạo proxy sâu
+
+// Kích hoạt tính phản ứng chỉ xảy ra khi thay thế giá trị gốc .value:
+normalized2.value = { items: [1, 2, 3, 4], meta: { total: 4 } }
+```
+

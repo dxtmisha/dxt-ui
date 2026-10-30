@@ -14,8 +14,8 @@ import { isString, type ItemList } from '@dxtmisha/functional-basic'
  * @param index external identifier added before identifiers from props / внешний идентификатор, добавляемый перед идентификаторами из props
  * @returns generated key, or undefined when every contributing identifier is absent / сформированный ключ либо undefined при отсутствии всех участвующих идентификаторов
  */
-export function getIndexForRender<T extends ItemList>(
-  name: string | any,
+export function getIndexForRender<T extends ItemList = ItemList>(
+  name?: unknown,
   props?: T,
   index?: string
 ): string | undefined {
@@ -39,9 +39,5 @@ export function getIndexForRender<T extends ItemList>(
     result += `.${id}`
   }
 
-  if (result !== '') {
-    return result
-  }
-
-  return undefined
+  return result || undefined
 }

@@ -1,3 +1,11 @@
 src/functions/ref/getRef.ts
 src/functions/ref/executeFunctionRef.ts
-
+src/functions/ref/getApiErrorRef.ts
+src/functions/toBind.ts
+src/functions/render/getBind.ts
+src/functions/ref/getBindRef.ts
+src/functions/render/getIndexForRender.ts
+src/functions/ref/render.ts
+src/functions/ref/setRef.ts
+src/functions/ref/toRefItem.ts
+src/functions/ref/toShallowRefItem.ts

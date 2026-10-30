@@ -7,11 +7,12 @@ import {
 import { type RefOrNormal } from '../../types/refTypes'
 
 /**
- * Returns a regular variable or wraps it in a regular variable if it is an ordinary variable.
+ * Returns the reactive reference or wraps a plain value in a new ref.
  *
- * Возвращает регулярный переменный или оборачивает его в регулярный переменный, если является обычным переменным.
- * @param item
+ * Возвращает реактивную переменную или оборачивает обычное значение в новый ref.
+ * @param item reactive variable or normal value / реактивная переменная или обычное значение
+ * @returns reactive variable / реактивная переменная
  */
-export function toRefItem<T>(item: RefOrNormal<T>): Ref<T> {
-  return isRef(item) ? item : ref<T>(item) as Ref<T>
+export function toRefItem<T>(item?: RefOrNormal<T>): Ref<T> {
+  return isRef(item) ? item : (ref<T>(item as T) as Ref<T>)
 }

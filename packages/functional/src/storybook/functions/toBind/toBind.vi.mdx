@@ -15,8 +15,8 @@ Hàm nhận hai đối tượng và trả về một đối tượng mới bằn
 3. **Thuộc tính `style`:** Hoạt động tương tự như các class. Sự hiện diện của style trong cả hai đối tượng sẽ dẫn đến việc chúng được kết hợp thành một mảng `[extra.style, value.style]`, điều này cần thiết để áp dụng style chính xác trong Vue.
 
 **Tham số:**
-- `extra: ItemList` — Đối tượng thuộc tính cơ sở (ví dụ: thuộc tính mặc định hoặc nội bộ).
-- `value: ItemList` — Đối tượng thuộc tính cần hợp nhất vào cơ sở (ví dụ: thuộc tính do người dùng cung cấp).
+- `extra?: ItemList` — Đối tượng thuộc tính cơ sở (ví dụ: thuộc tính mặc định hoặc nội bộ).
+- `value?: ItemList` — Đối tượng thuộc tính cần hợp nhất vào cơ sở (ví dụ: thuộc tính do người dùng cung cấp).
 
 **Trả về:**
 `ConstrBind<R>` — Đối tượng thuộc tính đã được hợp nhất.

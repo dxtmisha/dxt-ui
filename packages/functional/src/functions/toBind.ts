@@ -1,50 +1,37 @@
 import type { ItemList } from '@dxtmisha/functional-basic'
-import type { ConstrBind, ConstrClass, ConstrStyles } from '../types/constructorTypes'
+import type { ConstrBind } from '../types/constructorTypes'
 
 /**
- * Merges two objects with properties, taking into account their classes and styles
+ * Merges two objects with properties, taking into account their classes and styles.
  *
- * Объединяет два объекта со свойствами с учётом классов и стилей в них
- * @param extra additional property/ дополнительное свойство
- * @param value input value/ входное значение
+ * Объединяет два объекта со свойствами с учётом классов и стилей в них.
+ * @param extra additional property / дополнительное свойство
+ * @param value input value / входное значение
+ * @returns merged object / объединенный объект
  */
 export function toBind<R extends ItemList = ItemList>(
-  extra: ItemList,
-  value: ItemList
+  extra?: ItemList,
+  value?: ItemList
 ): ConstrBind<R> {
-  const extraClass: ConstrClass | undefined = extra?.class
-  const valueClass: ConstrClass | undefined = value?.class
+  if (!extra) {
+    return { ...value } as ConstrBind<R>
+  }
 
-  const extraStyle: ConstrStyles | undefined = extra?.style
-  const valueStyle: ConstrStyles | undefined = value?.style
+  if (!value) {
+    return { ...extra } as ConstrBind<R>
+  }
 
   const data: ConstrBind<R> = {
     ...extra,
     ...value
   } as ConstrBind<R>
 
-  if (extraClass && valueClass) {
-    data.class = []
-
-    if (extraClass) {
-      data.class.push(extraClass)
-    }
-
-    if (valueClass) {
-      data.class.push(valueClass)
-    }
+  if (extra.class && value.class) {
+    data.class = [extra.class, value.class]
   }
 
-  if (extraStyle && valueStyle) {
-    data.style = []
-
-    if (extraStyle) {
-      data.style.push(extraStyle)
-    }
-
-    if (valueStyle) {
-      data.style.push(valueStyle)
-    }
+  if (extra.style && value.style) {
+    data.style = [extra.style, value.style]
   }
 
   return data

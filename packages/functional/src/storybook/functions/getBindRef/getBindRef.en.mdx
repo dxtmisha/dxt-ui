@@ -10,9 +10,10 @@ Reactive version of the [`getBind`](../getBind/getBind.en.mdx) function for gene
 - `value: RefOrNormal<T | R> | undefined` — Input value. Can be a reactive ref or a normal object containing multiple properties.
 - `nameExtra: RefOrNormal<ItemList> | string = {}` — Additional parameters or property names to be merged into the final binding object.
 - `name: string = 'value'` — The property name to use for the primary value (defaults to `'value'`).
+- `except: boolean = false` — If true, skips the check requiring a primary key in the `value` object.
 
 **Returns:**
-`ComputedRef<R>` — A reactive computed ref containing the merged properties object ready to be bound (e.g., via `v-bind`).
+`ComputedRef<ConstrBind<R>>` — A reactive computed ref containing the merged properties object ready to be bound (e.g., via `v-bind`).
 
 ```typescript
 import { ref } from 'vue'

@@ -19,13 +19,13 @@ import { type RawChildren, type RawSlots } from '../../types/refTypes'
  * @param index external identifier used for the automatic key / внешний идентификатор для автоматического ключа
  * @returns newly created VNode / созданный VNode
  */
-export function render<T extends ItemList>(
-  name: string | any,
+export function render<T extends ItemList = ItemList>(
+  name: Parameters<typeof h>[0],
   props?: T,
   children?: RawChildren | RawSlots,
   index?: string
 ): VNode {
-  let data: any = props
+  let data: (ItemList & { key?: string | undefined }) | undefined = props
   const keyExists = props && 'key' in props
 
   if (!props || !keyExists) {

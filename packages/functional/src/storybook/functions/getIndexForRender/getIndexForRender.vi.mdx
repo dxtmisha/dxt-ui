@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Tạo `key` tổng hợp cho component từ tên, các chỉ số và id. Các định danh được nối bằng dấu chấm; CSS class được bỏ qua.
 
 ### Tham số:
-- `name: string | any` — Tên hoặc thẻ của thành phần (phần cơ sở của key).
+- `name?: unknown` — Tên hoặc thẻ của thành phần (phần cơ sở của key).
 - `props?: T` — Các thuộc tính của thành phần (dùng để trích xuất `index` và `id`; `class` không ảnh hưởng đến key).
 - `index?: string` — Một chỉ số bên ngoài tùy chọn.
 

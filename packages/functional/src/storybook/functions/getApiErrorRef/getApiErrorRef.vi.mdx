@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/getApiErrorRef - Trích xuất lỗi API'/>
+
+# `getApiErrorRef`
+
+Một hàm tiện ích trả về một tham chiếu được tính toán (`ComputedRef`) đến đối tượng lỗi `ApiErrorItem` từ dữ liệu phản hồi API phản ứng. Nếu phản hồi API thành công hoặc thiếu dữ liệu, hàm sẽ trả về `undefined`.
+
+**Tham số:**
+- `data: RefType<ApiData<R> | undefined> | { readonly value: unknown }` — Dữ liệu phản hồi API phản ứng (`Ref` hoặc `ComputedRef`).
+
+**Trả về:**
+`ComputedRef<ApiErrorItem | undefined>` — Tham chiếu được tính toán đến `ApiErrorItem` hoặc `undefined`.
+
+```typescript
+import { ref } from 'vue'
+import { getApiErrorRef } from '@dxtmisha/functional'
+
+const apiData = ref({
+  status: 'error',
+  errorObject: {
+    getCode: () => 'AUTH_REQUIRED',
+    getMessage: () => 'Authentication is required',
+    getStatus: () => 401
+  }
+})
+
+const error = getApiErrorRef(apiData)
+console.log(error.value?.getCode())    // 'AUTH_REQUIRED'
+console.log(error.value?.getMessage()) // 'Authentication is required'
+```
+
