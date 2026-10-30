@@ -8,22 +8,24 @@ A utility for safely converting any input value into a string according to deter
 
 ### Key Features:
 - **Safe & Resilient**: Never throws runtime errors on `null`, `undefined`, circular object references, symbols, or BigInt values.
-- **Design System Boolean Convention**: Converts `true` to `'1'` and `false` to `'0'` for reliable serialization across form attributes and query parameters.
+- **Configurable Boolean Serialization**: Converts `true` to `'1'` and `false` to `'0'` by default for form attributes and query parameters, or returns `'true'` and `'false'` when `isBooleanString: true`.
 - **Configurable Array Serialization**: Joins flat primitive arrays with commas by default, or serializes as JSON when objects are present or when `isArrayString` is disabled.
 - **Circular Reference Protection**: Gracefully falls back to `String()` or `Object.prototype.toString` if `JSON.stringify` fails due to circular references.
 - **Isomorphic & SSR Safe**: Pure functional implementation without dependencies on browser globals or DOM APIs.
 
 **Parameters:**
 - `value?: V` — (Optional) The value for conversion.
-- `isArrayString: boolean = true` — (Optional) If `true`, flat arrays without objects are joined with commas; if `false`, serialized as a JSON string.
-- `trim: boolean = true` — (Optional) If `true`, then the resulting string will be trimmed (applies to string values).
+- `options: AnyToStringOptions = {}` — (Optional) Configuration options:
+  - `isArrayString?: boolean` — If `true`, flat arrays without objects are joined with commas; if `false`, serialized as a JSON string (default: `true`).
+  - `isBooleanString?: boolean` — If `true`, boolean values return `'true'` or `'false'`; if `false`, return `'1'` or `'0'` (default: `false`).
+  - `trim?: boolean` — If `true`, the resulting string will be trimmed (applies to string values, default: `true`).
 
 **Conversion Rules:**
 - **Strings**: Returned as is (trimmed if `trim = true`).
 - **Nullish values**: `null` and `undefined` return an empty string `''`.
 - **Arrays**: If `isArrayString = true` and the array contains no objects, elements are joined with commas. Otherwise serialized as JSON.
 - **Objects**: Converted to JSON via `JSON.stringify`. In case of circular references or serialization errors, falls back to `String()` or `Object.prototype.toString`.
-- **Booleans**: `true` converts to `'1'`, `false` converts to `'0'`.
+- **Booleans**: By default (`isBooleanString = false`), `true` converts to `'1'` and `false` converts to `'0'`. If `isBooleanString = true`, returns `'true'` or `'false'`.
 - **Other types**: Numbers, BigInt, Symbol, functions, etc. are converted via `.toString()`.
 
 **Returns:**
@@ -37,36 +39,38 @@ A utility for safely converting any input value into a string according to deter
 import { anyToString } from '@dxtmisha/functional-basic'
 
 // 1. Strings & trimming
-anyToString('  Hello  ')               // 'Hello'
-anyToString('  Hello  ', true, false)  // '  Hello  '
-anyToString('')                        // ''
+anyToString('  Hello  ')                          // 'Hello'
+anyToString('  Hello  ', { trim: false })         // '  Hello  '
+anyToString('')                                   // ''
 
 // 2. Nullish & omitted values
-anyToString(null)                      // ''
-anyToString(undefined)                 // ''
-anyToString()                          // ''
+anyToString(null)                                 // ''
+anyToString(undefined)                            // ''
+anyToString()                                     // ''
 
-// 3. Booleans (1/0 convention)
-anyToString(true)                      // '1'
-anyToString(false)                     // '0'
+// 3. Booleans (1/0 default or true/false string)
+anyToString(true)                                 // '1'
+anyToString(false)                                // '0'
+anyToString(true, { isBooleanString: true })      // 'true'
+anyToString(false, { isBooleanString: true })     // 'false'
 
 // 4. Arrays
-anyToString([1, 2, 3])                 // '1,2,3'
-anyToString([1, 2, 3], false)          // '[1,2,3]'
-anyToString([{ a: 1 }, 2])             // '[{"a":1},2]'
-anyToString([])                        // ''
+anyToString([1, 2, 3])                            // '1,2,3'
+anyToString([1, 2, 3], { isArrayString: false })  // '[1,2,3]'
+anyToString([{ a: 1 }, 2])                        // '[{"a":1},2]'
+anyToString([])                                   // ''
 
 // 5. Objects & circular reference resilience
-anyToString({ a: 1 })                  // '{"a":1}'
+anyToString({ a: 1 })                             // '{"a":1}'
 
 const circular: Record<string, unknown> = { id: 1 }
 circular.self = circular
-anyToString(circular)                  // '[object Object]'
+anyToString(circular)                             // '[object Object]'
 
 // 6. Numbers, BigInt, and special types
-anyToString(123)                       // '123'
-anyToString(0)                         // '0'
-anyToString(BigInt(42))                // '42'
-anyToString(Symbol('test'))            // 'Symbol(test)'
+anyToString(123)                                  // '123'
+anyToString(0)                                    // '0'
+anyToString(BigInt(42))                           // '42'
+anyToString(Symbol('test'))                       // 'Symbol(test)'
   `}
 />

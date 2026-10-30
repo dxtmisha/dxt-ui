@@ -24,6 +24,7 @@ describe('DataStorage', () => {
   it('should initialize correctly with the default prefix', () => {
     const storage = new DataStorage('test')
     expect(storage).toBeInstanceOf(DataStorage)
+    expect(storage.getIndex()).toBe('ui-storage__test')
   })
 
   it('should save data to localStorage by default', () => {
@@ -71,6 +72,19 @@ describe('DataStorage', () => {
 
     expect(retrieved).toBe('defaultValue')
     expect(storage.get()).toBe('defaultValue')
+  })
+
+  it('should infer exact type T when non-undefined defaultValue is passed, and T | undefined when omitted', () => {
+    const storage = new DataStorage<string>('test-type-inference')
+    const valWithDefault: string = storage.get('default')
+    const valWithFn: string = storage.get(() => 'default')
+    const valWithoutDefault: string | undefined = storage.get()
+    const valWithUndefined: string | undefined = storage.get(undefined)
+
+    expect(valWithDefault).toBe('default')
+    expect(valWithFn).toBe('default')
+    expect(valWithoutDefault).toBe('default')
+    expect(valWithUndefined).toBe('default')
   })
 
   it('should execute functions passed as value', () => {
@@ -251,6 +265,15 @@ describe('DataStorage', () => {
       expect(storage.get()).toBe('value')
     })
 
+    it('should handle multilingual, unicode and emoji values and keys correctly', () => {
+      const storage = new DataStorage<{ text: string, flag: string }>('ключ_dữ_liệu_🚀')
+      storage.set({ text: 'Привет, мир! Xin chào thế giới! 你好世界！', flag: '🇻🇳' })
+
+      const retrieved = storage.get()
+      expect(retrieved).toEqual({ text: 'Привет, мир! Xin chào thế giới! 你好世界！', flag: '🇻🇳' })
+      expect(storage.getIndex()).toBe('ui-storage__ключ_dữ_liệu_🚀')
+    })
+
     it('should handle large data objects', () => {
       const storage = new DataStorage<{ data: string[] }>('test-large-data')
       const largeObject = {
@@ -415,6 +438,14 @@ describe('DataStorage', () => {
   })
 
   describe('prefix management', () => {
+    it('should return updated getIndex after setPrefix is called', () => {
+      const storage = new DataStorage('test-get-index-prefix')
+      expect(storage.getIndex()).toBe('ui-storage__test-get-index-prefix')
+
+      DataStorage.setPrefix('custom-app')
+      expect(storage.getIndex()).toBe('custom-app__test-get-index-prefix')
+    })
+
     it('should apply prefix to all new instances after setPrefix', () => {
       DataStorage.setPrefix('new-prefix')
 

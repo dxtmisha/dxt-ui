@@ -27,6 +27,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 **Параметры:**
 - `name: string` — имя cookie
 - `defaultValue?: T | (() => T)` — значение по умолчанию или функция, возвращающая значение
+- `options?: CookieOptions` — дополнительные параметры cookie при сохранении значения по умолчанию
 
 **Возвращает:** `T | undefined` — преобразованное значение cookie или значение по умолчанию
 
@@ -64,13 +65,13 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Объект конфигурации для параметров cookie:
 
 - `age?: number` — время жизни в секундах (атрибут max-age)
-- `sameSite?: 'strict' | 'lax'` — политика SameSite
+- `sameSite?: 'strict' | 'lax' | 'none'` — политика SameSite (при `'none'` атрибут `Secure` добавляется автоматически по стандарту RFC 6265bis)
 - `path?: string` — путь для cookie (по умолчанию `/`)
 - `domain?: string` — домен для cookie
-- `secure?: boolean` — если true, добавляет атрибут Secure
+- `secure?: boolean` — если true, добавляет атрибут Secure (автоматически включается при `sameSite: 'none'` или `partitioned: true`)
 - `httpOnly?: boolean` — если true, добавляет атрибут HttpOnly (только для серверных слушателей)
 - `partitioned?: boolean` — если true, добавляет атрибут Partitioned (CHIPS)
-- `arguments?: string[] | Record<string, any>` — дополнительные директивы для строки cookie
+- `arguments?: string[] | Record<string, unknown>` — дополнительные директивы для строки cookie
 
 ## Встроенное преобразование типов
 

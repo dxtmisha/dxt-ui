@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `transformation`
 
-Chuyển đổi một giá trị chuỗi thành kiểu dữ liệu tương ứng (boolean, số, đối tượng/mảng JSON hoặc `null`/`undefined`). Lỗi phân tích cú pháp JSON được chuyển qua `ErrorCenter` (thuộc nhóm `'transformation'`). Nếu cờ `isFunctionCheck` được bật và đang chạy trong môi trường DOM, hàm sẽ kiểm tra sự tồn tại của một hàm có tên đó trong đối tượng toàn cục `window`. Các giá trị không phải chuỗi hoặc chuỗi không khớp với bất kỳ quy tắc chuyển đổi nào sẽ được trả về nguyên trạng.
+Chuyển đổi một giá trị chuỗi thành kiểu dữ liệu tương ứng (boolean, số, đối tượng/mảng JSON hoặc `null`/`undefined`). Các chuỗi số trong phạm vi số nguyên an toàn hoặc số thực hữu hạn được chuyển đổi thành số (các số vượt quá giới hạn an toàn được giữ nguyên dạng chuỗi để tránh mất độ chính xác). Lỗi phân tích cú pháp JSON được chuyển qua `ErrorCenter` (thuộc nhóm `'transformation'`). Nếu cờ `isFunctionCheck` được bật và đang chạy trong môi trường DOM, hàm sẽ kiểm tra sự tồn tại của một hàm có tên đó trong đối tượng toàn cục `window`. Các giá trị không phải chuỗi hoặc chuỗi không khớp с bất kỳ quy tắc chuyển đổi nào sẽ được trả về nguyên trạng.
 
 **Tham số:**
-- `value: unknown` — Giá trị đầu vào cần chuyển đổi.
+- `value?: unknown` — Giá trị đầu vào cần chuyển đổi.
 - `isFunctionCheck: boolean = false` — Cờ kiểm tra hàm trong đối tượng toàn cục `window` (mặc định là `false`).
 
 **Trả về:**

@@ -27,6 +27,7 @@ Lấy giá trị cookie theo tên với chuyển đổi kiểu tự động. N�
 **Tham số:**
 - `name: string` — tên cookie
 - `defaultValue?: T | (() => T)` — giá trị mặc định hoặc hàm trả về giá trị
+- `options?: CookieOptions` — tham số cookie bổ sung khi lưu giá trị mặc định
 
 **Trả về:** `T | undefined` — giá trị cookie đã chuyển đổi hoặc giá trị mặc định
 
@@ -64,13 +65,13 @@ Xóa cookie bằng cách đặt giá trị rỗng và thời hạn hết hạn �
 Đối tượng cấu hình cho tham số cookie:
 
 - `age?: number` — thời gian tồn tại tính bằng giây (thuộc tính max-age)
-- `sameSite?: 'strict' | 'lax'` — chính sách SameSite
+- `sameSite?: 'strict' | 'lax' | 'none'` — chính sách SameSite (khi `'none'`, thuộc tính `Secure` được thêm tự động theo RFC 6265bis)
 - `path?: string` — đường dẫn cho cookie (mặc định là `/`)
 - `domain?: string` — tên miền cho cookie
-- `secure?: boolean` — nếu đúng, thêm thuộc tính Secure
+- `secure?: boolean` — nếu đúng, thêm thuộc tính Secure (tự động bật khi `sameSite: 'none'` hoặc `partitioned: true`)
 - `httpOnly?: boolean` — nếu đúng, thêm thuộc tính HttpOnly (chỉ dành cho trình lắng nghe phía máy chủ)
 - `partitioned?: boolean` — nếu đúng, thêm thuộc tính Partitioned (CHIPS)
-- `arguments?: string[] | Record<string, any>` — các chỉ thị bổ sung cho chuỗi cookie
+- `arguments?: string[] | Record<string, unknown>` — các chỉ thị bổ sung cho chuỗi cookie
 
 ## Chuyển đổi loại tích hợp
 

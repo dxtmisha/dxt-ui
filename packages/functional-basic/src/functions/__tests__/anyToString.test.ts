@@ -7,12 +7,13 @@ describe('anyToString', () => {
       expect(anyToString(' test ')).toBe('test')
       expect(anyToString('test')).toBe('test')
       expect(anyToString('  multi  word  string  ')).toBe('multi  word  string')
+      expect(anyToString(' test ', { trim: true })).toBe('test')
     })
 
-    it('should NOT trim the string if trim parameter is false', () => {
-      expect(anyToString(' test ', true, false)).toBe(' test ')
-      expect(anyToString('   ', true, false)).toBe('   ')
-      expect(anyToString('\t\nhello\r\n', true, false)).toBe('\t\nhello\r\n')
+    it('should NOT trim the string if trim option is false', () => {
+      expect(anyToString(' test ', { trim: false })).toBe(' test ')
+      expect(anyToString('   ', { trim: false })).toBe('   ')
+      expect(anyToString('\t\nhello\r\n', { trim: false })).toBe('\t\nhello\r\n')
     })
 
     it('should handle empty strings and whitespace-only strings', () => {
@@ -43,13 +44,17 @@ describe('anyToString', () => {
     })
   })
 
-  describe('Booleans (Design System rules)', () => {
-    it('should return "1" for true', () => {
+  describe('Booleans and isBooleanString option', () => {
+    it('should return "1" for true and "0" for false by default (isBooleanString: false)', () => {
       expect(anyToString(true)).toBe('1')
+      expect(anyToString(false)).toBe('0')
+      expect(anyToString(true, { isBooleanString: false })).toBe('1')
+      expect(anyToString(false, { isBooleanString: false })).toBe('0')
     })
 
-    it('should return "0" for false', () => {
-      expect(anyToString(false)).toBe('0')
+    it('should return "true" for true and "false" for false when isBooleanString is true', () => {
+      expect(anyToString(true, { isBooleanString: true })).toBe('true')
+      expect(anyToString(false, { isBooleanString: true })).toBe('false')
     })
   })
 
@@ -76,7 +81,7 @@ describe('anyToString', () => {
     })
   })
 
-  describe('Arrays and isArrayString parameter features', () => {
+  describe('Arrays and isArrayString option features', () => {
     it('should join primitive arrays with commas when isArrayString is true (default)', () => {
       expect(anyToString([1, 2, 3])).toBe('1,2,3')
       expect(anyToString(['a', 'b', 'c'])).toBe('a,b,c')
@@ -85,34 +90,34 @@ describe('anyToString', () => {
 
     it('should return an empty string for an empty array when isArrayString is true', () => {
       expect(anyToString([])).toBe('')
-      expect(anyToString([], true)).toBe('')
+      expect(anyToString([], { isArrayString: true })).toBe('')
     })
 
     it('should return stringified JSON for an array if isArrayString is false', () => {
-      expect(anyToString([1, 2, 3], false)).toBe('[1,2,3]')
-      expect(anyToString(['a', 'b'], false)).toBe('["a","b"]')
-      expect(anyToString([], false)).toBe('[]')
+      expect(anyToString([1, 2, 3], { isArrayString: false })).toBe('[1,2,3]')
+      expect(anyToString(['a', 'b'], { isArrayString: false })).toBe('["a","b"]')
+      expect(anyToString([], { isArrayString: false })).toBe('[]')
     })
 
     it('should return stringified JSON for arrays containing objects, regardless of isArrayString', () => {
       expect(anyToString([{ a: 1 }, 2])).toBe('[{"a":1},2]')
-      expect(anyToString([{ a: 1 }, 2], true)).toBe('[{"a":1},2]')
-      expect(anyToString([{ a: 1 }, 2], false)).toBe('[{"a":1},2]')
+      expect(anyToString([{ a: 1 }, 2], { isArrayString: true })).toBe('[{"a":1},2]')
+      expect(anyToString([{ a: 1 }, 2], { isArrayString: false })).toBe('[{"a":1},2]')
     })
 
     it('should return stringified JSON for nested arrays', () => {
       expect(anyToString([[1], [2]])).toBe('[[1],[2]]')
-      expect(anyToString([[1, 2], [3, 4]], true)).toBe('[[1,2],[3,4]]')
+      expect(anyToString([[1, 2], [3, 4]], { isArrayString: true })).toBe('[[1,2],[3,4]]')
     })
 
     it('should join arrays with boolean values using native join without converting them to 1/0', () => {
       expect(anyToString([true, false])).toBe('true,false')
-      expect(anyToString([true, false], false)).toBe('[true,false]')
+      expect(anyToString([true, false], { isArrayString: false })).toBe('[true,false]')
     })
 
     it('should join arrays containing null and undefined with empty slots', () => {
       expect(anyToString([1, null, undefined, 2])).toBe('1,,,2')
-      expect(anyToString([1, null, undefined, 2], false)).toBe('[1,null,null,2]')
+      expect(anyToString([1, null, undefined, 2], { isArrayString: false })).toBe('[1,null,null,2]')
     })
   })
 

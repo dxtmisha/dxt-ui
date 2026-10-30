@@ -23,7 +23,7 @@ Bao gồm tích hợp chặt chẽ với `DataStorage` để lưu trữ trạng 
 Cập nhật trạng thái truy cập cookie. Khi đặt thành `true`, chặn tất cả hoạt động ghi cookie trong ngữ cảnh của phiên bản này.
 
 **Tham số:**
-- `value: boolean` — trạng thái mới cần thiết lập
+- `value: boolean = true` — trạng thái mới cần thiết lập (mặc định là `true`)
 
 ### Kiểm tra
 
@@ -84,17 +84,18 @@ if (CookieBlock.get()) {
 }
 ```
 
-### Ngữ cảnh độc lập
+### Đồng bộ hóa giữa các phiên bản
+
+Tất cả các phiên bản `CookieBlockInstance` trong cùng một môi trường client đều chia sẻ kho lưu trữ `DataStorage`:
 
 ```typescript
 import { CookieBlockInstance } from '@dxtmisha/functional-basic'
 
-// Tạo các phiên bản độc lập
 const block1 = new CookieBlockInstance()
 const block2 = new CookieBlockInstance()
 
 block1.set(true)
 
 console.log(block1.get()) // true
-console.log(block2.get()) // false (phiên bản độc lập)
+console.log(block2.get()) // true (đã đồng bộ qua DataStorage)
 ```

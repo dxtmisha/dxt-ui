@@ -43,14 +43,17 @@ const session = new DataStorage('user_session', true)
 
 ### Truy cập Bộ lưu trữ
 
-- `get(defaultValue?: T | (() => T), cache?: number): T | undefined` — Truy xuất giá trị hiện được lưu trữ. Nếu thời gian cache được cung cấp, nó sẽ trả về `undefined` nếu dữ liệu đã quá hạn.
+- `get(defaultValue?: D, cache?: number): DataStorageGet<T, D>` — Truy xuất giá trị hiện được lưu trữ. Nếu thời gian cache được cung cấp, nó sẽ trả về `undefined` nếu dữ liệu đã quá hạn. Khi truyền giá trị mặc định, nó sẽ suy luận chính xác kiểu `T`.
 - `set(value?: T | (() => T)): T | undefined` — Thiết lập hoặc cập nhật giá trị trong cơ chế lưu trữ. Truyền `undefined` sẽ xóa mục đó.
+- `getIndex(): string` — Lấy tên khóa lưu trữ kèm tiền tố.
 - `remove(): this` — Xóa khóa tương ứng khỏi môi trường lưu trữ và thực thể trong bộ nhớ.
 - `update(): this` — Buộc thực thể bộ nhớ phải đồng bộ hóa với dữ liệu thô hiện tại bên trong các Storage API vật lý.
 
 ### Cấu hình
 
-- `static setPrefix(newPrefix: string): void` — Thay đổi tiền tố toàn cục áp dụng cho các thực thể mới. Tiền tố mặc định là `ui-storage`.
+- `static setPrefix(newPrefix: string): void` — Thay đổi tiền tố toàn cục áp dụng cho các thực thể mới. Tiền tố mặc định là `ui-storage`. Nên được gọi một lần khi khởi động ứng dụng.
+
+> **Lưu ý về SSR**: Tiền tố được chủ ý lưu trữ ở cấp độ module như một cấu hình dùng chung cho toàn bộ tiến trình ứng dụng. Trong môi trường SSR, nó áp dụng toàn cục cho toàn bộ tiến trình Node.js thay vì được cô lập theo từng request riêng lẻ.
 
 ## SSR và Hydration
 

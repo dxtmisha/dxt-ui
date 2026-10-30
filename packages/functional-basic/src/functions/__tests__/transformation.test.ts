@@ -39,21 +39,47 @@ describe('transformation', () => {
       expect(transformation('123')).toBe(123)
       expect(transformation('0')).toBe(0)
       expect(transformation('-42')).toBe(-42)
+      expect(transformation('+42')).toBe(42)
+      expect(transformation('+0')).toBe(0)
+      expect(transformation('-0')).toBe(-0)
       expect(transformation('  99  ')).toBe(99)
+      expect(transformation('  +99  ')).toBe(99)
     })
 
     it('should transform floating-point strings into numbers', () => {
       expect(transformation('123.45')).toBe(123.45)
+      expect(transformation('+123.45')).toBe(123.45)
       expect(transformation('0.0')).toBe(0)
+      expect(transformation('+0.0')).toBe(0)
       expect(transformation('-42.5')).toBe(-42.5)
+      expect(transformation('+42.5')).toBe(42.5)
       expect(transformation(' -3.1415 ')).toBe(-3.1415)
+      expect(transformation(' +3.1415 ')).toBe(3.1415)
     })
 
-    it('should not transform strings that only partially resemble numbers', () => {
+    it('should not transform strings that only partially resemble numbers or have leading zeros', () => {
+      expect(transformation('0123')).toBe('0123')
+      expect(transformation('007')).toBe('007')
+      expect(transformation('-0123')).toBe('-0123')
+      expect(transformation('+0123')).toBe('+0123')
+      expect(transformation('01.23')).toBe('01.23')
+      expect(transformation('+01.23')).toBe('+01.23')
       expect(transformation('12.34.56')).toBe('12.34.56')
       expect(transformation('100px')).toBe('100px')
       expect(transformation('.5')).toBe('.5')
       expect(transformation('5.')).toBe('5.')
+    })
+
+    it('should not transform integers beyond safe range (Number.MAX_SAFE_INTEGER / MIN_SAFE_INTEGER) to avoid precision loss', () => {
+      expect(transformation('9007199254740993')).toBe('9007199254740993')
+      expect(transformation('-9007199254740993')).toBe('-9007199254740993')
+      expect(transformation('9007199254740991')).toBe(9007199254740991)
+      expect(transformation('-9007199254740991')).toBe(-9007199254740991)
+    })
+
+    it('should not transform floating-point strings that overflow to Infinity', () => {
+      const hugeFloat = `1${'0'.repeat(309)}.5`
+      expect(transformation(hugeFloat)).toBe(hugeFloat)
     })
   })
 
@@ -96,7 +122,7 @@ describe('transformation', () => {
   })
 
   describe('Global window function resolution', () => {
-    it('should resolve a global window function when isFunction is true', () => {
+    it('should resolve a global window function when isFunctionCheck is true', () => {
       const mockCallback = () => 'executed'
       const windowRecord = window as unknown as Record<string, unknown>
       windowRecord.customGlobalCallback = mockCallback
@@ -109,7 +135,7 @@ describe('transformation', () => {
       }
     })
 
-    it('should not resolve a global window function when isFunction is false (default)', () => {
+    it('should not resolve a global window function when isFunctionCheck is false (default)', () => {
       const mockCallback = () => 'executed'
       const windowRecord = window as unknown as Record<string, unknown>
       windowRecord.customGlobalCallback = mockCallback
@@ -122,7 +148,7 @@ describe('transformation', () => {
       }
     })
 
-    it('should not return non-function properties attached to window when isFunction is true', () => {
+    it('should not return non-function properties attached to window when isFunctionCheck is true', () => {
       const windowRecord = window as unknown as Record<string, unknown>
       windowRecord.customGlobalValue = 12345
 
@@ -157,6 +183,7 @@ describe('transformation', () => {
       const sourceObject = { key: 'value' }
       const sourceArray = [1, 2, 3]
 
+      expect(transformation()).toBe(undefined)
       expect(transformation(0)).toBe(0)
       expect(transformation(123)).toBe(123)
       expect(transformation(false)).toBe(false)

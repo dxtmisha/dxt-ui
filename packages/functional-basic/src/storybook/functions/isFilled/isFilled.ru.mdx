@@ -10,11 +10,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - Считает массивы пустыми (`false`), если их длина равна 0.
 - Считает коллекции (`Map`, `Set`) пустыми (`false`), если их размер `.size` равен 0.
 - Считает объекты пустыми (`false`), если у них нет собственных свойств или все их значения равны `null` или `undefined`.
+- Считает объекты `Date` заполненными (`true`), если дата валидна (не `NaN`).
 - Распознает специальные строковые паттерны, такие как `'undefined'`, `'null'`, `'false'`, `'[]'` и по умолчанию считает их пустыми (`false`).
 - Позволяет настроить поведение для строкового значения `'0'` через аргумент `zeroTrue`.
 
 **Параметры:**
-- `value: T` — Входное значение любого типа для проверки.
+- `value?: T` — Входное значение любого типа для проверки (необязательно).
 - `zeroTrue?: boolean` — (Необязательно) Если передано `true`, строковое значение `'0'` будет считаться заполненным (вернет `true`), а не пустым.
 
 **Возвращает:**
@@ -27,6 +28,7 @@ console.log(isFilled('Текст')) // true
 console.log(isFilled(100)) // true
 console.log(isFilled([1, 2, 3])) // true
 console.log(isFilled({ data: 'ok' })) // true
+console.log(isFilled(new Date())) // true
 
 // Примеры пустых значений
 console.log(isFilled('')) // false
@@ -34,6 +36,7 @@ console.log(isFilled([])) // false
 console.log(isFilled({ a: null })) // false
 console.log(isFilled('null')) // false
 console.log(isFilled('0')) // false
+console.log(isFilled(new Date('invalid'))) // false
 
 // Использование zeroTrue
 console.log(isFilled('0', true)) // true

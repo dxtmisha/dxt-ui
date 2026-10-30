@@ -1,6 +1,9 @@
 import { CookieBlockInstance } from './CookieBlockInstance'
 import { ServerStorage } from './ServerStorage'
 
+/** Server storage key for cookie block instance / Ключ серверного хранилища для экземпляра блокировки cookie */
+const SERVER_STORAGE_KEY = '__ui:cookie-block__'
+
 /**
  * Class for changing cookie access status.
  *
@@ -35,6 +38,6 @@ export class CookieBlock {
    * @returns CookieBlockInstance instance / экземпляр CookieBlockInstance
    */
   static getItem(): CookieBlockInstance {
-    return ServerStorage.get('__ui:cookie-block__', () => new CookieBlockInstance())
+    return ServerStorage.get(SERVER_STORAGE_KEY, () => new CookieBlockInstance())
   }
 }

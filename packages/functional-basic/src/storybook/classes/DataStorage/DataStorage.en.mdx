@@ -43,14 +43,17 @@ const session = new DataStorage('user_session', true)
 
 ### Storage Access
 
-- `get(defaultValue?: T | (() => T), cache?: number): T | undefined` — Retrieves the currently saved value. If a cache time is provided, it returns `undefined` if the data is stale.
+- `get(defaultValue?: D, cache?: number): DataStorageGet<T, D>` — Retrieves the currently saved value. If a cache time is provided, it returns `undefined` if the data is stale. Passing a default value strictly infers the return type as `T`.
 - `set(value?: T | (() => T)): T | undefined` — Sets or updates the value in the storage mechanism. Passing `undefined` deletes the item.
+- `getIndex(): string` — Retrieves the prefixed storage key name.
 - `remove(): this` — Clears the corresponding key from the storage environment and the memory instance.
 - `update(): this` — Forces the memory instance to synchronize with the current raw data inside the physical Storage APIs.
 
 ### Configuration
 
-- `static setPrefix(newPrefix: string): void` — Changes the global prefix applied to new instances. The default prefix is `ui-storage`.
+- `static setPrefix(newPrefix: string): void` — Changes the global prefix applied to new instances. The default prefix is `ui-storage`. Should be called once during application startup.
+
+> **SSR Note**: The prefix is intentionally stored at module level as an application-wide setting across the entire runtime process. In SSR environments, it applies globally to the entire Node.js process rather than being isolated per individual request.
 
 ## SSR and Hydration
 

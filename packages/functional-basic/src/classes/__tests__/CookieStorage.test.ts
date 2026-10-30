@@ -64,6 +64,25 @@ describe('CookieStorage', () => {
       expect(CookieStorage.get('testKey')).toBe('testValue')
     })
 
+    it('should support direct setItem invocation for already-resolved values', () => {
+      // @ts-expect-error: intentionally testing protected static setItem method
+      CookieStorage.setItem('protectedKey', 'protectedValue')
+      expect(CookieStorage.get('protectedKey')).toBe('protectedValue')
+    })
+
+    it('should respect isWriteEmpty parameter in setItem', () => {
+      cookieSpy.mockClear()
+      // @ts-expect-error: intentionally testing protected static setItem method
+      const returnedValue = CookieStorage.setItem('noWriteEmptyKey', '', undefined, false)
+      expect(returnedValue).toBe('')
+      expect(CookieStorage.get('noWriteEmptyKey')).toBeUndefined()
+      expect(cookieSpy).not.toHaveBeenCalled()
+
+      // @ts-expect-error: intentionally testing protected static setItem method
+      CookieStorage.setItem('writeEmptyKey', '', undefined, true)
+      expect(cookieSpy).toHaveBeenCalledWith('writeEmptyKey=; Max-Age=-1; SameSite=Strict; Path=/')
+    })
+
     it('should return undefined for non-existent key', () => {
       expect(CookieStorage.get('missing')).toBeUndefined()
     })
@@ -114,6 +133,44 @@ describe('CookieStorage', () => {
       )
     })
 
+    it('should sanitize control characters (;, \\r, \\n) in path and domain to prevent header injection', () => {
+      CookieStorage.set('key', 'value', {
+        path: '/sub; evil=1\r\nSet-Cookie: injection=1',
+        domain: 'example.com;\r\ninvalid'
+      })
+
+      expect(cookieSpy).toHaveBeenCalledWith(
+        'key=value; Max-Age=604800; SameSite=Strict; Path=/sub evil=1Set-Cookie: injection=1; Domain=example.cominvalid'
+      )
+
+      // Fallback to '/' when path consists only of stripped control characters
+      CookieStorage.set('key2', 'value2', {
+        path: ';;;\r\n',
+        domain: ';;;\r\n'
+      })
+
+      expect(cookieSpy).toHaveBeenLastCalledWith(
+        'key2=value2; Max-Age=604800; SameSite=Strict; Path=/'
+      )
+    })
+
+    it('should automatically append Secure when sameSite is "none" or partitioned is true per RFC 6265bis', () => {
+      CookieStorage.set('sameSiteNoneKey', 'val1', { sameSite: 'none' })
+      expect(cookieSpy).toHaveBeenLastCalledWith(
+        'sameSiteNoneKey=val1; Max-Age=604800; SameSite=none; Path=/; Secure'
+      )
+
+      CookieStorage.set('partitionedKey', 'val2', { partitioned: true })
+      expect(cookieSpy).toHaveBeenLastCalledWith(
+        'partitionedKey=val2; Max-Age=604800; SameSite=Strict; Path=/; Secure; Partitioned'
+      )
+
+      CookieStorage.set('bothKey', 'val3', { sameSite: 'none', partitioned: true })
+      expect(cookieSpy).toHaveBeenLastCalledWith(
+        'bothKey=val3; Max-Age=604800; SameSite=none; Path=/; Secure; Partitioned'
+      )
+    })
+
     it('should handle empty string in set by setting in-memory value to undefined and Max-Age=-1', () => {
       CookieStorage.set('emptyKey', 'initial')
       expect(CookieStorage.get('emptyKey')).toBe('initial')
@@ -134,11 +191,44 @@ describe('CookieStorage', () => {
       expect(CookieStorage.get('falseKey', false)).toBe(false)
       expect(CookieStorage.get('falseKey')).toBe(false)
 
+      cookieSpy.mockClear()
       expect(CookieStorage.get('emptyDefaultKey', '')).toBe('')
       expect(CookieStorage.get('emptyDefaultKey')).toBeUndefined()
+      expect(cookieSpy).not.toHaveBeenCalled()
+
+      expect(CookieStorage.get('fnEmptyDefaultKey', () => '')).toBe('')
+      expect(CookieStorage.get('fnEmptyDefaultKey')).toBeUndefined()
+      expect(cookieSpy).not.toHaveBeenCalled()
+
+      expect(CookieStorage.get('nullDefaultKey', null)).toBeNull()
+      expect(CookieStorage.get('nullDefaultKey')).toBeUndefined()
+      expect(cookieSpy).not.toHaveBeenCalled()
 
       expect(CookieStorage.get('factoryKey', () => 'fromFactory')).toBe('fromFactory')
       expect(CookieStorage.get('factoryKey')).toBe('fromFactory')
+
+      expect(CookieStorage.get('optionsDefaultKey', 'securedValue', { age: 1800, sameSite: 'lax', secure: true })).toBe('securedValue')
+      expect(cookieSpy).toHaveBeenLastCalledWith('optionsDefaultKey=securedValue; Max-Age=1800; SameSite=lax; Path=/; Secure')
+    })
+
+    it('should infer exact return type from defaultValue when generic T is omitted', () => {
+      const stringVal = CookieStorage.get('autoStringType', 'stringValue')
+      const fnStringVal = CookieStorage.get('autoFnType', () => 'computedValue')
+      const numVal = CookieStorage.get('autoNumType', 42)
+      const boolVal = CookieStorage.get('autoBoolType', true)
+      const omittedVal = CookieStorage.get<string>('explicitOmitted')
+
+      const typedString: string = stringVal
+      const typedFnString: string = fnStringVal
+      const typedNumber: number = numVal
+      const typedBoolean: boolean = boolVal
+      const typedOmitted: string | undefined = omittedVal
+
+      expect(typedString).toBe('stringValue')
+      expect(typedFnString).toBe('computedValue')
+      expect(typedNumber).toBe(42)
+      expect(typedBoolean).toBe(true)
+      expect(typedOmitted).toBeUndefined()
     })
 
     it('should transform string values in get via transformation()', () => {
@@ -175,6 +265,11 @@ describe('CookieStorage', () => {
       expect(CookieStorage.get('key')).toBeUndefined()
       expect(cookieSpy).toHaveBeenLastCalledWith('key=; Max-Age=-1; SameSite=Strict; Path=/')
     })
+
+    it('should respect custom options (path, domain) when removing item', () => {
+      CookieStorage.remove('key', { path: '/admin', domain: 'example.com' })
+      expect(cookieSpy).toHaveBeenLastCalledWith('key=; Max-Age=-1; SameSite=Strict; Path=/admin; Domain=example.com')
+    })
   })
 
   describe('format and parse', () => {
@@ -189,6 +284,16 @@ describe('CookieStorage', () => {
       expect(CookieStorage.get('key2')).toBe('value=with=equals')
     })
 
+    it('should protect against prototype pollution when cookie contains "__proto__" or "constructor"', () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
+      CookieStorage.init(undefined, () => '__proto__=polluted; constructor=polluted')
+
+      expect(CookieStorage.get('__proto__')).toBe('polluted')
+      expect(CookieStorage.get('constructor')).toBe('polluted')
+      expect(Object.hasOwn(Object.prototype, 'polluted')).toBe(false)
+      expect(({} as any).polluted).toBeUndefined()
+    })
+
     it('should URL-encode and decode special characters and JSON objects in keys and values', () => {
       cookieSpy.mockRestore()
       CookieStorage.set('user profile', { name: 'Иван', role: 'admin & user' })
@@ -200,10 +305,12 @@ describe('CookieStorage', () => {
 
     it('should gracefully fallback to raw key and value when decodeURIComponent fails on malformed URI sequence', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
-      CookieStorage.init(undefined, () => 'malformedKey=%E0%A4%A; %E0%A4%A=rawValue')
+      CookieStorage.init(undefined, () => 'malformedKey=%E0%A4%A; %E0%A4%A=rawValue; user%20name=50%off; %E0%A4%A%20key=valid%20value')
 
       expect(CookieStorage.get('malformedKey')).toBe('%E0%A4%A')
       expect(CookieStorage.get('%E0%A4%A')).toBe('rawValue')
+      expect(CookieStorage.get('user name')).toBe('50%off')
+      expect(CookieStorage.get('%E0%A4%A%20key')).toBe('valid value')
     })
 
     it('should ignore empty or value-less segments when parsing cookies', () => {
@@ -232,6 +339,36 @@ describe('CookieStorage', () => {
       CookieStorage.set('domDataKey', 'domDataValue')
       expect(CookieStorage.get('domDataKey')).toBe('domDataValue')
       expect(cookieSpy).not.toHaveBeenCalled()
+    })
+
+    it('should gracefully handle exceptions when reading document.cookie is blocked (e.g. strict sandbox)', () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
+      vi.mocked(isDomDataModule.isDomData).mockReturnValue(false)
+      const readSpy = vi.spyOn(document, 'cookie', 'get').mockImplementation(() => {
+        throw new DOMException('Failed to read the cookie property from Document: The document is sandboxed and lacks the allow-same-origin flag', 'SecurityError')
+      })
+
+      try {
+        expect(() => CookieStorage.get('anyKey')).not.toThrow()
+        expect(CookieStorage.get('anyKey')).toBeUndefined()
+      } finally {
+        readSpy.mockRestore()
+      }
+    })
+
+    it('should gracefully handle exceptions when writing to document.cookie is blocked (e.g. strict sandbox)', () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
+      vi.mocked(isDomDataModule.isDomData).mockReturnValue(false)
+      cookieSpy.mockImplementation(() => {
+        throw new DOMException('Failed to set the cookie property on Document', 'SecurityError')
+      })
+
+      try {
+        expect(() => CookieStorage.set('sandboxKey', 'sandboxVal')).not.toThrow()
+        expect(CookieStorage.get('sandboxKey')).toBe('sandboxVal')
+      } finally {
+        cookieSpy.mockReset()
+      }
     })
   })
 
@@ -349,6 +486,26 @@ describe('CookieStorage', () => {
       expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Max-Age=3600'))
       expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Priority=High'))
     })
+
+    it('should sanitize control characters (;, \\r, \\n) in array and object arguments', () => {
+      CookieStorage.set('key1', 'value1', {
+        arguments: ['CustomFlag;\r\nSet-Cookie: evil=1', ';;;\r\n']
+      })
+
+      expect(cookieSpy).toHaveBeenLastCalledWith(
+        'key1=value1; Max-Age=604800; SameSite=Strict; Path=/; CustomFlagSet-Cookie: evil=1'
+      )
+
+      CookieStorage.set('key2', 'value2', {
+        arguments: {
+          'Priority;\r\n': 'High;\r\nSet-Cookie: evil=1'
+        }
+      })
+
+      expect(cookieSpy).toHaveBeenLastCalledWith(
+        'key2=value2; Max-Age=604800; SameSite=Strict; Path=/; Priority=HighSet-Cookie: evil=1'
+      )
+    })
   })
 
   describe('different data types', () => {
@@ -357,11 +514,18 @@ describe('CookieStorage', () => {
       expect(CookieStorage.get('numberKey')).toBe(123)
     })
 
-    it('should handle booleans', () => {
+    it('should handle booleans and preserve them across update()', () => {
+      cookieSpy.mockRestore()
+
       CookieStorage.set('booleanKey', true)
       expect(CookieStorage.get('booleanKey')).toBe(true)
 
       CookieStorage.set('booleanKey2', false)
+      expect(CookieStorage.get('booleanKey2')).toBe(false)
+
+      CookieStorage.update()
+
+      expect(CookieStorage.get('booleanKey')).toBe(true)
       expect(CookieStorage.get('booleanKey2')).toBe(false)
     })
 
@@ -429,6 +593,18 @@ describe('CookieStorage', () => {
 
       const afterUpdate = CookieStorage.get('ssrKey')
       expect(beforeUpdate).toBe(afterUpdate)
+    })
+
+    it('should not clear in-memory storage on update when isDomData() is true', () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
+      vi.mocked(isDomDataModule.isDomData).mockReturnValue(true)
+
+      CookieStorage.set('dataUrlKey', 'dataUrlValue')
+      expect(CookieStorage.get('dataUrlKey')).toBe('dataUrlValue')
+
+      CookieStorage.update()
+
+      expect(CookieStorage.get('dataUrlKey')).toBe('dataUrlValue')
     })
   })
 

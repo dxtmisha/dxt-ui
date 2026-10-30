@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `transformation`
 
-Transforms a string value into its corresponding data type (boolean, numeric, JSON object/array, or `null`/`undefined`). JSON parsing errors are routed through `ErrorCenter` (under group `'transformation'`). If the `isFunctionCheck` flag is enabled and running in a DOM environment, it checks for a function with that name in the global `window` object. Non-string values or strings that do not match any conversion rule are returned as-is.
+Transforms a string value into its corresponding data type (boolean, numeric, JSON object/array, or `null`/`undefined`). Numeric strings within the safe integer or finite floating-point range are parsed into numbers (large numbers exceeding safe limits remain unchanged as strings). JSON parsing errors are routed through `ErrorCenter` (under group `'transformation'`). If the `isFunctionCheck` flag is enabled and running in a DOM environment, it checks for a function with that name in the global `window` object. Non-string values or strings that do not match any conversion rule are returned as-is.
 
 **Parameters:**
-- `value: unknown` — The input value to transform.
+- `value?: unknown` — The input value to transform.
 - `isFunctionCheck: boolean = false` — Flag to check for a function in the global `window` object (defaults to `false`).
 
 **Returns:**

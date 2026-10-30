@@ -43,9 +43,15 @@ export function useStorageRef<T>(
   })
 
   if (isDomRuntime()) {
-    window.addEventListener('storage', () => {
-      storage.update()
-      item.value = storage.get()
+    window.addEventListener('storage', (event: StorageEvent) => {
+      if (
+        event.key === null
+        || event.key === undefined
+        || event.key === storage.getIndex?.()
+      ) {
+        storage.update()
+        item.value = storage.get()
+      }
     })
   }
 

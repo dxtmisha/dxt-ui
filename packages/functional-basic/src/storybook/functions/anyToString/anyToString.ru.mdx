@@ -8,22 +8,24 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 ### Ключевые возможности:
 - **Безопасность и отказоустойчивость**: Никогда не выбрасывает ошибок при `null`, `undefined`, циклических ссылках в объектах, `Symbol` или `BigInt`.
-- **Соглашение дизайн-системы для Boolean**: Преобразует `true` в `'1'`, а `false` — в `'0'` для надёжной сериализации в атрибутах HTML-форм и query-параметрах.
+- **Настраиваемая сериализация Boolean**: По умолчанию преобразует `true` в `'1'`, а `false` — в `'0'` для атрибутов HTML-форм и query-параметров, либо возвращает `'true'` и `'false'` при `isBooleanString: true`.
 - **Гибкая сериализация массивов**: По умолчанию объединяет плоские массивы примитивов через запятую, либо сериализует в JSON при наличии вложенных объектов или при отключении `isArrayString`.
 - **Защита от циклических ссылок**: Безопасно переключается на `String()` или `Object.prototype.toString`, если `JSON.stringify` падает из-за циклических ссылок.
 - **Изоморфность и безопасность для SSR**: Чистая функциональная реализация без зависимостей от глобальных объектов браузера и DOM API.
 
 **Параметры:**
 - `value?: V` — (Опционально) Значение для преобразования.
-- `isArrayString: boolean = true` — (Опционально) Если `true`, плоские массивы без объектов склеиваются через запятую; если `false`, сериализуются в JSON-строку.
-- `trim: boolean = true` — (Опционально) Если `true`, результирующая строка будет обрезана от пробельных символов (применяется к строковым значениям).
+- `options: AnyToStringOptions = {}` — (Опционально) Объект опций:
+  - `isArrayString?: boolean` — Если `true`, плоские массивы без объектов склеиваются через запятую; если `false`, сериализуются в JSON-строку (по умолчанию `true`).
+  - `isBooleanString?: boolean` — Если `true`, логические значения возвращают `'true'` или `'false'`; если `false` — `'1'` или `'0'` (по умолчанию `false`).
+  - `trim?: boolean` — Если `true`, результирующая строка будет обрезана от пробельных символов (применяется к строковым значениям, по умолчанию `true`).
 
 **Правила преобразования:**
 - **Строки**: Возвращаются как есть (с обрезкой пробелов, если `trim = true`).
 - **Пустые значения**: `null` и `undefined` возвращают пустую строку `''`.
 - **Массивы**: Если `isArrayString = true` и массив не содержит объектов, элементы объединяются через запятую. В остальных случаях сериализуются в JSON.
 - **Объекты**: Преобразуются в JSON через `JSON.stringify`. При циклических ссылках или ошибках сериализации возвращается `String()` или `Object.prototype.toString`.
-- **Логические значения**: `true` преобразуется в `'1'`, `false` — в `'0'`.
+- **Логические значения**: По умолчанию (`isBooleanString = false`) `true` преобразуется в `'1'`, `false` — в `'0'`. Если `isBooleanString = true`, возвращается `'true'` или `'false'`.
 - **Прочие типы**: Числа, BigInt, Symbol, функции и др. преобразуются через `.toString()`.
 
 **Возвращает:**
@@ -37,36 +39,38 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 import { anyToString } from '@dxtmisha/functional-basic'
 
 // 1. Строки и обрезка пробелов
-anyToString('  Hello  ')               // 'Hello'
-anyToString('  Hello  ', true, false)  // '  Hello  '
-anyToString('')                        // ''
+anyToString('  Hello  ')                          // 'Hello'
+anyToString('  Hello  ', { trim: false })         // '  Hello  '
+anyToString('')                                   // ''
 
 // 2. Пустые и опущенные значения
-anyToString(null)                      // ''
-anyToString(undefined)                 // ''
-anyToString()                          // ''
+anyToString(null)                                 // ''
+anyToString(undefined)                            // ''
+anyToString()                                     // ''
 
-// 3. Логические значения (соглашение 1/0)
-anyToString(true)                      // '1'
-anyToString(false)                     // '0'
+// 3. Логические значения (1/0 по умолчанию или true/false)
+anyToString(true)                                 // '1'
+anyToString(false)                                // '0'
+anyToString(true, { isBooleanString: true })      // 'true'
+anyToString(false, { isBooleanString: true })     // 'false'
 
 // 4. Массивы
-anyToString([1, 2, 3])                 // '1,2,3'
-anyToString([1, 2, 3], false)          // '[1,2,3]'
-anyToString([{ a: 1 }, 2])             // '[{"a":1},2]'
-anyToString([])                        // ''
+anyToString([1, 2, 3])                            // '1,2,3'
+anyToString([1, 2, 3], { isArrayString: false })  // '[1,2,3]'
+anyToString([{ a: 1 }, 2])                        // '[{"a":1},2]'
+anyToString([])                                   // ''
 
 // 5. Объекты и устойчивость к циклическим ссылкам
-anyToString({ a: 1 })                  // '{"a":1}'
+anyToString({ a: 1 })                             // '{"a":1}'
 
 const circular: Record<string, unknown> = { id: 1 }
 circular.self = circular
-anyToString(circular)                  // '[object Object]'
+anyToString(circular)                             // '[object Object]'
 
 // 6. Числа, BigInt и специальные типы
-anyToString(123)                       // '123'
-anyToString(0)                         // '0'
-anyToString(BigInt(42))                // '42'
-anyToString(Symbol('test'))            // 'Symbol(test)'
+anyToString(123)                                  // '123'
+anyToString(0)                                    // '0'
+anyToString(BigInt(42))                           // '42'
+anyToString(Symbol('test'))                       // 'Symbol(test)'
   `}
 />

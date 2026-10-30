@@ -2,6 +2,7 @@ import { executeFunction } from '../functions/executeFunction'
 import { isDomData } from '../functions/isDomData'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isNull } from '../functions/isNull'
+import { isObjectNotArray } from '../functions/isObjectNotArray'
 
 import { ErrorCenter } from './ErrorCenter'
 import { type ErrorCenterInstance } from './ErrorCenterInstance'
@@ -9,13 +10,22 @@ import { ServerStorage } from './ServerStorage'
 
 /** Storage item wrapper value structure / Структура обёртки хранимого значения в хранилище */
 type DataStorageValue<T> = {
+  /** Stored value / Хранимое значение */
   value: T
+  /** Timestamp of when the value was saved / Временная метка сохранения значения */
   age: number
 }
 
+/** Return type of the get method / Тип возвращаемого значения метода get */
+export type DataStorageGet<T, D = undefined> = [D] extends [undefined]
+  ? (T | undefined)
+  : unknown extends T
+    ? (D extends () => infer R ? R : D)
+    : T
+
 /**
- * Default prefix for storage keys /
- * Префикс по умолчанию для ключей хранилища
+ * Default prefix for storage keys. Intentionally stored at module level as an application-wide setting /
+ * Префикс по умолчанию для ключей хранилища. Намеренно хранится на уровне модуля как глобальная настройка приложения
  */
 let prefix: string = 'ui-storage'
 
@@ -39,7 +49,7 @@ const getItems = (): Record<string, DataStorage<unknown>> => {
  * Класс для работы с localStorage и sessionStorage.
  * Включает поддержку префиксов, времени жизни данных и изоляцию запросов в SSR.
  */
-export class DataStorage<T> {
+export class DataStorage<T = unknown> {
   /**
    * The current value stored in memory /
    * Текущее значение, хранящееся в памяти
@@ -61,9 +71,9 @@ export class DataStorage<T> {
    * @param errorCenter error center instance / экземпляр центра ошибок
    */
   constructor(
-    private name: string,
-    private isSession = false,
-    private errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
+    private readonly name: string,
+    private readonly isSession: boolean = false,
+    private readonly errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {
     const nameCache = `${isSession ? 'session' : 'storage'}#${name}`
     const items = getItems()
@@ -85,22 +95,22 @@ export class DataStorage<T> {
    * @param cache cache time in seconds / время кэширования в секундах
    * @returns stored value or default value / сохраненное значение или значение по умолчанию
    */
-  get(
-    defaultValue?: T | (() => T),
+  get<D extends T | (() => T) | undefined = undefined>(
+    defaultValue?: D,
     cache?: number
-  ): T | undefined {
+  ): DataStorageGet<T, D> {
     if (
       !isNull(this.value)
       && this.isCache(cache)
     ) {
-      return this.value
+      return this.value as DataStorageGet<T, D>
     }
 
     if (defaultValue !== undefined) {
-      return this.set(defaultValue)
+      return this.set(defaultValue) as DataStorageGet<T, D>
     }
 
-    return undefined
+    return undefined as DataStorageGet<T, D>
   }
 
   /**
@@ -140,9 +150,23 @@ export class DataStorage<T> {
   }
 
   /**
-   * Changing the prefix in key names. Should be called at the beginning of the code.
+   * Getting the storage key name with prefix.
    *
-   * Изменение префикса в названиях ключей. Вызывать нужно в начале кода.
+   * Получение имени ключа в хранилище с учетом префикса.
+   * @returns key name / имя ключа
+   */
+  getIndex(): string {
+    return `${prefix}__${this.name}`
+  }
+
+  /**
+   * Changing the prefix in key names. Should be called once during application bootstrap.
+   * Note: The prefix is intentionally stored at module scope as a shared process-wide setting,
+   * so in SSR environments it applies globally to the entire runtime process rather than per-request.
+   *
+   * Изменение префикса в названиях ключей. Вызывать нужно один раз при инициализации приложения.
+   * Примечание: Префикс намеренно хранится на уровне модуля как общая настройка для всего процесса,
+   * поэтому в SSR-окружении он применяется глобально ко всему процессу рантайма, а не изолированно для каждого запроса.
    * @param newPrefix new prefix / новый префикс
    */
   static setPrefix(newPrefix: string): void {
@@ -191,20 +215,10 @@ export class DataStorage<T> {
    * @returns true if data is valid / true, если данные актуальны
    */
   private isCache(cache?: number): boolean {
-    return isNull(cache) || Boolean(
-      this.age
+    return isNull(cache) || (
+      this.age !== undefined
       && this.age + (cache * 1000) >= Date.now()
     )
-  }
-
-  /**
-   * Getting the storage key name with prefix.
-   *
-   * Получение имени ключа в хранилище с учетом префикса.
-   * @returns key name / имя ключа
-   */
-  private getIndex(): string {
-    return `${prefix}__${this.name}`
   }
 
   /**
@@ -220,8 +234,8 @@ export class DataStorage<T> {
     ) {
       try {
         const storage = this.isSession
-          ? window?.sessionStorage
-          : window?.localStorage
+          ? window.sessionStorage
+          : window.localStorage
 
         if (storage) {
           return storage
@@ -247,10 +261,14 @@ export class DataStorage<T> {
   private getValue(): DataStorageValue<T> | undefined {
     try {
       const value = this.getMethod()
-        ?.getItem?.(this.getIndex())
+        ?.getItem(this.getIndex())
 
       if (value) {
-        return JSON.parse(value)
+        const parsed: unknown = JSON.parse(value)
+
+        if (isObjectNotArray(parsed)) {
+          return parsed as DataStorageValue<T>
+        }
       }
     } catch (error) {
       this.errorCenter.on({

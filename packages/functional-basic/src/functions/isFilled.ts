@@ -4,6 +4,9 @@ import { isNull } from './isNull'
 
 import { type EmptyValue } from '../types/basicTypes'
 
+/** List of empty string token representations / Список строковых представлений пустых значений */
+const EMPTY_STRINGS = ['', 'undefined', 'null', '0', 'false', '[]'] as const
+
 /**
  * Checks if the field is filled.
  *
@@ -13,17 +16,10 @@ import { type EmptyValue } from '../types/basicTypes'
  * @returns true if filled / true, если заполнено
  */
 export function isFilled<T>(
-  value: T,
+  value?: T,
   zeroTrue?: boolean
 ): value is Exclude<T, EmptyValue> {
   if (value) {
-    if (
-      zeroTrue
-      && value === '0'
-    ) {
-      return true
-    }
-
     switch (typeof value) {
       case 'function':
       case 'symbol':
@@ -35,6 +31,10 @@ export function isFilled<T>(
 
         if (value instanceof RegExp) {
           return true
+        }
+
+        if (value instanceof Date) {
+          return !Number.isNaN(value.getTime())
         }
 
         if (
@@ -55,7 +55,14 @@ export function isFilled<T>(
 
         return false
       case 'string':
-        return !['', 'undefined', 'null', '0', 'false', '[]'].includes(value.trim())
+        if (
+          zeroTrue
+          && value === '0'
+        ) {
+          return true
+        }
+
+        return !(EMPTY_STRINGS as readonly string[]).includes(value.trim())
       default:
         return Boolean(value)
     }

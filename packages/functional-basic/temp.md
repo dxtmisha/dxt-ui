@@ -24,3 +24,10 @@ ErrorCenter
 ServerStorage
 isNull
 isDomData
+strSplit
+transformation
+CookieBlock
+DataStorage
+CookieBlockInstance
+isFilled
+CookieStorage

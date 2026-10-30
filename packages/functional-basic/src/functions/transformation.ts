@@ -8,13 +8,13 @@ import { ErrorCenter } from '../classes/ErrorCenter'
  * Matches floating-point numbers /
  * Регулярное выражение для сопоставления чисел с плавающей точкой
  */
-const REGEXP_FLOAT = /^-?\d+\.\d+$/
+const REGEXP_FLOAT = /^[+-]?(?:0|[1-9]\d*)\.\d+$/
 
 /**
  * Matches integer numbers /
  * Регулярное выражение для сопоставления целых чисел
  */
-const REGEXP_INT = /^-?\d+$/
+const REGEXP_INT = /^[+-]?(?:0|[1-9]\d*)$/
 
 /**
  * Transforms a string into the corresponding data type.
@@ -32,11 +32,13 @@ const REGEXP_INT = /^-?\d+$/
  * transformation('{"a":1}') // { a: 1 }
  * transformation('null') // null
  */
-export function transformation<T = unknown>(value: unknown, isFunctionCheck: boolean = false): T {
+export function transformation<T = unknown>(value?: unknown, isFunctionCheck: boolean = false): T {
   if (isString(value)) {
     const stringValue = value.trim()
 
     switch (stringValue) {
+      case '':
+        return value as T
       case 'undefined':
         return undefined as T
       case 'null':
@@ -62,9 +64,17 @@ export function transformation<T = unknown>(value: unknown, isFunctionCheck: boo
             })
           }
         } else if (REGEXP_FLOAT.test(stringValue)) {
-          return parseFloat(stringValue) as T
+          const parsedFloat = parseFloat(stringValue)
+
+          if (Number.isFinite(parsedFloat)) {
+            return parsedFloat as T
+          }
         } else if (REGEXP_INT.test(stringValue)) {
-          return parseInt(stringValue, 10) as T
+          const parsedInteger = parseInt(stringValue, 10)
+
+          if (Number.isSafeInteger(parsedInteger)) {
+            return parsedInteger as T
+          }
         } else if (isFunctionCheck && isDomRuntime()) {
           const windowRecord = window as unknown as Record<string, unknown>
 

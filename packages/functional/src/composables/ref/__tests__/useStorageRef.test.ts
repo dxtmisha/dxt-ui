@@ -8,7 +8,8 @@ import { nextTick } from 'vue'
 const storageMocks = {
   get: vi.fn((def: any) => (typeof def === 'function' ? def() : def)),
   set: vi.fn(),
-  update: vi.fn()
+  update: vi.fn(),
+  getIndex: vi.fn(() => 'ui-storage__event-storage')
 }
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
@@ -54,5 +55,17 @@ describe('useStorageRef', () => {
 
     expect(storageMocks.update).toHaveBeenCalled()
     expect(item.value).toBe('updated from event')
+  })
+
+  it('should ignore storage events for unrelated keys', async () => {
+    useStorageRef('event-storage-filtered', 'initial')
+
+    storageMocks.getIndex.mockReturnValue('ui-storage__event-storage-filtered')
+    storageMocks.update.mockClear()
+
+    const event = new StorageEvent('storage', { key: 'ui-storage__other-key' })
+    window.dispatchEvent(event)
+
+    expect(storageMocks.update).not.toHaveBeenCalled()
   })
 })

@@ -52,12 +52,24 @@ describe('isFilled', () => {
       expect(isFilled(new Map([['key', 'value']]))).toBe(true)
       expect(isFilled(new Set([1, 2, 3]))).toBe(true)
     })
+
+    it('should return true for valid Date instances', () => {
+      expect(isFilled(new Date())).toBe(true)
+      expect(isFilled(new Date('2026-01-01'))).toBe(true)
+      expect(isFilled(new Date(0))).toBe(true)
+    })
   })
 
   describe('Empty, whitespace-only, and nullish inputs', () => {
     it('should return false for null and undefined', () => {
+      expect(isFilled()).toBe(false)
       expect(isFilled(null)).toBe(false)
       expect(isFilled(undefined)).toBe(false)
+    })
+
+    it('should return false for invalid Date instances', () => {
+      expect(isFilled(new Date('invalid-date'))).toBe(false)
+      expect(isFilled(new Date(NaN))).toBe(false)
     })
 
     it('should return false for boolean false', () => {

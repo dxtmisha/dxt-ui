@@ -23,7 +23,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Обновляет статус доступа к куки. При значении `true` блокирует все операции записи с куки в контексте этого экземпляра.
 
 **Параметры:**
-- `value: boolean` — новый статус для установки
+- `value: boolean = true` — новый статус для установки (по умолчанию `true`)
 
 ### Проверка
 
@@ -41,8 +41,8 @@ const cookieBlock = new CookieBlockInstance()
 // Получить текущий статус
 console.log(cookieBlock.get()) // false (по умолчанию)
 
-// Заблокировать куки
-cookieBlock.set(true)
+// Заблокировать куки (по умолчанию true)
+cookieBlock.set()
 
 console.log(cookieBlock.get()) // true
 
@@ -68,17 +68,18 @@ if (CookieBlock.get()) {
 }
 ```
 
-### Независимые контексты
+### Синхронизация между экземплярами
+
+Все экземпляры `CookieBlockInstance` в рамках одного клиентского окружения обращаются к единому внутреннему хранилищу `DataStorage`:
 
 ```typescript
 import { CookieBlockInstance } from '@dxtmisha/functional-basic'
 
-// Создание независимых экземпляров
 const block1 = new CookieBlockInstance()
 const block2 = new CookieBlockInstance()
 
 block1.set(true)
 
 console.log(block1.get()) // true
-console.log(block2.get()) // false (независимый экземпляр)
+console.log(block2.get()) // true (синхронизировано через DataStorage)
 ```

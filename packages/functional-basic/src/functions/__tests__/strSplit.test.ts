@@ -46,6 +46,12 @@ describe('strSplit', () => {
       expect(strSplit('.a..b.', '.')).toEqual(['', 'a', '', 'b', ''])
       expect(strSplit('.a..b.', '.', 3)).toEqual(['', 'a', '.b.'])
     })
+
+    it('should handle floating-point, NaN, and Infinity limits safely', () => {
+      expect(strSplit('a.b.c.d', '.', 2.5)).toEqual(['a', 'b.c.d'])
+      expect(strSplit('a.b.c', '.', Number.NaN)).toEqual(['a', 'b', 'c'])
+      expect(strSplit('a.b.c', '.', Number.POSITIVE_INFINITY)).toEqual(['a', 'b', 'c'])
+    })
   })
 
   describe('Type coercion, empty, and nullish inputs', () => {
@@ -59,21 +65,44 @@ describe('strSplit', () => {
       expect(strSplit(null, '.')).toEqual([''])
     })
 
-    it('should convert numeric values (including 0) via anyToString before splitting', () => {
+    it('should convert numeric values (including 0 and negatives) via anyToString before splitting', () => {
       expect(strSplit(123.456, '.')).toEqual(['123', '456'])
       expect(strSplit(0, '.')).toEqual(['0'])
+      expect(strSplit(-42.5, '.')).toEqual(['-42', '5'])
     })
 
     it('should convert boolean values via anyToString ("1" and "0") before splitting', () => {
       expect(strSplit(true, '.')).toEqual(['1'])
       expect(strSplit(false, '.')).toEqual(['0'])
     })
+
+    it('should convert complex objects and arrays safely via anyToString before splitting', () => {
+      expect(strSplit([1, 2, 3], ',')).toEqual(['1', '2', '3'])
+      expect(strSplit([1, 2, 3], ',', 2)).toEqual(['1', '2,3'])
+    })
   })
 
-  describe('Multilingual and Unicode support', () => {
+  describe('Multilingual, Unicode, and delimiter safety', () => {
     it('should split Unicode, Cyrillic, Vietnamese, and Emoji strings accurately with limit', () => {
       expect(strSplit('Привет мир тест', ' ', 2)).toEqual(['Привет', 'мир тест'])
       expect(strSplit('Xin-chào-Việt-Nam', '-', 3)).toEqual(['Xin', 'chào', 'Việt-Nam'])
+      expect(strSplit('🎉-🚀-✨', '-', 2)).toEqual(['🎉', '🚀-✨'])
+    })
+
+    it('should handle regex-like characters in string delimiter without escaping issues', () => {
+      expect(strSplit('a[0].b[0].c', '[0].', 2)).toEqual(['a', 'b[0].c'])
+      expect(strSplit('a$b$c', '$', 2)).toEqual(['a', 'b$c'])
+      expect(strSplit('a*b*c', '*', 2)).toEqual(['a', 'b*c'])
+      expect(strSplit('a+b+c', '+', 2)).toEqual(['a', 'b+c'])
+      expect(strSplit('a|b|c', '|', 2)).toEqual(['a', 'b|c'])
+    })
+  })
+
+  describe('Purity and determinism', () => {
+    it('should produce identical results on repeated calls without state leaks', () => {
+      const input = 'key.subkey.property'
+      expect(strSplit(input, '.', 2)).toEqual(['key', 'subkey.property'])
+      expect(strSplit(input, '.', 2)).toEqual(['key', 'subkey.property'])
     })
   })
 })

@@ -29,8 +29,13 @@ describe('CookieBlockInstance', () => {
       expect(instance.get()).toBe(false)
     })
 
-    it('should set block status to true and return true', () => {
+    it('should set block status to true when called with true', () => {
       instance.set(true)
+      expect(instance.get()).toBe(true)
+    })
+
+    it('should set block status to true by default when called without arguments', () => {
+      instance.set()
       expect(instance.get()).toBe(true)
     })
 
@@ -38,6 +43,16 @@ describe('CookieBlockInstance', () => {
       instance.set(true)
       expect(instance.get()).toBe(true)
 
+      instance.set(false)
+      expect(instance.get()).toBe(false)
+    })
+
+    it('should handle repeated toggles idempotently', () => {
+      instance.set(true)
+      instance.set(true)
+      expect(instance.get()).toBe(true)
+
+      instance.set(false)
       instance.set(false)
       expect(instance.get()).toBe(false)
     })
@@ -65,6 +80,15 @@ describe('CookieBlockInstance', () => {
       ServerStorage.reset()
       const freshInstance = new CookieBlockInstance()
       expect(freshInstance.get()).toBe(true)
+    })
+
+    it('should share state between multiple instances in the same runtime via DataStorage', () => {
+      const secondInstance = new CookieBlockInstance()
+      instance.set(true)
+      expect(secondInstance.get()).toBe(true)
+
+      secondInstance.set(false)
+      expect(instance.get()).toBe(false)
     })
 
     it('should work in SSR environment without accessing localStorage', () => {

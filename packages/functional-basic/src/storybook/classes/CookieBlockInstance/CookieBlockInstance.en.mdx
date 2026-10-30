@@ -23,7 +23,7 @@ Includes tight integration with `DataStorage` for reliable state persistence.
 Updates the cookie access status. When set to `true`, blocks all cookie write operations within this instance's context.
 
 **Parameters:**
-- `value: boolean` — the new status to set
+- `value: boolean = true` — the new status to set (defaults to `true`)
 
 ### Check
 
@@ -41,8 +41,8 @@ const cookieBlock = new CookieBlockInstance()
 // Get the current status
 console.log(cookieBlock.get()) // false (default)
 
-// Set status to blocked
-cookieBlock.set(true)
+// Set status to blocked (defaults to true)
+cookieBlock.set()
 
 console.log(cookieBlock.get()) // true
 
@@ -68,17 +68,18 @@ if (CookieBlock.get()) {
 }
 ```
 
-### Independent Contexts
+### Synchronization Across Instances
+
+All `CookieBlockInstance` instances within the same client environment share the underlying `DataStorage`:
 
 ```typescript
 import { CookieBlockInstance } from '@dxtmisha/functional-basic'
 
-// Create independent instances
 const block1 = new CookieBlockInstance()
 const block2 = new CookieBlockInstance()
 
 block1.set(true)
 
 console.log(block1.get()) // true
-console.log(block2.get()) // false (independent instance)
+console.log(block2.get()) // true (synchronized via DataStorage)
 ```

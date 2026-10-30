@@ -27,6 +27,7 @@ Retrieves a cookie value by name with automatic type conversion. If the value do
 **Parameters:**
 - `name: string` — the cookie name
 - `defaultValue?: T | (() => T)` — default value or function returning the value
+- `options?: CookieOptions` — additional cookie options when saving the default value
 
 **Returns:** `T | undefined` — the converted cookie value or default value
 
@@ -64,13 +65,13 @@ Removes a cookie by setting an empty value and negative expiration. Equivalent t
 Configuration object for cookie parameters:
 
 - `age?: number` — lifetime in seconds (max-age attribute)
-- `sameSite?: 'strict' | 'lax'` — SameSite policy
+- `sameSite?: 'strict' | 'lax' | 'none'` — SameSite policy (when `'none'`, `Secure` is added automatically per RFC 6265bis)
 - `path?: string` — cookie path (defaults to `/`)
 - `domain?: string` — cookie domain
-- `secure?: boolean` — if true, adds the Secure attribute
+- `secure?: boolean` — if true, adds the Secure attribute (automatically enabled when `sameSite: 'none'` or `partitioned: true`)
 - `httpOnly?: boolean` — if true, adds the HttpOnly attribute (only for server-side listeners)
 - `partitioned?: boolean` — if true, adds the Partitioned attribute (CHIPS)
-- `arguments?: string[] | Record<string, any>` — additional directives for the cookie string
+- `arguments?: string[] | Record<string, unknown>` — additional directives for the cookie string
 
 ## Built-in Type Conversion
 

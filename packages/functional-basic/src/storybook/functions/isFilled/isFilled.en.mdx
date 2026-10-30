@@ -10,11 +10,12 @@ Unlike the generic truthy check (`if (value)`), `isFilled`:
 - Resolves arrays as empty (`false`) if their `.length` equals 0.
 - Assesses collections (`Map`, `Set`) as empty (`false`) if their `.size` equals 0.
 - Assesses objects as empty (`false`) when they have no own properties or all own values are `null` or `undefined`.
+- Treats `Date` instances as filled (`true`) if the date is valid (not `NaN`).
 - Flags definitive string placeholders like `'undefined'`, `'null'`, `'false'`, `'[]'` as entirely empty.
 - Out of the box, treats the string `'0'` as empty, although this is modularly configurable via the secondary `zeroTrue` prop.
 
 **Parameters:**
-- `value: T` — The targeted input value of any type anticipating validation.
+- `value?: T` — The targeted input value of any type anticipating validation (optional).
 - `zeroTrue?: boolean` — (Optional) When flagged as `true`, interprets the explicit string `'0'` as meaningfully filled (returns `true`), avoiding its traditional falsy deduction.
 
 **Returns:**
@@ -27,6 +28,7 @@ console.log(isFilled('Some text')) // true
 console.log(isFilled(100)) // true
 console.log(isFilled([1, 2, 3])) // true
 console.log(isFilled({ data: 'ok' })) // true
+console.log(isFilled(new Date())) // true
 
 // Scenarios evaluated as empty
 console.log(isFilled('')) // false
@@ -34,6 +36,7 @@ console.log(isFilled([])) // false
 console.log(isFilled({ a: null })) // false
 console.log(isFilled('null')) // false
 console.log(isFilled('0')) // false
+console.log(isFilled(new Date('invalid'))) // false
 
 // Applying zeroTrue override
 console.log(isFilled('0', true)) // true
