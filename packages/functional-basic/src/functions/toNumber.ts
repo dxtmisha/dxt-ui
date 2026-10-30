@@ -1,4 +1,3 @@
-import type { NumberOrString } from '../types/basicTypes'
 import { isFilled } from './isFilled'
 import { isString } from './isString'
 
@@ -45,11 +44,11 @@ const REGEXP_DOT_THOUSANDS = /[.][0-9]{3}[,.]/
 const REGEXP_DOT = /[.]/g
 
 /**
- * Converts a string or number to a finite floating-point number.
+ * Converts a value to a finite floating-point number.
  * Handles various separators (spaces, commas, dots) and strips non-numeric characters.
  * Safe for use in SSR (Server-Side Rendering) environments.
  *
- * Преобразует строку или число в конечное число с плавающей точкой.
+ * Преобразует значение в конечное число с плавающей точкой.
  * Обрабатывает различные разделители (пробелы, запятые, точки) и удаляет нечисловые символы.
  * Безопасно для использования в SSR (Server-Side Rendering) средах.
  *
@@ -61,7 +60,7 @@ const REGEXP_DOT = /[.]/g
  * toNumber("1,234.56") // 1234.56
  * toNumber("1,234")    // 1.234
  */
-export function toNumber(value?: NumberOrString): number {
+export function toNumber(value?: unknown): number {
   if (typeof value === 'number') {
     return Number.isFinite(value) ? (value || 0) : 0
   }

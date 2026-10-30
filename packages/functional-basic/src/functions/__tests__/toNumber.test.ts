@@ -32,11 +32,13 @@ describe('toNumber', () => {
       expect(toNumber('123.45')).toBe(123.45)
       expect(toNumber('-123.45')).toBe(-123.45)
       expect(toNumber('.45')).toBe(0.45)
+      expect(toNumber('-.45')).toBe(-0.45)
     })
 
     it('should parse string zero and normalize "-0" to +0', () => {
       expect(toNumber('0')).toBe(0)
       expect(Object.is(toNumber('-0'), 0)).toBe(true)
+      expect(Object.is(toNumber('-0.0'), 0)).toBe(true)
     })
   })
 
@@ -47,6 +49,7 @@ describe('toNumber', () => {
       expect(toNumber('1 234.56')).toBe(1234.56)
       expect(toNumber('1 234 567.89')).toBe(1234567.89)
       expect(toNumber(' 123,45')).toBe(123.45)
+      expect(toNumber('-1 234,56')).toBe(-1234.56)
     })
 
     it('should handle comma as thousands separator when followed by dot or multiple commas', () => {
@@ -87,7 +90,6 @@ describe('toNumber', () => {
     it('should return 0 for omitted argument, undefined, null, or empty/whitespace strings', () => {
       expect(toNumber()).toBe(0)
       expect(toNumber(undefined)).toBe(0)
-      // @ts-expect-error testing null runtime safety
       expect(toNumber(null)).toBe(0)
       expect(toNumber('')).toBe(0)
       expect(toNumber('   ')).toBe(0)
@@ -103,12 +105,12 @@ describe('toNumber', () => {
     })
 
     it('should safely return 0 for non-string and non-number runtime inputs', () => {
-      // @ts-expect-error testing boolean runtime safety
       expect(toNumber(false)).toBe(0)
-      // @ts-expect-error testing boolean runtime safety
       expect(toNumber(true)).toBe(0)
-      // @ts-expect-error testing object runtime safety
       expect(toNumber({})).toBe(0)
+      expect(toNumber([])).toBe(0)
+      expect(toNumber(() => 42)).toBe(0)
+      expect(toNumber(Symbol('test'))).toBe(0)
     })
   })
 })

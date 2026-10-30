@@ -1,0 +1,48 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/GeoList - Global Geographic Country List'/>
+
+# GeoList Class
+
+A static utility class for managing and querying the global repository of country items and locale configurations. It maintains an absolute deep copy of the `@dxtmisha/media` geographical database shared across SSR requests, preventing prototype/object mutations and providing high-performance query methods.
+
+## Key Features
+
+- **Absolute Deep Copy** — creates a fully isolated deep clone via `copyObject(geo)` on first access, protecting the underlying media dataset from mutations.
+- **Shared Static Store** — shared across requests in SSR and across all `GeoInstance` instances for optimal memory efficiency.
+- **Fast Lookups** — optimized search helpers for country codes (`getByCountry`), language codes (`getByLanguage`), and full locale tags (`getByCodeFull`).
+- **Dynamic Extensibility** — allows registering custom countries or overriding existing properties with automatic unit deep merging via `add()` and `addList()`.
+- **Environment Reset** — provides a `reset()` method to clear cached modifications during test runs or environment swaps.
+
+## Basic Usage
+
+```javascript
+import { GeoList } from '@dxtmisha/functional-basic'
+
+// Retrieve the global list of countries
+const countries = GeoList.get()
+
+// Find country by primary code or alternative
+const us = GeoList.getByCountry('US')
+const uk = GeoList.getByCountry('UK') // returns GB
+
+// Find country by language
+const french = GeoList.getByLanguage('fr')
+
+// Add or override a country definition globally
+GeoList.add('VN', {
+  phoneCode: '84',
+  firstDay: 'Mo'
+})
+```
+
+## Methods
+
+- `get(): GeoItem[]` — Returns the global list of countries, creating an absolute deep copy on first access.
+- `getByCodeFull(code?: string): GeoItem | undefined` — Finds country data by a combined locale tag (e.g., `'en-US'` or `'RU-ru'`).
+- `getByCountry(country?: string): GeoItem | undefined` — Finds country data by primary ISO 3166-1 country code or alternative aliases.
+- `getByLanguage(language?: string): GeoItem | undefined` — Finds country data by primary ISO 639-1 language code or alternative aliases.
+- `add(country: string, item?: Partial<GeoItem>): GeoItem` — Adds or merges country data in the global list, returning the resulting item.
+- `addList(list?: Record<string, Partial<GeoItem>>): void` — Adds or merges multiple country definitions into the list.
+- `reset(): void` — Clears the cached list, resetting it to initial state on the next access.
+

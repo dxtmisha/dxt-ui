@@ -9,10 +9,10 @@ A versatile utility engineered to ascertain if an incoming argument acts effecti
 This evaluation effortlessly handles the native numeric typing (`typeof value === 'number'`, excluding `NaN` and `Infinity`), native `bigint` primitives, and expands validation to test strings by running a robust RegEx check ensuring that the entirety of the string constitutes a valid numeric format (including positive/negative signs and fractional decimals).
 
 **Parameters:**
-- `value: unknown` — The arbitrary data item to screen.
+- `value?: unknown` — The arbitrary data item to screen.
 
 **Returns:**
-`boolean` (`value is number | string`) — Emits `true` if the subject naturally belongs to the quantitative number type or if it's a completely digital string structure. Displays `false` in every alternative state. Acts as a TypeScript type guard narrowing the value to `number | string`.
+`boolean` (`value is number | string | bigint`) — Emits `true` if the subject naturally belongs to the quantitative number type, `bigint`, or if it's a completely digital string structure. Displays `false` in every alternative state. Acts as a TypeScript type guard narrowing the value to `number | string | bigint`.
 
 ```typescript
 import { isNumber } from '@dxtmisha/functional-basic'

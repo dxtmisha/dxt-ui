@@ -31,10 +31,10 @@ Phiên bản `Cookie` có thể được tạo để quản lý cookie cụ th�
 Khi chạy `get()`, nếu cung cấp một đoạn code tĩnh phụ, class sẽ so khớp. Trường hợp lúc này không thấy thông số cookie trên hệ điều hành, đoạn code tĩnh lập tức ghi vào cấu trúc và lưu lại lên trình duyệt. Hỗ trợ các hàm để tính toán giá trị mặc định một cách lười.
 
 **Tham số:**
-- `defaultValue?: T | string | (() => T | string)` — cấu trúc dự phòng mặc định hoặc callback function
+- `defaultValue?: D` — cấu trúc dự phòng mặc định hoặc callback function
 - `options?: CookieOptions` — tham số cookie (sử dụng khi đặt giá trị mặc định)
 
-**Trả về:** `T | string | undefined` — biến lấy từ cookie hoặc dữ liệu phụ trợ
+**Trả về:** `CookieGet<T, D>` — biến lấy từ cookie hoặc dữ liệu phụ trợ
 
 #### `set`
 
@@ -54,7 +54,7 @@ Tập lệnh thực thi việc đẩy một mảng thông số rỗng bằng str
 
 ### Phương thức tĩnh
 
-- `getInstance<T>(name: string): Cookie<T>` — Trả về phiên bản hiện có hoặc tạo mới theo tên
+- `getInstance<T = unknown>(name: string): Cookie<T>` — Trả về phiên bản hiện có hoặc tạo mới theo tên
 
 ### Hỗ trợ
 

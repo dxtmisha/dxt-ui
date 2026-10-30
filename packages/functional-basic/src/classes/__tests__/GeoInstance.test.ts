@@ -1,6 +1,7 @@
 /** @vitest-environment jsdom */
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { GeoInstance, UI_GEO_COOKIE_KEY } from '../GeoInstance'
+import { GeoList } from '../GeoList'
 import { ServerStorage } from '../ServerStorage'
 import { CookieStorage } from '../CookieStorage'
 import { isDomRuntime } from '../../functions/isDomRuntime'
@@ -24,6 +25,7 @@ function resetSingletons(): void {
 
   ServerStorage.reset()
   CookieStorage.reset()
+  GeoList.reset()
   ServerStorage.init(() => ({}))
 
   document.documentElement.setAttribute('lang', '')
@@ -279,6 +281,17 @@ describe('GeoInstance', () => {
   })
 
   describe('Timezone', () => {
+    it('initializes GeoTimezone lazily on first access', () => {
+      const geo = new GeoInstance()
+      // @ts-expect-error accessing protected property for testing lazy initialization
+      expect(geo.timezone).toBeUndefined()
+
+      expect(typeof geo.getTimezone()).toBe('number')
+
+      // @ts-expect-error accessing protected property for testing lazy initialization
+      expect(geo.timezone).toBeDefined()
+    })
+
     it('getTimezone() returns a number', () => {
       const geo = new GeoInstance()
       expect(typeof geo.getTimezone()).toBe('number')

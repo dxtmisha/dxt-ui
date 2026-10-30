@@ -1,27 +1,60 @@
 // ai-none
 
-import { executeFunction } from '../functions/executeFunction'
-import { forEach } from '../functions/forEach'
-import { isDomRuntime } from '../functions/isDomRuntime'
-import { isSelected } from '../functions/isSelected'
+import { isString } from '../functions/isString'
+import { sanitizeLocation } from '../functions/sanitizeLocation'
 
-import { Cookie } from './Cookie'
-import { DataStorage } from './DataStorage'
-
-import { geo } from '@dxtmisha/media'
+import { GeoList } from './GeoList'
+import { GeoLocation, UI_GEO_COOKIE_KEY } from './GeoLocation'
+import { GeoTimezone } from './GeoTimezone'
 
 import {
   type GeoItem,
   type GeoItemFull
 } from '../types/geoTypes'
 
-/**
- * Cookie key for storing the geo code /
- * Ключ куки для хранения кода гео
- */
-export const UI_GEO_COOKIE_KEY = 'ui-geo-code'
+export { UI_GEO_COOKIE_KEY }
 
-const STORAGE_NAME_CODE = '__ui:geo-code__'
+/**
+ * Default first day of the week /
+ * Первый день недели по умолчанию
+ */
+const DEFAULT_FIRST_DAY = 'Mo'
+
+/**
+ * Regular expression for matching full language-country or country-language codes /
+ * Регулярное выражение для проверки полного кода язык-страна или страна-язык
+ */
+const REGEXP_CODE_FULL = /([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/
+
+/**
+ * Regular expression for hyphen or underscore subtag separators /
+ * Регулярное выражение для разделителей субтегов (дефис или подчеркивание)
+ */
+const REGEXP_SEPARATOR = /[-_]/
+
+/**
+ * Regular expression for an exact 2-letter uppercase country code /
+ * Регулярное выражение для точного двухбуквенного кода страны в верхнем регистре
+ */
+const REGEXP_COUNTRY_CODE = /^[A-Z]{2}$/
+
+/**
+ * Regular expression for a 2-letter Latin region subtag in any case /
+ * Регулярное выражение для двухбуквенного латинского субтега региона в любом регистре
+ */
+const REGEXP_ALPHA_TWO = /^[a-zA-Z]{2}$/
+
+/**
+ * Regular expression for a 2- or 3-letter lowercase ISO language code /
+ * Регулярное выражение для двух- или трехбуквенного ISO-кода языка в нижнем регистре
+ */
+const REGEXP_LANGUAGE_LOWER = /^[a-z]{2,3}$/
+
+/**
+ * Regular expression for a 2- or 3-letter primary language subtag in any case /
+ * Регулярное выражение для двух- или трехбуквенного основного субтега языка в любом регистре
+ */
+const REGEXP_LANGUAGE_SUBTAG = /^[a-zA-Z]{2,3}$/
 
 /**
  * Base class for working with geographic data.
@@ -32,46 +65,28 @@ const STORAGE_NAME_CODE = '__ui:geo-code__'
  */
 export class GeoInstance {
   /**
-   * List of available countries /
-   * Список доступных стран
+   * Location manager instance /
+   * Экземпляр менеджера локации
    */
-  private list: GeoItem[] = [...geo]
+  protected readonly location = new GeoLocation()
 
   /**
-   * Data storage instance for geo code /
-   * Экземпляр хранилища данных для гео-кода
+   * Time zone manager instance /
+   * Экземпляр менеджера часового пояса
    */
-  private storage = new DataStorage<string>(STORAGE_NAME_CODE)
-
-  /**
-   * Current location code (e.g., 'en-GB') /
-   * Текущий код локации (например, 'en-GB')
-   */
-  private location: string
-
-  /**
-   * Value by default for the country code /
-   * Значение по умолчанию для кода страны
-   */
-  private valueDefault?: string | (() => string)
+  protected timezone?: GeoTimezone
 
   /**
    * Detailed data about the current country /
    * Детальные данные о текущей стране
    */
-  private item: GeoItemFull
+  protected item: GeoItemFull
 
   /**
    * Current language code /
    * Текущий код языка
    */
-  private language: string
-
-  /**
-   * Current time zone offset in minutes /
-   * Текущее смещение часового пояса в минутах
-   */
-  private timezone: number = new Date().getTimezoneOffset()
+  protected language: string
 
   /**
    * Constructor.
@@ -81,10 +96,8 @@ export class GeoInstance {
    * Инициализирует местоположение и связанные с ним данные.
    */
   constructor() {
-    this.location = this.findLocation()
-
-    this.item = this.getByCode(this.location)
-    this.language = this.findLanguage(this.location)
+    this.item = this.getByCode(this.location.get())
+    this.language = this.findLanguage(this.location.get())
   }
 
   /**
@@ -103,17 +116,13 @@ export class GeoInstance {
    * Обновляет текущее местоположение и связанные с ним данные.
    * @param code location code (e.g., 'en-GB') / код локации (например, 'en-GB')
    * @param save whether to save the location in storage / нужно ли сохранять местоположение в хранилище
+   * @returns void / ничего не возвращает
    */
   set(code: string, save?: boolean): void {
-    this.location = code
+    this.location.set(code, save)
 
-    this.item = this.getByCode(this.location)
-    this.language = this.findLanguage(this.location)
-
-    if (save) {
-      this.storage.set(this.location)
-      this.getCookie().set(this.location)
-    }
+    this.item = this.getByCode(this.location.get())
+    this.language = this.findLanguage(this.location.get())
   }
 
   /**
@@ -125,22 +134,31 @@ export class GeoInstance {
    */
   getByCode(code?: string): GeoItemFull {
     let item: GeoItem | undefined
+    const validCode = isString(code) ? code : undefined
 
-    if (code) {
-      if (/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/.test(code)) {
-        item = this.getByCodeFull(code)
+    if (validCode) {
+      if (REGEXP_CODE_FULL.test(validCode)) {
+        item = this.getByCodeFull(validCode)
       }
 
-      if (!item && /[A-Z]{2}/.test(code)) {
-        item = this.getByCountry(this.toCountry(code))
+      if (!item) {
+        const country = this.toCountry(validCode)
+
+        if (country) {
+          item = this.getByCountry(country)
+        }
       }
 
-      if (!item && /[a-z]{2}/.test(code)) {
-        item = this.getByLanguage(this.toLanguage(code))
+      if (!item) {
+        const language = this.toLanguage(validCode)
+
+        if (language) {
+          item = this.getByLanguage(language)
+        }
       }
     }
 
-    return this.toFull(item ?? this.getList()[0] as GeoItem, code)
+    return this.toFull(item ?? this.getList()[0] as GeoItem, validCode)
   }
 
   /**
@@ -151,13 +169,7 @@ export class GeoInstance {
    * @returns geo item or undefined / гео-объект или undefined
    */
   getByCodeFull(code: string): GeoItem | undefined {
-    return this.getList()
-      .find(
-        item => isSelected(code, [
-          `${item.language}-${item.country}`,
-          `${item.country}-${item.language}`
-        ])
-      )
+    return GeoList.getByCodeFull(code)
   }
 
   /**
@@ -168,11 +180,7 @@ export class GeoInstance {
    * @returns geo item or undefined / гео-объект или undefined
    */
   getByCountry(country: string): GeoItem | undefined {
-    return this.getList()
-      .find((item) => {
-        return item.country === country
-          || item?.countryAlternative?.includes(country)
-      })
+    return GeoList.getByCountry(country)
   }
 
   /**
@@ -183,11 +191,7 @@ export class GeoInstance {
    * @returns geo item or undefined / гео-объект или undefined
    */
   getByLanguage(language: string): GeoItem | undefined {
-    return this.getList()
-      .find((item) => {
-        return item.language === language
-          || item?.languageAlternative?.includes(language)
-      })
+    return GeoList.getByLanguage(language)
   }
 
   /**
@@ -215,6 +219,7 @@ export class GeoInstance {
    *
    * Получение обработанных данных, включая текущий язык.
    * @returns full geo item data / полные данные гео-объекта
+   * @deprecated Use get() / Используйте get()
    */
   getItem(): GeoItemFull {
     return this.item
@@ -237,7 +242,7 @@ export class GeoInstance {
    * @returns list of geo items / список гео-объектов
    */
   getList(): GeoItem[] {
-    return this.list
+    return GeoList.get()
   }
 
   /**
@@ -247,7 +252,7 @@ export class GeoInstance {
    * @returns location string / строка местоположения
    */
   getLocation(): string {
-    return this.location
+    return this.location.get()
   }
 
   /**
@@ -277,7 +282,7 @@ export class GeoInstance {
    * @returns standard string / строка стандарта
    */
   getStandard(): string {
-    return this.getItem().standard
+    return this.item.standard
   }
 
   /**
@@ -287,7 +292,7 @@ export class GeoInstance {
    * @returns timezone offset / смещение часового пояса
    */
   getTimezone(): number {
-    return this.timezone
+    return this.getTimezoneObject().get()
   }
 
   /**
@@ -297,14 +302,7 @@ export class GeoInstance {
    * @returns formatted timezone string / отформатированная строка часового пояса
    */
   getTimezoneFormat(): string {
-    const hours = Math.abs(Math.trunc(this.timezone / 60)).toString().padStart(2, '0')
-    const minutes = Math.abs(this.timezone % 60).toString().padStart(2, '0')
-
-    if (this.timezone > 0) {
-      return `-${hours}:${minutes}`
-    }
-
-    return `+${hours}:${minutes}`
+    return this.getTimezoneObject().getFormat()
   }
 
   /**
@@ -315,7 +313,7 @@ export class GeoInstance {
    * @returns current instance / текущий экземпляр
    */
   setTimezone(timezone: number): this {
-    this.timezone = timezone
+    this.getTimezoneObject().set(timezone)
     return this
   }
 
@@ -324,13 +322,13 @@ export class GeoInstance {
    *
    * Устанавливает значение по умолчанию для кода страны.
    * @param code default code value / значение кода по умолчанию
+   * @returns void / ничего не возвращает
    */
-  setValueDefault(code?: string | (() => string)): void {
-    this.valueDefault = code
+  setValueDefault(code?: string | (() => string | undefined)): void {
+    this.location.setValueDefault(code)
 
-    this.location = this.findLocation()
-    this.item = this.getByCode(this.location)
-    this.language = this.findLanguage(this.location)
+    this.item = this.getByCode(this.location.get())
+    this.language = this.findLanguage(this.location.get())
   }
 
   /**
@@ -347,38 +345,14 @@ export class GeoInstance {
     country: string,
     item: Partial<GeoItem>
   ): this {
-    const index = this.list.findIndex(
-      geoItem => geoItem.country === country
-    )
-
-    if (index !== -1) {
-      const current = this.list[index]
-      const unit = current.unit || item.unit
-        ? {
-            ...current.unit,
-            ...item.unit
-          }
-        : undefined
-
-      this.list[index] = {
-        ...current,
-        ...item,
-        ...(unit ? { unit } : {})
-      }
-    } else {
-      this.list.push({
-        language: 'en',
-        ...item,
-        country
-      })
-    }
+    GeoList.add(country, item)
 
     if (
       this.item.country === country
-      || this.toCountry(this.location) === country
+      || this.toCountry(this.location.get()) === country
     ) {
-      this.item = this.getByCode(this.location)
-      this.language = this.findLanguage(this.location)
+      this.item = this.getByCode(this.location.get())
+      this.language = this.findLanguage(this.location.get())
     }
 
     return this
@@ -394,21 +368,23 @@ export class GeoInstance {
   addList(
     list: Record<string, Partial<GeoItem>>
   ): this {
-    forEach(list, (item, country) => {
-      this.add(country, item)
-    })
+    GeoList.addList(list)
+
+    this.item = this.getByCode(this.location.get())
+    this.language = this.findLanguage(this.location.get())
 
     return this
   }
 
   /**
-   * Finds the country data by its code or name.
+   * Finds the country data by its code.
    *
-   * Ищет данные о стране по ее коду или названию.
+   * Ищет данные о стране по ее коду.
    * @param code country code / код страны
    * @returns full geo data / полные гео-данные
+   * @deprecated Use getByCode() / Используйте getByCode()
    */
-  find(code: string): GeoItemFull {
+  find(code?: string): GeoItemFull {
     return this.getByCode(code)
   }
 
@@ -436,46 +412,33 @@ export class GeoInstance {
   }
 
   /**
-   * Internal method to get the geo cookie instance.
+   * Internal getter for the list of available countries.
    *
-   * Внутренний метод для получения экземпляра гео-куки.
-   * @returns Cookie instance for geo code / экземпляр куки для гео-кода
+   * Внутренний геттер для списка доступных стран.
+   * @returns list of geo items / список гео-объектов
    */
-  private getCookie(): Cookie<string> {
-    return Cookie.getInstance<string>(UI_GEO_COOKIE_KEY)
+  protected get list(): GeoItem[] {
+    return GeoList.get()
   }
 
   /**
-   * Internal method to determine the initial location.
+   * Internal method to get the location manager instance.
    *
-   * Внутренний метод для определения начального местоположения.
-   * @returns initial location code / начальный код локации
+   * Внутренний метод для получения экземпляра менеджера локации.
+   * @returns location manager instance / экземпляр менеджера локации
    */
-  private findLocation(): string {
-    return this.getCookie().get()
-      || this.findLocationDom()
-      || executeFunction(this.valueDefault)
-      || 'en-GB'
+  protected getLocationObject(): GeoLocation {
+    return this.location
   }
 
   /**
-   * Internal method to determine the location from DOM-specific sources.
-   * Returns an empty string (falsy) when not in a DOM runtime.
+   * Internal method to get or initialize the time zone manager instance.
    *
-   * Внутренний метод для определения местоположения из DOM-источников.
-   * Возвращает пустую строку (falsy) вне DOM-окружения.
-   * @returns location code from DOM or empty string / код локации из DOM или пустая строка
+   * Внутренний метод для получения или инициализации экземпляра менеджера часового пояса.
+   * @returns time zone manager instance / экземпляр менеджера часового пояса
    */
-  private findLocationDom(): string | undefined {
-    return (
-      isDomRuntime() && (
-        this.storage.get()
-        || document.querySelector('html')?.lang
-        || navigator.language
-        || navigator.languages[0]
-        || undefined
-      )
-    ) || undefined
+  protected getTimezoneObject(): GeoTimezone {
+    return (this.timezone ??= new GeoTimezone())
   }
 
   /**
@@ -485,8 +448,8 @@ export class GeoInstance {
    * @param code location or language code / код локации или языка
    * @returns language code / код языка
    */
-  private findLanguage(code?: string): string {
-    if (code) {
+  protected findLanguage(code?: string): string {
+    if (isString(code) && code) {
       const language = this.toLanguage(code)
 
       if (language) {
@@ -503,24 +466,122 @@ export class GeoInstance {
 
   /**
    * Internal method to extract country code from a location string.
+   * Supports BCP-47 subtags (e.g., 'zh-Hans-CN'), case-insensitive tags ('en-gb'),
+   * reversed tags ('RU-ru'), and underscore alternatives ('BY_BY').
    *
    * Внутренний метод для извлечения кода страны из строки локации.
+   * Поддерживает BCP-47 субтеги (например, 'zh-Hans-CN'), регистронезависимые теги ('en-gb'),
+   * обратные теги ('RU-ru') и альтернативные коды с подчеркиванием ('BY_BY').
    * @param code combined string / комбинированная строка
    * @returns country code / код страны
    */
-  private toCountry(code: string): string {
-    return code.replace(/[^A-Z]+/g, '')
+  protected toCountry(code: string): string {
+    if (!isString(code)) {
+      return ''
+    }
+
+    const trimmed = code.trim()
+
+    if (!trimmed) {
+      return ''
+    }
+
+    if (!REGEXP_SEPARATOR.test(trimmed)) {
+      if (REGEXP_COUNTRY_CODE.test(trimmed)) {
+        return trimmed
+      }
+
+      return this.getByCountry(trimmed)?.country ?? ''
+    }
+
+    const segments = trimmed.split(REGEXP_SEPARATOR)
+
+    if (
+      segments.length === 2
+      && REGEXP_COUNTRY_CODE.test(segments[0])
+      && REGEXP_LANGUAGE_LOWER.test(segments[1])
+    ) {
+      return segments[0]
+    }
+
+    if (!REGEXP_LANGUAGE_SUBTAG.test(segments[0])) {
+      return this.getByCountry(trimmed)?.country ?? ''
+    }
+
+    const length = segments.length
+
+    for (let index = 1; index < length; index++) {
+      const segment = segments[index]
+
+      if (segment.length <= 1) {
+        break
+      }
+
+      if (REGEXP_ALPHA_TWO.test(segment)) {
+        return segment.toUpperCase()
+      }
+    }
+
+    return this.getByCountry(trimmed)?.country ?? ''
   }
 
   /**
    * Internal method to extract language code from a location string.
+   * Supports BCP-47 subtags (e.g., 'zh-Hans-CN'), case-insensitive tags ('ru-ru'),
+   * 3-letter ISO 639-3 codes ('cmn-SG'), and reversed tags ('RU-ru').
    *
    * Внутренний метод для извлечения кода языка из строки локации.
+   * Поддерживает BCP-47 субтеги (например, 'zh-Hans-CN'), регистронезависимые теги ('ru-ru'),
+   * трехбуквенные коды ISO 639-3 ('cmn-SG') и обратные теги ('RU-ru').
    * @param code combined string / комбинированная строка
    * @returns language code / код языка
    */
-  private toLanguage(code: string): string {
-    return code.replace(/[^a-z]+/g, '')
+  protected toLanguage(code: string): string {
+    if (!isString(code)) {
+      return ''
+    }
+
+    const trimmed = code.trim()
+
+    if (!trimmed) {
+      return ''
+    }
+
+    if (!REGEXP_SEPARATOR.test(trimmed)) {
+      return REGEXP_LANGUAGE_LOWER.test(trimmed) ? trimmed : ''
+    }
+
+    if (this.getByCountry(trimmed)) {
+      return ''
+    }
+
+    const segments = trimmed.split(REGEXP_SEPARATOR)
+
+    if (
+      segments.length === 2
+      && REGEXP_COUNTRY_CODE.test(segments[0])
+    ) {
+      if (REGEXP_LANGUAGE_LOWER.test(segments[1])) {
+        return segments[1]
+      }
+
+      if (
+        segments[0] === segments[1]
+        && !this.getByLanguage(segments[0].toLowerCase())
+      ) {
+        return ''
+      }
+    }
+
+    if (
+      segments.length >= 2
+      && segments[1].length > 0
+      && REGEXP_LANGUAGE_SUBTAG.test(segments[0])
+    ) {
+      return segments[0].toLowerCase()
+    }
+
+    return ''
   }
 
   /**
@@ -531,16 +592,16 @@ export class GeoInstance {
    * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
    * @returns full geo item data / полные данные гео-объекта
    */
-  private toFull(item: GeoItem, code?: string): GeoItemFull {
+  protected toFull(item: GeoItem, code?: string): GeoItemFull {
     const locationLanguage = (code && this.toLanguage(code)) || item.language
     const standard = this.toStandard(item, locationLanguage)
 
     return {
       ...item,
       standard,
-      firstDay: item?.firstDay || 'Mo',
+      firstDay: item.firstDay || DEFAULT_FIRST_DAY,
 
-      location: code ?? standard,
+      location: sanitizeLocation(code) ?? standard,
       locationCountry: (code && this.toCountry(code)) || item.country,
       locationLanguage
     }

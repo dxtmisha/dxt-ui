@@ -1,0 +1,48 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/GeoList - Danh sách quốc gia địa lý toàn cầu'/>
+
+# Lớp GeoList
+
+Lớp tiện ích tĩnh để quản lý và truy vấn kho lưu trữ toàn cầu về các quốc gia và cấu hình ngôn ngữ. Lớp duy trì một bản sao sâu tuyệt đối của cơ sở dữ liệu địa lý `@dxtmisha/media` được chia sẻ giữa các yêu cầu trong SSR, ngăn chặn việc làm biến đổi dữ liệu gốc và cung cấp các phương thức truy vấn hiệu suất cao.
+
+## Tính năng chính
+
+- **Bản sao sâu tuyệt đối** — tạo một bản sao sâu hoàn toàn độc lập thông qua `copyObject(geo)` ở lần truy cập đầu tiên, bảo vệ bộ dữ liệu gốc khỏi bị biến đổi.
+- **Kho lưu trữ tĩnh dùng chung** — được chia sẻ giữa các yêu cầu trong SSR và giữa tất cả các thực thể `GeoInstance`, tối ưu hóa hiệu quả sử dụng bộ nhớ.
+- **Tra cứu nhanh** — các hàm tìm kiếm tối ưu theo mã quốc gia (`getByCountry`), mã ngôn ngữ (`getByLanguage`) và mã định danh đầy đủ (`getByCodeFull`).
+- **Khả năng mở rộng động** — cho phép đăng ký quốc gia mới hoặc ghi đè thuộc tính hiện có với tính năng hợp nhất sâu đơn vị đo lường (`unit`) tự động qua `add()` và `addList()`.
+- **Đặt lại trạng thái** — cung cấp phương thức `reset()` để xóa bộ nhớ đệm trong các lần chạy kiểm thử hoặc làm mới môi trường.
+
+## Cách sử dụng cơ bản
+
+```javascript
+import { GeoList } from '@dxtmisha/functional-basic'
+
+// Lấy danh sách quốc gia toàn cầu
+const countries = GeoList.get()
+
+// Tìm quốc gia theo mã chính hoặc mã thay thế
+const us = GeoList.getByCountry('US')
+const uk = GeoList.getByCountry('UK') // trả về GB
+
+// Tìm quốc gia theo ngôn ngữ
+const french = GeoList.getByLanguage('fr')
+
+// Thêm hoặc ghi đè cấu hình quốc gia trên toàn cầu
+GeoList.add('VN', {
+  phoneCode: '84',
+  firstDay: 'Mo'
+})
+```
+
+## Các phương thức
+
+- `get(): GeoItem[]` — Trả về danh sách quốc gia toàn cầu, tạo một bản sao sâu tuyệt đối ở lần truy cập đầu tiên.
+- `getByCodeFull(code?: string): GeoItem | undefined` — Tìm dữ liệu quốc gia theo thẻ mã định danh kết hợp (ví dụ: `'en-US'` hoặc `'RU-ru'`).
+- `getByCountry(country?: string): GeoItem | undefined` — Tìm dữ liệu quốc gia theo mã quốc gia ISO 3166-1 hoặc bí danh thay thế.
+- `getByLanguage(language?: string): GeoItem | undefined` — Tìm dữ liệu quốc gia theo mã ngôn ngữ ISO 639-1 hoặc bí danh thay thế.
+- `add(country: string, item?: Partial<GeoItem>): GeoItem` — Thêm hoặc hợp nhất dữ liệu quốc gia trong danh sách toàn cầu, trả về đối tượng kết quả.
+- `addList(list?: Record<string, Partial<GeoItem>>): void` — Thêm hoặc hợp nhất nhiều cấu hình quốc gia vào danh sách.
+- `reset(): void` — Xóa danh sách đã lưu trong bộ nhớ đệm, đặt lại về trạng thái ban đầu ở lần truy cập tiếp theo.
+

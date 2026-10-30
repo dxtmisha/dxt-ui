@@ -352,5 +352,17 @@ describe('Cookie', () => {
       expect(customGet).toHaveBeenCalledWith('custom')
       expect(result).toBe('custom')
     })
+
+    it('should infer return type from defaultValue when T is omitted', () => {
+      const cookie = new Cookie('inferredString')
+      const value = cookie.get('defaultVal')
+      expect(value).toBe('defaultVal')
+    })
+
+    it('should infer return type from functional defaultValue', () => {
+      const cookie = new Cookie('inferredNumber')
+      const value = cookie.get(() => 42)
+      expect(value).toBe(42)
+    })
   })
 })

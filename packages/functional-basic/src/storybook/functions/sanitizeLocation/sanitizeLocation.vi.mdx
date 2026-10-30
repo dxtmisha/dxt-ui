@@ -1,0 +1,37 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/sanitizeLocation - Xác thực và chuẩn hóa mã định danh ngôn ngữ'/>
+
+# `sanitizeLocation`
+
+Xác thực và chuẩn hóa chuỗi mã ngôn ngữ/vị trí bên ngoài. Hàm đảm bảo tính an toàn cho URL và tương thích với các tiêu chuẩn ECMA-402 / BCP-47 bằng cách loại bỏ khoảng trắng, chuyển đổi dấu gạch dưới thành dấu gạch nối, kiểm tra độ dài và cấu trúc, đồng thời chuẩn hóa kết quả qua `Intl.Locale` khi được hỗ trợ.
+
+**Tham số:**
+- `code?: unknown` — Mã vị trí/ngôn ngữ cần kiểm tra và chuẩn hóa.
+
+**Trả về:**
+`string | undefined` — Mã vị trí chuẩn hóa hợp lệ (ví dụ: `'en-US'`) hoặc `undefined` nếu giá trị không hợp lệ hoặc không an toàn.
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { sanitizeLocation } from '@dxtmisha/functional-basic'
+
+// 1. Chuẩn hóa chữ hoa chữ thường và dấu phân cách
+sanitizeLocation('en_US')     // 'en-US'
+sanitizeLocation('  ru-ru  ') // 'ru-RU'
+sanitizeLocation('zh-hans-cn') // 'zh-Hans-CN'
+
+// 2. Loại bỏ các chuỗi nguy hiểm hoặc ký tự không hợp lệ
+sanitizeLocation('<script>alert(1)</script>') // undefined
+sanitizeLocation('../en')                     // undefined
+sanitizeLocation('en;drop table')             // undefined
+
+// 3. Loại bỏ các giá trị không phải chuỗi hoặc cấu trúc sai
+sanitizeLocation(undefined)   // undefined
+sanitizeLocation(null)        // undefined
+sanitizeLocation('12-34')     // undefined
+  `}
+/>

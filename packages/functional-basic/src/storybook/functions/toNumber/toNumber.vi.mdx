@@ -4,10 +4,10 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `toNumber`
 
-Chuyển đổi một chuỗi hoặc một số thành một số thực (float) hữu hạn. Hàm được thiết kế để xử lý nhiều kiểu định dạng khác nhau, bao gồm các ký tự phân cách phần nghìn và các dấu thập phân khác nhau.
+Chuyển đổi một giá trị thành một số thực (float) hữu hạn. Hàm được thiết kế để xử lý nhiều kiểu định dạng khác nhau, bao gồm các ký tự phân cách phần nghìn và các dấu thập phân khác nhau.
 
 **Tham số:**
-- `value?: NumberOrString` — Giá trị đầu vào cần chuyển đổi.
+- `value?: unknown` — Giá trị đầu vào cần chuyển đổi.
 
 **Trả về:**
 `number` — Số thực sau khi phân tách hoặc `0` nếu chuyển đổi thất bại hoặc giá trị là vô hạn.

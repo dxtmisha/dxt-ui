@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/GeoTimezone - Time Zone Manager'/>
+
+# GeoTimezone Class
+
+A dedicated class for managing, normalizing, and formatting time zone offsets within a geographic context or as a standalone value object. It stores the offset in minutes following `Date.prototype.getTimezoneOffset()` semantics (negative for zones east of UTC, positive for zones west of UTC) and converts it to ISO 8601 compliant offset strings.
+
+## Key Features
+
+- **Standard Semantics** — matches standard ECMAScript `Date.prototype.getTimezoneOffset()` rules.
+- **Robust Normalization** — automatically coerces inputs to finite integers, handling floating-point values, negative zero (`-0`), and non-finite fallbacks (`NaN`, `Infinity`).
+- **ISO 8601 Formatting** — converts minute offsets into standard formatted strings (`'+03:00'`, `'-05:00'`, `'+00:00'`).
+- **Fluent API** — method chaining support via `set()`.
+- **SSR Safe** — completely isomorphic with zero reliance on browser-only globals.
+
+## Basic Usage
+
+```javascript
+import { GeoTimezone } from '@dxtmisha/functional-basic'
+
+// Initialize with the system time zone offset
+const tz = new GeoTimezone()
+console.log(tz.get()) // e.g., -180 (for UTC+3)
+console.log(tz.getFormat()) // '+03:00'
+
+// Set a custom offset for UTC-5 (300 minutes west of UTC)
+tz.set(300)
+console.log(tz.getFormat()) // '-05:00'
+
+// Supports fractional time zones such as UTC+5:30 (India)
+tz.set(-330)
+console.log(tz.getFormat()) // '+05:30'
+```
+
+## Methods
+
+- `get(): number` — Returns the current time zone offset in minutes.
+- `set(timezone: number): this` — Updates and normalizes the current time zone offset in minutes, returning the instance for chaining.
+- `getFormat(): string` — Returns the current time zone offset formatted as an ISO 8601 string (e.g., `'+03:00'`, `'-05:00'`).
+

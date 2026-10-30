@@ -31,3 +31,11 @@ DataStorage
 CookieBlockInstance
 isFilled
 CookieStorage
+isSelected
+isNumber
+toNumber
+Cookie
+GeoTimezone
+GeoList
+GeoLocation
+sanitizeLocation

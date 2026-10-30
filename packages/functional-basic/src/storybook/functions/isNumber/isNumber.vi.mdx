@@ -9,10 +9,10 @@ Tiện ích chuyên biệt có khả năng nhìn thấu vấn đề liệu một
 Tính năng hoạt động tương thích hoàn hảo kiểu loại cấu thành `typeof value === 'number'` (loại trừ `NaN` và `Infinity`), hỗ trợ kiểu `bigint`, và xử lý tốt ngay cả những xâu chuỗi văn bản thông qua thuật toán RegEx để kiểm tra phần tử chuỗi có mang cấu trúc định dạng chuẩn số hay không (ủng hộ cả dấu `+`, `-` và số có phần thập phân).
 
 **Tham số:**
-- `value: unknown` — Mức giá trị bất kỳ để khảo sát.
+- `value?: unknown` — Mức giá trị bất kỳ để khảo sát.
 
 **Trả về:**
-`boolean` (`value is number | string`) — Giải phóng biến kiểm tra `true` nếu nguồn căn thuộc thể trạng chữ số lý thuyết hay hệ thống dải văn bản cấu tạo chỉ bởi số liệu đơn thuần. Sẽ cho ra `false` khi có bất trắc nào dính lẫn kí tự ngoại vi ngoài chữ số. Đóng vai trò là type guard trong TypeScript giúp thu hẹp kiểu về `number | string`.
+`boolean` (`value is number | string | bigint`) — Giải phóng biến kiểm tra `true` nếu nguồn căn thuộc thể trạng chữ số lý thuyết, kiểu `bigint` hay hệ thống dải văn bản cấu tạo chỉ bởi số liệu đơn thuần. Sẽ cho ra `false` khi có bất trắc nào dính lẫn kí tự ngoại vi ngoài chữ số. Đóng vai trò là type guard trong TypeScript giúp thu hẹp kiểu về `number | string | bigint`.
 
 ```typescript
 import { isNumber } from '@dxtmisha/functional-basic'

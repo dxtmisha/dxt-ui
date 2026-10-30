@@ -7,4 +7,4 @@
  * toNumber("1,234.56") // 1234.56
  * toNumber("1,234")    // 1.234
  */
-export declare function toNumber(value?: NumberOrString): number;
+export declare function toNumber(value?: unknown): number;

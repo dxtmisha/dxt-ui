@@ -14,8 +14,8 @@ import { toNumber } from './toNumber'
  * @param selected target value or array of selected values / целевое значение или массив выбранных значений
  * @returns true if selected / true, если выбрано
  */
-export function isSelected<T>(
-  value: T,
+export function isSelected<T = unknown>(
+  value?: T,
   selected?: unknown
 ): boolean {
   if (isNull(value)) {
@@ -23,13 +23,29 @@ export function isSelected<T>(
   }
 
   if (isArray(selected)) {
+    const length = selected.length
+
+    if (length === 0) {
+      return false
+    }
+
     if (selected.includes(value)) {
       return true
     }
 
     if (isNumber(value)) {
       const numericValue = toNumber(value)
-      return selected.some(item => isNumber(item) && toNumber(item) === numericValue)
+
+      for (let index = 0; index < length; index++) {
+        const item = selected[index]
+
+        if (
+          isNumber(item)
+          && toNumber(item) === numericValue
+        ) {
+          return true
+        }
+      }
     }
 
     return false

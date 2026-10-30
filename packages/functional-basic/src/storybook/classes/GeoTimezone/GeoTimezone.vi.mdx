@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/GeoTimezone - Trình quản lý múi giờ'/>
+
+# Lớp GeoTimezone
+
+Lớp chuyên dụng để quản lý, chuẩn hóa và định dạng độ lệch múi giờ trong ngữ cảnh địa lý (`GeoInstance`) hoặc dưới dạng một đối tượng giá trị độc lập. Lớp lưu trữ độ lệch tính bằng phút theo ngữ nghĩa của `Date.prototype.getTimezoneOffset()` (âm đối với các khu vực phía đông UTC, dương đối với các khu vực phía tây UTC) và chuyển đổi thành chuỗi độ lệch tuân thủ ISO 8601.
+
+## Tính năng chính
+
+- **Ngữ nghĩa tiêu chuẩn** — tuân thủ hoàn toàn quy tắc của ECMAScript `Date.prototype.getTimezoneOffset()`.
+- **Chuẩn hóa mạnh mẽ** — tự động ép kiểu dữ liệu đầu vào thành số nguyên hữu hạn, xử lý an toàn các số thực dấu phẩy động, số âm không (`-0`) và các giá trị không hợp lệ (`NaN`, `Infinity`).
+- **Định dạng ISO 8601** — chuyển đổi độ lệch phút thành chuỗi chuẩn định dạng (`'+03:00'`, `'-05:00'`, `'+00:00'`).
+- **Giao diện chuỗi (Fluent API)** — hỗ trợ gọi chuỗi phương thức thông qua `set()`.
+- **An toàn cho SSR** — hoàn toàn đẳng hình (isomorphic), không phụ thuộc vào các biến toàn cục của trình duyệt.
+
+## Cách sử dụng cơ bản
+
+```javascript
+import { GeoTimezone } from '@dxtmisha/functional-basic'
+
+// Khởi tạo với độ lệch múi giờ của hệ thống
+const tz = new GeoTimezone()
+console.log(tz.get()) // ví dụ: -180 (cho UTC+3)
+console.log(tz.getFormat()) // '+03:00'
+
+// Đặt độ lệch tùy chỉnh cho UTC-5 (300 phút về phía tây UTC)
+tz.set(300)
+console.log(tz.getFormat()) // '-05:00'
+
+// Hỗ trợ các múi giờ lẻ như UTC+5:30 (Ấn Độ)
+tz.set(-330)
+console.log(tz.getFormat()) // '+05:30'
+```
+
+## Các phương thức
+
+- `get(): number` — Trả về độ lệch múi giờ hiện tại tính bằng phút.
+- `set(timezone: number): this` — Cập nhật và chuẩn hóa độ lệch múi giờ tính bằng phút, trả về thực thể hiện tại để gọi chuỗi.
+- `getFormat(): string` — Trả về độ lệch múi giờ hiện tại ở định dạng chuỗi ISO 8601 (ví dụ: `'+03:00'`, `'-05:00'`).
+

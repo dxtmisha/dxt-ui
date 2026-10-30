@@ -9,7 +9,9 @@ describe('isSelected', () => {
       expect(isSelected(null, [null])).toBe(false)
     })
 
-    it('should return false if value is undefined', () => {
+    it('should return false if value is undefined or omitted', () => {
+      expect(isSelected()).toBe(false)
+      expect(isSelected(undefined)).toBe(false)
       expect(isSelected(undefined, 1)).toBe(false)
       expect(isSelected(undefined, undefined)).toBe(false)
       expect(isSelected(undefined, [undefined])).toBe(false)
@@ -85,6 +87,11 @@ describe('isSelected', () => {
       expect(isSelected(0, '')).toBe(false)
       expect(isSelected('', 0)).toBe(false)
     })
+
+    it('should handle NaN without false positives', () => {
+      expect(isSelected(Number.NaN, Number.NaN)).toBe(false)
+      expect(isSelected(Number.NaN, 0)).toBe(false)
+    })
   })
 
   describe('Array selection comparison', () => {
@@ -98,6 +105,11 @@ describe('isSelected', () => {
       expect(isSelected(4, [1, 2, 3])).toBe(false)
       expect(isSelected('date', ['banana', 'apple', 'cherry'])).toBe(false)
       expect(isSelected('item', [])).toBe(false)
+    })
+
+    it('should handle empty array early return', () => {
+      expect(isSelected(1, [])).toBe(false)
+      expect(isSelected('test', [])).toBe(false)
     })
 
     it('should match numeric strings with numbers in array (consistent behavior)', () => {

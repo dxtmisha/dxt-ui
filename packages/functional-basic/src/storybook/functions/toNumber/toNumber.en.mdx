@@ -4,10 +4,10 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `toNumber`
 
-Converts a string or number into a finite floating-point number. The function is designed to handle various formatting styles, including thousands separators and different decimal markers.
+Converts a value into a finite floating-point number. The function is designed to handle various formatting styles, including thousands separators and different decimal markers.
 
 **Parameters:**
-- `value?: NumberOrString` — The input value for conversion.
+- `value?: unknown` — The input value for conversion.
 
 **Returns:**
 `number` — The parsed float number or `0` if conversion fails or the value is non-finite.

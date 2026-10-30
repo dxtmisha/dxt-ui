@@ -31,10 +31,10 @@ A `Cookie` instance can be created to manage a specific cookie. If an instance w
 Reads the cookie value. If the value doesn't exist and a default is provided, it will be saved and returned. Supports functions for lazy default value computation.
 
 **Parameters:**
-- `defaultValue?: T | string | (() => T | string)` — default value or function returning the value
+- `defaultValue?: D` — default value or function returning the value
 - `options?: CookieOptions` — cookie options (used when setting default value)
 
-**Returns:** `T | string | undefined` — the cookie value or the assigned default
+**Returns:** `CookieGet<T, D>` — the cookie value or the assigned default
 
 #### `set`
 
@@ -54,7 +54,7 @@ Removes a cookie by overwriting it with an empty string and setting Max-Age to `
 
 ### Static Methods
 
-- `getInstance<T>(name: string): Cookie<T>` — Returns an existing instance or creates a new one by name
+- `getInstance<T = unknown>(name: string): Cookie<T>` — Returns an existing instance or creates a new one by name
 
 ### Auxiliary
 

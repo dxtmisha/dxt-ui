@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/GeoLocation - Quản lý vị trí địa lý'/>
+
+# Lớp GeoLocation
+
+Lớp chuyên dụng để quản lý, xác thực và lưu trữ mã vị trí địa lý hiện tại (ví dụ: `'en-GB'`, `'ru-RU'`) trong `Geo` hoặc dưới dạng đối tượng độc lập. Lớp cung cấp thứ tự phân giải dự phòng tuần tự qua cookie, bộ nhớ trình duyệt cục bộ, thuộc tính tài liệu HTML và đối tượng `navigator` của trình duyệt, tương thích hoàn toàn với SSR và chuẩn hóa theo chuẩn BCP-47.
+
+## Tính năng chính
+
+- **Phân giải thứ bậc tuần tự** — tự động tìm kiếm mã vị trí theo thứ tự ưu tiên: Cookie -> DataStorage -> thuộc tính `lang` của thẻ HTML -> `navigator.language` / `navigator.languages` -> giá trị mặc định -> `'en-GB'`.
+- **Lưu trữ hai cấp độ** — tùy chọn đồng bộ hóa vị trí vào cả `localStorage` (qua `DataStorage`) và cookie (qua `Cookie`), đảm bảo tính bền vững giữa các phiên làm việc và yêu cầu.
+- **Khử khuẩn theo BCP-47** — chuẩn hóa và xác thực chuỗi qua `sanitizeLocation`, chuyển đổi dấu gạch dưới thành dấu gạch nối và loại bỏ các ký tự không an toàn.
+- **Giá trị mặc định động** — hỗ trợ giá trị chuỗi tĩnh hoặc hàm gọi lại động qua `setValueDefault()`.
+- **An toàn cho SSR** — kiểm tra môi trường qua `isDomRuntime()` và tương thích với `ServerStorage` để đọc cookie độc lập trên máy chủ.
+
+## Cách sử dụng cơ bản
+
+```javascript
+import { GeoLocation } from '@dxtmisha/functional-basic'
+
+// Khởi tạo thực thể với cơ chế phân giải tự động
+const location = new GeoLocation()
+console.log(location.get()) // ví dụ: 'en-GB' hoặc giá trị từ Cookie/DOM
+
+// Cập nhật vị trí và lưu trữ lâu dài
+location.set('ru-RU', true)
+console.log(location.get()) // 'ru-RU'
+
+// Thiết lập hàm xác định mặc định động
+location.setValueDefault(() => 'vi-VN')
+```
+
+## Các phương thức
+
+- `get(): string` — Trả về chuỗi mã vị trí hiện tại.
+- `set(code?: string, save?: boolean): this` — Cập nhật mã vị trí hiện tại và tùy chọn lưu vào bộ nhớ và cookie, trả về thực thể để gọi chuỗi.
+- `setValueDefault(code?: string | (() => string | undefined)): this` — Thiết lập giá trị mặc định hoặc hàm xác định mặc định và tính toán lại vị trí.

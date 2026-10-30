@@ -1,0 +1,37 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/sanitizeLocation - Validating and normalizing locale tags'/>
+
+# `sanitizeLocation`
+
+Validates and normalizes an external locale code string. It ensures URL safety and ECMA-402 / BCP-47 compatibility by stripping whitespace, converting underscore separators to hyphens, validating length and structural tokens, and canonicalizing the result via `Intl.Locale` when supported.
+
+**Parameters:**
+- `code?: unknown` — Candidate locale code to validate and normalize.
+
+**Returns:**
+`string | undefined` — Valid canonical locale code (e.g., `'en-US'`) or `undefined` if the input is invalid or unsafe.
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { sanitizeLocation } from '@dxtmisha/functional-basic'
+
+// 1. Normalizing casing and underscore separators
+sanitizeLocation('en_US')     // 'en-US'
+sanitizeLocation('  ru-ru  ') // 'ru-RU'
+sanitizeLocation('zh-hans-cn') // 'zh-Hans-CN'
+
+// 2. Rejecting dangerous or non-BCP-47 characters
+sanitizeLocation('<script>alert(1)</script>') // undefined
+sanitizeLocation('../en')                     // undefined
+sanitizeLocation('en;drop table')             // undefined
+
+// 3. Rejecting non-string or structurally invalid values
+sanitizeLocation(undefined)   // undefined
+sanitizeLocation(null)        // undefined
+sanitizeLocation('12-34')     // undefined
+  `}
+/>

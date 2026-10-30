@@ -1,0 +1,37 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/sanitizeLocation - Валидация и нормализация тегов локали'/>
+
+# `sanitizeLocation`
+
+Валидирует и нормализует внешнюю строку кода локали. Обеспечивает безопасность для URL и совместимость со стандартами ECMA-402 / BCP-47: удаляет пробелы, заменяет символы подчеркивания на дефисы, проверяет длину и структуру субтегов, а также канонизирует результат через `Intl.Locale` при поддержке платформой.
+
+**Параметры:**
+- `code?: unknown` — Проверяемый код локали.
+
+**Возвращает:**
+`string | undefined` — Валидный канонический код локали (например, `'en-US'`) или `undefined`, если значение некорректно или небезопасно.
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { sanitizeLocation } from '@dxtmisha/functional-basic'
+
+// 1. Нормализация регистра и разделителей
+sanitizeLocation('en_US')     // 'en-US'
+sanitizeLocation('  ru-ru  ') // 'ru-RU'
+sanitizeLocation('zh-hans-cn') // 'zh-Hans-CN'
+
+// 2. Отклонение опасных строк и некорректных символов
+sanitizeLocation('<script>alert(1)</script>') // undefined
+sanitizeLocation('../en')                     // undefined
+sanitizeLocation('en;drop table')             // undefined
+
+// 3. Отклонение нестроковых или структурно невалидных значений
+sanitizeLocation(undefined)   // undefined
+sanitizeLocation(null)        // undefined
+sanitizeLocation('12-34')     // undefined
+  `}
+/>
