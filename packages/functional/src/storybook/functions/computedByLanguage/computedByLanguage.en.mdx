@@ -15,13 +15,13 @@ The function performs checks in the following order:
 4. **Fallback Option**: If any of the checks fail or the `getter` returns `undefined`, the `getterNone` is executed/returned.
 
 **Parameters:**
-- `getter: ComputedGetter<R>` — The primary logic for obtaining the value. Called only if the language is set and conditions are met.
-- `getterNone: R | (() => R)` — A fallback value or a function returning it. Acts as "Plan B". Default: `() => undefined`.
+- `getter: ComputedGetter<T>` — The primary logic for obtaining the value. Called only if the language is set and conditions are met.
+- `getterNone?: D | (() => D)` — A fallback value or a function returning it. Acts as "Plan B". Default: `undefined`.
 - `conditions?: () => boolean` — A condition function. Acts as a gatekeeper: if it returns `false`, the main `getter` will not even be triggered.
 - `debugOptions?: DebuggerOptions` — Options used for debugging reactive computations, supported by Vue.js.
 
 **Returns:**
-`ComputedRef<R>` — A reactive computed property.
+`ComputedRef<T | D>` — A reactive computed property.
 
 ```typescript
 import { computedByLanguage } from '@dxtmisha/functional'

@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/getInject - Truy cập an toàn giá trị Inject'/>
+
+# `getInject`
+
+Hàm tiện ích đọc giá trị provide/inject một cách an toàn theo khóa hoặc `InjectionKey` khi có ngữ cảnh inject Vue hoạt động (`hasInjectionContext()`). Giữ nguyên các giá trị falsy (`false`, `0`, `''`, `NaN`) và chỉ coi `null` cùng `undefined` là vắng mặt, trả về giá trị dự phòng `defaultValue`. Khi được gọi bên ngoài ngữ cảnh inject, hàm trả về `defaultValue` mà không phát cảnh báo trong console.
+
+**Tham số:**
+- `key: InjectionKey<T> | string` — Khóa chuỗi hoặc `InjectionKey<T>` có kiểu dữ liệu.
+- `defaultValue?: D | (() => D)` — Giá trị dự phòng tùy chọn hoặc hàm factory khi khóa vắng mặt hoặc khi gọi ngoài ngữ cảnh.
+
+**Trả về:**
+`InjectedValue<T, D>` — Giá trị được cung cấp, `defaultValue`, hoặc `undefined`.
+
+```typescript
+import { type InjectionKey } from 'vue'
+import { getInject } from '@dxtmisha/functional'
+
+// 1. Với khóa chuỗi và giá trị mặc định
+const theme = getInject('theme', 'dark') // string
+
+// 2. Với hàm factory giá trị mặc định
+const config = getInject('config', () => ({ debug: false }))
+
+// 3. Với InjectionKey có kiểu dữ liệu
+interface UserService {
+  name: string
+}
+const userKey: InjectionKey<UserService> = Symbol('user')
+const user = getInject(userKey) // UserService | undefined
+```
+

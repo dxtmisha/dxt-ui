@@ -15,13 +15,13 @@ Hàm thực hiện các kiểm tra theo thứ tự sau:
 4. **Tùy chọn dự phòng**: Nếu bất kỳ kiểm tra nào thất bại hoặc `getter` trả về `undefined`, `getterNone` sẽ được thực thi/trả về.
 
 **Tham số:**
-- `getter: ComputedGetter<R>` — Logic chính để lấy giá trị. Chỉ được gọi nếu ngôn ngữ đã thiết lập và các điều kiện được thỏa mãn.
-- `getterNone: R | (() => R)` — Giá trị dự phòng hoặc hàm trả về giá trị đó. Đóng vai trò là "Phương án B". Mặc định: `() => undefined`.
+- `getter: ComputedGetter<T>` — Logic chính để lấy giá trị. Chỉ được gọi nếu ngôn ngữ đã thiết lập và các điều kiện được thỏa mãn.
+- `getterNone?: D | (() => D)` — Giá trị dự phòng hoặc hàm trả về giá trị đó. Đóng vai trò là "Phương án B". Mặc định: `undefined`.
 - `conditions?: () => boolean` — Một hàm điều kiện. Đóng vai trò là "người gác cổng" (gatekeeper): nếu nó trả về `false`, `getter` chính thậm chí sẽ không được kích hoạt.
 - `debugOptions?: DebuggerOptions` — Tùy chọn dùng để gỡ lỗi các phép tính phản ứng, được hỗ trợ bởi Vue.js.
 
 **Trả về:**
-`ComputedRef<R>` — Thuộc tính computed phản ứng.
+`ComputedRef<T | D>` — Thuộc tính computed phản ứng.
 
 ```typescript
 import { computedByLanguage } from '@dxtmisha/functional'

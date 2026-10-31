@@ -1,16 +1,17 @@
-import type { ApiFetch } from '@dxtmisha/functional-basic'
+import { isString, type ApiFetch, type ApiMethod } from '@dxtmisha/functional-basic'
 
 import type { ApiOptions } from '../types/apiTypes'
 import type { RefOrNormal } from '../types/refTypes'
 
 /**
- * Get request options.
+ * Normalizes API request options into a fetch options object or reactive reference.
  *
- * Возвращает опции запроса.
- * @param options options / параметры
+ * Нормализует параметры API-запроса в объект опций запроса или реактивную ссылку.
+ * @param options Request method string or request options object / Метод запроса строкой или объект параметров запроса
+ * @returns Request options object or reactive reference / Объект параметров запроса или реактивная ссылка
  */
-export const getOptions = (options?: ApiOptions): RefOrNormal<ApiFetch> => {
-  if (typeof options === 'string') {
+export function getOptions(options?: ApiOptions | ApiMethod): RefOrNormal<ApiFetch> {
+  if (isString(options)) {
     return { method: options }
   }
 
@@ -18,5 +19,5 @@ export const getOptions = (options?: ApiOptions): RefOrNormal<ApiFetch> => {
     return options
   }
 
-  return {} as ApiFetch
+  return {}
 }

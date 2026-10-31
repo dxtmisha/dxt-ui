@@ -13,3 +13,9 @@ src/functions/render/getClassName.ts
 src/composables/ref/useScope.ts
 src/functions/watchEffectAsync.ts
 src/functions/computedAsync.ts
+src/classes/ref/GeoRef.ts
+src/functions/computedByLanguage.ts
+src/classes/ref/EffectScopeGlobal.ts
+src/functions/getInject.ts
+src/functions/getOptions.ts
+src/functions/dxtFunctionalPlugin.ts

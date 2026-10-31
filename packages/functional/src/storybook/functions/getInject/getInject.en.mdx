@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/getInject - Safe Injected Value Access'/>
+
+# `getInject`
+
+Utility function that safely reads an injected provide/inject value by its key or `InjectionKey` when a Vue injection context is available (`hasInjectionContext()`). Preserves all falsy values (`false`, `0`, `''`, `NaN`) and treats only `null` and `undefined` as absent, returning the optional `defaultValue` fallback. When called outside an injection context, it returns `defaultValue` without logging console warnings.
+
+**Parameters:**
+- `key: InjectionKey<T> | string` — String key or typed `InjectionKey<T>`.
+- `defaultValue?: D | (() => D)` — Optional fallback value or factory executed when the key is absent or when called outside context.
+
+**Returns:**
+`InjectedValue<T, D>` — Provided value, `defaultValue`, or `undefined`.
+
+```typescript
+import { type InjectionKey } from 'vue'
+import { getInject } from '@dxtmisha/functional'
+
+// 1. With string key and default value
+const theme = getInject('theme', 'dark') // string
+
+// 2. With default value factory
+const config = getInject('config', () => ({ debug: false }))
+
+// 3. With typed InjectionKey
+interface UserService {
+  name: string
+}
+const userKey: InjectionKey<UserService> = Symbol('user')
+const user = getInject(userKey) // UserService | undefined
+```
+

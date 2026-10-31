@@ -30,6 +30,18 @@ export class GeoRef {
   }
 
   /**
+   * Sets the current Geo locale with persistence enabled and replaces the reactive item.
+   *
+   * Устанавливает текущую локаль Geo с сохранением и заменяет реактивные данные.
+   * @param code Locale, country or language code. / Код локали, страны или языка.
+   * @returns No return value. / Нет возвращаемого значения.
+   */
+  static set(code: string): void {
+    Geo.set(code, true)
+    this.get().value = Geo.getItem()
+  }
+
+  /**
    * Returns the country code.
    *
    * Возвращает код страны.
@@ -43,32 +55,6 @@ export class GeoRef {
   }
 
   /**
-   * Returns the country metadata language.
-   *
-   * Возвращает язык из данных страны.
-   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-   */
-  static getLanguage(): ComputedRef<string> {
-    return ServerStorage.get(
-      '__ui:geo-ref-language__',
-      () => computed<string>(() => this.get().value.language)
-    )
-  }
-
-  /**
-   * Returns the standard locale code.
-   *
-   * Возвращает стандартный код локали.
-   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-   */
-  static getStandard(): ComputedRef<string> {
-    return ServerStorage.get(
-      '__ui:geo-ref-standard__',
-      () => computed<string>(() => this.get().value.standard)
-    )
-  }
-
-  /**
    * Returns the first-weekday token from country metadata.
    *
    * Возвращает обозначение первого дня недели из данных страны.
@@ -78,6 +64,19 @@ export class GeoRef {
     return ServerStorage.get(
       '__ui:geo-ref-first-day__',
       () => computed<string>(() => this.get().value.firstDay)
+    )
+  }
+
+  /**
+   * Returns the country metadata language.
+   *
+   * Возвращает язык из данных страны.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+   */
+  static getLanguage(): ComputedRef<string> {
+    return ServerStorage.get(
+      '__ui:geo-ref-language__',
+      () => computed<string>(() => this.get().value.language)
     )
   }
 
@@ -121,15 +120,16 @@ export class GeoRef {
   }
 
   /**
-   * Sets the current Geo locale with persistence enabled and replaces the reactive item.
+   * Returns the standard locale code.
    *
-   * Устанавливает текущую локаль Geo с сохранением и заменяет реактивные данные.
-   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
-   * @returns No return value. / Нет возвращаемого значения.
+   * Возвращает стандартный код локали.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  static set(code: string): void {
-    Geo.set(code, true)
-    this.get().value = Geo.getItem()
+  static getStandard(): ComputedRef<string> {
+    return ServerStorage.get(
+      '__ui:geo-ref-standard__',
+      () => computed<string>(() => this.get().value.standard)
+    )
   }
 
   /**

@@ -1,4 +1,4 @@
-import { EffectScope, effectScope } from 'vue'
+import { effectScope, type EffectScope } from 'vue'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 
 /**
@@ -11,6 +11,7 @@ export class EffectScopeGlobal {
    * Runs the callback synchronously inside the cached detached effect scope and returns its result.
    *
    * Синхронно выполняет обработчик в кэшированной отсоединённой области эффектов и возвращает результат.
+   * @template T Return type of the executed callback / Тип возвращаемого значения обработчика
    * @param fn Callback to execute inside the detached scope. / Обработчик для выполнения в отсоединённой области.
    * @returns Callback result, or undefined when the stored scope is inactive. / Результат обработчика либо undefined для неактивной сохранённой области.
    */
@@ -22,7 +23,7 @@ export class EffectScopeGlobal {
    * Gets the global effect scope instance.
    *
    * Получает экземпляр глобальной области действия эффекта.
-   * @returns the global effect scope instance/ экземпляр глобальной области действия эффекта
+   * @returns The global effect scope instance. / Экземпляр глобальной области действия эффекта.
    */
   private static getScope(): EffectScope {
     return ServerStorage.get<EffectScope>(

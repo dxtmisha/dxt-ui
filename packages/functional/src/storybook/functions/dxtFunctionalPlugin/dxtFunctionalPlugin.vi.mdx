@@ -40,11 +40,12 @@ Khi plugin được cài đặt, nó thực hiện các bước sau theo thứ t
 
 1.  **Api**: Gọi `Api.setConfig()` với `ApiConfig` được cung cấp.
 2.  **Translate**: Gọi `Translate.setConfig()` với `TranslateConfig` được cung cấp.
-3.  **Icons**: Gọi `Icons.setConfig()` với `IconsConfig` được cung cấp.
-4.  **Meta**: Cấu hình hậu tố cho tiêu đề thông qua `useMeta().setSuffix()`.
-5.  **Router**: Đăng ký router vào `RouterItemRef`, giúp có thể truy cập toàn cục.
-6.  **ErrorCenter**: Cấu hình danh sách nguyên nhân lỗi định trước thông qua `ErrorCenter.addList()` và đăng ký các trình xử lý lỗi thông qua `ErrorCenter.addHandlerList()`.
-7.  **executeUseGlobalInit**: Kích hoạt quá trình khởi tạo hàng loạt cho tất cả các đối tượng đơn lẻ được định nghĩa thông qua `executeUseGlobal`.
+3.  **Geo**: Cấu hình vị trí địa lý hoặc ngôn ngữ mặc định thông qua `GeoRef.setValueDefault()`.
+4.  **Icons**: Gọi `Icons.setConfig()` với `IconsConfig` và `MediaSocial.addIcons()` với `InputSocialIcons`.
+5.  **Meta**: Cấu hình hậu tố cho tiêu đề thông qua `useMeta().setSuffix()`.
+6.  **Router**: Đăng ký router vào `RouterItemRef`, giúp có thể truy cập toàn cục.
+7.  **ErrorCenter**: Cấu hình nguyên nhân lỗi (`ErrorCenter.addList()`), trình xử lý lỗi (`ErrorCenter.addHandlerList()`) và hàm gọi lại khi xảy ra lỗi (`ErrorCenter.addCallback()`).
+8.  **executeUseGlobalInit**: Kích hoạt quá trình khởi tạo hàng loạt cho tất cả các đối tượng đơn lẻ được định nghĩa thông qua `executeUseGlobal`.
 
 ## Các kiểu dữ liệu
 
@@ -54,11 +55,14 @@ Plugin sử dụng các giao diện (interface) sau để cấu hình:
 
 - `api?: ApiConfig` — Cấu hình cho phiên bản `Api` toàn cục.
 - `translate?: TranslateConfig` — Cấu hình cho dịch vụ dịch thuật `Translate` toàn cục.
+- `location?: string | (() => string)` — Mã vị trí địa lý hoặc ngôn ngữ mặc định cho `GeoRef`.
 - `icons?: IconsConfig` — Cấu hình cho cơ sở dữ liệu biểu tượng `Icons` toàn cục.
+- `iconsSocial?: InputSocialIcons` — Cấu hình biểu tượng mạng xã hội cho `MediaSocial`.
 - `metaSuffix?: string` — Chuỗi hậu tố sẽ được thêm vào tất cả tiêu đề trang được thiết lập thông qua `useMeta()`.
 - `router?: Router` — Thực thể Vue Router. Nếu bỏ qua, plugin sẽ cố gắng lấy nó từ `app.config.globalProperties.$router`.
 - `errorCauses?: ErrorCenterCauseList` — Danh sách các nguyên nhân lỗi định trước cho `ErrorCenter`.
 - `errorHandlers?: ErrorCenterHandlerList` — Danh sách các trình xử lý lỗi cho `ErrorCenter`.
+- `errorCallbacks?: ErrorCenterHandlerCallback[]` — Danh sách các hàm gọi lại khi xảy ra lỗi cho `ErrorCenter`.
 
 ### `ApiConfig`
 

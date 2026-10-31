@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/getInject - Безопасное получение внедренного значения'/>
+
+# `getInject`
+
+Утилитарная функция, которая безопасно читает внедрённое значение (provide/inject) по ключу или `InjectionKey` при наличии активного контекста внедрения Vue (`hasInjectionContext()`). Сохраняет любые ложные значения (`false`, `0`, `''`, `NaN`) и считает отсутствующими только `null` и `undefined`, возвращая опциональное резервное значение `defaultValue`. При вызове вне контекста внедрения возвращает `defaultValue` без вывода предупреждений в консоль.
+
+**Параметры:**
+- `key: InjectionKey<T> | string` — Строковый ключ или типизированный `InjectionKey<T>`.
+- `defaultValue?: D | (() => D)` — Опциональное резервное значение или фабрика, вызываемая при отсутствии значения или вызове вне контекста.
+
+**Возвращает:**
+`InjectedValue<T, D>` — Предоставленное значение, `defaultValue` или `undefined`.
+
+```typescript
+import { type InjectionKey } from 'vue'
+import { getInject } from '@dxtmisha/functional'
+
+// 1. Со строковым ключом и значением по умолчанию
+const theme = getInject('theme', 'dark') // string
+
+// 2. С фабрикой значения по умолчанию
+const config = getInject('config', () => ({ debug: false }))
+
+// 3. С типизированным InjectionKey
+interface UserService {
+  name: string
+}
+const userKey: InjectionKey<UserService> = Symbol('user')
+const user = getInject(userKey) // UserService | undefined
+```
+

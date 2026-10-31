@@ -3,7 +3,7 @@
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { createApp, ref } from 'vue'
+import { createApp, ref, type InjectionKey } from 'vue'
 
 import { getInject } from '../getInject'
 
@@ -125,6 +125,106 @@ describe('getInject', () => {
       })
 
       expect(getInject('value')).toBeUndefined()
+    })
+  })
+
+  describe('Default value fallback', () => {
+    it('returns raw defaultValue when key is missing', () => {
+      const application = createApp({})
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      const result = application.runWithContext(() => getInject('missing', 'fallback'))
+      expect(result).toBe('fallback')
+    })
+
+    it('returns factory result when defaultValue is a function', () => {
+      const application = createApp({})
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const factory = vi.fn(() => 42)
+
+      const result = application.runWithContext(() => getInject('count', factory))
+      expect(result).toBe(42)
+      expect(factory).toHaveBeenCalledTimes(1)
+    })
+
+    it('falls back to defaultValue when provided value is null', () => {
+      const application = createApp({})
+      application.provide('theme', null)
+
+      const result = application.runWithContext(() => getInject('theme', 'dark'))
+      expect(result).toBe('dark')
+    })
+
+    it('falls back to defaultValue when provided value is undefined', () => {
+      const application = createApp({})
+      application.provide('theme', undefined)
+
+      const result = application.runWithContext(() => getInject('theme', 'system'))
+      expect(result).toBe('system')
+    })
+
+    it('prefers the provided value over defaultValue', () => {
+      const application = createApp({})
+      application.provide('theme', 'light')
+
+      const fallback = vi.fn(() => 'dark')
+      const result = application.runWithContext(() => getInject('theme', fallback))
+
+      expect(result).toBe('light')
+      expect(fallback).not.toHaveBeenCalled()
+    })
+
+    it.each([
+      { label: 'zero', value: 0, defaultVal: 100 },
+      { label: 'false', value: false, defaultVal: true },
+      { label: 'empty string', value: '', defaultVal: 'fallback' },
+      { label: 'NaN', value: NaN, defaultVal: 0 }
+    ])('preserves falsy provided $label without activating defaultValue', ({ value, defaultVal }) => {
+      const application = createApp({})
+      application.provide('testKey', value)
+
+      const fallback = vi.fn(() => defaultVal)
+      const result = application.runWithContext(() => getInject('testKey', fallback))
+
+      expect(result).toBe(value)
+      expect(fallback).not.toHaveBeenCalled()
+    })
+
+    it('returns defaultValue outside injection context without warning', () => {
+      const warning = vi.spyOn(console, 'warn')
+
+      expect(getInject('outside', 'offline')).toBe('offline')
+      expect(getInject('outside-fn', () => 'computed-offline')).toBe('computed-offline')
+      expect(warning).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('InjectionKey support', () => {
+    interface SessionInfo {
+      id: string
+      authenticated: boolean
+    }
+
+    const sessionKey: InjectionKey<SessionInfo> = Symbol('session')
+
+    it('infers type correctly from InjectionKey without defaultValue', () => {
+      const application = createApp({})
+      const mockSession: SessionInfo = { id: 's-123', authenticated: true }
+      application.provide(sessionKey, mockSession)
+
+      const received = application.runWithContext(() => getInject(sessionKey))
+      expect(received).toEqual(mockSession)
+      expect(received?.id).toBe('s-123')
+    })
+
+    it('infers non-nullish type from InjectionKey with defaultValue', () => {
+      const application = createApp({})
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const defaultSession: SessionInfo = { id: 'guest', authenticated: false }
+
+      const received = application.runWithContext(() => getInject(sessionKey, defaultSession))
+      expect(received).toEqual(defaultSession)
+      expect(received.authenticated).toBe(false)
     })
   })
 })

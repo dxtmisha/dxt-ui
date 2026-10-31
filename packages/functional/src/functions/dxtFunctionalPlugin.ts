@@ -25,64 +25,34 @@ import type { Router } from 'vue-router'
  * Интерфейс для опций функционального плагина
  */
 export interface FunctionalPluginOptions {
-  /**
-   * Configuration for the API client /
-   * Конфигурация для API-клиента
-   */
+  /** Configuration for the API client / Конфигурация для API-клиента */
   api?: ApiConfig
 
-  /**
-   * Configuration for the translation service /
-   * Конфигурация для сервиса переводов
-   */
+  /** Configuration for the translation service / Конфигурация для сервиса переводов */
   translate?: TranslateConfig
 
-  /**
-   * Default geographical location or language code /
-   * Код географического местоположения или языка по умолчанию
-   */
+  /** Default geographical location or language code / Код географического местоположения или языка по умолчанию */
   location?: string | (() => string)
 
-  /**
-   * Suffix to be appended to all page titles /
-   * Суффикс, который будет добавляться ко всем заголовкам страниц
-   */
+  /** Suffix to be appended to all page titles / Суффикс, который будет добавляться ко всем заголовкам страниц */
   metaSuffix?: string
 
-  /**
-   * Configuration for the icon management service /
-   * Конфигурация для сервиса управления иконками
-   */
+  /** Configuration for the icon management service / Конфигурация для сервиса управления иконками */
   icons?: IconsConfig
 
-  /**
-   * Configuration for the social networks icons management service /
-   * Конфигурация для сервиса управления иконками социальных сетей
-   */
+  /** Configuration for the social networks icons management service / Конфигурация для сервиса управления иконками социальных сетей */
   iconsSocial?: InputSocialIcons
 
-  /**
-   * Vue Router instance for global navigation state management /
-   * Экземпляр Vue Router для глобального управления состоянием навигации
-   */
+  /** Vue Router instance for global navigation state management / Экземпляр Vue Router для глобального управления состоянием навигации */
   router?: Router
 
-  /**
-   * Error causes list for error center /
-   * Список причин ошибок для центра ошибок
-   */
+  /** Error causes list for error center / Список причин ошибок для центра ошибок */
   errorCauses?: ErrorCenterCauseList
 
-  /**
-   * Error handlers list for error center /
-   * Список обработчиков ошибок для центра ошибок
-   */
+  /** Error handlers list for error center / Список обработчиков ошибок для центра ошибок */
   errorHandlers?: ErrorCenterHandlerList
 
-  /**
-   * Global error callback functions for error center /
-   * Список глобальных функций обратного вызова для центра ошибок
-   */
+  /** Global error callback functions for error center / Список глобальных функций обратного вызова для центра ошибок */
   errorCallbacks?: ErrorCenterHandlerCallback[]
 }
 
@@ -112,10 +82,11 @@ export const dxtFunctionalPlugin: Plugin = {
    * Plugin installation method.
    *
    * Метод установки плагина.
-   * @param app Vue application instance/ экземпляр приложения Vue
-   * @param options plugin configuration options/ опции конфигурации плагина
+   * @param app Vue application instance / Экземпляр приложения Vue
+   * @param options Plugin configuration options / Опции конфигурации плагина
+   * @returns No return value. / Нет возвращаемого значения.
    */
-  install(app: App, options: FunctionalPluginOptions = {}) {
+  install(app: App, options: FunctionalPluginOptions = {}): void {
     // 1. Configure API
     if (options.api) {
       Api.setConfig(options.api)
@@ -167,7 +138,9 @@ export const dxtFunctionalPlugin: Plugin = {
     }
 
     if (options.errorCallbacks) {
-      options.errorCallbacks.forEach(callback => ErrorCenter.addCallback(callback))
+      for (const callback of options.errorCallbacks) {
+        ErrorCenter.addCallback(callback)
+      }
     }
 
     // 8. Initialize global singletons (ExecuteUseType.global)

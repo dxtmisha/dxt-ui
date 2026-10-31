@@ -19,7 +19,6 @@ vi.mock('../../classes/ref/GeoRef', () => {
     GeoRef: {
       get: vi.fn(() => geoData),
       set: vi.fn((code: string) => {
-        // Simple mock of set
         const [lang, country] = code.split('-')
         geoData.value = {
           country: country || 'US',
@@ -44,16 +43,28 @@ describe('computedByLanguage', () => {
       expect(result.value).toBe('translated')
     })
 
-    it('should return undefined by default when getter returns undefined', () => {
-      const result = computedByLanguage(() => undefined as any)
+    it('should return undefined by default when getter returns undefined and no getterNone is provided', () => {
+      const result = computedByLanguage(() => undefined)
       expect(result.value).toBeUndefined()
+    })
+
+    it('should preserve falsy values returned by getter without triggering fallback', () => {
+      const zeroResult = computedByLanguage(() => 0, () => 100)
+      const emptyResult = computedByLanguage(() => '', () => 'default')
+      const falseResult = computedByLanguage(() => false, () => true)
+      const nullResult = computedByLanguage(() => null, () => 'fallback')
+
+      expect(zeroResult.value).toBe(0)
+      expect(emptyResult.value).toBe('')
+      expect(falseResult.value).toBe(false)
+      expect(nullResult.value).toBeNull()
     })
   })
 
   describe('getterNone fallback', () => {
-    it('should return getterNone when getter returns undefined', () => {
+    it('should return getterNone factory result when getter returns undefined', () => {
       const result = computedByLanguage(
-        () => undefined as any,
+        () => undefined,
         () => 'fallback'
       )
       expect(result.value).toBe('fallback')
@@ -61,8 +72,8 @@ describe('computedByLanguage', () => {
 
     it('should return a raw getterNone value when getter returns undefined', () => {
       const result = computedByLanguage(
-        () => undefined as any,
-        'static fallback' as any
+        () => undefined,
+        'static fallback'
       )
       expect(result.value).toBe('static fallback')
     })
@@ -70,17 +81,25 @@ describe('computedByLanguage', () => {
     it('should prefer the getter value over getterNone', () => {
       const result = computedByLanguage(
         () => 'primary',
-        () => 'fallback' as any
+        () => 'fallback'
       )
       expect(result.value).toBe('primary')
     })
+
+    it('should correctly infer heterogeneous types between getter and getterNone', () => {
+      const result = computedByLanguage(
+        () => undefined as string | undefined,
+        () => 42
+      )
+      expect(result.value).toBe(42)
+    })
   })
 
-  describe('conditions', () => {
+  describe('conditions guard', () => {
     it('should call getter when conditions return true', () => {
       const result = computedByLanguage(
         () => 'conditional value',
-        () => 'fallback' as any,
+        () => 'fallback',
         () => true
       )
       expect(result.value).toBe('conditional value')
@@ -89,7 +108,7 @@ describe('computedByLanguage', () => {
     it('should use getterNone when conditions return false', () => {
       const result = computedByLanguage(
         () => 'conditional value',
-        () => 'fallback' as any,
+        () => 'fallback',
         () => false
       )
       expect(result.value).toBe('fallback')
@@ -113,7 +132,7 @@ describe('computedByLanguage', () => {
       const conditionRef = ref(false)
       const result = computedByLanguage(
         () => 'active',
-        () => 'inactive' as any,
+        () => 'inactive',
         () => conditionRef.value
       )
 
@@ -125,19 +144,31 @@ describe('computedByLanguage', () => {
       expect(result.value).toBe('active')
     })
 
+    it('should re-compute when GeoRef language changes', async () => {
+      const result = computedByLanguage(() => `locale-${GeoRef.get().value.language}`)
+
+      expect(result.value).toBe('locale-en')
+
+      GeoRef.set('ru-RU')
+      await nextTick()
+
+      expect(result.value).toBe('locale-ru')
+    })
+
     it('should use getterNone when GeoRef.get().value is falsy', async () => {
       const { GeoRef } = await import('../../classes/ref/GeoRef')
-      const geoData = GeoRef.get() as any
+      const geoData = GeoRef.get()
 
       const result = computedByLanguage(
         () => 'active',
-        () => 'inactive' as any
+        () => 'inactive'
       )
 
       expect(result.value).toBe('active')
 
       // Set geo value to undefined (simulating not set)
       const originalValue = geoData.value
+      // @ts-expect-error Simulating missing geo context in tests
       geoData.value = undefined
       await nextTick()
 
@@ -145,6 +176,23 @@ describe('computedByLanguage', () => {
 
       // Restore
       geoData.value = originalValue
+    })
+  })
+
+  describe('debugOptions', () => {
+    it('should pass debugOptions to Vue computed', () => {
+      const onTrack = vi.fn()
+      const trigger = ref(1)
+
+      const result = computedByLanguage(
+        () => `value-${trigger.value}`,
+        () => 'fallback',
+        undefined,
+        { onTrack }
+      )
+
+      expect(result.value).toBe('value-1')
+      expect(onTrack).toHaveBeenCalled()
     })
   })
 })

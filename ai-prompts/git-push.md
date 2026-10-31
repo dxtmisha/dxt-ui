@@ -1,11 +1,11 @@
 ---
 name: git-push
-description: Perform a strict code review on modified code and affected dependencies (checking for dead code, standards compliance, strict typing), halt and report flaws to developer, and only commit and push upon approval.
+description: Run ESLint fix on modified files, halt on remaining warnings/errors, perform a strict code review; if flaws are found halt and report to developer, otherwise immediately commit and push.
 ---
 
-# Task: Strict Code Review and Git Commit/Push
+# Task: Strict Code Review, ESLint Fix, and Git Commit/Push
 
-Your task is to perform a thorough, rigorous code review of all changes and affected code before committing. If any flaws, dead code, or standards violations are detected, you must report them to the developer in detail and HALT the process. Only proceed with generating a Conventional Commits message and pushing to the remote repository if no issues were found, or if the developer explicitly instructs to proceed.
+Your task is to apply ESLint auto-fixes to all modified files, verify that no warnings or errors remain, and perform a thorough, rigorous code review of all changes and affected code before committing. If any lint warnings/errors, flaws, dead code, or standards violations are detected, you must report them to the developer in detail and HALT the process. If no issues were found, proceed immediately with generating a Conventional Commits message, staging, committing, and pushing to the remote repository.
 
 ### Execution Steps:
 
@@ -13,7 +13,20 @@ Your task is to perform a thorough, rigorous code review of all changes and affe
    - Inspect all changes using `git status` and `git diff`.
    - Identify all modified, added, or deleted files, as well as adjacent files and dependent code directly or indirectly affected by the changes (call sites, exported interfaces, re-exports, contracts).
 
-2. **Strict Code Review (MANDATORY AUDIT BEFORE COMMIT)**:
+2. **ESLint Auto-Fix & Lint Verification (MANDATORY BEFORE COMMIT)**:
+   - Run ESLint with auto-fix on all modified/added files:
+     ```bash
+     npx eslint --fix <file-paths>
+     ```
+   - Re-check the linting status of modified files.
+   - **Lint Gate & Halt on Warnings/Errors (STRICT PROCESS HALT)**:
+     - If after auto-fix there are **ANY remaining warnings or errors** (even a single warning):
+       1. **HALT THE PROCESS IMMEDIATELY**. Do NOT proceed to code review, staging, committing, or pushing (`git add`, `git commit`, `git push` are strictly forbidden).
+       2. Present a detailed report of all remaining ESLint warnings and errors to the developer (file paths, line numbers, ESLint rule names, and problem descriptions).
+       3. Stop and wait for the developer's instructions.
+     - Only when ESLint passes cleanly with 0 errors and 0 warnings, proceed to the code review.
+
+3. **Strict Code Review (MANDATORY AUDIT BEFORE COMMIT)**:
    - **Dead & Residual Code Audit**:
      - Check for and identify unused imports, variables, functions, arguments, types, and interfaces.
      - Detect temporary debugging artifacts: `console.log`, `debugger`, dump statements, test flags, and commented-out code blocks.
@@ -31,18 +44,18 @@ Your task is to perform a thorough, rigorous code review of all changes and affe
        1. **HALT THE PROCESS IMMEDIATELY**. Do NOT proceed to staging, committing, or pushing (`git add`, `git commit`, `git push` are strictly forbidden at this stage).
        2. Present a detailed, structured report of all detected defects to the developer (file paths, line numbers, description of the violation, and recommended fixes).
        3. Stop and wait for the developer's instructions.
-       4. Proceed to steps 3 and 4 **STRICTLY AND ONLY IF** the developer explicitly tells you to proceed (or after the issues are resolved according to their instructions).
+       4. Proceed to steps 4 and 5 **STRICTLY AND ONLY IF** the developer explicitly tells you to proceed (or after the issues are resolved according to their instructions).
      - **If NO flaws are found** (all checks pass cleanly):
-       - Inform the developer that the code review passed cleanly, and proceed to step 3 (Commit Message Generation) and step 4 (Staging, Committing, and Pushing).
+       - Immediately proceed to step 4 (Commit Message Generation) and step 5 (Staging, Committing, and Pushing) without waiting for extra confirmation. Output the generated commit message and push status in the final response.
 
-3. **Commit Message Generation**:
+4. **Commit Message Generation**:
    - Compose a commit title and detailed description adhering to the **Conventional Commits** standard (`feat`, `fix`, `docs`, `refactor`, `style`, `chore`, etc.):
      - `<type>(<scope>): <short summary in imperative mood>`
      - Detailed bullet points explaining the motivation and essence of changes.
    - Both title and description must be in English.
    - Output the proposed commit message (Title and Description) clearly in the response.
 
-4. **Staging, Committing, and Pushing**:
+5. **Staging, Committing, and Pushing**:
    - Stage all verified changes:
      ```bash
      git add .

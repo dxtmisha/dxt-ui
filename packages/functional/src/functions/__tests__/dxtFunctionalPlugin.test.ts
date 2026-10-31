@@ -9,6 +9,7 @@ import {
   Icons,
   ErrorCenter
 } from '@dxtmisha/functional-basic'
+import { MediaSocial } from '@dxtmisha/media'
 import { dxtFunctionalPlugin } from '../dxtFunctionalPlugin'
 import { useMeta } from '../../composables/ref/useMeta'
 import { RouterItemRef } from '../../classes/ref/RouterItemRef'
@@ -22,6 +23,10 @@ vi.mock('@dxtmisha/functional-basic', () => ({
   Icons: { setConfig: vi.fn() },
   ErrorCenter: { addList: vi.fn(), addHandlerList: vi.fn(), addCallback: vi.fn() },
   initGetElementId: vi.fn()
+}))
+
+vi.mock('@dxtmisha/media', () => ({
+  MediaSocial: { addIcons: vi.fn() }
 }))
 
 vi.mock('../../composables/ref/useMeta', () => ({
@@ -53,6 +58,11 @@ describe('dxtFunctionalPlugin', () => {
     vi.clearAllMocks()
   })
 
+  it('should install smoothly with default empty options', () => {
+    expect(() => dxtFunctionalPlugin?.install?.(appMock)).not.toThrow()
+    expect(executeUse.executeUseGlobalInit).toHaveBeenCalled()
+  })
+
   it('should call Api.setConfig if api option is provided', () => {
     const options = { api: { url: 'https://api.test' } }
     dxtFunctionalPlugin?.install?.(appMock, options)
@@ -69,6 +79,12 @@ describe('dxtFunctionalPlugin', () => {
     const options = { icons: { url: '/icons/' } }
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(Icons.setConfig).toHaveBeenCalledWith(options.icons)
+  })
+
+  it('should call MediaSocial.addIcons if iconsSocial option is provided', () => {
+    const options = { iconsSocial: { github: 'svg-data' } }
+    dxtFunctionalPlugin?.install?.(appMock, options)
+    expect(MediaSocial.addIcons).toHaveBeenCalledWith(options.iconsSocial)
   })
 
   it('should call useMeta().setSuffix if metaSuffix option is provided', () => {
@@ -121,13 +137,18 @@ describe('dxtFunctionalPlugin', () => {
     expect(ErrorCenter.addCallback).toHaveBeenCalledWith(callback2)
   })
 
-  it('should call GeoRef.setValueDefault if location option is provided', () => {
-    const options = { location: 'de-DE' }
-    dxtFunctionalPlugin?.install?.(appMock, options)
+  it('should call GeoRef.setValueDefault with string or function location', () => {
+    const optionsString = { location: 'de-DE' }
+    dxtFunctionalPlugin?.install?.(appMock, optionsString)
     expect(GeoRef.setValueDefault).toHaveBeenCalledWith('de-DE')
+
+    const locationFactory = () => 'vi-VN'
+    const optionsFunction = { location: locationFactory }
+    dxtFunctionalPlugin?.install?.(appMock, optionsFunction)
+    expect(GeoRef.setValueDefault).toHaveBeenCalledWith(locationFactory)
   })
 
-  it('should call executeUseGlobalInit at the end', () => {
+  it('should call executeUseGlobalInit at the end of installation', () => {
     dxtFunctionalPlugin?.install?.(appMock, {})
     expect(executeUse.executeUseGlobalInit).toHaveBeenCalled()
   })

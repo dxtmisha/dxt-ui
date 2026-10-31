@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Returns the request options. If the provided option is a string, it returns an object with the `method` field equal to that string. If an object is passed, it returns the object itself. If no parameter is provided, it returns an empty object.
 
 **Parameters:**
-- `options?: ApiOptions` — The request options or a string specifying the method.
+- `options?: ApiOptions | ApiMethod` — Request options, HTTP method string, or `ApiMethodItem` enum value.
 
 **Returns:**
 `RefOrNormal<ApiFetch>` — Options for the `ApiFetch` request.

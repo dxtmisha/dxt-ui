@@ -40,11 +40,12 @@ When the plugin is installed, it performs the following steps in order:
 
 1.  **Api**: Calls `Api.setConfig()` with the provided `ApiConfig`.
 2.  **Translate**: Calls `Translate.setConfig()` with the provided `TranslateConfig`.
-3.  **Icons**: Calls `Icons.setConfig()` with the provided `IconsConfig`.
-4.  **Meta**: Configures the default title suffix via `useMeta().setSuffix()`.
-5.  **Router**: Registers the router instance in `RouterItemRef`, making it accessible globally.
-6.  **ErrorCenter**: Configures the predefined list of error causes via `ErrorCenter.addList()` and registers error handlers via `ErrorCenter.addHandlerList()`.
-7.  **executeUseGlobalInit**: Triggers the batch initialization of all global singletons defined using `executeUseGlobal`.
+3.  **Geo**: Configures the default geographical location via `GeoRef.setValueDefault()`.
+4.  **Icons**: Calls `Icons.setConfig()` with `IconsConfig` and `MediaSocial.addIcons()` with `InputSocialIcons`.
+5.  **Meta**: Configures the default title suffix via `useMeta().setSuffix()`.
+6.  **Router**: Registers the router instance in `RouterItemRef`, making it accessible globally.
+7.  **ErrorCenter**: Configures error causes (`ErrorCenter.addList()`), handlers (`ErrorCenter.addHandlerList()`), and callbacks (`ErrorCenter.addCallback()`).
+8.  **executeUseGlobalInit**: Triggers the batch initialization of all global singletons defined using `executeUseGlobal`.
 
 ## Data Types
 
@@ -54,11 +55,14 @@ The plugin uses the following interfaces for configuration:
 
 - `api?: ApiConfig` — Configuration for the global `Api` instance.
 - `translate?: TranslateConfig` — Configuration for the global `Translate` service.
+- `location?: string | (() => string)` — Default geographical location or language code for `GeoRef`.
 - `icons?: IconsConfig` — Configuration for the global `Icons` registry.
+- `iconsSocial?: InputSocialIcons` — Social icons configuration for `MediaSocial`.
 - `metaSuffix?: string` — A string that will be appended to all page titles set via `useMeta()`.
 - `router?: Router` — The Vue Router instance. If omitted, the plugin will attempt to extract it from `app.config.globalProperties.$router`.
 - `errorCauses?: ErrorCenterCauseList` — Predefined list of error causes for `ErrorCenter`.
 - `errorHandlers?: ErrorCenterHandlerList` — List of error handlers for `ErrorCenter`.
+- `errorCallbacks?: ErrorCenterHandlerCallback[]` — Global error callback functions for `ErrorCenter`.
 
 ### `ApiConfig`
 

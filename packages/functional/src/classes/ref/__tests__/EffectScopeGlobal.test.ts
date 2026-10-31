@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, getCurrentScope, nextTick, onScopeDispose, ref, watch, type EffectScope } from 'vue'
+import { computed, effectScope, getCurrentScope, nextTick, onScopeDispose, ref, watch, type ComputedRef, type EffectScope } from 'vue'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 import { EffectScopeGlobal } from '../EffectScopeGlobal'
 
@@ -36,6 +36,22 @@ describe('EffectScopeGlobal', () => {
       })).toBe(value)
     })
 
+    it('supports nested invocations (re-entrancy) within the same global scope', () => {
+      const result = EffectScopeGlobal.run(() => {
+        const outerScope = getCurrentScope()
+        if (outerScope) scopes.add(outerScope)
+
+        const innerResult = EffectScopeGlobal.run(() => {
+          const innerScope = getCurrentScope()
+          return { sameScope: innerScope === outerScope, value: 42 }
+        })
+
+        return innerResult
+      })
+
+      expect(result).toEqual({ sameScope: true, value: 42 })
+    })
+
     it('propagates callback errors and restores the calling scope', () => {
       const parent = effectScope()
       scopes.add(parent)
@@ -49,28 +65,52 @@ describe('EffectScopeGlobal', () => {
         expect(getCurrentScope()).toBe(parent)
       })
     })
+
+    it('returns undefined when running inside an inactive/stopped scope', () => {
+      const scope = EffectScopeGlobal.run(() => getCurrentScope())
+      expect(scope).toBeDefined()
+      if (scope) scopes.add(scope)
+
+      // Explicitly stop the global scope
+      scope?.stop()
+
+      // Execution in an inactive scope should return undefined as per contract
+      const result = EffectScopeGlobal.run(() => 'should not execute')
+      expect(result).toBeUndefined()
+    })
   })
 
   describe('State isolation and lifecycle cleanup', () => {
-    it('keeps detached watchers alive after their calling scope stops', async () => {
+    it('keeps detached watchers and computed properties alive after calling scope stops', async () => {
       const counter = ref(0)
       const onChange = vi.fn()
       const onDispose = vi.fn()
       const parent = effectScope()
       scopes.add(parent)
+
+      let double: ComputedRef<number> | undefined
+
       const globalScope = parent.run(() => EffectScopeGlobal.run(() => {
         watch(counter, onChange)
         onScopeDispose(onDispose)
+        double = computed(() => counter.value * 2)
         return getCurrentScope()
       }))
+
       expect(globalScope).toBeDefined()
       if (globalScope) scopes.add(globalScope)
+      expect(double?.value).toBe(0)
+
+      // Stop the calling parent scope
       parent.stop()
+
       counter.value = 1
       await nextTick()
       expect(onChange).toHaveBeenCalledTimes(1)
+      expect(double?.value).toBe(2)
       expect(onDispose).not.toHaveBeenCalled()
 
+      // Stop the global scope
       globalScope?.stop()
       counter.value = 2
       await nextTick()
