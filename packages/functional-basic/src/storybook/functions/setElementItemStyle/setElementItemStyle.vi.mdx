@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/setElementItemStyle - Thiết lập kiểu dáng và biến CSS cho phần tử'/>
+
+# `setElementItemStyle`
+
+Thiết lập các thuộc tính kiểu dáng CSS, biến tùy chỉnh CSS (`--*`) hoặc chuỗi `cssText` trên phần tử DOM được tìm thấy theo bộ chọn hoặc truyền trực tiếp. Hỗ trợ hàm factory cho cả tập hợp kiểu dáng lẫn từng thuộc tính riêng lẻ.
+
+**Tham số:**
+- `element?: ElementOrString<E>` — Phần tử DOM đích, đối tượng `window` (trỏ tới `document.body`) hoặc bộ chọn CSS (`E extends ElementOrWindow = HTMLElement`).
+- `styles?: unknown` — Chuỗi kiểu dáng (`cssText`), đối tượng thuộc tính kiểu dáng hoặc hàm factory.
+
+**Trả về:**
+`boolean` — `true` nếu kiểu dáng đã được áp dụng thành công, ngược lại là `false`.
+
+## Cách thức hoạt động
+
+Hàm quản lý an toàn các kiểu dáng nội tuyến và biến CSS thông qua giao diện CSSOM `CSSStyleDeclaration` tiêu chuẩn:
+
+**Đặc điểm:**
+- **Hỗ trợ Chuỗi & Đối tượng** — Gán `targetData.cssText` khi `styles` là chuỗi, hoặc duyệt qua các thuộc tính riêng bằng `forOwn` khi `styles` là đối tượng.
+- **Chuẩn hóa khóa** — Tự động chuyển đổi các khóa `camelCase` (`backgroundColor`) sang `kebab-case` (`background-color`), đồng thời giữ nguyên chữ hoa/thường cho biến tùy chỉnh CSS (`--myCustomVar`).
+- **Hỗ trợ độ ưu tiên `!important`** — Tự động tách hậu tố `!important` khỏi giá trị thuộc tính trong đối tượng và truyền `'important'` làm đối số thứ ba cho `CSSStyleDeclaration.setProperty`.
+- **Xóa thuộc tính sạch sẽ** — Truyền `null` hoặc `undefined` (hoặc hàm trả về chúng) sẽ xóa thuộc tính CSS thông qua `removeProperty`.
+- **Bảo vệ chống Prototype Pollution** — Sử dụng `forOwn` để bỏ qua các thuộc tính kế thừa và chặn các khóa `__proto__`, `constructor`, `prototype`.
+
+## Ví dụ
+
+```typescript
+import { setElementItemStyle } from '@dxtmisha/functional-basic'
+
+// 1. Thiết lập kiểu dáng bằng chuỗi cssText
+setElementItemStyle('#banner', 'color: white; padding: 16px;')
+
+// 2. Thiết lập camelCase, kebab-case, biến CSS và !important
+setElementItemStyle(document.body, {
+  backgroundColor: '#121212',
+  'font-size': '16px',
+  color: '#ffffff !important',
+  '--brand-accent': () => '#0055ff'
+})
+
+// 3. Xóa kiểu dáng hoặc biến CSS bằng null / undefined
+setElementItemStyle(document.body, {
+  backgroundColor: null,
+  '--brand-accent': undefined
+})
+```
+

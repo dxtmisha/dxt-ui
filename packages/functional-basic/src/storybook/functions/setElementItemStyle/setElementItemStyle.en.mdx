@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/setElementItemStyle - Setting inline styles and CSS variables on an element'/>
+
+# `setElementItemStyle`
+
+Applies CSS styles, CSS custom properties (`--*`), or a `cssText` string to a DOM element resolved by selector or passed directly. Supports factory functions for both the styles payload and individual style properties.
+
+**Parameters:**
+- `element?: ElementOrString<E>` — Target DOM element, `window` (resolves to `document.body`), or CSS selector (`E extends ElementOrWindow = HTMLElement`).
+- `styles?: unknown` — Style declaration string (`cssText`), style dictionary object, or a factory function returning either.
+
+**Returns:**
+`boolean` — `true` if styles were applied to a valid target element, `false` otherwise.
+
+## How it works
+
+The function safely manages inline styles and CSS variables via the standard CSSOM `CSSStyleDeclaration` interface:
+
+**Features:**
+- **String & Object Modes** — Assigns `targetData.cssText` when `styles` resolves to a string, or iterates over own properties via `forOwn` when `styles` resolves to an object.
+- **Key Normalization** — Automatically converts `camelCase` keys (`backgroundColor`) to `kebab-case` (`background-color`), while preserving exact casing for CSS custom properties (`--myCustomVar`).
+- **`!important` Priority Support** — Automatically extracts the `!important` suffix from property values in object mode and passes `'important'` as the third argument to `CSSStyleDeclaration.setProperty`.
+- **Clean Property Removal** — Passing `null` or `undefined` (or a factory returning them) removes the style property via `removeProperty`.
+- **Prototype Pollution Defense** — Uses `forOwn` under the hood to ignore inherited properties and block `__proto__`, `constructor`, and `prototype`.
+
+## Examples
+
+```typescript
+import { setElementItemStyle } from '@dxtmisha/functional-basic'
+
+// 1. Applying styles via cssText string
+setElementItemStyle('#banner', 'color: white; padding: 16px;')
+
+// 2. Applying camelCase, kebab-case, CSS variables, and !important
+setElementItemStyle(document.body, {
+  backgroundColor: '#121212',
+  'font-size': '16px',
+  color: '#ffffff !important',
+  '--brand-accent': () => '#0055ff'
+})
+
+// 3. Removing specific styles or CSS variables via null / undefined
+setElementItemStyle(document.body, {
+  backgroundColor: null,
+  '--brand-accent': undefined
+})
+```
+

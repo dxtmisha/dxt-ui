@@ -62,6 +62,13 @@ Before analyzing any code or generating any review text, you MUST execute these 
 - **Strict Prohibition of Structural & Breaking Modifications**:
   - Large architectural refactorings, class or component rewrites, business logic modifications, entity deletions, or public API signature changes are **STRICTLY FORBIDDEN** without an explicit direct command from the developer (e.g., "apply fixes", "apply recommendations", "fix item 2", "update tests").
   - Document all structural proposals **exclusively within Section 6 of the AI Artifact** as advisory recommendations with Before/After diff blocks. Fix and edit strictly what the developer tells you to fix!
+- **Strict Prohibition on Modifying Tests & Documentation Until Developer Confirms Completion («готово» / «закончили код-ревью»)**:
+  - **Complete Freeze on Tests and Documentation During Review**: Until the developer explicitly writes that the review is finished / ready (e.g., «готово», «готова», «закончили код-ревью», «код-ревью готово», «review complete»), it is **CATEGORICALLY FORBIDDEN** to edit, rewrite, create, or update unit test files (`__tests__/*.test.ts`) or documentation files (`src/storybook/**/*.mdx`, docs, markdown) in the workspace repository.
+  - **Artifact Only**: All unit test improvements, missing edge-case suites, and documentation recommendations must be authored **strictly and exclusively inside Section 6 of the AI Artifact report**.
+  - **Mandatory Trigger to Begin Finalization**: Only after the developer sends an explicit confirmation (e.g., «готово», «готова», «закончили код-ревью», «код-ревью готово»), the agent is authorized to proceed to the post-review finalization steps:
+    1. **Update Unit Tests**: Apply the verified test suite to `__tests__/<Entity>.test.ts` according to `ai-prompts/test.md` and verify a 100% clean run (`vitest run`).
+    2. **Update Documentation**: Check and synchronize MDX documentation files in `src/storybook/` for full relevance.
+    3. **Registry Update (`temp.md`)**: If the package tracks reviewed entities (e.g. `packages/functional-basic/temp.md`), record the entity name.
 
 ### 4. Mandatory Dependency & Inbound Usage Investigation (Graph & Blast Radius Audit)
 - **Never Review in Isolation**: Always inspect both what the target depends on and every place where it is consumed across the codebase.
@@ -85,7 +92,7 @@ Before analyzing any code or generating any review text, you MUST execute these 
 - **Formulate Comprehensive Test Suite in the Artifact (Do NOT Modify Test Files)**:
   - If existing tests are incomplete, shallow, fragile, or missing, author the complete, copy-paste-ready unit test suite **STRICTLY inside Section 6 of the AI Artifact report**.
   - **No Contrived Hypothetical Tests**: Apply Step 6 strictly — never penalize existing tests or add test cases for speculative, non-practical inputs (such as internal marker collisions like `___HIGHLIGHT_START___`) that cause neither crashes nor security vulnerabilities.
-  - **STRICT PROHIBITION**: Do NOT rewrite, overwrite, or create test files in the workspace repository during code review unless explicitly commanded by the developer.
+  - **STRICT PROHIBITION (Complete Freeze Until Confirmation)**: Do NOT rewrite, overwrite, or create test files or documentation in the workspace repository during code review. Modifying tests and documentation is permitted ONLY after the developer explicitly confirms that the review is complete (e.g., «готово», «готова», «закончили код-ревью», «код-ревью готово»).
 
 ### 6. Practical Usage & Impact Filter (Strict Ban on Hypothetical Findings & Over-Engineering)
 - **Ground Every Finding in Practical Usage (Zero Speculative Hypotheses)**: Assess code strictly through **practical real-world usage, actual consumer call sites, and intended functional purpose**. It is **STRICTLY FORBIDDEN** to raise remarks, deduct score points, or propose defensive code based on artificial, speculative "what-if" hypotheses detached from real user behavior.
@@ -115,10 +122,11 @@ Before analyzing any code or generating any review text, you MUST execute these 
   - Outdated TypeScript paradigms (excessive `any` or type assertions instead of type narrowing, utility types, template literal types, `satisfies`, discriminated unions).
   - Legacy DOM manipulation (direct element mutations, `querySelector` hacks, manual style manipulation instead of reactive bindings, CSS variables, or standard Web APIs).
   - Obsolete asynchronous patterns (unhandled promise rejections, missing `AbortController` cancellation, callback hell vs `async`/`await`, missing race condition guards).
-- **Benchmarking Against Modern Top-Tier Standards**:
+- **Benchmarking Against Modern Top-Tier Standards & Actionable Conclusion**:
   - Compare against state-of-the-art industry benchmarks (Radix UI, Headless UI, Ark UI, VueUse, Nuxt 3 core, TanStack).
   - Check utilization of modern web platform standards (native Popover API, CSS container queries, subgrid, modern `IntersectionObserver`/`ResizeObserver` APIs) where appropriate.
   - Verify optimal tree-shaking, `/*#__PURE__*/` annotations, and minimal runtime overhead.
+  - Always synthesize comparisons into a clear, reasoned architectural conclusion (`Вывод`).
 
 ---
 
@@ -289,11 +297,15 @@ Structure the artifact markdown document with the following six sections (transl
 #### 5. Comparison with Industry Top Solutions
 - Compare the reviewed implementation with how leading open-source libraries (VueUse, Radix UI, Headless UI, Ark UI, Nuxt, TanStack) solve similar architectural problems.
 - Highlight concrete patterns that could elevate the implementation to state-of-the-art quality.
+- **Mandatory Summary Conclusion (Обязательный вывод)**: It is **strictly mandatory to write a comprehensive, well-reasoned conclusion (`Вывод` / `Conclusion & Takeaways`)** directly after the comparison table/analysis. The conclusion must:
+  1. Explicitly state whether the reviewed solution matches, surpasses, or lags behind top industry counterparts.
+  2. Clearly define its distinct competitive advantages within the project ecosystem (e.g., zero third-party dependencies, native SSR isomorphism, seamless design token integration, strict type safety, or minimal runtime overhead).
+  3. Formulate clear actionable takeaways: which high-value techniques from other tools are worth adopting, and what excessive abstractions or over-engineering should be intentionally avoided.
 
 #### 6. Actionable Refactoring, Advisory Proposals & Test Suite
 - **Advisory Refactoring Diffs**: Provide copy-paste-ready Before/After code diffs illustrating recommended architectural improvements.
 - **Proportional & Lean Fixes (Anti-Overengineering)**: Keep refactored code lean and focused on the entity's actual purpose and environment. Never introduce bloated defensive wrappers for contrived "all-life" edge cases.
 - **Unit Test Recommendations & Code Blocks (In Artifact Only)**:
   - If existing tests are incomplete, superficial, fragile, or missing, provide a complete, copy-paste-ready unit test suite covering all execution paths, edge cases, reactivity, SSR safety, and lifecycles **strictly within this section of the artifact**.
-- **Prohibition of Unsolicited Structural Modifications**:
-  - All major architectural modifications, class/component rewrites, test file creations/overwrites, and breaking changes remain purely advisory until the developer explicitly commands to apply them (e.g., "apply fixes", "apply recommendations", "fix item 2"). Fix and edit strictly what the developer tells you to fix!
+- **Prohibition of Unsolicited Structural Modifications & Post-Review Trigger**:
+  - All major architectural modifications, class/component rewrites, test file creations/overwrites, and documentation updates remain purely advisory and frozen until the developer explicitly commands to apply them or confirms completion (e.g., «готово», «готова», «закончили код-ревью», «код-ревью готово»). Only upon receiving this explicit trigger should you proceed to updating unit tests in `__tests__/` and documentation in `src/storybook/`. Fix and edit strictly what the developer tells you to fix!

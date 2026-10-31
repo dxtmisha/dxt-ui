@@ -12,10 +12,10 @@ describe('setElementItem', () => {
   })
 
   describe('Standard functional requirements (DOM properties & selectors)', () => {
-    it('should set a standard property on an element and return the element', () => {
+    it('should set a standard property on an element and return true', () => {
       const result = setElementItem(element, 'id', 'new-id')
 
-      expect(result).toBe(element)
+      expect(result).toBe(true)
       expect(element.id).toBe('new-id')
     })
 
@@ -25,7 +25,7 @@ describe('setElementItem', () => {
 
       const result = setElementItem('#target-node', 'title', 'Updated Title')
 
-      expect(result).toBe(element)
+      expect(result).toBe(true)
       expect(element.title).toBe('Updated Title')
 
       document.body.removeChild(element)
@@ -33,15 +33,16 @@ describe('setElementItem', () => {
 
     it('should evaluate function values before setting element properties', () => {
       const clickHandler = () => 'clicked'
-      setElementItem(element, 'onclick', () => clickHandler)
+      const result = setElementItem(element, 'onclick', () => clickHandler)
 
+      expect(result).toBe(true)
       expect(element.onclick).toBe(clickHandler)
     })
 
     it('should resolve Window target to document.body via getElement and set attribute/property', () => {
       const result = setElementItem(window, 'data-window-target', 'window-value')
 
-      expect(result).toBe(document.body)
+      expect(result).toBe(true)
       expect(document.body.getAttribute('data-window-target')).toBe('window-value')
 
       document.body.removeAttribute('data-window-target')
@@ -60,6 +61,11 @@ describe('setElementItem', () => {
 
       setElementItem(element, 'data-count', 42)
       expect(element.getAttribute('data-count')).toBe('42')
+    })
+
+    it('should support BigInt attribute values', () => {
+      setElementItem(element, 'data-big', BigInt(9007199254740991))
+      expect(element.getAttribute('data-big')).toBe('9007199254740991')
     })
 
     it('should set boolean aria-* attributes as explicit "true" or "false" strings', () => {
@@ -175,9 +181,9 @@ describe('setElementItem', () => {
       const resultConstructor = setElementItem(element, 'constructor', { polluted: true })
       const resultPrototype = setElementItem(element, 'prototype', { polluted: true })
 
-      expect(resultProto).toBe(element)
-      expect(resultConstructor).toBe(element)
-      expect(resultPrototype).toBe(element)
+      expect(resultProto).toBe(false)
+      expect(resultConstructor).toBe(false)
+      expect(resultPrototype).toBe(false)
 
       setElementItem(element, 'style', {
         __proto__: { polluted: true },
@@ -195,9 +201,12 @@ describe('setElementItem', () => {
       expect(Object.prototype.toString).toBe(originalProtoToString)
     })
 
-    it('should return undefined gracefully when element does not exist or selector matches nothing', () => {
-      expect(setElementItem('#non-existent-selector', 'id', 'test')).toBeUndefined()
-      expect(setElementItem(undefined, 'id', 'test')).toBeUndefined()
+    it('should return false when element or index is falsy, empty, null, or undefined', () => {
+      expect(setElementItem(element, '', 'value')).toBe(false)
+      expect(setElementItem(element, undefined, 'value')).toBe(false)
+      expect(setElementItem(null, 'id', 'test')).toBe(false)
+      expect(setElementItem(undefined, 'id', 'test')).toBe(false)
+      expect(setElementItem('#non-existent-selector', 'id', 'test')).toBe(false)
     })
   })
 })

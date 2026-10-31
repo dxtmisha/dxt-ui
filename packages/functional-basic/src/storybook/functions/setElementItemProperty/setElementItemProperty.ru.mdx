@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/setElementItemProperty - Установка свойств элемента'/>
+
+# `setElementItemProperty`
+
+Безопасно устанавливает свойство или выполняет слияние свойств вложенного объекта на DOM-элементе (или объекте) со встроенной защитой от **Prototype Pollution**.
+
+**Параметры:**
+- `element?: ElementOrString<E> | null` — Целевой DOM-элемент, объект `window` или CSS-селектор.
+- `index?: PropertyKey` — Имя свойства, индекс или символ (`string | number | symbol`).
+- `value?: unknown` — Значение свойства или функция-фабрика, возвращающая значение.
+
+**Возвращает:**
+`boolean` — `true`, если свойство было успешно установлено или объединено, иначе `false`.
+
+## Особенности работы
+
+- **Защита от Prototype Pollution**: Автоматически отклоняет опасные ключи `__proto__`, `constructor` и `prototype` на верхнем уровне и игнорирует их при слиянии вложенных словарей.
+- **Слияние вложенных объектов**: Если существующее свойство и новое значение являются объектами (и не массивами), функция объединяет их свойства, не перезаписывая ссылку на родительский объект.
+- **Функции-фабрики**: Автоматически вычисляет значения функций через `executeFunction`.
+- **Использование `Reflect.set`**: Перенаправляет установку в `Reflect.set` и возвращает `false`, если свойство недоступно для записи.
+
+```typescript
+import { setElementItemProperty } from '@dxtmisha/functional-basic'
+
+// 1. Установка примитивного свойства
+setElementItemProperty('#app', 'title', 'Панель управления')
+
+// 2. Слияние вложенных свойств объекта
+const element = document.createElement('div')
+setElementItemProperty(element, 'customData', { a: 1 })
+setElementItemProperty(element, 'customData', { b: 2 }) // customData теперь { a: 1, b: 2 }
+
+// 3. Динамический геттер / фабричная функция
+setElementItemProperty(element, 'onclick', () => () => console.log('клик'))
+```
+

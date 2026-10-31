@@ -67,6 +67,24 @@ describe('getElement', () => {
     it('should return document.body when the global window object is passed', () => {
       expect(getElement(window)).toBe(document.body)
     })
+
+    it('should return undefined when window is passed but document.body is unavailable (null)', () => {
+      const originalBody = document.body
+      try {
+        Object.defineProperty(document, 'body', {
+          value: null,
+          configurable: true,
+          writable: true
+        })
+        expect(getElement(window)).toBeUndefined()
+      } finally {
+        Object.defineProperty(document, 'body', {
+          value: originalBody,
+          configurable: true,
+          writable: true
+        })
+      }
+    })
   })
 
   describe('Empty, unmatched, and nullish inputs', () => {
@@ -75,13 +93,17 @@ describe('getElement', () => {
       expect(getElement('#missing-id')).toBeUndefined()
     })
 
+    it('should throw SyntaxError when selector is empty string (native querySelector behavior)', () => {
+      expect(() => getElement('')).toThrow()
+    })
+
     it('should return undefined when called with no arguments or undefined', () => {
       expect(getElement()).toBeUndefined()
       expect(getElement(undefined)).toBeUndefined()
     })
 
-    it('should return null when null is explicitly cast and passed as non-string', () => {
-      expect(getElement(null as unknown as undefined)).toBeNull()
+    it('should return undefined when null is explicitly passed', () => {
+      expect(getElement(null)).toBeUndefined()
     })
   })
 
@@ -102,9 +124,10 @@ describe('getElement', () => {
       expect(getElement(container)).toBe(container)
     })
 
-    it('should return undefined when no argument or undefined is passed in a non-DOM environment', () => {
+    it('should return undefined when no argument, undefined, or null is passed in a non-DOM environment', () => {
       expect(getElement()).toBeUndefined()
       expect(getElement(undefined)).toBeUndefined()
+      expect(getElement(null)).toBeUndefined()
     })
   })
 })

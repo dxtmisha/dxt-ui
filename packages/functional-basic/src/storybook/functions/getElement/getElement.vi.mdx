@@ -4,10 +4,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElement`
 
-Trả về một `Element` (nút HTML) từ tài liệu. Tiện ích này nhận vào một chuỗi bộ chọn CSS, đối tượng `Window` hoặc một `Element` có sẵn và trả về nút DOM tương ứng nếu được thực thi trong môi trường trình duyệt. Trong các môi trường không có DOM (ví dụ: SSR), nó trả về `undefined` đối với chuỗi bộ chọn hoặc trả về nguyên tham chiếu phần tử được truyền vào.
+Trả về một `Element` (nút HTML) từ tài liệu. Tiện ích này nhận vào một chuỗi bộ chọn CSS, đối tượng `Window` hoặc một `Element` có sẵn và trả về nút DOM tương ứng nếu được thực thi trong môi trường trình duyệt.
+
+### Hành vi trong SSR và các trường hợp biên:
+- **Chuỗi bộ chọn trong SSR**: Trong môi trường không có DOM (kết xuất phía máy chủ Node.js / Nitro SSR), việc truy vấn tài liệu không khả dụng nên hàm sẽ trả về `undefined` một cách an toàn cho mọi chuỗi bộ chọn.
+- **Phần tử có sẵn (Unwrapper)**: Khi truyền vào một đối tượng `Element` đã được khởi tạo (HTML, SVG, virtual node hoặc mock trong kiểm thử), hàm sẽ trả về nguyên trạng phần tử đó mà không thay đổi.
+- **Đối tượng `Window`**: Khi truyền vào `Window` trong môi trường trình duyệt, hàm sẽ trả về `document.body`.
+- **Giá trị `null` và `undefined`**: Khi truyền vào `null` hoặc `undefined`, hàm trả về `undefined`.
 
 **Tham số:**
-- `element?: ElementOrString<E>` — Bộ chọn CSS (ví dụ: `'.btn'`), đối tượng `Window`, hoặc một nút `Element` đã có.
+- `element?: ElementOrString<E> | null` — Bộ chọn CSS (ví dụ: `'.btn'`), đối tượng `Window`, hoặc một nút `Element` đã có (HTML, SVG).
 
 **Trả về:**
 `R | undefined` — Nút DOM được tìm thấy hoặc được cung cấp, hoặc `document.body` nếu truyền vào là `Window`. Trả về `undefined` nếu không tìm thấy phần tử hoặc môi trường DOM không khả dụng.
@@ -18,9 +24,9 @@ import { getElement } from '@dxtmisha/functional-basic'
 // Tìm kiếm theo bộ chọn CSS
 const btn = getElement('.submit-btn')
 
-// Truyền vào một phần tử đã có sẵn
+// Truyền vào một phần tử đã có sẵn (trả về chính phần tử đó trong cả DOM và SSR)
 const sameBtn = getElement(btn)
 
-// Truyền vào Window sẽ trả về document.body
+// Truyền vào Window trong trình duyệt sẽ trả về document.body
 const body = getElement(window)
 ```

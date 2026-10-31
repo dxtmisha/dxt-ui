@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/setElementItemProperty - Thiết lập thuộc tính phần tử'/>
+
+# `setElementItemProperty`
+
+Thiết lập thuộc tính hoặc gộp các thuộc tính đối tượng lồng nhau trên một phần tử DOM (hoặc đối tượng) một cách an toàn với cơ chế bảo vệ chống **Prototype Pollution**.
+
+**Tham số:**
+- `element?: ElementOrString<E> | null` — Phần tử DOM đích, đối tượng `window`, hoặc bộ chọn CSS.
+- `index?: PropertyKey` — Tên thuộc tính, chỉ số hoặc biểu tượng (`string | number | symbol`).
+- `value?: unknown` — Giá trị thuộc tính hoặc hàm factory trả về giá trị.
+
+**Trả về:**
+`boolean` — `true` nếu thuộc tính được thiết lập hoặc gộp thành công, ngược lại `false`.
+
+## Cách thức hoạt động
+
+- **Bảo vệ chống Prototype Pollution**: Tự động từ chối các khóa `__proto__`, `constructor`, và `prototype` ở cấp cao nhất và bỏ qua chúng khi gộp đối tượng lồng nhau.
+- **Gộp đối tượng lồng nhau**: Nếu cả thuộc tính hiện tại và giá trị truyền vào đều là đối tượng (không phải mảng), hàm sẽ gộp các khóa mà không thay thế toàn bộ tham chiếu đối tượng.
+- **Hàm Factory**: Tự động giải quyết giá trị hàm thông qua `executeFunction`.
+- **Sử dụng `Reflect.set`**: Ủy quyền thiết lập thuộc tính cho `Reflect.set`, trả về `false` nếu việc gán thất bại.
+
+```typescript
+import { setElementItemProperty } from '@dxtmisha/functional-basic'
+
+// 1. Thiết lập thuộc tính nguyên thủy
+setElementItemProperty('#app', 'title', 'Bảng điều khiển')
+
+// 2. Gộp các thuộc tính đối tượng lồng nhau
+const element = document.createElement('div')
+setElementItemProperty(element, 'customData', { a: 1 })
+setElementItemProperty(element, 'customData', { b: 2 }) // customData hiện là { a: 1, b: 2 }
+
+// 3. Getter động / hàm factory
+setElementItemProperty(element, 'onclick', () => () => console.log('đã nhấp'))
+```
+

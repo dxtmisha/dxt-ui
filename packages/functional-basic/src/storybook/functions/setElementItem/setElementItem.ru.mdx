@@ -14,7 +14,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `value: V | Record<string, V> | unknown` — Новое значение, функция, возвращающая значение, или объект для слияния.
 
 **Возвращает:**
-`E | undefined` — Целевой элемент (модифицированный или без изменений, если передан ключ загрязнения прототипа), либо `undefined`, если элемент не найден.
+`boolean` — `true`, если свойство или атрибут были успешно установлены, иначе `false`.
 
 ```typescript
 import { setElementItem } from '@dxtmisha/functional-basic'

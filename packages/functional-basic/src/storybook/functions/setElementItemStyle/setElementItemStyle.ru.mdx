@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/setElementItemStyle - Установка стилей и CSS-переменных на элементе'/>
+
+# `setElementItemStyle`
+
+Устанавливает свойства стиля, кастомные CSS-переменные (`--*`) или строку `cssText` на DOM-элементе, найденном по селектору или переданном напрямую. Поддерживает функции-фабрики как для всего набора стилей, так и для отдельных свойств.
+
+**Параметры:**
+- `element?: ElementOrString<E>` — Целевой DOM-элемент, объект `window` (разрешается в `document.body`) или CSS-селектор (`E extends ElementOrWindow = HTMLElement`).
+- `styles?: unknown` — Строка стилей (`cssText`), объект со свойствами стилей или функция-фабрика.
+
+**Возвращает:**
+`boolean` — `true`, если стили были успешно применены к элементу, иначе `false`.
+
+## Как это работает
+
+Функция управляет инлайновыми стилями и CSS-переменными через стандартный интерфейс CSSOM `CSSStyleDeclaration`:
+
+**Особенности:**
+- **Поддержка строк и объектов** — При передаче строки устанавливает `targetData.cssText`, а при передаче объекта обходит его собственные свойства через `forOwn`.
+- **Нормализация ключей** — Автоматически преобразует `camelCase` ключи (`backgroundColor`) в `kebab-case` (`background-color`), сохраняя исходный регистр для CSS-переменных (`--myCustomVar`).
+- **Поддержка приоритета `!important`** — Автоматически распознаёт суффикс `!important` в значениях свойств объекта и передаёт `'important'` третьим аргументом в `CSSStyleDeclaration.setProperty`.
+- **Удаление свойств** — Передача `null` или `undefined` (либо функции, возвращающей их) удаляет CSS-свойство через `removeProperty`.
+- **Защита от Prototype Pollution** — Использует `forOwn`, игнорируя унаследованные свойства и блокируя ключи `__proto__`, `constructor` и `prototype`.
+
+## Примеры
+
+```typescript
+import { setElementItemStyle } from '@dxtmisha/functional-basic'
+
+// 1. Установка стилей строкой (cssText)
+setElementItemStyle('#banner', 'color: white; padding: 16px;')
+
+// 2. Установка camelCase, kebab-case, CSS-переменных и !important
+setElementItemStyle(document.body, {
+  backgroundColor: '#121212',
+  'font-size': '16px',
+  color: '#ffffff !important',
+  '--brand-accent': () => '#0055ff'
+})
+
+// 3. Удаление отдельных стилей и CSS-переменных через null / undefined
+setElementItemStyle(document.body, {
+  backgroundColor: null,
+  '--brand-accent': undefined
+})
+```
+

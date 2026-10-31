@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/setElementItemProperty - Setting properties on an element'/>
+
+# `setElementItemProperty`
+
+Safely sets a property or merges nested object properties on a DOM element (or object) with built-in **Prototype Pollution** protection.
+
+**Parameters:**
+- `element?: ElementOrString<E> | null` — Target DOM element, `window`, or CSS selector.
+- `index?: PropertyKey` — Property name, index, or symbol (`string | number | symbol`).
+- `value?: unknown` — Property value or factory function returning a value.
+
+**Returns:**
+`boolean` — `true` if the property was successfully set or merged, `false` otherwise.
+
+## How it works
+
+- **Prototype Pollution Defense**: Automatically rejects `__proto__`, `constructor`, and `prototype` keys on the root level and ignores them during nested object merges.
+- **Nested Object Merging**: If both the target property and incoming value are objects (and not arrays), performs a shallow merge of keys instead of replacing the entire object reference.
+- **Factory Functions**: Evaluates dynamic values and nested property factories via `executeFunction`.
+- **Reflect.set**: Delegates primitive assignment to `Reflect.set`, returning `false` if assignment fails (e.g. non-writable property).
+
+```typescript
+import { setElementItemProperty } from '@dxtmisha/functional-basic'
+
+// 1. Setting primitive property
+setElementItemProperty('#app', 'title', 'Dashboard')
+
+// 2. Merging nested object properties
+const element = document.createElement('div')
+setElementItemProperty(element, 'customData', { a: 1 })
+setElementItemProperty(element, 'customData', { b: 2 }) // customData is now { a: 1, b: 2 }
+
+// 3. Dynamic getter / factory function
+setElementItemProperty(element, 'onclick', () => () => console.log('clicked'))
+```
+

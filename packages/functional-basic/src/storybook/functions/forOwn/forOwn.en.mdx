@@ -1,0 +1,58 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/forOwn - Iterate over own object properties safely'/>
+
+# `forOwn`
+
+Iterates over own enumerable properties of an object, safely skipping prototype pollution keys (`__proto__`, `constructor`, `prototype`). Supports early termination when the callback returns `false`.
+
+**Parameters:**
+- `data?: T` — Object for iteration (`T extends object = Record<string, unknown>`).
+- `callback?: (value: T[K], key: K, collection: T) => void | boolean` — A function executed for each own property. If it returns `false`, iteration terminates immediately.
+
+**Returns:**
+`void`
+
+## How it works
+
+The function provides an efficient, memory-optimized way to traverse object properties without allocating intermediate key arrays (like `Object.keys()` or `Object.entries()`).
+
+**Features:**
+- **Zero Allocations** — Uses a direct `for...in` loop with native `Object.hasOwn` checks, avoiding temporary array allocations.
+- **Prototype Pollution Defense** — Automatically filters out security-critical prototype keys (`__proto__`, `constructor`, `prototype`) using `isPrototypeKey`.
+- **Prototype Chain Isolation** — Ignores inherited properties from the prototype chain, processing only own properties.
+- **Early Termination** — Exits the loop immediately when the callback explicitly returns `false`.
+- **Null and Primitive Safety** — Safely handles `null`, `undefined`, and non-object values without runtime exceptions.
+
+## Examples
+
+```typescript
+import { forOwn } from '@dxtmisha/functional-basic'
+
+// 1. Basic property iteration
+const config = { host: 'localhost', port: 8080, debug: true }
+forOwn(config, (value, key) => {
+  console.log(`${key}: ${value}`)
+})
+
+// 2. Early termination (break when finding a target)
+const permissions = { read: true, write: false, admin: false }
+let hasAdmin = false
+forOwn(permissions, (value, key) => {
+  if (key === 'admin' && value) {
+    hasAdmin = true
+    return false // breaks loop
+  }
+})
+
+// 3. Safe from prototype pollution
+const untrustedData = {
+  valid: 'data',
+  __proto__: { injected: true },
+  constructor: 'malicious'
+}
+forOwn(untrustedData, (value, key) => {
+  // Only runs for 'valid'
+})
+```
+

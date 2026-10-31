@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/setElementItemAttribute - Thiết lập thuộc tính HTML và ARIA cho phần tử'/>
+
+# `setElementItemAttribute`
+
+Thiết lập, chuyển đổi hoặc xóa thuộc tính HTML hoặc ARIA trên phần tử DOM được tìm thấy theo bộ chọn hoặc truyền trực tiếp. Hỗ trợ giá trị boolean (với định dạng WAI-ARIA tự động), chuỗi, số, BigInt và các hàm factory động.
+
+**Tham số:**
+- `element?: ElementOrString<E> | null` — Phần tử DOM đích, đối tượng `window` (trỏ tới `document.body`) hoặc bộ chọn CSS (`E extends ElementOrWindow = HTMLElement`).
+- `attribute?: string` — Tên thuộc tính cần thiết lập hoặc xóa (tự động chuẩn hóa sang `kebab-case`).
+- `value?: unknown` — Giá trị thuộc tính (chuỗi, số, BigInt, boolean, `null`/`undefined` để xóa) hoặc hàm factory.
+
+**Trả về:**
+`boolean` — `true` nếu thuộc tính đã được xử lý (thiết lập hoặc xóa), `false` nếu phần tử hoặc tên thuộc tính không hợp lệ, hoặc kiểu giá trị không được hỗ trợ.
+
+## Cách thức hoạt động
+
+Hàm quản lý thuộc tính một cách an toàn thông qua các phương thức DOM tiêu chuẩn `setAttribute` và `removeAttribute`:
+
+**Đặc điểm:**
+- **Chuẩn hóa kebab-case** — Tự động chuyển đổi tên thuộc tính sang `kebab-case` (`dataTestId` -> `data-test-id`, `ariaHidden` -> `aria-hidden`) và loại bỏ các ký tự không hợp lệ.
+- **Phân biệt Boolean ARIA và HTML** —
+  - Thuộc tính `aria-*`: giá trị boolean `true` / `false` được định dạng thành chuỗi rõ ràng `"true"` hoặc `"false"` theo tiêu chuẩn WAI-ARIA.
+  - Thuộc tính HTML thông thường: giá trị `true` sẽ thiết lập thuộc tính rỗng `""` (ví dụ: `disabled=""`), trong khi `false` sẽ xóa hoàn toàn thuộc tính.
+- **Hỗ trợ số và BigInt** — Số nguyên, số thập phân, số không (`0`), số âm và `BigInt` được chuyển đổi thành chuỗi; các giá trị số không hữu hạn (`NaN`, `Infinity`) bị từ chối.
+- **Xóa thuộc tính sạch sẽ** — Truyền `null` hoặc `undefined` (hoặc hàm trả về chúng) sẽ xóa thuộc tính thông qua `removeAttribute`.
+- **Hỗ trợ hàm Factory** — Các giá trị được truyền dưới dạng hàm getter sẽ được tự động tính toán thông qua `executeFunction`.
+- **Bảo vệ SSR & Chống Prototype Pollution** — Kiểm tra an toàn `isDomRuntime()` và `'setAttribute' in targetElement`. Các thao tác diễn ra trên thuộc tính DOM mà không làm thay đổi prototype của đối tượng JavaScript.
+
+## Ví dụ
+
+```typescript
+import { setElementItemAttribute } from '@dxtmisha/functional-basic'
+
+// 1. Thiết lập data-attribute tùy chỉnh, số và BigInt
+setElementItemAttribute('#card', 'data-mode', 'dark')
+setElementItemAttribute(document.body, 'data-count', 42)
+setElementItemAttribute(document.body, 'data-id', 9007199254740993n)
+
+// 2. Thiết lập thuộc tính ARIA (giá trị boolean sang "true" / "false")
+setElementItemAttribute('#modal', 'aria-hidden', false) // aria-hidden="false"
+setElementItemAttribute('#dropdown', 'ariaExpanded', true) // aria-expanded="true"
+
+// 3. Thiết lập thuộc tính boolean HTML tiêu chuẩn
+setElementItemAttribute('#submit-btn', 'disabled', true) // disabled=""
+setElementItemAttribute('#submit-btn', 'disabled', false) // thuộc tính bị xóa
+
+// 4. Xóa thuộc tính bằng null / undefined
+setElementItemAttribute('#banner', 'data-loading', null)
+
+// 5. Sử dụng hàm factory
+setElementItemAttribute('#counter', 'data-time', () => Date.now())
+```
+

@@ -1,0 +1,58 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/forOwn - Duyệt an toàn các thuộc tính riêng của đối tượng'/>
+
+# `forOwn`
+
+Duyệt qua các thuộc tính riêng có thể đếm được của một đối tượng, bỏ qua các khóa gây ô nhiễm prototype (`__proto__`, `constructor`, `prototype`). Hỗ trợ dừng sớm khi hàm callback trả về `false`.
+
+**Tham số:**
+- `data?: T` — Đối tượng cần duyệt (`T extends object = Record<string, unknown>`).
+- `callback?: (value: T[K], key: K, collection: T) => void | boolean` — Hàm được thực thi cho mỗi thuộc tính riêng. Nếu trả về `false`, vòng lặp sẽ dừng ngay lập tức.
+
+**Trả về:**
+`void`
+
+## Cách thức hoạt động
+
+Hàm cung cấp giải pháp tối ưu hóa bộ nhớ và hiệu năng để duyệt qua các thuộc tính của đối tượng mà không cần cấp phát mảng khóa trung gian (như `Object.keys()` hay `Object.entries()`).
+
+**Đặc điểm:**
+- **Zero Allocations** — Sử dụng vòng lặp `for...in` trực tiếp kết hợp kiểm tra `Object.hasOwn` gốc, loại bỏ việc phân bổ bộ nhớ không cần thiết.
+- **Bảo vệ chống Prototype Pollution** — Tự động lọc bỏ các thuộc tính nguy hiểm (`__proto__`, `constructor`, `prototype`) thông qua `isPrototypeKey`.
+- **Cô lập chuỗi prototype** — Bỏ qua các thuộc tính kế thừa, chỉ xử lý các thuộc tính thuộc quyền sở hữu của đối tượng.
+- **Dừng vòng lặp sớm** — Lập tức dừng vòng lặp khi hàm callback trả về `false`.
+- **An toàn với null và kiểu nguyên thủy** — Xử lý an toàn khi gặp `null`, `undefined` hoặc giá trị nguyên thủy mà không gây lỗi runtime.
+
+## Ví dụ
+
+```typescript
+import { forOwn } from '@dxtmisha/functional-basic'
+
+// 1. Duyệt thuộc tính cơ bản
+const config = { host: 'localhost', port: 8080, debug: true }
+forOwn(config, (value, key) => {
+  console.log(`${key}: ${value}`)
+})
+
+// 2. Dừng vòng lặp sớm (break)
+const permissions = { read: true, write: false, admin: false }
+let hasAdmin = false
+forOwn(permissions, (value, key) => {
+  if (key === 'admin' && value) {
+    hasAdmin = true
+    return false // dừng vòng lặp
+  }
+})
+
+// 3. An toàn trước ô nhiễm prototype
+const untrustedData = {
+  valid: 'data',
+  __proto__: { injected: true },
+  constructor: 'malicious'
+}
+forOwn(untrustedData, (value, key) => {
+  // Chỉ thực thi cho 'valid'
+})
+```
+

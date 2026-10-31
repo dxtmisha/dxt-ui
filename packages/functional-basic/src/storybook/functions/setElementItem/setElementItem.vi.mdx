@@ -14,7 +14,7 @@ Hàm cung cấp khả năng bảo vệ mạnh mẽ chống lại **Prototype Pol
 - `value: V | Record<string, V> | unknown` — Giá trị mới, hàm trả về giá trị, hoặc đối tượng để gộp.
 
 **Trả về:**
-`E | undefined` — Phần tử đích (đã được chỉnh sửa, hoặc giữ nguyên nếu truyền khóa gây ô nhiễm prototype), hoặc `undefined` nếu không tìm thấy phần tử.
+`boolean` — `true` nếu thuộc tính hoặc thuộc tính HTML được thiết lập thành công, ngược lại `false`.
 
 ```typescript
 import { setElementItem } from '@dxtmisha/functional-basic'

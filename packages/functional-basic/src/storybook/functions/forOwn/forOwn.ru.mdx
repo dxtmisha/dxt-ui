@@ -1,0 +1,58 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/forOwn - Безопасный перебор собственных свойств объекта'/>
+
+# `forOwn`
+
+Перебирает собственные перечисляемые свойства объекта, безопасно пропуская ключи загрязнения прототипа (`__proto__`, `constructor`, `prototype`). Поддерживает досрочное прерывание, если функция обратного вызова возвращает `false`.
+
+**Параметры:**
+- `data?: T` — Объект для перебора (`T extends object = Record<string, unknown>`).
+- `callback?: (value: T[K], key: K, collection: T) => void | boolean` — Функция, выполняемая для каждого собственного свойства. Если функция возвращает `false`, перебор немедленно завершается.
+
+**Возвращает:**
+`void`
+
+## Как это работает
+
+Функция обеспечивает высокопроизводительный и оптимизированный по памяти обход свойств объекта без создания промежуточных массивов ключей (таких как `Object.keys()` или `Object.entries()`).
+
+**Особенности:**
+- **Zero Allocations** — Использует прямой цикл `for...in` с нативной проверкой `Object.hasOwn`, исключая лишние аллокации памяти под массивы ключей.
+- **Защита от Prototype Pollution** — Автоматически отфильтровывает опасные свойства прототипа (`__proto__`, `constructor`, `prototype`) с помощью `isPrototypeKey`.
+- **Изоляция цепочки прототипов** — Игнорирует унаследованные свойства из прототипа, обрабатывая строго собственные свойства объекта.
+- **Досрочное прерывание** — Мгновенно прерывает цикл, если функция обратного вызова возвращает явное `false`.
+- **Безопасность при null и примитивах** — Корректно и безопасно обрабатывает `null`, `undefined` и примитивные значения без генерации исключений во время выполнения.
+
+## Примеры
+
+```typescript
+import { forOwn } from '@dxtmisha/functional-basic'
+
+// 1. Базовый перебор свойств объекта
+const config = { host: 'localhost', port: 8080, debug: true }
+forOwn(config, (value, key) => {
+  console.log(`${key}: ${value}`)
+})
+
+// 2. Досрочное прерывание цикла (break)
+const permissions = { read: true, write: false, admin: false }
+let hasAdmin = false
+forOwn(permissions, (value, key) => {
+  if (key === 'admin' && value) {
+    hasAdmin = true
+    return false // останавливает цикл
+  }
+})
+
+// 3. Защита от загрязнения прототипа
+const untrustedData = {
+  valid: 'data',
+  __proto__: { injected: true },
+  constructor: 'malicious'
+}
+forOwn(untrustedData, (value, key) => {
+  // Выполнится только для 'valid'
+})
+```
+

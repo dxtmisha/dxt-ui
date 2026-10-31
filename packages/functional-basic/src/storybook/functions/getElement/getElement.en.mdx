@@ -4,10 +4,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElement`
 
-Returns an `Element` (HTML node) from the document. The utility accepts a CSS selector string, a `Window` object, or an existing `Element`, and returns the corresponding DOM node if executed in a browser environment. In non-DOM environments (e.g., SSR), it returns `undefined` for selector strings or returns the provided element reference as-is.
+Returns an `Element` (HTML node) from the document. The utility accepts a CSS selector string, a `Window` object, or an existing `Element`, and returns the corresponding DOM node if executed in a browser environment.
+
+### SSR Behavior and Edge Cases:
+- **String Selectors in SSR**: In non-DOM environments (Node.js / Nitro SSR), querying the document is unavailable, so the function safely returns `undefined` for any selector string.
+- **Existing Elements (Unwrapper)**: When an already instantiated `Element` object is provided (HTML, SVG, virtual node, or test mock), the function returns it as-is without modification, acting as a transparent pass-through unwrapper.
+- **`Window` Object**: When `Window` is passed in a browser environment, it resolves to `document.body`.
+- **`null` and `undefined` Values**: Passing `null` or `undefined` returns `undefined`.
 
 **Parameters:**
-- `element?: ElementOrString<E>` — A CSS selector (e.g., `'.btn'`), the `Window` object, or an existing `Element` node.
+- `element?: ElementOrString<E> | null` — A CSS selector (e.g., `'.btn'`), the `Window` object, or an existing `Element` node (HTML, SVG).
 
 **Returns:**
 `R | undefined` — The found or provided DOM node, or `document.body` if `Window` was passed. Returns `undefined` if the element is not found or the DOM is unavailable.
@@ -18,9 +24,9 @@ import { getElement } from '@dxtmisha/functional-basic'
 // Search by selector
 const btn = getElement('.submit-btn')
 
-// Passing an existing element
+// Passing an existing element (returns the element as-is in both DOM and SSR)
 const sameBtn = getElement(btn)
 
-// Passing Window will return document.body
+// Passing Window in a browser returns document.body
 const body = getElement(window)
 ```

@@ -119,10 +119,10 @@ export type ItemName<V> = {
 
 // Element
 /**
- * Union type for HTML elements and Window object/
- * Объединенный тип для HTML элементов и объекта Window
+ * Union type for HTML, SVG elements, Element and Window object/
+ * Объединенный тип для HTML, SVG элементов, Element и объекта Window
  */
-export type ElementOrWindow = HTMLElement | Window
+export type ElementOrWindow = HTMLElement | SVGElement | Element | Window
 
 /**
  * Generic type that can be either an element or a string selector/

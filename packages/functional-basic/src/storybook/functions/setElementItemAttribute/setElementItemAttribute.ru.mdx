@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/setElementItemAttribute - Установка HTML- и ARIA-атрибутов на элементе'/>
+
+# `setElementItemAttribute`
+
+Устанавливает, переключает или удаляет HTML- или ARIA-атрибут на DOM-элементе, найденном по селектору или переданном напрямую. Поддерживает логические значения (с автоматическим форматированием по стандарту WAI-ARIA), строки, числа, BigInt и функции-фабрики.
+
+**Параметры:**
+- `element?: ElementOrString<E> | null` — Целевой DOM-элемент, объект `window` (разрешается в `document.body`) или CSS-селектор (`E extends ElementOrWindow = HTMLElement`).
+- `attribute?: string` — Имя атрибута для установки или удаления (автоматически нормализуется в `kebab-case`).
+- `value?: unknown` — Значение атрибута (строка, число, BigInt, логическое значение, `null`/`undefined` для удаления) или функция-фабрика.
+
+**Возвращает:**
+`boolean` — `true`, если атрибут был успешно обработан (установлен или удален), `false`, если элемент или имя атрибута невалидны, либо передан неподдерживаемый тип значения.
+
+## Как это работает
+
+Функция управляет атрибутами через стандартные методы DOM `setAttribute` и `removeAttribute`:
+
+**Особенности:**
+- **Нормализация в kebab-case** — Автоматически преобразует имена атрибутов в `kebab-case` (`dataTestId` -> `data-test-id`, `ariaHidden` -> `aria-hidden`) и отфильтровывает недопустимые символы.
+- **Дифференциация ARIA и HTML булевых значений** —
+  - Атрибуты `aria-*`: логические значения `true` / `false` устанавливаются как строковые литералы `"true"` или `"false"` в соответствии со спецификацией WAI-ARIA.
+  - Обычные HTML-атрибуты: значение `true` устанавливает пустой атрибут `""` (например, `disabled=""`), а `false` полностью удаляет атрибут.
+- **Поддержка чисел и BigInt** — Целые, дробные, нулевые (`0`), отрицательные числа и `BigInt` сериализуются в строку; невалидные числовые значения (`NaN`, `Infinity`) отклоняются.
+- **Удаление атрибутов** — Передача `null` или `undefined` (либо функции, возвращающей их) удаляет атрибут через `removeAttribute`.
+- **Поддержка функций-фабрик** — Значения, переданные в виде функций-геттеров, автоматически вычисляются через `executeFunction`.
+- **SSR-безопасность и защита от Prototype Pollution** — Безопасно проверяет `isDomRuntime()` и `'setAttribute' in targetElement`. Манипуляции ведутся строго на уровне атрибутов DOM без модификации прототипов JavaScript-объектов.
+
+## Примеры
+
+```typescript
+import { setElementItemAttribute } from '@dxtmisha/functional-basic'
+
+// 1. Установка пользовательских data-атрибутов, чисел и BigInt
+setElementItemAttribute('#card', 'data-mode', 'dark')
+setElementItemAttribute(document.body, 'data-count', 42)
+setElementItemAttribute(document.body, 'data-id', 9007199254740993n)
+
+// 2. Установка ARIA-атрибутов (булево значение в "true" / "false")
+setElementItemAttribute('#modal', 'aria-hidden', false) // aria-hidden="false"
+setElementItemAttribute('#dropdown', 'ariaExpanded', true) // aria-expanded="true"
+
+// 3. Установка стандартных булевых HTML-атрибутов
+setElementItemAttribute('#submit-btn', 'disabled', true) // disabled=""
+setElementItemAttribute('#submit-btn', 'disabled', false) // атрибут удален
+
+// 4. Удаление атрибутов через null / undefined
+setElementItemAttribute('#banner', 'data-loading', null)
+
+// 5. Использование функций-фабрик
+setElementItemAttribute('#counter', 'data-time', () => Date.now())
+```
+

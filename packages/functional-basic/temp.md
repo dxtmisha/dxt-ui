@@ -42,3 +42,10 @@ sanitizeLocation
 toCountry
 toLanguage
 getLast
+forOwn
+setElementItemStyle
+setElementItemAttribute
+getElement
+isPrototypeKey
+setElementItemProperty
+setElementItem

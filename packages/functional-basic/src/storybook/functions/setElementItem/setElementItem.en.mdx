@@ -14,7 +14,7 @@ The function provides robust protection against **Prototype Pollution** via `isP
 - `value: V | Record<string, V> | unknown` — New value, function returning a value, or object to merge.
 
 **Returns:**
-`E | undefined` — The target element (modified, or unchanged if a prototype pollution key was passed), or `undefined` if the element is not found.
+`boolean` — `true` if the property or attribute was successfully set, `false` otherwise.
 
 ```typescript
 import { setElementItem } from '@dxtmisha/functional-basic'

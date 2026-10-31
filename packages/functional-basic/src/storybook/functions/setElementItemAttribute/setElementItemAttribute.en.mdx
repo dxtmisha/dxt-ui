@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/setElementItemAttribute - Setting HTML and ARIA attributes on an element'/>
+
+# `setElementItemAttribute`
+
+Sets, toggles, or removes an HTML or ARIA attribute on a DOM element resolved by selector or passed directly. Supports boolean values (with automatic WAI-ARIA formatting), strings, numbers, BigInts, and dynamic factory functions.
+
+**Parameters:**
+- `element?: ElementOrString<E> | null` — Target DOM element, `window` (resolves to `document.body`), or CSS selector (`E extends ElementOrWindow = HTMLElement`).
+- `attribute?: string` — Attribute name to set or remove (automatically normalized to `kebab-case`).
+- `value?: unknown` — Attribute value (string, number, BigInt, boolean, `null`/`undefined` for removal), or a factory function returning one of these.
+
+**Returns:**
+`boolean` — `true` if the attribute was processed (set or removed), `false` if the target element or attribute name is invalid, or if the value type is not supported.
+
+## How it works
+
+The function manages attributes safely via standard DOM `setAttribute` and `removeAttribute` methods:
+
+**Features:**
+- **Kebab-Case Normalization** — Automatically normalizes attribute names to `kebab-case` (`dataTestId` -> `data-test-id`, `ariaHidden` -> `aria-hidden`) and filters out invalid characters.
+- **ARIA vs HTML Boolean Handling** —
+  - `aria-*` attributes: boolean `true` / `false` are formatted as explicit `"true"` or `"false"` strings according to the WAI-ARIA specification.
+  - Standard HTML attributes: `true` sets an empty attribute `""` (e.g. `disabled=""`), while `false` removes the attribute entirely.
+- **Numeric & BigInt Support** — Integer, float, zero (`0`), negative numbers, and `BigInt` values are serialized to string; non-finite numbers (`NaN`, `Infinity`) are rejected.
+- **Clean Attribute Removal** — Passing `null` or `undefined` (or a factory function returning them) removes the attribute via `removeAttribute`.
+- **Factory Functions** — Values wrapped in getter functions are automatically resolved via `executeFunction`.
+- **SSR & Prototype Pollution Defense** — Safely checks `isDomRuntime()` and `'setAttribute' in targetElement`. Modifies DOM attributes without touching JavaScript object prototypes.
+
+## Examples
+
+```typescript
+import { setElementItemAttribute } from '@dxtmisha/functional-basic'
+
+// 1. Setting standard custom attributes and numbers
+setElementItemAttribute('#card', 'data-mode', 'dark')
+setElementItemAttribute(document.body, 'data-count', 42)
+setElementItemAttribute(document.body, 'data-id', 9007199254740993n)
+
+// 2. Setting ARIA attributes (boolean to "true" / "false")
+setElementItemAttribute('#modal', 'aria-hidden', false) // aria-hidden="false"
+setElementItemAttribute('#dropdown', 'ariaExpanded', true) // aria-expanded="true"
+
+// 3. Setting standard HTML boolean attributes
+setElementItemAttribute('#submit-btn', 'disabled', true) // disabled=""
+setElementItemAttribute('#submit-btn', 'disabled', false) // attribute removed
+
+// 4. Removing attributes via null / undefined
+setElementItemAttribute('#banner', 'data-loading', null)
+
+// 5. Using factory functions
+setElementItemAttribute('#counter', 'data-time', () => Date.now())
+```
+

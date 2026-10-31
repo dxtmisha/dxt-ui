@@ -85,9 +85,9 @@ describe('getElementOrWindow', () => {
       expect(getElementOrWindow(undefined)).toBeUndefined()
     })
 
-    it('should pass through null when passed at runtime since it is neither a Window nor a selector string', () => {
+    it('should return undefined when null is passed at runtime', () => {
       // @ts-expect-error Testing runtime handling of null input
-      expect(getElementOrWindow(null)).toBeNull()
+      expect(getElementOrWindow(null)).toBeUndefined()
     })
 
     it('should return undefined if selector does not match any element in the DOM', () => {
