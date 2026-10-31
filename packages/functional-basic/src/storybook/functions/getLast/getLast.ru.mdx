@@ -7,10 +7,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Возвращает последний элемент массива или объекта. Если значение является примитивом, возвращает само значение.
 
 **Параметры:**
-- `value: T | readonly T[] | Record<string, T>` — входное значение.
+- `value?: T | readonly T[] | Record<PropertyKey, T>` — входное значение.
 
 **Возвращает:**
-`T | undefined` — последний элемент массива или объекта, или само значение.
+`T` — последний элемент массива или объекта, или само значение.
 
 ```typescript
 import { getLast } from '@dxtmisha/functional-basic'

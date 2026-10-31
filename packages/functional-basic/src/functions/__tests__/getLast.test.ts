@@ -37,6 +37,7 @@ describe('getLast', () => {
     })
 
     it('should return undefined for undefined input', () => {
+      expect(getLast()).toBeUndefined()
       expect(getLast(undefined)).toBeUndefined()
     })
 

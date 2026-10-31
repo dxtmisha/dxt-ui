@@ -2,6 +2,8 @@
 
 import { isString } from '../functions/isString'
 import { sanitizeLocation } from '../functions/sanitizeLocation'
+import { toCountry } from '../functions/toCountry'
+import { toLanguage } from '../functions/toLanguage'
 
 import { GeoList } from './GeoList'
 import { GeoLocation, UI_GEO_COOKIE_KEY } from './GeoLocation'
@@ -25,36 +27,6 @@ const DEFAULT_FIRST_DAY = 'Mo'
  * Регулярное выражение для проверки полного кода язык-страна или страна-язык
  */
 const REGEXP_CODE_FULL = /([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/
-
-/**
- * Regular expression for hyphen or underscore subtag separators /
- * Регулярное выражение для разделителей субтегов (дефис или подчеркивание)
- */
-const REGEXP_SEPARATOR = /[-_]/
-
-/**
- * Regular expression for an exact 2-letter uppercase country code /
- * Регулярное выражение для точного двухбуквенного кода страны в верхнем регистре
- */
-const REGEXP_COUNTRY_CODE = /^[A-Z]{2}$/
-
-/**
- * Regular expression for a 2-letter Latin region subtag in any case /
- * Регулярное выражение для двухбуквенного латинского субтега региона в любом регистре
- */
-const REGEXP_ALPHA_TWO = /^[a-zA-Z]{2}$/
-
-/**
- * Regular expression for a 2- or 3-letter lowercase ISO language code /
- * Регулярное выражение для двух- или трехбуквенного ISO-кода языка в нижнем регистре
- */
-const REGEXP_LANGUAGE_LOWER = /^[a-z]{2,3}$/
-
-/**
- * Regular expression for a 2- or 3-letter primary language subtag in any case /
- * Регулярное выражение для двух- или трехбуквенного основного субтега языка в любом регистре
- */
-const REGEXP_LANGUAGE_SUBTAG = /^[a-zA-Z]{2,3}$/
 
 /**
  * Base class for working with geographic data.
@@ -142,7 +114,7 @@ export class GeoInstance {
       }
 
       if (!item) {
-        const country = this.toCountry(validCode)
+        const country = toCountry(validCode)
 
         if (country) {
           item = this.getByCountry(country)
@@ -150,7 +122,7 @@ export class GeoInstance {
       }
 
       if (!item) {
-        const language = this.toLanguage(validCode)
+        const language = toLanguage(validCode)
 
         if (language) {
           item = this.getByLanguage(language)
@@ -262,7 +234,7 @@ export class GeoInstance {
    * @returns country code / код страны
    */
   getLocationCountry(): string {
-    return this.toCountry(this.getLocation())
+    return toCountry(this.getLocation())
   }
 
   /**
@@ -272,7 +244,7 @@ export class GeoInstance {
    * @returns language code / код языка
    */
   getLocationLanguage(): string {
-    return this.toLanguage(this.getLocation())
+    return toLanguage(this.getLocation())
   }
 
   /**
@@ -349,7 +321,7 @@ export class GeoInstance {
 
     if (
       this.item.country === country
-      || this.toCountry(this.location.get()) === country
+      || toCountry(this.location.get()) === country
     ) {
       this.item = this.getByCode(this.location.get())
       this.language = this.findLanguage(this.location.get())
@@ -450,7 +422,7 @@ export class GeoInstance {
    */
   protected findLanguage(code?: string): string {
     if (isString(code) && code) {
-      const language = this.toLanguage(code)
+      const language = toLanguage(code)
 
       if (language) {
         const item = this.getByLanguage(language)
@@ -465,126 +437,6 @@ export class GeoInstance {
   }
 
   /**
-   * Internal method to extract country code from a location string.
-   * Supports BCP-47 subtags (e.g., 'zh-Hans-CN'), case-insensitive tags ('en-gb'),
-   * reversed tags ('RU-ru'), and underscore alternatives ('BY_BY').
-   *
-   * Внутренний метод для извлечения кода страны из строки локации.
-   * Поддерживает BCP-47 субтеги (например, 'zh-Hans-CN'), регистронезависимые теги ('en-gb'),
-   * обратные теги ('RU-ru') и альтернативные коды с подчеркиванием ('BY_BY').
-   * @param code combined string / комбинированная строка
-   * @returns country code / код страны
-   */
-  protected toCountry(code: string): string {
-    if (!isString(code)) {
-      return ''
-    }
-
-    const trimmed = code.trim()
-
-    if (!trimmed) {
-      return ''
-    }
-
-    if (!REGEXP_SEPARATOR.test(trimmed)) {
-      if (REGEXP_COUNTRY_CODE.test(trimmed)) {
-        return trimmed
-      }
-
-      return this.getByCountry(trimmed)?.country ?? ''
-    }
-
-    const segments = trimmed.split(REGEXP_SEPARATOR)
-
-    if (
-      segments.length === 2
-      && REGEXP_COUNTRY_CODE.test(segments[0])
-      && REGEXP_LANGUAGE_LOWER.test(segments[1])
-    ) {
-      return segments[0]
-    }
-
-    if (!REGEXP_LANGUAGE_SUBTAG.test(segments[0])) {
-      return this.getByCountry(trimmed)?.country ?? ''
-    }
-
-    const length = segments.length
-
-    for (let index = 1; index < length; index++) {
-      const segment = segments[index]
-
-      if (segment.length <= 1) {
-        break
-      }
-
-      if (REGEXP_ALPHA_TWO.test(segment)) {
-        return segment.toUpperCase()
-      }
-    }
-
-    return this.getByCountry(trimmed)?.country ?? ''
-  }
-
-  /**
-   * Internal method to extract language code from a location string.
-   * Supports BCP-47 subtags (e.g., 'zh-Hans-CN'), case-insensitive tags ('ru-ru'),
-   * 3-letter ISO 639-3 codes ('cmn-SG'), and reversed tags ('RU-ru').
-   *
-   * Внутренний метод для извлечения кода языка из строки локации.
-   * Поддерживает BCP-47 субтеги (например, 'zh-Hans-CN'), регистронезависимые теги ('ru-ru'),
-   * трехбуквенные коды ISO 639-3 ('cmn-SG') и обратные теги ('RU-ru').
-   * @param code combined string / комбинированная строка
-   * @returns language code / код языка
-   */
-  protected toLanguage(code: string): string {
-    if (!isString(code)) {
-      return ''
-    }
-
-    const trimmed = code.trim()
-
-    if (!trimmed) {
-      return ''
-    }
-
-    if (!REGEXP_SEPARATOR.test(trimmed)) {
-      return REGEXP_LANGUAGE_LOWER.test(trimmed) ? trimmed : ''
-    }
-
-    if (this.getByCountry(trimmed)) {
-      return ''
-    }
-
-    const segments = trimmed.split(REGEXP_SEPARATOR)
-
-    if (
-      segments.length === 2
-      && REGEXP_COUNTRY_CODE.test(segments[0])
-    ) {
-      if (REGEXP_LANGUAGE_LOWER.test(segments[1])) {
-        return segments[1]
-      }
-
-      if (
-        segments[0] === segments[1]
-        && !this.getByLanguage(segments[0].toLowerCase())
-      ) {
-        return ''
-      }
-    }
-
-    if (
-      segments.length >= 2
-      && segments[1].length > 0
-      && REGEXP_LANGUAGE_SUBTAG.test(segments[0])
-    ) {
-      return segments[0].toLowerCase()
-    }
-
-    return ''
-  }
-
-  /**
    * Internal method to fill missing fields in a geo item.
    *
    * Внутренний метод для заполнения отсутствующих полей в гео-объекте.
@@ -593,7 +445,7 @@ export class GeoInstance {
    * @returns full geo item data / полные данные гео-объекта
    */
   protected toFull(item: GeoItem, code?: string): GeoItemFull {
-    const locationLanguage = (code && this.toLanguage(code)) || item.language
+    const locationLanguage = (code && toLanguage(code)) || item.language
     const standard = this.toStandard(item, locationLanguage)
 
     return {
@@ -602,7 +454,7 @@ export class GeoInstance {
       firstDay: item.firstDay || DEFAULT_FIRST_DAY,
 
       location: sanitizeLocation(code) ?? standard,
-      locationCountry: (code && this.toCountry(code)) || item.country,
+      locationCountry: (code && toCountry(code)) || item.country,
       locationLanguage
     }
   }

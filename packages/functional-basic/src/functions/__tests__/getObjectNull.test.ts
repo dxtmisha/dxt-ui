@@ -124,7 +124,7 @@ describe('getObjectNull', () => {
   describe('Multilingual and Unicode support', () => {
     it('should support Cyrillic, Vietnamese, and Emoji keys and values', () => {
       const source = {
-        ключ: 'значение',
+        'ключ': 'значение',
         'tiêu đề': 'nội dung',
         '🚀': 'космос'
       }

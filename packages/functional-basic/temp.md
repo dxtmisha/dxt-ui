@@ -39,3 +39,6 @@ GeoTimezone
 GeoList
 GeoLocation
 sanitizeLocation
+toCountry
+toLanguage
+getLast

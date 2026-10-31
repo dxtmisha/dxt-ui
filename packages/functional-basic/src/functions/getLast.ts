@@ -8,19 +8,14 @@ import { isObject } from './isObject'
  * @param value input value / входное значение
  * @returns last element of the array or object / последний элемент массива или объекта
  */
-export function getLast<T>(value: T | readonly T[] | Record<string, T>): T | undefined {
-  if (isArray(value)) {
-    return value?.[value.length - 1] as T
-  }
-
+export function getLast<T = undefined>(
+  value?: T | readonly T[] | Record<PropertyKey, T>
+): T {
   if (isObject(value)) {
-    const keys = Object.keys(value)
-    const lastKey = keys[keys.length - 1]
+    const data = isArray(value) ? value : Object.values(value)
 
-    return lastKey !== undefined
-      ? (value as Record<string, T>)[lastKey]
-      : undefined
+    return data[data.length - 1] as T
   }
 
-  return value
+  return value as T
 }

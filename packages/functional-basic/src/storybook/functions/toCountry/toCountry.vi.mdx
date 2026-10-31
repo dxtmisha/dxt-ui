@@ -1,0 +1,55 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toCountry - Trích xuất và xác thực mã quốc gia'/>
+
+# `toCountry`
+
+Trích xuất và xác thực mã quốc gia ISO 2 chữ cái viết hoa từ chuỗi vị trí, định danh ngôn ngữ (locale) hoặc mã quốc gia thông qua danh mục `GeoList`.
+
+## Tính năng chính
+
+- **Hỗ trợ thẻ con BCP-47** — Trích xuất chính xác mã khu vực 2 chữ cái từ các thẻ BCP-47 tiêu chuẩn và phức tạp (ví dụ: `'zh-Hans-CN'` -> `'CN'`, `'en-US-u-ca-gregory'` -> `'US'`).
+- **Hỗ trợ nhiều định dạng thẻ ngôn ngữ** — Hoạt động với định dạng chuẩn (`'en-US'`), dấu gạch dưới (`'en_US'`), không phân biệt chữ hoa chữ thường (`'en-gb'` -> `'GB'`) và đảo ngược (`'RU-ru'` -> `'RU'`).
+- **Phân giải mã quốc gia thay thế** — Tự động chuyển đổi các mã quốc gia thay thế hoặc lịch sử được khai báo trong `GeoList` (ví dụ: `'UK'` -> `'GB'`, `'EN'` -> `'US'`, `'BY_BY'` -> `'BY'`).
+- **Xác thực chặt chẽ qua `GeoList`** — Phân biệt mã quốc gia với mã ngôn ngữ viết thường (`'en'` -> `''`, `'ru'` -> `''`) và đảm bảo khu vực trích xuất tồn tại trong cơ sở dữ liệu quốc gia được hỗ trợ.
+- **Tương thích SSR và ép kiểu an toàn** — Hàm thuần túy không có tác dụng phụ, sử dụng `toString()` để xử lý an toàn các giá trị không phải chuỗi, `null` và `undefined` mà không gây ra ngoại lệ khi thực thi.
+
+**Tham số:**
+- `code?: unknown` — Chuỗi vị trí hoặc mã quốc gia cần phân tích và xác thực.
+
+**Trả về:**
+- `string` — Mã quốc gia 2 chữ cái viết hoa (ví dụ: `'US'`, `'GB'`, `'VN'`) hoặc chuỗi rỗng nếu không tìm thấy.
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { toCountry } from '@dxtmisha/functional-basic'
+
+// 1. Mã quốc gia trực tiếp
+toCountry('US') // 'US'
+toCountry('VN') // 'VN'
+
+// 2. Thẻ ngôn ngữ tiêu chuẩn và đảo ngược
+toCountry('en-US') // 'US'
+toCountry('en_US') // 'US'
+toCountry('RU-ru') // 'RU'
+toCountry('en-gb') // 'GB'
+
+// 3. Thẻ BCP-47 phức tạp
+toCountry('zh-Hans-CN')          // 'CN'
+toCountry('en-US-u-ca-gregory')  // 'US'
+
+// 4. Mã quốc gia thay thế (qua GeoList)
+toCountry('UK')    // 'GB'
+toCountry('en-UK') // 'GB'
+toCountry('BY_BY') // 'BY'
+
+// 5. Mã chỉ có ngôn ngữ hoặc giá trị không hợp lệ
+toCountry('en')       // '' (chỉ là ngôn ngữ, không phải quốc gia)
+toCountry('')         // ''
+toCountry(undefined)  // ''
+  `}
+/>
+

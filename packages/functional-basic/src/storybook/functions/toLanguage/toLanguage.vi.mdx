@@ -1,0 +1,58 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toLanguage - Trích xuất và xác thực mã ngôn ngữ'/>
+
+# `toLanguage`
+
+Trích xuất và xác thực mã ngôn ngữ chuẩn viết thường từ chuỗi vị trí, định danh ngôn ngữ (locale) hoặc mã ngôn ngữ thông qua danh mục `GeoList`.
+
+## Tính năng chính
+
+- **Hỗ trợ thẻ con BCP-47** — Trích xuất chính xác mã ngôn ngữ chính 2 hoặc 3 chữ cái từ các thẻ BCP-47 tiêu chuẩn và nâng cao (ví dụ: `'zh-Hans-CN'` -> `'zh'`, `'cmn-SG'` -> `'cmn'`).
+- **Hỗ trợ nhiều định dạng thẻ ngôn ngữ** — Hoạt động linh hoạt với định dạng chuẩn (`'en-US'`), dấu gạch dưới (`'en_US'`), không phân biệt chữ hoa chữ thường (`'ru-ru'` -> `'ru'`, `'EN-GB'` -> `'en'`) và đảo ngược (`'RU-ru'` -> `'ru'`, `'VN_vi'` -> `'vi'`).
+- **Phân giải mã ngôn ngữ thay thế** — Tự động chuyển đổi các mã ngôn ngữ thay thế hoặc lịch sử được khai báo trong `GeoList` sang dạng chuẩn (ví dụ: `'us'` -> `'en'`, `'ua'` -> `'uk'`, `'cz'` -> `'cs'`, `'il'` -> `'he'`).
+- **Xác thực chặt chẽ qua `GeoList`** — Phân biệt mã ngôn ngữ với mã quốc gia viết hoa (`'US'` -> `''`, `'RU'` -> `''`) và kiểm tra ngôn ngữ trong cơ sở dữ liệu địa lý được hỗ trợ.
+- **Tương thích SSR và kiểm tra kiểu an toàn** — Hàm thuần túy không có tác dụng phụ, sử dụng `isString()` để loại bỏ nhanh chóng các giá trị không phải chuỗi, `null` và `undefined` trong $O(1)$ mà không gây lỗi lúc chạy.
+
+**Tham số:**
+- `code?: unknown` — Chuỗi vị trí hoặc mã ngôn ngữ cần kiểm tra và xác thực.
+
+**Trả về:**
+- `string` — Mã ngôn ngữ chữ thường hợp lệ (ví dụ: `'en'`, `'ru'`, `'vi'`) hoặc chuỗi rỗng nếu không tìm thấy.
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { toLanguage } from '@dxtmisha/functional-basic'
+
+// 1. Mã ngôn ngữ trực tiếp
+toLanguage('en')  // 'en'
+toLanguage('ru')  // 'ru'
+toLanguage('cmn') // 'cmn'
+
+// 2. Thẻ ngôn ngữ tiêu chuẩn và đảo ngược
+toLanguage('en-US') // 'en'
+toLanguage('en_US') // 'en'
+toLanguage('RU-ru') // 'ru'
+toLanguage('VN_vi') // 'vi'
+
+// 3. Thẻ BCP-47 phức tạp
+toLanguage('zh-Hans-CN')         // 'zh'
+toLanguage('en-US-u-ca-gregory') // 'en'
+toLanguage('cmn-SG')             // 'cmn'
+
+// 4. Mã ngôn ngữ thay thế (qua GeoList)
+toLanguage('ua')    // 'uk'
+toLanguage('ua-UA') // 'uk'
+toLanguage('cz')    // 'cs'
+toLanguage('il')    // 'he'
+
+// 5. Mã chỉ có quốc gia hoặc giá trị không hợp lệ
+toLanguage('US')      // '' (chỉ là quốc gia, không phải ngôn ngữ)
+toLanguage('')        // ''
+toLanguage(undefined) // ''
+  `}
+/>
+

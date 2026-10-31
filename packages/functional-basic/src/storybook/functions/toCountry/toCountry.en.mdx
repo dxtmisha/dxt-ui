@@ -1,0 +1,55 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toCountry - Extracting and validating country codes'/>
+
+# `toCountry`
+
+Extracts and validates a two-letter uppercase ISO country code from location strings, locale identifiers, or country codes via `GeoList`.
+
+## Key Features
+
+- **BCP-47 Subtag Support** — Accurately extracts the two-letter region code from standard and complex BCP-47 locale tags (e.g., `'zh-Hans-CN'` -> `'CN'`, `'en-US-u-ca-gregory'` -> `'US'`).
+- **Flexible Locale Tag Formats** — Supports classic (`'en-US'`), underscore-separated (`'en_US'`), case-insensitive (`'en-gb'` -> `'GB'`), and reversed (`'RU-ru'` -> `'RU'`) locale formats.
+- **Alternative Country Code Resolution** — Automatically resolves historical or non-standard country codes registered in `GeoList` (e.g., `'UK'` -> `'GB'`, `'EN'` -> `'US'`, `'BY_BY'` -> `'BY'`).
+- **Strict Verification via `GeoList`** — Distinguishes country codes from lowercase language tags (`'en'` -> `''`, `'ru'` -> `''`) and validates that extracted regions exist in the supported geo database.
+- **Isomorphic & Safe Coercion** — Pure, side-effect-free function utilizing `toString()` to safely accept non-string, `null`, and `undefined` inputs without runtime exceptions.
+
+**Parameters:**
+- `code?: unknown` — Candidate location or country string to parse and validate.
+
+**Returns:**
+- `string` — Two-letter uppercase country code (e.g., `'US'`, `'GB'`, `'VN'`) or an empty string if not found.
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { toCountry } from '@dxtmisha/functional-basic'
+
+// 1. Direct country codes
+toCountry('US') // 'US'
+toCountry('VN') // 'VN'
+
+// 2. Standard and reversed locale tags
+toCountry('en-US') // 'US'
+toCountry('en_US') // 'US'
+toCountry('RU-ru') // 'RU'
+toCountry('en-gb') // 'GB'
+
+// 3. Complex BCP-47 tags
+toCountry('zh-Hans-CN')          // 'CN'
+toCountry('en-US-u-ca-gregory')  // 'US'
+
+// 4. Alternative country codes (via GeoList)
+toCountry('UK')    // 'GB'
+toCountry('en-UK') // 'GB'
+toCountry('BY_BY') // 'BY'
+
+// 5. Language-only or invalid values
+toCountry('en')       // '' (language only, not a country)
+toCountry('')         // ''
+toCountry(undefined)  // ''
+  `}
+/>
+

@@ -42,7 +42,6 @@ describe('isFunction', () => {
       expect(isFunction(asyncGeneratorFunction)).toBe(true)
     })
     it('should return true for dynamically created functions via Function constructor', () => {
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval
       const dynamicFunction = new Function('a', 'b', 'return a + b')
       expect(isFunction(dynamicFunction)).toBe(true)
     })
