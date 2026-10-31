@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/watchEffectAsync - Bộ theo dõi phản ứng bất đồng bộ với kiểm tra tính hợp lệ'/>
+
+# `watchEffectAsync`
+
+Phiên bản nâng cao bất đồng bộ của `watchEffect` từ Vue 3, cung cấp hàm kiểm tra tính hợp lệ `isCurrent` làm đối số đầu tiên của callback hiệu ứng.
+
+Tự động quản lý vòng đời của mỗi lần đánh giá bộ theo dõi thông qua cơ chế `onCleanup` tích hợp: khi hiệu ứng kích hoạt lại, bộ theo dõi dừng lại hoặc `effectScope` bị hủy, `isCurrent()` sẽ trả về `false`. Điều này ngăn chặn tình trạng tranh chấp (race conditions) trong các thao tác bất đồng bộ mà không cần phải quản lý cờ hủy hoặc đăng ký `onCleanup` thủ công.
+
+Trong môi trường SSR, việc thực thi hiệu ứng sẽ tự động bị bỏ qua và trả về một trình xử lý dừng không hoạt động để ngăn ngừa rò rỉ bộ nhớ bất đồng bộ ở chế độ nền.
+
+**Tham số:**
+- `effect: (isCurrent: () => boolean, onCleanup: (cleanupFunction: () => void) => void) => Promise<void>` — Hàm hiệu ứng nhận kiểm tra `isCurrent` và hàm đăng ký dọn dẹp `onCleanup`.
+- `options?: WatchEffectOptions` — Các tùy chọn cấu hình bộ theo dõi Vue.js (`flush`, `onTrack`, `onTrigger`).
+
+**Trả về:**
+`WatchStopHandle` — Hàm để dừng hiệu ứng phản ứng.
+
+```typescript
+import { watchEffectAsync } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const query = ref('')
+const results = ref<string[]>([])
+
+// Thao tác bất đồng bộ được bảo vệ khỏi kết quả cũ
+watchEffectAsync(async (isCurrent) => {
+  const currentQuery = query.value
+  const response = await fetch(`/api/search?q=${currentQuery}`)
+  const data = await response.json()
+
+  // Kiểm tra xem lần thực thi này có còn hợp lệ không
+  if (isCurrent()) {
+    results.value = data
+  }
+})
+```

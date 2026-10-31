@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/watchEffectAsync - Asynchronous reactive watcher with activity guard'/>
+
+# `watchEffectAsync`
+
+An enhanced asynchronous version of Vue 3's `watchEffect` providing an `isCurrent` activity check as the first argument of the effect callback.
+
+Automatically manages the lifecycle of each watcher evaluation using an internal `onCleanup` hook: when the effect re-runs, the watcher stops, or the owning `effectScope` is disposed, `isCurrent()` returns `false`. This eliminates race conditions during asynchronous operations without manually managing cancellation flags or registering `onCleanup`.
+
+In SSR environments, effect execution is automatically skipped and a no-op stop handle is returned to prevent background asynchronous memory leaks.
+
+**Parameters:**
+- `effect: (isCurrent: () => boolean, onCleanup: (cleanupFunction: () => void) => void) => Promise<void>` — The effect callback function receiving the `isCurrent` guard and the `onCleanup` registration hook.
+- `options?: WatchEffectOptions` — Optional Vue.js watcher configuration options (`flush`, `onTrack`, `onTrigger`).
+
+**Returns:**
+`WatchStopHandle` — Handle to stop the reactive effect.
+
+```typescript
+import { watchEffectAsync } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const query = ref('')
+const results = ref<string[]>([])
+
+// Asynchronous operation guarded against outdated responses
+watchEffectAsync(async (isCurrent) => {
+  const currentQuery = query.value
+  const response = await fetch(`/api/search?q=${currentQuery}`)
+  const data = await response.json()
+
+  // Verify whether this evaluation is still current
+  if (isCurrent()) {
+    results.value = data
+  }
+})
+```
+

@@ -10,3 +10,6 @@ src/functions/ref/setRef.ts
 src/functions/ref/toRefItem.ts
 src/functions/ref/toShallowRefItem.ts
 src/functions/render/getClassName.ts
+src/composables/ref/useScope.ts
+src/functions/watchEffectAsync.ts
+src/functions/computedAsync.ts

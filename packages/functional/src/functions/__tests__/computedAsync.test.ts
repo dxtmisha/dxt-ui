@@ -119,6 +119,21 @@ describe('computedAsync', () => {
     })
   })
 
+  it('supports initial state with a distinct type and preserves both types in return reference', async () => {
+    await scope.run(async () => {
+      const pending = createDeferred<{ id: number, name: string }>()
+      const result = computedAsync(() => pending.promise, null)
+
+      expect(result.value).toBeNull()
+
+      pending.resolve({ id: 1, name: 'Alice' })
+      await nextTick()
+      await nextTick()
+
+      expect(result.value).toEqual({ id: 1, name: 'Alice' })
+    })
+  })
+
   it('recomputes from reactive dependencies and notifies watchers', async () => {
     await scope.run(async () => {
       const source = ref(1)
@@ -167,7 +182,7 @@ describe('computedAsync', () => {
     })
   })
 
-  it('clears previous data when the getter returns undefined without an ignore argument', async () => {
+  it('preserves previous data when the getter returns undefined without an ignore argument', async () => {
     await scope.run(async () => {
       const source = ref<string | undefined>('loaded')
       const result = computedAsync(() => source.value)
@@ -180,7 +195,7 @@ describe('computedAsync', () => {
       source.value = undefined
       await nextTick()
       await nextTick()
-      expect(result.value).toBeUndefined()
+      expect(result.value).toBe('loaded')
 
       source.value = 'recovered'
       await nextTick()

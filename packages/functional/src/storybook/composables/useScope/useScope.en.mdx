@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useScope - Effect scope'/>
+
+# `useScope`
+
+Composable for capturing the current or target `EffectScope` in **Vue 3**, providing helper methods to verify activity and safely execute synchronous and asynchronous operations.
+
+When the scope stops or is disposed (`scope.stop()`), function executions are skipped, and outdated asynchronous tasks are discarded without mutating state.
+
+## Parameters
+
+- `targetScope` (`EffectScope | undefined`, defaults to `getCurrentScope()`) — optional target effect scope.
+
+## Return Value
+
+Returns a `UseScopeItem` object:
+- `scope` (`EffectScope | undefined`) — the captured effect scope instance.
+- `is()` (`() => boolean`) — returns `true` if the scope is active or absent (unscoped execution), and `false` when stopped.
+- `run<T>(callback: () => T): T | undefined` — executes a synchronous callback within the effect scope if present. Returns `undefined` if stopped.
+- `runAsync<T>(callback: (isCurrent: () => boolean) => Promise<T> | T): Promise<T | undefined>` — executes an asynchronous operation. Discards outdated executions when a newer run starts or the scope stops.
+
+## Usage Examples
+
+### 1. Synchronous Execution Scoped to Context
+
+```typescript
+import { effectScope } from 'vue'
+import { useScope } from '@dxtmisha/functional'
+
+const scope = effectScope()
+const { is, run } = useScope(scope)
+
+if (is()) {
+  run(() => {
+    // Executed within scope
+  })
+}
+```
+
+### 2. Guarding Asynchronous Operations Against Race Conditions
+
+```typescript
+import { useScope } from '@dxtmisha/functional'
+
+const { runAsync } = useScope()
+
+async function loadData(query: string) {
+  const result = await runAsync(async (isCurrent) => {
+    const response = await fetch(`/api/search?q=${query}`)
+    const data = await response.json()
+
+    // Inspect whether this execution is still active and current
+    if (!isCurrent()) {
+      return undefined
+    }
+
+    return data
+  })
+
+  return result
+}
+```
+

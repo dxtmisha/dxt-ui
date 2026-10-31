@@ -43,6 +43,7 @@ export * from './composables/ref/useSearchValueRef'
 export * from './composables/ref/useSessionRef'
 export * from './composables/ref/useStorageRef'
 export * from './composables/ref/useTranslateRef'
+export * from './composables/ref/useScope'
 
 // Functions
 export * from './functions/basic'
@@ -66,6 +67,7 @@ export * from './functions/render/getClassName'
 export * from './functions/render/getIndexForRender'
 export * from './functions/toBind'
 export * from './functions/toBinds'
+export * from './functions/watchEffectAsync'
 
 // Types
 export * from './types/apiTypes'

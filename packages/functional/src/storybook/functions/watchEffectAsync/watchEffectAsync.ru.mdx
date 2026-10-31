@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/watchEffectAsync - Асинхронный реактивный наблюдатель с проверкой актуальности'/>
+
+# `watchEffectAsync`
+
+Расширенная асинхронная версия `watchEffect` из Vue 3, предоставляющая функцию проверки актуальности `isCurrent` первым аргументом колбэка.
+
+Автоматически отслеживает жизненный цикл текущей итерации наблюдателя с помощью встроенного механизма `onCleanup`: при повторном срабатывании эффекта, остановке наблюдателя или уничтожении `effectScope` функция `isCurrent()` начинает возвращать `false`. Это предотвращает состояние гонки (race conditions) при выполнении асинхронных операций без необходимости вручную объявлять флаги и регистрировать `onCleanup`.
+
+В среде SSR выполнение эффекта автоматически пропускается и возвращается пустая функция остановки для предотвращения фоновых асинхронных утечек памяти.
+
+**Параметры:**
+- `effect: (isCurrent: () => boolean, onCleanup: (cleanupFunction: () => void) => void) => Promise<void>` — Функция эффекта. Принимает проверку `isCurrent` и функцию регистрации очистки `onCleanup`.
+- `options?: WatchEffectOptions` — Опции конфигурации наблюдателя Vue.js (`flush`, `onTrack`, `onTrigger`).
+
+**Возвращает:**
+`WatchStopHandle` — Функция для остановки реактивного эффекта.
+
+```typescript
+import { watchEffectAsync } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const query = ref('')
+const results = ref<string[]>([])
+
+// Асинхронная операция с защитой от устаревших ответов
+watchEffectAsync(async (isCurrent) => {
+  const currentQuery = query.value
+  const response = await fetch(`/api/search?q=${currentQuery}`)
+  const data = await response.json()
+
+  // Проверяем, актуален ли еще этот ответ
+  if (isCurrent()) {
+    results.value = data
+  }
+})
+```
+

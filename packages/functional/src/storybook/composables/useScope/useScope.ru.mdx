@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useScope - Область эффектов'/>
+
+# `useScope`
+
+Composable для захвата текущего или целевого контекста `EffectScope` в **Vue 3** с вспомогательными методами проверки активности и безопасного запуска синхронных и асинхронных операций.
+
+При завершении или остановке скоупа (`scope.stop()`) вызовы функций автоматически прекращаются, а устаревшие асинхронные задачи отменяются и не изменяют состояние.
+
+## Параметры
+
+- `targetScope` (`EffectScope | undefined`, по умолчанию `getCurrentScope()`) — целевая область эффектов.
+
+## Возвращаемое значение
+
+Возвращает объект `UseScopeItem`:
+- `scope` (`EffectScope | undefined`) — текущий экземпляр области эффектов.
+- `is()` (`() => boolean`) — возвращает `true`, если область активна или отсутствует (выполнение вне скоупа), и `false`, если область была остановлена.
+- `run<T>(callback: () => T): T | undefined` — выполняет синхронный колбэк внутри области эффектов при её наличии. Если область остановлена, возвращает `undefined`.
+- `runAsync<T>(callback: (isCurrent: () => boolean) => Promise<T> | T): Promise<T | undefined>` — выполняет асинхронную операцию. Если запускается новый вызов или скоуп останавливается, результат устаревшего вызова отбрасывается, а ошибки подавляются.
+
+## Примеры использования
+
+### 1. Синхронное выполнение с привязкой к скоупу
+
+```typescript
+import { effectScope } from 'vue'
+import { useScope } from '@dxtmisha/functional'
+
+const scope = effectScope()
+const { is, run } = useScope(scope)
+
+if (is()) {
+  run(() => {
+    // Выполняется внутри scope
+  })
+}
+```
+
+### 2. Защита асинхронных операций от состояния гонки (Race Conditions)
+
+```typescript
+import { useScope } from '@dxtmisha/functional'
+
+const { runAsync } = useScope()
+
+async function loadData(query: string) {
+  const result = await runAsync(async (isCurrent) => {
+    const response = await fetch(`/api/search?q=${query}`)
+    const data = await response.json()
+
+    // Проверяем, актуален ли еще текущий запуск
+    if (!isCurrent()) {
+      return undefined
+    }
+
+    return data
+  })
+
+  return result
+}
+```
+

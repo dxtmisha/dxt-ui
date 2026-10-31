@@ -8,16 +8,16 @@ Tạo một thuộc tính computed có thể xử lý các getter bất đồng 
 
 Chỉ lần tính toán hiện tại được cập nhật kết quả; kết quả và lỗi đến muộn từ các lần trước bị bỏ qua. Watcher thuộc về phạm vi hiệu ứng nơi thuộc tính được tạo, kể cả khi lần đọc đầu tiên xảy ra sau đó. Khi phạm vi dừng, các kết quả đang chờ không còn được áp dụng. Trên máy chủ, chỉ trả về `initialState` mà không thực thi getter.
 
-Khi không truyền `ignore`, kết quả `undefined` sẽ xóa dữ liệu trước đó. Truyền rõ ràng `undefined` ở đối số thứ ba để giữ dữ liệu cũ khi nhận kết quả này. Lỗi từ getter hiện tại sẽ xóa dữ liệu và được chuyển tới `ErrorCenter` với nhóm `functional` và mã `computed-async`.
+Giá trị giải quyết khớp với đối số `ignore` (mặc định là `undefined`) sẽ bị bỏ qua và không ghi đè dữ liệu trước đó. Lỗi từ getter hiện tại sẽ xóa dữ liệu và được chuyển tới `ErrorCenter` với nhóm `functional` và mã `computed-async`. Các phụ thuộc phản ứng (reactive dependencies) phải được đọc trước câu lệnh `await` đầu tiên, vì các phụ thuộc được truy cập sau khi tạm dừng bất đồng bộ sẽ không được theo dõi bởi watcher.
 
 **Tham số:**
 - `getter: (() => Promise<R>) | (() => R) | R` — Hàm bất đồng bộ, hàm đồng bộ, hoặc giá trị trực tiếp dùng để tính toán kết quả.
-- `initialState?: (() => R) | R` — Giá trị ban đầu hoặc hàm được gọi một lần khi tạo thuộc tính.
-- `ignore?: R` — Giá trị được truyền rõ ràng sẽ không được áp dụng vào kết quả. Nếu bỏ qua đối số này, không loại trừ giá trị nào.
+- `initialState?: (() => I) | I` — Giá trị ban đầu hoặc hàm được gọi một lần khi tạo thuộc tính (hỗ trợ kiểu dữ liệu riêng biệt `I`).
+- `ignore?: R` — Giá trị cần loại trừ khỏi kết quả (mặc định là `undefined`, giữ lại dữ liệu trước đó).
 - `debugOptions?: DebuggerOptions` — Tùy chọn dùng để gỡ lỗi các phép tính phản ứng, được hỗ trợ bởi Vue.js.
 
 **Trả về:**
-`ComputedRef<R | undefined>` — Một computed ref phản ứng chứa kết quả đã được giải quyết từ getter.
+`ComputedRef<R | I | undefined>` — Một computed ref phản ứng chứa kết quả đã được giải quyết từ getter.
 
 ```typescript
 import { computedAsync } from '@dxtmisha/functional'

@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useScope - Phạm vi hiệu ứng'/>
+
+# `useScope`
+
+Composable để nắm bắt ngữ cảnh `EffectScope` hiện tại hoặc mục tiêu trong **Vue 3**, cung cấp các phương thức trợ giúp để xác minh hoạt động và thực thi an toàn các hoạt động đồng bộ và bất đồng bộ.
+
+Khi phạm vi dừng hoặc bị hủy (`scope.stop()`), các lệnh thực thi hàm sẽ bị bỏ qua và các tác vụ bất đồng bộ lỗi thời sẽ bị loại bỏ mà không làm thay đổi trạng thái.
+
+## Tham số
+
+- `targetScope` (`EffectScope | undefined`, mặc định là `getCurrentScope()`) — phạm vi hiệu ứng mục tiêu tùy chọn.
+
+## Giá trị trả về
+
+Trả về đối tượng `UseScopeItem`:
+- `scope` (`EffectScope | undefined`) — thể hiện phạm vi hiệu ứng đã chụp.
+- `is()` (`() => boolean`) — trả về `true` nếu phạm vi đang hoạt động hoặc không tồn tại (thực thi không phạm vi), và `false` khi đã dừng.
+- `run<T>(callback: () => T): T | undefined` — thực thi một callback đồng bộ trong phạm vi hiệu ứng nếu có. Trả về `undefined` nếu phạm vi đã dừng.
+- `runAsync<T>(callback: (isCurrent: () => boolean) => Promise<T> | T): Promise<T | undefined>` — thực thi hoạt động bất đồng bộ. Hủy bỏ kết quả thực thi cũ khi có tác vụ mới bắt đầu hoặc phạm vi dừng lại.
+
+## Ví dụ sử dụng
+
+### 1. Thực thi đồng bộ trong phạm vi ngữ cảnh
+
+```typescript
+import { effectScope } from 'vue'
+import { useScope } from '@dxtmisha/functional'
+
+const scope = effectScope()
+const { is, run } = useScope(scope)
+
+if (is()) {
+  run(() => {
+    // Được thực thi bên trong scope
+  })
+}
+```
+
+### 2. Bảo vệ các thao tác bất đồng bộ khỏi điều kiện tranh chấp (Race Conditions)
+
+```typescript
+import { useScope } from '@dxtmisha/functional'
+
+const { runAsync } = useScope()
+
+async function loadData(query: string) {
+  const result = await runAsync(async (isCurrent) => {
+    const response = await fetch(`/api/search?q=${query}`)
+    const data = await response.json()
+
+    // Kiểm tra xem lần thực thi này có còn hợp lệ không
+    if (!isCurrent()) {
+      return undefined
+    }
+
+    return data
+  })
+
+  return result
+}
+```
+
