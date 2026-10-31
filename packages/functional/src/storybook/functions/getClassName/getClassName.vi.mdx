@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getClassName`
 
-Một hàm tiện ích trích xuất thuộc tính `class` từ một đối tượng thuộc tính cho trước. Nó đảm bảo giá trị trả về là một chuỗi, điều này hữu ích để thu được tên lớp một cách nhất quán khi render các thành phần hoặc phần tử.
+Một hàm tiện ích trích xuất và chuẩn hóa thuộc tính `class` từ một đối tượng thuộc tính cho trước bằng cách sử dụng `normalizeClass` của Vue. Hỗ trợ chuỗi, đối tượng và mảng, trả về chuỗi lớp đã chuẩn hóa hoặc `undefined` nếu rỗng hoặc bị thiếu.
 
 **Tham số:**
-- `props?: T` — Đối tượng thuộc tính của thành phần, có thể chứa thuộc tính `class`.
+- `props?: T | unknown` — Đối tượng thuộc tính của thành phần, có thể chứa thuộc tính `class`.
 
 **Trả về:**
-`string | undefined` — Tên lớp dưới dạng chuỗi nếu nó tồn tại và là một chuỗi, nếu không thì trả về `undefined`.
+`string | undefined` — Tên lớp đã chuẩn hóa dưới dạng chuỗi nếu nó tồn tại và không rỗng, nếu không thì trả về `undefined`.
 
 ```typescript
 import { getClassName } from '@dxtmisha/functional'
@@ -18,9 +18,12 @@ import { getClassName } from '@dxtmisha/functional'
 // Trả về 'my-custom-class'
 const className1 = getClassName({ class: 'my-custom-class', otherProp: 1 })
 
-// Trả về undefined vì 'class' bị thiếu
-const className2 = getClassName({ otherProp: 1 })
+// Trả về 'active' (cú pháp đối tượng)
+const className2 = getClassName({ class: { active: true, disabled: false } })
 
-// Trả về undefined vì 'class' không phải là một chuỗi
-const className3 = getClassName({ class: 123 })
+// Trả về 'c1 c2' (cú pháp mảng)
+const className3 = getClassName({ class: ['c1', 'c2'] })
+
+// Trả về undefined vì 'class' bị thiếu hoặc rỗng
+const className4 = getClassName({ otherProp: 1 })
 ```

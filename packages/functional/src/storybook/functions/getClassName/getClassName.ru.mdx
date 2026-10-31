@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getClassName`
 
-Утилитарная функция, которая извлекает свойство `class` из заданного объекта свойств. Она гарантирует, что возвращаемое значение является строкой, что полезно для единообразного получения имен классов при рендеринге компонентов или элементов.
+Утилитарная функция, которая извлекает и нормализует свойство `class` из заданного объекта свойств с помощью `normalizeClass` из Vue. Поддерживает строки, объекты и массивы, возвращая нормализованную строку классов или `undefined`, если класс пуст или отсутствует.
 
 **Параметры:**
-- `props?: T` — Объект свойств компонента, который может содержать свойство `class`.
+- `props?: T | unknown` — Объект свойств компонента, который может содержать свойство `class`.
 
 **Возвращает:**
-`string | undefined` — Имя класса в виде строки, если оно существует и является строкой, в противном случае `undefined`.
+`string | undefined` — Нормализованное имя класса в виде строки, если оно присутствует и не пустое, в противном случае `undefined`.
 
 ```typescript
 import { getClassName } from '@dxtmisha/functional'
@@ -18,9 +18,12 @@ import { getClassName } from '@dxtmisha/functional'
 // Возвращает 'my-custom-class'
 const className1 = getClassName({ class: 'my-custom-class', otherProp: 1 })
 
-// Возвращает undefined, так как 'class' отсутствует
-const className2 = getClassName({ otherProp: 1 })
+// Возвращает 'active' (синтаксис объектов)
+const className2 = getClassName({ class: { active: true, disabled: false } })
 
-// Возвращает undefined, так как 'class' не является строкой
-const className3 = getClassName({ class: 123 })
+// Возвращает 'c1 c2' (синтаксис массивов)
+const className3 = getClassName({ class: ['c1', 'c2'] })
+
+// Возвращает undefined, так как 'class' отсутствует или пуст
+const className4 = getClassName({ otherProp: 1 })
 ```

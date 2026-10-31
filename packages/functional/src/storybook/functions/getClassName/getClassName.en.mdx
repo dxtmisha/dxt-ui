@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getClassName`
 
-A utility function that extracts the `class` property from a given properties object. It ensures that the returned value is a string, which is useful for consistently obtaining class names when rendering components or elements.
+A utility function that extracts and normalizes the `class` property from a given properties object using Vue's `normalizeClass`. It supports strings, objects, and arrays, returning a normalized class string or `undefined` if empty or missing.
 
 **Parameters:**
-- `props?: T` — The properties object of the component, which may contain a `class` property.
+- `props?: T | unknown` — The properties object of the component, which may contain a `class` property.
 
 **Returns:**
-`string | undefined` — The class name as a string if it exists and is a string, otherwise `undefined`.
+`string | undefined` — The normalized class name as a string if present and non-empty, otherwise `undefined`.
 
 ```typescript
 import { getClassName } from '@dxtmisha/functional'
@@ -18,9 +18,12 @@ import { getClassName } from '@dxtmisha/functional'
 // Returns 'my-custom-class'
 const className1 = getClassName({ class: 'my-custom-class', otherProp: 1 })
 
-// Returns undefined as 'class' is missing
-const className2 = getClassName({ otherProp: 1 })
+// Returns 'active' (object syntax)
+const className2 = getClassName({ class: { active: true, disabled: false } })
 
-// Returns undefined as 'class' is not a string
-const className3 = getClassName({ class: 123 })
+// Returns 'c1 c2' (array syntax)
+const className3 = getClassName({ class: ['c1', 'c2'] })
+
+// Returns undefined as 'class' is missing or empty
+const className4 = getClassName({ otherProp: 1 })
 ```

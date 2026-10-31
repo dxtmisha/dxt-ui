@@ -104,6 +104,32 @@ describe('getBind', () => {
       expect(getBind(undefined, undefined)).toEqual({})
       expect(getBind(undefined, {})).toEqual({})
     })
+
+    it('should correctly handle numeric 0 without discarding it', () => {
+      expect(getBind(0)).toEqual({ value: 0 })
+      expect(getBind(0, 'count')).toEqual({ count: 0 })
+    })
+
+    it('should correctly handle boolean false when explicitly provided', () => {
+      expect(getBind(false)).toEqual({ value: false })
+      expect(getBind(false, 'checked')).toEqual({ checked: false })
+    })
+
+    it('should correctly handle empty string when explicitly provided', () => {
+      expect(getBind('')).toEqual({ value: '' })
+      expect(getBind('', 'text')).toEqual({ text: '' })
+    })
+
+    it('should not treat prototype methods as own keys on objects', () => {
+      const objectWithoutKey = { custom: 42 }
+      expect(getBind(objectWithoutKey, {}, 'toString', false)).toEqual({
+        toString: { custom: 42 }
+      })
+    })
+
+    it('should handle nameExtra passed explicitly as undefined', () => {
+      expect(getBind('test', undefined, 'custom')).toEqual({ custom: 'test' })
+    })
   })
 
   describe('Immutability and idempotency', () => {

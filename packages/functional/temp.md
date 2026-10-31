@@ -9,3 +9,4 @@ src/functions/ref/render.ts
 src/functions/ref/setRef.ts
 src/functions/ref/toRefItem.ts
 src/functions/ref/toShallowRefItem.ts
+src/functions/render/getClassName.ts

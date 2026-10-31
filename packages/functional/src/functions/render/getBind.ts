@@ -1,12 +1,18 @@
-import { isObjectNotArray, type ItemList } from '@dxtmisha/functional-basic'
+import {
+  hasKey,
+  isNull,
+  isObjectNotArray,
+  isString,
+  type ItemList
+} from '@dxtmisha/functional-basic'
 import { toBind } from '../toBind'
 
 import type { ConstrBind } from '../../types/constructorTypes'
 
 /**
- * A method for generating properties for a subcomponent.
+ * A function for generating properties for a subcomponent.
  *
- * Метод для генерации свойств для подкомпонента.
+ * Функция для генерации свойств для подкомпонента.
  * @param value input value. Can be an object if you need to pass multiple properties /
  * входное значение. Может быть объектом, если надо передать несколько свойств
  * @param nameExtra additional parameter or property name / дополнительный параметр или имя свойства
@@ -17,18 +23,18 @@ import type { ConstrBind } from '../../types/constructorTypes'
  */
 export function getBind<T = unknown, R extends ItemList = ItemList>(
   value: T | R | undefined | null,
-  nameExtra: ItemList | string = {},
+  nameExtra: ItemList | string | undefined = {},
   name = 'value',
   except = false
 ): ConstrBind<R> {
-  const isName = typeof nameExtra === 'string'
+  const isName = isString(nameExtra)
   const index = isName ? nameExtra : name
   const extra = isName ? undefined : nameExtra
 
-  if (value) {
+  if (!isNull(value)) {
     if (
       isObjectNotArray(value)
-      && (index in value || except)
+      && (hasKey(value, index) || except)
     ) {
       return toBind<R>(extra, value)
     }

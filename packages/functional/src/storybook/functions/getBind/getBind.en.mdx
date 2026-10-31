@@ -8,7 +8,7 @@ Base utility function for generating a properties object for a subcomponent base
 
 **Parameters:**
 - `value: T | R | undefined | null` — The input value to be bound. Can be a primitive or an object.
-- `nameExtra: ItemList | string = {}` — Additional properties to merge or the name of the property to use if `value` is not an object.
+- `nameExtra: ItemList | string | undefined = {}` — Additional properties to merge or the name of the property to use if `value` is not an object.
 - `name: string = 'value'` — The default property name (defaults to `'value'`).
 - `except: boolean = false` — If true, skips the check requiring a primary key in the `value` object.
 

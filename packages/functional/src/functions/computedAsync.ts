@@ -3,7 +3,6 @@ import {
   type ComputedRef,
   type DebuggerOptions,
   getCurrentScope,
-  onScopeDispose,
   shallowRef,
   type ShallowRef,
   type WatchEffect,
@@ -46,14 +45,6 @@ export function computedAsync<R>(
   const hasIgnore = arguments.length >= 3
   /** Whether lazy initialization has not run yet / Ожидается ли первый запуск ленивой инициализации */
   let first = true
-  /** Whether the owning effect scope has stopped / Остановлена ли область эффектов владельца */
-  let disposed = false
-
-  if (scope) {
-    onScopeDispose(() => {
-      disposed = true
-    })
-  }
 
   /**
    * Evaluates the getter and invalidates pending results on cleanup.
@@ -74,11 +65,11 @@ export function computedAsync<R>(
       /** Resolved getter result / Результат выполнения геттера */
       const newValue = await executePromise(getter)
 
-      if (active && !disposed && (!hasIgnore || newValue !== ignore)) {
+      if (active && scope?.active !== false && (!hasIgnore || newValue !== ignore)) {
         item.value = newValue
       }
     } catch (error) {
-      if (active && !disposed) {
+      if (active && scope?.active !== false) {
         item.value = undefined
         ErrorCenter.on({
           group: FUNCTIONAL_ERROR_GROUP,
@@ -95,7 +86,7 @@ export function computedAsync<R>(
    * Лениво запускает наблюдатель в исходной области эффектов.
    */
   const init = (): void => {
-    if (first && !disposed) {
+    if (first && scope?.active !== false) {
       first = false
 
       if (isDomRuntime()) {

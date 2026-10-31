@@ -8,7 +8,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `value: T | R | undefined | null` — Входное значение для привязки. Может быть примитивом или объектом.
-- `nameExtra: ItemList | string = {}` — Дополнительные свойства для объединения или имя свойства, если `value` не является объектом.
+- `nameExtra: ItemList | string | undefined = {}` — Дополнительные свойства для объединения или имя свойства, если `value` не является объектом.
 - `name: string = 'value'` — Имя свойства по умолчанию (по умолчанию `'value'`).
 - `except: boolean = false` — Если true, пропускает проверку на наличие первичного ключа в объекте `value`.
 

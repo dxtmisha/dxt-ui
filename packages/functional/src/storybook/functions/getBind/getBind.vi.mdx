@@ -8,7 +8,7 @@ Hàm tiện ích cơ bản để tạo đối tượng các thuộc tính cho m�
 
 **Tham số:**
 - `value: T | R | undefined | null` — Giá trị đầu vào cần liên kết. Có thể là kiểu nguyên thủy hoặc đối tượng.
-- `nameExtra: ItemList | string = {}` — Các thuộc tính bổ sung để hợp nhất hoặc tên của thuộc tính sẽ sử dụng nếu `value` không phải là một đối tượng.
+- `nameExtra: ItemList | string | undefined = {}` — Các thuộc tính bổ sung để hợp nhất hoặc tên của thuộc tính sẽ sử dụng nếu `value` không phải là một đối tượng.
 - `name: string = 'value'` — Tên thuộc tính mặc định (mặc định là `'value'`).
 - `except: boolean = false` — Nếu true, sẽ bỏ qua việc kiểm tra yêu cầu khóa chính trong đối tượng `value`.
 
