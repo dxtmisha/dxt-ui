@@ -4,15 +4,20 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `splice`
 
-Copies and recursively merges properties from one object into another. Supports replacing properties starting from a specific key or element value while preserving the order of surrounding properties.
+Copies and recursively merges own enumerable properties from a replacement object into a target object. Supports replacing a specific entry matched by property key or element value (`indexStart`) in place, preserving surrounding key order and cascade priority (properties before `indexStart` are overridden by `replacement`, while properties after `indexStart` recursively override `replacement`).
+
+Includes built-in **Prototype Pollution** protection via `forOwn` (`isPrototypeKey`), automatically filtering out dangerous keys (`__proto__`, `constructor`, `prototype`).
+
+> **Warning:** This method is intended exclusively for processing plain JSON-like objects (such as data received via API or configurations); built-in class instances (`Date`, `RegExp`, `Map`, `Set`) and functions are not supported.
 
 **Parameters:**
-- `array: ObjectItem<I>` — The target object.
-- `replacement?: ObjectItem<I> | I` — The source object containing new data.
-- `indexStart?: string` — The key or element value from which the replacement will begin.
+- `array?: ObjectItem<I> | null` — The target object.
+- `replacement?: ObjectItem<I> | I | null` — The source object containing replacement properties.
+- `indexStart?: string | null` — Property key or value at which to inject the replacement in place.
+- `<I = unknown>` — Value type of elements.
 
 **Returns:**
-`ObjectItem<I>` — A new object with the changes applied.
+- `ObjectItem<I>` — A new deeply merged object with the changes applied, without mutating input objects.
 
 ```typescript
 import { splice } from '@dxtmisha/functional-basic'
@@ -24,7 +29,22 @@ const replacement = { middleNew: 20 }
 console.log(splice(target, replacement))
 // { first: 1, middle: 2, last: 3, middleNew: 20 }
 
-// Replace a property by key while preserving order of remaining fields
+// In-place replacement at indexStart matching key 'middle'
 console.log(splice(target, replacement, 'middle'))
 // { first: 1, middleNew: 20, last: 3 }
+
+// Cascade priority: properties declared after indexStart override replacement values
+const base = {
+  theme: 'light',
+  anchor: '{link}',
+  size: '14px' // Declared after anchor: higher cascade priority
+}
+const injected = {
+  theme: 'dark', // Overrides base.theme (before anchor)
+  color: 'blue',
+  size: '12px' // Overridden by base.size (after anchor)
+}
+
+console.log(splice(base, injected, 'anchor'))
+// { theme: 'dark', color: 'blue', size: '14px' }
 ```

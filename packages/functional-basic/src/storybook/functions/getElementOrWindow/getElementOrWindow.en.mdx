@@ -9,7 +9,7 @@ This utility is similar to `getElement`, but with one significant difference: if
 If a string or another element is passed, the function behaves exactly like the standard `getElement` utility.
 
 **Parameters:**
-- `element?: ElementOrString<E>` — A selector to search for, an `Element` node, or the `Window` object.
+- `element?: ElementOrString<E> | null` — A selector to search for, an `Element` node, the `Window` object, or `null`.
 
 **Returns:**
 `E | undefined` — The located element, the originally passed element, the `window` object (if it was passed), or `undefined` if nothing matched.

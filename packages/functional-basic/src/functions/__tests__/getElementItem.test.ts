@@ -112,7 +112,6 @@ describe('getElementItem', () => {
     })
 
     it('should trigger defaultValue when property value is null', () => {
-      // Standalone input has null form property
       expect(getElementItem(inputElement, 'form', 'no-form')).toBe('no-form')
     })
 
@@ -131,16 +130,21 @@ describe('getElementItem', () => {
       expect(getElementItem('.missing-selector', 'id')).toBeUndefined()
     })
 
-    it('should return default value when element is undefined', () => {
-      expect(getElementItem(undefined as unknown as string, 'id', 'default-id')).toBe('default-id')
+    it('should return default value when element is natively undefined without cast', () => {
+      expect(getElementItem(undefined, 'id', 'default-id')).toBe('default-id')
     })
 
     it('should return undefined when element is undefined and no default is provided', () => {
-      expect(getElementItem(undefined as unknown as string, 'id')).toBeUndefined()
+      expect(getElementItem(undefined, 'id')).toBeUndefined()
     })
 
-    it('should return default value when element is null', () => {
-      expect(getElementItem(null as unknown as string, 'id', 'default-id')).toBe('default-id')
+    it('should return default value when element is null without cast', () => {
+      expect(getElementItem(null, 'id', 'default-id')).toBe('default-id')
+    })
+
+    it('should return default value when property is undefined or null', () => {
+      expect(getElementItem(element, undefined, 'fallback-prop')).toBe('fallback-prop')
+      expect(getElementItem(element, null as unknown as string, 'fallback-null')).toBe('fallback-null')
     })
 
     it('should throw SyntaxError when selector is empty string (standard DOM querySelector behavior)', () => {
@@ -194,7 +198,6 @@ describe('getElementItem', () => {
     })
 
     it('should return fallback for window-specific properties because window resolves to document.body', () => {
-      // document.body does not have innerWidth, so fallback is returned
       expect(getElementItem(window, 'innerWidth' as keyof Window, 1024)).toBe(1024)
     })
 

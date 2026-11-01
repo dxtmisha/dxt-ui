@@ -5,7 +5,8 @@ import { isWindow } from './isWindow'
 
 import {
   type ElementOrString,
-  type ElementOrWindow
+  type ElementOrWindow,
+  type ElementResolved
 } from '../types/basicTypes'
 
 /**
@@ -25,7 +26,7 @@ import {
  */
 export function getElement<
   E extends ElementOrWindow = HTMLElement,
-  R extends (E extends Window ? HTMLElement : Exclude<E, Window>) = E extends Window ? HTMLElement : Exclude<E, Window>
+  R extends ElementResolved<E> = ElementResolved<E>
 >(
   element?: ElementOrString<E> | null
 ): R | undefined {

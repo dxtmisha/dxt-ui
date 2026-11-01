@@ -2,6 +2,114 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-11-01
+
+### Added
+- **`forOwn`**:
+  - Safe object traversal utility skipping prototype pollution keys (`'__proto__'`, `'constructor'`, `'prototype'`) and non-enumerable properties with optional early break return.
+  - Exported in public library exports (`src/library.ts`).
+  - Added comprehensive unit test suite in `src/functions/__tests__/forOwn.test.ts`.
+  - Added trilingual Storybook documentation (EN, RU, VI).
+- **`setElementItemStyle` / `setElementItemAttribute` / `setElementItemProperty`**:
+  - Modular DOM mutation utilities extracted from `setElementItem`.
+  - `setElementItemStyle`: manages CSS style declarations, CSS custom properties (`--*`), kebab-case property normalization, `!important` suffix extraction, and nullish property removal.
+  - `setElementItemAttribute`: manages HTML and ARIA attributes with boolean ARIA serialization (`'true'` / `'false'`), boolean flag toggling, and numeric / BigInt coercion.
+  - `setElementItemProperty`: safely sets element properties and performs deep merges with prototype pollution protection.
+  - Exported in public library exports (`src/library.ts`).
+  - Added unit test suites and trilingual Storybook documentation for each utility.
+- **`GeoLocation` / `GeoList` / `GeoTimezone`**:
+  - Modular decomposition of the monolithic `GeoInstance` class for location resolution, global country database querying, and time zone offset management.
+  - `GeoLocation`: tiered resolution (Cookie -> Storage -> DOM), BCP-47 normalization, and dynamic location synchronization.
+  - `GeoList`: immutable query methods and mutation APIs for country, phone, language, and continent datasets.
+  - `GeoTimezone`: time zone offset parsing, ISO 8601 formatting, and zone normalization.
+  - Exported in public library exports (`src/library.ts`).
+  - Added comprehensive test suites and trilingual Storybook documentation.
+- **`toCountry` / `toLanguage` / `sanitizeLocation`**:
+  - `toCountry`: extracts normalized 2-letter ISO 3166-1 alpha-2 country codes from locale tags or country names.
+  - `toLanguage`: extracts normalized 2-letter ISO 639-1 language codes from locale strings.
+  - `sanitizeLocation`: validates and canonicalizes BCP-47 locale tags using length bounds, regex validation, and `Intl.Locale`.
+  - Exported in public library exports (`src/library.ts`).
+  - Added unit tests and trilingual Storybook documentation.
+- **`removeTag`**:
+  - Utility for stripping HTML/XML tags, comments, DOCTYPE declarations, and CDATA blocks with customizable tag whitelisting/filtering and regex caching.
+  - Exported in public library exports (`src/library.ts`).
+  - Added unit tests and trilingual Storybook documentation.
+- **`getObjectNull`**:
+  - Helper to create clean prototype-less objects (`Object.create(null)`) for safe key-value dictionary storage.
+  - Exported in public library exports (`src/library.ts`).
+  - Added unit tests and trilingual Storybook documentation.
+- **`hasKeys`**:
+  - Zero-allocation property inspection utility checking for the presence of multiple keys on an object.
+  - Exported in public library exports (`src/library.ts`).
+  - Added unit tests and trilingual Storybook documentation.
+- **`isRegExp`**:
+  - Cross-realm `RegExp` type predicate utility.
+  - Exported in public library exports (`src/library.ts`).
+  - Added unit tests and trilingual Storybook documentation.
+- **`domElementsFromPoint`**:
+  - SSR-safe wrapper around `document.elementsFromPoint`.
+  - Exported in public library exports (`src/library.ts`).
+
+### Changed
+- **`splice`**:
+  - Hardened with `forOwn` traversal protecting against prototype pollution on both target and replacement objects.
+  - Optimized local accumulation with `disableCopy = true`, reducing merging complexity from $O(N^2)$ to $O(N)$.
+  - Added defensive non-object target guard `!isObject(array)` returning `{}` (or a deep clone of `replacement`).
+  - Widened parameter types: `array?: ObjectItem<I> | null`, `replacement?: ObjectItem<I> | I | null`, `indexStart?: string | null` with generic item inference `<I = unknown>`.
+  - Added bilingual JSDoc `@warning` regarding plain JSON-like object scope.
+  - Authoritative 16-test suite added and trilingual Storybook documentation updated.
+- **`replaceRecursive`**:
+  - Added `disableCopy: boolean = false` parameter (passed as `true` in self-recursion) to eliminate redundant nested deep clones and achieve linear $O(N)$ merge performance.
+  - Switched traversal to `forOwn`, automatically protecting against prototype pollution.
+  - Refined types to `<I = unknown>` and accepted `readonly I[] | null`.
+  - Added bilingual JSDoc `@warning` regarding plain JSON-like object scope.
+  - Expanded unit test suite to 19 tests and synchronized trilingual Storybook documentation.
+- **`uniqueArray`**:
+  - Optimized deduplication with $O(N)$ `Set` fast-path for primitive arrays while preserving deep structural deduplication for objects.
+  - Accepted `readonly I[] | null` collections and hardened boundary checks.
+  - Expanded unit test suite and synchronized trilingual Storybook documentation.
+- **`copyObject` / `copyObjectLite`**:
+  - Hardened prototype pollution safety by verifying property descriptors and skipping non-enumerable properties.
+  - Streamlined clone paths with `globalThis.structuredClone` and robust fallback handling.
+- **`getElement` / `getElementItem` / `getElementOrWindow` / `isElementVisible`**:
+  - Extended `ElementOrWindow` type union to include `SVGElement` and generic `Element`.
+  - Hardened SSR safety with `isDomRuntime()` guards and safe fallbacks across DOM queries.
+  - Expanded unit tests and updated Storybook documentation.
+- **`setElementItem`**:
+  - Decomposed into modular sub-utilities (`setElementItemStyle`, `setElementItemAttribute`, `setElementItemProperty`) while maintaining full backward-compatible API.
+- **`CookieStorage` / `DataStorage` / `ServerStorage`**:
+  - `CookieStorage`: added SameSite `'none'` with automatic `Secure` per RFC 6265bis, CHIPS `Partitioned` support, control character sanitization, and exact return type inference via `CookieStorageGet<T, D>`.
+  - `DataStorage`: exported `DataStorageGet<T, D>` conditional type, isolated keys by process prefix, and protected `JSON.parse` with `isObjectNotArray`.
+  - `ServerStorage`: refactored internal storage to use null-prototype dictionaries, integrated `executeFunction`, and hardened hydration traversal.
+- **`ErrorCenter` / `ErrorCenterHandler` / `ErrorCenterInstance`**:
+  - Added lifecycle unsubscription and cleanup methods (`remove`, `removeHandler`, `removeCallback`, `reset`).
+  - Added `getHandler(): ErrorCenterHandler` for direct handler access.
+  - Harmonized `group?: ErrorCenterGroup` typing across all methods.
+- **`GeoInstance`**:
+  - Refactored as a lightweight composite layer delegating to `GeoLocation`, `GeoList`, and `GeoTimezone`, maintaining 100% backward compatibility.
+- **Core Utilities**:
+  - `addTagHighlightMatch`: added `shouldRemoveTag` option and collision-resistant unique markers.
+  - `anyToString`: optimized options and string coercion.
+  - `isFilled`: hardened for empty tokens, `Date` instances, and prototype-less objects.
+  - `isNull`: refined TypeScript type predicate narrowing behavior.
+  - `getLast`: optimized array and object retrieval with strict return type inference.
+  - `encodeAttribute`: added fast-path check and non-string primitive support.
+  - `escapeExp`: supported numbers and nullish values safely.
+  - `capitalize`: enforced single unified signature without overloads (`T extends string ? Capitalize<T> : string`).
+  - `getElementSafeScript`: integrated `encodeAttribute` for robust XSS/injection protection and widened `id` to `string | number`.
+  - `getHydrationData`: supported numeric script IDs and nullish coalescing.
+  - `blobToBase64`: relaxed parameter typing to `Blob | null | undefined`.
+- **Documentation & Tests**:
+  - Synchronized Storybook documentation across English, Russian, and Vietnamese (`.en.mdx`, `.ru.mdx`, `.vi.mdx`).
+  - Comprehensive unit test expansion across all packages with 100% passing test suites.
+
+### Security
+- **Prototype Pollution Guards**:
+  - Comprehensive protection across `forOwn`, `splice`, `replaceRecursive`, `copyObject`, `setElementItemProperty`, `getObjectByKeys`, and `transformation` against prototype pollution vectors (`__proto__`, `constructor`, `prototype`).
+- **XSS & Injection Protection**:
+  - Hardened `getElementSafeScript` via `encodeAttribute` sanitization and precompiled regexes.
+  - Hardened cookie value sanitization in `CookieStorage` stripping control characters (`\r`, `\n`, `\0`, `;`).
+
 ## [1.14.0] - 2026-10-23
 
 ### Added

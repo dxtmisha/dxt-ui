@@ -6,15 +6,19 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Performs a deep (recursive) merge of the target object with data from a replacement object or array. When `isMerge` is enabled (`true` by default), arrays at matching keys are concatenated with duplicates removed via `uniqueArray`; otherwise, arrays from `replacement` overwrite the target arrays.
 
-Includes built-in **Prototype Pollution** protection via `isPrototypeKey`, automatically skipping dangerous keys (`__proto__`, `constructor`, `prototype`) during traversal.
+Includes built-in **Prototype Pollution** protection via `forOwn` (`isPrototypeKey`), automatically skipping dangerous keys (`__proto__`, `constructor`, `prototype`) during traversal.
+
+> **Warning:** This function is intended exclusively for processing plain JSON-like objects and arrays (such as data received via API or configurations); built-in class instances (`Date`, `RegExp`, `Map`, `Set`) and functions are not supported.
 
 **Parameters:**
-- `target: ObjectItem<I>` — The target object whose elements will be replaced or merged.
-- `replacement?: ObjectOrArray<I>` — Object or array from which elements will be extracted for replacement.
-- `isMerge?: boolean = true` — Flag to merge arrays (defaults to `true`). If `false`, arrays from `replacement` overwrite the original ones.
+- `target?: ObjectItem<I> | null` — The target object whose elements will be replaced or merged.
+- `replacement?: ObjectOrArray<I> | readonly I[] | null` — Object or array (including `readonly` collections) from which elements will be extracted for replacement.
+- `isMerge?: boolean = true` — Flag to merge arrays without duplicates (defaults to `true`). If `false`, arrays from `replacement` overwrite the original ones.
+- `disableCopy?: boolean = false` — Disables deep cloning of `target` (used internally during recursion to avoid repeated cloning, or externally when mutating a local accumulator in place).
+- `<I = unknown>` — Value type of elements.
 
 **Returns:**
-`ObjectItem<I>` — A new merged object without mutating `target`. If `target` is not an object, returns a copy of `replacement` (if it is an object) or `{}`.
+`ObjectItem<I>` — A new merged object without mutating `target` (or the updated `target` reference if `disableCopy` is `true`). If `target` is not an object, returns a copy of `replacement` (if it is an object) or `{}`.
 
 ```typescript
 import { replaceRecursive } from '@dxtmisha/functional-basic'
@@ -22,9 +26,14 @@ import { replaceRecursive } from '@dxtmisha/functional-basic'
 const target = { a: [1, 2], b: { x: 1 } }
 const source = { a: [2, 3], b: { y: 2 } }
 
-console.log(replaceRecursive(target, source)) 
+console.log(replaceRecursive(target, source))
 // { a: [1, 2, 3], b: { x: 1, y: 2 } }
 
-console.log(replaceRecursive(target, source, false)) 
+console.log(replaceRecursive(target, source, false))
 // { a: [2, 3], b: { x: 1, y: 2 } }
+
+// In-place merge into a local accumulator without cloning target
+const accumulator: Record<string, unknown> = { count: 1 }
+replaceRecursive(accumulator, { active: true }, true, true)
+// accumulator -> { count: 1, active: true }
 ```

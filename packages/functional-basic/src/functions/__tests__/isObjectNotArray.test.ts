@@ -32,8 +32,10 @@ describe('isObjectNotArray', () => {
     })
 
     it('should return true for array-like objects and TypedArrays', () => {
-      // eslint-disable-next-line prefer-rest-params
-      const args = (function () { return arguments })()
+      const args = (function () {
+        // eslint-disable-next-line prefer-rest-params
+        return arguments
+      })()
       expect(isObjectNotArray(args)).toBe(true)
       expect(isObjectNotArray({ length: 2, 0: 'a', 1: 'b' })).toBe(true)
       expect(isObjectNotArray(new Uint8Array([1, 2, 3]))).toBe(true)

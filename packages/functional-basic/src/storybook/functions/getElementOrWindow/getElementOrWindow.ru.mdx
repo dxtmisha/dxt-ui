@@ -9,7 +9,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Если передана строка или другой элемент, функция действует как стандартный `getElement`.
 
 **Параметры:**
-- `element?: ElementOrString<E>` — Селектор для поиска, элемент `Element` или объект `Window`.
+- `element?: ElementOrString<E> | null` — Селектор для поиска, элемент `Element`, объект `Window` или `null`.
 
 **Возвращает:**
 `E | undefined` — Найденный элемент, изначальный переданный элемент, сам объект `window` (если он был передан), или `undefined` если ничего не найдено.

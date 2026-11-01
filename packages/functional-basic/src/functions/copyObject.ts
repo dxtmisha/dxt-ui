@@ -6,6 +6,7 @@ import { isFunction } from './isFunction'
  *
  * Создает глубокую копию объекта для независимого управления данными.
  * Цель метода — получить полностью новый отдельный экземпляр объекта во избежание нежелательных мутаций.
+ * @template T type of the object / тип объекта
  * @param value object for copying / объект для копирования
  * @returns returns a new copy of the object / возвращает новую копию объекта
  */
@@ -21,5 +22,11 @@ export function copyObject<T>(
     }
   }
 
-  return JSON.parse(JSON.stringify(value)) as T
+  try {
+    const json = JSON.stringify(value)
+
+    return json !== undefined ? (JSON.parse(json) as T) : value
+  } catch {
+    return value
+  }
 }

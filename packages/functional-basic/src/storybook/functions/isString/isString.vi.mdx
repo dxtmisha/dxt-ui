@@ -9,16 +9,17 @@ Kiểm tra xem giá trị được cung cấp có thuộc kiểu chuỗi (`strin
 Sử dụng phép kiểm tra tiêu chuẩn `typeof value === 'string'` để xác nhận giá trị là kiểu chuỗi nguyên thủy, loại trừ các kiểu số, boolean, đối tượng, mảng, `null` và `undefined`.
 
 **Tham số:**
-- `value: T` — Giá trị đầu vào cần kiểm tra.
+- `value?: unknown` — Giá trị đầu vào cần kiểm tra.
 
 **Trả về:**
-`value is Extract<T, string>` (`boolean`) — Trả về `true` nếu `value` là một chuỗi, ngược lại là `false`. Đóng vai trò là bộ bảo vệ kiểu (type guard) trong TypeScript, thu hẹp `T` thành `Extract<T, string>`.
+`value is string` (`boolean`) — Trả về `true` nếu `value` là một chuỗi, ngược lại là `false`. Đóng vai trò là bộ bảo vệ kiểu (type guard) trong TypeScript, thu hẹp kiểu của `value` thành `string`.
 
 ```typescript
 import { isString } from '@dxtmisha/functional-basic'
 
 console.log(isString('Chào thế giới!')) // true
 console.log(isString('')) // true (chuỗi rỗng vẫn là chuỗi hợp lệ)
+console.log(isString()) // false
 
 // Các kiểu dữ liệu không phải chuỗi
 console.log(isString(123)) // false

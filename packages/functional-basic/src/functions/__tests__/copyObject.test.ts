@@ -156,6 +156,14 @@ describe('copyObject', () => {
       const copy = copyObject({ negativeZero: -0 })
       expect(Object.is(copy.negativeZero, -0)).toBe(true)
     })
+
+    it('should safely return top-level functions and symbols without crashing JSON fallback', () => {
+      const fn = () => 'test'
+      expect(copyObject(fn)).toBe(fn)
+
+      const sym = Symbol('item')
+      expect(copyObject(sym)).toBe(sym)
+    })
   })
 
   describe('Structured clone support and JSON fallback semantics', () => {
@@ -206,6 +214,15 @@ describe('copyObject', () => {
       expect(copy.setInstance).toBeInstanceOf(Set)
       expect(copy.setInstance).not.toBe(original.setInstance)
       expect(Array.from(copy.setInstance)).toEqual([1, 2, 3])
+    })
+
+    it('should deeply clone TypedArray buffers via structuredClone', () => {
+      const uint8 = new Uint8Array([10, 20, 30])
+      const copy = copyObject({ buffer: uint8 })
+
+      expect(copy.buffer).toBeInstanceOf(Uint8Array)
+      expect(copy.buffer).not.toBe(uint8)
+      expect(Array.from(copy.buffer)).toEqual([10, 20, 30])
     })
 
     it('should deeply clone circular references and BigInt values via structuredClone', () => {
@@ -290,6 +307,11 @@ describe('copyObject', () => {
       expect(copy).not.toBe(original)
       expect(copy.nested).not.toBe(original.nested)
       expect(copy.items).not.toBe(original.items)
+    })
+
+    it('should safely return undefined when structuredClone is unavailable and value is undefined', () => {
+      vi.stubGlobal('structuredClone', undefined)
+      expect(copyObject(undefined)).toBeUndefined()
     })
   })
 

@@ -48,6 +48,31 @@ describe('isElementVisible', () => {
 
       expect(isElementVisible(div)).toBe(true)
     })
+
+    it('should return true when passing window (resolves to document.body)', () => {
+      Object.defineProperty(document.body, 'offsetWidth', { value: 1024, configurable: true })
+      Object.defineProperty(document.body, 'offsetHeight', { value: 768, configurable: true })
+
+      expect(isElementVisible(window)).toBe(true)
+    })
+
+    it('should return true for different visible display values such as flex and grid', () => {
+      const flexDiv = document.createElement('div')
+      flexDiv.style.display = 'flex'
+      Object.defineProperty(flexDiv, 'offsetWidth', { value: 50, configurable: true })
+      Object.defineProperty(flexDiv, 'offsetHeight', { value: 50, configurable: true })
+      container.appendChild(flexDiv)
+
+      expect(isElementVisible(flexDiv)).toBe(true)
+
+      const gridDiv = document.createElement('div')
+      gridDiv.style.display = 'grid'
+      Object.defineProperty(gridDiv, 'offsetWidth', { value: 50, configurable: true })
+      Object.defineProperty(gridDiv, 'offsetHeight', { value: 50, configurable: true })
+      container.appendChild(gridDiv)
+
+      expect(isElementVisible(gridDiv)).toBe(true)
+    })
   })
 
   describe('CSS hidden properties and zero dimensions (display, visibility, opacity, offsetWidth/offsetHeight)', () => {
@@ -91,6 +116,16 @@ describe('isElementVisible', () => {
       expect(isElementVisible(div)).toBe(false)
     })
 
+    it('should return true if an element has partial opacity (e.g. 0.5)', () => {
+      const div = document.createElement('div')
+      Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
+      Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
+      div.style.opacity = '0.5'
+      container.appendChild(div)
+
+      expect(isElementVisible(div)).toBe(true)
+    })
+
     it('should return false if both offsetWidth and offsetHeight are 0', () => {
       const div = document.createElement('div')
       Object.defineProperty(div, 'offsetWidth', { value: 0, configurable: true })
@@ -100,22 +135,29 @@ describe('isElementVisible', () => {
       expect(isElementVisible(div)).toBe(false)
     })
 
-    it('should return false if offsetWidth is 0 while offsetHeight is positive', () => {
+    it('should return true if offsetWidth is 0 while offsetHeight is positive (e.g. vertical divider)', () => {
       const div = document.createElement('div')
       Object.defineProperty(div, 'offsetWidth', { value: 0, configurable: true })
       Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
       container.appendChild(div)
 
-      expect(isElementVisible(div)).toBe(false)
+      expect(isElementVisible(div)).toBe(true)
     })
 
-    it('should return false if offsetHeight is 0 while offsetWidth is positive', () => {
+    it('should return true if offsetHeight is 0 while offsetWidth is positive (e.g. horizontal divider)', () => {
       const div = document.createElement('div')
       Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
       Object.defineProperty(div, 'offsetHeight', { value: 0, configurable: true })
       container.appendChild(div)
 
-      expect(isElementVisible(div)).toBe(false)
+      expect(isElementVisible(div)).toBe(true)
+    })
+
+    it('should return true for an SVGElement or generic Element without offsetWidth/offsetHeight in fallback mode', () => {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      container.appendChild(svg)
+
+      expect(isElementVisible(svg)).toBe(true)
     })
   })
 
@@ -128,7 +170,7 @@ describe('isElementVisible', () => {
     it('should return false when input is omitted, undefined, or null', () => {
       expect(isElementVisible()).toBe(false)
       expect(isElementVisible(undefined)).toBe(false)
-      expect(isElementVisible(null as unknown as HTMLElement)).toBe(false)
+      expect(isElementVisible(null)).toBe(false)
     })
 
     it('should return false if the selector does not match any element', () => {

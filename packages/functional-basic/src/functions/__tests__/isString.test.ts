@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { isString } from '../isString'
 
 describe('isString', () => {
@@ -7,6 +7,15 @@ describe('isString', () => {
       expect(isString('hello')).toBe(true)
       expect(isString(`template ${1}`)).toBe(true)
       expect(isString(String(123))).toBe(true)
+    })
+
+    it('should narrow types correctly when used as a type guard', () => {
+      const value: unknown = 'test-narrowing'
+      if (isString(value)) {
+        expect(value.toUpperCase()).toBe('TEST-NARROWING')
+      } else {
+        expect.unreachable('Should have narrowed to string')
+      }
     })
   })
 
@@ -26,10 +35,11 @@ describe('isString', () => {
     })
   })
 
-  describe('Nullish and falsy non-string inputs', () => {
-    it('should return false for null and undefined', () => {
-      expect(isString(null)).toBe(false)
+  describe('Nullish, optional, and falsy non-string inputs', () => {
+    it('should return false when called without arguments or with undefined/null', () => {
+      expect(isString()).toBe(false)
       expect(isString(undefined)).toBe(false)
+      expect(isString(null)).toBe(false)
     })
 
     it('should return false for falsy numbers, booleans, and bigints', () => {

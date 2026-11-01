@@ -14,11 +14,17 @@ describe('uniqueArray', () => {
 
     it('should collapse an array of identical values into a single element', () => {
       expect(uniqueArray(['repeat', 'repeat', 'repeat'])).toEqual(['repeat'])
+      expect(uniqueArray([7, 7, 7, 7])).toEqual([7])
+    })
+
+    it('should handle an array with a single element correctly', () => {
+      expect(uniqueArray([42])).toEqual([42])
+      expect(uniqueArray(['single'])).toEqual(['single'])
     })
   })
 
   describe('Boundary numeric, boolean, and special values', () => {
-    it('should treat 0 and -0 as equal under SameValueZero semantics', () => {
+    it('should treat 0, -0, and +0 as equal under SameValueZero semantics', () => {
       const result = uniqueArray([0, -0, 1, +0])
       expect(result).toEqual([0, 1])
     })
@@ -41,11 +47,45 @@ describe('uniqueArray', () => {
     it('should deduplicate boolean values including false', () => {
       expect(uniqueArray([false, true, false, true])).toEqual([false, true])
     })
+
+    it('should accurately deduplicate BigInt values', () => {
+      expect(uniqueArray([1n, 2n, 1n, 3n, 2n])).toEqual([1n, 2n, 3n])
+    })
+
+    it('should deduplicate identical Symbol references while keeping distinct instances with identical description', () => {
+      const sharedSymbol = Symbol('shared')
+      const uniqueSymbol1 = Symbol('test')
+      const uniqueSymbol2 = Symbol('test')
+
+      const result = uniqueArray([sharedSymbol, uniqueSymbol1, sharedSymbol, uniqueSymbol2])
+      expect(result).toEqual([sharedSymbol, uniqueSymbol1, uniqueSymbol2])
+      expect(result).toHaveLength(3)
+    })
   })
 
-  describe('Empty and nullish elements', () => {
+  describe('Defensive runtime behavior and nullish inputs', () => {
     it('should return an empty array when given an empty array', () => {
       expect(uniqueArray([])).toEqual([])
+    })
+
+    it('should return an empty array when called without arguments or with undefined', () => {
+      expect(uniqueArray()).toEqual([])
+      expect(uniqueArray(undefined)).toEqual([])
+    })
+
+    it('should return an empty array when given null', () => {
+      expect(uniqueArray(null)).toEqual([])
+    })
+
+    it('should return an empty array when passed non-array values at runtime', () => {
+      // @ts-expect-error Runtime defensive check
+      expect(uniqueArray('invalid-string')).toEqual([])
+      // @ts-expect-error Runtime defensive check
+      expect(uniqueArray(12345)).toEqual([])
+      // @ts-expect-error Runtime defensive check
+      expect(uniqueArray({})).toEqual([])
+      // @ts-expect-error Runtime defensive check
+      expect(uniqueArray(true)).toEqual([])
     })
 
     it('should deduplicate null, undefined, and empty string elements', () => {
@@ -54,6 +94,12 @@ describe('uniqueArray', () => {
         undefined,
         ''
       ])
+    })
+
+    it('should handle sparse arrays containing holes', () => {
+      // eslint-disable-next-line no-sparse-arrays
+      const sparseArray = [1, , 2, , 1]
+      expect(uniqueArray(sparseArray)).toEqual([1, undefined, 2])
     })
   })
 
@@ -75,6 +121,15 @@ describe('uniqueArray', () => {
 
       const result = uniqueArray<unknown>([callback, nestedArray, callback, nestedArray])
       expect(result).toEqual([callback, nestedArray])
+    })
+
+    it('should preserve distinct Date and RegExp instances while deduplicating shared references', () => {
+      const sharedDate = new Date('2026-01-01')
+      const sharedRegex = /test/g
+
+      const result = uniqueArray([sharedDate, sharedRegex, sharedDate, sharedRegex])
+      expect(result).toEqual([sharedDate, sharedRegex])
+      expect(result).toHaveLength(2)
     })
   })
 
@@ -107,6 +162,13 @@ describe('uniqueArray', () => {
 
       expect(result).not.toBe(sourceArray)
       expect(sourceArray).toEqual([3, 1, 2, 1, 3])
+    })
+
+    it('should support readonly tuple arrays (as const)', () => {
+      const readonlyTuple = [1, 2, 3, 2, 1] as const
+      const result = uniqueArray(readonlyTuple)
+
+      expect(result).toEqual([1, 2, 3])
     })
   })
 })

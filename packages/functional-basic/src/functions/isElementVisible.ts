@@ -1,5 +1,6 @@
 import { getElement } from './getElement'
 import { isDomRuntime } from './isDomRuntime'
+import { isFunction } from './isFunction'
 import {
   type ElementOrString,
   type ElementOrWindow
@@ -11,11 +12,12 @@ import {
  *
  * Проверяет, является ли элемент видимым (не скрыт через CSS и находится в DOM).
  * Элемент может находиться за пределами экрана и при этом считаться видимым.
- * @param elementSelectors selectors for matching or an Element / селекторы для сопоставления или Element
+ * @template E element or Window type / тип элемента или Window
+ * @param elementSelectors selectors for matching, an Element, or null / селекторы для сопоставления, Element или null
  * @returns true if the element is visible, otherwise false / true, если элемент является видимым, иначе false
  */
-export function isElementVisible<E extends ElementOrWindow>(
-  elementSelectors?: ElementOrString<E>
+export function isElementVisible<E extends ElementOrWindow = HTMLElement>(
+  elementSelectors?: ElementOrString<E> | null
 ): boolean {
   if (!isDomRuntime()) {
     return false
@@ -34,8 +36,8 @@ export function isElementVisible<E extends ElementOrWindow>(
     return false
   }
 
-  if (typeof (element as Element).checkVisibility === 'function') {
-    return (element as Element).checkVisibility({
+  if (isFunction(element.checkVisibility)) {
+    return element.checkVisibility({
       checkOpacity: true,
       checkVisibilityCSS: true
     })
@@ -51,6 +53,12 @@ export function isElementVisible<E extends ElementOrWindow>(
     && style.visibility !== 'hidden'
     && style.visibility !== 'collapse'
     && style.opacity !== '0'
-    && element.offsetWidth !== 0
-    && element.offsetHeight !== 0
+    && (
+      !(
+        'offsetWidth' in element
+        && 'offsetHeight' in element
+      )
+      || element.offsetWidth !== 0
+      || element.offsetHeight !== 0
+    )
 }

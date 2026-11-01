@@ -4,15 +4,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElementItem`
 
-Trả về giá trị của một thuộc tính cụ thể từ một phần tử HTML (ví dụ: `id`, `className`, hoặc bất kỳ thuộc tính tùy chỉnh nào nếu nó được khai báo là khóa của kiểu phần tử đó). Tiện ích sử dụng `getElement` để tìm nút, và nếu không tìm thấy phần tử hoặc phân tử không có thuộc tính được chỉ định, tiện ích sẽ trả về `defaultValue` (mặc định là `undefined`).
+Trả về giá trị của một thuộc tính cụ thể từ một phần tử HTML (ví dụ: `id`, `className`, hoặc bất kỳ thuộc tính tùy chỉnh nào nếu nó được khai báo là khóa của kiểu phần tử đó). Nếu truyền đối tượng `window`, tiện ích sẽ chuyển đổi thành `document.body` trong môi trường DOM thông qua `getElement`. Nếu không tìm thấy phần tử hoặc phân tử không có thuộc tính được chỉ định, tiện ích sẽ trả về `defaultValue` (mặc định là `undefined`).
 
 **Tham số:**
-- `element: ElementOrString<T>` — Một chuỗi bộ chọn CSS hoặc một phần tử DOM có sẵn.
-- `property: K | string` — Tên thuộc tính (khóa) của phần tử có giá trị đang được yêu cầu.
+- `element?: ElementOrString<E> | null` — Một chuỗi bộ chọn CSS, phần tử DOM có sẵn, `window` (được chuyển đổi thành `document.body`) hoặc `null`/`undefined`.
+- `property?: K | string | number` — Tên hoặc chỉ số thuộc tính (khóa) của phần tử có giá trị đang được yêu cầu.
 - `defaultValue?: D` — Giá trị dự phòng sẽ được trả về nếu không tìm thấy thuộc tính.
 
 **Trả về:**
-`T[K] | D | undefined` — Giá trị của thuộc tính được yêu cầu hoặc `defaultValue`.
+`ElementResolved<E>[K] | D` — Giá trị của thuộc tính được yêu cầu hoặc `defaultValue`.
 
 ```typescript
 import { getElementItem } from '@dxtmisha/functional-basic'

@@ -4,15 +4,20 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `splice`
 
-Sao chép và hợp nhất đệ quy các thuộc tính từ đối tượng này sang đối tượng khác. Hỗ trợ thay thế thuộc tính bắt đầu từ một khóa hoặc giá trị phần tử cụ thể trong khi vẫn duy trì thứ tự của các trường còn lại.
+Sao chép và hợp nhất đệ quy các thuộc tính có thể liệt kê (enumerable own properties) từ đối tượng thay thế vào đối tượng đích. Hỗ trợ thay thế trực tiếp tại vị trí khóa hoặc giá trị phần tử trùng khớp (`indexStart`) trong khi vẫn bảo toàn thứ tự khai báo khóa và mức độ ưu tiên phân tầng (các thuộc tính trước `indexStart` bị ghi đè bởi `replacement`, trong khi các thuộc tính sau `indexStart` sẽ ghi đè ngược lại lên `replacement`).
+
+Tích hợp sẵn cơ chế bảo vệ chống **Prototype Pollution** thông qua `forOwn` (`isPrototypeKey`), tự động lọc bỏ các khóa nguy hiểm (`__proto__`, `constructor`, `prototype`).
+
+> **Cảnh báo:** Phương thức này chỉ dành riêng cho việc xử lý các đối tượng thuần túy dạng JSON (chẳng hạn như dữ liệu nhận qua API hoặc tệp cấu hình); các thực thể lớp dựng sẵn (`Date`, `RegExp`, `Map`, `Set`) và hàm (function) không được hỗ trợ.
 
 **Tham số:**
-- `array: ObjectItem<I>` — Đối tượng đích.
-- `replacement?: ObjectItem<I> | I` — Đối tượng nguồn chứa dữ liệu mới.
-- `indexStart?: string` — Khóa hoặc giá trị phần tử bắt đầu thực hiện thay thế.
+- `array?: ObjectItem<I> | null` — Đối tượng đích.
+- `replacement?: ObjectItem<I> | I | null` — Đối tượng nguồn chứa các thuộc tính thay thế.
+- `indexStart?: string | null` — Khóa hoặc giá trị thuộc tính mà từ đó quá trình thay thế sẽ diễn ra.
+- `<I = unknown>` — Kiểu giá trị của các phần tử.
 
 **Trả về:**
-`ObjectItem<I>` — Đối tượng mới với các thay đổi đã được áp dụng.
+- `ObjectItem<I>` — Một đối tượng mới sau khi hợp nhất sâu mà không làm thay đổi các đối tượng ban đầu.
 
 ```typescript
 import { splice } from '@dxtmisha/functional-basic'
@@ -24,7 +29,22 @@ const replacement = { middleNew: 20 }
 console.log(splice(target, replacement))
 // { first: 1, middle: 2, last: 3, middleNew: 20 }
 
-// Thay thế thuộc tính theo khóa trong khi vẫn giữ nguyên thứ tự các trường khác
+// Thay thế trực tiếp tại khóa 'middle' trong khi vẫn giữ nguyên thứ tự các trường
 console.log(splice(target, replacement, 'middle'))
 // { first: 1, middleNew: 20, last: 3 }
+
+// Mức độ ưu tiên phân tầng: các trường khai báo sau indexStart có độ ưu tiên cao hơn dữ liệu thay thế
+const base = {
+  theme: 'light',
+  anchor: '{link}',
+  size: '14px' // Khai báo sau anchor: độ ưu tiên cao nhất
+}
+const injected = {
+  theme: 'dark', // Ghi đè base.theme (trước anchor)
+  color: 'blue',
+  size: '12px' // Bị ghi đè bởi base.size (sau anchor)
+}
+
+console.log(splice(base, injected, 'anchor'))
+// { theme: 'dark', color: 'blue', size: '14px' }
 ```

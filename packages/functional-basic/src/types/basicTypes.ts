@@ -125,6 +125,14 @@ export type ItemName<V> = {
 export type ElementOrWindow = HTMLElement | SVGElement | Element | Window
 
 /**
+ * Generic type resolving ElementOrWindow to an Element (Window resolves to HTMLElement)/
+ * Дженерик тип, разрешающий ElementOrWindow в Element (Window разрешается в HTMLElement)
+ */
+export type ElementResolved<E extends ElementOrWindow = HTMLElement> = E extends Window
+  ? HTMLElement
+  : Exclude<E, Window>
+
+/**
  * Generic type that can be either an element or a string selector/
  * Дженерик тип для элемента или строкового селектора
  */

@@ -9,16 +9,17 @@ Checks whether the provided value is of type `string`.
 Uses the native `typeof value === 'string'` check to confirm that the value is a string primitive, filtering out numbers, booleans, objects, arrays, `null`, and `undefined`.
 
 **Parameters:**
-- `value: T` — The input value to check.
+- `value?: unknown` — The input value to check.
 
 **Returns:**
-`value is Extract<T, string>` (`boolean`) — Returns `true` if `value` is a string, otherwise `false`. Acts as a TypeScript type guard narrowing `T` to `Extract<T, string>`.
+`value is string` (`boolean`) — Returns `true` if `value` is a string primitive, otherwise `false`. Acts as a TypeScript type guard narrowing `value` to `string`.
 
 ```typescript
 import { isString } from '@dxtmisha/functional-basic'
 
 console.log(isString('Hello, World!')) // true
 console.log(isString('')) // true (empty strings are valid strings)
+console.log(isString()) // false
 
 // Non-string types
 console.log(isString(123)) // false

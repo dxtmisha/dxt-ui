@@ -4,17 +4,22 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `uniqueArray`
 
-Создает новый массив, содержащий только уникальные элементы из исходного массива.
+Создает новый массив, содержащий только уникальные элементы из исходного массива с сохранением порядка их первого появления.
 
 **Параметры:**
-- `value: T[]` — Исходный массив.
+- `value?: readonly T[] | null` — Исходный массив или неизменяемая коллекция для дедупликации.
+- `<T = unknown>` — Тип элементов массива.
 
 **Возвращает:**
-`T[]` — Новый массив без дубликатов.
+`T[]` — Новый массив без дубликатов. Если передан пустой массив, `null`, `undefined` или не-массив, возвращается пустой массив `[]`.
 
 ```typescript
 import { uniqueArray } from '@dxtmisha/functional-basic'
 
 const list = [1, 2, 2, 3, 1]
 console.log(uniqueArray(list)) // [1, 2, 3]
+
+// Поддерживает неизменяемые массивы (as const)
+const readonlyList = ['a', 'b', 'a'] as const
+console.log(uniqueArray(readonlyList)) // ['a', 'b']
 ```

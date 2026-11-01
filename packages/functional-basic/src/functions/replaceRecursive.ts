@@ -1,9 +1,8 @@
 import { copyObject } from './copyObject'
-import { forEach } from './forEach'
+import { forOwn } from './forOwn'
 import { isArray } from './isArray'
 import { isObject } from './isObject'
 import { isObjectNotArray } from './isObjectNotArray'
-import { isPrototypeKey } from './isPrototypeKey'
 import { uniqueArray } from './uniqueArray'
 
 import {
@@ -12,34 +11,35 @@ import {
 } from '../types/basicTypes'
 
 /**
- * Merge one or more arrays or objects recursively.
+ * Recursively merges a target object with elements from a replacement object or array without mutating the source data.
  *
- * Рекурсивное слияние одного или более массивов или объектов.
- * @param target the object in which elements are replaced / объект, элементы которого будут заменены
- * @param replacement object or array from which elements will be extracted / объект или массив, из которого будут браться элементы для замены
- * @param isMerge merge arrays or overwrite them / сливать массивы или перезаписывать их
- * @returns merged object / объединенный объект
+ * Рекурсивно объединяет целевой объект с элементами из объекта или массива замены без мутации исходных данных.
+ * @template [I=unknown] item value type / тип значения элементов
+ * @param target the object in which elements are replaced / целевой объект, элементы которого будут заменены
+ * @param replacement object or array from which elements will be extracted / объект или массив, из которого извлекаются элементы для замены
+ * @param [isMerge=true] merge arrays without duplicates or overwrite them / объединять массивы без дубликатов или перезаписывать их
+ * @param [disableCopy=false] disables deep cloning of target (used internally during recursion or for mutable accumulators) / запрещает глубокое копирование target (используется внутри рекурсии или для мутабельных аккумуляторов)
+ * @returns new merged object / новый объединенный объект
+ * @warning This method is intended exclusively for processing plain JSON-like objects and arrays (such as data received via API or configurations); built-in class instances (`Date`, `RegExp`, `Map`, `Set`) and functions are not supported. /
+ * Этот метод предназначен исключительно для обработки простых JSON-подобных объектов и массивов (таких как данные, полученные через API или файлы конфигураций); экземпляры встроенных классов (`Date`, `RegExp`, `Map`, `Set`) и функции не поддерживаются.
  */
-export function replaceRecursive<I>(
-  target: ObjectItem<I>,
-  replacement?: ObjectOrArray<I>,
-  isMerge: boolean = true
+export function replaceRecursive<I = unknown>(
+  target?: ObjectItem<I> | null,
+  replacement?: ObjectOrArray<I> | readonly I[] | null,
+  isMerge: boolean = true,
+  disableCopy: boolean = false
 ): ObjectItem<I> {
   if (!isObject(target)) {
     return (isObject(replacement) ? copyObject(replacement) : {}) as ObjectItem<I>
   }
 
-  const returnData: ObjectItem<I> = copyObject(target)
+  const returnData: ObjectItem<I> = disableCopy ? target : copyObject(target)
 
-  if (isObject(replacement)) {
-    forEach(
+  if (isObject<I>(replacement)) {
+    forOwn(
       replacement,
       (item, index) => {
-        if (isPrototypeKey(index)) {
-          return
-        }
-
-        const data = returnData?.[index]
+        const data = returnData[index]
 
         if (
           isArray(data)
@@ -57,7 +57,8 @@ export function replaceRecursive<I>(
           returnData[index] = replaceRecursive<I>(
             data as ObjectItem<I>,
             item as ObjectOrArray<I>,
-            isMerge
+            isMerge,
+            true
           ) as I
         } else {
           returnData[index] = isObject(item) ? copyObject(item) : item

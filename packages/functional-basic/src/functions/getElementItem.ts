@@ -1,14 +1,21 @@
 import { getElement } from './getElement'
+import { isNull } from './isNull'
 
 import {
   type ElementOrString,
-  type ElementOrWindow
+  type ElementOrWindow,
+  type ElementResolved
 } from '../types/basicTypes'
 
 /**
  * Returns the value of an element property by its key.
+ * If Window is passed, retrieves the property from document.body in DOM runtime.
  *
  * Возвращает значение свойства элемента по его ключу.
+ * При передаче Window возвращает значение свойства из document.body в DOM-окружении.
+ * @template E element or Window type / тип элемента или Window
+ * @template K property key type / тип ключа свойства
+ * @template D default value type / тип значения по умолчанию
  * @param element checked element / проверяемый элемент
  * @param property property key to retrieve / ключ свойства для получения значения
  * @param defaultValue returns this parameter if the value is missing / возвращает этот параметр,
@@ -16,13 +23,17 @@ import {
  * @returns element value or default value / значение элемента или значение по умолчанию
  */
 export function getElementItem<
-  T extends ElementOrWindow,
-  K extends keyof T,
-  D
+  E extends ElementOrWindow = HTMLElement,
+  K extends keyof ElementResolved<E> = keyof ElementResolved<E>,
+  D = undefined
 >(
-  element: ElementOrString<T>,
-  property: K | string,
+  element?: ElementOrString<E> | null,
+  property?: K | string | number,
   defaultValue?: D
-): T[K] | D | undefined {
-  return getElement(element)?.[property as K] ?? defaultValue
+): ElementResolved<E>[K] | D {
+  if (isNull(property)) {
+    return defaultValue as ElementResolved<E>[K] | D
+  }
+
+  return (getElement(element)?.[property as K] ?? defaultValue) as ElementResolved<E>[K] | D
 }

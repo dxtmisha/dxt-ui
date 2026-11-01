@@ -208,6 +208,7 @@ describe('resizeImage', () => {
         private sourceUrl = ''
 
         constructor() {
+          // eslint-disable-next-line @typescript-eslint/no-this-alias
           createdImageInstance = this
         }
 
@@ -241,6 +242,7 @@ describe('resizeImage', () => {
         private sourceUrl = ''
 
         constructor() {
+          // eslint-disable-next-line @typescript-eslint/no-this-alias
           createdImageInstance = this
         }
 

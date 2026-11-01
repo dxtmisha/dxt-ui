@@ -4,15 +4,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElementItem`
 
-Returns the value of a specific property from an HTML element (e.g., `id`, `className`, or any custom property if it's defined as a key on the element type). The utility uses `getElement` to find the node, and if the element is not found or lacks the specified property, it returns `defaultValue` (which defaults to `undefined`).
+Returns the value of a specific property from an HTML element (e.g., `id`, `className`, or any custom property if it's defined as a key on the element type). If `window` is passed, the utility resolves it to `document.body` in DOM runtime via `getElement`. If the element is not found or lacks the specified property, it returns `defaultValue` (which defaults to `undefined`).
 
 **Parameters:**
-- `element: ElementOrString<T>` — A selector string or an existing DOM element.
-- `property: K | string` — The property name (key) of the element whose value is required.
+- `element?: ElementOrString<E> | null` — A selector string, an existing DOM element, `window` (resolves to `document.body`), or `null`/`undefined`.
+- `property?: K | string | number` — The property name or index (key) of the element whose value is required.
 - `defaultValue?: D` — A fallback value returned if the property is not found.
 
 **Returns:**
-`T[K] | D | undefined` — The value of the requested property or the `defaultValue`.
+`ElementResolved<E>[K] | D` — The value of the requested property or the `defaultValue`.
 
 ```typescript
 import { getElementItem } from '@dxtmisha/functional-basic'

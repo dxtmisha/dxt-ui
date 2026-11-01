@@ -53,22 +53,28 @@ function normalizeStylePropertyValue(
  * Sets style properties, CSS custom properties, or cssText on an element.
  *
  * Устанавливает свойства стиля, переменные CSS или cssText на элементе.
- * @param element target element or selector / целевой элемент или селектор
+ * @template E element or Window type / тип элемента или Window
+ * @param element target element, selector, or null / целевой элемент, селектор или null
  * @param styles style string, styles object, or factory function / строка стилей, объект стилей или функция-фабрика
  * @returns true if styles were applied, false otherwise / true, если стили были применены, иначе false
  */
 export function setElementItemStyle<
   E extends ElementOrWindow = HTMLElement
 >(
-  element?: ElementOrString<E>,
+  element?: ElementOrString<E> | null,
   styles?: unknown
 ): boolean {
-  const targetData = getElement(element)?.style
+  const targetElement = getElement(element)
 
-  if (!targetData) {
+  if (
+    !targetElement
+    || !('style' in targetElement)
+    || !targetElement.style
+  ) {
     return false
   }
 
+  const targetData = targetElement.style as CSSStyleDeclaration
   const computedStyles = executeFunction(styles)
 
   if (isString(computedStyles)) {

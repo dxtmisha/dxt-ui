@@ -6,15 +6,19 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Выполняет глубокое (рекурсивное) слияние целевого объекта с данными из объекта или массива замены. При включенном параметре `isMerge` (по умолчанию `true`) массивы по совпадающим ключам объединяются с удалением дубликатов через `uniqueArray`, в противном случае массивы из `replacement` перезаписывают исходные.
 
-Включает встроенную защиту от **Prototype Pollution** через `isPrototypeKey`, автоматически пропуская опасные ключи (`__proto__`, `constructor`, `prototype`) при обходе.
+Включает встроенную защиту от **Prototype Pollution** через `forOwn` (`isPrototypeKey`), автоматически пропуская опасные ключи (`__proto__`, `constructor`, `prototype`) при обходе.
+
+> **Внимание:** Этот метод предназначен исключительно для обработки простых JSON-подобных объектов и массивов (таких как данные, полученные через API или файлы конфигураций); экземпляры встроенных классов (`Date`, `RegExp`, `Map`, `Set`) и функции не поддерживаются.
 
 **Параметры:**
-- `target: ObjectItem<I>` — Целевой объект, элементы которого будут заменены или объединены.
-- `replacement?: ObjectOrArray<I>` — Объект или массив, из которого будут браться элементы для замены.
-- `isMerge?: boolean = true` — Флаг слияния одноименных массивов (по умолчанию `true`). При `false` массивы из `replacement` полностью перезаписывают исходные.
+- `target?: ObjectItem<I> | null` — Целевой объект, элементы которого будут заменены или объединены.
+- `replacement?: ObjectOrArray<I> | readonly I[] | null` — Объект или массив (включая `readonly`-коллекции), из которого извлекаются элементы для замены.
+- `isMerge?: boolean = true` — Флаг слияния одноименных массивов без дубликатов (по умолчанию `true`). При `false` массивы из `replacement` полностью перезаписывают исходные.
+- `disableCopy?: boolean = false` — Запрещает глубокое копирование `target` (используется внутри рекурсии для исключения повторного клонирования, либо внешне для обновления локального объекта-аккумулятора на месте).
+- `<I = unknown>` — Тип значения элементов.
 
 **Возвращает:**
-`ObjectItem<I>` — Новый объединенный объект без мутации исходного `target`. Если `target` не является объектом, возвращает копию `replacement` (если это объект) или `{}`.
+`ObjectItem<I>` — Новый объединенный объект без мутации исходного `target` (либо обновленную ссылку на `target`, если `disableCopy` равен `true`). Если `target` не является объектом, возвращает копию `replacement` (если это объект) или `{}`.
 
 ```typescript
 import { replaceRecursive } from '@dxtmisha/functional-basic'
@@ -22,9 +26,14 @@ import { replaceRecursive } from '@dxtmisha/functional-basic'
 const target = { a: [1, 2], b: { x: 1 } }
 const source = { a: [2, 3], b: { y: 2 } }
 
-console.log(replaceRecursive(target, source)) 
+console.log(replaceRecursive(target, source))
 // { a: [1, 2, 3], b: { x: 1, y: 2 } }
 
-console.log(replaceRecursive(target, source, false)) 
+console.log(replaceRecursive(target, source, false))
 // { a: [2, 3], b: { x: 1, y: 2 } }
+
+// Слияние на месте в локальный аккумулятор без клонирования target
+const accumulator: Record<string, unknown> = { count: 1 }
+replaceRecursive(accumulator, { active: true }, true, true)
+// accumulator -> { count: 1, active: true }
 ```

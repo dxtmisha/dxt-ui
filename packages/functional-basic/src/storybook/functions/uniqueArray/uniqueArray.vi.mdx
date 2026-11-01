@@ -4,17 +4,22 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `uniqueArray`
 
-Tạo một mảng mới chỉ chứa các phần tử duy nhất từ mảng gốc.
+Tạo một mảng mới chỉ chứa các phần tử duy nhất từ mảng gốc và giữ nguyên thứ tự xuất hiện đầu tiên của chúng.
 
 **Tham số:**
-- `value: T[]` — Mảng đầu vào.
+- `value?: readonly T[] | null` — Mảng đầu vào hoặc tập hợp chỉ đọc để loại bỏ trùng lặp.
+- `<T = unknown>` — Kiểu phần tử của mảng.
 
 **Trả về:**
-`T[]` — Một mảng mới không chứa dữ liệu trùng lặp.
+`T[]` — Một mảng mới không chứa dữ liệu trùng lặp. Nếu đầu vào rỗng, `null`, `undefined` hoặc không phải là mảng, trả về mảng rỗng `[]`.
 
 ```typescript
 import { uniqueArray } from '@dxtmisha/functional-basic'
 
 const list = [1, 2, 2, 3, 1]
 console.log(uniqueArray(list)) // [1, 2, 3]
+
+// Hoạt động với mảng chỉ đọc (as const)
+const readonlyList = ['a', 'b', 'a'] as const
+console.log(uniqueArray(readonlyList)) // ['a', 'b']
 ```

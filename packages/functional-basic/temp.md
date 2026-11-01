@@ -49,3 +49,11 @@ getElement
 isPrototypeKey
 setElementItemProperty
 setElementItem
+getElementItem
+getElementOrWindow
+isElementVisible
+copyObject
+uniqueArray
+replaceRecursive
+splice
+isString
