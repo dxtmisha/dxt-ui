@@ -1,5 +1,5 @@
-import { effectScope, type EffectScope, getCurrentInstance, inject, provide } from 'vue'
-import { isObjectNotArray, ServerStorage } from '@dxtmisha/functional-basic'
+import { effectScope, type EffectScope, getCurrentInstance, hasInjectionContext, inject, provide } from 'vue'
+import { isObject, ServerStorage } from '@dxtmisha/functional-basic'
 
 import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
 
@@ -13,29 +13,48 @@ export enum ExecuteUseType {
   local = 'local'
 }
 
+/** Management methods added by executeUse when not defined on the container / Методы управления, добавляемые executeUse при отсутствии одноимённых свойств в контейнере */
+export interface ExecuteUseManagement<R extends object | void> {
+  /**
+   * Returns the original shallowly frozen factory result without the management shell.
+   * Not created when the container already defines its own `init` property (use `_init()` instead).
+   *
+   * Возвращает исходный поверхностно замороженный результат фабрики без управляющей оболочки.
+   * Не создаётся, если контейнер уже содержит собственное свойство `init` (используйте `_init()`).
+   * @returns original factory result / исходный результат фабрики
+   */
+  init(): Readonly<R>
+  /**
+   * Fallback management method returning the original shallowly frozen factory result (always available unless `_init` is occupied on the container).
+   *
+   * Резервный метод управления, возвращающий исходный поверхностно замороженный результат фабрики (доступен всегда, если имя `_init` не занято в контейнере).
+   * @returns original factory result / исходный результат фабрики
+   */
+  _init(): Readonly<R>
+  /**
+   * Removes the cached local instance or resets the process-wide global instance, stopping its effect scope.
+   * Absent for provided instances or when the container defines its own `destroyExecute` property (use `_destroyExecute()` instead).
+   *
+   * Удаляет локальный экземпляр из кеша либо сбрасывает общий глобальный экземпляр процесса, останавливая его область эффектов.
+   * Отсутствует у предоставляемых через provide экземпляров либо если контейнер определяет собственное свойство `destroyExecute` (используйте `_destroyExecute()`).
+   */
+  destroyExecute?(): void
+  /**
+   * Fallback management method resetting the local or global instance (available unless `_destroyExecute` is occupied on the container).
+   * This method is absent for provided instances.
+   *
+   * Резервный метод управления для сброса локального или глобального экземпляра (доступен, если имя `_destroyExecute` не занято в контейнере).
+   * У предоставляемых через provide экземпляров этот метод отсутствует.
+   */
+  _destroyExecute?(): void
+}
+
 /** Readonly container with singleton management methods / Контейнер только для чтения с методами управления синглтоном */
 export type ExecuteUseReturn<R extends object | void>
   = Readonly<
-    R
-    & {
-      /**
-       * Returns the original shallowly frozen factory result without the management shell.
-       *
-       * Возвращает исходный поверхностно замороженный результат фабрики без управляющей оболочки.
-       * @returns original factory result / исходный результат фабрики
-       */
-      init(): Readonly<R>
-      /**
-       * Removes the cached local instance or resets the process-wide global instance.
-       * Global reset also stops the instance's effect scope; local reset leaves its effects active.
-       * This method is absent for provided instances.
-       *
-       * Удаляет локальный экземпляр из кеша либо сбрасывает общий глобальный экземпляр процесса.
-       * Глобальный сброс также останавливает область эффектов экземпляра; локальный оставляет эффекты активными.
-       * У предоставляемых через provide экземпляров этот метод отсутствует.
-       */
-      destroyExecute?(): void
-    }
+    string extends keyof R
+      ? Omit<R, keyof ExecuteUseManagement<R>> & ExecuteUseManagement<R>
+      : R & Omit<ExecuteUseManagement<R>, keyof R>
   >
 
 /** Sequence used to distinguish factories within the loaded module / Счётчик для различения фабрик в загруженном модуле */
@@ -47,7 +66,7 @@ let globalId: number = 1
  * Выделяет уникальный ключ фабрики для хранилища и provide/inject.
  * @returns next factory key / следующий ключ фабрики
  */
-const getId = () => `__execute_use::${globalId++}`
+const getId = (): string => `__execute_use::${globalId++}`
 
 /** Global factory registry shared by every SSR request / Общий для всех SSR-запросов реестр глобальных фабрик */
 const globalMethods: (() => unknown)[] = []
@@ -67,7 +86,7 @@ const globalMethods: (() => unknown)[] = []
  * - `provide`: Разделяется через provide/inject в дереве компонентов (стандарт для Vue 3).
  * - `local`: Лениво создаваемый экземпляр на контекст ServerStorage.
  *
- * @template R plain object container or void returned by the factory / обычный объект-контейнер или void, возвращаемый фабрикой
+ * @template R plain object container (not a class instance or reactive proxy) or void returned by the factory / обычный объект-контейнер (не экземпляр класса и не реактивный прокси) или void, возвращаемый фабрикой
  * @template O argument types for the factory function / типы аргументов фабричной функции
  * @template RI instance type with management methods / тип экземпляра с методами управления
  *
@@ -93,16 +112,48 @@ const globalMethods: (() => unknown)[] = []
  * Global factories must not capture request-scoped services or store user-specific data during SSR.
  * Use the local strategy with an initialized ServerStorage request context for request-specific state.
  *
+ * **Warning (`ExecuteUseType.global` arguments):** Factories registered with `ExecuteUseType.global`
+ * are invoked with **zero arguments** during batch startup via {@link executeUseGlobalInit}.
+ * Do not declare mandatory parameters in a `global` factory (prefer {@link executeUseGlobal} or provide default values).
+ *
+ * **Note (`ExecuteUseType.provide` context):** The `provide` strategy relies on an active Vue component `setup()` context
+ * (and checks the internal `instance.provides` registry for repeated calls within the same owner component).
+ * Inside `app.runWithContext()` (where `hasInjectionContext()` is `true` but `getCurrentInstance()` is `null`),
+ * `inject` still resolves app-level values, while `provide` is skipped without warnings when unprovided.
+ * When called outside an injection context (`hasInjectionContext() === false`), `provide`/`inject` are skipped
+ * and a fresh non-cached instance is returned on every call.
+ *
  * Глобальные фабрики не должны захватывать сервисы запроса или хранить пользовательские данные при SSR.
  * Для состояния конкретного запроса используйте local с инициализированным контекстом ServerStorage.
  *
- * Return a plain object container or void. Put class instances inside the container:
- * `() => ({ service: new Service() })`. Only the container is shallowly frozen.
- * Direct class instances are rejected because the management shell copies own enumerable properties.
+ * **Предупреждение (аргументы `ExecuteUseType.global`):** Фабрики со стратегией `ExecuteUseType.global`
+ * вызываются **без аргументов** при пакетной инициализации через {@link executeUseGlobalInit}.
+ * Не объявляйте обязательные параметры в `global`-фабрике (используйте {@link executeUseGlobal} либо задавайте значения по умолчанию).
  *
- * Возвращайте обычный объект-контейнер или void. Размещайте экземпляры классов внутри контейнера:
- * `() => ({ service: new Service() })`. Поверхностно замораживается только контейнер.
- * Прямой возврат экземпляра класса запрещён, поскольку управляющая оболочка копирует собственные перечислимые свойства.
+ * **Особенность контекста `ExecuteUseType.provide`:** Стратегия `provide` рассчитана на вызов внутри `setup()` компонента Vue
+ * (и проверяет внутренний реестр `instance.provides` при повторных обращениях в том же компоненте-владельце).
+ * Внутри `app.runWithContext()` (где `hasInjectionContext()` равен `true`, но `getCurrentInstance()` равен `null`)
+ * `inject` по-прежнему читает значения уровня приложения, а `provide` пропускается без предупреждений при отсутствии провайдера.
+ * При вызове вне контекста внедрения (`hasInjectionContext() === false`) операции `provide`/`inject` пропускаются,
+ * и каждый вызов возвращает новый некэшируемый экземпляр.
+ *
+ * Return a plain object container or void. Put class instances and reactive proxies (`reactive`, `shallowReactive`)
+ * inside the container (e.g., `() => ({ service: new Service() })` or `() => ({ count: ref(0) })`).
+ * Only the outer container is shallowly frozen.
+ * Returning direct class instances or bare `reactive()` / `shallowReactive()` proxies is strictly forbidden:
+ * the management shell shallow-copies own property descriptors and freezes the returned target, which strips
+ * proxy reactivity and blocks direct property mutations.
+ * If the returned container already defines own `init` or `destroyExecute` properties, they are preserved as-is,
+ * and management methods remain accessible via fallback `_init()` and `_destroyExecute()`.
+ *
+ * Возвращайте обычный объект-контейнер или void. Размещайте экземпляры классов и реактивные прокси (`reactive`, `shallowReactive`)
+ * внутри контейнера (например, `() => ({ service: new Service() })` или `() => ({ count: ref(0) })`).
+ * Поверхностно замораживается только внешний контейнер.
+ * Прямой возврат экземпляра класса или «голого» прокси `reactive()` / `shallowReactive()` строго запрещён:
+ * управляющая оболочка поверхностно копирует собственные дескрипторы свойств и замораживает возвращённый объект,
+ * что приводит к потере реактивности прокси и блокировке прямых мутаций его свойств.
+ * Если возвращаемый контейнер уже содержит собственные свойства `init` или `destroyExecute`, они сохраняются без перезаписи,
+ * а методы управления остаются доступны через резервные имена `_init()` и `_destroyExecute()`.
  *
  * @example
  * import { ref } from 'vue'
@@ -130,59 +181,104 @@ export function executeUse<
 >(
   callback: (...args: O) => R,
   type: ExecuteUseType = ExecuteUseType.provide
-): ((...args: O) => RI) | (() => RI) {
+): (...args: O) => RI {
   /** Factory key used by the selected storage strategy / Ключ фабрики для выбранной стратегии хранения */
   const id: string = getId()
+
   /** Process-wide singleton owned by this factory / Общий для процесса синглтон этой фабрики */
   let globalItem: RI | undefined
   /** Detached effects owned by the global singleton / Отсоединённая область эффектов глобального синглтона */
   let globalScope: EffectScope | undefined
 
   /**
-   * Performs the base initialization of the object and wraps it in a management shell.
+   * Executes the factory, validates that the result is a plain object or void, and shallowly freezes it.
    *
-   * Выполняет базовую инициализацию объекта и оборачивает его в управляющую оболочку.
+   * Выполняет фабрику, проверяет, что результат является обычным объектом или void, и поверхностно замораживает его.
    * @param args arguments used for the first initialization / аргументы первого вызова инициализатора
-   * @returns management shell exposing the frozen result's enumerable properties / управляющая оболочка с перечислимыми свойствами замороженного результата
+   * @returns shallowly frozen factory result / поверхностно замороженный результат фабрики
    * @throws TypeError when the factory result is neither a plain object nor void / TypeError, если результат фабрики не является обычным объектом или void
    */
-  const initCallback = (args: O): RI => {
+  const initCallback = (args: O): Readonly<R> => {
     const newItem = callback(...args)
 
     if (newItem !== undefined) {
-      const prototype: unknown = isObjectNotArray(newItem) ? Object.getPrototypeOf(newItem) : undefined
+      const prototype: unknown = isObject(newItem)
+        ? Object.getPrototypeOf(newItem)
+        : undefined
 
-      if (prototype !== Object.prototype && prototype !== null) {
+      if (
+        prototype !== Object.prototype
+        && prototype !== null
+      ) {
         throw new TypeError('executeUse: return a plain object container or void; wrap class instances as { service: instance }.')
       }
+
+      Object.freeze(newItem)
     }
 
-    Object.freeze(newItem)
-
-    return {
-      ...newItem,
-      /**
-       * Retrieves the original frozen factory result.
-       *
-       * Получает исходный замороженный результат фабрики.
-       * @returns original factory result without added management methods / исходный результат фабрики без добавленных методов управления
-       */
-      init(): Readonly<R> {
-        return newItem
-      }
-    } as RI
+    return newItem as Readonly<R>
   }
 
   /**
-   * Initializes the object and provides it to the component tree.
+   * Builds a frozen management shell preserving container property descriptors (including getters)
+   * and attaching `init`/`_init` and optional `destroyExecute`/`_destroyExecute` without overwriting user properties.
    *
-   * Инициализирует объект и предоставляет его в дерево компонентов.
+   * Создаёт замороженную управляющую оболочку с сохранением дескрипторов свойств контейнера (включая геттеры)
+   * и добавлением `init`/`_init` и опциональных `destroyExecute`/`_destroyExecute` без перезаписи пользовательских свойств.
+   * @param rawItem shallowly frozen factory result / поверхностно замороженный результат фабрики
+   * @param destroyExecute optional reset handler for local and global strategies / опциональный обработчик сброса для стратегий local и global
+   * @returns frozen managed container / замороженный управляемый контейнер
+   */
+  const createShell = (
+    rawItem: Readonly<R>,
+    destroyExecute?: () => void
+  ): RI => {
+    const init = (): Readonly<R> => rawItem
+    const shell: Record<PropertyKey, unknown> = {}
+
+    if (rawItem !== undefined) {
+      Object.defineProperties(shell, Object.getOwnPropertyDescriptors(rawItem))
+    }
+
+    if (!Object.hasOwn(shell, 'init')) {
+      shell.init = init
+    }
+
+    if (!Object.hasOwn(shell, '_init')) {
+      shell._init = init
+    }
+
+    if (destroyExecute) {
+      if (!Object.hasOwn(shell, 'destroyExecute')) {
+        shell.destroyExecute = destroyExecute
+      }
+
+      if (!Object.hasOwn(shell, '_destroyExecute')) {
+        shell._destroyExecute = destroyExecute
+      }
+    }
+
+    return Object.freeze(shell) as RI
+  }
+
+  /**
+   * Initializes the object and provides it to the component tree when an active component setup instance is present.
+   *
+   * Инициализирует объект и предоставляет его в дерево компонентов при наличии активного экземпляра setup() компонента.
    * @param args arguments used to initialize the component-owned instance / аргументы инициализации экземпляра компонента-владельца
+   * @param canProvide whether an active component setup instance exists for provide() / имеется ли активный экземпляр setup() компонента для вызова provide()
    * @returns frozen container provided to the component subtree / замороженный контейнер, предоставленный поддереву компонента
    */
-  const initProvide = (args: O): RI => {
-    const newItem = Object.freeze(initCallback(args))
-    provide(id, newItem)
+  const initProvide = (
+    args: O,
+    canProvide: boolean
+  ): RI => {
+    const newItem = createShell(initCallback(args))
+
+    if (canProvide) {
+      provide(id, newItem)
+    }
+
     return newItem
   }
 
@@ -191,35 +287,56 @@ export function executeUse<
    *
    * Инициализирует объект с возможностью сброса.
    * @param args arguments used for initialization / аргументы инициализации
+   * @param localScope effect scope owned by a local instance / область эффектов локального экземпляра
    * @returns frozen container with raw-result access and cache reset methods / замороженный контейнер с методами доступа к исходному результату и сброса кеша
    */
-  const initItem = (args: O): RI => {
-    const newItem = initCallback(args)
+  const initItem = (
+    args: O,
+    localScope?: EffectScope
+  ): RI => {
+    const rawItem = initCallback(args)
+    const item = createShell(rawItem, (): void => {
+      if (type === ExecuteUseType.global) {
+        if (globalItem === item) {
+          const scope = globalScope
 
-    const item = Object.freeze({
-      ...newItem,
-      /**
-       * Removes the local cache entry or clears this global instance and stops its effects.
-       * A stale global instance cannot reset its replacement.
-       *
-       * Удаляет локальную запись кеша либо сбрасывает этот глобальный экземпляр и останавливает его эффекты.
-       * Устаревший глобальный экземпляр не может сбросить созданную ему замену.
-       */
-      destroyExecute(): void {
-        if (type === ExecuteUseType.global) {
-          if (globalItem === item) {
-            const scope = globalScope
-            globalItem = undefined
-            globalScope = undefined
-            scope?.stop()
-          }
-        } else {
+          globalItem = undefined
+          globalScope = undefined
+
+          scope?.stop()
+        }
+      } else {
+        if (ServerStorage.get<RI | undefined>(id) === item) {
           ServerStorage.remove(id)
         }
+
+        localScope?.stop()
       }
     })
 
     return item
+  }
+
+  /**
+   * Initializes a local singleton within its own child effect scope of EffectScopeGlobal.
+   *
+   * Инициализирует локальный синглтон в собственной дочерней области эффектов внутри EffectScopeGlobal.
+   * @param args arguments used when the local instance is absent in ServerStorage / аргументы при отсутствии локального экземпляра в ServerStorage
+   * @returns storage-scoped managed singleton / управляемый синглтон текущего контекста хранилища
+   */
+  const initLocal = (args: O): RI => {
+    const localScope = EffectScopeGlobal.run(() => effectScope())
+    let localItem: RI | undefined
+
+    try {
+      localItem = localScope?.run<RI>(() => initItem(args, localScope)) as RI
+
+      return localItem
+    } finally {
+      if (!localItem) {
+        localScope?.stop()
+      }
+    }
   }
 
   /**
@@ -255,31 +372,33 @@ export function executeUse<
    */
   const method = (...args: O): RI => {
     if (type === ExecuteUseType.provide) {
-      const itemInject = inject<RI | undefined>(id, undefined)
+      if (hasInjectionContext()) {
+        const itemInject = inject<RI | undefined>(id, undefined)
 
-      if (itemInject) {
-        return itemInject
+        if (itemInject) {
+          return itemInject
+        }
+
+        const instance = getCurrentInstance()
+        const itemProvide = (
+          instance as unknown as { provides?: Record<string, RI | undefined> } | null
+        )?.provides?.[id]
+
+        if (itemProvide) {
+          return itemProvide
+        }
+
+        return initProvide(args, Boolean(instance))
       }
 
-      const instance = getCurrentInstance()
-      const itemProvide = (
-        instance as unknown as { provides?: Record<string, RI | undefined> } | null
-      )?.provides?.[id]
-
-      if (itemProvide) {
-        return itemProvide
-      }
-
-      return initProvide(args)
+      return initProvide(args, false)
     }
 
     if (type === ExecuteUseType.global) {
       return initGlobal(args)
     }
 
-    return ServerStorage.get<RI>(id, () => {
-      return EffectScopeGlobal.run<RI>(() => initItem(args)) as RI
-    })
+    return ServerStorage.get<RI>(id, () => initLocal(args))
   }
 
   if (type === ExecuteUseType.global) {
@@ -316,9 +435,13 @@ export function executeUseGlobal<R extends object | void>(callback: () => R): ()
  *
  * @remarks
  * Best for sharing state within a component sub-tree.
+ * Providing requires an active Vue component `setup()` context (`getCurrentInstance() !== null`);
+ * outside `setup()` (including `app.runWithContext()` when unprovided), `provide` is skipped and a fresh non-cached instance is returned on each call.
  * See {@link executeUse} for more details.
  *
  * Лучше всего подходит для совместного использования состояния внутри поддерева компонентов.
+ * Предоставление экземпляра требует активного `setup()` компонента Vue (`getCurrentInstance() !== null`);
+ * вне `setup()` (включая `app.runWithContext()` при отсутствии провайдера) вызов `provide` пропускается, и каждое обращение возвращает новый некэшируемый экземпляр.
  * Подробнее см. {@link executeUse}.
  *
  * @template R factory result type / тип результата фабрики
@@ -334,10 +457,10 @@ export function executeUseProvide<R extends object | void, O extends unknown[]>(
 
 /**
  * Creates a lazy singleton in the current ServerStorage context.
- * Its effects run in EffectScopeGlobal and survive disposal of the caller's scope.
+ * Its effects run in a child scope of EffectScopeGlobal, survive disposal of the caller's scope, and stop on destroyExecute().
  *
  * Создаёт ленивый синглтон в текущем контексте ServerStorage.
- * Его эффекты работают в EffectScopeGlobal и переживают уничтожение области вызывающего кода.
+ * Его эффекты работают в дочерней области EffectScopeGlobal, переживают уничтожение области вызывающего кода и останавливаются при вызове destroyExecute().
  *
  * @remarks
  * Browser calls reuse the cached instance. SSR isolation requires an initialized request context.
@@ -365,5 +488,13 @@ export function executeUseLocal<R extends object | void, O extends unknown[]>(
  * Повторные вызовы используют готовые экземпляры и инициализируют фабрики, добавленные позднее.
  */
 export function executeUseGlobalInit(): void {
-  globalMethods.forEach(method => method())
+  const length = globalMethods.length
+
+  if (length === 0) {
+    return
+  }
+
+  for (let index = 0; index < length; index++) {
+    globalMethods[index]?.()
+  }
 }

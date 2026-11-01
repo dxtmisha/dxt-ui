@@ -4,14 +4,15 @@
 
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
+import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 
 import { computedEternity } from '../computedEternity'
 
 /**
- * Waits for the getter promise and publication of its result.
+ * Waits for pending microtasks and timers.
  *
- * Дожидается промиса геттера и публикации его результата.
- * @returns completion of pending promise continuations / завершение ожидающих продолжений промисов
+ * Дожидается завершения ожидающих микрозадач и таймеров.
+ * @returns completion of pending continuations / завершение ожидающих продолжений
  */
 async function flushEvaluation(): Promise<void> {
   await new Promise<void>((resolve) => {
@@ -21,44 +22,43 @@ async function flushEvaluation(): Promise<void> {
 }
 
 describe('computedEternity: SSR', () => {
-  describe('Lazy one-time evaluation', () => {
-    it('resolves an asynchronous getter after the first read and caches the result', async () => {
+  describe('Server-side evaluation skip', () => {
+    it('skips getter evaluation and returns initialState in a non-DOM runtime', async () => {
       const getter = vi.fn(async () => 'server result')
-      const result = computedEternity(getter, 'initial')
+      const initialState = vi.fn(() => 'initial')
+      const runSpy = vi.spyOn(EffectScopeGlobal, 'run')
+      const result = computedEternity(getter, initialState)
 
+      expect(initialState).toHaveBeenCalledTimes(1)
       expect(getter).not.toHaveBeenCalled()
       expect(result.value).toBe('initial')
       await flushEvaluation()
 
-      expect(result.value).toBe('server result')
-      expect(result.value).toBe('server result')
-      expect(getter).toHaveBeenCalledTimes(1)
+      expect(result.value).toBe('initial')
+      expect(getter).not.toHaveBeenCalled()
+      expect(runSpy).not.toHaveBeenCalled()
     })
 
-    it('does not create a persistent dependency watcher on the server', async () => {
+    it('does not create a dependency watcher or evaluate reactive sources on the server', async () => {
       const source = ref(1)
       const getter = vi.fn(() => source.value)
       const result = computedEternity(getter)
 
       expect(result.value).toBeUndefined()
       await flushEvaluation()
-      expect(result.value).toBe(1)
+      expect(result.value).toBeUndefined()
       source.value = 2
       await flushEvaluation()
 
-      expect(result.value).toBe(1)
-      expect(getter).toHaveBeenCalledTimes(1)
+      expect(result.value).toBeUndefined()
+      expect(getter).not.toHaveBeenCalled()
     })
 
-    it('keeps results of independently created refs isolated', async () => {
+    it('keeps initial states of independently created refs isolated on the server', () => {
       const firstState = { request: 'first' }
       const secondState = { request: 'second' }
-      const first = computedEternity(() => firstState)
-      const second = computedEternity(() => secondState)
-
-      expect(first.value).toBeUndefined()
-      expect(second.value).toBeUndefined()
-      await flushEvaluation()
+      const first = computedEternity(() => ({ request: 'resolved-first' }), () => firstState)
+      const second = computedEternity(() => ({ request: 'resolved-second' }), () => secondState)
 
       expect(first.value).toBe(firstState)
       expect(second.value).toBe(secondState)

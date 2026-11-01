@@ -4,18 +4,21 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `computedEternity`
 
-Tạo một thuộc tính tính toán được tính toán theo yêu cầu và được lưu vào bộ nhớ đệm. Giá trị được cập nhật tự động khi các phụ thuộc thay đổi, nhưng chỉ khi nó đã được truy cập ít nhất một lần. Watcher vẫn hoạt động trong suốt vòng đời của ứng dụng. Điều này đặc biệt hữu ích cho các thuộc tính cần tồn tại trên toàn cầu sau lần truy cập đầu tiên.
+Tạo một thuộc tính tính toán được tính toán theo yêu cầu và được lưu vào bộ nhớ đệm. Giá trị được cập nhật tự động khi các phụ thuộc phản ứng thay đổi, nhưng chỉ khi nó đã được truy cập ít nhất một lần. Watcher chạy trong `EffectScopeGlobal` và vẫn hoạt động trong suốt vòng đời của ứng dụng, phù hợp cho các thuộc tính cần tồn tại trên toàn cầu sau lần truy cập đầu tiên.
 
-Khi các lần tính toán bất đồng bộ chồng lấp nhau, chỉ lần tính toán mới nhất có thể cập nhật giá trị. Kết quả từ các lần tính toán cũ bị bỏ qua, ngay cả khi chúng hoàn tất muộn hơn. Trong khi chờ lần tính toán mới nhất, giá trị trước đó hoặc `initialState` được giữ nguyên.
+Khi các lần tính toán bất đồng bộ chồng lấp nhau, chỉ lần tính toán mới nhất có thể cập nhật giá trị; kết quả và lỗi từ các lần tính toán cũ bị bỏ qua. Trong khi chờ lần tính toán mới nhất, giá trị trước đó hoặc `initialState` được giữ nguyên. Khi không có môi trường DOM (SSR), việc tính toán sẽ bị bỏ qua và trả về trạng thái ban đầu.
+
+Nếu lần tính toán hiện tại gặp lỗi, giá trị trong bộ nhớ đệm sẽ được đặt lại về `initialState` và lỗi được báo cáo qua `ErrorCenter` (nhóm `functional`, mã `computed-eternity`). Việc gán giá trị cho ref trả về cũng báo cáo lỗi chỉ đọc qua `ErrorCenter`. Các phụ thuộc phản ứng phải được truy cập trước câu lệnh `await` đầu tiên.
 
 **Các tham số:**
-- `getter: () => Promise<T> | T` — Một hàm trả về giá trị cần tính toán (có thể là đồng bộ hoặc bất đồng bộ).
-- `initialState?: T` — Giá trị ban đầu của kết quả.
+- `getter: (() => Promise<T> | T) | Promise<T> | T` — Hàm tính toán đồng bộ hoặc bất đồng bộ, promise, hoặc giá trị trực tiếp; các phụ thuộc phản ứng được theo dõi trước câu lệnh `await` đầu tiên.
+- `initialState?: (() => I) | I` — Giá trị được lưu trong bộ nhớ đệm ban đầu hoặc hàm khởi tạo được thực thi ngay khi tạo ref.
 
 **Trả về:**
-`CustomRef<T>` — Một ref tùy chỉnh phản ứng chứa kết quả đã giải quyết của getter.
+`Ref<ComputedEternityValue<T, I>>` — Một custom ref phản ứng chứa giá trị ban đầu hoặc kết quả giải quyết mới nhất của getter.
 
 ```typescript
+import { ref } from 'vue'
 import { computedEternity } from '@dxtmisha/functional'
 
 // Trạng thái ban đầu
@@ -23,7 +26,7 @@ const status = computedEternity(async () => {
   await new Promise(resolve => setTimeout(resolve, 1000))
   return 'online'
 }, 'offline')
-// Status.value là 'offline' cho đến khi getter được giải quyết
+// status.value là 'offline' cho đến khi getter được giải quyết
 
 // Getter bất đồng bộ - sẽ chỉ được gọi khi 'data.value' được truy cập lần đầu tiên
 const data = computedEternity(async () => {
@@ -31,11 +34,7 @@ const data = computedEternity(async () => {
   return response.json()
 })
 
-// Getter đồng bộ
-const i = ref(0)
-const double = computedEternity(() => i.value * 2)
-
-console.log(double.value) // 0
-i.value = 5
-// double.value sẽ là 10 trong lần truy cập tiếp theo
+// Phụ thuộc phản ứng với giá trị ban đầu
+const count = ref(1)
+const double = computedEternity(() => count.value * 2, 0)
 ```

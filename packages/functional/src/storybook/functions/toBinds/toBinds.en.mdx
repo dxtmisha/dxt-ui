@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Merges multiple property objects sequentially using `toBind`. This function is useful for combining multiple layers of properties (e.g., defaults, component props, and state-driven modifiers) while ensuring `class` and `style` properties are correctly combined rather than overwritten.
 
 **Parameters:**
-- `...values: (ItemList | undefined)[]` — A list of property objects to merge.
+- `...values: (ItemList | null | undefined)[]` — A list of property objects to merge.
 
 **Returns:**
 `ConstrBind<R>` — The final merged properties object.

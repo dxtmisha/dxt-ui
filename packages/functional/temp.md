@@ -19,3 +19,6 @@ src/classes/ref/EffectScopeGlobal.ts
 src/functions/getInject.ts
 src/functions/getOptions.ts
 src/functions/dxtFunctionalPlugin.ts
+src/functions/computedEternity.ts
+src/functions/executeUse.ts
+src/functions/toBinds.ts

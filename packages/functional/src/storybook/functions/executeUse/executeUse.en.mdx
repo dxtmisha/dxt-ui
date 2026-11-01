@@ -6,7 +6,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 `executeUse` is a factory that wraps any initializer function and turns its result into a **managed singleton**. The object is created exactly once, frozen (`Object.freeze`), and reused on every subsequent call. Depending on the selected type, the singleton can be component-scoped, global, or local.
 
-To ensure unique identifiers, a combination of an internal global code and the `getElementId()` function is used, guaranteeing no collisions even when used across different modules.
+To isolate instances, a unique key based on a monotonic module sequence counter is used, guaranteeing reliable entity separation without collisions.
 
 
 
@@ -32,8 +32,10 @@ function executeUseLocal<R extends object | void, O extends unknown[]>(callback:
 - `type: ExecuteUseType` — The type of singleton (default: `ExecuteUseType.provide`).
 
 **Returns:** `ExecuteUseReturn<R>` — a frozen object extending `R` with the following methods:
-- `init(): Readonly<R>` — returns the raw result of `callback` without any management methods (`init`, `destroyExecute`).
-- `destroyExecute?(): void` — only on `local` and `global`. Resets the cache, allowing the object to be re-created on the next call.
+- `init(): Readonly<R>` — returns the raw result of `callback` without any management methods (when `init` is occupied on the container, fallback `_init()` is used).
+- `_init(): Readonly<R>` — fallback method returning the raw factory result.
+- `destroyExecute?(): void` — only on `local` and `global`. Resets the cache and stops its effect scope (when `destroyExecute` is occupied on the container, fallback `_destroyExecute()` is used).
+- `_destroyExecute?(): void` — fallback method resetting the cache and stopping effects for `local` and `global`.
 
 ### Class instances inside a container
 
@@ -180,7 +182,7 @@ This is a component-oriented singleton that is strictly tied to the lifecycle of
 - If you need automatic garbage collection of the data straight from memory when the "owner" component is unmounted.
 
 **How it works:**
-The first component that calls this function automatically becomes the "owner". The function instantiates the object and immediately calls `provide(id, instance)`. Any nested components that call the same function will not create a new object; instead, they retrieve the previously created one via `inject(id)`. 
+The first component that calls this function inside its active `setup()` context automatically becomes the "owner". The function instantiates the object and calls `provide(id, instance)`. Any nested components that call the same function will not create a new object; instead, they retrieve the previously created one via `inject(id)`. When invoked within `app.runWithContext()` (where an injection context exists but the component instance is absent), `inject` reads app-level values, while `provide` is safely skipped without Vue warnings. Outside an injection context, each call returns a new isolated instance.
 > Note: This type lacks a `destroyExecute()` method because memory is freed automatically by Vue's reactivity system when the owner component is destroyed.
 
 ```typescript

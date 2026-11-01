@@ -343,5 +343,108 @@ describe('executeUse', () => {
       expect(changed).toHaveBeenCalledTimes(1)
       expect(disposed).toHaveBeenCalledTimes(1)
     })
+
+    it('returns fresh non-cached instances without Vue warnings when called outside setup()', () => {
+      const initialize = vi.fn(() => ({ count: ref(0) }))
+      const useService = factories.executeUseProvide(initialize)
+
+      const first = useService()
+      const second = useService()
+
+      expect(first).not.toBe(second)
+      expect(first.destroyExecute).toBeUndefined()
+      expect(initialize).toHaveBeenCalledTimes(2)
+    })
+
+    it('does not trigger Vue provide() warning inside app.runWithContext() and resolves app-level provides', () => {
+      const initialize = vi.fn(() => ({ mode: 'fallback' }))
+      const useService = factories.executeUseProvide(initialize)
+      const application = createApp({ render: () => null })
+
+      const result = application.runWithContext(() => useService())
+
+      expect(result.mode).toBe('fallback')
+      expect(console.warn).not.toHaveBeenCalled()
+    })
+
+    it('isolates state between sibling component subtrees within the same application', () => {
+      const useService = factories.executeUseProvide((name: string) => ({ name, count: ref(0) }))
+      const branchValues: string[] = []
+
+      const Leaf = defineComponent({
+        setup(): () => null {
+          const service = useService('ignored')
+          branchValues.push(`${service.name}:${service.count.value}`)
+          return () => null
+        }
+      })
+
+      const Branch = defineComponent({
+        props: {
+          branchName: { type: String, required: true },
+          initial: { type: Number, required: true }
+        },
+        setup(props): () => VNode {
+          const service = useService(props.branchName)
+          service.count.value = props.initial
+          return () => h(Leaf)
+        }
+      })
+
+      mountApplication(createApp({
+        render: () => h('div', [
+          h(Branch, { branchName: 'left', initial: 10 }),
+          h(Branch, { branchName: 'right', initial: 20 })
+        ])
+      }))
+
+      expect(branchValues).toEqual(['left:10', 'right:20'])
+    })
+  })
+
+  describe('Local scope disposal and reset protection', () => {
+    it('stops local watchers, fires onScopeDispose, and ignores stale destroyExecute() calls', async () => {
+      const source = ref(0)
+      const changed = vi.fn()
+      const disposed = vi.fn()
+      const useService = factories.executeUseLocal((label: string) => {
+        captureScope()
+        watch(source, changed)
+        onScopeDispose(disposed)
+        return { label, source }
+      })
+
+      const first = useService('first')
+      source.value = 1
+      await nextTick()
+      expect(changed).toHaveBeenCalledTimes(1)
+
+      first.destroyExecute?.()
+      expect(disposed).toHaveBeenCalledTimes(1)
+
+      source.value = 2
+      await nextTick()
+      expect(changed).toHaveBeenCalledTimes(1)
+
+      const second = useService('second')
+      first.destroyExecute?.()
+
+      expect(useService('ignored')).toBe(second)
+      expect(second.label).toBe('second')
+      expect(disposed).toHaveBeenCalledTimes(1)
+    })
+
+    it('disposes the local child scope when the initializer throws', () => {
+      const disposed = vi.fn()
+      const failure = new Error('Local init error')
+      const useService = factories.executeUseLocal(() => {
+        captureScope()
+        onScopeDispose(disposed)
+        throw failure
+      })
+
+      expect(() => useService()).toThrow(failure)
+      expect(disposed).toHaveBeenCalledTimes(1)
+    })
   })
 })

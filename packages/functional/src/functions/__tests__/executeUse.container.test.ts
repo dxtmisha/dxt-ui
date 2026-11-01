@@ -219,6 +219,72 @@ describe.each(Object.values(ExecuteUseType))('executeUse: %s container contract'
       expect(useService().init()).toBe(container)
     })
   })
+
+  it('preserves user-defined init and destroyExecute fields while exposing _init() and _destroyExecute() fallbacks', () => {
+    const customInit = vi.fn(() => 'user-init')
+    const customDestroy = vi.fn(() => 'user-destroy')
+    const container = {
+      init: customInit,
+      destroyExecute: customDestroy,
+      label: 'service'
+    }
+    const useService = factories.executeUse(() => {
+      captureScope()
+      return container
+    }, type)
+
+    withinComponent(() => {
+      const managed = useService()
+
+      expect(managed.init).toBe(customInit)
+      expect(managed.init()).toBe('user-init')
+      expect(managed._init()).toBe(container)
+      expect(managed.destroyExecute).toBe(customDestroy)
+
+      if (type === ExecuteUseType.provide) {
+        expect(managed._destroyExecute).toBeUndefined()
+      } else {
+        expect(managed._destroyExecute).toEqual(expect.any(Function))
+      }
+    })
+  })
+
+  it('preserves container getters and symbol-keyed descriptors on the management shell', () => {
+    const token = Symbol('service-token')
+    let internal = 5
+    const container = {
+      [token]: 'secret-meta',
+      get doubled(): number {
+        return internal * 2
+      }
+    }
+    const useService = factories.executeUse(() => {
+      captureScope()
+      return container
+    }, type)
+
+    withinComponent(() => {
+      const managed = useService()
+
+      expect(managed.doubled).toBe(10)
+      internal = 9
+      expect(managed.doubled).toBe(18)
+      expect((managed as Record<symbol, unknown>)[token]).toBe('secret-meta')
+    })
+  })
+
+  it.each([
+    ['Array', () => [1, 2, 3]],
+    ['Map', () => new Map()],
+    ['Date', () => new Date()],
+    ['Function', () => (): number => 1]
+  ])('rejects non-plain container %s with TypeError', (_label, factory) => {
+    const useService = factories.executeUse(factory as () => object, type)
+
+    withinComponent(() => {
+      expect(() => useService()).toThrow(TypeError)
+    })
+  })
 })
 
 describe('executeUse: container lifecycle', () => {

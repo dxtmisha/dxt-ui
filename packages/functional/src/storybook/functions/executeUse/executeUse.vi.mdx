@@ -6,7 +6,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 `executeUse` là một factory bao bọc bất kỳ hàm khởi tạo nào và biến kết quả của nó thành một **singleton được quản lý**. Đối tượng được tạo đúng một lần, đóng băng (`Object.freeze`) và tái sử dụng trong mỗi lần gọi tiếp theo. Tùy theo loại được chọn, singleton có thể là phạm vi component, toàn cục, hoặc cục bộ.
 
-Để đảm bảo định danh duy nhất, thư viện kết hợp mã code toàn cục nội bộ và hàm `getElementId()`, giúp ngăn chặn hoàn toàn việc trùng lặp ID ngay cả khi sử dụng trong nhiều module khác nhau.
+Để cô lập các instance, thư viện sử dụng một khóa duy nhất dựa trên bộ đếm tuần tự của module, đảm bảo phân tách thực thể an toàn mà không bị xung đột.
 
 
 
@@ -32,8 +32,10 @@ function executeUseLocal<R extends object | void, O extends unknown[]>(callback:
 - `type: ExecuteUseType` — Loại singleton (mặc định: `ExecuteUseType.provide`).
 
 **Trả về:** `ExecuteUseReturn<R>` — đối tượng đóng băng mở rộng `R` với các phương thức:
-- `init(): Readonly<R>` — trả về kết quả gốc của `callback` mà không có các phương thức quản lý (`init`, `destroyExecute`).
-- `destroyExecute?(): void` — chỉ có ở `local` và `global`. Đặt lại cache, cho phép tạo lại đối tượng ở lần gọi tiếp theo.
+- `init(): Readonly<R>` — trả về kết quả gốc của `callback` mà không có các phương thức quản lý (nếu tên `init` đã bị chiếm dụng trên đối tượng chứa, dùng phương thức dự phòng `_init()`).
+- `_init(): Readonly<R>` — phương thức dự phòng trả về kết quả gốc của factory.
+- `destroyExecute?(): void` — chỉ có ở `local` và `global`. Đặt lại cache và dừng scope hiệu ứng (nếu tên bị chiếm dụng, dùng `_destroyExecute()`).
+- `_destroyExecute?(): void` — phương thức dự phòng đặt lại cache và dừng hiệu ứng cho `local` và `global`.
 
 ### Instance của class bên trong đối tượng chứa
 
@@ -180,7 +182,7 @@ if (service.destroyExecute) {
 - Nếu bạn cần dọn dẹp bộ nhớ tự động (garbage collection) ngay khi "component chủ" bị hủy (unmount).
 
 **Cách hoạt động:**
-Component gọi hàm này đầu tiên tự động trở thành "chủ sở hữu" (owner). Hàm tạo đối tượng và ngay lập tức gọi `provide(id, instance)`. Mọi component con (bên trong) khi gọi cùng một hàm này sẽ không tạo ra đối tượng mới mà lấy đối tượng đã tạo trước đó qua `inject(id)`. 
+Component gọi hàm này đầu tiên bên trong ngữ cảnh `setup()` đang hoạt động tự động trở thành "chủ sở hữu" (owner). Hàm tạo đối tượng và gọi `provide(id, instance)`. Mọi component con (bên trong) khi gọi cùng một hàm này sẽ không tạo ra đối tượng mới mà lấy đối tượng đã tạo trước đó qua `inject(id)`. Khi được gọi bên trong `app.runWithContext()` (nơi ngữ cảnh injection tồn tại nhưng không có instance component), `inject` đọc các giá trị ở cấp ứng dụng, trong khi `provide` được bỏ qua an toàn mà không có cảnh báo Vue. Ngoài ngữ cảnh injection, mỗi lần gọi trả về một instance độc lập mới.
 > Chú ý: Loại này thiếu phương thức `destroyExecute()` vì bộ nhớ được tự do hóa một cách tự động nhờ hệ thống phản ứng (reactivity) của Vue tại thời điểm hủy component.
 
 ```typescript

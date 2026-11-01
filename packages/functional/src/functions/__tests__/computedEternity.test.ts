@@ -4,10 +4,12 @@
 
 import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest'
 import { effectScope, getCurrentScope, nextTick, ref, watch, type EffectScope } from 'vue'
-import { ServerStorage } from '@dxtmisha/functional-basic'
+import * as functionalBasic from '@dxtmisha/functional-basic'
+import { ErrorCenter, ServerStorage } from '@dxtmisha/functional-basic'
 
 import { computedEternity } from '../computedEternity'
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
+import { FUNCTIONAL_ERROR_GROUP } from '../../types/errorTypes'
 
 /** Controllable asynchronous result / Управляемый асинхронный результат */
 export interface Deferred<T> {
@@ -15,6 +17,8 @@ export interface Deferred<T> {
   readonly promise: Promise<T>
   /** Resolves the result / Завершает результат успешно */
   readonly resolve: (value: T) => void
+  /** Rejects the result / Завершает результат с ошибкой */
+  readonly reject: (reason: unknown) => void
 }
 
 /**
@@ -25,13 +29,16 @@ export interface Deferred<T> {
  */
 function createDeferred<T>(): Deferred<T> {
   let resolvePromise: (value: T) => void
-  const promise = new Promise<T>((resolve) => {
+  let rejectPromise: (reason: unknown) => void
+  const promise = new Promise<T>((resolve, reject) => {
     resolvePromise = resolve
+    rejectPromise = reject
   })
 
   return {
     promise,
-    resolve: (value: T): void => resolvePromise(value)
+    resolve: (value: T): void => resolvePromise(value),
+    reject: (reason: unknown): void => rejectPromise(reason)
   }
 }
 
@@ -85,6 +92,18 @@ describe('computedEternity', () => {
       expect(getter).toHaveBeenCalledTimes(1)
     })
 
+    it.each([
+      { label: 'direct value', getter: 'direct value', expected: 'direct value' },
+      { label: 'direct promise', getter: Promise.resolve('promise value'), expected: 'promise value' }
+    ])('resolves a $label passed as getter', async ({ getter, expected }) => {
+      const result = computedEternity(getter, 'initial')
+
+      expect(result.value).toBe('initial')
+      await flushEvaluation()
+
+      expect(result.value).toBe(expected)
+    })
+
     it('keeps the initial value until an asynchronous getter resolves', async () => {
       const pending = createDeferred<string>()
       const result = computedEternity(() => pending.promise, 'loading')
@@ -96,6 +115,17 @@ describe('computedEternity', () => {
       await flushEvaluation()
 
       expect(result.value).toBe('resolved')
+    })
+
+    it('supports an initial state with a distinct type', async () => {
+      const pending = createDeferred<{ id: number }>()
+      const result = computedEternity(() => pending.promise, null)
+
+      expect(result.value).toBeNull()
+      pending.resolve({ id: 1 })
+      await flushEvaluation()
+
+      expect(result.value).toEqual({ id: 1 })
     })
 
     it.each([
@@ -156,14 +186,33 @@ describe('computedEternity', () => {
       expect(getter).toHaveBeenCalledTimes(2)
     })
 
-    it('warns on assignment without changing the result or eagerly starting the getter', async () => {
-      const warning = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    it('does not trigger watchers when the resolved value is identical via Object.is', async () => {
+      const source = ref(1)
+      const changed = vi.fn()
+      const result = computedEternity(() => source.value > 0 ? NaN : 0, NaN)
+
+      scope.run(() => watch(result, changed))
+      await flushEvaluation()
+      expect(changed).not.toHaveBeenCalled()
+
+      source.value = 2
+      await flushEvaluation()
+      expect(changed).not.toHaveBeenCalled()
+    })
+
+    it('reports to ErrorCenter on assignment without changing the result or eagerly starting the getter', async () => {
+      const errorHandler = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => undefined)
       const getter = vi.fn(() => 'resolved')
       const result = computedEternity(getter, 'initial')
 
       result.value = 'assigned'
 
-      expect(warning).toHaveBeenCalledExactlyOnceWith('computedEternity: value is read-only.')
+      expect(errorHandler).toHaveBeenCalledExactlyOnceWith({
+        group: FUNCTIONAL_ERROR_GROUP,
+        code: 'computed-eternity',
+        message: 'computedEternity: value is read-only.',
+        details: 'assigned'
+      })
       expect(getter).not.toHaveBeenCalled()
       expect(result.value).toBe('initial')
       await flushEvaluation()
@@ -178,7 +227,62 @@ describe('computedEternity', () => {
       await flushEvaluation()
       expect(result.value).toBe(state)
       state.count.value = 3
-      expect(result.value.count.value).toBe(3)
+      expect(result.value?.count.value).toBe(3)
+    })
+  })
+
+  describe('Error handling and recovery', () => {
+    it.each(['throw', 'reject'])('resets to initialValue on current %s, reports to ErrorCenter, and recovers', async (failureType) => {
+      const errorHandler = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => undefined)
+      const source = ref('loaded')
+      const failure = new Error('Evaluation failed')
+      const result = computedEternity(() => {
+        if (source.value === 'failed') {
+          if (failureType === 'reject') {
+            return Promise.reject<string>(failure)
+          }
+
+          throw failure
+        }
+
+        return Promise.resolve(source.value)
+      }, 'fallback')
+
+      expect(result.value).toBe('fallback')
+      await flushEvaluation()
+      expect(result.value).toBe('loaded')
+
+      source.value = 'failed'
+      await flushEvaluation()
+
+      expect(result.value).toBe('fallback')
+      expect(errorHandler).toHaveBeenCalledExactlyOnceWith({
+        group: FUNCTIONAL_ERROR_GROUP,
+        code: 'computed-eternity',
+        details: failure
+      })
+
+      source.value = 'recovered'
+      await flushEvaluation()
+      expect(result.value).toBe('recovered')
+    })
+
+    it('ignores a rejected obsolete evaluation without resetting the value or reporting to ErrorCenter', async () => {
+      const errorHandler = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => undefined)
+      const previous = createDeferred<string>()
+      const source = ref(false)
+      const result = computedEternity(() => source.value ? 'current' : previous.promise, 'initial')
+
+      expect(result.value).toBe('initial')
+      source.value = true
+      await flushEvaluation()
+      expect(result.value).toBe('current')
+
+      previous.reject(new Error('Obsolete error'))
+      await flushEvaluation()
+
+      expect(result.value).toBe('current')
+      expect(errorHandler).not.toHaveBeenCalled()
     })
   })
 
@@ -278,7 +382,7 @@ describe('computedEternity', () => {
     })
   })
 
-  describe('Effect scope ownership', () => {
+  describe('Effect scope ownership and SSR guard', () => {
     it('keeps its watcher active after the calling scope stops', async () => {
       const source = ref(1)
       const owner = effectScope()
@@ -308,6 +412,20 @@ describe('computedEternity', () => {
       await flushEvaluation()
 
       expect(result.value).toBe('initial')
+    })
+
+    it('skips evaluation and returns the initial state when isDomRuntime is false', async () => {
+      vi.spyOn(functionalBasic, 'isDomRuntime').mockReturnValue(false)
+      const getter = vi.fn(() => 'client')
+      const initialState = vi.fn(() => 'server')
+      const result = computedEternity(getter, initialState)
+
+      expect(result.value).toBe('server')
+      await flushEvaluation()
+
+      expect(result.value).toBe('server')
+      expect(getter).not.toHaveBeenCalled()
+      expect(initialState).toHaveBeenCalledTimes(1)
     })
   })
 })

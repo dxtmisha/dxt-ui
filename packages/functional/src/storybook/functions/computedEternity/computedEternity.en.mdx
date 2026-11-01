@@ -4,18 +4,21 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `computedEternity`
 
-Creates a computed property that is computed on demand and cached. The value is updated automatically when dependencies change, but only if it has been accessed at least once. The watcher remains active throughout the application's lifecycle. This is particularly useful for properties that should persist globally after the first access.
+Creates a computed property that is evaluated on demand and cached. The value is updated automatically when reactive dependencies change, but only after it has been accessed at least once. The watcher runs inside `EffectScopeGlobal` and remains active throughout the application's lifecycle, making it suitable for properties that should persist globally after the first access.
 
-When asynchronous evaluations overlap, only the latest evaluation can update the value. Results from older evaluations are ignored, even if they complete later. While the latest evaluation is pending, the previous value or `initialState` is retained.
+When asynchronous evaluations overlap, only the latest evaluation can update the value; results and errors from older evaluations are ignored. While the latest evaluation is pending, the previous resolved value or `initialState` is retained. Without a DOM runtime (SSR), evaluation is skipped and the initial state is returned.
+
+If the current evaluation throws or rejects, the cached value resets to `initialState` and the error is reported through `ErrorCenter` (group `functional`, code `computed-eternity`). Assigning a value to the returned ref also reports a read-only error through `ErrorCenter`. Reactive dependencies must be accessed before the first `await` statement.
 
 **Parameters:**
-- `getter: () => Promise<T> | T` — A function that returns the value to be computed (can be synchronous or asynchronous).
-- `initialState?: T` — The initial value of the result.
+- `getter: (() => Promise<T> | T) | Promise<T> | T` — A synchronous or asynchronous evaluator function, promise, or direct value; reactive dependencies are tracked before the first `await`.
+- `initialState?: (() => I) | I` — The initial cached value or a factory executed immediately when the ref is created.
 
 **Returns:**
-`CustomRef<T>` — A reactive custom ref containing the resolved result of the getter.
+`Ref<ComputedEternityValue<T, I>>` — A reactive custom ref containing the initial or latest resolved result of the getter.
 
 ```typescript
+import { ref } from 'vue'
 import { computedEternity } from '@dxtmisha/functional'
 
 // Initial state
@@ -23,7 +26,7 @@ const status = computedEternity(async () => {
   await new Promise(resolve => setTimeout(resolve, 1000))
   return 'online'
 }, 'offline')
-// Status.value is 'offline' until the getter resolves
+// status.value is 'offline' until the getter resolves
 
 // Async getter - will only be called when 'data.value' is first accessed
 const data = computedEternity(async () => {
@@ -31,11 +34,7 @@ const data = computedEternity(async () => {
   return response.json()
 })
 
-// Sync getter
-const i = ref(0)
-const double = computedEternity(() => i.value * 2)
-
-console.log(double.value) // 0
-i.value = 5
-// double.value will be 10 on next access
+// Reactive dependency with initial value
+const count = ref(1)
+const double = computedEternity(() => count.value * 2, 0)
 ```
