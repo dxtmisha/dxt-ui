@@ -36,7 +36,7 @@ export function useStorageRef<T>(
   }
 
   const storage = new DataStorage<T>(name)
-  const item = ref<T | undefined>(storage.get(defaultValue, cache))
+  const item = ref<T | undefined>(storage.get(defaultValue, cache) as T | undefined)
 
   EffectScopeGlobal.run(() => {
     watch(item, value => storage.set(value as T), { deep: true })

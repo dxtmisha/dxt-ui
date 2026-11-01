@@ -1,3 +1,10 @@
-// md5:d3532fbb2466a6659e367b35ca7ef6ae true
-/** Unwraps a ref or returns the value directly if not reactive. @keywords unref, ref, reactive, unwrap */
+// md5:13f2811d3aaab977e81692df9e998936
+import { type RefOrNormal } from '../../types/refTypes';
+/**
+ * Returns the value of a reactive reference or the raw value if it is not reactive.
+ *
+ * Возвращает значение реактивной переменной или само значение, если оно не реактивное.
+ * @param item reactive variable or ordinary value / реактивная переменная или обычное значение
+ * @returns unwrapped value / распакованное значение
+ */
 export declare function getRef<T>(item: RefOrNormal<T>): T;

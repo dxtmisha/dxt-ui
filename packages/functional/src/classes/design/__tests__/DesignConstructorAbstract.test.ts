@@ -628,4 +628,53 @@ describe('DesignConstructorAbstract public state', () => {
     assert(design)
     expect(design.getAttrs()).toEqual({ 'id': 'fixture', 'data-zero': 0, 'data-active': false })
   })
+
+  it('initializes DesignComponents registry when non-empty components option is provided and skips when empty', () => {
+    class ComponentHostDesign extends DesignConstructorAbstract {
+      constructor(options?: ConstrOptions<{ button?: object }, ConstrItem, { button?: { type?: string } }>) {
+        super('d1.host', {}, options)
+      }
+
+      getComponents() {
+        return this.components
+      }
+
+      protected initExpose(): Record<string, never> {
+        return {}
+      }
+
+      protected initClasses(): Partial<ConstrClasses> {
+        return { main: 'd1-host' }
+      }
+
+      protected initStyles(): ConstrStyles {
+        return {}
+      }
+
+      protected initRender(): VNode {
+        return h('div', { ref: this.element }, this.components?.render('button'))
+      }
+    }
+
+    let withComponents: ComponentHostDesign | undefined
+    let withoutComponents: ComponentHostDesign | undefined
+
+    const container = mountApplication(createApp({
+      setup() {
+        withComponents = new ComponentHostDesign({
+          components: { button: { render: () => h('button', 'child') } },
+          compMod: { button: { type: 'button' } }
+        })
+        withoutComponents = new ComponentHostDesign({ components: {} })
+        return withComponents.render()
+      }
+    }))
+
+    assert(withComponents)
+    assert(withoutComponents)
+    expect(withComponents.getComponents()?.is('button')).toBe(true)
+    expect(withoutComponents.getComponents()).toBeUndefined()
+    expect(container.querySelector('button')?.getAttribute('type')).toBe('button')
+    expect(container.querySelector('button')?.textContent).toBe('child')
+  })
 })

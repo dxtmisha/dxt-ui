@@ -50,4 +50,12 @@ describe('DesignLifecycleAbstract', () => {
     expect(second.history).toEqual(['unmounted'])
     expect(first.history).toEqual(['mounted'])
   })
+
+  it('distinguishes real instances from duck-typed plain objects via instanceof', () => {
+    const plainObject = {
+      onMounted: () => {},
+      onUnmounted: () => {}
+    }
+    expect(plainObject instanceof DesignLifecycleAbstract).toBe(false)
+  })
 })

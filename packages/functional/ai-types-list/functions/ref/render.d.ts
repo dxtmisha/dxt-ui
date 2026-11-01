@@ -1,6 +1,20 @@
-// md5:174094434a3deb7f9638c7130f4ae953 true
-import { type VNode } from 'vue';
+// md5:ca6a2d65566e1fa53fb1dec061ec2dfd
+import { h, type VNode } from 'vue';
 import type { ItemList } from '@dxtmisha/functional-basic';
-
-/** Renders and caches immutable VNode component structures. @keywords render, vnode, component, cache */
-export declare function render<T extends ItemList>(name: string | any, props?: T, children?: RawChildren | RawSlots, index?: string): VNode;
+import { type RawChildren, type RawSlots } from '../../types/refTypes';
+/**
+ * Creates a VNode and supplies an automatic key when props do not contain a key property.
+ * An explicitly provided key is preserved, including null and undefined.
+ * The generated key depends on component identity rather than presentation classes.
+ *
+ * Создаёт VNode и добавляет автоматический ключ, если props не содержит свойства key.
+ * Явно переданный ключ сохраняется, включая null и undefined.
+ * Автоматический ключ зависит от идентичности компонента, а не от классов оформления.
+ * @template T component properties / свойства компонента
+ * @param name tag name or component definition accepted by Vue h / имя тега или определение компонента, принимаемое Vue h
+ * @param props properties passed to Vue h; copied when an automatic key is added / свойства, передаваемые в Vue h; копируются при добавлении автоматического ключа
+ * @param children child nodes, text or slots / дочерние узлы, текст или слоты
+ * @param index external identifier used for the automatic key / внешний идентификатор для автоматического ключа
+ * @returns newly created VNode / созданный VNode
+ */
+export declare function render<T extends ItemList = ItemList>(name: Parameters<typeof h>[0], props?: T, children?: RawChildren | RawSlots, index?: string): VNode;

@@ -1,5 +1,10 @@
-// md5:f8365e152f16ee6f1972db91af7789cc true
+// md5:a7c3617b3d2d69fd6958facdb557a550
 import { type Ref } from 'vue';
-
-/** Updates the value of a Vue Ref. @keywords vue ref reactivity set update */
+/**
+ * Sets a new value for the reactive reference if it differs from the current value.
+ *
+ * Устанавливает новое значение для реактивной переменной, если оно отличается от текущего значения.
+ * @param item reactive element / реактивный элемент
+ * @param value value for replacement / значение для замены
+ */
 export declare function setRef<T>(item: Ref<T>, value: T): void;

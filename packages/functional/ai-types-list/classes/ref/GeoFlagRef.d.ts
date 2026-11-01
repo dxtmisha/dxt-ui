@@ -1,25 +1,83 @@
-// md5:6f7f3d81c5aae1d46af7cf6c26e855ae true
+// md5:f9cb51ae98f4ddea6c64216f79d22a0a
 import { type ComputedRef } from 'vue';
-import { type GeoFlagItem, type GeoFlagNational } from '@dxtmisha/functional-basic';
-
-/** Reactive wrapper for managing geo flags and country/language information. @keywords geo, flag, country, language, reactive */
+import { GeoFlag, type GeoFlagItem, type GeoFlagNational } from '@dxtmisha/functional-basic';
+import type { RefOrNormal } from '../../types/refTypes';
+/**
+ * Reactive wrapper around `GeoFlag` for country and language metadata and flag icon identifiers. The internal base instance follows the supplied code ref or the current `GeoRef` location.
+ *
+ * Реактивная обёртка над `GeoFlag` для данных стран, языков и идентификаторов иконок флагов. Базовый экземпляр следует переданной ссылке на код либо текущему местоположению `GeoRef`.
+ */
 export declare class GeoFlagRef {
-    /** Initializes the reactive geo flag manager with an optional country or language code. @keywords constructor, init */
+    /** Instance for working with flags / Экземпляр для работы с флагами */
+    protected flag: ComputedRef<GeoFlag>;
+    /**
+     * Initializes GeoFlagRef with the supplied configuration.
+     *
+     * Инициализирует GeoFlagRef с переданными настройками.
+     * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+     */
     constructor(code?: RefOrNormal<string | undefined>);
-    /** Retrieves the resolved country code. @keywords country_code, get_code */
+    /**
+     * Returns the current base code as a string.
+     *
+     * Возвращает текущий базовый код строкой.
+     * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
+     */
     getCode(): string;
-    /** Retrieves reactive country and flag metadata. @keywords country, flag_item, metadata */
+    /**
+     * Returns the country metadata for the explicit code or current base code.
+     *
+     * Возвращает данные страны по явному либо текущему базовому коду.
+     * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
     get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>;
-    /** Retrieves reactive language and flag metadata. @keywords language, flag_item, metadata */
+    /**
+     * Returns language metadata for the explicit code or current base code.
+     *
+     * Возвращает данные языка по явному либо текущему базовому коду.
+     * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
     getLanguage(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>;
-    /** Retrieves a reactive link or URL to the flag asset. @keywords flag_url, flag_link */
+    /**
+     * Returns the flag icon identifier for the explicit code or current base code.
+     *
+     * Возвращает идентификатор флага по явному либо текущему базовому коду.
+     * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
     getFlag(code?: RefOrNormal<string>): ComputedRef<string | undefined>;
-    /** Retrieves a reactive list of country flag items filtered by codes. @keywords country_list, flag_list */
+    /**
+     * Returns country flag items, optionally filtered by reactive codes.
+     *
+     * Возвращает флаги стран с необязательной фильтрацией реактивным списком кодов.
+     * @param codes Optional list of country/language codes. / Необязательный список кодов стран/языков.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
     getList(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]>;
-    /** Retrieves a reactive list of language flag items filtered by codes. @keywords language_list, flag_list */
+    /**
+     * Returns language flag items, optionally filtered by reactive codes.
+     *
+     * Возвращает флаги языков с необязательной фильтрацией реактивным списком кодов.
+     * @param codes Optional list of country/language codes. / Необязательный список кодов стран/языков.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
     getListLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]>;
-    /** Retrieves a reactive list of country flag items in their national language. @keywords national_names, country_national */
+    /**
+     * Returns country names in national languages.
+     *
+     * Возвращает названия стран на национальных языках.
+     * @param codes Optional list of country/language codes. / Необязательный список кодов стран/языков.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
     getNational(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>;
-    /** Retrieves a reactive list of language flag items in their national language. @keywords national_languages, language_national */
+    /**
+     * Returns language names in national languages.
+     *
+     * Возвращает названия языков на национальных языках.
+     * @param codes Optional list of country/language codes. / Необязательный список кодов стран/языков.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
     getNationalLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>;
 }

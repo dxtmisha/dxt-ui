@@ -38,12 +38,12 @@ export * from './composables/ref/useLoadingRef'
 export * from './composables/ref/useMeta'
 export * from './composables/ref/useQueryRef'
 export * from './composables/ref/useRouterList'
+export * from './composables/ref/useScope'
 export * from './composables/ref/useSearchRef'
 export * from './composables/ref/useSearchValueRef'
 export * from './composables/ref/useSessionRef'
 export * from './composables/ref/useStorageRef'
 export * from './composables/ref/useTranslateRef'
-export * from './composables/ref/useScope'
 
 // Functions
 export * from './functions/basic'

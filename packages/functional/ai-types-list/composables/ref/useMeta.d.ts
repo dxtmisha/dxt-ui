@@ -1,83 +1,224 @@
-// md5:d6d7863a500b7995e1cb70cf6073c9d1 true
-import { Meta, MetaRobots } from '@dxtmisha/functional-basic';
-import { Ref } from 'vue';
-
-/** Reactive meta tag management. Prefer setTitle(), setDescription(), and other set methods; writable refs update synchronously in SSR and are batched in the browser. @keywords useMeta, meta, seo, head, open graph */
+// md5:ed00e380e0ca20ef4d7a1759e978bd1a
+import { MetaRobots } from '@dxtmisha/functional-basic';
+/**
+ * Vue composable for reactive meta tags management with automatic DOM synchronization.
+ * Uses singleton pattern - all components share the same meta state.
+ * Prefer setTitle(), setDescription(), and the other set methods for changes.
+ * Direct ref writes remain supported; SSR updates are synchronous, browser updates are batched.
+ *
+ * Vue композабл для реактивного управления мета-тегами с автоматической синхронизацией DOM.
+ * Использует паттерн singleton - все компоненты используют одно состояние мета-тегов.
+ * Для изменений предпочтительно использовать setTitle(), setDescription() и остальные set-методы.
+ * Прямая запись в refs поддерживается; SSR обновляется синхронно, изменения в браузере объединяются.
+ */
 export declare const useMeta: () => Readonly<{
-    meta: Meta;
-    title: Ref<string, string>;
-    keyword: Ref<string, string>;
-    description: Ref<string, string>;
-    author: Ref<string, string>;
-    image: Ref<string, string>;
-    canonical: Ref<string, string>;
-    robots: Ref<MetaRobots, MetaRobots>;
-    siteName: Ref<string, string>;
-    /** Generates HTML string for all meta tags for SSR. @keywords ssr, html, meta */
+    meta: import("@dxtmisha/functional-basic").Meta;
+    /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */
+    title: import("vue").Ref<string, string>;
+    /** Reactive keywords meta tag / Реактивный мета-тег keywords */
+    keyword: import("vue").Ref<string, string>;
+    /** Reactive description meta tag / Реактивный мета-тег description */
+    description: import("vue").Ref<string, string>;
+    /** Reactive author meta tag / Реактивный мета-тег author */
+    author: import("vue").Ref<string, string>;
+    /** Reactive Open Graph / Twitter Card image URL / Реактивный URL изображения для Open Graph / Twitter Card */
+    image: import("vue").Ref<string, string>;
+    /** Reactive canonical URL / Реактивный канонический URL */
+    canonical: import("vue").Ref<string, string>;
+    /** Reactive robots meta tag directive / Реактивная директива мета-тега robots */
+    robots: import("vue").Ref<MetaRobots, MetaRobots>;
+    /** Reactive site name for Open Graph and Twitter Card / Реактивное название сайта для Open Graph и Twitter Card */
+    siteName: import("vue").Ref<string, string>;
+    /**
+     * Generates HTML string for all meta tags (for SSR).
+     *
+     * Генерирует HTML-строку для всех мета-тегов (для SSR).
+     */
     getHtmlMeta: () => string;
-    /** Synchronizes reactive state with current MetaStatic state. @keywords sync, meta */
+    /**
+     * Synchronizes all reactive values with the current state of MetaStatic.
+     *
+     * Синхронизирует все реактивные значения с текущим состоянием MetaStatic.
+     */
     sync: () => void;
-    /** Updates MetaStatic values with current reactive state. @keywords update, meta */
+    /**
+     * Updates MetaStatic values with current reactive state.
+     *
+     * Обновляет значения MetaStatic текущим реактивным состоянием.
+     */
     update: () => void;
-    /** Updates MetaStatic values in SSR environments. @keywords ssr, update */
+    /**
+     * Updates MetaStatic values if the current environment is SSR (not a DOM runtime).
+     *
+     * Обновляет значения MetaStatic, если текущая среда — SSR (не DOM-среда).
+     */
     updateSsr: () => void;
-    /** Sets the page title. @keywords title, seo */
+    /**
+     * Sets the page title.
+     *
+     * Устанавливает заголовок страницы.
+     * @param value Title to set / Заголовок для установки
+     */
     setTitle: (value: string) => void;
-    /** Sets the keywords meta tag. @keywords keywords, seo */
+    /**
+     * Sets the keywords meta tag.
+     *
+     * Устанавливает мета-тег keywords.
+     * @param value Keywords to set / Ключевые слова для установки
+     */
     setKeywords: (value: string) => void;
-    /** Sets the description meta tag. @keywords description, seo */
+    /**
+     * Sets the description meta tag.
+     *
+     * Устанавливает мета-тег description.
+     * @param value Description to set / Описание для установки
+     */
     setDescription: (value: string) => void;
-    /** Sets the author meta tag. @keywords author, meta */
+    /**
+     * Sets the author meta tag.
+     *
+     * Устанавливает мета-тег author.
+     * @param value Author to set / Автор для установки
+     */
     setAuthor: (value: string) => void;
-    /** Sets Open Graph and Twitter Card image URL. @keywords image, og, twitter */
+    /**
+     * Sets the Open Graph / Twitter Card image URL.
+     *
+     * Устанавливает URL изображения для Open Graph / Twitter Card.
+     * @param value Image URL to set / URL изображения для установки
+     */
     setImage: (value: string) => void;
-    /** Sets the canonical URL. @keywords canonical, url */
+    /**
+     * Sets the canonical URL.
+     *
+     * Устанавливает канонический URL.
+     * @param value Canonical URL to set / Канонический URL для установки
+     */
     setCanonical: (value: string) => void;
-    /** Sets the robots meta tag directive. @keywords robots, indexing */
+    /**
+     * Sets the robots meta tag directive.
+     *
+     * Устанавливает директиву мета-тега robots.
+     * @param value Robots directive to set / Директива robots для установки
+     */
     setRobots: (value: MetaRobots) => void;
-    /** Sets site name for Open Graph and Twitter Card. @keywords siteName, og, twitter */
+    /**
+     * Sets the site name for Open Graph and Twitter Card.
+     *
+     * Устанавливает название сайта для Open Graph и Twitter Card.
+     * @param value Site name to set / Название сайта для установки
+     */
     setSiteName: (value: string) => void;
-    /** Sets suffix for the page title. @keywords suffix, title */
-    setSuffix: (suffix: string) => void;
-}> & {
-    /** Initializes meta manager instance. @keywords init, meta */
-    init(): Readonly<{
-        meta: Meta;
-        title: Ref<string, string>;
-        keyword: Ref<string, string>;
-        description: Ref<string, string>;
-        author: Ref<string, string>;
-        image: Ref<string, string>;
-        canonical: Ref<string, string>;
-        robots: Ref<MetaRobots, MetaRobots>;
-        siteName: Ref<string, string>;
-        /** Generates HTML string for all meta tags for SSR. @keywords ssr, html, meta */
-        getHtmlMeta: () => string;
-        /** Synchronizes reactive state with current MetaStatic state. @keywords sync, meta */
-        sync: () => void;
-        /** Updates MetaStatic values with current reactive state. @keywords update, meta */
-        update: () => void;
-        /** Updates MetaStatic values in SSR environments. @keywords ssr, update */
-        updateSsr: () => void;
-        /** Sets the page title. @keywords title, seo */
-        setTitle: (value: string) => void;
-        /** Sets the keywords meta tag. @keywords keywords, seo */
-        setKeywords: (value: string) => void;
-        /** Sets the description meta tag. @keywords description, seo */
-        setDescription: (value: string) => void;
-        /** Sets the author meta tag. @keywords author, meta */
-        setAuthor: (value: string) => void;
-        /** Sets Open Graph and Twitter Card image URL. @keywords image, og, twitter */
-        setImage: (value: string) => void;
-        /** Sets the canonical URL. @keywords canonical, url */
-        setCanonical: (value: string) => void;
-        /** Sets the robots meta tag directive. @keywords robots, indexing */
-        setRobots: (value: MetaRobots) => void;
-        /** Sets site name for Open Graph and Twitter Card. @keywords siteName, og, twitter */
-        setSiteName: (value: string) => void;
-        /** Sets suffix for the page title. @keywords suffix, title */
-        setSuffix: (suffix: string) => void;
-    }>;
-    /** Cleans up meta watchers and listeners. @keywords cleanup, destroy */
-    destroyExecute?(): void;
-};
+    /**
+     * Sets the suffix for the page title.
+     *
+     * Устанавливает суффикс для заголовка страницы.
+     * @param suffix Suffix to set / Суффикс для установки
+     */
+    setSuffix: (suffix: string) => import("@dxtmisha/functional-basic").Meta;
+} & Omit<import("../../library").ExecuteUseManagement<{
+    meta: import("@dxtmisha/functional-basic").Meta;
+    /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */
+    title: import("vue").Ref<string, string>;
+    /** Reactive keywords meta tag / Реактивный мета-тег keywords */
+    keyword: import("vue").Ref<string, string>;
+    /** Reactive description meta tag / Реактивный мета-тег description */
+    description: import("vue").Ref<string, string>;
+    /** Reactive author meta tag / Реактивный мета-тег author */
+    author: import("vue").Ref<string, string>;
+    /** Reactive Open Graph / Twitter Card image URL / Реактивный URL изображения для Open Graph / Twitter Card */
+    image: import("vue").Ref<string, string>;
+    /** Reactive canonical URL / Реактивный канонический URL */
+    canonical: import("vue").Ref<string, string>;
+    /** Reactive robots meta tag directive / Реактивная директива мета-тега robots */
+    robots: import("vue").Ref<MetaRobots, MetaRobots>;
+    /** Reactive site name for Open Graph and Twitter Card / Реактивное название сайта для Open Graph и Twitter Card */
+    siteName: import("vue").Ref<string, string>;
+    /**
+     * Generates HTML string for all meta tags (for SSR).
+     *
+     * Генерирует HTML-строку для всех мета-тегов (для SSR).
+     */
+    getHtmlMeta: () => string;
+    /**
+     * Synchronizes all reactive values with the current state of MetaStatic.
+     *
+     * Синхронизирует все реактивные значения с текущим состоянием MetaStatic.
+     */
+    sync: () => void;
+    /**
+     * Updates MetaStatic values with current reactive state.
+     *
+     * Обновляет значения MetaStatic текущим реактивным состоянием.
+     */
+    update: () => void;
+    /**
+     * Updates MetaStatic values if the current environment is SSR (not a DOM runtime).
+     *
+     * Обновляет значения MetaStatic, если текущая среда — SSR (не DOM-среда).
+     */
+    updateSsr: () => void;
+    /**
+     * Sets the page title.
+     *
+     * Устанавливает заголовок страницы.
+     * @param value Title to set / Заголовок для установки
+     */
+    setTitle: (value: string) => void;
+    /**
+     * Sets the keywords meta tag.
+     *
+     * Устанавливает мета-тег keywords.
+     * @param value Keywords to set / Ключевые слова для установки
+     */
+    setKeywords: (value: string) => void;
+    /**
+     * Sets the description meta tag.
+     *
+     * Устанавливает мета-тег description.
+     * @param value Description to set / Описание для установки
+     */
+    setDescription: (value: string) => void;
+    /**
+     * Sets the author meta tag.
+     *
+     * Устанавливает мета-тег author.
+     * @param value Author to set / Автор для установки
+     */
+    setAuthor: (value: string) => void;
+    /**
+     * Sets the Open Graph / Twitter Card image URL.
+     *
+     * Устанавливает URL изображения для Open Graph / Twitter Card.
+     * @param value Image URL to set / URL изображения для установки
+     */
+    setImage: (value: string) => void;
+    /**
+     * Sets the canonical URL.
+     *
+     * Устанавливает канонический URL.
+     * @param value Canonical URL to set / Канонический URL для установки
+     */
+    setCanonical: (value: string) => void;
+    /**
+     * Sets the robots meta tag directive.
+     *
+     * Устанавливает директиву мета-тега robots.
+     * @param value Robots directive to set / Директива robots для установки
+     */
+    setRobots: (value: MetaRobots) => void;
+    /**
+     * Sets the site name for Open Graph and Twitter Card.
+     *
+     * Устанавливает название сайта для Open Graph и Twitter Card.
+     * @param value Site name to set / Название сайта для установки
+     */
+    setSiteName: (value: string) => void;
+    /**
+     * Sets the suffix for the page title.
+     *
+     * Устанавливает суффикс для заголовка страницы.
+     * @param suffix Suffix to set / Суффикс для установки
+     */
+    setSuffix: (suffix: string) => import("@dxtmisha/functional-basic").Meta;
+}>, "meta" | "title" | "description" | "sync" | "keyword" | "author" | "image" | "canonical" | "robots" | "siteName" | "getHtmlMeta" | "update" | "updateSsr" | "setTitle" | "setKeywords" | "setDescription" | "setAuthor" | "setImage" | "setCanonical" | "setRobots" | "setSiteName" | "setSuffix">>;

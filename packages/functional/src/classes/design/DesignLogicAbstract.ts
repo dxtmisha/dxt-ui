@@ -7,7 +7,7 @@ import {
   watch,
   type Ref
 } from 'vue'
-import { ErrorCenter, forEach } from '@dxtmisha/functional-basic'
+import { ErrorCenter, forEach, forOwn } from '@dxtmisha/functional-basic'
 
 import { DesignLifecycleAbstract } from './DesignLifecycleAbstract'
 import type { DesignComponents } from './DesignComponents'
@@ -21,7 +21,6 @@ import type {
   ConstrInstance,
   ConstrItem,
   ConstrItems,
-  ConstrItemsItem,
   ConstrParameters
 } from '../../types/constructorTypes'
 
@@ -212,13 +211,13 @@ export abstract class DesignLogicAbstract<
    * @returns calculated result / вычисленный результат
    */
   protected initConditions(): void {
-    forEach(this.constructorItems, (item: ConstrItemsItem<CONSTRUCTORS, any>, name) => {
+    forOwn(this.constructorItems, (item, name) => {
       if (item?.conditions) {
         watch(
           item.conditions,
           (active) => {
             if (active) {
-              this.getInstance(name as keyof CONSTRUCTORS & string)
+              this.getInstance(name)
             }
           },
           { immediate: true }

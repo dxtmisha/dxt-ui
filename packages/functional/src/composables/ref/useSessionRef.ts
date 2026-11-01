@@ -34,7 +34,7 @@ export function useSessionRef<T>(
   }
 
   const storage = new DataStorage<T>(name, true)
-  const item = ref<T | undefined>(storage.get(defaultValue))
+  const item = ref<T | undefined>(storage.get(defaultValue) as T | undefined)
 
   EffectScopeGlobal.run(() => {
     watch(item, value => storage.set(value as T), { deep: true })

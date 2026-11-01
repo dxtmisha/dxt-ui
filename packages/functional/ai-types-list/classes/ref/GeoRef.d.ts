@@ -1,26 +1,82 @@
-// md5:fa7b73af8d1942ecfda485a9a62544a7 true
+// md5:6c3c49d3a4c710f505bdc10143312a3e
 import { type ComputedRef, type Ref } from 'vue';
 import { type GeoItemFull } from '@dxtmisha/functional-basic';
-/** Reactive class for geographic and locale data management. @keywords geo, location, country, language, locale */
+/**
+ * Static reactive facade for the current geographic context. It caches a shallow ref to `Geo.getItem()` and computed projections through `ServerStorage`.
+ *
+ * Статический реактивный фасад текущего географического контекста. Кэширует поверхностную ссылку на `Geo.getItem()` и вычисляемые проекции через `ServerStorage`.
+ */
 export declare class GeoRef {
-    /** Returns reactive object with full geographic information. @keywords geo, country, info, ref */
+    /**
+     * Returns the cached geographic item ref.
+     *
+     * Возвращает кэшированную ссылку на географические данные.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     static get(): Ref<GeoItemFull>;
-    /** Returns reactive string with current country code. @keywords country, code, geo */
-    static getCountry(): ComputedRef<string>;
-    /** Returns reactive string with current language code. @keywords language, code, locale */
-    static getLanguage(): ComputedRef<string>;
-    /** Returns reactive string with full standard locale format. @keywords standard, locale, format */
-    static getStandard(): ComputedRef<string>;
-    /** Returns reactive string representing first day of the week. @keywords first day, week, calendar */
-    static getFirstDay(): ComputedRef<string>;
-    /** Returns reactive string with current location identifier. @keywords location, geo */
-    static getLocation(): ComputedRef<string>;
-    /** Returns reactive string with current country code from location. @keywords location, country */
-    static getLocationCountry(): ComputedRef<string>;
-    /** Returns reactive string with current language code from location. @keywords location, language */
-    static getLocationLanguage(): ComputedRef<string>;
-    /** Updates geographic data by locale or country code. @keywords set, update, locale, geo */
+    /**
+     * Sets the current Geo locale with persistence enabled and replaces the reactive item.
+     *
+     * Устанавливает текущую локаль Geo с сохранением и заменяет реактивные данные.
+     * @param code Locale, country or language code. / Код локали, страны или языка.
+     * @returns No return value. / Нет возвращаемого значения.
+     */
     static set(code: string): void;
-    /** Sets default country code value or resolver function. @keywords default, fallback, country */
+    /**
+     * Returns the country code.
+     *
+     * Возвращает код страны.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
+    static getCountry(): ComputedRef<string>;
+    /**
+     * Returns the first-weekday token from country metadata.
+     *
+     * Возвращает обозначение первого дня недели из данных страны.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
+    static getFirstDay(): ComputedRef<string>;
+    /**
+     * Returns the country metadata language.
+     *
+     * Возвращает язык из данных страны.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
+    static getLanguage(): ComputedRef<string>;
+    /**
+     * Returns the current location locale.
+     *
+     * Возвращает текущую локаль местоположения.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
+    static getLocation(): ComputedRef<string>;
+    /**
+     * Returns the country segment of the requested location.
+     *
+     * Возвращает сегмент страны запрошенного местоположения.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
+    static getLocationCountry(): ComputedRef<string>;
+    /**
+     * Returns the language segment of the requested location.
+     *
+     * Возвращает языковой сегмент запрошенного местоположения.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
+    static getLocationLanguage(): ComputedRef<string>;
+    /**
+     * Returns the standard locale code.
+     *
+     * Возвращает стандартный код локали.
+     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+     */
+    static getStandard(): ComputedRef<string>;
+    /**
+     * Sets the Geo fallback code or factory and refreshes the reactive item from Geo.
+     *
+     * Устанавливает резервный код Geo либо фабрику и обновляет реактивные данные из Geo.
+     * @param code Fallback locale code or factory. / Резервный код локали либо фабрика.
+     * @returns No return value. / Нет возвращаемого значения.
+     */
     static setValueDefault(code?: string | (() => string)): void;
 }

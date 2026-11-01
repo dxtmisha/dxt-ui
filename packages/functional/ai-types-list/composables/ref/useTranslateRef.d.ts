@@ -1,11 +1,43 @@
-// md5:126b102ebb61fa7f29d512e13aa37cb6 true
+// md5:5ea88fd502096156bb6a00425afd94df
 import { type ShallowRef } from 'vue';
 import { type TranslateInstance, type TranslateList } from '@dxtmisha/functional-basic';
 /**
- * Returns a reactive ShallowRef of translated texts for given keys, auto-updating on locale change.
- * @example const translations = useTranslateRef(['home.title', 'home.description'] as const);
- * @keywords translate translation i18n vue composable shallowRef reactive
+ * Getting the translated text by an array of keys or a string with a key.
+ *
+ * It returns a `ShallowRef` that automatically updates when the global language changes.
+ * Pending updates are invalidated on language changes and scope disposal.
+ * Use `as const` for arrays to ensure proper TypeScript key inference.
+ *
+ * ---
+ *
+ * Получение переведенного текста по массиву ключей или пункту с ключом.
+ *
+ * Возвращает `ShallowRef`, который автоматически обновляется при смене глобального языка.
+ * Незавершённые обновления теряют актуальность при смене языка и завершении scope.
+ * Используйте `as const` для массивов, чтобы обеспечить корректный вывод типов ключей в TypeScript.
+ *
+ * ### Examples / Примеры использования:
+ * ```typescript
+ * // 1. Using the main composable / Использование основного хука
+ * const translations = useTranslateRef(['home.title', 'home.description'] as const);
+ *
+ * // 2. Using the shorthand 't' / Использование сокращения 't'
+ * const labels = t(['button.save', 'button.cancel'] as const);
+ * ```
+ *
+ * @param names a string or an array with keys / строка или массив с ключами
+ * @param translateInstance a translate instance / экземпляр перевода
  */
 export declare function useTranslateRef<T extends (string | string[])[]>(names: T, translateInstance?: TranslateInstance): ShallowRef<TranslateList<T>>;
-/** Shorthand for `useTranslateRef`. @keywords translate i18n t vue composable */
+/**
+ * Shorthand for useTranslateRef.
+ * Use `as const` for arrays to ensure proper TypeScript key inference.
+ *
+ * ---
+ *
+ * Сокращение для useTranslateRef.
+ * Используйте `as const` для массивов, чтобы обеспечить корректный вывод типов ключей в TypeScript.
+ *
+ * @param names a string or an array with keys / строка или массив с ключами
+ */
 export declare const t: <T extends string[]>(names: T) => ShallowRef<TranslateList<T>>;

@@ -12,7 +12,7 @@ import {
   useSlots,
   type VNode
 } from 'vue'
-import { isDifferent, isFilled } from '@dxtmisha/functional-basic'
+import { isDifferent, isFilled, isFunction } from '@dxtmisha/functional-basic'
 
 import { DesignComponents } from './DesignComponents'
 import { DesignName } from './DesignName'
@@ -33,13 +33,13 @@ import type {
  * Абстрактный конструктор рендеринга Vue: объединяет именование, ссылку на корневой элемент, подключённые компоненты, атрибуты, слоты, экспортируемые данные и вычисляемые классы/стили. Создавайте конкретный подкласс в `setup()` компонента.
  */
 export abstract class DesignConstructorAbstract<
-  E extends Element,
-  COMP extends ConstrComponent,
-  EMITS extends ConstrItem,
-  EXPOSE extends ConstrItem,
-  SLOTS extends ConstrItem,
-  CLASSES extends ConstrClasses,
-  P extends ConstrItem
+  E extends Element = Element,
+  COMP extends ConstrComponent = ConstrComponent,
+  EMITS extends ConstrItem = ConstrItem,
+  EXPOSE extends ConstrItem = ConstrItem,
+  SLOTS extends ConstrItem = ConstrItem,
+  CLASSES extends ConstrClasses = ConstrClasses,
+  P extends ConstrItem = ConstrItem
 > {
   /** Component naming helper / Помощник именования компонента */
   protected readonly naming: DesignName
@@ -58,9 +58,9 @@ export abstract class DesignConstructorAbstract<
   protected readonly styles?: ComputedRef<ConstrStyles>
 
   /** Additional attributes / Дополнительные атрибуты */
-  protected attrs?: ConstrItem
+  protected readonly attrs?: ConstrItem
   /** Named slots / Именованные слоты */
-  protected slots?: SLOTS
+  protected readonly slots?: SLOTS
 
   /**
    * Initializes DesignConstructorAbstract with the supplied configuration.
@@ -108,10 +108,13 @@ export abstract class DesignConstructorAbstract<
    * @param name Sub-element class-map key. / Ключ подэлемента в карте классов.
    * @returns Object containing the key and computed class entry. / Объект с ключом и вычисляемым значением класса.
    */
-  getKeyClass<K extends keyof CLASSES>(name: K & string) {
+  getKeyClass<K extends keyof CLASSES>(name: K & string): {
+    key: K & string
+    class: CLASSES[K & string] | undefined
+  } {
     return {
       key: name,
-      class: (this.classes?.value as ConstrItem | undefined)?.[name]
+      class: this.classes?.value?.[name]
     }
   }
 
@@ -208,11 +211,7 @@ export abstract class DesignConstructorAbstract<
     children?: VNode[],
     props: ConstrItem = {}
   ): VNode | undefined {
-    if (
-      this.slots
-      && this.slots?.[name]
-      && typeof this.slots[name] === 'function'
-    ) {
+    if (isFunction(this.slots?.[name])) {
       const slot = renderSlot(this.slots as Slots, String(name), props)
 
       if (children) {

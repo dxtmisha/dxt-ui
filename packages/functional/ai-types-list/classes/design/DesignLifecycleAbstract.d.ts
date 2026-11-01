@@ -1,8 +1,12 @@
-// md5:22f8338f905ad6bc507285a2b60a2659 true
-/** Base abstract class declaring optional synchronous component lifecycle hooks. @keywords lifecycle, mounted, unmounted, hooks */
+// md5:2336b15c563d2f2a5e12090c1aab679a
+/**
+ * Abstract marker class for dependencies with synchronous component lifecycle callbacks. `DesignLogicAbstract` invokes these callbacks only on instances derived from this class.
+ *
+ * Абстрактный базовый класс зависимостей с синхронными обработчиками жизненного цикла. `DesignLogicAbstract` вызывает эти обработчики только у экземпляров, наследующих этот класс.
+ */
 export declare abstract class DesignLifecycleAbstract {
-    /** Lifecycle callback executed after component mount. @keywords onMounted, mount, hook */
+    /** Optional synchronous mount callback. / Необязательный синхронный обработчик монтирования. */
     readonly onMounted?: () => void;
-    /** Lifecycle callback executed after component unmount. @keywords onUnmounted, unmount, hook */
+    /** Optional synchronous cleanup callback. / Необязательный синхронный обработчик очистки. */
     readonly onUnmounted?: () => void;
 }

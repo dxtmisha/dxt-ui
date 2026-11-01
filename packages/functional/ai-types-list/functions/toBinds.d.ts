@@ -1,4 +1,11 @@
-// md5:cc6a8a947ca4cfea0d165e09f1295e09 true
+// md5:a047a4c858a4362725749b1c56e3cce0
 import type { ItemList } from '@dxtmisha/functional-basic';
-/** Merges multiple objects with properties, intelligently combining their classes and styles. @keywords merge binds classes styles */
-export declare function toBinds<R extends ItemList = ItemList>(...values: (ItemList | undefined)[]): ConstrBind<R>;
+import type { ConstrBind } from '../types/constructorTypes';
+/**
+ * Merges multiple objects with properties, taking into account their classes and styles.
+ *
+ * Объединяет несколько объектов со свойствами с учётом классов и стилей в них.
+ * @param values list of input values / список входных значений
+ * @returns merged object / объединенный объект
+ */
+export declare function toBinds<R extends ItemList = ItemList>(...values: (ItemList | null | undefined)[]): ConstrBind<R>;

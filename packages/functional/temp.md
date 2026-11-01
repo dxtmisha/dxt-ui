@@ -22,3 +22,6 @@ src/functions/dxtFunctionalPlugin.ts
 src/functions/computedEternity.ts
 src/functions/executeUse.ts
 src/functions/toBinds.ts
+src/classes/design/DesignComponents.ts
+src/classes/design/DesignConstructorAbstract.ts
+src/classes/design/DesignLifecycleAbstract.ts

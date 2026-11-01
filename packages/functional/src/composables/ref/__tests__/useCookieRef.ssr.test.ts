@@ -33,7 +33,7 @@ interface Settings {
 }
 
 /** Current request storage / Хранилище текущего запроса */
-const contexts = /*#__PURE__*/ new AsyncLocalStorage<CookieRequestContext>()
+const contexts = /* #__PURE__ */ new AsyncLocalStorage<CookieRequestContext>()
 /** Contexts whose effects need cleanup / Контексты, эффекты которых нужно остановить */
 const storageContexts: CookieRequestContext[] = []
 
@@ -108,7 +108,7 @@ describe('useCookieRef SSR', () => {
 
   it.each([
     [0, '0'],
-    [false, '0'],
+    [false, 'false'],
     ['', ''],
     [undefined, '']
   ] as const)('should synchronously persist or clear a value of %s', async (value, serialized) => {

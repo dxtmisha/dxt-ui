@@ -24,11 +24,11 @@ import type {
  * Типизированный реестр подключённых компонентов Vue. Находит компоненты по имени, кэширует вычисляемые модификации, объединяет свойства и создаёт VNode с согласованными ключами.
  */
 export class DesignComponents<
-  COMP extends ConstrComponent,
-  P extends ConstrItem
+  COMP extends ConstrComponent = ConstrComponent,
+  P extends ConstrItem = ConstrItem
 > {
   /** Cache for computed properties / Кэш для вычисляемых свойств */
-  protected caching: Record<string, ComputedRef<ConstrItem>> = {}
+  protected readonly caching: Record<string, ComputedRef<ConstrItem>> = {}
 
   /**
    * Initializes DesignComponents with the supplied configuration.
@@ -78,19 +78,18 @@ export class DesignComponents<
     props?: P[K] | ConstrItem
   ): ConstrItem | undefined {
     if (index) {
-      if (!(index in this.caching)) {
-        this.caching[index] = computed(() => this.computeModification(index))
+      let caching = this.caching[index]
+
+      if (!caching) {
+        caching = computed(() => this.computeModification(index))
+        this.caching[index] = caching
       }
 
-      const caching = this.caching[index]
-
-      if (caching) {
-        if (props) {
-          return toBinds(caching.value, props)
-        }
-
-        return caching.value
+      if (props) {
+        return toBinds(caching.value, props)
       }
+
+      return caching.value
     }
 
     return props
@@ -192,8 +191,8 @@ export class DesignComponents<
    * Calculates modified input data for connected components.
    *
    * Вычисляет модифицированные входные данные для подключенных компонентов.
-   * @param index the name of this / название данного
-   * @returns modified properties / модифицированные свойства
+   * @param index Entry or modification index. / Индекс записи либо модификации.
+   * @returns Modified properties. / Модифицированные свойства.
    */
   protected computeModification<K extends keyof P>(
     index: K & string | string

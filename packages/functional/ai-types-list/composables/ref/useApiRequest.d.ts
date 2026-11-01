@@ -1,38 +1,112 @@
-// md5:b9d0a1b9a2bc5566515e7a9db61d060f true
+// md5:1b0883c7a42866e76547e794999e514f
 import { type ApiInstance, ApiMethodItem, type ApiData, type ApiFetch, type ApiErrorStorageList, type ApiDataValidation } from '@dxtmisha/functional-basic';
-
-/** API request setup configuration options. @keywords api, request, setup, options */
+import type { ApiOptions } from '../../types/apiTypes';
+import type { RefOrNormal } from '../../types/refTypes';
+/**
+ * Setup interface for API request.
+ *
+ * Интерфейс настроек для запроса API.
+ */
 export interface UseApiRequestSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> {
-    /** Endpoint path or reactive ref. */
+    /**
+     * Path to the API endpoint. Can be a reactive Ref or a normal string.
+     *
+     * Путь к endpoint API. Может быть реактивным Ref или обычной строкой.
+     */
     path?: RefOrNormal<string | undefined>;
-    /** HTTP method. Defaults to POST. */
+    /**
+     * HTTP method used for the request (e.g., GET, POST, PUT, DELETE). Defaults to POST.
+     *
+     * HTTP метод, используемый для запроса (например, GET, POST, PUT, DELETE). По умолчанию POST.
+     */
     method?: ApiMethodItem;
-    /** Callback after receiving response data, regardless of success / Колбэк после получения данных ответа, независимо от успешности */
+    /**
+     * Callback invoked after receiving and processing response data, regardless of success.
+     * Can return a Promise for asynchronous operations.
+     *
+     * Колбэк после получения и обработки данных ответа, независимо от успешности.
+     * Может возвращать Promise для асинхронных операций.
+     */
     action?: (data: Return | undefined) => Promise<void> | void;
     /** Callback for a successful response / Колбэк для успешного ответа */
     actionSuccess?: (data: Return) => Promise<void> | void;
-    /** Callback for error data or a transport exception / Колбэк для ошибочных данных или исключения при передаче запроса */
+    /**
+     * Callback for an error response or validation failure; transport errors pass undefined and the exception /
+     * Колбэк для ошибочного ответа или результата валидации; при ошибке сети передаются undefined и исключение
+     */
     actionError?: (data: Return | undefined, error?: unknown) => Promise<void> | void;
-    /** Transforms raw response data before returning. */
+    /**
+     * Transformation function that modifies the raw response data before returning it.
+     *
+     * Функция трансформации, которая преобразует исходные данные ответа перед их возвратом.
+     */
     transformation?: (data: T) => Return;
-    /** Validates request payload contract. */
+    /**
+     * Function to validate the request payload contract. Used to ensure that the API
+     * request payload matches the expected structure.
+     *
+     * Функция для проверки контракта данных запроса. Используется для гарантии того,
+     * что отправляемая полезная нагрузка запроса API соответствует ожидаемой структуре.
+     */
     validateRequestContract?: (data: Request) => ApiDataValidation & Return;
-    /** Validates response data contract. */
+    /**
+     * Function to validate response data contract. Used to ensure that the API
+     * response matches the expected structure. Highly recommended to use with `@effect/schema`.
+     * It should return `ApiDataValidation` containing a `status` ('success' or 'error')
+     * and the parsed data or errors.
+     *
+     * Функция для проверки контракта данных ответа. Используется для гарантии того, что ответ API соответствует
+     * ожидаемой структуре. Настоятельно рекомендуется использовать с `@effect/schema`. Должна возвращать объект
+     * `ApiDataValidation`, содержащий `status` ('success' или 'error') и распарсенные данные или ошибки.
+     */
     validateResponseContract?: (data: T) => ApiDataValidation & Return;
-    /** Expected error contracts list for centralized handling. */
+    /**
+     * Array of expected error contracts for the request (`ApiErrorStorageList`).
+     * Highly recommended to add if there is information about possible request errors. Allows you to predefine
+     * possible errors (by code, status, or custom validation) which will be centrally processed by the application.
+     *
+     * Массив контрактов ожидаемых ошибок для запроса (`ApiErrorStorageList`). Желательно добавлять, если есть
+     * информация о возможных ошибках запроса. Позволяет заранее описать возможные ошибки (по коду, статусу или
+     * кастомной валидации) для централизованной обработки в приложении.
+     */
     errorContract?: ApiErrorStorageList;
-    /** Extracts nested 'data' field from response envelope. Defaults to true. */
+    /**
+     * If true, extracts the nested 'data' field from the response object instead of returning the raw envelope.
+     * Defaults to true.
+     *
+     * Если true, извлекает вложенное поле 'data' из объекта ответа вместо возврата исходного конверта.
+     * По умолчанию true.
+     */
     toData?: boolean;
-    /** Additional request options. */
+    /**
+     * Additional request options (headers, query params, etc.).
+     *
+     * Дополнительные опции запроса (заголовки, параметры запроса и т.д.).
+     */
     options?: ApiOptions;
-    /** Custom Api instance. Defaults to global singleton. */
+    /**
+     * Custom Api instance to execute the request on. Defaults to global Api singleton instance.
+     *
+     * Кастомный экземпляр класса Api для выполнения запроса. По умолчанию используется глобальный синглтон Api.
+     */
     apiInstance?: ApiInstance;
 }
-
-/** Composable for managing and executing API requests with loading state. @keywords api, request, fetch, composable */
+/**
+ * Use api request.
+ *
+ * Использование запроса api.
+ * @param setup Configured parameters as a single object / Настроенные параметры в виде единого объекта
+ * @returns Object with loading state and send method / Объект с состоянием загрузки и методом отправки
+ */
 export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>({ path, method, action, actionSuccess, actionError, transformation, validateRequestContract, validateResponseContract, errorContract, toData, options, apiInstance }: UseApiRequestSetup<T, Request, Return>): {
-    /** True while any send call, validation or callback is active / True, пока активен хотя бы один вызов send, его валидация или колбэк */
+    /** Whether any send call is active / Выполняется ли хотя бы один вызов send */
     loading: import("vue").Ref<boolean, boolean>;
-    /** Executes the API request. @keywords send, execute, call */
+    /**
+     * Sends a request and awaits callbacks; loading covers all active send calls.
+     *
+     * Отправляет запрос и ожидает колбэки; loading учитывает все активные вызовы send.
+     * @param request Request data / Данные запроса
+     * @returns Response data / Данные ответа
+     */
     send(request?: Request): Promise<Return | undefined>;
 };

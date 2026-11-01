@@ -1,89 +1,306 @@
-// md5:149f764de6bdd9eb4aa2aeb770193b6e true
-/** Reactive data list management with search, focus, selection, and navigation. @keywords list, data, reactive, selection, focus */
+// md5:4d4ecdb4bef56565d5fe057eafb2dc11
+import type { RefOrNormal, RefType } from '../../types/refTypes';
+import type { ListDataFull, ListDataItem, ListList, ListListInput, ListNames, ListSelectedItem, ListSelectedList } from '../../types/listTypes';
+/**
+ * Reactive list model for normalization, nested groups, selection, focus and search matching. It exposes computed top-level and flattened views without rendering UI or mutating the selected input.
+ *
+ * Реактивная модель списка: нормализация, вложенные группы, выбор, фокус и поиск. Предоставляет вычисляемые верхнеуровневые и плоские представления, не рисуя UI и не изменяя входное выделение.
+ */
 export declare class ListDataRef {
-    /** Initializes list data manager with reactive configurations. @keywords constructor, init */
+    protected readonly list: RefOrNormal<ListListInput | undefined>;
+    protected readonly focus?: RefType<ListSelectedItem | undefined> | undefined;
+    protected readonly highlight?: RefType<string | undefined> | undefined;
+    protected readonly highlightLengthStart?: RefType<number | undefined> | undefined;
+    protected readonly filterMode?: RefType<boolean | undefined> | undefined;
+    protected readonly selected?: RefType<ListSelectedList | undefined> | undefined;
+    protected readonly keyValue?: RefType<string | undefined> | undefined;
+    protected readonly keyLabel?: RefType<string | undefined> | undefined;
+    protected readonly lite?: RefType<number | undefined> | undefined;
+    protected readonly min: RefOrNormal<number | string | undefined>;
+    protected readonly max: RefOrNormal<number | string | undefined>;
+    protected readonly parent?: string | undefined;
+    /** Cached sublists without inherited properties / Кэш подсписков без унаследованных свойств */
+    protected subList: Record<string, ListDataRef | undefined>;
+    /**
+     * Initializes ListDataRef with the supplied configuration.
+     *
+     * Инициализирует ListDataRef с переданными настройками.
+     * @param list Input list or record, optionally reactive. / Входной список либо словарь, может быть реактивным.
+     * @param focus Focused index ref. / Ссылка на индекс фокуса.
+     * @param highlight Search query ref. / Ссылка на поисковый запрос.
+     * @param highlightLengthStart Minimum search-length ref; defaults to 2 when omitted. / Ссылка на минимальную длину поиска; при отсутствии 2.
+     * @param filterMode Filter-mode ref copied into fullData. / Ссылка на режим фильтра, копируемый в fullData.
+     * @param selected Ref with a single selected identifier or an array. / Ссылка на один выбранный идентификатор либо массив.
+     * @param keyValue Value-field name ref; defaults to value. / Ссылка на имя поля значения; по умолчанию value.
+     * @param keyLabel Label-field name ref; defaults to label. / Ссылка на имя поля метки; по умолчанию label.
+     * @param lite Ref for the simplified-list threshold. / Ссылка на порог упрощённого списка.
+     * @param min Selection minimum; defaults to 0. / Минимум выбора; по умолчанию 0.
+     * @param max Selection maximum; defaults to 9_999_999. / Максимум выбора; по умолчанию 9_999_999.
+     * @param parent Parent index, or undefined for the root level. / Индекс родителя либо undefined для корневого уровня.
+     */
     constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, filterMode?: RefType<boolean | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, min?: RefOrNormal<number | string | undefined>, max?: RefOrNormal<number | string | undefined>, parent?: string | undefined);
-    /** Reactive list formatted for display. @keywords data, items, list */
+    /** Normalized entries at the current level. / Нормализованные записи текущего уровня. */
     readonly data: import("vue").ComputedRef<ListList>;
-    /** Simplified reactive list for fast rendering. @keywords lite, fast-load */
+    /** Reduced entries only when the lite threshold is exceeded; otherwise the full normalized data. / Сокращённые записи при превышении порога lite; иначе нормализованные данные целиком. */
     readonly liteData: import("vue").ComputedRef<ListList>;
-    /** Detailed reactive records including selection and focus state. @keywords full-data, records */
+    /** Current-level entries enriched with focus, highlight, filterMode, selected and disabled. An explicit disabled value takes precedence. / Записи текущего уровня с focus, highlight, filterMode, selected и disabled. Явное disabled имеет приоритет. */
     readonly fullData: import("vue").ComputedRef<ListDataFull>;
-    /** Flat map containing all records including sublists. @keywords map, flat */
+    /** Flattened item/group/menu entries, retaining group headers. / Плоские записи item/group/menu с сохранением заголовков групп. */
     readonly map: import("vue").ComputedRef<ListList>;
-    /** Flat list containing item-type entries only. @keywords map-items, entries */
+    /** Leaf item entries from the flattened map. / Конечные item из плоской карты. */
     readonly mapItems: import("vue").ComputedRef<ListList>;
-    /** Reactive selectable list items. @keywords items, selectable */
+    /** Item/group/menu entries from the flattened map. / Записи item/group/menu из плоской карты. */
     readonly items: import("vue").ComputedRef<ListList>;
-    /** Index of first item matching search highlight criteria. @keywords highlight, search-index */
+    /** First matching map position, or -1 for no match or a query below the threshold. Matches label, index or search. / Позиция первого совпадения в карте либо -1 при отсутствии совпадения или коротком запросе. Проверяет label, index и search. */
     readonly highlightFirstItem: import("vue").ComputedRef<number>;
-    /** Indicates whether any item is currently selected. @keywords selected, check */
+    /** Whether at least one leaf matches the selected input. / Совпадает ли хотя бы один конечный элемент с входным выбором. */
     readonly isSelected: import("vue").ComputedRef<boolean>;
-    /** Indicates whether minimum selection threshold is satisfied. @keywords min-selection, limit */
+    /** True when a positive minimum is reached by current-group selections. / Истина при достижении положительного минимума выбранными элементами текущей группы. */
     readonly isSelectedMin: import("vue").ComputedRef<boolean>;
-    /** Indicates whether maximum selection threshold is reached. @keywords max-selection, limit */
+    /** True when a positive maximum is reached by current-group selections. A falsy maximum uses the default limit. / Истина при достижении положительного максимума выбранными элементами текущей группы. Ложное значение максимума использует лимит по умолчанию. */
     readonly isSelectedMax: import("vue").ComputedRef<boolean>;
-    /** List of currently selected items across full map. @keywords selected-list */
+    /** Selected leaves across the flattened map. / Выбранные конечные элементы всей плоской карты. */
     readonly selectedList: import("vue").ComputedRef<ListList>;
-    /** List of currently selected items within active group. @keywords selected-group */
+    /** Selected entries at the current level. / Выбранные записи текущего уровня. */
     readonly selectedListInGroup: import("vue").ComputedRef<ListList>;
-    /** List of display labels for selected items. @keywords labels, selected-names */
+    /** Labels of selected leaves. / Метки выбранных конечных элементов. */
     readonly selectedNames: import("vue").ComputedRef<ListNames>;
-    /** Array of raw values for selected items. @keywords values, selected-values */
+    /** Values of selected leaves, preserving zero and false. / Значения выбранных конечных элементов с сохранением нуля и false. */
     readonly selectedValues: import("vue").ComputedRef<any[]>;
-    /** Checks if lite rendering mode is enabled. @keywords lite-check */
+    /**
+     * True when the nonzero lite threshold is exceeded by the current-level length.
+     *
+     * Истина, если длина текущего уровня превышает ненулевой порог lite.
+     * @returns Whether the described condition is satisfied. / Выполнено ли описанное условие.
+     */
     isLite(): boolean;
-    /** Checks if any item is focused. @keywords focus-check */
+    /**
+     * Checks the focused index against the flattened map.
+     *
+     * Проверяет индекс фокуса в плоской карте.
+     * @returns Whether the described condition is satisfied. / Выполнено ли описанное условие.
+     */
     isFocus(): boolean;
-    /** Checks if search highlight matches exist. @keywords highlight-check */
+    /**
+     * Reports whether search found a map entry.
+     *
+     * Сообщает, найдено ли совпадение в карте.
+     * @returns Whether the described condition is satisfied. / Выполнено ли описанное условие.
+     */
     isHighlight(): boolean;
-    /** Checks if search query meets minimum highlight length. @keywords highlight-active */
+    /**
+     * True when the query is below the minimum length or at least one match exists.
+     *
+     * Истина, если запрос короче порога либо найдено хотя бы одно совпадение.
+     * @returns Whether the described condition is satisfied. / Выполнено ли описанное условие.
+     */
     isHighlightActive(): boolean;
-    /** Total count of records in current view. @keywords length, count */
+    /**
+     * Returns the current-level item count.
+     *
+     * Возвращает количество записей текущего уровня.
+     * @returns Current entry count or threshold. / Текущее количество записей либо порог.
+     */
     getLength(): number;
-    /** Total count of all mapped records. @keywords map-length, count */
+    /**
+     * Returns the flattened map count, including group and menu entries.
+     *
+     * Возвращает размер плоской карты, включая группы и меню.
+     * @returns Current entry count or threshold. / Текущее количество записей либо порог.
+     */
     getLengthByMap(): number;
-    /** Total count of selectable items. @keywords items-length, count */
+    /**
+     * Returns the item/group/menu count from the flattened map.
+     *
+     * Возвращает количество item/group/menu в плоской карте.
+     * @returns Current entry count or threshold. / Текущее количество записей либо порог.
+     */
     getLengthByItems(): number;
-    /** Returns identifier of currently focused item. @keywords get-focus */
+    /**
+     * Returns the supplied focus value.
+     *
+     * Возвращает переданное значение фокуса.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getFocus(): ListSelectedItem | undefined;
-    /** Returns record of currently focused item. @keywords get-focus-item */
+    /**
+     * Finds the focused entry at the current level only.
+     *
+     * Ищет запись в фокусе только на текущем уровне.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getFocusItem(): ListDataItem | undefined;
-    /** Returns active highlight search string. @keywords get-highlight */
+    /**
+     * Returns the search text.
+     *
+     * Возвращает текст поиска.
+     * @returns Requested string, or undefined when unavailable. / Запрошенная строка либо undefined при отсутствии.
+     */
     getHighlight(): string | undefined;
-    /** Returns minimum query length required to trigger highlight. @keywords highlight-length */
+    /**
+     * Returns the search-length threshold, defaulting to 2.
+     *
+     * Возвращает минимальную длину поиска, по умолчанию 2.
+     * @returns Current entry count or threshold. / Текущее количество записей либо порог.
+     */
     getHighlightLengthStart(): number;
-    /** Returns list of selected item identifiers. @keywords get-selected */
+    /**
+     * Returns the single selection or selection array supplied to the model.
+     *
+     * Возвращает переданное одиночное выделение либо массив выделений.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getSelected(): ListSelectedList | undefined;
-    /** Finds selected identifier offset by given step. @keywords selected-step */
+    /**
+     * Moves from the first selected leaf by the supplied step. Without a selected leaf, returns the first leaf index. An empty list returns `undefined`.
+     *
+     * Перемещается от первого выделенного конечного элемента на указанный шаг. Без выделенного элемента возвращает индекс первого. Для пустого списка возвращает `undefined`.
+     * @param step Signed navigation step. / Шаг навигации со знаком.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getSelectedByStep(step: number): ListSelectedItem | undefined;
-    /** Finds next selected identifier. @keywords selected-next */
+    /**
+     * Returns the next selected-relative leaf index, with boundary wrapping.
+     *
+     * Возвращает следующий индекс конечного элемента относительно выбора с переходом через границу.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getSelectedNext(): ListSelectedItem | undefined;
-    /** Finds previous selected identifier. @keywords selected-prev */
+    /**
+     * Returns the previous selected-relative leaf index, with boundary wrapping.
+     *
+     * Возвращает предыдущий индекс конечного элемента относительно выбора с переходом через границу.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getSelectedPrev(): ListSelectedItem | undefined;
-    /** Finds item offset by step count relative to given item. @keywords item-step */
+    /**
+     * Moves in the leaf-only map. An out-of-range positive step returns the first leaf; a negative step returns the last. A zero step keeps a known item.
+     *
+     * Перемещается по карте конечных элементов. Положительный шаг за границу возвращает первый, отрицательный — последний элемент. Нулевой шаг сохраняет найденный элемент.
+     * @param item Current list entry. / Текущая запись списка.
+     * @param step Signed navigation step. / Шаг навигации со знаком.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined;
-    /** Finds next sequential item from given item. @keywords item-next */
+    /**
+     * Returns the next leaf after an item, wrapping to the first.
+     *
+     * Возвращает следующий конечный элемент, с переходом к первому.
+     * @param item Item or output array as specified by the signature. / Элемент либо выходной массив согласно сигнатуре.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getItemNext(item: ListDataItem): ListDataItem | undefined;
-    /** Finds previous sequential item from given item. @keywords item-prev */
+    /**
+     * Returns the previous leaf before an item, wrapping to the last.
+     *
+     * Возвращает предыдущий конечный элемент, с переходом к последнему.
+     * @param item Item or output array as specified by the signature. / Элемент либо выходной массив согласно сигнатуре.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getItemPrev(item: ListDataItem): ListDataItem | undefined;
-    /** Finds item offset by step count relative to given index. @keywords index-step */
+    /**
+     * Looks up an index in the map, then applies leaf navigation. An unknown index returns `undefined`.
+     *
+     * Находит индекс в карте, затем выполняет навигацию по конечным элементам. Неизвестный индекс возвращает `undefined`.
+     * @param index Entry or modification index. / Индекс записи либо модификации.
+     * @param step Signed navigation step. / Шаг навигации со знаком.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getIndexByStep(index: string, step: number): ListDataItem | undefined;
-    /** Finds next sequential item after given index. @keywords index-next */
+    /**
+     * Resolves an index and returns its next leaf.
+     *
+     * Находит индекс и возвращает следующий конечный элемент.
+     * @param index Entry or modification index. / Индекс записи либо модификации.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getIndexNext(index: string): ListDataItem | undefined;
-    /** Finds previous sequential item before given index. @keywords index-prev */
+    /**
+     * Resolves an index and returns its previous leaf.
+     *
+     * Находит индекс и возвращает предыдущий конечный элемент.
+     * @param index Entry or modification index. / Индекс записи либо модификации.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getIndexPrev(index: string): ListDataItem | undefined;
-    /** Retrieves item record and key by index identifier. @keywords item-by-index */
+    /**
+     * Looks up an entry in the flattened map and returns its map key and item.
+     *
+     * Ищет запись в плоской карте и возвращает ключ карты и элемент.
+     * @param index Entry or modification index. / Индекс записи либо модификации.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getItemByIndex(index?: string): {
         key: number;
         item: ListDataItem;
     } | undefined;
-    /** Retrieves item record by numeric key. @keywords item-by-key */
+    /**
+     * Returns the entry at a flattened-map position, or undefined.
+     *
+     * Возвращает запись по позиции плоской карты либо undefined.
+     * @param key Position in the flattened map. / Позиция в плоской карте.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getItemByKey(key: number): ListDataItem | undefined;
-    /** Retrieves first child item under specified parent. @keywords first-child, parent */
+    /**
+     * Returns the first item/group/menu entry with the supplied parent.
+     *
+     * Возвращает первую запись item/group/menu с указанным родителем.
+     * @param parent Parent index, or undefined for the root level. / Индекс родителя либо undefined для корневого уровня.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getFirstItemByParent(parent: string | undefined): ListDataItem | undefined;
-    /** Retrieves last child item under specified parent. @keywords last-child, parent */
+    /**
+     * Returns the last item/group/menu entry with the supplied parent.
+     *
+     * Возвращает последнюю запись item/group/menu с указанным родителем.
+     * @param parent Parent index, or undefined for the root level. / Индекс родителя либо undefined для корневого уровня.
+     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+     */
     getLastItemByParent(parent: string | undefined): ListDataItem | undefined;
-    /** Creates sublist manager for group item. @keywords sublist, group */
+    /**
+     * Returns a cached child model sharing state refs and limits. Recreates it when the group’s source identity changes; the parent is the group index.
+     *
+     * Возвращает кэшированную дочернюю модель с общими ссылками состояния и лимитами. Пересоздаёт её при замене источника группы; родитель — индекс группы.
+     * @param item Item or output array as specified by the signature. / Элемент либо выходной массив согласно сигнатуре.
+     * @returns Cached child list model. / Кэшированная дочерняя модель списка.
+     */
     getSubList(item: ListDataItem): ListDataRef;
+    /**
+     * Checks if the item is an item, group, or menu.
+     *
+     * Проверяет, является ли элемент элементом, группой или меню.
+     * @param item List item data/ данные элемента списка
+     * @returns calculated result / вычисленный результат
+     */
+    protected isItem(item: ListDataItem): boolean;
+    /**
+     * Checks if the item is in the specified parent.
+     *
+     * Проверяет, находится ли элемент в указанном родителе.
+     * @param parent parent identifier to search for / идентификатор родителя для поиска
+     * @param item List item data/ данные элемента списка
+     * @returns calculated result / вычисленный результат
+     */
+    protected isInParent(parent: string | undefined, item: ListDataItem): boolean;
+    /**
+     * Returns the index for the list item.
+     *
+     * Возвращает индекс для элемента списка.
+     * @param index current index / текущий индекс
+     * @param value item value / значение элемента
+     * @param key item key / ключ элемента
+     * @param label item label / метка элемента
+     * @returns calculated result / вычисленный результат
+     */
+    protected getIndex(index: string | number | undefined, value: any, key: string | number | undefined, label: string | number | undefined): string | number | undefined;
+    /**
+     * Creates an object of the record element.
+     *
+     * Создает объект элемента записи.
+     * @param key the value of the key in the element/ значения ключа у элемента
+     * @param item selected element/ выбранный элемент
+     * @returns calculated result / вычисленный результат
+     */
+    protected initItem(key: string | number, item: any): ListDataItem;
 }

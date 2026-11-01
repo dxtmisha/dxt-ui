@@ -1,5 +1,16 @@
-// md5:668c8f565a2728ea402d6876886295f4 true
+// md5:cbaf0a5e758022f18bec4477f4e02ffd
 import { type Ref } from 'vue';
 import { type CookieOptions } from '@dxtmisha/functional-basic';
-/** Creates a reactive Vue ref synchronized with cookies; writes are synchronous during SSR and batched in the browser, including nested changes. @param name Cookie name @param defaultValue Initial fallback value or getter function @param options Cookie configuration options @keywords cookie reactive state storage vue ref useCookieRef ssr */
+/**
+ * Creates a reactive variable to manage cookies.
+ * Changes, including nested objects and arrays, are persisted synchronously during SSR.
+ * Browser writes are batched on the next Vue update cycle.
+ *
+ * Создает реактивную переменную для управления cookie.
+ * Изменения, включая вложенные объекты и массивы, сохраняются синхронно при SSR.
+ * В браузере записи объединяются в следующем цикле обновления Vue.
+ * @param name cookie name / название cookie
+ * @param defaultValue value or function to change data / значение или функция для изменения данных
+ * @param options additional parameters / дополнительные параметры
+ */
 export declare function useCookieRef<T>(name: string, defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): Ref<T | string | undefined>;

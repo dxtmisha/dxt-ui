@@ -1,43 +1,62 @@
-// md5:09d74ccb68d9bd2bac19ab046a4905df true
+// md5:9f2c52a560dd66de11c1d18ac244a882
 import type { ApiData, ApiDataValidation, ApiDefaultValue, ApiErrorStorageList, ApiFetch, ApiMethodItem, SearchColumns, SearchItem, SearchOptions } from '@dxtmisha/functional-basic';
+import type { RefOrNormal, RefType } from './refTypes';
 import type { Ref } from 'vue';
+/** Options for api requests/ Опции для запросов api */
 export type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
+/**
+ * Base type for API management values, either a single value or an array.
+ *
+ * Базовый тип для значений управления API: одиночное значение или массив.
+ */
 export type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
-/** Configuration for GET requests in API management @keywords api, get, fetch, request */
+/**
+ * Configuration for the main GET request in API management.
+ *
+ * Конфигурация для основного GET-запроса в управлении API.
+ */
 export type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
-    /** API endpoint path */
+    /** API endpoint path / Путь к API */
     path?: RefOrNormal<string | undefined>;
-    /** Additional request options */
+    /** Additional request options / Дополнительные опции запроса */
     options?: ApiOptions;
-    /** Enables reactive refetching on path or options change */
+    /** Enable reactive updates when path or options change / Включить реактивные обновления при изменении пути или опций */
     reactivity?: boolean;
-    /** Condition required to trigger the request */
+    /** Condition to trigger the request / Условие выполнения запроса */
     conditions?: RefType<boolean>;
-    /** Custom transformation applied to fetched data */
+    /** Custom transformation for the fetched data / Пользовательская трансформация полученных данных */
     transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>;
-    /** Validates the response data contract */
+    /** Function to validate response data contract / Функция для проверки контракта данных ответа */
     validateResponseContract?: (data: Type) => ApiDataValidation;
-    /** Storage of response error contracts */
+    /** Storage of response error contracts / Хранилище контрактов ошибок ответа */
     errorContract?: ApiErrorStorageList;
     /** Data validation function returning a boolean / Функция проверки данных, возвращающая boolean */
     typeData?: (data: Return) => boolean;
-    /** Clears data on component unmount */
+    /** Whether to clear data when the component is unmounted / Удалять ли данные при размонтировании компонента */
     unmounted?: boolean;
-    /** Provides skeleton placeholder data during loading */
+    /** Function to provide skeleton data during loading / Функция, предоставляющая данные-заглушки во время загрузки */
     skeleton?: () => Return;
 };
-/** Configuration for client-side search across API data @keywords api, search, filter */
+/**
+ * Configuration for client-side search across API data.
+ *
+ * Конфигурация для клиентского поиска по данным API.
+ */
 export type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = {
-    /** Columns to search through */
+    /** List of columns to search through / Список столбцов для поиска */
     columns: K;
-    /** Reactive search query string */
+    /** Reactive search query / Реактивная строка поиска */
     value?: Ref<string>;
-    /** Search algorithm configuration */
+    /** Additional search algorithm options / Дополнительные опции алгоритма поиска */
     options?: SearchOptions;
 };
-/** Configuration for mutation requests (POST, PUT, DELETE) @keywords api, mutation, request, post, put, delete */
+/**
+ * Configuration for mutation requests (POST, PUT, DELETE).
+ *
+ * Конфигурация для запросов мутации (POST, PUT, DELETE).
+ */
 export type ApiManagementRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> = {
-    /** Target API endpoint path */
+    /** Target API endpoint path / Целевой путь к API */
     path?: RefOrNormal<string | undefined>;
     /** Callback after receiving response data, regardless of success / Колбэк после получения данных ответа, независимо от успешности */
     action?: (data: Return | undefined) => Promise<void> | void;
@@ -45,16 +64,16 @@ export type ApiManagementRequest<T, Request extends ApiFetch['request'] = ApiFet
     actionSuccess?: (data: Return) => Promise<void> | void;
     /** Callback for error data or a transport exception / Колбэк для ошибочных данных или исключения при передаче запроса */
     actionError?: (data: Return | undefined, error?: unknown) => Promise<void> | void;
-    /** Transformation applied before sending data */
+    /** Transformation before sending data / Трансформация перед отправкой данных */
     transformation?: (data: T) => Return;
-    /** Request contract validation function */
+    /** Request contract validation function / Функция валидации контракта запроса */
     validateRequestContract?: (data: Request) => ApiDataValidation & Return;
-    /** Response contract validation function */
+    /** Response contract validation function / Функция валидации контракта ответа */
     validateResponseContract?: (data: T) => ApiDataValidation & Return;
-    /** Storage of response error contracts */
+    /** Storage of response error contracts / Хранилище контрактов ошибок ответа */
     errorContract?: ApiErrorStorageList;
-    /** Wraps payload into a `data` property */
+    /** Whether to wrap the payload in a 'data' property / Обертывать ли полезную нагрузку в свойство 'data' */
     toData?: boolean;
-    /** Additional mutation request options */
+    /** Additional mutation request options / Дополнительные опции запроса мутации */
     options?: ApiOptions;
 };

@@ -1,4 +1,16 @@
-// md5:f7adb21af33996aa008f6cc20c56b177 true
+// md5:92fd9f6e07b86463aee9309175234900
 import { type ItemList } from '@dxtmisha/functional-basic';
-/** Generates binding properties for a subcomponent. @keywords bind, props, subcomponent, generate */
-export declare function getBind<T, R extends ItemList>(value: T | R | undefined | null, nameExtra?: ItemList | string, name?: string, except?: boolean): ConstrBind<R>;
+import type { ConstrBind } from '../../types/constructorTypes';
+/**
+ * A function for generating properties for a subcomponent.
+ *
+ * Функция для генерации свойств для подкомпонента.
+ * @param value input value. Can be an object if you need to pass multiple properties /
+ * входное значение. Может быть объектом, если надо передать несколько свойств
+ * @param nameExtra additional parameter or property name / дополнительный параметр или имя свойства
+ * @param name property name / имя свойства
+ * @param except exclude the rule requiring the presence of a primary key /
+ * исключить правило обязательности наличия главного ключа
+ * @returns generated properties object / сгенерированный объект свойств
+ */
+export declare function getBind<T = unknown, R extends ItemList = ItemList>(value: T | R | undefined | null, nameExtra?: ItemList | string | undefined, name?: string, except?: boolean): ConstrBind<R>;

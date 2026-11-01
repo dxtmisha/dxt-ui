@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, expectTypeOf, it } from 'vitest'
 import { computed, h, reactive, ref, type VNode } from 'vue'
 import { DesignComponents } from '../DesignComponents'
 
@@ -27,6 +27,7 @@ describe('DesignComponents', () => {
       expect(design.is('missing')).toBe(false)
       expect(design.get('missing')).toBeUndefined()
       const empty = new DesignComponents()
+      expectTypeOf(empty).toEqualTypeOf<DesignComponents>()
       expect(empty.is('button')).toBe(false)
       expect(empty.get('button')).toBeUndefined()
     })
@@ -38,9 +39,16 @@ describe('DesignComponents', () => {
       expect(design.getModification()).toBeUndefined()
     })
 
-    it('uses an empty modification when the index has no configuration', () => {
+    it('uses an empty modification when the index has no configuration or is non-object', () => {
       expect(design.getModification('unknown')).toEqual({})
       expect(design.getModification('unknown', { disabled: false, count: 0 })).toEqual({ disabled: false, count: 0 })
+
+      const withNonObjectMod = new DesignComponents(components, {
+        arrayMod: ref(['invalid']) as unknown as Record<string, unknown>,
+        nullMod: ref(null) as unknown as Record<string, unknown>
+      })
+      expect(withNonObjectMod.getModification('arrayMod')).toEqual({})
+      expect(withNonObjectMod.getModification('nullMod')).toEqual({})
     })
   })
 
@@ -109,10 +117,16 @@ describe('DesignComponents', () => {
     it('appends without replacing existing children and supports chaining for missing entries', () => {
       const first = h('span', 'retained')
       const children: VNode[] = [first]
-      expect(design.renderAdd(children, 'button').renderAdd(children, 'missing')).toBe(design)
+      expect(
+        design
+          .renderAdd(children, 'button', { label: 'Added' }, 'text-child', 'button')
+          .renderAdd(children, 'missing')
+      ).toBe(design)
       expect(children).toHaveLength(2)
       expect(children[0]).toBe(first)
       expect(children[1]?.type).toBe(components.button)
+      expect(children[1]?.props).toMatchObject({ size: 'large', label: 'Added' })
+      expect(children[1]?.children).toBe('text-child')
     })
   })
 })

@@ -1,16 +1,67 @@
-// md5:f491ca4125006e357efb8399a8916d8d true
-/** BEM naming helper for design components and CSS custom properties. @keywords bem, class name, css variable, design */
+// md5:bb91f4df7a2c15687b2439d17332943f
+/**
+ * BEM naming helper for design components. The constructor splits `design.component` at the first two segments, normalizes each segment, and caches the design and component class names.
+ *
+ * Помощник именования компонентов по БЭМ. Конструктор берёт первые два сегмента `design.component`, нормализует их и сохраняет названия дизайна и класса компонента.
+ */
 export declare class DesignName {
-    /** Initializes the design component naming helper. @keywords constructor, init */
+    /** Component name split by levels / Название компонента, разбитое по уровням */
+    protected readonly name: string[];
+    /** Cached component class name / Кэшированное название класса компонента */
+    protected readonly className: string;
+    /** Cached design name / Кэшированное название дизайна */
+    protected readonly designName: string;
+    /**
+     * Initializes DesignName with the supplied configuration.
+     *
+     * Инициализирует DesignName с переданными настройками.
+     * @param name Design-prefixed component name, such as d1.button. / Имя компонента с префиксом дизайна, например d1.button.
+     */
     constructor(name: string);
-    /** Returns the normalized design name prefix. @keywords design, prefix */
+    /**
+     * Returns the first normalized name segment.
+     *
+     * Возвращает первый нормализованный сегмент имени.
+     * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
+     */
     getDesign(): string;
-    /** Returns the base BEM component class name. @keywords component, class name */
+    /**
+     * Returns the normalized component class name.
+     *
+     * Возвращает нормализованное имя класса компонента.
+     * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
+     */
     getName(): string;
-    /** Generates a modifier or status class name. @keywords status class, modifier */
+    /**
+     * Joins modifier segments using `--` after the component name.
+     *
+     * Объединяет сегменты модификатора через `--` после имени компонента.
+     * @param names Name segments, joined in the supplied order. / Сегменты имени в порядке передачи.
+     * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
+     */
     getStatusClass(...names: (string | number | undefined)[]): string;
-    /** Generates a CSS custom property name. @keywords css variable, custom property, style */
+    /**
+     * Builds a CSS custom property name with the `--` prefix and `-sys-` namespace.
+     *
+     * Формирует имя CSS-переменной с префиксом `--` и пространством имён `-sys-`.
+     * @param names Name segments, joined in the supplied order. / Сегменты имени в порядке передачи.
+     * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
+     */
     getStyle(...names: (string | number | undefined)[]): string;
-    /** Generates a BEM sub-element class name. @keywords sub-element, element class, bem */
+    /**
+     * Joins element segments using `__` after the component name.
+     *
+     * Объединяет сегменты элемента через `__` после имени компонента.
+     * @param names Name segments, joined in the supplied order. / Сегменты имени в порядке передачи.
+     * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
+     */
     getSubClass(...names: (string | number | undefined)[]): string;
+    /**
+     * Getting component names as an array.
+     *
+     * Получение названий компонентов в виде массива.
+     * @param name component name for transformation / название компонента для преобразования
+     * @returns component names by levels / названия компонента по уровням
+     */
+    private initName;
 }

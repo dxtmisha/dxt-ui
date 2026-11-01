@@ -1,4 +1,17 @@
-// md5:c6fa1a932479be1bddb14a38876968ff true
+// md5:fda10e94faf5ffdc41c6dc2fd6e2d46a
 import { type ItemList } from '@dxtmisha/functional-basic';
-/** Resolves or generates a unique key index for rendering a component item. @keywords render index, component key, unique key */
-export declare function getIndexForRender<T extends ItemList>(name: string | any, props?: T, index?: string): string | undefined;
+/**
+ * Builds a render key by concatenating a string component name, the external index,
+ * a string props.index and a truthy props.id in that order.
+ * Presentation properties such as class are ignored.
+ *
+ * Формирует ключ рендеринга, последовательно объединяя строковое имя компонента,
+ * внешний индекс, строковый props.index и истинный props.id.
+ * Свойства оформления, например class, игнорируются.
+ * @template T component properties containing optional identity fields / свойства компонента с необязательными полями идентичности
+ * @param name component name or definition; only string names contribute to the key / имя или определение компонента; в ключ включаются только строковые имена
+ * @param props component properties containing optional index and id / свойства компонента с необязательными index и id
+ * @param index external identifier added before identifiers from props / внешний идентификатор, добавляемый перед идентификаторами из props
+ * @returns generated key, or undefined when every contributing identifier is absent / сформированный ключ либо undefined при отсутствии всех участвующих идентификаторов
+ */
+export declare function getIndexForRender<T extends ItemList = ItemList>(name?: unknown, props?: T, index?: string): string | undefined;

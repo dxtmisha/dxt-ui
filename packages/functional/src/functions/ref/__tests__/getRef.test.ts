@@ -54,7 +54,7 @@ describe('getRef', () => {
 
     it('should correctly unwrap a customRef', () => {
       let customValue = 'initial-custom'
-      const customReference = customRef((track, trigger) => ({
+      const customReference = customRef<string>((track, trigger) => ({
         get() {
           track()
           return customValue
