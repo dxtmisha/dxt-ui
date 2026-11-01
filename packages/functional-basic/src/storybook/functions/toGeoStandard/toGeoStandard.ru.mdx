@@ -1,0 +1,49 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toGeoStandard - Преобразование GeoItem в стандартную строку локали'/>
+
+# `toGeoStandard`
+
+Преобразует объект гео-данных (`GeoItem`) в стандартную строку локали вида `'язык-страна'` (например, `'en-US'`, `'ru-RU'`, `'vi-VN'`). Поддерживает опциональное переопределение языка и флаг прямого использования языка без повторной нормализации.
+
+## Основные возможности
+
+- **Форматирование `'язык-страна'`** — Формирует каноническую строку на основе свойств `language` и `country`.
+- **Переопределение языка** — Позволяет указать альтернативный язык для заданной страны с валидацией через `toLanguage`.
+- **Флаг `raw`** — Исключает повторную нормализацию языка при передаче уже проверенных значений.
+- **Безопасная обработка** — Возвращает пустую строку при отсутствии объекта `item`.
+
+**Параметры:**
+- `item?: GeoItem` — Объект географических данных.
+- `language?: string` — Опциональный код языка для переопределения.
+- `raw?: boolean` — Не нормализовать язык через `toLanguage`, если передан `true`.
+
+**Возвращает:**
+- `string` — Строка стандартного кода локали или пустая строка.
+
+## Примеры использования
+
+<Source
+  language='typescript'
+  code={`
+import { toGeoStandard } from '@dxtmisha/functional-basic'
+
+const vietnam = { country: 'VN', language: 'vi' }
+const usa = { country: 'US', language: 'en' }
+
+// 1. Стандартное преобразование
+toGeoStandard(vietnam) // 'vi-VN'
+toGeoStandard(usa)     // 'en-US'
+
+// 2. Переопределение языка (с валидацией через toLanguage)
+toGeoStandard(vietnam, 'en') // 'en-VN'
+toGeoStandard(usa, 'ua')     // 'uk-US'
+
+// 3. Флаг raw (без нормализации языка)
+toGeoStandard(vietnam, 'custom-lang', true) // 'custom-lang-VN'
+
+// 4. Граничные случаи
+toGeoStandard(undefined) // ''
+  `}
+/>
+

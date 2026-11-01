@@ -50,12 +50,13 @@ describe('toLanguage', () => {
       expect(toLanguage('ru-ru')).toBe('ru')
       expect(toLanguage('en-gb')).toBe('en')
       expect(toLanguage('EN-GB')).toBe('en')
-      expect(toLanguage('RU_RU')).toBe('ru')
     })
 
     it('extracts language code with underscore separator and rejects country-only BY_BY', () => {
       expect(toLanguage('en_US')).toBe('en')
       expect(toLanguage('ru_RU')).toBe('ru')
+      expect(toLanguage('ru-BY_BY')).toBe('ru')
+      expect(toLanguage('BY_BY-ru')).toBe('ru')
       expect(toLanguage('BY_BY')).toBe('')
     })
 
@@ -120,6 +121,25 @@ describe('toLanguage', () => {
       expect(toLanguage(['ru'])).toBe('')
       expect(toLanguage(Symbol('ru'))).toBe('')
       expect(toLanguage(Object.create(null))).toBe('')
+    })
+  })
+
+  describe('Raw extraction mode (raw = true)', () => {
+    it('returns raw extracted language code without GeoList validation', () => {
+      expect(toLanguage('us-US', true)).toBe('us')
+      expect(toLanguage('QQ-qq', true)).toBe('qq')
+      expect(toLanguage('vi', true)).toBe('vi')
+      expect(toLanguage('vi-VN', true)).toBe('vi')
+      expect(toLanguage('us', true)).toBe('us')
+      expect(toLanguage('zz', true)).toBe('zz')
+      expect(toLanguage('ru-BY_BY', true)).toBe('ru')
+      expect(toLanguage('BY_BY-ru', true)).toBe('ru')
+    })
+
+    it('falls back to GeoList lookup (returning empty string) when input is uppercase country or mixed-case', () => {
+      expect(toLanguage('VN', true)).toBe('')
+      expect(toLanguage('BY_BY', true)).toBe('')
+      expect(toLanguage('Us', true)).toBe('')
     })
   })
 })

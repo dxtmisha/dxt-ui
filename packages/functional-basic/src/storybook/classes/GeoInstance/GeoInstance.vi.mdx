@@ -37,32 +37,37 @@ console.log(geo.getTimezoneFormat()) // ví dụ: '+07:00'
 ### Thông tin
 
 - `get(): GeoItemFull` — Trả về đối tượng dữ liệu đầy đủ cho quốc gia và ngôn ngữ hiện tại.
-- `getItem(): GeoItemFull` — Trả về một bản sao của đối tượng cài đặt hiện tại, có tính đến ngôn ngữ động.
-- `getCountry(): string` — Trả về mã 2 chữ cái của quốc gia hiện tại (viết hoa).
-- `getLanguage(): string` — Trả về mã 2 chữ cái của ngôn ngữ hiện tại (viết thường).
-- `getStandard(): string` — Trả về chuỗi địa phương kết hợp dựa trên cài đặt hiện tại (ví dụ: `'en-VN'`).
-- `getLocation(): string` — Trả về chuỗi địa phương thô hiện đang được thiết lập.
-- `getFirstDay(): string` — Trả về mã cho ngày đầu tiên của tuần của địa phương hiện tại (ví dụ: `'Mo'`).
+- `getItem(): GeoItemFull` — *(Đã lỗi thời: sử dụng `get()`)* Trả về đối tượng dữ liệu `GeoItemFull` hiện tại.
+- `getCountry(): string` — Trả về mã ISO 2 chữ cái đã chuẩn hóa của quốc gia hiện tại (viết hoa).
+- `getLanguage(): string` — Trả về mã ISO đã chuẩn hóa của ngôn ngữ hiện tại (viết thường).
+- `getStandard(): string` — Trả về chuỗi địa phương chuẩn kết hợp dựa trên cài đặt hiện tại (ví dụ: `'en-VN'`, `'ru-BY'`).
+- `getLocation(): string` — Trả về chuỗi vị trí thô hiện đang được thiết lập (ví dụ: `'ru-BY_BY'`, `'us-US'`).
+- `getLocationCountry(): string` — Trả về mã quốc gia thô được trích xuất trực tiếp từ chuỗi vị trí (ví dụ: `'BY_BY'`, `'QQ'` hoặc `''`).
+- `getLocationLanguage(): string` — Trả về mã ngôn ngữ thô được trích xuất trực tiếp từ chuỗi vị trí (ví dụ: `'us'`, `'qq'` hoặc `''`).
+- `getFirstDay(): string` — Trả về mã cho ngày đầu tiên của tuần của địa phương hiện tại (ví dụ: `'Mo'`, `'Su'`).
 - `getTimezone(): number` — Trả về độ lệch múi giờ tính bằng phút.
 - `getTimezoneFormat(): string` — Trả về độ lệch múi giờ ở định dạng chuỗi (ví dụ: `'+07:00'`).
 
 ### Lựa chọn
 
 - `getList(): GeoItem[]` — Trả về danh sách đầy đủ các quốc gia và ngôn ngữ có sẵn.
-- `find(code: string): GeoItemFull` — Một bí danh cho phương thức `getByCode`.
-- `getByCode(code?: string): GeoItemFull` — Tìm kiếm dữ liệu theo mã. **Ưu tiên: Ngôn ngữ trước**, sau đó đến Quốc gia. Nếu cung cấp mã `en-VN`, nó sẽ trả về bản ghi cho tiếng Anh (`en-US`).
-- `getByCodeFull(code: string): GeoItem | undefined` — Tìm kiếm kết quả khớp chính xác theo mã địa phương đầy đủ (ví dụ: `vi-VN`).
-- `getByCountry(country: string): GeoItem | undefined` — Tìm kiếm dữ liệu cụ thể theo mã quốc gia.
-- `getByLanguage(language: string): GeoItem | undefined` — Tìm kiếm dữ liệu cụ thể theo mã ngôn ngữ.
+- `getByCode(code?: string): GeoItemFull` — Phân giải dữ liệu địa lý đầy đủ theo mã (ưu tiên: khớp đầy đủ `ngôn ngữ-quốc gia` -> quốc gia -> ngôn ngữ -> phần tử đầu tiên trong `GeoList`).
+- `getByCodeFull(code?: string): GeoItem | undefined` — Tìm kiếm kết quả khớp chính xác theo mã địa phương đầy đủ (ví dụ: `'vi-VN'`, `'RU-ru'`).
+- `getByCountry(country?: string): GeoItem | undefined` — Tìm kiếm dữ liệu theo mã quốc gia chính hoặc thay thế.
+- `getByLanguage(language?: string): GeoItem | undefined` — Tìm kiếm dữ liệu theo mã ngôn ngữ chính hoặc thay thế.
+- `find(code?: string): GeoItemFull` — *(Đã lỗi thời: sử dụng `getByCode()`)* Bí danh cho phương thức `getByCode`.
 
 ### Cấu hình
 
-- `set(code: string, save?: boolean): void` — Thiết lập địa phương cho đối tượng hiện tại.
-- `setTimezone(timezone: number): void` — Thiết lập độ lệch múi giờ tùy chỉnh tính bằng phút.
+- `set(code?: string, save?: boolean): this` — Thiết lập vị trí cho thực thể hiện tại, tùy chọn lưu vào bộ nhớ cùng cookie và trả về thực thể hiện tại.
+- `setTimezone(timezone: number): this` — Thiết lập độ lệch múi giờ tùy chỉnh tính bằng phút và trả về thực thể hiện tại.
+- `setValueDefault(code?: string | (() => string | undefined)): this` — Thiết lập mã vị trí mặc định hoặc hàm phân giải dự phòng và trả về thực thể hiện tại.
+- `add(country: string, item?: Partial<GeoItem>): this` — Thêm quốc gia mới hoặc hợp nhất dữ liệu vào quốc gia hiện có trong `GeoList`.
+- `addList(list?: Record<string, Partial<GeoItem>>): this` — Thêm hoặc cập nhật nhiều quốc gia trong `GeoList`.
 
 ### Phụ trợ
 
-- `toStandard(item: GeoItem): string` — Tạo chuỗi `'ngôn ngữ-quốc gia'` tiêu chuẩn từ đối tượng `GeoItem`.
+- `toStandard(item?: GeoItem, language?: string, raw?: boolean): string` — Tạo chuỗi `'ngôn ngữ-quốc gia'` tiêu chuẩn từ đối tượng `GeoItem`.
 
 ## Ví dụ
 

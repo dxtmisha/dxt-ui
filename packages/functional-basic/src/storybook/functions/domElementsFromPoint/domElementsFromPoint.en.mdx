@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/domElementsFromPoint - Retrieve elements at coordinates'/>
+
+# `domElementsFromPoint`
+
+Returns an array of all DOM elements located at the specified coordinates relative to the browser viewport.
+
+In non-DOM environments (such as server-side rendering with SSR) or when `document.elementsFromPoint` is not supported by the browser, the function safely returns an empty array `[]`.
+
+**Parameters:**
+- `coordinator?: ImageCoordinator | null` — Coordinates object `{ x: number, y: number }`.
+
+**Returns:**
+`Element[]` — An array of DOM elements ordered from topmost to bottommost along the Z-axis.
+
+```typescript
+import { domElementsFromPoint } from '@dxtmisha/functional-basic'
+
+// Get all elements beneath coordinates
+const elements = domElementsFromPoint({ x: 150, y: 300 })
+console.log('Elements under point:', elements)
+```
+

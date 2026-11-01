@@ -44,12 +44,15 @@ describe('createElement', () => {
       expect(sectionElement?.tagName.toLowerCase()).toBe('section')
     })
 
-    it('should create an element without appending when parentElement is undefined', () => {
-      const element = createElement<HTMLSpanElement>(undefined, 'span')
+    it('should create an element without appending when parentElement is undefined or null', () => {
+      const elementFromUndefined = createElement<HTMLSpanElement>(undefined, 'span')
+      const elementFromNull = createElement<HTMLSpanElement>(null, 'span')
 
-      expect(element).toBeInstanceOf(HTMLSpanElement)
-      expect(element?.tagName.toLowerCase()).toBe('span')
-      expect(element?.parentElement).toBeNull()
+      expect(elementFromUndefined).toBeInstanceOf(HTMLSpanElement)
+      expect(elementFromUndefined?.parentElement).toBeNull()
+
+      expect(elementFromNull).toBeInstanceOf(HTMLSpanElement)
+      expect(elementFromNull?.parentElement).toBeNull()
       expect(parentElement.children).toHaveLength(0)
     })
 
@@ -128,13 +131,34 @@ describe('createElement', () => {
       expect(element?.id).toBe('no-parent-id')
     })
 
+    it('should set innerHTML property when provided in options', () => {
+      const element = createElement(parentElement, 'div', {
+        innerHTML: '<span class="child">Safe markup</span>'
+      })
+
+      expect(element?.innerHTML).toBe('<span class="child">Safe markup</span>')
+      expect(element?.firstElementChild?.tagName.toLowerCase()).toBe('span')
+      expect(element?.firstElementChild?.className).toBe('child')
+    })
+
+    it('should safely accept null as options when passing referenceElement', () => {
+      const refNode = document.createElement('div')
+      parentElement.appendChild(refNode)
+
+      const element = createElement(parentElement, 'span', null, refNode)
+
+      expect(element).toBeInstanceOf(HTMLSpanElement)
+      expect(parentElement.firstElementChild).toBe(element)
+      expect(element?.nextElementSibling).toBe(refNode)
+    })
+
     it('should safely ignore undefined, null, or array passed as options', () => {
       const elementUndefined = createElement(parentElement, 'div', undefined)
       expect(elementUndefined?.id).toBe('')
       expect(elementUndefined?.className).toBe('')
       expect(elementUndefined?.innerHTML).toBe('')
 
-      const elementNull = createElement(parentElement, 'div', null as unknown as Record<string, unknown>)
+      const elementNull = createElement(parentElement, 'div', null)
       expect(elementNull).toBeInstanceOf(HTMLDivElement)
       expect(elementNull?.attributes).toHaveLength(0)
 

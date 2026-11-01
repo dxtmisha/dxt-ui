@@ -1,6 +1,8 @@
 import { executeFunction } from '../functions/executeFunction'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { sanitizeLocation } from '../functions/sanitizeLocation'
+import { toCountry } from '../functions/toCountry'
+import { toLanguage } from '../functions/toLanguage'
 
 import { Cookie } from './Cookie'
 import { DataStorage } from './DataStorage'
@@ -84,6 +86,26 @@ export class GeoLocation {
     }
 
     return this
+  }
+
+  /**
+   * Returns the raw country code extracted from the current location.
+   *
+   * Возвращает сырой код страны, извлеченный из текущей локации.
+   * @returns country code / код страны
+   */
+  getCountry(): string {
+    return toCountry(this.location, true)
+  }
+
+  /**
+   * Returns the raw language code extracted from the current location.
+   *
+   * Возвращает сырой код языка, извлеченный из текущей локации.
+   * @returns language code / код языка
+   */
+  getLanguage(): string {
+    return toLanguage(this.location, true)
   }
 
   /**

@@ -31,7 +31,7 @@ export class Geo {
    * @param code location code / код локации
    * @param save whether to persist the change in storage / сохранять ли изменения в хранилище
    */
-  static set(code: string, save?: boolean): void {
+  static set(code?: string, save?: boolean): void {
     this.getObject().set(code, save)
   }
 
@@ -53,7 +53,7 @@ export class Geo {
    * @param code full locale string / полная строка локали
    * @returns geo item or undefined / гео-объект или undefined
    */
-  static getByCodeFull(code: string): GeoItem | undefined {
+  static getByCodeFull(code?: string): GeoItem | undefined {
     return this.getObject().getByCodeFull(code)
   }
 
@@ -64,7 +64,7 @@ export class Geo {
    * @param country country code / код страны
    * @returns geo item or undefined / гео-объект или undefined
    */
-  static getByCountry(country: string): GeoItem | undefined {
+  static getByCountry(country?: string): GeoItem | undefined {
     return this.getObject().getByCountry(country)
   }
 
@@ -75,7 +75,7 @@ export class Geo {
    * @param language language code / код языка
    * @returns geo item or undefined / гео-объект или undefined
    */
-  static getByLanguage(language: string): GeoItem | undefined {
+  static getByLanguage(language?: string): GeoItem | undefined {
     return this.getObject().getByLanguage(language)
   }
 
@@ -104,6 +104,7 @@ export class Geo {
    *
    * Возвращает полностью обработанные гео-данные с учетом текущего языка.
    * @returns full geo item data / полные данные гео-объекта
+   * @deprecated Use get() / Используйте get()
    */
   static getItem(): GeoItemFull {
     return this.getObject().getItem()
@@ -215,7 +216,7 @@ export class Geo {
    * Устанавливает значение по умолчанию для кода страны.
    * @param code default code value / значение кода по умолчанию
    */
-  static setValueDefault(code?: string | (() => string)): void {
+  static setValueDefault(code?: string | (() => string | undefined)): void {
     this.getObject().setValueDefault(code)
   }
 
@@ -231,7 +232,7 @@ export class Geo {
    */
   static add(
     country: string,
-    item: Partial<GeoItem>
+    item?: Partial<GeoItem>
   ): GeoInstance {
     return this.getObject().add(country, item)
   }
@@ -244,7 +245,7 @@ export class Geo {
    * @returns GeoInstance instance / экземпляр GeoInstance
    */
   static addList(
-    list: Record<string, Partial<GeoItem>>
+    list?: Record<string, Partial<GeoItem>>
   ): GeoInstance {
     return this.getObject().addList(list)
   }
@@ -255,8 +256,9 @@ export class Geo {
    * Находит или определяет гео-данные для заданного кода. Алиас для getByCode.
    * @param code country or language code / код страны или языка
    * @returns full geo data / полные гео-данные
+   * @deprecated Use getByCode() / Используйте getByCode()
    */
-  static find(code: string): GeoItemFull {
+  static find(code?: string): GeoItemFull {
     return this.getObject().find(code)
   }
 
@@ -265,9 +267,15 @@ export class Geo {
    *
    * Возвращает стандартную объединенную строку для гео-объекта (например, 'ru-RU').
    * @param item geo item data / данные гео-объекта
+   * @param language optional language override / опциональное переопределение языка
+   * @param raw whether to skip language processing / не обрабатывать ли язык
    * @returns standard string / стандартная строка
    */
-  static toStandard(item: GeoItem): string {
-    return this.getObject().toStandard(item)
+  static toStandard(
+    item?: GeoItem,
+    language?: string,
+    raw?: boolean
+  ): string {
+    return this.getObject().toStandard(item, language, raw)
   }
 }

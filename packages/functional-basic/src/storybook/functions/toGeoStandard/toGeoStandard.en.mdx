@@ -1,0 +1,49 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toGeoStandard - Converting GeoItem to standard locale string'/>
+
+# `toGeoStandard`
+
+Converts a geographic data item (`GeoItem`) into a standard locale string formatted as `'language-country'` (e.g., `'en-US'`, `'ru-RU'`, `'vi-VN'`). Supports optional language override and a raw flag to skip redundant language normalization.
+
+## Key Features
+
+- **Standard `'language-country'` Formatting** — Constructs a canonical locale string from `language` and `country` properties.
+- **Language Override** — Allows specifying an alternative language for the given country, validated via `toLanguage`.
+- **`raw` Flag** — Skips secondary language normalization when working with pre-resolved values or custom subtags.
+- **Safe Handling** — Gracefully returns an empty string when the input `item` is nullish.
+
+**Parameters:**
+- `item?: GeoItem` — Geographic data object.
+- `language?: string` — Optional language code override.
+- `raw?: boolean` — Whether to skip language normalization via `toLanguage` when `true`.
+
+**Returns:**
+- `string` — Standard locale code string or an empty string.
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { toGeoStandard } from '@dxtmisha/functional-basic'
+
+const vietnam = { country: 'VN', language: 'vi' }
+const usa = { country: 'US', language: 'en' }
+
+// 1. Standard conversion
+toGeoStandard(vietnam) // 'vi-VN'
+toGeoStandard(usa)     // 'en-US'
+
+// 2. Language override (normalized via toLanguage)
+toGeoStandard(vietnam, 'en') // 'en-VN'
+toGeoStandard(usa, 'ua')     // 'uk-US'
+
+// 3. Raw flag (skips normalization)
+toGeoStandard(vietnam, 'custom-lang', true) // 'custom-lang-VN'
+
+// 4. Boundary cases
+toGeoStandard(undefined) // ''
+  `}
+/>
+

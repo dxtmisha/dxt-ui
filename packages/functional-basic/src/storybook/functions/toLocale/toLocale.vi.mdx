@@ -1,0 +1,51 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toLocale - Chuẩn hóa định dạng ngôn ngữ và quốc gia (aa-AA)'/>
+
+# `toLocale`
+
+Chuyển đổi chuỗi định danh ngôn ngữ đầy đủ thành định dạng chuẩn quy chuẩn `aa-AA` (ví dụ: `'en-US'`, `'ru-RU'`, `'vi-VN'`). Nếu chuỗi đầu vào không phải là định dạng đầy đủ (chỉ có quốc gia hoặc chỉ có ngôn ngữ) hoặc không hợp lệ, hàm sẽ trả về chuỗi rỗng `''`.
+
+## Tính năng chính
+
+- **Định dạng quy chuẩn `aa-AA`** — Đảm bảo đầu ra theo chuẩn `[mã ngôn ngữ 2 ký tự]-[mã quốc gia 2 ký tự]` (ngôn ngữ chữ thường, quốc gia chữ hoa).
+- **Yêu cầu định dạng đầy đủ** — Bắt buộc phải có cả ngôn ngữ và quốc gia. Các đầu vào không đầy đủ như chỉ có mã quốc gia (`'US'`) hoặc chỉ có mã ngôn ngữ (`'vi'`) sẽ trả về chuỗi rỗng `''`.
+- **Hỗ trợ thẻ con BCP-47** — Trích xuất chính xác từ các thẻ mở rộng (ví dụ: `'zh-Hans-CN'` -> `'zh-CN'`, `'en-US-u-ca-gregory'` -> `'en-US'`).
+- **Định dạng chuỗi linh hoạt** — Hỗ trợ chuẩn (`'en-US'`), dấu gạch dưới (`'en_US'`), không phân biệt chữ hoa chữ thường (`'en-gb'` -> `'en-GB'`) và đảo ngược (`'RU-ru'` -> `'ru-RU'`).
+- **An toàn và tương thích SSR** — Xử lý an toàn các giá trị `null`, `undefined`, chuỗi rỗng và kiểu không phải chuỗi mà không gây ra lỗi ngoại lệ.
+
+**Tham số:**
+- `code?: unknown` — Chuỗi định danh ngôn ngữ cần chuẩn hóa.
+
+**Trả về:**
+- `string` — Mã quy chuẩn dạng `aa-AA` hoặc chuỗi rỗng nếu không đầy đủ hoặc không xác định được.
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { toLocale } from '@dxtmisha/functional-basic'
+
+// 1. Thẻ ngôn ngữ đầy đủ tiêu chuẩn và đảo ngược
+toLocale('en-US') // 'en-US'
+toLocale('ru_RU') // 'ru-RU'
+toLocale('RU-ru') // 'ru-RU'
+toLocale('en-gb') // 'en-GB'
+
+// 2. Thẻ BCP-47 phức tạp
+toLocale('zh-Hans-CN')         // 'zh-CN'
+toLocale('en-US-u-ca-gregory') // 'en-US'
+
+// 3. Định dạng không đầy đủ (chỉ có quốc gia hoặc chỉ có ngôn ngữ) trả về chuỗi rỗng
+toLocale('US') // ''
+toLocale('RU') // ''
+toLocale('ru') // ''
+toLocale('vi') // ''
+
+// 4. Giá trị không hợp lệ
+toLocale('')         // ''
+toLocale(undefined)  // ''
+toLocale(null)       // ''
+  `}
+/>

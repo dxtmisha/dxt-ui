@@ -1,0 +1,49 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toGeoStandard - Chuyển đổi GeoItem thành chuỗi định danh chuẩn'/>
+
+# `toGeoStandard`
+
+Chuyển đổi đối tượng dữ liệu địa lý (`GeoItem`) thành chuỗi định danh chuẩn dạng `'ngôn ngữ-quốc gia'` (ví dụ: `'en-US'`, `'ru-RU'`, `'vi-VN'`). Hỗ trợ ghi đè ngôn ngữ tùy chọn và cờ `raw` để bỏ qua chuẩn hóa ngôn ngữ trùng lặp.
+
+## Tính năng chính
+
+- **Định dạng `'ngôn ngữ-quốc gia'` tiêu chuẩn** — Tạo chuỗi quy chuẩn từ các thuộc tính `language` và `country`.
+- **Ghi đè ngôn ngữ** — Cho phép chỉ định ngôn ngữ thay thế cho quốc gia cụ thể, được xác thực qua `toLanguage`.
+- **Cờ `raw`** — Bỏ qua chuẩn hóa ngôn ngữ lần hai khi đã có giá trị đã xử lý trước.
+- **Xử lý an toàn** — Trả về chuỗi rỗng một cách an toàn khi đối tượng `item` không tồn tại.
+
+**Tham số:**
+- `item?: GeoItem` — Đối tượng dữ liệu địa lý.
+- `language?: string` — Mã ngôn ngữ ghi đè tùy chọn.
+- `raw?: boolean` — Có bỏ qua chuẩn hóa ngôn ngữ qua `toLanguage` khi là `true` hay không.
+
+**Trả về:**
+- `string` — Chuỗi mã định danh chuẩn hoặc chuỗi rỗng.
+
+## Ví dụ sử dụng
+
+<Source
+  language='typescript'
+  code={`
+import { toGeoStandard } from '@dxtmisha/functional-basic'
+
+const vietnam = { country: 'VN', language: 'vi' }
+const usa = { country: 'US', language: 'en' }
+
+// 1. Chuyển đổi tiêu chuẩn
+toGeoStandard(vietnam) // 'vi-VN'
+toGeoStandard(usa)     // 'en-US'
+
+// 2. Ghi đè ngôn ngữ (chuẩn hóa qua toLanguage)
+toGeoStandard(vietnam, 'en') // 'en-VN'
+toGeoStandard(usa, 'ua')     // 'uk-US'
+
+// 3. Cờ raw (không chuẩn hóa lại)
+toGeoStandard(vietnam, 'custom-lang', true) // 'custom-lang-VN'
+
+// 4. Trường hợp biên
+toGeoStandard(undefined) // ''
+  `}
+/>
+

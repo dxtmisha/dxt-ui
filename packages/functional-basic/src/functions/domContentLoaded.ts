@@ -10,6 +10,7 @@ import { isDomRuntime } from './isDomRuntime'
  * Если DOM уже загружен (readyState равен 'interactive' или 'complete') или код выполняется вне браузера,
  * функция обратного вызова выполняется немедленно. Может вызываться без аргументов для простого ожидания готовности DOM.
  *
+ * @template T return value type / тип возвращаемого значения
  * @param callback optional function to execute when DOM is loaded / опциональная функция для выполнения при загрузке DOM
  * @param isServer whether to execute the callback in non-DOM/SSR environments (defaults to true) / выполнять ли функцию обратного вызова в среде без DOM/SSR (по умолчанию true)
  * @returns promise resolving to the callback result / промис, разрешающийся результатом выполнения функции
@@ -20,8 +21,8 @@ import { isDomRuntime } from './isDomRuntime'
  * В среде без DOM (SSR) выполнение можно отключить, передав `isServer: false`.
  */
 export function domContentLoaded<T = void>(
-  callback?: () => T | Promise<T>,
-  isServer: boolean = true
+  callback?: (() => T | Promise<T>) | null,
+  isServer = true
 ): Promise<T> {
   if (!isDomRuntime()) {
     return executePromise(

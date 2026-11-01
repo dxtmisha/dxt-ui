@@ -22,18 +22,22 @@ describe('sanitizeLocation', () => {
   })
 
   describe('Normalization and Trimming', () => {
-    it('normalizes underscores to hyphens', () => {
-      expect(sanitizeLocation('en_US')).toBe('en-US')
-      expect(sanitizeLocation('ru_RU')).toBe('ru-RU')
-      expect(sanitizeLocation('zh_Hans_CN')).toBe('zh-Hans-CN')
+    it('preserves underscores and hyphens as valid separators', () => {
+      expect(sanitizeLocation('en_US')).toBe('en_US')
+      expect(sanitizeLocation('ru_RU')).toBe('ru_RU')
+      expect(sanitizeLocation('BY_BY')).toBe('BY_BY')
+      expect(sanitizeLocation('ru-BY_BY')).toBe('ru-BY_BY')
+      expect(sanitizeLocation('zh_Hans_CN')).toBe('zh_Hans_CN')
     })
 
-    it('canonicalizes tag casing (language lowercase, region uppercase, script titlecase)', () => {
-      expect(sanitizeLocation('en-us')).toBe('en-US')
-      expect(sanitizeLocation('EN-US')).toBe('en-US')
-      expect(sanitizeLocation('ru-ru')).toBe('ru-RU')
-      expect(sanitizeLocation('zh-hans-cn')).toBe('zh-Hans-CN')
-      expect(sanitizeLocation('ZH_HANS_CN')).toBe('zh-Hans-CN')
+    it('preserves original tag casing for standalone and composite codes', () => {
+      expect(sanitizeLocation('VN')).toBe('VN')
+      expect(sanitizeLocation('vi')).toBe('vi')
+      expect(sanitizeLocation('Us')).toBe('Us')
+      expect(sanitizeLocation('us-US')).toBe('us-US')
+      expect(sanitizeLocation('QQ-qq')).toBe('QQ-qq')
+      expect(sanitizeLocation('en-us')).toBe('en-us')
+      expect(sanitizeLocation('EN-US')).toBe('EN-US')
     })
 
     it('trims leading and trailing whitespace', () => {
@@ -43,6 +47,13 @@ describe('sanitizeLocation', () => {
   })
 
   describe('Boundary values and length limits', () => {
+    it('accepts strings exactly at MAX_LOCATION_LENGTH (64 chars)', () => {
+      // 9 subtags of 'aaaaaaa' (7 chars each + 1 hyphen = 8 chars * 7 = 56) + 'en-aaaaa' (8 chars) = 64 chars
+      const exact64 = 'en-' + Array(7).fill('aaaaaaa').join('-') + '-aaaaa'
+      expect(exact64.length).toBe(64)
+      expect(sanitizeLocation(exact64)).toBe(exact64)
+    })
+
     it('rejects strings exceeding MAX_LOCATION_LENGTH (64 chars)', () => {
       const longValidPattern = 'en-' + 'a'.repeat(62)
       expect(longValidPattern.length).toBeGreaterThan(64)

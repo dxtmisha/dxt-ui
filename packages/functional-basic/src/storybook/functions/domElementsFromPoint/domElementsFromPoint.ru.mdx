@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/domElementsFromPoint - Получение элементов по координатам'/>
+
+# `domElementsFromPoint`
+
+Возвращает массив всех DOM-элементов, расположенных по указанным координатам относительно области просмотра (viewport).
+
+В среде без DOM (например, при серверном рендеринге SSR) или если метод `document.elementsFromPoint` не поддерживается браузером, функция безопасно возвращает пустой массив `[]`.
+
+**Параметры:**
+- `coordinator?: ImageCoordinator | null` — Объект с координатами `{ x: number, y: number }`.
+
+**Возвращает:**
+`Element[]` — Массив найденных элементов, упорядоченных от самого верхнего к нижнему по оси Z.
+
+```typescript
+import { domElementsFromPoint } from '@dxtmisha/functional-basic'
+
+// Определение элементов под курсором
+const elements = domElementsFromPoint({ x: 150, y: 300 })
+console.log('Элементы под точкой:', elements)
+```
+

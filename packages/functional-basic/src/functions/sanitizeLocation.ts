@@ -7,16 +7,10 @@ import { isString } from './isString'
 const MAX_LOCATION_LENGTH = 64
 
 /**
- * Regular expression for underscore separators in locale codes /
- * Регулярное выражение для разделителей подчеркивания в кодах локали
- */
-const REGEXP_UNDERSCORE = /_/g
-
-/**
  * Regular expression for structural validation of URL-safe BCP-47 locale tags /
  * Регулярное выражение для структурной проверки URL-безопасных BCP-47 тегов локали
  */
-const REGEXP_SAFE_LOCALE = /^[a-zA-Z]{2,3}(?:-[a-zA-Z0-9]{1,8})*$/
+const REGEXP_SAFE_LOCALE = /^[a-zA-Z]{2,3}(?:[-_][a-zA-Z0-9]{1,8})*$/
 
 /**
  * Validates and normalizes an external locale code string.
@@ -37,19 +31,10 @@ export function sanitizeLocation(code?: unknown): string | undefined {
   if (
     !trimmed
     || trimmed.length > MAX_LOCATION_LENGTH
+    || !REGEXP_SAFE_LOCALE.test(trimmed)
   ) {
     return undefined
   }
 
-  const normalized = trimmed.replace(REGEXP_UNDERSCORE, '-')
-
-  if (!REGEXP_SAFE_LOCALE.test(normalized)) {
-    return undefined
-  }
-
-  try {
-    return Intl.getCanonicalLocales(normalized)[0]
-  } catch {
-    return undefined
-  }
+  return trimmed
 }

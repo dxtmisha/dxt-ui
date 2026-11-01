@@ -10,7 +10,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 - **Эшелонированное разрешение локали** — строгий детерминированный поиск в порядке приоритета: Cookie -> DataStorage -> атрибут `lang` тега HTML -> `navigator.language` / `navigator.languages` -> провайдер по умолчанию -> `'en-GB'`.
 - **Двухуровневое сохранение** — опциональная синхронизация локации одновременно в `localStorage` (через `DataStorage`) и куки (через `Cookie`), гарантирующая доступность данных между сессиями и запросами.
-- **Санитизация по BCP-47** — валидация и нормализация строк через `sanitizeLocation` с заменой подчеркиваний на дефисы и защитой от инъекций.
+- **Санитизация по BCP-47** — валидация и очистка строк через `sanitizeLocation` с сохранением исходного регистра и разделителей (`-`, `_`) и защитой от инъекций.
+- **Сырое извлечение страны и языка** — методы `getCountry()` и `getLanguage()` возвращают сырые коды страны и языка, извлеченные напрямую из текущей строки локации.
 - **Динамические дефолты** — поддержка статических строк или динамических коллбэк-функций через `setValueDefault()`.
 - **SSR-изоляция** — изоморфный доступ к окружению через `isDomRuntime()` и безопасная гидратация куки через `ServerStorage`.
 
@@ -24,8 +25,10 @@ const location = new GeoLocation()
 console.log(location.get()) // например, 'en-GB' или значение из Cookie/DOM
 
 // Обновление локации с сохранением в хранилище и куки
-location.set('ru-RU', true)
-console.log(location.get()) // 'ru-RU'
+location.set('ru-BY_BY', true)
+console.log(location.get())         // 'ru-BY_BY'
+console.log(location.getLanguage()) // 'ru'
+console.log(location.getCountry())  // 'BY_BY'
 
 // Установка динамического провайдера по умолчанию
 location.setValueDefault(() => 'vi-VN')
@@ -35,5 +38,7 @@ location.setValueDefault(() => 'vi-VN')
 
 - `get(): string` — Возвращает строку текущего кода локации.
 - `set(code?: string, save?: boolean): this` — Обновляет текущий код локации и опционально сохраняет его в хранилище и куки, возвращая инстанс для цепочечных вызовов.
+- `getCountry(): string` — Возвращает сырой код страны, извлеченный из текущей локации (`toCountry(location, true)`).
+- `getLanguage(): string` — Возвращает сырой код языка, извлеченный из текущей локации (`toLanguage(location, true)`).
 - `setValueDefault(code?: string | (() => string | undefined)): this` — Устанавливает значение по умолчанию или функцию его вычисления и заново разрешает локацию.
 

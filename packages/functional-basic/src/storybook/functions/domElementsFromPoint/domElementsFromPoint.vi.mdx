@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/domElementsFromPoint - Lấy các phần tử theo tọa độ'/>
+
+# `domElementsFromPoint`
+
+Trả về một mảng chứa tất cả các phần tử DOM nằm tại các tọa độ được chỉ định so với khung nhìn trình duyệt (viewport).
+
+Trong môi trường không có DOM (chẳng hạn như kết xuất phía máy chủ SSR) hoặc khi phương thức `document.elementsFromPoint` không được trình duyệt hỗ trợ, hàm trả về một mảng rỗng `[]` một cách an toàn.
+
+**Tham số:**
+- `coordinator?: ImageCoordinator | null` — Đối tượng tọa độ `{ x: number, y: number }`.
+
+**Trả về:**
+`Element[]` — Một mảng các phần tử DOM được sắp xếp từ phần tử trên cùng đến phần tử dưới cùng theo trục Z.
+
+```typescript
+import { domElementsFromPoint } from '@dxtmisha/functional-basic'
+
+// Xác định các phần tử bên dưới tọa độ
+const elements = domElementsFromPoint({ x: 150, y: 300 })
+console.log('Các phần tử dưới tọa độ:', elements)
+```
+

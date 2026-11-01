@@ -11,14 +11,15 @@ Trích xuất và xác thực mã ngôn ngữ chuẩn viết thường từ chu�
 - **Hỗ trợ thẻ con BCP-47** — Trích xuất chính xác mã ngôn ngữ chính 2 hoặc 3 chữ cái từ các thẻ BCP-47 tiêu chuẩn và nâng cao (ví dụ: `'zh-Hans-CN'` -> `'zh'`, `'cmn-SG'` -> `'cmn'`).
 - **Hỗ trợ nhiều định dạng thẻ ngôn ngữ** — Hoạt động linh hoạt với định dạng chuẩn (`'en-US'`), dấu gạch dưới (`'en_US'`), không phân biệt chữ hoa chữ thường (`'ru-ru'` -> `'ru'`, `'EN-GB'` -> `'en'`) và đảo ngược (`'RU-ru'` -> `'ru'`, `'VN_vi'` -> `'vi'`).
 - **Phân giải mã ngôn ngữ thay thế** — Tự động chuyển đổi các mã ngôn ngữ thay thế hoặc lịch sử được khai báo trong `GeoList` sang dạng chuẩn (ví dụ: `'us'` -> `'en'`, `'ua'` -> `'uk'`, `'cz'` -> `'cs'`, `'il'` -> `'he'`).
-- **Xác thực chặt chẽ qua `GeoList`** — Phân biệt mã ngôn ngữ với mã quốc gia viết hoa (`'US'` -> `''`, `'RU'` -> `''`) và kiểm tra ngôn ngữ trong cơ sở dữ liệu địa lý được hỗ trợ.
+- **Xác thực chặt chẽ qua `GeoList` hoặc trích xuất thô** — Phân biệt mã ngôn ngữ với mã quốc gia viết hoa (`'US'` -> `''`, `'BY_BY'` -> `''`). Mặc định kiểm tra ngôn ngữ qua `GeoList`, hoặc trả về mã ngôn ngữ chữ thường trích xuất thô khi `raw = true`.
 - **Tương thích SSR và kiểm tra kiểu an toàn** — Hàm thuần túy không có tác dụng phụ, sử dụng `isString()` để loại bỏ nhanh chóng các giá trị không phải chuỗi, `null` và `undefined` trong $O(1)$ mà không gây lỗi lúc chạy.
 
 **Tham số:**
 - `code?: unknown` — Chuỗi vị trí hoặc mã ngôn ngữ cần kiểm tra và xác thực.
+- `raw?: boolean` — Có bỏ qua tra cứu `GeoList` và trả về mã ngôn ngữ trích xuất thô hay không.
 
 **Trả về:**
-- `string` — Mã ngôn ngữ chữ thường hợp lệ (ví dụ: `'en'`, `'ru'`, `'vi'`) hoặc chuỗi rỗng nếu không tìm thấy.
+- `string` — Mã ngôn ngữ chữ thường (ví dụ: `'en'`, `'ru'`, `'vi'`) hoặc chuỗi rỗng nếu không tìm thấy.
 
 ## Ví dụ
 
@@ -49,7 +50,13 @@ toLanguage('ua-UA') // 'uk'
 toLanguage('cz')    // 'cs'
 toLanguage('il')    // 'he'
 
-// 5. Mã chỉ có quốc gia hoặc giá trị không hợp lệ
+// 5. Chế độ trích xuất thô (raw = true)
+toLanguage('us-US', true) // 'us'
+toLanguage('QQ-qq', true) // 'qq'
+toLanguage('VN', true)    // ''
+toLanguage('BY_BY', true) // ''
+
+// 6. Mã chỉ có quốc gia hoặc giá trị không hợp lệ
 toLanguage('US')      // '' (chỉ là quốc gia, không phải ngôn ngữ)
 toLanguage('')        // ''
 toLanguage(undefined) // ''

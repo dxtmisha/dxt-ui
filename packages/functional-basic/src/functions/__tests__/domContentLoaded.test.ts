@@ -58,6 +58,16 @@ describe('domContentLoaded', () => {
       expect(result).toBeUndefined()
     })
 
+    it('should safely accept null as callback', async () => {
+      Object.defineProperty(document, 'readyState', {
+        configurable: true,
+        get: () => 'complete'
+      })
+
+      const result = await domContentLoaded(null)
+      expect(result).toBeNull()
+    })
+
     it('should handle async callback returning a promise when document is already loaded', async () => {
       Object.defineProperty(document, 'readyState', {
         configurable: true,
@@ -244,6 +254,17 @@ describe('domContentLoaded', () => {
       const result = await domContentLoaded(() => payload)
       expect(result).toEqual(payload)
       expect(result).toBe(payload)
+    })
+
+    it('should accurately return Unicode and multilingual strings', async () => {
+      Object.defineProperty(document, 'readyState', {
+        configurable: true,
+        get: () => 'complete'
+      })
+
+      const text = 'Привет Мир / Tiếng Việt 🚀 🔥'
+      const result = await domContentLoaded(() => text)
+      expect(result).toBe(text)
     })
 
     it('should preserve promises resolving to falsy values when event is deferred', async () => {

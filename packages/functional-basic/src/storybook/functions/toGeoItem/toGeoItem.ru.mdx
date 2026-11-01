@@ -1,0 +1,48 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toGeoItem - Получение объекта GeoItem по коду'/>
+
+# `toGeoItem`
+
+Находит географические данные страны и локали (`GeoItem`) по коду язык-страна, коду страны или коду языка через `GeoList`.
+
+## Основные возможности
+
+- **Поиск по полной локали** — Распознаёт комбинированные строки в формате язык-страна или страна-язык (например, `'en-US'`, `'RU-ru'`).
+- **Фоллбэк по коду страны** — Находит данные страны по двухбуквенному ISO-коду или альтернативным псевдонимам (например, `'US'`, `'VN'`, `'UK'`).
+- **Фоллбэк по коду языка** — Определяет основную страну для заданного кода языка (например, `'ru'`, `'vi'`).
+- **Безопасная обработка ввода** — Чистая функция без побочных эффектов, возвращающая `undefined` при некорректных, пустых или нестроковых значениях.
+
+**Параметры:**
+- `code?: unknown` — Код локали, страны или языка для поиска.
+
+**Возвращает:**
+- `GeoItem | undefined` — Объект географических данных страны или `undefined`, если совпадение не найдено.
+
+## Примеры использования
+
+<Source
+  language='typescript'
+  code={`
+import { toGeoItem } from '@dxtmisha/functional-basic'
+
+// 1. Полный код локали (включая underscore, разный регистр и BCP-47)
+toGeoItem('en-US') // { country: 'US', language: 'en', ... }
+toGeoItem('en_US') // { country: 'US', language: 'en', ... }
+toGeoItem('RU-ru') // { country: 'RU', language: 'ru', ... }
+toGeoItem('en-gb') // { country: 'GB', language: 'en', ... }
+toGeoItem('zh-Hans-CN') // { country: 'CN', language: 'zh', ... }
+
+// 2. Код страны
+toGeoItem('VN')    // { country: 'VN', language: 'vi', ... }
+toGeoItem('UK')    // { country: 'GB', language: 'en', ... }
+
+// 3. Код языка
+toGeoItem('ru')    // { country: 'RU', language: 'ru', ... }
+
+// 4. Некорректный или отсутствующий код
+toGeoItem('XYZ')   // undefined
+toGeoItem(null)    // undefined
+`}
+/>
+

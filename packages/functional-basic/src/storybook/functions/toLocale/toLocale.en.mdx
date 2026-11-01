@@ -1,0 +1,51 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toLocale - Canonical locale format (aa-AA) conversion'/>
+
+# `toLocale`
+
+Converts a full locale string into a canonical standard locale format `aa-AA` (e.g., `'en-US'`, `'ru-RU'`, `'vi-VN'`). If the input is not a full locale format (e.g. only country or only language) or is invalid, it returns an empty string `''`.
+
+## Key Features
+
+- **Canonical `aa-AA` Format** — Guarantees a normalized `[two-letter language]-[two-letter country]` output (lowercase language subtag, uppercase country code).
+- **Strict Full Format Enforcement** — Requires both language and country to be present. Incomplete inputs such as country-only (`'US'`) or language-only (`'ru'`) return an empty string `''`.
+- **BCP-47 Subtag Support** — Accurately extracts components from extended BCP-47 tags (e.g., `'zh-Hans-CN'` -> `'zh-CN'`, `'en-US-u-ca-gregory'` -> `'en-US'`).
+- **Flexible String Formats** — Supports standard (`'en-US'`), underscore-separated (`'en_US'`), case-insensitive (`'en-gb'` -> `'en-GB'`), and reversed (`'RU-ru'` -> `'ru-RU'`) formats.
+- **Safe & Isomorphic** — Handles `null`, `undefined`, empty strings, and non-string inputs safely without runtime errors.
+
+**Parameters:**
+- `code?: unknown` — Candidate locale string.
+
+**Returns:**
+- `string` — Canonical locale code in `aa-AA` format or an empty string if incomplete or unresolved.
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { toLocale } from '@dxtmisha/functional-basic'
+
+// 1. Full standard and reversed locale tags
+toLocale('en-US') // 'en-US'
+toLocale('ru_RU') // 'ru-RU'
+toLocale('RU-ru') // 'ru-RU'
+toLocale('en-gb') // 'en-GB'
+
+// 2. Complex BCP-47 tags
+toLocale('zh-Hans-CN')         // 'zh-CN'
+toLocale('en-US-u-ca-gregory') // 'en-US'
+
+// 3. Incomplete formats (country-only or language-only) return empty string
+toLocale('US') // ''
+toLocale('RU') // ''
+toLocale('ru') // ''
+toLocale('vi') // ''
+
+// 4. Invalid values
+toLocale('')         // ''
+toLocale(undefined)  // ''
+toLocale(null)       // ''
+  `}
+/>

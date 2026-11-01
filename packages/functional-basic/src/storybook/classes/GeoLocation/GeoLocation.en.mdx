@@ -10,7 +10,8 @@ A dedicated class for managing, validating, and persisting the current geographi
 
 - **Tiered Resolution Hierarchy** — resolves location code deterministically in order: Cookie -> DataStorage -> HTML `lang` attribute -> `navigator.language` / `navigator.languages` -> Default fallback provider -> `'en-GB'`.
 - **Dual-Tier Persistence** — optionally synchronizes location across both browser `localStorage` (via `DataStorage`) and cookies (via `Cookie`), ensuring cross-session and cross-request persistence.
-- **BCP-47 Sanitization** — normalizes and validates external strings via `sanitizeLocation`, converting underscores to hyphens and discarding invalid or dangerous inputs.
+- **BCP-47 Sanitization** — validates and trims external strings via `sanitizeLocation`, preserving original casing and `-` / `_` separators while discarding invalid or dangerous inputs.
+- **Raw Country & Language Extraction** — provides `getCountry()` and `getLanguage()` to extract raw country and language codes directly from the current location string.
 - **Dynamic Defaults** — supports static string values or dynamic callback resolvers via `setValueDefault()`.
 - **SSR Safe** — guards all DOM interactions with `isDomRuntime()` and integrates with request-isolated `ServerStorage` for cookie access in server runtimes.
 
@@ -24,8 +25,10 @@ const location = new GeoLocation()
 console.log(location.get()) // e.g., 'en-GB' or resolved from Cookie/DOM
 
 // Update current location with storage persistence
-location.set('ru-RU', true)
-console.log(location.get()) // 'ru-RU'
+location.set('ru-BY_BY', true)
+console.log(location.get())         // 'ru-BY_BY'
+console.log(location.getLanguage()) // 'ru'
+console.log(location.getCountry())  // 'BY_BY'
 
 // Provide a dynamic fallback resolver
 location.setValueDefault(() => 'vi-VN')
@@ -35,5 +38,7 @@ location.setValueDefault(() => 'vi-VN')
 
 - `get(): string` — Returns the current location code string.
 - `set(code?: string, save?: boolean): this` — Updates the current location code and optionally persists it in storage and cookie, returning the instance for chaining.
+- `getCountry(): string` — Returns the raw country code extracted from the current location (`toCountry(location, true)`).
+- `getLanguage(): string` — Returns the raw language code extracted from the current location (`toLanguage(location, true)`).
 - `setValueDefault(code?: string | (() => string | undefined)): this` — Sets the default value or resolver for the location code and re-evaluates current location.
 

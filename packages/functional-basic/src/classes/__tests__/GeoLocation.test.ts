@@ -16,8 +16,8 @@ function resetSingletons(): void {
   vi.mocked(isDomRuntime).mockReturnValue(false)
 
   ServerStorage.reset()
-  CookieStorage.reset()
   ServerStorage.init(() => ({}))
+  CookieStorage.reset()
 
   try {
     window.localStorage?.clear()
@@ -133,13 +133,19 @@ describe('GeoLocation', () => {
       expect(secondLocation.get()).toBe('ko-KR')
     })
 
-    it('sanitizes and canonicalizes location codes', () => {
+    it('sanitizes and trims location codes while preserving original casing and underscores', () => {
       const location = new GeoLocation()
       location.set('en_us')
-      expect(location.get()).toBe('en-US')
+      expect(location.get()).toBe('en_us')
 
       location.set('  ru-ru  ')
-      expect(location.get()).toBe('ru-RU')
+      expect(location.get()).toBe('ru-ru')
+
+      location.set('ru-BY_BY')
+      expect(location.get()).toBe('ru-BY_BY')
+
+      location.set('VN')
+      expect(location.get()).toBe('VN')
     })
 
     it('falls back to "en-GB" when setting invalid or dangerous code', () => {
@@ -149,6 +155,48 @@ describe('GeoLocation', () => {
 
       location.set('invalid--tag')
       expect(location.get()).toBe('en-GB')
+    })
+  })
+
+  describe('getCountry and getLanguage', () => {
+    it('extracts raw country and language codes from various location strings', () => {
+      const location = new GeoLocation()
+
+      location.set('us-US')
+      expect(location.getLanguage()).toBe('us')
+      expect(location.getCountry()).toBe('US')
+
+      location.set('QQ-qq')
+      expect(location.getLanguage()).toBe('qq')
+      expect(location.getCountry()).toBe('QQ')
+
+      location.set('vi')
+      expect(location.getLanguage()).toBe('vi')
+      expect(location.getCountry()).toBe('')
+
+      location.set('VN')
+      expect(location.getLanguage()).toBe('')
+      expect(location.getCountry()).toBe('VN')
+
+      location.set('vi-VN')
+      expect(location.getLanguage()).toBe('vi')
+      expect(location.getCountry()).toBe('VN')
+
+      location.set('us')
+      expect(location.getLanguage()).toBe('us')
+      expect(location.getCountry()).toBe('')
+
+      location.set('Us')
+      expect(location.getLanguage()).toBe('')
+      expect(location.getCountry()).toBe('')
+
+      location.set('ru-BY_BY')
+      expect(location.getLanguage()).toBe('ru')
+      expect(location.getCountry()).toBe('BY_BY')
+
+      location.set('BY_BY')
+      expect(location.getLanguage()).toBe('')
+      expect(location.getCountry()).toBe('BY_BY')
     })
   })
 

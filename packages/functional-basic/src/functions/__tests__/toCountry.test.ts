@@ -71,6 +71,7 @@ describe('toCountry', () => {
       expect(toCountry('UK')).toBe('GB')
       expect(toCountry('EN')).toBe('US')
       expect(toCountry('BY_BY')).toBe('BY')
+      expect(toCountry('ru-BY_BY')).toBe('BY')
       expect(toCountry('en-UK')).toBe('GB')
       expect(toCountry('en-uk')).toBe('GB')
       expect(toCountry('UK-en')).toBe('GB')
@@ -114,6 +115,26 @@ describe('toCountry', () => {
       expect(toCountry(true)).toBe('')
       expect(toCountry({})).toBe('')
       expect(toCountry([])).toBe('')
+    })
+  })
+
+  describe('Raw extraction mode (raw = true)', () => {
+    it('returns raw extracted country code without GeoList validation', () => {
+      expect(toCountry('us-US', true)).toBe('US')
+      expect(toCountry('QQ-qq', true)).toBe('QQ')
+      expect(toCountry('vi-VN', true)).toBe('VN')
+      expect(toCountry('VN', true)).toBe('VN')
+      expect(toCountry('UK', true)).toBe('UK')
+      expect(toCountry('ZZ', true)).toBe('ZZ')
+      expect(toCountry('BY_BY', true)).toBe('BY_BY')
+      expect(toCountry('ru-BY_BY', true)).toBe('BY_BY')
+      expect(toCountry('BY_BY-ru', true)).toBe('BY_BY')
+    })
+
+    it('falls back to GeoList lookup (returning empty string) when input is lowercase or mixed-case without region', () => {
+      expect(toCountry('vi', true)).toBe('')
+      expect(toCountry('us', true)).toBe('')
+      expect(toCountry('Us', true)).toBe('')
     })
   })
 })

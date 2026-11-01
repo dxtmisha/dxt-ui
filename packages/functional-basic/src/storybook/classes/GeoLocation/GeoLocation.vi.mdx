@@ -10,7 +10,8 @@ Lớp chuyên dụng để quản lý, xác thực và lưu trữ mã vị trí 
 
 - **Phân giải thứ bậc tuần tự** — tự động tìm kiếm mã vị trí theo thứ tự ưu tiên: Cookie -> DataStorage -> thuộc tính `lang` của thẻ HTML -> `navigator.language` / `navigator.languages` -> giá trị mặc định -> `'en-GB'`.
 - **Lưu trữ hai cấp độ** — tùy chọn đồng bộ hóa vị trí vào cả `localStorage` (qua `DataStorage`) và cookie (qua `Cookie`), đảm bảo tính bền vững giữa các phiên làm việc và yêu cầu.
-- **Khử khuẩn theo BCP-47** — chuẩn hóa và xác thực chuỗi qua `sanitizeLocation`, chuyển đổi dấu gạch dưới thành dấu gạch nối và loại bỏ các ký tự không an toàn.
+- **Khử khuẩn theo BCP-47** — xác thực và làm sạch chuỗi qua `sanitizeLocation`, giữ nguyên chữ hoa/thường và dấu phân cách (`-`, `_`) đồng thời loại bỏ các ký tự không an toàn.
+- **Trích xuất thô quốc gia và ngôn ngữ** — cung cấp `getCountry()` và `getLanguage()` để trích xuất trực tiếp mã quốc gia và ngôn ngữ thô từ chuỗi vị trí hiện tại.
 - **Giá trị mặc định động** — hỗ trợ giá trị chuỗi tĩnh hoặc hàm gọi lại động qua `setValueDefault()`.
 - **An toàn cho SSR** — kiểm tra môi trường qua `isDomRuntime()` và tương thích với `ServerStorage` để đọc cookie độc lập trên máy chủ.
 
@@ -24,8 +25,10 @@ const location = new GeoLocation()
 console.log(location.get()) // ví dụ: 'en-GB' hoặc giá trị từ Cookie/DOM
 
 // Cập nhật vị trí và lưu trữ lâu dài
-location.set('ru-RU', true)
-console.log(location.get()) // 'ru-RU'
+location.set('ru-BY_BY', true)
+console.log(location.get())         // 'ru-BY_BY'
+console.log(location.getLanguage()) // 'ru'
+console.log(location.getCountry())  // 'BY_BY'
 
 // Thiết lập hàm xác định mặc định động
 location.setValueDefault(() => 'vi-VN')
@@ -35,5 +38,7 @@ location.setValueDefault(() => 'vi-VN')
 
 - `get(): string` — Trả về chuỗi mã vị trí hiện tại.
 - `set(code?: string, save?: boolean): this` — Cập nhật mã vị trí hiện tại và tùy chọn lưu vào bộ nhớ và cookie, trả về thực thể để gọi chuỗi.
+- `getCountry(): string` — Trả về mã quốc gia thô được trích xuất từ vị trí hiện tại (`toCountry(location, true)`).
+- `getLanguage(): string` — Trả về mã ngôn ngữ thô được trích xuất từ vị trí hiện tại (`toLanguage(location, true)`).
 - `setValueDefault(code?: string | (() => string | undefined)): this` — Thiết lập giá trị mặc định hoặc hàm xác định mặc định và tính toán lại vị trí.
 

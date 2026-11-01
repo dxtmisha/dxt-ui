@@ -57,3 +57,9 @@ uniqueArray
 replaceRecursive
 splice
 isString
+createElement
+domContentLoaded
+domElementsFromPoint
+toLocale
+toGeoStandard
+GeoInstance

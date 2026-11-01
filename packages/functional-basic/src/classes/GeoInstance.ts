@@ -1,32 +1,17 @@
 // ai-none
 
-import { isString } from '../functions/isString'
-import { sanitizeLocation } from '../functions/sanitizeLocation'
-import { toCountry } from '../functions/toCountry'
-import { toLanguage } from '../functions/toLanguage'
+import { toGeoItem } from '../functions/toGeoItem'
+import { toGeoItemFull } from '../functions/toGeoItemFull'
+import { toGeoStandard } from '../functions/toGeoStandard'
 
 import { GeoList } from './GeoList'
-import { GeoLocation, UI_GEO_COOKIE_KEY } from './GeoLocation'
+import { GeoLocation } from './GeoLocation'
 import { GeoTimezone } from './GeoTimezone'
 
 import {
   type GeoItem,
   type GeoItemFull
 } from '../types/geoTypes'
-
-export { UI_GEO_COOKIE_KEY }
-
-/**
- * Default first day of the week /
- * Первый день недели по умолчанию
- */
-const DEFAULT_FIRST_DAY = 'Mo'
-
-/**
- * Regular expression for matching full language-country or country-language codes /
- * Регулярное выражение для проверки полного кода язык-страна или страна-язык
- */
-const REGEXP_CODE_FULL = /([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/
 
 /**
  * Base class for working with geographic data.
@@ -52,13 +37,7 @@ export class GeoInstance {
    * Detailed data about the current country /
    * Детальные данные о текущей стране
    */
-  protected item: GeoItemFull
-
-  /**
-   * Current language code /
-   * Текущий код языка
-   */
-  protected language: string
+  protected item!: GeoItemFull
 
   /**
    * Constructor.
@@ -68,8 +47,7 @@ export class GeoInstance {
    * Инициализирует местоположение и связанные с ним данные.
    */
   constructor() {
-    this.item = this.getByCode(this.location.get())
-    this.language = this.findLanguage(this.location.get())
+    this.updateItem()
   }
 
   /**
@@ -88,13 +66,13 @@ export class GeoInstance {
    * Обновляет текущее местоположение и связанные с ним данные.
    * @param code location code (e.g., 'en-GB') / код локации (например, 'en-GB')
    * @param save whether to save the location in storage / нужно ли сохранять местоположение в хранилище
-   * @returns void / ничего не возвращает
+   * @returns current instance / текущий экземпляр
    */
-  set(code: string, save?: boolean): void {
+  set(code?: string, save?: boolean): this {
     this.location.set(code, save)
+    this.updateItem()
 
-    this.item = this.getByCode(this.location.get())
-    this.language = this.findLanguage(this.location.get())
+    return this
   }
 
   /**
@@ -105,64 +83,39 @@ export class GeoInstance {
    * @returns full geo data / полные гео-данные
    */
   getByCode(code?: string): GeoItemFull {
-    let item: GeoItem | undefined
-    const validCode = isString(code) ? code : undefined
-
-    if (validCode) {
-      if (REGEXP_CODE_FULL.test(validCode)) {
-        item = this.getByCodeFull(validCode)
-      }
-
-      if (!item) {
-        const country = toCountry(validCode)
-
-        if (country) {
-          item = this.getByCountry(country)
-        }
-      }
-
-      if (!item) {
-        const language = toLanguage(validCode)
-
-        if (language) {
-          item = this.getByLanguage(language)
-        }
-      }
-    }
-
-    return this.toFull(item ?? this.getList()[0] as GeoItem, validCode)
+    return toGeoItemFull(toGeoItem(code) ?? this.getList()[0], code)
   }
 
   /**
-   * Returns full data by language and country combination.
+   * Returns geo item data by language and country combination.
    *
-   * Возвращает полные данные по комбинации языка и страны.
+   * Возвращает гео-данные по комбинации языка и страны.
    * @param code string in the form of language-country / строка в виде язык-страна
    * @returns geo item or undefined / гео-объект или undefined
    */
-  getByCodeFull(code: string): GeoItem | undefined {
+  getByCodeFull(code?: string): GeoItem | undefined {
     return GeoList.getByCodeFull(code)
   }
 
   /**
-   * Returns full data by country code.
+   * Returns geo item data by country code.
    *
-   * Возвращает полные данные по коду страны.
+   * Возвращает гео-данные по коду страны.
    * @param country country code / код страны
    * @returns geo item or undefined / гео-объект или undefined
    */
-  getByCountry(country: string): GeoItem | undefined {
+  getByCountry(country?: string): GeoItem | undefined {
     return GeoList.getByCountry(country)
   }
 
   /**
-   * Returns full data by language code.
+   * Returns geo item data by language code.
    *
-   * Возвращает полные данные по коду языка.
+   * Возвращает гео-данные по коду языка.
    * @param language language code / код языка
    * @returns geo item or undefined / гео-объект или undefined
    */
-  getByLanguage(language: string): GeoItem | undefined {
+  getByLanguage(language?: string): GeoItem | undefined {
     return GeoList.getByLanguage(language)
   }
 
@@ -204,7 +157,7 @@ export class GeoInstance {
    * @returns language code / код языка
    */
   getLanguage(): string {
-    return this.language
+    return this.item.locationLanguage
   }
 
   /**
@@ -234,7 +187,7 @@ export class GeoInstance {
    * @returns country code / код страны
    */
   getLocationCountry(): string {
-    return toCountry(this.getLocation())
+    return this.location.getCountry()
   }
 
   /**
@@ -244,7 +197,7 @@ export class GeoInstance {
    * @returns language code / код языка
    */
   getLocationLanguage(): string {
-    return toLanguage(this.getLocation())
+    return this.location.getLanguage()
   }
 
   /**
@@ -290,17 +243,17 @@ export class GeoInstance {
   }
 
   /**
-   * Sets the default value for the country code.
+   * Sets the default value or resolver for the location code.
    *
-   * Устанавливает значение по умолчанию для кода страны.
-   * @param code default code value / значение кода по умолчанию
-   * @returns void / ничего не возвращает
+   * Устанавливает значение по умолчанию или функцию его вычисления для кода локации.
+   * @param code default code value or provider / значение кода по умолчанию или провайдер
+   * @returns current instance / текущий экземпляр
    */
-  setValueDefault(code?: string | (() => string | undefined)): void {
+  setValueDefault(code?: string | (() => string | undefined)): this {
     this.location.setValueDefault(code)
+    this.updateItem()
 
-    this.item = this.getByCode(this.location.get())
-    this.language = this.findLanguage(this.location.get())
+    return this
   }
 
   /**
@@ -315,17 +268,10 @@ export class GeoInstance {
    */
   add(
     country: string,
-    item: Partial<GeoItem>
+    item?: Partial<GeoItem>
   ): this {
     GeoList.add(country, item)
-
-    if (
-      this.item.country === country
-      || toCountry(this.location.get()) === country
-    ) {
-      this.item = this.getByCode(this.location.get())
-      this.language = this.findLanguage(this.location.get())
-    }
+    this.updateItem()
 
     return this
   }
@@ -338,12 +284,12 @@ export class GeoInstance {
    * @returns current instance / текущий экземпляр
    */
   addList(
-    list: Record<string, Partial<GeoItem>>
+    list?: Record<string, Partial<GeoItem>>
   ): this {
-    GeoList.addList(list)
-
-    this.item = this.getByCode(this.location.get())
-    this.language = this.findLanguage(this.location.get())
+    if (list) {
+      GeoList.addList(list)
+      this.updateItem()
+    }
 
     return this
   }
@@ -366,41 +312,15 @@ export class GeoInstance {
    * Преобразует гео-объект в его стандартное строковое представление (язык-страна).
    * @param item geo item data / данные гео-объекта
    * @param language optional language override / опциональное переопределение языка
+   * @param raw whether to skip language processing / не обрабатывать ли язык
    * @returns standard code string / строка стандартного кода
    */
   toStandard(
-    item: GeoItem,
-    language?: string
+    item?: GeoItem,
+    language?: string,
+    raw?: boolean
   ): string {
-    if (language) {
-      const standardLanguage = this.getByLanguage(language)?.language
-
-      if (standardLanguage) {
-        return `${standardLanguage}-${item.country}`
-      }
-    }
-
-    return `${item.language}-${item.country}`
-  }
-
-  /**
-   * Internal getter for the list of available countries.
-   *
-   * Внутренний геттер для списка доступных стран.
-   * @returns list of geo items / список гео-объектов
-   */
-  protected get list(): GeoItem[] {
-    return GeoList.get()
-  }
-
-  /**
-   * Internal method to get the location manager instance.
-   *
-   * Внутренний метод для получения экземпляра менеджера локации.
-   * @returns location manager instance / экземпляр менеджера локации
-   */
-  protected getLocationObject(): GeoLocation {
-    return this.location
+    return toGeoStandard(item, language, raw)
   }
 
   /**
@@ -414,48 +334,12 @@ export class GeoInstance {
   }
 
   /**
-   * Internal method to determine the language from the provided code.
+   * Internal method to update current geo item.
    *
-   * Внутренний метод для определения языка по предоставленному коду.
-   * @param code location or language code / код локации или языка
-   * @returns language code / код языка
+   * Внутренний метод для обновления текущего гео-объекта.
+   * @returns void / ничего не возвращает
    */
-  protected findLanguage(code?: string): string {
-    if (isString(code) && code) {
-      const language = toLanguage(code)
-
-      if (language) {
-        const item = this.getByLanguage(language)
-
-        if (item) {
-          return item.language
-        }
-      }
-    }
-
-    return this.item.language
-  }
-
-  /**
-   * Internal method to fill missing fields in a geo item.
-   *
-   * Внутренний метод для заполнения отсутствующих полей в гео-объекте.
-   * @param item basic geo item / базовый гео-объект
-   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
-   * @returns full geo item data / полные данные гео-объекта
-   */
-  protected toFull(item: GeoItem, code?: string): GeoItemFull {
-    const locationLanguage = (code && toLanguage(code)) || item.language
-    const standard = this.toStandard(item, locationLanguage)
-
-    return {
-      ...item,
-      standard,
-      firstDay: item.firstDay || DEFAULT_FIRST_DAY,
-
-      location: sanitizeLocation(code) ?? standard,
-      locationCountry: (code && toCountry(code)) || item.country,
-      locationLanguage
-    }
+  protected updateItem(): void {
+    this.item = this.getByCode(this.location.get())
   }
 }

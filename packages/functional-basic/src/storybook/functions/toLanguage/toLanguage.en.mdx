@@ -11,14 +11,15 @@ Extracts and validates a canonical lowercase language code from location strings
 - **BCP-47 Subtag Support** — Accurately extracts the primary 2- or 3-letter language code from standard and complex BCP-47 locale tags (e.g., `'zh-Hans-CN'` -> `'zh'`, `'cmn-SG'` -> `'cmn'`).
 - **Flexible Locale Tag Formats** — Supports classic (`'en-US'`), underscore-separated (`'en_US'`), case-insensitive (`'ru-ru'` -> `'ru'`, `'EN-GB'` -> `'en'`), and reversed (`'RU-ru'` -> `'ru'`, `'VN_vi'` -> `'vi'`) locale tags.
 - **Alternative Language Code Resolution** — Automatically maps historical or non-standard language codes registered in `GeoList` to their canonical forms (e.g., `'us'` -> `'en'`, `'ua'` -> `'uk'`, `'cz'` -> `'cs'`, `'il'` -> `'he'`).
-- **Strict Verification via `GeoList`** — Distinguishes language codes from uppercase country codes (`'US'` -> `''`, `'RU'` -> `''`) and validates that extracted language tags exist in the supported geo database.
+- **Strict Verification via `GeoList` or Raw Extraction** — Distinguishes language codes from uppercase country codes (`'US'` -> `''`, `'BY_BY'` -> `''`). Validates against `GeoList` by default, or returns the raw extracted lowercase language subtag when `raw = true`.
 - **Isomorphic & Safe Coercion** — Pure, side-effect-free function utilizing `isString()` to safely reject non-string, `null`, and `undefined` inputs in $O(1)$ without runtime exceptions.
 
 **Parameters:**
 - `code?: unknown` — Candidate location or language string to parse and validate.
+- `raw?: boolean` — Whether to skip `GeoList` lookup and return the raw extracted lowercase language code.
 
 **Returns:**
-- `string` — Canonical lowercase language code (e.g., `'en'`, `'ru'`, `'vi'`) or an empty string if not found.
+- `string` — Lowercase language code (e.g., `'en'`, `'ru'`, `'vi'`) or an empty string if not found.
 
 ## Examples
 
@@ -49,7 +50,13 @@ toLanguage('ua-UA') // 'uk'
 toLanguage('cz')    // 'cs'
 toLanguage('il')    // 'he'
 
-// 5. Country-only, empty, or invalid values
+// 5. Raw extraction mode (raw = true)
+toLanguage('us-US', true) // 'us'
+toLanguage('QQ-qq', true) // 'qq'
+toLanguage('VN', true)    // ''
+toLanguage('BY_BY', true) // ''
+
+// 6. Country-only, empty, or invalid values
 toLanguage('US')      // '' (country only, not a language)
 toLanguage('')        // ''
 toLanguage(undefined) // ''

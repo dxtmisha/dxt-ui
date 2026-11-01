@@ -4,13 +4,13 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `sanitizeLocation`
 
-Валидирует и нормализует внешнюю строку кода локали. Обеспечивает безопасность для URL и совместимость со стандартами ECMA-402 / BCP-47: удаляет пробелы, заменяет символы подчеркивания на дефисы, проверяет длину и структуру субтегов, а также канонизирует результат через `Intl.Locale` при поддержке платформой.
+Валидирует и очищает внешнюю строку кода локали. Обеспечивает безопасность для URL и структурную корректность тегов локали: удаляет крайние пробелы, проверяет максимальную длину (`64` символа) и структуру субтегов с разделителями `-` или `_`, сохраняя исходный регистр и разделители без изменений.
 
 **Параметры:**
 - `code?: unknown` — Проверяемый код локали.
 
 **Возвращает:**
-`string | undefined` — Валидный канонический код локали (например, `'en-US'`) или `undefined`, если значение некорректно или небезопасно.
+`string | undefined` — Валидный очищенный код локали (например, `'en-US'`, `'ru-BY_BY'`, `'VN'`) или `undefined`, если значение некорректно или небезопасно.
 
 ## Примеры
 
@@ -19,10 +19,11 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
   code={`
 import { sanitizeLocation } from '@dxtmisha/functional-basic'
 
-// 1. Нормализация регистра и разделителей
-sanitizeLocation('en_US')     // 'en-US'
-sanitizeLocation('  ru-ru  ') // 'ru-RU'
-sanitizeLocation('zh-hans-cn') // 'zh-Hans-CN'
+// 1. Удаление пробелов и сохранение исходного регистра/разделителей
+sanitizeLocation('  en-US  ')  // 'en-US'
+sanitizeLocation('en_US')      // 'en_US'
+sanitizeLocation('ru-BY_BY')   // 'ru-BY_BY'
+sanitizeLocation('VN')         // 'VN'
 
 // 2. Отклонение опасных строк и некорректных символов
 sanitizeLocation('<script>alert(1)</script>') // undefined
