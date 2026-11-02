@@ -439,13 +439,13 @@ describe('GeoInstance', () => {
       expect(geo.getCountry()).toBe('VN')
     })
 
-    it('distinguishes raw getLocation* methods from normalized get* methods across edge cases', () => {
+    it('distinguishes getLocation* methods from country metadata get* methods across edge cases', () => {
       const geo = new GeoInstance()
       const cases = [
         {
           input: 'us-US',
           location: 'us-US',
-          locationLanguage: 'us',
+          locationLanguage: 'en',
           locationCountry: 'US',
           language: 'en',
           country: 'US',
@@ -454,8 +454,8 @@ describe('GeoInstance', () => {
         {
           input: 'QQ-qq',
           location: 'QQ-qq',
-          locationLanguage: 'qq',
-          locationCountry: 'QQ',
+          locationLanguage: 'en',
+          locationCountry: 'US',
           language: 'en',
           country: 'US',
           standard: 'en-US'
@@ -464,7 +464,7 @@ describe('GeoInstance', () => {
           input: 'vi',
           location: 'vi',
           locationLanguage: 'vi',
-          locationCountry: '',
+          locationCountry: 'VN',
           language: 'vi',
           country: 'VN',
           standard: 'vi-VN'
@@ -472,7 +472,7 @@ describe('GeoInstance', () => {
         {
           input: 'VN',
           location: 'VN',
-          locationLanguage: '',
+          locationLanguage: 'vi',
           locationCountry: 'VN',
           language: 'vi',
           country: 'VN',
@@ -488,10 +488,19 @@ describe('GeoInstance', () => {
           standard: 'vi-VN'
         },
         {
+          input: 'en-VN',
+          location: 'en-VN',
+          locationLanguage: 'en',
+          locationCountry: 'VN',
+          language: 'vi',
+          country: 'VN',
+          standard: 'en-VN'
+        },
+        {
           input: 'us',
           location: 'us',
-          locationLanguage: 'us',
-          locationCountry: '',
+          locationLanguage: 'en',
+          locationCountry: 'US',
           language: 'en',
           country: 'US',
           standard: 'en-US'
@@ -499,8 +508,8 @@ describe('GeoInstance', () => {
         {
           input: 'Us',
           location: 'Us',
-          locationLanguage: '',
-          locationCountry: '',
+          locationLanguage: 'en',
+          locationCountry: 'US',
           language: 'en',
           country: 'US',
           standard: 'en-US'
@@ -509,16 +518,16 @@ describe('GeoInstance', () => {
           input: 'ru-BY_BY',
           location: 'ru-BY_BY',
           locationLanguage: 'ru',
-          locationCountry: 'BY_BY',
-          language: 'ru',
+          locationCountry: 'BY',
+          language: 'be',
           country: 'BY',
           standard: 'ru-BY'
         },
         {
           input: 'BY_BY',
           location: 'BY_BY',
-          locationLanguage: '',
-          locationCountry: 'BY_BY',
+          locationLanguage: 'be',
+          locationCountry: 'BY',
           language: 'be',
           country: 'BY',
           standard: 'be-BY'

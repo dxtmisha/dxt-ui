@@ -56,7 +56,7 @@ export class DesignName {
    * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
    */
   getStatusClass(...names: (string | number | undefined)[]): string {
-    return `${this.getName()}--${names.flat().join('--')}`
+    return `${this.getName()}--${names.join('--')}`
   }
 
   /**
@@ -67,7 +67,7 @@ export class DesignName {
    * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
    */
   getStyle(...names: (string | number | undefined)[]): string {
-    return `--${this.getName()}-sys-${names.flat().join('-')}`
+    return `--${this.getName()}-sys-${names.join('-')}`
   }
 
   /**
@@ -78,7 +78,7 @@ export class DesignName {
    * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
    */
   getSubClass(...names: (string | number | undefined)[]): string {
-    return `${this.getName()}__${names.flat().join('__')}`
+    return `${this.getName()}__${names.join('__')}`
   }
 
   /**

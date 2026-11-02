@@ -1,8 +1,21 @@
 // @vitest-environment jsdom
 import { afterEach, assert, describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { createApp, createSSRApp, effectScope, getCurrentInstance, getCurrentScope, h, nextTick, onErrorCaptured, onMounted, onScopeDispose, reactive, ref, watch, type ComponentPublicInstance, type EffectScope, type Ref, type VNode } from 'vue'
+import {
+  createApp,
+  createSSRApp,
+  effectScope,
+  getCurrentScope,
+  nextTick,
+  onMounted,
+  onScopeDispose,
+  reactive,
+  ref,
+  watch,
+  type ComponentPublicInstance,
+  type EffectScope,
+  type Ref
+} from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { ErrorCenter } from '@dxtmisha/functional-basic'
 
 import { DesignLogicAbstract } from '../DesignLogicAbstract'
 import { DesignLifecycleAbstract } from '../DesignLifecycleAbstract'
@@ -131,53 +144,31 @@ class TestLogic extends DesignLogicAbstract<
    *
    * Регистрирует стандартные конструкторы зависимостей и их переопределения.
    * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
+   * @param hasLifecycle whether to register lifecycle hooks / регистрировать ли хуки жизненного цикла
    */
-  constructor(constructors: TestConstructors = {}) {
-    super({ label: 'test' }, ref<HTMLElement>(), new DesignName('d1.test'), undefined, undefined, undefined, {
-      DependencyConstructor: TestDependency,
-      CountConstructor: CountDependency,
-      LifecycleConstructor: LifecycleDependency,
-      EmptyLifecycleConstructor: EmptyLifecycleDependency,
-      ...constructors
-    })
+  constructor(constructors: TestConstructors = {}, hasLifecycle: boolean = true) {
+    super(
+      { label: 'test' },
+      ref<HTMLElement>(),
+      new DesignName('d1.test'),
+      undefined,
+      undefined,
+      undefined,
+      {
+        DependencyConstructor: TestDependency,
+        CountConstructor: CountDependency,
+        LifecycleConstructor: LifecycleDependency,
+        EmptyLifecycleConstructor: EmptyLifecycleDependency,
+        ...constructors
+      },
+      hasLifecycle
+    )
   }
 
   /** Mount state exposed for observation in tests / Состояние монтирования для наблюдения в тестах */
   declare readonly isMounted: Ref<boolean>
 
   readonly value = ref(0)
-}
-
-/**
- * Logic fixture with dependency names matching Object prototype properties.
- *
- * Тестовый класс логики с именами зависимостей, совпадающими со свойствами прототипа Object.
- */
-class PrototypeKeyLogic extends DesignLogicAbstract<
-  HTMLElement,
-  ConstrComponent,
-  ConstrItem,
-  ConstrItem,
-  { label: string },
-  Record<string, typeof LifecycleDependency | undefined>
-> {
-  /** Argument factories for prototype property names / Фабрики аргументов для имен свойств прототипа */
-  protected readonly constructorItems = {
-    constructor: { parameters: (): [] => [] },
-    toString: { parameters: (): [] => [] },
-    hasOwnProperty: { parameters: (): [] => [] },
-    ['__proto__']: { parameters: (): [] => [] }
-  }
-
-  /**
-   * Registers constructors with arbitrary dependency names.
-   *
-   * Регистрирует конструкторы с произвольными именами зависимостей.
-   * @param constructors dependency constructors / конструкторы зависимостей
-   */
-  constructor(constructors: Record<string, typeof LifecycleDependency | undefined> = {}) {
-    super({ label: 'test' }, ref<HTMLElement>(), new DesignName('d1.test'), undefined, undefined, undefined, constructors)
-  }
 }
 
 const scopes: EffectScope[] = []
@@ -260,6 +251,21 @@ describe('DesignLogicAbstract', () => {
     >['getInstance']>[0]>().toEqualTypeOf<string>()
   })
 
+  it('supports default generic type parameters for minimal subclasses', () => {
+    class MinimalLogic extends DesignLogicAbstract {
+      protected readonly constructorItems = {}
+
+      constructor() {
+        super({}, ref<Element>(), new DesignName('d1.minimal'))
+      }
+    }
+
+    const scope = createScope()
+    const logic = scope.run(() => new MinimalLogic())
+    assert(logic)
+    expect(logic.isMounted.value).toBe(false)
+  })
+
   it('evaluates arguments on first access and caches instances separately by name', () => {
     const scope = createScope()
     const logic = scope.run(() => new TestLogic())
@@ -281,17 +287,6 @@ describe('DesignLogicAbstract', () => {
     expect(logic.getInstance('CountConstructor')).toBe(count)
     expect(logic.i('CountConstructor')).toBe(count)
     expect(logic.onArguments).toHaveBeenCalledTimes(1)
-  })
-
-  it.each(['constructor', 'toString', 'hasOwnProperty', '__proto__'])('creates and caches a dependency named %s', (name) => {
-    const scope = createScope()
-    const logic = scope.run(() => new PrototypeKeyLogic({ [name]: LifecycleDependency }))
-    assert(logic)
-
-    const dependency = logic.getInstance(name)
-    expectTypeOf(dependency).toEqualTypeOf<LifecycleDependency>()
-    expect(dependency).toBeInstanceOf(LifecycleDependency)
-    expect(logic.getInstance(name)).toBe(dependency)
   })
 
   it('creates dependencies in the captured scope and disposes their effects with it', () => {
@@ -377,6 +372,37 @@ describe('DesignLogicAbstract', () => {
     expect(dependency.onUnmounted).toHaveBeenCalledTimes(1)
     expect(dependency.onUnmounted.mock.contexts[0]).toBe(dependency)
     expect(count.onUnmounted).not.toHaveBeenCalled()
+  })
+
+  it('does not register component lifecycle hooks when hasLifecycle is false', () => {
+    class DisabledLifecycleLogic extends TestLogic {
+      readonly onLogicMounted = vi.fn()
+      readonly onLogicUnmounted = vi.fn()
+
+      protected override readonly onMounted = this.onLogicMounted
+      protected override readonly onUnmounted = this.onLogicUnmounted
+
+      constructor() {
+        super({}, false)
+      }
+    }
+
+    const { logic, unmount } = mountLogic(() => {
+      const instance = new DisabledLifecycleLogic()
+      instance.getInstance('LifecycleConstructor')
+      return instance
+    })
+
+    const dependency = logic.getInstance('LifecycleConstructor')
+    assert(dependency)
+
+    expect(logic.isMounted.value).toBe(false)
+    expect(dependency.onMounted).not.toHaveBeenCalled()
+    expect(logic.onLogicMounted).not.toHaveBeenCalled()
+
+    unmount()
+    expect(dependency.onUnmounted).not.toHaveBeenCalled()
+    expect(logic.onLogicUnmounted).not.toHaveBeenCalled()
   })
 
   it('immediately mounts dependencies first requested after component mounting', () => {
@@ -542,239 +568,8 @@ describe('DesignLogicAbstract', () => {
     expect(secondDependency.onUnmounted).not.toHaveBeenCalled()
   })
 
-  it.each([
-    ['onMounted', false],
-    ['onMounted', true],
-    ['onUnmounted', false],
-    ['onUnmounted', true]
-  ] as const)('continues %s dependency callbacks when logic failure is %s', (name, failsLogic) => {
-    const events: string[] = []
-    const receivedErrors: unknown[] = []
-    const failure = new Error(`${name} failed`)
-    const logicFailure = new Error(`${name} logic failed`)
-    const reportError = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {
-      events.push('reported')
-    })
-
-    /**
-     * Dependency with a failing lifecycle callback.
-     *
-     * Зависимость с обработчиком жизненного цикла, выбрасывающим ошибку.
-     */
-    class FailingLifecycle extends LifecycleDependency {
-      /**
-       * Configures the selected callback to fail.
-       *
-       * Настраивает выбранный обработчик на выбрасывание ошибки.
-       */
-      constructor() {
-        super()
-        this[name].mockImplementation(() => {
-          events.push('failed')
-          throw failure
-        })
-      }
-    }
-
-    /**
-     * Dependency whose callback must run after another callback fails.
-     *
-     * Зависимость, обработчик которой должен выполниться после ошибки другого обработчика.
-     */
-    class LaterLifecycle extends EmptyLifecycleDependency {
-      /** Mount callback / Обработчик монтирования */
-      override readonly onMounted = vi.fn()
-      /** Unmount callback / Обработчик демонтирования */
-      override readonly onUnmounted = vi.fn()
-
-      /**
-       * Records execution of the selected callback.
-       *
-       * Записывает выполнение выбранного обработчика.
-       */
-      constructor() {
-        super()
-        this[name].mockImplementation(() => {
-          events.push('later')
-        })
-      }
-    }
-
-    /**
-     * Logic whose lifecycle callback can fail after its dependency callbacks.
-     *
-     * Логика, обработчик жизненного цикла которой может завершиться ошибкой после обработчиков зависимостей.
-     */
-    class FailingLogic extends TestLogic {
-      /** Mount callback that can fail / Обработчик монтирования, который может выбросить ошибку */
-      protected override readonly onMounted = (): void => {
-        if (name === 'onMounted') {
-          events.push('logic')
-          if (failsLogic) {
-            throw logicFailure
-          }
-        }
-      }
-
-      /** Unmount callback that can fail / Обработчик демонтирования, который может выбросить ошибку */
-      protected override readonly onUnmounted = (): void => {
-        if (name === 'onUnmounted') {
-          events.push('logic')
-          if (failsLogic) {
-            throw logicFailure
-          }
-        }
-      }
-    }
-
-    const { logic, unmount } = mountLogic(() => {
-      const logic = new FailingLogic({ LifecycleConstructor: FailingLifecycle, EmptyLifecycleConstructor: LaterLifecycle })
-      logic.getInstance('LifecycleConstructor')
-      logic.getInstance('EmptyLifecycleConstructor')
-      return logic
-    }, (error) => {
-      receivedErrors.push(error)
-      events.push('vue')
-    })
-
-    if (name === 'onUnmounted') {
-      expect(reportError).not.toHaveBeenCalled()
-      unmount()
-    }
-
-    expect(events).toEqual(['failed', 'later', 'reported', 'vue'])
-    expect(logic.getInstance('EmptyLifecycleConstructor')?.[name]).toHaveBeenCalledTimes(1)
-    expect(receivedErrors).toHaveLength(1)
-    const aggregate = reportError.mock.calls[0]?.[0].details
-    assert(aggregate instanceof AggregateError)
-    expect(aggregate.errors).toEqual([failure])
-    expect(receivedErrors[0]).toBe(aggregate)
-    expect(reportError).toHaveBeenCalledExactlyOnceWith({ group: 'design', code: name, details: aggregate })
-  })
-
-  it.each([
-    ['dependency', 'onMounted'],
-    ['logic', 'onMounted'],
-    ['dependency', 'onUnmounted'],
-    ['logic', 'onUnmounted']
-  ] as const)('reports synchronous %s errors during %s through Vue', (owner, name) => {
-    const failure = new Error(`${owner} ${name} failed`)
-    const reportError = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
-    const onError = vi.fn<(error: unknown, instance: ComponentPublicInstance | null, info: string) => void>()
-    let component: ComponentPublicInstance | null | undefined
-
-    /**
-     * Dependency throwing during the selected lifecycle phase.
-     *
-     * Зависимость, выбрасывающая ошибку на выбранном этапе жизненного цикла.
-     */
-    class FailingDependency extends LifecycleDependency {
-      /** Optional mount failure / Необязательная ошибка монтирования */
-      override readonly onMounted = vi.fn(() => {
-        if (owner === 'dependency' && name === 'onMounted') {
-          throw failure
-        }
-      })
-
-      /** Optional unmount failure / Необязательная ошибка демонтирования */
-      override readonly onUnmounted = vi.fn(() => {
-        if (owner === 'dependency' && name === 'onUnmounted') {
-          throw failure
-        }
-      })
-    }
-
-    /**
-     * Logic throwing during the selected lifecycle phase.
-     *
-     * Логика, выбрасывающая ошибку на выбранном этапе жизненного цикла.
-     */
-    class FailingLogic extends TestLogic {
-      /** Optional mount failure / Необязательная ошибка монтирования */
-      protected override readonly onMounted = (): void => {
-        if (owner === 'logic' && name === 'onMounted') {
-          throw failure
-        }
-      }
-
-      /** Optional unmount failure / Необязательная ошибка демонтирования */
-      protected override readonly onUnmounted = (): void => {
-        if (owner === 'logic' && name === 'onUnmounted') {
-          throw failure
-        }
-      }
-    }
-
-    const { logic, unmount } = mountLogic(() => {
-      component = getCurrentInstance()?.proxy
-      const logic = new FailingLogic({ LifecycleConstructor: FailingDependency })
-      logic.getInstance('LifecycleConstructor')
-      return logic
-    }, onError)
-
-    if (name === 'onUnmounted') {
-      unmount()
-    }
-
-    expect(onError).toHaveBeenCalledTimes(1)
-    const reported = onError.mock.calls[0]?.[0]
-    if (owner === 'dependency') {
-      assert(reported instanceof AggregateError)
-      expect(reported.errors).toEqual([failure])
-      expect(reportError).toHaveBeenCalledExactlyOnceWith({ group: 'design', code: name, details: reported })
-    } else {
-      expect(reported).toBe(failure)
-      expect(reportError).not.toHaveBeenCalled()
-    }
-    expect(onError).toHaveBeenCalledExactlyOnceWith(reported, component, name === 'onMounted' ? 'mounted hook' : 'unmounted hook')
-    expect(logic.getInstance('LifecycleConstructor')?.[name]).toHaveBeenCalledTimes(1)
-  })
-
-  it('throws a late mount failure to the caller while preserving its scope and cached instance', () => {
-    const failure = new Error('late mount failed')
-    const reportError = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
-    const onError = vi.fn<(error: unknown) => void>()
-    let ownerScope: EffectScope | undefined
-
-    /**
-     * Lazy dependency with a synchronous mount failure.
-     *
-     * Ленивая зависимость с синхронной ошибкой монтирования.
-     */
-    class LateDependency extends LifecycleDependency {
-      /** Failing mount callback recording its scope / Обработчик монтирования, записывающий область и выбрасывающий ошибку */
-      override readonly onMounted = vi.fn(() => {
-        this.mountedScope = getCurrentScope()
-        throw failure
-      })
-    }
-
-    const { logic } = mountLogic(() => {
-      ownerScope = createScope()
-      const logic = ownerScope.run(() => new TestLogic({ LifecycleConstructor: LateDependency }))
-      assert(logic)
-      return logic
-    }, onError)
-
-    expect(getCurrentInstance()).toBeNull()
-    expect(() => logic.getInstance('LifecycleConstructor')).toThrow(AggregateError)
-    expect(getCurrentScope()).toBeUndefined()
-    const reported = reportError.mock.calls[0]?.[0].details
-    assert(reported instanceof AggregateError)
-    expect(reported.errors).toEqual([failure])
-    expect(reportError).toHaveBeenCalledExactlyOnceWith({ group: 'design', code: 'onMounted', details: reported })
-    expect(onError).not.toHaveBeenCalled()
-
-    const dependency = logic.getInstance('LifecycleConstructor')
-    assert(dependency)
-    expect(dependency.mountedScope).toBe(ownerScope)
-    expect(logic.getInstance('LifecycleConstructor')).toBe(dependency)
-    expect(dependency.onMounted).toHaveBeenCalledTimes(1)
-  })
-
   it('ignores values returned by callbacks typed as void', () => {
     const events: string[] = []
-    const reportError = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
     const onError = vi.fn<(error: unknown) => void>()
 
     /**
@@ -811,111 +606,7 @@ describe('DesignLogicAbstract', () => {
     expect(events).toEqual(['mounted', 'unmounted'])
     expect(logic.getInstance('LifecycleConstructor')?.onMounted).toHaveBeenCalledTimes(1)
     expect(logic.getInstance('LifecycleConstructor')?.onUnmounted).toHaveBeenCalledTimes(1)
-    expect(reportError).not.toHaveBeenCalled()
     expect(onError).not.toHaveBeenCalled()
-  })
-
-  it('forwards synchronous lifecycle errors through parent errorCaptured hooks', () => {
-    const failure = new Error('captured synchronous failure')
-    const reportError = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
-    const onError = vi.fn<(error: unknown) => void>()
-    const captured = vi.fn<(error: unknown, instance: ComponentPublicInstance | null, info: string) => boolean>(() => false)
-
-    /**
-     * Dependency whose mount failure is handled by its owner component's parent.
-     *
-     * Зависимость, ошибка монтирования которой обрабатывается родителем компонента-владельца.
-     */
-    class CapturedDependency extends LifecycleDependency {
-      /** Failing mount callback / Обработчик монтирования с ошибкой */
-      override readonly onMounted = vi.fn(() => {
-        throw failure
-      })
-    }
-
-    const child = {
-      setup(): () => null {
-        new TestLogic({ LifecycleConstructor: CapturedDependency }).getInstance('LifecycleConstructor')
-        return () => null
-      }
-    }
-    const application = createApp({
-      setup(): () => VNode {
-        onErrorCaptured(captured)
-        return () => h(child)
-      }
-    })
-    application.config.errorHandler = onError
-    application.mount(document.createElement('div'))
-    unmountCallbacks.push(() => application.unmount())
-
-    const reported = captured.mock.calls[0]?.[0]
-    assert(reported instanceof AggregateError)
-    expect(reported.errors).toEqual([failure])
-    expect(reportError).toHaveBeenCalledExactlyOnceWith({ group: 'design', code: 'onMounted', details: reported })
-    expect(captured).toHaveBeenCalledExactlyOnceWith(reported, expect.any(Object), 'mounted hook')
-    expect(onError).not.toHaveBeenCalled()
-  })
-
-  it.each(['onMounted', 'onUnmounted'] as const)('collects all synchronous dependency failures during %s', (name) => {
-    const firstFailure = new Error('first dependency failed')
-    const secondFailure = new Error('second dependency failed')
-    const reportError = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
-    const onError = vi.fn<(error: unknown) => void>()
-
-    /**
-     * Dependency with the first lifecycle failure.
-     *
-     * Зависимость с первой ошибкой жизненного цикла.
-     */
-    class FirstDependency extends LifecycleDependency {
-      /**
-       * Configures the selected callback to fail.
-       *
-       * Настраивает выбранный обработчик на выбрасывание ошибки.
-       */
-      constructor() {
-        super()
-        this[name].mockImplementation(() => {
-          throw firstFailure
-        })
-      }
-    }
-
-    /**
-     * Dependency whose failure must also be included in the aggregate.
-     *
-     * Зависимость, ошибка которой также должна попасть в общую ошибку.
-     */
-    class SecondDependency extends LifecycleDependency {
-      /**
-       * Configures the selected callback to fail after the first dependency.
-       *
-       * Настраивает выбранный обработчик на ошибку после первой зависимости.
-       */
-      constructor() {
-        super()
-        this[name].mockImplementation(() => {
-          throw secondFailure
-        })
-      }
-    }
-
-    const { unmount } = mountLogic(() => {
-      const logic = new TestLogic({ LifecycleConstructor: FirstDependency, EmptyLifecycleConstructor: SecondDependency })
-      logic.getInstance('LifecycleConstructor')
-      logic.getInstance('EmptyLifecycleConstructor')
-      return logic
-    }, onError)
-    if (name === 'onUnmounted') {
-      unmount()
-    }
-
-    const aggregate = onError.mock.calls[0]?.[0]
-    assert(aggregate instanceof AggregateError)
-    expect(aggregate.errors).toEqual([firstFailure, secondFailure])
-    expect(reportError).toHaveBeenCalledExactlyOnceWith({ group: 'design', code: name, details: aggregate })
-    expect(onError).toHaveBeenCalledExactlyOnceWith(aggregate, expect.any(Object), name === 'onMounted' ? 'mounted hook' : 'unmounted hook')
   })
 
   it('owns initial mount effects in the captured nested scope', () => {
@@ -1090,6 +781,10 @@ describe('DesignLogicAbstract', () => {
     const first = logic.getInstance('first')
     expect(first).toBeInstanceOf(TestDependency)
     expect(first.label).toBe('default-first')
+
+    const second = logic.getInstance('second')
+    expect(second).toBeInstanceOf(CountDependency)
+    expect(second.count).toBe(42)
 
     const custom = logic.getInstance('custom')
     expect(custom).toBeInstanceOf(CustomDependency)

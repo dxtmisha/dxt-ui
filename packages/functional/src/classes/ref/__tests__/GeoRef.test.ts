@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { watch } from 'vue'
+import { effectScope, watch } from 'vue'
 import { Cookie, Geo, ServerStorage } from '@dxtmisha/functional-basic'
 import { GeoRef } from '../GeoRef'
 
@@ -80,6 +80,22 @@ describe('GeoRef', () => {
 
       stopStandard()
       stopCountry()
+    })
+
+    it('keeps computed projections alive after calling effect scope stops', () => {
+      const parent = effectScope()
+      let countryRef: ReturnType<typeof GeoRef.getCountry>
+
+      parent.run(() => {
+        countryRef = GeoRef.getCountry()
+      })
+
+      expect(countryRef!.value).toBe('US')
+
+      parent.stop()
+
+      GeoRef.set('vi-VN')
+      expect(countryRef!.value).toBe('VN')
     })
   })
 

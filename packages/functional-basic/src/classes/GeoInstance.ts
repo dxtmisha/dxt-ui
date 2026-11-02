@@ -157,7 +157,7 @@ export class GeoInstance {
    * @returns language code / код языка
    */
   getLanguage(): string {
-    return this.item.locationLanguage
+    return this.item.language
   }
 
   /**
@@ -177,7 +177,7 @@ export class GeoInstance {
    * @returns location string / строка местоположения
    */
   getLocation(): string {
-    return this.location.get()
+    return this.item.location
   }
 
   /**
@@ -187,7 +187,7 @@ export class GeoInstance {
    * @returns country code / код страны
    */
   getLocationCountry(): string {
-    return this.location.getCountry()
+    return this.item.locationCountry
   }
 
   /**
@@ -197,7 +197,7 @@ export class GeoInstance {
    * @returns language code / код языка
    */
   getLocationLanguage(): string {
-    return this.location.getLanguage()
+    return this.item.locationLanguage
   }
 
   /**

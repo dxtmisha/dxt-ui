@@ -25,3 +25,5 @@ src/functions/toBinds.ts
 src/classes/design/DesignComponents.ts
 src/classes/design/DesignConstructorAbstract.ts
 src/classes/design/DesignLifecycleAbstract.ts
+src/classes/design/DesignLogicAbstract.ts
+src/classes/design/DesignName.ts

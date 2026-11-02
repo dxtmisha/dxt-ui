@@ -128,7 +128,8 @@ describe('Geo', () => {
     it('should update location state and reflect custom language in getStandard()', () => {
       Geo.set('en-VN')
       expect(Geo.getLocation()).toBe('en-VN')
-      expect(Geo.getLanguage()).toBe('en')
+      expect(Geo.getLanguage()).toBe('vi')
+      expect(Geo.getLocationLanguage()).toBe('en')
       expect(Geo.getCountry()).toBe('VN')
       expect(Geo.getStandard()).toBe('en-VN')
     })

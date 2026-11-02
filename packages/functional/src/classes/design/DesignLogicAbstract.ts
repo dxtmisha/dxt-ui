@@ -7,7 +7,7 @@ import {
   watch,
   type Ref
 } from 'vue'
-import { ErrorCenter, forEach, forOwn } from '@dxtmisha/functional-basic'
+import { forEach, forOwn } from '@dxtmisha/functional-basic'
 
 import { DesignLifecycleAbstract } from './DesignLifecycleAbstract'
 import type { DesignComponents } from './DesignComponents'
@@ -30,20 +30,20 @@ import type {
  * Абстрактный координатор зависимостей логики компонента. Сохраняет текущую область эффектов Vue и общие входные данные, лениво создаёт и кэширует зависимости по строковому ключу.
  */
 export abstract class DesignLogicAbstract<
-  E extends Element,
-  COMP extends ConstrComponent,
-  EMITS extends ConstrItem,
-  SLOTS extends ConstrItem,
-  P extends ConstrItem,
+  E extends Element = Element,
+  COMP extends ConstrComponent = ConstrComponent,
+  EMITS extends ConstrItem = ConstrItem,
+  SLOTS extends ConstrItem = ConstrItem,
+  P extends ConstrItem = ConstrItem,
   CONSTRUCTORS extends ConstrConstructors<CONSTRUCTORS> = object
 > {
   /** Item configurations and default constructors by dependency name / Конфигурации элементов и конструкторы по умолчанию по имени зависимости */
   protected abstract readonly constructorItems: ConstrItems<CONSTRUCTORS>
 
-  /** Cached dependency instances without inherited properties / Сохраненные экземпляры зависимостей без унаследованных свойств */
+  /** Cached dependency instances / Сохраненные экземпляры зависимостей */
   protected readonly instances: {
     [K in keyof CONSTRUCTORS & string]?: ConstrInstance<CONSTRUCTORS, K>
-  } = Object.create(null)
+  } = {}
 
   /** Callback after dependency mount callbacks / Обработчик после обработчиков монтирования зависимостей */
   protected readonly onMounted?: () => void
@@ -181,34 +181,24 @@ export abstract class DesignLogicAbstract<
    * Синхронно вызывает обработчики жизненного цикла зависимостей.
    * @param name lifecycle callback name / имя обработчика жизненного цикла
    * @param instances dependency instances / экземпляры зависимостей
-   * @throws AggregateError collected callback errors after all callbacks run / собранные ошибки после выполнения всех обработчиков
    * @returns no return value / нет возвращаемого значения
    */
-  protected callLifecycle(name: keyof DesignLifecycleAbstract, instances: unknown[] = Object.values(this.instances)): void {
-    const failures: unknown[] = []
-
+  protected callLifecycle(
+    name: keyof DesignLifecycleAbstract,
+    instances: unknown[] = Object.values(this.instances)
+  ): void {
     forEach(instances, (instance) => {
       if (this.isLifecycle(instance)) {
-        try {
-          instance[name]?.()
-        } catch (error) {
-          failures.push(error)
-        }
+        instance[name]?.()
       }
     })
-
-    if (failures.length > 0) {
-      const error = new AggregateError(failures, `Lifecycle callback ${name} failed`)
-      ErrorCenter.on({ group: 'design', code: name, details: error })
-      throw error
-    }
   }
 
   /**
    * Initializes condition watchers for dependencies with defined conditions.
    *
    * Инициализирует наблюдатели условий для зависимостей с заданными условиями.
-   * @returns calculated result / вычисленный результат
+   * @returns no return value / нет возвращаемого значения
    */
   protected initConditions(): void {
     forOwn(this.constructorItems, (item, name) => {
