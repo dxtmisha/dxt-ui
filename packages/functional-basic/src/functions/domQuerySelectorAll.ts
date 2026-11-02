@@ -4,6 +4,7 @@ import { isDomRuntime } from './isDomRuntime'
  * Selects all elements that match the specified selectors.
  *
  * Выбирает все элементы, которые соответствуют указанным селекторам.
+ * @template E type of the elements / тип элементов
  * @param selectors selectors / селекторы
  * @returns list of matched elements or undefined / список найденных элементов или undefined
  */

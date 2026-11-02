@@ -16,8 +16,8 @@ import { getElement, domQuerySelector } from '@dxtmisha/functional-basic'
 // 1. Получение элемента по селектору или ссылке
 const container = getElement('#app')
 
-// 2. Поиск внутри конкретного родителя (scoped search)
-const button = domQuerySelector('.btn-submit', container)
+// 2. Безопасный поиск элемента по CSS-селектору
+const button = domQuerySelector('.btn-submit')
 ```
 
 ## Создание и атрибуты

@@ -9,7 +9,7 @@ Tạo một bản sao nông (shallow copy) của một đối tượng đơn gi�
 > Vì đây là sao chép nông, các đối tượng và mảng lồng nhau sẽ được sao chép theo tham chiếu (reference), chứ không phải theo giá trị.
 
 **Tham số:**
-- `value: T` — Đối tượng cần sao chép.
+- `value?: T | null` — Đối tượng cần sao chép.
 - `source?: Record<PropertyKey, unknown> | null` — Các thuộc tính bổ sung để hợp nhất với đối tượng `value`. Các thuộc tính từ `source` sẽ ghi đè các thuộc tính từ `value` nếu chúng có cùng khóa (key).
 
 **Trả về:**

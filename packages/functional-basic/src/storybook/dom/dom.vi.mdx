@@ -16,8 +16,8 @@ import { getElement, domQuerySelector } from '@dxtmisha/functional-basic'
 // 1. Lấy một phần tử bằng bộ chọn hoặc tham chiếu
 const container = getElement('#app')
 
-// 2. Tìm kiếm trong một cha cụ thể (tìm kiếm theo phạm vi)
-const button = domQuerySelector('.btn-submit', container)
+// 2. Tìm kiếm phần tử an toàn theo bộ chọn CSS
+const button = domQuerySelector('.btn-submit')
 ```
 
 ## Tạo và Thuộc tính

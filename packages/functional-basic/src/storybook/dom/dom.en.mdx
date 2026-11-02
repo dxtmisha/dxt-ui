@@ -16,8 +16,8 @@ import { getElement, domQuerySelector } from '@dxtmisha/functional-basic'
 // 1. Get an element by selector or reference
 const container = getElement('#app')
 
-// 2. Search within a specific parent (scoped search)
-const button = domQuerySelector('.btn-submit', container)
+// 2. Safe element lookup by CSS selector
+const button = domQuerySelector('.btn-submit')
 ```
 
 ## Creation and Attributes

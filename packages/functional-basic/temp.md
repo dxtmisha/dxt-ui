@@ -65,3 +65,7 @@ toGeoStandard
 GeoInstance
 Geo
 Datetime
+copyObjectLite
+domQuerySelector
+domQuerySelectorAll
+encodeLiteAttribute

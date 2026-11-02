@@ -4,22 +4,34 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `encodeLiteAttribute`
 
-Mã hóa các ký tự đặc biệt cơ bản của HTML trong chuỗi (`<`, `>`, `&`) thành các thực thể HTML tương ứng (`&lt;`, `&gt;`, `&amp;`), đồng thời giữ nguyên dấu ngoặc kép và ngoặc đơn (`"` và `'`). Thường được sử dụng cho thẻ tiêu đề HTML và định dạng văn bản nhẹ.
+Mã hóa các ký tự đặc biệt cơ bản của HTML trong chuỗi (`<`, `>`, `&`) thành các thực thể HTML tương ứng (`&lt;`, `&gt;`, `&amp;`), đồng thời giữ nguyên dấu ngoặc kép và ngoặc đơn (`"` và `'`). Thường được sử dụng cho thẻ tiêu đề HTML (`<title>`), mô tả meta và định dạng văn bản nhẹ.
 
 > **Lưu ý:** Hàm này chủ đích KHÔNG mã hóa dấu ngoặc kép và ngoặc đơn (`"` và `'`). Để mã hóa dữ liệu đầu vào của người dùng bên trong các thuộc tính HTML, hãy sử dụng `encodeAttribute` để ngăn chặn lỗ hổng chèn thuộc tính.
 
+### Tính năng chính:
+- **Bảo toàn dấu ngoặc kép**: Giữ nguyên dấu nháy đơn (`'`), dấu nháy kép (`"`) và dấu backtick (`` ` ``), lý tưởng cho tiêu đề trang và hiển thị văn bản tự nhiên.
+- **Hiệu suất cao (Fast-Path)**: Sử dụng kiểm tra nhanh trước khi thay thế chuỗi, trả về chuỗi gốc ngay lập tức nếu không tìm thấy ký tự đặc biệt.
+- **Ép kiểu an toàn & Null-safety**: Xử lý an toàn chuỗi, số (bao gồm cả `0` và số âm), `null` và `undefined` mà không ném ra ngoại lệ.
+- **Hỗ trợ Unicode & Dấu tiếng Việt**: Bảo toàn văn bản tiếng Việt có dấu, chữ Cyrillic, CJK và emoji mà không bị hỏng ký tự.
+
 **Tham số:**
-- `text: string` — Chuỗi cần được mã hóa.
+- `text?: string | number | null` — Giá trị cần mã hóa (chuỗi, số hoặc giá trị rỗng).
 
 **Trả về:**
-`string` — Chuỗi đã được mã hóa.
+`string` — Chuỗi đã được mã hóa, hoặc chuỗi rỗng `''` nếu đầu vào là `null` hoặc `undefined`.
 
 ```typescript
 import { encodeLiteAttribute } from '@dxtmisha/functional-basic'
 
-const input = 'Title "Hello & <World>"'
-const encoded = encodeLiteAttribute(input)
+// 1. Bảo toàn dấu ngoặc kép trong tiêu đề trang khi mã hóa ký tự HTML
+const title = 'Sách "Chiến tranh & Hòa bình" <Tập 1>'
+const encodedTitle = encodeLiteAttribute(title)
+console.log(encodedTitle)
+// 'Sách "Chiến tranh &amp; Hòa bình" &lt;Tập 1&gt;'
 
-console.log(encoded)
-// 'Title "Hello &amp; &lt;World&gt;"'
+// 2. Xử lý an toàn với số và giá trị rỗng
+encodeLiteAttribute(0)         // '0'
+encodeLiteAttribute(123)       // '123'
+encodeLiteAttribute(null)      // ''
+encodeLiteAttribute(undefined) // ''
 ```

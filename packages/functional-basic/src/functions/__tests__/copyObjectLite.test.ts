@@ -74,7 +74,12 @@ describe('copyObjectLite', () => {
     })
   })
 
-  describe('Empty, nullish, and missing inputs', () => {
+  describe('Empty, nullish, optional, and missing inputs', () => {
+    it('should handle call without arguments cleanly', () => {
+      const copy = copyObjectLite()
+      expect(copy).toEqual({})
+    })
+
     it('should handle omitted or undefined source parameter gracefully', () => {
       const original = { a: 1 }
 
@@ -105,11 +110,11 @@ describe('copyObjectLite', () => {
       expect(copy).not.toBe(emptySource)
     })
 
-    it('should safely return an empty object or source properties when value is null or undefined', () => {
-      expect(copyObjectLite(null as unknown as Record<string, unknown>)).toEqual({})
-      expect(copyObjectLite(undefined as unknown as Record<string, unknown>)).toEqual({})
-      expect(copyObjectLite(null as unknown as Record<string, unknown>, { fallback: 1 })).toEqual({ fallback: 1 })
-      expect(copyObjectLite(undefined as unknown as Record<string, unknown>, { fallback: 2 })).toEqual({ fallback: 2 })
+    it('should safely return an empty object or source properties when value is null or undefined without type casts', () => {
+      expect(copyObjectLite(null)).toEqual({})
+      expect(copyObjectLite(undefined)).toEqual({})
+      expect(copyObjectLite(null, { fallback: 1 })).toEqual({ fallback: 1 })
+      expect(copyObjectLite(undefined, { fallback: 2 })).toEqual({ fallback: 2 })
     })
   })
 
@@ -193,6 +198,16 @@ describe('copyObjectLite', () => {
 
       expect(copy).toEqual({ first: 1, second: 2 })
       expect(Object.getPrototypeOf(copy)).toBe(Object.prototype)
+    })
+  })
+
+  describe('Security and prototype isolation', () => {
+    it('should not pollute global Object.prototype when copying objects with __proto__ keys', () => {
+      const maliciousPayload = JSON.parse('{"__proto__": {"polluted": true}}') as Record<string, unknown>
+      const copy = copyObjectLite(maliciousPayload)
+
+      expect((copy as Record<string, unknown>).polluted).toBe(true)
+      expect(({} as Record<string, unknown>).polluted).toBeUndefined()
     })
   })
 

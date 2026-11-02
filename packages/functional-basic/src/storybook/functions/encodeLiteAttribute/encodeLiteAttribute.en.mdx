@@ -4,22 +4,34 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `encodeLiteAttribute`
 
-Encodes basic HTML special characters in a string (`<`, `>`, `&`) into their corresponding HTML entities (`&lt;`, `&gt;`, `&amp;`) while preserving quotes (`"` and `'`). Commonly used for HTML title tags and light text formatting.
+Encodes basic HTML special characters in a string (`<`, `>`, `&`) into their corresponding HTML entities (`&lt;`, `&gt;`, `&amp;`) while preserving quotes (`"` and `'`). Commonly used for HTML `<title>` tags, meta descriptions, and light text formatting.
 
 > **Note:** This function intentionally does NOT encode quotes (`"` and `'`). For encoding untrusted user input inside HTML attributes, use `encodeAttribute` instead to prevent attribute injection vulnerabilities.
 
+### Key Features:
+- **Quote Preservation**: Leaves single (`'`), double (`"`), and backtick (`` ` ``) quotes intact, ideal for page titles and natural text display.
+- **High Performance (Fast-Path)**: Employs an instant pre-check before string replacement, returning the input immediately if no special characters are found.
+- **Type Coercion & Null Safety**: Safely handles strings, numbers (including `0` and negative values), `null`, and `undefined` without throwing runtime exceptions.
+- **Unicode & Diacritics**: Preserves Cyrillic, Vietnamese, CJK, emojis, and surrogate pairs without corruption.
+
 **Parameters:**
-- `text: string` — The string to encode.
+- `text?: string | number | null` — The value to encode (string, number, or nullish value).
 
 **Returns:**
-`string` — The encoded string.
+`string` — The encoded string, or an empty string `''` if `null` or `undefined` is provided.
 
 ```typescript
 import { encodeLiteAttribute } from '@dxtmisha/functional-basic'
 
-const input = 'Title "Hello & <World>"'
-const encoded = encodeLiteAttribute(input)
+// 1. Preserving quotes in page titles while encoding HTML entities
+const title = 'Book "War & Peace" <Volume 1>'
+const encodedTitle = encodeLiteAttribute(title)
+console.log(encodedTitle)
+// 'Book "War &amp; Peace" &lt;Volume 1&gt;'
 
-console.log(encoded)
-// 'Title "Hello &amp; &lt;World&gt;"'
+// 2. Safe coercion of numbers and nullish values
+encodeLiteAttribute(0)         // '0'
+encodeLiteAttribute(123)       // '123'
+encodeLiteAttribute(null)      // ''
+encodeLiteAttribute(undefined) // ''
 ```

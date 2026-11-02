@@ -4,6 +4,7 @@ import { isDomRuntime } from './isDomRuntime'
  * Selects the first element that matches the specified selectors.
  *
  * Выбирает первый элемент, который соответствует указанным селекторам.
+ * @template E type of the target element / тип целевого элемента
  * @param selectors selectors / селекторы
  * @returns first matched element or undefined / первый найденный элемент или undefined
  */

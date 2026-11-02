@@ -74,24 +74,25 @@ describe('encodeLiteAttribute', () => {
     })
 
     it('should safely handle null by returning an empty string', () => {
-      expect(encodeLiteAttribute(null as unknown as string)).toBe('')
+      expect(encodeLiteAttribute(null)).toBe('')
     })
 
     it('should safely handle undefined by returning an empty string', () => {
-      expect(encodeLiteAttribute(undefined as unknown as string)).toBe('')
+      expect(encodeLiteAttribute(undefined)).toBe('')
+      expect(encodeLiteAttribute()).toBe('')
     })
   })
 
   describe('Type coercion and non-standard data types', () => {
     it('should safely coerce numeric zero (0 and -0) to string', () => {
-      expect(encodeLiteAttribute(0 as unknown as string)).toBe('0')
-      expect(encodeLiteAttribute(-0 as unknown as string)).toBe('0')
+      expect(encodeLiteAttribute(0)).toBe('0')
+      expect(encodeLiteAttribute(-0)).toBe('0')
     })
 
     it('should safely coerce positive and negative numbers', () => {
-      expect(encodeLiteAttribute(123 as unknown as string)).toBe('123')
-      expect(encodeLiteAttribute(-42 as unknown as string)).toBe('-42')
-      expect(encodeLiteAttribute(3.14159 as unknown as string)).toBe('3.14159')
+      expect(encodeLiteAttribute(123)).toBe('123')
+      expect(encodeLiteAttribute(-42)).toBe('-42')
+      expect(encodeLiteAttribute(3.14159)).toBe('3.14159')
     })
 
     it('should safely coerce boolean values', () => {
@@ -189,7 +190,7 @@ describe('encodeLiteAttribute', () => {
       expect(encodeLiteAttribute('<tag>')).toBe('&lt;tag&gt;')
       expect(encodeLiteAttribute('')).toBe('')
       expect(encodeLiteAttribute('"quoted"')).toBe('"quoted"')
-      expect(encodeLiteAttribute(null as unknown as string)).toBe('')
+      expect(encodeLiteAttribute(null)).toBe('')
       expect(encodeLiteAttribute('\'single\'')).toBe('\'single\'')
       expect(encodeLiteAttribute('>')).toBe('&gt;')
     })
