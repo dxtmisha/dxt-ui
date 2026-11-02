@@ -41,6 +41,9 @@ console.log(Geo.getTimezoneFormat()) // ví dụ: '+07:00'
 - `getStandard(): string` — Trả về chuỗi địa phương kết hợp (ví dụ: `'vi-VN'`).
 - `getFirstDay(): string` — Trả về mã cho ngày đầu tiên của tuần của địa phương hiện tại (ví dụ: `'Mo'`, `'Su'`).
 - `getLocation(): string` — Trả về địa phương hiện đang được thiết lập dưới dạng chuỗi.
+- `getLocationCountry(): string` — Trả về mã quốc gia được trích xuất từ chuỗi vị trí hiện tại.
+- `getLocationLanguage(): string` — Trả về mã ngôn ngữ được trích xuất từ chuỗi vị trí hiện tại.
+- `getObject(): GeoInstance` — Trả về phiên bản `GeoInstance` được cô lập theo yêu cầu từ `ServerStorage`.
 - `getItem(): GeoItemFull` — Trả về một bản sao của đối tượng cài đặt hiện tại, có tính đến ngôn ngữ.
 - `getTimezone(): number` — Trả về độ lệch múi giờ tính bằng phút.
 - `getTimezoneFormat(): string` — Trả về độ lệch múi giờ ở định dạng chuỗi (ví dụ: `'+07:00'`).
@@ -58,6 +61,12 @@ console.log(Geo.getTimezoneFormat()) // ví dụ: '+07:00'
 
 - `set(code: string, save?: boolean): void` — Thiết lập địa phương hiện tại trên toàn cầu. Nếu `save` là `true`, sẽ lưu lựa chọn vào `localStorage`.
 - `setTimezone(timezone: number): void` — Thiết lập độ lệch múi giờ tùy chỉnh tính bằng phút.
+- `setValueDefault(code?: string | (() => string | undefined)): void` — Đặt giá trị dự phòng mặc định hoặc hàm cung cấp cho mã quốc gia/địa phương.
+
+### Quản lý quốc gia
+
+- `add(country: string, item?: Partial<GeoItem>): GeoInstance` — Thêm hoặc hợp nhất dữ liệu địa lý cho quốc gia được chỉ định.
+- `addList(list?: Record<string, Partial<GeoItem>>): GeoInstance` — Thêm hoặc hợp nhất dữ liệu địa lý cho nhiều quốc gia.
 
 ### Tiện ích
 

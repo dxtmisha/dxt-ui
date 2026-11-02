@@ -41,6 +41,9 @@ console.log(Geo.getTimezoneFormat()) // например, '+03:00'
 - `getStandard(): string` — Возвращает комбинированную строку локали (например, `'ru-RU'`).
 - `getFirstDay(): string` — Возвращает код первого дня недели для текущей локали (`'Mo'`, `'Su'` и т.д.).
 - `getLocation(): string` — Возвращает текущую установленную локаль в виде строки.
+- `getLocationCountry(): string` — Возвращает код страны, извлеченный из текущей строки локации.
+- `getLocationLanguage(): string` — Возвращает код языка, извлеченный из текущей строки локации.
+- `getObject(): GeoInstance` — Возвращает изолированный в рамках запроса экземпляр `GeoInstance` из `ServerStorage`.
 - `getItem(): GeoItemFull` — Возвращает копию объекта текущих настроек с учетом языка.
 - `getTimezone(): number` — Возвращает смещение часового пояса в минутах.
 - `getTimezoneFormat(): string` — Возвращает смещение часового пояса в строковом формате (например, `'+03:00'`).
@@ -58,6 +61,12 @@ console.log(Geo.getTimezoneFormat()) // например, '+03:00'
 
 - `set(code: string, save?: boolean): void` — Глобально устанавливает текущую локаль. Если `save` равен `true`, сохраняет выбор в `localStorage`.
 - `setTimezone(timezone: number): void` — Устанавливает кастомное смещение часового пояса в минутах.
+- `setValueDefault(code?: string | (() => string | undefined)): void` — Устанавливает значение по умолчанию или функцию-провайдер для кода страны/локали.
+
+### Управление базой стран
+
+- `add(country: string, item?: Partial<GeoItem>): GeoInstance` — Добавляет или объединяет гео-данные для указанной страны.
+- `addList(list?: Record<string, Partial<GeoItem>>): GeoInstance` — Добавляет или объединяет гео-данные для списка стран.
 
 ### Утилиты
 

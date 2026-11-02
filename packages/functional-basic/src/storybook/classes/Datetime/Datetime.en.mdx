@@ -42,11 +42,11 @@ const fromTs = new Datetime(1710460800000)
 
 - `getIntl(): GeoIntl` — Returns a `GeoIntl` object for working with formatting.
 - `getDate(): Date` — Returns the original native `Date` object.
-- `getType(): string` — Returns the set output type (`date`, `datetime`, etc.).
+- `getType(): GeoDate` — Returns the set output type (`date`, `datetime`, etc.).
 - `getHoursType(): GeoHours` — Determines the hour format (12 or 24) for the current locale.
 - `getHour24(): boolean` — Returns the current setting for displaying the 24-hour format.
 - `getTimeZoneOffset(): number` — Returns the time zone offset in minutes.
-- `getTimeZone(style?: GeoTimeZoneStyle): string` — Returns the time zone (supports `minute`, `hour`, `RFC` styles; default format with colon).
+- `getTimeZone(style?: GeoTimeZoneStyle): string` — Returns the time zone (supports `minute`, `hour`, `ISO8601`, `RFC` styles; default format with colon).
 - `getFirstDayCode(): GeoFirstDay` — Returns the code for the first day of the week (0 for Sunday, 1 for Monday, 6 for Saturday).
 
 ### Value Retrieval
@@ -54,22 +54,23 @@ const fromTs = new Datetime(1710460800000)
 - `getYear(): number` — Returns the full year.
 - `getMonth(): number` — Returns the month (human-readable, from 1 to 12).
 - `getDay(): number` — Returns the day of the month (1-31).
-- `getHour(): number` — Returns the hours.
-- `getMinute(): number` — Returns the minutes.
-- `getSecond(): number` — Returns the seconds.
+- `getWeekday(): number` — Returns the day of the week (0-6).
+- `getHour(): number` — Returns the hours (0-23).
+- `getMinute(): number` — Returns the minutes (0-59).
+- `getSecond(): number` — Returns the seconds (0-59).
 - `getMaxDay(): number` — Returns the number of the last day of the current month (28-31).
 
 ### Value Setting
 
-Allow for precise changes to date components. Methods (except `setCode` and `setWatch`) trigger the `watch` callback.
+Allow for precise changes to date components. Methods (except `setWatch`) trigger the `watch` callback.
 
-- `setDate(value: NumberOrStringOrDate): this` — Completely overwrites the date.
+- `setDate(value?: NumberOrStringOrDate): this` — Completely overwrites the date.
 - `setType(value: GeoDate): this` — Sets the output type.
 - `setHour24(value: boolean): this` — Enables/disables the 24-hour format.
-- `setCode(code: string): this` — Changes the locale code.
-- `setWatch(watch: Function): this` — Sets a callback function for data changes.
-- `setYear(value: number): this` — Sets the year.
-- `setMonth(value: number): this` — Sets the month (1-12).
+- `setCode(code?: string): this` — Changes the locale code (defaults to `Geo.getLocation()`) and notifies the watcher.
+- `setWatch(watch?: (date: Date, type: GeoDate, hour24: boolean) => void): this` — Sets a callback function for data changes.
+- `setYear(value: number): this` — Sets the year (clamps the day to the maximum days in the current month of the target year).
+- `setMonth(value: number): this` — Sets the month (1-12, clamps the day to the maximum days in the target month).
 - `setDay(value: number): this` — Sets the day of the month.
 - `setHour(value: number): this` — Sets the hours.
 - `setMinute(value: number): this` — Sets the minutes.
@@ -149,12 +150,13 @@ dt.locale('date', { month: 'short' }) // e.g., "Mar 15, 2024"
 
 ### `standard`
 
-Returns the date in ISO 8601 format (YYYY-MM-DDTHH:mm:ss±HH:mm).
+Returns the date/time in standard ISO-like format according to the configured `type` (`YYYY-MM-DDTHH:mm:ss±HH:mm` for `full`/`datetime`, `YYYY-MM-DD` for `date`, `HH:mm:ss±HH:mm` for `time`, etc.), or an empty string `''` if the date is invalid.
 
 **Parameters:**
-- `timeZone: boolean = true` — whether to add time zone information.
+- `timeZone: boolean = true` — whether to append time zone information (applicable to `full`, `datetime`, and `time` types).
 
 ```javascript
+const dt = new Datetime('2024-03-15T00:00:00', 'datetime')
 dt.standard() // "2024-03-15T00:00:00+03:00"
 dt.standard(false) // "2024-03-15T00:00:00"
 ```

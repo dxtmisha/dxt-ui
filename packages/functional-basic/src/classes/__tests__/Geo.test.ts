@@ -43,9 +43,23 @@ describe('Geo', () => {
       }))
       expect(Geo.getLocation()).toBe('ru-RU')
     })
+
+    it('should provide independent state instances for isolated SSR requests', () => {
+      vi.mocked(isDomRuntime).mockReturnValue(false)
+      const firstInstance = Geo.getObject()
+      firstInstance.set('fr-FR')
+      expect(Geo.getLocation()).toBe('fr-FR')
+
+      ServerStorage.reset()
+      ServerStorage.init(() => ({}))
+
+      const secondInstance = Geo.getObject()
+      expect(secondInstance).not.toBe(firstInstance)
+      expect(Geo.getLocation()).toBe('en-GB')
+    })
   })
 
-  describe('Data Retrieval', () => {
+  describe('Data Retrieval & Queries', () => {
     it('should return current GeoItemFull via get() and getItem()', () => {
       Geo.set('ru-RU')
       expect(Geo.get().country).toBe('RU')
@@ -57,9 +71,10 @@ describe('Geo', () => {
       const list = Geo.getList()
       expect(Array.isArray(list)).toBe(true)
       expect(list.length).toBeGreaterThan(0)
+      expect(list[0]).toHaveProperty('country')
     })
 
-    it('should find item by full code (language-country) via getByCode and find', () => {
+    it('should find item by full code via getByCode and find', () => {
       const result = Geo.getByCode('ru-RU')
       expect(result.language).toBe('ru')
       expect(result.country).toBe('RU')
@@ -71,38 +86,46 @@ describe('Geo', () => {
       expect(found.standard).toBe('de-DE')
     })
 
-    it('should look up exact match via getByCodeFull, country via getByCountry, and language via getByLanguage', () => {
+    it('should query exact match via getByCodeFull, country via getByCountry, and language via getByLanguage', () => {
       expect(Geo.getByCodeFull('en-US')?.country).toBe('US')
       expect(Geo.getByCodeFull('xx-ZZ')).toBeUndefined()
+      expect(Geo.getByCodeFull(undefined)).toBeUndefined()
 
       expect(Geo.getByCountry('VN')?.country).toBe('VN')
       expect(Geo.getByCountry('ZZ')).toBeUndefined()
+      expect(Geo.getByCountry(undefined)).toBeUndefined()
 
       expect(Geo.getByLanguage('vi')?.language).toBe('vi')
       expect(Geo.getByLanguage('zz')).toBeUndefined()
+      expect(Geo.getByLanguage(undefined)).toBeUndefined()
     })
 
-    it('should handle non-standard codes in getByCode (returning static base info with custom standard)', () => {
+    it('should handle non-standard combinations in getByCode', () => {
       const result = Geo.getByCode('en-VN')
       expect(result.country).toBe('VN')
       expect(result.language).toBe('vi')
       expect(result.standard).toBe('en-VN')
     })
 
-    it('should return default item for invalid code', () => {
-      const result = Geo.getByCode('invalid-code')
-      expect(result).toBeDefined()
-      expect(result.standard).toBe('en-US')
+    it('should fallback to default item for invalid or undefined code in getByCode', () => {
+      const invalidResult = Geo.getByCode('invalid-code')
+      expect(invalidResult).toBeDefined()
+      expect(invalidResult.standard).toBe('en-US')
+
+      const undefinedResult = Geo.getByCode(undefined)
+      expect(undefinedResult).toBeDefined()
     })
 
     it('should convert a GeoItem to standard locale format via toStandard()', () => {
       const vietnamItem = Geo.getByCountry('VN')!
       expect(Geo.toStandard(vietnamItem)).toBe('vi-VN')
+      expect(Geo.toStandard(vietnamItem, 'en')).toBe('en-VN')
+      expect(Geo.toStandard(undefined)).toBe('')
     })
   })
 
   describe('State Management (Setters & Getters)', () => {
-    it('should update state and reflect custom language in getStandard()', () => {
+    it('should update location state and reflect custom language in getStandard()', () => {
       Geo.set('en-VN')
       expect(Geo.getLocation()).toBe('en-VN')
       expect(Geo.getLanguage()).toBe('en')
@@ -110,7 +133,7 @@ describe('Geo', () => {
       expect(Geo.getStandard()).toBe('en-VN')
     })
 
-    it('should return extracted country and language codes from location', () => {
+    it('should extract country and language parts from current location', () => {
       Geo.set('en-VN')
       expect(Geo.getLocationCountry()).toBe('VN')
       expect(Geo.getLocationLanguage()).toBe('en')
@@ -132,7 +155,7 @@ describe('Geo', () => {
       expect(Geo.getCountry()).toBe('VN')
     })
 
-    it('should persist changes to localStorage when requested', () => {
+    it('should persist changes to localStorage when save flag is true', () => {
       vi.mocked(isDomRuntime).mockReturnValue(true)
       Geo.set('de-DE', true)
 
@@ -142,56 +165,42 @@ describe('Geo', () => {
     })
   })
 
-  describe('Timezone Handling', () => {
-    it('should format positive offsets correctly (UTC+3)', () => {
+  describe('Timezone Management', () => {
+    it('should format positive offsets correctly (e.g. UTC+3)', () => {
       Geo.setTimezone(-180)
       expect(Geo.getTimezone()).toBe(-180)
       expect(Geo.getTimezoneFormat()).toBe('+03:00')
     })
 
-    it('should format negative offsets correctly (UTC-5)', () => {
+    it('should format negative offsets correctly (e.g. UTC-5)', () => {
       Geo.setTimezone(300)
       expect(Geo.getTimezoneFormat()).toBe('-05:00')
     })
 
-    it('should handle fractional offsets (UTC+5:30)', () => {
+    it('should handle fractional offsets (e.g. UTC+5:30)', () => {
       Geo.setTimezone(-330)
       expect(Geo.getTimezoneFormat()).toBe('+05:30')
     })
 
-    it('should return "+00:00" when timezone is 0', () => {
+    it('should return "+00:00" when timezone offset is 0', () => {
       Geo.setTimezone(0)
       expect(Geo.getTimezone()).toBe(0)
       expect(Geo.getTimezoneFormat()).toBe('+00:00')
     })
   })
 
-  describe('Instance Isolation', () => {
-    it('should provide a unique instance for each request context via getObject()', () => {
-      vi.mocked(isDomRuntime).mockReturnValue(false)
-      const firstInstance = Geo.getObject()
-      firstInstance.set('fr-FR')
-
-      ServerStorage.reset()
-      ServerStorage.init(() => ({}))
-
-      const secondInstance = Geo.getObject()
-      expect(secondInstance).not.toBe(firstInstance)
-      expect(secondInstance.getLocation()).toBe('en-GB')
-    })
-  })
-
-  describe('add and addList', () => {
+  describe('Dynamic Country Management (add & addList)', () => {
     beforeEach(() => {
       vi.mocked(isDomRuntime).mockReturnValue(true)
     })
 
-    it('should add a new country or merge with existing through static Geo facade', () => {
-      Geo.add('VN', {
+    it('should add a new country or merge with existing through static facade', () => {
+      const instance = Geo.add('VN', {
         firstDay: 'Mo',
         phoneWithin: '0'
       })
 
+      expect(instance).toBeDefined()
       const item = Geo.getByCountry('VN')
       expect(item?.firstDay).toBe('Mo')
       expect(item?.phoneWithin).toBe('0')
@@ -199,25 +208,31 @@ describe('Geo', () => {
 
     it('should deep-merge nested unit overrides without wiping existing units', () => {
       const usBefore = Geo.getByCountry('US')
-      const existingKilometerUnit = usBefore?.unit?.kilometer
+      const existingKilometer = usBefore?.unit?.kilometer
 
       Geo.add('US', {
         unit: {
-          meter: 'custom-foot'
+          meter: 'custom-meter'
         }
       })
 
       const usAfter = Geo.getByCountry('US')
-      expect(usAfter?.unit?.meter).toBe('custom-foot')
-      expect(usAfter?.unit?.kilometer).toBe(existingKilometerUnit)
+      expect(usAfter?.unit?.meter).toBe('custom-meter')
+      expect(usAfter?.unit?.kilometer).toBe(existingKilometer)
     })
 
     it('should add multiple countries using Geo.addList', () => {
       Geo.addList({
-        QQ: { language: 'qq', phoneCode: '777' }
+        QQ: { language: 'qq', phoneCode: '777' },
+        ZZ: { language: 'zz', phoneCode: '888' }
       })
 
       expect(Geo.getByCountry('QQ')?.phoneCode).toBe('777')
+      expect(Geo.getByCountry('ZZ')?.phoneCode).toBe('888')
+    })
+
+    it('should safely handle undefined in addList', () => {
+      expect(() => Geo.addList(undefined)).not.toThrow()
     })
   })
 })

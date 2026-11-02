@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp Datetime
 
-Một bộ khung lớp bao quanh đối tượng `Date` nguyên bản của JavaScript, được thiết kế để đơn giản hóa việc làm việc với ngày tháng và thời gian. Nó kết hợp các khả năng định dạng, tính toán (điều hướng ngày tháng) và sao chép, dựa trên các thiết lập địa phương hóa của `Geo` и `GeoIntl`.
+Một bộ khung lớp bao quanh đối tượng `Date` nguyên bản của JavaScript, được thiết kế để đơn giản hóa việc làm việc với ngày tháng và thời gian. Nó kết hợp các khả năng định dạng, tính toán (điều hướng ngày tháng) và sao chép, dựa trên các thiết lập địa phương hóa của `Geo` và `GeoIntl`.
 
 ## Tính năng chính
 
@@ -42,11 +42,11 @@ const fromTs = new Datetime(1710460800000)
 
 - `getIntl(): GeoIntl` — Trả về đối tượng `GeoIntl` để làm việc với định dạng.
 - `getDate(): Date` — Trả về đối tượng `Date` nguyên bản.
-- `getType(): string` — Trả về kiểu đầu ra đã thiết lập (`date`, `datetime`, v.v.).
+- `getType(): GeoDate` — Trả về kiểu đầu ra đã thiết lập (`date`, `datetime`, v.v.).
 - `getHoursType(): GeoHours` — Xác định định dạng giờ (12 hoặc 24) cho địa phương hiện tại.
 - `getHour24(): boolean` — Trả về thiết lập hiện tại cho việc hiển thị định dạng 24 giờ.
 - `getTimeZoneOffset(): number` — Trả về độ lệch múi giờ tính bằng phút.
-- `getTimeZone(style?: GeoTimeZoneStyle): string` — Trả về múi giờ (hỗ trợ các kiểu `minute`, `hour`, `RFC`; định dạng mặc định với dấu hai chấm).
+- `getTimeZone(style?: GeoTimeZoneStyle): string` — Trả về múi giờ (hỗ trợ các kiểu `minute`, `hour`, `ISO8601`, `RFC`; định dạng mặc định với dấu hai chấm).
 - `getFirstDayCode(): GeoFirstDay` — Trả về mã cho ngày đầu tiên của tuần (0 cho Chủ Nhật, 1 cho Thứ Hai, 6 cho Thứ Bảy).
 
 ### Lấy giá trị
@@ -54,22 +54,23 @@ const fromTs = new Datetime(1710460800000)
 - `getYear(): number` — Trả về năm đầy đủ.
 - `getMonth(): number` — Trả về tháng (dễ đọc, từ 1 đến 12).
 - `getDay(): number` — Trả về ngày trong tháng (1-31).
-- `getHour(): number` — Trả về giờ.
-- `getMinute(): number` — Trả về phút.
-- `getSecond(): number` — Trả về giây.
+- `getWeekday(): number` — Trả về ngày trong tuần (0-6).
+- `getHour(): number` — Trả về giờ (0-23).
+- `getMinute(): number` — Trả về phút (0-59).
+- `getSecond(): number` — Trả về giây (0-59).
 - `getMaxDay(): number` — Trả về số của ngày cuối cùng trong tháng hiện tại (28-31).
 
 ### Thiết lập giá trị
 
-Cho phép thay đổi chính xác các thành phần của ngày tháng. Các phương thức (ngoại trừ `setCode` và `setWatch`) sẽ kích hoạt hàm gọi lại `watch`.
+Cho phép thay đổi chính xác các thành phần của ngày tháng. Các phương thức (ngoại trừ `setWatch`) sẽ kích hoạt hàm gọi lại `watch`.
 
-- `setDate(value: NumberOrStringOrDate): this` — Ghi đè hoàn toàn ngày tháng.
+- `setDate(value?: NumberOrStringOrDate): this` — Ghi đè hoàn toàn ngày tháng.
 - `setType(value: GeoDate): this` — Thiết lập kiểu đầu ra.
 - `setHour24(value: boolean): this` — Bật/tắt định dạng 24 giờ.
-- `setCode(code: string): this` — Thay đổi mã địa phương.
-- `setWatch(watch: Function): this` — Thiết lập hàm gọi lại cho các thay đổi dữ liệu.
-- `setYear(value: number): this` — Thiết lập năm.
-- `setMonth(value: number): this` — Thiết lập tháng (1-12).
+- `setCode(code?: string): this` — Thay đổi mã địa phương (mặc định là `Geo.getLocation()`) và thông báo cho trình theo dõi.
+- `setWatch(watch?: (date: Date, type: GeoDate, hour24: boolean) => void): this` — Thiết lập hàm gọi lại cho các thay đổi dữ liệu.
+- `setYear(value: number): this` — Thiết lập năm (giới hạn ngày theo số ngày tối đa trong tháng hiện tại của năm đích).
+- `setMonth(value: number): this` — Thiết lập tháng (1-12, giới hạn ngày theo số ngày tối đa trong tháng đích).
 - `setDay(value: number): this` — Thiết lập ngày trong tháng.
 - `setHour(value: number): this` — Thiết lập giờ.
 - `setMinute(value: number): this` — Thiết lập phút.
@@ -109,7 +110,7 @@ Tạo bản sao của dữ liệu.
 - `cloneMonthFirst(): Datetime` — Sao chép với việc chuyển đến tháng 1.
 - `cloneMonthLast(): Datetime` — Sao chép với việc chuyển đến tháng 12.
 - `cloneMonthNext(): Datetime` — Sao chép với việc chuyển sang tháng tiếp theo.
-- `cloneMonthPrevious(): Datetime` — Sao chép with việc chuyển sang tháng trước.
+- `cloneMonthPrevious(): Datetime` — Sao chép với việc chuyển sang tháng trước.
 - `cloneWeekdayFirst(): Datetime` — Sao chép được thiết lập vào đầu tuần hiện tại.
 - `cloneWeekdayLast(): Datetime` — Sao chép được thiết lập vào cuối tuần hiện tại.
 - `cloneWeekdayFirstByMonth(): Datetime` — Sao chép đến đầu tuần đầu tiên của tháng.
@@ -149,12 +150,13 @@ dt.locale('date', { month: 'short' }) // ví dụ: "15 thg 3, 2024"
 
 ### `standard`
 
-Trả về ngày ở định dạng ISO 8601 (YYYY-MM-DDTHH:mm:ss±HH:mm).
+Trả về ngày/giờ ở định dạng chuẩn tương tự ISO theo `type` đã cấu hình (`YYYY-MM-DDTHH:mm:ss±HH:mm` cho `full`/`datetime`, `YYYY-MM-DD` cho `date`, `HH:mm:ss±HH:mm` cho `time`, v.v.), hoặc chuỗi rỗng `''` nếu ngày không hợp lệ.
 
 **Tham số:**
-- `timeZone: boolean = true` — có thêm thông tin múi giờ hay không.
+- `timeZone: boolean = true` — có thêm thông tin múi giờ hay không (áp dụng cho các kiểu `full`, `datetime` và `time`).
 
 ```javascript
+const dt = new Datetime('2024-03-15T00:00:00', 'datetime')
 dt.standard() // "2024-03-15T00:00:00+03:00"
 dt.standard(false) // "2024-03-15T00:00:00"
 ```

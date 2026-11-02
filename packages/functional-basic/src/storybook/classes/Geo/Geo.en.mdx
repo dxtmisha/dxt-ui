@@ -41,6 +41,9 @@ console.log(Geo.getTimezoneFormat()) // e.g., '+00:00'
 - `getStandard(): string` — Returns the combined locale string (e.g., `'en-US'`).
 - `getFirstDay(): string` — Returns the code for the first day of the week for the current locale (e.g., `'Mo'`, `'Su'`).
 - `getLocation(): string` — Returns the currently set locale as a string.
+- `getLocationCountry(): string` — Returns the country code extracted from the current location string.
+- `getLocationLanguage(): string` — Returns the language code extracted from the current location string.
+- `getObject(): GeoInstance` — Returns the request-isolated `GeoInstance` instance from `ServerStorage`.
 - `getItem(): GeoItemFull` — Returns a copy of the current settings object, accounting for the language.
 - `getTimezone(): number` — Returns the time zone offset in minutes.
 - `getTimezoneFormat(): string` — Returns the time zone offset in string format (e.g., `'+03:00'`).
@@ -58,6 +61,12 @@ console.log(Geo.getTimezoneFormat()) // e.g., '+00:00'
 
 - `set(code: string, save?: boolean): void` — Globally sets the current locale. If `save` is `true`, saves the choice to `localStorage`.
 - `setTimezone(timezone: number): void` — Sets a custom time zone offset in minutes.
+- `setValueDefault(code?: string | (() => string | undefined)): void` — Sets the default fallback value or provider function for the country/locale code.
+
+### Country Management
+
+- `add(country: string, item?: Partial<GeoItem>): GeoInstance` — Adds or merges geo data for the specified country.
+- `addList(list?: Record<string, Partial<GeoItem>>): GeoInstance` — Adds or merges geo data for multiple countries.
 
 ### Utilities
 

@@ -63,3 +63,5 @@ domElementsFromPoint
 toLocale
 toGeoStandard
 GeoInstance
+Geo
+Datetime

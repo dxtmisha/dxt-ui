@@ -6,6 +6,9 @@ import {
   type GeoItemFull
 } from '../types/geoTypes'
 
+/** Storage key for GeoInstance / Ключ хранилища для GeoInstance */
+const GEO_INSTANCE_KEY = '__ui:geo-instance__'
+
 /**
  * Static class for working with geographical data.
  * Provides a centralized interface for managing locale, country, and time zone.
@@ -14,6 +17,12 @@ import {
  * Предоставляет централизованный интерфейс для управления локалью, страной и часовым поясом.
  */
 export class Geo {
+  /**
+   * Protected constructor for static utility class /
+   * Защищенный конструктор для статического утилитного класса
+   */
+  protected constructor() {}
+
   /**
    * Returns information about the current country and language.
    *
@@ -167,7 +176,7 @@ export class Geo {
    * @returns GeoInstance instance / экземпляр GeoInstance
    */
   static getObject(): GeoInstance {
-    return ServerStorage.get('__ui:geo-instance__', () => new GeoInstance())
+    return ServerStorage.get(GEO_INSTANCE_KEY, () => new GeoInstance())
   }
 
   /**

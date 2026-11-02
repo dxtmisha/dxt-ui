@@ -58,11 +58,12 @@ describe('Datetime', () => {
   })
 
   describe('Basic Getters', () => {
-    it('should get year, month, day, hour, minute, second correctly', () => {
+    it('should get year, month, day, weekday, hour, minute, second correctly', () => {
       const datetime = new Datetime(baseDate)
       expect(datetime.getYear()).toBe(baseDate.getFullYear())
       expect(datetime.getMonth()).toBe(baseDate.getMonth() + 1)
       expect(datetime.getDay()).toBe(baseDate.getDate())
+      expect(datetime.getWeekday()).toBe(baseDate.getDay())
       expect(datetime.getHour()).toBe(baseDate.getHours())
       expect(datetime.getMinute()).toBe(baseDate.getMinutes())
       expect(datetime.getSecond()).toBe(baseDate.getSeconds())
@@ -229,6 +230,31 @@ describe('Datetime', () => {
 
       expect(datetime.setSecond(30)).toBe(datetime)
       expect(datetime.getSecond()).toBe(30)
+    })
+
+    it('should report to ErrorCenter when setDate receives an invalid date', () => {
+      const errorSpy = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
+      const datetime = new Datetime('2024-03-15')
+
+      datetime.setDate('invalid-date')
+
+      expect(errorSpy).toHaveBeenCalledWith({
+        group: 'intl',
+        code: 'invalid'
+      })
+    })
+
+    it('should clamp day of month when setYear or setMonth targets a shorter month', () => {
+      const leapDay = new Datetime('2024-02-29T12:00:00')
+      leapDay.setYear(2023)
+      expect(leapDay.getYear()).toBe(2023)
+      expect(leapDay.getMonth()).toBe(2)
+      expect(leapDay.getDay()).toBe(28)
+
+      const endOfJan = new Datetime('2024-01-31T12:00:00')
+      endOfJan.setMonth(2)
+      expect(endOfJan.getMonth()).toBe(2)
+      expect(endOfJan.getDay()).toBe(29)
     })
 
     it('should set hour24, type, and code with chaining', () => {
@@ -483,26 +509,26 @@ describe('Datetime', () => {
   })
 
   describe('Standard Format', () => {
-    it('should format standard date, day-month, year-month, year, month, day, datetime, time, and hour-minute', () => {
+    it('should format standard output for all GeoDate types', () => {
       const datetime = new Datetime('2024-06-15T10:30:45')
 
       datetime.setType('date')
       expect(datetime.standard(false)).toBe('2024-06-15')
 
       datetime.setType('day-month')
-      expect(datetime.standard(false)).toBe('2024-06-15')
+      expect(datetime.standard(false)).toBe('06-15')
 
       datetime.setType('year-month')
       expect(datetime.standard(false)).toBe('2024-06')
 
       datetime.setType('year')
-      expect(datetime.standard(false)).toBe('2024-06-15')
+      expect(datetime.standard(false)).toBe('2024')
 
       datetime.setType('month')
-      expect(datetime.standard(false)).toBe('2024-06-15')
+      expect(datetime.standard(false)).toBe('06')
 
       datetime.setType('day')
-      expect(datetime.standard(false)).toBe('2024-06-15')
+      expect(datetime.standard(false)).toBe('15')
 
       datetime.setType('datetime')
       expect(datetime.standard(false)).toBe('2024-06-15T10:30:45')
@@ -511,21 +537,39 @@ describe('Datetime', () => {
       expect(datetime.standard(false)).toBe('2024-06-15T10:30:45')
 
       datetime.setType('time')
-      expect(datetime.standard(false)).toBe('T10:30:45')
+      expect(datetime.standard(false)).toBe('10:30:45')
 
       datetime.setType('hour-minute')
-      const hourMinuteFormatted = datetime.standard(false)
-      expect(hourMinuteFormatted).toContain('T')
-      expect(hourMinuteFormatted).toContain('10:30')
+      expect(datetime.standard(false)).toBe('10:30')
+
+      datetime.setType('hour')
+      expect(datetime.standard(false)).toBe('10')
+
+      datetime.setType('minute')
+      expect(datetime.standard(false)).toBe('30')
+
+      datetime.setType('second')
+      expect(datetime.standard(false)).toBe('45')
     })
 
-    it('should include time zone by default when time part is present', () => {
-      const datetime = new Datetime('2024-06-15T10:30:00', 'datetime')
-      const withTimeZone = datetime.standard(true)
-      const withoutTimeZone = datetime.standard(false)
+    it('should include time zone by default for full, datetime, and time types', () => {
+      const datetime = new Datetime('2024-06-15T10:30:45', 'datetime')
+      const timeZone = datetime.getTimeZone()
 
-      expect(withTimeZone.length).toBeGreaterThan(withoutTimeZone.length)
-      expect(withTimeZone).toContain(withoutTimeZone)
+      expect(datetime.standard(true)).toBe(`2024-06-15T10:30:45${timeZone}`)
+      expect(datetime.standard(false)).toBe('2024-06-15T10:30:45')
+
+      datetime.setType('time')
+      expect(datetime.standard(true)).toBe(`10:30:45${timeZone}`)
+      expect(datetime.standard(false)).toBe('10:30:45')
+    })
+
+    it('should return an empty string when formatting an invalid date in standard()', () => {
+      vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
+      const datetime = new Datetime('invalid-date')
+
+      expect(datetime.standard()).toBe('')
+      expect(datetime.standard(false)).toBe('')
     })
   })
 
@@ -568,6 +612,36 @@ describe('Datetime', () => {
         'datetime',
         true
       )
+    })
+
+    it('should invoke watch callback exactly once per composite move method', () => {
+      const datetime = new Datetime('2024-06-15T12:00:00', 'date', 'ru-RU')
+      const watchCallback = vi.fn()
+      datetime.setWatch(watchCallback)
+
+      datetime.moveMonthNext()
+      expect(watchCallback).toHaveBeenCalledTimes(1)
+
+      datetime.moveMonthPrevious()
+      expect(watchCallback).toHaveBeenCalledTimes(2)
+
+      datetime.moveWeekdayLast()
+      expect(watchCallback).toHaveBeenCalledTimes(3)
+
+      datetime.moveWeekdayFirstByMonth()
+      expect(watchCallback).toHaveBeenCalledTimes(4)
+
+      datetime.moveWeekdayLastByMonth()
+      expect(watchCallback).toHaveBeenCalledTimes(5)
+
+      datetime.moveWeekdayNext()
+      expect(watchCallback).toHaveBeenCalledTimes(6)
+
+      datetime.moveWeekdayPrevious()
+      expect(watchCallback).toHaveBeenCalledTimes(7)
+
+      datetime.moveDayLast()
+      expect(watchCallback).toHaveBeenCalledTimes(8)
     })
   })
 

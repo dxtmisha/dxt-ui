@@ -42,11 +42,11 @@ const fromTs = new Datetime(1710460800000)
 
 - `getIntl(): GeoIntl` — Возвращает объект `GeoIntl` для работы с форматированием.
 - `getDate(): Date` — Возвращает оригинальный нативный объект `Date`.
-- `getType(): string` — Возвращает установленный тип вывода (`date`, `datetime` и т.д.).
+- `getType(): GeoDate` — Возвращает установленный тип вывода (`date`, `datetime` и т.д.).
 - `getHoursType(): GeoHours` — Определяет формат часов (12 или 24) для текущей локали.
 - `getHour24(): boolean` — Возвращает текущую настройку отображения 24-часового формата.
 - `getTimeZoneOffset(): number` — Возвращает смещение часового пояса в минутах.
-- `getTimeZone(style?: GeoTimeZoneStyle): string` — Возвращает часовой пояс (поддерживает стили `minute`, `hour`, `RFC`; по умолчанию формат с двоеточием).
+- `getTimeZone(style?: GeoTimeZoneStyle): string` — Возвращает часовой пояс (поддерживает стили `minute`, `hour`, `ISO8601`, `RFC`; по умолчанию формат с двоеточием).
 - `getFirstDayCode(): GeoFirstDay` — Возвращает код первого дня недели (0 для воскресенья, 1 для понедельника, 6 для субботы).
 
 ### Получение значений
@@ -54,22 +54,23 @@ const fromTs = new Datetime(1710460800000)
 - `getYear(): number` — Возвращает полный год.
 - `getMonth(): number` — Возвращает месяц (человекочитаемый, от 1 до 12).
 - `getDay(): number` — Возвращает число месяца (1-31).
-- `getHour(): number` — Возвращает часы.
-- `getMinute(): number` — Возвращает минуты.
-- `getSecond(): number` — Возвращает секунды.
+- `getWeekday(): number` — Возвращает день недели (0-6).
+- `getHour(): number` — Возвращает часы (0-23).
+- `getMinute(): number` — Возвращает минуты (0-59).
+- `getSecond(): number` — Возвращает секунды (0-59).
 - `getMaxDay(): number` — Возвращает число последнего дня текущего месяца (28-31).
 
 ### Установка значений
 
-Позволяют точечно изменять компоненты даты. Методы (кроме `setCode` и `setWatch`) инициируют вызов `watch` колбэка.
+Позволяют точечно изменять компоненты даты. Методы (кроме `setWatch`) инициируют вызов `watch` колбэка.
 
-- `setDate(value: NumberOrStringOrDate): this` — Полностью перезаписывает дату.
+- `setDate(value?: NumberOrStringOrDate): this` — Полностью перезаписывает дату.
 - `setType(value: GeoDate): this` — Устанавливает тип вывода.
 - `setHour24(value: boolean): this` — Включает/выключает 24-часовой формат.
-- `setCode(code: string): this` — Меняет код локали.
-- `setWatch(watch: Function): this` — Устанавливает функцию обратного вызова при изменении данных.
-- `setYear(value: number): this` — Устанавливает год.
-- `setMonth(value: number): this` — Устанавливает месяц (1-12).
+- `setCode(code?: string): this` — Меняет код локали (по умолчанию `Geo.getLocation()`) и уведомляет наблюдателя.
+- `setWatch(watch?: (date: Date, type: GeoDate, hour24: boolean) => void): this` — Устанавливает функцию обратного вызова при изменении данных.
+- `setYear(value: number): this` — Устанавливает год (ограничивает день максимальным числом дней текущего месяца целевого года).
+- `setMonth(value: number): this` — Устанавливает месяц (1-12, ограничивает день максимальным числом дней целевого месяца).
 - `setDay(value: number): this` — Устанавливает число месяца.
 - `setHour(value: number): this` — Устанавливает часы.
 - `setMinute(value: number): this` — Устанавливает минуты.
@@ -149,12 +150,13 @@ dt.locale('date', { month: 'short' }) // "15 мар. 2024 г."
 
 ### `standard`
 
-Возвращает дату в формате ISO 8601 (YYYY-MM-DDTHH:mm:ss±HH:mm).
+Возвращает дату/время в стандартном ISO-подобном формате согласно установленному `type` (`YYYY-MM-DDTHH:mm:ss±HH:mm` для `full`/`datetime`, `YYYY-MM-DD` для `date`, `HH:mm:ss±HH:mm` для `time` и т.д.), либо пустую строку `''`, если дата невалидна.
 
 **Параметры:**
-- `timeZone: boolean = true` — добавлять ли информацию о часовом поясе.
+- `timeZone: boolean = true` — добавлять ли информацию о часовом поясе (применяется для типов `full`, `datetime` и `time`).
 
 ```javascript
+const dt = new Datetime('2024-03-15T00:00:00', 'datetime')
 dt.standard() // "2024-03-15T00:00:00+03:00"
 dt.standard(false) // "2024-03-15T00:00:00"
 ```
