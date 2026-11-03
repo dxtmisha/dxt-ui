@@ -184,6 +184,18 @@ describe('Formatters', () => {
       expect(formatted?.zeroCustomFormat).toBe('')
       expect(formatted?.falseCustomFormat).toBe('')
     })
+
+    it('should not mutate the original list or item objects when calling to()', () => {
+      const originalItem: TestRecord = { price: 100, currency: 'USD', firstName: 'John', lastName: 'Doe' }
+      const originalList: TestRecord[] = [originalItem]
+      const formatters = new Formatters(options, originalList)
+
+      const formattedList = formatters.to()
+
+      expect(formattedList).not.toBe(originalList)
+      expect(formattedList[0]).not.toBe(originalItem)
+      expect('priceFormat' in originalItem).toBe(false)
+    })
   })
 
   describe('Specific Formatter Options', () => {

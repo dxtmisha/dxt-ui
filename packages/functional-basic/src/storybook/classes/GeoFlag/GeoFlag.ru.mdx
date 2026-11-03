@@ -34,11 +34,15 @@ const ruFlag = new GeoFlag('ru-RU')
 
 ### Получение данных
 - `get(code?: string): GeoFlagItem | undefined` — Возвращает полный объект данных о стране.
+- `getCode(): string` — Возвращает текущий код страны или локали экземпляра.
 - `getFlag(code?: string): string | undefined` — Возвращает только идентификатор иконки флага (например, `'f-ru'`).
+- `getLanguage(code?: string): GeoFlagItem | undefined` — Возвращает информацию о языке и его флаге (где `label` и `value` соответствуют языку).
 
 ### Списки
 - `getList(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Возвращает массив данных о странах. По умолчанию сортирует по алфавиту.
+- `getListLanguage(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Возвращает список уникальных языков без дубликатов. По умолчанию сортирует по алфавиту.
 - `getNational(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Возвращает список стран с национальными названиями. По умолчанию сортирует по алфавиту.
+- `getNationalLanguage(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Возвращает список языков с их национальными названиями. По умолчанию сортирует по алфавиту.
 
 ### Настройка
 - `setCode(code: string): this` — Изменяет базовую локаль для текущего экземпляра.
@@ -77,12 +81,14 @@ const national = geo.getNational(['JP'])
 ### `GeoFlagItem`
 Базовый объект информации о флаге.
 - `country`: string — Локализованное название страны.
+- `countryCode`: string — Код страны (ISO alpha-2).
 - `language`: string — Локализованное название языка.
+- `languageCode`: string — Код языка (ISO 639-1).
 - `standard`: string — Полный стандарт локали (например, `ru-RU`).
-- `icon`: string — Имя иконки флага (префикс `f-`).
-- `label`: string — Метка для отображения (по умолчанию совпадает с `country`).
-- `value`: string — Код страны (ISO alpha-2).
-- `phoneCode`: string — Телефонный код страны (например, `+1`, `+7`).
+- `icon`: string | undefined — Имя иконки флага (префикс `f-`).
+- `label`: string — Метка для отображения (по умолчанию совпадает с `country` или `language`).
+- `value`: string — Значение для выбора (код страны или код языка).
+- `phoneCode`: string | undefined — Телефонный код страны (например, `+1`, `+7`).
 
 ### `GeoFlagNational`
 Расширяет `GeoFlagItem` дополнительными полями:

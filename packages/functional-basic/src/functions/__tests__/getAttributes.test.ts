@@ -83,7 +83,7 @@ describe('getAttributes', () => {
     })
 
     it('should return an empty object when passed null', () => {
-      expect(getAttributes(null as unknown as undefined)).toEqual({})
+      expect(getAttributes(null)).toEqual({})
     })
 
     it('should return an empty object for an element that has no attributes', () => {

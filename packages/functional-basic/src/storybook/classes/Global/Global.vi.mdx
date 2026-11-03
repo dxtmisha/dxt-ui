@@ -9,7 +9,7 @@ Một lớp tiện ích tĩnh để lưu trữ và truy xuất dữ liệu toàn
 ## Tính năng chính
 
 - **Khởi tạo một lần** — Phương thức `add` chỉ hoạt động trong lần gọi đầu tiên; các lần gọi tiếp theo bị bỏ qua.
-- **Sao chép sâu** — Dữ liệu được sao chép qua `copyObjectLite`, cô lập khỏi các thay đổi bên ngoài.
+- **Cô lập SSR** — Dữ liệu được lưu trữ qua `ServerStorage`, đảm bảo cô lập giữa các yêu cầu trên máy chủ.
 - **Không quản lý trạng thái** — Chỉ dành cho cấu hình tĩnh.
 - **Truy cập tĩnh** — tất cả các phương thức đều là tĩnh, loại bỏ nhu cầu khởi tạo (`new Global()`).
 
@@ -32,8 +32,9 @@ console.log(Global.get('apiUrl')) // 'https://api.myapp.com'
 
 ## Phương thức
 
-- `add(data: Record<string, any>): void` — Lưu dữ liệu toàn cục. Chỉ hoạt động **trong lần gọi đầu tiên**. Các lần gọi sau bị bỏ qua hoàn toàn.
-- `get<R>(name: string): R` — Trả về giá trị theo khóa từ dữ liệu toàn cục đã lưu.
+- `get<R = unknown>(name: string): R` — Trả về giá trị thuộc tính riêng theo khóa từ dữ liệu toàn cục đã lưu.
+- `getItem(): Record<string, unknown>` — Trả về đối tượng lưu trữ dữ liệu toàn cục cho ngữ cảnh hiện tại.
+- `add(data: Record<string, unknown>): void` — Lưu dữ liệu toàn cục. Chỉ hoạt động **trong lần gọi đầu tiên** (khi bộ nhớ trống). Các lần gọi sau bị bỏ qua hoàn toàn.
 
 ## Ví dụ
 

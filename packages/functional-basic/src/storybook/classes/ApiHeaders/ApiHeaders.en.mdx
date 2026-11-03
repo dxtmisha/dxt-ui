@@ -34,15 +34,15 @@ Intersects default headers with custom ones and injects `Content-Type`. If the `
 A specialized version of `get` that adjusts headers based on the request type. Specifically, it ensures `Content-Type` is not manually set for `FormData` to allow correct boundary generation.
 
 **Parameters:**
-- `request: ApiFetch['request']` — The request payload (Object, FormData, or String).
+- `request?: ApiFetch['request']` — The request payload (Object, FormData, or String).
 - `value?: Record<string, string> | null` — Custom headers.
-- `type: string` — The desired `Content-Type`.
+- `type?: string | null` — The desired `Content-Type`.
 
 **Returns:** `Record<string, string> | undefined` — The processed headers object.
 
 ### Configuration
 
-- `set(headers: Record<string, string>): this` — Sets or updates the default headers object.
+- `set(headers: ApiHeadersValue): this` — Sets or updates the default headers object.
 
 ## Types
 

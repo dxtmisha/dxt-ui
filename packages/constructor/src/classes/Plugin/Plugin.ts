@@ -1,3 +1,4 @@
+import type { SourceMap } from 'magic-string'
 import type { Plugin as VitePlugin, Rolldown } from 'vite'
 
 import { PluginTool } from './PluginTool'
@@ -5,6 +6,7 @@ import { PluginCode } from './PluginCode'
 import { PluginData } from './PluginData'
 import { PluginImport } from './PluginImport'
 import { PluginComponents } from './PluginComponents'
+import { PluginMap } from './PluginMap'
 import { PluginStyle } from './PluginStyle'
 
 import type { PluginComponentImports, PluginOptions } from '../../types/pluginTypes'
@@ -19,6 +21,7 @@ export class Plugin {
 
   protected first: boolean = true
   protected mode: string = 'production'
+  protected sourcemap: boolean = true
 
   /**
    * Constructor
@@ -57,8 +60,12 @@ export class Plugin {
     return {
       name: this.name,
       enforce: 'pre',
-      apply: (_, env): boolean => {
+      apply: (config, env): boolean => {
         this.mode = env.mode
+        this.sourcemap = Boolean(
+          config?.build?.sourcemap
+          || PluginTool.isDev(env.mode)
+        )
         return true
       },
       transform: (code: string, id: string): Rolldown.TransformResult => {
@@ -75,6 +82,16 @@ export class Plugin {
    */
   protected isComponents(): boolean {
     return Boolean(this.options?.component ?? true)
+  }
+
+  /**
+   * Checks if source maps should be generated.
+   *
+   * Проверяет, нужно ли генерировать карты исходного кода.
+   * @returns true if source maps are enabled / true, если карты исходного кода включены
+   */
+  protected isMap(): boolean {
+    return Boolean(this.options?.map ?? this.sourcemap)
   }
 
   /**
@@ -96,6 +113,21 @@ export class Plugin {
   }
 
   /**
+   * Returns the source map for the modified code if enabled.
+   *
+   * Возвращает карту исходного кода для измененного кода, если она включена.
+   * @param code file content / содержимое файла
+   * @returns source map or null / карта исходного кода или null
+   */
+  protected getMap(code: PluginCode): SourceMap | null {
+    if (this.isMap()) {
+      return new PluginMap(code).get()
+    }
+
+    return null
+  }
+
+  /**
    * Transforms the code.
    *
    * Преобразовывает код.
@@ -103,24 +135,29 @@ export class Plugin {
    * @param id file identification / идентификация файла
    */
   protected transform(code: string, id: string): Rolldown.TransformResult {
+    const magicCode = new PluginCode(id, code)
+
     if (
       this.first
       && PluginTool.isJs(id)
     ) {
       if (this.isStyleMain()) {
-        code = this.initMain(code)
+        magicCode.set(this.initMain(magicCode.get()))
       }
 
       this.first = false
     }
 
-    const magicCode = new PluginCode(id, code)
-
     this.makeComponents(magicCode)
     this.initStyles(magicCode)
 
+    if (!magicCode.isModified()) {
+      return null
+    }
+
     return {
-      code: magicCode.get()
+      code: magicCode.get(),
+      map: this.getMap(magicCode)
     }
   }
 

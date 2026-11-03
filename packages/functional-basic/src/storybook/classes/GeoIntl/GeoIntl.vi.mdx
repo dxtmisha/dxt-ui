@@ -36,7 +36,7 @@ const currentIntl = new GeoIntl() // Cũng sử dụng bộ nhớ đệm singlet
 ## Các phương thức Địa lý & Địa phương hóa
 
 - `getLocation(): string` — Trả về chuỗi locale chuẩn đã chuẩn hóa (ví dụ: `'vi-VN'`).
-- `getFirstDay(): string` — Trả về chỉ định ngày đầu tiên trong tuần của vùng locale (ví dụ: `'Mon'`, `'Sun'`).
+- `getFirstDay(): string` — Trả về chỉ định ngày đầu tiên trong tuần của vùng locale (ví dụ: `'Mo'`, `'Su'`, `'Sa'`).
 
 ## Tên & Vùng
 
@@ -144,7 +144,7 @@ Công cụ định dạng ngày chính cung cấp các biểu diễn địa phư
 
 Trả về các mảng nhãn đã được địa phương hóa cho tháng hoặc các ngày trong tuần, lý tưởng để đưa vào các thành phần lựa chọn trên UI.
 
-**Trả về:** `ItemValue<number>[]` — Mảng các đối tượng có trường `label` và `value`.
+**Trả về:** `ItemValue<number | undefined>[]` — Mảng các đối tượng có trường `label` và `value`.
 
 ## Thời gian Tương đối
 

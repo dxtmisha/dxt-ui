@@ -151,8 +151,9 @@ describe('getElementId', () => {
       expect(id.includes('.child')).toBe(false)
     })
 
-    it('should handle undefined element parameter safely', () => {
+    it('should handle undefined and null element parameter safely', () => {
       expect(getElementId(undefined)).toMatch(/^id-\d+$/)
+      expect(getElementId(null)).toMatch(/^id-\d+$/)
     })
 
     it('should return plain ID without hash prefix when selector is undefined', () => {
@@ -325,12 +326,10 @@ describe('getElementId', () => {
     })
 
     it('should fall back to ServerStorage if listener returns undefined or null at runtime', () => {
-      // @ts-expect-error Testing runtime fallback when listener returns undefined (e.g. Vue useId outside setup)
       initGetElementId(() => undefined)
       expect(getElementId()).toBe('id-100000')
 
       resetGetElementId()
-      // @ts-expect-error Testing runtime fallback when listener returns null
       initGetElementId(() => null)
       expect(getElementId()).toBe('id-100001')
     })

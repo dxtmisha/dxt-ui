@@ -19,6 +19,45 @@ import {
 } from '../types/geoTypes'
 
 /**
+ * Extracts numeric amount and 3-letter ISO currency code suffix /
+ * Извлекает числовое значение и 3-буквенный суффикс кода валюты ISO
+ */
+const REGEXP_CURRENCY_SUFFIX = /^([\S\s]+[\d ])([a-zA-Z]{3})$/i
+
+/**
+ * Extracts numeric value and alphabetic measurement unit suffix /
+ * Извлекает числовое значение и буквенный суффикс единицы измерения
+ */
+const REGEXP_UNIT_SUFFIX = /^([\S\s]+[\d ])([a-zA-Z]+)$/i
+
+/**
+ * Matches the first character of a string for capitalization /
+ * Соответствует первому символу строки для перевода в верхний регистр
+ */
+const REGEXP_FIRST_CHAR = /^./
+
+/** Part types excluded when formatting currency as number-only / Типы частей, исключаемые при форматировании валюты только числом */
+const CURRENCY_EXCLUDED_PART_TYPES: Intl.NumberFormatPartTypes[] = ['literal', 'currency']
+
+/** Date format types that include the year / Типы форматов даты, включающие год */
+const DATE_OPTIONS_YEAR_TYPES: Array<GeoDate | undefined> = ['full', 'datetime', 'date', undefined, 'year-month', 'year']
+
+/** Date format types that include the month / Типы форматов даты, включающие месяц */
+const DATE_OPTIONS_MONTH_TYPES: Array<GeoDate | undefined> = ['full', 'datetime', 'date', undefined, 'year-month', 'month', 'day-month']
+
+/** Date format types that include the day / Типы форматов даты, включающие день */
+const DATE_OPTIONS_DAY_TYPES: Array<GeoDate | undefined> = ['full', 'datetime', 'date', undefined, 'day', 'day-month']
+
+/** Date format types that include the hour / Типы форматов даты, включающие час */
+const DATE_OPTIONS_HOUR_TYPES: GeoDate[] = ['full', 'datetime', 'time', 'hour-minute', 'hour']
+
+/** Date format types that include the minute / Типы форматов даты, включающие минуту */
+const DATE_OPTIONS_MINUTE_TYPES: GeoDate[] = ['full', 'datetime', 'time', 'hour-minute', 'minute']
+
+/** Date format types that include the second / Типы форматов даты, включающие секунду */
+const DATE_OPTIONS_SECOND_TYPES: GeoDate[] = ['full', 'time', 'second']
+
+/**
  * The Intl namespace object contains several constructors as well as functionality common
  * to the internationalization constructors and other language sensitive functions. Collectively,
  * they comprise the ECMAScript Internationalization API, which provides language sensitive
@@ -34,6 +73,9 @@ export class GeoIntl {
   /** Full geo item data / Полные данные гео-объекта */
   private readonly geo: GeoItemFull
 
+  /** Error center instance / Экземпляр центра ошибок */
+  private readonly errorCenter: ErrorCenterInstance
+
   /**
    * Constructor
    * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
@@ -41,9 +83,10 @@ export class GeoIntl {
    */
   constructor(
     code: string = Geo.getLocation(),
-    private errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
+    errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {
     this.geo = Geo.find(code)
+    this.errorCenter = errorCenter
     const location = this.getLocation()
 
     if (location in items) {
@@ -149,7 +192,10 @@ export class GeoIntl {
     }
 
     try {
-      if (typeof Intl !== 'undefined') {
+      if (
+        this.hasIntl()
+        && typeof Intl.DisplayNames !== 'undefined'
+      ) {
         if (value) {
           text = new Intl.DisplayNames(this.getLocation(), options).of(value)
         } else if (options.type === 'language') {
@@ -261,7 +307,7 @@ export class GeoIntl {
     value: NumberOrString,
     options?: Intl.NumberFormatOptions
   ): string {
-    return this.numberObject(options)?.format?.(toNumber(value)) || value.toString()
+    return this.numberObject(options)?.format(toNumber(value)) || value.toString()
   }
 
   /**
@@ -272,8 +318,8 @@ export class GeoIntl {
    */
   decimal(): string {
     return this.numberObject()
-      ?.formatToParts?.(1.2)
-      ?.find?.(item => item.type === 'decimal')?.value || '.'
+      ?.formatToParts(1.2)
+      .find(item => item.type === 'decimal')?.value || '.'
   }
 
   /**
@@ -298,7 +344,7 @@ export class GeoIntl {
 
     const number: string = value
       .toString()
-      .replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...text: string[]): string => {
+      .replace(REGEXP_CURRENCY_SUFFIX, (...text: string[]): string => {
         options.currency = String(text[2]).toUpperCase()
         return String(text[1])
       })
@@ -308,7 +354,7 @@ export class GeoIntl {
       if (object) {
         return getColumn(
           object.formatToParts(toNumber(value))
-            .filter(item => !inArray(['literal', 'currency'], item.type)),
+            .filter(item => !inArray(CURRENCY_EXCLUDED_PART_TYPES, item.type)),
           'value'
         )
           .join('')
@@ -348,8 +394,8 @@ export class GeoIntl {
       currencyDisplay,
       currency
     })
-      ?.formatToParts?.(100)
-      ?.find?.(item => item.type === 'currency')?.value || currency
+      ?.formatToParts(100)
+      .find(item => item.type === 'currency')?.value || currency
   }
 
   /**
@@ -372,7 +418,7 @@ export class GeoIntl {
 
     const number: string = value
       .toString()
-      .replace(/^([\S\s]+[\d ])([a-zA-Z]+)$/i, (...text: string[]): string => {
+      .replace(REGEXP_UNIT_SUFFIX, (...text: string[]): string => {
         options.unit = String(text[2]).toLowerCase()
         return String(text[1])
       })
@@ -477,7 +523,8 @@ export class GeoIntl {
     if (list.length > 1) {
       try {
         if (
-          typeof Intl !== 'undefined'
+          this.hasIntl()
+          && typeof Intl.PluralRules !== 'undefined'
         ) {
           const plural = new Intl.PluralRules(this.getLocation(), options)
           const type = plural.select(number)
@@ -488,16 +535,16 @@ export class GeoIntl {
               wordsFormat = list[list.length - 1]
               break
             case 'one':
-              wordsFormat = list?.[0]
+              wordsFormat = list[0]
               break
             case 'two':
-              wordsFormat = list?.[1]
+              wordsFormat = list[1]
               break
             case 'few':
-              wordsFormat = list?.[3] ? list?.[2] : list?.[1]
+              wordsFormat = list[3] ? list[2] : list[1]
               break
             case 'many':
-              wordsFormat = list?.[3] || list?.[2] || list?.[1]
+              wordsFormat = list[3] || list[2] || list[1]
               break
             case 'other':
               if (list.length === 6) {
@@ -519,7 +566,7 @@ export class GeoIntl {
       }
     }
 
-    return `${this.number(number, optionsNumber)} ${list?.[0] ?? ''}`.trim()
+    return `${this.number(number, optionsNumber)} ${list[0] ?? ''}`.trim()
   }
 
   /**
@@ -710,7 +757,7 @@ export class GeoIntl {
   ): string {
     try {
       if (this.hasIntlDateTimeFormat()) {
-        return Intl.DateTimeFormat(this.getLocation(), { month: style || 'long' })
+        return new Intl.DateTimeFormat(this.getLocation(), { month: style || 'long' })
           .format(toDate(value))
       }
     } catch (error) {
@@ -748,7 +795,7 @@ export class GeoIntl {
           date.setMonth(index)
           list.push({
             label: format.format(date)
-              .replace(/^./, character => character.toUpperCase()),
+              .replace(REGEXP_FIRST_CHAR, character => character.toUpperCase()),
             value: index + 1
           })
         }
@@ -819,7 +866,7 @@ export class GeoIntl {
           list.push({
             label: format
               .format(date)
-              .replace(/^./, character => character.toUpperCase()),
+              .replace(REGEXP_FIRST_CHAR, character => character.toUpperCase()),
             value: date.getDay()
           })
 
@@ -894,6 +941,47 @@ export class GeoIntl {
   }
 
   /**
+   * Returns options for data according to its type.
+   *
+   * Возвращает options для data по его типу.
+   * @param type type of data format / тип формата data
+   * @param display the representation of the month / представление месяца
+   * @returns Intl.DateTimeFormatOptions object / объект Intl.DateTimeFormatOptions
+   */
+  private dateOptions(
+    type?: GeoDate,
+    display: Intl.DateTimeFormatOptions['month'] = 'short'
+  ): Intl.DateTimeFormatOptions {
+    const options: Intl.DateTimeFormatOptions = {}
+
+    if (inArray(DATE_OPTIONS_YEAR_TYPES, type)) {
+      options.year = 'numeric'
+    }
+
+    if (inArray(DATE_OPTIONS_MONTH_TYPES, type)) {
+      options.month = display
+    }
+
+    if (inArray(DATE_OPTIONS_DAY_TYPES, type)) {
+      options.day = '2-digit'
+    }
+
+    if (inArray(DATE_OPTIONS_HOUR_TYPES, type)) {
+      options.hour = '2-digit'
+    }
+
+    if (inArray(DATE_OPTIONS_MINUTE_TYPES, type)) {
+      options.minute = '2-digit'
+    }
+
+    if (inArray(DATE_OPTIONS_SECOND_TYPES, type)) {
+      options.second = '2-digit'
+    }
+
+    return options
+  }
+
+  /**
    * The object enables language-sensitive number formatting.
    *
    * Объект включает форматирование чисел с учетом языка.
@@ -918,50 +1006,10 @@ export class GeoIntl {
 
     return undefined
   }
-
-  /**
-   * Returns options for data according to its type.
-   *
-   * Возвращает options для data по его типу.
-   * @param type type of data format / тип формата data
-   * @param display the representation of the month / представление месяца
-   * @returns Intl.DateTimeFormatOptions object / объект Intl.DateTimeFormatOptions
-   */
-  private dateOptions(
-    type?: GeoDate,
-    display: Intl.DateTimeFormatOptions['month'] = 'short'
-  ): Intl.DateTimeFormatOptions {
-    const options: Intl.DateTimeFormatOptions = {}
-
-    if (inArray(['full', 'datetime', 'date', undefined, 'year-month', 'year'], type)) {
-      options.year = 'numeric'
-    }
-
-    if (inArray(['full', 'datetime', 'date', undefined, 'year-month', 'month', 'day-month'], type)) {
-      options.month = display
-    }
-
-    if (inArray(['full', 'datetime', 'date', undefined, 'day', 'day-month'], type)) {
-      options.day = '2-digit'
-    }
-
-    if (type !== undefined) {
-      if (inArray(['full', 'datetime', 'time', 'hour-minute', 'hour'], type)) {
-        options.hour = '2-digit'
-      }
-
-      if (inArray(['full', 'datetime', 'time', 'hour-minute', 'minute'], type)) {
-        options.minute = '2-digit'
-      }
-
-      if (inArray(['full', 'time', 'second'], type)) {
-        options.second = '2-digit'
-      }
-    }
-
-    return options
-  }
 }
 
-const locations: Record<string, string> = {}
-const items: Record<string, GeoIntl> = {}
+/** Cache of resolved standard location codes by input code / Кэш стандартных кодов локаций по входному коду */
+const locations: Record<string, string> = /* #__PURE__ */ Object.create(null)
+
+/** Cache of GeoIntl instances by standard location code / Кэш экземпляров GeoIntl по стандартному коду локации */
+const items: Record<string, GeoIntl> = /* #__PURE__ */ Object.create(null)

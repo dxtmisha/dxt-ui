@@ -22,7 +22,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### Ограничения дженериков (Generic Constraints)
 
-- `Message = any` — тип полезной нагрузки сообщения.
+- `Message = unknown` — тип полезной нагрузки сообщения.
 
 **Параметры:**
 - `name: string` — уникальное имя канала связи.
@@ -49,15 +49,15 @@ const messenger = new BroadcastMessage<string>(
 ### Настройка и доступ
 
 - `getChannel(): BroadcastChannel | undefined` — Возвращает базовый экземпляр `BroadcastChannel`.
-- `setCallback(callback: Function): this` — Обновляет функцию обработки входящих сообщений.
-- `setCallbackError(callbackError: Function): this` — Обновляет функцию обработки ошибок.
+- `setCallback(callback?: (event: MessageEvent<Message>) => void): this` — Обновляет функцию обработки входящих сообщений.
+- `setCallbackError(callbackError?: (event: MessageEvent<Message>) => void): this` — Обновляет функцию обработки ошибок.
 
 ## Примеры
 
 ### Синхронизация состояния между вкладками
 
 ```typescript
-import { BroadcastMessage } from '@dxtmisha/functional'
+import { BroadcastMessage } from '@dxtmisha/functional-basic'
 
 // Во всех вкладках приложения
 const authChannel = new BroadcastMessage<string>('auth-status', (event) => {

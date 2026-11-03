@@ -23,7 +23,7 @@ describe('Plugin', () => {
     }
   })
 
-  it('should transform main file and import style.css on first JS/TS transform', () => {
+  it('should transform main file with sourcemap on first JS/TS transform and return null for unmodified files', () => {
     const plugin = new Plugin('DesignA', 'pkg-a', componentsReg, styleVarsReg, componentsList)
     const config = plugin.init()
 
@@ -33,9 +33,28 @@ describe('Plugin', () => {
 
       expect(result).toBeDefined()
       expect(result.code).toBe('import \'pkg-a/style.css\';const x = 1;')
+      expect(result.map).toBeDefined()
+      expect(result.map.version).toBe(3)
+      expect(result.map.sources).toEqual(['/project/src/main.ts'])
 
       const secondResult = config.transform.call({} as any, code, '/project/src/other.ts') as any
-      expect(secondResult.code).toBe('const x = 1;')
+      expect(secondResult).toBeNull()
+    }
+  })
+
+  it('should transform Vue component with auto-imports and generate valid sourcemap', () => {
+    const plugin = new Plugin('DesignA', 'pkg-a', componentsReg, styleVarsReg, componentsList)
+    const config = plugin.init()
+
+    if (config.transform && typeof config.transform === 'function') {
+      const vueCode = '<template><my-button /></template>\n<script setup>\nconst a = 1;\n</script>'
+      const result = config.transform.call({} as any, vueCode, '/project/src/App.vue') as any
+
+      expect(result).not.toBeNull()
+      expect(result.code).toContain('import { MyButton } from\'pkg-a/MyButton\';')
+      expect(result.map).toBeDefined()
+      expect(result.map.version).toBe(3)
+      expect(result.map.sources).toEqual(['/project/src/App.vue'])
     }
   })
 })

@@ -55,7 +55,7 @@ export async function ensureMaxSize(
 
     if (!image) {
       URL.revokeObjectURL(data)
-      blobToBase64(blob).then(original => resolve(String(original ?? '')))
+      blobToBase64(blob).then(original => resolve(original ?? ''))
     }
   })
 }

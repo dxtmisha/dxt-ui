@@ -18,12 +18,13 @@ Một lớp chuyên dụng để theo dõi và quản lý trạng thái của m�
 
 ### Hành động
 
-- `getResponse<T>(): T | undefined` — Trả về dữ liệu thô từ yêu cầu thành công cuối cùng.
+- `getResponse<T = unknown>(): T | undefined` — Trả về dữ liệu thô từ yêu cầu thành công cuối cùng.
 - `getMessage(): string` — Trả về thông điệp máy chủ được lấy từ phản hồi thành công hoặc thông điệp được thiết lập thủ công.
 
 ### Kiểm tra
 
 - `get(): ApiStatusItem | undefined` — Trả về đối tượng dữ liệu trạng thái đầy đủ.
+- `getCode(): string | undefined` — Trả về mã trạng thái thực thi từ phản hồi.
 - `getStatus(): number | undefined` — Trả về mã trạng thái HTTP (ví dụ: `200`).
 - `getStatusText(): string | undefined` — Trả về văn bản trạng thái (ví dụ: `"OK"`).
 - `getStatusType(): ApiStatusType | undefined` — Trả về loại xác thực trạng thái cuối cùng.
@@ -34,9 +35,11 @@ Một lớp chuyên dụng để theo dõi và quản lý trạng thái của m�
 - `set(data: ApiStatusItem): this` — Thiết lập nhiều trường trạng thái cùng một lúc.
 - `setStatus(status?: number, statusText?: string): this` — Thiết lập mã và văn bản trạng thái HTTP.
 - `setError(error?: string): this` — Ghi lại một chuỗi thông điệp lỗi.
-- `setLastResponse(response?: any): this` — Ghi lại phản hồi máy chủ và trích xuất siêu dữ liệu liên quan.
+- `setLastCode(code?: string): this` — Thiết lập mã thực thi cuối cùng.
+- `setLastResponse(response?: unknown): this` — Ghi lại phản hồi máy chủ và trích xuất siêu dữ liệu liên quan (`message`, `code`, `status`).
 - `setLastStatus(status?: ApiStatusType): this` — Thiết lập loại trạng thái API tùy chỉnh.
 - `setLastMessage(message?: string): this` — Ghi lại một thông điệp một cách rõ ràng.
+- `reset(): this` — Đặt lại tất cả dữ liệu trạng thái.
 
 ## Các kiểu dữ liệu
 
@@ -47,4 +50,5 @@ Một đại diện đầy đủ của trạng thái yêu cầu.
 - `error?: string` — Thông điệp lỗi.
 - `lastResponse?: any` — Dữ liệu phản hồi thô.
 - `lastStatus?: ApiStatusType` — Danh mục xác thực.
+- `lastCode?: string` — Mã phản hồi cuối cùng.
 - `lastMessage?: string` — Thông điệp hiển thị đã trích xuất.

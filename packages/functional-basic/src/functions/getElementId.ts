@@ -6,7 +6,8 @@ import { ServerStorage } from '../classes/ServerStorage'
 
 import {
   type ElementOrString,
-  type ElementOrWindow
+  type ElementOrWindow,
+  type Undefined
 } from '../types/basicTypes'
 
 /** Server storage key / Ключ серверного хранилища */
@@ -16,7 +17,7 @@ const SERVER_STORAGE_KEY = '__ui:getElementId__'
  * Listener that returns the current request context /
  * Слушатель, возвращающий контекст текущего запроса
  */
-let listener: (() => string | number) | undefined
+let listener: (() => string | number | Undefined) | undefined
 
 /**
  * Returns the next ID.
@@ -45,12 +46,13 @@ const getNextId = (): string => {
  *
  * Возвращает идентификатор (ID) элемента или создает его, если у элемента нет ID.
  * При передаче объекта Window идентификатор получается или назначается для document.body.
+ * @template E element or Window type / тип элемента или Window
  * @param element element from which you obtain an ID / элемент, с которого получаете ID
  * @param selector selector for matching / селектор для сопоставления
  * @returns element ID / идентификатор элемента
  */
-export function getElementId<E extends ElementOrWindow>(
-  element?: ElementOrString<E>,
+export function getElementId<E extends ElementOrWindow = HTMLElement>(
+  element?: ElementOrString<E> | null,
   selector?: string
 ): string {
   if (element) {
@@ -83,7 +85,7 @@ export function getElementId<E extends ElementOrWindow>(
  * initGetElementId(() => useId())
  * ```
  */
-export function initGetElementId(newListener: () => string | number): void {
+export function initGetElementId(newListener: () => string | number | Undefined): void {
   if (!listener) {
     listener = newListener
   }

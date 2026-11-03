@@ -62,7 +62,7 @@ const REGEXP_TIME_SECONDS = /^\d{2}:\d{2}:\d{2}$/
  * @param value input value / входное значение
  * @returns date object / объект даты
  */
-export function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date {
+export function toDate<T extends Date | number | string>(value?: T | null): (T & Date) | Date {
   if (value instanceof Date) {
     return value
   }
@@ -75,14 +75,22 @@ export function toDate<T extends Date | number | string>(value?: T): (T & Date) 
     return new Date(value)
   }
 
-  let date: string = value
-  let timeZone: string = Geo.getTimezoneFormat().trim()
+  const trimmedValue = value.trim()
 
-  const timezoneMatch = value.match(REGEXP_TIMEZONE)
+  if (trimmedValue === '') {
+    return new Date(NaN)
+  }
+
+  const timezoneMatch = REGEXP_TIMEZONE.exec(trimmedValue)
+  let date: string
+  let timeZone: string
 
   if (timezoneMatch) {
-    date = timezoneMatch[1]
-    timeZone = timezoneMatch[2].trim()
+    date = timezoneMatch[1].trim()
+    timeZone = timezoneMatch[2]
+  } else {
+    date = trimmedValue
+    timeZone = Geo.getTimezoneFormat().trim()
   }
 
   let stringDate: string

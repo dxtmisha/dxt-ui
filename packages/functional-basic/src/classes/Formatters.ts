@@ -37,6 +37,12 @@ export class Formatters<
   List extends FormattersListProp = FormattersListProp,
   Item extends FormattersItemProp<List> = FormattersItemProp<List>
 > {
+  /** Formatting options for each column/property / Параметры форматирования для каждого столбца/свойства */
+  protected options: Options
+
+  /** Initial list of data to format / Начальный список данных для форматирования */
+  protected list?: List
+
   /**
    * Constructor
    *
@@ -45,9 +51,12 @@ export class Formatters<
    * @param list initial list of data to format / начальный список данных для форматирования
    */
   constructor(
-    protected options: Options,
-    protected list?: List
-  ) { }
+    options: Options,
+    list?: List
+  ) {
+    this.options = options
+    this.list = list
+  }
 
   /**
    * Checks if the list is set.
@@ -188,54 +197,6 @@ export class Formatters<
   }
 
   /**
-   * Router-like method to delegate formatting to specific type formatters.
-   *
-   * Метод-маршрутизатор для делегирования форматирования конкретным типам форматировщиков.
-   * @param valueOriginal original value to format / исходное значение для форматирования
-   * @param item entire item context / весь контекст элемента
-   * @param type type of formatter to use / тип используемого форматировщика
-   * @param options additional options for the specific formatter / дополнительные параметры для конкретного форматировщика
-   * @protected
-   * @returns Formatted string / отформатированная строка
-   */
-  protected transformation<Type extends FormattersType>(
-    valueOriginal: unknown,
-    item: Item,
-    type?: Type,
-    options?: FormattersOptionsInformation<Type>
-  ): string {
-    if (
-      isFilled(valueOriginal)
-      || type === FormattersType.name
-    ) {
-      switch (type) {
-        case FormattersType.currency:
-          return this.formatCurrency(valueOriginal as NumberOrString, item, options as FormattersOptionsCurrency)
-
-        case FormattersType.date:
-          return this.formatDate(valueOriginal as NumberOrStringOrDate, options as FormattersOptionsDate)
-
-        case FormattersType.name:
-          return this.formatName(item, options as FormattersOptionsName)
-
-        case FormattersType.number:
-          return this.formatNumber(valueOriginal as NumberOrString, options as FormattersOptionsNumber)
-
-        case FormattersType.plural:
-          return this.formatPlural(valueOriginal as NumberOrString, options as FormattersOptionsPlural)
-
-        case FormattersType.unit:
-          return this.formatUnit(valueOriginal as NumberOrString, options as FormattersOptionsUnit)
-
-        default:
-          return String(valueOriginal)
-      }
-    }
-
-    return ''
-  }
-
-  /**
    * Formats a value as currency.
    *
    * Форматирует значение как валюту.
@@ -350,17 +311,14 @@ export class Formatters<
     value: NumberOrString,
     options?: FormattersOptionsPlural
   ): string {
-    if (
-      options
-      && options.words
-    ) {
+    if (options?.words) {
       return GeoIntl
         .getInstance()
         .plural(
           value,
-          options?.words,
-          options?.options,
-          options?.optionsNumber
+          options.words,
+          options.options,
+          options.optionsNumber
         )
     }
 
@@ -380,15 +338,60 @@ export class Formatters<
     value: NumberOrString,
     options?: FormattersOptionsUnit
   ): string {
-    if (
-      options
-      && options.unit
-    ) {
+    if (options?.unit) {
       return GeoIntl
         .getInstance()
         .unit(value, options.unit)
     }
 
     return String(value)
+  }
+
+  /**
+   * Router-like method to delegate formatting to specific type formatters.
+   *
+   * Метод-маршрутизатор для делегирования форматирования конкретным типам форматировщиков.
+   * @param valueOriginal original value to format / исходное значение для форматирования
+   * @param item entire item context / весь контекст элемента
+   * @param type type of formatter to use / тип используемого форматировщика
+   * @param options additional options for the specific formatter / дополнительные параметры для конкретного форматировщика
+   * @protected
+   * @returns Formatted string / отформатированная строка
+   */
+  protected transformation<Type extends FormattersType>(
+    valueOriginal: unknown,
+    item: Item,
+    type?: Type,
+    options?: FormattersOptionsInformation<Type>
+  ): string {
+    if (
+      isFilled(valueOriginal)
+      || type === FormattersType.name
+    ) {
+      switch (type) {
+        case FormattersType.currency:
+          return this.formatCurrency(valueOriginal as NumberOrString, item, options as FormattersOptionsCurrency)
+
+        case FormattersType.date:
+          return this.formatDate(valueOriginal as NumberOrStringOrDate, options as FormattersOptionsDate)
+
+        case FormattersType.name:
+          return this.formatName(item, options as FormattersOptionsName)
+
+        case FormattersType.number:
+          return this.formatNumber(valueOriginal as NumberOrString, options as FormattersOptionsNumber)
+
+        case FormattersType.plural:
+          return this.formatPlural(valueOriginal as NumberOrString, options as FormattersOptionsPlural)
+
+        case FormattersType.unit:
+          return this.formatUnit(valueOriginal as NumberOrString, options as FormattersOptionsUnit)
+
+        default:
+          return String(valueOriginal)
+      }
+    }
+
+    return ''
   }
 }

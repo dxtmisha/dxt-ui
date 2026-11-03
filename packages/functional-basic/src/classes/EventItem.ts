@@ -95,8 +95,8 @@ import {
  * ```
  */
 export class EventItem<
-  E extends ElementOrWindow,
-  O extends Event,
+  E extends ElementOrWindow = ElementOrWindow,
+  O extends Event = Event,
   D extends Record<string, unknown> = Record<string, unknown>
 > {
   /** Target element / Целевой элемент */
@@ -117,7 +117,7 @@ export class EventItem<
 
       if (
         isObject(this.options)
-        && this.options?.once
+        && this.options.once
       ) {
         this.stop()
       }
@@ -174,6 +174,18 @@ export class EventItem<
   }
 
   /**
+   * Modifying the additional data provided to the listener.
+   *
+   * Изменение дополнительных данных, передаваемых слушателю.
+   * @param detail custom data / пользовательские данные
+   * @returns this instance / текущий экземпляр
+   */
+  setDetail(detail?: D): this {
+    this.detail = detail
+    return this
+  }
+
+  /**
    * Change of an element for tracking.
    *
    * Изменение элемента для прослеживания.
@@ -212,27 +224,13 @@ export class EventItem<
   }
 
   /**
-   * Changes the type of the handled event.
-   *
-   * Изменяет тип обрабатываемого события.
-   * @param type event type or array of types / тип события или массив типов
-   * @returns this instance / текущий экземпляр
-   */
-  setType(type: string | string[]): this {
-    this.type = toArray(type)
-    this.reset()
-
-    return this
-  }
-
-  /**
    * Modifies the listener function.
    *
    * Модифицирует функцию-слушатель.
    * @param listener new listener function / новая функция-слушатель
    * @returns this instance / текущий экземпляр
    */
-  setListener(listener: EventListenerDetail<O, D>): this {
+  setListener(listener?: EventListenerDetail<O, D>): this {
     this.listener = listener
     return this
   }
@@ -257,14 +255,31 @@ export class EventItem<
   }
 
   /**
-   * Modifying the additional data provided to the listener.
+   * Changes the type of the handled event.
    *
-   * Изменение дополнительных данных, передаваемых слушателю.
-   * @param detail custom data / пользовательские данные
+   * Изменяет тип обрабатываемого события.
+   * @param type event type or array of types / тип события или массив типов
    * @returns this instance / текущий экземпляр
    */
-  setDetail(detail?: D): this {
-    this.detail = detail
+  setType(type: string | string[]): this {
+    this.type = toArray(type)
+    this.reset()
+
+    return this
+  }
+
+  /**
+   * Overloads the listening events (stops and starts again if active).
+   *
+   * Перегружает события прослушивания (останавливает и запускает заново, если активно).
+   * @returns this instance / текущий экземпляр
+   */
+  reset(): this {
+    if (this.activity) {
+      this.stop()
+      this.start()
+    }
+
     return this
   }
 
@@ -360,21 +375,6 @@ export class EventItem<
   }
 
   /**
-   * Overloads the listening events (stops and starts again if active).
-   *
-   * Перегружает события прослушивания (останавливает и запускает заново, если активно).
-   * @returns this instance / текущий экземпляр
-   */
-  reset(): this {
-    if (this.activity) {
-      this.stop()
-      this.start()
-    }
-
-    return this
-  }
-
-  /**
    * Checks if the ResizeObserver object exists.
    *
    * Проверяет, существует ли объект ResizeObserver.
@@ -392,12 +392,11 @@ export class EventItem<
    */
   protected makeResize(): boolean {
     if (
-      this.element
-      && this.element instanceof HTMLElement
+      this.element instanceof HTMLElement
       && this.isObserver()
     ) {
       const observer = new ResizeObserver(
-        (entries: ResizeObserverEntry[]) => this.listenerRecent(entries?.[0])
+        (entries: ResizeObserverEntry[]) => this.listenerRecent(entries[0])
       )
 
       observer.observe(this.element)

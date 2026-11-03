@@ -126,8 +126,7 @@ const formatter = new Formatters(options, data)
 
 #### 6. Единица измерения (`unit`)
 Добавление единиц измерения (км, кг, л).
-- `unit: string` — Код единицы измерения (например, `'kilometer'`, `'kilogram'`, `'liter'`).
-- `options?: Intl.NumberFormatOptions` — Параметры форматирования числовой части.
+- `unit: string | Intl.NumberFormatOptions` — Код единицы измерения (например, `'kilometer'`, `'kilogram'`, `'liter'`) или объект параметров `Intl.NumberFormatOptions`.
 
 ## Примеры
 

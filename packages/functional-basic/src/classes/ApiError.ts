@@ -52,6 +52,7 @@ export class ApiError {
    * @param item error item or list of error items / элемент ошибки или список элементов ошибок
    * @param url URL pattern or RegExp / шаблон URL или регулярное выражение
    * @param method HTTP method of the request / HTTP-метод запроса
+   * @returns void / ничего не возвращает
    */
   static add(
     item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[],

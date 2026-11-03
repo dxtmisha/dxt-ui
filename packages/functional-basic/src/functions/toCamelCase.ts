@@ -14,7 +14,7 @@ const REGEXP_SEPARATORS = /[ ._]+/g
  * Lowercases adjacent uppercase letters in acronyms /
  * Регулярное выражение для перевода в нижний регистр смежных заглавных букв в акронимах
  */
-const REGEXP_ACRONYMS = /(?<=[A-Z])([A-Z])/g
+const REGEXP_ACRONYMS = /(?<=[A-Z])[A-Z]/g
 
 /**
  * Capitalizes alphanumeric characters preceded by one or more dashes /
@@ -26,7 +26,7 @@ const REGEXP_CAMEL_BOUNDARY = /-+([a-zA-Z0-9])/g
  * Lowercases the first uppercase character in a string /
  * Регулярное выражение для перевода в нижний регистр первого заглавного символа строки
  */
-const REGEXP_FIRST_CHAR = /^([A-Z])/
+const REGEXP_FIRST_CHAR = /^[A-Z]/
 
 /**
  * Removes trailing dashes from the end of a string /
@@ -41,13 +41,18 @@ const REGEXP_TRAILING_DASHES = /-+$/
  * @param value input value / входное значение
  * @returns camel case string / строка в camel case
  */
-export function toCamelCase(value?: string): string {
+export function toCamelCase(value?: string | null): string {
   if (!value) {
     return ''
   }
 
-  return value
-    .trim()
+  const trimmed = value.trim()
+
+  if (!trimmed) {
+    return ''
+  }
+
+  return trimmed
     .replace(REGEXP_INVALID_CHARS, '')
     .replace(REGEXP_SEPARATORS, '-')
     .replace(REGEXP_ACRONYMS, character => character.toLowerCase())

@@ -9,7 +9,7 @@ A static utility class for storing and retrieving application-wide global data. 
 ## Key Features
 
 - **One-time initialization** — The `add` method only works on the first call; subsequent calls are ignored.
-- **Deep copy** — Data is copied via `copyObjectLite`, isolating it from external mutations.
+- **SSR isolation** — Data is stored via `ServerStorage`, ensuring per-request isolation on the server.
 - **No state management** — Intended purely for static configuration.
 - **Static Access** — all methods are static, eliminating the need for instantiation (`new Global()`).
 
@@ -32,8 +32,9 @@ console.log(Global.get('apiUrl')) // 'https://api.myapp.com'
 
 ## Methods
 
-- `add(data: Record<string, any>): void` — Saves the global data. Only works **on the first call**. Subsequent calls are silently ignored.
-- `get<R>(name: string): R` — Returns the value for a given key from the stored global data.
+- `get<R = unknown>(name: string): R` — Returns the own property value for a given key from the stored global data.
+- `getItem(): Record<string, unknown>` — Returns the global data storage object for the current context.
+- `add(data: Record<string, unknown>): void` — Saves the global data. Only works **on the first call** (while storage is empty). Subsequent calls are silently ignored.
 
 ## Examples
 

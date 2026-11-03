@@ -37,6 +37,7 @@ Thực thể `ApiInstance` có thể được cấu hình trong quá trình kh�
 - `preparationClass?: typeof ApiPreparation` — lớp quản lý các hook vòng đời.
 - `loadingClass?: LoadingInstance` — thực thể của trình quản lý chỉ báo tải (mặc định: `Loading.getItem()`).
 - `errorCenterClass?: ErrorCenterInstance` — thực thể của trung tâm lỗi để kích hoạt các sự kiện (mặc định: `ErrorCenter.getItem()`).
+- `hydrationClass?: typeof ApiHydration` — lớp quản lý hydration SSR.
 - `wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — hàm wrapper để thực thi các yêu cầu.
 
 ## Các phương thức
@@ -70,12 +71,13 @@ Khi hệ thống bối rối hoặc gọi trượt giao thức mạng (như lỗ
 ### Cấu hình
 
 Hỗ trợ phương pháp nối chuỗi (chaining methods) trả về đối tượng `ApiInstance` mấu chốt:
-- `setHeaders(headers: Record<string, string>): this` — Áp dụng một thư mục Header chuẩn cho toàn hệ thống.
-- `setRequestDefault(request: Record<string, any>): this` — Đưa toàn bộ thông số tham số mặc định chuẩn vào mạng.
-- `setUrl(url: string): this` — Ghi đè định danh URL mặc định nhánh server API.
-- `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Thiết lập vòng lặp hook _ngay trước_ thời khắc thao tác diễn ra.
 - `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Thiết lập vòng lặp hook _sau_ khi tín hiệu mạng phản hồi trả về.
+- `setHeaders(headers: ApiHeadersValue): this` — Áp dụng một thư mục Header chuẩn cho toàn hệ thống.
 - `setOrigin(origin: string): this` — Thiết lập nguồn (giao thức và tên miền) cho URL base.
+- `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Thiết lập vòng lặp hook _ngay trước_ thời khắc thao tác diễn ra.
+- `setRequestDefault(request: ApiDefaultValue): this` — Đưa toàn bộ thông số tham số mặc định chuẩn vào mạng.
+- `setTimeout(timeout: number): this` — Thay đổi thời gian chờ yêu cầu tính bằng mili giây.
+- `setUrl(url: string): this` — Ghi đè định danh URL mặc định nhánh server API.
 - `setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): this` — Thiết lập hàm wrapper cho các yêu cầu.
 
 ### Phụ trợ
@@ -84,6 +86,8 @@ Hỗ trợ phương pháp nối chuỗi (chaining methods) trả về đối tư
 - `getOrigin(): string` — Trả về URL base đã kết hợp với đường dẫn API.
 - `getBody(request?: ApiFetch['request'], method?: string): string | FormData | undefined` — Hoán đổi tài liệu để form nạp JSON hoặc `FormData`.
 - `getBodyForGet(request: ApiFetch['request'], path?: string, method?: string): string` — Hoàn trả dữ liệu params cấu hình chuẩn cho thanh Search URL `GET`.
+- `getHydration(): ApiHydration` — Trả về trình quản lý hydration.
+- `getHydrationScript(): string` — Trả về chuỗi biểu diễn dữ liệu hydration cho client.
 
 ## Đối tượng ApiFetch
 
@@ -169,7 +173,7 @@ Các hook cho phép bạn chèn logic toàn cục sẽ được tự động th�
 Phương thức `setPreparation` thiết lập một hàm callback được gọi ngay trước khi yêu cầu được gửi đến máy chủ (trước khi thực hiện lệnh `fetch` gốc).
 
 **Đặc điểm hoạt động:**
-- **Thứ tự thực thi**: Nếu nhiều yêu cầu được bắt đầu đồng thời, lớp đảm bảo rằng hook chuẩn bị sẽ được thực thi **tuần tự**. Tất cả các yêu cầu tiếp theo sẽ đợi hook hiện tại kết thúc trong chế độ chờ (với khoảng thời gian thăm dò 160ms). Điều này ngăn chặn xung đột, ví dụ như khi nhiều yêu cầu đồng thời cố gắng làm mới token.
+- **Thứ tự thực thi**: Nếu nhiều yêu cầu được bắt đầu đồng thời, lớp đảm bảo rằng hook chuẩn bị sẽ được thực thi **tuần tự**. Tất cả các yêu cầu tiếp theo sẽ đợi hook hiện tại kết thúc trong chế độ chờ (với khoảng thời gian thăm dò 16ms). Điều này ngăn chặn xung đột, ví dụ như khi nhiều yêu cầu đồng thời cố gắng làm mới token.
 - **Tham số**: Nhận đối tượng `apiFetch`, chứa tất cả các cài đặt yêu cầu hiện tại. Bạn có thể sửa đổi đối tượng này (ví dụ: thêm tiêu đề hoặc sửa đổi thân yêu cầu).
 - **Trả về**: `Promise<void>`.
 
@@ -298,7 +302,7 @@ Thư viện cung cấp cơ chế bộ nhớ đệm (caching) tích hợp cho cá
 Mặc định, bộ nhớ đệm chỉ hoạt động trong RAM và sẽ bị xóa khi tải lại trang. Để lưu dữ liệu lâu dài, bạn cần khởi tạo `ApiCache` với các listener của riêng mình (ví dụ: sử dụng `LocalStorage` hoặc `IndexedDB`):
 
 ```javascript
-import { ApiCache, DataStorage } from '@dxtmisha/functional';
+import { ApiCache, DataStorage } from '@dxtmisha/functional-basic';
 
 // Ví dụ về khởi tạo bằng LocalStorage qua trình bọc DataStorage
 ApiCache.init(
@@ -392,7 +396,7 @@ const profile = await api.get({ path: 'users/profile' })
 ## Ví dụ sử dụng cơ bản
 
 ```javascript
-import { ApiInstance } from '@dxtmisha/functional'
+import { ApiInstance } from '@dxtmisha/functional-basic'
 
 const api = new ApiInstance()
 

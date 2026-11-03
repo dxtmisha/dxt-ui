@@ -18,12 +18,13 @@ A class dedicated to tracking and managing the state of an API request. It secur
 
 ### Action
 
-- `getResponse<T>(): T | undefined` — Returns the raw data payload from the last successful request.
+- `getResponse<T = unknown>(): T | undefined` — Returns the raw data payload from the last successful request.
 - `getMessage(): string` — Returns the server message pulled from a successful response or a manually set message.
 
 ### Check
 
 - `get(): ApiStatusItem | undefined` — Returns the complete status data object.
+- `getCode(): string | undefined` — Returns the execution status code extracted from the response.
 - `getStatus(): number | undefined` — Returns the HTTP status code (e.g., `200`).
 - `getStatusText(): string | undefined` — Returns the status text (e.g., `"OK"`).
 - `getStatusType(): ApiStatusType | undefined` — Returns the last status validation type.
@@ -34,9 +35,11 @@ A class dedicated to tracking and managing the state of an API request. It secur
 - `set(data: ApiStatusItem): this` — Sets multiple status fields at once.
 - `setStatus(status?: number, statusText?: string): this` — Sets the HTTP status code and text.
 - `setError(error?: string): this` — Records an error message string.
-- `setLastResponse(response?: any): this` — Records a server response and automatically extracts `message` and `status` if present.
+- `setLastCode(code?: string): this` — Sets the last execution code.
+- `setLastResponse(response?: unknown): this` — Records a server response and automatically extracts `message`, `code`, and `status` if present.
 - `setLastStatus(status?: ApiStatusType): this` — Sets the custom API status type.
 - `setLastMessage(message?: string): this` — Explicitly records a message.
+- `reset(): this` — Resets all status item data.
 
 ## Types
 
@@ -47,4 +50,5 @@ A complete representation of a request status.
 - `error?: string` — Error message.
 - `lastResponse?: any` — Last response data.
 - `lastStatus?: ApiStatusType` — Last status type.
+- `lastCode?: string` — Last response code.
 - `lastMessage?: string` — Last message.

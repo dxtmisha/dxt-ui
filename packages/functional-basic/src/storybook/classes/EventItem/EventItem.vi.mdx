@@ -22,13 +22,13 @@ Một vỏ bọc mạnh mẽ để quản lý các trình lắng nghe sự kiệ
 ### Các ràng buộc Generic (Generic Constraints)
 
 Để đảm bảo kiểu nghiêm ngặt, lớp hỗ trợ các generic sau:
-- `E extends ElementOrWindow` — Kiểu phần tử mà các sự kiện được lắng nghe.
-- `O extends Event` — Kiểu của đối tượng sự kiện.
-- `D extends Record<string, any>` — Cấu trúc của dữ liệu bổ sung.
+- `E extends ElementOrWindow = ElementOrWindow` — Kiểu phần tử mà các sự kiện được lắng nghe.
+- `O extends Event = Event` — Kiểu của đối tượng sự kiện.
+- `D extends Record<string, unknown> = Record<string, unknown>` — Cấu trúc của dữ liệu bổ sung.
 
 **Tham số:**
 - `elementSelector?: ElementOrString<E>` — phần tử đích mà trình lắng nghe được đính kèm.
-- `type: string | string[] = 'click'` — kiểu sự kiện, mảng các kiểu hoặc các kiểu đặc biệt (`'resize'`, `'scroll-sync'`).
+- `type: string | string[] = ['click']` — kiểu sự kiện, mảng các kiểu hoặc các kiểu đặc biệt (`'resize'`, `'scroll-sync'`).
 - `listener?: EventListenerDetail<O, D>` — hàm xử lý sự kiện.
 - `options?: EventOptions` — các tùy chọn `addEventListener` tiêu chuẩn.
 - `detail?: D` — dữ liệu tùy chỉnh sẽ có sẵn trong trình xử lý.
@@ -71,12 +71,12 @@ customEvent.start()
 
 Tất cả các phương thức trong nhóm này đều hỗ trợ nối chuỗi và tự động gọi `reset()` nếu sự kiện đang hoạt động.
 
-- `setElement(elementSelector?: ElementOrString): this` — Thay đổi phần tử đích.
-- `setElementControl(elementSelector?: ElementOrString): this` — Thiết lập phần tử điều khiển (nếu nó không có trong DOM, sự kiện sẽ không kích hoạt).
-- `setType(type: string | string[]): this` — Thay đổi kiểu sự kiện.
-- `setListener(listener: Function): this` — Thay đổi hàm xử lý.
-- `setOptions(options?: EventOptions): this` — Thay đổi các tham số trình lắng nghe.
 - `setDetail(detail?: D): this` — Thay đổi dữ liệu sự kiện tùy chỉnh.
+- `setElement(elementSelector?: ElementOrString<E>): this` — Thay đổi phần tử đích (khởi động lại lắng nghe nếu đang hoạt động).
+- `setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this` — Thiết lập phần tử điều khiển (nếu nó không có trong DOM, sự kiện sẽ không kích hoạt).
+- `setListener(listener?: EventListenerDetail<O, D>): this` — Thay đổi hàm xử lý.
+- `setOptions(options?: EventOptions): this` — Thay đổi các tham số trình lắng nghe (khởi động lại lắng nghe nếu đang hoạt động).
+- `setType(type: string | string[]): this` — Thay đổi kiểu sự kiện (khởi động lại lắng nghe nếu đang hoạt động).
 
 ### Quản lý
 

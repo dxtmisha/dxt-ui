@@ -77,9 +77,10 @@ describe('toCamelCase', () => {
   })
 
   describe('Empty, whitespace-only, and nullish inputs', () => {
-    it('should return empty string when value is empty, whitespace-only, or undefined', () => {
+    it('should return empty string when value is empty, whitespace-only, undefined, or null', () => {
       expect(toCamelCase('')).toBe('')
       expect(toCamelCase(undefined)).toBe('')
+      expect(toCamelCase(null)).toBe('')
       expect(toCamelCase()).toBe('')
       expect(toCamelCase('   ')).toBe('')
       expect(toCamelCase('\t\n')).toBe('')

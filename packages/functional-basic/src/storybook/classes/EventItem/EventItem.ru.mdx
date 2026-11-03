@@ -22,13 +22,13 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ### Ограничения дженериков (Generic Constraints)
 
 Для обеспечения строгой типизации класс поддерживает следующие дженерики:
-- `E extends ElementOrWindow` — Тип элемента, на котором слушаются события.
-- `O extends Event` — Тип объекта события.
-- `D extends Record<string, any>` — Структура дополнительных данных.
+- `E extends ElementOrWindow = ElementOrWindow` — Тип элемента, на котором слушаются события.
+- `O extends Event = Event` — Тип объекта события.
+- `D extends Record<string, unknown> = Record<string, unknown>` — Структура дополнительных данных.
 
 **Параметры:**
 - `elementSelector?: ElementOrString<E>` — целевой элемент, на который вешается слушатель.
-- `type: string | string[] = 'click'` — тип события, массив типов или специальные типы (`'resize'`, `'scroll-sync'`).
+- `type: string | string[] = ['click']` — тип события, массив типов или специальные типы (`'resize'`, `'scroll-sync'`).
 - `listener?: EventListenerDetail<O, D>` — функция-обработчик события.
 - `options?: EventOptions` — стандартные опции `addEventListener`.
 - `detail?: D` — пользовательские данные, которые будут доступны в обработчике.
@@ -71,12 +71,12 @@ customEvent.start()
 
 Все методы этой группы поддерживают чейнинг и автоматически вызывают `reset()`, если событие активно.
 
-- `setElement(elementSelector?: ElementOrString): this` — Изменяет целевой элемент.
-- `setElementControl(elementSelector?: ElementOrString): this` — Устанавливает контрольный элемент (если его нет в DOM, событие не сработает).
-- `setType(type: string | string[]): this` — Изменяет тип события.
-- `setListener(listener: Function): this` — Изменяет функцию-обработчик.
-- `setOptions(options?: EventOptions): this` — Изменяет параметры прослушивателя.
 - `setDetail(detail?: D): this` — Изменяет пользовательские данные события.
+- `setElement(elementSelector?: ElementOrString<E>): this` — Изменяет целевой элемент (перезапускает прослушивание, если активно).
+- `setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this` — Устанавливает контрольный элемент (если его нет в DOM, событие не сработает).
+- `setListener(listener?: EventListenerDetail<O, D>): this` — Изменяет функцию-обработчик.
+- `setOptions(options?: EventOptions): this` — Изменяет параметры прослушивателя (перезапускает прослушивание, если активно).
+- `setType(type: string | string[]): this` — Изменяет тип события (перезапускает прослушивание, если активно).
 
 ### Управление
 

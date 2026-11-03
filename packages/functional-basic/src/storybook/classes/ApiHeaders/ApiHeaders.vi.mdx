@@ -34,15 +34,15 @@ Giao thoa tiêu đề mặc định với những tiêu đề tùy chỉnh và t
 Một phiên bản chuyên biệt của `get` để điều chỉnh tiêu đề dựa trên loại yêu cầu. Cụ thể, nó đảm bảo `Content-Type` không được thiết lập thủ công cho `FormData` để cho phép tạo boundary chính xác.
 
 **Tham số:**
-- `request: ApiFetch['request']` — Dữ liệu yêu cầu (Đối tượng, FormData hoặc Chuỗi).
+- `request?: ApiFetch['request']` — Dữ liệu yêu cầu (Đối tượng, FormData hoặc Chuỗi).
 - `value?: Record<string, string> | null` — Các tiêu đề tùy chỉnh.
-- `type: string` — `Content-Type` mong muốn.
+- `type?: string | null` — `Content-Type` mong muốn.
 
 **Trả về:** `Record<string, string> | undefined` — Đối tượng tiêu đề đã được xử lý.
 
 ### Cấu hình
 
-- `set(headers: Record<string, string>): this` — Thiết lập hoặc cập nhật đối tượng tiêu đề mặc định.
+- `set(headers: ApiHeadersValue): this` — Thiết lập hoặc cập nhật đối tượng tiêu đề mặc định.
 
 ## Các kiểu dữ liệu
 

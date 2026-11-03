@@ -24,6 +24,8 @@ export type PluginOptions = {
   styleMain?: boolean
   /** Whether to include components / Включать ли компоненты */
   component?: boolean
+  /** Whether to generate source maps / Генерировать ли карты исходного кода */
+  map?: boolean
   /** Additional Vite plugin options/ Дополнительные опции плагина Vite */
   viteOptions?: VitePlugin
 }

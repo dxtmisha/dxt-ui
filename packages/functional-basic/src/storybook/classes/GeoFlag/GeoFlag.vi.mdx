@@ -34,11 +34,15 @@ const vnFlag = new GeoFlag('vi-VN')
 
 ### Lấy dữ liệu
 - `get(code?: string): GeoFlagItem | undefined` — Trả về một đối tượng dữ liệu đầy đủ về một quốc gia.
+- `getCode(): string` — Trả về mã quốc gia hoặc ngôn ngữ hiện tại của thực thể.
 - `getFlag(code?: string): string | undefined` — Trả về chỉ định danh biểu tượng cờ (ví dụ: `'f-vn'`).
+- `getLanguage(code?: string): GeoFlagItem | undefined` — Trả về thông tin ngôn ngữ và cờ (trong đó `label` và `value` tương ứng với ngôn ngữ).
 
 ### Danh sách
 - `getList(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Trả về một mảng dữ liệu quốc gia. Mặc định sắp xếp theo bảng chữ cái.
+- `getListLanguage(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Trả về danh sách các ngôn ngữ duy nhất không trùng lặp. Mặc định sắp xếp theo bảng chữ cái.
 - `getNational(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Trả về danh sách các quốc gia với tên quốc gia gốc. Mặc định sắp xếp theo bảng chữ cái.
+- `getNationalLanguage(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Trả về danh sách các ngôn ngữ với tên ngôn ngữ gốc. Mặc định sắp xếp theo bảng chữ cái.
 
 ### Cấu hình
 - `setCode(code: string): this` — Thay đổi ngôn ngữ cơ sở cho thực thể hiện tại.
@@ -77,12 +81,14 @@ const national = geo.getNational(['JP'])
 ### `GeoFlagItem`
 Đối tượng thông tin cờ cơ bản.
 - `country`: string — Tên quốc gia đã được bản địa hóa.
+- `countryCode`: string — Mã quốc gia (ISO alpha-2).
 - `language`: string — Tên ngôn ngữ đã được bản địa hóa.
+- `languageCode`: string — Mã ngôn ngữ (ISO 639-1).
 - `standard`: string — Tiêu chuẩn ngôn ngữ đầy đủ (ví dụ: `vi-VN`).
-- `icon`: string — Tên biểu tượng cờ (tiền tố `f-`).
-- `label`: string — Nhãn hiển thị (mặc định khớp với `country`).
-- `value`: string — Mã quốc gia (ISO alpha-2).
-- `phoneCode`: string — Mã điện thoại quốc gia (ví dụ: `+1`, `+7`).
+- `icon`: string | undefined — Tên biểu tượng cờ (tiền tố `f-`).
+- `label`: string — Nhãn hiển thị (mặc định khớp với `country` hoặc `language`).
+- `value`: string — Giá trị lựa chọn (mã quốc gia hoặc mã ngôn ngữ).
+- `phoneCode`: string | undefined — Mã điện thoại quốc gia (ví dụ: `+1`, `+7`).
 
 ### `GeoFlagNational`
 Mở rộng `GeoFlagItem` với các trường bổ sung:

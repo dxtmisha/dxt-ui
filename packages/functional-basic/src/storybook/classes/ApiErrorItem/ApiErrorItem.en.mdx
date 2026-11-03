@@ -18,12 +18,12 @@ The `ApiErrorItem` class is a **data wrapper for API error responses**. It encap
 
 - `getMethod(): ApiMethodItem` — Returns the HTTP method used for the request.
 - `getResponse(): Response` — Returns the raw Fetch response object.
-- `getError(): ApiErrorStorageItem` — Returns the identified error criteria from storage.
+- `getError(): ApiErrorStorageItem | undefined` — Returns the identified error criteria from storage.
 - `getStatus(): number` — Returns the HTTP status code.
 
 ### Data Extraction
 
-- `getCode(): string | undefined` — Retrieves the error code from the storage criteria.
+- `getCode(): string | number | undefined` — Retrieves the error code from the storage criteria.
 - `getMessage(): string | undefined` — Resolves the error message (checks storage criteria or falls back to response defaults).
 
 ## Architecture

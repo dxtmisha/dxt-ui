@@ -7,6 +7,6 @@ import { getExp } from './getExp'
  * @param search search string / строка поиска
  * @returns regular expression for exact search / регулярное выражение для точного поиска
  */
-export function getExactSearchExp(search: string): RegExp {
+export function getExactSearchExp(search?: unknown): RegExp {
   return getExp(search, 'i', '(:value)')
 }

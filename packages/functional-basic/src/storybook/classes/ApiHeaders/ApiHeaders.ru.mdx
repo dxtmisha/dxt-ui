@@ -34,15 +34,15 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Специализированная версия метода `get`, которая корректирует заголовки в зависимости от типа запроса. В частности, она гарантирует, что `Content-Type` не устанавливается вручную для `FormData`, чтобы обеспечить корректную генерацию `boundary`.
 
 **Параметры:**
-- `request: ApiFetch['request']` — Данные запроса (Объект, FormData или Строка).
+- `request?: ApiFetch['request']` — Данные запроса (Объект, FormData или Строка).
 - `value?: Record<string, string> | null` — Пользовательские заголовки.
-- `type: string` — Желаемый `Content-Type`.
+- `type?: string | null` — Желаемый `Content-Type`.
 
 **Возвращает:** `Record<string, string> | undefined` — Обработанный объект заголовков.
 
 ### Конфигурация
 
-- `set(headers: Record<string, string>): this` — Устанавливает или обновляет заголовки по умолчанию.
+- `set(headers: ApiHeadersValue): this` — Устанавливает или обновляет заголовки по умолчанию.
 
 ## Типы
 

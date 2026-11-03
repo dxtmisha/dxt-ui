@@ -12,11 +12,11 @@ import { escapeExp } from './escapeExp'
  * @returns regular expression / регулярное выражение
  */
 export function getExp(
-  value: string,
+  value?: unknown,
   flags = 'ig',
   pattern = ':value'
 ): RegExp {
   const data = escapeExp(value)
 
-  return new RegExp(pattern.replace(/:value/g, data), flags)
+  return new RegExp(pattern.replace(/:value/g, () => data), flags)
 }

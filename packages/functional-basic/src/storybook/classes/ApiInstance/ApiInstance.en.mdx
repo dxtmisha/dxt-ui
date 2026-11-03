@@ -71,12 +71,13 @@ In case of network failures (e.g., 500 status), the method explicitly throws an 
 ### Configuration
 
 Methods to configure the API (support chaining, returning the `ApiInstance` object):
-- `setHeaders(headers: Record<string, string>): this` — Applies universal headers injected automatically toward outbound fetch activities.
-- `setRequestDefault(request: Record<string, any>): this` — Forces parameters recursively sent to network traffic streams.
-- `setUrl(url: string): this` — Overwrites generic target URL configurations prefix points.
-- `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Connects a custom hook function actively running just _before_ execution trigger occurs.
 - `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Sets the hook triggered exactly _after_ network response returns.
+- `setHeaders(headers: ApiHeadersValue): this` — Applies universal headers injected automatically toward outbound fetch activities.
 - `setOrigin(origin: string): this` — Sets the origin (protocol and domain) for the base URL.
+- `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Connects a custom hook function actively running just _before_ execution trigger occurs.
+- `setRequestDefault(request: ApiDefaultValue): this` — Forces parameters recursively sent to network traffic streams.
+- `setTimeout(timeout: number): this` — Changes the request timeout in milliseconds.
+- `setUrl(url: string): this` — Overwrites generic target URL configurations prefix points.
 - `setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): this` — Sets the wrapper function for requests.
 
 ### Auxiliary
@@ -172,7 +173,7 @@ Hooks allow you to inject global logic that will automatically execute for every
 The `setPreparation` method sets a callback function that is called immediately before a request is sent to the server (before the native `fetch` is executed).
 
 **Key Features:**
-- **Execution Order**: If multiple requests are started simultaneously, the class ensures that the preparation hook is executed **sequentially**. All subsequent requests will wait for the current hook to finish in wait mode (with a 160ms polling interval). This prevents conflicts, such as when multiple concurrent requests attempt to refresh a token.
+- **Execution Order**: If multiple requests are started simultaneously, the class ensures that the preparation hook is executed **sequentially**. All subsequent requests will wait for the current hook to finish in wait mode (with a 16ms polling interval). This prevents conflicts, such as when multiple concurrent requests attempt to refresh a token.
 - **Parameters**: Receives the `apiFetch` object, which contains all current request settings. You can modify this object (e.g., adding headers or modifying the request body).
 - **Returns**: `Promise<void>`.
 
@@ -299,7 +300,7 @@ The library provides a built-in mechanism for caching responses, allowing you to
 By default, the cache works only in RAM and is reset when the page is reloaded. To save data long-term, you need to initialize `ApiCache` with your own listeners (for example, using `LocalStorage` or `IndexedDB`):
 
 ```javascript
-import { ApiCache, DataStorage } from '@dxtmisha/functional';
+import { ApiCache, DataStorage } from '@dxtmisha/functional-basic';
 
 // Example of initialization using LocalStorage via DataStorage wrapper
 ApiCache.init(
@@ -393,7 +394,7 @@ const profile = await api.get({ path: 'users/profile' })
 ## Examples
 
 ```javascript
-import { ApiInstance } from '@dxtmisha/functional'
+import { ApiInstance } from '@dxtmisha/functional-basic'
 
 const api = new ApiInstance()
 

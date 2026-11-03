@@ -17,7 +17,7 @@ Lớp `ApiError` là một **Tiện ích chính (Tĩnh)** để quản lý bộ 
 ### Quản lý bộ lưu trữ
 
 - `getStorage(): ApiErrorStorage` — Lấy instance singleton nội bộ của bộ lưu trữ lỗi.
-- `add(item: ApiErrorStorageItem | ApiErrorStorageList): void` — Thêm một hoặc nhiều mẫu lỗi vào bộ lưu trữ toàn cầu.
+- `add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void` — Thêm một hoặc nhiều mẫu lỗi vào bộ lưu trữ toàn cầu.
 
 ### Phân tích
 

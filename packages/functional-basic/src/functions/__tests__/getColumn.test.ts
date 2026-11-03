@@ -171,8 +171,8 @@ describe('getColumn', () => {
     })
 
     it('should safely return an empty array when passed null or undefined as the collection', () => {
-      expect(getColumn(undefined as unknown as UserRecord[], 'name')).toEqual([])
-      expect(getColumn(null as unknown as UserRecord[], 'name')).toEqual([])
+      expect(getColumn(undefined, 'name')).toEqual([])
+      expect(getColumn(null, 'name')).toEqual([])
     })
 
     it('should handle null Elements inside an array via optional chaining (item?.[column])', () => {

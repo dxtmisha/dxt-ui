@@ -14,9 +14,9 @@ export class CacheStatic {
    * Returns a cached value for the given name. If not cached, executes the callback and stores the result.
    *
    * Возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
-   * @param name - Unique cache key / Уникальный ключ кэша
-   * @param callback - Function to compute the value if not cached / Функция для вычисления значения, если его нет в кэше
-   * @param comparison - Optional array for cache invalidation / Опциональный массив для инвалидации кэша
+   * @param name Unique cache key / Уникальный ключ кэша
+   * @param callback Function to compute the value if not cached / Функция для вычисления значения, если его нет в кэше
+   * @param comparison Optional array for cache invalidation / Опциональный массив для инвалидации кэша
    * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
    */
   static get<T>(
@@ -31,9 +31,9 @@ export class CacheStatic {
    * Asynchronously returns a cached value for the given name. If not cached, executes the callback and stores the result.
    *
    * Асинхронно возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
-   * @param name - Unique cache key / Уникальный ключ кэша
-   * @param callback - Async function to compute the value if not cached / Асинхронная функция для вычисления значения
-   * @param comparison - Optional array for cache invalidation / Опциональный массив для инвалидации кэша
+   * @param name Unique cache key / Уникальный ключ кэша
+   * @param callback Async function to compute the value if not cached / Асинхронная функция для вычисления значения
+   * @param comparison Optional array for cache invalidation / Опциональный массив для инвалидации кэша
    * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
    */
   static async getAsync<T>(

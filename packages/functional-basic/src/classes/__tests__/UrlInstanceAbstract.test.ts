@@ -92,6 +92,18 @@ describe('UrlInstanceAbstract', () => {
       expect(instance.updateCalls).toBe(2)
       expect(instance.get('page')).toBe(2)
     })
+
+    it('should safely handle Object.prototype keys like toString and constructor in get, set, and addWatch', () => {
+      const watcher = vi.fn()
+      instance.addWatch('toString', watcher)
+
+      expect(instance.get('toString')).toBeUndefined()
+      expect(instance.get('toString', 'custom-str')).toBe('custom-str')
+
+      instance.mockLocation = { toString: 'reloaded-str' }
+      instance.reload()
+      expect(watcher).toHaveBeenCalledWith('reloaded-str')
+    })
   })
 
   describe('addWatch and removeWatch', () => {

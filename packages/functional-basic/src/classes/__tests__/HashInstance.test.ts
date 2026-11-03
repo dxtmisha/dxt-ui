@@ -53,11 +53,13 @@ describe('HashInstance', () => {
     expect(hashInstance.get('encoded[key]')).toBe(123)
   })
 
-  it('should gracefully handle malformed URI sequences in hash', () => {
-    mockLocation.hash = '#badKey=%E0%A4%A'
+  it('should gracefully handle malformed URI sequences in hash and ignore prototype pollution keys', () => {
+    mockLocation.hash = '#bad%20Key=%E0%A4%A;__proto__=polluted;constructor=bad'
     hashInstance.reload()
 
-    expect(hashInstance.get('badKey')).toBe('%E0%A4%A')
+    expect(hashInstance.get('bad Key')).toBe('%E0%A4%A')
+    expect(hashInstance.get('__proto__')).toBeUndefined()
+    expect(hashInstance.get('constructor')).toBeUndefined()
   })
 
   it('should set and return a value', () => {

@@ -13,16 +13,6 @@ import {
  */
 export class Loading {
   /**
-   * Get current loading value.
-   *
-   * Получить текущее значение загрузки.
-   * @returns current loading value / текущее значение загрузки
-   */
-  static get(): number {
-    return this.getItem().get()
-  }
-
-  /**
    * Check if the loader is active now.
    *
    * Проверить, активен ли сейчас загрузчик.
@@ -30,6 +20,16 @@ export class Loading {
    */
   static is(): boolean {
     return this.getItem().is()
+  }
+
+  /**
+   * Get current loading value.
+   *
+   * Получить текущее значение загрузки.
+   * @returns current loading value / текущее значение загрузки
+   */
+  static get(): number {
+    return this.getItem().get()
   }
 
   /**

@@ -22,28 +22,31 @@ const API_CACHE_DEFAULT_STEP_AGE_CLEAR_OLD = 16_384
  * Предназначен только для публичных/общих запросов, которые не зависят от сессии конкретного пользователя.
  */
 export class ApiCache {
-  /** Cache storage / Кэш-хранилища */
+  /** Cache storage / Кэш-хранилище */
   protected static items?: ApiCacheList
 
-  /** Storage mechanism for getting data / механизм хранения для получения данных */
+  /** Storage mechanism for getting data / Механизм хранения для получения данных */
   protected static getListener?: (key: string) => Promise<ApiCacheItem | undefined>
 
-  /** Storage mechanism for setting data / механизм хранения для сохранения данных */
+  /** Storage mechanism for setting data / Механизм хранения для сохранения данных */
   protected static setListener?: (
     key: string,
     value: ApiCacheItem
   ) => Promise<boolean>
 
-  /** Storage mechanism for removing data / механизм хранения для удаления данных */
+  /** Storage mechanism for removing data / Механизм хранения для удаления данных */
   protected static removeListener?: (key: string) => Promise<boolean>
 
   /**
    * Number of data retrieval requests before starting the cleaning of old cache /
    * Количество запросов получения данных перед началом очистки старого кэша
    */
-  protected static cacheStepAgeClearOld = API_CACHE_DEFAULT_STEP_AGE_CLEAR_OLD
+  protected static cacheStepAgeClearOld: number = API_CACHE_DEFAULT_STEP_AGE_CLEAR_OLD
 
-  /** Number of data retrieval requests before starting the cleaning of old cache / Количество запросов получения данных перед началом очистки старого кэша */
+  /**
+   * Remaining number of data retrieval requests before cleaning old cache /
+   * Оставшееся количество запросов получения данных до очистки старого кэша
+   */
   protected static stepAgeClearOld: number = API_CACHE_DEFAULT_STEP_AGE_CLEAR_OLD
 
   /**
@@ -69,6 +72,22 @@ export class ApiCache {
   }
 
   /**
+   * Gets data from cache using fetch options.
+   *
+   * Получает данные из кэша с использованием опций fetch.
+   * @param fetch fetch options / опции fetch
+   * @returns T | undefined / данные из кэша или undefined
+   */
+  static async getByFetch<T>(fetch: ApiFetch): Promise<T | undefined> {
+    if (!this.isCache(fetch)) {
+      return undefined
+    }
+
+    const key = this.generateKey(fetch)
+    return await this.get<T>(key)
+  }
+
+  /**
    * Saves data to cache.
    *
    * Сохраняет данные в кэш.
@@ -89,22 +108,6 @@ export class ApiCache {
     }
 
     await this.setItemOrListener(key, item)
-  }
-
-  /**
-   * Gets data from cache using fetch options.
-   *
-   * Получает данные из кэша с использованием опций fetch.
-   * @param fetch fetch options / опции fetch
-   * @returns T | undefined / данные из кэша или undefined
-   */
-  static async getByFetch<T>(fetch: ApiFetch): Promise<T | undefined> {
-    if (!this.isCache(fetch)) {
-      return undefined
-    }
-
-    const key = this.generateKey(fetch)
-    return await this.get<T>(key)
   }
 
   /**

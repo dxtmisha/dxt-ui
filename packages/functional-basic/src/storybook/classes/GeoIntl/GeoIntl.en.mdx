@@ -36,7 +36,7 @@ const currentIntl = new GeoIntl() // Also uses the singleton cache internally
 ## Geographic & Localization Methods
 
 - `getLocation(): string` — Returns the normalized standard locale string (e.g., `'en-US'`).
-- `getFirstDay(): string` — Returns the first day of the week specification for the locale (e.g., `'Mon'`, `'Sun'`).
+- `getFirstDay(): string` — Returns the first day of the week specification for the locale (e.g., `'Mo'`, `'Su'`, `'Sa'`).
 
 ## Names & Regions
 
@@ -144,7 +144,7 @@ Main date formatting engine providing localized representations based on predefi
 
 Returns arrays of localized labels for months or days, ideal for populating UI selection components.
 
-**Returns:** `ItemValue<number>[]` — Array of objects with `label` and `value` fields.
+**Returns:** `ItemValue<number | undefined>[]` — Array of objects with `label` and `value` fields.
 
 ## Relative Time
 

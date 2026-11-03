@@ -7,8 +7,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Checks if the value is in the current array.
 
 **Parameters:**
-- `array: T[]` — array for checking.
-- `value: T` — value to be checked.
+- `array: readonly T[]` — array for checking.
+- `value?: T | null` — value to be checked.
 
 **Returns:**
 `boolean` — `true` if the value is in the array, otherwise `false`.

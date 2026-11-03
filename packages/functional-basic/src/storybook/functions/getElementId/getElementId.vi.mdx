@@ -9,7 +9,7 @@ Trả về `id` của một phần tử DOM được chỉ định. Nếu phần
 Ngoài ra, hàm cho phép đính kèm một bộ chọn CSS vào chuỗi trả về, để bạn có thể sử dụng ngay kết quả dưới dạng một bộ chọn kết hợp (ví dụ: `"#id-123456 .child-class"`).
 
 **Tham số:**
-- `element?: ElementOrString<E>` — Phần tử DOM, đối tượng `Window` hoặc chuỗi chọn để lấy ID.
+- `element?: ElementOrString<E> | null` — Phần tử DOM, đối tượng `Window`, chuỗi chọn hoặc `null` để lấy ID.
 - `selector?: string` — Chuỗi tùy chọn sẽ được gắn vào giá trị ID trả về (chẳng hạn như các lớp giả hoặc bộ chọn phần tử con).
 
 **Trả về:**
@@ -33,7 +33,7 @@ console.log(selector) // '#id-100000 > span.active'
 
 ## `initGetElementId`
 
-Khởi tạo hàm để sử dụng trong môi trường SSR với hàm lắng nghe tạo ID tùy chỉnh (`newListener: () => string | number`). Điều này là cần thiết để đảm bảo tính đồng bộ của các ID được tạo ra giữa máy chủ và máy khách. Nếu không có listener nào được đăng ký, bộ đếm cách ly qua `ServerStorage` (`id-100000`) sẽ được sử dụng.
+Khởi tạo hàm để sử dụng trong môi trường SSR với hàm lắng nghe tạo ID tùy chỉnh (`newListener: () => string | number | Undefined`). Điều này là cần thiết để đảm bảo tính đồng bộ của các ID được tạo ra giữa máy chủ và máy khách. Nếu không có listener nào được đăng ký, bộ đếm cách ly qua `ServerStorage` (`id-100000`) sẽ được sử dụng.
 
 Khi sử dụng **Vue 3.5+**, khuyến nghị sử dụng hàm `useId()` có sẵn.
 

@@ -17,7 +17,7 @@ Lớp `ApiErrorStorage` là một **Trình quản lý xử lý và nhận dạng
 
 ### Quản lý
 
-- `add(item: ApiErrorStorageItem | ApiErrorStorageList): this` — Thêm một hoặc nhiều mục lỗi hoặc danh sách lỗi vào bộ lưu trữ nội bộ.
+- `add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): this` — Thêm một hoặc nhiều mục lỗi hoặc danh sách lỗi vào bộ lưu trữ nội bộ.
 
 ### Nhận dạng
 
@@ -45,7 +45,7 @@ if (errorItem.code === 'USER_NOT_FOUND') {
 
 - `url: string | RegExp` — Chuỗi URL hoặc biểu thức chính quy để khớp với URL yêu cầu.
 - `method: ApiMethodItem` — Phương thức HTTP bắt buộc để khớp.
-- `code?: string` — Mã lỗi tùy chọn để khớp với thân JSON.
+- `code?: string | number` — Mã lỗi tùy chọn để khớp với thân JSON.
 - `status?: number` — Mã trạng thái HTTP tùy chọn để khớp.
 - `validation?: (response: Response) => boolean` — Hàm xác thực tùy chỉnh tùy chọn.
 - `message?: string | ((response?: Response) => string)` — Thông báo lỗi tùy chọn hoặc hàm tạo thông báo.

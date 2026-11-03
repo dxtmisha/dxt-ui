@@ -16,6 +16,7 @@ Lớp tĩnh để quản lý trạng thái tải toàn cục (sử dụng `Loadi
 
 - `is(): boolean` — trả về `true` nếu tải đang hoạt động (bộ đếm > 0).
 - `get(): number` — trả về giá trị hiện tại của bộ đếm.
+- `getItem(): LoadingInstance` — trả về thực thể `LoadingInstance` được cô lập theo yêu cầu.
 - `show(): void` — tăng bộ đếm lên 1, thông báo cho các listener.
 - `hide(): void` — giảm bộ đếm đi 1. Bỏ qua nếu bộ đếm đã bằng 0.
 

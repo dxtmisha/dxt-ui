@@ -13,7 +13,7 @@ If an error occurs while reading the clipboard, it is reported via `ErrorCenter`
 > Note: Using `navigator.clipboard.readText()` requires a secure context (HTTPS) and may require the user to explicitly grant clipboard reading permissions in some browsers.
 
 **Parameters:**
-- `event?: ClipboardEvent` — The (optional) clipboard event that fires during cut, copy, or paste actions.
+- `event?: ClipboardEvent | null` — The optional clipboard event or `null` that fires during cut, copy, or paste actions.
 
 **Returns:**
 `Promise<string>` — A promise that resolves to the string content of the clipboard, or an empty string if retrieval fails.

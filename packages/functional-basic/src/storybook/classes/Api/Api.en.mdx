@@ -58,14 +58,15 @@ Methods for performing physical network requests.
 
 ### ApiConfig
 
-- `urlRoot: string` — the base URL for the API.
-- `origin: string` — protocol and domain for the base URL.
-- `headers: Record<string, string>` — default request headers.
-- `requestDefault: Record<string, any>` — default request data.
-- `preparation: (apiFetch: ApiFetch) => Promise<void>` — entry hook.
-- `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — exit hook.
-- `timeout: number` — global timeout in milliseconds.
-- `wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — wrapper function for request execution.
+- `urlRoot?: string` — the base URL for the API.
+- `origin?: string` — protocol and domain for the base URL.
+- `headers?: ApiHeadersValue` — default request headers.
+- `requestDefault?: ApiDefaultValue` — default request data.
+- `preparation?: (apiFetch: ApiFetch) => Promise<void>` — entry hook.
+- `end?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — exit hook.
+- `timeout?: number` — global timeout in milliseconds.
+- `devMode?: boolean` — enable developer mode.
+- `wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — wrapper function for request execution.
 
 ## Proxy Architecture
 
@@ -73,7 +74,7 @@ The `Api` class operates as a **Static Proxy**. All method calls are redirected 
 
 ### Instance Management
 
-The internal manager is stored in `ServerStorage` using a unique key (`__dxt_api_instance__`). This architecture solves two major problems:
+The internal manager is stored in `ServerStorage` using a unique key (`__ui:api-instance__`). This architecture solves two major problems:
 
 1.  **Thread Safety in SSR**: During server-side rendering, `ServerStorage` ensures that each incoming request has its own isolated API configuration and state, preventing data leaks between users.
 2.  **Singleton Simplicity on Client**: On the client side, it behaves as a true singleton, allowing you to configure the API in your entry point and use it anywhere without passing instances.

@@ -58,14 +58,15 @@ Các phương thức để thực hiện các yêu cầu mạng vật lý.
 
 ### ApiConfig
 
-- `urlRoot: string` — URL base cho API.
-- `origin: string` — giao thức và tên miền cho URL base.
-- `headers: Record<string, string>` — các header yêu cầu mặc định.
-- `requestDefault: Record<string, any>` — dữ liệu yêu cầu mặc định.
-- `preparation: (apiFetch: ApiFetch) => Promise<void>` — hook đầu vào (entry hook).
-- `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — hook đầu ra (exit hook).
-- `timeout: number` — timeout toàn cục tính bằng mili giây.
-- `wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — hàm wrapper để thực thi các yêu cầu.
+- `urlRoot?: string` — URL base cho API.
+- `origin?: string` — giao thức và tên miền cho URL base.
+- `headers?: ApiHeadersValue` — các header yêu cầu mặc định.
+- `requestDefault?: ApiDefaultValue` — dữ liệu yêu cầu mặc định.
+- `preparation?: (apiFetch: ApiFetch) => Promise<void>` — hook đầu vào (entry hook).
+- `end?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — hook đầu ra (exit hook).
+- `timeout?: number` — timeout toàn cục tính bằng mili giây.
+- `devMode?: boolean` — bật chế độ nhà phát triển.
+- `wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — hàm wrapper để thực thi các yêu cầu.
 
 ## Kiến trúc Proxy
 
@@ -73,7 +74,7 @@ Lớp `Api` hoạt động như một **Proxy tĩnh**. Tất cả các lệnh g�
 
 ### Quản lý Instance
 
-Trình quản lý nội bộ được lưu trữ trong `ServerStorage` bằng một khóa duy nhất (`__dxt_api_instance__`). Kiến trúc này giải quyết hai vấn đề lớn:
+Trình quản lý nội bộ được lưu trữ trong `ServerStorage` bằng một khóa duy nhất (`__ui:api-instance__`). Kiến trúc này giải quyết hai vấn đề lớn:
 
 1.  **An toàn luồng trong SSR**: Trong quá trình render phía máy chủ, `ServerStorage` đảm bảo rằng mỗi yêu cầu đến có cấu hình và trạng thái API riêng biệt, ngăn chặn rò rỉ dữ liệu giữa các người dùng.
 2.  **Sự đơn giản của Singleton trên Client**: Ở phía client, nó hoạt động như một singleton thực sự, cho phép bạn cấu hình API tại điểm truy cập và sử dụng nó ở bất cứ đâu mà không cần truyền instance.

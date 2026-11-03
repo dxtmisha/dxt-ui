@@ -10,16 +10,6 @@ import { ServerStorage } from './ServerStorage'
  */
 export class Hash {
   /**
-   * Returns a request-isolated instance of HashInstance.
-   *
-   * Возвращает изолированный в рамках запроса экземпляр HashInstance.
-   * @returns HashInstance instance / экземпляр HashInstance
-   */
-  static getItem(): HashInstance {
-    return ServerStorage.get('__ui:hash-instance__', () => new HashInstance())
-  }
-
-  /**
    * Get data from hash.
    *
    * Получение данных из хэша.
@@ -35,11 +25,22 @@ export class Hash {
   }
 
   /**
+   * Returns a request-isolated instance of HashInstance.
+   *
+   * Возвращает изолированный в рамках запроса экземпляр HashInstance.
+   * @returns HashInstance instance / экземпляр HashInstance
+   */
+  static getItem(): HashInstance {
+    return ServerStorage.get('__ui:hash-instance__', () => new HashInstance())
+  }
+
+  /**
    * Change data in hash.
    *
    * Изменение данных в хэше.
    * @param name variable name / название переменной
    * @param callback value or function to change data / значение или функция для изменения данных
+   * @returns void / ничего не возвращает
    */
   static set<T>(
     name: string,
@@ -54,6 +55,7 @@ export class Hash {
    * Добавление события при изменении данных.
    * @param name variable name / название переменной
    * @param callback the function is called when the data is changed / функция вызывается при изменении данных
+   * @returns void / ничего не возвращает
    */
   static addWatch<T>(
     name: string,
@@ -68,12 +70,23 @@ export class Hash {
    * Удаление события при изменении данных.
    * @param name variable name / название переменной
    * @param callback the function is called when the data is changed / функция вызывается при изменении данных
+   * @returns void / ничего не возвращает
    */
   static removeWatch<T>(
     name: string,
     callback: (value: T) => void
   ): void {
     this.getItem().removeWatch(name, callback)
+  }
+
+  /**
+   * Reset / destroy instance and remove listeners.
+   *
+   * Сброс / уничтожение экземпляра и удаление слушателей.
+   * @returns void / ничего не возвращает
+   */
+  static reset(): void {
+    this.getItem().destroy()
   }
 
   /**
@@ -84,14 +97,5 @@ export class Hash {
    */
   static reload(): void {
     this.getItem().reload()
-  }
-
-  /**
-   * Reset / destroy instance and remove listeners.
-   *
-   * Сброс / уничтожение экземпляра и удаление слушателей.
-   */
-  static reset(): void {
-    this.getItem().destroy()
   }
 }

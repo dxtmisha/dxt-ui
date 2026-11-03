@@ -9,6 +9,7 @@ import {
   type GeoItemFull
 } from '../types/geoTypes'
 
+/** Prefix for flag icon names / Префикс для названий иконок флагов */
 export const GEO_FLAG_ICON_NAME = 'f'
 
 /**
@@ -271,6 +272,9 @@ export class GeoFlag {
     ZW: `${GEO_FLAG_ICON_NAME}-zw`
   }
 
+  /** Country and language code / Код страны и языка */
+  protected code: string
+
   /**
    * Constructor
    *
@@ -278,8 +282,9 @@ export class GeoFlag {
    * @param code country and language code / код страны и языка
    */
   constructor(
-    protected code: string = Geo.getLocation()
+    code: string = Geo.getLocation()
   ) {
+    this.code = code
   }
 
   /**
@@ -301,31 +306,10 @@ export class GeoFlag {
         country,
         countryCode: data.country,
         standard: data.standard,
-        icon: GeoFlag.flags?.[data.country],
+        icon: GeoFlag.flags[data.country],
         label: country,
         value: data.country,
         phoneCode: data.phoneCode
-      }
-    }
-
-    return undefined
-  }
-
-  /**
-   * Returns information about the language and its flag.
-   *
-   * Возвращает информацию о языке и его флаге.
-   * @param code country code / код страны
-   * @returns language information / информация о языке
-   */
-  getLanguage(code: string = this.getCode()): GeoFlagItem | undefined {
-    const item = this.get(code)
-
-    if (item) {
-      return {
-        ...item,
-        label: item.language,
-        value: item.languageCode
       }
     }
 
@@ -351,6 +335,27 @@ export class GeoFlag {
    */
   getFlag(code: string = this.getCode()): string | undefined {
     return this.get(code)?.icon
+  }
+
+  /**
+   * Returns information about the language and its flag.
+   *
+   * Возвращает информацию о языке и его флаге.
+   * @param code country code / код страны
+   * @returns language information / информация о языке
+   */
+  getLanguage(code: string = this.getCode()): GeoFlagItem | undefined {
+    const item = this.get(code)
+
+    if (item) {
+      return {
+        ...item,
+        label: item.language,
+        value: item.languageCode
+      }
+    }
+
+    return undefined
   }
 
   /**
@@ -473,17 +478,6 @@ export class GeoFlag {
   }
 
   /**
-   * Returns a special object for formatting and translations.
-   *
-   * Возвращает специальный объект для работы с форматированием и переводами.
-   * @protected
-   * @returns GeoIntl instance / экземпляр GeoIntl
-   */
-  protected getLocation(): GeoIntl {
-    return new GeoIntl(this.code)
-  }
-
-  /**
    * Returns a list of country codes to retrieve data from.
    *
    * Возвращает список кодов стран для получения данных.
@@ -496,10 +490,23 @@ export class GeoFlag {
   }
 
   /**
+   * Getting the name of the country.
+   *
+   * Получение названия страны.
+   * @param data object with information of data / объект с информацией данных
+   * @protected
+   * @returns country name / название страны
+   */
+  protected getCountry(data: GeoItemFull): string {
+    return this.getLocation().countryName(data.country)
+  }
+
+  /**
    * Getting the name of the language.
    *
    * Получение названия языка.
    * @param data object with information of data / объект с информацией данных
+   * @protected
    * @returns language name / название языка
    */
   protected getLanguageName(data: GeoItemFull): string {
@@ -507,13 +514,13 @@ export class GeoFlag {
   }
 
   /**
-   * Getting the name of the country.
+   * Returns a special object for formatting and translations.
    *
-   * Получение названия страны.
-   * @param data object with information of data / объект с информацией данных
-   * @returns country name / название страны
+   * Возвращает специальный объект для работы с форматированием и переводами.
+   * @protected
+   * @returns GeoIntl instance / экземпляр GeoIntl
    */
-  protected getCountry(data: GeoItemFull): string {
-    return this.getLocation().countryName(data.country)
+  protected getLocation(): GeoIntl {
+    return new GeoIntl(this.code)
   }
 }

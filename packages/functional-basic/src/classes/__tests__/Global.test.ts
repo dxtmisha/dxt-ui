@@ -66,9 +66,11 @@ describe('Global', () => {
       expect(Global.get('initializedAfterEmpty')).toBe('success')
     })
 
-    it('should return undefined for an unknown key', () => {
+    it('should return undefined for an unknown key or Object.prototype keys', () => {
       Global.add({ known: 'value' })
       expect(Global.get('nonExistentKey')).toBeUndefined()
+      expect(Global.get('toString')).toBeUndefined()
+      expect(Global.get('constructor')).toBeUndefined()
     })
   })
 

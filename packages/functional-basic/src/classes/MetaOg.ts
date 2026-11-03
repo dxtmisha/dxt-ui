@@ -20,6 +20,46 @@ export class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
   }
 
   /**
+   * Gets the Open Graph description.
+   *
+   * Получает описание Open Graph.
+   * @returns description / описание
+   */
+  getDescription(): string {
+    return this.get(MetaOpenGraphTag.description)
+  }
+
+  /**
+   * Gets the Open Graph image URL.
+   *
+   * Получает URL изображения Open Graph.
+   * @returns image URL / URL изображения
+   */
+  getImage(): string {
+    return this.get(MetaOpenGraphTag.image)
+  }
+
+  /**
+   * Gets the Open Graph locale.
+   *
+   * Получает локаль Open Graph.
+   * @returns locale / локаль
+   */
+  getLocale(): string {
+    return this.get(MetaOpenGraphTag.locale)
+  }
+
+  /**
+   * Gets the Open Graph site name.
+   *
+   * Получает название сайта Open Graph.
+   * @returns site name / название сайта
+   */
+  getSiteName(): string {
+    return this.get(MetaOpenGraphTag.siteName)
+  }
+
+  /**
    * Gets the Open Graph title.
    *
    * Получает заголовок Open Graph.
@@ -50,43 +90,47 @@ export class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
   }
 
   /**
-   * Gets the Open Graph image URL.
+   * Sets the Open Graph description.
    *
-   * Получает URL изображения Open Graph.
-   * @returns image URL / URL изображения
+   * Устанавливает описание Open Graph.
+   * @param description description / описание
+   * @returns current instance / текущий экземпляр
    */
-  getImage(): string {
-    return this.get(MetaOpenGraphTag.image)
+  setDescription(description: string): this {
+    return this.set(MetaOpenGraphTag.description, description)
   }
 
   /**
-   * Gets the Open Graph description.
+   * Sets the Open Graph image URL.
    *
-   * Получает описание Open Graph.
-   * @returns description / описание
+   * Устанавливает URL изображения Open Graph.
+   * @param url image URL / URL изображения
+   * @returns current instance / текущий экземпляр
    */
-  getDescription(): string {
-    return this.get(MetaOpenGraphTag.description)
+  setImage(url: string): this {
+    return this.set(MetaOpenGraphTag.image, url)
   }
 
   /**
-   * Gets the Open Graph locale.
+   * Sets the Open Graph locale.
    *
-   * Получает локаль Open Graph.
-   * @returns locale / локаль
+   * Устанавливает локаль Open Graph.
+   * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
+   * @returns current instance / текущий экземпляр
    */
-  getLocale(): string {
-    return this.get(MetaOpenGraphTag.locale)
+  setLocale(locale: string): this {
+    return this.set(MetaOpenGraphTag.locale, locale)
   }
 
   /**
-   * Gets the Open Graph site name.
+   * Sets the Open Graph site name.
    *
-   * Получает название сайта Open Graph.
-   * @returns site name / название сайта
+   * Устанавливает название сайта Open Graph.
+   * @param siteName site name / название сайта
+   * @returns current instance / текущий экземпляр
    */
-  getSiteName(): string {
-    return this.get(MetaOpenGraphTag.siteName)
+  setSiteName(siteName: string): this {
+    return this.set(MetaOpenGraphTag.siteName, siteName)
   }
 
   /**
@@ -120,49 +164,5 @@ export class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
    */
   setUrl(url: string): this {
     return this.set(MetaOpenGraphTag.url, url)
-  }
-
-  /**
-   * Sets the Open Graph image URL.
-   *
-   * Устанавливает URL изображения Open Graph.
-   * @param url image URL / URL изображения
-   * @returns current instance / текущий экземпляр
-   */
-  setImage(url: string): this {
-    return this.set(MetaOpenGraphTag.image, url)
-  }
-
-  /**
-   * Sets the Open Graph description.
-   *
-   * Устанавливает описание Open Graph.
-   * @param description description / описание
-   * @returns current instance / текущий экземпляр
-   */
-  setDescription(description: string): this {
-    return this.set(MetaOpenGraphTag.description, description)
-  }
-
-  /**
-   * Sets the Open Graph locale.
-   *
-   * Устанавливает локаль Open Graph.
-   * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
-   * @returns current instance / текущий экземпляр
-   */
-  setLocale(locale: string): this {
-    return this.set(MetaOpenGraphTag.locale, locale)
-  }
-
-  /**
-   * Sets the Open Graph site name.
-   *
-   * Устанавливает название сайта Open Graph.
-   * @param siteName site name / название сайта
-   * @returns current instance / текущий экземпляр
-   */
-  setSiteName(siteName: string): this {
-    return this.set(MetaOpenGraphTag.siteName, siteName)
   }
 }

@@ -35,8 +35,9 @@ Icons.setUrl('/assets/svg/')
 
 ### Truy xuất icon
 
-- `async get(index: string, url?: string, wait?: number): Promise<string>` — Trả về nội dung hoặc đường dẫn của icon theo tên. Nếu icon đang "tải", sẽ chờ cho đến khi xuất hiện (mặc định 3 phút).
 - `is(index: string): boolean` — Kiểm tra xem icon đã được đăng ký chưa.
+- `async get(index: string, url?: string, wait?: number): Promise<string>` — Trả về nội dung hoặc đường dẫn của icon theo tên. Nếu icon đang "tải", sẽ chờ cho đến khi xuất hiện (mặc định 3 phút).
+- `getAsync(index: string, url?: string): string` — Trả về đồng bộ icon nếu nó đã được tải dưới dạng chuỗi (ngược lại trả về `''`).
 - `getNameList(): string[]` — Trả về danh sách tên của tất cả icon đã đăng ký.
 - `getUrlGlobal(): string` — Trả về URL cơ sở hiện tại của icon.
 
@@ -44,6 +45,7 @@ Icons.setUrl('/assets/svg/')
 
 - `setUrl(url: string): void` — Thay đổi đường dẫn cơ sở để lưu trữ icon.
 - `setConfig(config: IconsConfig): void` — Cập nhật cấu hình biểu tượng (URL và/hoặc danh sách biểu tượng).
+- `reset(): void` — Đặt lại registry biểu tượng và khôi phục URL cơ sở mặc định (`'/icons/'`).
 
 ## Hệ thống tải
 

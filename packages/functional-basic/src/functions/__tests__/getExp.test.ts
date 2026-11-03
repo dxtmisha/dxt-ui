@@ -40,6 +40,16 @@ describe('getExp', () => {
       expect(regex.test('non-empty')).toBe(false)
     })
 
+    it('should handle undefined and null safely', () => {
+      const undefinedRegex = getExp(undefined, 'i', '^:value$')
+      expect(undefinedRegex.source).toBe('^$')
+      expect(undefinedRegex.test('')).toBe(true)
+
+      const nullRegex = getExp(null, 'i', '^:value$')
+      expect(nullRegex.source).toBe('^$')
+      expect(nullRegex.test('')).toBe(true)
+    })
+
     it('should allow empty flags string', () => {
       const regex = getExp('CaseSensitive', '')
       expect(regex.flags).toBe('')
@@ -61,10 +71,55 @@ describe('getExp', () => {
     })
   })
 
+  describe('Type coercion and non-standard data types', () => {
+    it('should handle numeric values including 0, negative numbers, and floats', () => {
+      const zeroRegex = getExp(0, 'i', '^:value$')
+      expect(zeroRegex.source).toBe('^0$')
+      expect(zeroRegex.test('0')).toBe(true)
+
+      const negativeRegex = getExp(-42, 'i', '^:value$')
+      expect(negativeRegex.source).toBe('^\\-42$')
+      expect(negativeRegex.test('-42')).toBe(true)
+
+      const floatRegex = getExp(3.14, 'i', '^:value$')
+      expect(floatRegex.source).toBe('^3\\.14$')
+      expect(floatRegex.test('3.14')).toBe(true)
+      expect(floatRegex.test('3X14')).toBe(false)
+    })
+
+    it('should handle boolean values (true and false)', () => {
+      const trueRegex = getExp(true, 'i', '^:value$')
+      expect(trueRegex.source).toBe('^true$')
+      expect(trueRegex.test('true')).toBe(true)
+      expect(trueRegex.test('false')).toBe(false)
+
+      const falseRegex = getExp(false, 'i', '^:value$')
+      expect(falseRegex.source).toBe('^false$')
+      expect(falseRegex.test('false')).toBe(true)
+      expect(falseRegex.test('true')).toBe(false)
+    })
+
+    it('should handle arrays and plain objects without throwing', () => {
+      const arrayRegex = getExp(['a', 'b'], 'i', '^:value$')
+      expect(arrayRegex.test('a,b')).toBe(true)
+
+      const objectRegex = getExp({ id: 1 }, 'i', '^:value$')
+      expect(objectRegex.source).toBe('^\\[object Object\\]$')
+      expect(objectRegex.test('[object Object]')).toBe(true)
+    })
+  })
+
   describe('Metacharacters, escaping, and security', () => {
-    it('should escape all special regex characters in the input value', () => {
-      const regex = getExp('hello.*+?^${}()|[]\\world')
-      expect(regex.source).toBe('hello\\.\\*\\+\\?\\^\\$\\{\\}\\(\\)\\|\\[\\]\\\\world')
+    it('should escape all special regex characters including hyphen and slash', () => {
+      const regex = getExp('hello-.*+?^${}()|[]\\/world')
+      expect(regex.source).toBe('hello\\-\\.\\*\\+\\?\\^\\$\\{\\}\\(\\)\\|\\[\\]\\\\\\/world')
+    })
+
+    it('should safely escape hyphen inside character class patterns', () => {
+      const regex = getExp('-', 'g', '([:value]+)')
+      expect(regex.source).toBe('([\\-]+)')
+      expect(regex.test('---')).toBe(true)
+      expect(regex.test('abc')).toBe(false)
     })
 
     it('should match escaped metacharacters literally instead of as regex operators', () => {
@@ -75,6 +130,12 @@ describe('getExp', () => {
       const quantifierRegex = getExp('a+b*c?', 'i', '^:value$')
       expect(quantifierRegex.test('a+b*c?')).toBe(true)
       expect(quantifierRegex.test('aaabbbc')).toBe(false)
+    })
+
+    it('should handle String.prototype.replace special replacement patterns ($&, $$, $\', $`) literally', () => {
+      const regex = getExp('$& $$ $\' $` $1', 'i', '^:value$')
+      expect(regex.test('$& $$ $\' $` $1')).toBe(true)
+      expect(regex.test(':value')).toBe(false)
     })
 
     it('should handle input value containing literal :value without recursive replacement', () => {

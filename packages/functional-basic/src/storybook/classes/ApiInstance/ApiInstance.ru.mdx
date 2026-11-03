@@ -71,12 +71,13 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ### Конфигурация
 
 Методы для настройки API (поддерживают чейнинг вызовов, возвращают объект `ApiInstance`):
-- `setHeaders(headers: Record<string, string>): this` — Устанавливает глобальные заголовки по умолчанию.
-- `setRequestDefault(request: Record<string, any>): this` — Устанавливает общие параметры для всех запросов.
-- `setUrl(url: string): this` — Изменяет базовый URL путь для API скриптов.
-- `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Устанавливает хук, выполняемый перед каждым сетевым запросом.
 - `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Устанавливает хук, выполняемый после получения ответа.
+- `setHeaders(headers: ApiHeadersValue): this` — Устанавливает глобальные заголовки по умолчанию.
 - `setOrigin(origin: string): this` — Устанавливает источник (протокол и домен) для формирования базового URL.
+- `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Устанавливает хук, выполняемый перед каждым сетевым запросом.
+- `setRequestDefault(request: ApiDefaultValue): this` — Устанавливает общие параметры для всех запросов.
+- `setTimeout(timeout: number): this` — Изменяет таймаут запроса в миллисекундах.
+- `setUrl(url: string): this` — Изменяет базовый URL путь для API скриптов.
 - `setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): this` — Устанавливает функцию-обертку для запросов.
 
 ### Вспомогательные
@@ -299,7 +300,7 @@ const hydrationScript = api.getHydrationScript();
 По умолчанию кэш работает только в оперативной памяти и сбрасывается при перезагрузке страницы. Чтобы сохранять данные надолго, необходимо инициализировать `ApiCache` своими слушателями (например, используя `LocalStorage` или `IndexedDB`):
 
 ```javascript
-import { ApiCache, DataStorage } from '@dxtmisha/functional';
+import { ApiCache, DataStorage } from '@dxtmisha/functional-basic';
 
 // Пример инициализации с использованием LocalStorage через обертку DataStorage
 ApiCache.init(
@@ -393,7 +394,7 @@ const profile = await api.get({ path: 'users/profile' })
 ## Примеры
 
 ```javascript
-import { ApiInstance } from '@dxtmisha/functional'
+import { ApiInstance } from '@dxtmisha/functional-basic'
 
 const api = new ApiInstance()
 

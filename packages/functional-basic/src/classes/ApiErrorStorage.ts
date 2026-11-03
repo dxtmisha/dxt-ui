@@ -5,7 +5,7 @@ import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { isString } from '../functions/isString'
 import { toArray } from '../functions/toArray'
 
-import { type ApiErrorStorageList, type ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes'
+import type { ApiErrorStorageList, ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes'
 
 /**
  * Manager for handling and identifying API error states.

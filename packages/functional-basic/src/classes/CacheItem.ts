@@ -6,7 +6,7 @@
  * Класс для управления одним кэшированным значением с отслеживанием зависимостей.
  * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
-export class CacheItem<T> {
+export class CacheItem<T = unknown> {
   /** Cached value / Кэшированное значение */
   private cache?: T
   /** Previous cached value / Предыдущее кэшированное значение */
@@ -18,7 +18,7 @@ export class CacheItem<T> {
    * Creates a new CacheItem instance.
    *
    * Создает новый экземпляр CacheItem.
-   * @param callback - Function to compute the cached value / Функция для вычисления кэшированного значения
+   * @param callback Function to compute the cached value / Функция для вычисления кэшированного значения
    */
   constructor(
     private readonly callback: () => T
@@ -29,10 +29,10 @@ export class CacheItem<T> {
    * Returns the cached value. Recomputes if the comparison array has changed.
    *
    * Возвращает кэшированное значение. Пересчитывает, если массив comparison изменился.
-   * @param comparison - Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
+   * @param comparison Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
    * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
    */
-  getCache(comparison: unknown[]): T {
+  getCache(comparison: unknown[] = []): T {
     if (this.isUpdate(comparison)) {
       this.cacheOld = this.cache
       this.setCache()
@@ -45,10 +45,10 @@ export class CacheItem<T> {
    * Asynchronously returns the cached value. Recomputes if the comparison array has changed.
    *
    * Асинхронно возвращает кэшированное значение. Пересчитывает, если массив comparison изменился.
-   * @param comparison - Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
+   * @param comparison Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
    * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
    */
-  async getCacheAsync(comparison: unknown[]): Promise<T> {
+  async getCacheAsync(comparison: unknown[] = []): Promise<T> {
     if (this.isUpdate(comparison)) {
       this.cacheOld = this.cache
       await this.setCacheAsync()
@@ -71,7 +71,7 @@ export class CacheItem<T> {
    * Determines if the cache should be updated based on comparison array changes.
    *
    * Определяет, следует ли обновить кэш на основе изменений в массиве comparison.
-   * @param comparison - New comparison array to compare against / Новый массив comparison для сравнения
+   * @param comparison New comparison array to compare against / Новый массив comparison для сравнения
    * @returns True if cache should be updated, false otherwise / True, если кэш нужно обновить, иначе false
    */
   private isUpdate(comparison: unknown[]): boolean {

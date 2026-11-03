@@ -1,5 +1,6 @@
 import { isFilled } from './isFilled'
 import { isObject } from './isObject'
+import { isPrototypeKey } from './isPrototypeKey'
 import { strSplit } from './strSplit'
 
 /**
@@ -13,8 +14,14 @@ import { strSplit } from './strSplit'
 export function getItemByPath<
   T extends Record<string, unknown>,
   R = string
->(item: T, path: string): R | undefined {
-  if (!isFilled(path, true)) {
+>(
+  item: T | null | undefined,
+  path: string
+): R | undefined {
+  if (
+    !item
+    || !isFilled(path, true)
+  ) {
     return undefined
   }
 
@@ -22,17 +29,22 @@ export function getItemByPath<
   const column = paths[0]
 
   if (
-    column
-    && item?.[column]
-    && isObject(item[column])
-    && paths?.[1]
+    !column
+    || isPrototypeKey(column)
   ) {
-    return getItemByPath(item[column] as Record<string, unknown>, paths[1])
-  }
-
-  if (paths?.[1]) {
     return undefined
   }
 
-  return item?.[column] as R | undefined
+  const value = item[column]
+  const restPath = paths[1]
+
+  if (restPath) {
+    if (isObject(value)) {
+      return getItemByPath(value as Record<string, unknown>, restPath)
+    }
+
+    return undefined
+  }
+
+  return value as R | undefined
 }

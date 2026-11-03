@@ -101,7 +101,9 @@ export class ApiInstance {
   protected wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>
 
   /**
-   * Constructor
+   * Constructor for ApiInstance.
+   *
+   * Конструктор для ApiInstance.
    * @param url base path to the script / базовый путь к скрипту
    * @param options options for the API instance / опции для экземпляра API
    */
@@ -145,68 +147,6 @@ export class ApiInstance {
     return isDomRuntime()
       && typeof location !== 'undefined'
       && location.hostname === 'localhost'
-  }
-
-  /**
-   * Returns the status of the last request.
-   *
-   * Возвращает статус последнего запроса.
-   * @returns ApiStatus instance / экземпляр ApiStatus
-   */
-  getStatus(): ApiStatus {
-    return this.status
-  }
-
-  /**
-   * Gets the response handler.
-   *
-   * Получает обработчик ответа.
-   * @returns ApiResponse instance / экземпляр ApiResponse
-   */
-  getResponse(): ApiResponse {
-    return this.response
-  }
-
-  /**
-   * Gets the hydration handler.
-   *
-   * Получает обработчик гидратации.
-   * @returns ApiHydration instance / экземпляр ApiHydration
-   */
-  getHydration(): ApiHydration {
-    return this.hydration
-  }
-
-  /**
-   * Gets the base origin URL combined with the API path.
-   *
-   * Получает базовый URL источника, объединенный с путем API.
-   * @returns final base URL string / итоговая строка базового URL
-   */
-  getOrigin(): string {
-    if (
-      this.origin
-      && /^\//.test(this.url)
-    ) {
-      return `${this.origin}${this.url}`
-    }
-
-    return this.url
-  }
-
-  /**
-   * Gets the full path to the request script.
-   *
-   * Получает полный путь к скрипту запроса.
-   * @param path path to the script / путь к скрипту
-   * @param api whether to prepend base API URL / нужно ли добавить базовый URL API
-   * @returns full URL / полный URL
-   */
-  getUrl(path: string, api: boolean = true): string {
-    return `${api ? this.getOrigin() : ''}${path}`
-      .replace('{locale}', this.geo.getLocation())
-      .replace('{country}', this.geo.getCountry())
-      .replace('{language}', this.geo.getLanguage())
   }
 
   /**
@@ -269,6 +209,16 @@ export class ApiInstance {
   }
 
   /**
+   * Gets the hydration handler.
+   *
+   * Получает обработчик гидратации.
+   * @returns ApiHydration instance / экземпляр ApiHydration
+   */
+  getHydration(): ApiHydration {
+    return this.hydration
+  }
+
+  /**
    * Returns a string representation of the hydration data for the client.
    *
    * Возвращает строковое представление данных гидратации для клиента.
@@ -276,6 +226,70 @@ export class ApiInstance {
    */
   getHydrationScript(): string {
     return this.hydration.toString()
+  }
+
+  /**
+   * Gets the base origin URL combined with the API path.
+   *
+   * Получает базовый URL источника, объединенный с путем API.
+   * @returns final base URL string / итоговая строка базового URL
+   */
+  getOrigin(): string {
+    if (
+      this.origin
+      && /^\//.test(this.url)
+    ) {
+      return `${this.origin}${this.url}`
+    }
+
+    return this.url
+  }
+
+  /**
+   * Gets the response handler.
+   *
+   * Получает обработчик ответа.
+   * @returns ApiResponse instance / экземпляр ApiResponse
+   */
+  getResponse(): ApiResponse {
+    return this.response
+  }
+
+  /**
+   * Returns the status of the last request.
+   *
+   * Возвращает статус последнего запроса.
+   * @returns ApiStatus instance / экземпляр ApiStatus
+   */
+  getStatus(): ApiStatus {
+    return this.status
+  }
+
+  /**
+   * Gets the full path to the request script.
+   *
+   * Получает полный путь к скрипту запроса.
+   * @param path path to the script / путь к скрипту
+   * @param api whether to prepend base API URL / нужно ли добавить базовый URL API
+   * @returns full URL / полный URL
+   */
+  getUrl(path: string, api: boolean = true): string {
+    return `${api ? this.getOrigin() : ''}${path}`
+      .replace('{locale}', this.geo.getLocation())
+      .replace('{country}', this.geo.getCountry())
+      .replace('{language}', this.geo.getLanguage())
+  }
+
+  /**
+   * Modifies the function to be called after the request.
+   *
+   * Изменяет функцию для вызова после запроса.
+   * @param callback function to call after request / функция для вызова после запроса
+   * @returns this instance / текущий экземпляр
+   */
+  setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this {
+    this.preparation.setEnd(callback)
+    return this
   }
 
   /**
@@ -291,26 +305,14 @@ export class ApiInstance {
   }
 
   /**
-   * Modifies the default request data.
+   * Changes the origin (protocol and domain) for the base URL.
    *
-   * Изменяет данные запроса по умолчанию.
-   * @param request default request data / данные запроса по умолчанию
+   * Изменяет источник (протокол и домен) для базового URL.
+   * @param origin protocol and domain / протокол и домен
    * @returns this instance / текущий экземпляр
    */
-  setRequestDefault(request: ApiDefaultValue): this {
-    this.requestDefault.set(request)
-    return this
-  }
-
-  /**
-   * Changes the base path to the script.
-   *
-   * Изменяет базовый путь к скрипту.
-   * @param url path to the script / путь к скрипту
-   * @returns this instance / текущий экземпляр
-   */
-  setUrl(url: string): this {
-    this.url = url
+  setOrigin(origin: string): this {
+    this.origin = origin
     return this
   }
 
@@ -327,14 +329,14 @@ export class ApiInstance {
   }
 
   /**
-   * Modifies the function to be called after the request.
+   * Modifies the default request data.
    *
-   * Изменяет функцию для вызова после запроса.
-   * @param callback function to call after request / функция для вызова после запроса
+   * Изменяет данные запроса по умолчанию.
+   * @param request default request data / данные запроса по умолчанию
    * @returns this instance / текущий экземпляр
    */
-  setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this {
-    this.preparation.setEnd(callback)
+  setRequestDefault(request: ApiDefaultValue): this {
+    this.requestDefault.set(request)
     return this
   }
 
@@ -351,14 +353,14 @@ export class ApiInstance {
   }
 
   /**
-   * Changes the origin (protocol and domain) for the base URL.
+   * Changes the base path to the script.
    *
-   * Изменяет источник (протокол и домен) для базового URL.
-   * @param origin protocol and domain / протокол и домен
+   * Изменяет базовый путь к скрипту.
+   * @param url path to the script / путь к скрипту
    * @returns this instance / текущий экземпляр
    */
-  setOrigin(origin: string): this {
-    this.origin = origin
+  setUrl(url: string): this {
+    this.url = url
     return this
   }
 
@@ -381,7 +383,7 @@ export class ApiInstance {
    * @param pathRequest path or configuration / путь или конфигурация запроса
    * @returns Promise with response data / Promise с данными ответа
    */
-  async request<T>(pathRequest: string | ApiFetch): Promise<T> {
+  async request<T = unknown>(pathRequest: string | ApiFetch): Promise<T> {
     const apiFetch = isString(pathRequest) ? { path: pathRequest } : pathRequest
     const wrapper = apiFetch.wrapper ?? this.wrapper
 
@@ -402,7 +404,7 @@ export class ApiInstance {
    * @param request fetch configuration / конфигурация запроса
    * @returns Promise with response data / Promise с данными ответа
    */
-  get<T>(request: ApiFetch): Promise<T> {
+  get<T = unknown>(request: ApiFetch): Promise<T> {
     return this.request({
       ...request,
       method: ApiMethodItem.get
@@ -416,7 +418,7 @@ export class ApiInstance {
    * @param request fetch configuration / конфигурация запроса
    * @returns Promise with response data / Promise с данными ответа
    */
-  post<T>(request: ApiFetch): Promise<T> {
+  post<T = unknown>(request: ApiFetch): Promise<T> {
     return this.request({
       ...request,
       method: ApiMethodItem.post
@@ -430,7 +432,7 @@ export class ApiInstance {
    * @param request fetch configuration / конфигурация запроса
    * @returns Promise with response data / Promise с данными ответа
    */
-  put<T>(request: ApiFetch): Promise<T> {
+  put<T = unknown>(request: ApiFetch): Promise<T> {
     return this.request({
       ...request,
       method: ApiMethodItem.put
@@ -444,7 +446,7 @@ export class ApiInstance {
    * @param request fetch configuration / конфигурация запроса
    * @returns Promise with response data / Promise с данными ответа
    */
-  patch<T>(request: ApiFetch): Promise<T> {
+  patch<T = unknown>(request: ApiFetch): Promise<T> {
     return this.request({
       ...request,
       method: ApiMethodItem.patch
@@ -458,7 +460,7 @@ export class ApiInstance {
    * @param request fetch configuration / конфигурация запроса
    * @returns Promise with response data / Promise с данными ответа
    */
-  delete<T>(request: ApiFetch): Promise<T> {
+  delete<T = unknown>(request: ApiFetch): Promise<T> {
     return this.request({
       ...request,
       method: ApiMethodItem.delete
@@ -485,7 +487,7 @@ export class ApiInstance {
    * @param retryCount current retry count / текущий счетчик повторов
    * @returns Promise with response data / Promise с данными ответа
    */
-  protected async fetch<T>(
+  protected async fetch<T = unknown>(
     apiFetch: ApiFetch,
     retryCount: number = 0
   ): Promise<T> {
@@ -601,56 +603,51 @@ export class ApiInstance {
   }
 
   /**
-   * Executing the HTTP request.
+   * Initialize controller for request with timeout support.
    *
-   * Выполнение HTTP-запроса.
-   * @param apiFetch fetch configuration / конфигурация запроса
-   * @param pathToApi base path to API / базовый путь к API
-   * @returns object containing response and optional timeout ID / объект, содержащий ответ и опциональный ID таймера
+   * Инициализация контроллера для запроса с поддержкой таймаута.
+   * @param apiFetch request options / опции запроса
+   * @param fetchInit request initialization object / объект инициализации запроса
+   * @returns timeout ID (from setTimeout) or undefined / ID таймера (от setTimeout) или undefined
    */
-  protected async makeQuery(
+  protected initController(
     apiFetch: ApiFetch,
-    pathToApi: string
-  ): Promise<{ query: Response, timeoutId: ReturnType<typeof setTimeout> | undefined }> {
-    const request: ApiFetch['request'] = this.requestDefault.request(apiFetch.request)
+    fetchInit: RequestInit
+  ): ReturnType<typeof setTimeout> | undefined {
     const {
-      pathFull = undefined,
-      method = ApiMethodItem.get,
-      headers = {},
-      type = 'application/json;charset=UTF-8',
-      init = {}
+      timeout = this.timeout,
+      controller
     } = apiFetch
 
-    const pathFinal = pathFull ?? pathToApi
-    const url = `${pathFinal}${this.getBodyForGet(request, pathFinal, method)}`
-    const fetchHeaders = this.headers.getByRequest(apiFetch.request, headers, type)
-    const fetchInit = {
-      ...init,
-      method,
-      body: this.getBody(request, method)
+    if (
+      timeout
+      && !controller
+      && typeof AbortSignal !== 'undefined'
+      && typeof AbortSignal.timeout === 'function'
+    ) {
+      fetchInit.signal = AbortSignal.timeout(timeout)
+      return undefined
     }
 
-    if (fetchHeaders) {
-      fetchInit.headers = {
-        ...fetchHeaders,
-        ...(init.headers ?? {})
-      }
+    if (
+      !timeout
+      && controller
+    ) {
+      fetchInit.signal = controller.signal
+      return undefined
     }
 
-    const timeoutId = this.initController(apiFetch, fetchInit)
+    if (timeout) {
+      const controllerFocus = controller ?? new AbortController()
 
-    try {
-      return {
-        query: await fetch(url, fetchInit),
-        timeoutId
-      }
-    } catch (error) {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
+      fetchInit.signal = controllerFocus.signal
 
-      throw error
+      return setTimeout(() => {
+        controllerFocus.abort(new DOMException('Timeout', 'TimeoutError'))
+      }, timeout)
     }
+
+    return undefined
   }
 
   /**
@@ -719,50 +716,55 @@ export class ApiInstance {
   }
 
   /**
-   * Initialize controller for request with timeout support.
+   * Executing the HTTP request.
    *
-   * Инициализация контроллера для запроса с поддержкой таймаута.
-   * @param apiFetch request options / опции запроса
-   * @param fetchInit request initialization object / объект инициализации запроса
-   * @returns timeout ID (from setTimeout) or undefined / ID таймера (от setTimeout) или undefined
+   * Выполнение HTTP-запроса.
+   * @param apiFetch fetch configuration / конфигурация запроса
+   * @param pathToApi base path to API / базовый путь к API
+   * @returns object containing response and optional timeout ID / объект, содержащий ответ и опциональный ID таймера
    */
-  protected initController(
+  protected async makeQuery(
     apiFetch: ApiFetch,
-    fetchInit: RequestInit
-  ): ReturnType<typeof setTimeout> | undefined {
+    pathToApi: string
+  ): Promise<{ query: Response, timeoutId: ReturnType<typeof setTimeout> | undefined }> {
+    const request: ApiFetch['request'] = this.requestDefault.request(apiFetch.request)
     const {
-      timeout = this.timeout,
-      controller
+      pathFull = undefined,
+      method = ApiMethodItem.get,
+      headers = {},
+      type = 'application/json;charset=UTF-8',
+      init = {}
     } = apiFetch
 
-    if (
-      timeout
-      && !controller
-      && typeof AbortSignal !== 'undefined'
-      && typeof AbortSignal.timeout === 'function'
-    ) {
-      fetchInit.signal = AbortSignal.timeout(timeout)
-      return undefined
+    const pathFinal = pathFull ?? pathToApi
+    const url = `${pathFinal}${this.getBodyForGet(request, pathFinal, method)}`
+    const fetchHeaders = this.headers.getByRequest(apiFetch.request, headers, type)
+    const fetchInit = {
+      ...init,
+      method,
+      body: this.getBody(request, method)
     }
 
-    if (
-      !timeout
-      && controller
-    ) {
-      fetchInit.signal = controller.signal
-      return undefined
+    if (fetchHeaders) {
+      fetchInit.headers = {
+        ...fetchHeaders,
+        ...(init.headers ?? {})
+      }
     }
 
-    if (timeout) {
-      const controllerFocus = controller ?? new AbortController()
+    const timeoutId = this.initController(apiFetch, fetchInit)
 
-      fetchInit.signal = controllerFocus.signal
+    try {
+      return {
+        query: await fetch(url, fetchInit),
+        timeoutId
+      }
+    } catch (error) {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
 
-      return setTimeout(() => {
-        controllerFocus.abort(new DOMException('Timeout', 'TimeoutError'))
-      }, timeout)
+      throw error
     }
-
-    return undefined
   }
 }

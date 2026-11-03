@@ -49,6 +49,28 @@ describe('GeoIntl', () => {
       expect(englishIntl.getLocation()).toBe('en-US')
       expect(russianIntl.getLocation()).toBe('ru-RU')
     })
+
+    it('should not collide with Object.prototype keys in isItem, getLocation, and getInstance', () => {
+      expect(GeoIntl.getLocation('toString')).toBe('en-US')
+      expect(GeoIntl.getLocation('constructor')).toBe('en-US')
+      expect(GeoIntl.getInstance('toString')).toBe(intl)
+      expect(GeoIntl.isItem('toString')).toBe(true)
+    })
+
+    it('should report invalid Intl options to ErrorCenter and return safe fallbacks', () => {
+      const customErrorCenter = { on: vi.fn() }
+      const customIntl = new GeoIntl('de-AT', customErrorCenter as never)
+
+      expect(customIntl.display('invalid_code_!!!', 'region')).toBe('invalid_code_!!!')
+      expect(customErrorCenter.on).toHaveBeenCalledWith(
+        expect.objectContaining({ group: 'intl', code: 'display' })
+      )
+
+      expect(customIntl.relativeByValue(5, 'invalid-unit' as Intl.RelativeTimeFormatUnit)).toBe('')
+      expect(customErrorCenter.on).toHaveBeenCalledWith(
+        expect.objectContaining({ group: 'intl', code: 'relative' })
+      )
+    })
   })
 
   describe('General Methods', () => {

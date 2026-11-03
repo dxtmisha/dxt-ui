@@ -7,8 +7,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Kiểm tra xem giá trị có trong mảng hiện tại hay không.
 
 **Tham số:**
-- `array: T[]` — mảng để kiểm tra.
-- `value: T` — giá trị cần kiểm tra.
+- `array: readonly T[]` — mảng để kiểm tra.
+- `value?: T | null` — giá trị cần kiểm tra.
 
 **Trả về:**
 `boolean` — `true` nếu giá trị có trong mảng, ngược lại là `false`.

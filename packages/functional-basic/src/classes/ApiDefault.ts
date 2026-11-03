@@ -4,7 +4,7 @@ import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { executeFunction } from '../functions/executeFunction'
 
-import { type ApiDefaultValue, type ApiFetch } from '../types/apiTypes'
+import type { ApiDefaultValue, ApiFetch } from '../types/apiTypes'
 
 /**
  * Class for working with default API request data.
@@ -55,12 +55,12 @@ export class ApiDefault {
    * @returns merged request data / объединенные данные запроса
    */
   request(
-    request: ApiFetch['request']
+    request?: ApiFetch['request']
   ): ApiFetch['request'] {
     const value = this.get()
 
     if (isFilled(value)) {
-      if (request instanceof FormData) {
+      if (typeof FormData !== 'undefined' && request instanceof FormData) {
         this.addByFormData(request, value)
       } else if (request === undefined || isObjectNotArray(request)) {
         return {
@@ -83,12 +83,12 @@ export class ApiDefault {
    */
   protected addByFormData(
     request: FormData,
-    value: ApiDefaultValue
+    value: Record<string, unknown>
   ): this {
     Object.entries(value)
-      .forEach(([name, value]) => {
+      .forEach(([name, item]) => {
         if (!request.has(name)) {
-          request.set(name, value)
+          request.set(name, item as string | Blob)
         }
       })
 

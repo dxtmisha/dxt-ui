@@ -18,12 +18,12 @@ Lớp `ApiErrorItem` là một **vỏ bọc dữ liệu cho các phản hồi l�
 
 - `getMethod(): ApiMethodItem` — Trả về phương thức HTTP được sử dụng cho yêu cầu.
 - `getResponse(): Response` — Trả về đối tượng phản hồi Fetch thô.
-- `getError(): ApiErrorStorageItem` — Trả về tiêu chí lỗi đã xác định từ bộ lưu trữ.
+- `getError(): ApiErrorStorageItem | undefined` — Trả về tiêu chí lỗi đã xác định từ bộ lưu trữ.
 - `getStatus(): number` — Trả về mã trạng thái HTTP.
 
 ### Trích xuất dữ liệu
 
-- `getCode(): string | undefined` — Lấy mã lỗi từ tiêu chí lưu trữ.
+- `getCode(): string | number | undefined` — Lấy mã lỗi từ tiêu chí lưu trữ.
 - `getMessage(): string | undefined` — Giải quyết thông báo lỗi (kiểm tra tiêu chí lưu trữ hoặc quay lại mặc định của phản hồi).
 
 ## Kiến trúc

@@ -62,11 +62,11 @@ export class ApiHeaders {
    * @returns merged headers or undefined / объединенные заголовки или undefined
    */
   getByRequest(
-    request: ApiFetch['request'],
+    request?: ApiFetch['request'],
     value?: Record<string, string> | null,
-    type = 'application/json;charset=UTF-8'
+    type: string | undefined | null = 'application/json;charset=UTF-8'
   ): Record<string, string> | undefined {
-    if (request instanceof FormData) {
+    if (typeof FormData !== 'undefined' && request instanceof FormData) {
       return this.get(value, null)
     }
 

@@ -17,7 +17,7 @@ The `ApiErrorStorage` class is a **Manager for handling and identifying API erro
 
 ### Management
 
-- `add(item: ApiErrorStorageItem | ApiErrorStorageList): this` — Adds one or more error items or lists to the internal storage.
+- `add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): this` — Adds one or more error items or lists to the internal storage.
 
 ### Identification
 
@@ -45,7 +45,7 @@ if (errorItem.code === 'USER_NOT_FOUND') {
 
 - `url: string | RegExp` — URL string or regular expression to match the request URL.
 - `method: ApiMethodItem` — HTTP method required for the match.
-- `code?: string` — Optional error code to match against the JSON body.
+- `code?: string | number` — Optional error code to match against the JSON body.
 - `status?: number` — Optional HTTP status code to match.
 - `validation?: (response: Response) => boolean` — Optional custom validation function.
 - `message?: string | ((response?: Response) => string)` — Optional error message or message factory.

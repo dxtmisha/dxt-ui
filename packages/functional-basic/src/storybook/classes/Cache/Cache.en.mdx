@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Cache Class
 
-> **⚠️ Deprecated** — This class is obsolete and should not be used. / Этот класс устарел и не рекомендуется к использованию.
+> **⚠️ Deprecated** — This class is obsolete and should not be used.
 
 A lightweight, memory-based caching mechanism. It provides an efficient way to execute expensive data-fetching functions only when necessary, relying on "comparison arrays" to trigger cache invalidation and recalculation.
 
@@ -19,7 +19,7 @@ A lightweight, memory-based caching mechanism. It provides an efficient way to e
 To initialize the object, call the `Cache()` constructor.
 
 ```typescript
-import { Cache } from '@dxtmisha/functional'
+import { Cache } from '@dxtmisha/functional-basic'
 
 // 1. Storage initialization
 const cache = new Cache()
@@ -39,7 +39,7 @@ Use the `get()` method to retrieve a cached value or calculate it if it doesn't 
 **Parameters:**
 - `name: string` — a unique identifier for the cache entry.
 - `callback: () => T` — the function that computes the value.
-- `comparison?: any[]` — optional array of dependencies. If any value in this array changes relative to the last call, the cache is invalidated and `callback` runs again.
+- `comparison?: unknown[]` — optional array of dependencies. If any value in this array changes relative to the last call, the cache is invalidated and `callback` runs again.
 
 **Returns:** `T` — the cached or freshly calculated value.
 
@@ -64,7 +64,7 @@ Functions identically to `get()`, but designed for async calls.
 **Parameters:**
 - `name: string` — a unique identifier for the cache entry.
 - `callback: () => Promise<T>` — the async function that computes the value.
-- `comparison?: any[]` — optional array of dependencies.
+- `comparison?: unknown[]` — optional array of dependencies.
 
 **Returns:** `Promise<T>` — the cached or freshly calculated async value.
 

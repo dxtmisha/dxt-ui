@@ -18,12 +18,12 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 - `getMethod(): ApiMethodItem` — Возвращает HTTP-метод, использованный для запроса.
 - `getResponse(): Response` — Возвращает сырой объект ответа Fetch.
-- `getError(): ApiErrorStorageItem` — Возвращает идентифицированные критерии ошибки из хранилища.
+- `getError(): ApiErrorStorageItem | undefined` — Возвращает идентифицированные критерии ошибки из хранилища.
 - `getStatus(): number` — Возвращает код статуса HTTP.
 
 ### Извлечение данных
 
-- `getCode(): string | undefined` — Получает код ошибки из критериев хранилища.
+- `getCode(): string | number | undefined` — Получает код ошибки из критериев хранилища.
 - `getMessage(): string | undefined` — Разрешает сообщение об ошибке (проверяет критерии хранилища или использует значения по умолчанию из ответа).
 
 ## Архитектура

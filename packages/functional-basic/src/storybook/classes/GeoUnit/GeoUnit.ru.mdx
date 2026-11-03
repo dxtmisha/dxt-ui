@@ -1,0 +1,66 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/GeoUnit - Единицы измерения'/>
+
+# Класс GeoUnit
+
+Класс для локализованного форматирования единиц измерения и автоматической конвертации между метрической и неметрической системами. Автоматически преобразует метрические единицы (такие как грамм, метр, градус Цельсия) в локальные аналоги (унция, фут, градус Фаренгейта) для неметрических регионов (США, Мьянма, Либерия) и форматирует их с помощью `GeoIntl`.
+
+## Ключевые особенности
+
+- **Автоматическая конвертация** — прозрачный перевод длины, площади, веса, объёма, температуры и скорости в соответствии с настройками страны из `Geo`.
+- **Локализованное форматирование** — интеграция с `GeoIntl.unit()` и поддержка стандартных опций `Intl.NumberFormatOptions`.
+- **Кэширование экземпляров** — паттерн мультитон (`GeoUnit.getInstance()`), переиспользующий экземпляры по стандартному коду локали.
+
+## Инициализация
+
+```javascript
+import { GeoUnit } from '@dxtmisha/functional-basic'
+
+// Получение кэшированного экземпляра для текущей локали
+const unit = GeoUnit.getInstance()
+
+// Для конкретной локали
+const usUnit = new GeoUnit('en-US')
+const ruUnit = new GeoUnit('ru-RU')
+```
+
+## Методы
+
+### Статические методы
+- `GeoUnit.getInstance(code?: string): GeoUnit` — Возвращает кэшированный экземпляр `GeoUnit` для указанной локали.
+
+### Информация
+- `getLocation(): string` — Возвращает стандартный код локали (например, `'en-US'`).
+
+### Универсальное форматирование
+- `format(value: NumberOrString, unit: string, options?: Intl.NumberFormatOptions): string` — Конвертирует и форматирует значение для указанной единицы измерения (`'millimeter'`, `'centimeter'`, `'meter'`, `'kilometer'`, `'square-meter'`, `'hectare'`, `'gram'`, `'kilogram'`, `'tonne'`, `'milliliter'`, `'liter'`, `'celsius'`, `'kilometer-per-hour'`).
+
+### Специализированные методы
+- `celsius(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Градусы Цельсия (конвертируются в Фаренгейты для США).
+- `centimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Сантиметры (в дюймы).
+- `gram(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Граммы (в унции).
+- `hectare(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Гектары (в акры).
+- `kilogram(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Килограммы (в фунты).
+- `kilometer(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Километры (в мили).
+- `kilometerPerHour(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Километры в час (в мили в час).
+- `liter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Литры (в галлоны).
+- `meter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Метры (в футы).
+- `milliliter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Миллилитры (в жидкие унции).
+- `millimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Миллиметры (в дюймы).
+- `squareMeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Квадратные метры (в квадратные футы).
+- `tonne(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Тонны (в короткие тонны).
+
+## Примеры
+
+```javascript
+const ruUnit = GeoUnit.getInstance('ru-RU')
+const usUnit = GeoUnit.getInstance('en-US')
+
+console.log(ruUnit.meter(100))   // "100 м"
+console.log(usUnit.meter(100))   // "328.084 ft"
+
+console.log(ruUnit.celsius(0))   // "0 °C"
+console.log(usUnit.celsius(0))   // "32°F"
+```
+

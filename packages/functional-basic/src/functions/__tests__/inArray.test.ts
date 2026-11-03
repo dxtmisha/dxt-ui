@@ -25,13 +25,25 @@ describe('inArray', () => {
       expect(inArray([true], false)).toBe(false)
       expect(inArray([false], false)).toBe(true)
     })
+
+    it('should accept readonly arrays (as const) and optional/nullish search values', () => {
+      const sizes = ['sm', 'md', 'lg'] as const
+      const optionalSize: 'sm' | 'md' | 'lg' | undefined = 'md'
+      const missingSize: 'sm' | 'md' | 'lg' | undefined = undefined
+
+      expect(inArray(sizes, optionalSize)).toBe(true)
+      expect(inArray(sizes, missingSize)).toBe(false)
+      expect(inArray(sizes, null)).toBe(false)
+      expect(inArray(sizes)).toBe(false)
+    })
   })
 
   describe('Boundary values and array shapes', () => {
     it('should return false for any search value in an empty array', () => {
-      expect(inArray([], 1 as never)).toBe(false)
-      expect(inArray([], '' as never)).toBe(false)
-      expect(inArray([], undefined as never)).toBe(false)
+      expect(inArray<number>([], 1)).toBe(false)
+      expect(inArray<string>([], '')).toBe(false)
+      expect(inArray([], undefined)).toBe(false)
+      expect(inArray([], null)).toBe(false)
     })
 
     it('should match single-element arrays and boundary positions (first and last)', () => {

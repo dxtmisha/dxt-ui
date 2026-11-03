@@ -32,11 +32,13 @@ describe('Icons', () => {
     expect(result).toContain('.svg')
   })
 
-  it('should check if an icon is registered (is)', () => {
+  it('should check if an icon is registered (is) and not match Object.prototype keys', () => {
     Icons.add('check', '<svg>check</svg>')
     expect(Icons.is('check')).toBe(true)
     expect(Icons.is('@check')).toBe(true)
     expect(Icons.is('nonexistent')).toBe(false)
+    expect(Icons.is('toString')).toBe(false)
+    expect(Icons.is('constructor')).toBe(false)
   })
 
   it('should return a list of registered icon names', () => {

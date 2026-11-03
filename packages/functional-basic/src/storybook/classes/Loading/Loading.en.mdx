@@ -16,6 +16,7 @@ A static class for managing global loading state (uses `LoadingInstance`). Uses 
 
 - `is(): boolean` — returns `true` if loading is active (counter > 0).
 - `get(): number` — returns the current counter value.
+- `getItem(): LoadingInstance` — returns a request-isolated instance of `LoadingInstance`.
 - `show(): void` — increments the counter by 1, notifies listeners.
 - `hide(): void` — decrements the counter by 1. Ignored if counter is already 0.
 

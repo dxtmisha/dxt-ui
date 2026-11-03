@@ -1,0 +1,66 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/GeoUnit - Đơn vị đo lường'/>
+
+# Lớp GeoUnit
+
+Lớp định dạng đơn vị đo lường được bản địa hóa và tự động chuyển đổi giữa hệ mét và hệ phi mét. Tự động chuyển đổi các đơn vị hệ mét (như gam, mét, độ C) sang các đơn vị tương đương tại địa phương (ounce, foot, độ F) cho các khu vực không dùng hệ mét (Hoa Kỳ, Myanmar, Liberia) và định dạng chúng thông qua `GeoIntl`.
+
+## Tính năng chính
+
+- **Chuyển đổi tự động** — Chuyển đổi minh bạch chiều dài, diện tích, trọng lượng, thể tích, nhiệt độ và tốc độ theo cài đặt quốc gia trong `Geo`.
+- **Định dạng bản địa hóa** — Tích hợp với `GeoIntl.unit()` và hỗ trợ `Intl.NumberFormatOptions` tiêu chuẩn.
+- **Bộ nhớ đệm thực thể** — Mẫu multiton (`GeoUnit.getInstance()`) tái sử dụng các thực thể theo mã ngôn ngữ tiêu chuẩn.
+
+## Khởi tạo
+
+```javascript
+import { GeoUnit } from '@dxtmisha/functional-basic'
+
+// Lấy thực thể đã lưu trong bộ nhớ đệm cho ngôn ngữ hiện tại
+const unit = GeoUnit.getInstance()
+
+// Cho một ngôn ngữ cụ thể
+const usUnit = new GeoUnit('en-US')
+const viUnit = new GeoUnit('vi-VN')
+```
+
+## Các phương thức
+
+### Phương thức tĩnh
+- `GeoUnit.getInstance(code?: string): GeoUnit` — Trả về thực thể `GeoUnit` đã lưu trong bộ nhớ đệm cho ngôn ngữ được chỉ định.
+
+### Thông tin
+- `getLocation(): string` — Trả về mã ngôn ngữ tiêu chuẩn (ví dụ: `'en-US'`).
+
+### Định dạng chung
+- `format(value: NumberOrString, unit: string, options?: Intl.NumberFormatOptions): string` — Chuyển đổi và định dạng giá trị cho đơn vị được chỉ định (`'millimeter'`, `'centimeter'`, `'meter'`, `'kilometer'`, `'square-meter'`, `'hectare'`, `'gram'`, `'kilogram'`, `'tonne'`, `'milliliter'`, `'liter'`, `'celsius'`, `'kilometer-per-hour'`).
+
+### Phương thức theo đơn vị
+- `celsius(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Độ C (chuyển sang độ F cho Hoa Kỳ).
+- `centimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Xăng-ti-mét (sang inch).
+- `gram(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Gam (sang ounce).
+- `hectare(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Héc-ta (sang mẫu Anh).
+- `kilogram(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Ki-lô-gam (sang pound).
+- `kilometer(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Ki-lô-mét (sang dặm).
+- `kilometerPerHour(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Ki-lô-mét trên giờ (sang dặm trên giờ).
+- `liter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Lít (sang gallon).
+- `meter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Mét (sang foot).
+- `milliliter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Mi-li-lít (sang ounce chất lỏng).
+- `millimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Mi-li-mét (sang inch).
+- `squareMeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Mét vuông (sang foot vuông).
+- `tonne(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Tấn (sang tấn ngắn).
+
+## Ví dụ
+
+```javascript
+const viUnit = GeoUnit.getInstance('vi-VN')
+const usUnit = GeoUnit.getInstance('en-US')
+
+console.log(viUnit.meter(100))   // "100 m"
+console.log(usUnit.meter(100))   // "328.084 ft"
+
+console.log(viUnit.celsius(0))   // "0°C"
+console.log(usUnit.celsius(0))   // "32°F"
+```
+

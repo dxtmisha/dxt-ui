@@ -37,12 +37,14 @@ export class LoadingInstance {
   /** Current loading value / Текущее значение загрузки */
   protected value = 0
   /** Event item / Элемент события */
-  protected event?: EventItem<Window, CustomEvent>
+  protected event?: EventItem<Window, CustomEvent, LoadingDetail>
   /** Registration list / Список регистрации */
   protected registrationList: LoadingRegistrationItem[] = []
 
   /**
-   * Constructor
+   * Constructor for LoadingInstance.
+   *
+   * Конструктор для LoadingInstance.
    * @param eventName name of the event for tracking loading / название события для отслеживания загрузки
    */
   constructor(
@@ -54,16 +56,6 @@ export class LoadingInstance {
   }
 
   /**
-   * Get current loading value.
-   *
-   * Получить текущее значение загрузки.
-   * @returns returns the current loading value / возвращает текущее значение загрузки
-   */
-  get(): number {
-    return this.value
-  }
-
-  /**
    * Check if the loader is active now.
    *
    * Проверить, активен ли сейчас загрузчик.
@@ -71,6 +63,16 @@ export class LoadingInstance {
    */
   is(): boolean {
     return this.value > 0
+  }
+
+  /**
+   * Get current loading value.
+   *
+   * Получить текущее значение загрузки.
+   * @returns returns the current loading value / возвращает текущее значение загрузки
+   */
+  get(): number {
+    return this.value
   }
 
   /**
@@ -153,9 +155,10 @@ export class LoadingInstance {
    * Calls the event listener.
    *
    * Вызывает слушателя событий.
+   * @returns void / ничего не возвращает
    */
   protected dispatch(): void {
-    this.event?.dispatch({ loading: this.is() } as LoadingDetail)
+    this.event?.dispatch({ loading: this.is() })
     this.pruneRegistrationList()
   }
 
@@ -163,6 +166,7 @@ export class LoadingInstance {
    * Prunes inactive event items from the registration list.
    *
    * Удаляет неактивные элементы событий из списка регистрации.
+   * @returns void / ничего не возвращает
    */
   protected pruneRegistrationList(): void {
     this.registrationList = this.registrationList.filter(item => item.item.isActive())

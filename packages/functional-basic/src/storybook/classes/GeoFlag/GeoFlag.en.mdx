@@ -34,11 +34,15 @@ const usFlag = new GeoFlag('en-US')
 
 ### Data Retrieval
 - `get(code?: string): GeoFlagItem | undefined` — Returns a full data object about a country.
+- `getCode(): string` — Returns the current country or locale code of the instance.
 - `getFlag(code?: string): string | undefined` — Returns only the flag icon identifier (e.g., `'f-us'`).
+- `getLanguage(code?: string): GeoFlagItem | undefined` — Returns language and flag information (where `label` and `value` correspond to the language).
 
 ### Lists
 - `getList(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Returns an array of country data, sorted alphabetically by default.
+- `getListLanguage(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Returns a deduplicated list of languages, sorted alphabetically by default.
 - `getNational(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Returns a list of countries with national names, sorted alphabetically by default.
+- `getNationalLanguage(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Returns a list of languages with their national names, sorted alphabetically by default.
 
 ### Configuration
 - `setCode(code: string): this` — Changes the base locale for the current instance.
@@ -77,12 +81,14 @@ const national = geo.getNational(['JP'])
 ### `GeoFlagItem`
 Basic flag information object.
 - `country`: string — Localized country name.
+- `countryCode`: string — Country code (ISO alpha-2).
 - `language`: string — Localized language name.
+- `languageCode`: string — Language code (ISO 639-1).
 - `standard`: string — Full locale standard (e.g., `en-US`).
-- `icon`: string — Flag icon name (prefix `f-`).
-- `label`: string — Display label (matches `country` by default).
-- `value`: string — Country code (ISO alpha-2).
-- `phoneCode`: string — Country phone code (e.g., `+1`, `+7`).
+- `icon`: string | undefined — Flag icon name (prefix `f-`).
+- `label`: string — Display label (matches `country` or `language` by default).
+- `value`: string — Selection value (country code or language code).
+- `phoneCode`: string | undefined — Country phone code (e.g., `+1`, `+7`).
 
 ### `GeoFlagNational`
 Extends `GeoFlagItem` with additional fields:

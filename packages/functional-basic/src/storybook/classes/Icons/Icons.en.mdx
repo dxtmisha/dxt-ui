@@ -35,8 +35,9 @@ Icons.setUrl('/assets/svg/')
 
 ### Retrieving Icons
 
-- `async get(index: string, url?: string, wait?: number): Promise<string>` — Returns the content or path of an icon by name. If the icon is marked as "loading", waits for it to appear (default timeout: 3 min).
 - `is(index: string): boolean` — Checks whether an icon is registered.
+- `async get(index: string, url?: string, wait?: number): Promise<string>` — Returns the content or path of an icon by name. If the icon is marked as "loading", waits for it to appear (default timeout: 3 min).
+- `getAsync(index: string, url?: string): string` — Synchronously returns the icon if it is already loaded as a string (otherwise `''`).
 - `getNameList(): string[]` — Returns a list of names of all registered icons.
 - `getUrlGlobal(): string` — Returns the current base URL for icons.
 
@@ -44,6 +45,7 @@ Icons.setUrl('/assets/svg/')
 
 - `setUrl(url: string): void` — Changes the base path for icon storage.
 - `setConfig(config: IconsConfig): void` — Updates the icons configuration (URL and/or icon list).
+- `reset(): void` — Resets the icon registry and restores the default base URL (`'/icons/'`).
 
 ## Loading System
 

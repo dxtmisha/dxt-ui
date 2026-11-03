@@ -21,9 +21,20 @@ export class PluginCode {
   }
 
   /**
+   * Checks if the code has been modified compared to the original.
+   *
+   * Проверяет, был ли код изменен по сравнению с оригиналом.
+   * @returns true if code was modified / true, если код был изменен
+   */
+  isModified(): boolean {
+    return this.newCode !== this.code
+  }
+
+  /**
    * Checks if the file is a Vue component.
    *
    * Проверяет, является ли файл компонентом Vue.
+   * @returns true if file is a Vue component / true, если файл является компонентом Vue
    */
   isVue(): boolean {
     return PluginTool.isVue(this.id)
@@ -33,36 +44,10 @@ export class PluginCode {
    * Checks if the file is a SCSS file.
    *
    * Проверяет, является ли файл SCSS.
+   * @returns true if file is a SCSS file / true, если файл является SCSS
    */
   isScss(): boolean {
     return PluginTool.isCss(this.id)
-  }
-
-  /**
-   * Returns the modified code.
-   *
-   * Возвращает измененный код.
-   */
-  get(): string {
-    return this.newCode
-  }
-
-  /**
-   * Returns the file ID.
-   *
-   * Возвращает ID файла.
-   */
-  getId(): string {
-    return this.id
-  }
-
-  /**
-   * Returns the original code.
-   *
-   * Возвращает оригинальный код.
-   */
-  getCode(): string {
-    return this.code
   }
 
   /**
@@ -71,6 +56,7 @@ export class PluginCode {
    * Проверяет наличие кода.
    * @param pattern search pattern / паттерн поиска
    * @param flags search flags / флаги поиска
+   * @returns true if pattern is found / true, если паттерн найден
    */
   has(
     pattern: string | RegExp,
@@ -84,12 +70,56 @@ export class PluginCode {
   }
 
   /**
+   * Returns the modified code.
+   *
+   * Возвращает измененный код.
+   * @returns modified code string / строка измененного кода
+   */
+  get(): string {
+    return this.newCode
+  }
+
+  /**
+   * Returns the file ID.
+   *
+   * Возвращает ID файла.
+   * @returns file ID / ID файла
+   */
+  getId(): string {
+    return this.id
+  }
+
+  /**
+   * Returns the original code.
+   *
+   * Возвращает оригинальный код.
+   * @returns original code string / строка оригинального кода
+   */
+  getCode(): string {
+    return this.code
+  }
+
+  /**
+   * Sets the modified code value.
+   *
+   * Устанавливает новое значение измененного кода.
+   * @param code new code value / новое значение кода
+   * @returns current instance / текущий экземпляр
+   */
+  set(code: string): this {
+    this.newCode = code
+
+    return this
+  }
+
+  /**
    * Adds code after the <script setup> tag.
    * If the tag is missing, adds it to the beginning of the file.
    *
    * Добавляет код после тега <script setup>.
    * Если тег отсутствует, добавляет в начало файла.
    * @param code code to add / код для добавления
+   * @returns current instance / текущий экземпляр
    */
   addAfterScript(code: string): this {
     const regExp = /(<script[^>]*\bsetup\b[^>]*>)/
@@ -109,6 +139,7 @@ export class PluginCode {
    *
    * Добавляет код в начало файла.
    * @param code code to add / код для добавления
+   * @returns current instance / текущий экземпляр
    */
   addStart(code: string): this {
     this.newCode = `${code}${this.newCode}`
@@ -122,6 +153,7 @@ export class PluginCode {
    * Добавляет код в начало файла, если он отсутствует.
    * @param code code to add / код для добавления
    * @param pattern search pattern / паттерн поиска
+   * @returns current instance / текущий экземпляр
    */
   addStartIfNone(
     code: string,
@@ -140,6 +172,7 @@ export class PluginCode {
    * Заменяет найденный фрагмент на новый код в newCode.
    * @param pattern search pattern / паттерн поиска
    * @param replacement replacement string / строка замены
+   * @returns current instance / текущий экземпляр
    */
   replace(
     pattern: string | RegExp,

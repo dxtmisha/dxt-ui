@@ -1,0 +1,66 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/GeoUnit - Measurement Units'/>
+
+# GeoUnit Class
+
+A class for localized unit formatting and automatic conversion between metric and non-metric systems. Automatically converts metric units (such as gram, meter, Celsius) to local equivalents (ounce, foot, Fahrenheit) for non-metric regions (US, Myanmar, Liberia) and formats them via `GeoIntl`.
+
+## Key Features
+
+- **Automatic Conversion** — Transparent conversion of length, area, weight, volume, temperature, and speed according to country settings in `Geo`.
+- **Localized Formatting** — Integrated with `GeoIntl.unit()` and supports standard `Intl.NumberFormatOptions`.
+- **Instance Caching** — Multiton pattern (`GeoUnit.getInstance()`) that reuses instances by standard locale code.
+
+## Initialization
+
+```javascript
+import { GeoUnit } from '@dxtmisha/functional-basic'
+
+// Get cached instance for the current locale
+const unit = GeoUnit.getInstance()
+
+// For a specific locale
+const usUnit = new GeoUnit('en-US')
+const ruUnit = new GeoUnit('ru-RU')
+```
+
+## Methods
+
+### Static Methods
+- `GeoUnit.getInstance(code?: string): GeoUnit` — Returns a cached `GeoUnit` instance for the specified locale.
+
+### Information
+- `getLocation(): string` — Returns the standard locale code (e.g., `'en-US'`).
+
+### General Formatting
+- `format(value: NumberOrString, unit: string, options?: Intl.NumberFormatOptions): string` — Converts and formats the value for the specified unit (`'millimeter'`, `'centimeter'`, `'meter'`, `'kilometer'`, `'square-meter'`, `'hectare'`, `'gram'`, `'kilogram'`, `'tonne'`, `'milliliter'`, `'liter'`, `'celsius'`, `'kilometer-per-hour'`).
+
+### Unit-Specific Methods
+- `celsius(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Degrees Celsius (converted to Fahrenheit for the US).
+- `centimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Centimeters (to inches).
+- `gram(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Grams (to ounces).
+- `hectare(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Hectares (to acres).
+- `kilogram(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Kilograms (to pounds).
+- `kilometer(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Kilometers (to miles).
+- `kilometerPerHour(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Kilometers per hour (to miles per hour).
+- `liter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Liters (to gallons).
+- `meter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Meters (to feet).
+- `milliliter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Milliliters (to fluid ounces).
+- `millimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Millimeters (to inches).
+- `squareMeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Square meters (to square feet).
+- `tonne(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Tonnes (to short tons).
+
+## Examples
+
+```javascript
+const ruUnit = GeoUnit.getInstance('ru-RU')
+const usUnit = GeoUnit.getInstance('en-US')
+
+console.log(ruUnit.meter(100))   // "100 м"
+console.log(usUnit.meter(100))   // "328.084 ft"
+
+console.log(ruUnit.celsius(0))   // "0 °C"
+console.log(usUnit.celsius(0))   // "32°F"
+```
+

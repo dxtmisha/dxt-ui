@@ -58,14 +58,15 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### ApiConfig
 
-- `urlRoot: string` — базовый URL для API.
-- `origin: string` — протокол и домен для формирования базового URL.
-- `headers: Record<string, string>` — заголовки запроса по умолчанию.
-- `requestDefault: Record<string, any>` — данные запроса по умолчанию.
-- `preparation: (apiFetch: ApiFetch) => Promise<void>` — входной хук.
-- `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — выходной хук.
-- `timeout: number` — глобальный таймаут в миллисекундах.
-- `wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — функция-обертка для выполнения запросов.
+- `urlRoot?: string` — базовый URL для API.
+- `origin?: string` — протокол и домен для формирования базового URL.
+- `headers?: ApiHeadersValue` — заголовки запроса по умолчанию.
+- `requestDefault?: ApiDefaultValue` — данные запроса по умолчанию.
+- `preparation?: (apiFetch: ApiFetch) => Promise<void>` — входной хук.
+- `end?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — выходной хук.
+- `timeout?: number` — глобальный таймаут в миллисекундах.
+- `devMode?: boolean` — включить режим разработчика.
+- `wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — функция-обертка для выполнения запросов.
 
 ## Прокси-архитектура
 
@@ -73,7 +74,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### Управление экземпляром
 
-Внутренний менеджер хранится в `ServerStorage` под уникальным ключом (`__dxt_api_instance__`). Эта архитектура решает две основные проблемы:
+Внутренний менеджер хранится в `ServerStorage` под уникальным ключом (`__ui:api-instance__`). Эта архитектура решает две основные проблемы:
 
 1.  **Потокобезопасность в SSR**: Во время рендеринга на стороне сервера `ServerStorage` гарантирует, что каждый входящий запрос имеет свою собственную изолированную конфигурацию и состояние API, предотвращая утечку данных между пользователями.
 2.  **Простота синглтона на клиенте**: На стороне клиента он ведет себя как настоящий синглтон, позволяя настроить API в точке входа и использовать его где угодно без передачи экземпляров.

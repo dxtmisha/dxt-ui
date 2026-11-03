@@ -22,13 +22,13 @@ To initialize the object, call the constructor `EventItem(elementSelector, type,
 ### Generic Constraints
 
 To ensure strict typing, the class supports the following generics:
-- `E extends ElementOrWindow` — The type of element on which events are listened.
-- `O extends Event` — The type of the event object.
-- `D extends Record<string, any>` — The structure of additional data.
+- `E extends ElementOrWindow = ElementOrWindow` — The type of element on which events are listened.
+- `O extends Event = Event` — The type of the event object.
+- `D extends Record<string, unknown> = Record<string, unknown>` — The structure of additional data.
 
 **Parameters:**
 - `elementSelector?: ElementOrString<E>` — the target element on which the listener is attached.
-- `type: string | string[] = 'click'` — event type, array of types, or special types (`'resize'`, `'scroll-sync'`).
+- `type: string | string[] = ['click']` — event type, array of types, or special types (`'resize'`, `'scroll-sync'`).
 - `listener?: EventListenerDetail<O, D>` — the event handler function.
 - `options?: EventOptions` — standard `addEventListener` options.
 - `detail?: D` — custom data that will be available in the handler.
@@ -71,12 +71,12 @@ customEvent.start()
 
 All methods in this group support chaining and automatically call `reset()` if the event is active.
 
-- `setElement(elementSelector?: ElementOrString): this` — Changes the target element.
-- `setElementControl(elementSelector?: ElementOrString): this` — Sets the control element (if it is not in the DOM, the event will not fire).
-- `setType(type: string | string[]): this` — Changes the event type.
-- `setListener(listener: Function): this` — Changes the handler function.
-- `setOptions(options?: EventOptions): this` — Changes the listener parameters.
 - `setDetail(detail?: D): this` — Changes the custom event data.
+- `setElement(elementSelector?: ElementOrString<E>): this` — Changes the target element (restarts listening if active).
+- `setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this` — Sets the control element (if it is not in the DOM, the event will not fire).
+- `setListener(listener?: EventListenerDetail<O, D>): this` — Changes the handler function.
+- `setOptions(options?: EventOptions): this` — Changes the listener parameters (restarts listening if active).
+- `setType(type: string | string[]): this` — Changes the event type (restarts listening if active).
 
 ### Management
 

@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.3] - 2026-11-03
+
+### Added
+- **Source Maps Generation via `magic-string` (`PluginMap`)**:
+  - Introduced `PluginMap` class (`src/classes/Plugin/PluginMap.ts`) generating high-resolution boundary source maps for modified code using `magic-string`.
+  - Implemented common prefix (`getPrefixLength`) and suffix (`getSuffixLength`) diffing algorithms to isolate modified code ranges and optimize map generation.
+  - Added `map?: boolean` option to `PluginOptions` in `src/types/pluginTypes.ts` to control source map generation.
+  - Exported `PluginMap` in `src/library.ts`.
+  - Added unit test suite in `src/classes/Plugin/__tests__/PluginMap.test.ts`.
+- **`PluginCode` State & Mutation Tracking**:
+  - Added `isModified()` method to verify whether code content was altered.
+  - Added `set(code: string)` method to update or reset the modified code buffer.
+  - Updated unit tests in `src/classes/Plugin/__tests__/PluginCode.test.ts`.
+
+### Changed
+- **`Plugin` Source Map & Transform Integration**:
+  - Updated `Plugin.transform` to generate source maps via `this.getMap(magicCode)` and return `Rolldown.TransformResult` (`{ code, map }`).
+  - Added early return (`null`) when code is not modified (`!magicCode.isModified()`), skipping unnecessary bundler overhead.
+  - Added automatic sourcemap detection in `apply()` from Vite build options (`config?.build?.sourcemap`) or dev mode (`PluginTool.isDev(env.mode)`).
+  - Added `isMap()` and `getMap()` helper methods.
+  - Updated `Plugin` unit tests in `src/classes/Plugin/__tests__/Plugin.test.ts`.
+- **Dependencies**:
+  - Added `magic-string` (`>=0.30.21`) dependency in `package.json`.
+
 ## [1.4.1] - 2026-11-03
 
 ### Added

@@ -12,7 +12,7 @@ export abstract class UrlInstanceAbstract {
   /** URL state data record / Запись данных состояния URL */
   protected data?: Record<string, unknown>
   /** Watchers map for URL state variables / Карта слушателей для переменных состояния URL */
-  protected watch: Record<string, ((value: unknown) => void)[]> = {}
+  protected watch: Record<string, ((value: unknown) => void)[]> = Object.create(null)
   /** Update block flag / Флаг блокировки обновления */
   protected block = false
   /** Debounce timer instance / Экземпляр таймера задержки */
@@ -35,13 +35,17 @@ export abstract class UrlInstanceAbstract {
     const data = this.getData()
 
     if (
-      !(name in data)
+      !Object.prototype.hasOwnProperty.call(data, name)
       && defaultValue !== undefined
     ) {
       this.set(name, defaultValue)
     }
 
-    return data[name] as T
+    return (
+      Object.prototype.hasOwnProperty.call(data, name)
+        ? data[name]
+        : undefined
+    ) as T
   }
 
   /**
@@ -56,10 +60,14 @@ export abstract class UrlInstanceAbstract {
     name: string,
     callback: T | (() => T)
   ): this {
+    const data = this.getData()
     const value = executeFunction(callback)
+    const currentValue = Object.prototype.hasOwnProperty.call(data, name)
+      ? data[name]
+      : undefined
 
-    if (value !== this.data?.[name]) {
-      this.getData()[name] = value
+    if (value !== currentValue) {
+      data[name] = value
       this.update()
     }
 
@@ -78,8 +86,10 @@ export abstract class UrlInstanceAbstract {
     name: string,
     callback: (value: T) => void
   ): this {
-    if (name in this.watch) {
-      this.watch[name]?.push(callback as (value: unknown) => void)
+    const list = this.watch[name]
+
+    if (list) {
+      list.push(callback as (value: unknown) => void)
     } else {
       this.watch[name] = [callback as (value: unknown) => void]
     }
@@ -99,11 +109,26 @@ export abstract class UrlInstanceAbstract {
     name: string,
     callback: (value: T) => void
   ): this {
-    const list = this.watch?.[name]
+    const list = this.watch[name]
 
     if (list) {
       this.watch[name] = list.filter(item => item !== callback)
     }
+
+    return this
+  }
+
+  /**
+   * Destroys instance, clears timers and listeners.
+   *
+   * Уничтожает экземпляр, очищает таймеры и слушатели.
+   * @returns this instance / текущий экземпляр
+   */
+  destroy(): this {
+    clearTimeout(this.time)
+    clearTimeout(this.reloadTimer)
+    this.reloadTimer = undefined
+    this.removeListener()
 
     return this
   }
@@ -131,24 +156,10 @@ export abstract class UrlInstanceAbstract {
   }
 
   /**
-   * Destroys instance, clears timers and listeners.
-   *
-   * Уничтожает экземпляр, очищает таймеры и слушатели.
-   * @returns this instance / текущий экземпляр
-   */
-  destroy(): this {
-    clearTimeout(this.time)
-    clearTimeout(this.reloadTimer)
-    this.reloadTimer = undefined
-    this.removeListener()
-
-    return this
-  }
-
-  /**
    * Returns the query/hash data object, initializing if needed.
    *
    * Возвращает объект данных, инициализируя при необходимости.
+   * @protected
    * @returns Record<string, unknown> data object / объект данных
    */
   protected getData(): Record<string, unknown> {
@@ -160,9 +171,46 @@ export abstract class UrlInstanceAbstract {
   }
 
   /**
+   * Obtaining data from the URL string.
+   *
+   * Получение данных из строки URL.
+   * @protected
+   * @returns parsed URL data object / разобранный объект данных URL
+   */
+  protected abstract getLocation(): Record<string, unknown>
+
+  /**
+   * Removes window event listeners.
+   *
+   * Удаляет слушатели событий окна.
+   * @protected
+   * @returns void / ничего не возвращает
+   */
+  protected abstract removeListener(): void
+
+  /**
+   * Update string in URL.
+   *
+   * Обновление строки в URL.
+   * @protected
+   * @returns this instance / текущий экземпляр
+   */
+  protected abstract update(): this
+
+  /**
+   * Initializes data and event listeners.
+   *
+   * Инициализирует данные и слушатели событий.
+   * @protected
+   * @returns this instance / текущий экземпляр
+   */
+  protected abstract init(): this
+
+  /**
    * Reads data from the URL and triggers watchers.
    *
    * Считывает данные из URL и вызывает наблюдателей.
+   * @protected
    * @returns this instance / текущий экземпляр
    */
   protected initData(): this {
@@ -179,47 +227,23 @@ export abstract class UrlInstanceAbstract {
    *
    * Вызов всех функций, у которых были изменены данные.
    * @param location fresh data / свежие данные
+   * @protected
    * @returns this instance / текущий экземпляр
    */
   protected makeWatch(location: Record<string, unknown>): this {
     forEach(this.watch, (item, name) => {
-      if (this.data?.[name] !== location?.[name]) {
-        item.forEach(callback => callback(location[name]))
+      const prevValue = this.data && Object.prototype.hasOwnProperty.call(this.data, name)
+        ? this.data[name]
+        : undefined
+      const nextValue = Object.prototype.hasOwnProperty.call(location, name)
+        ? location[name]
+        : undefined
+
+      if (prevValue !== nextValue) {
+        item.forEach(callback => callback(nextValue))
       }
     })
 
     return this
   }
-
-  /**
-   * Initializes data and event listeners.
-   *
-   * Инициализирует данные и слушатели событий.
-   * @returns this instance / текущий экземпляр
-   */
-  protected abstract init(): this
-
-  /**
-   * Obtaining data from the URL string.
-   *
-   * Получение данных из строки URL.
-   * @returns parsed URL data object / разобранный объект данных URL
-   */
-  protected abstract getLocation(): Record<string, unknown>
-
-  /**
-   * Update string in URL.
-   *
-   * Обновление строки в URL.
-   * @returns this instance / текущий экземпляр
-   */
-  protected abstract update(): this
-
-  /**
-   * Removes window event listeners.
-   *
-   * Удаляет слушатели событий окна.
-   * @returns void / ничего не возвращает
-   */
-  protected abstract removeListener(): void
 }

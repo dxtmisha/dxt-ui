@@ -17,7 +17,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### Управление
 
-- `add(item: ApiErrorStorageItem | ApiErrorStorageList): this` — Добавляет один или несколько элементов или списков ошибок во внутреннее хранилище.
+- `add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): this` — Добавляет один или несколько элементов или списков ошибок во внутреннее хранилище.
 
 ### Идентификация
 
@@ -45,7 +45,7 @@ if (errorItem.code === 'USER_NOT_FOUND') {
 
 - `url: string | RegExp` — Строка URL или регулярное выражение для сопоставления с URL запроса.
 - `method: ApiMethodItem` — HTTP-метод, необходимый для совпадения.
-- `code?: string` — Необязательный код ошибки для сопоставления с телом JSON.
+- `code?: string | number` — Необязательный код ошибки для сопоставления с телом JSON.
 - `status?: number` — Необязательный код статуса HTTP для сопоставления.
 - `validation?: (response: Response) => boolean` — Необязательная функция пользовательской валидации.
 - `message?: string | ((response?: Response) => string)` — Необязательное сообщение об ошибке или фабрика сообщений.

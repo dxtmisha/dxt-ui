@@ -52,8 +52,8 @@ const apiResponse = new ApiResponse(myApiDefault)
 
 ### Проверка
 
-- `get(path: string, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Синхронно проверяет наличие подходящего мок-запроса в кэше.
-- `getList(): (ApiResponseItem & Record<string, any>)[]` — Возвращает список всех зарегистрированных конфигураций эмулятора.
+- `get(path: string = '', method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Синхронно проверяет наличие подходящего мок-запроса в кэше.
+- `getList(): (ApiResponseItem & Record<string, unknown>)[]` — Возвращает список всех зарегистрированных конфигураций эмулятора.
 
 ### Конфигурация
 

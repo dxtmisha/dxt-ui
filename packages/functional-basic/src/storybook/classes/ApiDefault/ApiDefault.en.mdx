@@ -24,14 +24,14 @@ A class for managing default data for API requests. It allows setting base param
 Merges the stored default data into a provided request object or `FormData` instance. If the input is a plain object, it returns a new merged object. If the input is `FormData`, it adds missing keys directly to the instance.
 
 **Parameters:**
-- `request: ApiFetch['request']` — The original request data (Object, FormData, or String).
+- `request?: ApiFetch['request']` — The original request data (Object, FormData, or String).
 
 **Returns:** `ApiFetch['request']` — The transformed request data.
 
 ### Check
 
 - `is(): boolean` — Checks if any default data has been set.
-- `get(): ApiDefaultValue | undefined` — Returns the current default data object.
+- `get(): Record<string, unknown> | undefined` — Returns the current default data object.
 
 ### Configuration
 

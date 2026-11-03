@@ -18,6 +18,8 @@ describe('GeoUnit', () => {
 
     const frenchInstance = GeoUnit.getInstance('fr-FR')
     expect(frenchInstance.getLocation()).toBe('fr-FR')
+
+    expect(GeoUnit.getInstance('toString')).toBe(firstInstance)
   })
 
   it('should format all metric units without conversion for metric countries (ru-RU)', () => {

@@ -98,7 +98,7 @@ export class ApiStatus {
    * Возвращает данные последнего запроса.
    * @returns last response data or undefined / данные последнего ответа или undefined
    */
-  getResponse<T>(): T | undefined {
+  getResponse<T = unknown>(): T | undefined {
     return this.get()?.lastResponse
   }
 
@@ -259,6 +259,7 @@ export class ApiStatus {
    * Устанавливает конкретное поле в элементе статуса.
    * @param name field name / название поля
    * @param value field value / значение поля
+   * @returns void / ничего не возвращает
    */
   protected setValue<K extends keyof ApiStatusItem>(
     name: K,

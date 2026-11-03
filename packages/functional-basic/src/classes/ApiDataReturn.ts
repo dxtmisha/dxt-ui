@@ -3,7 +3,7 @@
 import { isArray } from '../functions/isArray'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 
-import { ApiStatus } from './ApiStatus'
+import type { ApiStatus } from './ApiStatus'
 import type { ApiErrorItem } from './ApiErrorItem'
 
 import type { ApiData, ApiFetch, ApiPreparationEnd } from '../types/apiTypes'
@@ -132,7 +132,6 @@ export class ApiDataReturn<T = unknown> {
 
     if (
       !toData
-      || !data
       || !isObjectNotArray(data)
       || !('data' in data)
     ) {
@@ -178,8 +177,8 @@ export class ApiDataReturn<T = unknown> {
           && isObjectNotArray(data[key])
         ) {
           const error = data[key] as Record<string, unknown>
-          item.code = (error?.code ?? data.code) as string | number | undefined
-          item.message = (error?.message ?? data.message) as string | undefined
+          item.code = (error.code ?? data.code) as string | number | undefined
+          item.message = (error.message ?? data.message) as string | undefined
         }
       }
     })
@@ -193,7 +192,7 @@ export class ApiDataReturn<T = unknown> {
    * Считывает и анализирует данные из ответа.
    * @returns parsed API data / обработанные данные API
    */
-  protected async readData<T>(): Promise<ApiData<T>> {
+  protected async readData(): Promise<ApiData<T>> {
     const { queryReturn } = this.apiFetch
     const query = this.query
 

@@ -9,7 +9,7 @@ Trích xuất tất cả các thuộc tính HTML của một phần tử DOM đ�
 Hàm sử dụng `getElement` để tìm nút đích. Nếu phần tử không được tìm thấy hoặc đối số trống được truyền vào, nó sẽ trả về một đối tượng rỗng `{}`.
 
 **Tham số:**
-- `element?: ElementOrString<E>` — Một phần tử DOM, đối tượng Window, hoặc một chuỗi CSS selector để tìm kiếm phần tử đó.
+- `element?: ElementOrString<E> | null` — Một phần tử DOM, đối tượng Window, một chuỗi CSS selector để tìm kiếm phần tử đó, hoặc `null`.
 
 **Trả về:**
 `Record<string, string | undefined>` — Một đối tượng trong đó khóa là tên thuộc tính (ví dụ: `id`, `class`, `data-value`), và giá trị là nội dung của chúng.

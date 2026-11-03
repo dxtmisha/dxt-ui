@@ -48,8 +48,8 @@ export class Cache {
    * Gets or creates a CacheItem instance for the given name.
    *
    * Получает или создает экземпляр CacheItem для указанного имени.
-   * @param name - Unique cache key / Уникальный ключ кэша
-   * @param callback - Function to compute the value / Функция для вычисления значения
+   * @param name Unique cache key / Уникальный ключ кэша
+   * @param callback Function to compute the value / Функция для вычисления значения
    * @returns CacheItem instance for the cache key / Экземпляр CacheItem для ключа кэша
    */
   private getCacheItem<T>(

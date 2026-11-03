@@ -95,6 +95,14 @@ describe('GeoPhone', () => {
       expect(mapInfo?.mask[0]?.includes('=')).toBe(true)
     })
 
+    it('should apply "within" symbol "$" when within is 4 or "4"', () => {
+      const toWithin = (GeoPhone as unknown as { toWithin: (mask: string, within: number | string) => string }).toWithin.bind(GeoPhone)
+      expect(toWithin('+* (***)', 4)).toBe('+$ (***)')
+      expect(toWithin('+* (***)', '4')).toBe('+$ (***)')
+      expect(toWithin('+* (***)', 8)).toBe('+~ (***)')
+      expect(toWithin('+* (***)', 0)).toBe('+= (***)')
+    })
+
     it('should return undefined for unknown code', () => {
       const mapInfo = GeoPhone.getByCode('INVALID')
       expect(mapInfo).toBeUndefined()

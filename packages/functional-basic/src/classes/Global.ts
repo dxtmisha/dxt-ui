@@ -11,9 +11,16 @@ export class Global {
    *
    * Возвращает значение по его имени.
    * @param name property name / название свойства
+   * @returns property value / значение свойства
    */
   static get<R = unknown>(name: string): R {
-    return this.getItem()?.[name] as R
+    const item = this.getItem()
+
+    return (
+      Object.prototype.hasOwnProperty.call(item, name)
+        ? item[name]
+        : undefined
+    ) as R
   }
 
   /**

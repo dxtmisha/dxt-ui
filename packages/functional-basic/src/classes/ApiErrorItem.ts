@@ -24,7 +24,7 @@ export class ApiErrorItem {
   constructor(
     protected readonly method: ApiMethodItem,
     protected readonly response: Response,
-    protected readonly error: ApiErrorStorageItem
+    protected readonly error?: ApiErrorStorageItem
   ) { }
 
   /**
@@ -43,16 +43,14 @@ export class ApiErrorItem {
    * Возвращает идентифицированный элемент ошибки из хранилища, если он существует.
    * @returns error item or undefined / элемент ошибки или undefined
    */
-  getError(): ApiErrorStorageItem {
+  getError(): ApiErrorStorageItem | undefined {
     return this.error
   }
 
   /**
-   * Asynchronously retrieves the error message.
-   * Checks the identified error item, the response body, or falls back to status text.
+   * Retrieves the error message from the identified error item or executes its message factory.
    *
-   * Асинхронно получает сообщение об ошибке.
-   * Проверяет идентифицированный элемент ошибки, тело ответа или использует текст статуса.
+   * Получает сообщение об ошибке из идентифицированного элемента ошибки или выполняет его функцию-фабрику.
    * @returns error message or undefined / сообщение об ошибке или undefined
    */
   getMessage(): string | undefined {

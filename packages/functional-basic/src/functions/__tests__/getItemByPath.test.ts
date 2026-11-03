@@ -90,8 +90,17 @@ describe('getItemByPath', () => {
     })
 
     it('should safely return undefined when item is null or undefined at runtime', () => {
-      expect(getItemByPath(null as unknown as Record<string, unknown>, 'a.b')).toBeUndefined()
-      expect(getItemByPath(undefined as unknown as Record<string, unknown>, 'a')).toBeUndefined()
+      expect(getItemByPath(null, 'a.b')).toBeUndefined()
+      expect(getItemByPath(undefined, 'a')).toBeUndefined()
+    })
+
+    it('should block prototype pollution keys (__proto__, constructor, prototype)', () => {
+      const sourceObject = { safe: 'value' }
+      expect(getItemByPath(sourceObject, '__proto__')).toBeUndefined()
+      expect(getItemByPath(sourceObject, '__proto__.toString')).toBeUndefined()
+      expect(getItemByPath(sourceObject, 'constructor')).toBeUndefined()
+      expect(getItemByPath(sourceObject, 'constructor.prototype')).toBeUndefined()
+      expect(getItemByPath(sourceObject, 'prototype')).toBeUndefined()
     })
   })
 

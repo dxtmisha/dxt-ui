@@ -22,7 +22,7 @@ To initialize the object, call the constructor `BroadcastMessage(name, callback,
 
 ### Generic Constraints
 
-- `Message = any` — the type of the message payload.
+- `Message = unknown` — the type of the message payload.
 
 **Parameters:**
 - `name: string` — unique channel name.
@@ -49,15 +49,15 @@ const messenger = new BroadcastMessage<string>(
 ### Configuration and Access
 
 - `getChannel(): BroadcastChannel | undefined` — Returns the underlying `BroadcastChannel` instance.
-- `setCallback(callback: Function): this` — Updates the function for processing incoming messages.
-- `setCallbackError(callbackError: Function): this` — Updates the function for processing message errors.
+- `setCallback(callback?: (event: MessageEvent<Message>) => void): this` — Updates the function for processing incoming messages.
+- `setCallbackError(callbackError?: (event: MessageEvent<Message>) => void): this` — Updates the function for processing message errors.
 
 ## Examples
 
 ### Syncing State Between Tabs
 
 ```typescript
-import { BroadcastMessage } from '@dxtmisha/functional'
+import { BroadcastMessage } from '@dxtmisha/functional-basic'
 
 // In all application tabs
 const authChannel = new BroadcastMessage<string>('auth-status', (event) => {

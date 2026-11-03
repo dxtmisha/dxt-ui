@@ -26,7 +26,7 @@ A class for handling and processing data received from an API request. It transf
 
 ## Internal Logic (Protected)
 
-- `readData<T>(): Promise<ApiData<T>>` — Low-level method that reads the response body and parses it as JSON or text.
+- `readData(): Promise<ApiData<T>>` — Low-level method that reads the response body and parses it as JSON or text.
 - `initData(): ApiData<T>` — Formats the raw data according to configuration, handling property unwrapping.
-- `initItem(data: Record<string, any>): ApiData<T>` — Merges metadata fields from the response root into the main data object.
+- `initItem(data: Record<string, unknown>): ApiData<T>` — Merges metadata fields from the response root into the main data object.
 

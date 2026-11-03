@@ -52,8 +52,8 @@ Phiên bản đồng bộ của trình giả lập. Nó trả về phản hồi 
 
 ### Kiểm tra
 
-- `get(path: string, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Kiểm tra đồng bộ một yêu cầu mock đã lưu khớp với các tham số.
-- `getList(): (ApiResponseItem & Record<string, any>)[]` — Trả về danh sách tất cả các cấu hình giả lập đã đăng ký.
+- `get(path: string = '', method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Kiểm tra đồng bộ một yêu cầu mock đã lưu khớp với các tham số.
+- `getList(): (ApiResponseItem & Record<string, unknown>)[]` — Trả về danh sách tất cả các cấu hình giả lập đã đăng ký.
 
 ### Cấu hình
 

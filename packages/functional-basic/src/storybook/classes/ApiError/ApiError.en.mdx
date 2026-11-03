@@ -17,7 +17,7 @@ The `ApiError` class is a **Primary Utility (Static)** for managing API error st
 ### Storage Management
 
 - `getStorage(): ApiErrorStorage` — Retrieves the internal singleton instance of the error storage.
-- `add(item: ApiErrorStorageItem | ApiErrorStorageList): void` — Adds one or more error patterns to the global storage.
+- `add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void` — Adds one or more error patterns to the global storage.
 
 ### Analysis
 

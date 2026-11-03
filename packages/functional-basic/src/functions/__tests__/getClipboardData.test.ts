@@ -91,6 +91,15 @@ describe('getClipboardData', () => {
       expect(readTextMock).toHaveBeenCalledOnce()
     })
 
+    it('should fall back to navigator.clipboard.readText() when event is null', async () => {
+      readTextMock.mockResolvedValue('fallback from null event')
+
+      const data = await getClipboardData(null)
+
+      expect(data).toBe('fallback from null event')
+      expect(readTextMock).toHaveBeenCalledOnce()
+    })
+
     it('should fall back to navigator.clipboard.readText() when event.clipboardData is null or undefined', async () => {
       readTextMock.mockResolvedValue('fallback clipboard text')
 
@@ -172,6 +181,26 @@ describe('getClipboardData', () => {
         code: 'error',
         details: securityError
       })
+    })
+
+    it('should catch error and report to ErrorCenter when navigator.clipboard is undefined', async () => {
+      const errorSpy = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => undefined)
+      Object.defineProperty(navigator, 'clipboard', {
+        value: undefined,
+        writable: true,
+        configurable: true
+      })
+
+      const data = await getClipboardData()
+
+      expect(data).toBe('')
+      expect(errorSpy).toHaveBeenCalledOnce()
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          group: 'clipboard',
+          code: 'error'
+        })
+      )
     })
   })
 

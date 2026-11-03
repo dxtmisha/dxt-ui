@@ -22,7 +22,7 @@ Bao gồm tính năng đặt tên tiền tố tự động để ngăn chặn xu
 
 ### Ràng buộc Generic (Generic Constraints)
 
-- `Message = any` — kiểu của tải trọng tin nhắn.
+- `Message = unknown` — kiểu của tải trọng tin nhắn.
 
 **Tham số:**
 - `name: string` — tên kênh duy nhất.
@@ -49,15 +49,15 @@ const messenger = new BroadcastMessage<string>(
 ### Cấu hình và Truy cập
 
 - `getChannel(): BroadcastChannel | undefined` — Trả về thực thể `BroadcastChannel` cơ bản.
-- `setCallback(callback: Function): this` — Cập nhật hàm xử lý tin nhắn đến.
-- `setCallbackError(callbackError: Function): this` — Cập nhật hàm xử lý lỗi tin nhắn.
+- `setCallback(callback?: (event: MessageEvent<Message>) => void): this` — Cập nhật hàm xử lý tin nhắn đến.
+- `setCallbackError(callbackError?: (event: MessageEvent<Message>) => void): this` — Cập nhật hàm xử lý lỗi tin nhắn.
 
 ## Ví dụ
 
 ### Đồng bộ hóa trạng thái giữa các Tab
 
 ```typescript
-import { BroadcastMessage } from '@dxtmisha/functional'
+import { BroadcastMessage } from '@dxtmisha/functional-basic'
 
 // Trong tất cả các tab của ứng dụng
 const authChannel = new BroadcastMessage<string>('auth-status', (event) => {

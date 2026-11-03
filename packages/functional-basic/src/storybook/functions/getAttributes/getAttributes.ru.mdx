@@ -9,7 +9,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Функция использует `getElement` для поиска целевого узла. Если элемент не найден или передан пустой аргумент, возвращается пустой объект `{}`.
 
 **Параметры:**
-- `element?: ElementOrString<E>` — DOM-элемент, объект Window, либо строка с CSS-селектором для его поиска.
+- `element?: ElementOrString<E> | null` — DOM-элемент, объект Window, строка с CSS-селектором для его поиска или `null`.
 
 **Возвращает:**
 `Record<string, string | undefined>` — Объект, где ключами являются названия атрибутов (например, `id`, `class`, `data-value`), а значениями — их содержимое.

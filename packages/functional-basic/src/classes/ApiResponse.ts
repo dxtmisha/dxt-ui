@@ -9,7 +9,7 @@ import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { random } from '../functions/random'
 import { toArray } from '../functions/toArray'
 
-import { ApiDefault } from './ApiDefault'
+import { type ApiDefault } from './ApiDefault'
 import { Loading } from './Loading'
 
 import {
@@ -40,7 +40,9 @@ export class ApiResponse {
   protected devMode: boolean = false
 
   /**
-   * Constructor
+   * Constructor for ApiResponse.
+   *
+   * Конструктор для ApiResponse.
    * @param requestDefault default request class / класс запросов по умолчанию
    */
   constructor(
@@ -116,7 +118,7 @@ export class ApiResponse {
   add(
     response: ApiResponseItem | ApiResponseItem[]
   ): this {
-    this.response.push(...toArray(response) as ApiResponseItem[])
+    this.response.push(...toArray(response))
     return this
   }
 
@@ -127,7 +129,7 @@ export class ApiResponse {
    * @param apiFetch fetch configuration / конфигурация запроса
    * @returns emulated response or undefined / эмулированный ответ или undefined
    */
-  async emulator<T>(apiFetch: ApiFetch): Promise<T | undefined> {
+  async emulator<T = unknown>(apiFetch: ApiFetch): Promise<T | undefined> {
     const readData = this.readData(apiFetch)
 
     if (readData) {
@@ -136,10 +138,10 @@ export class ApiResponse {
         devMode = false
       } = apiFetch
 
-      const read = (await this.fetch<T>(
+      const read = await this.fetch<T>(
         readData.response,
         readData.request
-      ))
+      )
 
       if (this.isDevMode(devMode)) {
         console.warn('Response data:', path, readData.request, read)
@@ -158,7 +160,7 @@ export class ApiResponse {
    * @param apiFetch fetch configuration / конфигурация запроса
    * @returns emulated response or undefined / эмулированный ответ или undefined
    */
-  emulatorAsync<T>(apiFetch: ApiFetch): T | undefined {
+  emulatorAsync<T = unknown>(apiFetch: ApiFetch): T | undefined {
     const read = this.readData(apiFetch)
 
     if (read) {
@@ -169,6 +171,17 @@ export class ApiResponse {
   }
 
   /**
+   * Checks if it is developer mode.
+   *
+   * Проверяет, является ли режимом разработчика.
+   * @param devMode is it developer mode / является ли режим разработчика
+   * @returns true if in dev mode / true, если в режиме разработчика
+   */
+  protected isDevMode(devMode?: boolean): boolean {
+    return devMode || this.devMode
+  }
+
+  /**
    * Checks if the cached item is disabled.
    *
    * Проверяет, отключен ли кешированный элемент.
@@ -176,7 +189,23 @@ export class ApiResponse {
    * @returns true if item is disabled / true, если элемент отключен
    */
   protected isDisable(item: ApiResponseItem): boolean {
-    return Boolean(executeFunction(item?.disable))
+    return Boolean(executeFunction(item.disable))
+  }
+
+  /**
+   * Checks if this is the first request.
+   *
+   * Проверяет, является ли это первым запросом.
+   * @param item cached item / кешированный элемент
+   * @param devMode is it developer mode / является ли режим разработчика
+   * @returns true if this is the first request / true, если это первый запрос
+   */
+  protected isFirst(
+    item: ApiResponseItem,
+    devMode?: boolean
+  ): boolean {
+    return this.first.indexOf(item) === -1
+      || this.isDevMode(devMode)
   }
 
   /**
@@ -199,33 +228,6 @@ export class ApiResponse {
   }
 
   /**
-   * Checks if it is developer mode.
-   *
-   * Проверяет, является ли режимом разработчика.
-   * @param devMode is it developer mode / является ли режим разработчика
-   * @returns true if in dev mode / true, если в режиме разработчика
-   */
-  protected isDevMode(devMode?: boolean): boolean {
-    return devMode || this.devMode
-  }
-
-  /**
-   * Checks if this is the first request.
-   *
-   * Проверяет, является ли это первым запросом.
-   * @param item cached item / кешированный элемент
-   * @param devMode is it developer mode / является ли режим разработчика
-   * @returns true if this is the first request / true, если это первый запрос
-   */
-  protected isFirst(
-    item: ApiResponseItem,
-    devMode?: boolean
-  ): boolean {
-    return this.first.indexOf(item) === -1
-      || this.isDevMode(devMode)
-  }
-
-  /**
    * Checks if the request matches the cached one.
    *
    * Проверяет, совпадает ли запрос с кешированным.
@@ -237,7 +239,7 @@ export class ApiResponse {
     item: ApiResponseItem,
     request?: ApiFetch['request']
   ): boolean {
-    const requestItem = this.requestDefault.request(item?.request)
+    const requestItem = this.requestDefault.request(item.request)
 
     return request === requestItem
       || '*any' === requestItem
@@ -250,8 +252,59 @@ export class ApiResponse {
         && !(requestItem instanceof FormData)
         && Object.values(request).length === Object.values(requestItem).length
         && Object.entries(requestItem)
-          .every(([key, value]) => value === request?.[key] || value === '*any')
+          .every(([key, value]) => value === request[key] || value === '*any')
       )
+  }
+
+  /**
+   * Emulates an execution request (internal fetch).
+   *
+   * Эмулирует запрос выполнения (внутренний fetch).
+   * @param response response item for emulation / элемент ответа для эмуляции
+   * @param request data for the request / данные для запроса
+   * @returns Promise with emulated response data / Promise с эмулированными данными ответа
+   */
+  protected fetch<T>(
+    response: ApiResponseItem,
+    request?: ApiFetch['request']
+  ): Promise<T> {
+    this.startResponseLoading()
+
+    return new Promise((resolve, reject) => {
+      executePromise(
+        isFunction(response.response)
+          ? response.response(request)
+          : response.response
+      ).then((data) => {
+        if (response.lag) {
+          Loading.show()
+
+          setTimeout(() => {
+            this.stopResponseLoading()
+
+            resolve(data)
+            Loading.hide()
+          }, random(0, 2000))
+        } else {
+          this.stopResponseLoading()
+          resolve(data)
+        }
+      }).catch((error) => {
+        this.stopResponseLoading()
+        reject(error)
+      })
+    })
+  }
+
+  /**
+   * Emulates an execution request synchronously (internal fetch).
+   *
+   * Эмулирует запрос выполнения синхронно (внутренний fetch).
+   * @param response response item for emulation / элемент ответа для эмуляции
+   * @returns emulated response data / эмулированные данные ответа
+   */
+  protected fetchAsync<T>(response: ApiResponseItem): T {
+    return response.response
   }
 
   /**
@@ -292,57 +345,6 @@ export class ApiResponse {
     }
 
     return undefined
-  }
-
-  /**
-   * Emulates an execution request (internal fetch).
-   *
-   * Эмулирует запрос выполнения (внутренний fetch).
-   * @param response response item for emulation / элемент ответа для эмуляции
-   * @param request data for the request / данные для запроса
-   * @returns Promise with emulated response data / Promise с эмулированными данными ответа
-   */
-  protected fetch<T>(
-    response: ApiResponseItem,
-    request?: ApiFetch['request']
-  ): Promise<T> {
-    this.startResponseLoading()
-
-    return new Promise((resolve, reject) => {
-      executePromise(
-        isFunction(response.response)
-          ? response.response(request)
-          : response.response
-      ).then((data) => {
-        if (response?.lag) {
-          Loading.show()
-
-          setTimeout(() => {
-            this.stopResponseLoading()
-
-            resolve(data)
-            Loading.hide()
-          }, random(0, 2000))
-        } else {
-          this.stopResponseLoading()
-          resolve(data)
-        }
-      }).catch((error) => {
-        this.stopResponseLoading()
-        reject(error)
-      })
-    })
-  }
-
-  /**
-   * Emulates an execution request synchronously (internal fetch).
-   *
-   * Эмулирует запрос выполнения синхронно (внутренний fetch).
-   * @param response response item for emulation / элемент ответа для эмуляции
-   * @returns emulated response data / эмулированные данные ответа
-   */
-  protected fetchAsync<T>(response: ApiResponseItem): T {
-    return response.response
   }
 
   /**

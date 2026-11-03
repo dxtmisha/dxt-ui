@@ -1,11 +1,21 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { GeoFlag, GEO_FLAG_ICON_NAME } from '../GeoFlag'
 import { Geo } from '../Geo'
 
 describe('GeoFlag', () => {
   beforeEach(() => {
     Geo.set('en-US')
+  })
+
+  it('should return undefined from get() and getLanguage() when Geo.find() returns undefined', () => {
+    const spy = vi.spyOn(Geo, 'find').mockReturnValueOnce(undefined).mockReturnValueOnce(undefined)
+    const flag = new GeoFlag('en-US')
+
+    expect(flag.get('UNKNOWN')).toBeUndefined()
+    expect(flag.getLanguage('UNKNOWN')).toBeUndefined()
+
+    spy.mockRestore()
   })
 
   it('should return the flag item for the default locale and expose getCode()', () => {

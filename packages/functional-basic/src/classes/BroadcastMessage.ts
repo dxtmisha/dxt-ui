@@ -83,7 +83,7 @@ export class BroadcastMessage<Message = unknown> {
    * @param callback function to execute on message received / функция для выполнения при получении сообщения
    * @returns this instance for chaining / этот экземпляр для цепочки вызовов
    */
-  setCallback(callback: (event: MessageEvent<Message>) => void): this {
+  setCallback(callback?: (event: MessageEvent<Message>) => void): this {
     this.callback = callback
     return this
   }
@@ -95,20 +95,8 @@ export class BroadcastMessage<Message = unknown> {
    * @param callbackError function to execute on message error / функция для выполнения при ошибке сообщения
    * @returns this instance for chaining / этот экземпляр для цепочки вызовов
    */
-  setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this {
+  setCallbackError(callbackError?: (event: MessageEvent<Message>) => void): this {
     this.callbackError = callbackError
-    return this
-  }
-
-  /**
-   * Sends a message through the broadcast channel.
-   *
-   * Отправляет сообщение через канал вещания.
-   * @param message message data to send / данные сообщения для отправки
-   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
-   */
-  post(message: Message): this {
-    this.channel?.postMessage(message)
     return this
   }
 
@@ -122,6 +110,18 @@ export class BroadcastMessage<Message = unknown> {
     this.channel?.close()
     this.channel = undefined
 
+    return this
+  }
+
+  /**
+   * Sends a message through the broadcast channel.
+   *
+   * Отправляет сообщение через канал вещания.
+   * @param message message data to send / данные сообщения для отправки
+   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
+   */
+  post(message: Message): this {
+    this.channel?.postMessage(message)
     return this
   }
 }

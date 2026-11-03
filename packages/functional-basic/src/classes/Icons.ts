@@ -14,6 +14,7 @@ export type IconsConfig = {
 
 const ICONS_WAIT = 120
 const ICONS_LOAD = '--LOAD--'
+const REGEXP_AT_PREFIX = /^@/
 
 /**
  * Class for managing icons.
@@ -22,7 +23,7 @@ const ICONS_LOAD = '--LOAD--'
  */
 export class Icons {
   /** Registered icons map / Карта зарегистрированных иконок */
-  protected static icons: Record<string, IconsItem> = {}
+  protected static icons: Record<string, IconsItem> = /* #__PURE__ */ Object.create(null)
   /** Base icons storage URL / Базовый URL хранилища иконок */
   protected static url: string = '/icons/'
 
@@ -103,7 +104,7 @@ export class Icons {
    */
   static getNameList(): string[] {
     return forEach(this.icons, (_, name) => {
-      return name.replace(/^@/, '')
+      return name.replace(REGEXP_AT_PREFIX, '')
     })
   }
 
@@ -122,6 +123,7 @@ export class Icons {
    *
    * Изменяет конфигурацию.
    * @param config new configuration / новая конфигурация
+   * @returns void / ничего не возвращает
    */
   static setConfig(config: IconsConfig): void {
     if (config.url) {
@@ -138,6 +140,7 @@ export class Icons {
    *
    * Изменяет путь к файлу.
    * @param url new file path / новый путь к файлу
+   * @returns void / ничего не возвращает
    */
   static setUrl(url: string): void {
     this.url = url
@@ -149,6 +152,7 @@ export class Icons {
    * Добавление пользовательских иконок.
    * @param index icon name / название иконки
    * @param file path to the file / путь к файлу
+   * @returns void / ничего не возвращает
    */
   static add(index: string, file: IconsItem): void {
     this.icons[this.getName(index)] = file
@@ -158,7 +162,8 @@ export class Icons {
    * Adding an icon by the list.
    *
    * Добавление иконки по списку.
-   * @param list list of icons / список иконки
+   * @param list list of icons / список иконок
+   * @returns void / ничего не возвращает
    */
   static addByList(list: Record<string, IconsItem>): void {
     forEach(list, (file, index) => this.add(index, file))
@@ -170,6 +175,7 @@ export class Icons {
    * Добавление пользовательских глобальных иконок.
    * @param index icon name / название иконки
    * @param file path to the file / путь к файлу
+   * @returns void / ничего не возвращает
    */
   static addGlobal(index: string, file: string): void {
     this.icons[this.getName(index)] = `${this.getUrlGlobal()}${file}`
@@ -180,6 +186,7 @@ export class Icons {
    *
    * Добавление пользовательских иконок в режиме загрузки.
    * @param index icon name / название иконки
+   * @returns void / ничего не возвращает
    */
   static addLoad(index: string): void {
     this.icons[this.getName(index)] = ICONS_LOAD
@@ -189,9 +196,10 @@ export class Icons {
    * Resets the icons registry.
    *
    * Сбрасывает реестр иконок.
+   * @returns void / ничего не возвращает
    */
   static reset(): void {
-    this.icons = {}
+    this.icons = Object.create(null)
     this.url = '/icons/'
   }
 
@@ -200,6 +208,7 @@ export class Icons {
    *
    * Возвращает название иконки с префиксом.
    * @param index icon name / название иконки
+   * @protected
    * @returns icon name with prefix / название иконки с префиксом
    */
   protected static getName(index: string): string {
@@ -212,18 +221,20 @@ export class Icons {
    * Возвращает исходные данные иконки по названию.
    * @param index icon name / название иконки
    * @param url path to the storage location of the icon, if the icon does not exist / путь к месту хранения иконки, если иконка не существует
+   * @protected
    * @returns icon path or content / путь к иконке или контент
    */
   protected static getRaw(index: string, url = ''): IconsItem {
-    return this.icons?.[this.getName(index)]
-      ?? this.icons?.[index]
-      ?? `${index.replace(/^@/, url || this.url)}.svg`
+    return this.icons[this.getName(index)]
+      ?? this.icons[index]
+      ?? `${index.replace(REGEXP_AT_PREFIX, url || this.url)}.svg`
   }
 
   /**
    * Script execution delay.
    *
    * Задержка выполнения скрипта.
+   * @protected
    * @returns Promise<void> Promise for delay / Promise для задержки
    */
   protected static wait(): Promise<void> {

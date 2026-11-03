@@ -4,12 +4,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getExp`
 
-Tiện ích này tạo ra một đối tượng `RegExp` từ một chuỗi mẫu bằng cách thực hiện "thoát" (escape) tất cả các ký tự đặc biệt của biểu thức chính quy bên trong chuỗi đó (chẳng hạn như `.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\`).
+Tiện ích này tạo ra một đối tượng `RegExp` từ một chuỗi mẫu bằng cách thực hiện "thoát" (escape) tất cả các ký tự đặc biệt của biểu thức chính quy bên trong giá trị đầu vào (chẳng hạn như `-` `.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\` `/`).
 
 Điều này rất cần thiết khi chuỗi tìm kiếm đến từ người dùng hoặc chứa các ký tự có thể phá vỡ một biểu thức chính quy. Hàm cho phép bạn chỉ định các cờ (flags) cho `RegExp` cũng như một chuỗi mẫu nơi đoạn văn bản đã "escape" sẽ thay thế token `:value`.
 
 **Tham số:**
-- `value: string` — Chuỗi đích cần escape.
+- `value?: unknown` — (tuỳ chọn) Giá trị đích cần chuyển thành chuỗi và escape.
 - `flags?: string` — (tuỳ chọn) Các cờ cấu hình (ví dụ: `'ig'`). Mặc định là `'ig'` (không phân biệt chữ hoa/thường và tìm toàn cục).
 - `pattern?: string` — (tuỳ chọn) Chuỗi mẫu biểu thức chính quy. Mặc định chỉ là `':value'`.
 

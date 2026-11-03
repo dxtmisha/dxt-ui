@@ -32,7 +32,6 @@ describe('toDate', () => {
     it('should return the current Date when passed undefined or null', () => {
       const beforeTimestamp = Date.now()
       const undefinedResult = toDate(undefined)
-      // @ts-expect-error testing null runtime safety
       const nullResult = toDate(null)
       const afterTimestamp = Date.now()
 
@@ -210,6 +209,16 @@ describe('toDate', () => {
 
       const timeWithUtc = toDate('14:45Z')
       expect(timeWithUtc.toISOString()).toBe('2000-01-01T14:45:00.000Z')
+    })
+
+    it('should handle surrounding whitespace and space before timezone offset', () => {
+      const paddedDate = toDate('  2024-01-15  ')
+      expect(paddedDate.getFullYear()).toBe(2024)
+      expect(paddedDate.getMonth()).toBe(0)
+      expect(paddedDate.getDate()).toBe(15)
+
+      const spacedOffset = toDate('2024-01-15 +03:00')
+      expect(spacedOffset.toISOString()).toBe('2024-01-14T21:00:00.000Z')
     })
   })
 

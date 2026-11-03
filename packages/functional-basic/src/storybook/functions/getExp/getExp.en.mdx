@@ -4,12 +4,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getExp`
 
-A utility that creates a `RegExp` object from a template string by first escaping all special regular expression characters within it (such as `.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\`).
+A utility that creates a `RegExp` object from a template string by first escaping all special regular expression characters within the input value (such as `-` `.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\` `/`).
 
 This is essential when the search string comes from user input or contains characters that could break a regular expression. The function allows you to specify the regex flags and a pattern string where the escaped text will replace the `:value` token.
 
 **Parameters:**
-- `value: string` — The target string to be escaped and matched.
+- `value?: unknown` — (optional) The target value to be converted to a string, escaped, and matched.
 - `flags?: string` — (optional) Regular expression flags (e.g., `'ig'`). Defaults to `'ig'` (case-insensitive and global search).
 - `pattern?: string` — (optional) The regular expression template string. Defaults to just `':value'`.
 

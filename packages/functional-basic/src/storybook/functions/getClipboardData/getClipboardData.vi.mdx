@@ -13,7 +13,7 @@ Nếu xảy ra lỗi khi đọc khay nhớ tạm, lỗi sẽ được ghi nhận
 > Lưu ý: Việc sử dụng `navigator.clipboard.readText()` yêu cầu ngữ cảnh an toàn (HTTPS) và có thể yêu cầu người dùng cấp quyền đọc khay nhớ tạm rõ ràng trong một số trình duyệt.
 
 **Tham số:**
-- `event?: ClipboardEvent` — Sự kiện khay nhớ tạm (tùy chọn) phát sinh trong quá trình cắt, sao chép hoặc dán.
+- `event?: ClipboardEvent | null` — Sự kiện khay nhớ tạm hoặc `null` (tùy chọn) phát sinh trong quá trình cắt, sao chép hoặc dán.
 
 **Trả về:**
 `Promise<string>` — Một promise hoạt động và giải quyết/trả về chuỗi nội dung của khay nhớ tạm, hoặc trả về một chuỗi rỗng nếu truy xuất thất bại.

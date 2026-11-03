@@ -26,7 +26,7 @@ Lớp dùng để xử lý và chuẩn bị dữ liệu nhận được từ yê
 
 ## Logic nội bộ (Protected)
 
-- `readData<T>(): Promise<ApiData<T>>` — Phương thức cấp thấp đọc thân phản hồi và phân tích nó dưới dạng JSON hoặc văn bản.
+- `readData(): Promise<ApiData<T>>` — Phương thức cấp thấp đọc thân phản hồi và phân tích nó dưới dạng JSON hoặc văn bản.
 - `initData(): ApiData<T>` — Định dạng dữ liệu thô theo cấu hình, xử lý việc giải nén các thuộc tính.
-- `initItem(data: Record<string, any>): ApiData<T>` — Hợp nhất các trường metadata từ gốc phản hồi vào đối tượng dữ liệu chính.
+- `initItem(data: Record<string, unknown>): ApiData<T>` — Hợp nhất các trường metadata từ gốc phản hồi vào đối tượng dữ liệu chính.
 

@@ -17,7 +17,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ### Управление хранилищем
 
 - `getStorage(): ApiErrorStorage` — Возвращает внутренний синглтон-экземпляр хранилища ошибок.
-- `add(item: ApiErrorStorageItem | ApiErrorStorageList): void` — Добавляет один или несколько паттернов ошибок в глобальное хранилище.
+- `add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void` — Добавляет один или несколько паттернов ошибок в глобальное хранилище.
 
 ### Анализ
 

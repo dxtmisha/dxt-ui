@@ -19,7 +19,7 @@ Một cơ chế lưu trữ đệm trong bộ nhớ (memory-based) nhẹ nhàng. 
 Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `Cache()`.
 
 ```typescript
-import { Cache } from '@dxtmisha/functional'
+import { Cache } from '@dxtmisha/functional-basic'
 
 // 1. Khởi tạo bộ lưu trữ
 const cache = new Cache()
@@ -39,7 +39,7 @@ Sử dụng phương thức `get()` để truy xuất một giá trị được 
 **Tham số:**
 - `name: string` — một mã định danh duy nhất cho mục nhập bộ nhớ đệm.
 - `callback: () => T` — hàm tính toán giá trị.
-- `comparison?: any[]` — mảng phụ thuộc tùy chọn. Nếu bất kỳ giá trị nào trong mảng này thay đổi so với lần gọi cuối cùng, bộ nhớ đệm sẽ bị hủy và `callback` sẽ chạy lại.
+- `comparison?: unknown[]` — mảng phụ thuộc tùy chọn. Nếu bất kỳ giá trị nào trong mảng này thay đổi so với lần gọi cuối cùng, bộ nhớ đệm sẽ bị hủy và `callback` sẽ chạy lại.
 
 **Trả về:** `T` — giá trị đã lưu đệm hoặc giá trị mới được tính toán.
 
@@ -64,7 +64,7 @@ Hoạt động tương tự như `get()`, nhưng được thiết kế cho các 
 **Tham số:**
 - `name: string` — một mã định danh duy nhất cho mục nhập bộ nhớ đệm.
 - `callback: () => Promise<T>` — hàm không đồng bộ tính toán giá trị.
-- `comparison?: any[]` — mảng phụ thuộc tùy chọn.
+- `comparison?: unknown[]` — mảng phụ thuộc tùy chọn.
 
 **Trả về:** `Promise<T>` — giá trị không đồng bộ đã lưu đệm hoặc giá trị mới được tính toán.
 

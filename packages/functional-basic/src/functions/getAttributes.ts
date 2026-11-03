@@ -9,11 +9,14 @@ import {
  * Gets a list of attributes of an element.
  *
  * Получает список атрибутов у элемента.
- * @param element selector for matching or an Element / селектор для сопоставления или Element
+ * @template E element or Window type / тип элемента или Window
+ * @param element selector for matching, Element, Window, or null / селектор для сопоставления, Element, Window или null
  * @returns list of attributes / список атрибутов
  */
-export function getAttributes<E extends ElementOrWindow>(
-  element?: ElementOrString<E>
+export function getAttributes<
+  E extends ElementOrWindow = HTMLElement
+>(
+  element?: ElementOrString<E> | null
 ): Record<string, string | undefined> {
   const attributes: Record<string, string | undefined> = {}
   const item = getElement(element)
