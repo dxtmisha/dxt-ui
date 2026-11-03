@@ -172,8 +172,8 @@ export class InputSocial {
    *
    * Возвращает текущую конфигурацию социальной сети на основе выбранного socialType.
    */
-  readonly data = computed<InputSocialItem | undefined>(() => {
-    return (this.props.socialType && MediaSocial.get(this.props.socialType)) || undefined
+  readonly data = computed<InputSocialItem<MaskPropsInclude['mask']> | undefined>(() => {
+    return (this.props.socialType && MediaSocial.get(this.props.socialType) as InputSocialItem<MaskPropsInclude['mask']>) || undefined
   })
 
   /**

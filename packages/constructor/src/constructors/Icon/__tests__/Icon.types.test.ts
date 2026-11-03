@@ -68,8 +68,8 @@ describe('Icon (contracts checked by TypeScript)', () => {
 
       expectTypeOf<IconExpose['isActive']>().toEqualTypeOf<() => boolean>()
       expectTypeOf<ReturnType<IconExpose['isActive']>>().not.toBeAny()
-      expectTypeOf<IconExpose['getValue']>().toBeFunction()
-      expectTypeOf<IconExpose['getDetail']>().toBeFunction()
+      expectTypeOf<NonNullable<IconExpose['getValue']>>().toBeFunction()
+      expectTypeOf<NonNullable<IconExpose['getDetail']>>().toBeFunction()
 
       expectTypeOf<IconSlots>().toBeObject()
       expectTypeOf<IconClasses['main']>().not.toBeAny()

@@ -1,3 +1,3 @@
-// md5:562e6d1f78b407d9aa1d8f30bb9324d6 true
-/** Returns the last element of an array or object. @keywords last, element, array, object, tail */
-export declare function getLast<T>(value: T | readonly T[] | Record<string, T>): T | undefined;
+// md5:75877f33719dd4eec019646c6bbfdfaf true
+/** Returns the last element of an array or object. @keywords last, element, tail, array, object */
+export declare function getLast<T = undefined>(value?: T | readonly T[] | Record<PropertyKey, T>): T;

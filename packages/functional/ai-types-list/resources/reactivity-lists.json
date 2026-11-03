@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/reactivity-lists.md",
-  "md5": "6e8b7100e59f0ffd08416bed080802db",
+  "md5": "d64b0e14009e9d69c23167fe3e566be8",
   "name": "Reactivity and DOM Utilities",
-  "description": "Provides composables and utility classes for asynchronous reactivity, reactive list state management, and debounced multi-field search. Includes helpers for managed DOM event listeners and IntersectionObserver-based lazy loading. Solves advanced state synchronization and efficient DOM handling in reactive applications."
+  "description": "Utilities and composables for asynchronous reactivity, list management, search filtering, and DOM event handling."
 }

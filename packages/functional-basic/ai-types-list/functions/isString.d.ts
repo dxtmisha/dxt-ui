@@ -1,3 +1,3 @@
-// md5:c2c01c7e9cca17db118c4be34498c5fa true
-/** Checks if a value is of type string. @keywords isString, type guard, check string */
-export declare function isString(value: unknown): value is string;
+// md5:c97b93ecca0267af6c1d52484d2aba34 true
+/** Checks if the value is of type string. @keywords is string, type guard, validation */
+export declare function isString(value?: unknown): value is string;

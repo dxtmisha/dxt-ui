@@ -1,7 +1,11 @@
-// md5:61edbc09cf709625350fc93762da2b2e true
-export type CookieSameSite = 'strict' | 'lax';
-
-/** Cookie configuration options @keywords cookie, options, settings */
+// md5:b76ed6468f0adc3bee68ee6d191f3254 true
+export type CookieSameSite = 'strict' | 'lax' | 'none';
+/** Resolves return type of CookieStorage.get based on fallback value. @keywords cookie return type */
+export type CookieStorageGet<T, D = undefined> = [
+    D
+] extends [
+    undefined
+] ? (T | undefined) : unknown extends T ? (D extends () => infer R ? R : D) : T;
 export type CookieOptions = {
     age?: number;
     sameSite?: CookieSameSite;
@@ -10,21 +14,24 @@ export type CookieOptions = {
     secure?: boolean;
     httpOnly?: boolean;
     partitioned?: boolean;
-    arguments?: string[] | Record<string, string | number | boolean>;
+    arguments?: string[] | Record<string, unknown>;
 };
-
-/** Universal cookie storage manager supporting custom listeners for DOM and SSR environments @keywords cookie, storage, ssr, persistence */
+/** Manages cookies with support for DOM, SSR, and custom storage listeners. @keywords cookie storage ssr browser */
 export declare class CookieStorage {
-    /** Retrieves data from cookie storage with optional fallback @keywords cookie, get, read */
-    static get<T>(name: string, defaultValue?: T | (() => T)): T | undefined;
-    /** Stores a value in cookies with configurable options @keywords cookie, set, write, save */
-    static set<T>(name: string, value: T | (() => T), options?: CookieOptions): T;
-    /** Removes a cookie by name from storage @keywords cookie, remove, delete */
-    static remove(name: string): void;
-    /** Synchronizes and updates data from current cookies @keywords cookie, update, sync, refresh */
+    /** Retrieves a cookie value or returns the default fallback. @keywords cookie get read storage */
+    static get<T = unknown, D extends T | (() => T) | undefined = undefined>(name: string, defaultValue?: D, options?: CookieOptions): CookieStorageGet<T, D>;
+    /** Writes a cookie value with optional attributes. @keywords cookie set save write */
+    static set<T = unknown>(name: string, value: T | (() => T), options?: CookieOptions): T;
+    /** Deletes a cookie from storage. @keywords cookie remove delete */
+    static remove(name: string, options?: CookieOptions): void;
+    /** Synchronizes and updates cache from current cookie sources. @keywords cookie update refresh sync */
     static update(): void;
-    /** Clears all in-memory items and resets registered listeners @keywords cookie, reset, clear */
+    /** Clears in-memory items and resets listeners to default state. @keywords cookie reset clear */
     static reset(): void;
-    /** Initializes storage listeners for custom cookie retrieval and persistence @keywords cookie, init, setup, listeners */
+    /**
+     * Initializes storage listeners and hooks for custom or SSR runtimes.
+     * @remarks When omitted, DOM runtime defaults to `document.cookie`, while non-DOM/SSR falls back to in-memory caching.
+     * @keywords cookie init setup listeners ssr
+     */
     static init(getListener?: (key: string) => unknown, getListenerRaw?: () => string, setListener?: (key: string, value: string, cookie: string, options?: CookieOptions) => void): void;
 }

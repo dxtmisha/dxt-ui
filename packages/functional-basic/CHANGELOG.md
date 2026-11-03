@@ -2,7 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.0] - 2026-11-01
+## [2.0.1] - 2026-11-03
+
+### Added
+- **`getCurrentDate` Enhancements**:
+  - Added optional `timeZone` parameter (`boolean`, defaults to `true`) to allow callers to suppress the timezone offset in standard formatted dates (e.g. producing `YYYY-MM-DDTHH:mm:ss` without `±HH:mm`).
+  - Added bilingual JSDoc descriptions for `timeZone` parameter.
+  - Added comprehensive unit test suite in `src/functions/__tests__/getCurrentDate.test.ts` covering all 13 `GeoDate` formats, boundary conditions, zero-padding, and timezone suppression.
+  - Synchronized Storybook documentation in English and Russian with accurate ISO output examples and `timeZone` parameter details.
+  - Registered `getCurrentDate` in `temp.md`.
+
+### Changed
+- **Dependencies**:
+  - Updated `@dxtmisha/media` dependency to `>=1.0.0`.
+
+## [2.0.0] - 2026-11-03
 
 ### Added
 - **`forOwn`**:
@@ -10,6 +24,13 @@ All notable changes to this project will be documented in this file.
   - Exported in public library exports (`src/library.ts`).
   - Added comprehensive unit test suite in `src/functions/__tests__/forOwn.test.ts`.
   - Added trilingual Storybook documentation (EN, RU, VI).
+- **`toGeoItem` / `toGeoItemFull` / `toGeoStandard` / `toLocale`**:
+  - `toGeoItem`: resolves standardized `GeoItem` records from country and language inputs with localized fallbacks.
+  - `toGeoItemFull`: creates comprehensive `GeoItemFull` metadata containing location, language, and country codes.
+  - `toGeoStandard`: transforms raw country and language maps into structured `GeoItem` records.
+  - `toLocale`: creates and formats standard BCP-47 locale tags (`en-US`, `vi-VN`) from country and language codes.
+  - Exported in public library exports (`src/library.ts`).
+  - Added comprehensive unit test suites and trilingual Storybook documentation (EN, RU, VI).
 - **`setElementItemStyle` / `setElementItemAttribute` / `setElementItemProperty`**:
   - Modular DOM mutation utilities extracted from `setElementItem`.
   - `setElementItemStyle`: manages CSS style declarations, CSS custom properties (`--*`), kebab-case property normalization, `!important` suffix extraction, and nullish property removal.
@@ -25,8 +46,8 @@ All notable changes to this project will be documented in this file.
   - Exported in public library exports (`src/library.ts`).
   - Added comprehensive test suites and trilingual Storybook documentation.
 - **`toCountry` / `toLanguage` / `sanitizeLocation`**:
-  - `toCountry`: extracts normalized 2-letter ISO 3166-1 alpha-2 country codes from locale tags or country names.
-  - `toLanguage`: extracts normalized 2-letter ISO 639-1 language codes from locale strings.
+  - `toCountry`: extracts normalized 2-letter ISO 3166-1 alpha-2 country codes from locale tags or country names, with `isRaw` fallback option.
+  - `toLanguage`: extracts normalized 2-letter ISO 639-1 language codes from locale strings, with `isRaw` fallback option.
   - `sanitizeLocation`: validates and canonicalizes BCP-47 locale tags using length bounds, regex validation, and `Intl.Locale`.
   - Exported in public library exports (`src/library.ts`).
   - Added unit tests and trilingual Storybook documentation.
@@ -49,8 +70,42 @@ All notable changes to this project will be documented in this file.
 - **`domElementsFromPoint`**:
   - SSR-safe wrapper around `document.elementsFromPoint`.
   - Exported in public library exports (`src/library.ts`).
+  - Added comprehensive test suite and trilingual Storybook documentation (EN, RU, VI).
 
 ### Changed
+- **`Datetime`**:
+  - Refactored `standard()` to construct formatted date-time strings directly from date parts, returning an empty string for invalid dates.
+  - Added `getCode(): string` accessor to retrieve current locale code.
+  - Added `getWeekday(): number` method to get day of the week (0 = Sunday).
+  - Optimized `getMaxDay()` calculation without allocating intermediate cloned date instances.
+  - Clamped days of the month in `setYear()` and `setMonth()` to prevent unintentional month overflow on shorter months.
+  - Introduced `block` flag preventing duplicate watch callbacks during composite operations.
+  - Integrated `ErrorCenter.on` error logging for invalid dates in `setDate()`.
+  - Supported optional parameters in `setDate()`, `setCode()`, and `setWatch()`.
+  - Expanded unit test suite and updated trilingual Storybook documentation.
+- **`Geo` / `GeoInstance`**:
+  - `Geo`: added protected constructor to enforce static utility usage; aligned static facade methods (`get`, `getItem`, `getFirstItem`, `getFlag`, `getFlagList`).
+  - `GeoInstance`: decomposed extraction logic to modular utilities (`toGeoItem`, `toGeoItemFull`, `toGeoStandard`, `toLocale`).
+  - `GeoInstance`: aligned getters with `GeoItemFull` metadata (`getLanguage()` returns `item.language`, `getLocationCountry()` and `getLocationLanguage()` return `item.locationCountry` and `item.locationLanguage`).
+  - `GeoLocation`: delegated country and language extraction to `toCountry` and `toLanguage` with raw fallback support.
+- **`getFirst`**:
+  - Unified implementation and signature symmetry with `getLast` (`readonly T[] | null | undefined`, duck-typed collections).
+  - Optimized object key retrieval via `Object.keys()` without array allocations.
+  - Expanded unit test coverage and updated trilingual Storybook documentation.
+- **`getImageSrc` / `getElementImage` / `resizeImageByMax`**:
+  - `getImageSrc`: widened parameter types to accept `HTMLImageElement | string | Record<string, unknown> | null | undefined`, preventing runtime `TypeError` on non-string primitives using `isObject`.
+  - `getElementImage`: widened source parameter typing to `string | HTMLImageElement | Record<string, unknown> | null | undefined` with duck-typed `HTMLImageElement` checking.
+  - `resizeImageByMax`: refined typing and fallback handling when image is within constraints.
+  - Expanded unit tests and synchronized trilingual Storybook documentation.
+- **`encodeLiteAttribute` / `copyObjectLite`**:
+  - `encodeLiteAttribute`: widened parameter typing to `text?: string | number | null` and added fast-path bypass for strings without special characters via `REGEXP_HAS_SPECIAL_CHARACTERS_LITE`.
+  - `copyObjectLite`: widened parameter typing to optional `source?: unknown` and added prototype isolation tests.
+  - Synchronized trilingual Storybook documentation.
+- **`domQuerySelector` / `domQuerySelectorAll`**:
+  - Added `@template E extends Element = HTMLElement` JSDoc annotations for typed element query narrowing.
+- **`createElement` / `domContentLoaded`**:
+  - Refined SSR guards, promise resolution, and parameter options.
+  - Synchronized trilingual Storybook documentation and expanded unit tests.
 - **`splice`**:
   - Hardened with `forOwn` traversal protecting against prototype pollution on both target and replacement objects.
   - Optimized local accumulation with `disableCopy = true`, reducing merging complexity from $O(N^2)$ to $O(N)$.

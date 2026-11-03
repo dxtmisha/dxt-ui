@@ -1,3 +1,3 @@
-// md5:e873c2f5f10ab14d4d4972e2c03ef991 true
-/** Checks if the value is a number or numeric string. @keywords isNumber, number, numeric, type guard, validate */
-export declare function isNumber(value: unknown): value is number | string;
+// md5:6bacc1563291c48d54d4aad10e65f67a true
+/** Checks if the value is a number, numeric string, or bigint. @keywords isNumber, is numeric, check number, bigint, numeric string */
+export declare function isNumber(value?: unknown): value is number | string | bigint;

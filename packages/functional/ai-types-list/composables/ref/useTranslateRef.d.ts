@@ -1,43 +1,7 @@
-// md5:5ea88fd502096156bb6a00425afd94df
+// md5:5ea88fd502096156bb6a00425afd94df true
 import { type ShallowRef } from 'vue';
 import { type TranslateInstance, type TranslateList } from '@dxtmisha/functional-basic';
-/**
- * Getting the translated text by an array of keys or a string with a key.
- *
- * It returns a `ShallowRef` that automatically updates when the global language changes.
- * Pending updates are invalidated on language changes and scope disposal.
- * Use `as const` for arrays to ensure proper TypeScript key inference.
- *
- * ---
- *
- * Получение переведенного текста по массиву ключей или пункту с ключом.
- *
- * Возвращает `ShallowRef`, который автоматически обновляется при смене глобального языка.
- * Незавершённые обновления теряют актуальность при смене языка и завершении scope.
- * Используйте `as const` для массивов, чтобы обеспечить корректный вывод типов ключей в TypeScript.
- *
- * ### Examples / Примеры использования:
- * ```typescript
- * // 1. Using the main composable / Использование основного хука
- * const translations = useTranslateRef(['home.title', 'home.description'] as const);
- *
- * // 2. Using the shorthand 't' / Использование сокращения 't'
- * const labels = t(['button.save', 'button.cancel'] as const);
- * ```
- *
- * @param names a string or an array with keys / строка или массив с ключами
- * @param translateInstance a translate instance / экземпляр перевода
- */
+/** Gets translated text as a reactive ShallowRef that updates on language changes. @keywords translate, i18n, localization, shallowRef */
 export declare function useTranslateRef<T extends (string | string[])[]>(names: T, translateInstance?: TranslateInstance): ShallowRef<TranslateList<T>>;
-/**
- * Shorthand for useTranslateRef.
- * Use `as const` for arrays to ensure proper TypeScript key inference.
- *
- * ---
- *
- * Сокращение для useTranslateRef.
- * Используйте `as const` для массивов, чтобы обеспечить корректный вывод типов ключей в TypeScript.
- *
- * @param names a string or an array with keys / строка или массив с ключами
- */
+/** Shorthand for useTranslateRef. @keywords translate, shorthand, i18n, localization */
 export declare const t: <T extends string[]>(names: T) => ShallowRef<TranslateList<T>>;

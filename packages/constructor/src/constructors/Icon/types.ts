@@ -47,5 +47,7 @@ export type IconClasses = {
   /** Root element classes / Классы корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  icon: string
+  iconActive: string
   // :classes [!] System label / Системная метка
 }

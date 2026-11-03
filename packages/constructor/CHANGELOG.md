@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.1] - 2026-11-03
+
+### Added
+- **`Icon` Unit, SSR & Type Test Suites**:
+  - Added comprehensive test suites in `Icon.test.ts`, `Icon.ssr.test.ts`, `Icon.types.test.ts`, and `IconInclude.test.ts` covering ARIA attributes, active/inactive icon bindings, skeleton loading states, lazy dependency instantiation, SSR rendering, and `IconLiteInclude` / `IconInclude` / `IconTrailingInclude` integration.
+- **`Arrow` Unit & SSR Test Suites**:
+  - Added `Arrow.test.ts`, `Arrow.ssr.test.ts`, and `ArrowInclude.test.ts`, and expanded `ArrowElementTarget.test.ts`, `ArrowEvent.test.ts`, `ArrowParent.test.ts`, and `ArrowPosition.test.ts` covering lifecycle management, DOM rect calculations, and edge cases.
+
+### Changed
+- **`Icon` Migration to `DesignLogicAbstract`**:
+  - Refactored `Icon` orchestrator (`src/constructors/Icon/Icon.ts`) to extend `DesignLogicAbstract` with lazy dependency instantiation (`enabled`, `event`, `skeleton`).
+  - Encapsulated ARIA attributes and interactive bindings (`role`, `ariaLabel`, `tabindex`, `aria-disabled`, `aria-hidden`) in `Icon` via `aria` and `binds` getters.
+  - Updated `EventClickInclude` to accept a lazy getter function for `EnabledInclude` across `Avatar`, `BreadcrumbItem`, `Button`, `Cell`, `ClockPeriod`, `Field`, `Icon`, `ListItem`, `NavigationRailItem`, `SelectValue`, and `TabItem`.
+  - Refined RTL directional mirroring in `Icon/style.scss` and updated `IconLiteInclude`, `IconInclude`, and `IconTrailingInclude` bindings.
+- **`Arrow` Migration to `DesignLogicAbstract`**:
+  - Refactored `Arrow` orchestrator (`src/constructors/Arrow/Arrow.ts`) to extend `DesignLogicAbstract` with lazy dependency instantiation (`element`, `elementTarget`, `event`, `parent`, `position`).
+  - Encapsulated ARIA attributes in `Arrow` via `aria` and `binds` getters and forwarded `getAttrs()` in `ArrowDesign`.
+  - Extended `DesignLifecycleAbstract` in `ArrowPosition`, `ArrowEvent`, and `ArrowParent` with `cancelAnimationFrame` cleanup and single-frame `getBoundingClientRect` caching in `ArrowPosition.update`.
+  - Replaced `parseFloat` with `toNumber` in `ArrowElement` and refined `ArrowInclude.toBinds` merge precedence to respect `arrowAttrs`.
+- **Vite 8 Compatibility & Dependency Updates**:
+  - Updated `Plugin.transform` return type in `src/classes/Plugin/Plugin.ts` to `Rolldown.TransformResult` from `vite`.
+  - Updated dependencies `@dxtmisha/functional` (`>=2.0.1`), `@dxtmisha/functional-basic` (`>=2.0.1`), `@dxtmisha/media` (`>=1.0.0`), and `@dxtmisha/styles` (`>=1.0.14`).
+
+### Fixed
+- **Strict Type Narrowing & Lifecycle Cleanup**:
+  - Parameterized `InputSocialItem<MaskPropsInclude['mask']>` in `InputSocial.data` so `mask` bindings strictly match `MaskPropsInclude['mask']`.
+  - Added `!isArray(value)` guard in `MenuValue.setValue` to narrow `ListSelectedList` to `NumberOrStringOrBoolean` before emitting `updateValue`.
+  - Fixed `HTMLElement` target resolution in `ArrowElementTarget` via `getElement` and guaranteed parent style cleanup on unmount in `ArrowParent` by retaining the parent element reference.
+
 ## [1.4.0] - 2026-10-23
 
 ### Added

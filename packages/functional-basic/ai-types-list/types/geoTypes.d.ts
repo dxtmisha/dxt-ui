@@ -1,87 +1,82 @@
-// md5:85a2d400c450f5e21f3ebeadfe2a129d true
+// md5:e076fb90628ae36e54cd7a2e28ed6905 true
 export type GeoDate = 'full' | 'datetime' | 'date' | 'year-month' | 'year' | 'month' | 'day' | 'day-month' | 'time' | 'hour-minute' | 'hour' | 'minute' | 'second';
 export type GeoFirstDay = 1 | 6 | 0;
+/** Default first day of the week ('Mo' = Monday). @keywords calendar, first_day, locale */
+export declare const GEO_DEFAULT_FIRST_DAY = "Mo";
 export type GeoHours = '12' | '24';
 export type GeoTimeZoneStyle = 'minute' | 'hour' | 'ISO8601' | 'RFC';
-
-/** Geographic configuration item containing country, language, and locale formatting rules @keywords geo, locale, country, language */
+/** Geographic item configuration for country, language, and regional formats. @keywords geo, country, language, locale, unit */
 export interface GeoItem {
-  country: string;
-  countryAlternative?: string[];
-  language: string;
-  languageAlternative?: string[];
-  firstDay?: string | null;
-  zone?: string | null;
-  phoneCode?: string;
-  phoneWithin?: string;
-  phoneMask?: string | string[];
-  nameFormat?: 'fl' | 'fsl' | 'lf' | 'lsf' | string;
-  unit?: {
-    'millimeter'?: string;
-    'centimeter'?: string;
-    'meter'?: string;
-    'kilometer'?: string;
-    'square-meter'?: string;
-    'hectare'?: string;
-    'gram'?: string;
-    'kilogram'?: string;
-    'tonne'?: string;
-    'milliliter'?: string;
-    'liter'?: string;
-    'celsius'?: string;
-    'kilometer-per-hour'?: string;
-  };
+    country: string;
+    countryAlternative?: string[];
+    language: string;
+    languageAlternative?: string[];
+    firstDay?: string | null;
+    zone?: string | null;
+    phoneCode?: string;
+    phoneWithin?: string;
+    phoneMask?: string | string[];
+    nameFormat?: 'fl' | 'fsl' | 'lf' | 'lsf' | string;
+    unit?: {
+        'millimeter'?: string;
+        'centimeter'?: string;
+        'meter'?: string;
+        'kilometer'?: string;
+        'square-meter'?: string;
+        'hectare'?: string;
+        'gram'?: string;
+        'kilogram'?: string;
+        'tonne'?: string;
+        'milliliter'?: string;
+        'liter'?: string;
+        'celsius'?: string;
+        'kilometer-per-hour'?: string;
+    };
 }
-
-/** Extended geographic item with resolved required locale fields @keywords geo, locale, full */
+/** Complete geographic item with resolved locale and location identifiers. @keywords geo, location, locale, country */
 export interface GeoItemFull extends Omit<GeoItem, 'firstDay'> {
-  standard: string;
-  firstDay: string;
-  location: string;
-  locationCountry: string;
-  locationLanguage: string;
+    standard: string;
+    firstDay: string;
+    location: string;
+    locationCountry: string;
+    locationLanguage: string;
 }
-
-/** Geographic flag and country display metadata @keywords flag, country, language */
+/** Country flag selection and display item. @keywords flag, country, language, option */
 export interface GeoFlagItem {
-  language: string;
-  languageCode: string;
-  country: string;
-  countryCode: string;
-  standard: string;
-  icon?: string;
-  label: string;
-  value: string;
-  phoneCode?: string;
+    language: string;
+    languageCode: string;
+    country: string;
+    countryCode: string;
+    standard: string;
+    icon?: string;
+    label: string;
+    value: string;
+    phoneCode?: string;
 }
-
-/** Geographic flag item with localized native language descriptions @keywords flag, national, localized */
+/** Extended geographic flag item containing localized national language and country names. @keywords flag, national, localization */
 export interface GeoFlagNational extends GeoFlagItem {
-  description: string;
-  nationalLanguage: string;
-  nationalCountry: string;
+    description: string;
+    nationalLanguage: string;
+    nationalCountry: string;
 }
-
-/** Country phone prefix and mask pattern metadata @keywords phone, mask, countryCode */
+/** Phone dialing configuration and mask metadata for a country. @keywords phone, country_code, mask, dialing */
 export interface GeoPhoneValue {
-  phone: number;
-  within: number;
-  mask: string[];
-  value: string;
+    phone: number;
+    within: number;
+    mask: string[];
+    value: string;
 }
-
-/** Prefix tree node for phone code lookup and mask formatting @keywords phone, trie, prefix, mask */
+/** Node in the internal phone prefix tree (Trie) for number lookup. @keywords phone, trie, prefix_tree, lookup */
 export interface GeoPhoneMap {
-  items: GeoPhoneValue[];
-  info: GeoPhoneValue | undefined;
-  value: string | undefined;
-  mask: string[];
-  maskFull: string[];
-  next: Record<string, GeoPhoneMap>;
+    items: GeoPhoneValue[];
+    info: GeoPhoneValue | undefined;
+    value: string | undefined;
+    mask: string[];
+    maskFull: string[];
+    next: Record<string, GeoPhoneMap>;
 }
-
-/** Result of a phone number lookup against the prefix tree @keywords phone, lookup, result */
+/** Result of matching a phone number against the prefix tree. @keywords phone, lookup, result, match */
 export interface GeoPhoneMapInfo {
-  item?: GeoPhoneMap;
-  phone?: string;
+    item?: GeoPhoneMap;
+    phone?: string;
 }

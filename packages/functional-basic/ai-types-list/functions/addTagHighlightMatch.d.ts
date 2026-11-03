@@ -1,3 +1,8 @@
-// md5:f4294d982215281002bea493a677470b true
-/** Wraps matched search substrings with an HTML highlight tag. @keywords highlight match search replace tag html */
-export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;
+// md5:34a88c041bc9c1b3e4dad04168047bf5 true
+export interface AddTagHighlightMatchOptions {
+    className?: string;
+    shouldEscape?: boolean;
+    shouldRemoveTag?: boolean;
+}
+/** Wraps matched substrings in an HTML tag for visual search highlighting. @keywords highlight, search, match, tag, mark, html */
+export declare function addTagHighlightMatch(value?: string | number | null, search?: string | RegExp, options?: AddTagHighlightMatchOptions): string;

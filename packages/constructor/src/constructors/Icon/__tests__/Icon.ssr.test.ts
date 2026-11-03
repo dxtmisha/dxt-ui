@@ -1,7 +1,7 @@
 // @vitest-environment node
 import './testWarnings'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { createSSRApp, defineComponent, h, reactive } from 'vue'
+import { createSSRApp, defineComponent, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { ServerStorage } from '@dxtmisha/functional'
 
@@ -26,19 +26,14 @@ afterEach(() => {
  */
 const StubImage = defineComponent({
   name: 'StubImage',
-  props: {
-    value: { type: String, default: '' },
-    turn: { type: Boolean, default: false },
-    disabled: { type: Boolean, default: false },
-    hide: { type: Boolean, default: false }
-  },
+  props: ['value', 'turn', 'disabled', 'hide'],
   setup(componentProps) {
     return () => h('span', {
-      'data-value': componentProps.value,
-      'data-turn': String(componentProps.turn),
-      'data-disabled': String(componentProps.disabled),
-      'data-hide': String(componentProps.hide)
-    }, componentProps.value)
+      'data-value': componentProps.value ?? '',
+      'data-turn': String(Boolean(componentProps.turn)),
+      'data-disabled': String(Boolean(componentProps.disabled)),
+      'data-hide': String(Boolean(componentProps.hide))
+    }, componentProps.value ?? '')
   }
 })
 
@@ -54,13 +49,11 @@ async function renderIconSsr(
   properties: IconProps,
   slotText?: string
 ): Promise<string> {
-  const props = reactive<IconProps>({ ...properties })
-
   const InnerComponent = defineComponent({
     setup() {
       const design = new IconDesign<IconComponents, IconExpose, IconClasses, IconProps>(
         'd1.icon',
-        props,
+        properties,
         {
           components: {
             image: StubImage

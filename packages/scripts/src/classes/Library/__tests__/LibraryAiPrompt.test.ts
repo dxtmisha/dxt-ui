@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { LibraryAiPrompt } from '../LibraryAiPrompt'
 import { LibraryAiPromptItem } from '../LibraryAiPromptItem'
 import { PropertiesConfig } from '../../Properties/PropertiesConfig'
-import { PropertiesFile } from '../../Properties/PropertiesFile'
+import { PropertiesFile, type PropertiesFilePath } from '../../Properties/PropertiesFile'
 
 class TestLibraryAiPromptItem extends LibraryAiPromptItem {
   public testGetDescription() {
@@ -42,9 +42,9 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
       vi.spyOn(PropertiesFile, 'readFileOnly').mockReturnValue('Custom package description')
 
-      const desc = item.testGetDescription()
-      expect(desc).toContain('## Package Description & Module Overview')
-      expect(desc).toContain('Custom package description')
+      const description = item.testGetDescription()
+      expect(description).toContain('## Package Description & Module Overview')
+      expect(description).toContain('Custom package description')
 
       const info = item.testGetInfo()
       expect(info).toContain('## Package Core Information')
@@ -55,12 +55,12 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
 
       vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
       vi.spyOn(PropertiesFile, 'isDir').mockReturnValue(true)
-      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/scripts' } as any)
+      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/scripts' })
       const copySpy = vi.spyOn(PropertiesFile, 'copy').mockImplementation(() => {})
 
-      const dev = item.testGetDeveloper()
-      expect(dev).toContain('## Developer Rules')
-      expect(dev).toContain('packages/scripts/ai-developer.md')
+      const developer = item.testGetDeveloper()
+      expect(developer).toContain('## Developer Rules')
+      expect(developer).toContain('packages/scripts/ai-developer.md')
 
       const types = item.testGetTypes()
       expect(types).toContain('## Package Type Definitions')
@@ -73,7 +73,7 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
 
       vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
       vi.spyOn(PropertiesFile, 'isDir').mockReturnValue(true)
-      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/scripts' } as any)
+      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/scripts' })
       vi.spyOn(PropertiesFile, 'readFileOnly').mockReturnValue('Section content')
       vi.spyOn(PropertiesFile, 'readDir').mockReturnValue(['screen.png'])
       vi.spyOn(PropertiesFile, 'copy').mockImplementation(() => {})
@@ -99,8 +99,7 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       }
 
       const promptDefault = new TestLibraryAiPrompt()
-      expect(promptDefault.testGetVuePrompt()).toHaveLength(1)
-      expect(promptDefault.testGetVuePrompt()[0]).toContain('## Vue Component Implementation Rules')
+      expect(promptDefault.testGetVuePrompt()).toEqual([])
 
       const promptWithVue = new TestLibraryAiPrompt([], false, true)
       expect(promptWithVue.testGetVuePrompt()).toHaveLength(1)
@@ -118,19 +117,19 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       }
 
       vi.spyOn(PropertiesFile, 'readDir').mockReturnValue([])
-      vi.spyOn(PropertiesFile, 'is').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'is').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         return pathString === 'ai-types.md' || pathString === 'package.json'
       })
       vi.spyOn(PropertiesFile, 'isDir').mockReturnValue(true)
-      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/root-pkg' } as any)
+      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/root-pkg' })
 
       const prompt = new TestLibraryAiPrompt()
       const list = prompt.testGetList()
 
       expect(list.length).toBeGreaterThanOrEqual(1)
-      expect(list[0].getDir()).toEqual([])
-      expect(list[0].getProjectName()).toBe('@dxtmisha/root-pkg')
+      expect(list[0]?.getDir()).toEqual([])
+      expect(list[0]?.getProjectName()).toBe('@dxtmisha/root-pkg')
     })
 
     it('excludes libraries configured in PropertiesConfig.promptExclude from getList', () => {
@@ -142,12 +141,12 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
 
       vi.spyOn(PropertiesConfig, 'getPromptExclude').mockReturnValue(['@dxtmisha/excluded-pkg'])
       vi.spyOn(PropertiesFile, 'readDir').mockReturnValue([])
-      vi.spyOn(PropertiesFile, 'is').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'is').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         return pathString === 'ai-types.md' || pathString === 'package.json'
       })
       vi.spyOn(PropertiesFile, 'isDir').mockReturnValue(true)
-      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/excluded-pkg' } as any)
+      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/excluded-pkg' })
 
       const prompt = new TestLibraryAiPrompt()
       const list = prompt.testGetList()
@@ -166,13 +165,13 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       const itemStyles = new LibraryAiPromptItem(['packages', 'styles'])
       const itemFunctional = new LibraryAiPromptItem(['packages', 'functional'])
 
-      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         if (pathString.includes('styles')) {
-          return { name: '@dxtmisha/styles' } as any
+          return { name: '@dxtmisha/styles' }
         }
         if (pathString.includes('functional')) {
-          return { name: '@dxtmisha/functional' } as any
+          return { name: '@dxtmisha/functional' }
         }
         return undefined
       })
@@ -193,13 +192,13 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       const itemStyles = new LibraryAiPromptItem(['packages', 'styles'])
       const itemFunctional = new LibraryAiPromptItem(['packages', 'functional'])
 
-      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         if (pathString.includes('styles')) {
-          return { name: '@dxtmisha/styles' } as any
+          return { name: '@dxtmisha/styles' }
         }
         if (pathString.includes('functional')) {
-          return { name: '@dxtmisha/functional' } as any
+          return { name: '@dxtmisha/functional' }
         }
         return undefined
       })
@@ -231,7 +230,7 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
         optionalDependencies: {
           '@dxtmisha/zip': '^1.0.0'
         }
-      } as any)
+      })
 
       const prompt = new TestLibraryAiPrompt()
       const names = prompt.testGetPackageNames()
@@ -252,7 +251,7 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
         }
       }
 
-      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         if (pathString === 'package.json') {
           return {
@@ -260,13 +259,13 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
             dependencies: {
               '@dxtmisha/styles': '^1.0.0'
             }
-          } as any
+          }
         }
         if (pathString.includes('styles')) {
-          return { name: '@dxtmisha/styles' } as any
+          return { name: '@dxtmisha/styles' }
         }
         if (pathString.includes('other')) {
-          return { name: '@dxtmisha/other' } as any
+          return { name: '@dxtmisha/other' }
         }
         return undefined
       })
@@ -292,7 +291,7 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
 
       vi.spyOn(PropertiesConfig, 'getPromptExclude').mockReturnValue([])
       vi.spyOn(PropertiesConfig, 'isPromptPackageOnly').mockReturnValue(true)
-      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         if (pathString === 'package.json') {
           return {
@@ -300,13 +299,13 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
             dependencies: {
               '@dxtmisha/styles': '^1.0.0'
             }
-          } as any
+          }
         }
         if (pathString.includes('styles')) {
-          return { name: '@dxtmisha/styles' } as any
+          return { name: '@dxtmisha/styles' }
         }
         if (pathString.includes('unlisted')) {
-          return { name: '@dxtmisha/unlisted' } as any
+          return { name: '@dxtmisha/unlisted' }
         }
         return undefined
       })
@@ -328,15 +327,15 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
 
       vi.spyOn(PropertiesConfig, 'getPromptExclude').mockReturnValue([])
       vi.spyOn(PropertiesConfig, 'isPromptPackageOnly').mockReturnValue(true)
-      vi.spyOn(PropertiesFile, 'is').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'is').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         return pathString === 'package.json' || pathString.endsWith('ai-types.md')
       })
-      vi.spyOn(PropertiesFile, 'isDir').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'isDir').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         return !pathString.endsWith('.md') && !pathString.endsWith('.json')
       })
-      vi.spyOn(PropertiesFile, 'readDir').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'readDir').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         if (pathString === 'node_modules') {
           return ['@dxtmisha']
@@ -352,7 +351,7 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
         }
         return []
       })
-      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         if (pathString === 'package.json') {
           return {
@@ -360,13 +359,13 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
             dependencies: {
               '@dxtmisha/styles': '^1.0.0'
             }
-          } as any
+          }
         }
         if (pathString.includes('styles')) {
-          return { name: '@dxtmisha/styles' } as any
+          return { name: '@dxtmisha/styles' }
         }
         if (pathString.includes('unlisted')) {
-          return { name: '@dxtmisha/unlisted' } as any
+          return { name: '@dxtmisha/unlisted' }
         }
         return undefined
       })
@@ -387,15 +386,15 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       }
 
       vi.spyOn(PropertiesConfig, 'getPromptInclude').mockReturnValue(['@dxtmisha/styles'])
-      vi.spyOn(PropertiesFile, 'is').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'is').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         return pathString === 'package.json' || pathString.endsWith('ai-types.md')
       })
-      vi.spyOn(PropertiesFile, 'isDir').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'isDir').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         return !pathString.endsWith('.md') && !pathString.endsWith('.json')
       })
-      vi.spyOn(PropertiesFile, 'readDir').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'readDir').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         if (pathString === 'node_modules') {
           return ['@dxtmisha']
@@ -411,13 +410,13 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
         }
         return []
       })
-      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: any) => {
+      vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path: PropertiesFilePath) => {
         const pathString = Array.isArray(path) ? path.join('/') : path
         if (pathString.includes('styles')) {
-          return { name: '@dxtmisha/styles' } as any
+          return { name: '@dxtmisha/styles' }
         }
         if (pathString.includes('functional')) {
-          return { name: '@dxtmisha/functional' } as any
+          return { name: '@dxtmisha/functional' }
         }
         return undefined
       })
@@ -547,7 +546,7 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
 
       vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
       vi.spyOn(PropertiesFile, 'isDir').mockReturnValue(true)
-      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/root-pkg' } as any)
+      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/root-pkg' })
       vi.spyOn(PropertiesFile, 'readFileOnly').mockReturnValue('Root description with ./ai-resources/test')
       vi.spyOn(PropertiesFile, 'readDir').mockReturnValue(['root-screenshot.webp'])
       vi.spyOn(PropertiesFile, 'copy').mockImplementation(() => {})

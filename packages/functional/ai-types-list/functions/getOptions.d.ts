@@ -1,12 +1,5 @@
-// md5:c00cef056862cde13285ce147bfaacc9
+// md5:c00cef056862cde13285ce147bfaacc9 true
 import { type ApiFetch, type ApiMethod } from '@dxtmisha/functional-basic';
-import type { ApiOptions } from '../types/apiTypes';
-import type { RefOrNormal } from '../types/refTypes';
-/**
- * Normalizes API request options into a fetch options object or reactive reference.
- *
- * Нормализует параметры API-запроса в объект опций запроса или реактивную ссылку.
- * @param options Request method string or request options object / Метод запроса строкой или объект параметров запроса
- * @returns Request options object or reactive reference / Объект параметров запроса или реактивная ссылка
- */
+
+/** Normalizes API request options into fetch options or a reactive reference. @keywords api, options, fetch, normalize, request */
 export declare function getOptions(options?: ApiOptions | ApiMethod): RefOrNormal<ApiFetch>;

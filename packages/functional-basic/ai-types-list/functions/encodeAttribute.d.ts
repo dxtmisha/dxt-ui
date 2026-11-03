@@ -1,3 +1,11 @@
-// md5:89b5de4a4b086819fc234362e6a2db59 true
-/** Encodes special characters in a string for safe use in HTML attributes. @keywords html attribute encode escape sanitize */
-export declare function encodeAttribute(text: string): string;
+// md5:e0426c0519c7f16347679aa718709287 true
+/**
+ * Encodes special characters for safe use in HTML attributes.
+ * @keywords html, attribute, encode, escape, sanitize
+ * @example
+ * 
+ * encodeAttribute('<div class="box">') // => '&lt;div class=&quot;box&quot;&gt;'
+ * encodeAttribute(undefined) // => ''
+ * 
+ */
+export declare function encodeAttribute(text?: string | number | null): string;

@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/api-reference.md",
-  "md5": "4b38e33b9fd417537df8bf76c492d263",
-  "name": "API Management & Reactive Singletons",
-  "description": "Defines guidance and usage patterns for scope-isolated reactive singleton factories and REST API management in @dxtmisha/functional. Details scope initialization functions (executeUseGlobal, executeUseLocal, executeUseProvide) and reactive CRUD operations via useApiManagementRef."
+  "md5": "56c735bffa6a1209c37911f51f7c197e",
+  "name": "API Management and Reactive Singletons",
+  "description": "Standards and patterns for scope-isolated singletons, SSR safety, and reactive REST API management."
 }

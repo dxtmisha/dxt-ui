@@ -10,6 +10,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `format?: GeoDate` — тип формата даты вывода (по умолчанию `'datetime'`). Поддерживает значения: `'date'`, `'time'`, `'datetime'`, `'full'` и другие.
+- `timeZone?: boolean` — добавлять временную зону (по умолчанию: `true`).
 
 **Возвращает:**
 `string` — Текущая дата в указанном формате.
@@ -17,9 +18,13 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ```typescript
 import { getCurrentDate } from '@dxtmisha/functional-basic'
 
-// Стандартный формат (datetime)
+// Стандартный формат (datetime со смещением таймзоны)
 const now = getCurrentDate()
-// Результат: "2024-03-15 14:30"
+// Результат: "2024-03-15T14:30:00+03:00"
+
+// Без временной зоны
+const local = getCurrentDate('datetime', false)
+// Результат: "2024-03-15T14:30:00"
 
 // Только дата
 const date = getCurrentDate('date')

@@ -1,164 +1,72 @@
-// md5:0608307b6978e75af7d707cd20e1467d
-import { type Ref } from 'vue';
-import { type FormattersOptionsList, type ApiData, type ApiInstance, type ArrayToItem, type SearchColumns, type SearchFormatList, type FormattersListColumns, type ApiFetch } from '@dxtmisha/functional-basic';
-import type { ApiManagementGet, ApiManagementRequest, ApiManagementSearch, ApiManagementValue } from '../../types/apiTypes';
+// md5:0608307b6978e75af7d707cd20e1467d true
+import { type ComputedRef, type Ref } from 'vue';
+import { type ApiData, type ApiDataValidation, type ApiErrorItem, type ApiFetch, type ApiInstance, type ArrayToItem, type FormattersListColumns, type FormattersOptionsList, type SearchColumns, type SearchFormatList } from '@dxtmisha/functional-basic';
+
 /**
- * A powerful composable for comprehensive API request orchestration.
- * It centrally manages data loading (GET), list formatting, client-side searching,
- * and mutations (POST, PUT, DELETE) through a single reactive interface.
- *
- * Мощный композабл для комплексной оркестрации API-запросов.
- * Он централизованно управляет загрузкой данных (GET), форматированием списков,
- * клиентским поиском и мутациями (POST, PUT, DELETE) через единый реактивный интерфейс.
- *
- * @template Return type of data returned by the API / тип данных, возвращаемых API
- * @template FormattersOptions optional formatting rules / опциональные правила форматирования
- * @template Post data type for POST creation request / тип данных для POST-запроса создания
- * @template Put data type for PUT update request / тип данных для PUT-запроса обновления
- * @template Delete data type for DELETE removal request / тип данных для DELETE-запроса удаления
- * @template Type original data type (before transformation) / тип исходных данных (до трансформации)
- * @template Item type of a single item in the data list / тип одного элемента из списка данных
- * @template ItemFormatters item type after formatters are applied / тип элемента после применения форматировщиков
- * @template Columns search columns derived from formatting / колонки, по которым производится поиск
- *
- * @param propsGet main GET request settings (path, reactivity, skeleton, etc.) / настройки главного GET-запроса
- * @param formattersOptions optional reactive formatting rules / правила для реактивного форматирования данных
- * @param searchOptions optional client-side search settings / настройки для клиентского поиска по списку
- * @param postRequest optional POST mutation settings / настройки для POST-запроса создания
- * @param putRequest optional PUT mutation settings / настройки для PUT-запроса обновления
- * @param deleteRequest optional DELETE mutation settings / настройки для DELETE-запроса удаления
- * @param action common callback awaited after receiving any mutation response / общий коллбэк, ожидаемый после получения любого ответа на мутацию
- * @param actionSuccess common callback awaited after receiving a successful mutation response / общий коллбэк, ожидаемый после получения успешного ответа на мутацию
- * @param actionError common callback awaited after receiving an error mutation response / общий коллбэк, ожидаемый после получения ошибочного ответа на мутацию
- * @param apiInstance API instance for requests (defaults to Api.getItem()) / экземпляр API для выполнения запроса
- *
- * @returns reactive API management interface / реактивный интерфейс управления API
- *
- * @note This hook is recommended to be used in tandem with `executeUse` for centralized state management.
- * By wrapping `useApiManagementRef` in `executeUseProvide` or `executeUseGlobal`, you can ensure
- * a single source of truth across the component tree or the entire application.
- *
- * Рекомендуется использовать этот хук в тандеме с `executeUse` для централизованного управления состоянием.
- * Обернув `useApiManagementRef` в `executeUseProvide` или `executeUseGlobal`, вы обеспечите
- * единый источник истины в дереве компонентов или во всем приложении.
- *
+ * Orchestrates API requests, data loading, formatting, client-side search, and mutations (POST, PUT, DELETE).
+ * @note Recommended to use with `executeUse` (`executeUseProvide` or `executeUseGlobal`) for centralized state management.
  * @remarks
- * Data formatting guidelines for `formattersOptions`:
- * - **Recommended for formatting:** Numbers that represent values (prices, counts), dates, currency, units, and statuses.
- * - **Not recommended for formatting:** Technical identifiers such as ID, UUID, account numbers (if used for logic), types, or internal codes.
- *
- * Рекомендации по форматированию данных для `formattersOptions`:
- * - **Рекомендуется для форматирования:** Числа, представляющие значения (цены, количества), даты, валюта, единицы измерения и статусы.
- * - **Не рекомендуется для форматирования:** Технические идентификаторы, такие как ID, UUID, номера счетов (если они используются для логики), типы или внутренние коды.
- *
+ * Formatting recommendations for `formattersOptions`:
+ * - Recommended: Display values such as numbers, currency, dates, units, and statuses.
+ * - Not recommended: Technical identifiers (ID, UUID, internal codes).
  * @example
- * // 1. Comprehensive API orchestration/ Комплексная оркестрация API
  * const products = useApiManagementRef(
- *   {
- *     path: '/api/v1/products',
- *     skeleton: () => Array(5).fill({ id: 0, name: 'Loading...', price: 0 })
- *   },
- *   {
- *     // Formatters for display/ Форматтеры для отображения
- *     price: (v) => `${v} USD`,
- *     created_at: (v) => new Date(v).toLocaleDateString()
- *   },
- *   {
- *     // Client-side search setup/ Настройка поиска на стороне клиента
- *     columns: ['name', 'category']
- *   },
- *   { path: '/api/v1/products' }, // POST (create)
- *   { path: (data) => `/api/v1/products/${data.id}` }, // PUT (update)
- *   { path: (data) => `/api/v1/products/${data.id}` }  // DELETE (remove)
+ *   { path: '/api/v1/products' },
+ *   { price: (v) => `${v} USD` },
+ *   { columns: ['name'] },
+ *   { path: '/api/v1/products' },
+ *   { path: (data) => `/api/v1/products/${data.id}` },
+ *   { path: (data) => `/api/v1/products/${data.id}` }
  * );
- *
- * // Accessing data/ Доступ к данным:
- * // products.list.value -> processed, formatted, and searched list
- * // products.sendPost({ name: 'New Product', price: 100 }) -> execute mutation
+ * @keywords api, management, request, get, post, put, delete, search, formatter
  */
 export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, actionSuccess?: () => Promise<void> | void, actionError?: () => Promise<void> | void, apiInstance?: ApiInstance): {
-    /** Whether data passed the `typeData` check / `true`, если данные прошли проверку `typeData` */
-    isValid: import("vue").ComputedRef<boolean>;
-    /** Status of response contract validation / Статус валидации контракта ответа */
-    isResponseContractValid: import("vue").ComputedRef<boolean>;
-    /** Result of response validation / Результат валидации ответа */
-    responseValidationResult: import("vue").ComputedRef<import("@dxtmisha/functional-basic").ApiDataValidation | undefined>;
-    /** Processed data array (supports Skeleton, formatters, and search) / Обработанный массив данных (поддерживает Skeleton, форматтеры и поиск) */
-    list: import("vue").ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
-    /** Raw reactive data from `useApiRef` / «Сырые» реактивные данные из `useApiRef` */
-    readonly data: import("vue").ComputedRef<ApiData<Return> | undefined>;
-    /** Current error from request / Текущая ошибка ответа */
-    errorItem: import("vue").ComputedRef<import("@dxtmisha/functional-basic").ApiErrorItem | undefined>;
-    /** Current number of items in `list` (changes with search) / Текущее количество элементов в `list` (меняется при поиске) */
-    readonly length: import("vue").ComputedRef<number>;
-    /** Total number of items in raw `data` / Общее количество элементов в исходном `data` */
-    lengthData: import("vue").ComputedRef<number>;
-    /** Initial loading flag (true when no data yet) / Флаг первичной загрузки (когда данных еще нет) */
-    starting: import("vue").ComputedRef<boolean>;
-    /** Active read process flag / Флаг активного процесса чтения данных */
-    reading: Ref<boolean, boolean>;
-    /** Loading state for the main GET request / Общее состояние загрузки главного GET-запроса */
-    loading: Ref<boolean, boolean>;
-    /** Loading state during search processing / Состояние загрузки в процессе поиска */
-    loadingSearch: Ref<boolean, boolean> | undefined;
-    /** Loading state for POST mutation / Состояние загрузки для POST мутации */
-    loadingPost: Ref<boolean, boolean> | undefined;
-    /** Loading state for PUT mutation / Состояние загрузки для PUT мутации */
-    loadingPut: Ref<boolean, boolean> | undefined;
-    /** Loading state for DELETE mutation / Состояние загрузки для DELETE мутации */
-    loadingDelete: Ref<boolean, boolean> | undefined;
-    /** Whether search is currently active / Активен ли поиск (есть ли поисковый запрос) */
-    isSearch: import("vue").ComputedRef<boolean> | undefined;
-    /** Reactive search string (Proxy to `searchOptions.value`) / Реактивная строка поиска (Proxy к переданному `searchOptions.value`) */
-    search: Ref<string>;
-    /**
-     * Manual initialization
-     *
-     * Ручная инициализация
-     */
-    init: () => void;
-    /**
-     * SSR initialization
-     *
-     * Инициализация SSR
-     */
-    initSsr: () => void;
-    /**
-     * Default reset
-     *
-     * Сброс по умолчанию
-     */
-    /**
-     * Force reset the GET request and clear state.
-     *
-     * Принудительный перезапуск GET-запроса и очистка состояния.
-     */
-    reset: () => Promise<void>;
-    /**
-     * Abort the current network request.
-     *
-     * Прекращение текущего сетевого запроса.
-     */
-    abort: () => void;
-    /**
-     * Execute POST mutation request.
-     *
-     * Выполнить POST запрос мутации.
-     * @param request request data / данные запроса
-     */
-    sendPost: (request?: ApiFetch["request"]) => Promise<ApiData<Post> | undefined>;
-    /**
-     * Execute PUT mutation request.
-     *
-     * Выполнить PUT запрос мутации.
-     * @param request request data / данные запроса
-     */
-    sendPut: (request?: ApiFetch["request"]) => Promise<ApiData<Put> | undefined>;
-    /**
-     * Execute DELETE mutation request.
-     *
-     * Выполнить DELETE запрос мутации.
-     * @param request request data / данные запроса
-     */
-    sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
+  /** Whether data passed the `typeData` check. */
+  isValid: ComputedRef<boolean>;
+  /** Status of response contract validation. */
+  isResponseContractValid: ComputedRef<boolean>;
+  /** Result of response contract validation. */
+  responseValidationResult: ComputedRef<ApiDataValidation | undefined>;
+  /** Processed data array with skeleton, formatters, and search applied. */
+  list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
+  /** Raw reactive response data. */
+  readonly data: ComputedRef<ApiData<Return> | undefined>;
+  /** Current request error. */
+  errorItem: ComputedRef<ApiErrorItem | undefined>;
+  /** Current item count in processed list. */
+  readonly length: ComputedRef<number>;
+  /** Total item count in raw response data. */
+  lengthData: ComputedRef<number>;
+  /** Initial loading flag before any data is loaded. */
+  starting: ComputedRef<boolean>;
+  /** Active read process status. */
+  reading: Ref<boolean, boolean>;
+  /** Main GET request loading state. */
+  loading: Ref<boolean, boolean>;
+  /** Search processing loading state. */
+  loadingSearch: Ref<boolean, boolean> | undefined;
+  /** POST mutation loading state. */
+  loadingPost: Ref<boolean, boolean> | undefined;
+  /** PUT mutation loading state. */
+  loadingPut: Ref<boolean, boolean> | undefined;
+  /** DELETE mutation loading state. */
+  loadingDelete: Ref<boolean, boolean> | undefined;
+  /** Indicates whether a search query is active. */
+  isSearch: ComputedRef<boolean> | undefined;
+  /** Reactive search query string proxy. */
+  search: Ref<string>;
+  /** Manually initializes the composable. @keywords init, manual */
+  init: () => void;
+  /** Initializes state for SSR context. @keywords init, ssr */
+  initSsr: () => void;
+  /** Resets state and forces a fresh GET request. @keywords reset, reload */
+  reset: () => Promise<void>;
+  /** Aborts the active network request. @keywords abort, cancel */
+  abort: () => void;
+  /** Executes POST mutation request. @keywords post, create, mutation */
+  sendPost: (request?: ApiFetch["request"]) => Promise<ApiData<Post> | undefined>;
+  /** Executes PUT mutation request. @keywords put, update, mutation */
+  sendPut: (request?: ApiFetch["request"]) => Promise<ApiData<Put> | undefined>;
+  /** Executes DELETE mutation request. @keywords delete, remove, mutation */
+  sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
 };

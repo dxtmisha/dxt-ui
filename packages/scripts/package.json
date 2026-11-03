@@ -98,10 +98,10 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": ">=1.15.18",
-    "@dxtmisha/functional-basic": ">=1.11.2",
-    "@dxtmisha/media": ">=0.8.1",
-    "sass": ">=1.107.0",
+    "@dxtmisha/functional": ">=2.0.1",
+    "@dxtmisha/functional-basic": ">=2.0.1",
+    "@dxtmisha/media": ">=1.0.0",
+    "sass": ">=1.107.1",
     "typescript": ">=6.0.3",
     "vite-node": ">=6.0.0",
     "vue": ">=3.5.44"
@@ -110,15 +110,15 @@
     "puppeteer": ">=25.16.0"
   },
   "peerDependencies": {
-    "@ai-sdk/xai": ">=5.0.20",
-    "@anthropic-ai/claude-agent-sdk": ">=0.3.295",
-    "@anthropic-ai/sdk": ">=0.133.0",
-    "@dxtmisha/wiki": ">=0.118.1",
-    "@google/genai": ">=2.28.0",
-    "@napi-rs/canvas": ">=1.0.10",
-    "ai": ">=7.0.137",
-    "openai": ">=7.31.0",
-    "puppeteer": ">=25.13.0"
+    "@ai-sdk/xai": ">=5.0.38",
+    "@anthropic-ai/claude-agent-sdk": ">=0.3.317",
+    "@anthropic-ai/sdk": ">=1.4.0",
+    "@dxtmisha/wiki": ">=0.119.1",
+    "@google/genai": ">=2.32.0",
+    "@napi-rs/canvas": ">=1.1.0",
+    "ai": ">=7.0.162",
+    "openai": ">=7.47.0",
+    "puppeteer": ">=25.16.0"
   },
   "peerDependenciesMeta": {
     "@ai-sdk/xai": {

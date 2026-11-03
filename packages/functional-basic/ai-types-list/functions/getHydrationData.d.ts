@@ -1,3 +1,3 @@
-// md5:71c8f5877681c247efa16a7c5b113194 true
-/** Retrieves and parses JSON hydration data from a DOM script element. @keywords hydration, json, script tag, dom, parse, ssr */
-export declare function getHydrationData<T>(id: string, defaultValue: T, remove?: boolean): T;
+// md5:86b8f0e19cd164b8df323063d1a3b8f2 true
+/** Retrieves and parses JSON hydration data from a script element in the DOM. @keywords hydration, script tag, json parse, dom state */
+export declare function getHydrationData<T>(id: string | number, defaultValue: T, remove?: boolean): T;

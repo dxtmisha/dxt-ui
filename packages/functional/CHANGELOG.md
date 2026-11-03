@@ -2,9 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.0] - 2026-10-18
+## [2.0.1] - 2026-11-03
 
 ### Added
+- **`useScope`**:
+  - Introduced `useScope` composable for effect scope tracking, synchronous and asynchronous execution with race condition invalidation, and automatic cleanup on scope disposal.
+  - Implemented `scope.run()` for synchronous execution within a captured `EffectScope`, `scope.runAsync()` for async workflows with execution currency guards, and `scope.stop()` for manual scope teardown.
+  - Exported `useScope` in package entry point (`src/library.ts`).
+  - Added comprehensive unit test suite in `src/composables/ref/__tests__/useScope.test.ts`.
+  - Added trilingual Storybook documentation (EN, RU, VI).
+- **`watchEffectAsync`**:
+  - Introduced `watchEffectAsync` helper utility with evaluation currency guard, automatic cleanup, and SSR skipping (`isDomRuntime()`).
+  - Coordinates with `useScope` and `effectScope` for deterministic async side effect orchestration.
+  - Exported `watchEffectAsync` in package entry point (`src/library.ts`).
+  - Added comprehensive unit test suite in `src/functions/__tests__/watchEffectAsync.test.ts`.
+  - Added trilingual Storybook documentation (EN, RU, VI).
+- **`toShallowRefItem`**:
+  - Introduced `toShallowRefItem` utility for creating shallow reactive references with direct assignment and unwrapping.
+  - Exported `toShallowRefItem` in package entry point (`src/library.ts`).
+  - Added unit test suite in `src/functions/ref/__tests__/toShallowRefItem.test.ts` and trilingual Storybook documentation (EN, RU, VI).
+- **`getApiErrorRef`**:
+  - Introduced `getApiErrorRef` helper utility to extract structured, localized reactive error descriptions from API error items.
+  - Exported `getApiErrorRef` in package entry point (`src/library.ts`).
+  - Added comprehensive unit test suite in `src/functions/ref/__tests__/getApiErrorRef.test.ts` and trilingual Storybook documentation (EN, RU, VI).
+- **`useApiManagementRef` & `useApiManagementAsyncRef` Mutation Callbacks**:
+  - Added `actionSuccess` and `actionError` lifecycle callback options to `useApiManagementRef` and `useApiManagementAsyncRef` for handling successful and failed CRUD mutations.
+  - Added unit test coverage for callback execution across create, update, and delete actions.
+- **`getInject`**:
+  - Added `defaultValue` support and `InjectedValue` type definition in `src/functions/getInject.ts`.
+  - Preserved falsy injected values (`false`, `0`, `''`, `null`) without falling back to default values erroneously.
+  - Added comprehensive unit test suite in `src/functions/__tests__/getInject.test.ts` and trilingual Storybook documentation (EN, RU, VI).
+- **`DesignComp` & Lifecycle Tests**:
+  - Added `DesignComp` component helper class and unit test suite in `src/classes/design/__tests__/DesignComp.test.ts`.
+  - Added standalone test suites in `src/classes/design/__tests__/DesignLifecycleAbstract.test.ts` and `src/classes/design/__tests__/DesignName.test.ts`.
 - **`DesignName`**:
   - Introduced `DesignName` class for component naming, BEM class resolution, and CSS custom property generation (`getName()`, `getDesign()`, `getSubClass()`, `getStatusClass()`, `getStyle()`).
   - Cached normalized class and design names to optimize performance during component rendering.
@@ -25,19 +55,58 @@ All notable changes to this project will be documented in this file.
   - Added comprehensive test suite in `src/classes/design/__tests__/DesignConstructorAbstract.test.ts`.
 
 ### Changed
-- **`DesignConstructorAbstract` (Major Architecture Refactoring)**:
-  - **Removed Manual `this.init()`**: Eliminated the requirement to manually call `this.init()` at the end of constructor classes; classes, styles, and expose data are now dynamically computed from `initClasses()`, `initStyles()`, and `initExpose()`.
-  - **Delegated Naming to `DesignName`**: Integrated `DesignName` as `this.naming` and exposed via `getNaming()`, replacing direct naming methods on the constructor instance.
-  - **Optional Components**: `this.components` is now optional (`DesignComponents | undefined`), instantiated only when `options.components` is provided (`isFilled(options?.components)`).
-  - **Vue Native Class & Style Normalization**: Replaced manual class and style conversions with Vue's `normalizeClass` and `normalizeStyle` to merge constructor, option, and attribute styles (`this.attrs?.class`, `this.attrs?.style`).
-  - **Reactive Slot Tracking**: Updated `render()` to track slot changes reactively via `shallowRef` and `onBeforeUpdate` with `isDifferent`, ensuring slots re-render when changed.
-  - **`initSlot` Rendering**: Updated `initSlot` to use Vue's `renderSlot` for consistent slot fragment rendering, typing children as `VNode[]`.
-  - **Attribute Filtering**: Streamlined `getAttrs()` using rest destructuring `{ class: _class, style: _style, ...attrs }` to cleanly exclude class and style.
+- **`computedAsync`**:
+  - Refactored with lazy watcher activation, scope isolation, improved generic ergonomics (`<R, I = R>`), and centralized `ErrorCenter` integration (`group: 'functional'`, code `'computed-async'`).
+  - Replaced local disposed flag with native `scope?.active !== false` check and removed redundant `onScopeDispose`.
+  - Prevented outdated asynchronous evaluations from overwriting newer results.
+  - Expanded unit test suites and updated Storybook documentation (EN, RU, VI).
+- **`computedEternity`**:
+  - Hardened SSR safety and error handling; discards obsolete asynchronous evaluations and catches getter errors cleanly.
+  - Expanded unit test suite in `src/functions/__tests__/computedEternity.test.ts` and updated Storybook documentation (EN, RU, VI).
+- **`executeUse`**:
+  - Added `initGlobal` helper, detached effect scope caching, and process-wide SSR singleton support.
+  - Validated plain-object singleton containers, supported interface-based result types, and switched to sequential instance ID generation.
+  - Expanded unit test suite in `src/functions/__tests__/executeUse.test.ts`.
+- **`toBinds` & `toBind`**:
+  - Widened parameter typing to accept `null` and `undefined` safely.
+  - Optimized iteration loops and property merging fast paths.
+  - Expanded test suites in `toBinds.test.ts` and `toBind.test.ts`.
+- **`getClassName`**:
+  - Supported object and array class syntax via Vue's `normalizeClass`.
+  - Widened prop typing and added comprehensive unit test suite in `src/functions/render/__tests__/getClassName.test.ts`.
+- **`getBind`**:
+  - Improved handling of falsy values (`0`, `false`, `''`).
+  - Standardized checks using primitive helper functions (`hasKey`, `isString`, `isNull`).
+- **`getOptions`**:
+  - Added support for `ApiMethod` union type in method configuration.
+  - Added unit tests in `src/functions/__tests__/getOptions.test.ts` and updated documentation.
+- **`dxtFunctionalPlugin`**:
+  - Refined plugin installation pipeline, social icon wiring, and test assertions in `dxtFunctionalPlugin.test.ts`.
+- **`DatetimeRef` & `GeoRef`**:
+  - Enforced `DatetimeRef` state ownership: defaulted locale code to `GeoRef.getLocation()` for automatic global locale reactivity.
+  - Reset direct `setType` and `setCode` mutations made through `getDatetime()` and avoided redundant `watch(this.date)` cycles.
+  - Added fallback projection creation in `GeoRef` when `EffectScopeGlobal.run` returns `undefined`.
+  - Projected language metadata via `EffectScopeGlobal` and supported `undefined` return type in `setValueDefault` factory.
+- **Design Classes (`DesignComponents`, `DesignConstructorAbstract`, `DesignLogicAbstract`, `DesignName`)**:
+  - **`DesignConstructorAbstract` Architecture**: Eliminated requirement to manually call `this.init()`; classes, styles, and expose data are now dynamically computed from `initClasses()`, `initStyles()`, and `initExpose()`. Delegated naming to `DesignName` (`this.naming` / `getNaming()`). Made `this.components` optional. Switched to Vue's `normalizeClass` and `normalizeStyle`. Updated `render()` to track slot changes reactively via `shallowRef` and `onBeforeUpdate` with `isDifferent`. Updated `initSlot` to use `renderSlot` for fragment rendering. Streamlined `getAttrs()` via rest destructuring. Added default generic arguments and marked `attrs` and `slots` as `readonly`.
+  - **`DesignComponents`**: Added default generic types, marked caching as `readonly`, and optimized cache retrieval in `getModification`.
+  - **`DesignLogicAbstract`**: Replaced `forEach` with `forOwn` for type-safe constructor item condition watchers; simplified lifecycle invocation and removed redundant array flattening in `DesignName`.
 - **Dependencies**:
-  - Updated `@dxtmisha/functional-basic` dependency to `>=1.13.0`.
+  - Updated `@dxtmisha/functional-basic` dependency to `>=2.0.1`.
+  - Updated `@dxtmisha/media` dependency to `>=1.0.0`.
+  - Updated `vue` dependency to `>=3.5.44`.
 - **Documentation & Types**:
-  - Updated Storybook documentation for `DesignConstructorAbstract` across English, Russian, and Vietnamese.
-  - Updated AI type declarations in `ai-types-list/`.
+  - Updated Storybook documentation across English, Russian, and Vietnamese.
+  - Synchronized AI type declarations in `ai-types-list/`.
+
+### Fixed
+- **`useLazyItemByMarginRef`**:
+  - Retained element reference during unmount to ensure reliable cleanup in `removeLazyItem`.
+- **`useApiRef` & `useApiRequest`**:
+  - Hardened error handling, concurrency, and global watch sources.
+- **Storage & Cookie Types**:
+  - Type cast `DataStorage.get` return value to satisfy strict ref generic types.
+  - Fixed `useCookieRef` SSR boolean serialization assertion.
 
 ### Removed
 - **`DesignConstructorAbstract`**:

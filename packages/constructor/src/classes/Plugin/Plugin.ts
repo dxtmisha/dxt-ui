@@ -1,5 +1,4 @@
-import type { TransformResult } from 'rollup'
-import type { Plugin as VitePlugin } from 'vite'
+import type { Plugin as VitePlugin, Rolldown } from 'vite'
 
 import { PluginTool } from './PluginTool'
 import { PluginCode } from './PluginCode'
@@ -62,7 +61,7 @@ export class Plugin {
         this.mode = env.mode
         return true
       },
-      transform: (code: string, id: string): TransformResult => {
+      transform: (code: string, id: string): Rolldown.TransformResult => {
         return this.transform(code, id)
       },
       ...this.options?.viteOptions
@@ -103,7 +102,7 @@ export class Plugin {
    * @param code file content / содержимое файла
    * @param id file identification / идентификация файла
    */
-  protected transform(code: string, id: string): TransformResult {
+  protected transform(code: string, id: string): Rolldown.TransformResult {
     if (
       this.first
       && PluginTool.isJs(id)

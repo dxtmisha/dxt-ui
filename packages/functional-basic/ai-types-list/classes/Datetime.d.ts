@@ -1,154 +1,154 @@
-// md5:903c825fc3643aedb6b09e96f4f4d35f true
+// md5:4b4ab9f76cf65fd0f9bb80b46c02348c true
 /**
- * Date manipulation and localization utility class.
- *
- * @remarks
- * Creating a `Datetime` instance without a specific date (using the current time)
- * for rendering in SSR may lead to hydration mismatches because the time or time zone
- * on the server may differ from the time on the client.
- * @keywords datetime, date, calendar, timezone, localization, intl
+ * Class for working with dates, time, and internationalized calendar calculations.
+ * @remarks Creating a `Datetime` instance without a specific date (using the current time) for rendering in SSR may lead to hydration mismatches because the time or time zone on the server may differ from the time on the client.
+ * @keywords datetime, date, calendar, time, timezone, intl
  */
 export declare class Datetime {
-    /** Constructs a Datetime instance. @keywords constructor, init */
+    /** Initializes a Datetime instance with date, format type, and locale. @keywords init, constructor */
     constructor(date?: NumberOrStringOrDate, type?: GeoDate, code?: string);
-    /** Gets the GeoIntl localization formatting instance. @keywords intl, localization */
+    /** Returns the GeoIntl internationalization helper instance. @keywords intl, localization, format */
     getIntl(): GeoIntl;
-    /** Gets the underlying native Date object. @keywords date, native */
+    /** Returns the underlying native Date instance. @keywords date, native */
     getDate(): Date;
-    /** Gets the configured output date type format. @keywords type, format */
+    /** Returns the date output format type. @keywords type, format */
     getType(): GeoDate;
-    /** Gets the hour display format type. @keywords hours, format */
+    /** Returns the hour display format type. @keywords hours, format */
     getHoursType(): GeoHours;
-    /** Checks whether 24-hour time format is enabled. @keywords hour24, format, time */
+    /** Checks whether the 24-hour time format is enabled. @keywords 24-hour, time format */
     getHour24(): boolean;
-    /** Returns time zone offset in minutes relative to UTC. @keywords timezone, offset, utc */
+    /** Returns the country and language locale code. @keywords locale, language, country, code */
+    getCode(): string;
+    /** Returns the time zone offset in minutes relative to UTC. @keywords timezone, offset, utc */
     getTimeZoneOffset(): number;
-    /** Gets the time zone representation string. @keywords timezone, tz */
+    /** Returns the formatted time zone string. @keywords timezone, tz */
     getTimeZone(style?: GeoTimeZoneStyle): string;
-    /** Gets the code for the first day of the week. @keywords firstDay, weekday */
+    /** Returns the first day of the week code for the current locale. @keywords first day, week, weekday */
     getFirstDayCode(): GeoFirstDay;
-    /** Gets the full year in local time. @keywords year, local */
+    /** Returns the full year according to local time. @keywords year, local time */
     getYear(): number;
-    /** Gets the 1-based month (1-12) in local time. @keywords month, local */
+    /** Returns the 1-based month (1-12) according to local time. @keywords month */
     getMonth(): number;
-    /** Gets the day of the month (1-31) in local time. @keywords day, date, local */
+    /** Returns the day of the month (1-31) according to local time. @keywords day, day of month */
     getDay(): number;
-    /** Gets the hour (0-23) in local time. @keywords hour, local */
+    /** Returns the day of the week (0-6) according to local time. @keywords weekday, day of week */
+    getWeekday(): number;
+    /** Returns the hour (0-23) according to local time. @keywords hour, time */
     getHour(): number;
-    /** Gets the minute (0-59) in local time. @keywords minute, local */
+    /** Returns the minutes (0-59) according to local time. @keywords minute, time */
     getMinute(): number;
-    /** Gets the second (0-59) in local time. @keywords second, local */
+    /** Returns the seconds (0-59) according to local time. @keywords second, time */
     getSecond(): number;
-    /** Gets the total number of days (28-31) in the current month. @keywords maxDay, daysInMonth */
+    /** Returns the total number of days in the current month (28-31). @keywords max day, days in month */
     getMaxDay(): number;
-    /** Replaces the current date value. @keywords setDate, update */
-    setDate(value: NumberOrStringOrDate): this;
-    /** Sets the output date type format. @keywords setType, format */
+    /** Sets the date value completely. @keywords set date */
+    setDate(value?: NumberOrStringOrDate): this;
+    /** Sets the date format output type. @keywords set type, format */
     setType(value: GeoDate): this;
-    /** Sets whether to use 24-hour time format. @keywords setHour24, format */
+    /** Configures whether to use the 24-hour time format. @keywords 24-hour, format */
     setHour24(value: boolean): this;
-    /** Sets the locale/country code. @keywords setCode, locale */
-    setCode(code: string): this;
-    /** Registers a change listener callback. @keywords watch, observer, listener */
-    setWatch(watch: (date: Date, type: GeoDate, hour24: boolean) => void): this;
-    /** Sets the full year in local time. @keywords setYear, year */
+    /** Updates the locale code and triggers watcher notification. @keywords set locale, code */
+    setCode(code?: string): this;
+    /** Registers a callback invoked whenever date values update. @keywords watch, listener, callback */
+    setWatch(watch?: (date: Date, type: GeoDate, hour24: boolean) => void): this;
+    /** Sets the full year in local time, clamping day to avoid month overflow. @keywords set year */
     setYear(value: number): this;
-    /** Sets the 1-based month (1-12) in local time. @keywords setMonth, month */
+    /** Sets the 1-based month (1-12) in local time, clamping day to avoid overflow. @keywords set month */
     setMonth(value: number): this;
-    /** Sets the day of the month (1-31) in local time. @keywords setDay, day */
+    /** Sets the day of the month in local time. @keywords set day */
     setDay(value: number): this;
-    /** Sets the hour (0-23) in local time. @keywords setHour, hour */
+    /** Sets the hour in local time. @keywords set hour */
     setHour(value: number): this;
-    /** Sets the minute (0-59) in local time. @keywords setMinute, minute */
+    /** Sets the minutes in local time. @keywords set minute */
     setMinute(value: number): this;
-    /** Sets the second (0-59) in local time. @keywords setSecond, second */
+    /** Sets the seconds in local time. @keywords set second */
     setSecond(value: number): this;
-    /** Formats date and time according to locale and format options. @keywords locale, format, string */
+    /** Formats date and time according to locale and format options. @keywords locale, format, intl */
     locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): string;
-    /** Formats the year according to locale. @keywords localeYear, year, format */
+    /** Formats the year according to locale options. @keywords format year, locale */
     localeYear(style?: Intl.DateTimeFormatOptions['year']): string;
-    /** Formats the month according to locale. @keywords localeMonth, month, format */
+    /** Formats the month according to locale options. @keywords format month, locale */
     localeMonth(style?: Intl.DateTimeFormatOptions['month']): string;
-    /** Formats the day according to locale. @keywords localeDay, day, format */
+    /** Formats the day according to locale options. @keywords format day, locale */
     localeDay(style?: Intl.DateTimeFormatOptions['day']): string;
-    /** Formats the hour according to locale. @keywords localeHour, hour, format */
+    /** Formats the hour according to locale options. @keywords format hour, locale */
     localeHour(style?: Intl.DateTimeFormatOptions['hour']): string;
-    /** Formats the minute according to locale. @keywords localeMinute, minute, format */
+    /** Formats the minute according to locale options. @keywords format minute, locale */
     localeMinute(style?: Intl.DateTimeFormatOptions['minute']): string;
-    /** Formats the second according to locale. @keywords localeSecond, second, format */
+    /** Formats the second according to locale options. @keywords format second, locale */
     localeSecond(style?: Intl.DateTimeFormatOptions['second']): string;
-    /** Formats date to a standard ISO-like string. @keywords standard, iso, format */
+    /** Outputs date in standard format with optional timezone offset. @keywords standard, iso, format */
     standard(timeZone?: boolean): string;
-    /** Shifts the date by a specified number of years. @keywords moveByYear, addYears */
+    /** Shifts the date by a given number of years. @keywords move year, shift, offset */
     moveByYear(value: number): this;
-    /** Shifts the date by a specified number of months. @keywords moveByMonth, addMonths */
+    /** Shifts the date by a given number of months. @keywords move month, shift, offset */
     moveByMonth(value: number): this;
-    /** Shifts the date by a specified number of days. @keywords moveByDay, addDays */
+    /** Shifts the date by a given number of days. @keywords move day, shift, offset */
     moveByDay(value: number): this;
-    /** Shifts the date by a specified number of hours. @keywords moveByHour, addHours */
+    /** Shifts the date by a given number of hours. @keywords move hour, shift, offset */
     moveByHour(value: number): this;
-    /** Shifts the date by a specified number of minutes. @keywords moveByMinute, addMinutes */
+    /** Shifts the date by a given number of minutes. @keywords move minute, shift, offset */
     moveByMinute(value: number): this;
-    /** Shifts the date by a specified number of seconds. @keywords moveBySecond, addSeconds */
+    /** Shifts the date by a given number of seconds. @keywords move second, shift, offset */
     moveBySecond(value: number): this;
-    /** Moves the date to January of the current year. @keywords moveMonthFirst, january */
+    /** Sets the month to January. @keywords january, first month */
     moveMonthFirst(): this;
-    /** Moves the date to December of the current year. @keywords moveMonthLast, december */
+    /** Sets the month to December. @keywords december, last month */
     moveMonthLast(): this;
-    /** Advances the date to the first day of the next month. @keywords moveMonthNext, nextMonth */
+    /** Moves date to the first day of the next month. @keywords next month */
     moveMonthNext(): this;
-    /** Rewinds the date to the first day of the previous month. @keywords moveMonthPrevious, prevMonth */
+    /** Moves date to the first day of the previous month. @keywords previous month */
     moveMonthPrevious(): this;
-    /** Moves the date to the first day of the current week. @keywords moveWeekdayFirst, weekStart */
+    /** Moves date to the first day of the current week. @keywords first day, week */
     moveWeekdayFirst(): this;
-    /** Moves the date to the last day of the current week. @keywords moveWeekdayLast, weekEnd */
+    /** Moves date to the last day of the current week. @keywords last day, week */
     moveWeekdayLast(): this;
-    /** Moves to the first weekday of the month's first week. @keywords moveWeekdayFirstByMonth */
+    /** Moves date to the first day of the first week of the month. @keywords first week, calendar grid */
     moveWeekdayFirstByMonth(): this;
-    /** Moves to the first weekday of the following month's first full week. @keywords moveWeekdayLastByMonth */
+    /** Moves date to the last day of the last week of the month. @keywords last week, calendar grid */
     moveWeekdayLastByMonth(): this;
-    /** Advances the date by one full week. @keywords moveWeekdayNext, nextWeek */
+    /** Shifts date to the next week. @keywords next week */
     moveWeekdayNext(): this;
-    /** Rewinds the date by one full week. @keywords moveWeekdayPrevious, prevWeek */
+    /** Shifts date to the previous week. @keywords previous week */
     moveWeekdayPrevious(): this;
-    /** Moves the date to the first day of the current month. @keywords moveDayFirst, startOfMonth */
+    /** Moves date to the first day of the month. @keywords start of month, day first */
     moveDayFirst(): this;
-    /** Moves the date to the last day of the current month. @keywords moveDayLast, endOfMonth */
+    /** Moves date to the last day of the month. @keywords end of month, day last */
     moveDayLast(): this;
-    /** Advances the date by one day. @keywords moveDayNext, tomorrow */
+    /** Shifts date forward by one day. @keywords next day, tomorrow */
     moveDayNext(): this;
-    /** Rewinds the date by one day. @keywords moveDayPrevious, yesterday */
+    /** Shifts date backward by one day. @keywords previous day, yesterday */
     moveDayPrevious(): this;
-    /** Clones and returns a native Date instance. @keywords clone, date */
+    /** Clones date as a native Date instance. @keywords clone date */
     clone(): Date;
-    /** Clones and returns a new Datetime instance. @keywords cloneClass, copy */
+    /** Clones the Datetime instance. @keywords clone datetime */
     cloneClass(): Datetime;
-    /** Clones instance and sets month to January. @keywords cloneMonthFirst, january */
+    /** Clones Datetime instance and sets month to January. @keywords clone, january */
     cloneMonthFirst(): Datetime;
-    /** Clones instance and sets month to December. @keywords cloneMonthLast, december */
+    /** Clones Datetime instance and sets month to December. @keywords clone, december */
     cloneMonthLast(): Datetime;
-    /** Clones instance shifted to the next month. @keywords cloneMonthNext, nextMonth */
+    /** Clones Datetime instance and shifts one month ahead. @keywords clone, next month */
     cloneMonthNext(): Datetime;
-    /** Clones instance shifted to the previous month. @keywords cloneMonthPrevious, prevMonth */
+    /** Clones Datetime instance and shifts one month back. @keywords clone, previous month */
     cloneMonthPrevious(): Datetime;
-    /** Clones instance set to the first day of the week. @keywords cloneWeekdayFirst, weekStart */
+    /** Clones Datetime instance set to the first day of the week. @keywords clone, start of week */
     cloneWeekdayFirst(): Datetime;
-    /** Clones instance set to the last day of the week. @keywords cloneWeekdayLast, weekEnd */
+    /** Clones Datetime instance set to the last day of the week. @keywords clone, end of week */
     cloneWeekdayLast(): Datetime;
-    /** Clones instance set to the first weekday of the month's first week. @keywords cloneWeekdayFirstByMonth */
+    /** Clones Datetime instance set to the first day of the first week of the month. @keywords clone, calendar start */
     cloneWeekdayFirstByMonth(): Datetime;
-    /** Clones instance set to the first weekday of the following month's first full week. @keywords cloneWeekdayLastByMonth */
+    /** Clones Datetime instance set to the last day of the last week of the month. @keywords clone, calendar end */
     cloneWeekdayLastByMonth(): Datetime;
-    /** Clones instance advanced by one week. @keywords cloneWeekdayNext, nextWeek */
+    /** Clones Datetime instance shifted one week ahead. @keywords clone, next week */
     cloneWeekdayNext(): Datetime;
-    /** Clones instance rewound by one week. @keywords cloneWeekdayPrevious, prevWeek */
+    /** Clones Datetime instance shifted one week back. @keywords clone, previous week */
     cloneWeekdayPrevious(): Datetime;
-    /** Clones instance set to the first day of the month. @keywords cloneDayFirst, startOfMonth */
+    /** Clones Datetime instance set to the first day of the month. @keywords clone, start of month */
     cloneDayFirst(): Datetime;
-    /** Clones instance set to the last day of the month. @keywords cloneDayLast, endOfMonth */
+    /** Clones Datetime instance set to the last day of the month. @keywords clone, end of month */
     cloneDayLast(): Datetime;
-    /** Clones instance advanced by one day. @keywords cloneDayNext, tomorrow */
+    /** Clones Datetime instance shifted one day ahead. @keywords clone, next day */
     cloneDayNext(): Datetime;
-    /** Clones instance rewound by one day. @keywords cloneDayPrevious, yesterday */
+    /** Clones Datetime instance shifted one day back. @keywords clone, previous day */
     cloneDayPrevious(): Datetime;
 }

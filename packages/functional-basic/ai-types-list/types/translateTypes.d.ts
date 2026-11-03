@@ -1,24 +1,25 @@
-// md5:5cc611483b3118288c41edb2a24d88ce true
-/** Translation plugin configuration options @keywords i18n, translate, config, options */
+// md5:180a1b1882c4ae4c49c240a6b34464eb true
+/** Configuration options for the translation plugin. @keywords translate, config, options */
 export type TranslateConfig = {
     url?: string;
     propsName?: string;
     readApi?: boolean;
 };
-/** Translation code or list of translation codes @keywords i18n, key, code */
 export type TranslateCode = string | string[];
-/** Map of translation keys to resolved translated strings @keywords i18n, list, dictionary */
+/** Map of translation codes to their localized string values. @keywords translate, list, mapping */
 export type TranslateList<T extends TranslateCode[]> = {
     [K in T[number] as K extends readonly string[] ? K[0] : K]: string;
 };
-/** Conditional translation result resolving to an object for multiple keys or a string for single key @keywords i18n, translate, resolver */
+/** Resolves return type to a single translated string or a mapped dictionary. @keywords translate, conditional */
 export type TranslateItemOrList<T extends TranslateCode> = T extends string[] ? TranslateList<T> : string;
 export type TranslateDataFileList = Record<string, string>;
-/** Asynchronous loader function for translation data @keywords i18n, loader, async */
 export type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
-/** Mapping of locale identifiers to translation file loaders @keywords i18n, locale, dictionary */
 export type TranslateDataFile = Record<string, TranslateDataFileItem>;
-/** Translation batch bound to its original language and location @keywords i18n, batch, locale, cache */
+export type TranslatePromiseItem = {
+    id: number;
+    promise: Promise<TranslateDataFileList | undefined>;
+};
+/** Translation batch queued for retrieval by locale and language. @keywords translate, batch, queue */
 export interface TranslateBatch {
     readonly location: string;
     readonly language: string;
@@ -26,7 +27,7 @@ export interface TranslateBatch {
     readonly codes: string[];
     readonly resolves: (() => void)[];
 }
-/** Prefix identifier for global translations @keywords i18n, global, prefix */
+/** Prefix for global translation keys. @keywords translate, prefix, global */
 export declare const TRANSLATE_GLOBAL_PREFIX = "global";
-/** Batch loading request timeout in milliseconds @keywords i18n, timeout, batch */
+/** Request debounce timeout in milliseconds for batch translation loading. @keywords translate, timeout, debounce */
 export declare const TRANSLATE_TIME_OUT = 160;

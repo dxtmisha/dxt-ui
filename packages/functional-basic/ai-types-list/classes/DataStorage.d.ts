@@ -1,16 +1,24 @@
-// md5:c8faeea2a4c38a1a5a073b1d42a5b3d2 true
-/** Storage manager for localStorage and sessionStorage with prefix, TTL expiration, and SSR isolation support. @keywords localstorage, sessionstorage, storage, cache, ssr */
-export declare class DataStorage<T> {
-    /** Initializes storage key, storage type, and optional error handler. @keywords constructor, init, storage */
+// md5:5923b3ef5d6303d46259132dd81d5825 true
+/** Resolution type for DataStorage.get return value with fallback handling. @keywords storage, return type */
+export type DataStorageGet<T, D = undefined> = [
+    D
+] extends [
+    undefined
+] ? (T | undefined) : unknown extends T ? (D extends () => infer R ? R : D) : T;
+/** Manages localStorage and sessionStorage with prefixing, expiration caching, and SSR request isolation. @keywords storage, localStorage, sessionStorage, cache, ssr */
+export declare class DataStorage<T = unknown> {
+    /** Initializes storage instance with key name, storage target, and error handler. @keywords storage, constructor, session */
     constructor(name: string, isSession?: boolean, errorCenter?: ErrorCenterInstance);
-    /** Retrieves stored value with optional fallback and cache expiration in seconds. @keywords get, read, retrieve, cache */
-    get(defaultValue?: T | (() => T), cache?: number): T | undefined;
-    /** Updates stored value using a direct value or resolver function. @keywords set, write, update, store */
+    /** Retrieves item from storage with optional default fallback and cache TTL in seconds. @keywords storage, get, read, cache */
+    get<D extends T | (() => T) | undefined = undefined>(defaultValue?: D, cache?: number): DataStorageGet<T, D>;
+    /** Writes value or generator result to storage. @keywords storage, set, write */
     set(value?: T | (() => T)): T | undefined;
-    /** Configures global storage key prefix. @keywords setPrefix, prefix, namespace */
+    /** Returns fully-qualified storage key including prefix. @keywords storage, key, index, prefix */
+    getIndex(): string;
+    /** Sets process-wide key prefix for bootstrapping. @note Applies globally to entire runtime process in SSR. @keywords storage, prefix, config */
     static setPrefix(newPrefix: string): void;
-    /** Removes stored item from storage. @keywords remove, delete, clear */
+    /** Deletes item from storage. @keywords storage, remove, delete, clear */
     remove(): this;
-    /** Synchronizes data from storage into instance. @keywords update, sync, refresh */
+    /** Synchronizes and refreshes data from storage. @keywords storage, sync, update, refresh */
     update(): this;
 }

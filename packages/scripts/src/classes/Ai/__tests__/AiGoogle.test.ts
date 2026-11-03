@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import type { GoogleGenAI } from '@google/genai'
 import { AiGoogle } from '../AiGoogle'
 import { AiGoogleLite } from '../AiGoogleLite'
 import { PropertiesConfig } from '../../Properties/PropertiesConfig'
@@ -16,8 +17,8 @@ class TestAiGoogleLite extends AiGoogleLite {
     return this.response(model, contents)
   }
 
-  public setAiInstance(ai: any) {
-    this.ai = ai
+  public setAiInstance(ai: unknown) {
+    this.ai = ai as GoogleGenAI
   }
 }
 
@@ -79,13 +80,14 @@ describe('AiGoogleLite and AiGoogle', () => {
       model: 'gemini-2.5-flash',
       contents: [
         {
-          inlineData: {
-            mimeType: 'image/webp',
-            data: 'webp-data'
-          }
-        },
-        {
+          role: 'user',
           parts: [
+            {
+              inlineData: {
+                mimeType: 'image/webp',
+                data: 'webp-data'
+              }
+            },
             { text: 'Context prompt' },
             { text: 'User question' }
           ]

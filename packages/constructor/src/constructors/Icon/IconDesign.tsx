@@ -96,6 +96,8 @@ export class IconDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
+        icon: this.naming.getSubClass('icon'),
+        iconActive: this.naming.getSubClass('iconActive')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

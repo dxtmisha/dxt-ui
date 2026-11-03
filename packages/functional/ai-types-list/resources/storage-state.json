@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/storage-state.md",
-  "md5": "7c6142dc8dc5172b2cbf5fca08b2b2d5",
-  "name": "Reactive Storage State Composables",
-  "description": "Contains composable utilities for managing persistent and synchronized browser state across storage mediums and tabs. Includes reactive wrappers for localStorage, sessionStorage, cookies, BroadcastChannel, and URL hash fragments. Solves client-side state persistence, SSR safety, and cross-tab communication requirements."
+  "md5": "f355dff94cdacbd3f47fba274b112b7f",
+  "name": "Reactive Browser Storage Composables",
+  "description": "Composables for persistent, SSR-safe reactive browser storage, cross-tab synchronization, and URL hash state management."
 }

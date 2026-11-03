@@ -1,7 +1,7 @@
-// md5:3b47ab08c09cb30eaed755140cc47d68 true
+// md5:cb6a497fd0ebe857774658f959250eb6 true
 /**
- * Creates an HTML element, configures its attributes or logic, and optionally mounts it to a parent DOM node.
- * @remarks Designed for standard HTML elements via `document.createElement` (use `document.createElementNS` for SVG/MathML). Returns `undefined` in SSR environments; execute within client-only lifecycle hooks to avoid hydration mismatches.
- * @keywords createElement, create dom element, html, dom manipulation, mount
+ * Creates an HTML element, configures attributes or runs a modifier callback, and optionally appends it to a parent node.
+ * @remarks Returns `undefined` during SSR. Uses `document.createElement`; use `document.createElementNS` for SVG/MathML. Sanitize input when providing `innerHTML` through options.
+ * @keywords createElement, dom, html, create element, insert node
  */
-export declare function createElement<T extends HTMLElement>(parentElement?: Element | DocumentFragment, tagName?: string, options?: Partial<T> | Record<string, unknown> | ((element: T) => void), referenceElement?: Node | null): T | undefined;
+export declare function createElement<T extends HTMLElement = HTMLDivElement>(parentElement?: Element | DocumentFragment | null, tagName?: string, options?: Partial<T> | Record<string, unknown> | ((element: T) => void) | null, referenceElement?: Node | null): T | undefined;

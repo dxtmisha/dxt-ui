@@ -3,20 +3,21 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { ArrowParent } from '../ArrowParent'
+import type { ArrowElement } from '../ArrowElement'
 
 vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
+  const actual = await vi.importActual<typeof import('vue')>('vue')
   return {
     ...actual,
-    onMounted: (fn: () => void) => fn(),
-    onUnmounted: (fn: () => void) => fn()
+    onMounted: (callback: () => void) => callback(),
+    onUnmounted: (callback: () => void) => callback()
   }
 })
 
 describe('ArrowParent', () => {
   let parentElement: HTMLElement
   let element: HTMLElement
-  let mockElementItem: any
+  let mockElementItem: ArrowElement
 
   beforeEach(() => {
     parentElement = document.createElement('div')
@@ -24,18 +25,18 @@ describe('ArrowParent', () => {
     parentElement.appendChild(element)
     document.body.appendChild(parentElement)
 
-    mockElementItem = { height: 16 }
+    mockElementItem = { height: 16 } as ArrowElement
 
-    vi.spyOn(window, 'getComputedStyle').mockImplementation((el: Element) => {
-      if (el === parentElement) {
+    vi.spyOn(window, 'getComputedStyle').mockImplementation((targetElement: Element) => {
+      if (targetElement === parentElement) {
         return {
           backgroundColor: 'rgb(255, 0, 0)',
           borderWidth: '2px',
           borderColor: 'rgb(0, 255, 0)',
           borderRadius: '8px'
-        } as any
+        } as CSSStyleDeclaration
       }
-      return {} as any
+      return {} as CSSStyleDeclaration
     })
   })
 
@@ -82,7 +83,8 @@ describe('ArrowParent', () => {
     elementRef.value = undefined
     element.remove()
 
-    expect(elementRef.value?.parentElement).toBeUndefined()
+    expect(elementRef.value).toBeUndefined()
+    expect(element.parentElement).toBeNull()
 
     parent.onUnmounted()
 

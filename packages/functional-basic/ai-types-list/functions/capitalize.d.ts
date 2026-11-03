@@ -1,3 +1,3 @@
-// md5:94c9eb1499ae9950fec739b4d491a9e7 true
-/** Capitalizes the first letter of a string. @keywords capitalize, uppercase, string, formatting */
-export declare function capitalize<T extends string = string>(value?: T, locale?: boolean | string): Capitalize<T>;
+// md5:ba9038a1cfdca9c053bed855d2585da4 true
+/** Capitalizes the first letter of a string. @keywords capitalize, uppercase, first letter, string */
+export declare function capitalize<T = string>(value?: T, locale?: boolean | string): T extends string ? Capitalize<T> : string;

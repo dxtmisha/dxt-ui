@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/localization-seo.md",
-  "md5": "99983d3a7683e94f3e62b67851b8244d",
-  "name": "Localization, Geo & SEO Management",
-  "description": "Provides reactive utility tools for internationalization, geographic context detection, multi-key translations, and dynamic HTML document metadata/SEO tag management. It standardizes locale-aware formatting for numbers, dates, and currencies across the application. Solves technical requirements for global localization and search engine optimization."
+  "md5": "260ca397212bfd36039a9ab357a4f098",
+  "name": "Localization and SEO Management",
+  "description": "Provides reactive tools for handling translations, geographic localization, formatting, and HTML document SEO metadata."
 }

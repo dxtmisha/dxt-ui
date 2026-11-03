@@ -1,28 +1,57 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { PropertiesFile } from '../../Properties/PropertiesFile'
+import type { WikiDataItem } from '@dxtmisha/wiki'
+import { PropertiesFile, type PropertiesFilePath } from '../../Properties/PropertiesFile'
 import { DesignWikiStormItem } from '../DesignWikiStormItem'
+import type { LibraryData } from '../../../types/libraryTypes'
+
+type MockWikiDesignItem = {
+  type?: string
+  options?: {
+    category?: string
+    type?: string
+    description?: Record<string, string>
+  }
+}
+
+const createLibraryData = (dir: string): LibraryData => ({
+  design: 'd1',
+  name: dir,
+  alias: dir,
+  codeFull: `D1${dir}`,
+  dir
+})
 
 class TestDesignWikiStormItem extends DesignWikiStormItem {
-  public testCleanType(type: string) {
+  public static resetCache(): void {
+    DesignWikiStormItem.wikiDesignCache = undefined
+    DesignWikiStormItem.wikiDescriptionsCache = undefined
+  }
+
+  public testCleanType(type: string): string {
     return this.cleanType(type)
   }
 
-  public testGetDirName() {
+  public testGetDirName(): string {
     return this.getDirName()
   }
 
-  public async testGetData() {
+  public async testGetData(): Promise<WikiDataItem | undefined> {
     return this.getData()
+  }
+
+  public testGetWikiDesign(): Record<string, MockWikiDesignItem> {
+    return this.getWikiDesign()
   }
 }
 
 describe('DesignWikiStorm and DesignWikiStormItem', () => {
   afterEach(() => {
+    TestDesignWikiStormItem.resetCache()
     vi.restoreAllMocks()
   })
 
   it('cleans type strings in cleanType()', () => {
-    const item = new TestDesignWikiStormItem('my-project', ['src', 'components'], { dir: 'Button' } as any)
+    const item = new TestDesignWikiStormItem('my-project', ['src', 'components'], createLibraryData('Button'))
 
     expect(item.testCleanType('(ButtonClasses)')).toBe('ButtonClasses')
     expect(item.testCleanType('(ButtonClasses) | undefined')).toBe('ButtonClasses')
@@ -31,7 +60,7 @@ describe('DesignWikiStorm and DesignWikiStormItem', () => {
   })
 
   it('returns directory name from library data', () => {
-    const item = new TestDesignWikiStormItem('my-project', ['src'], { dir: 'CustomCard' } as any)
+    const item = new TestDesignWikiStormItem('my-project', ['src'], createLibraryData('CustomCard'))
     expect(item.testGetDirName()).toBe('CustomCard')
   })
 
@@ -71,23 +100,23 @@ export const defaults = {
 }
 `
 
-    vi.spyOn(PropertiesFile, 'is').mockImplementation((path: any) => {
+    vi.spyOn(PropertiesFile, 'is').mockImplementation((path: PropertiesFilePath) => {
       const pathString = Array.isArray(path) ? path.join('/') : String(path)
       return pathString.includes('wikiData.ts') || pathString.includes('props.ts')
     })
 
-    vi.spyOn(PropertiesFile, 'readFileOnly').mockImplementation((path: any) => {
+    vi.spyOn(PropertiesFile, 'readFileOnly').mockImplementation(<R = string>(path: PropertiesFilePath): R | undefined => {
       const pathString = Array.isArray(path) ? path.join('/') : String(path)
       if (pathString.includes('wikiData.ts')) {
-        return mockWikiDataContent
+        return mockWikiDataContent as R
       }
       if (pathString.includes('props.ts')) {
-        return mockPropsContent
+        return mockPropsContent as R
       }
       return undefined
     })
 
-    const item = new TestDesignWikiStormItem('@dxtmisha/d1', ['src', 'components', 'Ui'], { dir: 'Window' } as any)
+    const item = new TestDesignWikiStormItem('@dxtmisha/d1', ['src', 'components', 'Ui'], createLibraryData('Window'))
     const data = await item.testGetData()
 
     expect(data).toBeDefined()
@@ -96,9 +125,9 @@ export const defaults = {
     expect(data?.props[0]).toEqual({ name: 'adaptive', type: 'string', option: ['menu', 'modal'] })
     expect(data?.props[1]).toEqual({ name: 'dense', type: 'boolean' })
     expect(data?.slots).toHaveLength(1)
-    expect(data?.slots[0].name).toBe('control')
+    expect(data?.slots?.[0].name).toBe('control')
     expect(data?.events).toHaveLength(2)
-    expect(data?.events[0].name).toBe('load')
+    expect(data?.events?.[0].name).toBe('load')
     expect(data?.defaults).toEqual({ iconClose: 'close', width: 'md', dense: false })
 
     const slots = await item.getSlots()
@@ -131,12 +160,12 @@ export const wikiStyle = {
 }
 `
 
-    vi.spyOn(PropertiesFile, 'is').mockImplementation((path: any) => {
+    vi.spyOn(PropertiesFile, 'is').mockImplementation((path: PropertiesFilePath) => {
       const pathString = Array.isArray(path) ? path.join('/') : String(path)
       return pathString.includes('wiki')
     })
 
-    vi.spyOn(PropertiesFile, 'readDirRecursive').mockImplementation((path: any) => {
+    vi.spyOn(PropertiesFile, 'readDirRecursive').mockImplementation((path: PropertiesFilePath) => {
       const pathString = Array.isArray(path) ? path.join('/') : String(path)
       if (pathString.includes('wiki')) {
         return ['wikiStyle.ts']
@@ -144,21 +173,21 @@ export const wikiStyle = {
       return []
     })
 
-    vi.spyOn(PropertiesFile, 'readFileOnly').mockImplementation((path: any) => {
+    vi.spyOn(PropertiesFile, 'readFileOnly').mockImplementation(<R = string>(path: PropertiesFilePath): R | undefined => {
       const pathString = Array.isArray(path) ? path.join('/') : String(path)
       if (pathString.includes('wikiStyle.ts')) {
-        return mockWikiStyleContent
+        return mockWikiStyleContent as R
       }
       return undefined
     })
 
-    const item = new TestDesignWikiStormItem('@dxtmisha/c3', ['src', 'components', 'Ui'], { dir: 'Window' } as any)
-    const wikiDesign = (item as any).getWikiDesign()
+    const item = new TestDesignWikiStormItem('@dxtmisha/c3', ['src', 'components', 'Ui'], createLibraryData('Window'))
+    const wikiDesign = item.testGetWikiDesign()
 
     expect(wikiDesign).toBeDefined()
     expect(wikiDesign.adaptive).toBeDefined()
-    expect(wikiDesign.adaptive.type).toBe('select')
-    expect(wikiDesign.adaptive.options.category).toBe('Styles')
-    expect(wikiDesign.adaptive.options.description.en).toBe('Controls adaptive display behavior')
+    expect(wikiDesign.adaptive?.type).toBe('select')
+    expect(wikiDesign.adaptive?.options?.category).toBe('Styles')
+    expect(wikiDesign.adaptive?.options?.description?.en).toBe('Controls adaptive display behavior')
   })
 })

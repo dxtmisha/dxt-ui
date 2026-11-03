@@ -2,7 +2,7 @@
 import './testWarnings'
 import { describe, expect, it } from 'vitest'
 import { computed, h, reactive, ref } from 'vue'
-import { type ConstrClass, DesignComponents, DesignName } from '@dxtmisha/functional'
+import { type ConstrBind, type ConstrClass, DesignComponents, DesignName, type Undefined } from '@dxtmisha/functional'
 
 import { IconLiteInclude } from '../IconLiteInclude'
 import { IconInclude } from '../IconInclude'
@@ -22,7 +22,7 @@ import type { IconPropsBasic } from '../props'
  * @param value class value to normalize / значение класса для нормализации
  * @returns flat list of string classes / плоский список строковых классов
  */
-function extractClassList(value: ConstrClass | undefined): string[] {
+function extractClassList(value: ConstrClass | Undefined): string[] {
   if (!value) {
     return []
   }
@@ -46,6 +46,17 @@ function extractClassList(value: ConstrClass | undefined): string[] {
     .map(([className]) => className)
 }
 
+/**
+ * Creates a reactive props object without triggering deep UnwrapNestedRefs recursion in TypeScript.
+ *
+ * Создает реактивный объект свойств без вызова глубокой рекурсии UnwrapNestedRefs в TypeScript.
+ * @param initial initial properties / начальные свойства
+ * @returns reactive properties / реактивные свойства
+ */
+function createReactiveProps<Props extends IconLitePropsInclude>(initial: Props): Props {
+  return reactive<Record<string, unknown>>(initial) as Props
+}
+
 describe('Icon Include Classes', () => {
   const naming = new DesignName('d1.button')
 
@@ -59,8 +70,8 @@ describe('Icon Include Classes', () => {
     })
 
     it('should compute iconBind for string and object icon values and merge extra classes without duplicates', () => {
-      const props = reactive<IconLitePropsInclude>({ icon: 'home' })
-      const extra = computed<IconPropsBasic>(() => ({
+      const props = createReactiveProps<IconLitePropsInclude>({ icon: 'home' })
+      const extra = computed<ConstrBind<IconPropsBasic>>(() => ({
         ariaLabel: 'Home action',
         class: 'extra-button-icon'
       }))
@@ -88,7 +99,7 @@ describe('Icon Include Classes', () => {
     })
 
     it('should support reactive getter functions for props and render VNodes via DesignComponents', () => {
-      const state = reactive<IconLitePropsInclude>({ icon: 'star' })
+      const state = createReactiveProps<IconLitePropsInclude>({ icon: 'star' })
       const components = new DesignComponents<IconComponentInclude, IconLitePropsInclude>(
         {
           icon: {
@@ -131,7 +142,7 @@ describe('Icon Include Classes', () => {
 
   describe('IconInclude', () => {
     it('should map status and style props and merge extra, iconAttrs, and subClass without duplicates', () => {
-      const props = reactive<IconPropsInclude>({
+      const props = createReactiveProps<IconPropsInclude>({
         icon: 'search',
         selected: true,
         iconTurn: true,
@@ -181,7 +192,7 @@ describe('Icon Include Classes', () => {
     })
 
     it('should prioritize constructor turn and dir arguments over props.iconTurn and props.iconDir when provided', () => {
-      const props = reactive<IconPropsInclude>({
+      const props = createReactiveProps<IconPropsInclude>({
         icon: 'arrow_forward',
         iconTurn: true,
         iconDir: true
@@ -207,7 +218,7 @@ describe('Icon Include Classes', () => {
 
   describe('IconTrailingInclude', () => {
     it('should report isIcon, isIconTrailing, and hasAtLeastOneIcon across all combinations', () => {
-      const props = reactive<IconTrailingPropsInclude>({})
+      const props = createReactiveProps<IconTrailingPropsInclude>({})
       const include = new IconTrailingInclude(props, naming)
 
       expect(include.isIcon()).toBe(false)
@@ -232,7 +243,7 @@ describe('Icon Include Classes', () => {
     })
 
     it('should compute trailingBind and merge extra, iconAttrs, and trailing subClass without duplicate classes', () => {
-      const props = reactive<IconTrailingPropsInclude>({
+      const props = createReactiveProps<IconTrailingPropsInclude>({
         icon: 'check',
         iconTrailing: 'arrow_down',
         iconTurn: true,
@@ -270,7 +281,7 @@ describe('Icon Include Classes', () => {
     })
 
     it('should control main icon turn and dir based on iconTrailing, iconTrailingTurnOnly, and iconTrailingDirOnly', () => {
-      const props = reactive<IconTrailingPropsInclude>({
+      const props = createReactiveProps<IconTrailingPropsInclude>({
         icon: 'expand_more',
         iconTurn: true,
         iconDir: true
@@ -300,7 +311,7 @@ describe('Icon Include Classes', () => {
     })
 
     it('should render both main and trailing icons in order via render()', () => {
-      const props = reactive<IconTrailingPropsInclude>({
+      const props = createReactiveProps<IconTrailingPropsInclude>({
         icon: 'person',
         iconTrailing: 'expand_more'
       })

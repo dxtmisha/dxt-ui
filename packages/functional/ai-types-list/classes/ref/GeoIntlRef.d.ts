@@ -1,227 +1,52 @@
-// md5:fa925ebcb61edec35ea5662509968034
+// md5:fa925ebcb61edec35ea5662509968034 true
 import { type ComputedRef } from 'vue';
 import { type GeoDate, type ItemValue, type NumberOrString, type NumberOrStringOrDate } from '@dxtmisha/functional-basic';
-import type { RefOrNormal } from '../../types/refTypes';
-/**
- * Reactive `GeoIntl` facade for numbers, money, dates, names and locale-aware sorting. Methods return computed refs that track supported value refs and the explicit locale or `GeoRef` fallback. Use the nonreactive GeoIntl class when computed updates are unnecessary.
- *
- * Реактивный фасад `GeoIntl` для чисел, валют, дат, названий и сортировки с учётом локали. Методы возвращают вычисляемые ссылки, отслеживающие поддерживаемые входные ссылки и явную локаль либо резервную локаль `GeoRef`. Используйте нереактивный GeoIntl, если вычисляемые обновления не нужны.
- */
+/** Reactive Intl facade providing computed formatting for numbers, dates, currency, and locale-aware sorting. @keywords intl, localization, reactive, i18n, formatting */
 export declare class GeoIntlRef {
-    /** Explicit locale ref or undefined for GeoRef fallback / Явная ссылка на локаль либо undefined для локали GeoRef */
-    private location;
-    /** Locale-dependent formatting utility / Утилита форматирования текущей локали */
-    private intl;
-    /**
-     * Initializes GeoIntlRef with the supplied configuration.
-     *
-     * Инициализирует GeoIntlRef с переданными настройками.
-     * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
-     */
+    /** Initializes GeoIntlRef with an optional locale or country code ref. @keywords constructor, locale */
     constructor(code?: RefOrNormal<string>);
-    /**
-     * Returns a localized display name for the requested Intl type.
-     *
-     * Возвращает локализованное название для указанного типа Intl.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param typeOptions Intl display-name type or options. / Тип отображаемого названия Intl либо опции.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Returns a reactive localized display name for the specified Intl type. @keywords display name, localization */
     display(value?: RefOrNormal<string>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): ComputedRef<string>;
-    /**
-     * Returns the localized language name.
-     *
-     * Возвращает локализованное название языка.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param style Intl display style. / Стиль отображения Intl.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Returns a reactive localized language name. @keywords language, display name */
     languageName(value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle): ComputedRef<string>;
-    /**
-     * Returns the localized region name.
-     *
-     * Возвращает локализованное название региона.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param style Intl display style. / Стиль отображения Intl.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Returns a reactive localized region or country name. @keywords country, region, display name */
     countryName(value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle): ComputedRef<string>;
-    /**
-     * Formats a numeric value or numeric string using locale rules and number options.
-     *
-     * Форматирует число или числовую строку по правилам локали и числовым опциям.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param options Configuration options. / Параметры настройки.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats a numeric value using locale number formatting rules. @keywords number format, decimal */
     number(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Returns the locale decimal separator.
-     *
-     * Возвращает десятичный разделитель локали.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Returns the decimal separator for the active locale. @keywords decimal separator, delimiter */
     decimal(): ComputedRef<string>;
-    /**
-     * Formats money with a currency code or reactive option object. `numberOnly` omits the currency representation.
-     *
-     * Форматирует сумму с кодом валюты или реактивным объектом опций. `numberOnly` убирает обозначение валюты.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param currencyOptions Currency code or Intl number options. / Код валюты либо числовые опции Intl.
-     * @param numberOnly Omit the currency representation; defaults to false. / Убрать обозначение валюты; по умолчанию false.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats a monetary value with currency options or currency code. @keywords currency, money, format */
     currency(value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>, numberOnly?: boolean): ComputedRef<string>;
-    /**
-     * Returns the requested currency representation, falling back to its code.
-     *
-     * Возвращает запрошенное представление валюты с резервным возвратом кода.
-     * @param currency Currency code. / Код валюты.
-     * @param currencyDisplay Currency representation; defaults to symbol. / Представление валюты; по умолчанию symbol.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Returns the currency symbol or representation for the specified currency code. @keywords currency symbol */
     currencySymbol(currency: RefOrNormal<string>, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): ComputedRef<string>;
-    /**
-     * Formats a numeric value with an Intl unit; it does not perform regional unit conversion.
-     *
-     * Форматирует число с единицей Intl; не выполняет региональную конвертацию единиц.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param unitOptions Unit identifier or Intl number options. / Идентификатор единицы либо числовые опции Intl.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats a numeric value with a measurement unit. @keywords unit, measurement */
     unit(value: RefOrNormal<NumberOrString>, unitOptions?: string | Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Formats a file size starting with the supplied unit. String units are promoted when the value exceeds 1024; an options object is passed to unit formatting.
-     *
-     * Форматирует размер файла начиная с переданной единицы. Строковые единицы повышаются при значении больше 1024; объект опций передаётся форматированию единиц.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param unitOptions Unit identifier or Intl number options. / Идентификатор единицы либо числовые опции Intl.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats a file size value, automatically promoting byte units. @keywords file size, bytes */
     sizeFile(value: RefOrNormal<NumberOrString>, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Formats a ratio as a percentage: 0.25 becomes 25%.
-     *
-     * Форматирует долю в проценты: 0.25 превращается в 25%.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param options Configuration options. / Параметры настройки.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats a decimal ratio as a percentage. @keywords percent, percentage */
     percent(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Divides by 100 before percentage formatting: 25 becomes 25%.
-     *
-     * Делит на 100 перед форматированием процентов: 25 превращается в 25%.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param options Configuration options. / Параметры настройки.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Divides a number by 100 and formats it as a percentage. @keywords percent, ratio */
     percentBy100(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Selects a plural word form and formats its count. Pass pipe-separated word variants supported by `GeoIntl`.
-     *
-     * Выбирает форму множественного числа и форматирует количество. Передавайте варианты слов через вертикальную черту по правилам `GeoIntl`.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param words Pipe-separated plural word forms. / Формы слова через вертикальную черту.
-     * @param options Configuration options. / Параметры настройки.
-     * @param optionsNumber Number formatting options for the count. / Опции форматирования числового количества.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats a pluralized string based on numeric count and pipe-separated forms. @keywords pluralization, plural, count */
     plural(value: RefOrNormal<NumberOrString>, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Formats a date with a Geo format type, date options and an optional 24-hour clock override.
-     *
-     * Форматирует дату с типом Geo, опциями даты и необязательным переключением на 24-часовые часы.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param type Output format or event type(s), according to the signature. / Формат вывода либо типы событий согласно сигнатуре.
-     * @param styleOptions Intl style or formatting options. / Стиль Intl либо параметры форматирования.
-     * @param hour24 Whether to use a 24-hour clock. / Использовать ли 24-часовые часы.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats a date using Geo date format presets and Intl options. @keywords date, format, time */
     date(value: RefOrNormal<NumberOrStringOrDate>, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): ComputedRef<string>;
-    /**
-     * Formats a date relative to the reference date using GeoIntl’s unit selection.
-     *
-     * Форматирует дату относительно точки отсчёта с выбором единицы по правилам GeoIntl.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param styleOptions Intl style or formatting options. / Стиль Intl либо параметры форматирования.
-     * @param todayValue Reference date; omitted values use the current date when evaluated. / Дата отсчёта; при отсутствии используется текущая дата в момент вычисления.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats a date relative to the reference date. @keywords relative time, ago */
     relative(value: RefOrNormal<NumberOrStringOrDate>, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): ComputedRef<string>;
-    /**
-     * Uses relative formatting inside the inclusive ±limit-day interval. Outside that interval, delegates to date formatting with all supplied date options.
-     *
-     * Использует относительное время внутри включительного интервала ±limit дней. Снаружи форматирует дату со всеми переданными опциями даты.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param limit Inclusive relative-time limit in days. / Включительный лимит относительного времени в днях.
-     * @param todayValue Reference date; omitted values use the current date when evaluated. / Дата отсчёта; при отсутствии используется текущая дата в момент вычисления.
-     * @param relativeOptions Relative-time style or Intl options. / Стиль либо опции Intl относительного времени.
-     * @param dateOptions Date style or Intl date options for values outside the limit. / Стиль либо опции Intl даты за пределами лимита.
-     * @param type Output format or event type(s), according to the signature. / Формат вывода либо типы событий согласно сигнатуре.
-     * @param hour24 Whether to use a 24-hour clock. / Использовать ли 24-часовые часы.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats relative time within a day limit; falls back to standard date formatting. @keywords relative time, date limit */
     relativeLimit(value: RefOrNormal<NumberOrStringOrDate>, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): ComputedRef<string>;
-    /**
-     * Formats an explicit signed interval using the supplied relative-time unit.
-     *
-     * Форматирует явный интервал со знаком в переданной единице относительного времени.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param unit Unit identifier. / Идентификатор единицы.
-     * @param styleOptions Intl style or formatting options. / Стиль Intl либо параметры форматирования.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats a signed numeric value using a relative time unit. @keywords relative time, duration */
     relativeByValue(value: RefOrNormal<NumberOrString>, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): ComputedRef<string>;
-    /**
-     * Returns the month name for the supplied date.
-     *
-     * Возвращает название месяца переданной даты.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param style Intl display style. / Стиль отображения Intl.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Returns the localized month name for the given date. @keywords month, date */
     month(value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['month']): ComputedRef<string>;
-    /**
-     * Returns the placeholder followed by 12 month entries numbered 1–12.
-     *
-     * Возвращает пустую запись и 12 месяцев с номерами 1–12.
-     * @param style Intl display style. / Стиль отображения Intl.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Returns a list of month options numbered 1–12 with a placeholder item. @keywords months, calendar */
     months(style?: Intl.DateTimeFormatOptions['month']): ComputedRef<ItemValue<number | undefined>[]>;
-    /**
-     * Returns the weekday name for the supplied date.
-     *
-     * Возвращает название дня недели переданной даты.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @param style Intl display style. / Стиль отображения Intl.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Returns the localized weekday name for the given date. @keywords weekday, day name */
     weekday(value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['weekday']): ComputedRef<string>;
-    /**
-     * Returns the placeholder followed by seven weekday entries in locale order.
-     *
-     * Возвращает пустую запись и семь дней недели в порядке локали.
-     * @param style Intl display style. / Стиль отображения Intl.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Returns a list of weekday options in locale order with a placeholder item. @keywords weekdays, calendar */
     weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ComputedRef<ItemValue<number | undefined>[]>;
-    /**
-     * Formats the supplied date as local time.
-     *
-     * Форматирует переданную дату как местное время.
-     * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Formats a date value as local time. @keywords time, clock */
     time(value: RefOrNormal<NumberOrStringOrDate>): ComputedRef<string>;
-    /**
-     * Returns a sorted copy using locale collation. For object arrays, provide a mapper returning the two comparison strings.
-     *
-     * Возвращает отсортированную копию по правилам локали. Для массива объектов передайте функцию, возвращающую две сравниваемые строки.
-     * @param data Input array; it is not mutated. / Входной массив; не изменяется.
-     * @param compareFn Maps two entries to the two strings compared by Intl.Collator. / Преобразует две записи в две строки для сравнения Intl.Collator.
-     * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-     */
+    /** Returns a sorted array copy using locale collation. @keywords sort, collator, localeCompare */
     sort<T>(data: RefOrNormal<T[]>, compareFn?: (a: T, b: T) => [string, string]): ComputedRef<T[]>;
 }

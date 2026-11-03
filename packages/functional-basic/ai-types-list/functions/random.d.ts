@@ -1,3 +1,3 @@
-// md5:08b0d33f4491ae6379e2b09dc5c7525f true
-/** Generates a random integer within a specified range. @keywords random integer number math range */
+// md5:cabaa43924853db04fc327ec0f8d1bd7 true
+/** Generates a random integer within the specified range (inclusive). @keywords random, integer, range, math, number */
 export declare function random(min: number, max: number): number;

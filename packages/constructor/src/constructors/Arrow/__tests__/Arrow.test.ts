@@ -217,7 +217,7 @@ describe('Arrow', () => {
       arrow.i('position').shift.value = '15px'
       vi.spyOn(arrow.i('elementTarget'), 'is').mockReturnValue(true)
 
-      const styles = arrow.styles
+      const styles = arrow.styles as Record<string, string | undefined>
       expect(styles['--d1-arrow-sys-background']).toBe('rgb(255, 0, 0)')
       expect(styles['--d1-arrow-sys-borderWidth']).toBe('1px')
       expect(styles['--d1-arrow-sys-borderColor']).toBe('rgb(0, 255, 0)')
@@ -239,7 +239,7 @@ describe('Arrow', () => {
       // Mock parent with no border
       vi.spyOn(arrow.i('parent'), 'isBorder').mockReturnValue(false)
 
-      const styles = arrow.styles
+      const styles = arrow.styles as Record<string, string | undefined>
       expect(styles['--d1-arrow-sys-clipPath']).toBeUndefined()
       expect(styles['--d1-arrow-sys-shift']).toBeUndefined()
 

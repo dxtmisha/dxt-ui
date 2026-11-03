@@ -73,3 +73,5 @@ getElementImage
 resizeImageByMax
 getImageSrc
 getFirst
+getCurrentDate
+

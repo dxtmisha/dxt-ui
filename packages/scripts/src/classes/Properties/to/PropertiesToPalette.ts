@@ -125,7 +125,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
     const value = item?.[PropertyKey.default]
 
     if (isFilled(value)) {
-      return isObject(value) ? value?.[theme] : value as string
+      return (isObject(value) ? value?.[theme] : value) as string
     }
 
     return 'default'

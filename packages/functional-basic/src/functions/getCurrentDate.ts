@@ -16,8 +16,12 @@ import type { GeoDate } from '../types/geoTypes'
  * Рекомендуется использовать эту функцию только внутри хуков, выполняющихся на клиенте (например, `onMounted` в Vue или `useEffect` in React).
  *
  * @param format type of date format for output / тип формата даты вывода
+ * @param timeZone add time zone (default: true) / добавить временную зону (по умолчанию: true)
  * @returns formatted current date / текущая дата в указанном формате
  */
-export function getCurrentDate(format: GeoDate = 'datetime'): string {
-  return new Datetime(undefined, format).standard()
+export function getCurrentDate(
+  format: GeoDate = 'datetime',
+  timeZone = true
+): string {
+  return new Datetime(undefined, format).standard(timeZone)
 }

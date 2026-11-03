@@ -1,3 +1,3 @@
-// md5:2cf226f30f4e2269b5e07821928cdde9 true
-/** Checks if a value is an object. @keywords isObject, object, type guard, predicate */
-export declare function isObject<T>(value: T): value is Extract<T, ObjectItem>;
+// md5:6341c93366c25f6202f0cead0ad8c363 true
+/** Checks if a value is an object. @keywords isObject, object, type guard */
+export declare function isObject<T = unknown>(value: unknown): value is ObjectItem<T>;

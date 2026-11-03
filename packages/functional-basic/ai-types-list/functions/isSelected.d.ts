@@ -1,3 +1,3 @@
-// md5:9c066d972512a0950988e8240933b37c true
-/** Checks if a value is selected against a target or an array of items, supporting numeric equivalence. @keywords isSelected check selected selection match compare */
-export declare function isSelected<T>(value: T, selected?: unknown): boolean;
+// md5:579dbb06b66239727127f2bcb362a23e true
+/** Checks if a value matches a target or array of selected values with numeric equivalence support. @keywords isSelected, selection, match, compare */
+export declare function isSelected<T = unknown>(value?: T, selected?: unknown): boolean;

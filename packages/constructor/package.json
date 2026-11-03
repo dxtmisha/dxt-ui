@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "1.4.0",
+  "version": "1.4.1",
   "type": "module",
   "description": "Class-based Vue 3 component constructors, state logic engines, and ARIA accessibility controllers for DXT UI design system",
   "keywords": [
@@ -598,11 +598,11 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": ">=1.15.18",
-    "@dxtmisha/functional-basic": ">=1.11.2",
-    "@dxtmisha/media": ">=0.8.1",
-    "@dxtmisha/styles": ">=1.0.13",
-    "rollup": ">=4.66.0",
+    "@dxtmisha/functional": ">=2.0.1",
+    "@dxtmisha/functional-basic": ">=2.0.1",
+    "@dxtmisha/media": ">=1.0.0",
+    "@dxtmisha/styles": ">=1.0.14",
+    "rollup": ">=4.67.4",
     "vue": ">=3.5.44",
     "vue-router": ">=5.4.0"
   },

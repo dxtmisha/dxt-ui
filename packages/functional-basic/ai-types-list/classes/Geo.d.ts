@@ -1,52 +1,52 @@
-// md5:3f513613cfcc5ebce0989288c4a80551 true
-/** Static manager for geographical data, locale, country, and time zone. @keywords geo, locale, country, timezone */
+// md5:75e80646466539187f71a3ed767382f9 true
+/** Static class providing centralized interface for managing locale, country, and time zone data. @keywords geo, locale, country, timezone */
 export declare class Geo {
-    /** Returns information about the current country and language. @keywords current, country, language, geo */
+    /** Returns current country and language data. @keywords current, geo, country, language */
     static get(): GeoItemFull;
-    /** Sets the current geographical location and updates instance state. @keywords set, location, locale */
-    static set(code: string, save?: boolean): void;
-    /** Resolves geo data by country or language code from the global database. @keywords lookup, code, country, language */
+    /** Sets current geographical location and updates instance state. @keywords set, location, locale */
+    static set(code?: string, save?: boolean): void;
+    /** Resolves geo data by country or language code from global database. @keywords lookup, code, country, language */
     static getByCode(code?: string): GeoItemFull;
-    /** Finds exact geo data matching a full locale string. @keywords match, locale, full */
-    static getByCodeFull(code: string): GeoItem | undefined;
-    /** Retrieves geo data for a specific country code. @keywords country, lookup */
-    static getByCountry(country: string): GeoItem | undefined;
-    /** Retrieves geo data for a specific language code. @keywords language, lookup */
-    static getByLanguage(language: string): GeoItem | undefined;
-    /** Returns the 2-letter code of the current country. @keywords country, code, iso */
+    /** Resolves exact geo data by matching full locale string (e.g., 'en-US'). @keywords lookup, exact, full, locale */
+    static getByCodeFull(code?: string): GeoItem | undefined;
+    /** Resolves geo data for specific country code. @keywords country, code, lookup */
+    static getByCountry(country?: string): GeoItem | undefined;
+    /** Resolves geo data for specific language code. @keywords language, code, lookup */
+    static getByLanguage(language?: string): GeoItem | undefined;
+    /** Returns 2-letter code of current country. @keywords country, code, current */
     static getCountry(): string;
-    /** Returns the first day of the week for the current locale. @keywords firstDay, week, calendar */
+    /** Returns code for first day of the week for current locale. @keywords firstDay, week, locale */
     static getFirstDay(): string;
-    /** Returns fully processed geo data updated with the current language. @keywords item, full, locale */
+    /** Returns fully processed geo data updated with current language. @note Deprecated: use get() @keywords item, current, language */
     static getItem(): GeoItemFull;
-    /** Returns the 2-letter code of the current language. @keywords language, code, iso */
+    /** Returns 2-letter code of current language. @keywords language, code, current */
     static getLanguage(): string;
-    /** Returns the list of all available countries and regions. @keywords list, countries, regions */
+    /** Returns complete list of available countries and regions. @keywords list, countries, regions */
     static getList(): GeoItem[];
-    /** Returns the current location string identifier. @keywords location, current */
+    /** Returns current location string. @keywords location, current */
     static getLocation(): string;
-    /** Returns the country code extracted from the location string. @keywords location, country, extract */
-    static getLocationCountry(): string;
-    /** Returns the language code extracted from the location string. @keywords location, language, extract */
+    /** Returns country code extracted from current location string. @keywords location, country, code */
     static getLocationLanguage(): string;
-    /** Returns a request-isolated instance of GeoInstance. @keywords instance, isolated, context */
+    /** Returns language code extracted from current location string. @keywords location, language, code */
+    static getLocationCountry(): string;
+    /** Returns request-isolated instance of GeoInstance. @keywords instance, isolated, request */
     static getObject(): GeoInstance;
-    /** Returns the combined standard locale string (e.g. 'en-US'). @keywords standard, locale, format */
+    /** Returns combined locale string in standard format (e.g., 'en-US'). @keywords standard, locale, format */
     static getStandard(): string;
-    /** Returns the timezone offset in minutes for the current context. @keywords timezone, offset, minutes */
+    /** Returns timezone offset in minutes for current context. @keywords timezone, offset, minutes */
     static getTimezone(): number;
-    /** Returns the formatted timezone string (e.g. '+00:00'). @keywords timezone, format, offset */
+    /** Returns formatted timezone string (e.g., '+00:00') for current context. @keywords timezone, format, offset */
     static getTimezoneFormat(): string;
-    /** Sets a custom timezone offset in minutes for the current context. @keywords timezone, set, offset */
+    /** Sets custom timezone offset in minutes for current context. @keywords timezone, set, offset */
     static setTimezone(timezone: number): void;
-    /** Sets the default country code or provider function. @keywords default, country, fallback */
-    static setValueDefault(code?: string | (() => string)): void;
-    /** Adds or updates country geo data and merges with existing records. @keywords add, country, update, merge */
-    static add(country: string, item: Partial<GeoItem>): GeoInstance;
-    /** Adds or updates multiple country entries in the geo registry. @keywords addList, bulk, countries */
-    static addList(list: Record<string, Partial<GeoItem>>): GeoInstance;
-    /** Resolves geo data for a given code (alias for getByCode). @keywords find, search, code */
-    static find(code: string): GeoItemFull;
-    /** Generates a standard formatted locale string from a geo item. @keywords standard, format, locale */
-    static toStandard(item: GeoItem): string;
+    /** Sets default value or resolver for country code. @keywords default, country, code */
+    static setValueDefault(code?: string | (() => string | undefined)): void;
+    /** Adds or updates country geo data and merges with existing records. @keywords add, country, update */
+    static add(country: string, item?: Partial<GeoItem>): GeoInstance;
+    /** Adds or updates multiple countries in geo list. @keywords add, batch, countries, list */
+    static addList(list?: Record<string, Partial<GeoItem>>): GeoInstance;
+    /** Resolves geo data for given code. Alias for getByCode. @note Deprecated: use getByCode() @keywords find, lookup, code */
+    static find(code?: string): GeoItemFull;
+    /** Formats geo item into standard concatenated locale string (e.g., 'en-US'). @keywords standard, locale, format */
+    static toStandard(item?: GeoItem, language?: string, raw?: boolean): string;
 }

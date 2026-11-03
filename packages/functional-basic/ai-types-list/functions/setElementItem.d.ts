@@ -1,3 +1,3 @@
-// md5:491f8982f589f9dc9c7d73da099b2a65 true
-/** Modifies the property, attribute, or style value of an element by key. @keywords element, set property, attribute, style, dom */
-export declare function setElementItem<E extends ElementOrWindow, K extends keyof E = keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K | string, value: V | Record<string, V> | unknown): E | undefined;
+// md5:d02de04b07a4d7ca439ad65144d043f5 true
+/** Modifies the value of an element property, attribute, or style by key. @keywords element attribute property style set modify */
+export declare function setElementItem<E extends ElementOrWindow = HTMLElement, K extends keyof E = keyof E, V extends E[K] = E[K]>(element?: ElementOrString<E> | null, index?: K | string, value?: V | Record<string, V> | unknown): boolean;

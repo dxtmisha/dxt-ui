@@ -1,7 +1,7 @@
 // ai-none
 
 import { computed, ref, watch } from 'vue'
-import { type ConstrEmit, isObject, type ListSelectedList } from '@dxtmisha/functional'
+import { type ConstrEmit, isArray, isObject, type ListSelectedList } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
 
@@ -61,6 +61,7 @@ export class MenuValue {
   setValue(value: ListSelectedList, isEmit: boolean = false): this {
     if (
       this.props.isSelectedByValue
+      && !isArray(value)
       && !isObject(value)
       && this.value.value !== value
     ) {

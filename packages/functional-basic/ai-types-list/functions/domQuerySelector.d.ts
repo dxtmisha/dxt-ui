@@ -1,3 +1,3 @@
-// md5:00bd3329f0e441347c9b5ad0f8e1f3e3 true
-/** Selects the first element matching specified CSS selectors. @keywords dom, querySelector, element, find, select */
+// md5:b40880af89ae479fba9f0b65ad6fe95f true
+/** Selects the first element matching the specified selectors. @keywords dom, querySelector, find element */
 export declare function domQuerySelector<E extends Element = Element>(selectors: string): E | undefined;

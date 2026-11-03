@@ -2,9 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.5.6] - 2026-10-14
+## [1.5.6] - 2026-11-03
 
 ### Added
+- **Storybook `play` & Interaction Test Generation in `DesignComponent` (`src/classes/Design/DesignComponent.ts`)**:
+  - Added `toPlayStories(play, indent)` helper to normalize and format `play` or `test` code blocks into Storybook `play` functions, automatically inferring `{ canvasElement, step }` context parameters or preserving custom function headers.
+  - Updated `replaceRender()` and `replaceStories()` to emit `play` functions on both the primary `Component` story and additional stories from `description.play` / `description.test` and `story.play` / `story.test`.
+  - Updated `replaceImport()` to scan `play` and `test` blocks for testing utilities (`expect`, `within`, `userEvent`, `waitFor`, `fireEvent`, `fn`, `spyOn`) and automatically inject `import { ... } from 'storybook/test'` when not already imported.
+- **Comprehensive Story & Subcomponent Testing Rules (`ai-resources/componentWiki.md`)**:
+  - Updated component documentation and Storybook generation rules to analyze `subcomponents/`, generate all possible story variations with `play` tests, create stories and `play` tests for subcomponents, and strictly prohibit embedding variant/test/subcomponent stories into `.mdx` documentation files.
 - **Prohibition of Hacks & Workarounds in AI Prompts (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`)**:
   - Added Rule 14 prohibiting "crutches", ad-hoc shims, makeshift backward-compatibility branches (e.g., `isLegacy = isFunction(...)`), and superficial patches, mandating that all architectural, interface, and type issues be resolved at their root cause in the foundation.
   - Added Stop & Ask Guard requiring AI to immediately stop and consult the developer when resolving an issue fundamentally would require extensive refactoring, touching multiple external files, or modifying global contracts.
@@ -17,6 +23,10 @@ All notable changes to this project will be documented in this file.
   - Added unit test coverage in `PropertiesConvector.test.ts` verifying semantic conversions on tokens containing `$value` and `$type`.
 
 ### Changed
+- **Pure Annotation Formatting & Type Guard Narrowing**:
+  - Standardized pure annotation syntax in `aiCodeGlobalPrompt.en.md` and `aiCodeGlobalPrompt.ru.md` (Rule 12) to `/* #__PURE__ */`.
+  - Updated `DesignScreenshotDescription`, `DesignWikiStormItem`, and `PropertiesToPalette.getValueDefault` to align with stricter `isArray` and `isObject` type narrowing from `@dxtmisha/functional-basic`.
+  - Updated unit test suites in `AiGoogle.test.ts`, `DesignWikiStorm.test.ts`, and `LibraryAiPrompt.test.ts` with strict TypeScript types, static cache resets, and updated assertions.
 - **Build Execution Guard in AI Prompts (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`)**:
   - Refined Rule 8 ("Build Execution Guard" / "Запрет на самовольный запуск сборки") to restrict only proactive project builds (`npm run build`, `storybook build`, etc.), removing prohibitions on running test suites during code authoring.
 - **Dependencies**:

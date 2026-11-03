@@ -10,7 +10,7 @@ import { EnabledInclude } from '../../../classes/EnabledInclude'
 import { EventClickInclude } from '../../../classes/EventClickInclude'
 import { SKELETON_NAME_STATUS, SkeletonInclude } from '../../Skeleton'
 import type { IconProps } from '../props'
-import type { ImageEventData } from '../../Image'
+import { ImageTypeValue, type ImageEventData } from '../../Image'
 import type { IconClasses, IconComponents, IconExpose } from '../types'
 
 /**
@@ -64,12 +64,23 @@ function runInVueSetup<Result>(
   return result
 }
 
+/**
+ * Creates a reactive IconProps object without triggering deep UnwrapNestedRefs recursion in TypeScript.
+ *
+ * Создает реактивный объект IconProps без вызова глубокой рекурсии UnwrapNestedRefs в TypeScript.
+ * @param initial initial icon properties / начальные свойства иконки
+ * @returns reactive icon properties / реактивные свойства иконки
+ */
+function createReactiveProps(initial: IconProps = {}): IconProps {
+  return reactive<Record<string, unknown>>(initial) as IconProps
+}
+
 describe('Icon', () => {
   describe('Standard functional requirements (Happy path)', () => {
     it('should compute iconBind and iconActiveBind for string and object values with visibility states', () => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: 'home',
         iconActive: 'home-active',
         active: false,
@@ -115,7 +126,7 @@ describe('Icon', () => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
       const emits = vi.fn()
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: 'settings',
         iconActive: 'settings-active'
       })
@@ -130,7 +141,7 @@ describe('Icon', () => {
       ))!
 
       const loadEventData: ImageEventData = {
-        type: 'image',
+        type: ImageTypeValue.image,
         image: 'settings'
       }
 
@@ -139,7 +150,7 @@ describe('Icon', () => {
       expect(emits).toHaveBeenCalledWith('load', loadEventData)
 
       const loadActiveEventData: ImageEventData = {
-        type: 'image',
+        type: ImageTypeValue.image,
         image: 'settings-active'
       }
 
@@ -153,7 +164,7 @@ describe('Icon', () => {
     it('should compute decorative ARIA attributes for static icons', () => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = reactive<IconProps>({ icon: 'search' })
+      const props = createReactiveProps({ icon: 'search' })
       const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
 
       expect(icon.role).toBeUndefined()
@@ -172,7 +183,7 @@ describe('Icon', () => {
     it('should not pass aria-label or role when dynamic is not true', () => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: 'search',
         ariaLabel: 'Search site',
         role: 'img'
@@ -196,7 +207,7 @@ describe('Icon', () => {
     it('should compute accessible aria-label and custom role when dynamic is true', () => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: 'search',
         dynamic: true,
         ariaLabel: 'Search site',
@@ -223,7 +234,7 @@ describe('Icon', () => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
       const emits = vi.fn()
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: 'close',
         dynamic: true,
         tabindex: 2,
@@ -277,7 +288,7 @@ describe('Icon', () => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
       const emits = vi.fn()
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: 'close',
         dynamic: true,
         disabled: true,
@@ -314,7 +325,7 @@ describe('Icon', () => {
     it('should return empty classes when isSkeleton is not set, and apply skeleton classes when true', () => {
       runInVueSetup(() => {
         const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-        const props = reactive<IconProps>({ icon: 'star' })
+        const props = createReactiveProps({ icon: 'star' })
         const icon = new InspectableIcon(props, element, new DesignName('d1.icon'))
 
         expect(icon.classes).toEqual({})
@@ -334,7 +345,7 @@ describe('Icon', () => {
     it.each([undefined, null, ''])('should keep value falsy in iconBind and iconActiveBind for %j and report isActive as false', (emptyValue) => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: emptyValue,
         iconActive: emptyValue,
         active: true
@@ -352,11 +363,11 @@ describe('Icon', () => {
     it('should not throw when onLoad is triggered without an emits function', () => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = reactive<IconProps>({ icon: 'home' })
+      const props = createReactiveProps({ icon: 'home' })
       const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
 
       expect(() => icon.iconBind?.onLoad?.({
-        type: 'image',
+        type: ImageTypeValue.image,
         image: 'home'
       })).not.toThrow()
 
@@ -368,7 +379,7 @@ describe('Icon', () => {
     it('should keep enabled, event, and skeleton lazy upon construction and instantiate only on demand', () => {
       runInVueSetup(() => {
         const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-        const props = reactive<IconProps>({ icon: 'user' })
+        const props = createReactiveProps({ icon: 'user' })
         const icon = new InspectableIcon(props, element, new DesignName('d1.icon'))
 
         expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
@@ -391,7 +402,7 @@ describe('Icon', () => {
 
     it('should instantiate enabled, event, and skeleton strictly on demand via explicit call sites and not on initConditions', async () => {
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: 'bell',
         dynamic: false,
         isSkeleton: false
@@ -464,7 +475,7 @@ describe('Icon', () => {
 
       runInVueSetup(() => {
         const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-        const props = reactive<IconProps>({ icon: 'settings' })
+        const props = createReactiveProps({ icon: 'settings' })
 
         const icon = new InspectableIcon(
           props,
@@ -501,7 +512,7 @@ describe('Icon', () => {
 
   describe('IconDesign composition and rendering', () => {
     it('should expose isActive, getValue, and getDetail without prematurely instantiating event', () => {
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: 'home',
         value: 'home-value',
         detail: { page: 'index' }
@@ -531,8 +542,8 @@ describe('Icon', () => {
       expect(exposedValue).toBeDefined()
       expect(exposedValue?.isActive()).toBe(false)
 
-      expect(exposedValue?.getValue()).toBe('home-value')
-      expect(exposedValue?.getDetail()).toEqual({ page: 'index' })
+      expect(exposedValue?.getValue?.()).toBe('home-value')
+      expect(exposedValue?.getDetail?.()).toEqual({ page: 'index' })
 
       props.active = true
       props.iconActive = 'home-filled'
@@ -540,7 +551,7 @@ describe('Icon', () => {
     })
 
     it('should render a span element with classes, attrs, and sub-elements, and update reactively', async () => {
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: 'home',
         iconActive: 'home-filled',
         active: false,
@@ -619,7 +630,7 @@ describe('Icon', () => {
     })
 
     it('should render safely when components registry is omitted even if icon and iconActive are provided', () => {
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: 'home',
         iconActive: 'home-filled'
       })
@@ -651,7 +662,7 @@ describe('Icon', () => {
     ])('should preserve Unicode icon %s and ariaLabel %s in aria and binds', (iconName, ariaLabel) => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = reactive<IconProps>({
+      const props = createReactiveProps({
         icon: iconName,
         dynamic: true,
         ariaLabel

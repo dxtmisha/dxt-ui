@@ -1,7 +1,7 @@
-// md5:1bf42b2a43bfd8cc6fc653769744ee3f true
+// md5:e413ec45de870a5c311f1e72bfeaacf2 true
 /**
- * Converts a string or number to a finite floating-point number, handling separators and stripping non-numeric characters.
- * @keywords toNumber, parse float, string to number, numeric cast, sanitize
+ * Converts a value to a finite floating-point number, normalizing separators and stripping non-numeric characters.
+ * @keywords parse, float, number, cast, numeric conversion, separator
  * @example
  * toNumber("1 234,56") // 1234.56
  * toNumber("1,234.56") // 1234.56

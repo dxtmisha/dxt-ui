@@ -1,71 +1,19 @@
-// md5:8f0ceac558da924375efe8430f3b4898
+// md5:8f0ceac558da924375efe8430f3b4898 true
 import type { LocationQueryRaw, RouteLocationRaw, RouteParamsRawGeneric, Router } from 'vue-router';
-import type { ConstrHrefProps } from '../../types/constructorTypes';
-/**
- * Static facade for an installed Vue Router instance stored through `ServerStorage`. It resolves named routes to href properties and dispatches navigation.
- *
- * Статический фасад установленного Vue Router, сохранённого через `ServerStorage`. Разрешает именованные маршруты в свойства href и запускает навигацию.
- */
+/** Static facade for managing and accessing the global Vue Router instance. @keywords router facade navigation link href */
 export declare class RouterItemRef {
-    /**
-     * Returns the registered router; it may be absent at runtime.
-     *
-     * Возвращает зарегистрированный роутер; фактически он может отсутствовать.
-     * @returns Registered router, or undefined when none is installed. / Зарегистрированный роутер либо undefined при его отсутствии.
-     */
+    /** Returns the registered Vue Router instance if available. @keywords router get instance */
     static get(): import("vue-router")._RouterClassic;
-    /**
-     * Resolves a named location to `router.resolve(...).href`, or returns `undefined` without a router.
-     *
-     * Разрешает именованное местоположение в `router.resolve(...).href`; без роутера возвращает `undefined`.
-     * @param name Registered route name. / Имя зарегистрированного маршрута.
-     * @param params Named-route parameters. / Параметры именованного маршрута.
-     * @param query Route query parameters. / Параметры строки запроса маршрута.
-     * @param hash Route fragment including its leading #. / Фрагмент маршрута с начальным #.
-     * @returns Requested string, or undefined when unavailable. / Запрошенная строка либо undefined при отсутствии.
-     */
+    /** Resolves a named route to an href string, or undefined if unavailable. @keywords resolve link route url href */
     static getLink(name: string, params?: RouteParamsRawGeneric, query?: LocationQueryRaw, hash?: string): string | undefined;
-    /**
-     * Returns `{ href }` for a nonempty resolved link, otherwise `{}`.
-     *
-     * Возвращает `{ href }` для непустой разрешённой ссылки, иначе `{}`.
-     * @param name Registered route name. / Имя зарегистрированного маршрута.
-     * @param params Named-route parameters. / Параметры именованного маршрута.
-     * @param query Route query parameters. / Параметры строки запроса маршрута.
-     * @param hash Route fragment including its leading #. / Фрагмент маршрута с начальным #.
-     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
-     */
+    /** Returns an href object for a resolved route, or an empty object if unavailable. @keywords route href link props */
     static getHref(name?: string, params?: RouteParamsRawGeneric, query?: LocationQueryRaw, hash?: string): ConstrHrefProps;
-    /**
-     * Starts router navigation when a router is registered.
-     *
-     * Запускает навигацию при наличии зарегистрированного роутера.
-     * @param to Raw route location. / Необработанное местоположение маршрута.
-     * @returns No return value. / Нет возвращаемого значения.
-     */
+    /** Navigates to the specified route location using the registered router. @keywords navigate push route */
     static push(to: string | RouteLocationRaw): void;
-    /**
-     * Stores or replaces the router in the current context.
-     *
-     * Сохраняет или заменяет роутер текущего контекста.
-     * @param router Vue Router instance to register. / Регистрируемый экземпляр Vue Router.
-     * @returns No return value. / Нет возвращаемого значения.
-     */
+    /** Stores or replaces the active Vue Router instance. @keywords set register router instance */
     static set(router: Router): void;
-    /**
-     * Registers the router only if no router has been stored.
-     *
-     * Регистрирует роутер только при отсутствии сохранённого.
-     * @param router Vue Router instance to register. / Регистрируемый экземпляр Vue Router.
-     * @returns No return value. / Нет возвращаемого значения.
-     */
+    /** Registers the Vue Router instance only if no router has been stored. @keywords set router once singleton */
     static setOneTime(router: Router): void;
-    /**
-     * Converts a named raw location to href props, retaining params, query and hash.
-     *
-     * Преобразует именованное местоположение в href-свойства, сохраняя параметры, query и hash.
-     * @param to Raw route location. / Необработанное местоположение маршрута.
-     * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
-     */
+    /** Converts a raw route location into href properties preserving params, query, and hash. @keywords raw route href resolve location */
     static rawToHref(to?: string | RouteLocationRaw): ConstrHrefProps;
 }

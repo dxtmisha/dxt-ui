@@ -1,3 +1,3 @@
-// md5:251d6d9f3c50a8961866b5cb516c0634 true
-/** Creates a case-insensitive, global RegExp for word-separated search queries or clones an existing RegExp. @keywords regexp, search, word separator, pattern */
-export declare function getSeparatingSearchExp(search: string | RegExp, limit?: number): RegExp;
+// md5:a89524aeb522402d510d65f61f1547ec true
+/** Creates a case-insensitive, global word-separating search RegExp or clones an existing RegExp. @keywords search regexp regex query filter words */
+export declare function getSeparatingSearchExp(search?: unknown, limit?: number): RegExp;

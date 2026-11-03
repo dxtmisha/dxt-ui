@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { createSSRApp, defineComponent, h } from 'vue'
 import { renderToString } from '@vue/server-renderer'
 import { ArrowDesign } from '../ArrowDesign'
+import type { ArrowProps } from '../props'
 
 describe('ArrowDesign in Node SSR', () => {
   it('renders ArrowDesign without error in SSR (node environment)', async () => {
@@ -10,9 +11,10 @@ describe('ArrowDesign in Node SSR', () => {
     expect(typeof document).toBe('undefined')
     expect(typeof requestAnimationFrame).toBe('undefined')
 
+    const props: ArrowProps = { position: 'auto' }
     const TestComp = defineComponent({
       setup() {
-        const design = new ArrowDesign('d1.arrow', { position: 'auto' })
+        const design = new ArrowDesign('d1.arrow', props)
         const render = design.render()
         return () => h(render)
       }
@@ -25,9 +27,10 @@ describe('ArrowDesign in Node SSR', () => {
 
   it('handles multiple SSR renders without leaking or crashing', async () => {
     for (const position of ['auto', 'top', 'bottom', 'left', 'right'] as const) {
+      const props: ArrowProps = { position }
       const TestComp = defineComponent({
         setup() {
-          const design = new ArrowDesign('d1.arrow', { position })
+          const design = new ArrowDesign('d1.arrow', props)
           const render = design.render()
           return () => h(render)
         }

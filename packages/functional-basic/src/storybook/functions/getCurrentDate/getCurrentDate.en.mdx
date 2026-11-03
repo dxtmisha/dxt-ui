@@ -10,6 +10,7 @@ Returns the current date in the specified format. The function is a wrapper arou
 
 **Parameters:**
 - `format?: GeoDate` — type of date format for output (default `'datetime'`). Supports values: `'date'`, `'time'`, `'datetime'`, `'full'`, and others.
+- `timeZone?: boolean` — add time zone (default: `true`).
 
 **Returns:**
 `string` — Current date in the specified format.
@@ -17,9 +18,13 @@ Returns the current date in the specified format. The function is a wrapper arou
 ```typescript
 import { getCurrentDate } from '@dxtmisha/functional-basic'
 
-// Standard format (datetime)
+// Standard format (datetime with timezone offset)
 const now = getCurrentDate()
-// Result: "2024-03-15 14:30"
+// Result: "2024-03-15T14:30:00+03:00"
+
+// Without timezone offset
+const local = getCurrentDate('datetime', false)
+// Result: "2024-03-15T14:30:00"
 
 // Date only
 const date = getCurrentDate('date')

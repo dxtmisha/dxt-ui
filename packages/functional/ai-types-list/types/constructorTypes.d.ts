@@ -1,151 +1,93 @@
-// md5:52328cc26563212c0aef74f2c3e41a2e
+// md5:52328cc26563212c0aef74f2c3e41a2e true
 import type { Ref, PropType, ComputedRef } from 'vue';
 import type { Undefined } from '@dxtmisha/functional-basic';
-import type { RefOrNormal, RefType } from './refTypes';
-/** Optional constructors with string names / Необязательные конструкторы со строковыми именами */
+
+/** Named constructor dependency mapping. @keywords constructors, di, dependencies */
 export type ConstrConstructors<T extends object> = Partial<Record<keyof T & string, new (...parameters: never[]) => unknown>>;
-/** Constructor arguments for a named dependency / Аргументы конструктора зависимости по имени */
+/** Constructor parameters for a named dependency. @keywords parameters, constructor_args */
 export type ConstrParameters<T extends ConstrConstructors<T>, K extends keyof T & string> = ConstructorParameters<NonNullable<T[K]>>;
-/** Instance type for a named dependency / Тип экземпляра зависимости по имени */
+/** Instance type for a named dependency. @keywords instance, dependency */
 export type ConstrInstance<T extends ConstrConstructors<T>, K extends keyof T & string> = InstanceType<NonNullable<T[K]>>;
-/** Constructor function for a named dependency / Функция-конструктор зависимости по имени */
+/** Constructor function signature for a named dependency. @keywords constructor, factory */
 export type ConstrConstructor<T extends ConstrConstructors<T>, K extends keyof T & string> = new (...parameters: ConstrParameters<T, K>) => ConstrInstance<T, K>;
-/** Single constructor item configuration for a named dependency / Конфигурация отдельного элемента конструктора для зависимости по имени */
+/** Configuration for a single constructor dependency item. @keywords di_item, lazy_init */
 export type ConstrItemsItem<T extends ConstrConstructors<T>, K extends keyof T & string> = {
-    /** Constructor class or element / Класс конструктора или элемент */
-    item?: T[K];
-    /** Condition for lazy instantiation / Условие для ленивого создания */
-    conditions?: () => boolean;
-    /** Constructor parameters factory / Фабрика параметров конструктора */
-    parameters?: () => ConstrParameters<T, K>;
+  item?: T[K];
+  conditions?: () => boolean;
+  parameters?: () => ConstrParameters<T, K>;
 };
-/** Constructor items configurations by dependency name / Конфигурации элементов конструкторов по имени зависимости */
+/** Constructor items configuration map indexed by dependency name. @keywords di_map, dependencies */
 export type ConstrItems<T extends ConstrConstructors<T>> = {
-    [K in keyof T & string]-?: ConstrItemsItem<T, K>;
+  [K in keyof T & string]-?: ConstrItemsItem<T, K>;
 };
-/** Generic record type for constructor items / Дженерик тип записи для элементов конструктора */
 export type ConstrItem = Record<string, any>;
-/** Constructor value wrapper with optional value property / Обертка значения конструктора с опциональным свойством value */
 export type ConstrValue<T = any> = {
-    /** Optional value of type T / Опциональное значение типа T */
-    value?: T;
+  value?: T;
 };
-/** Generic record type for constructor components / Дженерик тип записи для компонентов конструктора */
 export type ConstrComponent = Record<string, any>;
-/**
- * Constructor component modification type with reactive or normal values /
- * Тип модификации компонента конструктора с реактивными или обычными значениями
- */
+/** Component modifications allowing reactive or raw values. @keywords component_mod, reactive_props */
 export type ConstrComponentMod<P extends ConstrItem> = ConstrItem | {
-    [K in keyof P]?: RefOrNormal<P[K]>;
+  [K in keyof P]?: RefOrNormal<P[K]>;
 };
-/** Constructor expose type with elementHtml ref / Тип экспорта конструктора с ref elementHtml */
+/** Component exposed API contract including root element reference. @keywords expose, root_element */
 export type ConstrExpose<E extends Element, EXPOSE extends ConstrItem> = EXPOSE & {
-    /** Root HTML element reference / Ссылка на корневой HTML-элемент */
-    elementHtml?: ComputedRef<E | undefined>;
+  elementHtml?: ComputedRef<E | undefined>;
 };
-/** Utility type to convert union types to intersection types / Утилитарный тип для преобразования объединенных типов в пересеченные */
+/** Converts union type to intersection type. @keywords union_to_intersection, utility */
 export type UnionToIntersection<U> = (U extends unknown ? (value: U) => void : never) extends (value: infer I) => void ? I : never;
-/** Extract emit item type from constructor item / Извлечение типа элемента emit из элемента конструктора */
 export type ConstrEmitItem<T extends ConstrItem> = T[keyof T];
-/**
- * Constructor emit type with proper event handler signatures /
- * Тип emit конструктора с правильными сигнатурами обработчиков событий
- */
+/** Strongly-typed event emitter function signature map. @keywords emit, events, dispatcher */
 export type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToIntersection<ConstrEmitItem<{
-    [K in keyof T]: (event: K, ...args: T[K]) => void;
+  [K in keyof T]: (event: K, ...args: T[K]) => void;
 }>>;
-/** Object type for CSS class names with boolean values / Тип объекта для CSS классов с булевыми значениями */
 export type ConstrClassObject = Record<string, boolean | undefined>;
-/**
- * Constructor class type supporting strings, arrays, and objects /
- * Тип класса конструктора, поддерживающий строки, массивы и объекты
- */
+/** Normalized class binding supporting strings, nested arrays, and boolean maps. @keywords class_name, styling */
 export type ConstrClass = string | (string | ConstrClass | Undefined)[] | ConstrClassObject;
-/** Record type for mapping class names to class definitions / Тип записи для сопоставления имен классов с определениями классов */
 export type ConstrClassList = Record<string, ConstrClass>;
-/** Constructor classes with required main class and additional class list / Классы конструктора с обязательным основным классом и дополнительным списком классов */
+/** Component classes containing mandatory main class and optional sub-element classes. @keywords classes, styling */
 export type ConstrClasses = {
-    /** Main component class / Основной класс компонента */
-    main: ConstrClass;
+  main: ConstrClass;
 } & ConstrClassList;
-/** Constructor style item type for individual style properties / Тип элемента стиля конструктора для отдельных свойств стиля */
 export type ConstrStylesItem = string | number | null | Undefined;
-/**
- * Constructor styles type supporting objects and arrays of style definitions /
- * Тип стилей конструктора, поддерживающий объекты и массивы определений стилей
- */
+/** CSS style definitions supporting nested objects and arrays. @keywords styles, css */
 export type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
-/**
- * Constructor options interface for component configuration /
- * Интерфейс опций конструктора для конфигурации компонента
- */
+/** Component constructor configuration options. @keywords options, config */
 export type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
-    /** Optional components configuration / Опциональная конфигурация компонентов */
-    components?: COMP;
-    /** Optional component modifications / Опциональные модификации компонента */
-    compMod?: ConstrComponentMod<P>;
-    /** Optional emit handlers / Опциональные обработчики emit */
-    emits?: ConstrEmit<EMITS>;
-    /** Optional reactive classes / Опциональные реактивные классы */
-    classes?: RefType<ConstrClasses>;
-    /** Optional reactive styles / Опциональные реактивные стили */
-    styles?: RefType<ConstrStyles>;
+  components?: COMP;
+  compMod?: ConstrComponentMod<P>;
+  emits?: ConstrEmit<EMITS>;
+  classes?: RefType<ConstrClasses>;
+  styles?: RefType<ConstrStyles>;
 };
-/**
- * Constructor setup interface for component initialization /
- * Интерфейс настройки конструктора для инициализации компонента
- */
+/** Component setup execution context and state contract. @keywords setup, component_state */
 export type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = {
-    /** Component name / Имя компонента */
-    name: string;
-    /** Reactive element reference / Реактивная ссылка на элемент */
-    element: Ref<E | undefined>;
-    /** Reactive classes / Реактивные классы */
-    classes: RefType<CLASSES>;
-    /** Reactive styles / Реактивные стили */
-    styles: RefType<ConstrStyles>;
+  name: string;
+  element: Ref<E | undefined>;
+  classes: RefType<CLASSES>;
+  styles: RefType<ConstrStyles>;
 } & SETUP;
-/** Constructor registration configuration / Конфигурация регистрации конструктора */
 export type ConstrRegistration = {
-    /** Optional flag for registration / Опциональный флаг для регистрации */
-    flag?: boolean;
-    /** Optional translation map / Опциональная карта переводов */
-    translate?: Record<string, string>;
+  flag?: boolean;
+  translate?: Record<string, string>;
 };
-/**
- * Constructor bind type for component binding with class and style support /
- * Тип привязки конструктора для привязки компонента с поддержкой классов и стилей
- */
+/** Dynamic component attribute binding supporting classes and styles. @keywords v_bind, props_binding */
 export type ConstrBind<T = ConstrItem> = T & Record<string, any> & {
-    /** Optional key / Опциональный ключ */
-    key?: string;
-    /** Optional CSS classes / Опциональные CSS классы */
-    class?: ConstrClass;
-    /** Optional styles / Опциональные стили */
-    style?: ConstrStyles;
+  key?: string;
+  class?: ConstrClass;
+  style?: ConstrStyles;
 };
-/** Constructor prop item options for Vue prop definitions / Опции элемента prop конструктора для определений Vue prop */
+/** Vue prop option definition configuration. @keywords prop_options, vue_props */
 export type ConstrPropItemOptions<T = any> = {
-    /** Vue prop type / Тип Vue prop */
-    type?: PropType<T>;
-    /** Required flag / Флаг обязательности */
-    required?: boolean;
-    /** Default value / Значение по умолчанию */
-    default?: any;
-    /** Custom validator function / Пользовательская функция валидации */
-    validator?(value: any, props: any): boolean;
+  type?: PropType<T>;
+  required?: boolean;
+  default?: any;
+  validator?(value: any, props: any): boolean;
 };
-/** Constructor prop item type with options or direct PropType / Тип элемента prop конструктора с опциями или прямым PropType */
 export type ConstrPropItem<T = any> = ConstrPropItemOptions<T> | PropType<T>;
-/** Constructor props type for component prop definitions / Тип props конструктора для определений props компонента */
+/** Vue props map definition. @keywords vue_props, prop_types */
 export type ConstrProps<P = Record<string, any>> = {
-    [K in keyof P]: ConstrPropItem<P[K]>;
+  [K in keyof P]: ConstrPropItem<P[K]>;
 };
-/**
- * Props for link handling / Пропсы для обработки ссылок
- */
 export type ConstrHrefProps = {
-    /** Hyperlink reference / Гиперссылка */
-    href?: string;
+  href?: string;
 };

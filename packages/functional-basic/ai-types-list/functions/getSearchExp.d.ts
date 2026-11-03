@@ -1,3 +1,3 @@
-// md5:379e317145142963f7b98cb859f7d118 true
-/** Builds a case-insensitive RegExp matching strings containing all search words in any order. @keywords regex search multi-word lookahead filter query */
-export declare function getSearchExp(search: string, limit?: number): RegExp;
+// md5:04d1b2d8c3b16163df2423d22a82e712 true
+/** Builds a case-insensitive RegExp matching strings containing all specified words in any order. @keywords regex search query multi-word lookahead */
+export declare function getSearchExp(search?: unknown, limit?: number): RegExp;

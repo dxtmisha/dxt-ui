@@ -1,9 +1,9 @@
-// md5:9e7966db036886cc5de4b7525f4bbc5e true
+// md5:b9ac136de0fd0983c8d2beba37504fe3 true
 export type ResizeImageByMaxType = 'auto' | 'width' | 'height';
 
 /**
- * Resizes an image synchronously to fit within a maximum size constraint.
- * @remarks Requires a loaded image with valid dimensions. Returns `undefined` if already within bounds or unprocessable to prevent redundant canvas re-encoding.
- * @keywords resize image, scale image, max dimension, canvas resize, base64
+ * Resizes an image to fit within a maximum size constraint using HTML Canvas.
+ * @remarks Synchronous; requires a fully loaded image with valid natural dimensions. Returns a Base64 Data URL only when scaled; returns `undefined` if already within `maxSize` or unprocessable to prevent redundant Canvas re-encoding. For a fallback to the original source, use `resizeImage`.
+ * @keywords image resize, scale image, max dimension, canvas resize, thumbnail, base64 data url
  */
 export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: ResizeImageByMaxType, typeData?: string, quality?: number): string | undefined;
