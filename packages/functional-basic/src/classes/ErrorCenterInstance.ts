@@ -37,6 +37,21 @@ export class ErrorCenterInstance {
   }
 
   /**
+   * Checks if a cause with specific code exists.
+   *
+   * Проверяет наличие причины с конкретным кодом.
+   * @param code error code / код ошибки
+   * @param group error group / группа ошибки
+   * @returns true if cause exists / true, если причина существует
+   */
+  has(
+    code: string,
+    group?: ErrorCenterGroup
+  ): boolean {
+    return Boolean(this.get(code, group))
+  }
+
+  /**
    * Gets a specific error cause by code and group.
    *
    * Получает конкретную причину ошибки по коду и группе.
@@ -61,21 +76,6 @@ export class ErrorCenterInstance {
    */
   getHandler(): ErrorCenterHandler {
     return this.handler
-  }
-
-  /**
-   * Checks if a cause with specific code exists.
-   *
-   * Проверяет наличие причины с конкретным кодом.
-   * @param code error code / код ошибки
-   * @param group error group / группа ошибки
-   * @returns true if cause exists / true, если причина существует
-   */
-  has(
-    code: string,
-    group?: ErrorCenterGroup
-  ): boolean {
-    return Boolean(this.get(code, group))
   }
 
   /**
@@ -177,6 +177,20 @@ export class ErrorCenterInstance {
   }
 
   /**
+   * Removes a global callback.
+   *
+   * Удаляет глобальный обратный вызов.
+   * @param callback callback function to remove / функция обратного вызова для удаления
+   * @returns this instance / текущий экземпляр
+   */
+  removeCallback(
+    callback: ErrorCenterHandlerCallback
+  ): this {
+    this.handler.removeCallback(callback)
+    return this
+  }
+
+  /**
    * Removes a handler or all handlers for a group.
    *
    * Удаляет обработчик или все обработчики для группы.
@@ -189,20 +203,6 @@ export class ErrorCenterInstance {
     handler?: ErrorCenterHandlerCallback
   ): this {
     this.handler.remove(group, handler)
-    return this
-  }
-
-  /**
-   * Removes a global callback.
-   *
-   * Удаляет глобальный обратный вызов.
-   * @param callback callback function to remove / функция обратного вызова для удаления
-   * @returns this instance / текущий экземпляр
-   */
-  removeCallback(
-    callback: ErrorCenterHandlerCallback
-  ): this {
-    this.handler.removeCallback(callback)
     return this
   }
 

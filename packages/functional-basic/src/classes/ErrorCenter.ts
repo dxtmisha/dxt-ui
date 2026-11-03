@@ -21,6 +21,21 @@ export class ErrorCenter {
   protected static item?: ErrorCenterInstance
 
   /**
+   * Checks if a cause with specific code exists.
+   *
+   * Проверяет наличие причины с конкретным кодом.
+   * @param code error code / код ошибки
+   * @param group error group / группа ошибки
+   * @returns true if cause exists / true, если причина существует
+   */
+  static has(
+    code: string,
+    group?: ErrorCenterGroup
+  ): boolean {
+    return this.getItem().has(code, group)
+  }
+
+  /**
    * Gets a specific error cause by code and group.
    *
    * Получает конкретную причину ошибки по коду и группе.
@@ -43,21 +58,6 @@ export class ErrorCenter {
    */
   static getHandler(): ErrorCenterHandler {
     return this.getItem().getHandler()
-  }
-
-  /**
-   * Checks if a cause with specific code exists.
-   *
-   * Проверяет наличие причины с конкретным кодом.
-   * @param code error code / код ошибки
-   * @param group error group / группа ошибки
-   * @returns true if cause exists / true, если причина существует
-   */
-  static has(
-    code: string,
-    group?: ErrorCenterGroup
-  ): boolean {
-    return this.getItem().has(code, group)
   }
 
   /**
@@ -157,6 +157,18 @@ export class ErrorCenter {
   }
 
   /**
+   * Removes a global callback.
+   *
+   * Удаляет глобальный обратный вызов.
+   * @param callback callback function to remove / функция обратного вызова для удаления
+   */
+  static removeCallback(
+    callback: ErrorCenterHandlerCallback
+  ): void {
+    this.getItem().removeCallback(callback)
+  }
+
+  /**
    * Removes a handler or all handlers for a group.
    *
    * Удаляет обработчик или все обработчики для группы.
@@ -168,18 +180,6 @@ export class ErrorCenter {
     handler?: ErrorCenterHandlerCallback
   ): void {
     this.getItem().removeHandler(group, handler)
-  }
-
-  /**
-   * Removes a global callback.
-   *
-   * Удаляет глобальный обратный вызов.
-   * @param callback callback function to remove / функция обратного вызова для удаления
-   */
-  static removeCallback(
-    callback: ErrorCenterHandlerCallback
-  ): void {
-    this.getItem().removeCallback(callback)
   }
 
   /**

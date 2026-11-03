@@ -41,18 +41,6 @@ export class ApiHeaders {
   }
 
   /**
-   * Sets the default headers.
-   *
-   * Устанавливает заголовки по умолчанию.
-   * @param headers list of default headers / список заголовков по умолчанию
-   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-   */
-  set(headers: ApiHeadersValue): this {
-    this.headers = headers
-    return this
-  }
-
-  /**
    * Gets the headers for the request based on request type.
    *
    * Получает заголовки для запроса на основе типа запроса.
@@ -71,6 +59,18 @@ export class ApiHeaders {
     }
 
     return this.get(value, type)
+  }
+
+  /**
+   * Sets the default headers.
+   *
+   * Устанавливает заголовки по умолчанию.
+   * @param headers list of default headers / список заголовков по умолчанию
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
+   */
+  set(headers: ApiHeadersValue): this {
+    this.headers = headers
+    return this
   }
 
   /**
