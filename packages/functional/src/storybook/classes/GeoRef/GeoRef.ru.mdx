@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс GeoRef
 
-Статический реактивный фасад текущего географического контекста. Кэширует поверхностную ссылку на `Geo.getItem()` и вычисляемые проекции через `ServerStorage`.
+Статический реактивный фасад текущего географического контекста. Кэширует поверхностную ссылку на `Geo.get()` и вычисляемые проекции через `ServerStorage`.
 
 ## Ключевые особенности
 
@@ -68,13 +68,13 @@ GeoRef.set('vi-VN')
 
 #### `setValueDefault`
 
-`setValueDefault(code?: string | (() => string)): void`
+`setValueDefault(code?: string | (() => string | undefined)): void`
 
 Устанавливает резервный код Geo либо фабрику и обновляет реактивные данные из Geo.
 
 **Параметры:**
 
-- `code?: string | (() => string)` — Резервный код локали либо фабрика.
+- `code?: string | (() => string | undefined)` — Резервный код локали либо фабрика.
 
 **Возвращает:** `void` — Нет возвращаемого значения.
 

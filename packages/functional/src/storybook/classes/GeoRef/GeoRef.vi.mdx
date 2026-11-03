@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp GeoRef
 
-Facade phản ứng tĩnh cho ngữ cảnh địa lý hiện tại. Lưu shallow ref tới `Geo.getItem()` và các phép chiếu computed qua `ServerStorage`.
+Facade phản ứng tĩnh cho ngữ cảnh địa lý hiện tại. Lưu shallow ref tới `Geo.get()` và các phép chiếu computed qua `ServerStorage`.
 
 ## Tính năng chính
 
@@ -68,13 +68,13 @@ GeoRef.set('vi-VN')
 
 #### `setValueDefault`
 
-`setValueDefault(code?: string | (() => string)): void`
+`setValueDefault(code?: string | (() => string | undefined)): void`
 
 Đặt mã hoặc hàm dự phòng Geo và làm mới mục phản ứng từ Geo.
 
 **Tham số:**
 
-- `code?: string | (() => string)` — Mã locale dự phòng hoặc hàm tạo mã.
+- `code?: string | (() => string | undefined)` — Mã locale dự phòng hoặc hàm tạo mã.
 
 **Trả về:** `void` — Không có giá trị trả về.
 

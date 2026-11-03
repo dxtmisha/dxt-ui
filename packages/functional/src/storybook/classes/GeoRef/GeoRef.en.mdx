@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # GeoRef Class
 
-Static reactive facade for the current geographic context. It caches a shallow ref to `Geo.getItem()` and computed projections through `ServerStorage`.
+Static reactive facade for the current geographic context. It caches a shallow ref to `Geo.get()` and computed projections through `ServerStorage`.
 
 ## Key Features
 
@@ -68,13 +68,13 @@ GeoRef.set('vi-VN')
 
 #### `setValueDefault`
 
-`setValueDefault(code?: string | (() => string)): void`
+`setValueDefault(code?: string | (() => string | undefined)): void`
 
 Sets the Geo fallback code or factory and refreshes the reactive item from Geo.
 
 **Parameters:**
 
-- `code?: string | (() => string)` — Fallback locale code or factory.
+- `code?: string | (() => string | undefined)` — Fallback locale code or factory.
 
 **Returns:** `void` — No return value.
 

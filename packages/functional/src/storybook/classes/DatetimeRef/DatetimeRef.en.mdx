@@ -14,17 +14,17 @@ Reactive wrapper around `Datetime`. It synchronizes input date refs with a worki
 
 ## Initialization
 
-`constructor( date: RefOrNormal<NumberOrStringOrDate>, type: RefOrNormal<GeoDate> = 'date', code: RefOrNormal<string> = Geo.getLocation() )`
+`constructor( date: RefOrNormal<NumberOrStringOrDate>, type: RefOrNormal<GeoDate> = 'date', code: RefOrNormal<string> = GeoRef.getLocation() )`
 
 **Parameters:**
 
 - `date: RefOrNormal<NumberOrStringOrDate>` — Required input date, timestamp or date string.
 - `type: RefOrNormal<GeoDate> = 'date'` — Date output format; the constructor defaults to date.
-- `code: RefOrNormal<string> = Geo.getLocation()` — Locale, country or language code; a ref is supported where declared.
+- `code: RefOrNormal<string> = GeoRef.getLocation()` — Locale, country or language code; a ref is supported where declared.
 
 ## Behavior and lifecycle
 
-The default locale is captured from `Geo.getLocation()` at construction. Pass a locale ref to track later changes. Input/type/locale watchers follow Vue scheduling; await `nextTick()` after updating those refs. Mutations through `getDatetime()` notify synchronously. `getItem()` retains the original input ref and is not rewritten by base-class mutations. Use an effect scope to dispose watchers. Assign a new `Date` to `getDate().value` or mutate through `getDatetime()`; native in-place `Date` changes do not trigger Vue by themselves.
+The default locale tracks `GeoRef.getLocation()` reactively unless an explicit locale or locale ref is supplied. Input/type/locale watchers follow Vue scheduling; await `nextTick()` after updating those refs. Mutations through `getDatetime()` notify synchronously. Direct modification of `type` and `code` via `getDatetime()` (`setType`, `setCode`) is prohibited, as these values are managed by the wrapper and will be reset. Methods returning `ComputedRef` create a new `computed` instance on each call; declare and store them once (for example, in `setup`). `getItem()` retains the original input ref and is not rewritten by base-class mutations. Use an effect scope to dispose watchers. Assign a new `Date` to `getDate().value` or mutate through `getDatetime()`; native in-place `Date` changes do not trigger Vue by themselves.
 
 ## Usage
 
@@ -95,13 +95,13 @@ const formatted = /*#__PURE__*/ datetime?.locale('date', 'long')
 
 #### `standard`
 
-`standard(timeZone = true as boolean): ComputedRef<string>`
+`standard(timeZone = true): ComputedRef<string>`
 
 Returns the base utility’s standard representation for the current type. `timeZone` controls timezone output where that format includes time.
 
 **Parameters:**
 
-- `timeZone = true as boolean` — Whether to include timezone information; defaults to true.
+- `timeZone = true` — Whether to include timezone information; defaults to true.
 
 **Returns:** `ComputedRef<string>` — Computed result; read it through .value.
 

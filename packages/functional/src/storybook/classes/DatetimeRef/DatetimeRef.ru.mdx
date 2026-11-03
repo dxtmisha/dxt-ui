@@ -14,17 +14,17 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-`constructor( date: RefOrNormal<NumberOrStringOrDate>, type: RefOrNormal<GeoDate> = 'date', code: RefOrNormal<string> = Geo.getLocation() )`
+`constructor( date: RefOrNormal<NumberOrStringOrDate>, type: RefOrNormal<GeoDate> = 'date', code: RefOrNormal<string> = GeoRef.getLocation() )`
 
 **Параметры:**
 
 - `date: RefOrNormal<NumberOrStringOrDate>` — Обязательная дата, временная метка либо строка даты.
 - `type: RefOrNormal<GeoDate> = 'date'` — Формат вывода даты; конструктор использует date по умолчанию.
-- `code: RefOrNormal<string> = Geo.getLocation()` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+- `code: RefOrNormal<string> = GeoRef.getLocation()` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
 
 ## Поведение и жизненный цикл
 
-Локаль по умолчанию берётся из `Geo.getLocation()` при создании. Для последующих изменений передайте ссылку на локаль. Наблюдатели даты, типа и локали используют планировщик Vue: после изменения ссылок дождитесь `nextTick()`. Изменения через `getDatetime()` уведомляют синхронно. `getItem()` сохраняет исходную ссылку и не перезаписывается изменениями базового класса. Для очистки наблюдателей используйте область эффектов. Присваивайте новый `Date` в `getDate().value` либо меняйте дату через `getDatetime()`: встроенные мутации `Date` сами не уведомляют Vue.
+Локаль по умолчанию реактивно отслеживает `GeoRef.getLocation()`, если явно не передана своя локаль или ссылка на локаль. Наблюдатели даты, типа и локали используют планировщик Vue: после изменения ссылок дождитесь `nextTick()`. Изменения через `getDatetime()` уведомляют синхронно. Прямое изменение `type` и `code` через `getDatetime()` (`setType`, `setCode`) запрещено, так как эти значения управляются обёрткой и будут сброшены. Методы, возвращающие `ComputedRef`, создают новый экземпляр `computed` при каждом вызове — объявляйте и сохраняйте их один раз (например, в `setup`). `getItem()` сохраняет исходную ссылку и не перезаписывается изменениями базового класса. Для очистки наблюдателей используйте область эффектов. Присваивайте новый `Date` в `getDate().value` либо меняйте дату через `getDatetime()`: встроенные мутации `Date` сами не уведомляют Vue.
 
 ## Использование
 
@@ -95,13 +95,13 @@ const formatted = /*#__PURE__*/ datetime?.locale('date', 'long')
 
 #### `standard`
 
-`standard(timeZone = true as boolean): ComputedRef<string>`
+`standard(timeZone = true): ComputedRef<string>`
 
 Возвращает стандартное представление базовой утилиты для текущего типа. `timeZone` управляет выводом часового пояса в форматах со временем.
 
 **Параметры:**
 
-- `timeZone = true as boolean` — Выводить ли часовой пояс; по умолчанию true.
+- `timeZone = true` — Выводить ли часовой пояс; по умолчанию true.
 
 **Возвращает:** `ComputedRef<string>` — Вычисляемый результат; читайте через .value.
 

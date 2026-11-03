@@ -140,7 +140,10 @@ export class GeoRef {
   ): ComputedRef<GeoItemFull[K]> {
     return ServerStorage.get(
       key,
-      () => EffectScopeGlobal.run(() => computed(() => this.get().value[property]))!
+      () => {
+        const createProjection = () => computed(() => this.get().value[property])
+        return EffectScopeGlobal.run(createProjection) ?? createProjection()
+      }
     )
   }
 }

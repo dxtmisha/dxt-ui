@@ -138,6 +138,16 @@ export class Datetime {
   }
 
   /**
+   * Returns the country and language code.
+   *
+   * Возвращает код страны и языка.
+   * @returns string country and language code / код страны и языка
+   */
+  getCode(): string {
+    return this.code
+  }
+
+  /**
    * The method returns the difference, in minutes, between
    * a date as evaluated in the UTC time zone, and the same date as evaluated
    * in the local time zone.

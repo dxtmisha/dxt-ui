@@ -8,7 +8,6 @@ import {
 } from 'vue'
 import {
   Datetime,
-  Geo,
   type GeoDate,
   type GeoFirstDay,
   type GeoHours,
@@ -18,12 +17,21 @@ import {
 
 import { toRefItem } from '../../functions/ref/toRefItem'
 
+import { GeoRef } from './GeoRef'
+
 import type { RefOrNormal } from '../../types/refTypes'
 
 /**
  * Reactive wrapper around `Datetime`. It synchronizes input date refs with a working `Date`, exposes computed calendar fields, and refreshes those fields after mutations through `getDatetime()`.
  *
  * Реактивная обёртка над `Datetime`. Синхронизирует входную дату с рабочим `Date`, предоставляет вычисляемые поля календаря и обновляет их после изменений через `getDatetime()`.
+ *
+ * @remarks
+ * - **Warning (`type` and `code`):** Direct modification of `type` and `code` via `getDatetime()` (`setType`, `setCode`) is prohibited, as these values are managed by the wrapper and will be reset.
+ * - **Warning (`computed` methods):** Methods returning `ComputedRef` (`getYear`, `getMonth`, `getDay`, `getHour`, `getMinute`, `getSecond`, `getMaxDay`, `getHoursType`, `getFirstDayCode`, `locale`, `standard`) create a new `computed` instance on each call. Declare and store them only once (for example, in `setup`), rather than calling them repeatedly in templates or render functions.
+ *
+ * - **Предупреждение (`type` и `code`):** Прямое изменение `type` и `code` через `getDatetime()` (`setType`, `setCode`) запрещено, так как эти значения управляются обёрткой и будут сброшены.
+ * - **Предупреждение (`computed`-методы):** Методы, возвращающие `ComputedRef` (`getYear`, `getMonth`, `getDay`, `getHour`, `getMinute`, `getSecond`, `getMaxDay`, `getHoursType`, `getFirstDayCode`, `locale`, `standard`), создают новый экземпляр `computed` при каждом вызове. Объявляйте и сохраняйте их только один раз (например, в `setup`), а не вызывайте повторно в шаблонах или render-функциях.
  */
 export class DatetimeRef {
   /** Original input date ref / Исходная ссылка на входную дату */
@@ -61,7 +69,7 @@ export class DatetimeRef {
   constructor(
     date: RefOrNormal<NumberOrStringOrDate>,
     type: RefOrNormal<GeoDate> = 'date',
-    code: RefOrNormal<string> = Geo.getLocation()
+    code: RefOrNormal<string> = GeoRef.getLocation()
   ) {
     this.item = toRefItem(date)
     this.type = toRefItem(type)
@@ -79,13 +87,32 @@ export class DatetimeRef {
 
     watch(this.type, type => this.datetime.setType(type))
     watch(this.code, code => this.datetime.setCode(code))
-    watch(this.date, value => this.datetime.setDate(value))
-
-    this.datetime.setWatch((date) => {
-      this.date.value = date
-      this.updateDate()
-      triggerRef(this.date)
+    watch(this.date, (value) => {
+      if (value !== this.datetime.getDate()) {
+        this.datetime.setDate(value)
+      }
     })
+
+    this.datetime.setWatch((date, type) => {
+      if (this.type.value !== type) {
+        this.datetime.setType(this.type.value)
+        return
+      }
+
+      if (this.code.value !== this.datetime.getCode()) {
+        this.datetime.setCode(this.code.value)
+        return
+      }
+
+      this.updateDate()
+
+      if (this.date.value !== date) {
+        this.date.value = date
+      } else {
+        triggerRef(this.date)
+      }
+    })
+
     this.updateDate()
   }
 
@@ -231,7 +258,7 @@ export class DatetimeRef {
    * @param timeZone Whether to include timezone information; defaults to true. / Выводить ли часовой пояс; по умолчанию true.
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  standard(timeZone = true as boolean): ComputedRef<string> {
+  standard(timeZone = true): ComputedRef<string> {
     return computed(() => this.date.value && this.datetime.standard(timeZone))
   }
 

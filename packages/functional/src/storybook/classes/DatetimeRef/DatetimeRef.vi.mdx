@@ -14,17 +14,17 @@ Lớp bọc phản ứng cho `Datetime`. Đồng bộ ref ngày đầu vào vớ
 
 ## Khởi tạo
 
-`constructor( date: RefOrNormal<NumberOrStringOrDate>, type: RefOrNormal<GeoDate> = 'date', code: RefOrNormal<string> = Geo.getLocation() )`
+`constructor( date: RefOrNormal<NumberOrStringOrDate>, type: RefOrNormal<GeoDate> = 'date', code: RefOrNormal<string> = GeoRef.getLocation() )`
 
 **Tham số:**
 
 - `date: RefOrNormal<NumberOrStringOrDate>` — Ngày, dấu thời gian hoặc chuỗi ngày bắt buộc.
 - `type: RefOrNormal<GeoDate> = 'date'` — Kiểu đầu ra ngày; hàm dựng mặc định date.
-- `code: RefOrNormal<string> = Geo.getLocation()` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
+- `code: RefOrNormal<string> = GeoRef.getLocation()` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
 
 ## Hành vi và vòng đời
 
-Locale mặc định được lấy từ `Geo.getLocation()` lúc tạo. Truyền ref locale để theo dõi thay đổi về sau. Watcher ngày, kiểu và locale dùng lịch Vue; chờ `nextTick()` sau khi đổi ref. Thay đổi qua `getDatetime()` thông báo đồng bộ. `getItem()` giữ ref đầu vào gốc và không bị ghi lại bởi thay đổi lớp cơ sở. Dùng phạm vi hiệu ứng để dọn watcher. Gán `Date` mới cho `getDate().value` hoặc sửa qua `getDatetime()`; sửa trực tiếp bên trong `Date` không tự thông báo Vue.
+Locale mặc định theo dõi phản ứng `GeoRef.getLocation()` trừ khi truyền locale hoặc ref locale riêng. Watcher ngày, kiểu và locale dùng lịch Vue; chờ `nextTick()` sau khi đổi ref. Thay đổi qua `getDatetime()` thông báo đồng bộ. Không được sửa trực tiếp `type` và `code` qua `getDatetime()` (`setType`, `setCode`) vì các giá trị này do lớp bọc quản lý và sẽ bị đặt lại. Các phương thức trả về `ComputedRef` tạo một thực thể `computed` mới ở mỗi lần gọi — hãy khai báo và lưu trữ một lần (ví dụ trong `setup`). `getItem()` giữ ref đầu vào gốc và không bị ghi lại bởi thay đổi lớp cơ sở. Dùng phạm vi hiệu ứng để dọn watcher. Gán `Date` mới cho `getDate().value` hoặc sửa qua `getDatetime()`; sửa trực tiếp bên trong `Date` không tự thông báo Vue.
 
 ## Cách dùng
 
@@ -95,13 +95,13 @@ const formatted = /*#__PURE__*/ datetime?.locale('date', 'long')
 
 #### `standard`
 
-`standard(timeZone = true as boolean): ComputedRef<string>`
+`standard(timeZone = true): ComputedRef<string>`
 
 Trả biểu diễn chuẩn của tiện ích cơ sở cho kiểu hiện tại. `timeZone` điều khiển phần múi giờ khi định dạng có thời gian.
 
 **Tham số:**
 
-- `timeZone = true as boolean` — Có thêm thông tin múi giờ; mặc định true.
+- `timeZone = true` — Có thêm thông tin múi giờ; mặc định true.
 
 **Trả về:** `ComputedRef<string>` — Kết quả computed; đọc qua .value.
 

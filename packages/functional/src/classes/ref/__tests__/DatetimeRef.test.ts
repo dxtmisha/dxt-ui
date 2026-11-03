@@ -1,6 +1,7 @@
 import { afterEach, assert, describe, it, expect, beforeEach } from 'vitest'
 import { ServerStorage, type GeoDate } from '@dxtmisha/functional-basic'
 import { DatetimeRef } from '../DatetimeRef'
+import { GeoRef } from '../GeoRef'
 import { effectScope, ref, nextTick, type EffectScope } from 'vue'
 
 describe('DatetimeRef', () => {
@@ -183,7 +184,7 @@ describe('DatetimeRef', () => {
       expect(standard.value).not.toBe(initialStandard)
     })
 
-    it('uses the current base type when it changes through getDatetime', () => {
+    it('resets direct type modifications made through getDatetime back to the wrapper type', () => {
       const formatted = datetimeRef.locale()
       const explicitDate = datetimeRef.locale('date')
       const initialFormat = formatted.value
@@ -191,12 +192,12 @@ describe('DatetimeRef', () => {
 
       datetimeRef.getDatetime().setType('time')
 
-      expect(formatted.value).toBe(datetimeRef.getDatetime().locale())
-      expect(formatted.value).not.toBe(initialFormat)
+      expect(datetimeRef.getDatetime().getType()).toBe('datetime')
+      expect(formatted.value).toBe(initialFormat)
       expect(explicitDate.value).toBe(initialDate)
     })
 
-    it('updates saved localized values when the base code changes through getDatetime', () => {
+    it('resets direct code modifications made through getDatetime back to the wrapper code', () => {
       const formatted = datetimeRef.locale('date')
       const hours = datetimeRef.getHoursType()
       const firstDay = datetimeRef.getFirstDayCode()
@@ -205,8 +206,22 @@ describe('DatetimeRef', () => {
 
       datetimeRef.getDatetime().setCode('en-GB')
 
-      expect(formatted.value).toBe(datetimeRef.getDatetime().locale('date'))
-      expect(formatted.value).not.toBe(initialFormat)
+      expect(datetimeRef.getDatetime().getCode()).toBe('en-US')
+      expect(formatted.value).toBe(initialFormat)
+      expect([hours.value, firstDay.value]).toEqual(['12', 0])
+    })
+
+    it('tracks global GeoRef location by default when code is omitted', async () => {
+      GeoRef.set('en-US')
+      const datetime = scope.run(() => new DatetimeRef(dateStr, 'date'))
+      assert(datetime)
+      const hours = datetime.getHoursType()
+      const firstDay = datetime.getFirstDayCode()
+      expect([hours.value, firstDay.value]).toEqual(['12', 0])
+
+      GeoRef.set('en-GB')
+      await nextTick()
+
       expect([hours.value, firstDay.value]).toEqual(['24', 1])
     })
 

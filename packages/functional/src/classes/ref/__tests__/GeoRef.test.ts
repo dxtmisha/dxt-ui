@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, watch } from 'vue'
 import { Cookie, Geo, ServerStorage } from '@dxtmisha/functional-basic'
+import { EffectScopeGlobal } from '../EffectScopeGlobal'
 import { GeoRef } from '../GeoRef'
 
 describe('GeoRef', () => {
@@ -18,7 +19,7 @@ describe('GeoRef', () => {
   describe('Cached reactive projections', () => {
     it('reuses the main ref and each computed within a request', () => {
       expect(GeoRef.get()).toBe(GeoRef.get())
-      expect(GeoRef.get().value).toEqual(Geo.getItem())
+      expect(GeoRef.get().value).toEqual(Geo.get())
       const projections = [
         [GeoRef.getCountry(), 'country'],
         [GeoRef.getFirstDay(), 'firstDay'],
@@ -62,6 +63,7 @@ describe('GeoRef', () => {
       expect(locationCountryRef.value).toBe(locationCountry)
       expect(locationLanguageRef.value).toBe(locationLanguage)
       expect(standardRef.value).toBe(code)
+      expect(Cookie.getInstance('ui-geo-code').get()).toBe(code)
     })
 
     it('triggers reactivity watchers on location update', () => {
@@ -97,12 +99,26 @@ describe('GeoRef', () => {
       GeoRef.set('vi-VN')
       expect(countryRef!.value).toBe('VN')
     })
+
+    it('falls back to creating a computed projection if EffectScopeGlobal returns undefined', () => {
+      const spy = vi.spyOn(EffectScopeGlobal, 'run').mockReturnValueOnce(undefined)
+
+      const countryRef = GeoRef.getCountry()
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(countryRef.value).toBe('US')
+
+      GeoRef.set('vi-VN')
+      expect(countryRef.value).toBe('VN')
+
+      spy.mockRestore()
+    })
   })
 
   describe('Defaults and server isolation', () => {
     it.each([
       'de-DE',
       () => 'vi-VN',
+      () => undefined,
       undefined
     ])('accepts a default locale, factory or undefined', (code) => {
       Cookie.getInstance('ui-geo-code').remove()
