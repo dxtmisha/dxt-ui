@@ -8,14 +8,14 @@ import { isObject } from './isObject'
  * @param value input value / входное значение
  * @returns first element of an array or object / первый элемент массива или объекта
  */
-export function getFirst<T>(value: T | T[] | Record<string, T>): T | undefined {
-  if (isArray(value)) {
-    return value?.[0] as T
-  }
-
+export function getFirst<T = undefined>(
+  value?: T | readonly T[] | Record<PropertyKey, T>
+): T {
   if (isObject(value)) {
-    return Object.values(value)?.[0]
+    const data = isArray(value) ? value : Object.values(value)
+
+    return data[0] as T
   }
 
-  return value
+  return value as T
 }

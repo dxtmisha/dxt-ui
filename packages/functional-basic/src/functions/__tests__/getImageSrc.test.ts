@@ -24,9 +24,14 @@ describe('getImageSrc', () => {
       imageElement.src = 'https://example.com/photo.png'
       expect(getImageSrc(imageElement)).toBe('https://example.com/photo.png')
     })
+
+    it('should extract src from plain objects with a string src property', () => {
+      expect(getImageSrc({ src: 'https://example.com/item.png' })).toBe('https://example.com/item.png')
+      expect(getImageSrc({ src: '/local/avatar.webp', width: 200, height: 200 })).toBe('/local/avatar.webp')
+    })
   })
 
-  describe('Boundary values and empty inputs', () => {
+  describe('Boundary values, falsy inputs, and primitives', () => {
     it('should return an empty string when passed an empty string', () => {
       expect(getImageSrc('')).toBe('')
     })
@@ -45,28 +50,39 @@ describe('getImageSrc', () => {
       expect(getImageSrc()).toBe('')
     })
 
-    it('should return an empty string when called with null at runtime', () => {
-      expect(getImageSrc(null as unknown as undefined)).toBe('')
+    it('should safely return an empty string when called with null without type assertions', () => {
+      expect(getImageSrc(null)).toBe('')
+    })
+
+    it('should safely handle non-string primitives at runtime without throwing TypeError', () => {
+      expect(getImageSrc(42 as unknown as string)).toBe('')
+      expect(getImageSrc(0 as unknown as string)).toBe('')
+      expect(getImageSrc(true as unknown as string)).toBe('')
+      expect(getImageSrc(false as unknown as string)).toBe('')
+      expect(getImageSrc(Symbol('image') as unknown as string)).toBe('')
     })
 
     it('should fallback to empty string when image object has null or undefined src property', () => {
-      const imageWithNullSrc = { src: null } as unknown as HTMLImageElement
-      expect(getImageSrc(imageWithNullSrc)).toBe('')
+      expect(getImageSrc({ src: null })).toBe('')
+      expect(getImageSrc({ src: undefined })).toBe('')
+    })
 
-      const imageWithUndefinedSrc = { src: undefined } as unknown as HTMLImageElement
-      expect(getImageSrc(imageWithUndefinedSrc)).toBe('')
+    it('should fallback to empty string when image object has non-string src property', () => {
+      expect(getImageSrc({ src: 123 } as Record<string, unknown>)).toBe('')
+      expect(getImageSrc({ src: true } as Record<string, unknown>)).toBe('')
+      expect(getImageSrc({ src: {} } as Record<string, unknown>)).toBe('')
     })
   })
 
-  describe('Type coercion and non-image objects', () => {
+  describe('Objects and DOM elements without src', () => {
     it('should return an empty string for DOM elements without a src property', () => {
-      const divElement = document.createElement('div') as unknown as HTMLImageElement
-      expect(getImageSrc(divElement)).toBe('')
+      const divElement = document.createElement('div')
+      expect(getImageSrc(divElement as unknown as HTMLImageElement)).toBe('')
     })
 
     it('should return an empty string for plain objects without a src property', () => {
-      const emptyObject = {} as unknown as HTMLImageElement
-      expect(getImageSrc(emptyObject)).toBe('')
+      expect(getImageSrc({})).toBe('')
+      expect(getImageSrc({ url: 'https://example.com/test.png' })).toBe('')
     })
   })
 
@@ -89,6 +105,14 @@ describe('getImageSrc', () => {
 
       expect(imageElement.src).toBe('https://example.com/immutable.png')
       expect(imageElement.alt).toBe('Original alt')
+    })
+
+    it('should not mutate the passed plain object', () => {
+      const plainObject = { src: 'https://example.com/immutable.jpg', meta: 1 }
+
+      getImageSrc(plainObject)
+
+      expect(plainObject).toEqual({ src: 'https://example.com/immutable.jpg', meta: 1 })
     })
   })
 })

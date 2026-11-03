@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Dùng để lấy nút `HTMLImageElement` một cách an toàn. Nếu truyền vào một chuỗi (URL / Base64 / Blob URL), hàm sẽ tạo thẻ `<img>` mới, tùy chọn gắn các hàm xử lý sự kiện `onload` và `onerror`, sau đó gán chuỗi đó cho thuộc tính `src`. Nếu giá trị truyền vào đã là một đối tượng `HTMLImageElement`, hàm sẽ trả về đối tượng đó ngay lập tức mà không thay đổi.
 
 **Tham số:**
-- `image?: HTMLImageElement | string` — Phần tử hình ảnh hoặc nguồn chuỗi (URL / Base64 / Blob URL).
+- `image?: HTMLImageElement | string | null` — Phần tử hình ảnh, nguồn chuỗi (URL / Base64 / Blob URL) hoặc `null`.
 - `onload?: GetElementImageCallback` (`(image: HTMLImageElement, event?: Event | string) => void`) — Hàm callback tùy chọn khi tải hình ảnh thành công.
 - `onerror?: GetElementImageCallback` (`(image: HTMLImageElement, event?: Event | string) => void`) — Hàm callback tùy chọn khi xảy ra lỗi tải hình ảnh.
 

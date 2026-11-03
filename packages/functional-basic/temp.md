@@ -69,3 +69,7 @@ copyObjectLite
 domQuerySelector
 domQuerySelectorAll
 encodeLiteAttribute
+getElementImage
+resizeImageByMax
+getImageSrc
+getFirst

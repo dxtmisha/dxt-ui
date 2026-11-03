@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getImageSrc`
 
-Dùng để lấy chuỗi nguồn (`src`) một cách an toàn từ đối tượng `HTMLImageElement` hoặc chuỗi (URL / Data URL). Nếu truyền vào một chuỗi, hàm sẽ trả về chính chuỗi đó. Nếu truyền vào một phần tử `<img>`, hàm sẽ trả về giá trị thuộc tính `src`. Nếu không có giá trị, hàm trả về chuỗi rỗng.
+Dùng để lấy chuỗi nguồn (`src`) một cách an toàn từ đối tượng `HTMLImageElement`, đối tượng có thuộc tính `src`, hoặc chuỗi (URL / Data URL). Nếu truyền vào một chuỗi, hàm sẽ trả về chính chuỗi đó. Nếu truyền vào một phần tử `<img>` hoặc đối tượng có `src`, hàm sẽ trả về giá trị chuỗi của `src`. Nếu không có giá trị, hàm trả về chuỗi rỗng.
 
 **Tham số:**
-- `image?: HTMLImageElement | string` — Phần tử hình ảnh, nguồn chuỗi (URL) hoặc `undefined`.
+- `image?: HTMLImageElement | Record<string, unknown> | string | null` — Phần tử hình ảnh, đối tượng có `src`, nguồn chuỗi (URL) hoặc `null` / `undefined`.
 
 **Trả về:**
 `string` — Chuỗi nguồn hình ảnh hoặc chuỗi rỗng `''`.
@@ -24,6 +24,11 @@ const imgElement = document.querySelector('img')
 const src2 = getImageSrc(imgElement)
 console.log(src2) // 'https://example.com/...'
 
-// Truyền vào undefined
+// Truyền vào đối tượng có thuộc tính src
+const src3 = getImageSrc({ src: 'https://example.com/item.png' })
+console.log(src3) // 'https://example.com/item.png'
+
+// Truyền vào null hoặc undefined
 console.log(getImageSrc(undefined)) // ''
+console.log(getImageSrc(null)) // ''
 ```

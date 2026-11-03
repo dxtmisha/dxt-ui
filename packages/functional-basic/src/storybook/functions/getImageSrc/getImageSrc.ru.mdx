@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getImageSrc`
 
-Служит для безопасного извлечения строки источника (`src`) из объекта изображения `HTMLImageElement` или строкового значения (URL / Data URL). Если на вход подана строка, она возвращается без изменений. Если передан элемент `<img>`, возвращается значение его атрибута `src`. При отсутствии значения возвращается пустая строка.
+Служит для безопасного извлечения строки источника (`src`) из объекта изображения `HTMLImageElement`, объекта со свойством `src` или строкового значения (URL / Data URL). Если на вход подана строка, она возвращается без изменений. Если передан элемент `<img>` или объект со свойством `src`, возвращается строковое значение его `src`. При отсутствии значения возвращается пустая строка.
 
 **Параметры:**
-- `image?: HTMLImageElement | string` — Элемент изображения, строковый источник (URL) или `undefined`.
+- `image?: HTMLImageElement | Record<string, unknown> | string | null` — Элемент изображения, объект с `src`, строковый источник (URL) или `null` / `undefined`.
 
 **Возвращает:**
 `string` — Строка источника изображения или пустая строка `''`.
@@ -24,6 +24,11 @@ const imgElement = document.querySelector('img')
 const src2 = getImageSrc(imgElement)
 console.log(src2) // 'https://example.com/...'
 
-// Передаем undefined
+// Передаем объект со свойством src
+const src3 = getImageSrc({ src: 'https://example.com/item.png' })
+console.log(src3) // 'https://example.com/item.png'
+
+// Передаем null или undefined
 console.log(getImageSrc(undefined)) // ''
+console.log(getImageSrc(null)) // ''
 ```

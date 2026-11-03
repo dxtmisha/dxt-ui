@@ -1,11 +1,7 @@
 import { getElementImage } from './getElementImage'
 import { isDomRuntime } from './isDomRuntime'
 
-/**
- * Resize type for image scaling.
- *
- * Тип изменения размера для масштабирования изображения.
- */
+/** Resize type for image scaling / Тип изменения размера для масштабирования изображения */
 export type ResizeImageByMaxType = 'auto' | 'width' | 'height'
 
 /**
@@ -70,43 +66,51 @@ export function resizeImageByMax(
   typeData?: string,
   quality?: number
 ): string | undefined {
+  if (
+    !isDomRuntime()
+    || !(maxSize > 0)
+  ) {
+    return undefined
+  }
+
   const element = getElementImage(image)
 
-  if (
-    isDomRuntime()
-    && maxSize > 0
-    && element
-    && element.naturalWidth > 0
-    && element.naturalHeight > 0
-    && (
-      (element.naturalWidth > maxSize && (type === 'auto' || type === 'width'))
-      || (element.naturalHeight > maxSize && (type === 'auto' || type === 'height'))
-    )
-  ) {
-    const isScaledByWidth = isByWidth(element, type)
-    const canvas = document.createElement('canvas')
-    const context = canvas.getContext('2d')
+  if (element) {
+    const { naturalWidth, naturalHeight } = element
 
-    if (context) {
-      canvas.width = Math.max(
-        1,
-        Math.round(isScaledByWidth ? maxSize : (element.naturalWidth / element.naturalHeight) * maxSize)
+    if (
+      naturalWidth > 0
+      && naturalHeight > 0
+      && (
+        (naturalWidth > maxSize && (type === 'auto' || type === 'width'))
+        || (naturalHeight > maxSize && (type === 'auto' || type === 'height'))
       )
-      canvas.height = Math.max(
-        1,
-        Math.round(isScaledByWidth ? (element.naturalHeight / element.naturalWidth) * maxSize : maxSize)
-      )
+    ) {
+      const isScaledByWidth = isByWidth(element, type)
+      const canvas = document.createElement('canvas')
+      const context = canvas.getContext('2d')
 
-      context.imageSmoothingEnabled = true
-      context.imageSmoothingQuality = 'high'
-      context.drawImage(element, 0, 0, canvas.width, canvas.height)
+      if (context) {
+        canvas.width = Math.max(
+          1,
+          Math.round(isScaledByWidth ? maxSize : (naturalWidth / naturalHeight) * maxSize)
+        )
+        canvas.height = Math.max(
+          1,
+          Math.round(isScaledByWidth ? (naturalHeight / naturalWidth) * maxSize : maxSize)
+        )
 
-      try {
-        return quality !== undefined
-          ? canvas.toDataURL(typeData, quality)
-          : canvas.toDataURL(typeData)
-      } catch {
-        return undefined
+        context.imageSmoothingEnabled = true
+        context.imageSmoothingQuality = 'high'
+        context.drawImage(element, 0, 0, canvas.width, canvas.height)
+
+        try {
+          return quality !== undefined
+            ? canvas.toDataURL(typeData, quality)
+            : canvas.toDataURL(typeData)
+        } catch {
+          return undefined
+        }
       }
     }
   }

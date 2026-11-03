@@ -37,6 +37,7 @@ describe('getFirst', () => {
     })
 
     it('should return undefined for undefined input', () => {
+      expect(getFirst()).toBeUndefined()
       expect(getFirst(undefined)).toBeUndefined()
     })
 
@@ -89,6 +90,20 @@ describe('getFirst', () => {
       // eslint-disable-next-line no-sparse-arrays
       const sparseWithMiddleHole = [1, , 3]
       expect(getFirst(sparseWithMiddleHole)).toBe(1)
+    })
+  })
+
+  describe('Readonly and immutable data (as const)', () => {
+    it('should work with readonly arrays declared with as const', () => {
+      const readonlyList = [10, 20, 30] as const
+      const result = getFirst(readonlyList)
+      expect(result).toBe(10)
+    })
+
+    it('should work with readonly string tuples', () => {
+      const tuple = ['alpha', 'beta', 'gamma'] as const
+      const result = getFirst(tuple)
+      expect(result).toBe('alpha')
     })
   })
 

@@ -230,9 +230,8 @@ describe('getElementImage', () => {
       expect(getElementImage(undefined)).toBeUndefined()
     })
 
-    it('should handle null safely at runtime without throwing', () => {
-      // @ts-expect-error Testing runtime safety with null input
-      expect(getElementImage(null)).toBeNull()
+    it('should return undefined when null is passed', () => {
+      expect(getElementImage(null)).toBeUndefined()
     })
 
     it('should handle whitespace-only string by creating an HTMLImageElement', () => {
@@ -244,11 +243,11 @@ describe('getElementImage', () => {
   })
 
   describe('Type coercion and non-standard data types', () => {
-    it('should not create an image element if non-string falsy values (0, false) are passed at runtime', () => {
+    it('should return undefined if non-string falsy values (0, false) are passed at runtime', () => {
       // @ts-expect-error Testing runtime type guard with number 0
-      expect(getElementImage(0)).toBe(0)
+      expect(getElementImage(0)).toBeUndefined()
       // @ts-expect-error Testing runtime type guard with boolean false
-      expect(getElementImage(false)).toBe(false)
+      expect(getElementImage(false)).toBeUndefined()
     })
   })
 

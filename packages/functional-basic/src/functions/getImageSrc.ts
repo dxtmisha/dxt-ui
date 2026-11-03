@@ -1,21 +1,26 @@
+import { isObject } from './isObject'
 import { isString } from './isString'
 
 /**
- * Returns the source string from an HTMLImageElement or string source.
+ * Returns the source string from an HTMLImageElement, object with src, or string source.
  *
- * Возвращает строку источника из HTMLImageElement или строкового источника.
- * @param image image element or string source / элемент изображения или строковый источник
+ * Возвращает строку источника из HTMLImageElement, объекта с src или строкового источника.
+ * @param image image element, object with src, or string source / элемент изображения, объект с src или строковый источник
  * @returns image source string / строка источника изображения
  */
 export function getImageSrc(
-  image?: HTMLImageElement | string
+  image?: HTMLImageElement | Record<string, unknown> | string | null
 ): string {
   if (isString(image)) {
     return image
   }
 
-  if (image && 'src' in image) {
-    return image.src ?? ''
+  if (
+    isObject(image)
+    && 'src' in image
+    && isString(image.src)
+  ) {
+    return image.src
   }
 
   return ''

@@ -229,6 +229,20 @@ describe('resizeImageByMax', () => {
       expect(resizeImageByMax(mockImage, -500)).toBeUndefined()
     })
 
+    it('should return undefined when maxSize is NaN or -Infinity, and not resize on Infinity', () => {
+      expect(resizeImageByMax(mockImage, Number.NaN)).toBeUndefined()
+      expect(resizeImageByMax(mockImage, Number.NEGATIVE_INFINITY)).toBeUndefined()
+      expect(resizeImageByMax(mockImage, Number.POSITIVE_INFINITY)).toBeUndefined()
+    })
+
+    it('should not create an img element when maxSize is 0 or negative and image is a URL string', () => {
+      const createElementSpy = vi.spyOn(document, 'createElement')
+
+      expect(resizeImageByMax('https://example.com/photo.jpg', 0)).toBeUndefined()
+      expect(resizeImageByMax('https://example.com/photo.jpg', -100)).toBeUndefined()
+      expect(createElementSpy).not.toHaveBeenCalledWith('img')
+    })
+
     it('should handle floating-point maxSize values and round dimensions correctly', () => {
       activeMockCanvas = createMockCanvas()
 
