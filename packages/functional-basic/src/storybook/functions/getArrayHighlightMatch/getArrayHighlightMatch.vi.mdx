@@ -7,7 +7,7 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 Tiện ích để chia một chuỗi thành một mảng các đối tượng để làm nổi bật các kết quả khớp. Mỗi đối tượng chứa `text` và giá trị boolean `isMatch` cho biết đoạn văn bản đó có khớp với truy vấn tìm kiếm hay không. Điều này rất hữu ích cho các UI framework như Vue hoặc React để hiển thị văn bản được làm nổi bật mà không cần dùng `v-html`.
 
 **Tham số:**
-- `value: string` — Chuỗi ban đầu để xử lý.
+- `value?: unknown` — Giá trị hoặc chuỗi ban đầu để xử lý.
 - `search?: string | RegExp` — Chuỗi tìm kiếm (hỗ trợ tìm kiếm nhiều từ phân tách bằng dấu cách) hoặc biểu thức chính quy.
 
 **Trả về:**

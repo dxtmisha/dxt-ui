@@ -10,8 +10,8 @@ import { executeFunction } from './executeFunction'
  * @param args arguments of the function / аргументы функции
  * @returns promise resolving to the execution result / промис, разрешающийся результатом выполнения
  */
-export async function executePromise<T, Args extends unknown[] = unknown[]>(
-  callback: ((...args: Args) => PromiseLike<T> | T) | PromiseLike<T> | T,
+export async function executePromise<T = void, Args extends unknown[] = unknown[]>(
+  callback?: ((...args: Args) => PromiseLike<T> | T) | PromiseLike<T> | T,
   ...args: Args
 ): Promise<Awaited<T>> {
   const data = executeFunction(callback, ...args)

@@ -9,7 +9,7 @@ Một tiện ích mạnh mẽ để thực thi và chờ đợi kết quả từ
 Bên dưới, nó tận dụng `executeFunction` để thực thi các hàm và sau đó đảm bảo rằng nếu kết quả là một `Promise`, nó sẽ được chờ đợi (await) đúng cách.
 
 **Tham số:**
-- `callback: ((...args: Args) => PromiseLike<T> | T) | PromiseLike<T> | T` — Nguồn để thực thi hoặc giải quyết.
+- `callback?: ((...args: Args) => PromiseLike<T> | T) | PromiseLike<T> | T` (tùy chọn) — Nguồn để thực thi hoặc giải quyết.
 - `...args: Args` (tùy chọn) — Các đối số được truyền vào hàm nếu `callback` có thể gọi được.
 
 **Trả về:**

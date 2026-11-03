@@ -269,7 +269,7 @@ describe('getArrayHighlightMatch', () => {
     })
   })
 
-  describe('Multilingual, Unicode, and boundary conditions', () => {
+  describe('Multilingual, Unicode, and permissive value typing (value?: unknown)', () => {
     it('should highlight Cyrillic characters accurately', () => {
       const result = getArrayHighlightMatch('Привет мир, как дела?', 'мир')
       expect(result).toEqual([
@@ -301,12 +301,22 @@ describe('getArrayHighlightMatch', () => {
       ])
     })
 
-    it('should convert numeric value input via toString and highlight match', () => {
-      const result = getArrayHighlightMatch(100500 as unknown as string, '500')
+    it('should convert numeric value input directly without type assertion and highlight match', () => {
+      const result = getArrayHighlightMatch(100500, '500')
       expect(result).toEqual([
         { text: '100', isMatch: false },
         { text: '500', isMatch: true }
       ])
+    })
+
+    it('should safely handle null and undefined value inputs', () => {
+      expect(getArrayHighlightMatch(null, 'test')).toEqual([{ text: '', isMatch: false }])
+      expect(getArrayHighlightMatch(undefined, 'test')).toEqual([{ text: '', isMatch: false }])
+    })
+
+    it('should safely handle boolean values', () => {
+      expect(getArrayHighlightMatch(true, 'true')).toEqual([{ text: 'true', isMatch: true }])
+      expect(getArrayHighlightMatch(false, 'false')).toEqual([{ text: 'false', isMatch: true }])
     })
 
     it('should return unhighlighted text when search exceeds the 128-character limit', () => {

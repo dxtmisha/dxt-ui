@@ -74,4 +74,9 @@ resizeImageByMax
 getImageSrc
 getFirst
 getCurrentDate
+escapeExp
+eventStopPropagation
+executePromise
+frame
+getArrayHighlightMatch
 

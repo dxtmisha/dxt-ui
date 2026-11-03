@@ -16,7 +16,7 @@ Rất hữu ích khi từ khóa tìm kiếm, truy vấn hoặc chuỗi đến t�
 - **Tương thích Isomorphic & SSR**: Hàm thuần túy không có tác dụng phụ, không phụ thuộc vào các đối tượng toàn cục của trình duyệt (`window` hoặc `document`).
 
 **Tham số:**
-- `value?: string | number | null` — Chuỗi hoặc số cần escape.
+- `value?: unknown` — Giá trị cần escape.
 
 **Trả về:**
 `string` — Chuỗi đã được escape tất cả các ký tự đặc biệt, an toàn để dùng trong `RegExp`. Trả về chuỗi rỗng `''` nếu là `null` hoặc `undefined`.

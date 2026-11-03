@@ -247,16 +247,25 @@ describe('escapeExp', () => {
       expect(escapeExp(-Infinity)).toBe('\\-Infinity')
     })
 
-    it('should safely handle boolean values', () => {
-      expect(escapeExp(false as unknown as string)).toBe('false')
-      expect(escapeExp(true as unknown as string)).toBe('true')
+    it('should safely handle boolean values without type assertions', () => {
+      expect(escapeExp(false)).toBe('false')
+      expect(escapeExp(true)).toBe('true')
+    })
+
+    it('should safely handle bigint values', () => {
+      expect(escapeExp(100n)).toBe('100')
+      expect(escapeExp(-50n)).toBe('\\-50')
+    })
+
+    it('should safely handle symbol values', () => {
+      expect(escapeExp(Symbol('status.active'))).toBe('Symbol\\(status\\.active\\)')
     })
 
     it('should safely handle objects with custom toString implementation', () => {
       const customObject = {
         toString: () => 'price: $100.00 (discount -20%)'
       }
-      expect(escapeExp(customObject as unknown as string)).toBe(
+      expect(escapeExp(customObject)).toBe(
         'price: \\$100\\.00 \\(discount \\-20%\\)'
       )
     })

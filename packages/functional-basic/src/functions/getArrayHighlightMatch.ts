@@ -1,4 +1,5 @@
 import { getSeparatingSearchExp } from './getSeparatingSearchExp'
+import { isRegExp } from './isRegExp'
 import { isString } from './isString'
 import { toString } from './toString'
 
@@ -14,7 +15,7 @@ import { type HighlightMatchItem } from '../types/searchTypes'
 const isSearchValid = (
   search?: string | RegExp
 ): search is string | RegExp =>
-  search instanceof RegExp
+  isRegExp(search)
     ? search.source.length > 0
     : isString(search) && search.trim().length > 0
 
@@ -22,22 +23,24 @@ const isSearchValid = (
  * Ensures regular expression has the global flag.
  *
  * Гарантирует наличие глобального флага у регулярного выражения.
- * @param exp regular expression / регулярное выражение
+ * @param expression regular expression / регулярное выражение
  * @returns regular expression with global flag / регулярное выражение с глобальным флагом
  */
-const toGlobalExp = (exp: RegExp): RegExp =>
-  new RegExp(exp.source, exp.flags.includes('g') ? exp.flags : `${exp.flags}g`)
+const toGlobalExp = (expression: RegExp): RegExp =>
+  expression.global
+    ? expression
+    : new RegExp(expression.source, `${expression.flags}g`)
 
 /**
  * Split a string into an array of objects to highlight matches.
  *
  * Разделяет строку на массив объектов для выделения совпадений.
- * @param value initial string / исходная строка
+ * @param value initial value / исходное значение
  * @param search search string or RegExp / строка поиска или регулярное выражение
  * @returns array of objects with text and match flag / массив объектов с текстом и флагом совпадения
  */
 export function getArrayHighlightMatch(
-  value: string,
+  value?: unknown,
   search?: string | RegExp
 ): HighlightMatchItem[] {
   const text = toString(value)
@@ -47,16 +50,16 @@ export function getArrayHighlightMatch(
     && isSearchValid(search)
   ) {
     const result: HighlightMatchItem[] = []
-    const exp = toGlobalExp(getSeparatingSearchExp(search))
+    const expression = toGlobalExp(getSeparatingSearchExp(search))
     let lastIndex = 0
     let match: RegExpExecArray | null
 
-    while ((match = exp.exec(text)) !== null) {
+    while ((match = expression.exec(text)) !== null) {
       const matchIndex = match.index
       const matchLength = match[0].length
 
       if (matchLength === 0) {
-        exp.lastIndex = matchIndex + 1
+        expression.lastIndex = matchIndex + 1
         continue
       }
 
@@ -72,7 +75,7 @@ export function getArrayHighlightMatch(
         isMatch: true
       })
 
-      lastIndex = exp.lastIndex
+      lastIndex = expression.lastIndex
     }
 
     if (lastIndex < text.length) {

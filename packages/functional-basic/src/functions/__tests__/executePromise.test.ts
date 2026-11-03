@@ -269,4 +269,25 @@ describe('executePromise', () => {
       expect(results).toEqual([1, 2, 3, 4])
     })
   })
+
+  describe('Zero-argument invocation and optional parameter ergonomics', () => {
+    it('should resolve to undefined when called with no arguments', async () => {
+      const result = await executePromise()
+      expect(result).toBeUndefined()
+    })
+
+    it('should correctly infer void return type when called without arguments', async () => {
+      const promise: Promise<void> = executePromise()
+      await expect(promise).resolves.toBeUndefined()
+    })
+
+    it('should handle optional callback parameters smoothly', async () => {
+      const executeOptional = async (optionalFn?: () => string) => {
+        return await executePromise(optionalFn)
+      }
+
+      expect(await executeOptional()).toBeUndefined()
+      expect(await executeOptional(() => 'provided')).toBe('provided')
+    })
+  })
 })

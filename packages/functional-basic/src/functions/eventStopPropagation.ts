@@ -1,9 +1,8 @@
 /**
- * Stop listening to events in depth.
+ * Stops event propagation and prevents its default action.
  *
- * Остановить прослушивания события в глубину.
+ * Останавливает дальнейшее всплытие события и отменяет его действие по умолчанию.
  * @param event event instance / экземпляр события
- * @returns void / ничего не возвращает
  */
 export function eventStopPropagation(event: Event): void {
   event.preventDefault()

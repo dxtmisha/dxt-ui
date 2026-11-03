@@ -175,4 +175,30 @@ describe('frame', () => {
       expect(secondLoopCalls).toHaveLength(4)
     })
   })
+
+  describe('Error handling and edge case robustness', () => {
+    it('should propagate errors thrown inside callback without breaking unhandled rejection monitors', () => {
+      vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
+      const errorCallback = () => {
+        throw new Error('Callback animation failure')
+      }
+
+      expect(() => {
+        frame(errorCallback)
+      }).toThrow('Callback animation failure')
+    })
+
+    it('should propagate errors thrown inside next condition function', () => {
+      vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
+      const callback = vi.fn()
+      const errorNext = () => {
+        throw new Error('Next condition evaluation error')
+      }
+
+      expect(() => {
+        frame(callback, errorNext)
+      }).toThrow('Next condition evaluation error')
+      expect(callback).toHaveBeenCalledTimes(1)
+    })
+  })
 })

@@ -16,7 +16,7 @@ Useful when a search term, query, or token comes from user input or an external 
 - **Isomorphic & SSR Safe**: Pure function with zero dependencies on browser globals (`window` or `document`).
 
 **Parameters:**
-- `value?: string | number | null` — The string or number to escape.
+- `value?: unknown` — The value to escape.
 
 **Returns:**
 `string` — A string with all special regex characters escaped, safe to use inside a `RegExp`. Returns an empty string `''` if `null` or `undefined` is provided.

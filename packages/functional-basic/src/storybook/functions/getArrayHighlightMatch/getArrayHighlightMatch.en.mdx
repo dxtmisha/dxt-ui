@@ -7,7 +7,7 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 A utility for splitting a string into an array of objects for highlighting matches. Each object contains the `text` and a boolean `isMatch` indicating if it matches the search query. This is useful for UI frameworks like Vue or React to render highlighted text without using `v-html`.
 
 **Parameters:**
-- `value: string` — The initial string to process.
+- `value?: unknown` — The initial value or string to process.
 - `search?: string | RegExp` — The search string (supports space-separated multi-word search) or regular expression.
 
 **Returns:**
