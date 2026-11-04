@@ -50,7 +50,7 @@ const createHelper = (initialProps: Partial<InputImageProps> = {}) => {
   }) as InputImageProps
 
   const elementItem = new FieldElementInclude(props, ref(undefined))
-  const value = new FieldValueInclude<InputImageItem>(props, elementItem)
+  const value = new FieldValueInclude<InputImageItem>(props, () => elementItem)
   const files = new InputImageFiles(props, value)
 
   return { props, value, files }

@@ -1,13 +1,16 @@
 /**
- * Class for importing plugins.
+ * Class for injecting package style imports into the entry file.
  *
- * Класс для импорта плагинов.
+ * Класс для внедрения импортов стилей пакета в главный входной файл.
  */
 export class PluginImport {
+  /** File content / Содержимое файла */
   protected code: string
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param packageName package name / название пакета
    * @param code file content / содержимое файла
    */
@@ -22,15 +25,17 @@ export class PluginImport {
    * Returns the file content.
    *
    * Возвращает содержимое файла.
+   * @returns transformed file content / преобразованное содержимое файла
    */
   get(): string {
     return this.code
   }
 
   /**
-   * Returns the style connection code.
+   * Prepends the main style import (`style.css`) to the file content.
    *
-   * Возвращает код подключения стиля.
+   * Добавляет импорт основного файла стилей (`style.css`) в начало содержимого файла.
+   * @returns current instance / текущий экземпляр
    */
   importStyle(): this {
     this.makeImport('style.css')
@@ -38,12 +43,12 @@ export class PluginImport {
   }
 
   /**
-   * Creates an import line.
+   * Creates an import line if it is not already present in the code.
    *
-   * Создает строку импорта.
+   * Создает строку импорта, если она еще не присутствует в коде.
    * @param name file name / имя файла
    */
-  protected makeImport(name: string) {
+  protected makeImport(name: string): void {
     const path = `${this.packageName}/${name}`
 
     if (!this.code.includes(path)) {

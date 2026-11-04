@@ -1,18 +1,20 @@
-import type { IconPropsBasic } from '../Icon'
-import type { InputPhoneDialCodePropsBasic, InputPhoneDialCodePropsInclude } from '../InputPhoneDialCode'
+import type { ConstrBind } from '@dxtmisha/functional'
+
 import type { FieldPropsBasic, FieldPropsInclude } from '../Field'
 import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { FieldLabelPropsBasic } from '../FieldLabel'
 import type { FieldMessagePropsBasic } from '../FieldMessage'
+import type { IconPropsBasic } from '../Icon'
+import type { InputPhoneDialCodePropsBasic, InputPhoneDialCodePropsInclude } from '../InputPhoneDialCode'
+import type { MaskPropsBasic } from '../Mask'
 import type { ProgressPropsBasic } from '../Progress'
 
 import type { FieldInputPhoneProps } from '../../types/fieldTypes'
-import type { ConstrBind } from '@dxtmisha/functional'
-import type { MaskPropsBasic } from '../Mask'
 
 /**
- * Type describing token properties for InputPhone /
- * Тип, описывающий свойства токенов для InputPhone
+ * Type describing token properties for InputPhone.
+ *
+ * Тип, описывающий свойства токенов для InputPhone.
  */
 type InputPhonePropsToken = {
   // :type [!] System label / Системная метка
@@ -20,8 +22,9 @@ type InputPhonePropsToken = {
 }
 
 /**
- * Interface describing basic properties of the InputPhone component /
- * Интерфейс, описывающий базовые свойства компонента InputPhone
+ * Interface describing basic properties of the InputPhone component.
+ *
+ * Интерфейс, описывающий базовые свойства компонента InputPhone.
  */
 export type InputPhonePropsBasic<
   InputPhoneDialCode extends InputPhoneDialCodePropsBasic = InputPhoneDialCodePropsBasic,

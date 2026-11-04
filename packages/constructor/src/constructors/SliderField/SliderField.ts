@@ -132,24 +132,28 @@ export class SliderField {
     this.code = new FieldCodeIncludeConstructor(props)
     this.validation = new FieldValidationIncludeConstructor(
       props,
-      this.attributes,
-      this.value,
-      this.change,
-      this.code
+      () => this.attributes,
+      () => this.value,
+      () => this.change,
+      () => this.code
     )
     this.form = new FieldFormIncludeConstructor(
       props,
-      this.value,
-      this.validation
+      () => this.value,
+      () => this.validation
     )
     this.event = new FieldEventIncludeConstructor(
       props,
-      this.change,
-      this.value,
-      this.validation,
+      () => this.change,
+      () => this.value,
+      () => this.validation,
       emits,
-      this.form
+      () => this.form
     )
+
+    // TODO: Temporary workaround until SliderField is migrated to DesignLogicAbstract / Временный костыль до перевода SliderField на DesignLogicAbstract
+    this.value.onMounted?.()
+    this.event.onMounted?.()
     this.sliderEvent = new SliderFieldEventConstructor(
       props,
       this.event,

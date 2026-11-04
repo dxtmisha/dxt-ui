@@ -6,7 +6,7 @@ import { ModelInclude } from '../ModelInclude'
 let mountedCallback: (() => void) | undefined
 
 vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
+  const actual = await vi.importActual('vue') as Record<string, unknown>
   return {
     ...actual,
     onMounted: (fn: () => void) => {
@@ -55,10 +55,20 @@ describe('ModelInclude', () => {
     expect(syncValue.value).toBe('new')
   })
 
-  it('should return empty binds if syncValue is readonly', () => {
-    const readonlyVal = readonly(ref('val'))
-    const modelReadonly = new ModelInclude('user-name', undefined, readonlyVal as any)
+  it('should return empty binds and ignore update() if syncValue is readonly or undefined', () => {
+    const readonlyValue = readonly(ref('val'))
+    const modelReadonly = new ModelInclude('user-name', undefined, readonlyValue as unknown as ReturnType<typeof ref<string>>)
 
     expect(modelReadonly.getBinds()).toEqual({})
+    modelReadonly.update('ignored')
+    expect(readonlyValue.value).toBe('val')
+
+    const modelWithoutSync = new ModelInclude('user-name')
+    expect(modelWithoutSync.getBinds()).toEqual({})
+  })
+
+  it('should safely handle emit() when emits callback is not a function', () => {
+    const model = new ModelInclude('value')
+    expect(() => model.emit('test')).not.toThrow()
   })
 })

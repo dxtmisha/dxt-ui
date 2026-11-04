@@ -136,14 +136,14 @@ export class Input {
     this.text = new TextIncludeConstructor(this.props)
     this.change = new FieldChangeIncludeConstructor(this.props)
     this.visibility = new FieldVisibilityIncludeConstructor()
-    this.type = new FieldTypeIncludeConstructor(this.props, this.visibility)
-    this.pattern = new FieldPatternIncludeConstructor(this.props, this.type)
-    this.inputMode = new FieldInputModeIncludeConstructor(this.props, this.type)
+    this.type = new FieldTypeIncludeConstructor(this.props, () => this.visibility)
+    this.pattern = new FieldPatternIncludeConstructor(this.props, () => this.type)
+    this.inputMode = new FieldInputModeIncludeConstructor(this.props, () => this.type)
     this.attributes = new FieldAttributesIncludeConstructor(
       this.props,
-      this.type,
-      this.pattern,
-      this.inputMode
+      () => this.type,
+      () => this.pattern,
+      () => this.inputMode
     )
 
     this.elementItem = new FieldElementIncludeConstructor(
@@ -153,37 +153,41 @@ export class Input {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.elementItem
+      () => this.elementItem
     )
-    this.arrow = new FieldArrowIncludeConstructor(this.props, this.value, this.type)
+    this.arrow = new FieldArrowIncludeConstructor(
+      this.props,
+      () => this.value,
+      () => this.type
+    )
     this.password = new InputPasswordConstructor(this.props, this.visibility, this.text)
     this.match = new FieldMatchIncludeConstructor(
       this.props,
-      this.elementItem,
-      this.value
+      () => this.elementItem,
+      () => this.value
     )
 
     this.code = new FieldCodeIncludeConstructor(this.props)
     this.validation = new FieldValidationIncludeConstructor(
       this.props,
-      this.attributes,
-      this.value,
-      this.change,
-      this.code,
-      this.match
+      () => this.attributes,
+      () => this.value,
+      () => this.change,
+      () => this.code,
+      () => this.match
     )
     this.form = new FieldFormIncludeConstructor(
       this.props,
-      this.value,
-      this.validation
+      () => this.value,
+      () => this.validation
     )
     this.event = new FieldEventIncludeConstructor(
       this.props,
-      this.change,
-      this.value,
-      this.validation,
+      () => this.change,
+      () => this.value,
+      () => this.validation,
       this.emits,
-      this.form
+      () => this.form
     )
 
     this.field = new FieldIncludeConstructor(
@@ -195,9 +199,9 @@ export class Input {
         maxlength: this.props.maxlength ?? this.props.max
       }),
       undefined,
-      this.value,
-      this.event,
-      this.arrow,
+      () => this.value,
+      () => this.event,
+      () => this.arrow,
       undefined,
       this.password.toggle
     )
@@ -207,10 +211,15 @@ export class Input {
       this.components,
       undefined,
       undefined,
-      this.value,
+      () => this.value,
       '',
-      this.type
+      () => this.type
     )
+
+    // TODO: Temporary workaround until Input is migrated to DesignLogicAbstract / Временный костыль до перевода Input на DesignLogicAbstract
+    this.value.onMounted?.()
+    this.event.onMounted?.()
+    this.mask.onMounted?.()
   }
 
   /** Input binding values and event handlers / Значения привязок ввода и обработчики событий */

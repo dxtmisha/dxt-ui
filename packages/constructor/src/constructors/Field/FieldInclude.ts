@@ -1,5 +1,3 @@
-// ai-none
-
 import {
   type DesignComponents,
   type DesignName,
@@ -47,9 +45,9 @@ export class FieldInclude extends ComponentIncludeAbstract<
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index index identifier / идентификатор индекса
-   * @param value object for working with values / объект для работы со значениями
-   * @param event object for working with events / объект для работы с событиями
-   * @param arrow object for working with arrows / объект для работы со стрелками
+   * @param value function returning object for working with values / функция, возвращающая объект для работы со значениями
+   * @param event function returning object for working with events / функция, возвращающая объект для работы с событиями
+   * @param arrow function returning object for working with arrows / функция, возвращающая объект для работы со стрелками
    * @param onIcon Collection icon click handler / Обработчик клика по иконке коллекции
    * @param onTrailing Trailing icon click handler / Обработчик клика по иконке трейлинга
    * @param onNext Next arrow click handler / Обработчик клика по следующей стрелке
@@ -61,9 +59,9 @@ export class FieldInclude extends ComponentIncludeAbstract<
     components?: DesignComponents<FieldComponentInclude, FieldPropsInclude & FieldArrowProps>,
     extra?: ComponentIncludeExtra<FieldPropsBasic>,
     index?: string,
-    protected readonly value?: FieldValueInclude,
-    protected readonly event?: FieldEventInclude,
-    protected readonly arrow?: FieldArrowInclude,
+    protected readonly value?: () => FieldValueInclude,
+    protected readonly event?: () => FieldEventInclude,
+    protected readonly arrow?: () => FieldArrowInclude,
     protected readonly onIcon?: () => void,
     protected readonly onTrailing?: () => void,
     protected readonly onNext?: () => void,
@@ -86,17 +84,20 @@ export class FieldInclude extends ComponentIncludeAbstract<
    * @returns merged binding attributes / объединенные атрибуты привязки
    */
   protected override getAttrs(attrs?: FieldPropsBasic) {
+    const value = this.value?.()
+    const arrow = this.arrow?.()
+
     return {
       ...super.getAttrs(attrs),
 
-      isValue: this.value?.is(),
-      value: this.value?.item.value,
-      cancelShow: this.value?.boolean,
+      isValue: value?.is(),
+      value: value?.item.value,
+      cancelShow: value?.boolean,
 
-      counter: this.value?.length,
+      counter: value?.length,
 
-      disabledPrevious: this.arrow?.disabledPrevious,
-      disabledNext: this.arrow?.disabledNext
+      disabledPrevious: arrow?.disabledPrevious,
+      disabledNext: arrow?.disabledNext
     }
   }
 
@@ -149,9 +150,9 @@ export class FieldInclude extends ComponentIncludeAbstract<
 
       align: props.align,
 
-      arrowCarousel: this.arrow?.isCarousel() ?? props.arrow === 'carousel',
-      arrowStepper: this.arrow?.isStepper() ?? props.arrow === 'stepper',
-      arrowAlign: this.arrow?.align() ?? props.arrowAlign,
+      arrowCarousel: this.arrow?.().isCarousel() ?? props.arrow === 'carousel',
+      arrowStepper: this.arrow?.().isStepper() ?? props.arrow === 'stepper',
+      arrowAlign: this.arrow?.().align() ?? props.arrowAlign,
 
       isSkeleton: props.isSkeleton,
 
@@ -189,9 +190,11 @@ export class FieldInclude extends ComponentIncludeAbstract<
     event: MouseEvent,
     { type }: EventClickValue
   ) => {
+    const eventItem = this.event?.()
+
     if (
       (event.target as HTMLElement).closest('[data-element="scoreboard"]')
-      && (this.event?.isEnabled() ?? true)
+      && (eventItem?.isEnabled() ?? true)
     ) {
       switch (type) {
         case 'icon':
@@ -203,20 +206,20 @@ export class FieldInclude extends ComponentIncludeAbstract<
           eventStopPropagation(event)
           break
         case 'cancel':
-          this.event?.onClear(event)
+          eventItem?.onClear(event)
           this.resetFocus()
           eventStopPropagation(event)
           break
         case 'next':
           this.onNext?.()
-          this.arrow?.next()
-          this.event?.on(event)
+          this.arrow?.().next()
+          eventItem?.on(event)
           eventStopPropagation(event)
           break
         case 'previous':
           this.onPrevious?.()
-          this.arrow?.previous()
-          this.event?.on(event)
+          this.arrow?.().previous()
+          eventItem?.on(event)
           eventStopPropagation(event)
           break
       }

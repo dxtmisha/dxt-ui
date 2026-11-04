@@ -1,7 +1,7 @@
 import { toNumber } from '@dxtmisha/functional'
 
-import { FieldValueInclude } from './FieldValueInclude'
-import { FieldTypeInclude } from './FieldTypeInclude'
+import type { FieldTypeInclude } from './FieldTypeInclude'
+import type { FieldValueInclude } from './FieldValueInclude'
 
 import type { FieldAllProps, FieldArrowProps } from '../../types/fieldTypes'
 
@@ -16,13 +16,13 @@ export class FieldArrowInclude {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param value object for working with values / объект для работы со значениями
-   * @param type object for working with input type / объект для работы с типом ввода
+   * @param value function returning object for working with values / функция, возвращающая объект для работы со значениями
+   * @param type function returning object for working with input type / функция, возвращающая объект для работы с типом ввода
    */
   constructor(
     protected readonly props: FieldAllProps,
-    protected readonly value: FieldValueInclude,
-    protected readonly type?: FieldTypeInclude
+    protected readonly value: () => FieldValueInclude,
+    protected readonly type?: () => FieldTypeInclude
   ) {
   }
 
@@ -43,7 +43,7 @@ export class FieldArrowInclude {
    * @returns true if previous is disabled / true, если кнопка предыдущего отключена
    */
   get disabledPrevious(): boolean {
-    return !this.isPrevious(this.value.number)
+    return !this.isPrevious(this.value().number)
   }
 
   /**
@@ -53,7 +53,7 @@ export class FieldArrowInclude {
    * @returns true if next is disabled / true, если кнопка следующего отключена
    */
   get disabledNext(): boolean {
-    return !this.isNext(this.value.number)
+    return !this.isNext(this.value().number)
   }
 
   /**
@@ -108,15 +108,18 @@ export class FieldArrowInclude {
    */
   get(): FieldArrowProps['arrow'] | undefined {
     switch (this.props.arrow) {
-      case 'auto':
+      case 'auto': {
+        const type = this.type?.().get()
+
         if (
-          this.type?.get() === 'number'
-          || this.type?.get() === 'number-format'
+          type === 'number'
+          || type === 'number-format'
         ) {
           return 'stepper'
         }
 
         break
+      }
     }
 
     return this.props.arrow
@@ -139,10 +142,10 @@ export class FieldArrowInclude {
    * @returns current instance / текущий экземпляр
    */
   previous(): this {
-    const value = this.value.number - this.step
+    const value = this.value().number - this.step
 
     if (this.isPrevious(value)) {
-      this.value.set(value.toString())
+      this.value().set(value.toString())
     } else {
       this.toMin()
     }
@@ -157,10 +160,10 @@ export class FieldArrowInclude {
    * @returns current instance / текущий экземпляр
    */
   next(): this {
-    const value = this.value.number + this.step
+    const value = this.value().number + this.step
 
     if (this.isNext(value)) {
-      this.value.set(value.toString())
+      this.value().set(value.toString())
     } else {
       this.toMax()
     }
@@ -179,7 +182,7 @@ export class FieldArrowInclude {
       const min = this.min
 
       if (min !== undefined) {
-        this.value.set(min.toString())
+        this.value().set(min.toString())
       }
     }
 
@@ -197,7 +200,7 @@ export class FieldArrowInclude {
       const max = this.max
 
       if (max !== undefined) {
-        this.value.set(max.toString())
+        this.value().set(max.toString())
       }
     }
 
@@ -211,7 +214,7 @@ export class FieldArrowInclude {
 
   /** Minimum value / Минимальное значение */
   protected get min(): number | undefined {
-    return toNumber(this.props.min) ?? undefined
+    return toNumber(this.props.min)
   }
 
   /** Maximum value / Максимальное значение */

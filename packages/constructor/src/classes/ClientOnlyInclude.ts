@@ -8,10 +8,12 @@ import type { ClientOnlyPropsInclude } from '../types/clientOnlyTypes'
  */
 export class ClientOnlyInclude {
   /** Check if the component is mounted / Проверка, смонтирован ли компонент */
-  isMounted = ref<boolean>(false)
+  readonly isMounted = ref<boolean>(false)
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data / входные данные
    */
   constructor(

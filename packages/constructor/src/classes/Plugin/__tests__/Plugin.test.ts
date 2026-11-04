@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest'
+import type { ConfigEnv, Rolldown, UserConfig } from 'vite'
 import { Plugin } from '../Plugin'
+
+type TransformFn = (code: string, id: string) => Rolldown.TransformResult
 
 describe('Plugin', () => {
   const componentsList = [
@@ -18,7 +21,9 @@ describe('Plugin', () => {
     expect(config.transform).toBeDefined()
 
     if (typeof config.apply === 'function') {
-      const applyResult = config.apply({} as any, { mode: 'development', command: 'serve' })
+      const userConfig: UserConfig = {}
+      const env: ConfigEnv = { mode: 'development', command: 'serve' }
+      const applyResult = config.apply(userConfig, env)
       expect(applyResult).toBe(true)
     }
   })
@@ -27,17 +32,22 @@ describe('Plugin', () => {
     const plugin = new Plugin('DesignA', 'pkg-a', componentsReg, styleVarsReg, componentsList)
     const config = plugin.init()
 
-    if (config.transform && typeof config.transform === 'function') {
+    if (typeof config.transform === 'function') {
+      const transform = config.transform as TransformFn
       const code = 'const x = 1;'
-      const result = config.transform.call({} as any, code, '/project/src/main.ts') as any
+      const result = transform(code, '/project/src/main.ts')
 
       expect(result).toBeDefined()
-      expect(result.code).toBe('import \'pkg-a/style.css\';const x = 1;')
-      expect(result.map).toBeDefined()
-      expect(result.map.version).toBe(3)
-      expect(result.map.sources).toEqual(['/project/src/main.ts'])
+      if (result && typeof result === 'object' && 'code' in result) {
+        expect(result.code).toBe('import \'pkg-a/style.css\';const x = 1;')
+        expect(result.map).toBeDefined()
+        if (result.map && typeof result.map === 'object' && 'version' in result.map) {
+          expect(result.map.version).toBe(3)
+          expect(result.map.sources).toEqual(['/project/src/main.ts'])
+        }
+      }
 
-      const secondResult = config.transform.call({} as any, code, '/project/src/other.ts') as any
+      const secondResult = transform(code, '/project/src/other.ts')
       expect(secondResult).toBeNull()
     }
   })
@@ -46,15 +56,68 @@ describe('Plugin', () => {
     const plugin = new Plugin('DesignA', 'pkg-a', componentsReg, styleVarsReg, componentsList)
     const config = plugin.init()
 
-    if (config.transform && typeof config.transform === 'function') {
+    if (typeof config.transform === 'function') {
+      const transform = config.transform as TransformFn
       const vueCode = '<template><my-button /></template>\n<script setup>\nconst a = 1;\n</script>'
-      const result = config.transform.call({} as any, vueCode, '/project/src/App.vue') as any
+      const result = transform(vueCode, '/project/src/App.vue')
 
       expect(result).not.toBeNull()
-      expect(result.code).toContain('import { MyButton } from\'pkg-a/MyButton\';')
-      expect(result.map).toBeDefined()
-      expect(result.map.version).toBe(3)
-      expect(result.map.sources).toEqual(['/project/src/App.vue'])
+      if (result && typeof result === 'object' && 'code' in result) {
+        expect(result.code).toContain('import { MyButton } from\'pkg-a/MyButton\';')
+        expect(result.map).toBeDefined()
+        if (result.map && typeof result.map === 'object' && 'version' in result.map) {
+          expect(result.map.version).toBe(3)
+          expect(result.map.sources).toEqual(['/project/src/App.vue'])
+        }
+      }
+    }
+  })
+
+  it('should respect plugin options disabling map, styleMain, component, and style', () => {
+    const plugin = new Plugin(
+      'DesignA',
+      'pkg-a',
+      componentsReg,
+      styleVarsReg,
+      componentsList,
+      'custom-plugin',
+      {
+        styleMain: false,
+        component: false,
+        style: false,
+        map: false
+      }
+    )
+    const config = plugin.init()
+
+    if (typeof config.transform === 'function') {
+      const transform = config.transform as TransformFn
+      expect(transform('const x = 1;', '/project/src/main.ts')).toBeNull()
+      expect(transform('<template><my-button /></template>', '/project/src/App.vue')).toBeNull()
+      expect(transform('.btn { color: var(--sys-color-primary); }', '/project/src/style.scss')).toBeNull()
+    }
+  })
+
+  it('should return null map when map option is false', () => {
+    const plugin = new Plugin(
+      'DesignA',
+      'pkg-a',
+      componentsReg,
+      styleVarsReg,
+      componentsList,
+      'custom-plugin',
+      { map: false }
+    )
+    const config = plugin.init()
+
+    if (typeof config.transform === 'function') {
+      const transform = config.transform as TransformFn
+      const result = transform('const x = 1;', '/project/src/main.ts')
+
+      expect(result).not.toBeNull()
+      if (result && typeof result === 'object' && 'map' in result) {
+        expect(result.map).toBeNull()
+      }
     }
   })
 })

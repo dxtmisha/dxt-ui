@@ -1,6 +1,7 @@
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import {
   anyToString,
+  DesignLifecycleAbstract,
   getLength,
   getRef,
   isFilled,
@@ -11,9 +12,9 @@ import {
   toNumber
 } from '@dxtmisha/functional'
 
-import { FieldElementInclude } from './FieldElementInclude'
+import type { FieldElementInclude } from './FieldElementInclude'
 
-import type { FieldValueProps } from '../../types/fieldTypes'
+import type { FieldBasicExpose, FieldValueProps } from '../../types/fieldTypes'
 
 /**
  * Class for working with input values.
@@ -24,7 +25,7 @@ import type { FieldValueProps } from '../../types/fieldTypes'
  * Управляет реактивным состоянием значения ввода, отслеживает полноту значения,
  * обрабатывает преобразования в другие типы и координирует обновления между Vue props и внутренним состоянием.
  */
-export class FieldValueInclude<Value = any> {
+export class FieldValueInclude<Value = any> extends DesignLifecycleAbstract {
   /** Current value / Текущее значение */
   readonly item = ref<Value>()
 
@@ -39,26 +40,20 @@ export class FieldValueInclude<Value = any> {
    *
    * Конструктор для FieldValueInclude.
    * @param props input data / входные данные
-   * @param element object for working with the input element / объект для работы с элементом ввода
+   * @param element function returning object for working with the input element / функция, возвращающая объект для работы с элементом ввода
    * @param original original values / оригинальные значения
    * @param isMultiple flag enabling multiple selection handling in setValues / флаг включения множественного выбора в setValues
    * @param isValueVariant flag enabling valueVariant support / флаг включения поддержки valueVariant
    */
   constructor(
     protected readonly props: FieldValueProps<Value> & { valueVariant?: NumberOrStringOrBoolean },
-    protected readonly element?: FieldElementInclude,
+    protected readonly element?: () => FieldElementInclude,
     protected readonly original?: RefOrNormal<Value>,
     protected readonly isMultiple: boolean = true,
     protected readonly isValueVariant: boolean = false
   ) {
+    super()
     this.item.value = this.getOriginal()
-
-    onMounted(() => {
-      watch([
-        () => props.value,
-        () => props.modelValue
-      ], this.update)
-    })
   }
 
   /** Returns the current value if isFull is true / Возвращает текущее значение, если isFull истинно */
@@ -161,31 +156,6 @@ export class FieldValueInclude<Value = any> {
   }
 
   /**
-   * Returns value properties for expose.
-   *
-   * Возвращает свойства значения для экспонирования.
-   * @returns value expose object / объект экспонирования значения
-   */
-  readonly expose = () => {
-    return {
-      value: this.item,
-      getValue: () => {
-        return this.itemByFull.value
-      },
-      setValue: (value: any) => {
-        if (this.isValueVariant) {
-          this.setValueByRadio(value)
-        } else {
-          this.set(value)
-        }
-      },
-      clear: () => {
-        this.clear()
-      }
-    }
-  }
-
-  /**
    * Changes the value.
    *
    * Изменяет значение.
@@ -203,14 +173,14 @@ export class FieldValueInclude<Value = any> {
         }
       ) as Value
 
-      const element = this.element?.getElement()
+      const element = this.element?.().getElement()
 
       if (
         element
         && element.value
         && 'setValue' in element.value
       ) {
-        element.value?.setValue(this.item.value)
+        element.value.setValue(this.item.value)
       }
     }
 
@@ -316,7 +286,7 @@ export class FieldValueInclude<Value = any> {
    * Устанавливает значение isFull.
    * @param isFull isFull value / значение isFull
    */
-  setFull(isFull: boolean) {
+  setFull(isFull: boolean): void {
     this.isFull.value = isFull
   }
 
@@ -326,7 +296,7 @@ export class FieldValueInclude<Value = any> {
    * Устанавливает значение hasEdit.
    * @param hasEdit hasEdit value / значение hasEdit
    */
-  setHasEdit(hasEdit: boolean) {
+  setHasEdit(hasEdit: boolean): void {
     this.hasEdit.value = hasEdit
   }
 
@@ -349,12 +319,45 @@ export class FieldValueInclude<Value = any> {
    */
   clear(): this {
     this.item.value = getRef(this.original)
-    this.element?.clear()
+    this.element?.().clear()
 
     this.hasEdit.value = false
     this.isFull.value = true
 
     return this
+  }
+
+  /**
+   * Returns value properties for expose.
+   *
+   * Возвращает свойства значения для экспонирования.
+   * @returns value expose object / объект экспонирования значения
+   */
+  readonly expose = (): Pick<FieldBasicExpose<Value | undefined>, 'value' | 'getValue' | 'setValue' | 'clear'> => {
+    return {
+      value: this.item,
+      getValue: () => {
+        return this.itemByFull.value
+      },
+      setValue: (value: Value | undefined) => {
+        if (this.isValueVariant) {
+          this.setValueByRadio(value)
+        } else {
+          this.set(value)
+        }
+      },
+      clear: () => {
+        this.clear()
+      }
+    }
+  }
+
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    watch([
+      () => this.props.value,
+      () => this.props.modelValue
+    ], this.update)
   }
 
   /**
@@ -382,6 +385,17 @@ export class FieldValueInclude<Value = any> {
   }
 
   /**
+   * Checks if the value is being edited.
+   *
+   * Проверяет, редактируется ли значение.
+   * @param value value to check / значение для проверки
+   * @returns true if value is edited / true, если значение редактируется
+   */
+  protected isEdit(value?: Value): boolean {
+    return value !== undefined && anyToString(value) !== this.string
+  }
+
+  /**
    * Returns the original value.
    *
    * Возвращает оригинальное значение.
@@ -403,16 +417,5 @@ export class FieldValueInclude<Value = any> {
     ) {
       this.setToOriginal()
     }
-  }
-
-  /**
-   * Checks if the value is being edited.
-   *
-   * Проверяет, редактируется ли значение.
-   * @param value value to check / значение для проверки
-   * @returns true if value is edited / true, если значение редактируется
-   */
-  protected isEdit(value?: Value): boolean {
-    return value !== undefined && anyToString(value) !== this.string
   }
 }

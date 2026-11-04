@@ -1,4 +1,6 @@
-import { type Ref } from 'vue'
+import { isDomRuntime } from '@dxtmisha/functional'
+
+import type { Ref } from 'vue'
 import type { FieldAllProps, FieldElementInput } from '../../types/fieldTypes'
 
 /**
@@ -51,40 +53,9 @@ export class FieldElementInclude {
   }
 
   /**
-   * Search for an element by its name inside a group or by selector.
-   *
-   * Поиск элемента по его названию внутри группы или по селектору.
-   * @param nameSelectors element name or selector / название элемента или селектор
-   * @returns input element or undefined / элемент ввода или undefined
-   */
-  findByName(nameSelectors: string | HTMLInputElement): HTMLInputElement | undefined {
-    if (nameSelectors instanceof Element) {
-      return nameSelectors
-    }
-
-    const form = this.get()?.form
-
-    if (form) {
-      const item = form.querySelector<HTMLInputElement>(`[name="${nameSelectors}"]`)
-
-      if (item) {
-        return item
-      }
-    }
-
-    const globalItem = document.querySelector<HTMLInputElement>(nameSelectors)
-
-    if (globalItem) {
-      return globalItem
-    }
-
-    return undefined
-  }
-
-  /**
    * Clear all values to the original ones.
    *
-   * Очисти все значения до оригинальных.
+   * Очистить все значения до оригинальных.
    * @returns current instance / текущий экземпляр
    */
   clear(): this {
@@ -98,5 +69,77 @@ export class FieldElementInclude {
     }
 
     return this
+  }
+
+  /**
+   * Search for an element by its name inside a group or by selector.
+   *
+   * Поиск элемента по его названию внутри группы или по селектору.
+   * @param nameSelectors element name or selector / название элемента или селектор
+   * @param isGlobal whether to search globally in the document / искать ли глобально в документе
+   * @returns input element or undefined / элемент ввода или undefined
+   */
+  findByName(
+    nameSelectors: string | HTMLInputElement,
+    isGlobal: boolean = true
+  ): HTMLInputElement | undefined {
+    if (
+      !isDomRuntime()
+      || !nameSelectors
+    ) {
+      return undefined
+    }
+
+    if (nameSelectors instanceof Element) {
+      return nameSelectors
+    }
+
+    const item = this.findByForm(nameSelectors)
+
+    if (item) {
+      return item
+    }
+
+    if (isGlobal) {
+      return this.querySelector(nameSelectors)
+    }
+
+    return undefined
+  }
+
+  /**
+   * Searches for an input element by name within the parent form.
+   *
+   * Ищет элемент ввода по имени внутри родительской формы.
+   * @param nameSelectors element name / имя элемента
+   * @returns input element or undefined / элемент ввода или undefined
+   */
+  protected findByForm(nameSelectors: string): HTMLInputElement | undefined {
+    const form = this.get()?.form
+
+    if (form) {
+      return this.querySelector(`[name="${nameSelectors}"]`, form)
+    }
+
+    return undefined
+  }
+
+  /**
+   * Searches for an input element by CSS selector within the given parent node.
+   *
+   * Ищет элемент ввода по CSS-селектору внутри указанного родительского узла.
+   * @param selectors CSS selector / CSS-селектор
+   * @param element parent node to search within / родительский узел для поиска
+   * @returns input element or undefined / элемент ввода или undefined
+   */
+  protected querySelector(
+    selectors: string,
+    element: ParentNode = document
+  ): HTMLInputElement | undefined {
+    try {
+      return element.querySelector<HTMLInputElement>(selectors) ?? undefined
+    } catch {
+      return undefined
+    }
   }
 }

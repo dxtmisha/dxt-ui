@@ -1,11 +1,16 @@
-// ai-none
-
 import { computed, ref, watch } from 'vue'
-import { Geo, GeoPhone, type GeoPhoneMap } from '@dxtmisha/functional'
+import {
+  type ConstrItem,
+  DesignLifecycleAbstract,
+  Geo,
+  GeoPhone,
+  type GeoPhoneMap
+} from '@dxtmisha/functional'
 
-import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
+import type { EventClickValue } from '../../types/eventClickTypes'
 import type { InputPhonePropsBasic } from './props'
 
 /**
@@ -15,7 +20,7 @@ import type { InputPhonePropsBasic } from './props'
  * Менеджер данных для компонента InputPhone.
  * Отвечает за обработку значений телефона, определение соответствующей страны и нормализацию значений телефона.
  */
-export class InputPhoneData {
+export class InputPhoneData extends DesignLifecycleAbstract {
   /** Selected country code ref / Ссылка на выбранный код страны */
   readonly country = ref<string>(Geo.getCountry())
 
@@ -24,20 +29,28 @@ export class InputPhoneData {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param value field value / значение поля
-   * @param event field event / событие поля
+   * @param value function returning field value manager / функция, возвращающая менеджер значения поля
+   * @param event function returning field event manager / функция, возвращающая менеджер событий поля
    */
   constructor(
     protected readonly props: InputPhonePropsBasic,
-    protected readonly value?: FieldValueInclude,
-    protected readonly event?: FieldEventInclude
+    protected readonly value: () => FieldValueInclude,
+    protected readonly event?: () => FieldEventInclude
   ) {
+    super()
+
     if (this.props.countryDefault) {
       this.country.value = this.props.countryDefault
     }
+  }
 
-    this.value?.set(this.toPhone(this.country.value))
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    if (!this.value().boolean) {
+      this.value().set(this.toPhone(this.country.value))
+    }
 
+    this.updateCountry()
     watch(this.valueItem, () => this.updateCountry())
   }
 
@@ -48,11 +61,13 @@ export class InputPhoneData {
 
   /** Computed phone map based on current phone number / Вычисляемая карта телефона на основе текущего телефонного номера */
   readonly valueItem = computed<GeoPhoneMap | undefined>(() => {
+    const currentValue = this.value().item.value
+
     if (
       !this.props.countryBlock
-      && this.value?.item.value
+      && currentValue
     ) {
-      return GeoPhone.getByPhone(this.value.item.value)?.item
+      return GeoPhone.getByPhone(currentValue)?.item
     }
 
     return undefined
@@ -72,9 +87,9 @@ export class InputPhoneData {
    */
   readonly onInput = (
     event: InputEvent,
-    data: Record<string, any>
-  ) => {
-    this.event?.onInput(event, {
+    data: ConstrItem
+  ): void => {
+    this.event?.().onInput(event, {
       ...data,
       value: this.toPhone(data?.value)
     })
@@ -84,15 +99,16 @@ export class InputPhoneData {
    * Handler for country code change event.
    *
    * Обработчик события изменения кода страны.
-   * @param _ input event / событие ввода
+   * @param event click or input event / событие клика или ввода
    * @param data event data / данные события
    */
   readonly onCountry = (
-    _: InputEvent,
-    data?: Record<string, any>
-  ) => {
+    event: MouseEvent | InputEvent,
+    data?: EventClickValue
+  ): void => {
+    void event
     this.country.value = data?.value
-    this.event?.onValue(this.toPhone(data?.value))
+    this.event?.().onValue(this.toPhone(data?.value))
   }
 
   /**

@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
+import { computed } from 'vue'
 import { FieldChangeInclude } from '../FieldChangeInclude'
 
 describe('FieldChangeInclude', () => {
@@ -14,7 +15,7 @@ describe('FieldChangeInclude', () => {
     expect(changeEmpty.is()).toBe(false)
   })
 
-  it('should allow setting value manually', () => {
+  it('should allow setting value manually via set()', () => {
     const change = new FieldChangeInclude({})
     expect(change.is()).toBe(false)
 
@@ -25,11 +26,16 @@ describe('FieldChangeInclude', () => {
     expect(change.is()).toBe(false)
   })
 
-  it('should force mark as changed via to()', () => {
+  it('should force mark as changed via to() and remain idempotent when already true', () => {
     const change = new FieldChangeInclude({})
-    expect(change.is()).toBe(false)
+    const isChanged = computed(() => change.is())
+
+    expect(isChanged.value).toBe(false)
 
     change.to()
-    expect(change.is()).toBe(true)
+    expect(isChanged.value).toBe(true)
+
+    change.to()
+    expect(isChanged.value).toBe(true)
   })
 })

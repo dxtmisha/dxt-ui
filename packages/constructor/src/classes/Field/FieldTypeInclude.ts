@@ -1,4 +1,4 @@
-import { FieldVisibilityInclude } from './FieldVisibilityInclude'
+import type { FieldVisibilityInclude } from './FieldVisibilityInclude'
 
 import type { FieldAllProps, FieldType } from '../../types/fieldTypes'
 
@@ -13,11 +13,11 @@ export class FieldTypeInclude {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param visibility object for working with visualization / объект для работы с визуализацией
+   * @param visibility function returning object for working with visualization / функция, возвращающая объект для работы с визуализацией
    */
   constructor(
     protected readonly props: FieldAllProps,
-    protected readonly visibility?: FieldVisibilityInclude
+    protected readonly visibility?: () => FieldVisibilityInclude
   ) {
   }
 
@@ -32,7 +32,7 @@ export class FieldTypeInclude {
 
     if (
       type === 'password'
-      && this.visibility?.item.value
+      && this.visibility?.().item.value
     ) {
       return 'text'
     }

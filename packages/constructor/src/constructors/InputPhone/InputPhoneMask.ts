@@ -1,11 +1,9 @@
-// ai-none
-
 import { type ConstrBind } from '@dxtmisha/functional'
 
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
-import type { InputPhoneData } from './InputPhoneData'
 import type { MaskPropsInclude } from '../Mask'
+import type { InputPhoneData } from './InputPhoneData'
 
 import type { InputPhonePropsBasic } from './props'
 
@@ -37,13 +35,13 @@ export class InputPhoneMask {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param data data manager / менеджер данных
-   * @param value field value / значение поля
+   * @param data function returning data manager / функция, возвращающая менеджер данных
+   * @param value function returning field value manager / функция, возвращающая менеджер значения поля
    */
   constructor(
     protected readonly props: InputPhonePropsBasic,
-    protected readonly data: InputPhoneData,
-    protected readonly value?: FieldValueInclude
+    protected readonly data: () => InputPhoneData,
+    protected readonly value?: () => FieldValueInclude
   ) { }
 
   /**
@@ -53,7 +51,7 @@ export class InputPhoneMask {
    * @returns mask pattern or array of patterns / шаблон маски или массив шаблонов
    */
   get mask(): string | string[] {
-    const masks = this.data.item.value?.[this.props.countryBlock ? 'mask' : 'maskFull']
+    const masks = this.data().item.value?.[this.props.countryBlock ? 'mask' : 'maskFull']
 
     if (
       masks
@@ -76,7 +74,7 @@ export class InputPhoneMask {
 
     return {
       modelValue: this.props.modelValue,
-      value: this.value?.item.value ?? this.data.valueDefault.value,
+      value: this.value?.().item.value ?? this.data().valueDefault.value,
 
       mask: {
         mask,

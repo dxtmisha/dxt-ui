@@ -2,6 +2,7 @@ import { computed, ref, type VNode } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
+  DesignLifecycleAbstract,
   type DesignName,
   executeFunction,
   executeFunctionRef,
@@ -46,7 +47,7 @@ export abstract class ComponentIncludeAbstract<
   ComponentExpose extends Record<string, any> = Record<string, any>,
   ComponentSlots extends Record<string, any> = Record<string, any>,
   PartialPropsExtra extends Record<string, any> = Partial<ConstrBind<PropsExtra>>
-> {
+> extends DesignLifecycleAbstract {
   /** Reference to the sub-component element / Ссылка на элемент субкомпонента */
   protected readonly element = ref<ConstrBind<ComponentExpose> | undefined>()
   /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
@@ -77,6 +78,7 @@ export abstract class ComponentIncludeAbstract<
     protected readonly extra?: ComponentIncludeExtra<PropsExtra>,
     protected readonly index?: string
   ) {
+    super()
   }
 
   /** Computed binding object for the component / Вычисляемый объект привязки для компонента */

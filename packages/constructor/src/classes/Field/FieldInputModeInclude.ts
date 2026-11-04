@@ -13,11 +13,11 @@ export class FieldInputModeInclude {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param type object for working with input type / объект для работы с типом ввода
+   * @param type function returning object for working with input type / функция, возвращающая объект для работы с типом ввода
    */
   constructor(
     protected readonly props: FieldAllProps,
-    protected readonly type?: FieldTypeInclude
+    protected readonly type?: () => FieldTypeInclude
   ) {
   }
 
@@ -32,7 +32,7 @@ export class FieldInputModeInclude {
       return this.props.inputMode
     }
 
-    switch (this.type?.item) {
+    switch (this.type?.().item) {
       case 'number':
       case 'datetime':
       case 'date':
@@ -63,7 +63,7 @@ export class FieldInputModeInclude {
       return this.props.autocomplete
     }
 
-    switch (this.type?.item) {
+    switch (this.type?.().item) {
       case 'search':
         return 'off'
       case 'email':

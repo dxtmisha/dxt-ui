@@ -1,6 +1,5 @@
 import { h, type VNode } from 'vue'
 import {
-  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
@@ -82,8 +81,9 @@ export class InputPhoneDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.value.expose(),
-      ...this.item.validation.expose()
+      ...this.item.i('value').expose(),
+      checkValidity: () => this.item.i('validation').checkValidity(),
+      getValidationMessage: () => this.item.i('validation').message
     } as EXPOSE
   }
 
@@ -120,7 +120,7 @@ export class InputPhoneDesign<
    * @returns array of VNodes / массив VNode
    */
   protected initRender(): VNode[] {
-    return this.item.field.render(
+    return this.item.i('field').render(
       {
         default: this.renderMask,
         leading: this.renderDialCode
@@ -128,7 +128,7 @@ export class InputPhoneDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
-        validationMessage: this.item.validation.message
+        validationMessage: this.item.i('validation').message
       }
     )
   }
@@ -146,27 +146,27 @@ export class InputPhoneDesign<
       || this.props.readonly
     ) {
       return [h('input', {
-        value: this.item.value.item.value,
+        value: this.item.i('value').item.value,
         disabled: this.props.disabled,
         readonly: this.props.readonly,
         class: input.className
       })]
     }
 
-    return this.item.mask.render(undefined, {
+    return this.item.i('mask').render(undefined, {
       ref: this.element,
       class: input.className,
       align: this.props.align,
-      inputAttrs: toBinds<ConstrBind<any>>(
-        this.item.attributes.listForInput,
+      inputAttrs: toBinds(
+        this.item.i('attributes').listForInput,
         input.binds,
         {
           inputMode: 'tel'
         },
         this.props.inputAttrs
-      ),
-      onBlur: this.item.event.onBlur,
-      onInput: this.item.event.onInput
+      ) as Partial<HTMLInputElement>,
+      onBlur: this.item.i('event').onBlur,
+      onInput: this.item.i('event').onInput
     })
   }
 
@@ -181,6 +181,6 @@ export class InputPhoneDesign<
       return []
     }
 
-    return this.item.dialCode.render()
+    return this.item.i('dialCode').render()
   }
 }

@@ -1,8 +1,8 @@
 import { inject } from 'vue'
 import { executeFunction, getElementId, type FunctionOr } from '@dxtmisha/functional'
 
-import { FieldValidationInclude } from './FieldValidationInclude'
-import { FieldValueInclude } from './FieldValueInclude'
+import type { FieldValidationInclude } from './FieldValidationInclude'
+import type { FieldValueInclude } from './FieldValueInclude'
 
 import {
   FORM_NAME_ELEMENT,
@@ -17,22 +17,36 @@ import type { FieldAllProps, FieldValidationItem } from '../../types/fieldTypes'
  * Класс для работы с контекстом элемента формы.
  */
 export class FieldFormInclude {
+  /**
+   * Checks whether the form integration is active based on the name property.
+   *
+   * Проверяет, активна ли интеграция с формой на основе свойства name.
+   * @param props input data / входные данные
+   * @returns true if name is defined / true, если имя задано
+   */
+  static is(props?: FieldAllProps): boolean {
+    return Boolean(props?.name)
+  }
+
   /** Unique element identifier / Уникальный идентификатор элемента */
   readonly id: string = getElementId()
 
-  protected context: FormElementRegistration | undefined
+  /** Form element registration context / Контекст регистрации элемента формы */
+  protected readonly context: FormElementRegistration | undefined
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data / входные данные
-   * @param value object for working with values / объект для работы со значениями
-   * @param validation object for working with validity / объект для работы с валидностью
+   * @param value function returning object for working with values / функция, возвращающая объект для работы со значениями
+   * @param validation function returning object for working with validity / функция, возвращающая объект для работы с валидностью
    * @param extra additional parameters or function returning parameters / дополнительные параметры или функция, возвращающая параметры
    */
   constructor(
     protected readonly props: FieldAllProps,
-    protected readonly value: FieldValueInclude,
-    protected readonly validation: FieldValidationInclude,
+    protected readonly value: () => FieldValueInclude,
+    protected readonly validation: () => FieldValidationInclude,
     protected readonly extra?: FunctionOr<Record<string, any>>
   ) {
     this.context = inject<FormElementRegistration | undefined>(FORM_NAME_ELEMENT, undefined)
@@ -58,9 +72,9 @@ export class FieldFormInclude {
     return {
       id: this.id,
       name: this.props.name,
-      data: this.validation.item.value,
-      ...this.value.expose(),
-      ...this.validation.expose(),
+      data: this.validation().item.value,
+      ...this.value().expose(),
+      ...this.validation().expose(),
       ...executeFunction(this.extra)
     }
   }

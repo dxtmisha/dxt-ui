@@ -26,9 +26,9 @@ describe('FieldInclude', () => {
       undefined,
       undefined,
       undefined,
-      mockValue,
+      () => mockValue,
       undefined,
-      mockArrow
+      () => mockArrow
     )
 
     const attrs = (fieldInclude as any).getAttrs()
@@ -71,8 +71,8 @@ describe('FieldInclude', () => {
       undefined,
       undefined,
       undefined,
-      mockEvent,
-      mockArrow,
+      () => mockEvent,
+      () => mockArrow,
       onIcon,
       onTrailing,
       onNext,

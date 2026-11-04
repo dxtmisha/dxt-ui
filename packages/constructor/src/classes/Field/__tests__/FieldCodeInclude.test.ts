@@ -10,9 +10,17 @@ describe('FieldCodeInclude', () => {
     expect(codeInclude.get(mockState)).toBe('Global custom error')
   })
 
-  it('should return undefined if ValidityState is valid', () => {
+  it('should return undefined if ValidityState is valid or missing', () => {
     const codeInclude = new FieldCodeInclude({ validationCode: 'Error' })
     const mockState = { valid: true } as ValidityState
+
+    expect(codeInclude.get(mockState)).toBeUndefined()
+    expect(codeInclude.get(undefined)).toBeUndefined()
+  })
+
+  it('should return undefined if validationCode is not configured in props', () => {
+    const codeInclude = new FieldCodeInclude({})
+    const mockState = { valid: false, valueMissing: true } as ValidityState
 
     expect(codeInclude.get(mockState)).toBeUndefined()
   })
@@ -28,7 +36,7 @@ describe('FieldCodeInclude', () => {
       valid: false,
       valueMissing: true,
       typeMismatch: false
-    } as any
+    } as unknown as ValidityState
 
     expect(codeInclude.get(mockStateMissing)).toBe('Please fill this field')
 
@@ -36,8 +44,15 @@ describe('FieldCodeInclude', () => {
       valid: false,
       valueMissing: false,
       typeMismatch: true
-    } as any
+    } as unknown as ValidityState
 
     expect(codeInclude.get(mockStateTypeMismatch)).toBe('Invalid type format')
+
+    const mockStateUnmapped = {
+      valid: false,
+      rangeOverflow: true
+    } as unknown as ValidityState
+
+    expect(codeInclude.get(mockStateUnmapped)).toBeUndefined()
   })
 })

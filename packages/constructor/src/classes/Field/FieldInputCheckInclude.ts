@@ -3,6 +3,7 @@ import {
   createElement,
   ErrorCenter,
   executeFunction,
+  isArray,
   isFilled,
   isString,
   toArray
@@ -25,6 +26,16 @@ import type {
  * Класс создаёт скрытый input и выполняет нативную валидацию по паттерну.
  */
 export class FieldInputCheckInclude<Value = any> {
+  /**
+   * Returns the default group name.
+   *
+   * Возвращает название группы по умолчанию.
+   * @returns group name / название группы
+   */
+  static getGroupDefault(): string {
+    return 'check'
+  }
+
   /** Hidden input element for native validation / Скрытый input для нативной валидации */
   readonly input: HTMLInputElement | undefined
 
@@ -34,12 +45,12 @@ export class FieldInputCheckInclude<Value = any> {
    * Конструктор
    * @param pattern property for verification / свойство для проверки
    * @param group group name / название группы
-   * @param code object for error codes / объект для работы с кодами ошибок
+   * @param code function returning object for error codes / функция, возвращающая объект для работы с кодами ошибок
    */
   constructor(
     readonly pattern: FieldPatternItemOrFunction,
     readonly group: string = FieldInputCheckInclude.getGroupDefault(),
-    protected readonly code?: FieldCodeInclude
+    protected readonly code?: () => FieldCodeInclude
   ) {
     this.input = createElement<HTMLInputElement>(
       undefined,
@@ -81,45 +92,6 @@ export class FieldInputCheckInclude<Value = any> {
   }
 
   /**
-   * Runs validation for file input and returns result.
-   *
-   * Выполняет проверку для файлового инпута и возвращает результат.
-   * @param input file input element / элемент файлового инпута
-   * @param value checked value / проверяемое значение
-   * @returns validation item data / данные элемента валидации
-   */
-  protected checkFile(
-    input: HTMLInputElement,
-    value: Value
-  ): FieldValidationItem {
-    try {
-      if (value instanceof FileList) {
-        input.files = value
-      } else if (
-        (value instanceof File || Array.isArray(value))
-        && typeof DataTransfer !== 'undefined'
-      ) {
-        const dataTransfer = new DataTransfer()
-        toArray(value).forEach((file) => {
-          if (file instanceof File) {
-            dataTransfer.items.add(file)
-          }
-        })
-        input.files = dataTransfer.files
-      } else {
-        input.value = ''
-      }
-    } catch {
-      ErrorCenter.on({
-        group: CONSTRUCTOR_ERROR_GROUP,
-        code: 'field-input-check-file'
-      })
-    }
-
-    return this.checkByInput(input, value)
-  }
-
-  /**
    * Runs validation by input and returns result.
    *
    * Выполняет проверку по инпуту и возвращает результат.
@@ -137,7 +109,7 @@ export class FieldInputCheckInclude<Value = any> {
       status: input.checkValidity(),
       validationMessage: input.validationMessage,
       validity: input.validity,
-      validityMessage: this.code?.get(input.validity),
+      validityMessage: this.code?.().get(input.validity),
       required: input.required,
       pattern: this.pattern,
       value: value ?? input.value
@@ -169,13 +141,42 @@ export class FieldInputCheckInclude<Value = any> {
   }
 
   /**
-   * Returns the default group name.
+   * Runs validation for file input and returns result.
    *
-   * Возвращает название группы по умолчанию.
-   * @returns group name / название группы
+   * Выполняет проверку для файлового инпута и возвращает результат.
+   * @param input file input element / элемент файлового инпута
+   * @param value checked value / проверяемое значение
+   * @returns validation item data / данные элемента валидации
    */
-  static getGroupDefault(): string {
-    return 'check'
+  protected checkFile(
+    input: HTMLInputElement,
+    value: Value
+  ): FieldValidationItem {
+    try {
+      if (value instanceof FileList) {
+        input.files = value
+      } else if (
+        (value instanceof File || isArray(value))
+        && typeof DataTransfer !== 'undefined'
+      ) {
+        const dataTransfer = new DataTransfer()
+        toArray(value).forEach((file) => {
+          if (file instanceof File) {
+            dataTransfer.items.add(file)
+          }
+        })
+        input.files = dataTransfer.files
+      } else {
+        input.value = ''
+      }
+    } catch {
+      ErrorCenter.on({
+        group: CONSTRUCTOR_ERROR_GROUP,
+        code: 'field-input-check-file'
+      })
+    }
+
+    return this.checkByInput(input, value)
   }
 }
 

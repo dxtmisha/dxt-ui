@@ -14,30 +14,22 @@ import type { FieldAllProps } from '../../types/fieldTypes'
 export class FieldAttributesInclude {
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data or function returning input data / входные данные или функция, возвращающая входные данные
-   * @param type object for working with input type / объект для работы с типом ввода
-   * @param pattern object for working with checks by regular expressions /
-   * объект для работы с проверкой по регулярным выражениям
-   * @param inputMode object for working with the keyboard / объект для работы с клавиатурой
+   * @param type function returning object for working with input type / функция, возвращающая объект для работы с типом ввода
+   * @param pattern function returning object for working with checks by regular expressions /
+   * функция, возвращающая объект для работы с проверкой по регулярным выражениям
+   * @param inputMode function returning object for working with the keyboard / функция, возвращающая объект для работы с клавиатурой
    * @param typeDefault default value for type / значение по умолчанию для типа
    */
   constructor(
     protected readonly props: FunctionOr<FieldAllProps>,
-    protected readonly type?: FieldTypeInclude,
-    protected readonly pattern?: FieldPatternInclude,
-    protected readonly inputMode?: FieldInputModeInclude,
+    protected readonly type?: () => FieldTypeInclude,
+    protected readonly pattern?: () => FieldPatternInclude,
+    protected readonly inputMode?: () => FieldInputModeInclude,
     protected readonly typeDefault: string = 'text'
   ) {
-  }
-
-  /**
-   * Returns properties.
-   *
-   * Возвращает свойства.
-   * @returns properties object / объект свойств
-   */
-  protected getProps(): FieldAllProps {
-    return executeFunction(this.props)
   }
 
   /**
@@ -101,9 +93,20 @@ export class FieldAttributesInclude {
   }
 
   /**
+   * Returns properties.
+   *
+   * Возвращает свойства.
+   * @returns properties object / объект свойств
+   */
+  protected getProps(): FieldAllProps {
+    return executeFunction(this.props)
+  }
+
+  /**
    * Returns the list of attributes to be set on the input element.
    *
    * Возвращает список атрибутов, которые нужно установить на элемент ввода.
+   * @returns array of attribute keys / массив ключей атрибутов
    */
   protected getAttributes(): (keyof FieldAllProps)[] {
     return [
@@ -128,6 +131,7 @@ export class FieldAttributesInclude {
    * Returns the list of attributes to be set on the input element.
    *
    * Возвращает список атрибутов, которые нужно установить на элемент ввода.
+   * @returns array of input attribute keys / массив ключей атрибутов ввода
    */
   protected getInputAttributes(): (keyof FieldAllProps)[] {
     return [
@@ -161,6 +165,7 @@ export class FieldAttributesInclude {
    *
    * Возвращает данные для указанных атрибутов.
    * @param attributes list of attributes / список атрибутов
+   * @returns attribute values map / объект значений атрибутов
    */
   protected getData(attributes: (keyof FieldAllProps)[]): Record<string, any> {
     const data: Record<string, any> = {}
@@ -173,28 +178,28 @@ export class FieldAttributesInclude {
         switch (index) {
           case 'type':
             if (this.type) {
-              value = this.type.item
+              value = this.type().item
             } else {
               value = props.type
             }
             break
           case 'pattern':
             if (this.pattern) {
-              value = this.pattern.item
+              value = this.pattern().item
             } else {
               value = props.pattern
             }
             break
           case 'inputMode':
             if (this.inputMode) {
-              value = this.inputMode.item
+              value = this.inputMode().item
             } else {
               value = props.inputMode
             }
             break
           case 'autocomplete':
             if (this.inputMode) {
-              value = this.inputMode.autocomplete
+              value = this.inputMode().autocomplete
             } else {
               value = props.autocomplete
             }

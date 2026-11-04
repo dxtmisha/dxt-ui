@@ -109,8 +109,8 @@ export class Select extends SelectAbstract {
         cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
       }),
       undefined,
-      this.value,
-      this.event,
+      () => this.value,
+      () => this.event,
       undefined,
       undefined,
       () => this.menu.getElement()?.toggle(),

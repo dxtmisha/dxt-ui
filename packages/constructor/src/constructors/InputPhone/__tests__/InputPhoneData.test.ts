@@ -18,7 +18,8 @@ describe('InputPhoneData', () => {
       set: vi.fn()
     } as any
 
-    const data = new InputPhoneData({ countryDefault: 'US' }, mockValue)
+    const data = new InputPhoneData({ countryDefault: 'US' }, () => mockValue)
+    data.onMounted()
     expect(data.country.value).toBe('US')
   })
 })

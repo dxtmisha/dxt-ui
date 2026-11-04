@@ -18,11 +18,11 @@ export class FieldPatternInclude {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param type object for working with input type / объект для работы с типом ввода
+   * @param type function returning object for working with input type / функция, возвращающая объект для работы с типом ввода
    */
   constructor(
     protected readonly props: FieldAllProps,
-    protected readonly type?: FieldTypeInclude
+    protected readonly type?: () => FieldTypeInclude
   ) {
   }
 
@@ -38,7 +38,7 @@ export class FieldPatternInclude {
     }
 
     if (this.type) {
-      return PATTERNS?.[this.type.item]
+      return PATTERNS?.[this.type().item]
     }
 
     return undefined

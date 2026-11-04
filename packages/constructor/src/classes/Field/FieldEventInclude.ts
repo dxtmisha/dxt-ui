@@ -1,4 +1,5 @@
-import { type ConstrEmit } from '@dxtmisha/functional'
+import { watch } from 'vue'
+import { type ConstrEmit, DesignLifecycleAbstract } from '@dxtmisha/functional'
 
 import { FieldChangeInclude } from './FieldChangeInclude'
 import { FieldFormInclude } from './FieldFormInclude'
@@ -13,7 +14,7 @@ import type { FieldAllProps, FieldBasicEmits, FieldValidationItem } from '../../
  *
  * Класс для работы с событиями.
  */
-export class FieldEventInclude {
+export class FieldEventInclude extends DesignLifecycleAbstract {
   /** Model inclusion instance / Экземпляр включения модели */
   protected readonly model: ModelInclude
 
@@ -22,25 +23,33 @@ export class FieldEventInclude {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param change object for working with data change label / объект для работы с меткой об изменении данных
-   * @param value object for working with values / объект для работы со значениями
-   * @param validation object for working with validity / объект для работы с валидностью
+   * @param change function returning object for working with data change label / функция, возвращающая объект для работы с меткой об изменении данных
+   * @param value function returning object for working with values / функция, возвращающая объект для работы со значениями
+   * @param validation function returning object for working with validity / функция, возвращающая объект для работы с валидностью
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param form object for working with the form element context / объект для работы с контекстом элемента формы
+   * @param form function returning object for working with the form element context / функция, возвращающая объект для работы с контекстом элемента формы
    */
   constructor(
     protected readonly props: FieldAllProps,
-    protected readonly change: FieldChangeInclude,
-    protected readonly value: FieldValueInclude,
-    protected readonly validation?: FieldValidationInclude,
+    protected readonly change: () => FieldChangeInclude,
+    protected readonly value: () => FieldValueInclude,
+    protected readonly validation?: () => FieldValidationInclude,
     protected readonly emits?: ConstrEmit<FieldBasicEmits>,
-    protected readonly form?: FieldFormInclude
+    protected readonly form?: () => FieldFormInclude
   ) {
+    super()
+
     this.model = new ModelInclude(
       'value',
-      this.emits,
-      this.value.itemByFull
+      this.emits
     )
+  }
+
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    watch(this.value().itemByFull, (newValue) => {
+      this.model.emit(newValue)
+    })
   }
 
   /**
@@ -56,7 +65,7 @@ export class FieldEventInclude {
 
   /** Events for losing focus / События для потери фокуса */
   readonly onBlur = () => {
-    this.change.to()
+    this.change().to()
   }
 
   /**
@@ -74,13 +83,13 @@ export class FieldEventInclude {
       const newData = data ?? event
 
       if (
-        this.change.is()
+        this.change().is()
         || data
       ) {
-        this.validation?.set(newData)
+        this.validation?.().set(newData)
       }
 
-      this.value.setByEvent(newData)
+      this.value().setByEvent(newData)
       this.on(event)
     }
   }
@@ -94,10 +103,10 @@ export class FieldEventInclude {
   readonly onChange = (event?: InputEvent | Event): void => {
     if (this.isEnabled()) {
       if (event) {
-        this.validation?.set(event)
+        this.validation?.().set(event)
       }
 
-      this.change.to()
+      this.change().to()
       this.on(event, 'change')
     }
   }
@@ -114,7 +123,7 @@ export class FieldEventInclude {
     data?: Record<string, any>
   ): void => {
     if (this.isEnabled()) {
-      this.value.setByEvent(data ?? event)
+      this.value().setByEvent(data ?? event)
       this.onAndChange(event)
     }
   }
@@ -127,7 +136,7 @@ export class FieldEventInclude {
    */
   readonly onChecked = (event: Event): void => {
     if (this.isEnabled()) {
-      this.value.setByChecked(event)
+      this.value().setByChecked(event)
       this.onAndChange(event)
     }
   }
@@ -140,7 +149,7 @@ export class FieldEventInclude {
    */
   readonly onRadio = (event: Event): void => {
     if (this.isEnabled()) {
-      this.value.setByRadio(event)
+      this.value().setByRadio(event)
       this.onAndChange(event)
     }
   }
@@ -153,7 +162,7 @@ export class FieldEventInclude {
    */
   readonly onClear = (event?: MouseEvent): void => {
     if (this.isEnabled()) {
-      this.value.clear()
+      this.value().clear()
       this.onAndChange(event)
     }
   }
@@ -167,7 +176,7 @@ export class FieldEventInclude {
   readonly onValue = (value?: any): void => {
     if (this.isEnabled()) {
       if (value !== undefined) {
-        this.value.set(value)
+        this.value().set(value)
       }
 
       this.onAndChange()
@@ -187,7 +196,7 @@ export class FieldEventInclude {
     type: string & keyof FieldBasicEmits = 'input'
   ): this => {
     if (type === 'input') {
-      this.model.emit(this.value.itemByFull.value)
+      this.model.emit(this.value().itemByFull.value)
     }
 
     const data = {
@@ -199,7 +208,7 @@ export class FieldEventInclude {
     this.emits?.(`${type}Lite` as 'inputLite', data)
 
     if (this.props.name) {
-      this.form?.updateData(data, event as InputEvent)
+      this.form?.().updateData(data, event as InputEvent)
     }
 
     return this
@@ -239,9 +248,11 @@ export class FieldEventInclude {
    * @returns validation item data / данные элемента валидации
    */
   protected getData(): FieldValidationItem {
+    const value = this.value()
+
     return {
-      value: this.value.itemByFull.value,
-      valueInput: this.value.item.value,
+      value: value.itemByFull.value,
+      valueInput: value.item.value,
       detail: this.props.detail
     }
   }
@@ -258,12 +269,12 @@ export class FieldEventInclude {
   ): FieldValidationItem {
     if (this.isValue(type)) {
       if (this.validation) {
-        return this.validation.item.value
+        return this.validation().item.value
       }
 
       return {
         group: 'check',
-        value: this.value.item.value
+        value: this.value().item.value
       }
     }
 

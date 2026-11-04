@@ -22,23 +22,23 @@ describe('FieldMatchInclude', () => {
   })
 
   it('should detect if matching check is enabled', () => {
-    const enabled = new FieldMatchInclude({ match: 'target-name' }, mockElement, mockValue)
+    const enabled = new FieldMatchInclude({ match: 'target-name' }, () => mockElement, () => mockValue)
     expect(enabled.is()).toBe(true)
 
-    const disabled = new FieldMatchInclude({}, mockElement, mockValue)
+    const disabled = new FieldMatchInclude({}, () => mockElement, () => mockValue)
     expect(disabled.is()).toBe(false)
   })
 
   it('should extract selector and validation message properly', () => {
     const matchObj = { name: 'confirm-password', validationMessage: 'Passwords mismatched' }
-    const matchInclude = new FieldMatchInclude({ match: matchObj }, mockElement, mockValue, mockText)
+    const matchInclude = new FieldMatchInclude({ match: matchObj }, () => mockElement, () => mockValue, () => mockText)
 
     expect(matchInclude.getSelectors()).toBe('confirm-password')
     expect(matchInclude.getValidationMessage()).toBe('Passwords mismatched')
   })
 
   it('should fallback to global text for validation message', () => {
-    const matchInclude = new FieldMatchInclude({ match: 'confirm-password' }, mockElement, mockValue, mockText)
+    const matchInclude = new FieldMatchInclude({ match: 'confirm-password' }, () => mockElement, () => mockValue, () => mockText)
     expect(matchInclude.getValidationMessage()).toBe('Fields must match')
   })
 
@@ -48,7 +48,7 @@ describe('FieldMatchInclude', () => {
     mockElement.findByName.mockReturnValue(targetInput)
     mockElement.get.mockReturnValue('my-input-element')
 
-    const matchInclude = new FieldMatchInclude({ match: 'confirm-password' }, mockElement, mockValue, mockText)
+    const matchInclude = new FieldMatchInclude({ match: 'confirm-password' }, () => mockElement, () => mockValue, () => mockText)
     const result = matchInclude.check()
 
     expect(result).toBeDefined()
@@ -62,7 +62,7 @@ describe('FieldMatchInclude', () => {
     targetInput.value = 'hello'
     mockElement.findByName.mockReturnValue(targetInput)
 
-    const matchInclude = new FieldMatchInclude({ match: 'confirm-password' }, mockElement, mockValue, mockText)
+    const matchInclude = new FieldMatchInclude({ match: 'confirm-password' }, () => mockElement, () => mockValue, () => mockText)
     const result = matchInclude.check()
 
     expect(result).toBeUndefined()

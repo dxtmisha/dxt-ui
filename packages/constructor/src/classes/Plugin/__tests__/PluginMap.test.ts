@@ -50,4 +50,16 @@ describe('PluginMap', () => {
     expect(map?.sourcesContent).toEqual([original])
     expect(map?.mappings).toBeTruthy()
   })
+
+  it('should generate sourcemap when code is appended at the very end', () => {
+    const original = 'const a = 1;'
+    const pluginCode = new PluginCode('/project/src/main.ts', original)
+    pluginCode.set('const a = 1;\nconst b = 2;')
+
+    const map = new PluginMap(pluginCode).get()
+
+    expect(map).not.toBeNull()
+    expect(map?.sources).toEqual(['/project/src/main.ts'])
+    expect(map?.sourcesContent).toEqual([original])
+  })
 })

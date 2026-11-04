@@ -5,7 +5,7 @@ import { ClientOnlyInclude } from '../ClientOnlyInclude'
 let mountedCallback: (() => void) | undefined
 
 vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
+  const actual = await vi.importActual('vue') as Record<string, unknown>
   return {
     ...actual,
     onMounted: (fn: () => void) => {
@@ -32,9 +32,12 @@ describe('ClientOnlyInclude', () => {
     expect(clientOnly.isRender()).toBe(true)
   })
 
-  it('should render on server/client if clientOnly prop is false', () => {
+  it('should render on server/client if clientOnly prop is false or omitted in object', () => {
     const clientOnly = new ClientOnlyInclude({ clientOnly: false })
     expect(clientOnly.isRender()).toBe(true)
+
+    const clientOnlyEmptyProps = new ClientOnlyInclude({})
+    expect(clientOnlyEmptyProps.isRender()).toBe(true)
 
     if (mountedCallback) {
       mountedCallback()

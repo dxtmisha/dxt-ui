@@ -1,15 +1,18 @@
 import { PluginTool } from './PluginTool'
 
 /**
- * Class for working with plugin code.
+ * Class for working with and transforming source code in the Vite plugin.
  *
- * Класс для работы с кодом плагина.
+ * Класс для работы с исходным кодом и его трансформации в плагине Vite.
  */
 export class PluginCode {
+  /** Modified source code / Измененный исходный код */
   protected newCode: string
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param id file ID / ID файла
    * @param code source code / исходный код
    */
@@ -31,16 +34,6 @@ export class PluginCode {
   }
 
   /**
-   * Checks if the file is a Vue component.
-   *
-   * Проверяет, является ли файл компонентом Vue.
-   * @returns true if file is a Vue component / true, если файл является компонентом Vue
-   */
-  isVue(): boolean {
-    return PluginTool.isVue(this.id)
-  }
-
-  /**
    * Checks if the file is a SCSS file.
    *
    * Проверяет, является ли файл SCSS.
@@ -48,6 +41,16 @@ export class PluginCode {
    */
   isScss(): boolean {
     return PluginTool.isCss(this.id)
+  }
+
+  /**
+   * Checks if the file is a Vue component.
+   *
+   * Проверяет, является ли файл компонентом Vue.
+   * @returns true if file is a Vue component / true, если файл является компонентом Vue
+   */
+  isVue(): boolean {
+    return PluginTool.isVue(this.id)
   }
 
   /**
@@ -80,16 +83,6 @@ export class PluginCode {
   }
 
   /**
-   * Returns the file ID.
-   *
-   * Возвращает ID файла.
-   * @returns file ID / ID файла
-   */
-  getId(): string {
-    return this.id
-  }
-
-  /**
    * Returns the original code.
    *
    * Возвращает оригинальный код.
@@ -97,6 +90,16 @@ export class PluginCode {
    */
   getCode(): string {
     return this.code
+  }
+
+  /**
+   * Returns the file ID.
+   *
+   * Возвращает ID файла.
+   * @returns file ID / ID файла
+   */
+  getId(): string {
+    return this.id
   }
 
   /**
@@ -123,9 +126,8 @@ export class PluginCode {
    */
   addAfterScript(code: string): this {
     const regExp = /(<script[^>]*\bsetup\b[^>]*>)/
-    const match = this.code.match(regExp)
 
-    if (match) {
+    if (regExp.test(this.code)) {
       this.newCode = this.newCode.replace(regExp, `$1${code}`)
     } else {
       this.newCode = `<script setup>\r\n${code}</script>${this.newCode}`
@@ -171,12 +173,12 @@ export class PluginCode {
    *
    * Заменяет найденный фрагмент на новый код в newCode.
    * @param pattern search pattern / паттерн поиска
-   * @param replacement replacement string / строка замены
+   * @param replacement replacement string or callback / строка или функция замены
    * @returns current instance / текущий экземпляр
    */
   replace(
     pattern: string | RegExp,
-    replacement: string | ((substring: string, ...args: any[]) => string)
+    replacement: string | ((substring: string, ...args: string[]) => string)
   ): this {
     this.newCode = this.newCode.replace(pattern, replacement as string)
 

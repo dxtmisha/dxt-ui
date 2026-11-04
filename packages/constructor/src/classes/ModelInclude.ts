@@ -16,6 +16,8 @@ import {
 export class ModelInclude<Value = string> {
   /**
    * Constructor
+   *
+   * Конструктор
    * @param index The index key for the model property / Ключ индекса для свойства модели
    * @param emits Function to emit events / Функция для испускания событий
    * @param syncValue Reactive value to synchronize / Реактивное значение для синхронизации
@@ -25,13 +27,13 @@ export class ModelInclude<Value = string> {
     protected readonly emits?: any,
     protected readonly syncValue?: RefType<Value>
   ) {
-    onMounted(() => {
-      if (syncValue) {
+    if (syncValue) {
+      onMounted(() => {
         watch(syncValue, (newValue: Value) => {
           this.emit(newValue)
         })
-      }
-    })
+      })
+    }
   }
 
   /**
@@ -55,7 +57,7 @@ export class ModelInclude<Value = string> {
    * Создает свойства для двусторонней привязки данных с обработчиками модели и обновления.
    * @returns Object with model value and update handlers / Объект со значением модели и обработчиками обновления
    */
-  getBinds() {
+  getBinds(): Record<string, any> {
     if (this.isValue()) {
       const name = toCamelCaseFirst(this.index)
 

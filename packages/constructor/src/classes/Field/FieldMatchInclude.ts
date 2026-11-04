@@ -19,15 +19,15 @@ export class FieldMatchInclude {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param element object for working with input element / объект для работы с элементом ввода
-   * @param value object for working with value / объект для работы со значениями
-   * @param text object for working with texts / объект для работы с текстами
+   * @param element function returning object for working with input element / функция, возвращающая объект для работы с элементом ввода
+   * @param value function returning object for working with value / функция, возвращающая объект для работы со значениями
+   * @param text function returning object for working with texts / функция, возвращающая объект для работы с текстами
    */
   constructor(
     protected readonly props: FieldAllProps,
-    protected readonly element: FieldElementInclude,
-    protected readonly value: FieldValueInclude,
-    protected readonly text?: TextInclude
+    protected readonly element: () => FieldElementInclude,
+    protected readonly value: () => FieldValueInclude,
+    protected readonly text?: () => TextInclude
   ) {
   }
 
@@ -75,7 +75,7 @@ export class FieldMatchInclude {
       }
 
       if (this.text) {
-        return this.text.entriesMatch ?? ''
+        return this.text().entriesMatch ?? ''
       }
     }
 
@@ -92,18 +92,19 @@ export class FieldMatchInclude {
     const selectors = this.getSelectors()
 
     if (selectors) {
-      const input = this.element.findByName(selectors)
+      const element = this.element()
+      const input = element.findByName(selectors)
 
       if (
         input
-        && anyToString(input.value) !== this.value.string
+        && anyToString(input.value) !== this.value().string
       ) {
         return {
           group: FieldInputCheckInclude.getGroupDefault(),
           status: false,
-          input: this.element.get(),
+          input: element.get(),
           validationMessage: this.getValidationMessage(),
-          value: this.value.item.value
+          value: this.value().item.value
         }
       }
     }

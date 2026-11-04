@@ -89,29 +89,29 @@ export class Textarea {
     )
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.elementItem
+      () => this.elementItem
     )
 
     this.code = new FieldCodeIncludeConstructor(this.props)
     this.validation = new FieldValidationIncludeConstructor(
       this.props,
-      this.attributes,
-      this.value,
-      this.change,
-      this.code
+      () => this.attributes,
+      () => this.value,
+      () => this.change,
+      () => this.code
     )
     this.form = new FieldFormIncludeConstructor(
       this.props,
-      this.value,
-      this.validation
+      () => this.value,
+      () => this.validation
     )
     this.event = new FieldEventIncludeConstructor(
       this.props,
-      this.change,
-      this.value,
-      this.validation,
+      () => this.change,
+      () => this.value,
+      () => this.validation,
       this.emits,
-      this.form
+      () => this.form
     )
 
     this.field = new FieldIncludeConstructor(
@@ -122,9 +122,13 @@ export class Textarea {
         maxlength: this.props.maxlength
       }),
       undefined,
-      this.value,
-      this.event
+      () => this.value,
+      () => this.event
     )
+
+    // TODO: Temporary workaround until Textarea is migrated to DesignLogicAbstract / Временный костыль до перевода Textarea на DesignLogicAbstract
+    this.value.onMounted?.()
+    this.event.onMounted?.()
   }
 
   /**

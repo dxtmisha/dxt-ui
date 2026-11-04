@@ -39,14 +39,14 @@ describe('FieldEventInclude', () => {
   })
 
   it('should mark change to true on onBlur', () => {
-    const eventInclude = new FieldEventInclude({}, mockChange, mockValue, mockValidation, emitsSpy)
+    const eventInclude = new FieldEventInclude({}, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
     eventInclude.onBlur()
 
     expect(mockChange.to).toHaveBeenCalled()
   })
 
   it('should update validation, set value, and emit input events on onInput', () => {
-    const eventInclude = new FieldEventInclude({}, mockChange, mockValue, mockValidation, emitsSpy)
+    const eventInclude = new FieldEventInclude({}, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
     const mockEvent = { target: {} } as any
 
     eventInclude.onInput(mockEvent)
@@ -57,7 +57,7 @@ describe('FieldEventInclude', () => {
   })
 
   it('should trigger update on onChange', () => {
-    const eventInclude = new FieldEventInclude({}, mockChange, mockValue, mockValidation, emitsSpy)
+    const eventInclude = new FieldEventInclude({}, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
     const mockEvent = { target: {} } as any
 
     eventInclude.onChange(mockEvent)
@@ -68,7 +68,7 @@ describe('FieldEventInclude', () => {
   })
 
   it('should handle onChecked event by delegation', () => {
-    const eventInclude = new FieldEventInclude({}, mockChange, mockValue, mockValidation, emitsSpy)
+    const eventInclude = new FieldEventInclude({}, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
     const mockEvent = { target: { checked: true } } as any
 
     eventInclude.onChecked(mockEvent)
@@ -78,7 +78,7 @@ describe('FieldEventInclude', () => {
   })
 
   it('should handle onRadio event by delegation', () => {
-    const eventInclude = new FieldEventInclude({}, mockChange, mockValue, mockValidation, emitsSpy)
+    const eventInclude = new FieldEventInclude({}, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
     const mockEvent = { target: { checked: true, value: 'radio-val' } } as any
 
     eventInclude.onRadio(mockEvent)
@@ -88,7 +88,7 @@ describe('FieldEventInclude', () => {
   })
 
   it('should handle onClear event and delegate to value.clear()', () => {
-    const eventInclude = new FieldEventInclude({}, mockChange, mockValue, mockValidation, emitsSpy)
+    const eventInclude = new FieldEventInclude({}, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
     const mockEvent = {} as any
 
     eventInclude.onClear(mockEvent)
@@ -98,7 +98,7 @@ describe('FieldEventInclude', () => {
   })
 
   it('should handle onValue event with and without value', () => {
-    const eventInclude = new FieldEventInclude({}, mockChange, mockValue, mockValidation, emitsSpy)
+    const eventInclude = new FieldEventInclude({}, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
 
     eventInclude.onValue('custom-value')
     expect(mockValue.set).toHaveBeenCalledWith('custom-value')
@@ -113,11 +113,11 @@ describe('FieldEventInclude', () => {
     const mockForm = { updateData: vi.fn() } as any
     const eventInclude = new FieldEventInclude(
       { name: 'username' },
-      mockChange,
-      mockValue,
-      mockValidation,
+      () => mockChange,
+      () => mockValue,
+      () => mockValidation,
       emitsSpy,
-      mockForm
+      () => mockForm
     )
 
     const mockEvent = new InputEvent('input')

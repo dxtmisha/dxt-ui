@@ -1,30 +1,36 @@
 import type { SourceMap } from 'magic-string'
 import type { Plugin as VitePlugin, Rolldown } from 'vite'
 
-import { PluginTool } from './PluginTool'
 import { PluginCode } from './PluginCode'
+import { PluginComponents } from './PluginComponents'
 import { PluginData } from './PluginData'
 import { PluginImport } from './PluginImport'
-import { PluginComponents } from './PluginComponents'
 import { PluginMap } from './PluginMap'
 import { PluginStyle } from './PluginStyle'
+import { PluginTool } from './PluginTool'
 
 import type { PluginComponentImports, PluginOptions } from '../../types/pluginTypes'
 
 /**
- * Base class for the Vite plugin.
+ * Base class for the Vite plugin that automates component imports, style token injection, and source maps.
  *
- * Базовый класс для плагина Vite.
+ * Базовый класс для плагина Vite, автоматизирующий импорт компонентов, внедрение стилевых токенов и генерацию карт исходного кода.
  */
 export class Plugin {
+  /** Plugin metadata instance / Экземпляр метаданных плагина */
   protected readonly data: PluginData
 
+  /** Flag indicating the first processed JS/TS entry file / Флаг, указывающий на первый обрабатываемый входной JS/TS файл */
   protected first: boolean = true
+  /** Current Vite build mode / Текущий режим сборки Vite */
   protected mode: string = 'production'
+  /** Whether source maps are enabled / Включена ли генерация карт исходного кода */
   protected sourcemap: boolean = true
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param design design name / название дизайна
    * @param packageName package name / название пакета
    * @param componentsReg regular expression for finding components / регулярное выражение для поиска компонентов
@@ -55,6 +61,7 @@ export class Plugin {
    * Initializes the plugin.
    *
    * Инициализирует плагин.
+   * @returns Vite plugin configuration object / объект конфигурации плагина Vite
    */
   init(): VitePlugin {
     return {
@@ -79,6 +86,7 @@ export class Plugin {
    * Checks if components should be processed.
    *
    * Проверяет, нужно ли обрабатывать компоненты.
+   * @returns true if component auto-import is enabled / true, если автоимпорт компонентов включен
    */
   protected isComponents(): boolean {
     return Boolean(this.options?.component ?? true)
@@ -98,6 +106,7 @@ export class Plugin {
    * Checks if the main style file should be processed.
    *
    * Проверяет, нужно ли обрабатывать главный файл стилей.
+   * @returns true if main style injection is enabled / true, если подключение главного файла стилей включено
    */
   protected isStyleMain(): boolean {
     return Boolean(this.options?.styleMain ?? true)
@@ -107,6 +116,7 @@ export class Plugin {
    * Checks if styles should be processed.
    *
    * Проверяет, нужно ли обрабатывать стили.
+   * @returns true if style transformation is enabled / true, если преобразование стилей включено
    */
   protected isStyles(): boolean {
     return Boolean(this.options?.style ?? true)
@@ -128,11 +138,65 @@ export class Plugin {
   }
 
   /**
+   * Initializes the main file.
+   *
+   * Инициализирует главный файл.
+   * @param code file content / содержимое файла
+   * @returns code with injected style import / код с добавленным импортом стилей
+   */
+  protected initMain(code: string): string {
+    const imports = new PluginImport(this.packageName, code)
+
+    imports.importStyle()
+
+    return imports.get()
+  }
+
+  /**
+   * Initializes styles.
+   *
+   * Инициализирует стили.
+   * @param code file content / содержимое файла
+   * @returns current instance / текущий экземпляр
+   */
+  protected initStyles(
+    code: PluginCode
+  ): this {
+    if (this.isStyles()) {
+      new PluginStyle(
+        code,
+        this.data,
+        this.options.styleNamespace
+      ).make()
+    }
+
+    return this
+  }
+
+  /**
+   * Initializes components.
+   *
+   * Инициализирует компоненты.
+   * @param code file content / содержимое файла
+   * @returns current instance / текущий экземпляр
+   */
+  protected makeComponents(
+    code: PluginCode
+  ): this {
+    if (this.isComponents()) {
+      new PluginComponents(code, this.data).make()
+    }
+
+    return this
+  }
+
+  /**
    * Transforms the code.
    *
    * Преобразовывает код.
    * @param code file content / содержимое файла
    * @param id file identification / идентификация файла
+   * @returns transform result with code and source map, or null / результат трансформации с кодом и картой исходников или null
    */
   protected transform(code: string, id: string): Rolldown.TransformResult {
     const magicCode = new PluginCode(id, code)
@@ -159,55 +223,5 @@ export class Plugin {
       code: magicCode.get(),
       map: this.getMap(magicCode)
     }
-  }
-
-  /**
-   * Initializes the main file.
-   *
-   * Инициализирует главный файл.
-   * @param code file content / содержимое файла
-   */
-  protected initMain(code: string): string {
-    const imports = new PluginImport(this.packageName, code)
-
-    imports.importStyle()
-
-    return imports.get()
-  }
-
-  /**
-   * Initializes components.
-   *
-   * Инициализирует компоненты.
-   * @param code file content / содержимое файла
-   */
-  protected makeComponents(
-    code: PluginCode
-  ): this {
-    if (this.isComponents()) {
-      new PluginComponents(code, this.data).make()
-    }
-
-    return this
-  }
-
-  /**
-   * Initializes styles.
-   *
-   * Инициализирует стили.
-   * @param code file content / содержимое файла
-   */
-  protected initStyles(
-    code: PluginCode
-  ): this {
-    if (this.isStyles()) {
-      new PluginStyle(
-        code,
-        this.data,
-        this.options.styleNamespace
-      ).make()
-    }
-
-    return this
   }
 }

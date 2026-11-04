@@ -1,15 +1,18 @@
-import { PluginData } from './PluginData'
-import { PluginCode } from './PluginCode'
 import { isFilled } from '@dxtmisha/functional'
 
+import { PluginCode } from './PluginCode'
+import { PluginData } from './PluginData'
+
 /**
- * Class for transforming into non-standard style properties.
+ * Class for transforming standard CSS properties and variables into design system SCSS mixins and tokens.
  *
- * Класс для преобразования в нестандартные свойства стилей.
+ * Класс для преобразования стандартных CSS-свойств и переменных в SCSS-миксины и токены дизайн-системы.
  */
 export class PluginStyle {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param code file content / содержимое файла
    * @param data plugin data / данные плагина
    * @param namespace namespace for styles in the SCSS `@use` rule / пространство имен для стилей в правиле SCSS `@use`
@@ -25,6 +28,7 @@ export class PluginStyle {
    * Initialization of the transformation of all style properties.
    *
    * Инициализация преобразования всех свойств стилей.
+   * @returns current instance / текущий экземпляр
    */
   make(): this {
     if (this.is()) {
@@ -41,6 +45,7 @@ export class PluginStyle {
    * Checks whether this file needs to be transformed.
    *
    * Проверяет, нужно ли преобразовывать этот файл.
+   * @returns true if file should be transformed / true, если файл нужно преобразовать
    */
   protected is(): boolean {
     return this.code.isScss()
@@ -52,24 +57,17 @@ export class PluginStyle {
    * Returns the comment for ignoring the file.
    *
    * Возвращает комментарий для игнорирования файла.
+   * @returns ignore comment string / строка комментария для игнорирования
    */
   protected getIgnoreComment(): string {
     return `// ${this.data.getDesign()}-css-ignore`
   }
 
   /**
-   * Returns a string for a negative lookahead to exclude lines with a special comment.
-   *
-   * Возвращает строку для негативного просмотра вперед, чтобы исключить строки со специальным комментарием.
-   */
-  protected getPropertiesNone() {
-    return `(?![^\r\n]*// ${this.data.getDesign()}-mode-none)`
-  }
-
-  /**
    * Returns a regular expression for finding properties that need to be replaced with mixins.
    *
    * Возвращает регулярное выражение для поиска свойств, которые необходимо заменить на миксины.
+   * @returns regular expression for property replacement / регулярное выражение для замены свойств
    */
   protected getModificationRef(): RegExp {
     const properties: Record<string, string> = this.data.getStyleModification()
@@ -81,9 +79,20 @@ export class PluginStyle {
   }
 
   /**
+   * Returns a string for a negative lookahead to exclude lines with a special comment.
+   *
+   * Возвращает строку для негативного просмотра вперед, чтобы исключить строки со специальным комментарием.
+   * @returns negative lookahead regex pattern / паттерн негативного просмотра вперед
+   */
+  protected getPropertiesNone(): string {
+    return `(?![^\r\n]*// ${this.data.getDesign()}-mode-none)`
+  }
+
+  /**
    * Connects a list of tokens to work with values.
    *
    * Подключает список токенов для работы со значениями.
+   * @returns current instance / текущий экземпляр
    */
   protected importDesign(): this {
     const importPath = `${this.data.getPackageName()}/ui-properties`
@@ -98,6 +107,7 @@ export class PluginStyle {
    * Removes default values from colors.
    *
    * Удаляет значения по умолчанию у цветов.
+   * @returns current instance / текущий экземпляр
    */
   protected makeColors(): this {
     const reg: RegExp = new RegExp(`(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`, 'ig')
@@ -110,27 +120,10 @@ export class PluginStyle {
   }
 
   /**
-   * Transforms property values under the correct name.
-   *
-   * Преобразовывает значения свойств под правильным именем.
-   */
-  protected makeVars(): this {
-    const styleVarsReg = this.data.getStyleVarsReg()
-
-    if (this.code.has(styleVarsReg)) {
-      this.code.replace(
-        styleVarsReg,
-        `${this.data.getDesign()}-$1`
-      )
-    }
-
-    return this
-  }
-
-  /**
    * Transformation of all properties into non-standard ones used through mixins.
    *
    * Преобразование всех свойств в нестандартные, используемые через миксины.
+   * @returns current instance / текущий экземпляр
    */
   protected makeProperties(): this {
     const properties: Record<string, string> = this.data.getStyleModification()
@@ -147,8 +140,27 @@ export class PluginStyle {
           end: string
         ) => {
           const data = value.trim()
-          return `@include ${namespace}${properties?.[name.trim()]}(${data.match(/[()]/) ? `#{${data}}` : data})${end}`
+          return `@include ${namespace}${properties[name.trim()]}(${/[()]/.test(data) ? `#{${data}}` : data})${end}`
         }
+      )
+    }
+
+    return this
+  }
+
+  /**
+   * Transforms property values under the correct name.
+   *
+   * Преобразовывает значения свойств под правильным именем.
+   * @returns current instance / текущий экземпляр
+   */
+  protected makeVars(): this {
+    const styleVarsReg = this.data.getStyleVarsReg()
+
+    if (this.code.has(styleVarsReg)) {
+      this.code.replace(
+        styleVarsReg,
+        `${this.data.getDesign()}-$1`
       )
     }
 

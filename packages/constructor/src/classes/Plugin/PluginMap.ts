@@ -8,7 +8,9 @@ import type { PluginCode } from './PluginCode'
  */
 export class PluginMap {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param code plugin code instance / экземпляр кода плагина
    */
   constructor(

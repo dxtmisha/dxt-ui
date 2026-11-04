@@ -4,13 +4,15 @@ import { PluginData } from './PluginData'
 import type { PluginComponentItem } from '../../types/pluginTypes'
 
 /**
- * Class for connecting components.
+ * Class for automatically injecting component imports into Vue SFC files.
  *
- * Класс для подключения компонентов.
+ * Класс для автоматического добавления импортов компонентов в файлы Vue SFC.
  */
 export class PluginComponents {
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param code file content / содержимое файла
    * @param pluginData plugin data / данные плагина
    */
@@ -21,9 +23,9 @@ export class PluginComponents {
   }
 
   /**
-   * Initializes the data.
+   * Scans the Vue file for used components and injects their import statements.
    *
-   * Инициализирует данные.
+   * Сканирует файл Vue на наличие используемых компонентов и добавляет их импорты.
    */
   make(): void {
     if (
@@ -44,20 +46,22 @@ export class PluginComponents {
   }
 
   /**
-   * Returns the path to the component.
+   * Returns the import path for the component.
    *
-   * Возвращает путь к компоненту.
+   * Возвращает путь импорта для компонента.
    * @param item component data / данные компонента
+   * @returns component import path / путь импорта компонента
    */
   protected getPath(item: PluginComponentItem): string {
     return `${this.pluginData.getPackageName()}/${item.name}`
   }
 
   /**
-   * Generates the import string for a component.
+   * Generates the ES module import string for a component.
    *
-   * Генерирует строку импорта для компонента.
+   * Генерирует строку ES-импорта для компонента.
    * @param item component data / данные компонента
+   * @returns import statement string / строка выражения импорта
    */
   protected importComponent(
     item: PluginComponentItem

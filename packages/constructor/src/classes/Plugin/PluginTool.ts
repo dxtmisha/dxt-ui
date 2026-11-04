@@ -1,59 +1,62 @@
 /**
- * A class for obtaining data to work with plugins.
+ * Utility class with static helpers for identifying file types and build modes in the Vite plugin.
  *
- * Класс для получения данных для работы с плагинами.
+ * Утилитарный класс со статическими методами для определения типов файлов и режимов сборки в плагине Vite.
  */
 export class PluginTool {
   /**
-   * Checks if the id is a user’s file.
-   *
-   * Проверяет, является ли id файлом пользователя.
-   * @param id file identification / идентификация файла
-   */
-  static isSrc(id: string): boolean {
-    return Boolean(
-      id.match(/\/src\//i)
-      && !id.match(/\/node_modules\//i)
-    )
-  }
-
-  /**
-   * Checks if the id is a JS user’s file.
-   *
-   * Проверяет, является ли id файлом JS пользователя.
-   * @param id file identification / идентификация файла
-   */
-  static isJs(id: string): boolean {
-    return this.isSrc(id) && Boolean(id.match(/\.ts|js|tsx/))
-  }
-
-  /**
-   * Checks if the id is a Vue user’s file.
-   *
-   * Проверяет, является ли id файлом vue пользователя.
-   * @param id file identification / идентификация файла
-   */
-  static isVue(id: string): boolean {
-    return this.isSrc(id) && Boolean(id.match(/\.vue$/))
-  }
-
-  /**
    * Checks if the id is a Style user’s file.
    *
-   * Проверяет, является ли id файлом style пользователя.
+   * Проверяет, является ли id файлом стилей пользователя.
    * @param id file identification / идентификация файла
+   * @returns true if file is a user style file / true, если файл является пользовательским файлом стилей
    */
   static isCss(id: string): boolean {
-    return this.isSrc(id) && Boolean(id.match(/\.(css|sass|scss)/))
+    return this.isSrc(id) && /\.(css|sass|scss)/.test(id)
   }
 
   /**
    * Checks if it is development mode.
    *
-   * Проверяет, является ли режим разработка.
+   * Проверяет, является ли режим разработкой.
    * @param mode current mode / текущий режим
+   * @returns true if mode is development / true, если режим — разработка
    */
   static isDev(mode: string): boolean {
     return mode === 'development'
+  }
+
+  /**
+   * Checks if the id is a JS/TS user’s file.
+   *
+   * Проверяет, является ли id файлом JS/TS пользователя.
+   * @param id file identification / идентификация файла
+   * @returns true if file is a user JS/TS file / true, если файл является пользовательским JS/TS файлом
+   */
+  static isJs(id: string): boolean {
+    return this.isSrc(id) && /\.ts|js|tsx/.test(id)
+  }
+
+  /**
+   * Checks if the id is a user’s source file outside node_modules.
+   *
+   * Проверяет, является ли id исходным файлом пользователя вне node_modules.
+   * @param id file identification / идентификация файла
+   * @returns true if file is in src and not in node_modules / true, если файл находится в src и не в node_modules
+   */
+  static isSrc(id: string): boolean {
+    return /\/src\//i.test(id)
+      && !/\/node_modules\//i.test(id)
+  }
+
+  /**
+   * Checks if the id is a Vue user’s file.
+   *
+   * Проверяет, является ли id файлом Vue пользователя.
+   * @param id file identification / идентификация файла
+   * @returns true if file is a user Vue component / true, если файл является пользовательским компонентом Vue
+   */
+  static isVue(id: string): boolean {
+    return this.isSrc(id) && /\.vue$/.test(id)
   }
 }

@@ -1,5 +1,3 @@
-// ai-none
-
 import { computed, watch } from 'vue'
 import {
   type DesignComponents,
@@ -34,13 +32,13 @@ export class MaskInclude<
   /**
    * Constructor
    * @param naming component naming helper / помощник именования компонента
-   * @param props input data/ входные данные
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
-   * @param value object for working with values/ объект для работы со значениями
-   * @param valueDefault default value/ значение по умолчанию
-   * @param type object for working with the input type/ объект для работы с типом ввода
+   * @param props input data / входные данные
+   * @param components object for working with components / объект для работы с компонентами
+   * @param extra additional parameter or property name / дополнительный параметр или имя свойства
+   * @param index index identifier / идентификатор индекса
+   * @param value function returning object for working with values / функция, возвращающая объект для работы со значениями
+   * @param valueDefault default value / значение по умолчанию
+   * @param type function returning object for working with the input type / функция, возвращающая объект для работы с типом ввода
    */
   constructor(
     naming: DesignName,
@@ -48,18 +46,21 @@ export class MaskInclude<
     components?: DesignComponents<MaskComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
-    protected readonly value?: FieldValueInclude,
+    protected readonly value?: () => FieldValueInclude,
     protected readonly valueDefault: RefOrNormalOrFunction<any> = '',
-    protected readonly type?: FieldTypeInclude
+    protected readonly type?: () => FieldTypeInclude
   ) {
     super(naming, props, components, extra, index)
+  }
 
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
     if (this.value) {
       watch(
         this.active,
         (active) => {
           if (!active) {
-            this.value?.setFull(true)
+            this.value?.().setFull(true)
           }
         }
       )
@@ -77,7 +78,7 @@ export class MaskInclude<
 
   readonly active = computed(() => {
     const props = this.getProps()
-    const type = this.type?.get()
+    const type = this.type?.().get()
 
     return props.maskNone !== true
       && Boolean(
@@ -127,7 +128,7 @@ export class MaskInclude<
       currency: props.currency,
       currencyHide: props.currencyHide,
       fraction: props.fraction,
-      type: this.type?.get(),
+      type: this.type?.().get(),
       visible: props.maskVisible,
       value: props.modelValue ?? props.value
     }

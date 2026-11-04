@@ -1,3 +1,5 @@
+import { isString } from '@dxtmisha/functional'
+
 import type { FieldAllProps } from '../../types/fieldTypes'
 
 /**
@@ -32,7 +34,7 @@ export class FieldCodeInclude {
       && validationCode
       && !state.valid
     ) {
-      if (typeof validationCode === 'string') {
+      if (isString(validationCode)) {
         return validationCode
       } else {
         const index = this.getIndex(state)

@@ -13,7 +13,7 @@ describe('InputPhoneMask', () => {
       item: ref('123')
     } as any
 
-    const mask = new InputPhoneMask({ countryBlock: true }, mockData, mockValue)
+    const mask = new InputPhoneMask({ countryBlock: true }, () => mockData, () => mockValue)
     expect(mask.mask).toBe('+************')
     expect(mask.maskProps.modelValue).toBeUndefined()
     expect(mask.maskProps.value).toBe('123')

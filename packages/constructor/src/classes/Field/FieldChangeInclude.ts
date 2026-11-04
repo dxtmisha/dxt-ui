@@ -38,7 +38,7 @@ export class FieldChangeInclude {
    * Устанавливает состояние изменения.
    * @param change new state value / новое значение состояния
    */
-  set(change: boolean) {
+  set(change: boolean): void {
     this.item.value = change
   }
 
@@ -47,7 +47,7 @@ export class FieldChangeInclude {
    *
    * Принудительно помечает как изменённое.
    */
-  to() {
+  to(): void {
     if (!this.item.value) {
       this.set(true)
     }

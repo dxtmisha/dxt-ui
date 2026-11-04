@@ -36,10 +36,11 @@ describe('MaskInclude', () => {
       undefined,
       undefined,
       undefined,
-      mockValue,
+      () => mockValue,
       '',
-      mockType
+      () => mockType
     )
+    maskInclude.onMounted()
   })
 
   it('should be active when mask string is provided', () => {

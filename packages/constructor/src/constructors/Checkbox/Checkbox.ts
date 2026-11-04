@@ -180,7 +180,7 @@ export class Checkbox {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.elementItem,
+      () => this.elementItem,
       undefined,
       false,
       Boolean(this.props.valueVariant)
@@ -189,24 +189,28 @@ export class Checkbox {
     this.code = new FieldCodeIncludeConstructor(this.props)
     this.validation = new FieldValidationIncludeConstructor(
       this.props,
-      this.attributes,
-      this.value,
-      this.change,
-      this.code
+      () => this.attributes,
+      () => this.value,
+      () => this.change,
+      () => this.code
     )
     this.form = new FieldFormIncludeConstructor(
       this.props,
-      this.value,
-      this.validation
+      () => this.value,
+      () => this.validation
     )
     this.event = new FieldEventIncludeConstructor(
       this.props,
-      this.change,
-      this.value,
-      this.validation,
+      () => this.change,
+      () => this.value,
+      () => this.validation,
       this.emits,
-      this.form
+      () => this.form
     )
+
+    // TODO: Temporary workaround until Checkbox is migrated to DesignLogicAbstract / Временный костыль до перевода Checkbox на DesignLogicAbstract
+    this.value.onMounted?.()
+    this.event.onMounted?.()
 
     this.message = new FieldMessageConstructor(
       this.naming,
