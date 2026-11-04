@@ -1,4 +1,3 @@
-import type { NumberOrString } from '../types/basicTypes'
 import { toNumber } from './toNumber'
 
 /**
@@ -16,10 +15,10 @@ import { toNumber } from './toNumber'
  * toNumberPositive('invalid', 1) // 1
  */
 export function toNumberPositive(
-  value?: NumberOrString | null,
+  value?: unknown,
   defaultValue: number = 0
 ): number {
-  const numericValue = toNumber(value ?? undefined)
+  const numericValue = toNumber(value)
 
   return numericValue > 0 ? numericValue : defaultValue
 }

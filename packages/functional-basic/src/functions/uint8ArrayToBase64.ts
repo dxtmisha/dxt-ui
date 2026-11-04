@@ -1,6 +1,26 @@
 import { isFunction } from './isFunction'
 
 /**
+ * Buffer constructor interface for base64 encoding /
+ * Интерфейс конструктора Buffer для кодирования в base64
+ */
+type BufferConstructor = {
+  from(
+    buffer: ArrayBufferLike,
+    byteOffset?: number,
+    byteLength?: number
+  ): { toString(encoding: string): string }
+}
+
+/**
+ * Extended Uint8Array interface with modern toBase64 method /
+ * Расширенный интерфейс Uint8Array с современным методом toBase64
+ */
+type Uint8ArrayWithBase64 = {
+  toBase64?: () => string
+}
+
+/**
  * Maximum chunk size for String.fromCharCode spread to prevent call stack overflow /
  * Максимальный размер порции для String.fromCharCode для предотвращения переполнения стека
  */
@@ -25,13 +45,7 @@ export function uint8ArrayToBase64(bytes?: Uint8Array | null): string {
 
   const bufferConstructor = (
     globalThis as unknown as {
-      Buffer?: {
-        from(
-          buffer: ArrayBufferLike,
-          byteOffset?: number,
-          byteLength?: number
-        ): { toString(encoding: string): string }
-      }
+      Buffer?: BufferConstructor
     }
   ).Buffer
 
@@ -39,7 +53,7 @@ export function uint8ArrayToBase64(bytes?: Uint8Array | null): string {
     return bufferConstructor.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString('base64')
   }
 
-  const toBase64 = (bytes as unknown as { toBase64?: () => string }).toBase64
+  const toBase64 = (bytes as unknown as Uint8ArrayWithBase64).toBase64
 
   if (isFunction(toBase64)) {
     return toBase64.call(bytes)
@@ -47,8 +61,9 @@ export function uint8ArrayToBase64(bytes?: Uint8Array | null): string {
 
   if (isFunction(globalThis.btoa)) {
     let binary = ''
+    const length = bytes.length
 
-    for (let index = 0; index < bytes.length; index += CHUNK_SIZE) {
+    for (let index = 0; index < length; index += CHUNK_SIZE) {
       const chunk = bytes.subarray(index, index + CHUNK_SIZE)
       binary += String.fromCharCode(...chunk)
     }

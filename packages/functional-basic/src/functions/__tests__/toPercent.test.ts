@@ -12,6 +12,7 @@ describe('toPercent', () => {
 
     it('should return 1 when value equals maxValue', () => {
       expect(toPercent(10, 10)).toBe(1)
+      expect(toPercent(49, 49)).toBe(1)
       expect(toPercent(100, 100)).toBe(1)
       expect(toPercent(0.5, 0.5)).toBe(1)
     })

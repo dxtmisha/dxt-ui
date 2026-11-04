@@ -20,7 +20,7 @@ function copyByExecCommand(text: string): void {
 
   try {
     textarea?.select()
-    document?.execCommand?.('copy', false, text)
+    document.execCommand?.('copy', false, text)
   } catch {
     // Fallback execution failed / Ошибка выполнения резервного копирования
   } finally {
@@ -29,9 +29,9 @@ function copyByExecCommand(text: string): void {
 }
 
 /**
- * Writes data to the buffer.
+ * Writes text data to the system clipboard using the modern Clipboard API with an execCommand fallback.
  *
- * Записывает данные в буфер.
+ * Записывает текстовые данные в системный буфер обмена с использованием современного Clipboard API и резервного метода execCommand.
  * @param text text for recording / текст для записи
  * @returns promise without return value / промис без возвращаемого значения
  */

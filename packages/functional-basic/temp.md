@@ -198,3 +198,8 @@ splice
 toPascalCase
 toCamelCaseFirst
 toNumberByMax
+toNumberPositive
+toPercent
+toPercentBy100
+uint8ArrayToBase64
+writeClipboardData

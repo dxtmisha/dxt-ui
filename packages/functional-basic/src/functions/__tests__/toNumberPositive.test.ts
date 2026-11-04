@@ -60,10 +60,10 @@ describe('toNumberPositive', () => {
     })
 
     it('should safely return default value for non-numeric runtime types', () => {
-      // @ts-expect-error testing boolean runtime safety
       expect(toNumberPositive(true)).toBe(0)
-      // @ts-expect-error testing boolean runtime safety
       expect(toNumberPositive(false)).toBe(0)
+      expect(toNumberPositive({})).toBe(0)
+      expect(toNumberPositive([])).toBe(0)
     })
   })
 
