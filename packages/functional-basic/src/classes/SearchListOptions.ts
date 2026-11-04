@@ -19,33 +19,13 @@ export class SearchListOptions {
   ) { }
 
   /**
-   * Returns the current search options.
+   * Returns the CSS class name used for highlighting matches.
    *
-   * Возвращает текущие опции поиска.
-   * @returns search options / опции поиска
+   * Возвращает имя класса CSS, используемое для выделения совпадений.
+   * @returns class name / имя класса
    */
-  getOptions(): SearchOptions {
-    return this.options || {}
-  }
-
-  /**
-   * Returns the minimum number of characters required to trigger a search.
-   *
-   * Возвращает минимальное количество символов, необходимых для запуска поиска.
-   * @returns limit value / значение лимита
-   */
-  getLimit(): number {
-    return this.getOptions().limit ?? 2
-  }
-
-  /**
-   * Returns whether to return all items even if they don't match the search query.
-   *
-   * Возвращает, следует ли возвращать все элементы, даже если они не соответствуют поисковому запросу.
-   * @returns boolean value / логическое значение
-   */
-  getReturnEverything(): boolean {
-    return this.getOptions().returnEverything ?? false
+  getClassName(): string {
+    return this.getOptions().classSearchName ?? 'sys-search-selection'
   }
 
   /**
@@ -69,13 +49,33 @@ export class SearchListOptions {
   }
 
   /**
-   * Returns the CSS class name used for highlighting matches.
+   * Returns the minimum number of characters required to trigger a search.
    *
-   * Возвращает имя класса CSS, используемое для выделения совпадений.
-   * @returns class name / имя класса
+   * Возвращает минимальное количество символов, необходимых для запуска поиска.
+   * @returns limit value / значение лимита
    */
-  getClassName(): string {
-    return this.getOptions().classSearchName ?? 'sys-search-selection'
+  getLimit(): number {
+    return this.getOptions().limit ?? 2
+  }
+
+  /**
+   * Returns the current search options.
+   *
+   * Возвращает текущие опции поиска.
+   * @returns search options / опции поиска
+   */
+  getOptions(): SearchOptions {
+    return this.options ?? {}
+  }
+
+  /**
+   * Returns whether to return all items even if they don't match the search query.
+   *
+   * Возвращает, следует ли возвращать все элементы, даже если они не соответствуют поисковому запросу.
+   * @returns boolean value / логическое значение
+   */
+  getReturnEverything(): boolean {
+    return this.getOptions().returnEverything ?? false
   }
 
   /**
@@ -85,7 +85,7 @@ export class SearchListOptions {
    * @param options search options / опции поиска
    * @returns this instance / данный экземпляр
    */
-  setOptions(options: SearchOptions): this {
+  setOptions(options?: SearchOptions): this {
     this.options = options
     return this
   }

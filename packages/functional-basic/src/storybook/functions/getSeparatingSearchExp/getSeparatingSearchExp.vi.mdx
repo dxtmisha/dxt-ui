@@ -18,7 +18,7 @@ Các từ duy nhất được phân tách bằng khoảng trắng, sắp xếp t
 - **Tương thích SSR & Isomorphic**: Hàm thuần túy (pure function) không có tác dụng phụ, không phụ thuộc vào môi trường trình duyệt (`window` hay `document`).
 
 **Tham số:**
-- `search: string | RegExp` — Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi dấu cách, hoặc đối tượng `RegExp`.
+- `search?: unknown` — Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi dấu cách, đối tượng `RegExp`, hoặc giá trị truy vấn bất kỳ.
 - `limit?: number` — (Tùy chọn) Độ dài tối đa cho phép của chuỗi tìm kiếm (bị bỏ qua nếu một `RegExp` được truyền vào). Mặc định là `128`.
 
 **Trả về:**

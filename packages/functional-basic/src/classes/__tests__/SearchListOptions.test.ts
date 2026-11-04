@@ -45,5 +45,9 @@ describe('SearchListOptions', () => {
     expect(options.getLimit()).toBe(4)
     expect(options.getDelay()).toBe(100)
     expect(options.getReturnEverything()).toBe(false)
+
+    options.setOptions(undefined)
+    expect(options.getOptions()).toEqual({})
+    expect(options.getLimit()).toBe(2)
   })
 })

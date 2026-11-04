@@ -25,7 +25,7 @@ To initialize the object, call the `SearchList(list, columns, value, options)` c
 - `options?: SearchOptions` — search configuration.
 
 ```typescript
-import { SearchList } from '@dxtmisha/functional'
+import { SearchList } from '@dxtmisha/functional-basic'
 
 const mockData = [
   { id: 1, name: 'Search Engine', category: 'Web' },
@@ -76,7 +76,7 @@ results.forEach(item => {
 - `setList(list: T[]): this` — Sets a new data list.
 - `setColumns(columns?: string[]): this` — Sets new search columns.
 - `setValue(value?: string): this` — Sets a new search value and triggers a matcher update.
-- `setOptions(options: SearchOptions): this` — Sets new search options.
+- `setOptions(options?: SearchOptions): this` — Sets new search options.
 
 ## Types
 

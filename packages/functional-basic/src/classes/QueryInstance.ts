@@ -17,32 +17,6 @@ export class QueryInstance extends UrlInstanceAbstract {
   }
 
   /**
-   * Initializes query data and registers the popstate listener.
-   *
-   * Инициализирует данные query-параметров и регистрирует слушатель popstate.
-   * @returns this instance / текущий экземпляр
-   */
-  protected init(): this {
-    if (isDomRuntime()) {
-      addEventListener('popstate', this.listener)
-    }
-
-    this.initData()
-    return this
-  }
-
-  /**
-   * Removes window event listeners.
-   *
-   * Удаляет слушатели событий окна.
-   */
-  protected removeListener(): void {
-    if (isDomRuntime()) {
-      removeEventListener('popstate', this.listener)
-    }
-  }
-
-  /**
    * Obtaining data from the URL string.
    *
    * Получение данных из строки URL.
@@ -54,6 +28,18 @@ export class QueryInstance extends UrlInstanceAbstract {
     }
 
     return UrlItem.getInstance().getParams()
+  }
+
+  /**
+   * Removes window event listeners.
+   *
+   * Удаляет слушатели событий окна.
+   * @returns void / ничего не возвращает
+   */
+  protected removeListener(): void {
+    if (isDomRuntime()) {
+      removeEventListener('popstate', this.listener)
+    }
   }
 
   /**
@@ -83,6 +69,21 @@ export class QueryInstance extends UrlInstanceAbstract {
       }
     }
 
+    return this
+  }
+
+  /**
+   * Initializes query data and registers the popstate listener.
+   *
+   * Инициализирует данные query-параметров и регистрирует слушатель popstate.
+   * @returns this instance / текущий экземпляр
+   */
+  protected init(): this {
+    if (isDomRuntime()) {
+      addEventListener('popstate', this.listener)
+    }
+
+    this.initData()
     return this
   }
 }

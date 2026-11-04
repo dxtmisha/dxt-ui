@@ -43,6 +43,7 @@ const filter = Query.get('filter') // 'active' (string)
 - `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Hủy đăng ký theo dõi thay đổi của một biến.
 
 ### Quản lý
+- `static reset(): void` — Hủy phiên bản, xóa các bộ hẹn giờ và gỡ bỏ các trình lắng nghe sự kiện.
 - `static reload(): void` — Ép buộc đồng bộ hóa trạng thái với URL query parameters hiện tại.
 
 ## Ví dụ

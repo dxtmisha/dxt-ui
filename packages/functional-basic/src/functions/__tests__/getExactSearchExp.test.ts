@@ -67,10 +67,16 @@ describe('getExactSearchExp', () => {
       expect(whitespaceRegex.test('line1 line2')).toBe(false)
     })
 
-    it('should handle numeric strings including zero', () => {
+    it('should handle numeric strings and non-string values including zero, null, and undefined', () => {
       const zeroRegex = getExactSearchExp('0')
       expect(zeroRegex.test('Room 0')).toBe(true)
       expect(zeroRegex.test('Room 1')).toBe(false)
+
+      const numericZeroRegex = getExactSearchExp(0)
+      expect(numericZeroRegex.test('Room 0')).toBe(true)
+
+      expect(getExactSearchExp(undefined).source).toBe('()')
+      expect(getExactSearchExp(null).source).toBe('()')
     })
   })
 

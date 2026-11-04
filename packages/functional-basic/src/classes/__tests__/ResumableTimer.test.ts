@@ -163,4 +163,20 @@ describe('ResumableTimer', () => {
     vi.advanceTimersByTime(500)
     expect(callback).toHaveBeenCalledTimes(1)
   })
+
+  it('should allow restarting the timer via reset() from inside the callback', () => {
+    let count = 0
+    const timer = new ResumableTimer(() => {
+      count += 1
+      if (count === 1) {
+        timer.reset()
+      }
+    }, 500)
+
+    vi.advanceTimersByTime(500)
+    expect(count).toBe(1)
+
+    vi.advanceTimersByTime(500)
+    expect(count).toBe(2)
+  })
 })

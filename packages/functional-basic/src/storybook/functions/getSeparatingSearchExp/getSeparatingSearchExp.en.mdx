@@ -18,7 +18,7 @@ Unique words are split by whitespace, sorted by length in descending order, esca
 - **Isomorphic & SSR Safe**: Pure function with zero dependencies on browser globals (`window` or `document`).
 
 **Parameters:**
-- `search: string | RegExp` — A search string consisting of one or more space-separated words, or a `RegExp` object.
+- `search?: unknown` — A search string consisting of one or more space-separated words, a `RegExp` object, or an arbitrary query value.
 - `limit?: number` — (Optional) The maximum allowed length of the search string (ignored if a `RegExp` is passed). Defaults to `128`.
 
 **Returns:**

@@ -30,7 +30,7 @@ import {
  */
 export class TranslateInstance {
   /** List of translations / Список переводов */
-  protected readonly data: Record<string, string> = {}
+  protected readonly data: Record<string, string> = Object.create(null)
 
   /** Pending batches grouped by language and location / Ожидающие партии, сгруппированные по языку и региону */
   protected batches: TranslateBatch[] = []
@@ -167,6 +167,7 @@ export class TranslateInstance {
    *
    * Изменить имя свойства для получения перевода.
    * @param name property name / имя свойства
+   * @returns this instance / данный экземпляр
    */
   setPropsName(name: string): this {
     this.propsName = name
@@ -178,6 +179,7 @@ export class TranslateInstance {
    *
    * Изменить режим чтения из API.
    * @param value read mode / режим чтения
+   * @returns this instance / данный экземпляр
    */
   setReadApi(value: boolean): this {
     this.isReadApi = value
@@ -189,6 +191,7 @@ export class TranslateInstance {
    *
    * Изменить путь к скрипту для получения перевода.
    * @param url path to the script / путь к скрипту
+   * @returns this instance / данный экземпляр
    */
   setUrl(url: string): this {
     this.url = url
@@ -284,6 +287,7 @@ export class TranslateInstance {
    *
    * Добавляет тексты в режиме синхронизации.
    * @param data list of texts in the form of key-value / список текстов в виде ключ-значение
+   * @returns void / ничего не возвращает
    */
   addSync(data: Record<string, string>): void {
     forEach(data, (text, key) => {
@@ -301,6 +305,7 @@ export class TranslateInstance {
    *
    * Добавляет тексты синхронно из файла.
    * @param data file with translations / файл с переводами
+   * @returns void / ничего не возвращает
    */
   addSyncByFile(data: TranslateDataFile): void {
     this.files.add(data)
@@ -311,6 +316,7 @@ export class TranslateInstance {
    *
    * Добавляет тексты синхронно по местоположению.
    * @param data list of texts by location / список текстов по местоположению
+   * @returns void / ничего не возвращает
    */
   addSyncByLocation(data: Record<string, Record<string, string>>): void {
     forEach(
@@ -342,41 +348,6 @@ export class TranslateInstance {
   }
 
   /**
-   * Retrieves translation text by code, returning the first matching fallback.
-   *
-   * Получает текст перевода по коду, возвращая первое совпадение из запасных вариантов.
-   * @param name code name / название кода
-   * @param location requested location / запрошенный регион
-   * @param language requested language / запрошенный язык
-   * @returns translation text or undefined / текст перевода или undefined
-   */
-  protected getText(
-    name: string,
-    location: string = this.files.getLocation(),
-    language: string = this.files.getLanguage()
-  ): string | undefined {
-    const fullName = this.getName(name, location)
-
-    if (this.data[fullName]) {
-      return this.data[fullName]
-    }
-
-    const nameByLanguage = this.getNameByLanguage(name, language)
-
-    if (this.data[nameByLanguage]) {
-      return this.data[nameByLanguage]
-    }
-
-    const nameByGlobal = this.getNameByGlobal(name)
-
-    if (this.data[nameByGlobal]) {
-      return this.data[nameByGlobal]
-    }
-
-    return undefined
-  }
-
-  /**
    * Getting the full title for translation.
    *
    * Получение полного названия для перевода.
@@ -389,6 +360,17 @@ export class TranslateInstance {
   }
 
   /**
+   * Getting the title for translation globally.
+   *
+   * Получение названия для перевода глобально.
+   * @param name code name / название кода
+   * @returns global title / глобальное название
+   */
+  protected getNameByGlobal(name: string): string {
+    return `${TRANSLATE_GLOBAL_PREFIX}-${name}`
+  }
+
+  /**
    * Getting the title for translation by language.
    *
    * Получение названия для перевода по языку.
@@ -398,17 +380,6 @@ export class TranslateInstance {
    */
   protected getNameByLanguage(name: string, language: string = this.files.getLanguage()): string {
     return `${language}-${name}`
-  }
-
-  /**
-   * Getting the title for translation globally.
-   *
-   * Получение названия для перевода глобально.
-   * @param name code name / название кода
-   * @returns global title / глобальное название
-   */
-  protected getNameByGlobal(name: string): string {
-    return `${TRANSLATE_GLOBAL_PREFIX}-${name}`
   }
 
   /**
@@ -466,22 +437,38 @@ export class TranslateInstance {
   }
 
   /**
-   * Replaces the text with the specified values.
+   * Retrieves translation text by code, returning the first matching fallback.
    *
-   * Заменяет текст на указанные значения.
-   * @param text text to replace / текст для замены
-   * @param replacement values for replacement / значения для замены
-   * @returns replaced text / замененный текст
+   * Получает текст перевода по коду, возвращая первое совпадение из запасных вариантов.
+   * @param name code name / название кода
+   * @param location requested location / запрошенный регион
+   * @param language requested language / запрошенный язык
+   * @returns translation text or undefined / текст перевода или undefined
    */
-  protected replacement(
-    text: string,
-    replacement?: string[] | Record<string, string | number>
-  ): string {
-    if (replacement) {
-      return applyTemplate(text, replacement)
+  protected getText(
+    name: string,
+    location: string = this.files.getLocation(),
+    language: string = this.files.getLanguage()
+  ): string | undefined {
+    const fullName = this.getName(name, location)
+
+    if (this.data[fullName]) {
+      return this.data[fullName]
     }
 
-    return text
+    const nameByLanguage = this.getNameByLanguage(name, language)
+
+    if (this.data[nameByLanguage]) {
+      return this.data[nameByLanguage]
+    }
+
+    const nameByGlobal = this.getNameByGlobal(name)
+
+    if (this.data[nameByGlobal]) {
+      return this.data[nameByGlobal]
+    }
+
+    return undefined
   }
 
   /**
@@ -515,6 +502,7 @@ export class TranslateInstance {
    * @param list list of translations / список переводов
    * @param cache list of requested codes / список запрошенных кодов
    * @param location original batch location / исходный регион партии
+   * @returns void / ничего не возвращает
    */
   protected makeList(
     list: Record<string, string>,
@@ -524,5 +512,24 @@ export class TranslateInstance {
     cache.forEach((name) => {
       this.data[this.getName(name, location)] = list?.[name] ?? ''
     })
+  }
+
+  /**
+   * Replaces the text with the specified values.
+   *
+   * Заменяет текст на указанные значения.
+   * @param text text to replace / текст для замены
+   * @param replacement values for replacement / значения для замены
+   * @returns replaced text / замененный текст
+   */
+  protected replacement(
+    text: string,
+    replacement?: string[] | Record<string, string | number>
+  ): string {
+    if (replacement) {
+      return applyTemplate(text, replacement)
+    }
+
+    return text
   }
 }

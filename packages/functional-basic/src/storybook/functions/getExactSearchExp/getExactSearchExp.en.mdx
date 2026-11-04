@@ -9,7 +9,7 @@ A utility that builds a case-insensitive `RegExp` for an exact phrase match (wit
 Unlike `getSearchExp`, this function matches the entire phrase as a single contiguous substring (with special characters escaped) without splitting it into separate words.
 
 **Parameters:**
-- `search: string` — The search string for exact phrase matching.
+- `search?: unknown` — (optional) The search string or value for exact phrase matching.
 
 **Returns:**
 `RegExp` — A regular expression with the `i` flag (case-insensitive) and pattern `(:value)`.

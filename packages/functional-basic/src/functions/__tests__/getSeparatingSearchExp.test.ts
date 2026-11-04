@@ -258,8 +258,8 @@ describe('getSeparatingSearchExp', () => {
     })
 
     it('should return /(?!)/ for null and undefined inputs safely', () => {
-      const searchExpressionNull = getSeparatingSearchExp(null as unknown as string)
-      const searchExpressionUndefined = getSeparatingSearchExp(undefined as unknown as string)
+      const searchExpressionNull = getSeparatingSearchExp(null)
+      const searchExpressionUndefined = getSeparatingSearchExp(undefined)
 
       expect(searchExpressionNull.toString()).toBe('/(?!)/')
       expect(searchExpressionUndefined.toString()).toBe('/(?!)/')
@@ -328,7 +328,7 @@ describe('getSeparatingSearchExp', () => {
 
   describe('Non-string inputs and type coercion', () => {
     it('should safely handle number 0 as a valid search query', () => {
-      const searchExpression = getSeparatingSearchExp(0 as unknown as string)
+      const searchExpression = getSeparatingSearchExp(0)
 
       expect(searchExpression.source).toBe('(0)')
       expect(searchExpression.test('Room 0')).toBe(true)
@@ -337,16 +337,16 @@ describe('getSeparatingSearchExp', () => {
     })
 
     it('should safely handle positive and negative numbers', () => {
-      const searchExpressionPositive = getSeparatingSearchExp(98765 as unknown as string)
-      const searchExpressionNegative = getSeparatingSearchExp(-100 as unknown as string)
+      const searchExpressionPositive = getSeparatingSearchExp(98765)
+      const searchExpressionNegative = getSeparatingSearchExp(-100)
 
       expect(searchExpressionPositive.test('Code 98765')).toBe(true)
       expect(searchExpressionNegative.test('Offset -100')).toBe(true)
     })
 
     it('should safely handle boolean values', () => {
-      const searchExpressionFalse = getSeparatingSearchExp(false as unknown as string)
-      const searchExpressionTrue = getSeparatingSearchExp(true as unknown as string)
+      const searchExpressionFalse = getSeparatingSearchExp(false)
+      const searchExpressionTrue = getSeparatingSearchExp(true)
 
       expect(searchExpressionFalse.source).toBe('(false)')
       expect(searchExpressionTrue.source).toBe('(true)')
@@ -359,7 +359,7 @@ describe('getSeparatingSearchExp', () => {
         toString: () => 'custom query'
       }
 
-      const searchExpression = getSeparatingSearchExp(customValue as unknown as string)
+      const searchExpression = getSeparatingSearchExp(customValue)
 
       expect(searchExpression.test('custom')).toBe(true)
       searchExpression.lastIndex = 0

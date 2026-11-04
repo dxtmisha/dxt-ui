@@ -4,6 +4,7 @@
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { QueryInstance } from '../QueryInstance'
+import { ServerStorage } from '../ServerStorage'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 
 const mockLocation = {
@@ -117,6 +118,7 @@ describe('QueryInstance', () => {
 
   it('should not update location if isDomRuntime === false', () => {
     vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
+    ServerStorage.init(() => ({}))
     queryInstance.set('ssrKey', 'ssrValue')
     expect(mockHistory.replaceState).not.toHaveBeenCalled()
   })
@@ -169,5 +171,24 @@ describe('QueryInstance', () => {
     expect(queryInstance.reloadTimer).toBeUndefined()
 
     vi.useRealTimers()
+  })
+
+  it('should handle popstate event listener and reload state from URL', () => {
+    const watcher = vi.fn()
+    queryInstance.get('page')
+    queryInstance.addWatch('page', watcher)
+
+    expect(addEventListener).toHaveBeenCalledWith('popstate', expect.any(Function))
+    const popstateListener = vi.mocked(addEventListener).mock.calls.find(
+      call => call[0] === 'popstate'
+    )?.[1] as (() => void) | undefined
+
+    expect(popstateListener).toBeDefined()
+
+    mockLocation.search = '?page=5'
+    popstateListener?.()
+
+    expect(queryInstance.get('page')).toBe(5)
+    expect(watcher).toHaveBeenCalledWith(5)
   })
 })

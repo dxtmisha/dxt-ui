@@ -183,7 +183,7 @@ export class SearchList<
    * @param options new options / новые опции
    * @returns this instance / данный экземпляр
    */
-  setOptions(options: SearchOptions): this {
+  setOptions(options?: SearchOptions): this {
     this.options.setOptions(options)
     this.matcher.update()
 

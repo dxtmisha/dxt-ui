@@ -25,7 +25,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `options?: SearchOptions` — конфигурация поиска.
 
 ```typescript
-import { SearchList } from '@dxtmisha/functional'
+import { SearchList } from '@dxtmisha/functional-basic'
 
 const mockData = [
   { id: 1, name: 'Search Engine', category: 'Web' },
@@ -76,7 +76,7 @@ results.forEach(item => {
 - `setList(list: T[]): this` — Устанавливает новый список данных.
 - `setColumns(columns?: string[]): this` — Устанавливает новые столбцы поиска.
 - `setValue(value?: string): this` — Устанавливает новое значение поиска и инициирует обновление сопоставителя.
-- `setOptions(options: SearchOptions): this` — Устанавливает новые параметры поиска.
+- `setOptions(options?: SearchOptions): this` — Устанавливает новые параметры поиска.
 
 ## Типы
 

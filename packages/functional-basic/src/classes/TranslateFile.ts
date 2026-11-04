@@ -78,16 +78,6 @@ export class TranslateFile {
   }
 
   /**
-   * Returns the location.
-   *
-   * Возвращает местоположение.
-   * @returns location / местоположение
-   */
-  getLocation(): string {
-    return executeFunction(this.location)
-  }
-
-  /**
    * Returns translations for a fixed location and language, preserving them across asynchronous loading.
    *
    * Возвращает переводы для заданных региона и языка, сохраняя их при асинхронной загрузке.
@@ -110,10 +100,21 @@ export class TranslateFile {
   }
 
   /**
+   * Returns the location.
+   *
+   * Возвращает местоположение.
+   * @returns location / местоположение
+   */
+  getLocation(): string {
+    return executeFunction(this.location)
+  }
+
+  /**
    * Adds a list of files with translations and clears stale cache for updated keys.
    *
    * Добавляет список файлов с переводами и очищает устаревший кэш для обновляемых ключей.
    * @param data list of files / список файлов
+   * @returns void / ничего не возвращает
    */
   add(data: TranslateDataFile): void {
     forEach(data, (file, key) => {

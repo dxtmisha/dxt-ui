@@ -60,16 +60,6 @@ export class ScrollbarWidth {
   }
 
   /**
-   * Returns the storage for scroll width.
-   *
-   * Возвращает хранилище для ширины скролла.
-   * @returns DataStorage instance / экземпляр DataStorage
-   */
-  static getStorage(): DataStorage<number> {
-    return new DataStorage<number>('__ui:scrollbar__', true)
-  }
-
-  /**
    * Returns the calculate flag, indicating if width calculation is in progress.
    *
    * Возвращает флаг вычисления, указывающий, идет ли расчет ширины.
@@ -77,6 +67,16 @@ export class ScrollbarWidth {
    */
   static getCalculate(): boolean {
     return this.calculate
+  }
+
+  /**
+   * Returns the storage for scroll width.
+   *
+   * Возвращает хранилище для ширины скролла.
+   * @returns DataStorage instance / экземпляр DataStorage
+   */
+  static getStorage(): DataStorage<number> {
+    return new DataStorage<number>('__ui:scrollbar__', true)
   }
 
   /**

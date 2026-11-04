@@ -43,6 +43,7 @@ const filter = Query.get('filter') // 'active' (string)
 - `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Отписывается от изменений.
 
 ### Управление
+- `static reset(): void` — Уничтожает экземпляр, очищает таймеры и удаляет слушатели событий.
 - `static reload(): void` — Принудительно синхронизирует состояние с текущим URL query-параметрами.
 
 ## Примеры

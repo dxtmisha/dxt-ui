@@ -166,10 +166,11 @@ export class ResumableTimer {
    * @returns this instance / текущий экземпляр
    */
   protected go(): this {
-    this.callback()
-
     this.timerId = undefined
     this.completed = true
+    this.remaining = 0
+
+    this.callback()
 
     return this
   }

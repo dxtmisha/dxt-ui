@@ -29,8 +29,10 @@ const width = await ScrollbarWidth.get()
 
 ## Methods
 
-- `get(): Promise<number>` — scrollbar width in pixels. On first call, measures via a temporary DOM element.
 - `is(): Promise<boolean>` — `true` if the scrollbar is overlay (width ≤ 8px, macOS / mobile).
+- `get(): Promise<number>` — scrollbar width in pixels. On first call, measures via a temporary DOM element.
+- `getCalculate(): boolean` — returns a flag indicating if width calculation is currently in progress.
+- `getStorage(): DataStorage<number>` — returns the `DataStorage` instance used for caching the scrollbar width.
 
 ## Example
 

@@ -9,7 +9,7 @@ Tiện ích tạo một `RegExp` không phân biệt chữ hoa/thường để k
 Khác với `getSearchExp`, hàm này khớp với toàn bộ cụm từ dưới dạng một chuỗi con liền mạch (với các ký tự đặc biệt được escape) mà không tách nó thành các từ riêng biệt.
 
 **Tham số:**
-- `search: string` — Chuỗi tìm kiếm để khớp chính xác cụm từ.
+- `search?: unknown` — (tùy chọn) Chuỗi tìm kiếm hoặc giá trị để khớp chính xác cụm từ.
 
 **Trả về:**
 `RegExp` — Biểu thức chính quy với cờ `i` (không phân biệt chữ hoa/thường) và mẫu `(:value)`.

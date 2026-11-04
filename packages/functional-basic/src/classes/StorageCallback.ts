@@ -11,7 +11,7 @@ import { ServerStorage } from './ServerStorage'
 const getItems = (): Record<string, StorageCallback> => {
   return ServerStorage.get<Record<string, StorageCallback>>(
     '__ui:storage-callback__',
-    () => ({})
+    () => Object.create(null)
   )
 }
 
