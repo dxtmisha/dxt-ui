@@ -1,5 +1,8 @@
+// @vitest-environment node
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { ApiInstance } from '../ApiInstance'
 import { ErrorCenterHandler } from '../ErrorCenterHandler'
+import { ErrorCenterInstance } from '../ErrorCenterInstance'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 import type { ErrorCenterCauseItem, ErrorCenterHandlerList } from '../../types/errorCenterTypes'
 
@@ -15,6 +18,7 @@ describe('ErrorCenterHandler', () => {
 
   afterEach(() => {
     vi.restoreAllMocks()
+    vi.unstubAllGlobals()
   })
 
   it('should initialize with optional handlers and isConsole flag in constructor', () => {
@@ -65,7 +69,7 @@ describe('ErrorCenterHandler', () => {
     expect(handler.has('group2')).toBe(true)
   })
 
-  it('should trigger handlers on "on" call and log details to console', () => {
+  it('should give handlers the full cause and log explicitly supplied details', () => {
     const callback = vi.fn()
     const cause: ErrorCenterCauseItem = {
       code: 'ERR001',
@@ -81,7 +85,61 @@ describe('ErrorCenterHandler', () => {
     expect(callback).toHaveBeenCalledWith(cause)
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center: ERR001')
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center/message: ', 'Test error')
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center/details: ', { reason: 'timeout' })
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center/details: ', cause.details)
+  })
+
+  it('should preserve the HTTP result and notify the other subscribers when one throws', async () => {
+    const errorCenter = new ErrorCenterInstance(undefined, handler)
+    const groupHandler = vi.fn()
+    const globalCallback = vi.fn()
+    errorCenter.addHandler('api', () => {
+      throw new Error('subscriber-private-marker')
+    })
+    errorCenter.addHandler('api', groupHandler)
+    errorCenter.addCallback(globalCallback)
+    const api = new ApiInstance('https://example.test/api/', { errorCenterClass: errorCenter })
+    api.setOrigin('https://example.test')
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({ success: false }, { status: 401 })))
+
+    await expect(api.get({ path: 'sign-in' })).resolves.toMatchObject({ success: false })
+    expect(groupHandler).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ code: 'unauthorized' }))
+    expect(globalCallback).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ code: 'unauthorized' }))
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center: subscriberFailed')
+    expect(consoleErrorSpy.mock.calls.flat().join('\n')).not.toContain('subscriber-private-marker')
+  })
+
+  it('should isolate an async rejection without delaying the next subscriber', async () => {
+    const nextCallback = vi.fn()
+    const cause: ErrorCenterCauseItem = { code: 'ASYNC_TEST' }
+    handler.addCallback(async () => {
+      throw new Error('async subscriber failed')
+    })
+    handler.addCallback(nextCallback)
+
+    expect(handler.on(cause)).toBe(handler)
+    expect(nextCallback).toHaveBeenCalledExactlyOnceWith(cause)
+
+    await vi.waitFor(() => expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center: subscriberFailed'))
+  })
+
+  it('should continue dispatch if the console filter throws while reporting a subscriber failure', () => {
+    const nextCallback = vi.fn()
+    const cause: ErrorCenterCauseItem = { code: 'FILTER_TEST' }
+    handler.setIsConsole((entry) => {
+      if (entry.code === 'subscriberFailed') {
+        throw new Error('console filter failed')
+      }
+
+      return false
+    })
+    handler.addCallback(() => {
+      throw new Error('subscriber failed')
+    })
+    handler.addCallback(nextCallback)
+
+    expect(handler.on(cause)).toBe(handler)
+    expect(nextCallback).toHaveBeenCalledExactlyOnceWith(cause)
+    expect(consoleErrorSpy).not.toHaveBeenCalled()
   })
 
   it('should log stack trace in non-DOM runtime and omit trace in DOM runtime', () => {

@@ -7,13 +7,29 @@ import {
 } from '@dxtmisha/functional-basic'
 
 /**
+ * Return interface for `useSearchValueRef` composable /
+ * Интерфейс возвращаемого значения композабла `useSearchValueRef`
+ */
+export interface UseSearchValueRef {
+  /** Current search value / Текущее значение поиска */
+  search: Ref<string>
+  /** Search value with applied delay / Значение поиска с примененной задержкой */
+  searchDelay: Ref<string>
+  /** Loading status during delay / Статус загрузки во время задержки */
+  loading: Ref<boolean>
+}
+
+/**
  * Composable for managing search value state and handling delays.
  *
  * Композабл для управления состоянием значения поиска и обработки задержек.
  * Он изолирует логику debounce, предоставляя `searchDelay` (строка с задержкой)
  * и `loading` (флаг ожидания), которые затем читаются классом `SearchList` или `useSearchRef`.
+ * @template T search item type / тип элемента поиска
+ * @template K search columns type / тип колонок поиска
  * @param item search list instance / экземпляр поиска `SearchList`
  * @param value reactive search string / реактивная строка поиска (опционально)
+ * @returns reactive search value state and delay status / реактивное состояние значения поиска и статус задержки
  */
 export function useSearchValueRef<
   T extends SearchItem,
@@ -21,18 +37,18 @@ export function useSearchValueRef<
 >(
   item: SearchList<T, K>,
   value?: Ref<string>
-) {
-  /** reactive search string / реактивная строка поиска */
+): UseSearchValueRef {
+  /** Reactive search string / Реактивная строка поиска */
   const search = value ?? ref('')
 
-  /** search value with applied delay / значение поиска с примененной задержкой */
+  /** Search value with applied delay / Значение поиска с примененной задержкой */
   const searchDelay = ref(search.value)
 
-  /** loading status during delay / статус загрузки во время задержки */
+  /** Loading status during delay / Статус загрузки во время задержки */
   const loading = ref<boolean>(false)
 
-  /** timeout for delay / таймаут для задержки */
-  let timeout: any
+  /** Timeout for delay / Таймаут для задержки */
+  let timeout: ReturnType<typeof setTimeout> | undefined
 
   watch(search, (_, __, onCleanup) => {
     const delay = item.getOptions().getDelay()

@@ -2,10 +2,10 @@ import { isObjectNotArray } from './isObjectNotArray'
 
 /**
  * Creates an object without a prototype (Object.create(null)).
- * Optionally copies properties from the provided data object into the new prototype-less object.
+ * Optionally copies the source object's own enumerable properties.
  *
  * Создает объект без прототипа (Object.create(null)).
- * При необходимости копирует свойства из переданного объекта данных в новый объект без прототипа.
+ * При необходимости копирует собственные перечисляемые свойства исходного объекта.
  * @param data optional initial object data / необязательные начальные данные объекта
  * @returns prototype-less object / объект без прототипа
  */

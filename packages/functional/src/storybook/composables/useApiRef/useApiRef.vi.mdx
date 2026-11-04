@@ -38,7 +38,8 @@ Phương thức:
 - `isLoading(): boolean` — Phương thức đồng bộ trả về giá trị hiện tại của cờ `loading`.
 - `isReading(): boolean` — Phương thức đồng bộ trả về giá trị hiện tại của cờ `reading`.
 - `getItem(): ApiData<R> | undefined` — Phương thức để lấy giá trị hiện tại của `data` mà không tạo ra phụ thuộc phản ứng.
-- `init(awaitFetch?: boolean): Promise<void>` — Phương thức để khởi tạo yêu cầu và watcher một cách rõ ràng. Tự động kích hoạt khi truy cập `data` lần đầu. Nếu `awaitFetch` là `true`, nó sẽ đợi yêu cầu đầu tiên hoàn thành.
+- `init(): void` — Phương thức để khởi tạo yêu cầu và watcher một cách rõ ràng. Tự động kích hoạt khi truy cập `data` hoặc `item` lần đầu.
+- `initSsr(): void` — Phương thức để khởi tạo ở phía máy chủ. Sử dụng `onServerPrefetch` để lấy dữ liệu trong quá trình SSR.
 - `reset(): Promise<void>` — Phương thức bất đồng bộ để buộc chạy lại yêu cầu. Hủy yêu cầu hiện tại (nếu có) và bắt đầu một yêu cầu mới.
 - `stop(): void` — Dừng việc theo dõi các phụ thuộc phản ứng và đặt lại `data` thành `undefined`.
 - `abort(): void` — Hủy yêu cầu HTTP hiện tại thông qua `AbortController` nội bộ, trong khi vẫn giữ lại dữ liệu đã tải trong `data`.
@@ -95,7 +96,7 @@ initSsr()
 ## Ví dụ
 
 ```typescript
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useApiRef, setApiRefGlobalWatchSource } from '@dxtmisha/functional'
 
 const userId = ref('123')
@@ -114,7 +115,7 @@ const {
   stop,
   abort
 } = useApiRef(
-  () => `users/${userId.value}`,
+  computed(() => `users/${userId.value}`),
   { method: 'GET' },
   true // Tự động chạy lại khi userId thay đổi
 )

@@ -59,7 +59,7 @@ export class ApiCache {
   static async get<T>(key: string): Promise<T | undefined> {
     const item: ApiCacheItem<T> | undefined = await this.getItemOrListener(key)
 
-    this.clearOld()
+    this.clearOld(key)
       .catch((error) => {
         ErrorCenter.on({
           group: 'api',
@@ -229,22 +229,29 @@ export class ApiCache {
   }
 
   /**
-   * Gets data from cache using listener.
+   * Gets data from cache, preferring an unexpired local value.
    *
-   * Получает данные из кэша с использованием слушателя.
+   * Получает данные из кэша, отдавая приоритет непросроченному локальному значению.
    * @param key cache key / ключ кэша
    * @returns cache item or undefined / элемент кэша или undefined (если не существует или истек срок действия)
    */
   protected static async getItemOrListener(key: string): Promise<ApiCacheItem | undefined> {
-    const item = this.getListener
-      ? await this.getListener(key)
-      : this.getList()[key]
+    const localItem = this.getList()[key]
 
-    if (this.isAge(item)) {
-      return item
+    if (
+      localItem?.value !== undefined
+      && this.isAge(localItem)
+    ) {
+      return localItem
     }
 
-    return undefined
+    if (!this.getListener) {
+      return undefined
+    }
+
+    const externalItem = await this.getListener(key)
+
+    return this.isAge(externalItem) ? externalItem : undefined
   }
 
   /**
@@ -298,12 +305,17 @@ export class ApiCache {
   }
 
   /**
-   * Clears old in-memory cache data.
+   * Clears expired cache entries except for the key being read.
+   * A sweep triggered by another key can still delete an entry refreshed during asynchronous removal.
+   * The resulting cache miss is acceptable because the next successful API request repopulates the entry.
    *
-   * Очищает старый кэш в памяти.
+   * Удаляет просроченные записи кэша, пропуская ключ текущего чтения.
+   * Очистка, запущенная для другого ключа, всё ещё может удалить запись, обновлённую во время асинхронного удаления.
+   * Такой промах допустим, поскольку следующий успешный запрос к API снова заполнит кэш.
+   * @param skipKey cache key to skip during this sweep / ключ кэша, который пропускается при этой очистке
    * @returns Promise<void> / Promise без возвращаемого значения (удаляет устаревшие элементы из кэша)
    */
-  protected static async clearOld(): Promise<void> {
+  protected static async clearOld(skipKey?: string): Promise<void> {
     if (this.stepAgeClearOld-- > 0) {
       return
     }
@@ -314,7 +326,10 @@ export class ApiCache {
       for (const key in this.items) {
         const item = this.items[key]
 
-        if (!this.isAge(item)) {
+        if (
+          key !== skipKey
+          && !this.isAge(item)
+        ) {
           await this.removeItemOrListener(key)
         }
       }

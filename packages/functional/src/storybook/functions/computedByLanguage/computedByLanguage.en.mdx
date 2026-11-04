@@ -21,7 +21,7 @@ The function performs checks in the following order:
 - `debugOptions?: DebuggerOptions` — Options used for debugging reactive computations, supported by Vue.js.
 
 **Returns:**
-`ComputedRef<T | D>` — A reactive computed property.
+`ComputedRef<T | (D extends () => infer DR ? DR : D)>` — A reactive computed property.
 
 ```typescript
 import { computedByLanguage } from '@dxtmisha/functional'

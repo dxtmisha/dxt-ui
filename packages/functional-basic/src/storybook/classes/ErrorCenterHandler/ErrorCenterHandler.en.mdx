@@ -10,8 +10,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 - **Handler Registration** — convenient addition of callback functions to specific groups.
 - **Global Handler** — support for the `undefined` group, which catches any error without a specific handler.
-- **Sequential Execution** — triggers all registered functions in the order they were added.
-- **Configurable Logging** — outputs error details to the console with support for custom filtering callbacks or complete suppression.
+- **Subscriber Isolation** — starts group handlers followed by global callbacks, each in registration order. A throw or rejected promise produces a `subscriberFailed` diagnostic without interrupting dispatch.
+- **Configurable Logging** — console output includes the code, message, supplied details, and a server stack trace.
 
 ## Initialization
 
@@ -59,7 +59,7 @@ const handlers = new ErrorCenterHandler(
 Group name (`string`) or `undefined` for global interception.
 
 #### `ErrorCenterHandlerCallback`
-Callback function: `(cause: ErrorCenterCauseItem) => void`.
+Callback function `(cause: ErrorCenterCauseItem) => void | Promise<void>`.
 
 #### `ErrorCenterHandlerIsConsole`
 Console logging configuration option: `boolean | ((cause: ErrorCenterCauseItem) => boolean)`.

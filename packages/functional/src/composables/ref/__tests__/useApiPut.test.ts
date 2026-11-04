@@ -63,12 +63,15 @@ describe('useApiPut', () => {
 
   it('should apply transformation', async () => {
     vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ raw: 'data' })
-    const transformation = (data: any) => ({ transformed: data.raw })
+    const transformation = (data: { raw: string, transformed?: string }) => ({ raw: data.raw, transformed: data.raw })
 
-    const { send } = useApiPut({ path: 'test/path', transformation })
+    const { send } = useApiPut({
+      path: 'test/path',
+      transformation
+    })
     const result = await send()
 
-    expect(result).toEqual({ transformed: 'data' })
+    expect(result).toEqual({ raw: 'data', transformed: 'data' })
   })
 
   it('should call action callback', async () => {

@@ -43,7 +43,9 @@ import type { ApiOptions } from '../../types/apiTypes'
  * )
  * ```
  *
- * @param path path to request (can be a Ref or Getter) / путь к запросу (может быть Ref или Getter)
+ * @template R transformed response data type / тип преобразованных данных ответа
+ * @template T raw response data type before transformation / тип исходных данных ответа до трансформации
+ * @param path path to request (can be a Ref, ComputedRef, or string) / путь к запросу (может быть Ref, ComputedRef или строкой)
  * @param options data for the request (headers, method, etc.) / данные для запроса (заголовки, метод и т.д.)
  * @param reactivity should reactivity be enabled (automatically re-fetch on deps change) /
  * включить ли реактивность (автоматически повторять запрос при изменении зависимостей)
@@ -69,6 +71,7 @@ import type { ApiOptions } from '../../types/apiTypes'
  * нужно ли останавливать запрос и удалять данные из кеша при размонтировании компонента
  * @param apiInstance Api instance (defaults to global Api instance) /
  * Экземпляр Api (по умолчанию используется глобальный экземпляр Api)
+ * @returns reactive API request state and control methods / реактивное состояние API-запроса и методы управления
  */
 export function useApiAsyncRef<R, T = R>(
   path?: RefOrNormal<string | undefined>,

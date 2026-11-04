@@ -21,7 +21,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `debugOptions?: DebuggerOptions` — Опции отладки реактивных вычислений Vue.js.
 
 **Возвращает:**
-`ComputedRef<T | D>` — Реактивное вычисляемое свойство.
+`ComputedRef<T | (D extends () => infer DR ? DR : D)>` — Реактивное вычисляемое свойство.
 
 ```typescript
 import { computedByLanguage } from '@dxtmisha/functional'

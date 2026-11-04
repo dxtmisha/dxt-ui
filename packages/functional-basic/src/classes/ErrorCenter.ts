@@ -1,4 +1,5 @@
 import { ErrorCenterInstance } from './ErrorCenterInstance'
+import { ServerStorage } from './ServerStorage'
 import { errorCauseList } from '../media/errorCauseList'
 
 import type { ErrorCenterHandler } from './ErrorCenterHandler'
@@ -11,15 +12,15 @@ import type {
   ErrorCenterHandlerList
 } from '../types/errorCenterTypes'
 
+/** Key for the error center in server storage / Ключ центра ошибок в серверном хранилище */
+const ERROR_CENTER_INSTANCE_KEY = '__ui:error-center-instance__'
+
 /**
  * Class for managing error storage and handling.
  *
  * Класс для управления хранилищем ошибок и их обработкой.
  */
 export class ErrorCenter {
-  /** Instance of the error center / Экземпляр центра ошибок */
-  protected static item?: ErrorCenterInstance
-
   /**
    * Checks if a cause with specific code exists.
    *
@@ -61,17 +62,14 @@ export class ErrorCenter {
   }
 
   /**
-   * Returns the global singleton instance of ErrorCenterInstance.
+   * Returns the ErrorCenterInstance for the active storage context.
    *
-   * Возвращает глобальный экземпляр синглтона ErrorCenterInstance.
+   * Возвращает экземпляр ErrorCenterInstance для текущего контекста хранилища.
    * @returns ErrorCenterInstance instance / экземпляр ErrorCenterInstance
    */
   static getItem(): ErrorCenterInstance {
-    if (!this.item) {
-      this.item = new ErrorCenterInstance(errorCauseList)
-    }
-
-    return this.item
+    // The error center also reports storage errors / Центр ошибок сам сообщает об ошибках хранилища
+    return ServerStorage.get(ERROR_CENTER_INSTANCE_KEY, () => new ErrorCenterInstance(errorCauseList), false, false)
   }
 
   /**

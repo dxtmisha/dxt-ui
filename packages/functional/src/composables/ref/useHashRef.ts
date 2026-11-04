@@ -11,8 +11,9 @@ import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
  * Returns a list of active HashRef instances for the current request context.
  *
  * Возвращает список активных экземпляров HashRef для контекста текущего запроса.
+ * @returns dictionary of HashRef instances / словарь экземпляров HashRef
  */
-const getItems = () => {
+const getItems = (): Record<string, Ref> => {
   return ServerStorage.get<Record<string, Ref>>(
     '__ui:hash-ref__',
     () => ({})
@@ -25,6 +26,7 @@ const getItems = () => {
  * Создает реактивную переменную для управления хэшем.
  * @param name value name / название значения
  * @param defaultValue default value / значение по умолчанию
+ * @returns reactive shallow reference for the hash value / поверхностная реактивная ссылка на значение хэша
  */
 export function useHashRef<T>(
   name: string,

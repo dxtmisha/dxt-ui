@@ -179,12 +179,14 @@ describe('ApiResponse', () => {
   it('should execute response factory function with request payload and log in devMode', async () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
 
-    apiResponse.add({
+    const factory = vi.fn((request?: ApiFetch['request']) => ({ resolved: true, request }))
+    const item: ApiResponseItem = {
       path: 'func-response',
       method: ApiMethodItem.get,
       request: '*any',
-      response: (request?: ApiFetch['request']) => ({ resolved: true, request })
-    })
+      response: factory
+    }
+    apiResponse.add(item)
 
     const result = await apiResponse.emulator<{ resolved: boolean, request: ApiFetch['request'] }>({
       path: 'func-response',
@@ -195,6 +197,7 @@ describe('ApiResponse', () => {
     })
 
     expect(result).toEqual({ resolved: true, request: { page: 1 } })
+    expect(factory.mock.contexts[0]).toBe(item)
     expect(warnSpy).toHaveBeenCalledWith(
       'Response data:',
       'func-response',

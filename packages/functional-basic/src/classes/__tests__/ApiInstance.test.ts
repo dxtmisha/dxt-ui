@@ -1,13 +1,14 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ApiInstance } from '../ApiInstance'
-import { type ApiFetch, ApiMethodItem } from '../../types/apiTypes'
+import { type ApiData, type ApiFetch, ApiMethodItem } from '../../types/apiTypes'
 import { Loading } from '../Loading'
 import { ErrorCenter } from '../ErrorCenter'
 import { ApiCache } from '../ApiCache'
 import { ApiDefault } from '../ApiDefault'
 import { ApiErrorItem } from '../ApiErrorItem'
 import { ApiResponse } from '../ApiResponse'
+import { isApiSuccess } from '../../functions/isApiSuccess'
 import * as isOnLineModule from '../../functions/isOnLine'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 
@@ -450,6 +451,16 @@ describe('ApiInstance', () => {
     fetchMock.mockRejectedValueOnce(new DOMException('User aborted', 'AbortError'))
     await expect(api.get({ path: 'abort-error-test' })).rejects.toThrow('User aborted')
     expect(errorCenterSpy).not.toHaveBeenCalled()
+  })
+
+  it.each([false, 0, ''])('should normalize root JSON value %j to an unsuccessful response', async (value) => {
+    fetchMock.mockResolvedValueOnce(Response.json(value))
+
+    const result = await api.get<ApiData<unknown>>({ path: 'unsuccessful-root-value' })
+
+    expect(result).toMatchObject({ success: false, statusObject: { status: 200 } })
+    expect(isApiSuccess(result)).toBe(false)
+    expect(api.getStatus().getResponse()).toBe(value)
   })
 
   it('should support custom queryReturn to bypass standard response parsing', async () => {

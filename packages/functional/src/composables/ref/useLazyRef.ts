@@ -6,12 +6,19 @@ import {
 } from 'vue'
 import { getElementId, isDomRuntime } from '@dxtmisha/functional-basic'
 
+/** Lazy tracking item state / Состояние отслеживаемого ленивого элемента */
 export type LazyItem = {
+  /** Visibility status / Статус видимости */
   status: ShallowRef<boolean>
+  /** Intersection ratio / Коэффициент пересечения */
   ratio: ShallowRef<number>
+  /** Observer entry / Запись наблюдателя */
   entry: ShallowRef<IntersectionObserverEntry | undefined>
+  /** Watcher stop function / Функция остановки наблюдателя */
   stopWatch: () => void
 }
+
+/** Dictionary of lazy items / Словарь ленивых элементов */
 export type LazyList = Record<string, LazyItem>
 
 /**
@@ -20,6 +27,8 @@ export type LazyList = Record<string, LazyItem>
  *
  * Хук для инициализации отслеживания появления элемента на экране.
  * Регистрации одного элемента разделяют наблюдение, сохраняя независимое состояние и очистку.
+ * @param options IntersectionObserver options / настройки IntersectionObserver
+ * @returns lazy tracking controller / контроллер ленивого отслеживания
  */
 export const useLazyRef = (
   options: IntersectionObserverInit = {
@@ -46,6 +55,12 @@ export const useLazyRef = (
       )
     : undefined
 
+  /**
+   * Removes all registrations of an element from tracking.
+   *
+   * Удаляет все регистрации элемента из отслеживания.
+   * @param element tracked element / отслеживаемый элемент
+   */
   const remove = (element?: HTMLElement): void => {
     if (element) {
       const id = getElementId(element)
@@ -57,6 +72,7 @@ export const useLazyRef = (
   }
 
   return {
+    /** Native IntersectionObserver instance / Нативный экземпляр IntersectionObserver */
     intersectionObserver,
 
     /**
@@ -87,7 +103,7 @@ export const useLazyRef = (
      * Adding an element for tracking.
      *
      * Добавление элемента для отслеживания.
-     * @param element element for tracking/ элемента для отслеживания
+     * @param element element for tracking / элемент для отслеживания
      * @returns independent visibility status / независимый статус видимости
      */
     addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean> {

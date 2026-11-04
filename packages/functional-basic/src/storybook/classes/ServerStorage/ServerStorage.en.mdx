@@ -36,6 +36,7 @@ Retrieves a value by key. If it doesn't exist, creates it using the default valu
 - `key: string` — unique storage key.
 - `defaultValue?: (() => T) | T` — default value or function that returns the default value if not found.
 - `hydration: boolean` — if `true`, the value will be included in the JSON for the client (default: `false`).
+- `reportContextError: boolean` — reports a missing server context by default. Bootstrap code can pass `false` when resolving the error reporter itself.
 
 **Returns:** `T` — stored value.
 

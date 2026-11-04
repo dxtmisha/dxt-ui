@@ -8,6 +8,8 @@ Tạo chuỗi phần tử HTML `<script type="application/json">` an toàn chố
 
 ## Tính năng chính
 
+- **Mở chú thích HTML** — Mã hóa `<!--` thành `\u003c!--` để đoạn HTML đã lưu không nuốt phần đánh dấu sau script hydration. Khi đọc JSON, văn bản gốc được khôi phục.
+
 - **Ngăn chặn XSS & Đóng thẻ script sớm** — Vô hiệu hóa các cuộc tấn công phá vỡ ngữ cảnh script HTML bằng cách thoát toàn bộ các biến thể của thẻ đóng `</script>` thành `<\\/script>` (bao gồm chữ hoa/thường `</Script>`, khoảng trắng cuối `</script >`, dấu gạch chéo cuối `</script/>` và thẻ có thuộc tính `</script attr="...">`), ngăn parser HTML của trình duyệt đóng script trước thời hạn.
 - **Thoát ký tự thuộc tính `id` mạnh mẽ** — Tận dụng tiện ích `encodeAttribute` để thoát toàn diện các ký tự đặc biệt (`"`, `<`, `>`, `&`, `'`) trong thuộc tính định danh, loại bỏ hoàn toàn nguy cơ thoát thuộc tính và tiêm thẻ HTML.
 - **Tuần tự hóa JSON an toàn** — Chuyển đổi an toàn các giá trị `undefined`, hàm, symbol và `null` thành chuỗi `'null'`, đảm bảo đầu ra JSON luôn hợp lệ.

@@ -6,7 +6,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 `ErrorCenter` là công cụ trung tâm để quản lý tất cả các lỗi trong ứng dụng. Nó cho phép bạn đăng ký các nguyên nhân lỗi có thể xảy ra ở một nơi, cấu hình phản ứng với chúng (ví dụ: hiển thị thông báo) và kích hoạt chúng từ bất kỳ phần nào của mã.
 
-Lớp này hoạt động như một vỏ bọc tĩnh (Static Bridge), chuyển tất cả các yêu cầu đến một `ErrorCenterInstance` duy nhất.
+Lớp tĩnh dùng `ServerStorage` để tái sử dụng một `ErrorCenterInstance` trong mỗi yêu cầu SSR. Trong trình duyệt và trong Node.js ngoài yêu cầu, lớp dùng bộ nhớ của môi trường hiện tại.
 
 ## Các phương thức
 
@@ -17,12 +17,12 @@ Lớp này hoạt động như một vỏ bọc tĩnh (Static Bridge), chuyển 
 - `has(code: string, group?: ErrorCenterGroup): boolean` — Kiểm tra xem lỗi đã được đăng ký chưa.
 - `get(code: string, group?: ErrorCenterGroup): ErrorCenterCauseItem | undefined` — Trả về dữ liệu lỗi từ sổ đăng ký.
 - `getHandler(): ErrorCenterHandler` — Trả về bộ điều phối trình xử lý nội bộ.
-- `getItem(): ErrorCenterInstance` — Trả về thực thể nội bộ của lớp.
+- `getItem(): ErrorCenterInstance` — Trả về thực thể của ngữ cảnh lưu trữ hiện tại.
 
 ### Cấu hình và Vòng đời
 - `add(cause: ErrorCenterCauseItem): void` — Thêm một nguyên nhân lỗi.
 - `addList(causes: ErrorCenterCauseList): void` — Thêm một danh sách lỗi (đăng ký hàng loạt).
-- `addCallback(callback: ErrorCenterHandlerCallback): void` — Đăng ký callback toàn cục cho mọi lỗi.
+- `addCallback(callback: ErrorCenterHandlerCallback): void` — Đăng ký callback cho mọi lỗi của thực thể hiện tại.
 - `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Đăng ký phản ứng cho một nhóm lỗi.
 - `addHandlerList(handlers: ErrorCenterHandlerList): void` — Đăng ký hàng loạt nhiều trình xử lý.
 - `remove(code: string, group?: ErrorCenterGroup): void` — Xóa nguyên nhân lỗi khỏi sổ đăng ký.

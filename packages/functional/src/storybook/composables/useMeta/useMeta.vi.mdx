@@ -18,6 +18,9 @@ Nên sử dụng `setTitle()`, `setDescription()` và các phương thức `set�
 - `author: Ref<string>` — thẻ meta author phản ứng.
 - `siteName: Ref<string>` — tên trang web phản ứng.
 - `getHtmlMeta(): string` — tạo chuỗi HTML cho tất cả các thẻ meta (hữu ích cho SSR).
+- `sync(): void` — đồng bộ hóa tất cả các giá trị phản ứng với trạng thái hiện tại của `MetaStatic`.
+- `update(): void` — cập nhật các giá trị `MetaStatic` bằng trạng thái phản ứng hiện tại.
+- `updateSsr(): void` — cập nhật các giá trị `MetaStatic` nếu môi trường hiện tại là SSR (không phải môi trường DOM).
 - `setTitle(value: string): void` — thiết lập tiêu đề trang.
 - `setKeywords(value: string): void` — thiết lập từ khóa.
 - `setDescription(value: string): void` — thiết lập mô tả trang.

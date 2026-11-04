@@ -6,7 +6,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 `ErrorCenter` — это центральный инструмент для управления всеми ошибками в приложении. Он позволяет в одном месте регистрировать возможные причины ошибок, настраивать реакцию на них (например, показ уведомлений) и вызывать их из любой части кода.
 
-Класс работает как статическая обертка (Static Bridge), направляя все запросы к единственному экземпляру `ErrorCenterInstance`.
+Статический фасад использует `ServerStorage` и повторно возвращает один `ErrorCenterInstance` в пределах SSR-запроса. В браузере и в Node.js вне запроса используется хранилище текущей среды в памяти.
 
 ## Методы
 
@@ -17,12 +17,12 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `has(code: string, group?: ErrorCenterGroup): boolean` — Проверяет, зарегистрирована ли ошибка.
 - `get(code: string, group?: ErrorCenterGroup): ErrorCenterCauseItem | undefined` — Возвращает данные ошибки из реестра.
 - `getHandler(): ErrorCenterHandler` — Возвращает диспетчер обработчиков.
-- `getItem(): ErrorCenterInstance` — Возвращает внутренний экземпляр класса.
+- `getItem(): ErrorCenterInstance` — Возвращает экземпляр для текущего контекста хранилища.
 
 ### Конфигурация и жизненный цикл
 - `add(cause: ErrorCenterCauseItem): void` — Добавляет одну причину ошибки.
 - `addList(causes: ErrorCenterCauseList): void` — Добавляет список ошибок (массовая регистрация).
-- `addCallback(callback: ErrorCenterHandlerCallback): void` — Регистрирует глобальный обратный вызов при любой ошибке.
+- `addCallback(callback: ErrorCenterHandlerCallback): void` — Регистрирует обратный вызов для всех ошибок текущего экземпляра.
 - `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Регистрирует реакцию на группу ошибок.
 - `addHandlerList(handlers: ErrorCenterHandlerList): void` — Пакетная регистрация нескольких обработчиков.
 - `remove(code: string, group?: ErrorCenterGroup): void` — Удаляет причину ошибки из реестра.

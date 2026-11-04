@@ -15,7 +15,7 @@ Encodes special characters in a string (`&`, `<`, `>`, `"`, `'`) into their corr
 - **Whitespace Preservation**: Preserves spaces, tabs, and newlines exactly as entered without unsolicited trimming.
 
 **Parameters:**
-- `text?: string | number | null` — The value to encode (string, number, or nullish value).
+- `text?: unknown` — A value convertible to a string. Missing and nullish values yield an empty string.
 
 **Returns:**
 `string` — The encoded string, or an empty string `''` if `null` or `undefined` is provided.

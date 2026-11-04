@@ -3,8 +3,11 @@ import { ServerStorage } from '@dxtmisha/functional-basic'
 import { useLazyRef, type LazyItem } from './useLazyRef'
 import type { RefType } from '../../types/refTypes'
 
+/** Pooled lazy observer entry by rootMargin / Запись пула ленивого наблюдателя по rootMargin */
 export type LazyItemByMargin = {
+  /** Observer root margin / Отступ области наблюдения */
   rootMargin: string
+  /** Lazy observer controller / Контроллер ленивого наблюдателя */
   item: ReturnType<typeof useLazyRef>
 }
 
@@ -12,6 +15,7 @@ export type LazyItemByMargin = {
  * Returns a list of lazy items by margin for the current request context.
  *
  * Возвращает список ленивых элементов по отступу для контекста текущего запроса.
+ * @returns list of pooled lazy controllers by margin / список пула ленивых контроллеров по отступу
  */
 const getItems = (): LazyItemByMargin[] => {
   return ServerStorage.get<LazyItemByMargin[]>(
@@ -24,7 +28,8 @@ const getItems = (): LazyItemByMargin[] => {
  * Getting a lazy item by root margin.
  *
  * Получение ленивого элемента по отступу.
- * @param rootMargin root margin for IntersectionObserver/ отступ для IntersectionObserver
+ * @param rootMargin root margin for IntersectionObserver / отступ для IntersectionObserver
+ * @returns lazy observer controller for the requested margin / контроллер ленивого наблюдателя для заданного отступа
  */
 const getItemByMargin = (rootMargin: string): ReturnType<typeof useLazyRef> => {
   const items = getItems()
@@ -48,6 +53,7 @@ const getItemByMargin = (rootMargin: string): ReturnType<typeof useLazyRef> => {
  * Несколько регистраций одного элемента используют общий observer и освобождаются независимо.
  * @param element element for tracking / элемент для отслеживания
  * @param rootMargin root margin for IntersectionObserver / отступ для IntersectionObserver
+ * @returns element visibility tracking state and cleanup / состояние отслеживания видимости элемента и функция очистки
  */
 export const useLazyItemByMarginRef = (
   element: RefType<HTMLElement | undefined>,

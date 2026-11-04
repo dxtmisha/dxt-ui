@@ -63,7 +63,7 @@ const myErrorCenter = new ErrorCenterInstance([
 - `details?: any` — дополнительные данные.
 
 #### `ErrorCenterHandlerCallback`
-- `(cause: ErrorCenterCauseItem) => void` — функция обработки.
+- `(cause: ErrorCenterCauseItem) => void | Promise<void>` — функция обработки.
 
 ## Примеры
 

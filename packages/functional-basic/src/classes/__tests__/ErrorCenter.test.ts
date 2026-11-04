@@ -1,24 +1,23 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ErrorCenter } from '../ErrorCenter'
 import { ErrorCenterInstance } from '../ErrorCenterInstance'
+import { ServerStorage } from '../ServerStorage'
 import type { ErrorCenterCauseItem, ErrorCenterHandlerList } from '../../types/errorCenterTypes'
 
 describe('ErrorCenter', () => {
   beforeEach(() => {
-    const instance = ErrorCenter.getItem()
-    // @ts-expect-error: Accessing protected member to reset singleton state
-    instance.causes = []
-    // @ts-expect-error: Accessing protected member to reset singleton state
-    instance.handler.handlers = []
-    // @ts-expect-error: Accessing protected member to reset singleton state
-    instance.handler.callbacks = []
-    instance.setIsConsole(true)
-
+    ServerStorage.reset()
     vi.spyOn(console, 'error').mockImplementation(() => {})
   })
 
-  it('should return singleton ErrorCenterInstance via getItem()', () => {
+  afterEach(() => {
+    ServerStorage.reset()
+    vi.unstubAllGlobals()
+    vi.restoreAllMocks()
+  })
+
+  it('should reuse the ErrorCenterInstance in browser storage', () => {
     const firstInstance = ErrorCenter.getItem()
     const secondInstance = ErrorCenter.getItem()
 
@@ -26,11 +25,67 @@ describe('ErrorCenter', () => {
     expect(firstInstance).toBe(secondInstance)
   })
 
-  it('should initialize a new ErrorCenterInstance if static item is undefined', () => {
-    // @ts-expect-error: Resetting protected static item for initialization test
-    ErrorCenter.item = undefined
+  it('should load the default causes when a new storage instance is created', () => {
+    const firstInstance = ErrorCenter.getItem()
+    ServerStorage.reset()
+
+    expect(ErrorCenter.getItem()).not.toBe(firstInstance)
+    expect(ErrorCenter.has('unauthorized', 'api')).toBe(true)
+  })
+
+  it('should reuse an instance within a server request and isolate separate requests', () => {
+    vi.stubGlobal('window', undefined)
+    const firstContext: Record<string, unknown> = {}
+    let context: Record<string, unknown> = firstContext
+    ServerStorage.init(() => context)
+
+    const firstInstance = ErrorCenter.getItem()
+    const firstCallback = vi.fn()
+    ErrorCenter.addCallback(firstCallback)
+
+    context = {}
+    const secondInstance = ErrorCenter.getItem()
+    const secondCallback = vi.fn()
+    ErrorCenter.addCallback(secondCallback)
+    const cause = { code: 'SECOND_REQUEST' }
+    ErrorCenter.on(cause)
+
+    expect(secondInstance).not.toBe(firstInstance)
+    expect(secondCallback).toHaveBeenCalledExactlyOnceWith(cause)
+    expect(firstCallback).not.toHaveBeenCalled()
+    context = firstContext
+    expect(ErrorCenter.getItem()).toBe(firstInstance)
+  })
+
+  it('should reuse fallback storage without reporting a recursive context error', () => {
+    vi.stubGlobal('window', undefined)
+    const consoleError = vi.mocked(console.error)
+
     const instance = ErrorCenter.getItem()
-    expect(instance).toBeInstanceOf(ErrorCenterInstance)
+    expect(ErrorCenter.getItem()).toBe(instance)
+    expect(consoleError).not.toHaveBeenCalled()
+
+    ServerStorage.get('outside-request')
+    expect(consoleError).toHaveBeenCalledWith('Error Center: context')
+    expect(consoleError.mock.calls.filter(([message]) => message === 'Error Center: context')).toHaveLength(1)
+  })
+
+  it('should initialize once when invalid hydration data reports an error', () => {
+    const script = document.createElement('script')
+    script.id = '__ui:server:storage:id__'
+    script.type = 'application/json'
+    script.textContent = '{invalid'
+    document.body.append(script)
+
+    try {
+      const instance = ErrorCenter.getItem()
+
+      expect(ErrorCenter.getItem()).toBe(instance)
+      expect(console.error).toHaveBeenCalledWith('Error Center: error')
+      expect(script.isConnected).toBe(false)
+    } finally {
+      script.remove()
+    }
   })
 
   it('should add and check for causes via static methods', () => {

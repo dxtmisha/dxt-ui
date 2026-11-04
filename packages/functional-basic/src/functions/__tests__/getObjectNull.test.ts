@@ -39,12 +39,16 @@ describe('getObjectNull', () => {
 
     it('should safely treat prototype method names as normal own properties', () => {
       const result = getObjectNull<string>()
+      const properties = {
+        toString: 'custom-to-string',
+        valueOf: 'custom-value-of'
+      }
 
-      result.toString = 'custom-to-string'
-      result.valueOf = 'custom-value-of'
+      for (const [key, value] of Object.entries(properties)) {
+        result[key] = value
+      }
 
-      expect(result.toString).toBe('custom-to-string')
-      expect(result.valueOf).toBe('custom-value-of')
+      expect(result).toEqual(properties)
       expect(Object.keys(result)).toEqual(['toString', 'valueOf'])
     })
   })

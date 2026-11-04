@@ -4,22 +4,22 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `isFunction`
 
-A high-performance type guard utility that determines whether a provided value is a callable function, supporting standard functions, arrow functions, async/generator functions, ES6 classes, constructors, and cross-realm functions.
+A type guard that recognizes function objects, including ordinary functions, class constructors, and functions from other realms.
 
 ## Key Features
 
-- **Fast-Path $O(1)$ Execution** — Prioritizes `typeof callback === 'function'` for instant opcode-level evaluation without walking prototype chains.
+- **Runtime Check** — Uses `typeof callback === 'function'` without traversing the prototype chain.
 - **Cross-Realm & Iframe Support** — Accurately identifies functions originating from separate window realms, iframes, and VM contexts where `instanceof Function` would otherwise fail due to distinct prototype trees.
 - **Comprehensive Callable Support** — Recognizes all executable constructs: standard functions, arrow functions, async functions, generator functions, ES6 classes, built-in constructors (`Date`, `Array`, `Function`), bound functions, and Proxy-wrapped callables.
-- **TypeScript Type Guard** — Narrows candidate union types at compile time via `callback is Extract<T, FunctionAnyType>`, preserving specific argument and return type contracts.
+- **TypeScript Type Guard** — Preserves known call or constructor signatures when narrowing a union. An `unknown` value narrows to `CallableFunction | NewableFunction`.
 - **Safe Against Falsy & Non-Callable Inputs** — Gracefully returns `false` for `null`, `undefined`, `0`, `false`, `NaN`, empty strings, arrays, regexes, plain objects, and objects with callable mimics.
 - **Pure & Isomorphic** — Stateless, side-effect-free, and safe for server-side rendering (SSR/SSG).
 
 **Parameters:**
-- `callback: T` — The value to be checked.
+- `callback: unknown` — The value to check.
 
 **Returns:**
-`boolean` (`callback is Extract<T, FunctionAnyType>`) — Returns `true` if the value is a callable function; otherwise `false`. Acts as a TypeScript type guard narrowing `T` to `FunctionAnyType`.
+`callback is CallableFunction | NewableFunction` — Returns `true` for function objects and `false` for other values. To call a value narrowed from `unknown`, establish its call signature first.
 
 ## Examples
 

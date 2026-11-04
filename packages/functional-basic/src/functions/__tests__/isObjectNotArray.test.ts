@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, expectTypeOf } from 'vitest'
 import { isObjectNotArray } from '../isObjectNotArray'
 
 describe('isObjectNotArray', () => {
@@ -97,21 +97,25 @@ describe('isObjectNotArray', () => {
   })
 
   describe('TypeScript type guard narrowing', () => {
-    it('should narrow union of string, array, and object to ObjectItem', () => {
-      const candidate: string | number[] | { name: string } = { name: 'Item' }
+    it('should narrow a union to the object type and exclude readonly arrays', () => {
+      function getName(candidate: string | readonly number[] | { name: string }): string | undefined {
+        if (isObjectNotArray(candidate)) {
+          expectTypeOf(candidate).toEqualTypeOf<{ name: string }>()
+          return candidate.name
+        }
 
-      if (isObjectNotArray(candidate)) {
-        // TypeScript narrows candidate to ObjectItem
-        expect(candidate.name).toBe('Item')
-      } else {
-        expect.unreachable('Should have narrowed candidate to object')
+        return undefined
       }
+
+      expect(getName({ name: 'Item' })).toBe('Item')
+      expect(getName([1, 2] as const)).toBeUndefined()
     })
 
     it('should narrow unknown values and permit index access', () => {
       const candidate: unknown = { count: 10 }
 
       if (isObjectNotArray(candidate)) {
+        expectTypeOf(candidate).toEqualTypeOf<Record<string, unknown>>()
         expect(candidate.count).toBe(10)
       } else {
         expect.unreachable('Should have narrowed candidate to object')

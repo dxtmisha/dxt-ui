@@ -12,7 +12,7 @@ Tiện ích bảo vệ kiểu (type guard) hiệu năng cao, xác định xem m�
 - **Hỗ trợ đa dạng đối tượng** — Nhận diện chính xác đối tượng thông thường (`{}`), từ điển không có prototype (`Object.create(null)`), thể hiện của lớp và đối tượng tích hợp (`Date`, `RegExp`, `Map`, `Set`, `Error`).
 - **Xử lý đối tượng dạng mảng & TypedArray** — Phân loại các đối tượng dạng mảng (như `arguments` hoặc `{ length: 2 }`) và `TypedArray` (`Uint8Array`) là đối tượng, vì chúng không phải là thể hiện của mảng JavaScript chuẩn.
 - **Tương thích với Proxy** — Trả về `true` cho `Proxy` bọc đối tượng và `false` cho `Proxy` bọc mảng theo đúng đặc tả ECMAScript Proxy.
-- **Rào chắn kiểu trong TypeScript** — Thu hẹp các kiểu hợp nhất tại thời điểm biên dịch thông qua `value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null>`, loại trừ kiểu mảng, `null` và `undefined`.
+- **Thu hẹp kiểu trong TypeScript** — Thu hẹp `unknown` thành `Record<string, unknown>` và loại bỏ cả mảng có thể sửa và mảng `readonly` khỏi các kiểu hợp đã biết.
 - **An toàn trước giá trị falsy & nguyên thủy** — Trả về `false` an toàn cho `null`, `undefined`, `0`, `false`, `NaN`, chuỗi rỗng, số, boolean, symbol và hàm.
 - **Đẳng hình & Sẵn sàng cho SSR** — Hàm thuần túy không có tác dụng phụ, hoàn toàn an toàn cho server-side rendering (SSR/SSG).
 
@@ -20,7 +20,7 @@ Tiện ích bảo vệ kiểu (type guard) hiệu năng cao, xác định xem m�
 - `value: T` — Giá trị cần kiểm tra.
 
 **Trả về:**
-`value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null>` (`boolean`) — Chỉ trả về `true` đối với các đối tượng khác `null` và không phải mảng; ngược lại trả về `false`.
+`boolean` — Trả về `true` cho đối tượng, trừ mảng và `null`. Hàm bảo vệ kiểu giữ nguyên các kiểu đối tượng đã biết.
 
 ## Ví dụ
 

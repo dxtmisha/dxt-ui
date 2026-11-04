@@ -1,4 +1,5 @@
 import { GeoIntlRef } from '../../classes/ref/GeoIntlRef'
+import type { RefOrNormal } from '../../types/refTypes'
 
 /**
  * Returns a class object for working with data formatting.
@@ -11,7 +12,9 @@ import { GeoIntlRef } from '../../classes/ref/GeoIntlRef'
  *
  * Старайтесь избегать этого хука, если не требуется реактивная переменная.
  * Для нереактивного форматирования используйте обычный `GeoIntl` из `@dxtmisha/functional-basic`.
+ * @param code locale, country or language code / код локали, страны или языка
+ * @returns reactive GeoIntlRef instance / реактивный экземпляр GeoIntlRef
  */
-export function useGeoIntlRef(): GeoIntlRef {
-  return new GeoIntlRef()
+export function useGeoIntlRef(code?: RefOrNormal<string | undefined>): GeoIntlRef {
+  return new GeoIntlRef(code)
 }

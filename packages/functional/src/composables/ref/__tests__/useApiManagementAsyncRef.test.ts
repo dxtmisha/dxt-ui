@@ -9,7 +9,7 @@ import { Api, type ApiInstance, isDomRuntime } from '@dxtmisha/functional-basic'
 import type { ApiManagementGet } from '../../../types/apiTypes'
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const actual = await importOriginal<any>()
+  const actual = await importOriginal<typeof import('@dxtmisha/functional-basic')>()
   return {
     ...actual,
     isDomRuntime: vi.fn(() => true)
@@ -18,7 +18,7 @@ vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
 
 describe('useApiManagementAsyncRef', () => {
   let mockApiInstance: ApiInstance
-  let mockGetResponse: any
+  let mockGetResponse: { emulatorAsync: ReturnType<typeof vi.fn> }
 
   beforeEach(() => {
     vi.clearAllMocks()

@@ -28,7 +28,7 @@ export type ErrorCenterCauseList = ErrorCenterCauseItem[]
 /**
  * Callback function for error handling / Функция обратного вызова для обработки ошибок
  */
-export type ErrorCenterHandlerCallback = (cause: ErrorCenterCauseItem) => void
+export type ErrorCenterHandlerCallback = (cause: ErrorCenterCauseItem) => void | Promise<void>
 /**
  * Interface for error handler storage / Интерфейс для хранения обработчика ошибок
  */

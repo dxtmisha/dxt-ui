@@ -9,7 +9,7 @@ Quản lý danh sách liên kết cho router. Cho phép tạo menu điều hư�
 **Tham số:**
 - `list: RefType<ConstrBind<T>[] | undefined>` — danh sách các mục điều hướng. Mỗi mục phải chứa `value` và `label`.
 - `selected?: Ref<string> | string` — mục được chọn ban đầu hoặc giá trị của nó. Nếu không được chỉ định, mục đầu tiên trong danh sách sẽ được chọn.
-- `hasTo?: boolean` — tự động thêm thuộc tính `to` vào các mục danh sách để điều hướng (mặc định là `false`).
+- `hasTo?: boolean` — tự động thêm thuộc tính `to` vào các mục danh sách để điều hướng (mặc định là `true`).
 
 **Trả về:**
 Một đối tượng với các thuộc tính phản ứng và phương thức điều khiển:

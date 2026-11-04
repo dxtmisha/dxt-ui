@@ -7,7 +7,7 @@ import { MetaRobots, ServerStorage } from '@dxtmisha/functional-basic'
 import { useMeta } from '../useMeta'
 
 /** Request-local storage resolver / Хранилище текущего серверного запроса */
-const contexts = /*#__PURE__*/ new AsyncLocalStorage<Record<string, unknown>>()
+const contexts = /* #__PURE__ */ new AsyncLocalStorage<Record<string, unknown>>()
 /** Contexts whose effects need cleanup / Контексты, эффекты которых нужно остановить */
 const storageContexts: Record<string, unknown>[] = []
 

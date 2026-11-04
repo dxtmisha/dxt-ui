@@ -29,10 +29,10 @@ const mockMeta = vi.hoisted(() => ({
 }))
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const actual = await importOriginal() as any
+  const actual = await importOriginal<typeof import('@dxtmisha/functional-basic')>()
   return {
     ...actual,
-    Meta: vi.fn().mockImplementation(function (this: any) {
+    Meta: vi.fn().mockImplementation(function () {
       return mockMeta
     }),
     MetaStatic: {
@@ -119,7 +119,7 @@ describe('useMeta', () => {
     await nextTick()
     expect(mockMeta.setCanonical).toHaveBeenCalledWith('more updated canonical')
 
-    robots.value = MetaRobots.none as any
+    robots.value = MetaRobots.none
     await nextTick()
     expect(mockMeta.setRobots).toHaveBeenCalledWith('none')
 
@@ -134,7 +134,16 @@ describe('useMeta', () => {
   })
 
   it('should update values via setter methods', async () => {
-    const { setTitle, setKeywords, setDescription } = useMeta()
+    const {
+      setTitle,
+      setKeywords,
+      setDescription,
+      setImage,
+      setCanonical,
+      setRobots,
+      setAuthor,
+      setSiteName
+    } = useMeta()
 
     setTitle('title from setter')
     await nextTick()
@@ -147,6 +156,26 @@ describe('useMeta', () => {
     setDescription('description from setter')
     await nextTick()
     expect(mockMeta.setDescription).toHaveBeenCalledWith('description from setter')
+
+    setImage('https://example.com/image.png')
+    await nextTick()
+    expect(mockMeta.setImage).toHaveBeenCalledWith('https://example.com/image.png')
+
+    setCanonical('https://example.com/canonical')
+    await nextTick()
+    expect(mockMeta.setCanonical).toHaveBeenCalledWith('https://example.com/canonical')
+
+    setRobots(MetaRobots.noIndexFollow)
+    await nextTick()
+    expect(mockMeta.setRobots).toHaveBeenCalledWith('noindex, follow')
+
+    setAuthor('author from setter')
+    await nextTick()
+    expect(mockMeta.setAuthor).toHaveBeenCalledWith('author from setter')
+
+    setSiteName('siteName from setter')
+    await nextTick()
+    expect(mockMeta.setSiteName).toHaveBeenCalledWith('siteName from setter')
   })
 
   it('should synchronize reactive values with Meta instance via sync()', async () => {

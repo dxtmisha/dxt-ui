@@ -289,7 +289,7 @@ export class ApiResponse {
     return new Promise((resolve, reject) => {
       executePromise(
         isFunction(response.response)
-          ? response.response(request)
+          ? Reflect.apply(response.response, response, [request])
           : response.response
       ).then((data) => {
         if (response.lag) {

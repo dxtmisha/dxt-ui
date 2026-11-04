@@ -171,9 +171,9 @@ describe('encodeAttribute', () => {
       expect(encodeAttribute(-Infinity)).toBe('-Infinity')
     })
 
-    it('should safely coerce boolean values passed via type assertions', () => {
-      expect(encodeAttribute(false as unknown as string)).toBe('false')
-      expect(encodeAttribute(true as unknown as string)).toBe('true')
+    it('should safely coerce boolean values', () => {
+      expect(encodeAttribute(false)).toBe('false')
+      expect(encodeAttribute(true)).toBe('true')
     })
 
     it('should safely handle objects with custom toString methods', () => {
@@ -182,7 +182,7 @@ describe('encodeAttribute', () => {
           return '<custom & "value">'
         }
       }
-      expect(encodeAttribute(objectWithSpecialChars as unknown as string))
+      expect(encodeAttribute(objectWithSpecialChars))
         .toBe('&lt;custom &amp; &quot;value&quot;&gt;')
 
       const objectWithCleanString = {
@@ -190,7 +190,7 @@ describe('encodeAttribute', () => {
           return 'clean-identifier'
         }
       }
-      expect(encodeAttribute(objectWithCleanString as unknown as string))
+      expect(encodeAttribute(objectWithCleanString))
         .toBe('clean-identifier')
     })
   })

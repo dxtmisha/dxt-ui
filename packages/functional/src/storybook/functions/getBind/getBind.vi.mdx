@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Hàm tiện ích cơ bản để tạo đối tượng các thuộc tính cho một thành phần phụ dựa trên các giá trị bình thường (không phản ứng). Nó xử lý các loại đầu vào khác nhau và đảm bảo cấu trúc nhất quán cho việc liên kết thuộc tính.
 
 **Tham số:**
-- `value: T | R | undefined | null` — Giá trị đầu vào cần liên kết. Có thể là kiểu nguyên thủy hoặc đối tượng.
+- `value?: T | R | undefined | null` — Giá trị đầu vào cần liên kết. Có thể là kiểu nguyên thủy hoặc đối tượng.
 - `nameExtra: ItemList | string | undefined = {}` — Các thuộc tính bổ sung để hợp nhất hoặc tên của thuộc tính sẽ sử dụng nếu `value` không phải là một đối tượng.
 - `name: string = 'value'` — Tên thuộc tính mặc định (mặc định là `'value'`).
 - `except: boolean = false` — Nếu true, sẽ bỏ qua việc kiểm tra yêu cầu khóa chính trong đối tượng `value`.
@@ -23,6 +23,6 @@ const bind1 = getBind('Xin chào', {}, 'label')
 // Kết quả: { label: 'Xin chào' }
 
 // Trường hợp 2: Đối tượng với các thuộc tính bổ sung
-const bind2 = getBind({ id: 1 }, { class: 'active' }, 'data')
-// Kết quả: { id: 1, class: 'active' }
+const bind2 = getBind({ id: 1 }, { class: 'active' }, 'id')
+// Kết quả: { class: 'active', id: 1 }
 ```

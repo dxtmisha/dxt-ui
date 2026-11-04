@@ -84,20 +84,14 @@ export class ListDataRef {
       const lite: ListList = []
 
       for (const item of this.data.value) {
-        const newItem = {
+        lite.push({
           parent: this.parent,
           index: item.index,
           type: item.type,
           label: item.label,
           description: item.description,
           value: item.value
-        }
-
-        if ('description' in item) {
-          newItem.description = item.description
-        }
-
-        lite.push(newItem)
+        })
       }
 
       return lite
@@ -163,11 +157,7 @@ export class ListDataRef {
 
   /** Item/group/menu entries from the flattened map. / Записи item/group/menu из плоской карты. */
   readonly items = computed<ListList>(() => {
-    return this.map.value.filter(
-      item => item.type === 'item'
-        || item.type === 'group'
-        || item.type === 'menu'
-    )
+    return this.map.value.filter(item => this.isItem(item))
   })
 
   /** First matching map position, or -1 for no match or a query below the threshold. Matches label, index or search. / Позиция первого совпадения в карте либо -1 при отсутствии совпадения или коротком запросе. Проверяет label, index и search. */
@@ -256,7 +246,7 @@ export class ListDataRef {
   })
 
   /** Values of selected leaves, preserving zero and false. / Значения выбранных конечных элементов с сохранением нуля и false. */
-  readonly selectedValues = computed<any[]>(() => {
+  readonly selectedValues = computed<ListDataItem['value'][]>(() => {
     return getColumn(this.selectedList.value, 'value')
   })
 
@@ -391,7 +381,7 @@ export class ListDataRef {
    * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   getSelectedByStep(step: number): ListSelectedItem | undefined {
-    const selected = this.selectedList.value?.[0]
+    const selected = this.selectedList.value[0]
 
     if (selected) {
       return this.getItemByStep(selected, step)?.index
@@ -430,7 +420,7 @@ export class ListDataRef {
    */
   getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined {
     const mapItems = this.mapItems.value
-    const key = mapItems.findIndex(i => i.index === item.index)
+    const key = mapItems.findIndex(mapItem => mapItem.index === item.index)
 
     if (key !== -1) {
       const keyByStep = key + step
@@ -541,7 +531,7 @@ export class ListDataRef {
    * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
    */
   getItemByKey(key: number): ListDataItem | undefined {
-    return this.map.value?.[key]
+    return this.map.value[key]
   }
 
   /**
@@ -637,19 +627,19 @@ export class ListDataRef {
    */
   protected getIndex(
     index: string | number | undefined,
-    value: any,
+    value: unknown,
     key: string | number | undefined,
     label: string | number | undefined
-  ) {
+  ): string {
     if (!isNull(index) && !isObject(index)) {
-      return index
+      return index as string
     }
 
     if (!isNull(value) && !isObject(value)) {
-      return value
+      return value as string
     }
 
-    return key && label
+    return (key && label) as string
   }
 
   /**
@@ -662,13 +652,13 @@ export class ListDataRef {
    */
   protected initItem(
     key: string | number,
-    item: any
+    item: ListListInputItem
   ): ListDataItem {
     if (isObjectNotArray(item)) {
-      const value = item?.[this.keyValue?.value ?? 'value']
-      const label = item?.[this.keyLabel?.value ?? 'label'] ?? value
+      const value = item[this.keyValue?.value ?? 'value']
+      const label = item[this.keyLabel?.value ?? 'label'] ?? value
       const index = this.getIndex(
-        item?.index,
+        item.index,
         value,
         key,
         label
@@ -678,7 +668,7 @@ export class ListDataRef {
         ...item,
         parent: this.parent,
         index,
-        type: item?.type ?? 'item',
+        type: item.type ?? 'item',
         label,
         value
       }

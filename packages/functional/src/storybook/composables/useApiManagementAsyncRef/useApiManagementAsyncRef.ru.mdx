@@ -21,6 +21,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `searchOptions?: ApiManagementSearch<Item, Columns>` — настройки поиска.
 - `postRequest / putRequest / deleteRequest` — настройки мутаций.
 - `action?: () => Promise<void> | void` — Общий колбэк после получения любого ответа на мутацию, независимо от успешности.
+- `actionSuccess?: () => Promise<void> | void` — Общий колбэк после получения успешного ответа на мутацию.
+- `actionError?: () => Promise<void> | void` — Общий колбэк после получения ошибочного ответа на мутацию.
 - `apiInstance?: ApiInstance` — экземпляр API.
 
 Колбэки `action`, `actionSuccess` и `actionError` настраиваются отдельно в `postRequest`, `putRequest` и `deleteRequest`.

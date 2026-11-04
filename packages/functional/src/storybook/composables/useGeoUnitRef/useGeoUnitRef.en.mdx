@@ -1,0 +1,25 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useGeoUnitRef - Unit Formatting'/>
+
+# `useGeoUnitRef`
+
+A composable that returns an instance of the `GeoUnitRef` class for reactive formatting and automatic regional conversion of measurement units (length, area, weight, volume, temperature, speed).
+
+**Parameters:**
+- `code?: RefOrNormal<string>` — Locale, country, or language code (supports a reactive `Ref`).
+
+**Returns (`GeoUnitRef`):**
+- A `GeoUnitRef` class object providing methods for reactive unit formatting.
+
+## Example
+
+```typescript
+import { useGeoUnitRef } from '@dxtmisha/functional'
+
+const unit = useGeoUnitRef()
+
+// Reactive formatting of distance and weight based on regional settings
+const distance = unit.kilometer(10)
+const weight = unit.gram(500)
+```

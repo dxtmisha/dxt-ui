@@ -6,9 +6,10 @@ import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
  * Returns a list of active SessionRef instances for the current request context.
  *
  * Возвращает список активных экземпляров SessionRef для контекста текущего запроса.
+ * @returns dictionary of SessionRef instances / словарь экземпляров SessionRef
  */
-const getItems = () => {
-  return ServerStorage.get<Record<string, Ref<any>>>(
+const getItems = (): Record<string, Ref> => {
+  return ServerStorage.get<Record<string, Ref>>(
     '__ui:session-ref__',
     () => ({})
   )
@@ -20,8 +21,9 @@ const getItems = () => {
  *
  * Создает реактивную переменную для управления сессией хранения.
  * Вложенные изменения объектов и массивов сохраняются в следующем цикле обновления Vue.
- * @param name value name/ название значения
- * @param defaultValue default value/ значение по умолчанию
+ * @param name value name / название значения
+ * @param defaultValue default value / значение по умолчанию
+ * @returns reactive session storage reference / реактивная ссылка на значение сессионного хранилища
  */
 export function useSessionRef<T>(
   name: string,
@@ -41,5 +43,5 @@ export function useSessionRef<T>(
   })
 
   items[name] = item
-  return item as Ref<T>
+  return item as Ref<T | undefined>
 }

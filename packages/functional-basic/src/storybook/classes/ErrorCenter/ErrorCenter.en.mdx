@@ -6,7 +6,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 `ErrorCenter` is the central tool for managing all errors in the application. It allows you to register possible error causes in one place, configure the reaction to them (e.g., showing notifications), and trigger them from any part of the code.
 
-The class acts as a static bridge (Static Bridge), directing all requests to a single `ErrorCenterInstance`.
+The static facade uses `ServerStorage` to reuse one `ErrorCenterInstance` per SSR request. In the browser and in Node.js outside a request, it uses the current runtime's in-memory storage.
 
 ## Methods
 
@@ -17,12 +17,12 @@ The class acts as a static bridge (Static Bridge), directing all requests to a s
 - `has(code: string, group?: ErrorCenterGroup): boolean` — Checks if an error is registered.
 - `get(code: string, group?: ErrorCenterGroup): ErrorCenterCauseItem | undefined` — Returns error data from the registry.
 - `getHandler(): ErrorCenterHandler` — Returns the internal handler dispatcher.
-- `getItem(): ErrorCenterInstance` — Returns the internal instance of the class.
+- `getItem(): ErrorCenterInstance` — Returns the instance for the active storage context.
 
 ### Configuration & Lifecycle
 - `add(cause: ErrorCenterCauseItem): void` — Adds a single error cause.
 - `addList(causes: ErrorCenterCauseList): void` — Adds a list of errors (batch registration).
-- `addCallback(callback: ErrorCenterHandlerCallback): void` — Registers a global callback on any error.
+- `addCallback(callback: ErrorCenterHandlerCallback): void` — Registers a callback for all errors in the active instance.
 - `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Registers a reaction to a group of errors.
 - `addHandlerList(handlers: ErrorCenterHandlerList): void` — Batch registration of several handlers.
 - `remove(code: string, group?: ErrorCenterGroup): void` — Removes an error cause from the registry.

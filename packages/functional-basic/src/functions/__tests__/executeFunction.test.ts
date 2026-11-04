@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, expectTypeOf, vi } from 'vitest'
 import { executeFunction } from '../executeFunction'
 
 describe('executeFunction', () => {
@@ -96,6 +96,34 @@ describe('executeFunction', () => {
       expect(executeFunction(callback, inputArray, inputObject)).toBe(13)
       expect(inputArray).toEqual([1, 2, 3])
       expect(inputObject).toEqual({ count: 10 })
+    })
+  })
+
+  describe('Explicit type arguments', () => {
+    const formatTitle = (options: { title: string }): string => options.title.trim()
+
+    it('should forward a matching argument with inferred and explicit tuples', () => {
+      const options = { title: ' DXT ' }
+
+      expect(executeFunction(formatTitle, options)).toBe('DXT')
+      expect(executeFunction<string, Parameters<typeof formatTitle>>(formatTitle, options)).toBe('DXT')
+    })
+
+    it('should reject missing and incompatible arguments during type checking', () => {
+      expectTypeOf(() => {
+        // @ts-expect-error formatTitle requires options / formatTitle требует объект настроек
+        return executeFunction<string>(formatTitle)
+      }).returns.toEqualTypeOf<string>()
+
+      expectTypeOf(() => {
+        // @ts-expect-error the empty tuple omits the required options / в пустом кортеже отсутствует обязательный аргумент
+        return executeFunction<string, []>(formatTitle)
+      }).returns.toEqualTypeOf<string>()
+
+      expectTypeOf(() => {
+        // @ts-expect-error a string cannot supply options / строка несовместима с объектом настроек
+        return executeFunction<string>(formatTitle, 'DXT')
+      }).returns.toEqualTypeOf<string>()
     })
   })
 

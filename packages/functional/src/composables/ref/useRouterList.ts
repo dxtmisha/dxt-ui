@@ -14,6 +14,7 @@ import type { RefType } from '../../types/refTypes'
  * @param list list of items / список элементов
  * @param selected selected item / выбранный элемент
  * @param hasTo has to / имеет to
+ * @returns router list state and navigation methods / состояние списка роутера и методы навигации
  */
 export const useRouterList = <T extends ListDataBasic>(
   list: RefType<ConstrBind<T>[] | undefined>,
@@ -29,6 +30,7 @@ export const useRouterList = <T extends ListDataBasic>(
    * Returns the current item.
    *
    * Возвращает текущий элемент.
+   * @returns current active item or undefined / текущий активный элемент или undefined
    */
   const getItem = (): T | undefined => find(index.value)
 
@@ -37,6 +39,7 @@ export const useRouterList = <T extends ListDataBasic>(
    *
    * Поиск элемента по индексу.
    * @param index index / индекс
+   * @returns matching item or undefined / найденный элемент или undefined
    */
   const find = (index: string): T | undefined => {
     return list.value?.find(item => item.value === index)
@@ -59,11 +62,11 @@ export const useRouterList = <T extends ListDataBasic>(
     }
   }
 
-  /** Current element/ Текущий элемент */
+  /** Current element / Текущий элемент */
   const item = computed<T | undefined>(() => getItem())
 
   /** Label / Метка */
-  const label = computed<NumberOrString>(() => getItem()?.label || '')
+  const label = computed<NumberOrString>(() => item.value?.label ?? '')
 
   /** List of elements / Список элементов */
   const listComputed = computed<ConstrBind<T>[]>(() => {
@@ -107,7 +110,7 @@ export const useRouterList = <T extends ListDataBasic>(
      *
      * Переход к главному элементу.
      */
-    toMain() {
+    toMain(): void {
       to(list.value?.[0]?.value)
     }
   }

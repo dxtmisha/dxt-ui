@@ -1,10 +1,8 @@
 /**
- * Checks if the code is running in a browser where the `window` object is available.
- * Returns `true` if `window` is defined, indicating the code is running in a browser.
+ * Checks whether the current runtime exposes a document through `window`.
  *
- * Проверяет, выполняется ли код в браузере, где доступен объект `window`.
- * Возвращает `true`, если `window` доступен, что означает, что код выполняется в браузере.
- * @returns `true` if running in a browser, otherwise `false` / `true`, если выполняется в браузере, иначе `false`
+ * Проверяет, доступен ли документ через `window` в текущей среде выполнения.
+ * @returns whether `window.document` is available / доступен ли `window.document`
  */
 export function isDomRuntime(): boolean {
   return typeof window !== 'undefined' && Boolean(window.document)

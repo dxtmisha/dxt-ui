@@ -63,7 +63,7 @@ Object describing a specific error.
 - `details?: any` — additional data.
 
 #### `ErrorCenterHandlerCallback`
-- `(cause: ErrorCenterCauseItem) => void` — processing function.
+- `(cause: ErrorCenterCauseItem) => void | Promise<void>` — processing function.
 
 ## Examples
 

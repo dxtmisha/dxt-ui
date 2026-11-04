@@ -4,6 +4,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { computed, effectScope, type EffectScope, nextTick, ref } from 'vue'
+import * as functionalBasic from '@dxtmisha/functional-basic'
 import { Translate, type TranslateInstance } from '@dxtmisha/functional-basic'
 import { GeoRef } from '../../../classes/ref/GeoRef'
 import { useTranslateRef, t } from '../useTranslateRef'
@@ -56,22 +57,22 @@ describe('useTranslateRef', () => {
     vi.mocked(GeoRef.getLanguage).mockReturnValue(computed(() => languageRef.value))
 
     mockTranslateInstance = {
-      getListSync: vi.fn((names: any[]) => {
-        const res: any = {}
-        names.forEach((n: any) => {
-          const key = Array.isArray(n) ? n[0] : n
-          res[key] = key
+      getListSync: vi.fn((names: (string | string[])[]) => {
+        const result: Record<string, string> = {}
+        names.forEach((name) => {
+          const key = Array.isArray(name) ? (name[0] ?? '') : name
+          result[key] = key
         })
-        return res
+        return result
       }),
-      getList: vi.fn(async (names: any[]) => {
-        const res: any = {}
-        const lang = languageRef.value
-        names.forEach((n: any) => {
-          const key = Array.isArray(n) ? n[0] : n
-          res[key] = lang === 'ru' ? 'translated ru' : `translated ${key}`
+      getList: vi.fn(async (names: (string | string[])[]) => {
+        const result: Record<string, string> = {}
+        const language = languageRef.value
+        names.forEach((name) => {
+          const key = Array.isArray(name) ? (name[0] ?? '') : name
+          result[key] = language === 'ru' ? 'translated ru' : `translated ${key}`
         })
-        return res
+        return result
       })
     } as unknown as TranslateInstance
 
@@ -135,11 +136,23 @@ describe('useTranslateRef', () => {
     }, { timeout: 2000 })
   })
 
-  it('should work with shorthand t and use default instance', () => {
-    const names = ['key1']
-    const translate = runInScope(() => t(names))
-    expect(translate.value).toEqual({ key1: 'key1' })
-    expect(mockTranslateInstance.getListSync).toHaveBeenCalled()
+  it('should work with shorthand t, tuple keys, and optional custom instance', () => {
+    const names = ['key1', ['key2', 'default']]
+    const translate = runInScope(() => t(names, mockTranslateInstance))
+    expect(translate.value).toEqual({ key1: 'key1', key2: 'key2' })
+    expect(mockTranslateInstance.getListSync).toHaveBeenCalledWith(['key1', ['key2', 'default']], true)
+  })
+
+  it('should return sync translations without registering watcher in SSR runtime', async () => {
+    vi.spyOn(functionalBasic, 'isDomRuntime').mockReturnValue(false)
+    const translate = runInScope(() => useTranslateRef(['ssrKey']))
+
+    expect(translate.value).toEqual({ ssrKey: 'ssrKey' })
+    expect(mockTranslateInstance.getList).not.toHaveBeenCalled()
+
+    languageRef.value = 'ru'
+    await nextTick()
+    expect(mockTranslateInstance.getList).not.toHaveBeenCalled()
   })
 
   it('should keep the latest translation when an earlier language finishes afterwards', async () => {

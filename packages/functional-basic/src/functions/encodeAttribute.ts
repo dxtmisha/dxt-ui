@@ -34,7 +34,7 @@ const REGEXP_SPECIAL_CHARACTERS = /[&<>"']/g
  * encodeAttribute(undefined) // => ''
  * ```
  */
-export function encodeAttribute(text?: string | number | null): string {
+export function encodeAttribute(text?: unknown): string {
   const preparedText = toString(text)
 
   if (

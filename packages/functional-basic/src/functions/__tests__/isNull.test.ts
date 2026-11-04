@@ -68,6 +68,17 @@ describe('isNull', () => {
   })
 
   describe('TypeScript type narrowing verification', () => {
+    it('should narrow unknown values to null or undefined', () => {
+      const value: unknown = null
+
+      if (isNull(value)) {
+        expectTypeOf(value).toEqualTypeOf<null | undefined>()
+        expect(value).toBeNull()
+      } else {
+        expect.unreachable('Expected a nullish value')
+      }
+    })
+
     it('should narrow union types correctly in conditional branches', () => {
       const value: string | null | undefined = 'sample' as string | null | undefined
 

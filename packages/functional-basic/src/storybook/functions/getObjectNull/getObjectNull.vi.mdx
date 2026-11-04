@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getObjectNull`
 
-Tạo và trả về một đối tượng không có prototype (`Object.create(null)`). Hàm này loại bỏ hoàn toàn việc kế thừa từ `Object.prototype`, bảo vệ an toàn các từ điển và sổ đăng ký lưu trữ khỏi tấn công ô nhiễm nguyên mẫu (prototype pollution) cũng như xung đột khóa với các thuộc tính tích hợp như `toString`, `valueOf` hoặc `constructor`. Nếu đối số dữ liệu ban đầu tùy chọn được cung cấp, các thuộc tính của nó sẽ được sao chép vào đối tượng mới.
+Tạo một từ điển không có prototype bằng `Object.create(null)`. Các khóa như `toString`, `valueOf` và `constructor` được lưu dưới dạng mục thông thường. Nếu có dữ liệu ban đầu, hàm sao chép các thuộc tính riêng có thể liệt kê của dữ liệu đó.
 
 **Tham số:**
 - `data?: Record<string, T>` — Dữ liệu đối tượng ban đầu tùy chọn để sao chép thuộc tính.

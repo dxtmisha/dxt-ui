@@ -63,7 +63,7 @@ const myErrorCenter = new ErrorCenterInstance([
 - `details?: any` — dữ liệu bổ sung.
 
 #### `ErrorCenterHandlerCallback`
-- `(cause: ErrorCenterCauseItem) => void` — hàm xử lý.
+- `(cause: ErrorCenterCauseItem) => void | Promise<void>` — hàm xử lý.
 
 ## Ví dụ
 

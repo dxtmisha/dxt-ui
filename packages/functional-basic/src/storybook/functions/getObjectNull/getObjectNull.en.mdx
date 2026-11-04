@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getObjectNull`
 
-Creates and returns a prototype-less object (`Object.create(null)`). It completely eliminates inheritance from `Object.prototype`, protecting dictionaries and key-value registries against prototype pollution and key collisions with built-in properties like `toString`, `valueOf`, or `constructor`. If an optional initial data object is provided, its own properties are copied into the new prototype-less object.
+Creates a dictionary without a prototype using `Object.create(null)`. Keys such as `toString`, `valueOf`, and `constructor` can be stored as ordinary entries. If initial data is supplied, the function copies its own enumerable properties.
 
 **Parameters:**
 - `data?: Record<string, T>` — Optional initial object data to copy properties from.

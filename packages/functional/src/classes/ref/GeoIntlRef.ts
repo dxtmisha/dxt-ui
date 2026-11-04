@@ -35,7 +35,7 @@ export class GeoIntlRef {
    * Инициализирует GeoIntlRef с переданными настройками.
    * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
    */
-  constructor(code?: RefOrNormal<string>) {
+  constructor(code?: RefOrNormal<string | undefined>) {
     this.location = toRefItem(code)
     this.intl = computed(() => new GeoIntl(this.location.value ?? GeoRef.getLocation().value))
   }

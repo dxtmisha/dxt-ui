@@ -42,7 +42,7 @@ Trả về đối tượng `UseApiRef<R>`:
 **Phương thức:**
 - `isStarting(): boolean`, `isLoading(): boolean`, `isReading(): boolean` — các phương thức kiểm tra trạng thái.
 - `getItem(): ApiData<R> | undefined` — lấy giá trị dữ liệu hiện tại không cần phản ứng.
-- `init(awaitFetch?: boolean): Promise<void>` — khởi tạo thủ công.
+- `init(): void` — khởi tạo thủ công.
 - `initSsr(): void` — khởi tạo cho SSR.
 - `reset(): Promise<void>` — buộc chạy lại yêu cầu.
 - `stop(): void` — dừng theo dõi và xóa dữ liệu.

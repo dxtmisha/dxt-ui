@@ -14,6 +14,8 @@ Một composable mạnh mẽ để điều phối toàn diện các request API.
 - `putRequest?: ApiManagementRequest<Put>` — cấu hình tùy chọn cho yêu cầu cập nhật (PUT).
 - `deleteRequest?: ApiManagementRequest<Delete>` — cấu hình tùy chọn cho yêu cầu xóa (DELETE).
 - `action?: () => Promise<void> | void` — Callback chung sau khi nhận bất kỳ phản hồi mutation nào, bất kể thành công hay lỗi.
+- `actionSuccess?: () => Promise<void> | void` — Callback chung sau khi nhận phản hồi mutation thành công.
+- `actionError?: () => Promise<void> | void` — Callback chung sau khi nhận phản hồi mutation lỗi.
 - `apiInstance?: ApiInstance` — Phiên bản API sử dụng cho yêu cầu. Mặc định là `Api.getItem()`.
 
 Cấu hình riêng `action`, `actionSuccess` và `actionError` trong `postRequest`, `putRequest` và `deleteRequest`.
@@ -37,8 +39,14 @@ Các phương thức `sendPost`, `sendPut` và `sendDelete` chờ `action` riên
 - `isSearch: ComputedRef<boolean>` — cho biết truy vấn tìm kiếm hiện có đang hoạt động hay không.
 - `search: Ref<string>` — chuỗi tìm kiếm reactive (Proxy đến `searchOptions.value` đã cung cấp).
 - `sendPost / sendPut / sendDelete: (request?: ApiFetch['request']) => Promise<any>` — các phương thức để thực thi mutation.
+- `init: () => void` — phương thức khởi tạo thủ công yêu cầu và theo dõi.
+- `initSsr: () => void` — phương thức khởi tạo ở phía máy chủ (SSR).
 - `reset: () => Promise<void>` — buộc khởi động lại/làm mới GET request chính thủ công.
 - `abort: () => void` — hủy bỏ yêu cầu mạng đang diễn ra.
+
+## Phiên bản bất đồng bộ
+
+Đối với các trường hợp cần khởi tạo yêu cầu ngay lập tức (không lazy, ví dụ cho SSR), hãy sử dụng [**`useApiManagementAsyncRef`**](./useApiManagementAsyncRef.vi.mdx). Nó tự động gọi `initSsr()` khi được tạo.
 
 ## Ràng buộc Generic (Generic Constraints)
 

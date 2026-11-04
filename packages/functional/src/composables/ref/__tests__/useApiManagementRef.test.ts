@@ -256,8 +256,12 @@ describe('useApiManagementRef', () => {
         vi.mocked(mockApiInstance.request).mockResolvedValueOnce(response)
         let resolveLocal!: () => void
         let resolveCommon!: () => void
-        const localPromise = new Promise<void>((resolve) => { resolveLocal = resolve })
-        const commonPromise = new Promise<void>((resolve) => { resolveCommon = resolve })
+        const localPromise = new Promise<void>((resolve) => {
+          resolveLocal = resolve
+        })
+        const commonPromise = new Promise<void>((resolve) => {
+          resolveCommon = resolve
+        })
         const localAction = vi.fn(() => localPromise)
         const commonAction = vi.fn(() => commonPromise)
         const actionSuccess = vi.fn()
@@ -309,7 +313,9 @@ describe('useApiManagementRef', () => {
       it('should handle a rejected common action inside send', async () => {
         vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ success: true })
         let rejectCommon!: (error: Error) => void
-        const commonPromise = new Promise<void>((_, reject) => { rejectCommon = reject })
+        const commonPromise = new Promise<void>((_, reject) => {
+          rejectCommon = reject
+        })
         const commonAction = vi.fn(() => commonPromise)
         const actionSuccess = vi.fn()
         const actionError = vi.fn()
@@ -346,8 +352,12 @@ describe('useApiManagementRef', () => {
     it('should start the background GET refresh only after the common action completes', async () => {
       let resolveCommon!: () => void
       let resolveRefresh!: (data: { id: number }[]) => void
-      const commonPromise = new Promise<void>((resolve) => { resolveCommon = resolve })
-      const refreshPromise = new Promise<{ id: number }[]>((resolve) => { resolveRefresh = resolve })
+      const commonPromise = new Promise<void>((resolve) => {
+        resolveCommon = resolve
+      })
+      const refreshPromise = new Promise<{ id: number }[]>((resolve) => {
+        resolveRefresh = resolve
+      })
       const commonAction = vi.fn(() => commonPromise)
       const scope = effectScope()
       const response = { success: true }
@@ -388,7 +398,9 @@ describe('useApiManagementRef', () => {
 
     it('should invoke actionSuccess on successful mutation and wait for it before completing', async () => {
       let resolveSuccess!: () => void
-      const successPromise = new Promise<void>((resolve) => { resolveSuccess = resolve })
+      const successPromise = new Promise<void>((resolve) => {
+        resolveSuccess = resolve
+      })
       const commonAction = vi.fn()
       const commonSuccess = vi.fn(() => successPromise)
       const commonError = vi.fn()
@@ -418,7 +430,9 @@ describe('useApiManagementRef', () => {
 
     it('should invoke actionError on error mutation and wait for it before completing', async () => {
       let resolveError!: () => void
-      const errorPromise = new Promise<void>((resolve) => { resolveError = resolve })
+      const errorPromise = new Promise<void>((resolve) => {
+        resolveError = resolve
+      })
       const commonAction = vi.fn()
       const commonSuccess = vi.fn()
       const commonError = vi.fn(() => errorPromise)

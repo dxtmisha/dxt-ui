@@ -36,6 +36,7 @@ Truy xuất giá trị theo khóa. Nếu không tìm thấy, nó sẽ tạo giá
 - `key: string` — khóa lưu trữ duy nhất.
 - `defaultValue?: (() => T) | T` — giá trị mặc định hoặc hàm trả về giá trị mặc định nếu không tìm thấy.
 - `hydration: boolean` — nếu là `true`, giá trị sẽ được bao gồm trong JSON cho máy khách (mặc định: `false`).
+- `reportContextError: boolean` — mặc định báo lỗi khi thiếu ngữ cảnh máy chủ. Mã khởi tạo có thể truyền `false` khi lấy chính trình báo lỗi.
 
 **Trả về:** `T` — giá trị được lưu trữ.
 

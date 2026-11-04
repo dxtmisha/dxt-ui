@@ -6,29 +6,30 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
 import { useHashRef } from '../useHashRef'
 
-// Mock Hash from functional-basic
 const hashMocks = {
   get: vi.fn(),
   set: vi.fn(),
   addWatch: vi.fn()
 }
+let domRuntime = true
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const actual = await importOriginal() as any
+  const actual = await importOriginal() as Record<string, unknown>
   return {
     ...actual,
+    isDomRuntime: () => domRuntime,
     Hash: {
-      get: (name: string, defaultValue: any) => hashMocks.get(name, defaultValue),
-      set: (name: string, value: any) => hashMocks.set(name, value),
-      addWatch: (name: string, callback: any) => hashMocks.addWatch(name, callback)
+      get: (name: string, defaultValue: unknown) => hashMocks.get(name, defaultValue),
+      set: (name: string, value: unknown) => hashMocks.set(name, value),
+      addWatch: (name: string, callback: unknown) => hashMocks.addWatch(name, callback)
     }
   }
 })
 
 describe('useHashRef', () => {
   beforeEach(() => {
+    domRuntime = true
     vi.clearAllMocks()
-    // 'items' record is module-level, so use unique names
   })
 
   it('should initialize with the value from `Hash.get`', () => {
@@ -40,6 +41,17 @@ describe('useHashRef', () => {
 
     expect(hashMocks.get).toHaveBeenCalledWith(name, defaultValue)
     expect(item.value).toBe('value-from-hash')
+  })
+
+  it('should support a factory function as defaultValue', () => {
+    const name = 'test-hash-factory'
+    const factory = () => 'factory-value'
+    hashMocks.get.mockImplementation((_key, def) => (typeof def === 'function' ? def() : def))
+
+    const item = useHashRef(name, factory)
+
+    expect(hashMocks.get).toHaveBeenCalledWith(name, factory)
+    expect(item.value).toBe('factory-value')
   })
 
   it('should update Hash when ref value changes', async () => {
@@ -56,15 +68,15 @@ describe('useHashRef', () => {
 
   it('should update ref when Hash changes (external change)', async () => {
     const name = 'test-hash-watch'
-    let watchCallback: any
-    hashMocks.addWatch.mockImplementation((_n, cb) => {
-      watchCallback = cb
+    let watchCallback: ((value: string) => void) | undefined
+    hashMocks.addWatch.mockImplementation((_name: string, callback: (value: string) => void) => {
+      watchCallback = callback
     })
 
     const item = useHashRef(name, 'initial')
     expect(hashMocks.addWatch).toHaveBeenCalled()
 
-    watchCallback('updated-externally')
+    watchCallback?.('updated-externally')
     await nextTick()
 
     expect(item.value).toBe('updated-externally')
@@ -78,5 +90,30 @@ describe('useHashRef', () => {
 
     expect(item1).toBe(item2)
     expect(hashMocks.get).toHaveBeenCalledTimes(1)
+  })
+
+  it.each([0, false, '', undefined] as const)('should handle boundary value %s', async (boundary) => {
+    const name = `test-hash-boundary-${String(boundary)}`
+    hashMocks.get.mockReturnValue('initial')
+
+    const item = useHashRef<string | number | boolean | undefined>(name, 'initial')
+    item.value = boundary
+    await nextTick()
+
+    expect(hashMocks.set).toHaveBeenCalledWith(name, boundary)
+  })
+
+  it('should skip DOM watchers during SSR when isDomRuntime is false', async () => {
+    domRuntime = false
+    const name = 'test-hash-ssr'
+    hashMocks.get.mockReturnValue('ssr-initial')
+
+    const item = useHashRef(name, 'ssr-initial')
+    item.value = 'ssr-changed'
+    await nextTick()
+
+    expect(item.value).toBe('ssr-changed')
+    expect(hashMocks.addWatch).not.toHaveBeenCalled()
+    expect(hashMocks.set).not.toHaveBeenCalled()
   })
 })

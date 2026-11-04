@@ -12,7 +12,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `value: T` — Любое проверяемое значение.
 
 **Возвращает:**
-`boolean` (`value is Extract<T, Undefined>`) — Вернет `true`, если переменная равна `null` либо `undefined`. Функция также выступает как type guard TypeScript, сужающий тип переменной до `Extract<T, Undefined>` (`null | undefined`).
+`boolean` (`value is T & Undefined`) — Вернет `true`, если переменная равна `null` либо `undefined`. Функция также выступает как type guard TypeScript, сужающий тип переменной до `T & Undefined` (`null | undefined`).
 
 ```typescript
 import { isNull } from '@dxtmisha/functional-basic'

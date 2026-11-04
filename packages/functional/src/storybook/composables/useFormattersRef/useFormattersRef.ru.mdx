@@ -7,32 +7,20 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Композабл для реактивного форматирования списков данных на основе заданных правил для каждого свойства.
 
 **Параметры:**
-- `list: RefType<List>` — исходный список данных (Ref или ComputedRef).
+- `list: RefType<List | undefined>` — исходный список данных (Ref или ComputedRef).
 - `options: Options` — настройки форматирования для каждого свойства:
     - `type: FormattersType` — тип форматировщика (`currency`, `date`, `name`, `number`, `plural`, `unit`).
     - `options?: object` — дополнительные настройки для конкретного типа (например, код валюты, формат даты).
     - `transformation?: function` — пользовательская функция для преобразования значения.
 
-**Возвращает:**
-- `listFormat: ComputedRef<FormattersReturn<List, Options>>` — отформатированный список данных. К элементам добавляются поля вида `{property}Format` для каждого свойства, указанного в `options`.
+**Возвращает (`UseFormattersRef<List, Options>`):**
+- `listFormat: ComputedRef<FormattersReturn<List, Options>>` — отформатированный список данных. К элементам добавляются поля вида `{property}Format` для каждого свойства, указанного в `options`. Автоматически обновляется при смене локали `GeoRef`.
+- `length: ComputedRef<number>` — количество записей в списке.
 
 ### Ограничения дженериков (Generic Constraints)
 
 - `Options extends FormattersOptionsList` — тип параметров форматирования каждого свойства.
 - `List extends FormattersListProp` — тип исходного списка (может быть массивом или одним элементом).
-
-## Архитектура: ленивые `computed` (Динамические геттеры)
-
-Композибл возвращает `listFormat` как нативный JS-геттер.
-Такой подход позволяет вызывать `useFormattersRef()` **вне жизненного цикла компонента Vue** (например, глобально или в сторах).
-Объект `ComputedRef` создается и кэшируется Vue при первом обращении к свойству во время деструктуризации:
-
-```typescript
-// ComputedRef создается при деструктуризации в setup()
-const { listFormat } = useFormattersRef(items, { price: { type: FormattersType.currency } })
-```
-
-> **Важно**: Избегайте обращения к геттеру "через точку" множество раз (например, `result.listFormat`). Всегда деструктурируйте результат один раз на уровне `setup`, чтобы гарантировать создание только одного экземпляра `computed`.
 
 ## Пример использования
 

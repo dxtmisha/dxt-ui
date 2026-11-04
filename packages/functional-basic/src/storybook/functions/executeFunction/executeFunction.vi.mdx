@@ -15,8 +15,10 @@ Tiện ích đẳng hình (isomorphic) nền tảng giúp thực thi một giá 
 - **Không phụ thuộc & An toàn cho SSR** — Hàm thuần túy với chi phí thực thi $O(1)$, hoàn toàn độc lập với DOM và chạy ổn định trên Node.js, Nitro, Bun, Cloudflare Workers và trình duyệt.
 
 **Tham số:**
-- `callback: T | FunctionArgs<never, T> | ((...args: Args) => T)` — Giá trị cần xử lý. Có thể là giá trị tĩnh, đối tượng hoặc một hàm trả về kiểu `T`.
+- `callback: T | ((...args: Args) => T)` — Giá trị cần xử lý. Có thể là giá trị tĩnh, đối tượng hoặc một hàm trả về kiểu `T`.
 - `...args: Args` — Các đối số được chuyển tiếp vào hàm nếu `callback` là hàm có thể gọi.
+
+Với hàm callback có tham số được định kiểu, hãy để TypeScript suy luận cả hai đối số kiểu hoặc chỉ định kiểu kết quả và bộ đối số.
 
 **Trả về:**
 `T` — Kết quả từ việc thực thi hàm, hoặc chính giá trị ban đầu.

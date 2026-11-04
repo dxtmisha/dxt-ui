@@ -9,7 +9,8 @@ Composable để lấy các bản dịch phản ứng dựa trên các khóa ho�
 Các cập nhật ref lỗi thời bị bỏ qua sau khi đổi ngôn ngữ. `TranslateInstance` cũng giữ ngôn ngữ và vị trí ban đầu của mỗi lần tải: tập tin đến muộn của ngôn ngữ trước không thể ghi đè bộ nhớ đệm của mã vùng hiện tại, kể cả với các hook mới tạo.
 
 **Tham số:**
-- `names: (string | string[])[]` — một chuỗi hoặc một mảng các khóa để dịch.
+- `names: T extends (string | string[])[]` — một mảng các khóa hoặc bộ khóa để dịch.
+- `translateInstance?: TranslateInstance` — thực thể `TranslateInstance` tùy chỉnh (mặc định là `Translate.getItem()`).
 
 **Trả về:**
 - `ShallowRef<TranslateList<T>>` — một tham chiếu phản ứng nông chứa các văn bản đã dịch.

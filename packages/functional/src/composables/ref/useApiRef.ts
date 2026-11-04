@@ -175,7 +175,9 @@ let globalWatchSource: RefType<unknown> | undefined
  * )
  * ```
  *
- * @param path path to request (can be a Ref or Getter) / путь к запросу (может быть Ref или Getter)
+ * @template R transformed response data type / тип преобразованных данных ответа
+ * @template T raw response data type before transformation / тип исходных данных ответа до трансформации
+ * @param path path to request (can be a Ref, ComputedRef, or string) / путь к запросу (может быть Ref, ComputedRef или строкой)
  * @param options data for the request (headers, method, etc.) / данные для запроса (заголовки, метод и т.д.)
  * @param reactivity should reactivity be enabled (automatically re-fetch on deps change) /
  * включить ли реактивность (автоматически повторять запрос при изменении зависимостей)
@@ -201,6 +203,7 @@ let globalWatchSource: RefType<unknown> | undefined
  * нужно ли останавливать запрос и удалять данные из кеша при размонтировании компонента
  * @param apiInstance Api instance (defaults to global Api instance) /
  * Экземпляр Api (по умолчанию используется глобальный экземпляр Api)
+ * @returns reactive API request state and control methods / реактивное состояние API-запроса и методы управления
  */
 export function useApiRef<
   R,
@@ -383,7 +386,7 @@ export function useApiRef<
    *
    * Ручная инициализация.
    */
-  const init = () => {
+  const init = (): void => {
     if (first) {
       first = false
 
@@ -427,7 +430,7 @@ export function useApiRef<
    *
    * Инициализация SSR.
    */
-  const initSsr = () => {
+  const initSsr = (): void => {
     if (isDomRuntime()) {
       return
     }
@@ -468,7 +471,7 @@ export function useApiRef<
   }
 
   /** Reactive data (Computed) / Реактивные данные (Computed) */
-  const data = computed(() => {
+  const data = computed<ApiData<R> | undefined>(() => {
     init()
 
     return item.value
@@ -496,7 +499,7 @@ export function useApiRef<
     /** Reactive data (Computed) / Реактивные данные (Computed) */
     data,
     /** Item (Ref) / Элемент (Ref) */
-    get item() {
+    get item(): Ref<ApiData<R> | undefined> {
       init()
 
       return item
@@ -504,7 +507,9 @@ export function useApiRef<
     /** Error item (Computed) / Элемент ошибки (Computed) */
     errorItem,
 
+    /** Status of response contract validation / Статус валидации контракта ответа */
     isResponseContractValid: computed<boolean>(() => responseValidationResult.value?.status === 'success'),
+    /** Result of response validation / Результат валидации ответа */
     responseValidationResult: computed<ApiDataValidation | undefined>(() => responseValidationResult.value),
 
     /**
@@ -525,7 +530,7 @@ export function useApiRef<
      *
      * Проверяет, начинается ли запрос (true, если данных еще нет)
      */
-    isStarting() {
+    isStarting(): boolean {
       return item.value === undefined
     },
     /**
@@ -533,7 +538,7 @@ export function useApiRef<
      *
      * Проверяет, загружается ли запрос в данный момент.
      */
-    isLoading() {
+    isLoading(): boolean {
       return loading.value
     },
     /**
@@ -541,7 +546,7 @@ export function useApiRef<
      *
      * Проверяет, читается ли запрос в данный момент.
      */
-    isReading() {
+    isReading(): boolean {
       return reading.value
     },
     /**
@@ -549,7 +554,7 @@ export function useApiRef<
      *
      * Получает текущие данные элемента.
      */
-    getItem() {
+    getItem(): ApiData<R> | undefined {
       return item.value
     },
 
@@ -582,7 +587,7 @@ export function useApiRef<
      *
      * Отмена запроса
      */
-    abort: () => abortController?.abort()
+    abort: (): void => abortController?.abort()
   }
 }
 

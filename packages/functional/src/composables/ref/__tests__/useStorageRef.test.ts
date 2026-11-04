@@ -3,17 +3,18 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { nextTick } from 'vue'
+import { type EffectScope, nextTick } from 'vue'
+import { ServerStorage } from '@dxtmisha/functional-basic'
 
 const storageMocks = {
-  get: vi.fn((def: any) => (typeof def === 'function' ? def() : def)),
+  get: vi.fn((def?: unknown) => (typeof def === 'function' ? def() : def)),
   set: vi.fn(),
   update: vi.fn(),
   getIndex: vi.fn(() => 'ui-storage__event-storage')
 }
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const actual = await importOriginal() as any
+  const actual = await importOriginal() as Record<string, unknown>
   return {
     ...actual,
     DataStorage: vi.fn().mockImplementation(function () {
@@ -27,10 +28,14 @@ import { useStorageRef } from '../useStorageRef'
 
 describe('useStorageRef', () => {
   beforeEach(() => {
+    if (ServerStorage.has('__ui:effect-scope-global__')) {
+      ServerStorage.get<EffectScope>('__ui:effect-scope-global__').stop()
+    }
+    ServerStorage.reset()
     vi.clearAllMocks()
   })
 
-  it('should initialize with value from DataStorage', () => {
+  it('should initialize with value from DataStorage and cache TTL', () => {
     storageMocks.get.mockReturnValue('cached storage')
     const item = useStorageRef('test-storage', 'default', 100)
 
@@ -39,6 +44,7 @@ describe('useStorageRef', () => {
   })
 
   it('should update DataStorage when ref changes', async () => {
+    storageMocks.get.mockReturnValue('default')
     const item = useStorageRef('update-storage', 'default')
     item.value = 'new value'
 
@@ -46,26 +52,43 @@ describe('useStorageRef', () => {
     expect(storageMocks.set).toHaveBeenCalledWith('new value')
   })
 
-  it('should update value on global storage event', async () => {
+  it('should update value on global storage event with matching key or null key', async () => {
+    storageMocks.get.mockReturnValue('initial')
+    storageMocks.getIndex.mockReturnValue('ui-storage__event-storage')
     const item = useStorageRef('event-storage', 'initial')
 
     storageMocks.get.mockReturnValue('updated from event')
-    const event = new Event('storage')
-    window.dispatchEvent(event)
+    window.dispatchEvent(new StorageEvent('storage', { key: 'ui-storage__event-storage' }))
 
-    expect(storageMocks.update).toHaveBeenCalled()
+    expect(storageMocks.update).toHaveBeenCalledTimes(1)
     expect(item.value).toBe('updated from event')
+
+    storageMocks.get.mockReturnValue('cleared from event')
+    window.dispatchEvent(new StorageEvent('storage', { key: null }))
+
+    expect(storageMocks.update).toHaveBeenCalledTimes(2)
+    expect(item.value).toBe('cleared from event')
   })
 
-  it('should ignore storage events for unrelated keys', async () => {
-    useStorageRef('event-storage-filtered', 'initial')
-
+  it('should ignore storage events for unrelated keys', () => {
     storageMocks.getIndex.mockReturnValue('ui-storage__event-storage-filtered')
+    useStorageRef('event-storage-filtered', 'initial')
     storageMocks.update.mockClear()
 
-    const event = new StorageEvent('storage', { key: 'ui-storage__other-key' })
-    window.dispatchEvent(event)
+    window.dispatchEvent(new StorageEvent('storage', { key: 'ui-storage__other-key' }))
 
     expect(storageMocks.update).not.toHaveBeenCalled()
+  })
+
+  it('should remove the window storage listener when EffectScopeGlobal stops', () => {
+    const removeSpy = vi.spyOn(window, 'removeEventListener')
+    useStorageRef('disposable-storage', 'initial')
+
+    if (ServerStorage.has('__ui:effect-scope-global__')) {
+      ServerStorage.get<EffectScope>('__ui:effect-scope-global__').stop()
+    }
+
+    expect(removeSpy).toHaveBeenCalledWith('storage', expect.any(Function))
+    removeSpy.mockRestore()
   })
 })

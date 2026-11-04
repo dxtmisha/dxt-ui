@@ -113,13 +113,14 @@ export class ApiDataReturn<T = unknown> {
    */
   async init(): Promise<this> {
     this.data = await this.readData()
+    this.dataMod = undefined
     return this
   }
 
   /**
-   * Prepares and formats the raw data.
+   * Prepares and formats the raw data. Root values false, 0, and an empty string become { success: false }.
    *
-   * Подготавливает и форматирует исходные данные.
+   * Подготавливает и форматирует исходные данные. Корневые false, 0 и пустая строка преобразуются в { success: false }.
    * @returns prepared API data / подготовленные данные API
    */
   protected initData(): ApiData<T> {
@@ -127,6 +128,16 @@ export class ApiDataReturn<T = unknown> {
     const data = this.getData()
 
     if (!data) {
+      const rootValue: unknown = data
+
+      if (
+        rootValue === false
+        || rootValue === 0
+        || rootValue === ''
+      ) {
+        return { success: false } as ApiData<T>
+      }
+
       return {} as ApiData<T>
     }
 
@@ -204,9 +215,12 @@ export class ApiDataReturn<T = unknown> {
       return this.end.data
     }
 
-    const headers = query.headers.get('Content-Type') ?? ''
+    const mediaType = query.headers.get('Content-Type')?.split(';', 1)[0]?.trim().toLowerCase()
 
-    if (headers.includes('application/json')) {
+    if (
+      mediaType === 'application/json'
+      || mediaType?.endsWith('+json')
+    ) {
       try {
         return await query.json()
       } catch {

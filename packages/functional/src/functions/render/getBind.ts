@@ -22,7 +22,7 @@ import type { ConstrBind } from '../../types/constructorTypes'
  * @returns generated properties object / сгенерированный объект свойств
  */
 export function getBind<T = unknown, R extends ItemList = ItemList>(
-  value: T | R | undefined | null,
+  value?: T | R | undefined | null,
   nameExtra: ItemList | string | undefined = {},
   name = 'value',
   except = false

@@ -138,17 +138,22 @@ describe('ApiCache', () => {
       expect(result).toBeUndefined()
     })
 
-    it('should retain value in in-memory fallback when setListener returns false', async () => {
-      const noopGet = undefined as unknown as (key: string) => Promise<ApiCacheItem | undefined>
+    it('should read external storage after the in-memory fallback expires', async () => {
+      const getListener = vi.fn(async (): Promise<ApiCacheItem | undefined> => undefined)
       const setListener = vi.fn(async (): Promise<boolean> => false)
-      const noopRemove = undefined as unknown as (key: string) => Promise<boolean>
+      const removeListener = vi.fn(async (): Promise<boolean> => true)
 
-      ApiCache.init(noopGet, setListener, noopRemove)
+      ApiCache.init(getListener, setListener, removeListener)
 
-      await ApiCache.set('fallback-key', 'stored-in-memory')
-      const result = await ApiCache.get<string>('fallback-key')
+      await ApiCache.set('fallback-key', false, 1)
+      expect(await ApiCache.get<boolean>('fallback-key')).toBe(false)
+      expect(getListener).not.toHaveBeenCalled()
 
-      expect(result).toBe('stored-in-memory')
+      vi.advanceTimersByTime(1001)
+      getListener.mockResolvedValueOnce({ value: true, age: 1, cacheAge: Date.now() })
+
+      expect(await ApiCache.get<boolean>('fallback-key')).toBe(true)
+      expect(getListener).toHaveBeenCalledWith('fallback-key')
     })
   })
 
@@ -218,7 +223,7 @@ describe('ApiCache', () => {
   })
 
   describe('Amortized background cleanup (clearOld) & error handling', () => {
-    it('should automatically clean up expired items after stepAgeClearOld retrievals', async () => {
+    it('should clean up other expired items after stepAgeClearOld retrievals', async () => {
       const noopGet = undefined as unknown as (key: string) => Promise<ApiCacheItem | undefined>
       const noopSet = undefined as unknown as (key: string, value: ApiCacheItem) => Promise<boolean>
       const removeListener = vi.fn(async (): Promise<boolean> => true)
@@ -226,6 +231,7 @@ describe('ApiCache', () => {
       ApiCache.init(noopGet, noopSet, removeListener, 1)
 
       await ApiCache.set('expired-item', 'old', 1)
+      await ApiCache.set('current-item', 'old', 1)
       await ApiCache.set('valid-item', 'fresh', 60)
 
       vi.advanceTimersByTime(1500)
@@ -235,12 +241,13 @@ describe('ApiCache', () => {
       expect(removeListener).not.toHaveBeenCalled()
 
       // Second get: stepAgeClearOld 0 -> -1 (triggers cleanup)
-      await ApiCache.get('valid-item')
+      expect(await ApiCache.get('current-item')).toBeUndefined()
 
       await Promise.resolve()
       await Promise.resolve()
 
       expect(removeListener).toHaveBeenCalledWith('expired-item')
+      expect(removeListener).not.toHaveBeenCalledWith('current-item')
       expect(removeListener).not.toHaveBeenCalledWith('valid-item')
     })
 

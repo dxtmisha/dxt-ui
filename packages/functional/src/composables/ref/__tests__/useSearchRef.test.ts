@@ -12,33 +12,42 @@ describe('useSearchRef', () => {
     { id: 2, name: 'Banana', Category: 'Fruit' },
     { id: 3, name: 'Carrot', Category: 'Vegetable' }
   ]
-  const columns = ['name', 'Category'] as any
+  const columns: ['name', 'Category'] = ['name', 'Category']
 
   const tick = async () => {
     await nextTick()
     await nextTick()
   }
 
-  it('should initialize with default states', () => {
-    const { isSearch, loading, listSearch } = useSearchRef(listItems, columns)
+  it('should initialize with default states and expose length', () => {
+    const { isSearch, loading, listSearch, length } = useSearchRef(listItems, columns)
 
     expect(isSearch.value).toBe(false)
     expect(loading.value).toBe(false)
     expect(listSearch.value).toHaveLength(3)
+    expect(length.value).toBe(3)
     // Check if items are formatted (added Search keys)
     expect(listSearch.value[0]).toHaveProperty('nameSearch', 'Apple')
     expect(listSearch.value[0]).toHaveProperty('CategorySearch', 'Fruit')
     expect(listSearch.value[0]).toHaveProperty('searchActive', false)
   })
 
+  it('should fallback to empty array when list is undefined', () => {
+    const { listSearch, length } = useSearchRef(undefined, columns)
+
+    expect(listSearch.value).toEqual([])
+    expect(length.value).toBe(0)
+  })
+
   it('should filter items when searching', async () => {
-    const { search, isSearch, listSearch } = useSearchRef(listItems, columns)
+    const { search, isSearch, listSearch, length } = useSearchRef(listItems, columns)
 
     search.value = 'app'
     await tick()
 
     expect(isSearch.value).toBe(true)
     expect(listSearch.value).toHaveLength(1)
+    expect(length.value).toBe(1)
     expect(listSearch.value[0]?.name).toBe('Apple')
     expect(listSearch.value[0]?.searchActive).toBe(true)
     // Highlight check (addTagHighlightMatch uses span with sys-search-selection by default)
@@ -87,7 +96,7 @@ describe('useSearchRef', () => {
   })
 
   it('should react to columns ref or callback changes', async () => {
-    const columnsRef = ref(['Category'] as any)
+    const columnsRef = ref<('name' | 'Category')[]>(['Category'])
     const { search, listSearch } = useSearchRef(listItems, columnsRef)
 
     search.value = 'Apple'

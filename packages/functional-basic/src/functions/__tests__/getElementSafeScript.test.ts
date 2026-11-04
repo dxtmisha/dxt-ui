@@ -227,8 +227,21 @@ describe('getElementSafeScript', () => {
 
     it('should handle HTML comment sequences', () => {
       const data = { comment: '<!-- <script>alert(1)</script> -->' }
-      const result = getElementSafeScript('html-comment', data)
-      expect(result).toContain('<!-- <script>alert(1)<\\/script> -->')
+      document.body.innerHTML = getElementSafeScript('html-comment', data)
+
+      expect(getHydrationData('html-comment', { comment: '' })).toEqual(data)
+    })
+
+    it('should hydrate data and preserve markup after an unfinished HTML comment', () => {
+      const data = {
+        comment: '<!-- preview -->',
+        source: '<!--\n<script type="module">\ninitializePreview()\n</script>'
+      }
+      const script = getElementSafeScript('hydration-data', data)
+      document.body.innerHTML = `${script}<main id="content">Rendered content</main>`
+
+      expect(document.getElementById('content')?.textContent).toBe('Rendered content')
+      expect(getHydrationData('hydration-data', { comment: '', source: '' })).toEqual(data)
     })
   })
 

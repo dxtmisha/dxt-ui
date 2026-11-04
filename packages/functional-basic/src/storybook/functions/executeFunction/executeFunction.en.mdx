@@ -15,8 +15,10 @@ A foundational isomorphic utility that conditionally executes a value if it is a
 - **Zero-Dependency & SSR Safe** — Pure isomorphic utility executing with $O(1)$ overhead and zero DOM requirements across Node.js, Nitro, Bun, Cloudflare Workers, and browser environments.
 
 **Parameters:**
-- `callback: T | FunctionArgs<never, T> | ((...args: Args) => T)` — The value to resolve. Can be a static value or a callable function returning type `T`.
+- `callback: T | ((...args: Args) => T)` — The value to resolve. Can be a static value or a callable function returning type `T`.
 - `...args: Args` — Arguments forwarded to the function if `callback` is callable.
+
+For a callback with typed parameters, let TypeScript infer both type arguments or specify both the result type and the argument tuple.
 
 **Returns:**
 `T` — The returned value from function execution, or the original static value.

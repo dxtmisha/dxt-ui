@@ -6,27 +6,29 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
 import { useQueryRef } from '../useQueryRef'
 
-// Mock Query from functional-basic
 const queryMocks = {
   get: vi.fn(),
   set: vi.fn(),
   addWatch: vi.fn()
 }
+let domRuntime = true
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const actual = await importOriginal() as any
+  const actual = await importOriginal() as Record<string, unknown>
   return {
     ...actual,
+    isDomRuntime: () => domRuntime,
     Query: {
-      get: (name: string, defaultValue: any) => queryMocks.get(name, defaultValue),
-      set: (name: string, value: any) => queryMocks.set(name, value),
-      addWatch: (name: string, callback: any) => queryMocks.addWatch(name, callback)
+      get: (name: string, defaultValue: unknown) => queryMocks.get(name, defaultValue),
+      set: (name: string, value: unknown) => queryMocks.set(name, value),
+      addWatch: (name: string, callback: unknown) => queryMocks.addWatch(name, callback)
     }
   }
 })
 
 describe('useQueryRef', () => {
   beforeEach(() => {
+    domRuntime = true
     vi.clearAllMocks()
   })
 
@@ -39,6 +41,17 @@ describe('useQueryRef', () => {
 
     expect(queryMocks.get).toHaveBeenCalledWith(name, defaultValue)
     expect(item.value).toBe('value-from-query')
+  })
+
+  it('should support a factory function as defaultValue', () => {
+    const name = 'test-query-factory'
+    const factory = () => 'factory-value'
+    queryMocks.get.mockImplementation((_key, def) => (typeof def === 'function' ? def() : def))
+
+    const item = useQueryRef(name, factory)
+
+    expect(queryMocks.get).toHaveBeenCalledWith(name, factory)
+    expect(item.value).toBe('factory-value')
   })
 
   it('should update Query when ref value changes', async () => {
@@ -55,15 +68,15 @@ describe('useQueryRef', () => {
 
   it('should update ref when Query changes (external change)', async () => {
     const name = 'test-query-watch'
-    let watchCallback: any
-    queryMocks.addWatch.mockImplementation((_n, cb) => {
-      watchCallback = cb
+    let watchCallback: ((value: string) => void) | undefined
+    queryMocks.addWatch.mockImplementation((_name: string, callback: (value: string) => void) => {
+      watchCallback = callback
     })
 
     const item = useQueryRef(name, 'initial')
     expect(queryMocks.addWatch).toHaveBeenCalled()
 
-    watchCallback('updated-externally')
+    watchCallback?.('updated-externally')
     await nextTick()
 
     expect(item.value).toBe('updated-externally')
@@ -77,5 +90,30 @@ describe('useQueryRef', () => {
 
     expect(item1).toBe(item2)
     expect(queryMocks.get).toHaveBeenCalledTimes(1)
+  })
+
+  it.each([0, false, '', undefined] as const)('should handle boundary value %s', async (boundary) => {
+    const name = `test-query-boundary-${String(boundary)}`
+    queryMocks.get.mockReturnValue('initial')
+
+    const item = useQueryRef<string | number | boolean | undefined>(name, 'initial')
+    item.value = boundary
+    await nextTick()
+
+    expect(queryMocks.set).toHaveBeenCalledWith(name, boundary)
+  })
+
+  it('should skip DOM watchers during SSR when isDomRuntime is false', async () => {
+    domRuntime = false
+    const name = 'test-query-ssr'
+    queryMocks.get.mockReturnValue('ssr-initial')
+
+    const item = useQueryRef(name, 'ssr-initial')
+    item.value = 'ssr-changed'
+    await nextTick()
+
+    expect(item.value).toBe('ssr-changed')
+    expect(queryMocks.addWatch).not.toHaveBeenCalled()
+    expect(queryMocks.set).not.toHaveBeenCalled()
   })
 })

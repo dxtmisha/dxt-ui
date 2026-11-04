@@ -10,7 +10,7 @@ import { Api, ApiMethodItem, type ApiDataValidation, type ApiFetch, type ApiInst
 
 describe('useApiRef', () => {
   let mockApiInstance: ApiInstance
-  let mockGetResponse: any
+  let mockGetResponse: { emulatorAsync: ReturnType<typeof vi.fn> }
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -550,12 +550,12 @@ describe('useApiRef', () => {
     it('should apply transformation to response data', async () => {
       vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ rawInfo: '  text  ' })
 
-      const transformation = (data: any) => ({ cleanInfo: data.rawInfo.trim() })
+      const transformation = (data: { rawInfo: string }) => ({ cleanInfo: data.rawInfo.trim() })
       const { data } = useApiRef('test/path', undefined, true, undefined, transformation)
 
       // Access to init
       expect(data.value).toBeUndefined()
-      await new Promise(r => setTimeout(r, 0))
+      await new Promise(resolve => setTimeout(resolve, 0))
 
       expect(data.value).toEqual({ cleanInfo: 'text' })
     })

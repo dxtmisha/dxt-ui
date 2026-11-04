@@ -14,8 +14,7 @@ describe('ServerStorage', () => {
   const ssrContext: Record<string, unknown> = {}
 
   beforeEach(() => {
-    errorCenterSpy = vi.spyOn(ErrorCenter.getItem(), 'on')
-
+    errorCenterSpy = vi.spyOn(ErrorCenter, 'on')
     ServerStorage.reset()
     ServerStorage.setErrorStatus(false)
 

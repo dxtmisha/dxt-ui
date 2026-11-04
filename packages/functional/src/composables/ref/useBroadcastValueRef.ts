@@ -2,14 +2,16 @@ import { ref, type Ref, toRaw, watch } from 'vue'
 import { BroadcastMessage, executeFunction, isDomRuntime, ServerStorage } from '@dxtmisha/functional-basic'
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 
+/** Broadcast value item type / Тип элемента передаваемого значения */
 type BroadcastValueItem<T> = T | string | undefined
 
 /**
  * Returns a list of active BroadcastValueRef instances for the current request context.
  *
  * Возвращает список активных экземпляров BroadcastValueRef для контекста текущего запроса.
+ * @returns dictionary of BroadcastValueRef instances / словарь экземпляров BroadcastValueRef
  */
-const getItems = () => {
+const getItems = (): Record<string, Ref> => {
   return ServerStorage.get<Record<string, Ref>>(
     '__ui:broadcast-value-ref__',
     () => ({})
@@ -20,8 +22,9 @@ const getItems = () => {
  * Creates a reactive variable to manage data between browser tabs.
  *
  * Создает реактивную переменную для управления данными между вкладками браузера.
- * @param name value name/ название значения
- * @param defaultValue default value/ значение по умолчанию
+ * @param name value name / название значения
+ * @param defaultValue default value / значение по умолчанию
+ * @returns reactive broadcast value reference / реактивная ссылка на синхронизируемое значение
  */
 export function useBroadcastValueRef<T>(
   name: string,

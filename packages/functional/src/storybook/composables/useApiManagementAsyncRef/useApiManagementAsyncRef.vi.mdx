@@ -21,6 +21,8 @@ Các tham số giống hệt với [`useApiManagementRef`](./useApiManagementRef
 - `searchOptions?: ApiManagementSearch<Item, Columns>` — cài đặt tìm kiếm.
 - `postRequest / putRequest / deleteRequest` — cài đặt mutation.
 - `action?: () => Promise<void> | void` — Callback chung sau khi nhận bất kỳ phản hồi mutation nào, bất kể thành công hay lỗi.
+- `actionSuccess?: () => Promise<void> | void` — Callback chung sau khi nhận phản hồi mutation thành công.
+- `actionError?: () => Promise<void> | void` — Callback chung sau khi nhận phản hồi mutation lỗi.
 - `apiInstance?: ApiInstance` — instance của API.
 
 Cấu hình riêng `action`, `actionSuccess` và `actionError` trong `postRequest`, `putRequest` và `deleteRequest`.

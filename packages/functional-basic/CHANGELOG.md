@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2026-11-04
+
+### Added
+- **Documentation & Storybook Stories**:
+  - Added comprehensive trilingual Storybook MDX documentation across English, Russian, and Vietnamese (`.en.mdx`, `.ru.mdx`, `.vi.mdx`) for `GeoUnit`, `toGeoItemFull`, and `hasKeys`.
+  - Added test cases covering edge cases, nullish inputs, and SSR safety across utility functions and core classes.
+
+### Changed
+- **Class Architecture & Method Ordering**:
+  - Standardized class member and method ordering to strictly follow project conventions (`get` -> `set` -> `is` -> `has` -> `get...` -> `set...` -> `add...` -> `remove...` -> `update...` -> `reset...`, followed by alphabetical sorting) across `Api`, `ApiHeaders`, `ApiResponse`, `ErrorCenter`, `ErrorCenterInstance`, `GeoFlag`, `GeoIntl`, `GeoPhone`, `GeoUnit`, `Hash`, `HashInstance`, `Icons`, `Loading`, `LoadingInstance`, `Meta`, `MetaManager`, `MetaOg`, `MetaStatic`, `MetaTwitter`, `Query`, `QueryInstance`, `ScrollbarWidth`, `SearchListOptions`, `Translate`, `TranslateFile`, `TranslateInstance`, and `UrlInstanceAbstract`.
+  - Extracted named constants for magic numbers and static regular expressions across `ApiPreparation`, `ApiResponse`, `GeoPhone`, `HashInstance`, `Icons`, and `UrlItem`.
+  - Replaced plain object dictionaries with prototype-less objects (`Object.create(null)`) in `StorageCallback` and `TranslateInstance` for safer key-value storage.
+  - Allowed nullish element references (`element?: ElementOrWindow | null`) in `EventItem` and `LoadingInstance` for more flexible event and loader registration lifecycles.
+  - Made `options` parameter optional in `SearchList.setOptions()` and `SearchListOptions.setOptions()`.
+- **Core Utility Functions & Type Safety**:
+  - Widened input parameters to accept nullish (`null | undefined`) or `unknown` values across utility functions (`escapeExp`, `getArrayHighlightMatch`, `isDifferent`, `isEnter`, `isFloat`, `isInput`, `isMetaKey`, `isSelectedByList`, `isTab`, `removeCommonPrefix`, `replaceComponentName`, `replaceRecursive`, `replaceTemplate`, `resizeImage`, `resizeImageByMax`, `secondToTime`, `setValues`, `skipFrame`, `sortList`, `toCamelCaseFirst`, `toNumberByMax`, `toNumberPositive`, `toPascalCase`, `toPercent`, `toPercentBy100`).
+  - `escapeExp` / `getArrayHighlightMatch`: widened `value?: unknown` to align with runtime string coercion; integrated `isRegExp` helper and checked `expression.global` to prevent redundant regex compilation and support cross-realm instances.
+  - `executePromise`: made `callback` parameter optional with default generic `T = void`.
+  - `uint8ArrayToBase64`: extracted strongly-typed `BufferConstructor` and `Uint8ArrayWithBase64` interfaces, micro-optimized loop iteration, and eliminated untyped constructs.
+  - `toPercent` / `toPercentBy100`: optimized percentage calculation formulas, clarified bilingual JSDoc descriptions, and refined return types.
+  - `removeCommonPrefix`: optimized string prefix matching algorithm.
+  - `skipFrame`: improved SSR safety and resource cleanup.
+  - Expanded runtime nullish safety across core utilities: `Translate`, `eventStopPropagation`, `getKey`, `getLengthOfAllArray`, `getMaxLengthAllArray`, `getMinLengthAllArray`, `getMouseClient`, `getMouseClientX`, `getMouseClientY`, `getObjectByKeys`, `getObjectNoUndefined`, `getObjectOrNone`, `getOnlyText`, `getRandomItem`, `getRandomText`, `getStepPercent`, `getStepValue`, `goScroll`, `handleShare`, `initScrollbarOffset`, `strFill`.
+- **Tests & Code Review Registry**:
+  - Overhauled and expanded unit test suites across all modified classes and functions, verifying boundary conditions, null safety, and SSR compatibility.
+  - Synchronized Storybook MDX documentation across English, Russian, and Vietnamese.
+  - Recorded completed class and utility reviews in `temp.md`.
+
+### Fixed
+- **`ResumableTimer`**:
+  - Fixed re-entrancy issue in `go()` by finalizing timer state before executing callback, allowing `reset()` to be safely invoked inside callbacks.
+- **`ApiResponse`**:
+  - Fixed `FormData` type narrowing in `isResponse()` by removing obsolete `hasFormData` check.
+- **`writeClipboardData`**:
+  - Safely guarded `document.execCommand` invocation against runtime exceptions in restricted environments.
+
 ## [2.0.1] - 2026-11-03
 
 ### Added

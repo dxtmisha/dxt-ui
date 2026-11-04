@@ -1,0 +1,25 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useGeoUnitRef - Định dạng đơn vị đo lường'/>
+
+# `useGeoUnitRef`
+
+Một composable trả về một instance của lớp `GeoUnitRef` để định dạng phản ứng và tự động chuyển đổi đơn vị đo lường theo khu vực (chiều dài, diện tích, trọng lượng, thể tích, nhiệt độ, tốc độ).
+
+**Tham số:**
+- `code?: RefOrNormal<string>` — Mã locale, quốc gia hoặc ngôn ngữ (hỗ trợ tham chiếu phản ứng `Ref`).
+
+**Trả về (`GeoUnitRef`):**
+- Một đối tượng lớp `GeoUnitRef` cung cấp các phương thức để định dạng đơn vị phản ứng.
+
+## Ví dụ
+
+```typescript
+import { useGeoUnitRef } from '@dxtmisha/functional'
+
+const unit = useGeoUnitRef()
+
+// Định dạng phản ứng khoảng cách và trọng lượng theo cài đặt khu vực
+const distance = unit.kilometer(10)
+const weight = unit.gram(500)
+```

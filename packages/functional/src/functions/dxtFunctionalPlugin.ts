@@ -71,7 +71,7 @@ export interface FunctionalPluginOptions {
  *
  * const app = createApp(App)
  * app.use(dxtFunctionalPlugin, {
- *   api: { url: 'https://api.example.com' },
+ *   api: { urlRoot: 'https://api.example.com' },
  *   metaSuffix: ' | My App',
  *   router
  * })

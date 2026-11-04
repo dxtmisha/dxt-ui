@@ -14,6 +14,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `putRequest?: ApiManagementRequest<Put>` — опциональные настройки для PUT-запроса обновления.
 - `deleteRequest?: ApiManagementRequest<Delete>` — опциональные настройки для DELETE-запроса удаления.
 - `action?: () => Promise<void> | void` — Общий колбэк после получения любого ответа на мутацию, независимо от успешности.
+- `actionSuccess?: () => Promise<void> | void` — Общий колбэк после получения успешного ответа на мутацию.
+- `actionError?: () => Promise<void> | void` — Общий колбэк после получения ошибочного ответа на мутацию.
 - `apiInstance?: ApiInstance` — Экземпляр API, используемый для выполнения запроса. По умолчанию `Api.getItem()`.
 
 Колбэки `action`, `actionSuccess` и `actionError` настраиваются отдельно в `postRequest`, `putRequest` и `deleteRequest`.

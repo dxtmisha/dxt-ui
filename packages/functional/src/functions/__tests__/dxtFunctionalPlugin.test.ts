@@ -3,11 +3,15 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import type { App } from 'vue'
+import type { Router } from 'vue-router'
 import {
   Api,
   Translate,
   Icons,
-  ErrorCenter
+  ErrorCenter,
+  type ErrorCenterCauseList,
+  type ErrorCenterHandlerList
 } from '@dxtmisha/functional-basic'
 import { MediaSocial } from '@dxtmisha/media'
 import { dxtFunctionalPlugin } from '../dxtFunctionalPlugin'
@@ -52,7 +56,7 @@ describe('dxtFunctionalPlugin', () => {
     config: {
       globalProperties: {}
     }
-  } as any
+  } as unknown as App
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -60,11 +64,12 @@ describe('dxtFunctionalPlugin', () => {
 
   it('should install smoothly with default empty options', () => {
     expect(() => dxtFunctionalPlugin?.install?.(appMock)).not.toThrow()
+    expect(RouterItemRef.set).not.toHaveBeenCalled()
     expect(executeUse.executeUseGlobalInit).toHaveBeenCalled()
   })
 
   it('should call Api.setConfig if api option is provided', () => {
-    const options = { api: { url: 'https://api.test' } }
+    const options = { api: { urlRoot: 'https://api.test' } }
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(Api.setConfig).toHaveBeenCalledWith(options.api)
   })
@@ -90,7 +95,7 @@ describe('dxtFunctionalPlugin', () => {
   it('should call useMeta().setSuffix if metaSuffix option is provided', () => {
     const options = { metaSuffix: ' - Test' }
     const setSuffixSpy = vi.fn()
-    vi.mocked(useMeta).mockReturnValue({ setSuffix: setSuffixSpy } as any)
+    vi.mocked(useMeta).mockReturnValue({ setSuffix: setSuffixSpy } as unknown as ReturnType<typeof useMeta>)
 
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(useMeta).toHaveBeenCalled()
@@ -98,32 +103,32 @@ describe('dxtFunctionalPlugin', () => {
   })
 
   it('should set router in RouterItemRef if router option is provided', () => {
-    const routerMock = { name: 'router' } as any
+    const routerMock = { name: 'router' } as unknown as Router
     const options = { router: routerMock }
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(RouterItemRef.set).toHaveBeenCalledWith(routerMock)
   })
 
   it('should fallback to globalProperties.$router if router option is missing', () => {
-    const routerMock = { name: 'global-router' } as any
+    const routerMock = { name: 'global-router' } as unknown as Router
     const appWithRouter = {
       config: {
         globalProperties: { $router: routerMock }
       }
-    } as any
+    } as unknown as App
 
     dxtFunctionalPlugin?.install?.(appWithRouter, {})
     expect(RouterItemRef.set).toHaveBeenCalledWith(routerMock)
   })
 
   it('should call ErrorCenter.addList if errorCauses option is provided', () => {
-    const options = { errorCauses: { test: 'error' } as any }
+    const options = { errorCauses: [{ group: 'test', code: 'error', message: 'Error' }] as ErrorCenterCauseList }
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(ErrorCenter.addList).toHaveBeenCalledWith(options.errorCauses)
   })
 
   it('should call ErrorCenter.addHandlerList if errorHandlers option is provided', () => {
-    const options = { errorHandlers: [{ group: 'test', handlers: [] }] as any }
+    const options = { errorHandlers: [{ group: 'test', handlers: [] }] as ErrorCenterHandlerList }
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(ErrorCenter.addHandlerList).toHaveBeenCalledWith(options.errorHandlers)
   })

@@ -1,4 +1,4 @@
-import { computed, type Ref } from 'vue'
+import { computed, type ComputedRef, type Ref } from 'vue'
 import {
   type FormattersOptionsList,
   type FormattersReturn,
@@ -316,7 +316,7 @@ export function useApiManagementRef<
     /** Processed data array (supports Skeleton, formatters, and search) / Обработанный массив данных (поддерживает Skeleton, форматтеры и поиск) */
     list,
     /** Raw reactive data from `useApiRef` / «Сырые» реактивные данные из `useApiRef` */
-    get data() {
+    get data(): ComputedRef<ApiData<Return> | undefined> {
       return request.data
     },
 
@@ -324,7 +324,7 @@ export function useApiManagementRef<
     errorItem: request.errorItem,
 
     /** Current number of items in `list` (changes with search) / Текущее количество элементов в `list` (меняется при поиске) */
-    get length() {
+    get length(): ComputedRef<number> {
       if (search) {
         return search.length
       }
@@ -368,11 +368,6 @@ export function useApiManagementRef<
      */
     initSsr: request.initSsr,
     /**
-     * Default reset
-     *
-     * Сброс по умолчанию
-     */
-    /**
      * Force reset the GET request and clear state.
      *
      * Принудительный перезапуск GET-запроса и очистка состояния.
@@ -390,21 +385,24 @@ export function useApiManagementRef<
      *
      * Выполнить POST запрос мутации.
      * @param request request data / данные запроса
+     * @returns mutation response / ответ мутации
      */
-    sendPost: async (request?: ApiFetch['request']) => await postItem?.send(request),
+    sendPost: async (request?: ApiFetch['request']): Promise<Post | undefined> => await postItem?.send(request),
     /**
      * Execute PUT mutation request.
      *
      * Выполнить PUT запрос мутации.
      * @param request request data / данные запроса
+     * @returns mutation response / ответ мутации
      */
-    sendPut: async (request?: ApiFetch['request']) => await putItem?.send(request),
+    sendPut: async (request?: ApiFetch['request']): Promise<Put | undefined> => await putItem?.send(request),
     /**
      * Execute DELETE mutation request.
      *
      * Выполнить DELETE запрос мутации.
      * @param request request data / данные запроса
+     * @returns mutation response / ответ мутации
      */
-    sendDelete: async (request?: ApiFetch['request']) => await deleteItem?.send(request)
+    sendDelete: async (request?: ApiFetch['request']): Promise<Delete | undefined> => await deleteItem?.send(request)
   }
 }

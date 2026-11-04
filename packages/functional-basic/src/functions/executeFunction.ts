@@ -1,7 +1,5 @@
 import { isFunction } from './isFunction'
 
-import { type FunctionArgs } from '../types/basicTypes'
-
 /**
  * Flexible utility that executes the provided argument if it is a function, otherwise returns it as is.
  * Supports passing arbitrary arguments to the callback.
@@ -13,7 +11,7 @@ import { type FunctionArgs } from '../types/basicTypes'
  * @returns result of the execution or the value itself / результат выполнения или само значение
  */
 export function executeFunction<T, Args extends unknown[] = unknown[]>(
-  callback: T | FunctionArgs<never, T> | ((...args: Args) => T),
+  callback: T | ((...args: Args) => T),
   ...args: Args
 ): T {
   return isFunction(callback)

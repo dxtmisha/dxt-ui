@@ -203,10 +203,10 @@ export class ErrorCenterHandler {
     const item = this.get(cause.group) ?? this.get(undefined)
 
     if (item) {
-      item.handlers.forEach(handler => handler(cause))
+      item.handlers.forEach(handler => void this.notifySubscriber(handler, cause))
     }
 
-    this.callbacks.forEach(callback => callback(cause))
+    this.callbacks.forEach(callback => void this.notifySubscriber(callback, cause))
 
     this.toConsole(cause)
 
@@ -214,10 +214,10 @@ export class ErrorCenterHandler {
   }
 
   /**
-   * Logs error cause to the console.
+   * Logs the error code, message and details to the console.
    *
-   * Выводит причину ошибки в консоль.
-   * @param cause error details / детали ошибки
+   * Выводит код, сообщение и детали ошибки в консоль.
+   * @param cause error event received by the subscribers / событие ошибки, полученное подписчиками
    * @returns this instance / текущий экземпляр
    */
   protected toConsole(
@@ -235,5 +235,28 @@ export class ErrorCenterHandler {
     }
 
     return this
+  }
+
+  /**
+   * Runs a subscriber and reports its failure without redispatching the event.
+   *
+   * Вызывает подписчика и сообщает о его сбое без повторной отправки события.
+   * @param callback subscriber to invoke / вызываемый подписчик
+   * @param cause original error event / исходное событие ошибки
+   * @returns promise that settles after the subscriber completes / промис, завершающийся после работы подписчика
+   */
+  private async notifySubscriber(
+    callback: ErrorCenterHandlerCallback,
+    cause: ErrorCenterCauseItem
+  ): Promise<void> {
+    try {
+      await callback(cause)
+    } catch {
+      try {
+        this.toConsole({ group: 'error-center', code: 'subscriberFailed' })
+      } catch {
+        // A failing console filter must also stay isolated / Сбой фильтра консоли тоже изолируется
+      }
+    }
   }
 }

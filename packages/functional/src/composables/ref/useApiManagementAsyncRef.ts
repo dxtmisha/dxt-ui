@@ -45,6 +45,7 @@ import type {
  * @param actionSuccess common callback awaited after receiving a successful mutation response / общий коллбэк, ожидаемый после получения успешного ответа на мутацию
  * @param actionError common callback awaited after receiving an error mutation response / общий коллбэк, ожидаемый после получения ошибочного ответа на мутацию
  * @param apiInstance API instance for requests (defaults to Api.getItem()) / экземпляр API для выполнения запроса
+ * @returns reactive API management interface / реактивный интерфейс управления API
  */
 export function useApiManagementAsyncRef<
   Return extends ApiManagementValue,

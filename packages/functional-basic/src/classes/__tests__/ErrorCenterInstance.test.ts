@@ -17,9 +17,25 @@ describe('ErrorCenterInstance', () => {
     vi.restoreAllMocks()
   })
 
-  it('should initialize with default causes and default handler when none provided', () => {
+  it('should register initial causes and create a default handler', () => {
     const defaultInstance = new ErrorCenterInstance([{ code: 'INIT_CODE', group: 'INIT_GROUP' }])
     expect(defaultInstance.has('INIT_CODE', 'INIT_GROUP')).toBe(true)
+    expect(defaultInstance.getHandler()).toBeInstanceOf(ErrorCenterHandler)
+  })
+
+  it('should keep registered causes and callbacks local to an instance', () => {
+    const firstInstance = new ErrorCenterInstance().setIsConsole(false)
+    const secondInstance = new ErrorCenterInstance().setIsConsole(false)
+    const callback = vi.fn()
+    const cause: ErrorCenterCauseItem = { code: 'LOCAL', group: 'api' }
+    firstInstance.add({ ...cause, label: 'First instance' }).addCallback(callback)
+
+    secondInstance.on(cause)
+    expect(secondInstance.has('LOCAL', 'api')).toBe(false)
+    expect(callback).not.toHaveBeenCalled()
+
+    firstInstance.on(cause)
+    expect(callback).toHaveBeenCalledExactlyOnceWith({ ...cause, label: 'First instance' })
   })
 
   it('should add and check for causes', () => {
@@ -57,10 +73,8 @@ describe('ErrorCenterInstance', () => {
     expect(instance.addHandler('G1', callback)).toBe(instance)
     expect(instance.addHandlerList([{ group: 'G2', handlers: [callback] }])).toBe(instance)
 
-    // @ts-expect-error: Accessing protected member for testing
-    expect(instance.handler.has('G1')).toBe(true)
-    // @ts-expect-error: Accessing protected member for testing
-    expect(instance.handler.has('G2')).toBe(true)
+    expect(instance.getHandler().has('G1')).toBe(true)
+    expect(instance.getHandler().has('G2')).toBe(true)
   })
 
   it('should forward setIsConsole to underlying handler and return this', () => {

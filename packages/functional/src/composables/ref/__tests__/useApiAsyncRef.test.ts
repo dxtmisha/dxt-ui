@@ -3,12 +3,13 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { createSSRApp, h, nextTick, ref } from 'vue'
+import { renderToString } from '@vue/server-renderer'
 import { useApiAsyncRef } from '../useApiAsyncRef'
 import { Api, type ApiInstance, isDomRuntime } from '@dxtmisha/functional-basic'
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const actual = await importOriginal<any>()
+  const actual = await importOriginal<typeof import('@dxtmisha/functional-basic')>()
   return {
     ...actual,
     isDomRuntime: vi.fn(() => true)
@@ -17,7 +18,7 @@ vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
 
 describe('useApiAsyncRef', () => {
   let mockApiInstance: ApiInstance
-  let mockGetResponse: any
+  let mockGetResponse: { emulatorAsync: ReturnType<typeof vi.fn> }
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -117,7 +118,7 @@ describe('useApiAsyncRef', () => {
 
   it('should handle transformation', async () => {
     vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ value: 10 })
-    const transformation = (data: any) => ({ doubled: data.value * 2 })
+    const transformation = (data: { value: number }) => ({ doubled: data.value * 2 })
 
     const item = useApiAsyncRef(
       'test/path',
@@ -131,5 +132,21 @@ describe('useApiAsyncRef', () => {
     await nextTick()
 
     expect(item.data.value).toEqual({ doubled: 20 })
+  })
+
+  it('should prefetch data on server during SSR via initSsr()', async () => {
+    vi.mocked(isDomRuntime).mockReturnValue(false)
+    vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ id: 42 })
+
+    const app = createSSRApp({
+      setup() {
+        const api = useApiAsyncRef<{ id: number }>('test/ssr')
+        return () => h('div', String(api.getItem()?.id ?? 'empty'))
+      }
+    })
+
+    const html = await renderToString(app)
+    expect(html).toContain('42')
+    expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'test/ssr' }))
   })
 })

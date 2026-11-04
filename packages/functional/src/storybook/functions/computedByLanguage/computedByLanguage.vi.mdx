@@ -21,7 +21,7 @@ Hàm thực hiện các kiểm tra theo thứ tự sau:
 - `debugOptions?: DebuggerOptions` — Tùy chọn dùng để gỡ lỗi các phép tính phản ứng, được hỗ trợ bởi Vue.js.
 
 **Trả về:**
-`ComputedRef<T | D>` — Thuộc tính computed phản ứng.
+`ComputedRef<T | (D extends () => infer DR ? DR : D)>` — Thuộc tính computed phản ứng.
 
 ```typescript
 import { computedByLanguage } from '@dxtmisha/functional'

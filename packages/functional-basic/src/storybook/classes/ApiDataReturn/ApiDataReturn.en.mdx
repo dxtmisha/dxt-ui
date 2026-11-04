@@ -10,10 +10,14 @@ A class for handling and processing data received from an API request. It transf
 
 ## Key Features
 
-- **Automated Parsing** — intelligently parses JSON responses or returns raw text based on Content-Type headers.
+- **Automated Parsing** — parses `application/json` and media types ending in `+json` as JSON, including `application/vnd.api+json`.
 - **Data Normalization** — ensures that the returned object follows a consistent structure, even if the server response varies.
 - **Metadata Extraction** — automatically extracts common fields like `success`, `status`, `code`, and `message` from the root of the response and merges them into the data object.
 - **Flexible Configuration** — supports custom processing logic via `queryReturn` and controls whether to unwrap the `data` field using `toData`.
+
+## Unsuccessful responses
+
+When the parsed root value is `false`, `0`, or `""`, `get()` returns `{ success: false }`. A request through `ApiInstance` resolves with this flag and its usual HTTP metadata. `isApiSuccess()` returns `false` even when the HTTP status is 200.
 
 ## Methods
 

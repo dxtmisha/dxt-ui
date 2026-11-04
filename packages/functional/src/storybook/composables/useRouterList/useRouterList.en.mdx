@@ -9,7 +9,7 @@ Managing a list of links for the router. Allows creating navigation menus based 
 **Parameters:**
 - `list: RefType<ConstrBind<T>[] | undefined>` — list of navigation items. Each item must contain `value` and `label`.
 - `selected?: Ref<string> | string` — initially selected item or its value. If not specified, the first item in the list is selected.
-- `hasTo?: boolean` — automatically adds the `to` property to list items for navigation (default is `false`).
+- `hasTo?: boolean` — automatically adds the `to` property to list items for navigation (default is `true`).
 
 **Returns:**
 An object with reactive properties and control methods:

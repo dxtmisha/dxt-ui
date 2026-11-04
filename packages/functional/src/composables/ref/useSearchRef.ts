@@ -1,4 +1,4 @@
-import { computed, type Ref } from 'vue'
+import { computed, type ComputedRef, type Ref } from 'vue'
 import {
   executeFunction,
   SearchList,
@@ -13,13 +13,48 @@ import { useSearchValueRef } from './useSearchValueRef'
 import type { SearchColumnsInput, SearchListInput } from '../../types/searchTypes'
 
 /**
+ * Return interface for `useSearchRef` composable /
+ * Интерфейс возвращаемого значения композабла `useSearchRef`
+ */
+export interface UseSearchRef<
+  T extends SearchItem,
+  K extends SearchColumns<T>
+> {
+  /**
+   * Whether the search is currently active (minimum character limit reached) /
+   * Активен ли поиск в данный момент (достигнут ли лимит символов)
+   */
+  isSearch: ComputedRef<boolean>
+  /** Search string ref / Ссылка на строку поиска */
+  search: Ref<string>
+  /**
+   * Search loading status (if delay is used) /
+   * Статус загрузки поиска (если используется задержка)
+   */
+  loading: Ref<boolean>
+  /**
+   * Formatted list of search results with highlights /
+   * Форматированный список результатов поиска с подсветкой совпадений
+   */
+  listSearch: ComputedRef<SearchFormatList<T, K>>
+  /**
+   * Length of the search results /
+   * Длина списка результатов поиска
+   */
+  length: ComputedRef<number>
+}
+
+/**
  * Composable for handling search logic with reactive data.
  *
  * Композабл для управления логикой поиска с реактивными данными.
+ * @template T search item type / тип элемента поиска
+ * @template K search columns type / тип колонок поиска
  * @param list list of items to search / список элементов для поиска
  * @param columns columns to search in / колонки, по которым ведется поиск
  * @param value reactive search string / реактивная строка поиска
  * @param options search options / настройки поиска
+ * @returns reactive search state and formatted results / реактивное состояние поиска и отформатированные результаты
  */
 export function useSearchRef<
   T extends SearchItem,
@@ -29,7 +64,7 @@ export function useSearchRef<
   columns?: SearchColumnsInput<T, K>,
   value?: Ref<string>,
   options?: SearchOptions
-) {
+): UseSearchRef<T, K> {
   /**
    * Get columns to search in
    *
@@ -94,16 +129,16 @@ export function useSearchRef<
    * Length of the search results /
    * Длина списка результатов поиска
    */
-  const length = computed(() => listSearch.value.length)
+  const length = computed<number>(() => listSearch.value.length)
 
   return {
     /**
-     * Whether the search is currently active (minimum character limit reached)/
+     * Whether the search is currently active (minimum character limit reached) /
      * Активен ли поиск в данный момент (достигнут ли лимит символов)
      */
     isSearch,
 
-    /** Search string ref/ Ссылка на строку поиска */
+    /** Search string ref / Ссылка на строку поиска */
     search,
 
     /**

@@ -31,8 +31,9 @@ import { GeoRef } from '../../classes/ref/GeoRef'
  * const labels = t(['button.save', 'button.cancel'] as const);
  * ```
  *
- * @param names a string or an array with keys / строка или массив с ключами
+ * @param names an array with keys / массив с ключами
  * @param translateInstance a translate instance / экземпляр перевода
+ * @returns reactive reference to translations / реактивная ссылка на переводы
  */
 export function useTranslateRef<
   T extends (string | string[])[]
@@ -86,6 +87,11 @@ export function useTranslateRef<
  * Сокращение для useTranslateRef.
  * Используйте `as const` для массивов, чтобы обеспечить корректный вывод типов ключей в TypeScript.
  *
- * @param names a string or an array with keys / строка или массив с ключами
+ * @param names an array with keys / массив с ключами
+ * @param translateInstance a translate instance / экземпляр перевода
+ * @returns reactive reference to translations / реактивная ссылка на переводы
  */
-export const t = <T extends string[]>(names: T) => useTranslateRef(names)
+export const t = <T extends (string | string[])[]>(
+  names: T,
+  translateInstance?: TranslateInstance
+): ShallowRef<TranslateList<T>> => useTranslateRef(names, translateInstance)

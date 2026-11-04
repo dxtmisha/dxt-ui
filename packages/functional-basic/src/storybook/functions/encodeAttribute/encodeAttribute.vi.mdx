@@ -15,7 +15,7 @@ Mã hóa các ký tự đặc biệt trong chuỗi (`&`, `<`, `>`, `"`, `'`) th�
 - **Giữ nguyên khoảng trắng**: Không tự động cắt tỉa (trim), giữ nguyên hoàn toàn các khoảng trắng, tab và xuống dòng.
 
 **Tham số:**
-- `text?: string | number | null` — Giá trị cần mã hóa (chuỗi, số hoặc giá trị nullish).
+- `text?: unknown` — Giá trị có thể chuyển thành chuỗi. Tham số bị bỏ qua, `null` và `undefined` cho chuỗi rỗng.
 
 **Trả về:**
 `string` — Chuỗi đã được mã hóa, hoặc chuỗi rỗng `''` nếu giá trị là `null` hoặc `undefined`.

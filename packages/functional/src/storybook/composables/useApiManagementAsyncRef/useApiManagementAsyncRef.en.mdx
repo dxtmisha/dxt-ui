@@ -21,6 +21,8 @@ Parameters are identical to [`useApiManagementRef`](./useApiManagementRef.en.mdx
 - `searchOptions?: ApiManagementSearch<Item, Columns>` — search settings.
 - `postRequest / putRequest / deleteRequest` — mutation settings.
 - `action?: () => Promise<void> | void` — Common callback after receiving any mutation response, regardless of success.
+- `actionSuccess?: () => Promise<void> | void` — Common callback after receiving a successful mutation response.
+- `actionError?: () => Promise<void> | void` — Common callback after receiving an error mutation response.
 - `apiInstance?: ApiInstance` — API instance.
 
 Configure `action`, `actionSuccess`, and `actionError` separately in `postRequest`, `putRequest`, and `deleteRequest`.

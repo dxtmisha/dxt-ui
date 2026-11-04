@@ -34,7 +34,7 @@ function deferred<T>(): Deferred<T> {
   return { promise, resolve, reject }
 }
 
-const request = /*#__PURE__*/ vi.fn<(options: ApiFetch) => Promise<unknown>>()
+const request = /* #__PURE__ */ vi.fn<(options: ApiFetch) => Promise<unknown>>()
 const apiInstance = { request } as unknown as ApiInstance
 
 beforeEach(() => {

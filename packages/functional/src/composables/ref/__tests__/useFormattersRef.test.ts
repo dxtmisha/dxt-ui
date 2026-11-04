@@ -22,7 +22,7 @@ describe('useFormattersRef', () => {
     price: { type: FormattersType.currency },
     count: { type: FormattersType.number },
     custom: {
-      transformation: (val: any) => `custom-${val}`
+      transformation: (value: unknown) => `custom-${String(value)}`
     }
   }
 
@@ -67,10 +67,16 @@ describe('useFormattersRef', () => {
     expect(result[0]?.customFormat).toBe('custom-new')
   })
 
-  it('should handle an empty list', () => {
+  it('should handle an empty list and undefined list', () => {
     const list = ref([])
-    const { listFormat } = useFormattersRef(list, options)
+    const { listFormat, length } = useFormattersRef(list, options)
     expect(listFormat.value).toEqual([])
+    expect(length.value).toBe(0)
+
+    const undefinedList = ref<typeof listData | undefined>(undefined)
+    const { listFormat: undefinedFormat, length: undefinedLength } = useFormattersRef(undefinedList, options)
+    expect(undefinedFormat.value).toBeUndefined()
+    expect(undefinedLength.value).toBe(0)
   })
 
   it.each(['de-DE', 'fr-FR', 'vi-VN'])('should update a saved computed when the locale changes to %s', (locale) => {

@@ -26,12 +26,17 @@ describe('ApiDataReturn', () => {
   const emptyEnd: ApiPreparationEnd = {}
 
   describe('Initialization & response reading (readData)', () => {
-    it('should return undefined from getData() before init() and empty object from get()', () => {
-      const response = createResponse({ id: 1 })
+    it('should refresh the processed result after init() when get() was called early', async () => {
+      const response = Response.json(false)
       const apiDataReturn = new ApiDataReturn(defaultApiFetch, response, emptyEnd)
 
       expect(apiDataReturn.getData()).toBeUndefined()
       expect(apiDataReturn.get()).toEqual({})
+
+      await apiDataReturn.init()
+
+      expect(apiDataReturn.getData()).toBe(false)
+      expect(apiDataReturn.get()).toEqual({ success: false })
     })
 
     it('should initialize and return JSON data when no "data" wrapper key is present', async () => {
@@ -45,6 +50,17 @@ describe('ApiDataReturn', () => {
       expect(apiDataReturn.get()).toEqual(mockData)
       // Calling get() a second time returns the cached dataMod
       expect(apiDataReturn.get()).toEqual(mockData)
+    })
+
+    it.each([
+      'application/vnd.api+json',
+      'Application/JSON; charset=utf-8'
+    ])('should parse a JSON response with Content-Type %s', async (contentType) => {
+      const data = [{ type: 'articles', id: '1' }]
+      const response = Response.json({ data }, { headers: { 'Content-Type': contentType } })
+      const apiDataReturn = await new ApiDataReturn(defaultApiFetch, response, emptyEnd).init()
+
+      expect(apiDataReturn.get()).toEqual(data)
     })
 
     it('should read text data and unwrap it when Content-Type is not application/json', async () => {

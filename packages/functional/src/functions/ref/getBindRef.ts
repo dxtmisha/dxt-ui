@@ -20,8 +20,8 @@ import type { RefOrNormal } from '../../types/refTypes'
  * @returns computed reference to generated properties / вычисляемая ссылка на сгенерированные свойства
  */
 export function getBindRef<T = unknown, R extends ItemList = ItemList>(
-  value: RefOrNormal<T | R> | undefined,
-  nameExtra: RefOrNormal<ItemList> | string = {},
+  value?: RefOrNormal<T | R | undefined | null> | null,
+  nameExtra: RefOrNormal<ItemList | undefined> | string = {},
   name = 'value',
   except = false
 ): ComputedRef<ConstrBind<R>> {

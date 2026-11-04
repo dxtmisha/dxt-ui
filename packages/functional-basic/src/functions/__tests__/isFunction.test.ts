@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, expectTypeOf } from 'vitest'
 import vm from 'node:vm'
 import { isFunction } from '../isFunction'
 
@@ -153,26 +153,46 @@ describe('isFunction', () => {
 
   describe('TypeScript type guard narrowing', () => {
     it('should correctly narrow union types to callable functions', () => {
-      const candidate: string | ((multiplier: number) => number) = (multiplier: number) => multiplier * 5
+      function evaluate(candidate: string | ((multiplier: number) => number)): number {
+        if (isFunction(candidate)) {
+          expectTypeOf(candidate).toEqualTypeOf<(multiplier: number) => number>()
+          return candidate(4)
+        }
 
-      if (isFunction(candidate)) {
-        // TypeScript verifies `candidate` is callable here
-        const result: number = candidate(4)
-        expect(result).toBe(20)
+        expectTypeOf(candidate).toEqualTypeOf<string>()
+        return Number(candidate)
+      }
+
+      expect(evaluate(multiplier => multiplier * 5)).toBe(20)
+      expect(evaluate('12')).toBe(12)
+    })
+
+    it('should narrow unknown to a function object', () => {
+      const unknownValue: unknown = (greeting: string) => `Hello, ${greeting}!`
+
+      if (isFunction(unknownValue)) {
+        expectTypeOf(unknownValue).toEqualTypeOf<CallableFunction | NewableFunction>()
+        expect(typeof unknownValue).toBe('function')
       } else {
         expect.unreachable('Should have narrowed to function')
       }
     })
 
-    it('should correctly narrow unknown types to FunctionAnyType', () => {
-      const unknownValue: unknown = (greeting: string) => `Hello, ${greeting}!`
-
-      if (isFunction(unknownValue)) {
-        // TypeScript verifies `unknownValue` is callable
-        expect(unknownValue('World')).toBe('Hello, World!')
-      } else {
-        expect.unreachable('Should have narrowed to function')
+    it('should preserve a known constructor signature and static properties', () => {
+      class SampleService {
+        static readonly key = 'service'
       }
+
+      function getKey(candidate: string | typeof SampleService): string {
+        if (isFunction(candidate)) {
+          expectTypeOf(candidate).toEqualTypeOf<typeof SampleService>()
+          return candidate.key
+        }
+
+        return candidate
+      }
+
+      expect(getKey(SampleService)).toBe('service')
     })
   })
 })

@@ -6,6 +6,9 @@ import { encodeAttribute } from './encodeAttribute'
  */
 const REGEXP_CLOSING_SCRIPT = /<\/(script)/gi
 
+/** Matches HTML comment openers / Находит начало HTML-комментариев */
+const REGEXP_OPENING_COMMENT = /<!--/g
+
 /**
  * Generates a safe script tag for data hydration.
  *
@@ -16,7 +19,15 @@ const REGEXP_CLOSING_SCRIPT = /<\/(script)/gi
  */
 export function getElementSafeScript<T = unknown>(id: string | number, data?: T): string {
   const safeId = encodeAttribute(id)
-  const json = JSON.stringify(data)?.replace(REGEXP_CLOSING_SCRIPT, '<\\/$1') ?? 'null'
+  let json = JSON.stringify(data)
+
+  if (json) {
+    json = json
+      .replace(REGEXP_CLOSING_SCRIPT, '<\\/$1')
+      .replace(REGEXP_OPENING_COMMENT, '\\u003c!--')
+  } else {
+    json = 'null'
+  }
 
   return `<script id="${safeId}" type="application/json">${json}</script>`
 }

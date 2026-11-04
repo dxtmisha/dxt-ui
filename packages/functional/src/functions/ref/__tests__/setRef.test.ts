@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { ref, shallowRef, watch, type Ref } from 'vue'
+import { ref, shallowRef, watch } from 'vue'
 import { setRef } from '../setRef'
 
 describe('setRef', () => {
@@ -55,11 +55,11 @@ describe('setRef', () => {
       }
     })
 
-    setRef(proxy as unknown as Ref<{ key: string }>, shared)
+    setRef(proxy, shared)
     expect(setCalled).toBe(false)
 
     const updated = { key: 'value' }
-    setRef(proxy as unknown as Ref<{ key: string }>, updated)
+    setRef(proxy, updated)
     expect(setCalled).toBe(true)
     expect(item.value).toBe(updated)
   })

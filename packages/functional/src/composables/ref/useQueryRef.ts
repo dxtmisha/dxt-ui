@@ -11,8 +11,9 @@ import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
  * Returns a list of active QueryRef instances for the current request context.
  *
  * Возвращает список активных экземпляров QueryRef для контекста текущего запроса.
+ * @returns dictionary of QueryRef instances / словарь экземпляров QueryRef
  */
-const getItems = () => {
+const getItems = (): Record<string, Ref> => {
   return ServerStorage.get<Record<string, Ref>>(
     '__ui:query-ref__',
     () => ({})
@@ -25,6 +26,7 @@ const getItems = () => {
  * Создает реактивную переменную для управления query-параметрами URL.
  * @param name value name / название значения
  * @param defaultValue default value / значение по умолчанию
+ * @returns reactive shallow reference for the query parameter / поверхностная реактивная ссылка на query-параметр
  */
 export function useQueryRef<T>(
   name: string,

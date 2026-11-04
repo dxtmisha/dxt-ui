@@ -7,11 +7,11 @@ import { Api, type ApiFetch, type ApiInstance, ServerStorage } from '@dxtmisha/f
 import { setApiRefGlobalConditions, setApiRefGlobalWatchSource, useApiRef } from '../useApiRef'
 import { useApiAsyncRef } from '../useApiAsyncRef'
 
-const source = /*#__PURE__*/ ref<unknown>()
+const source = /* #__PURE__ */ ref<unknown>()
 setApiRefGlobalConditions(source)
 
-const request = /*#__PURE__*/ vi.fn<(options: ApiFetch) => Promise<unknown>>()
-const emulatorAsync = /*#__PURE__*/ vi.fn<(options: ApiFetch) => unknown>()
+const request = /* #__PURE__ */ vi.fn<(options: ApiFetch) => Promise<unknown>>()
+const emulatorAsync = /* #__PURE__ */ vi.fn<(options: ApiFetch) => unknown>()
 const apiInstance = {
   request,
   getResponse: () => ({ emulatorAsync })

@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import { isDomRuntime, MetaRobots, MetaStatic } from '@dxtmisha/functional-basic'
+import { isDomRuntime, type Meta, MetaRobots, MetaStatic } from '@dxtmisha/functional-basic'
 
 import { executeUseLocal } from '../../functions/executeUse'
 
@@ -35,8 +35,13 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
   /** Reactive site name for Open Graph and Twitter Card / Реактивное название сайта для Open Graph и Twitter Card */
   const siteName = ref<string>(meta.getSiteName())
 
-  /** Generates HTML string for all meta tags (for SSR) / Генерирует HTML-строку для всех мета-тегов (для SSR) */
-  const getHtmlMeta = () => meta.html()
+  /**
+   * Generates HTML string for all meta tags (for SSR).
+   *
+   * Генерирует HTML-строку для всех мета-тегов (для SSR).
+   * @returns HTML string with meta tags / HTML-строка с мета-тегами
+   */
+  const getHtmlMeta = (): string => meta.html()
 
   /**
    * Sets the page title.
@@ -44,7 +49,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
    * Устанавливает заголовок страницы.
    * @param value Title to set / Заголовок для установки
    */
-  const setTitle = (value: string) => {
+  const setTitle = (value: string): void => {
     title.value = value
     updateSsr()
   }
@@ -55,7 +60,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
    * Устанавливает мета-тег keywords.
    * @param value Keywords to set / Ключевые слова для установки
    */
-  const setKeywords = (value: string) => {
+  const setKeywords = (value: string): void => {
     keyword.value = value
     updateSsr()
   }
@@ -66,7 +71,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
    * Устанавливает мета-тег description.
    * @param value Description to set / Описание для установки
    */
-  const setDescription = (value: string) => {
+  const setDescription = (value: string): void => {
     description.value = value
     updateSsr()
   }
@@ -77,7 +82,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
    * Устанавливает URL изображения для Open Graph / Twitter Card.
    * @param value Image URL to set / URL изображения для установки
    */
-  const setImage = (value: string) => {
+  const setImage = (value: string): void => {
     image.value = value
     updateSsr()
   }
@@ -88,7 +93,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
    * Устанавливает канонический URL.
    * @param value Canonical URL to set / Канонический URL для установки
    */
-  const setCanonical = (value: string) => {
+  const setCanonical = (value: string): void => {
     canonical.value = value
     updateSsr()
   }
@@ -99,7 +104,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
    * Устанавливает директиву мета-тега robots.
    * @param value Robots directive to set / Директива robots для установки
    */
-  const setRobots = (value: MetaRobots) => {
+  const setRobots = (value: MetaRobots): void => {
     robots.value = value
     updateSsr()
   }
@@ -110,7 +115,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
    * Устанавливает мета-тег author.
    * @param value Author to set / Автор для установки
    */
-  const setAuthor = (value: string) => {
+  const setAuthor = (value: string): void => {
     author.value = value
     updateSsr()
   }
@@ -121,7 +126,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
    * Устанавливает название сайта для Open Graph и Twitter Card.
    * @param value Site name to set / Название сайта для установки
    */
-  const setSiteName = (value: string) => {
+  const setSiteName = (value: string): void => {
     siteName.value = value
     updateSsr()
   }
@@ -160,7 +165,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
    *
    * Обновляет состояние MetaStatic, используя текущие реактивные значения.
    */
-  const update = () => {
+  const update = (): void => {
     meta.setTitle(title.value)
     meta.setKeywords(keyword.value)
     meta.setDescription(description.value)
@@ -176,7 +181,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
    *
    * Обновляет значения MetaStatic, если текущая среда — SSR (не DOM-среда).
    */
-  const updateSsr = () => {
+  const updateSsr = (): void => {
     if (!isDomRuntime()) {
       update()
     }
@@ -198,6 +203,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
   )
 
   return {
+    /** Underlying Meta instance / Базовый экземпляр Meta */
     meta,
 
     /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */
@@ -221,6 +227,7 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
      * Generates HTML string for all meta tags (for SSR).
      *
      * Генерирует HTML-строку для всех мета-тегов (для SSR).
+     * @returns HTML string with meta tags / HTML-строка с мета-тегами
      */
     getHtmlMeta,
 
@@ -314,8 +321,9 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
      *
      * Устанавливает суффикс для заголовка страницы.
      * @param suffix Suffix to set / Суффикс для установки
+     * @returns Meta instance / Экземпляр Meta
      */
-    setSuffix: (suffix: string) => meta.setSuffix(suffix)
+    setSuffix: (suffix: string): Meta => meta.setSuffix(suffix)
   }
 })
 
@@ -329,5 +337,6 @@ const item = /* #__PURE__ */ executeUseLocal(() => {
  * Использует паттерн singleton - все компоненты используют одно состояние мета-тегов.
  * Для изменений предпочтительно использовать setTitle(), setDescription() и остальные set-методы.
  * Прямая запись в refs поддерживается; SSR обновляется синхронно, изменения в браузере объединяются.
+ * @returns reactive metadata state and management methods / реактивное состояние мета-тегов и методы управления
  */
-export const useMeta = () => item()
+export const useMeta = (): ReturnType<typeof item> => item()

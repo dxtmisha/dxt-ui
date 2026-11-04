@@ -13,9 +13,10 @@ import type { ConstrBind } from '../types/constructorTypes'
 export function toBinds<R extends ItemList = ItemList>(
   ...values: (ItemList | null | undefined)[]
 ): ConstrBind<R> {
+  const length = values.length
   let data = {} as ConstrBind<R>
 
-  for (let index = 0; index < values.length; index += 1) {
+  for (let index = 0; index < length; index += 1) {
     const value = values[index]
 
     if (value) {

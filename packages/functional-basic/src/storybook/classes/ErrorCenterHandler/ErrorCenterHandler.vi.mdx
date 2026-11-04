@@ -10,8 +10,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 - **Đăng ký trình xử lý** — thêm thuận tiện các hàm callback vào các nhóm cụ thể.
 - **Trình xử lý toàn cục** — hỗ trợ nhóm `undefined`, nhóm này bắt bất kỳ lỗi nào không có trình xử lý cụ thể.
-- **Thực thi tuần tự** — kích hoạt tất cả các hàm đã đăng ký theo thứ tự chúng được thêm vào.
-- **Ghi log có thể cấu hình** — xuất chi tiết lỗi ra console với hỗ trợ hàm lọc tùy chỉnh hoặc tắt hoàn toàn.
+- **Cô lập lỗi của bên đăng ký** — gọi các trình xử lý của nhóm trước, rồi đến các callback toàn cục, theo thứ tự đăng ký trong mỗi danh sách. Ngoại lệ hoặc Promise bị từ chối tạo chẩn đoán `subscriberFailed` mà không làm gián đoạn việc gửi sự kiện.
+- **Ghi log có thể cấu hình** — console ghi mã, thông báo, chi tiết được cung cấp và dấu vết ngăn xếp trên máy chủ.
 
 ## Khởi tạo
 
@@ -59,7 +59,7 @@ const handlers = new ErrorCenterHandler(
 Tên nhóm (`string`) hoặc `undefined` để chặn toàn cục.
 
 #### `ErrorCenterHandlerCallback`
-Hàm callback: `(cause: ErrorCenterCauseItem) => void`.
+Hàm callback `(cause: ErrorCenterCauseItem) => void | Promise<void>`.
 
 #### `ErrorCenterHandlerIsConsole`
 Tùy chọn cấu hình ghi log console: `boolean | ((cause: ErrorCenterCauseItem) => boolean)`.

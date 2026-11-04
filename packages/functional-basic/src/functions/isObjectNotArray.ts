@@ -10,6 +10,10 @@ import { type ObjectItem } from '../types/basicTypes'
  * @param value input value / входное значение
  * @returns true if object and not array / true, если объект и не массив
  */
-export function isObjectNotArray<T>(value: T): value is Exclude<Extract<T, ObjectItem>, unknown[] | undefined | null> {
+export function isObjectNotArray<T>(
+  value: T
+): value is unknown extends T
+  ? T & ObjectItem<unknown>
+  : Exclude<Extract<T, ObjectItem>, readonly unknown[] | undefined | null> {
   return isObject(value) && !isArray(value)
 }

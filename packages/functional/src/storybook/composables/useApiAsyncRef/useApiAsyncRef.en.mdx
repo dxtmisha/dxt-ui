@@ -42,7 +42,7 @@ Returns the `UseApiRef<R>` object:
 **Methods:**
 - `isStarting(): boolean`, `isLoading(): boolean`, `isReading(): boolean` — status check methods.
 - `getItem(): ApiData<R> | undefined` — get current data value without reactivity.
-- `init(awaitFetch?: boolean): Promise<void>` — manual initialization.
+- `init(): void` — manual initialization.
 - `initSsr(): void` — SSR initialization.
 - `reset(): Promise<void>` — force re-run the request.
 - `stop(): void` — stop observation and clear data.

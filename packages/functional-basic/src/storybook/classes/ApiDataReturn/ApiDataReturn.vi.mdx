@@ -10,10 +10,14 @@ Lớp dùng để xử lý và chuẩn bị dữ liệu nhận được từ yê
 
 ## Các tính năng chính
 
-- **Phân tích tự động** — phân tích thông minh các phản hồi JSON hoặc trả về văn bản thô dựa trên tiêu đề Content-Type.
+- **Phân tích tự động** — phân tích `application/json` và các kiểu nội dung có hậu tố `+json` dưới dạng JSON, bao gồm `application/vnd.api+json`.
 - **Chuẩn hóa dữ liệu** — đảm bảo rằng đối tượng trả về tuân theo một cấu trúc nhất quán, ngay cả khi phản hồi của máy chủ thay đổi.
 - **Trích xuất Metadata** — tự động trích xuất các trường chung như `success`, `status`, `code` và `message` từ gốc của phản hồi và hợp nhất chúng vào đối tượng dữ liệu.
 - **Cấu hình linh hoạt** — hỗ trợ logic xử lý tùy chỉnh thông qua `queryReturn` và kiểm soát việc giải nén trường `data` bằng `toData`.
+
+## Phản hồi không thành công
+
+Nếu giá trị gốc sau khi phân tích là `false`, `0` hoặc `""`, phương thức `get()` trả về `{ success: false }`. Yêu cầu qua `ApiInstance` trả về cờ này cùng với siêu dữ liệu HTTP thông thường. `isApiSuccess()` trả về `false` ngay cả khi mã trạng thái HTTP là 200.
 
 ## Các phương thức
 

@@ -37,7 +37,7 @@ describe('useApiRequest', () => {
 
   describe('send method', () => {
     it('should set the loading state correctly during request', async () => {
-      let resolveRequest: (value: any) => void
+      let resolveRequest: (value: unknown) => void
       vi.mocked(mockApiInstance.request).mockImplementationOnce(() => new Promise((resolve) => {
         resolveRequest = resolve
       }))
@@ -102,13 +102,20 @@ describe('useApiRequest', () => {
 
     it('should apply transformation callback and return transformed data', async () => {
       vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ rawInfo: '  text  ' })
-      const transformation = (data: any) => ({ cleanInfo: data.rawInfo.trim() })
+      const transformation = (data: { rawInfo: string, cleanInfo?: string }) => ({
+        rawInfo: data.rawInfo.trim(),
+        cleanInfo: data.rawInfo.trim()
+      })
 
-      const { send } = useApiRequest({ path: 'test/path', method: ApiMethodItem.get, transformation })
+      const { send } = useApiRequest({
+        path: 'test/path',
+        method: ApiMethodItem.get,
+        transformation
+      })
 
       const result = await send()
 
-      expect(result).toEqual({ cleanInfo: 'text' })
+      expect(result).toEqual({ rawInfo: 'text', cleanInfo: 'text' })
     })
   })
 

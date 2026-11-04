@@ -18,8 +18,8 @@ export class RouterItemRef {
    * Возвращает зарегистрированный роутер; фактически он может отсутствовать.
    * @returns Registered router, or undefined when none is installed. / Зарегистрированный роутер либо undefined при его отсутствии.
    */
-  static get() {
-    return ServerStorage.get<Router>(ROUTER_ITEM_REF_KEY)
+  static get(): Router | undefined {
+    return ServerStorage.get<Router | undefined>(ROUTER_ITEM_REF_KEY)
   }
 
   /**
@@ -69,28 +69,13 @@ export class RouterItemRef {
   }
 
   /**
-   * Starts router navigation when a router is registered.
-   *
-   * Запускает навигацию при наличии зарегистрированного роутера.
-   * @param to Raw route location. / Необработанное местоположение маршрута.
-   * @returns No return value. / Нет возвращаемого значения.
-   */
-  static push(to: string | RouteLocationRaw) {
-    const router = this.get()
-
-    if (router) {
-      router.push(to).then()
-    }
-  }
-
-  /**
    * Stores or replaces the router in the current context.
    *
    * Сохраняет или заменяет роутер текущего контекста.
    * @param router Vue Router instance to register. / Регистрируемый экземпляр Vue Router.
    * @returns No return value. / Нет возвращаемого значения.
    */
-  static set(router: Router) {
+  static set(router: Router): void {
     ServerStorage.set<Router>(ROUTER_ITEM_REF_KEY, () => router)
   }
 
@@ -101,9 +86,24 @@ export class RouterItemRef {
    * @param router Vue Router instance to register. / Регистрируемый экземпляр Vue Router.
    * @returns No return value. / Нет возвращаемого значения.
    */
-  static setOneTime(router: Router) {
+  static setOneTime(router: Router): void {
     if (!this.get()) {
       this.set(router)
+    }
+  }
+
+  /**
+   * Starts router navigation when a router is registered.
+   *
+   * Запускает навигацию при наличии зарегистрированного роутера.
+   * @param to Raw route location. / Необработанное местоположение маршрута.
+   * @returns No return value. / Нет возвращаемого значения.
+   */
+  static push(to: string | RouteLocationRaw): void {
+    const router = this.get()
+
+    if (router) {
+      router.push(to).then()
     }
   }
 
@@ -120,7 +120,7 @@ export class RouterItemRef {
     if (
       isObjectNotArray(to)
       && 'name' in to
-      && isString(to?.name)
+      && isString(to.name)
     ) {
       return this.getHref(to.name, to.params, to.query, to.hash)
     }

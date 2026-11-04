@@ -58,14 +58,16 @@ export class ServerStorage {
    * @param key unique storage key / уникальный ключ хранилища
    * @param defaultValue default value or function that returns the default value if not found / значение по умолчанию или функция, возвращающая значение по умолчанию, если оно не найдено
    * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
+   * @param reportContextError whether to report missing server context / сообщать ли об отсутствии серверного контекста
    * @returns stored value / сохраненное значение
    */
   static get<T = unknown>(
     key: string,
     defaultValue?: (() => T) | T,
-    hydration: boolean = false
+    hydration: boolean = false,
+    reportContextError: boolean = true
   ): T {
-    const storage = this.getStorage(defaultValue !== undefined, `get:${key}`)
+    const storage = this.getStorage(defaultValue !== undefined, `get:${key}`, reportContextError)
 
     if (key in storage) {
       return storage[key].value as T
@@ -188,11 +190,13 @@ export class ServerStorage {
    * Возвращает хранилище.
    * @param isInit whether to initialize the storage if it does not exist / инициализировать ли хранилище, если оно не существует
    * @param status optional status for error reporting / необязательный статус для отчета об ошибках
+   * @param reportContextError whether to report missing server context / сообщать ли об отсутствии серверного контекста
    * @returns storage list / список хранилища
    */
   protected static getStorage(
     isInit: boolean = true,
-    status?: string
+    status?: string,
+    reportContextError: boolean = true
   ): ServerStorageList {
     if (isDomRuntime()) {
       return this.getStorageDom()
@@ -210,7 +214,7 @@ export class ServerStorage {
     }
 
     if (!context) {
-      if (!this.hideError) {
+      if (reportContextError && !this.hideError) {
         ErrorCenter.on({
           group: 'storage',
           code: 'context',
@@ -250,8 +254,10 @@ export class ServerStorage {
    */
   protected static getStorageDom(): ServerStorageList {
     if (!this.storage) {
+      const storage = getObjectNull<ServerStorageItem>()
+      // Hydration can report errors through this storage / Ошибки гидратации могут обращаться к этому хранилищу
+      this.storage = storage
       const data = getHydrationData<Record<string, unknown>>(SERVER_STORAGE_ID, {})
-      const storage: ServerStorageList = getObjectNull()
 
       if (isObjectNotArray(data)) {
         for (const name in data) {
@@ -263,8 +269,6 @@ export class ServerStorage {
           }
         }
       }
-
-      this.storage = storage
     }
 
     return this.storage

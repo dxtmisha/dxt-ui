@@ -4,22 +4,22 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `isFunction`
 
-Tiện ích bảo vệ kiểu (type guard) hiệu năng cao, xác định xem một giá trị được cung cấp có phải là một hàm có thể thực thi hay không: hỗ trợ các hàm thông thường, hàm mũi tên, hàm bất đồng bộ/generator, lớp ES6, hàm tạo và các hàm bắt nguồn từ môi trường khác (cross-realm iframe hoặc VM).
+Hàm bảo vệ kiểu nhận diện các đối tượng hàm, gồm hàm thông thường, hàm tạo của lớp và hàm từ ngữ cảnh JavaScript khác.
 
 ## Tính năng chính
 
-- **Thực thi nhanh $O(1)$** — Ưu tiên kiểm tra `typeof callback === 'function'` ở cấp độ opcode của V8 mà không cần duyệt qua chuỗi prototype.
+- **Kiểm tra giá trị** — Dùng `typeof callback === 'function'` mà không cần duyệt chuỗi prototype.
 - **Hỗ trợ Cross-Realm & Iframe** — Xác định chính xác các hàm đến từ các cửa sổ riêng biệt, iframe hoặc ngữ cảnh Node.js VM, nơi `instanceof Function` thường thất bại do cây prototype không đồng nhất.
 - **Hỗ trợ toàn diện các cấu trúc thực thi** — Nhận diện tất cả các loại hàm: khai báo thông thường, hàm mũi tên, hàm `async`, hàm generator (`function*`), lớp ES6, hàm tạo tích hợp (`Date`, `Array`, `Function`), hàm đã liên kết (`bind`) và hàm được bọc bằng `Proxy`.
-- **Rào chắn kiểu trong TypeScript** — Hoạt động như một type guard `callback is Extract<T, FunctionAnyType>`, giúp trình biên dịch tự động thu hẹp kiểu hợp nhất (union types).
+- **Thu hẹp kiểu trong TypeScript** — Giữ nguyên chữ ký gọi hàm hoặc chữ ký hàm tạo đã biết khi thu hẹp kiểu hợp. Giá trị kiểu `unknown` được thu hẹp thành `CallableFunction | NewableFunction`.
 - **An toàn trước các giá trị falsy và không thể gọi** — Trả về `false` một cách an toàn cho `null`, `undefined`, `0`, `false`, `NaN`, chuỗi rỗng, mảng, regex và các đối tượng giả lập phương thức `call`/`apply`.
 - **Đẳng hình & Sẵn sàng cho SSR** — Hàm thuần túy không có tác dụng phụ, không phụ thuộc vào DOM hoặc môi trường trình duyệt.
 
 **Tham số:**
-- `callback: T` — Giá trị cần kiểm tra.
+- `callback: unknown` — Giá trị cần kiểm tra.
 
 **Trả về:**
-`boolean` (`callback is Extract<T, FunctionAnyType>`) — Trả về `true` nếu giá trị là một hàm có thể thực thi; ngược lại trả về `false`. Đóng vai trò là type guard TypeScript thu hẹp kiểu `T` xuống `FunctionAnyType`.
+`callback is CallableFunction | NewableFunction` — Trả về `true` cho đối tượng hàm và `false` cho các giá trị khác. Để gọi giá trị được thu hẹp từ `unknown`, trước tiên hãy xác định chữ ký gọi hàm.
 
 ## Ví dụ
 

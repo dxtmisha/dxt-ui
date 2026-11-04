@@ -1,0 +1,25 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useGeoUnitRef - Форматирование единиц измерения'/>
+
+# `useGeoUnitRef`
+
+Composable, возвращающий экземпляр класса `GeoUnitRef` для реактивного форматирования и автоматической региональной конвертации единиц измерения (длина, площадь, вес, объем, температура, скорость).
+
+**Параметры:**
+- `code?: RefOrNormal<string>` — Код локали, страны или языка (поддерживает реактивную ссылку `Ref`).
+
+**Возвращает (`GeoUnitRef`):**
+- Объект класса `GeoUnitRef`, предоставляющий методы для реактивного форматирования единиц измерения.
+
+## Пример
+
+```typescript
+import { useGeoUnitRef } from '@dxtmisha/functional'
+
+const unit = useGeoUnitRef()
+
+// Реактивное форматирование расстояния и веса с учетом региона
+const distance = unit.kilometer(10)
+const weight = unit.gram(500)
+```

@@ -8,6 +8,8 @@ Generates an injection-safe `<script type="application/json">` HTML element stri
 
 ## Key Features
 
+- **HTML comment openers** — Encodes `<!--` as `\u003c!--` so a stored HTML fragment cannot absorb the page markup after the hydration script. Reading the JSON restores the original text.
+
 - **XSS & Script Termination Defense** — Neutralizes HTML script breakout attacks by escaping all variations of closing `</script>` tags into `<\\/script>` (including mixed-case `</Script>`, trailing whitespace `</script >`, trailing slashes `</script/>`, and attribute variants `</script attr="...">`), ensuring the browser HTML parser cannot prematurely terminate the script element.
 - **Robust Attribute Sanitization** — Leverages `encodeAttribute` to comprehensively escape special characters (`"`, `<`, `>`, `&`, `'`) in the `id` attribute, preventing attribute breakout and tag injection vulnerabilities.
 - **Fail-Safe JSON Serialization** — Converts undefined, function, symbol, and null values safely into `'null'`, ensuring valid JSON output even for unsupported primitives.

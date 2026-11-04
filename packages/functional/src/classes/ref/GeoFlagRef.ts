@@ -35,16 +35,6 @@ export class GeoFlagRef {
   }
 
   /**
-   * Returns the current base code as a string.
-   *
-   * Возвращает текущий базовый код строкой.
-   * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
-   */
-  getCode(): string {
-    return this.flag.value.getCode()
-  }
-
-  /**
    * Returns the country metadata for the explicit code or current base code.
    *
    * Возвращает данные страны по явному либо текущему базовому коду.
@@ -53,6 +43,16 @@ export class GeoFlagRef {
    */
   get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined> {
     return computed(() => this.flag.value.get(getRef(code)))
+  }
+
+  /**
+   * Returns the current base code as a string.
+   *
+   * Возвращает текущий базовый код строкой.
+   * @returns Requested name or identifier. / Запрошенное имя либо идентификатор.
+   */
+  getCode(): string {
+    return this.flag.value.getCode()
   }
 
   /**
