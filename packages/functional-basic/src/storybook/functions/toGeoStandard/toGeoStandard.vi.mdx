@@ -14,8 +14,8 @@ Chuyển đổi đối tượng dữ liệu địa lý (`GeoItem`) thành chuỗ
 - **Xử lý an toàn** — Trả về chuỗi rỗng một cách an toàn khi đối tượng `item` không tồn tại.
 
 **Tham số:**
-- `item?: GeoItem` — Đối tượng dữ liệu địa lý.
-- `language?: string` — Mã ngôn ngữ ghi đè tùy chọn.
+- `item?: GeoItem | null` — Đối tượng dữ liệu địa lý.
+- `language?: string | null` — Mã ngôn ngữ ghi đè tùy chọn.
 - `raw?: boolean` — Có bỏ qua chuẩn hóa ngôn ngữ qua `toLanguage` khi là `true` hay không.
 
 **Trả về:**

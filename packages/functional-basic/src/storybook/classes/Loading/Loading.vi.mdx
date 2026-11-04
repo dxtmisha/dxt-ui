@@ -28,7 +28,7 @@ Lớp tĩnh để quản lý trạng thái tải toàn cục (sử dụng `Loadi
 
 **Tham số:**
 - `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — hàm xử lý nhận `event.detail.loading: boolean`.
-- `element?: ElementOrString<HTMLElement>` — phần tử DOM tùy chọn: listener tự động dừng khi phần tử bị xóa khỏi DOM.
+- `element?: ElementOrString<HTMLElement> | null` — phần tử DOM tùy chọn: listener tự động dừng khi phần tử bị xóa khỏi DOM.
 
 ### `unregistrationEvent`
 
@@ -36,7 +36,7 @@ Hủy đăng ký listener đã được thêm trước đó qua `registrationEve
 
 **Tham số:**
 - `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — hàm xử lý đã sử dụng khi đăng ký.
-- `element?: ElementOrString<HTMLElement>` — phần tử DOM đã sử dụng khi đăng ký.
+- `element?: ElementOrString<HTMLElement> | null` — phần tử DOM đã sử dụng khi đăng ký.
 
 ## LoadingInstance
 Lớp `LoadingInstance` có thể được sử dụng để tạo một thực thể (instance) riêng biệt để theo dõi quá trình tải.

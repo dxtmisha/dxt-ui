@@ -26,12 +26,12 @@ import {Meta} from '@storybook/addon-docs/blocks'
 **Параметры:**
 - `name: string` — уникальный идентификатор для вашей записи в глобальном кэше.
 - `callback: () => T` — функция, которая вычисляет значение.
-- `comparison?: any[]` — опциональный массив зависимостей. Передача нового массива (где значения или длина отличаются) очищает кэш и вызывает пересчет.
+- `comparison?: unknown[]` — опциональный массив зависимостей. Передача нового массива (где значения или длина отличаются) очищает кэш и вызывает пересчет.
 
 **Возвращает:** `T` — закэшированное или вычисленное значение.
 
 ```javascript
-import { CacheStatic } from '@dxtmisha/functional'
+import { CacheStatic } from '@dxtmisha/functional-basic'
 
 // Файл A.js
 function calculateHeavyData(id) {

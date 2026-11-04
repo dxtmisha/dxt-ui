@@ -89,9 +89,10 @@ describe('getItemByPath', () => {
       expect(getItemByPath(sourceObject, 'list.test')).toBeUndefined()
     })
 
-    it('should safely return undefined when item is null or undefined at runtime', () => {
+    it('should safely return undefined when item is null, undefined, or primitive at runtime', () => {
       expect(getItemByPath(null, 'a.b')).toBeUndefined()
       expect(getItemByPath(undefined, 'a')).toBeUndefined()
+      expect(getItemByPath(123 as unknown as Record<string, unknown>, 'a')).toBeUndefined()
     })
 
     it('should block prototype pollution keys (__proto__, constructor, prototype)', () => {

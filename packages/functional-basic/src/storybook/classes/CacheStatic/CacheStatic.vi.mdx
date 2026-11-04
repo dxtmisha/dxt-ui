@@ -26,12 +26,12 @@ Hàm chức năng `get()` có vai trò lặp tìm phần tử hiện có từ b�
 **Tham số:**
 - `name: string` — biến gán để tạo lập index/luồng đối chiếu cho bộ nhớ định tuyến global hiện tại.
 - `callback: () => T` — các khối lệnh đóng trong tham chiếu được xử lý thông qua biến này.
-- `comparison?: any[]` — danh sách các đối tượng thay đổi, hay dependency list. Khi chạy hàm, node `CacheItem` sẽ đánh mất tình trạng (invalidation) nếu phát hiện bất kì thông số phụ bị sửa bằng biến mảng thay thế (`comparison`).
+- `comparison?: unknown[]` — danh sách các đối tượng thay đổi, hay dependency list. Khi chạy hàm, node `CacheItem` sẽ đánh mất tình trạng (invalidation) nếu phát hiện bất kì thông số phụ bị sửa bằng biến mảng thay thế (`comparison`).
 
 **Trả về:** `T` — biến được gọi là static cache block.
 
 ```javascript
-import { CacheStatic } from '@dxtmisha/functional'
+import { CacheStatic } from '@dxtmisha/functional-basic'
 
 // Mảng A.js
 function calculateHeavyData(id) {

@@ -27,7 +27,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `D extends Record<string, unknown> = Record<string, unknown>` — Структура дополнительных данных.
 
 **Параметры:**
-- `elementSelector?: ElementOrString<E>` — целевой элемент, на который вешается слушатель.
+- `elementSelector?: ElementOrString<E> | null` — целевой элемент, на который вешается слушатель.
 - `type: string | string[] = ['click']` — тип события, массив типов или специальные типы (`'resize'`, `'scroll-sync'`).
 - `listener?: EventListenerDetail<O, D>` — функция-обработчик события.
 - `options?: EventOptions` — стандартные опции `addEventListener`.
@@ -72,8 +72,8 @@ customEvent.start()
 Все методы этой группы поддерживают чейнинг и автоматически вызывают `reset()`, если событие активно.
 
 - `setDetail(detail?: D): this` — Изменяет пользовательские данные события.
-- `setElement(elementSelector?: ElementOrString<E>): this` — Изменяет целевой элемент (перезапускает прослушивание, если активно).
-- `setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this` — Устанавливает контрольный элемент (если его нет в DOM, событие не сработает).
+- `setElement(elementSelector?: ElementOrString<E> | null): this` — Изменяет целевой элемент (перезапускает прослушивание, если активно).
+- `setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC> | null): this` — Устанавливает контрольный элемент (если его нет в DOM, событие не сработает).
 - `setListener(listener?: EventListenerDetail<O, D>): this` — Изменяет функцию-обработчик.
 - `setOptions(options?: EventOptions): this` — Изменяет параметры прослушивателя (перезапускает прослушивание, если активно).
 - `setType(type: string | string[]): this` — Изменяет тип события (перезапускает прослушивание, если активно).

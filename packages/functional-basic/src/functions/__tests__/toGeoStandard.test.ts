@@ -49,7 +49,8 @@ describe('toGeoStandard', () => {
   describe('Nullish and boundary inputs', () => {
     it('returns empty string when item is undefined or null', () => {
       expect(toGeoStandard(undefined)).toBe('')
-      expect(toGeoStandard(null as unknown as GeoItem)).toBe('')
+      expect(toGeoStandard(null)).toBe('')
+      expect(toGeoStandard(mockItem, null)).toBe('vi-VN')
     })
   })
 })

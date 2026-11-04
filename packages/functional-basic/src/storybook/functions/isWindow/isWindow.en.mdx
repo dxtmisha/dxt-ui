@@ -9,7 +9,7 @@ Checks whether the provided value is the global browser `window` object.
 First verifies via `isDomRuntime()` that the code is running in a DOM environment (preventing errors during Server-Side Rendering), and then compares `element === window`.
 
 **Parameters:**
-- `element: E` — The element or value to check.
+- `element?: E` — The element or value to check.
 
 **Returns:**
 `element is Extract<E, Window>` (`boolean`) — Returns `true` if running in a browser environment and `element` is strictly equal to `window`, otherwise `false`. Acts as a TypeScript type guard narrowing `E` to `Extract<E, Window>`.

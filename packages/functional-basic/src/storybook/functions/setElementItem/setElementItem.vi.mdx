@@ -9,9 +9,9 @@ Thay đổi giá trị thuộc tính hoặc thuộc tính DOM của phần tử 
 Hàm cung cấp khả năng bảo vệ mạnh mẽ chống lại **Prototype Pollution** thông qua `isPrototypeKey` (bỏ qua `__proto__`, `constructor`, `prototype`), hỗ trợ biến tùy chỉnh CSS (`--*`) và các thuộc tính kebab-case trong đối tượng kiểu dáng, loại bỏ kiểu dáng hoặc thuộc tính khi truyền `null` / `undefined`, đồng thời tuần tự hóa các thuộc tính boolean `aria-*` thành chuỗi `"true"` / `"false"` (trong khi đặt `""` hoặc xóa thuộc tính đối với các thuộc tính boolean tiêu chuẩn).
 
 **Tham số:**
-- `element: ElementOrString<E>` — Phần tử, đối tượng `window` hoặc bộ chọn CSS.
-- `index: K | string` — Khóa thuộc tính, tên thuộc tính HTML hoặc khóa kiểu dáng.
-- `value: V | Record<string, V> | unknown` — Giá trị mới, hàm trả về giá trị, hoặc đối tượng để gộp.
+- `element?: ElementOrString<E> | null` — Phần tử, đối tượng `window` hoặc bộ chọn CSS.
+- `index?: K | string` — Khóa thuộc tính, tên thuộc tính HTML hoặc khóa kiểu dáng.
+- `value?: V | Record<string, V> | unknown` — Giá trị mới, hàm trả về giá trị, hoặc đối tượng để gộp.
 
 **Trả về:**
 `boolean` — `true` nếu thuộc tính hoặc thuộc tính HTML được thiết lập thành công, ngược lại `false`.

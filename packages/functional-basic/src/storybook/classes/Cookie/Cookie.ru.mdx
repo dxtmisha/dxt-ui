@@ -67,15 +67,20 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Объект конфигурации для параметров cookie:
 
 - `age?: number` — время жизни в секундах (атрибут Max-Age). По умолчанию: 7 дней (604800 сек)
-- `sameSite?: 'strict' | 'lax'` — политика SameSite. По умолчанию: `'strict'`
-- `arguments?: string[]` — дополнительные директивы для строки cookie
+- `sameSite?: 'strict' | 'lax' | 'none'` — политика SameSite. По умолчанию: `'strict'`
+- `path?: string` — путь для cookie (по умолчанию `'/'`)
+- `domain?: string` — домен для cookie
+- `secure?: boolean` — атрибут `Secure`
+- `httpOnly?: boolean` — атрибут `HttpOnly`
+- `partitioned?: boolean` — атрибут `Partitioned`
+- `arguments?: string[] | Record<string, unknown>` — дополнительные директивы для строки cookie
 
 ## Примеры
 
 ### Базовое использование
 
 ```typescript
-import { Cookie } from '@dxtmisha/functional'
+import { Cookie } from '@dxtmisha/functional-basic'
 
 // Создание экземпляра для управления cookie 'theme'
 const themeCookie = new Cookie('theme')
@@ -99,7 +104,7 @@ themeCookie.remove()
 ### Использование getInstance
 
 ```typescript
-import { Cookie } from '@dxtmisha/functional'
+import { Cookie } from '@dxtmisha/functional-basic'
 
 // Получение или создание экземпляра
 const cookie = Cookie.getInstance<string>('user')
@@ -113,7 +118,7 @@ console.log(cookie === sameCookie) // true
 ### Интеграция с CookieBlock
 
 ```typescript
-import { Cookie, CookieBlock } from '@dxtmisha/functional'
+import { Cookie, CookieBlock } from '@dxtmisha/functional-basic'
 
 // Блокировка всех операций записи
 CookieBlock.set(true)

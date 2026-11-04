@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Thiết lập các thuộc tính kiểu dáng CSS, biến tùy chỉnh CSS (`--*`) hoặc chuỗi `cssText` trên phần tử DOM được tìm thấy theo bộ chọn hoặc truyền trực tiếp. Hỗ trợ hàm factory cho cả tập hợp kiểu dáng lẫn từng thuộc tính riêng lẻ.
 
 **Tham số:**
-- `element?: ElementOrString<E>` — Phần tử DOM đích, đối tượng `window` (trỏ tới `document.body`) hoặc bộ chọn CSS (`E extends ElementOrWindow = HTMLElement`).
+- `element?: ElementOrString<E> | null` — Phần tử DOM đích, đối tượng `window` (trỏ tới `document.body`) hoặc bộ chọn CSS (`E extends ElementOrWindow = HTMLElement`).
 - `styles?: unknown` — Chuỗi kiểu dáng (`cssText`), đối tượng thuộc tính kiểu dáng hoặc hàm factory.
 
 **Trả về:**

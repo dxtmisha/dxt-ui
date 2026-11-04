@@ -103,12 +103,13 @@ describe('getRequestString', () => {
     })
 
     it('should safely return an empty string for non-object inputs', () => {
-      expect(getRequestString(null as unknown as Record<string, unknown>)).toBe('')
-      expect(getRequestString(undefined as unknown as Record<string, unknown>)).toBe('')
-      expect(getRequestString(123 as unknown as Record<string, unknown>)).toBe('')
-      expect(getRequestString('some-string' as unknown as Record<string, unknown>)).toBe('')
-      expect(getRequestString(true as unknown as Record<string, unknown>)).toBe('')
-      expect(getRequestString(false as unknown as Record<string, unknown>)).toBe('')
+      expect(getRequestString(null)).toBe('')
+      expect(getRequestString(undefined)).toBe('')
+      expect(getRequestString()).toBe('')
+      expect(getRequestString(123)).toBe('')
+      expect(getRequestString('some-string')).toBe('')
+      expect(getRequestString(true)).toBe('')
+      expect(getRequestString(false)).toBe('')
     })
 
     it('should skip keys that are empty or whitespace-only after trim', () => {

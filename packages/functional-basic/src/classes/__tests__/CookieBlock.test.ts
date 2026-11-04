@@ -35,6 +35,11 @@ describe('CookieBlock', () => {
       expect(CookieBlock.get()).toBe(true)
     })
 
+    it('should set block status to true by default when called without arguments', () => {
+      CookieBlock.set()
+      expect(CookieBlock.get()).toBe(true)
+    })
+
     it('should update the block status from true back to false', () => {
       CookieBlock.set(true)
       expect(CookieBlock.get()).toBe(true)

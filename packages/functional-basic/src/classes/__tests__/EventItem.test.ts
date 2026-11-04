@@ -250,13 +250,17 @@ describe('EventItem', () => {
     expect(updatedListener).toHaveBeenCalledTimes(1)
     expect(updatedListener.mock.calls[0]?.[1]).toEqual({ userId: 99 })
 
-    // Reset elementControl when passed undefined
+    // Reset elementControl when passed undefined or null
+    eventItem.setElementControl(null)
     eventItem.setElementControl(undefined)
 
     // Remove secondElement from DOM and verify control stops listener
     document.body.removeChild(secondElement)
     eventItem.dispatch({ userId: 100 })
     expect(eventItem.isActive()).toBe(false)
+
+    eventItem.setElement(null)
+    expect(eventItem.getElement()).toBeUndefined()
 
     eventItem.toggle(false)
     expect(eventItem.isActive()).toBe(false)

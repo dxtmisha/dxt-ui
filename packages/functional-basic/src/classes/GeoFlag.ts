@@ -521,6 +521,6 @@ export class GeoFlag {
    * @returns GeoIntl instance / экземпляр GeoIntl
    */
   protected getLocation(): GeoIntl {
-    return new GeoIntl(this.code)
+    return GeoIntl.getInstance(this.getCode())
   }
 }

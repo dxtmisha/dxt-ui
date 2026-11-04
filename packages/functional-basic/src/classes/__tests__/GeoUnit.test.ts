@@ -1,9 +1,12 @@
+// @vitest-environment jsdom
 import { describe, it, expect, beforeEach } from 'vitest'
+import { ErrorCenter } from '../ErrorCenter'
 import { Geo } from '../Geo'
 import { GeoUnit } from '../GeoUnit'
 
 describe('GeoUnit', () => {
   beforeEach(() => {
+    ErrorCenter.setIsConsole(false)
     Geo.set('en-US')
   })
 

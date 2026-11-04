@@ -86,7 +86,6 @@ describe('getElementOrWindow', () => {
     })
 
     it('should return undefined when null is passed at runtime', () => {
-      // @ts-expect-error Testing runtime handling of null input
       expect(getElementOrWindow(null)).toBeUndefined()
     })
 

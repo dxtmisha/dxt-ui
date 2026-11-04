@@ -54,7 +54,7 @@ const meta = new Meta()
 - `setKeywords(keywords: string | string[])` — принимает строку или массив; массив объединяется через запятую.
 - `setDescription(description: string)` — устанавливает `<meta name="description">`.
 - `setImage(image: string)` — устанавливает `og:image` и `twitter:image` одновременно.
-- `setCanonical(canonical: string)` — устанавливает `<meta name="canonical">`, `og:url` и `twitter:url` одновременно.
+- `setCanonical(canonical: string)` — устанавливает `<link rel="canonical" href="...">`, `og:url` и `twitter:url` одновременно.
 - `setRobots(robots: MetaRobots)` — устанавливает `<meta name="robots">` (`'index, follow'`, `'noindex, nofollow'` и др.).
 - `setAuthor(author: string)` — устанавливает `<meta name="author">`.
 - `setSiteName(siteName: string)` — устанавливает `og:site_name` и `twitter:site` одновременно.

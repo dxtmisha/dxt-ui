@@ -12,8 +12,8 @@ import { type GeoItem } from '../types/geoTypes'
  * @returns standard code string or empty string / строка стандартного кода или пустая строка
  */
 export function toGeoStandard(
-  item?: GeoItem,
-  language?: string,
+  item?: GeoItem | null,
+  language?: string | null,
   raw?: boolean
 ): string {
   if (!item) {

@@ -44,8 +44,8 @@ const numberCache = new CacheItem<number>(() => Math.random())
 
 ### Truy cập Bộ nhớ đệm
 
-- `getCache(comparison?: any[]): T` — Lấy giá trị từ bộ nhớ đệm. Nếu các thành phần phụ thuộc trong mảng `comparison` thay đổi, nó sẽ kích hoạt tính toán lại.
-- `getCacheAsync(comparison?: any[]): Promise<T>` — Phiên bản bất đồng bộ của `getCache`. Trả về một Promise giải quyết thành dữ liệu đã lưu hoặc dữ liệu mới được lấy về.
+- `getCache(comparison?: unknown[]): T` — Lấy giá trị từ bộ nhớ đệm. Nếu các thành phần phụ thuộc trong mảng `comparison` thay đổi, nó sẽ kích hoạt tính toán lại.
+- `getCacheAsync(comparison?: unknown[]): Promise<T>` — Phiên bản bất đồng bộ của `getCache`. Trả về một Promise giải quyết thành dữ liệu đã lưu hoặc dữ liệu mới được lấy về.
 
 ### Lịch sử
 

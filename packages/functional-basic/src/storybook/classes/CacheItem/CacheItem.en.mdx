@@ -44,8 +44,8 @@ const numberCache = new CacheItem<number>(() => Math.random())
 
 ### Cache Access
 
-- `getCache(comparison?: any[]): T` — Retrieves the value from the cache. If the comparison dependencies have changed, it triggers a recalculation.
-- `getCacheAsync(comparison?: any[]): Promise<T>` — Asynchronous version of `getCache`. Returns a Promise that resolves to the cached or newly fetched data.
+- `getCache(comparison?: unknown[]): T` — Retrieves the value from the cache. If the comparison dependencies have changed, it triggers a recalculation.
+- `getCacheAsync(comparison?: unknown[]): Promise<T>` — Asynchronous version of `getCache`. Returns a Promise that resolves to the cached or newly fetched data.
 
 ### History
 

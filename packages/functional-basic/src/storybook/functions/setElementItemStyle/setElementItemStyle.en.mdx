@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Applies CSS styles, CSS custom properties (`--*`), or a `cssText` string to a DOM element resolved by selector or passed directly. Supports factory functions for both the styles payload and individual style properties.
 
 **Parameters:**
-- `element?: ElementOrString<E>` — Target DOM element, `window` (resolves to `document.body`), or CSS selector (`E extends ElementOrWindow = HTMLElement`).
+- `element?: ElementOrString<E> | null` — Target DOM element, `window` (resolves to `document.body`), or CSS selector (`E extends ElementOrWindow = HTMLElement`).
 - `styles?: unknown` — Style declaration string (`cssText`), style dictionary object, or a factory function returning either.
 
 **Returns:**

@@ -6,6 +6,7 @@ import { isPrototypeKey } from '../functions/isPrototypeKey'
 import { transformation } from '../functions/transformation'
 import { UrlInstanceAbstract } from './UrlInstanceAbstract'
 
+/** Regular expression for parsing key-value pairs in URL hash / Регулярное выражение для разбора пар ключ-значение в хеше URL */
 const REGEXP_HASH_ITEM = /([^#;:=]+)[:=]([^;]+)/gi
 
 /**

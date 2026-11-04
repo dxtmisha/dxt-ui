@@ -9,7 +9,7 @@ Kiểm tra xem phần tử hoặc giá trị được truyền vào có phải l
 Trước tiên hàm kiểm tra qua `isDomRuntime()` để đảm bảo mã đang chạy trong môi trường DOM (ngăn ngừa lỗi trong quá trình Server-Side Rendering - SSR), sau đó so sánh `element === window`.
 
 **Tham số:**
-- `element: E` — Phần tử hoặc giá trị cần kiểm tra.
+- `element?: E` — Phần tử hoặc giá trị cần kiểm tra.
 
 **Trả về:**
 `element is Extract<E, Window>` (`boolean`) — Trả về `true` nếu đang chạy trong môi trường trình duyệt và `element` bằng nghiêm ngặt với `window`, ngược lại là `false`. Đóng vai trò là bộ bảo vệ kiểu (type guard) trong TypeScript, thu hẹp `E` thành `Extract<E, Window>`.

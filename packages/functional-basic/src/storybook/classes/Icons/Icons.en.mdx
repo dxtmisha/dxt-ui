@@ -4,11 +4,11 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Icons Class
 
-A static class for managing the application's icon registry. Provides a mechanism for registering, lazy-loading, and retrieving SVG icons. Icons are stored in the global `window` object to be accessible across multiple library instances.
+A static class for managing the application's icon registry. Provides a mechanism for registering, lazy-loading, and retrieving SVG icons.
 
 ## Key Features
 
-- **Global Registry** — Uses `window.__UI_ICON` to store icons, ensuring a single registry even with multiple instances.
+- **Safe Registry** — Uses an isolated `Object.create(null)` dictionary to store icons without prototype property collisions.
 - **Lazy Loading** — The `addLoad` method registers an icon as "loading"; `get` will wait for it to appear.
 - **Flexible Types** — An icon can be a string, a `Promise`, or a function returning a `Promise`.
 - **Automatic URL** — Icons prefixed with `@` are expanded into a full URL based on the base `url`.

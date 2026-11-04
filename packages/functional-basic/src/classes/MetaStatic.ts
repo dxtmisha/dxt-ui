@@ -13,53 +13,23 @@ import { ServerStorage } from './ServerStorage'
  */
 export class MetaStatic {
   /**
-   * Returns the singleton instance of the Meta class.
+   * Gets the author meta tag.
    *
-   * Возвращает синглтон-экземпляр класса Meta.
-   * @returns Meta singleton / синглтон Meta
+   * Получает мета-тег author.
+   * @returns author name / имя автора
    */
-  static getItem(): Meta {
-    return ServerStorage.get('__ui:meta-instance__', () => new Meta())
+  static getAuthor(): string {
+    return this.getItem().getAuthor()
   }
 
   /**
-   * Gets the MetaOg instance for advanced Open Graph operations.
+   * Gets the canonical URL.
    *
-   * Получает экземпляр MetaOg для расширенных операций с Open Graph.
-   * @returns MetaOg instance / экземпляр MetaOg
+   * Получает канонический URL.
+   * @returns canonical URL / канонический URL
    */
-  static getOg(): MetaOg {
-    return this.getItem().getOg()
-  }
-
-  /**
-   * Gets the MetaTwitter instance for advanced Twitter Card operations.
-   *
-   * Получает экземпляр MetaTwitter для расширенных операций с Twitter Card.
-   * @returns MetaTwitter instance / экземпляр MetaTwitter
-   */
-  static getTwitter(): MetaTwitter {
-    return this.getItem().getTwitter()
-  }
-
-  /**
-   * Gets the page title without suffix.
-   *
-   * Получает заголовок страницы без суффикса.
-   * @returns title without suffix / заголовок без суффикса
-   */
-  static getTitle(): string {
-    return this.getItem().getTitle()
-  }
-
-  /**
-   * Gets the keywords meta tag.
-   *
-   * Получает мета-тег keywords.
-   * @returns keywords content / содержимое keywords
-   */
-  static getKeywords(): string {
-    return this.getItem().getKeywords()
+  static getCanonical(): string {
+    return this.getItem().getCanonical()
   }
 
   /**
@@ -83,43 +53,23 @@ export class MetaStatic {
   }
 
   /**
-   * Gets the canonical URL.
+   * Returns the singleton instance of the Meta class.
    *
-   * Получает канонический URL.
-   * @returns canonical URL / канонический URL
+   * Возвращает синглтон-экземпляр класса Meta.
+   * @returns Meta singleton / синглтон Meta
    */
-  static getCanonical(): string {
-    return this.getItem().getCanonical()
+  static getItem(): Meta {
+    return ServerStorage.get('__ui:meta-instance__', () => new Meta())
   }
 
   /**
-   * Gets the robots meta tag value.
+   * Gets the keywords meta tag.
    *
-   * Получает значение мета-тега robots.
-   * @returns robots directive / директива robots
+   * Получает мета-тег keywords.
+   * @returns keywords content / содержимое keywords
    */
-  static getRobots(): MetaRobots {
-    return this.getItem().getRobots()
-  }
-
-  /**
-   * Gets the author meta tag.
-   *
-   * Получает мета-тег author.
-   * @returns author name / имя автора
-   */
-  static getAuthor(): string {
-    return this.getItem().getAuthor()
-  }
-
-  /**
-   * Gets the Open Graph site name.
-   *
-   * Получает название сайта Open Graph.
-   * @returns site name / название сайта
-   */
-  static getSiteName(): string {
-    return this.getItem().getSiteName()
+  static getKeywords(): string {
+    return this.getItem().getKeywords()
   }
 
   /**
@@ -133,26 +83,76 @@ export class MetaStatic {
   }
 
   /**
-   * Sets the page title (with suffix) and updates Open Graph and Twitter Card titles.
+   * Gets the MetaOg instance for advanced Open Graph operations.
    *
-   * Устанавливает заголовок страницы (с суффиксом) и обновляет заголовки Open Graph и Twitter Card.
-   * @param title page title / заголовок страницы
+   * Получает экземпляр MetaOg для расширенных операций с Open Graph.
+   * @returns MetaOg instance / экземпляр MetaOg
+   */
+  static getOg(): MetaOg {
+    return this.getItem().getOg()
+  }
+
+  /**
+   * Gets the robots meta tag value.
+   *
+   * Получает значение мета-тега robots.
+   * @returns robots directive / директива robots
+   */
+  static getRobots(): MetaRobots {
+    return this.getItem().getRobots()
+  }
+
+  /**
+   * Gets the Open Graph site name.
+   *
+   * Получает название сайта Open Graph.
+   * @returns site name / название сайта
+   */
+  static getSiteName(): string {
+    return this.getItem().getSiteName()
+  }
+
+  /**
+   * Gets the page title without suffix.
+   *
+   * Получает заголовок страницы без суффикса.
+   * @returns title without suffix / заголовок без суффикса
+   */
+  static getTitle(): string {
+    return this.getItem().getTitle()
+  }
+
+  /**
+   * Gets the MetaTwitter instance for advanced Twitter Card operations.
+   *
+   * Получает экземпляр MetaTwitter для расширенных операций с Twitter Card.
+   * @returns MetaTwitter instance / экземпляр MetaTwitter
+   */
+  static getTwitter(): MetaTwitter {
+    return this.getItem().getTwitter()
+  }
+
+  /**
+   * Sets the author meta tag.
+   *
+   * Устанавливает мета-тег author.
+   * @param author author name / имя автора
    * @returns MetaStatic class / класс MetaStatic
    */
-  static setTitle(title: string): typeof MetaStatic {
-    this.getItem().setTitle(title)
+  static setAuthor(author: string): typeof MetaStatic {
+    this.getItem().setAuthor(author)
     return this
   }
 
   /**
-   * Sets the keywords meta tag.
+   * Sets the canonical URL and updates Open Graph and Twitter Card URLs.
    *
-   * Устанавливает мета-тег keywords.
-   * @param keywords keywords as string or array / ключевые слова в виде строки или массива
+   * Устанавливает канонический URL и обновляет URL для Open Graph и Twitter Card.
+   * @param canonical canonical URL / канонический URL
    * @returns MetaStatic class / класс MetaStatic
    */
-  static setKeywords(keywords: string | string[]): typeof MetaStatic {
-    this.getItem().setKeywords(keywords)
+  static setCanonical(canonical: string): typeof MetaStatic {
+    this.getItem().setCanonical(canonical)
     return this
   }
 
@@ -181,50 +181,14 @@ export class MetaStatic {
   }
 
   /**
-   * Sets the canonical URL and updates Open Graph and Twitter Card URLs.
+   * Sets the keywords meta tag.
    *
-   * Устанавливает канонический URL и обновляет URL для Open Graph и Twitter Card.
-   * @param canonical canonical URL / канонический URL
+   * Устанавливает мета-тег keywords.
+   * @param keywords keywords as string or array / ключевые слова в виде строки или массива
    * @returns MetaStatic class / класс MetaStatic
    */
-  static setCanonical(canonical: string): typeof MetaStatic {
-    this.getItem().setCanonical(canonical)
-    return this
-  }
-
-  /**
-   * Sets the robots meta tag.
-   *
-   * Устанавливает мета-тег robots.
-   * @param robots robots directive / директива robots
-   * @returns MetaStatic class / класс MetaStatic
-   */
-  static setRobots(robots: MetaRobots): typeof MetaStatic {
-    this.getItem().setRobots(robots)
-    return this
-  }
-
-  /**
-   * Sets the author meta tag.
-   *
-   * Устанавливает мета-тег author.
-   * @param author author name / имя автора
-   * @returns MetaStatic class / класс MetaStatic
-   */
-  static setAuthor(author: string): typeof MetaStatic {
-    this.getItem().setAuthor(author)
-    return this
-  }
-
-  /**
-   * Sets the site name for Open Graph and Twitter Card.
-   *
-   * Устанавливает название сайта для Open Graph и Twitter Card.
-   * @param siteName site name / название сайта
-   * @returns MetaStatic class / класс MetaStatic
-   */
-  static setSiteName(siteName: string): typeof MetaStatic {
-    this.getItem().setSiteName(siteName)
+  static setKeywords(keywords: string | string[]): typeof MetaStatic {
+    this.getItem().setKeywords(keywords)
     return this
   }
 
@@ -241,6 +205,30 @@ export class MetaStatic {
   }
 
   /**
+   * Sets the robots meta tag.
+   *
+   * Устанавливает мета-тег robots.
+   * @param robots robots directive / директива robots
+   * @returns MetaStatic class / класс MetaStatic
+   */
+  static setRobots(robots: MetaRobots): typeof MetaStatic {
+    this.getItem().setRobots(robots)
+    return this
+  }
+
+  /**
+   * Sets the site name for Open Graph and Twitter Card.
+   *
+   * Устанавливает название сайта для Open Graph и Twitter Card.
+   * @param siteName site name / название сайта
+   * @returns MetaStatic class / класс MetaStatic
+   */
+  static setSiteName(siteName: string): typeof MetaStatic {
+    this.getItem().setSiteName(siteName)
+    return this
+  }
+
+  /**
    * Sets the suffix to append to page title.
    *
    * Устанавливает суффикс для добавления к заголовку страницы.
@@ -249,6 +237,18 @@ export class MetaStatic {
    */
   static setSuffix(suffix?: string): typeof MetaStatic {
     this.getItem().setSuffix(suffix)
+    return this
+  }
+
+  /**
+   * Sets the page title (with suffix) and updates Open Graph and Twitter Card titles.
+   *
+   * Устанавливает заголовок страницы (с суффиксом) и обновляет заголовки Open Graph и Twitter Card.
+   * @param title page title / заголовок страницы
+   * @returns MetaStatic class / класс MetaStatic
+   */
+  static setTitle(title: string): typeof MetaStatic {
+    this.getItem().setTitle(title)
     return this
   }
 

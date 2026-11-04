@@ -19,7 +19,14 @@ import {
   type ApiResponseItem
 } from '../types/apiTypes'
 
+/** CSS class added to document.body during response emulation / CSS-класс, добавляемый к document.body во время эмуляции ответа */
 const CLASS_RESPONSE_LOADING = 'd-response-loading'
+
+/** Maximum emulated network lag in milliseconds / Максимальная эмулируемая задержка сети в миллисекундах */
+const MAX_EMULATOR_LAG = 2000
+
+/** Delay before removing response loading CSS class in milliseconds / Задержка перед удалением CSS-класса загрузки ответа в миллисекундах */
+const RESPONSE_LOADING_TIMEOUT = 2400
 
 /**
  * Class for working with API responses.
@@ -241,19 +248,28 @@ export class ApiResponse {
   ): boolean {
     const requestItem = this.requestDefault.request(item.request)
 
-    return request === requestItem
+    if (
+      request === requestItem
       || '*any' === requestItem
-      || (
-        isFilled(request)
-        && isFilled(requestItem)
-        && isObjectNotArray(request)
-        && isObjectNotArray(requestItem)
-        && !(request instanceof FormData)
-        && !(requestItem instanceof FormData)
-        && Object.values(request).length === Object.values(requestItem).length
-        && Object.entries(requestItem)
-          .every(([key, value]) => value === request[key] || value === '*any')
-      )
+    ) {
+      return true
+    }
+
+    if (
+      isFilled(request)
+      && isFilled(requestItem)
+      && isObjectNotArray(request)
+      && isObjectNotArray(requestItem)
+      && !(request instanceof FormData)
+      && !(requestItem instanceof FormData)
+    ) {
+      const entries = Object.entries(requestItem)
+
+      return entries.length === Object.keys(request).length
+        && entries.every(([key, value]) => value === request[key] || value === '*any')
+    }
+
+    return false
   }
 
   /**
@@ -284,7 +300,7 @@ export class ApiResponse {
 
             resolve(data)
             Loading.hide()
-          }, random(0, 2000))
+          }, random(0, MAX_EMULATOR_LAG))
         } else {
           this.stopResponseLoading()
           resolve(data)
@@ -374,7 +390,7 @@ export class ApiResponse {
       this.loading = setTimeout(() => {
         this.loading = undefined
         document.body.classList.remove(CLASS_RESPONSE_LOADING)
-      }, 2400)
+      }, RESPONSE_LOADING_TIMEOUT)
     }
   }
 }

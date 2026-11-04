@@ -10,8 +10,11 @@ import {
   type GeoPhoneMapInfo
 } from '../types/geoTypes'
 
+/** Regular expression matching a single digit / Регулярное выражение для поиска одной цифры */
 const REGEXP_DIGIT = /\d/g
+/** Regular expression matching mask placeholder characters / Регулярное выражение для поиска символов-заполнителей маски */
 const REGEXP_MASK_PLACEHOLDER = /\*/g
+/** Regular expression matching non-digit sequences / Регулярное выражение для поиска нецифровых последовательностей */
 const REGEXP_NON_DIGIT = /\D+/g
 
 /**

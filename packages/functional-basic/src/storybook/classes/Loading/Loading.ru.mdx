@@ -28,7 +28,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — функция-обработчик, получающая `event.detail.loading: boolean`.
-- `element?: ElementOrString<HTMLElement>` — DOM-элемент-триггер: при его удалении из DOM слушатель автоматически останавливается.
+- `element?: ElementOrString<HTMLElement> | null` — DOM-элемент-триггер: при его удалении из DOM слушатель автоматически останавливается.
 
 ### `unregistrationEvent`
 
@@ -36,7 +36,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — функция-обработчик, которая была использована при регистрации.
-- `element?: ElementOrString<HTMLElement>` — DOM-элемент, который был использован при регистрации.
+- `element?: ElementOrString<HTMLElement> | null` — DOM-элемент, который был использован при регистрации.
 
 ## LoadingInstance
 Класс `LoadingInstance` можно использовать для создания отдельного экземпляра для отслеживания загрузки.

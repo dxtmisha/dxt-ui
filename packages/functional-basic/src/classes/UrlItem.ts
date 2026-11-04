@@ -5,6 +5,12 @@ import { transformation } from '../functions/transformation'
 import { ServerStorage } from './ServerStorage'
 
 /**
+ * Regular expression for checking if a URL string has a protocol scheme /
+ * Регулярное выражение для проверки наличия схемы протокола в строке URL
+ */
+const REGEXP_PROTOCOL = /^[a-z0-9+.-]+:/i
+
+/**
  * Isomorphic utility class for working with URLs.
  * Provides read-only getters and a single 'set' method for modifying the URL.
  *
@@ -102,7 +108,7 @@ export class UrlItem {
     } else if (url instanceof URL) {
       this.url = new URL(url.href)
     } else {
-      const hasProtocol = /^[a-z0-9+.-]+:/i.test(url)
+      const hasProtocol = REGEXP_PROTOCOL.test(url)
 
       if (hasProtocol) {
         this.url = new URL(url)
@@ -210,16 +216,6 @@ export class UrlItem {
   }
 
   /**
-   * Converts the Url instance to its string representation.
-   *
-   * Преобразует экземпляр Url в его строковое представление.
-   * @returns full URL string / полная строка URL
-   */
-  toString(): string {
-    return this.url.toString()
-  }
-
-  /**
    * Converts the Url instance to JSON string representation.
    *
    * Преобразует экземпляр Url в строковое представление JSON.
@@ -227,5 +223,15 @@ export class UrlItem {
    */
   toJSON(): string {
     return this.url.toJSON()
+  }
+
+  /**
+   * Converts the Url instance to its string representation.
+   *
+   * Преобразует экземпляр Url в его строковое представление.
+   * @returns full URL string / полная строка URL
+   */
+  toString(): string {
+    return this.url.toString()
   }
 }

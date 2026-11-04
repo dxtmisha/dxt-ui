@@ -1,6 +1,7 @@
 /** @vitest-environment jsdom */
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { Geo } from '../Geo'
+import { GeoList } from '../GeoList'
 import { CookieStorage } from '../CookieStorage'
 import { ServerStorage } from '../ServerStorage'
 import { isDomRuntime } from '../../functions/isDomRuntime'
@@ -12,9 +13,10 @@ vi.mock('../../functions/isDomRuntime', () => ({
 function resetGeoContext(): void {
   vi.mocked(isDomRuntime).mockReturnValue(false)
   ServerStorage.reset()
-  CookieStorage.reset()
   const context: Record<string, unknown> = {}
   ServerStorage.init(() => context)
+  CookieStorage.reset()
+  GeoList.reset()
   localStorage.clear()
   document.documentElement.setAttribute('lang', '')
 }

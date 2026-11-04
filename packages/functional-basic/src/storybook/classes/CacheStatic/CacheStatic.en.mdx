@@ -26,12 +26,12 @@ Use the static `get()` method to retrieve a cached value or calculate it if miss
 **Parameters:**
 - `name: string` — a unique identifier for the specific global cache entry.
 - `callback: () => T` — the function that computes the value.
-- `comparison?: any[]` — optional array of dependencies. Passing a new array (where values or length differ) invalidates the cache and forces a recalculation.
+- `comparison?: unknown[]` — optional array of dependencies. Passing a new array (where values or length differ) invalidates the cache and forces a recalculation.
 
 **Returns:** `T` — the cached or freshly stringified value.
 
 ```javascript
-import { CacheStatic } from '@dxtmisha/functional'
+import { CacheStatic } from '@dxtmisha/functional-basic'
 
 // File A.js
 function calculateHeavyData(id) {

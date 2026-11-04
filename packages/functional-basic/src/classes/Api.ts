@@ -167,11 +167,11 @@ export class Api {
         this.setEnd(config.end)
       }
 
-      if (config.timeout) {
+      if (config.timeout !== undefined) {
         this.setTimeout(config.timeout)
       }
 
-      if (config.devMode) {
+      if (config.devMode !== undefined) {
         this.getResponse().setDevMode(config.devMode)
       }
 

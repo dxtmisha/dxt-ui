@@ -14,8 +14,8 @@ Converts a geographic data item (`GeoItem`) into a standard locale string format
 - **Safe Handling** — Gracefully returns an empty string when the input `item` is nullish.
 
 **Parameters:**
-- `item?: GeoItem` — Geographic data object.
-- `language?: string` — Optional language code override.
+- `item?: GeoItem | null` — Geographic data object.
+- `language?: string | null` — Optional language code override.
 - `raw?: boolean` — Whether to skip language normalization via `toLanguage` when `true`.
 
 **Returns:**

@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Duyệt qua các thuộc tính riêng có thể đếm được của một đối tượng, bỏ qua các khóa gây ô nhiễm prototype (`__proto__`, `constructor`, `prototype`). Hỗ trợ dừng sớm khi hàm callback trả về `false`.
 
 **Tham số:**
-- `data?: T` — Đối tượng cần duyệt (`T extends object = Record<string, unknown>`).
+- `data?: T | null` — Đối tượng cần duyệt (`T extends object = Record<string, unknown>`).
 - `callback?: (value: T[K], key: K, collection: T) => void | boolean` — Hàm được thực thi cho mỗi thuộc tính riêng. Nếu trả về `false`, vòng lặp sẽ dừng ngay lập tức.
 
 **Trả về:**

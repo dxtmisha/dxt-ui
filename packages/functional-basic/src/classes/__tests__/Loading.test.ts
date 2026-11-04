@@ -461,7 +461,6 @@ describe('Loading', () => {
 
     it('should handle event registration with null element', () => {
       const listener = vi.fn()
-      // @ts-expect-error: Testing runtime null element fallback
       Loading.registrationEvent(listener, null)
 
       Loading.show()

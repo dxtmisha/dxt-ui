@@ -38,7 +38,8 @@ describe('isWindow', () => {
   })
 
   describe('Nullish and primitive values', () => {
-    it('should return false for null and undefined', () => {
+    it('should return false for null, undefined, and zero arguments', () => {
+      expect(isWindow()).toBe(false)
       expect(isWindow(null)).toBe(false)
       expect(isWindow(undefined)).toBe(false)
     })

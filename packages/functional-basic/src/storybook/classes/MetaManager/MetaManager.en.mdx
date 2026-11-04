@@ -10,9 +10,9 @@ This class is the parent of `MetaOg`, `MetaTwitter`, and `Meta`.
 
 ## Initialization
 
-The class is **abstract**. You cannot create its instance directly using `new MetaManager()`. Instead, it must be extended.
+The class can be instantiated directly via `new MetaManager(listMeta, isProperty)` or extended by subclasses (`MetaOg`, `MetaTwitter`, `Meta`).
 
-**Constructor Parameters (for descendants):**
+**Constructor Parameters:**
 - `listMeta: T` — a list of meta tag names managed by this instance.
 - `isProperty?: boolean` — determines the attribute used: `true` for `property` (Open Graph), `false` for `name` (standard tags). Default: `false`.
 
@@ -31,9 +31,9 @@ const myMeta = new MyMeta()
 
 ## Methods
 
-- `getListMeta(): T` — returns the list of managed tag names.
 - `get(name): string` — returns the content of a tag by name. Returns `''` if not set.
 - `getItems(): MetaList<T>` — returns an object with all tags: `{ [name]: content }`.
+- `getListMeta(): T` — returns the list of managed tag names.
 - `set(name, content): this` — sets the tag in the DOM (creates if not found). Supports chaining.
 - `setByList(metaList): this` — sets multiple tags from an object. Supports chaining.
 
@@ -41,7 +41,7 @@ const myMeta = new MyMeta()
 
 ### `html(): string`
 
-Generates an HTML string for all managed tags that have content. Used for SSR.
+Generates an HTML string for all managed tags that have content (escaping attributes via `encodeAttribute` and rendering `canonical` as `<link rel="canonical" href="...">`). Used for SSR.
 
 ```javascript
 manager.set('description', 'My description').set('keywords', 'vue, typescript')
@@ -50,11 +50,6 @@ manager.html()
 // '<meta name="description" content="My description"><meta name="keywords" content="vue, typescript">'
 ```
 
-### `htmlTitle(title: string): string`
+### `protected toHtmlTitle(title: string): string`
 
-Converts a title string into an HTML `<title>` tag.
-
-```javascript
-manager.htmlTitle('My Page Title')
-// '<title>My Page Title</title>'
-```
+Protected helper that encodes HTML special characters (`<`, `>`, `&`) in a title string via `encodeLiteAttribute` while preserving quotes.

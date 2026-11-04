@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Перебирает собственные перечисляемые свойства объекта, безопасно пропуская ключи загрязнения прототипа (`__proto__`, `constructor`, `prototype`). Поддерживает досрочное прерывание, если функция обратного вызова возвращает `false`.
 
 **Параметры:**
-- `data?: T` — Объект для перебора (`T extends object = Record<string, unknown>`).
+- `data?: T | null` — Объект для перебора (`T extends object = Record<string, unknown>`).
 - `callback?: (value: T[K], key: K, collection: T) => void | boolean` — Функция, выполняемая для каждого собственного свойства. Если функция возвращает `false`, перебор немедленно завершается.
 
 **Возвращает:**

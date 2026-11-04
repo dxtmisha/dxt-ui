@@ -29,7 +29,7 @@ Lớp `UrlItem` là một **Lớp tiện ích isomorphic** để phân tích cú
 - `get hash(): string` — Trả về chuỗi hash bao gồm cả dấu thăng ở đầu.
 - `get origin(): string` — Trả về nguồn gốc (origin) của URL (chỉ đọc).
 - `getParam(name: string): string | undefined` — Trả về giá trị của tham số truy vấn, hoặc `undefined` nếu không tìm thấy.
-- `getParams(): Record<string, any>` — Trả về tất cả các tham số truy vấn dưới dạng một đối tượng với các kiểu đã biến đổi.
+- `getParams(): Record<string, unknown>` — Trả về tất cả các tham số truy vấn dưới dạng một đối tượng với các kiểu đã biến đổi.
 
 ### Kiểm tra
 
@@ -39,7 +39,7 @@ Lớp `UrlItem` là một **Lớp tiện ích isomorphic** để phân tích cú
 
 - `set(url?: string | URL): this` — Cập nhật giá trị URL.
 - `setParam(name: string, value: string): this` — Thiết lập giá trị của tham số truy vấn.
-- `setParams(params: Record<string, any>): this` — Thay thế tất cả các tham số truy vấn bằng đối tượng được chỉ định.
+- `setParams(params: Record<string, unknown>): this` — Thay thế tất cả các tham số truy vấn bằng đối tượng được chỉ định.
 - `deleteParam(name: string): this` — Xóa tham số truy vấn.
 
 ### Phụ trợ

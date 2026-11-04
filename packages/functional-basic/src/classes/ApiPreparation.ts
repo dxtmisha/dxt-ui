@@ -2,6 +2,12 @@
 
 import type { ApiFetch, ApiPreparationEnd } from '../types/apiTypes'
 
+/** Default maximum number of retry polling attempts / Лимит попыток опроса по умолчанию */
+const DEFAULT_PREPARATION_LIMIT = 32
+
+/** Delay in milliseconds between preparation polling attempts / Задержка в миллисекундах между попытками опроса подготовки */
+const PREPARATION_RETRY_DELAY = 160
+
 /**
  * Class for preparing requests.
  *
@@ -24,7 +30,7 @@ export class ApiPreparation {
    * @param callback function to call before request / функция для вызова перед запросом
    * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
-  set(callback: (apiFetch: ApiFetch) => Promise<void>): this {
+  set(callback?: (apiFetch: ApiFetch) => Promise<void>): this {
     this.callback = callback
     return this
   }
@@ -36,7 +42,7 @@ export class ApiPreparation {
    * @param callback function to call after request / функция для вызова после запроса
    * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
-  setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this {
+  setEnd(callback?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this {
     this.callbackEnd = callback
     return this
   }
@@ -87,27 +93,32 @@ export class ApiPreparation {
    * @param limit limit of retry attempts / лимит попыток повтора
    * @returns Promise<void> / Promise без возвращаемого значения
    */
-  protected async go(apiFetch: ApiFetch, limit: number = 32): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (
-        this.loading
-        && limit > 0
-      ) {
-        setTimeout(() => this.go(apiFetch, limit - 1).then(resolve), 160)
-      } else if (this.callback) {
-        this.loading = true
-        this.callback(apiFetch)
-          .then(() => {
-            this.loading = false
-            resolve()
-          })
-          .catch(() => {
-            this.loading = false
-            resolve()
-          })
-      } else {
-        resolve()
+  protected async go(
+    apiFetch: ApiFetch,
+    limit: number = DEFAULT_PREPARATION_LIMIT
+  ): Promise<void> {
+    if (
+      this.loading
+      && limit > 0
+    ) {
+      return new Promise<void>((resolve) => {
+        setTimeout(() => {
+          void this.go(apiFetch, limit - 1).then(resolve)
+        }, PREPARATION_RETRY_DELAY)
+      })
+    }
+
+    if (this.callback) {
+      this.loading = true
+
+      try {
+        await this.callback(apiFetch)
+      } catch {
+        // Ignore callback failure to allow the request lifecycle to proceed /
+        // Игнорируем ошибку коллбэка, чтобы жизненный цикл запроса продолжился
+      } finally {
+        this.loading = false
       }
-    })
+    }
   }
 }

@@ -37,6 +37,66 @@ export class Meta extends MetaManager<MetaTag[]> {
   }
 
   /**
+   * Gets the author meta tag.
+   *
+   * Получает мета-тег author.
+   * @returns author name / имя автора
+   */
+  getAuthor(): string {
+    return this.get(MetaTag.author)
+  }
+
+  /**
+   * Gets the canonical URL.
+   *
+   * Получает канонический URL.
+   * @returns canonical URL / канонический URL
+   */
+  getCanonical(): string {
+    return this.get(MetaTag.canonical)
+  }
+
+  /**
+   * Gets the description meta tag.
+   *
+   * Получает мета-тег description.
+   * @returns description content / содержимое description
+   */
+  getDescription(): string {
+    return this.get(MetaTag.description)
+  }
+
+  /**
+   * Gets the Open Graph image URL.
+   *
+   * Получает URL изображения Open Graph.
+   * @returns image URL / URL изображения
+   */
+  getImage(): string {
+    return this.og.getImage()
+  }
+
+  /**
+   * Gets the keywords meta tag.
+   *
+   * Получает мета-тег keywords.
+   * @returns keywords content / содержимое keywords
+   */
+  getKeywords(): string {
+    return this.get(MetaTag.keywords)
+  }
+
+  /**
+   * Gets the Open Graph locale.
+   *
+   * Получает локаль Open Graph.
+   * @returns locale / локаль
+   */
+  getLocale(): string {
+    return this.og.getLocale()
+  }
+
+  /**
    * Gets the MetaOg instance for advanced Open Graph operations.
    *
    * Получает экземпляр MetaOg для расширенных операций с Open Graph.
@@ -47,13 +107,23 @@ export class Meta extends MetaManager<MetaTag[]> {
   }
 
   /**
-   * Gets the MetaTwitter instance for advanced Twitter Card operations.
+   * Gets the robots meta tag value.
    *
-   * Получает экземпляр MetaTwitter для расширенных операций с Twitter Card.
-   * @returns MetaTwitter instance / экземпляр MetaTwitter
+   * Получает значение мета-тега robots.
+   * @returns robots directive / директива robots
    */
-  getTwitter(): MetaTwitter {
-    return this.twitter
+  getRobots(): MetaRobots {
+    return this.get(MetaTag.robots) as MetaRobots
+  }
+
+  /**
+   * Gets the Open Graph site name.
+   *
+   * Получает название сайта Open Graph.
+   * @returns site name / название сайта
+   */
+  getSiteName(): string {
+    return this.og.getSiteName()
   }
 
   /**
@@ -89,121 +159,38 @@ export class Meta extends MetaManager<MetaTag[]> {
   }
 
   /**
-   * Gets the keywords meta tag.
+   * Gets the MetaTwitter instance for advanced Twitter Card operations.
    *
-   * Получает мета-тег keywords.
-   * @returns keywords content / содержимое keywords
+   * Получает экземпляр MetaTwitter для расширенных операций с Twitter Card.
+   * @returns MetaTwitter instance / экземпляр MetaTwitter
    */
-  getKeywords(): string {
-    return this.get(MetaTag.keywords)
+  getTwitter(): MetaTwitter {
+    return this.twitter
   }
 
   /**
-   * Gets the description meta tag.
+   * Sets the author meta tag.
    *
-   * Получает мета-тег description.
-   * @returns description content / содержимое description
-   */
-  getDescription(): string {
-    return this.get(MetaTag.description)
-  }
-
-  /**
-   * Gets the Open Graph image URL.
-   *
-   * Получает URL изображения Open Graph.
-   * @returns image URL / URL изображения
-   */
-  getImage(): string {
-    return this.og.getImage()
-  }
-
-  /**
-   * Gets the canonical URL.
-   *
-   * Получает канонический URL.
-   * @returns canonical URL / канонический URL
-   */
-  getCanonical(): string {
-    return this.get(MetaTag.canonical)
-  }
-
-  /**
-   * Gets the robots meta tag value.
-   *
-   * Получает значение мета-тега robots.
-   * @returns robots directive / директива robots
-   */
-  getRobots(): MetaRobots {
-    return this.get(MetaTag.robots) as MetaRobots
-  }
-
-  /**
-   * Gets the author meta tag.
-   *
-   * Получает мета-тег author.
-   * @returns author name / имя автора
-   */
-  getAuthor(): string {
-    return this.get(MetaTag.author)
-  }
-
-  /**
-   * Gets the Open Graph site name.
-   *
-   * Получает название сайта Open Graph.
-   * @returns site name / название сайта
-   */
-  getSiteName(): string {
-    return this.og.getSiteName()
-  }
-
-  /**
-   * Gets the Open Graph locale.
-   *
-   * Получает локаль Open Graph.
-   * @returns locale / локаль
-   */
-  getLocale(): string {
-    return this.og.getLocale()
-  }
-
-  /**
-   * Sets the page title (with suffix) and updates Open Graph and Twitter Card titles.
-   *
-   * Устанавливает заголовок страницы (с суффиксом) и обновляет заголовки Open Graph и Twitter Card.
-   * @param title page title / заголовок страницы
+   * Устанавливает мета-тег author.
+   * @param author author name / имя автора
    * @returns current instance / текущий экземпляр
    */
-  setTitle(title: string): this {
-    this.rawTitle = title
-
-    const fullTitle = isFilled(title)
-      ? `${title}${this.getSuffix()}`
-      : this.suffix
-        ? this.suffix
-        : ''
-
-    if (isDomRuntime()) {
-      document.title = fullTitle
-    }
-
-    this.set(MetaTag.title, fullTitle)
-    this.og.setTitle(fullTitle)
-    this.twitter.setTitle(fullTitle)
-
+  setAuthor(author: string): this {
+    this.set(MetaTag.author, author)
     return this
   }
 
   /**
-   * Sets the keywords meta tag.
+   * Sets the canonical URL and updates Open Graph and Twitter Card URLs.
    *
-   * Устанавливает мета-тег keywords.
-   * @param keywords keywords as string or array / ключевые слова в виде строки или массива
+   * Устанавливает канонический URL и обновляет URL для Open Graph и Twitter Card.
+   * @param canonical canonical URL / канонический URL
    * @returns current instance / текущий экземпляр
    */
-  setKeywords(keywords: string | string[]): this {
-    this.set(MetaTag.keywords, toArray(keywords).join(', '))
+  setCanonical(canonical: string): this {
+    this.set(MetaTag.canonical, canonical)
+    this.og.setUrl(canonical)
+    this.twitter.setUrl(canonical)
     return this
   }
 
@@ -233,16 +220,26 @@ export class Meta extends MetaManager<MetaTag[]> {
   }
 
   /**
-   * Sets the canonical URL and updates Open Graph and Twitter Card URLs.
+   * Sets the keywords meta tag.
    *
-   * Устанавливает канонический URL и обновляет URL для Open Graph и Twitter Card.
-   * @param canonical canonical URL / канонический URL
+   * Устанавливает мета-тег keywords.
+   * @param keywords keywords as string or array / ключевые слова в виде строки или массива
    * @returns current instance / текущий экземпляр
    */
-  setCanonical(canonical: string): this {
-    this.set(MetaTag.canonical, canonical)
-    this.og.setUrl(canonical)
-    this.twitter.setUrl(canonical)
+  setKeywords(keywords: string | string[]): this {
+    this.set(MetaTag.keywords, toArray(keywords).join(', '))
+    return this
+  }
+
+  /**
+   * Sets the locale for Open Graph.
+   *
+   * Устанавливает локаль для Open Graph.
+   * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
+   * @returns current instance / текущий экземпляр
+   */
+  setLocale(locale: string): this {
+    this.og.setLocale(locale)
     return this
   }
 
@@ -255,18 +252,6 @@ export class Meta extends MetaManager<MetaTag[]> {
    */
   setRobots(robots: MetaRobots): this {
     this.set(MetaTag.robots, robots)
-    return this
-  }
-
-  /**
-   * Sets the author meta tag.
-   *
-   * Устанавливает мета-тег author.
-   * @param author author name / имя автора
-   * @returns current instance / текущий экземпляр
-   */
-  setAuthor(author: string): this {
-    this.set(MetaTag.author, author)
     return this
   }
 
@@ -284,18 +269,6 @@ export class Meta extends MetaManager<MetaTag[]> {
   }
 
   /**
-   * Sets the locale for Open Graph.
-   *
-   * Устанавливает локаль для Open Graph.
-   * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
-   * @returns current instance / текущий экземпляр
-   */
-  setLocale(locale: string): this {
-    this.og.setLocale(locale)
-    return this
-  }
-
-  /**
    * Sets the suffix to append to page title.
    *
    * Устанавливает суффикс для добавления к заголовку страницы.
@@ -308,6 +281,33 @@ export class Meta extends MetaManager<MetaTag[]> {
     if (this.rawTitle !== undefined) {
       this.setTitle(this.rawTitle)
     }
+
+    return this
+  }
+
+  /**
+   * Sets the page title (with suffix) and updates Open Graph and Twitter Card titles.
+   *
+   * Устанавливает заголовок страницы (с суффиксом) и обновляет заголовки Open Graph и Twitter Card.
+   * @param title page title / заголовок страницы
+   * @returns current instance / текущий экземпляр
+   */
+  setTitle(title: string): this {
+    this.rawTitle = title
+
+    const fullTitle = isFilled(title)
+      ? `${title}${this.getSuffix()}`
+      : this.suffix
+        ? this.suffix
+        : ''
+
+    if (isDomRuntime()) {
+      document.title = fullTitle
+    }
+
+    this.set(MetaTag.title, fullTitle)
+    this.og.setTitle(fullTitle)
+    this.twitter.setTitle(fullTitle)
 
     return this
   }

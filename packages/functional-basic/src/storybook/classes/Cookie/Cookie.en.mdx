@@ -67,15 +67,20 @@ Removes a cookie by overwriting it with an empty string and setting Max-Age to `
 Configuration object for cookie parameters:
 
 - `age?: number` — lifetime in seconds (Max-Age attribute). Default: 7 days (604800 sec)
-- `sameSite?: 'strict' | 'lax'` — SameSite policy. Default: `'strict'`
-- `arguments?: string[]` — additional directives appended to the cookie string
+- `sameSite?: 'strict' | 'lax' | 'none'` — SameSite policy. Default: `'strict'`
+- `path?: string` — cookie path (default `'/'`)
+- `domain?: string` — cookie domain
+- `secure?: boolean` — `Secure` attribute
+- `httpOnly?: boolean` — `HttpOnly` attribute
+- `partitioned?: boolean` — `Partitioned` attribute
+- `arguments?: string[] | Record<string, unknown>` — additional directives appended to the cookie string
 
 ## Examples
 
 ### Basic Usage
 
 ```typescript
-import { Cookie } from '@dxtmisha/functional'
+import { Cookie } from '@dxtmisha/functional-basic'
 
 // Create instance to manage 'theme' cookie
 const themeCookie = new Cookie('theme')
@@ -99,7 +104,7 @@ themeCookie.remove()
 ### Using getInstance
 
 ```typescript
-import { Cookie } from '@dxtmisha/functional'
+import { Cookie } from '@dxtmisha/functional-basic'
 
 // Get or create instance
 const cookie = Cookie.getInstance<string>('user')
@@ -113,7 +118,7 @@ console.log(cookie === sameCookie) // true
 ### CookieBlock Integration
 
 ```typescript
-import { Cookie, CookieBlock } from '@dxtmisha/functional'
+import { Cookie, CookieBlock } from '@dxtmisha/functional-basic'
 
 // Block all write operations
 CookieBlock.set(true)

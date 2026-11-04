@@ -72,7 +72,7 @@ export class Loading {
    */
   static registrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
-    element?: ElementOrString<HTMLElement>
+    element?: ElementOrString<HTMLElement> | null
   ): void {
     this.getItem().registrationEvent(listener, element)
   }
@@ -87,7 +87,7 @@ export class Loading {
    */
   static unregistrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
-    element?: ElementOrString<HTMLElement>
+    element?: ElementOrString<HTMLElement> | null
   ): void {
     this.getItem().unregistrationEvent(listener, element)
   }

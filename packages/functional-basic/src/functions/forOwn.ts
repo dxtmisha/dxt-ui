@@ -14,7 +14,7 @@ export function forOwn<
   T extends object = Record<string, unknown>,
   K extends Extract<keyof T, string> = Extract<keyof T, string>
 >(
-  data?: T,
+  data?: T | null,
   callback?: (value: T[K], key: K, collection: T) => void | boolean
 ): void {
   if (!isObject(data) || !callback) {

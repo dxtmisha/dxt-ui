@@ -41,8 +41,8 @@ Thực thi callback phân tích đã đăng ký sau khi một yêu cầu hoàn t
 
 ### Cấu hình
 
-- `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Đăng ký một hàm sẽ chạy trước mọi yêu cầu được bật.
-- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Đăng ký một hàm sẽ chạy sau mọi phản hồi được bật.
+- `set(callback?: (apiFetch: ApiFetch) => Promise<void>): this` — Đăng ký hoặc xóa hàm sẽ chạy trước mọi yêu cầu được bật.
+- `setEnd(callback?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Đăng ký hoặc xóa hàm sẽ chạy sau mọi phản hồi được bật.
 
 ## Các kiểu dữ liệu
 

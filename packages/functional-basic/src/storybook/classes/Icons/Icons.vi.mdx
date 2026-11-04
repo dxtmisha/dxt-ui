@@ -4,11 +4,11 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp Icons
 
-Một lớp tĩnh để quản lý registry biểu tượng (icon) của ứng dụng. Cung cấp cơ chế đăng ký, tải chậm (lazy loading) và truy xuất SVG icon. Các icon được lưu trữ trong đối tượng `window` toàn cục để có thể truy cập từ nhiều phiên bản của thư viện.
+Một lớp tĩnh để quản lý registry biểu tượng (icon) của ứng dụng. Cung cấp cơ chế đăng ký, tải chậm (lazy loading) và truy xuất SVG icon.
 
 ## Tính năng chính
 
-- **Registry toàn cục** — Sử dụng `window.__UI_ICON` để lưu trữ icon, đảm bảo registry duy nhất dù có nhiều phiên bản.
+- **Registry an toàn** — Sử dụng từ điển `Object.create(null)` biệt lập để lưu trữ icon mà không xung đột với thuộc tính prototype.
 - **Tải chậm (Lazy Loading)** — Phương thức `addLoad` đánh dấu icon là "đang tải"; `get` sẽ chờ cho đến khi nó xuất hiện.
 - **Kiểu linh hoạt** — Một icon có thể là chuỗi, `Promise`, hoặc hàm trả về `Promise`.
 - **URL tự động** — Icon có tiền tố `@` được chuyển thành URL đầy đủ dựa trên `url` cơ sở.

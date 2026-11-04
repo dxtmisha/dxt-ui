@@ -142,7 +142,7 @@ export class EventItem<
    * @param detail additional data provided to the listener via the custom Event interaction / дополнительные данные, предоставляемые слушателю через кастомное взаимодействие с событием
    */
   constructor(
-    elementSelector?: ElementOrString<E>,
+    elementSelector?: ElementOrString<E> | null,
     type: string | string[] = ['click'],
     protected listener?: EventListenerDetail<O, D>,
     protected options?: EventOptions,
@@ -192,7 +192,7 @@ export class EventItem<
    * @param elementSelector target element or selector / целевой элемент или селектор
    * @returns this instance / текущий экземпляр
    */
-  setElement(elementSelector?: ElementOrString<E>): this {
+  setElement(elementSelector?: ElementOrString<E> | null): this {
     const element = getElementOrWindow(elementSelector)
 
     if (!this.elementControlEdit) {
@@ -212,7 +212,7 @@ export class EventItem<
    * @param elementSelector control element or selector / контрольный элемент или селектор
    * @returns this instance / текущий экземпляр
    */
-  setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this {
+  setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC> | null): this {
     this.elementControl = getElement(elementSelector)
     this.elementControlEdit = !isNull(this.elementControl)
 

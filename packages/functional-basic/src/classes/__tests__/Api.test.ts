@@ -159,6 +159,14 @@ describe('Api', () => {
     expect(setDevModeSpy).toHaveBeenCalledWith(true)
     expect(setOriginSpy).toHaveBeenCalledWith('https://example.org')
     expect(setWrapperSpy).toHaveBeenCalledWith(wrapperCallback)
+
+    Api.setConfig({
+      timeout: 0,
+      devMode: false
+    })
+
+    expect(setTimeoutSpy).toHaveBeenCalledWith(0)
+    expect(setDevModeSpy).toHaveBeenCalledWith(false)
   })
 
   it('should safely ignore empty or non-object values in setConfig()', () => {

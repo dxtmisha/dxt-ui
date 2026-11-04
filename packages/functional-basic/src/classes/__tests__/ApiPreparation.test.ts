@@ -70,7 +70,7 @@ describe('ApiPreparation', () => {
     expect(secondCallback).toHaveBeenCalledWith({ path: 'second' })
   })
 
-  it('should reset loading state even if the preparation callback rejects', async () => {
+  it('should reset loading state even if the preparation callback rejects or throws synchronously', async () => {
     const preparation = new ApiPreparation()
     const failingCallback = vi.fn(async () => {
       throw new Error('Preparation failure')
@@ -79,6 +79,13 @@ describe('ApiPreparation', () => {
     preparation.set(failingCallback)
     await preparation.make(true, { path: 'error' })
 
+    const syncThrowingCallback = vi.fn((() => {
+      throw new Error('Sync failure')
+    }) as unknown as () => Promise<void>)
+
+    preparation.set(syncThrowingCallback)
+    await preparation.make(true, { path: 'sync-error' })
+
     const subsequentCallback = vi.fn(async () => {})
     preparation.set(subsequentCallback)
 
@@ -86,14 +93,10 @@ describe('ApiPreparation', () => {
     expect(subsequentCallback).toHaveBeenCalledWith({ path: 'success' })
   })
 
-  it('should resolve when callback becomes undefined while waiting in go()', async () => {
+  it('should resolve when callback becomes undefined while waiting in go() or cleared via set(undefined)', async () => {
     class ExposedApiPreparation extends ApiPreparation {
       setLoading(value: boolean): void {
         this.loading = value
-      }
-
-      clearCallback(): void {
-        this.callback = undefined
       }
 
       runGo(): Promise<void> {
@@ -102,13 +105,14 @@ describe('ApiPreparation', () => {
     }
 
     const preparation = new ExposedApiPreparation()
+    preparation.set(async () => {})
+    preparation.set(undefined)
     preparation.setLoading(true)
-    preparation.clearCallback()
 
     await expect(preparation.runGo()).resolves.toBeUndefined()
   })
 
-  it('should execute callbackEnd in makeEnd() when active is true and support chaining on setEnd()', async () => {
+  it('should execute callbackEnd in makeEnd() when active is true, support chaining on setEnd(), and allow clearing via setEnd(undefined)', async () => {
     const preparation = new ApiPreparation()
     const callbackEndSpy = vi.fn(async () => ({ reset: true }))
 
@@ -120,6 +124,10 @@ describe('ApiPreparation', () => {
 
     expect(callbackEndSpy).toHaveBeenCalledWith(mockResponse, { path: 'test' })
     expect(result).toEqual({ reset: true })
+
+    preparation.setEnd(undefined)
+    const clearedResult = await preparation.makeEnd(true, mockResponse, { path: 'test' })
+    expect(clearedResult).toEqual({})
   })
 
   it('should return an empty object from makeEnd() when active is false', async () => {

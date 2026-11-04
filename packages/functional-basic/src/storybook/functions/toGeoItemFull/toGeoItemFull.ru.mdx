@@ -1,0 +1,33 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toGeoItemFull - Преобразование GeoItem в GeoItemFull'/>
+
+# `toGeoItemFull`
+
+Преобразует базовый географический объект (`GeoItem`) в полный географический объект (`GeoItemFull`) с вычисленными полями локации (`standard`, `location`, `locationCountry`, `locationLanguage`) и значениями по умолчанию (`firstDay`).
+
+**Параметры:**
+- `item: GeoItem` — Базовый объект географических данных.
+- `code?: string` — Опциональный код локали, страны или языка для разрешения активной локации.
+
+**Возвращает:**
+- `GeoItemFull` — Полный объект географических данных с разрешёнными параметрами локации и стандарта.
+
+## Примеры использования
+
+<Source
+  language='typescript'
+  code={`
+import { toGeoItemFull } from '@dxtmisha/functional-basic'
+
+const baseVn = { country: 'VN', language: 'vi', firstDay: 'Mo' }
+
+// 1. Стандартное преобразование
+toGeoItemFull(baseVn)
+// { country: 'VN', language: 'vi', firstDay: 'Mo', standard: 'vi-VN', location: 'vi-VN', locationCountry: 'VN', locationLanguage: 'vi' }
+
+// 2. Переопределение кода локации
+toGeoItemFull(baseVn, 'en-VN')
+// { country: 'VN', language: 'vi', firstDay: 'Mo', standard: 'en-VN', location: 'en-VN', locationCountry: 'VN', locationLanguage: 'en' }
+  `}
+/>

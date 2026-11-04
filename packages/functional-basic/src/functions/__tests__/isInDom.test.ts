@@ -103,7 +103,7 @@ describe('isInDom', () => {
     it('should return false when called with no arguments, undefined, or null', () => {
       expect(isInDom()).toBe(false)
       expect(isInDom(undefined)).toBe(false)
-      expect(isInDom(null as unknown as HTMLElement)).toBe(false)
+      expect(isInDom(null)).toBe(false)
     })
 
     it('should return false when querying by selector in a non-DOM / SSR environment', () => {

@@ -1,0 +1,33 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toGeoItemFull - Chuyển đổi GeoItem sang GeoItemFull'/>
+
+# `toGeoItemFull`
+
+Chuyển đổi đối tượng địa lý cơ bản (`GeoItem`) thành đối tượng địa lý đầy đủ (`GeoItemFull`) với các trường vị trí đã phân giải (`standard`, `location`, `locationCountry`, `locationLanguage`) và giá trị mặc định (`firstDay`).
+
+**Tham số:**
+- `item: GeoItem` — Đối tượng dữ liệu địa lý cơ bản.
+- `code?: string` — Mã định danh, quốc gia hoặc ngôn ngữ tùy chọn để phân giải vị trí hiện tại.
+
+**Trả về:**
+- `GeoItemFull` — Đối tượng dữ liệu địa lý đầy đủ với thông tin vị trí và định chuẩn.
+
+## Ví dụ sử dụng
+
+<Source
+  language='typescript'
+  code={`
+import { toGeoItemFull } from '@dxtmisha/functional-basic'
+
+const baseVn = { country: 'VN', language: 'vi', firstDay: 'Mo' }
+
+// 1. Chuyển đổi mặc định
+toGeoItemFull(baseVn)
+// { country: 'VN', language: 'vi', firstDay: 'Mo', standard: 'vi-VN', location: 'vi-VN', locationCountry: 'VN', locationLanguage: 'vi' }
+
+// 2. Ghi đè mã ngôn ngữ-quốc gia
+toGeoItemFull(baseVn, 'en-VN')
+// { country: 'VN', language: 'vi', firstDay: 'Mo', standard: 'en-VN', location: 'en-VN', locationCountry: 'VN', locationLanguage: 'en' }
+  `}
+/>

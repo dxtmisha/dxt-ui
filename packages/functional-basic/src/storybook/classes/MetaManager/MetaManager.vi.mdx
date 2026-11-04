@@ -10,11 +10,11 @@ Lớp này là lớp cha của `MetaOg`, `MetaTwitter` và `Meta`.
 
 ## Khởi tạo
 
-Lớp này là **trừu tượng (abstract)**. Bạn không thể tạo instance của nó trực tiếp qua `new MetaManager()`. Thay vào đó, nó phải được kế thừa.
+Lớp này có thể được khởi tạo trực tiếp qua `new MetaManager(listMeta, isProperty)` hoặc được kế thừa bởi các lớp con (`MetaOg`, `MetaTwitter`, `Meta`).
 
-**Tham số constructor (cho các lớp con):**
+**Tham số constructor:**
 - `listMeta: T` — danh sách tên các thẻ meta được quản lý bởi instance này.
-- `isProperty?: boolean` — xác định thuộc tính được sử dụng: `true` cho `property` (Open Graph), `false` for `name` (thẻ tiêu chuẩn). Mặc định: `false`.
+- `isProperty?: boolean` — xác định thuộc tính được sử dụng: `true` cho `property` (Open Graph), `false` cho `name` (thẻ tiêu chuẩn). Mặc định: `false`.
 
 ```typescript
 import { MetaManager } from '@dxtmisha/functional-basic'
@@ -31,9 +31,9 @@ const myMeta = new MyMeta()
 
 ## Phương thức
 
-- `getListMeta(): T` — trả về danh sách tên thẻ được quản lý.
 - `get(name): string` — trả về nội dung thẻ theo tên. Trả về `''` nếu chưa đặt.
 - `getItems(): MetaList<T>` — trả về đối tượng với tất cả thẻ: `{ [name]: content }`.
+- `getListMeta(): T` — trả về danh sách tên thẻ được quản lý.
 - `set(name, content): this` — đặt thẻ trong DOM (tạo nếu chưa có). Hỗ trợ chuỗi phương thức.
 - `setByList(metaList): this` — đặt nhiều thẻ từ một đối tượng. Hỗ trợ chuỗi phương thức.
 
@@ -41,7 +41,7 @@ const myMeta = new MyMeta()
 
 ### `html(): string`
 
-Tạo chuỗi HTML cho tất cả thẻ có nội dung. Dùng cho SSR.
+Tạo chuỗi HTML cho tất cả thẻ có nội dung (mã hóa thuộc tính qua `encodeAttribute` và tạo `<link rel="canonical" href="...">` cho `canonical`). Dùng cho SSR.
 
 ```javascript
 manager.set('description', 'Mô tả của tôi').set('keywords', 'vue, typescript')
@@ -50,11 +50,6 @@ manager.html()
 // '<meta name="description" content="Mô tả của tôi"><meta name="keywords" content="vue, typescript">'
 ```
 
-### `htmlTitle(title: string): string`
+### `protected toHtmlTitle(title: string): string`
 
-Chuyển đổi chuỗi tiêu đề thành thẻ HTML `<title>`.
-
-```javascript
-manager.htmlTitle('Tiêu đề trang')
-// '<title>Tiêu đề trang</title>'
-```
+Phương thức protected giúp mã hóa an toàn các ký tự đặc biệt HTML (`<`, `>`, `&`) trong chuỗi tiêu đề qua `encodeLiteAttribute` trong khi vẫn giữ nguyên dấu ngoặc kép.

@@ -27,7 +27,7 @@ Một vỏ bọc mạnh mẽ để quản lý các trình lắng nghe sự kiệ
 - `D extends Record<string, unknown> = Record<string, unknown>` — Cấu trúc của dữ liệu bổ sung.
 
 **Tham số:**
-- `elementSelector?: ElementOrString<E>` — phần tử đích mà trình lắng nghe được đính kèm.
+- `elementSelector?: ElementOrString<E> | null` — phần tử đích mà trình lắng nghe được đính kèm.
 - `type: string | string[] = ['click']` — kiểu sự kiện, mảng các kiểu hoặc các kiểu đặc biệt (`'resize'`, `'scroll-sync'`).
 - `listener?: EventListenerDetail<O, D>` — hàm xử lý sự kiện.
 - `options?: EventOptions` — các tùy chọn `addEventListener` tiêu chuẩn.
@@ -72,8 +72,8 @@ customEvent.start()
 Tất cả các phương thức trong nhóm này đều hỗ trợ nối chuỗi và tự động gọi `reset()` nếu sự kiện đang hoạt động.
 
 - `setDetail(detail?: D): this` — Thay đổi dữ liệu sự kiện tùy chỉnh.
-- `setElement(elementSelector?: ElementOrString<E>): this` — Thay đổi phần tử đích (khởi động lại lắng nghe nếu đang hoạt động).
-- `setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this` — Thiết lập phần tử điều khiển (nếu nó không có trong DOM, sự kiện sẽ không kích hoạt).
+- `setElement(elementSelector?: ElementOrString<E> | null): this` — Thay đổi phần tử đích (khởi động lại lắng nghe nếu đang hoạt động).
+- `setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC> | null): this` — Thiết lập phần tử điều khiển (nếu nó không có trong DOM, sự kiện sẽ không kích hoạt).
 - `setListener(listener?: EventListenerDetail<O, D>): this` — Thay đổi hàm xử lý.
 - `setOptions(options?: EventOptions): this` — Thay đổi các tham số trình lắng nghe (khởi động lại lắng nghe nếu đang hoạt động).
 - `setType(type: string | string[]): this` — Thay đổi kiểu sự kiện (khởi động lại lắng nghe nếu đang hoạt động).

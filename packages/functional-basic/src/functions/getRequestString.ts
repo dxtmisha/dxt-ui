@@ -14,7 +14,7 @@ import { toString } from './toString'
  * @returns formatted request string / форматированная строка запроса
  */
 export function getRequestString(
-  request: Record<string, unknown> | readonly unknown[],
+  request?: unknown,
   sign: string = '=',
   separator: string = '&',
   subKey?: string

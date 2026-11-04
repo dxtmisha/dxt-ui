@@ -33,23 +33,6 @@ const UNIT_MULTIPLIERS: Record<string, number> = {
  * (такие как унция, фут) для неметрических регионов (США, Мьянма, Либерия) и форматирует их.
  */
 export class GeoUnit {
-  /**
-   * Returns a cached instance of GeoUnit for the specified locale.
-   *
-   * Возвращает кэшированный экземпляр GeoUnit для указанной локали.
-   * @param code country or language code / код страны или языка
-   * @returns GeoUnit instance / экземпляр GeoUnit
-   */
-  static getInstance(code: string = Geo.getLocation()): GeoUnit {
-    const location = Geo.find(code).standard
-
-    if (location in instances) {
-      return instances[location]
-    }
-
-    return new GeoUnit(code)
-  }
-
   /** Detailed data about the current country / Детальные данные о текущей стране */
   protected readonly geo: GeoItemFull
 
@@ -68,6 +51,23 @@ export class GeoUnit {
     }
 
     instances[location] = this
+  }
+
+  /**
+   * Returns a cached instance of GeoUnit for the specified locale.
+   *
+   * Возвращает кэшированный экземпляр GeoUnit для указанной локали.
+   * @param code country or language code / код страны или языка
+   * @returns GeoUnit instance / экземпляр GeoUnit
+   */
+  static getInstance(code: string = Geo.getLocation()): GeoUnit {
+    const location = Geo.find(code).standard
+
+    if (location in instances) {
+      return instances[location]
+    }
+
+    return new GeoUnit(code)
   }
 
   /**
@@ -367,11 +367,16 @@ export class GeoUnit {
     const numericValue = toNumber(value)
     const targetUnit = this.getTargetUnit(sourceUnit)
     const convertedValue = this.convert(numericValue, sourceUnit, targetUnit)
+    const intl = GeoIntl.getInstance(this.getLocation())
+    const result = intl.unit(convertedValue, {
+      unit: targetUnit,
+      ...options
+    })
 
-    return GeoIntl.getInstance(this.getLocation())
-      .unit(convertedValue, {
-        unit: targetUnit,
-        ...options
-      })
+    if (result === convertedValue.toString()) {
+      return `${intl.number(convertedValue, options)} ${targetUnit}`
+    }
+
+    return result
   }
 }

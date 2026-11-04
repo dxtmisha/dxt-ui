@@ -29,7 +29,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `get hash(): string` — Возвращает хеш-строку, включая ведущий знак решетки.
 - `get origin(): string` — Возвращает источник URL (только для чтения).
 - `getParam(name: string): string | undefined` — Возвращает значение параметра запроса или `undefined`, если параметр не найден.
-- `getParams(): Record<string, any>` — Возвращает все параметры запроса в виде объекта с преобразованными типами.
+- `getParams(): Record<string, unknown>` — Возвращает все параметры запроса в виде объекта с преобразованными типами.
 
 ### Проверка
 
@@ -39,7 +39,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 - `set(url?: string | URL): this` — Обновляет значение URL.
 - `setParam(name: string, value: string): this` — Устанавливает значение параметра запроса.
-- `setParams(params: Record<string, any>): this` — Заменяет все параметры запроса на указанный объект.
+- `setParams(params: Record<string, unknown>): this` — Заменяет все параметры запроса на указанный объект.
 - `deleteParam(name: string): this` — Удаляет параметр запроса.
 
 ### Вспомогательные

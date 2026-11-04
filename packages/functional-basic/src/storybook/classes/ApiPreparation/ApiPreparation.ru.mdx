@@ -41,8 +41,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### Конфигурация
 
-- `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Регистрирует функцию для запуска перед каждым включенным запросом.
-- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Регистрирует функцию для запуска после каждого включенного ответа.
+- `set(callback?: (apiFetch: ApiFetch) => Promise<void>): this` — Регистрирует или сбрасывает функцию для запуска перед каждым включенным запросом.
+- `setEnd(callback?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Регистрирует или сбрасывает функцию для запуска после каждого включенного ответа.
 
 ## Типы
 

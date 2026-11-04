@@ -189,7 +189,13 @@ describe('GeoIntl', () => {
     })
 
     it('unit should fallback to parsed number if unit is invalid', () => {
-      expect(intl.unit('50invalid')).toBe('50')
+      const customErrorCenter = { on: vi.fn() }
+      const customIntl = new GeoIntl('es-MX', customErrorCenter as never)
+
+      expect(customIntl.unit('50invalid')).toBe('50')
+      expect(customErrorCenter.on).toHaveBeenCalledWith(
+        expect.objectContaining({ group: 'intl', code: 'number' })
+      )
     })
 
     it('sizeFile auto-upgrades recursively from byte through petabyte', () => {

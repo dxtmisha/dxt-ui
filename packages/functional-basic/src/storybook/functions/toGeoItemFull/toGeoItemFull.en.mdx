@@ -1,0 +1,33 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toGeoItemFull - Transforming GeoItem to GeoItemFull'/>
+
+# `toGeoItemFull`
+
+Transforms a basic geographic item (`GeoItem`) into a full geographic item (`GeoItemFull`) with resolved location fields (`standard`, `location`, `locationCountry`, `locationLanguage`) and default fallback values (`firstDay`).
+
+**Parameters:**
+- `item: GeoItem` — Base geographic data object.
+- `code?: string` — Optional locale, country, or language code used to resolve active location overrides.
+
+**Returns:**
+- `GeoItemFull` — Enriched geographic data object with resolved location and standard locale metadata.
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { toGeoItemFull } from '@dxtmisha/functional-basic'
+
+const baseVn = { country: 'VN', language: 'vi', firstDay: 'Mo' }
+
+// 1. Default transformation
+toGeoItemFull(baseVn)
+// { country: 'VN', language: 'vi', firstDay: 'Mo', standard: 'vi-VN', location: 'vi-VN', locationCountry: 'VN', locationLanguage: 'vi' }
+
+// 2. Custom language-country code override
+toGeoItemFull(baseVn, 'en-VN')
+// { country: 'VN', language: 'vi', firstDay: 'Mo', standard: 'en-VN', location: 'en-VN', locationCountry: 'VN', locationLanguage: 'en' }
+  `}
+/>

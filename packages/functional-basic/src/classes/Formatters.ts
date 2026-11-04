@@ -186,8 +186,8 @@ export class Formatters<
           format[formatKey] = this.transformation(
             valueOriginal,
             item,
-            options.type,
-            options.options
+            options?.type,
+            options?.options
           )
         }
       }

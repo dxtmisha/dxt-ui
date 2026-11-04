@@ -10,9 +10,9 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-Класс является **абстрактным**. Вы не можете создать его экземпляр напрямую через `new MetaManager()`. Вместо этого его необходимо расширить.
+Класс может использоваться напрямую через `new MetaManager(listMeta, isProperty)` или служить базовым классом для наследников (`MetaOg`, `MetaTwitter`, `Meta`).
 
-**Параметры конструктора (для потомков):**
+**Параметры конструктора:**
 - `listMeta: T` — список имён мета-тегов, которыми будет управлять менеджер.
 - `isProperty?: boolean` — определяет используемый атрибут: `true` для `property` (Open Graph), `false` для `name` (стандартные теги). По умолчанию: `false`.
 
@@ -31,9 +31,9 @@ const myMeta = new MyMeta()
 
 ## Методы
 
-- `getListMeta(): T` — возвращает список имён управляемых тегов.
 - `get(name): string` — возвращает содержимое тега по имени. Если не установлен — `''`.
 - `getItems(): MetaList<T>` — возвращает объект со всеми тегами: `{ [name]: content }`.
+- `getListMeta(): T` — возвращает список имён управляемых тегов.
 - `set(name, content): this` — устанавливает тег в DOM (создаёт если нет). Поддерживает цепочку.
 - `setByList(metaList): this` — устанавливает несколько тегов из объекта. Поддерживает цепочку.
 
@@ -41,7 +41,7 @@ const myMeta = new MyMeta()
 
 ### `html(): string`
 
-Генерирует HTML-строку для всех управляемых тегов с заполненным `content`. Используется для SSR.
+Генерирует HTML-строку для всех управляемых тегов с заполненным `content` (экранируя атрибуты через `encodeAttribute`, а для `canonical` формируя `<link rel="canonical" href="...">`). Используется для SSR.
 
 ```javascript
 manager.set('description', 'Моё описание').set('keywords', 'vue, typescript')
@@ -50,11 +50,6 @@ manager.html()
 // '<meta name="description" content="Моё описание"><meta name="keywords" content="vue, typescript">'
 ```
 
-### `htmlTitle(title: string): string`
+### `protected toHtmlTitle(title: string): string`
 
-Преобразует строку заголовка в HTML-тег `<title>`.
-
-```javascript
-manager.htmlTitle('Заголовок страницы')
-// '<title>Заголовок страницы</title>'
-```
+Защищённый метод для безопасного экранирования спецсимволов HTML (`<`, `>`, `&`) в тексте заголовка через `encodeLiteAttribute` с сохранением кавычек.

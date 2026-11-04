@@ -9,7 +9,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Сначала выполняет проверку `isDomRuntime()`, чтобы убедиться, что код запущен в DOM-окружении (предотвращая ошибки при серверном рендеринге SSR), а затем сравнивает `element === window`.
 
 **Параметры:**
-- `element: E` — Проверяемый элемент или значение.
+- `element?: E` — Проверяемый элемент или значение.
 
 **Возвращает:**
 `element is Extract<E, Window>` (`boolean`) — Возвращает `true`, если код выполняется в браузере и `element` строго равен `window`, иначе `false`. Выступает в качестве защитника типа (type guard) в TypeScript, сужая `E` до `Extract<E, Window>`.

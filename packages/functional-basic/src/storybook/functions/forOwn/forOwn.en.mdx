@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Iterates over own enumerable properties of an object, safely skipping prototype pollution keys (`__proto__`, `constructor`, `prototype`). Supports early termination when the callback returns `false`.
 
 **Parameters:**
-- `data?: T` — Object for iteration (`T extends object = Record<string, unknown>`).
+- `data?: T | null` — Object for iteration (`T extends object = Record<string, unknown>`).
 - `callback?: (value: T[K], key: K, collection: T) => void | boolean` — A function executed for each own property. If it returns `false`, iteration terminates immediately.
 
 **Returns:**

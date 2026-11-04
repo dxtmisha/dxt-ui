@@ -30,16 +30,6 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
   }
 
   /**
-   * Gets the website or brand @username.
-   *
-   * Получает аккаунт сайта или бренда (@username).
-   * @returns @username / аккаунт
-   */
-  getSite(): string {
-    return this.get(MetaTwitterTag.site)
-  }
-
-  /**
    * Gets the content creator @username.
    *
    * Получает автора контента (@username).
@@ -47,26 +37,6 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    */
   getCreator(): string {
     return this.get(MetaTwitterTag.creator)
-  }
-
-  /**
-   * Gets the page URL.
-   *
-   * Получает URL страницы.
-   * @returns URL / URL адрес
-   */
-  getUrl(): string {
-    return this.get(MetaTwitterTag.url)
-  }
-
-  /**
-   * Gets the card title.
-   *
-   * Получает заголовок карточки.
-   * @returns title / заголовок
-   */
-  getTitle(): string {
-    return this.get(MetaTwitterTag.title)
   }
 
   /**
@@ -90,6 +60,36 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
   }
 
   /**
+   * Gets the website or brand @username.
+   *
+   * Получает аккаунт сайта или бренда (@username).
+   * @returns @username / аккаунт
+   */
+  getSite(): string {
+    return this.get(MetaTwitterTag.site)
+  }
+
+  /**
+   * Gets the card title.
+   *
+   * Получает заголовок карточки.
+   * @returns title / заголовок
+   */
+  getTitle(): string {
+    return this.get(MetaTwitterTag.title)
+  }
+
+  /**
+   * Gets the page URL.
+   *
+   * Получает URL страницы.
+   * @returns URL / URL адрес
+   */
+  getUrl(): string {
+    return this.get(MetaTwitterTag.url)
+  }
+
+  /**
    * Sets the Twitter Card type.
    *
    * Устанавливает тип Twitter Card.
@@ -102,18 +102,6 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
   }
 
   /**
-   * Sets the website or brand @username.
-   *
-   * Устанавливает аккаунт сайта или бренда (@username).
-   * @param site @username / аккаунт
-   * @returns current instance / текущий экземпляр
-   */
-  setSite(site: string): this {
-    this.set(MetaTwitterTag.site, site)
-    return this
-  }
-
-  /**
    * Sets the content creator @username.
    *
    * Устанавливает автора контента (@username).
@@ -122,30 +110,6 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    */
   setCreator(creator: string): this {
     this.set(MetaTwitterTag.creator, creator)
-    return this
-  }
-
-  /**
-   * Sets the page URL.
-   *
-   * Устанавливает URL страницы.
-   * @param url URL / URL адрес
-   * @returns current instance / текущий экземпляр
-   */
-  setUrl(url: string): this {
-    this.set(MetaTwitterTag.url, url)
-    return this
-  }
-
-  /**
-   * Sets the card title.
-   *
-   * Устанавливает заголовок карточки.
-   * @param title title / заголовок
-   * @returns current instance / текущий экземпляр
-   */
-  setTitle(title: string): this {
-    this.set(MetaTwitterTag.title, title)
     return this
   }
 
@@ -170,6 +134,42 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    */
   setImage(image: string): this {
     this.set(MetaTwitterTag.image, image)
+    return this
+  }
+
+  /**
+   * Sets the website or brand @username.
+   *
+   * Устанавливает аккаунт сайта или бренда (@username).
+   * @param site @username / аккаунт
+   * @returns current instance / текущий экземпляр
+   */
+  setSite(site: string): this {
+    this.set(MetaTwitterTag.site, site)
+    return this
+  }
+
+  /**
+   * Sets the card title.
+   *
+   * Устанавливает заголовок карточки.
+   * @param title title / заголовок
+   * @returns current instance / текущий экземпляр
+   */
+  setTitle(title: string): this {
+    this.set(MetaTwitterTag.title, title)
+    return this
+  }
+
+  /**
+   * Sets the page URL.
+   *
+   * Устанавливает URL страницы.
+   * @param url URL / URL адрес
+   * @returns current instance / текущий экземпляр
+   */
+  setUrl(url: string): this {
+    this.set(MetaTwitterTag.url, url)
     return this
   }
 }

@@ -44,8 +44,8 @@ const numberCache = new CacheItem<number>(() => Math.random())
 
 ### Доступ к кэшу
 
-- `getCache(comparison?: any[]): T` — Извлекает значение из кэша. Если массив зависимостей `comparison` изменился, запускает пересчет.
-- `getCacheAsync(comparison?: any[]): Promise<T>` — Асинхронная версия `getCache`. Возвращает Promise, который разрешается в закэшированные или новые данные.
+- `getCache(comparison?: unknown[]): T` — Извлекает значение из кэша. Если массив зависимостей `comparison` изменился, запускает пересчет.
+- `getCacheAsync(comparison?: unknown[]): Promise<T>` — Асинхронная версия `getCache`. Возвращает Promise, который разрешается в закэшированные или новые данные.
 
 ### История
 

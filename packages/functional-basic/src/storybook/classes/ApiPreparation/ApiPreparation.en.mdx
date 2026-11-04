@@ -41,8 +41,8 @@ Executes the registered analysis callback after a request completes.
 
 ### Configuration
 
-- `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Registers a function to run before every enabled request.
-- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Registers a function to run after every enabled response.
+- `set(callback?: (apiFetch: ApiFetch) => Promise<void>): this` — Registers or clears a function to run before every enabled request.
+- `setEnd(callback?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Registers or clears a function to run after every enabled response.
 
 ## Types
 

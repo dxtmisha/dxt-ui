@@ -22,7 +22,7 @@ export type LoadingRegistrationItem = {
   /** Event listener / Слушатель события */
   listener: EventListenerDetail<CustomEvent, LoadingDetail>
   /** Element / Элемент */
-  element?: ElementOrString<HTMLElement>
+  element?: ElementOrString<HTMLElement> | null
 }
 
 /** Name of the event for tracking loading / Название события для отслеживания загрузки */
@@ -109,7 +109,7 @@ export class LoadingInstance {
    */
   registrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
-    element?: ElementOrString<HTMLElement>
+    element?: ElementOrString<HTMLElement> | null
   ): void {
     if (isDomRuntime()) {
       this.pruneRegistrationList()
@@ -136,7 +136,7 @@ export class LoadingInstance {
    */
   unregistrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
-    element?: ElementOrString<HTMLElement>
+    element?: ElementOrString<HTMLElement> | null
   ): void {
     this.registrationList = this.registrationList.filter((item) => {
       if (

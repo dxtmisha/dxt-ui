@@ -70,9 +70,10 @@ describe('toCamelCase', () => {
       expect(toCamelCase('trailing-hyphen-')).toBe('trailingHyphen')
     })
 
-    it('should strip non-word special characters before converting', () => {
+    it('should strip non-word special characters and non-ASCII symbols before converting', () => {
       expect(toCamelCase('Some_Special@String')).toBe('someSpecialString')
       expect(toCamelCase('user#name$test')).toBe('usernametest')
+      expect(toCamelCase('🚀-icon-name')).toBe('iconName')
     })
   })
 

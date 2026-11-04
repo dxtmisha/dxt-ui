@@ -19,7 +19,7 @@ export function getItemByPath<
   path: string
 ): R | undefined {
   if (
-    !item
+    !isObject(item)
     || !isFilled(path, true)
   ) {
     return undefined

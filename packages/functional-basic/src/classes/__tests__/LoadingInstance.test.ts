@@ -336,12 +336,15 @@ describe('LoadingInstance', () => {
       expect(listener).toHaveBeenCalledTimes(2)
     })
 
-    it('should unregister event with specific element', () => {
+    it('should unregister event with specific element or null', () => {
       const listener = vi.fn()
       const element = document.createElement('div')
 
       loading.registrationEvent(listener, element)
       loading.unregistrationEvent(listener, element)
+
+      loading.registrationEvent(listener, null)
+      loading.unregistrationEvent(listener, null)
 
       loading.show()
       expect(listener).not.toHaveBeenCalled()

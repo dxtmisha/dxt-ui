@@ -194,10 +194,10 @@ export class ApiInstance {
     method: ApiMethod = ApiMethodItem.get
   ): string {
     if (method === ApiMethodItem.get) {
-      const type = path.match(/\?/) ? '&' : '?'
+      const type = path.includes('?') ? '&' : '?'
       const isFormData = typeof FormData !== 'undefined' && request instanceof FormData
       const body = isObject(request) && !isFormData
-        ? getRequestString(request as Record<string, unknown>)
+        ? getRequestString(request)
         : (isString(request) ? request : '')
 
       if (isFilled(body)) {
@@ -659,10 +659,10 @@ export class ApiInstance {
    * @returns void / ничего не возвращает
    */
   protected makeError(
-    error: Record<string, unknown> & { name: string },
+    error: (Record<string, unknown> & { name?: string }) | null | undefined,
     group: string = 'api'
   ): void {
-    switch (error.name) {
+    switch (error?.name) {
       case 'TimeoutError':
         this.errorCenter.on({ group, code: 'timeout', details: error })
         break

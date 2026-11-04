@@ -12,8 +12,11 @@ export type IconsConfig = {
   list?: Record<string, IconsItem>
 }
 
+/** Polling interval in milliseconds while waiting for an icon to load / Интервал опроса в миллисекундах при ожидании загрузки иконки */
 const ICONS_WAIT = 120
+/** Internal marker indicating that an icon is currently being loaded / Внутренний маркер, указывающий, что иконка находится в процессе загрузки */
 const ICONS_LOAD = '--LOAD--'
+/** Regular expression for stripping the leading @ prefix from icon names / Регулярное выражение для удаления ведущего префикса @ из имен иконок */
 const REGEXP_AT_PREFIX = /^@/
 
 /**

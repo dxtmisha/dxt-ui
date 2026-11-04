@@ -29,7 +29,7 @@ The `UrlItem` class is an **Isomorphic Utility Class** for parsing, managing, an
 - `get hash(): string` — Returns the hash string including the leading hash sign.
 - `get origin(): string` — Returns the origin of the URL (readonly).
 - `getParam(name: string): string | undefined` — Returns the value of a query parameter, or `undefined` if not found.
-- `getParams(): Record<string, any>` — Returns all query parameters as an object with transformed types.
+- `getParams(): Record<string, unknown>` — Returns all query parameters as an object with transformed types.
 
 ### Check
 
@@ -39,7 +39,7 @@ The `UrlItem` class is an **Isomorphic Utility Class** for parsing, managing, an
 
 - `set(url?: string | URL): this` — Updates the URL value.
 - `setParam(name: string, value: string): this` — Sets the value of a query parameter.
-- `setParams(params: Record<string, any>): this` — Replaces all query parameters with the specified object.
+- `setParams(params: Record<string, unknown>): this` — Replaces all query parameters with the specified object.
 - `deleteParam(name: string): this` — Deletes a query parameter.
 
 ### Auxiliary

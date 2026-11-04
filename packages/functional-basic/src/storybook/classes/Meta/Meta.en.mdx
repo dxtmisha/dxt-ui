@@ -54,7 +54,7 @@ All setters return `this` for method chaining.
 - `setKeywords(keywords: string | string[])` — accepts a string or array; arrays are joined with commas.
 - `setDescription(description: string)` — sets `<meta name="description">`.
 - `setImage(image: string)` — sets `og:image` and `twitter:image` simultaneously.
-- `setCanonical(canonical: string)` — sets `<meta name="canonical">`, `og:url`, and `twitter:url` simultaneously.
+- `setCanonical(canonical: string)` — sets `<link rel="canonical" href="...">`, `og:url`, and `twitter:url` simultaneously.
 - `setRobots(robots: MetaRobots)` — sets `<meta name="robots">` (`'index, follow'`, `'noindex, nofollow'`, etc.).
 - `setAuthor(author: string)` — sets `<meta name="author">`.
 - `setSiteName(siteName: string)` — sets `og:site_name` and `twitter:site` simultaneously.

@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Устанавливает свойства стиля, кастомные CSS-переменные (`--*`) или строку `cssText` на DOM-элементе, найденном по селектору или переданном напрямую. Поддерживает функции-фабрики как для всего набора стилей, так и для отдельных свойств.
 
 **Параметры:**
-- `element?: ElementOrString<E>` — Целевой DOM-элемент, объект `window` (разрешается в `document.body`) или CSS-селектор (`E extends ElementOrWindow = HTMLElement`).
+- `element?: ElementOrString<E> | null` — Целевой DOM-элемент, объект `window` (разрешается в `document.body`) или CSS-селектор (`E extends ElementOrWindow = HTMLElement`).
 - `styles?: unknown` — Строка стилей (`cssText`), объект со свойствами стилей или функция-фабрика.
 
 **Возвращает:**
