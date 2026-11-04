@@ -115,6 +115,7 @@ describe('isFloat', () => {
     it('should return false for null and undefined', () => {
       expect(isFloat(null)).toBe(false)
       expect(isFloat(undefined)).toBe(false)
+      expect(isFloat()).toBe(false)
     })
 
     it('should return false for boolean values', () => {

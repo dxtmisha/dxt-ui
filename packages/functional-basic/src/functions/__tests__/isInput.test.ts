@@ -169,15 +169,15 @@ describe('isInput', () => {
     })
 
     it('should return false for plain objects and duck-typed objects', () => {
-      expect(isInput({} as unknown as EventTarget)).toBe(false)
-      expect(isInput({ tagName: 'input' } as unknown as EventTarget)).toBe(false)
-      expect(isInput({ tagName: 'INPUT', isContentEditable: true } as unknown as EventTarget)).toBe(false)
+      expect(isInput({})).toBe(false)
+      expect(isInput({ tagName: 'input' })).toBe(false)
+      expect(isInput({ tagName: 'INPUT', isContentEditable: true })).toBe(false)
     })
 
     it('should return false for primitive types', () => {
-      expect(isInput('input' as unknown as EventTarget)).toBe(false)
-      expect(isInput(123 as unknown as EventTarget)).toBe(false)
-      expect(isInput(true as unknown as EventTarget)).toBe(false)
+      expect(isInput('input')).toBe(false)
+      expect(isInput(123)).toBe(false)
+      expect(isInput(true)).toBe(false)
     })
 
     it('should return false when executed in a non-DOM / SSR environment', () => {

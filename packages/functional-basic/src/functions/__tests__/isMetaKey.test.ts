@@ -58,6 +58,14 @@ describe('isMetaKey', () => {
 
     it('should return false for an empty event object where modifier properties are undefined', () => {
       expect(isMetaKey({} as KeyboardEvent)).toBe(false)
+      expect(isMetaKey(null)).toBe(false)
+      expect(isMetaKey(undefined)).toBe(false)
+      expect(isMetaKey()).toBe(false)
+    })
+
+    it('should support MouseEvent with modifier keys', () => {
+      expect(isMetaKey(new MouseEvent('click', { ctrlKey: true }))).toBe(true)
+      expect(isMetaKey(new MouseEvent('click'))).toBe(false)
     })
   })
 })

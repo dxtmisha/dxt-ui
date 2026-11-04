@@ -30,7 +30,11 @@ export function replaceRecursive<I = unknown>(
   disableCopy: boolean = false
 ): ObjectItem<I> {
   if (!isObject(target)) {
-    return (isObject(replacement) ? copyObject(replacement) : {}) as ObjectItem<I>
+    return (
+      isObject(replacement)
+        ? replaceRecursive({}, replacement, isMerge, disableCopy)
+        : {}
+    ) as ObjectItem<I>
   }
 
   const returnData: ObjectItem<I> = disableCopy ? target : copyObject(target)

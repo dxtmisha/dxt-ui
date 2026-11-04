@@ -360,7 +360,7 @@ describe('removeTag', () => {
 
     it('should gracefully handle cache overflow beyond CACHE_MAX_SIZE (128) without error and continue functioning', () => {
       // Generate more than CACHE_MAX_SIZE (128) unique tag patterns to trigger cache eviction
-      for (let index = 0; index < 135; index += 1) {
+      for (let index = 0; index < 135; index++) {
         const tagName = `tag-${index}`
         const result = removeTag(`<${tagName}>text</${tagName}>`, { tag: tagName })
         expect(result).toBe('text')
@@ -372,7 +372,7 @@ describe('removeTag', () => {
     })
 
     it('should gracefully handle contentTagExpressionCache overflow beyond CACHE_MAX_SIZE (128)', () => {
-      for (let index = 0; index < 135; index += 1) {
+      for (let index = 0; index < 135; index++) {
         const tagName = `content-tag-${index}`
         const result = removeTag(`<${tagName}>secret</${tagName}>visible`, { removeContent: tagName })
         expect(result).toBe('visible')

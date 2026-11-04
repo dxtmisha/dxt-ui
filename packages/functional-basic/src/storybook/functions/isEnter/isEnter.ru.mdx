@@ -9,7 +9,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Если фокус находится внутри поля ввода (`input`, `textarea`, `select`, `contenteditable`), функция возвращает `false`, чтобы не блокировать ввод текста и пробелов, если это поведение явно не переопределено параметром `isInputElement`.
 
 **Параметры:**
-- `event: KeyboardEvent` — объект события клавиатуры.
+- `event?: KeyboardEvent | Event | null` — объект события клавиатуры.
 - `isInputElement?: boolean` — принудительный флаг: `true` — считать элемент полем ввода (вернёт `false`), `false` — разрешить обработку даже внутри полей ввода. Если не передан, определяется автоматически через `isInput(event.target)`.
 
 **Возвращает:**

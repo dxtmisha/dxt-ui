@@ -37,9 +37,9 @@ function getCollator(): Intl.Collator | undefined {
  * @returns new sorted array of items / новый отсортированный массив элементов
  */
 export function sortList<T = Record<string, unknown>>(
-  list: T[],
-  sortColumns: SortColumnItem[],
-  customSort?: SortFunction<T>
+  list?: T[] | null,
+  sortColumns?: SortColumnItem[] | null,
+  customSort?: SortFunction<T> | null
 ): T[] {
   if (
     !isArray(list)

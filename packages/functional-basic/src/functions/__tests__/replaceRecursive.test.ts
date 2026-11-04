@@ -162,13 +162,17 @@ describe('replaceRecursive', () => {
       }
 
       const result = replaceRecursive({}, source)
+      const resultUndefinedTarget = replaceRecursive(undefined, source)
       const verificationObject: Record<string, unknown> = {}
 
       expect(verificationObject.hacked).toBeUndefined()
       expect(verificationObject.injected).toBeUndefined()
       expect(Object.hasOwn(result, 'constructor')).toBe(false)
       expect(Object.hasOwn(result, 'prototype')).toBe(false)
+      expect(Object.hasOwn(resultUndefinedTarget, 'constructor')).toBe(false)
+      expect(Object.hasOwn(resultUndefinedTarget, 'prototype')).toBe(false)
       expect(result).toEqual({ valid: 'ok' })
+      expect(resultUndefinedTarget).toEqual({ valid: 'ok' })
     })
   })
 

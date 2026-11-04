@@ -77,8 +77,8 @@ describe('secondToTime', () => {
     })
 
     it('should safely handle undefined, null, NaN, and non-numeric strings', () => {
+      expect(secondToTime()).toBe('00:00')
       expect(secondToTime(undefined)).toBe('00:00')
-      // @ts-expect-error testing null input at runtime
       expect(secondToTime(null)).toBe('00:00')
       expect(secondToTime(Number.NaN)).toBe('00:00')
       expect(secondToTime('invalid')).toBe('00:00')

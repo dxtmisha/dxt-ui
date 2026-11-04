@@ -9,7 +9,7 @@ Converts a given number of seconds into a formatted time string `MM:SS` (or `HH:
 If the value of seconds is less than or equal to zero, or is not provided, the default value (`00:00`, or `00:00:00` when `hasHour = true`) is returned.
 
 **Parameters:**
-- `second: number | string | undefined` — The total number of seconds (numbers, floating-point numbers, and string representations are supported).
+- `second?: number | string | null` — The total number of seconds (numbers, floating-point numbers, and string representations are supported).
 - `hasHour?: boolean` — Whether to force the hours format (`HH:MM:SS`).
 
 **Returns:**

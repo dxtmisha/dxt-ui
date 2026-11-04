@@ -70,7 +70,7 @@ describe('setValues', () => {
 
     it('should initialize a single-element array when selected is undefined or null', () => {
       expect(setValues(undefined, 'first', { multiple: true })).toEqual(['first'])
-      expect(setValues<string | null>(null, 'first', { multiple: true })).toEqual(['first'])
+      expect(setValues(null, 'first', { multiple: true })).toEqual(['first'])
     })
 
     it('should toggle off to an empty array when scalar selected equals value and notEmpty is false', () => {

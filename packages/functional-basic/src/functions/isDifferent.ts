@@ -10,8 +10,8 @@ import { hasKey } from './hasKey'
  * @returns true if different / true, если отличаются
  */
 export function isDifferent<T = unknown>(
-  value: ObjectItem<T>,
-  old: ObjectItem<T>
+  value?: ObjectItem<T> | null,
+  old?: ObjectItem<T> | null
 ): boolean {
   if (value === old) {
     return false
@@ -23,12 +23,13 @@ export function isDifferent<T = unknown>(
 
   const keys = Object.keys(value)
   const oldKeys = Object.keys(old)
+  const length = keys.length
 
-  if (keys.length !== oldKeys.length) {
+  if (length !== oldKeys.length) {
     return true
   }
 
-  for (let index = 0; index < keys.length; index += 1) {
+  for (let index = 0; index < length; index++) {
     const key = keys[index]
 
     if (

@@ -7,7 +7,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Checks if the pressed key is `Tab`. This function is useful for handling keyboard events when you need to react to focus navigation or trap focus, while supporting accessibility (a11y) and older browsers.
 
 **Parameters:**
-- `event: KeyboardEvent` — the keyboard event object.
+- `event?: KeyboardEvent | Event | null` — the keyboard event object.
 
 **Returns:**
 `boolean` — `true` if the `Tab` key is pressed, otherwise `false`.

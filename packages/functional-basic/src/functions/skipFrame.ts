@@ -12,10 +12,10 @@ import { isDomRuntime } from './isDomRuntime'
  * @returns promise resolving on the animation frame / промис, разрешающийся на кадре анимации
  */
 export function skipFrame<T = void>(
-  callback?: () => T | Promise<T>,
+  callback?: (() => T | Promise<T>) | null,
   count = 1
 ): Promise<T | void> {
-  const init = (): Promise<T | void> => executePromise(callback)
+  const init = async (): Promise<T | void> => (await executePromise(callback)) ?? undefined
 
   if (isDomRuntime() && count > 0) {
     return new Promise<T | void>((resolve, reject) => {

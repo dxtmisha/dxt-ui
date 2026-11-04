@@ -107,6 +107,10 @@ describe('removeCommonPrefix', () => {
 
     it('should return empty string when both main string and prefix are empty', () => {
       expect(removeCommonPrefix('', '')).toBe('')
+      expect(removeCommonPrefix(null, null)).toBe('')
+      expect(removeCommonPrefix(undefined, undefined)).toBe('')
+      expect(removeCommonPrefix('hello', null)).toBe('hello')
+      expect(removeCommonPrefix(null, 'prefix')).toBe('')
     })
 
     it('should return empty string when main string consists only of spaces after prefix removal and trim is true', () => {

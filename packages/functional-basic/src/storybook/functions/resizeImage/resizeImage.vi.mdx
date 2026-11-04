@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Tải và thay đổi kích thước hình ảnh một cách bất đồng bộ nếu chiều rộng hoặc chiều cao vượt quá `maxSize` được chỉ định. Trả về một Promise chứa chuỗi Data URL của hình ảnh đã thu nhỏ, hoặc nguồn ban đầu nếu không cần thu nhỏ.
 
 **Tham số:**
-- `image: HTMLImageElement | string` — Phần tử hình ảnh hoặc nguồn chuỗi (URL, Data URL).
+- `image?: HTMLImageElement | string | null` — Phần tử hình ảnh hoặc nguồn chuỗi (URL, Data URL).
 - `maxSize?: number = 1280` — Kích thước tối đa cho phép tính bằng pixel (mặc định là `1280`).
 - `typeData?: string` — Loại MIME tùy chọn cho Data URL kết quả (ví dụ: `'image/jpeg'`).
 

@@ -15,10 +15,10 @@ const EXP_KEY = /\[([^\]]+)\]/g
  * @param replaces object with data for replacement / объект с данными для замены
  * @returns replaced string / замененная строка
  */
-export function replaceTemplate(
-  value: string,
-  replaces: Record<string, FunctionOr<string | number | boolean>>
-): string {
+export function replaceTemplate<T extends string | null | undefined = string>(
+  value: T,
+  replaces?: Record<string, FunctionOr<string | number | boolean | null | undefined>> | null
+): T {
   if (
     !isObject(replaces)
     || typeof value !== 'string'
@@ -34,5 +34,5 @@ export function replaceTemplate(
     }
 
     return match
-  })
+  }) as T
 }

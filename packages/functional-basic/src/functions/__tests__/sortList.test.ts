@@ -246,12 +246,10 @@ describe('sortList', () => {
     })
 
     it('should handle non-array runtime inputs safely without throwing', () => {
-      // @ts-expect-error testing invalid runtime input
       expect(sortList(undefined, [{ column: 'id' }])).toEqual([])
-      // @ts-expect-error testing invalid runtime input
       expect(sortList(null, [{ column: 'id' }])).toEqual([])
-      // @ts-expect-error testing invalid runtime input
       expect(sortList(sampleList, undefined)).toEqual(sampleList)
+      expect(sortList(sampleList, null)).toEqual(sampleList)
     })
   })
 })

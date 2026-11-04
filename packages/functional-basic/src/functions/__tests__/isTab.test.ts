@@ -66,10 +66,13 @@ describe('isTab', () => {
       expect(isTab({ key: 'TAB', code: 'TAB', keyCode: 0 } as KeyboardEvent)).toBe(false)
     })
 
-    it('should return false for an empty event object', () => {
+    it('should return false for an empty event object, null, or undefined', () => {
       const event = {} as KeyboardEvent
 
       expect(isTab(event)).toBe(false)
+      expect(isTab(null)).toBe(false)
+      expect(isTab(undefined)).toBe(false)
+      expect(isTab()).toBe(false)
     })
   })
 })

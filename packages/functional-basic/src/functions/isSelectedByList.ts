@@ -9,9 +9,9 @@ import { isSelected } from './isSelected'
  * @param selected array or string for comparison / массив или строка для сравнения
  * @returns true if all selected / true, если все выбраны
  */
-export function isSelectedByList<T>(
-  values: T | T[],
-  selected: T | T[]
+export function isSelectedByList<T = unknown>(
+  values?: T | T[] | null,
+  selected?: unknown
 ): boolean {
   if (isArray(values)) {
     return values.every(item => isSelected(item, selected))

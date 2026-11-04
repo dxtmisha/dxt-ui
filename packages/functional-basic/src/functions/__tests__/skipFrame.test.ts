@@ -30,12 +30,13 @@ describe('skipFrame', () => {
       expect(result).toBeUndefined()
     })
 
-    it('should skip the specified number of frames before resolving', async () => {
+    it('should skip the specified number of frames before resolving with null or undefined callback', async () => {
       vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
 
       await skipFrame(undefined, 3)
+      await skipFrame(null, 2)
 
-      expect(mockRequestAnimationFrame).toHaveBeenCalledTimes(3)
+      expect(mockRequestAnimationFrame).toHaveBeenCalledTimes(5)
     })
 
     it('should execute synchronous callback on the target frame and resolve with its return value', async () => {

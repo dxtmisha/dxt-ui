@@ -13,7 +13,7 @@ import { resizeImageByMax } from './resizeImageByMax'
  * @returns promise with resized image data as base64 or original source / промис с данными измененного изображения в формате base64 или исходным источником
  */
 export async function resizeImage(
-  image: HTMLImageElement | string,
+  image?: HTMLImageElement | string | null,
   maxSize: number = 1280,
   typeData?: string
 ): Promise<string> {
@@ -28,7 +28,8 @@ export async function resizeImage(
   }
 
   if (
-    !isString(image)
+    image
+    && !isString(image)
     && image.complete
     && image.naturalWidth > 0
     && image.naturalHeight > 0

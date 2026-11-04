@@ -7,7 +7,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Checks if a key event contains active modifier/meta keys (Command, Alt/Option, Control). This function is useful for filtering keyboard events when you want to ignore modifier key combinations (e.g., CMD+C, CTRL+V, ALT+TAB).
 
 **Parameters:**
-- `event: KeyboardEvent` — the keyboard event object.
+- `event?: KeyboardEvent | MouseEvent | Event | null` — the keyboard or mouse event object.
 
 **Returns:**
 `boolean` — `true` if any of `metaKey`, `altKey`, or `ctrlKey` is pressed, otherwise `false`.

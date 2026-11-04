@@ -7,7 +7,7 @@ import { toCamelCase } from './toCamelCase'
  * @param value input value / входное значение
  * @returns PascalCase string / строка в формате PascalCase
  */
-export function toPascalCase(value?: string): string {
+export function toPascalCase(value?: string | null): string {
   const result = toCamelCase(value)
 
   if (result.length === 0) {

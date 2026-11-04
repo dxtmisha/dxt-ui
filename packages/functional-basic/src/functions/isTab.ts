@@ -5,8 +5,13 @@
  * @param event event object / объект события
  * @returns true if tab pressed / true, если нажат tab
  */
-export function isTab(event: KeyboardEvent): boolean {
-  return event.key === 'Tab'
-    || event.code === 'Tab'
-    || event.keyCode === 9
+export function isTab(event?: KeyboardEvent | Event | null): boolean {
+  if (!event) {
+    return false
+  }
+
+  const keyboardEvent = event as KeyboardEvent
+  return keyboardEvent.key === 'Tab'
+    || keyboardEvent.code === 'Tab'
+    || keyboardEvent.keyCode === 9
 }

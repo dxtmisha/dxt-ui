@@ -9,8 +9,8 @@ Extends the `isSelected` check to an entire list of values. It verifies whether 
 If `values` is a single item rather than an array, the function delegates directly to `isSelected(values, selected)`. If `values` is an array, it uses `.every()` to ensure that every element satisfies `isSelected(item, selected)`.
 
 **Parameters:**
-- `values: T | T[]` — A single value or an array of values to check.
-- `selected: T | T[]` — The target value or array of selected values for comparison.
+- `values?: T | T[] | null` — A single value or an array of values to check.
+- `selected?: unknown` — The target value or array of selected values for comparison.
 
 **Returns:**
 `boolean` — `true` if all provided values in `values` are selected, otherwise `false`.

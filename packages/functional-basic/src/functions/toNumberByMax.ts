@@ -30,8 +30,8 @@ function getFormatting(
  * @returns formatted number string or number / форматированная строка числа или число
  */
 export function toNumberByMax(
-  value?: NumberOrString,
-  max?: NumberOrString,
+  value?: NumberOrString | null,
+  max?: NumberOrString | null,
   formatting?: boolean,
   language?: string
 ): string | number {

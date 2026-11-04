@@ -1,3 +1,5 @@
+import { escapeExp } from './escapeExp'
+
 /**
  * Replaces the component name in the text.
  *
@@ -8,12 +10,21 @@
  * @returns text with replaced component name or undefined / текст с заменённым именем компонента или undefined
  */
 export function replaceComponentName(
-  text: string | undefined,
-  name: string,
-  componentName: string
+  text?: string | null,
+  name?: string | null,
+  componentName?: string | null
 ): string | undefined {
+  if (text === undefined || text === null) {
+    return undefined
+  }
+
+  if (!name || !componentName) {
+    return text.trim()
+  }
+
+  const escapedName = escapeExp(name)
+
   return text
-    ?.replace(new RegExp(`<${name}`, 'ig'), `<${componentName}`)
-    ?.replace(new RegExp(`</${name}`, 'ig'), `</${componentName}`)
-    ?.trim()
+    .replace(new RegExp(`<(/?)${escapedName}`, 'ig'), `<$1${componentName}`)
+    .trim()
 }

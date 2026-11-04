@@ -9,7 +9,7 @@ import { isDomRuntime } from './isDomRuntime'
  * @returns true if input element / true, если элемент ввода
  */
 export function isInput(
-  element?: HTMLElement | EventTarget | null,
+  element?: unknown,
   includeDisabled?: boolean
 ): element is HTMLElement {
   if (

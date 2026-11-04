@@ -9,7 +9,7 @@ Kiểm tra xem phím được nhấn có phải là `Enter` hoặc `Space` (phí
 Nếu tiêu điểm nằm bên trong một trường nhập liệu (`input`, `textarea`, `select`, `contenteditable`), hàm sẽ trả về `false` để tránh xung đột với thao tác nhập văn bản thông thường, trừ khi được ghi đè rõ ràng bằng tham số `isInputElement`.
 
 **Tham số:**
-- `event: KeyboardEvent` — đối tượng sự kiện bàn phím.
+- `event?: KeyboardEvent | Event | null` — đối tượng sự kiện bàn phím.
 - `isInputElement?: boolean` — cờ ghi đè rõ ràng: `true` để coi là trường nhập liệu (trả về `false`), `false` để cho phép kích hoạt ngay cả bên trong phần tử nhập liệu. Nếu bỏ qua, sẽ tự động xác định qua `isInput(event.target)`.
 
 **Trả về:**

@@ -7,9 +7,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 A utility that sorts an array of objects or items by one or more column property paths, directions (`'asc'` or `'desc'`), or a custom comparison function. It performs locale-aware string comparisons using a cached `Intl.Collator` with numeric and case-insensitive sensitivity options, properly handles numbers, booleans, dates, and places `null` or `undefined` values at the end of sorted lists.
 
 **Parameters:**
-- `list: T[]` — Input array of items to sort.
-- `sortColumns: SortColumnItem[]` — Array of column sorting specifications `{ column: string, dir: SortDir }`.
-- `customSort?: SortFunction<T>` — Optional custom comparison function.
+- `list?: T[] | null` — Input array of items to sort.
+- `sortColumns?: SortColumnItem[] | null` — Array of column sorting specifications `{ column: string, dir: SortDir }`.
+- `customSort?: SortFunction<T> | null` — Optional custom comparison function.
 
 **Returns:**
 `T[]` — A new sorted array of items (always returns a new shallow copy).

@@ -19,6 +19,9 @@ describe('resizeImage', () => {
   describe('SSR safety and boundary guard conditions', () => {
     it('should return original src if src is empty or maxSize <= 0', async () => {
       expect(await resizeImage('', 100)).toBe('')
+      expect(await resizeImage(null, 100)).toBe('')
+      expect(await resizeImage(undefined, 100)).toBe('')
+      expect(await resizeImage()).toBe('')
       expect(await resizeImage('https://example.com/test.jpg', 0)).toBe('https://example.com/test.jpg')
       expect(await resizeImage('https://example.com/test.jpg', -50)).toBe('https://example.com/test.jpg')
     })

@@ -99,8 +99,8 @@ describe('isEnter', () => {
     })
 
     it('should safely return false for null or undefined event', () => {
-      expect(isEnter(null as unknown as KeyboardEvent)).toBe(false)
-      expect(isEnter(undefined as unknown as KeyboardEvent)).toBe(false)
+      expect(isEnter(null)).toBe(false)
+      expect(isEnter(undefined)).toBe(false)
     })
 
     it('should return false for empty event object', () => {

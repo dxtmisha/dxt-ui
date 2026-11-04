@@ -70,17 +70,17 @@ describe('isDifferent', () => {
     })
 
     it('should return false if both arguments are the same nullish reference', () => {
-      expect(isDifferent(null as unknown as ObjectItem, null as unknown as ObjectItem)).toBe(false)
-      expect(isDifferent(undefined as unknown as ObjectItem, undefined as unknown as ObjectItem)).toBe(false)
+      expect(isDifferent(null, null)).toBe(false)
+      expect(isDifferent(undefined, undefined)).toBe(false)
     })
 
     it('should return true when comparing an object with null or undefined', () => {
       const validObject: ObjectItem = { a: 1 }
-      expect(isDifferent(validObject, null as unknown as ObjectItem)).toBe(true)
-      expect(isDifferent(null as unknown as ObjectItem, validObject)).toBe(true)
-      expect(isDifferent(validObject, undefined as unknown as ObjectItem)).toBe(true)
-      expect(isDifferent(undefined as unknown as ObjectItem, validObject)).toBe(true)
-      expect(isDifferent(null as unknown as ObjectItem, undefined as unknown as ObjectItem)).toBe(true)
+      expect(isDifferent(validObject, null)).toBe(true)
+      expect(isDifferent(null, validObject)).toBe(true)
+      expect(isDifferent(validObject, undefined)).toBe(true)
+      expect(isDifferent(undefined, validObject)).toBe(true)
+      expect(isDifferent(null, undefined)).toBe(true)
     })
 
     it('should distinguish between different falsy values (0, false, empty string, null, undefined)', () => {

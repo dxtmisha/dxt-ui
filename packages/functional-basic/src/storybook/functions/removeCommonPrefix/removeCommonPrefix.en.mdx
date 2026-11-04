@@ -7,8 +7,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Removes the common prefix from the beginning of the main string. If `mainString` starts with the full `prefix` or shares a partial leading character sequence with `prefix`, the matching leading characters are stripped, and the result is optionally trimmed.
 
 **Parameters:**
-- `mainString: string` — The main string.
-- `prefix: string` — The prefix string to remove.
+- `mainString?: string | null` — The main string.
+- `prefix?: string | null` — The prefix string to remove.
 - `trim?: boolean = true` — If `true`, trims leading and trailing whitespace from the resulting string (defaults to `true`).
 
 **Returns:**

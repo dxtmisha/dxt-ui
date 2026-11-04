@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Asynchronously loads and resizes an image if its width or height exceeds the specified `maxSize`. Returns a Promise with a Data URL string of the scaled image, or the original source if no scaling is needed.
 
 **Parameters:**
-- `image: HTMLImageElement | string` — The image element or string source (URL, Data URL).
+- `image?: HTMLImageElement | string | null` — The image element or string source (URL, Data URL).
 - `maxSize?: number = 1280` — The maximum allowed size in pixels (defaults to `1280`).
 - `typeData?: string` — Optional MIME type for the resulting Data URL (e.g., `'image/jpeg'`).
 

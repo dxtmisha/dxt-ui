@@ -48,15 +48,15 @@ describe('isSelectedByList', () => {
 
   describe('Numeric equivalence between numbers and numeric strings', () => {
     it('should match single numeric string against number or array of numbers', () => {
-      expect(isSelectedByList<number | string>('5', 5)).toBe(true)
-      expect(isSelectedByList<number | string>(5, '5')).toBe(true)
-      expect(isSelectedByList<number | string>('0', [1, 0, 2])).toBe(true)
+      expect(isSelectedByList('5', 5)).toBe(true)
+      expect(isSelectedByList(5, '5')).toBe(true)
+      expect(isSelectedByList('0', [1, 0, 2])).toBe(true)
     })
 
     it('should match an array of mixed numbers and numeric strings against selected targets', () => {
-      expect(isSelectedByList<number | string>(['1', 2, '0'], [0, '1', '2', 3])).toBe(true)
-      expect(isSelectedByList<number | string>(['5', 5], 5)).toBe(true)
-      expect(isSelectedByList<number | string>(['1', 99], [1, 2, 3])).toBe(false)
+      expect(isSelectedByList(['1', 2, '0'], [0, '1', '2', 3])).toBe(true)
+      expect(isSelectedByList(['5', 5], 5)).toBe(true)
+      expect(isSelectedByList(['1', 99], [1, 2, 3])).toBe(false)
     })
   })
 

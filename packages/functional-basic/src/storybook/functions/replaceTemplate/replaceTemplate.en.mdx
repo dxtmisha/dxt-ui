@@ -9,8 +9,8 @@ A simplified templating utility designed for a single type of replacement — `[
 If the marker's value is a function, it is automatically called, and its result is safely substituted into the string without modifying special replacement tokens.
 
 **Parameters:**
-- `value: string` — The template string containing markers (e.g., `[name]`).
-- `replaces: Record<string, FunctionOr<string | number | boolean>>` — An object containing replacement data, where the key is the marker name inside brackets, and the value is a string, number, boolean, or a function returning a value.
+- `value: T` — The template string containing markers (e.g., `[name]`).
+- `replaces?: Record<string, FunctionOr<string | number | boolean | null | undefined>> | null` — An object containing replacement data, where the key is the marker name inside brackets, and the value is a string, number, boolean, or a function returning a value.
 
 **Returns:**
 `string` — A new string with the substituted values.

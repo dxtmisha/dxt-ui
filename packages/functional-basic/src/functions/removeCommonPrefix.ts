@@ -23,19 +23,29 @@ function toTrimmed(
  * @returns string without common prefix / строка без общего префикса
  */
 export function removeCommonPrefix(
-  mainString: string,
-  prefix: string,
+  mainString?: string | null,
+  prefix?: string | null,
   trim: boolean = true
 ): string {
+  if (!mainString) {
+    return ''
+  }
+
+  if (!prefix) {
+    return toTrimmed(mainString, trim)
+  }
+
   if (mainString.startsWith(prefix)) {
     return toTrimmed(mainString.slice(prefix.length), trim)
   }
 
   let characterIndex = 0
+  const mainLength = mainString.length
+  const prefixLength = prefix.length
 
   while (
-    characterIndex < mainString.length
-    && characterIndex < prefix.length
+    characterIndex < mainLength
+    && characterIndex < prefixLength
     && mainString[characterIndex] === prefix[characterIndex]
   ) {
     characterIndex++

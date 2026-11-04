@@ -69,7 +69,7 @@ describe('replaceTemplate', () => {
         nullValue: null,
         undefinedValue: undefined,
         nullCallback: () => null
-      } as unknown as TemplateReplaces
+      }
 
       expect(replaceTemplate(template, replaces)).toBe('Start----End')
     })
@@ -144,13 +144,13 @@ describe('replaceTemplate', () => {
     it('should safely return value when replaces is null or undefined', () => {
       const template = 'Hello [name]'
 
-      expect(replaceTemplate(template, null as unknown as TemplateReplaces)).toBe('Hello [name]')
-      expect(replaceTemplate(template, undefined as unknown as TemplateReplaces)).toBe('Hello [name]')
+      expect(replaceTemplate(template, null)).toBe('Hello [name]')
+      expect(replaceTemplate(template, undefined)).toBe('Hello [name]')
     })
 
     it('should safely return value when value is not a string at runtime', () => {
-      expect(replaceTemplate(null as unknown as string, { name: 'John' })).toBeNull()
-      expect(replaceTemplate(undefined as unknown as string, { name: 'John' })).toBeUndefined()
+      expect(replaceTemplate(null, { name: 'John' })).toBeNull()
+      expect(replaceTemplate(undefined, { name: 'John' })).toBeUndefined()
     })
   })
 

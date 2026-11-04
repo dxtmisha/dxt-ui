@@ -7,7 +7,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Checks if the element is an input field (`input`, `textarea`, `select`) or an element with the `contenteditable` attribute.
 
 **Parameters:**
-- `element?: HTMLElement | EventTarget | null` — the element to check.
+- `element?: unknown` — the element or value to check.
 - `includeDisabled?: boolean` — (Optional) if `true`, does not check `readOnly` and `disabled` properties (returns `true` even for disabled or readonly input elements).
 
 **Returns:**

@@ -71,8 +71,17 @@ describe('replaceComponentName', () => {
   })
 
   describe('Empty, whitespace, and undefined inputs', () => {
-    it('should return undefined when text is undefined', () => {
+    it('should return undefined when text is undefined or null', () => {
       expect(replaceComponentName(undefined, 'Old', 'New')).toBeUndefined()
+      expect(replaceComponentName(null, 'Old', 'New')).toBeUndefined()
+      expect(replaceComponentName()).toBeUndefined()
+    })
+
+    it('should safely handle component names with special characters or regex metacharacters', () => {
+      const text = '<Comp+Special>Content</Comp+Special>'
+      expect(replaceComponentName(text, 'Comp+Special', 'NewComp')).toBe(
+        '<NewComp>Content</NewComp>'
+      )
     })
 
     it('should return empty string for empty or whitespace-only text', () => {

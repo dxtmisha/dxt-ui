@@ -9,7 +9,7 @@ import { toNumber } from './toNumber'
  * @returns formatted time string / форматированная строка с временем
  */
 export function secondToTime(
-  second: number | string | undefined,
+  second?: number | string | null,
   hasHour?: boolean
 ): string {
   const time = toNumber(second)

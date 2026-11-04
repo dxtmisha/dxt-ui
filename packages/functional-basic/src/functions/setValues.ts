@@ -27,7 +27,7 @@ export interface SetValuesOptions {
  * @returns modified values / измененные значения
  */
 export function setValues<T>(
-  selected: T | T[] | undefined,
+  selected: T | T[] | null | undefined,
   value: T,
   options?: SetValuesOptions
 ): T | T[] | undefined {
@@ -63,7 +63,7 @@ export function setValues<T>(
         return [value]
       }
 
-      return [selected, value]
+      return [selected as T, value]
     }
 
     return [value]
@@ -76,5 +76,5 @@ export function setValues<T>(
     return value
   }
 
-  return selected
+  return (selected ?? undefined) as T | undefined
 }

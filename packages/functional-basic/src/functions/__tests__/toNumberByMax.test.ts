@@ -59,9 +59,11 @@ describe('toNumberByMax', () => {
       expect(toNumberByMax('1500.50', '1000')).toBe('1000+')
     })
 
-    it('should return 0 when called with no arguments, undefined, or non-numeric strings', () => {
+    it('should return 0 when called with no arguments, null, undefined, or non-numeric strings', () => {
       expect(toNumberByMax()).toBe(0)
       expect(toNumberByMax(undefined, 100)).toBe(0)
+      expect(toNumberByMax(null, 100)).toBe(0)
+      expect(toNumberByMax(150, null)).toBe(150)
       expect(toNumberByMax('', 100)).toBe(0)
       expect(toNumberByMax('abc', 100)).toBe(0)
     })

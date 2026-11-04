@@ -12,7 +12,7 @@ const FLOAT_REGEXP = /^[+-]?\d+(\.\d+)?$/
  * @param value values for checking / значения для проверки
  * @returns true if number / true, если число
  */
-export function isFloat(value: unknown): boolean {
+export function isFloat(value?: unknown): boolean {
   switch (typeof value) {
     case 'number':
       return Number.isFinite(value)

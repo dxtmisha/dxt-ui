@@ -65,7 +65,7 @@ function getTags(tag: string | string[]): string[] {
   const seenTags = new Set<string>()
   const tags: string[] = []
 
-  for (let index = 0; index < length; index += 1) {
+  for (let index = 0; index < length; index++) {
     const cleanedTag = sanitizeTagName(rawList[index])
 
     if (

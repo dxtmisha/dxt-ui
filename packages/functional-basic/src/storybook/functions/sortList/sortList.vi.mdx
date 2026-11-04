@@ -7,9 +7,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Một tiện ích sắp xếp một mảng các đối tượng hoặc phần tử theo một hoặc nhiều đường dẫn thuộc tính cột, hướng sắp xếp (`'asc'` hoặc `'desc'`), hoặc một hàm so sánh tùy chỉnh. Tiện ích thực hiện so sánh chuỗi theo ngữ cảnh địa phương bằng `Intl.Collator` đã được lưu vào bộ nhớ đệm với tùy chọn so sánh số và không phân biệt chữ hoa chữ thường, hỗ trợ xử lý đúng các kiểu số, boolean, ngày tháng (Date), đồng thời đưa các giá trị `null` hoặc `undefined` về cuối danh sách đã sắp xếp.
 
 **Tham số:**
-- `list: T[]` — Mảng các phần tử đầu vào cần sắp xếp.
-- `sortColumns: SortColumnItem[]` — Mảng các chỉ định sắp xếp cột `{ column: string, dir: SortDir }`.
-- `customSort?: SortFunction<T>` — Hàm so sánh tùy chỉnh (không bắt buộc).
+- `list?: T[] | null` — Mảng các phần tử đầu vào cần sắp xếp.
+- `sortColumns?: SortColumnItem[] | null` — Mảng các chỉ định sắp xếp cột `{ column: string, dir: SortDir }`.
+- `customSort?: SortFunction<T> | null` — Hàm so sánh tùy chỉnh (không bắt buộc).
 
 **Trả về:**
 `T[]` — Mảng các phần tử mới đã được sắp xếp (luôn trả về một bản sao nông mới).

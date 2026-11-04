@@ -59,10 +59,11 @@ describe('toPascalCase', () => {
   })
 
   describe('Empty, whitespace-only, separator-only, and nullish inputs', () => {
-    it('should return an empty string for empty string, undefined, or omitted argument', () => {
+    it('should return an empty string for empty string, null, undefined, or omitted argument', () => {
       expect(toPascalCase('')).toBe('')
       expect(toPascalCase()).toBe('')
       expect(toPascalCase(undefined)).toBe('')
+      expect(toPascalCase(null)).toBe('')
     })
 
     it('should return an empty string for whitespace-only strings', () => {

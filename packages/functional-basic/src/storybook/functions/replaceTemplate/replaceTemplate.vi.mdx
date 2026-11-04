@@ -9,8 +9,8 @@ Phiên bản tạo mẫu đơn giản hóa cho một kiểu thay thế duy nhấ
 Nếu giá trị của điểm đánh dấu là một hàm, hàm đó sẽ tự động được gọi và kết quả của nó sẽ được chèn an toàn vào chuỗi mà không làm thay đổi các ký tự thay thế đặc biệt.
 
 **Tham số:**
-- `value: string` — Chuỗi mẫu chứa các điểm đánh dấu (ví dụ: `[name]`).
-- `replaces: Record<string, FunctionOr<string | number | boolean>>` — Một đối tượng chứa dữ liệu thay thế, trong đó khóa là tên của điểm đánh dấu bên trong ngoặc vuông, và giá trị là chuỗi, số, giá trị boolean hoặc một hàm trả về giá trị.
+- `value: T` — Chuỗi mẫu chứa các điểm đánh dấu (ví dụ: `[name]`).
+- `replaces?: Record<string, FunctionOr<string | number | boolean | null | undefined>> | null` — Một đối tượng chứa dữ liệu thay thế, trong đó khóa là tên của điểm đánh dấu bên trong ngoặc vuông, và giá trị là chuỗi, số, giá trị boolean hoặc một hàm trả về giá trị.
 
 **Trả về:**
 `string` — Một chuỗi mới với các giá trị đã được thay thế.

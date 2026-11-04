@@ -9,8 +9,8 @@ Mở rộng phép kiểm tra `isSelected` cho toàn bộ danh sách giá trị. 
 Nếu `values` là một giá trị đơn lẻ thay vì mảng, hàm sẽ chuyển tiếp trực tiếp sang `isSelected(values, selected)`. Nếu `values` là một mảng, hàm sử dụng `.every()` để đảm bảo mọi phần tử đều thỏa mãn `isSelected(item, selected)`.
 
 **Tham số:**
-- `values: T | T[]` — Một giá trị đơn hoặc mảng các giá trị cần kiểm tra.
-- `selected: T | T[]` — Giá trị đích hoặc mảng các giá trị đã chọn để so sánh.
+- `values?: T | T[] | null` — Một giá trị đơn hoặc mảng các giá trị cần kiểm tra.
+- `selected?: unknown` — Giá trị đích hoặc mảng các giá trị đã chọn để so sánh.
 
 **Trả về:**
 `boolean` — `true` nếu tất cả các giá trị trong `values` đều được chọn, ngược lại là `false`.
