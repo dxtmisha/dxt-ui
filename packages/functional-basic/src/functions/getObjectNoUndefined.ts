@@ -4,40 +4,17 @@ import { isObject } from './isObject'
  * Removes from the object all properties belonging to the exception type.
  *
  * Удаляет из объекта все свойства, принадлежащие к типу исключения.
- * @param data collection for processing / коллекция для обработки
+ * @param data collection or object for processing / коллекция или объект для обработки
  * @param exception exception value / значение для исключения
  * @returns object without exception values / объект без исключенных значений
  */
-export function getObjectNoUndefined<V>(
-  data: readonly V[],
-  exception?: unknown
-): Record<number, V>
-
-/**
- * Removes from the object all properties belonging to the exception type.
- *
- * Удаляет из объекта все свойства, принадлежащие к типу исключения.
- * @param data object for processing / объект для обработки
- * @param exception exception value / значение для исключения
- * @returns object without exception values / объект без исключенных значений
- */
-export function getObjectNoUndefined<T extends Record<PropertyKey, unknown>>(
-  data: T,
-  exception?: unknown
-): T
-
-/**
- * Removes from the object all properties belonging to the exception type.
- *
- * Удаляет из объекта все свойства, принадлежащие к типу исключения.
- * @param data object for processing / объект для обработки
- * @param exception exception value / значение для исключения
- * @returns object without exception values / объект без исключенных значений
- */
-export function getObjectNoUndefined<T extends Record<PropertyKey, unknown>>(
-  data: unknown,
+export function getObjectNoUndefined<
+  T = Record<PropertyKey, unknown>,
+  R = T extends readonly (infer V)[] ? Record<number, V> : T extends Record<PropertyKey, unknown> ? T : Record<PropertyKey, unknown>
+>(
+  data?: T,
   exception: unknown = undefined
-): T {
+): R {
   const returnData: Record<PropertyKey, unknown> = {}
 
   if (isObject(data)) {
@@ -48,5 +25,5 @@ export function getObjectNoUndefined<T extends Record<PropertyKey, unknown>>(
     }
   }
 
-  return returnData as T
+  return returnData as R
 }

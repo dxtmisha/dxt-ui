@@ -13,7 +13,7 @@ const REGEXP_ONLY_TEXT = /[^\p{L}\p{M}\p{N}\s]+/gu
  * @param text text for processing / текст для обработки
  * @returns cleaned text without special characters / очищенный текст без специальных символов
  */
-export function getOnlyText(text: unknown): string {
+export function getOnlyText(text?: unknown): string {
   return anyToString(text)
     .replace(REGEXP_ONLY_TEXT, '')
     .trim()

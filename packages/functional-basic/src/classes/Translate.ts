@@ -1,3 +1,5 @@
+import { isObjectNotArray } from '../functions/isObjectNotArray'
+
 import { TranslateInstance } from './TranslateInstance'
 
 import {
@@ -8,9 +10,11 @@ import {
 } from '../types/translateTypes'
 
 /**
- * Class for getting the translated text.
+ * Static wrapper class for managing translations and localized text at the application level.
+ * Delegates all operations to a global singleton instance of TranslateInstance.
  *
- * Класс для получения переведенного текста.
+ * Статический класс-обертка для управления переводами и локализованным текстом на уровне приложения.
+ * Делегирует все операции глобальному экземпляру синглтона TranslateInstance.
  */
 export class Translate {
   /** TranslateInstance singleton item / Экземпляр синглтона TranslateInstance */
@@ -57,11 +61,11 @@ export class Translate {
   }
 
   /**
-   * Getting a list of translations by an array of text codes.
+   * Getting a list of translations by an array of text codes (Sync).
    *
-   * Получение списка переводов по массиву кодов текста.
+   * Получение списка переводов по массиву кодов текста (Sync).
    * @param names list of codes to get translations / список кодов для получения переводов
-   * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
+   * @param first If set to true, returns a space when there is no text instead of the code name / если установлено true, возвращает пробел при отсутствии текста вместо названия кода
    * @returns object with translations / объект с переводами
    */
   static getListSync<T extends TranslateCode[]>(names: T, first: boolean = false): TranslateList<T> {
@@ -73,7 +77,7 @@ export class Translate {
    *
    * Получение текста перевода по его коду (Sync).
    * @param name code name / название кода
-   * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
+   * @param first If set to true, returns a space when there is no text instead of the code name / если установлено true, возвращает пробел при отсутствии текста вместо названия кода
    * @param replacement If set, replaces the text with the specified values / если установлено, заменяет текст на указанные значения
    * @returns translation text / текст перевода
    */
@@ -90,18 +94,23 @@ export class Translate {
    *
    * Установить конфигурацию для перевода.
    * @param config configuration / конфигурация
+   * @returns void / ничего не возвращает
    */
-  static setConfig(config: TranslateConfig): void {
-    if (config.url) {
-      this.getItem().setUrl(config.url)
-    }
+  static setConfig(config?: TranslateConfig): void {
+    if (isObjectNotArray(config)) {
+      const item = this.getItem()
 
-    if (config.propsName) {
-      this.getItem().setPropsName(config.propsName)
-    }
+      if (config.url) {
+        item.setUrl(config.url)
+      }
 
-    if (typeof config.readApi === 'boolean') {
-      this.getItem().setReadApi(config.readApi)
+      if (config.propsName) {
+        item.setPropsName(config.propsName)
+      }
+
+      if (typeof config.readApi === 'boolean') {
+        item.setReadApi(config.readApi)
+      }
     }
   }
 
@@ -110,6 +119,7 @@ export class Translate {
    *
    * Изменить имя свойства для получения перевода.
    * @param name property name / имя свойства
+   * @returns void / ничего не возвращает
    */
   static setPropsName(name: string): void {
     this.getItem().setPropsName(name)
@@ -120,6 +130,7 @@ export class Translate {
    *
    * Изменить режим чтения из API.
    * @param value read mode / режим чтения
+   * @returns void / ничего не возвращает
    */
   static setReadApi(value: boolean): void {
     this.getItem().setReadApi(value)
@@ -130,6 +141,7 @@ export class Translate {
    *
    * Изменить путь к скрипту для получения перевода.
    * @param url path to the script / путь к скрипту
+   * @returns void / ничего не возвращает
    */
   static setUrl(url: string): void {
     this.getItem().setUrl(url)
@@ -140,6 +152,7 @@ export class Translate {
    *
    * Добавлен список переведенных текстов.
    * @param names list of codes to get translations / список кодов для получения переводов
+   * @returns promise resolving when translations are added / промис, разрешающийся после добавления переводов
    */
   static async add(names: string | string[]): Promise<void> {
     await this.getItem().add(names)
@@ -150,6 +163,7 @@ export class Translate {
    *
    * Добавление данных в виде запроса или напрямую, в зависимости от среды выполнения.
    * @param data list of texts in the form of key-value / список текстов в виде ключ-значение
+   * @returns promise resolving when operation completes / промис, разрешающийся после завершения операции
    */
   static async addNormalOrSync(data: Record<string, string>): Promise<void> {
     await this.getItem().addNormalOrSync(data)
@@ -160,6 +174,7 @@ export class Translate {
    *
    * Добавляет тексты в режиме синхронизации.
    * @param data list of texts in the form of key-value / список текстов в виде ключ-значение
+   * @returns void / ничего не возвращает
    */
   static addSync(data: Record<string, string>): void {
     this.getItem().addSync(data)
@@ -170,6 +185,7 @@ export class Translate {
    *
    * Добавляет тексты синхронно из файла.
    * @param data file with translations / файл с переводами
+   * @returns void / ничего не возвращает
    */
   static addSyncByFile(data: TranslateDataFile): void {
     this.getItem().addSyncByFile(data)
@@ -180,6 +196,7 @@ export class Translate {
    *
    * Добавляет тексты синхронно по местоположению.
    * @param data list of texts by location / список текстов по местоположению
+   * @returns void / ничего не возвращает
    */
   static addSyncByLocation(data: Record<string, Record<string, string>>): void {
     this.getItem().addSyncByLocation(data)

@@ -75,6 +75,12 @@ describe('getMouseClient', () => {
   })
 
   describe('Empty and missing coordinate properties', () => {
+    it('should default to { x: 0, y: 0 } when event is null or undefined', () => {
+      expect(getMouseClient()).toEqual({ x: 0, y: 0 })
+      expect(getMouseClient(null)).toEqual({ x: 0, y: 0 })
+      expect(getMouseClient(undefined)).toEqual({ x: 0, y: 0 })
+    })
+
     it('should default to { x: 0, y: 0 } when event has no coordinate properties', () => {
       const event = {} as unknown as MouseEvent
       expect(getMouseClient(event)).toEqual({ x: 0, y: 0 })

@@ -153,5 +153,11 @@ describe('eventStopPropagation', () => {
       expect(mockEvent.preventDefault).toHaveBeenCalledTimes(2)
       expect(mockEvent.stopPropagation).toHaveBeenCalledTimes(2)
     })
+
+    it('should safely handle null and undefined without throwing', () => {
+      expect(() => eventStopPropagation(null)).not.toThrow()
+      expect(() => eventStopPropagation(undefined)).not.toThrow()
+      expect(() => eventStopPropagation()).not.toThrow()
+    })
   })
 })

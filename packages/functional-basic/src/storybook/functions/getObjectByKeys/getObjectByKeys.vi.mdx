@@ -7,8 +7,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Tạo và trả về một đối tượng mới chỉ bao gồm các thuộc tính riêng (`hasKey`) có khóa tương ứng nằm trong danh sách truyền vào từ đối tượng nguồn. Các khóa prototype (`__proto__`, `constructor`, `prototype`), các thuộc tính không tồn tại hoặc có giá trị bằng `undefined` sẽ bị bỏ qua khi sao chép.
 
 **Tham số:**
-- `data: T` — Đối tượng nguồn chứa dữ liệu ban đầu (trong đó `T extends Record<string, unknown>`).
-- `keys: K[]` — Mảng các khóa cần trích xuất từ đối tượng nguồn (trong đó `K extends keyof T`).
+- `data?: T | null` — Đối tượng nguồn chứa dữ liệu ban đầu (trong đó `T extends Record<string, unknown>`).
+- `keys?: readonly K[] | null` — Mảng các khóa cần trích xuất từ đối tượng nguồn (trong đó `K extends keyof T`).
 
 **Trả về:**
 `Pick<T, K>` — Một đối tượng mới chỉ chứa các thuộc tính riêng đã chọn có giá trị khác `undefined`.

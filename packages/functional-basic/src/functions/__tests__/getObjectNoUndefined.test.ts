@@ -112,8 +112,9 @@ describe('getObjectNoUndefined', () => {
     })
 
     it('should safely return empty object for null, undefined, and primitives without throwing', () => {
-      expect(getObjectNoUndefined(null as unknown as Record<string, unknown>)).toEqual({})
-      expect(getObjectNoUndefined(undefined as unknown as Record<string, unknown>)).toEqual({})
+      expect(getObjectNoUndefined()).toEqual({})
+      expect(getObjectNoUndefined(null)).toEqual({})
+      expect(getObjectNoUndefined(undefined)).toEqual({})
       expect(getObjectNoUndefined(42 as unknown as Record<string, unknown>)).toEqual({})
       expect(getObjectNoUndefined('string' as unknown as Record<string, unknown>)).toEqual({})
       expect(getObjectNoUndefined(true as unknown as Record<string, unknown>)).toEqual({})

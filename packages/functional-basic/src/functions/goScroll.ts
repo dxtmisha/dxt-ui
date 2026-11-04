@@ -16,12 +16,12 @@ import { isString } from './isString'
  * @returns void / ничего не возвращает
  */
 export function goScroll(
-  target: string | HTMLElement,
+  target?: string | HTMLElement | null,
   elementTo?: HTMLElement | null,
   elementCenter?: HTMLElement | null,
   indent: number = 0
 ): void {
-  if (!isDomRuntime() || !elementTo) {
+  if (!isDomRuntime() || !target || !elementTo) {
     return
   }
 

@@ -65,6 +65,17 @@ describe('initScrollbarOffset', () => {
       expect(ScrollbarWidth.get).not.toHaveBeenCalled()
       expect(setPropertyMock).not.toHaveBeenCalled()
     })
+
+    it('should safely do nothing when document.body is not yet available', async () => {
+      const originalBody = document.body
+      try {
+        Object.defineProperty(document, 'body', { value: null, configurable: true })
+        await expect(initScrollbarOffset()).resolves.toBeUndefined()
+        expect(ScrollbarWidth.get).not.toHaveBeenCalled()
+      } finally {
+        Object.defineProperty(document, 'body', { value: originalBody, configurable: true })
+      }
+    })
   })
 
   describe('Repeated invocations and state updates', () => {

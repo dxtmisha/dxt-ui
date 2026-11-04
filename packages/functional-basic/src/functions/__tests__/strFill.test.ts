@@ -48,9 +48,7 @@ describe('strFill', () => {
     })
 
     it('should coerce non-string runtime values via String()', () => {
-      // @ts-expect-error testing numeric runtime coercion
       expect(strFill(7, 3)).toBe('777')
-      // @ts-expect-error testing boolean runtime coercion
       expect(strFill(true, 2)).toBe('truetrue')
     })
   })

@@ -125,12 +125,18 @@ describe('getObjectByKeys', () => {
       expect(getObjectByKeys(data, ['a'])).toEqual({})
     })
 
+    it('should support readonly as const keys and optional data', () => {
+      const data = { id: 1, name: 'John', extra: true }
+      const keys = ['id', 'name'] as const
+      expect(getObjectByKeys(data, keys)).toEqual({ id: 1, name: 'John' })
+      expect(getObjectByKeys(null, keys)).toEqual({})
+      expect(getObjectByKeys(undefined, keys)).toEqual({})
+    })
+
     it('should return an empty object when data is an array, null, undefined, or primitive', () => {
       // @ts-expect-error testing runtime guard for array input
       expect(getObjectByKeys(['a', 'b'], [0])).toEqual({})
-      // @ts-expect-error testing runtime guard for null input
       expect(getObjectByKeys(null, ['a'])).toEqual({})
-      // @ts-expect-error testing runtime guard for undefined input
       expect(getObjectByKeys(undefined, ['a'])).toEqual({})
       // @ts-expect-error testing runtime guard for numeric primitive
       expect(getObjectByKeys(42, ['toString'])).toEqual({})

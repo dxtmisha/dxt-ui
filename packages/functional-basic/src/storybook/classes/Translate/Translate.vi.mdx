@@ -37,17 +37,18 @@ await Translate.add(['welcome', 'auth.login'])
 
 ### Cấu hình
 
-- `setConfig(config: TranslateConfig): Translate` — Thiết lập cấu hình hoàn chỉnh cho thực thể dịch thuật.
-- `setUrl(url: string): Translate` — Thay đổi đường dẫn API để lấy bản dịch.
-- `setPropsName(name: string): Translate` — Thay đổi tên thuộc tính được sử dụng trong yêu cầu/phản hồi API.
-- `setReadApi(value: boolean): Translate` — Bật hoặc tắt việc lấy bản dịch từ API.
+- `setConfig(config?: TranslateConfig): void` — Thiết lập cấu hình hoàn chỉnh cho thực thể dịch thuật.
+- `setUrl(url: string): void` — Thay đổi đường dẫn API để lấy bản dịch.
+- `setPropsName(name: string): void` — Thay đổi tên thuộc tính được sử dụng trong yêu cầu/phản hồi API.
+- `setReadApi(value: boolean): void` — Bật hoặc tắt việc lấy bản dịch từ API.
 
 ### Truy xuất bản dịch
 
-- `async get(name: string, replacement?: any): Promise<string>` — Lấy văn bản bất đồng bộ. Nếu không có trong cache và không phải môi trường localhost, hệ thống sẽ cố gắng tải từ máy chủ.
-- `getSync(name: string, first?: boolean, replacement?: any): string` — Trả về văn bản từ cache. Nếu `first` là `true`, trả về một khoảng trắng ` ` nếu thiếu văn bản.
-- `async getList<T>(names: T): Promise<TranslateList<T>>` — Lấy một nhóm các bản dịch (bất đồng bộ).
-- `getListSync<T>(names: T, first?: boolean): TranslateList<T>` — Lấy một nhóm các bản dịch từ cache (đồng bộ).
+- `getItem(): TranslateInstance` — Trả về thực thể singleton toàn cục của `TranslateInstance`.
+- `async get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>` — Lấy văn bản bất đồng bộ. Nếu không có trong cache và không phải môi trường localhost, hệ thống sẽ cố gắng tải từ máy chủ.
+- `getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string` — Trả về văn bản từ cache. Nếu `first` là `true`, trả về một khoảng trắng ` ` nếu thiếu văn bản.
+- `async getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>` — Lấy một nhóm các bản dịch (bất đồng bộ).
+- `getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>` — Lấy một nhóm các bản dịch từ cache (đồng bộ).
 
 ### Cập nhật theo lô
 

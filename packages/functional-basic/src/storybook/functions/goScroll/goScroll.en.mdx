@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Quickly scrolls a container to bring a target element into view (scroll-into-view) if it is outside the visible boundary, or centers it relative to a reference element. Scrolling is confined strictly to the container and does not affect outer window scrolling.
 
 **Parameters:**
-- `target: string | HTMLElement` — CSS selector to resolve the nearest ancestor container or the scrollable container element itself.
+- `target?: string | HTMLElement | null` — CSS selector to resolve the nearest ancestor container or the scrollable container element itself.
 - `elementTo?: HTMLElement | null` — The target element to scroll into view.
 - `elementCenter?: HTMLElement | null` — (Optional) Reference element to center the target element against.
 - `indent?: number` — (Optional) Additional padding indent in pixels from the boundary. Defaults to `0`.

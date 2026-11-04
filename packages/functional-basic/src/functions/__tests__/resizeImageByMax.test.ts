@@ -271,6 +271,11 @@ describe('resizeImageByMax', () => {
     it('should return undefined when passed an empty string URL', () => {
       expect(resizeImageByMax('', 500)).toBeUndefined()
     })
+
+    it('should return undefined when image parameter is null or undefined', () => {
+      expect(resizeImageByMax(null, 500)).toBeUndefined()
+      expect(resizeImageByMax(undefined, 500)).toBeUndefined()
+    })
   })
 
   describe('SSR and Canvas availability failures', () => {

@@ -1,0 +1,49 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/hasKeys - Kiểm tra đối tượng có thuộc tính riêng'/>
+
+# `hasKeys`
+
+Hàm tiện ích bảo vệ kiểu (type guard) với hiệu năng cao, kiểm tra xem một đối tượng có chứa ít nhất một thuộc tính riêng (own property) hay không.
+
+## Tính năng nổi bật
+
+- **Đánh giá ngắt mạch (Short-circuit)** — Dừng kiểm tra ngay khi phát hiện thuộc tính riêng đầu tiên, loại bỏ chi phí cấp phát bộ nhớ của mảng `Object.keys()`.
+- **Phòng chống Prototype Pollution** — Sử dụng `Object.hasOwn` để kiểm tra thuộc tính riêng, bỏ qua các thuộc tính kế thừa từ nguyên mẫu (`toString`, `valueOf`, `constructor`).
+- **Hỗ trợ đối tượng không có prototype** — Hoạt động an toàn với các đối tượng từ điển tạo bởi `Object.create(null)`.
+- **An toàn với giá trị nguyên thủy** — Trả về `false` một cách an toàn khi nhận `null`, `undefined`, số, chuỗi mà không gây ra lỗi ngoại lệ.
+- **Thu hẹp kiểu trong TypeScript** — Hoạt động như một type guard `object is T`, giúp thu hẹp kiểu `unknown` thành đối tượng có dữ liệu.
+- **Đẳng hình cho SSR** — Hàm thuần túy không phụ thuộc vào DOM hoặc đối tượng trình duyệt toàn cục.
+
+**Tham số:**
+- `object: unknown` — Đối tượng hoặc giá trị thuộc bất kỳ kiểu nào cần kiểm tra.
+
+**Trả về:**
+`boolean` (`object is T`) — Trả về `true` nếu đối tượng có ít nhất một thuộc tính riêng, ngược lại là `false`.
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { hasKeys } from '@dxtmisha/functional-basic'
+
+// 1. Đối tượng cơ bản
+hasKeys({ name: 'Alice' }) // true
+hasKeys({})                // false
+
+// 2. Thuộc tính có giá trị falsy
+hasKeys({ count: 0 })      // true
+hasKeys({ flag: false })   // true
+hasKeys({ text: '' })      // true
+
+// 3. Bảo vệ khỏi thuộc tính kế thừa
+hasKeys({})                // false (toString, valueOf bị bỏ qua)
+
+// 4. An toàn với giá trị nguyên thủy và nullish
+hasKeys(null)              // false
+hasKeys(undefined)         // false
+hasKeys('hello')           // false
+hasKeys(123)               // false
+`}
+/>

@@ -14,13 +14,17 @@ export function getObjectByKeys<
   T extends Record<string, unknown>,
   K extends keyof T
 >(
-  data: T,
-  keys: K[]
+  data?: T | null,
+  keys?: readonly K[] | null
 ): Pick<T, K> {
   const returnData = {} as Pick<T, K>
 
-  if (isObjectNotArray(data)) {
-    keys.forEach((key) => {
+  if (isObjectNotArray(data) && keys) {
+    const length = keys.length
+
+    for (let index = 0; index < length; index++) {
+      const key = keys[index]
+
       if (
         !isPrototypeKey(key)
         && hasKey(data, key)
@@ -28,7 +32,7 @@ export function getObjectByKeys<
       ) {
         returnData[key] = data[key]
       }
-    })
+    }
   }
 
   return returnData

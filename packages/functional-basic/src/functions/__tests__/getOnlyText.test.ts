@@ -107,7 +107,8 @@ describe('getOnlyText', () => {
   })
 
   describe('Nullish and falsy values', () => {
-    it('should safely return empty string for null and undefined', () => {
+    it('should safely return empty string for missing arguments, null, and undefined', () => {
+      expect(getOnlyText()).toBe('')
       expect(getOnlyText(null)).toBe('')
       expect(getOnlyText(undefined)).toBe('')
     })

@@ -66,6 +66,29 @@ describe('getMouseClientY', () => {
   })
 
   describe('Empty and missing coordinate properties', () => {
+    it('should return 0 when event is null or undefined', () => {
+      expect(getMouseClientY()).toBe(0)
+      expect(getMouseClientY(null)).toBe(0)
+      expect(getMouseClientY(undefined)).toBe(0)
+    })
+
+    it('should return 0 when targetTouches has coordinate 0 even if touches has non-zero', () => {
+      const event = {
+        targetTouches: [{ clientY: 0 }],
+        touches: [{ clientY: 100 }]
+      } as unknown as TouchEvent
+      expect(getMouseClientY(event)).toBe(0)
+    })
+
+    it('should fallback to changedTouches[0].clientY for touchend events', () => {
+      const event = {
+        targetTouches: [],
+        touches: [],
+        changedTouches: [{ clientY: 88 }]
+      } as unknown as TouchEvent
+      expect(getMouseClientY(event)).toBe(88)
+    })
+
     it('should return 0 if no clientY information is found on event', () => {
       const event = {} as unknown as MouseEvent
       expect(getMouseClientY(event)).toBe(0)

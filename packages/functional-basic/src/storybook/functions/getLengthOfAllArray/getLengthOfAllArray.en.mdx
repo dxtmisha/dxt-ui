@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Creates and returns a new array consisting of the lengths (the `.length` property) of all elements in the provided array or object of strings.
 
 **Parameters:**
-- `value: ObjectOrArray<string>` — The input array or object of strings.
+- `value?: ObjectOrArray<string | null | undefined>` — The input array or object of strings.
 
 **Returns:**
 `number[]` — An array of numbers where each number corresponds to the length of the string in the source collection (or `0` if an element is undefined or empty).

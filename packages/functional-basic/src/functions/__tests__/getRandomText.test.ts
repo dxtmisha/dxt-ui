@@ -8,6 +8,15 @@ describe('getRandomText', () => {
   })
 
   describe('Standard functional requirements (Happy path)', () => {
+    it('should generate text with default parameters when called with no arguments', () => {
+      const text = getRandomText()
+      expect(typeof text).toBe('string')
+      expect(text.trim().length).toBeGreaterThan(0)
+      const words = text.split(' ')
+      expect(words.length).toBeGreaterThanOrEqual(1)
+      expect(words.length).toBeLessThanOrEqual(10)
+    })
+
     it('should generate a space-separated string of words with default parameters', () => {
       const text = getRandomText(2, 5)
       expect(typeof text).toBe('string')

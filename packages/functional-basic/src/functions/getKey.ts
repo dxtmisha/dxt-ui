@@ -5,6 +5,6 @@
  * @param event event object/ объект события
  * @returns pressed key / нажатая клавиша
  */
-export function getKey(event: KeyboardEvent): string | number | undefined {
+export function getKey(event?: KeyboardEvent | null): string | number | undefined {
   return event?.key ?? event?.code ?? event?.keyCode?.toString()
 }

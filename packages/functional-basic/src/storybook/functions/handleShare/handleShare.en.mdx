@@ -8,7 +8,7 @@ Invokes the native sharing mechanism of the device via the Web Share API (`navig
 Internally verifies support using `isShare()` and `navigator.canShare(data)` before invoking `navigator.share(data)`. Any error thrown during sharing is routed through `ErrorCenter` (`group: 'share'`, `code: 'error'`).
 
 **Parameters:**
-- `data: ShareData` — An object containing data to share (`title`, `text`, `url`, `files`).
+- `data?: ShareData | null` — An object containing data to share (`title`, `text`, `url`, `files`). Safely handles `null` and `undefined`.
 
 **Returns:**
 `Promise<boolean>` — `true` if the data was shared successfully, otherwise `false` (if unsupported, invalid, or cancelled/failed).

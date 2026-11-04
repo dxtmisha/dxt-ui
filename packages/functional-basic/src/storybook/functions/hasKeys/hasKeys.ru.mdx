@@ -1,0 +1,49 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/hasKeys - Проверка наличия собственных свойств в объекте'/>
+
+# `hasKeys`
+
+Высокопроизводительная утилита-защитник типа (type guard), проверяющая, содержит ли объект хотя бы одно собственное свойство.
+
+## Ключевые возможности
+
+- **Ранний выход (Short-circuit)** — Прекращает итерацию при нахождении первого же собственного свойства, избегая создания промежуточных массивов ключей `Object.keys()` в памяти.
+- **Защита от Prototype Pollution** — Проверяет собственные свойства через `Object.hasOwn`, исключая ложные срабатывания на свойства прототипа (`toString`, `valueOf`, `constructor`).
+- **Поддержка словарей без прототипа** — Корректно и безопасно работает с объектами `Object.create(null)`.
+- **Безопасность для примитивов** — Возвращает `false` при передаче `null`, `undefined`, чисел, строк или других примитивов без выбрасывания исключений.
+- **Сужение типов в TypeScript** — Выступает предикатом типа `object is T`, сужая тип `unknown` до непустого объекта.
+- **Изоморфность для SSR** — Чистая функция без зависимостей от DOM и глобальных объектов браузера.
+
+**Параметры:**
+- `object: unknown` — Проверяемый объект или значение любого типа.
+
+**Возвращает:**
+`boolean` (`object is T`) — Возвращает `true`, если у объекта есть хотя бы одно собственное свойство, иначе `false`.
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { hasKeys } from '@dxtmisha/functional-basic'
+
+// 1. Базовые объекты
+hasKeys({ name: 'Alice' }) // true
+hasKeys({})                // false
+
+// 2. Свойства с falsy-значениями
+hasKeys({ count: 0 })      // true
+hasKeys({ flag: false })   // true
+hasKeys({ text: '' })      // true
+
+// 3. Защита от свойств прототипа
+hasKeys({})                // false (toString, valueOf не учитываются)
+
+// 4. Безопасность примитивов и nullish-значений
+hasKeys(null)              // false
+hasKeys(undefined)         // false
+hasKeys('hello')           // false
+hasKeys(123)               // false
+`}
+/>

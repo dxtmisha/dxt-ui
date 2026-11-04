@@ -8,6 +8,12 @@ describe('getRandomItem', () => {
   })
 
   describe('Standard functional requirements (Happy path)', () => {
+    it('should support readonly as const arrays', () => {
+      const constArray = ['one', 'two', 'three'] as const
+      const result = getRandomItem(constArray)
+      expect(['one', 'two', 'three']).toContain(result)
+    })
+
     it('should return a random element from a numeric array', () => {
       const array = [1, 2, 3, 4, 5]
       const result = getRandomItem(array)

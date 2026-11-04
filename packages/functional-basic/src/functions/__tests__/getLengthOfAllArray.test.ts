@@ -19,6 +19,12 @@ describe('getLengthOfAllArray', () => {
   })
 
   describe('Boundary values and empty inputs', () => {
+    it('should return an empty array when undefined or null is passed', () => {
+      expect(getLengthOfAllArray()).toEqual([])
+      expect(getLengthOfAllArray(undefined)).toEqual([])
+      expect(getLengthOfAllArray(null)).toEqual([])
+    })
+
     it('should return an empty array when an empty array is passed', () => {
       expect(getLengthOfAllArray([])).toEqual([])
     })
@@ -40,15 +46,15 @@ describe('getLengthOfAllArray', () => {
 
   describe('Nullish elements and fallback branch (item?.length ?? 0)', () => {
     it('should return 0 for null or undefined elements inside an array', () => {
-      const data = ['abc', undefined as unknown as string, null as unknown as string, 'de']
+      const data = ['abc', undefined, null, 'de']
       expect(getLengthOfAllArray(data)).toEqual([3, 0, 0, 2])
     })
 
     it('should return 0 for null or undefined property values inside an object', () => {
       const sourceObject = {
         first: 'hello',
-        second: null as unknown as string,
-        third: undefined as unknown as string
+        second: null,
+        third: undefined
       }
       expect(getLengthOfAllArray(sourceObject)).toEqual([5, 0, 0])
     })

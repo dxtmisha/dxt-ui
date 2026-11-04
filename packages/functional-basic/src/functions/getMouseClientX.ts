@@ -2,15 +2,20 @@
  * Returns the position of the mouse cursor or the location of the click (X).
  *
  * Возвращает позицию курсора мыши или место нажатия (X).
- * @param event event object/ объект события
+ * @param event event object / объект события
  * @returns X coordinate / координата X
  */
-export function getMouseClientX(event: MouseEvent | TouchEvent): number {
+export function getMouseClientX(event?: MouseEvent | TouchEvent | null): number {
+  if (!event) {
+    return 0
+  }
+
   if ('clientX' in event) {
     return event.clientX
   }
 
   return event?.targetTouches?.[0]?.clientX
-    || event?.touches?.[0]?.clientX
-    || 0
+    ?? event?.touches?.[0]?.clientX
+    ?? (event as TouchEvent)?.changedTouches?.[0]?.clientX
+    ?? 0
 }

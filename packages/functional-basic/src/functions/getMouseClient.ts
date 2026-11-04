@@ -7,10 +7,10 @@ import { type ImageCoordinator } from '../types/basicTypes'
  * Returns the position of the mouse cursor or the location of the click.
  *
  * Возвращает позицию курсора мыши или место нажатия.
- * @param event event object/ объект события
+ * @param event event object / объект события
  * @returns coordinates of the mouse cursor / координаты курсора мыши
  */
-export function getMouseClient(event: MouseEvent | TouchEvent): ImageCoordinator {
+export function getMouseClient(event?: MouseEvent | TouchEvent | null): ImageCoordinator {
   return {
     x: getMouseClientX(event),
     y: getMouseClientY(event)

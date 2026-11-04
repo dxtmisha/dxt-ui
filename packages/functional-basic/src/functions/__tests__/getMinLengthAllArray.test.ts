@@ -63,12 +63,13 @@ describe('getMinLengthAllArray', () => {
 
   describe('Nullish inputs and element fallbacks', () => {
     it('should safely return 0 when data is null or undefined at runtime', () => {
-      expect(getMinLengthAllArray(null as unknown as string[])).toBe(0)
-      expect(getMinLengthAllArray(undefined as unknown as string[])).toBe(0)
+      expect(getMinLengthAllArray()).toBe(0)
+      expect(getMinLengthAllArray(null)).toBe(0)
+      expect(getMinLengthAllArray(undefined)).toBe(0)
     })
 
     it('should return 0 when an array contains null or undefined elements', () => {
-      const data = ['hello', undefined as unknown as string, 'world']
+      const data = ['hello', undefined, 'world']
       expect(getMinLengthAllArray(data)).toBe(0)
     })
   })

@@ -88,6 +88,13 @@ describe('handleShare', () => {
       expect(navigator.canShare).toHaveBeenCalledWith(shareData)
       expect(navigator.share).not.toHaveBeenCalled()
     })
+
+    it('should return false safely when data is undefined or null', async () => {
+      expect(await handleShare(undefined)).toBe(false)
+      expect(await handleShare(null)).toBe(false)
+      expect(await handleShare()).toBe(false)
+      expect(navigator.share).not.toHaveBeenCalled()
+    })
   })
 
   describe('Error handling and ErrorCenter reporting', () => {

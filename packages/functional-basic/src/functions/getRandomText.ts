@@ -13,9 +13,9 @@ import { strFill } from './strFill'
  * @returns generated text / сгенерированный текст
  */
 export function getRandomText(
-  min: number,
-  max: number,
-  symbol: string = '#',
+  min: number = 1,
+  max: number = 10,
+  symbol: unknown = '#',
   lengthMin: number = 2,
   lengthMax: number = 12
 ): string {

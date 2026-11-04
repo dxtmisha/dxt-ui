@@ -37,17 +37,18 @@ await Translate.add(['welcome', 'auth.login'])
 
 ### Конфигурация
 
-- `setConfig(config: TranslateConfig): Translate` — Устанавливает полную конфигурацию для экземпляра перевода.
-- `setUrl(url: string): Translate` — Изменяет адрес API для получения переводов.
-- `setPropsName(name: string): Translate` — Изменяет имя свойства, используемое в API-запросе/ответе.
-- `setReadApi(value: boolean): Translate` — Включает или отключает получение переводов из API.
+- `setConfig(config?: TranslateConfig): void` — Устанавливает полную конфигурацию для экземпляра перевода.
+- `setUrl(url: string): void` — Изменяет адрес API для получения переводов.
+- `setPropsName(name: string): void` — Изменяет имя свойства, используемое в API-запросе/ответе.
+- `setReadApi(value: boolean): void` — Включает или отключает получение переводов из API.
 
 ### Получение переводов
 
-- `async get(name: string, replacement?: any): Promise<string>` — Асинхронно получает текст. Если его нет в кэше и мы не на localhost, пытается загрузить его с сервера.
-- `getSync(name: string, first?: boolean, replacement?: any): string` — Возвращает текст из кэша. Если `first` равен `true`, вернет пробел ` `, если текст отсутствует.
-- `async getList<T>(names: T): Promise<TranslateList<T>>` — Получает группу переводов (асинхронно).
-- `getListSync<T>(names: T, first?: boolean): TranslateList<T>` — Получает группу переводов из кэша (синхронно).
+- `getItem(): TranslateInstance` — Возвращает глобальный экземпляр синглтона `TranslateInstance`.
+- `async get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>` — Асинхронно получает текст. Если его нет в кэше и мы не на localhost, пытается загрузить его с сервера.
+- `getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string` — Возвращает текст из кэша. Если `first` равен `true`, вернет пробел ` `, если текст отсутствует.
+- `async getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>` — Получает группу переводов (асинхронно).
+- `getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>` — Получает группу переводов из кэша (синхронно).
 
 ### Групповое обновление
 

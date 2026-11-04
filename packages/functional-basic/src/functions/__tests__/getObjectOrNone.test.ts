@@ -34,7 +34,8 @@ describe('getObjectOrNone', () => {
   })
 
   describe('Empty, nullish, and primitive inputs', () => {
-    it('should return an empty object if the value is null or undefined', () => {
+    it('should return an empty object if the value is missing, null, or undefined', () => {
+      expect(getObjectOrNone()).toEqual({})
       expect(getObjectOrNone(null)).toEqual({})
       expect(getObjectOrNone(undefined)).toEqual({})
     })

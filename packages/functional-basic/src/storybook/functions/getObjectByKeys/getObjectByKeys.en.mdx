@@ -7,8 +7,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Creates and returns a new object containing only the own properties (`hasKey`) corresponding to the specified keys from the source object. Prototype pollution keys (`__proto__`, `constructor`, `prototype`), non-existent properties, and properties whose value is strictly equal to `undefined` are ignored during copying.
 
 **Parameters:**
-- `data: T` — The source object containing the initial data (where `T extends Record<string, unknown>`).
-- `keys: K[]` — An array of keys to extract from the source object (where `K extends keyof T`).
+- `data?: T | null` — The source object containing the initial data (where `T extends Record<string, unknown>`).
+- `keys?: readonly K[] | null` — An array of keys to extract from the source object (where `K extends keyof T`).
 
 **Returns:**
 `Pick<T, K>` — A new object containing only the selected own properties whose values are not `undefined`.

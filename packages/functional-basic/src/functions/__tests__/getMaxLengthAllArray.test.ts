@@ -63,12 +63,13 @@ describe('getMaxLengthAllArray', () => {
 
   describe('Nullish inputs and element fallbacks', () => {
     it('should safely return 0 when data is null or undefined at runtime', () => {
-      expect(getMaxLengthAllArray(null as unknown as string[])).toBe(0)
-      expect(getMaxLengthAllArray(undefined as unknown as string[])).toBe(0)
+      expect(getMaxLengthAllArray()).toBe(0)
+      expect(getMaxLengthAllArray(null)).toBe(0)
+      expect(getMaxLengthAllArray(undefined)).toBe(0)
     })
 
     it('should treat null or undefined array elements as length 0', () => {
-      const data = ['hi', undefined as unknown as string, null as unknown as string, 'hello']
+      const data = ['hi', undefined, null, 'hello']
       expect(getMaxLengthAllArray(data)).toBe(5)
     })
   })

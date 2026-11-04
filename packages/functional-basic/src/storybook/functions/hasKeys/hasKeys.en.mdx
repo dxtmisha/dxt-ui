@@ -1,0 +1,49 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/hasKeys - Check if object has own properties'/>
+
+# `hasKeys`
+
+A high-performance type guard utility that determines whether an object contains at least one own property.
+
+## Key Features
+
+- **Short-circuit Evaluation** — Terminates immediately upon detecting the first own property, avoiding the overhead and memory allocation of `Object.keys()`.
+- **Prototype Pollution Defense** — Uses `Object.hasOwn` to strictly check own properties, ignoring prototype properties like `toString`, `valueOf`, or `constructor`.
+- **Null-prototype Object Support** — Safely handles dictionary objects created via `Object.create(null)`.
+- **Safe Handling of Primitives** — Safely returns `false` when receiving `null`, `undefined`, numbers, strings, or other primitives without throwing runtime errors.
+- **TypeScript Type Narrowing** — Acts as a type guard predicate `object is T`, narrowing `unknown` to a populated object type.
+- **SSR-Isomorphic** — Pure functional utility with zero dependencies on DOM or browser globals.
+
+**Parameters:**
+- `object: unknown` — The object or value of any type to inspect.
+
+**Returns:**
+`boolean` (`object is T`) — Returns `true` if the object has at least one own property, otherwise `false`.
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { hasKeys } from '@dxtmisha/functional-basic'
+
+// 1. Basic objects
+hasKeys({ name: 'Alice' }) // true
+hasKeys({})                // false
+
+// 2. Falsy property values
+hasKeys({ count: 0 })      // true
+hasKeys({ flag: false })   // true
+hasKeys({ text: '' })      // true
+
+// 3. Prototype pollution protection
+hasKeys({})                // false (toString, valueOf ignored)
+
+// 4. Safe with primitives and nullish inputs
+hasKeys(null)              // false
+hasKeys(undefined)         // false
+hasKeys('hello')           // false
+hasKeys(123)               // false
+`}
+/>

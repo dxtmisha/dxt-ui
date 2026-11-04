@@ -7,13 +7,14 @@ import { ErrorCenter } from '../classes/ErrorCenter'
  *
  * Метод вызывает встроенный механизм обмена данными мобильного устройства или операционной системы.
  * Если Web Share API не поддерживается браузером или данные не могут быть переданы, метод возвращает false.
- * @param data an object containing data to share/ объект, содержащий данные для обмена
- * @returns true if the data was shared successfully/ true, если данные были успешно переданы
+ * @param data an object containing data to share / объект, содержащий данные для обмена
+ * @returns true if the data was shared successfully / true, если данные были успешно переданы
  */
-export async function handleShare(data: ShareData): Promise<boolean> {
+export async function handleShare(data?: ShareData | null): Promise<boolean> {
   if (
-    isShare()
-    && navigator.canShare
+    data
+    && isShare()
+    && Boolean(navigator.canShare)
     && navigator.canShare(data)
   ) {
     try {

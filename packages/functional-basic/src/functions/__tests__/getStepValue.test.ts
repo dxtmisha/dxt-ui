@@ -64,7 +64,7 @@ describe('getStepValue', () => {
     })
 
     it('should fallback to min = 0 when min is null at runtime', () => {
-      expect(getStepValue(null as unknown as undefined, 300)).toBe(3)
+      expect(getStepValue(null, 300)).toBe(3)
     })
   })
 

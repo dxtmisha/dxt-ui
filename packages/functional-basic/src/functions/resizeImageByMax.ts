@@ -60,8 +60,8 @@ function isByWidth(
  * Для прикладных сценариев, где всегда требуется готовая строка с фолбэком на исходное изображение, используйте функцию `resizeImage`.
  */
 export function resizeImageByMax(
-  image: HTMLImageElement | string,
-  maxSize: number,
+  image?: HTMLImageElement | string | null,
+  maxSize: number = 0,
   type: ResizeImageByMaxType = 'auto',
   typeData?: string,
   quality?: number

@@ -10,12 +10,16 @@ import { type ObjectOrArray } from '../types/basicTypes'
  * @param data array with data / массив с данными
  * @returns minimum string length / минимальная длина строки
  */
-export function getMinLengthAllArray(data: ObjectOrArray<string>): number {
+export function getMinLengthAllArray(data?: ObjectOrArray<string | null | undefined> | null): number {
   if (!isFilled(data)) {
     return 0
   }
 
   const lengths = getLengthOfAllArray(data)
+
+  if (lengths.length === 0) {
+    return 0
+  }
 
   if (lengths.length > 10_000) {
     return lengths.reduce((min, current) => Math.min(min, current))
