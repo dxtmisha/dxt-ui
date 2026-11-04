@@ -45,6 +45,8 @@ Core engine loop that validates request configurations and executes matched rout
 
 Synchronous version of the emulator. It returns the mock response immediately without any delay or loading state. This method only runs in DOM environments.
 
+If the first matching response is a factory, this method returns `undefined` and leaves the mock available for `emulator()`.
+
 **Parameters:**
 - `apiFetch: ApiFetch` — The properties of the request to emulate.
 
@@ -52,7 +54,7 @@ Synchronous version of the emulator. It returns the mock response immediately wi
 
 ### Check
 
-- `get(path: string = '', method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Synchronously checks for a matching cached mock request.
+- `get(path: string = '', method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean, toData?: boolean, staticOnly = false): ApiResponseItem | undefined` — Finds a matching response. When both the lookup and the record specify `toData`, their values must match. With `staticOnly`, a matching factory stays available for asynchronous execution.
 - `getList(): (ApiResponseItem & Record<string, unknown>)[]` — Returns a list of all registered emulator configurations.
 
 ### Configuration
@@ -68,6 +70,7 @@ An object defining a mock response configuration.
 - `method: ApiMethod` — The HTTP method (GET, POST, etc.).
 - `response: any | ((request?: any) => any)` — The mock data or a function returning it.
 - `request?: ApiFetch['request'] | '*any'` — Optional request payload to match against.
+- `toData?: boolean` — Optional response unwrapping mode for matching.
 - `lag?: boolean` — Whether to simulate network latency.
 - `disable?: any` — Condition to disable the mock (boolean or function).
 - `isForGlobal?: boolean` — Mark as global mock (hidden from getList).

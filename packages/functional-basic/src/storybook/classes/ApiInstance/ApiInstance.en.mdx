@@ -111,7 +111,7 @@ Methods to configure the API (support chaining, returning the `ApiInstance` obje
 - `init?: RequestInit` — additional options passed directly to native `fetch()` (CORS, cache mode, etc.).
 - `timeout?: number` — request timeout in milliseconds. Default: `16000`ms (only used if `controller` is not provided).
 - `controller?: AbortController` — controller for canceling the request. If provided, timeout is ignored.
-- `retry?: number` — number of retries on failure.
+- `retry?: number` — number of retries after an HTTP response with status `400` or higher.
 - `retryDelay?: number` — base delay between retries in milliseconds. Default: `64`ms. Jitter is used to prevent thundering herd problems.
 - `endResetLimit?: number` — limit for recursive retries via `setEnd` with `reset: true`. Default: `8`.
 - `wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — local wrapper function for executing this specific request.

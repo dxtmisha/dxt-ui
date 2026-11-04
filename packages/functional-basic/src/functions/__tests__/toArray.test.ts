@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { toArray } from '../toArray'
 
 describe('toArray', () => {
@@ -9,6 +9,14 @@ describe('toArray', () => {
 
       expect(result).toBe(input)
       expect(result).toEqual([1, 2, 3])
+    })
+
+    it('should preserve the type and reference of a readonly tuple', () => {
+      const input = [1, 2] as const
+      const result = toArray(input)
+
+      expectTypeOf(result).toEqualTypeOf<typeof input>()
+      expect(result).toBe(input)
     })
 
     it('should wrap primitive values in a single-element array', () => {

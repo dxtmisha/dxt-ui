@@ -107,10 +107,11 @@ export class Cookie<T = unknown> {
    * Delete cookie data.
    *
    * Удаление данных из cookie.
+   * @param options cookie options overriding the saved options / параметры cookie, переопределяющие сохранённые параметры
    * @returns void / ничего не возвращает
    */
-  remove(): void {
-    this.set(undefined)
+  remove(options?: CookieOptions): void {
+    this.set(undefined, options)
   }
 
   /**

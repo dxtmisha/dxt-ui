@@ -422,11 +422,15 @@ export class EventItem<
   protected makeScroll(): boolean {
     if (this.element) {
       let go = false
+      const activityItems = this.activityItems
       const listener = (event: O): void => {
         if (!go) {
           go = true
           requestAnimationFrame(() => {
-            if (this.activity) {
+            if (
+              this.activity
+              && this.activityItems === activityItems
+            ) {
               this.listenerRecent(event)
             }
             go = false

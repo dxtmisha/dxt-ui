@@ -28,9 +28,9 @@ export class ApiErrorItem {
   ) { }
 
   /**
-   * Retrieves the error code from storage or the response body.
+   * Retrieves the code from the resolved error item.
    *
-   * Получает код ошибки из хранилища или тела ответа.
+   * Возвращает код из определённого элемента ошибки.
    * @returns error code or undefined / код ошибки или undefined
    */
   getCode(): string | number | undefined {

@@ -43,7 +43,7 @@ if (errorItem.code === 'USER_NOT_FOUND') {
 
 ### ApiErrorStorageItem
 
-- `url: string | RegExp` — Chuỗi URL hoặc biểu thức chính quy để khớp với URL yêu cầu.
+- `url: string | RegExp` — Chuỗi URL hoặc biểu thức chính quy để khớp với URL yêu cầu. Với cờ `g` hoặc `y`, mỗi lần kiểm tra bắt đầu ở vị trí `0` và giữ nguyên `lastIndex` của biểu thức gốc.
 - `method: ApiMethodItem` — Phương thức HTTP bắt buộc để khớp.
 - `code?: string | number` — Mã lỗi tùy chọn để khớp với thân JSON.
 - `status?: number` — Mã trạng thái HTTP tùy chọn để khớp.

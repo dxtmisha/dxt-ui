@@ -105,6 +105,10 @@ export class ApiErrorStorage {
     pattern: string | RegExp
   ): boolean {
     if (pattern instanceof RegExp) {
+      if (pattern.global || pattern.sticky) {
+        return new RegExp(pattern).test(url)
+      }
+
       return pattern.test(url)
     }
 

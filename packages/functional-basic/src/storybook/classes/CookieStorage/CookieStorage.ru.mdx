@@ -58,6 +58,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 - `update()` — Обновляет данные в памяти, парся значения из `document.cookie`
 
+При чтении `document.cookie` или заголовка `Cookie` в SSR парсер сохраняет первое непустое значение для каждого декодированного имени.
+
 ## Типы
 
 ### `CookieOptions`

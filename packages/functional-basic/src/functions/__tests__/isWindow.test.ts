@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, expectTypeOf, vi, beforeEach } from 'vitest'
 import { isWindow } from '../isWindow'
 import * as isDomRuntimeModule from '../isDomRuntime'
 
@@ -13,6 +13,17 @@ describe('isWindow', () => {
     it('should return true if the element is the global window object', () => {
       expect(isWindow(window)).toBe(true)
       expect(isWindow(globalThis.window)).toBe(true)
+    })
+
+    it('should narrow an unknown value to Window', () => {
+      const element: unknown = window
+
+      if (isWindow(element)) {
+        expectTypeOf(element).toEqualTypeOf<Window>()
+        expect(element).toBe(window)
+      } else {
+        expect.unreachable('Expected the current window')
+      }
     })
   })
 

@@ -12,7 +12,7 @@ A versatile class for interacting with the browser's `localStorage` and `session
 
 - **Automatic Serialization** — seamlessly handles JSON parsing and stringifying for stored configurations and objects.
 - **Time-based Caching** — allows saving objects with timestamps and respects age constraints during data retrieval.
-- **Prefix Management** — supports global and instance-specific prefixes to isolate and group keys within `localStorage`.
+- **Prefix Management** — uses an application-wide prefix to group storage keys.
 - **Memory Efficiency** — creates singletons for identical keys, avoiding duplicate reads from disk.
 - **SSR Ready** — uses request-specific isolation during server-side rendering to prevent data leaks between parallel requests.
 
@@ -43,15 +43,15 @@ const session = new DataStorage('user_session', true)
 
 ### Storage Access
 
-- `get(defaultValue?: D, cache?: number): DataStorageGet<T, D>` — Retrieves the currently saved value. If a cache time is provided, it returns `undefined` if the data is stale. Passing a default value strictly infers the return type as `T`.
-- `set(value?: T | (() => T)): T | undefined` — Sets or updates the value in the storage mechanism. Passing `undefined` deletes the item.
+- `get(defaultValue?: D, cache?: number): DataStorageGet<T, D>` — Returns a current saved value. For missing or expired data, the method uses the supplied default or returns `undefined`.
+- `set(value?: T | (() => T)): T | undefined` — Sets or updates the value in the storage mechanism. Passing `null` or `undefined` deletes the item.
 - `getIndex(): string` — Retrieves the prefixed storage key name.
 - `remove(): this` — Clears the corresponding key from the storage environment and the memory instance.
 - `update(): this` — Forces the memory instance to synchronize with the current raw data inside the physical Storage APIs.
 
 ### Configuration
 
-- `static setPrefix(newPrefix: string): void` — Changes the global prefix applied to new instances. The default prefix is `ui-storage`. Should be called once during application startup.
+- `static setPrefix(newPrefix: string): void` — Changes the global prefix used to construct storage keys. The default prefix is `ui-storage`. Should be called once during application startup.
 
 > **SSR Note**: The prefix is intentionally stored at module level as an application-wide setting across the entire runtime process. In SSR environments, it applies globally to the entire Node.js process rather than being isolated per individual request.
 
@@ -59,7 +59,7 @@ const session = new DataStorage('user_session', true)
 
 The `DataStorage` class is fully compatible with Server-Side Rendering (SSR). It uses a special registry to isolate instances between different HTTP requests on the server.
 
-> To avoid hydration mismatches (when the server-rendered HTML differs from the client-rendered one), it is recommended to call `get()` inside `useEffect` or other client-only hooks. On the server, `get()` will return `undefined` (or the `defaultValue`), as `localStorage` is not available.
+> On the server, values are held in memory for the current request. Read browser storage after mounting when its contents affect rendered HTML.
 
 ## Examples
 

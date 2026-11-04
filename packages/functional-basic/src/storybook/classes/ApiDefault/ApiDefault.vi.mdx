@@ -23,6 +23,8 @@ Một lớp để quản lý dữ liệu mặc định cho các yêu cầu API. 
 
 Gộp dữ liệu mặc định đã lưu vào một đối tượng yêu cầu hoặc thực thể `FormData` được cung cấp. Nếu đầu vào là một đối tượng thuần túy, nó sẽ trả về một đối tượng mới đã được gộp. Nếu đầu vào là `FormData`, nó sẽ thêm trực tiếp các khóa còn thiếu vào thực thể đó.
 
+Khi gửi lại cùng một `FormData`, các trường đã có giữ nguyên giá trị, kể cả các giá trị mặc định được thêm trong lần chuẩn bị đầu tiên.
+
 **Tham số:**
 - `request?: ApiFetch['request']` — Dữ liệu yêu cầu gốc (Đối tượng, FormData hoặc Chuỗi).
 

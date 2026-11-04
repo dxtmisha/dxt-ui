@@ -45,6 +45,8 @@ Vòng lặp công cụ chính để xác thực các cấu hình yêu cầu và 
 
 Phiên bản đồng bộ của trình giả lập. Nó trả về phản hồi mock ngay lập tức mà không có bất kỳ độ trễ hoặc trạng thái tải nào. Phương thức này chỉ chạy trong môi trường DOM.
 
+Nếu phản hồi phù hợp đầu tiên là một hàm tạo dữ liệu, phương thức trả về `undefined` và giữ phản hồi mock đó cho `emulator()`.
+
 **Tham số:**
 - `apiFetch: ApiFetch` — Các thuộc tính của yêu cầu cần giả lập.
 
@@ -52,7 +54,7 @@ Phiên bản đồng bộ của trình giả lập. Nó trả về phản hồi 
 
 ### Kiểm tra
 
-- `get(path: string = '', method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Kiểm tra đồng bộ một yêu cầu mock đã lưu khớp với các tham số.
+- `get(path: string = '', method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean, toData?: boolean, staticOnly = false): ApiResponseItem | undefined` — Tìm phản hồi phù hợp. Nếu cả lời gọi và bản ghi đều có `toData`, hai giá trị phải khớp. Khi bật `staticOnly`, hàm tạo phản hồi phù hợp sẽ được giữ lại để thực thi bất đồng bộ.
 - `getList(): (ApiResponseItem & Record<string, unknown>)[]` — Trả về danh sách tất cả các cấu hình giả lập đã đăng ký.
 
 ### Cấu hình
@@ -68,6 +70,7 @@ Một đối tượng định nghĩa cấu hình phản hồi mock.
 - `method: ApiMethod` — Phương thức HTTP (GET, POST, v.v.).
 - `response: any | ((request?: any) => any)` — Dữ liệu mock hoặc hàm trả về dữ liệu đó.
 - `request?: ApiFetch['request'] | '*any'` — Dữ liệu yêu cầu tùy chọn để khớp.
+- `toData?: boolean` — Chế độ tách trường `data` tùy chọn dùng để khớp phản hồi.
 - `lag?: boolean` — Có mô phỏng độ trễ mạng hay không.
 - `disable?: any` — Điều kiện để vô hiệu hóa mock (boolean hoặc hàm).
 - `isForGlobal?: boolean` — Đánh dấu là mock toàn cục (ẩn khỏi getList).

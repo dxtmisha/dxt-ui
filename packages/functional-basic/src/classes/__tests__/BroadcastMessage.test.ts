@@ -32,7 +32,8 @@ describe('BroadcastMessage', () => {
 
     vi.stubGlobal('BroadcastChannel', MockBroadcastChannel)
     isDomRuntimeSpy = vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
-    errorCenterSpy = vi.spyOn(ErrorCenter.getItem(), 'on').mockImplementation(() => undefined)
+    const errorCenter = ErrorCenter.getItem()
+    errorCenterSpy = vi.spyOn(errorCenter, 'on').mockReturnValue(errorCenter)
   })
 
   afterEach(() => {
@@ -133,7 +134,7 @@ describe('BroadcastMessage', () => {
 
     it('should report to custom ErrorCenterInstance if provided when initialization throws', () => {
       const customErrorCenter = new ErrorCenterInstance()
-      const customErrorSpy = vi.spyOn(customErrorCenter, 'on').mockImplementation(() => undefined)
+      const customErrorSpy = vi.spyOn(customErrorCenter, 'on').mockReturnValue(customErrorCenter)
       const initializationError = new Error('Custom channel failure')
 
       const ThrowingChannel = class {
@@ -163,6 +164,24 @@ describe('BroadcastMessage', () => {
 
       expect(returnValue).toBe(broadcast)
       expect(channel.postMessage).toHaveBeenCalledWith({ key: 'value' })
+    })
+
+    it('should report a send error without throwing', () => {
+      const error = new DOMException('Message could not be cloned', 'DataCloneError')
+      const errorCenter = new ErrorCenterInstance()
+      const reportError = vi.spyOn(errorCenter, 'on').mockReturnValue(errorCenter)
+      const broadcast = new BroadcastMessage('failed_post', undefined, undefined, errorCenter)
+      const channel = broadcast.getChannel() as unknown as MockBroadcastChannel
+      channel.postMessage.mockImplementationOnce(() => {
+        throw error
+      })
+
+      expect(broadcast.post({ key: 'value' })).toBe(broadcast)
+      expect(reportError).toHaveBeenCalledExactlyOnceWith({
+        group: 'broadcast',
+        code: 'error',
+        details: error
+      })
     })
 
     it('should not throw on post if channel is undefined and still return this', () => {

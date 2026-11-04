@@ -43,8 +43,10 @@ export class LoadingInstance {
 
   /**
    * Constructor for LoadingInstance.
+   * For a separate loader, pass an event name unique to that instance. The global loader uses `ui-loading`.
    *
    * Конструктор для LoadingInstance.
+   * Для отдельного загрузчика укажите уникальное имя события. Глобальный загрузчик использует `ui-loading`.
    * @param eventName name of the event for tracking loading / название события для отслеживания загрузки
    */
   constructor(

@@ -10,7 +10,7 @@ A specialized class designed to handle tasks and side effects immediately before
 
 ## Key Features
 
-- **Sequential Execution** — ensures that preparation hooks resolve one at a time, preventing collisions during concurrent operations (e.g., duplicate token refreshes).
+- **Bounded Waiting** — each request waits while a preparation hook is active, up to its own waiting limit.
 - **Global Interception** — provides a single point of entry and exit for all network traffic initiated by its parent manager.
 - **Request Replay** — post-request hooks can signal the system to automatically retry a request after state changes.
 
@@ -20,7 +20,7 @@ A specialized class designed to handle tasks and side effects immediately before
 
 #### `make`
 
-Executes the registered preparation callback. If another preparation is currently in progress, it waits for it to complete.
+Executes the registered preparation callback. If hooks are already active, it waits for them to finish or for the waiting limit to expire.
 
 **Parameters:**
 - `active: boolean` — Whether the hook is enabled for the current request.
@@ -55,7 +55,7 @@ Result of the analysis hook execution.
 
 The following rules and conditions define how the preparation system synchronizes and manages lifecycle hooks:
 
-- **Synchronization** — the system uses a polling mechanism (160ms interval) to ensure that only one `setPreparation` hook executes at a time. If multiple requests start concurrently, subsequent calls will wait up to 32 polling attempts (~5 seconds) for the first one to finish.
+- **Synchronization** — each request checks for active `setPreparation` hooks every 160 ms, up to 32 times. When its limit expires, it may start its hook while another is still active. New requests count their wait while any hook remains active.
 - **Context Injection** — the `apiFetch` object is passed to the hooks by reference. Modifying its properties (like headers or request body) inside `setPreparation` directly affects the physical network call that follows.
 - **Flow Control (Reset)** — the `setEnd` hook can return `{ reset: true }`. When this flag is detected, the `ApiInstance` will abort the current request chain and immediately restart it from the preparation phase. This is primarily used for silent, automatic token refreshing.
 - **Execution Scope** — hooks only run if they are explicitly enabled in the request configuration. By default, `globalPreparation` and `globalEnd` are set to true in `ApiFetch`.

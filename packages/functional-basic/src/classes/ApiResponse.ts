@@ -65,32 +65,47 @@ export class ApiResponse {
    * @param method request method / метод запроса
    * @param request data for the request / данные для запроса
    * @param devMode optional developer mode flag / необязательный флаг режима разработчика
+   * @param toData response unwrapping mode / режим разворачивания ответа
+   * @param staticOnly leave a matching response factory for asynchronous execution / оставить найденную фабрику ответа для асинхронного выполнения
    * @returns cached response item or undefined / кешированный элемент ответа или undefined
    */
   get(
     path: string = '',
     method: ApiMethod,
     request?: ApiFetch['request'],
-    devMode?: boolean
+    devMode?: boolean,
+    toData?: boolean,
+    staticOnly: boolean = false
   ): ApiResponseItem | undefined {
-    return this.response.find((item) => {
-      if (
-        !this.isDisable(item)
-        && this.isPath(item, path)
-        && method === item.method
-        && this.isFirst(item, devMode)
-        && this.isResponse(item, request)
-      ) {
-        if (this.isDevMode(devMode)) {
-          console.warn(`Response type: ${item.path}`)
-        }
+    const item = this.response.find(item =>
+      !this.isDisable(item)
+      && this.isPath(item, path)
+      && method === item.method
+      && (
+        toData === undefined
+        || item.toData === undefined
+        || item.toData === toData
+      )
+      && this.isFirst(item, devMode)
+      && this.isResponse(item, request)
+    )
 
-        this.first.push(item)
-        return true
-      }
+    if (
+      !item
+      || (
+        staticOnly
+        && isFunction(item.response)
+      )
+    ) {
+      return undefined
+    }
 
-      return false
-    })
+    if (this.isDevMode(devMode)) {
+      console.warn(`Response type: ${item.path}`)
+    }
+
+    this.first.push(item)
+    return item
   }
 
   /**
@@ -161,14 +176,14 @@ export class ApiResponse {
   }
 
   /**
-   * Executes the emulator synchronously if available.
+   * Returns a static emulated response synchronously. Response factories are reserved for emulator().
    *
-   * Выполняет эмулятор синхронно, если доступно.
+   * Синхронно возвращает статический эмулированный ответ. Фабрики ответов выполняются через emulator().
    * @param apiFetch fetch configuration / конфигурация запроса
    * @returns emulated response or undefined / эмулированный ответ или undefined
    */
   emulatorAsync<T = unknown>(apiFetch: ApiFetch): T | undefined {
-    const read = this.readData(apiFetch)
+    const read = this.readData(apiFetch, true)
 
     if (read) {
       return this.fetchAsync<T>(read.response)
@@ -287,11 +302,15 @@ export class ApiResponse {
     this.startResponseLoading()
 
     return new Promise((resolve, reject) => {
-      executePromise(
-        isFunction(response.response)
-          ? Reflect.apply(response.response, response, [request])
-          : response.response
-      ).then((data) => {
+      executePromise<T>(() => {
+        const value = response.response
+
+        if (isFunction(value)) {
+          return Reflect.apply(value, response, [request])
+        }
+
+        return value
+      }).then((data) => {
         if (response.lag) {
           Loading.show()
 
@@ -328,9 +347,10 @@ export class ApiResponse {
    *
    * Считывает конфигурацию кешированных данных.
    * @param apiFetch fetch configuration / конфигурация запроса
+   * @param staticOnly leave a matching response factory for asynchronous execution / оставить найденную фабрику ответа для асинхронного выполнения
    * @returns object with response and request data or undefined / объект с данными ответа и запроса или undefined
    */
-  protected readData(apiFetch: ApiFetch): {
+  protected readData(apiFetch: ApiFetch, staticOnly: boolean = false): {
     response: ApiResponseItem
     request: ApiFetch['request']
   } | undefined {
@@ -342,6 +362,7 @@ export class ApiResponse {
       path = '',
       method = ApiMethodItem.get,
       global = method === ApiMethodItem.get,
+      toData = true,
       devMode = false
     } = apiFetch
 
@@ -350,7 +371,7 @@ export class ApiResponse {
       || this.isDevMode(devMode)
     ) {
       const request: ApiFetch['request'] = this.requestDefault.request(apiFetch.request)
-      const response = this.get(path, method, request, devMode)
+      const response = this.get(path, method, request, devMode, toData, staticOnly)
 
       if (response) {
         return {

@@ -115,6 +115,8 @@ Nếu kiểu sự kiện được đặt thành `resize`, lớp sẽ tự độn
 ### `scroll-sync`
 Một kiểu đặc biệt cho việc cuộn tối ưu hóa. Bên trong sử dụng `requestAnimationFrame`, ngăn chặn các cuộc gọi trình xử lý không cần thiết và tăng hiệu suất.
 
+Khung hình đã lên lịch chỉ gọi trình xử lý cho lượt lắng nghe đã tạo khung hình đó. Khi đổi phần tử đích, các sự kiện đang chờ của phần tử cũ bị bỏ qua.
+
 ## Ví dụ
 
 ### Chuyển đổi phần tử động

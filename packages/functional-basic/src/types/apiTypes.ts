@@ -236,6 +236,8 @@ export type ApiHydrationItem = {
   method: ApiMethod
   /** Expected request payload or special marker '*any'/ Ожидаемая нагрузка запроса или маркер '*any' */
   request?: ApiFetch['request']
+  /** Response unwrapping mode / Режим разворачивания ответа */
+  toData?: boolean
   /** Static response or factory function/ Статический ответ или функция, возвращающая ответ */
   response: any
 }
@@ -294,6 +296,8 @@ export type ApiResponseItem = {
   method: ApiMethod
   /** Expected request payload or special marker '*any'/ Ожидаемая нагрузка запроса или маркер '*any' */
   request?: ApiFetch['request'] | '*any'
+  /** Expected response unwrapping mode / Ожидаемый режим разворачивания ответа */
+  toData?: boolean
   /** Static response or factory function/ Статический ответ или функция, возвращающая ответ */
   response: any | ((request?: ApiFetch['request']) => any)
   /** Disable this mock/ Отключить этот мок */

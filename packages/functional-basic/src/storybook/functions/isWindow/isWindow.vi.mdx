@@ -12,7 +12,7 @@ Trước tiên hàm kiểm tra qua `isDomRuntime()` để đảm bảo mã đang
 - `element?: E` — Phần tử hoặc giá trị cần kiểm tra.
 
 **Trả về:**
-`element is Extract<E, Window>` (`boolean`) — Trả về `true` nếu đang chạy trong môi trường trình duyệt và `element` bằng nghiêm ngặt với `window`, ngược lại là `false`. Đóng vai trò là bộ bảo vệ kiểu (type guard) trong TypeScript, thu hẹp `E` thành `Extract<E, Window>`.
+`element is E & Window` (`boolean`) — Trả về `true` nếu đang chạy trong môi trường trình duyệt và `element` bằng nghiêm ngặt với `window`, ngược lại là `false`. Đóng vai trò là bộ bảo vệ kiểu (type guard) trong TypeScript, thu hẹp `E` thành `E & Window`.
 
 ```typescript
 import { isWindow } from '@dxtmisha/functional-basic'

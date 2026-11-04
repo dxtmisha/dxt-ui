@@ -42,8 +42,9 @@ Trả về chuỗi đại diện cho dữ liệu hydrat hóa đã thu thập, đ
 #### `ApiHydrationList`
 Danh sách các phản hồi API đã thu thập để hydrat hóa.
 - `path: string` — Đường dẫn endpoint API.
-- `method: ApiMethodItem` — Phương thức HTTP đã sử dụng.
-- `request: any` — Dữ liệu yêu cầu.
+- `method: ApiMethod` — Phương thức HTTP đã sử dụng.
+- `request?: ApiFetch['request']` — Dữ liệu yêu cầu.
+- `toData?: boolean` — Chế độ tách trường `data` dùng để khớp phản hồi. Bản ghi mới dùng `true` nếu yêu cầu không đặt `toData`.
 - `response: any` — Dữ liệu phản hồi từ máy chủ.
 
 ## Hướng dẫn: Cơ chế Hydrat hóa

@@ -149,6 +149,33 @@ describe('EventItem', () => {
     rafSpy.mockRestore()
   })
 
+  it('should ignore a queued scroll-sync frame after switching elements', () => {
+    const nextElement = document.createElement('div')
+    document.body.appendChild(nextElement)
+
+    const listener = vi.fn()
+    const frames = vi.spyOn(window, 'requestAnimationFrame').mockReturnValue(1)
+    const eventItem = new EventItem(element, 'scroll-sync', listener).start()
+
+    try {
+      element.dispatchEvent(new Event('scroll'))
+      expect(frames).toHaveBeenCalledTimes(1)
+
+      eventItem.setElement(nextElement)
+      frames.mock.calls[0]?.[0](0)
+      expect(listener).not.toHaveBeenCalled()
+
+      const event = new Event('scroll')
+      nextElement.dispatchEvent(event)
+      expect(frames).toHaveBeenCalledTimes(2)
+      frames.mock.calls[1]?.[0](0)
+      expect(listener).toHaveBeenCalledExactlyOnceWith(event, undefined)
+    } finally {
+      eventItem.stop()
+      nextElement.remove()
+    }
+  })
+
   it('should automatically stop if element is removed from DOM', () => {
     const listener = vi.fn()
     const eventItem = new EventItem(element, 'click', listener)

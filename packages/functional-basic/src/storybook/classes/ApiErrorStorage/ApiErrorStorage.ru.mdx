@@ -43,7 +43,7 @@ if (errorItem.code === 'USER_NOT_FOUND') {
 
 ### ApiErrorStorageItem
 
-- `url: string | RegExp` — Строка URL или регулярное выражение для сопоставления с URL запроса.
+- `url: string | RegExp` — Строка URL или регулярное выражение для сопоставления с URL запроса. Для шаблонов с `g` или `y` каждая проверка начинается с позиции `0` и сохраняет исходный `lastIndex`.
 - `method: ApiMethodItem` — HTTP-метод, необходимый для совпадения.
 - `code?: string | number` — Необязательный код ошибки для сопоставления с телом JSON.
 - `status?: number` — Необязательный код статуса HTTP для сопоставления.

@@ -58,6 +58,8 @@ Xóa cookie bằng cách đặt giá trị rỗng và thời hạn hết hạn �
 
 - `update()` — Cập nhật dữ liệu trong bộ nhớ bằng cách phân tích giá trị từ `document.cookie`
 
+Khi đọc `document.cookie` hoặc header `Cookie` trong SSR, bộ phân tích giữ giá trị không rỗng đầu tiên của mỗi tên đã giải mã.
+
 ## Các loại
 
 ### `CookieOptions`

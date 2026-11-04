@@ -127,10 +127,12 @@ describe('ApiErrorStorage', () => {
     expect(result.message).toBe('Validation Error')
   })
 
-  it('should find error by RegExp URL pattern', async () => {
+  it.each(['', 'g', 'y'])('should consistently find error by RegExp URL pattern with flags %j', async (flags) => {
     const storage = new ApiErrorStorage()
+    const pattern = new RegExp('/api/item/\\d+', flags)
+
     storage.add({
-      url: /\/api\/item\/\d+/,
+      url: pattern,
       method: ApiMethodItem.get,
       status: 404,
       message: 'Item Not Found'
@@ -144,8 +146,9 @@ describe('ApiErrorStorage', () => {
       })
     } as unknown as Response
 
-    const result = await storage.find(ApiMethodItem.get, response)
-    expect(result.message).toBe('Item Not Found')
+    expect((await storage.find(ApiMethodItem.get, response)).message).toBe('Item Not Found')
+    expect((await storage.find(ApiMethodItem.get, response)).message).toBe('Item Not Found')
+    expect(pattern.lastIndex).toBe(0)
   })
 
   it('should return default error item when no stored item matches', async () => {

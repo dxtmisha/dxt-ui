@@ -62,9 +62,9 @@ describe('ApiHeaders', () => {
     })
   })
 
-  it('should omit Content-Type for FormData requests in getByRequest()', () => {
+  it('should omit the default Content-Type for FormData requests in getByRequest()', () => {
     const apiHeaders = new ApiHeaders()
-    apiHeaders.set({ Global: 'yes' })
+    apiHeaders.set({ 'Global': 'yes', 'Content-Type': 'application/json' })
 
     const formData = new FormData()
     const headers = apiHeaders.getByRequest(formData, { Additional: 'test' })

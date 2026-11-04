@@ -53,7 +53,7 @@ describe('ApiHydration', () => {
     vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
     const getElementSafeScriptSpy = vi
       .spyOn(getElementSafeScriptModule, 'getElementSafeScript')
-      .mockImplementation((_id: string, data: unknown) => JSON.stringify(data))
+      .mockImplementation((_id, data) => JSON.stringify(data))
 
     const hydration = new ApiHydration()
     hydration.toClient({ path: 'my-path', request: { page: 1 } }, { someData: 1 })
@@ -64,6 +64,7 @@ describe('ApiHydration', () => {
         path: 'my-path',
         method: ApiMethodItem.get,
         request: { page: 1 },
+        toData: true,
         response: { someData: 1 }
       }
     ])
@@ -74,7 +75,7 @@ describe('ApiHydration', () => {
   it('should NOT push non-GET request into hydration list unless global is explicitly true', () => {
     vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
     vi.spyOn(getElementSafeScriptModule, 'getElementSafeScript')
-      .mockImplementation((_id: string, data: unknown) => JSON.stringify(data))
+      .mockImplementation((_id, data) => JSON.stringify(data))
 
     const hydration = new ApiHydration()
     hydration.toClient({ path: 'post-path', method: ApiMethodItem.post }, { created: true })
@@ -87,7 +88,7 @@ describe('ApiHydration', () => {
   it('should NOT push into list for toClient() when in DOM runtime', () => {
     vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
     vi.spyOn(getElementSafeScriptModule, 'getElementSafeScript')
-      .mockImplementation((_id: string, data: unknown) => JSON.stringify(data))
+      .mockImplementation((_id, data) => JSON.stringify(data))
 
     const hydration = new ApiHydration()
     hydration.toClient({ path: 'my-path' }, { someData: 1 })
@@ -98,7 +99,7 @@ describe('ApiHydration', () => {
   it('should NOT push into list if global is false', () => {
     vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
     vi.spyOn(getElementSafeScriptModule, 'getElementSafeScript')
-      .mockImplementation((_id: string, data: unknown) => JSON.stringify(data))
+      .mockImplementation((_id, data) => JSON.stringify(data))
 
     const hydration = new ApiHydration()
     hydration.toClient({ path: 'my-path', global: false }, { someData: 1 })
@@ -109,7 +110,7 @@ describe('ApiHydration', () => {
   it('should NOT push into list if path is empty or missing', () => {
     vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
     vi.spyOn(getElementSafeScriptModule, 'getElementSafeScript')
-      .mockImplementation((_id: string, data: unknown) => JSON.stringify(data))
+      .mockImplementation((_id, data) => JSON.stringify(data))
 
     const hydration = new ApiHydration()
     hydration.toClient({ path: '' }, { someData: 1 })

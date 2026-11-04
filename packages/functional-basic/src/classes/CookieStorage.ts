@@ -327,8 +327,10 @@ export class CookieStorage {
 
   /**
    * Parses the cookie string into a key-value pair object.
+   * Keeps the first non-empty value for each decoded name.
    *
    * Разбирает строку cookie в объект пар ключ-значение.
+   * Сохраняет первое непустое значение для каждого декодированного имени.
    * @param cookie cookie string / строка cookie
    * @returns parsed items / разобранные элементы
    */
@@ -350,7 +352,11 @@ export class CookieStorage {
         key
         && value
       ) {
-        items[this.decode(key)] = this.decode(value)
+        const name = this.decode(key)
+
+        if (!Object.hasOwn(items, name)) {
+          items[name] = this.decode(value)
+        }
       }
     }
 

@@ -42,10 +42,10 @@ import {Meta} from '@storybook/addon-docs/blocks'
 #### `ApiHydrationList`
 Список захваченных ответов API для гидратации.
 - `path: string` — Путь эндпоинта API.
-- `method: ApiMethodItem` — Используемый HTTP-метод.
-- `request: any` — Данные запроса.
+- `method: ApiMethod` — Используемый HTTP-метод.
+- `request?: ApiFetch['request']` — Данные запроса.
+- `toData?: boolean` — Режим разворачивания ответа для сопоставления. В новых записях используется `true`, если запрос не задаёт `toData`.
 - `response: any` — Данные ответа сервера.
-- `global?: boolean` — Флаг глобального использования.
 
 ## Руководство: Механика гидратации
 

@@ -12,7 +12,7 @@ Under the hood, the function uses the native `structuredClone` API when availabl
 - `value: T` — The object or array to be copied.
 
 **Returns:**
-`T` — A new copy of the object.
+`T` — A copy of the value. If cloning and JSON serialization both fail, the function returns the original value.
 
 ## Examples
 

@@ -48,7 +48,7 @@ Sử dụng `set()` để nạp hoặc làm đệm chèn đè lên biến trư�
 
 #### `remove`
 
-Tập lệnh thực thi việc đẩy một mảng thông số rỗng bằng string trắng vào vùng cookie, sau đó cập nhật vòng đời thuộc tính Max-Age thành `-1`. Lúc này máy khách sẽ hiểu trình truy xuất cần dừng hoạt động, đẩy lùi chu kỳ hết hạn và loại cookie ngay rực khắc.
+`remove(options?: CookieOptions)` đặt cookie hết hạn. Theo mặc định, phương thức dùng các tùy chọn đã lưu trong thực thể hiện tại. Các tùy chọn được truyền vào ghi đè các trường tương ứng. Sau khi tải lại trang, hãy truyền `path` và `domain` ban đầu nếu đã thiết lập.
 
 **Trả về:** `void`
 

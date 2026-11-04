@@ -58,6 +58,8 @@ Removes a cookie by setting an empty value and negative expiration. Equivalent t
 
 - `update()` — Updates in-memory data by parsing values from `document.cookie`
 
+When reading `document.cookie` or the SSR `Cookie` header, the parser keeps the first non-empty value for each decoded name.
+
 ## Types
 
 ### `CookieOptions`

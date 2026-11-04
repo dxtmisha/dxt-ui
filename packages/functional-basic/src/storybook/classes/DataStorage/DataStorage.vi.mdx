@@ -12,7 +12,7 @@ Một lớp linh hoạt để tương tác với `localStorage` và `sessionStor
 
 - **Chuyển đổi Tự động** — tự động xử lý phân tích và chuyển đổi chuỗi JSON cho các cấu hình và đối tượng được lưu trữ.
 - **Bộ nhớ đệm Dựa trên Thời gian** — cho phép lưu các đối tượng cùng với mốc thời gian và tôn trọng các ràng buộc về tuổi đời (age) của dữ liệu trong quá trình truy xuất.
-- **Quản lý Tiền tố** — hỗ trợ cả tiền tố toàn cục và riêng biệt để cách ly cũng như gom nhóm các khóa trong `localStorage`.
+- **Quản lý Tiền tố** — dùng tiền tố chung của ứng dụng để nhóm các khóa lưu trữ.
 - **Tối ưu Bộ nhớ** — tạo ra các singleton cho những khóa giống nhau nhằm tránh các thao tác đọc đĩa bị lặp lại.
 - **Hỗ trợ SSR** — sử dụng cơ chế cách ly theo từng request trong quá trình render phía server để ngăn chặn rò rỉ dữ liệu giữa các phiên làm việc song song.
 
@@ -43,15 +43,15 @@ const session = new DataStorage('user_session', true)
 
 ### Truy cập Bộ lưu trữ
 
-- `get(defaultValue?: D, cache?: number): DataStorageGet<T, D>` — Truy xuất giá trị hiện được lưu trữ. Nếu thời gian cache được cung cấp, nó sẽ trả về `undefined` nếu dữ liệu đã quá hạn. Khi truyền giá trị mặc định, nó sẽ suy luận chính xác kiểu `T`.
-- `set(value?: T | (() => T)): T | undefined` — Thiết lập hoặc cập nhật giá trị trong cơ chế lưu trữ. Truyền `undefined` sẽ xóa mục đó.
+- `get(defaultValue?: D, cache?: number): DataStorageGet<T, D>` — Trả về giá trị đã lưu còn hiệu lực. Khi dữ liệu thiếu hoặc hết hạn, phương thức dùng giá trị mặc định đã truyền hoặc trả về `undefined`.
+- `set(value?: T | (() => T)): T | undefined` — Thiết lập hoặc cập nhật giá trị trong cơ chế lưu trữ. Truyền `null` hoặc `undefined` sẽ xóa mục đó.
 - `getIndex(): string` — Lấy tên khóa lưu trữ kèm tiền tố.
 - `remove(): this` — Xóa khóa tương ứng khỏi môi trường lưu trữ và thực thể trong bộ nhớ.
 - `update(): this` — Buộc thực thể bộ nhớ phải đồng bộ hóa với dữ liệu thô hiện tại bên trong các Storage API vật lý.
 
 ### Cấu hình
 
-- `static setPrefix(newPrefix: string): void` — Thay đổi tiền tố toàn cục áp dụng cho các thực thể mới. Tiền tố mặc định là `ui-storage`. Nên được gọi một lần khi khởi động ứng dụng.
+- `static setPrefix(newPrefix: string): void` — Thay đổi tiền tố toàn cục dùng để tạo khóa lưu trữ. Tiền tố mặc định là `ui-storage`. Nên được gọi một lần khi khởi động ứng dụng.
 
 > **Lưu ý về SSR**: Tiền tố được chủ ý lưu trữ ở cấp độ module như một cấu hình dùng chung cho toàn bộ tiến trình ứng dụng. Trong môi trường SSR, nó áp dụng toàn cục cho toàn bộ tiến trình Node.js thay vì được cô lập theo từng request riêng lẻ.
 
@@ -59,7 +59,7 @@ const session = new DataStorage('user_session', true)
 
 Lớp `DataStorage` hoàn toàn tương thích với Server-Side Rendering (SSR). Nó sử dụng một registry đặc biệt để cách ly các instance giữa các HTTP request khác nhau trên server.
 
-> Để tránh lỗi hydration (khi HTML render từ server khác với client), bạn nên gọi phương thức `get()` bên trong `useEffect` hoặc các hook chỉ chạy ở client. Trên server, `get()` sẽ luôn trả về `undefined` (hoặc `defaultValue`) vì `localStorage` không khả dụng.
+> Trên máy chủ, các giá trị được giữ trong bộ nhớ của yêu cầu hiện tại. Nếu dữ liệu lưu trong trình duyệt ảnh hưởng đến HTML, hãy đọc dữ liệu sau khi thành phần được gắn.
 
 ## Ví dụ
 

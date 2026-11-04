@@ -10,14 +10,14 @@ Lớp `ApiError` là một **Tiện ích chính (Tĩnh)** để quản lý bộ 
 
 - **Giao diện tĩnh** — quản lý tiêu chí lỗi và phân tích phản hồi mà không cần khởi tạo thủ công.
 - **Singleton an toàn cho SSR** — sử dụng `ServerStorage` để duy trì bộ lưu trữ lỗi riêng biệt giữa các yêu cầu khác nhau trong quá trình render phía máy chủ.
-- **Đăng ký mẫu** — API đơn giản để thêm các mẫu lỗi riêng lẻ hoặc danh sách hàng loạt để nhận dạng lỗi toàn cầu.
+- **Đăng ký quy tắc** — thêm từng quy tắc hoặc danh sách quy tắc vào kho lỗi hiện tại.
 
 ## Các phương thức
 
 ### Quản lý bộ lưu trữ
 
-- `getStorage(): ApiErrorStorage` — Lấy instance singleton nội bộ của bộ lưu trữ lỗi.
-- `add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void` — Thêm một hoặc nhiều mẫu lỗi vào bộ lưu trữ toàn cầu.
+- `getStorage(): ApiErrorStorage` — Trả về kho lỗi của yêu cầu hiện tại khi có ngữ cảnh SSR, hoặc kho lỗi dùng chung của trang trong trình duyệt.
+- `add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void` — Thêm một hoặc nhiều quy tắc vào kho lỗi hiện tại.
 
 ### Phân tích
 

@@ -284,6 +284,34 @@ describe('CookieStorage', () => {
       expect(CookieStorage.get('key2')).toBe('value=with=equals')
     })
 
+    it('should keep the more specific cookie after refreshing the browser cache', () => {
+      const name = 'displayMode'
+      const previousUrl = window.location.href
+      window.history.replaceState(null, '', '/app/settings')
+
+      try {
+        CookieStorage.set(name, 'regular', { path: '/' })
+        CookieStorage.set(name, 'compact', { path: '/app' })
+        expect(CookieStorage.get(name)).toBe('compact')
+
+        CookieStorage.update()
+
+        expect(CookieStorage.get(name)).toBe('compact')
+      } finally {
+        CookieStorage.remove(name, { path: '/app' })
+        CookieStorage.remove(name, { path: '/' })
+        window.history.replaceState(null, '', previousUrl)
+      }
+    })
+
+    it('should keep the first cookie for a decoded name in the SSR header', () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
+      CookieStorage.init(undefined, () => 'display%4Dode=compact; displayMode=regular; theme=dark')
+
+      expect(CookieStorage.get('displayMode')).toBe('compact')
+      expect(CookieStorage.get('theme')).toBe('dark')
+    })
+
     it('should protect against prototype pollution when cookie contains "__proto__" or "constructor"', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
       CookieStorage.init(undefined, () => '__proto__=polluted; constructor=polluted')

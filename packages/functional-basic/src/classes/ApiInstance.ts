@@ -556,7 +556,7 @@ export class ApiInstance {
           this.loading.hide()
         }
 
-        return await this.fetch(apiFetch, retryCount + 1)
+        return this.fetch(apiFetch, retryCount + 1)
       }
 
       if (

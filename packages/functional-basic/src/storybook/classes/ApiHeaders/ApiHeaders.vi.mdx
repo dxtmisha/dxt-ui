@@ -31,7 +31,7 @@ Giao thoa tiêu đề mặc định với những tiêu đề tùy chỉnh và t
 
 #### `getByRequest`
 
-Một phiên bản chuyên biệt của `get` để điều chỉnh tiêu đề dựa trên loại yêu cầu. Cụ thể, nó đảm bảo `Content-Type` không được thiết lập thủ công cho `FormData` để cho phép tạo boundary chính xác.
+Một phiên bản chuyên biệt của `get` để điều chỉnh tiêu đề theo loại yêu cầu. Với `FormData`, phương thức bỏ `Content-Type` khỏi tập tiêu đề mặc định và tiêu đề yêu cầu đã gộp để `fetch` tạo boundary multipart.
 
 **Tham số:**
 - `request?: ApiFetch['request']` — Dữ liệu yêu cầu (Đối tượng, FormData hoặc Chuỗi).

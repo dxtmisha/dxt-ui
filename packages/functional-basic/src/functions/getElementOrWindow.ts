@@ -20,7 +20,7 @@ export function getElementOrWindow<E extends ElementOrWindow = HTMLElement>(
   element?: ElementOrString<E> | null
 ): E | undefined {
   if (isWindow(element)) {
-    return element
+    return element as E
   }
 
   return getElement(element) as E | undefined

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, expectTypeOf } from 'vitest'
 import { executePromise } from '../executePromise'
 
 describe('executePromise', () => {
@@ -283,7 +283,9 @@ describe('executePromise', () => {
 
     it('should handle optional callback parameters smoothly', async () => {
       const executeOptional = async (optionalFn?: () => string) => {
-        return await executePromise(optionalFn)
+        const result = executePromise(optionalFn)
+        expectTypeOf(result).toEqualTypeOf<Promise<string | undefined>>()
+        return await result
       }
 
       expect(await executeOptional()).toBeUndefined()

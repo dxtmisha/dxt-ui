@@ -39,7 +39,7 @@ describe('ApiPreparation', () => {
     await expect(preparation.make(true, { path: 'test' })).resolves.toBeUndefined()
   })
 
-  it('should wait and retry when loading is true until the previous preparation finishes', async () => {
+  it('should wait until the previous preparation finishes', async () => {
     const preparation = new ApiPreparation()
 
     let resolveFirstCallback: (() => void) | undefined
@@ -70,6 +70,33 @@ describe('ApiPreparation', () => {
     expect(secondCallback).toHaveBeenCalledWith({ path: 'second' })
   })
 
+  it('should keep waiting while a preparation remains active after another finishes', async () => {
+    const preparation = new ApiPreparation()
+    let finishFirst: (() => void) | undefined
+    const firstPending = new Promise<void>((resolve) => {
+      finishFirst = resolve
+    })
+    const callback = vi.fn(async () => {}).mockReturnValueOnce(firstPending)
+
+    preparation.set(callback)
+    const first = preparation.make(true, { path: 'first' })
+    const second = preparation.make(true, { path: 'second' })
+
+    await vi.advanceTimersByTimeAsync(32 * 160)
+    await second
+    expect(callback).toHaveBeenNthCalledWith(2, { path: 'second' })
+
+    const third = preparation.make(true, { path: 'third' })
+    expect(callback).toHaveBeenCalledTimes(2)
+
+    finishFirst?.()
+    await first
+    await vi.advanceTimersByTimeAsync(160)
+    await third
+
+    expect(callback).toHaveBeenNthCalledWith(3, { path: 'third' })
+  })
+
   it('should reset loading state even if the preparation callback rejects or throws synchronously', async () => {
     const preparation = new ApiPreparation()
     const failingCallback = vi.fn(async () => {
@@ -95,7 +122,7 @@ describe('ApiPreparation', () => {
 
   it('should resolve when callback becomes undefined while waiting in go() or cleared via set(undefined)', async () => {
     class ExposedApiPreparation extends ApiPreparation {
-      setLoading(value: boolean): void {
+      setLoading(value: number): void {
         this.loading = value
       }
 
@@ -107,7 +134,7 @@ describe('ApiPreparation', () => {
     const preparation = new ExposedApiPreparation()
     preparation.set(async () => {})
     preparation.set(undefined)
-    preparation.setLoading(true)
+    preparation.setLoading(1)
 
     await expect(preparation.runGo()).resolves.toBeUndefined()
   })

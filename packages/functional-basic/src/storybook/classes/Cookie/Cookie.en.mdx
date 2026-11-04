@@ -48,7 +48,7 @@ Stores or updates a cookie value with specified options. Supports functions for 
 
 #### `remove`
 
-Removes a cookie by overwriting it with an empty string and setting Max-Age to `-1`, instructing the browser to instantly delete the record.
+`remove(options?: CookieOptions)` expires the cookie. It uses the options saved by the current instance by default. Passed options override the saved fields. After reloading, pass the original `path` and `domain` if they were set.
 
 **Returns:** `void`
 

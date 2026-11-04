@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ApiInstance } from '../ApiInstance'
 import { type ApiData, type ApiFetch, ApiMethodItem } from '../../types/apiTypes'
 import { Loading } from '../Loading'
+import { LoadingInstance } from '../LoadingInstance'
 import { ErrorCenter } from '../ErrorCenter'
 import { ApiCache } from '../ApiCache'
 import { ApiDefault } from '../ApiDefault'
@@ -111,6 +112,38 @@ describe('ApiInstance', () => {
     expect(script).toContain('type="application/json"')
   })
 
+  it('should hydrate responses by toData when server requests finish out of order', async () => {
+    const runtime = vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
+    const request = { path: 'items', hideLoading: true }
+    const body = { data: [{ id: 1 }], cursor: 'next' }
+
+    fetchMock
+      .mockImplementationOnce(async () => {
+        await new Promise<void>(resolve => setTimeout(resolve, 1))
+        return Response.json(body)
+      })
+      .mockResolvedValueOnce(Response.json(body))
+
+    const serverData = api.get(request)
+    const serverEnvelope = await api.get({ ...request, toData: false })
+
+    await vi.advanceTimersByTimeAsync(1)
+    expect(await serverData).toEqual(body.data)
+    expect(serverEnvelope).toMatchObject(body)
+
+    runtime.mockReturnValue(true)
+    document.body.insertAdjacentHTML('beforeend', api.getHydrationScript())
+    const browser = new ApiInstance('/api/')
+
+    const browserData = await browser.get({ ...request, toData: true })
+    const browserEnvelope = await browser.get({ ...request, toData: false })
+    await vi.runAllTimersAsync()
+
+    expect(browserData).toEqual(body.data)
+    expect(browserEnvelope).toMatchObject(body)
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+  })
+
   it('should reset instance status before starting a new top-level request', async () => {
     api.getStatus().setError('Previous error')
     expect(api.getStatus().getError()).toBe('Previous error')
@@ -155,6 +188,46 @@ describe('ApiInstance', () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(result.ok).toBe(true)
+  })
+
+  it('should keep another request loading when a retry rejects', async () => {
+    const loading = new LoadingInstance('api-instance-retry-loading')
+    const client = new ApiInstance('/api/', { loadingClass: loading })
+    let resolvePending!: (response: Response) => void
+    const pendingResponse = new Promise<Response>((resolve) => {
+      resolvePending = resolve
+    })
+    const error = new Error('Network failure on retry')
+    const headers = { 'Content-Type': 'application/json' }
+    fetchMock
+      .mockReturnValueOnce(pendingResponse)
+      .mockResolvedValueOnce(new Response('{}', { status: 503, headers }))
+      .mockRejectedValueOnce(error)
+
+    const pending = client.get({ path: 'pending', timeout: 0 })
+    try {
+      await vi.advanceTimersByTimeAsync(0)
+      expect(loading.get()).toBe(1)
+
+      const retry = client.get({
+        path: 'retry',
+        retry: 1,
+        retryDelay: 1,
+        timeout: 0,
+        hideError: true
+      })
+      const rejection = expect(retry).rejects.toBe(error)
+      await vi.advanceTimersByTimeAsync(1)
+      await rejection
+
+      expect(fetchMock).toHaveBeenCalledTimes(3)
+      expect(loading.get()).toBe(1)
+    } finally {
+      resolvePending(new Response('{}', { headers }))
+      await pending
+    }
+
+    expect(loading.get()).toBe(0)
   })
 
   it('should clear timeout timer when fetch rejects in makeQuery', async () => {

@@ -10,7 +10,7 @@ Một lớp chuyên dụng được thiết kế để xử lý các tác vụ v
 
 ## Các tính năng chính
 
-- **Thực thi tuần tự** — đảm bảo rằng các hook chuẩn bị được giải quyết từng cái một, ngăn chặn xung đột trong các hoạt động đồng thời (ví dụ: làm mới token bị trùng lặp).
+- **Chờ có giới hạn** — mỗi yêu cầu chờ các hook chuẩn bị đang chạy trong giới hạn riêng của mình.
 - **Chặn luồng toàn cục** — cung cấp một điểm vào và ra duy nhất cho tất cả lưu lượng mạng được khởi tạo bởi trình quản lý cha của nó.
 - **Phát lại yêu cầu** — các hook sau yêu cầu có thể báo hiệu hệ thống tự động thử lại một yêu cầu sau khi trạng thái thay đổi.
 
@@ -20,7 +20,7 @@ Một lớp chuyên dụng được thiết kế để xử lý các tác vụ v
 
 #### `make`
 
-Thực thi callback chuẩn bị đã đăng ký. Nếu một quá trình chuẩn bị khác đang diễn ra, nó sẽ đợi cho đến khi hoàn thành.
+Thực thi callback chuẩn bị đã đăng ký. Nếu có hook đang chạy, phương thức chờ chúng hoàn tất hoặc hết giới hạn chờ.
 
 **Tham số:**
 - `active: boolean` — Hook có được bật cho yêu cầu hiện tại hay không.
@@ -55,7 +55,7 @@ Kết quả thực thi của hook phân tích.
 
 Các quy tắc và điều kiện sau đây xác định cách hệ thống chuẩn bị đồng bộ hóa và quản lý các hook vòng đời:
 
-- **Đồng bộ hóa** — hệ thống sử dụng cơ chế thăm dò (khoảng thời gian 160ms) để đảm bảo rằng chỉ có một hook `setPreparation` thực thi tại một thời điểm. Nếu nhiều yêu cầu bắt đầu đồng thời, các cuộc gọi tiếp theo sẽ đợi tối đa 32 lần thăm dò (~5 giây) để cuộc gọi đầu tiên hoàn thành.
+- **Đồng bộ hóa** — mỗi yêu cầu kiểm tra các hook `setPreparation` đang chạy sau mỗi 160 ms, tối đa 32 lần. Khi hết giới hạn chờ, yêu cầu có thể bắt đầu hook của mình trong khi hook khác vẫn chạy. Yêu cầu mới tính thời gian chờ riêng khi còn bất kỳ hook nào đang chạy.
 - **Tiêm ngữ cảnh** — đối tượng `apiFetch` được truyền vào các hook theo dạng tham chiếu. Việc sửa đổi các thuộc tính của nó (như tiêu đề hoặc thân yêu cầu) bên trong `setPreparation` sẽ ảnh hưởng trực tiếp đến lệnh gọi mạng vật lý ngay sau đó.
 - **Điều khiển luồng (Reset)** — hook `setEnd` có thể trả về `{ reset: true }`. Khi cờ này được phát hiện, `ApiInstance` sẽ hủy chuỗi yêu cầu hiện tại và khởi động lại nó ngay lập tức từ giai đoạn chuẩn bị. Điều này chủ yếu được sử dụng để làm mới token tự động và thầm lặng.
 - **Phạm vi thực thi** — các hook chỉ chạy nếu chúng được bật rõ ràng trong cấu hình yêu cầu. Theo mặc định, `globalPreparation` và `globalEnd` được đặt thành true trong `ApiFetch`.

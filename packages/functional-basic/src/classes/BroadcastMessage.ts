@@ -49,7 +49,7 @@ export class BroadcastMessage<Message = unknown> {
     name: string,
     protected callback?: (event: MessageEvent<Message>) => void,
     protected callbackError?: (event: MessageEvent<Message>) => void,
-    errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
+    protected readonly errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {
     if (isDomRuntime()) {
       try {
@@ -57,7 +57,7 @@ export class BroadcastMessage<Message = unknown> {
         this.channel.onmessage = this.update
         this.channel.onmessageerror = this.updateError
       } catch (error) {
-        errorCenter.on({
+        this.errorCenter.on({
           group: 'broadcast',
           code: 'error',
           details: error
@@ -115,13 +115,24 @@ export class BroadcastMessage<Message = unknown> {
 
   /**
    * Sends a message through the broadcast channel.
+   * Reports synchronous send errors to the error center.
    *
    * Отправляет сообщение через канал вещания.
+   * Передаёт синхронные ошибки отправки в центр ошибок.
    * @param message message data to send / данные сообщения для отправки
    * @returns this instance for chaining / этот экземпляр для цепочки вызовов
    */
   post(message: Message): this {
-    this.channel?.postMessage(message)
+    try {
+      this.channel?.postMessage(message)
+    } catch (error) {
+      this.errorCenter.on({
+        group: 'broadcast',
+        code: 'error',
+        details: error
+      })
+    }
+
     return this
   }
 }

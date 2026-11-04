@@ -10,14 +10,14 @@ The `ApiError` class is a **Primary Utility (Static)** for managing API error st
 
 - **Static Interface** — manage error criteria and analyze responses without manual instantiation.
 - **SSR-Safe Singleton** — utilizes `ServerStorage` to maintain isolated error storage across different requests during server-side rendering.
-- **Pattern Registration** — simple API for adding individual error patterns or bulk lists for global error identification.
+- **Pattern Registration** — adds individual rules or lists to the current error storage.
 
 ## Methods
 
 ### Storage Management
 
-- `getStorage(): ApiErrorStorage` — Retrieves the internal singleton instance of the error storage.
-- `add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void` — Adds one or more error patterns to the global storage.
+- `getStorage(): ApiErrorStorage` — Returns the current request's storage when an SSR context is available, or the shared storage for the page in the browser.
+- `add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void` — Adds one or more error patterns to the current storage.
 
 ### Analysis
 

@@ -7,17 +7,17 @@ import { isString } from './isString'
 const MAX_LOCATION_LENGTH = 64
 
 /**
- * Regular expression for structural validation of URL-safe BCP-47 locale tags /
- * Регулярное выражение для структурной проверки URL-безопасных BCP-47 тегов локали
+ * Regular expression for URL-safe locale codes with hyphen or underscore separators /
+ * Регулярное выражение для URL-безопасных кодов локали с дефисом или подчёркиванием
  */
 const REGEXP_SAFE_LOCALE = /^[a-zA-Z]{2,3}(?:[-_][a-zA-Z0-9]{1,8})*$/
 
 /**
- * Validates and normalizes an external locale code string.
- * Ensures URL safety and ECMA-402 BCP-47 compatibility.
+ * Trims and validates an external locale code for use in URLs.
+ * Preserves the original casing and separators.
  *
- * Валидирует и нормализует внешнюю строку кода локали.
- * Обеспечивает безопасность для URL и совместимость со стандартом ECMA-402 BCP-47.
+ * Убирает крайние пробелы и проверяет внешний код локали для использования в URL.
+ * Сохраняет исходный регистр и разделители.
  * @param code candidate locale code / проверяемый код локали
  * @returns valid locale code or undefined / валидный код локали или undefined
  */

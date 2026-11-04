@@ -243,7 +243,23 @@ describe('ApiResponse', () => {
     expect(result).toBeUndefined()
   })
 
-  it('should reject and clean up loading state when response function throws or rejects', async () => {
+  it('should leave the first matching factory for the asynchronous request', async () => {
+    const response = vi.fn(async () => ({ data: ['Ada'] }))
+    const request = { path: 'users', method: ApiMethodItem.get }
+    apiResponse.add([
+      { ...request, response },
+      { ...request, response: { data: ['fallback'] } }
+    ])
+
+    expect(apiResponse.emulatorAsync(request)).toBeUndefined()
+    expect(response).not.toHaveBeenCalled()
+
+    await expect(apiResponse.emulator(request)).resolves.toEqual({ data: ['Ada'] })
+    expect(response).toHaveBeenCalledOnce()
+    expect(apiResponse.emulatorAsync(request)).toEqual({ data: ['fallback'] })
+  })
+
+  it('should reject and clean up loading state when the response promise rejects', async () => {
     apiResponse.add({
       path: 'error-test',
       method: ApiMethodItem.get,
@@ -260,6 +276,24 @@ describe('ApiResponse', () => {
     await expect(promise).rejects.toThrow('Emulator failed')
 
     await vi.advanceTimersByTimeAsync(3000)
+    expect(document.body.classList.contains('d-response-loading')).toBe(false)
+  })
+
+  it('should reject and clean up loading state when a synchronous factory throws', async () => {
+    const request = { path: 'users', method: ApiMethodItem.get }
+    const error = new Error('Cannot build fixture')
+    apiResponse.add({
+      ...request,
+      response: () => {
+        throw error
+      }
+    })
+
+    const promise = apiResponse.emulator(request)
+    expect(document.body.classList.contains('d-response-loading')).toBe(true)
+    await expect(promise).rejects.toBe(error)
+
+    await vi.advanceTimersByTimeAsync(2400)
     expect(document.body.classList.contains('d-response-loading')).toBe(false)
   })
 })

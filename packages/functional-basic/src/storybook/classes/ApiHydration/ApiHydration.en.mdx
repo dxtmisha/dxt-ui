@@ -42,10 +42,10 @@ Returns a string representation of the captured hydration data, wrapped in a saf
 #### `ApiHydrationList`
 A list of captured API responses for hydration.
 - `path: string` — The API endpoint path.
-- `method: ApiMethodItem` — The HTTP method used.
-- `request: any` — The request payload.
+- `method: ApiMethod` — The HTTP method used.
+- `request?: ApiFetch['request']` — The request payload.
+- `toData?: boolean` — The response unwrapping mode used for matching. New records use `true` when the request omits `toData`.
 - `response: any` — The server response data.
-- `global?: boolean` — Global usage flag.
 
 ## Guide: Hydration Mechanics
 

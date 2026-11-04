@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Một tiện ích lặp qua mảng các đối tượng và trả về một mảng mới chỉ bao gồm các giá trị từ một khóa (thuộc tính) cụ thể của mỗi đối tượng. Về cơ bản, điều này tương đương với cú pháp `Array.prototype.map(item => item[key])` nhưng được định kiểu tĩnh chặt chẽ.
 
 **Tham số:**
-- `array: ObjectOrArray<T> | null | undefined` — Một mảng (hoặc một đối tượng từ điển) chứa các phần tử kiểu `T`, hoặc `null`/`undefined`.
+- `array: readonly (T | null | undefined)[] | ObjectItem<T | null | undefined> | null | undefined` — Mảng chỉ đọc hoặc từ điển có các phần tử kiểu `T | null | undefined`. Tập hợp cũng có thể là `null` hoặc `undefined`.
 - `column: K` — Khóa (tên thuộc tính) có các giá trị mà bạn muốn trích xuất.
 
 **Trả về:**

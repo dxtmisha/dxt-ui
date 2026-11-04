@@ -20,8 +20,8 @@ export class ApiPreparation {
   /** Function for call after the request / Функция для вызова после запроса */
   protected callbackEnd?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>
 
-  /** Is the preparation in progress / Идет ли подготовка */
-  protected loading = false
+  /** Number of active preparations / Количество активных подготовок */
+  protected loading = 0
 
   /**
    * Modifies the function to be called before the request.
@@ -98,7 +98,7 @@ export class ApiPreparation {
     limit: number = DEFAULT_PREPARATION_LIMIT
   ): Promise<void> {
     if (
-      this.loading
+      this.loading > 0
       && limit > 0
     ) {
       return new Promise<void>((resolve) => {
@@ -109,7 +109,7 @@ export class ApiPreparation {
     }
 
     if (this.callback) {
-      this.loading = true
+      this.loading++
 
       try {
         await this.callback(apiFetch)
@@ -117,7 +117,7 @@ export class ApiPreparation {
         // Ignore callback failure to allow the request lifecycle to proceed /
         // Игнорируем ошибку коллбэка, чтобы жизненный цикл запроса продолжился
       } finally {
-        this.loading = false
+        this.loading--
       }
     }
   }

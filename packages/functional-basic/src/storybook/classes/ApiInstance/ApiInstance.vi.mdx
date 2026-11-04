@@ -111,7 +111,7 @@ Hỗ trợ phương pháp nối chuỗi (chaining methods) trả về đối tư
 - `init?: RequestInit` — các tùy chọn bổ sung truyền thẳng vào `fetch()` nội tại (CORS, chế độ cache, v.v.).
 - `timeout?: number` — thời gian chờ yêu cầu tính bằng mili giây. Mặc định: `16000`ms.
 - `controller?: AbortController` — bộ điều khiển để hủy yêu cầu.
-- `retry?: number` — số lần thử lại khi thất bại.
+- `retry?: number` — số lần thử lại sau khi nhận phản hồi HTTP có mã trạng thái từ `400` trở lên.
 - `retryDelay?: number` — độ trễ cơ bản giữa các lần thử lại tính bằng mili giây. Mặc định: `64`ms. Jitter được sử dụng để ngăn chặn vấn đề thundering herd.
 - `endResetLimit?: number` — giới hạn đệ quy thử lại thông qua `setEnd` với `reset: true`. Mặc định: `8`.
 - `wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — hàm wrapper cục bộ để thực thi yêu cầu cụ thể này.

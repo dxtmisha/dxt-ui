@@ -45,6 +45,8 @@ const apiResponse = new ApiResponse(myApiDefault)
 
 Синхронная версия эмулятора. Возвращает мок-ответ немедленно, без задержек и состояния загрузки. Этот метод работает только в среде DOM.
 
+Если первый подходящий ответ задан фабрикой, метод возвращает `undefined` и оставляет мок доступным для `emulator()`.
+
 **Параметры:**
 - `apiFetch: ApiFetch` — Свойства запроса для эмуляции.
 
@@ -52,7 +54,7 @@ const apiResponse = new ApiResponse(myApiDefault)
 
 ### Проверка
 
-- `get(path: string = '', method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Синхронно проверяет наличие подходящего мок-запроса в кэше.
+- `get(path: string = '', method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean, toData?: boolean, staticOnly = false): ApiResponseItem | undefined` — Ищет подходящий ответ. Если `toData` задан и при поиске, и в записи, значения должны совпадать. При `staticOnly` подходящая фабрика остаётся доступной для асинхронного выполнения.
 - `getList(): (ApiResponseItem & Record<string, unknown>)[]` — Возвращает список всех зарегистрированных конфигураций эмулятора.
 
 ### Конфигурация
@@ -68,6 +70,7 @@ const apiResponse = new ApiResponse(myApiDefault)
 - `method: ApiMethod` — HTTP-метод (GET, POST и т.д.).
 - `response: any | ((request?: any) => any)` — Данные мока или функция для их генерации.
 - `request?: ApiFetch['request'] | '*any'` — Опциональные данные запроса для сопоставления.
+- `toData?: boolean` — Необязательный режим разворачивания ответа для сопоставления.
 - `lag?: boolean` — Нужно ли имитировать задержку сети.
 - `disable?: any` — Условие для отключения мока (boolean или функция).
 - `isForGlobal?: boolean` — Пометить как глобальный мок (скрыт из getList).

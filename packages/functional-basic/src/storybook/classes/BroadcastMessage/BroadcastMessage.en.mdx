@@ -43,7 +43,7 @@ const messenger = new BroadcastMessage<string>(
 
 ### Action
 
-- `post(message: Message): this` — Sends a message to all listeners in the same channel.
+- `post(message: Message): this` — Sends a message to listeners in the same channel. Reports synchronous send errors to the error center and returns the instance.
 - `destroy(): this` — Closes the channel and stops listening for messages.
 
 ### Configuration and Access

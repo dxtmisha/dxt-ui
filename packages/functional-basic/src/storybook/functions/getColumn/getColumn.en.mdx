@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 A utility that iterates over an array of objects and returns a new array consisting only of the values from a specific key (property) of each object. Essentially, this is a strongly-typed equivalent of `Array.prototype.map(item => item[key])`.
 
 **Parameters:**
-- `array: ObjectOrArray<T> | null | undefined` — An array (or a dictionary object) containing items of type `T`, or `null`/`undefined`.
+- `array: readonly (T | null | undefined)[] | ObjectItem<T | null | undefined> | null | undefined` — A readonly array or dictionary with entries of type `T | null | undefined`. The collection can also be `null` or `undefined`.
 - `column: K` — The key (property name) whose values you wish to extract.
 
 **Returns:**

@@ -54,8 +54,17 @@ export class ApiHeaders {
     value?: Record<string, string> | null,
     type: string | undefined | null = 'application/json;charset=UTF-8'
   ): Record<string, string> | undefined {
-    if (typeof FormData !== 'undefined' && request instanceof FormData) {
-      return this.get(value, null)
+    if (
+      typeof FormData !== 'undefined'
+      && request instanceof FormData
+    ) {
+      const headers = this.get(value, null)
+
+      if (headers) {
+        delete headers['content-type']
+      }
+
+      return headers
     }
 
     return this.get(value, type)

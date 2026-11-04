@@ -171,14 +171,14 @@ describe('getColumn', () => {
     })
 
     it('should safely return an empty array when passed null or undefined as the collection', () => {
-      expect(getColumn(undefined, 'name')).toEqual([])
-      expect(getColumn(null, 'name')).toEqual([])
+      expect(getColumn<UserRecord, 'name'>(undefined, 'name')).toEqual([])
+      expect(getColumn<UserRecord, 'name'>(null, 'name')).toEqual([])
     })
 
     it('should handle null Elements inside an array via optional chaining (item?.[column])', () => {
       const sparseItems = [
         { id: 1, name: 'First' },
-        null as unknown as UserRecord,
+        null,
         { id: 3, name: 'Third' }
       ]
 

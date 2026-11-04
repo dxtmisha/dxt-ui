@@ -11,6 +11,6 @@ import { isArray } from './isArray'
  * @param value the value to be converted into an array / значение, которое необходимо преобразовать в массив
  * @returns an array containing the provided value / массив, содержащий переданное значение
  */
-export function toArray<T>(value: T): T extends unknown[] ? T : [T] {
-  return (isArray(value) ? value : [value]) as T extends unknown[] ? T : [T]
+export function toArray<T>(value: T): T extends readonly unknown[] ? T : [T] {
+  return (isArray(value) ? value : [value]) as T extends readonly unknown[] ? T : [T]
 }

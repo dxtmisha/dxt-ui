@@ -43,7 +43,7 @@ const messenger = new BroadcastMessage<string>(
 
 ### Hành động
 
-- `post(message: Message): this` — Gửi tin nhắn đến tất cả những người đang lắng nghe trong kênh đã cho.
+- `post(message: Message): this` — Gửi tin nhắn đến các trình nghe trong cùng một kênh. Khi xảy ra lỗi gửi đồng bộ, phương thức báo lỗi cho trung tâm xử lý lỗi và trả về thực thể.
 - `destroy(): this` — Đóng kênh và ngừng lắng nghe tin nhắn.
 
 ### Cấu hình và Truy cập

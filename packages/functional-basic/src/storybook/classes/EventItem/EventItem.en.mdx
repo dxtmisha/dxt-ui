@@ -115,6 +115,8 @@ If the event type is set to `resize`, the class automatically uses `ResizeObserv
 ### `scroll-sync`
 A special type for optimized scrolling. Internally uses `requestAnimationFrame`, preventing unnecessary handler calls and increasing performance.
 
+A queued frame calls the handler only for the listener activation that scheduled it. Switching the target discards pending events from the old target.
+
 ## Examples
 
 ### Dynamic Element Switching

@@ -43,7 +43,7 @@ if (errorItem.code === 'USER_NOT_FOUND') {
 
 ### ApiErrorStorageItem
 
-- `url: string | RegExp` — URL string or regular expression to match the request URL.
+- `url: string | RegExp` — URL string or regular expression to match the request URL. Patterns with `g` or `y` start each check at position `0` and keep the original pattern's `lastIndex` intact.
 - `method: ApiMethodItem` — HTTP method required for the match.
 - `code?: string | number` — Optional error code to match against the JSON body.
 - `status?: number` — Optional HTTP status code to match.

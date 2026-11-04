@@ -11,10 +11,11 @@ import { executeFunction } from './executeFunction'
  * @returns promise resolving to the execution result / промис, разрешающийся результатом выполнения
  */
 export async function executePromise<T = void, Args extends unknown[] = unknown[]>(
-  callback?: ((...args: Args) => PromiseLike<T> | T) | PromiseLike<T> | T,
-  ...args: Args
+  ...[callback, ...args]:
+    | [callback: ((...args: Args) => PromiseLike<T> | T) | PromiseLike<T> | T, ...args: Args]
+    | (undefined extends T ? [] : never)
 ): Promise<Awaited<T>> {
-  const data = executeFunction(callback, ...args)
+  const data = executeFunction(callback, ...args as Args)
 
   return await data as Awaited<T>
 }

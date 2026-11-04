@@ -49,6 +49,7 @@ export class ApiHydration {
       path,
       method = ApiMethodItem.get,
       request,
+      toData = true,
       global = method === ApiMethodItem.get
     } = apiFetch
 
@@ -64,6 +65,7 @@ export class ApiHydration {
       path,
       method,
       request,
+      toData,
       response
     })
   }

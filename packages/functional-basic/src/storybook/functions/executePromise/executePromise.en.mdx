@@ -9,11 +9,11 @@ A robust utility for safely executing and awaiting results from flexible sources
 Under the hood, it leverages `executeFunction` to resolve callables and then ensures that if the result is a `Promise`, it is properly awaited.
 
 **Parameters:**
-- `callback?: ((...args: Args) => PromiseLike<T> | T) | PromiseLike<T> | T` (optional) — The source to execute or resolve.
+- `callback` — A function, promise, or value. An empty call resolves to `undefined` and is allowed when the result type accepts it.
 - `...args: Args` (optional) — Arguments to pass to the function if `callback` is callable.
 
 **Returns:**
-`Promise<Awaited<T>>` — A promise that resolves to the final computed or provided value.
+`Promise<Awaited<T>>` — A promise that resolves to the computed or provided value, including `undefined` when the source can be absent.
 
 
 ```typescript

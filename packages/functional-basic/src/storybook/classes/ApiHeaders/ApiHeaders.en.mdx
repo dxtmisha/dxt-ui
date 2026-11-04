@@ -31,7 +31,7 @@ Intersects default headers with custom ones and injects `Content-Type`. If the `
 
 #### `getByRequest`
 
-A specialized version of `get` that adjusts headers based on the request type. Specifically, it ensures `Content-Type` is not manually set for `FormData` to allow correct boundary generation.
+A specialized version of `get` that adjusts headers based on the request type. For `FormData`, it removes `Content-Type` from the merged default and per-request headers so that `fetch` can generate the multipart boundary.
 
 **Parameters:**
 - `request?: ApiFetch['request']` — The request payload (Object, FormData, or String).

@@ -33,9 +33,9 @@ export class ApiError {
   }
 
   /**
-   * Retrieves the singleton instance of the API error storage.
+   * Retrieves the API error storage for the current context.
    *
-   * Возвращает синглтон-экземпляр хранилища ошибок API.
+   * Возвращает хранилище ошибок API для текущего контекста.
    * @returns error storage instance / экземпляр хранилища ошибок
    */
   static getStorage(): ApiErrorStorage {

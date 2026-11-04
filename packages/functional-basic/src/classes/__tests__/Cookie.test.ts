@@ -185,16 +185,53 @@ describe('Cookie', () => {
   })
 
   describe('remove', () => {
-    it('should remove data by setting value to undefined via set(undefined) and expiring cookie in DOM', () => {
+    it('should clear the value and expire the cookie in DOM', () => {
       const cookie = new Cookie('toRemove')
-      const setSpy = vi.spyOn(cookie, 'set')
 
       cookie.set('activeValue')
       cookie.remove()
 
-      expect(setSpy).toHaveBeenLastCalledWith(undefined)
       expect(cookie.get()).toBeUndefined()
       expect(document.cookie).not.toContain('toRemove=activeValue')
+    })
+
+    it.each([
+      { scenario: 'using the saved options', reload: false },
+      { scenario: 'after reloading with explicit options', reload: true }
+    ])('should remove a cookie with a custom path $scenario', ({ reload }) => {
+      const name = 'scopedCookie'
+      const options = { path: '/app' }
+      const previousUrl = window.location.href
+      window.history.replaceState(null, '', '/app/settings')
+
+      try {
+        const cookie = Cookie.getInstance<string>(name)
+        cookie.set('compact', options)
+        expect(document.cookie).toContain(`${name}=compact`)
+
+        if (reload) {
+          ServerStorage.reset()
+          CookieStorage.reset()
+
+          const restored = Cookie.getInstance<string>(name)
+          expect(restored).not.toBe(cookie)
+          expect(restored.get()).toBe('compact')
+          restored.remove(options)
+          expect(restored.get()).toBeUndefined()
+        } else {
+          cookie.remove()
+          expect(cookie.get()).toBeUndefined()
+        }
+
+        expect(document.cookie).not.toContain(`${name}=`)
+
+        ServerStorage.reset()
+        CookieStorage.reset()
+        expect(Cookie.getInstance<string>(name).get()).toBeUndefined()
+      } finally {
+        CookieStorage.remove(name, options)
+        window.history.replaceState(null, '', previousUrl)
+      }
     })
 
     it('should return defaultValue on get after remove', () => {
