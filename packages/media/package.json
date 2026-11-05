@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/media",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "Media resources, vector icon libraries, and geographical datasets for DXT UI — file classification, social networks, country flags, and ISO 3166-1 country metadata. Framework-agnostic, tree-shakeable, zero dependencies.",
   "keywords": [

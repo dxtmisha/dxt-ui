@@ -17,8 +17,8 @@ export type GeoDate
     | 'minute'
     | 'second'
 
-/** First day of week code (0 = Sunday, 1 = Monday, 6 = Saturday) / Код первого дня недели (0 = воскресенье, 1 = понедельник, 6 = суббота) */
-export type GeoFirstDay = 1 | 6 | 0
+/** First day of week code (0 = Sunday, 1 = Monday, 5 = Friday, 6 = Saturday) / Код первого дня недели (0 = воскресенье, 1 = понедельник, 5 = пятница, 6 = суббота) */
+export type GeoFirstDay = 1 | 6 | 5 | 0
 
 /** Default first day of the week ('Mo' = Monday) / Первый день недели по умолчанию ('Mo' = понедельник) */
 export const GEO_DEFAULT_FIRST_DAY = 'Mo'

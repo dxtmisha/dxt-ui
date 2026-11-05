@@ -150,7 +150,7 @@ describe('Datetime', () => {
   })
 
   describe('First Day Code', () => {
-    it('should return 1 for Monday, 0 for Sunday, and 6 for Saturday', () => {
+    it('should return 1 for Monday, 0 for Sunday, 6 for Saturday, and 5 for Friday', () => {
       const datetime = new Datetime(baseDate)
       const intl = datetime.getIntl()
 
@@ -162,6 +162,9 @@ describe('Datetime', () => {
 
       vi.spyOn(intl, 'getFirstDay').mockReturnValue('Sa')
       expect(datetime.getFirstDayCode()).toBe(6)
+
+      vi.spyOn(intl, 'getFirstDay').mockReturnValue('Fr')
+      expect(datetime.getFirstDayCode()).toBe(5)
     })
   })
 

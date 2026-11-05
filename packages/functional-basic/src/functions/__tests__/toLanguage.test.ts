@@ -8,14 +8,12 @@ describe('toLanguage', () => {
   })
 
   describe('Direct language codes via GeoList', () => {
-    it('returns 2- and 3-letter language codes registered in GeoList', () => {
+    it('returns 2-letter language codes registered in GeoList', () => {
       expect(toLanguage('en')).toBe('en')
       expect(toLanguage('ru')).toBe('ru')
       expect(toLanguage('vi')).toBe('vi')
       expect(toLanguage('de')).toBe('de')
       expect(toLanguage('fr')).toBe('fr')
-      expect(toLanguage('cmn')).toBe('cmn')
-      expect(toLanguage('fil')).toBe('fil')
     })
 
     it('returns empty string for uppercase country-only codes, non-registered codes, or unknown tokens', () => {
@@ -36,7 +34,6 @@ describe('toLanguage', () => {
       expect(toLanguage('ru-RU')).toBe('ru')
       expect(toLanguage('vi-VN')).toBe('vi')
       expect(toLanguage('de-DE')).toBe('de')
-      expect(toLanguage('cmn-SG')).toBe('cmn')
     })
 
     it('extracts language code from reversed country-language format', () => {

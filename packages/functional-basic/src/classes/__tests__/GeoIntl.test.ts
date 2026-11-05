@@ -331,6 +331,14 @@ describe('GeoIntl', () => {
       expect(saturdayList[1]?.value).toBe(6) // Saturday
       expect(saturdayList[2]?.value).toBe(0) // Sunday
       expect(saturdayList[7]?.value).toBe(5) // Friday
+
+      // Friday-first locale ('Fr' -> 5, e.g. Maldives)
+      Geo.add('MV', { firstDay: 'Fr' })
+      const fridayFirstIntl = new GeoIntl('dv-MV')
+      const fridayList = fridayFirstIntl.weekdays()
+      expect(fridayList[1]?.value).toBe(5) // Friday
+      expect(fridayList[2]?.value).toBe(6) // Saturday
+      expect(fridayList[7]?.value).toBe(4) // Thursday
     })
   })
 

@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-11-05
+
+### Added
+- **ISO 3166-1 Geographical Dataset (`geo.json`)**:
+  - Added 16 territories with full geographical and phone metadata (`AX`, `BL`, `BQ`, `BV`, `CC`, `CX`, `EH`, `GG`, `GP`, `HM`, `IM`, `MF`, `PM`, `PN`, `PR`, `SJ`) to achieve a 1-to-1 match with `GeoFlag.flags` (246 entries total).
+  - Added `"countryAlternative": ["IC"]` to `ES` (Spain) for Canary Islands resolution.
+  - Added `languageAlternative` mappings for common BCP 47 and legacy ISO 639-1 language codes:
+    - `NO` (Norway): `["nb", "nn"]` (Norwegian Bokmål and Nynorsk).
+    - `PH` (Philippines): `["fil"]` (Filipino).
+    - `ID` (Indonesia): `["in"]` (legacy Indonesian code).
+    - `IL` (Israel): added `"iw"` to `["il", "iw"]` (legacy Hebrew code).
+  - Added `nameFormat` configurations (`"lf"` for `CN`, `HK`, `HU`, `JP`, `KH`, `KP`, `KR`, `MN`, `MO`, `TW`; `"lsf"` for `BY` and `VN`).
+  - Expanded `CA` (Canada) `phoneMask` list with all 56 regional NANP area codes (including `+1-622-***-****`) for accurate distinction from `US` (`+1`).
+
+### Changed
+- **Language Standardization & Primary Block Ordering (`geo.json`)**:
+  - Replaced 3-letter ISO 639-3 language codes (`crs`, `gil`, `niu`, `pau`, `pis`, `tet`, `tkl`, `tvl`, `wls`) with standard 2-letter ISO 639-1 codes (`en`, `fr`, `pt`) across `CK`, `KI`, `NF`, `NU`, `PW`, `SB`, `SC`, `TK`, `TL`, `TV`, `WF`, and updated `VA` to `"language": "it"` with `"languageAlternative": ["la"]`.
+  - Updated `ZA` (South Africa) primary language to `"en"` with `"languageAlternative": ["zu", "af", "xh"]`.
+  - Moved 6 countries with unique primary languages (`ER`, `GL`, `IN`, `MW`, `NR`, `SI`) into the primary language block (Block 1) and sorted both blocks consistently (preserving `GP` before `BL` and `MA` before `EH` for shared phone prefix priority).
+- **Timezones (`zone`) & First Day of Week (`firstDay`)**:
+  - Replaced all `"firstDay": null` values with valid CLDR weekday codes (`"Mo"`, `"Su"`, `"Sa"`) across all 246 entries.
+  - Updated `zone` identifiers to canonical IANA timezone names (e.g. `Europe/Kyiv`, `America/Nuuk`, `Asia/Kolkata`, `Asia/Yangon`, `Asia/Kathmandu`, `Asia/Ho_Chi_Minh`, `Atlantic/Faroe`) and specific country timezones (`Europe/Sarajevo`, `Europe/Zagreb`, `Europe/Podgorica`, `Europe/Skopje`, `Europe/Ljubljana`, `Europe/Vaduz`, `Europe/San_Marino`, `Europe/Vatican`, `Africa/Lusaka`, `Africa/Harare`, etc.).
+- **Phone Codes (`phoneCode`), Trunk Prefixes (`phoneWithin`), and Masks (`phoneMask`)**:
+  - Standardized NANP (`+1-XXX`) territories with full area codes in `phoneCode` and `"phoneWithin": "1"`.
+  - Added `phoneWithin` national trunk prefixes (`"0"`, `"1"`, `"8"`, `"06"`) and updated `phoneMask` definitions across all 246 entries according to current ITU-T E.164 numbering plans (including 10-digit `CI`, 9-digit `CM` and `GN`, 8-digit `PF`, `KZ` `+7-6`/`+7-7` mobile/landline ranges, `YT` `+262-*****-****`, and multi-length masks).
+  - Standardized property ordering across all objects in `geo.json` and simplified single-element `phoneMask` arrays to string literals.
+
+### Removed
+- **Deprecated / Non-Flag Territory Entries (`geo.json`)**:
+  - Removed standalone `AN`, `IC`, and `XK` entries (migrating `AN` and `IC` into `countryAlternative` under `CW` and `ES`).
+
 ## [1.0.0] - 2026-10-29
 
 ### Added

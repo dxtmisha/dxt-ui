@@ -196,6 +196,8 @@ export class Datetime {
 
     if (value === 'Sa') {
       return 6
+    } else if (value === 'Fr') {
+      return 5
     } else if (value === 'Su') {
       return 0
     } else {

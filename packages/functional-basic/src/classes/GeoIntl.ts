@@ -920,7 +920,13 @@ export class GeoIntl {
       if (this.hasIntlDateTimeFormat()) {
         const date = new Date(2000, 0, 2)
         const format = new Intl.DateTimeFormat(this.getLocation(), { weekday: style || 'long' })
-        const firstDayOffset = this.geo.firstDay === 'Mo' ? 1 : this.geo.firstDay === 'Sa' ? -1 : 0
+        const firstDayOffset = this.geo.firstDay === 'Mo'
+          ? 1
+          : this.geo.firstDay === 'Sa'
+            ? -1
+            : this.geo.firstDay === 'Fr'
+              ? -2
+              : 0
 
         date.setDate(date.getDate() + firstDayOffset)
 
