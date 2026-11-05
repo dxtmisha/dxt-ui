@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `toKebabCase`
 
-Converts a text string to `kebab-case` format. The function converts all letters to lowercase and replaces spaces, special characters, and case transitions (CamelCase) with dashes.
+Converts an ASCII identifier to `kebab-case`: removes characters other than A–Z/a–z letters, digits, dashes, dots, underscores and spaces; replaces runs of spaces, dots and underscores with a dash and converts letter case. Existing dashes are preserved. Returns `''` for `null`, `undefined` and an empty string. Adjacent uppercase letters are grouped: `XMLHttpRequest` → `xmlhttp-request`.
 
 **Parameters:**
-- `value?: string` — The original string to convert.
+- `value?: string | null` — The original string to convert.
 
 **Returns:**
 `string` — The string in `kebab-case` format.

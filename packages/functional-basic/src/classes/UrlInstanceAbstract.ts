@@ -2,6 +2,8 @@
 
 import { executeFunction } from '../functions/executeFunction'
 import { forEach } from '../functions/forEach'
+import { getObjectNull } from '../functions/getObjectNull'
+import { hasKey } from '../functions/hasKey'
 
 /**
  * Base abstract class for working with URL-based states (Hash, Query).
@@ -12,7 +14,7 @@ export abstract class UrlInstanceAbstract {
   /** URL state data record / Запись данных состояния URL */
   protected data?: Record<string, unknown>
   /** Watchers map for URL state variables / Карта слушателей для переменных состояния URL */
-  protected watch: Record<string, ((value: unknown) => void)[]> = Object.create(null)
+  protected watch: Record<string, ((value: unknown) => void)[]> = getObjectNull()
   /** Update block flag / Флаг блокировки обновления */
   protected block = false
   /** Debounce timer instance / Экземпляр таймера задержки */
@@ -35,14 +37,14 @@ export abstract class UrlInstanceAbstract {
     const data = this.getData()
 
     if (
-      !Object.prototype.hasOwnProperty.call(data, name)
+      !hasKey(data, name)
       && defaultValue !== undefined
     ) {
       this.set(name, defaultValue)
     }
 
     return (
-      Object.prototype.hasOwnProperty.call(data, name)
+      hasKey(data, name)
         ? data[name]
         : undefined
     ) as T
@@ -62,7 +64,7 @@ export abstract class UrlInstanceAbstract {
   ): this {
     const data = this.getData()
     const value = executeFunction(callback)
-    const currentValue = Object.prototype.hasOwnProperty.call(data, name)
+    const currentValue = hasKey(data, name)
       ? data[name]
       : undefined
 
@@ -134,9 +136,9 @@ export abstract class UrlInstanceAbstract {
   }
 
   /**
-   * Update variables from URL string.
+   * Initializes the instance on first reload, then refreshes data from the URL.
    *
-   * Обновление переменных из строки URL.
+   * Инициализирует экземпляр при первой перезагрузке, затем обновляет данные из URL.
    * @returns this instance / текущий экземпляр
    */
   reload(): this {
@@ -149,7 +151,12 @@ export abstract class UrlInstanceAbstract {
     } else {
       clearTimeout(this.reloadTimer)
       this.reloadTimer = undefined
-      this.initData()
+
+      if (this.data) {
+        this.initData()
+      } else {
+        this.init()
+      }
     }
 
     return this
@@ -207,17 +214,18 @@ export abstract class UrlInstanceAbstract {
   protected abstract init(): this
 
   /**
-   * Reads data from the URL and triggers watchers.
+   * Publishes data read from the URL before notifying watchers.
    *
-   * Считывает данные из URL и вызывает наблюдателей.
+   * Публикует считанные из URL данные перед уведомлением наблюдателей.
    * @protected
    * @returns this instance / текущий экземпляр
    */
   protected initData(): this {
     const location = this.getLocation()
+    const previousData = this.data
 
-    this.makeWatch(location)
     this.data = location
+    this.makeWatch(location, previousData)
 
     return this
   }
@@ -227,19 +235,23 @@ export abstract class UrlInstanceAbstract {
    *
    * Вызов всех функций, у которых были изменены данные.
    * @param location fresh data / свежие данные
+   * @param previousData state before publication / состояние до публикации
    * @protected
    * @returns this instance / текущий экземпляр
    */
-  protected makeWatch(location: Record<string, unknown>): this {
+  protected makeWatch(
+    location: Record<string, unknown>,
+    previousData: Record<string, unknown> | undefined
+  ): this {
     forEach(this.watch, (item, name) => {
-      const prevValue = this.data && Object.prototype.hasOwnProperty.call(this.data, name)
-        ? this.data[name]
+      const previousValue = previousData && hasKey(previousData, name)
+        ? previousData[name]
         : undefined
-      const nextValue = Object.prototype.hasOwnProperty.call(location, name)
+      const nextValue = hasKey(location, name)
         ? location[name]
         : undefined
 
-      if (prevValue !== nextValue) {
+      if (previousValue !== nextValue) {
         item.forEach(callback => callback(nextValue))
       }
     })

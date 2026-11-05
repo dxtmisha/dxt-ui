@@ -16,7 +16,7 @@ The internal engine driving individual cache entries. While `Cache` and `CacheSt
 - **Lazy Evaluation** — ensures the expensive callback function only runs when dependencies have changed.
 - **Historical Memory** — keeps a reference to the previously cached value (`getCacheOld`) even after a recalculation occurs.
 - **Async Support** — natively handles both synchronous (`getCache`) and `Promise`-based asynchronous (`getCacheAsync`) data loading.
-- **Strict Invalidation** — uses deep comparison logic to trigger updates only when necessary.
+- **Strict Invalidation** — shallowly compares dependency array elements; objects are compared by reference.
 
 ## Initialization
 
@@ -47,9 +47,17 @@ const numberCache = new CacheItem<number>(() => Math.random())
 - `getCache(comparison?: unknown[]): T` — Retrieves the value from the cache. If the comparison dependencies have changed, it triggers a recalculation.
 - `getCacheAsync(comparison?: unknown[]): Promise<T>` — Asynchronous version of `getCache`. Returns a Promise that resolves to the cached or newly fetched data.
 
+Concurrent calls matching the current pending operation share its computation. If a computation with different dependencies starts, only the latest computation may update the shared cache. Earlier calls still receive their own operation's result.
+
+The value, dependencies, and history are committed only after successful computation. A thrown error or rejected Promise allows another call with the same dependencies to retry; the last successful value is preserved. Use `getCacheAsync` for callbacks that return a Promise.
+
 ### History
 
-- `getCacheOld(): T | undefined` — Returns the value that was stored in the cache immediately prior to the last update.
+- `getCacheOld(): T | undefined` — Returns the value stored immediately before the last successful update. Failed and superseded computations do not change history.
+
+### Updating the Factory
+
+- `setCallback(callback: () => T): this` — Sets the factory for subsequent computations and returns the current instance. Calling this method does not invalidate the cache, compute a value, or change an operation that has already started.
 
 ## Examples
 

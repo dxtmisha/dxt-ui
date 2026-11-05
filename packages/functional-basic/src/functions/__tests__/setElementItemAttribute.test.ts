@@ -1,7 +1,8 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import * as domRuntime from '../isDomRuntime'
 import { setElementItemAttribute } from '../setElementItemAttribute'
 
 describe('setElementItemAttribute', () => {
@@ -9,6 +10,26 @@ describe('setElementItemAttribute', () => {
 
   beforeEach(() => {
     element = document.createElement('div')
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('does not evaluate a value factory without a valid target and name', () => {
+    const factory = vi.fn(() => 'value')
+    expect(setElementItemAttribute(null, 'data-test', factory)).toBe(false)
+    expect(setElementItemAttribute(element, null, factory)).toBe(false)
+    expect(factory).not.toHaveBeenCalled()
+  })
+
+  it('does not evaluate a value factory or modify attributes during SSR', () => {
+    vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(false)
+    const factory = vi.fn(() => 'value')
+
+    expect(setElementItemAttribute('#target', 'data-test', factory)).toBe(false)
+    expect(factory).not.toHaveBeenCalled()
+    expect(element.hasAttribute('data-test')).toBe(false)
   })
 
   describe('Standard string and identifier attributes', () => {
@@ -225,6 +246,7 @@ describe('setElementItemAttribute', () => {
       expect(setElementItemAttribute(element, '', 'val')).toBe(false)
       expect(setElementItemAttribute(element, '   ', 'val')).toBe(false)
       expect(setElementItemAttribute(element, undefined, 'val')).toBe(false)
+      expect(setElementItemAttribute(element, null, 'val')).toBe(false)
       expect(setElementItemAttribute(element, '@#$%^&*()+=!', 'val')).toBe(false)
     })
 

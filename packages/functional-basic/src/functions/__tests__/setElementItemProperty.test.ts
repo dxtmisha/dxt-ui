@@ -1,7 +1,8 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import * as domRuntime from '../isDomRuntime'
 import { setElementItemProperty } from '../setElementItemProperty'
 
 describe('setElementItemProperty', () => {
@@ -9,6 +10,33 @@ describe('setElementItemProperty', () => {
 
   beforeEach(() => {
     element = document.createElement('div')
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('preserves zero and false property values', () => {
+    element.hidden = true
+    expect(setElementItemProperty(element, 'tabIndex', 0)).toBe(true)
+    expect(element.tabIndex).toBe(0)
+    expect(setElementItemProperty(element, 'hidden', false)).toBe(true)
+    expect(element.hidden).toBe(false)
+  })
+
+  it('does not evaluate a factory for a blocked key or absent target', () => {
+    const factory = vi.fn(() => 'value')
+    expect(setElementItemProperty(element, '__proto__', factory)).toBe(false)
+    expect(setElementItemProperty(null, 'title', factory)).toBe(false)
+    expect(factory).not.toHaveBeenCalled()
+  })
+
+  it('returns false for a selector in SSR without evaluating its factory', () => {
+    vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(false)
+    const factory = vi.fn(() => 'value')
+
+    expect(setElementItemProperty('#target', 'title', factory)).toBe(false)
+    expect(factory).not.toHaveBeenCalled()
   })
 
   describe('Standard property assignment', () => {
@@ -81,12 +109,9 @@ describe('setElementItemProperty', () => {
       const targetObj = element as unknown as { nested: Record<string, unknown> }
       targetObj.nested = { safe: true }
 
-      expect(setElementItemProperty(element, 'nested', {
-        __proto__: { polluted: true },
-        constructor: { polluted: true },
-        prototype: { polluted: true },
-        newKey: 'safeValue'
-      })).toBe(true)
+      const properties: Record<string, unknown> = JSON.parse('{"__proto__":{"polluted":true},"constructor":{"polluted":true},"prototype":{"polluted":true},"newKey":"safeValue"}')
+
+      expect(setElementItemProperty(element, 'nested', properties)).toBe(true)
 
       expect(({} as Record<string, unknown>).polluted).toBeUndefined()
       expect(targetObj.nested.newKey).toBe('safeValue')
@@ -95,8 +120,8 @@ describe('setElementItemProperty', () => {
 
   describe('Edge cases, nullish inputs, and non-writable targets', () => {
     it('should return false when index is null or undefined', () => {
-      expect(setElementItemProperty(element, null as unknown as PropertyKey, 'value')).toBe(false)
-      expect(setElementItemProperty(element, undefined as unknown as PropertyKey, 'value')).toBe(false)
+      expect(setElementItemProperty(element, null, 'value')).toBe(false)
+      expect(setElementItemProperty(element, undefined, 'value')).toBe(false)
     })
 
     it('should return false when element does not exist or selector matches nothing', () => {

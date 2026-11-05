@@ -16,7 +16,7 @@ Hệ thống cốt lõi quản lý từng mục lưu trữ bộ nhớ đệm (ca
 - **Tính toán lười (Lazy Evaluation)** — đảm bảo rằng hàm callback (vốn có thể tốn kém tài nguyên) chỉ chạy khi các thành phần phụ thuộc thực sự thay đổi.
 - **Bộ nhớ lịch sử** — giữ lại tham chiếu đến giá trị đã lưu trước đó (`getCacheOld`) ngay cả khi quá trình tính toán lại đã diễn ra.
 - **Hỗ trợ Async** — xử lý tự nhiên cả việc nạp dữ liệu đồng bộ (`getCache`) và bất đồng bộ dựa trên `Promise` (`getCacheAsync`).
-- **Vô hiệu hóa nghiêm ngặt** — sử dụng logic so sánh sâu để chỉ kích hoạt cập nhật khi thực sự cần thiết.
+- **Vô hiệu hóa nghiêm ngặt** — so sánh nông các phần tử của mảng phụ thuộc; đối tượng được so sánh theo tham chiếu.
 
 ## Khởi tạo
 
@@ -47,9 +47,17 @@ const numberCache = new CacheItem<number>(() => Math.random())
 - `getCache(comparison?: unknown[]): T` — Lấy giá trị từ bộ nhớ đệm. Nếu các thành phần phụ thuộc trong mảng `comparison` thay đổi, nó sẽ kích hoạt tính toán lại.
 - `getCacheAsync(comparison?: unknown[]): Promise<T>` — Phiên bản bất đồng bộ của `getCache`. Trả về một Promise giải quyết thành dữ liệu đã lưu hoặc dữ liệu mới được lấy về.
 
+Các lời gọi đồng thời có cùng phụ thuộc với tác vụ đang chờ sẽ dùng chung một lần tính toán. Khi một lần tính toán có phụ thuộc khác bắt đầu, chỉ lần tính toán mới nhất được cập nhật cache chung. Các lời gọi trước đó vẫn nhận kết quả của tác vụ tương ứng.
+
+Giá trị, phụ thuộc và lịch sử chỉ được cập nhật sau khi tính toán thành công. Sau ngoại lệ hoặc Promise bị từ chối, có thể gọi lại với cùng phụ thuộc để thử lại; giá trị thành công gần nhất vẫn được giữ nguyên. Dùng `getCacheAsync` cho callback trả về Promise.
+
 ### Lịch sử
 
-- `getCacheOld(): T | undefined` — Trả về giá trị đã được lưu trong bộ nhớ đệm ngay trước lần cập nhật cuối cùng.
+- `getCacheOld(): T | undefined` — Trả về giá trị đã lưu ngay trước lần cập nhật thành công cuối cùng. Các lần tính toán thất bại hoặc bị thay thế không làm thay đổi lịch sử.
+
+### Cập nhật hàm tính toán
+
+- `setCallback(callback: () => T): this` — Đặt hàm cho những lần tính toán tiếp theo và trả về đối tượng hiện tại. Lời gọi này không vô hiệu hóa cache, không tính toán giá trị và không thay đổi tác vụ đã bắt đầu.
 
 ## Ví dụ
 

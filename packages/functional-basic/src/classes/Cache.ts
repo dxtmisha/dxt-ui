@@ -1,3 +1,4 @@
+import { getObjectNull } from '../functions/getObjectNull'
 import { CacheItem } from './CacheItem'
 
 /**
@@ -8,7 +9,7 @@ import { CacheItem } from './CacheItem'
  */
 export class Cache {
   /** Map of cached items / Карта кэшированных элементов */
-  private cache: Record<string, CacheItem<unknown>> = {}
+  private cache: Record<string, CacheItem<unknown>> = getObjectNull<CacheItem<unknown>>()
 
   /**
    * Returns a cached value for the given name. If not cached, executes the callback and stores the result.
@@ -45,9 +46,9 @@ export class Cache {
   }
 
   /**
-   * Gets or creates a CacheItem instance for the given name.
+   * Gets or creates a CacheItem instance and updates its factory for future computations.
    *
-   * Получает или создает экземпляр CacheItem для указанного имени.
+   * Получает или создаёт экземпляр CacheItem и обновляет фабрику последующих вычислений.
    * @param name Unique cache key / Уникальный ключ кэша
    * @param callback Function to compute the value / Функция для вычисления значения
    * @returns CacheItem instance for the cache key / Экземпляр CacheItem для ключа кэша
@@ -60,6 +61,8 @@ export class Cache {
       this.cache[name] = new CacheItem(callback) as CacheItem<unknown>
     }
 
-    return this.cache[name] as CacheItem<T>
+    const cache = this.cache[name] as CacheItem<T>
+    cache.setCallback(callback)
+    return cache
   }
 }

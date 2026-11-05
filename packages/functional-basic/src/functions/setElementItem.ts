@@ -27,7 +27,7 @@ export function setElementItem<
   V extends E[K] = E[K]
 >(
   element?: ElementOrString<E> | null,
-  index?: K | string,
+  index?: K | string | null,
   value?: V | Record<string, V> | unknown
 ): boolean {
   if (

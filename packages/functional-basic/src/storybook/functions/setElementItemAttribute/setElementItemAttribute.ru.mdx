@@ -8,7 +8,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `element?: ElementOrString<E> | null` — Целевой DOM-элемент, объект `window` (разрешается в `document.body`) или CSS-селектор (`E extends ElementOrWindow = HTMLElement`).
-- `attribute?: string` — Имя атрибута для установки или удаления (автоматически нормализуется в `kebab-case`).
+- `attribute?: string | null` — Имя атрибута для установки или удаления (автоматически нормализуется в `kebab-case`).
 - `value?: unknown` — Значение атрибута (строка, число, BigInt, логическое значение, `null`/`undefined` для удаления) или функция-фабрика.
 
 **Возвращает:**

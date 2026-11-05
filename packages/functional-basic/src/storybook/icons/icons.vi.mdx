@@ -28,6 +28,8 @@ if (Icons.is('home')) {
 const fastPath = Icons.getAsync('search') // trả về chuỗi hoặc chuỗi rỗng
 ```
 
+Trình tải bất đồng bộ có thể trả về chuỗi hoặc mô-đun có `default: string`, bao gồm kết quả của `import()`. `get()` lấy và lưu chuỗi vào bộ nhớ đệm. Khi trình tải bị lỗi hoặc trả về kết quả khác sẽ trả về `''` và báo tới `ErrorCenter` (`icons` / `error` hoặc `icons` / `invalid`).
+
 ## Tải chậm (Lazy Loading)
 
 Một tính năng chính là hỗ trợ `Promise` và các hàm, cho phép các icon chỉ được tải khi chúng thực sự cần thiết, giúp giảm dung lượng tải ban đầu của ứng dụng.
@@ -42,7 +44,7 @@ const iconData = await Icons.get('user')
 
 ## Đồng bộ hóa toàn cục
 
-Công cụ tự động duy trì tính phù hợp của dữ liệu trong `window.__UI_ICON`. Điều này cho phép đăng ký icon ở một nơi (ví dụ: khi khởi tạo ứng dụng) và truy cập ngay lập tức ở bất kỳ đâu trong mã nguồn.
+Các icon được lưu trong registry tĩnh của lớp `Icons`. Mọi nơi sử dụng lớp này trong ứng dụng đều có thể truy cập các đăng ký; việc lưu trữ không sử dụng đối tượng `window` của trình duyệt.
 
 ```javascript
 // Thêm icon tương đối với đường dẫn toàn cục

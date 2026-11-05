@@ -28,6 +28,8 @@ if (Icons.is('home')) {
 const fastPath = Icons.getAsync('search') // returns string or empty string
 ```
 
+An asynchronous loader may return a string or a module with `default: string`, including the result of `import()`. `get()` extracts and caches the string. Loader rejections and other non-string results return `''` and are reported to `ErrorCenter` (`icons` / `error` or `icons` / `invalid`).
+
 ## Lazy Loading
 
 A key feature is the support for `Promise` and functions, allowing icons to be loaded only when they are actually needed, reducing the initial bundle size.
@@ -42,7 +44,7 @@ const iconData = await Icons.get('user')
 
 ## Global Synchronization
 
-The tool automatically maintains data relevance in `window.__UI_ICON`. This allows icons to be registered in one place (e.g., during app initialization) and accessed instantly anywhere in the code.
+Icons are stored in the static registry of the `Icons` class. Registrations are available to all consumers of this class in the application; storage does not use the browser `window` object.
 
 ```javascript
 // Adding an icon relative to the global path

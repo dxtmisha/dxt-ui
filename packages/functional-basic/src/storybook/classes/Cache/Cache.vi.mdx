@@ -16,6 +16,8 @@ Một cơ chế lưu trữ đệm trong bộ nhớ (memory-based) nhẹ nhàng. 
 
 ## Khởi tạo
 
+Tên mục có thể là chuỗi bất kỳ, bao gồm `constructor`, `toString` và `__proto__`.
+
 Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `Cache()`.
 
 ```typescript
@@ -41,6 +43,8 @@ Sử dụng phương thức `get()` để truy xuất một giá trị được 
 - `callback: () => T` — hàm tính toán giá trị.
 - `comparison?: unknown[]` — mảng phụ thuộc tùy chọn. Nếu bất kỳ giá trị nào trong mảng này thay đổi so với lần gọi cuối cùng, bộ nhớ đệm sẽ bị hủy và `callback` sẽ chạy lại.
 
+Mỗi lời gọi lưu lại hàm `callback` hiện tại cho những lần tính toán tiếp theo. Nếu phụ thuộc không đổi, giá trị cache được trả về; khi cache bị vô hiệu hóa, hàm của lời gọi hiện tại được sử dụng.
+
 **Trả về:** `T` — giá trị đã lưu đệm hoặc giá trị mới được tính toán.
 
 ```javascript
@@ -60,6 +64,8 @@ const changed = cache.get('user', () => `User ${++counter}`, [2])
 #### `getAsync`
 
 Hoạt động tương tự như `get()`, nhưng được thiết kế cho các cuộc gọi không đồng bộ.
+
+Các lời gọi có cùng phụ thuộc dùng chung tác vụ đang chờ. Việc cập nhật hàm tính toán không thay đổi tác vụ đã bắt đầu; phụ thuộc thay đổi sẽ tạo lần tính toán mới với callback mới.
 
 **Tham số:**
 - `name: string` — một mã định danh duy nhất cho mục nhập bộ nhớ đệm.

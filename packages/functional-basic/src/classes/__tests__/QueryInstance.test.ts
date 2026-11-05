@@ -50,6 +50,18 @@ describe('QueryInstance', () => {
     vi.clearAllMocks()
   })
 
+  it('registers popstate once when reload is the first operation', () => {
+    mockLocation.search = '?page=1'
+    queryInstance.reload()
+    expect(queryInstance.get('page')).toBe(1)
+    expect(addEventListener).toHaveBeenCalledWith('popstate', expect.any(Function))
+
+    mockLocation.search = '?page=2'
+    queryInstance.reload()
+    expect(queryInstance.get('page')).toBe(2)
+    expect(vi.mocked(addEventListener).mock.calls.filter(([type]) => type === 'popstate')).toHaveLength(1)
+  })
+
   it('should return default value if key is missing', () => {
     const value = queryInstance.get('testKey', 'defaultValue')
     expect(value).toBe('defaultValue')

@@ -72,9 +72,9 @@ export class HashInstance extends UrlInstanceAbstract {
   }
 
   /**
-   * Update hash string in URL.
+   * Updates the URL hash while preserving the current history entry state.
    *
-   * Обновление строки хэша в URL.
+   * Обновляет хэш URL, сохраняя состояние текущей записи истории.
    * @protected
    * @returns this instance / текущий экземпляр
    */
@@ -85,7 +85,7 @@ export class HashInstance extends UrlInstanceAbstract {
 
       try {
         const data = this.getData()
-        history.replaceState(null, '', `#${getRequestString(data, '=', ';')}`)
+        history.replaceState(history.state, '', `#${getRequestString(data, '=', ';')}`)
       } finally {
         this.time = setTimeout(() => {
           this.block = false

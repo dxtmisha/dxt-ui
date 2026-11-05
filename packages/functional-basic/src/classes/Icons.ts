@@ -1,6 +1,9 @@
 import { executeFunction } from '../functions/executeFunction'
 import { forEach } from '../functions/forEach'
+import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { isString } from '../functions/isString'
+
+import { ErrorCenter } from './ErrorCenter'
 
 /** Icon item type definition / Определение типа элемента иконки */
 export type IconsItem = string | Promise<string | unknown> | (() => Promise<string | unknown>)
@@ -43,8 +46,10 @@ export class Icons {
 
   /**
    * Returns the icon by the name.
+   * Resolves string loaders and the string default export of imported modules.
    *
    * Возвращает иконку по названию.
+   * Получает строку из загрузчика или строкового экспорта default импортированного модуля.
    * @param index icon name / название иконки
    * @param url path to the storage location of the icon, if the icon does not exist / путь к месту хранения иконки, если иконка не существует
    * @param wait waiting time for picture loading (ms) / время ожидания загрузки картинки (мс)
@@ -69,10 +74,24 @@ export class Icons {
       return icon === ICONS_LOAD ? '' : icon
     }
 
-    const result = await executeFunction(icon) as string
-    this.add(index, result)
+    try {
+      const loaded: unknown = await executeFunction(icon)
+      const result = isObjectNotArray(loaded) ? loaded.default : loaded
 
-    return result
+      if (!isString(result)) {
+        const error = new TypeError('Icon loader must resolve to a string or a module with a string default export')
+
+        ErrorCenter.on({ group: 'icons', code: 'invalid', details: error })
+        return ''
+      }
+
+      this.add(index, result)
+
+      return result
+    } catch (error) {
+      ErrorCenter.on({ group: 'icons', code: 'error', details: error })
+      return ''
+    }
   }
 
   /**

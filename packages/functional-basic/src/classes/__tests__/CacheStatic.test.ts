@@ -32,6 +32,23 @@ describe('CacheStatic', () => {
       expect(CacheStatic.get('isolatedKey', callback)).toBe('secondContextValue')
       expect(callback).toHaveBeenCalledTimes(2)
     })
+
+    it('keeps separate server contexts isolated without resetting either context', () => {
+      const firstContext: Record<string, unknown> = {}
+      const secondContext: Record<string, unknown> = {}
+      let context = firstContext
+      ServerStorage.init(() => context)
+
+      try {
+        expect(CacheStatic.get('user', () => 'first')).toBe('first')
+        context = secondContext
+        expect(CacheStatic.get('user', () => 'second')).toBe('second')
+        context = firstContext
+        expect(CacheStatic.get('user', () => 'unused')).toBe('first')
+      } finally {
+        ServerStorage.init(() => undefined)
+      }
+    })
   })
 
   describe('get', () => {
@@ -97,6 +114,11 @@ describe('CacheStatic', () => {
       expect(resultFirst).toBe(1)
       expect(resultSecond).toBe(2)
       expect(callback).toHaveBeenCalledTimes(2)
+    })
+
+    it('uses the current asynchronous factory after dependencies change', async () => {
+      expect(await CacheStatic.getAsync('user', async () => ({ id: 5 }), [5])).toEqual({ id: 5 })
+      expect(await CacheStatic.getAsync('user', async () => ({ id: 6 }), [6])).toEqual({ id: 6 })
     })
   })
 })

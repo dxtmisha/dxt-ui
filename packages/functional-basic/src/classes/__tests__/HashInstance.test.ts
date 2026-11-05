@@ -1,169 +1,177 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
+// @vitest-environment jsdom
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { HashInstance } from '../HashInstance'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 
-const mockLocation = { hash: '' }
-const mockHistory = { replaceState: vi.fn() }
-
-vi.stubGlobal('location', mockLocation)
-vi.stubGlobal('history', mockHistory)
-vi.stubGlobal('addEventListener', vi.fn())
-vi.stubGlobal('removeEventListener', vi.fn())
-vi.stubGlobal('requestAnimationFrame', (callback: () => void) => callback())
-
 describe('HashInstance', () => {
-  let hashInstance: HashInstance
+  let instance: HashInstance
 
   beforeEach(() => {
-    vi.restoreAllMocks()
-    mockLocation.hash = ''
-    mockHistory.replaceState.mockClear()
-
-    hashInstance = new HashInstance()
-
-    vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
+    vi.useFakeTimers()
+    history.replaceState(null, '', '/')
+    instance = new HashInstance()
   })
 
   afterEach(() => {
-    vi.clearAllMocks()
-  })
-
-  it('should return default value if key is missing', () => {
-    const value = hashInstance.get('testKey', 'defaultValue')
-    expect(value).toBe('defaultValue')
-  })
-
-  it('should call defaultValue function', () => {
-    const value = hashInstance.get('funcKey', () => 'funcValue')
-    expect(value).toBe('funcValue')
-  })
-
-  it('should accept falsy defaultValue such as 0, false, or empty string', () => {
-    expect(hashInstance.get('zeroKey', 0)).toBe(0)
-    expect(hashInstance.get('falseKey', false)).toBe(false)
-    expect(hashInstance.get('emptyKey', '')).toBe('')
-  })
-
-  it('should decode URL-encoded hash values and support non-word characters in keys', () => {
-    mockLocation.hash = '#query=hello%20world;filter[type]=admin;encoded%5Bkey%5D=123'
-    hashInstance.reload()
-
-    expect(hashInstance.get('query')).toBe('hello world')
-    expect(hashInstance.get('filter[type]')).toBe('admin')
-    expect(hashInstance.get('encoded[key]')).toBe(123)
-  })
-
-  it('should gracefully handle malformed URI sequences in hash and ignore prototype pollution keys', () => {
-    mockLocation.hash = '#bad%20Key=%E0%A4%A;__proto__=polluted;constructor=bad'
-    hashInstance.reload()
-
-    expect(hashInstance.get('bad Key')).toBe('%E0%A4%A')
-    expect(hashInstance.get('__proto__')).toBeUndefined()
-    expect(hashInstance.get('constructor')).toBeUndefined()
-  })
-
-  it('should set and return a value', () => {
-    hashInstance.set('myKey', 'myValue')
-    expect(hashInstance.get('myKey')).toBe('myValue')
-    expect(mockHistory.replaceState).toHaveBeenCalledWith(null, '', '#myKey=myValue')
-  })
-
-  it('should correctly update hash when set with a function call', () => {
-    hashInstance.set('myKey', () => 'computedValue')
-    expect(hashInstance.get('myKey')).toBe('computedValue')
-  })
-
-  it('should call handlers when value changes (watch)', () => {
-    const firstCallback = vi.fn()
-    const secondCallback = vi.fn()
-
-    hashInstance.addWatch('watchKey', firstCallback)
-    hashInstance.addWatch('watchKey', secondCallback)
-
-    mockLocation.hash = '#watchKey=newValue'
-    hashInstance.reload()
-    expect(firstCallback).toHaveBeenCalledWith('newValue')
-    expect(secondCallback).toHaveBeenCalledWith('newValue')
-  })
-
-  it('should not call removed handlers', () => {
-    const callback = vi.fn()
-    hashInstance.addWatch('removeKey', callback)
-    hashInstance.removeWatch('removeKey', callback)
-
-    mockLocation.hash = '#removeKey=value2'
-    hashInstance.reload()
-    expect(callback).not.toHaveBeenCalled()
-  })
-
-  it('chaining should work correctly', () => {
-    const callback = () => {}
-    expect(hashInstance.set('alpha', 1)).toBe(hashInstance)
-    expect(hashInstance.addWatch('alpha', callback)).toBe(hashInstance)
-    expect(hashInstance.removeWatch('alpha', callback)).toBe(hashInstance)
-    expect(hashInstance.reload()).toBe(hashInstance)
-  })
-
-  it('should correctly parse complex hash strings', () => {
-    mockLocation.hash = '#key1=value1;key2:value2'
-    hashInstance.reload()
-    expect(hashInstance.get('key1')).toBe('value1')
-    expect(hashInstance.get('key2')).toBe('value2')
-  })
-
-  it('should not update location if isDomRuntime === false', () => {
-    vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
-    hashInstance.set('ssrKey', 'ssrValue')
-    expect(mockHistory.replaceState).not.toHaveBeenCalled()
-  })
-
-  it('should correctly handle the timer in the update method', () => {
-    vi.useFakeTimers()
-    hashInstance.set('key1', 'value1')
-    expect(mockHistory.replaceState).toHaveBeenCalled()
-
-    hashInstance.set('key2', 'value2')
-
-    vi.advanceTimersByTime(120)
+    instance.destroy()
+    vi.clearAllTimers()
     vi.useRealTimers()
+    vi.restoreAllMocks()
   })
 
-  it('reload should wait if block === true', () => {
-    vi.useFakeTimers()
-    hashInstance.set('key', 'value')
+  describe('reading and serialization', () => {
+    it('returns undefined when no value or default exists', () => {
+      expect(instance.get('missing')).toBeUndefined()
+    })
 
-    const watcher = vi.fn()
-    hashInstance.addWatch('key', watcher)
-    mockLocation.hash = '#key=updatedValue'
+    it('applies a default factory only once', () => {
+      const factory = vi.fn(() => 'default')
+      expect(instance.get('value', factory)).toBe('default')
+      expect(instance.get('value', factory)).toBe('default')
+      expect(factory).toHaveBeenCalledTimes(1)
+    })
 
-    hashInstance.reload()
+    it.each([0, false, ''])('accepts the falsy default %s', (value) => {
+      expect(instance.get('value', value)).toBe(value)
+    })
 
-    expect(watcher).not.toHaveBeenCalled()
+    it('decodes encoded keys and values', () => {
+      history.replaceState(null, '', '/#query=hello%20world;filter%5Btype%5D=admin')
+      expect(instance.get('query')).toBe('hello world')
+      expect(instance.get('filter[type]')).toBe('admin')
+    })
 
-    vi.advanceTimersByTime(32)
-    expect(watcher).not.toHaveBeenCalled()
+    it('accepts both supported key-value separators', () => {
+      history.replaceState(null, '', '/#first=value;second:other')
+      expect(instance.get('first')).toBe('value')
+      expect(instance.get('second')).toBe('other')
+    })
 
-    vi.advanceTimersByTime(120)
-    vi.advanceTimersByTime(32)
+    it('keeps malformed encoded values and excludes prototype keys', () => {
+      history.replaceState(null, '', '/#bad=%E0%A4%A;__proto__=bad;constructor=bad')
+      expect(instance.get('bad')).toBe('%E0%A4%A')
+      expect(instance.get('__proto__')).toBeUndefined()
+      expect(instance.get('constructor')).toBeUndefined()
+    })
 
-    expect(watcher).toHaveBeenCalledWith('updatedValue')
+    it('updates the hash and returns the same instance', () => {
+      expect(instance.set('query', 'hello world')).toBe(instance)
+      expect(instance.get('query')).toBe('hello world')
+      expect(location.hash).toBe('#query=hello%20world')
+    })
 
-    vi.useRealTimers()
+    it('accepts a factory when setting a value', () => {
+      instance.set('value', () => 42)
+      expect(instance.get('value')).toBe(42)
+    })
   })
 
-  it('destroy should remove event listener and cancel pending reload timer', () => {
-    vi.useFakeTimers()
-    hashInstance.set('key', 'value')
-    hashInstance.reload()
+  describe('history state preservation', () => {
+    it.each([
+      { state: { position: 7, back: '/previous', scroll: { left: 0, top: 100 } } },
+      { state: 'application-state' },
+      { state: 42 },
+      { state: ['first', 'second'] }
+    ])('preserves the existing history state %j', ({ state }) => {
+      history.replaceState(state, '', '/before?sort=old')
+      instance.set('page', 2)
+      expect(history.state).toEqual(state)
+      expect(location.pathname).toBe('/before')
+      expect(location.search).toBe('?sort=old')
+      expect(location.hash).toBe('#page=2')
+    })
 
-    // @ts-expect-error: inspecting protected reloadTimer
-    expect(hashInstance.reloadTimer).toBeDefined()
+    it('preserves history state while writing a missing default', () => {
+      const state = { position: 3, current: '/app' }
+      history.replaceState(state, '', '/app')
+      expect(instance.get('page', 1)).toBe(1)
+      expect(history.state).toEqual(state)
+    })
 
-    hashInstance.destroy()
-    expect(removeEventListener).toHaveBeenCalledWith('hashchange', expect.any(Function))
-    // @ts-expect-error: inspecting protected reloadTimer
-    expect(hashInstance.reloadTimer).toBeUndefined()
+    it('retains null when no application history state exists', () => {
+      instance.set('page', 1)
+      expect(history.state).toBeNull()
+    })
+  })
 
-    vi.useRealTimers()
+  describe('watchers and lifecycle', () => {
+    it('does not register duplicate listeners on repeated reload', () => {
+      const listenerSpy = vi.spyOn(globalThis, 'addEventListener')
+      instance.reload()
+      instance.reload()
+      instance.get('page')
+      expect(listenerSpy.mock.calls.filter(([type]) => type === 'hashchange')).toHaveLength(1)
+    })
+
+    it('registers hashchange when reload is the first operation', () => {
+      history.replaceState(null, '', '/#page=1')
+      const values: unknown[] = []
+      instance.addWatch('page', value => values.push(value))
+      instance.reload()
+      history.replaceState(history.state, '', '/#page=2')
+      dispatchEvent(new HashChangeEvent('hashchange'))
+      expect(values).toEqual([1, 2])
+      expect(instance.get('page')).toBe(2)
+    })
+
+    it('reads the published state from an initial watcher', () => {
+      history.replaceState(null, '', '/#page=2')
+      const values: unknown[] = []
+      instance.addWatch<number>('page', () => {
+        values.push(instance.get('page'))
+      })
+      expect(instance.get('page')).toBe(2)
+      expect(values).toEqual([2])
+    })
+
+    it('notifies only remaining watchers when the hash changes', () => {
+      instance.get('page')
+      const removed = vi.fn()
+      const kept = vi.fn()
+      instance.addWatch('page', removed)
+      instance.addWatch('page', kept)
+      instance.removeWatch('page', removed)
+      history.replaceState(null, '', '/#page=2')
+      dispatchEvent(new HashChangeEvent('hashchange'))
+      expect(removed).not.toHaveBeenCalled()
+      expect(kept).toHaveBeenCalledWith(2)
+    })
+
+    it('waits for the write block to expire before reloading', () => {
+      instance.set('page', 1)
+      const watcher = vi.fn()
+      instance.addWatch('page', watcher)
+      history.replaceState(null, '', '/#page=2')
+      instance.reload()
+      vi.advanceTimersByTime(32)
+      expect(watcher).not.toHaveBeenCalled()
+      vi.advanceTimersByTime(128)
+      expect(watcher).toHaveBeenCalledTimes(1)
+      expect(watcher).toHaveBeenCalledWith(2)
+    })
+
+    it('removes the browser listener and cancels pending reload on destroy', () => {
+      instance.set('page', 1)
+      const watcher = vi.fn()
+      instance.addWatch('page', watcher)
+      history.replaceState(null, '', '/#page=2')
+      instance.reload()
+      instance.destroy()
+      dispatchEvent(new HashChangeEvent('hashchange'))
+      vi.advanceTimersByTime(200)
+      expect(watcher).not.toHaveBeenCalled()
+      expect(vi.getTimerCount()).toBe(0)
+    })
+
+    it('does not write browser history when the DOM runtime is disabled', () => {
+      vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
+      const state = { position: 1 }
+      history.replaceState(state, '', '/before')
+      const previousUrl = location.href
+      instance.set('page', 2)
+      expect(instance.get('page')).toBe(2)
+      expect(history.state).toEqual(state)
+      expect(location.href).toBe(previousUrl)
+    })
   })
 })

@@ -16,6 +16,8 @@ A lightweight, memory-based caching mechanism. It provides an efficient way to e
 
 ## Initialization
 
+Any string can be an entry name, including `constructor`, `toString`, and `__proto__`.
+
 To initialize the object, call the `Cache()` constructor.
 
 ```typescript
@@ -41,6 +43,8 @@ Use the `get()` method to retrieve a cached value or calculate it if it doesn't 
 - `callback: () => T` — the function that computes the value.
 - `comparison?: unknown[]` — optional array of dependencies. If any value in this array changes relative to the last call, the cache is invalidated and `callback` runs again.
 
+Each call stores the current `callback` factory for subsequent computations. Matching dependencies return the cached value; invalidation uses the factory from the current call.
+
 **Returns:** `T` — the cached or freshly calculated value.
 
 ```javascript
@@ -60,6 +64,8 @@ const changed = cache.get('user', () => `User ${++counter}`, [2])
 #### `getAsync`
 
 Functions identically to `get()`, but designed for async calls.
+
+Matching calls share the current pending operation. Updating the factory does not change an operation that has already started; changed dependencies start a new computation using the new callback.
 
 **Parameters:**
 - `name: string` — a unique identifier for the cache entry.

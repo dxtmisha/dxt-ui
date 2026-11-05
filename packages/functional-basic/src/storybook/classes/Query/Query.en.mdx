@@ -42,9 +42,12 @@ const filter = Query.get('filter') // 'active' (string)
 - `static addWatch<T>(name: string, callback: (value: T) => void): void` — Subscribes to changes for a specific query variable.
 - `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Unsubscribes from changes for a specific variable.
 
+The new state is published before watchers run: `get()` inside a callback reads the new values, and synchronous writes through `set()` are preserved in the current state.
+
+
 ### Management
 - `static reset(): void` — Destroys the instance, clears timers, and removes event listeners.
-- `static reload(): void` — Forces synchronization of the state with the current URL query parameters.
+- `static reload(): void` — Forces synchronization of the state with the current URL query parameters. The first call initializes both data and the listener; subsequent calls refresh data without registering the listener again.
 
 ## Examples
 

@@ -43,7 +43,7 @@ const REGEXP_REMAINING_UPPER = /[A-Z]/g
  * @param value input value / входное значение
  * @returns kebab-case string / строка в формате kebab-case
  */
-export function toKebabCase(value?: string): string {
+export function toKebabCase(value?: string | null): string {
   if (!value) {
     return ''
   }

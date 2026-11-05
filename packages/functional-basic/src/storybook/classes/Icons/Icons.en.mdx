@@ -24,6 +24,8 @@ import { Icons } from '@dxtmisha/functional-basic'
 Icons.setUrl('/assets/svg/')
 ```
 
+An asynchronous loader may return a string or a module with `default: string`, including the result of `import()`. `get()` extracts and caches the string. Loader rejections and other non-string results return `''` and are reported to `ErrorCenter` (`icons` / `error` or `icons` / `invalid`).
+
 ## Methods
 
 ### Registering Icons
@@ -52,7 +54,7 @@ Icons.setUrl('/assets/svg/')
 The `Icons` class supports an asynchronous waiting mechanism. This allows you to request an icon before it is actually loaded or registered in the system.
 
 1.  **Wait Registration**: Using the `addLoad(name)` method, an icon is marked with a special `--LOAD--` marker. This tells the system that the icon will be available later.
-2.  **Waiting Process**: If `get(name)` is called for an icon that is in the loading state, the method will not return an error but will instead enter a waiting mode. It will check the registry every 320 ms.
+2.  **Waiting Process**: If `get(name)` is called for an icon that is in the loading state, the method will not return an error but will instead enter a waiting mode. It will check the registry every 120 ms.
 3.  **Completion**: Once the icon is added via `add(name, ...)`, all pending `get` calls will automatically resolve and return the icon's content.
 
 This mechanism is critical for distributed systems where components might request resources before the media database has finished initializing.
@@ -62,8 +64,8 @@ This mechanism is critical for distributed systems where components might reques
 ### `IconsItem`
 The definition of an icon. Can be:
 - `string` — Raw SVG content or a path to the SVG file.
-- `Promise<string>` — A promise that resolves to the SVG content (useful for dynamic imports).
-- `() => Promise<string>` — A factory function that returns a promise (useful for lazy-loading on demand).
+- `Promise<string | { default: string }>` — A promise that resolves to the SVG content (useful for dynamic imports).
+- `() => Promise<string | { default: string }>` — A factory function that returns a promise (useful for lazy-loading on demand).
 
 ### `IconsConfig`
 Configuration object for the `setConfig` method:

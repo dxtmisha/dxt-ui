@@ -8,6 +8,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A wrapper class providing a globally accessible, static cache instance. It allows you to perform fast caching operations anywhere during code execution without needing to instantiate or pass around a dedicated `Cache` object.
 
+On the server, the `Cache` instance belongs to the active `ServerStorage` context: different requests must use distinct provider contexts. Static access does not imply a cache shared across server requests. Changed dependencies use the callback from the current call.
+
 ## Key Features
 
 - **Global Accessibility** — works as a singleton pattern using static methods, meaning the same cache pool is accessible throughout the application context.
@@ -28,7 +30,7 @@ Use the static `get()` method to retrieve a cached value or calculate it if miss
 - `callback: () => T` — the function that computes the value.
 - `comparison?: unknown[]` — optional array of dependencies. Passing a new array (where values or length differ) invalidates the cache and forces a recalculation.
 
-**Returns:** `T` — the cached or freshly stringified value.
+**Returns:** `T` — the cached or freshly computed value.
 
 ```javascript
 import { CacheStatic } from '@dxtmisha/functional-basic'
@@ -60,6 +62,6 @@ Asynchronous version of the `get()` method. Useful when the callback function re
 **Parameters:**
 - `name: string` — a unique identifier for the specific global cache entry.
 - `callback: () => Promise<T> | T` — the asynchronous function that computes the value.
-- `comparison?: any[]` — optional array of dependencies. Passing a new array (where values or length differ) invalidates the cache and forces a recalculation.
+- `comparison?: unknown[]` — optional array of dependencies. Passing a new array (where values or length differ) invalidates the cache and forces a recalculation.
 
 **Returns:** `Promise<T>` — a promise that resolves to the cached or computed value.

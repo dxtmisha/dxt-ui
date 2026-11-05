@@ -204,6 +204,7 @@ describe('setElementItem', () => {
     it('should return false when element or index is falsy, empty, null, or undefined', () => {
       expect(setElementItem(element, '', 'value')).toBe(false)
       expect(setElementItem(element, undefined, 'value')).toBe(false)
+      expect(setElementItem(element, null, 'value')).toBe(false)
       expect(setElementItem(null, 'id', 'test')).toBe(false)
       expect(setElementItem(undefined, 'id', 'test')).toBe(false)
       expect(setElementItem('#non-existent-selector', 'id', 'test')).toBe(false)

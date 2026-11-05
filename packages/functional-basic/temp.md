@@ -82,3 +82,15 @@ GeoFlag
 GeoUnit
 forOwn
 Global
+CacheItem
+Cache
+CacheStatic
+UrlInstanceAbstract
+HashInstance
+Hash
+Icons
+toKebabCase
+setElementItemAttribute
+setElementItemProperty
+setElementItemStyle
+setElementItem

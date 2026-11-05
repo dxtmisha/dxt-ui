@@ -147,6 +147,18 @@ describe('UrlInstanceAbstract', () => {
   })
 
   describe('reload and block debounce', () => {
+    it('initializes once when reload is the first operation', () => {
+      instance.mockLocation = { page: 1 }
+      instance.reload()
+      expect(instance.initCalls).toBe(1)
+      expect(instance.get('page')).toBe(1)
+
+      instance.mockLocation = { page: 2 }
+      instance.reload()
+      expect(instance.get('page')).toBe(2)
+      expect(instance.initCalls).toBe(1)
+    })
+
     it('should immediately reload when block is false', () => {
       instance.mockLocation = { search: 'instant' }
       instance.reload()
@@ -205,6 +217,56 @@ describe('UrlInstanceAbstract', () => {
 
       vi.advanceTimersByTime(200)
       expect(watcher).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('state publication before watcher callbacks', () => {
+    it('allows a watcher to read state during lazy initialization', () => {
+      instance.mockLocation = { page: 1 }
+      const observed: number[] = []
+      instance.addWatch<number>('page', () => {
+        observed.push(instance.get<number>('page'))
+      })
+      expect(instance.get('page')).toBe(1)
+      expect(observed).toEqual([1])
+      expect(instance.initCalls).toBe(1)
+    })
+
+    it('exposes the entire new state to watchers during reload', () => {
+      instance.mockLocation = { page: 1, sort: 'old' }
+      instance.reload()
+      const observed: Record<string, unknown>[] = []
+      instance.addWatch<number>('page', () => {
+        observed.push({ page: instance.get('page'), sort: instance.get('sort') })
+      })
+      instance.mockLocation = { page: 2, sort: 'new' }
+      instance.reload()
+      expect(observed).toEqual([{ page: 2, sort: 'new' }])
+    })
+
+    it('preserves values written synchronously by a watcher', () => {
+      instance.mockLocation = { page: 1 }
+      instance.reload()
+      instance.addWatch<number>('page', () => {
+        instance.set('filter', 'active')
+      })
+      instance.mockLocation = { page: 2 }
+      instance.reload()
+      expect(instance.get('page')).toBe(2)
+      expect(instance.get('filter')).toBe('active')
+    })
+
+    it('does not recursively notify the same change when a watcher reloads', () => {
+      instance.mockLocation = { page: 1 }
+      instance.reload()
+      const watcher = vi.fn(() => {
+        instance.reload()
+      })
+      instance.addWatch<number>('page', watcher)
+      instance.mockLocation = { page: 2 }
+      expect(() => instance.reload()).not.toThrow()
+      expect(watcher).toHaveBeenCalledTimes(1)
+      expect(instance.get('page')).toBe(2)
     })
   })
 })

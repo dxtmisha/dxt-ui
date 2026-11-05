@@ -80,8 +80,9 @@ describe('toKebabCase', () => {
   })
 
   describe('Empty, whitespace-only, and nullish inputs', () => {
-    it('should return an empty string for empty string, undefined, or omitted argument', () => {
+    it('should return an empty string for empty string, null, undefined, or omitted argument', () => {
       expect(toKebabCase('')).toBe('')
+      expect(toKebabCase(null)).toBe('')
       expect(toKebabCase(undefined)).toBe('')
       expect(toKebabCase()).toBe('')
     })

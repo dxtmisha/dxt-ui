@@ -8,7 +8,7 @@ Thiết lập, chuyển đổi hoặc xóa thuộc tính HTML hoặc ARIA trên 
 
 **Tham số:**
 - `element?: ElementOrString<E> | null` — Phần tử DOM đích, đối tượng `window` (trỏ tới `document.body`) hoặc bộ chọn CSS (`E extends ElementOrWindow = HTMLElement`).
-- `attribute?: string` — Tên thuộc tính cần thiết lập hoặc xóa (tự động chuẩn hóa sang `kebab-case`).
+- `attribute?: string | null` — Tên thuộc tính cần thiết lập hoặc xóa (tự động chuẩn hóa sang `kebab-case`).
 - `value?: unknown` — Giá trị thuộc tính (chuỗi, số, BigInt, boolean, `null`/`undefined` để xóa) hoặc hàm factory.
 
 **Trả về:**

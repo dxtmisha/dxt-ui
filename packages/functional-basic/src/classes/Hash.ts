@@ -80,13 +80,14 @@ export class Hash {
   }
 
   /**
-   * Reset / destroy instance and remove listeners.
+   * Destroys the active instance and removes it from storage so the next access creates a fresh one.
    *
-   * Сброс / уничтожение экземпляра и удаление слушателей.
+   * Уничтожает активный экземпляр и удаляет его из хранилища для создания нового при следующем обращении.
    * @returns void / ничего не возвращает
    */
   static reset(): void {
     this.getItem().destroy()
+    ServerStorage.remove('__ui:hash-instance__')
   }
 
   /**

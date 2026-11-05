@@ -8,7 +8,7 @@ Sets, toggles, or removes an HTML or ARIA attribute on a DOM element resolved by
 
 **Parameters:**
 - `element?: ElementOrString<E> | null` — Target DOM element, `window` (resolves to `document.body`), or CSS selector (`E extends ElementOrWindow = HTMLElement`).
-- `attribute?: string` — Attribute name to set or remove (automatically normalized to `kebab-case`).
+- `attribute?: string | null` — Attribute name to set or remove (automatically normalized to `kebab-case`).
 - `value?: unknown` — Attribute value (string, number, BigInt, boolean, `null`/`undefined` for removal), or a factory function returning one of these.
 
 **Returns:**

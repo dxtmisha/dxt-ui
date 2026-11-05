@@ -44,7 +44,7 @@ export function setElementItemProperty<
   E extends ElementOrWindow = HTMLElement
 >(
   element?: ElementOrString<E> | null,
-  index?: PropertyKey,
+  index?: PropertyKey | null,
   value?: unknown
 ): boolean {
   if (

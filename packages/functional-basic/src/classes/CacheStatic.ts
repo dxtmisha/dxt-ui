@@ -4,9 +4,9 @@ import { Cache } from './Cache'
 import { ServerStorage } from './ServerStorage'
 
 /**
- * Static cache class that uses ServerStorage for persistent caching across the application.
+ * Static cache facade that stores a Cache instance in the active ServerStorage context.
  *
- * Статический класс кэша, использующий ServerStorage для постоянного кэширования в приложении.
+ * Статический фасад кэша, хранящий экземпляр Cache в активном контексте ServerStorage.
  * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export class CacheStatic {

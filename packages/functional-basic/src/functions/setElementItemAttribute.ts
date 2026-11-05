@@ -44,7 +44,7 @@ export function setElementItemAttribute<
   E extends ElementOrWindow = HTMLElement
 >(
   element?: ElementOrString<E> | null,
-  attribute?: string,
+  attribute?: string | null,
   value?: unknown
 ): boolean {
   const targetElement = getElement(element)

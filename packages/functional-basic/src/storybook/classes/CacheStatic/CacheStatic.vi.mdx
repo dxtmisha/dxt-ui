@@ -8,20 +8,22 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Một lớp định dạng lớp bọc ngoài (wrapper class) đóng vai trò xây dựng lớp giao tiếp toàn cục sử dụng bộ nhớ cache tĩnh (static cache instance). Với `CacheStatic`, cơ chế hoạt động giúp bộ nhớ có tính linh hoạt xuyên suốt đoạn code ở mọi nơi trong phân lớp code được thực thi, thay thế và loại bỏ hoàn toàn quá trình tạo đối tượng object `Cache` chuyên biệt như cấu trúc gốc.
 
+Trên máy chủ, đối tượng `Cache` thuộc ngữ cảnh `ServerStorage` đang hoạt động: các yêu cầu khác nhau phải dùng các ngữ cảnh riêng do bộ cung cấp trả về. Truy cập tĩnh không có nghĩa là dùng chung cache giữa các yêu cầu máy chủ. Khi phụ thuộc thay đổi, callback của lời gọi hiện tại được sử dụng.
+
 ## Các tính năng chính
 
-- **Lưu Cục Bộ Toàn Phân (Global Accessibility)** — mô hình kết nối hoạt động giống singleton thông qua thiết kế pattern là stactic method. Code định dạng luôn chung vùng bộ nhớ, đảm bảo kết nối giữa nhiều lớp dữ liệu đồng thời suốt hệ thống ứng dụng.
-- **Cơ Chế Phân Định Ngầm** — phần cốt lõi bên trong lớp bọc được nạp một phương thức tham chiếu kế thừa thẳng cấu trúc từ đối tượng `Cache` tiêu chuẩn. Toàn bộ hiệu ứng phụ của `Cache` bao gồm: Cập nhật dependency, lazy loading/lazy evulation,... đều hoạt động trơn tru.
+- **Lưu Cục Bộ Toàn Phân (Global Accessibility)** — mô hình kết nối hoạt động giống singleton thông qua thiết kế pattern là static method. Code định dạng luôn chung vùng bộ nhớ, đảm bảo kết nối giữa nhiều lớp dữ liệu đồng thời suốt hệ thống ứng dụng.
+- **Cơ Chế Phân Định Ngầm** — phần cốt lõi bên trong lớp bọc được nạp một phương thức tham chiếu kế thừa thẳng cấu trúc từ đối tượng `Cache` tiêu chuẩn. Toàn bộ hiệu ứng phụ của `Cache` bao gồm: Cập nhật dependency, lazy loading/lazy evaluation,... đều hoạt động trơn tru.
 - **Tính Tiện Dụng** — tiện lợi tuyệt đối, phù hợp với hệ module/chia sẻ component liên kết đơn giản mà không sinh ra phụ thuộc hay tính kế thừa vòng lặp phức tạp trong cây component.
 
 
-Về cấu trúc class, tất cả hàm nội bộ gắn định danh `static`. Hệ quả là hệ thống sẽ chặn không cho sử dụng trình khởi tạo `new CacheStatic()`. Người code sử dụng những hàm này theo cấu trúc thực thi trực tiếp từ class gốc thông qua dấu châm (`.`).
+Về cấu trúc class, tất cả hàm nội bộ gắn định danh `static`. Không cần tạo đối tượng bằng `new CacheStatic()`. Người code sử dụng những hàm này theo cấu trúc thực thi trực tiếp từ class gốc thông qua dấu châm (`.`).
 
 ## Lưu trữ cache toàn cục
 
 ### `get`
 
-Hàm chức năng `get()` có vai trò lặp tìm phần tử hiện có từ bộ đệm, nếu đối chiếu ra null hoặc undefined nó tự động chạy logic tải và sinh phần tử cache mới thay vào vị trí truy vấn hiện tại.
+Hàm chức năng `get()` có vai trò lặp tìm phần tử hiện có từ bộ đệm, nếu giá trị chưa có hoặc phụ thuộc đã thay đổi nó tự động chạy logic tải và sinh phần tử cache mới thay vào vị trí truy vấn hiện tại.
 
 **Tham số:**
 - `name: string` — biến gán để tạo lập index/luồng đối chiếu cho bộ nhớ định tuyến global hiện tại.
@@ -61,6 +63,6 @@ Phiên bản bất đồng bộ của phương thức `get()`. Hữu ích khi h�
 **Tham số:**
 - `name: string` — định danh duy nhất cho mục nhập cache toàn cục cụ thể.
 - `callback: () => Promise<T> | T` — hàm bất đồng bộ thực hiện tính toán giá trị.
-- `comparison?: any[]` — mảng phụ thuộc tùy chọn. Việc truyền một mảng mới (nơi các giá trị hoặc độ dài khác nhau) sẽ vô hiệu hóa bộ nhớ đệm và buộc tính toán lại.
+- `comparison?: unknown[]` — mảng phụ thuộc tùy chọn. Việc truyền một mảng mới (nơi các giá trị hoặc độ dài khác nhau) sẽ vô hiệu hóa bộ nhớ đệm và buộc tính toán lại.
 
 **Trả về:** `Promise<T>` — một promise trả về giá trị đã lưu trong bộ nhớ đệm hoặc giá trị vừa được tính toán.

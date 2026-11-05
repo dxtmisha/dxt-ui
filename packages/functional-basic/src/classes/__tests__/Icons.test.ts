@@ -1,10 +1,69 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { Icons } from '../Icons'
+import { ErrorCenter } from '../ErrorCenter'
 
 describe('Icons', () => {
   beforeEach(() => {
     Icons.reset()
+  })
+
+  afterEach(() => {
+    Icons.reset()
+    vi.restoreAllMocks()
+  })
+
+  describe('dynamic import results', () => {
+    it('unwraps and caches the string default export from a module promise', async () => {
+      Icons.add('module', Promise.resolve({ default: '/assets/module.svg' }))
+
+      expect(await Icons.get('module')).toBe('/assets/module.svg')
+      expect(Icons.getAsync('module')).toBe('/assets/module.svg')
+    })
+
+    it('unwraps and caches a module returned by a lazy factory', async () => {
+      const factory = vi.fn(async () => ({ default: '/assets/module.svg' }))
+      Icons.add('module', factory)
+
+      expect(await Icons.get('module')).toBe('/assets/module.svg')
+      expect(await Icons.get('module')).toBe('/assets/module.svg')
+      expect(Icons.getAsync('module')).toBe('/assets/module.svg')
+      expect(factory).toHaveBeenCalledTimes(1)
+    })
+
+    it('preserves an empty string default export', async () => {
+      Icons.add('empty', Promise.resolve({ default: '' }))
+
+      expect(await Icons.get('empty')).toBe('')
+      expect(Icons.getAsync('empty')).toBe('')
+    })
+
+    it.each([undefined, null, { default: undefined }])('returns empty string and reports an invalid loader result %s without caching it', async (value) => {
+      const onError = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => undefined)
+      const factory = vi.fn(async () => value)
+      Icons.add('invalid', factory)
+
+      await expect(Icons.get('invalid')).resolves.toBe('')
+      expect(onError).toHaveBeenCalledWith({ group: 'icons', code: 'invalid', details: expect.any(TypeError) })
+      expect(Icons.getAsync('invalid')).toBe('')
+      await expect(Icons.get('invalid')).resolves.toBe('')
+      expect(factory).toHaveBeenCalledTimes(2)
+    })
+
+    it('reports import failures to ErrorCenter, returns empty string, and allows a lazy factory to retry', async () => {
+      const onError = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => undefined)
+      const error = new Error('Import failed')
+      const factory = vi.fn<() => Promise<{ default: string }>>()
+        .mockRejectedValueOnce(error)
+        .mockResolvedValueOnce({ default: '/assets/module.svg' })
+      Icons.add('retry', factory)
+
+      await expect(Icons.get('retry')).resolves.toBe('')
+      expect(onError).toHaveBeenCalledWith({ group: 'icons', code: 'error', details: error })
+      expect(Icons.getAsync('retry')).toBe('')
+      expect(await Icons.get('retry')).toBe('/assets/module.svg')
+      expect(Icons.getAsync('retry')).toBe('/assets/module.svg')
+    })
   })
 
   it('should add and retrieve a string icon', async () => {

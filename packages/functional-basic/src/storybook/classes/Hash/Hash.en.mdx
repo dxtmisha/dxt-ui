@@ -38,13 +38,18 @@ const filter = Hash.get('filter') // 'active' (string)
 - `static get<T>(name: string, defaultValue?: T | (() => T)): T` — Returns the value of a hash variable.
 - `static set<T>(name: string, callback: T | (() => T)): void` — Sets a variable's value and updates the URL hash.
 
+Hash updates preserve the existing `history.state`: writing parameters does not discard the current history entry state, such as router data.
+
 ### Watchers
 - `static addWatch<T>(name: string, callback: (value: T) => void): void` — Subscribes to changes for a specific hash variable.
 - `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Unsubscribes from changes for a specific variable.
 
+The new state is published before watchers run: `get()` inside a callback reads the new values, and synchronous writes through `set()` are preserved in the current state.
+
+
 ### Management
-- `static reload(): void` — Forces synchronization of the state with the current URL hash.
-- `static reset(): void` — Destroys the instance and removes global event listeners.
+- `static reload(): void` — Forces synchronization of the state with the current URL hash. The first call initializes both data and the listener; subsequent calls refresh data without registering the listener again.
+- `static reset(): void` — Destroys the instance, removes its listeners and its entry from the current storage context. The next access creates a fresh instance using the current URL.
 
 ## Examples
 
