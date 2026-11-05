@@ -14,8 +14,11 @@ The class implements a **Per-locale Singleton pattern**, ensuring that only one 
 - **Unified Formatting API** — Simplifies complex `Intl` configurations into straightforward, high-level methods.
 - **Adaptive Geolocation** — Automatically pulls defaults from the global `Geo` state if no explicit locale is provided.
 - **Cultural Awareness** — Correctly handles diverse naming conventions, calendar start days, and pluralization rules across different cultures.
+- **SSR Error Handling** — Formatting errors are silent by default. An explicitly attached error center must be shared at the application level.
 
 ## Initialization
+
+> **Warning (Single Instance per Location):** `GeoIntl` always creates and caches **only one object per standard location** (`location`). Calling `new GeoIntl(code)` or `GeoIntl.getInstance(code)` for an already initialized location always returns the existing cached instance. As a result, the `errorCenter` constructor argument is only applied on the first instantiation for a given location, and `setErrorCenter()` modifies that shared locale instance globally (including across SSR requests for the same location).
 
 ### `getInstance`
 
@@ -31,6 +34,32 @@ import { GeoIntl } from '@dxtmisha/functional-basic'
 
 const intl = GeoIntl.getInstance('en-US')
 const currentIntl = new GeoIntl() // Also uses the singleton cache internally
+```
+
+### `setErrorCenter`
+
+Sets the `ErrorCenterInstance` used to report formatting errors.
+
+> **Warning for SSR.** Do not pass a request-scoped center such as `ErrorCenter.getItem()`. Requests using the same cached locale would report their errors to that center.
+
+**Parameters:**
+- `errorCenter?: ErrorCenterInstance` — Error center instance (or `undefined` to disable error reporting).
+
+**Returns:** `this` — The current `GeoIntl` instance.
+
+### `setMaxItems` (Static)
+
+Sets the maximum number of cached entries for locations and `GeoIntl` instances (defaults to `32`). When the number of cached entries exceeds this limit, the corresponding cache is completely cleared.
+
+**Parameters:**
+- `max?: number` — Maximum number of cached entries (defaults to `32`).
+
+**Returns:** `void`
+
+```javascript
+import { GeoIntl } from '@dxtmisha/functional-basic'
+
+GeoIntl.setMaxItems(64)
 ```
 
 ## Geographic & Localization Methods
@@ -145,6 +174,12 @@ Main date formatting engine providing localized representations based on predefi
 Returns arrays of localized labels for months or days, ideal for populating UI selection components.
 
 **Returns:** `ItemValue<number | undefined>[]` — Array of objects with `label` and `value` fields.
+
+### `hoursType`
+
+Determines the default clock format (12-hour or 24-hour) for the current locale.
+
+**Returns:** `GeoHours` (`'12'` or `'24'`)
 
 ## Relative Time
 

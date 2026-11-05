@@ -65,7 +65,7 @@ const formatter = new Formatters(options, data)
 ## Các phương thức
 
 ### Xử lý
-- `to(): FormattersReturn<List, Options>` — Xử lý dữ liệu và trả về kết quả. Nếu đầu vào là một mảng, trả về một mảng mới gồm các mục đã được làm giàu. Nếu là một mục duy nhất — một đối tượng duy nhất. Thêm các thuộc tính với hậu tố `Format`.
+- `to(): FormattersReturn<List, Options>` — Trả về mảng mới nếu đầu vào là mảng, hoặc đối tượng mới nếu đầu vào là một mục. Khi chưa có dữ liệu đầu vào, kết quả là `undefined`. Mảng đầu vào rỗng trả về `[]`.
 
 ### Cấu hình
 - `setList(list?: List): this` — Cập nhật dữ liệu để định dạng. Hỗ trợ nối chuỗi.
@@ -80,6 +80,8 @@ const formatter = new Formatters(options, data)
 ## Các loại định dạng và Tham số
 
 Cấu hình `FormattersOptionsList` là một từ điển trong đó các khóa tương ứng với tên thuộc tính trong dữ liệu (hỗ trợ ký hiệu chấm `path.to.prop`) và các giá trị là đối tượng `FormattersOptionsItem`.
+
+Tên trường được chuyển đổi bằng `toCamelCase` trước khi thêm hậu tố `Format`. Ví dụ, `created_at` tạo ra `createdAtFormat` khi chạy. Kiểu `FormattersKey` chỉ xử lý dấu chấm làm dấu phân cách, nên TypeScript suy ra `created_atFormat` cho trường này.
 
 ### Cấu trúc chung của `FormattersOptionsItem`
 - `type?: FormattersType` — Loại định dạng.

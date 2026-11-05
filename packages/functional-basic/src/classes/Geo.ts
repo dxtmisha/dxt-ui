@@ -203,10 +203,11 @@ export class Geo {
    * Returns the formatted time zone string (e.g., '+00:00') for the current context.
    *
    * Возвращает отформатированную строку часового пояса (например, '+03:00') для текущего контекста.
+   * @param configuredOnly return an empty string when the offset was not explicitly set / вернуть пустую строку, если смещение не задано явно
    * @returns formatted timezone / отформатированная временная зона
    */
-  static getTimezoneFormat(): string {
-    return this.getObject().getTimezoneFormat()
+  static getTimezoneFormat(configuredOnly = false): string {
+    return this.getObject().getTimezoneFormat(configuredOnly)
   }
 
   /**

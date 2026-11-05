@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ErrorCenter } from '../ErrorCenter'
 import { Geo } from '../Geo'
+import { GeoList } from '../GeoList'
 import { GeoUnit } from '../GeoUnit'
 
 describe('GeoUnit', () => {
@@ -112,5 +113,44 @@ describe('GeoUnit', () => {
 
     // Fallback for unknown unit
     expect(geoUnit.format(100, 'unknown-unit')).toBe('100')
+  })
+
+  it('should keep the converted unit while applying display options', () => {
+    const geoUnit = new GeoUnit('en-US')
+
+    expect(geoUnit.meter(1, { unit: 'meter' })).toBe('3.281 ft')
+    expect(geoUnit.meter(1, { style: 'percent' })).toBe('3.281 ft')
+    expect(geoUnit.meter(1, { maximumFractionDigits: 1, unitDisplay: 'long' })).toBe('3.3 feet')
+    expect(geoUnit.squareMeter(10, { style: 'percent', maximumFractionDigits: 1 })).toBe('107.6 sq ft')
+  })
+
+  it('should keep the source unit when the configured conversion is unavailable', () => {
+    Geo.add('GB', { unit: { meter: 'yard' } })
+
+    try {
+      expect(new GeoUnit('en-GB').meter(1)).toBe('1 m')
+    } finally {
+      GeoList.reset()
+    }
+  })
+
+  it('should format area and tonnes without sending errors for text fallback units', () => {
+    const callback = vi.fn()
+    ErrorCenter.addCallback(callback)
+
+    try {
+      const imperial = new GeoUnit('en-US')
+      const metric = new GeoUnit('ru-RU')
+
+      expect(imperial.squareMeter(10)).toBe('107.639 sq ft')
+      expect(imperial.tonne(10)).toBe('11.023 tn')
+      expect(metric.squareMeter(1)).toBe('1 m²')
+      expect(metric.squareMeter(1.5)).toBe('1,5 m²')
+      expect(metric.tonne(1)).toBe('1 t')
+      expect(metric.tonne(10)).toBe('10 t')
+      expect(callback).not.toHaveBeenCalled()
+    } finally {
+      ErrorCenter.removeCallback(callback)
+    }
   })
 })

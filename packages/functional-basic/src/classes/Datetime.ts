@@ -118,13 +118,7 @@ export class Datetime {
    * @returns GeoHours hour format / формат часов
    */
   getHoursType(): GeoHours {
-    const date = this.clone()
-    date.setHours(23)
-
-    return date.toLocaleTimeString(this.getIntl().getLocation(), { hour: '2-digit' })
-      .includes('23')
-      ? '24'
-      : '12'
+    return this.getIntl().hoursType()
   }
 
   /**

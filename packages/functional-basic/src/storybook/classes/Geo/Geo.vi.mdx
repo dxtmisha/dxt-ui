@@ -46,7 +46,7 @@ console.log(Geo.getTimezoneFormat()) // ví dụ: '+07:00'
 - `getObject(): GeoInstance` — Trả về phiên bản `GeoInstance` được cô lập theo yêu cầu từ `ServerStorage`.
 - `getItem(): GeoItemFull` — Trả về một bản sao của đối tượng cài đặt hiện tại, có tính đến ngôn ngữ.
 - `getTimezone(): number` — Trả về độ lệch múi giờ tính bằng phút.
-- `getTimezoneFormat(): string` — Trả về độ lệch múi giờ ở định dạng chuỗi (ví dụ: `'+07:00'`).
+- `getTimezoneFormat(configuredOnly?: boolean): string` — Trả về độ lệch múi giờ ở định dạng chuỗi (ví dụ: `'+07:00'`). Khi `configuredOnly` là `true`, trả về `''` nếu chưa thiết lập độ lệch múi giờ rõ ràng.
 
 ### Danh sách và Tìm kiếm
 

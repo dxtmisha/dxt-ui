@@ -259,9 +259,9 @@ export type FormattersListProp = FormattersList<FormattersListItem> | Formatters
 export type FormattersItemProp<List extends FormattersListProp> = ArrayToItem<List>
 
 /**
- * The return type of the formatter, matching the structure of the input data.
+ * The formatted result has the same structure as the input, or is undefined when no input is set.
  *
- * Возвращаемый тип форматировщика, соответствующий структуре входных данных.
+ * Отформатированный результат имеет структуру входных данных или равен undefined, если данные не заданы.
  *
  * @template List - The input data type / Тип входных данных.
  * @template Options - The formatting options / Параметры форматирования.
@@ -271,6 +271,6 @@ export type FormattersReturn<
   List extends FormattersListProp,
   Options extends FormattersOptionsList = FormattersOptionsList,
   Item extends FormattersItemProp<List> = FormattersItemProp<List>
-> = List extends any[]
+> = (List extends unknown[]
   ? FormattersListColumns<Item, Options>
-  : (FormattersListColumnItem<Item, Options> | undefined)
+  : FormattersListColumnItem<Item, Options>) | undefined

@@ -23,6 +23,14 @@ const UNIT_MULTIPLIERS: Record<string, number> = {
   'kilometer-per-hour->mile-per-hour': 0.621371192
 }
 
+/** Short English labels for units with text fallback / Краткие английские обозначения единиц с текстовым выводом */
+const TEXT_FALLBACK_UNIT_LABELS = /* #__PURE__ */ new Map<string, string>([
+  ['square-meter', 'm²'],
+  ['square-foot', 'sq ft'],
+  ['tonne', 't'],
+  ['ton', 'tn']
+])
+
 /**
  * Class for localized unit formatting and automatic conversions.
  * Automatically translates metric units (like gram, meter) to local equivalents
@@ -296,15 +304,27 @@ export class GeoUnit {
   }
 
   /**
-   * Retrieves the target unit configured for the given source unit.
+   * Retrieves the configured target unit if the conversion is supported.
    *
-   * Получает целевую единицу измерения, настроенную для заданной исходной единицы измерения.
+   * Возвращает настроенную целевую единицу, если преобразование поддерживается.
    * @param sourceUnit metric unit identifier / метрический идентификатор единицы измерения
    * @protected
    * @returns target unit identifier / целевой идентификатор единицы измерения
    */
   protected getTargetUnit(sourceUnit: string): string {
-    return this.geo.unit?.[sourceUnit as keyof NonNullable<GeoItemFull['unit']>] || sourceUnit
+    const targetUnit = this.geo.unit?.[sourceUnit as keyof NonNullable<GeoItemFull['unit']>]
+
+    if (
+      targetUnit
+      && (
+        this.isCelsiusToFahrenheit(sourceUnit, targetUnit)
+        || `${sourceUnit}->${targetUnit}` in UNIT_MULTIPLIERS
+      )
+    ) {
+      return targetUnit
+    }
+
+    return sourceUnit
   }
 
   /**
@@ -368,15 +388,20 @@ export class GeoUnit {
     const targetUnit = this.getTargetUnit(sourceUnit)
     const convertedValue = this.convert(numericValue, sourceUnit, targetUnit)
     const intl = GeoIntl.getInstance(this.getLocation())
-    const result = intl.unit(convertedValue, {
-      unit: targetUnit,
-      ...options
-    })
+    const fallbackLabel = TEXT_FALLBACK_UNIT_LABELS.get(targetUnit)
 
-    if (result === convertedValue.toString()) {
-      return `${intl.number(convertedValue, options)} ${targetUnit}`
+    if (!fallbackLabel) {
+      const result = intl.unit(convertedValue, {
+        ...options,
+        style: 'unit',
+        unit: targetUnit
+      })
+
+      if (result !== convertedValue.toString()) {
+        return result
+      }
     }
 
-    return result
+    return `${intl.number(convertedValue, { ...options, style: 'decimal' })} ${fallbackLabel ?? targetUnit}`
   }
 }

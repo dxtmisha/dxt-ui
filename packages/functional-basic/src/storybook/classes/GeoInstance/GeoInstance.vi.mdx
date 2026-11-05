@@ -46,7 +46,7 @@ console.log(geo.getTimezoneFormat()) // ví dụ: '+07:00'
 - `getLocationLanguage(): string` — Trả về mã ngôn ngữ thô được trích xuất trực tiếp từ chuỗi vị trí (ví dụ: `'us'`, `'qq'` hoặc `''`).
 - `getFirstDay(): string` — Trả về mã cho ngày đầu tiên của tuần của địa phương hiện tại (ví dụ: `'Mo'`, `'Su'`).
 - `getTimezone(): number` — Trả về độ lệch múi giờ tính bằng phút.
-- `getTimezoneFormat(): string` — Trả về độ lệch múi giờ ở định dạng chuỗi (ví dụ: `'+07:00'`).
+- `getTimezoneFormat(configuredOnly?: boolean): string` — Trả về độ lệch múi giờ ở định dạng chuỗi (ví dụ: `'+07:00'`). Khi `configuredOnly` là `true`, trả về `''` nếu chưa thiết lập độ lệch múi giờ rõ ràng.
 
 ### Lựa chọn
 

@@ -224,10 +224,11 @@ export class GeoInstance {
    * Returns the current time zone offset in a formatted string (e.g., '+03:00').
    *
    * Возвращает текущее смещение часового пояса в виде отформатированной строки (например, '+03:00').
+   * @param configuredOnly return an empty string when the offset was not explicitly set / вернуть пустую строку, если смещение не задано явно
    * @returns formatted timezone string / отформатированная строка часового пояса
    */
-  getTimezoneFormat(): string {
-    return this.getTimezoneObject().getFormat()
+  getTimezoneFormat(configuredOnly = false): string {
+    return this.getTimezoneObject().getFormat(configuredOnly)
   }
 
   /**

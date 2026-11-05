@@ -46,7 +46,7 @@ console.log(Geo.getTimezoneFormat()) // e.g., '+00:00'
 - `getObject(): GeoInstance` — Returns the request-isolated `GeoInstance` instance from `ServerStorage`.
 - `getItem(): GeoItemFull` — Returns a copy of the current settings object, accounting for the language.
 - `getTimezone(): number` — Returns the time zone offset in minutes.
-- `getTimezoneFormat(): string` — Returns the time zone offset in string format (e.g., `'+03:00'`).
+- `getTimezoneFormat(configuredOnly?: boolean): string` — Returns the time zone offset in string format (e.g., `'+03:00'`). With `configuredOnly` set to `true`, returns `''` when no offset was explicitly set.
 
 ### Lists and Search
 

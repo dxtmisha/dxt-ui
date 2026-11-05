@@ -36,6 +36,8 @@ const ruUnit = new GeoUnit('ru-RU')
 ### Универсальное форматирование
 - `format(value: NumberOrString, unit: string, options?: Intl.NumberFormatOptions): string` — Конвертирует и форматирует значение для указанной единицы измерения (`'millimeter'`, `'centimeter'`, `'meter'`, `'kilometer'`, `'square-meter'`, `'hectare'`, `'gram'`, `'kilogram'`, `'tonne'`, `'milliliter'`, `'liter'`, `'celsius'`, `'kilometer-per-hour'`).
 
+`GeoUnit` сам выбирает единицу и стиль вывода. Опции вроде `maximumFractionDigits` управляют отображением. Если региональная настройка задаёт преобразование, для которого нет коэффициента или формулы, результат сохраняет исходное число и единицу. Для `square-meter`, `square-foot`, `tonne` и `ton` число форматируется по выбранной локали, а единица выводится в краткой форме. Этим единицам соответствуют `m²`, `sq ft`, `t` и `tn`.
+
 ### Специализированные методы
 - `celsius(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Градусы Цельсия (конвертируются в Фаренгейты для США).
 - `centimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Сантиметры (в дюймы).

@@ -65,7 +65,7 @@ const formatter = new Formatters(options, data)
 ## Methods
 
 ### Processing
-- `to(): FormattersReturn<List, Options>` — Processes the data and returns the result. If the input was an array, returns a new array of enriched items. If it was a single item — a single object. Adds properties with the `Format` suffix.
+- `to(): FormattersReturn<List, Options>` — Returns a new array for array input and a new object for a single item. If no input is set, the result is `undefined`. An empty input array returns `[]`.
 
 ### Configuration
 - `setList(list?: List): this` — Updates the data for formatting. Supports chaining.
@@ -80,6 +80,8 @@ const formatter = new Formatters(options, data)
 ## Formatting Types and Parameters
 
 The `FormattersOptionsList` configuration is a dictionary where keys correspond to property names in the data (dot notation `path.to.prop` is supported), and values are `FormattersOptionsItem` objects.
+
+Generated field names use `toCamelCase` before appending `Format`. For example, `created_at` produces `createdAtFormat` at runtime. TypeScript's `FormattersKey` only accounts for dot separators and infers `created_atFormat` for this example.
 
 ### General Structure of `FormattersOptionsItem`
 - `type?: FormattersType` — Formatter type.

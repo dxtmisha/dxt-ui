@@ -46,7 +46,7 @@ console.log(geo.getTimezoneFormat()) // e.g., '+00:00'
 - `getLocationLanguage(): string` — Returns the raw language code extracted directly from the location string (e.g., `'us'`, `'qq'`, or `''`).
 - `getFirstDay(): string` — Returns the code for the first day of the week (e.g., `'Mo'`, `'Su'`).
 - `getTimezone(): number` — Returns the time zone offset in minutes.
-- `getTimezoneFormat(): string` — Returns the time zone offset in string format (e.g., `'+03:00'`).
+- `getTimezoneFormat(configuredOnly?: boolean): string` — Returns the time zone offset in string format (e.g., `'+03:00'`). With `configuredOnly` set to `true`, returns `''` when no offset was explicitly set.
 
 ### Selection
 

@@ -49,6 +49,8 @@ const vnFlag = new GeoFlag('vi-VN')
 
 ## Các phương thức danh sách
 
+Nếu danh sách `codes` được truyền vào chứa mã không xác định, các phương thức tạo danh sách dùng quốc gia đầu tiên trong danh mục `Geo` cho mã đó. Với danh mục hiện tại, `getNational(['FR', 'ZZ'])` trả về Pháp và Hoa Kỳ. Danh sách ngôn ngữ dùng ngôn ngữ của quốc gia thay thế và vẫn loại bỏ mục trùng lặp.
+
 Sự khác biệt chính giữa các phương thức nằm ở ngôn ngữ mà tên quốc gia và ngôn ngữ được trả về:
 
 *   **`getList`** — trả về tên chỉ bằng ngôn ngữ được thiết lập trong thực thể lớp (ví dụ: tất cả bằng tiếng Việt).

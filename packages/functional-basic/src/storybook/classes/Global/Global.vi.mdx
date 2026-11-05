@@ -4,11 +4,11 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp Global
 
-Một lớp tiện ích tĩnh để lưu trữ và truy xuất dữ liệu toàn cục của ứng dụng. Dữ liệu được ghi **một lần duy nhất** trong quá trình khởi tạo và sau đó chỉ có thể đọc. Được sử dụng để truyền cấu hình hoặc dữ liệu từ máy chủ sang phía client.
+Một lớp tiện ích tĩnh để lưu trữ và truy xuất dữ liệu toàn cục của ứng dụng. Cấu hình không rỗng đầu tiên xác định các khóa cấp cao nhất. Dùng `get()` để đọc từng giá trị. Các đối tượng lồng nhau được trả về theo tham chiếu.
 
 ## Tính năng chính
 
-- **Khởi tạo một lần** — Phương thức `add` chỉ hoạt động trong lần gọi đầu tiên; các lần gọi tiếp theo bị bỏ qua.
+- **Khởi tạo một lần** — `add()` lưu tập thuộc tính an toàn không rỗng đầu tiên.
 - **Cô lập SSR** — Dữ liệu được lưu trữ qua `ServerStorage`, đảm bảo cô lập giữa các yêu cầu trên máy chủ.
 - **Không quản lý trạng thái** — Chỉ dành cho cấu hình tĩnh.
 - **Truy cập tĩnh** — tất cả các phương thức đều là tĩnh, loại bỏ nhu cầu khởi tạo (`new Global()`).
@@ -32,21 +32,20 @@ console.log(Global.get('apiUrl')) // 'https://api.myapp.com'
 
 ## Phương thức
 
-- `get<R = unknown>(name: string): R` — Trả về giá trị thuộc tính riêng theo khóa từ dữ liệu toàn cục đã lưu.
-- `getItem(): Record<string, unknown>` — Trả về đối tượng lưu trữ dữ liệu toàn cục cho ngữ cảnh hiện tại.
-- `add(data: Record<string, unknown>): void` — Lưu dữ liệu toàn cục. Chỉ hoạt động **trong lần gọi đầu tiên** (khi bộ nhớ trống). Các lần gọi sau bị bỏ qua hoàn toàn.
+- `get<R = unknown>(name: string): R | undefined` — Trả về giá trị thuộc tính riêng theo khóa hoặc `undefined` nếu không tìm thấy khóa.
+- `add(data: Record<string, unknown>): void` — Lưu tập thuộc tính riêng có thể liệt kê không rỗng đầu tiên, bỏ qua `__proto__`, `constructor` và `prototype`.
 
 ## Ví dụ
 
 ### Truy xuất dữ liệu
-```javascript
+```typescript
 import { Global } from '@dxtmisha/functional-basic'
 
 const apiUrl = Global.get<string>('apiUrl')
 console.log(apiUrl) // 'https://api.myapp.com'
 
 const flags = Global.get<Record<string, boolean>>('featureFlags')
-console.log(flags.darkMode) // true
+console.log(flags?.darkMode ?? false)
 ```
 
 ### Khởi tạo khi ứng dụng bắt đầu

@@ -14,8 +14,11 @@ Lớp này triển khai mẫu **Per-locale Singleton (Singleton theo vùng local
 - **API định dạng thống nhất** — Đơn giản hóa các cấu hình `Intl` phức tạp thành các phương thức cấp cao, dễ sử dụng.
 - **Định vị thích ứng** — Tự động lấy các giá trị mặc định từ trạng thái `Geo` toàn cầu nếu không có locale rõ ràng nào được cung cấp.
 - **Nhận thức văn hóa** — Xử lý chính xác các quy ước đặt tên đa dạng, ngày bắt đầu của tuần trong lịch và các quy tắc số nhiều trên các nền văn hóa khác nhau.
+- **Xử lý lỗi trong SSR** — Theo mặc định, lỗi định dạng không được báo cáo. Nếu cấu hình rõ ràng, hãy dùng trung tâm lỗi dùng chung ở cấp ứng dụng.
 
 ## Khởi tạo
+
+> **Cảnh báo (Một đối tượng duy nhất theo vị trí/locale):** `GeoIntl` luôn chỉ tạo và lưu vào bộ nhớ đệm **một đối tượng duy nhất tương ứng với mỗi vị trí chuẩn** (`location`). Việc gọi `new GeoIntl(code)` hoặc `GeoIntl.getInstance(code)` cho một vị trí đã được khởi tạo sẽ luôn trả về instance đã có sẵn trong bộ nhớ đệm. Do đó, tham số `errorCenter` trong constructor chỉ được áp dụng ở lần khởi tạo đầu tiên của vị trí đó, và việc gọi `setErrorCenter()` sẽ thay đổi instance dùng chung của vị trí đó trên phạm vi toàn cục (bao gồm cả giữa các yêu cầu SSR có cùng vị trí).
 
 ### `getInstance`
 
@@ -31,6 +34,32 @@ import { GeoIntl } from '@dxtmisha/functional-basic'
 
 const intl = GeoIntl.getInstance('vi-VN')
 const currentIntl = new GeoIntl() // Cũng sử dụng bộ nhớ đệm singleton nội bộ
+```
+
+### `setErrorCenter`
+
+Thiết lập `ErrorCenterInstance` dùng để báo cáo lỗi định dạng.
+
+> **Cảnh báo cho SSR.** Không truyền trung tâm lỗi của yêu cầu hiện tại, chẳng hạn như `ErrorCenter.getItem()`. Các yêu cầu dùng chung locale trong bộ nhớ đệm sẽ gửi lỗi đến trung tâm đó.
+
+**Tham số:**
+- `errorCenter?: ErrorCenterInstance` — Instance trung tâm lỗi (hoặc `undefined` để tắt báo cáo lỗi).
+
+**Trả về:** `this` — Instance `GeoIntl` hiện tại.
+
+### `setMaxItems` (Static)
+
+Thiết lập số lượng bản ghi tối đa được lưu trong bộ nhớ đệm cho các vị trí và instance `GeoIntl` (mặc định là `32`). Khi số lượng bản ghi vượt quá giới hạn này, bộ nhớ đệm tương ứng sẽ được xóa hoàn toàn.
+
+**Tham số:**
+- `max?: number` — Số lượng bản ghi tối đa trong bộ nhớ đệm (mặc định là `32`).
+
+**Trả về:** `void`
+
+```javascript
+import { GeoIntl } from '@dxtmisha/functional-basic'
+
+GeoIntl.setMaxItems(64)
 ```
 
 ## Các phương thức Địa lý & Địa phương hóa
@@ -145,6 +174,12 @@ Công cụ định dạng ngày chính cung cấp các biểu diễn địa phư
 Trả về các mảng nhãn đã được địa phương hóa cho tháng hoặc các ngày trong tuần, lý tưởng để đưa vào các thành phần lựa chọn trên UI.
 
 **Trả về:** `ItemValue<number | undefined>[]` — Mảng các đối tượng có trường `label` và `value`.
+
+### `hoursType`
+
+Xác định định dạng đồng hồ mặc định (12 giờ hoặc 24 giờ) cho vùng locale hiện tại.
+
+**Trả về:** `GeoHours` (`'12'` hoặc `'24'`)
 
 ## Thời gian Tương đối
 

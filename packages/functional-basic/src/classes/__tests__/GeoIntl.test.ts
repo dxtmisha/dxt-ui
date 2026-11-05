@@ -1,7 +1,9 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { ErrorCenter } from '../ErrorCenter'
 import { GeoIntl } from '../GeoIntl'
 import { Geo } from '../Geo'
+import { ServerStorage } from '../ServerStorage'
 
 describe('GeoIntl', () => {
   let intl: GeoIntl
@@ -70,6 +72,51 @@ describe('GeoIntl', () => {
       expect(customErrorCenter.on).toHaveBeenCalledWith(
         expect.objectContaining({ group: 'intl', code: 'relative' })
       )
+    })
+
+    it('should leave errorCenter undefined in SSR and allow setting it via setErrorCenter', () => {
+      const ssrContext: Record<string, unknown> = {}
+      ServerStorage.init(() => ssrContext)
+      vi.stubGlobal('window', undefined)
+
+      try {
+        Geo.getObject()
+        const getItemSpy = vi.spyOn(ErrorCenter, 'getItem')
+        const onSpy = vi.spyOn(ErrorCenter, 'on')
+
+        const ssrIntl = new GeoIntl('nl-NL')
+        expect(getItemSpy).not.toHaveBeenCalled()
+        expect(ssrIntl.display('invalid_code_!!!', 'region')).toBe('invalid_code_!!!')
+        expect(onSpy).not.toHaveBeenCalled()
+
+        const customErrorCenter = { on: vi.fn() }
+        expect(ssrIntl.setErrorCenter(customErrorCenter as never)).toBe(ssrIntl)
+        expect(ssrIntl.display('invalid_code_!!!', 'region')).toBe('invalid_code_!!!')
+        expect(customErrorCenter.on).toHaveBeenCalledWith(
+          expect.objectContaining({ group: 'intl', code: 'display' })
+        )
+      } finally {
+        vi.unstubAllGlobals()
+        ServerStorage.reset()
+      }
+    })
+
+    it('should completely clear locations and items caches when exceeding maxItems and allow configuring via setMaxItems', () => {
+      GeoIntl.setMaxItems(0)
+      GeoIntl.setMaxItems(2)
+
+      new GeoIntl('en-US')
+      new GeoIntl('ru-RU')
+      expect(GeoIntl.isItem('en-US')).toBe(true)
+      expect(GeoIntl.isItem('ru-RU')).toBe(true)
+
+      // Adding a 3rd entry exceeds the limit of 2 and clears previous entries
+      new GeoIntl('de-DE')
+      expect(GeoIntl.isItem('en-US')).toBe(false)
+      expect(GeoIntl.isItem('ru-RU')).toBe(false)
+      expect(GeoIntl.isItem('de-DE')).toBe(true)
+
+      GeoIntl.setMaxItems()
     })
   })
 
@@ -238,6 +285,11 @@ describe('GeoIntl', () => {
 
     it('time formats correct time', () => {
       expect(intl.time(sampleDate)).toContain('3:30')
+    })
+
+    it('hoursType returns 12 or 24 according to locale', () => {
+      expect(intl.hoursType()).toBe('12')
+      expect(new GeoIntl('ru-RU').hoursType()).toBe('24')
     })
 
     it('month returns long month name', () => {

@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
+import { describe, it, expect, expectTypeOf, beforeEach, vi, afterEach } from 'vitest'
 import { Global } from '../Global'
 import { ServerStorage } from '../ServerStorage'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
@@ -13,17 +13,8 @@ describe('Global', () => {
     vi.restoreAllMocks()
   })
 
-  describe('getItem', () => {
-    it('should return an empty object initially from ServerStorage', () => {
-      const storage = Global.getItem()
-      expect(storage).toEqual({})
-    })
-
-    it('should return the same storage reference on subsequent calls within the same context', () => {
-      const storageFirst = Global.getItem()
-      const storageSecond = Global.getItem()
-      expect(storageFirst).toBe(storageSecond)
-    })
+  it('should keep the storage private at runtime', () => {
+    expect(Reflect.get(Global, 'getItem')).toBeUndefined()
   })
 
   describe('add and get', () => {
@@ -68,9 +59,56 @@ describe('Global', () => {
 
     it('should return undefined for an unknown key or Object.prototype keys', () => {
       Global.add({ known: 'value' })
-      expect(Global.get('nonExistentKey')).toBeUndefined()
+      const missing = Global.get<string>('nonExistentKey')
+
+      expectTypeOf(missing).toEqualTypeOf<string | undefined>()
+      expect(missing).toBeUndefined()
       expect(Global.get('toString')).toBeUndefined()
       expect(Global.get('constructor')).toBeUndefined()
+    })
+
+    it('should skip reserved prototype keys in server JSON data', () => {
+      Global.add(JSON.parse('{"__proto__":{"featureEnabled":true},"constructor":1,"prototype":2,"site":"example"}'))
+
+      expect(Global.get('site')).toBe('example')
+      expect(Global.get('featureEnabled')).toBeUndefined()
+      expect(Global.get('__proto__')).toBeUndefined()
+      expect(Global.get('constructor')).toBeUndefined()
+      expect(Global.get('prototype')).toBeUndefined()
+    })
+
+    it('should allow initialization after data containing only reserved keys', () => {
+      Global.add(JSON.parse('{"__proto__":{},"constructor":1,"prototype":2}'))
+      Global.add({ site: 'example' })
+
+      expect(Global.get('site')).toBe('example')
+    })
+
+    it('should allow a retry when reading the initial data throws', () => {
+      const data = {
+        site: 'partial',
+        get unavailable(): string {
+          throw new Error('Unavailable')
+        }
+      }
+
+      expect(() => Global.add(data)).toThrow('Unavailable')
+      expect(Global.get('site')).toBeUndefined()
+
+      Global.add({ site: 'complete' })
+
+      expect(Global.get('site')).toBe('complete')
+    })
+
+    it('should preserve the first committed data during reentrant initialization', () => {
+      Global.add({
+        get site(): string {
+          Global.add({ site: 'first' })
+          return 'second'
+        }
+      })
+
+      expect(Global.get('site')).toBe('first')
     })
   })
 

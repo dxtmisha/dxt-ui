@@ -37,5 +37,5 @@ console.log(tz.getFormat()) // '+05:30'
 
 - `get(): number` — Trả về độ lệch múi giờ hiện tại tính bằng phút.
 - `set(timezone: number): this` — Cập nhật và chuẩn hóa độ lệch múi giờ tính bằng phút, trả về thực thể hiện tại để gọi chuỗi.
-- `getFormat(): string` — Trả về độ lệch múi giờ hiện tại ở định dạng chuỗi ISO 8601 (ví dụ: `'+03:00'`, `'-05:00'`).
+- `getFormat(configuredOnly?: boolean): string` — Trả về độ lệch múi giờ hiện tại ở định dạng chuỗi ISO 8601 (ví dụ: `'+03:00'`, `'-05:00'`). Khi `configuredOnly` là `true`, trả về `''` nếu chưa thiết lập độ lệch múi giờ rõ ràng.
 

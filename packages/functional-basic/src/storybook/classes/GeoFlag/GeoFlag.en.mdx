@@ -49,6 +49,8 @@ const usFlag = new GeoFlag('en-US')
 
 ## List Methods
 
+When an explicit `codes` list contains an unknown code, the list methods use the first country in the `Geo` catalog for that code. With the current catalog, `getNational(['FR', 'ZZ'])` returns France and the United States. Language lists use the fallback country's language and still remove duplicate languages.
+
 The main difference between the methods lies in the language in which the country and language names are returned:
 
 *   **`getList`** — returns names only in the language set in the class instance (e.g., everything in English).

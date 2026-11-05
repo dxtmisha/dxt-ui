@@ -4,7 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `toDate`
 
-Converts the input value (date, number, or string) into a `Date` object. Supports various string formats, including ISO-like strings without delimiters, as well as automatic timezone substitution.
+Converts the input value (date, number, or string) into a `Date` object. Supports various string formats, including ISO-like strings without delimiters.
+
+For strings, an offset in the input takes precedence over `Geo.setTimezone()`. With neither specified, the runtime uses the local time zone for the input date, including its daylight saving offset.
 
 **Parameters:**
 - `value?: T | null` — The input value (`T extends Date | number | string`: a `Date` object, timestamp in milliseconds, or a date string).
@@ -15,7 +17,7 @@ Converts the input value (date, number, or string) into a `Date` object. Support
 ```typescript
 import { toDate } from '@dxtmisha/functional-basic'
 
-console.log(toDate('20231027')) // '2023-10-27T00:00:00.000Z'
-console.log(toDate(1672531200000)) // '2023-01-01T00:00:00.000Z'
-console.log(toDate('12:00')) // '2000-01-01T12:00:00.000Z'
+console.log(toDate('20231027Z').toISOString()) // '2023-10-27T00:00:00.000Z'
+console.log(toDate(1672531200000).toISOString()) // '2023-01-01T00:00:00.000Z'
+console.log(toDate('12:00Z').toISOString()) // '2000-01-01T12:00:00.000Z'
 ```

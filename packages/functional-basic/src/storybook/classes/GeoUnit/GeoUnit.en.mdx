@@ -36,6 +36,8 @@ const ruUnit = new GeoUnit('ru-RU')
 ### General Formatting
 - `format(value: NumberOrString, unit: string, options?: Intl.NumberFormatOptions): string` — Converts and formats the value for the specified unit (`'millimeter'`, `'centimeter'`, `'meter'`, `'kilometer'`, `'square-meter'`, `'hectare'`, `'gram'`, `'kilogram'`, `'tonne'`, `'milliliter'`, `'liter'`, `'celsius'`, `'kilometer-per-hour'`).
 
+`GeoUnit` selects the output unit and style. Options such as `maximumFractionDigits` affect display. When a regional setting requests an unavailable conversion, the result keeps the source value and unit. For `square-meter`, `square-foot`, `tonne`, and `ton`, the number follows the selected locale and the unit uses a short label. The labels are `m²`, `sq ft`, `t`, and `tn`, respectively.
+
 ### Unit-Specific Methods
 - `celsius(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Degrees Celsius (converted to Fahrenheit for the US).
 - `centimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Centimeters (to inches).

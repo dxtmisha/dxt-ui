@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { Datetime } from '../Datetime'
 import { ErrorCenter } from '../ErrorCenter'
+import { Geo } from '../Geo'
 import { ServerStorage } from '../ServerStorage'
 
 describe('Datetime', () => {
@@ -43,7 +44,8 @@ describe('Datetime', () => {
     it('should initialize with the provided timestamp', () => {
       const timestamp = 1672531200000 // 2023-01-01T00:00:00Z
       const datetime = new Datetime(timestamp)
-      expect(datetime.getYear()).toBe(2023)
+      expect(datetime.getDate().getTime()).toBe(timestamp)
+      expect(datetime.getYear()).toBe(new Date(timestamp).getFullYear())
     })
 
     it('should report to ErrorCenter when initialized with an invalid date string', () => {
@@ -94,6 +96,12 @@ describe('Datetime', () => {
 
       const datetime12 = new Datetime(baseDate, 'date', 'en-US')
       expect(datetime12.getHoursType()).toBe('12')
+    })
+
+    it.each(['fa-IR', 'my-MM'])('should detect the 24-hour format for %s', (locale) => {
+      const datetime = new Datetime(baseDate, 'time', locale)
+
+      expect(datetime.getHoursType()).toBe('24')
     })
   })
 
@@ -509,6 +517,25 @@ describe('Datetime', () => {
   })
 
   describe('Standard Format', () => {
+    it('should preserve a local calendar date across different seasonal offsets', () => {
+      vi.setSystemTime(new Date('2026-07-01T12:00:00Z'))
+      const input = '2026-01-15T00:00:00'
+      const localDate = new Date(input)
+      vi.spyOn(Date.prototype, 'getTimezoneOffset').mockReturnValueOnce(localDate.getTimezoneOffset() - 60)
+
+      const datetime = new Datetime(input, 'date')
+
+      expect(datetime.getDate().getTime()).toBe(localDate.getTime())
+      expect(datetime.standard(false)).toBe('2026-01-15')
+
+      Geo.setTimezone(240)
+      expect(new Datetime(input).getDate().toISOString()).toBe('2026-01-15T04:00:00.000Z')
+
+      Geo.setTimezone(0)
+      expect(new Datetime(input).getDate().toISOString()).toBe('2026-01-15T00:00:00.000Z')
+      expect(new Datetime(`${input}+07:00`).getDate().toISOString()).toBe('2026-01-14T17:00:00.000Z')
+    })
+
     it('should format standard output for all GeoDate types', () => {
       const datetime = new Datetime('2024-06-15T10:30:45')
 

@@ -41,16 +41,16 @@ describe('useFormattersRef', () => {
 
     const result = listFormat.value
     expect(result).toHaveLength(1)
-    expect(result[0]?.priceFormat).toContain('$100.00')
-    expect(result[0]?.countFormat).toBe('1,234.56')
-    expect(result[0]?.customFormat).toBe('custom-value')
+    expect(result?.[0]?.priceFormat).toContain('$100.00')
+    expect(result?.[0]?.countFormat).toBe('1,234.56')
+    expect(result?.[0]?.customFormat).toBe('custom-value')
   })
 
   it('should be reactive when the list changes', () => {
     const list = ref([...listData])
     const { listFormat } = useFormattersRef(list, options)
 
-    expect(listFormat.value[0]?.priceFormat).toContain('$100.00')
+    expect(listFormat.value?.[0]?.priceFormat).toContain('$100.00')
 
     list.value = [
       {
@@ -62,9 +62,9 @@ describe('useFormattersRef', () => {
     ]
 
     const result = listFormat.value
-    expect(result[0]?.priceFormat).toContain('€200.00')
-    expect(result[0]?.countFormat).toBe('50')
-    expect(result[0]?.customFormat).toBe('custom-new')
+    expect(result?.[0]?.priceFormat).toContain('€200.00')
+    expect(result?.[0]?.countFormat).toBe('50')
+    expect(result?.[0]?.customFormat).toBe('custom-new')
   })
 
   it('should handle an empty list and undefined list', () => {
@@ -77,6 +77,10 @@ describe('useFormattersRef', () => {
     const { listFormat: undefinedFormat, length: undefinedLength } = useFormattersRef(undefinedList, options)
     expect(undefinedFormat.value).toBeUndefined()
     expect(undefinedLength.value).toBe(0)
+
+    undefinedList.value = [...listData]
+    expect(undefinedFormat.value?.map(item => item.priceFormat)).toEqual(['$100.00'])
+    expect(undefinedLength.value).toBe(1)
   })
 
   it.each(['de-DE', 'fr-FR', 'vi-VN'])('should update a saved computed when the locale changes to %s', (locale) => {
@@ -85,21 +89,21 @@ describe('useFormattersRef', () => {
     const formatters = useFormattersRef(list, { count: { type: FormattersType.number } })
     const listFormat = formatters.listFormat
 
-    expect(listFormat.value[0]?.countFormat).toBe('1,234.5')
+    expect(listFormat.value?.[0]?.countFormat).toBe('1,234.5')
 
     GeoRef.set(locale)
 
     expect(formatters.listFormat).toBe(listFormat)
-    expect(listFormat.value[0]?.countFormat).toBe(new Intl.NumberFormat(locale).format(1234.5))
+    expect(listFormat.value?.[0]?.countFormat).toBe(new Intl.NumberFormat(locale).format(1234.5))
     expect(list.value).toBe(source)
     expect(list.value).toEqual([{ count: 1234.5 }])
     expect(formatters.length.value).toBe(1)
 
     list.value = [{ count: 2000.5 }]
-    expect(listFormat.value[0]?.countFormat).toBe(new Intl.NumberFormat(locale).format(2000.5))
+    expect(listFormat.value?.[0]?.countFormat).toBe(new Intl.NumberFormat(locale).format(2000.5))
 
     GeoRef.set('en-US')
-    expect(listFormat.value[0]?.countFormat).toBe('2,000.5')
+    expect(listFormat.value?.[0]?.countFormat).toBe('2,000.5')
   })
 
   it('should update formatting for a single object when the locale changes', () => {
@@ -129,17 +133,17 @@ describe('useFormattersRef', () => {
       createdAt: { type: FormattersType.date, options: { type: 'date' as const, options: dateOptions } }
     })
 
-    expect(listFormat.value[0]?.priceFormat).toBe('$1,234.50')
-    expect(listFormat.value[0]?.createdAtFormat).toBe('12/31/2024')
+    expect(listFormat.value?.[0]?.priceFormat).toBe('$1,234.50')
+    expect(listFormat.value?.[0]?.createdAtFormat).toBe('12/31/2024')
     const language = GeoRef.getLanguage().value
 
     GeoRef.set('en-GB')
 
     expect(GeoRef.getLanguage().value).toBe(language)
-    expect(listFormat.value[0]?.priceFormat).toBe(new Intl.NumberFormat('en-GB', {
+    expect(listFormat.value?.[0]?.priceFormat).toBe(new Intl.NumberFormat('en-GB', {
       style: 'currency', currency: 'USD'
     }).format(1234.5))
-    expect(listFormat.value[0]?.createdAtFormat).toBe('31/12/2024')
+    expect(listFormat.value?.[0]?.createdAtFormat).toBe('31/12/2024')
   })
 
   it('should return the same computed instance on multiple accesses', () => {
@@ -154,13 +158,13 @@ describe('useFormattersRef', () => {
     expect(comp1).toBe(comp2)
 
     // And it should work and be reactive
-    expect(comp1.value[0]?.priceFormat).toContain('$100.00')
+    expect(comp1.value?.[0]?.priceFormat).toContain('$100.00')
 
     if (list.value[0]) {
       list.value[0].price = 300
     }
 
-    expect(comp1.value[0]?.priceFormat).toContain('$300.00')
-    expect(comp2.value[0]?.priceFormat).toContain('$300.00')
+    expect(comp1.value?.[0]?.priceFormat).toContain('$300.00')
+    expect(comp2.value?.[0]?.priceFormat).toContain('$300.00')
   })
 })

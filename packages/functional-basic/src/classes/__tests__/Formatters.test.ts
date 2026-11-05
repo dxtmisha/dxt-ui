@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach } from 'vitest'
+import { assert, describe, it, expect, expectTypeOf, beforeEach } from 'vitest'
 import { Formatters } from '../Formatters'
-import { FormattersType, type FormattersOptionsList } from '../../types/formattersTypes'
+import { FormattersType, type FormattersListColumns, type FormattersOptionsList } from '../../types/formattersTypes'
 import { Geo } from '../Geo'
 
 interface TestRecord extends Record<string, unknown> {
@@ -106,7 +106,8 @@ describe('Formatters', () => {
     it('should format an array of data correctly', () => {
       const formatters = new Formatters(options, sampleList)
       const result = formatters.to()
-      const firstItem = result[0]!
+      const firstItem = result?.[0]
+      assert.isDefined(firstItem)
 
       expect(firstItem.priceFormat).toContain('$100.00')
       expect(typeof firstItem.birthdayFormat).toBe('string')
@@ -119,10 +120,10 @@ describe('Formatters', () => {
 
     it('should update formatted output when list is changed via setList', () => {
       const formatters = new Formatters(options, sampleList)
-      expect(formatters.to()[0]?.priceFormat).toContain('$100.00')
+      expect(formatters.to()?.[0]?.priceFormat).toContain('$100.00')
 
       formatters.setList([{ ...sampleList[0], price: 200 }])
-      expect(formatters.to()[0]?.priceFormat).toContain('$200.00')
+      expect(formatters.to()?.[0]?.priceFormat).toContain('$200.00')
     })
 
     it('should format a single item correctly', () => {
@@ -138,11 +139,22 @@ describe('Formatters', () => {
       expect(formatters.to()).toBeUndefined()
     })
 
+    it('should distinguish an absent array from an empty array', () => {
+      const formatters = new Formatters<typeof options, TestRecord[]>(options)
+
+      expectTypeOf(formatters.to()).toEqualTypeOf<FormattersListColumns<TestRecord, typeof options> | undefined>()
+      expect(formatters.to()).toBeUndefined()
+      expect(formatters.setList([]).to()).toEqual([])
+      expect(formatters.setList(sampleList).to()?.[0]?.priceFormat).toContain('$100.00')
+      expect(formatters.setList(undefined).to()).toBeUndefined()
+    })
+
     it('should handle missing values by returning empty strings', () => {
       const incompleteList: TestRecord[] = [{}]
       const formatters = new Formatters(options, incompleteList)
       const result = formatters.to()
-      const firstItem = result[0]!
+      const firstItem = result?.[0]
+      assert.isDefined(firstItem)
 
       expect(firstItem.priceFormat).toBe('')
       expect(firstItem.birthdayFormat).toBe('')
@@ -192,8 +204,9 @@ describe('Formatters', () => {
 
       const formattedList = formatters.to()
 
+      expect(formattedList).toHaveLength(originalList.length)
       expect(formattedList).not.toBe(originalList)
-      expect(formattedList[0]).not.toBe(originalItem)
+      expect(formattedList?.[0]).not.toBe(originalItem)
       expect('priceFormat' in originalItem).toBe(false)
     })
   })
@@ -208,7 +221,7 @@ describe('Formatters', () => {
       } satisfies FormattersOptionsList
       const customList = [{ price: 50, myCurrency: 'EUR' }]
       const formatters = new Formatters(customOptions, customList)
-      expect(formatters.to()[0]?.priceFormat).toContain('€50.00')
+      expect(formatters.to()?.[0]?.priceFormat).toContain('€50.00')
     })
 
     it('should handle a currency numberOnly option', () => {
@@ -220,7 +233,7 @@ describe('Formatters', () => {
       } satisfies FormattersOptionsList
       const customList = [{ price: 100, currency: 'USD' }]
       const formatters = new Formatters(customOptions, customList)
-      expect(formatters.to()[0]?.priceFormat).toBe('100.00')
+      expect(formatters.to()?.[0]?.priceFormat).toBe('100.00')
     })
 
     it('should handle date formatting with custom type, options, and hour24', () => {
@@ -236,7 +249,7 @@ describe('Formatters', () => {
       } satisfies FormattersOptionsList
       const dateList = [{ eventAt: '2025-03-15T15:30:00' }]
       const formatters = new Formatters(dateOptions, dateList)
-      const formattedDate = formatters.to()[0]?.eventAtFormat
+      const formattedDate = formatters.to()?.[0]?.eventAtFormat
       expect(formattedDate).toContain('March')
       expect(formattedDate).toContain('15:30')
     })
@@ -255,7 +268,7 @@ describe('Formatters', () => {
       } satisfies FormattersOptionsList
       const nameList = [{ givenName: 'Ivan', familyName: 'Ivanov', middleName: 'Ivanovich' }]
       const formatters = new Formatters(nameOptions, nameList)
-      const result = formatters.to()[0]?.userFormat
+      const result = formatters.to()?.[0]?.userFormat
       expect(result).toBe('I. Ivanov')
     })
 
@@ -274,8 +287,8 @@ describe('Formatters', () => {
       } satisfies FormattersOptionsList
       const pluralList = [{ items: 1, noWords: 42 }]
       const formatters = new Formatters(pluralOptions, pluralList)
-      expect(formatters.to()[0]?.itemsFormat).toBe('1.0 item')
-      expect(formatters.to()[0]?.noWordsFormat).toBe('42')
+      expect(formatters.to()?.[0]?.itemsFormat).toBe('1.0 item')
+      expect(formatters.to()?.[0]?.noWordsFormat).toBe('42')
     })
 
     it('should handle unit formatting and fallback when unit option is missing', () => {
@@ -290,8 +303,8 @@ describe('Formatters', () => {
       } satisfies FormattersOptionsList
       const unitList = [{ distance: 5, rawUnit: 12 }]
       const formatters = new Formatters(unitOptions, unitList)
-      expect(formatters.to()[0]?.distanceFormat).toBe('5 m')
-      expect(formatters.to()[0]?.rawUnitFormat).toBe('12')
+      expect(formatters.to()?.[0]?.distanceFormat).toBe('5 m')
+      expect(formatters.to()?.[0]?.rawUnitFormat).toBe('12')
     })
 
     it('should stringify value when type is omitted in options', () => {
@@ -300,7 +313,7 @@ describe('Formatters', () => {
       } satisfies FormattersOptionsList
       const untypedList = [{ label: 999 }]
       const formatters = new Formatters(untypedOptions, untypedList)
-      expect(formatters.to()[0]?.labelFormat).toBe('999')
+      expect(formatters.to()?.[0]?.labelFormat).toBe('999')
     })
 
     it('should handle dot notation in keys and convert format key to camelCase', () => {
@@ -322,7 +335,8 @@ describe('Formatters', () => {
       ]
 
       const formatters = new Formatters(dotOptions, dotList)
-      const firstResult = formatters.to()[0]!
+      const firstResult = formatters.to()?.[0]
+      assert.isDefined(firstResult)
 
       expect(firstResult.userNameFormat).toBe('John Doe')
       expect(firstResult.orderTotalAmountFormat).toBe('2,500')

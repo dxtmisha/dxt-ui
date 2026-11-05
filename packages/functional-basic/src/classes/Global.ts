@@ -1,3 +1,6 @@
+import { forOwn } from '../functions/forOwn'
+import { getObjectNull } from '../functions/getObjectNull'
+
 import { ServerStorage } from './ServerStorage'
 
 /**
@@ -11,42 +14,47 @@ export class Global {
    *
    * Возвращает значение по его имени.
    * @param name property name / название свойства
-   * @returns property value / значение свойства
+   * @returns property value or undefined / значение свойства или undefined
    */
-  static get<R = unknown>(name: string): R {
-    const item = this.getItem()
+  static get<R = unknown>(name: string): R | undefined {
+    const item = Global.#getItem()
 
-    return (
-      Object.prototype.hasOwnProperty.call(item, name)
-        ? item[name]
-        : undefined
-    ) as R
+    return Object.hasOwn(item, name) ? item[name] as R : undefined
   }
 
   /**
-   * Returns the instance of the class.
+   * Stores the first non-empty set of own, safe properties.
    *
-   * Возвращает инстанс класса.
-   * @returns global data storage / хранилище глобальных данных
-   */
-  static getItem(): Record<string, unknown> {
-    return ServerStorage.get('__ui:global-instance__', () => ({} as Record<string, unknown>))
-  }
-
-  /**
-   * Adds data, this method works only once.
-   *
-   * Добавляет данные, этот метод работает только 1 раз.
+   * Сохраняет первый непустой набор собственных безопасных свойств.
    * @param data global data / глобальные данные
    * @returns void / ничего не возвращает
    */
   static add(data: Record<string, unknown>): void {
-    const dataStorage = this.getItem()
+    const dataStorage = Global.#getItem()
 
     if (Object.keys(dataStorage).length > 0) {
       return
     }
 
-    Object.assign(dataStorage, data)
+    const initialData = getObjectNull()
+
+    forOwn(data, (value, name) => {
+      initialData[name] = value
+    })
+
+    // A getter may initialize storage while the data is copied. / Геттер может инициализировать хранилище во время копирования данных.
+    if (Object.keys(dataStorage).length === 0) {
+      Object.assign(dataStorage, initialData)
+    }
+  }
+
+  /**
+   * Returns the global data storage for the current context.
+   *
+   * Возвращает хранилище глобальных данных текущего контекста.
+   * @returns global data storage / хранилище глобальных данных
+   */
+  static #getItem(): Record<string, unknown> {
+    return ServerStorage.get('__ui:global-instance__', getObjectNull)
   }
 }

@@ -36,6 +36,8 @@ const viUnit = new GeoUnit('vi-VN')
 ### Định dạng chung
 - `format(value: NumberOrString, unit: string, options?: Intl.NumberFormatOptions): string` — Chuyển đổi và định dạng giá trị cho đơn vị được chỉ định (`'millimeter'`, `'centimeter'`, `'meter'`, `'kilometer'`, `'square-meter'`, `'hectare'`, `'gram'`, `'kilogram'`, `'tonne'`, `'milliliter'`, `'liter'`, `'celsius'`, `'kilometer-per-hour'`).
 
+`GeoUnit` tự chọn đơn vị và kiểu hiển thị. Các tùy chọn như `maximumFractionDigits` điều chỉnh cách hiển thị. Nếu cấu hình khu vực yêu cầu phép chuyển đổi chưa được hỗ trợ, kết quả giữ nguyên giá trị và đơn vị đầu vào. Với `square-meter`, `square-foot`, `tonne` và `ton`, số được định dạng theo ngôn ngữ đã chọn và đơn vị dùng nhãn ngắn. Các nhãn tương ứng là `m²`, `sq ft`, `t` và `tn`.
+
 ### Phương thức theo đơn vị
 - `celsius(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Độ C (chuyển sang độ F cho Hoa Kỳ).
 - `centimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string` — Xăng-ti-mét (sang inch).

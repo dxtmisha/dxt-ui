@@ -57,8 +57,10 @@ const REGEXP_TIME_SECONDS = /^\d{2}:\d{2}:\d{2}$/
 
 /**
  * Conversion to Date object.
+ * Uses the local time zone for the input date when no explicit offset is set.
  *
  * Преобразование в объект Date.
+ * При отсутствии явного смещения использует местный часовой пояс на дату из строки.
  * @param value input value / входное значение
  * @returns date object / объект даты
  */
@@ -90,7 +92,7 @@ export function toDate<T extends Date | number | string>(value?: T | null): (T &
     timeZone = timezoneMatch[2]
   } else {
     date = trimmedValue
-    timeZone = Geo.getTimezoneFormat().trim()
+    timeZone = Geo.getTimezoneFormat(true)
   }
 
   let stringDate: string

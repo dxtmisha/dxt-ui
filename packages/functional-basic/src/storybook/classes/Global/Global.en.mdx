@@ -4,11 +4,11 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Global Class
 
-A static utility class for storing and retrieving application-wide global data. Data is written **once** during initialization and is thereafter available as read-only. Used to pass server-side configuration or data to the client-side application.
+A static utility class for storing and retrieving application-wide global data. The first non-empty configuration sets the top-level keys. Individual values are available through `get()`, and nested objects are returned by reference.
 
 ## Key Features
 
-- **One-time initialization** — The `add` method only works on the first call; subsequent calls are ignored.
+- **One-time initialization** — `add()` stores the first non-empty set of safe properties.
 - **SSR isolation** — Data is stored via `ServerStorage`, ensuring per-request isolation on the server.
 - **No state management** — Intended purely for static configuration.
 - **Static Access** — all methods are static, eliminating the need for instantiation (`new Global()`).
@@ -32,21 +32,20 @@ console.log(Global.get('apiUrl')) // 'https://api.myapp.com'
 
 ## Methods
 
-- `get<R = unknown>(name: string): R` — Returns the own property value for a given key from the stored global data.
-- `getItem(): Record<string, unknown>` — Returns the global data storage object for the current context.
-- `add(data: Record<string, unknown>): void` — Saves the global data. Only works **on the first call** (while storage is empty). Subsequent calls are silently ignored.
+- `get<R = unknown>(name: string): R | undefined` — Returns the own value for the given key, or `undefined` if the key is missing.
+- `add(data: Record<string, unknown>): void` — Stores the first non-empty set of own enumerable properties, skipping `__proto__`, `constructor`, and `prototype`.
 
 ## Examples
 
 ### Retrieving Data
-```javascript
+```typescript
 import { Global } from '@dxtmisha/functional-basic'
 
 const apiUrl = Global.get<string>('apiUrl')
 console.log(apiUrl) // 'https://api.myapp.com'
 
 const flags = Global.get<Record<string, boolean>>('featureFlags')
-console.log(flags.darkMode) // true
+console.log(flags?.darkMode ?? false)
 ```
 
 ### Initialization on App Start

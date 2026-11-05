@@ -138,7 +138,7 @@ export class Formatters<
    *
    * Форматирует весь список или один элемент на основе предоставленных параметров.
    * Добавляет отформатированные значения с суффиксом 'Format' к каждому элементу.
-   * @returns FormattersReturn<List, Options> formatted data (list or single item) / отформатированные данные (список или один элемент)
+   * @returns formatted data or undefined when no input is set / отформатированные данные или undefined, если данные не заданы
    */
   to(): FormattersReturn<List, Options> {
     const list = forEach(this.getList(), (item) => {

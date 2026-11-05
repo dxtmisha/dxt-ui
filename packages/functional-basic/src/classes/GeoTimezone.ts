@@ -34,6 +34,9 @@ export class GeoTimezone {
    */
   protected value: number
 
+  /** Whether the offset was explicitly configured / Было ли смещение задано явно */
+  private configured: boolean
+
   /**
    * Constructor for GeoTimezone.
    * Initializes the time zone offset in minutes.
@@ -43,9 +46,10 @@ export class GeoTimezone {
    * @param timezone initial time zone offset in minutes / начальное смещение часового пояса в минутах
    */
   constructor(
-    timezone: number = new Date().getTimezoneOffset()
+    timezone?: number
   ) {
-    this.value = this.normalize(timezone)
+    this.configured = timezone !== undefined
+    this.value = this.normalize(timezone === undefined ? new Date().getTimezoneOffset() : timezone)
   }
 
   /**
@@ -67,6 +71,7 @@ export class GeoTimezone {
    */
   set(timezone: number): this {
     this.value = this.normalize(timezone)
+    this.configured = true
     return this
   }
 
@@ -74,9 +79,14 @@ export class GeoTimezone {
    * Returns the current time zone offset as an ISO 8601 formatted string (e.g., '+03:00', '-05:00').
    *
    * Возвращает текущее смещение часового пояса в виде отформатированной строки ISO 8601 (например, '+03:00', '-05:00').
+   * @param configuredOnly return an empty string when the offset was not explicitly set / вернуть пустую строку, если смещение не задано явно
    * @returns formatted time zone string / отформатированная строка часового пояса
    */
-  getFormat(): string {
+  getFormat(configuredOnly = false): string {
+    if (configuredOnly && !this.configured) {
+      return ''
+    }
+
     const absoluteOffset = Math.abs(this.value)
     const hours = Math.trunc(absoluteOffset / MINUTES_IN_HOUR)
       .toString()

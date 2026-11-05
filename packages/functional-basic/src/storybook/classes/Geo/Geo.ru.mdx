@@ -46,7 +46,7 @@ console.log(Geo.getTimezoneFormat()) // например, '+03:00'
 - `getObject(): GeoInstance` — Возвращает изолированный в рамках запроса экземпляр `GeoInstance` из `ServerStorage`.
 - `getItem(): GeoItemFull` — Возвращает копию объекта текущих настроек с учетом языка.
 - `getTimezone(): number` — Возвращает смещение часового пояса в минутах.
-- `getTimezoneFormat(): string` — Возвращает смещение часового пояса в строковом формате (например, `'+03:00'`).
+- `getTimezoneFormat(configuredOnly?: boolean): string` — Возвращает смещение часового пояса в строковом формате (например, `'+03:00'`). При `configuredOnly = true` возвращает `''`, если смещение не задано явно.
 
 ### Списки и поиск
 

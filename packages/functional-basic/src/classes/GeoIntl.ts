@@ -1,5 +1,6 @@
 import { getColumn } from '../functions/getColumn'
 import { inArray } from '../functions/inArray'
+import { isDomRuntime } from '../functions/isDomRuntime'
 import { isString } from '../functions/isString'
 import { toDate } from '../functions/toDate'
 import { toNumber } from '../functions/toNumber'
@@ -15,6 +16,7 @@ import {
 } from '../types/basicTypes'
 import {
   type GeoDate,
+  type GeoHours,
   type GeoItemFull
 } from '../types/geoTypes'
 
@@ -57,44 +59,68 @@ const DATE_OPTIONS_MINUTE_TYPES: GeoDate[] = ['full', 'datetime', 'time', 'hour-
 /** Date format types that include the second / Типы форматов даты, включающие секунду */
 const DATE_OPTIONS_SECOND_TYPES: GeoDate[] = ['full', 'time', 'second']
 
+/** Default maximum number of cached entries / Максимальное количество кэшируемых записей по умолчанию */
+const MAX_ITEMS_DEFAULT = 32
+
 /**
  * The Intl namespace object contains several constructors as well as functionality common
  * to the internationalization constructors and other language sensitive functions. Collectively,
  * they comprise the ECMAScript Internationalization API, which provides language sensitive
- * string comparison, number formatting, date and time formatting, and more
+ * string comparison, number formatting, date and time formatting, and more.
  *
- * Объект Intl является пространством имён для API интернационализации ECMАСcript, предоставляющим
+ * Объект Intl является пространством имён для API интернационализации ECMAScript, предоставляющим
  * языка-зависимое сравнение строк, форматирование чисел и дат со временем. Конструкторы объектов
  * Collator, NumberFormat и DateTimeFormat являются свойствами объекта Intl. На этой странице
  * описаны эти свойства, а также общая функциональность конструкторов интернационализации и других
- * языка-зависимых функций
+ * языка-зависимых функций.
+ *
+ * @remarks
+ * **Warning (Single Instance per Location):** `GeoIntl` always creates and caches only a single object per standard location (`location`).
+ * Both `new GeoIntl(code)` and `GeoIntl.getInstance(code)` return the existing cached instance if one has already been created for that location.
+ * Consequently, the `errorCenter` constructor argument is only applied when the instance for a location is created for the first time,
+ * and calling `setErrorCenter()` mutates the shared instance for that location globally.
+ *
+ * During SSR (when DOM runtime is unavailable), `errorCenter` is not initialized by default (`undefined`),
+ * and formatting errors are silently ignored without dispatching to `ErrorCenter`.
+ * In SSR, only attach a process-wide error center. A request-scoped center would be shared with other requests.
+ *
+ * **Внимание (Один объект на локацию):** `GeoIntl` всегда создаёт и кэширует только один объект для каждой стандартной локации (`location`).
+ * Вызовы `new GeoIntl(code)` и `GeoIntl.getInstance(code)` всегда возвращают уже существующий экземпляр из кэша для данной локации.
+ * Поэтому параметр `errorCenter` в конструкторе применяется только при первом создании объекта для локации,
+ * а вызов `setErrorCenter()` изменяет этот общий экземпляр для данной локации глобально.
+ *
+ * При SSR (когда DOM-окружение недоступно) `errorCenter` по умолчанию не инициализируется (`undefined`),
+ * и ошибки форматирования игнорируются без отправки в `ErrorCenter`.
+ * В SSR подключайте только центр ошибок уровня приложения. Центр текущего запроса будет доступен другим запросам.
  */
 export class GeoIntl {
   /** Full geo item data / Полные данные гео-объекта */
   private readonly geo: GeoItemFull
 
-  /** Error center instance / Экземпляр центра ошибок */
-  private readonly errorCenter: ErrorCenterInstance
+  /** Error center instance (undefined by default in SSR) / Экземпляр центра ошибок (по умолчанию undefined в SSR) */
+  private errorCenter?: ErrorCenterInstance
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
-   * @param errorCenter error center instance / экземпляр центра ошибок
+   * @param errorCenter error center instance (defaults to ErrorCenter.getItem() in DOM runtime, undefined in SSR) / экземпляр центра ошибок (по умолчанию ErrorCenter.getItem() в DOM-окружении, undefined в SSR)
    */
   constructor(
     code: string = Geo.getLocation(),
-    errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
+    errorCenter?: ErrorCenterInstance
   ) {
     this.geo = Geo.find(code)
-    this.errorCenter = errorCenter
     const location = this.getLocation()
 
     if (location in items) {
       return items[location]
     }
 
-    locations[code] = location
-    items[location] = this
+    this.errorCenter = errorCenter ?? (isDomRuntime() ? ErrorCenter.getItem() : undefined)
+    GeoIntl.setLocationItem(code, location)
+    GeoIntl.setItem(location, this)
   }
 
   /**
@@ -141,7 +167,7 @@ export class GeoIntl {
     }
 
     const geo = Geo.find(code)
-    locations[code] = geo.standard
+    this.setLocationItem(code, geo.standard)
     return geo.standard
   }
 
@@ -163,6 +189,42 @@ export class GeoIntl {
    */
   getLocation(): string {
     return this.geo.standard
+  }
+
+  /**
+   * Sets the error center instance for handling formatting errors.
+   * Warning: In SSR, do not pass a request-scoped center such as `ErrorCenter.getItem()`.
+   * Requests using the same cached locale would report their errors to that center.
+   *
+   * Устанавливает экземпляр центра ошибок для обработки ошибок форматирования.
+   * Внимание: на SSR не передавайте центр текущего запроса, например `ErrorCenter.getItem()`.
+   * Запросы с той же кешированной локалью будут отправлять ошибки в этот центр.
+   * @param errorCenter error center instance / экземпляр центра ошибок
+   * @returns this / текущий экземпляр
+   */
+  setErrorCenter(errorCenter?: ErrorCenterInstance): this {
+    this.errorCenter = errorCenter
+    return this
+  }
+
+  /**
+   * Sets the maximum number of cached entries for locations and instances.
+   * If the number of entries exceeds this limit, the cache is completely cleared.
+   *
+   * Устанавливает максимальное количество кэшируемых записей для локаций и экземпляров.
+   * Если количество записей превышает этот лимит, кэш полностью очищается.
+   * @param max maximum number of cached entries (default: 32) / максимальное количество кэшируемых записей (по умолчанию: 32)
+   */
+  static setMaxItems(max: number = MAX_ITEMS_DEFAULT): void {
+    maxItems = max
+
+    if (Object.keys(locations).length > maxItems) {
+      locations = Object.create(null)
+    }
+
+    if (Object.keys(items).length > maxItems) {
+      items = Object.create(null)
+    }
   }
 
   /**
@@ -205,7 +267,7 @@ export class GeoIntl {
         }
       }
     } catch (error) {
-      this.errorCenter.on({
+      this.errorCenter?.on({
         group: 'intl',
         code: 'display',
         details: error
@@ -558,7 +620,7 @@ export class GeoIntl {
           return `${this.number(number, optionsNumber)} ${wordsFormat ?? ''}`.trim()
         }
       } catch (error) {
-        this.errorCenter.on({
+        this.errorCenter?.on({
           group: 'intl',
           code: 'plural',
           details: error
@@ -733,7 +795,7 @@ export class GeoIntl {
         return new Intl.RelativeTimeFormat(this.getLocation(), options).format(Math.round(toNumber(value)), unit)
       }
     } catch (error) {
-      this.errorCenter.on({
+      this.errorCenter?.on({
         group: 'intl',
         code: 'relative',
         details: error
@@ -761,7 +823,7 @@ export class GeoIntl {
           .format(toDate(value))
       }
     } catch (error) {
-      this.errorCenter.on({
+      this.errorCenter?.on({
         group: 'intl',
         code: 'datetime',
         details: error
@@ -801,7 +863,7 @@ export class GeoIntl {
         }
       }
     } catch (error) {
-      this.errorCenter.on({
+      this.errorCenter?.on({
         group: 'intl',
         code: 'datetime',
         details: error
@@ -829,7 +891,7 @@ export class GeoIntl {
           .format(toDate(value))
       }
     } catch (error) {
-      this.errorCenter.on({
+      this.errorCenter?.on({
         group: 'intl',
         code: 'datetime',
         details: error
@@ -874,7 +936,7 @@ export class GeoIntl {
         }
       }
     } catch (error) {
-      this.errorCenter.on({
+      this.errorCenter?.on({
         group: 'intl',
         code: 'datetime',
         details: error
@@ -893,6 +955,31 @@ export class GeoIntl {
    */
   time(value: NumberOrStringOrDate): string {
     return this.date(value, 'time')
+  }
+
+  /**
+   * Returns the hour format (12-hour or 24-hour) for the current locale.
+   *
+   * Возвращает формат часов (12-часовой или 24-часовой) для текущей локали.
+   * @returns hour format ('12' or '24') / формат часов ('12' или '24')
+   */
+  hoursType(): GeoHours {
+    try {
+      if (this.hasIntlDateTimeFormat()) {
+        const { hour12 } = new Intl.DateTimeFormat(this.getLocation(), { hour: '2-digit' })
+          .resolvedOptions()
+
+        return hour12 === false ? '24' : '12'
+      }
+    } catch (error) {
+      this.errorCenter?.on({
+        group: 'intl',
+        code: 'datetime',
+        details: error
+      })
+    }
+
+    return '12'
   }
 
   /**
@@ -938,6 +1025,50 @@ export class GeoIntl {
   private hasIntlDateTimeFormat(): boolean {
     return this.hasIntl()
       && typeof Intl.DateTimeFormat !== 'undefined'
+  }
+
+  /**
+   * Saves a GeoIntl instance to the cache, clearing the cache if the limit is exceeded.
+   *
+   * Сохраняет экземпляр GeoIntl в кэш, полностью очищая кэш при превышении лимита.
+   * @param location standard location code / стандартный код локации
+   * @param item GeoIntl instance / экземпляр GeoIntl
+   */
+  private static setItem(
+    location: string,
+    item: GeoIntl
+  ): void {
+    if (!(location in items)) {
+      if (Object.keys(items).length >= maxItems) {
+        items = Object.create(null)
+      }
+
+      if (maxItems > 0) {
+        items[location] = item
+      }
+    }
+  }
+
+  /**
+   * Saves a resolved standard location code to the cache, clearing the cache if the limit is exceeded.
+   *
+   * Сохраняет стандартный код локации в кэш, полностью очищая кэш при превышении лимита.
+   * @param code input location code / входной код локации
+   * @param location standard location code / стандартный код локации
+   */
+  private static setLocationItem(
+    code: string,
+    location: string
+  ): void {
+    if (!(code in locations)) {
+      if (Object.keys(locations).length >= maxItems) {
+        locations = Object.create(null)
+      }
+
+      if (maxItems > 0) {
+        locations[code] = location
+      }
+    }
   }
 
   /**
@@ -997,7 +1128,7 @@ export class GeoIntl {
         return new Intl.NumberFormat(this.getLocation(), options)
       }
     } catch (error) {
-      this.errorCenter.on({
+      this.errorCenter?.on({
         group: 'intl',
         code: 'number',
         details: error
@@ -1008,8 +1139,11 @@ export class GeoIntl {
   }
 }
 
+/** Maximum number of cached entries before full reset / Максимальное количество кэшируемых записей до полной очистки */
+let maxItems: number = MAX_ITEMS_DEFAULT
+
 /** Cache of resolved standard location codes by input code / Кэш стандартных кодов локаций по входному коду */
-const locations: Record<string, string> = /* #__PURE__ */ Object.create(null)
+let locations: Record<string, string> = /* #__PURE__ */ Object.create(null)
 
 /** Cache of GeoIntl instances by standard location code / Кэш экземпляров GeoIntl по стандартному коду локации */
-const items: Record<string, GeoIntl> = /* #__PURE__ */ Object.create(null)
+let items: Record<string, GeoIntl> = /* #__PURE__ */ Object.create(null)

@@ -74,6 +74,13 @@ describe('GeoFlag', () => {
     expect(list[0]).toHaveProperty('value')
   })
 
+  it('should include India and the Dominican Republic in the default national list', () => {
+    const list = new GeoFlag('en-US').getNational()
+
+    expect(list.find(item => item.value === 'IN')?.icon).toBe('f-in')
+    expect(list.find(item => item.value === 'DO')?.icon).toBe('f-do')
+  })
+
   it('should return a list of all languages when no codes provided', () => {
     const flag = new GeoFlag('en-US')
     const list = flag.getListLanguage()
@@ -99,6 +106,12 @@ describe('GeoFlag', () => {
 
     const unsortedList = flag.getList(['US', 'FR', 'DE'], false)
     expect(unsortedList.map(item => item.value)).toEqual(['US', 'FR', 'DE'])
+  })
+
+  it('should use the fallback country for an unknown code in a filtered list', () => {
+    const list = new GeoFlag('en-US').getNational(['FR', 'ZZ'])
+
+    expect(list.map(item => item.value)).toEqual(['FR', 'US'])
   })
 
   it('should return a filtered list of languages by codes with or without sorting', () => {

@@ -37,5 +37,5 @@ console.log(tz.getFormat()) // '+05:30'
 
 - `get(): number` — Returns the current time zone offset in minutes.
 - `set(timezone: number): this` — Updates and normalizes the current time zone offset in minutes, returning the instance for chaining.
-- `getFormat(): string` — Returns the current time zone offset formatted as an ISO 8601 string (e.g., `'+03:00'`, `'-05:00'`).
+- `getFormat(configuredOnly?: boolean): string` — Returns the current time zone offset formatted as an ISO 8601 string (e.g., `'+03:00'`, `'-05:00'`). With `configuredOnly` set to `true`, returns `''` when no offset was explicitly set.
 

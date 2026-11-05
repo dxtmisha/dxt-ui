@@ -72,3 +72,13 @@ getColumn
 inArray
 toDate
 toNumber
+GeoIntl
+Datetime
+isPrototypeKey
+getItemByPath
+toCamelCase
+Formatters
+GeoFlag
+GeoUnit
+forOwn
+Global
