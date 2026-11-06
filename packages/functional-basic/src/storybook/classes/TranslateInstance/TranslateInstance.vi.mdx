@@ -184,4 +184,3 @@ translate.addSyncByLocation({ en: { save: 'Save' } })
 Cache được đọc theo thứ tự khu vực → ngôn ngữ → `global`; văn bản rỗng được coi là chưa có. Từ điển thành công nhưng thiếu mã yêu cầu sẽ ghi nhận sự thiếu đó để tránh tải lặp. Lỗi API hoặc yêu cầu bị từ chối không tạo mục này; lỗi được gửi đến `ErrorCenter` và `get()` hiện tại trả về mã.
 
 `get()` không bắt đầu tải trên localhost. Gọi `add()` trực tiếp sẽ xử lý theo nhóm và có thể tải tập tin. `getSync()` và `getListSync()` luôn đọc cache. Phép thay thế trả về chuỗi không mã hóa HTML.
-

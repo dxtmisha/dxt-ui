@@ -184,4 +184,3 @@ translate.addSyncByLocation({ en: { save: 'Save' } })
 Cache lookup follows location → language → `global`; empty text is treated as missing. A successful dictionary without a requested key records that absence to avoid repeated loading. An API failure or rejected request creates no such entry; the error is routed to `ErrorCenter` and the current `get()` returns the code.
 
 `get()` does not start loading on localhost. An explicit `add()` starts batch processing and can load a file. `getSync()` and `getListSync()` always read the cache. Interpolation returns a string without HTML encoding.
-
