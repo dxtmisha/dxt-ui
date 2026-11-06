@@ -5,7 +5,8 @@ import { NITRO_API_HEADERS } from '../types/nitroAppTypes'
  * Initializes the API headers and provides them to the application.
  *
  * Инициализирует заголовки API и предоставляет их приложению.
- * @param app root component of the application / корневой компонент приложения
+ * @param app Vue application instance / Экземпляр приложения Vue
+ * @returns object containing the initialized Headers instance / объект с инициализированным экземпляром Headers
  */
 export function initHeaders<T>(app: App<T>): { headers: Headers } {
   const headers = new Headers()

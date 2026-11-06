@@ -19,6 +19,7 @@ import type { NitroAppOptions } from '../types/nitroAppTypes'
  * @param router instance of Vue Router / экземпляр Vue Router
  * @param options configuration options for the application / параметры конфигурации приложения
  * @param action additional action to perform before mounting / дополнительное действие перед монтированием
+ * @returns promise resolved when client app is mounted / промис, разрешающийся после монтирования клиентского приложения
  */
 export async function uiCreateClientApp<T>(
   app: App<T>,
@@ -26,7 +27,7 @@ export async function uiCreateClientApp<T>(
   router?: Router | undefined,
   options: NitroAppOptions = {},
   action?: (app: App<T>) => Promise<void> | void
-) {
+): Promise<void> {
   app.use(dxtFunctionalPlugin, options)
 
   await initClientRouter(router)

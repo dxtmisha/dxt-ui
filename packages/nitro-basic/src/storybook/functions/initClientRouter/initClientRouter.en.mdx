@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 An asynchronous function that waits for the initialization and full readiness of the Vue router. This ensures that all asynchronous components and initial navigation hooks are resolved before the application continues execution (e.g., before hydration on the client or rendering on the server).
 
 **Parameters:**
-- `router: Router | undefined` — The Vue Router instance.
+- `router?: Router` — The Vue Router instance (optional).
 
 **Returns:**
 `Promise<void>`

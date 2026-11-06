@@ -7,11 +7,16 @@ import { renderToString, type SSRContext } from 'vue/server-renderer'
  * Рендерит приложение Vue в строку и извлекает данные контекста.
  * @param app Vue application instance / Экземпляр приложения Vue
  * @param context SSR context / Контекст SSR
+ * @returns rendered HTML, teleports HTML, and SSR context / отрендеренный HTML, HTML телепортов и контекст SSR
  */
 export async function initSsrApp<T>(
   app: App<T>,
   context: SSRContext = {}
-) {
+): Promise<{
+  appHtml: string
+  teleportsHtml: string
+  context: SSRContext
+}> {
   const appHtml = await renderToString(app, context)
   const teleportsHtml = context.teleports
     ? Object.values(context.teleports).join('')

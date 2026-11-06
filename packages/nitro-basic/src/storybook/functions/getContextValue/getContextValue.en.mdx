@@ -10,7 +10,7 @@ A utility function that retrieves a specific value from the active Server-Side R
 - `key: string` — The key of the value to retrieve (e.g., `'headers'`, `'storage'`, or `'cookie'`).
 
 **Returns:**
-`any | undefined` — The retrieved context value, or `undefined` if the context is not active or the key does not exist.
+`T | undefined` — The retrieved context value, or `undefined` if the context is not active or the key does not exist.
 
 ```typescript
 import { getContextValue } from '@dxtmisha/nitro-basic'

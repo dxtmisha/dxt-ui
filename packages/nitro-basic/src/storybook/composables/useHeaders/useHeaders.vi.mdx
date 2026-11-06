@@ -7,11 +7,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Một hàm composable cung cấp quyền truy cập vào các header API của yêu cầu hiện tại. Nó có thể trả về toàn bộ đối tượng `Headers` hoặc giá trị của một header cụ thể theo tên của nó.
 
 **Tham số:**
-- `name?: string` — Tên header (tùy chọn).
+- `name?: T` (`T extends string | undefined = undefined`) — Tên header (tùy chọn).
 
 **Trả về:**
-- `Headers | undefined` — Nếu không cung cấp tên, trả về toàn bộ đối tượng headers.
-- `string | undefined` — Nếu cung cấp tên, trả về giá trị của header đó.
+- `Headers | undefined` — Nếu không cung cấp tên (hoặc `undefined`), trả về toàn bộ đối tượng headers.
+- `string | undefined` — Nếu cung cấp tên, trả về giá trị của header đó (hoặc `undefined` nếu không tồn tại hoặc chuỗi rỗng).
 
 **Ví dụ sử dụng:**
 

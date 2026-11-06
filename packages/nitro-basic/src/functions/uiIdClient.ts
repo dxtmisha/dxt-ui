@@ -1,5 +1,6 @@
 import { initGetElementId } from '@dxtmisha/functional-basic'
 
+/** Incremental counter for client-side element IDs / Инкрементный счётчик для клиентских идентификаторов элементов */
 let code = 10_000
 
 /**

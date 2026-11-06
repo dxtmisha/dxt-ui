@@ -22,7 +22,7 @@ import { appContext } from './initContext'
  * Initializes the server-side application, including storage, routing, and SSR rendering.
  *
  * Инициализирует серверное приложение, включая хранилища, роутинг и SSR-рендеринг.
- * @param app root component of the application / корневой компонент приложения
+ * @param app Vue application instance / Экземпляр приложения Vue
  * @param request incoming server request / входящий запрос сервера
  * @param router optional router instance / экземпляр роутера (опционально)
  * @param options configuration options for the application / параметры конфигурации приложения
@@ -39,7 +39,17 @@ export async function uiCreateServerApp<T>(
   action?: (app: App<T>) => Promise<void> | void,
   context: SSRContext = {},
   body?: string
-) {
+): Promise<{
+  headers: Headers | undefined
+  lang: string
+  title: string
+  meta: string
+  scriptsJson: string
+  body: string
+  appHtml: string
+  teleportsHtml: string
+  context: SSRContext
+}> {
   const contextData = {
     id: { code: 10_000 },
     ...initHeaders(app),
@@ -74,12 +84,12 @@ export async function uiCreateServerApp<T>(
 
         if (body) {
           newBody = body
-            .replace('<!--ssr-lang-->', lang)
-            .replace('<!--ssr-title-->', title)
-            .replace('<!--ssr-meta-->', meta)
-            .replace('<!--ssr-scriptsJson-->', scriptsJson)
-            .replace('<!--ssr-outlet-->', rendered.appHtml)
-            .replace('<!--ssr-teleports-->', rendered.teleportsHtml)
+            .replace('<!--ssr-lang-->', () => lang)
+            .replace('<!--ssr-title-->', () => title)
+            .replace('<!--ssr-meta-->', () => meta)
+            .replace('<!--ssr-scriptsJson-->', () => scriptsJson)
+            .replace('<!--ssr-outlet-->', () => rendered.appHtml)
+            .replace('<!--ssr-teleports-->', () => rendered.teleportsHtml)
         } else {
           newBody = rendered.appHtml
         }

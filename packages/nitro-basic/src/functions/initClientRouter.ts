@@ -1,15 +1,16 @@
 import type { Router } from 'vue-router'
 
 /**
- * Waits for the initialization and readiness of the server-side router.
- * This ensures that all components and initial hooks are resolved before the application is rendered into HTML.
+ * Waits for the initialization and readiness of the Vue router.
+ * This ensures that all components and initial hooks are resolved before the application is mounted or rendered.
  *
- * Ожидает инициализацию и готовность роутера на стороне сервера.
- * Это гарантирует, что все компоненты и начальные хуки разрешены до того, как приложение будет отрисовано в HTML.
+ * Ожидает инициализацию и готовность роутера Vue.
+ * Это гарантирует, что все компоненты и начальные хуки разрешены до того, как приложение будет смонтировано или отрисовано.
  * @param router instance of Vue Router / экземпляр Vue Router
+ * @returns promise resolved when the router is ready / промис, разрешающийся после готовности роутера
  */
 export async function initClientRouter(
-  router: Router | undefined
+  router?: Router
 ): Promise<void> {
   if (router) {
     await router.isReady()

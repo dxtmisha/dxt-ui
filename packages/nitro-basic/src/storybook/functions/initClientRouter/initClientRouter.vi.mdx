@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Một hàm bất đối xứng giúp đợi việc khởi tạo và sự sẵn sàng hoàn toàn của Vue router. Điều này đảm bảo rằng tất cả các thành phần bất đối xứng và các hook điều hướng ban đầu được giải quyết trước khi ứng dụng tiếp tục thực thi (ví dụ: trước khi hydrat hóa trên client hoặc render trên server).
 
 **Tham số:**
-- `router: Router | undefined` — Thực thể Vue Router.
+- `router?: Router` — Thực thể Vue Router (tùy chọn).
 
 **Trả về:**
 `Promise<void>`

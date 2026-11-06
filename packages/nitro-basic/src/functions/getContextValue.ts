@@ -8,6 +8,6 @@ import { appContext } from './initContext'
  * @returns context value or undefined / значение контекста или undefined
  */
 export function getContextValue<T = any>(key: string): T | undefined {
-  const context = appContext.tryUse() as Record<string, any> | undefined
+  const context = appContext.tryUse() as Record<string, T> | null
   return context?.[key]
 }

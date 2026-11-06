@@ -18,7 +18,7 @@ import { NITRO_APP_STORAGE } from '../types/nitroAppTypes'
  * для получения объекта хранилища из контекста приложения Vue с помощью `inject`.
  * Она ищет ключ `NITRO_APP_STORAGE`.
  */
-export function uiServerStorage() {
+export function uiServerStorage(): void {
   ServerStorage.init(() => {
     const item = getInject<{ storage: Record<string, any> }>(NITRO_APP_STORAGE)
       ?? getContextValue('storage')

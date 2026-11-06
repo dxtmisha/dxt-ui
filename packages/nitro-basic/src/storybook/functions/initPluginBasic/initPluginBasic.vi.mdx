@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Một hàm khởi tạo cho các khả năng cơ bản trong ứng dụng Nitro. Hiện tại, nó chịu trách nhiệm chính trong việc cấu hình bộ nhớ đệm API bằng cách sử dụng cấu hình được cung cấp.
 
 **Tham số:**
-- `_ : NitroApp` — Thực thể ứng dụng Nitro.
+- `_?: NitroApp` — Thực thể ứng dụng Nitro (tùy chọn).
 - `config: NitroAppBasicConfig` — Đối tượng cấu hình.
 
 ## Các kiểu
@@ -21,7 +21,7 @@ Một hàm khởi tạo cho các khả năng cơ bản trong ứng dụng Nitro.
 **Ví dụ sử dụng:**
 
 ```typescript
-import { initPluginBasic } from '@dxtmisha/nitro-basic'
+import { initPluginBasic } from '@dxtmisha/nitro-basic/plugin'
 
 export default defineNitroPlugin((nitroApp) => {
   initPluginBasic(nitroApp, {

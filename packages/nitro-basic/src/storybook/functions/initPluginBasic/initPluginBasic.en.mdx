@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 An initialization function for basic capabilities in a Nitro application. Currently, it is primarily responsible for configuring the API cache using the provided configuration.
 
 **Parameters:**
-- `_ : NitroApp` — The Nitro application instance.
+- `_?: NitroApp` — The Nitro application instance (optional).
 - `config: NitroAppBasicConfig` — The configuration object.
 
 ## Types
@@ -21,7 +21,7 @@ An initialization function for basic capabilities in a Nitro application. Curren
 **Usage Example:**
 
 ```typescript
-import { initPluginBasic } from '@dxtmisha/nitro-basic'
+import { initPluginBasic } from '@dxtmisha/nitro-basic/plugin'
 
 export default defineNitroPlugin((nitroApp) => {
   initPluginBasic(nitroApp, {

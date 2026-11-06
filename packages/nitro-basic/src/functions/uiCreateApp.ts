@@ -1,4 +1,4 @@
-import { createSSRApp } from 'vue'
+import { type App, type Component, createSSRApp } from 'vue'
 import type { Router } from 'vue-router'
 
 import { uiCreateSsrRouter } from './uiCreateSsrRouter'
@@ -8,14 +8,19 @@ import { type NitroAppOptions } from '../types/nitroAppTypes'
  * Creates a Vue SSR application instance and initializes core plugins.
  *
  * Создаёт экземпляр приложения Vue SSR и инициализирует основные плагины.
- * @param appComponent root component of the application/ корневой компонент приложения
- * @param options application configuration options/ опции конфигурации приложения
+ * @param appComponent root component of the application / корневой компонент приложения
+ * @param options application configuration options / опции конфигурации приложения
+ * @returns object containing the Vue app, router, and options / объект с экземпляром приложения Vue, роутером и опциями
  */
-export function uiCreateApp<A = any>(
+export function uiCreateApp<A extends Component = Component>(
   appComponent: A,
   options: NitroAppOptions = {}
-) {
-  const app = createSSRApp(appComponent as any)
+): {
+  app: App<Element>
+  router: Router | undefined
+  options: NitroAppOptions
+} {
+  const app = createSSRApp(appComponent)
   let router: Router | undefined = undefined
 
   if (options.router) {

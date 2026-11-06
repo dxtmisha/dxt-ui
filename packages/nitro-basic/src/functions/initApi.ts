@@ -9,7 +9,7 @@ import { getRequestOrigin } from './getRequestOrigin'
  * Устанавливает базовый источник (origin) для обеспечения корректных абсолютных URL-адресов при запросах на стороне сервера.
  * @param request incoming server request / входящий запрос сервера
  */
-export function initApi(request: Request) {
+export function initApi(request: Request): void {
   Api.setOrigin(getRequestOrigin(request))
   UrlItem.getInstance().set(request.url)
 }

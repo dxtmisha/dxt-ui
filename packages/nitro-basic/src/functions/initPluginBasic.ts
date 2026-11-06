@@ -13,10 +13,10 @@ import type { NitroAppBasicConfig } from '../types/nitroAppTypes'
  * @param _ Nitro application instance / Экземпляр приложения Nitro
  * @param config Configuration / Конфигурация
  */
-export function initPluginBasic<N extends NitroApp & Record<string, any> = NitroApp>(
-  _: N,
+export function initPluginBasic<N = NitroApp>(
+  _?: N,
   config: NitroAppBasicConfig = {}
-) {
+): void {
   initPluginApiCache(
     config.api?.cacheStorageKey,
     config.api?.cacheStepAgeClearOld

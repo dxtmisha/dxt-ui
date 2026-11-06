@@ -7,11 +7,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 A composable function that provides access to the API headers of the current request. It can return either the entire `Headers` object or the value of a specific header by its name.
 
 **Parameters:**
-- `name?: string` — Optional header name.
+- `name?: T` (`T extends string | undefined = undefined`) — Optional header name.
 
 **Returns:**
-- `Headers | undefined` — If no name is provided, returns the entire headers object.
-- `string | undefined` — If a name is provided, returns the value of that header.
+- `Headers | undefined` — If no name is provided (or `undefined`), returns the entire headers object.
+- `string | undefined` — If a name is provided, returns the value of that header (or `undefined` if missing or empty).
 
 **Usage Example:**
 

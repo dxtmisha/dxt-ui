@@ -10,7 +10,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `key: string` — Ключ значения, которое необходимо извлечь (например, `'headers'`, `'storage'` или `'cookie'`).
 
 **Возвращает:**
-`any | undefined` — Извлеченное значение из контекста, или `undefined`, если контекст не активен или ключ не существует.
+`T | undefined` — Извлеченное значение из контекста, или `undefined`, если контекст не активен или ключ не существует.
 
 ```typescript
 import { getContextValue } from '@dxtmisha/nitro-basic'

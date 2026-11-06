@@ -10,7 +10,7 @@ Một hàm tiện ích giúp truy xuất một giá trị cụ thể từ ngữ 
 - `key: string` — Khóa của giá trị cần truy xuất (ví dụ: `'headers'`, `'storage'`, hoặc `'cookie'`).
 
 **Trả về:**
-`any | undefined` — Giá trị ngữ cảnh được truy xuất, hoặc `undefined` nếu ngữ cảnh không hoạt động hoặc khóa không tồn tại.
+`T | undefined` — Giá trị ngữ cảnh được truy xuất, hoặc `undefined` nếu ngữ cảnh không hoạt động hoặc khóa không tồn tại.
 
 ```typescript
 import { getContextValue } from '@dxtmisha/nitro-basic'

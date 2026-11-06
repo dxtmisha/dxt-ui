@@ -28,7 +28,7 @@ export function initPluginApiCache(
    * @param key Cache key / Ключ кэша
    * @returns Full cache key / Полный ключ кэша
    */
-  const getKey = (key: string) => `Ui_ApiCache_${key}`
+  const getKey = (key: string): string => `Ui_ApiCache_${key}`
 
   ApiCache.init(
     /**
@@ -38,7 +38,7 @@ export function initPluginApiCache(
      * @param key Cache key / Ключ кэша
      * @returns Cache item or undefined / Элемент кэша или undefined
      */
-    async (key: string) => {
+    async (key: string): Promise<ApiCacheItem | undefined> => {
       try {
         return (await storage.getItem<ApiCacheItem>(getKey(key))) ?? undefined
       } catch (error) {
@@ -60,7 +60,7 @@ export function initPluginApiCache(
      * @param value Cache item / Элемент кэша
      * @returns Promise with success status / Promise со статусом успеха
      */
-    async (key: string, value: ApiCacheItem) => {
+    async (key: string, value: ApiCacheItem): Promise<boolean> => {
       try {
         await storage.setItem(getKey(key), value)
         return true
@@ -82,7 +82,7 @@ export function initPluginApiCache(
      * @param key Cache key / Ключ кэша
      * @returns Promise with success status / Promise со статусом успеха
      */
-    async (key: string) => {
+    async (key: string): Promise<boolean> => {
       try {
         await storage.removeItem(getKey(key))
         return true
