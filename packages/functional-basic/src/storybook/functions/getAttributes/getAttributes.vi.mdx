@@ -4,9 +4,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getAttributes`
 
-Trích xuất tất cả các thuộc tính HTML của một phần tử DOM được chỉ định (hoặc phần tử được tìm thấy bằng bộ chọn CSS) và trả về chúng dưới dạng một đối tượng khóa-giá trị (key-value) đơn giản.
+Trích xuất tất cả các thuộc tính của phần tử DOM, kể cả SVG, và trả về một đối tượng khóa-giá trị đơn giản. Có thể truyền trực tiếp phần tử hoặc tìm phần tử bằng bộ chọn CSS.
 
 Hàm sử dụng `getElement` để tìm nút đích. Nếu phần tử không được tìm thấy hoặc đối số trống được truyền vào, nó sẽ trả về một đối tượng rỗng `{}`.
+
+Khi truyền `window`, hàm đọc các thuộc tính của `document.body`. Giá trị vẫn là chuỗi, kể cả thuộc tính boolean rỗng; giá trị không tồn tại được biểu diễn bằng `undefined`.
 
 **Tham số:**
 - `element?: ElementOrString<E> | null` — Một phần tử DOM, đối tượng Window, một chuỗi CSS selector để tìm kiếm phần tử đó, hoặc `null`.
@@ -19,8 +21,8 @@ import { getAttributes } from '@dxtmisha/functional-basic'
 
 // Giả sử có phần tử: <div id="app" class="container" data-theme="dark"></div>
 
-const attrs = getAttributes('#app')
-console.log(attrs)
+const attributes = getAttributes('#app')
+console.log(attributes)
 /*
 {
   id: 'app',

@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getFirst`
 
-Returns the first element of an array or object. If the value is a primitive, returns the value itself.
+Returns the first array entry or the first own enumerable string-keyed object value. Non-object inputs are returned unchanged.
 
 **Parameters:**
 - `value?: T | readonly T[] | Record<PropertyKey, T>` — input value.
 
 **Returns:**
-`T` — the first element of the array or object, or the value itself.
+`T` — the declared result type: the first entry or the original non-object input. At runtime, empty arrays and objects, as well as omitted input, return `undefined`.
 
 ```typescript
 import { getFirst } from '@dxtmisha/functional-basic'
@@ -18,4 +18,6 @@ import { getFirst } from '@dxtmisha/functional-basic'
 console.log(getFirst([1, 2, 3])) // 1
 console.log(getFirst({ a: 1, b: 2 })) // 1
 console.log(getFirst('string')) // 'string'
+console.log(getFirst([])) // undefined
+console.log(getFirst({})) // undefined
 ```

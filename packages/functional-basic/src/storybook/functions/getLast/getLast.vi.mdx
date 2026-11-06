@@ -6,11 +6,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Trả về phần tử cuối cùng của một mảng hoặc một đối tượng. Nếu giá trị là kiểu nguyên thủy, trả về chính giá trị đó.
 
+Mảng và đối tượng rỗng, cũng như ô cuối cùng bị khuyết trong mảng, trả về `undefined`. Giá trị đối tượng tuân theo thứ tự `Object.values`: chỉ gồm thuộc tính riêng có thể liệt kê với khóa chuỗi; bỏ qua thuộc tính kế thừa và symbol.
+
 **Tham số:**
 - `value?: T | readonly T[] | Record<PropertyKey, T>` — giá trị đầu vào.
 
 **Trả về:**
-`T` — phần tử cuối cùng của mảng hoặc đối tượng, hoặc chính giá trị đó.
+`T` — kiểu trả về được khai báo trong TypeScript cho phần tử cuối cùng hoặc giá trị đầu vào giữ nguyên. Khi chạy, tập hợp rỗng cũng có thể trả về `undefined`.
 
 ```typescript
 import { getLast } from '@dxtmisha/functional-basic'
@@ -18,4 +20,5 @@ import { getLast } from '@dxtmisha/functional-basic'
 console.log(getLast([1, 2, 3])) // 3
 console.log(getLast({ a: 1, b: 2 })) // 2
 console.log(getLast('string')) // 'string'
+console.log(getLast([])) // undefined
 ```

@@ -6,8 +6,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Trả về độ dài hoặc kích thước của các kiểu dữ liệu khác nhau bao gồm Mảng, Đối tượng (Object), Map, Set và Chuỗi. Nếu giá trị là null, undefined hoặc kiểu không được hỗ trợ (như số hoặc boolean), hàm trả về `0`.
 
+Chuỗi dùng độ dài JavaScript gốc theo đơn vị mã UTF-16, nên `getLength('🚀')` là `2`. Mảng dùng length, Map/Set dùng size, còn đối tượng đếm khóa chuỗi riêng có thể liệt kê bằng `Object.keys`; khóa kế thừa, không thể liệt kê và symbol không được tính. Gọi không có đối số trả về `0`.
+
 **Tham số:**
-- `value: unknown` — Giá trị đầu vào cần đo độ dài/kích thước.
+- `value?: unknown` — Giá trị đầu vào cần đo; giá trị bị bỏ qua hoặc nullish trả về `0`.
 
 **Trả về:**
 `number` — Độ dài hoặc kích thước của giá trị.

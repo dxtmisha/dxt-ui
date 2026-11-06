@@ -12,14 +12,14 @@ Transforms the first character of a given string to uppercase while leaving the 
 - **Locale-Aware Capitalization** — Seamlessly respects language-specific casing rules (such as Turkish/Azerbaijani dotted `'i'` converting to `'İ'` instead of `'I'`) through either an explicit BCP 47 language tag (e.g., `'tr-TR'`) or the ambient global application locale retrieved dynamically via `Geo.getLocation()`.
 - **Compile-Time Literal Type Preservation** — Injects TypeScript's native `Capitalize<T>` utility type for string literals (`'user'` -> `'User'`), enabling robust compile-time autocomplete and type safety for event names, CSS classes, and object property keys.
 - **Permissive & Crash-Proof Input Coercion** — Employs `toString()` to safely handle non-string primitives, numbers (`0`, `-42`), booleans (`false`, `true`), `null`, and `undefined` without throwing runtime exceptions.
-- **Deterministic, Pure & SSR-Safe** — A pure, side-effect-free function with zero DOM dependencies and no mutable module state, executing with $O(1)$ complexity across Node.js, Nitro, Bun, and browser runtimes.
+- **Deterministic, Pure & SSR-Safe** — A pure, side-effect-free function with zero DOM dependencies and no mutable module state, executing with $O(n)$ time and result space for a string of length $n$ across Node.js, Nitro, Bun, and browser runtimes.
 
 **Parameters:**
-- `value?: T | unknown` — The input string or value to capitalize. If omitted or nullish, an empty string is returned.
+- `value?: T` — The input string or value to capitalize. If omitted or nullish, an empty string is returned.
 - `locale: boolean | string = false` — When set to `true`, uses the current global ambient locale from `Geo.getLocation()`; when a string is provided, uses it as an explicit BCP 47 locale tag (e.g., `'tr-TR'`).
 
 **Returns:**
-`Capitalize<T> | string` — The capitalized string.
+`T extends string ? Capitalize<T> : string` — The capitalized string.
 
 ## Examples
 

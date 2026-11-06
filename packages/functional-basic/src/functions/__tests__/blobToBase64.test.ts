@@ -1,10 +1,14 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { blobToBase64 } from '../blobToBase64'
 
 describe('blobToBase64', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
   beforeEach(() => {
     vi.stubGlobal('window', undefined)
     vi.stubGlobal('document', undefined)
@@ -313,6 +317,26 @@ describe('blobToBase64', () => {
       const blob = new Blob(['sync-error'])
       const result = await blobToBase64(blob)
       expect(result).toBeUndefined()
+    })
+  })
+
+  describe('Native FileReader integration', () => {
+    it('should encode actual Unicode bytes without mocked readers', async () => {
+      vi.unstubAllGlobals()
+
+      const blob = new Blob(['Học tiếng Việt'], { type: 'text/plain;charset=utf-8' })
+
+      expect(await blobToBase64(blob, true)).toBe('SOG7jWMgdGnhur9uZyBWaeG7h3Q=')
+      expect(await blobToBase64(blob)).toBe('data:text/plain;charset=utf-8;base64,SOG7jWMgdGnhur9uZyBWaeG7h3Q=')
+    })
+
+    it('should preserve actual binary bytes and resolve an empty Blob', async () => {
+      vi.unstubAllGlobals()
+
+      const blob = new Blob([new Uint8Array([0x00, 0x01, 0x01, 0xff])], { type: 'application/octet-stream' })
+
+      expect(await blobToBase64(blob, true)).toBe('AAEB/w==')
+      expect(await blobToBase64(new Blob([]))).toBeUndefined()
     })
   })
 

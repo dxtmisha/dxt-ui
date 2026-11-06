@@ -8,6 +8,8 @@ Returns the `id` of a specified DOM element. If the element exists but does not 
 
 Additionally, the function allows appending a CSS selector to the returned string, so you can immediately use the result as a compound selector (e.g., `"#id-123456 .child-class"`).
 
+In this CSS mode, only the element ID is escaped with `CSS.escape`; the selector suffix is preserved. Calling without a suffix returns the original ID unchanged for DOM and ARIA references.
+
 **Parameters:**
 - `element?: ElementOrString<E> | null` — A DOM element, `Window` object, selector, or `null` from which to obtain the ID.
 - `selector?: string` — An optional string that will be appended to the returned ID (like pseudo-classes or descendant selectors).

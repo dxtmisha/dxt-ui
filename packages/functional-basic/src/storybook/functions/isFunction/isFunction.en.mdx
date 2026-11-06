@@ -11,15 +11,15 @@ A type guard that recognizes function objects, including ordinary functions, cla
 - **Runtime Check** — Uses `typeof callback === 'function'` without traversing the prototype chain.
 - **Cross-Realm & Iframe Support** — Accurately identifies functions originating from separate window realms, iframes, and VM contexts where `instanceof Function` would otherwise fail due to distinct prototype trees.
 - **Comprehensive Callable Support** — Recognizes all executable constructs: standard functions, arrow functions, async functions, generator functions, ES6 classes, built-in constructors (`Date`, `Array`, `Function`), bound functions, and Proxy-wrapped callables.
-- **TypeScript Type Guard** — Preserves known call or constructor signatures when narrowing a union. An `unknown` value narrows to `CallableFunction | NewableFunction`.
+- **TypeScript Type Guard** — Preserves known call or constructor signatures when narrowing a union, and narrows `unknown` or `any` to `FunctionAnyType`.
 - **Safe Against Falsy & Non-Callable Inputs** — Gracefully returns `false` for `null`, `undefined`, `0`, `false`, `NaN`, empty strings, arrays, regexes, plain objects, and objects with callable mimics.
 - **Pure & Isomorphic** — Stateless, side-effect-free, and safe for server-side rendering (SSR/SSG).
 
 **Parameters:**
-- `callback: unknown` — The value to check.
+- `callback: T` — The value to check.
 
 **Returns:**
-`callback is CallableFunction | NewableFunction` — Returns `true` for function objects and `false` for other values. To call a value narrowed from `unknown`, establish its call signature first.
+`boolean` — Returns `true` for function objects (narrowing `callback` to its callable/constructor type or `FunctionAnyType`) and `false` for other values.
 
 ## Examples
 

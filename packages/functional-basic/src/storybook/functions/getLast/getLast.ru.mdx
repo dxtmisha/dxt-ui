@@ -6,11 +6,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Возвращает последний элемент массива или объекта. Если значение является примитивом, возвращает само значение.
 
+Пустые массивы и объекты, а также пустой последний слот массива возвращают `undefined`. Значения объекта следуют порядку `Object.values`: учитываются только собственные перечисляемые строковые свойства; наследуемые свойства и символы исключены.
+
 **Параметры:**
 - `value?: T | readonly T[] | Record<PropertyKey, T>` — входное значение.
 
 **Возвращает:**
-`T` — последний элемент массива или объекта, или само значение.
+`T` — объявленный в TypeScript тип последнего элемента или неизменённого входного значения. Во время выполнения пустая коллекция также может вернуть `undefined`.
 
 ```typescript
 import { getLast } from '@dxtmisha/functional-basic'
@@ -18,4 +20,5 @@ import { getLast } from '@dxtmisha/functional-basic'
 console.log(getLast([1, 2, 3])) // 3
 console.log(getLast({ a: 1, b: 2 })) // 2
 console.log(getLast('string')) // 'string'
+console.log(getLast([])) // undefined
 ```

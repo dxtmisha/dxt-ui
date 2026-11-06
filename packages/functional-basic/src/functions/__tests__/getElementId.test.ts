@@ -260,6 +260,23 @@ describe('getElementId', () => {
       expect(getElementId(element)).toBe('my-component_v2:input')
     })
 
+    it.each([':r0:', '101', 'row:1', 'panel:content', 'field.name'])(
+      'should return a usable compound selector for the valid HTML ID %s',
+      (id) => {
+        element.id = id
+        const child = document.createElement('span')
+        element.appendChild(child)
+
+        const selector = getElementId(element, ' > span')
+
+        expect(() => document.querySelector(selector)).not.toThrow()
+        expect(document.querySelector(selector)).toBe(child)
+        expect(child.closest(getElementId(element, ' '))).toBe(element)
+        expect(getElementId(element)).toBe(id)
+        expect(element.id).toBe(id)
+      }
+    )
+
     it('should append complex CSS attribute and pseudo-class selectors intact', () => {
       element.id = 'form'
       expect(getElementId(element, ' [data-state="active"]:hover')).toBe(

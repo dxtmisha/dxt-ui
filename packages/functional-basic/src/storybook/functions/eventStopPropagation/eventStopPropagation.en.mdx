@@ -8,8 +8,10 @@ Stops the further propagation of an event in the DOM tree (bubbling / capturing)
 
 The function is a convenient wrapper around calling both `event.preventDefault()` and `event.stopPropagation()`.
 
+It safely ignores `null` and `undefined`. Default prevention follows native event rules: it has no effect for non-cancelable events or passive listeners. Other listeners on the same target are still allowed to run.
+
 **Parameters:**
-- `event: Event` — The DOM event instance to stop.
+- `event?: Event | null` — The DOM event instance to stop; omitted or nullish values are ignored.
 
 **Returns:**
 `void`
@@ -19,9 +21,9 @@ import { eventStopPropagation } from '@dxtmisha/functional-basic'
 
 const link = document.createElement('a')
 link.href = 'https://example.com'
-link.onclick = (e) => {
+link.onclick = (event) => {
   // Will cancel the navigation to the link and stop the click from bubbling to parents
-  eventStopPropagation(e)
+  eventStopPropagation(event)
   console.log('Click intercepted!')
 }
 ```

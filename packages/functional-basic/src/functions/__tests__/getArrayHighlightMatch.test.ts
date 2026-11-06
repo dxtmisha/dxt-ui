@@ -157,6 +157,20 @@ describe('getArrayHighlightMatch', () => {
       expect(result).toEqual([{ text: 'abc', isMatch: false }])
     })
 
+    it.each(['u', 'v'])('should advance across an astral character after a zero-length match with %s', (flags) => {
+      const expression = new RegExp('(?=.)', flags)
+      expect(getArrayHighlightMatch('🚀', expression)).toEqual([{ text: '🚀', isMatch: false }])
+      expect(expression.lastIndex).toBe(0)
+    })
+
+    it.each(['u', 'v'])('should preserve later matches after an astral zero-width match with %s', (flags) => {
+      const expression = new RegExp('(?=🚀)|x', flags)
+      expect(getArrayHighlightMatch('a🚀x', expression)).toEqual([
+        { text: 'a🚀', isMatch: false },
+        { text: 'x', isMatch: true }
+      ])
+    })
+
     it('should not skip matches or mutate input RegExp when a stateful global RegExp with lastIndex > 0 is passed', () => {
       const statefulExpression = /apple/gi
       statefulExpression.lastIndex = 10

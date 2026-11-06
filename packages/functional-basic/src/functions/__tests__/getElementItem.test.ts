@@ -55,11 +55,11 @@ describe('getElementItem', () => {
     })
 
     it('should return undefined if property does not exist on element and no default provided', () => {
-      expect(getElementItem(element, 'nonExistentProperty' as keyof HTMLElement)).toBeUndefined()
+      expect(getElementItem(element, 'nonExistentProperty')).toBeUndefined()
     })
 
     it('should return default value if property is undefined on element', () => {
-      expect(getElementItem(element, 'nonExistentProperty' as keyof HTMLElement, 'default-val')).toBe(
+      expect(getElementItem(element, 'nonExistentProperty', 'default-val')).toBe(
         'default-val'
       )
     })
@@ -108,7 +108,7 @@ describe('getElementItem', () => {
 
     it('should preserve NaN without replacing it with defaultValue', () => {
       const custom = { value: NaN } as unknown as HTMLElement
-      expect(Number.isNaN(getElementItem(custom, 'value' as keyof HTMLElement, 42))).toBe(true)
+      expect(Number.isNaN(getElementItem(custom, 'value', 42))).toBe(true)
     })
 
     it('should trigger defaultValue when property value is null', () => {
@@ -117,7 +117,7 @@ describe('getElementItem', () => {
 
     it('should trigger defaultValue when property value is explicitly undefined', () => {
       const custom = { customField: undefined } as unknown as HTMLElement
-      expect(getElementItem(custom, 'customField' as keyof HTMLElement, 'fallback')).toBe('fallback')
+      expect(getElementItem(custom, 'customField', 'fallback')).toBe('fallback')
     })
   })
 
@@ -144,7 +144,7 @@ describe('getElementItem', () => {
 
     it('should return default value when property is undefined or null', () => {
       expect(getElementItem(element, undefined, 'fallback-prop')).toBe('fallback-prop')
-      expect(getElementItem(element, null as unknown as string, 'fallback-null')).toBe('fallback-null')
+      expect(getElementItem(element, null, 'fallback-null')).toBe('fallback-null')
     })
 
     it('should throw SyntaxError when selector is empty string (standard DOM querySelector behavior)', () => {
@@ -198,7 +198,7 @@ describe('getElementItem', () => {
     })
 
     it('should return fallback for window-specific properties because window resolves to document.body', () => {
-      expect(getElementItem(window, 'innerWidth' as keyof Window, 1024)).toBe(1024)
+      expect(getElementItem(window, 'innerWidth', 1024)).toBe(1024)
     })
 
     it('should retrieve properties from anchor and button elements', () => {
@@ -237,8 +237,8 @@ describe('getElementItem', () => {
 
     it('should return numeric properties from custom objects', () => {
       const customObject = { count: 42, zero: 0 } as unknown as HTMLElement
-      expect(getElementItem(customObject, 'count' as keyof HTMLElement)).toBe(42)
-      expect(getElementItem(customObject, 'zero' as keyof HTMLElement, 100)).toBe(0)
+      expect(getElementItem(customObject, 'count')).toBe(42)
+      expect(getElementItem(customObject, 'zero', 100)).toBe(0)
     })
   })
 
@@ -247,14 +247,8 @@ describe('getElementItem', () => {
       expect(getElementItem('[data-custom="123"]', 'id')).toBe('test-id')
     })
 
-    it('should safely handle invalid selector strings by catching or returning fallback', () => {
-      let result: string | undefined
-      try {
-        result = getElementItem(':::invalid-selector:::', 'id', 'safe-fallback')
-      } catch {
-        result = 'caught'
-      }
-      expect(['safe-fallback', 'caught']).toContain(result)
+    it('should propagate the native error for invalid selector strings', () => {
+      expect(() => getElementItem(':::invalid-selector:::', 'id', 'safe-fallback')).toThrow()
     })
   })
 

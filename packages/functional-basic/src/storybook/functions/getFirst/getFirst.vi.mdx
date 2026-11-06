@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getFirst`
 
-Trả về phần tử đầu tiên của một mảng hoặc một đối tượng. Nếu giá trị là kiểu nguyên thủy, trả về chính giá trị đó.
+Trả về phần tử đầu tiên của mảng hoặc giá trị thuộc tính riêng có thể liệt kê với khóa chuỗi đầu tiên của đối tượng. Đầu vào không phải đối tượng được trả về nguyên vẹn.
 
 **Tham số:**
 - `value?: T | readonly T[] | Record<PropertyKey, T>` — giá trị đầu vào.
 
 **Trả về:**
-`T` — phần tử đầu tiên của mảng hoặc đối tượng, hoặc chính giá trị đó.
+`T` — kiểu kết quả được khai báo: phần tử đầu tiên hoặc đầu vào gốc không phải đối tượng. Khi chạy, mảng và đối tượng rỗng, cũng như đầu vào bị bỏ qua, trả về `undefined`.
 
 ```typescript
 import { getFirst } from '@dxtmisha/functional-basic'
@@ -18,4 +18,6 @@ import { getFirst } from '@dxtmisha/functional-basic'
 console.log(getFirst([1, 2, 3])) // 1
 console.log(getFirst({ a: 1, b: 2 })) // 1
 console.log(getFirst('string')) // 'string'
+console.log(getFirst([])) // undefined
+console.log(getFirst({})) // undefined
 ```

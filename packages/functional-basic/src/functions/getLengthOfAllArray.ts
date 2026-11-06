@@ -10,5 +10,5 @@ import { type ObjectOrArray } from '../types/basicTypes'
  * @returns array of string lengths / массив длин строк
  */
 export function getLengthOfAllArray(value?: ObjectOrArray<string | null | undefined> | null): number[] {
-  return forEach<string | null | undefined, number>(value as ObjectOrArray<string | null | undefined>, item => item?.length ?? 0)
+  return forEach<string | null | undefined, number>(value ?? [], item => item?.length ?? 0)
 }

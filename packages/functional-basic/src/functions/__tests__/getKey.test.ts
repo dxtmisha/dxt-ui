@@ -66,9 +66,10 @@ describe('getKey', () => {
       expect(getKey(nullPropertiesEvent)).toBeUndefined()
     })
 
-    it('should safely return undefined when event is null or undefined at runtime', () => {
-      expect(getKey(null as unknown as KeyboardEvent)).toBeUndefined()
-      expect(getKey(undefined as unknown as KeyboardEvent)).toBeUndefined()
+    it('should safely return undefined when event is omitted, null or undefined', () => {
+      expect(getKey()).toBeUndefined()
+      expect(getKey(null)).toBeUndefined()
+      expect(getKey(undefined)).toBeUndefined()
     })
   })
 

@@ -6,8 +6,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Trả về mã số hoặc tên của phím vừa được bấm dựa trên đối tượng sự kiện `KeyboardEvent`. Tiện ích này chuẩn hóa cách tìm được định danh của phím nhờ vào cách truy xuất thuộc tính theo thứ tự ưu tiên an toàn như sau: `event.key` → `event.code` → chuyển `event.keyCode` thành chuỗi. Nếu tất cả đều vắng mặt, trả về `undefined`.
 
+Giá trị nullish được bỏ qua. Chuỗi key hoặc code rỗng được giữ nguyên thay vì chuyển sang thuộc tính tiếp theo.
+
 **Tham số:**
-- `event: KeyboardEvent` — Đối tượng sự kiện của bàn phím (được kích hoạt từ sự kiện `keydown`, `keyup` hoặc `keypress`).
+- `event?: KeyboardEvent | null` — Đối tượng sự kiện của bàn phím (được kích hoạt từ sự kiện `keydown`, `keyup` hoặc `keypress`).
 
 **Trả về:**
 `string | number | undefined` — Mã hoặc tên của phím bấm vừa bị kích bằng số hay chuỗi (ví dụ: `'Enter'`, `'Escape'`, `'A'`), hoặc `undefined` nếu không có.
@@ -15,8 +17,8 @@ Trả về mã số hoặc tên của phím vừa được bấm dựa trên đ�
 ```typescript
 import { getKey } from '@dxtmisha/functional-basic'
 
-document.addEventListener('keydown', (e) => {
-  const keyName = getKey(e)
+document.addEventListener('keydown', (event) => {
+  const keyName = getKey(event)
   
   if (keyName === 'Escape') {
     console.log('Người dùng đã bấm nút thoái (Escape)! Chúng ta sẽ tắt menu.')

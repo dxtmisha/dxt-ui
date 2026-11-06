@@ -8,8 +8,10 @@ Dừng việc lan truyền tiếp theo của một sự kiện trong cây DOM (g
 
 Hàm này là một trình bao bọc (wrapper) tiện lợi gọi cả hai phương thức `event.preventDefault()` và `event.stopPropagation()`.
 
+Hàm bỏ qua `null` và `undefined` một cách an toàn. Việc hủy hành động tuân theo quy tắc sự kiện gốc: không có tác dụng với sự kiện không thể hủy hoặc trình xử lý thụ động. Các trình xử lý khác trên cùng phần tử vẫn được thực thi.
+
 **Tham số:**
-- `event: Event` — Phiên bản sự kiện DOM cần dừng.
+- `event?: Event | null` — Sự kiện DOM cần dừng; giá trị bị bỏ qua hoặc nullish được bỏ qua an toàn.
 
 **Trả về:**
 `void`
@@ -19,9 +21,9 @@ import { eventStopPropagation } from '@dxtmisha/functional-basic'
 
 const link = document.createElement('a')
 link.href = 'https://example.com'
-link.onclick = (e) => {
+link.onclick = (event) => {
   // Sẽ hủy bỏ việc điều hướng đến liên kết và ngăn chặn cú nhấp chuột lan truyền lên các phần tử cha
-  eventStopPropagation(e)
+  eventStopPropagation(event)
   console.log('Cú nhấp chuột bị chặn!')
 }
 ```

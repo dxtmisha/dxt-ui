@@ -6,6 +6,8 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 Tiện ích để chia một chuỗi thành một mảng các đối tượng để làm nổi bật các kết quả khớp. Mỗi đối tượng chứa `text` và giá trị boolean `isMatch` cho biết đoạn văn bản đó có khớp với truy vấn tìm kiếm hay không. Điều này rất hữu ích cho các UI framework như Vue hoặc React để hiển thị văn bản được làm nổi bật mà không cần dùng `v-html`.
 
+Các kết quả khớp có độ dài bằng không được bỏ qua. Với cờ Unicode `u` hoặc `v`, tìm kiếm tiến qua toàn bộ một mã điểm, kể cả emoji, mà không thay đổi trạng thái RegExp đầu vào.
+
 **Tham số:**
 - `value?: unknown` — Giá trị hoặc chuỗi ban đầu để xử lý.
 - `search?: string | RegExp` — Chuỗi tìm kiếm (hỗ trợ tìm kiếm nhiều từ phân tách bằng dấu cách) hoặc biểu thức chính quy.
@@ -27,9 +29,7 @@ const result = getArrayHighlightMatch('Xin chào thế giới', 'chào')
 ]
 */
 
-// Ví dụ trong Vue template:
-// <template v-for="item in getArrayHighlightMatch(text, search)">
-//   <span :class="{ 'sys-highlight-match': item.isMatch }">{{ item.text }}</span>
-// </template>
+// Hiển thị segment.text dưới dạng văn bản thuần.
+// Dùng segment.isMatch để chọn lớp làm nổi bật.
   `}
 />

@@ -6,6 +6,8 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 A utility for splitting a string into an array of objects for highlighting matches. Each object contains the `text` and a boolean `isMatch` indicating if it matches the search query. This is useful for UI frameworks like Vue or React to render highlighted text without using `v-html`.
 
+Zero-length matches are ignored. With Unicode flags `u` or `v`, the search advances over a complete code point, including emoji, without changing the input RegExp's state.
+
 **Parameters:**
 - `value?: unknown` — The initial value or string to process.
 - `search?: string | RegExp` — The search string (supports space-separated multi-word search) or regular expression.
@@ -26,9 +28,7 @@ const result = getArrayHighlightMatch('Hello world', 'hello')
 ]
 */
 
-// Example in Vue template:
-// <template v-for="item in getArrayHighlightMatch(text, search)">
-//   <span :class="{ 'sys-highlight-match': item.isMatch }">{{ item.text }}</span>
-// </template>
+// Render each segment.text as plain text.
+// Use segment.isMatch to choose the highlighting class.
   `}
 />

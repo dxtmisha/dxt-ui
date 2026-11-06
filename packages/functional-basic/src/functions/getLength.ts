@@ -6,13 +6,15 @@ import { isString } from './isString'
 /**
  * Returns the length or size of various data types including Arrays, Objects, Maps, Sets, and Strings.
  * If the value is null, undefined, or an unsupported type (e.g. number, boolean), it returns 0.
+ * Strings use UTF-16 code units; objects use their own enumerable string keys.
  *
  * Возвращает длину или размер различных типов данных, включая массивы, объекты, Map, Set и строки.
  * Если значение равно null, undefined или имеет неподдерживаемый тип (например, число, булево), возвращает 0.
+ * Для строк учитываются кодовые единицы UTF-16, для объектов — собственные перечисляемые строковые ключи.
  * @param value input value to measure / входное значение для измерения
  * @returns the length or size of the value / длина или размер значения
  */
-export function getLength(value: unknown): number {
+export function getLength(value?: unknown): number {
   if (isNull(value)) {
     return 0
   }

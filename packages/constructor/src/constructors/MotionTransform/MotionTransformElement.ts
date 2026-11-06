@@ -1,7 +1,7 @@
 // ai-none
 
 import { type Ref } from 'vue'
-import { getElementId, type DesignName } from '@dxtmisha/functional'
+import { getElementId, isDomRuntime, type DesignName } from '@dxtmisha/functional'
 
 import { __MOTION_TRANSFORM_TYPE_BODY_NAME, type MotionTransformClassList, type MotionTransformStyle } from './basicTypes'
 import type { MotionTransformProps } from './props'
@@ -61,7 +61,8 @@ export class MotionTransformElement {
    * Возвращает селектор идентификатора.
    */
   get idSelector(): string {
-    return `#${getElementId(this.element.value)}`
+    const id = getElementId(this.element.value)
+    return `#${isDomRuntime() ? CSS.escape(id) : id}`
   }
 
   /**

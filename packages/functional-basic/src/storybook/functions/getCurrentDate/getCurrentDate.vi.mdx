@@ -10,6 +10,7 @@ Trả về ngày hiện tại theo định dạng được chỉ định. Hàm n
 
 **Tham số:**
 - `format?: GeoDate` — loại định dạng ngày đầu ra (mặc định là `'datetime'`). Hỗ trợ các giá trị: `'date'`, `'time'`, `'datetime'`, `'full'` và các giá trị khác.
+- `timeZone?: boolean` — thêm độ lệch múi giờ (mặc định: `true`).
 
 **Trả về:**
 `string` — Ngày hiện tại theo định dạng được chỉ định.
@@ -17,9 +18,13 @@ Trả về ngày hiện tại theo định dạng được chỉ định. Hàm n
 ```typescript
 import { getCurrentDate } from '@dxtmisha/functional-basic'
 
-// Định dạng chuẩn (datetime)
+// Định dạng chuẩn (datetime có độ lệch múi giờ)
 const now = getCurrentDate()
-// Kết quả: "2024-03-15 14:30"
+// Kết quả: "2024-03-15T14:30:00+03:00"
+
+// Không có độ lệch múi giờ
+const local = getCurrentDate('datetime', false)
+// Kết quả: "2024-03-15T14:30:00"
 
 // Chỉ ngày
 const date = getCurrentDate('date')

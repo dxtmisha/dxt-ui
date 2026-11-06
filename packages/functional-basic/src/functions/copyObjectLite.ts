@@ -1,7 +1,7 @@
 /**
- * Copies a simple object.
+ * Creates a shallow copy of own enumerable properties without changing the result's prototype.
  *
- * Копирует простой объект.
+ * Создаёт поверхностную копию собственных перечисляемых свойств без изменения прототипа результата.
  * @template T type of the original object / тип исходного объекта
  * @template R return type of the copied object / тип возвращаемого скопированного объекта
  * @param value object for copying / объект для копирования
@@ -15,5 +15,5 @@ export function copyObjectLite<
   value?: T | null,
   source?: Record<PropertyKey, unknown> | null
 ): R {
-  return Object.assign({}, value, source) as R
+  return { ...value, ...source } as R
 }

@@ -11,15 +11,15 @@ Hàm bảo vệ kiểu nhận diện các đối tượng hàm, gồm hàm thôn
 - **Kiểm tra giá trị** — Dùng `typeof callback === 'function'` mà không cần duyệt chuỗi prototype.
 - **Hỗ trợ Cross-Realm & Iframe** — Xác định chính xác các hàm đến từ các cửa sổ riêng biệt, iframe hoặc ngữ cảnh Node.js VM, nơi `instanceof Function` thường thất bại do cây prototype không đồng nhất.
 - **Hỗ trợ toàn diện các cấu trúc thực thi** — Nhận diện tất cả các loại hàm: khai báo thông thường, hàm mũi tên, hàm `async`, hàm generator (`function*`), lớp ES6, hàm tạo tích hợp (`Date`, `Array`, `Function`), hàm đã liên kết (`bind`) và hàm được bọc bằng `Proxy`.
-- **Thu hẹp kiểu trong TypeScript** — Giữ nguyên chữ ký gọi hàm hoặc chữ ký hàm tạo đã biết khi thu hẹp kiểu hợp. Giá trị kiểu `unknown` được thu hẹp thành `CallableFunction | NewableFunction`.
+- **Thu hẹp kiểu trong TypeScript** — Giữ nguyên chữ ký gọi hàm hoặc chữ ký hàm tạo đã biết khi thu hẹp kiểu hợp, và thu hẹp giá trị `unknown` hoặc `any` thành `FunctionAnyType`.
 - **An toàn trước các giá trị falsy và không thể gọi** — Trả về `false` một cách an toàn cho `null`, `undefined`, `0`, `false`, `NaN`, chuỗi rỗng, mảng, regex và các đối tượng giả lập phương thức `call`/`apply`.
 - **Đẳng hình & Sẵn sàng cho SSR** — Hàm thuần túy không có tác dụng phụ, không phụ thuộc vào DOM hoặc môi trường trình duyệt.
 
 **Tham số:**
-- `callback: unknown` — Giá trị cần kiểm tra.
+- `callback: T` — Giá trị cần kiểm tra.
 
 **Trả về:**
-`callback is CallableFunction | NewableFunction` — Trả về `true` cho đối tượng hàm và `false` cho các giá trị khác. Để gọi giá trị được thu hẹp từ `unknown`, trước tiên hãy xác định chữ ký gọi hàm.
+`boolean` — Trả về `true` cho đối tượng hàm (thu hẹp `callback` thành kiểu hàm/hàm tạo tương ứng hoặc `FunctionAnyType`) và `false` cho các giá trị khác.
 
 ## Ví dụ
 

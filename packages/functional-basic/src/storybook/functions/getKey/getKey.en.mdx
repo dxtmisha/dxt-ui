@@ -6,8 +6,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Returns the code or name of the key that was pressed, based on the `KeyboardEvent` object. This utility normalizes retrieving the key identifier by safely attempting properties in the following priority order: `event.key` → `event.code` → stringified `event.keyCode`. If all fail, it returns `undefined`.
 
+Nullish values are ignored. An empty key or code is preserved instead of falling back to the next property.
+
 **Parameters:**
-- `event: KeyboardEvent` — The keyboard event object (triggered by `keydown`, `keyup`, or `keypress`).
+- `event?: KeyboardEvent | null` — The keyboard event object (triggered by `keydown`, `keyup`, or `keypress`).
 
 **Returns:**
 `string | number | undefined` — The name or code of the pressed key (e.g., `'Enter'`, `'Escape'`, `'A'`), or `undefined` if unavailable.
@@ -15,8 +17,8 @@ Returns the code or name of the key that was pressed, based on the `KeyboardEven
 ```typescript
 import { getKey } from '@dxtmisha/functional-basic'
 
-document.addEventListener('keydown', (e) => {
-  const keyName = getKey(e)
+document.addEventListener('keydown', (event) => {
+  const keyName = getKey(event)
   
   if (keyName === 'Escape') {
     console.log('User pressed Escape! Closing menu.')

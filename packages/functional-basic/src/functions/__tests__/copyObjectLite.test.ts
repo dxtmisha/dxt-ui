@@ -202,12 +202,49 @@ describe('copyObjectLite', () => {
   })
 
   describe('Security and prototype isolation', () => {
-    it('should not pollute global Object.prototype when copying objects with __proto__ keys', () => {
+    it.each(['value', 'source'] as const)('should copy __proto__ from %s as inert own data', (argument) => {
       const maliciousPayload = JSON.parse('{"__proto__": {"polluted": true}}') as Record<string, unknown>
-      const copy = copyObjectLite(maliciousPayload)
+      const copy = argument === 'value'
+        ? copyObjectLite(maliciousPayload)
+        : copyObjectLite<Record<string, unknown>>({}, maliciousPayload)
 
-      expect((copy as Record<string, unknown>).polluted).toBe(true)
+      expect(Object.getPrototypeOf(copy)).toBe(Object.prototype)
+      expect(copy.polluted).toBeUndefined()
+      expect(Object.hasOwn(copy, '__proto__')).toBe(true)
+      expect(Object.getOwnPropertyDescriptor(copy, '__proto__')?.value).toEqual({ polluted: true })
+      expect(JSON.stringify(copy)).toBe(JSON.stringify(maliciousPayload))
       expect(({} as Record<string, unknown>).polluted).toBeUndefined()
+    })
+
+    it('should preserve a __proto__ property from a prototype-less source', () => {
+      const source = Object.create(null) as Record<string, unknown>
+      source.__proto__ = null
+
+      const copy = copyObjectLite<Record<string, unknown>>({}, source)
+
+      expect(Object.getPrototypeOf(copy)).toBe(Object.prototype)
+      expect(Object.hasOwn(copy, '__proto__')).toBe(true)
+      expect(Object.getOwnPropertyDescriptor(copy, '__proto__')?.value).toBeNull()
+    })
+  })
+
+  describe('Enumerable property access', () => {
+    it('should evaluate an enumerable getter once and ignore non-enumerable properties', () => {
+      let reads = 0
+      const original = {
+        get value(): number {
+          reads++
+          return 42
+        }
+      }
+      Object.defineProperty(original, 'hidden', { value: true })
+
+      const copy = copyObjectLite(original)
+
+      expect(copy.value).toBe(42)
+      expect(reads).toBe(1)
+      expect(Object.getOwnPropertyDescriptor(copy, 'value')?.get).toBeUndefined()
+      expect(Object.hasOwn(copy, 'hidden')).toBe(false)
     })
   })
 

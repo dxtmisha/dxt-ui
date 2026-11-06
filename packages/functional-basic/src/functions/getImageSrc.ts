@@ -9,7 +9,7 @@ import { isString } from './isString'
  * @returns image source string / строка источника изображения
  */
 export function getImageSrc(
-  image?: HTMLImageElement | Record<string, unknown> | string | null
+  image?: unknown
 ): string {
   if (isString(image)) {
     return image

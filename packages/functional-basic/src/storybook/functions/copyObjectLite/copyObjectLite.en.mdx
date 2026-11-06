@@ -4,7 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `copyObjectLite`
 
-Creates a shallow copy of a simple object using `Object.assign`. It can optionally merge additional properties from the second argument `source`.
+Creates a shallow copy of a simple object using object spread. It can optionally merge additional properties from the second argument `source`.
+
+Own enumerable properties, including symbols and `__proto__`, are copied as data without changing the result's standard `Object.prototype` prototype.
 
 > Because this is a shallow copy, nested objects and arrays will be copied by reference, not by value.
 

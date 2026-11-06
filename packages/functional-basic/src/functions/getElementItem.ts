@@ -17,7 +17,7 @@ import {
  * @template K property key type / тип ключа свойства
  * @template D default value type / тип значения по умолчанию
  * @param element checked element / проверяемый элемент
- * @param property property key to retrieve / ключ свойства для получения значения
+ * @param property property key to retrieve, or null for the fallback / ключ свойства для получения значения или null для возврата значения по умолчанию
  * @param defaultValue returns this parameter if the value is missing / возвращает этот параметр,
  * если значение отсутствует
  * @returns element value or default value / значение элемента или значение по умолчанию
@@ -28,7 +28,7 @@ export function getElementItem<
   D = undefined
 >(
   element?: ElementOrString<E> | null,
-  property?: K | string | number,
+  property?: K | string | number | null,
   defaultValue?: D
 ): ElementResolved<E>[K] | D {
   if (isNull(property)) {

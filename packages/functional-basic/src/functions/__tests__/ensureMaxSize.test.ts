@@ -233,18 +233,28 @@ describe('ensureMaxSize', () => {
       expect(spyResizeImageByMax).not.toHaveBeenCalled()
     })
 
-    it('should revoke object URL even if resizeImageByMax throws an exception', async () => {
+    it.each([
+      { fallback: 'data:image/jpeg;base64,original', expected: 'data:image/jpeg;base64,original' },
+      { fallback: undefined, expected: '' }
+    ])('should settle after a deferred resize failure (fallback: $fallback)', async ({ fallback, expected }) => {
       const mockImage = createMockImage(1000)
+      let triggerLoad: Parameters<typeof getElementImageRef.getElementImage>[1]
       vi.spyOn(getElementImageRef, 'getElementImage').mockImplementation((_source, onload) => {
-        onload?.(mockImage)
+        triggerLoad = onload
         return mockImage
       })
       vi.spyOn(resizeImageByMaxRef, 'resizeImageByMax').mockImplementation(() => {
         throw new Error('Fatal canvas error')
       })
+      const fallbackSpy = vi.spyOn(blobToBase64Ref, 'blobToBase64').mockResolvedValue(fallback)
       const spyRevokeObjectURL = vi.spyOn(URL, 'revokeObjectURL')
+      const result = ensureMaxSize(sampleFile)
 
-      await expect(ensureMaxSize(sampleFile)).rejects.toThrow('Fatal canvas error')
+      expect(triggerLoad).toBeDefined()
+      expect(() => triggerLoad?.(mockImage)).not.toThrow()
+      await expect(result).resolves.toBe(expected)
+      expect(fallbackSpy).toHaveBeenCalledWith(createdBlobs[0])
+      expect(spyRevokeObjectURL).toHaveBeenCalledTimes(1)
       expect(spyRevokeObjectURL).toHaveBeenCalledWith('blob:mock-url-1')
     })
   })

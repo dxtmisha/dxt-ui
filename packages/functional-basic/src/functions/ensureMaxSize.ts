@@ -30,21 +30,25 @@ export async function ensureMaxSize(
     const image = getElementImage(
       data,
       (element) => {
+        let value: string | undefined
+
         try {
-          const value = resizeImageByMax(
+          value = resizeImageByMax(
             element,
             compress * element.naturalWidth,
             'width',
             type
           )
-
-          if (value) {
-            resolve(value)
-          } else {
-            blobToBase64(blob).then(original => resolve(original ?? ''))
-          }
+        } catch {
+          value = undefined
         } finally {
           URL.revokeObjectURL(data)
+        }
+
+        if (value) {
+          resolve(value)
+        } else {
+          blobToBase64(blob).then(original => resolve(original ?? ''))
         }
       },
       () => {

@@ -8,6 +8,8 @@ Trả về `id` của một phần tử DOM được chỉ định. Nếu phần
 
 Ngoài ra, hàm cho phép đính kèm một bộ chọn CSS vào chuỗi trả về, để bạn có thể sử dụng ngay kết quả dưới dạng một bộ chọn kết hợp (ví dụ: `"#id-123456 .child-class"`).
 
+Trong chế độ CSS này, chỉ ID phần tử được escape bằng `CSS.escape`; hậu tố bộ chọn được giữ nguyên. Khi không có hậu tố, hàm trả về ID gốc không thay đổi cho tham chiếu DOM và ARIA.
+
 **Tham số:**
 - `element?: ElementOrString<E> | null` — Phần tử DOM, đối tượng `Window`, chuỗi chọn hoặc `null` để lấy ID.
 - `selector?: string` — Chuỗi tùy chọn sẽ được gắn vào giá trị ID trả về (chẳng hạn như các lớp giả hoặc bộ chọn phần tử con).

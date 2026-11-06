@@ -4,9 +4,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getAttributes`
 
-Извлекает все HTML-атрибуты указанного DOM-элемента (или элемента, найденного по селектору) и возвращает их в виде простого объекта (ключ-значение).
+Извлекает все атрибуты DOM-элемента (включая SVG) и возвращает простой объект с именами и значениями. Элемент можно передать напрямую или найти по CSS-селектору.
 
 Функция использует `getElement` для поиска целевого узла. Если элемент не найден или передан пустой аргумент, возвращается пустой объект `{}`.
+
+При передаче `window` читаются атрибуты `document.body`. Значения остаются строками, включая пустые булевы атрибуты; отсутствующее значение представлено как `undefined`.
 
 **Параметры:**
 - `element?: ElementOrString<E> | null` — DOM-элемент, объект Window, строка с CSS-селектором для его поиска или `null`.
@@ -19,8 +21,8 @@ import { getAttributes } from '@dxtmisha/functional-basic'
 
 // У нас есть элемент: <div id="app" class="container" data-theme="dark"></div>
 
-const attrs = getAttributes('#app')
-console.log(attrs)
+const attributes = getAttributes('#app')
+console.log(attributes)
 /*
 {
   id: 'app',

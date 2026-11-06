@@ -4,10 +4,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getImageSrc`
 
-Dùng để lấy chuỗi nguồn (`src`) một cách an toàn từ đối tượng `HTMLImageElement`, đối tượng có thuộc tính `src`, hoặc chuỗi (URL / Data URL). Nếu truyền vào một chuỗi, hàm sẽ trả về chính chuỗi đó. Nếu truyền vào một phần tử `<img>` hoặc đối tượng có `src`, hàm sẽ trả về giá trị chuỗi của `src`. Nếu không có giá trị, hàm trả về chuỗi rỗng.
+Dùng để lấy chuỗi nguồn (`src`) một cách an toàn từ đối tượng `HTMLImageElement`, đối tượng có thuộc tính `src`, hoặc chuỗi (URL / Data URL). Nếu truyền vào một chuỗi, hàm sẽ trả về chính chuỗi đó. Nếu truyền vào một phần tử `<img>` hoặc đối tượng có `src`, hàm sẽ trả về giá trị chuỗi của `src`. Giá trị không được hỗ trợ hoặc `src` không phải chuỗi sẽ trả về chuỗi rỗng.
 
 **Tham số:**
-- `image?: HTMLImageElement | Record<string, unknown> | string | null` — Phần tử hình ảnh, đối tượng có `src`, nguồn chuỗi (URL) hoặc `null` / `undefined`.
+- `image?: unknown` — Phần tử hình ảnh, đối tượng có `src` dạng chuỗi hoặc nguồn chuỗi (URL). Giá trị không được hỗ trợ, kể cả `null` / `undefined`, trả về chuỗi rỗng.
 
 **Trả về:**
 `string` — Chuỗi nguồn hình ảnh hoặc chuỗi rỗng `''`.

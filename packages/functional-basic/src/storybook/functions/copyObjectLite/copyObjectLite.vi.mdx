@@ -4,7 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `copyObjectLite`
 
-Tạo một bản sao nông (shallow copy) của một đối tượng đơn giản bằng cách sử dụng `Object.assign`. Nó có thể tùy chọn hợp nhất các thuộc tính bổ sung từ đối số thứ hai `source`.
+Tạo một bản sao nông (shallow copy) của một đối tượng đơn giản bằng cú pháp object spread. Nó có thể tùy chọn hợp nhất các thuộc tính bổ sung từ đối số thứ hai `source`.
+
+Các thuộc tính riêng có thể liệt kê, bao gồm symbol và `__proto__`, được sao chép dưới dạng dữ liệu mà không thay đổi prototype chuẩn `Object.prototype` của kết quả.
 
 > Vì đây là sao chép nông, các đối tượng và mảng lồng nhau sẽ được sao chép theo tham chiếu (reference), chứ không phải theo giá trị.
 

@@ -8,9 +8,11 @@ Proportionally resizes an image to fit within the specified maximum size constra
 
 This function is useful for compressing images on the fly before uploading to a server.
 
+The operation is synchronous and requires a loaded image with valid natural dimensions. It does not wait for a string URL to load; unloaded or unsupported inputs return `undefined`.
+
 **Parameters:**
-- `image: HTMLImageElement | string` — The image element or URL.
-- `maxSize: number` — The maximum allowed size in pixels (for width or height).
+- `image?: unknown` — A loaded image element or string source; unsupported values return `undefined`.
+- `maxSize: number = 0` — The maximum allowed size in pixels (for width or height). Non-positive values disable resizing.
 - `type?: ResizeImageByMaxType = 'auto'` — The scaling strategy: `'auto'`, `'width'`, or `'height'`. Defaults to `'auto'`.
 - `typeData?: string` — Optional MIME type for the resulting Data URL (e.g., `'image/jpeg'`). Defaults to `'image/png'`.
 - `quality?: number` — Optional quality factor between 0 and 1 for lossy compression formats (`'image/jpeg'`, `'image/webp'`).

@@ -154,6 +154,38 @@ describe('frame', () => {
   })
 
   describe('Concurrency and isolation', () => {
+    it('should defer callbacks until queued frames run and stop scheduling when next becomes false', () => {
+      const pendingFrames: FrameRequestCallback[] = []
+      mockRequestAnimationFrame.mockImplementation((frameCallback: FrameRequestCallback) => {
+        pendingFrames.push(frameCallback)
+        return pendingFrames.length
+      })
+      const callback = vi.fn()
+      const nextCallback = vi.fn().mockReturnValueOnce(true).mockReturnValue(false)
+      const endCallback = vi.fn()
+
+      frame(callback, nextCallback, endCallback)
+
+      expect(callback).not.toHaveBeenCalled()
+      expect(nextCallback).not.toHaveBeenCalled()
+      expect(pendingFrames).toHaveLength(1)
+
+      pendingFrames.shift()?.(10)
+
+      expect(callback).toHaveBeenNthCalledWith(1, 10)
+      expect(nextCallback).toHaveBeenNthCalledWith(1, 10)
+      expect(pendingFrames).toHaveLength(1)
+      expect(endCallback).not.toHaveBeenCalled()
+
+      pendingFrames.shift()?.(20)
+
+      expect(callback).toHaveBeenNthCalledWith(2, 20)
+      expect(nextCallback).toHaveBeenNthCalledWith(2, 20)
+      expect(pendingFrames).toHaveLength(0)
+      expect(endCallback).toHaveBeenCalledTimes(1)
+      expect(mockRequestAnimationFrame).toHaveBeenCalledTimes(2)
+    })
+
     it('should allow multiple independent frame loops to run concurrently without interference', () => {
       vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
       const firstLoopCalls: number[] = []

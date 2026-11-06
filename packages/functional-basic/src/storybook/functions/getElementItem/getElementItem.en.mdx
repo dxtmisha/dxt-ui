@@ -4,11 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElementItem`
 
-Returns the value of a specific property from an HTML element (e.g., `id`, `className`, or any custom property if it's defined as a key on the element type). If `window` is passed, the utility resolves it to `document.body` in DOM runtime via `getElement`. If the element is not found or lacks the specified property, it returns `defaultValue` (which defaults to `undefined`).
+Returns the value of a specific property from a DOM element, including SVG elements (e.g., `id`, `className`, or a custom property). If `window` is passed, the utility resolves it to `document.body` in DOM runtime via `getElement`. If the element is not found or the property value is `null` or `undefined`, it returns `defaultValue` (which defaults to `undefined`). Values `0`, `false`, and `''` are preserved.
+
+Omitting the property key or passing `null` returns the fallback. Invalid CSS selectors still propagate the native selector error.
 
 **Parameters:**
 - `element?: ElementOrString<E> | null` — A selector string, an existing DOM element, `window` (resolves to `document.body`), or `null`/`undefined`.
-- `property?: K | string | number` — The property name or index (key) of the element whose value is required.
+- `property?: K | string | number | null` — The property name or index (key) of the element whose value is required, or `null` to return the fallback.
 - `defaultValue?: D` — A fallback value returned if the property is not found.
 
 **Returns:**
@@ -22,7 +24,7 @@ input.type = 'text'
 input.id = 'my-input'
 
 // Getting the ID
-const elementId = getElementItem(input, 'id') 
+const elementId = getElementItem(input, 'id')
 console.log(elementId) // 'my-input'
 
 // If the property is missing and we provide a fallback

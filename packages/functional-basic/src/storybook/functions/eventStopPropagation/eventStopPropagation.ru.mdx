@@ -8,8 +8,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Функция является удобной обёрткой над вызовами `event.preventDefault()` и `event.stopPropagation()`.
 
+Безопасно игнорирует `null` и `undefined`. Отмена действия подчиняется нативным правилам: не действует для неотменяемых событий и пассивных обработчиков. Остальные обработчики на том же элементе продолжают выполняться.
+
 **Параметры:**
-- `event: Event` — Экземпляр события DOM, который необходимо остановить.
+- `event?: Event | null` — Экземпляр события DOM, который необходимо остановить; пропущенные и nullish-значения игнорируются.
 
 **Возвращает:**
 `void`
@@ -19,9 +21,9 @@ import { eventStopPropagation } from '@dxtmisha/functional-basic'
 
 const link = document.createElement('a')
 link.href = 'https://example.com'
-link.onclick = (e) => {
+link.onclick = (event) => {
   // Отменит переход по ссылке и остановит всплытие клика к родителям
-  eventStopPropagation(e)
+  eventStopPropagation(event)
   console.log('Клик перехвачен!')
 }
 ```

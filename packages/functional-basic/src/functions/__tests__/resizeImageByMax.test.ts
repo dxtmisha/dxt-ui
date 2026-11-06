@@ -276,6 +276,11 @@ describe('resizeImageByMax', () => {
       expect(resizeImageByMax(null, 500)).toBeUndefined()
       expect(resizeImageByMax(undefined, 500)).toBeUndefined()
     })
+
+    it('should return undefined for values that are not images or string sources', () => {
+      expect(resizeImageByMax(0, 500)).toBeUndefined()
+      expect(resizeImageByMax(false, 500)).toBeUndefined()
+    })
   })
 
   describe('SSR and Canvas availability failures', () => {

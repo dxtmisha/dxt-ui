@@ -34,9 +34,10 @@ describe('getLength', () => {
   })
 
   describe('Boundary values and limit thresholds', () => {
-    it('should return 0 for null and undefined', () => {
+    it('should return 0 for null, undefined, and omitted values', () => {
       expect(getLength(null)).toBe(0)
       expect(getLength(undefined)).toBe(0)
+      expect(getLength()).toBe(0)
     })
 
     it('should return 0 for empty array', () => {

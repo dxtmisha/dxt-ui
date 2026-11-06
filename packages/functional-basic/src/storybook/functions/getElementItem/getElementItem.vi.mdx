@@ -4,11 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElementItem`
 
-Trả về giá trị của một thuộc tính cụ thể từ một phần tử HTML (ví dụ: `id`, `className`, hoặc bất kỳ thuộc tính tùy chỉnh nào nếu nó được khai báo là khóa của kiểu phần tử đó). Nếu truyền đối tượng `window`, tiện ích sẽ chuyển đổi thành `document.body` trong môi trường DOM thông qua `getElement`. Nếu không tìm thấy phần tử hoặc phân tử không có thuộc tính được chỉ định, tiện ích sẽ trả về `defaultValue` (mặc định là `undefined`).
+Trả về giá trị thuộc tính của phần tử DOM, kể cả SVG (ví dụ: `id`, `className` hoặc thuộc tính tùy chỉnh). Nếu truyền đối tượng `window`, tiện ích sẽ chuyển đổi thành `document.body` trong môi trường DOM thông qua `getElement`. Nếu không tìm thấy phần tử hoặc giá trị thuộc tính là `null` hay `undefined`, tiện ích trả về `defaultValue` (mặc định là `undefined`). Các giá trị `0`, `false` và `''` được giữ nguyên.
+
+Nếu bỏ qua khóa thuộc tính hoặc truyền `null`, hàm trả về giá trị dự phòng. Bộ chọn CSS không hợp lệ vẫn phát sinh lỗi tìm kiếm gốc.
 
 **Tham số:**
 - `element?: ElementOrString<E> | null` — Một chuỗi bộ chọn CSS, phần tử DOM có sẵn, `window` (được chuyển đổi thành `document.body`) hoặc `null`/`undefined`.
-- `property?: K | string | number` — Tên hoặc chỉ số thuộc tính (khóa) của phần tử có giá trị đang được yêu cầu.
+- `property?: K | string | number | null` — Tên hoặc chỉ số thuộc tính (khóa) của phần tử cần đọc, hoặc `null` để trả về giá trị dự phòng.
 - `defaultValue?: D` — Giá trị dự phòng sẽ được trả về nếu không tìm thấy thuộc tính.
 
 **Trả về:**
@@ -22,7 +24,7 @@ input.type = 'text'
 input.id = 'my-input'
 
 // Lấy ID
-const elementId = getElementItem(input, 'id') 
+const elementId = getElementItem(input, 'id')
 console.log(elementId) // 'my-input'
 
 // Nếu thiếu thuộc tính và chúng ta cung cấp một fallback

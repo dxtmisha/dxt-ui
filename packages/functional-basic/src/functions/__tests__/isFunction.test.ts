@@ -1,6 +1,7 @@
 import { describe, it, expect, expectTypeOf } from 'vitest'
 import vm from 'node:vm'
 import { isFunction } from '../isFunction'
+import { type FunctionAnyType } from '../../types/basicTypes'
 
 describe('isFunction', () => {
   describe('Standard functional requirements (Happy path)', () => {
@@ -167,12 +168,12 @@ describe('isFunction', () => {
       expect(evaluate('12')).toBe(12)
     })
 
-    it('should narrow unknown to a function object', () => {
+    it('should narrow unknown to a callable function type', () => {
       const unknownValue: unknown = (greeting: string) => `Hello, ${greeting}!`
 
       if (isFunction(unknownValue)) {
-        expectTypeOf(unknownValue).toEqualTypeOf<CallableFunction | NewableFunction>()
-        expect(typeof unknownValue).toBe('function')
+        expectTypeOf(unknownValue).toEqualTypeOf<FunctionAnyType>()
+        expect(unknownValue('World')).toBe('Hello, World!')
       } else {
         expect.unreachable('Should have narrowed to function')
       }

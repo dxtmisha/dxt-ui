@@ -6,7 +6,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Asynchronously extracts text from the clipboard.
 
-This function primarily attempts to retrieve text data from the provided `ClipboardEvent` (e.g., when handling a `paste` event). If the event is omitted or contains no data, it falls back to reading directly from the system clipboard using `navigator.clipboard.readText()`.
+This function primarily attempts to retrieve text data from the provided `ClipboardEvent` (e.g., when handling a `paste` event). It falls back to reading directly from the system clipboard using `navigator.clipboard.readText()` only when the event text result is `null` or `undefined`, including when the event or its `clipboardData` is missing. An empty string returned by `getData('text')` is preserved without reading the system clipboard.
 
 If an error occurs while reading the clipboard, it is reported via `ErrorCenter` (`group: 'clipboard'`, `code: 'error'`) and the function safely resolves to an empty string `''`. In non-DOM environments (e.g., SSR), it immediately returns `''`.
 

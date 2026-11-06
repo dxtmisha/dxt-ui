@@ -6,7 +6,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Trích xuất bất đồng bộ văn bản từ khay nhớ tạm (clipboard).
 
-Hàm này chủ yếu cố gắng lấy dữ liệu văn bản từ sự kiện `ClipboardEvent` được cung cấp (ví dụ: khi xử lý sự kiện `paste`). Nếu sự kiện không được cung cấp hoặc không chứa dữ liệu, nó sẽ chuyển sang cách đọc trực tiếp từ khay nhớ tạm hệ thống bằng `navigator.clipboard.readText()`.
+Hàm này ưu tiên lấy văn bản từ `ClipboardEvent` được cung cấp (ví dụ: khi xử lý sự kiện `paste`). Hàm chỉ đọc khay nhớ tạm hệ thống bằng `navigator.clipboard.readText()` khi kết quả lấy văn bản từ sự kiện là `null` hoặc `undefined`, bao gồm khi không có sự kiện hoặc `clipboardData`. Chuỗi rỗng do `getData('text')` trả về được giữ nguyên mà không đọc thêm từ khay nhớ tạm hệ thống.
 
 Nếu xảy ra lỗi khi đọc khay nhớ tạm, lỗi sẽ được ghi nhận thông qua `ErrorCenter` (`group: 'clipboard'`, `code: 'error'`) và hàm trả về chuỗi rỗng `''` một cách an toàn. Trong môi trường không có DOM (ví dụ: SSR), hàm trả về ngay `''`.
 

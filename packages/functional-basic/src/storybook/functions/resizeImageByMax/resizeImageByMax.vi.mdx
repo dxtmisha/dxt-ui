@@ -8,9 +8,11 @@ Thay đổi kích thước hình ảnh theo tỷ lệ để vừa với giới h
 
 Hàm này hữu ích để nén hình ảnh trực tiếp (on the fly) trước khi tải lên máy chủ.
 
+Thao tác này đồng bộ và yêu cầu hình ảnh đã tải với kích thước tự nhiên hợp lệ. Hàm không chờ URL dạng chuỗi tải xong; đầu vào chưa tải hoặc không được hỗ trợ trả về `undefined`.
+
 **Tham số:**
-- `image: HTMLImageElement | string` — Phần tử hình ảnh hoặc đường dẫn URL.
-- `maxSize: number` — Kích thước pixel tối đa cho phép (đối với chiều rộng hoặc chiều cao).
+- `image?: unknown` — Phần tử hình ảnh đã tải hoặc nguồn dạng chuỗi; giá trị không được hỗ trợ trả về `undefined`.
+- `maxSize: number = 0` — Kích thước pixel tối đa cho phép (đối với chiều rộng hoặc chiều cao). Giá trị không dương tắt thay đổi kích thước.
 - `type?: ResizeImageByMaxType = 'auto'` — Chiến lược mở rộng/thu nhỏ: `'auto'`, `'width'`, hoặc `'height'`. Mặc định là `'auto'`.
 - `typeData?: string` — Loại MIME tùy chọn cho chuỗi Data URL trả về (ví dụ, `'image/jpeg'`). Mặc định là `'image/png'`.
 - `quality?: number` — Hệ số chất lượng tùy chọn từ 0 đến 1 cho các định dạng nén có mất dữ liệu (`'image/jpeg'`, `'image/webp'`).

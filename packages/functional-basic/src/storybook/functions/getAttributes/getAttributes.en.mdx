@@ -4,9 +4,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getAttributes`
 
-Extracts all HTML attributes of a specified DOM element (or an element found by a CSS selector) and returns them as a simple key-value object.
+Extracts all attributes of a DOM element, including SVG elements, and returns a simple key-value object. The element can be passed directly or located by a CSS selector.
 
 The function uses `getElement` to find the target node. If the element is not found or an empty argument is passed, it returns an empty object `{}`.
+
+Passing `window` reads attributes from `document.body`. Attribute values remain strings, including empty boolean attributes; a missing value is represented by `undefined`.
 
 **Parameters:**
 - `element?: ElementOrString<E> | null` — A DOM element, Window object, a CSS selector string to find it, or `null`.
@@ -19,8 +21,8 @@ import { getAttributes } from '@dxtmisha/functional-basic'
 
 // We have an element: <div id="app" class="container" data-theme="dark"></div>
 
-const attrs = getAttributes('#app')
-console.log(attrs)
+const attributes = getAttributes('#app')
+console.log(attributes)
 /*
 {
   id: 'app',

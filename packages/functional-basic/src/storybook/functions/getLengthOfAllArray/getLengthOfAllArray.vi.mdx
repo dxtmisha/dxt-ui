@@ -6,8 +6,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Tạo và trả về một mảng mới bao gồm độ dài (thuộc tính `.length`) của tất cả các phần tử trong mảng hoặc đối tượng chuỗi được cung cấp.
 
+Độ dài được tính theo đơn vị mã UTF-16 của JavaScript, không phải số grapheme. Tập hợp nullish trả về mảng rỗng; phần tử nullish có độ dài 0.
+
 **Tham số:**
-- `value?: ObjectOrArray<string | null | undefined>` — Mảng hoặc đối tượng chuỗi đầu vào.
+- `value?: ObjectOrArray<string | null | undefined> | null` — Mảng hoặc đối tượng chuỗi đầu vào.
 
 **Trả về:**
 `number[]` — Một mảng các số, trong đó mỗi số tương ứng với độ dài của chuỗi trong tập hợp nguồn (hoặc `0` nếu phần tử không xác định hoặc rỗng).

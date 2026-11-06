@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getFirst`
 
-Возвращает первый элемент массива или объекта. Если значение является примитивом, возвращает само значение.
+Возвращает первый элемент массива или первое собственное перечисляемое значение объекта со строковым ключом. Необъектные значения возвращаются без изменений.
 
 **Параметры:**
 - `value?: T | readonly T[] | Record<PropertyKey, T>` — входное значение.
 
 **Возвращает:**
-`T` — первый элемент массива или объекта, или само значение.
+`T` — объявленный тип результата: первый элемент или исходное необъектное значение. Во время выполнения пустые массивы и объекты, а также отсутствующий аргумент дают `undefined`.
 
 ```typescript
 import { getFirst } from '@dxtmisha/functional-basic'
@@ -18,4 +18,6 @@ import { getFirst } from '@dxtmisha/functional-basic'
 console.log(getFirst([1, 2, 3])) // 1
 console.log(getFirst({ a: 1, b: 2 })) // 1
 console.log(getFirst('string')) // 'string'
+console.log(getFirst([])) // undefined
+console.log(getFirst({})) // undefined
 ```

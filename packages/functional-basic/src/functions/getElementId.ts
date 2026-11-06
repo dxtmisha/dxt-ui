@@ -48,7 +48,7 @@ const getNextId = (): string => {
  * При передаче объекта Window идентификатор получается или назначается для document.body.
  * @template E element or Window type / тип элемента или Window
  * @param element element from which you obtain an ID / элемент, с которого получаете ID
- * @param selector selector for matching / селектор для сопоставления
+ * @param selector CSS suffix appended to the escaped element ID / CSS-суффикс, добавляемый к экранированному ID элемента
  * @returns element ID / идентификатор элемента
  */
 export function getElementId<E extends ElementOrWindow = HTMLElement>(
@@ -63,7 +63,7 @@ export function getElementId<E extends ElementOrWindow = HTMLElement>(
         item.setAttribute('id', getNextId())
       }
 
-      return selector ? `#${item.id}${selector}`.trim() : item.id
+      return selector ? `#${CSS.escape(item.id)}${selector}`.trim() : item.id
     }
   }
 

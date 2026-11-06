@@ -4,11 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElementItem`
 
-Возвращает значение определенного свойства из HTML-элемента (например, `id`, `className`, пользовательское свойство, если оно определено как ключ объекта типа элемента). При передаче объекта `window` утилита через `getElement` разрешает его в `document.body` в DOM-окружении. Если элемент не найден или у него нет указанного свойства, возвращает `defaultValue` (которое по умолчанию равно `undefined`).
+Возвращает значение свойства DOM-элемента, включая SVG-элементы (например, `id`, `className` или пользовательское свойство). При передаче объекта `window` утилита через `getElement` разрешает его в `document.body` в DOM-окружении. Если элемент не найден или значение свойства равно `null` либо `undefined`, возвращает `defaultValue` (которое по умолчанию равно `undefined`). Значения `0`, `false` и `''` сохраняются.
+
+Если ключ свойства пропущен или равен `null`, возвращается fallback. Неверный CSS-селектор по-прежнему вызывает нативную ошибку поиска.
 
 **Параметры:**
 - `element?: ElementOrString<E> | null` — Строка селектора, готовый DOM-элемент, `window` (разрешается в `document.body`) или `null`/`undefined`.
-- `property?: K | string | number` — Имя или индекс свойства элемента (ключ), значение которого требуется получить.
+- `property?: K | string | number | null` — Имя или индекс свойства элемента (ключ), значение которого требуется получить, либо `null` для возврата fallback.
 - `defaultValue?: D` — Значение по умолчанию, возвращаемое, если свойство не найдено.
 
 **Возвращает:**
@@ -22,7 +24,7 @@ input.type = 'text'
 input.id = 'my-input'
 
 // Получение ID
-const elementId = getElementItem(input, 'id') 
+const elementId = getElementItem(input, 'id')
 console.log(elementId) // 'my-input'
 
 // Если свойство отсутствует и мы передаем fallback

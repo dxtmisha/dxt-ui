@@ -43,7 +43,7 @@ export type GetElementImageCallback = (
  * не забудьте освободить их в `onload`/`onerror` во избежание утечек памяти.
  */
 export function getElementImage(
-  image?: HTMLImageElement | string | null,
+  image?: unknown,
   onload?: GetElementImageCallback,
   onerror?: GetElementImageCallback
 ): HTMLImageElement | undefined {

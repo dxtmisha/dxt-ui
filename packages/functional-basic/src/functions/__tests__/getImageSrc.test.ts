@@ -55,11 +55,11 @@ describe('getImageSrc', () => {
     })
 
     it('should safely handle non-string primitives at runtime without throwing TypeError', () => {
-      expect(getImageSrc(42 as unknown as string)).toBe('')
-      expect(getImageSrc(0 as unknown as string)).toBe('')
-      expect(getImageSrc(true as unknown as string)).toBe('')
-      expect(getImageSrc(false as unknown as string)).toBe('')
-      expect(getImageSrc(Symbol('image') as unknown as string)).toBe('')
+      expect(getImageSrc(42)).toBe('')
+      expect(getImageSrc(0)).toBe('')
+      expect(getImageSrc(true)).toBe('')
+      expect(getImageSrc(false)).toBe('')
+      expect(getImageSrc(Symbol('image'))).toBe('')
     })
 
     it('should fallback to empty string when image object has null or undefined src property', () => {
@@ -68,16 +68,16 @@ describe('getImageSrc', () => {
     })
 
     it('should fallback to empty string when image object has non-string src property', () => {
-      expect(getImageSrc({ src: 123 } as Record<string, unknown>)).toBe('')
-      expect(getImageSrc({ src: true } as Record<string, unknown>)).toBe('')
-      expect(getImageSrc({ src: {} } as Record<string, unknown>)).toBe('')
+      expect(getImageSrc({ src: 123 })).toBe('')
+      expect(getImageSrc({ src: true })).toBe('')
+      expect(getImageSrc({ src: {} })).toBe('')
     })
   })
 
   describe('Objects and DOM elements without src', () => {
     it('should return an empty string for DOM elements without a src property', () => {
       const divElement = document.createElement('div')
-      expect(getImageSrc(divElement as unknown as HTMLImageElement)).toBe('')
+      expect(getImageSrc(divElement)).toBe('')
     })
 
     it('should return an empty string for plain objects without a src property', () => {

@@ -5,6 +5,6 @@
  * @param event event instance / экземпляр события
  */
 export function eventStopPropagation(event?: Event | null): void {
-  event?.preventDefault?.()
-  event?.stopPropagation?.()
+  event?.preventDefault()
+  event?.stopPropagation()
 }

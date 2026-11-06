@@ -2,11 +2,13 @@ import { isArray } from './isArray'
 import { isObject } from './isObject'
 
 /**
- * Returns the first element of an array or object.
+ * Returns the first array entry or the first own enumerable string-keyed object value.
+ * Non-object inputs are returned unchanged; empty collections and omitted inputs return undefined.
  *
- * Возвращает первый элемент массива или объекта.
+ * Возвращает первый элемент массива или первое собственное перечисляемое значение объекта со строковым ключом.
+ * Необъектные значения возвращаются без изменений; для пустых коллекций и отсутствующего аргумента возвращается undefined.
  * @param value input value / входное значение
- * @returns first element of an array or object / первый элемент массива или объекта
+ * @returns first entry or original non-object input; undefined if unavailable / первый элемент или исходное необъектное значение; undefined при отсутствии результата
  */
 export function getFirst<T = undefined>(
   value?: T | readonly T[] | Record<PropertyKey, T>

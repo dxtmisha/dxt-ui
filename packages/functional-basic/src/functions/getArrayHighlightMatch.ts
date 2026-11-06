@@ -5,6 +5,9 @@ import { toString } from './toString'
 
 import { type HighlightMatchItem } from '../types/searchTypes'
 
+/** Maximum BMP code point / Максимальная кодовая точка BMP */
+const UNICODE_MAX_BMP = 0xFFFF
+
 /**
  * Checks if the search parameter is valid and non-empty.
  *
@@ -51,6 +54,7 @@ export function getArrayHighlightMatch(
   ) {
     const result: HighlightMatchItem[] = []
     const expression = toGlobalExp(getSeparatingSearchExp(search))
+    const isUnicode = expression.unicode || expression.flags.includes('v')
     let lastIndex = 0
     let match: RegExpExecArray | null
 
@@ -59,7 +63,8 @@ export function getArrayHighlightMatch(
       const matchLength = match[0].length
 
       if (matchLength === 0) {
-        expression.lastIndex = matchIndex + 1
+        const codePoint = text.codePointAt(matchIndex) ?? 0
+        expression.lastIndex = matchIndex + (isUnicode && codePoint > UNICODE_MAX_BMP ? 2 : 1)
         continue
       }
 
