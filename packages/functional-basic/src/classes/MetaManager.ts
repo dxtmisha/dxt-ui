@@ -226,6 +226,24 @@ export class MetaManager<
   }
 
   /**
+   * Finds a meta element in the DOM.
+   *
+   * Находит мета-элемент в DOM.
+   * @param name meta tag name / имя мета-тега
+   * @protected
+   * @returns meta element if found, or undefined / мета-элемент, если найден, иначе undefined
+   */
+  protected findMetaElement(name: string): HTMLMetaElement | undefined {
+    if (!isDomRuntime()) {
+      return undefined
+    }
+
+    const selector = `meta[${this.getAttributeName()}="${encodeAttribute(name)}"]`
+
+    return document.querySelector<HTMLMetaElement>(selector) || undefined
+  }
+
+  /**
    * Converts meta tag to HTML string.
    *
    * Преобразует мета-тег в HTML-строку.
@@ -263,23 +281,5 @@ export class MetaManager<
    */
   protected toHtmlTitle(title: string): string {
     return encodeLiteAttribute(title)
-  }
-
-  /**
-   * Finds a meta element in the DOM.
-   *
-   * Находит мета-элемент в DOM.
-   * @param name meta tag name / имя мета-тега
-   * @protected
-   * @returns meta element if found, or undefined / мета-элемент, если найден, иначе undefined
-   */
-  protected findMetaElement(name: string): HTMLMetaElement | undefined {
-    if (!isDomRuntime()) {
-      return undefined
-    }
-
-    const selector = `meta[${this.getAttributeName()}="${encodeAttribute(name)}"]`
-
-    return document.querySelector<HTMLMetaElement>(selector) || undefined
   }
 }

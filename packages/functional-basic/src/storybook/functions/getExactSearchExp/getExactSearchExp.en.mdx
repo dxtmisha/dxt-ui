@@ -8,6 +8,8 @@ A utility that builds a case-insensitive `RegExp` for an exact phrase match (wit
 
 Unlike `getSearchExp`, this function matches the entire phrase as a single contiguous substring (with special characters escaped) without splitting it into separate words.
 
+An empty, null, or undefined value produces `()`, which matches an empty substring in any text. The phrase retains its whitespace and is not split into words. There is no `g` flag, so repeated `test()` calls are not affected by lastIndex.
+
 **Parameters:**
 - `search?: unknown` — (optional) The search string or value for exact phrase matching.
 

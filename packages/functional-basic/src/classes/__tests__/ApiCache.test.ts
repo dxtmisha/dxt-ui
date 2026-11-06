@@ -24,9 +24,11 @@ describe('ApiCache', () => {
       expect(result).toEqual({ data: 123 })
     })
 
-    it('should return undefined for non-existent keys', async () => {
-      const result = await ApiCache.get('missing-key')
-      expect(result).toBeUndefined()
+    it('should return undefined for non-existent keys and not collide with Object.prototype keys', async () => {
+      expect(await ApiCache.get('missing-key')).toBeUndefined()
+      expect(await ApiCache.get('toString')).toBeUndefined()
+      expect(await ApiCache.get('constructor')).toBeUndefined()
+      await expect(ApiCache.remove('toString')).resolves.toBeUndefined()
     })
 
     it('should correctly store and retrieve falsy values (0, false, empty string, null)', async () => {
@@ -154,6 +156,48 @@ describe('ApiCache', () => {
 
       expect(await ApiCache.get<boolean>('fallback-key')).toBe(true)
       expect(getListener).toHaveBeenCalledWith('fallback-key')
+    })
+
+    it('should report listener failures to ErrorCenter and fall back gracefully on get, set, and remove', async () => {
+      const errorCenterSpy = vi.spyOn(ErrorCenter, 'on')
+      const getError = new Error('External get failed')
+      const setError = new Error('External set failed')
+      const removeError = new Error('External remove failed')
+
+      const getListener = vi.fn(async (): Promise<ApiCacheItem | undefined> => {
+        throw getError
+      })
+      const setListener = vi.fn(async (): Promise<boolean> => {
+        throw setError
+      })
+      const removeListener = vi.fn(async (): Promise<boolean> => {
+        throw removeError
+      })
+
+      ApiCache.init(getListener, setListener, removeListener)
+
+      await expect(ApiCache.get('missing-external')).resolves.toBeUndefined()
+      expect(errorCenterSpy).toHaveBeenCalledWith({
+        group: 'api',
+        code: 'cacheGet',
+        details: getError
+      })
+
+      await expect(ApiCache.set('fallback-local', 'stored-locally', 60)).resolves.toBeUndefined()
+      expect(errorCenterSpy).toHaveBeenCalledWith({
+        group: 'api',
+        code: 'cacheSet',
+        details: setError
+      })
+      expect(await ApiCache.get<string>('fallback-local')).toBe('stored-locally')
+
+      await expect(ApiCache.remove('fallback-local')).resolves.toBeUndefined()
+      expect(errorCenterSpy).toHaveBeenCalledWith({
+        group: 'api',
+        code: 'cacheRemove',
+        details: removeError
+      })
+      expect(await ApiCache.get<string>('fallback-local')).toBeUndefined()
     })
   })
 

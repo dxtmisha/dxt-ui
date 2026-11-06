@@ -4,6 +4,42 @@ import { SearchListMatcher } from '../SearchListMatcher'
 import { SearchListOptions } from '../SearchListOptions'
 
 describe('SearchListMatcher', () => {
+  it('switches between words and phrase after an explicit update', () => {
+    const options = new SearchListOptions()
+    const item = new SearchListItem('gaming mouse', options)
+    const matcher = new SearchListMatcher(item, options)
+
+    expect(matcher.isSelection('mouse for gaming')).toBe(true)
+    options.setOptions({ findExactMatch: true })
+    matcher.update()
+    expect(matcher.isSelection('mouse for gaming')).toBe(false)
+    expect(matcher.isSelection('a GAMING MOUSE')).toBe(true)
+    expect(matcher.isSelection('a GAMING MOUSE')).toBe(true)
+  })
+
+  it('replaces the expression and resets it when the query is cleared', () => {
+    const options = new SearchListOptions({ limit: 3 })
+    const item = new SearchListItem('', options)
+    const matcher = new SearchListMatcher(item, options)
+
+    expect(matcher.is()).toBe(false)
+    item.set('ab')
+    matcher.update()
+    expect(matcher.isSelection('ab')).toBe(true)
+    item.set('abcd')
+    matcher.update()
+    const previous = matcher.get()
+    expect(matcher.isSelection('abcd')).toBe(true)
+    item.set('efgh')
+    matcher.update()
+    expect(matcher.get()).not.toBe(previous)
+    expect(matcher.isSelection('abcd')).toBe(false)
+    expect(matcher.isSelection('efgh')).toBe(true)
+    item.set('')
+    matcher.update()
+    expect(matcher.get()).toBeUndefined()
+  })
+
   it('should initialize and match correctly with default options', () => {
     const options = new SearchListOptions()
     const item = new SearchListItem('test', options)

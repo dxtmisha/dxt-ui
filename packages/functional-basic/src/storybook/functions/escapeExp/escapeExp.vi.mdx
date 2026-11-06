@@ -4,13 +4,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `escapeExp`
 
+Dấu gạch nối được mã hóa thành `\x2d`: chuỗi escape này hợp lệ với cờ Unicode `u`, `v` và trong lớp ký tự. Ví dụ, `new RegExp(escapeExp('Ho-Chi-Minh'), 'u')` khớp chính xác văn bản gốc. Chuỗi đầu ra đã thay đổi: dấu gạch nối dùng hex thay cho dấu gạch chéo ngược đứng trước `-`.
+
 Tiện ích thực hiện "thoát" (escape) tất cả các ký tự đặc biệt của biểu thức chính quy trong một chuỗi (`.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\` `/` `-`), để chuỗi đó có thể được sử dụng an toàn bên trong mẫu `RegExp` hoặc bên trong lớp ký tự (`[...]`).
 
 Rất hữu ích khi từ khóa tìm kiếm, truy vấn hoặc chuỗi đến từ người dùng hoặc nguồn bên ngoài và có thể chứa các ký tự mang ý nghĩa đặc biệt trong biểu thức chính quy.
 
 ### Các tính năng chính:
 - **Thoát toàn diện 16 ký tự đặc biệt**: Escape tất cả các ký tự cú pháp regex tiêu chuẩn (`.` `*` `+` `?` `^` `$` `{}` `()` `|` `[]` `\`) cùng với dấu gạch chéo (`/`) và dấu gạch nối (`-`).
-- **An toàn trong lớp ký tự (`[...]`)**: Escape dấu gạch nối (`-`) thành `\-`, ngăn chặn việc vô tình mở rộng phạm vi ký tự (ví dụ: `[0-9]`) hoặc lỗi cú pháp `SyntaxError: Range out of order in character class` khi nội suy các chuỗi có thứ tự ngược (ví dụ: `[z-a]`).
+- **An toàn trong lớp ký tự (`[...]`)**: Escape dấu gạch nối (`-`) thành `\x2d`, ngăn chặn việc vô tình mở rộng phạm vi ký tự (ví dụ: `[0-9]`) hoặc lỗi cú pháp `SyntaxError: Range out of order in character class` khi nội suy các chuỗi có thứ tự ngược (ví dụ: `[z-a]`).
 - **Ép kiểu an toàn**: Chấp nhận chuỗi, số (bao gồm cả số `0` và số âm), `null`, và `undefined`, xử lý an toàn mà không gây ra ngoại lệ thời gian chạy.
 - **An toàn trước ReDoS**: Hoạt động với độ phức tạp tuyến tính xác định $O(N)$, không bị lỗi backtracking thảm khốc.
 - **Tương thích Isomorphic & SSR**: Hàm thuần túy không có tác dụng phụ, không phụ thuộc vào các đối tượng toàn cục của trình duyệt (`window` hoặc `document`).
@@ -47,7 +49,7 @@ safeBracketRegex.test('a') // true
 // 4. Xử lý an toàn cho số và giá trị nullish
 escapeExp(0)         // '0'
 escapeExp(12345)     // '12345'
-escapeExp(-42)       // '\\-42'
+escapeExp(-42)       // '\\x2d42'
 escapeExp(null)      // ''
 escapeExp(undefined) // ''
 ```

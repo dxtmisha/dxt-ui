@@ -1,8 +1,12 @@
 // ai-none
 
 import { isDomRuntime } from '../functions/isDomRuntime'
+import { ErrorCenter } from './ErrorCenter'
 import { UrlInstanceAbstract } from './UrlInstanceAbstract'
 import { UrlItem } from './UrlItem'
+
+/** Write block timeout in milliseconds / Таймаут блокировки записи в миллисекундах */
+const QUERY_BLOCK_TIMEOUT = 120
 
 /**
  * Class for working with data stored in the URL query parameters.
@@ -20,6 +24,7 @@ export class QueryInstance extends UrlInstanceAbstract {
    * Obtaining data from the URL string.
    *
    * Получение данных из строки URL.
+   * @protected
    * @returns Record<string, unknown> query data / данные query-параметров
    */
   protected getLocation(): Record<string, unknown> {
@@ -34,6 +39,7 @@ export class QueryInstance extends UrlInstanceAbstract {
    * Removes window event listeners.
    *
    * Удаляет слушатели событий окна.
+   * @protected
    * @returns void / ничего не возвращает
    */
   protected removeListener(): void {
@@ -43,9 +49,10 @@ export class QueryInstance extends UrlInstanceAbstract {
   }
 
   /**
-   * Update query string in URL.
+   * Updates the URL query string while preserving the current history entry state.
    *
-   * Обновление строки query-параметров в URL.
+   * Обновляет строку query-параметров в URL, сохраняя состояние текущей записи истории.
+   * @protected
    * @returns this instance / текущий экземпляр
    */
   protected update(): this {
@@ -61,11 +68,17 @@ export class QueryInstance extends UrlInstanceAbstract {
       try {
         const search = urlItem.search
         const newUrl = `${location.pathname}${search}${location.hash}`
-        history.replaceState(null, '', newUrl)
+        history.replaceState(history.state ?? null, '', newUrl)
+      } catch (error) {
+        ErrorCenter.on({
+          group: 'storage',
+          code: 'error',
+          details: error
+        })
       } finally {
         this.time = setTimeout(() => {
           this.block = false
-        }, 120)
+        }, QUERY_BLOCK_TIMEOUT)
       }
     }
 
@@ -76,6 +89,7 @@ export class QueryInstance extends UrlInstanceAbstract {
    * Initializes query data and registers the popstate listener.
    *
    * Инициализирует данные query-параметров и регистрирует слушатель popstate.
+   * @protected
    * @returns this instance / текущий экземпляр
    */
   protected init(): this {

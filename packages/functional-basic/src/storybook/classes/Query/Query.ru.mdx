@@ -38,6 +38,8 @@ const filter = Query.get('filter') // 'active' (string)
 - `static get<T>(name: string, defaultValue?: T | (() => T)): T` — Возвращает значение переменной из query-параметров.
 - `static set<T>(name: string, callback: T | (() => T)): void` — Устанавливает значение переменной и обновляет URL query-параметры.
 
+При записи URL `QueryInstance` сохраняет `history.state`. Ошибки `history.replaceState` передаются в `ErrorCenter` как `storage/error`; локальное состояние остаётся доступным, а блокировка записи снимается через 120 мс.
+
 ### Наблюдение (Watchers)
 - `static addWatch<T>(name: string, callback: (value: T) => void): void` — Подписывается на изменение переменной.
 - `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Отписывается от изменений.
@@ -46,7 +48,7 @@ const filter = Query.get('filter') // 'active' (string)
 
 
 ### Управление
-- `static reset(): void` — Уничтожает экземпляр, очищает таймеры и удаляет слушатели событий.
+- `static reset(): void` — Уничтожает экземпляр, очищает таймеры и удаляет слушатели событий и запись текущего контекста в `ServerStorage`. Старые подписки завершаются; следующее чтение или `reload()` создаёт и инициализирует новый экземпляр по текущему URL. Сам URL не изменяется.
 - `static reload(): void` — Принудительно синхронизирует состояние с текущим URL query-параметрами. Первый вызов выполняет полную инициализацию данных и слушателя; повторные вызовы обновляют данные без повторного подключения слушателя.
 
 ## Примеры
@@ -66,14 +68,17 @@ Query.set('page', () => page + 1)
 ```
 
 ### Подписка на изменения
-```javascript
-Query.addWatch<string>('filter', (newFilter) => {
+```typescript
+const callback = (newFilter: string) => {
   console.log('Фильтр изменен на:', newFilter)
-})
+}
+Query.addWatch('filter', callback)
 
 // Отписка (callback должен быть ссылкой на ту же функцию)
 Query.removeWatch('filter', callback)
 ```
+
+Для изоляции на сервере требуется провайдер `ServerStorage.init(...)`, возвращающий хранилище активного запроса. `reset()` удаляет экземпляр только этого контекста. Ранее созданные refs из `useQueryRef` имеют собственный кеш и не переподключаются этим методом.
 
 ### Управление состоянием страницы
 ```javascript

@@ -15,7 +15,7 @@ Việc kiểm tra được thực hiện theo các quy tắc ưu tiên nghiêm n
 6. Nếu không có trường trạng thái nào có mặt, sự thành công được xác định bởi trạng thái API toàn cục (`Api.getStatus().getStatus()`).
 
 **Tham số:**
-- `data?: ApiData<T>` — dữ liệu phản hồi API (đối tượng hoặc mảng).
+- `data?: T | ApiData<T> (T = unknown)` — giá trị cần kiểm tra hoặc đối tượng bao phản hồi API.
 
 **Trả về:**
 `boolean` — `true` nếu phản hồi thành công, ngược lại là `false`.
@@ -39,3 +39,5 @@ console.log(isApiSuccess({ status: 'error', statusObject: { status: 200 } })) //
 console.log(isApiSuccess(null)) // false
 console.log(isApiSuccess(undefined)) // false
 ```
+
+Chuỗi trạng thái HTTP dạng số được chuyển qua `Number()`. Sự hiện diện của khóa `status`, `success` hoặc `statusObject`, kể cả có giá trị `undefined`, sẽ tắt fallback sang trạng thái `Api` hiện tại. `statusObject.status` cục bộ được kiểm tra độc lập với trạng thái toàn cục đó. Mảng được coi là thành công theo quy ước riêng của hàm.

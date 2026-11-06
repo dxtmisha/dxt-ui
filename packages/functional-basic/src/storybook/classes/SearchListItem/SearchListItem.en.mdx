@@ -43,6 +43,8 @@ console.log(item.isSearch()) // true (length >= 3)
 
 - `set(value?: string): this` — Sets a new search value and returns the current instance.
 
+`is()` and `isSearch()` inspect the trimmed string; `get()` preserves the original outer whitespace. The `limit` uses UTF-16 units (`String.length`). Changes to the shared `SearchListOptions` are read on the next check. Calling `set()` without an argument resets the value to undefined.
+
 ## Search Activation
 
 The `SearchListItem` class acts as a filter that determines whether the search system should start processing data. This is handled by the `isSearch()` method, which uses the `limit` option from `SearchListOptions`.

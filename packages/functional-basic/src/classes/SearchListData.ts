@@ -2,6 +2,7 @@
 
 import { addTagHighlightMatch } from '../functions/addTagHighlightMatch'
 import { anyToString } from '../functions/anyToString'
+import { encodeAttribute } from '../functions/encodeAttribute'
 import { getItemByPath } from '../functions/getItemByPath'
 import { isFilled } from '../functions/isFilled'
 
@@ -153,8 +154,10 @@ export class SearchListData<
 
   /**
    * Converts a single item to a formatted item with highlighted matches if selected.
+   * Search fields contain encoded text and the generated highlight spans.
    *
    * Преобразует один элемент в отформатированный элемент с выделенными совпадениями, если он выбран.
+   * Поля поиска содержат экранированный текст и сформированные span-подсветки.
    * @param item original item / исходный элемент
    * @param selection whether the item matches the search and should be highlighted / совпадает ли элемент с поиском и должен ли он быть выделен
    * @returns formatted item / отформатированный элемент
@@ -172,7 +175,7 @@ export class SearchListData<
 
         format[name] = this.isFilled(value) && selection
           ? this.addTag(value)
-          : anyToString(value)
+          : encodeAttribute(anyToString(value))
       })
     }
 
@@ -218,7 +221,7 @@ export class SearchListData<
   protected getColumnName(column: string): string {
     return column.replace(
       /\.([a-z0-9])/ig,
-      (_: string, char: string) => char.toUpperCase()
+      (_: string, character: string) => character.toUpperCase()
     ) + 'Search'
   }
 
@@ -233,7 +236,10 @@ export class SearchListData<
     return addTagHighlightMatch(
       anyToString(value),
       this.item.get(),
-      { className: this.options.getClassName() }
+      {
+        className: this.options.getClassName(),
+        shouldEscape: true
+      }
     )
   }
 

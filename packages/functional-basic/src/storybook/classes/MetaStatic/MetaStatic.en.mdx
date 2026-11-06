@@ -46,7 +46,7 @@ All setter methods return `typeof MetaStatic` to support method chaining.
 - `setAuthor(author: string): typeof MetaStatic` — Sets the author meta tag.
 - `setSiteName(siteName: string): typeof MetaStatic` — Sets the site name for OG and Twitter.
 - `setLocale(locale: string): typeof MetaStatic` — Sets the locale for Open Graph.
-- `setSuffix(suffix?: string): typeof MetaStatic` — Sets a suffix (e.g., " | My Site") appended to titles.
+- `setSuffix(suffix?: string): typeof MetaStatic` — Sets the suffix text (e.g., "My Site"); the ` - ` separator is added automatically.
 
 ### Output
 
@@ -60,6 +60,8 @@ All setter methods return `typeof MetaStatic` to support method chaining.
 ### Request Isolation (SSR)
 
 By using `ServerStorage`, `MetaStatic` ensures that during Server-Side Rendering (SSR), meta information for one request does not leak into another. Each request gets its own isolated context.
+
+This requires a configured `ServerStorage.init(...)` provider that returns the active request's store. In the browser, calls share the current application's instance. Updating `title` through `getItem().set()` or `getItem().setByList()` also keeps the title and suffix consistent.
 
 ### Examples
 

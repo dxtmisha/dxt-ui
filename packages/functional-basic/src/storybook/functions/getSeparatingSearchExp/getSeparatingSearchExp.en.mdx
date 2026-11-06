@@ -17,6 +17,8 @@ Unique words are split by whitespace, sorted by length in descending order, esca
 - **Deterministic Safe Fallback `/(?!)/`**: For empty queries, whitespace-only strings, exceeded length limits, or empty regular expressions (`/(?:)/` or `new RegExp('')`), it returns the negative lookahead pattern `/(?!)/`, which is guaranteed never to match anything and prevents infinite loops.
 - **Isomorphic & SSR Safe**: Pure function with zero dependencies on browser globals (`window` or `document`).
 
+The limit is checked after trimming outer whitespace. String queries are lowercased; words of equal length keep their input order. An existing `RegExp` is cloned without changing its pattern and is not subject to the string-query length limit.
+
 **Parameters:**
 - `search?: unknown` — A search string consisting of one or more space-separated words, a `RegExp` object, or an arbitrary query value.
 - `limit?: number` — (Optional) The maximum allowed length of the search string (ignored if a `RegExp` is passed). Defaults to `128`.

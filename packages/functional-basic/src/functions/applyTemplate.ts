@@ -23,14 +23,14 @@ const EXP_CONTENT_MACROS = /[[{]content[\]}]/g
  * Применяет шаблон к тексту, заменяя ключи на значения из объекта замены.
  * @param text text with a template containing keys in square or curly brackets, for example "[key]" or "{key}" /
  * текст с шаблоном, содержащим ключи в квадратных или фигурных скобках, например "[key]" или "{key}"
- * @param replacement an object or array containing key-value pairs for replacement /
- * объект или массив, содержащий пары ключ-значение для замены
+ * @param replacement object or array with replacements; other values are ignored /
+ * объект или массив с заменами; остальные значения игнорируются
  * @returns formatted string with applied template replacements /
  * отформатированная строка с примененными заменами шаблона
  */
 export function applyTemplate(
   text: unknown,
-  replacement?: Record<string, unknown> | readonly unknown[]
+  replacement?: unknown
 ): string {
   let content = String(text)
 
@@ -40,7 +40,7 @@ export function applyTemplate(
     isArray(replacement)
     && content.includes('%')
   ) {
-    content = content.replace(EXP_LIST_MACROS, (_all, key) => {
+    content = content.replace(EXP_LIST_MACROS, (_all: string, key: string): string => {
       const index = key.charCodeAt(0) - CHAR_CODE_D
       return String(replacement[index] ?? '')
     })

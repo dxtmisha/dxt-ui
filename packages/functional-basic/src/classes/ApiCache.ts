@@ -1,5 +1,6 @@
 // ai-none
 
+import { getObjectNull } from '../functions/getObjectNull'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { ErrorCenter } from './ErrorCenter'
 
@@ -72,22 +73,6 @@ export class ApiCache {
   }
 
   /**
-   * Gets data from cache using fetch options.
-   *
-   * Получает данные из кэша с использованием опций fetch.
-   * @param fetch fetch options / опции fetch
-   * @returns T | undefined / данные из кэша или undefined
-   */
-  static async getByFetch<T>(fetch: ApiFetch): Promise<T | undefined> {
-    if (!this.isCache(fetch)) {
-      return undefined
-    }
-
-    const key = this.generateKey(fetch)
-    return await this.get<T>(key)
-  }
-
-  /**
    * Saves data to cache.
    *
    * Сохраняет данные в кэш.
@@ -108,6 +93,22 @@ export class ApiCache {
     }
 
     await this.setItemOrListener(key, item)
+  }
+
+  /**
+   * Gets data from cache using fetch options.
+   *
+   * Получает данные из кэша с использованием опций fetch.
+   * @param fetch fetch options / опции fetch
+   * @returns T | undefined / данные из кэша или undefined
+   */
+  static async getByFetch<T>(fetch: ApiFetch): Promise<T | undefined> {
+    if (!this.isCache(fetch)) {
+      return undefined
+    }
+
+    const key = this.generateKey(fetch)
+    return await this.get<T>(key)
   }
 
   /**
@@ -133,7 +134,15 @@ export class ApiCache {
    * @returns Promise<void> / Promise без возвращаемого значения
    */
   static async remove(key: string): Promise<void> {
-    await this.removeItemOrListener(key)
+    try {
+      await this.removeItemOrListener(key)
+    } catch (error) {
+      ErrorCenter.on({
+        group: 'api',
+        code: 'cacheRemove',
+        details: error
+      })
+    }
   }
 
   /**
@@ -183,6 +192,7 @@ export class ApiCache {
    *
    * Проверяет, действителен ли элемент кэша (не истек ли срок действия).
    * @param item cache item / элемент кэша
+   * @protected
    * @returns true if item is valid / true, если элемент действителен
    */
   protected static isAge(item?: ApiCacheItem): boolean {
@@ -202,6 +212,7 @@ export class ApiCache {
    *
    * Проверяет, включен ли кэш.
    * @param fetch fetch options / опции fetch
+   * @protected
    * @returns true if cache is enabled / true, если кэш включен
    */
   protected static isCache(fetch: ApiFetch): boolean {
@@ -222,6 +233,7 @@ export class ApiCache {
    *
    * Проверяет, существует ли ключ в кэше.
    * @param key cache key / ключ кэша
+   * @protected
    * @returns true if key exists / true, если ключ существует
    */
   protected static isItem(key: string): boolean {
@@ -233,6 +245,7 @@ export class ApiCache {
    *
    * Получает данные из кэша, отдавая приоритет непросроченному локальному значению.
    * @param key cache key / ключ кэша
+   * @protected
    * @returns cache item or undefined / элемент кэша или undefined (если не существует или истек срок действия)
    */
   protected static async getItemOrListener(key: string): Promise<ApiCacheItem | undefined> {
@@ -249,20 +262,31 @@ export class ApiCache {
       return undefined
     }
 
-    const externalItem = await this.getListener(key)
+    try {
+      const externalItem = await this.getListener(key)
 
-    return this.isAge(externalItem) ? externalItem : undefined
+      return this.isAge(externalItem) ? externalItem : undefined
+    } catch (error) {
+      ErrorCenter.on({
+        group: 'api',
+        code: 'cacheGet',
+        details: error
+      })
+
+      return undefined
+    }
   }
 
   /**
    * Gets list of cache items.
    *
    * Получает список элементов кэша.
+   * @protected
    * @returns list of cache items / список элементов кэша
    */
   protected static getList(): ApiCacheList {
     if (!this.items) {
-      this.items = {}
+      this.items = getObjectNull<ApiCacheItem>()
     }
 
     return this.items
@@ -274,12 +298,23 @@ export class ApiCache {
    * Сохраняет данные в кэш с использованием слушателя.
    * @param key cache key / ключ кэша
    * @param value data to be stored / данные для хранения
+   * @protected
    * @returns Promise<void> / ничего не возвращает
    */
   protected static async setItemOrListener(key: string, value: ApiCacheItem): Promise<void> {
-    const status = this.setListener
-      ? await this.setListener(key, value)
-      : false
+    let status = false
+
+    if (this.setListener) {
+      try {
+        status = await this.setListener(key, value)
+      } catch (error) {
+        ErrorCenter.on({
+          group: 'api',
+          code: 'cacheSet',
+          details: error
+        })
+      }
+    }
 
     this.getList()[key] = {
       ...value,
@@ -292,15 +327,18 @@ export class ApiCache {
    *
    * Удаляет данные из кэша с использованием слушателя.
    * @param key cache key / ключ кэша
+   * @protected
    * @returns Promise<void> / ничего не возвращает
    */
   protected static async removeItemOrListener(key: string): Promise<void> {
-    if (this.removeListener) {
-      await this.removeListener(key)
-    }
-
-    if (this.isItem(key)) {
-      delete this.getList()[key]
+    try {
+      if (this.removeListener) {
+        await this.removeListener(key)
+      }
+    } finally {
+      if (this.isItem(key)) {
+        delete this.getList()[key]
+      }
     }
   }
 
@@ -313,6 +351,7 @@ export class ApiCache {
    * Очистка, запущенная для другого ключа, всё ещё может удалить запись, обновлённую во время асинхронного удаления.
    * Такой промах допустим, поскольку следующий успешный запрос к API снова заполнит кэш.
    * @param skipKey cache key to skip during this sweep / ключ кэша, который пропускается при этой очистке
+   * @protected
    * @returns Promise<void> / Promise без возвращаемого значения (удаляет устаревшие элементы из кэша)
    */
   protected static async clearOld(skipKey?: string): Promise<void> {
@@ -341,6 +380,7 @@ export class ApiCache {
    *
    * Генерирует ключ кэша из опций fetch.
    * @param fetch fetch options / опции fetch
+   * @protected
    * @returns cache key string / строка ключа кэша (JSON.stringify)
    */
   protected static generateKey(fetch: ApiFetch): string {

@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { MetaTwitter } from '../MetaTwitter'
 import { MetaTwitterCard } from '../../types/metaTypes'
 
@@ -132,6 +132,15 @@ describe('MetaTwitter', () => {
   })
 
   describe('setCard', () => {
+    it('clears an existing card type with an empty string', () => {
+      metaTwitter.setCard(MetaTwitterCard.summary)
+      metaTwitter.setCard('')
+
+      expect(metaTwitter.getCard()).toBe('')
+      expect(metaTwitter.html()).not.toContain('name="twitter:card"')
+      expect(document.querySelector('meta[name="twitter:card"]')?.getAttribute('content')).toBe('')
+    })
+
     it('should set Twitter card type', () => {
       metaTwitter.setCard(MetaTwitterCard.summary)
       expect(metaTwitter.getCard()).toBe(MetaTwitterCard.summary)
@@ -388,6 +397,28 @@ describe('MetaTwitter', () => {
       expect(document.querySelector('meta[name="twitter:site"]')).toBeTruthy()
       expect(document.querySelector('meta[name="twitter:title"]')).toBeTruthy()
       expect(document.querySelector('meta[name="twitter:description"]')).toBeTruthy()
+    })
+  })
+
+  describe('SSR', () => {
+    it('serializes escaped metadata without DOM and keeps instances independent', () => {
+      vi.stubGlobal('window', undefined)
+      vi.stubGlobal('document', undefined)
+
+      try {
+        const first = new MetaTwitter()
+        const second = new MetaTwitter()
+        first.setCard(MetaTwitterCard.summary).setTitle('<script>first</script>')
+        second.setTitle('second')
+
+        expect(first.getTitle()).toBe('<script>first</script>')
+        expect(second.getTitle()).toBe('second')
+        expect(first.html()).toContain('name="twitter:card" content="summary"')
+        expect(first.html()).toContain('&lt;script&gt;first&lt;/script&gt;')
+        expect(first.html()).not.toContain('<script>')
+      } finally {
+        vi.unstubAllGlobals()
+      }
     })
   })
 

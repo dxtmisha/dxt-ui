@@ -15,7 +15,7 @@ Mã hóa các ký tự đặc biệt cơ bản của HTML trong chuỗi (`<`, `>
 - **Hỗ trợ Unicode & Dấu tiếng Việt**: Bảo toàn văn bản tiếng Việt có dấu, chữ Cyrillic, CJK và emoji mà không bị hỏng ký tự.
 
 **Tham số:**
-- `text?: string | number | null` — Giá trị cần mã hóa (chuỗi, số hoặc giá trị rỗng).
+- `text?: unknown` — Giá trị cần mã hóa. Được chuyển đổi bằng `String` trước khi mã hóa; `null` và `undefined` trở thành chuỗi rỗng.
 
 **Trả về:**
 `string` — Chuỗi đã được mã hóa, hoặc chuỗi rỗng `''` nếu đầu vào là `null` hoặc `undefined`.

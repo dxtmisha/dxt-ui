@@ -17,6 +17,8 @@ Mỗi từ trong truy vấn được tách bởi khoảng trắng, loại bỏ t
 - **Giá trị mặc định an toàn `/^/`**: Nếu chuỗi tìm kiếm trống, chỉ chứa khoảng trắng, không phải chuỗi hoặc vượt quá giới hạn độ dài, hàm trả về `/^/` (khớp với vị trí bắt đầu của bất kỳ chuỗi nào). Điều này giúp bộ lọc hiển thị đầy đủ danh sách khi ô tìm kiếm bị xóa rỗng.
 - **Đẳng hình & An toàn với SSR**: Hàm thuần túy, hoàn toàn không phụ thuộc vào các đối tượng toàn cục của trình duyệt.
 
+Giới hạn độ dài áp dụng cho truy vấn gốc, kể cả khoảng trắng ở hai đầu; `trim()` được dùng khi tách từ. `Set` loại trùng theo cách viết chính xác, còn cờ `i` xử lý so khớp không phân biệt hoa/thường. Matcher kiểm tra sự hiện diện của tất cả từ, không dùng để lấy văn bản khớp.
+
 **Tham số:**
 - `search?: unknown` — (Tùy chọn) Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi khoảng trắng, hoặc bất kỳ giá trị truy vấn nào.
 - `limit?: number` — (Tùy chọn) Độ dài tối đa cho phép của chuỗi tìm kiếm. Mặc định là `128`.

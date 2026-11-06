@@ -9,7 +9,7 @@ Lớp tĩnh để đo độ rộng thanh cuộn của trình duyệt một cách
 ## Các tính năng chính
 
 - **Bộ nhớ đệm** — độ rộng chỉ được đo một lần, sau đó đọc từ bộ nhớ đệm.
-- **Đo bất đồng bộ** — sử dụng `requestAnimationFrame` để có kết quả chính xác sau khi vẽ lại.
+- **Đo bất đồng bộ** — đọc kích thước phần tử tạm trong `requestAnimationFrame` trước khi vẽ khung hình, rồi xóa phần tử đó.
 - **Phát hiện thanh cuộn phủ** — `is()` kiểm tra xem thanh cuộn có phải "overlay" không (rộng ≤ 8px), điển hình cho macOS và trình duyệt di động.
 
 ## Khởi tạo
@@ -33,6 +33,10 @@ const width = await ScrollbarWidth.get()
 - `get(): Promise<number>` — độ rộng thanh cuộn tính bằng pixel. Lần đầu tiên đo qua phần tử DOM tạm thời.
 - `getCalculate(): boolean` — trả về cờ cho biết quá trình tính toán độ rộng có đang diễn ra hay không.
 - `getStorage(): DataStorage<number>` — trả về phiên bản `DataStorage` dùng để lưu đệm độ rộng thanh cuộn.
+
+Các lời gọi `get()` và `is()` đồng thời dùng chung một lần đo. Chỉ gọi sau khi có `document.body`. Khi không có DOM, `get()` trả về `0` và `is()` trả về `true` mà không truy cập bộ nhớ. `is()` dùng ngưỡng `width <= 8` và loại trừ `-1`; đây là quy tắc ước lượng, không phải phép kiểm tra hệ điều hành.
+
+Xóa bộ nhớ đệm bằng `getStorage().remove()` cho phép đo lại ở lần gọi tiếp theo. JSDOM không tính kích thước thanh cuộn thực tế: cần trình duyệt có layout để xác minh số pixel.
 
 ## Ví dụ
 

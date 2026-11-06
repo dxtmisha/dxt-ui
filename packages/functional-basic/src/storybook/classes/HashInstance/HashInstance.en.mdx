@@ -33,6 +33,8 @@ const myHash = new HashInstance()
 
 Hash updates preserve the existing `history.state`: writing parameters does not discard the current history entry state, such as router data.
 
+Malformed URI sequences are reported through `ErrorCenter` as `transformation/error`, and the raw key or value is retained. Failed `history.replaceState` calls are reported as `storage/error`; local state remains available, and the write block is released after 120 ms.
+
 ### Watchers
 - `addWatch<T>(name: string, callback: (value: T) => void): this` — Adds a handler for variable changes.
 - `removeWatch<T>(name: string, callback: (value: T) => void): this` — Removes a handler.

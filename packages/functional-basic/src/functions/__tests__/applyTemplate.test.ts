@@ -155,9 +155,10 @@ describe('applyTemplate', () => {
     })
 
     it('should safely return original text when replacement is a primitive or null', () => {
-      expect(applyTemplate('Hello [name] and %d', null as unknown as Record<string, unknown>)).toBe('Hello [name] and %d')
-      expect(applyTemplate('Hello [name] and %d', 42 as unknown as Record<string, unknown>)).toBe('Hello [name] and %d')
-      expect(applyTemplate('Hello [name] and %d', 'string' as unknown as Record<string, unknown>)).toBe('Hello [name] and %d')
+      expect(applyTemplate('Hello [name] and %d', null)).toBe('Hello [name] and %d')
+      expect(applyTemplate('Hello [name] and %d', 42)).toBe('Hello [name] and %d')
+      expect(applyTemplate('Hello [name] and %d', 'string')).toBe('Hello [name] and %d')
+      expect(applyTemplate('Hello [name] and %d', false)).toBe('Hello [name] and %d')
     })
 
     it('should safely handle non-string text input with array replacement without throwing', () => {
@@ -222,6 +223,12 @@ describe('applyTemplate', () => {
   })
 
   describe('Metacharacters, escaping, and security', () => {
+    it('returns replacement text literally without HTML encoding', () => {
+      const value = '<img src=x onerror="example()"> & "quoted"'
+      expect(applyTemplate('[value]', { value })).toBe(value)
+      expect(applyTemplate('%d', [value])).toBe(value)
+    })
+
     it('should NOT replace inherited Object.prototype properties (prototype pollution guard)', () => {
       expect(applyTemplate('[toString] {valueOf} [constructor] {__proto__} [hasOwnProperty]', {}))
         .toBe('[toString] {valueOf} [constructor] {__proto__} [hasOwnProperty]')

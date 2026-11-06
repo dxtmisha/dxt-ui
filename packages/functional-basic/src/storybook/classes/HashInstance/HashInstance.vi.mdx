@@ -33,6 +33,8 @@ const myHash = new HashInstance()
 
 Khi cập nhật hash, `history.state` hiện có được giữ nguyên: việc ghi tham số không xóa trạng thái của mục lịch sử hiện tại, chẳng hạn dữ liệu của bộ định tuyến.
 
+Lỗi giải mã URI được gửi đến `ErrorCenter` dưới dạng `transformation/error`, đồng thời giữ nguyên khóa hoặc giá trị gốc. Lỗi `history.replaceState` được gửi dưới dạng `storage/error`; trạng thái cục bộ vẫn khả dụng và khóa ghi được giải phóng sau 120 ms.
+
 ### Theo dõi (Watchers)
 - `addWatch<T>(name: string, callback: (value: T) => void): this` — Thêm bộ xử lý cho các thay đổi của biến.
 - `removeWatch<T>(name: string, callback: (value: T) => void): this` — Xóa bộ xử lý.

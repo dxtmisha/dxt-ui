@@ -22,11 +22,11 @@ const twitter = new MetaTwitter()
 
 ## Supported Tags
 
-Manages the following `twitter:*` tags: `twitter:card`, `twitter:site`, `twitter:creator`, `twitter:url`, `twitter:title`, `twitter:description`, `twitter:image`.
+Convenience methods cover `twitter:card`, `twitter:site`, `twitter:creator`, `twitter:url`, `twitter:title`, `twitter:description`, `twitter:image`. Other tags from `MetaTwitterTag` are available through the inherited `get()` and `set()` methods.
 
 ## Getters
 
-- `getCard(): MetaTwitterCard` — card type (`'summary'`, `'summary_large_image'`, `'app'`, `'player'`).
+- `getCard(): MetaTwitterCard | ''` — card type (`'summary'`, `'summary_large_image'`, `'app'`, `'player'`); `''` when unset.
 - `getSite(): string` — @username of the website or brand account.
 - `getCreator(): string` — @username of the content creator.
 - `getUrl(): string` — page URL.
@@ -38,7 +38,7 @@ Manages the following `twitter:*` tags: `twitter:card`, `twitter:site`, `twitter
 
 All setters update the tag in the DOM and return `this` for chaining.
 
-- `setCard(card: MetaTwitterCard): this` — card type.
+- `setCard(card: MetaTwitterCard | ''): this` — card type; `''` clears the value.
 - `setSite(site: string): this` — site @username.
 - `setCreator(creator: string): this` — creator @username.
 - `setUrl(url: string): this`

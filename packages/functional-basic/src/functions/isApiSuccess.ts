@@ -18,24 +18,24 @@ function isHttpSuccess(status: unknown): boolean {
   }
 
   const code = Number(status)
-  return !Number.isNaN(code) && code >= 200 && code < 300
+  return code >= 200 && code < 300
 }
 
 /**
  * Checks if the API response is successful.
  *
  * Проверяет, является ли ответ API успешным.
- * @param data API response data / данные ответа API
+ * @param data value to check as an API response / значение для проверки как ответа API
  * @returns true if successful / true, если успешно
  */
-export function isApiSuccess<T>(
-  data?: ApiData<T>
+export function isApiSuccess<T = unknown>(
+  data?: T | ApiData<T>
 ): boolean {
   if (isArray(data)) {
     return true
   }
 
-  if (!data || !isObjectNotArray(data)) {
+  if (!isObjectNotArray<unknown>(data)) {
     return false
   }
 
@@ -52,7 +52,7 @@ export function isApiSuccess<T>(
     return true
   }
 
-  if (data.statusObject && 'status' in data.statusObject) {
+  if (isObjectNotArray(data.statusObject) && 'status' in data.statusObject) {
     return isHttpSuccess(data.statusObject.status)
   }
 

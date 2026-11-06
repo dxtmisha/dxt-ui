@@ -84,6 +84,19 @@ describe('addTagHighlightMatch', () => {
   })
 
   describe('Type coercion and non-standard data types', () => {
+    it.each([false, true])('converts the boolean value %s to text', (value) => {
+      expect(addTagHighlightMatch(value, String(value)))
+        .toBe(`<span class="sys-highlight-match">${value}</span>`)
+    })
+
+    it('converts an object before removing its tags and highlighting', () => {
+      expect(addTagHighlightMatch({ toString: () => '<b>custom</b>' }, 'custom'))
+        .toBe('<span class="sys-highlight-match">custom</span>')
+    })
+
+    it.each([null, 0, false, {}])('ignores a search value outside string or RegExp: %s', (search) => {
+      expect(addTagHighlightMatch('plain text', search)).toBe('plain text')
+    })
     it('should correctly search and highlight "0"', () => {
       const result = addTagHighlightMatch('Count: 0 items', '0')
       expect(result).toBe('Count: <span class="sys-highlight-match">0</span> items')
@@ -108,6 +121,12 @@ describe('addTagHighlightMatch', () => {
   })
 
   describe('Metacharacters, escaping, and security', () => {
+    it.each(['zz', 'missing', ''])('encodes reconstructed tag text with query %s', (search) => {
+      const value = 'zz <<b>img src=x onerror="alert(1)">'
+      const result = addTagHighlightMatch(value, search, { shouldEscape: true })
+      expect(result).toContain('&lt;img')
+      expect(result).not.toContain('<img')
+    })
     it('should handle special regex characters in search string', () => {
       const result = addTagHighlightMatch('price is $10', '$10')
       expect(result).toBe('price is <span class="sys-highlight-match">$10</span>')

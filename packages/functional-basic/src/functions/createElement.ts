@@ -24,6 +24,9 @@ import { setElementItem } from './setElementItem'
  * If you use it within a component's rendering logic, it may lead to hydration mismatches.
  * It is recommended to call this function only inside lifecycle hooks that run exclusively on the client (e.g., `onMounted` in Vue or `useEffect` in React).
  * When passing `innerHTML` through `options`, make sure the markup is trusted or properly sanitized to prevent XSS vulnerabilities.
+ * Function-valued entries in the options object are evaluated immediately as factories.
+ * To assign a function itself, return it from another function, for example `onclick: () => handler`.
+ * The options callback can assign functions directly to the element, for example `element.onclick = handler`.
  *
  * Функция предназначена для стандартных HTML-элементов через `document.createElement`.
  * Для элементов SVG или MathML, требующих пространства имён, используйте `document.createElementNS`.
@@ -32,6 +35,9 @@ import { setElementItem } from './setElementItem'
  * Если вы используете её внутри логики рендеринга компонента, это может привести к ошибкам гидратации.
  * Рекомендуется вызывать эту функцию только в хуках жизненного цикла, которые выполняются на клиенте (например, `onMounted` в Vue или `useEffect` в React).
  * При передаче `innerHTML` через `options` убедитесь, что разметка доверенная или надлежащим образом санитизирована во избежание XSS-уязвимостей.
+ * Функциональные значения в объекте options вычисляются немедленно как фабрики.
+ * Для записи самой функции верните её из другой функции, например `onclick: () => handler`.
+ * В колбэке options функции можно назначать элементу напрямую, например `element.onclick = handler`.
  */
 export function createElement<T extends HTMLElement = HTMLDivElement>(
   parentElement?: Element | DocumentFragment | null,

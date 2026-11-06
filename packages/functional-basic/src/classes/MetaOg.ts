@@ -73,10 +73,10 @@ export class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
    * Gets the Open Graph type.
    *
    * Получает тип Open Graph.
-   * @returns type / тип
+   * @returns type, or an empty string when unset / тип или пустая строка, если не задан
    */
-  getType(): MetaOpenGraphType {
-    return this.get(MetaOpenGraphTag.type) as MetaOpenGraphType
+  getType(): MetaOpenGraphType | '' {
+    return this.get(MetaOpenGraphTag.type) as MetaOpenGraphType | ''
   }
 
   /**
@@ -148,10 +148,10 @@ export class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
    * Sets the Open Graph type.
    *
    * Устанавливает тип Open Graph.
-   * @param type type / тип
+   * @param type type, or an empty string to clear it / тип или пустая строка для очистки
    * @returns current instance / текущий экземпляр
    */
-  setType(type: MetaOpenGraphType): this {
+  setType(type: MetaOpenGraphType | ''): this {
     return this.set(MetaOpenGraphTag.type, type)
   }
 

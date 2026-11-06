@@ -61,6 +61,20 @@ const meta = new Meta()
 - `setLocale(locale: string)` — устанавливает `og:locale` (формат: `'ru_RU'`).
 - `setSuffix(suffix?: string)` — суффикс заголовка. `setTitle('Статья')` + `setSuffix('Сайт')` → `'Статья - Сайт'`.
 
+## Общие методы записи
+
+Унаследованные `set()` и `setByList()` также используют `setTitle()` для поля `title`: передавайте исходный заголовок без добавленного суффикса. Обновляются исходный текст, полный заголовок, Open Graph и Twitter Card. Последующая смена суффикса сохраняет последний записанный текст.
+
+```typescript
+import { Meta, MetaTag } from '@dxtmisha/functional-basic'
+
+const meta = new Meta().setSuffix('Сайт')
+meta.set(MetaTag.title, 'Статья')
+meta.setByList({ title: 'Новая статья' })
+meta.getTitle()  // 'Новая статья'
+meta.htmlTitle() // 'Новая статья - Сайт'
+```
+
 ## Генерация HTML
 
 ### `html(): string`

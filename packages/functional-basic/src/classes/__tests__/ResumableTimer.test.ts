@@ -7,6 +7,7 @@ describe('ResumableTimer', () => {
   })
 
   afterEach(() => {
+    vi.clearAllTimers()
     vi.useRealTimers()
     vi.restoreAllMocks()
   })
@@ -178,5 +179,75 @@ describe('ResumableTimer', () => {
 
     vi.advanceTimersByTime(500)
     expect(count).toBe(2)
+  })
+
+  it.each([0, -1])('runs synchronously for a nonpositive delay of %s', (delay) => {
+    const callback = vi.fn()
+    const timer = new ResumableTimer(callback, delay)
+    expect(callback).toHaveBeenCalledTimes(1)
+    expect(vi.getTimerCount()).toBe(0)
+    timer.resume()
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
+  it('keeps repeated pauses from consuming the remaining delay', () => {
+    const callback = vi.fn()
+    const timer = new ResumableTimer(callback, 1000)
+    vi.advanceTimersByTime(200)
+    timer.pause()
+    vi.advanceTimersByTime(500)
+    timer.pause().resume()
+    vi.advanceTimersByTime(799)
+    expect(callback).not.toHaveBeenCalled()
+    vi.advanceTimersByTime(1)
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
+  it('allows pause before start and after completion without scheduling work', () => {
+    const callback = vi.fn()
+    const timer = new ResumableTimer(callback, 100, true)
+    timer.pause()
+    expect(vi.getTimerCount()).toBe(0)
+    timer.resume()
+    vi.advanceTimersByTime(100)
+    timer.pause().resume()
+    expect(callback).toHaveBeenCalledTimes(1)
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
+  it('starts a full delay when resumed after clear', () => {
+    const callback = vi.fn()
+    const timer = new ResumableTimer(callback, 1000)
+    vi.advanceTimersByTime(400)
+    timer.clear().clear()
+    expect(vi.getTimerCount()).toBe(0)
+    timer.resume()
+    vi.advanceTimersByTime(999)
+    expect(callback).not.toHaveBeenCalled()
+    vi.advanceTimersByTime(1)
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
+  it('restarts a completed timer through reset', () => {
+    const callback = vi.fn()
+    const timer = new ResumableTimer(callback, 100)
+    vi.advanceTimersByTime(100)
+    timer.reset()
+    vi.advanceTimersByTime(99)
+    expect(callback).toHaveBeenCalledTimes(1)
+    vi.advanceTimersByTime(1)
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
+
+  it('remains completed if the callback throws', () => {
+    const failure = new Error('callback failure')
+    const callback = vi.fn(() => {
+      throw failure
+    })
+    const timer = new ResumableTimer(callback, 100)
+    expect(() => vi.advanceTimersByTime(100)).toThrow(failure)
+    timer.resume()
+    expect(callback).toHaveBeenCalledTimes(1)
+    expect(vi.getTimerCount()).toBe(0)
   })
 })

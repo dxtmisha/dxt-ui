@@ -17,6 +17,8 @@ Each word in the search query is split by whitespace, deduplicated, escaped agai
 - **Deterministic Safe Fallback `/^/`**: If the query is empty, whitespace-only, not a string, or exceeds the length limit, it returns `/^/` (matching the start of any string). This allows list filters to return all items when the search input is cleared.
 - **Isomorphic & SSR Safe**: Pure functional implementation with zero dependencies on browser globals.
 
+The length limit applies to the original query including outer whitespace; `trim()` is used during tokenization. `Set` deduplication compares exact token spelling, while the `i` flag handles case-insensitive matching. The matcher checks whether all words are present rather than extracting matched text.
+
 **Parameters:**
 - `search?: unknown` — (Optional) A search string consisting of one or more space-separated words, or any query value.
 - `limit?: number` — (Optional) The maximum allowed length of the search string. Defaults to `128`.

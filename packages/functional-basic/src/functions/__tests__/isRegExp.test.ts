@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { isRegExp } from '../isRegExp'
 
@@ -18,6 +19,21 @@ describe('isRegExp', () => {
   })
 
   describe('Cross-realm RegExp instances (vm/iframe)', () => {
+    it('recognizes a genuine RegExp from an iframe with another constructor', () => {
+      const frame = document.createElement('iframe')
+      document.body.append(frame)
+
+      try {
+        const foreignWindow = frame.contentWindow as Window & typeof globalThis
+        const expression = new foreignWindow.RegExp('foreign', 'gi')
+        expect(expression instanceof RegExp).toBe(false)
+        expect(isRegExp(expression)).toBe(true)
+        expect(expression.test('FOREIGN')).toBe(true)
+      } finally {
+        frame.remove()
+      }
+    })
+
     it('should return true for cross-realm RegExp instances with [Symbol.toStringTag]', () => {
       const foreignRegExp = {
         [Symbol.toStringTag]: 'RegExp',
@@ -68,5 +84,18 @@ describe('isRegExp', () => {
       expect(isRegExp({ source: 'fake', flags: 'i' })).toBe(false)
       expect(isRegExp({ test: () => true, exec: () => null })).toBe(false)
     })
+  })
+
+  it('recognizes subclasses without changing their state', () => {
+    /**
+     * RegExp subclass used to verify state preservation.
+     *
+     * Подкласс RegExp для проверки сохранения состояния.
+     */
+    class SearchExpression extends RegExp {}
+    const expression = new SearchExpression('word', 'g')
+    expression.lastIndex = 2
+    expect(isRegExp(expression)).toBe(true)
+    expect(expression.lastIndex).toBe(2)
   })
 })

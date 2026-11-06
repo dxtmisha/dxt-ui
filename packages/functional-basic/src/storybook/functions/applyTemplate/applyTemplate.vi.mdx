@@ -14,12 +14,12 @@ Tiện ích hiệu năng cao để áp dụng mẫu cho văn bản, thay thế c
 - **An toàn trước Prototype Pollution** — Sử dụng `hasKey` để kiểm tra nghiêm ngặt các thuộc tính riêng của đối tượng, bỏ qua các thuộc tính kế thừa từ prototype (`toString`, `valueOf`, `constructor`, `__proto__`).
 - **An toàn với ký tự thay thế đặc biệt** — Xử lý ký tự đô la (`$`) trong giá trị và nội dung thẻ dưới dạng chuỗi ký tự thuần túy, ngăn ngừa lỗi chèn nhóm chụp regex ngoài ý muốn.
 - **Bỏ qua sớm (Fast-Path Bailouts)** — Bỏ qua việc thực thi biểu thức chính quy ngay lập tức nếu chuỗi mẫu không chứa ký tự `%`, dấu ngoặc `[`/`{` hoặc dấu gạch chéo thẻ `/`.
-- **Ép kiểu linh hoạt và an toàn** — Xử lý an toàn mọi kiểu văn bản đầu vào (`unknown`) và các kiểu nguyên thủy của giá trị (`0`, `false`, số âm, `toString` tùy chỉnh) mà không gây ra ngoại lệ khi chạy.
+- **Chuyển đổi thành chuỗi** — Dùng `String()` cho văn bản gốc và giá trị thay thế; giữ nguyên `0` và `false`.
 - **Đẳng hình & Sẵn sàng cho SSR** — Hàm thuần túy không có tác dụng phụ, không phụ thuộc vào các biến toàn cục của trình duyệt hoặc DOM API.
 
 **Tham số:**
 - `text: unknown` — Văn bản hoặc giá trị gốc chứa mẫu. Tự động chuyển đổi thành chuỗi.
-- `replacement?: Record<string, unknown> | readonly unknown[]` — (Tùy chọn) Đối tượng hoặc mảng chứa các cặp khóa-giá trị hoặc phần tử danh sách để thay thế. Mặc định là `{}`.
+- `replacement?: unknown` — (Tùy chọn) Đối tượng hoặc mảng chứa các giá trị thay thế. Giá trị khác được bỏ qua; không truyền đối số sẽ giữ văn bản gốc.
 
 **Định dạng thay thế (`replacement`):**
 - **Mảng (`readonly unknown[]`)**: Được sử dụng cho các điểm đánh dấu vị trí từ `%d` (chỉ mục 0) đến `%v` (chỉ mục 18). Các phần tử bị thiếu sẽ được thay thế bằng chuỗi rỗng `''`. Các chữ cái ngoài phạm vi (ví dụ: `%a`, `%w`, `%D`) và dấu `%` đứng riêng lẻ được giữ nguyên.
@@ -100,3 +100,5 @@ applyTemplate('Xin chào %d, bạn có %e thông báo mới.', ['Nguyễn', 3])
 // => 'Xin chào Nguyễn, bạn có 3 thông báo mới.'
   `}
 />
+
+Hàm trả về chuỗi không mã hóa HTML. Dùng nội suy hoặc `textContent` để hiển thị văn bản; mẫu HTML cần mã đánh dấu đáng tin cậy và xử lý giá trị phù hợp tại nơi hiển thị. Các khối được thay trước, sau đó đến khóa đơn; đây là định dạng mẫu đơn giản, không phải parser đệ quy.

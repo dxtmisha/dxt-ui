@@ -169,6 +169,20 @@ export class Meta extends MetaManager<MetaTag[]> {
   }
 
   /**
+   * Sets a managed field and routes title updates through the title formatter.
+   *
+   * Устанавливает управляемое поле и направляет изменение title через форматирование заголовка.
+   * @param name managed field name / имя управляемого поля
+   * @param content field value, or the raw page title / значение поля или исходный заголовок страницы
+   * @returns current instance / текущий экземпляр
+   */
+  override set(name: MetaTag, content: string): this {
+    return name === MetaTag.title
+      ? this.setTitle(content)
+      : super.set(name, content)
+  }
+
+  /**
    * Sets the author meta tag.
    *
    * Устанавливает мета-тег author.
@@ -305,7 +319,7 @@ export class Meta extends MetaManager<MetaTag[]> {
       document.title = fullTitle
     }
 
-    this.set(MetaTag.title, fullTitle)
+    super.set(MetaTag.title, fullTitle)
     this.og.setTitle(fullTitle)
     this.twitter.setTitle(fullTitle)
 

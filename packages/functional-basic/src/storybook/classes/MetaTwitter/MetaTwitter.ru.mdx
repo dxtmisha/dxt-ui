@@ -22,11 +22,11 @@ const twitter = new MetaTwitter()
 
 ## Поддерживаемые теги
 
-Управляет следующими `twitter:*` тегами: `twitter:card`, `twitter:site`, `twitter:creator`, `twitter:url`, `twitter:title`, `twitter:description`, `twitter:image`.
+Удобные методы предусмотрены для `twitter:card`, `twitter:site`, `twitter:creator`, `twitter:url`, `twitter:title`, `twitter:description`, `twitter:image`. Остальные теги из `MetaTwitterTag` доступны через унаследованные `get()` и `set()`.
 
 ## Геттеры
 
-- `getCard(): MetaTwitterCard` — тип карточки (`'summary'`, `'summary_large_image'`, `'app'`, `'player'`).
+- `getCard(): MetaTwitterCard | ''` — тип карточки (`'summary'`, `'summary_large_image'`, `'app'`, `'player'`); `''`, если не задан.
 - `getSite(): string` — @username аккаунта сайта или бренда.
 - `getCreator(): string` — @username автора контента.
 - `getUrl(): string` — URL страницы.
@@ -38,7 +38,7 @@ const twitter = new MetaTwitter()
 
 Все сеттеры обновляют тег в DOM и возвращают `this` для цепочки вызовов.
 
-- `setCard(card: MetaTwitterCard): this` — тип карточки.
+- `setCard(card: MetaTwitterCard | ''): this` — тип карточки; `''` очищает значение.
 - `setSite(site: string): this` — @username сайта.
 - `setCreator(creator: string): this` — @username автора.
 - `setUrl(url: string): this`

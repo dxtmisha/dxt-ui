@@ -4,10 +4,14 @@ import { getRequestString } from '../functions/getRequestString'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isPrototypeKey } from '../functions/isPrototypeKey'
 import { transformation } from '../functions/transformation'
+import { ErrorCenter } from './ErrorCenter'
 import { UrlInstanceAbstract } from './UrlInstanceAbstract'
 
 /** Regular expression for parsing key-value pairs in URL hash / Регулярное выражение для разбора пар ключ-значение в хеше URL */
 const REGEXP_HASH_ITEM = /([^#;:=]+)[:=]([^;]+)/gi
+
+/** Write block timeout in milliseconds / Таймаут блокировки записи в миллисекундах */
+const HASH_BLOCK_TIMEOUT = 120
 
 /**
  * Class for working with data stored in the URL hash.
@@ -37,8 +41,12 @@ export class HashInstance extends UrlInstanceAbstract {
 
         try {
           key = decodeURIComponent(key)
-        } catch {
-          // Keep raw key if URI sequence is malformed
+        } catch (error) {
+          ErrorCenter.on({
+            group: 'transformation',
+            code: 'error',
+            details: error
+          })
         }
 
         if (isPrototypeKey(key)) {
@@ -47,8 +55,12 @@ export class HashInstance extends UrlInstanceAbstract {
 
         try {
           value = decodeURIComponent(value)
-        } catch {
-          // Keep raw value if URI sequence is malformed
+        } catch (error) {
+          ErrorCenter.on({
+            group: 'transformation',
+            code: 'error',
+            details: error
+          })
         }
 
         hash[key] = transformation(value)
@@ -86,10 +98,16 @@ export class HashInstance extends UrlInstanceAbstract {
       try {
         const data = this.getData()
         history.replaceState(history.state, '', `#${getRequestString(data, '=', ';')}`)
+      } catch (error) {
+        ErrorCenter.on({
+          group: 'storage',
+          code: 'error',
+          details: error
+        })
       } finally {
         this.time = setTimeout(() => {
           this.block = false
-        }, 120)
+        }, HASH_BLOCK_TIMEOUT)
       }
     }
 

@@ -21,27 +21,6 @@ export class SearchListItem {
   ) { }
 
   /**
-   * Checks if the value is filled.
-   *
-   * Проверяет, заполнено ли значение.
-   * @returns boolean indicating if value exists / логическое значение, указывающее на наличие значения
-   */
-  is(): this is this & { value: string } {
-    return Boolean(this.value && this.value.trim().length > 0)
-  }
-
-  /**
-   * Checks if the value is filled and the length is greater than or equal to the limit.
-   *
-   * Проверяет, заполнено ли значение и длина больше или равна лимиту.
-   * @returns boolean / логическое значение
-   */
-  isSearch(): boolean {
-    return this.is()
-      && this.value.trim().length >= this.options.getLimit()
-  }
-
-  /**
    * Returns the current search value as a string.
    *
    * Возвращает текущее значение поиска в виде строки.
@@ -61,5 +40,26 @@ export class SearchListItem {
   set(value?: string): this {
     this.value = value
     return this
+  }
+
+  /**
+   * Checks if the value is filled.
+   *
+   * Проверяет, заполнено ли значение.
+   * @returns boolean indicating if value exists / логическое значение, указывающее на наличие значения
+   */
+  is(): this is this & { value: string } {
+    return Boolean(this.value && this.value.trim().length > 0)
+  }
+
+  /**
+   * Checks if the value is filled and the length is greater than or equal to the limit.
+   *
+   * Проверяет, заполнено ли значение и длина больше или равна лимиту.
+   * @returns boolean / логическое значение
+   */
+  isSearch(): boolean {
+    return this.is()
+      && this.value.trim().length >= this.options.getLimit()
   }
 }

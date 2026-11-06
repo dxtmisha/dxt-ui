@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 The `SearchListData` class manages the source data list and its associated search cache. It handles the formatting of items, extraction of values from nested paths, and the application of highlight tags to matching strings.
 
+Fields with the `Search` suffix contain an HTML representation: source text is escaped and matches are wrapped in generated `span` elements. Unhighlighted fields are escaped too. Original object fields retain their values. Render `*Search` as prepared HTML; use the original field for plain text interpolation to avoid encoding the text twice.
+
 ## Key Features
 
 - **Lazy Initialization** — implements on-demand cache generation, ensuring performance overhead only occurs when a search is actively performed.
@@ -19,8 +21,8 @@ The `SearchListData` class manages the source data list and its associated searc
 To initialize the object, call the `SearchListData(list, columns, item, options)` constructor.
 
 **Parameters:**
-- `list: T[]` — the original array of data items.
-- `columns?: string[]` — an array of property paths to search in.
+- `list: T[] | undefined` — the original array of data items.
+- `columns: K | undefined` — an array of property paths to search in.
 - `item: SearchListItem` — the search item state.
 - `options: SearchListOptions` — configuration options.
 
@@ -36,8 +38,8 @@ const data = new SearchListData(
   options
 )
 
-const results = data.forEach((origItem, value) => {
-  return data.toFormatItem(origItem, true)
+const results = data.forEach((originalItem, value) => {
+  return data.toFormatItem(originalItem, true)
 })
 ```
 
@@ -47,13 +49,13 @@ const results = data.forEach((origItem, value) => {
 
 - `is(): boolean` — Checks if both the list and columns are initialized.
 - `isList(): boolean` — Checks if the source list is provided.
-- `getList(): T[]` — Returns the original data list.
-- `getColumns(): string[] | undefined` — Returns the current search columns.
+- `getList(): T[] | undefined` — Returns the original data list.
+- `getColumns(): K | undefined` — Returns the current search columns.
 - `findCacheItem(item: T)` — Finds the cached search value for a specific original item.
 
 ### Configuration (Setters)
 
-- `setList(list: T[]): this` — Updates the data list and regenerates the cache.
+- `setList(list: T[] | undefined): this` — Updates the data list and regenerates the cache.
 - `setColumns(columns?: string[]): this` — Updates the search columns and regenerates the cache.
 
 ### Processing

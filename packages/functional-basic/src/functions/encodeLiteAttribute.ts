@@ -43,7 +43,7 @@ const REGEXP_SPECIAL_CHARACTERS_LITE = /[&<>]/g
  * Эта функция намеренно НЕ экранирует кавычки (" и '). Для экранирования пользовательского ввода
  * внутри HTML-атрибутов используйте `encodeAttribute` во избежание уязвимостей инъекции атрибутов.
  */
-export function encodeLiteAttribute(text?: string | number | null): string {
+export function encodeLiteAttribute(text?: unknown): string {
   const preparedText = toString(text)
 
   if (

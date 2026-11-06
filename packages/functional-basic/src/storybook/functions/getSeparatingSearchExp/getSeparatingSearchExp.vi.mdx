@@ -17,6 +17,8 @@ Các từ duy nhất được phân tách bằng khoảng trắng, sắp xếp t
 - **Fallback an toàn `/(?!)/`**: Khi truy vấn tìm kiếm trống, chỉ chứa khoảng trắng, vượt quá độ dài giới hạn hoặc truyền `RegExp` rỗng (`/(?:)/` hoặc `new RegExp('')`), hàm trả về mẫu phủ định `/(?!)/` đảm bảo không bao giờ khớp với bất kỳ thứ gì và ngăn chặn vòng lặp vô hạn.
 - **Tương thích SSR & Isomorphic**: Hàm thuần túy (pure function) không có tác dụng phụ, không phụ thuộc vào môi trường trình duyệt (`window` hay `document`).
 
+Giới hạn được kiểm tra sau khi bỏ khoảng trắng ở hai đầu. Truy vấn chuỗi được chuyển thành chữ thường; các từ cùng độ dài giữ nguyên thứ tự nhập. `RegExp` có sẵn được sao chép mà không đổi mẫu và không chịu giới hạn độ dài của truy vấn chuỗi.
+
 **Tham số:**
 - `search?: unknown` — Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi dấu cách, đối tượng `RegExp`, hoặc giá trị truy vấn bất kỳ.
 - `limit?: number` — (Tùy chọn) Độ dài tối đa cho phép của chuỗi tìm kiếm (bị bỏ qua nếu một `RegExp` được truyền vào). Mặc định là `128`.

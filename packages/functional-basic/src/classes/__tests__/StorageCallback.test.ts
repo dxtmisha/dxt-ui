@@ -96,6 +96,96 @@ describe('StorageCallback', () => {
   })
 
   describe('callback management and execution', () => {
+    it('consumes an async once registration before another run starts', async () => {
+      const storage = new StorageCallback<string>('once-overlap')
+      let resolvePending: () => void = () => {}
+      const pending = new Promise<void>((resolve) => {
+        resolvePending = resolve
+      })
+      const callback = vi.fn(async (): Promise<void> => {
+        await pending
+      })
+
+      storage.addCallback(callback, true)
+      const first = storage.run('first')
+      const second = storage.run('second')
+      resolvePending()
+      await Promise.all([first, second])
+
+      expect(callback).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledWith('first')
+      await storage.run('third')
+      expect(callback).toHaveBeenCalledTimes(1)
+    })
+
+    it('consumes once across snapshots paused by an earlier callback', async () => {
+      const storage = new StorageCallback<string>('once-after-await')
+      let resolvePending: () => void = () => {}
+      const pending = new Promise<void>((resolve) => {
+        resolvePending = resolve
+      })
+      const callback = vi.fn()
+
+      storage.addCallback(async () => {
+        await pending
+      })
+      storage.addCallback(callback, true)
+      const first = storage.run('first')
+      const second = storage.run('second')
+      resolvePending()
+      await Promise.all([first, second])
+
+      expect(callback).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledWith('first')
+    })
+
+    it('does not invoke a once registration again during a nested run', async () => {
+      const storage = new StorageCallback<string>('once-nested')
+      let nested: Promise<StorageCallback<string>> | undefined
+      const callback = vi.fn((value: string): void => {
+        if (value === 'first') {
+          nested = storage.run('nested')
+        }
+      })
+
+      storage.addCallback(callback, true)
+      await storage.run('first')
+      await nested
+
+      expect(callback).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledWith('first')
+    })
+
+    it('keeps a new once registration of the same function for the next run', async () => {
+      const storage = new StorageCallback<string>('once-register-again')
+      const callback = vi.fn((value: string): void => {
+        if (value === 'first') {
+          storage.addCallback(callback, true)
+        }
+      })
+
+      storage.addCallback(callback, true)
+      await storage.run('first')
+      await storage.run('second')
+      await storage.run('third')
+
+      expect(callback).toHaveBeenCalledTimes(2)
+      expect(callback).toHaveBeenNthCalledWith(1, 'first')
+      expect(callback).toHaveBeenNthCalledWith(2, 'second')
+    })
+
+    it('preserves a regular registration of the same function after consuming once', async () => {
+      const storage = new StorageCallback<string>('once-and-regular')
+      const callback = vi.fn()
+
+      storage.addCallback(callback, true).addCallback(callback)
+      await storage.run('first')
+      await storage.run('second')
+
+      expect(callback).toHaveBeenCalledTimes(3)
+      expect(callback).toHaveBeenLastCalledWith('second')
+    })
+
     it('should add and remove callbacks and return this for chaining', async () => {
       const storage = new StorageCallback<string>('callback-test')
       const callbackFirst = vi.fn()
@@ -130,7 +220,7 @@ describe('StorageCallback', () => {
       expect(executionOrder).toEqual([1, 2])
     })
 
-    it('should handle isOnce callbacks by removing them after their first execution', async () => {
+    it('should handle isOnce callbacks by consuming each registration before invocation', async () => {
       const storage = new StorageCallback<string>('once-test')
       const callbackOnce = vi.fn()
       const callbackRegular = vi.fn()
@@ -148,7 +238,7 @@ describe('StorageCallback', () => {
       expect(callbackRegular).toHaveBeenCalledTimes(2)
     })
 
-    it('should catch callback errors via ErrorCenter, remove failing isOnce callback in finally, and continue executing remaining callbacks', async () => {
+    it('should catch callback errors via ErrorCenter, consume a failing once registration, and continue executing remaining callbacks', async () => {
       const errorSpy = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
       const storage = new StorageCallback<string>('error-test')
       const callbackError = new Error('Callback failed')

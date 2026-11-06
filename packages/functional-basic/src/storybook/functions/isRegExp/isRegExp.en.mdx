@@ -8,6 +8,8 @@ Checks whether the provided value is a regular expression object (`RegExp`), inc
 
 The function combines `value instanceof RegExp` with prototype tag verification `Object.prototype.toString.call(value) === '[object RegExp]'`. This guarantees accurate type narrowing across isolated execution environments (such as Figma plugin UIs or modular micro-frontends), where `instanceof` evaluates to `false` due to different global prototypes.
 
+An object with an explicit `Symbol.toStringTag: "RegExp"` also passes the string-tag check.
+
 **Parameters:**
 - `value: unknown` — The input value of any type to check.
 
@@ -22,7 +24,11 @@ console.log(isRegExp(/^[a-z]+$/i)) // true
 console.log(isRegExp(new RegExp('test'))) // true
 
 // Cross-realm instances (e.g. from an iframe)
-console.log(isRegExp(iframeWindow.RegExp('foo'))) // true
+const frame = document.createElement('iframe')
+document.body.append(frame)
+const iframeWindow = frame.contentWindow as Window & typeof globalThis
+console.log(isRegExp(new iframeWindow.RegExp('foo'))) // true
+frame.remove()
 
 // Non-RegExp types
 console.log(isRegExp('/^[a-z]+$/')) // false (string literal, not RegExp)

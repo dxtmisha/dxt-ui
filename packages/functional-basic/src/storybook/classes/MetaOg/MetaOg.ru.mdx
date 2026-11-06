@@ -24,12 +24,12 @@ const og = new MetaOg()
 
 ## Поддерживаемые теги
 
-Управляет следующими `og:*` тегами: `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`.
+Удобные методы предусмотрены для `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`. Остальные теги из `MetaOpenGraphTag` доступны через унаследованные `get()` и `set()`.
 
 ## Геттеры
 
 - `getTitle(): string` — заголовок страницы для превью.
-- `getType(): MetaOpenGraphType` — тип контента (например: `'website'`, `'article'`).
+- `getType(): MetaOpenGraphType | ''` — тип контента (например: `'website'`, `'article'`); `''`, если не задан.
 - `getUrl(): string` — канонический URL страницы.
 - `getImage(): string` — URL изображения для превью.
 - `getDescription(): string` — описание страницы.
@@ -41,7 +41,7 @@ const og = new MetaOg()
 Все сеттеры обновляют соответствующий тег в DOM и возвращают `this` для цепочки вызовов.
 
 - `setTitle(title: string): this`
-- `setType(type: MetaOpenGraphType): this` — тип: `'website'`, `'article'`, `'book'`, `'music.song'` и другие.
+- `setType(type: MetaOpenGraphType | ''): this` — тип: `'website'`, `'article'`, `'book'`, `'music.song'` и другие; `''` очищает значение.
 - `setUrl(url: string): this`
 - `setImage(url: string): this`
 - `setDescription(description: string): this`

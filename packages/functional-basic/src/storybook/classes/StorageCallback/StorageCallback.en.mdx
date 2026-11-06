@@ -38,7 +38,7 @@ const sharedStorage = StorageCallback.getInstance('settings', 'global')
 
 // 3. Using generics for strict typing
 const numberStorage = new StorageCallback<number>('counter')
-numberStorage.addCallback((val) => console.log(val + 1))
+numberStorage.addCallback((value) => console.log(value + 1))
 ```
 
 ## Methods
@@ -51,13 +51,15 @@ numberStorage.addCallback((val) => console.log(val + 1))
 
 ### Management
 
-- `addCallback(callback: Callback, isOnce?: boolean): this` — adds a new callback to the execution list. If `isOnce: true`, the callback will be removed after the first execution.
+- `addCallback(callback: Callback, isOnce?: boolean): this` — adds a new registration. With `isOnce: true`, it is consumed before its first invocation, including overlapping or nested `run()` calls.
 - `removeCallback(callback: Callback): this` — removes a specific callback from the list.
 
 ### Control
 
 - `preparation(): this` — prepares the state before execution (sets `loading` to `true`). Should be called manually when starting an asynchronous process.
-- `run(value: T): Promise<this>` — executes all callbacks sequentially with the provided value. Sets `loading` back to `false` at the start of execution.
+- `run(value: T): Promise<this>` — executes a snapshot of callbacks sequentially with the provided value. Sets `loading` back to `false` after processing.
+
+Each once registration is consumed separately: a new registration of the same function and its regular subscription are preserved. A callback added during `run()` enters the next snapshot. `removeCallback()` removes all registrations of the given function. Execution is sequential within one `run()`; separate runs can overlap. `loading` is set manually through `preparation()` and reset after each `run()` completes.
 
 ## Usage Examples
 

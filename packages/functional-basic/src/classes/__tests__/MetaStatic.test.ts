@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { MetaStatic } from '../MetaStatic'
 import { Meta } from '../Meta'
 import { MetaRobots } from '../../types/metaTypes'
@@ -16,11 +16,40 @@ describe('MetaStatic', () => {
   })
 
   afterEach(() => {
+    ServerStorage.remove('__ui:meta-instance__')
     document.head.innerHTML = ''
     document.title = ''
   })
 
   describe('getItem', () => {
+    it('keeps metadata isolated in separate SSR contexts', () => {
+      const firstContext: Record<string, unknown> = {}
+      const secondContext: Record<string, unknown> = {}
+      let context = firstContext
+      vi.stubGlobal('window', undefined)
+      vi.stubGlobal('document', undefined)
+      ServerStorage.init(() => context)
+
+      try {
+        MetaStatic.setSuffix('First site').setTitle('First page')
+        const first = MetaStatic.getItem()
+        context = secondContext
+        MetaStatic.setSuffix('Second site').setTitle('Second page')
+        const second = MetaStatic.getItem()
+
+        expect(first).not.toBe(second)
+        context = firstContext
+        expect(MetaStatic.getItem()).toBe(first)
+        expect(MetaStatic.htmlTitle()).toBe('First page - First site')
+        context = secondContext
+        expect(MetaStatic.getItem()).toBe(second)
+        expect(MetaStatic.htmlTitle()).toBe('Second page - Second site')
+      } finally {
+        ServerStorage.init(() => undefined)
+        vi.unstubAllGlobals()
+      }
+    })
+
     it('should return Meta instance', () => {
       expect(MetaStatic.getItem()).toBeInstanceOf(Meta)
     })
@@ -45,6 +74,17 @@ describe('MetaStatic', () => {
   })
 
   describe('Sync and State', () => {
+    it('keeps generic title writes through getItem in sync with the facade', () => {
+      MetaStatic.setSuffix('Site').setTitle('Old')
+      MetaStatic.getItem().setByList({ title: 'New' })
+      MetaStatic.setSuffix('Changed')
+
+      expect(MetaStatic.getTitle()).toBe('New')
+      expect(MetaStatic.htmlTitle()).toBe('New - Changed')
+      expect(MetaStatic.getOg().getTitle()).toBe('New - Changed')
+      expect(MetaStatic.getTwitter().getTitle()).toBe('New - Changed')
+    })
+
     it('should correctly set and get title', () => {
       MetaStatic.setSuffix('Test Site')
       MetaStatic.setTitle('Home')

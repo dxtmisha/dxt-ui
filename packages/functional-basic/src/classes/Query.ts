@@ -80,13 +80,14 @@ export class Query {
   }
 
   /**
-   * Reset / destroy instance and remove listeners.
+   * Destroys the active instance and removes it from storage for the next access.
    *
-   * Сброс / уничтожение экземпляра и удаление слушателей.
+   * Уничтожает активный экземпляр и удаляет его из хранилища для следующего обращения.
    * @returns void / ничего не возвращает
    */
   static reset(): void {
     this.getItem().destroy()
+    ServerStorage.remove('__ui:query-instance__')
   }
 
   /**

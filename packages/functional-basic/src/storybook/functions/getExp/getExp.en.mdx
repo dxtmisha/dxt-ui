@@ -8,6 +8,8 @@ A utility that creates a `RegExp` object from a template string by first escapin
 
 This is essential when the search string comes from user input or contains characters that could break a regular expression. The function allows you to specify the regex flags and a pattern string where the escaped text will replace the `:value` token.
 
+Only `value` is escaped; `pattern` remains a regular expression template. Invalid flags or patterns propagate the standard `SyntaxError` from the `RegExp` constructor. Each call creates a separate instance.
+
 **Parameters:**
 - `value?: unknown` — (optional) The target value to be converted to a string, escaped, and matched.
 - `flags?: string` — (optional) Regular expression flags (e.g., `'ig'`). Defaults to `'ig'` (case-insensitive and global search).
@@ -20,10 +22,10 @@ This is essential when the search string comes from user input or contains chara
 import { getExp } from '@dxtmisha/functional-basic'
 
 // Basic search
-const rx1 = getExp('user.name')
-console.log(rx1) // /user\.name/gi  (dot is escaped)
+const basicExpression = getExp('user.name')
+console.log(basicExpression) // /user\.name/gi  (dot is escaped)
 
 // Search with a custom flag and pattern (e.g., "starts with")
-const rx2 = getExp('query[1]', 'i', '^:value.*')
-console.log(rx2) // /^query\[1\].*/i
+const prefixExpression = getExp('query[1]', 'i', '^:value.*')
+console.log(prefixExpression) // /^query\[1\].*/i
 ```

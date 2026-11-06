@@ -213,7 +213,7 @@ export interface RemoveTagOptions {
  * Removes all HTML/XML tags or specified tags from a string.
  *
  * Удаляет все HTML/XML теги или указанные теги из строки.
- * @param value initial string / исходная строка
+ * @param value initial value converted to text / исходное значение для преобразования в текст
  * @param options configuration options / объект опций
  * @returns cleaned string without tags / очищенная строка без тегов
  *
@@ -242,7 +242,7 @@ export interface RemoveTagOptions {
  * ```
  */
 export function removeTag(
-  value?: string | number | null,
+  value?: unknown,
   options: RemoveTagOptions = {}
 ): string {
   const preparedValue = toString(value)

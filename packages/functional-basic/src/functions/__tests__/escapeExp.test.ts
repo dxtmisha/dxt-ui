@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { escapeExp } from '../escapeExp'
+import { getExp } from '../getExp'
 
 describe('escapeExp', () => {
   describe('Individual metacharacters escaping', () => {
@@ -47,7 +48,7 @@ describe('escapeExp', () => {
     it('should escape square brackets ([ and ])', () => {
       expect(escapeExp('[')).toBe('\\[')
       expect(escapeExp(']')).toBe('\\]')
-      expect(escapeExp('[a-z]')).toBe('\\[a\\-z\\]')
+      expect(escapeExp('[a-z]')).toBe('\\[a\\x2dz\\]')
     })
 
     it('should escape backslash (\\)', () => {
@@ -61,9 +62,9 @@ describe('escapeExp', () => {
     })
 
     it('should escape hyphen-minus (-)', () => {
-      expect(escapeExp('-')).toBe('\\-')
-      expect(escapeExp('a-z')).toBe('a\\-z')
-      expect(escapeExp('foo-bar')).toBe('foo\\-bar')
+      expect(escapeExp('-')).toBe('\\x2d')
+      expect(escapeExp('a-z')).toBe('a\\x2dz')
+      expect(escapeExp('foo-bar')).toBe('foo\\x2dbar')
     })
   })
 
@@ -71,7 +72,7 @@ describe('escapeExp', () => {
     it('should escape all 16 metacharacters simultaneously in a single string', () => {
       const allMetacharacters = '.*+?^${}()|[]\\/-'
       expect(escapeExp(allMetacharacters)).toBe(
-        '\\.\\*\\+\\?\\^\\$\\{\\}\\(\\)\\|\\[\\]\\\\\\/\\-'
+        '\\.\\*\\+\\?\\^\\$\\{\\}\\(\\)\\|\\[\\]\\\\\\/\\x2d'
       )
     })
 
@@ -81,13 +82,13 @@ describe('escapeExp', () => {
       expect(escapeExp('???')).toBe('\\?\\?\\?')
       expect(escapeExp('...')).toBe('\\.\\.\\.')
       expect(escapeExp('///')).toBe('\\/\\/\\/')
-      expect(escapeExp('---')).toBe('\\-\\-\\-')
+      expect(escapeExp('---')).toBe('\\x2d\\x2d\\x2d')
       expect(escapeExp('\\\\\\')).toBe('\\\\\\\\\\\\')
     })
 
     it('should escape alternating metacharacters', () => {
       expect(escapeExp('.*.*.*')).toBe('\\.\\*\\.\\*\\.\\*')
-      expect(escapeExp('+-+-+-')).toBe('\\+\\-\\+\\-\\+\\-')
+      expect(escapeExp('+-+-+-')).toBe('\\+\\x2d\\+\\x2d\\+\\x2d')
       expect(escapeExp('()[]{}')).toBe('\\(\\)\\[\\]\\{\\}')
     })
 
@@ -96,7 +97,7 @@ describe('escapeExp', () => {
       const escaped = escapeExp(expression)
 
       expect(escaped).toBe(
-        '\\(a \\+ b\\) \\* \\[c \\/ d\\] \\- e\\^2 > 0 && f \\|\\| g \\? \\{h: 1\\} : \\$0'
+        '\\(a \\+ b\\) \\* \\[c \\/ d\\] \\x2d e\\^2 > 0 && f \\|\\| g \\? \\{h: 1\\} : \\$0'
       )
       // Unescaped chars like > & : remain untouched
       expect(escaped).toContain('>')
@@ -115,7 +116,7 @@ describe('escapeExp', () => {
     it('should escape complex URL strings with query params and anchors', () => {
       const url = 'https://example.com/api/v1?search=foo+bar&filter[status]=active#item-1'
       expect(escapeExp(url)).toBe(
-        'https:\\/\\/example\\.com\\/api\\/v1\\?search=foo\\+bar&filter\\[status\\]=active#item\\-1'
+        'https:\\/\\/example\\.com\\/api\\/v1\\?search=foo\\+bar&filter\\[status\\]=active#item\\x2d1'
       )
     })
   })
@@ -124,7 +125,7 @@ describe('escapeExp', () => {
     it('should prevent Range out of order syntax errors when interpolated into character classes', () => {
       const reversedRange = 'z-a'
       const escaped = escapeExp(reversedRange)
-      expect(escaped).toBe('z\\-a')
+      expect(escaped).toBe('z\\x2da')
 
       // Without escaping, new RegExp('[z-a]') throws SyntaxError: Range out of order
       expect(() => new RegExp(`[${escaped}]`)).not.toThrow()
@@ -213,7 +214,7 @@ describe('escapeExp', () => {
     })
 
     it('should properly escape metacharacters surrounded by whitespace', () => {
-      expect(escapeExp(' . * + - / ')).toBe(' \\. \\* \\+ \\- \\/ ')
+      expect(escapeExp(' . * + - / ')).toBe(' \\. \\* \\+ \\x2d \\/ ')
     })
   })
 
@@ -234,7 +235,7 @@ describe('escapeExp', () => {
 
     it('should safely handle positive and negative integers', () => {
       expect(escapeExp(12345)).toBe('12345')
-      expect(escapeExp(-42)).toBe('\\-42')
+      expect(escapeExp(-42)).toBe('\\x2d42')
     })
 
     it('should safely handle floating point numbers', () => {
@@ -244,7 +245,7 @@ describe('escapeExp', () => {
     it('should safely handle special numeric values (NaN, Infinity, -Infinity)', () => {
       expect(escapeExp(NaN)).toBe('NaN')
       expect(escapeExp(Infinity)).toBe('Infinity')
-      expect(escapeExp(-Infinity)).toBe('\\-Infinity')
+      expect(escapeExp(-Infinity)).toBe('\\x2dInfinity')
     })
 
     it('should safely handle boolean values without type assertions', () => {
@@ -254,7 +255,7 @@ describe('escapeExp', () => {
 
     it('should safely handle bigint values', () => {
       expect(escapeExp(100n)).toBe('100')
-      expect(escapeExp(-50n)).toBe('\\-50')
+      expect(escapeExp(-50n)).toBe('\\x2d50')
     })
 
     it('should safely handle symbol values', () => {
@@ -266,7 +267,7 @@ describe('escapeExp', () => {
         toString: () => 'price: $100.00 (discount -20%)'
       }
       expect(escapeExp(customObject)).toBe(
-        'price: \\$100\\.00 \\(discount \\-20%\\)'
+        'price: \\$100\\.00 \\(discount \\x2d20%\\)'
       )
     })
   })
@@ -276,8 +277,8 @@ describe('escapeExp', () => {
       const repeatedMetas = '.*+?-/'.repeat(2000) // 12,000 chars
       const escaped = escapeExp(repeatedMetas)
 
-      expect(escaped.length).toBe(repeatedMetas.length * 2)
-      expect(escaped.startsWith('\\.\\*\\+\\?\\-\\/')).toBe(true)
+      expect(escaped).toBe('\\.\\*\\+\\?\\x2d\\/'.repeat(2000))
+      expect(escaped.startsWith('\\.\\*\\+\\?\\x2d\\/')).toBe(true)
     })
 
     it('should handle large plain strings efficiently', () => {
@@ -369,10 +370,24 @@ describe('escapeExp', () => {
         expect(escapeExp('.')).toBe('\\.')
         expect(escapeExp('/')).toBe('\\/')
         expect(escapeExp('\\')).toBe('\\\\')
-        expect(escapeExp('-')).toBe('\\-')
+        expect(escapeExp('-')).toBe('\\x2d')
         expect(escapeExp('^')).toBe('\\^')
         expect(escapeExp('$')).toBe('\\$')
       }
+    })
+  })
+
+  describe.each(['', 'u', 'iu', 'v'])('hyphen compatibility with flags %s', (flags) => {
+    it.each(['Ho-Chi-Minh', '2026-11-05', -42])('compiles %s as a literal pattern', (value) => {
+      const expression = getExp(value, flags, '^:value$')
+      expect(expression.test(String(value))).toBe(true)
+      expect(expression.test(`${value}!`)).toBe(false)
+    })
+
+    it('keeps hyphens literal inside a character class', () => {
+      const expression = getExp('z-a', flags, '^[:value]+$')
+      expect(expression.test('z-a')).toBe(true)
+      expect(expression.test('m')).toBe(false)
     })
   })
 })

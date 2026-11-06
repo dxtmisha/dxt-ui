@@ -6,13 +6,15 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 Tiện ích hiệu năng cao để xóa tất cả các thẻ HTML/XML hoặc các thẻ cụ thể được chỉ định khỏi chuỗi mà vẫn giữ nguyên nội dung văn bản bên trong.
 
+Kết quả là văn bản thuần túy. Việc xóa thẻ có thể nối các phần liền nhau thành chuỗi giống HTML. Dùng `textContent` hoặc nội suy để hiển thị văn bản; khi tạo HTML, mã hóa bằng `encodeAttribute` hoặc bật `shouldEscape` trong highlighter.
+
 ## Tính năng chính
 
 - **Hỗ trợ đầy đủ HTML/XML và cấu trúc đặc biệt** — Xóa các phần tử tiêu chuẩn, thẻ tự đóng (`<br/>`, `<img />`), các khối nhiều dòng, chú thích HTML (`<!-- ... -->`, `<!-- ... --!>`), `<!DOCTYPE ...>` (bao gồm các định danh đặt trong dấu ngoặc kép có chứa `>`), `<![CDATA[...]]>` và `<?xml ...?>`.
 - **Lọc thẻ mục tiêu cụ thể** — Khả năng chỉ xóa các thẻ được chỉ định (ví dụ: `'b'` hoặc `['b', 'i']`) trong khi vẫn giữ nguyên các thẻ khác.
 - **Hỗ trợ HTML rút gọn & thuộc tính linh hoạt** — Xử lý chính xác các thuộc tính được trích dẫn liền kề nhau mà không có khoảng trắng (`<img src="x"onerror="alert(1)">`, `<div class="a"id="b">`) và các thuộc tính chứa `>` hoặc `/>` trong dấu ngoặc kép.
 - **Thoát nhanh (Fast-Path)** — Trả về ngay chuỗi ban đầu nếu chuỗi không chứa ký tự `<`, bỏ qua hoàn toàn việc thực thi biểu thức chính quy.
-- **Kháng ReDoS an toàn** — Sử dụng các lớp ký tự không giao nhau trong mẫu thuộc tính, đảm bảo độ phức tạp tuyến tính $O(N)$ ngay cả trên mã đánh dấu bị hỏng hoặc độc hại.
+- **Xử lý thuộc tính** — Phân biệt giá trị có và không có dấu nháy, kể cả thuộc tính trong mã đánh dấu chưa hoàn chỉnh.
 - **An toàn với ký tự thay thế đặc biệt** — Sử dụng hàm replacer `() => replacement`, ngăn chặn việc diễn giải các mẫu thay thế (`$&`, `$1`, `$$`) và chèn chuỗi thay thế theo nghĩa đen.
 - **Bộ nhớ đệm biểu thức đã biên dịch** — Tự động lưu biểu thức chính quy động cho thẻ và thẻ nội dung vào các bộ đệm giới hạn (tối đa 128 mục mỗi bộ đệm) với việc sắp xếp khóa chuẩn hóa để tránh chi phí biên dịch lại.
 - **Tương thích hoàn toàn với SSR** — Hàm thuần túy không phụ thuộc vào các biến toàn cục của trình duyệt (`window`/`document`), an toàn tuyệt đối cho render phía máy chủ (Node.js/Nitro).
@@ -21,7 +23,7 @@ Tiện ích hiệu năng cao để xóa tất cả các thẻ HTML/XML hoặc c�
 > **Lưu ý:** Theo mặc định (`removeContent = true`), các thẻ thực thi và định kiểu (`<script>`, `<style>`, `<noscript>`) hoặc các thẻ được chỉ định trong `removeContent` sẽ bị xóa âm thầm cùng với nội dung bên trong của chúng mà không áp dụng `replacement`, ngăn mã lập trình và quy tắc CSS rò rỉ vào văn bản thuần túy. Các thẻ định dạng và bố cục khác vẫn giữ lại nội dung văn bản bên trong, và cú pháp thẻ của chúng được thay thế bằng `replacement`. Khi chỉ định bộ lọc `tag`, chỉ các thẻ khớp mới được xử lý, trong khi các thẻ thực thi vẫn tiếp tục bị xóa cùng nội dung trừ khi `removeContent: false` được đặt rõ ràng.
 
 **Tham số:**
-- `value?: string | number | null` — Chuỗi hoặc số ban đầu để xử lý.
+- `value?: unknown` — Giá trị ban đầu được chuyển thành văn bản trước khi xử lý.
 - `options?: RemoveTagOptions` — Đối tượng tùy chọn cấu hình xóa thẻ:
   - `tag?: string | string[]` — Tên thẻ hoặc mảng các thẻ cần xóa. Nếu bỏ qua (`undefined`), tất cả các thẻ HTML/XML sẽ bị xóa.
   - `replacement?: string` — Chuỗi thay thế cho các thẻ bị xóa (không áp dụng cho các khối nội dung bị xóa âm thầm; mặc định là chuỗi rỗng `''`).

@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { HashInstance } from '../HashInstance'
+import { ErrorCenter } from '../ErrorCenter'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 
 describe('HashInstance', () => {
@@ -8,6 +9,7 @@ describe('HashInstance', () => {
 
   beforeEach(() => {
     vi.useFakeTimers()
+    vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
     history.replaceState(null, '', '/')
     instance = new HashInstance()
   })
@@ -52,6 +54,23 @@ describe('HashInstance', () => {
       expect(instance.get('bad')).toBe('%E0%A4%A')
       expect(instance.get('__proto__')).toBeUndefined()
       expect(instance.get('constructor')).toBeUndefined()
+      expect(ErrorCenter.on).toHaveBeenCalledWith({
+        group: 'transformation',
+        code: 'error',
+        details: expect.any(URIError)
+      })
+    })
+
+    it('reports malformed keys while retaining their raw spelling', () => {
+      history.replaceState(null, '', '/#%E0%A4%A=value')
+
+      expect(instance.get('%E0%A4%A')).toBe('value')
+      expect(ErrorCenter.on).toHaveBeenCalledTimes(1)
+      expect(ErrorCenter.on).toHaveBeenCalledWith({
+        group: 'transformation',
+        code: 'error',
+        details: expect.any(URIError)
+      })
     })
 
     it('updates the hash and returns the same instance', () => {
@@ -91,6 +110,21 @@ describe('HashInstance', () => {
     it('retains null when no application history state exists', () => {
       instance.set('page', 1)
       expect(history.state).toBeNull()
+    })
+
+    it('reports history.replaceState errors and still clears the write block', () => {
+      const error = new DOMException('Rate limit exceeded', 'SecurityError')
+      vi.spyOn(history, 'replaceState').mockImplementationOnce(() => {
+        throw error
+      })
+
+      expect(() => instance.set('page', 3)).not.toThrow()
+      expect(instance.get('page')).toBe(3)
+      expect(ErrorCenter.on).toHaveBeenCalledWith({ group: 'storage', code: 'error', details: error })
+      vi.advanceTimersByTime(120)
+      history.replaceState(null, '', '/#page=4')
+      instance.reload()
+      expect(instance.get('page')).toBe(4)
     })
   })
 

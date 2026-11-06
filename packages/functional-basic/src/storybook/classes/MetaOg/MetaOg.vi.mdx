@@ -24,12 +24,12 @@ const og = new MetaOg()
 
 ## Thẻ được hỗ trợ
 
-Quản lý các thẻ `og:*` sau: `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`.
+Các phương thức tiện ích hỗ trợ `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`. Những thẻ khác trong `MetaOpenGraphTag` có thể được truy cập qua các phương thức kế thừa `get()` và `set()`.
 
 ## Getter
 
 - `getTitle(): string` — tiêu đề trang cho bản xem trước.
-- `getType(): MetaOpenGraphType` — loại nội dung (ví dụ: `'website'`, `'article'`).
+- `getType(): MetaOpenGraphType | ''` — loại nội dung (ví dụ: `'website'`, `'article'`); `''` khi chưa đặt.
 - `getUrl(): string` — URL chính của trang.
 - `getImage(): string` — URL hình ảnh xem trước.
 - `getDescription(): string` — mô tả trang.
@@ -41,7 +41,7 @@ Quản lý các thẻ `og:*` sau: `og:title`, `og:type`, `og:url`, `og:image`, `
 Tất cả setter cập nhật thẻ tương ứng trong DOM và trả về `this` để chuỗi phương thức.
 
 - `setTitle(title: string): this`
-- `setType(type: MetaOpenGraphType): this` — loại: `'website'`, `'article'`, `'book'`, `'music.song'`, v.v.
+- `setType(type: MetaOpenGraphType | ''): this` — loại: `'website'`, `'article'`, `'book'`, `'music.song'`, v.v.; `''` xóa giá trị.
 - `setUrl(url: string): this`
 - `setImage(url: string): this`
 - `setDescription(description: string): this`

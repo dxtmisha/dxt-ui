@@ -46,7 +46,7 @@ Tất cả các phương thức thiết lập đều trả về `typeof MetaStat
 - `setAuthor(author: string): typeof MetaStatic` — Thiết lập thẻ meta author.
 - `setSiteName(siteName: string): typeof MetaStatic` — Thiết lập tên trang web cho OG và Twitter.
 - `setLocale(locale: string): typeof MetaStatic` — Thiết lập mã ngôn ngữ cho Open Graph.
-- `setSuffix(suffix?: string): typeof MetaStatic` — Thiết lập hậu tố (ví dụ: " | My Site") được thêm vào cuối tiêu đề.
+- `setSuffix(suffix?: string): typeof MetaStatic` — Thiết lập văn bản hậu tố (ví dụ: "My Site"); dấu phân cách ` - ` được thêm tự động.
 
 ### Đầu ra
 
@@ -60,6 +60,8 @@ Tất cả các phương thức thiết lập đều trả về `typeof MetaStat
 ### Cách ly yêu cầu (SSR)
 
 Bằng cách sử dụng `ServerStorage`, `MetaStatic` đảm bảo rằng trong quá trình Render phía máy chủ (SSR), thông tin meta của một yêu cầu không bị rò rỉ sang yêu cầu khác. Mỗi yêu cầu có một bối cảnh cách ly riêng.
+
+Điều này yêu cầu cấu hình provider `ServerStorage.init(...)` trả về kho dữ liệu của yêu cầu đang hoạt động. Trong trình duyệt, các lời gọi dùng chung instance của ứng dụng hiện tại. Việc cập nhật `title` qua `getItem().set()` hoặc `getItem().setByList()` cũng giữ tiêu đề và hậu tố nhất quán.
 
 ### Ví dụ
 

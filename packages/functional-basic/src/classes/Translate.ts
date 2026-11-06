@@ -12,9 +12,11 @@ import {
 /**
  * Static wrapper class for managing translations and localized text at the application level.
  * Delegates all operations to a global singleton instance of TranslateInstance.
+ * The shared translation dictionary is independent of user identity, including during SSR.
  *
  * Статический класс-обертка для управления переводами и локализованным текстом на уровне приложения.
  * Делегирует все операции глобальному экземпляру синглтона TranslateInstance.
+ * Общий словарь переводов не зависит от пользователя, в том числе при SSR.
  */
 export class Translate {
   /** TranslateInstance singleton item / Экземпляр синглтона TranslateInstance */

@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A static wrapper for a default instance of the `TranslateInstance` class. It manages translations and localized text at a global level, providing tools for retrieving, caching, and displaying content with template support and automatic locale detection.
 
+The translation dictionary is intentionally shared by all users, including SSR requests. User identity does not determine its contents; the locale selects the text. `Translate.getItem()` returns one shared instance.
+
 ## Relationship with TranslateInstance
 
 The `Translate` class acts as a global, pre-configured interface for `TranslateInstance`. All static methods call the corresponding methods on an internal instance (`Translate.getItem()`).
@@ -15,8 +17,8 @@ While `Translate` is suitable for most application-wide translation needs, you c
 ## Key Features
 
 - **Batch Loading** — Intelligently groups translation requests, sending them as a single pack 160ms after being queued.
-- **Flexible Templates** — Supports parameter replacement in text using both indices (`[0]`) and named keys (`{key}`).
-- **Sync and Async Access** — Methods for instant text retrieval from cache (`getSync`) or guaranteed server loading (`get`).
+- **Flexible Templates** — Supports positional markers `%d`–`%v` for arrays and named keys `{key}` for objects.
+- **Sync and Async Access** — Methods for instant text retrieval from cache (`getSync`) or retrieval that awaits loading (`get`).
 - **Smart Cache** — Stores translations scoped to the current locale and supports fallbacks (Location > Language > Global).
 
 ## Initialization
@@ -37,9 +39,9 @@ await Translate.add(['welcome', 'auth.login'])
 
 ### Configuration
 
-- `setConfig(config?: TranslateConfig): void` — Sets the complete configuration for the translation instance.
+- `setConfig(config?: TranslateConfig): void` — Applies the supplied settings; empty `url` and `propsName` are ignored, while `readApi: false` is preserved.
 - `setUrl(url: string): void` — Changes the API endpoint for fetching translations.
-- `setPropsName(name: string): void` — Changes the property name used in the API request/response.
+- `setPropsName(name: string): void` — Changes the property name used in the API request.
 - `setReadApi(value: boolean): void` — Enables or disables fetching translations from the API.
 
 ### Translation Retrieval
@@ -73,7 +75,7 @@ import { TranslateInstance, TranslateFile } from '@dxtmisha/functional-basic'
 
 // 1. Create a specialized set of translation files
 const widgetFiles = new TranslateFile({
-  'en-US': () => import('./locales/widget.en-US.json')
+  'en-US': () => import('./locales/widget.en-US.json').then(module => module.default)
 })
 
 // 2. Initialize a standalone translation instance
@@ -101,8 +103,8 @@ A record where keys are translation codes and values are the resulting translate
 
 ### Working with Templates
 ```javascript
-// In database: "Hello, [0]! You have {count} notifications."
-const text = await Translate.get('user.notifications', ['John', { count: 5 }])
+// In database: "Hello, {name}! You have {count} notifications."
+const text = await Translate.get('user.notifications', { name: 'John', count: 5 })
 // Result: "Hello, John! You have 5 notifications."
 ```
 

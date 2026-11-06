@@ -61,6 +61,20 @@ All setter trả về `this` để chuỗi phương thức.
 - `setLocale(locale: string)` — đặt `og:locale` (định dạng: `'vi_VN'`).
 - `setSuffix(suffix?: string)` — hậu tố tiêu đề. `setTitle('Bài viết')` + `setSuffix('Trang web')` → `'Bài viết - Trang web'`.
 
+## Ghi qua phương thức chung
+
+Các phương thức kế thừa `set()` và `setByList()` cũng dùng `setTitle()` cho trường `title`: truyền tiêu đề gốc chưa thêm hậu tố. Chúng cập nhật văn bản gốc, tiêu đề đầy đủ, Open Graph và Twitter Card. Khi đổi hậu tố sau đó, văn bản tiêu đề mới nhất vẫn được giữ lại.
+
+```typescript
+import { Meta, MetaTag } from '@dxtmisha/functional-basic'
+
+const meta = new Meta().setSuffix('Trang web')
+meta.set(MetaTag.title, 'Bài viết')
+meta.setByList({ title: 'Bài viết mới' })
+meta.getTitle()  // 'Bài viết mới'
+meta.htmlTitle() // 'Bài viết mới - Trang web'
+```
+
 ## Tạo HTML
 
 ### `html(): string`

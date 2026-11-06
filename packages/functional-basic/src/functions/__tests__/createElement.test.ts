@@ -77,6 +77,39 @@ describe('createElement', () => {
   })
 
   describe('Options configuration (Object & Function)', () => {
+    it('evaluates a function-valued property as a factory', () => {
+      const factory = vi.fn(() => 'Factory title')
+      const element = createElement(parentElement, 'div', { title: factory })
+
+      expect(factory).toHaveBeenCalledTimes(1)
+      expect(element?.title).toBe('Factory title')
+    })
+
+    it('assigns a wrapped event handler without invoking the handler during creation', () => {
+      const handler = vi.fn((event: MouseEvent): void => {
+        event.preventDefault()
+      })
+      const button = createElement<HTMLButtonElement>(parentElement, 'button', { onclick: () => handler })!
+
+      expect(handler).not.toHaveBeenCalled()
+      expect(button.onclick).toBe(handler)
+      button.click()
+      expect(handler).toHaveBeenCalledExactlyOnceWith(expect.any(MouseEvent))
+      expect(handler.mock.contexts[0]).toBe(button)
+      expect(handler.mock.calls[0]![0].defaultPrevented).toBe(true)
+    })
+
+    it('allows direct event handler assignment inside the options callback', () => {
+      const handler = vi.fn()
+      const button = createElement<HTMLButtonElement>(parentElement, 'button', (element) => {
+        element.onclick = handler
+      })!
+
+      expect(handler).not.toHaveBeenCalled()
+      button.click()
+      expect(handler).toHaveBeenCalledTimes(1)
+    })
+
     it('should apply standard DOM properties from the options object', () => {
       const element = createElement(parentElement, 'div', {
         id: 'test-id',

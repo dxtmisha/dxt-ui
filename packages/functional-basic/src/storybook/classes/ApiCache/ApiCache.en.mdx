@@ -54,7 +54,7 @@ By default, `ApiCache` stores records in the process RAM and works only on the s
 
 To solve these issues, you must initialize `ApiCache` with the `init` method, providing listeners that bridge it to an external storage mechanism.
 
-If an external write fails, `ApiCache` keeps the value in memory. Reads use that value until its TTL expires, then check the external storage.
+If an external storage operation fails or throws an error, `ApiCache` reports it to `ErrorCenter` (`api` / `cacheSet`, `cacheGet`, `cacheRemove`) and keeps the value in memory. Reads use that value until its TTL expires, then check the external storage.
 
 > Important: You must call `ApiCache.init()` during your application's bootstrap phase (before the first API request) to ensure the cache is correctly configured.
 

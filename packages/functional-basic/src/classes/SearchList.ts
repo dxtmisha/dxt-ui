@@ -146,9 +146,9 @@ export class SearchList<
    * Returns the current search value.
    *
    * Возвращает текущее значение поиска.
-   * @returns search value string or undefined / строка значения поиска или undefined
+   * @returns search value string, empty when unset / строка поиска, пустая при отсутствии значения
    */
-  getValue(): string | undefined {
+  getValue(): string {
     return this.item.get()
   }
 

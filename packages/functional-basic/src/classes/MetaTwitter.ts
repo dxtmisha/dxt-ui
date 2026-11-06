@@ -23,10 +23,10 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Gets the Twitter Card type.
    *
    * Получает тип Twitter Card.
-   * @returns card type / тип карточки
+   * @returns card type, or an empty string when unset / тип карточки или пустая строка, если не задан
    */
-  getCard(): MetaTwitterCard {
-    return this.get(MetaTwitterTag.card) as MetaTwitterCard
+  getCard(): MetaTwitterCard | '' {
+    return this.get(MetaTwitterTag.card) as MetaTwitterCard | ''
   }
 
   /**
@@ -93,10 +93,10 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Sets the Twitter Card type.
    *
    * Устанавливает тип Twitter Card.
-   * @param card card type / тип карточки
+   * @param card card type, or an empty string to clear it / тип карточки или пустая строка для очистки
    * @returns current instance / текущий экземпляр
    */
-  setCard(card: MetaTwitterCard): this {
+  setCard(card: MetaTwitterCard | ''): this {
     this.set(MetaTwitterTag.card, card)
     return this
   }

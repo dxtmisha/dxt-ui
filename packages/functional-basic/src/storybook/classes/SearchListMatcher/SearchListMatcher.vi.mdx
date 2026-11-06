@@ -8,7 +8,7 @@ Lớp `SearchListMatcher` chịu trách nhiệm về logic so khớp cốt lõi.
 
 ## Tính năng chính
 
-- **Tạo RegExp động** — tự động xây dựng hoặc thiết lập lại trình so khớp khi cụm từ tìm kiếm hoặc tùy chọn thay đổi.
+- **Tạo RegExp động** — tạo trình so khớp trong hàm khởi tạo; gọi `update()` sau khi thay đổi truy vấn hoặc tùy chọn.
 - **Chế độ tìm kiếm** — hỗ trợ cả chế độ khớp một phần tiêu chuẩn và khớp chính xác dựa trên `SearchListOptions`.
 - **Kiểm tra hiệu quả** — sử dụng kiểm tra biểu thức chính quy hiệu suất cao để xác định các kết quả khớp trong dữ liệu.
 
@@ -47,13 +47,15 @@ console.log(matcher.isSelection('System Administrator')) // true
 Lớp hỗ trợ hai chế độ so khớp chính, được điều khiển bởi tùy chọn `findExactMatch` trong `SearchListOptions`:
 
 ### 1. Chứa tất cả các từ (Mặc định)
-Когда `findExactMatch` là `false`, chuỗi tìm kiếm được chia thành các từ riêng lẻ. Kết quả khớp chỉ được tìm thấy nếu **mọi từ** đều có mặt trong chuỗi đích, bất kể thứ tự của chúng.
+Khi `findExactMatch` là `false`, chuỗi tìm kiếm được chia thành các từ riêng lẻ. Kết quả khớp chỉ được tìm thấy nếu **mọi từ** đều có mặt trong chuỗi đích, bất kể thứ tự của chúng.
 - **Ví dụ**: Tìm kiếm `"chuột chơi game"` sẽ khớp với `"Chuột dành cho chơi game"` và `"Chơi game Pro Chuột"`.
 
 ### 2. Cụm từ chính xác
-Когда `findExactMatch` là `true`, chuỗi tìm kiếm được xử lý như một cụm từ liên tục duy nhất. Kết quả khớp chỉ được tìm thấy nếu **chính xác trình tự** các ký tự (không phân biệt hoa thường) tồn tại trong chuỗi đích.
+Khi `findExactMatch` là `true`, chuỗi tìm kiếm được xử lý như một cụm từ liên tục duy nhất. Kết quả khớp chỉ được tìm thấy nếu **chính xác trình tự** các ký tự (không phân biệt hoa thường) tồn tại trong chuỗi đích.
 - **Ví dụ**: Tìm kiếm `"chuột chơi game"` sẽ khớp với `"Chuột chơi game cực ngầu"`, nhưng sẽ **không** khớp với `"Chuột dành cho chơi game"`.
 
 ## Các kiểu dữ liệu (Types)
 
 Lớp này chủ yếu sử dụng kiểu gốc `RegExp` và logic nội bộ được quản lý bởi `SearchListOptions`.
+
+Truy vấn không rỗng kích hoạt matcher qua `SearchListItem.is()`. Lớp sở hữu `SearchList` kiểm tra độ dài tối thiểu `limit` qua `isSearch()`. Khi truy vấn chưa hoạt động, `get()` trả về `undefined` và `isSelection()` trả về `false`. `get()` trả về đối tượng `RegExp` hiện tại; phép kiểm tra thông thường không dùng cờ `g`, nên cho cùng kết quả khi lặp lại. Ở chế độ mọi từ, truy vấn dài hơn 128 ký tự dùng fallback `/^/` của `getSearchExp`.

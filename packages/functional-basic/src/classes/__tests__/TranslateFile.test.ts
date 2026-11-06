@@ -6,7 +6,12 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { ErrorCenter } from '../ErrorCenter'
 import { TranslateFile } from '../TranslateFile'
 import { Geo } from '../Geo'
-import { TRANSLATE_GLOBAL_PREFIX, type TranslateDataFile } from '../../types/translateTypes'
+import {
+  TRANSLATE_GLOBAL_PREFIX,
+  type TranslateDataFile,
+  type TranslateDataFileList,
+  type TranslatePromiseItem
+} from '../../types/translateTypes'
 
 class TestableTranslateFile extends TranslateFile {
   getFilesMap(): TranslateDataFile {
@@ -17,11 +22,11 @@ class TestableTranslateFile extends TranslateFile {
     return this.getIndex(location, language)
   }
 
-  getCachedData(index: string) {
+  getCachedData(index: string): TranslateDataFileList | undefined {
     return this.getByData(index)
   }
 
-  getActivePromises(index: string) {
+  getActivePromises(index: string): TranslatePromiseItem | undefined {
     return this.promises[index]
   }
 }
@@ -48,10 +53,9 @@ describe('TranslateFile', () => {
     })
 
     it('should safely handle undefined, null or empty object in add', () => {
-      // @ts-expect-error Testing invalid runtime value
       expect(() => translateFile.add(null)).not.toThrow()
-      // @ts-expect-error Testing invalid runtime value
       expect(() => translateFile.add(undefined)).not.toThrow()
+      expect(() => translateFile.add()).not.toThrow()
       expect(() => translateFile.add({})).not.toThrow()
     })
 
@@ -129,10 +133,10 @@ describe('TranslateFile', () => {
       expect(mockLoader).toHaveBeenCalledTimes(1)
 
       resolvePromise!({ hello: 'concurrent' })
-      const [res1, res2] = await Promise.all([promise1, promise2])
+      const [firstResult, secondResult] = await Promise.all([promise1, promise2])
 
-      expect(res1).toEqual({ hello: 'concurrent' })
-      expect(res2).toEqual({ hello: 'concurrent' })
+      expect(firstResult).toEqual({ hello: 'concurrent' })
+      expect(secondResult).toEqual({ hello: 'concurrent' })
       expect(mockLoader).toHaveBeenCalledTimes(1)
     })
 
@@ -215,9 +219,9 @@ describe('TranslateFile', () => {
       const load3 = translateFile.getList('en-US', 'en')
 
       resolveSecond!({ req: '2' })
-      const [res2, res3] = await Promise.all([load2, load3])
-      expect(res2).toEqual({ req: '2' })
-      expect(res3).toEqual({ req: '2' })
+      const [secondResult, thirdResult] = await Promise.all([load2, load3])
+      expect(secondResult).toEqual({ req: '2' })
+      expect(thirdResult).toEqual({ req: '2' })
     })
 
     it('should invalidate cache when add() is called for an existing locale', async () => {
@@ -351,6 +355,19 @@ describe('TranslateFile', () => {
   })
 
   describe('constructor options and getters', () => {
+    it('keeps cached dictionaries isolated between instances', async () => {
+      const firstLoader = vi.fn().mockResolvedValue({ hello: 'First' })
+      const secondLoader = vi.fn().mockResolvedValue({ hello: 'Second' })
+      const first = new TranslateFile({ en: firstLoader }, 'en-US', 'en')
+      const second = new TranslateFile({ en: secondLoader }, 'en-US', 'en')
+
+      expect(await first.getList()).toEqual({ hello: 'First' })
+      expect(await second.getList()).toEqual({ hello: 'Second' })
+      first.reset()
+      expect(await second.getList()).toEqual({ hello: 'Second' })
+      expect(secondLoader).toHaveBeenCalledTimes(1)
+    })
+
     it('should accept initial data and custom language and location getters', async () => {
       const mockFrenchLoader = vi.fn().mockResolvedValue({ greeting: 'Bonjour' })
       const customFile = new TranslateFile(

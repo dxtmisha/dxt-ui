@@ -24,12 +24,12 @@ const og = new MetaOg()
 
 ## Supported Tags
 
-Manages the following `og:*` tags: `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`.
+Convenience methods cover `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`. Other tags from `MetaOpenGraphTag` are available through the inherited `get()` and `set()` methods.
 
 ## Getters
 
 - `getTitle(): string` — page title for preview.
-- `getType(): MetaOpenGraphType` — content type (e.g. `'website'`, `'article'`).
+- `getType(): MetaOpenGraphType | ''` — content type (e.g. `'website'`, `'article'`); `''` when unset.
 - `getUrl(): string` — canonical page URL.
 - `getImage(): string` — preview image URL.
 - `getDescription(): string` — page description.
@@ -41,7 +41,7 @@ Manages the following `og:*` tags: `og:title`, `og:type`, `og:url`, `og:image`, 
 All setters update the corresponding tag in the DOM and return `this` for chaining.
 
 - `setTitle(title: string): this`
-- `setType(type: MetaOpenGraphType): this` — types: `'website'`, `'article'`, `'book'`, `'music.song'`, and others.
+- `setType(type: MetaOpenGraphType | ''): this` — types: `'website'`, `'article'`, `'book'`, `'music.song'`, and others; `''` clears the value.
 - `setUrl(url: string): this`
 - `setImage(url: string): this`
 - `setDescription(description: string): this`

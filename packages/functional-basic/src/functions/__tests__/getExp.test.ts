@@ -2,6 +2,13 @@ import { describe, it, expect } from 'vitest'
 import { getExp } from '../getExp'
 
 describe('getExp', () => {
+  it('propagates invalid flags from the RegExp constructor', () => {
+    expect(() => getExp('value', 'z')).toThrow(SyntaxError)
+  })
+
+  it('propagates an invalid pattern from the RegExp constructor', () => {
+    expect(() => getExp('value', 'i', '[')).toThrow(SyntaxError)
+  })
   describe('Standard functional requirements (Happy path)', () => {
     it('should use default flags (ig) and default pattern (:value) when not provided', () => {
       const regex = getExp('test')
@@ -78,7 +85,7 @@ describe('getExp', () => {
       expect(zeroRegex.test('0')).toBe(true)
 
       const negativeRegex = getExp(-42, 'i', '^:value$')
-      expect(negativeRegex.source).toBe('^\\-42$')
+      expect(negativeRegex.source).toBe('^\\x2d42$')
       expect(negativeRegex.test('-42')).toBe(true)
 
       const floatRegex = getExp(3.14, 'i', '^:value$')
@@ -112,12 +119,12 @@ describe('getExp', () => {
   describe('Metacharacters, escaping, and security', () => {
     it('should escape all special regex characters including hyphen and slash', () => {
       const regex = getExp('hello-.*+?^${}()|[]\\/world')
-      expect(regex.source).toBe('hello\\-\\.\\*\\+\\?\\^\\$\\{\\}\\(\\)\\|\\[\\]\\\\\\/world')
+      expect(regex.source).toBe('hello\\x2d\\.\\*\\+\\?\\^\\$\\{\\}\\(\\)\\|\\[\\]\\\\\\/world')
     })
 
     it('should safely escape hyphen inside character class patterns', () => {
       const regex = getExp('-', 'g', '([:value]+)')
-      expect(regex.source).toBe('([\\-]+)')
+      expect(regex.source).toBe('([\\x2d]+)')
       expect(regex.test('---')).toBe(true)
       expect(regex.test('abc')).toBe(false)
     })

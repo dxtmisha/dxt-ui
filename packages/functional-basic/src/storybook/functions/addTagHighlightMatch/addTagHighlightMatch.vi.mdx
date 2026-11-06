@@ -6,9 +6,11 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 Tiện ích để làm nổi bật các kết quả khớp trong một chuỗi bằng cách bọc chúng trong thẻ HTML `<span>` với một class được chỉ định. Nó sử dụng `getSeparatingSearchExp` để hỗ trợ tìm kiếm nhiều từ (phân tách bằng dấu cách).
 
+Dùng `shouldEscape: true` khi hiển thị văn bản bên ngoài dưới dạng HTML: văn bản được escape, còn các span làm nổi bật được giữ lại. Chế độ mặc định `shouldEscape: false` dành cho nội dung đáng tin cậy. `value` được chuyển thành văn bản; `search` không phải chuỗi hoặc `RegExp` sẽ tắt làm nổi bật. `SearchListData` bật escape rõ ràng.
+
 **Tham số:**
-- `value?: string | number | null` — Giá trị ban đầu để xử lý.
-- `search?: string | RegExp` — Chuỗi tìm kiếm (một hoặc nhiều từ phân tách bằng dấu cách) hoặc biểu thức chính quy.
+- `value?: unknown` — Giá trị ban đầu để xử lý.
+- `search?: unknown` — Chuỗi tìm kiếm (một hoặc nhiều từ phân tách bằng dấu cách) hoặc biểu thức chính quy.
 - `options: AddTagHighlightMatchOptions = {}` — Tùy chọn cấu hình:
   - `className?: string` — Class CSS sẽ được thêm vào thẻ `<span>` (mặc định: `'sys-highlight-match'`).
   - `shouldEscape?: boolean` — Có nên thoát chuỗi trước khi thêm làm nổi bật hay không (mặc định: `false`).

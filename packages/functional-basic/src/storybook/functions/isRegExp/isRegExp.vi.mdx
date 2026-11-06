@@ -8,6 +8,8 @@ Kiểm tra xem giá trị được cung cấp có phải là đối tượng bi�
 
 Hàm kết hợp phép kiểm tra `value instanceof RegExp` cùng với thẻ nguyên mẫu `Object.prototype.toString.call(value) === '[object RegExp]'`. Điều này đảm bảo nhận diện chính xác trong các môi trường biệt lập (chẳng hạn như giao diện plugin Figma hoặc micro-frontends), nơi toán tử `instanceof` trả về `false` do nguyên mẫu toàn cục khác nhau.
 
+Đối tượng có `Symbol.toStringTag: "RegExp"` được gán rõ ràng cũng vượt qua phép kiểm tra thẻ chuỗi.
+
 **Tham số:**
 - `value: unknown` — Giá trị đầu vào thuộc bất kỳ kiểu dữ liệu nào cần kiểm tra.
 
@@ -22,7 +24,11 @@ console.log(isRegExp(/^[a-z]+$/i)) // true
 console.log(isRegExp(new RegExp('test'))) // true
 
 // Các thể hiện từ ngữ cảnh khác (ví dụ từ iframe)
-console.log(isRegExp(iframeWindow.RegExp('foo'))) // true
+const frame = document.createElement('iframe')
+document.body.append(frame)
+const iframeWindow = frame.contentWindow as Window & typeof globalThis
+console.log(isRegExp(new iframeWindow.RegExp('foo'))) // true
+frame.remove()
 
 // Các kiểu không phải RegExp
 console.log(isRegExp('/^[a-z]+$/')) // false (chuỗi ký tự, không phải RegExp)

@@ -55,5 +55,7 @@ Main configuration object for the search system. All fields are optional:
 - `limit?: number` — minimum character length to trigger search. Default: `2`.
 - `returnEverything?: boolean` — if `true`, returns all items regardless of match. Default: `false`.
 - `delay?: number` — search execution delay in milliseconds. Default: `0`.
-- `findExactMatch?: boolean` — enables strict word matching. Default: `false`.
+- `findExactMatch?: boolean` — enables continuous phrase matching. Default: `false`.
 - `classSearchName?: string` — CSS class for highlighting matches. Default: `'sys-search-selection'`.
+
+`setOptions()` replaces the whole object rather than merging it; calling it without an argument restores defaults. The supplied object is stored by reference and returned by `getOptions()`. Values `0`, `false`, and an empty class name are preserved through `??`. This class starts no timers: `useSearchValueRef` reads `delay`. Use `SearchList.setOptions()` to update the matcher. `findExactMatch` means a case-insensitive continuous phrase within the string.

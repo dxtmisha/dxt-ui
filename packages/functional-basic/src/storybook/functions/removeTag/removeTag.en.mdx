@@ -6,13 +6,15 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 A high-performance utility for stripping all HTML/XML tags or specific target tags from a string while preserving inner text content.
 
+The result is plain text. Removing tags can join adjacent parts into a string that resembles HTML. Use `textContent` or interpolation for text output; when generating HTML, encode the text with `encodeAttribute` or enable `shouldEscape` in the highlighter.
+
 ## Key Features
 
 - **Full HTML/XML & Structure Support** — Removes standard elements, self-closing void tags (`<br/>`, `<img />`), multiline elements, HTML comments (`<!-- ... -->`, `<!-- ... --!>`), `<!DOCTYPE ...>` (including quoted identifiers with `>`), `<![CDATA[...]]>`, and `<?xml ...?>`.
 - **Targeted Tag Filtering** — Strip only designated tags (e.g. `'b'` or `['b', 'i']`) while keeping the rest of the markup intact.
 - **Minified HTML & Attribute Robustness** — Accurately handles adjacent quoted attributes without whitespace (`<img src="x"onerror="alert(1)">`, `<div class="a"id="b">`) and attributes containing `>` or `/>` inside quotes.
 - **Fast-Path Bailout** — Instantly returns the input string if it contains no `<` character, bypassing regular expression execution entirely.
-- **ReDoS Resilient** — Crafted with mutually disjoint token patterns, ensuring deterministic $O(N)$ linear execution on adversarial or malformed markup.
+- **Attribute Handling** — Distinguishes quoted and unquoted values, including attributes in incomplete markup.
 - **Replacement Pattern Safe** — Uses a replacer function `() => replacement` to treat special replacement strings (`$&`, `$1`, `$$`) literally, preventing unexpected regex capture insertions.
 - **Compiled Regex Caching** — Automatically memoizes dynamic tag and content tag patterns in bounded caches (up to 128 entries each) with canonical key sorting to avoid recompilation overhead.
 - **Isomorphic & SSR Ready** — Pure function with zero DOM dependencies (`window`/`document`), fully safe for server-side rendering (SSR/SSG).
@@ -21,7 +23,7 @@ A high-performance utility for stripping all HTML/XML tags or specific target ta
 > **Note:** By default (`removeContent = true`), executable and styling tags (`<script>`, `<style>`, `<noscript>`) or tags specified in `removeContent` are silently removed along with their inner content without applying `replacement`, preventing script code and CSS rules from leaking into plain text. Other formatting and layout tags preserve their inner text, and their tag markup is replaced with `replacement`. When `tag` is specified, only matching tags are processed, but executable tags continue to be stripped with their content unless `removeContent: false` is explicitly set.
 
 **Parameters:**
-- `value?: string | number | null` — The initial string or number to process.
+- `value?: unknown` — The initial value converted to text before processing.
 - `options?: RemoveTagOptions` — Options object to configure tag removal:
   - `tag?: string | string[]` — Specific tag or list of tags to remove. If omitted (`undefined`), removes all HTML/XML tags.
   - `replacement?: string` — Replacement string for removed tags (not applied to silently removed content blocks; default is `''`).

@@ -37,10 +37,12 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### Действие
 
-- `set(url?: string | URL): this` — Обновляет значение URL.
-- `setParam(name: string, value: string): this` — Устанавливает значение параметра запроса.
+- `set(url?: string | URL | null): this` — Обновляет значение URL (безопасно откатывается к базовому URL среды выполнения, если `url` не передан или некорректен).
+- `setParam(name: string, value: string | number | boolean): this` — Устанавливает значение параметра запроса.
 - `setParams(params: Record<string, unknown>): this` — Заменяет все параметры запроса на указанный объект.
 - `deleteParam(name: string): this` — Удаляет параметр запроса.
+
+Ошибки разбора URL передаются в `ErrorCenter` как `transformation/error`. Диагностика содержит операцию, этап обработки (`input` или `fallback`) и имя ошибки, без исходного URL и текста исключения. Если резервный URL среды выполнения тоже некорректен, `set()` использует `http://localhost/`.
 
 ### Вспомогательные
 

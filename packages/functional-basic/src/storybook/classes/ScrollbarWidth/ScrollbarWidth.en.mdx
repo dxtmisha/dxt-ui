@@ -9,7 +9,7 @@ A static class for asynchronously measuring the browser scrollbar width. The res
 ## Key Features
 
 - **Caching** — width is measured only once, then read from cache.
-- **Async Measurement** — uses `requestAnimationFrame` for an accurate result after repaint.
+- **Async Measurement** — reads a temporary element's dimensions in `requestAnimationFrame` before painting the frame, then removes the element.
 - **Overlay Scroll Detection** — `is()` checks if the scrollbar is "overlay" (width ≤ 8px), typical of macOS and mobile browsers.
 
 ## Initialization
@@ -33,6 +33,10 @@ const width = await ScrollbarWidth.get()
 - `get(): Promise<number>` — scrollbar width in pixels. On first call, measures via a temporary DOM element.
 - `getCalculate(): boolean` — returns a flag indicating if width calculation is currently in progress.
 - `getStorage(): DataStorage<number>` — returns the `DataStorage` instance used for caching the scrollbar width.
+
+Concurrent `get()` and `is()` calls share one measurement. Call them after `document.body` is available. Without a DOM, `get()` returns `0` and `is()` returns `true` without accessing storage. `is()` uses the `width <= 8` threshold and excludes `-1`; it is a heuristic rather than an operating-system check.
+
+Removing the cache with `getStorage().remove()` allows a new measurement on the next call. JSDOM does not calculate actual scrollbar dimensions: verifying pixel values requires a browser with layout.
 
 ## Example
 

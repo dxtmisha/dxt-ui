@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Một lớp bao tĩnh (static wrapper) cho một thực thể mặc định của lớp `TranslateInstance`. Nó quản lý bản dịch và văn bản đa ngôn ngữ ở cấp độ toàn cục, cung cấp các công cụ để truy xuất, lưu trữ bộ nhớ đệm (cache) và hiển thị nội dung với hỗ trợ mẫu (template) cùng khả năng tự động phát hiện ngôn ngữ.
 
+Từ điển bản dịch được chủ ý dùng chung cho mọi người dùng, kể cả các yêu cầu SSR. Danh tính người dùng không quyết định nội dung; mã vùng chọn văn bản phù hợp. `Translate.getItem()` trả về một đối tượng dùng chung.
+
 ## Mối liên hệ với TranslateInstance
 
 Lớp `Translate` hoạt động như một giao diện toàn cục, được cấu hình sẵn cho `TranslateInstance`. Tất cả các phương thức tĩnh đều gọi đến các phương thức tương ứng trên một thực thể nội bộ (`Translate.getItem()`).
@@ -15,8 +17,8 @@ Mặc dù `Translate` phù hợp cho hầu hết các nhu cầu dịch thuật t
 ## Tính năng chính
 
 - **Tải theo lô (Batch Loading)** — Tự động gom nhóm các yêu cầu dịch thuật và gửi đi trong một gói duy nhất sau 160ms kể từ khi đưa vào hàng đợi.
-- **Mẫu văn bản linh hoạt** — Hỗ trợ thay thế tham số trong văn bản thông qua chỉ số (`[0]`) hoặc khóa định danh (`{key}`).
-- **Truy cập Đồng bộ và Bất đồng bộ** — Cung cấp các phương thức lấy văn bản tức thì từ cache (`getSync`) hoặc đảm bảo tải từ máy chủ (`get`).
+- **Mẫu văn bản linh hoạt** — Hỗ trợ điểm đánh dấu vị trí `%d`–`%v` cho mảng và khóa định danh `{key}` cho đối tượng.
+- **Truy cập Đồng bộ và Bất đồng bộ** — Cung cấp các phương thức lấy văn bản tức thì từ cache (`getSync`) hoặc lấy văn bản sau khi chờ tải (`get`).
 - **Bộ nhớ đệm thông minh** — Lưu trữ bản dịch theo mã vùng hiện tại và hỗ trợ cơ chế dự phòng (Vị trí > Ngôn ngữ > Toàn cầu).
 
 ## Khởi tạo
@@ -37,9 +39,9 @@ await Translate.add(['welcome', 'auth.login'])
 
 ### Cấu hình
 
-- `setConfig(config?: TranslateConfig): void` — Thiết lập cấu hình hoàn chỉnh cho thực thể dịch thuật.
+- `setConfig(config?: TranslateConfig): void` — Áp dụng cấu hình được cung cấp; bỏ qua `url` và `propsName` rỗng, giữ nguyên `readApi: false`.
 - `setUrl(url: string): void` — Thay đổi đường dẫn API để lấy bản dịch.
-- `setPropsName(name: string): void` — Thay đổi tên thuộc tính được sử dụng trong yêu cầu/phản hồi API.
+- `setPropsName(name: string): void` — Thay đổi tên thuộc tính được sử dụng trong yêu cầu API.
 - `setReadApi(value: boolean): void` — Bật hoặc tắt việc lấy bản dịch từ API.
 
 ### Truy xuất bản dịch
@@ -73,7 +75,7 @@ import { TranslateInstance, TranslateFile } from '@dxtmisha/functional-basic'
 
 // 1. Tạo một bộ tệp dịch chuyên dụng
 const widgetFiles = new TranslateFile({
-  'vi-VN': () => import('./locales/widget.vi-VN.json')
+  'vi-VN': () => import('./locales/widget.vi-VN.json').then(module => module.default)
 })
 
 // 2. Khởi tạo một thực thể dịch thuật độc lập
@@ -101,8 +103,8 @@ Một bản ghi (record) với khóa là mã bản dịch và giá trị là cá
 
 ### Làm việc với mẫu (Template)
 ```javascript
-// Trong cơ sở dữ liệu: "Xin chào, [0]! Bạn có {count} thông báo."
-const text = await Translate.get('user.notifications', ['Sơn', { count: 5 }])
+// Trong cơ sở dữ liệu: "Xin chào, {name}! Bạn có {count} thông báo."
+const text = await Translate.get('user.notifications', { name: 'Sơn', count: 5 })
 // Kết quả: "Xin chào, Sơn! Bạn có 5 thông báo."
 ```
 

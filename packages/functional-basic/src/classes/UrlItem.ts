@@ -1,7 +1,9 @@
 import { forEach } from '../functions/forEach'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isFilled } from '../functions/isFilled'
+import { isPrototypeKey } from '../functions/isPrototypeKey'
 import { transformation } from '../functions/transformation'
+import { ErrorCenter } from './ErrorCenter'
 import { ServerStorage } from './ServerStorage'
 
 /**
@@ -27,7 +29,7 @@ export class UrlItem {
    * Создает новый экземпляр Url.
    * @param url URL string or standard URL object / строка URL или стандартный объект URL
    */
-  constructor(url?: string | URL) {
+  constructor(url?: string | URL | null) {
     this.set(url)
   }
 
@@ -98,24 +100,45 @@ export class UrlItem {
    * @param url URL string or standard URL object / строка URL или стандартный объект URL
    * @returns this Url instance / текущий экземпляр Url
    */
-  set(url?: string | URL): this {
-    if (!url) {
-      if (isDomRuntime()) {
-        this.url = new URL(window.location.href)
-      } else {
-        this.url = new URL('http://localhost')
-      }
-    } else if (url instanceof URL) {
-      this.url = new URL(url.href)
-    } else {
-      const hasProtocol = REGEXP_PROTOCOL.test(url)
+  set(url?: string | URL | null): this {
+    const defaultOrigin = isDomRuntime() ? window.location.origin : 'http://localhost'
+    const defaultUrl = isDomRuntime() ? window.location.href : 'http://localhost'
 
-      if (hasProtocol) {
+    try {
+      if (!url) {
+        this.url = new URL(defaultUrl)
+      } else if (url instanceof URL) {
+        this.url = new URL(url.href)
+      } else if (REGEXP_PROTOCOL.test(url)) {
         this.url = new URL(url)
-      } else if (isDomRuntime()) {
-        this.url = new URL(url, window.location.origin)
       } else {
-        this.url = new URL(url, 'http://localhost')
+        this.url = new URL(url, defaultOrigin)
+      }
+    } catch (error) {
+      ErrorCenter.on({
+        group: 'transformation',
+        code: 'error',
+        details: {
+          operation: 'UrlItem.set',
+          stage: 'input',
+          errorName: error instanceof Error ? error.name : undefined
+        }
+      })
+
+      try {
+        this.url = new URL(defaultUrl)
+      } catch (error) {
+        ErrorCenter.on({
+          group: 'transformation',
+          code: 'error',
+          details: {
+            operation: 'UrlItem.set',
+            stage: 'fallback',
+            errorName: error instanceof Error ? error.name : undefined
+          }
+        })
+
+        this.url = new URL('http://localhost')
       }
     }
 
@@ -164,7 +187,9 @@ export class UrlItem {
     const params: Record<string, unknown> = {}
 
     this.url.searchParams.forEach((value, key) => {
-      params[key] = transformation(value)
+      if (!isPrototypeKey(key)) {
+        params[key] = transformation(value)
+      }
     })
 
     return params
@@ -178,8 +203,8 @@ export class UrlItem {
    * @param value parameter value / значение параметра
    * @returns this UrlItem instance / текущий экземпляр UrlItem
    */
-  setParam(name: string, value: string): this {
-    this.url.searchParams.set(name, value)
+  setParam(name: string, value: string | number | boolean): this {
+    this.url.searchParams.set(name, String(value))
     return this
   }
 

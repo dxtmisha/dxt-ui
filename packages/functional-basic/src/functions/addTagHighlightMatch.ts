@@ -55,7 +55,7 @@ const getTagEnd = (): string => '</span>'
  * @returns true if search is valid / true, если поиск валиден
  */
 const isSearchValid = (
-  search?: string | RegExp
+  search?: unknown
 ): search is string | RegExp =>
   isRegExp(search)
     ? search.source.length > 0
@@ -90,14 +90,17 @@ const getValueForSearch = (
  * Adds a tag to highlight the match in the string.
  *
  * Добавляет тег для выделения совпадения в строке.
- * @param value initial value / исходное значение
+ * @param value initial value converted to text / исходное значение для преобразования в текст
  * @param search search string or RegExp / строка поиска или регулярное выражение
  * @param options configuration options / объект опций
  * @returns string with highlighting / строка с выделением
+ * @remarks
+ * Enable shouldEscape when rendering untrusted text as HTML.
+ * Включайте shouldEscape при HTML-выводе недоверенного текста.
  */
 export function addTagHighlightMatch(
-  value?: string | number | null,
-  search?: string | RegExp,
+  value?: unknown,
+  search?: unknown,
   options: AddTagHighlightMatchOptions = {}
 ): string {
   const {

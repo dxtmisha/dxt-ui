@@ -8,6 +8,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Функция объединяет стандартную проверку `value instanceof RegExp` и проверку тега прототипа `Object.prototype.toString.call(value) === '[object RegExp]'`. Это гарантирует корректную работу в архитектурах с изолированными контекстами (таких как UI плагинов Figma или модульные микрофронтенды), где `instanceof` возвращает `false` из-за различия прототипов глобальных объектов.
 
+Объект с явно заданным `Symbol.toStringTag: "RegExp"` также проходит проверку строкового тега.
+
 **Параметры:**
 - `value: unknown` — Проверяемое значение любого типа.
 
@@ -22,7 +24,11 @@ console.log(isRegExp(/^[a-z]+$/i)) // true
 console.log(isRegExp(new RegExp('test'))) // true
 
 // Межконтекстные регулярные выражения (например, из iframe)
-console.log(isRegExp(iframeWindow.RegExp('foo'))) // true
+const frame = document.createElement('iframe')
+document.body.append(frame)
+const iframeWindow = frame.contentWindow as Window & typeof globalThis
+console.log(isRegExp(new iframeWindow.RegExp('foo'))) // true
+frame.remove()
 
 // Не являющиеся регулярными выражениями типы
 console.log(isRegExp('/^[a-z]+$/')) // false (это строка, а не RegExp)

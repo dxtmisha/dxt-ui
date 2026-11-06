@@ -38,6 +38,8 @@ const filter = Query.get('filter') // 'active' (string)
 - `static get<T>(name: string, defaultValue?: T | (() => T)): T` — Returns the value of a query variable.
 - `static set<T>(name: string, callback: T | (() => T)): void` — Sets a variable's value and updates the URL query parameters.
 
+`QueryInstance` preserves `history.state` when writing the URL. Failed `history.replaceState` calls are reported through `ErrorCenter` as `storage/error`; local state remains available, and the write block is released after 120 ms.
+
 ### Watchers
 - `static addWatch<T>(name: string, callback: (value: T) => void): void` — Subscribes to changes for a specific query variable.
 - `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Unsubscribes from changes for a specific variable.
@@ -46,7 +48,7 @@ The new state is published before watchers run: `get()` inside a callback reads 
 
 
 ### Management
-- `static reset(): void` — Destroys the instance, clears timers, and removes event listeners.
+- `static reset(): void` — Destroys the instance, clears timers, and removes event listeners and the current context's entry in `ServerStorage`. Old subscriptions end; the next read or `reload()` creates and initializes a fresh instance from the current URL. The URL itself stays unchanged.
 - `static reload(): void` — Forces synchronization of the state with the current URL query parameters. The first call initializes both data and the listener; subsequent calls refresh data without registering the listener again.
 
 ## Examples
@@ -66,14 +68,17 @@ Query.set('page', () => page + 1)
 ```
 
 ### Subscribing to Changes
-```javascript
-Query.addWatch<string>('filter', (newFilter) => {
+```typescript
+const callback = (newFilter: string) => {
   console.log('Filter changed to:', newFilter)
-})
+}
+Query.addWatch('filter', callback)
 
 // Unsubscribe (callback must be a reference to the same function)
 Query.removeWatch('filter', callback)
 ```
+
+Server isolation requires a `ServerStorage.init(...)` provider returning the active request's store. `reset()` removes only that context's instance. Existing refs from `useQueryRef` have their own cache and are not reconnected by this method.
 
 ### Managing Page State
 ```javascript

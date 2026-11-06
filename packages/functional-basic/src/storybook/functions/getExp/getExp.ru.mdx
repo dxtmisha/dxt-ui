@@ -8,6 +8,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Это необходимо, если искомая строка поступает от пользователя или содержит символы, которые могли бы сломать регулярное выражение. В функции также можно задать флаги регулярного выражения и шаблон, в который будет подставлена экранированная строка вместо метки `:value`.
 
+Экранируется только `value`; `pattern` остаётся шаблоном регулярного выражения. Некорректные flags или pattern вызывают стандартный `SyntaxError` конструктора `RegExp`. Каждый вызов создаёт отдельный экземпляр.
+
 **Параметры:**
 - `value?: unknown` — (опционально) Искомое значение, которое будет приведено к строке и экранировано.
 - `flags?: string` — (опционально) Флаги регулярного выражения (например, `'ig'`). По умолчанию `'ig'` (игнорирование регистра и глобальный поиск).
@@ -20,10 +22,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 import { getExp } from '@dxtmisha/functional-basic'
 
 // Обычный поиск
-const rx1 = getExp('user.name')
-console.log(rx1) // /user\.name/gi  (точка экранирована)
+const basicExpression = getExp('user.name')
+console.log(basicExpression) // /user\.name/gi  (точка экранирована)
 
 // Поиск с пользовательским флагом и шаблоном (например, "начинается с")
-const rx2 = getExp('query[1]', 'i', '^:value.*')
-console.log(rx2) // /^query\[1\].*/i
+const prefixExpression = getExp('query[1]', 'i', '^:value.*')
+console.log(prefixExpression) // /^query\[1\].*/i
 ```

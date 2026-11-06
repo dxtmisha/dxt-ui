@@ -37,10 +37,12 @@ Lớp `UrlItem` là một **Lớp tiện ích isomorphic** để phân tích cú
 
 ### Hành động
 
-- `set(url?: string | URL): this` — Cập nhật giá trị URL.
-- `setParam(name: string, value: string): this` — Thiết lập giá trị của tham số truy vấn.
+- `set(url?: string | URL | null): this` — Cập nhật giá trị URL (tự động quay về URL cơ sở của runtime một cách an toàn nếu `url` bị bỏ qua hoặc không hợp lệ).
+- `setParam(name: string, value: string | number | boolean): this` — Thiết lập giá trị của tham số truy vấn.
 - `setParams(params: Record<string, unknown>): this` — Thay thế tất cả các tham số truy vấn bằng đối tượng được chỉ định.
 - `deleteParam(name: string): this` — Xóa tham số truy vấn.
+
+Lỗi phân tích URL được gửi đến `ErrorCenter` dưới dạng `transformation/error`. Thông tin chẩn đoán gồm thao tác, giai đoạn xử lý (`input` hoặc `fallback`) và tên lỗi, không chứa URL gốc hoặc thông báo ngoại lệ. Nếu URL dự phòng của runtime cũng không hợp lệ, `set()` sử dụng `http://localhost/`.
 
 ### Phụ trợ
 

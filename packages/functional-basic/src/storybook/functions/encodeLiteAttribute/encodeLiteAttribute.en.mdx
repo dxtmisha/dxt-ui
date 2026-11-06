@@ -15,7 +15,7 @@ Encodes basic HTML special characters in a string (`<`, `>`, `&`) into their cor
 - **Unicode & Diacritics**: Preserves Cyrillic, Vietnamese, CJK, emojis, and surrogate pairs without corruption.
 
 **Parameters:**
-- `text?: string | number | null` — The value to encode (string, number, or nullish value).
+- `text?: unknown` — Value to encode. Converted using `String` before escaping; `null` and `undefined` become an empty string.
 
 **Returns:**
 `string` — The encoded string, or an empty string `''` if `null` or `undefined` is provided.

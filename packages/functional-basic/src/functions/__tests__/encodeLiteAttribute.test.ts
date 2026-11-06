@@ -96,17 +96,17 @@ describe('encodeLiteAttribute', () => {
     })
 
     it('should safely coerce boolean values', () => {
-      expect(encodeLiteAttribute(false as unknown as string)).toBe('false')
-      expect(encodeLiteAttribute(true as unknown as string)).toBe('true')
+      expect(encodeLiteAttribute(false)).toBe('false')
+      expect(encodeLiteAttribute(true)).toBe('true')
     })
 
     it('should safely convert objects with custom toString method', () => {
       const customObject = {
-        toString() {
+        toString(): string {
           return '<custom & "value">'
         }
       }
-      expect(encodeLiteAttribute(customObject as unknown as string))
+      expect(encodeLiteAttribute(customObject))
         .toBe('&lt;custom &amp; "value"&gt;')
     })
   })

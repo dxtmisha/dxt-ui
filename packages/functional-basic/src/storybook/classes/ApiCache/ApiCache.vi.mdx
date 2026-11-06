@@ -54,7 +54,7 @@ Theo mặc định, `ApiCache` lưu trữ các bản ghi trong RAM của tiến 
 
 Để giải quyết những vấn đề này, bạn phải khởi tạo `ApiCache` bằng phương thức `init`, cung cấp các bộ lắng nghe (listeners) đóng vai trò cầu nối với cơ chế lưu trữ bên ngoài.
 
-Nếu ghi vào kho lưu trữ bên ngoài thất bại, `ApiCache` giữ giá trị trong bộ nhớ. Khi đọc, `ApiCache` dùng giá trị đó cho đến khi hết TTL, sau đó kiểm tra kho lưu trữ bên ngoài.
+Nếu thao tác với kho lưu trữ bên ngoài thất bại hoặc ném ra lỗi, `ApiCache` sẽ báo tới `ErrorCenter` (`api` / `cacheSet`, `cacheGet`, `cacheRemove`) và giữ giá trị trong bộ nhớ. Khi đọc, `ApiCache` dùng giá trị đó cho đến khi hết TTL, sau đó kiểm tra kho lưu trữ bên ngoài.
 
 > Quan trọng: Bạn phải gọi `ApiCache.init()` trong giai đoạn khởi tạo ứng dụng (trước yêu cầu API đầu tiên) để đảm bảo bộ nhớ đệm được cấu hình chính xác.
 

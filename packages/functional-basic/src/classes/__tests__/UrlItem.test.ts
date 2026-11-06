@@ -1,11 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { UrlItem } from '../UrlItem'
 import { ServerStorage } from '../ServerStorage'
+import { ErrorCenter } from '../ErrorCenter'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 
 describe('UrlItem', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
+    vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
     vi.spyOn(ServerStorage, 'get').mockImplementation((_, defaultValue) => {
       return typeof defaultValue === 'function' ? defaultValue() : undefined
     })
@@ -58,6 +60,60 @@ describe('UrlItem', () => {
 
       const relativeUrl = new UrlItem('relative-path')
       expect(relativeUrl.href).toBe('http://localhost/relative-path')
+    })
+
+    it('should fall back safely without throwing when an invalid URL string or null is provided', () => {
+      vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
+      const nullUrl = new UrlItem(null)
+      expect(nullUrl.href).toBe('http://localhost/')
+
+      const invalidProtocolUrl = new UrlItem('http://')
+      expect(invalidProtocolUrl.href).toBe('http://localhost/')
+
+      const invalidBracketUrl = new UrlItem('http://[invalid]')
+      expect(invalidBracketUrl.href).toBe('http://localhost/')
+      expect(ErrorCenter.on).toHaveBeenCalledTimes(2)
+      expect(ErrorCenter.on).toHaveBeenCalledWith({
+        group: 'transformation',
+        code: 'error',
+        details: { operation: 'UrlItem.set', stage: 'input', errorName: 'TypeError' }
+      })
+    })
+
+    it('reports URL errors without including credentials from the input', () => {
+      vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
+      const input = 'http://user:example-password@[invalid]'
+
+      expect(new UrlItem(input).href).toBe('http://localhost/')
+      const diagnostics = JSON.stringify(vi.mocked(ErrorCenter.on).mock.calls)
+      expect(diagnostics).toContain('TypeError')
+      expect(diagnostics).not.toContain(input)
+      expect(diagnostics).not.toContain('example-password')
+    })
+
+    it('reports both a rejected input and an invalid browser fallback before using localhost', () => {
+      vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
+      const originalWindow = globalThis.window
+      globalThis.window = {
+        location: { href: 'http://', origin: 'http://' }
+      } as unknown as Window & typeof globalThis
+
+      try {
+        expect(new UrlItem('http://[invalid]').href).toBe('http://localhost/')
+        expect(ErrorCenter.on).toHaveBeenCalledTimes(2)
+        expect(ErrorCenter.on).toHaveBeenNthCalledWith(1, {
+          group: 'transformation',
+          code: 'error',
+          details: { operation: 'UrlItem.set', stage: 'input', errorName: 'TypeError' }
+        })
+        expect(ErrorCenter.on).toHaveBeenNthCalledWith(2, {
+          group: 'transformation',
+          code: 'error',
+          details: { operation: 'UrlItem.set', stage: 'fallback', errorName: 'TypeError' }
+        })
+      } finally {
+        globalThis.window = originalWindow
+      }
     })
 
     it('should update the URL when calling set()', () => {
@@ -137,6 +193,20 @@ describe('UrlItem', () => {
 
       expect(url.setParams({ alpha: 1, beta: 'two', gamma: '', delta: null, epsilon: undefined })).toBe(url)
       expect(url.getParams()).toEqual({ alpha: 1, beta: 'two' })
+
+      expect(url.setParam('count', 42).setParam('enabled', true)).toBe(url)
+      expect(url.getParams()).toEqual({ alpha: 1, beta: 'two', count: 42, enabled: true })
+    })
+
+    it('should ignore prototype keys (__proto__, constructor, prototype) in getParams()', () => {
+      const url = new UrlItem('https://example.com/path?__proto__={"polluted":true}&constructor=bad&prototype=bad&safe=1')
+      const params = url.getParams()
+
+      expect(params).toEqual({ safe: 1 })
+      expect(Object.prototype.hasOwnProperty.call(params, '__proto__')).toBe(false)
+      expect(Object.prototype.hasOwnProperty.call(params, 'constructor')).toBe(false)
+      expect(Object.prototype.hasOwnProperty.call(params, 'prototype')).toBe(false)
+      expect((params as Record<string, unknown>).polluted).toBeUndefined()
     })
   })
 

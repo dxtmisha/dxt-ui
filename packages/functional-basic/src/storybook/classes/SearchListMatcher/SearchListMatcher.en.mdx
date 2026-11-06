@@ -8,7 +8,7 @@ The `SearchListMatcher` class is responsible for the core matching logic. It con
 
 ## Key Features
 
-- **Dynamic RegExp Generation** — automatically builds or resets the matcher when the search term or options change.
+- **Dynamic RegExp Generation** — builds the matcher in the constructor; call `update()` after changing the search term or options.
 - **Search Modes** — supports both standard partial matching and exact match modes based on `SearchListOptions`.
 - **Efficient Testing** — uses high-performance regular expression testing to identify matches in the data.
 
@@ -53,3 +53,5 @@ When `findExactMatch` is `false`, the search string is split into individual wor
 ### 2. Exact Phrase
 When `findExactMatch` is `true`, the search string is treated as a single continuous phrase. A match is found only if the **exact sequence** of characters (case-insensitive) exists in the target string.
 - **Example**: Search for `"gaming mouse"` will match `"Cool gaming mouse"`, but will **not** match `"Mouse for gaming"`.
+
+A nonempty query activates the matcher through `SearchListItem.is()`. The owner `SearchList` checks the minimum length `limit` through `isSearch()`. Without an active query, `get()` returns `undefined` and `isSelection()` returns `false`. `get()` exposes the current `RegExp`; normal matching uses no `g` flag and repeated tests have the same result. In all-words mode, queries longer than 128 characters use the `/^/` fallback from `getSearchExp`.

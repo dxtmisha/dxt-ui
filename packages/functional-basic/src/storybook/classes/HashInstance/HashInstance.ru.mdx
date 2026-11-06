@@ -33,6 +33,8 @@ const myHash = new HashInstance()
 
 При изменении хэша сохраняется существующее `history.state`: запись параметров не удаляет состояние текущей записи истории, например данные маршрутизатора.
 
+Ошибки URI-декодирования передаются в `ErrorCenter` как `transformation/error`, при этом сохраняется исходный ключ или значение. Ошибки `history.replaceState` передаются как `storage/error`; локальное состояние остаётся доступным, а блокировка записи снимается через 120 мс.
+
 ### Наблюдение (Watchers)
 - `addWatch<T>(name: string, callback: (value: T) => void): this` — Добавляет обработчик изменения переменной.
 - `removeWatch<T>(name: string, callback: (value: T) => void): this` — Удаляет обработчик.

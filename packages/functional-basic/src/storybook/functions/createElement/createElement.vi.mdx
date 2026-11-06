@@ -16,6 +16,8 @@ Hàm này kiểm tra sự tồn tại của môi trường DOM thông qua `isDom
 - `options?: Partial<T> | Record<string, unknown> | ((element: T) => void) | null` — Một đối tượng chứa các thuộc tính cho phần tử (ví dụ: `id`, `className`, trình xử lý sự kiện), hoặc một hàm callback để tùy chỉnh cấu hình cho phần tử.
 - `referenceElement?: Node | null` — Nút mà phía trước nó sẽ chèn phần tử mới. Nếu không được đặt (hoặc truyền `null`), phần tử sẽ được chèn vào cuối các nút con của thẻ mẹ (`appendChild`).
 
+Các giá trị hàm trong đối tượng `options` được gọi ngay như các hàm factory. Để gán chính hàm đó, chẳng hạn trình xử lý sự kiện, hãy bọc nó trong một hàm khác: `onclick: () => handler`. Trong callback khởi tạo `options`, có thể gán trình xử lý trực tiếp: `element.onclick = handler`.
+
 **Trả về:**
 `T | undefined` — Phần tử HTML đã được tạo, hoặc `undefined` nếu môi trường DOM không khả dụng.
 
@@ -28,7 +30,7 @@ const container = document.getElementById('app')
 const btn = createElement(container, 'button', {
   className: 'primary-btn',
   textContent: 'Nhấn vào tôi',
-  onclick: () => alert('Đã nhấn!')
+  onclick: () => () => alert('Đã nhấn!')
 })
 
 // Cấu hình tùy chỉnh thông qua hàm

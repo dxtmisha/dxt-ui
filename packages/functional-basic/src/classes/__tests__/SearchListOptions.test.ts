@@ -2,6 +2,37 @@ import { describe, expect, it } from 'vitest'
 import { SearchListOptions } from '../SearchListOptions'
 
 describe('SearchListOptions', () => {
+  it('preserves explicit zero, false and an empty class name', () => {
+    const options = new SearchListOptions({
+      limit: 0,
+      delay: 0,
+      returnEverything: false,
+      findExactMatch: false,
+      classSearchName: ''
+    })
+
+    expect(options.getLimit()).toBe(0)
+    expect(options.getDelay()).toBe(0)
+    expect(options.getReturnEverything()).toBe(false)
+    expect(options.getFindExactMatch()).toBe(false)
+    expect(options.getClassName()).toBe('')
+  })
+
+  it('replaces rather than merges options and keeps the supplied reference', () => {
+    const initial = { limit: 3, delay: 500 }
+    const options = new SearchListOptions(initial)
+    const independent = new SearchListOptions()
+
+    expect(options.getOptions()).toBe(initial)
+    initial.limit = 4
+    expect(options.getLimit()).toBe(4)
+    options.setOptions({ limit: 1 })
+    expect(options.getDelay()).toBe(0)
+    expect(independent.getLimit()).toBe(2)
+    expect(options.setOptions()).toBe(options)
+    expect(options.getLimit()).toBe(2)
+  })
+
   it('should initialize with default options', () => {
     const options = new SearchListOptions()
 

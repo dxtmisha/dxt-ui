@@ -21,7 +21,7 @@ Unlike static utilities, `TranslateFile` is an instantiable class, allowing for 
 To initialize the object, call the `TranslateFile(data, location, language)` constructor.
 
 **Parameters:**
-- `data?: TranslateDataFile` — initial mapping of locales to file loaders.
+- `data?: TranslateDataFile | null` — initial mapping of locales to file loaders.
 - `location: string | (() => string) = () => Geo.getLocation()` — current location or a function returning it.
 - `language: string | (() => string) = () => Geo.getLanguage()` — current language or a function returning it.
 
@@ -30,9 +30,9 @@ import { TranslateFile, Geo } from '@dxtmisha/functional-basic'
 
 // 1. Simple initialization
 const files = new TranslateFile({
-  'en-US': () => import('./locales/en-US.json'),
-  'en': () => import('./locales/en.json'),
-  'global': () => import('./locales/global.json')
+  'en-US': () => import('./locales/en-US.json').then(module => module.default),
+  'en': () => import('./locales/en.json').then(module => module.default),
+  'global': () => import('./locales/global.json').then(module => module.default)
 })
 
 // 2. Custom context providers
@@ -54,7 +54,7 @@ const customFiles = new TranslateFile(
 
 ### Data Management
 
-- `add(data: TranslateDataFile): void` — Adds a mapping of locales to their respective translation file loaders (functions returning a Promise).
+- `add(data?: TranslateDataFile | null): void` — Adds a mapping of locales to their respective translation file loaders (functions returning a Promise).
 - `reset(): this` — Resets the cache of loaded translation data and active promises.
 
 ## Types
@@ -94,3 +94,5 @@ const translate = new TranslateInstance(
 
 const message = await translate.get('hello')
 ```
+
+One file is selected by location → language → global priority; dictionaries from different levels are not merged automatically. A loader returns the `Record<string, string>` itself, so the module import example reads `default`. Calling `add()` without data does nothing. Replacing a key through `add()` and calling `reset()` prevent old loads from writing to the new cache; an existing call still receives its own result. `reset()` preserves loaders.

@@ -21,7 +21,7 @@ Khác với các công cụ tĩnh (static utilities), `TranslateFile` là một 
 Để khởi tạo đối tượng, hãy gọi hàm tạo `TranslateFile(data, location, language)`.
 
 **Tham số:**
-- `data?: TranslateDataFile` — ánh xạ ban đầu của mã vùng và các trình tải tập tin.
+- `data?: TranslateDataFile | null` — ánh xạ ban đầu của mã vùng và các trình tải tập tin.
 - `location: string | (() => string) = () => Geo.getLocation()` — vị trí hiện tại hoặc một hàm trả về giá trị đó.
 - `language: string | (() => string) = () => Geo.getLanguage()` — ngôn ngữ hiện tại hoặc một hàm trả về giá trị đó.
 
@@ -30,9 +30,9 @@ import { TranslateFile, Geo } from '@dxtmisha/functional-basic'
 
 // 1. Khởi tạo đơn giản
 const files = new TranslateFile({
-  'en-US': () => import('./locales/en-US.json'),
-  'vi': () => import('./locales/vi.json'),
-  'global': () => import('./locales/global.json')
+  'en-US': () => import('./locales/en-US.json').then(module => module.default),
+  'vi': () => import('./locales/vi.json').then(module => module.default),
+  'global': () => import('./locales/global.json').then(module => module.default)
 })
 
 // 2. Sử dụng các trình cung cấp ngữ cảnh tùy chỉnh
@@ -54,7 +54,7 @@ const customFiles = new TranslateFile(
 
 ### Quản lý Dữ liệu
 
-- `add(data: TranslateDataFile): void` — Thêm ánh xạ mã vùng vào các trình tải tập tin dịch tương ứng (các hàm trả về Promise).
+- `add(data?: TranslateDataFile | null): void` — Thêm ánh xạ mã vùng vào các trình tải tập tin dịch tương ứng (các hàm trả về Promise).
 - `reset(): this` — Đặt lại bộ nhớ đệm của dữ liệu dịch đã tải và các promise đang hoạt động.
 
 ## Các Kiểu Dữ liệu
@@ -94,3 +94,5 @@ const translate = new TranslateInstance(
 
 const message = await translate.get('hello')
 ```
+
+Một tập tin được chọn theo thứ tự location → language → global; các từ điển ở nhiều cấp không tự động được gộp. Trình tải trả về chính `Record<string, string>`, nên ví dụ import module lấy `default`. Gọi `add()` không có dữ liệu sẽ không làm gì. Thay khóa qua `add()` và gọi `reset()` ngăn lần tải cũ ghi vào cache mới; lời gọi đã bắt đầu vẫn nhận kết quả riêng. `reset()` giữ lại các trình tải.

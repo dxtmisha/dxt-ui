@@ -1,4 +1,7 @@
-import { describe, expect, it } from 'vitest'
+// @vitest-environment jsdom
+import { describe, expect, it, vi } from 'vitest'
+import { SearchList } from '../SearchList'
+import { removeTag } from '../../functions/removeTag'
 import { SearchListData } from '../SearchListData'
 import { SearchListItem } from '../SearchListItem'
 import { SearchListOptions } from '../SearchListOptions'
@@ -127,5 +130,78 @@ describe('SearchListData', () => {
 
     const formattedString = data.toFormatItem(listWithZero[1]!, true)
     expect(formattedString.scoreSearch).toContain('<span class="sys-search-selection">0</span>')
+  })
+})
+
+describe('SearchListData HTML boundary', () => {
+  const inputs = [
+    'zz <<b>img src=x onerror="alert(1)">',
+    'zz <img src=x onerror="alert(1)">',
+    'zz <svg onload="alert(1)"></svg>',
+    'zz A & B > C "quoted"'
+  ]
+
+  it('encodes formatted fields without browser globals', () => {
+    vi.stubGlobal('window', undefined)
+    vi.stubGlobal('document', undefined)
+
+    try {
+      const row = { label: 'zz <<b>img src=x onerror="alert(1)">' }
+      const options = new SearchListOptions()
+      const item = new SearchListItem('zz', options)
+      const data = new SearchListData<{ label: string }, ['label']>([row], ['label'], item, options)
+      const highlighted = data.toFormatItem(row, true)
+      const plain = data.toFormatItem(row, false)
+      expect(highlighted.labelSearch).toContain('&lt;img')
+      expect(highlighted.labelSearch).not.toContain('<img')
+      expect(plain.labelSearch).not.toContain('<img')
+      expect(highlighted.label).toBe(row.label)
+      expect(plain.label).toBe(row.label)
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  describe.each([true, false])('selection %s', (selection) => {
+    it.each(inputs)('renders the value as text while retaining highlight spans: %s', (input) => {
+      const row = { label: input }
+      const options = new SearchListOptions()
+      const item = new SearchListItem('zz', options)
+      const data = new SearchListData<{ label: string }, ['label']>(
+        [row], ['label'], item, options
+      )
+      const formatted = data.toFormatItem(row, selection)
+      const host = document.createElement('div')
+      host.innerHTML = formatted.labelSearch
+
+      expect(host.querySelector('img,svg,iframe,script,[onerror],[onload]')).toBeNull()
+      expect(host.textContent).toBe(selection ? removeTag(input) : input)
+      expect(host.querySelectorAll('span')).toHaveLength(selection ? 1 : 0)
+      expect(formatted.label).toBe(input)
+      expect(row.label).toBe(input)
+      expect(formatted.searchActive).toBe(selection)
+    })
+  })
+
+  it('keeps the public SearchList result safe for HTML rendering', () => {
+    const input = 'zz <<b>img src=x onerror="alert(1)">'
+    const result = new SearchList([{ label: input }], ['label'], 'zz').to()[0]!
+    const host = document.createElement('div')
+    host.innerHTML = result.labelSearch
+    expect(host.querySelector('img')).toBeNull()
+    expect(host.textContent).toBe(removeTag(input))
+    expect(host.querySelector('span')?.textContent).toBe('zz')
+  })
+
+  it('encodes nonmatching rows returned by returnEverything', () => {
+    const input = '<img src=x onerror="alert(1)">'
+    const result = new SearchList(
+      [{ label: input }], ['label'], 'missing', { returnEverything: true }
+    ).to()[0]!
+    const host = document.createElement('div')
+    host.innerHTML = result.labelSearch
+    expect(host.querySelector('img')).toBeNull()
+    expect(host.textContent).toBe(input)
+    expect(result.searchActive).toBe(false)
   })
 })

@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Lớp `SearchListData` quản lý danh sách dữ liệu nguồn và bộ nhớ đệm (cache) tìm kiếm liên quan. Nó xử lý việc định dạng các thành phần, trích xuất các giá trị từ các đường dẫn lồng nhau và áp dụng các thẻ làm nổi bật (highlight tags) cho các chuỗi khớp.
 
+Các trường có hậu tố `Search` chứa biểu diễn HTML: văn bản nguồn được escape và các phần khớp được bọc trong `span` do lớp tạo ra. Các trường không được làm nổi bật cũng được escape. Trường gốc giữ nguyên giá trị. Hiển thị `*Search` dưới dạng HTML đã chuẩn bị; khi nội suy văn bản thuần túy, dùng trường gốc để tránh mã hóa hai lần.
+
 ## Tính năng chính
 
 - **Khởi tạo trễ (Lazy Initialization)** — thực hiện tạo bộ nhớ đệm theo yêu cầu, đảm bảo chi phí hiệu suất chỉ xảy ra khi tìm kiếm đang được thực hiện tích cực.
@@ -19,8 +21,8 @@ Lớp `SearchListData` quản lý danh sách dữ liệu nguồn và bộ nhớ 
 Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `SearchListData(list, columns, item, options)`.
 
 **Tham số:**
-- `list: T[]` — mảng ban đầu của các thành phần dữ liệu.
-- `columns?: string[]` — một mảng các đường dẫn thuộc tính để tìm kiếm.
+- `list: T[] | undefined` — mảng ban đầu của các thành phần dữ liệu.
+- `columns: K | undefined` — một mảng các đường dẫn thuộc tính để tìm kiếm.
 - `item: SearchListItem` — trạng thái thành phần tìm kiếm.
 - `options: SearchListOptions` — các tùy chọn cấu hình.
 
@@ -36,8 +38,8 @@ const data = new SearchListData(
   options
 )
 
-const results = data.forEach((origItem, value) => {
-  return data.toFormatItem(origItem, true)
+const results = data.forEach((originalItem, value) => {
+  return data.toFormatItem(originalItem, true)
 })
 ```
 
@@ -47,13 +49,13 @@ const results = data.forEach((origItem, value) => {
 
 - `is(): boolean` — Kiểm tra xem cả danh sách và các cột đã được khởi tạo hay chưa.
 - `isList(): boolean` — Kiểm tra xem danh sách nguồn có được cung cấp hay không.
-- `getList(): T[]` — Trả về danh sách dữ liệu ban đầu.
-- `getColumns(): string[] | undefined` — Trả về các cột tìm kiếm hiện tại.
+- `getList(): T[] | undefined` — Trả về danh sách dữ liệu ban đầu.
+- `getColumns(): K | undefined` — Trả về các cột tìm kiếm hiện tại.
 - `findCacheItem(item: T)` — Tìm thành phần tìm kiếm đã lưu trong bộ nhớ đệm cho một thành phần gốc cụ thể.
 
 ### Cấu hình (Setters)
 
-- `setList(list: T[]): this` — Cập nhật danh sách dữ liệu và tạo lại bộ nhớ đệm.
+- `setList(list: T[] | undefined): this` — Cập nhật danh sách dữ liệu và tạo lại bộ nhớ đệm.
 - `setColumns(columns?: string[]): this` — Cập nhật các cột tìm kiếm và tạo lại bộ nhớ đệm.
 
 ### Xử lý
@@ -66,7 +68,7 @@ const results = data.forEach((origItem, value) => {
 Hệ thống tìm kiếm sử dụng chiến lược khởi tạo trễ (lazy initialization) để tối ưu hóa hiệu suất khi làm việc với các danh sách lớn:
 - **Tạo theo yêu cầu**: Bộ nhớ đệm không được xây dựng khi lớp được khởi tạo. Thay vào đó, nó chỉ được tạo ra vào lần đầu tiên một thao tác tìm kiếm yêu cầu.
 - **Vô hiệu hóa bộ nhớ đệm**: Gọi `setList()` hoặc `setColumns()` sẽ tự động phá hủy bộ nhớ đệm hiện tại. Nó sẽ được xây dựng lại một cách liền mạch trong lần tìm kiếm tiếp theo.
-- **Biểu diễn phẳng**: Để tạo bộ nhớ đệm, lớp sẽ lặp qua danh sách ban đầu và trích xuất các giá trị từ các `columns` (bao gồm cả các đường dẫn sâu). Các giá trị này được chuyển đổi thành chuỗi và nối thành một chuỗi duy nhất, cách nhau bằng dấu cách. Chuỗi tổng hợp này được lưu trong `SearchCacheItem.value` и được sử dụng cho tất cả các kiểm tra biểu thức chính quy tốc độ cao tiếp theo. Phương pháp này loại bỏ hoàn toàn việc duyệt đối tượng phức tạp trong quá trình người dùng đang gõ phím.
+- **Biểu diễn phẳng**: Để tạo bộ nhớ đệm, lớp sẽ lặp qua danh sách ban đầu và trích xuất các giá trị từ các `columns` (bao gồm cả các đường dẫn sâu). Các giá trị này được chuyển đổi thành chuỗi và nối thành một chuỗi duy nhất, cách nhau bằng dấu cách. Chuỗi tổng hợp này được lưu trong `SearchCacheItem.value` và được sử dụng cho tất cả các kiểm tra biểu thức chính quy tốc độ cao tiếp theo. Phương pháp này loại bỏ hoàn toàn việc duyệt đối tượng phức tạp trong quá trình người dùng đang gõ phím.
 
 ## Các kiểu dữ liệu (Types)
 

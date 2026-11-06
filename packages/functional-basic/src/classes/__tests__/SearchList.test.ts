@@ -16,6 +16,34 @@ describe('SearchList', () => {
     { id: '3', name: 'Mechanical Keyboard', category: 'Accessories', stock: 8, tags: ['work', 'gaming'] }
   ]
 
+  it('updates phrase matching and restores defaults when options are reset', () => {
+    const searchList = new SearchList(mockProducts, ['name'], 'mouse gaming')
+    expect(searchList.to().map(item => item.id)).toEqual(['2'])
+
+    searchList.setOptions({ findExactMatch: true })
+    expect(searchList.to()).toEqual([])
+    searchList.setValue('Gaming Mouse')
+    expect(searchList.to().map(item => item.id)).toEqual(['2'])
+    searchList.setValue('mouse gaming').setOptions()
+    expect(searchList.to().map(item => item.id)).toEqual(['2'])
+    searchList.setValue()
+    expect(searchList.getValue()).toBe('')
+    expect(searchList.to()).toHaveLength(3)
+  })
+
+  it('activates at the trimmed length limit and handles clearing data', () => {
+    const searchList = new SearchList(mockProducts, ['name'], '  mo  ', { limit: 3 })
+    expect(searchList.to()).toHaveLength(3)
+    searchList.setValue('mou')
+    expect(searchList.to().map(item => item.id)).toEqual(['2'])
+    searchList.setList(undefined)
+    expect(searchList.to()).toEqual([])
+    searchList.setList(mockProducts)
+    expect(searchList.to().map(item => item.id)).toEqual(['2'])
+    expect(mockProducts[1]).not.toHaveProperty('nameSearch')
+    expect(mockProducts[1]).not.toHaveProperty('searchActive')
+  })
+
   it('should initialize and expose getter methods', () => {
     const searchList = new SearchList(mockProducts, ['name', 'category'], 'mouse')
 

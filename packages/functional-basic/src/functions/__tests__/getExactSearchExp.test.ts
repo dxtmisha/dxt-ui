@@ -2,6 +2,12 @@ import { describe, it, expect } from 'vitest'
 import { getExactSearchExp } from '../getExactSearchExp'
 
 describe('getExactSearchExp', () => {
+  it.each([
+    [false, 'false'],
+    [{ toString: (): string => 'custom phrase' }, 'custom phrase']
+  ] as const)('converts %s to a literal phrase', (value, phrase) => {
+    expect(getExactSearchExp(value).test(phrase)).toBe(true)
+  })
   describe('Standard functional requirements (Happy path)', () => {
     it('should match the exact string', () => {
       const regex = getExactSearchExp('hello')

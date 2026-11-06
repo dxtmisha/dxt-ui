@@ -1,9 +1,9 @@
 // ai-none
 
 import { Meta } from './Meta'
-import { MetaOg } from './MetaOg'
-import { MetaTwitter } from './MetaTwitter'
-import { MetaRobots } from '../types/metaTypes'
+import type { MetaOg } from './MetaOg'
+import type { MetaTwitter } from './MetaTwitter'
+import type { MetaRobots } from '../types/metaTypes'
 import { ServerStorage } from './ServerStorage'
 
 /**
@@ -53,10 +53,10 @@ export class MetaStatic {
   }
 
   /**
-   * Returns the singleton instance of the Meta class.
+   * Returns the Meta instance for the current storage context.
    *
-   * Возвращает синглтон-экземпляр класса Meta.
-   * @returns Meta singleton / синглтон Meta
+   * Возвращает экземпляр Meta для текущего контекста хранилища.
+   * @returns current context's Meta instance / экземпляр Meta текущего контекста
    */
   static getItem(): Meta {
     return ServerStorage.get('__ui:meta-instance__', () => new Meta())

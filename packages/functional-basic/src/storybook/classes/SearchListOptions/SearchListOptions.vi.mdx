@@ -55,5 +55,7 @@ console.log(options.getLimit()) // 3
 - `limit?: number` — độ dài ký tự tối thiểu để kích hoạt tìm kiếm. Mặc định: `2`.
 - `returnEverything?: boolean` — nếu là `true`, trả về tất cả các mục bất kể có khớp hay không. Mặc định: `false`.
 - `delay?: number` — độ trễ thực hiện tìm kiếm tính bằng mili giây. Mặc định: `0`.
-- `findExactMatch?: boolean` — cho phép khớp từ chính xác. Mặc định: `false`.
+- `findExactMatch?: boolean` — cho phép khớp cụm từ liên tục. Mặc định: `false`.
 - `classSearchName?: string` — tên lớp CSS để làm nổi bật các kết quả khớp. Mặc định: `'sys-search-selection'`.
+
+`setOptions()` thay thế toàn bộ đối tượng, không gộp với cấu hình cũ; gọi không có đối số sẽ khôi phục giá trị mặc định. Đối tượng được giữ theo tham chiếu và trả về qua `getOptions()`. Các giá trị `0`, `false` và tên lớp rỗng được giữ nhờ `??`. Lớp này không tạo bộ hẹn giờ: `useSearchValueRef` đọc `delay`. Dùng `SearchList.setOptions()` để cập nhật matcher. `findExactMatch` là cụm từ liên tục trong chuỗi, không phân biệt hoa/thường.

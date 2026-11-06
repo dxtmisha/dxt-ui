@@ -19,8 +19,8 @@ Lớp `SearchList` là điểm truy cập chính để triển khai các danh s�
 Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `SearchList(list, columns, value, options)`.
 
 **Tham số:**
-- `list: T[]` — mảng dữ liệu ban đầu.
-- `columns?: string[]` — các đường dẫn thuộc tính để tìm kiếm.
+- `list: T[] | undefined` — mảng dữ liệu ban đầu.
+- `columns?: K` — các đường dẫn thuộc tính để tìm kiếm.
 - `value?: string` — giá trị tìm kiếm ban đầu.
 - `options?: SearchOptions` — cấu hình tìm kiếm.
 
@@ -65,16 +65,16 @@ results.forEach(item => {
 ### Thông tin (Getters)
 
 - `getData(): SearchListData` — Trả về thực thể quản lý dữ liệu nội bộ.
-- `getList(): T[]` — Trả về danh sách dữ liệu nguồn.
-- `getColumns(): string[] | undefined` — Trả về các cột tìm kiếm hiện tại.
+- `getList(): T[] | undefined` — Trả về danh sách dữ liệu nguồn.
+- `getColumns(): K | undefined` — Trả về các cột tìm kiếm hiện tại.
 - `getItem(): SearchListItem` — Trả về thực thể trạng thái thành phần tìm kiếm.
-- `getValue(): string | undefined` — Trả về chuỗi tìm kiếm hiện tại.
+- `getValue(): string` — Trả về chuỗi tìm kiếm hiện tại.
 - `getOptions(): SearchListOptions` — Trả về thực thể quản lý tùy chọn.
 
 ### Cấu hình (Setters)
 
-- `setList(list: T[]): this` — Thiết lập danh sách dữ liệu mới.
-- `setColumns(columns?: string[]): this` — Thiết lập các cột tìm kiếm mới.
+- `setList(list: T[] | undefined): this` — Thiết lập danh sách dữ liệu mới.
+- `setColumns(columns?: K): this` — Thiết lập các cột tìm kiếm mới.
 - `setValue(value?: string): this` — Thiết lập giá trị tìm kiếm mới và kích hoạt cập nhật trình so khớp.
 - `setOptions(options?: SearchOptions): this` — Thiết lập các tùy chọn tìm kiếm mới.
 
@@ -111,3 +111,7 @@ Một đối tượng chung có thể được tìm kiếm:
 
 Giá trị danh sách đầu vào:
 `type SearchListValue<T> = T[] | undefined`
+
+Thay đổi danh sách và cột qua `setList()` / `setColumns()`: các phương thức này xóa cache văn bản. `setValue()` và `setOptions()` cập nhật matcher; `to()` tính kết quả đồng bộ. `getValue()` trả về chuỗi rỗng khi chưa có giá trị. `limit` dùng độ dài sau `trim()`, còn matcher nhận truy vấn gốc. Truy vấn rỗng vẫn không hoạt động ngay cả với `limit: 0`.
+
+Các trường `...Search` chứa HTML đã chuẩn bị: văn bản người dùng được escape và phần làm nổi bật tạo thẻ `span`. Điều này cũng áp dụng khi tìm kiếm chưa hoạt động và với `returnEverything`. Các trường gốc vẫn giữ dữ liệu nguồn; hãy dùng trường đã chuẩn bị để hiển thị HTML. Ở chế độ mọi từ, giới hạn của `getSearchExp` được áp dụng: truy vấn dài hơn 128 ký tự dùng `/^/`.

@@ -20,6 +20,7 @@ describe('ScrollbarWidth', () => {
   })
 
   afterEach(() => {
+    ScrollbarWidth.getStorage().remove()
     vi.restoreAllMocks()
   })
 
@@ -108,5 +109,63 @@ describe('ScrollbarWidth', () => {
     expect(ScrollbarWidth.getStorage().get()).toBe(16)
 
     insertBeforeSpy.mockRestore()
+  })
+
+  it.each([
+    [0, true],
+    [8, true],
+    [9, false]
+  ] as const)('classifies a cached width of %s as %s', async (width, expected) => {
+    ScrollbarWidth.getStorage().set(width)
+    expect(await ScrollbarWidth.is()).toBe(expected)
+    expect(window.requestAnimationFrame).not.toHaveBeenCalled()
+  })
+
+  it('uses one attached element for concurrent calls and removes it after measurement', async () => {
+    let frame: FrameRequestCallback | undefined
+    vi.mocked(window.requestAnimationFrame).mockImplementation((callback) => {
+      frame = callback
+      return 1
+    })
+    const initialCount = document.body.childElementCount
+    const first = ScrollbarWidth.get()
+    const second = ScrollbarWidth.get()
+    expect(window.requestAnimationFrame).toHaveBeenCalledTimes(1)
+    expect(ScrollbarWidth.getCalculate()).toBe(true)
+    expect(document.body.childElementCount).toBe(initialCount + 1)
+
+    const measurement = document.body.lastElementChild as HTMLDivElement
+    expect(measurement.style.overflowY).toBe('scroll')
+    Object.defineProperties(measurement, {
+      offsetWidth: { value: 100 },
+      clientWidth: { value: 85 }
+    })
+    frame!(0)
+    expect(await Promise.all([first, second])).toEqual([15, 15])
+    expect(ScrollbarWidth.getCalculate()).toBe(false)
+    expect(measurement.isConnected).toBe(false)
+    expect(document.body.childElementCount).toBe(initialCount)
+
+    ScrollbarWidth.getStorage().remove()
+    const next = ScrollbarWidth.get()
+    expect(window.requestAnimationFrame).toHaveBeenCalledTimes(2)
+    frame!(0)
+    await next
+    expect(document.body.childElementCount).toBe(initialCount)
+    expect(ScrollbarWidth.getCalculate()).toBe(false)
+  })
+
+  it('does not touch storage when browser globals are absent', async () => {
+    const storage = vi.spyOn(ScrollbarWidth, 'getStorage')
+    vi.stubGlobal('window', undefined)
+    vi.stubGlobal('document', undefined)
+
+    try {
+      expect(await ScrollbarWidth.get()).toBe(0)
+      expect(await ScrollbarWidth.is()).toBe(true)
+      expect(storage).not.toHaveBeenCalled()
+    } finally {
+      vi.unstubAllGlobals()
+    }
   })
 })

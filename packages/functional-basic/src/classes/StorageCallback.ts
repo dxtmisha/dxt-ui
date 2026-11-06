@@ -101,7 +101,7 @@ export class StorageCallback<
    *
    * Добавляет обратный вызов в список.
    * @param callback function for callbacks / функция для обратных вызовов
-   * @param isOnce whether the callback should only be called once / является ли колбэк одноразовым
+   * @param isOnce whether this registration is consumed before its first invocation / потребляется ли регистрация перед первым вызовом
    * @returns this instance / текущий экземпляр
    */
   addCallback(
@@ -140,13 +140,27 @@ export class StorageCallback<
 
   /**
    * Execution of all callbacks.
+   * One-time registrations are consumed before invocation, including across overlapping runs.
    *
    * Выполнение всех обратных вызовов.
+   * Одноразовые регистрации потребляются до вызова, в том числе при пересекающихся запусках.
    * @param value storage data / данные хранилища
    * @returns this instance / текущий экземпляр
    */
   async run(value: T): Promise<this> {
-    for (const { callback, isOnce } of [...this.callbacks]) {
+    for (const item of [...this.callbacks]) {
+      const { callback, isOnce } = item
+
+      if (isOnce) {
+        const index = this.callbacks.indexOf(item)
+
+        if (index === -1) {
+          continue
+        }
+
+        this.callbacks.splice(index, 1)
+      }
+
       try {
         await executePromise(callback, value)
       } catch (error) {
@@ -155,10 +169,6 @@ export class StorageCallback<
           code: 'error',
           details: error
         })
-      } finally {
-        if (isOnce) {
-          this.removeCallback(callback)
-        }
       }
     }
 

@@ -1,0 +1,187 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/TranslateInstance - Đối tượng dịch'/>
+
+# Lớp TranslateInstance
+
+`TranslateInstance` lưu bản dịch và tải văn bản còn thiếu từ `TranslateFile` hoặc API. Mỗi đối tượng có cache và hàng đợi riêng.
+
+## Tính năng chính
+
+- **Tải theo nhóm** — các mã còn thiếu được gộp với độ trễ `160` ms.
+- **Giữ nguyên mã vùng** — mỗi nhóm giữ ngôn ngữ, khu vực và đường dẫn API ban đầu.
+- **Thử lại sau lỗi** — phản hồi không thành công không được cache; lần gọi sau có thể tải lại.
+
+## Khởi tạo
+
+`new TranslateInstance(url?, propsName?, files?)`
+
+- `url: string = '/api/translate'` — đường dẫn API.
+- `propsName: string = 'list'` — thuộc tính yêu cầu chứa các mã.
+- `files: TranslateFile = new TranslateFile()` — trình tải và nguồn cung cấp mã vùng.
+
+```typescript
+import {TranslateFile, TranslateInstance} from '@dxtmisha/functional-basic'
+
+const files = new TranslateFile({
+  en: async () => ({greeting: 'Hello, %d!'})
+}, 'en-US', 'en')
+const translate = new TranslateInstance('/api/translate', 'list', files)
+await translate.add('greeting')
+const text = translate.getSync('greeting', false, ['World'])
+```
+
+## Phương thức
+
+### Lấy bản dịch
+
+#### `get`
+
+Trả về văn bản đã cache hoặc chờ tải. Nếu chưa có bản dịch, trả về mã.
+
+**Tham số:**
+
+- `name: string` — mã bản dịch.
+- `replacement?: string[] | Record<string, string | number>` — giá trị cho `applyTemplate`.
+
+**Trả về:** `Promise<string>`.
+
+```typescript
+const text = await translate.get('greeting', ['World'])
+```
+
+#### `getSync`
+
+Chỉ đọc cache hiện tại, không tải dữ liệu.
+
+**Tham số:**
+
+- `name: string` — mã bản dịch.
+- `first?: boolean = false` — khi thiếu văn bản, `true` trả về một dấu cách, `false` trả về mã.
+- `replacement?: string[] | Record<string, string | number>` — giá trị cho `applyTemplate`.
+
+**Trả về:** `string`.
+
+```typescript
+const text = translate.getSync('greeting', false, ['World'])
+```
+
+#### `getList`
+
+Lấy văn bản bất đồng bộ. Khóa kết quả là mã, kể cả với phần tử `[code, ...replacement]`.
+
+**Tham số:**
+
+- `names: T extends TranslateCode[]` — các mã hoặc mảng `[code, ...replacement]`.
+
+**Trả về:** `Promise<TranslateList<T>>`.
+
+```typescript
+const texts = await translate.getList(['save', ['greeting', 'World']])
+```
+
+#### `getListSync`
+
+Đọc danh sách từ cache; danh sách rỗng trả về đối tượng rỗng.
+
+**Tham số:**
+
+- `names: T extends TranslateCode[]` — các mã hoặc mảng `[code, ...replacement]`.
+- `first?: boolean = false` — khi thiếu văn bản, `true` trả về một dấu cách, `false` trả về mã.
+
+**Trả về:** `TranslateList<T>`.
+
+```typescript
+const texts = translate.getListSync(['save', 'cancel'], true)
+```
+
+### Thêm dữ liệu
+
+#### `add`
+
+Đưa mã còn thiếu vào hàng đợi và hoàn tất sau khi nhóm được xử lý.
+
+**Tham số:**
+
+- `names: string | string[]` — các mã cần tải.
+
+**Trả về:** `Promise<void>`.
+
+```typescript
+await translate.add(['save', 'cancel'])
+```
+
+#### `addNormalOrSync`
+
+Ghi văn bản được cung cấp trên localhost; ở môi trường khác, yêu cầu mã còn thiếu từ API/tập tin.
+
+**Tham số:**
+
+- `data: Record<string, string>` — văn bản theo mã.
+
+**Trả về:** `Promise<void>`.
+
+```typescript
+await translate.addNormalOrSync({ save: 'Save' })
+```
+
+#### `addSync`
+
+Ghi chuỗi không rỗng cho khu vực hiện tại, thay thế giá trị đã có.
+
+**Tham số:**
+
+- `data: Record<string, string>` — văn bản theo mã.
+
+**Trả về:** `void`.
+
+```typescript
+translate.addSync({ save: 'Save' })
+```
+
+#### `addSyncByFile`
+
+Đăng ký trình tải tập tin qua `TranslateFile.add()`.
+
+**Tham số:**
+
+- `data: TranslateDataFile` — trình tải theo mã vùng.
+
+**Trả về:** `void`.
+
+```typescript
+translate.addSyncByFile({ en: async () => ({ save: 'Save' }) })
+```
+
+#### `addSyncByLocation`
+
+Thêm khóa còn thiếu từ từ điển khu vực, ngôn ngữ và `global`.
+
+**Tham số:**
+
+- `data: Record<string, Record<string, string>>` — từ điển theo mã vùng.
+
+**Trả về:** `void`.
+
+```typescript
+translate.addSyncByLocation({ en: { save: 'Save' } })
+```
+
+### Cấu hình
+
+- `setUrl(url: string): this` — đặt đường dẫn API.
+- `setPropsName(name: string): this` — đặt thuộc tính yêu cầu.
+- `setReadApi(value: boolean): this` — bật hoặc tắt tải qua API; trình tải tập tin vẫn hoạt động.
+
+## Kiểu dữ liệu
+
+- `TranslateCode = string | string[]` — mã hoặc mã kèm giá trị thay thế theo vị trí.
+- `TranslateList<T>` — đối tượng chuỗi được lập chỉ mục bằng các mã yêu cầu.
+- `TranslateDataFile` — hàm trả về `Promise<Record<string, string>>`, lập chỉ mục theo mã vùng.
+
+## Tải và cache
+
+Cache được đọc theo thứ tự khu vực → ngôn ngữ → `global`; văn bản rỗng được coi là chưa có. Từ điển thành công nhưng thiếu mã yêu cầu sẽ ghi nhận sự thiếu đó để tránh tải lặp. Lỗi API hoặc yêu cầu bị từ chối không tạo mục này; lỗi được gửi đến `ErrorCenter` và `get()` hiện tại trả về mã.
+
+`get()` không bắt đầu tải trên localhost. Gọi `add()` trực tiếp sẽ xử lý theo nhóm và có thể tải tập tin. `getSync()` và `getListSync()` luôn đọc cache. Phép thay thế trả về chuỗi không mã hóa HTML.
+

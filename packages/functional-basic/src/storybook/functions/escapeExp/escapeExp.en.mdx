@@ -4,13 +4,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `escapeExp`
 
+Hyphens use `\x2d`: this escape is valid with Unicode flags `u` and `v` as well as inside character classes. For example, `new RegExp(escapeExp('Ho-Chi-Minh'), 'u')` correctly matches the original text. The output spelling has changed: hyphens use hex instead of a backslash followed by `-`.
+
 A utility that escapes all special regular expression characters in a string (`.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\` `/` `-`), so it can be safely used inside a `RegExp` pattern or character class (`[...]`).
 
 Useful when a search term, query, or token comes from user input or an external source and may contain characters that have special meaning in regular expressions.
 
 ### Key Features:
 - **Comprehensive 16-Metacharacter Escaping**: Escapes all standard regex syntax characters (`.` `*` `+` `?` `^` `$` `{}` `()` `|` `[]` `\`) as well as forward slash (`/`) and hyphen (`-`).
-- **Character Class Safety (`[...]`)**: Escapes the hyphen (`-`) as `\-`, preventing accidental character range expansion (e.g. `[0-9]`) or `SyntaxError: Range out of order in character class` when interpolating arbitrary strings into brackets (e.g. `[z-a]`).
+- **Character Class Safety (`[...]`)**: Escapes the hyphen (`-`) as `\x2d`, preventing accidental character range expansion (e.g. `[0-9]`) or `SyntaxError: Range out of order in character class` when interpolating arbitrary strings into brackets (e.g. `[z-a]`).
 - **Safe Type Coercion**: Accepts strings, numbers (including `0` and negative values), `null`, and `undefined`, converting them safely without throwing exceptions.
 - **ReDoS Safe**: Operates with deterministic $O(N)$ linear complexity without nested quantifiers or catastrophic backtracking.
 - **Isomorphic & SSR Safe**: Pure function with zero dependencies on browser globals (`window` or `document`).
@@ -47,7 +49,7 @@ safeBracketRegex.test('a') // true
 // 4. Safe handling of numbers and nullish values
 escapeExp(0)         // '0'
 escapeExp(12345)     // '12345'
-escapeExp(-42)       // '\\-42'
+escapeExp(-42)       // '\\x2d42'
 escapeExp(null)      // ''
 escapeExp(undefined) // ''
 ```

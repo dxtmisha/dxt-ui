@@ -8,7 +8,7 @@ A class for creating a timer that can be paused, resumed, reset, and cleared. It
 
 ## Key Features
 
-- **Pause & Resume** — stop the countdown and continue later from the exact millisecond where it left off.
+- **Pause & Resume** — preserve the remaining delay and continue later; callback timing depends on the runtime.
 - **Completion Tracking** — explicitly tracks if the timer has finished its execution.
 - **Robust Logic** — handles edge cases like resuming when time has already elapsed.
 - **Fluent Interface** — methods return `this`, allowing for method chaining.
@@ -48,3 +48,7 @@ delayedTimer.resume() // Start it manually
 - `pause(): this` — Pauses the timer and calculates the remaining time.
 - `reset(): this` — Completely clears the current state and restarts the timer with the original delay.
 - `clear(): this` — Completely stops the timer and resets all internal states.
+
+When `delay <= 0`, the callback runs synchronously on start. After completion, `resume()` does nothing; `reset()` starts a full new interval. After `clear()`, the next `resume()` also uses the full original delay.
+
+The class does not access the DOM and can schedule timers in both browser and server runtimes. The owner calls `clear()` when its work ends, for example when a component unmounts.

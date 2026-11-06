@@ -46,7 +46,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `setAuthor(author: string): typeof MetaStatic` — Устанавливает мета-тег author.
 - `setSiteName(siteName: string): typeof MetaStatic` — Устанавливает название сайта для OG и Twitter.
 - `setLocale(locale: string): typeof MetaStatic` — Устанавливает локаль для Open Graph.
-- `setSuffix(suffix?: string): typeof MetaStatic` — Устанавливает суффикс (например, " | Мой Сайт"), добавляемый к заголовкам.
+- `setSuffix(suffix?: string): typeof MetaStatic` — Устанавливает текст суффикса (например, "Мой Сайт"); разделитель ` - ` добавляется автоматически.
 
 ### Вывод
 
@@ -60,6 +60,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ### Изоляция запросов (SSR)
 
 Благодаря использованию `ServerStorage`, `MetaStatic` гарантирует, что при рендеринге на стороне сервера (SSR) информация одного запроса не попадет в другой. Каждый запрос получает свой изолированный контекст.
+
+Для этого требуется настроенный провайдер `ServerStorage.init(...)`, возвращающий хранилище активного запроса. В браузере вызовы используют один экземпляр текущего приложения. Изменение `title` через `getItem().set()` или `getItem().setByList()` также сохраняет согласованность заголовка и суффикса.
 
 ### Примеры
 

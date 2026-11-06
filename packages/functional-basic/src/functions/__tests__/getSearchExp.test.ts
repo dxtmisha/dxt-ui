@@ -130,6 +130,10 @@ describe('getSearchExp', () => {
   })
 
   describe('Edge cases, boundaries, and limits', () => {
+    it('counts outer whitespace towards the length limit before tokenization', () => {
+      expect(getSearchExp('  abc  ', 3).source).toBe('^')
+      expect(getSearchExp('  abc  ', 7).test('abc')).toBe(true)
+    })
     it('should return /^/ matching everything for an empty search string', () => {
       const regex = getSearchExp('')
       expect(regex.test('anything')).toBe(true)
@@ -197,6 +201,7 @@ describe('getSearchExp', () => {
 
       expect(regex1.source).toBe(regex2.source)
       expect(regex1.flags).toBe(regex2.flags)
+      expect(regex1).not.toBe(regex2)
     })
   })
 })

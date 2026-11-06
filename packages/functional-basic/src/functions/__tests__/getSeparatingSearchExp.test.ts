@@ -153,17 +153,13 @@ describe('getSeparatingSearchExp', () => {
       expect(searchExpression.test('Path: src/components\\button')).toBe(true)
     })
 
-    it('should avoid catastrophic backtracking (ReDoS) when processing long repetitive text', () => {
-      const repetitiveQuery = 'a a a a a'
+    it('treats quantified-looking queries as literal text', () => {
+      const repetitiveQuery = 'a+a+ a*'
       const searchExpression = getSeparatingSearchExp(repetitiveQuery)
-      const adversarialText = 'a'.repeat(500) + '!'
+      const adversarialText = 'a'.repeat(5000) + '!'
 
-      const startTime = performance.now()
-      const isMatched = searchExpression.test(adversarialText)
-      const duration = performance.now() - startTime
-
-      expect(isMatched).toBe(true)
-      expect(duration).toBeLessThan(50)
+      expect(searchExpression.test(adversarialText)).toBe(false)
+      expect(searchExpression.test('a+a+')).toBe(true)
     })
   })
 
@@ -389,12 +385,14 @@ describe('getSeparatingSearchExp', () => {
     })
 
     it('should preserve multiple combined flags (g, i, m, u, s)', () => {
-      const originalExpression = /multiline/gim
+      const originalExpression = /multiline/gimus
       const clonedExpression = getSeparatingSearchExp(originalExpression)
 
       expect(clonedExpression.flags).toContain('g')
       expect(clonedExpression.flags).toContain('i')
       expect(clonedExpression.flags).toContain('m')
+      expect(clonedExpression.flags).toContain('u')
+      expect(clonedExpression.flags).toContain('s')
     })
 
     it('should isolate lastIndex between original and cloned RegExp instances', () => {
@@ -436,7 +434,7 @@ describe('getSeparatingSearchExp', () => {
         [Symbol.toStringTag]: 'RegExp',
         source: 'cross-realm-token',
         flags: 'i'
-      } as unknown as RegExp
+      }
 
       expect(foreignExpression instanceof RegExp).toBe(false)
 

@@ -3,6 +3,29 @@ import { SearchListItem } from '../SearchListItem'
 import { SearchListOptions } from '../SearchListOptions'
 
 describe('SearchListItem', () => {
+  it('reads changes to the shared options without changing the original query', () => {
+    const options = new SearchListOptions({ limit: 2 })
+    const item = new SearchListItem('  abc  ', options)
+    expect(item.isSearch()).toBe(true)
+    options.setOptions({ limit: 4 })
+    expect(item.isSearch()).toBe(false)
+    expect(item.get()).toBe('  abc  ')
+    options.setOptions({ limit: 0 })
+    expect(item.isSearch()).toBe(true)
+    item.set(' ')
+    expect(item.isSearch()).toBe(false)
+  })
+
+  it('keeps queries independent between instances and resets an omitted value', () => {
+    const options = new SearchListOptions()
+    const first = new SearchListItem('first', options)
+    const second = new SearchListItem('second', options)
+    first.set()
+    expect(first.get()).toBe('')
+    expect(first.isSearch()).toBe(false)
+    expect(second.get()).toBe('second')
+    expect(second.isSearch()).toBe(true)
+  })
   it('should initialize correctly and get value', () => {
     const options = new SearchListOptions()
     const item = new SearchListItem('test', options)

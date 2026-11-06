@@ -2,9 +2,9 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { Meta } from '../Meta'
-import { MetaRobots } from '../../types/metaTypes'
+import { MetaRobots, MetaTag } from '../../types/metaTypes'
 
 describe('Meta', () => {
   let meta: Meta
@@ -32,6 +32,49 @@ describe('Meta', () => {
 
     it('should initialize MetaTwitter instance', () => {
       expect(meta.getTwitter()).toBeDefined()
+    })
+  })
+
+  describe('title writes through inherited APIs', () => {
+    it.each(['set', 'setByList'] as const)('keeps the latest title after %s and a suffix update', (mode) => {
+      meta.setSuffix('Initial').setTitle('Old')
+      if (mode === 'set') {
+        meta.set(MetaTag.title, 'New')
+      } else {
+        meta.setByList({ title: 'New' })
+      }
+
+      expect(meta.getTitle()).toBe('New')
+      expect(meta.htmlTitle()).toBe('New - Initial')
+      expect(document.title).toBe('New - Initial')
+      expect(meta.getOg().getTitle()).toBe('New - Initial')
+      expect(meta.getTwitter().getTitle()).toBe('New - Initial')
+      meta.setSuffix('Changed')
+      expect(meta.getTitle()).toBe('New')
+      expect(document.title).toBe('New - Changed')
+      expect(meta.htmlTitle()).toBe('New - Changed')
+    })
+
+    it.each(['set', 'setByList'] as const)('keeps the latest title after %s without DOM', (mode) => {
+      vi.stubGlobal('window', undefined)
+      vi.stubGlobal('document', undefined)
+
+      try {
+        const serverMeta = new Meta().setTitle('Old')
+        if (mode === 'set') {
+          serverMeta.set(MetaTag.title, 'New')
+        } else {
+          serverMeta.setByList({ title: 'New' })
+        }
+
+        serverMeta.setSuffix('Site')
+        expect(serverMeta.getTitle()).toBe('New')
+        expect(serverMeta.htmlTitle()).toBe('New - Site')
+        expect(serverMeta.getOg().getTitle()).toBe('New - Site')
+        expect(serverMeta.getTwitter().getTitle()).toBe('New - Site')
+      } finally {
+        vi.unstubAllGlobals()
+      }
     })
   })
 

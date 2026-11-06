@@ -4,7 +4,7 @@ import { getExp } from './getExp'
  * Creates a case-insensitive regular expression for an exact match of a phrase (without anchors).
  *
  * Создает регистронезависимое регулярное выражение для точного совпадения фразы (без якорей).
- * @param search search string / строка поиска
+ * @param search value converted to the search phrase / значение для преобразования в поисковую фразу
  * @returns regular expression for exact search / регулярное выражение для точного поиска
  */
 export function getExactSearchExp(search?: unknown): RegExp {

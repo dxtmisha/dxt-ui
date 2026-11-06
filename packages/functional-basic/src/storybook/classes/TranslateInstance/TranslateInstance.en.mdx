@@ -1,0 +1,187 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/TranslateInstance - Translation Instance'/>
+
+# TranslateInstance Class
+
+`TranslateInstance` stores translations and loads missing text from `TranslateFile` or an API. Each instance owns its cache and queue.
+
+## Key Features
+
+- **Batch loading** — missing codes are combined with a `160` ms delay.
+- **Captured locale** — each batch retains its original language, location, and API path.
+- **Retry after failure** — unsuccessful responses are not cached; a later call can retry loading.
+
+## Initialization
+
+`new TranslateInstance(url?, propsName?, files?)`
+
+- `url: string = '/api/translate'` — API path.
+- `propsName: string = 'list'` — request property containing codes.
+- `files: TranslateFile = new TranslateFile()` — loaders and locale providers.
+
+```typescript
+import {TranslateFile, TranslateInstance} from '@dxtmisha/functional-basic'
+
+const files = new TranslateFile({
+  en: async () => ({greeting: 'Hello, %d!'})
+}, 'en-US', 'en')
+const translate = new TranslateInstance('/api/translate', 'list', files)
+await translate.add('greeting')
+const text = translate.getSync('greeting', false, ['World'])
+```
+
+## Methods
+
+### Retrieving Translations
+
+#### `get`
+
+Returns cached text or awaits loading. Falls back to the code when no translation is available.
+
+**Parameters:**
+
+- `name: string` — translation code.
+- `replacement?: string[] | Record<string, string | number>` — values for `applyTemplate`.
+
+**Returns:** `Promise<string>`.
+
+```typescript
+const text = await translate.get('greeting', ['World'])
+```
+
+#### `getSync`
+
+Reads only the current cache, without loading.
+
+**Parameters:**
+
+- `name: string` — translation code.
+- `first?: boolean = false` — for missing text, `true` returns one space and `false` returns its code.
+- `replacement?: string[] | Record<string, string | number>` — values for `applyTemplate`.
+
+**Returns:** `string`.
+
+```typescript
+const text = translate.getSync('greeting', false, ['World'])
+```
+
+#### `getList`
+
+Retrieves text asynchronously. The result key is the code, including for `[code, ...replacement]` entries.
+
+**Parameters:**
+
+- `names: T extends TranslateCode[]` — codes or `[code, ...replacement]` arrays.
+
+**Returns:** `Promise<TranslateList<T>>`.
+
+```typescript
+const texts = await translate.getList(['save', ['greeting', 'World']])
+```
+
+#### `getListSync`
+
+Reads a list from the cache; an empty list returns an empty object.
+
+**Parameters:**
+
+- `names: T extends TranslateCode[]` — codes or `[code, ...replacement]` arrays.
+- `first?: boolean = false` — for missing text, `true` returns one space and `false` returns its code.
+
+**Returns:** `TranslateList<T>`.
+
+```typescript
+const texts = translate.getListSync(['save', 'cancel'], true)
+```
+
+### Adding Data
+
+#### `add`
+
+Queues missing codes and resolves after the batch is processed.
+
+**Parameters:**
+
+- `names: string | string[]` — codes to load.
+
+**Returns:** `Promise<void>`.
+
+```typescript
+await translate.add(['save', 'cancel'])
+```
+
+#### `addNormalOrSync`
+
+Writes the supplied text on localhost; otherwise requests its missing codes from the API/file.
+
+**Parameters:**
+
+- `data: Record<string, string>` — text by code.
+
+**Returns:** `Promise<void>`.
+
+```typescript
+await translate.addNormalOrSync({ save: 'Save' })
+```
+
+#### `addSync`
+
+Writes nonempty strings for the current location, replacing existing values.
+
+**Parameters:**
+
+- `data: Record<string, string>` — text by code.
+
+**Returns:** `void`.
+
+```typescript
+translate.addSync({ save: 'Save' })
+```
+
+#### `addSyncByFile`
+
+Registers lazy file loaders through `TranslateFile.add()`.
+
+**Parameters:**
+
+- `data: TranslateDataFile` — loaders by locale.
+
+**Returns:** `void`.
+
+```typescript
+translate.addSyncByFile({ en: async () => ({ save: 'Save' }) })
+```
+
+#### `addSyncByLocation`
+
+Adds missing keys from location, language, and `global` dictionaries.
+
+**Parameters:**
+
+- `data: Record<string, Record<string, string>>` — dictionaries by locale.
+
+**Returns:** `void`.
+
+```typescript
+translate.addSyncByLocation({ en: { save: 'Save' } })
+```
+
+### Configuration
+
+- `setUrl(url: string): this` — sets the API path.
+- `setPropsName(name: string): this` — sets the request property.
+- `setReadApi(value: boolean): this` — enables or disables API loading; file loaders remain available.
+
+## Types
+
+- `TranslateCode = string | string[]` — a code or code with positional replacements.
+- `TranslateList<T>` — an object of strings indexed by the requested codes.
+- `TranslateDataFile` — functions returning `Promise<Record<string, string>>`, indexed by locale.
+
+## Loading and Cache
+
+Cache lookup follows location → language → `global`; empty text is treated as missing. A successful dictionary without a requested key records that absence to avoid repeated loading. An API failure or rejected request creates no such entry; the error is routed to `ErrorCenter` and the current `get()` returns the code.
+
+`get()` does not start loading on localhost. An explicit `add()` starts batch processing and can load a file. `getSync()` and `getListSync()` always read the cache. Interpolation returns a string without HTML encoding.
+

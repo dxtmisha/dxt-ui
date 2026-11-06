@@ -191,6 +191,15 @@ describe('MetaOg', () => {
   })
 
   describe('setType', () => {
+    it('clears an existing type with an empty string', () => {
+      metaOg.setType(MetaOpenGraphType.article)
+      metaOg.setType('')
+
+      expect(metaOg.getType()).toBe('')
+      expect(metaOg.html()).not.toContain('property="og:type"')
+      expect(document.querySelector('meta[property="og:type"]')?.getAttribute('content')).toBe('')
+    })
+
     it('should set OG type', () => {
       metaOg.setType(MetaOpenGraphType.article)
       expect(metaOg.getType()).toBe(MetaOpenGraphType.article)

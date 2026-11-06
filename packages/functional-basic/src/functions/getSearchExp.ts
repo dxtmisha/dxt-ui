@@ -1,5 +1,4 @@
 import { escapeExp } from './escapeExp'
-import { isFilled } from './isFilled'
 import { isString } from './isString'
 
 /**
@@ -33,15 +32,7 @@ export function getSearchExp(
   }
 
   const uniqueWords = Array.from(new Set(search.trim().split(REGEXP_WHITESPACE)))
-  const exp: string[] = []
+  const expressions = uniqueWords.map(word => `(?=.*?${escapeExp(word)})`)
 
-  for (const item of uniqueWords) {
-    const text = escapeExp(item).trim()
-
-    if (isFilled(text)) {
-      exp.push(`(?=.*?${text})`)
-    }
-  }
-
-  return new RegExp(`^${exp.join('')}`, 'is')
+  return new RegExp(`^${expressions.join('')}`, 'is')
 }

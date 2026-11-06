@@ -5,6 +5,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { Translate } from '../Translate'
 import { TranslateInstance } from '../TranslateInstance'
+import { ServerStorage } from '../ServerStorage'
 
 describe('Translate (Static Wrapper)', () => {
   let instance: TranslateInstance
@@ -30,6 +31,28 @@ describe('Translate (Static Wrapper)', () => {
   })
 
   describe('Singleton management (getItem)', () => {
+    it('keeps the shared instance when the SSR storage context changes', () => {
+      const firstContext: Record<string, unknown> = {}
+      const secondContext: Record<string, unknown> = {}
+      let currentContext = firstContext
+
+      vi.stubGlobal('window', undefined)
+      vi.stubGlobal('document', undefined)
+      ServerStorage.reset()
+      ServerStorage.init(() => currentContext)
+
+      try {
+        const first = Translate.getItem()
+        currentContext = secondContext
+        expect(Translate.getItem()).toBe(first)
+        currentContext = firstContext
+        expect(Translate.getItem()).toBe(first)
+      } finally {
+        ServerStorage.reset()
+        vi.unstubAllGlobals()
+      }
+    })
+
     it('should return the internal TranslateInstance singleton', () => {
       const firstItem = Translate.getItem()
       const secondItem = Translate.getItem()
@@ -126,6 +149,14 @@ describe('Translate (Static Wrapper)', () => {
   })
 
   describe('Configuration (setUrl, setPropsName, setReadApi, setConfig)', () => {
+    it('ignores empty URL and property names while preserving an explicit false readApi', () => {
+      Translate.setConfig({ url: '', propsName: '', readApi: false })
+
+      expect(instance.setUrl).not.toHaveBeenCalled()
+      expect(instance.setPropsName).not.toHaveBeenCalled()
+      expect(instance.setReadApi).toHaveBeenCalledWith(false)
+    })
+
     it('setUrl should delegate to item.setUrl', () => {
       Translate.setUrl('/api')
       expect(instance.setUrl).toHaveBeenCalledWith('/api')

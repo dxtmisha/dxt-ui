@@ -16,6 +16,8 @@ The function relies on `isDomRuntime()` to verify the presence of a DOM environm
 - `options?: Partial<T> | Record<string, unknown> | ((element: T) => void) | null` — An object containing attributes and properties for the element (e.g., `id`, `className`, event listeners), or a callback function for custom processing of the element.
 - `referenceElement?: Node | null` — The node before which the new `element` is inserted. If omitted (or `null`), the element is appended as the last child of the parent (`appendChild`).
 
+Function-valued entries in the `options` object are evaluated immediately as factories. To assign a function itself, such as an event handler, wrap it in another function: `onclick: () => handler`. Inside the `options` initializer callback, assign the handler directly: `element.onclick = handler`.
+
 **Returns:**
 `T | undefined` — The created HTML element, or `undefined` if the DOM is not available.
 
@@ -28,7 +30,7 @@ const container = document.getElementById('app')
 const btn = createElement(container, 'button', {
   className: 'primary-btn',
   textContent: 'Click me',
-  onclick: () => alert('Clicked!')
+  onclick: () => () => alert('Clicked!')
 })
 
 // Custom configuration via callback function

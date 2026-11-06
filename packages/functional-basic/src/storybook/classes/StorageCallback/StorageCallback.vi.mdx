@@ -38,7 +38,7 @@ const sharedStorage = StorageCallback.getInstance('settings', 'global')
 
 // 3. Sử dụng generic để kiểm soát kiểu dữ liệu
 const numberStorage = new StorageCallback<number>('counter')
-numberStorage.addCallback((val) => console.log(val + 1))
+numberStorage.addCallback((value) => console.log(value + 1))
 ```
 
 ## Các phương thức
@@ -51,13 +51,15 @@ numberStorage.addCallback((val) => console.log(val + 1))
 
 ### Quản lý
 
-- `addCallback(callback: Callback, isOnce?: boolean): this` — thêm một callback mới vào danh sách thực thi. Nếu `isOnce: true`, callback sẽ bị xóa sau lần thực thi đầu tiên.
+- `addCallback(callback: Callback, isOnce?: boolean): this` — thêm một đăng ký mới. Với `isOnce: true`, đăng ký được tiêu thụ trước lần gọi đầu tiên, kể cả khi các lệnh `run()` chồng lấn hoặc lồng nhau.
 - `removeCallback(callback: Callback): this` — xóa một callback cụ thể khỏi danh sách.
 
 ### Điều khiển (Control)
 
 - `preparation(): this` — chuẩn bị trạng thái trước khi thực thi (đặt `loading` thành `true`). Được sử dụng thủ công khi bắt đầu các hoạt động bất đồng bộ.
-- `run(value: T): Promise<this>` — thực thi tất cả các callback theo trình tự với giá trị được cung cấp. Đặt `loading` về `false` khi bắt đầu thực thi.
+- `run(value: T): Promise<this>` — thực thi một snapshot callback theo trình tự với giá trị được cung cấp. Đặt `loading` về `false` sau khi xử lý.
+
+Mỗi đăng ký một lần được tiêu thụ riêng: đăng ký mới của cùng hàm và đăng ký thường xuyên của hàm đó vẫn được giữ. Callback được thêm trong `run()` sẽ nằm trong snapshot tiếp theo. `removeCallback()` xóa mọi đăng ký của hàm đã cho. Thực thi tuần tự trong một `run()`; các lần chạy riêng có thể chồng lấn. `loading` được đặt thủ công qua `preparation()` và đặt lại sau khi mỗi `run()` hoàn tất.
 
 ## Ví dụ sử dụng
 

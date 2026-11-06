@@ -16,7 +16,9 @@ export class ResumableTimer {
   protected completed: boolean = false
 
   /**
-   * Constructor
+   * Creates a timer and optionally starts it immediately.
+   *
+   * Создаёт таймер и при необходимости сразу запускает его.
    * @param callback function to be called after the delay / функция, которая будет вызвана после задержки
    * @param delay delay in milliseconds / задержка в миллисекундах
    * @param blockStart if true, the timer will not start immediately / если true, таймер не запустится сразу

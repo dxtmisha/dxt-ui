@@ -8,6 +8,8 @@ Tiện ích tạo một `RegExp` không phân biệt chữ hoa/thường để k
 
 Khác với `getSearchExp`, hàm này khớp với toàn bộ cụm từ dưới dạng một chuỗi con liền mạch (với các ký tự đặc biệt được escape) mà không tách nó thành các từ riêng biệt.
 
+Giá trị rỗng, null hoặc undefined tạo mẫu `()`, khớp chuỗi con rỗng trong mọi văn bản. Cụm từ giữ nguyên khoảng trắng và không bị tách thành các từ. Không có cờ `g`, nên các lần gọi `test()` liên tiếp không bị ảnh hưởng bởi lastIndex.
+
 **Tham số:**
 - `search?: unknown` — (tùy chọn) Chuỗi tìm kiếm hoặc giá trị để khớp chính xác cụm từ.
 

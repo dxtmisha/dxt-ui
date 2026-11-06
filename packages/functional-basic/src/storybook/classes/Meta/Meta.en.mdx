@@ -61,6 +61,20 @@ All setters return `this` for method chaining.
 - `setLocale(locale: string)` — sets `og:locale` (format: `'en_US'`).
 - `setSuffix(suffix?: string)` — title suffix. `setTitle('Article')` + `setSuffix('Site')` → `'Article - Site'`.
 
+## Generic Writes
+
+The inherited `set()` and `setByList()` methods also use `setTitle()` for the `title` field: pass the raw title without an appended suffix. They update the raw text, full title, Open Graph, and Twitter Card. A later suffix change keeps the latest title text.
+
+```typescript
+import { Meta, MetaTag } from '@dxtmisha/functional-basic'
+
+const meta = new Meta().setSuffix('Site')
+meta.set(MetaTag.title, 'Article')
+meta.setByList({ title: 'New article' })
+meta.getTitle()  // 'New article'
+meta.htmlTitle() // 'New article - Site'
+```
+
 ## HTML Generation
 
 ### `html(): string`

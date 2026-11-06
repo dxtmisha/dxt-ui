@@ -32,6 +32,16 @@ export class SearchListMatcher {
   }
 
   /**
+   * Returns the current regular expression matcher.
+   *
+   * Возвращает текущий сопоставитель регулярных выражений.
+   * @returns RegExp or undefined / RegExp или undefined
+   */
+  get(): RegExp | undefined {
+    return this.matcher
+  }
+
+  /**
    * Checks if the matcher is initialized.
    *
    * Проверяет, инициализирован ли сопоставитель.
@@ -54,16 +64,6 @@ export class SearchListMatcher {
     }
 
     return this.matcher.test(value)
-  }
-
-  /**
-   * Returns the current regular expression matcher.
-   *
-   * Возвращает текущий сопоставитель регулярных выражений.
-   * @returns RegExp or undefined / RegExp или undefined
-   */
-  get(): RegExp | undefined {
-    return this.matcher
   }
 
   /**

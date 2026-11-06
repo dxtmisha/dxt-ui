@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # UrlItem Class
 
-The `UrlItem` class is an **Isomorphic Utility Class** for parsing, managing, and updating URLs in both client-side (DOM) and server-side (SSR) environments. It encapsulates the standard standard `URL` object, providing clean read-only property getters and helper methods for query parameter manipulation.
+The `UrlItem` class is an **Isomorphic Utility Class** for parsing, managing, and updating URLs in both client-side (DOM) and server-side (SSR) environments. It encapsulates the standard `URL` object, providing clean read-only property getters and helper methods for query parameter manipulation.
 
 ## Key Features
 
@@ -37,10 +37,12 @@ The `UrlItem` class is an **Isomorphic Utility Class** for parsing, managing, an
 
 ### Action
 
-- `set(url?: string | URL): this` — Updates the URL value.
-- `setParam(name: string, value: string): this` — Sets the value of a query parameter.
+- `set(url?: string | URL | null): this` — Updates the URL value (falls back safely to the runtime base URL if `url` is omitted or invalid).
+- `setParam(name: string, value: string | number | boolean): this` — Sets the value of a query parameter.
 - `setParams(params: Record<string, unknown>): this` — Replaces all query parameters with the specified object.
 - `deleteParam(name: string): this` — Deletes a query parameter.
+
+URL parsing errors are reported through `ErrorCenter` as `transformation/error`. Diagnostics contain the operation, processing stage (`input` or `fallback`), and error name, without the source URL or exception message. If the runtime fallback URL is also invalid, `set()` uses `http://localhost/`.
 
 ### Auxiliary
 

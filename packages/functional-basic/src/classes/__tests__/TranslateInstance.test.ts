@@ -227,6 +227,57 @@ describe('TranslateInstance', () => {
       }))
     })
 
+    it('retries a code after an unsuccessful response instead of caching the failure', async () => {
+      mockIsLocalhost.mockReturnValue(false)
+      const errorSpy = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
+      mockApiGet
+        .mockResolvedValueOnce({ success: false, status: 'error' })
+        .mockResolvedValueOnce({ greeting: 'Recovered greeting' })
+
+      const first = translate.get('greeting')
+      await vi.advanceTimersByTimeAsync(200)
+      expect(await first).toBe('greeting')
+      expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({
+        group: 'translate',
+        code: 'error'
+      }))
+
+      const second = translate.get('greeting')
+      await vi.advanceTimersByTimeAsync(200)
+      expect(await second).toBe('Recovered greeting')
+      expect(mockApiGet).toHaveBeenCalledTimes(2)
+      expect(translate.getSync('greeting')).toBe('Recovered greeting')
+    })
+
+    it('retries after a failed HTTP status with an empty response body', async () => {
+      mockIsLocalhost.mockReturnValue(false)
+      vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
+      vi.mocked(Api.getStatus().getStatus).mockReturnValueOnce(503)
+      mockApiGet
+        .mockResolvedValueOnce({})
+        .mockResolvedValueOnce({ greeting: 'Recovered greeting' })
+
+      const first = translate.get('greeting')
+      await vi.advanceTimersByTimeAsync(200)
+      expect(await first).toBe('greeting')
+
+      const second = translate.get('greeting')
+      await vi.advanceTimersByTimeAsync(200)
+      expect(await second).toBe('Recovered greeting')
+      expect(mockApiGet).toHaveBeenCalledTimes(2)
+    })
+
+    it('keeps a missing key cached after a successful empty dictionary', async () => {
+      mockIsLocalhost.mockReturnValue(false)
+      mockApiGet.mockResolvedValue({})
+
+      const first = translate.get('missing')
+      await vi.advanceTimersByTimeAsync(200)
+      expect(await first).toBe('missing')
+      expect(await translate.get('missing')).toBe('missing')
+      expect(mockApiGet).toHaveBeenCalledTimes(1)
+    })
+
     it('should isolate in-flight batch from new add() calls arriving during network request', async () => {
       mockIsLocalhost.mockReturnValue(false)
 

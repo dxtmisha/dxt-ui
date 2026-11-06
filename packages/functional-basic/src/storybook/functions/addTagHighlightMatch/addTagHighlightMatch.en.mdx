@@ -6,9 +6,11 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 A utility for highlighting matches in a string by wrapping them in a `<span>` HTML tag with a specified class. It uses `getSeparatingSearchExp` to support multi-word search (space-separated).
 
+Use `shouldEscape: true` when rendering external text as HTML: text is escaped while generated highlight spans are retained. The default `shouldEscape: false` mode is intended for trusted content. `value` is converted to text; a `search` value other than a string or `RegExp` disables highlighting. `SearchListData` enables escaping explicitly.
+
 **Parameters:**
-- `value?: string | number | null` — The initial value to process.
-- `search?: string | RegExp` — The search string (one or more words separated by spaces) or a regular expression.
+- `value?: unknown` — The initial value to process.
+- `search?: unknown` — The search string (one or more words separated by spaces) or a regular expression.
 - `options: AddTagHighlightMatchOptions = {}` — Configuration options:
   - `className?: string` — The CSS class to be added to the `<span>` tag (default: `'sys-highlight-match'`).
   - `shouldEscape?: boolean` — Whether to escape the string before adding highlighting (default: `false`).

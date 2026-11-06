@@ -38,7 +38,7 @@ const sharedStorage = StorageCallback.getInstance('settings', 'global')
 
 // 3. Использование generic-типов для строгой типизации
 const numberStorage = new StorageCallback<number>('counter')
-numberStorage.addCallback((val) => console.log(val + 1))
+numberStorage.addCallback((value) => console.log(value + 1))
 ```
 
 ## Методы
@@ -51,13 +51,15 @@ numberStorage.addCallback((val) => console.log(val + 1))
 
 ### Управление
 
-- `addCallback(callback: Callback, isOnce?: boolean): this` — добавляет новый обратный вызов в список выполнения. При `isOnce: true` callback будет удален после первого выполнения.
+- `addCallback(callback: Callback, isOnce?: boolean): this` — добавляет новую регистрацию. При `isOnce: true` она потребляется перед первым вызовом, в том числе при пересекающихся или вложенных `run()`.
 - `removeCallback(callback: Callback): this` — удаляет конкретный обратный вызов из списка.
 
 ### Управление процессом (Control)
 
 - `preparation(): this` — подготавливает состояние перед выполнением (устанавливает `loading` в `true`). Используется вручную при запуске асинхронных операций.
-- `run(value: T): Promise<this>` — последовательно выполняет все обратные вызовы с переданным значением. В начале выполнения устанавливает `loading` в `false`.
+- `run(value: T): Promise<this>` — последовательно выполняет snapshot обратных вызовов с переданным значением. После обработки устанавливает `loading` в `false`.
+
+Каждая одноразовая регистрация потребляется отдельно: новая регистрация той же функции и её постоянная подписка сохраняются. Callback, добавленный во время `run()`, попадёт в следующий snapshot. `removeCallback()` удаляет все регистрации указанной функции. Последовательность обеспечивается внутри одного `run()`; разные запуски могут пересекаться. `loading` задаётся вручную через `preparation()` и сбрасывается после завершения каждого `run()`.
 
 ## Примеры использования
 

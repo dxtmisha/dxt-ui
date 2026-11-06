@@ -1,0 +1,187 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/TranslateInstance - Экземпляр переводов'/>
+
+# Класс TranslateInstance
+
+`TranslateInstance` хранит переводы и получает недостающие тексты из `TranslateFile` или API. Каждый экземпляр содержит собственные кеш и очередь.
+
+## Ключевые возможности
+
+- **Пакетная загрузка** — отсутствующие коды объединяются с задержкой `160` мс.
+- **Фиксированная локаль** — партия сохраняет исходные язык, регион и API-путь.
+- **Повтор после ошибки** — неуспешный ответ не записывается в кеш; следующий вызов может повторить загрузку.
+
+## Инициализация
+
+`new TranslateInstance(url?, propsName?, files?)`
+
+- `url: string = '/api/translate'` — путь к API.
+- `propsName: string = 'list'` — имя поля запроса с кодами.
+- `files: TranslateFile = new TranslateFile()` — загрузчики и поставщики локали.
+
+```typescript
+import {TranslateFile, TranslateInstance} from '@dxtmisha/functional-basic'
+
+const files = new TranslateFile({
+  en: async () => ({greeting: 'Hello, %d!'})
+}, 'en-US', 'en')
+const translate = new TranslateInstance('/api/translate', 'list', files)
+await translate.add('greeting')
+const text = translate.getSync('greeting', false, ['World'])
+```
+
+## Методы
+
+### Получение переводов
+
+#### `get`
+
+Возвращает кешированный текст либо ожидает загрузку. При отсутствии перевода возвращает код.
+
+**Параметры:**
+
+- `name: string` — код перевода.
+- `replacement?: string[] | Record<string, string | number>` — значения для `applyTemplate`.
+
+**Возвращает:** `Promise<string>`.
+
+```typescript
+const text = await translate.get('greeting', ['World'])
+```
+
+#### `getSync`
+
+Читает только текущий кеш, без загрузки.
+
+**Параметры:**
+
+- `name: string` — код перевода.
+- `first?: boolean = false` — при отсутствии текста `true` возвращает один пробел, `false` — имя кода.
+- `replacement?: string[] | Record<string, string | number>` — значения для `applyTemplate`.
+
+**Возвращает:** `string`.
+
+```typescript
+const text = translate.getSync('greeting', false, ['World'])
+```
+
+#### `getList`
+
+Получает тексты асинхронно. Ключ результата — код, в том числе для `[code, ...replacement]`.
+
+**Параметры:**
+
+- `names: T extends TranslateCode[]` — коды или массивы `[code, ...replacement]`.
+
+**Возвращает:** `Promise<TranslateList<T>>`.
+
+```typescript
+const texts = await translate.getList(['save', ['greeting', 'World']])
+```
+
+#### `getListSync`
+
+Читает список из кеша; пустой список возвращает пустой объект.
+
+**Параметры:**
+
+- `names: T extends TranslateCode[]` — коды или массивы `[code, ...replacement]`.
+- `first?: boolean = false` — при отсутствии текста `true` возвращает один пробел, `false` — имя кода.
+
+**Возвращает:** `TranslateList<T>`.
+
+```typescript
+const texts = translate.getListSync(['save', 'cancel'], true)
+```
+
+### Добавление данных
+
+#### `add`
+
+Ставит отсутствующие коды в очередь и завершается после обработки партии.
+
+**Параметры:**
+
+- `names: string | string[]` — коды для загрузки.
+
+**Возвращает:** `Promise<void>`.
+
+```typescript
+await translate.add(['save', 'cancel'])
+```
+
+#### `addNormalOrSync`
+
+На localhost записывает переданные тексты, иначе запрашивает по API/файлу их отсутствующие коды.
+
+**Параметры:**
+
+- `data: Record<string, string>` — тексты по кодам.
+
+**Возвращает:** `Promise<void>`.
+
+```typescript
+await translate.addNormalOrSync({ save: 'Save' })
+```
+
+#### `addSync`
+
+Записывает непустые строки для текущего региона, заменяя существующие значения.
+
+**Параметры:**
+
+- `data: Record<string, string>` — тексты по кодам.
+
+**Возвращает:** `void`.
+
+```typescript
+translate.addSync({ save: 'Save' })
+```
+
+#### `addSyncByFile`
+
+Регистрирует ленивые загрузчики файлов через `TranslateFile.add()`.
+
+**Параметры:**
+
+- `data: TranslateDataFile` — загрузчики по локалям.
+
+**Возвращает:** `void`.
+
+```typescript
+translate.addSyncByFile({ en: async () => ({ save: 'Save' }) })
+```
+
+#### `addSyncByLocation`
+
+Добавляет отсутствующие ключи из словарей регионов, языков и `global`.
+
+**Параметры:**
+
+- `data: Record<string, Record<string, string>>` — словари по локалям.
+
+**Возвращает:** `void`.
+
+```typescript
+translate.addSyncByLocation({ en: { save: 'Save' } })
+```
+
+### Настройка
+
+- `setUrl(url: string): this` — задаёт API-путь.
+- `setPropsName(name: string): this` — задаёт поле запроса.
+- `setReadApi(value: boolean): this` — включает или отключает API-загрузку; файловые загрузчики остаются доступными.
+
+## Типы
+
+- `TranslateCode = string | string[]` — код либо код с позиционными заменами.
+- `TranslateList<T>` — объект строк, индексированный запрошенными кодами.
+- `TranslateDataFile` — словарь функций, возвращающих `Promise<Record<string, string>>`.
+
+## Загрузка и кеш
+
+Кеш читается по приоритету регион → язык → `global`; пустой текст считается отсутствующим. Успешный словарь без запрошенного ключа запоминает этот пропуск, чтобы не загружать его повторно. Ошибка API или отклонённый запрос не создают такой записи; ошибка направляется в `ErrorCenter`, а текущий `get()` возвращает код.
+
+`get()` на localhost не запускает загрузку. Явный `add()` запускает пакетную обработку и может загрузить файл. `getSync()` и `getListSync()` всегда читают кеш. Подстановки возвращают строку без HTML-экранирования.
+

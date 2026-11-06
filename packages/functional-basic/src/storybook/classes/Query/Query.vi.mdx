@@ -38,6 +38,8 @@ const filter = Query.get('filter') // 'active' (string)
 - `static get<T>(name: string, defaultValue?: T | (() => T)): T` — Trả về giá trị của biến query.
 - `static set<T>(name: string, callback: T | (() => T)): void` — Thiết lập giá trị của biến và cập nhật URL query parameters.
 
+`QueryInstance` giữ nguyên `history.state` khi ghi URL. Lỗi `history.replaceState` được gửi đến `ErrorCenter` dưới dạng `storage/error`; trạng thái cục bộ vẫn khả dụng và khóa ghi được giải phóng sau 120 ms.
+
 ### Theo dõi (Watchers)
 - `static addWatch<T>(name: string, callback: (value: T) => void): void` — Đăng ký theo dõi thay đổi của một biến query cụ thể.
 - `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Hủy đăng ký theo dõi thay đổi của một biến.
@@ -46,7 +48,7 @@ Trạng thái mới được công bố trước khi gọi các hàm theo dõi: 
 
 
 ### Quản lý
-- `static reset(): void` — Hủy phiên bản, xóa các bộ hẹn giờ và gỡ bỏ các trình lắng nghe sự kiện.
+- `static reset(): void` — Hủy phiên bản, xóa bộ hẹn giờ, gỡ trình lắng nghe sự kiện và xóa mục của ngữ cảnh hiện tại trong `ServerStorage`. Các đăng ký cũ kết thúc; lần đọc hoặc `reload()` tiếp theo tạo và khởi tạo phiên bản mới từ URL hiện tại. URL không thay đổi.
 - `static reload(): void` — Ép buộc đồng bộ hóa trạng thái với URL query parameters hiện tại. Lời gọi đầu tiên khởi tạo dữ liệu và bộ lắng nghe; các lời gọi sau cập nhật dữ liệu mà không đăng ký lại bộ lắng nghe.
 
 ## Ví dụ
@@ -66,14 +68,17 @@ Query.set('page', () => page + 1)
 ```
 
 ### Đăng ký theo dõi thay đổi
-```javascript
-Query.addWatch<string>('filter', (newFilter) => {
+```typescript
+const callback = (newFilter: string) => {
   console.log('Bộ lọc đã thay đổi thành:', newFilter)
-})
+}
+Query.addWatch('filter', callback)
 
 // Hủy đăng ký (callback phải là tham chiếu đến cùng một hàm)
 Query.removeWatch('filter', callback)
 ```
+
+Việc cách ly trên máy chủ yêu cầu provider `ServerStorage.init(...)` trả về kho dữ liệu của yêu cầu đang hoạt động. `reset()` chỉ xóa phiên bản thuộc ngữ cảnh đó. Các ref đã tạo qua `useQueryRef` có bộ nhớ đệm riêng và không được phương thức này kết nối lại.
 
 ### Quản lý trạng thái trang
 ```javascript

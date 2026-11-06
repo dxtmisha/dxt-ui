@@ -4,6 +4,7 @@
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { QueryInstance } from '../QueryInstance'
+import { ErrorCenter } from '../ErrorCenter'
 import { ServerStorage } from '../ServerStorage'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 
@@ -82,6 +83,41 @@ describe('QueryInstance', () => {
     queryInstance.set('myKey', 'myValue')
     expect(queryInstance.get('myKey')).toBe('myValue')
     expect(mockHistory.replaceState).toHaveBeenCalledWith(null, '', '/path?myKey=myValue#hash')
+  })
+
+  it('reports history errors and unblocks subsequent URL reads', () => {
+    vi.useFakeTimers()
+    const error = new DOMException('Rate limit exceeded', 'SecurityError')
+    const errorSpy = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
+    mockHistory.replaceState.mockImplementationOnce(() => {
+      throw error
+    })
+
+    try {
+      expect(() => queryInstance.set('myKey', 'safeValue')).not.toThrow()
+      expect(queryInstance.get('myKey')).toBe('safeValue')
+      expect(errorSpy).toHaveBeenCalledWith({ group: 'storage', code: 'error', details: error })
+      vi.advanceTimersByTime(120)
+      mockLocation.search = '?myKey=updatedValue'
+      queryInstance.reload()
+      expect(queryInstance.get('myKey')).toBe('updatedValue')
+    } finally {
+      queryInstance.destroy()
+      vi.clearAllTimers()
+      vi.useRealTimers()
+    }
+  })
+
+  it('should preserve existing history.state when updating query string', () => {
+    const customState = { scrollY: 120, route: '/path' }
+    ;(mockHistory as Record<string, unknown>).state = customState
+
+    try {
+      queryInstance.set('myKey', 'withState')
+      expect(mockHistory.replaceState).toHaveBeenCalledWith(customState, '', '/path?myKey=withState#hash')
+    } finally {
+      delete (mockHistory as Record<string, unknown>).state
+    }
   })
 
   it('should correctly update query when set with a function call', () => {

@@ -43,7 +43,7 @@ export class TranslateFile {
    * @param language language / язык
    */
   constructor(
-    data?: TranslateDataFile,
+    data?: TranslateDataFile | null,
     protected location: string | (() => string) = () => Geo.getLocation(),
     protected language: string | (() => string) = () => Geo.getLanguage()
   ) {
@@ -116,8 +116,8 @@ export class TranslateFile {
    * @param data list of files / список файлов
    * @returns void / ничего не возвращает
    */
-  add(data: TranslateDataFile): void {
-    forEach(data, (file, key) => {
+  add(data?: TranslateDataFile | null): void {
+    forEach(data ?? {}, (file, key) => {
       if (isFunction(file)) {
         this.files[key] = file
         delete this.data[key]
@@ -147,11 +147,7 @@ export class TranslateFile {
    * @returns list of translations or undefined / список переводов или undefined
    */
   protected getByData(index: string): TranslateDataFileList | undefined {
-    if (index in this.data) {
-      return this.data[index]
-    }
-
-    return undefined
+    return this.data[index]
   }
 
   /**

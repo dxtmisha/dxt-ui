@@ -123,7 +123,7 @@ export class TranslateInstance {
    *
    * Получение списка переводов по массиву кодов текста.
    * @param names list of codes to get translations / список кодов для получения переводов
-   * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
+   * @param first return one space for missing text when true, otherwise return its code / при true возвращать один пробел для отсутствующего текста, иначе его код
    * @returns object with translations / объект с переводами
    */
   getListSync<T extends TranslateCode[]>(names: T, first: boolean = false): TranslateList<T> {
@@ -144,7 +144,7 @@ export class TranslateInstance {
    *
    * Получение текста перевода по его коду (Sync).
    * @param name code name / название кода
-   * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
+   * @param first return one space for missing text when true, otherwise return its code / при true возвращать один пробел для отсутствующего текста, иначе его код
    * @param replacement If set, replaces the text with the specified values / если установлено, заменяет текст на указанные значения
    * @returns translation text / текст перевода
    */
@@ -411,9 +411,9 @@ export class TranslateInstance {
    * Получение списка переводов с сервера.
    * @param cache list of requested codes / список запрошенных кодов
    * @param path API path resolved for the original locale / API-путь, вычисленный для исходной локали
-   * @returns promise with record of translations / промис с записью переводов
+   * @returns translation record, or undefined after an unsuccessful response / словарь переводов или undefined после неуспешного ответа
    */
-  protected async getResponse(cache: string[], path: string): Promise<Record<string, string>> {
+  protected async getResponse(cache: string[], path: string): Promise<Record<string, string> | undefined> {
     const data = (await Api.get<Record<string, string>>({
       api: false,
       path,
@@ -431,6 +431,8 @@ export class TranslateInstance {
         code: 'error',
         details: data
       })
+
+      return undefined
     }
 
     return data ?? {}
@@ -510,7 +512,7 @@ export class TranslateInstance {
     location: string
   ): void {
     cache.forEach((name) => {
-      this.data[this.getName(name, location)] = list?.[name] ?? ''
+      this.data[this.getName(name, location)] = list[name] ?? ''
     })
   }
 

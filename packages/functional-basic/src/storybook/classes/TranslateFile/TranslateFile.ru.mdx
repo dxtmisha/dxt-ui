@@ -21,7 +21,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Для инициализации объекта вызовите конструктор `TranslateFile(data, location, language)`.
 
 **Параметры:**
-- `data?: TranslateDataFile` — начальное сопоставление локалей и загрузчиков файлов.
+- `data?: TranslateDataFile | null` — начальное сопоставление локалей и загрузчиков файлов.
 - `location: string | (() => string) = () => Geo.getLocation()` — текущее местоположение или функция, возвращающая его.
 - `language: string | (() => string) = () => Geo.getLanguage()` — текущий язык или функция, возвращающая его.
 
@@ -30,9 +30,9 @@ import { TranslateFile, Geo } from '@dxtmisha/functional-basic'
 
 // 1. Простая инициализация
 const files = new TranslateFile({
-  'en-US': () => import('./locales/en-US.json'),
-  'en': () => import('./locales/en.json'),
-  'global': () => import('./locales/global.json')
+  'en-US': () => import('./locales/en-US.json').then(module => module.default),
+  'en': () => import('./locales/en.json').then(module => module.default),
+  'global': () => import('./locales/global.json').then(module => module.default)
 })
 
 // 2. Использование пользовательских провайдеров контекста
@@ -54,7 +54,7 @@ const customFiles = new TranslateFile(
 
 ### Управление данными
 
-- `add(data: TranslateDataFile): void` — Добавляет сопоставление локалей и соответствующих им функций-загрузчиков (функций, возвращающих Promise).
+- `add(data?: TranslateDataFile | null): void` — Добавляет сопоставление локалей и соответствующих им функций-загрузчиков (функций, возвращающих Promise).
 - `reset(): this` — Сбрасывает кэш загруженных данных переводов и активные промисы.
 
 ## Типы
@@ -83,7 +83,7 @@ import { TranslateFile, TranslateInstance } from '@dxtmisha/functional-basic'
 
 const translationFiles = new TranslateFile({
   'en-US': () => Promise.resolve({ hello: 'Hello US' }),
-  'en': () => Promise.resolve({ hello: 'Привет' })
+  'en': () => Promise.resolve({ hello: 'Hello' })
 })
 
 const translate = new TranslateInstance(
@@ -94,3 +94,5 @@ const translate = new TranslateInstance(
 
 const message = await translate.get('hello')
 ```
+
+Выбирается один файл по приоритету location → language → global; словари разных уровней автоматически не объединяются. Загрузчик возвращает сам `Record<string, string>`, поэтому у module import в примере берётся `default`. `add()` без данных ничего не делает. `add()` для существующего ключа и `reset()` исключают запись старых загрузок в новый кеш; уже начатый вызов всё ещё получает свой результат. `reset()` сохраняет загрузчики.
