@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2026-11-08
+
+### Added
+- **`MediaFile` Enhancements (`src/classes/MediaFile.ts`)**:
+  - Added support for `Blob` instances (`fileOrExtension: File | Blob | string`), `blob` getter, and `isBlobInput()` type guard.
+  - Added support for `Data URL` (`data:`) and `Blob URL` (`blob:`) inputs with `isDataUrl()`, `isBlobUrl()`, and `isUrl()` checker methods, including automatic MIME extraction from Data URL headers.
+  - Added category and group checker methods covering all 16 media classifications: `isCategoryGroup()`, `isConfig()`, `isDatabase()`, `isExecutable()`, `isFolder()`, `isFont()`, `isSystem()`, `isText()`, and `isVector()`.
+  - Added lazy instance memoization (`extensionCache`, `extensionsCache`, `itemCache`, `nameCache`, `rawMimeCache`, `rawStringCache`) and `reset(): this` method to clear cached values.
+  - Added safe URI percent-decoding for extracted file names via `toDecoded()` and MIME normalization via `toMime()`.
+- **`MediaFiles` Enhancements (`src/classes/MediaFiles.ts`)**:
+  - Added `isMime(mime)` method to validate registered MIME types and prevent MIME strings containing `'/'` from being misidentified as file paths in `isLink()`.
+  - Added lazy `Map` indexing (`categoryMap`, `codeMap`, `extensionMap`, `mimeMap`) and cached `neutralItem` (`Readonly<MediaFileItem>`) for $O(1)$ catalog lookups (`findByCode`, `findByExtension`, `findByMime`, `initCategory`, `toCategory`).
+- **`MediaFileIcon` Enhancements (`src/classes/MediaFileIcon.ts`)**:
+  - Added `remove(code)` and `reset()` methods for managing registered custom icons.
+  - Added hierarchical custom icon fallback in `find(item)` resolving by `code` -> `extensions` -> `mime` -> `category` with an $O(1)$ `hasCustomIcons` fast-path guard.
+- **File Types (`src/types/fileTypes.ts`)**:
+  - Added `MediaFileCategoryOrCode` and conditional `MediaFileItemReturn<T>` types.
+- **Quality & Code Review Registry (`temp.md`)**:
+  - Completed full architectural, security, and SSR code review across all 17 package entities (`src/media/`, `src/functions/`, `src/classes/`) and recorded verified entities in `temp.md`.
+
+### Changed
+- **`MediaFileIcon` Hardening**:
+  - Switched internal icon storage (`iconList`) to a prototype-isolated dictionary (`/* #__PURE__ */ Object.create(null)`) with `Object.hasOwn` checks and a `Readonly<MediaFileIcons>` `icons` getter returning a defensive copy.
+  - Enabled fluent method chaining (`typeof MediaFileIcon`) on `add()`, `addList()`, and `reset()`.
+  - Enhanced `toCode(code)` to strip MIME parameters (`;...`) and leading/trailing dots and whitespace.
+  - Updated `toItem(item)` with generic `MediaFileItemReturn<T>` return typing and deep cloning of the `extensions` array.
+- **`MediaFiles` Return Types & Immutability**:
+  - Tightened `MediaFiles.get()` and `MediaFiles.getNeutral()` return types to non-nullable `MediaFileItem`, and updated `MediaFiles.getList()` to enrich all returned items via `MediaFileIcon.toItem()`.
+- **`fileList` Catalog Deduplication (`src/media/fileList.ts`)**:
+  - Consolidated duplicate extension and MIME mappings (`csv`/`tsv`, `folder-zip`, `jpg`, `spreadsheet`, `table`, `txt`) to ensure deterministic $O(1)$ lookup priority.
+
 ## [1.1.1] - 2026-11-07
 
 ### Changed
