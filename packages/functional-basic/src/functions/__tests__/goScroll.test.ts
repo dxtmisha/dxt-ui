@@ -129,6 +129,35 @@ describe('goScroll', () => {
       expect(container.scrollTop).toBe(200)
     })
 
+    it('should keep targets on the exact top and bottom boundaries visible without scrolling', () => {
+      container.scrollTop = 200
+      vi.spyOn(container, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 100, 100, 200))
+      const targetSpy = vi.spyOn(elementTo, 'getBoundingClientRect')
+        .mockReturnValue(new DOMRect(0, 100, 100, 40))
+
+      goScroll(container, elementTo)
+      expect(container.scrollTop).toBe(200)
+
+      targetSpy.mockReturnValue(new DOMRect(0, 260, 100, 40))
+      goScroll(container, elementTo)
+      expect(container.scrollTop).toBe(200)
+    })
+
+    it('should leave an outer scroll container unchanged', () => {
+      const outerContainer = document.createElement('div')
+      document.body.appendChild(outerContainer)
+      outerContainer.appendChild(container)
+      outerContainer.scrollTop = 80
+      container.scrollTop = 100
+      vi.spyOn(container, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 100, 100, 200))
+      vi.spyOn(elementTo, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 310, 100, 40))
+
+      goScroll(container, elementTo)
+
+      expect(container.scrollTop).toBe(150)
+      expect(outerContainer.scrollTop).toBe(80)
+    })
+
     it('should support passing container directly as HTMLElement instance', () => {
       container.scrollTop = 100
 
@@ -471,6 +500,18 @@ describe('goScroll', () => {
   })
 
   describe('SSR and nullish / edge case inputs', () => {
+    it('should ignore omitted, null, undefined, or empty targets before reading layout', () => {
+      const containerSpy = vi.spyOn(container, 'getBoundingClientRect')
+      const targetSpy = vi.spyOn(elementTo, 'getBoundingClientRect')
+
+      expect(() => goScroll()).not.toThrow()
+      expect(() => goScroll(undefined, elementTo)).not.toThrow()
+      expect(() => goScroll(null, elementTo)).not.toThrow()
+      expect(() => goScroll('', elementTo)).not.toThrow()
+      expect(containerSpy).not.toHaveBeenCalled()
+      expect(targetSpy).not.toHaveBeenCalled()
+    })
+
     it('should immediately exit without errors in SSR runtime (isDomRuntime === false)', () => {
       vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
       container.scrollTop = 100

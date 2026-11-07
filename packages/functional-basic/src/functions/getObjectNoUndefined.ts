@@ -1,9 +1,12 @@
 import { isObject } from './isObject'
+import { isPrototypeKey } from './isPrototypeKey'
 
 /**
- * Removes from the object all properties belonging to the exception type.
+ * Creates an object without values matching the exception or prototype pollution keys.
+ * Only own enumerable string-keyed properties are copied; array indices become object keys.
  *
- * Удаляет из объекта все свойства, принадлежащие к типу исключения.
+ * Создаёт объект без значений, совпадающих с исключением, и ключей загрязнения прототипа.
+ * Копируются только собственные перечисляемые строковые свойства; индексы массива становятся ключами объекта.
  * @param data collection or object for processing / коллекция или объект для обработки
  * @param exception exception value / значение для исключения
  * @returns object without exception values / объект без исключенных значений
@@ -19,7 +22,7 @@ export function getObjectNoUndefined<
 
   if (isObject(data)) {
     for (const [key, value] of Object.entries(data)) {
-      if (!Object.is(value, exception) && value !== exception) {
+      if (!isPrototypeKey(key) && !Object.is(value, exception) && value !== exception) {
         returnData[key] = value
       }
     }

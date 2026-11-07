@@ -36,6 +36,31 @@ describe('initScrollbarOffset', () => {
       const result = await initScrollbarOffset()
       expect(result).toBeUndefined()
     })
+
+    it('should wait for the width measurement before writing the CSS custom property', async () => {
+      let resolveWidth!: (width: number) => void
+      const pendingWidth = new Promise<number>((resolve) => {
+        resolveWidth = resolve
+      })
+      vi.spyOn(ScrollbarWidth, 'get').mockReturnValue(pendingWidth)
+
+      const initialization = initScrollbarOffset()
+      expect(setPropertyMock).not.toHaveBeenCalled()
+
+      resolveWidth(18)
+      await initialization
+
+      expect(setPropertyMock).toHaveBeenCalledWith('--sys-scrollbar-offset', '18px')
+    })
+
+    it('should propagate a measurement failure without writing the CSS custom property', async () => {
+      const error = new Error('Scrollbar measurement failed')
+      vi.spyOn(ScrollbarWidth, 'get').mockRejectedValue(error)
+
+      await expect(initScrollbarOffset()).rejects.toBe(error)
+
+      expect(setPropertyMock).not.toHaveBeenCalled()
+    })
   })
 
   describe('Boundary values and width variations', () => {

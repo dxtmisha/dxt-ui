@@ -9,6 +9,16 @@ describe('isDifferent', () => {
       expect(isDifferent(objectItem, objectItem)).toBe(false)
     })
 
+    it('should not read properties when both arguments are the same reference', () => {
+      const objectItem = {
+        get value(): never {
+          throw new Error('The reference fast path must not evaluate getters')
+        }
+      }
+
+      expect(isDifferent(objectItem, objectItem)).toBe(false)
+    })
+
     it('should return false for distinct objects with identical properties and values', () => {
       const firstObject = { a: 1, b: 'hello', c: true }
       const secondObject = { a: 1, b: 'hello', c: true }
@@ -111,12 +121,21 @@ describe('isDifferent', () => {
 
   describe('Non-standard data types, arrays, and functions', () => {
     it('should work with arrays representing list items', () => {
-      const firstArray = [1, 2, 3] as unknown as ObjectItem
-      const secondArray = [1, 2, 3] as unknown as ObjectItem
-      const thirdArray = [1, 2, 4] as unknown as ObjectItem
+      const firstArray = [1, 2, 3]
+      const secondArray = [1, 2, 3]
+      const thirdArray = [1, 2, 4]
 
       expect(isDifferent(firstArray, secondArray)).toBe(false)
       expect(isDifferent(firstArray, thirdArray)).toBe(true)
+    })
+
+    it('should accept readonly arrays and compare their own indexed values', () => {
+      const values: readonly number[] = [0, 1, 2]
+      const sameValues: readonly number[] = [0, 1, 2]
+      const differentValues: readonly number[] = [0, 1, 3]
+
+      expect(isDifferent(values, sameValues)).toBe(false)
+      expect(isDifferent(values, differentValues)).toBe(true)
     })
 
     it('should compare function properties by reference', () => {

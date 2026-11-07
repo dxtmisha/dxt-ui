@@ -2,14 +2,14 @@ import { random } from './random'
 import { strFill } from './strFill'
 
 /**
- * Generates text.
+ * Generates placeholder words by repeating a value and joining the words with spaces.
  *
- * Генерирует текст.
- * @param min minimum word / минимальное слово
- * @param max maximum word / максимальное слово
- * @param symbol symbol for replacing a letter / символ для замены буквы
- * @param lengthMin minimum word length / минимальная длина слова
- * @param lengthMax maximum word length / максимальная длина слова
+ * Генерирует слова-заглушки повторением значения и соединяет их пробелами.
+ * @param min minimum word count / минимальное количество слов
+ * @param max maximum word count / максимальное количество слов
+ * @param symbol value repeated within each word / значение для повторения внутри каждого слова
+ * @param lengthMin minimum repetitions per word / минимальное количество повторений в слове
+ * @param lengthMax maximum repetitions per word / максимальное количество повторений в слове
  * @returns generated text / сгенерированный текст
  */
 export function getRandomText(

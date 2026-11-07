@@ -8,12 +8,14 @@ Tạo một chuỗi bao gồm số lượng ngẫu nhiên các "từ". Từ ở 
 
 Hàm này được xây dựng dựa trên các tiện ích `random` (để lấy ngẫu nhiên các giá trị số) và `strFill` (để lặp ký tự theo độ dài thành một từ).
 
+Mỗi từ lặp lại biểu diễn chuỗi của `symbol`; các giới hạn độ dài là số lần lặp. Với giá trị nhiều ký tự như `'ab'`, ba lần lặp tạo ra `'ababab'`. Symbol null tạo các từ rỗng nhưng vẫn giữ dấu cách phân tách. Symbol undefined dùng giá trị mặc định `'#'`.
+
 **Tham số:**
 - `min?: number` — (Tùy chọn) Số lượng từ tối thiểu của chuỗi trả về. Mặc định là `1`.
 - `max?: number` — (Tùy chọn) Số lượng từ tối đa của chuỗi trả về. Mặc định là `10`.
-- `symbol?: string` — (Tùy chọn) Ký tự sẽ được dùng để tạo thành chữ. Mặc định là `'#'`.
-- `lengthMin?: number` — (Tùy chọn) Chiều dài tối thiểu một từ. Mặc định là `2`.
-- `lengthMax?: number` — (Tùy chọn) Chiều dài tối đa của một từ. Mặc định là `12`.
+- `symbol?: unknown` — (Tùy chọn) Giá trị được lặp trong mỗi từ và chuyển đổi qua `strFill`. Mặc định là `'#'`.
+- `lengthMin?: number` — (Tùy chọn) Số lần lặp tối thiểu trong mỗi từ. Mặc định là `2`.
+- `lengthMax?: number` — (Tùy chọn) Số lần lặp tối đa trong mỗi từ. Mặc định là `12`.
 
 **Trả về:**
 `string` — Một chuỗi được tạo bằng các từ cách nhau bởi khoảng trắng.

@@ -16,6 +16,12 @@ describe('strFill', () => {
   })
 
   describe('Boundary values and count thresholds', () => {
+    it('should default to zero repetitions when count is omitted or undefined', () => {
+      expect(strFill()).toBe('')
+      expect(strFill('value')).toBe('')
+      expect(strFill('value', undefined)).toBe('')
+    })
+
     it('should return an empty string when count is 0', () => {
       expect(strFill('a', 0)).toBe('')
       expect(strFill('hello', 0)).toBe('')
@@ -25,17 +31,30 @@ describe('strFill', () => {
       expect(strFill('single', 1)).toBe('single')
     })
 
-    it('should truncate positive floating-point counts to integer repeat count', () => {
+    it('should truncate fractional counts toward zero', () => {
       expect(strFill('x', 3.9)).toBe('xxx')
+      expect(strFill('x', 0.9)).toBe('')
+      expect(strFill('x', -0.9)).toBe('')
     })
 
-    it('should throw RangeError when count is negative or Infinity', () => {
+    it('should treat NaN and negative zero counts as zero repetitions', () => {
+      expect(strFill('x', Number.NaN)).toBe('')
+      expect(strFill('x', -0)).toBe('')
+    })
+
+    it('should throw RangeError for negative integer or infinite counts', () => {
       expect(() => strFill('a', -1)).toThrow(RangeError)
       expect(() => strFill('a', Number.POSITIVE_INFINITY)).toThrow(RangeError)
+      expect(() => strFill('a', Number.NEGATIVE_INFINITY)).toThrow(RangeError)
     })
   })
 
   describe('Empty, whitespace-only, and coerced inputs', () => {
+    it('should normalize nullish values to an empty string before repeating', () => {
+      expect(strFill(null, 3)).toBe('')
+      expect(strFill(undefined, 3)).toBe('')
+    })
+
     it('should return an empty string when filling an empty string with any valid count', () => {
       expect(strFill('', 0)).toBe('')
       expect(strFill('', 10)).toBe('')
@@ -50,6 +69,8 @@ describe('strFill', () => {
     it('should coerce non-string runtime values via String()', () => {
       expect(strFill(7, 3)).toBe('777')
       expect(strFill(true, 2)).toBe('truetrue')
+      expect(strFill(0, 2)).toBe('00')
+      expect(strFill(false, 2)).toBe('falsefalse')
     })
   })
 

@@ -4,13 +4,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isFloat`
 
-Checks if the value is an integer or a floating-point number.
+Accepts finite JavaScript numbers (including integers) and decimal strings after trimming outer whitespace. A string may have a leading `+` or `-`, must contain digits before the decimal point, and must contain digits after it when present.
+
+Strings such as `'1e3'`, `'0x10'`, `'.5'`, and `'1.'` are rejected, as are `NaN`, infinities, and bigint values. String validation checks the decimal syntax without converting it to a number.
 
 **Parameters:**
 - `value?: unknown` — values for checking.
 
 **Returns:**
-`boolean` — `true` if the value is a number or a string representation of a number, otherwise `false`.
+`boolean` — `true` for a finite number or a decimal string matching the grammar above; otherwise `false`.
 
 ```typescript
 import { isFloat } from '@dxtmisha/functional-basic'

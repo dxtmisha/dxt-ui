@@ -8,12 +8,14 @@ Generates a string consisting of a random number of "words". A word is defined a
 
 It relies on the `random` (for choosing random numbers) and `strFill` (for repeating the symbol) utility functions.
 
+Each word repeats the string representation of `symbol`; the length bounds specify repetition counts. For a multi-character value such as `'ab'`, three repetitions produce `'ababab'`. A null symbol produces empty words, which still retain separator spaces. An undefined symbol uses the default `'#'`.
+
 **Parameters:**
 - `min?: number` — (Optional) Minimum number of words in the resulting string. Defaults to `1`.
 - `max?: number` — (Optional) Maximum number of words in the resulting string. Defaults to `10`.
-- `symbol?: string` — (Optional) The character used to construct the generated words. Defaults to `'#'`.
-- `lengthMin?: number` — (Optional) Minimum length of a single word. Defaults to `2`.
-- `lengthMax?: number` — (Optional) Maximum length of a single word. Defaults to `12`.
+- `symbol?: unknown` — (Optional) The value repeated within each word, converted by `strFill`. Defaults to `'#'`.
+- `lengthMin?: number` — (Optional) Minimum repetitions per word. Defaults to `2`.
+- `lengthMax?: number` — (Optional) Maximum repetitions per word. Defaults to `12`.
 
 **Returns:**
 `string` — A string of space-separated generated words.

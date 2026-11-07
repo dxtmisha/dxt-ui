@@ -7,6 +7,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Вызывает встроенный механизм обмена данными мобильного устройства или операционной системы через Web Share API (`navigator.share`).
 Внутри автоматически проверяет поддержку через `isShare()` и `navigator.canShare(data)` перед вызовом `navigator.share(data)`. При возникновении ошибки событие передается в `ErrorCenter` (`group: 'share'`, `code: 'error'`).
 
+Требуются оба метода: `share` и `canShare`. Отсутствующие данные, неподдерживаемые API или отклонение данных через `canShare` дают `false` без вызова `share`. Отклонённый вызов `share`, включая отмену пользователем, передаётся в `ErrorCenter` и возвращает `false`.
+
 **Параметры:**
 - `data?: ShareData | null` — Объект, содержащий данные для обмена (`title`, `text`, `url`, `files`). Безопасно обрабатывает `null` и `undefined`.
 

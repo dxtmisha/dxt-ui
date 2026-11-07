@@ -4,16 +4,18 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getObjectNoUndefined`
 
-Tạo và trả về một đối tượng mới bao gồm các thuộc tính từ đối tượng hoặc mảng gốc có giá trị **không bằng** giá trị ngoại lệ (so sánh nghiệm ngặt tuyệt đối). Theo mặc định, giá trị ngoại lệ là `undefined`.
+Tạo và trả về một đối tượng mới gồm các thuộc tính riêng có thể liệt kê với khóa chuỗi và giá trị không khớp với giá trị ngoại lệ. Mặc định, giá trị ngoại lệ là `undefined`. `NaN` khớp với `NaN`; số không dương và số không âm được xem là bằng nhau.
 
 Hàm này thường được dùng để dọn dẹp dữ liệu trước khi gửi tới máy chủ hoặc để chuẩn hóa các đối tượng. Khi bạn truyền vào một mảng, các chỉ số của mảng sẽ được chuyển dạng thành khóa (key) kiểu chuỗi trong kết quả trả về.
 
+Các khóa dành riêng `__proto__`, `constructor` và `prototype` luôn bị loại bỏ để bảo vệ prototype của kết quả. Đầu vào bị bỏ qua, nullish hoặc không phải đối tượng trả về một đối tượng thông thường rỗng. Hàm lọc nông và giữ nguyên tham chiếu lồng nhau.
+
 **Tham số:**
-- `data: T | readonly V[]` — Đối tượng hoặc mảng nguồn (trong đó `T extends Record<PropertyKey, unknown>`).
+- `data?: T` — Giá trị nguồn; hỗ trợ đối tượng và mảng readonly.
 - `exception?: unknown` — (Tùy chọn) Giá trị sẽ khiến thuộc tính mang nó bị loại bỏ (so sánh qua `Object.is` và so sánh khác nghiêm ngặt). Mặc định là `undefined`.
 
 **Trả về:**
-`T | Record<number, V>` — Một đối tượng mới đã được loại bỏ các thuộc tính chứa giá trị ngoại lệ được chỉ định.
+`R` — Đối tượng mới không có khóa dành riêng hoặc giá trị khớp. Theo mặc định, mảng suy ra `Record<number, V>`, đối tượng record giữ kiểu `T`, các giá trị khác suy ra `Record<PropertyKey, unknown>`. Kết quả luôn là đối tượng, kể cả khi đầu vào là mảng.
 
 ```typescript
 import { getObjectNoUndefined } from '@dxtmisha/functional-basic'

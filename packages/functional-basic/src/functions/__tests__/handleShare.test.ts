@@ -36,6 +36,18 @@ describe('handleShare', () => {
       expect(navigator.share).toHaveBeenCalledWith(shareData)
     })
 
+    it('should pass files unchanged when the browser accepts the payload', async () => {
+      const file = new File(['Shared content'], 'shared.txt', { type: 'text/plain' })
+      const shareData: ShareData = { files: [file] }
+      vi.mocked(navigator.canShare).mockReturnValue(true)
+      vi.mocked(navigator.share).mockResolvedValue(undefined)
+
+      expect(await handleShare(shareData)).toBe(true)
+      expect(navigator.canShare).toHaveBeenCalledWith(shareData)
+      expect(navigator.share).toHaveBeenCalledWith(shareData)
+      expect(shareData.files?.[0]).toBe(file)
+    })
+
     it('should support partial ShareData payloads (only url, only text, or only title)', async () => {
       vi.mocked(navigator.canShare).mockReturnValue(true)
       vi.mocked(navigator.share).mockResolvedValue(undefined)
@@ -79,6 +91,7 @@ describe('handleShare', () => {
     })
 
     it('should return false if navigator.canShare returns false for the given data', async () => {
+      const errorSpy = vi.spyOn(ErrorCenter, 'on').mockImplementation(() => {})
       const shareData: ShareData = { title: 'Unsupported payload' }
       vi.mocked(navigator.canShare).mockReturnValue(false)
 
@@ -87,6 +100,7 @@ describe('handleShare', () => {
       expect(result).toBe(false)
       expect(navigator.canShare).toHaveBeenCalledWith(shareData)
       expect(navigator.share).not.toHaveBeenCalled()
+      expect(errorSpy).not.toHaveBeenCalled()
     })
 
     it('should return false safely when data is undefined or null', async () => {

@@ -70,7 +70,8 @@ export class ImageData {
   ) {
     this.image = computedAsync<ImageEventItem>(
       () => this.init(),
-      () => this.initSsr()
+      () => this.initSsr(),
+      null as unknown as ImageEventItem
     )
   }
 

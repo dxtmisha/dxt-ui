@@ -48,6 +48,23 @@ export class ImageCoordinator {
   }
 
   /**
+   * Returns the values for the background-size property.
+   *
+   * Возвращает значения для свойства background-size.
+   * @returns background sizes as percentage strings / размеры фона в виде процентных строк
+   */
+  get backgroundSize(): ImageSize<string> {
+    const item = this.size
+    const width = item.width === 0 ? 100 : item.width
+    const height = item.height === 0 ? 100 : item.height
+
+    return {
+      width: `${100 / width * 100}%`,
+      height: `${100 / height * 100}%`
+    }
+  }
+
+  /**
    * Returns coordinates normalized to four values between 0 and 100.
    *
    * Возвращает координаты, нормализованные до четырех значений в диапазоне от 0 до 100.
@@ -80,23 +97,6 @@ export class ImageCoordinator {
     return {
       width: 100 - coordinator[1] - coordinator[3],
       height: 100 - coordinator[2] - coordinator[0]
-    }
-  }
-
-  /**
-   * Returns the values for the background-size property.
-   *
-   * Возвращает значения для свойства background-size.
-   * @returns background sizes as percentage strings / размеры фона в виде процентных строк
-   */
-  get backgroundSize(): ImageSize<string> {
-    const item = this.size
-    const width = item.width === 0 ? 100 : item.width
-    const height = item.height === 0 ? 100 : item.height
-
-    return {
-      width: `${100 / width * 100}%`,
-      height: `${100 / height * 100}%`
     }
   }
 

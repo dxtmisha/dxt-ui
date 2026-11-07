@@ -49,6 +49,13 @@ describe('getStepPercent', () => {
   })
 
   describe('Default and nullish min handling', () => {
+    it('should return 0 when the maximum is omitted, undefined, or null', () => {
+      expect(getStepPercent()).toBe(0)
+      expect(getStepPercent(0)).toBe(0)
+      expect(getStepPercent(0, undefined)).toBe(0)
+      expect(getStepPercent(0, null)).toBe(0)
+    })
+
     it('should fallback to min = 0 when min is undefined', () => {
       expect(getStepPercent(undefined, 20)).toBe(5)
       expect(getStepPercent(undefined, 100)).toBe(1)

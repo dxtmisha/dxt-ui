@@ -208,6 +208,21 @@ describe('ImageData', () => {
       expect(emits).not.toHaveBeenCalled()
     })
 
+    it('should clear image.value to undefined when props.value is reset after decoding', async () => {
+      const props = reactive<ImageProps>({ value: '/photo.png' })
+      const fixture = mountImageGraph(props)
+
+      await flushUpdates()
+      loadImage(browser.images[0]!, 400, 300)
+      await flushUpdates()
+      expect(fixture.item.data.isImage()).toBe(true)
+
+      props.value = undefined
+      await flushUpdates()
+      expect(fixture.item.data.image.value).toBeUndefined()
+      expect(fixture.item.data.is()).toBe(false)
+    })
+
     it('should report source processing exceptions to ErrorCenter and recover on the next source', async () => {
       const failure = new Error('source processing failed')
       vi.spyOn(ImageFile, 'createImage').mockRejectedValueOnce(failure)

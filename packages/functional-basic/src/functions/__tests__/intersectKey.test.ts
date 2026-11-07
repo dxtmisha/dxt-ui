@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { intersectKey } from '../intersectKey'
 
 describe('intersectKey', () => {
@@ -22,6 +22,15 @@ describe('intersectKey', () => {
       const comparison = { a: 10, b: 20, c: 30 }
 
       expect(intersectKey(data, comparison)).toEqual({ a: 1 })
+    })
+
+    it('should preserve the selected property types for ordinary records', () => {
+      const data = { id: 1, title: 'entry', ignored: true }
+      const comparison = { id: false, title: null }
+      const result = intersectKey(data, comparison)
+
+      expectTypeOf(result).toEqualTypeOf<{ id: number, title: string }>()
+      expect(result).toEqual({ id: 1, title: 'entry' })
     })
 
     it('should preserve values of different types correctly without mutation', () => {
@@ -53,6 +62,56 @@ describe('intersectKey', () => {
   })
 
   describe('Prototype pollution protection (Security & Correctness)', () => {
+    it('should keep the result prototype unchanged for matching JSON __proto__ keys', () => {
+      const data = JSON.parse('{"safe":"keep","__proto__":{"isAdmin":true}}') as Record<string, unknown>
+      const comparison = JSON.parse('{"safe":null,"__proto__":null}') as Record<string, unknown>
+      const result = intersectKey(data, comparison)
+
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype)
+      expect(result).toEqual({ safe: 'keep' })
+      expect(Object.hasOwn(result, '__proto__')).toBe(false)
+      expect('isAdmin' in result).toBe(false)
+      expect(Object.getPrototypeOf(data)).toBe(Object.prototype)
+      expect(Object.hasOwn(Object.prototype, 'isAdmin')).toBe(false)
+    })
+
+    it('should exclude constructor and prototype under the shared prototype-key policy', () => {
+      const data = { safe: 0, constructor: { sensitive: true }, prototype: 'blocked' }
+      const comparison = { safe: false, constructor: true, prototype: true }
+      const result = intersectKey(data, comparison)
+
+      expect(result).toEqual({ safe: 0 })
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype)
+      expect(Object.hasOwn(result, 'constructor')).toBe(false)
+      expect(Object.hasOwn(result, 'prototype')).toBe(false)
+    })
+
+    it('should block matching __proto__ keys from null-prototype dictionaries', () => {
+      const data = Object.create(null) as Record<string, unknown>
+      const comparison = Object.create(null) as Record<string, unknown>
+      data.__proto__ = { inherited: true }
+      data.safe = false
+      comparison.__proto__ = true
+      comparison.safe = null
+      const result = intersectKey(data, comparison)
+
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype)
+      expect(result).toEqual({ safe: false })
+      expect(Object.hasOwn(result, '__proto__')).toBe(false)
+      expect('inherited' in result).toBe(false)
+    })
+
+    it('should preserve other own prototype-named keys, undefined values, and nested references', () => {
+      const nested = { active: true }
+      const data = { toString: 'own', valueOf: false, absent: undefined, nested }
+      const comparison = { toString: null, valueOf: 0, absent: true, nested: true }
+      const result = intersectKey(data, comparison)
+
+      expect(result).toEqual(data)
+      expect(result.nested).toBe(nested)
+      expect(Object.hasOwn(result, 'absent')).toBe(true)
+    })
+
     it('should NOT intersect with Object.prototype properties (toString, valueOf, constructor) when they are not own properties', () => {
       const data = {
         a: 1,
@@ -82,11 +141,46 @@ describe('intersectKey', () => {
       expect(intersectKey(data, comparison)).toEqual({ 0: 'apple', 1: 'banana' })
     })
 
+    it('should infer a plain numeric-keyed object for array data', () => {
+      const result = intersectKey(['first', 'second'], { 0: true })
+
+      expectTypeOf(result).toEqualTypeOf<Partial<Record<number, string>>>()
+      expectTypeOf<keyof typeof result>().toEqualTypeOf<number>()
+      expect(result).toEqual({ 0: 'first' })
+      expect(Array.isArray(result)).toBe(false)
+    })
+
+    it('should support readonly tuple data without returning array methods', () => {
+      const data = ['first', 'second'] as const
+      const comparison = [true] as const
+      const result = intersectKey(data, comparison)
+
+      expectTypeOf(result).toEqualTypeOf<Partial<Record<number, 'first' | 'second'>>>()
+      expectTypeOf<keyof typeof result>().toEqualTypeOf<number>()
+      expect(result).toEqual({ 0: 'first' })
+      expect(Array.isArray(result)).toBe(false)
+    })
+
     it('should not match non-index array prototype properties', () => {
       const data = { slice: 'test', 0: 'first' }
       const comparison = ['zero', 'one']
+      const result = intersectKey(data, comparison)
 
-      expect(intersectKey(data, comparison)).toEqual({ 0: 'first' })
+      expectTypeOf(result.slice).toEqualTypeOf<string | undefined>()
+      expectTypeOf(result[0]).toEqualTypeOf<string | undefined>()
+      expect(result).toEqual({ 0: 'first' })
+      expect(Object.hasOwn(result, 'slice')).toBe(false)
+    })
+
+    it('should support readonly comparison arrays with conservative record property types', () => {
+      const data = { slice: 'test', 0: 'first', 1: 'second' }
+      const comparison = ['zero'] as const
+      const result = intersectKey(data, comparison)
+
+      expectTypeOf(result.slice).toEqualTypeOf<string | undefined>()
+      expectTypeOf(result[0]).toEqualTypeOf<string | undefined>()
+      expectTypeOf(result[1]).toEqualTypeOf<string | undefined>()
+      expect(result).toEqual({ 0: 'first' })
     })
   })
 

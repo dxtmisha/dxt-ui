@@ -114,16 +114,6 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Sets list of elements currently being calculated.
-   *
-   * Устанавливает список элементов, рассчитываемых в данный момент.
-   * @param value array of adaptive items / массив адаптивных элементов
-   */
-  protected static set objectsAdaptive(value: ImageAdaptiveItem[]) {
-    this.storage.objectsAdaptive = value
-  }
-
-  /**
    * Returns a request-isolated storage object from ServerStorage.
    *
    * Возвращает изолированный в рамках запроса объект хранилища из ServerStorage.
@@ -144,6 +134,16 @@ export class ImageAdaptiveGroup {
    */
   protected static get time(): boolean | undefined {
     return this.storage.time
+  }
+
+  /**
+   * Sets list of elements currently being calculated.
+   *
+   * Устанавливает список элементов, рассчитываемых в данный момент.
+   * @param value array of adaptive items / массив адаптивных элементов
+   */
+  protected static set objectsAdaptive(value: ImageAdaptiveItem[]) {
+    this.storage.objectsAdaptive = value
   }
 
   /**

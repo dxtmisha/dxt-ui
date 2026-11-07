@@ -4,17 +4,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `initScrollbarOffset`
 
-Một tiện ích bất đồng bộ giúp tính toán và đo chính xác chiều rộng mặc định cho thanh cuộn (scrollbar) từ trình duyệt hệ thống; ngay sau đó tự động lưu kết quả này (quy theo đơn vị pixels) thông qua một biến CSS toàn cục `--sys-scrollbar-offset` và đính lên phía trên thẻ gốc `<body>`.
+Đo chiều rộng thanh cuộn qua `ScrollbarWidth.get()` rồi ghi giá trị pixel vào biến CSS `--sys-scrollbar-offset` trên `document.body`.
 
-Con số thiết thực từ độ rộng phần cuốn này được chứng minh là thiết yếu cực độ tại các cấu thành như thẻ modal pop-up, lớp lót chặn che màn hình, hỗ trợ giảm hẳn đi triệu chứng cấu trúc trang giật bắn không mong muốn.
+Giá trị này có thể dùng để bù phần diện tích thanh cuộn chiếm chỗ khi khóa cuộn trang cho một lớp phủ.
 
-Chức năng chính phối hợp trực tiếp kèm thư viện class rẽ hướng `ScrollbarWidth` phụ đính bên cấu trúc hệ điều hành gói functional.
+Nếu không có môi trường DOM hoặc `document.body`, hàm hoàn tất mà không đo hay ghi giá trị; hàm không chờ body xuất hiện. Chiều rộng bằng 0 được ghi thành `0px`, còn giá trị thập phân được giữ nguyên. Lỗi đo làm promise trả về bị từ chối.
 
 **Tham số:**
 Hàm này không tiếp nhận bất kỳ đối số nào.
 
 **Trả về:**
-`Promise<void>` — promise bất đồng bộ hoàn tất sau khi thiết lập biến CSS `--sys-scrollbar-offset` trên `document.body`.
+`Promise<void>` — Hoàn tất sau khi ghi biến CSS hoặc kết thúc sớm khi không có DOM/body. Không trả về giá trị.
 
 ```typescript
 import { initScrollbarOffset } from '@dxtmisha/functional-basic'

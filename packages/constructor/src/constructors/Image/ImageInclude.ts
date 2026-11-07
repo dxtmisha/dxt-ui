@@ -50,8 +50,10 @@ export class ImageInclude extends ComponentIncludeAbstract<
   }
 
   /**
-   * Checks whether the image should be displayed /
-   * Проверяет, нужно ли отображать изображение
+   * Checks whether the image should be displayed.
+   *
+   * Проверяет, нужно ли отображать изображение.
+   * @returns true if the image property is defined / true, если свойство изображения задано
    */
   override get is(): boolean {
     return Boolean(this.getProps().image)

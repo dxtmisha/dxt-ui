@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { ImageLazy } from '../ImageLazy'
 import { browser, flushUpdates, intersect, mountHelper } from './domFixtures'
 import type { ImageProps } from '../props'
@@ -12,6 +12,18 @@ describe('ImageLazy', () => {
       expect(ImageLazy.is({})).toBe(false)
       expect(ImageLazy.is({ lazy: false })).toBe(false)
       expect(ImageLazy.is({ lazy: true })).toBe(true)
+    })
+
+    it('should not initialize observer before onMounted is called', async () => {
+      const element = ref<HTMLElement | undefined>(document.createElement('div'))
+      const props = reactive<ImageProps>({ lazy: true, preloadOffset: '100px' })
+      const lazy = new ImageLazy(props, element)
+
+      props.preloadOffset = '200px'
+      await flushUpdates()
+
+      expect(browser.intersections.every(item => item.targets.size === 0)).toBe(true)
+      expect(lazy.isLazy()).toBe(true)
     })
 
     it('should use 256px fallback rootMargin when preloadOffset is undefined', async () => {

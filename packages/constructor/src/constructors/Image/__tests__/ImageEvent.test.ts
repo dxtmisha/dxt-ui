@@ -9,7 +9,20 @@ import type { ImageType } from '../ImageType'
 
 describe('ImageEvent', () => {
   describe('Standard functional requirements (Happy path)', () => {
-    it('should immediately emit load event when initialized with an image object and re-emit on manual onLoad()', () => {
+    it('should not invoke data() or emits() in constructor before onMounted is called', () => {
+      const emits = vi.fn()
+      const dataGetter = vi.fn()
+      const typeGetter = vi.fn()
+
+      const eventHelper = new ImageEvent(dataGetter, typeGetter, emits)
+
+      expect(eventHelper).toBeDefined()
+      expect(dataGetter).not.toHaveBeenCalled()
+      expect(typeGetter).not.toHaveBeenCalled()
+      expect(emits).not.toHaveBeenCalled()
+    })
+
+    it('should immediately emit load event on onMounted() when initialized with an image object and re-emit on manual onLoad()', () => {
       const emits = vi.fn()
       const typeMock = {
         get: vi.fn().mockReturnValue(ImageTypeValue.image)
@@ -22,6 +35,7 @@ describe('ImageEvent', () => {
       } as unknown as ImageData
 
       const eventHelper = new ImageEvent(() => dataMock, () => typeMock, emits)
+      eventHelper.onMounted()
 
       expect(emits).toHaveBeenCalledExactlyOnceWith('load', {
         type: ImageTypeValue.image,
@@ -37,7 +51,7 @@ describe('ImageEvent', () => {
       })
     })
 
-    it('should automatically emit load event when watched data.image updates to an object', async () => {
+    it('should automatically emit load event when watched data.image updates to an object after onMounted()', async () => {
       const emits = vi.fn()
       const currentType = ref(ImageTypeValue.image)
       const typeMock = {
@@ -50,6 +64,7 @@ describe('ImageEvent', () => {
       } as unknown as ImageData
 
       const helper = new ImageEvent(() => dataMock, () => typeMock, emits)
+      helper.onMounted()
       expect(helper).toBeDefined()
       expect(emits).not.toHaveBeenCalled()
 
@@ -95,6 +110,7 @@ describe('ImageEvent', () => {
       } as unknown as ImageData
 
       const eventHelper = new ImageEvent(() => dataMock, typeGetter, emits)
+      eventHelper.onMounted()
       eventHelper.onLoad()
 
       expect(emits).not.toHaveBeenCalled()
@@ -103,7 +119,7 @@ describe('ImageEvent', () => {
   })
 
   describe('Optional dependency and lifecycle safety', () => {
-    it('should safely execute onLoad when emits callback is undefined', () => {
+    it('should safely execute onMounted and onLoad when emits callback is undefined', () => {
       const typeMock = {
         get: vi.fn().mockReturnValue(ImageTypeValue.image)
       } as unknown as ImageType
@@ -116,6 +132,7 @@ describe('ImageEvent', () => {
 
       const eventHelper = new ImageEvent(() => dataMock, () => typeMock, undefined)
 
+      expect(() => eventHelper.onMounted()).not.toThrow()
       expect(() => eventHelper.onLoad()).not.toThrow()
     })
   })

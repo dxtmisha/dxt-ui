@@ -75,6 +75,16 @@ describe('getMouseClient', () => {
   })
 
   describe('Empty and missing coordinate properties', () => {
+    it('should return the completed touch coordinates when no active touches remain', () => {
+      const event = {
+        targetTouches: [],
+        touches: [],
+        changedTouches: [{ clientX: 77, clientY: 88 }]
+      } as unknown as TouchEvent
+
+      expect(getMouseClient(event)).toEqual({ x: 77, y: 88 })
+    })
+
     it('should default to { x: 0, y: 0 } when event is null or undefined', () => {
       expect(getMouseClient()).toEqual({ x: 0, y: 0 })
       expect(getMouseClient(null)).toEqual({ x: 0, y: 0 })

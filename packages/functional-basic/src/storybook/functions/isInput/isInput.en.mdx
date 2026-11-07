@@ -4,7 +4,9 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # `isInput`
 
-Checks if the element is an input field (`input`, `textarea`, `select`) or an element with the `contenteditable` attribute.
+Checks whether an `HTMLElement` is an input field (`input`, `textarea`, `select`) or editable content. An explicit `contenteditable="false"` does not make an ordinary element editable; empty or `"true"` attributes are supported, as is the browser's `isContentEditable` state.
+
+Returns `false` in SSR and for arbitrary values, non-HTML nodes, or non-editable HTML elements. By default, truthy `disabled` or `readOnly` properties exclude the element. Passing `true` as the second argument bypasses only these property checks; it does not make a non-input element qualify.
 
 **Parameters:**
 - `element?: unknown` — the element or value to check.

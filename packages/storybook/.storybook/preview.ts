@@ -1,7 +1,8 @@
 import type { Preview } from '@storybook/vue3-vite'
-import { Geo } from '@dxtmisha/functional'
+import { Geo, Icons } from '@dxtmisha/functional'
 import { d1MakeIcons } from '@dxtmisha/d1/media'
 import { registerFileIcons } from '@dxtmisha/media/files'
+import { UsSvg, VnSvg } from '@dxtmisha/media/flags'
 import { registerSocialIcons } from '@dxtmisha/media/socials'
 
 import '@dxtmisha/wiki/storybook/styles'
@@ -12,6 +13,8 @@ Geo.set('ru-RU')
 d1MakeIcons()
 registerFileIcons()
 registerSocialIcons()
+Icons.add('flag-us', UsSvg)
+Icons.add('flag-vn', VnSvg)
 
 const preview: Preview = {
   parameters: {

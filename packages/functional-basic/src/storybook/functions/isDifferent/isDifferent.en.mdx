@@ -4,13 +4,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isDifferent`
 
-Performs a shallow comparison to determine if two provided objects differ from each other. 
+Performs a shallow comparison of objects or mutable/readonly arrays.
 
-The function first executes a fast referential equality check $O(1)$. If the references differ, it compares the number of own keys in both objects. If the key counts match, it verifies key ownership in the comparison object and checks property equality using `Object.is` semantics (handling `NaN` correctly and distinguishing missing keys from `undefined` values).
+The function first executes a fast referential equality check $O(1)$. If the references differ, it compares their own enumerable string keys. Symbols and non-enumerable properties are ignored. Matching keys are checked with `Object.is`: `NaN` equals `NaN`, while `+0` differs from `-0`. Nested objects and functions are compared by reference. Missing keys differ from present keys with `undefined` values.
+
+Equal nullish inputs return `false`; `null` and `undefined` differ from each other and from objects or arrays.
 
 **Parameters:**
-- `value?: ObjectItem<T> | null` — The current (new) object or data entity being evaluated.
-- `old?: ObjectItem<T> | null` — The previous (old) reference object to compare against.
+- `value?: ObjectItem<T> | readonly T[] | null` — The current object or array.
+- `old?: ObjectItem<T> | readonly T[] | null` — The previous object or array.
 
 **Returns:**
 `boolean` — Returns `true` if differences are detected between the objects (by property count, key presence, or value inequality), or `false` if they are identical.
@@ -26,6 +28,6 @@ console.log(isDifferent(newState, oldState)) // true
 
 const sameState = { id: 1, active: false }
 
-// Objects are completely identical
+// Own enumerable keys and their values match
 console.log(isDifferent(sameState, oldState)) // false
 ```

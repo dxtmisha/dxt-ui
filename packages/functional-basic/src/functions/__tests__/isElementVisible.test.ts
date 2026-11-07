@@ -108,12 +108,72 @@ describe('isElementVisible', () => {
 
     it('should return false if an element has opacity: 0', () => {
       const div = document.createElement('div')
+      Object.defineProperty(div, 'checkVisibility', { value: undefined, configurable: true })
       Object.defineProperty(div, 'offsetWidth', { value: 100, configurable: true })
       Object.defineProperty(div, 'offsetHeight', { value: 100, configurable: true })
       div.style.opacity = '0'
       container.appendChild(div)
 
       expect(isElementVisible(div)).toBe(false)
+    })
+
+    it('should reject a child with opacity 1 when its ordinary parent has opacity 0', () => {
+      container.style.opacity = '0'
+      const element = document.createElement('button')
+      element.style.opacity = '1'
+      Object.defineProperties(element, {
+        checkVisibility: { value: undefined, configurable: true },
+        offsetWidth: { value: 100, configurable: true },
+        offsetHeight: { value: 30, configurable: true }
+      })
+      container.appendChild(element)
+
+      expect(isElementVisible(element)).toBe(false)
+    })
+
+    it('should inspect opacity through more than one ordinary ancestor', () => {
+      container.style.opacity = '0'
+      const parentElement = document.createElement('div')
+      parentElement.style.opacity = '1'
+      const element = document.createElement('button')
+      element.style.opacity = '1'
+      Object.defineProperties(element, {
+        checkVisibility: { value: undefined, configurable: true },
+        offsetWidth: { value: 100, configurable: true },
+        offsetHeight: { value: 30, configurable: true }
+      })
+      parentElement.appendChild(element)
+      container.appendChild(parentElement)
+
+      expect(isElementVisible(element)).toBe(false)
+    })
+
+    it('should preserve visibility under a partially transparent ordinary ancestor', () => {
+      container.style.opacity = '0.5'
+      const element = document.createElement('button')
+      element.style.opacity = '1'
+      Object.defineProperties(element, {
+        checkVisibility: { value: undefined, configurable: true },
+        offsetWidth: { value: 100, configurable: true },
+        offsetHeight: { value: 30, configurable: true }
+      })
+      container.appendChild(element)
+
+      expect(isElementVisible(element)).toBe(true)
+    })
+
+    it('should allow a child to override an ordinary ancestor visibility with visible', () => {
+      container.style.visibility = 'hidden'
+      const element = document.createElement('button')
+      element.style.visibility = 'visible'
+      Object.defineProperties(element, {
+        checkVisibility: { value: undefined, configurable: true },
+        offsetWidth: { value: 100, configurable: true },
+        offsetHeight: { value: 30, configurable: true }
+      })
+      container.appendChild(element)
+
+      expect(isElementVisible(element)).toBe(true)
     })
 
     it('should return true if an element has partial opacity (e.g. 0.5)', () => {

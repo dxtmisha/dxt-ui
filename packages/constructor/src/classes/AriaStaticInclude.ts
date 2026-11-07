@@ -10,27 +10,27 @@ import type { RoleType } from '../types/roleTypes'
  */
 export class AriaStaticInclude {
   /**
-   * Returns the ARIA role attribute defining the semantic purpose, role, or widget type of the element in the accessibility tree.
+   * Converts a boolean value to an ARIA-compliant string literal ('true' or 'false').
    *
-   * Возвращает атрибут ARIA role, определяющий смысловое назначение, роль или тип виджета элемента в дереве доступности.
-   * @param role ARIA role type / Тип ARIA роли
-   * @returns ARIA attributes object / Объект ARIA атрибутов
+   * Преобразует булево значение в строковый литерал ('true' или 'false'), соответствующий спецификации ARIA.
+   * @param value boolean value to convert / преобразуемое булево значение
+   * @returns string 'true' or 'false', or undefined / строка 'true', 'false' или undefined
    */
-  static role(role?: RoleType): AriaList {
-    return {
-      role
-    }
+  static isTrueOrFalse(value?: boolean): AriaTrueOrFalse | undefined {
+    return value ? 'true' : 'false'
   }
 
   /**
-   * Returns the ARIA roledescription attribute defining a human-readable, author-localized description for the element role.
+   * Returns the ARIA modal attribute indicating whether the element is modal, restricting focus and accessibility navigation to its contents.
    *
-   * Возвращает атрибут ARIA roledescription, определяющий понятное человеку и локализованное описание роли элемента.
-   * @param roledescription human-readable role description / понятное человеку описание роли
+   * Возвращает атрибут ARIA modal, указывающий, является ли элемент модальным, ограничивая фокус и навигацию доступности его содержимым.
+   * @param isModal whether the element is modal / является ли элемент модальным
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */
-  static roledescription(roledescription?: string): AriaList {
-    return this.isDataToData('aria-roledescription', roledescription)
+  static ariaModal(
+    isModal: boolean = true
+  ): AriaList {
+    return this.isDataToData('aria-modal', isModal)
   }
 
   /**
@@ -47,6 +47,19 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Returns the ARIA busy attribute indicating an element is currently being modified, signaling assistive technologies to wait before reading changes.
+   *
+   * Возвращает атрибут ARIA busy, указывающий, что элемент в данный момент изменяется, сообщая вспомогательным технологиям подождать перед чтением изменений.
+   * @param isBusy whether the element is busy / находится ли элемент в процессе обновления
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  static busy(isBusy?: boolean): AriaList {
+    return {
+      'aria-busy': this.isTrueOrFalse(isBusy)
+    }
+  }
+
+  /**
    * Returns the ARIA checked attribute indicating the current checked state of checkboxes, radio buttons, or switches.
    *
    * Возвращает атрибут ARIA checked, указывающий текущее состояние отметки флажков, радиокнопок или переключателей.
@@ -56,6 +69,30 @@ export class AriaStaticInclude {
   static checked(isChecked?: boolean): AriaList {
     return {
       'aria-checked': this.isTrueOrFalse(isChecked)
+    }
+  }
+
+  /**
+   * Generates composite ARIA attributes (id, controls, haspopup, expanded) for interactive controls and trigger elements.
+   *
+   * Формирует составной набор ARIA атрибутов (id, controls, haspopup, expanded) для интерактивных элементов управления.
+   * @param id element identifier / идентификатор элемента
+   * @param controls identifier of the controlled element / идентификатор управляемого элемента
+   * @param haspopup popup type or boolean / тип всплывающего окна или булево значение
+   * @param expanded whether the controlled element is expanded / развернут ли управляемый элемент
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  static control(
+    id?: string,
+    controls?: string,
+    haspopup?: AriaList['aria-haspopup'],
+    expanded?: boolean
+  ): AriaList {
+    return {
+      id,
+      ...this.controls(controls),
+      ...this.haspopup(haspopup),
+      ...this.expanded(expanded)
     }
   }
 
@@ -83,19 +120,6 @@ export class AriaStaticInclude {
       : this.isTrueOrFalse(value)
 
     return this.isDataToData('aria-current', current)
-  }
-
-  /**
-   * Returns the ARIA busy attribute indicating an element is currently being modified, signaling assistive technologies to wait before reading changes.
-   *
-   * Возвращает атрибут ARIA busy, указывающий, что элемент в данный момент изменяется, сообщая вспомогательным технологиям подождать перед чтением изменений.
-   * @param isBusy whether the element is busy / находится ли элемент в процессе обновления
-   * @returns ARIA attributes object / Объект ARIA атрибутов
-   */
-  static busy(isBusy?: boolean): AriaList {
-    return {
-      'aria-busy': this.isTrueOrFalse(isBusy)
-    }
   }
 
   /**
@@ -127,23 +151,6 @@ export class AriaStaticInclude {
   }
 
   /**
-   * Returns the ARIA readonly attribute indicating that the element is not editable, but remains focusable and operable.
-   *
-   * Возвращает атрибут ARIA readonly, указывающий, что элемент не редактируется, но доступен для фокуса и навигации.
-   * @param isReadonly whether the element is read-only / доступен ли элемент только для чтения
-   * @returns ARIA attributes object / Объект ARIA атрибутов
-   */
-  static readonly(isReadonly: boolean = true): AriaList {
-    if (isReadonly) {
-      return {
-        'aria-readonly': this.isTrueOrFalse(isReadonly)
-      }
-    }
-
-    return {}
-  }
-
-  /**
    * Returns the ARIA expanded attribute indicating whether the element or the grouping container it controls is currently expanded or collapsed.
    *
    * Возвращает атрибут ARIA expanded, указывающий, развернут или свернут элемент либо управляемая им группа элементов.
@@ -165,6 +172,38 @@ export class AriaStaticInclude {
    */
   static haspopup(haspopup?: AriaList['aria-haspopup']): AriaList {
     return this.isDataToData('aria-haspopup', haspopup)
+  }
+
+  /**
+   * Returns the ARIA hidden attribute indicating whether the element is hidden from assistive technologies and excluded from the accessibility tree.
+   *
+   * Возвращает атрибут ARIA hidden, указывающий, скрыт ли элемент от вспомогательных технологий и исключен ли из дерева доступности.
+   * @param isHidden whether the element is hidden from accessibility tools / скрыт ли элемент от инструментов доступности
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  static hidden(
+    isHidden: boolean = true
+  ): AriaList {
+    return {
+      'aria-hidden': this.isTrueOrFalse(isHidden)
+    }
+  }
+
+  /**
+   * Returns the ARIA invalid attribute indicating that the entered value does not conform to expected validation rules.
+   *
+   * Возвращает атрибут ARIA invalid, указывающий, что введенное значение не соответствует правилам валидации.
+   * @param isInvalid whether the element value is invalid / является ли значение невалидным
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  static invalid(isInvalid: boolean = true): AriaList {
+    if (isInvalid) {
+      return {
+        'aria-invalid': this.isTrueOrFalse(isInvalid)
+      }
+    }
+
+    return {}
   }
 
   /**
@@ -190,62 +229,6 @@ export class AriaStaticInclude {
   }
 
   /**
-   * Returns the ARIA invalid attribute indicating that the entered value does not conform to expected validation rules.
-   *
-   * Возвращает атрибут ARIA invalid, указывающий, что введенное значение не соответствует правилам валидации.
-   * @param isInvalid whether the element value is invalid / является ли значение невалидным
-   * @returns ARIA attributes object / Объект ARIA атрибутов
-   */
-  static invalid(isInvalid: boolean = true): AriaList {
-    if (isInvalid) {
-      return {
-        'aria-invalid': this.isTrueOrFalse(isInvalid)
-      }
-    }
-
-    return {}
-  }
-
-  /**
-   * Generates composite ARIA attributes (id, controls, haspopup, expanded) for interactive controls and trigger elements.
-   *
-   * Формирует составной набор ARIA атрибутов (id, controls, haspopup, expanded) для интерактивных элементов управления.
-   * @param id element identifier / идентификатор элемента
-   * @param controls identifier of the controlled element / идентификатор управляемого элемента
-   * @param haspopup popup type or boolean / тип всплывающего окна или булево значение
-   * @param expanded whether the controlled element is expanded / развернут ли управляемый элемент
-   * @returns ARIA attributes object / Объект ARIA атрибутов
-   */
-  static control(
-    id?: string,
-    controls?: string,
-    haspopup?: AriaList['aria-haspopup'],
-    expanded?: boolean
-  ): AriaList {
-    return {
-      id,
-      ...this.controls(controls),
-      ...this.haspopup(haspopup),
-      ...this.expanded(expanded)
-    }
-  }
-
-  /**
-   * Returns the ARIA hidden attribute indicating whether the element is hidden from assistive technologies and excluded from the accessibility tree.
-   *
-   * Возвращает атрибут ARIA hidden, указывающий, скрыт ли элемент от вспомогательных технологий и исключен ли из дерева доступности.
-   * @param isHidden whether the element is hidden from accessibility tools / скрыт ли элемент от инструментов доступности
-   * @returns ARIA attributes object / Объект ARIA атрибутов
-   */
-  static hidden(
-    isHidden: boolean = true
-  ): AriaList {
-    return {
-      'aria-hidden': this.isTrueOrFalse(isHidden)
-    }
-  }
-
-  /**
    * Returns the ARIA live attribute indicating that an element updates dynamically and defining the announcement urgency for screen readers.
    *
    * Возвращает атрибут ARIA live, указывающий на динамическое обновление содержимого и определяющий приоритет оповещения скринридером.
@@ -256,19 +239,6 @@ export class AriaStaticInclude {
     live?: AriaList['aria-live']
   ): AriaList {
     return this.isDataToData('aria-live', live)
-  }
-
-  /**
-   * Returns the ARIA modal attribute indicating whether the element is modal, restricting focus and accessibility navigation to its contents.
-   *
-   * Возвращает атрибут ARIA modal, указывающий, является ли элемент модальным, ограничивая фокус и навигацию доступности его содержимым.
-   * @param isModal whether the element is modal / является ли элемент модальным
-   * @returns ARIA attributes object / Объект ARIA атрибутов
-   */
-  static ariaModal(
-    isModal: boolean = true
-  ): AriaList {
-    return this.isDataToData('aria-modal', isModal)
   }
 
   /**
@@ -306,6 +276,58 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Returns the ARIA orientation attribute indicating whether the element layout orientation is horizontal or vertical.
+   *
+   * Возвращает атрибут ARIA orientation, указывающий, является ли пространственная ориентация элемента горизонтальной или вертикальной.
+   * @param orientation element orientation ('horizontal' | 'vertical' | 'undefined') / ориентация элемента ('horizontal' | 'vertical' | 'undefined')
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  static orientation(orientation?: AriaList['aria-orientation']): AriaList {
+    return this.isDataToData('aria-orientation', orientation)
+  }
+
+  /**
+   * Returns the ARIA readonly attribute indicating that the element is not editable, but remains focusable and operable.
+   *
+   * Возвращает атрибут ARIA readonly, указывающий, что элемент не редактируется, но доступен для фокуса и навигации.
+   * @param isReadonly whether the element is read-only / доступен ли элемент только для чтения
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  static readonly(isReadonly: boolean = true): AriaList {
+    if (isReadonly) {
+      return {
+        'aria-readonly': this.isTrueOrFalse(isReadonly)
+      }
+    }
+
+    return {}
+  }
+
+  /**
+   * Returns the ARIA role attribute defining the semantic purpose, role, or widget type of the element in the accessibility tree.
+   *
+   * Возвращает атрибут ARIA role, определяющий смысловое назначение, роль или тип виджета элемента в дереве доступности.
+   * @param role ARIA role type / Тип ARIA роли
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  static role(role?: RoleType): AriaList {
+    return {
+      role
+    }
+  }
+
+  /**
+   * Returns the ARIA roledescription attribute defining a human-readable, author-localized description for the element role.
+   *
+   * Возвращает атрибут ARIA roledescription, определяющий понятное человеку и локализованное описание роли элемента.
+   * @param roledescription human-readable role description / понятное человеку описание роли
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  static roledescription(roledescription?: string): AriaList {
+    return this.isDataToData('aria-roledescription', roledescription)
+  }
+
+  /**
    * Returns the ARIA selected attribute indicating the current selected state of selectable items such as tabs, options, or rows.
    *
    * Возвращает атрибут ARIA selected, указывающий текущее состояние выбора таких элементов, как вкладки, пункты списка или строки.
@@ -334,17 +356,6 @@ export class AriaStaticInclude {
   }
 
   /**
-   * Returns the ARIA orientation attribute indicating whether the element layout orientation is horizontal or vertical.
-   *
-   * Возвращает атрибут ARIA orientation, указывающий, является ли пространственная ориентация элемента горизонтальной или вертикальной.
-   * @param orientation element orientation ('horizontal' | 'vertical' | 'undefined') / ориентация элемента ('horizontal' | 'vertical' | 'undefined')
-   * @returns ARIA attributes object / Объект ARIA атрибутов
-   */
-  static orientation(orientation?: AriaList['aria-orientation']): AriaList {
-    return this.isDataToData('aria-orientation', orientation)
-  }
-
-  /**
    * Returns ARIA range attributes (valuenow, valuemin, valuemax) defining the current, minimum, and maximum values for range widgets.
    *
    * Возвращает ARIA атрибуты диапазона (valuenow, valuemin, valuemax), определяющие текущее, минимальное и максимальное значения для виджетов с диапазоном.
@@ -363,17 +374,6 @@ export class AriaStaticInclude {
       'aria-valuemin': min,
       'aria-valuemax': max
     }
-  }
-
-  /**
-   * Converts a boolean value to an ARIA-compliant string literal ('true' or 'false').
-   *
-   * Преобразует булево значение в строковый литерал ('true' или 'false'), соответствующий спецификации ARIA.
-   * @param value boolean value to convert / преобразуемое булево значение
-   * @returns string 'true' or 'false', or undefined / строка 'true', 'false' или undefined
-   */
-  static isTrueOrFalse(value?: boolean): AriaTrueOrFalse | undefined {
-    return value ? 'true' : 'false'
   }
 
   /**

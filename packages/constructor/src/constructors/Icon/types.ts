@@ -35,7 +35,7 @@ export interface IconExpose extends EventClickExpose {
  */
 export interface IconSlots {
   /** Slot for custom icon content / Слот для пользовательского контента иконки */
-  default?(props: unknown): unknown
+  default?(props: any): any
 }
 
 /**

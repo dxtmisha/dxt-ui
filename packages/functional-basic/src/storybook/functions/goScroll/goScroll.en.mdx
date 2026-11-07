@@ -4,7 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `goScroll`
 
-Quickly scrolls a container to bring a target element into view (scroll-into-view) if it is outside the visible boundary, or centers it relative to a reference element. Scrolling is confined strictly to the container and does not affect outer window scrolling.
+Quickly adjusts the container's vertical scroll position to bring a target element into view (scroll-into-view) if it is outside the visible boundary, or centers it relative to a reference element. Scrolling is confined strictly to the container and does not affect outer window scrolling.
+
+SSR calls, missing target or container elements, unmatched container selectors, and containers without vertical overflow are ignored. `indent` applies to boundary scrolling when `elementCenter` is not provided; centering uses the reference element without this additional spacing.
 
 **Parameters:**
 - `target?: string | HTMLElement | null` — CSS selector to resolve the nearest ancestor container or the scrollable container element itself.

@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getObjectOrNone`
 
-A simple utility that checks whether the passed value is an actual object (not `null`, not an array, not a primitive) and returns it. If the passed argument is not a plain object, a new empty object `{}` is returned. This function is useful for safe variable initialization or parameter assignments.
+A utility that returns a non-array object unchanged, preserving its reference. Empty objects, objects with a null prototype, and class instances such as `Date` are accepted. Arrays, functions, primitives, null, undefined, and an omitted argument produce a new empty object `{}` on each call.
 
 **Parameters:**
 - `value?: T` — Any value, usually expected to be an object.
 
 **Returns:**
-`T & Record<string, unknown>` — The original object if the check passes; otherwise, an empty object `{}`.
+`ObjectOrNoneReturn<T>` — Preserves `T & Record<string, unknown>` for non-array object inputs. Arrays, functions, primitives, nullish values, and an omitted argument use `Record<string, unknown>`, so methods of a rejected input are not exposed as callable methods of the result. Union inputs retain both the preserved-object and fallback possibilities. At runtime, the result is the original non-array object or a new empty object `{}`.
 
 ```typescript
 import { getObjectOrNone } from '@dxtmisha/functional-basic'

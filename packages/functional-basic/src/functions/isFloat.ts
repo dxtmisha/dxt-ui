@@ -1,24 +1,14 @@
-/**
- * Regular expression for checking if the value is an integer or floating-point number.
- *
- * Регулярное выражение для проверки, является ли значение целым или дробным числом.
- */
-const FLOAT_REGEXP = /^[+-]?\d+(\.\d+)?$/
+import { isNumber } from './isNumber'
 
 /**
- * Checks if the value is an integer or a floating-point number.
+ * Checks for finite numbers or trimmed decimal strings, excluding bigint.
+ * Decimal strings require digits before and after any decimal point.
  *
- * Проверяет, является ли значение числом или дробным числом.
- * @param value values for checking / значения для проверки
- * @returns true if number / true, если число
+ * Проверяет конечные числа или десятичные строки после удаления внешних пробелов, исключая bigint.
+ * В десятичных строках обязательны цифры до и после десятичной точки, если она есть.
+ * @param value value to check / проверяемое значение
+ * @returns true for a finite number or decimal string / true для конечного числа или десятичной строки
  */
 export function isFloat(value?: unknown): boolean {
-  switch (typeof value) {
-    case 'number':
-      return Number.isFinite(value)
-    case 'string':
-      return FLOAT_REGEXP.test(value.trim())
-    default:
-      return false
-  }
+  return typeof value !== 'bigint' && isNumber(value)
 }

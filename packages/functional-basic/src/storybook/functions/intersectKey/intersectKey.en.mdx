@@ -4,16 +4,22 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `intersectKey`
 
-Analyzes two objects (or arrays) and returns a new object containing only the properties from the first object whose keys also exist in the second object. The values for the resulting object are extracted from the primary object (`data`). Key presence is verified strictly on own properties (via `hasKey`), preventing false matches from the prototype chain (`toString`, `valueOf`, `constructor`, etc.).
+Analyzes two objects or arrays and returns a new plain object with the keys shared by `data` and the own properties of `comparison` (checked with `hasKey`). Values come from `data`. Objects contribute their own enumerable string keys; arrays contribute their numeric indexes. Inherited properties of `comparison`, such as array methods, do not match.
+
+The keys `__proto__`, `constructor`, and `prototype` are always excluded, even when both inputs define them as own properties. This prevents copying `__proto__` from changing the result's prototype. Other own keys such as `toString` and `valueOf` remain supported. Values, including `undefined`, are copied shallowly.
 
 This function is highly useful for filtering payload data against an allowed schema footprint or synchronizing partial models.
 
 **Parameters:**
-- `data?: T | null` — The primary source object that supplies the final values.
-- `comparison?: C | null` — The reference object whose own keys are used strictly for existence checks.
+- `data?: T | null` — The source record or mutable/readonly array that supplies the values.
+- `comparison?: C | null` — The reference record or mutable/readonly array whose own keys are checked.
 
 **Returns:**
-`Pick<T, Extract<keyof T, keyof C>>` — A newly constructed object containing only intersecting properties with exact type preservation. If arguments are missing or not objects, it returns an empty object `{}`.
+A new plain object; it is never an array. Missing or nullish inputs produce `{}`. Generic constraints admit records and readonly arrays, while primitive inputs remain outside the TypeScript contract.
+
+- Array `data`: `Partial<Record<number, T[number]>>`, without array methods or `length`.
+- Record `data` with array `comparison`: `Partial<Pick<T, Extract<keyof T, keyof C>>>`, because a property may be inherited rather than owned by the array.
+- Two records: `Pick<T, Extract<keyof T, keyof C>>`.
 
 ```typescript
 import { intersectKey } from '@dxtmisha/functional-basic'

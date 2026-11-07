@@ -4,17 +4,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `initScrollbarOffset`
 
-An asynchronous utility configured to calculate the underlying system width of the browser's scrollbar, safely rendering the result (in pixels) securely via the globally attached CSS custom variable named `--sys-scrollbar-offset` appended dynamically onto `<body>`.
+Measures scrollbar width through `ScrollbarWidth.get()` and writes the pixel value to the `--sys-scrollbar-offset` CSS custom property on `document.body`.
 
-Dedicating precise numbers for system scrollbar sizing is an imperative design layer for constructing elegant modal overlays, flyouts, and body-scrolling locks without the page layout aggressively jumping back and forth. Resolving this size limits layout shift jitter.
+The value can be used to compensate for the space occupied by a scrollbar when locking page scrolling for an overlay.
 
-The function closely synchronizes with the `ScrollbarWidth` logic mapping internal to this package for the execution heavy-lifting.
+Outside a DOM runtime, or when `document.body` is unavailable, the function resolves without measuring or writing. It does not wait for the body to appear. Zero-width scrollbars produce `0px`; fractional measurements are preserved. Measurement failures reject the returned promise.
 
 **Parameters:**
 This function does not accept any arguments.
 
 **Returns:**
-`Promise<void>` — an asynchronous promise that resolves once the `--sys-scrollbar-offset` CSS custom property has been set on `document.body`.
+`Promise<void>` — Resolves after the CSS property is written or after an early exit without a DOM/body. No value is returned.
 
 ```typescript
 import { initScrollbarOffset } from '@dxtmisha/functional-basic'

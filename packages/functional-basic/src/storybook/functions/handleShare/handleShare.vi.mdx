@@ -7,6 +7,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Triệu hồi cơ chế chia sẻ tự nhiên của thiết bị thông qua Web Share API (`navigator.share`).
 Bên trong hàm tự động kiểm tra hỗ trợ bằng `isShare()` và `navigator.canShare(data)` trước khi gọi `navigator.share(data)`. Nếu xảy ra lỗi trong quá trình chia sẻ, lỗi sẽ được chuyển tiếp tới `ErrorCenter` (`group: 'share'`, `code: 'error'`).
 
+Cần có cả `share` và `canShare`. Thiếu dữ liệu, API không được hỗ trợ hoặc dữ liệu bị `canShare` từ chối trả về `false` mà không gọi `share`. Khi `share` bị từ chối, kể cả do người dùng hủy, lỗi được gửi tới `ErrorCenter` và hàm trả về `false`.
+
 **Tham số:**
 - `data?: ShareData | null` — Một đối tượng chứa dữ liệu để chia sẻ (`title`, `text`, `url`, `files`). Xử lý an toàn khi nhận `null` và `undefined`.
 

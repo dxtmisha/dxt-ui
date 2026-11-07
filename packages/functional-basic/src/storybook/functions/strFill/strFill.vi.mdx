@@ -4,11 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `strFill`
 
-Phương thức tạo một chuỗi có độ dài count, bao gồm các ký tự value.
+Trả về biểu diễn chuỗi của `value` được lặp lại `count` lần. `count` là số lần lặp, nên `strFill('ab', 3)` trả về `'ababab'` có độ dài 6.
+
+Giá trị nullish trở thành chuỗi rỗng; các giá trị khác được chuyển đổi bằng `String()`. Số lần lặp mặc định là `0`. Phần thập phân của count bị cắt về phía 0 và `NaN` được coi là `0`. Giống `String.prototype.repeat` gốc, số lần lặp âm sau khi cắt hoặc vô hạn sẽ gây `RangeError`.
 
 **Tham số:**
-- `value?: unknown` — ký tự để điền.
-- `count?: number` — độ dài của chuỗi.
+- `value?: unknown` — giá trị được chuyển đổi thành chuỗi rồi lặp lại; giá trị nullish trở thành `''`.
+- `count?: number` — số lần lặp; mặc định là `0`.
 
 **Trả về:**
 `string` — một chuỗi được điền với giá trị đã chỉ định.

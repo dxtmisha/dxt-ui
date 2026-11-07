@@ -4,13 +4,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isDifferent`
 
-Tiến hành so sánh nông (shallow comparison) để xác định xem hai đối tượng được cung cấp có khác biệt với nhau hay không.
+So sánh nông các đối tượng hoặc mảng có thể thay đổi/readonly.
 
-Hàm trước tiên thực hiện kiểm tra nhanh tính đồng nhất tham chiếu $O(1)$. Nếu các tham chiếu khác nhau, hàm sẽ so sánh số lượng khóa thuộc sở hữu riêng (own keys) của hai đối tượng. Khi số lượng khóa khớp nhau, hàm kiểm tra sự tồn tại của từng khóa và đối chiếu giá trị theo ngữ nghĩa `Object.is` (xử lý chính xác giá trị `NaN` và phân biệt rõ giữa khóa bị thiếu với giá trị `undefined`).
+Hàm kiểm tra nhanh tính đồng nhất tham chiếu $O(1)$ trước. Nếu các tham chiếu khác nhau, hàm so sánh các khóa chuỗi riêng có thể liệt kê. Symbol và thuộc tính không thể liệt kê bị bỏ qua. Giá trị của các khóa khớp nhau được so sánh bằng `Object.is`: `NaN` bằng `NaN`, còn `+0` khác `-0`. Đối tượng lồng nhau và hàm được so sánh theo tham chiếu. Khóa bị thiếu khác với khóa tồn tại có giá trị `undefined`.
+
+Hai đầu vào nullish giống nhau trả về `false`; `null` khác `undefined`, đối tượng và mảng.
 
 **Tham số:**
-- `value?: ObjectItem<T> | null` — Đối tượng chính (dữ liệu mới) được đem ra làm chủ thể xác nhận.
-- `old?: ObjectItem<T> | null` — Đối tượng tham chiếu (yếu tố lấy dữ liệu cũ).
+- `value?: ObjectItem<T> | readonly T[] | null` — Đối tượng hoặc mảng hiện tại.
+- `old?: ObjectItem<T> | readonly T[] | null` — Đối tượng hoặc mảng trước đó.
 
 **Trả về:**
 `boolean` — Trả về `true` nếu tìm thấy sự khác biệt giữa hai đối tượng (về số lượng khóa, sự hiện diện của khóa hoặc giá trị của thuộc tính), hoặc `false` nếu chúng giống nhau.
@@ -26,6 +28,6 @@ console.log(isDifferent(newState, oldState)) // true
 
 const sameState = { id: 1, active: false }
 
-// Mẫu đối tượng giống y hệt ở tất cả thông số
+// Các khóa riêng có thể liệt kê và giá trị tương ứng khớp nhau
 console.log(isDifferent(sameState, oldState)) // false
 ```

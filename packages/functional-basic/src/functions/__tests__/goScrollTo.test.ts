@@ -208,6 +208,25 @@ describe('goScrollTo', () => {
       })
     })
 
+    it('should ignore non-numeric client border properties', () => {
+      const customContainer = {
+        clientTop: '12',
+        clientLeft: null,
+        getBoundingClientRect: vi.fn(() => ({ top: 40, left: 30 } as DOMRect)),
+        scrollBy: vi.fn()
+      } as unknown as Element
+      const elementTo = document.createElement('div')
+      elementTo.getBoundingClientRect = vi.fn(() => ({ top: 100, left: 90 } as DOMRect))
+
+      goScrollTo(customContainer, elementTo)
+
+      expect(customContainer.scrollBy).toHaveBeenCalledWith({
+        top: 60,
+        left: 60,
+        behavior: 'smooth'
+      })
+    })
+
     it('should safely do nothing if neither scrollBy nor scrollTop/scrollLeft exist on container', () => {
       const minimalContainer = {
         getBoundingClientRect: vi.fn(() => ({ top: 0, left: 0 } as DOMRect))

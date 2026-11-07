@@ -4,12 +4,12 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `hasKeys`
 
-A high-performance type guard utility that determines whether an object contains at least one own property.
+A type guard utility that determines whether an object or function contains at least one own enumerable string-keyed property. Symbol keys, non-enumerable properties, and inherited properties are excluded.
 
 ## Key Features
 
-- **Short-circuit Evaluation** — Terminates immediately upon detecting the first own property, avoiding the overhead and memory allocation of `Object.keys()`.
-- **Prototype Pollution Defense** — Uses `Object.hasOwn` to strictly check own properties, ignoring prototype properties like `toString`, `valueOf`, or `constructor`.
+- **Short-circuit Evaluation** — Terminates immediately upon detecting the first own enumerable string-keyed property, avoiding the intermediate array created by `Object.keys()`.
+- **Own Properties Only** — Uses `Object.hasOwn` to ignore inherited properties. An enumerable own property named `toString`, `valueOf`, or `constructor` is counted normally.
 - **Null-prototype Object Support** — Safely handles dictionary objects created via `Object.create(null)`.
 - **Safe Handling of Primitives** — Safely returns `false` when receiving `null`, `undefined`, numbers, strings, or other primitives without throwing runtime errors.
 - **TypeScript Type Narrowing** — Acts as a type guard predicate `object is T`, narrowing `unknown` to a populated object type.
@@ -19,7 +19,7 @@ A high-performance type guard utility that determines whether an object contains
 - `object: unknown` — The object or value of any type to inspect.
 
 **Returns:**
-`boolean` (`object is T`) — Returns `true` if the object has at least one own property, otherwise `false`.
+`boolean` (`object is T`) — Returns `true` if an object or function has at least one own enumerable string-keyed property, otherwise `false`. A function without custom enumerable properties and an empty array both return `false`.
 
 ## Examples
 

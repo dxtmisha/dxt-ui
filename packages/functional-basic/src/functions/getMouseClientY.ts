@@ -14,8 +14,8 @@ export function getMouseClientY(event?: MouseEvent | TouchEvent | null): number 
     return event.clientY
   }
 
-  return event?.targetTouches?.[0]?.clientY
-    ?? event?.touches?.[0]?.clientY
-    ?? (event as TouchEvent)?.changedTouches?.[0]?.clientY
+  return event.targetTouches?.[0]?.clientY
+    ?? event.touches?.[0]?.clientY
+    ?? event.changedTouches?.[0]?.clientY
     ?? 0
 }

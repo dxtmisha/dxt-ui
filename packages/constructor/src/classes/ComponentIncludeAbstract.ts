@@ -84,7 +84,12 @@ export abstract class ComponentIncludeAbstract<
   /** Computed binding object for the component / Вычисляемый объект привязки для компонента */
   readonly binds = computed<PartialPropsExtra>(() => getObjectNoUndefined(this.toBinds()))
 
-  /** Exposes the API methods and properties / Экспортирует API-методы и свойства */
+  /**
+   * Exposes the API methods and properties.
+   *
+   * Экспортирует API-методы и свойства.
+   * @returns exposed API object / объект экспортируемого API
+   */
   get expose(): ComponentExpose {
     return this.toExpose()
   }
@@ -93,6 +98,7 @@ export abstract class ComponentIncludeAbstract<
    * Checks whether the component should be displayed.
    *
    * Проверяет, нужно ли отображать компонент.
+   * @returns true if the component should be displayed / true, если компонент должен отображаться
    */
   get is(): boolean {
     return true
@@ -104,7 +110,7 @@ export abstract class ComponentIncludeAbstract<
    * Возвращает связанный элемент или экземпляр субкомпонента.
    * @returns element or sub-component instance / элемент или экземпляр субкомпонента
    */
-  getElement() {
+  getElement(): ConstrBind<ComponentExpose> | undefined {
     return this.element.value
   }
 
@@ -126,46 +132,6 @@ export abstract class ComponentIncludeAbstract<
   ): VNode[] => this.initRender(slotsChildren, attrs, isShow, index)
 
   /**
-   * Generates the CSS class name according to BEM structure.
-   *
-   * Генерирует имя CSS-класса в соответствии с BEM-структурой.
-   * @returns BEM-formatted class name / имя класса в формате BEM
-   */
-  protected getClassName(): string {
-    return this.naming.getSubClass(this.name)
-  }
-
-  /**
-   * Resolves and returns current component properties.
-   *
-   * Разрешает и возвращает текущие свойства компонента.
-   * @returns component properties / свойства компонента
-   */
-  protected getProps(): Props {
-    return getObjectNoUndefined(executeFunction(this.props) ?? {} as Props)
-  }
-
-  /**
-   * Extracts and returns custom attributes defined in props.
-   *
-   * Извлекает и возвращает пользовательские атрибуты, определенные в свойствах (props).
-   * @returns raw bindable properties or undefined / сырые связываемые свойства или undefined
-   */
-  protected getPropsAttrs(): ConstrBind<Props> | undefined {
-    return this.propsAttrsName ? this.getProps()?.[this.propsAttrsName] : undefined
-  }
-
-  /**
-   * Resolves and returns additional attributes.
-   *
-   * Разрешает и возвращает дополнительные атрибуты.
-   * @returns extra attributes or undefined / дополнительные атрибуты или undefined
-   */
-  protected getExtra(): PartialPropsExtra | undefined {
-    return executeFunctionRef(this.extra) as PartialPropsExtra
-  }
-
-  /**
    * Combines input attributes with internal component bindings.
    *
    * Объединяет входные атрибуты со внутренними привязками компонента.
@@ -181,6 +147,16 @@ export abstract class ComponentIncludeAbstract<
     }
 
     return this.binds.value
+  }
+
+  /**
+   * Generates the CSS class name according to BEM structure.
+   *
+   * Генерирует имя CSS-класса в соответствии с BEM-структурой.
+   * @returns BEM-formatted class name / имя класса в формате BEM
+   */
+  protected getClassName(): string {
+    return this.naming.getSubClass(this.name)
   }
 
   /**
@@ -207,6 +183,67 @@ export abstract class ComponentIncludeAbstract<
           return data
       }
     }
+  }
+
+  /**
+   * Resolves and returns additional attributes.
+   *
+   * Разрешает и возвращает дополнительные атрибуты.
+   * @returns extra attributes or undefined / дополнительные атрибуты или undefined
+   */
+  protected getExtra(): PartialPropsExtra | undefined {
+    return executeFunctionRef(this.extra) as PartialPropsExtra
+  }
+
+  /**
+   * Resolves and returns current component properties.
+   *
+   * Разрешает и возвращает текущие свойства компонента.
+   * @returns component properties / свойства компонента
+   */
+  protected getProps(): Props {
+    return getObjectNoUndefined(executeFunction(this.props) ?? {} as Props)
+  }
+
+  /**
+   * Extracts and returns custom attributes defined in props.
+   *
+   * Извлекает и возвращает пользовательские атрибуты, определенные в свойствах (props).
+   * @returns raw bindable properties or undefined / сырые связываемые свойства или undefined
+   */
+  protected getPropsAttrs(): ConstrBind<Props> | undefined {
+    return this.propsAttrsName ? this.getProps()?.[this.propsAttrsName] : undefined
+  }
+
+  /**
+   * Initializes and renders the included component.
+   *
+   * Инициализирует и рендерит включенный компонент.
+   * @param slotsChildren sub-component slots / слоты субкомпонента
+   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
+   * @param isShow function returns true if the component should be rendered / функция возвращает true, если компонент должен быть отрисован
+   * @param index unique rendering key / уникальный ключ рендеринга
+   * @returns array of VNodes / массив VNode
+   */
+  protected initRender(
+    slotsChildren?: ComponentSlots,
+    attrs?: PartialPropsExtra,
+    isShow: () => boolean = () => this.is,
+    index?: string
+  ): VNode[] {
+    if (
+      this.components
+      && isShow()
+    ) {
+      return this.components.render(
+        this.name,
+        this.getAttrs(attrs),
+        slotsChildren as RawSlots,
+        index ?? this.index
+      )
+    }
+
+    return []
   }
 
   /**
@@ -248,36 +285,5 @@ export abstract class ComponentIncludeAbstract<
     }
 
     return data as ComponentExpose
-  }
-
-  /**
-   * Initializes and renders the included component.
-   *
-   * Инициализирует и рендерит включенный компонент.
-   * @param slotsChildren sub-component slots / слоты субкомпонента
-   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
-   * @param isShow function returns true if the component should be rendered / функция возвращает true, если компонент должен быть отрисован
-   * @param index unique rendering key / уникальный ключ рендеринга
-   * @returns array of VNodes / массив VNode
-   */
-  protected initRender(
-    slotsChildren?: ComponentSlots,
-    attrs?: PartialPropsExtra,
-    isShow: () => boolean = () => this.is,
-    index?: string
-  ): VNode[] {
-    if (
-      this.components
-      && isShow()
-    ) {
-      return this.components.render(
-        this.name,
-        this.getAttrs(attrs),
-        slotsChildren as RawSlots,
-        index ?? this.index
-      )
-    }
-
-    return []
   }
 }

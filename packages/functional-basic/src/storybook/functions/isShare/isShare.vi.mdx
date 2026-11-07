@@ -6,6 +6,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Kiểm tra xem Web Share API có được hỗ trợ trong môi trường hiện tại hay không.
 
+Trả về `false` ngoài môi trường DOM, khi không có `navigator` hoặc `navigator.share`. Phép kiểm tra không gọi `share()` hay `canShare()` và không xác thực dữ liệu cụ thể, quyền hoặc thao tác kích hoạt của người dùng mà trình duyệt yêu cầu để chia sẻ.
+
 **Trả về:**
 `boolean` — `true` nếu Web Share API được hỗ trợ, ngược lại là `false`.
 

@@ -4,16 +4,18 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getObjectNoUndefined`
 
-Creates and returns a new object containing only the properties from the source object or array whose values are **not strictly equal** to the exception value. By default, the exception value is `undefined`.
+Creates and returns a new object containing the own enumerable string-keyed properties whose values do not match the exception value. By default, the exception value is `undefined`. `NaN` matches `NaN`; positive and negative zero are treated as equal.
 
 This function is useful for cleaning up data before sending it to a server or for object normalization. When an array is passed, its indices will be converted into string keys in the resulting object.
 
+The reserved keys `__proto__`, `constructor`, and `prototype` are always excluded to protect the result prototype. Omitted, nullish, or non-object input produces an empty ordinary object. Filtering is shallow and preserves nested references.
+
 **Parameters:**
-- `data: T | readonly V[]` — The source object or array (where `T extends Record<PropertyKey, unknown>`).
+- `data?: T` — The source value; objects and readonly arrays are supported.
 - `exception?: unknown` — (Optional) The value used as criteria for removal (compared via `Object.is` and strict inequality). Defaults to `undefined`.
 
 **Returns:**
-`T | Record<number, V>` — A new object devoid of properties containing the specified exception value.
+`R` — A new object without reserved keys or matching values. By default, arrays infer `Record<number, V>`, record inputs retain `T`, and other inputs infer `Record<PropertyKey, unknown>`. The result is always an object, including for array input.
 
 ```typescript
 import { getObjectNoUndefined } from '@dxtmisha/functional-basic'

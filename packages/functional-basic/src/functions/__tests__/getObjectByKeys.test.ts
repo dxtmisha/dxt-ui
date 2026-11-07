@@ -21,6 +21,21 @@ describe('getObjectByKeys', () => {
       expect(getObjectByKeys(data, ['a', 'a', 'b'])).toEqual({ a: 10, b: 20 })
     })
 
+    it('should copy explicitly selected symbol keys', () => {
+      const symbolKey = Symbol('selected')
+      const data = { visible: 'skip', [symbolKey]: 42 }
+
+      expect(getObjectByKeys(data, [symbolKey])).toEqual({ [symbolKey]: 42 })
+    })
+
+    it('should copy own properties from an object with a null prototype', () => {
+      const data = Object.create(null) as Record<string, unknown>
+      data.selected = 'value'
+      data.ignored = 0
+
+      expect(getObjectByKeys(data, ['selected'])).toEqual({ selected: 'value' })
+    })
+
     it('should ignore inherited properties on the prototype chain and only include own properties', () => {
       const prototypeObject = { inheritedKey: 'fromPrototype' }
       const data = Object.create(prototypeObject) as {
@@ -55,6 +70,20 @@ describe('getObjectByKeys', () => {
       ).toEqual({
         safeKey: 'safeValue'
       })
+    })
+
+    it('should preserve the result prototype when selecting prototype keys from JSON data', () => {
+      const data = JSON.parse(
+        '{"safeKey":"safeValue","__proto__":{"polluted":true},"constructor":"blocked","prototype":"blocked"}'
+      ) as Record<string, unknown>
+      const result = getObjectByKeys(data, ['safeKey', '__proto__', 'constructor', 'prototype'])
+
+      expect(result).toEqual({ safeKey: 'safeValue' })
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype)
+      expect(Object.hasOwn(result, '__proto__')).toBe(false)
+      expect(Object.hasOwn(result, 'constructor')).toBe(false)
+      expect(Object.hasOwn(result, 'prototype')).toBe(false)
+      expect('polluted' in result).toBe(false)
     })
   })
 
@@ -118,6 +147,15 @@ describe('getObjectByKeys', () => {
     it('should return an empty object if an empty array of keys is provided', () => {
       const data = { a: 1, b: 2 }
       expect(getObjectByKeys(data, [])).toEqual({})
+    })
+
+    it('should return an empty object when keys are omitted, undefined, or null', () => {
+      const data = { selected: 'value' }
+
+      expect(getObjectByKeys()).toEqual({})
+      expect(getObjectByKeys(data)).toEqual({})
+      expect(getObjectByKeys(data, undefined)).toEqual({})
+      expect(getObjectByKeys(data, null)).toEqual({})
     })
 
     it('should return an empty object if the source object is empty', () => {

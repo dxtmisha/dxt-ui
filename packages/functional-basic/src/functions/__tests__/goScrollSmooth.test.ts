@@ -119,6 +119,16 @@ describe('goScrollSmooth', () => {
   })
 
   describe('window.scrollTo path (shift !== 0 or scrollIntoView missing)', () => {
+    it('should support a negative shift without discarding its sign', () => {
+      goScrollSmooth(element, undefined, -20)
+
+      expect(window.scrollTo).toHaveBeenCalledWith({
+        top: 120,
+        behavior: 'smooth'
+      })
+      expect(element.scrollIntoView).not.toHaveBeenCalled()
+    })
+
     it('should calculate scroll position with default block (start) when shift is provided', () => {
       Object.defineProperty(window, 'scrollY', { value: 50, writable: true, configurable: true })
 

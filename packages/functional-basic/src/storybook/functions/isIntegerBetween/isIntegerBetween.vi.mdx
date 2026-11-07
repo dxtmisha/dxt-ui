@@ -4,9 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isIntegerBetween`
 
-Rà soát cẩn thận xem một con số cụ thể có đang lọt lỏm ngay bên trong lằn ranh phân cách thuộc một phạm vi số nguyên đã được xác lập hay không.
+Kiểm tra xem một số có thuộc khoảng nửa mở được xác định bởi `between` hay không.
 
-Biên độ rào chắn sẽ được cắm mốc bằng cách làm tròn xuống trị số trung tâm (`between`). Hàm chỉ xác thực thành công khi con số đưa vào đem ra đọ kiếm có độ lớn hơn hoặc bằng mức sàn giới hạn dưới, đồng thời buộc phải mang trị số vĩnh viễn nhỏ hơn mốc số nguyên nối tiếp ngay ngay liền kề sau đó.
+Cận dưới là `Math.floor(between)`, làm tròn về âm vô cực. Khoảng bao gồm cận dưới và không bao gồm cận trên. Nếu một trong hai đối số là `NaN` hoặc vô cực, hàm trả về `false`.
 
 Tóm tắt công thức toán học: `floor(between) <= value < floor(between) + 1`
 
@@ -15,7 +15,7 @@ Tóm tắt công thức toán học: `floor(between) <= value < floor(between) +
 - `between: number` — Con số chủ đạo để ấn định khoanh vùng phạm vi (qua áp dụng thuật toán làm tròn xuống).
 
 **Trả về:**
-`boolean` — Tín hiệu trả về `true` miễn sao trị số nằm gọn trong khoảng không gian vòng đệm số lượng đã khoanh vùng.
+`boolean` — `true` nếu giá trị thuộc khoảng đã xác định, ngược lại là `false`.
 
 ```typescript
 import { isIntegerBetween } from '@dxtmisha/functional-basic'

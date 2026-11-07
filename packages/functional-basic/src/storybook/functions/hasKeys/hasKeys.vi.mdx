@@ -4,12 +4,12 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `hasKeys`
 
-Hàm tiện ích bảo vệ kiểu (type guard) với hiệu năng cao, kiểm tra xem một đối tượng có chứa ít nhất một thuộc tính riêng (own property) hay không.
+Hàm tiện ích bảo vệ kiểu (type guard), kiểm tra xem đối tượng hoặc hàm có ít nhất một thuộc tính riêng có thể liệt kê với khóa chuỗi hay không. Khóa symbol, thuộc tính không thể liệt kê và thuộc tính kế thừa không được tính.
 
 ## Tính năng nổi bật
 
-- **Đánh giá ngắt mạch (Short-circuit)** — Dừng kiểm tra ngay khi phát hiện thuộc tính riêng đầu tiên, loại bỏ chi phí cấp phát bộ nhớ của mảng `Object.keys()`.
-- **Phòng chống Prototype Pollution** — Sử dụng `Object.hasOwn` để kiểm tra thuộc tính riêng, bỏ qua các thuộc tính kế thừa từ nguyên mẫu (`toString`, `valueOf`, `constructor`).
+- **Đánh giá ngắt mạch (Short-circuit)** — Dừng kiểm tra khi phát hiện thuộc tính riêng đầu tiên có thể liệt kê với khóa chuỗi, tránh tạo mảng trung gian `Object.keys()`.
+- **Chỉ thuộc tính riêng** — Dùng `Object.hasOwn` để bỏ qua thuộc tính kế thừa. Thuộc tính riêng có thể liệt kê mang tên `toString`, `valueOf` hoặc `constructor` vẫn được tính như bình thường.
 - **Hỗ trợ đối tượng không có prototype** — Hoạt động an toàn với các đối tượng từ điển tạo bởi `Object.create(null)`.
 - **An toàn với giá trị nguyên thủy** — Trả về `false` một cách an toàn khi nhận `null`, `undefined`, số, chuỗi mà không gây ra lỗi ngoại lệ.
 - **Thu hẹp kiểu trong TypeScript** — Hoạt động như một type guard `object is T`, giúp thu hẹp kiểu `unknown` thành đối tượng có dữ liệu.
@@ -19,7 +19,7 @@ Hàm tiện ích bảo vệ kiểu (type guard) với hiệu năng cao, kiểm t
 - `object: unknown` — Đối tượng hoặc giá trị thuộc bất kỳ kiểu nào cần kiểm tra.
 
 **Trả về:**
-`boolean` (`object is T`) — Trả về `true` nếu đối tượng có ít nhất một thuộc tính riêng, ngược lại là `false`.
+`boolean` (`object is T`) — Trả về `true` nếu đối tượng hoặc hàm có ít nhất một thuộc tính riêng có thể liệt kê với khóa chuỗi, ngược lại là `false`. Hàm không có thuộc tính riêng có thể liệt kê và mảng rỗng đều trả về `false`.
 
 ## Ví dụ
 

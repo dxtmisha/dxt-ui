@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { getObjectOrNone } from '../getObjectOrNone'
+import { describe, it, expect, expectTypeOf } from 'vitest'
+import { getObjectOrNone, type ObjectOrNoneReturn } from '../getObjectOrNone'
 
 describe('getObjectOrNone', () => {
   describe('Standard functional requirements (Happy path)', () => {
@@ -88,6 +88,61 @@ describe('getObjectOrNone', () => {
       expect(firstFallback).not.toBe(secondFallback)
       firstFallback.mutated = true
       expect(secondFallback).toEqual({})
+    })
+  })
+
+  describe('Return types match preserved objects and fallback values', () => {
+    it('should preserve known object properties and instance methods', () => {
+      const object = { name: 'Admin', count: 2 } as const
+      const result = getObjectOrNone(object)
+
+      expectTypeOf(result.name).toEqualTypeOf<'Admin'>()
+      expectTypeOf(result.count).toEqualTypeOf<2>()
+      expectTypeOf(getObjectOrNone(new Date()).getTime).toBeFunction()
+    })
+
+    it('should expose array and string fallback properties as unknown', () => {
+      const arrayResult = getObjectOrNone(['a'])
+      const readonlyArrayResult = getObjectOrNone(['a'] as const)
+      const stringResult = getObjectOrNone('text')
+
+      expectTypeOf(arrayResult).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(readonlyArrayResult).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(stringResult).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(arrayResult.map).toBeUnknown()
+      expectTypeOf(readonlyArrayResult.map).toBeUnknown()
+      expectTypeOf(stringResult.toUpperCase).toBeUnknown()
+    })
+
+    it('should use the fallback type for other primitives and functions', () => {
+      const callbackResult = getObjectOrNone(() => 'value')
+      const constructorResult = getObjectOrNone(Date)
+
+      expectTypeOf(getObjectOrNone(42)).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(getObjectOrNone(false)).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(getObjectOrNone(Symbol('value'))).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(getObjectOrNone(1n)).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(callbackResult).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(constructorResult).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(callbackResult.apply).toBeUnknown()
+      expectTypeOf(constructorResult.now).toBeUnknown()
+      expectTypeOf<ObjectOrNoneReturn<abstract new () => { name: string }>>().toEqualTypeOf<Record<string, unknown>>()
+    })
+
+    it('should use an object fallback for missing and nullish inputs', () => {
+      expectTypeOf(getObjectOrNone()).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(getObjectOrNone(null)).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf(getObjectOrNone(undefined)).toEqualTypeOf<Record<string, unknown>>()
+      expectTypeOf<ObjectOrNoneReturn<never>>().toEqualTypeOf<Record<string, unknown>>()
+    })
+
+    it('should retain both object and fallback possibilities for mixed unions', () => {
+      expectTypeOf<ObjectOrNoneReturn<{ name: string } | string | undefined>>().toEqualTypeOf<
+        ({ name: string } & Record<string, unknown>) | Record<string, unknown>
+      >()
+      expectTypeOf<ObjectOrNoneReturn<{ name: string } | readonly string[] | null>>().toEqualTypeOf<
+        ({ name: string } & Record<string, unknown>) | Record<string, unknown>
+      >()
     })
   })
 })

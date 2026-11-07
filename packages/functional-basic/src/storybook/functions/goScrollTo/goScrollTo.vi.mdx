@@ -6,7 +6,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Thực thi hiệu ứng cuộn bên trong một phần tử vùng chứa (container) để đảm bảo rằng mục tiêu bên trong rơi vào vùng dễ nhìn. Hàm thực hiện trích xuất `getBoundingClientRect` từ cả hai thành phần, tính đến đường viền hộp chứa (`clientTop` và `clientLeft`), và kích hoạt phương thức `scrollBy` (có cơ chế dự phòng tự động sang `scrollTop` / `scrollLeft` nếu không hỗ trợ).
 
-Khác với `goScrollSmooth` (cuộn cửa sổ màn hình hoặc uỷ thác cho `scrollIntoView`), `goScrollTo` chủ động canh chỉnh lề thao tác trong không gian đo lường tĩnh của hộp chứa rõ ràng được cấp vào.
+Góc trên bên trái của mục tiêu được căn theo mép trong phía trên bên trái của vùng chứa trên cả hai trục, kể cả khi mục tiêu đã hiển thị. Nhánh dự phòng gán trực tiếp `scrollTop` / `scrollLeft` thay đổi vị trí ngay lập tức. Hàm không thực hiện thao tác khi chạy SSR hoặc thiếu phần tử.
 
 **Tham số:**
 - `container?: HTMLElement | Element | null` — Phần tử vùng chứa cuộn. Xử lý an toàn khi nhận `null` và `undefined`.

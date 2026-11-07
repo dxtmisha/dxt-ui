@@ -7,13 +7,15 @@ import {
 } from '../types/basicTypes'
 
 /**
- * Checks if an element is visible (not hidden by CSS and is in the DOM).
+ * Checks layout visibility using native checkVisibility or a style and dimension fallback.
+ * The fallback also rejects opacity: 0 on ordinary parentElement ancestors.
  * An element can be off-screen and still be considered visible.
  *
- * Проверяет, является ли элемент видимым (не скрыт через CSS и находится в DOM).
+ * Проверяет видимость в раскладке через нативный checkVisibility или фолбэк стилей и размеров.
+ * Фолбэк также учитывает opacity: 0 у обычных предков по parentElement.
  * Элемент может находиться за пределами экрана и при этом считаться видимым.
  * @template E element or Window type / тип элемента или Window
- * @param elementSelectors selectors for matching, an Element, or null / селекторы для сопоставления, Element или null
+ * @param elementSelectors selector, Element, Window resolved to body, or null / селектор, Element, Window с преобразованием в body или null
  * @returns true if the element is visible, otherwise false / true, если элемент является видимым, иначе false
  */
 export function isElementVisible<E extends ElementOrWindow = HTMLElement>(
@@ -49,7 +51,7 @@ export function isElementVisible<E extends ElementOrWindow = HTMLElement>(
     return false
   }
 
-  return style.display !== 'none'
+  const isVisible = style.display !== 'none'
     && style.visibility !== 'hidden'
     && style.visibility !== 'collapse'
     && style.opacity !== '0'
@@ -61,4 +63,20 @@ export function isElementVisible<E extends ElementOrWindow = HTMLElement>(
       || element.offsetWidth !== 0
       || element.offsetHeight !== 0
     )
+
+  if (!isVisible) {
+    return false
+  }
+
+  let parentElement = element.parentElement
+
+  while (parentElement) {
+    if (window.getComputedStyle(parentElement).opacity === '0') {
+      return false
+    }
+
+    parentElement = parentElement.parentElement
+  }
+
+  return true
 }

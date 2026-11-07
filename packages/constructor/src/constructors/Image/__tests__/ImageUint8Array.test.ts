@@ -143,7 +143,7 @@ describe('ImageUint8Array', () => {
       expect(URL.revokeObjectURL).toHaveBeenCalledTimes(2)
     })
 
-    it('should automatically revoke the object URL when props.value changes to a non-binary value or onUnmounted runs', async () => {
+    it('should automatically revoke the object URL when props.value changes to a non-binary value after mount or onUnmounted runs', async () => {
       const props = reactive<ImageProps>({ value: new Uint8Array([1, 2]) })
       const helper = new ImageUint8Array(props)
 
@@ -151,7 +151,12 @@ describe('ImageUint8Array', () => {
       loadImage(browser.images[0]!)
       await firstPending
 
+      props.value = '/before-mount.png'
+      await nextTick()
       expect(URL.revokeObjectURL).not.toHaveBeenCalled()
+
+      props.value = new Uint8Array([1, 2])
+      helper.onMounted()
 
       props.value = '/photo.png'
       await nextTick()

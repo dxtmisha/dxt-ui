@@ -4,9 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isIntegerBetween`
 
-Inspects whether a targeted float or integer actively rests within a specifically demarcated integer interval bounds.
+Checks whether a number belongs to the half-open interval defined by `between`.
 
-The threshold is established by flooring the foundational `between` input parameter. The function secures a true match exactly when the checking measurement is comprehensively greater than or equal to the grounded lower boundary, whilst being strictly inferior to the successive integer step.
+The lower bound is `Math.floor(between)`, rounded toward negative infinity. The lower bound is included and the upper bound is excluded. If either argument is `NaN` or infinite, the function returns `false`.
 
 Formula representation: `floor(between) <= value < floor(between) + 1`
 
@@ -15,7 +15,7 @@ Formula representation: `floor(between) <= value < floor(between) + 1`
 - `between: number` — The base origin dictating the interval bounds via mathematical floor rounding.
 
 **Returns:**
-`boolean` — Evaluates to `true` whenever the measurement comfortably exists within the outlined mathematical floor span.
+`boolean` — `true` if the value belongs to the interval, otherwise `false`.
 
 ```typescript
 import { isIntegerBetween } from '@dxtmisha/functional-basic'

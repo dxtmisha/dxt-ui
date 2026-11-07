@@ -4,13 +4,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `isFloat`
 
-Kiểm tra xem giá trị có phải là số nguyên hoặc số thực hay không.
+Chấp nhận số JavaScript hữu hạn (kể cả số nguyên) và chuỗi thập phân sau khi loại bỏ khoảng trắng ở hai đầu. Chuỗi có thể bắt đầu bằng dấu `+` hoặc `-`, phải có chữ số trước dấu chấm và phải có chữ số sau dấu chấm nếu có.
+
+Các chuỗi `'1e3'`, `'0x10'`, `'.5'` và `'1.'` bị từ chối, cũng như `NaN`, vô cực và bigint. Chuỗi được kiểm tra cú pháp thập phân mà không chuyển thành số.
 
 **Tham số:**
 - `value?: unknown` — giá trị cần kiểm tra.
 
 **Trả về:**
-`boolean` — `true` nếu giá trị là số hoặc chuỗi biểu diễn số, ngược lại là `false`.
+`boolean` — `true` với số hữu hạn hoặc chuỗi thập phân theo định dạng trên; ngược lại là `false`.
 
 ```typescript
 import { isFloat } from '@dxtmisha/functional-basic'

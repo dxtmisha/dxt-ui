@@ -53,6 +53,13 @@ describe('getStepValue', () => {
   })
 
   describe('Default and nullish min handling', () => {
+    it('should return 0 when the maximum is omitted, undefined, or null', () => {
+      expect(getStepValue()).toBe(0)
+      expect(getStepValue(0)).toBe(0)
+      expect(getStepValue(0, undefined)).toBe(0)
+      expect(getStepValue(0, null)).toBe(0)
+    })
+
     it('should fallback to min = 0 when min is undefined', () => {
       expect(getStepValue(undefined, 500)).toBe(5)
       expect(getStepValue(undefined, 100)).toBe(1)

@@ -1,7 +1,11 @@
 // ai-none
 
 import { watch } from 'vue'
-import { isObject, type ConstrEmit } from '@dxtmisha/functional'
+import {
+  type ConstrEmit,
+  DesignLifecycleAbstract,
+  isObject
+} from '@dxtmisha/functional'
 
 import type { ImageData } from './ImageData'
 import type { ImageType } from './ImageType'
@@ -13,7 +17,7 @@ import type { ImageEmits } from './types'
  *
  * Класс для работы с событиями изображения.
  */
-export class ImageEvent {
+export class ImageEvent extends DesignLifecycleAbstract {
   /**
    * Constructor for initializing image load event watching.
    *
@@ -27,6 +31,11 @@ export class ImageEvent {
     protected readonly type: () => ImageType,
     protected readonly emits?: ConstrEmit<ImageEmits>
   ) {
+    super()
+  }
+
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
     watch(this.data().image, this.onLoad, { immediate: true })
   }
 

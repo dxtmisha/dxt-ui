@@ -11,7 +11,7 @@ Calculates the absolute value of one percent (`1%`) of the total range (the diff
 - `max?: number | null` — The maximum value of the range.
 
 **Returns:**
-`number` — The value representing 1% of the range's length. If the maximum value is less than or equal to the minimum, it returns `0`.
+`number` — One percent of an increasing range: `(max - min) / 100`. A missing or null maximum, NaN, or a non-increasing range returns `0`. Arithmetic follows JavaScript number semantics; an increasing range with an infinite difference returns `Infinity`.
 
 ```typescript
 import { getStepValue } from '@dxtmisha/functional-basic'

@@ -36,7 +36,10 @@ export class ImageUint8Array extends DesignLifecycleAbstract {
     protected readonly props: ImageProps
   ) {
     super()
+  }
 
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
     watch(() => this.props.value, (value) => {
       if (!ImageUint8Array.is(value)) {
         this.reset()

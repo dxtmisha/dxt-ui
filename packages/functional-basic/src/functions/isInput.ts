@@ -1,9 +1,11 @@
 import { isDomRuntime } from './isDomRuntime'
 
 /**
- * Checks if the element is an input field or editable.
+ * Checks for an HTMLElement representing input, textarea, select, or editable content.
+ * By default, elements with a truthy disabled or readOnly property are excluded.
  *
- * Проверяет, является ли элемент полем ввода или редактируемым.
+ * Проверяет, является ли HTMLElement полем input, textarea, select или редактируемым содержимым.
+ * По умолчанию элементы с истинным свойством disabled или readOnly исключаются.
  * @param element element to check / проверяемый элемент
  * @param includeDisabled if true, include disabled and readOnly elements / если true, включать элементы с disabled и readOnly
  * @returns true if input element / true, если элемент ввода

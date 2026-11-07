@@ -22,6 +22,12 @@ describe('toNumber', () => {
       expect(toNumber(-Infinity)).toBe(0)
       expect(toNumber(NaN)).toBe(0)
     })
+
+    it('should return bigint as-is if input is a bigint', () => {
+      expect(toNumber(0n)).toBe(0n)
+      expect(toNumber(123n)).toBe(123n)
+      expect(toNumber(-9007199254740993n)).toBe(-9007199254740993n)
+    })
   })
 
   describe('Simple numeric strings', () => {

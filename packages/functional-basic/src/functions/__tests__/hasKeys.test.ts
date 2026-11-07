@@ -89,6 +89,26 @@ describe('hasKeys', () => {
   })
 
   describe('Arrays and special keys', () => {
+    it('should ignore symbol keys and non-enumerable own properties', () => {
+      const symbolOnly = { [Symbol('hidden')]: 'value' }
+      const nonEnumerableOnly = Object.defineProperty({}, 'hidden', { value: 'value' })
+
+      expect(hasKeys(symbolOnly)).toBe(false)
+      expect(hasKeys(nonEnumerableOnly)).toBe(false)
+      expect(hasKeys({ ...symbolOnly, visible: true })).toBe(true)
+    })
+
+    it('should detect an enumerable getter without evaluating it', () => {
+      const object = Object.defineProperty({}, 'value', {
+        enumerable: true,
+        get: () => {
+          throw new Error('The property value must not be read')
+        }
+      })
+
+      expect(hasKeys(object)).toBe(true)
+    })
+
     it('should return false for empty arrays and true for non-empty arrays', () => {
       expect(hasKeys([])).toBe(false)
       expect(hasKeys(['a'])).toBe(true)

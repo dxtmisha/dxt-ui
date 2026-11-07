@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "component": "dxt-component"
   },
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "unstorage": "^2.0.0-beta.0"
+  },
   "ui-test": true
 }

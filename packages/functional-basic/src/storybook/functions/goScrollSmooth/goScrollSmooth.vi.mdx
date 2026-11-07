@@ -8,6 +8,8 @@ Cung cấp trải nghiệm cuộn mượt mà (smooth scrolling) đưa vùng nh�
 
 Hàm trước tiên sẽ xác minh khả năng hỗ trợ phương thức `scrollIntoView` mặc định của phần tử muốn nhắm tới. Nếu được hỗ trợ và không có tham số khoảng bù định vị `shift`, hàm sử dụng phương thức native đó. Mặt khác, khi yêu cầu `shift` (ví dụ, để trừ đi chiều cao của một thanh menu cố định (fixed header) bị đè lên element), hàm sẽ tự động đo lường độ dời bằng `getBoundingClientRect` và điều khiển thanh cuộn bằng `window.scrollTo`.
 
+Nhánh native dùng `behavior`, `block` và `inline`, mặc định lần lượt là `'smooth'`, `'start'` và `'start'`. `shift` khác 0 hoặc việc thiếu `scrollIntoView` chọn nhánh dự phòng chỉ cuộn cửa sổ theo chiều dọc: nhánh này dùng `behavior` và `block`, nhưng không xử lý `inline` hay vùng cuộn lồng nhau. Khi không có môi trường DOM hoặc phần tử đích, hàm không thực hiện thao tác nào.
+
 **Tham số:**
 - `element?: HTMLElement | Element | null` — Phần tử (`HTMLElement` hoặc `Element`) cần cuộn tới. Xử lý an toàn khi nhận `null` và `undefined`.
 - `options?: ScrollIntoViewOptions` — (Tùy chọn) Các tham số định cấu hình chuyển tiếp cho `scrollIntoView` (ví dụ: `behavior`, `block`, `inline`).

@@ -48,14 +48,14 @@ export function goScrollTo(
     return
   }
 
-  const containerRect = container.getBoundingClientRect()
-  const targetRect = elementTo.getBoundingClientRect()
+  const containerRectangle = container.getBoundingClientRect()
+  const targetRectangle = elementTo.getBoundingClientRect()
 
   const clientTop = getClientValue(container, 'clientTop')
   const clientLeft = getClientValue(container, 'clientLeft')
 
-  const deltaTop = targetRect.top - (containerRect.top + clientTop)
-  const deltaLeft = targetRect.left - (containerRect.left + clientLeft)
+  const deltaTop = targetRectangle.top - (containerRectangle.top + clientTop)
+  const deltaLeft = targetRectangle.left - (containerRectangle.left + clientLeft)
 
   if (isFunction(container.scrollBy)) {
     container.scrollBy({

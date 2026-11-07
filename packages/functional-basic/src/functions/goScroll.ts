@@ -2,17 +2,19 @@ import { isDomRuntime } from './isDomRuntime'
 import { isString } from './isString'
 
 /**
- * Quick change of scroll at the element to the required element.
+ * Adjusts a container's vertical scroll position to reveal the target or align it with a reference element.
+ * Missing elements and non-scrollable containers are ignored; SSR calls do nothing.
  *
- * Быстрое изменение скролла у элемента к нужному элементу.
+ * Изменяет вертикальную прокрутку контейнера, чтобы показать цель или совместить её с опорным элементом.
+ * Отсутствующие элементы и непрокручиваемые контейнеры пропускаются; при SSR действие не выполняется.
  * @param target the container element or selector whose scroll position needs to be changed /
  * элемент контейнера или селектор, положение скролла которого надо изменить
  * @param elementTo the element to which you need to scroll /
  * элемент, до которого надо проскроллить
  * @param elementCenter the reference element to center against /
  * элемент, относительно которого надо центрировать
- * @param indent optional padding indent from boundary /
- * дополнительный отступ от границы
+ * @param indent optional boundary spacing when no reference element is provided /
+ * дополнительный отступ от границы, когда опорный элемент не передан
  * @returns void / ничего не возвращает
  */
 export function goScroll(

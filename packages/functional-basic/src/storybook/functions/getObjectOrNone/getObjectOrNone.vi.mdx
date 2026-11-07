@@ -4,13 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getObjectOrNone`
 
-Một tiện ích đơn giản kiểm tra xem giá trị được cung cấp có phải là một đối tượng thực tế (không phải `null`, không phải mảng, không phải kiểu nguyên thủy) hay không và trả về chính nó. Nếu đối số không phải là một đối tượng, hàm sẽ trả về một đối tượng rỗng `{}`. Việc này rất hữu ích trong việc đảm bảo an toàn khi khởi tạo hoặc truyền tham số.
+Tiện ích trả về nguyên đối tượng không phải mảng và giữ nguyên tham chiếu. Hàm chấp nhận đối tượng rỗng, đối tượng có prototype null và thể hiện của lớp như `Date`. Với mảng, hàm, kiểu nguyên thủy, null, undefined hoặc đối số bị bỏ qua, mỗi lần gọi tạo một đối tượng rỗng `{}` mới.
 
 **Tham số:**
 - `value?: T` — Bất kỳ giá trị nào, thường mong đợi đây là một đối tượng.
 
 **Trả về:**
-`T & Record<string, unknown>` — Chính đối tượng ban đầu nếu kiểu dữ liệu đúng; ngược lại, trả về đối tượng rỗng `{}`.
+`ObjectOrNoneReturn<T>` — Giữ `T & Record<string, unknown>` cho đối tượng đầu vào không phải mảng. Mảng, hàm, kiểu nguyên thủy, giá trị nullish và đối số bị bỏ qua dùng `Record<string, unknown>`, nên phương thức của giá trị bị loại không được xem là phương thức có thể gọi trên kết quả. Đầu vào union giữ cả khả năng trả về đối tượng gốc và đối tượng rỗng. Khi chạy, hàm trả về nguyên đối tượng không phải mảng hoặc một đối tượng rỗng `{}` mới.
 
 ```typescript
 import { getObjectOrNone } from '@dxtmisha/functional-basic'

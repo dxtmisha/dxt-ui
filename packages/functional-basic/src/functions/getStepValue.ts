@@ -1,3 +1,5 @@
+import { isNull } from './isNull'
+
 /**
  * Returns the unit of measurement for a single step relative to the given value.
  *
@@ -12,7 +14,7 @@ export function getStepValue(
 ): number {
   const minValue = min ?? 0
 
-  if (max !== undefined && max !== null && max > minValue) {
+  if (!isNull(max) && max > minValue) {
     return (max - minValue) / 100
   }
 

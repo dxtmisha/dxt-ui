@@ -6,7 +6,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Extracts the Y coordinate (vertical position) of the pointer (mouse or touch) relative to the visible area of the browser window (viewport) from the event object.
 
-The function processes both standard mouse events (`MouseEvent`) and touch events (`TouchEvent`), giving priority to the `clientY` property. If `clientY` is not found directly on the event, it searches within the `targetTouches` and `touches` arrays.
+The function processes both standard mouse events (`MouseEvent`) and touch events (`TouchEvent`), giving priority to the `clientY` property. If `clientY` is not found directly on the event, it checks the first item of `targetTouches`, then `touches`, then `changedTouches`. The last fallback also supports `touchend`, when the active touch lists are empty.
 
 **Parameters:**
 - `event?: MouseEvent | TouchEvent | null` — The event object (`mousemove`, `touchmove`, `click`, etc.).

@@ -4,11 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `strFill`
 
-The method creates a string of length count, consisting of the characters value.
+Returns the string representation of `value` repeated `count` times. `count` specifies the number of repetitions, so `strFill('ab', 3)` returns `'ababab'`, whose length is 6.
+
+Nullish values become an empty string; other values are converted with `String()`. The default count is `0`. Fractional counts are truncated toward zero, and `NaN` acts as `0`. As with native `String.prototype.repeat`, negative counts after truncation and infinite counts throw `RangeError`.
 
 **Parameters:**
-- `value?: unknown` — character for filling.
-- `count?: number` — length of the string.
+- `value?: unknown` — value to convert to a string and repeat; nullish values become `''`.
+- `count?: number` — number of repetitions; defaults to `0`.
 
 **Returns:**
 `string` — a string filled with the specified value.

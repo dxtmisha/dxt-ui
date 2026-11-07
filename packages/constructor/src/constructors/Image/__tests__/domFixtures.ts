@@ -259,11 +259,14 @@ export function mountImageGraph(
     onMounted(() => {
       isMounted.value = true
       lazy.onMounted?.()
+      uint8Array.onMounted?.()
+      event.onMounted?.()
     })
 
     onUnmounted(() => {
       lazy.onUnmounted?.()
       uint8Array.onUnmounted()
+      event.onUnmounted?.()
     })
 
     return { isMounted, lazy, type, data, event, coordinator, position, adaptive, background, img, text, uint8Array }

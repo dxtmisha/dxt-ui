@@ -2,16 +2,18 @@ import { type ObjectItem } from '../types/basicTypes'
 import { hasKey } from './hasKey'
 
 /**
- * Checks if the values of two objects are different.
+ * Shallowly compares own enumerable string keys using Object.is for their values.
+ * Nested objects and functions are compared by reference.
  *
- * Проверяет, различаются ли значения двух объектов.
- * @param value current values / текущие значения
- * @param old old values / старые значения
+ * Поверхностно сравнивает собственные перечисляемые строковые ключи и их значения через Object.is.
+ * Вложенные объекты и функции сравниваются по ссылке.
+ * @param value current object or array / текущий объект или массив
+ * @param old previous object or array / предыдущий объект или массив
  * @returns true if different / true, если отличаются
  */
 export function isDifferent<T = unknown>(
-  value?: ObjectItem<T> | null,
-  old?: ObjectItem<T> | null
+  value?: ObjectItem<T> | readonly T[] | null,
+  old?: ObjectItem<T> | readonly T[] | null
 ): boolean {
   if (value === old) {
     return false
@@ -34,7 +36,7 @@ export function isDifferent<T = unknown>(
 
     if (
       !hasKey(old, key)
-      || !Object.is(value[key], old[key])
+      || !Object.is(Reflect.get(value, key), Reflect.get(old, key))
     ) {
       return true
     }

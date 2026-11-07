@@ -91,6 +91,17 @@ describe('getRandomText', () => {
   })
 
   describe('Empty, multi-character, and Unicode symbols', () => {
+    it('should convert non-string symbols using strFill', () => {
+      expect(getRandomText(2, 2, 0, 2, 2)).toBe('00 00')
+      expect(getRandomText(2, 2, false, 1, 1)).toBe('false false')
+      expect(getRandomText(1, 1, 7, 3, 3)).toBe('777')
+    })
+
+    it('should normalize a null symbol and use the default for undefined', () => {
+      expect(getRandomText(2, 2, null, 2, 2)).toBe(' ')
+      expect(getRandomText(2, 2, undefined, 2, 2)).toBe('## ##')
+    })
+
     it('should handle an empty string symbol by returning only separator spaces', () => {
       const text = getRandomText(3, 3, '', 4, 4)
       expect(text).toBe('  ')

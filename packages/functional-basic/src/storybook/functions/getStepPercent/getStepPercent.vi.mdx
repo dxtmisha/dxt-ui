@@ -11,7 +11,7 @@ Tính toán xem phần trăm của toàn bộ phạm vi (tính từ giá trị n
 - `max?: number | null` — Giá trị tối đa của khoảng.
 
 **Trả về:**
-`number` — Phần trăm (từ 0 đến 100) mà một bước chiếm. Nếu giá trị tối đa nhỏ hơn hoặc bằng giá trị tối thiểu, hàm sẽ trả về `0`.
+`number` — Phần trăm mà một đơn vị chiếm: `100 / (max - min)`. Giá trị có thể vượt `100` nếu phạm vi nhỏ hơn một đơn vị. Giá trị tối đa bị bỏ qua hoặc null, phạm vi không hợp lệ hay hiệu không hữu hạn trả về `0`.
 
 ```typescript
 import { getStepPercent } from '@dxtmisha/functional-basic'

@@ -115,9 +115,37 @@ describe('getObjectNoUndefined', () => {
       expect(getObjectNoUndefined()).toEqual({})
       expect(getObjectNoUndefined(null)).toEqual({})
       expect(getObjectNoUndefined(undefined)).toEqual({})
-      expect(getObjectNoUndefined(42 as unknown as Record<string, unknown>)).toEqual({})
-      expect(getObjectNoUndefined('string' as unknown as Record<string, unknown>)).toEqual({})
-      expect(getObjectNoUndefined(true as unknown as Record<string, unknown>)).toEqual({})
+      expect(getObjectNoUndefined(42)).toEqual({})
+      expect(getObjectNoUndefined('string')).toEqual({})
+      expect(getObjectNoUndefined(true)).toEqual({})
+    })
+  })
+
+  describe('Prototype integrity', () => {
+    it.each([
+      '{"__proto__":{"polluted":true},"safe":42}',
+      '{"__proto__":null,"safe":42}'
+    ])('should preserve the result prototype when filtering JSON %s', (payload) => {
+      const data = JSON.parse(payload) as Record<string, unknown>
+      const result = getObjectNoUndefined(data)
+
+      expect(result).toEqual({ safe: 42 })
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype)
+      expect(result.polluted).toBeUndefined()
+      expect(Object.hasOwn(result, '__proto__')).toBe(false)
+      expect(Object.hasOwn(data, '__proto__')).toBe(true)
+      expect(Object.getPrototypeOf(data)).toBe(Object.prototype)
+      expect(Object.hasOwn(Object.prototype, 'polluted')).toBe(false)
+    })
+
+    it.each(['constructor', 'prototype'])('should exclude the reserved key %s', (key) => {
+      const data = { safe: 42, [key]: { polluted: true } }
+      const result = getObjectNoUndefined(data)
+
+      expect(result).toEqual({ safe: 42 })
+      expect(Object.hasOwn(result, key)).toBe(false)
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype)
+      expect(Object.hasOwn(data, key)).toBe(true)
     })
   })
 

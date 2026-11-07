@@ -12,11 +12,13 @@ describe('isShare', () => {
   describe('Standard functional requirements (Happy path)', () => {
     it('should return true when in DOM runtime and navigator.share is a function', () => {
       vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
+      const share = vi.fn()
       vi.stubGlobal('navigator', {
-        share: vi.fn()
+        share
       })
 
       expect(isShare()).toBe(true)
+      expect(share).not.toHaveBeenCalled()
     })
 
     it('should return false when navigator.share is undefined or missing', () => {
@@ -44,11 +46,11 @@ describe('isShare', () => {
   describe('SSR safety and non-DOM environment fallbacks', () => {
     it('should return false when isDomRuntime returns false even if navigator.share exists', () => {
       vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
-      vi.stubGlobal('navigator', {
-        share: vi.fn()
-      })
+      const shareGetter = vi.fn(() => vi.fn())
+      vi.stubGlobal('navigator', Object.defineProperty({}, 'share', { get: shareGetter }))
 
       expect(isShare()).toBe(false)
+      expect(shareGetter).not.toHaveBeenCalled()
     })
 
     it('should return false when navigator is undefined', () => {

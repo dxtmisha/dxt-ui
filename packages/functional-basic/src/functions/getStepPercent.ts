@@ -1,3 +1,5 @@
+import { isNull } from './isNull'
+
 /**
  * Returns the unit of measurement for 1 step.
  *
@@ -12,12 +14,12 @@ export function getStepPercent(
 ): number {
   const minValue = min ?? 0
 
-  if (max !== undefined && max !== null && max > minValue) {
-    const diff = max - minValue
-    if (!Number.isFinite(diff) || diff === 0) {
+  if (!isNull(max) && max > minValue) {
+    const difference = max - minValue
+    if (!Number.isFinite(difference)) {
       return 0
     }
-    return 100 / diff
+    return 100 / difference
   }
 
   return 0

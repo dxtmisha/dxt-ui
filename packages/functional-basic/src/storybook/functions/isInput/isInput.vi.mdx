@@ -4,7 +4,9 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # `isInput`
 
-Kiểm tra xem phần tử có phải là trường nhập liệu (`input`, `textarea`, `select`) hoặc phần tử có thuộc tính `contenteditable` hay không.
+Kiểm tra xem một `HTMLElement` có phải là trường nhập liệu (`input`, `textarea`, `select`) hoặc nội dung có thể chỉnh sửa hay không. `contenteditable="false"` không làm phần tử thường trở nên có thể chỉnh sửa; hàm hỗ trợ thuộc tính rỗng, giá trị `"true"` và trạng thái `isContentEditable` của trình duyệt.
+
+Trả về `false` khi SSR, với giá trị bất kỳ, nút không phải HTML hoặc phần tử HTML không thể chỉnh sửa. Theo mặc định, thuộc tính `disabled` hoặc `readOnly` có giá trị truthy sẽ loại phần tử. Truyền `true` cho đối số thứ hai chỉ bỏ qua các kiểm tra thuộc tính này, không biến phần tử thường thành trường nhập liệu.
 
 **Tham số:**
 - `element?: unknown` — phần tử hoặc giá trị cần kiểm tra.

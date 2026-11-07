@@ -7,10 +7,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Kiểm tra xem một phần tử có hiển thị hay không (không bị ẩn bởi CSS và có trong DOM).
 Một phần tử có thể nằm ngoài màn hình và vẫn được coi là hiển thị.
 
-Khi được trình duyệt hỗ trợ, hàm sử dụng API gốc có hiệu năng cao `checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })`. Trong môi trường không hỗ trợ, hàm sẽ dùng cơ chế dự phòng để kiểm tra computed styles (`display`, `visibility`, `opacity`) và kích thước layout (`offsetWidth`, `offsetHeight`).
+Khi được trình duyệt hỗ trợ, hàm dùng `checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })` gốc. Nếu không, nhánh dự phòng kiểm tra `display`, `visibility`, `opacity` được tính của phần tử, kích thước layout khi có và `opacity: 0` của các phần tử cha thông thường theo `parentElement`. Opacity dương của phần tử cha, như `0.5`, vẫn cho phép hiển thị. `visibility: visible` của phần tử con có thể ghi đè `visibility: hidden` của phần tử cha, nên hàm không loại bỏ vô điều kiện theo visibility của cha.
+
+Nhánh dự phòng duyệt các phần tử cha theo `parentElement`. Việc đi qua slot và shadow host thuộc phạm vi kiểm tra gốc của trình duyệt. Khi không có môi trường DOM, không có phần tử đích hoặc phần tử không còn kết nối với DOM, kết quả là `false`.
 
 **Tham số:**
-- `elementSelectors?: ElementOrString<E> | null` — bộ chọn để khớp, một Element hoặc null.
+- `elementSelectors?: ElementOrString<E> | null` — bộ chọn, Element, Window (được chuyển thành `document.body`) hoặc null.
 
 **Trả về:**
 `boolean` — `true` nếu phần tử có hiển thị, ngược lại là `false`.

@@ -44,25 +44,42 @@ const REGEXP_DOT_THOUSANDS = /[.][0-9]{3}[,.]/
 const REGEXP_DOT = /[.]/g
 
 /**
- * Converts a value to a finite floating-point number.
+ * Return type for `toNumber`: preserves `bigint` when the input type is strictly `bigint`, and resolves to `number` for all other types /
+ * Тип возвращаемого значения для `toNumber`: сохраняет `bigint`, когда входной тип строго `bigint`, и возвращает `number` для всех остальных типов
+ */
+export type ToNumberReturn<T> = [T] extends [never]
+  ? number
+  : 0 extends (1 & T)
+    ? number
+    : [T] extends [bigint]
+        ? bigint
+        : number
+
+/**
+ * Converts a value to a finite floating-point number (or returns `bigint` as-is).
  * Handles various separators (spaces, commas, dots) and strips non-numeric characters.
  * Safe for use in SSR (Server-Side Rendering) environments.
  *
- * Преобразует значение в конечное число с плавающей точкой.
+ * Преобразует значение в конечное число с плавающей точкой (или возвращает `bigint` без изменений).
  * Обрабатывает различные разделители (пробелы, запятые, точки) и удаляет нечисловые символы.
  * Безопасно для использования в SSR (Server-Side Rendering) средах.
  *
  * @param value input value to convert / входное значение для преобразования
- * @returns parsed number or 0 if conversion fails / распарсенное число или 0, если конвертация не удалась
+ * @returns parsed number, original bigint, or 0 if conversion fails / распарсенное число, исходный bigint или 0, если конвертация не удалась
  *
  * @example
  * toNumber("1 234,56") // 1234.56
  * toNumber("1,234.56") // 1234.56
  * toNumber("1,234")    // 1.234
+ * toNumber(100n)       // 100n
  */
-export function toNumber(value?: unknown): number {
+export function toNumber<T = number>(value?: T): ToNumberReturn<T> {
+  if (typeof value === 'bigint') {
+    return value as ToNumberReturn<T>
+  }
+
   if (typeof value === 'number') {
-    return Number.isFinite(value) ? (value || 0) : 0
+    return (Number.isFinite(value) ? (value || 0) : 0) as ToNumberReturn<T>
   }
 
   if (
@@ -85,8 +102,8 @@ export function toNumber(value?: unknown): number {
       preparedValue = preparedValue.replace(REGEXP_COMMA, '.')
     }
 
-    return parseFloat(preparedValue) || 0
+    return (parseFloat(preparedValue) || 0) as ToNumberReturn<T>
   }
 
-  return 0
+  return 0 as ToNumberReturn<T>
 }

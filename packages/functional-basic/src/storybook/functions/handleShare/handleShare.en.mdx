@@ -7,6 +7,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Invokes the native sharing mechanism of the device via the Web Share API (`navigator.share`).
 Internally verifies support using `isShare()` and `navigator.canShare(data)` before invoking `navigator.share(data)`. Any error thrown during sharing is routed through `ErrorCenter` (`group: 'share'`, `code: 'error'`).
 
+Both `share` and `canShare` must be available. Missing data, unsupported APIs, or a payload rejected by `canShare` return `false` without invoking `share`. A rejection from `share`, including user cancellation, is reported to `ErrorCenter` and returns `false`.
+
 **Parameters:**
 - `data?: ShareData | null` — An object containing data to share (`title`, `text`, `url`, `files`). Safely handles `null` and `undefined`.
 

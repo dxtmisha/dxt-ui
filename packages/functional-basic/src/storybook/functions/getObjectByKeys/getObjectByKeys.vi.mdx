@@ -6,6 +6,8 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Tạo và trả về một đối tượng mới chỉ bao gồm các thuộc tính riêng (`hasKey`) có khóa tương ứng nằm trong danh sách truyền vào từ đối tượng nguồn. Các khóa prototype (`__proto__`, `constructor`, `prototype`), các thuộc tính không tồn tại hoặc có giá trị bằng `undefined` sẽ bị bỏ qua khi sao chép.
 
+Dữ liệu nguồn nullish hoặc danh sách khóa bị bỏ qua, nullish hay rỗng sẽ trả về `{}`. Phép sao chép là nông: tham chiếu đến đối tượng và mảng lồng nhau được giữ nguyên. Có thể chọn tường minh các khóa symbol.
+
 **Tham số:**
 - `data?: T | null` — Đối tượng nguồn chứa dữ liệu ban đầu (trong đó `T extends Record<string, unknown>`).
 - `keys?: readonly K[] | null` — Mảng các khóa cần trích xuất từ đối tượng nguồn (trong đó `K extends keyof T`).

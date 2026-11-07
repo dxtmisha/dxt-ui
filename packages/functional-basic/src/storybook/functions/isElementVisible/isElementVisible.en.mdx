@@ -7,10 +7,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Checks if an element is visible (not hidden by CSS and is in the DOM).
 An element can be off-screen and still be considered visible.
 
-When supported by the browser, the function utilizes the high-performance native `checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })` API. In environments where it is not available, a fallback evaluates computed styles (`display`, `visibility`, `opacity`) and layout dimensions (`offsetWidth`, `offsetHeight`).
+When supported by the browser, the function uses native `checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })`. Otherwise, the fallback evaluates the target's computed `display`, `visibility`, and `opacity`, checks its layout dimensions when available, and rejects `opacity: 0` on ordinary ancestors reached through `parentElement`. A positive ancestor opacity such as `0.5` remains visible. A child's `visibility: visible` can override an ancestor's `visibility: hidden`; ancestor visibility is not rejected unconditionally.
+
+The fallback's ancestor traversal follows `parentElement`. Slot assignment and shadow-host traversal remain part of the browser's native visibility check. Outside a DOM runtime, or for a missing or disconnected target, the result is `false`.
 
 **Parameters:**
-- `elementSelectors?: ElementOrString<E> | null` — selectors for matching, an Element, or null.
+- `elementSelectors?: ElementOrString<E> | null` — a selector, Element, Window (resolved to `document.body`), or null.
 
 **Returns:**
 `boolean` — `true` if the element is visible, otherwise `false`.

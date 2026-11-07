@@ -55,17 +55,19 @@ export class ImageLazy extends DesignLifecycleAbstract {
     protected readonly element: Ref<HTMLElement | undefined>
   ) {
     super()
-
-    watch([
-      element,
-      () => props.lazy,
-      () => props.preloadOffset
-    ], () => this.update())
   }
 
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {
-    this.update()
+    watch(
+      [
+        this.element,
+        () => this.props.lazy,
+        () => this.props.preloadOffset
+      ],
+      () => this.update(),
+      { immediate: true }
+    )
   }
 
   /** Callback after component unmounting / Обработчик после демонтирования компонента */

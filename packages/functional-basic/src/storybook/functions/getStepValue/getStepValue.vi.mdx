@@ -11,7 +11,7 @@ Tính toán giá trị tuyệt đối của một phần trăm (`1%`) dựa trê
 - `max?: number | null` — Giá trị tối đa của khoảng.
 
 **Trả về:**
-`number` — Giá trị đại diện cho 1% sự chênh lệch mốc độ dài. Nếu giá trị tối đa nhỏ hơn hoặc bằng giá trị tối thiểu, hàm sẽ trả về `0`.
+`number` — Một phần trăm của phạm vi tăng: `(max - min) / 100`. Giá trị tối đa bị bỏ qua hoặc null, NaN hay phạm vi không tăng trả về `0`. Phép tính tuân theo kiểu số JavaScript; phạm vi tăng có hiệu vô hạn trả về `Infinity`.
 
 ```typescript
 import { getStepValue } from '@dxtmisha/functional-basic'
