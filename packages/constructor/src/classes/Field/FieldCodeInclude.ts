@@ -1,4 +1,4 @@
-import { isString } from '@dxtmisha/functional'
+import { isObject, isString } from '@dxtmisha/functional'
 
 import type { FieldAllProps } from '../../types/fieldTypes'
 
@@ -59,14 +59,18 @@ export class FieldCodeInclude {
    * @returns validation key or undefined / ключ валидации или undefined
    */
   protected getIndex(state: ValidityState): keyof ValidityState | undefined {
-    const data = Object.entries(state) as ([keyof ValidityState, boolean])[]
+    const validationCode = this.props.validationCode
+    const isMap = isObject(validationCode)
 
-    for (const [code, value] of data) {
+    for (const code in state) {
+      const index = code as keyof ValidityState
+
       if (
-        code !== 'valid'
-        && value
+        index !== 'valid'
+        && state[index]
+        && (!isMap || index in validationCode)
       ) {
-        return code
+        return index
       }
     }
 

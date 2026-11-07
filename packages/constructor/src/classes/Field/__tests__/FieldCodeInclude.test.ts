@@ -55,4 +55,36 @@ describe('FieldCodeInclude', () => {
 
     expect(codeInclude.get(mockStateUnmapped)).toBeUndefined()
   })
+
+  it('should resolve error message from a real DOM HTMLInputElement.validity instance (Web IDL prototype getters)', () => {
+    const input = document.createElement('input')
+    input.required = true
+    input.value = ''
+
+    const codeInclude = new FieldCodeInclude({
+      validationCode: {
+        valueMissing: 'Native required field error'
+      }
+    })
+
+    expect(input.validity.valid).toBe(false)
+    expect(input.validity.valueMissing).toBe(true)
+    expect(codeInclude.get(input.validity)).toBe('Native required field error')
+  })
+
+  it('should match configured key in validationCode when multiple ValidityState flags are true simultaneously', () => {
+    const codeInclude = new FieldCodeInclude({
+      validationCode: {
+        tooShort: 'Minimum length not met'
+      }
+    })
+
+    const mockMultipleErrors = {
+      valid: false,
+      patternMismatch: true,
+      tooShort: true
+    } as unknown as ValidityState
+
+    expect(codeInclude.get(mockMultipleErrors)).toBe('Minimum length not met')
+  })
 })
