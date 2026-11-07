@@ -13,7 +13,7 @@ Unlike naive string conversions (such as `value || ''` or template literals `${v
 - Objects with custom `toString()` or `Symbol.toPrimitive` methods are properly resolved.
 
 **Parameters:**
-- `value: T` — The value for conversion.
+- `value?: T` — The value for conversion.
 
 **Returns:**
 `string` — The string representation of the value, or an empty string for `null` / `undefined`.

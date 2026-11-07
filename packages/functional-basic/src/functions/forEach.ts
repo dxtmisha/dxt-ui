@@ -84,7 +84,15 @@ export function forEach<
     }
 
     for (let index = 0; index < length; index++) {
-      push(returnData, callback(data[index] as any, index as unknown as K, data), saveUndefined)
+      push(
+        returnData,
+        callback(
+          data[index] as D extends object ? ForEachItem<D> : T,
+          index as unknown as K,
+          data
+        ),
+        saveUndefined
+      )
     }
   } else if (data instanceof Map) {
     if (data.size === 0) {
@@ -92,7 +100,15 @@ export function forEach<
     }
 
     for (const [key, item] of data as Map<K, T>) {
-      push(returnData, callback(item as any, key, data), saveUndefined)
+      push(
+        returnData,
+        callback(
+          item as D extends object ? ForEachItem<D> : T,
+          key,
+          data
+        ),
+        saveUndefined
+      )
     }
   } else if (data instanceof Set) {
     if (data.size === 0) {
@@ -100,12 +116,28 @@ export function forEach<
     }
 
     for (const item of data) {
-      push(returnData, callback(item as any, item as unknown as K, data), saveUndefined)
+      push(
+        returnData,
+        callback(
+          item as D extends object ? ForEachItem<D> : T,
+          item as unknown as K,
+          data
+        ),
+        saveUndefined
+      )
     }
   } else {
     for (const key in data) {
       if (Object.hasOwn(data, key)) {
-        push(returnData, callback((data as any)[key], key as unknown as K, data), saveUndefined)
+        push(
+          returnData,
+          callback(
+            (data as Record<string, unknown>)[key] as D extends object ? ForEachItem<D> : T,
+            key as unknown as K,
+            data
+          ),
+          saveUndefined
+        )
       }
     }
   }

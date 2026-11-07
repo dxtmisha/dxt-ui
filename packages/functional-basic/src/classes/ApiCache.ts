@@ -57,7 +57,7 @@ export class ApiCache {
    * @param key cache key / ключ кэша
    * @returns T | undefined / данные из кэша или undefined
    */
-  static async get<T>(key: string): Promise<T | undefined> {
+  static async get<T = unknown>(key: string): Promise<T | undefined> {
     const item: ApiCacheItem<T> | undefined = await this.getItemOrListener(key)
 
     this.clearOld(key)
@@ -81,7 +81,7 @@ export class ApiCache {
    * @param age cache age in seconds / возраст кэша в секундах
    * @returns Promise<void> / Promise без возвращаемого значения
    */
-  static async set<T>(
+  static async set<T = unknown>(
     key: string,
     value: T,
     age: number = API_CACHE_DEFAULT_AGE
@@ -102,7 +102,7 @@ export class ApiCache {
    * @param fetch fetch options / опции fetch
    * @returns T | undefined / данные из кэша или undefined
    */
-  static async getByFetch<T>(fetch: ApiFetch): Promise<T | undefined> {
+  static async getByFetch<T = unknown>(fetch: ApiFetch): Promise<T | undefined> {
     if (!this.isCache(fetch)) {
       return undefined
     }

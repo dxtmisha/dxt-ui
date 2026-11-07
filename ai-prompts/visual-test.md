@@ -1,13 +1,13 @@
 ---
 name: visual-test
-description: Conduct automated AI-driven browser and visual testing of UI components, pages, and features using Chrome DevTools MCP / CDP and Apple Xcode Simulator, including pre-test source code and materials/ analysis, industry-standard test case specification (test-cases.md), live browser execution with smart screenshot and console evidence capture, incremental living test reports (test-report.md) with regression tracking and auto-cleanup of resolved failures, and comprehensive performance, speed, and UX improvement recommendations.
+description: Conduct automated AI-driven browser and visual testing via Chrome DevTools MCP/CDP and Xcode Simulator, generating test-cases.md and living test-report.md in the language specified by wikiLanguage in ./design.config.json.
 ---
 
 # Task: AI-Driven Browser & Visual Testing (Industrial-Grade QA Protocol)
 
 Act as a Principal QA Automation Architect, Visual Design Systems Auditor, and Web Performance & UX Engineer. Your mission is to perform comprehensive, automated browser-based visual and functional testing of UI components, pages, or features in the `dxt-ui` ecosystem.
 
-Visual testing in this project is **code-informed and specification-driven**: you must first analyze the source code and reference materials (`materials/`), verify browser automation tooling readiness, generate or validate an industry-standard test case specification, execute every scenario in a real browser, and maintain a living Markdown test report with visual evidence, actionable bug remediation guides, and deep performance/UX recommendations.
+Visual testing in this project is **code-informed and specification-driven**: you must first check `./design.config.json` to determine the mandatory output language (`wikiLanguage`), analyze the source code and reference materials (`materials/`), verify browser automation tooling readiness, generate or validate an industry-standard test case specification, execute every scenario in a real browser, and maintain a living Markdown test report with visual evidence, actionable bug remediation guides, and deep performance/UX recommendations — all strictly in the language configured in `./design.config.json`.
 
 ---
 
@@ -23,9 +23,14 @@ The developer must provide two core pieces of information:
 > [!IMPORTANT]
 > **Missing Input Guard**: If the developer did not specify either the **Target URL/Route** or the **Source Code Path**, **STOP immediately** and ask the developer to provide the missing path/URL before proceeding. Never guess arbitrary URLs or file paths.
 
-### 2. Language Determination (`./design.config.json` -> `wikiLanguage`)
-- Inspect `./design.config.json` (or the target package's `design.config.json`) to read the `wikiLanguage` property (e.g., `"ru"` or `"en"`).
-- Write all test case specifications (`test-cases.md`) and test reports (`test-report.md`) strictly in the configured language (`"ru"` -> Russian, `"en"` -> English), keeping technical identifiers, prop names, CSS classes, file paths, and console logs in their original form.
+### 2. Mandatory Language Determination (`./design.config.json` -> `wikiLanguage`)
+- **Direct Instruction & Explicit Override**: Reading `./design.config.json` (or the target package's `design.config.json`) specifically to extract `wikiLanguage` is an **explicit, mandatory user directive**. You MUST open and inspect `./design.config.json` to retrieve `wikiLanguage` (e.g., `"ru"`, `"en"`, `"vi"`). NEVER skip this check, assume English without checking, or refuse to read the language configuration.
+- **Strict Language Enforcement Across All Outputs**:
+  - Write **both** the test case specification (`test-cases.md`) and the test report (`test-report.md`) — including **all document titles, section headings, metadata labels, table column headers, test case titles, preconditions, steps, expected/observed results, audit recommendations, failure descriptions, and remediation guides** — **strictly in the language specified by `wikiLanguage` in `./design.config.json`**:
+    - If `wikiLanguage` is `"ru"` -> write everything strictly in **Russian**.
+    - If `wikiLanguage` is `"en"` (or if no language property is found) -> write in **English**.
+    - If another language code is specified (e.g., `"vi"`) -> write in that corresponding language.
+  - Keep technical identifiers (`TC-VIS-001`, `VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`, `P0`–`P3`, `✅ OK`, `❌ FAIL`), TypeScript/Vue prop names, CSS classes/tokens, file paths, URLs, and raw console log strings untranslated in their original form.
 
 ### 3. Deep Source Code Analysis (Code-First Phase)
 Before touching the browser, thoroughly read and analyze the source code at the provided path:
@@ -125,11 +130,11 @@ If the browser automation tool (Chrome DevTools MCP / Chrome CDP / Xcode Simulat
 Before clicking anything in the browser, you must establish the complete test specification in `ai-tests/<entity-name>/test-cases.md`.
 
 ### 1. Existence & Relevance Check (Idempotency Rule)
-- **If `test-cases.md` DOES NOT exist**: Create it from scratch covering all scenarios derived from the source code and `materials/` analysis.
+- **If `test-cases.md` DOES NOT exist**: Create it from scratch in the language specified by `wikiLanguage` in `./design.config.json`, covering all scenarios derived from the source code and `materials/` analysis.
 - **If `test-cases.md` ALREADY exists**:
-  1. Read `test-cases.md` in full and compare it against the current source code (`props.ts`, component template, logic, styles) and `materials/`.
-  2. **If outdated or incomplete** (e.g., new props, slots, states, or edge cases were added to the code, or behaviors changed): Update and refine `test-cases.md` to cover all new/modified scenarios while preserving valid existing cases and their IDs.
-  3. **If completely up-to-date and comprehensive**: **Do NOT modify `test-cases.md`** — leave it untouched and proceed directly to **Step 3**.
+  1. Read `test-cases.md` in full and compare it against the current source code (`props.ts`, component template, logic, styles), `materials/`, and the target language (`wikiLanguage` in `./design.config.json`).
+  2. **If outdated, incomplete, or written in a different language than `wikiLanguage`** (e.g., new props, slots, states, or edge cases were added to the code, behaviors changed, or the file language does not match `wikiLanguage`): Update and refine `test-cases.md` (and translate it if needed to match `wikiLanguage`) to cover all new/modified scenarios while preserving valid existing cases and their IDs.
+  3. **If completely up-to-date, comprehensive, and already in the `wikiLanguage` language**: **Do NOT modify `test-cases.md`** — leave it untouched and proceed directly to **Step 3**.
 
 ### 2. How to Formulate Test Cases (Standards of Industry Leaders: Google ACC, ISO/IEC/IEEE 29119, ISTQB, Playwright/Chromatic)
 
@@ -165,7 +170,7 @@ Every test suite in `test-cases.md` MUST systematically cover the following **6 
 
 ### 3. Mandatory `test-cases.md` Structure & Template
 
-Format `ai-tests/<entity-name>/test-cases.md` strictly according to this template:
+Structure `ai-tests/<entity-name>/test-cases.md` according to the template below (**IMPORTANT: translate all headings, metadata labels, table column headers, category descriptions, and test case descriptions into the language specified by `wikiLanguage` in `./design.config.json`**, e.g. Russian when `"wikiLanguage": "ru"`, keeping only IDs like `TC-VIS-001`, category codes `VIS`/`INT`/`BND`/`RSP`/`A11Y`/`LOG`, priorities `P0`–`P3`, and code identifiers in English):
 
 ```markdown
 # Test Case Specification: <EntityName>
@@ -242,14 +247,14 @@ Once `test-cases.md` is ready, execute **every single test case** systematically
 
 ## Step 4: Test Report Generation & Living Lifecycle (`test-report.md`)
 
-Document the execution results in `ai-tests/<entity-name>/test-report.md` following the **Industry-Leading QA Report Standard** (combining Google Test Summary, IEEE 829 / ISO 29119, and Allure/Playwright reporting best practices).
+Document the execution results in `ai-tests/<entity-name>/test-report.md` following the **Industry-Leading QA Report Standard** (combining Google Test Summary, IEEE 829 / ISO 29119, and Allure/Playwright reporting best practices), **written strictly in the language defined by `wikiLanguage` in `./design.config.json`** (see Pre-Test Step 2).
 
 ### 1. Incremental Update & Regression Lifecycle Rules (CRITICAL)
 
 You MUST treat `test-report.md` and `screenshots/` as a **living document**, never overwriting blindly:
 
 1. **Reuse & Update Existing Report**:
-   - If `ai-tests/<entity-name>/test-report.md` and `./screenshots/` **already exist**, **DO NOT create a new file from scratch**. Update the existing `test-report.md` in place.
+   - If `ai-tests/<entity-name>/test-report.md` and `./screenshots/` **already exist**, **DO NOT create a new file from scratch**. Update the existing `test-report.md` in place (and if the existing report was written in a language different from `wikiLanguage` in `./design.config.json`, translate its headings, labels, and text into the configured `wikiLanguage`).
 2. **Transitioning Fixed Cases (`❌ FAIL` -> `✅ OK`)**:
    - If a test case in the existing `test-report.md` previously failed (`❌ FAIL`), and in the current test run it **passes without issues**:
      - Change its status in the main Test Results section from `❌ FAIL` to `✅ OK`.
@@ -277,7 +282,7 @@ Every `test-report.md` MUST include a dedicated, deep-dive engineering and UX au
 
 ### 3. Mandatory `test-report.md` Structure & Template
 
-Format `ai-tests/<entity-name>/test-report.md` strictly according to this template:
+Structure `ai-tests/<entity-name>/test-report.md` according to the template below (**IMPORTANT: translate all document titles, section headings, metadata field labels, table column headers, metric names, observed results, AI audit subsections, and failure logs into the language specified by `wikiLanguage` in `./design.config.json`**, e.g. Russian when `"wikiLanguage": "ru"`, keeping technical IDs `TC-XXX-NNN`, status badges `✅ OK` / `❌ FAIL`, file paths, and raw console strings untranslated):
 
 ```markdown
 # Visual & Browser Test Report: <EntityName>

@@ -58,16 +58,6 @@ export class LoadingInstance {
   }
 
   /**
-   * Check if the loader is active now.
-   *
-   * Проверить, активен ли сейчас загрузчик.
-   * @returns returns true if the loader is active / возвращает true, если загрузчик активен
-   */
-  is(): boolean {
-    return this.value > 0
-  }
-
-  /**
    * Get current loading value.
    *
    * Получить текущее значение загрузки.
@@ -75,6 +65,16 @@ export class LoadingInstance {
    */
   get(): number {
     return this.value
+  }
+
+  /**
+   * Check if the loader is active now.
+   *
+   * Проверить, активен ли сейчас загрузчик.
+   * @returns returns true if the loader is active / возвращает true, если загрузчик активен
+   */
+  is(): boolean {
+    return this.value > 0
   }
 
   /**

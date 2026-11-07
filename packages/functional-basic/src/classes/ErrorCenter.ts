@@ -22,21 +22,6 @@ const ERROR_CENTER_INSTANCE_KEY = '__ui:error-center-instance__'
  */
 export class ErrorCenter {
   /**
-   * Checks if a cause with specific code exists.
-   *
-   * Проверяет наличие причины с конкретным кодом.
-   * @param code error code / код ошибки
-   * @param group error group / группа ошибки
-   * @returns true if cause exists / true, если причина существует
-   */
-  static has(
-    code: string,
-    group?: ErrorCenterGroup
-  ): boolean {
-    return this.getItem().has(code, group)
-  }
-
-  /**
    * Gets a specific error cause by code and group.
    *
    * Получает конкретную причину ошибки по коду и группе.
@@ -49,6 +34,21 @@ export class ErrorCenter {
     group?: ErrorCenterGroup
   ): ErrorCenterCauseItem | undefined {
     return this.getItem().get(code, group)
+  }
+
+  /**
+   * Checks if a cause with specific code exists.
+   *
+   * Проверяет наличие причины с конкретным кодом.
+   * @param code error code / код ошибки
+   * @param group error group / группа ошибки
+   * @returns true if cause exists / true, если причина существует
+   */
+  static has(
+    code: string,
+    group?: ErrorCenterGroup
+  ): boolean {
+    return this.getItem().has(code, group)
   }
 
   /**

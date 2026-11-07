@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Conduct a rigorous code review assessing architecture, security & vulnerabilities (XSS, injection, prototype pollution, ReDoS, sensitive data exposure), dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, practical bugs and real-world edge cases (strictly filtering out hypothetical non-crash/non-security remarks), adherence to project rules, accessibility & ARIA compliance, design quality, SSR compatibility & isomorphism, memory leak prevention & resource cleanup, and test suite completeness, with mandatory protocol re-reading upon chat context compaction or once every 8 reviewed files in batch mode, post-modification TypeScript and ESLint verification gates, temp.md pre-check deduplication guard, recursive intra-package dependency-first traversal (bottom-up DFS resolution of unreviewed same-package imports down to leaf dependencies before reviewing the target file), directory or multi-file (>1 files) batch processing (scanning folder or passed file list, excluding already reviewed entities via temp.md, sorting alphabetically, reviewing each file and its unreviewed intra-package dependency chain in isolation, enforcing separate per-run batch counters across 3 entity groups — max 8 files for Vue Components, max 12 files for Classes & Hooks/Composables, and max 24 files for all other files, auto-advancing on clean fast-track finalization until any group counter hits its limit, and halting immediately upon encountering blockers or critical findings), and parallel execution acceleration (actively leveraging parallel tool calls, concurrent processes, and subagents whenever supported by the AI agent runtime for independent leaf dependencies, file I/O, and test runs), all findings, refactorings, and proposed test suites saved exclusively as an AI artifact (allowing immediate in-place fixes for minor bugs, typing ergonomics, character check unifications, micro-optimizations, typos, and JSDoc, with a mandatory dedicated auto-fix report section in the artifact, while reserving structural/breaking changes for developer approval), in the language specified by wikiLanguage in ./design.config.json, and executing the mandatory post-review finalization protocol (temp.md update, test suite application, Storybook MDX synchronization, and clean ESLint/TypeScript verification) automatically when no critical issues are found, or upon developer confirmation («готово» / «готова» / «код-ревью готово»).
+description: Conduct a deep architectural, security, SSR, memory, and code quality review with safe auto-fixes, artifact reporting, and automated test/docs finalization.
 ---
 
 # Task: Strict Architectural and Quality Code Review
@@ -36,9 +36,8 @@ Before analyzing any code or generating any review text, you MUST execute these 
   - When the user specifies a **directory/folder** OR **multiple files (more than 1 file)** as the code review target (e.g. `packages/<pkg>/src/functions/`, `packages/<pkg>/src/classes/`, or a list of 2+ specific files):
     1. **Pre-Review Deduplication via `temp.md`**: Gather all target entity source files (from the specified directory or the passed list of files, excluding test directories `__tests__/`, test files `*.test.ts`, `*.spec.ts`, and barrel files `index.ts` / `library.ts` re-exports). Check each entity against `temp.md`. **Immediately exclude all files whose entities are already listed in `temp.md`** from the review queue. If all specified files (or all files in the folder) have already passed, inform the developer immediately that all entities have already been reviewed and stop.
     2. **Alphabetical Sorting with Recursive Dependency Pre-Resolution**: Sort the remaining unreviewed candidate files strictly **in alphabetical order** by entity name / file name. Before reviewing the next candidate file in the queue, always apply **Mandatory Recursive Intra-Package Dependency Resolution**: if the candidate imports any unreviewed entity from the same package (even if that entity lies later in the alphabetical queue, was not explicitly included in the multi-file list, or resides in another folder of the same package, e.g., `src/classes/` or `src/functions/`), recursively review and finalize the entire chain of unreviewed same-package dependencies down to the last leaf dependency first, and only then review the candidate file itself. (Skip any file in the main alphabetical queue that was already reviewed and added to `temp.md` earlier as a dependency).
-    3. **Isolated Sequential Review (One by One) & Periodic Protocol Re-Reading**:
-       - Iterate over the resolved execution order, reviewing each file **strictly in isolation as if it was submitted individually**, applying all standard code review rules, dependency audits, allowed immediate auto-fixes, and creating a dedicated artifact (`code_review_<Target>.md`) for each entity.
-       - **MANDATORY RE-READING ON CONTEXT COMPACTION OR EVERY 8 FILES**: The agent **MUST re-read `ai-prompts/code-review.md` completely anew from disk** immediately after any **chat context compaction** OR **once every 8 reviewed files** (including intra-package dependencies resolved along the way). Continuing after context compaction or reviewing more than 8 files consecutively without reloading the prompt file is strictly forbidden.
+    3. **Isolated Entity Review**:
+       - Review each entity **strictly in isolation as if it was submitted individually** (either sequentially in the main agent or via parallel worker subagents for independent leaf files under item 6), applying the Batch Freshness Guard (re-reading `ai-prompts/code-review.md` on context compaction or every 8 files), all standard code review rules, dependency audits, allowed immediate auto-fixes, and creating a dedicated artifact (`code_review_<Target>.md`) for each entity.
     4. **Maximum Batch Size Limits by Group (3 Separate Counters Per Run)**:
        - **Three Distinct Entity Groups with Independent Counters**: During any directory or multi-file batch review, track three separate, independent counters in the current turn/run (counting both target files from the queue and any unreviewed intra-package dependencies resolved along the way, according to the group of each reviewed file):
          1. **Group 1 — Components** (Vue components `.vue`): **maximum 8 files per run** (Counter 1: `0..8`).
@@ -46,21 +45,21 @@ Before analyzing any code or generating any review text, you MUST execute these 
          3. **Group 3 — Everything Else** (pure functions `src/functions/`, utilities, etc.): **maximum 24 files per run** (Counter 3: `0..24`).
        - **Automatic Pause When Any Counter Reaches Its Cap**: Because the counters are separate for each group (each reviewed entity increments only the counter of its own group), as soon as **Counter 1 reaches 8**, **Counter 2 reaches 12**, OR **Counter 3 reaches 24** (and the current file is finalized), the agent **MUST STOP**, output a concise summary of all reviewed files in the current run with links to their artifacts, and wait for the developer's next prompt to continue with the remaining queue.
     5. **Stop-on-Blocker vs Chained Auto-Finalization**:
-       - **Chained Progression (Fast Track)**: If an entity has **NO critical issues (P0) and NO major architectural blockers (P1)** (i.e. it qualifies for immediate autonomous finalization / step «готово»): execute the Post-Review Finalization Protocol (record in `temp.md`, verify tests via `vitest run`, synchronize Storybook MDX), notify in chat with the artifact link, and **automatically proceed to the next entity in the dependency chain or alphabetical queue (re-reading `ai-prompts/code-review.md` anew upon chat context compaction or once every 8 reviewed files, until any group counter reaches its cap: 8 for Components, 12 for Classes & Hooks, or 24 for Everything Else)**.
-       - **Mandatory Halt on Blocker (Stop-on-Issue)**: If an entity (whether a leaf dependency in the chain or the target file itself) contains **critical issues (P0), major architectural flaws (P1), breaking changes, or runtime defects requiring developer decisions**: **IMMEDIATELY HALT!** Do NOT proceed to dependent parent files or subsequent files in the folder / multi-file queue. Generate the artifact for the current file, report the blockers in chat, freeze tests, documentation, and `temp.md` for this file, and halt until the developer reviews and issues explicit instructions or confirmation («готово»). Only after resolution and confirmation can the agent finalize this entity and continue unwinding the dependency chain / advancing the queue.
+       - **Chained Progression (Fast Track)**: If an entity has **NO critical issues (P0) and NO major architectural blockers (P1)**: execute the Post-Review Finalization Protocol (record in `temp.md`, verify tests via `vitest run`, synchronize Storybook MDX), notify in chat with the artifact link, and **automatically proceed to the next entity in the dependency chain or alphabetical queue** (respecting the Batch Freshness Guard and per-run group caps above).
+       - **Mandatory Halt on Blocker (Stop-on-Issue)**: If an entity (whether a leaf dependency in the chain or the target file itself) contains **critical issues (P0), major architectural flaws (P1), breaking changes, or runtime defects requiring developer decisions**: **IMMEDIATELY HALT!** Do NOT proceed to dependent parent files or subsequent files in the folder / multi-file queue. Generate the artifact for the current file, report the blockers in chat, freeze tests, documentation, and `temp.md` for this file, and halt until the developer reviews and issues explicit instructions or confirmation («готово»).
     6. **Parallel Execution & Multi-Process / Subagent Acceleration (Mandatory When Supported)**:
        - If the AI agent runtime supports launching multiple parallel processes, concurrent tool calls, or background subagents (`invoke_subagent`, parallel file reads/edits, concurrent test runs), the agent **MUST actively utilize this capability** to maximize review speed and throughput:
          - **Parallel Tool Calls (I/O & Verification)**: Always batch independent operations in parallel within a single turn — read source files, unit tests, and localized Storybook docs (`*.ru.mdx`, `*.en.mdx`, `*.vi.mdx`) simultaneously; write review artifacts and update MDX files in parallel; and batch `npx vitest run` executions across multiple independent test files.
-         - **Parallel Subagents / Processes for Independent Entities**: After mapping the intra-package dependency graph for the current batch, independent leaf dependencies or independent files that do not depend on each other may be delegated to parallel processes/subagents for simultaneous review, auto-fixing, test verification, and artifact generation, provided that:
-           1. **Dependency Order Integrity**: A parent file is never finalized before all of its intra-package dependencies have passed review.
-           2. **Conflict-Free Shared State**: Updates to shared registry files (`temp.md`) are synchronized without race conditions or lost entries.
-           3. **Strict Counter & Blocker Enforcement**: Per-run group caps (`8` Components, `12` Classes & Hooks, `24` Everything Else) and immediate Stop-on-Blocker rules remain strictly enforced across all parallel tasks.
+         - **Parallel Subagents / Processes via Orchestrator-Worker Pattern**: After mapping the intra-package dependency graph for the current batch, independent leaf dependencies or independent files that do not depend on each other may be delegated to parallel worker subagents for simultaneous analysis, auto-fixing, test/MDX updates on their isolated files, and artifact generation, strictly following the **Orchestrator-Worker** architecture:
+           1. **Dependency Order Integrity**: Workers only process independent leaf/sibling entities; a parent file is never reviewed or finalized before all of its intra-package dependencies have passed review.
+           2. **Centralized Orchestrator State (`temp.md` & Counters)**: Worker subagents **MUST NEVER** modify shared registry files (`temp.md`) directly and do not manage global batch counters. Workers return their review results and artifact paths to the parent **Orchestrator agent**, which exclusively performs all writes to `temp.md` and increments the 3 group counters (`8` Components, `12` Classes & Hooks, `24` Everything Else) to prevent race conditions or lost entries.
+           3. **Strict Counter & Blocker Enforcement**: The parent Orchestrator pre-allocates tasks within the remaining per-run group caps (`8` / `12` / `24`) and enforces immediate Stop-on-Blocker if any worker reports a `P0`/`P1` issue.
 
 ### 1. Mandatory Language Determination (`./design.config.json` -> `wikiLanguage`)
 - **Direct Instruction & Explicit Override**: Reading `./design.config.json` specifically to extract `wikiLanguage` is an **explicit, mandatory user directive**. You MUST open and inspect `./design.config.json` to retrieve `wikiLanguage` (e.g., `"ru"` or `"en"`). NEVER skip this check, assume English without checking, or refuse to read the language configuration.
 - **Language Enforcement**:
   - If `wikiLanguage` is `"ru"`, the **entire code review report MUST be written strictly in Russian** (all sections, headings, categories, explanations, bug descriptions, summaries, and recommendations).
-  - If `wikiLanguage` is `"en"` (or if no language property is found), write in English.
+  - If `wikiLanguage` is `"en"` (or if no language property is found), write in English; if another language code is specified (e.g., `"vi"`), write strictly in that configured language.
   - Code snippets, TypeScript type names, variable names, technical identifiers, and file paths must always remain untranslated in their original form.
 
 ### 2. Artifact Delivery (Zero Chat Dumping, Do NOT Pollute Repository)
@@ -81,51 +80,23 @@ Before analyzing any code or generating any review text, you MUST execute these 
      - **Loss of Generic Return Type Inference from Fallback/Default Values (`defaultValue`)**: When an accessor method, storage utility, or getter function accepts a generic type parameter `<T = unknown>` and an optional default fallback value/factory (e.g., `defaultValue?: D`), but TypeScript fails to infer `T` when the caller omits `<T>` (leaving `T = unknown` and unnecessarily degrading the return type to `unknown`), **you MUST automatically refine the return type helper in-place** using conditional type unwrapping (e.g., `type EntityGet<T, D = undefined> = [D] extends [undefined] ? (T | undefined) : unknown extends T ? (D extends () => infer R ? R : D) : T`). This ensures calls like `storage.get('theme', 'dark')` or `get('count', () => 42)` infer exact types (`string`, `number`) automatically without forcing callers to write redundant explicit generic arguments (`<string>`).
      - **No Function Overloads (Single Unified Signature)**: Avoid TypeScript function overloads (`export function ...\nexport function ...`) when widening parameters or refining return types. Always achieve type ergonomics and literal type preservation via a single unified signature using generics, default types, and conditional return types (e.g., `export function capitalize<T = string>(value?: T, ...): T extends string ? Capitalize<T> : string` instead of multiple overload declarations). Single signatures are concise, easier to maintain, prevent JSDoc duplication, and generate cleaner `.d.ts` declaration files without overload boilerplate.
      - **Test Assertion Cleanup**: Removing redundant `// @ts-expect-error` directives or type casts (e.g., `as unknown as string`, `as any`) in associated unit tests that become unnecessary after the type fix.
-  4. **Redundant Logic, Dead Code & Micro-Optimizations**:
-     - Eliminating redundant or duplicate checks in logical expressions (e.g., when `A || (B && C)` re-evaluates `A` inside `C` even though `A` is guaranteed false on the right-hand side: `isControlCharacter(charCode) || (cleanValue.length === 0 && isControlOrSpace(charCode))` simplifies to `isControlCharacter(charCode) || (cleanValue.length === 0 && charCode === 32)`).
-     - Removing private helper micro-functions, constants, and types rendered unused after eliminating redundant conditions (e.g., removing `isControlOrSpace`).
-     - Cleaning up unreachable branches, dead code, and unused local imports or variables inside the audited file.
-     - **Redundant Optional Chaining & Syntax Cleanup**: Eliminating redundant optional chaining operators (such as `?.method?.()` when `method` is guaranteed to exist on a resolved non-null object, e.g., simplifying `this.getMethod()?.getItem?.(this.getIndex())` to `this.getMethod()?.getItem(this.getIndex())`), removing unneeded double-checks, and unifying invocation styles across adjacent methods.
-     - **Falsy Boundary Traps, Property Existence Guards, & Non-Destructive Object Merging**:
-       - Replacing truthiness checks (`if (value)` or `isFilled(value)` which returns `false` for numeric `0`) on numeric or `NumberOrString` properties where `0` is a valid domain value with `value !== undefined` (or `!isNull(value)`).
-       - Unwrapping computed/default fallback branches from `if (key in object)` / `Object.hasOwn` guards so default resolvers still execute when plain input objects omit optional keys.
-       - Preventing unconditional object spreads (`{ ...base, key: optionalValue }`) from overwriting existing properties in `base` when `optionalValue` is `undefined`, and ensuring default fallbacks are applied consistently across all output getters/methods.
-       - Adding missing union members or declared interface properties to `switch` statements, lookup maps, and property whitelists after cross-checking against their TypeScript type definitions (`*Types.ts`).
+  4. **Redundant Logic, Dead Code & Boundary Guards**:
+     - Eliminating duplicate conditions in logical expressions (e.g., when `A || (B && C)` re-evaluates `A` inside `C`), unreachable branches, dead code, and unused private helpers, constants, types, or local imports.
+     - **Redundant Optional Chaining & Syntax Cleanup**: Removing redundant `?.` operators on guaranteed non-null members (e.g., `obj?.method?.()` -> `obj?.method()`) and unifying invocation styles across adjacent methods.
+     - **Falsy Boundary Traps, Property Existence Guards & Non-Destructive Merging**:
+       - Replacing truthiness checks (`if (value)` or `isFilled(value)`) on numeric/`NumberOrString` properties where `0` is valid with `value !== undefined` (or `!isNull(value)`).
+       - Unwrapping computed/default fallback branches from `if (key in object)` / `Object.hasOwn` guards so default resolvers execute when optional keys are omitted.
+       - Preventing unconditional spreads (`{ ...base, key: optionalValue }`) from overwriting existing `base` properties with `undefined`, and adding missing union members or interface properties to `switch` statements and lookup maps per `*Types.ts`.
   5. **Micro-Optimizations, Loop Safeguards & Check Unification**:
-     - Caching collection lengths in loops (e.g., `const length = array.length` or `data.length` before indexed iterations) to eliminate repetitive property access overhead and guarantee termination against infinite loops caused by mutations in callbacks.
-     - Early boundary exits for empty collections (`if (length === 0) return ...` / `if (data.size === 0) return ...`) to skip redundant loop setup.
-     - Replacing repeated string indexing with already extracted numeric character codes (e.g., replacing `value[index] === ':'` with `charCode === CHAR_COLON` or `charCode === 58` when `charCode = value.charCodeAt(index)` was already computed in the current loop iteration).
-     - Extracting magic numbers (character codes, boundary constants) into named, bilingually documented module-level constants (e.g., `CHAR_SPACE = 32`, `CHAR_COLON = 58`).
-     - Unifying character check styles (if one branch checks a numeric code `charCode === 32` while an adjacent branch checks a string literal `value[index] === ':'`, unify them to character code checks).
-     - Any similar minor, safe, and non-breaking algorithmic micro-optimizations, loop invariant hoists, and performance guards can and should be applied automatically in-place.
-  6. **Class Structure & Method Ordering (`ai-prompt.md`)**:
-     - Automatically reordering class members, properties, and methods to strictly adhere to the project's mandatory class structure guidelines:
-       - Properties/Variables (`public` -> `protected` -> `private`) -> `constructor` -> Computed/Reactive Properties (`computed` and reactive fields placed immediately after constructor) -> Public Methods -> Protected Methods -> Private Methods.
-       - Method group order within each visibility section: 1) `get` (getters), 2) `set` (setters), 3) `is...`, 4) `has...`, 5) `get...`, 6) `set...`, 7) `add...`, 8) `remove...`, 9) `update...`, 10) `reset...`, 11) remaining methods (grouped by semantic pairs such as `min`/`max`, `width`/`height`, then alphabetically).
-     - Bringing class members into compliant order is completely safe, preserves behavior, and must be performed in-place automatically during code review.
-- **Mandatory Dedicated Auto-Fix Report Section**:
-  All applied in-place fixes **MUST be documented in Section 2 of the AI Artifact** ("Applied Immediate Fixes") with: modified files and line links (`file.ts#L10-L15`), fix category (`Typo` / `JSDoc` / `Typing Ergonomics` / `Micro-Optimization & Check Unification` / `Dead Code Removal` / `Redundant Chaining & Syntax Cleanup` / `Class Structure & Method Ordering`), technical rationale/benefit, Before/After `diff` blocks, and unit test verification status after the changes (e.g., `vitest run: 37 passed`). If no fixes were needed, state explicitly: *"No automated fixes required (code is originally clean)"*.
-- **Mandatory Post-Modification Verification (TypeScript & ESLint Quality Guard)**:
-  - Immediately after applying ANY in-place auto-fixes or modifying audited files:
-    1. **ESLint Verification**: Run `npx eslint --fix <file-paths>` on all modified files and ensure **0 errors and 0 warnings**.
-    2. **TypeScript Compilation Check**: Run the package typecheck or build (`npm --prefix packages/<pkg> run build` or `npx vue-tsc -b`) to verify that all code changes, widened signatures, and refactorings compile with **0 TypeScript errors**.
-    3. **Test Suite Verification**: Re-run the unit test runner (`npx vitest run <test-file>`) to guarantee 100% clean test execution without regressions.
-  - If any TypeScript error or ESLint warning is introduced by a modification, **fix it immediately in-place** before proceeding.
+     - Caching collection lengths before indexed loops (`const length = array.length`), adding early exits for empty collections (`if (length === 0) return ...`), hoisting loop invariants, extracting magic numbers into named bilingually documented constants, and unifying check styles within loops (e.g., avoiding mixed `charCodeAt` and string literal indexing in the same iteration).
+  6. **Class Structure & Method Ordering (`ai-prompt.md` & Section 2.B)**:
+     - Automatically reorder class members, properties, and methods in-place to strictly match the canonical class structure and method ordering rules defined in Section 2.B (`Properties -> constructor -> computed -> Public/Protected/Private methods`).
+- **Auto-Fix Reporting & Verification**:
+  - Document all applied in-place fixes in **Section 2 of the AI Artifact** (see Section 6.B.2) and immediately verify them via `npx eslint --fix`, TypeScript typecheck (`tsc`/`vue-tsc --noEmit` or package `build`), and `npx vitest run` (see **Post-Review Finalization Protocol Step 4**, which explicitly overrides the general Build Execution Guard in `ai-prompt.md`). Fix any introduced lint or type errors immediately in-place.
 - **Strict Prohibition of Structural & Breaking Modifications**:
-  - Large architectural refactorings, class or component rewrites, business logic modifications, entity deletions, or public API signature changes are **STRICTLY FORBIDDEN** without an explicit direct command from the developer (e.g., "apply fixes", "apply recommendations", "fix item 2", "update tests").
-  - Document all structural proposals **exclusively within Section 6 of the AI Artifact** as advisory recommendations with Before/After diff blocks. Fix and edit strictly what the developer tells you to fix!
-- **Autonomous Finalization when Clean (Fast Track) vs Freeze on Critical Issues**:
-  - **Fast Track (Zero Critical Issues — Immediate Autonomous Finalization)**:
-    If during the code review **NO critical issues (P0 / Blocker), NO major architectural bugs (P1), and NO breaking changes** are identified — meaning the target entity is either originally clean or all detected issues were safe, non-breaking immediate auto-fixes (typos, JSDoc, parameter widening like `| null`, micro-optimizations, character code constants) — the AI agent **MUST NOT pause or wait for a manual confirmation**.
-    The agent is authorized and required to **proceed DIRECTLY and AUTONOMOUSLY in the very same turn** to execute the Post-Review Finalization Protocol (registering the entity in `temp.md`, applying/updating unit tests in `__tests__/`, synchronizing Storybook MDX documentation in `src/storybook/`, and verifying 100% pass via `vitest run`).
-  - **Freeze on Critical Issues (Mandatory Stop & Wait)**:
-    If the review discovers genuine critical vulnerabilities (P0), major architectural anti-patterns (P1), breaking public API changes, runtime crashes, data loss, or memory leaks that require structural refactoring or developer design decisions:
-    The test and documentation freeze remains in full effect. The agent **MUST NOT** modify tests, documentation, or `temp.md`. Document all structural proposals strictly in Section 6 of the AI Artifact, report the blockers in the chat, and halt until the developer reviews and issues explicit instructions or confirmation.
-  - **Explicit Developer Trigger (When Critical Issues Were Found)**:
-    Only after the developer reviews the report and sends an explicit confirmation (e.g., «готово», «готова», «закончили код-ревью», «код-ревью готово»), the agent is authorized to proceed to the post-review finalization steps:
-    1. **Update Unit Tests**: Apply the verified test suite to `__tests__/<Entity>.test.ts` according to `ai-prompts/test.md` and verify a 100% clean run (`vitest run`).
-    2. **Update Documentation**: Check and synchronize MDX documentation files in `src/storybook/` for full relevance.
-    3. **Registry Update (`temp.md`)**: If the package tracks reviewed entities (e.g. `packages/functional-basic/temp.md`), record the entity name.
+  - Large architectural refactorings, class or component rewrites, business logic modifications, entity deletions, or **breaking public API signature changes** (such as narrowing parameter types, removing parameters, changing argument order, or renaming public methods/props/exports — as opposed to non-breaking, backward-compatible parameter widening and generic return type inference allowed above) are **STRICTLY FORBIDDEN** without an explicit direct command from the developer. Document all structural proposals **exclusively within Section 6 of the AI Artifact**.
+- **Fast Track vs Freeze on Blockers**:
+  - Follow the **Post-Review Finalization Protocol** below: if **NO `P0` (Critical) or `P1` (Major) issues and NO breaking changes** are found, proceed **immediately and autonomously in the same turn (Fast Track)** to update `temp.md`, unit tests in `__tests__/`, and Storybook MDX in `src/storybook/`. If `P0`/`P1` blockers or structural proposals exist, **freeze** all test, doc, and `temp.md` updates until the developer explicitly confirms («готово»).
 
 ### 4. Mandatory Dependency & Inbound Usage Investigation (Graph & Blast Radius Audit)
 - **Never Review in Isolation**: Always inspect both what the target depends on and every place where it is consumed across the codebase.
@@ -140,16 +111,16 @@ Before analyzing any code or generating any review text, you MUST execute these 
   - **Blast Radius & Backward Compatibility**: Evaluate the exact impact of any proposed changes, refactorings, or type adjustments on existing consumers and flag breaking changes.
   - Identify obsolete, inconsistent, or anti-pattern usages at call sites that should be refactored alongside the entity.
 
-### 5. Mandatory Unit Test Audit & Quality Inspection (Audit in Artifact, Do NOT Modify Test Files Proactively)
+### 5. Mandatory Unit Test Audit & Quality Inspection (Audit in Artifact First; Apply via Fast Track or Upon Confirmation)
 - **Locate & Inspect Tests**: Search for corresponding unit tests in the adjacent or package `__tests__/` directory (`__tests__/<Entity>.test.ts` or `<name>.test.ts`).
 - **Assess Test Quality & Completeness**:
   - Critically inspect test depth: detect superficial smoke tests (e.g., 1 shallow assertion), missing edge cases (`''`, `null`, `undefined`, `0`, negative values, invalid objects), unhandled error branches, untested reactive properties, unverified event emissions, ignored lifecycle hooks (`onMounted`, `onUnmounted`, resource cleanup), or unverified SSR behavior (server-side rendering safety and hydration compatibility).
 - **Read-Only Verification (Run Test Runner)**:
   - Execute the test runner (`npx vitest run <path-to-test>`) to verify current pass/fail status, failure points, and execution coverage (and re-run to verify any Immediate In-Place Fixes applied in Step 3).
-- **Formulate Comprehensive Test Suite in the Artifact (Do NOT Modify Test Files)**:
+- **Formulate Comprehensive Test Suite in the Artifact**:
   - If existing tests are incomplete, shallow, fragile, or missing, author the complete, copy-paste-ready unit test suite **STRICTLY inside Section 6 of the AI Artifact report**.
-  - **No Contrived Hypothetical Tests**: Apply Step 6 strictly — never penalize existing tests or add test cases for speculative, non-practical inputs (such as internal marker collisions like `___HIGHLIGHT_START___`) that cause neither crashes nor security vulnerabilities.
-  - **STRICT PROHIBITION (Complete Freeze Until Confirmation)**: Do NOT rewrite, overwrite, or create test files or documentation in the workspace repository during code review. Modifying tests and documentation is permitted ONLY after the developer explicitly confirms that the review is complete (e.g., «готово», «готова», «закончили код-ревью», «код-ревью готово»).
+  - **No Contrived Hypothetical Tests**: Apply Pre-Review Step 6 strictly — never penalize existing tests or add test cases for speculative, non-practical inputs that cause neither crashes nor security vulnerabilities.
+  - **Freeze on Blockers vs Fast Track Auto-Finalization**: Follow the **Post-Review Finalization Protocol** (freeze workspace test/doc edits if `P0`/`P1` blockers or structural proposals exist until «готово»; otherwise apply immediately via Fast Track).
 
 ### 6. Practical Usage & Impact Filter (Strict Ban on Hypothetical Findings & Over-Engineering)
 - **Ground Every Finding in Practical Usage (Zero Speculative Hypotheses)**: Assess code strictly through **practical real-world usage, actual consumer call sites, and intended functional purpose**. It is **STRICTLY FORBIDDEN** to raise remarks, deduct score points, or propose defensive code based on artificial, speculative "what-if" hypotheses detached from real user behavior.
@@ -179,6 +150,9 @@ Before analyzing any code or generating any review text, you MUST execute these 
   - Outdated TypeScript paradigms (excessive `any` or type assertions instead of type narrowing, utility types, template literal types, `satisfies`, discriminated unions).
   - Legacy DOM manipulation (direct element mutations, `querySelector` hacks, manual style manipulation instead of reactive bindings, CSS variables, or standard Web APIs).
   - Obsolete asynchronous patterns (unhandled promise rejections, missing `AbortController` cancellation, callback hell vs `async`/`await`, missing race condition guards).
+- **Modern Vue 3.5+ & TypeScript 5.x Standards**:
+  - **Vue 3.5+ Idioms**: Reactive props destructuring, `useTemplateRef()` for typed template refs, `onWatcherCleanup()` for side-effect disposal inside watchers, `defineModel()` where appropriate, and isomorphic SSR ID generation (`useId()` / project ID helpers) to prevent hydration mismatches on `id` / `aria-labelledby` / `aria-controls`.
+  - **TypeScript 5.x Idioms**: `satisfies` for config/dictionary validation without widening literal types, `const` generic type parameters (`<const T>`), `as const` objects/tuples and union types over runtime-heavy `enum` declarations where appropriate, and conditional return type inference.
 - **Benchmarking Against Modern Top-Tier Standards & Actionable Conclusion**:
   - Compare against state-of-the-art industry benchmarks (Radix UI, Headless UI, Ark UI, VueUse, Nuxt 3 core, TanStack).
   - Check utilization of modern web platform standards (native Popover API, CSS container queries, subgrid, modern `IntersectionObserver`/`ResizeObserver` APIs) where appropriate.
@@ -191,12 +165,12 @@ Before analyzing any code or generating any review text, you MUST execute these 
 
 Evaluate the target according to its specific entity type (in addition to the cross-cutting checks in Sections 3–5):
 
-### A. Vue Components (`.vue`)
+### A. Vue Components (`.vue`) & UI Constructors (`constructor` / `d1`)
 - **Composition & Atomicity**: Minimal, single-purpose component with complex business/state logic extracted into composables.
 - **Props & Emits Contract**: Strictly typed via `defineProps<{ ... }>()` and `defineEmits<{ ... }>()`; strict one-way data flow (never mutate incoming props); predictable naming with `kebab-case` event names.
 - **Template Hygiene**: Cleanest possible semantic HTML; zero function calls, complex calculations, or inline styles in templates; unique non-index `:key` in `v-for`; never combine `v-if` with `v-for` on the same element.
-- **Styles & Design System**: Strict SCSS mixin usage from `@dxtmisha/styles`; zero hardcoded colors, borders, or spacing values; never modify base UI library styles; PurgeCSS compliance (all class names must be unbroken string literals).
-- **Component Lifecycle, SSR & Security**: Safe `Teleport` targets and `ClientOnly` wrappers; deterministic initial markup matching between server and client (no `<p><div>...</div></p>` invalid nesting); full WAI-ARIA roles/states and keyboard focus management; sanitized bindings (avoid `v-html`, sanitize dynamic SVGs and `href`/`src`/`action` URLs, enforce `rel="noopener noreferrer"` on `target="_blank"`).
+- **Styles, Design Tokens & RTL/LTR Logical Properties**: Strict SCSS mixin usage from `@dxtmisha/styles` and token compliance with `properties.json`; zero hardcoded colors, borders, or spacing values; never modify base UI library styles; **strict RTL/LTR logical CSS properties and mixins** (`inset-inline`, `margin-inline`, `padding-inline`, `text-align: start/end` instead of physical `left`/`right`/`margin-left`/`padding-right`); PurgeCSS compliance (all class names must be unbroken string literals).
+- **Component Lifecycle, SSR, WCAG 2.2 & Security**: Safe `Teleport` targets and `ClientOnly` wrappers; deterministic initial markup matching between server and client (no `<p><div>...</div></p>` invalid nesting); full WAI-ARIA & **WCAG 2.2 AA** compliance (`:focus-visible` ring, `inert` background locking and focus restoration on modal/menu close, `prefers-reduced-motion` support for animations); sanitized bindings (avoid `v-html`, sanitize dynamic SVGs and `href`/`src`/`action` URLs, enforce `rel="noopener noreferrer"` on `target="_blank"`).
 
 ### B. TypeScript Classes (`class`)
 - **Structure & Ordering**:
@@ -223,7 +197,7 @@ Evaluate the target according to its specific entity type (in addition to the cr
 
 ---
 
-## 3. Bugs, Edge Cases, Memory Safety & SSR Isomorphism
+## 3. Bugs, Edge Cases, Performance, Memory Safety & SSR Isomorphism
 
 **MANDATORY EXHAUSTIVE SCENARIO AUDIT**: You MUST trace every execution path and state combination to identify any scenario that can cause:
 - **Incorrect Entity Operation**: Logic branches, dependency interactions, or state transitions that prevent the entity from fulfilling its contract across its full lifecycle.
@@ -231,24 +205,28 @@ Evaluate the target according to its specific entity type (in addition to the cr
 - **Broken or Unexpected Behavior**: Side effects between helpers, lost attributes/constraints on state toggles, desynchronized reactive states, or broken UX/DOM bindings.
 - **Runtime Code Crashes**: Unhandled exceptions, null/undefined dereferences, invalid DOM/API calls, infinite recursion/loops, or unguarded parsing failures.
 
-Rigorously search for subtle runtime and architectural defects across five core areas:
+Rigorously search for subtle runtime and architectural defects across six core areas:
 
 1. **Reactivity & State Bugs**:
    - Accidental loss of Vue reactivity, stale closures in composables/callbacks/computed getters, infinite reactivity loops, or un-memoized expensive calculations.
-2. **Asynchronous & Concurrency Issues**:
+   - **Computed Reference Stability & Vue Reactivity Cost**: Detect `computed` properties that allocate and return fresh object/array literals on every evaluation even when underlying semantic values have not changed (causing cascading downstream `watch` triggers and unnecessary component re-renders); verify use of `shallowRef` / `markRaw` for large immutable collections, class instances, or DOM references where deep proxy tracking is wasteful.
+2. **Algorithmic Complexity (Big-O), Hot Paths & Layout Thrashing**:
+   - **Hidden Quadratic Complexity ($O(n^2)$)**: Detect linear lookups (`array.includes`, `find`, `indexOf`, `filter`) nested inside loops, `.map()`, `.reduce()`, or `v-for` templates that should be indexed via `Set` or `Map` ($O(1)$ lookup), as well as redundant multi-pass array chains (`.filter().map().find()`) or unnecessary deep clones on hot paths.
+   - **DOM Layout Thrashing**: Detect interleaved DOM geometry reads (`getBoundingClientRect()`, `offsetWidth`, `scrollTop`) and style/DOM writes inside loops, resize/scroll handlers without `requestAnimationFrame` batching or throttling.
+3. **Asynchronous & Concurrency Issues**:
    - Race conditions in async data fetches or event debounces, unhandled promise rejections, or uncancelled pending requests (`AbortController`).
-3. **Memory Leaks & Resource Cleanup Failures**:
+4. **Memory Leaks & Resource Cleanup Failures**:
    - Missing `removeEventListener` on `window`, `document`, or external DOM elements in `onUnmounted` / `onScopeDispose` (or failure to use managed helpers like `useEventListener`).
    - Lingering `setInterval`, `setTimeout`, or `requestAnimationFrame` continuing after component unmount or scope disposal (especially critical in SSR where Node processes keep timers alive indefinitely).
    - Unstopped watchers (`watch`, `watchEffect`) created outside synchronous `setup()` or active `effectScope()`.
    - Detached DOM nodes retained in closures, static arrays, caches, or `Map`/`Set` references; unbounded caches without eviction policies.
    - Undisposed observers (`ResizeObserver`, `IntersectionObserver`, `MutationObserver`), media query listeners (`matchMedia`), or subscriptions (`BroadcastChannel`, `WebSocket`, custom event emitters, store subscriptions); missing `destroy()` / `dispose()` / `reset()` methods on stateful classes.
-4. **Edge Cases & Pragmatic Boundaries**:
+5. **Edge Cases & Pragmatic Boundaries**:
    - Unhandled `null`, `undefined`, `''`, `[]`, `{}`, `NaN`, `0`, negative numbers, division by zero, or off-by-one errors in realistic inputs.
    - **Falsy Value Traps on Valid Zero/Empty Boundaries**: Audit all conditional checks on numeric, `NumberOrString`, or boolean-like properties. Using raw truthiness (`if (value)`) or `isFilled(value)` treats numeric `0` (or `''`/`false` where valid) as absent and breaks logic on zero boundaries. Always require `value !== undefined` (or `!isNull(value)`).
    - **Property Existence Guards (`key in object`) Blocking Computed Fallbacks**: Audit loops and object builders that gate `switch` or fallback branches behind `if (key in object)` / `Object.hasOwn`. When computed fallback resolvers are placed inside `key in object`, passing a plain object that omits optional keys skips the fallback logic entirely. Computed/default properties must always be resolved independently of key presence on the raw input object.
-   - **Practical Impact Filter (Step 6)**: Evaluate edge cases strictly through practical usage and real consequences. Do NOT flag contrived scenarios (such as a user deliberately typing internal sentinel markers like `___HIGHLIGHT_START___`) when they cause neither a runtime crash nor a security/XSS vulnerability and at worst only affect local visual markup for that user.
-5. **SSR Hydration & Isomorphic Flaws**:
+   - **Practical Impact Filter**: Apply Pre-Review Step 6 strictly — evaluate edge cases only through practical usage and real consequences (crashes, data loss, leaks, or security/XSS flaws).
+6. **SSR Hydration & Isomorphic Flaws**:
    - Direct access to browser globals (`window`, `document`, `navigator`, `localStorage`, `sessionStorage`, `location`) on the server without checking `isDomRuntime()` or deferring to `onMounted`.
    - Cross-request state pollution: storing user- or request-specific data in module-level global variables, shared refs, or static class properties, leaking state across concurrent SSR requests (must use `ServerStorage.get('key', () => new Class())`, `executeUseLocal`, or `executeUseProvide`).
    - Timers, continuous background polling loops, or DOM measurements (`offsetWidth`, `getBoundingClientRect`, canvas context) executing during server render.
@@ -303,8 +281,8 @@ Verify 100% compliance with all core `dxt-ui` engineering standards:
   - Zero aliases or duplicate exports (e.g., `useFile = useMediaFile` or `inputFileList = fileList` is strictly forbidden — export and use strictly one canonical name).
 - **Tree-Shaking (`/* #__PURE__ */`)**: Every top-level module function call, factory invocation, or constructor (`new Class()`) assigned to a constant/variable MUST be annotated with `/* #__PURE__ */`.
 - **PurgeCSS Compatibility**: Never construct CSS class names dynamically via string concatenation or template literals (`'btn-' + size`, `` `badge-${color}` ``). Always use full, unbroken string literals in object syntax, dictionaries, or ternaries, or wrap external dynamic classes in `/* purgecss start ignore */ ... /* purgecss end ignore */`.
-- **Accessibility & ARIA (WAI-ARIA & A11y)**: Full ARIA support for interactive, graphical, and informative components (`role="img"`, `role="button"`, `role="dialog"`, `aria-expanded`, `aria-controls`, `aria-selected`, `aria-checked`, `aria-disabled`, `aria-live`, `aria-haspopup`, `aria-label`, `aria-labelledby`, `aria-describedby`, `aria-hidden="true"`); proper encapsulation via `AriaStaticInclude` and `get aria(): AriaList` in constructors; full keyboard navigation (`Enter`, `Space`, `Escape`, `Arrow` keys) and focus management.
-- **SSR, Memory, Security & Testing Compliance**: Full compliance with Section 3 (isomorphic `isDomRuntime()` / `ServerStorage.get()`, deterministic hydration, complete listener/timer/observer/watcher disposal), Section 4 (zero XSS/prototype pollution/ReDoS/data leaks), and Pre-Review Step 5 (thorough unit test audit documented in Section 6 of the artifact without modifying workspace test files unless instructed).
+- **Accessibility, WCAG 2.2 & ARIA (WAI-ARIA & A11y)**: Full ARIA support for interactive, graphical, and informative components (`role="img"`, `role="button"`, `role="dialog"`, `aria-expanded`, `aria-controls`, `aria-selected`, `aria-checked`, `aria-disabled`, `aria-live`, `aria-haspopup`, `aria-label`, `aria-labelledby`, `aria-describedby`, `aria-hidden="true"`); proper encapsulation via `AriaStaticInclude` and `get aria(): AriaList` in constructors; full keyboard navigation (`Enter`, `Space`, `Escape`, `Arrow` keys), `:focus-visible` outline compliance, focus trapping/restoration (`inert`), and `prefers-reduced-motion` awareness.
+- **SSR, Memory, Security & Testing Compliance**: Full compliance with Section 3 (isomorphic `isDomRuntime()` / `ServerStorage.get()`, deterministic hydration, complete listener/timer/observer/watcher disposal), Section 4 (zero XSS/prototype pollution/ReDoS/data leaks), and Pre-Review Step 5 (thorough unit test audit documented in Section 6 of the artifact, freezing workspace test/doc modifications when `P0`/`P1` blockers or structural proposals exist until developer confirmation, or applying them immediately via Fast Track on a clean review).
 
 ---
 
@@ -318,9 +296,16 @@ Verify 100% compliance with all core `dxt-ui` engineering standards:
 Structure the artifact markdown document with the following six sections (translate all section titles, table headers, and prose according to `wikiLanguage`):
 
 #### 1. Executive Summary & Quality Score
-- **Overall Rating**: Grade (`A`, `B`, `C`, `D`, `F`) and Score (`0–100`).
+- **Overall Rating**: Grade (`A`, `B`, `C`, `D`, `F`) and Score (`0–100`). When in-place auto-fixes were applied during the review, report both initial and post-fix scores (e.g., `94 -> 100 (A)`).
+- **Objective Scoring Rubric & Grade Caps (Base = `100` pts)**:
+  - **Grades**: `A` (`90–100`), `B` (`80–89`), `C` (`70–79`), `D` (`60–69`), `F` (`< 60`).
+  - **Deductions per Finding**:
+    - `P0 (Critical / Blocker)`: `-25` to `-40` pts each (caps maximum grade at `D`/`F`; blocks Fast Track auto-finalization).
+    - `P1 (Major)`: `-10` to `-15` pts each (caps maximum grade at `C`; blocks Fast Track auto-finalization).
+    - `P2 (Minor / Auto-Fixed)`: `-2` to `-5` pts on initial score, restored to `+0` deduction on post-fix score once fixed in-place during the review.
+    - `P3 (Nit)`: `0` to `-2` pts.
 - **Core Verdict**: High-level summary of strengths, weaknesses, and production readiness.
-- **Category Scores**:
+- **Category Scores** (use `N/A` / `Неприменимо` for categories irrelevant to the entity layer, e.g., `Accessibility & ARIA` for a pure data/string utility function):
   | Category | Rating | Summary |
   | :--- | :---: | :--- |
   | **Architecture & Modularity** | Excellent / Good / Needs Improvement / Poor | ... |
@@ -328,9 +313,9 @@ Structure the artifact markdown document with the following six sections (transl
   | **Modernity vs Legacy Patterns** | Modern / Outdated / Mixed | ... |
   | **Component / Class / Hook Design** | Excellent / Good / Needs Improvement / Poor | ... |
   | **Security & Vulnerabilities** | Secure / Minor Risks / High Vulnerabilities (XSS, ReDoS, Leaks) | ... |
-  | **Accessibility & ARIA (A11y)** | Fully Accessible / Minor Gaps / Inaccessible | ... |
-  | **SSR Compatibility & Isomorphism** | Safe & Isomorphic / Hydration Risks / Leaking Server State | ... |
-  | **Memory Safety & Leak Prevention** | Zero Leaks & Clean Disposal / Lingering Listeners or Timers / Critical Memory Leaks | ... |
+  | **Accessibility & ARIA (A11y)** | Fully Accessible / Minor Gaps / Inaccessible / N/A | ... |
+  | **SSR Compatibility & Isomorphism** | Safe & Isomorphic / Hydration Risks / Leaking Server State / N/A | ... |
+  | **Memory Safety & Leak Prevention** | Zero Leaks & Clean Disposal / Lingering Listeners or Timers / Critical Memory Leaks / N/A | ... |
   | **Bugs & Edge Cases** | Clean / Minor Issues / Critical Bugs | ... |
   | **Unit Tests & Quality** | Comprehensive & High-Quality / Rewritten & Refined / Created from Scratch / Incomplete or Missing | ... |
   | **Project Rules & Conventions** | 100% Compliant / Minor Discrepancies / Non-compliant | ... |
@@ -358,9 +343,11 @@ Structure the artifact markdown document with the following six sections (transl
   - *Mandatory In-Place Auto-Fix*: All minor typing defects (such as narrow parameter types contradicting runtime coercion, loss of generic return type inference from default fallback values, missing optional modifiers, typos, JSDoc omissions, dead code branches, redundant optional chaining operators, or class structure and method ordering inconsistencies) **MUST NOT remain unaddressed in the codebase** — they MUST be fixed immediately in-place during the review (Pre-Review Step 3), documented in Section 2 ("Applied Immediate Fixes"), and marked as resolved in Section 4.
 - **Nit / Suggestion (P3)**: Minor stylistic polish, code ergonomics, micro-optimizations.
 
-*Strict Hypothetical Filter (Pre-Review Step 6)*: Speculative "what-if" scenarios that do not occur in practical usage and produce **no runtime crash, no data loss, and no security/attack vulnerability** (e.g., an artificial input colliding with an internal marker like `___HIGHLIGHT_START___` whose worst-case effect is a harmless local layout/markup glitch for that user) are **STRICTLY EXCLUDED from all severity tiers (including P2 and P3/Nit)** and must never lower the review score.
+*Strict Hypothetical Filter (Pre-Review Step 6)*: Speculative "what-if" scenarios that do not occur in practical usage and produce **no runtime crash, no data loss, and no security/attack vulnerability** are **STRICTLY EXCLUDED from all severity tiers (including P2 and P3/Nit)** and must never lower the review score.
 
-*For each finding, specify: File, line number, detailed explanation of the flaw, and why it is problematic.*
+*Mandatory Proof-of-Defect / Call Trace for `P0` & `P1` Blockers (Zero False Positives)*: To classify any issue as `P0` or `P1` (which halts batch progression and blocks Fast Track auto-finalization), you **MUST provide a deterministic reproduction trace**: `Concrete Input / Caller State -> Exact File:Line Execution Path -> Actual Broken Output / Exception vs Expected Contract`. Never halt a batch review on unverified suspicion.
+
+*For each finding, specify: File, line number, detailed explanation of the flaw, reproduction trace (for P0/P1), and why it is problematic.*
 
 #### 5. Comparison with Industry Top Solutions
 - Compare the reviewed implementation with how leading open-source libraries (VueUse, Radix UI, Headless UI, Ark UI, Nuxt, TanStack) solve similar architectural problems.
@@ -376,7 +363,7 @@ Structure the artifact markdown document with the following six sections (transl
 - **Unit Test Recommendations & Code Blocks (In Artifact Only)**:
   - If existing tests are incomplete, superficial, fragile, or missing, provide a complete, copy-paste-ready unit test suite covering all execution paths, edge cases, reactivity, SSR safety, and lifecycles **strictly within this section of the artifact**.
 - **Prohibition of Unsolicited Structural Modifications & Post-Review Trigger**:
-  - All major architectural modifications, class/component rewrites, test file creations/overwrites, and documentation updates remain purely advisory and frozen until the developer explicitly commands to apply them or confirms completion (e.g., «готово», «готова», «закончили код-ревью», «код-ревью готово»). Only upon receiving this explicit trigger should you proceed to updating unit tests in `__tests__/` and documentation in `src/storybook/`. Fix and edit strictly what the developer tells you to fix!
+  - All major architectural modifications, class/component rewrites, and breaking changes remain purely advisory and frozen until the developer explicitly commands to apply them. When critical (`P0`) or major (`P1`) blockers or structural refactoring proposals exist, test file creations/overwrites and documentation updates are also frozen until the developer explicitly confirms completion (e.g., «готово», «готова», «закончили код-ревью», «код-ревью готово»); if no `P0`/`P1` blockers or structural proposals exist, execute **Fast Track** auto-finalization immediately in the same turn (updating unit tests in `__tests__/`, documentation in `src/storybook/`, and `temp.md`). Fix and edit strictly what is allowed by the protocol or explicitly requested by the developer!
 
 ---
 
@@ -386,7 +373,7 @@ The finalization protocol transitions the reviewed entity into its production-re
 
 ### Finalization Triggers (When to Execute):
 1. **Autonomous Immediate Transition (Fast Track — Nothing Critical Found)**:
-   If during the code review **no critical issues (P0 / Blocker) and no major architectural blockers (P1) were found** (the code is originally clean or only safe non-breaking auto-fixes were applied: typos, JSDoc, parameter widening, micro-optimizations), the agent **MUST NOT stop or wait for manual confirmation**. The agent proceeds **directly, immediately, and autonomously to finalization within the same turn**. Upon completing the finalization of the current entity, the agent immediately and automatically advances to review the next entity in the intra-package dependency chain (unwinding bottom-up) or the next file in the sorted directory / multi-file queue (**re-reading `ai-prompts/code-review.md` anew upon chat context compaction or once every 8 reviewed files**) — **up to the per-run group limits (separate counters: max 8 files for Components, max 12 files for Classes & Hooks/Composables, max 24 files for all other files)**, after which the agent stops and reports the batch summary.
+   If during the code review **no critical issues (P0 / Blocker) and no major architectural blockers (P1) were found** (the code is originally clean or only safe non-breaking auto-fixes were applied), the agent **MUST NOT stop or wait for manual confirmation**. Proceed **directly, immediately, and autonomously to finalization within the same turn**, and in batch mode automatically advance to the next entity in the dependency chain or alphabetical queue (respecting the Batch Freshness Guard and per-run group limits in Pre-Review Step 0).
 2. **Explicit Developer Trigger (When Critical Issues Were Found or Structural Proposals Applied)**:
    If the entity had genuine critical vulnerabilities, architectural anti-patterns, breaking changes, or structural refactorings requiring developer review, finalization is executed **strictly and only after** the developer reviews the report and confirms completion using trigger phrases such as:
    - «готово» / «готова»
@@ -419,16 +406,24 @@ Upon activation of either trigger, the AI agent MUST autonomously execute the fo
   - Vietnamese (`<Entity>.vi.mdx`)
 - Verify that parameter types, default values, return types, usage examples, and descriptions strictly reflect the latest refined implementation and any widened signatures (such as adding `| null` or optional flags).
 
-### 4. Mandatory Post-Modification Verification (TypeScript & ESLint Quality Gate)
+### 4. Mandatory Post-Modification Verification (TypeScript & ESLint Quality Gate — Explicit Override)
+- **Direct Instruction & Explicit Override**: Executing typechecking and package builds in this step is an **explicit user directive** overriding Rule 8 (Build Execution Guard) in `ai-prompt.md`.
 - Run ESLint with auto-fix on all modified files (source code, unit tests, Storybook MDX):
   ```bash
   npx eslint --fix <modified-files>
   ```
   Verify that ESLint passes cleanly with **0 errors and 0 warnings**.
-- Run TypeScript build / typecheck for the affected package:
-  ```bash
-  npm --prefix packages/<pkg> run build
-  ```
+- Run TypeScript verification for the affected package:
+  - For fast intermediate per-file verification during a multi-file batch run, use lightweight typechecking:
+    ```bash
+    npx tsc -p packages/<pkg>/tsconfig.json --noEmit
+    # or for Vue packages:
+    npx vue-tsc -p packages/<pkg>/tsconfig.json --noEmit
+    ```
+  - For single-file finalization or at the completion of a package/session batch run, execute the full package build:
+    ```bash
+    npm --prefix packages/<pkg> run build
+    ```
   Verify that bundling, types generation, and typechecking succeed with **0 TypeScript errors**.
 - Re-run the unit test runner to guarantee 100% green tests after all checks:
   ```bash

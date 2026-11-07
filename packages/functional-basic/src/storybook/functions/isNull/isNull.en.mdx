@@ -9,7 +9,7 @@ An explicit, stringent utility focused entirely on confirming if a presented var
 Distinguished from a conventional negative falsy check like `!value` (which intercepts valid zeroes `0`, vacuous strings `''`, and `false` toggles), this function deliberately sidesteps those values, honing in flawlessly on absent definitions.
 
 **Parameters:**
-- `value: T` — Any inclusive subject variable requested to be verified.
+- `value?: T` — Any inclusive subject variable requested to be verified (optional).
 
 **Returns:**
 `boolean` (`value is T & Undefined`) — Returns `true` uniformly whenever confronted with a raw `null` or an isolated `undefined` marker. It likewise fulfills the responsibility as a TypeScript type guard, securely minimizing the scope to `T & Undefined` (`null | undefined`).

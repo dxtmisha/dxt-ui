@@ -37,21 +37,6 @@ export class ErrorCenterInstance {
   }
 
   /**
-   * Checks if a cause with specific code exists.
-   *
-   * Проверяет наличие причины с конкретным кодом.
-   * @param code error code / код ошибки
-   * @param group error group / группа ошибки
-   * @returns true if cause exists / true, если причина существует
-   */
-  has(
-    code: string,
-    group?: ErrorCenterGroup
-  ): boolean {
-    return Boolean(this.get(code, group))
-  }
-
-  /**
    * Gets a specific error cause by code and group.
    *
    * Получает конкретную причину ошибки по коду и группе.
@@ -66,6 +51,21 @@ export class ErrorCenterInstance {
     return this.causes.find(
       cause => cause.group === group && cause.code === code
     )
+  }
+
+  /**
+   * Checks if a cause with specific code exists.
+   *
+   * Проверяет наличие причины с конкретным кодом.
+   * @param code error code / код ошибки
+   * @param group error group / группа ошибки
+   * @returns true if cause exists / true, если причина существует
+   */
+  has(
+    code: string,
+    group?: ErrorCenterGroup
+  ): boolean {
+    return Boolean(this.get(code, group))
   }
 
   /**

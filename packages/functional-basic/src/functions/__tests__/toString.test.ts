@@ -69,6 +69,7 @@ describe('toString', () => {
     })
 
     it('should return empty string for undefined', () => {
+      expect(toString()).toBe('')
       expect(toString(undefined)).toBe('')
       expect(toString(void 0)).toBe('')
     })

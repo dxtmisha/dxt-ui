@@ -53,17 +53,6 @@ export class Cookie<T = unknown> {
   }
 
   /**
-   * Returns an instance of the class according to the specified cookie name.
-   *
-   * Возвращает экземпляр класса по указанному имени cookie.
-   * @param name cookie name / название cookie
-   * @returns Cookie instance / экземпляр Cookie
-   */
-  static getInstance<T = unknown>(name: string): Cookie<T> {
-    return (getItems()[name] ?? new Cookie<T>(name)) as Cookie<T>
-  }
-
-  /**
    * Get data or update if none.
    *
    * Получает данные или обновляет, если их нет.
@@ -101,6 +90,17 @@ export class Cookie<T = unknown> {
 
     Object.assign(this.options, options)
     this.update()
+  }
+
+  /**
+   * Returns an instance of the class according to the specified cookie name.
+   *
+   * Возвращает экземпляр класса по указанному имени cookie.
+   * @param name cookie name / название cookie
+   * @returns Cookie instance / экземпляр Cookie
+   */
+  static getInstance<T = unknown>(name: string): Cookie<T> {
+    return (getItems()[name] ?? new Cookie<T>(name)) as Cookie<T>
   }
 
   /**

@@ -9,7 +9,7 @@ Một chiêu thức thẩm định hết mực khắt khe, duy chỉ theo dấu 
 Thoát ly hẳn hoàn toàn ra khỏi cách phủ định falsy phổ cập đi kèm như kiểu `!value` (có thể vô tình bắt nhầm cả con số `0`, dải xâu chuỗi rỗng thênh thang `''`, hay ngay cả boolean lật ngược `false`), hàm logic đơn độc này sẽ nhẹ nhàng lánh sang mọi thứ tạp nham đó và chiếu thẳng cốt lỗi vào một vùng không chứa bất kì cái gì cả.
 
 **Tham số:**
-- `value: T` — Giá trị bất luận loại nào được bệ lên bàn mổ soi thử độ tồn tại.
+- `value?: T` — Giá trị bất luận loại nào được bệ lên bàn mổ soi thử độ tồn tại (tùy chọn).
 
 **Trả về:**
 `boolean` (`value is T & Undefined`) — Gõ thông điệp `true` bất cứ kì khoảnh khắc nào đối diện bằng nhãn trúng tâm phác hoạ `null` hay mã `undefined`. Trợ thủ siêu phàm này cùng đút túi chức năng bộ bảo vệ type guard TypeScript để cắt chặt giới hạn ép khuôn theo cấu kiện `T & Undefined` (`null | undefined`).

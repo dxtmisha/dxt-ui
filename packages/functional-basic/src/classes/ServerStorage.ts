@@ -39,19 +39,6 @@ export class ServerStorage {
   protected static hideError?: boolean
 
   /**
-   * Checks if a value exists in storage.
-   *
-   * Проверяет наличие значения в хранилище.
-   * @param key unique storage key / уникальный ключ хранилища
-   * @returns true if key exists, false otherwise / true, если ключ существует, иначе false
-   */
-  static has(key: string): boolean {
-    const storage = this.getStorage(false, `has:${key}`)
-
-    return key in storage
-  }
-
-  /**
    * Retrieves a value from storage. If it doesn't exist, creates it using the default value factory or value.
    *
    * Извлекает значение из хранилища. Если оно не существует, создает его с помощью фабрики значений по умолчанию или значения.
@@ -104,6 +91,19 @@ export class ServerStorage {
       hydration
     }
     return newValue
+  }
+
+  /**
+   * Checks if a value exists in storage.
+   *
+   * Проверяет наличие значения в хранилище.
+   * @param key unique storage key / уникальный ключ хранилища
+   * @returns true if key exists, false otherwise / true, если ключ существует, иначе false
+   */
+  static has(key: string): boolean {
+    const storage = this.getStorage(false, `has:${key}`)
+
+    return key in storage
   }
 
   /**

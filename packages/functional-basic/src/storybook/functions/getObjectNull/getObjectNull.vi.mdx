@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Tạo một từ điển không có prototype bằng `Object.create(null)`. Các khóa như `toString`, `valueOf` và `constructor` được lưu dưới dạng mục thông thường. Nếu có dữ liệu ban đầu, hàm sao chép các thuộc tính riêng có thể liệt kê của dữ liệu đó.
 
 **Tham số:**
-- `data?: Record<string, T>` — Dữ liệu đối tượng ban đầu tùy chọn để sao chép thuộc tính.
+- `data?: Record<string, T> | null` — Dữ liệu đối tượng ban đầu tùy chọn để sao chép thuộc tính.
 
 **Trả về:**
 - `Record<string, T>` — Đối tượng sạch không có prototype.

@@ -7,7 +7,8 @@ describe('isNull', () => {
       expect(isNull(null)).toBe(true)
     })
 
-    it('should return true for undefined and void 0', () => {
+    it('should return true for undefined, void 0, and omitted argument', () => {
+      expect(isNull()).toBe(true)
       expect(isNull(undefined)).toBe(true)
       expect(isNull(void 0)).toBe(true)
     })

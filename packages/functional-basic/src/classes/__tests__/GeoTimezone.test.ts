@@ -141,6 +141,18 @@ describe('GeoTimezone', () => {
       timezone.set(Number.POSITIVE_INFINITY)
       expect(timezone.getFormat()).toBe('+00:00')
     })
+
+    it('returns empty string when configuredOnly is true and offset was not explicitly set', () => {
+      const defaultTimezone = new GeoTimezone()
+      expect(defaultTimezone.getFormat(true)).toBe('')
+      expect(defaultTimezone.getFormat(false)).not.toBe('')
+
+      defaultTimezone.set(0)
+      expect(defaultTimezone.getFormat(true)).toBe('+00:00')
+
+      const explicitTimezone = new GeoTimezone(-180)
+      expect(explicitTimezone.getFormat(true)).toBe('+03:00')
+    })
   })
 
   describe('Isolation and statefulness', () => {

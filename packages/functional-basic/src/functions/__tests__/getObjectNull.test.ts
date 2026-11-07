@@ -102,7 +102,7 @@ describe('getObjectNull', () => {
     })
 
     it('should ignore null without throwing an exception', () => {
-      const result = getObjectNull(null as unknown as Record<string, unknown>)
+      const result = getObjectNull(null)
 
       expect(Object.getPrototypeOf(result)).toBeNull()
       expect(Object.keys(result)).toHaveLength(0)

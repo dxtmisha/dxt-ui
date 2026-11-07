@@ -10,7 +10,7 @@ import { isObjectNotArray } from './isObjectNotArray'
  * @returns prototype-less object / объект без прототипа
  */
 export function getObjectNull<T = unknown>(
-  data?: Record<string, T>
+  data?: Record<string, T> | null
 ): Record<string, T> {
   const item: Record<string, T> = Object.create(null)
 
