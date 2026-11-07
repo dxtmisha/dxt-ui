@@ -7,7 +7,7 @@ description: Conduct a rigorous code review assessing architecture, security & v
 
 Act as an elite Principal Software Architect and Senior Code Reviewer. Your goal is to conduct an uncompromising, deep-dive code review of the specified files, components, classes, functions, or composables/hooks.
 
-Your analysis must go far beyond a superficial lint check: evaluate architectural soundness, security vulnerabilities and safe data handling, dependency health, real-world usage across the codebase, technological relevance vs obsolete patterns, subtle bugs and edge cases, adherence to strict project conventions, full SSR compatibility, memory leak prevention, and alignment with industry-leading state-of-the-art standards.
+Your analysis must go far beyond a superficial lint check: **you MUST exhaustively trace and verify all execution scenarios that could lead to incorrect operation of the entity, wrong return values/responses, broken or unexpected runtime behavior, or code crashes**. Evaluate architectural soundness, security vulnerabilities and safe data handling, dependency health, real-world usage across the codebase, technological relevance vs obsolete patterns, subtle bugs and edge cases, adherence to strict project conventions, full SSR compatibility, memory leak prevention, and alignment with industry-leading state-of-the-art standards.
 
 ---
 
@@ -86,6 +86,11 @@ Before analyzing any code or generating any review text, you MUST execute these 
      - Removing private helper micro-functions, constants, and types rendered unused after eliminating redundant conditions (e.g., removing `isControlOrSpace`).
      - Cleaning up unreachable branches, dead code, and unused local imports or variables inside the audited file.
      - **Redundant Optional Chaining & Syntax Cleanup**: Eliminating redundant optional chaining operators (such as `?.method?.()` when `method` is guaranteed to exist on a resolved non-null object, e.g., simplifying `this.getMethod()?.getItem?.(this.getIndex())` to `this.getMethod()?.getItem(this.getIndex())`), removing unneeded double-checks, and unifying invocation styles across adjacent methods.
+     - **Falsy Boundary Traps, Property Existence Guards, & Non-Destructive Object Merging**:
+       - Replacing truthiness checks (`if (value)` or `isFilled(value)` which returns `false` for numeric `0`) on numeric or `NumberOrString` properties where `0` is a valid domain value with `value !== undefined` (or `!isNull(value)`).
+       - Unwrapping computed/default fallback branches from `if (key in object)` / `Object.hasOwn` guards so default resolvers still execute when plain input objects omit optional keys.
+       - Preventing unconditional object spreads (`{ ...base, key: optionalValue }`) from overwriting existing properties in `base` when `optionalValue` is `undefined`, and ensuring default fallbacks are applied consistently across all output getters/methods.
+       - Adding missing union members or declared interface properties to `switch` statements, lookup maps, and property whitelists after cross-checking against their TypeScript type definitions (`*Types.ts`).
   5. **Micro-Optimizations, Loop Safeguards & Check Unification**:
      - Caching collection lengths in loops (e.g., `const length = array.length` or `data.length` before indexed iterations) to eliminate repetitive property access overhead and guarantee termination against infinite loops caused by mutations in callbacks.
      - Early boundary exits for empty collections (`if (length === 0) return ...` / `if (data.size === 0) return ...`) to skip redundant loop setup.
@@ -199,6 +204,9 @@ Evaluate the target according to its specific entity type (in addition to the cr
   - Strict method ordering within visibility groups: `get` -> `set` -> `is...` -> `has...` -> `get...` -> `set...` -> `add...` -> `remove...` -> `update...` -> `reset...` -> remaining methods (grouped by semantic pairs such as `min`/`max`, `width`/`height`, then alphabetically).
 - **Encapsulation & Immutability**: Strict visibility modifiers (`protected`/`private` for internals) and immutability (`readonly`, `as const`).
 - **Reuse of Project Primitives**: Use helper primitives from `@dxtmisha/functional-basic` (`isFunction`, `executeFunction`, `isFilled`, `isObject`, `isArray`, `isString`, etc.) instead of custom inline checks.
+- **Canonical State vs Derived/Mutated Helper State**: Verify whether a class or method reads from an injected helper that returns a *derived or UI-mutated* representation when the logic actually requires the *canonical source configuration* (`this.props`). Depending on a dynamically mutated helper state for static rules, metadata, or constraints causes those rules to silently break during UI state transitions and introduces unnecessary coupling.
+- **Exhaustiveness Against Type Definitions (`*Types.ts`)**: Cross-check all `switch` statements, lookup dictionaries, and property/attribute whitelists against the full TypeScript union types and interfaces in `*Types.ts` to ensure no valid union variants or declared interface properties are omitted.
+- **Consistent Defaults & Non-Destructive Merging Across Getters**: Verify that default fallback values are applied consistently across all related output getters/methods of a class, and that optional overrides are merged only when defined (`!== undefined` or via `toBinds`) so they never overwrite existing base properties with `undefined`.
 - **ARIA Encapsulation (Constructors & Controllers)**: Encapsulate ARIA attributes inside dedicated `aria` getters (`get aria(): AriaList`) or via `AriaStaticInclude` (`AriaStaticInclude.role()`, `label()`, `hidden()`) rather than fragmented template bindings; automatically hide decorative assets (`AriaStaticInclude.hidden()` / `aria-hidden="true"`) when meaningful labels (`alt`/`label`) are absent.
 - **Lifecycle, SSR & Security**: Request-isolated SSR singletons via `ServerStorage.get('key', () => new Class())` (zero mutable static/module state); explicit `destroy()` / `dispose()` / `reset()` teardown methods and bounded internal caches; prototype pollution guards, ReDoS-safe regexes, and credential-safe error serialization.
 
@@ -217,6 +225,12 @@ Evaluate the target according to its specific entity type (in addition to the cr
 
 ## 3. Bugs, Edge Cases, Memory Safety & SSR Isomorphism
 
+**MANDATORY EXHAUSTIVE SCENARIO AUDIT**: You MUST trace every execution path and state combination to identify any scenario that can cause:
+- **Incorrect Entity Operation**: Logic branches, dependency interactions, or state transitions that prevent the entity from fulfilling its contract across its full lifecycle.
+- **Wrong Return Values / Output Data**: Missing fallbacks, skipped computed resolvers, silent `undefined` overwrites, incomplete union/type mappings, or flawed transformations that return inaccurate results.
+- **Broken or Unexpected Behavior**: Side effects between helpers, lost attributes/constraints on state toggles, desynchronized reactive states, or broken UX/DOM bindings.
+- **Runtime Code Crashes**: Unhandled exceptions, null/undefined dereferences, invalid DOM/API calls, infinite recursion/loops, or unguarded parsing failures.
+
 Rigorously search for subtle runtime and architectural defects across five core areas:
 
 1. **Reactivity & State Bugs**:
@@ -231,6 +245,8 @@ Rigorously search for subtle runtime and architectural defects across five core 
    - Undisposed observers (`ResizeObserver`, `IntersectionObserver`, `MutationObserver`), media query listeners (`matchMedia`), or subscriptions (`BroadcastChannel`, `WebSocket`, custom event emitters, store subscriptions); missing `destroy()` / `dispose()` / `reset()` methods on stateful classes.
 4. **Edge Cases & Pragmatic Boundaries**:
    - Unhandled `null`, `undefined`, `''`, `[]`, `{}`, `NaN`, `0`, negative numbers, division by zero, or off-by-one errors in realistic inputs.
+   - **Falsy Value Traps on Valid Zero/Empty Boundaries**: Audit all conditional checks on numeric, `NumberOrString`, or boolean-like properties. Using raw truthiness (`if (value)`) or `isFilled(value)` treats numeric `0` (or `''`/`false` where valid) as absent and breaks logic on zero boundaries. Always require `value !== undefined` (or `!isNull(value)`).
+   - **Property Existence Guards (`key in object`) Blocking Computed Fallbacks**: Audit loops and object builders that gate `switch` or fallback branches behind `if (key in object)` / `Object.hasOwn`. When computed fallback resolvers are placed inside `key in object`, passing a plain object that omits optional keys skips the fallback logic entirely. Computed/default properties must always be resolved independently of key presence on the raw input object.
    - **Practical Impact Filter (Step 6)**: Evaluate edge cases strictly through practical usage and real consequences. Do NOT flag contrived scenarios (such as a user deliberately typing internal sentinel markers like `___HIGHLIGHT_START___`) when they cause neither a runtime crash nor a security/XSS vulnerability and at worst only affect local visual markup for that user.
 5. **SSR Hydration & Isomorphic Flaws**:
    - Direct access to browser globals (`window`, `document`, `navigator`, `localStorage`, `sessionStorage`, `location`) on the server without checking `isDomRuntime()` or deferring to `onMounted`.

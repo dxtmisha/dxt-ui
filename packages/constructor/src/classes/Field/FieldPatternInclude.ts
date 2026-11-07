@@ -1,5 +1,3 @@
-import { FieldTypeInclude } from './FieldTypeInclude'
-
 import type { FieldAllProps } from '../../types/fieldTypes'
 
 const PATTERNS: Record<string, string> = {
@@ -18,11 +16,9 @@ export class FieldPatternInclude {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param type function returning object for working with input type / функция, возвращающая объект для работы с типом ввода
    */
   constructor(
-    protected readonly props: FieldAllProps,
-    protected readonly type?: () => FieldTypeInclude
+    protected readonly props: FieldAllProps
   ) {
   }
 
@@ -37,8 +33,8 @@ export class FieldPatternInclude {
       return this.props.pattern
     }
 
-    if (this.type) {
-      return PATTERNS?.[this.type().item]
+    if (this.props.type) {
+      return PATTERNS?.[this.props.type]
     }
 
     return undefined

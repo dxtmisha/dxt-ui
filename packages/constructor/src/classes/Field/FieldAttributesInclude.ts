@@ -39,10 +39,7 @@ export class FieldAttributesInclude {
    * @returns data record / объект с данными
    */
   get list(): Record<string, any> {
-    return {
-      type: this.typeDefault,
-      ...this.getData(this.getAttributes())
-    }
+    return this.getData(this.getAttributes())
   }
 
   /**
@@ -56,9 +53,9 @@ export class FieldAttributesInclude {
     const props = this.getProps()
 
     if (
-      props.min
-      || props.max
-      || props.step
+      props.min !== undefined
+      || props.max !== undefined
+      || props.step !== undefined
     ) {
       return {
         ...data,
@@ -86,10 +83,17 @@ export class FieldAttributesInclude {
    * @returns data record / объект с данными
    */
   get listForCheckbox(): Record<string, any> {
-    return {
-      ...this.getData(this.getInputAttributes()),
-      value: this.getProps().valueVariant
+    const data = this.getData(this.getInputAttributes())
+    const value = this.getProps().valueVariant
+
+    if (value !== undefined) {
+      return {
+        ...data,
+        value
+      }
     }
+
+    return data
   }
 
   /**
@@ -139,6 +143,7 @@ export class FieldAttributesInclude {
 
       // Input
       'list',
+      'capture',
 
       // Value
       'placeholder',
@@ -174,39 +179,39 @@ export class FieldAttributesInclude {
     attributes.forEach((index) => {
       let value: any = undefined
 
-      if (index in props) {
-        switch (index) {
-          case 'type':
-            if (this.type) {
-              value = this.type().item
-            } else {
-              value = props.type
-            }
-            break
-          case 'pattern':
-            if (this.pattern) {
-              value = this.pattern().item
-            } else {
-              value = props.pattern
-            }
-            break
-          case 'inputMode':
-            if (this.inputMode) {
-              value = this.inputMode().item
-            } else {
-              value = props.inputMode
-            }
-            break
-          case 'autocomplete':
-            if (this.inputMode) {
-              value = this.inputMode().autocomplete
-            } else {
-              value = props.autocomplete
-            }
-            break
-          default:
+      switch (index) {
+        case 'type':
+          if (this.type) {
+            value = this.type().item
+          } else {
+            value = props.type ?? this.typeDefault
+          }
+          break
+        case 'pattern':
+          if (this.pattern) {
+            value = this.pattern().item
+          } else {
+            value = props.pattern
+          }
+          break
+        case 'inputMode':
+          if (this.inputMode) {
+            value = this.inputMode().item
+          } else {
+            value = props.inputMode
+          }
+          break
+        case 'autocomplete':
+          if (this.inputMode) {
+            value = this.inputMode().autocomplete
+          } else {
+            value = props.autocomplete
+          }
+          break
+        default:
+          if (index in props) {
             value = props[index]
-        }
+          }
       }
 
       if (value !== undefined) {

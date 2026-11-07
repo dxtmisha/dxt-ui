@@ -137,8 +137,8 @@ export class Input {
     this.change = new FieldChangeIncludeConstructor(this.props)
     this.visibility = new FieldVisibilityIncludeConstructor()
     this.type = new FieldTypeIncludeConstructor(this.props, () => this.visibility)
-    this.pattern = new FieldPatternIncludeConstructor(this.props, () => this.type)
-    this.inputMode = new FieldInputModeIncludeConstructor(this.props, () => this.type)
+    this.pattern = new FieldPatternIncludeConstructor(this.props)
+    this.inputMode = new FieldInputModeIncludeConstructor(this.props)
     this.attributes = new FieldAttributesIncludeConstructor(
       this.props,
       () => this.type,

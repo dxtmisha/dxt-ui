@@ -1,5 +1,3 @@
-import type { FieldTypeInclude } from './FieldTypeInclude'
-
 import type { FieldAllProps } from '../../types/fieldTypes'
 
 /**
@@ -13,11 +11,9 @@ export class FieldInputModeInclude {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param type function returning object for working with input type / функция, возвращающая объект для работы с типом ввода
    */
   constructor(
-    protected readonly props: FieldAllProps,
-    protected readonly type?: () => FieldTypeInclude
+    protected readonly props: FieldAllProps
   ) {
   }
 
@@ -32,7 +28,9 @@ export class FieldInputModeInclude {
       return this.props.inputMode
     }
 
-    switch (this.type?.().item) {
+    switch (this.props.type) {
+      case 'search':
+        return 'search'
       case 'number':
       case 'datetime':
       case 'date':
@@ -45,6 +43,8 @@ export class FieldInputModeInclude {
         return 'decimal'
       case 'tel':
         return 'tel'
+      case 'url':
+        return 'url'
       case 'email':
         return 'email'
       default:
@@ -63,8 +63,15 @@ export class FieldInputModeInclude {
       return this.props.autocomplete
     }
 
-    switch (this.type?.().item) {
+    switch (this.props.type) {
       case 'search':
+      case 'number-format':
+      case 'currency':
+      case 'datetime':
+      case 'date':
+      case 'year-month':
+      case 'time':
+      case 'hour-minute':
         return 'off'
       case 'email':
         return 'email'

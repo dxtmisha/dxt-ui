@@ -16,9 +16,14 @@ Tests in this repository must **never be superficial smoke checks**. They must s
 1. **Zero Superficiality**:
    - A test suite consisting of only 1–2 trivial "happy path" checks is considered incomplete and unacceptable.
    - Every public method, argument branch, error condition, and boundary value must have dedicated test cases.
-2. **Test Contracts, Never Legitimate Bugs**:
-   - Never write or adapt test assertions to accommodate or pass broken code.
-   - If the code behaves incorrectly (e.g., returning `/^/` when it should match nothing, or dropping `$1` when capturing groups are absent), **do NOT assert the broken output** — report the defect or fix the implementation so the test asserts the correct specification contract.
+2. **Design Tests by Specification (How the Entity MUST Work), NEVER by Implementation (How It Was Written)**:
+   - **Specification-First Mindset**: Design every test suite based on **how the entity must work according to its business purpose, domain logic, and TypeScript contracts (`*Types.ts`)** — **NEVER** write tests by mechanically copying the branches of how the code was currently written.
+   - **Never Work Around Bugs in Test Setup**: Never adapt test inputs or assertions to accommodate implementation flaws (for example, never pass artificial `{ key: undefined }` properties in a test just to satisfy a broken `if (key in props)` guard in the code, and never omit valid union types from tests just because the author forgot them in a `switch`). If natural, real-world usage fails, the test has successfully exposed a bug that must be fixed in the code.
+   - **Mandatory Verification of All Failure & Crash Scenarios**: Every test suite MUST actively probe all scenarios that could lead to:
+     1. **Incorrect Entity Operation**: Broken state transitions, cross-helper side effects (e.g., a visual state toggle corrupting validation rules or metadata), or lifecycle failures.
+     2. **Wrong Return Values / Output Data**: Skipped computed fallbacks, silent `undefined` overwrites during object merging, inconsistent defaults across related getters/methods, or omitted union variants / interface properties from `*Types.ts`.
+     3. **Incorrect Runtime Behavior**: Falsy boundary traps (`0`, `false`, `''` treated as absent), broken reactivity, or desynchronized DOM/attribute bindings.
+     4. **Code Crashes**: Unhandled exceptions, `null`/`undefined` dereferences, invalid API invocations, or infinite loops.
 3. **Strict Isolation & Determinism**:
    - Every test must be completely independent. Never rely on the side-effects or execution order of preceding tests.
    - For stateful objects (such as `RegExp` with the `g` flag, instances of classes, or reactive stores), always reset state (`regex.lastIndex = 0`), instantiate fresh instances, or clean up in `beforeEach` / `afterEach`.
@@ -133,9 +138,12 @@ Every unit test suite MUST thoroughly evaluate the following boundary conditions
 - **`false`**: `false` is falsy, but often valid data (e.g. searching for the word `'false'`, or boolean property `active = false`). **Always test `false` explicitly**.
 - **`true`**: Standard truthy boolean.
 
-### D. Nullish & Falsy Values
+### D. Nullish, Falsy & Object Structure Boundaries
 - `undefined` and `null`: Verify safe fallback or explicit error handling without uncaught `TypeError` crashes.
 - Empty arrays `[]` and empty objects `{}`.
+- **Minimal Plain Objects (Omitted Optional Keys)**: Always test with clean, minimal plain objects (e.g. `{ required: true }`) that do **not** contain explicit `key: undefined` entries, verifying that computed properties and default fallbacks still resolve without being blocked by `key in object` guards.
+- **Non-Destructive Property Merging**: Verify that when an optional override property is `undefined`, it does **not** overwrite existing values from base configurations or fallback attributes with `undefined`.
+- **Full Union & Interface Exhaustiveness (`*Types.ts`)**: Use `it.each` to test all relevant union variants and interface properties declared in `*Types.ts`, rather than testing only the subset hardcoded in the implementation.
 
 ### E. Regular Expressions (`RegExp`)
 - **Flags**: With flags (`g`, `i`, `m`, `u`, `s`), without flags (`flags === ''`).
@@ -160,6 +168,8 @@ Every unit test suite MUST thoroughly evaluate the following boundary conditions
 
 ### B. Classes & State Managers
 - Test methods in logical order: constructor initialization -> getters/setters -> action methods -> `reset()` -> `destroy()`.
+- **Consistent Defaults Across All Getters/Outputs**: Verify that default values configured in the constructor apply consistently across every output getter/method of the class.
+- **Canonical State vs UI-Mutated Helper State**: When a class interacts with other helpers (e.g., visual state toggles, mode switches), verify that toggling visual/UI state does not corrupt or reset canonical validation rules, patterns, or metadata.
 - Test instance encapsulation: private fields are isolated; two instances do not share state.
 - Test teardown: verify that `destroy()` clears caches, removes event listeners, and cancels subscriptions.
 

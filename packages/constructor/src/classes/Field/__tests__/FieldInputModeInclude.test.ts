@@ -1,60 +1,61 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { FieldInputModeInclude } from '../FieldInputModeInclude'
-import { FieldTypeInclude } from '../FieldTypeInclude'
 
 describe('FieldInputModeInclude', () => {
   it('should return inputMode from props if provided', () => {
-    const type = new FieldTypeInclude({ type: 'number' })
-    const inputMode = new FieldInputModeInclude({ inputMode: 'text' }, () => type)
+    const inputMode = new FieldInputModeInclude({ type: 'number', inputMode: 'text' })
 
     expect(inputMode.item).toBe('text')
   })
 
   it('should resolve default inputMode based on type', () => {
-    const numberType = new FieldTypeInclude({ type: 'number' })
-    const inputModeNumber = new FieldInputModeInclude({}, () => numberType)
+    const inputModeSearch = new FieldInputModeInclude({ type: 'search' })
+    expect(inputModeSearch.item).toBe('search')
+
+    const inputModeNumber = new FieldInputModeInclude({ type: 'number' })
     expect(inputModeNumber.item).toBe('numeric')
 
-    const currencyType = new FieldTypeInclude({ type: 'currency' })
-    const inputModeCurrency = new FieldInputModeInclude({}, () => currencyType)
+    const inputModeCurrency = new FieldInputModeInclude({ type: 'currency' })
     expect(inputModeCurrency.item).toBe('decimal')
 
-    const telType = new FieldTypeInclude({ type: 'tel' })
-    const inputModeTel = new FieldInputModeInclude({}, () => telType)
+    const inputModeTel = new FieldInputModeInclude({ type: 'tel' })
     expect(inputModeTel.item).toBe('tel')
 
-    const emailType = new FieldTypeInclude({ type: 'email' })
-    const inputModeEmail = new FieldInputModeInclude({}, () => emailType)
+    const inputModeUrl = new FieldInputModeInclude({ type: 'url' })
+    expect(inputModeUrl.item).toBe('url')
+
+    const inputModeEmail = new FieldInputModeInclude({ type: 'email' })
     expect(inputModeEmail.item).toBe('email')
 
-    const textType = new FieldTypeInclude({ type: 'text' })
-    const inputModeText = new FieldInputModeInclude({}, () => textType)
+    const inputModeText = new FieldInputModeInclude({ type: 'text' })
     expect(inputModeText.item).toBeUndefined()
   })
 
   it('should return autocomplete from props if provided', () => {
-    const type = new FieldTypeInclude({ type: 'email' })
-    const inputMode = new FieldInputModeInclude({ autocomplete: 'username' }, () => type)
+    const inputMode = new FieldInputModeInclude({ type: 'email', autocomplete: 'username' })
 
     expect(inputMode.autocomplete).toBe('username')
   })
 
   it('should resolve default autocomplete based on type', () => {
-    const searchType = new FieldTypeInclude({ type: 'search' })
-    const autocompleteSearch = new FieldInputModeInclude({}, () => searchType)
+    const autocompleteSearch = new FieldInputModeInclude({ type: 'search' })
     expect(autocompleteSearch.autocomplete).toBe('off')
 
-    const passwordType = new FieldTypeInclude({ type: 'password' })
-    const autocompletePassword = new FieldInputModeInclude({}, () => passwordType)
+    const autocompleteDate = new FieldInputModeInclude({ type: 'date' })
+    expect(autocompleteDate.autocomplete).toBe('off')
+
+    const autocompleteCurrency = new FieldInputModeInclude({ type: 'currency' })
+    expect(autocompleteCurrency.autocomplete).toBe('off')
+
+    const autocompletePassword = new FieldInputModeInclude({ type: 'password' })
     expect(autocompletePassword.autocomplete).toBe('new-password')
 
-    const textType = new FieldTypeInclude({ type: 'text' })
-    const autocompleteText = new FieldInputModeInclude({}, () => textType)
+    const autocompleteText = new FieldInputModeInclude({ type: 'text' })
     expect(autocompleteText.autocomplete).toBeUndefined()
   })
 
-  it('should handle optional type when type is not provided', () => {
+  it('should handle empty props when type is not provided', () => {
     const inputMode = new FieldInputModeInclude({})
     expect(inputMode.item).toBeUndefined()
     expect(inputMode.autocomplete).toBeUndefined()
