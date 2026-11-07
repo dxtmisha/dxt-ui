@@ -1,3 +1,3 @@
-// md5:cb1cfce87df9ac149c1d36aff0a002cb true
-/** Retrieves an element property by key, resolving to document.body for Window instances, or returning a default value. @keywords element property get value dom window document */
-export declare function getElementItem<E extends ElementOrWindow = HTMLElement, K extends keyof ElementResolved<E> = keyof ElementResolved<E>, D = undefined>(element?: ElementOrString<E> | null, property?: K | string | number, defaultValue?: D): ElementResolved<E>[K] | D;
+// md5:332450e726f69f48d2270ce36d7fde4a true
+/** Returns the value of an element property by key, falling back to document.body if Window is passed. @keywords element property value window document getElementItem */
+export declare function getElementItem<E extends ElementOrWindow = HTMLElement, K extends keyof ElementResolved<E> = keyof ElementResolved<E>, D = undefined>(element?: ElementOrString<E> | null, property?: K | string | number | null, defaultValue?: D): ElementResolved<E>[K] | D;

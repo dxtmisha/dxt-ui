@@ -1,18 +1,18 @@
-// md5:4d8705596ce1acb451d6bb99a4c4ed8e true
-/** Manages global loading state and loader events. @keywords global loading, loader, spinner, state */
+// md5:ce517074c245911361a91dd81a2e541c true
+/** Global loading indicator manager. @keywords loading, loader, spinner, progress, global */
 export declare class Loading {
-    /** Gets the current loading counter value. @keywords loading value, counter, progress */
-    static get(): number;
-    /** Checks if the loader is currently active. @keywords is loading, active loader, status */
+    /** Checks if global loading is currently active. @keywords is active, loading state, status */
     static is(): boolean;
-    /** Returns a request-isolated LoadingInstance object. @keywords loading instance, isolated loader, context */
+    /** Gets the current loading counter value. @keywords get loading, counter, active requests */
+    static get(): number;
+    /** Returns a request-isolated LoadingInstance. @keywords loading instance, isolated loader */
     static getItem(): LoadingInstance;
-    /** Increments the loading counter and displays the loader. @keywords show loader, start loading, display spinner */
+    /** Shows the loader and increments the active count. @keywords show loader, start loading, spinner */
     static show(): void;
-    /** Decrements the loading counter and hides the loader when zero. @keywords hide loader, stop loading, dismiss spinner */
+    /** Hides the loader and decrements the active count. @keywords hide loader, stop loading, dismiss */
     static hide(): void;
-    /** Registers an event listener for loading state changes. @keywords add event listener, loading event, watch */
-    static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
-    /** Unregisters a previously added loading state event listener. @keywords remove event listener, unsubscribe, loading event */
-    static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+    /** Registers an event listener for loading state changes. @keywords subscribe, add event listener, loading change */
+    static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement> | null): void;
+    /** Unregisters a loading state change event listener. @keywords unsubscribe, remove event listener, loading change */
+    static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement> | null): void;
 }

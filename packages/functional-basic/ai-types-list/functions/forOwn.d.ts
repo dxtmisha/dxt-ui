@@ -1,3 +1,3 @@
-// md5:29cb6e015e742f5d25cd6a5fa8df499e true
-/** Iterates over own enumerable object properties safely skipping prototype pollution keys, supporting early exit when false is returned. @keywords forOwn, iterate, loop, object, enumerable, prototype pollution */
-export declare function forOwn<T extends object = Record<string, unknown>, K extends Extract<keyof T, string> = Extract<keyof T, string>>(data?: T, callback?: (value: T[K], key: K, collection: T) => void | boolean): void;
+// md5:cf3cb1bb58d0b2a52dfbb2e520bc253a true
+/** Iterates over own enumerable properties of an object safely skipping prototype pollution keys, supporting early exit on false. @keywords iterate, forOwn, object traversal, prototype safe */
+export declare function forOwn<T extends object = Record<string, unknown>, K extends Extract<keyof T, string> = Extract<keyof T, string>>(data?: T | null, callback?: (value: T[K], key: K, collection: T) => void | boolean): void;

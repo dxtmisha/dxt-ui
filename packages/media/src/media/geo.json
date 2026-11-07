@@ -11,7 +11,6 @@
     "firstDay": "Su",
     "zone": "America/New_York",
     "phoneCode": "1",
-    "phoneWithin": "1",
     "phoneMask": "+1-***-***-****",
     "unit": {
       "millimeter": "inch",
@@ -525,7 +524,6 @@
     "firstDay": "Su",
     "zone": "Pacific/Majuro",
     "phoneCode": "692",
-    "phoneWithin": "1",
     "phoneMask": "+692-***-****"
   },
   {
@@ -967,7 +965,6 @@
     "firstDay": "Su",
     "zone": "America/Antigua",
     "phoneCode": "1-268",
-    "phoneWithin": "1",
     "phoneMask": "+1-268-***-****"
   },
   {
@@ -976,7 +973,6 @@
     "firstDay": "Mo",
     "zone": "America/Anguilla",
     "phoneCode": "1-264",
-    "phoneWithin": "1",
     "phoneMask": "+1-264-***-****"
   },
   {
@@ -1010,7 +1006,6 @@
     "firstDay": "Su",
     "zone": "Pacific/Pago_Pago",
     "phoneCode": "1-684",
-    "phoneWithin": "1",
     "phoneMask": "+1-684-***-****"
   },
   {
@@ -1060,7 +1055,6 @@
     "firstDay": "Mo",
     "zone": "America/Barbados",
     "phoneCode": "1-246",
-    "phoneWithin": "1",
     "phoneMask": "+1-246-***-****"
   },
   {
@@ -1134,7 +1128,6 @@
     "firstDay": "Mo",
     "zone": "Atlantic/Bermuda",
     "phoneCode": "1-441",
-    "phoneWithin": "1",
     "phoneMask": "+1-441-***-****"
   },
   {
@@ -1185,7 +1178,6 @@
     "firstDay": "Su",
     "zone": "America/Nassau",
     "phoneCode": "1-242",
-    "phoneWithin": "1",
     "phoneMask": "+1-242-***-****"
   },
   {
@@ -1222,7 +1214,6 @@
     "firstDay": "Su",
     "zone": "America/Toronto",
     "phoneCode": "1",
-    "phoneWithin": "1",
     "phoneMask": [
       "+1-204-***-****",
       "+1-226-***-****",
@@ -1436,7 +1427,6 @@
     "firstDay": "Su",
     "zone": "America/Dominica",
     "phoneCode": "1-767",
-    "phoneWithin": "1",
     "phoneMask": "+1-767-***-****"
   },
   {
@@ -1445,7 +1435,6 @@
     "firstDay": "Su",
     "zone": "America/Santo_Domingo",
     "phoneCode": "1-809",
-    "phoneWithin": "1",
     "phoneMask": [
       "+1-809-***-****",
       "+1-829-***-****",
@@ -1528,7 +1517,6 @@
     "firstDay": "Mo",
     "zone": "Pacific/Pohnpei",
     "phoneCode": "691",
-    "phoneWithin": "1",
     "phoneMask": "+691-***-****"
   },
   {
@@ -1549,7 +1537,6 @@
     "firstDay": "Mo",
     "zone": "America/Grenada",
     "phoneCode": "1-473",
-    "phoneWithin": "1",
     "phoneMask": "+1-473-***-****"
   },
   {
@@ -1630,7 +1617,6 @@
     "firstDay": "Su",
     "zone": "Pacific/Guam",
     "phoneCode": "1-671",
-    "phoneWithin": "1",
     "phoneMask": "+1-671-***-****"
   },
   {
@@ -1745,7 +1731,6 @@
     "firstDay": "Su",
     "zone": "America/Jamaica",
     "phoneCode": "1-876",
-    "phoneWithin": "1",
     "phoneMask": [
       "+1-876-***-****",
       "+1-658-***-****"
@@ -1798,7 +1783,6 @@
     "firstDay": "Mo",
     "zone": "America/St_Kitts",
     "phoneCode": "1-869",
-    "phoneWithin": "1",
     "phoneMask": "+1-869-***-****"
   },
   {
@@ -1815,7 +1799,6 @@
     "firstDay": "Mo",
     "zone": "America/Cayman",
     "phoneCode": "1-345",
-    "phoneWithin": "1",
     "phoneMask": "+1-345-***-****"
   },
   {
@@ -1836,7 +1819,6 @@
     "firstDay": "Mo",
     "zone": "America/St_Lucia",
     "phoneCode": "1-758",
-    "phoneWithin": "1",
     "phoneMask": "+1-758-***-****"
   },
   {
@@ -1967,7 +1949,6 @@
     "firstDay": "Mo",
     "zone": "Pacific/Saipan",
     "phoneCode": "1-670",
-    "phoneWithin": "1",
     "phoneMask": "+1-670-***-****"
   },
   {
@@ -1993,7 +1974,6 @@
     "firstDay": "Mo",
     "zone": "America/Montserrat",
     "phoneCode": "1-664",
-    "phoneWithin": "1",
     "phoneMask": "+1-664-***-****"
   },
   {
@@ -2180,7 +2160,6 @@
     "firstDay": "Su",
     "zone": "America/Puerto_Rico",
     "phoneCode": "1-787",
-    "phoneWithin": "1",
     "phoneMask": [
       "+1-787-***-****",
       "+1-939-***-****"
@@ -2358,7 +2337,6 @@
     "firstDay": "Mo",
     "zone": "America/Lower_Princes",
     "phoneCode": "1-721",
-    "phoneWithin": "1",
     "phoneMask": "+1-721-***-****"
   },
   {
@@ -2387,7 +2365,6 @@
     "firstDay": "Mo",
     "zone": "America/Grand_Turk",
     "phoneCode": "1-649",
-    "phoneWithin": "1",
     "phoneMask": "+1-649-***-****"
   },
   {
@@ -2442,7 +2419,6 @@
     "firstDay": "Su",
     "zone": "America/Port_of_Spain",
     "phoneCode": "1-868",
-    "phoneWithin": "1",
     "phoneMask": "+1-868-***-****"
   },
   {
@@ -2493,7 +2469,6 @@
     "firstDay": "Mo",
     "zone": "America/St_Vincent",
     "phoneCode": "1-784",
-    "phoneWithin": "1",
     "phoneMask": "+1-784-***-****"
   },
   {
@@ -2511,7 +2486,6 @@
     "firstDay": "Mo",
     "zone": "America/Tortola",
     "phoneCode": "1-284",
-    "phoneWithin": "1",
     "phoneMask": "+1-284-***-****"
   },
   {
@@ -2520,7 +2494,6 @@
     "firstDay": "Su",
     "zone": "America/St_Thomas",
     "phoneCode": "1-340",
-    "phoneWithin": "1",
     "phoneMask": "+1-340-***-****"
   },
   {

@@ -1,3 +1,3 @@
-// md5:abef563b97f942508dee7ee71f8088f0 true
-/** Retrieves the position of the mouse cursor or touch point from an event. @keywords mouse touch coordinates client position cursor */
-export declare function getMouseClient(event: MouseEvent | TouchEvent): ImageCoordinator;
+// md5:3cdf0f57b6e74bdf67930eadfba25d17 true
+/** Retrieves the cursor or touch coordinates from a mouse or touch event. @keywords mouse position cursor coordinates touch client */
+export declare function getMouseClient(event?: MouseEvent | TouchEvent | null): ImageCoordinator;

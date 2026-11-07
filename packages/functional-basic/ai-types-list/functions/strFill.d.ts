@@ -1,3 +1,3 @@
-// md5:2461a4212bff2eec9917f6a8bdb2296f true
-/** Creates a string of the specified length filled with the given character. @keywords string fill repeat pad */
-export declare function strFill(value: string, count: number): string;
+// md5:d0be29a9100f00f1d5296bab24dddbd0 true
+/** Creates a string of a specified length filled with the given value. @keywords string fill, repeat, pad */
+export declare function strFill(value?: unknown, count?: number): string;

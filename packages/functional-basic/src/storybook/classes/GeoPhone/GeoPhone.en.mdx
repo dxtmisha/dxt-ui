@@ -24,9 +24,10 @@ import { GeoPhone } from '@dxtmisha/functional-basic'
 const info = GeoPhone.getByPhone('79001234567')
 console.log(info.item?.value) // 'RU'
 
-// Formatting by mask
-const formatted = GeoPhone.toMask('9001234567', ['+* (***) ***-**-**'])
-console.log(formatted) // '+7 (900) 123-45-67'
+// Full information and mask formatting
+const fullInfo = GeoPhone.getByPhoneFull('+7 (900) 123-45-67')
+console.log(fullInfo.format) // '+7-900-123-45-67'
+console.log(GeoPhone.cleanPhone('+7 (900) 123-45-67')) // '79001234567'
 ```
 
 ## Methods
@@ -36,15 +37,17 @@ console.log(formatted) // '+7 (900) 123-45-67'
 - `getList(): GeoPhoneValue[]` — Returns a complete, sorted, flat list of all registered international phone metadata.
 - `getMap(): Record<string, GeoPhoneMap>` — Returns the root node of the internal prefix tree used for searching.
 
-### Selection
+### Selection & Formatting
 
 - `get(code: string): GeoPhoneValue | undefined` — Retrieves phone metadata associated with a specific country code.
-- `getByPhone(phone: string): GeoPhoneMapInfo` — Analyzes a phone number string to extract information and the suitable mask.
 - `getByCode(code: string): GeoPhoneMap | undefined` — Returns complete mask information, including the search tree node for a given code.
+- `getByPhone(phone: string): GeoPhoneMapInfo` — Analyzes a phone number string to extract information and the suitable mask.
+- `getByPhoneFull(phone: string): GeoPhoneMapInfoFull` — Returns extended phone number information, including the cleaned digit string (`full`) and the formatted phone number (`format`).
+- `cleanPhone(value: string): string` — Removes all non-digit characters from a phone string.
 
-### Auxiliary
+### Protected Auxiliary Methods (`protected`)
 
-- `toMask(phone: string, masks?: string[]): string | undefined` — Converts a raw numeric phone string into a formatted version.
+- `toMask(phone: string, masks?: string[], isRemoveZero?: boolean): string | undefined` — Converts a raw numeric phone string into a formatted version according to the mask.
 - `removeZero(phone: string): string` — Standardizes the internal representation of a number by removing leading zeros or adjusting regional prefixes.
 
 ## Data Types
@@ -52,7 +55,7 @@ console.log(formatted) // '+7 (900) 123-45-67'
 ### `GeoPhoneValue`
 Basic metadata structure for each country's phone configuration:
 - `phone: number` — Phone country code (e.g., `7`).
-- `within: number` — Internal dialing rule code (used to select the special symbol in the mask).
+- `within?: string` — Internal dialing rule code (used to select the special symbol in the mask).
 - `mask: string[]` — Array of mask patterns assigned to the country.
 - `value: string` — Country identifier (ISO 3166).
 
@@ -61,7 +64,7 @@ A node in the internal prefix tree (Trie) used for searching:
 - `items: GeoPhoneValue[]` — List of all items available in this branch of the tree.
 - `info: GeoPhoneValue | undefined` — Phone metadata if the current node is a complete code.
 - `value: string | undefined` — Country identifier for this node.
-- `mask: string[]` — Array of masks with substituted internal symbols (`~`, `=`, `$`).
+- `mask: string[]` — Array of masks with substituted internal symbols (`~`, `=`, `$`, `?`).
 - `maskFull: string[]` — Full masks including the international code.
 - `next: Record<string, GeoPhoneMap>` — Pointers to the next digits in the search tree.
 
@@ -70,21 +73,30 @@ Result of the `getByPhone` search method:
 - `item?: GeoPhoneMap` — The found tree node with country and mask information.
 - `phone?: string` — The remaining part of the number after separating the country code.
 
+### `GeoPhoneMapInfoFull`
+Extended result of the `getByPhoneFull` method (extends `GeoPhoneMapInfo`):
+- `full: string` — Full phone number (digits only).
+- `format: string` — Formatted phone number according to the mask (or original string if length does not match).
+
 ## Examples
 
 ### Internal Symbols (Within Logic)
-The class's internal logic replaces the first "asterisk" in the mask with a special symbol depending on regional rules:
-- `~` — for Russia (internal code 8).
-- `=` — for default/other regions (e.g., USA).
+The class's internal logic replaces `*` symbols in the mask with a special symbol depending on regional rules:
+- `~` — for Russia (internal code `'8'`).
+- `=` — for regions with internal code `'0'` (e.g., Germany).
+- `?` — for regions with internal code `'06'` (e.g., Hungary).
+- `$` — for regions with internal code `'4'`.
 
 ```javascript
 const mapInfo = GeoPhone.getByCode('RU')
-console.log(mapInfo.mask[0]) // '~ (***) ***-**-**'
+console.log(mapInfo?.mask[0]) // '+~-***-***-**-**'
 ```
 
-### Multiple Masks
+### Complete Phone Parsing & Formatting
 ```javascript
-const masks = ['+* (***) ***-**-**', '+* (***) ***-***']
-console.log(GeoPhone.toMask('79991234567', masks)) // 11 digits -> '+7 (999) 123-45-67'
-console.log(GeoPhone.toMask('7999123456', masks))  // 10 digits -> '+7 (999) 123-456'
+const result = GeoPhone.getByPhoneFull('+7 (999) 123-45-67')
+console.log(result.item?.value) // 'RU'
+console.log(result.phone)       // '9991234567'
+console.log(result.full)        // '79991234567'
+console.log(result.format)      // '+7-999-123-45-67'
 ```

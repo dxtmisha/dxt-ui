@@ -148,3 +148,4 @@ getElementItem
 getFirst
 getImageSrc
 getKey
+GeoPhone

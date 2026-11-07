@@ -1,9 +1,9 @@
-// md5:6ac4f40270ef9c55da24ac2181b3796a true
+// md5:a42bb0bd33d619c870807af6c556e387 true
 export interface SetValuesOptions {
     multiple?: boolean;
     maxlength?: number;
     alwaysChange?: boolean;
     notEmpty?: boolean;
 }
-/** Modifies or toggles single or multiple selected values according to configuration options. @keywords set values, toggle selection, collection, update */
-export declare function setValues<T>(selected: T | T[] | undefined, value: T, options?: SetValuesOptions): T | T[] | undefined;
+/** Modifies, toggles, or updates single or multiple values based on configuration options. @keywords setValues, selection, toggle, update */
+export declare function setValues<T>(selected: T | T[] | null | undefined, value: T, options?: SetValuesOptions): T | T[] | undefined;

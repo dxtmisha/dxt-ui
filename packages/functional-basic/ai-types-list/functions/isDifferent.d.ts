@@ -1,3 +1,3 @@
-// md5:037f99c5a81543c0e9a58ee008ad14be true
-/** Checks if the values of two objects are different. @keywords compare, diff, equality, object difference */
-export declare function isDifferent<T = unknown>(value: ObjectItem<T>, old: ObjectItem<T>): boolean;
+// md5:1444e2996553da630d925910b67f84aa true
+/** Checks if the values of two objects are different. @keywords compare, difference, diff, equality, object comparison */
+export declare function isDifferent<T = unknown>(value?: ObjectItem<T> | null, old?: ObjectItem<T> | null): boolean;

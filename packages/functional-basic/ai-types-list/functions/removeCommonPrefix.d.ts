@@ -1,3 +1,3 @@
-// md5:09e2f4f588af55574fd762f4da9df4d1 true
-/** Removes the common prefix from a string, optionally trimming the result. @keywords string prefix remove strip trim */
-export declare function removeCommonPrefix(mainString: string, prefix: string, trim?: boolean): string;
+// md5:c165e04ab09be1542c73776d4cd9c8eb true
+/** Removes the common prefix from the main string with optional trimming. @keywords remove prefix, strip prefix, common prefix, trim */
+export declare function removeCommonPrefix(mainString?: string | null, prefix?: string | null, trim?: boolean): string;

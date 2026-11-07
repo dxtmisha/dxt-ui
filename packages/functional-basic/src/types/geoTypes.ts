@@ -143,7 +143,7 @@ export interface GeoPhoneValue {
   /** Phone country code (e.g., 7) / Телефонный код страны (например, 7) */
   phone: number
   /** Internal dialing rule code / Код внутреннего правила набора */
-  within: number
+  within?: string
   /** Array of mask patterns assigned to the country / Массив паттернов масок, закрепленных за страной */
   mask: string[]
   /** Country identifier (ISO 3166) / Идентификатор страны (ISO 3166) */
@@ -172,4 +172,15 @@ export interface GeoPhoneMapInfo {
   item?: GeoPhoneMap
   /** The remaining part of the number after separating the country code / Оставшаяся часть номера после отделения кода страны */
   phone?: string
+}
+
+/**
+ * Extended result of searching a country by phone number with full and formatted phone /
+ * Расширенный результат поиска страны по номеру телефона с полным и отформатированным номером
+ */
+export interface GeoPhoneMapInfoFull extends GeoPhoneMapInfo {
+  /** Full phone number (digits only) / Полный номер телефона (только цифры) */
+  full: string
+  /** Formatted phone number according to the mask / Отформатированный номер телефона по маске */
+  format: string
 }

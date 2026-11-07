@@ -1,3 +1,3 @@
-// md5:c5e925284e361638cf93936a85f71cc3 true
-/** Check if the device is currently online. @keywords online, network, connectivity, internet */
+// md5:ee8a78ee41cf1e8ddee6c68b77972123 true
+/** Checks if the device is online. @keywords online network connectivity internet connection */
 export declare function isOnLine(): boolean;

@@ -1,22 +1,22 @@
-// md5:3765be7d636b69bd10eed837ccf48894 true
-/** Manages storage callback lists and execution state. @keywords storage, callbacks, listeners */
+// md5:28398f71aeeebe425ab34a94c9eaeca1 true
+/** Manages storage callback lists and execution workflows. @keywords storage, callback, listener, event */
 export declare class StorageCallback<T = unknown, Callback = (value: T) => void | Promise<void>> {
-    /** Initializes a storage callback manager. @keywords constructor, init */
+    /** Initializes a new StorageCallback instance. @keywords constructor, init */
     constructor(name: string, group?: string);
-    /** Checks whether callbacks or storage are currently loading. @keywords loading, state, status */
+    /** Checks if callbacks are currently executing. @keywords loading, state, status */
     isLoading(): boolean;
-    /** Returns or creates an instance by storage name and group. @keywords singleton, instance, lookup */
+    /** Retrieves or creates a cached instance by name and optional group. @keywords singleton, getInstance */
     static getInstance<T>(name: string, group?: string): StorageCallback<T>;
-    /** Returns the current loading state. @keywords loading, state */
+    /** Returns the current loading state. @keywords loading, state, status */
     getLoading(): boolean;
-    /** Returns the storage name identifier. @keywords name, identifier */
+    /** Returns the storage identifier name. @keywords name, identifier, key */
     getName(): string;
-    /** Registers a callback listener to the list. @keywords add, listener, callback, subscribe */
+    /** Registers a callback with optional one-time execution. @keywords addCallback, subscribe, listener, once */
     addCallback(callback: Callback, isOnce?: boolean): this;
-    /** Removes a callback listener from the list. @keywords remove, unsubscribe, callback */
+    /** Unregisters a callback from the list. @keywords removeCallback, unsubscribe, listener */
     removeCallback(callback: Callback): this;
-    /** Prepares state and data before execution. @keywords prepare, setup, init */
+    /** Prepares callback execution state before launch. @keywords preparation, setup, lifecycle */
     preparation(): this;
-    /** Executes all registered callbacks with the provided storage value. @keywords run, execute, notify, trigger */
+    /** Executes all registered callbacks, consuming one-time registrations before invocation. @keywords run, execute, dispatch, notify */
     run(value: T): Promise<this>;
 }

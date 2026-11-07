@@ -1,3 +1,3 @@
-// md5:ea7586122640fd58cefd925b9e658e4a true
-/** Extracts an array of values for a specific property or column from an array of objects. @keywords column, pluck, extract, values, property */
-export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>, column: K): (T[K] | undefined)[];
+// md5:ba20a68343a61cdf42555825d3fc46df true
+/** Extracts an array of values for a specified property or column from a collection. @keywords column, pluck, extract, property, map */
+export declare function getColumn<T, K extends keyof T>(array: readonly (T | null | undefined)[] | ObjectItem<T | null | undefined> | null | undefined, column: K): (T[K] | undefined)[];

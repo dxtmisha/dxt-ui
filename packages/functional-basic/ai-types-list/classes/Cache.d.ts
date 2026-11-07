@@ -1,8 +1,8 @@
-// md5:4ec694864f452b749e232c7ea51b7949 true
-/** In-memory cache storing computed values by key. @warning Obsolete and should not be used. @keywords in-memory cache, memoize, key-value */
+// md5:cd5a5417ae696da6f3dd25bd991c6c47 true
+/** Simple in-memory cache storing computed values by key. @warning Obsolete and should not be used. @keywords cache, memoize, storage */
 export declare class Cache {
-    /** Retrieves or computes and caches a synchronous value by key with optional dependency invalidation. @keywords cache get, memoize, sync cache */
+    /** Returns or computes and stores a cached value with optional invalidation dependencies. @keywords cache, get, memoize */
     get<T>(name: string, callback: () => T, comparison?: unknown[]): T;
-    /** Asynchronously retrieves or computes and caches a value by key with optional dependency invalidation. @keywords async cache, memoize promise, async get */
+    /** Asynchronously returns or computes and stores a cached value with optional invalidation dependencies. @keywords cache, async, memoize, promise */
     getAsync<T>(name: string, callback: () => T, comparison?: unknown[]): Promise<T>;
 }

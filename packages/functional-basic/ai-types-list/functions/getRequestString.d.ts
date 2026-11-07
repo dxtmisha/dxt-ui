@@ -1,3 +1,3 @@
-// md5:ba99eee55cedd3c948ff65166204d33d true
-/** Serializes an object or array into a key-value request string. @keywords request string, query string, serialize, key value, params */
-export declare function getRequestString(request: Record<string, unknown> | readonly unknown[], sign?: string, separator?: string, subKey?: string): string;
+// md5:c3839c0b82ff2707c1902409aecfa54d true
+/** Converts request data into a serialized key-value query string. @keywords query string, serialize, key value, request params */
+export declare function getRequestString(request?: unknown, sign?: string, separator?: string, subKey?: string): string;

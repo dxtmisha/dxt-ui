@@ -1,33 +1,33 @@
-// md5:95483b4069f41b51a60c9adb08130f39 true
+// md5:cdadc102e0e08a4c63d458c90962136d true
 export type IconsItem = string | Promise<string | unknown> | (() => Promise<string | unknown>);
 export type IconsConfig = {
     url?: string;
     list?: Record<string, IconsItem>;
 };
-/** Icon manager for registering, caching, and retrieving icon assets. @keywords icon, icons, manager, registry */
+/** Icon management registry and loader service. @keywords icons, registry, loader, svg */
 export declare class Icons {
-    /** Checks whether an icon is registered by name. @keywords icon, check, exists, is */
+    /** Checks if an icon exists in the registry. @keywords icon exists, check icon, has icon */
     static is(index: string): boolean;
-    /** Asynchronously retrieves an icon by name or URL with optional timeout. @keywords icon, get, fetch, load, async */
+    /** Asynchronously retrieves an icon by name, resolving loaders or fallback URLs. @keywords get icon, load icon, async icon */
     static get(index: string, url?: string, wait?: number): Promise<string>;
-    /** Synchronously returns an icon if loaded or retrieves from string source. @keywords icon, getAsync, sync, cache */
+    /** Synchronously returns an icon if already loaded or defined as a string. @keywords get icon sync, cached icon */
     static getAsync(index: string, url?: string): string;
-    /** Returns a list of all registered icon names. @keywords icon, list, names, keys */
+    /** Returns an array of all registered icon names. @keywords icon names, icon list, registry names */
     static getNameList(): string[];
-    /** Returns the global base URL for icon storage. @keywords icon, url, global, base */
+    /** Returns the global base URL for icons. @keywords global url, icon base url */
     static getUrlGlobal(): string;
-    /** Updates the icon configuration. @keywords icon, config, configure, settings */
+    /** Updates the icons configuration. @keywords set config, icon settings */
     static setConfig(config: IconsConfig): void;
-    /** Sets the global base URL for icon storage. @keywords icon, url, set, base */
+    /** Sets the base file URL for icon assets. @keywords set icon url, base url */
     static setUrl(url: string): void;
-    /** Registers a custom icon by name with a path, promise, or loader function. @keywords icon, register, add, custom */
+    /** Registers a custom icon by name. @keywords add icon, register icon */
     static add(index: string, file: IconsItem): void;
-    /** Registers multiple icons from a key-value map. @keywords icon, register, bulk, addByList, map */
+    /** Registers multiple icons from a key-value map. @keywords add icons, batch register, icon list */
     static addByList(list: Record<string, IconsItem>): void;
-    /** Registers a global icon path by name. @keywords icon, global, register, addGlobal */
+    /** Registers a custom global icon file path. @keywords add global icon, external icon */
     static addGlobal(index: string, file: string): void;
-    /** Marks an icon as being loaded. @keywords icon, load, loading, addLoad */
+    /** Registers an icon in loading state. @keywords icon loading, placeholder */
     static addLoad(index: string): void;
-    /** Resets the icon registry to its default state. @keywords icon, reset, clear */
+    /** Resets the icon registry to its initial state. @keywords reset icons, clear registry */
     static reset(): void;
 }

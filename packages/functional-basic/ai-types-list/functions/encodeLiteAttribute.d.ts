@@ -1,11 +1,12 @@
-// md5:b086fb53dd67d318c40dd69e550456b7 true
+// md5:e2377d32b546dc73b1d8c05e81701ac4 true
 /**
  * Encodes basic HTML special characters (<, >, &) while preserving quotes.
- * @keywords html encode, escape html, lite attribute, html entities, title encode
+ * @keywords html, encode, escape, sanitize, lite attribute
  * @example
  * encodeLiteAttribute('Tom & Jerry') // => 'Tom &amp; Jerry'
  * encodeLiteAttribute('<title> "Hello" </title>') // => '&lt;title&gt; "Hello" &lt;/title&gt;'
  * encodeLiteAttribute(undefined) // => ''
- * @remarks Does NOT encode quotes (" and '). For untrusted input inside HTML attributes, use `encodeAttribute`.
+ * @remarks
+ * Does not encode quotes (" and '). For untrusted attribute values, use `encodeAttribute` to prevent injection vulnerabilities.
  */
-export declare function encodeLiteAttribute(text?: string | number | null): string;
+export declare function encodeLiteAttribute(text?: unknown): string;

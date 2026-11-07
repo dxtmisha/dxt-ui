@@ -1,38 +1,32 @@
-// md5:21db09a021054fc3e03965dbc5b9a496 true
-/**
- * Advanced lifecycle-managed event listener wrapper with DOM-safety checks and optimizations for resize and scroll.
- * @keywords event-listener dom-events resize-observer scroll-sync event-dispatch
- * @example
- * const clickEvent = new EventItem('.btn', 'click', (e) => console.log('Clicked!'));
- * clickEvent.start();
- */
-export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, unknown> = Record<string, unknown>> {
-    /** Creates an EventItem instance. @keywords constructor init */
-    constructor(elementSelector?: ElementOrString<E>, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
-    /** Checks whether event listening is currently active. @keywords active status listening */
+// md5:f88b3a2bd51b1ef47d94c5c0a57dc43b true
+/** Advanced DOM and window event listener lifecycle manager with optimization and safety checks. @keywords event-manager, event-listener, dom-lifecycle, resize-observer, scroll-sync */
+export declare class EventItem<E extends ElementOrWindow = ElementOrWindow, O extends Event = Event, D extends Record<string, unknown> = Record<string, unknown>> {
+    /** Initializes a new EventItem instance with element target, event type, listener, and options. @keywords event, listener, dom, observer, init */
+    constructor(elementSelector?: ElementOrString<E> | null, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
+    /** Checks whether event listening is currently active. @keywords active, status, listening, check */
     isActive(): boolean;
-    /** Returns the resolved target element. @keywords target element getter */
+    /** Returns the target DOM element. @keywords element, target, dom */
     getElement(): E | undefined;
-    /** Updates the target element or selector. @keywords set-target element-bind */
-    setElement(elementSelector?: ElementOrString<E>): this;
-    /** Sets the control element used for DOM attachment safety checks. @keywords dom-safety control-element */
-    setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this;
-    /** Updates the event type or types to listen to. @keywords set-type event-type */
-    setType(type: string | string[]): this;
-    /** Updates the event listener callback. @keywords set-listener callback handler */
-    setListener(listener: EventListenerDetail<O, D>): this;
-    /** Updates the event listener configuration options. @keywords options capture passive */
-    setOptions(options?: EventOptions): this;
-    /** Updates the custom detail payload passed to listeners. @keywords set-detail payload custom-event */
+    /** Sets custom detail data passed to listeners. @keywords detail, data, payload, custom-event */
     setDetail(detail?: D): this;
-    /** Dispatches a CustomEvent with optional payload across configured event types. @keywords dispatch trigger fire */
-    dispatch(detail?: D | undefined): this;
-    /** Attaches and activates the event listeners. @keywords start listen attach */
-    start(): this;
-    /** Detaches and stops the event listeners. @keywords stop remove detach */
-    stop(): this;
-    /** Toggles the active listening state based on the given boolean. @keywords toggle state active */
-    toggle(activity: boolean): this;
-    /** Resets the event listener lifecycle by restarting if currently active. @keywords reset reload restart */
+    /** Updates the target element or selector for event tracking. @keywords target, element, selector, update */
+    setElement(elementSelector?: ElementOrString<E> | null): this;
+    /** Sets a control element used for DOM safety and connectivity verification. @keywords control-element, dom-safety, verify */
+    setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC> | null): this;
+    /** Updates the event listener callback function. @keywords listener, handler, callback */
+    setListener(listener?: EventListenerDetail<O, D>): this;
+    /** Updates event listener options or capture flag. @keywords options, capture, passive, once */
+    setOptions(options?: EventOptions): this;
+    /** Sets the event type or array of event types. @keywords type, event-name, event-type */
+    setType(type: string | string[]): this;
+    /** Restarts event listeners if currently active. @keywords reset, reload, restart */
     reset(): this;
+    /** Dispatches a CustomEvent with optional detail data on the target element. @keywords dispatch, trigger, emit, custom-event */
+    dispatch(detail?: D | undefined): this;
+    /** Starts listening to configured events. @keywords start, listen, attach, bind */
+    start(): this;
+    /** Stops listening to configured events and cleans up observers. @keywords stop, unbind, detach, remove */
+    stop(): this;
+    /** Toggles the active state of event listening. @keywords toggle, enable, disable, switch */
+    toggle(activity: boolean): this;
 }

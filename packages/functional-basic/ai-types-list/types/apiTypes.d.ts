@@ -1,5 +1,4 @@
-// md5:e88dcaf1a0f244447c3c840f0ed808ba true
-/** HTTP request methods. @keywords http, method, rest, verb */
+// md5:149a212c1e349c4a7c02d2be486d7d4e true
 export declare enum ApiMethodItem {
     delete = "DELETE",
     get = "GET",
@@ -7,14 +6,13 @@ export declare enum ApiMethodItem {
     put = "PUT",
     patch = "PATCH"
 }
-/** Cached API response structure. @keywords cache, response, ttl, storage */
 export type ApiCacheItem<T = any> = {
     value: T;
     age?: number;
     cacheAge: number;
 };
 export type ApiCacheList = Record<string, ApiCacheItem>;
-/** Configuration options for the API client. @keywords api, config, options, client */
+/** API configuration settings. @keywords api, config, fetch, options */
 export type ApiConfig = {
     urlRoot?: string;
     origin?: string;
@@ -27,7 +25,6 @@ export type ApiConfig = {
     wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
 };
 export type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>;
-/** API response validation metadata. @keywords validation, response, status, error */
 export type ApiDataValidation = {
     status?: ApiStatusType;
     code?: string | number;
@@ -37,7 +34,7 @@ export type ApiDataValidation = {
         message?: string;
     };
 };
-/** Unified API response payload wrapped with status and error metadata. @keywords response, wrapper, payload, data */
+/** API response data wrapper with validation and status metadata. @keywords api, response, data, status */
 export type ApiDataItem<T = any> = T & ApiDataValidation & {
     data?: T;
     success?: boolean;
@@ -46,7 +43,7 @@ export type ApiDataItem<T = any> = T & ApiDataValidation & {
 };
 export type ApiHeadersValue = Record<string, string> | (() => Record<string, string>);
 export type ApiDefaultValue = Record<string, any> | (() => Record<string, any>);
-/** Parameters and execution options for API fetch requests. @keywords fetch, request, options, http */
+/** Request configuration options for API fetch operations. @keywords api, fetch, request, http */
 export type ApiFetch = {
     api?: boolean;
     path?: string;
@@ -76,15 +73,16 @@ export type ApiFetch = {
     endResetLimit?: number;
     wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
 };
-/** SSR hydration record for matching and preloading API responses. @keywords hydration, ssr, match */
+/** Mock hydration entry for preloading or SSR response matching. @keywords hydration, mock, api */
 export type ApiHydrationItem = {
     path: string;
     method: ApiMethod;
     request?: ApiFetch['request'];
+    toData?: boolean;
     response: any;
 };
 export type ApiHydrationList = ApiHydrationItem[];
-/** Error matching rule descriptor for API error management. @keywords error, handler, matcher, storage */
+/** Error storage pattern and matcher for API error mapping. @keywords error, storage, matcher */
 export type ApiErrorStorageItem = Record<string, any> & {
     url: string | RegExp;
     method: ApiMethodItem;
@@ -95,22 +93,22 @@ export type ApiErrorStorageItem = Record<string, any> & {
 };
 export type ApiErrorStorageList = ApiErrorStorageItem[];
 export type ApiMethod = string | ApiMethodItem;
-/** Hook return value containing state reset flag and payload data. @keywords hook, lifecycle, reset */
 export type ApiPreparationEnd = {
     reset?: boolean;
     data?: any;
 };
-/** Mock API response rule descriptor. @keywords mock, response, test, stub */
+/** Mock API response definition for testing and simulation. @keywords mock, api, response, lag */
 export type ApiResponseItem = {
     path: string | RegExp;
     method: ApiMethod;
     request?: ApiFetch['request'] | '*any';
+    toData?: boolean;
     response: any | ((request?: ApiFetch['request']) => any);
     disable?: any;
     isForGlobal?: boolean;
     lag?: any;
 };
-/** Execution status state and metadata for the last API request. @keywords status, error, response, state */
+/** Snapshot of HTTP response status and error information. @keywords status, http, response, error */
 export type ApiStatusItem = {
     status?: number;
     statusText?: string;

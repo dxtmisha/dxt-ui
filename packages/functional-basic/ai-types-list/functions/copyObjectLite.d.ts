@@ -1,3 +1,3 @@
-// md5:540acbc8c5f580030da48ec58ab4a663 true
-/** Creates a shallow copy of an object with optional additional properties. @keywords copy, clone, shallow copy, object lite, merge */
+// md5:9d6722328d4579dc5b1973ed075bc070 true
+/** Creates a shallow copy of own enumerable properties without changing the prototype. @keywords shallow copy, clone, object, copyObjectLite */
 export declare function copyObjectLite<T = Record<PropertyKey, unknown>, R = T>(value?: T | null, source?: Record<PropertyKey, unknown> | null): R;

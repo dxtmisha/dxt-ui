@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2026-11-07
+
+### Changed
+- **Phone Trunk Prefixes (`geo.json`)**:
+  - Removed redundant `"phoneWithin": "1"` from NANP (`+1`) and Pacific countries and territories (`US`, `CA`, `AG`, `AI`, `AS`, `BB`, `BM`, `BS`, `DM`, `DO`, `FM`, `GD`, `GU`, `JM`, `KN`, `KY`, `LC`, `MH`, `MP`, `MS`, `PR`, `SX`, `TC`, `TT`, `VC`, `VG`, `VI`) where the domestic trunk prefix `'1'` matches the international country code or uses default `'*'` mask placeholders.
+
 ## [1.1.0] - 2026-11-05
 
 ### Added

@@ -1,18 +1,18 @@
-// md5:1e556e5e65ef71a12904afd7193b7706 true
-/** Static class managing data stored in the URL hash via HashInstance delegation. @keywords hash url state navigation routing */
+// md5:131e263f6350d7d9d1f05e58a0ff3cf3 true
+/** Static class providing centralized URL hash data management delegating to HashInstance. @keywords hash, url, state */
 export declare class Hash {
-    /** Returns a request-isolated HashInstance instance. @keywords hash instance isolate get */
-    static getItem(): HashInstance;
-    /** Retrieves a stored value by name from the URL hash with an optional default. @keywords get hash value read query */
+    /** Retrieves a stored value from the URL hash. @keywords hash, get, read, state */
     static get<T>(name: string, defaultValue?: T | (() => T)): T;
-    /** Sets or updates a value in the URL hash. @keywords set hash value update write */
+    /** Returns the request-isolated HashInstance. @keywords instance, context, hashInstance */
+    static getItem(): HashInstance;
+    /** Updates or sets a variable in the URL hash. @keywords hash, set, write, update */
     static set<T>(name: string, callback: T | (() => T)): void;
-    /** Subscribes a listener callback to changes for a specific hash variable. @keywords watch listener subscribe observe change */
+    /** Subscribes a listener callback to changes of a specific hash variable. @keywords watch, observe, listener, subscribe */
     static addWatch<T>(name: string, callback: (value: T) => void): void;
-    /** Unsubscribes a listener callback from changes for a specific hash variable. @keywords unwatch unsubscribe remove listener */
+    /** Unsubscribes a listener callback from changes of a specific hash variable. @keywords unwatch, removeListener, unsubscribe */
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
-    /** Synchronizes hash variables by reparsing the current URL string. @keywords reload sync refresh parse */
-    static reload(): void;
-    /** Resets the instance, clears state, and removes all active listeners. @keywords reset destroy clear teardown */
+    /** Destroys the active instance and resets storage. @keywords reset, destroy, clear */
     static reset(): void;
+    /** Reloads and synchronizes hash variables from the current URL string. @keywords reload, sync, refresh, url */
+    static reload(): void;
 }

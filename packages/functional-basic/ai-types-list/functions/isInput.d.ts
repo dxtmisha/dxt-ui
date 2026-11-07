@@ -1,3 +1,3 @@
-// md5:2395733cce3d5f3c7488875a08ec8d07 true
-/** Checks if an element is an input field or editable. @keywords input, editable, form element, check, dom */
-export declare function isInput(element?: HTMLElement | EventTarget | null, includeDisabled?: boolean): element is HTMLElement;
+// md5:3f37f7b2fb2315f525332c1c61ec0d09 true
+/** Checks if the element is an input field or editable. @keywords isInput, input, editable, form element, contenteditable */
+export declare function isInput(element?: unknown, includeDisabled?: boolean): element is HTMLElement;

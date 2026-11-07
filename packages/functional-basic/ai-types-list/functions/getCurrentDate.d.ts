@@ -1,7 +1,7 @@
-// md5:bd99635f167f28939438e3a969a10113 true
+// md5:2f6360303fc5bd3a8f5f1b1e86ceb353 true
 /**
  * Returns the current date in the specified format.
- * @remarks Using for SSR rendering may lead to hydration mismatches due to timezone differences. Use within client-side hooks.
- * @keywords current date, today, now, format, ssr
+ * @remarks Using in SSR may cause hydration mismatches due to timezone differences; run within client hooks.
+ * @keywords current date, format, timezone, date now
  */
-export declare function getCurrentDate(format?: GeoDate): string;
+export declare function getCurrentDate(format?: GeoDate, timeZone?: boolean): string;

@@ -1,16 +1,16 @@
-// md5:b83ac3bf8a4bef842f3d839b5ae3df91 true
-/** Manages inter-context communication via BroadcastChannel API. @keywords broadcast channel, messaging, cross-tab, ipc */
+// md5:37e46a97c4f004206901b38d43ed1264 true
+/** Manages BroadcastChannel cross-tab messaging with error handling. @keywords broadcast channel, messaging, cross-tab, communication */
 export declare class BroadcastMessage<Message = unknown> {
-    /** Initializes the broadcast channel with optional message/error handlers. @keywords broadcast, channel, init, listener */
+    /** Initializes the broadcast channel with message and error listeners. @keywords broadcast, channel, init, listener */
     constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined, errorCenter?: ErrorCenterInstance);
-    /** Returns the active BroadcastChannel instance if available in the environment. @keywords channel instance, dom, get */
+    /** Returns the underlying BroadcastChannel instance if supported in the current environment. @keywords channel, instance, broadcast */
     getChannel(): BroadcastChannel | undefined;
-    /** Sets the callback executed when a message is received. @keywords onmessage, listener, handler, callback */
-    setCallback(callback: (event: MessageEvent<Message>) => void): this;
-    /** Sets the callback executed on message errors. @keywords messageerror, error handler, callback */
-    setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
-    /** Sends a message to all listening contexts on the channel. @keywords send, postMessage, emit, publish */
-    post(message: Message): this;
-    /** Closes the channel and stops listening for messages. @keywords close, cleanup, unbind, destroy */
+    /** Sets or updates the message reception callback handler. @keywords message, listener, callback, event */
+    setCallback(callback?: (event: MessageEvent<Message>) => void): this;
+    /** Sets or updates the message error callback handler. @keywords error, handler, callback, messageerror */
+    setCallbackError(callbackError?: (event: MessageEvent<Message>) => void): this;
+    /** Closes the channel and terminates message listening. @keywords destroy, close, cleanup */
     destroy(): this;
+    /** Broadcasts a message across listening contexts. @keywords post, send, broadcast, message */
+    post(message: Message): this;
 }

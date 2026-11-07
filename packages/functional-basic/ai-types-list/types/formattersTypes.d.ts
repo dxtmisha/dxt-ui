@@ -1,5 +1,4 @@
-// md5:b2fe331169b3c497b1635ef0089acd64 true
-/** Supported formatter types. @keywords formatter, types, formatting */
+// md5:7b11f5429ee16df8c7113b10e9499a72 true
 export declare enum FormattersType {
     currency = "currency",
     date = "date",
@@ -35,9 +34,9 @@ export type FormattersOptionsPlural = {
 export type FormattersOptionsUnit = {
     unit: string | Intl.NumberFormatOptions;
 };
-/** Resolves option configuration type based on formatter type. @keywords options, type mapping */
+/** Maps formatter type to its corresponding configuration options. @keywords options, mapping */
 export type FormattersOptionsInformation<Type extends FormattersType> = Type extends FormattersType.currency ? FormattersOptionsCurrency : Type extends FormattersType.date ? FormattersOptionsDate : Type extends FormattersType.name ? FormattersOptionsName : Type extends FormattersType.number ? FormattersOptionsNumber : Type extends FormattersType.plural ? FormattersOptionsPlural : Type extends FormattersType.unit ? FormattersOptionsUnit : Record<string, any>;
-/** Single property formatter configuration. @keywords formatter, item, configuration */
+/** Configuration for a single property formatter. @keywords formatter, config */
 export type FormattersOptionsItem<Type extends FormattersType = FormattersType, R = string> = {
     type?: Type;
     transformation?: (valueOriginal: any, item: any, options?: FormattersOptionsInformation<Type>) => R;
@@ -46,11 +45,12 @@ export type FormattersOptionsItem<Type extends FormattersType = FormattersType, 
 export type FormattersOptionsList = Record<string, FormattersOptionsItem>;
 export type FormattersListItem = Record<string, any>;
 export type FormattersList<Item extends FormattersListItem> = Item[];
-/** Capitalizes dot-notated property paths into camelCase. @keywords capitalize, path, utility */
+/** Converts a dot-notated string into camelCase capitalized format. @keywords capitalize, string */
 export type FormattersCapitalize<K extends string> = K extends `${infer First}.${infer Rest}` ? `${First}${Capitalize<FormattersCapitalize<Rest>>}` : K;
 export type FormattersColumns<T extends FormattersOptionsList> = (keyof T & string)[];
+/** Generates a formatted property key with a suffix. @keywords key, property */
 export type FormattersKey<K, A extends string = 'Format'> = K extends string ? `${FormattersCapitalize<K>}${A}` : never;
-/** Appends formatted string properties to an item type. @keywords data item, format */
+/** Extends a data item with formatted property keys. @keywords item, formatted */
 export type FormattersDataItem<T extends FormattersListItem, KT extends string[]> = {
     [K in keyof T | FormattersKey<KT[number]>]: K extends keyof T ? T[K] : string;
 };
@@ -59,5 +59,5 @@ export type FormattersListColumnItem<T extends FormattersListItem, O extends For
 export type FormattersListColumns<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersListFormat<T, FormattersColumns<O>>;
 export type FormattersListProp = FormattersList<FormattersListItem> | FormattersListItem;
 export type FormattersItemProp<List extends FormattersListProp> = ArrayToItem<List>;
-/** Resulting formatted list or item preserving input collection shape. @keywords return type, formatters */
-export type FormattersReturn<List extends FormattersListProp, Options extends FormattersOptionsList = FormattersOptionsList, Item extends FormattersItemProp<List> = FormattersItemProp<List>> = List extends any[] ? FormattersListColumns<Item, Options> : (FormattersListColumnItem<Item, Options> | undefined);
+/** Resolves the return type matching the input data structure with formatted columns. @keywords return, result */
+export type FormattersReturn<List extends FormattersListProp, Options extends FormattersOptionsList = FormattersOptionsList, Item extends FormattersItemProp<List> = FormattersItemProp<List>> = (List extends unknown[] ? FormattersListColumns<Item, Options> : FormattersListColumnItem<Item, Options>) | undefined;

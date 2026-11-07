@@ -1,3 +1,3 @@
-// md5:c6b8584507cbc511884889d1b45d54b2 true
-/** Checks if an element or selector is attached to the DOM tree. @keywords dom, attached, is connected, element in dom, is in document */
-export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean;
+// md5:ba364be7413639bcc2a7a1a844090785 true
+/** Checks if an element is still present in the DOM tree. @keywords is in dom, element connected, dom tree, attached */
+export declare function isInDom<E extends ElementOrWindow = HTMLElement>(element?: ElementOrString<E> | null): boolean;

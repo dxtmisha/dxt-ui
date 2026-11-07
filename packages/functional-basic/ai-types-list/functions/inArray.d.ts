@@ -1,3 +1,3 @@
-// md5:452e1eee09d25d8857115832c0ccc7ad true
-/** Checks if a value exists within the specified array. @keywords inArray, array, includes, contains, search */
-export declare function inArray<T>(array: T[], value: T): boolean;
+// md5:ec3c405384aca85b07f54c6999759d69 true
+/** Checks if a value exists within an array. @keywords inArray, contains, includes, search, exists */
+export declare function inArray<T>(array: readonly T[], value?: T | null): boolean;

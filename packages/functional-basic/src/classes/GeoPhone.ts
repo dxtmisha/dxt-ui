@@ -1,19 +1,21 @@
 import { forEach } from '../functions/forEach'
 import { isArray } from '../functions/isArray'
 import { isFilled } from '../functions/isFilled'
+import { isNumber } from '../functions/isNumber'
 import { toArray } from '../functions/toArray'
 
 import { Geo } from './Geo'
 import {
-  type GeoPhoneValue,
   type GeoPhoneMap,
-  type GeoPhoneMapInfo
+  type GeoPhoneMapInfo,
+  type GeoPhoneMapInfoFull,
+  type GeoPhoneValue
 } from '../types/geoTypes'
 
 /** Regular expression matching a single digit / Регулярное выражение для поиска одной цифры */
 const REGEXP_DIGIT = /\d/g
 /** Regular expression matching mask placeholder characters / Регулярное выражение для поиска символов-заполнителей маски */
-const REGEXP_MASK_PLACEHOLDER = /\*/g
+const REGEXP_MASK_PLACEHOLDER = /[*=~$?]/g
 /** Regular expression matching non-digit sequences / Регулярное выражение для поиска нецифровых последовательностей */
 const REGEXP_NON_DIGIT = /\D+/g
 
@@ -104,6 +106,24 @@ export class GeoPhone {
   }
 
   /**
+   * Getting complete information by phone, including full and formatted phone number.
+   *
+   * Получение полной информации по телефону, включая полный и отформатированный номер.
+   * @param phone phone number / номер телефона
+   * @returns extended phone mask info / расширенная информация о маске телефона
+   */
+  static getByPhoneFull(phone: string): GeoPhoneMapInfoFull {
+    const data = this.getByPhone(phone)
+    const full = this.cleanPhone(phone)
+
+    return {
+      ...data,
+      full,
+      format: this.toMask(full, data.item?.maskFull) ?? phone
+    }
+  }
+
+  /**
    * We get an array from a list of all phone numbers.
    *
    * Получаем массив из списка всех телефонных кодов.
@@ -132,51 +152,14 @@ export class GeoPhone {
   }
 
   /**
-   * Deletes the country code from the input number.
+   * Removes all non-digit characters from the phone string.
    *
-   * Удаляет код страны по входному номеру.
-   * @param phone phone number / номер телефона
-   * @returns phone number without leading zero or country prefix / номер телефона без ведущего нуля или префикса страны
+   * Удаляет все нецифровые символы из строки телефона.
+   * @param value the value to clean / очищаемая строка
+   * @returns string containing only digits / строка, содержащая только цифры
    */
-  static removeZero(phone: string): string {
-    if (
-      phone.startsWith('0')
-      || phone.startsWith('89')
-    ) {
-      return phone.slice(1)
-    }
-
-    return phone
-  }
-
-  /**
-   * Convert to phone mask.
-   *
-   * Преобразовать в маску телефона.
-   * @param phone phone number / номер телефона
-   * @param masks a mask to transform a phone number / маска для преобразования номера телефона
-   * @returns masked phone string or undefined / отформатированный по маске номер телефона или undefined
-   */
-  static toMask(
-    phone: string,
-    masks?: string[]
-  ): string | undefined {
-    if (
-      isFilled(phone)
-      && isArray(masks)
-      && masks.length > 0
-    ) {
-      const value = this.removeZero(phone)
-      const length = value.length
-
-      for (const mask of masks) {
-        if (this.getUnnecessaryLength(mask) === length) {
-          return this.toStandard(value, mask)
-        }
-      }
-    }
-
-    return undefined
+  static cleanPhone(value: string): string {
+    return value.replace(REGEXP_NON_DIGIT, '')
   }
 
   /**
@@ -199,17 +182,38 @@ export class GeoPhone {
    * @protected
    * @returns internal country code symbol / символ кода внутри страны
    */
-  protected static getWithinSymbol(within: number | string): string {
+  protected static getWithinSymbol(within?: string): string {
     switch (within) {
-      case 4:
+      case '0':
+        return '='
+      case '06':
+        return '?'
       case '4':
         return '$'
-      case 8:
       case '8':
         return '~'
     }
 
-    return '='
+    return '*'
+  }
+
+  /**
+   * Deletes the country code from the input number.
+   *
+   * Удаляет код страны по входному номеру.
+   * @param phone phone number / номер телефона
+   * @protected
+   * @returns phone number without leading zero or country prefix / номер телефона без ведущего нуля или префикса страны
+   */
+  protected static removeZero(phone: string): string {
+    if (
+      phone.startsWith('0')
+      || phone.startsWith('89')
+    ) {
+      return phone.slice(1)
+    }
+
+    return phone
   }
 
   /**
@@ -222,9 +226,12 @@ export class GeoPhone {
   protected static makeList(): void {
     const list = forEach(Geo.getList(), (item) => {
       if (item?.phoneMask) {
+        const phone = (item.phoneCode && Number(this.cleanPhone(item.phoneCode))) || 0
+        const within = isNumber(item.phoneWithin) ? String(item.phoneWithin) : undefined
+
         return {
-          phone: (item.phoneCode && Number(item.phoneCode.replace(REGEXP_NON_DIGIT, ''))) || 0,
-          within: Number(item.phoneWithin) || 0,
+          phone,
+          within,
           mask: toArray(item.phoneMask),
           value: item.country
         }
@@ -244,11 +251,11 @@ export class GeoPhone {
    * @returns void / ничего не возвращает
    */
   protected static makeMap(): void {
-    this.map = {}
+    const map: Record<string, GeoPhoneMap> = {}
 
     this.getList().forEach((item) => {
       item.mask.forEach((mask) => {
-        let focus = this.map!
+        let focus = map
         let value: GeoPhoneMap | undefined
 
         this.toNumber(mask).forEach((number) => {
@@ -280,10 +287,48 @@ export class GeoPhone {
 
           value.mask.push(maskWithin)
           value.maskFull.push(maskWithin.replace(REGEXP_DIGIT, '*'))
-          value.items.push(item)
+
+          if (!value.items.includes(item)) {
+            value.items.push(item)
+          }
         }
       })
     })
+
+    this.map = map
+  }
+
+  /**
+   * Convert to phone mask.
+   *
+   * Преобразовать в маску телефона.
+   * @param phone phone number / номер телефона
+   * @param masks a mask to transform a phone number / маска для преобразования номера телефона
+   * @param isRemoveZero whether to remove leading zero or country prefix / нужно ли удалять ведущий ноль или префикс страны
+   * @protected
+   * @returns masked phone string or undefined / отформатированный по маске номер телефона или undefined
+   */
+  protected static toMask(
+    phone: string,
+    masks?: string[],
+    isRemoveZero: boolean = false
+  ): string | undefined {
+    if (
+      isFilled(phone)
+      && isArray(masks)
+      && masks.length > 0
+    ) {
+      const value = isRemoveZero ? this.removeZero(phone) : phone
+      const length = value.length
+
+      for (const mask of masks) {
+        if (this.getUnnecessaryLength(mask) === length) {
+          return this.toStandard(value, mask)
+        }
+      }
+    }
+
+    return undefined
   }
 
   /**
@@ -295,9 +340,7 @@ export class GeoPhone {
    * @returns array of numbers / массив цифр
    */
   protected static toNumber(value: string): string[] {
-    return value
-      .replace(REGEXP_NON_DIGIT, '')
-      .split('')
+    return this.cleanPhone(value).split('')
   }
 
   /**
@@ -315,15 +358,27 @@ export class GeoPhone {
   }
 
   /**
-   * Replaces the first character with the internal country code.
+   * Replaces characters with the internal country code symbols.
    *
-   * Заменяет первый символ на код внутри страны.
+   * Заменяет символы на код внутри страны.
    * @param mask a mask to transform a phone number / маска для преобразования номера телефона
    * @param within internal country code / код внутри страны
    * @protected
    * @returns mask with internal country code symbol / маска с символом кода внутри страны
    */
-  protected static toWithin(mask: string, within: number | string): string {
-    return mask.replace('*', this.getWithinSymbol(within))
+  protected static toWithin(mask: string, within?: string): string {
+    if (within) {
+      let result = mask
+      const symbol = this.getWithinSymbol(within)
+      const length = within.length
+
+      for (let index = 0; index < length; index++) {
+        result = result.replace('*', symbol)
+      }
+
+      return result
+    }
+
+    return mask
   }
 }

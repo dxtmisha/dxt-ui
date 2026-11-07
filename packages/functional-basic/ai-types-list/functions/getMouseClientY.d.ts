@@ -1,3 +1,3 @@
-// md5:1829d80efdd4da7539c069c4c8548640 true
-/** Returns the vertical client coordinate (Y) of a mouse or touch event. @keywords mouse, touch, clientY, cursor position, Y coordinate */
-export declare function getMouseClientY(event: MouseEvent | TouchEvent): number;
+// md5:0dade0fbf7ae8f2dc17b05e736c9d243 true
+/** Returns the vertical client position (Y coordinate) of a mouse or touch event. @keywords mouse, touch, clientY, cursor position, pointer, y coordinate */
+export declare function getMouseClientY(event?: MouseEvent | TouchEvent | null): number;

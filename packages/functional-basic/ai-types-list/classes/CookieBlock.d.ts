@@ -1,10 +1,10 @@
-// md5:7a6431a445b3ed317c8e467eacbbdff2 true
-/** Manages cookie access and blocking status. @keywords cookie, block, access, permissions */
+// md5:74ec25921ff20dcc1a19ae743d876d7e true
+/** Manages cookie access and blocking status. @keywords cookie, access, block, consent */
 export declare class CookieBlock {
-    /** Retrieves current cookie blocking status. @keywords cookie, block, status, check */
+    /** Gets the current cookie block status. @keywords get, cookie, block, status */
     static get(): boolean;
-    /** Sets cookie blocking status. @keywords cookie, block, status, toggle */
-    static set(value: boolean): void;
-    /** Gets request-isolated CookieBlockInstance. @keywords cookie, block, instance, request */
+    /** Sets the cookie block status. @keywords set, cookie, block, status */
+    static set(value?: boolean): void;
+    /** Returns a request-isolated CookieBlockInstance. @keywords cookie, block, instance, request */
     static getItem(): CookieBlockInstance;
 }

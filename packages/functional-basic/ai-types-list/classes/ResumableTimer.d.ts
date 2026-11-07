@@ -1,14 +1,14 @@
-// md5:e3399fa79bf1806825acb9525a222998 true
-/** Timer that can be paused, resumed, reset, and cleared. @keywords timer, pause, resume, delay, timeout, schedule */
+// md5:001888517ad517b582ebf0313bf5c9ea true
+/** Timer that can be paused, resumed, reset, and cleared. @keywords timer, resumable, pause, resume, timeout, delay */
 export declare class ResumableTimer {
-    /** Creates a new resumable timer instance. @keywords constructor, create, timer */
+    /** Creates a resumable timer and optionally starts it immediately. @keywords create, init, start */
     constructor(callback: FunctionVoid, delay?: number, blockStart?: boolean);
-    /** Resets and restarts the timer with the original delay. @keywords reset, restart, timer */
+    /** Resets and restarts the timer with the original delay. @keywords reset, restart */
     reset(): this;
-    /** Clears the timer and resets its state. @keywords clear, stop, cancel, timer */
+    /** Completely clears the timer and resets its state. @keywords clear, stop, cancel */
     clear(): this;
-    /** Pauses the timer and preserves remaining time. @keywords pause, freeze, timer */
+    /** Pauses the timer and calculates remaining time. @keywords pause, suspend, freeze */
     pause(): this;
-    /** Resumes a paused timer or starts it if not running. @keywords resume, start, unpause, timer */
+    /** Resumes the timer with the remaining delay or starts it. @keywords resume, unpause, continue */
     resume(): this;
 }

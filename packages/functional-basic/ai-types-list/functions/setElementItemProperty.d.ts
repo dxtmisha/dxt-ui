@@ -1,3 +1,3 @@
-// md5:fc7bf08303f38d5a7cb2f085f53c0ac3 true
-/** Sets or merges nested properties on an element with prototype pollution protection. @keywords set element property, merge properties, prototype pollution */
-export declare function setElementItemProperty<E extends ElementOrWindow = HTMLElement>(element?: ElementOrString<E> | null, index?: PropertyKey, value?: unknown): boolean;
+// md5:efb2c16e19b132593eed08b4ba68f511 true
+/** Sets a property or merges nested object properties on an element with prototype pollution protection. @keywords element, property, set, merge, prototype pollution */
+export declare function setElementItemProperty<E extends ElementOrWindow = HTMLElement>(element?: ElementOrString<E> | null, index?: PropertyKey | null, value?: unknown): boolean;

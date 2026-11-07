@@ -1,3 +1,3 @@
-// md5:f89f9632c2ae1ae0e6e23bc51d496cbf true
-/** Replaces template placeholders in text with values from an object or array. @keywords template, replace, interpolate, string format, placeholders */
-export declare function applyTemplate(text: unknown, replacement?: Record<string, unknown> | readonly unknown[]): string;
+// md5:142e714bb2b89cf82362a5c636fabd4f true
+/** Replaces placeholders like [key] or {key} in text with values from a replacement object or array. @keywords template, string format, interpolation, replace placeholders */
+export declare function applyTemplate(text: unknown, replacement?: unknown): string;

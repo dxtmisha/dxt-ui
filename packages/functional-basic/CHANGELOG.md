@@ -2,6 +2,118 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.2] - 2026-11-07
+
+### Added
+- **`GeoPhone` Enhancements**:
+  - Added `GeoPhone.getByPhoneFull()` static method and `GeoPhoneMapInfoFull` interface to return extended phone information including cleaned digit string (`full`) and formatted mask string (`format`).
+  - Added `GeoPhone.cleanPhone()` static method to strip all non-digit characters from phone strings.
+  - Added support for `'06'` internal dialing prefix (`?` placeholder symbol) in `GeoPhone.getWithinSymbol()` and `REGEXP_MASK_PLACEHOLDER` (`/[*=~$?]/g`).
+
+### Changed
+- **`GeoPhone` & `geoTypes`**:
+  - Changed `GeoPhoneValue.within` type from `number` to optional `string` (`within?: string`) to preserve leading zeros in domestic prefixes (such as `'0'` and `'06'`).
+  - Updated `GeoPhone.getWithinSymbol()` to default to `'*'` when `within` is not specified, and `GeoPhone.toWithin()` to replace placeholders according to the length of the `within` prefix.
+  - Encapsulated `removeZero()` and `toMask()` as `protected static` helpers and added optional `isRemoveZero` flag (`boolean = false`) to `toMask()`.
+  - Deduplicated country items in `GeoPhone.makeMap()` (`value.items`) and standardized class method ordering.
+  - Expanded unit test suite (`GeoPhone.test.ts`) and synchronized trilingual Storybook MDX documentation (`.en.mdx`, `.ru.mdx`, `.vi.mdx`).
+
+## [2.1.1] - 2026-11-06
+
+### Added
+- **Documentation & Storybook Stories**:
+  - Added comprehensive trilingual Storybook MDX documentation across English, Russian, and Vietnamese (`.en.mdx`, `.ru.mdx`, `.vi.mdx`) for `TranslateInstance`.
+  - Added Storybook documentation entries for `GeoIntl.hoursType()`, `setErrorCenter()`, `setMaxItems()`, and `CacheStatic`.
+- **`GeoIntl` Enhancements**:
+  - Added `GeoIntl.hoursType()` method using `Intl.DateTimeFormat.resolvedOptions().hour12` to determine locale 12/24-hour time conventions.
+  - Added `setErrorCenter()` method to dynamically attach or update error reporting handler.
+  - Added cache size limiting (default 32) with static `GeoIntl.setMaxItems()` configuration and automatic cache eviction to prevent memory leaks in SSR and client environments.
+- **`GeoFlag` Country Codes**:
+  - Added flag icon mappings for `DO` (Dominican Republic) and `IN` (India).
+  - Synchronized ISO code mappings with `geo.json` (added `AX`, `BQ`, `BV`, `GP`, `HM`).
+
+### Changed
+- **Dependencies**:
+  - Updated `@dxtmisha/media` dependency to `>=1.1.0`.
+- **`ApiCache`**:
+  - Optimized cache retrieval by prioritizing unexpired local cache items in `ApiCache.getItemOrListener` before checking listeners.
+  - Protected active keys from premature eviction in `clearOld()`.
+- **`ApiDataReturn`**:
+  - Reset cached `dataMod` on `ApiDataReturn.init()` to ensure fresh transformations on state changes.
+  - Normalized handling of falsy root primitives (`0`, `false`, `""`).
+  - Added support for `+json` media types (e.g. `application/ld+json`, `application/problem+json`).
+- **`Api` / `ApiResponse` / `ApiHydration` / `ApiPreparation`**:
+  - Unified data extraction between `ApiHydration` and `ApiResponse` via `toData`.
+  - Deferred mock response factory evaluation in `emulatorAsync` until requested.
+  - Stripped lowercase `content-type` header on `FormData` in `ApiHeaders` to allow native boundary generation.
+  - Added request preparation counter in `ApiPreparation` to track concurrent executions.
+- **`Cache` & `CacheItem`**:
+  - Deduplicated concurrent asynchronous computations and guarded against stale revisions in `CacheItem` and `Cache`.
+- **`Cookie` & `CookieStorage`**:
+  - Supported optional `CookieOptions` parameter in `Cookie.remove()`.
+  - Preserved the first decoded cookie value in `CookieStorage` for deterministic multi-path cookie resolution.
+- **`Datetime`**:
+  - Delegated `Datetime.getHoursType()` to `GeoIntl.hoursType()`.
+  - Supported Friday-first week calculation (`Fr` -> `5`) in `GeoFirstDay`, `GeoIntl`, and `Datetime`.
+- **`Geo` / `GeoInstance` / `GeoTimezone`**:
+  - Added `configuredOnly` parameter to `GeoTimezone.getFormat()`, `GeoInstance.getTimezoneFormat()`, and `Geo.getTimezoneFormat()` to allow retrieving strictly custom timezone formats, and applied it in `toDate()`.
+- **`Geo Metadata & Internationalization`**:
+  - Audited and standardized `geo.json` across all 246 countries and territories.
+  - Standardized language codes to 2-letter ISO 639-1 with language fallback alternatives (`nb`/`nn`, `fil`, `in`, `iw`).
+  - Moved unique-language countries to primary language block and updated `ZA` (South Africa) default language to English (`en`).
+  - Added regional NANP phone masks for Canada and updated phone trunk prefixes and mask lengths.
+- **`Global`**:
+  - Refactored `Global` to use a private storage getter and safely copy own enumerable properties while skipping prototype pollution keys.
+- **`Hash` & `UrlInstanceAbstract`**:
+  - Preserved `history.state` during hash transitions in `HashInstance.update()`.
+  - Removed `ServerStorage` entry on `Hash.reset()`.
+  - Published updated state before notifying watchers in `UrlInstanceAbstract`.
+- **`Meta` / `MetaManager` / `MetaStatic`**:
+  - Synchronized document title updates and standardized reset lifecycles across meta handlers.
+- **`SearchList` & Search Utilities**:
+  - Escaped HTML special characters in `addTagHighlightMatch` search results to prevent XSS.
+  - Hardened regex patterns in `escapeExp` and `getSearchExp` to keep hyphens compatible with Unicode patterns and avoid range errors.
+  - Advanced astral code points (surrogate pairs) correctly in `getArrayHighlightMatch`.
+- **Type Guards & Utility Functions**:
+  - `isFunction`: refined type predicate to narrow `unknown`/`any` to `FunctionAnyType` while preserving callable and constructor union types.
+  - `isObjectNotArray`: hardened type guard preserving known object types.
+  - `executePromise`: refined generic signature to accept `PromiseLike<T> | T` with default `void`.
+  - `executeFunction`: refined parameter inference and callback handling.
+  - `encodeAttribute`: optimized regex checks and escaped additional special characters.
+  - `getElementId`: escaped element IDs via `CSS.escape` in selector suffix for valid CSS selector generation.
+  - `ensureMaxSize`: added error guarding around `resizeImageByMax`, safely falling back to original blob or base64 string on failure.
+  - Widened input parameters to accept nullish (`null | undefined`) or `unknown` values across `toKebabCase`, `setElementItem`, `setElementItemAttribute`, `setElementItemProperty`, `getElementImage`, `getImageSrc`, `getLength`, `getColumn`, `isWindow`, and `toArray`.
+  - Refined types and parameter ergonomics in `copyObjectLite`, `eventStopPropagation`, `getElementItem`, and `getLengthOfAllArray`.
+- **`EventItem`**:
+  - Guarded queued scroll `requestAnimationFrame` callbacks against restarted event listeners to prevent stale invocations.
+- **`Formatters`**:
+  - Updated `FormattersReturn` type to include `undefined` for array inputs when list is not provided.
+- **`GeoUnit`**:
+  - Improved target unit validation and text fallback labels for area and mass units.
+
+### Fixed
+- **`Icons`**:
+  - Handled rejected and invalid icon loaders gracefully in `Icons.get()` via `ErrorCenter.on`, returning an empty string instead of throwing unhandled errors.
+- **`BroadcastMessage`**:
+  - Reported `postMessage` failure exceptions through `ErrorCenter.on` instead of unhandled runtime errors.
+- **`ApiErrorStorage`**:
+  - Cloned stateful `RegExp` instances (`expression.global` / `expression.sticky`) before URL testing to prevent erratic `test()` behavior caused by sticky/global `lastIndex`.
+- **`Translate` / `TranslateFile` / `TranslateInstance`**:
+  - Added retry mechanism for failed translation file loading in `TranslateFile`.
+  - Fixed `once` callbacks lifecycle execution and cleanup in `StorageCallback` and `TranslateInstance`.
+- **`UrlItem` / `Query`**:
+  - Fixed URL history state preservation during push/replace state operations.
+  - Routed recoverable URL parsing and query synchronization failures through `ErrorCenter.on`.
+
+### Security
+- **`getElementSafeScript`**:
+  - Escaped HTML comments (`<!--`) to prevent script breakout and injection vulnerabilities when serializing data into HTML script tags.
+- **`ErrorCenter` SSR Isolation**:
+  - Isolated `ErrorCenter` instances per SSR request using `ServerStorage`, preventing cross-request error state leakage.
+  - Protected `ErrorCenterHandler` subscribers by catching listener errors to avoid breaking execution chains.
+- **Prototype Pollution Guards**:
+  - Hardened `Global` property copying to strictly skip prototype keys (`__proto__`, `constructor`, `prototype`).
+
 ## [2.1.0] - 2026-11-04
 
 ### Added

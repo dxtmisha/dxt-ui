@@ -1,3 +1,3 @@
-// md5:33a60fb2820fef3f4163261142cc20bc true
-/** Generates random text with specified word count and length constraints. @keywords random, text, generator, words, string */
-export declare function getRandomText(min: number, max: number, symbol?: string, lengthMin?: number, lengthMax?: number): string;
+// md5:bfd713ef053ef1c6ceca554abb06d81b true
+/** Generates random text with configurable word count, word length, and custom symbol. @keywords random text, generator, mock data, placeholder, words */
+export declare function getRandomText(min?: number, max?: number, symbol?: unknown, lengthMin?: number, lengthMax?: number): string;

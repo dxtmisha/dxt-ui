@@ -1,31 +1,23 @@
-// md5:2854dba65050ceaff33575e14759d317 true
+// md5:f71613eec1779133071539b82a40fb56 true
 export type ErrorCenterGroup = string | undefined;
-
-/** Error item descriptor with metadata and custom payload details. @keywords error cause item */
+/** Error cause item descriptor. @keywords error cause details */
 export type ErrorCenterCauseItem<D = any> = {
-  group?: ErrorCenterGroup;
-  code: string;
-  priority?: number;
-  label?: string;
-  message?: string;
-  details?: D;
+    group?: ErrorCenterGroup;
+    code: string;
+    priority?: number;
+    label?: string;
+    message?: string;
+    details?: D;
 };
-
 export type ErrorCenterCauseList = ErrorCenterCauseItem[];
-
-/** Callback function for processing error items. @keywords error handler callback */
-export type ErrorCenterHandlerCallback = (cause: ErrorCenterCauseItem) => void;
-
-/** Error handler registration entry mapped to an optional error group. @keywords error handler item */
+/** Callback function for processing error causes. @keywords error handler callback */
+export type ErrorCenterHandlerCallback = (cause: ErrorCenterCauseItem) => void | Promise<void>;
+/** Error handler registration mapping an optional group to callback handlers. @keywords error handler item */
 export type ErrorCenterHandlerItem = {
-  group?: ErrorCenterGroup;
-  handlers: ErrorCenterHandlerCallback[];
+    group?: ErrorCenterGroup;
+    handlers: ErrorCenterHandlerCallback[];
 };
-
 export type ErrorCenterHandlerList = ErrorCenterHandlerItem[];
-
-/** Predicate determining whether an error should be logged to the console. @keywords error console filter */
+/** Predicate callback to check whether an error should be logged to console. @keywords error console predicate */
 export type ErrorCenterHandlerIsConsoleCallback = (cause: ErrorCenterCauseItem) => boolean;
-
-/** Console logging configuration flag or dynamic predicate. @keywords error console logging */
 export type ErrorCenterHandlerIsConsole = boolean | ErrorCenterHandlerIsConsoleCallback;

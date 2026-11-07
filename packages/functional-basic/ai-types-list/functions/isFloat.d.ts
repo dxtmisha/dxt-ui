@@ -1,3 +1,3 @@
-// md5:434da2cd93c871ff6c4cbabb1ddcc115 true
-/** Checks if the value is an integer or floating-point number. @keywords isFloat, float, number, numeric, check */
-export declare function isFloat(value: unknown): boolean;
+// md5:0bbe2daa45709882fdc2cb885b284059 true
+/** Checks if the value is an integer or a floating-point number. @keywords float, number, integer, check, validator */
+export declare function isFloat(value?: unknown): boolean;

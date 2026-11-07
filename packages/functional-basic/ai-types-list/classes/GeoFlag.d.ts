@@ -1,27 +1,28 @@
-// md5:5de4d42226dac5de0b23dc0038a61e85 true
+// md5:d576d6ea7eb370b0926c073463b9ece0 true
+/** Prefix for flag icon names. @keywords flag, icon, prefix */
 export declare const GEO_FLAG_ICON_NAME = "f";
-/** Country, language, and flag icon geographic utility. @keywords geo flag country language locale icon */
+/** Geographic flags and information utility for country names, languages, and icons. @keywords geo, flag, country, language, icon */
 export declare class GeoFlag {
-    /** Country code to flag icon name mapping. @keywords flag icons mapping */
+    /** Mapping of country codes to flag icon names. @keywords flags, country codes, icon map */
     static flags: Record<string, string>;
-    /** Creates a GeoFlag instance with an optional country/language code. @keywords constructor init */
+    /** Initializes the GeoFlag instance with an optional country/language code. @keywords constructor, geo flag */
     constructor(code?: string);
-    /** Retrieves country and flag details. @keywords get country flag */
+    /** Returns country and flag information for the specified code. @keywords country, flag, info */
     get(code?: string): GeoFlagItem | undefined;
-    /** Retrieves language and flag details. @keywords get language flag */
-    getLanguage(code?: string): GeoFlagItem | undefined;
-    /** Returns the active country code. @keywords country code get */
+    /** Returns the current country code. @keywords country code, get code */
     getCode(): string;
-    /** Returns the flag icon identifier for a country code. @keywords flag icon code */
+    /** Returns the flag icon identifier for the specified country code. @keywords flag, icon, identifier */
     getFlag(code?: string): string | undefined;
-    /** Returns country list, optionally filtered and sorted. @keywords list countries sort */
+    /** Returns language and flag information for the specified country code. @keywords language, flag, info */
+    getLanguage(code?: string): GeoFlagItem | undefined;
+    /** Returns a list of countries based on provided codes, optionally sorted. @keywords country list, countries */
     getList(codes?: string[], sort?: boolean): GeoFlagItem[];
-    /** Returns language list, optionally filtered and sorted. @keywords list languages sort */
+    /** Returns a list of languages based on provided codes, optionally sorted. @keywords language list, languages */
     getListLanguage(codes?: string[], sort?: boolean): GeoFlagItem[];
-    /** Returns country list with names in native languages. @keywords national countries native */
+    /** Returns a list of countries formatted with their national names. @keywords national countries, native names */
     getNational(codes?: string[], sort?: boolean): GeoFlagNational[];
-    /** Returns language list with names in native languages. @keywords national languages native */
+    /** Returns a list of languages formatted with their national names. @keywords national languages, native names */
     getNationalLanguage(codes?: string[], sort?: boolean): GeoFlagNational[];
-    /** Updates the active locale or country code. @keywords set code locale */
+    /** Sets the current country and language code. @keywords set code, locale */
     setCode(code: string): this;
 }

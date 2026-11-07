@@ -1,3 +1,3 @@
-// md5:0f804f831952b63f16fecb57471d75bd true
-/** Writes text data to the system clipboard. @keywords clipboard, copy, write, text */
+// md5:70cdfad57c61616f178ec9f81ba7e472 true
+/** Writes text to the system clipboard with an execCommand fallback. @keywords clipboard, copy text, write clipboard, execCommand */
 export declare function writeClipboardData(text: string): Promise<void>;

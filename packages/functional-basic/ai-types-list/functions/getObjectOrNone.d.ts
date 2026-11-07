@@ -1,3 +1,4 @@
-// md5:415ac93c0f293aa65492fa7a713eebc6 true
-/** Returns the object if its values are set, or an empty object. @keywords object fallback empty validate */
-export declare function getObjectOrNone<T>(value: T): T & Record<string, unknown>;
+// md5:26bcd7164a2d4e01d5510e789415bd3b true
+export type ObjectOrNoneReturn<T> = [Exclude<T, undefined | null>] extends [never] ? Record<string, unknown> : Exclude<T, undefined | null> & Record<string, unknown>;
+/** Returns the provided object or an empty object fallback. @keywords object, fallback, default, empty, record */
+export declare function getObjectOrNone<T>(value?: T): ObjectOrNoneReturn<T>;

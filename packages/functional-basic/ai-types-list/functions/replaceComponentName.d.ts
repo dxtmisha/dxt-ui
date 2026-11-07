@@ -1,3 +1,3 @@
-// md5:fc331ad91556d85bfc3915ff2eeea366 true
-/** Replaces occurrences of a component name within the provided text. @keywords replace component name, text replacement, rename component */
-export declare function replaceComponentName(text: string | undefined, name: string, componentName: string): string | undefined;
+// md5:1b2750583f426d6df9b954fcd94d0ceb true
+/** Replaces a component name within the provided text. @keywords replace component name text string */
+export declare function replaceComponentName(text?: string | null, name?: string | null, componentName?: string | null): string | undefined;

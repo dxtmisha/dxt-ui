@@ -1,3 +1,3 @@
-// md5:0c396f8a5bbcbe879ca8f2b7b9d9d655 true
-/** Checks if the pressed key is Tab. @keywords tab key keyboard event check */
-export declare function isTab(event: KeyboardEvent): boolean;
+// md5:4b435f0053dd2c4e6f6d797b9ceebea4 true
+/** Checks if the pressed key is Tab. @keywords tab key keyboard event */
+export declare function isTab(event?: KeyboardEvent | Event | null): boolean;

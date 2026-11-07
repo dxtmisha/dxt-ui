@@ -1,3 +1,3 @@
-// md5:39175af5e65b8fd750e4a509700ead06 true
-/** Pauses execution for the specified number of milliseconds. @keywords sleep, delay, wait, pause, timeout */
+// md5:6663865143bbab597ceeff8b16f09ca4 true
+/** Pauses execution for a specified number of milliseconds. @keywords sleep delay wait pause timeout */
 export declare function sleep(ms: number): Promise<void>;

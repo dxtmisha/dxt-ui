@@ -1,3 +1,3 @@
-// md5:7a78f0fceb65bc3767aa8c877509fcac true
-/** Converts a value to a number clamped by a maximum permissible value, with optional formatting. @keywords toNumberByMax, clamp, max, number, format */
-export declare function toNumberByMax(value?: NumberOrString, max?: NumberOrString, formatting?: boolean, language?: string): string | number;
+// md5:688fffae0bf2957ed1f101eac53282cc true
+/** Converts data to a number constrained by a maximum value, with optional locale formatting. @keywords number clamp max limit format */
+export declare function toNumberByMax(value?: NumberOrString | null, max?: NumberOrString | null, formatting?: boolean, language?: string): string | number;

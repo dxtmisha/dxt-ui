@@ -1,3 +1,3 @@
-// md5:52d3d4d6201ecf39a1a7452fb1a15644 true
-/** Checks if an object is a Window instance. @keywords window, isWindow, type guard, DOM */
-export declare function isWindow<E>(element: E): element is Extract<E, Window>;
+// md5:3cee717f6fc04a00c5e7212237bd6c50 true
+/** Checks if the given object is a Window instance. @keywords isWindow, window, DOM, global */
+export declare function isWindow<E = unknown>(element?: E): element is E & Window;

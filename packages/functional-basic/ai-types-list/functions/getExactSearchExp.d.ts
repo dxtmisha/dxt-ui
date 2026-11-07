@@ -1,3 +1,3 @@
-// md5:821271aba11b181c250a0f5bef859b62 true
-/** Creates a case-insensitive regular expression for an exact match of a phrase without anchors. @keywords regex, regular expression, exact match, search pattern */
-export declare function getExactSearchExp(search: string): RegExp;
+// md5:a7c336e75edae02ba0464632e1cd260a true
+/** Creates a case-insensitive regular expression for exact phrase matching without anchors. @keywords regex, exact match, search, expression, case-insensitive */
+export declare function getExactSearchExp(search?: unknown): RegExp;

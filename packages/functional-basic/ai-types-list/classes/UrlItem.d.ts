@@ -1,50 +1,50 @@
-// md5:4ae15a90787c7ce6f547758a167323af true
-/** Isomorphic utility class for URL parsing, manipulation, and serialization @keywords url, parser, route, query */
+// md5:10ac66e2bf176953971f1613ad155f7e true
+/** Isomorphic utility class for URL parsing, manipulation, and query parameters. @keywords url, uri, parser, query, searchParams */
 export declare class UrlItem {
-    /** Creates a new UrlItem instance @keywords constructor, url, create */
-    constructor(url?: string | URL);
-    /** Gets the serialized full URL string @keywords href, url, address */
+    /** Creates a new UrlItem instance. @keywords constructor, url, create */
+    constructor(url?: string | URL | null);
+    /** Gets the full URL serialized string. @keywords href, url, address */
     get href(): string;
-    /** Gets the protocol scheme including the trailing colon @keywords protocol, scheme, http, https */
+    /** Gets the protocol scheme including trailing colon. @keywords protocol, scheme, http, https */
     get protocol(): string;
-    /** Gets the username specified before the domain name @keywords username, auth, credentials */
+    /** Gets the username specified before the domain name. @keywords username, auth, credentials */
     get username(): string;
-    /** Gets the password specified before the domain name @keywords password, auth, credentials */
+    /** Gets the password specified before the domain name. @keywords password, auth, credentials */
     get password(): string;
-    /** Gets the host including hostname and port @keywords host, domain, port */
+    /** Gets the host portion (hostname and port). @keywords host, domain, port */
     get host(): string;
-    /** Gets the domain name or IP without the port @keywords hostname, domain */
+    /** Gets the domain hostname excluding port. @keywords hostname, domain */
     get hostname(): string;
-    /** Gets the port number portion of the URL @keywords port, network */
+    /** Gets the port number string. @keywords port, network */
     get port(): string;
-    /** Gets the resource pathname @keywords pathname, path, route */
-    get search(): string;
-    /** Gets the search query string including the leading question mark @keywords search, query, params */
+    /** Gets the path of the URL. @keywords pathname, path, route */
     get pathname(): string;
-    /** Gets the URLSearchParams object representing search parameters @keywords searchParams, query, urlsearchparams */
+    /** Gets the query string including leading question mark. @keywords search, query, querystring */
+    get search(): string;
+    /** Gets the URLSearchParams object for query parameters. @keywords searchParams, query, urlsearchparams */
     get searchParams(): URLSearchParams;
-    /** Gets the fragment identifier hash string including the leading hash symbol @keywords hash, fragment, anchor */
+    /** Gets the fragment identifier hash including leading '#'. @keywords hash, fragment, anchor */
     get hash(): string;
-    /** Gets the serialized origin of the URL @keywords origin, domain, protocol */
+    /** Gets the origin of the URL (protocol, hostname, and port). @keywords origin, domain, base */
     get origin(): string;
-    /** Updates the internal URL value @keywords set, update, parse */
-    set(url?: string | URL): this;
-    /** Checks whether the specified query parameter exists @keywords hasParam, query, contains, exists */
+    /** Updates the current URL target. @keywords set, update, mutate */
+    set(url?: string | URL | null): this;
+    /** Checks if a query parameter exists in the URL. @keywords hasParam, query, contains, exists */
     hasParam(name: string): boolean;
-    /** Gets a request-isolated instance of UrlItem @keywords getInstance, singleton, request */
+    /** Returns a request-isolated instance of UrlItem. @keywords getInstance, singleton, factory */
     static getInstance(): UrlItem;
-    /** Gets the value of a specific query parameter @keywords getParam, query, search */
+    /** Retrieves the value of a specific query parameter. @keywords getParam, query, search */
     getParam(name: string): string | undefined;
-    /** Gets all query parameters as an object with converted types @keywords getParams, query, dictionary */
+    /** Returns all query parameters transformed into an object record. @keywords getParams, query, record */
     getParams(): Record<string, unknown>;
-    /** Sets the value of a query parameter @keywords setParam, query, search */
-    setParam(name: string, value: string): this;
-    /** Replaces all query parameters with values from the specified object @keywords setParams, query, batch */
+    /** Sets or updates a single query parameter. @keywords setParam, query, param */
+    setParam(name: string, value: string | number | boolean): this;
+    /** Replaces all query parameters with the specified record. @keywords setParams, query, bulk */
     setParams(params: Record<string, unknown>): this;
-    /** Removes a query parameter by name @keywords deleteParam, query, remove */
+    /** Removes a query parameter from the URL. @keywords deleteParam, remove, query */
     deleteParam(name: string): this;
-    /** Converts the URL instance to its full string representation @keywords toString, stringify, serialize */
-    toString(): string;
-    /** Converts the URL instance to its JSON string representation @keywords toJSON, json, serialize */
+    /** Serializes the URL instance to a JSON string. @keywords toJSON, serialize, json */
     toJSON(): string;
+    /** Returns the full serialized URL string. @keywords toString, stringify, href */
+    toString(): string;
 }

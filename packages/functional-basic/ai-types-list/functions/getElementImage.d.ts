@@ -1,11 +1,10 @@
-// md5:1f9b6fd523d67befeda67c2105b007d8 true
+// md5:18e22129cff2880c6395ebe19c2b71da true
 export type GetElementImageCallback = (image: HTMLImageElement, event?: Event | string) => void;
+
 /**
- * Resolves or creates an HTMLImageElement from an existing element or URL string.
+ * Resolves or creates an HTMLImageElement from an element instance or source string.
  * @remarks
- * If `image` is a string, a new `HTMLImageElement` is created with load and error callbacks attached before assigning `src`.
- * If already an `HTMLImageElement`, it is returned directly. Returns `undefined` for null, undefined, or in SSR environments.
- * Created elements are not attached to the DOM tree.
- * @keywords image, HTMLImageElement, load image, image loader, create element, DOM
+ * If `image` is a string, creates an in-memory `HTMLImageElement` with `onload` and `onerror` listeners attached before assigning `src`. Existing `HTMLImageElement` instances are returned directly without modification. Returns `undefined` for invalid values or in SSR environments. Created elements are not attached to the DOM tree. Revoke Blob URLs in callbacks if applicable to prevent memory leaks.
+ * @keywords image, HTMLImageElement, image loader, image source, DOM, SSR
  */
-export declare function getElementImage(image?: HTMLImageElement | string | null, onload?: GetElementImageCallback, onerror?: GetElementImageCallback): HTMLImageElement | undefined;
+export declare function getElementImage(image?: unknown, onload?: GetElementImageCallback, onerror?: GetElementImageCallback): HTMLImageElement | undefined;

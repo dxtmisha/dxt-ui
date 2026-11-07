@@ -1,3 +1,3 @@
-// md5:e282d993b5b5e2145322ac672ec76931 true
-/** Gets a key-value record of attributes for an element. @keywords attributes, dom, element, element attributes */
-export declare function getAttributes<E extends ElementOrWindow>(element?: ElementOrString<E>): Record<string, string | undefined>;
+// md5:e0cde1dcbf83e71ecdf6b81e7d6d30b4 true
+/** Retrieves all attributes of an element as key-value pairs. @keywords get attributes, dom, element, properties */
+export declare function getAttributes<E extends ElementOrWindow = HTMLElement>(element?: ElementOrString<E> | null): Record<string, string | undefined>;

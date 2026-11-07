@@ -21,6 +21,10 @@ const inputPhoneMaskSpecial = {
     match: /[123456789]/,
     pattern: '[123456789]+'
   },
+  '?': {
+    match: /[0-9]/,
+    pattern: '^(?!06)[0-9]+$'
+  },
   '*': {
     match: /[0-9]/
   }

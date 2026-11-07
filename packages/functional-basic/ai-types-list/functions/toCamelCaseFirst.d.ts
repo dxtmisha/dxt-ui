@@ -1,3 +1,3 @@
-// md5:2ef99149387d103bf8bf523953c263c8 true
-/** Converts a string to PascalCase (CamelCase with first letter capitalized). @keywords pascalCase, camelCase, capitalize, case conversion */
-export declare function toCamelCaseFirst(value?: string): string;
+// md5:6a243b21994f97473329013218d80e16 true
+/** Converts a string to PascalCase (UpperCamelCase). @keywords pascal case, upper camel case, camelCase, string converter, capitalize */
+export declare function toCamelCaseFirst(value?: string | null): string;
