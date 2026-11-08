@@ -164,7 +164,7 @@ export class Field {
       }
     )
 
-    this.enabled = new EnabledIncludeConstructor(props, this.progress)
+    this.enabled = new EnabledIncludeConstructor(props, () => this.progress)
     this.event = new EventClickIncludeConstructor(
       props,
       () => this.enabled,

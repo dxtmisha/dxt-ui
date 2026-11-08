@@ -1,7 +1,7 @@
 // ai-none
 
-import { type ComputedRef, inject } from 'vue'
-import type { ConstrClassObject, DesignName } from '@dxtmisha/functional'
+import { type ComputedRef, getCurrentInstance, inject } from 'vue'
+import type { ConstrBind, ConstrClassObject, DesignName } from '@dxtmisha/functional'
 
 import { Skeleton } from './Skeleton'
 
@@ -15,11 +15,13 @@ import { SKELETON_NAME_STATUS } from './const'
  * Класс для подключения и работы с компонентом Skeleton.
  */
 export class SkeletonInclude {
-  /** Skeleton display states / Состояния отображения Skeleton */
-  protected readonly status = inject<ComputedRef<boolean> | undefined>(SKELETON_NAME_STATUS, undefined)
-
   /** A list of available classes for the Skeleton / Список доступных классов для Skeleton */
   readonly classesSkeleton: SkeletonClassesList
+
+  /** Skeleton display states / Состояния отображения Skeleton */
+  protected readonly status = getCurrentInstance()
+    ? inject<ComputedRef<boolean> | undefined>(SKELETON_NAME_STATUS, undefined)
+    : undefined
 
   /**
    * Constructor for initializing SkeletonInclude properties.
@@ -35,6 +37,18 @@ export class SkeletonInclude {
     protected readonly classesList?: (keyof SkeletonClassesList)[]
   ) {
     this.classesSkeleton = Skeleton.getClassesListByDesign(naming.getDesign())
+  }
+
+  /**
+   * Values for the skeleton.
+   *
+   * Значения для скелетона.
+   * @returns skeleton bindings / привязки скелетона
+   */
+  get binds(): ConstrBind<SkeletonPropsInclude> {
+    return {
+      isSkeleton: this.props.isSkeleton
+    }
   }
 
   /**
@@ -56,18 +70,6 @@ export class SkeletonInclude {
     }
 
     return classes
-  }
-
-  /**
-   * Values for the skeleton.
-   *
-   * Значения для скелетона.
-   * @returns skeleton bindings / привязки скелетона
-   */
-  get binds() {
-    return {
-      isSkeleton: this.props.isSkeleton
-    }
   }
 
   /**

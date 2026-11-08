@@ -20,3 +20,11 @@ src/constructors/Image/Image.ts
 src/constructors/Image/ImageDesign.tsx
 src/classes/ComponentIncludeAbstract.ts
 src/constructors/Image/ImageInclude.ts
+
+src/classes/EnabledInclude.ts
+
+src/classes/EventClickInclude.ts
+
+src/constructors/Skeleton/Skeleton.ts
+src/constructors/Skeleton/SkeletonDesign.tsx
+src/constructors/Skeleton/SkeletonInclude.ts

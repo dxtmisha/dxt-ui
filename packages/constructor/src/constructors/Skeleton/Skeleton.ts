@@ -1,23 +1,40 @@
 import {
   computed,
   type ComputedRef,
+  getCurrentInstance,
   inject,
-  onMounted,
-  onUnmounted,
   provide,
   ref,
   type Ref,
   watch
 } from 'vue'
 import {
+  type ConstrBind,
   type ConstrClassObject,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComponents,
+  DesignLogicAbstract,
   type DesignName,
   toNumber
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+
+import type { AriaList } from '../../types/ariaTypes'
 import type { SkeletonClassesList } from './basicTypes'
 import { defaultsSkeleton, type SkeletonProps } from './props'
+import type {
+  SkeletonComponents,
+  SkeletonEmits,
+  SkeletonSlots
+} from './types'
 import { SKELETON_NAME_STATUS } from './const'
+
+/** Skeleton dependency constructors type / Тип конструкторов зависимостей Skeleton */
+export type SkeletonConstructors = {
+  // No subordinate constructors / Нет дочерних конструкторов
+}
 
 /**
  * Class for managing the Skeleton component logic.
@@ -26,72 +43,14 @@ import { SKELETON_NAME_STATUS } from './const'
  * Класс для управления логикой компонента Skeleton.
  * Координирует реактивные состояния загрузки через внедрение провайдера между родителем и потомком и разрешает списки классов CSS.
  */
-export class Skeleton {
-  /** Timer instance for delayed visibility updates / Экземпляр таймера для отложенного обновления видимости */
-  protected timeout?: ReturnType<typeof setTimeout>
-
-  /** Reactive computed status of the parent skeleton / Реактивный вычисляемый статус родительского скелетона */
-  protected status?: ComputedRef<boolean>
-
-  /** Reactive state for visible status / Реактивное состояние статуса видимости */
-  protected readonly visible: Ref<boolean>
-
-  /**
-   * Returns the list of available classes for the skeleton.
-   *
-   * Возвращает список доступных классов для скелетона.
-   */
-  readonly classesSkeleton: SkeletonClassesList
-
-  /**
-   * Constructor
-   *
-   * Конструктор
-   * @param props input data / входные данные
-   * @param naming component naming helper / помощник именования компонента
-   */
-  constructor(
-    protected readonly props: SkeletonProps,
-    protected readonly naming: DesignName
-  ) {
-    this.status = inject<ComputedRef<boolean> | undefined>(SKELETON_NAME_STATUS, undefined)
-    this.classesSkeleton = Skeleton.getClassesList(this.naming.getName())
-    this.visible = ref<boolean>(Boolean(this.isActive() && !toNumber(this.props.delay ?? defaultsSkeleton.delay)))
-
-    watch(
-      () => this.isActive(),
-      this.switch
-    )
-    onMounted(this.switch)
-
-    onUnmounted(() => {
-      clearTimeout(this.timeout)
-    })
-
-    provide(SKELETON_NAME_STATUS, computed<boolean>(() => this.visible.value))
-  }
-
-  /**
-   * Returns classes for the element.
-   *
-   * Возвращает классы для элемента.
-   * @returns list of computed classes / список вычисленных классов
-   */
-  get classes(): ConstrClassObject {
-    return {
-      [this.naming.getStatusClass('visible')]: this.visible.value,
-      [this.naming.getStatusClass('invisible')]: Boolean(this.props.invisible && this.isActive())
-    }
-  }
-
-  /**
-   * Checks if the loading mode is enabled.
-   *
-   * Проверяет, включен ли режим загрузки.
-   * @returns status of the loading mode / статус режима загрузки
-   */
-  readonly isActive = (): boolean => Boolean(this.status?.value || this.props.active)
-
+export class Skeleton extends DesignLogicAbstract<
+  HTMLDivElement,
+  SkeletonComponents,
+  SkeletonEmits,
+  SkeletonSlots,
+  SkeletonProps,
+  SkeletonConstructors
+> {
   /**
    * Returns the list of available classes.
    *
@@ -124,6 +83,139 @@ export class Skeleton {
     return this.getClassesList(`${design}-skeleton`)
   }
 
+  /** List of available classes for the skeleton / Список доступных классов для скелетона */
+  readonly classesSkeleton: SkeletonClassesList
+
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<SkeletonConstructors> = {}
+
+  /** Timer instance for delayed visibility updates / Экземпляр таймера для отложенного обновления видимости */
+  protected timeout?: ReturnType<typeof setTimeout>
+
+  /** Reactive computed status of the parent skeleton / Реактивный вычисляемый статус родительского скелетона */
+  protected readonly status?: ComputedRef<boolean>
+
+  /** Reactive state for visible status / Реактивное состояние статуса видимости */
+  protected readonly visible: Ref<boolean>
+
+  /**
+   * Constructor for initializing Skeleton logic.
+   *
+   * Конструктор для инициализации логики Skeleton.
+   * @param props input properties / входные свойства
+   * @param element root element reference / ссылка на корневой элемент
+   * @param naming component naming helper / помощник именования компонента
+   * @param components connected component registry / реестр подключённых компонентов
+   * @param slots named slot registry / реестр именованных слотов
+   * @param emits component event emitter / функция событий компонента
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
+   * @param hasLifecycle whether to register component lifecycle hooks / регистрировать ли хуки жизненного цикла компонента
+   */
+  constructor(
+    props: Readonly<SkeletonProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComponents<SkeletonComponents, SkeletonProps>,
+    slots?: SkeletonSlots,
+    emits?: ConstrEmit<SkeletonEmits>,
+    constructors?: Partial<SkeletonConstructors>,
+    hasLifecycle: boolean = true
+  ) {
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors,
+      hasLifecycle
+    )
+
+    const hasInstance = Boolean(getCurrentInstance())
+
+    if (hasInstance) {
+      this.status = inject<ComputedRef<boolean> | undefined>(SKELETON_NAME_STATUS, undefined)
+    }
+
+    this.classesSkeleton = Skeleton.getClassesList(this.naming.getName())
+    this.visible = ref<boolean>(
+      Boolean(
+        this.isActive()
+        && toNumber(this.props.delay ?? defaultsSkeleton.delay) <= 0
+      )
+    )
+
+    if (hasInstance) {
+      provide(SKELETON_NAME_STATUS, computed<boolean>(() => this.visible.value))
+    }
+  }
+
+  /**
+   * Hook executed when component mounts.
+   *
+   * Хук, выполняемый при монтировании компонента.
+   */
+  protected override readonly onMounted = (): void => {
+    this.switch()
+    watch(this.isActive, this.switch)
+  }
+
+  /**
+   * Hook executed when component unmounts.
+   *
+   * Хук, выполняемый при размонтировании компонента.
+   */
+  protected override readonly onUnmounted = (): void => {
+    clearTimeout(this.timeout)
+  }
+
+  /**
+   * List of ARIA attributes for the skeleton element.
+   *
+   * Список ARIA-атрибутов для элемента скелетона.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
+   */
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.busy(this.isActive()),
+      ...AriaStaticInclude.live('polite')
+    }
+  }
+
+  /**
+   * Computed bindings for the skeleton element.
+   *
+   * Вычисляемые привязки для элемента скелетона.
+   * @returns root element bindings / привязки корневого элемента
+   */
+  get binds(): ConstrBind {
+    return {
+      ...this.aria
+    }
+  }
+
+  /**
+   * Returns classes for the element.
+   *
+   * Возвращает классы для элемента.
+   * @returns list of computed classes / список вычисленных классов
+   */
+  get classes(): ConstrClassObject {
+    return {
+      [this.naming.getStatusClass('visible')]: this.visible.value,
+      [this.naming.getStatusClass('invisible')]: Boolean(this.props.invisible && this.isActive())
+    }
+  }
+
+  /**
+   * Checks if the loading mode is enabled.
+   *
+   * Проверяет, включен ли режим загрузки.
+   * @returns status of the loading mode / статус режима загрузки
+   */
+  readonly isActive = (): boolean => Boolean(this.status?.value || this.props.active)
+
   /**
    * Updates the visible status with a delay or immediately.
    *
@@ -144,6 +236,23 @@ export class Skeleton {
   }
 
   /**
+   * Method triggers when the active property changes to change the status of the output of the element.
+   *
+   * Метод срабатывает при изменении свойства active для изменения статуса вывода элемента.
+   */
+  protected readonly switch = (): void => {
+    clearTimeout(this.timeout)
+
+    if (this.isActive()) {
+      if (!this.visible.value) {
+        this.toVisible()
+      }
+    } else if (this.visible.value) {
+      this.toHide()
+    }
+  }
+
+  /**
    * Resets the visible status or starts a timer for delayed hiding.
    *
    * Сбрасывает статус видимости или запускает таймер для отложенного скрытия.
@@ -159,20 +268,5 @@ export class Skeleton {
    */
   protected toVisible(): void {
     this.setVisible(true, this.props.delay ?? defaultsSkeleton.delay)
-  }
-
-  /**
-   * Method triggers when the active property changes to change the status of the output of the element.
-   *
-   * Метод срабатывает при изменении свойства active для изменения статуса вывода элемента.
-   */
-  protected readonly switch = (): void => {
-    clearTimeout(this.timeout)
-
-    if (this.isActive()) {
-      this.toVisible()
-    } else if (this.visible.value) {
-      this.toHide()
-    }
   }
 }

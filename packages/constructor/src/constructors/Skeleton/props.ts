@@ -1,9 +1,11 @@
+/** Skeleton design token properties / Свойства дизайн-токенов Skeleton */
 export type SkeletonPropsToken = {
   // :type [!] System label / Системная метка
   active?: boolean
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties of the Skeleton component / Базовые свойства компонента Skeleton */
 export type SkeletonPropsBasic = {
   /** Delay before showing / Задержка перед показом */
   delay?: number | string
@@ -13,18 +15,10 @@ export type SkeletonPropsBasic = {
   invisible?: boolean
 }
 
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Type describing incoming properties / Тип, описывающий входящие свойства */
 export type SkeletonProps = SkeletonPropsBasic & SkeletonPropsToken
 
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default value for property / Значение по умолчанию для свойства */
 export const defaultsSkeleton = {
   delay: 0,
   delayHide: 0,

@@ -118,7 +118,7 @@ export class Cell {
     )
     this.caption = new CaptionConstructor(props, naming, slots)
     this.description = new DescriptionConstructor(props, naming, slots, this.skeleton)
-    this.enabled = new EnabledConstructor(props, this.progress)
+    this.enabled = new EnabledConstructor(props, () => this.progress)
 
     this.icon = new IconConstructor(props, naming, components)
     this.ripple = new RippleConstructor(naming, components, this.enabled)

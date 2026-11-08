@@ -1,8 +1,8 @@
 import { AriaStaticInclude } from './AriaStaticInclude'
-import { ProgressInclude } from '../constructors/Progress'
 
 import type { AriaList } from '../types/ariaTypes'
 import type { EnabledProps } from '../types/enabledTypes'
+import type { ProgressInclude } from '../constructors/Progress'
 
 /**
  * Utility class for controlling the interactive activity state of a component.
@@ -13,43 +13,29 @@ import type { EnabledProps } from '../types/enabledTypes'
  */
 export class EnabledInclude {
   /**
-   * Constructor
-   * @param props input property / входное свойство
-   * @param progress object for working with progress / объект для работы с прогрессами
+   * Constructor for initializing EnabledInclude.
+   *
+   * Конструктор для инициализации EnabledInclude.
+   * @param props input properties / входные свойства
+   * @param progress callback returning object for working with progress / функция обратного вызова, возвращающая объект для работы с прогрессами
    */
   constructor(
-    protected readonly props: EnabledProps,
-    protected readonly progress?: ProgressInclude
+    protected readonly props: EnabledProps & {
+      /** Dynamic interactive state / Динамическое интерактивное состояние */
+      dynamic?: boolean
+    },
+    protected readonly progress?: () => ProgressInclude | undefined
   ) {
   }
 
   /**
-   * Checks if the element is active.
+   * List of ARIA properties for the enabled state.
    *
-   * Проверяет, активен ли элемент.
-   * @returns active state / состояние активности
+   * Список ARIA-свойств для состояния активности.
+   * @returns aria properties list / список свойств aria
    */
-  get isEnabled(): boolean {
-    return !this.props.disabled
-      && !this.props.readonly
-      && (
-        !this.progress
-        || !this.progress.is
-      )
-      && Boolean(
-        !('dynamic' in this.props)
-        || this.props.dynamic
-      )
-  }
-
-  /**
-   * Checks if the read-only status is enabled.
-   *
-   * Проверяет, включён ли статус "только для чтения".
-   * @returns readonly state / состояние только для чтения
-   */
-  get isReadonly(): boolean {
-    return Boolean(this.props.readonly)
+  get aria(): AriaList {
+    return AriaStaticInclude.disabled(!this.isEnabled)
   }
 
   /**
@@ -73,12 +59,38 @@ export class EnabledInclude {
   }
 
   /**
-   * List of ARIA properties for the enabled state.
+   * Checks if the element is active.
    *
-   * Список ARIA-свойств для состояния активности.
-   * @returns aria properties list / список свойств aria
+   * Проверяет, активен ли элемент.
+   * @returns active state / состояние активности
    */
-  get aria(): AriaList {
-    return AriaStaticInclude.disabled(!this.isEnabled)
+  get isEnabled(): boolean {
+    return !this.props.disabled
+      && !this.props.readonly
+      && !this.getProgress()?.is
+      && Boolean(
+        !('dynamic' in this.props)
+        || this.props.dynamic
+      )
+  }
+
+  /**
+   * Checks if the read-only status is enabled.
+   *
+   * Проверяет, включён ли статус "только для чтения".
+   * @returns readonly state / состояние только для чтения
+   */
+  get isReadonly(): boolean {
+    return Boolean(this.props.readonly)
+  }
+
+  /**
+   * Returns the progress state manager if provided.
+   *
+   * Возвращает менеджер состояния прогресса, если он предоставлен.
+   * @returns progress state manager or undefined / менеджер состояния прогресса или undefined
+   */
+  protected getProgress(): ProgressInclude | undefined {
+    return this.progress?.()
   }
 }

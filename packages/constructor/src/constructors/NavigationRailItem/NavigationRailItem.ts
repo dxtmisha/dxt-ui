@@ -102,7 +102,7 @@ export class NavigationRailItem {
         circular: true
       }
     )
-    this.enabled = new EnabledIncludeConstructor(props, this.progress)
+    this.enabled = new EnabledIncludeConstructor(props, () => this.progress)
 
     this.icon = new IconIncludeConstructor(props, naming, components, { isSkeleton: true })
     this.label = new LabelIncludeConstructor(

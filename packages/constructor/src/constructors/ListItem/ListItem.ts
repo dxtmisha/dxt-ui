@@ -126,7 +126,7 @@ export class ListItem {
       naming,
       ['classTextVariant']
     )
-    const enabled = new EnabledIncludeConstructor(props, progress)
+    const enabled = new EnabledIncludeConstructor(props, () => progress)
 
     this.icon = new IconTrailingIncludeConstructor(props, naming, components)
     this.label = new LabelHighlightIncludeConstructor(

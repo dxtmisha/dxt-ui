@@ -44,7 +44,10 @@ export class EventClickInclude {
    * Возвращает свойства привязки для HTML-элемента.
    * @returns object containing event and link bindings / объект, содержащий привязки событий и ссылок
    */
-  get binds() {
+  get binds(): ConstrHrefProps & {
+    onClick: (event: MouseEvent, options?: EventClickValue) => void
+    onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void
+  } {
     return {
       ...this.href,
       onClick: this.onClick,
@@ -75,8 +78,7 @@ export class EventClickInclude {
     const to = this.props?.to
 
     if (
-      this.props?.to
-      && isObjectNotArray(to)
+      isObjectNotArray(to)
       && 'name' in to
     ) {
       return RouterItemRef.rawToHref(to)
@@ -97,7 +99,7 @@ export class EventClickInclude {
   readonly onClick = (
     event: MouseEvent,
     options?: EventClickValue
-  ) => {
+  ): void => {
     if (this.emits) {
       const enabled = this.getEnabled()
 
@@ -135,7 +137,7 @@ export class EventClickInclude {
   readonly onKeydown = (
     event: KeyboardEvent,
     options?: EventClickValue
-  ) => {
+  ): void => {
     if (isEnter(event)) {
       this.onClick(event as unknown as MouseEvent, options)
       event.preventDefault()
@@ -174,13 +176,30 @@ export class EventClickInclude {
    * @param event mouse event object / объект события мыши
    * @returns detected target type / определенный тип целевого элемента
    */
-  protected getTargetType(event: MouseEvent) {
-    const type = (event.target as HTMLElement)
-      ?.closest<HTMLElement>('[data-event-type]')
+  protected getTargetType(event: MouseEvent): string {
+    const type = (event.target as HTMLElement | null)
+      ?.closest?.<HTMLElement>('[data-event-type]')
       ?.dataset
       ?.eventType
 
     return type ?? 'click'
+  }
+
+  /**
+   * Triggers the component click emits (click and clickLite).
+   *
+   * Вызывает события клика компонента (click и clickLite).
+   * @param event mouse event object / объект события мыши
+   * @param options processed click payload / обработанная полезная нагрузка клика
+   */
+  protected emit(
+    event: MouseEvent,
+    options: EventClickValue
+  ): void {
+    if (this.emits) {
+      this.emits('click', event, options)
+      this.emits('clickLite', options)
+    }
   }
 
   /**
@@ -198,22 +217,5 @@ export class EventClickInclude {
     }
 
     return false
-  }
-
-  /**
-   * Triggers the component click emits (click and clickLite).
-   *
-   * Вызывает события клика компонента (click и clickLite).
-   * @param event mouse event object / объект события мыши
-   * @param options processed click payload / обработанная полезная нагрузка клика
-   */
-  protected emit(
-    event: MouseEvent,
-    options: EventClickValue
-  ) {
-    if (this.emits) {
-      this.emits('click', event, options)
-      this.emits('clickLite', options)
-    }
   }
 }

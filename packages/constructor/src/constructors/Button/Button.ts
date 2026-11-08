@@ -100,7 +100,7 @@ export class Button {
     )
 
     this.label = new LabelConstructor(props, naming, undefined, slots)
-    this.enabled = new EnabledConstructor(props, this.progress)
+    this.enabled = new EnabledConstructor(props, () => this.progress)
 
     this.icon = new IconConstructor(
       props,
