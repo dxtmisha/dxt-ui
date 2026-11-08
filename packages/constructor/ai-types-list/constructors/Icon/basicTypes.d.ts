@@ -1,40 +1,55 @@
-// md5:227c73ae0ca46000768ebe1c99374bb0 true
-import type { ConstrBind, ConstrItem } from '@dxtmisha/functional';
+// md5:4bffbcbf9e0bbd5ba9a7f0c53475f25c true
+import type { ConstrBind } from '@dxtmisha/functional';
 
 /** Icon load event payload. @keywords icon, event, load */
 export type IconEventLoad = {
+    /** Whether the icon is active. */
     isActive: boolean;
-    iconBind: ConstrItem | undefined;
-    iconActiveBind: ConstrItem | undefined;
+    /** Bindings for the primary icon. */
+    iconBind: ConstrBind<ImagePropsBasic> | undefined;
+    /** Bindings for the active icon state. */
+    iconActiveBind: ConstrBind<ImagePropsBasic> | undefined;
 };
 
-/** Value definition for an icon, supporting string identifiers or property bindings. @keywords icon, value, bind */
+/** Supported icon input value types. @keywords icon, value */
 export type IconValue<Icon extends IconPropsBasic = IconPropsBasic> = string | ConstrBind<Icon> | null;
 
-/** Inclusion contract for an icon component instance. @keywords icon, component */
+/** Component definition with an icon element. @keywords icon, component */
 export type IconComponentInclude = {
+    /** Custom icon component. */
     icon?: object;
 };
 
-/** Basic icon property definitions. @keywords icon, lite, props */
+/** Basic icon property mixin. @keywords icon, props, lite */
 export type IconLitePropsInclude<Icon extends IconPropsBasic = IconPropsBasic> = {
+    /** Icon descriptor or value. */
     icon?: IconValue<Icon>;
 };
 
-/** Comprehensive icon properties including state, orientation, and binding configurations. @keywords icon, props, turn, hide, dir, palette */
+/** Full icon properties including states and transforms. @keywords icon, props */
 export type IconPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> = IconLitePropsInclude<Icon> & {
+    /** Selection state of the icon. */
     selected?: boolean;
+    /** Rotation state of the icon. */
     iconTurn?: boolean;
+    /** Visibility state of the icon. */
     iconHide?: boolean;
+    /** Directional state of the icon. */
     iconDir?: boolean;
+    /** Palette styling state of the icon. */
     iconPalette?: boolean;
+    /** Additional icon binding attributes. */
     iconAttrs?: ConstrBind<Icon>;
 };
 
-/** Trailing icon properties extending standard icon configuration. @keywords icon, trailing, turn, dir, palette */
+/** Properties for components with both primary and trailing icons. @keywords icon, trailing, props */
 export type IconTrailingPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> = IconPropsInclude<Icon> & {
+    /** Trailing icon descriptor or value. */
     iconTrailing?: IconValue<Icon>;
+    /** Trailing icon specific rotation. */
     iconTrailingTurnOnly?: boolean;
+    /** Trailing icon specific direction. */
     iconTrailingDirOnly?: boolean;
+    /** Trailing icon specific palette. */
     iconTrailingPalette?: boolean;
 };

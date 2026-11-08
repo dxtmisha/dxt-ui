@@ -151,7 +151,6 @@ CarouselPagination is an indicator and navigation component designed for carouse
 Supports multiple visual representations: bullets (dots), lines, fraction counter (e.g., 1 / 5), and progress bar.
 Includes dynamic bullet scaling (dynamic mode) which smoothly shrinks edge indicators to preserve layout compactness across large slide counts.
 Supports two-way binding via v-model:selected, keyboard and click control (control), template-driven fraction formatting, and scoped slots (item, fraction, progress) with pre-computed binds.
-    `,
-    hide: true
+    `
   }
 }

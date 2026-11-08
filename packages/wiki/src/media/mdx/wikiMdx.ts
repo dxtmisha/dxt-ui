@@ -37,6 +37,7 @@ import { wikiMdxClockPeriod } from './ClockPeriod/wikiMdxClockPeriod'
 import { wikiMdxCollage } from './Collage/wikiMdxCollage'
 import { wikiMdxCollageBar } from './CollageBar/wikiMdxCollageBar'
 import { wikiMdxCollageItem } from './CollageItem/wikiMdxCollageItem'
+import { wikiMdxComponentOutlet } from './ComponentOutlet/wikiMdxComponentOutlet'
 import { wikiMdxContainer } from './Container/wikiMdxContainer'
 import { wikiMdxCropArea } from './CropArea/wikiMdxCropArea'
 import { wikiMdxDialog } from './Dialog/wikiMdxDialog'
@@ -168,6 +169,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxCollage,
   wikiMdxCollageBar,
   wikiMdxCollageItem,
+  wikiMdxComponentOutlet,
   wikiMdxContainer,
   wikiMdxCropArea,
   wikiMdxDialog,

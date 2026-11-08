@@ -128,7 +128,6 @@ export const wikiDescriptionsInputFileDropzone: StorybookComponentsDescriptionIt
 Form control component combining a file dropzone with field label and message containers.
 Integrates Dropzone for drag-and-drop and file dialog selection, FieldLabel for input headings, and FieldMessage for validation errors and helper texts.
 Controlled via accept, multiple, maxFileSize, label, helperMessage, and validationMessage props. Emits add event with filtered valid File array when files are dropped or selected. Exposes open() method to programmatically trigger file dialog.
-    `,
-    hide: true
+    `
   }
 }

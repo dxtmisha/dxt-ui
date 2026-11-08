@@ -28,3 +28,6 @@ src/classes/EventClickInclude.ts
 src/constructors/Skeleton/Skeleton.ts
 src/constructors/Skeleton/SkeletonDesign.tsx
 src/constructors/Skeleton/SkeletonInclude.ts
+
+src/constructors/ComponentOutlet/ComponentOutlet.ts
+src/constructors/ComponentOutlet/ComponentOutletDesign.tsx

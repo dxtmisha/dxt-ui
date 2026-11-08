@@ -99,6 +99,7 @@ export const wikiDescriptionsNavigationRailItem: StorybookComponentsDescriptionI
     description: `
 Compact navigation item component designed specifically for vertical Navigation Rail panels and mini-sidebars.
 Features single leading icon, label, badge, ripple click effect, progress/skeleton loading states, and leading/body slots.
-    `
+    `,
+    hide: true
   }
 }

@@ -211,7 +211,6 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
 Individual file presentation component used within file lists and dropzone queues.
 Displays thumbnail/icon, file name, formatted size, upload progress bar, lifecycle status messages, and action buttons for deletion and retry.
 Supports list, compact, and tile appearance modes, along with selected, disabled, readonly, and skeleton states. Emits delete and retry events with file metadata. Exposes getFile(), getStatus(), delete(), and retry() methods.
-    `,
-    hide: true
+    `
   }
 }

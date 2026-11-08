@@ -38,6 +38,7 @@ export const wikiDescriptionsTextDescription: StorybookComponentsDescriptionItem
   ai: {
     description: `
 A utility component for displaying textual descriptions. Supports description slot injection, custom HTML tags via "tag" property (defaults to "span"), and clean semantic output. Integrated with DescriptionInclude for standardized description rendering.
-    `
+    `,
+    hide: true
   }
 }

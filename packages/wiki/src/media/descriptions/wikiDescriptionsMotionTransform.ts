@@ -230,6 +230,7 @@ export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem
 Low-level motion engine designed for complex component transitions like windows, dropdowns, and collapsible sections. Provides a unified system for managing element transforms, off-DOM teleportation, and interaction patterns (click-outside, etc.).
 Features dynamic size measurement with automatic CSS variable updates for smooth hardware-accelerated animations. Includes a robust state manager (open/show/teleport), focus trapping, and customizable interaction ignoring areas for triggers.
 Controlled via the v-model:open prop and utilizes #head and #body slots for layout. Use as a foundational utility when building custom interactive components requiring sophisticated motion, state transitions, and high-performance DOM manipulation.
-    `
+    `,
+    hide: true
   }
 }

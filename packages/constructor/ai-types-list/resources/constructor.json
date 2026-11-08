@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/constructor.md",
-  "md5": "d0de8cb515978914ce8007440d3d4347",
-  "name": "UI Constructor Architecture Guide",
-  "description": "Architectural rules and file standards for developing framework-agnostic UI component constructors in dxt-ui."
+  "md5": "313e63db13581e912d6fc793e894c9c6",
+  "name": "Constructor Architecture Guide",
+  "description": "Architectural conventions, lifecycle rules, and standards for building component constructors and logic orchestrators in dxt-ui"
 }

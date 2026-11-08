@@ -155,6 +155,7 @@ export const wikiDescriptionsMotionSticky: StorybookComponentsDescriptionItem = 
       attaches to or detaches from its boundaries. Emits a "sticky" event and
       applies a custom activity class when the state shifts, making it perfect
       for sticky headers, side navigation bars, or contextual summary blocks.
-    `
+    `,
+    hide: true
   }
 }

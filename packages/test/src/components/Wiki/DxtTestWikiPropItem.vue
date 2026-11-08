@@ -21,7 +21,6 @@ defineSlots<TestWikiSlotRender>()
 const { hide: hideProps } = useWikiPropsHide()
 
 const show = computed(() => !hideProps.value || !props.item.isHide())
-const hide = computed(() => props.item.isHide())
 const name = computed(() => props.item.getName())
 const defaultValue = computed(() => props.item.getDefaultValue())
 const description = computed(() => props.item.getDescription())
@@ -37,7 +36,6 @@ const demoOptions = computed(() => props.item.getDemoOptions())
   <div
     v-if="show"
     class="dxt-test-wiki-prop-item"
-    :class="{ 'dxt-test-wiki-prop-item--hide': hide }"
   >
     <div class="dxt-test-wiki-prop-item__tilte">
       <span class="dxt-test-wiki-prop-item__name">{{ name }}:</span>
@@ -109,10 +107,6 @@ const demoOptions = computed(() => props.item.getDemoOptions())
     @include dxt.flexX;
     flex-wrap: wrap;
     gap: 4px;
-  }
-
-  &--hide {
-    opacity: .32;
   }
 }
 </style>

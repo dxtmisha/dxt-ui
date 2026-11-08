@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-11-09
+
+### Added
+- **`ComponentOutlet` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsComponentOutlet.ts`) in `wikiDescriptions.ts` and MDX mapping (`wikiMdxComponentOutlet.ts`) in `wikiMdx.ts`.
+  - Created bilingual MDX documentation pages (`componentOutlet.en.mdx`, `componentOutlet.ru.mdx`), exposed method documentation (`expose.getElement.en.mdx`, `expose.getElement.ru.mdx`), and dynamic named slot forwarding documentation (`slot.any.en.mdx`, `slot.any.ru.mdx`).
+  - Created `wikiComponentOutlet.ts` defining `componentOutlet.name` (`string`) and `componentOutlet.props` (`object`) property controls and registered it in `wiki.ts`.
+  - Added interactive Storybook documentation stories (`ComponentOutletBasic`, `ComponentOutletSlots`, `ComponentOutletExpose`) and automated test story (`ComponentOutletTestMergingAndFallback`) with `play` test assertions.
+
+### Changed
+- **AI Wiki Component Visibility (`ai.hide`)**:
+  - Enabled AI layout preview visibility (removed `hide: true`) for standalone visual layout and form components: `CarouselPagination`, `Collage`, `InputFileDropzone`, `InputFileItem`, `Table`, and `TableFlex`.
+  - Hid low-level motion/scroll engines, context wrappers, and internal sub-components (`hide: true`) from the visual AI layout showcase: `Area`, `ClockDial`, `ClockPeriod`, `HorizontalScroll`, `MotionAxis`, `MotionFlip`, `MotionSticky`, `MotionTransform`, `NavigationItem`, `NavigationRailItem`, `Skeleton`, `TextDescription`, and `TextLabel`.
+- **Dependencies**:
+  - Updated `@dxtmisha/functional` (`>=2.1.0`) in `package.json`.
+
 ## [1.1.0] - 2026-11-08
 
 ### Added

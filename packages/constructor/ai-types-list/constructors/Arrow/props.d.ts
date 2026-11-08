@@ -1,16 +1,12 @@
-// md5:6a2e350de8d967d8198ee3e152ba9617 true
-/** Arrow position and direction tokens. @keywords arrow, position, tokens */
+// md5:ec380ba279b80f86d93a394ecd5ee4f2 true
 export type ArrowPropsToken = {
     position?: 'auto' | 'top' | 'bottom' | 'left' | 'right';
 };
-/** Basic properties for the arrow component. @keywords arrow, props, basic */
-export type ArrowPropsBasic = ClientOnlyPropsInclude & {
-    /** Target HTML element or selector the arrow points to. */
+export type ArrowPropsBasic = {
     elementTarget?: HTMLElement | string;
 };
-/** Arrow component properties. @keywords arrow, props */
 export type ArrowProps = ArrowPropsBasic & ArrowPropsToken;
-/** Default properties for the arrow component. @keywords arrow, defaults */
+/** Default arrow property values. @keywords arrow, defaults */
 export declare const defaultsArrow: {
     position: string;
 };

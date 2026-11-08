@@ -38,6 +38,7 @@ export const wikiDescriptionsTextLabel: StorybookComponentsDescriptionItem = {
   ai: {
     description: `
 A utility component for displaying text and labels. Supports slot injection, custom HTML tags via "tag" property (defaults to "span"), and clean semantic output. Integrated with LabelInclude for standardized text rendering.
-    `
+    `,
+    hide: true
   }
 }

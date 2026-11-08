@@ -77,6 +77,7 @@ export const wikiDescriptionsClockPeriod: StorybookComponentsDescriptionItem = {
     description: `
 Selector component for switching between AM (ante meridiem) and PM (post meridiem) time periods in 12-hour format.
 Supports automatic period resolution by hour (0..23), two-way v-model binding, vertical and horizontal orientations, accessible radiogroup keyboard navigation, and custom text labels.
-    `
+    `,
+    hide: true
   }
 }

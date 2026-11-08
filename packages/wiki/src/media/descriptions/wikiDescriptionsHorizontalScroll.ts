@@ -88,6 +88,7 @@ export const wikiDescriptionsHorizontalScroll: StorybookComponentsDescriptionIte
 Container component that enables horizontal scrolling for large content sets like galleries, item lists, or tab bars. Ensures smooth navigation when the body exceeds the viewport width.
 Features automated scroll-to-selected behavior on mount and exposes a programmatic method (toSelected) for navigation. Provides scoped slot bindings to ensure correct item styling and selection tracking.
 Controlled via the tag prop for root element customization. Use for product carousels, category filters, or any horizontally-oriented navigation menus in space-constrained layouts.
-    `
+    `,
+    hide: true
   }
 }

@@ -202,6 +202,7 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
 Structural layout utility designed to display animated loading placeholders (ghost versions) for UI elements. Improves perceived performance and prevents Cumulative Layout Shift (CLS) by reserving space for incoming content.
 Features a logic-sharing mechanism via provide/inject that allows child components (Field, Image, Chip) to automatically switch to their skeleton states without individual props. Exposes specialized CSS classes through slot props for styling raw HTML elements as text lines, backgrounds, or borders.
 Controlled via the active prop to toggle the global loading state and accessibility Busy/Live attributes. Use as a wrapper for sections or entire pages during data fetching to maintain structural integrity and a high-quality user experience.
-    `
+    `,
+    hide: true
   }
 }

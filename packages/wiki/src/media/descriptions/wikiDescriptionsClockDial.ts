@@ -147,6 +147,7 @@ export const wikiDescriptionsClockDial: StorybookComponentsDescriptionItem = {
     description: `
 An interactive circular clock dial component for picking and displaying hours, minutes, and seconds.
 Supports 12-hour, 24-hour, minute, and second dials, interactive pointer rotation, coordinate-based mark resolution, time hands with clock mode, and min/max/step constraints.
-    `
+    `,
+    hide: true
   }
 }

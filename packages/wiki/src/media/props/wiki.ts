@@ -41,6 +41,7 @@ import { wikiChipGroup } from './wikiChipGroup'
 import { wikiClockDial } from './wikiClockDial'
 import { wikiCollage } from './wikiCollage'
 import { wikiCollageItem } from './wikiCollageItem'
+import { wikiComponentOutlet } from './wikiComponentOutlet'
 import { wikiCropArea } from './wikiCropArea'
 import { wikiDialog } from './wikiDialog'
 import { wikiDraggableWrapper } from './wikiDraggableWrapper'
@@ -142,6 +143,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiClockDial,
   ...wikiCollage,
   ...wikiCollageItem,
+  ...wikiComponentOutlet,
   ...wikiCropArea,
   ...wikiDialog,
   ...wikiDraggableWrapper,

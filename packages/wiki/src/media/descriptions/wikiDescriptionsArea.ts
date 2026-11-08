@@ -48,6 +48,7 @@ A utility component that acts as a dynamic slot switcher based on an "area" cont
 It retrieves the current area value from the injection context (UI_AREA_VALUE) or uses the 'areaDefault' prop.
 It then renders the slot that matches the area name. If no matching slot is found, it falls back to the 'default' slot.
 This is particularly useful for building layouts where different components need to render different content depending on where they are placed (e.g., in a header, footer, or side panel).
-    `
+    `,
+    hide: true
   }
 }

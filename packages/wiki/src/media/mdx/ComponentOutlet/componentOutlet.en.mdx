@@ -1,0 +1,55 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The `ComponentOutlet` component is a wrapper-less dynamic component resolver that looks up a Vue component registered in `ComponentStorage` by its `name`, merges its pre-configured default properties with runtime `props` and fallthrough attributes, and renders it directly with forwarded slots.
+
+It decouples consumer templates from concrete component imports and preset configurations. When a component is registered in `ComponentStorage` (either globally via `dxtFunctionalPlugin` or imperatively via `ComponentStorage.add`), `ComponentOutlet` resolves the component definition and combines its default properties with the `props` prop, external attributes (`$attrs`), classes, and styles using `toBinds`. If the requested component `name` is not registered or is omitted, `ComponentOutlet` gracefully falls back to rendering its `default` slot without introducing an extra wrapper element in the DOM.
+
+**Key features:**
+
+- **Wrapper-less Dynamic Rendering:** Renders the resolved Vue component VNode directly without adding an intermediate container tag
+- **Centralized Registry Resolution:** Resolves components registered in `ComponentStorage` by string `name` across client and SSR environments
+- **Non-Destructive Property & Style Merging:** Combines registered default properties from `ComponentStorage`, the `props` prop, fallthrough attributes, classes, and inline styles via `toBinds`
+- **Transparent Slot Forwarding & Fallback:** Forwards `default` and all named/scoped slots to the resolved component, or renders the `default` slot as fallback markup when the component is not found
+- **Typed Instance Access:** Exposes `getElement<T>()` and `elementHtml` to inspect or invoke methods on the resolved component instance or root DOM element
+
+**Common use cases:**
+
+- Rendering configurable theme or plugin widgets registered by name at application bootstrap
+- Dynamic layout regions, dashboard cards, and CMS-driven blocks with pre-configured default props
+- Providing graceful fallback UI via the `default` slot when optional plugin components are not registered
+- Replacing repetitive `<component :is="...">` boilerplate with centralized default property management
+
+<Source
+    code={`
+<script setup lang="ts">
+import { ComponentStorage } from '@dxtmisha/functional'
+import MyBanner from './MyBanner.vue'
+
+ComponentStorage.add('promo-banner', MyBanner, {
+  variant: 'elevated',
+  closable: true
+})
+</script>
+
+<template>
+  <!-- Resolves 'promo-banner' and merges default props with :props -->
+  <DesignComponent
+    name="promo-banner"
+    :props="{ title: 'Special Offer' }"
+  >
+    <template #default>
+      Limited-time discount on all plans.
+    </template>
+  </DesignComponent>
+
+  <!-- Renders fallback default slot when component is not registered -->
+  <DesignComponent name="unregistered-widget">
+    <span>Fallback content when widget is unavailable</span>
+  </DesignComponent>
+</template>
+  `}
+    language="html"
+/>
+
+> ComponentOutlet provides a clean, SSR-safe bridge between `ComponentStorage` registrations and declarative Vue templates without extra DOM wrappers.
+

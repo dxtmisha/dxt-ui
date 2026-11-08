@@ -126,6 +126,7 @@ Low-level layout animation component implementing the FLIP (First, Last, Invert,
 Supports automatic DOM mutation observing via the 'auto' property, or explicit execution via the 'update(callback)' expose method.
 Provides a 'stop()' expose method to abort active animations.
 Used for dynamic lists, reorderable grids, and card transitions requiring high-performance hardware-accelerated animations.
-    `
+    `,
+    hide: true
   }
 }

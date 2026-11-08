@@ -271,7 +271,6 @@ export const wikiDescriptionsTableFlex: StorybookComponentsDescriptionItem = {
     description: `
 Flexible, modular flexbox table component. Manages a columns array to render flex table rows, supporting custom header, lists, selection states, custom key extraction fields, and sticky headers.
 Accepts body slots for complete layout customization. Controlled via columns, header (headers data), list (dataset array), and key/attributes mapping configurations.
-`,
-    hide: true
+`
   }
 }

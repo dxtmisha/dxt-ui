@@ -2,15 +2,33 @@
 
 > Modular Vue 3 UI testing and documentation harness library.
 
-Provides dedicated test containers (`DxtTestPage`, `DxtTestBlock`), visual regression helpers, and interactive documentation widgets for testing DXT UI components.
+Provides dedicated test containers (`DxtTestPage`, `DxtTestBlock`, `DxtTestButton`), interactive AI/Storybook wiki documentation components (`DxtTestWiki`, `DxtTestWikiPropItem`, `DxtTestWikiDemo`, `DxtTestWikiAnchor`, `DxtTestWikiHide`), and shared state composables (`useWikiItemFocus`, `useWikiPropsHide`) for testing and documenting DXT UI components.
 
 ## Key Components & Modules
 
-- [DxtTestPage](src/components/DxtTestPage.vue): Root layout wrapper for component test suites.
-- [DxtTestBlock](src/components/DxtTestBlock.vue): Isolated scenario container for rendering individual component states and props.
-- [library.ts](src/library.ts): Barrel exporting all test harness components and utilities.
+- [DxtTestPage](src/components/DxtTestPage.vue): Root layout wrapper for component test and AI wiki suites.
+- [DxtTestBlock](src/components/DxtTestBlock.vue): Isolated scenario container with title, description, and anchor support for rendering individual component states.
+- [DxtTestButton](src/components/DxtTestButton.vue): Compact control button with `selected` state support for test harness actions.
+- [DxtTestWiki](src/components/Wiki/DxtTestWiki.vue): Main AI wiki documentation block rendering component demos, descriptions, type headers (`Props`, `Emits`, `Slots`, `Expose`), and filtered property items; respects `useWikiItemFocus` and `useWikiPropsHide` (`getAiHide()` / `isHide()`).
+- [DxtTestWikiPropItem](src/components/Wiki/DxtTestWikiPropItem.vue): Property item renderer displaying prop name, type, description, default value, and compact interactive option demos; conditionally rendered via `v-if` based on `useWikiPropsHide`.
+- [DxtTestWikiDemo](src/components/Wiki/DxtTestWikiDemo.vue): Live component preview and formatted JSX/template code snippet generator with `compact` inline mode support.
+- [DxtTestWikiAnchor](src/components/Wiki/DxtTestWikiAnchor.vue): Multi-column navigation index for focusing on a specific component or showing all components (`useWikiItemFocus`).
+- [DxtTestWikiHide](src/components/Wiki/DxtTestWikiHide.vue): Toggle button (`useWikiPropsHide`) for hiding/showing obvious properties and AI-hidden components in the DOM.
+- [DxtTestWikiTitle](src/components/Wiki/DxtTestWikiTitle.vue): Section header component displaying section labels and TypeScript interface/type names.
+- [DxtTestWikiCode](src/components/Wiki/DxtTestWikiCode.vue): Styled `<pre>` block for displaying inline or block code snippets.
+- [DxtTestWikiPossibilities](src/components/Wiki/DxtTestWikiPossibilities.vue): Bulleted list renderer for component capabilities.
+- [useWikiItemFocus](src/composables/useWikiItemFocus.ts): Session-backed composable (`useSessionRef`) managing active component focus (`'all'` or component name).
+- [useWikiPropsHide](src/composables/useWikiPropsHide.ts): Session-backed composable (`useSessionRef`) managing visibility of hidden properties and AI-hidden components.
+- [wikiTypes.ts](src/types/wikiTypes.ts): TypeScript interfaces for custom demo slot rendering (`TestWikiDemoClasses`, `TestWikiSlotRender`).
+- [library.ts](src/library.ts): Main entry point exporting all composables, types, and Vue test harness components.
+
+## Exports
+
+- `@dxtmisha/test` (`.`): Vue components, composables (`useWikiItemFocus`, `useWikiPropsHide`), and types.
+- `@dxtmisha/test/style.css`: Compiled component styles.
 
 ## Optional
 
 - [README.md](README.md): Test harness usage guide and component examples.
-- [package.json](package.json): Package dependencies and scripts.
+- [CHANGELOG.md](CHANGELOG.md): Release history and notable changes.
+- [package.json](package.json): Package metadata, exports, and dependencies.

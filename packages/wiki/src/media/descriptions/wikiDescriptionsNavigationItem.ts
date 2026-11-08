@@ -112,6 +112,7 @@ export const wikiDescriptionsNavigationItem: StorybookComponentsDescriptionItem 
 Specialized navigation item component inheriting from ListItem, designed specifically for application sidebars, navigation drawers, and header menus.
 Inherits all layout features including prefix/suffix slots, icons, badges, selected states, loading skeleton states, and ripple click effects.
 Used in combination with NavigationList to construct structured navigation trees.
-    `
+    `,
+    hide: true
   }
 }

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.5] - 2026-11-09
+
+### Added
+- **`ComponentOutlet` Constructor (`ComponentOutlet` & `ComponentOutletDesign`)**:
+  - Introduced `ComponentOutlet` logic orchestrator (`src/constructors/ComponentOutlet/ComponentOutlet.ts`) extending `DesignLogicAbstract` to resolve registered Vue components from `ComponentStorage` by `props.name`, merge registered default properties with `props.props`, bind `ref: this.element`, and expose typed instance/DOM access via `getElement<T>()`.
+  - Introduced `ComponentOutletDesign` rendering class (`src/constructors/ComponentOutlet/ComponentOutletDesign.tsx`) extending `DesignConstructorAbstract` to render resolved components without a wrapper element, merging `binds`, `getAttrs()`, `classes`, `styles`, and `component.props` via `toBinds`, forwarding `default` and named slots, and falling back to the `default` slot when a component is not found.
+  - Added `ComponentOutletProps`, `ComponentOutletPropsBasic`, `ComponentOutletPropsToken`, and `defaultsComponentOutlet` (`props.ts`), `ComponentOutletComponents`, `ComponentOutletEmits`, `ComponentOutletExpose`, `ComponentOutletSlots`, and `ComponentOutletClasses` (`types.ts`), `mixinComponentOutlet` (`style.scss`, `src/library/style.scss`), and `./ComponentOutlet` subpath export (`src/library/componentOutlet.ts`, `package.json`).
+  - Added unit, complete component integration, SSR, and TypeScript contract test suites (`ComponentOutlet.test.ts`, `ComponentOutletDesign.test.ts`, `ComponentOutlet.integration.test.ts`, `ComponentOutlet.ssr.test.ts`, `ComponentOutlet.types.test.ts`).
+
 ## [1.4.4] - 2026-11-08
 
 ### Added

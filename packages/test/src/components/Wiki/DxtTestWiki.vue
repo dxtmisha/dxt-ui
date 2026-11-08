@@ -3,6 +3,7 @@ import { computed, provide } from 'vue'
 import { replaceComponentName } from '@dxtmisha/functional-basic'
 import { type WikiStorybook } from '@dxtmisha/wiki'
 import { useWikiItemFocus } from '../../composables/useWikiItemFocus'
+import { useWikiPropsHide } from '../../composables/useWikiPropsHide'
 
 import DxtTestBlock from '../DxtTestBlock.vue'
 import DxtTestWikiDemo from './DxtTestWikiDemo.vue'
@@ -26,6 +27,7 @@ defineSlots<{
 }>()
 
 const { focus } = useWikiItemFocus()
+const { hide: hideProps } = useWikiPropsHide()
 
 const name = computed(() => `${props.design}${props.wiki.getName()}`)
 const propsName = computed(() => `type ${props.wiki.getName()}Props`)
@@ -33,7 +35,15 @@ const emitsName = computed(() => `type ${props.wiki.getName()}Emits`)
 const exposeName = computed(() => `interface ${props.wiki.getName()}Expose`)
 const slotsName = computed(() => `interface ${props.wiki.getName()}Slots`)
 
-const list = computed(() => props.wiki.getWikiObject())
+const list = computed(() => {
+  const data = props.wiki.getWikiObject()
+
+  if (hideProps.value) {
+    return data.filter(item => !item.isHide())
+  }
+
+  return data
+})
 const values = computed(() => props.wiki.getFilteredValues())
 
 const aiRender = computed(
@@ -56,7 +66,10 @@ const aiDescription = computed(
  * Показывает wiki, если он не скрыт, а фокус установлен на "all" или имя компонента
  */
 const aiShow = computed(() =>
-  !props.wiki.getAiHide()
+  (
+    !hideProps.value
+    || !props.wiki.getAiHide()
+  )
   && (
     focus.value === 'all'
     || focus.value === name.value

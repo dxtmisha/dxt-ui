@@ -1,6 +1,6 @@
-// md5:2003d8b9010f59120c2f0294bf1e6767 true
+// md5:4aee03c288eef2ba44a1dc3273025895 true
 import type { ConstrBind } from '@dxtmisha/functional';
-
+/** Arrow direction and visibility states @keywords arrow, direction, orientation */
 export declare enum ArrowDirection {
     TOP = "top",
     BOTTOM = "bottom",
@@ -8,24 +8,16 @@ export declare enum ArrowDirection {
     RIGHT = "right",
     HIDE = "hide"
 }
-
 export type ArrowBorder = {
     top: number;
     bottom: number;
     left: number;
     right: number;
 };
-
-export type ArrowCenter = {
-    x: number;
-    y: number;
-};
-
 export type ArrowComponentInclude = {
     arrow?: object;
 };
-
-/** Props to include and configure the Arrow component. @keywords arrow, props, include */
+/** Props for including and configuring the Arrow component @keywords arrow, props, include, configuration */
 export type ArrowPropsInclude<Arrow extends ArrowProps = ArrowProps> = {
     arrowShow?: boolean;
     arrowPosition?: ArrowProps['position'];

@@ -1,20 +1,20 @@
-// md5:372a46511592e64368ed9ee550ca2067 true
+// md5:4270cd558337899e325251d34db675b2 true
 type DraggableWrapperPropsToken = {};
 
 export type DraggableWrapperPropsBasic = {
-    /** Disables drag-and-drop sorting */
-    disabled?: boolean;
-    /** HTML tag of the wrapper element */
-    tag?: string;
-    /** Delay before dragging starts in milliseconds */
-    delay?: number | string;
-    /** Custom classes for the placeholder square element */
-    classesSquare?: string | string[];
+  /** Custom classes for placeholder square element. */
+  classesSquare?: string | string[];
+  /** Delay before dragging starts in milliseconds. */
+  delay?: number | string;
+  /** Disables drag-and-drop sorting functionality. */
+  disabled?: boolean;
+  /** HTML tag of wrapper element. */
+  tag?: string;
 };
 
 export type DraggableWrapperProps = DraggableWrapperPropsBasic & DraggableWrapperPropsToken;
 
-/** Default property values @keywords defaults, draggable, wrapper */
+/** Default property values for DraggableWrapper. */
 export declare const defaultsDraggableWrapper: {
-    tag: string;
+  tag: string;
 };

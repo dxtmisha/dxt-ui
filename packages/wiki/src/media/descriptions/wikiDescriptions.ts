@@ -31,6 +31,7 @@ import { wikiDescriptionsClockPeriod } from './wikiDescriptionsClockPeriod'
 import { wikiDescriptionsCollage } from './wikiDescriptionsCollage'
 import { wikiDescriptionsCollageBar } from './wikiDescriptionsCollageBar'
 import { wikiDescriptionsCollageItem } from './wikiDescriptionsCollageItem'
+import { wikiDescriptionsComponentOutlet } from './wikiDescriptionsComponentOutlet'
 import { wikiDescriptionsContainer } from './wikiDescriptionsContainer'
 import { wikiDescriptionsCropArea } from './wikiDescriptionsCropArea'
 import { wikiDescriptionsDialog } from './wikiDescriptionsDialog'
@@ -156,6 +157,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsCollage,
   wikiDescriptionsCollageBar,
   wikiDescriptionsCollageItem,
+  wikiDescriptionsComponentOutlet,
   wikiDescriptionsContainer,
   wikiDescriptionsCropArea,
   wikiDescriptionsDialog,

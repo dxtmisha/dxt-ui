@@ -1,35 +1,36 @@
-// md5:695685a4f3ccdc9c10ea664a24186fc8 true
-import type { VNode } from 'vue';
+// md5:d8ba419dac096d8c9975b0ab0c48d831 true
 import type { ConstrClass } from '@dxtmisha/functional';
 
 export type ScrollbarComponents = {};
 
-/** Scrollbar event definitions and payloads @keywords scrollbar, emits, events */
+/** Scrollbar event emissions contract. @keywords scrollbar events emits */
 export type ScrollbarEmits = {
-    /** Triggered when reaching or leaving the top edge @keywords top, scroll */
-    top: [isTop: boolean];
-    /** Triggered when reaching the exact top position @keywords reachTop, top */
-    reachTop: [];
-    /** Triggered when scrolling away from the top position @keywords leaveTop, top */
-    leaveTop: [];
-    /** Triggered when reaching or leaving the bottom edge @keywords bottom, scroll */
-    bottom: [isBottom: boolean];
-    /** Triggered when reaching the exact bottom position @keywords reachBottom, bottom */
-    reachBottom: [];
-    /** Triggered when scrolling away from the bottom position @keywords leaveBottom, bottom */
-    leaveBottom: [];
-    /** Triggered when reaching any boundary edge @keywords edge, boundary */
-    edge: [isTop: boolean, isBottom: boolean, edge: ScrollbarEdgeType];
+  /** Triggered on top boundary state change. @keywords scroll top edge */
+  top: [isTop: boolean];
+  /** Triggered when reaching the top position. @keywords scroll reach top */
+  reachTop: [];
+  /** Triggered when leaving the top position. @keywords scroll leave top */
+  leaveTop: [];
+  /** Triggered on bottom boundary state change. @keywords scroll bottom edge */
+  bottom: [isBottom: boolean];
+  /** Triggered when reaching the bottom position. @keywords scroll reach bottom */
+  reachBottom: [];
+  /** Triggered when leaving the bottom position. @keywords scroll leave bottom */
+  leaveBottom: [];
+  /** Triggered when reaching any boundary edge. @keywords scroll edge boundary */
+  edge: [isTop: boolean, isBottom: boolean, edge: ScrollbarEdgeType];
 };
 
 export interface ScrollbarExpose {}
 
-/** Scrollbar slot definitions @keywords scrollbar, slots */
+/** Scrollbar slots definition. @keywords scrollbar slots */
 export interface ScrollbarSlots {
-    /** Main content slot @keywords slot, default */
-    default?(props?: Record<string, never>): VNode[] | undefined;
+  /** Slot for default scrollbar content. @keywords slot default */
+  default?(props: any): any;
 }
 
+/** Scrollbar class names structure. @keywords scrollbar classes */
 export type ScrollbarClasses = {
-    main: ConstrClass;
+  /** Root element classes. @keywords root classes */
+  main: ConstrClass;
 };

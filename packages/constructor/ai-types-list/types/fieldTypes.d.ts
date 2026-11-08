@@ -1,19 +1,19 @@
-// md5:c0031c1d90cfba98508ccc8761a37e34 true
+// md5:ac2394d7cafbea27e310d704d88b22f6 true
 import type { Ref } from 'vue';
 import type { ListRecord, NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional';
 
 export type FieldType = 'text' | 'search' | 'number' | 'number-format' | 'currency' | 'email' | 'password' | 'datetime' | 'date' | 'year-month' | 'time' | 'hour-minute' | 'tel' | 'url' | 'checkbox' | 'radio';
-
 export type FieldElementDom = HTMLInputElement | HTMLTextAreaElement;
-
 export type FieldElementInput = FieldElementDom | HTMLElement | Record<string, any> | undefined;
 
+/** ValidityState flags mapped to custom error messages. @keywords validity, validation, messages */
 export type FieldValidityCodeItem = {
     [K in keyof ValidityState]?: string;
 };
 
 export type FieldValidityCode = string | FieldValidityCodeItem;
 
+/** Mask segment state and metadata. @keywords mask, input-mask */
 export type FieldMaskItem = {
     group: string;
     value: string;
@@ -24,15 +24,12 @@ export type FieldMaskItem = {
 };
 
 export type FieldMasks = Record<string, FieldMaskItem>;
-
 export type FieldPatternElement = Partial<HTMLInputElement>;
-
 export type FieldPatternItem = string | FieldPatternElement;
-
-export type FieldPatternItemOrFunction = FieldPatternItem | ((item: FieldMasks) => FieldPatternItem);
-
+export type FieldPatternItemOrFunction = FieldPatternItem | ((item?: FieldMasks) => FieldPatternItem);
 export type FieldPatternList = Record<string, FieldPatternItemOrFunction>;
 
+/** Field cross-matching comparison configuration. @keywords match, compare, confirmation */
 export type FieldMatchItem = {
     name?: string | HTMLInputElement;
     validationMessage?: string;
@@ -46,13 +43,15 @@ export type FieldCheckMain = {
     pattern?: FieldPatternItemOrFunction;
 };
 
+/** Validation execution handler. @keywords check, validate, rule */
 export type FieldCheckItem<Value = any> = FieldCheckMain & {
-    /** Run validation check for the specified value @keywords validation, check */
+    /** Validates the specified value against constraints. @keywords validate, verify */
     check(value: Value): FieldValidationItem<Value>;
 };
 
 export type FieldCheckList = Record<string, FieldCheckItem>;
 
+/** Comprehensive field validation result payload. @keywords validation, status, error */
 export type FieldValidationItem<Value = any> = FieldCheckMain & {
     type?: string;
     status?: boolean;
@@ -66,7 +65,7 @@ export type FieldValidationItem<Value = any> = FieldCheckMain & {
     detail?: Record<string, any>;
 };
 
-/** File field value metadata, source, dimensions, and crop coordinates @keywords file, media, upload */
+/** Uploaded or selected file representation including dimensions and cropping. @keywords file, upload, media */
 export type FieldFileValue = {
     id?: string | number;
     value?: string;
@@ -81,7 +80,7 @@ export type FieldFileValue = {
     file?: File;
 };
 
-/** Emitted events for field value updates and commits @keywords events, emits, input, change */
+/** Input event emission signatures for value changes. @keywords emits, events, input, change */
 export type FieldValueEmits<T = any> = {
     input: [event: InputEvent | Event, value: FieldValidationItem<T>];
     inputLite: [value: FieldValidationItem<T>];
@@ -91,21 +90,22 @@ export type FieldValueEmits<T = any> = {
 
 export type FieldBasicEmits<T = any> = ModelEmits<T> & FieldValueEmits<T>;
 
-/** Exposed properties and control methods for field components @keywords expose, methods, form */
+/** Public API methods and reactive state exposed by field components. @keywords expose, ref, api */
 export type FieldBasicExpose<T = string> = {
     value: Ref<T>;
-    /** Returns the current field value @keywords get, value */
+    /** Retrieves current field value. @keywords getter, value */
     getValue: () => T | undefined;
-    /** Sets the field value @keywords set, value */
+    /** Mutates current field value. @keywords setter, update */
     setValue: (value: any) => void;
-    /** Clears the current field value @keywords clear, reset */
+    /** Clears the current field value. @keywords reset, clear */
     clear: () => void;
-    /** Checks validity of the field and returns status @keywords validity, validate */
+    /** Evaluates DOM validity state and returns success flag. @keywords validity, validate */
     checkValidity: () => boolean;
-    /** Returns current validation error message @keywords validation, message, error */
+    /** Returns current validation error message. @keywords error, message */
     getValidationMessage: () => string;
 };
 
+/** Value-handling properties and constraints. @keywords props, value, model */
 export type FieldValueProps<Value = any> = ModelProps<Value> & {
     placeholder?: string;
     multiple?: boolean;
@@ -114,6 +114,7 @@ export type FieldValueProps<Value = any> = ModelProps<Value> & {
     detail?: Record<string, any> | undefined;
 };
 
+/** Base properties shared across all form field components. @keywords props, input, form */
 export type FieldBasicProps<Value = any> = Omit<FieldValueProps<Value>, 'multiple' | 'maxlength'> & {
     type?: 'text' | 'search' | 'number' | 'number-format' | 'currency' | 'email' | 'password' | 'datetime' | 'date' | 'year-month' | 'time' | 'hour-minute' | 'tel' | 'url' | 'checkbox' | 'radio';
     name?: string;
@@ -151,6 +152,7 @@ export type FieldPatternProps = {
     pattern?: string;
 };
 
+/** Mobile and virtual keyboard behavioral attributes. @keywords ux, inputmode, autocapitalize */
 export type FieldUxProps = {
     autocomplete?: string;
     autocapitalize?: 'off' | 'none' | 'sentences' | 'words' | 'characters' | string;
@@ -160,6 +162,7 @@ export type FieldUxProps = {
     autocorrect?: 'on' | 'off' | string;
 };
 
+/** Standard text and numeric input properties. @keywords input, text, numeric */
 export type FieldInputProps<Value = any> = FieldBasicProps<Value> & FieldStepProps & FieldArrowProps & FieldLengthProps & FieldPatternProps & FieldUxProps & {
     list?: string;
     iconVisibility?: string;
@@ -172,6 +175,7 @@ export type FieldInputSocialProps = Omit<FieldBasicProps<string>, 'match' | 'pat
     autocomplete?: string;
 };
 
+/** Properties for file picker inputs. @keywords file, upload, picker */
 export type FieldInputFileProps<Value = FieldFileValue> = Omit<FieldBasicProps<Value>, 'type'> & FieldLengthProps & FieldUxProps & {
     multiple?: boolean;
     accept?: string;
@@ -179,12 +183,14 @@ export type FieldInputFileProps<Value = FieldFileValue> = Omit<FieldBasicProps<V
     maxFileSize?: number;
 };
 
+/** Properties for checkbox and radio toggle elements. @keywords checkbox, radio, toggle */
 export type FieldInputCheckProps<Value = boolean> = Omit<FieldBasicProps<Value>, 'type'> & FieldUxProps & {
     valueVariant?: NumberOrStringOrBoolean;
     valueVariantHide?: NumberOrStringOrBoolean;
     indeterminate?: boolean;
 };
 
+/** Properties for multiline text areas. @keywords textarea, multiline */
 export type FieldTextareaProps<Value = any> = Omit<FieldBasicProps<Value>, 'type'> & FieldLengthProps & FieldUxProps & {
     rows?: NumberOrString;
     cols?: NumberOrString;
@@ -192,6 +198,7 @@ export type FieldTextareaProps<Value = any> = Omit<FieldBasicProps<Value>, 'type
     fieldSizing?: 'content' | 'fixed' | string;
 };
 
+/** Selection dropdown properties. @keywords select, dropdown, options */
 export type FieldSelectProps<Value = any> = Omit<FieldBasicProps<Value>, 'type'> & Omit<FieldStepProps, 'min' | 'step'> & FieldArrowProps & FieldUxProps & {
     option?: ListRecord;
     multiple?: boolean;
@@ -204,4 +211,5 @@ export type FieldSliderProps<Value = any> = Omit<FieldBasicProps<Value>, 'type' 
     multiple?: boolean;
 };
 
+/** Unified field properties aggregating all specialized input variations. @keywords fields, schema, composite */
 export type FieldAllProps<Value = any> = FieldInputProps<Value> & FieldInputFileProps<Value> & FieldInputCheckProps<Value> & FieldTextareaProps<Value> & FieldSelectProps<Value> & FieldSliderProps<Value>;

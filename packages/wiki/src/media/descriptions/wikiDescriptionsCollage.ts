@@ -201,7 +201,6 @@ A responsive media gallery and layout container designed for photo collections, 
 Arranges media items using CSS Grid with 5 layout variants: standard (uniform columns with span tiles), quilted (dense auto-flow filling gaps), woven (alternating compact rhythmic tiles), masonryHorizontal (row justification via dynamic grow calculation), and masonryVertical (dynamic column masonry).
 Supports configurable column counts (1 to 12), customizable cell dimensions (cellSize), selection tracking (v-model:selected), and batch attribute passing to child items (collageItemAttrs).
 Exposes an update() method to trigger layout recalculation upon dynamic container or content changes.
-    `,
-    hide: true
+    `
   }
 }

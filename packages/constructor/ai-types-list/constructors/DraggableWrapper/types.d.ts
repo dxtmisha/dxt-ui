@@ -1,4 +1,4 @@
-// md5:c64742fba2100cf0b9e5f8d4b2345003 true
+// md5:fbca37118f756141e40cfd8f59653636 true
 import type { ConstrClass } from '@dxtmisha/functional';
 
 export type DraggableWrapperComponents = {};
@@ -9,8 +9,10 @@ export type DraggableWrapperEmits = {
 };
 
 export interface DraggableWrapperExpose {
-    /** Calculates reordered array after a drop event @keywords reorder, array, drop, sort */
-    toNewPosition<T extends { value?: any }>(values: T[], parameters: DraggableWrapperEventParameters): T[];
+    /** Calculates the reordered array after a drag-and-drop operation. @keywords draggable reorder drop array position */
+    toNewPosition<T extends {
+        value?: any;
+    }>(values: T[], parameters: DraggableWrapperEventParameters): T[];
 }
 
 export interface DraggableWrapperSlots {
@@ -19,5 +21,6 @@ export interface DraggableWrapperSlots {
 
 export type DraggableWrapperClasses = {
     main: ConstrClass;
+    item: string;
     square: string;
 };
