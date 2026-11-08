@@ -45,7 +45,8 @@ When the plugin is installed, it performs the following steps in order:
 5.  **Meta**: Configures the default title suffix via `useMeta().setSuffix()`.
 6.  **Router**: Registers the router instance in `RouterItemRef`, making it accessible globally.
 7.  **ErrorCenter**: Configures error causes (`ErrorCenter.addList()`), handlers (`ErrorCenter.addHandlerList()`), and callbacks (`ErrorCenter.addCallback()`).
-8.  **executeUseGlobalInit**: Triggers the batch initialization of all global singletons defined using `executeUseGlobal`.
+8.  **ComponentStorage**: Registers the provided list of Vue components with default properties via `ComponentStorage.addList()`.
+9.  **executeUseGlobalInit**: Triggers the batch initialization of all global singletons defined using `executeUseGlobal`.
 
 ## Data Types
 
@@ -63,6 +64,7 @@ The plugin uses the following interfaces for configuration:
 - `errorCauses?: ErrorCenterCauseList` — Predefined list of error causes for `ErrorCenter`.
 - `errorHandlers?: ErrorCenterHandlerList` — List of error handlers for `ErrorCenter`.
 - `errorCallbacks?: ErrorCenterHandlerCallback[]` — Global error callback functions for `ErrorCenter`.
+- `components?: ComponentStorageList` — List of Vue components for registration in `ComponentStorage`.
 
 ### `ApiConfig`
 

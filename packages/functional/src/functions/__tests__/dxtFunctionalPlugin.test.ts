@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import type { App } from 'vue'
+import { defineComponent, h, type App } from 'vue'
 import type { Router } from 'vue-router'
 import {
   Api,
@@ -16,6 +16,7 @@ import {
 import { MediaSocial } from '@dxtmisha/media'
 import { dxtFunctionalPlugin } from '../dxtFunctionalPlugin'
 import { useMeta } from '../../composables/ref/useMeta'
+import { ComponentStorage } from '../../classes/ComponentStorage'
 import { RouterItemRef } from '../../classes/ref/RouterItemRef'
 import { GeoRef } from '../../classes/ref/GeoRef'
 import * as executeUse from '../executeUse'
@@ -37,6 +38,10 @@ vi.mock('../../composables/ref/useMeta', () => ({
   useMeta: vi.fn(() => ({
     setSuffix: vi.fn()
   }))
+}))
+
+vi.mock('../../classes/ComponentStorage', () => ({
+  ComponentStorage: { addList: vi.fn() }
 }))
 
 vi.mock('../../classes/ref/RouterItemRef', () => ({
@@ -65,6 +70,7 @@ describe('dxtFunctionalPlugin', () => {
   it('should install smoothly with default empty options', () => {
     expect(() => dxtFunctionalPlugin?.install?.(appMock)).not.toThrow()
     expect(RouterItemRef.set).not.toHaveBeenCalled()
+    expect(ComponentStorage.addList).not.toHaveBeenCalled()
     expect(executeUse.executeUseGlobalInit).toHaveBeenCalled()
   })
 
@@ -140,6 +146,27 @@ describe('dxtFunctionalPlugin', () => {
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(ErrorCenter.addCallback).toHaveBeenCalledWith(callback1)
     expect(ErrorCenter.addCallback).toHaveBeenCalledWith(callback2)
+  })
+
+  it('should call ComponentStorage.addList if components option is provided before executeUseGlobalInit', () => {
+    const callOrder: string[] = []
+    vi.mocked(ComponentStorage.addList).mockImplementation(() => {
+      callOrder.push('ComponentStorage.addList')
+    })
+    vi.mocked(executeUse.executeUseGlobalInit).mockImplementation(() => {
+      callOrder.push('executeUseGlobalInit')
+    })
+
+    const DummyComponent = defineComponent({ render: () => h('div') })
+    const options = {
+      components: [
+        { name: 'dummy', component: DummyComponent, props: { id: 'default' } }
+      ]
+    }
+
+    dxtFunctionalPlugin?.install?.(appMock, options)
+    expect(ComponentStorage.addList).toHaveBeenCalledWith(options.components)
+    expect(callOrder).toEqual(['ComponentStorage.addList', 'executeUseGlobalInit'])
   })
 
   it('should call GeoRef.setValueDefault with string or function location', () => {

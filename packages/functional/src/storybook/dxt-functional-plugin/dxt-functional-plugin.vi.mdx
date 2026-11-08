@@ -60,7 +60,8 @@ Lúc bạn kích hoạt `app.use(dxtFunctionalPlugin)`, các giải đoạn tu�
 4. **Khởi Chạy `Meta`**: Khởi thiết lập hậu tố trực tiếp trên tab trình duyệt (sử dụng hàm `useMeta().setSuffix()`) nếu trường này được kê khai.
 5. **Cộng Giao Động Vue Router**: Nạp đối tượng định tuyến này vào mạng lưới dữ liệu riêng của bộ thư viện (`RouterItemRef`), biến các chức năng điều khiển trở thành có thể dùng chung mở cho những dịch vụ khác dẫu là nằm tách khỏi phạm vi một component Vue.
 6. **Thiết lập `ErrorCenter`**: Cấu hình danh sách các nguyên nhân lỗi định trước (`ErrorCenter.addList`) và đăng ký các hàm xử lý lỗi toàn cục (`ErrorCenter.addHandlerList`) vào kho lưu trữ lỗi tập trung.
-7. **Bật `executeUseGlobalInit()` chạy thi hành**: Đánh thức một lần tự khởi điểm duy nhất hoàn toàn những global singletons đứng ở nền móng `executeUseGlobal`. Chấm dứt thao tác bạn cất công truy xuất thủ công.
+7. **Đăng ký `ComponentStorage`**: Đăng ký danh sách `components` cùng các thuộc tính mặc định qua `ComponentStorage.addList()`.
+8. **Bật `executeUseGlobalInit()` chạy thi hành**: Đánh thức một lần tự khởi điểm duy nhất hoàn toàn những global singletons đứng ở nền móng `executeUseGlobal`. Chấm dứt thao tác bạn cất công truy xuất thủ công.
 
 ## Tinh Chỉnh Dịch Vụ Mở Rộng
 

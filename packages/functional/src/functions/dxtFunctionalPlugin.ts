@@ -15,10 +15,12 @@ import {
 
 import { executeUseGlobalInit } from './executeUse'
 import { useMeta } from '../composables/ref/useMeta'
+import { ComponentStorage } from '../classes/ComponentStorage'
 import { RouterItemRef } from '../classes/ref/RouterItemRef'
 import { GeoRef } from '../classes/ref/GeoRef'
 
 import type { Router } from 'vue-router'
+import type { ComponentStorageList } from '../types/componentStorageTypes'
 
 /**
  * Interface for the functional plugin options /
@@ -54,6 +56,9 @@ export interface FunctionalPluginOptions {
 
   /** Global error callback functions for error center / Список глобальных функций обратного вызова для центра ошибок */
   errorCallbacks?: ErrorCenterHandlerCallback[]
+
+  /** List of Vue components for registration in component storage / Список Vue компонентов для регистрации в хранилище компонентов */
+  components?: ComponentStorageList
 }
 
 /**
@@ -143,7 +148,12 @@ export const dxtFunctionalPlugin: Plugin = {
       }
     }
 
-    // 8. Initialize global singletons (ExecuteUseType.global)
+    // 8. Configure Component Storage
+    if (options.components) {
+      ComponentStorage.addList(options.components)
+    }
+
+    // 9. Initialize global singletons (ExecuteUseType.global)
     executeUseGlobalInit()
   }
 }

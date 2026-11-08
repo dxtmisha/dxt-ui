@@ -60,7 +60,8 @@ When you call `app.use(dxtFunctionalPlugin)`, the following steps occur automati
 4. **`Meta` Initialization**: Automatically sets the browser tab suffix (via `useMeta().setSuffix()`) if provided.
 5. **Vue Router Integration**: Globally registers the router object in the library's memory (`RouterItemRef`), allowing other functional services to use navigation even outside Vue components.
 6. **`ErrorCenter` Setup**: Configures predefined error causes (`ErrorCenter.addList`) and registers global error handlers (`ErrorCenter.addHandlerList`) in the central error registry.
-7. **`executeUseGlobalInit()` Execution**: Automatically triggers the initialization of absolutely all global singletons created via `executeUseGlobal`. You no longer need to call it manually!
+7. **`ComponentStorage` Registration**: Registers the passed `components` list with default properties via `ComponentStorage.addList()`.
+8. **`executeUseGlobalInit()` Execution**: Automatically triggers the initialization of absolutely all global singletons created via `executeUseGlobal`. You no longer need to call it manually!
 
 ## Service Configuration
 

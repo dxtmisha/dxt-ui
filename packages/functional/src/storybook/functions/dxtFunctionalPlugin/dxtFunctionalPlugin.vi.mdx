@@ -45,7 +45,8 @@ Khi plugin được cài đặt, nó thực hiện các bước sau theo thứ t
 5.  **Meta**: Cấu hình hậu tố cho tiêu đề thông qua `useMeta().setSuffix()`.
 6.  **Router**: Đăng ký router vào `RouterItemRef`, giúp có thể truy cập toàn cục.
 7.  **ErrorCenter**: Cấu hình nguyên nhân lỗi (`ErrorCenter.addList()`), trình xử lý lỗi (`ErrorCenter.addHandlerList()`) và hàm gọi lại khi xảy ra lỗi (`ErrorCenter.addCallback()`).
-8.  **executeUseGlobalInit**: Kích hoạt quá trình khởi tạo hàng loạt cho tất cả các đối tượng đơn lẻ được định nghĩa thông qua `executeUseGlobal`.
+8.  **ComponentStorage**: Đăng ký danh sách các component Vue kèm thuộc tính mặc định thông qua `ComponentStorage.addList()`.
+9.  **executeUseGlobalInit**: Kích hoạt quá trình khởi tạo hàng loạt cho tất cả các đối tượng đơn lẻ được định nghĩa thông qua `executeUseGlobal`.
 
 ## Các kiểu dữ liệu
 
@@ -63,6 +64,7 @@ Plugin sử dụng các giao diện (interface) sau để cấu hình:
 - `errorCauses?: ErrorCenterCauseList` — Danh sách các nguyên nhân lỗi định trước cho `ErrorCenter`.
 - `errorHandlers?: ErrorCenterHandlerList` — Danh sách các trình xử lý lỗi cho `ErrorCenter`.
 - `errorCallbacks?: ErrorCenterHandlerCallback[]` — Danh sách các hàm gọi lại khi xảy ra lỗi cho `ErrorCenter`.
+- `components?: ComponentStorageList` — Danh sách các component Vue cần đăng ký vào kho lưu trữ `ComponentStorage`.
 
 ### `ApiConfig`
 

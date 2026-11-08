@@ -1,0 +1,116 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/ComponentStorage - Global Component Storage'/>
+
+# ComponentStorage Class
+
+Static facade for storing and resolving Vue components with default properties. Uses a single shared `ComponentStorageInstance` across the entire runtime (including SSR).
+
+## Key Features
+
+- **Static interface** — register and resolve components without manual instantiation.
+- **Lazy initialization** — the shared `ComponentStorageInstance` is created only upon the first access via `getItem()`.
+- **`dxtFunctionalPlugin` integration** — automatically populated when passing the `components` option to the application plugin.
+
+## Usage
+
+```typescript
+import { ComponentStorage } from '@dxtmisha/functional'
+import { defineComponent, h } from 'vue'
+
+const MyButton = /*#__PURE__*/ defineComponent({
+  name: 'MyButton',
+  render: () => h('button')
+})
+
+ComponentStorage.add('button', MyButton, { class: 'btn-base' })
+const resolved = /*#__PURE__*/ ComponentStorage.get('button', { class: 'btn-primary' })
+```
+
+## Methods
+
+### Retrieval and lookup
+
+#### `get`
+
+`static get< C extends Component = Component, P extends ItemList = ItemList >( name: string, props?: P ): ComponentStorageReturn<C, P> | undefined`
+
+Retrieves a registered component by name and merges its default properties with the passed properties.
+
+**Parameters:**
+
+- `name: string` — Component name.
+- `props?: P` — Additional properties to merge with defaults.
+
+**Returns:** `ComponentStorageReturn<C, P> | undefined` — Component with merged properties or `undefined` if not found.
+
+```typescript
+const item = /*#__PURE__*/ ComponentStorage.get('button', { disabled: true })
+```
+
+#### `has`
+
+`static has(name: string): boolean`
+
+Checks if a component with the specified name is registered in the storage.
+
+**Parameters:**
+
+- `name: string` — Component name.
+
+**Returns:** `boolean` — `true` if the component exists.
+
+```typescript
+const exists = /*#__PURE__*/ ComponentStorage.has('button')
+```
+
+#### `getItem`
+
+`static getItem(): ComponentStorageInstance`
+
+Returns the shared `ComponentStorageInstance` instance.
+
+**Returns:** `ComponentStorageInstance` — Shared `ComponentStorageInstance`.
+
+```typescript
+const instance = /*#__PURE__*/ ComponentStorage.getItem()
+```
+
+### Registration
+
+#### `add`
+
+`static add< C extends Component = Component, P extends ItemList = ItemList >( name: string, component: C, props?: P ): void`
+
+Registers a Vue component with optional default properties in the storage.
+
+**Parameters:**
+
+- `name: string` — Component name.
+- `component: C` — Vue component.
+- `props?: P` — Default properties for the component.
+
+**Returns:** `void` — No return value.
+
+```typescript
+ComponentStorage.add('button', MyButton, { type: 'button' })
+```
+
+#### `addList`
+
+`static addList(list: ComponentStorageList): void`
+
+Registers a list of Vue components with their default properties in the storage.
+
+**Parameters:**
+
+- `list: ComponentStorageList` — List of component registration items.
+
+**Returns:** `void` — No return value.
+
+```typescript
+ComponentStorage.addList([
+  { name: 'button', component: MyButton, props: { type: 'button' } }
+])
+```
+

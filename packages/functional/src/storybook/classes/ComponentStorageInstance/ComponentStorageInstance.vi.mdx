@@ -1,0 +1,115 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/ComponentStorageInstance - Kho lưu trữ Component theo thực thể'/>
+
+# Lớp ComponentStorageInstance
+
+Lớp thực thể để lưu trữ và phân giải các component Vue kèm thuộc tính mặc định. Khi lấy component theo tên, lớp hợp nhất các thuộc tính mặc định đã đăng ký với các thuộc tính truyền vào thông qua `toBind`.
+
+## Tính năng chính
+
+- **Kho đăng ký độc lập** — lưu trữ các mục component trong `Map<string, ComponentStorageData>` nguyên bản.
+- **Hợp nhất thuộc tính** — `get()` gộp thuộc tính mặc định và tùy chỉnh qua `toBind`, kết hợp `class` và `style` thành mảng.
+- **Chuỗi lời gọi** — `add()` và `addList()` trả về thực thể hiện tại `this`.
+
+## Khởi tạo
+
+`constructor( list?: ComponentStorageList )`
+
+**Tham số:**
+
+- `list?: ComponentStorageList` — Danh sách các component ban đầu cần đăng ký.
+
+## Cách dùng
+
+```typescript
+import { ComponentStorageInstance } from '@dxtmisha/functional'
+import { defineComponent, h } from 'vue'
+
+const MyButton = /*#__PURE__*/ defineComponent({
+  name: 'MyButton',
+  render: () => h('button')
+})
+
+const storage = /*#__PURE__*/ new ComponentStorageInstance([
+  { name: 'button', component: MyButton, props: { class: 'btn-base', type: 'button' } }
+])
+
+const resolved = /*#__PURE__*/ storage.get('button', { class: 'btn-primary' })
+```
+
+## Phương thức
+
+### Truy xuất và kiểm tra
+
+#### `get`
+
+`get< C extends Component = Component, P extends ItemList = ItemList >( name: string, props?: P ): ComponentStorageReturn<C, P> | undefined`
+
+Lấy một component đã đăng ký theo tên và hợp nhất thuộc tính mặc định của nó với thuộc tính truyền vào.
+
+**Tham số:**
+
+- `name: string` — Tên component.
+- `props?: P` — Các thuộc tính bổ sung để hợp nhất với mặc định.
+
+**Trả về:** `ComponentStorageReturn<C, P> | undefined` — Component cùng thuộc tính đã hợp nhất hoặc `undefined` nếu không tìm thấy.
+
+```typescript
+const item = /*#__PURE__*/ storage.get('button', { disabled: true })
+```
+
+#### `has`
+
+`has(name: string): boolean`
+
+Kiểm tra xem component với tên chỉ định đã được đăng ký trong kho lưu trữ hay chưa.
+
+**Tham số:**
+
+- `name: string` — Tên component.
+
+**Trả về:** `boolean` — `true` nếu component tồn tại.
+
+```typescript
+const exists = /*#__PURE__*/ storage.has('button')
+```
+
+### Đăng ký
+
+#### `add`
+
+`add< C extends Component = Component, P extends ItemList = ItemList >( name: string, component: C, props?: P ): this`
+
+Đăng ký một component Vue cùng các thuộc tính mặc định tùy chọn vào kho lưu trữ.
+
+**Tham số:**
+
+- `name: string` — Tên component.
+- `component: C` — Component Vue.
+- `props?: P` — Các thuộc tính mặc định cho component.
+
+**Trả về:** `this` — Thực thể hiện tại.
+
+```typescript
+storage.add('button', MyButton, { type: 'button' })
+```
+
+#### `addList`
+
+`addList(list: ComponentStorageList): this`
+
+Đăng ký danh sách các component Vue cùng thuộc tính mặc định của chúng vào kho lưu trữ.
+
+**Tham số:**
+
+- `list: ComponentStorageList` — Danh sách các mục đăng ký component.
+
+**Trả về:** `this` — Thực thể hiện tại.
+
+```typescript
+storage.addList([
+  { name: 'button', component: MyButton, props: { type: 'button' } }
+])
+```
+

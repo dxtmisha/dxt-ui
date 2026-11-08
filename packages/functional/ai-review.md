@@ -54,7 +54,6 @@ src/functions/watchEffectAsync.ts
 src/functions/computedAsync.ts
 src/functions/computedByLanguage.ts
 src/functions/computedEternity.ts
-src/functions/dxtFunctionalPlugin.ts
 src/functions/ref/executeFunctionRef.ts
 src/functions/render/getBind.ts
 src/functions/ref/getBindRef.ts
@@ -62,3 +61,6 @@ src/functions/render/getClassName.ts
 src/functions/getInject.ts
 src/functions/ref/setRef.ts
 src/functions/ref/toShallowRefItem.ts
+src/classes/ComponentStorageInstance.ts
+src/classes/ComponentStorage.ts
+src/functions/dxtFunctionalPlugin.ts

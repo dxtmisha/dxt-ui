@@ -1,0 +1,116 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/ComponentStorage - Kho lưu trữ Component toàn cục'/>
+
+# Lớp ComponentStorage
+
+Facade tĩnh để lưu trữ và phân giải các component Vue kèm thuộc tính mặc định. Sử dụng một thực thể `ComponentStorageInstance` dùng chung duy nhất trong toàn bộ tiến trình chạy (bao gồm cả SSR).
+
+## Tính năng chính
+
+- **Giao diện tĩnh** — đăng ký và lấy component mà không cần khởi tạo thủ công.
+- **Khởi tạo lười (Lazy initialization)** — thực thể `ComponentStorageInstance` dùng chung chỉ được tạo ở lần truy cập đầu tiên qua `getItem()`.
+- **Tích hợp với `dxtFunctionalPlugin`** — tự động nạp danh sách component khi truyền tùy chọn `components` vào plugin khởi tạo ứng dụng.
+
+## Cách dùng
+
+```typescript
+import { ComponentStorage } from '@dxtmisha/functional'
+import { defineComponent, h } from 'vue'
+
+const MyButton = /*#__PURE__*/ defineComponent({
+  name: 'MyButton',
+  render: () => h('button')
+})
+
+ComponentStorage.add('button', MyButton, { class: 'btn-base' })
+const resolved = /*#__PURE__*/ ComponentStorage.get('button', { class: 'btn-primary' })
+```
+
+## Phương thức
+
+### Truy xuất và kiểm tra
+
+#### `get`
+
+`static get< C extends Component = Component, P extends ItemList = ItemList >( name: string, props?: P ): ComponentStorageReturn<C, P> | undefined`
+
+Lấy một component đã đăng ký theo tên và hợp nhất thuộc tính mặc định của nó với thuộc tính truyền vào.
+
+**Tham số:**
+
+- `name: string` — Tên component.
+- `props?: P` — Các thuộc tính bổ sung để hợp nhất với mặc định.
+
+**Trả về:** `ComponentStorageReturn<C, P> | undefined` — Component cùng thuộc tính đã hợp nhất hoặc `undefined` nếu không tìm thấy.
+
+```typescript
+const item = /*#__PURE__*/ ComponentStorage.get('button', { disabled: true })
+```
+
+#### `has`
+
+`static has(name: string): boolean`
+
+Kiểm tra xem component với tên chỉ định đã được đăng ký trong kho lưu trữ hay chưa.
+
+**Tham số:**
+
+- `name: string` — Tên component.
+
+**Trả về:** `boolean` — `true` nếu component tồn tại.
+
+```typescript
+const exists = /*#__PURE__*/ ComponentStorage.has('button')
+```
+
+#### `getItem`
+
+`static getItem(): ComponentStorageInstance`
+
+Trả về thực thể `ComponentStorageInstance` dùng chung.
+
+**Trả về:** `ComponentStorageInstance` — Thực thể `ComponentStorageInstance` dùng chung.
+
+```typescript
+const instance = /*#__PURE__*/ ComponentStorage.getItem()
+```
+
+### Đăng ký
+
+#### `add`
+
+`static add< C extends Component = Component, P extends ItemList = ItemList >( name: string, component: C, props?: P ): void`
+
+Đăng ký một component Vue cùng các thuộc tính mặc định tùy chọn vào kho lưu trữ.
+
+**Tham số:**
+
+- `name: string` — Tên component.
+- `component: C` — Component Vue.
+- `props?: P` — Các thuộc tính mặc định cho component.
+
+**Trả về:** `void` — Không có giá trị trả về.
+
+```typescript
+ComponentStorage.add('button', MyButton, { type: 'button' })
+```
+
+#### `addList`
+
+`static addList(list: ComponentStorageList): void`
+
+Đăng ký danh sách các component Vue cùng thuộc tính mặc định của chúng vào kho lưu trữ.
+
+**Tham số:**
+
+- `list: ComponentStorageList` — Danh sách các mục đăng ký component.
+
+**Trả về:** `void` — Không có giá trị trả về.
+
+```typescript
+ComponentStorage.addList([
+  { name: 'button', component: MyButton, props: { type: 'button' } }
+])
+```
+

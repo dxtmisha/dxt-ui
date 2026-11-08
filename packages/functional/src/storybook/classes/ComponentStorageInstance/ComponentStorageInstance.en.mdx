@@ -1,0 +1,115 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/ComponentStorageInstance - Component Storage Instance'/>
+
+# ComponentStorageInstance Class
+
+Instance class for storing and resolving Vue components with default properties. When retrieving a component by name, it merges the registered default properties with the passed properties using `toBind`.
+
+## Key Features
+
+- **Isolated registry** — stores component entries in a native `Map<string, ComponentStorageData>`.
+- **Property merging** — `get()` merges default and custom properties via `toBind`, combining `class` and `style` into arrays.
+- **Method chaining** — `add()` and `addList()` return the current instance `this`.
+
+## Initialization
+
+`constructor( list?: ComponentStorageList )`
+
+**Parameters:**
+
+- `list?: ComponentStorageList` — Initial list of components to register.
+
+## Usage
+
+```typescript
+import { ComponentStorageInstance } from '@dxtmisha/functional'
+import { defineComponent, h } from 'vue'
+
+const MyButton = /*#__PURE__*/ defineComponent({
+  name: 'MyButton',
+  render: () => h('button')
+})
+
+const storage = /*#__PURE__*/ new ComponentStorageInstance([
+  { name: 'button', component: MyButton, props: { class: 'btn-base', type: 'button' } }
+])
+
+const resolved = /*#__PURE__*/ storage.get('button', { class: 'btn-primary' })
+```
+
+## Methods
+
+### Retrieval and lookup
+
+#### `get`
+
+`get< C extends Component = Component, P extends ItemList = ItemList >( name: string, props?: P ): ComponentStorageReturn<C, P> | undefined`
+
+Retrieves a registered component by name and merges its default properties with the passed properties.
+
+**Parameters:**
+
+- `name: string` — Component name.
+- `props?: P` — Additional properties to merge with defaults.
+
+**Returns:** `ComponentStorageReturn<C, P> | undefined` — Component with merged properties or `undefined` if not found.
+
+```typescript
+const item = /*#__PURE__*/ storage.get('button', { disabled: true })
+```
+
+#### `has`
+
+`has(name: string): boolean`
+
+Checks if a component with the specified name is registered in the storage.
+
+**Parameters:**
+
+- `name: string` — Component name.
+
+**Returns:** `boolean` — `true` if the component exists.
+
+```typescript
+const exists = /*#__PURE__*/ storage.has('button')
+```
+
+### Registration
+
+#### `add`
+
+`add< C extends Component = Component, P extends ItemList = ItemList >( name: string, component: C, props?: P ): this`
+
+Registers a Vue component with optional default properties in the storage.
+
+**Parameters:**
+
+- `name: string` — Component name.
+- `component: C` — Vue component.
+- `props?: P` — Default properties for the component.
+
+**Returns:** `this` — Current instance.
+
+```typescript
+storage.add('button', MyButton, { type: 'button' })
+```
+
+#### `addList`
+
+`addList(list: ComponentStorageList): this`
+
+Registers a list of Vue components with their default properties in the storage.
+
+**Parameters:**
+
+- `list: ComponentStorageList` — List of component registration items.
+
+**Returns:** `this` — Current instance.
+
+```typescript
+storage.addList([
+  { name: 'button', component: MyButton, props: { type: 'button' } }
+])
+```
+

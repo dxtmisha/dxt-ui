@@ -1,4 +1,6 @@
 // Classes
+export * from './classes/ComponentStorage'
+export * from './classes/ComponentStorageInstance'
 export * from './classes/design/DesignComp'
 export * from './classes/design/DesignComponents'
 export * from './classes/design/DesignConstructorAbstract'
@@ -71,6 +73,7 @@ export * from './functions/watchEffectAsync'
 
 // Types
 export * from './types/apiTypes'
+export * from './types/componentStorageTypes'
 export * from './types/constructorTypes'
 export * from './types/errorTypes'
 export * from './types/listTypes'

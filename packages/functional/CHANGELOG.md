@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2026-11-08
+
+### Added
+- **`ComponentStorage` & `ComponentStorageInstance`**:
+  - Introduced `ComponentStorageInstance` class (`src/classes/ComponentStorageInstance.ts`) for registering and resolving Vue components with default properties (`get`, `has`, `add`, `addList`), automatically merging default and passed properties via `toBind`.
+  - Introduced `ComponentStorage` static facade (`src/classes/ComponentStorage.ts`) providing shared runtime-wide access (`get`, `has`, `getItem`, `add`, `addList`).
+  - Added `ComponentStorageData`, `ComponentStorageItem`, `ComponentStorageList`, and `ComponentStorageReturn` type definitions in `src/types/componentStorageTypes.ts` and exported them in `src/library.ts`.
+  - Added comprehensive unit test suites (`ComponentStorageInstance.test.ts`, `ComponentStorage.test.ts`) and trilingual Storybook MDX documentation (EN, RU, VI).
+- **`dxtFunctionalPlugin` Component Registration**:
+  - Added `components?: ComponentStorageList` option to `FunctionalPluginOptions` in `dxtFunctionalPlugin` to register Vue components and default properties via `ComponentStorage.addList` prior to `executeUseGlobalInit()`.
+  - Updated unit tests in `dxtFunctionalPlugin.test.ts` and synchronized Storybook MDX documentation (EN, RU, VI).
+
 ## [2.0.3] - 2026-11-08
 
 ### Changed

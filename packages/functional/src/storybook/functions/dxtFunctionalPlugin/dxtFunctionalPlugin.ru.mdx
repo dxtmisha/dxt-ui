@@ -45,7 +45,8 @@ app.mount('#app')
 5.  **Meta**: Настраивает суффикс заголовка по умолчанию через `useMeta().setSuffix()`.
 6.  **Router**: Регистрирует экземпляр роутера в `RouterItemRef`, делая его доступным глобально.
 7.  **ErrorCenter**: Настраивает причины ошибок (`ErrorCenter.addList()`), обработчики (`ErrorCenter.addHandlerList()`) и функции обратного вызова (`ErrorCenter.addCallback()`).
-8.  **executeUseGlobalInit**: Запускает пакетную инициализацию всех глобальных синглтонов, определенных с помощью `executeUseGlobal`.
+8.  **ComponentStorage**: Регистрирует переданный список компонентов Vue со свойствами по умолчанию через `ComponentStorage.addList()`.
+9.  **executeUseGlobalInit**: Запускает пакетную инициализацию всех глобальных синглтонов, определенных с помощью `executeUseGlobal`.
 
 ## Типы данных
 
@@ -63,6 +64,7 @@ app.mount('#app')
 - `errorCauses?: ErrorCenterCauseList` — Список предопределенных причин ошибок для `ErrorCenter`.
 - `errorHandlers?: ErrorCenterHandlerList` — Список обработчиков ошибок для `ErrorCenter`.
 - `errorCallbacks?: ErrorCenterHandlerCallback[]` — Список функций обратного вызова при возникновении ошибок.
+- `components?: ComponentStorageList` — Список компонентов Vue для регистрации в хранилище `ComponentStorage`.
 
 ### `ApiConfig`
 
