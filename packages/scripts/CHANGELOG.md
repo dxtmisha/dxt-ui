@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.1] - 2026-11-08
+
+### Changed
+- **Constructor Scaffolding Templates (`src/media/templates/constructors/`)**:
+  - Migrated `Constructors.ts` logic orchestrator template to inherit from `DesignLogicAbstract`, exporting `ConstructorsConstructors`, declaring `constructorItems: ConstrItems<ConstructorsConstructors>`, and providing default `binds`, `classes`, and `styles` getters with bilingual JSDoc comments.
+  - Updated `ConstructorsDesign.tsx` to wire `main: this.item.classes` in `initClasses()`, `...this.item.styles` in `initStyles()`, and `...this.getAttrs()`, `style: this.styles?.value`, `...this.item.binds`, and typed `children: VNode[]` in `initRender()`.
+  - Exported `ConstructorsPropsToken` in `props.ts` and updated slot typing in `types.ts` (`ConstructorsSlots`) to `default?(props: Record<string, never>): VNode[]` with complete bilingual JSDoc documentation.
+- **Template Identifier Replacement (`DesignReplace.getNameFile`)**:
+  - Added handling in `src/classes/Design/DesignReplace.ts` to preserve the `Constructors` suffix on compound identifiers (`ConstructorsConstructors` -> `<Component>Constructors`) during template generation.
+
 ## [1.6.0] - 2026-11-08
 
 ### Changed

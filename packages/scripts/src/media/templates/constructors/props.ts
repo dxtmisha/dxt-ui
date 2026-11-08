@@ -1,8 +1,10 @@
-type ConstructorsPropsToken = {
+/** Constructors design token properties / Свойства дизайн-токенов Constructors */
+export type ConstructorsPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties of the Constructors component / Базовые свойства компонента Constructors */
 export type ConstructorsPropsBasic = {
   // TODO: Location for a custom property / Место для пользовательского свойства
 }

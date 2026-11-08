@@ -1,3 +1,4 @@
+// import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 /**
@@ -32,7 +33,7 @@ export interface ConstructorsExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ConstructorsSlots {
-  // default? (props: any): any
+  // default?(props: Record<string, never>): VNode[]
 }
 
 /**
@@ -41,6 +42,7 @@ export interface ConstructorsSlots {
  * Тип, описывающий подклассы.
  */
 export type ConstructorsClasses = {
+  /** Root element classes / Классы корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

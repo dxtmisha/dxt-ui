@@ -86,6 +86,7 @@ export class DesignReplace {
       .replace(/\[component]/g, this.structure.getComponentName())
       .replace(/DesignComponent/g, this.structure.getFileName())
       .replace(new RegExp(this.mark, 'g'), this.component)
+      .replace(new RegExp(`${this.component}${this.component}`, 'g'), `${this.component}${this.mark}`)
       .replace(new RegExp(`DefineSetupFn${this.component}`, 'g'), 'DefineSetupFnComponent')
   }
 

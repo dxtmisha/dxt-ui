@@ -1,29 +1,67 @@
-import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrItems,
+  type ConstrStyles,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
-import type { ConstructorsComponents, ConstructorsEmits, ConstructorsSlots } from './types'
 import type { ConstructorsProps } from './props'
+import type {
+  ConstructorsComponents,
+  ConstructorsEmits,
+  ConstructorsSlots
+} from './types'
+
+/** Constructors dependency constructors type / Тип конструкторов зависимостей Constructors */
+export type ConstructorsConstructors = {
+  // item: typeof ConstructorsItem
+}
 
 /**
- * Constructors
+ * Base class for working with the Constructors component.
+ *
+ * Базовый класс для работы с компонентом Constructors.
  */
-export class Constructors {
+export class Constructors extends DesignLogicAbstract<
+  HTMLDivElement,
+  ConstructorsComponents,
+  ConstructorsEmits,
+  ConstructorsSlots,
+  ConstructorsProps,
+  ConstructorsConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ConstructorsConstructors> = {
+  }
+
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * Returns the root element bindings.
+   *
+   * Возвращает привязки корневого элемента.
+   * @returns root element bindings / привязки корневого элемента
    */
-  constructor(
-    protected readonly props: ConstructorsProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ConstructorsComponents, ConstructorsProps>,
-    protected readonly slots?: ConstructorsSlots,
-    protected readonly emits?: ConstrEmit<ConstructorsEmits>
-  ) {
+  get binds(): ConstrBind {
+    return {}
+  }
+
+  /**
+   * Values for the class.
+   *
+   * Значения для класса.
+   * @returns classes values / значения классов
+   */
+  get classes(): ConstrClassObject {
+    return {}
+  }
+
+  /**
+   * Calculates all properties for the style of the element.
+   *
+   * Вычисляет все свойства для стиля элемента.
+   * @returns styles object / объект стилей
+   */
+  get styles(): ConstrStyles {
+    return {}
   }
 }
