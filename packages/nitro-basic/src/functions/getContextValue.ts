@@ -7,7 +7,7 @@ import { appContext } from './initContext'
  * @param key Key name / Имя ключа
  * @returns context value or undefined / значение контекста или undefined
  */
-export function getContextValue<T = any>(key: string): T | undefined {
+export function getContextValue<T = unknown>(key: string): T | undefined {
   const context = appContext.tryUse() as Record<string, T> | null
   return context?.[key]
 }

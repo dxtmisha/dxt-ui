@@ -1,3 +1,3 @@
-// md5:88b0895d95af036f32d97300cbebcc7b true
-/** Gets the origin (protocol and domain) from a Request URL. @keywords request origin, url origin, http protocol domain */
+// md5:5e87db9f4e14b457b022b0c7588d1066 true
+/** Gets the origin (protocol and domain) from the request URL. @keywords request origin, url, domain, protocol, host */
 export declare function getRequestOrigin(request: Request): string;

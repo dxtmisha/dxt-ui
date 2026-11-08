@@ -8,7 +8,11 @@ import { NITRO_APP_STORAGE } from '../types/nitroAppTypes'
  * @param app Vue application instance / Экземпляр приложения Vue
  * @returns object containing the server storage container / объект с контейнером серверного хранилища
  */
-export function initServerStorage<T>(app: App<T>): { storage: Record<string, any> } {
+export function initServerStorage<T>(app: App<T>): {
+  storage: {
+    storage: Record<string, unknown>
+  }
+} {
   const data = { storage: {} }
 
   app.provide(NITRO_APP_STORAGE, data)

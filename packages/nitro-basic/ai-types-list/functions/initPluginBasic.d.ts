@@ -1,4 +1,4 @@
-// md5:85a979e754f7135279691942ed34fbd1 true
+// md5:a69e016e5d0f02f02f62fc666f38524b true
 import type { NitroApp } from 'nitro/types';
-/** Initializes basic functions for Nitro application. @keywords nitro plugin basic initialize config */
-export declare function initPluginBasic<N extends NitroApp & Record<string, any> = NitroApp>(_: N, config?: NitroAppBasicConfig): void;
+/** Initializes basic functionality and configuration for Nitro applications. @keywords nitro, plugin, init, initialize, basic */
+export declare function initPluginBasic<N = NitroApp>(_?: N, config?: NitroAppBasicConfig): void;

@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.21] - 2026-11-08
+
+### Changed
+- **`useHeaders`**: Replaced function overloads with a single generic conditional signature `useHeaders<T extends string | undefined = undefined>(name?: T): (T extends string ? string : Headers) | undefined` and refined empty/undefined header name handling.
+- **`getContextValue`**: Changed default generic parameter from `any` to `unknown` (`getContextValue<T = unknown>(key: string): T | undefined`) for stricter type safety.
+- **`initServerStorage` & `uiServerStorage`**: Replaced `Record<string, any>` with `Record<string, unknown>` and refined the explicit return type of `initServerStorage` to `{ storage: { storage: Record<string, unknown> } }`.
+- **`uiCreateApp`**: Constrained the root component generic parameter to `A extends Component = Component` and added an explicit return type `{ app: App<Element>; router: Router | undefined; options: NitroAppOptions }`.
+- **`initPluginBasic`**: Simplified generic signature to `initPluginBasic<N = NitroApp>(_?: N, config: NitroAppBasicConfig = {}): void`, making the Nitro application instance parameter optional.
+- **`initClientRouter` & `initServerRouter`**: Updated the `router?: Router` parameter to be optional.
+- **`initContext`**: Added `/* #__PURE__ */` annotation to `appContext` creation for better tree-shaking.
+- **Type Safety & JSDoc**: Added explicit return types and bilingual `@returns` JSDoc tags across `getRequestOrigin`, `getRequestUrl`, `initApi`, `initCookieStorage`, `initHeaders`, `initPluginApiCache`, `initScriptsJson`, `initSsrApp`, `uiCreateClientApp`, `uiCreateServerApp`, and `uiCreateSsrRouter`.
+- **Tests & Documentation**: Expanded unit test coverage across all composables and SSR functions, updated Storybook MDX documentation (`en`, `ru`, `vi`), and synchronized AI type declarations.
+- **Dependencies**: Updated `@dxtmisha/functional` (`>=2.0.3`) and `@dxtmisha/functional-basic` (`>=2.1.4`) dependency version ranges.
+
+### Fixed
+- **`uiCreateServerApp`**: Switched `String.prototype.replace` replacements for SSR HTML placeholders (`<!--ssr-lang-->`, `<!--ssr-title-->`, `<!--ssr-meta-->`, `<!--ssr-scriptsJson-->`, `<!--ssr-outlet-->`, `<!--ssr-teleports-->`) to callback functions (`() => value`) to prevent unintended `$` replacement pattern evaluation in rendered HTML and hydration scripts.
+
+## [0.1.20] - 2026-11-03
+
+### Changed
+- **Dependencies**: Updated `@dxtmisha/functional`, `@dxtmisha/functional-basic`, `nitro`, `vue`, and `vue-router` dependency version ranges.
+
 ## [0.1.19] - 2026-09-07
 
 ### Changed

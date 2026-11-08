@@ -1,7 +1,6 @@
-// md5:4eb52e7bf7f84e2ac98f3cb1f2967479 true
+// md5:0f4c6332274785c6cdfaa294ca34130e true
 import type { App } from 'vue';
-
-/** Initializes the cookie storage plugin for the Vue application. @keywords cookie, storage, plugin, vue, request */
+/** Initializes the cookie storage plugin for the Vue application from an HTTP request. @keywords cookie, storage, plugin, request, vue */
 export declare function initCookieStorage<T>(app: App<T>, request: Request): {
     cookie: string;
 };

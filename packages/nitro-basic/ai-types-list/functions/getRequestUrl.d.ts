@@ -1,3 +1,3 @@
-// md5:846aa42c912949f2756bc78ad785e044 true
-/** Gets the pathname from the request URL. @keywords pathname, request, url, path */
+// md5:03c08c1cc7539130c123a9af01eff070 true
+/** Gets the pathname from the request URL. @keywords request, url, pathname, http */
 export declare function getRequestUrl(request: Request): string;

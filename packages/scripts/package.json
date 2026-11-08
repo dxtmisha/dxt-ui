@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/scripts",
   "private": false,
-  "version": "1.5.6",
+  "version": "1.6.0",
   "type": "module",
   "description": "CLI tools, AI integration scripts, and automation utilities for DXT UI — automated component scaffolding, Figma layout generation, library packaging, documentation building, screenshot captures, and AI prompt processing.",
   "keywords": [
@@ -98,9 +98,9 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": ">=2.0.1",
-    "@dxtmisha/functional-basic": ">=2.0.1",
-    "@dxtmisha/media": ">=1.0.0",
+    "@dxtmisha/functional": ">=2.0.3",
+    "@dxtmisha/functional-basic": ">=2.1.4",
+    "@dxtmisha/media": ">=1.1.2",
     "sass": ">=1.107.1",
     "typescript": ">=6.0.3",
     "vite-node": ">=6.0.0",

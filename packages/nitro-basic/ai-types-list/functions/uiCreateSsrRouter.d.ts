@@ -1,4 +1,4 @@
-// md5:aeef16e59f6e3dfec590185664e0acaa true
-import { type RouteRecordRaw } from 'vue-router';
-/** Creates a router instance for SSR or client-side runtime. @keywords ssr, router, create router, vue-router */
-export declare function uiCreateSsrRouter(routes: RouteRecordRaw[], options?: NitroAppRouterOptions, base?: string): import("vue-router")._RouterClassic;
+// md5:e8a8225e68229e28cc4da1481a5f02d7 true
+import { type Router, type RouteRecordRaw } from 'vue-router';
+/** Creates a router instance for SSR or client-side runtime. @keywords router, ssr, vue-router, navigation, route */
+export declare function uiCreateSsrRouter(routes: RouteRecordRaw[], options?: NitroAppRouterOptions, base?: string): Router;

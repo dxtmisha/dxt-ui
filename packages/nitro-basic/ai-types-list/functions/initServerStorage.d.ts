@@ -1,7 +1,8 @@
-// md5:59a16a164bc9b3ebabaf869f50171fc9 true
+// md5:e3df14ab3c6de0273fe26377a7312936 true
 import type { App } from 'vue';
-
-/** Initializes the server storage plugin for a Vue application. @keywords server storage, plugin, init, vue */
+/** Initializes the server storage plugin for the Vue application. @keywords server storage, vue plugin, state initialization */
 export declare function initServerStorage<T>(app: App<T>): {
-    storage: Record<string, any>;
+    storage: {
+        storage: Record<string, unknown>;
+    };
 };

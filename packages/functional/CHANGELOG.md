@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.3] - 2026-11-08
+
+### Changed
+- **Dependencies**:
+  - Updated `@dxtmisha/functional-basic` (`>=2.1.4`) and `@dxtmisha/media` (`>=1.1.2`) dependency version ranges.
+
 ## [2.0.2] - 2026-11-08
 
 ### Added

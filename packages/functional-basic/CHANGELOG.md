@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.4] - 2026-11-08
+
+### Changed
+- **Dependencies**:
+  - Updated `@dxtmisha/media` dependency to `>=1.1.2`.
+
 ## [2.1.3] - 2026-11-08
 
 ### Added
