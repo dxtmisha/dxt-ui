@@ -19,7 +19,8 @@ export const wikiWindow: StorybookArgsToList = {
         ru: 'Позиционирует окно во вьюпорте: центр, края или углы'
       },
       options: []
-    }
+    },
+    hide: true
   },
   'window.autoTabIndex': {
     type: StorybookControl.boolean,
@@ -29,7 +30,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Automatically manages the tab index for the window',
         ru: 'Автоматически управляет индексом табуляции для окна'
       }
-    }
+    },
+    hide: true
   },
   'window.axis': {
     type: StorybookControl.select,
@@ -40,7 +42,8 @@ export const wikiWindow: StorybookArgsToList = {
         ru: 'Основная ось позиционирования относительно якоря или курсора; работает только в режиме меню (adaptive = "menu")'
       },
       options: []
-    }
+    },
+    hide: true
   },
   'window.beforeClosing': {
     type: StorybookControl.object,
@@ -50,7 +53,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Hook called before closing; return false to prevent closing',
         ru: 'Хук вызывается перед закрытием; возврат false предотвращает закрытие'
       }
-    }
+    },
+    hide: true
   },
   'window.beforeOpening': {
     type: StorybookControl.object,
@@ -60,7 +64,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Hook called before opening; return false to prevent opening',
         ru: 'Хук вызывается перед открытием; возврат false предотвращает открытие'
       }
-    }
+    },
+    hide: true
   },
   'window.inert': {
     type: StorybookControl.boolean,
@@ -70,7 +75,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Blocks interaction with external elements',
         ru: 'Блокирует управление внешними элементами'
       }
-    }
+    },
+    hide: true
   },
   'window.closeMobileHide': {
     type: StorybookControl.boolean,
@@ -80,7 +86,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Hides close control on mobile',
         ru: 'Скрывает управление закрытием на мобильных'
       }
-    }
+    },
+    hide: true
   },
   'window.closeOnEsc': {
     type: StorybookControl.boolean,
@@ -90,7 +97,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Closes the window when the ESC key is pressed',
         ru: 'Закрывает окно при нажатии клавиши ESC'
       }
-    }
+    },
+    hide: true
   },
   'window.closing': {
     type: StorybookControl.object,
@@ -100,7 +108,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Hook called during closing; return false to interrupt',
         ru: 'Хук вызывается во время закрытия; возврат false прерывает процесс'
       }
-    }
+    },
+    hide: true
   },
   'window.contextmenu': {
     type: StorybookControl.boolean,
@@ -110,7 +119,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Allows opening on right‑click (context menu)',
         ru: 'Позволяет открывать по правому клику (контекстное меню)'
       }
-    }
+    },
+    hide: true
   },
   'window.dense': {
     type: StorybookControl.boolean,
@@ -120,6 +130,11 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Compact layout: reduces internal paddings for a denser window',
         ru: 'Компактное оформление: уменьшает внутренние отступы для более плотного окна'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      staticMode: true,
+      adaptive: 'static'
     }
   },
   'window.divider': {
@@ -130,7 +145,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Displays top/bottom divider depending on scroll position',
         ru: 'Отображает разделитель сверху/снизу в зависимости от положения скролла'
       }
-    }
+    },
+    hide: true
   },
   'window.flash': {
     type: StorybookControl.boolean,
@@ -140,7 +156,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Disables animations for instant display',
         ru: 'Отключает анимации для мгновенного отображения'
       }
-    }
+    },
+    hide: true
   },
   'window.fullscreen': {
     type: StorybookControl.boolean,
@@ -151,7 +168,7 @@ export const wikiWindow: StorybookArgsToList = {
         ru: 'Заполняет экран без отступов'
       }
     },
-    isDemo: true
+    hide: true
   },
   'window.imageSize': {
     type: StorybookControl.select,
@@ -165,6 +182,8 @@ export const wikiWindow: StorybookArgsToList = {
     },
     isDemo: true,
     demoOptions: {
+      staticMode: true,
+      adaptive: 'static',
       image: 'https://drscdn.500px.org/photo/294267357/q%3D90_m%3D2048/v2?sig=adb52b9add18ad21ab4a86b99695377f2a18821c609d42149b3426dfb99cf924',
       imagePosition: 'left'
     }
@@ -177,7 +196,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Sets offsets for positioning relative to edges or anchor; works only in menu mode (adaptive = "menu")',
         ru: 'Задает отступы для позиционирования относительно краев или якоря; работает только в режиме меню (adaptive = "menu")'
       }
-    }
+    },
+    hide: true
   },
   'window.opening': {
     type: StorybookControl.object,
@@ -187,7 +207,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Hook called during opening; return false to interrupt',
         ru: 'Хук вызывается в процессе открытия; возврат false прерывает процесс'
       }
-    }
+    },
+    hide: true
   },
   'window.openOnArrowDown': {
     type: StorybookControl.boolean,
@@ -197,7 +218,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Opens the window when the arrow down key is pressed',
         ru: 'Открывает окно при нажатии клавиши стрелка вниз'
       }
-    }
+    },
+    hide: true
   },
   'window.origin': {
     type: StorybookControl.select,
@@ -208,7 +230,8 @@ export const wikiWindow: StorybookArgsToList = {
         ru: 'Задает точку трансформации для анимации открытия'
       },
       options: []
-    }
+    },
+    hide: true
   },
   'window.overElement': {
     type: StorybookControl.object,
@@ -218,7 +241,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Sets an anchor element for positioning',
         ru: 'Задает опорный элемент для позиционирования'
       }
-    }
+    },
+    hide: true
   },
   'window.overscroll': {
     type: StorybookControl.boolean,
@@ -228,7 +252,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Keeps horizontal scrolling inside the window',
         ru: 'Удерживает горизонтальный скролл внутри окна'
       }
-    }
+    },
+    hide: true
   },
   'window.persistent': {
     type: StorybookControl.boolean,
@@ -238,7 +263,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Prevents closing when clicking outside',
         ru: 'Предотвращает закрытие при клике за пределами окна'
       }
-    }
+    },
+    hide: true
   },
   'window.preparation': {
     type: StorybookControl.object,
@@ -248,7 +274,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Hook called during preparation before opening',
         ru: 'Хук вызывается на этапе подготовки перед открытием'
       }
-    }
+    },
+    hide: true
   },
   'window.staticMode': {
     type: StorybookControl.boolean,
@@ -272,6 +299,7 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Matches window width to control width (menu)',
         ru: 'Подгоняет ширину окна под ширину контрола (меню)'
       }
-    }
+    },
+    hide: true
   }
 }

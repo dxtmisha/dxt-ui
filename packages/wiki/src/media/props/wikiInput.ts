@@ -30,6 +30,7 @@ export const wikiInput: StorybookArgsToList = {
         en: 'Input type that determines the behavior and validation of the field',
         ru: 'Тип инпута, определяющий поведение и валидацию поля'
       }
-    }
+    },
+    hide: true
   }
 }

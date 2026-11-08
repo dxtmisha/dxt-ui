@@ -8,5 +8,6 @@ import { type StorybookArgsToList } from '../../types/storybookTypes'
  * Объект wikiSliderField содержит описание свойств для компонента SliderField
  */
 export const wikiSliderField: StorybookArgsToList = {
-  'sliderField.marks': wikiSlider['slider.marks']
+  'sliderField.marks': wikiSlider['slider.marks'],
+  'sliderField.vertical': wikiSlider['slider.vertical']
 }

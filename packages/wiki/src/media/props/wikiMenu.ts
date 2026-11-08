@@ -67,7 +67,12 @@ export const wikiMenu: StorybookArgsToList = {
         en: 'Custom request handler configuration for fetching menu data.',
         ru: 'Пользовательская конфигурация обработчика запросов для получения данных меню.'
       }
-    }
+    },
+    hide: true
   },
-  'menu.selected': wikiList['list.selected'] as StorybookArgsToItem
+  'menu.selected': {
+    ...(wikiList['list.selected'] as StorybookArgsToItem),
+    isDemo: false,
+    hide: true
+  }
 }

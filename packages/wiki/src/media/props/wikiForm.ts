@@ -64,7 +64,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Step size for input arrows (type="number" only) when using increment/decrement buttons',
         ru: 'Размер шага для стрелок ввода (только для type="number") при использовании кнопок увеличения/уменьшения'
       }
-    }
+    },
+    hide: true
   },
   autocapitalize: {
     type: StorybookControl.string,

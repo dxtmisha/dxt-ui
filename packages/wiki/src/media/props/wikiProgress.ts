@@ -30,7 +30,8 @@ export const wikiProgress: StorybookArgsToList = {
         en: 'Enables linear progress bar display',
         ru: 'Включает отображение линейной полосы прогресса'
       }
-    }
+    },
+    hide: true
   },
   'progress.circular': {
     type: StorybookControl.boolean,
@@ -52,7 +53,8 @@ export const wikiProgress: StorybookArgsToList = {
         en: 'Type of indeterminate progress animation',
         ru: 'Тип анимации неопределенного прогресса'
       }
-    }
+    },
+    hide: true
   },
   'progress.position': {
     type: StorybookControl.select,
@@ -75,6 +77,7 @@ export const wikiProgress: StorybookArgsToList = {
         en: 'Controls the visibility of the progress indicator',
         ru: 'Управляет видимостью индикатора прогресса'
       }
-    }
+    },
+    hide: true
   }
 }

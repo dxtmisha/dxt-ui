@@ -31,6 +31,7 @@ export const wikiInputFileItem: StorybookArgsToList = {
         thumbnail: 'https://picsum.photos/200/200?random=1',
         crop: [0, 0, 0, 0]
       }
-    }
+    },
+    hide: true
   }
 }

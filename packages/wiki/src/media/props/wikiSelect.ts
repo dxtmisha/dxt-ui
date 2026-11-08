@@ -18,6 +18,10 @@ export const wikiSelect: StorybookArgsToList = {
         en: 'Allows editing the selected value directly inside the input when not in multiple mode',
         ru: 'Позволяет редактировать выбранное значение прямо в input при одиночном выборе'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      value: 'home'
     }
   },
   'select.inputSearchAttrs': {
@@ -29,7 +33,8 @@ export const wikiSelect: StorybookArgsToList = {
         en: 'Additional bindings or attributes for the search input inside the dropdown',
         ru: 'Дополнительные привязки или атрибуты для поля поиска внутри выпадающего меню'
       }
-    }
+    },
+    hide: true
   },
   'select.option': {
     type: StorybookControl.object,
@@ -53,6 +58,7 @@ export const wikiSelect: StorybookArgsToList = {
         { label: 'Team', value: 'team', icon: 'group' },
         { label: 'Documents', value: 'documents', icon: 'description' }
       ]
-    }
+    },
+    hide: true
   }
 }

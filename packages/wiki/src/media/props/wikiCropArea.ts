@@ -18,7 +18,8 @@ export const wikiCropArea: StorybookArgsToList = {
         en: 'Disables bottom resize handles (bottom, left-bottom, right-bottom)',
         ru: 'Отключает нижние ручки изменения размера (bottom, left-bottom, right-bottom)'
       }
-    }
+    },
+    hide: true
   },
   'cropArea.disabledLeft': {
     type: StorybookControl.boolean,
@@ -28,7 +29,8 @@ export const wikiCropArea: StorybookArgsToList = {
         en: 'Disables left resize handles (left, left-top, left-bottom)',
         ru: 'Отключает левые ручки изменения размера (left, left-top, left-bottom)'
       }
-    }
+    },
+    hide: true
   },
   'cropArea.disabledRight': {
     type: StorybookControl.boolean,
@@ -38,7 +40,8 @@ export const wikiCropArea: StorybookArgsToList = {
         en: 'Disables right resize handles (right, right-top, right-bottom)',
         ru: 'Отключает правые ручки изменения размера (right, right-top, right-bottom)'
       }
-    }
+    },
+    hide: true
   },
   'cropArea.disabledTop': {
     type: StorybookControl.boolean,
@@ -48,7 +51,7 @@ export const wikiCropArea: StorybookArgsToList = {
         en: 'Disables top resize handles (top, left-top, right-top)',
         ru: 'Отключает верхние ручки изменения размера (top, left-top, right-top)'
       }
-    }
+    },
+    hide: true
   }
 }
-

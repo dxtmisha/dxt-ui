@@ -20,7 +20,8 @@ export const wikiProgressBar: StorybookArgsToList = {
         ru: 'Фокусируемый индекс элемента'
       }
     },
-    isDemo: true
+    isDemo: true,
+    demo: '2'
   },
   'progressBar.value': {
     ...wikiValue.value,
@@ -38,7 +39,6 @@ export const wikiProgressBar: StorybookArgsToList = {
         { index: '3', value: 30, label: '30%' }
       ]
     },
-    hide: false,
-    isDemo: true
+    hide: true
   }
 }

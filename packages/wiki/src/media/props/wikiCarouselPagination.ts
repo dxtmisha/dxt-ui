@@ -20,7 +20,8 @@ export const wikiCarouselPagination: StorybookArgsToList = {
         ru: 'Общее количество элементов'
       },
       value: '10'
-    }
+    },
+    hide: true
   },
   'carouselPagination.dynamic': {
     type: StorybookControl.boolean,
@@ -30,7 +31,8 @@ export const wikiCarouselPagination: StorybookArgsToList = {
         en: 'Enables dynamic mode with scaling bullets',
         ru: 'Включает динамический режим с масштабированием буллетов'
       }
-    }
+    },
+    isDemo: true
   },
   'carouselPagination.selected': {
     type: StorybookControl.string,
@@ -42,7 +44,8 @@ export const wikiCarouselPagination: StorybookArgsToList = {
         ru: 'Текущий активный слайд'
       },
       value: '1'
-    }
+    },
+    hide: true
   },
   'carouselPagination.vertical': {
     type: StorybookControl.boolean,
@@ -52,7 +55,8 @@ export const wikiCarouselPagination: StorybookArgsToList = {
         en: 'Vertical layout orientation',
         ru: 'Вертикальная ориентация'
       }
-    }
+    },
+    isDemo: true
   },
   'carouselPagination.visible': {
     type: StorybookControl.number,
@@ -64,6 +68,7 @@ export const wikiCarouselPagination: StorybookArgsToList = {
         ru: 'Количество отображаемых буллетов в динамическом режиме'
       },
       value: '5'
-    }
+    },
+    hide: true
   }
 }

@@ -18,7 +18,8 @@ export const wikiListItem: StorybookArgsToList = {
         en: 'Indicates if the item is a menu item. Adds aria-checked attribute for accessibility.',
         ru: 'Указывает, является ли элемент пунктом меню. Добавляет атрибут aria-checked для доступности.'
       }
-    }
+    },
+    hide: true
   },
   'listItem.isMenu': {
     type: StorybookControl.boolean,
@@ -28,7 +29,8 @@ export const wikiListItem: StorybookArgsToList = {
         en: 'Indicates if the item is a menu. Adds aria-haspopup="menu" and aria-expanded attributes for accessibility.',
         ru: 'Указывает, является ли элемент меню. Добавляет атрибуты aria-haspopup="menu" и aria-expanded для доступности.'
       }
-    }
+    },
+    hide: true
   },
   'listItem.listId': {
     type: StorybookControl.string,
@@ -50,7 +52,8 @@ export const wikiListItem: StorybookArgsToList = {
         en: 'Visual open state of the list item',
         ru: 'Визуальное открытое состояние элемента списка'
       }
-    }
+    },
+    hide: true
   },
   'listItem.parent': {
     type: StorybookControl.string,

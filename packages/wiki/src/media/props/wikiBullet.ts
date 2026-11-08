@@ -25,6 +25,6 @@ export const wikiBullet: StorybookArgsToList = {
         'Third item'
       ]
     },
-    isDemo: true
+    hide: true
   }
 }

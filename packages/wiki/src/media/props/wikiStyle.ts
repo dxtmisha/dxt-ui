@@ -20,8 +20,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Controls adaptive display behavior for different screen sizes and media queries',
         ru: 'Управляет адаптивным поведением отображения для разных размеров экрана и медиа‑запросов'
       }
-    }
-
+    },
+    hide: true
   },
   align: {
     type: StorybookControl.select,
@@ -71,7 +71,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Sets color based on palette class; otherwise uses default color',
         ru: 'Задает цвет на основе класса палитры; иначе используется стандартный цвет'
       }
-    }
+    },
+    hide: true
   },
   barsAdaptive: {
     type: StorybookControl.select,
@@ -81,7 +82,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Indicates whether the bars (header toolbar) should be shown',
         ru: 'Показывает, нужно ли отображать бар (верхнюю панель)'
       }
-    }
+    },
+    hide: true
   },
   block: {
     type: StorybookControl.boolean,
@@ -91,7 +93,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Enables block mode (component expands to full width)',
         ru: 'Включает блочный режим (компонент растягивается на всю ширину)'
       }
-    }
+    },
+    hide: true
   },
   closeButton: {
     type: StorybookControl.boolean,
@@ -138,7 +141,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Controls container‑based layout behavior with adaptive width constraints',
         ru: 'Управляет контейнерной раскладкой с адаптивными ограничениями ширины'
       }
-    }
+    },
+    hide: true
   },
   controlPosition: {
     type: StorybookControl.select,
@@ -162,7 +166,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Default height of the component',
         ru: 'Высота компонента по умолчанию'
       }
-    }
+    },
+    hide: true
   },
   dense: {
     type: StorybookControl.boolean,
@@ -184,7 +189,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Enables visual divider between elements',
         ru: 'Включает визуальный разделитель между элементами'
       }
-    }
+    },
+    isDemo: true
   },
   dividerLabel: {
     type: StorybookControl.select,
@@ -195,7 +201,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Adds divider only under the label',
         ru: 'Добавляет разделитель только под меткой'
       }
-    }
+    },
+    hide: true
   },
   dividerX: {
     type: StorybookControl.boolean,
@@ -205,7 +212,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Enables visual divider along the X-axis (vertical divider)',
         ru: 'Включает визуальный разделитель по оси X (вертикальный разделитель)'
       }
-    }
+    },
+    hide: true
   },
   dividerY: {
     type: StorybookControl.boolean,
@@ -215,7 +223,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Enables visual divider along the Y-axis (horizontal divider)',
         ru: 'Включает визуальный разделитель по оси Y (горизонтальный разделитель)'
       }
-    }
+    },
+    hide: true
   },
   dot: {
     type: StorybookControl.boolean,
@@ -240,7 +249,10 @@ export const wikiStyle: StorybookArgsToList = {
       }
     },
     isDemo: true,
-    demo: 'oklch(53.2% 0.157 131.589)'
+    demo: 'oklch(53.2% 0.157 131.589)',
+    demoOptions: {
+      fill: 'oklch(53.2% 0.157 131.589)'
+    }
   },
   flexible: {
     type: StorybookControl.select,
@@ -250,7 +262,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Enables flexible layout behavior that automatically adapts to available space',
         ru: 'Включает гибкое поведение раскладки, автоматически адаптирующееся к доступному пространству'
       }
-    }
+    },
+    hide: true
   },
   height: {
     type: StorybookControl.select,
@@ -262,7 +275,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Sets component height',
         ru: 'Задает высоту компонента'
       }
-    }
+    },
+    hide: true
   },
   horizontalScrollAlign: {
     type: StorybookControl.select,
@@ -287,10 +301,7 @@ export const wikiStyle: StorybookArgsToList = {
       },
       options: ['left', 'top']
     },
-    isDemo: true,
-    demoOptions: {
-      image: 'https://drscdn.500px.org/photo/294267357/q%3D90_m%3D2048/v2?sig=adb52b9add18ad21ab4a86b99695377f2a18821c609d42149b3426dfb99cf924'
-    }
+    hide: true
   },
   inverse: {
     type: StorybookControl.boolean,
@@ -311,7 +322,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Displays the component in skeleton mode',
         ru: 'Отображает компонент в режиме скелетона'
       }
-    }
+    },
+    hide: true
   },
   hasLabelMinWidth: {
     type: StorybookControl.boolean,
@@ -321,7 +333,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Indicates whether a minimum width should be applied to the label',
         ru: 'Определяет, нужно ли устанавливать минимальную ширину для метки'
       }
-    }
+    },
+    hide: true
   },
   margin: {
     type: StorybookControl.select,
@@ -347,7 +360,7 @@ export const wikiStyle: StorybookArgsToList = {
         ru: 'Задает максимальную ширину компонента'
       }
     },
-    isDemo: true
+    hide: true
   },
   overlay: {
     type: StorybookControl.boolean,
@@ -384,7 +397,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Applies horizontal padding based on grid indent values',
         ru: 'Применяет горизонтальные отступы на основе значений отступов сетки'
       }
-    }
+    },
+    hide: true
   },
   palette: {
     type: StorybookControl.select,
@@ -433,6 +447,10 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Adds rounded corners to the component',
         ru: 'Добавляет скругленные углы компоненту'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      overlay: true
     }
   },
   roundedFull: {
@@ -500,6 +518,10 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Sets text alignment within the element',
         ru: 'Задает выравнивание текста внутри элемента'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      adaptive: 'block'
     }
   },
   variant: {
@@ -526,7 +548,7 @@ export const wikiStyle: StorybookArgsToList = {
         ru: 'Задает ширину компонента'
       }
     },
-    isDemo: true
+    hide: true
   },
   wrap: {
     type: StorybookControl.boolean,

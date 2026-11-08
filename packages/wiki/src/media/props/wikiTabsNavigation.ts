@@ -26,7 +26,8 @@ export const wikiTabsNavigation: StorybookArgsToList = {
         { label: 'Dashboard', value: 'dashboard' },
         { label: 'Notifications', value: 'notifications' }
       ]
-    }
+    },
+    hide: true
   },
   'tabsNavigation.selected': {
     type: StorybookControl.text,
@@ -38,6 +39,7 @@ export const wikiTabsNavigation: StorybookArgsToList = {
         ru: 'Выбранное значение'
       },
       value: 'home'
-    }
+    },
+    hide: true
   }
 }

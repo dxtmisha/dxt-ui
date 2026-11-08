@@ -18,7 +18,8 @@ export const wikiGridItem: StorybookArgsToList = {
         en: 'Number of columns to span by default',
         ru: 'Количество занимаемых колонок по умолчанию'
       }
-    }
+    },
+    hide: true
   },
   'gridItem.sm': {
     type: StorybookControl.select,
@@ -28,7 +29,8 @@ export const wikiGridItem: StorybookArgsToList = {
         en: 'Number of columns to span on small screens (media: sm)',
         ru: 'Количество занимаемых колонок на маленьких экранах (media: sm)'
       }
-    }
+    },
+    hide: true
   },
   'gridItem.md': {
     type: StorybookControl.select,
@@ -38,7 +40,8 @@ export const wikiGridItem: StorybookArgsToList = {
         en: 'Number of columns to span on medium screens (media: md)',
         ru: 'Количество занимаемых колонок на средних экранах (media: md)'
       }
-    }
+    },
+    hide: true
   },
   'gridItem.lg': {
     type: StorybookControl.select,
@@ -48,7 +51,8 @@ export const wikiGridItem: StorybookArgsToList = {
         en: 'Number of columns to span on large screens (media: lg)',
         ru: 'Количество занимаемых колонок на больших экранах (media: lg)'
       }
-    }
+    },
+    hide: true
   },
   'gridItem.xl': {
     type: StorybookControl.select,
@@ -58,7 +62,8 @@ export const wikiGridItem: StorybookArgsToList = {
         en: 'Number of columns to span on extra large screens (media: xl)',
         ru: 'Количество занимаемых колонок на очень больших экранах (media: xl)'
       }
-    }
+    },
+    hide: true
   },
   'gridItem.xl2': {
     type: StorybookControl.select,
@@ -68,6 +73,7 @@ export const wikiGridItem: StorybookArgsToList = {
         en: 'Number of columns to span on 2xl screens (media: 2xl)',
         ru: 'Количество занимаемых колонок на экранах 2xl (media: 2xl)'
       }
-    }
+    },
+    hide: true
   }
 }

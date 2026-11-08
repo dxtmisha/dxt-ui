@@ -36,6 +36,10 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon alignment within the component',
         ru: 'Задает выравнивание иконки внутри компонента'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      description: 'Additional text to demonstrate alignment with multiple lines of content'
     }
   },
   iconArrowDown: {
@@ -280,7 +284,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon color based on palette class',
         ru: 'Задает цвет иконки на основе класса палитры'
       }
-    }
+    },
+    hide: true
   },
   iconPlus: {
     type: StorybookControl.string,
@@ -325,7 +330,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Controls visibility of icons in displayed items',
         ru: 'Управляет видимостью иконок в отображаемых элементах'
       }
-    }
+    },
+    hide: true
   },
   iconSort: {
     type: StorybookControl.string,
@@ -382,6 +388,10 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Aligns icon to the top of the container',
         ru: 'Выравнивает иконку по верхнему краю контейнера'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      description: 'Additional text to demonstrate alignment with multiple lines of content'
     }
   },
   iconTrailing: {
@@ -417,7 +427,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets trailing icon color based on palette class',
         ru: 'Задает цвет завершающей иконки на основе класса палитры'
       }
-    }
+    },
+    hide: true
   },
   iconTrailingTurnOnly: {
     type: StorybookControl.boolean,
@@ -495,6 +506,10 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Shows the icon only when the element is selected',
         ru: 'Показывает иконку только при выборе элемента'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      selected: 'apple'
     }
   }
 }

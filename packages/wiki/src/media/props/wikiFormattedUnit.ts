@@ -20,7 +20,8 @@ export const wikiFormattedUnit: StorybookArgsToList = {
         ru: 'Значение для форматирования'
       },
       value: '1000'
-    }
+    },
+    hide: true
   },
   'formattedUnit.unit': {
     type: StorybookControl.string,
@@ -32,6 +33,7 @@ export const wikiFormattedUnit: StorybookArgsToList = {
         ru: 'Единица измерения'
       },
       value: 'gram'
-    }
+    },
+    hide: true
   }
 }

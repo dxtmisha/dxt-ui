@@ -19,7 +19,9 @@ export const wikiSlider: StorybookArgsToList = {
         en: 'List of marks or tick values',
         ru: 'Список меток или делений'
       }
-    }
+    },
+    isDemo: true,
+    demo: [0, 25, 50, 75, 100]
   },
   'slider.vertical': {
     type: StorybookControl.boolean,

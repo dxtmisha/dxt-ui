@@ -18,14 +18,16 @@ export const wikiInputSocial: StorybookArgsToList = {
     options: {
       ...wikiIcon['icon.icon'].options,
       value: undefined
-    }
+    },
+    hide: true
   },
   'inputSocial.label': {
     type: wikiInformation.label.type,
     options: {
       ...wikiInformation.label.options,
       value: undefined
-    }
+    },
+    hide: true
   },
   'inputSocial.socialIcons': {
     type: StorybookControl.object,
@@ -49,6 +51,8 @@ export const wikiInputSocial: StorybookArgsToList = {
         ru: 'Тип социальной сети'
       },
       value: 'telegram'
-    }
+    },
+    isDemo: true,
+    demo: 'youtube'
   }
 }

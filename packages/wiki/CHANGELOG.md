@@ -35,12 +35,18 @@ All notable changes to this project will be documented in this file.
   - Expanded `wikiDescriptionsIcon.ts`, `icon.en.mdx`, `icon.ru.mdx`, `expose.isActive.en.mdx`, and `expose.isActive.ru.mdx` to document `DesignLogicAbstract` orchestrator capabilities, interactive `dynamic` mode (keyboard navigation, `@click` / `@clickLite`, automatic `role="button"`, `aria-label`, `aria-disabled`), default decorative `aria-hidden="true"` mode, `overlay` substrate, and exposed `isActive()`, `getValue()`, and `getDetail()` methods.
 - **`InputFileItem` Story Templates**:
   - Updated `wikiDescriptionsInputFileItem.ts` story layouts for `list`, `compact`, and `tile` appearances with `idle`, `uploading`, `uploaded`, and `error` statuses, `thumbnail` previews, and diverse file formats.
+- **AI Visual Demonstration Property Configurations (`isDemo`, `demo`, `demoOptions`, `hide`)**:
+  - Audited and standardized `isDemo`, `demo`, `demoOptions`, and `hide` across all property modules in `src/media/props/` (`wiki*.ts`) for `DxtTestWiki` / `DxtTestWikiPropItem` / `DxtTestWikiDemo`.
+  - Enabled visual demonstrations (`isDemo: true`) with explicit `demo` and `demoOptions` contexts for visual properties across shared and component-specific registries (`iconAlign`, `iconTop`, `iconWhenSelected`, `labelSeparator`, `color`, `hour`, `minute`, `second`, `unit`, `divider`, `fill`, `rounded`, `textAlign`, `itemCenter`, `reduction`, `showInput`, `showTime`, `showValueInLabel`, `alert.button`, `carouselPagination.dynamic` / `vertical`, `chipGroup.selected`, `clockDial.clock`, `inputCode.length`, `inputCodeItem.hide`, `inputSocial.socialType`, `mask.view` / `visiblePartly`, `menuButton.hideLabelValue` / `hideValueIcon`, `pagination.*`, `progressBar.focus`, `scrollbar.dividerBottom` / `dividerTop`, `select.editValue`, `skeletonItem.length`, `slider.marks`, `sliderField.vertical`, `table.captionBottom` / `foot`, and `window.dense` / `imageSize` in `staticMode`).
+  - Set `hide: true` on non-visual, behavioral, search/sort, validation, and default-populated data properties across 64 property modules so that every visible property card in `DxtTestWiki` renders a meaningful visual demonstration.
 - **Dependencies**:
   - Updated `@dxtmisha/functional` (`>=2.0.3`), `@dxtmisha/functional-basic` (`>=2.1.4`), `@dxtmisha/styles` (`>=1.0.14`), `@storybook/addon-docs` (`>=10.6.5`), `react` (`>=19.3.1`), and `vue` (`>=3.5.44`), and added `react-dom` (`>=19.3.1`) and `@types/react-dom` (`^19.3.0`) in `package.json`.
 
 ### Fixed
 - **`Image` Load Story Typing**:
   - Added explicit `ImageEventData` type import and annotation to the `onLoad` handler in `wikiDescriptionsImage.ts`.
+- **AI Demo Property Rendering**:
+  - Removed `demo: false` from `itemCenter` in `wikiOption.ts`, removed empty `options: []` from `vertical` in `wikiOption.ts`, and added `sliderField.vertical` in `wikiSliderField.ts` so `DxtTestWikiDemo` renders properly for boolean and multi-line alignment demos.
 
 ## [0.118.1] - 2026-10-05
 

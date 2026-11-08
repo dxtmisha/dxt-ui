@@ -18,6 +18,7 @@ export const wikiTableHeaderItem: StorybookArgsToList = {
         en: 'Header scope',
         ru: 'Область видимости заголовка'
       }
-    }
+    },
+    hide: true
   }
 }

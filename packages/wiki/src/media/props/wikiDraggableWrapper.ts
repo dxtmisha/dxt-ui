@@ -19,7 +19,8 @@ export const wikiDraggableWrapper: StorybookArgsToList = {
         en: 'Custom classes for the placeholder square element',
         ru: 'Пользовательские классы для элемента-заполнителя'
       }
-    }
+    },
+    hide: true
   },
   'draggableWrapper.delay': {
     type: StorybookControl.string,
@@ -30,6 +31,7 @@ export const wikiDraggableWrapper: StorybookArgsToList = {
         en: 'Delay before dragging starts in milliseconds',
         ru: 'Задержка перед началом перетаскивания в миллисекундах'
       }
-    }
+    },
+    hide: true
   }
 }

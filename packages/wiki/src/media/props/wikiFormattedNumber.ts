@@ -20,6 +20,7 @@ export const wikiFormattedNumber: StorybookArgsToList = {
         ru: 'Значение для форматирования'
       },
       value: '123456.78'
-    }
+    },
+    hide: true
   }
 }

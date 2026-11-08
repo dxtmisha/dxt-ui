@@ -19,6 +19,7 @@ export const wikiHeadroom: StorybookArgsToList = {
         ru: 'Целевой элемент прокрутки, селектор (строка) или окно для отслеживания событий прокрутки'
       },
       value: '#wiki-descriptions-headroom'
-    }
+    },
+    hide: true
   }
 }

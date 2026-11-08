@@ -19,7 +19,8 @@ export const wikiAlert: StorybookArgsToList = {
         ru: 'Значение или метка для кнопки закрытия/действия на правой стороне'
       }
     },
-    isDemo: true
+    isDemo: true,
+    demo: 'Action'
   },
   'alert.outline': {
     type: StorybookControl.boolean,

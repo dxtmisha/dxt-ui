@@ -73,7 +73,8 @@ export const wikiField: StorybookArgsToList = {
         en: 'Disables the next navigation control (right / plus)',
         ru: 'Отключает кнопку следующего управления (вправо / плюс)'
       }
-    }
+    },
+    hide: true
   },
   'field.disabledPrevious': {
     type: StorybookControl.boolean,
@@ -83,7 +84,8 @@ export const wikiField: StorybookArgsToList = {
         en: 'Disables the previous navigation control (left / minus)',
         ru: 'Отключает кнопку предыдущего управления (влево / минус)'
       }
-    }
+    },
+    hide: true
   },
   'field.filled': {
     type: StorybookControl.boolean,

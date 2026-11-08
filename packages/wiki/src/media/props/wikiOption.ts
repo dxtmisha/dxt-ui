@@ -18,7 +18,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables automatic behavior or state tracking for the component',
         ru: 'Включает автоматическое поведение или отслеживание состояния для компонента'
       }
-    }
+    },
+    hide: true
   },
   autoClose: {
     type: StorybookControl.boolean,
@@ -29,7 +30,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Closes the window/menu when clicking inside the content area',
         ru: 'Закрывает окно/меню при клике внутри области содержимого'
       }
-    }
+    },
+    hide: true
   },
   autosize: {
     type: StorybookControl.boolean,
@@ -40,7 +42,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Automatically adjusts the component size based on content',
         ru: 'Автоматически подстраивает размер компонента под содержимое'
       }
-    }
+    },
+    hide: true
   },
   axis: {
     type: StorybookControl.select,
@@ -78,7 +81,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Base cell dimension for the grid (width/height)',
         ru: 'Базовый размер ячейки для сетки (ширина/высота)'
       }
-    }
+    },
+    hide: true
   },
   clickable: {
     type: StorybookControl.boolean,
@@ -88,7 +92,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Whether the component or its elements are clickable',
         ru: 'Кликабелен ли компонент или его элементы'
       }
-    }
+    },
+    hide: true
   },
   clickOpen: {
     type: StorybookControl.boolean,
@@ -98,7 +103,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enable opening on click',
         ru: 'Включение открытия по клику'
       }
-    }
+    },
+    hide: true
   },
   colspan: {
     type: StorybookControl.string,
@@ -109,7 +115,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Number of columns the cell should span',
         ru: 'Количество объединяемых колонок для ячейки'
       }
-    }
+    },
+    hide: true
   },
   confirmDelete: {
     type: StorybookControl.boolean,
@@ -119,7 +126,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Whether to show confirmation dialog before delete',
         ru: 'Показывать ли диалог подтверждения перед удалением'
       }
-    }
+    },
+    hide: true
   },
   countryBlock: {
     type: StorybookControl.boolean,
@@ -129,7 +137,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Flag to disable dynamic country detection by phone number',
         ru: 'Флаг для отключения динамического определения страны по номеру телефона'
       }
-    }
+    },
+    hide: true
   },
   crop: {
     type: StorybookControl.boolean,
@@ -139,7 +148,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables image cropping for image files',
         ru: 'Включает кадрирование изображения для файлов-изображений'
       }
-    }
+    },
+    hide: true
   },
   currencyHide: {
     type: StorybookControl.boolean,
@@ -189,7 +199,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Mirrors the component depending on a site direction (RTL/LTR)',
         ru: 'Зеркально отражает компонент в зависимости от направления сайта (RTL/LTR)'
       }
-    }
+    },
+    hide: true
   },
   disappears: {
     type: StorybookControl.boolean,
@@ -200,7 +211,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Hides the element on scroll down and reveals it on scroll up',
         ru: 'Скрывает элемент при прокрутке вниз и показывает при прокрутке вверх'
       }
-    }
+    },
+    hide: true
   },
   dynamic: {
     type: StorybookControl.boolean,
@@ -233,7 +245,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables filter mode for search (hides non-matching items)',
         ru: 'Включает режим фильтрации для поиска (скрывает несовпадающие элементы)'
       }
-    }
+    },
+    hide: true
   },
   bleed: {
     type: StorybookControl.boolean,
@@ -243,7 +256,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Removes borders and rounded corners to render the component flush with its container',
         ru: 'Убирает границы и скругления для отображения компонента вплотную к контейнеру'
       }
-    }
+    },
+    hide: true
   },
   format: {
     type: StorybookControl.boolean,
@@ -278,7 +292,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Whether the message can contain HTML code',
         ru: 'Может ли сообщение содержать HTML‑код'
       }
-    }
+    },
+    hide: true
   },
   grid: {
     type: StorybookControl.boolean,
@@ -299,7 +314,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Whether to hide the component if only one item exists',
         ru: 'Скрывать ли компонент, если элемент всего один'
       }
-    }
+    },
+    hide: true
   },
   hideList: {
     type: StorybookControl.boolean,
@@ -309,7 +325,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Hides the internal List part of the Menu; shows only header/toolbar and other slots.',
         ru: 'Скрывает внутреннюю часть List в Menu; отображает только заголовок/панель и другие слоты.'
       }
-    }
+    },
+    hide: true
   },
   horizontalScrollBleed: {
     type: StorybookControl.boolean,
@@ -346,7 +363,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Indicates whether the window is in the DOM',
         ru: 'Указывает, присутствует ли окно в DOM'
       }
-    }
+    },
+    hide: true
   },
   interactive: {
     type: StorybookControl.boolean,
@@ -356,7 +374,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables interactive mode for the component',
         ru: 'Включает интерактивный режим для компонента'
       }
-    }
+    },
+    hide: true
   },
   invisible: {
     type: StorybookControl.boolean,
@@ -366,7 +385,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Makes content invisible upon activation before display',
         ru: 'Делает контент невидимым при активации до момента показа'
       }
-    }
+    },
+    hide: true
   },
   isSkeleton: {
     type: StorybookControl.boolean,
@@ -377,7 +397,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Displays the component in skeleton mode',
         ru: 'Отображает компонент в режиме скелетона'
       }
-    }
+    },
+    hide: true
   },
   itemCenter: {
     type: StorybookControl.boolean,
@@ -389,8 +410,10 @@ export const wikiOption: StorybookArgsToList = {
       }
     },
     isDemo: true,
-    demo: false,
-    demoOptions: { itemCenter: false }
+    demoOptions: {
+      itemCenter: false,
+      description: 'Additional text to demonstrate alignment with multiple lines of content'
+    }
   },
   keyLabel: {
     type: StorybookControl.string,
@@ -424,7 +447,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Limits the number of lines for the label text',
         ru: 'Ограничивает количество строк для текста метки'
       }
-    }
+    },
+    hide: true
   },
   labelMax: {
     type: StorybookControl.number,
@@ -450,7 +474,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Controls what label is shown in the dial-code trigger: country name, country code, or no label',
         ru: 'Определяет, какая метка отображается в триггере выбора кода: название страны, код страны или без метки'
       }
-    }
+    },
+    hide: true
   },
   lazy: {
     type: StorybookControl.boolean,
@@ -460,7 +485,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables lazy rendering or loading mode',
         ru: 'Включает режим ленивого рендеринга или загрузки'
       }
-    }
+    },
+    hide: true
   },
   limit: {
     type: StorybookControl.select,
@@ -472,7 +498,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Limits the number of simultaneously visible items',
         ru: 'Ограничивает количество одновременно видимых элементов'
       }
-    }
+    },
+    hide: true
   },
   magnet: {
     type: StorybookControl.boolean,
@@ -482,7 +509,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Magnetizes value or position to the nearest mark',
         ru: 'Притягивание значения или позиции к ближайшей метке'
       }
-    }
+    },
+    hide: true
   },
   maxlengthOnce: {
     type: StorybookControl.number,
@@ -493,7 +521,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'The number of characters remaining at which the screen reader starts announcing',
         ru: 'Количество оставшихся символов, при котором скринридер начинает произносить'
       }
-    }
+    },
+    hide: true
   },
   maxFileSize: {
     type: StorybookControl.number,
@@ -504,7 +533,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Maximum file size in bytes',
         ru: 'Максимальный размер файла в байтах'
       }
-    }
+    },
+    hide: true
   },
   maxPixel: {
     type: StorybookControl.number,
@@ -515,7 +545,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Maximum image dimension in pixels',
         ru: 'Максимальный размер изображения в пикселях'
       }
-    }
+    },
+    hide: true
   },
   native: {
     type: StorybookControl.boolean,
@@ -561,6 +592,10 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Whether to shorten the label to initials',
         ru: 'Нужно ли сокращать метку до инициалов'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      label: 'John Doe'
     }
   },
   rowspan: {
@@ -572,7 +607,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Number of rows the cell should span',
         ru: 'Количество объединяемых строк для ячейки'
       }
-    }
+    },
+    hide: true
   },
   scrollElement: {
     type: StorybookControl.text,
@@ -582,7 +618,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Target scrolling element, selector string or window for scroll event tracking',
         ru: 'Целевой элемент прокрутки, селектор (строка) или окно для отслеживания событий прокрутки'
       }
-    }
+    },
+    hide: true
   },
   showInput: {
     type: StorybookControl.boolean,
@@ -592,7 +629,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Show numeric input text boxes',
         ru: 'Показывать числовые поля ввода'
       }
-    }
+    },
+    isDemo: true
   },
   showLabel: {
     type: StorybookControl.boolean,
@@ -613,7 +651,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Whether to show the phone code',
         ru: 'Показывать ли код телефона'
       }
-    }
+    },
+    hide: true
   },
   showSearch: {
     type: StorybookControl.boolean,
@@ -623,7 +662,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Whether to show the search field',
         ru: 'Показывать ли поле поиска'
       }
-    }
+    },
+    hide: true
   },
   showThumbLabel: {
     type: StorybookControl.boolean,
@@ -633,7 +673,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Show thumb label',
         ru: 'Показывать метку ползунка'
       }
-    }
+    },
+    hide: true
   },
   showTime: {
     type: StorybookControl.boolean,
@@ -643,6 +684,12 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Show time',
         ru: 'Показывать время'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      clock: true,
+      hour: 10,
+      minute: 10
     }
   },
   showValue: {
@@ -653,7 +700,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Show current value badge',
         ru: 'Показывать метку текущего значения'
       }
-    }
+    },
+    hide: true
   },
   showValueInLabel: {
     type: StorybookControl.boolean,
@@ -663,7 +711,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Show value in label title',
         ru: 'Показывать значение в заголовке метки'
       }
-    }
+    },
+    isDemo: true
   },
   stickyEnable: {
     type: StorybookControl.boolean,
@@ -673,7 +722,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables active tracking for sticky positioning',
         ru: 'Включает активное отслеживание липкого позиционирования'
       }
-    }
+    },
+    hide: true
   },
   stickyLeft: {
     type: StorybookControl.boolean,
@@ -683,7 +733,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables sticky positioning for the cell from the left',
         ru: 'Включает липкое позиционирование для ячейки слева'
       }
-    }
+    },
+    hide: true
   },
   stickyScrollBottom: {
     type: StorybookControl.boolean,
@@ -693,7 +744,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables sticky positioning for the bottom scrollbar',
         ru: 'Включает прилипающий нижний скроллбар'
       }
-    }
+    },
+    hide: true
   },
   stickyScrollContainer: {
     type: StorybookControl.string,
@@ -704,7 +756,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Custom scroll container selector or element for sticky tracking',
         ru: 'Пользовательский селектор или элемент контейнера прокрутки для отслеживания липкости'
       }
-    }
+    },
+    hide: true
   },
   stickyTop: {
     type: StorybookControl.boolean,
@@ -714,7 +767,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables sticky positioning for the cell from the top',
         ru: 'Включает липкое позиционирование для ячейки сверху'
       }
-    }
+    },
+    hide: true
   },
   tag: {
     type: StorybookControl.string,
@@ -761,7 +815,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Custom display template used by the component',
         ru: 'Пользовательский шаблон отображения, используемый компонентом'
       }
-    }
+    },
+    hide: true
   },
   transformThreshold: {
     type: StorybookControl.number,
@@ -772,7 +827,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Transform threshold in pixels for transformation calculations',
         ru: 'Порог трансформации в пикселях для вычислений трансформации'
       }
-    }
+    },
+    hide: true
   },
   touchClose: {
     type: StorybookControl.boolean,
@@ -782,7 +838,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables closing the component by a swipe-down gesture on mobile devices',
         ru: 'Включает закрытие компонента жестом свайпа вниз на мобильных устройствах'
       }
-    }
+    },
+    hide: true
   },
   type: {
     type: StorybookControl.select,
@@ -802,7 +859,6 @@ export const wikiOption: StorybookArgsToList = {
     options: {
       category: StorybookCategory.option,
       type: 'string',
-      options: [],
       description: {
         en: 'Sets vertical alignment of elements',
         ru: 'Задает вертикальное выравнивание элементов'

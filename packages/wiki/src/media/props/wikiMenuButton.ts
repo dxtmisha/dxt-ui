@@ -20,6 +20,10 @@ export const wikiMenuButton: StorybookArgsToList = {
         en: 'Whether to hide the label when a value is selected',
         ru: 'Скрывать ли метку, если выбрано значение'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      selected: 'task-management'
     }
   },
   'menuButton.hideValueIcon': {
@@ -30,6 +34,10 @@ export const wikiMenuButton: StorybookArgsToList = {
         en: 'Whether to hide the value if an icon is present',
         ru: 'Скрывать ли значение, если присутствует иконка'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      selected: 'task-management'
     }
   },
   'menuButton.inputSearchAttrs': wikiSelect['select.inputSearchAttrs'],

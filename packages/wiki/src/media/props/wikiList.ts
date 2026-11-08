@@ -18,7 +18,8 @@ export const wikiList: StorybookArgsToList = {
         en: 'Selected item for focus state. Defines which item should be visually focused in the list.',
         ru: 'Выбранный элемент для состояния фокуса. Определяет, какой элемент должен быть визуально сфокусирован в списке.'
       }
-    }
+    },
+    hide: true
   },
   'list.inputSearchAttrs': {
     type: StorybookControl.object,
@@ -251,7 +252,8 @@ export const wikiList: StorybookArgsToList = {
           icon: 'star'
         }
       ]
-    }
+    },
+    hide: true
   },
   'list.lite': {
     type: StorybookControl.boolean,
@@ -275,7 +277,8 @@ export const wikiList: StorybookArgsToList = {
         en: 'Threshold value that works when lite mode is enabled (lite: true). Defines the maximum number of items before additional optimizations are applied in lite mode.',
         ru: 'Пороговое значение, которое работает, когда включен lite режим (lite: true). Определяет максимальное количество элементов перед применением дополнительных оптимизаций в lite режиме.'
       }
-    }
+    },
+    hide: true
   },
   'list.selected': {
     type: StorybookControl.string,

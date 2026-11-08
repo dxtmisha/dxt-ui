@@ -45,7 +45,8 @@ export const wikiValue: StorybookArgsToList = {
         ru: 'Пользовательский цвет для компонента'
       }
     },
-    isDemo: true
+    isDemo: true,
+    demo: 'oklch(53.2% 0.157 131.589)'
   },
   columns: {
     type: StorybookControl.array,
@@ -56,7 +57,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Column index names',
         ru: 'Имена индексов колонок'
       }
-    }
+    },
+    hide: true
   },
   currency: {
     type: StorybookControl.string,
@@ -83,7 +85,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Total item count',
         ru: 'Общее количество элементов'
       }
-    }
+    },
+    hide: true
   },
   countryDefault: {
     type: StorybookControl.string,
@@ -94,7 +97,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Default country code (ISO 3166-1 alpha-2)',
         ru: 'Код страны по умолчанию (ISO 3166-1 alpha-2)'
       }
-    }
+    },
+    hide: true
   },
   countryList: {
     type: StorybookControl.array,
@@ -104,7 +108,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Filter countries by code (ISO 3166-1 alpha-2).',
         ru: 'Фильтр стран по кодам (ISO 3166-1 alpha-2).'
       }
-    }
+    },
+    hide: true
   },
   crop: {
     type: StorybookControl.array,
@@ -115,7 +120,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Initial or current crop coordinates [top, right, bottom, left]',
         ru: 'Начальные или текущие координаты кадрирования [сверху, справа, снизу, слева]'
       }
-    }
+    },
+    hide: true
   },
   detail: {
     type: StorybookControl.object,
@@ -162,7 +168,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Fraction configuration for numeric masks (digits count or special mode)',
         ru: 'Настройка дробной части для числовых масок (количество знаков или режим)'
       }
-    }
+    },
+    hide: true
   },
   highlight: {
     type: StorybookControl.string,
@@ -186,7 +193,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Minimum length of highlight value to start highlighting',
         ru: 'Минимальная длина значения highlight для начала выделения'
       }
-    }
+    },
+    hide: true
   },
   hour: {
     type: StorybookControl.number,
@@ -197,7 +205,11 @@ export const wikiValue: StorybookArgsToList = {
         ru: 'Текущее значение часа'
       }
     },
-    isDemo: true
+    isDemo: true,
+    demo: 10,
+    demoOptions: {
+      clock: true
+    }
   },
   href: {
     type: StorybookControl.string,
@@ -234,7 +246,11 @@ export const wikiValue: StorybookArgsToList = {
         ru: 'Текущее значение минут'
       }
     },
-    isDemo: true
+    isDemo: true,
+    demo: 25,
+    demoOptions: {
+      clock: true
+    }
   },
   page: {
     type: StorybookControl.string,
@@ -245,7 +261,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Current page number for pagination',
         ru: 'Номер текущей страницы для пагинации'
       }
-    }
+    },
+    hide: true
   },
   search: {
     type: StorybookControl.string,
@@ -256,7 +273,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Search query string',
         ru: 'Строка поискового запроса'
       }
-    }
+    },
+    hide: true
   },
   second: {
     type: StorybookControl.number,
@@ -267,7 +285,11 @@ export const wikiValue: StorybookArgsToList = {
         ru: 'Текущее значение секунд'
       }
     },
-    isDemo: true
+    isDemo: true,
+    demo: 45,
+    demoOptions: {
+      clock: true
+    }
   },
   slide: {
     type: StorybookControl.string,
@@ -291,7 +313,8 @@ export const wikiValue: StorybookArgsToList = {
         ru: 'Список вкладок или свойства TabsNavigation'
       },
       value: wikiTabsNavigation?.['tabsNavigation.list']?.options?.value
-    }
+    },
+    hide: true
   },
   to: {
     type: StorybookControl.string,
@@ -327,7 +350,9 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Unit of measurement for formatting',
         ru: 'Единица измерения для форматирования'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'kilometer'
   },
   value: {
     type: StorybookControl.string,

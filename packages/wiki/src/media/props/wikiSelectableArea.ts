@@ -31,6 +31,6 @@ export const wikiSelectableArea: StorybookArgsToList = {
         ru: 'Массив или строка текущих выбранных значений'
       }
     },
-    isDemo: true
+    hide: true
   }
 }

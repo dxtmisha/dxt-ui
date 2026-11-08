@@ -69,7 +69,8 @@ export const wikiBars: StorybookArgsToList = {
         en: 'Provides configuration for the back button',
         ru: 'Предоставляет конфигурацию для кнопки назад'
       }
-    }
+    },
+    hide: true
   },
   'bars.backActionHide': {
     type: StorybookControl.boolean,

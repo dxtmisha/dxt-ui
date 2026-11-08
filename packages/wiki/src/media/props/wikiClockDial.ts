@@ -19,7 +19,12 @@ export const wikiClockDial: StorybookArgsToList = {
         ru: 'Режим отображения часов (без выбора)'
       }
     },
-    isDemo: true
+    isDemo: true,
+    demoOptions: {
+      hour: 10,
+      minute: 10,
+      second: 30
+    }
   },
   'clockDial.type': {
     type: StorybookControl.select,

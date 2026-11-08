@@ -24,6 +24,10 @@ export const wikiTable: StorybookArgsToList = {
         en: 'Display table caption at the bottom of the table',
         ru: 'Отображать подпись таблицы внизу таблицы'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      caption: 'Table caption'
     }
   },
   'table.columns': {
@@ -56,7 +60,8 @@ export const wikiTable: StorybookArgsToList = {
         en: 'Widths of columns via colgroup',
         ru: 'Ширина колонок через colgroup'
       }
-    }
+    },
+    hide: true
   },
   'table.foot': {
     type: StorybookControl.object,
@@ -66,6 +71,11 @@ export const wikiTable: StorybookArgsToList = {
         en: 'Table footer data',
         ru: 'Данные подвала таблицы'
       }
+    },
+    isDemo: true,
+    demo: {
+      id: 'Total',
+      name: '12 records'
     }
   },
   'table.header': {
@@ -97,7 +107,8 @@ export const wikiTable: StorybookArgsToList = {
         en: 'Sticky positioning of the table header at the top',
         ru: 'Липкое позиционирование шапки таблицы сверху'
       }
-    }
+    },
+    hide: true
   },
   'table.list': {
     type: StorybookControl.array,
@@ -125,5 +136,9 @@ export const wikiTable: StorybookArgsToList = {
     hide: true
   },
   'table.rows': wikiPagination['pagination.rows'],
-  'table.selected': wikiList['list.selected'] as StorybookArgsToItem
+  'table.selected': {
+    ...(wikiList['list.selected'] as StorybookArgsToItem),
+    isDemo: false,
+    hide: true
+  }
 }

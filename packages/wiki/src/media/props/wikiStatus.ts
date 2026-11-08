@@ -18,7 +18,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Sets the element to an active state',
         ru: 'Переводит элемент в активное состояние'
       }
-    }
+    },
+    hide: true
   },
   cancelShow: {
     type: StorybookControl.boolean,
@@ -28,7 +29,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Used only when cancel=auto: allows showing cancel (обычно при наличии значения). Ignored for always.',
         ru: 'Работает только при cancel=auto: разрешает показ (обычно при значении). Игнорируется для always.'
       }
-    }
+    },
+    hide: true
   },
   disabled: {
     type: StorybookControl.boolean,
@@ -71,7 +73,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Forces the display of the element regardless of other conditions',
         ru: 'Принудительно отображает элемент независимо от других условий'
       }
-    }
+    },
+    hide: true
   },
   hide: {
     type: StorybookControl.boolean,
@@ -92,7 +95,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Indicates that the control has a value and adjusts visuals (e.g., floating label)',
         ru: 'Указывает, что у элемента есть значение, и корректирует визуальное состояние (например, плавающая метка)'
       }
-    }
+    },
+    hide: true
   },
   loading: {
     type: StorybookControl.boolean,
@@ -124,7 +128,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Read-only state of the element',
         ru: 'Состояние только для чтения элемента'
       }
-    }
+    },
+    hide: true
   },
   selected: {
     type: StorybookControl.boolean,
@@ -148,7 +153,7 @@ export const wikiStatus: StorybookArgsToList = {
         ru: 'Текущий статус или состояние компонента'
       }
     },
-    isDemo: true
+    hide: true
   },
   success: {
     type: StorybookControl.boolean,
@@ -180,7 +185,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Validation status of the component',
         ru: 'Статус валидации компонента'
       }
-    }
+    },
+    hide: true
   },
   visible: {
     type: StorybookControl.boolean,
@@ -190,6 +196,7 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Controls the visibility of the component',
         ru: 'Управляет видимостью компонента'
       }
-    }
+    },
+    hide: true
   }
 }

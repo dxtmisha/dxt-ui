@@ -18,7 +18,8 @@ export const wikiTooltip: StorybookArgsToList = {
         en: 'Delay before showing the tooltip',
         ru: 'Задержка перед появлением подсказки'
       }
-    }
+    },
+    hide: true
   },
   'tooltip.delayHide': {
     type: StorybookControl.number,
@@ -28,7 +29,8 @@ export const wikiTooltip: StorybookArgsToList = {
         en: 'Delay before hiding the tooltip',
         ru: 'Задержка перед скрытием подсказки'
       }
-    }
+    },
+    hide: true
   },
   'tooltip.indent': {
     type: StorybookControl.number,
@@ -38,7 +40,8 @@ export const wikiTooltip: StorybookArgsToList = {
         en: 'Indent from the element',
         ru: 'Отступ от элемента'
       }
-    }
+    },
+    hide: true
   },
   'tooltip.top': {
     type: StorybookControl.boolean,
@@ -48,6 +51,7 @@ export const wikiTooltip: StorybookArgsToList = {
         en: 'Displaying the tooltip on top of the element',
         ru: 'Отображение подсказки поверх элемента'
       }
-    }
+    },
+    hide: true
   }
 }

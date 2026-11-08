@@ -28,6 +28,7 @@ export const wikiDialog: StorybookArgsToList = {
         en: 'Automatically closes the dialog when the OK button is clicked',
         ru: 'Автоматически закрывает диалог при клике на кнопку OK'
       }
-    }
+    },
+    hide: true
   }
 }

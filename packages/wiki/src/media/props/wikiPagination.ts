@@ -18,7 +18,8 @@ export const wikiPagination: StorybookArgsToList = {
         en: 'Whether to enable adaptive mode for show more button',
         ru: 'Включить ли адаптивный режим для кнопки "Показать еще"'
       }
-    }
+    },
+    isDemo: true
   },
   'pagination.adaptiveMorePrev': {
     type: StorybookControl.boolean,
@@ -28,6 +29,10 @@ export const wikiPagination: StorybookArgsToList = {
         en: 'Whether to enable adaptive mode for show previous button',
         ru: 'Включить ли адаптивный режим для кнопки "Показать предыдущие"'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      showMorePrev: true
     }
   },
   'pagination.count': {
@@ -40,7 +45,8 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Общее количество элементов'
       },
       value: '100'
-    }
+    },
+    hide: true
   },
   'pagination.ellipsis': {
     type: StorybookControl.string,
@@ -50,6 +56,11 @@ export const wikiPagination: StorybookArgsToList = {
         en: 'Ellipsis text separator',
         ru: 'Текст многоточия-разделителя'
       }
+    },
+    isDemo: true,
+    demo: '***',
+    demoOptions: {
+      showPagination: true
     }
   },
   'pagination.ends': {
@@ -61,7 +72,8 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Количество отображаемых кнопок у первой и последней страниц'
       },
       value: 1
-    }
+    },
+    hide: true
   },
   'pagination.hideIfOne': {
     type: StorybookControl.boolean,
@@ -72,7 +84,8 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Скрывать ли пагинацию, если страница всего одна'
       },
       value: true
-    }
+    },
+    hide: true
   },
   'pagination.menuRows': {
     type: StorybookControl.array,
@@ -83,7 +96,8 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Список вариантов количества строк'
       },
       value: [10, 25, 50, 100]
-    }
+    },
+    hide: true
   },
   'pagination.rows': {
     type: StorybookControl.string,
@@ -95,7 +109,8 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Количество строк на странице'
       },
       value: '10'
-    }
+    },
+    hide: true
   },
   'pagination.showArrows': {
     type: StorybookControl.boolean,
@@ -105,7 +120,8 @@ export const wikiPagination: StorybookArgsToList = {
         en: 'Whether to show the next and back buttons',
         ru: 'Показывать ли кнопки «Назад» и «Вперед»'
       }
-    }
+    },
+    isDemo: true
   },
   'pagination.showEnds': {
     type: StorybookControl.boolean,
@@ -116,7 +132,8 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Показывать ли первую и последнюю страницы и многоточие между ними'
       },
       value: true
-    }
+    },
+    hide: true
   },
   'pagination.showFirstLast': {
     type: StorybookControl.boolean,
@@ -126,7 +143,8 @@ export const wikiPagination: StorybookArgsToList = {
         en: 'Whether to show the first and last page buttons',
         ru: 'Показывать ли кнопки перехода к первой и последней страницам'
       }
-    }
+    },
+    isDemo: true
   },
   'pagination.showInfo': {
     type: StorybookControl.boolean,
@@ -137,7 +155,8 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Показывать ли информацию о диапазоне страниц'
       },
       value: true
-    }
+    },
+    hide: true
   },
   'pagination.showMore': {
     type: StorybookControl.boolean,
@@ -148,7 +167,8 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Показывать ли кнопку "Показать еще"'
       },
       value: true
-    }
+    },
+    hide: true
   },
   'pagination.showMorePrev': {
     type: StorybookControl.boolean,
@@ -158,7 +178,8 @@ export const wikiPagination: StorybookArgsToList = {
         en: 'Whether to show "Show previous" button',
         ru: 'Показывать ли кнопку "Показать предыдущие"'
       }
-    }
+    },
+    isDemo: true
   },
   'pagination.showPagination': {
     type: StorybookControl.boolean,
@@ -168,7 +189,8 @@ export const wikiPagination: StorybookArgsToList = {
         en: 'Whether to show the page navigation buttons',
         ru: 'Показывать ли панель с кнопками страниц'
       }
-    }
+    },
+    isDemo: true
   },
   'pagination.showRowsPerPageLabel': {
     type: StorybookControl.boolean,
@@ -178,7 +200,8 @@ export const wikiPagination: StorybookArgsToList = {
         en: 'Whether to show the text rows per page',
         ru: 'Показывать ли текст количества строк на странице'
       }
-    }
+    },
+    isDemo: true
   },
   'pagination.value': {
     type: StorybookControl.string,
@@ -190,7 +213,8 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Номер текущей страницы'
       },
       value: '3'
-    }
+    },
+    hide: true
   },
   'pagination.visible': {
     type: StorybookControl.number,
@@ -201,6 +225,7 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Количество отображаемых ссылок на страницы'
       },
       value: 3
-    }
+    },
+    hide: true
   }
 }

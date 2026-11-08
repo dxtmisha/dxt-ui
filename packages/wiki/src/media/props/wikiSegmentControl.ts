@@ -23,7 +23,8 @@ export const wikiSegmentControl: StorybookArgsToList = {
         { label: 'Profile', value: 'profile' },
         { label: 'Messages', value: 'messages' }
       ]
-    }
+    },
+    hide: true
   },
   'segmentControl.selected': {
     type: StorybookControl.text,
@@ -35,6 +36,7 @@ export const wikiSegmentControl: StorybookArgsToList = {
         ru: 'Выбранное значение'
       },
       value: 'home'
-    }
+    },
+    hide: true
   }
 }

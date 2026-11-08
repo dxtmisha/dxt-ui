@@ -18,7 +18,8 @@ export const wikiMotionSticky: StorybookArgsToList = {
         en: 'CSS class applied when the element becomes sticky',
         ru: 'CSS-класс, применяемый, когда элемент становится липким'
       }
-    }
+    },
+    hide: true
   },
   'motionSticky.elementScroll': {
     type: StorybookControl.text,
@@ -29,6 +30,7 @@ export const wikiMotionSticky: StorybookArgsToList = {
         ru: 'Элемент контейнера прокрутки или селектор'
       },
       value: '#design-sticky-demo'
-    }
+    },
+    hide: true
   }
 }

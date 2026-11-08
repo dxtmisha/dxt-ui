@@ -19,7 +19,8 @@ export const wikiScrollbar: StorybookArgsToList = {
         en: 'Show divider lines at top and bottom depending on scroll position',
         ru: 'Показывать разделительные линии сверху и снизу в зависимости от положения скролла'
       }
-    }
+    },
+    hide: true
   },
   'scrollbar.dividerBottom': {
     type: StorybookControl.boolean,
@@ -30,7 +31,8 @@ export const wikiScrollbar: StorybookArgsToList = {
         en: 'Show the divider line at the bottom',
         ru: 'Показывать разделительную линию снизу'
       }
-    }
+    },
+    isDemo: true
   },
   'scrollbar.dividerHide': {
     type: StorybookControl.boolean,
@@ -41,7 +43,8 @@ export const wikiScrollbar: StorybookArgsToList = {
         en: 'Hide divider lines',
         ru: 'Скрыть разделительные линии'
       }
-    }
+    },
+    hide: true
   },
   'scrollbar.dividerTop': {
     type: StorybookControl.boolean,
@@ -52,7 +55,8 @@ export const wikiScrollbar: StorybookArgsToList = {
         en: 'Show the divider line at the top',
         ru: 'Показывать разделительную линию сверху'
       }
-    }
+    },
+    isDemo: true
   },
   'scrollbar.inverse': {
     type: StorybookControl.boolean,
@@ -63,7 +67,8 @@ export const wikiScrollbar: StorybookArgsToList = {
         en: 'Invert divider line behavior - show lines when the scroll is at beginning/end',
         ru: 'Инвертировать поведение разделительных линий - показывать линии, когда скролл в начале/конце'
       }
-    }
+    },
+    hide: true
   },
   'scrollbar.standard': {
     type: StorybookControl.boolean,
@@ -74,7 +79,8 @@ export const wikiScrollbar: StorybookArgsToList = {
         en: 'Use standard browser scrollbar',
         ru: 'Использовать стандартный скролл браузера'
       }
-    }
+    },
+    hide: true
   },
   'scrollbar.visible': {
     type: StorybookControl.boolean,
@@ -84,6 +90,7 @@ export const wikiScrollbar: StorybookArgsToList = {
         en: 'Controls element visibility and scrolling behavior (overflow: visible)',
         ru: 'Управляет видимостью элемента и поведением прокрутки (overflow: visible)'
       }
-    }
+    },
+    hide: true
   }
 }

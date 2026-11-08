@@ -34,7 +34,8 @@ export const wikiIcon: StorybookArgsToList = {
         ru: 'Значение основной иконки'
       },
       value: 'visibility'
-    }
+    },
+    hide: true
   },
   'icon.iconActive': {
     type: StorybookControl.string,
@@ -46,7 +47,8 @@ export const wikiIcon: StorybookArgsToList = {
         ru: 'Значение активной иконки'
       },
       value: 'visibility_off'
-    }
+    },
+    hide: true
   },
 
   // Style

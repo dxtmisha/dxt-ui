@@ -64,7 +64,12 @@ export const wikiSkeletonItem: StorybookArgsToList = {
         ru: 'Ожидаемая длина или диапазон [min, max] случайного текста, генерируемого для элемента скелетона'
       }
     },
-    isDemo: true
+    isDemo: true,
+    demo: 3,
+    demoOptions: {
+      text: true,
+      label: ''
+    }
   },
   'skeletonItem.text': {
     type: StorybookControl.boolean,

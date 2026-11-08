@@ -19,7 +19,8 @@ export const wikiRadio: StorybookArgsToList = {
         en: 'The value that determines whether the radio is selected (for groups)',
         ru: 'Значение, которое определяет, выбран ли радио (для групп)'
       }
-    }
+    },
+    hide: true
   },
   'radio.value': {
     type: StorybookControl.boolean,

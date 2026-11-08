@@ -20,7 +20,8 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
         ru: 'Текущее количество символов'
       },
       value: 25
-    }
+    },
+    hide: true
   },
   counterShow: {
     type: StorybookControl.boolean,

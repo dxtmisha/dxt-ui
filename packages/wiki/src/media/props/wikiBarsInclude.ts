@@ -29,7 +29,8 @@ export const wikiBarsInclude: StorybookArgsToList = {
         en: 'Hides the back button in the bars',
         ru: 'Скрывает кнопку назад в барах'
       }
-    }
+    },
+    hide: true
   },
   barsDescription: {
     type: StorybookControl.string,

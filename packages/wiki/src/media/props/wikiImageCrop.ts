@@ -21,6 +21,6 @@ export const wikiImageCrop: StorybookArgsToList = {
       },
       value: 'https://picsum.photos/800/600?random=42'
     },
-    isDemo: true
+    hide: true
   }
 }

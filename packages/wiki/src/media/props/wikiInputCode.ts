@@ -22,7 +22,9 @@ export const wikiInputCode: StorybookArgsToList = {
         en: 'Code length (number of input characters)',
         ru: 'Длина кода (количество вводимых символов)'
       }
-    }
+    },
+    isDemo: true,
+    demo: 4
   },
   'inputCode.match': wikiInputCodeItem['inputCodeItem.match']
 }

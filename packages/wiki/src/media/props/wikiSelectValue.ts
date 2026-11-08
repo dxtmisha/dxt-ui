@@ -25,6 +25,7 @@ export const wikiSelectValue: StorybookArgsToList = {
         { label: 'React', value: 'react', icon: 'favorite', index: '3' },
         { label: 'Vue.js', value: 'vue', icon: 'star', index: '4', detail: 'Popular framework' }
       ]
-    }
+    },
+    hide: true
   }
 }

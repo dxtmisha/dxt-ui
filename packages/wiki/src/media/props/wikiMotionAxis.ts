@@ -19,7 +19,8 @@ export const wikiMotionAxis: StorybookArgsToList = {
         ru: 'Выбранный элемент'
       },
       value: 'slide2'
-    }
+    },
+    hide: true
   },
   'motionAxis.animationHeight': {
     type: StorybookControl.boolean,
@@ -51,6 +52,7 @@ export const wikiMotionAxis: StorybookArgsToList = {
         en: 'List of slides that should remain in the DOM',
         ru: 'Список слайдов, которые должны оставаться в DOM'
       }
-    }
+    },
+    hide: true
   }
 }

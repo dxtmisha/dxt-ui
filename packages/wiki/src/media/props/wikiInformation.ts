@@ -10,7 +10,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Alternative text for image',
         ru: 'Альтернативный текст для изображения'
       }
-    }
+    },
+    hide: true
   },
   button: {
     type: StorybookControl.object,
@@ -21,7 +22,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Button configuration (string for label, number, or full button props object)',
         ru: 'Конфигурация кнопки (строка для метки, число или полный объект свойств кнопки)'
       }
-    }
+    },
+    hide: true
   },
   buttonClose: {
     type: StorybookControl.object,
@@ -33,8 +35,7 @@ export const wikiInformation: StorybookArgsToList = {
         ru: 'Конфигурация кнопки закрытия (строка для метки или объект свойств кнопки, null для скрытия)'
       }
     },
-    isDemo: true,
-    demo: 'is close'
+    hide: true
   },
   buttonOk: {
     type: StorybookControl.object,
@@ -46,8 +47,7 @@ export const wikiInformation: StorybookArgsToList = {
         ru: 'Конфигурация кнопки OK (строка для метки или объект свойств кнопки, null для скрытия)'
       }
     },
-    isDemo: true,
-    demo: 'Confirm'
+    hide: true
   },
   caption: {
     type: StorybookControl.string,
@@ -108,7 +108,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Dropzone description text',
         ru: 'Текст описания для Dropzone'
       }
-    }
+    },
+    hide: true
   },
   dropzoneLabel: {
     type: StorybookControl.string,
@@ -119,7 +120,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Dropzone label text',
         ru: 'Текст метки для Dropzone'
       }
-    }
+    },
+    hide: true
   },
   forceShowMessage: {
     type: StorybookControl.boolean,
@@ -167,7 +169,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'HTML content to be rendered',
         ru: 'HTML-контент для рендеринга'
       }
-    }
+    },
+    hide: true
   },
   image: {
     type: StorybookControl.string,
@@ -232,7 +235,10 @@ export const wikiInformation: StorybookArgsToList = {
       }
     },
     isDemo: true,
-    demo: ': '
+    demo: ' - ',
+    demoOptions: {
+      selected: 'task-management'
+    }
   },
   links: {
     type: StorybookControl.object,
@@ -295,7 +301,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Tooltip description text',
         ru: 'Текст описания подсказки'
       }
-    }
+    },
+    hide: true
   },
   tooltipLabel: {
     type: StorybookControl.string,
@@ -305,7 +312,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Tooltip label text',
         ru: 'Текст ярлыка подсказки'
       }
-    }
+    },
+    hide: true
   },
   validationMessage: {
     type: StorybookControl.string,

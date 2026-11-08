@@ -18,6 +18,7 @@ export const wikiMenuLanguage: StorybookArgsToList = {
         en: 'List of country/language codes (ISO 3166-1 alpha-2 / ISO 639-1) for filtering the language menu.',
         ru: 'Список кодов стран/языков (ISO 3166-1 alpha-2 / ISO 639-1) для фильтрации языкового меню.'
       }
-    }
+    },
+    hide: true
   }
 }

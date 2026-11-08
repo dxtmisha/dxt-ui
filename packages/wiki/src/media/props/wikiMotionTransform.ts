@@ -20,7 +20,8 @@ export const wikiMotionTransform: StorybookArgsToList = {
         en: 'Head behavior during animations',
         ru: 'Поведение Head во время анимаций'
       }
-    }
+    },
+    hide: true
   },
   'motionTransform.animationShow': {
     type: StorybookControl.boolean,
@@ -41,7 +42,8 @@ export const wikiMotionTransform: StorybookArgsToList = {
         en: 'Automatically close on the outside click',
         ru: 'Автоматическое закрытие при клике снаружи'
       }
-    }
+    },
+    hide: true
   },
   'motionTransform.ignore': {
     type: StorybookControl.string,

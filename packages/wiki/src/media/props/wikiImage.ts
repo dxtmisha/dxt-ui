@@ -93,7 +93,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Defines the crop area of the image, accepting an array of values for top, right, bottom, and left',
         ru: 'Определяет область обрезки изображения, принимает массив значений для top, right, bottom, left'
       }
-    }
+    },
+    hide: true
   },
   'image.decoding': {
     type: StorybookControl.select,
@@ -163,7 +164,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Sources for different display conditions using the picture tag with media queries. Warning: when passing an object, keys must be either only numbers or only strings with units',
         ru: 'Источники для разных условий отображения с использованием тега picture и медиа-запросов. Внимание: при передаче объекта ключи должны быть либо только числами, либо только строками с единицами измерения'
       }
-    }
+    },
+    hide: true
   },
   'image.preloadOffset': {
     type: StorybookControl.string,
@@ -186,7 +188,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Set of image sources for different screen resolutions and pixel densities',
         ru: 'Набор источников изображения для разных разрешений экрана и плотности пикселей'
       }
-    }
+    },
+    hide: true
   },
   'image.static': {
     type: StorybookControl.boolean,
@@ -196,7 +199,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Disables absolute positioning and makes the image static in normal document flow',
         ru: 'Отключает абсолютное позиционирование и делает изображение статичным в обычном потоке документа'
       }
-    }
+    },
+    hide: true
   },
   'image.tagImg': {
     type: StorybookControl.boolean,
@@ -206,7 +210,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Use the img tag instead of background image for better accessibility and SEO',
         ru: 'Использовать тег img вместо фонового изображения для лучшей доступности и SEO'
       }
-    }
+    },
+    hide: true
   },
   'image.x': {
     type: StorybookControl.string,
@@ -216,7 +221,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Moves the image along the X-axis, accepts a string in % or px format',
         ru: 'Сдвигает изображение по оси X, принимает строку в формате % или px'
       }
-    }
+    },
+    hide: true
   },
   'image.y': {
     type: StorybookControl.string,
@@ -226,6 +232,7 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Moves the image along the Y-axis, accepts a string in % or px format',
         ru: 'Сдвигает изображение по оси Y, принимает строку в формате % или px'
       }
-    }
+    },
+    hide: true
   }
 }

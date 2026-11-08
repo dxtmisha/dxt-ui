@@ -19,7 +19,8 @@ export const wikiSort: StorybookArgsToList = {
         en: 'Controls visibility of sorting element',
         ru: 'Управляет видимостью элемента сортировки'
       }
-    }
+    },
+    hide: true
   },
   sortColumn: {
     type: StorybookControl.string,
@@ -30,7 +31,8 @@ export const wikiSort: StorybookArgsToList = {
         en: 'Current sorted column index name',
         ru: 'Имя индекса текущей отсортированной колонки'
       }
-    }
+    },
+    hide: true
   },
   sort: {
     type: StorybookControl.string,
@@ -41,7 +43,8 @@ export const wikiSort: StorybookArgsToList = {
         en: 'Target column(s) or property key(s) for sorting',
         ru: 'Целевая колонка (колонки) или ключ (ключи) свойств для сортировки'
       }
-    }
+    },
+    hide: true
   },
   sortDir: {
     type: StorybookControl.string,
@@ -52,7 +55,8 @@ export const wikiSort: StorybookArgsToList = {
         en: 'Sorting direction (\'asc\' or \'desc\')',
         ru: 'Направление сортировки (\'asc\' или \'desc\')'
       }
-    }
+    },
+    hide: true
   },
   sortFunction: {
     type: StorybookControl.object,
@@ -63,6 +67,7 @@ export const wikiSort: StorybookArgsToList = {
         en: 'Custom sorting comparison function',
         ru: 'Пользовательская функция сравнения для сортировки'
       }
-    }
+    },
+    hide: true
   }
 }

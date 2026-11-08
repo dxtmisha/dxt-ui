@@ -19,7 +19,8 @@ export const wikiMask: StorybookArgsToList = {
         en: 'Global validation pattern applied after mask completion for additional input checking',
         ru: 'Глобальный паттерн валидации, применяемый после завершения маски для дополнительной проверки ввода'
       }
-    }
+    },
+    hide: true
   },
   'mask.match': {
     type: StorybookControl.string,
@@ -30,7 +31,8 @@ export const wikiMask: StorybookArgsToList = {
         en: 'Global match pattern for allowed characters (RegExp|string or per-group map)',
         ru: 'Глобальный паттерн допустимых символов (RegExp|строка или карта по группам)'
       }
-    }
+    },
+    hide: true
   },
   'mask.fullOnly': {
     type: StorybookControl.boolean,
@@ -40,7 +42,8 @@ export const wikiMask: StorybookArgsToList = {
         en: 'Treat input as valid only when the mask is fully completed',
         ru: 'Считать ввод валидным только при полном заполнении маски'
       }
-    }
+    },
+    hide: true
   },
   'mask.groupSave': {
     type: StorybookControl.boolean,
@@ -51,7 +54,8 @@ export const wikiMask: StorybookArgsToList = {
         ru: 'Управляет поведением курсора при переходе между разными группами специальных символов в маске'
       },
       value: true
-    }
+    },
+    hide: true
   },
   'mask.mask': {
     type: StorybookControl.string,
@@ -63,7 +67,8 @@ export const wikiMask: StorybookArgsToList = {
         ru: 'Шаблон маски: строка или массив. Спецсимволы — группы ввода, прочие — литералы. При нескольких масках выбирается подходящая.'
       },
       value: '+1 (***) ***-****'
-    }
+    },
+    hide: true
   },
   'mask.pattern': {
     type: StorybookControl.string,
@@ -74,7 +79,8 @@ export const wikiMask: StorybookArgsToList = {
         en: 'Pattern definition for mask groups, defining allowed characters and validation rules per group',
         ru: 'Определение паттернов для групп маски, задающее допустимые символы и правила валидации по группам'
       }
-    }
+    },
+    hide: true
   },
   'mask.special': {
     type: StorybookControl.string,
@@ -86,7 +92,8 @@ export const wikiMask: StorybookArgsToList = {
         ru: 'Определение специальных символов для групп маски с расширенными свойствами (резиновость, значения по умолчанию, паттерны)'
       },
       value: '*'
-    }
+    },
+    hide: true
   },
   'mask.view': {
     type: StorybookControl.string,
@@ -97,7 +104,9 @@ export const wikiMask: StorybookArgsToList = {
         en: 'Display character used for placeholders in the mask view',
         ru: 'Отображаемый символ, используемый как плейсхолдер в представлении маски'
       }
-    }
+    },
+    isDemo: true,
+    demo: '_'
   },
   'mask.visible': {
     type: StorybookControl.boolean,
@@ -108,7 +117,8 @@ export const wikiMask: StorybookArgsToList = {
         ru: 'Управляет полной видимостью компонента маски и символов-заполнителей'
       },
       value: true
-    }
+    },
+    hide: true
   },
   'mask.visiblePartly': {
     type: StorybookControl.boolean,
@@ -118,6 +128,10 @@ export const wikiMask: StorybookArgsToList = {
         en: 'Controls partial visibility of mask placeholder characters, showing only filled positions',
         ru: 'Управляет частичной видимостью символов-заполнителей маски, показывая только заполненные позиции'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      value: '123'
     }
   }
 }

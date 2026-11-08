@@ -25,6 +25,6 @@ export const wikiBreadcrumbs: StorybookArgsToList = {
         { label: 'Shoes' }
       ]
     },
-    isDemo: true
+    hide: true
   }
 }

@@ -18,6 +18,7 @@ export const wikiMotionFlip: StorybookArgsToList = {
         en: 'Disables FLIP layout animation',
         ru: 'Отключает FLIP-анимацию перестроения'
       }
-    }
+    },
+    hide: true
   }
 }

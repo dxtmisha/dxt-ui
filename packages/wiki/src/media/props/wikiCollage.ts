@@ -39,7 +39,8 @@ export const wikiCollage: StorybookArgsToList = {
         { index: '15', image: 'https://picsum.photos/1200/500?random=15', span: 'banner', label: 'Skyline Sunset', description: 'Golden hour glow across the metropolis', collageBarPosition: 'bottom' },
         { index: '16', image: 'https://picsum.photos/750/1000?random=16', span: 'tall' }
       ]
-    }
+    },
+    hide: true
   },
   'collage.selected': wikiList['list.selected'] as StorybookArgsToItem
 }

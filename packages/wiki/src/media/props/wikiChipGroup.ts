@@ -23,7 +23,8 @@ export const wikiChipGroup: StorybookArgsToList = {
         { label: 'Banana', value: 'banana' },
         { label: 'Orange', value: 'orange' }
       ]
-    }
+    },
+    hide: true
   },
   'chipGroup.selected': {
     type: StorybookControl.string,
@@ -34,6 +35,8 @@ export const wikiChipGroup: StorybookArgsToList = {
         en: 'Currently selected item(s) - can be a single value or an array of values',
         ru: 'Выбранный элемент(ы) - может быть одним значением или массивом значений'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'apple'
   }
 }

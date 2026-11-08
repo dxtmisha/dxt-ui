@@ -18,6 +18,10 @@ export const wikiInputCodeItem: StorybookArgsToList = {
         en: 'Hide entered characters (renders as mask/placeholder)',
         ru: 'Скрыть введённые символы (отображается как маска/плейсхолдер)'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      value: '123456'
     }
   },
   'inputCodeItem.match': {
@@ -29,7 +33,8 @@ export const wikiInputCodeItem: StorybookArgsToList = {
         en: 'RegExp for input verification',
         ru: 'Регулярное выражение для проверки ввода'
       }
-    }
+    },
+    hide: true
   },
   'inputCodeItem.move': {
     type: StorybookControl.boolean,
@@ -39,6 +44,7 @@ export const wikiInputCodeItem: StorybookArgsToList = {
         en: 'Focus movement enabled',
         ru: 'Разрешено ли перемещение фокуса'
       }
-    }
+    },
+    hide: true
   }
 }

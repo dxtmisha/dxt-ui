@@ -19,7 +19,8 @@ export const wikiSearch: StorybookArgsToList = {
         en: 'Search query string',
         ru: 'Строка поискового запроса'
       }
-    }
+    },
+    hide: true
   },
   searchColumns: {
     type: StorybookControl.array,
@@ -30,7 +31,8 @@ export const wikiSearch: StorybookArgsToList = {
         en: 'Columns or property field names to search in',
         ru: 'Колонки или названия полей свойств для поиска'
       }
-    }
+    },
+    hide: true
   },
   searchOptions: {
     type: StorybookControl.object,
@@ -41,6 +43,7 @@ export const wikiSearch: StorybookArgsToList = {
         en: 'Additional search configuration options',
         ru: 'Дополнительные параметры конфигурации поиска'
       }
-    }
+    },
+    hide: true
   }
 }
