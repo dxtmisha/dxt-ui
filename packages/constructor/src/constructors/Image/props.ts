@@ -59,8 +59,10 @@ export type ImagePropsBasic = {
    */
   srcset?: string | Record<string, string>
   /**
-   * Picture sources for different resolutions using <picture> tag /
-   * Источники для разных разрешений с использованием тега <picture>
+   * Picture sources for different resolutions using <picture> tag.
+   * Warning: when passing an object, keys must be either only numbers or only strings with units /
+   * Источники для разных разрешений с использованием тега <picture>.
+   * Внимание: при передаче объекта ключи должны быть либо только числами, либо только строками с единицами измерения
    */
   picture?: ImagePicture
   /** Alt text / Текст alt */

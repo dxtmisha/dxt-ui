@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-11-08
+
+### Added
+- **`InputSearch` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsInputSearch.ts`) in `wikiDescriptions.ts` and MDX mapping (`wikiMdxInputSearch.ts`) in `wikiMdx.ts`.
+  - Created bilingual MDX documentation pages (`inputSearch.en.mdx`, `inputSearch.ru.mdx`, `query.en.mdx`, `query.ru.mdx`) covering search debouncing (`delay`), minimum query threshold (`minQuery`), immediate `Enter` execution, and two-way binding (`v-model:value`).
+  - Added interactive Storybook stories (`InputSearchVModel`, `InputSearchQuery`).
+- **Storybook Play Function & Component Testing Support**:
+  - Added `play` and `test` properties to `StorybookComponentsDescriptionStory` and `StorybookComponentsDescriptionItem` types in `src/types/storybookTypes.ts` for automated Storybook interaction and DOM testing.
+- **`Image` Comprehensive Test Stories & Play Suites**:
+  - Added interactive test stories and automated `play` test suites in `wikiDescriptionsImage.ts` covering Material icon style variants (`ImageTestIcons`), country flags and solid HEX colors (`ImageTestFlagsAndColors`), `File` / PDF `File` / `Uint8Array` / `ArrayBuffer` binary sources (`ImageTestBinaryAndFile`), visual state combinations (`turn`, `disabled`, `hide`, `static` in `ImageTestStates`), background rendering modes and `coordinator` / `x` / `y` positioning (`ImageTestBackground`), `<picture>` sources, `srcset`, `decoding`, `fetchPriority`, and lazy loading (`ImageTestPictureAndLoading`), adaptive scaling combinations (`ImageTestAdaptiveCombinations`), and `@load` event / exposed `getType()` and `getData()` methods (`ImageTestLoadAndExpose`).
+  - Added `play` test assertions to `ImageType`, `ImageSize`, `ImageTagImg`, and `ImageAdaptive` stories.
+  - Added `image.decoding` (`'async'`, `'auto'`, `'sync'`) select control in `wikiImage.ts`.
+- **`Ripple` Programmatic Expose Documentation**:
+  - Added bilingual MDX documentation for `add()` (`expose.add.en.mdx`, `expose.add.ru.mdx`) and `addCenter()` (`expose.addCenter.en.mdx`, `expose.addCenter.ru.mdx`) exposed methods.
+  - Registered new expose descriptions in `wikiMdxRipple.ts` and `wikiDescriptionsRipple.ts`.
+- **`InputFileItem` Property Controls & Crop Support**:
+  - Created `wikiInputFileItem.ts` with `inputFileItem.value` (`FieldFileValue` metadata, `thumbnail`, and `crop` coordinates) and registered it in `wiki.ts`.
+  - Added `confirmDelete` and `crop` boolean controls in `wikiOption.ts`.
+  - Added `iconCrop` and `iconWarning` icon controls in `wikiIconInclude.ts`.
+  - Added `textCrop`, `textDeleteConfirm`, and `textSearch` localization text controls in `wikiText.ts`.
+  - Added `minQuery` form property control in `wikiForm.ts`.
+
+### Changed
+- **`Image` MDX Documentation & Property Descriptions**:
+  - Updated `value.en.mdx` and `value.ru.mdx` to document binary buffers (`Uint8Array`, `ArrayBuffer`), explicit `image:` prefix, compressed country flags (`f-*`), solid HEX colors, and custom icon base `url`.
+  - Updated `size.en.mdx` and `size.ru.mdx` to reflect CSS box-model coordinate ordering `[top, right, bottom, left]` (1–4 values) for `coordinator` and CSS unit offsets for `x` and `y`.
+  - Updated `img-tag.en.mdx`, `img-tag.ru.mdx`, and `wikiImage.ts` with `decoding` attribute documentation and a warning against mixing numeric and CSS unit string keys in the `picture` object prop.
+  - Updated `event.load.en.mdx` and `event.load.ru.mdx` to match the refined `ImageEventData` and `ImageItem` structures.
+- **`Icon` MDX & Wiki Documentation**:
+  - Expanded `wikiDescriptionsIcon.ts`, `icon.en.mdx`, `icon.ru.mdx`, `expose.isActive.en.mdx`, and `expose.isActive.ru.mdx` to document `DesignLogicAbstract` orchestrator capabilities, interactive `dynamic` mode (keyboard navigation, `@click` / `@clickLite`, automatic `role="button"`, `aria-label`, `aria-disabled`), default decorative `aria-hidden="true"` mode, `overlay` substrate, and exposed `isActive()`, `getValue()`, and `getDetail()` methods.
+- **`InputFileItem` Story Templates**:
+  - Updated `wikiDescriptionsInputFileItem.ts` story layouts for `list`, `compact`, and `tile` appearances with `idle`, `uploading`, `uploaded`, and `error` statuses, `thumbnail` previews, and diverse file formats.
+- **Dependencies**:
+  - Updated `@dxtmisha/functional` (`>=2.0.3`), `@dxtmisha/functional-basic` (`>=2.1.4`), `@dxtmisha/styles` (`>=1.0.14`), `@storybook/addon-docs` (`>=10.6.5`), `react` (`>=19.3.1`), and `vue` (`>=3.5.44`), and added `react-dom` (`>=19.3.1`) and `@types/react-dom` (`^19.3.0`) in `package.json`.
+
+### Fixed
+- **`Image` Load Story Typing**:
+  - Added explicit `ImageEventData` type import and annotation to the `onLoad` handler in `wikiDescriptionsImage.ts`.
+
 ## [0.118.1] - 2026-10-05
 
 ### Added

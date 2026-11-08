@@ -25,19 +25,12 @@
 
   img {
     position: relative;
-    top: 50%;
-    left: 50%;
-    margin: auto;
 
     width: ui.v('??img.width');
     height: ui.v('??img.height');
-    min-width: 100%;
-    min-height: 100%;
 
     object-fit: ui.v('??img.object.fit');
 
-    --sys-transform-translateX: -50%;
-    --sys-transform-translateY: -50%;
     @include ui.transformInit();
     transform-origin: var(--sys-transform-originX) var(--sys-transform-originY);
   }
@@ -113,16 +106,9 @@
 
     img {
       position: static;
-      top: auto;
-      left: auto;
-      margin: 0;
       width: 100%;
       height: auto;
-      min-width: 0;
-      min-height: 0;
       display: block;
-      --sys-transform-translateX: 0%;
-      --sys-transform-translateY: 0%;
     }
   }
 

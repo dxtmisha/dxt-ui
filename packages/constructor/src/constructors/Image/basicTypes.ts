@@ -126,7 +126,12 @@ export interface ImagePictureItem extends Pick<SourceHTMLAttributes, 'media' | '
 /** List of image picture items / Список элементов изображения picture */
 export type ImagePictureList = ImagePictureItem[]
 
-/** Image picture type / Тип изображения picture */
+/**
+ * Image picture type.
+ * Warning: when using Record, pass either only numeric keys (auto-reversed) or only string keys with units /
+ * Тип изображения picture.
+ * Внимание: при использовании Record передавайте либо только числовые ключи (переворачиваются автоматически), либо только строковые с единицами измерения
+ */
 export type ImagePicture = Record<string, string> | ImagePictureList
 
 // --- Elements & DOM Bindings / Элементы разметки и привязки DOM ---

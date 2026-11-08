@@ -111,8 +111,12 @@ export class ImageImg {
 
   /**
    * Calculates the picture sources for different resolutions.
+   * Note: When passing an object, keys must be either all numbers (automatically reversed to descending order)
+   * or all strings with CSS units (preserved in the specified order).
    *
    * Вычисляет источники picture для разных разрешений.
+   * Примечание: при передаче объекта ключи должны быть либо только числами (автоматически переворачиваются по убыванию),
+   * либо только строками с единицами измерения (сохраняют заданный порядок).
    * @returns list of picture sources / список источников изображений
    */
   readonly picture = computed<ImagePictureList | undefined>(() => {
@@ -124,16 +128,25 @@ export class ImageImg {
       return this.props.picture
     }
 
-    return forEach<string, ImagePictureItem, Record<string, string>>(
+    let isAllNumber = true
+    const data = forEach<string, ImagePictureItem, Record<string, string>>(
       this.props.picture,
       (value, media) => {
+        const number = isNumber(media)
+
+        if (!number) {
+          isAllNumber = false
+        }
+
         return {
           key: media,
           srcset: value,
-          media: `(width >= ${isNumber(media) ? `${media}px` : media})`
+          media: `(width >= ${number ? `${media}px` : media})`
         }
       }
     )
+
+    return isAllNumber ? data.reverse() : data
   })
 
   /**

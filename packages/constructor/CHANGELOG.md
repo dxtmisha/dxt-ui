@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.4] - 2026-11-08
+
+### Added
+- **`InputPhoneMask` Domestic Trunk Prefix (`'?'`) Rule**:
+  - Added `'?'` special mask symbol rule (`pattern: '^(?!06)[0-9]+$'`) in `src/constructors/InputPhone/InputPhoneMask.ts` to disallow the `'06'` domestic trunk prefix.
+- **`FieldInputModeInclude` & `FieldAttributesInclude` Enhancements**:
+  - Added `search` and `url` input mode mappings in `FieldInputModeInclude` and set `autocomplete: 'off'` for masked `date` and `number` field types.
+  - Added `capture` attribute support in `FieldAttributesInclude`.
+- **Unit & Lifecycle Test Suites**:
+  - Added `InputPhone.test.ts` and expanded unit test suites across `AriaStaticInclude`, `ComponentIncludeAbstract`, `ClientOnlyInclude`, `ModelInclude`, `Field/*` includes, `Plugin/*` classes, `Image/*` sub-constructors, and `MotionTransformElement`.
+
+### Changed
+- **`InputPhone` & `Field/*` Migration to `DesignLogicAbstract`**:
+  - Migrated `InputPhone` orchestrator (`InputPhone.ts`, `InputPhoneData.ts`, `InputPhoneMask.ts`, `InputPhoneDesign.tsx`) and `Field/*` include classes (`FieldArrowInclude`, `FieldAttributesInclude`, `FieldChangeInclude`, `FieldCodeInclude`, `FieldElementInclude`, `FieldEventInclude`, `FieldFormInclude`, `FieldInputCheckInclude`, `FieldInputModeInclude`, `FieldMatchInclude`, `FieldPatternInclude`, `FieldTypeInclude`, `FieldValidationInclude`, `FieldValueInclude`) to `DesignLogicAbstract` and `DesignLifecycleAbstract` with lazy getter dependencies across `FieldInclude`, `MaskInclude`, `Checkbox`, `Input`, `InputImage`, `InputSearch`, `InputSocial`, `Select`, `SelectAbstract`, `SliderField`, and `Textarea`.
+- **`Image` `<picture>` Source Ordering, Lifecycle & Styling**:
+  - Updated `ImageImg.picture` (`src/constructors/Image/ImageImg.ts`) to automatically reverse numeric-keyed breakpoint records into descending order while preserving specified order for CSS unit string keys, and documented key constraints in `basicTypes.ts` and `props.ts`.
+  - Simplified `img` element positioning in `src/constructors/Image/style.scss` by removing redundant `top: 50%`, `left: 50%`, `min-width: 100%`, `min-height: 100%`, and `-50%` translation overrides in default and `--static` modes.
+  - Deferred `ImageEvent`, `ImageLazy`, and `ImageUint8Array` watchers to `onMounted` lifecycle and cleanly reset `ImageData` async state.
+- **Class Member Ordering & `Plugin/*` Refinements**:
+  - Standardized class member ordering, strict TypeScript types, and bilingual JSDoc across `AriaStaticInclude`, `ComponentIncludeAbstract`, `ImageAdaptiveGroup`, `ImageCoordinator`, `ImageFile`, and `Plugin/*` (`Plugin`, `PluginCode`, `PluginComponents`, `PluginData`, `PluginImport`, `PluginMap`, `PluginStyle`, `PluginTool`), and updated `ai-resources/constructor.md`.
+- **Dependencies**:
+  - Updated `@dxtmisha/functional` (`>=2.0.3`), `@dxtmisha/functional-basic` (`>=2.1.4`), and `@dxtmisha/media` (`>=1.1.2`) version constraints in `package.json`.
+
+### Fixed
+- **`FieldCodeInclude` Native `ValidityState` & Multi-Error Resolution**:
+  - Replaced `Object.entries(state)` with `for...in` traversal in `FieldCodeInclude.getIndex()` to properly read Web IDL `ValidityState` prototype getters on native input elements and check key presence in `validationCode` when multiple validity flags are active simultaneously.
+- **`FieldPatternInclude`, `FieldInputModeInclude` & `FieldAttributesInclude` Attribute Resolution**:
+  - Resolved `pattern`, `inputMode`, and `autocomplete` directly from `props.type` so toggling password visibility does not reset input constraints.
+  - Fixed `FieldAttributesInclude.getData` to evaluate `type`, `pattern`, `inputMode`, and `autocomplete` when keys are omitted in `props`, handled `0` values for `min`, `max`, and `step` in `listForCheck`, preserved `typeDefault` in `listForInput`, and avoided overwriting `inputAttrs.value` with `undefined` `valueVariant` in `listForCheckbox`.
+- **`MotionTransformElement` CSS ID Escaping & `IconSlots` Typing**:
+  - Escaped root element ID selector via `CSS.escape` in `MotionTransformElement` when running in a DOM runtime.
+  - Restored `IconSlots` default slot return type compatibility with Vue `SlotsType` in `src/constructors/Icon/types.ts`.
+
 ## [1.4.3] - 2026-11-03
 
 ### Added

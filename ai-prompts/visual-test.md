@@ -103,18 +103,21 @@ If the browser automation tool (Chrome DevTools MCP / Chrome CDP / Xcode Simulat
 
 ---
 
-## Step 1: Test Results Directory Structure (`ai-tests/<entity-name>/`)
+## Step 1: Test Results Directory Structure (`<component-project-root>/ai-tests/<entity-name>/`)
 
-1. Determine the **Project Root**:
-   - If testing a subproject/package inside a monorepo (e.g., `packages/demo`, `packages/d1`), use the root of that subproject/package (`packages/<pkg>/`) — or the repository root if testing from the root workspace.
-2. Check if the **`ai-tests/`** directory exists in the project root. If it does not exist, create it.
-3. Inside `ai-tests/`, check for a subdirectory named after the target entity: **`ai-tests/<entity-name>/`** (using the exact canonical name of the component, page, or feature, e.g., `ai-tests/D1Button/` or `ai-tests/DemoButtonPage/`). Create it if it does not exist, along with a **`screenshots/`** subfolder for visual artifacts.
+1. Determine the **Project Root of the Tested Component (CRITICAL)**:
+   - **Always store `ai-tests/` inside the project (package) of the tested component itself** (e.g., `packages/d1/ai-tests/D1Image/` when testing `packages/d1/src/components/Ui/Image`).
+   - **NEVER** create `ai-tests/` in the monorepo root (`/ai-tests/`) if the component belongs to a package inside `packages/*`.
+   - **When multiple paths are provided** (e.g., constructor `packages/constructor/...`, UI component `packages/d1/...`, and demo stand `packages/demo/...`), the target project is **strictly the UI component's package** (e.g., `packages/d1/`), NOT the monorepo root and NOT the `packages/demo/` test stand.
+   - Use the repository root (`./ai-tests/`) **only** if the repository is a single standalone project without `packages/*`.
+2. Check if the **`ai-tests/`** directory exists in that component's project root (`packages/<component-pkg>/ai-tests/`). If it does not exist, create it.
+3. Inside `ai-tests/`, check for a subdirectory named after the target component: **`ai-tests/<entity-name>/`** (using the exact canonical name of the component, e.g., `packages/d1/ai-tests/D1Image/` or `packages/d1/ai-tests/D1Button/`). Create it if it does not exist, along with a **`screenshots/`** subfolder for visual artifacts.
 
 ### Standard Directory Layout
 ```text
-<project-root>/
+packages/<component-pkg>/       # Project root of the tested component (e.g., packages/d1/)
 └── ai-tests/
-    └── <entity-name>/
+    └── <entity-name>/          # e.g., D1Image
         ├── test-cases.md       # Step 2: Comprehensive test case specification
         ├── test-report.md      # Step 4: Living execution report & regression log
         └── screenshots/        # Step 3 & 4: Visual confirmation screenshots
@@ -160,6 +163,14 @@ Every test suite in `test-cases.md` MUST systematically cover the following **6 
 4. **`RSP` — Responsive & Viewport Adaptivity (`TC-RSP-xxx`)**:
    - Desktop viewport (`1440×900`), Tablet viewport (`768×1024`), and Mobile viewport (`375×812`).
    - Container query / flex-wrap adaptation, horizontal scroll behavior, sticky elements, and touch target sizing on mobile (`>= 44×44px` where applicable).
+   - **Mandatory Multi-Device Adaptive Testing for Full Pages & Resolution-Dependent Elements (CRITICAL)**:
+     - If the target is **not a single isolated resolution-independent component**, but rather a **full page / application screen / layout**, OR an **element/component that depends on screen resolution, breakpoints, or container dimensions** (e.g., responsive grids, navigation systems, headers/sidebars, modals/drawers, tables, `<picture>` / `srcset` / `adaptive` images, media queries, or container queries), you **MUST** design and execute comprehensive adaptive test cases across **multiple device form factors and resolutions**:
+       - **Wide & Standard Desktop**: `1920×1080` and `1440×900`
+       - **Laptop / Tablet Landscape**: `1024×768`
+       - **Tablet Portrait (iPad)**: `768×1024`
+       - **Mobile Smartphone**: `375×812` and compact `320×568` (as well as real **Apple Xcode Simulator** when mobile device testing is applicable)
+     - Verify breakpoint switching, grid/column reflow, responsive asset selection (`<picture>`, `srcset`), visibility toggling of desktop vs. mobile elements, touch ergonomics, and absence of horizontal overflow (`document.documentElement.scrollWidth <= window.innerWidth`) or element overlap at every breakpoint.
+   - **Component vs. Test Stand Isolation Rule (CRITICAL)**: When testing a single UI component rendered inside a demo page or test stand (`Demo*Page.vue`, Storybook canvas, sandbox wrapper), **evaluate strictly the tested component itself**, NOT the surrounding layout/grid of the test stand. If the test stand's own wrapper grid, fixed demo column widths (e.g., `:base="'2'"`), or demo card containers become narrow on mobile viewports while the component itself adapts properly to the container given to it without breaking its own layout or throwing errors, **do NOT mark the test case as `❌ FAIL`**.
 5. **`A11Y` — Accessibility & Keyboard Navigation (`TC-A11Y-xxx`)**:
    - Full keyboard operability (`Tab`, `Shift+Tab` focus order, `Enter` and `Space` activation, `Escape` dismissal, `Arrow` key navigation in lists/tabs/menus/radios).
    - Visible focus ring (`:focus-visible` outline compliance).
@@ -235,7 +246,9 @@ Once `test-cases.md` is ready, execute **every single test case** systematically
      - `window.getComputedStyle(el)` (verifying CSS variables, colors, `outline`, `opacity`, `pointer-events`, `text-overflow`).
      - DOM attributes (`aria-*`, `disabled`, `inert`, `role`, `class`).
      - Console messages via `list_console_messages` (checking for errors, `[Vue warn]`, or expected log outputs).
-3. **Smart Evidence Collection Rule (Screenshots vs. Console/Text Logs)**:
+3. **Mandatory Multi-Device & Multi-Resolution Execution (Pages & Resolution-Dependent Elements)**:
+   - Whenever testing a **full page / layout** or **any element dependent on screen resolution / breakpoints** (as defined in `RSP` above), you MUST actively resize the browser viewport (`resize_page` / CDP emulation / Xcode Simulator) across all target device resolutions (`1920×1080`, `1440×900`, `1024×768`, `768×1024`, `375×812`, `320×568`), inspect layout reflows and media query transitions at each size, and capture dedicated visual evidence (`screenshots/TC-RSP-xxx.png`) for the tested device viewports.
+4. **Smart Evidence Collection Rule (Screenshots vs. Console/Text Logs)**:
    - **When Visual Confirmation Matters (`Evidence Type: Screenshot` or `Both`)**:
      - Capture a screenshot of the relevant component/viewport and save it to `ai-tests/<entity-name>/screenshots/<TC-ID>.png` (e.g., `TC-VIS-001.png`).
      - If a visual or functional failure is detected on a visual case, capture the failure state screenshot (e.g., `TC-VIS-001.png` or `TC-VIS-001-fail.png`) so the developer can immediately see the defect.

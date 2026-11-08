@@ -24,7 +24,7 @@ const demoImageExplicit = `image:${demoImage1}`
 const demoPdf = 'https://ontheline.trincoll.edu/images/bookdown/sample-local-pdf.pdf'
 
 /** Inline SVG markup for binary, File, and registered icon tests / SVG-разметка для тестов бинарных данных, File и зарегистрированных иконок */
-const svgMarkup = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="24" fill="#00897B"/><circle cx="60" cy="60" r="32" fill="#FFFFFF"/></svg>'
+const svgMarkup = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 0H96C109.255 0 120 10.7452 120 24V96C120 109.255 109.255 120 96 120H24C10.7452 120 0 109.255 0 96V24C0 10.7452 10.7452 0 24 0ZM60 92C77.6731 92 92 77.6731 92 60C92 42.3269 77.6731 28 60 28C42.3269 28 28 42.3269 28 60C28 77.6731 42.3269 92 60 92Z" fill="#00897B"/></svg>'
 /** Data URI for registered public icon / Data URI для зарегистрированной публичной иконки */
 const registeredIconDataUri = `data:image/svg+xml;utf8,${encodeURIComponent(svgMarkup)}`
 
@@ -84,8 +84,8 @@ const pictureSourcesList: ImagePictureList = [
 ]
 /** Picture breakpoint record configuration / Конфигурация объекта брейкпоинтов picture */
 const pictureBreakpointsRecord: Record<string, string> = {
-  '768': demoImage1,
-  '64rem': demoImage2
+  768: demoImage1,
+  1024: demoImage2
 }
 /** Picture fallback record configuration / Конфигурация объекта picture для фоллбэка */
 const pictureFallbackRecord: Record<string, string> = {

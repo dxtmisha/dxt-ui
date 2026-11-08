@@ -160,8 +160,8 @@ export const wikiImage: StorybookArgsToList = {
       category: StorybookCategory.value,
       type: ['Record<string, string>', 'ImagePictureList'],
       description: {
-        en: 'Sources for different display conditions using the picture tag with media queries',
-        ru: 'Источники для разных условий отображения с использованием тега picture и медиа-запросов'
+        en: 'Sources for different display conditions using the picture tag with media queries. Warning: when passing an object, keys must be either only numbers or only strings with units',
+        ru: 'Источники для разных условий отображения с использованием тега picture и медиа-запросов. Внимание: при передаче объекта ключи должны быть либо только числами, либо только строками с единицами измерения'
       }
     }
   },

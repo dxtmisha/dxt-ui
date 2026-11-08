@@ -67,11 +67,24 @@ describe('ImageImg', () => {
     })
 
     it('should support both record and array picture descriptors without mutating supplied objects', () => {
-      const props = reactive<ImageProps>({ value: '/photo.png', tagImg: true, picture: { '600px': '/wide.png' } })
+      const props = reactive<ImageProps>({
+        value: '/photo.png',
+        tagImg: true,
+        picture: { '64rem': '/desktop.png', '600px': '/wide.png' }
+      })
       const fixture = mountImageGraph(props)
 
       expect(fixture.item.img.isPicture()).toBe(true)
-      expect(fixture.item.img.picture.value).toEqual([{ key: '600px', srcset: '/wide.png', media: '(width >= 600px)' }])
+      expect(fixture.item.img.picture.value).toEqual([
+        { key: '64rem', srcset: '/desktop.png', media: '(width >= 64rem)' },
+        { key: '600px', srcset: '/wide.png', media: '(width >= 600px)' }
+      ])
+
+      props.picture = { 768: '/tablet.png', 1024: '/desktop.png' }
+      expect(fixture.item.img.picture.value).toEqual([
+        { key: '1024', srcset: '/desktop.png', media: '(width >= 1024px)' },
+        { key: '768', srcset: '/tablet.png', media: '(width >= 768px)' }
+      ])
 
       const sources = [{ srcset: '/portrait.png', media: '(max-width: 600px)', type: 'image/png' }]
       props.picture = sources

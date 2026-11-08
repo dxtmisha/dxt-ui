@@ -216,6 +216,8 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
         expect(images[3].tagName.toLowerCase()).toBe('picture')
         const sources = images[3].querySelectorAll('source')
         await expect(sources?.length).toBe(2)
+        await expect(sources[0]).toHaveAttribute('media', '(width >= 1024px)')
+        await expect(sources[1]).toHaveAttribute('media', '(width >= 768px)')
         const img3 = images[3].querySelector('img')
         await expect(img3).toHaveAttribute('alt', 'Adaptive image')
       `
@@ -236,13 +238,13 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <DesignComponent :value="phone1" adaptive object-width="76.2" adaptive-group="phones" adaptive-always/>
+            <DesignComponent :value="phone1" adaptive object-width="76.2"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <DesignComponent :value="phone2" adaptive object-width="71.9" adaptive-group="phones" adaptive-always/>
+            <DesignComponent :value="phone2" adaptive object-width="71.9"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <DesignComponent :value="phone3" adaptive object-width="129.9" object-height="160" adaptive-group="tablets" tag-img/>
+            <DesignComponent :value="phone3" adaptive object-width="129.9" tag-img/>
           </div>
         </div>
       `,
@@ -508,7 +510,7 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
       const svgBytes = new Uint8Array([...svgMarkup].map(c => c.charCodeAt(0)))
       const svgBuffer = svgBytes.buffer.slice(0)
       const svgFile = new File([svgMarkup], 'badge.svg', { type: 'image/svg+xml' })
-      const pdfContent = '%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 150] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>\nendobj\n4 0 obj\n<< /Length 40 >>\nstream\nBT\n/F1 18 Tf\n24 70 Td\n(DXT UI PDF) Tj\nET\nendstream\nendobj\n5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\nxref\n0 6\n0000000000 65535 f \n0000000009 00000 n \n0000000058 00000 n \n0000000115 00000 n \n0000000241 00000 n \n0000000331 00000 n \ntrailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n401\n%%EOF'
+      const pdfContent = '%PDF-1.4\\n1 0 obj\\n<< /Type /Catalog /Pages 2 0 R >>\\nendobj\\n2 0 obj\\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\\nendobj\\n3 0 obj\\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 150] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>\\nendobj\\n4 0 obj\\n<< /Length 40 >>\\nstream\\nBT\\n/F1 18 Tf\\n24 70 Td\\n(DXT UI PDF) Tj\\nET\\nendstream\\nendobj\\n5 0 obj\\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\\nendobj\\nxref\\n0 6\\n0000000000 65535 f \\n0000000009 00000 n \\n0000000058 00000 n \\n0000000115 00000 n \\n0000000241 00000 n \\n0000000331 00000 n \\ntrailer\\n<< /Size 6 /Root 1 0 R >>\\nstartxref\\n401\\n%%EOF'
       const pdfFile = new File([pdfContent], 'document.pdf', { type: 'application/pdf' })
 
       return {
@@ -919,7 +921,7 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">picture (record + CSS unit)</div>
-            <DesignComponent :value="image1" :picture="{ 768: image1, '64rem': image2 }" tag-img lazy decoding="async" fetch-priority="high" alt="Breakpoint record picture"/>
+            <DesignComponent :value="image1" :picture="{ '64rem': image2, '48rem': image1 }" tag-img lazy decoding="async" fetch-priority="high" alt="Breakpoint record picture"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">picture without tag-img</div>
@@ -966,12 +968,12 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
         await expect(sources0[0]).toHaveAttribute('height', '480')
         await expect(images[0].querySelector('img')).toHaveAttribute('alt', 'Art direction picture')
 
-        // 1. Picture tag (record with numeric and CSS unit keys) + lazy + decoding + fetchPriority
+        // 1. Picture tag (record with CSS unit keys) + lazy + decoding + fetchPriority
         expect(images[1].tagName.toLowerCase()).toBe('picture')
         const sources1 = images[1].querySelectorAll('source')
         await expect(sources1.length).toBe(2)
-        await expect(sources1[0]).toHaveAttribute('media', '(width >= 768px)')
-        await expect(sources1[1]).toHaveAttribute('media', '(width >= 64rem)')
+        await expect(sources1[0]).toHaveAttribute('media', '(width >= 64rem)')
+        await expect(sources1[1]).toHaveAttribute('media', '(width >= 48rem)')
         const img1 = images[1].querySelector('img')
         await expect(img1).toHaveAttribute('loading')
         await expect(img1).toHaveAttribute('decoding', 'async')

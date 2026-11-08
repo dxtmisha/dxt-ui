@@ -232,6 +232,8 @@ export const ImageTagImg: Story = {
     expect(images[3].tagName.toLowerCase()).toBe('picture')
     const sources = images[3].querySelectorAll('source')
     await expect(sources?.length).toBe(2)
+    await expect(sources[0]).toHaveAttribute('media', '(width >= 1024px)')
+    await expect(sources[1]).toHaveAttribute('media', '(width >= 768px)')
     const img3 = images[3].querySelector('img')
     await expect(img3).toHaveAttribute('alt', 'Adaptive image')
   }
@@ -251,13 +253,13 @@ export const ImageAdaptive: Story = {
         
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <D1Image :value="phone1" adaptive object-width="76.2" adaptive-group="phones" adaptive-always/>
+            <D1Image :value="phone1" adaptive object-width="76.2"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <D1Image :value="phone2" adaptive object-width="71.9" adaptive-group="phones" adaptive-always/>
+            <D1Image :value="phone2" adaptive object-width="71.9"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <D1Image :value="phone3" adaptive object-width="129.9" object-height="160" adaptive-group="tablets" tag-img/>
+            <D1Image :value="phone3" adaptive object-width="129.9" tag-img/>
           </div>
         </div>
       
@@ -940,7 +942,7 @@ export const ImageTestPictureAndLoading: Story = {
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">picture (record + CSS unit)</div>
-            <D1Image :value="image1" :picture="{ 768: image1, '64rem': image2 }" tag-img lazy decoding="async" fetch-priority="high" alt="Breakpoint record picture"/>
+            <D1Image :value="image1" :picture="{ '64rem': image2, '48rem': image1 }" tag-img lazy decoding="async" fetch-priority="high" alt="Breakpoint record picture"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">picture without tag-img</div>
@@ -989,12 +991,12 @@ export const ImageTestPictureAndLoading: Story = {
     await expect(sources0[0]).toHaveAttribute('height', '480')
     await expect(images[0].querySelector('img')).toHaveAttribute('alt', 'Art direction picture')
 
-    // 1. Picture tag (record with numeric and CSS unit keys) + lazy + decoding + fetchPriority
+    // 1. Picture tag (record with CSS unit keys) + lazy + decoding + fetchPriority
     expect(images[1].tagName.toLowerCase()).toBe('picture')
     const sources1 = images[1].querySelectorAll('source')
     await expect(sources1.length).toBe(2)
-    await expect(sources1[0]).toHaveAttribute('media', '(width >= 768px)')
-    await expect(sources1[1]).toHaveAttribute('media', '(width >= 64rem)')
+    await expect(sources1[0]).toHaveAttribute('media', '(width >= 64rem)')
+    await expect(sources1[1]).toHaveAttribute('media', '(width >= 48rem)')
     const img1 = images[1].querySelector('img')
     await expect(img1).toHaveAttribute('loading')
     await expect(img1).toHaveAttribute('decoding', 'async')

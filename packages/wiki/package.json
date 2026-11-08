@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/wiki",
   "private": false,
-  "version": "0.119.1",
+  "version": "1.1.0",
   "type": "module",
   "description": "Storybook documentation toolkit, component metadata registry, and MDX documentation system for DXT UI design system",
   "keywords": [
@@ -67,9 +67,9 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": ">=1.15.18",
-    "@dxtmisha/functional-basic": ">=1.11.2",
-    "@dxtmisha/styles": ">=1.0.13",
+    "@dxtmisha/functional": ">=2.0.3",
+    "@dxtmisha/functional-basic": ">=2.1.4",
+    "@dxtmisha/styles": ">=1.0.14",
     "@storybook/addon-docs": ">=10.6.5",
     "react": ">=19.3.1",
     "react-dom": ">=19.3.1",
