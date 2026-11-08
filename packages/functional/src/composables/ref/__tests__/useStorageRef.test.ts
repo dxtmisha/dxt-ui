@@ -13,6 +13,8 @@ const storageMocks = {
   getIndex: vi.fn(() => 'ui-storage__event-storage')
 }
 
+let domRuntime = true
+
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
   const actual = await importOriginal() as Record<string, unknown>
   return {
@@ -20,7 +22,7 @@ vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
     DataStorage: vi.fn().mockImplementation(function () {
       return storageMocks
     }),
-    isDomRuntime: vi.fn(() => true)
+    isDomRuntime: vi.fn(() => domRuntime)
   }
 })
 
@@ -28,6 +30,7 @@ import { useStorageRef } from '../useStorageRef'
 
 describe('useStorageRef', () => {
   beforeEach(() => {
+    domRuntime = true
     if (ServerStorage.has('__ui:effect-scope-global__')) {
       ServerStorage.get<EffectScope>('__ui:effect-scope-global__').stop()
     }
@@ -90,5 +93,26 @@ describe('useStorageRef', () => {
 
     expect(removeSpy).toHaveBeenCalledWith('storage', expect.any(Function))
     removeSpy.mockRestore()
+  })
+
+  it('should return the same ref for the same name (singleton)', () => {
+    storageMocks.get.mockReturnValue('v1')
+    const item1 = useStorageRef('singleton-storage', 'v1')
+    const item2 = useStorageRef('singleton-storage', 'v2')
+
+    expect(item1).toBe(item2)
+    expect(storageMocks.get).toHaveBeenCalledTimes(1)
+  })
+
+  it('should skip window storage event listener registration during SSR when isDomRuntime is false', () => {
+    domRuntime = false
+    const addSpy = vi.spyOn(window, 'addEventListener')
+    storageMocks.get.mockReturnValue('ssr-value')
+
+    const item = useStorageRef('ssr-storage', 'ssr-value')
+
+    expect(item.value).toBe('ssr-value')
+    expect(addSpy).not.toHaveBeenCalledWith('storage', expect.any(Function))
+    addSpy.mockRestore()
   })
 })

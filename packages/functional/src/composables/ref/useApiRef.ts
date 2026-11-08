@@ -34,11 +34,7 @@ import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 import type { ApiOptions } from '../../types/apiTypes'
 import type { RefOrNormal, RefType } from '../../types/refTypes'
 
-/**
- * Use api ref return type.
- *
- * Тип возвращаемого значения для useApiRef.
- */
+/** Return interface for useApiRef composable / Интерфейс возвращаемого значения композабла useApiRef */
 export interface UseApiRef<R> {
   /** Reactive data (Computed) / Реактивные данные (Computed) */
   data: ComputedRef<ApiData<R> | undefined>
@@ -49,18 +45,10 @@ export interface UseApiRef<R> {
   /** Error item (Computed) / Элемент ошибки (Computed) */
   errorItem: ComputedRef<ApiErrorItem | undefined>
 
-  /**
-   * Status of response contract validation.
-   *
-   * Статус валидации контракта ответа.
-   */
+  /** Status of response contract validation / Статус валидации контракта ответа */
   isResponseContractValid: ComputedRef<boolean>
 
-  /**
-   * Result of response validation.
-   *
-   * Результат валидации ответа.
-   */
+  /** Result of response validation / Результат валидации ответа */
   responseValidationResult: ComputedRef<ApiDataValidation | undefined>
 
   /** Length of the list (Computed) / Длина списка (Computed) */

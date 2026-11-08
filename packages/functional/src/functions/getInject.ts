@@ -34,10 +34,7 @@ export function getInject<T = unknown, D = undefined>(
   if (hasInjectionContext()) {
     const item = inject<T>(key)
 
-    if (
-      !isNull(item)
-      && item !== undefined
-    ) {
+    if (!isNull(item)) {
       return item as InjectedValue<T, D>
     }
   }

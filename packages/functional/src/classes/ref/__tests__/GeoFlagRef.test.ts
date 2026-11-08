@@ -96,7 +96,7 @@ describe('GeoFlagRef', () => {
 
     it('tracks an explicit ref code and preserves its priority when the constructor code changes', () => {
       const code = ref('ru-RU')
-      const explicitCode = ref('FR')
+      const explicitCode = ref<string | undefined>('FR')
       const flags = new GeoFlagRef(code)
       const result = flags[method](explicitCode)
       expect(result.value).toEqual(new GeoFlag('ru-RU')[method]('FR'))

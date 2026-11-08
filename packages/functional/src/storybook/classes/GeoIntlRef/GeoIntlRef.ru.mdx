@@ -14,11 +14,11 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-`constructor(code?: RefOrNormal<string>)`
+`constructor(code?: RefOrNormal<string | undefined>)`
 
 **Параметры:**
 
-- `code?: RefOrNormal<string>` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+- `code?: RefOrNormal<string | undefined>` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
 
 ## Поведение и жизненный цикл
 
@@ -42,11 +42,11 @@ locale.value = 'vi-VN'
 
 ### Отображаемые названия
 
-- `display( value?: RefOrNormal<string>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions ): ComputedRef<string>` — Возвращает локализованное название для указанного типа Intl.
+- `display( value?: RefOrNormal<string | undefined>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions ): ComputedRef<string>` — Возвращает локализованное название для указанного типа Intl.
 
-- `languageName( value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle ): ComputedRef<string>` — Возвращает локализованное название языка.
+- `languageName( value?: RefOrNormal<string | undefined>, style?: Intl.RelativeTimeFormatStyle ): ComputedRef<string>` — Возвращает локализованное название языка.
 
-- `countryName( value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle ): ComputedRef<string>` — Возвращает локализованное название региона.
+- `countryName( value?: RefOrNormal<string | undefined>, style?: Intl.RelativeTimeFormatStyle ): ComputedRef<string>` — Возвращает локализованное название региона.
 
 ### Числа
 
@@ -128,14 +128,14 @@ const label = /*#__PURE__*/ formatter.plural(amount, 'item|items')
 
 #### `currency`
 
-`currency( value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>, numberOnly = false ): ComputedRef<string>`
+`currency( value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions | undefined>, numberOnly = false ): ComputedRef<string>`
 
 Форматирует сумму с кодом валюты или реактивным объектом опций. `numberOnly` убирает обозначение валюты.
 
 **Параметры:**
 
 - `value: RefOrNormal<NumberOrString>` — Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>` — Код валюты либо числовые опции Intl.
+- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions | undefined>` — Код валюты либо числовые опции Intl.
 - `numberOnly = false` — Убрать обозначение валюты; по умолчанию false.
 
 **Возвращает:** `ComputedRef<string>` — Вычисляемый результат; читайте через .value.
@@ -211,11 +211,11 @@ const date = /*#__PURE__*/ formatter.date(ref('2025-01-01'), 'date', 'long')
 
 ### Календарные названия и время
 
-- `month( value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['month'] ): ComputedRef<string>` — Возвращает название месяца переданной даты.
+- `month( value?: RefOrNormal<NumberOrStringOrDate | undefined>, style?: Intl.DateTimeFormatOptions['month'] ): ComputedRef<string>` — Возвращает название месяца переданной даты.
 
 - `months( style?: Intl.DateTimeFormatOptions['month'] ): ComputedRef<ItemValue<number | undefined>[]>` — Возвращает пустую запись и 12 месяцев с номерами 1–12.
 
-- `weekday( value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['weekday'] ): ComputedRef<string>` — Возвращает название дня недели переданной даты.
+- `weekday( value?: RefOrNormal<NumberOrStringOrDate | undefined>, style?: Intl.DateTimeFormatOptions['weekday'] ): ComputedRef<string>` — Возвращает название дня недели переданной даты.
 
 - `weekdays( style?: Intl.DateTimeFormatOptions['weekday'] ): ComputedRef<ItemValue<number | undefined>[]>` — Возвращает пустую запись и семь дней недели в порядке локали.
 

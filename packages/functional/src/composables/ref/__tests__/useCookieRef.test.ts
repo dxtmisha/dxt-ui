@@ -11,11 +11,13 @@ const cookieMocks = {
   get: vi.fn(),
   set: vi.fn()
 }
+let domRuntime = true
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
   const actual = await importOriginal() as any
   return {
     ...actual,
+    isDomRuntime: () => domRuntime,
     Cookie: class {
       constructor(public name: string) {}
 
@@ -41,6 +43,7 @@ import { useBroadcastValueRef } from '../useBroadcastValueRef'
 
 describe('useCookieRef', () => {
   beforeEach(() => {
+    domRuntime = true
     vi.clearAllMocks()
     // Note: 'items' in useCookieRef.ts is a module-level variable and cannot be easily reset
     // without re-importing the module or adding a reset function.
@@ -99,5 +102,15 @@ describe('useCookieRef', () => {
 
     useCookieRef(name, 'val', options)
     expect(cookieMocks.get).toHaveBeenCalledWith(name, 'val', options)
+  })
+
+  it('should persist cookie synchronously during SSR when isDomRuntime is false', () => {
+    domRuntime = false
+    cookieMocks.get.mockReturnValue({ theme: 'light' })
+
+    const item = useCookieRef<{ theme: string }>('test-cookie-ssr')
+    item.value = { theme: 'dark' }
+
+    expect(cookieMocks.set).toHaveBeenCalledExactlyOnceWith('test-cookie-ssr', { theme: 'dark' }, undefined)
   })
 })

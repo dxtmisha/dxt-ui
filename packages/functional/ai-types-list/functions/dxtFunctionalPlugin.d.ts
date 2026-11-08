@@ -1,33 +1,36 @@
-// md5:25958ad8920b1a1991b3ef69ae33fc2c true
+// md5:23b727b3b6169c7179d6a81ffb6c68a2 true
 import { type Plugin } from 'vue';
 import { type InputSocialIcons } from '@dxtmisha/media';
 import { type ApiConfig, type ErrorCenterCauseList, type ErrorCenterHandlerCallback, type ErrorCenterHandlerList, type IconsConfig, type TranslateConfig } from '@dxtmisha/functional-basic';
 import type { Router } from 'vue-router';
-/** Configuration options for functional services plugin. @keywords plugin, options, config */
+
+/** Configuration options for initializing global functional services. @keywords plugin, options, config */
 export interface FunctionalPluginOptions {
-    /** Configuration for the API client. */
-    api?: ApiConfig;
-    /** Configuration for the translation service. */
-    translate?: TranslateConfig;
-    /** Default geographical location or language code. */
-    location?: string | (() => string);
-    /** Suffix to be appended to all page titles. */
-    metaSuffix?: string;
-    /** Configuration for the icon management service. */
-    icons?: IconsConfig;
-    /** Configuration for the social network icons service. */
-    iconsSocial?: InputSocialIcons;
-    /** Vue Router instance for global navigation state management. */
-    router?: Router;
-    /** Error causes list for error center. */
-    errorCauses?: ErrorCenterCauseList;
-    /** Error handlers list for error center. */
-    errorHandlers?: ErrorCenterHandlerList;
-    /** Global error callback functions for error center. */
-    errorCallbacks?: ErrorCenterHandlerCallback[];
+  /** API client configuration */
+  api?: ApiConfig;
+  /** Translation service configuration */
+  translate?: TranslateConfig;
+  /** Default geographical location or language code */
+  location?: string | (() => string);
+  /** Suffix appended to page titles */
+  metaSuffix?: string;
+  /** Icon management configuration */
+  icons?: IconsConfig;
+  /** Social media icons configuration */
+  iconsSocial?: InputSocialIcons;
+  /** Vue Router instance for navigation state management */
+  router?: Router;
+  /** Error causes list for error center */
+  errorCauses?: ErrorCenterCauseList;
+  /** Error handlers list for error center */
+  errorHandlers?: ErrorCenterHandlerList;
+  /** Global error callback functions for error center */
+  errorCallbacks?: ErrorCenterHandlerCallback[];
 }
+
 /**
- * Vue plugin for initializing and configuring global functional services. @keywords vue, plugin, functional, api, translate, icons, meta
+ * Vue plugin for initializing and configuring global functional services (API, Translate, Icons, Meta).
+ * @keywords vue, plugin, functional, setup
  * @example
  * 
  * import { createApp } from 'vue'
@@ -36,7 +39,7 @@ export interface FunctionalPluginOptions {
  *
  * const app = createApp(App)
  * app.use(dxtFunctionalPlugin, {
- *   api: { url: 'https://api.example.com' },
+ *   api: { urlRoot: 'https://api.example.com' },
  *   metaSuffix: ' | My App',
  *   router
  * })

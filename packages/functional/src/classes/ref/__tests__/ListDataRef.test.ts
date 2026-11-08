@@ -1905,5 +1905,77 @@ describe('ListDataRef', () => {
       const potatoItem = fullData.find(item => item.value === 'potato')
       expect(potatoItem?.disabled).toBe(true)
     })
+
+    it('should support getFocusItem on current level only', () => {
+      const focus = ref<string | undefined>('val2')
+      const listData = createListData(
+        [
+          { label: 'Item 1', value: 'val1' },
+          { label: 'Item 2', value: 'val2' },
+          {
+            label: 'Group',
+            type: 'group',
+            index: 'grp',
+            value: [{ label: 'Nested', value: 'nested' }]
+          }
+        ],
+        focus
+      )
+
+      expect(listData.getFocusItem()?.label).toBe('Item 2')
+
+      focus.value = 'nested'
+      expect(listData.isFocus()).toBe(true)
+      expect(listData.getFocusItem()).toBeUndefined()
+    })
+
+    it('should support leaf navigation helpers (getSelectedNext/Prev, getItemByStep/Next/Prev, getIndexByStep/Next/Prev)', () => {
+      const selected = ref<string | undefined>('b')
+      const listData = createListData(
+        [
+          { label: 'A', value: 'a' },
+          { label: 'Subtitle', value: 'sub', type: 'subtitle' },
+          { label: 'B', value: 'b' },
+          { label: 'C', value: 'c' }
+        ],
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        selected
+      )
+
+      expect(listData.getSelectedNext()).toBe('c')
+      expect(listData.getSelectedPrev()).toBe('a')
+
+      const itemA = listData.mapItems.value[0]!
+      const itemC = listData.mapItems.value[2]!
+
+      expect(listData.getItemByStep(itemA, 0)?.index).toBe('a')
+      expect(listData.getItemNext(itemC)?.index).toBe('a')
+      expect(listData.getItemPrev(itemA)?.index).toBe('c')
+
+      expect(listData.getIndexByStep('b', 1)?.index).toBe('c')
+      expect(listData.getIndexNext('c')?.index).toBe('a')
+      expect(listData.getIndexPrev('a')?.index).toBe('c')
+      expect(listData.getIndexByStep('unknown', 1)).toBeUndefined()
+    })
+
+    it('should normalize plain object records (Record<string, string> and Record<string, ListListInputItem>)', () => {
+      const stringRecordList = createListData({ first: 'First Label', second: 'Second Label' })
+      expect(stringRecordList.data.value).toEqual([
+        { parent: undefined, index: 'first', type: 'item', label: 'First Label', value: 'first' },
+        { parent: undefined, index: 'second', type: 'item', label: 'Second Label', value: 'second' }
+      ])
+
+      const objectRecordList = createListData({
+        a: { label: 'Alpha', value: 10 },
+        b: { label: 'Beta', value: 20 }
+      })
+      expect(objectRecordList.data.value).toMatchObject([
+        { index: 10, label: 'Alpha', value: 10 },
+        { index: 20, label: 'Beta', value: 20 }
+      ])
+    })
   })
 })

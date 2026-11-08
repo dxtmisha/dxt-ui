@@ -7,11 +7,13 @@ import { nextTick, reactive } from 'vue'
 
 let broadcastCallbacks: Record<string, (event: any) => void> = {}
 const broadcastSpy = vi.fn()
+let domRuntime = true
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
   const actual = await importOriginal() as any
   return {
     ...actual,
+    isDomRuntime: () => domRuntime,
     executeFunction: (value: any) => (typeof value === 'function' ? value() : value),
     BroadcastMessage: class {
       constructor(public name: string, public callback?: (event: any) => void) {
@@ -31,6 +33,7 @@ import { useBroadcastValueRef } from '../useBroadcastValueRef'
 
 describe('useBroadcastValueRef', () => {
   beforeEach(() => {
+    domRuntime = true
     broadcastCallbacks = {}
     broadcastSpy.mockClear()
   })
@@ -190,5 +193,18 @@ describe('useBroadcastValueRef', () => {
     await nextTick()
 
     expect(item.value).toBe('same')
+  })
+
+  it('should skip BroadcastMessage and watcher registration during SSR when isDomRuntime is false', async () => {
+    domRuntime = false
+    const item = useBroadcastValueRef('ssr-item', 'ssr-initial')
+
+    expect(item.value).toBe('ssr-initial')
+    expect(broadcastCallbacks['broadcast--ssr-item']).toBeUndefined()
+
+    item.value = 'ssr-updated'
+    await nextTick()
+
+    expect(broadcastSpy).not.toHaveBeenCalled()
   })
 })

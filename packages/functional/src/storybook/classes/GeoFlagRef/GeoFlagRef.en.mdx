@@ -47,13 +47,13 @@ code.value = 'en-US'
 
 #### `get`
 
-`get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>`
+`get(code?: RefOrNormal<string | undefined>): ComputedRef<GeoFlagItem | undefined>`
 
 Returns the country metadata for the explicit code or current base code.
 
 **Parameters:**
 
-- `code?: RefOrNormal<string>` — Locale, country or language code; a ref is supported where declared.
+- `code?: RefOrNormal<string | undefined>` — Locale, country or language code; a ref is supported where declared.
 
 **Returns:** `ComputedRef<GeoFlagItem | undefined>` — Computed result; read it through .value.
 
@@ -61,36 +61,36 @@ Returns the country metadata for the explicit code or current base code.
 const result = /*#__PURE__*/ flags.get(code)
 ```
 
-#### `getLanguage`
-
-`getLanguage(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>`
-
-Returns language metadata for the explicit code or current base code.
-
-**Parameters:**
-
-- `code?: RefOrNormal<string>` — Locale, country or language code; a ref is supported where declared.
-
-**Returns:** `ComputedRef<GeoFlagItem | undefined>` — Computed result; read it through .value.
-
-```typescript
-const result = /*#__PURE__*/ flags.getLanguage(code)
-```
-
 #### `getFlag`
 
-`getFlag(code?: RefOrNormal<string>): ComputedRef<string | undefined>`
+`getFlag(code?: RefOrNormal<string | undefined>): ComputedRef<string | undefined>`
 
 Returns the flag icon identifier for the explicit code or current base code.
 
 **Parameters:**
 
-- `code?: RefOrNormal<string>` — Locale, country or language code; a ref is supported where declared.
+- `code?: RefOrNormal<string | undefined>` — Locale, country or language code; a ref is supported where declared.
 
 **Returns:** `ComputedRef<string | undefined>` — Computed result; read it through .value.
 
 ```typescript
 const result = /*#__PURE__*/ flags.getFlag(code)
+```
+
+#### `getLanguage`
+
+`getLanguage(code?: RefOrNormal<string | undefined>): ComputedRef<GeoFlagItem | undefined>`
+
+Returns language metadata for the explicit code or current base code.
+
+**Parameters:**
+
+- `code?: RefOrNormal<string | undefined>` — Locale, country or language code; a ref is supported where declared.
+
+**Returns:** `ComputedRef<GeoFlagItem | undefined>` — Computed result; read it through .value.
+
+```typescript
+const result = /*#__PURE__*/ flags.getLanguage(code)
 ```
 
 ### Catalogs

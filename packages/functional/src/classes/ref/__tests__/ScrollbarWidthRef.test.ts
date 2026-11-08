@@ -105,5 +105,20 @@ describe('ScrollbarWidthRef', () => {
       expect(ScrollbarWidth.is).not.toHaveBeenCalled()
       expect(ScrollbarWidth.get).not.toHaveBeenCalled()
     })
+
+    it('reactively updates computed is when item transitions from undefined to boolean and back', () => {
+      vi.mocked(isDomRuntime).mockReturnValue(false)
+      const scrollbar = new ScrollbarWidthRef()
+      expect(scrollbar.is.value).toBe(false)
+
+      scrollbar.item.value = false
+      expect(scrollbar.is.value).toBe(true)
+
+      scrollbar.item.value = true
+      expect(scrollbar.is.value).toBe(true)
+
+      scrollbar.item.value = undefined
+      expect(scrollbar.is.value).toBe(false)
+    })
   })
 })

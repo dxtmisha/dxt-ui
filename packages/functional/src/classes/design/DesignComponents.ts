@@ -44,17 +44,6 @@ export class DesignComponents<
   }
 
   /**
-   * Checks whether a registry entry contains a component.
-   *
-   * Проверяет наличие компонента в записи реестра.
-   * @param name Connected component registry key. / Ключ подключённого компонента в реестре.
-   * @returns Whether the described condition is satisfied. / Выполнено ли описанное условие.
-   */
-  is<K extends keyof COMP>(name: K): name is K {
-    return Boolean(this.components?.[name])
-  }
-
-  /**
    * Returns the registry entry without creating a VNode.
    *
    * Возвращает запись реестра без создания VNode.
@@ -63,6 +52,17 @@ export class DesignComponents<
    */
   get<K extends keyof COMP>(name: K): COMP[K] {
     return this.components?.[name]
+  }
+
+  /**
+   * Checks whether a registry entry contains a component.
+   *
+   * Проверяет наличие компонента в записи реестра.
+   * @param name Connected component registry key. / Ключ подключённого компонента в реестре.
+   * @returns Whether the described condition is satisfied. / Выполнено ли описанное условие.
+   */
+  is<K extends keyof COMP>(name: K): name is K {
+    return Boolean(this.components?.[name])
   }
 
   /**

@@ -148,4 +148,52 @@ describe('GeoUnitRef public unit contracts', () => {
     expect(fallbackValue.value).toContain('32')
     expect(explicitValue.value).toContain('C')
   })
+
+  it('switches between explicit locale ref and undefined GeoRef fallback dynamically', () => {
+    GeoRef.set('ru-RU')
+    const code = ref<string | undefined>(undefined)
+    const formatter = new GeoUnitRef(code)
+    const temperature = formatter.celsius(0)
+
+    expect(formatter.getLocation().value).toBe('ru-RU')
+    expect(temperature.value).toBe(new GeoUnit('ru-RU').celsius(0))
+
+    code.value = 'en-US'
+    expect(formatter.getLocation().value).toBe('en-US')
+    expect(temperature.value).toBe(new GeoUnit('en-US').celsius(0))
+
+    code.value = undefined
+    expect(formatter.getLocation().value).toBe('ru-RU')
+    expect(temperature.value).toBe(new GeoUnit('ru-RU').celsius(0))
+  })
+
+  it.each([
+    ['millimeter', 'millimeter'],
+    ['centimeter', 'centimeter'],
+    ['meter', 'meter'],
+    ['kilometer', 'kilometer'],
+    ['square-meter', 'squareMeter'],
+    ['hectare', 'hectare'],
+    ['gram', 'gram'],
+    ['kilogram', 'kilogram'],
+    ['tonne', 'tonne'],
+    ['milliliter', 'milliliter'],
+    ['liter', 'liter'],
+    ['celsius', 'celsius'],
+    ['kilometer-per-hour', 'kilometerPerHour']
+  ] as const)('delegates format("%s") identically to shortcut method %s across locales', (unitId, method) => {
+    const code = ref('ru-RU')
+    const value = ref<number | string>(25)
+    const options: Intl.NumberFormatOptions = { maximumFractionDigits: 2 }
+    const formatter = new GeoUnitRef(code)
+
+    const viaFormat = formatter.format(value, unitId, options)
+    const viaMethod = formatter[method](value, options)
+
+    expect(viaFormat.value).toBe(viaMethod.value)
+
+    code.value = 'en-US'
+    value.value = -40
+    expect(viaFormat.value).toBe(viaMethod.value)
+  })
 })

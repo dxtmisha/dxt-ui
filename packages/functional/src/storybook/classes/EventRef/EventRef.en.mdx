@@ -14,12 +14,12 @@ Reactive extension of `EventItem` for DOM or window listeners. Constructor targe
 
 ## Initialization
 
-`constructor( elementSelector?: RefOrNormal<ElementOrString<E> | undefined>, elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>, type: string | string[] = ['click'], listener?: EventListenerDetail<O, D>, options?: EventOptions, detail?: D )`
+`constructor( elementSelector?: RefOrNormal<ElementOrString<E> | undefined>, elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement> | undefined>, type: string | string[] = ['click'], listener?: EventListenerDetail<O, D>, options?: EventOptions, detail?: D )`
 
 **Parameters:**
 
 - `elementSelector?: RefOrNormal<ElementOrString<E> | undefined>` — Target element or selector.
-- `elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>` — Optional control element or selector for DOM presence checks.
+- `elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement> | undefined>` — Optional control element or selector for DOM presence checks.
 - `type: string | string[] = ['click']` — Event type or array; defaults to click.
 - `listener?: EventListenerDetail<O, D>` — Event callback receiving event and stored detail.
 - `options?: EventOptions` — Configuration options.

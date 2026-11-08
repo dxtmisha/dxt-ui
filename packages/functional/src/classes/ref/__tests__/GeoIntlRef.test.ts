@@ -172,7 +172,7 @@ describe('GeoIntlRef boundaries and saved computed values', () => {
   })
 
   it('tracks currency options and symbols independently from numeric input', () => {
-    const options = ref<string | Intl.NumberFormatOptions>('USD')
+    const options = ref<string | Intl.NumberFormatOptions | undefined>('USD')
     const currency = ref('USD')
     const formatter = new GeoIntlRef('en-US')
     const amount = formatter.currency(0, options)
@@ -187,7 +187,7 @@ describe('GeoIntlRef boundaries and saved computed values', () => {
   })
 
   it('reacts to display-name inputs with Unicode translations', () => {
-    const language = ref('ru')
+    const language = ref<string | undefined>('ru')
     const formatter = new GeoIntlRef('vi-VN')
     const name = formatter.languageName(language)
     expect(name.value).toBe(new Intl.DisplayNames('vi-VN', { type: 'language' }).of('ru'))

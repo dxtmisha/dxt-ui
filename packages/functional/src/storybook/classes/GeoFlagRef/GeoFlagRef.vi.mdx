@@ -47,13 +47,13 @@ code.value = 'en-US'
 
 #### `get`
 
-`get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>`
+`get(code?: RefOrNormal<string | undefined>): ComputedRef<GeoFlagItem | undefined>`
 
 Trả dữ liệu quốc gia cho mã cụ thể hoặc mã cơ sở hiện tại.
 
 **Tham số:**
 
-- `code?: RefOrNormal<string>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
+- `code?: RefOrNormal<string | undefined>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
 
 **Trả về:** `ComputedRef<GeoFlagItem | undefined>` — Kết quả computed; đọc qua .value.
 
@@ -61,36 +61,36 @@ Trả dữ liệu quốc gia cho mã cụ thể hoặc mã cơ sở hiện tại
 const result = /*#__PURE__*/ flags.get(code)
 ```
 
-#### `getLanguage`
-
-`getLanguage(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>`
-
-Trả dữ liệu ngôn ngữ cho mã cụ thể hoặc mã cơ sở hiện tại.
-
-**Tham số:**
-
-- `code?: RefOrNormal<string>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
-
-**Trả về:** `ComputedRef<GeoFlagItem | undefined>` — Kết quả computed; đọc qua .value.
-
-```typescript
-const result = /*#__PURE__*/ flags.getLanguage(code)
-```
-
 #### `getFlag`
 
-`getFlag(code?: RefOrNormal<string>): ComputedRef<string | undefined>`
+`getFlag(code?: RefOrNormal<string | undefined>): ComputedRef<string | undefined>`
 
 Trả mã biểu tượng cờ cho mã cụ thể hoặc mã cơ sở hiện tại.
 
 **Tham số:**
 
-- `code?: RefOrNormal<string>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
+- `code?: RefOrNormal<string | undefined>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
 
 **Trả về:** `ComputedRef<string | undefined>` — Kết quả computed; đọc qua .value.
 
 ```typescript
 const result = /*#__PURE__*/ flags.getFlag(code)
+```
+
+#### `getLanguage`
+
+`getLanguage(code?: RefOrNormal<string | undefined>): ComputedRef<GeoFlagItem | undefined>`
+
+Trả dữ liệu ngôn ngữ cho mã cụ thể hoặc mã cơ sở hiện tại.
+
+**Tham số:**
+
+- `code?: RefOrNormal<string | undefined>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
+
+**Trả về:** `ComputedRef<GeoFlagItem | undefined>` — Kết quả computed; đọc qua .value.
+
+```typescript
+const result = /*#__PURE__*/ flags.getLanguage(code)
 ```
 
 ### Danh mục

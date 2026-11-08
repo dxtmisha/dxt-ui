@@ -185,5 +185,34 @@ describe('RouterItemRef', () => {
     it('should return empty object if to object has no name', () => {
       expect(RouterItemRef.rawToHref({ path: '/home' })).toEqual({})
     })
+
+    it('should isolate router instances across separate ServerStorage contexts in SSR', () => {
+      const contextA: Record<string, unknown> = {}
+      const contextB: Record<string, unknown> = {}
+      let activeContext = contextA
+
+      ServerStorage.reset()
+      ServerStorage.init(() => activeContext)
+
+      const routerA = createRouter({
+        history: createMemoryHistory('/tenant-a/'),
+        routes: [{ path: '/dashboard', name: 'dashboard', component: { render: () => null } }]
+      })
+      const routerB = createRouter({
+        history: createMemoryHistory('/tenant-b/'),
+        routes: [{ path: '/dashboard', name: 'dashboard', component: { render: () => null } }]
+      })
+
+      RouterItemRef.set(routerA)
+      expect(RouterItemRef.getLink('dashboard')).toBe('/tenant-a/dashboard')
+
+      activeContext = contextB
+      expect(RouterItemRef.get()).toBeUndefined()
+      RouterItemRef.setOneTime(routerB)
+      expect(RouterItemRef.getLink('dashboard')).toBe('/tenant-b/dashboard')
+
+      activeContext = contextA
+      expect(RouterItemRef.getLink('dashboard')).toBe('/tenant-a/dashboard')
+    })
   })
 })

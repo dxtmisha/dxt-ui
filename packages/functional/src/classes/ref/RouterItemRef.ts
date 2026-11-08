@@ -23,22 +23,14 @@ export class RouterItemRef {
   }
 
   /**
-   * Resolves a named location to `router.resolve(...).href`, or returns `undefined` without a router.
+   * Stores or replaces the router in the current context.
    *
-   * Разрешает именованное местоположение в `router.resolve(...).href`; без роутера возвращает `undefined`.
-   * @param name Registered route name. / Имя зарегистрированного маршрута.
-   * @param params Named-route parameters. / Параметры именованного маршрута.
-   * @param query Route query parameters. / Параметры строки запроса маршрута.
-   * @param hash Route fragment including its leading #. / Фрагмент маршрута с начальным #.
-   * @returns Requested string, or undefined when unavailable. / Запрошенная строка либо undefined при отсутствии.
+   * Сохраняет или заменяет роутер текущего контекста.
+   * @param router Vue Router instance to register. / Регистрируемый экземпляр Vue Router.
+   * @returns No return value. / Нет возвращаемого значения.
    */
-  static getLink(
-    name: string,
-    params?: RouteParamsRawGeneric,
-    query?: LocationQueryRaw,
-    hash?: string
-  ): string | undefined {
-    return this.get()?.resolve({ name, params, query, hash }).href
+  static set(router: Router): void {
+    ServerStorage.set<Router>(ROUTER_ITEM_REF_KEY, () => router)
   }
 
   /**
@@ -69,14 +61,22 @@ export class RouterItemRef {
   }
 
   /**
-   * Stores or replaces the router in the current context.
+   * Resolves a named location to `router.resolve(...).href`, or returns `undefined` without a router.
    *
-   * Сохраняет или заменяет роутер текущего контекста.
-   * @param router Vue Router instance to register. / Регистрируемый экземпляр Vue Router.
-   * @returns No return value. / Нет возвращаемого значения.
+   * Разрешает именованное местоположение в `router.resolve(...).href`; без роутера возвращает `undefined`.
+   * @param name Registered route name. / Имя зарегистрированного маршрута.
+   * @param params Named-route parameters. / Параметры именованного маршрута.
+   * @param query Route query parameters. / Параметры строки запроса маршрута.
+   * @param hash Route fragment including its leading #. / Фрагмент маршрута с начальным #.
+   * @returns Requested string, or undefined when unavailable. / Запрошенная строка либо undefined при отсутствии.
    */
-  static set(router: Router): void {
-    ServerStorage.set<Router>(ROUTER_ITEM_REF_KEY, () => router)
+  static getLink(
+    name: string,
+    params?: RouteParamsRawGeneric,
+    query?: LocationQueryRaw,
+    hash?: string
+  ): string | undefined {
+    return this.get()?.resolve({ name, params, query, hash }).href
   }
 
   /**

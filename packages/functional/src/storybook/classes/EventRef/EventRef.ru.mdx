@@ -14,12 +14,12 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-`constructor( elementSelector?: RefOrNormal<ElementOrString<E> | undefined>, elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>, type: string | string[] = ['click'], listener?: EventListenerDetail<O, D>, options?: EventOptions, detail?: D )`
+`constructor( elementSelector?: RefOrNormal<ElementOrString<E> | undefined>, elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement> | undefined>, type: string | string[] = ['click'], listener?: EventListenerDetail<O, D>, options?: EventOptions, detail?: D )`
 
 **Параметры:**
 
 - `elementSelector?: RefOrNormal<ElementOrString<E> | undefined>` — Целевой элемент либо селектор.
-- `elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>` — Необязательный контрольный элемент либо селектор для проверки присутствия в DOM.
+- `elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement> | undefined>` — Необязательный контрольный элемент либо селектор для проверки присутствия в DOM.
 - `type: string | string[] = ['click']` — Тип события либо массив; по умолчанию click.
 - `listener?: EventListenerDetail<O, D>` — Обработчик события, получающий событие и сохранённый detail.
 - `options?: EventOptions` — Параметры настройки.

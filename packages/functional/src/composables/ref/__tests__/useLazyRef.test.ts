@@ -5,10 +5,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { effectScope, ref, nextTick } from 'vue'
 
+let domRuntime = true
+
 // Mock functional-basic
 vi.mock('@dxtmisha/functional-basic', () => ({
   getElementId: vi.fn((el: any) => el.id || el.getAttribute?.('data-id') || 'fake-id'),
-  isDomRuntime: vi.fn(() => true)
+  isDomRuntime: vi.fn(() => domRuntime)
 }))
 
 // Mock IntersectionObserver
@@ -29,6 +31,7 @@ import { useLazyRef } from '../useLazyRef'
 
 describe('useLazyRef', () => {
   beforeEach(() => {
+    domRuntime = true
     vi.clearAllMocks()
   })
 
@@ -214,5 +217,17 @@ describe('useLazyRef', () => {
     } finally {
       scope.stop()
     }
+  })
+
+  it('should default status to true and skip observer creation during SSR when isDomRuntime is false', () => {
+    domRuntime = false
+    const lazy = useLazyRef()
+    const element = ref<HTMLElement | undefined>(document.createElement('div'))
+
+    const status = lazy.addLazyItem(element)
+
+    expect(lazy.intersectionObserver).toBeUndefined()
+    expect(status.value).toBe(true)
+    expect(observe).not.toHaveBeenCalled()
   })
 })

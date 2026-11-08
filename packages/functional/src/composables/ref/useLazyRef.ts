@@ -21,6 +21,46 @@ export type LazyItem = {
 /** Dictionary of lazy items / Словарь ленивых элементов */
 export type LazyList = Record<string, LazyItem>
 
+/** Lazy tracking controller / Контроллер ленивого отслеживания */
+export type UseLazyRef = {
+  /** Native IntersectionObserver instance / Нативный экземпляр IntersectionObserver */
+  intersectionObserver: IntersectionObserver | undefined
+
+  /**
+   * Gets a registration for an element, optionally selected by its status ref.
+   *
+   * Получает регистрацию элемента, при необходимости выбранную по её ref статуса.
+   * @param element tracked element / отслеживаемый элемент
+   * @param status status ref returned by addLazyItem / ref статуса, возвращённый addLazyItem
+   * @returns matching registration or the first active one / нужная регистрация или первая активная
+   */
+  getItem(element?: HTMLElement, status?: ShallowRef<boolean>): LazyItem | undefined
+
+  /**
+   * Adding an element for tracking.
+   *
+   * Добавление элемента для отслеживания.
+   * @param element element for tracking / элемент для отслеживания
+   * @returns independent visibility status / независимый статус видимости
+   */
+  addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean>
+
+  /**
+   * Removes all registrations of an element from tracking.
+   *
+   * Удаляет все регистрации элемента из отслеживания.
+   * @param element tracked element / отслеживаемый элемент
+   */
+  removeLazyItem: (element?: HTMLElement) => void
+
+  /**
+   * Removing all elements from tracking.
+   *
+   * Удаление всех элементов из отслеживания.
+   */
+  disconnectLazy: () => void
+}
+
 /**
  * Hook for initializing the tracking of an element's appearance on the screen.
  * Registrations of the same element share observation and keep independent state and cleanup.
@@ -34,7 +74,7 @@ export const useLazyRef = (
   options: IntersectionObserverInit = {
     rootMargin: '128px 0px'
   }
-) => {
+): UseLazyRef => {
   const list: Record<string, Set<LazyItem>> = {}
   const intersectionObserver = isDomRuntime() && 'IntersectionObserver' in window
     ? (
@@ -153,6 +193,7 @@ export const useLazyRef = (
      * Removes all registrations of an element from tracking.
      *
      * Удаляет все регистрации элемента из отслеживания.
+     * @param element tracked element / отслеживаемый элемент
      */
     removeLazyItem: remove,
 
@@ -161,6 +202,6 @@ export const useLazyRef = (
      *
      * Удаление всех элементов из отслеживания.
      */
-    disconnectLazy: () => intersectionObserver?.disconnect()
+    disconnectLazy: (): void => intersectionObserver?.disconnect()
   }
 }

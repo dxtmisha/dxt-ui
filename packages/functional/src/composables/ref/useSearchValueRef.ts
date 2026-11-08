@@ -1,4 +1,4 @@
-import { ref, watch, type Ref } from 'vue'
+import { getCurrentScope, onScopeDispose, ref, watch, type Ref } from 'vue'
 import {
   isDomRuntime,
   SearchList,
@@ -65,12 +65,20 @@ export function useSearchValueRef<
       onCleanup(() => {
         if (timeout) {
           clearTimeout(timeout)
+          timeout = undefined
         }
       })
     } else {
       searchDelay.value = search.value
+      loading.value = false
     }
   })
+
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      loading.value = false
+    })
+  }
 
   return {
     /** Current search value / Текущее значение поиска */

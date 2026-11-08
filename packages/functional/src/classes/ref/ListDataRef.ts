@@ -594,7 +594,7 @@ export class ListDataRef {
    * Checks if the item is an item, group, or menu.
    *
    * Проверяет, является ли элемент элементом, группой или меню.
-   * @param item List item data/ данные элемента списка
+   * @param item List item data / данные элемента списка
    * @returns calculated result / вычисленный результат
    */
   protected isItem(item: ListDataItem): boolean {
@@ -606,9 +606,9 @@ export class ListDataRef {
   /**
    * Checks if the item is in the specified parent.
    *
-   * Проверяет, находится ли элемент в указанном родителе.
+   * Проверяет, находится ли элемент в указанном родителем.
    * @param parent parent identifier to search for / идентификатор родителя для поиска
-   * @param item List item data/ данные элемента списка
+   * @param item List item data / данные элемента списка
    * @returns calculated result / вычисленный результат
    */
   protected isInParent(parent: string | undefined, item: ListDataItem): boolean {
@@ -646,8 +646,8 @@ export class ListDataRef {
    * Creates an object of the record element.
    *
    * Создает объект элемента записи.
-   * @param key the value of the key in the element/ значения ключа у элемента
-   * @param item selected element/ выбранный элемент
+   * @param key the value of the key in the element / значения ключа у элемента
+   * @param item selected element / выбранный элемент
    * @returns calculated result / вычисленный результат
    */
   protected initItem(

@@ -1,7 +1,7 @@
-// md5:863268d85235b78ed02501f85788b589 true
+// md5:cdbfe7b0cc93886e41b37a8157584e26 true
 /**
- * Returns a reactive instance for working with internationalization and data formatting.
- * @remarks Avoid using this reactive composable if reactive updates are not required; use non-reactive `GeoIntl` instead.
- * @keywords geointl, intl, format, localization, i18n, reactive
+ * Returns a reactive GeoIntl instance for data formatting.
+ * @remarks Avoid using this reactive composable if reactive updates are not required. For non-reactive formatting, use standard `GeoIntl`.
+ * @keywords geo intl internationalization localization i18n formatting reactive
  */
-export declare function useGeoIntlRef(): GeoIntlRef;
+export declare function useGeoIntlRef(code?: RefOrNormal<string | undefined>): GeoIntlRef;

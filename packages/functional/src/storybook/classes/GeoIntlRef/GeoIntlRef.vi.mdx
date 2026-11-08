@@ -14,11 +14,11 @@ Facade phản ứng của `GeoIntl` cho số, tiền tệ, ngày, tên và sắp
 
 ## Khởi tạo
 
-`constructor(code?: RefOrNormal<string>)`
+`constructor(code?: RefOrNormal<string | undefined>)`
 
 **Tham số:**
 
-- `code?: RefOrNormal<string>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
+- `code?: RefOrNormal<string | undefined>` — Mã locale, quốc gia hoặc ngôn ngữ; hỗ trợ ref theo chữ ký.
 
 ## Hành vi và vòng đời
 
@@ -42,11 +42,11 @@ locale.value = 'vi-VN'
 
 ### Tên hiển thị
 
-- `display( value?: RefOrNormal<string>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions ): ComputedRef<string>` — Trả tên địa phương hóa cho loại Intl được yêu cầu.
+- `display( value?: RefOrNormal<string | undefined>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions ): ComputedRef<string>` — Trả tên địa phương hóa cho loại Intl được yêu cầu.
 
-- `languageName( value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle ): ComputedRef<string>` — Trả tên ngôn ngữ được địa phương hóa.
+- `languageName( value?: RefOrNormal<string | undefined>, style?: Intl.RelativeTimeFormatStyle ): ComputedRef<string>` — Trả tên ngôn ngữ được địa phương hóa.
 
-- `countryName( value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle ): ComputedRef<string>` — Trả tên khu vực được địa phương hóa.
+- `countryName( value?: RefOrNormal<string | undefined>, style?: Intl.RelativeTimeFormatStyle ): ComputedRef<string>` — Trả tên khu vực được địa phương hóa.
 
 ### Số
 
@@ -128,14 +128,14 @@ const label = /*#__PURE__*/ formatter.plural(amount, 'item|items')
 
 #### `currency`
 
-`currency( value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>, numberOnly = false ): ComputedRef<string>`
+`currency( value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions | undefined>, numberOnly = false ): ComputedRef<string>`
 
 Định dạng tiền bằng mã tiền hoặc đối tượng tùy chọn phản ứng. `numberOnly` bỏ biểu diễn tiền tệ.
 
 **Tham số:**
 
 - `value: RefOrNormal<NumberOrString>` — Giá trị để định dạng; hỗ trợ ref theo chữ ký.
-- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>` — Mã tiền tệ hoặc tùy chọn số Intl.
+- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions | undefined>` — Mã tiền tệ hoặc tùy chọn số Intl.
 - `numberOnly = false` — Bỏ biểu diễn tiền tệ; mặc định false.
 
 **Trả về:** `ComputedRef<string>` — Kết quả computed; đọc qua .value.
@@ -211,11 +211,11 @@ const date = /*#__PURE__*/ formatter.date(ref('2025-01-01'), 'date', 'long')
 
 ### Tên lịch và giờ
 
-- `month( value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['month'] ): ComputedRef<string>` — Trả tên tháng của ngày được truyền.
+- `month( value?: RefOrNormal<NumberOrStringOrDate | undefined>, style?: Intl.DateTimeFormatOptions['month'] ): ComputedRef<string>` — Trả tên tháng của ngày được truyền.
 
 - `months( style?: Intl.DateTimeFormatOptions['month'] ): ComputedRef<ItemValue<number | undefined>[]>` — Trả mục giữ chỗ rồi 12 tháng đánh số 1–12.
 
-- `weekday( value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['weekday'] ): ComputedRef<string>` — Trả tên ngày tuần của ngày được truyền.
+- `weekday( value?: RefOrNormal<NumberOrStringOrDate | undefined>, style?: Intl.DateTimeFormatOptions['weekday'] ): ComputedRef<string>` — Trả tên ngày tuần của ngày được truyền.
 
 - `weekdays( style?: Intl.DateTimeFormatOptions['weekday'] ): ComputedRef<ItemValue<number | undefined>[]>` — Trả mục giữ chỗ rồi bảy ngày tuần theo thứ tự locale.
 

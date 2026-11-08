@@ -1,14 +1,17 @@
-// md5:5e38c8c9bf16b306475af7653ad27d68 true
+// md5:3e019fe347964c1ed9965f10756a2889 true
+import { type ShallowRef } from 'vue';
+
 export type LazyItemByMargin = {
-    rootMargin: string;
-    item: ReturnType<typeof useLazyRef>;
+  rootMargin: string;
+  item: ReturnType<typeof useLazyRef>;
 };
-/** Tracks element screen appearance by root margin with shared observer support. @keywords intersection observer, lazy load, root margin */
-export declare const useLazyItemByMarginRef: (element: RefType<HTMLElement | undefined>, rootMargin?: string) => {
-    /** Reactive visibility status of the tracked item. */
-    lazyItemStatus: import("vue").ShallowRef<boolean>;
-    /** Active tracking state owned by this registration. */
-    readonly lazyItem: LazyItem | undefined;
-    /** Releases this registration from tracking. @keywords unobserve, cleanup */
-    removeLazyItem: () => void;
+
+export type UseLazyItemByMarginRef = {
+  lazyItemStatus: ShallowRef<boolean>;
+  readonly lazyItem: LazyItem | undefined;
+  /** Releases registration from tracking. */
+  removeLazyItem: () => void;
 };
+
+/** Tracks element visibility by root margin with shared observer instances. @keywords lazy observer, intersection, visibility, margin */
+export declare const useLazyItemByMarginRef: (element: RefType<HTMLElement | undefined>, rootMargin?: string) => UseLazyItemByMarginRef;

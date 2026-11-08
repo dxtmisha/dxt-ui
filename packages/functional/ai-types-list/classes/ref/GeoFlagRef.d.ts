@@ -1,25 +1,25 @@
-// md5:f9cb51ae98f4ddea6c64216f79d22a0a true
+// md5:d89227707df54581a9a1843795e90e8c true
 import { type ComputedRef } from 'vue';
 import { type GeoFlagItem, type GeoFlagNational } from '@dxtmisha/functional-basic';
 
-/** Reactive wrapper around GeoFlag for country, language metadata, and flag icon identifiers. @keywords geo, flag, country, language, reactive */
+/** Reactive wrapper around GeoFlag for country and language metadata and flag icon identifiers. @keywords geo, flag, country, language, locale, reactive */
 export declare class GeoFlagRef {
-    /** Initializes GeoFlagRef with an optional locale, country, or language code. @keywords constructor, init, geo */
-    constructor(code?: RefOrNormal<string | undefined>);
-    /** Returns the current base code as a string. @keywords code, locale, country, language */
-    getCode(): string;
-    /** Returns computed country metadata for the explicit or base code. @keywords country, metadata, geo, item */
-    get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>;
-    /** Returns computed language metadata for the explicit or base code. @keywords language, metadata, geo, item */
-    getLanguage(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>;
-    /** Returns computed flag icon identifier for the explicit or base code. @keywords flag, icon, country */
-    getFlag(code?: RefOrNormal<string>): ComputedRef<string | undefined>;
-    /** Returns computed country flag items, optionally filtered by codes. @keywords list, countries, flags */
-    getList(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]>;
-    /** Returns computed language flag items, optionally filtered by codes. @keywords list, languages, flags */
-    getListLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]>;
-    /** Returns computed country names in national languages, optionally filtered by codes. @keywords national, country, native */
-    getNational(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>;
-    /** Returns computed language names in national languages, optionally filtered by codes. @keywords national, language, native */
-    getNationalLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>;
+  /** Initializes GeoFlagRef with an optional locale, country, or language code ref. @keywords constructor, geo, flag, init */
+  constructor(code?: RefOrNormal<string | undefined>);
+  /** Returns country metadata for the specified or current base code. @keywords country, metadata, flag */
+  get(code?: RefOrNormal<string | undefined>): ComputedRef<GeoFlagItem | undefined>;
+  /** Returns the current base code as a string. @keywords code, locale, country, language */
+  getCode(): string;
+  /** Returns the flag icon identifier for the specified or current base code. @keywords flag, icon, identifier */
+  getFlag(code?: RefOrNormal<string | undefined>): ComputedRef<string | undefined>;
+  /** Returns language metadata for the specified or current base code. @keywords language, metadata */
+  getLanguage(code?: RefOrNormal<string | undefined>): ComputedRef<GeoFlagItem | undefined>;
+  /** Returns country flag items, optionally filtered by codes. @keywords countries, list, flags */
+  getList(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]>;
+  /** Returns language flag items, optionally filtered by codes. @keywords languages, list, flags */
+  getListLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]>;
+  /** Returns country names in their national languages. @keywords country, national, names */
+  getNational(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>;
+  /** Returns language names in their national languages. @keywords language, national, names */
+  getNationalLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>;
 }

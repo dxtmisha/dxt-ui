@@ -10,7 +10,8 @@ describe('DesignComp', () => {
     expectTypeOf(registry.get('button')).toEqualTypeOf<string>()
     expect(registry.get('button')).toBe('button')
     expect(registry.render('missing')).toEqual([])
-    expect(new DesignComp().render('button')).toEqual([])
+    const untypedRegistry: DesignComp = new DesignComp()
+    expect(untypedRegistry.render('button')).toEqual([])
   })
 
   it('applies inherited reactive modifications during subsequent renders', () => {

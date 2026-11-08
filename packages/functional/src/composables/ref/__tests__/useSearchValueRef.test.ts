@@ -3,9 +3,9 @@
  */
 
 import { describe, it, expect, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { effectScope, nextTick, ref } from 'vue'
 import { SearchList } from '@dxtmisha/functional-basic'
-import { useSearchValueRef } from '../useSearchValueRef'
+import { useSearchValueRef, type UseSearchValueRef } from '../useSearchValueRef'
 
 describe('useSearchValueRef', () => {
   const dummyList = [{ id: 1, name: 'Apple' }]
@@ -73,6 +73,54 @@ describe('useSearchValueRef', () => {
 
     expect(loading.value).toBe(false)
     expect(searchDelay.value).toBe('hello')
+
+    vi.useRealTimers()
+  })
+
+  it('should cancel pending timeout and reset loading when effectScope is disposed', async () => {
+    vi.useFakeTimers()
+    const searchList = new SearchList(dummyList, columns, undefined, { delay: 100 })
+    const scope = effectScope()
+    let state!: UseSearchValueRef
+
+    scope.run(() => {
+      state = useSearchValueRef(searchList)
+    })
+
+    state.search.value = 'pending'
+    await Promise.resolve()
+
+    expect(state.loading.value).toBe(true)
+    expect(state.searchDelay.value).toBe('')
+
+    scope.stop()
+
+    expect(state.loading.value).toBe(false)
+
+    vi.advanceTimersByTime(200)
+    await nextTick()
+
+    expect(state.searchDelay.value).toBe('')
+    expect(state.loading.value).toBe(false)
+
+    vi.useRealTimers()
+  })
+
+  it('should reset loading immediately if delay is disabled while a timer is pending', async () => {
+    vi.useFakeTimers()
+    const searchList = new SearchList(dummyList, columns, undefined, { delay: 100 })
+    const { search, searchDelay, loading } = useSearchValueRef(searchList)
+
+    search.value = 'first'
+    await Promise.resolve()
+    expect(loading.value).toBe(true)
+
+    searchList.getOptions().setOptions({ delay: 0 })
+    search.value = 'instant'
+    await Promise.resolve()
+
+    expect(loading.value).toBe(false)
+    expect(searchDelay.value).toBe('instant')
 
     vi.useRealTimers()
   })

@@ -245,16 +245,17 @@ export function useApiManagementRef<
      *
      * Обёртка для действия API с выполнением коллбэка.
      * @param action target action / целевое действие
+     * @returns wrapped asynchronous callback / обёрнутый асинхронный колбэк
      */
-    const getCallbackActionRequest = (
-      action?: (data?: any) => Promise<void> | void
-    ): ((data?: any) => Promise<void>) => {
-      return async (data?: any) => {
+    const getCallbackActionRequest = <Data>(
+      action?: (data: Data | undefined) => Promise<void> | void
+    ): ((data: Data | undefined) => Promise<void>) => {
+      return async (data: Data | undefined) => {
         if (isFunction(action)) {
           await executePromise(action(data))
         }
 
-        return actionRequest(data)
+        return actionRequest(data as ApiData)
       }
     }
 

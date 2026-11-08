@@ -53,7 +53,7 @@ describe('EventRef', () => {
     })
 
     it('uses the new control ref for listener DOM safety checks', async () => {
-      const controlRef = ref<HTMLElement>(control)
+      const controlRef = ref<HTMLElement | undefined>(control)
       const listener = vi.fn()
       const scope = effectScope()
       const event = scope.run(() => new EventRef(element, controlRef, 'click', listener).start())

@@ -47,13 +47,13 @@ code.value = 'en-US'
 
 #### `get`
 
-`get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>`
+`get(code?: RefOrNormal<string | undefined>): ComputedRef<GeoFlagItem | undefined>`
 
 Возвращает данные страны по явному либо текущему базовому коду.
 
 **Параметры:**
 
-- `code?: RefOrNormal<string>` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+- `code?: RefOrNormal<string | undefined>` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
 
 **Возвращает:** `ComputedRef<GeoFlagItem | undefined>` — Вычисляемый результат; читайте через .value.
 
@@ -61,36 +61,36 @@ code.value = 'en-US'
 const result = /*#__PURE__*/ flags.get(code)
 ```
 
-#### `getLanguage`
-
-`getLanguage(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>`
-
-Возвращает данные языка по явному либо текущему базовому коду.
-
-**Параметры:**
-
-- `code?: RefOrNormal<string>` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
-
-**Возвращает:** `ComputedRef<GeoFlagItem | undefined>` — Вычисляемый результат; читайте через .value.
-
-```typescript
-const result = /*#__PURE__*/ flags.getLanguage(code)
-```
-
 #### `getFlag`
 
-`getFlag(code?: RefOrNormal<string>): ComputedRef<string | undefined>`
+`getFlag(code?: RefOrNormal<string | undefined>): ComputedRef<string | undefined>`
 
 Возвращает идентификатор флага по явному либо текущему базовому коду.
 
 **Параметры:**
 
-- `code?: RefOrNormal<string>` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+- `code?: RefOrNormal<string | undefined>` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
 
 **Возвращает:** `ComputedRef<string | undefined>` — Вычисляемый результат; читайте через .value.
 
 ```typescript
 const result = /*#__PURE__*/ flags.getFlag(code)
+```
+
+#### `getLanguage`
+
+`getLanguage(code?: RefOrNormal<string | undefined>): ComputedRef<GeoFlagItem | undefined>`
+
+Возвращает данные языка по явному либо текущему базовому коду.
+
+**Параметры:**
+
+- `code?: RefOrNormal<string | undefined>` — Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+
+**Возвращает:** `ComputedRef<GeoFlagItem | undefined>` — Вычисляемый результат; читайте через .value.
+
+```typescript
+const result = /*#__PURE__*/ flags.getLanguage(code)
 ```
 
 ### Каталоги

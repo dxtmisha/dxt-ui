@@ -28,6 +28,8 @@ const mockMeta = vi.hoisted(() => ({
   html: vi.fn(() => '<meta ...>')
 }))
 
+let domRuntime = true
+
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@dxtmisha/functional-basic')>()
   return {
@@ -45,7 +47,7 @@ vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
     },
     random: vi.fn((min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min),
     getElementId: vi.fn(() => 'test-id'),
-    isDomRuntime: vi.fn(() => true)
+    isDomRuntime: vi.fn(() => domRuntime)
   }
 })
 
@@ -53,6 +55,7 @@ import { useMeta } from '../useMeta'
 
 describe('useMeta', () => {
   beforeEach(() => {
+    domRuntime = true
     vi.clearAllMocks()
   })
 
@@ -191,5 +194,18 @@ describe('useMeta', () => {
     const { update } = useMeta()
     update()
     expect(mockMeta.setTitle).toHaveBeenCalled()
+  })
+
+  it('should synchronously update MetaStatic during SSR via setTitle and updateSsr when isDomRuntime is false', () => {
+    domRuntime = false
+    const { setTitle, updateSsr } = useMeta()
+    vi.clearAllMocks()
+
+    setTitle('ssr title')
+    expect(mockMeta.setTitle).toHaveBeenCalledWith('ssr title')
+
+    vi.clearAllMocks()
+    updateSsr()
+    expect(mockMeta.setTitle).toHaveBeenCalledWith('ssr title')
   })
 })

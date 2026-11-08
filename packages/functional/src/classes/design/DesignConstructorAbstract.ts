@@ -51,12 +51,6 @@ export abstract class DesignConstructorAbstract<
   /** Emit handlers / Обработчики emit */
   protected readonly emits?: ConstrEmit<EMITS>
 
-  /** Final computed list of classes / Итоговый вычисляемый список классов */
-  protected readonly classes?: ComputedRef<CLASSES>
-
-  /** Final computed list of styles / Итоговый вычисляемый список стилей */
-  protected readonly styles?: ComputedRef<ConstrStyles>
-
   /** Additional attributes / Дополнительные атрибуты */
   protected readonly attrs?: ConstrItem
   /** Named slots / Именованные слоты */
@@ -82,12 +76,16 @@ export abstract class DesignConstructorAbstract<
     }
 
     this.emits = options?.emits
-    this.classes = computed(() => this.updateClasses())
-    this.styles = computed(() => this.updateStyles())
 
     this.attrs = useAttrs()
     this.slots = useSlots() as SLOTS
   }
+
+  /** Final computed list of classes / Итоговый вычисляемый список классов */
+  protected readonly classes?: ComputedRef<CLASSES> = computed(() => this.updateClasses())
+
+  /** Final computed list of styles / Итоговый вычисляемый список стилей */
+  protected readonly styles?: ComputedRef<ConstrStyles> = computed(() => this.updateStyles())
 
   /**
    * Returns a new attribute object without `class` and `style`.

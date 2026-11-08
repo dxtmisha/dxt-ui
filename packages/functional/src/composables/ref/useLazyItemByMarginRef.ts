@@ -1,4 +1,4 @@
-import { effectScope } from 'vue'
+import { effectScope, type ShallowRef } from 'vue'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 import { useLazyRef, type LazyItem } from './useLazyRef'
 import type { RefType } from '../../types/refTypes'
@@ -9,6 +9,20 @@ export type LazyItemByMargin = {
   rootMargin: string
   /** Lazy observer controller / Контроллер ленивого наблюдателя */
   item: ReturnType<typeof useLazyRef>
+}
+
+/** Element visibility tracking state and cleanup / Состояние отслеживания видимости элемента и функция очистки */
+export type UseLazyItemByMarginRef = {
+  /** Lazy item status / Статус ленивого элемента */
+  lazyItemStatus: ShallowRef<boolean>
+  /** Owned active registration / Собственная активная регистрация */
+  readonly lazyItem: LazyItem | undefined
+  /**
+   * Releases only this registration from tracking.
+   *
+   * Освобождает только текущую регистрацию из отслеживания.
+   */
+  removeLazyItem: () => void
 }
 
 /**
@@ -58,7 +72,7 @@ const getItemByMargin = (rootMargin: string): ReturnType<typeof useLazyRef> => {
 export const useLazyItemByMarginRef = (
   element: RefType<HTMLElement | undefined>,
   rootMargin: string = '128px 0px'
-) => {
+): UseLazyItemByMarginRef => {
   const observer = getItemByMargin(rootMargin)
   const scope = effectScope()
   const status = scope.run(() => observer.addLazyItem(element))!

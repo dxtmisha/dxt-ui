@@ -22,10 +22,10 @@ import type { RefOrNormal } from '../../types/refTypes'
  */
 export class GeoUnitRef {
   /** Location reference / Ссылка на локацию */
-  protected location: Ref<string | undefined>
+  protected readonly location: Ref<string | undefined>
 
   /** Computed instance of GeoUnit / Вычисляемый экземпляр GeoUnit */
-  protected unitInstance: ComputedRef<GeoUnit>
+  protected readonly unitInstance: ComputedRef<GeoUnit>
 
   /**
    * Initializes GeoUnitRef with the supplied configuration.
@@ -49,18 +49,18 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats millimeters; converts to `inch` where regional settings require it.
+   * Formats degrees Celsius; converts to `fahrenheit` where regional settings require it.
    *
-   * Форматирует миллиметры; преобразует в `inch`, если это задано настройками региона.
+   * Форматирует градусы Цельсия; преобразует в `fahrenheit`, если это задано настройками региона.
    * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
    * @param options Configuration options. / Параметры настройки.
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  millimeter(
+  celsius(
     value: RefOrNormal<NumberOrString>,
     options?: Intl.NumberFormatOptions
   ): ComputedRef<string> {
-    return computed(() => this.unitInstance.value.millimeter(getRef(value), options))
+    return computed(() => this.unitInstance.value.celsius(getRef(value), options))
   }
 
   /**
@@ -79,63 +79,20 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats meters; converts to `foot` where regional settings require it.
+   * Selects the metric source unit reactively and delegates conversion and formatting to `GeoUnit`.
    *
-   * Форматирует метры; преобразует в `foot`, если это задано настройками региона.
+   * Реактивно выбирает исходную метрическую единицу и делегирует преобразование и форматирование `GeoUnit`.
    * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param unit Unit identifier. / Идентификатор единицы.
    * @param options Configuration options. / Параметры настройки.
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  meter(
+  format(
     value: RefOrNormal<NumberOrString>,
+    unit: RefOrNormal<string>,
     options?: Intl.NumberFormatOptions
   ): ComputedRef<string> {
-    return computed(() => this.unitInstance.value.meter(getRef(value), options))
-  }
-
-  /**
-   * Formats kilometers; converts to `mile` where regional settings require it.
-   *
-   * Форматирует километры; преобразует в `mile`, если это задано настройками региона.
-   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-   * @param options Configuration options. / Параметры настройки.
-   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-   */
-  kilometer(
-    value: RefOrNormal<NumberOrString>,
-    options?: Intl.NumberFormatOptions
-  ): ComputedRef<string> {
-    return computed(() => this.unitInstance.value.kilometer(getRef(value), options))
-  }
-
-  /**
-   * Formats square meters; converts to `square-foot` where regional settings require it.
-   *
-   * Форматирует квадратные метры; преобразует в `square-foot`, если это задано настройками региона.
-   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-   * @param options Configuration options. / Параметры настройки.
-   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-   */
-  squareMeter(
-    value: RefOrNormal<NumberOrString>,
-    options?: Intl.NumberFormatOptions
-  ): ComputedRef<string> {
-    return computed(() => this.unitInstance.value.squareMeter(getRef(value), options))
-  }
-
-  /**
-   * Formats hectares; converts to `acre` where regional settings require it.
-   *
-   * Форматирует гектары; преобразует в `acre`, если это задано настройками региона.
-   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-   * @param options Configuration options. / Параметры настройки.
-   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-   */
-  hectare(
-    value: RefOrNormal<NumberOrString>,
-    options?: Intl.NumberFormatOptions
-  ): ComputedRef<string> {
-    return computed(() => this.unitInstance.value.hectare(getRef(value), options))
+    return computed(() => this.unitInstance.value.format(getRef(value), getRef(unit), options))
   }
 
   /**
@@ -154,6 +111,21 @@ export class GeoUnitRef {
   }
 
   /**
+   * Formats hectares; converts to `acre` where regional settings require it.
+   *
+   * Форматирует гектары; преобразует в `acre`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+   */
+  hectare(
+    value: RefOrNormal<NumberOrString>,
+    options?: Intl.NumberFormatOptions
+  ): ComputedRef<string> {
+    return computed(() => this.unitInstance.value.hectare(getRef(value), options))
+  }
+
+  /**
    * Formats kilograms; converts to `pound` where regional settings require it.
    *
    * Форматирует килограммы; преобразует в `pound`, если это задано настройками региона.
@@ -169,63 +141,18 @@ export class GeoUnitRef {
   }
 
   /**
-   * Formats tonnes; converts to `ton` where regional settings require it.
+   * Formats kilometers; converts to `mile` where regional settings require it.
    *
-   * Форматирует тонны; преобразует в `ton`, если это задано настройками региона.
+   * Форматирует километры; преобразует в `mile`, если это задано настройками региона.
    * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
    * @param options Configuration options. / Параметры настройки.
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  tonne(
+  kilometer(
     value: RefOrNormal<NumberOrString>,
     options?: Intl.NumberFormatOptions
   ): ComputedRef<string> {
-    return computed(() => this.unitInstance.value.tonne(getRef(value), options))
-  }
-
-  /**
-   * Formats milliliters; converts to `fluid-ounce` where regional settings require it.
-   *
-   * Форматирует миллилитры; преобразует в `fluid-ounce`, если это задано настройками региона.
-   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-   * @param options Configuration options. / Параметры настройки.
-   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-   */
-  milliliter(
-    value: RefOrNormal<NumberOrString>,
-    options?: Intl.NumberFormatOptions
-  ): ComputedRef<string> {
-    return computed(() => this.unitInstance.value.milliliter(getRef(value), options))
-  }
-
-  /**
-   * Formats liters; converts to `gallon` where regional settings require it.
-   *
-   * Форматирует литры; преобразует в `gallon`, если это задано настройками региона.
-   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-   * @param options Configuration options. / Параметры настройки.
-   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-   */
-  liter(
-    value: RefOrNormal<NumberOrString>,
-    options?: Intl.NumberFormatOptions
-  ): ComputedRef<string> {
-    return computed(() => this.unitInstance.value.liter(getRef(value), options))
-  }
-
-  /**
-   * Formats degrees Celsius; converts to `fahrenheit` where regional settings require it.
-   *
-   * Форматирует градусы Цельсия; преобразует в `fahrenheit`, если это задано настройками региона.
-   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-   * @param options Configuration options. / Параметры настройки.
-   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-   */
-  celsius(
-    value: RefOrNormal<NumberOrString>,
-    options?: Intl.NumberFormatOptions
-  ): ComputedRef<string> {
-    return computed(() => this.unitInstance.value.celsius(getRef(value), options))
+    return computed(() => this.unitInstance.value.kilometer(getRef(value), options))
   }
 
   /**
@@ -244,19 +171,92 @@ export class GeoUnitRef {
   }
 
   /**
-   * Selects the metric source unit reactively and delegates conversion and formatting to `GeoUnit`.
+   * Formats liters; converts to `gallon` where regional settings require it.
    *
-   * Реактивно выбирает исходную метрическую единицу и делегирует преобразование и форматирование `GeoUnit`.
+   * Форматирует литры; преобразует в `gallon`, если это задано настройками региона.
    * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
-   * @param unit Unit identifier. / Идентификатор единицы.
    * @param options Configuration options. / Параметры настройки.
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  format(
+  liter(
     value: RefOrNormal<NumberOrString>,
-    unit: RefOrNormal<string>,
     options?: Intl.NumberFormatOptions
   ): ComputedRef<string> {
-    return computed(() => this.unitInstance.value.format(getRef(value), getRef(unit), options))
+    return computed(() => this.unitInstance.value.liter(getRef(value), options))
+  }
+
+  /**
+   * Formats meters; converts to `foot` where regional settings require it.
+   *
+   * Форматирует метры; преобразует в `foot`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+   */
+  meter(
+    value: RefOrNormal<NumberOrString>,
+    options?: Intl.NumberFormatOptions
+  ): ComputedRef<string> {
+    return computed(() => this.unitInstance.value.meter(getRef(value), options))
+  }
+
+  /**
+   * Formats milliliters; converts to `fluid-ounce` where regional settings require it.
+   *
+   * Форматирует миллилитры; преобразует в `fluid-ounce`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+   */
+  milliliter(
+    value: RefOrNormal<NumberOrString>,
+    options?: Intl.NumberFormatOptions
+  ): ComputedRef<string> {
+    return computed(() => this.unitInstance.value.milliliter(getRef(value), options))
+  }
+
+  /**
+   * Formats millimeters; converts to `inch` where regional settings require it.
+   *
+   * Форматирует миллиметры; преобразует в `inch`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+   */
+  millimeter(
+    value: RefOrNormal<NumberOrString>,
+    options?: Intl.NumberFormatOptions
+  ): ComputedRef<string> {
+    return computed(() => this.unitInstance.value.millimeter(getRef(value), options))
+  }
+
+  /**
+   * Formats square meters; converts to `square-foot` where regional settings require it.
+   *
+   * Форматирует квадратные метры; преобразует в `square-foot`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+   */
+  squareMeter(
+    value: RefOrNormal<NumberOrString>,
+    options?: Intl.NumberFormatOptions
+  ): ComputedRef<string> {
+    return computed(() => this.unitInstance.value.squareMeter(getRef(value), options))
+  }
+
+  /**
+   * Formats tonnes; converts to `ton` where regional settings require it.
+   *
+   * Форматирует тонны; преобразует в `ton`, если это задано настройками региона.
+   * @param value Value to format; a ref is supported where declared. / Значение для форматирования; ссылка поддерживается согласно сигнатуре.
+   * @param options Configuration options. / Параметры настройки.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+   */
+  tonne(
+    value: RefOrNormal<NumberOrString>,
+    options?: Intl.NumberFormatOptions
+  ): ComputedRef<string> {
+    return computed(() => this.unitInstance.value.tonne(getRef(value), options))
   }
 }

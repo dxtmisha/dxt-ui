@@ -49,7 +49,7 @@ export class GeoIntlRef {
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   display(
-    value?: RefOrNormal<string>,
+    value?: RefOrNormal<string | undefined>,
     typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions
   ): ComputedRef<string> {
     return computed(() => this.intl.value.display(getRef(value), typeOptions))
@@ -64,7 +64,7 @@ export class GeoIntlRef {
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   languageName(
-    value?: RefOrNormal<string>,
+    value?: RefOrNormal<string | undefined>,
     style?: Intl.RelativeTimeFormatStyle
   ): ComputedRef<string> {
     return computed(() => this.intl.value.languageName(getRef(value), style))
@@ -79,7 +79,7 @@ export class GeoIntlRef {
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   countryName(
-    value?: RefOrNormal<string>,
+    value?: RefOrNormal<string | undefined>,
     style?: Intl.RelativeTimeFormatStyle
   ): ComputedRef<string> {
     return computed(() => this.intl.value.countryName(getRef(value), style))
@@ -121,7 +121,7 @@ export class GeoIntlRef {
    */
   currency(
     value: RefOrNormal<NumberOrString>,
-    currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>,
+    currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions | undefined>,
     numberOnly = false
   ): ComputedRef<string> {
     return computed(
@@ -329,7 +329,7 @@ export class GeoIntlRef {
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   month(
-    value?: RefOrNormal<NumberOrStringOrDate>,
+    value?: RefOrNormal<NumberOrStringOrDate | undefined>,
     style?: Intl.DateTimeFormatOptions['month']
   ): ComputedRef<string> {
     return computed(() => this.intl.value.month(getRef(value), style))
@@ -357,7 +357,7 @@ export class GeoIntlRef {
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
   weekday(
-    value?: RefOrNormal<NumberOrStringOrDate>,
+    value?: RefOrNormal<NumberOrStringOrDate | undefined>,
     style?: Intl.DateTimeFormatOptions['weekday']
   ): ComputedRef<string> {
     return computed(() => this.intl.value.weekday(getRef(value), style))

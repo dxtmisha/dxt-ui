@@ -41,7 +41,7 @@ export class GeoFlagRef {
    * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined> {
+  get(code?: RefOrNormal<string | undefined>): ComputedRef<GeoFlagItem | undefined> {
     return computed(() => this.flag.value.get(getRef(code)))
   }
 
@@ -56,25 +56,25 @@ export class GeoFlagRef {
   }
 
   /**
-   * Returns language metadata for the explicit code or current base code.
-   *
-   * Возвращает данные языка по явному либо текущему базовому коду.
-   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
-   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
-   */
-  getLanguage(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined> {
-    return computed(() => this.flag.value.getLanguage(getRef(code)))
-  }
-
-  /**
    * Returns the flag icon identifier for the explicit code or current base code.
    *
    * Возвращает идентификатор флага по явному либо текущему базовому коду.
    * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
    * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
    */
-  getFlag(code?: RefOrNormal<string>): ComputedRef<string | undefined> {
+  getFlag(code?: RefOrNormal<string | undefined>): ComputedRef<string | undefined> {
     return computed(() => this.flag.value.getFlag(getRef(code)))
+  }
+
+  /**
+   * Returns language metadata for the explicit code or current base code.
+   *
+   * Возвращает данные языка по явному либо текущему базовому коду.
+   * @param code Locale, country or language code; a ref is supported where declared. / Код локали, страны или языка; ссылка поддерживается согласно сигнатуре.
+   * @returns Computed result; read it through .value. / Вычисляемый результат; читайте через .value.
+   */
+  getLanguage(code?: RefOrNormal<string | undefined>): ComputedRef<GeoFlagItem | undefined> {
+    return computed(() => this.flag.value.getLanguage(getRef(code)))
   }
 
   /**

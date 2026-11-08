@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.2] - 2026-11-08
+
+### Added
+- **Composable Return Interfaces & Types**:
+  - Exported explicit return interfaces and type aliases across composables: `UseApiRequestReturn` (`useApiRequest`), `UseFormattersRef` (`useFormattersRef`), `UseLazyRef` (`useLazyRef`), `UseLazyItemByMarginRef` (`useLazyItemByMarginRef`), `UseRouterList` (`useRouterList`), `UseSearchRef` (`useSearchRef`), and `UseSearchValueRef` (`useSearchValueRef`).
+- **`useGeoIntlRef` & `useGeoUnitRef` Locale Code Parameter**:
+  - Added optional `code?: RefOrNormal<string | undefined>` parameter to `useGeoIntlRef` and `useGeoUnitRef` to support custom reactive or static locale, country, or language codes.
+- **`t()` Translation Helper**:
+  - Added optional `translateInstance?: TranslateInstance` parameter and widened `names` generic constraint to `(string | string[])[]` in `t()` shorthand (`useTranslateRef.ts`).
+
+### Changed
+- **Design Classes (`DesignComp`, `DesignComponents`, `DesignConstructorAbstract`)**:
+  - Added default generic type parameters (`COMP extends ConstrComponent = ConstrComponent`, `P extends ConstrItem = ConstrItem`) to `DesignComp`.
+  - Standardized method ordering in `DesignComponents` (`get` before `is`) and moved computed property initializers (`classes`, `styles`) after the constructor in `DesignConstructorAbstract`.
+- **Ref Classes (`EventRef`, `GeoFlagRef`, `GeoIntlRef`, `GeoUnitRef`, `ListDataRef`, `RouterItemRef`)**:
+  - Widened optional `RefOrNormal` parameter types to accept `undefined` in `EventRef` (`elementSelectorControl`), `GeoFlagRef` (`get`, `getFlag`, `getLanguage`), `GeoIntlRef` (`constructor`, `display`, `languageName`, `countryName`, `currency`, `month`, `weekday`), and `GeoUnitRef` (`constructor`).
+  - Marked `location` and `unitInstance` properties as `protected readonly` in `GeoUnitRef` and standardized method ordering across `GeoFlagRef`, `GeoUnitRef`, and `RouterItemRef`.
+  - Replaced `any[]` with `ListDataItem['value'][]` for `selectedValues` and replaced `any` parameter types with `unknown` and `ListListInputItem` in `ListDataRef`.
+  - Added explicit return types to static methods in `RouterItemRef` (`get`, `set`, `setOneTime`, `push`).
+- **Reactive Composables & Functions**:
+  - Added explicit return type annotations across `useApiDelete`, `useApiGet`, `useApiPost`, `useApiPut`, `useApiManagementRef`, `useApiRef`, `useApiRequest`, `useFormattersRef`, `useLazyItemByMarginRef`, `useLazyRef`, `useMeta`, `useRouterList`, `useSearchRef`, `useSearchValueRef`, and `useTranslateRef`.
+  - Widened `value` and `nameExtra` parameter types in `getBindRef` and made `value` optional in `getBind`.
+  - Refined return types in `useCookieRef` (`Ref<T | string | undefined>`), `useSessionRef` (`Ref<T | undefined>`), and `useStorageRef` (`Ref<T | undefined>`), and removed `any` from internal `ServerStorage` caches.
+  - Simplified null/undefined guard in `getInject` using `!isNull(item)` and cached array length in `toBinds`.
+- **Tests & Documentation**:
+  - Expanded unit test suites across ref classes (`DesignComp`, `EventRef`, `GeoFlagRef`, `GeoIntlRef`, `GeoUnitRef`, `ListDataRef`, `RouterItemRef`, `ScrollbarWidthRef`) and composables (`useApi*`, `useBroadcastValueRef`, `useCookieRef`, `useFormattersRef`, `useGeoIntlRef`, `useGeoUnitRef`, `useHashRef`, `useLazyRef`, `useMeta`, `useQueryRef`, `useRouterList`, `useSearchValueRef`, `useStorageRef`).
+  - Synchronized bilingual JSDoc comments, trilingual Storybook MDX documentation (EN, RU, VI), and AI type declarations in `ai-types-list/`.
+
+### Fixed
+- **`useStorageRef`**:
+  - Moved cross-tab `window` `'storage'` event listener registration inside `EffectScopeGlobal.run()` and registered `onScopeDispose` cleanup (`window.removeEventListener('storage', listener)`) to prevent memory leaks.
+- **`useSearchValueRef`**:
+  - Reset `loading.value = false` when search delay is disabled (`0`) and on active scope disposal (`onScopeDispose`), and cleared `timeout` reference on watcher cleanup.
+
+### Removed
+- **Unused Styles**:
+  - Removed unused empty flag stylesheet `src/styles/flags.css`.
+
 ## [2.0.1] - 2026-11-03
 
 ### Added

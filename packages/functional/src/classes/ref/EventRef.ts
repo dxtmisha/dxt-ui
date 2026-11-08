@@ -33,7 +33,7 @@ export class EventRef<
    */
   constructor(
     elementSelector?: RefOrNormal<ElementOrString<E> | undefined>,
-    elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>,
+    elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement> | undefined>,
     type: string | string[] = ['click'],
     listener?: EventListenerDetail<O, D>,
     options?: EventOptions,

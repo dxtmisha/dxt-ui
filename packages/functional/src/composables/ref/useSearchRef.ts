@@ -66,9 +66,10 @@ export function useSearchRef<
   options?: SearchOptions
 ): UseSearchRef<T, K> {
   /**
-   * Get columns to search in
+   * Get columns to search in.
    *
-   * Получить колонки для поиска
+   * Получить колонки для поиска.
+   * @returns array of search columns or undefined / массив колонок для поиска или undefined
    */
   const getColumns = (): K | undefined => getRef(executeFunction(columns))
 
@@ -87,9 +88,10 @@ export function useSearchRef<
   } = useSearchValueRef(item, value)
 
   /**
-   * Get list of items to search
+   * Get list of items to search.
    *
-   * Получить список элементов для поиска
+   * Получить список элементов для поиска.
+   * @returns array of search items / массив элементов для поиска
    */
   const getList = (): T[] => {
     const listRead = getRef(executeFunction(list))

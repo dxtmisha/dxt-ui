@@ -1,4 +1,4 @@
-import { computed, isRef, type Ref, ref } from 'vue'
+import { computed, type ComputedRef, isRef, type Ref, ref } from 'vue'
 import { forEach, type NumberOrString } from '@dxtmisha/functional-basic'
 
 import { RouterItemRef } from '../../classes/ref/RouterItemRef'
@@ -6,6 +6,31 @@ import { RouterItemRef } from '../../classes/ref/RouterItemRef'
 import type { ConstrBind } from '../../types/constructorTypes'
 import type { ListDataBasic } from '../../types/listTypes'
 import type { RefType } from '../../types/refTypes'
+
+/** Router list state and navigation methods / Состояние списка роутера и методы навигации */
+export type UseRouterList<T extends ListDataBasic> = {
+  /** Current element / Текущий элемент */
+  item: ComputedRef<T | undefined>
+  /** Selected element / Выбранный элемент */
+  selected: Ref<string>
+  /** Label / Метка */
+  label: ComputedRef<NumberOrString>
+  /** List of elements / Список элементов */
+  list: ComputedRef<ConstrBind<T>[]>
+  /**
+   * Transition to the element.
+   *
+   * Переход к элементу.
+   * @param name element name / имя элемента
+   */
+  to: (name?: string) => void
+  /**
+   * Transition to the main element.
+   *
+   * Переход к главному элементу.
+   */
+  toMain(): void
+}
 
 /**
  * Managing a list of links for the router.
@@ -20,7 +45,7 @@ export const useRouterList = <T extends ListDataBasic>(
   list: RefType<ConstrBind<T>[] | undefined>,
   selected?: Ref<string> | string,
   hasTo: boolean = true
-) => {
+): UseRouterList<T> => {
   /** Selected index / Выбранный индекс */
   const index = isRef(selected)
     ? selected
