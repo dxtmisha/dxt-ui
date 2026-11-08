@@ -20,9 +20,9 @@ export class Meta extends MetaManager<MetaTag[]> {
   protected suffix?: string
 
   /** Open Graph meta instance / Экземпляр мета-тегов Open Graph */
-  protected og: MetaOg
+  protected readonly og: MetaOg
   /** Twitter Card meta instance / Экземпляр мета-тегов Twitter Card */
-  protected twitter: MetaTwitter
+  protected readonly twitter: MetaTwitter
 
   /**
    * Creates an instance of Meta with integrated Open Graph and Twitter Card support.
@@ -311,7 +311,7 @@ export class Meta extends MetaManager<MetaTag[]> {
 
     const fullTitle = isFilled(title)
       ? `${title}${this.getSuffix()}`
-      : this.suffix
+      : isFilled(this.suffix)
         ? this.suffix
         : ''
 

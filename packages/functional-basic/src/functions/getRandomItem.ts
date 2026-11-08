@@ -11,7 +11,9 @@ import { random } from './random'
  * @param value input array, object, or value / входной массив, объект или значение
  * @returns random element or undefined if empty / случайный элемент или undefined, если пусто
  */
-export function getRandomItem<T>(value?: T | readonly T[] | Record<string, T>): T | undefined {
+export function getRandomItem<T>(
+  value?: T | readonly T[] | Record<string, T> | null
+): T | undefined {
   if (isArray(value)) {
     if (value.length === 0) {
       return undefined

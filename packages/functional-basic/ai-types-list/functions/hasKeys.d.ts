@@ -1,3 +1,3 @@
-// md5:2180ce383cd07219d364b8c72c63a83e true
-/** Checks whether an object has at least one own property. @keywords hasKeys, object, keys, own properties, not empty */
+// md5:deb52ed858d5d9567ba967e81c237da1 true
+/** Checks if an target object has own enumerable string-keyed properties. @keywords hasKeys, object, keys, ownProperties, enumerable */
 export declare function hasKeys<T extends object = Record<PropertyKey, unknown>>(object: unknown): object is T;

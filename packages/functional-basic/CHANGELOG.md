@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.3] - 2026-11-08
+
+### Added
+- **`toNumber` & `ToNumberReturn<T>`**:
+  - Added exported `ToNumberReturn<T>` conditional return type and `bigint` pass-through support in `toNumber<T = number>(value?: T): ToNumberReturn<T>`, preserving `bigint` values as-is while resolving all other input types to `number`.
+- **Tests & Documentation**:
+  - Completed full code review and verification across all utility functions and classes in `temp.md`.
+  - Expanded unit test suites across `GeoTimezone`, `Meta`, `ScrollbarWidth`, `getMouseClient`, `getObjectByKeys`, `getObjectNoUndefined`, `getObjectNull`, `getObjectOrNone`, `getRandomItem`, `getRandomText`, `getStepPercent`, `getStepValue`, `goScroll`, `goScrollSmooth`, `goScrollTo`, `handleShare`, `hasKeys`, `initScrollbarOffset`, `intersectKey`, `isDifferent`, `isElementVisible`, `isNull`, `isShare`, `strFill`, `toNumber`, and `toString`.
+
+### Changed
+- **Dependencies**:
+  - Updated `@dxtmisha/media` dependency to `>=1.1.1`.
+- **Class Structure, Immutability & Generics**:
+  - Standardized method ordering (`get` -> `set` -> `is` -> `has` -> `get...` -> `set...`) across `ApiHeaders`, `Cookie`, `ErrorCenter`, `ErrorCenterInstance`, `Loading`, `LoadingInstance`, and `ServerStorage`.
+  - Added default generic parameter `<T = unknown>` to `ApiCache.get()`, `ApiCache.set()`, and `ApiCache.getByFetch()`.
+  - Marked internal sub-instances (`og` and `twitter` in `Meta`; `options`, `item`, `matcher`, and `data` in `SearchList`) as `protected readonly`.
+- **Type Guards, Return Types & Parameter Ergonomics**:
+  - `getObjectOrNone`: refined `ObjectOrNoneReturn<T>` conditional type to return `Record<string, unknown>` for arrays, readonly tuples, functions, abstract constructors, and primitives while preserving non-array object types (`T & Record<string, unknown>`).
+  - `intersectKey`: widened `data` and `comparison` parameters to accept `readonly unknown[]` in addition to records, with conditional return type inference (`Partial<Record<number, T[number]>>` for array inputs).
+  - `isDifferent`: widened `value` and `old` parameters to accept `readonly T[]` and switched property access to `Reflect.get()` for safe index/key comparison.
+  - `isNull`: refined generic signature `isNull<T = Undefined>(value?: T): value is Extract<T | undefined, Undefined>` to support zero-argument calls and exact type narrowing.
+  - `isArray`, `isObject`, `toString`, `getObjectNull`, `getRandomItem`: made input parameters optional (`value?: ...`) or nullable (`| null`) to align static types with runtime nullish handling.
+  - `forEach`: eliminated internal `any` casts in collection iteration callbacks in favor of `D extends object ? ForEachItem<D> : T`.
+  - `isFloat`: simplified implementation by delegating numeric and trimmed decimal string checks to `isNumber(value)` while excluding `bigint`.
+  - `hasKeys`: replaced manual `typeof` checks with `isObject(object) || isFunction(object)` helpers.
+  - `getStepPercent` / `getStepValue`: replaced manual `undefined`/`null` checks with `!isNull(max)` and descriptive variable naming (`difference`).
+  - `goScrollSmooth` / `goScrollTo`: replaced abbreviated variable names (`rect`, `containerRect`, `targetRect`) with full descriptive names (`rectangle`, `containerRectangle`, `targetRectangle`) and refined bilingual JSDoc and trilingual Storybook MDX documentation (`.en.mdx`, `.ru.mdx`, `.vi.mdx`).
+
+### Fixed
+- **`isElementVisible`**:
+  - Traversed `parentElement` ancestors in the computed-style fallback path to return `false` when any ancestor has `opacity: 0` in environments where native `checkVisibility` is unavailable.
+- **`Meta`**:
+  - Fixed `updateTitle()` to check `isFilled(this.suffix)` when `title` is empty, preventing whitespace-only suffixes from producing non-empty document titles.
+
+### Security
+- **Prototype Pollution Protection**:
+  - Hardened `getObjectNoUndefined` and `intersectKey` with `!isPrototypeKey()` guards to block `__proto__`, `constructor`, and `prototype` keys when filtering or intersecting objects.
+
 ## [2.1.2] - 2026-11-07
 
 ### Added

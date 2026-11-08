@@ -1,3 +1,3 @@
-// md5:0356cf85112daef266e78c95e413c373 true
-/** Quickly scrolls a container element to a target element with optional centering and indent. @keywords scroll, scrollTo, element, container, viewport, offset */
+// md5:5cb28e7f42814afa263890fdb313b8c3 true
+/** Adjusts container vertical scroll to reveal or align a target element with an optional reference or indent. @keywords scroll, scrollTo, container, align, viewport */
 export declare function goScroll(target?: string | HTMLElement | null, elementTo?: HTMLElement | null, elementCenter?: HTMLElement | null, indent?: number): void;

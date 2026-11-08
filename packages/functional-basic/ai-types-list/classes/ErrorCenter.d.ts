@@ -1,34 +1,34 @@
-// md5:378ebd362c8895d775a28289ba0b5afb true
-/** Class for managing error storage and handling. @keywords error center, error manager, error storage */
+// md5:a408ec81ccc6f11b1354015fe7403b81 true
+/** Manages error registration, storage, and handling. @keywords error management, handler, error center */
 export declare class ErrorCenter {
-    /** Checks if an error cause with a specific code exists. @keywords error exists, check error */
-    static has(code: string, group?: ErrorCenterGroup): boolean;
-    /** Gets an error cause by code and group. @keywords get error, find error cause */
+    /** Retrieves an error cause by code and group. @keywords get error cause, find error */
     static get(code: string, group?: ErrorCenterGroup): ErrorCenterCauseItem | undefined;
-    /** Returns the error handler instance. @keywords error handler, get handler */
+    /** Checks whether an error cause exists by code and group. @keywords check error, has error */
+    static has(code: string, group?: ErrorCenterGroup): boolean;
+    /** Returns the active error handler instance. @keywords error handler, get handler */
     static getHandler(): ErrorCenterHandler;
-    /** Returns the ErrorCenterInstance for the active storage context. @keywords error instance, error context */
+    /** Returns the ErrorCenterInstance for the active storage context. @keywords error instance, storage context */
     static getItem(): ErrorCenterInstance;
-    /** Sets the console output flag or filter function. @keywords console logging, error console, filter */
+    /** Sets console logging flag or filter predicate for errors. @keywords console logging, debug output, filter */
     static setIsConsole(isConsole: ErrorCenterHandlerIsConsole): void;
-    /** Adds an error cause to the storage. @keywords add error, register cause */
+    /** Registers an error cause in storage. @keywords add error, register cause */
     static add(cause: ErrorCenterCauseItem): void;
-    /** Adds a callback executed on any error. @keywords error callback, global error listener */
+    /** Adds a global callback invoked on any error occurrence. @keywords error callback, global listener */
     static addCallback(callback: ErrorCenterHandlerCallback): void;
-    /** Registers an error handler for a specific group. @keywords group handler, register handler */
+    /** Registers an error handler callback for a specific group. @keywords group handler, error listener */
     static addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void;
-    /** Registers a list of error handlers. @keywords register handlers, handler list */
+    /** Registers a batch list of error handlers. @keywords batch handlers, register list */
     static addHandlerList(handlers: ErrorCenterHandlerList): void;
-    /** Adds a list of error causes to the storage. @keywords add error list, batch causes */
+    /** Adds multiple error causes to storage. @keywords batch causes, add list */
     static addList(causes: ErrorCenterCauseList): void;
-    /** Removes an error cause by code and group. @keywords remove error, delete cause */
+    /** Removes an error cause from storage by code and optional group. @keywords remove error, delete cause */
     static remove(code: string, group?: ErrorCenterGroup): void;
-    /** Removes a global error callback. @keywords remove callback, unbind listener */
+    /** Removes a registered global error callback. @keywords remove callback, unsubscribe */
     static removeCallback(callback: ErrorCenterHandlerCallback): void;
-    /** Removes a handler or all handlers for a group. @keywords remove handler, unregister handler */
+    /** Removes a specific handler or all handlers for a group. @keywords remove handler, unregister group */
     static removeHandler(group?: ErrorCenterGroup, handler?: ErrorCenterHandlerCallback): void;
-    /** Resets registered handlers and callbacks. @keywords reset errors, clear handlers */
+    /** Resets all registered handlers and callbacks. @keywords reset, clear handlers */
     static reset(): void;
-    /** Triggers error handling for an error cause. @keywords trigger error, handle error, emit error */
+    /** Triggers error handling workflow for a given error cause. @keywords trigger error, dispatch error, handle */
     static on(cause: ErrorCenterCauseItem): void;
 }

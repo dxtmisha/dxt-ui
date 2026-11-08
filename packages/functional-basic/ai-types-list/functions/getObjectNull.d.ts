@@ -1,3 +1,3 @@
-// md5:d4907b97160ebd1578ea489e3034294e true
-/** Creates a prototype-less object (`Object.create(null)`), optionally copying source properties. @keywords object null, prototype-less, dictionary, clean object */
-export declare function getObjectNull<T = unknown>(data?: Record<string, T>): Record<string, T>;
+// md5:54b52efd97b57ddd684b4c56f23cf545 true
+/** Creates an object without a prototype (Object.create(null)), optionally copying own enumerable properties from data. @keywords object null prototype dictionary record clean map */
+export declare function getObjectNull<T = unknown>(data?: Record<string, T> | null): Record<string, T>;

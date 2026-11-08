@@ -1,3 +1,3 @@
-// md5:db3c28ded21f552ff58c1fef3ab5b9ed true
-/** Checks if an element is visible in the DOM and not hidden by CSS. @keywords visibility, dom, is visible, element, hidden */
+// md5:67c0d42a14ab3c204052e4db3542b151 true
+/** Checks layout visibility using native checkVisibility or style and dimension fallback (off-screen elements can be visible). @keywords isElementVisible, checkVisibility, dom, layout, visibility, hidden */
 export declare function isElementVisible<E extends ElementOrWindow = HTMLElement>(elementSelectors?: ElementOrString<E> | null): boolean;

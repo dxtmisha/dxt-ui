@@ -1,18 +1,18 @@
-// md5:ce517074c245911361a91dd81a2e541c true
-/** Global loading indicator manager. @keywords loading, loader, spinner, progress, global */
+// md5:92729145883a40812f753df042c1e5a1 true
+/** Global loading state manager. @keywords loading, loader, spinner, state */
 export declare class Loading {
-    /** Checks if global loading is currently active. @keywords is active, loading state, status */
-    static is(): boolean;
-    /** Gets the current loading counter value. @keywords get loading, counter, active requests */
+    /** Gets the current loading count value. @keywords loading, count, get */
     static get(): number;
-    /** Returns a request-isolated LoadingInstance. @keywords loading instance, isolated loader */
+    /** Checks if the loader is currently active. @keywords active, status, is */
+    static is(): boolean;
+    /** Returns a request-isolated instance of LoadingInstance. @keywords instance, request, isolated */
     static getItem(): LoadingInstance;
-    /** Shows the loader and increments the active count. @keywords show loader, start loading, spinner */
+    /** Displays or increments the loading indicator. @keywords show, display, increment */
     static show(): void;
-    /** Hides the loader and decrements the active count. @keywords hide loader, stop loading, dismiss */
+    /** Hides or decrements the loading indicator. @keywords hide, dismiss, decrement */
     static hide(): void;
-    /** Registers an event listener for loading state changes. @keywords subscribe, add event listener, loading change */
+    /** Registers an event listener for loading state changes. @keywords event, listen, register */
     static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement> | null): void;
-    /** Unregisters a loading state change event listener. @keywords unsubscribe, remove event listener, loading change */
+    /** Unregisters an event listener for loading state changes. @keywords event, unlisten, unregister */
     static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement> | null): void;
 }

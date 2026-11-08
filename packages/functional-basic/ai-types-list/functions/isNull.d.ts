@@ -1,3 +1,3 @@
-// md5:daaaa00b021ca06ee853c29af83d4f96 true
-/** Checks whether a value is null or undefined. @keywords isNull, isNil, null, undefined, check */
-export declare function isNull<T>(value: T): value is T & Undefined;
+// md5:071f3e554f4a3c01a8686b8688051251 true
+/** Checks whether the value is null or undefined. @keywords isNull, null, undefined, nil, check, type guard */
+export declare function isNull<T = Undefined>(value?: T): value is Extract<T | undefined, Undefined>;

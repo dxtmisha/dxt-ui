@@ -1,3 +1,3 @@
-// md5:a444c0845776985ddb360a50101cad2b true
-/** Smoothly scrolls the viewport to a specified element with an optional top offset. @keywords smooth scroll, scroll to element, scrollIntoView, scroll offset */
+// md5:1fe18f134dd32df76e3ec78c1c5e0619 true
+/** Scrolls an element into view with an optional vertical offset when shift is non-zero. @keywords scroll, smooth scroll, scrollIntoView, dom, offset */
 export declare function goScrollSmooth(element?: HTMLElement | Element | null, options?: ScrollIntoViewOptions, shift?: number): void;

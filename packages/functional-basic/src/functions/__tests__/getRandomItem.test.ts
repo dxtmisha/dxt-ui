@@ -84,6 +84,9 @@ describe('getRandomItem', () => {
       expect(getRandomItem()).toBeUndefined()
       expect(getRandomItem(undefined)).toBeUndefined()
       expect(getRandomItem(null)).toBeUndefined()
+
+      const nullableList: readonly string[] | null = Math.random() > 2 ? ['a'] : null
+      expect(getRandomItem(nullableList)).toBeUndefined()
     })
   })
 

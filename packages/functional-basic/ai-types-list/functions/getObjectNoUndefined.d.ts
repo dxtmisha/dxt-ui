@@ -1,3 +1,3 @@
-// md5:31cf09ab03de793bb7a6b62be22caaf2 true
-/** Removes all properties from an object matching the specified exception value. @keywords object filter clean remove undefined omit properties */
+// md5:ef1765c5928c0ee1bb98b7c428fb4397 true
+/** Creates an object omitting values matching an exception and prototype pollution keys. @keywords filter object undefined sanitize clean omit */
 export declare function getObjectNoUndefined<T = Record<PropertyKey, unknown>, R = T extends readonly (infer V)[] ? Record<number, V> : T extends Record<PropertyKey, unknown> ? T : Record<PropertyKey, unknown>>(data?: T, exception?: unknown): R;

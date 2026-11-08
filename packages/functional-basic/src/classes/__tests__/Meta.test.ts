@@ -243,6 +243,15 @@ describe('Meta', () => {
       expect(meta.getTitle()).toBe('')
     })
 
+    it('should treat whitespace-only suffix as empty when title is empty', () => {
+      meta.setSuffix('   ')
+      meta.setTitle('')
+
+      expect(document.title).toBe('')
+      expect(meta.getOg().getTitle()).toBe('')
+      expect(meta.getTwitter().getTitle()).toBe('')
+    })
+
     it('should update Open Graph title with suffix', () => {
       meta.setSuffix('My Site')
       meta.setTitle('OG Test')

@@ -1,3 +1,3 @@
-// md5:b5be820ae8475ebb8b290d9261021e59 true
-/** Checks if the Web Share API is supported in the current environment. @keywords web share api, share support, navigator.share */
+// md5:0a25cc9a2202328da26a1e1aff14eb45 true
+/** Checks if the Web Share API is supported in the current DOM runtime. @keywords web share api, navigator.share, share support */
 export declare function isShare(): boolean;

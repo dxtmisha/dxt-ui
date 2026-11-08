@@ -1,3 +1,3 @@
-// md5:d0be29a9100f00f1d5296bab24dddbd0 true
-/** Creates a string of a specified length filled with the given value. @keywords string fill, repeat, pad */
+// md5:50d2e1cf538a9d7dd32c35a3918212c6 true
+/** Repeats the string representation of value count times (nullish values become empty string). @keywords string, repeat, fill, duplicate */
 export declare function strFill(value?: unknown, count?: number): string;

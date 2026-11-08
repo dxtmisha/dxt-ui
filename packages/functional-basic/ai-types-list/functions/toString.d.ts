@@ -1,3 +1,3 @@
-// md5:067e88e2dbe444bfd76a170f9dddfd77 true
-/** Converts a value to a string, returning an empty string for null or undefined. @keywords stringify, convert, format, serialize */
-export declare function toString<T>(value: T): string;
+// md5:fd06bf47e297549682f0d5bb58c99938 true
+/** Converts a value to a string, returning an empty string if null or undefined. @keywords string conversion, cast to string, serialize, stringify */
+export declare function toString<T>(value?: T): string;

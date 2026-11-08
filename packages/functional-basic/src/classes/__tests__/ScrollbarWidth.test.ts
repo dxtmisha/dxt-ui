@@ -20,8 +20,8 @@ describe('ScrollbarWidth', () => {
   })
 
   afterEach(() => {
-    ScrollbarWidth.getStorage().remove()
     vi.restoreAllMocks()
+    ScrollbarWidth.getStorage().remove()
   })
 
   it('should return 0 in non-DOM (SSR) runtime', async () => {
