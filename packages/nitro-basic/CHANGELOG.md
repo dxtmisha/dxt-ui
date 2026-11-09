@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.22] - 2026-11-09
+
+### Added
+- **`setResponseCookie`**: Added exported helper method to append or replace a cookie in response `Headers` instances, updating existing cookies in-place without duplicate headers.
+
+### Fixed
+- **`uiCookieStorage`**: Fixed an issue where setting multiple cookies sequentially in SSR response headers would overwrite previous cookies due to `headers.set('Set-Cookie')`. Now correctly appends multiple cookies and preserves existing headers.
+
+### Changed
+- **Tests**: Expanded unit test suite in `uiCookieStorage.test.ts` to 24 tests covering multiple cookies, in-place updates, cookie deletions (`Max-Age=-1`), key prefix isolation, special/encoded characters, and runtime header fallbacks.
+
 ## [0.1.21] - 2026-11-08
 
 ### Changed
