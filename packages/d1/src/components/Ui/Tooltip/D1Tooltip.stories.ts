@@ -49,6 +49,7 @@ export const TooltipAllSlots: Story = {
   render: () => ({
     components: { D1Tooltip },
     template: `
+        
         <D1Tooltip>
           <template #control="{ binds }">
             <button class="wiki-storybook-button" v-bind="binds">
@@ -70,6 +71,7 @@ export const TooltipAllSlots: Story = {
             </div>
           </template>
         </D1Tooltip>
+      
     `
   })
 }

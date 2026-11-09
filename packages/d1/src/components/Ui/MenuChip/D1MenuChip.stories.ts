@@ -51,6 +51,7 @@ export const MenuChipBasic: Story = {
       return { options, value1, value2, value3 }
     },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1MenuChip
             v-model="value1"
@@ -74,6 +75,7 @@ export const MenuChipBasic: Story = {
             :option="options"
           />
         </div>
+      
     `
   })
 }
@@ -93,6 +95,7 @@ export const MenuChipVModel: Story = {
       return { valueSingle, valueMultiple, options }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Value: <strong>{{ valueSingle }}</strong></span>
@@ -122,6 +125,7 @@ export const MenuChipVModel: Story = {
             :option="options"
           />
         </div>
+      
     `
   })
 }
@@ -130,6 +134,7 @@ export const MenuChipSkeleton: Story = {
   render: () => ({
     components: { D1MenuChip, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true" style="max-width:320px">
           <div class="wiki-storybook-flex-column">
             <D1MenuChip
@@ -144,6 +149,7 @@ export const MenuChipSkeleton: Story = {
             />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

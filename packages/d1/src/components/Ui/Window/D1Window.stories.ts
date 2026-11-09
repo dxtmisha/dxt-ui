@@ -83,6 +83,7 @@ export const WindowStaticMode: Story = {
   render: () => ({
     components: { D1Window },
     template: `
+        
         <D1Window :staticMode="true" adaptive="static">
           <template #default>
             <h4>Static Mode Window</h4>
@@ -99,6 +100,7 @@ export const WindowStaticMode: Story = {
             </div>
           </template>
         </D1Window>
+      
     `
   })
 }
@@ -107,6 +109,7 @@ export const WindowAxis: Story = {
   render: () => ({
     components: { D1Window },
     template: `
+        
         <div class="wiki-storybook-flex wiki-storybook-gap">
           <!-- Axis: x -->
           <D1Window axis="x" adaptive="menu" :indent="8">
@@ -159,6 +162,7 @@ export const WindowAxis: Story = {
             </template>
           </D1Window>
         </div>
+      
     `
   })
 }
@@ -172,11 +176,13 @@ export const WindowVModel: Story = {
       }
     },
     template: `
+        
         <button class="wiki-storybook-button" @click="open = true">Open via v-model ({{ open }})</button>
 
         <D1Window v-model:open="open">
           <div class="wiki-storybook-item--padding">Your content here</div>
         </D1Window>
+      
     `
   })
 }

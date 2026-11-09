@@ -49,6 +49,7 @@ export const SliderFieldOrientation: Story = {
   render: () => ({
     components: { D1SliderField },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
             <D1SliderField label="Horizontal" :value="40" />
@@ -57,6 +58,7 @@ export const SliderFieldOrientation: Story = {
             <D1SliderField vertical label="Vertical" :value="60" />
           </div>
         </div>
+      
     `
   })
 }
@@ -65,12 +67,14 @@ export const SliderFieldMultiple: Story = {
   render: () => ({
     components: { D1SliderField },
     template: `
+        
         <D1SliderField
           label="Range selection"
           multiple
           showInput
           :value="[20, 80]"
         />
+      
     `
   })
 }
@@ -90,6 +94,7 @@ export const SliderFieldMarks: Story = {
       }
     },
     template: `
+        
         <D1SliderField
           label="Slider with marks"
           :marks="customMarks"
@@ -97,6 +102,7 @@ export const SliderFieldMarks: Story = {
           :step="5"
           showInput
         />
+      
     `
   })
 }
@@ -111,6 +117,7 @@ export const SliderFieldVModel: Story = {
       return { singleValue, rangeValue }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Single value: <strong>{{ singleValue }}</strong></span>
@@ -138,6 +145,7 @@ export const SliderFieldVModel: Story = {
             :max="100"
           />
         </div>
+      
     `
   })
 }
@@ -146,6 +154,7 @@ export const SliderFieldSkeleton: Story = {
   render: () => ({
     components: { D1SliderField, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-flex-column">
             <D1SliderField
@@ -155,6 +164,7 @@ export const SliderFieldSkeleton: Story = {
             />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

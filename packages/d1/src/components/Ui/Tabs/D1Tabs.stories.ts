@@ -51,6 +51,7 @@ export const TabsBasic: Story = {
   render: () => ({
     components: { D1Tabs },
     template: `
+        
         <D1Tabs
           :tabs="[
             { label: 'Home', value: 'home' },
@@ -61,6 +62,7 @@ export const TabsBasic: Story = {
           <template #home>Home</template>
           <template #profile>Profile</template>
         </D1Tabs>
+      
     `
   })
 }
@@ -74,6 +76,7 @@ export const TabsVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Current value: {{ selected }}</span>
@@ -95,6 +98,7 @@ export const TabsVModel: Story = {
             <template #tab3>Content 3</template>
           </D1Tabs>
         </div>
+      
     `
   })
 }

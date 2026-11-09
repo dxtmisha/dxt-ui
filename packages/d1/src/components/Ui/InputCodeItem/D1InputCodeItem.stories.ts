@@ -37,6 +37,7 @@ export const InputCodeItemBasic: Story = {
   render: () => ({
     components: { D1InputCodeItem },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1InputCodeItem value="0" />
           <D1InputCodeItem hide value="1" />
@@ -44,6 +45,7 @@ export const InputCodeItemBasic: Story = {
           <D1InputCodeItem error value="3" />
           <D1InputCodeItem disabled value="4" />
         </div>
+      
     `
   })
 }
@@ -52,6 +54,7 @@ export const InputCodeItemSkeleton: Story = {
   render: () => ({
     components: { D1InputCodeItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true" style="max-width:320px">
           <div class="wiki-storybook-flex">
             <D1InputCodeItem isSkeleton value="0" />
@@ -59,6 +62,7 @@ export const InputCodeItemSkeleton: Story = {
             <D1InputCodeItem isSkeleton value="2" />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

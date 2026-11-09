@@ -37,12 +37,14 @@ export const NavigationItemHighlight: Story = {
   render: () => ({
     components: { D1NavigationItem },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
             <D1NavigationItem highlight="nav" label="Navigation link item"/>
             <D1NavigationItem highlight="set" :highlightLengthStart="3" label="Settings panel"/>
           </div>
         </div>
+      
     `
   })
 }
@@ -51,6 +53,7 @@ export const NavigationItemSkeleton: Story = {
   render: () => ({
     components: { D1NavigationItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1NavigationItem
             :isSkeleton="true"
@@ -68,6 +71,7 @@ export const NavigationItemSkeleton: Story = {
             description="This is a much longer description to demonstrate how the skeleton adapts to different content lengths in the navigation item."
           >Very Long Navigation Item Label Example for Skeleton</D1NavigationItem>
         </D1Skeleton>
+      
     `
   })
 }

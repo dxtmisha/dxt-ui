@@ -49,6 +49,7 @@ export const AlertBasic: Story = {
   render: () => ({
     components: { D1Alert },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Alert label="Alert Title" description="This is an alert description text."/>
           <D1Alert label="Alert with Icon" description="Alert description text with an icon." icon="info"/>
@@ -60,6 +61,7 @@ export const AlertBasic: Story = {
             :actions-list="[{ label: 'Accept', value: 'accept' }, { label: 'Decline', value: 'decline' }]"
           />
         </div>
+      
     `
   })
 }

@@ -1,13 +1,16 @@
 ## CSS Classes for Display Control
 
-- `*__text` — main class for text skeleton
-- `*__textVariant` — text class variant for additional styling
-- `*__background` — main background class for skeleton
-- `*__backgroundAfter` — background class for `::after` pseudo-element
-- `*__backgroundBefore` — background class for `::before` pseudo-element
-- `*__backgroundVariant` — background class variant
-- `*__border` — class for skeleton border styling
-- `*__borderVariant` — border class variant
-- `*__none` — class to disable skeleton display
+All utility classes can be applied directly using the design system prefix (`*__*`) or accessed via the `default` scoped slot props (`SkeletonClassesList`):
+
+- `*__text` (`classText`) — primary text placeholder bar rendered via font-relative `line-through` decoration
+- `*__textVariant` (`classTextVariant`) — secondary text placeholder bar using the variant background color token
+- `*__background` (`classBackground`) — solid surface placeholder block for containers, avatars, and media wrappers
+- `*__backgroundAfter` (`classBackgroundAfter`) — applies the skeleton background fill to the `::after` pseudo-element
+- `*__backgroundBefore` (`classBackgroundBefore`) — applies the skeleton background fill to the `::before` pseudo-element
+- `*__backgroundVariant` (`classBackgroundVariant`) — accent surface placeholder block using the primary color token
+- `*__border` (`classBorder`) — replaces the element's border color with the skeleton border token
+- `*__borderVariant` (`classBorderVariant`) — replaces the element's border color with the variant color token
+- `*__none` (`classNone`) — hides decorative elements (`transparent` color, background, and border) while preserving layout space
 
 Where `*` is the component class name (e.g., `d1-skeleton`, `m3-skeleton`).
+

@@ -43,6 +43,7 @@ export const InputFileItemAppearance: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <span class="wiki-storybook-item__label wiki-storybook-item__label--static">List appearance:</span>
@@ -164,6 +165,7 @@ export const InputFileItemAppearance: Story = {
             </div>
           </div>
         </div>
+      
     `
   })
 }
@@ -172,11 +174,13 @@ export const InputFileItemSkeleton: Story = {
   render: () => ({
     components: { D1InputFileItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-flex-column">
             <D1InputFileItem isSkeleton :value="{ name: 'loading-file.pdf', size: 1048576 }" />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

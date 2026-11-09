@@ -37,6 +37,7 @@ export const ProgressBarBasic: Story = {
   render: () => ({
     components: { D1ProgressBar },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1ProgressBar :value="50" />
           <D1ProgressBar :value="[
@@ -55,6 +56,7 @@ export const ProgressBarBasic: Story = {
             { value: 30, label: '30%', color: '#eb2f96' }
           ]" />
         </div>
+      
     `
   })
 }
@@ -63,6 +65,7 @@ export const ProgressBarSkeleton: Story = {
   render: () => ({
     components: { D1ProgressBar, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-flex-column">
             <D1ProgressBar isSkeleton :value="50" />
@@ -73,6 +76,7 @@ export const ProgressBarSkeleton: Story = {
             ]" />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

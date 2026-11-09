@@ -37,12 +37,14 @@ export const InputSocialTypes: Story = {
   render: () => ({
     components: { D1InputSocial },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1InputSocial social-type="telegram" label="Telegram" />
           <D1InputSocial social-type="whatsapp" label="WhatsApp" />
           <D1InputSocial social-type="instagram" label="Instagram" />
           <D1InputSocial social-type="vk" label="VK" />
         </div>
+      
     `
   })
 }
@@ -56,6 +58,7 @@ export const InputSocialVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Current value: {{ value }}</span>
@@ -69,6 +72,7 @@ export const InputSocialVModel: Story = {
             placeholder="Username"
           />
         </div>
+      
     `
   })
 }

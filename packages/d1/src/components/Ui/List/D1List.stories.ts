@@ -39,6 +39,7 @@ export const ListLiteMode: Story = {
   render: () => ({
     components: { D1List },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Without lite</div>
@@ -68,6 +69,7 @@ export const ListLiteMode: Story = {
             />
           </div>
         </div>
+      
     `
   })
 }
@@ -76,6 +78,7 @@ export const ListHighlight: Story = {
   render: () => ({
     components: { D1List },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
             <D1List
@@ -90,6 +93,7 @@ export const ListHighlight: Story = {
             />
           </div>
         </div>
+      
     `
   })
 }

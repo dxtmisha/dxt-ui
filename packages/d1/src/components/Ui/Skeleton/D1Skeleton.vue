@@ -23,8 +23,7 @@ const props = withDefaults(defineProps<SkeletonProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-skeleton': true,
-    'd1-skeleton--active': props.active
+    'd1-skeleton': true
     // :classes-values [!] System label / Системная метка
   }
 }))

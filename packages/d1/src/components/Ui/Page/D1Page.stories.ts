@@ -55,6 +55,7 @@ export const PageBasic: Story = {
   render: () => ({
     components: { D1Page },
     template: `
+        
         <D1Page
           headline="User Dashboard"
           label="Overview"
@@ -62,6 +63,7 @@ export const PageBasic: Story = {
         >
           <p>Welcome to your dashboard. Here you can find a summary of your performance and manage your account settings.</p>
         </D1Page>
+      
     `
   })
 }
@@ -70,6 +72,7 @@ export const PageSlots: Story = {
   render: () => ({
     components: { D1Page },
     template: `
+        
         <D1Page>
           <template #default>Default slot</template>
           <template #headline>Headline slot</template>
@@ -78,6 +81,7 @@ export const PageSlots: Story = {
           <template #caption>Caption slot</template>
           <template #trailing>Trailing slot</template>
         </D1Page>
+      
     `
   })
 }

@@ -36,6 +36,7 @@ export const FieldCounterTemplate: Story = {
   render: () => ({
     components: { D1FieldCounter },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Default template</div>
@@ -50,6 +51,7 @@ export const FieldCounterTemplate: Story = {
             <D1FieldCounter :counter="42" template="<b>[c]</b> chars"/>
           </div>
         </div>
+      
     `
   })
 }

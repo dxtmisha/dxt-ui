@@ -1,50 +1,52 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for creating animated interface placeholders during content loading.
+The `Skeleton` component is a structural loading container that transforms real interface markup and child components into animated placeholders during asynchronous data fetching.
 
-Skeleton provides smooth transitions between loading state and real content display. The component automatically manages child element visibility through the `active` property and supports a CSS class system for creating various types of placeholders.
+It implements a zero-duplication architecture: instead of maintaining separate loading templates with `v-if` / `v-else`, developers wrap the actual layout inside `Skeleton`, apply utility classes (such as `*__text`, `*__background`, `*__border`) to HTML elements, and set `isSkeleton` on design system components. When `active` is enabled, `Skeleton` broadcasts its loading state to descendants via Vue `provide` / `inject`, manages show and hide delays (`delay`, `delayHide`), hides raw content via `invisible`, and updates `aria-busy` and `aria-live` accessibility attributes automatically.
 
-**Key Features:**
+**Key features:**
 
-- Automatic content visibility management
-- Support for special CSS classes for placeholders
-- Component integration via `isSkeleton` flag
-- Flexible placeholder types (text, background, borders)
-- Animated loading effects
+- **Zero-Duplication Markup:** Transforms real DOM elements and typography into pulsing placeholders without duplicating templates
+- **Automatic Child Synchronization:** Broadcasts loading status via `provide` / `inject` to nested `Skeleton` containers and child components with `isSkeleton`
+- **Scoped Slot Class Helpers:** Exposes all 9 placeholder CSS class names (`classText`, `classBackground`, `classBorder`, etc.) through the default slot scope
+- **Configurable Timing Control:** Independent `delay` and `delayHide` timers prevent layout flicker during fast network responses
+- **Immediate Content Masking:** The `invisible` prop hides raw unstyled content immediately upon activation before a delayed skeleton animation appears
+- **Built-in Accessibility:** Automatically manages `aria-busy` and `aria-live="polite"` attributes on the root container
 
-**Common Use Cases:**
+**Common use cases:**
 
-- Product and user card placeholders
-- List and table skeletons
-- Image and avatar placeholders
-- Text blocks during loading
-- Complex forms with multiple fields
+- Product cards, user profile headers, and feed posts during initial data fetching
+- Complex forms and settings panels awaiting asynchronous configuration data
+- Data tables, lists, and dashboard widgets transitioning between filter states
+- Media galleries and avatar blocks reserving layout dimensions to prevent Cumulative Layout Shift (CLS)
 
 <Source
     code={`
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import { Skeleton, Button, Input } from '@dxtmisha/constructor'
 
 const isLoading = ref(true)
-
-setTimeout(() => {
-  isLoading.value = false
-}, 2000)
 </script>
 
 <template>
-  <Skeleton :active="isLoading">
-    <!-- Placeholders visible during loading -->
-    <div class="skeleton__background avatar"></div>
-    <div class="skeleton__text title"></div>
-    <div class="skeleton__textVariant subtitle"></div>
-
-    <!-- Real content -->
-    <img src="/avatar.jpg" alt="User avatar" />
-    <h3>{{ user.name }}</h3>
-    <p>{{ user.description }}</p>
+  <Skeleton :active="isLoading" :delay="360">
+    <template #default="{ classText, classTextVariant, classBackground }">
+      <div class="profile-card">
+        <div :class="['profile-card__avatar', classBackground]">
+          <img src="/avatar.jpg" alt="User avatar" />
+        </div>
+        <h3 :class="classText">Alex Morgan</h3>
+        <p :class="classTextVariant">Senior Product Designer</p>
+        <Input label="Display Name" is-skeleton :disabled="isLoading" />
+        <Button label="Save Profile" is-skeleton :disabled="isLoading" />
+      </div>
+    </template>
   </Skeleton>
 </template>
   `}
     language="html"
 />
+
+> Skeleton eliminates template duplication and prevents layout shifts by turning live UI markup and components directly into accessible loading placeholders.
+

@@ -36,6 +36,7 @@ export const NavigationRailBasic: Story = {
   render: () => ({
     components: { D1NavigationRail },
     template: `
+        
         <D1NavigationRail
           :list="[
             { label: 'Home', value: 'home', icon: 'home' },
@@ -43,6 +44,7 @@ export const NavigationRailBasic: Story = {
             { label: 'Settings', value: 'settings', icon: 'settings' }
           ]"
         />
+      
     `
   })
 }

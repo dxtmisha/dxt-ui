@@ -52,6 +52,7 @@ export const TableItemSkeleton: Story = {
   render: () => ({
     components: { D1TableItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <table>
             <tbody>
@@ -71,6 +72,7 @@ export const TableItemSkeleton: Story = {
             </tbody>
           </table>
         </D1Skeleton>
+      
     `
   })
 }

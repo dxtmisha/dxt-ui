@@ -53,6 +53,7 @@ export const CropAreaVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Coordinates [top, right, bottom, left]: {{ coordinator }}</span>
@@ -66,6 +67,7 @@ export const CropAreaVModel: Story = {
             <D1CropArea v-model="coordinator"/>
           </div>
         </div>
+      
     `
   })
 }

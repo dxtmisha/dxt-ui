@@ -48,9 +48,11 @@ export const SegmentControlItemSkeleton: Story = {
   render: () => ({
     components: { D1SegmentControlItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1SegmentControlItem isSkeleton>Segment control item</D1SegmentControlItem>
         </D1Skeleton>
+      
     `
   })
 }

@@ -47,12 +47,14 @@ export const BadgeBasic: Story = {
   render: () => ({
     components: { D1Badge },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Badge overlap="static">Badge</D1Badge>
           <D1Badge overlap="static" icon="home">Badge</D1Badge>
           <D1Badge overlap="static">99</D1Badge>
           <D1Badge overlap="static" label="999" label-max="99"/>
         </div>
+      
     `
   })
 }
@@ -61,9 +63,11 @@ export const BadgeDot: Story = {
   render: () => ({
     components: { D1Badge },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Badge dot overlap="static"/>
         </div>
+      
     `
   })
 }
@@ -72,10 +76,12 @@ export const BadgePrimary: Story = {
   render: () => ({
     components: { D1Badge },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Badge primary overlap="static" icon="home"/>
           <D1Badge primary overlap="static">Badge</D1Badge>
         </div>
+      
     `
   })
 }
@@ -84,10 +90,12 @@ export const BadgeSecondary: Story = {
   render: () => ({
     components: { D1Badge },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Badge secondary overlap="static" icon="home"/>
           <D1Badge secondary overlap="static">Badge</D1Badge>
         </div>
+      
     `
   })
 }
@@ -96,10 +104,12 @@ export const BadgeOutline: Story = {
   render: () => ({
     components: { D1Badge },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Badge outline overlap="static" icon="home"/>
           <D1Badge outline overlap="static">Badge</D1Badge>
         </div>
+      
     `
   })
 }

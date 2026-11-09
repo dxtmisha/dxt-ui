@@ -45,6 +45,7 @@ export const SliderOrientation: Story = {
   render: () => ({
     components: { D1Slider },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Horizontal</div>
@@ -55,6 +56,7 @@ export const SliderOrientation: Story = {
             <D1Slider vertical :value="60" />
           </div>
         </div>
+      
     `
   })
 }
@@ -63,7 +65,9 @@ export const SliderMultiple: Story = {
   render: () => ({
     components: { D1Slider },
     template: `
+        
         <D1Slider multiple :minimumDistance="10" />
+      
     `
   })
 }
@@ -83,7 +87,9 @@ export const SliderMarks: Story = {
       }
     },
     template: `
+        
         <D1Slider :marks="customMarks" magnet :step="5" />
+      
     `
   })
 }
@@ -97,6 +103,7 @@ export const SliderVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Current value: <strong>{{ sliderValue }}</strong></span>
@@ -108,6 +115,7 @@ export const SliderVModel: Story = {
           </div>
           <D1Slider v-model="sliderValue" :min="0" :max="100" />
         </div>
+      
     `
   })
 }
@@ -116,12 +124,14 @@ export const SliderSkeleton: Story = {
   render: () => ({
     components: { D1Slider, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-flex-column">
             <D1Slider isSkeleton />
             <D1Slider isSkeleton multiple />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

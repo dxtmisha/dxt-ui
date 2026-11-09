@@ -20,8 +20,9 @@ import type { AriaList } from '../../../types/ariaTypes'
 describe('Skeleton (contracts checked by TypeScript)', () => {
   describe('Standard functional requirements (Happy path)', () => {
     it('should strictly type SkeletonProps, SkeletonPropsBasic, SkeletonPropsToken, and defaultsSkeleton without any', () => {
-      expectTypeOf<SkeletonPropsToken['active']>().not.toBeAny()
-      expectTypeOf<SkeletonPropsToken['active']>().toEqualTypeOf<boolean | undefined>()
+      expectTypeOf<SkeletonPropsToken>().not.toBeAny()
+      expectTypeOf<SkeletonPropsBasic['active']>().not.toBeAny()
+      expectTypeOf<SkeletonPropsBasic['active']>().toEqualTypeOf<boolean | undefined>()
 
       expectTypeOf<SkeletonPropsBasic['delay']>().not.toBeAny()
       expectTypeOf<SkeletonPropsBasic['delay']>().toEqualTypeOf<number | string | undefined>()
@@ -82,6 +83,7 @@ describe('Skeleton (contracts checked by TypeScript)', () => {
       expectTypeOf<Skeleton['binds']>().toEqualTypeOf<ConstrBind>()
       expectTypeOf<Skeleton['classes']>().toEqualTypeOf<ConstrClassObject>()
       expectTypeOf<Skeleton['isActive']>().toEqualTypeOf<() => boolean>()
+      expectTypeOf<Skeleton['isInvisible']>().toEqualTypeOf<() => boolean>()
 
       expectTypeOf<SkeletonPropsInclude['isSkeleton']>().toEqualTypeOf<boolean | undefined>()
       expectTypeOf<SkeletonInclude['classesSkeleton']>().toEqualTypeOf<SkeletonClassesList>()

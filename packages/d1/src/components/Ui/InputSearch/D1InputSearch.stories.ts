@@ -49,6 +49,7 @@ export const InputSearchVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Current query: {{ query || '—' }}</span>
@@ -60,6 +61,7 @@ export const InputSearchVModel: Story = {
             placeholder="Search query..."
           />
         </div>
+      
     `
   })
 }
@@ -68,6 +70,7 @@ export const InputSearchQuery: Story = {
   render: () => ({
     components: { D1InputSearch },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1InputSearch
             :min-query="3"
@@ -76,6 +79,7 @@ export const InputSearchQuery: Story = {
             helper-message="Triggers only after 3 characters with 500ms debounce"
           />
         </div>
+      
     `
   })
 }

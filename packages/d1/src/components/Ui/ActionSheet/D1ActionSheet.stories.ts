@@ -69,6 +69,7 @@ export const ActionSheetVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="open = true">Open via v-model ({{ open }})</button>
@@ -78,6 +79,7 @@ export const ActionSheetVModel: Story = {
             <div class="wiki-storybook-item--padding">Your content here</div>
           </D1ActionSheet>
         </div>
+      
     `
   })
 }
@@ -86,6 +88,7 @@ export const ActionSheetAllSlots: Story = {
   render: () => ({
     components: { D1ActionSheet },
     template: `
+        
         <D1ActionSheet>
           <template #control="{binds}">
             <button class="wiki-storybook-button" v-bind="binds">Open Action Sheet with All Slots</button>
@@ -95,6 +98,7 @@ export const ActionSheetAllSlots: Story = {
           <template #default>Default slot</template>
           <template #footer>Footer slot</template>
         </D1ActionSheet>
+      
     `
   })
 }

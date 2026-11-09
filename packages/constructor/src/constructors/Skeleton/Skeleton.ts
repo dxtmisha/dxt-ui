@@ -178,7 +178,7 @@ export class Skeleton extends DesignLogicAbstract<
    */
   get aria(): AriaList {
     return {
-      ...AriaStaticInclude.busy(this.isActive()),
+      ...AriaStaticInclude.busy(this.isActive() || this.visible.value),
       ...AriaStaticInclude.live('polite')
     }
   }
@@ -191,6 +191,7 @@ export class Skeleton extends DesignLogicAbstract<
    */
   get binds(): ConstrBind {
     return {
+      inert: this.isInvisible() || undefined,
       ...this.aria
     }
   }
@@ -203,8 +204,9 @@ export class Skeleton extends DesignLogicAbstract<
    */
   get classes(): ConstrClassObject {
     return {
+      [this.naming.getStatusClass('active')]: this.isActive(),
       [this.naming.getStatusClass('visible')]: this.visible.value,
-      [this.naming.getStatusClass('invisible')]: Boolean(this.props.invisible && this.isActive())
+      [this.naming.getStatusClass('invisible')]: this.isInvisible()
     }
   }
 
@@ -215,6 +217,19 @@ export class Skeleton extends DesignLogicAbstract<
    * @returns status of the loading mode / статус режима загрузки
    */
   readonly isActive = (): boolean => Boolean(this.status?.value || this.props.active)
+
+  /**
+   * Checks if the invisible mode is enabled.
+   *
+   * Проверяет, включен ли режим невидимости.
+   * @returns status of the invisible mode / статус режима невидимости
+   */
+  isInvisible(): boolean {
+    return Boolean(
+      this.props.invisible
+      && (this.isActive() || this.visible.value)
+    )
+  }
 
   /**
    * Updates the visible status with a delay or immediately.

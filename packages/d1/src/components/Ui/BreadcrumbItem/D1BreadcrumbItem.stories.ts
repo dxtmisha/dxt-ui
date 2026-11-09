@@ -37,9 +37,11 @@ export const BreadcrumbItemSkeleton: Story = {
   render: () => ({
     components: { D1BreadcrumbItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1BreadcrumbItem isSkeleton label="Breadcrumb item" />
         </D1Skeleton>
+      
     `
   })
 }

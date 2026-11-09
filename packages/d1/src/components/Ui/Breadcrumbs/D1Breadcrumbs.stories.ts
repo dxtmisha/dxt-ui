@@ -48,6 +48,7 @@ export const BreadcrumbsSkeleton: Story = {
   render: () => ({
     components: { D1Breadcrumbs, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1Breadcrumbs
             isSkeleton
@@ -58,6 +59,7 @@ export const BreadcrumbsSkeleton: Story = {
             ]"
           />
         </D1Skeleton>
+      
     `
   })
 }

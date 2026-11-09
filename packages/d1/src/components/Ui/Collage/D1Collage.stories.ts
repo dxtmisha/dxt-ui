@@ -46,6 +46,7 @@ export const CollageVariants: Story = {
   render: () => ({
     components: { D1Collage },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--borderNone">
             <div class="wiki-storybook-item__label">variant: standard</div>
@@ -133,6 +134,7 @@ export const CollageVariants: Story = {
             />
           </div>
         </div>
+      
     `
   })
 }
@@ -151,6 +153,7 @@ export const CollageVModel: Story = {
       return { selected, images }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Selected: {{ selected }}</span>
@@ -166,6 +169,7 @@ export const CollageVModel: Story = {
             v-model:selected="selected"
           />
         </div>
+      
     `
   })
 }

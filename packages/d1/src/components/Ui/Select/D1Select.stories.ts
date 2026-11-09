@@ -51,19 +51,20 @@ export const SelectBasic: Story = {
     components: { D1Select },
     setup() {
       const options = ref([
-        {label: 'JavaScript', value: 'js'},
-        {label: 'TypeScript', value: 'ts'},
-        {label: 'Python', value: 'py'},
-        {label: 'Java', value: 'java'},
-        {label: 'C++', value: 'cpp'},
-        {label: 'Ruby', value: 'rb'},
-        {label: 'Go', value: 'go'},
-        {label: 'PHP', value: 'php'}
+        { label: 'JavaScript', value: 'js' },
+        { label: 'TypeScript', value: 'ts' },
+        { label: 'Python', value: 'py' },
+        { label: 'Java', value: 'java' },
+        { label: 'C++', value: 'cpp' },
+        { label: 'Ruby', value: 'rb' },
+        { label: 'Go', value: 'go' },
+        { label: 'PHP', value: 'php' }
       ])
 
       return { options }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Select
             type="select"
@@ -102,6 +103,7 @@ export const SelectBasic: Story = {
             :option="options"
           />
         </div>
+      
     `
   })
 }
@@ -121,6 +123,7 @@ export const SelectVModel: Story = {
       return { valueSingle, valueMultiple, options }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Value: <strong>{{ valueSingle }}</strong></span>
@@ -150,6 +153,7 @@ export const SelectVModel: Story = {
             :option="options"
           />
         </div>
+      
     `
   })
 }
@@ -158,6 +162,7 @@ export const SelectSkeleton: Story = {
   render: () => ({
     components: { D1Select, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true" style="max-width:320px">
           <div class="wiki-storybook-flex-column">
             <D1Select
@@ -173,6 +178,7 @@ export const SelectSkeleton: Story = {
             />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

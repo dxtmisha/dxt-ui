@@ -58,6 +58,7 @@ export const MenuButtonBasic: Story = {
       return { options, value1, value2, value3 }
     },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1MenuButton
             v-model="value1"
@@ -81,6 +82,7 @@ export const MenuButtonBasic: Story = {
             :option="options"
           />
         </div>
+      
     `
   })
 }
@@ -100,6 +102,7 @@ export const MenuButtonVModel: Story = {
       return { valueSingle, valueMultiple, options }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Value: <strong>{{ valueSingle }}</strong></span>
@@ -129,6 +132,7 @@ export const MenuButtonVModel: Story = {
             :option="options"
           />
         </div>
+      
     `
   })
 }
@@ -137,6 +141,7 @@ export const MenuButtonSkeleton: Story = {
   render: () => ({
     components: { D1MenuButton, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true" style="max-width:320px">
           <div class="wiki-storybook-flex-column">
             <D1MenuButton
@@ -151,6 +156,7 @@ export const MenuButtonSkeleton: Story = {
             />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

@@ -56,6 +56,7 @@ export const BlockBasic: Story = {
   render: () => ({
     components: { D1Block },
     template: `
+        
         <D1Block
           headline="Account Settings"
           label="Profile Information"
@@ -63,6 +64,7 @@ export const BlockBasic: Story = {
         >
           <p>Welcome to your profile overview. Here you can update your name, bio, and contact information.</p>
         </D1Block>
+      
     `
   })
 }
@@ -71,6 +73,7 @@ export const BlockSlots: Story = {
   render: () => ({
     components: { D1Block },
     template: `
+        
         <D1Block>
           <template #default>Default slot</template>
           <template #headline>Headline slot</template>
@@ -79,6 +82,7 @@ export const BlockSlots: Story = {
           <template #caption>Caption slot</template>
           <template #trailing>Trailing slot</template>
         </D1Block>
+      
     `
   })
 }

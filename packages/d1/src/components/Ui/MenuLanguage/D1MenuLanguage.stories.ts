@@ -54,6 +54,7 @@ export const MenuLanguageFilter: Story = {
       }
     },
     template: `
+        
         <D1MenuLanguage
           v-model:selected="selectedValue"
           :list="list"
@@ -65,6 +66,7 @@ export const MenuLanguageFilter: Story = {
             </button>
           </template>
         </D1MenuLanguage>
+      
     `
   })
 }

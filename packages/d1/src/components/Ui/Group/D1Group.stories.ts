@@ -51,6 +51,7 @@ export const GroupBasic: Story = {
   render: () => ({
     components: { D1Group },
     template: `
+        
         <D1Group
           headline="Notifications"
           label="Settings"
@@ -66,6 +67,7 @@ export const GroupBasic: Story = {
             Changes are saved automatically and applied within a few minutes.
           </p>
         </D1Group>
+      
     `
   })
 }
@@ -74,6 +76,7 @@ export const GroupSlots: Story = {
   render: () => ({
     components: { D1Group },
     template: `
+        
         <D1Group>
           <template #default>Default slot</template>
           <template #headline>Headline slot</template>
@@ -82,6 +85,7 @@ export const GroupSlots: Story = {
           <template #caption>Caption slot</template>
           <template #trailing>Trailing slot</template>
         </D1Group>
+      
     `
   })
 }

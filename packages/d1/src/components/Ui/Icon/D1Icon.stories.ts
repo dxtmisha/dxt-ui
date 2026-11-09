@@ -37,6 +37,7 @@ export const IconState: Story = {
   render: () => ({
     components: { D1Icon },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Default</div>
@@ -47,6 +48,7 @@ export const IconState: Story = {
             <D1Icon icon="heart_minus" iconActive="favorite" :active="true"/>
           </div>
         </div>
+      
     `
   })
 }
@@ -55,6 +57,7 @@ export const IconDirection: Story = {
   render: () => ({
     components: { D1Icon },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">LTR</div>
@@ -65,6 +68,7 @@ export const IconDirection: Story = {
             <D1Icon dir icon="arrow_forward"/>
           </div>
         </div>
+      
     `
   })
 }
@@ -73,20 +77,22 @@ export const IconPalette: Story = {
   render: () => ({
     components: { D1Icon },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Basic</div>
-            <D1Icon icon="home" size="lg"/>
+            <D1Icon icon="home"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Palette</div>
-            <D1Icon icon="home" size="lg" asPalette/>
+            <D1Icon icon="home" asPalette/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Inverse</div>
-            <D1Icon icon="home" size="lg" asPalette inverse/>
+            <div class="wiki-storybook-item__label">Overlay</div>
+            <D1Icon icon="home" asPalette overlay/>
           </div>
         </div>
+      
     `
   })
 }
@@ -95,9 +101,11 @@ export const IconSkeleton: Story = {
   render: () => ({
     components: { D1Icon, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
-          <D1Icon isSkeleton icon="home" rounded="md"/>
+          <D1Icon isSkeleton icon="home"/>
         </D1Skeleton>
+      
     `
   })
 }

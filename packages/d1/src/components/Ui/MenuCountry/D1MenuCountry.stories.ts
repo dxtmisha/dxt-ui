@@ -54,6 +54,7 @@ export const MenuCountryFilter: Story = {
       }
     },
     template: `
+        
         <D1MenuCountry
           v-model:selected="selectedValue"
           :list="list"
@@ -65,6 +66,7 @@ export const MenuCountryFilter: Story = {
             </button>
           </template>
         </D1MenuCountry>
+      
     `
   })
 }

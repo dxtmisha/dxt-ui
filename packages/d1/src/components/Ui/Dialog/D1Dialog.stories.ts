@@ -54,6 +54,7 @@ export const DialogStates: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Dialog
             :success="true"
@@ -75,6 +76,7 @@ export const DialogStates: Story = {
             </template>
           </D1Dialog>
         </div>
+      
     `
   })
 }
@@ -88,6 +90,7 @@ export const DialogVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="open = true">Open via v-model ({{ open }})</button>
@@ -99,6 +102,7 @@ export const DialogVModel: Story = {
             description="Are you sure you want to proceed with this action?"
           />
         </div>
+      
     `
   })
 }
@@ -107,6 +111,7 @@ export const DialogAllSlots: Story = {
   render: () => ({
     components: { D1Dialog },
     template: `
+        
         <D1Dialog>
           <template #control="{binds}">
             <button class="wiki-storybook-button" v-bind="binds">Open Dialog with All Slots</button>
@@ -132,6 +137,7 @@ export const DialogAllSlots: Story = {
             Footer Slot
           </template>
         </D1Dialog>
+      
     `
   })
 }

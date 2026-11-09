@@ -44,6 +44,7 @@ export const ClockDialType: Story = {
   render: () => ({
     components: { D1ClockDial },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">12-Hour</div>
@@ -71,6 +72,7 @@ export const ClockDialType: Story = {
             <D1ClockDial type="second" :value="30" />
           </div>
         </div>
+      
     `
   })
 }
@@ -83,6 +85,7 @@ export const ClockDialVModel: Story = {
       return { hour }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Selected hour: {{ hour }}</span>
@@ -94,6 +97,7 @@ export const ClockDialVModel: Story = {
             type="12"
           />
         </div>
+      
     `
   })
 }
@@ -102,6 +106,7 @@ export const ClockDialClock: Story = {
   render: () => ({
     components: { D1ClockDial },
     template: `
+        
         <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
           <div class="wiki-storybook-item__label">10:15:30</div>
           <D1ClockDial
@@ -112,6 +117,7 @@ export const ClockDialClock: Story = {
             :second="30"
           />
         </div>
+      
     `
   })
 }

@@ -66,6 +66,7 @@ export const ModalVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="open = true">Open via v-model ({{ open }})</button>
@@ -75,6 +76,7 @@ export const ModalVModel: Story = {
             <div class="wiki-storybook-item--padding">Your content here</div>
           </D1Modal>
         </div>
+      
     `
   })
 }
@@ -83,6 +85,7 @@ export const ModalAllSlots: Story = {
   render: () => ({
     components: { D1Modal },
     template: `
+        
         <D1Modal>
           <template #control="{binds}">
             <button class="wiki-storybook-button" v-bind="binds">Open Modal with All Slots</button>
@@ -92,6 +95,7 @@ export const ModalAllSlots: Story = {
           <template #default>Default slot</template>
           <template #footer>Footer slot</template>
         </D1Modal>
+      
     `
   })
 }

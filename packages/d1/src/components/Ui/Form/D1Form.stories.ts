@@ -58,6 +58,7 @@ export const FormBasic: Story = {
   render: () => ({
     components: { D1Form, D1Input, D1Button },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
             <D1Form
@@ -75,6 +76,7 @@ export const FormBasic: Story = {
             </D1Form>
           </div>
         </div>
+      
     `
   })
 }
@@ -83,6 +85,7 @@ export const FormNative: Story = {
   render: () => ({
     components: { D1Form },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
             <D1Form
@@ -113,6 +116,7 @@ export const FormNative: Story = {
             </D1Form>
           </div>
         </div>
+      
     `
   })
 }
@@ -129,6 +133,7 @@ export const FormVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Current values: <strong>{{ formValue }}</strong></span>
@@ -185,6 +190,7 @@ export const FormVModel: Story = {
             </div>
           </div>
         </div>
+      
     `
   })
 }
@@ -193,6 +199,7 @@ export const FormSlots: Story = {
   render: () => ({
     components: { D1Form },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
             <D1Form>
@@ -214,6 +221,7 @@ export const FormSlots: Story = {
             </D1Form>
           </div>
         </div>
+      
     `
   })
 }

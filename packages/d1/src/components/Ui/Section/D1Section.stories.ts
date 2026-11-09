@@ -55,6 +55,7 @@ export const SectionBasic: Story = {
   render: () => ({
     components: { D1Section },
     template: `
+        
         <D1Section
           headline="User Profile Settings"
           label="Personalization"
@@ -62,6 +63,7 @@ export const SectionBasic: Story = {
         >
           <p>This section allows you to manage your personal display settings, theme selection, and language preferences. Changes are saved automatically as you update them.</p>
         </D1Section>
+      
     `
   })
 }
@@ -70,6 +72,7 @@ export const SectionSlots: Story = {
   render: () => ({
     components: { D1Section },
     template: `
+        
         <D1Section>
           <template #default>Default slot</template>
           <template #headline>Headline slot</template>
@@ -78,6 +81,7 @@ export const SectionSlots: Story = {
           <template #caption>Caption slot</template>
           <template #trailing>Trailing slot</template>
         </D1Section>
+      
     `
   })
 }

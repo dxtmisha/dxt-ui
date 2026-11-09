@@ -48,6 +48,7 @@ export const FieldWidth: Story = {
   render: () => ({
     components: { D1Field },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Field label="auto">
             <template #default="{id, className}">
@@ -70,6 +71,7 @@ export const FieldWidth: Story = {
             </template>
           </D1Field>
         </div>
+      
     `
   })
 }
@@ -78,6 +80,7 @@ export const FieldCancel: Story = {
   render: () => ({
     components: { D1Field },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Field cancel="auto" label="auto">
             <template #default="{id, className}">
@@ -95,6 +98,7 @@ export const FieldCancel: Story = {
             </template>
           </D1Field>
         </div>
+      
     `
   })
 }
@@ -103,6 +107,7 @@ export const FieldNavigation: Story = {
   render: () => ({
     components: { D1Field },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Field arrow-carousel label="carousel (start)" :disabled-previous="true">
             <template #default="{id, className}">
@@ -125,6 +130,7 @@ export const FieldNavigation: Story = {
             </template>
           </D1Field>
         </div>
+      
     `
   })
 }
@@ -133,6 +139,7 @@ export const FieldSkeleton: Story = {
   render: () => ({
     components: { D1Field, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true" style="max-width:280px">
           <D1Field isSkeleton label="Skeleton" counter="12" helper-message="Helper message: loading description.">
             <template #default="{id, className}">
@@ -140,6 +147,7 @@ export const FieldSkeleton: Story = {
             </template>
           </D1Field>
         </D1Skeleton>
+      
     `
   })
 }
@@ -148,6 +156,7 @@ export const FieldSlots: Story = {
   render: () => ({
     components: { D1Field },
     template: `
+        
         <D1Field
           :cancelShow="true"
           label="Label prop"
@@ -165,6 +174,7 @@ export const FieldSlots: Story = {
           <template #suffix>Suffix slot</template>
           <template #caption>Caption slot</template>
         </D1Field>
+      
     `
   })
 }

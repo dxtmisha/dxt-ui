@@ -93,6 +93,7 @@ export const AccordionVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="open = !open">
@@ -109,6 +110,7 @@ export const AccordionVModel: Story = {
             </template>
           </D1Accordion>
         </div>
+      
     `
   })
 }
@@ -117,6 +119,7 @@ export const AccordionSlots: Story = {
   render: () => ({
     components: { D1Accordion },
     template: `
+        
         <D1Accordion label="Default label" description="Default description" icon="settings">
           <template #label>Custom label slot</template>
           <template #description>Custom description slot</template>
@@ -126,6 +129,7 @@ export const AccordionSlots: Story = {
               <p>Custom default slot content (main accordion body)</p>
           </template>
         </D1Accordion>
+      
     `
   })
 }

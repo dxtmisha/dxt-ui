@@ -11,11 +11,12 @@ To create a demo page for a specific component (e.g., Badge, Button, Checkbox) i
 - **English-Only Content**: All textual content, labels, descriptions, and placeholder strings used inside demo pages must strictly be in English.
 - **Demo Isolation**: Each group (`D1Group`) represents an individual, self-contained demo. Do not create any global/general settings, controllers, or property toggle interfaces.
 
-### 1. Component Analysis
-- Study `props.ts` and the main constructor file in `packages/constructor/src/constructors/[Component]`.
-- Study the implementation in `packages/d1/src/components/Ui/[Component]`.
-- Identify all key properties (types, sizes, palettes, states, features).
-- **Maximum Coverage**: Aim to cover the maximum possible number of component use cases, especially those affecting **SSR** (e.g., `in-dom`, `client-only` properties, etc.).
+### 1. Component Analysis & Exhaustive Coverage (STRICTLY MANDATORY)
+- Study `props.ts`, `types.ts`, and the main constructor file in `packages/constructor/src/constructors/[Component]`.
+- Study the implementation and token props in `packages/d1/src/components/Ui/[Component]`.
+- **100% States Coverage**: The demo page **MUST** display **all possible states** of the component without exception (e.g., `active`, `selected`, `disabled`, `readonly`, `loading`, `skeleton` / `is-skeleton`, `error` / `validation`, `focus`, `open`, empty/populated states, visual variants, sizes, palettes, and layout modes).
+- **100% Accepted Data Types & Formats Coverage**: The demo page **MUST** demonstrate **all possible accepted data types and input formats** for props, models, and slots (e.g., `string`, `number`, `boolean`, arrays, nested objects, `ListRecord` items, callback functions/promises, `v-model` bindings, icon strings vs. icon objects, custom formatting options, and all available slots/scoped slot props).
+- **SSR & Lifecycle Cases**: Cover all properties and edge cases affecting **SSR**, hydration, and DOM lifecycle (e.g., `in-dom`, `client-only`, teleport targets, delayed rendering, etc.).
 
 ### 2. Creating the Demo Page
 - Create the file `packages/demo/src/pages/components/Demo[Component]Page.vue`.

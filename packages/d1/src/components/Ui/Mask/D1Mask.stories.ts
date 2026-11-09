@@ -48,6 +48,7 @@ export const MaskBasic: Story = {
   render: () => ({
     components: { D1Mask },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Phone number format (+1 area code)</div>
@@ -61,6 +62,7 @@ export const MaskBasic: Story = {
             />
           </div>
         </div>
+      
     `
   })
 }
@@ -69,6 +71,7 @@ export const MaskSpecial: Story = {
   render: () => ({
     components: { D1Mask },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Default special symbol (*)</div>
@@ -83,6 +86,7 @@ export const MaskSpecial: Story = {
             <D1Mask :mask="'***-###-XXX'" :special="['*', '#', 'X']" />
           </div>
         </div>
+      
     `
   })
 }
@@ -91,6 +95,7 @@ export const MaskValidation: Story = {
   render: () => ({
     components: { D1Mask },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Pattern validation (6-9 digits only)</div>
@@ -101,6 +106,7 @@ export const MaskValidation: Story = {
             <D1Mask :mask="'**:##'" :special="['*', '#']" :pattern="'[6-9]+'"/>
           </div>
         </div>
+      
     `
   })
 }
@@ -109,6 +115,7 @@ export const MaskGroupSave: Story = {
   render: () => ({
     components: { D1Mask },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Smart navigation enabled (groupSave: true)</div>
@@ -119,6 +126,7 @@ export const MaskGroupSave: Story = {
             <D1Mask :mask="'****-####'" :special="['*', '#']" :groupSave="false" />
           </div>
         </div>
+      
     `
   })
 }
@@ -127,6 +135,7 @@ export const MaskMatch: Story = {
   render: () => ({
     components: { D1Mask },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">HEX characters (0-9, A-F)</div>
@@ -137,6 +146,7 @@ export const MaskMatch: Story = {
             <D1Mask :mask="'***-***'" match="[A-Za-z]" />
           </div>
         </div>
+      
     `
   })
 }
@@ -145,6 +155,7 @@ export const MaskNumberTypes: Story = {
   render: () => ({
     components: { D1Mask },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Simple number</div>
@@ -159,6 +170,7 @@ export const MaskNumberTypes: Story = {
             <D1Mask type="currency" currency="RUB" language="ru" />
           </div>
         </div>
+      
     `
   })
 }
@@ -167,6 +179,7 @@ export const MaskDateTypes: Story = {
   render: () => ({
     components: { D1Mask },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Full date (DD.MM.YYYY)</div>
@@ -181,6 +194,7 @@ export const MaskDateTypes: Story = {
             <D1Mask type="hour-minute" />
           </div>
         </div>
+      
     `
   })
 }

@@ -50,6 +50,7 @@ export const ListItemBasic: Story = {
   render: () => ({
     components: { D1ListItem },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
             <D1ListItem>Simple Item</D1ListItem>
@@ -64,6 +65,7 @@ export const ListItemBasic: Story = {
             <D1ListItem icon="star" badge="new">Icon with Badge</D1ListItem>
           </div>
         </div>
+      
     `
   })
 }
@@ -72,6 +74,7 @@ export const ListItemHighlight: Story = {
   render: () => ({
     components: { D1ListItem },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
             <D1ListItem highlight="search" label="Search result item"/>
@@ -80,6 +83,7 @@ export const ListItemHighlight: Story = {
             <D1ListItem highlight="example" :highlightLengthStart="2" label="Example text for highlighting"/>
           </div>
         </div>
+      
     `
   })
 }
@@ -88,6 +92,7 @@ export const ListItemFill: Story = {
   render: () => ({
     components: { D1ListItem },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
             <D1ListItem label="Default fill"/>
@@ -96,6 +101,7 @@ export const ListItemFill: Story = {
             <D1ListItem fill="rgba(255, 165, 0, 0.7)" label="Orange transparent fill"/>
           </div>
         </div>
+      
     `
   })
 }
@@ -104,6 +110,7 @@ export const ListItemSkeleton: Story = {
   render: () => ({
     components: { D1ListItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1ListItem
             :isSkeleton="true"
@@ -121,6 +128,7 @@ export const ListItemSkeleton: Story = {
             description="This is a much longer description to demonstrate how the skeleton adapts to different content lengths in the list item."
           >Very Long Item Label Example for Skeleton</D1ListItem>
         </D1Skeleton>
+      
     `
   })
 }

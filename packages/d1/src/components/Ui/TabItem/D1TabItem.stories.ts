@@ -48,9 +48,11 @@ export const TabItemSkeleton: Story = {
   render: () => ({
     components: { D1TabItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1TabItem isSkeleton>Tab item</D1TabItem>
         </D1Skeleton>
+      
     `
   })
 }

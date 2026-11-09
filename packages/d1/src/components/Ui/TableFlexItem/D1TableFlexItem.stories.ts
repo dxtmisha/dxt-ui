@@ -48,6 +48,7 @@ export const TableFlexItemSkeleton: Story = {
   render: () => ({
     components: { D1TableFlexItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-flex">
             <D1TableFlexItem
@@ -63,6 +64,7 @@ export const TableFlexItemSkeleton: Story = {
             />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

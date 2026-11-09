@@ -37,11 +37,13 @@ export const ButtonBasic: Story = {
   render: () => ({
     components: { D1Button },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Button>Button</D1Button>
           <D1Button icon="home">Button</D1Button>
           <D1Button icon-trailing="arrow_forward">Button</D1Button>
         </div>
+      
     `
   })
 }
@@ -50,12 +52,14 @@ export const ButtonPrimary: Story = {
   render: () => ({
     components: { D1Button },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Button primary>Button</D1Button>
           <D1Button primary icon="home">Button</D1Button>
           <D1Button primary selected>Button</D1Button>
           <D1Button primary disabled>Button</D1Button>
         </div>
+      
     `
   })
 }
@@ -64,12 +68,14 @@ export const ButtonSecondary: Story = {
   render: () => ({
     components: { D1Button },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Button secondary>Button</D1Button>
           <D1Button secondary icon="home">Button</D1Button>
           <D1Button secondary selected>Button</D1Button>
           <D1Button secondary disabled>Button</D1Button>
         </div>
+      
     `
   })
 }
@@ -78,12 +84,14 @@ export const ButtonOutline: Story = {
   render: () => ({
     components: { D1Button },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Button outline>Button</D1Button>
           <D1Button outline icon="home">Button</D1Button>
           <D1Button outline selected>Button</D1Button>
           <D1Button outline disabled>Button</D1Button>
         </div>
+      
     `
   })
 }
@@ -92,12 +100,14 @@ export const ButtonText: Story = {
   render: () => ({
     components: { D1Button },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Button text>Button</D1Button>
           <D1Button text icon="home">Button</D1Button>
           <D1Button text selected>Button</D1Button>
           <D1Button text disabled>Button</D1Button>
         </div>
+      
     `
   })
 }
@@ -106,6 +116,7 @@ export const ButtonAdaptive: Story = {
   render: () => ({
     components: { D1Button },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Default</div>
@@ -120,6 +131,7 @@ export const ButtonAdaptive: Story = {
             <D1Button container="fullSm" icon="home" label="Button"/>
           </div>
         </div>
+      
     `
   })
 }
@@ -128,9 +140,11 @@ export const ButtonSkeleton: Story = {
   render: () => ({
     components: { D1Button, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1Button isSkeleton>Button</D1Button>
         </D1Skeleton>
+      
     `
   })
 }

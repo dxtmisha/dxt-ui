@@ -60,6 +60,7 @@ export const SelectableAreaBasic: Story = {
   render: () => ({
     components: { D1SelectableArea },
     template: `
+        
         <D1SelectableArea>
           <template #default="{ className, classClick, onClick }">
             <div class="wiki-storybook-group wiki-storybook-group--gapX3 wiki-storybook-item--paddingX2">
@@ -75,6 +76,7 @@ export const SelectableAreaBasic: Story = {
             </div>
           </template>
         </D1SelectableArea>
+      
     `
   })
 }
@@ -88,6 +90,7 @@ export const SelectableAreaVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Selected items: {{ selected }}</span>
@@ -118,6 +121,7 @@ export const SelectableAreaVModel: Story = {
             </template>
           </D1SelectableArea>
         </div>
+      
     `
   })
 }

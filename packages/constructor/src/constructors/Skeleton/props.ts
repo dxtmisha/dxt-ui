@@ -1,12 +1,13 @@
 /** Skeleton design token properties / Свойства дизайн-токенов Skeleton */
 export type SkeletonPropsToken = {
   // :type [!] System label / Системная метка
-  active?: boolean
   // :type [!] System label / Системная метка
 }
 
 /** Basic properties of the Skeleton component / Базовые свойства компонента Skeleton */
 export type SkeletonPropsBasic = {
+  /** Activates the skeleton mode / Активирует режим скелетона */
+  active?: boolean
   /** Delay before showing / Задержка перед показом */
   delay?: number | string
   /** Delay before hiding / Задержка перед скрытием */

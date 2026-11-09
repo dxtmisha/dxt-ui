@@ -36,6 +36,7 @@ export const SnackbarItemBasic: Story = {
   render: () => ({
     components: { D1SnackbarItem },
     template: `
+        
         <div class="wiki-storybook-group">
           <D1SnackbarItem
             label="Detailed notification"
@@ -60,6 +61,7 @@ export const SnackbarItemBasic: Story = {
             class="wiki-storybook-item--squared--lg"
           />
         </div>
+      
     `
   })
 }

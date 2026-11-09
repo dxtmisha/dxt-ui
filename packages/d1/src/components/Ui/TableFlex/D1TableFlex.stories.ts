@@ -37,6 +37,7 @@ export const TableFlexBasic: Story = {
   render: () => ({
     components: { D1TableFlex },
     template: `
+        
         <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding" style="max-height: 360px;">
           <D1TableFlex
             :columns="['id', 'name', 'status', 'role', 'email', 'age', 'country', 'city', 'salary']"
@@ -89,6 +90,7 @@ export const TableFlexBasic: Story = {
             ]"
           />
         </div>
+      
     `
   })
 }
@@ -97,6 +99,7 @@ export const TableFlexSlots: Story = {
   render: () => ({
     components: { D1TableFlex },
     template: `
+        
         <D1TableFlex
           caption="Table Caption"
           :columns="['id', 'name', 'status']"
@@ -144,6 +147,7 @@ export const TableFlexSlots: Story = {
             Foot Cell Slot: {{ value }}
           </template>
         </D1TableFlex>
+      
     `
   })
 }
@@ -152,6 +156,7 @@ export const TableFlexSort: Story = {
   render: () => ({
     components: { D1TableFlex },
     template: `
+        
         <D1TableFlex
           :columns="['id', 'name', 'role', 'age', 'salary']"
           :header="[
@@ -173,6 +178,7 @@ export const TableFlexSort: Story = {
             { id: '5', name: 'Edward Norton', role: 'Tester', age: 26, salary: 7000 }
           ]"
         />
+      
     `
   })
 }
@@ -182,10 +188,11 @@ export const TableFlexSearch: Story = {
     components: { D1TableFlex },
     setup() {
       return {
-          searchValue: ref('an')
-        }
+        searchValue: ref('an')
+      }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <input class="wiki-storybook-input" type="text" v-model="searchValue" placeholder="Search name or role..."/>
@@ -225,6 +232,7 @@ export const TableFlexSearch: Story = {
             </template>
           </D1TableFlex>
         </div>
+      
     `
   })
 }

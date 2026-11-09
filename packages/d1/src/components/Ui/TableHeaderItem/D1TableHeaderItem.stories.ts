@@ -58,6 +58,7 @@ export const TableHeaderItemSkeleton: Story = {
   render: () => ({
     components: { D1TableHeaderItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <table>
             <thead>
@@ -75,6 +76,7 @@ export const TableHeaderItemSkeleton: Story = {
             </thead>
           </table>
         </D1Skeleton>
+      
     `
   })
 }

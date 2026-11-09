@@ -57,6 +57,7 @@ export const InputImageVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Current crop: {{ value?.crop }}</span>
@@ -70,6 +71,7 @@ export const InputImageVModel: Story = {
             v-model="value"
           />
         </div>
+      
     `
   })
 }
@@ -91,6 +93,7 @@ export const InputImageCounter: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1InputImage
             label="Pixel dimension counter (max 1920px)"
@@ -107,6 +110,7 @@ export const InputImageCounter: Story = {
             v-model="sizeValue"
           />
         </div>
+      
     `
   })
 }
@@ -115,11 +119,13 @@ export const InputImageSkeleton: Story = {
   render: () => ({
     components: { D1InputImage, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
             <D1InputImage isSkeleton />
           </div>
         </D1Skeleton>
+      
     `
   })
 }
@@ -128,6 +134,7 @@ export const InputImageSlots: Story = {
   render: () => ({
     components: { D1InputImage },
     template: `
+        
         <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
           <D1InputImage>
             <template #label>
@@ -135,6 +142,7 @@ export const InputImageSlots: Story = {
             </template>
           </D1InputImage>
         </div>
+      
     `
   })
 }

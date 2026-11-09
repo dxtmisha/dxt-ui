@@ -46,6 +46,7 @@ export const CarouselPaginationBasic: Story = {
   render: () => ({
     components: { D1CarouselPagination },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Bullets</div>
@@ -68,6 +69,7 @@ export const CarouselPaginationBasic: Story = {
             <D1CarouselPagination :count="5" :selected="2" type="progressbar" />
           </div>
         </div>
+      
     `
   })
 }
@@ -80,6 +82,7 @@ export const CarouselPaginationVModel: Story = {
       return { selected }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Current slide: <strong>{{ selected }}</strong></span>
@@ -91,6 +94,7 @@ export const CarouselPaginationVModel: Story = {
             <D1CarouselPagination v-model:selected="selected" :count="5" />
           </div>
         </div>
+      
     `
   })
 }
@@ -103,6 +107,7 @@ export const CarouselPaginationSlots: Story = {
       return { selected }
     },
     template: `
+        
         <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--center">
           <D1CarouselPagination v-model:selected="selected" :count="4">
             <template #item="{ binds, index, item }">
@@ -115,6 +120,7 @@ export const CarouselPaginationSlots: Story = {
             </template>
           </D1CarouselPagination>
         </div>
+      
     `
   })
 }

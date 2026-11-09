@@ -48,6 +48,7 @@ export const InputFileDropzoneBasic: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span class="wiki-storybook-item__label wiki-storybook-item__label--static">Files added: {{ files.length }}</span>
@@ -60,6 +61,7 @@ export const InputFileDropzoneBasic: Story = {
             @add="onAdd"
           />
         </div>
+      
     `
   })
 }
@@ -68,9 +70,11 @@ export const InputFileDropzoneSkeleton: Story = {
   render: () => ({
     components: { D1InputFileDropzone, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1InputFileDropzone isSkeleton label="Drop files here" />
         </D1Skeleton>
+      
     `
   })
 }
@@ -79,6 +83,7 @@ export const InputFileDropzoneSlots: Story = {
   render: () => ({
     components: { D1InputFileDropzone },
     template: `
+        
         <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
           <D1InputFileDropzone>
             <template #label>
@@ -89,6 +94,7 @@ export const InputFileDropzoneSlots: Story = {
             </template>
           </D1InputFileDropzone>
         </div>
+      
     `
   })
 }

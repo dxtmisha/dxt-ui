@@ -36,6 +36,7 @@ export const CollageBarPositions: Story = {
   render: () => ({
     components: { D1CollageBar },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
             <D1CollageBar
@@ -64,6 +65,7 @@ export const CollageBarPositions: Story = {
             />
           </div>
         </div>
+      
     `
   })
 }
@@ -72,12 +74,14 @@ export const CollageBarSlots: Story = {
   render: () => ({
     components: { D1CollageBar },
     template: `
+        
         <D1CollageBar>
           <template #default>Default slot</template>
           <template #description>Description slot</template>
           <template #body>Body slot</template>
           <template #trailing>Trailing slot</template>
         </D1CollageBar>
+      
     `
   })
 }

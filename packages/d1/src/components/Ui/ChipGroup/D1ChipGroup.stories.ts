@@ -37,6 +37,7 @@ export const ChipGroupSelection: Story = {
   render: () => ({
     components: { D1ChipGroup },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1ChipGroup :list="['Option 1', 'Option 2', 'Option 3']" selected="2"/>
           <D1ChipGroup :list="['Option 1', 'Option 2', 'Option 3', 'Option 4']" :selected="['2', '3']"/>
@@ -50,6 +51,7 @@ export const ChipGroupSelection: Story = {
             :icon-when-selected="true"
           />
         </div>
+      
     `
   })
 }
@@ -63,6 +65,7 @@ export const ChipGroupVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Current value: {{ multipleSelected }}</span>
@@ -81,6 +84,7 @@ export const ChipGroupVModel: Story = {
             :icon-when-selected="true"
           />
         </div>
+      
     `
   })
 }

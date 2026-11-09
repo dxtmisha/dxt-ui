@@ -44,6 +44,7 @@ export const CheckboxVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="checkboxValue = !checkboxValue">Check {{ checkboxValue }}</button>
@@ -53,6 +54,7 @@ export const CheckboxVModel: Story = {
             label="Checkbox with v-model"
           />
         </div>
+      
     `
   })
 }
@@ -61,12 +63,14 @@ export const CheckboxSkeleton: Story = {
   render: () => ({
     components: { D1Checkbox, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-flex-column">
             <D1Checkbox isSkeleton label="Loading checkbox" />
             <D1Checkbox isSkeleton label="Another loading checkbox" />
           </div>
         </D1Skeleton>
+      
     `
   })
 }
@@ -75,6 +79,7 @@ export const CheckboxSlots: Story = {
   render: () => ({
     components: { D1Checkbox },
     template: `
+        
         <D1Checkbox>
           <template #default>
             <strong>Custom label slot</strong>
@@ -83,6 +88,7 @@ export const CheckboxSlots: Story = {
             <em>Custom description slot</em>
           </template>
         </D1Checkbox>
+      
     `
   })
 }

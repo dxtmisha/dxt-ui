@@ -54,6 +54,7 @@ export const ImageCropVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Coordinates [top, right, bottom, left]: {{ coordinator }}</span>
@@ -67,6 +68,7 @@ export const ImageCropVModel: Story = {
             v-model="coordinator"
           />
         </div>
+      
     `
   })
 }

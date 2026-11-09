@@ -115,6 +115,7 @@ export const ArrowBasic: Story = {
       }
     },
     template: `
+        
         <div
           class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--center"
           style="cursor: crosshair;"
@@ -176,6 +177,7 @@ export const ArrowBasic: Story = {
             </div>
           </div>
         </div>
+      
     `
   })
 }

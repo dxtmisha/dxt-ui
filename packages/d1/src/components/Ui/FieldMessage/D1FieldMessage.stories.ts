@@ -36,6 +36,7 @@ export const FieldMessageSlots: Story = {
   render: () => ({
     components: { D1FieldMessage },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1FieldMessage>
             <template #helper>
@@ -48,6 +49,7 @@ export const FieldMessageSlots: Story = {
             </template>
           </D1FieldMessage>
         </div>
+      
     `
   })
 }

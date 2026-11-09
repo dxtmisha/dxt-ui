@@ -36,6 +36,7 @@ export const ActionsSlots: Story = {
   render: () => ({
     components: { D1Actions },
     template: `
+        
         <D1Actions>
           <template #secondary>
             Secondary Slot
@@ -44,6 +45,7 @@ export const ActionsSlots: Story = {
             Default Slot
           </template>
         </D1Actions>
+      
     `
   })
 }

@@ -41,6 +41,7 @@ export const ClockPeriodVModel: Story = {
       return { period }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Selected period: {{ period }}</span>
@@ -49,6 +50,7 @@ export const ClockPeriodVModel: Story = {
           </div>
           <D1ClockPeriod v-model="period" />
         </div>
+      
     `
   })
 }

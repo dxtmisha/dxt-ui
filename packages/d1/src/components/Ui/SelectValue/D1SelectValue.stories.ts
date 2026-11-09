@@ -36,6 +36,7 @@ export const SelectValueBasic: Story = {
   render: () => ({
     components: { D1SelectValue },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--auto">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Placeholder</div>
@@ -57,6 +58,7 @@ export const SelectValueBasic: Story = {
             />
           </div>
         </div>
+      
     `
   })
 }

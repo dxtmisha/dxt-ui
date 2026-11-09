@@ -53,7 +53,9 @@ export const TabsNavigationBasic: Story = {
       return { list, selected }
     },
     template: `
+        
         <D1TabsNavigation :list="list" v-model:selected="selected"/>
+      
     `
   })
 }
@@ -71,6 +73,7 @@ export const TabsNavigationVModel: Story = {
       return { list, selected }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Current value: {{ selected }}</span>
@@ -81,6 +84,7 @@ export const TabsNavigationVModel: Story = {
 
           <D1TabsNavigation :list="list" v-model:selected="selected"/>
         </div>
+      
     `
   })
 }

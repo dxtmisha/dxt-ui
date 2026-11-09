@@ -47,6 +47,7 @@ export const CollageItemSpans: Story = {
   render: () => ({
     components: { D1CollageItem },
     template: `
+        
         <div class="wiki-storybook-container">
           <div class="wiki-storybook-group wiki-storybook-group--col4 wiki-storybook-group--squared">
             <D1CollageItem
@@ -111,6 +112,7 @@ export const CollageItemSpans: Story = {
             />
           </div>
         </div>
+      
     `
   })
 }
@@ -119,6 +121,7 @@ export const ImageSize: Story = {
   render: () => ({
     components: { D1CollageItem },
     template: `
+        
         <div class="wiki-storybook-container">
           <div class="wiki-storybook-group wiki-storybook-group--col4 wiki-storybook-group--squared">
             <D1CollageItem
@@ -159,6 +162,7 @@ export const ImageSize: Story = {
             />
           </div>
         </div>
+      
     `
   })
 }

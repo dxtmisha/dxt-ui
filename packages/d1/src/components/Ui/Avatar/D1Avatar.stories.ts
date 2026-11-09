@@ -37,11 +37,13 @@ export const AvatarBasic: Story = {
   render: () => ({
     components: { D1Avatar },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Avatar label="John Doe"/>
           <D1Avatar src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" label="User Image"/>
           <D1Avatar label="Online User" badgeDot/>
         </div>
+      
     `
   })
 }
@@ -50,10 +52,12 @@ export const AvatarReduction: Story = {
   render: () => ({
     components: { D1Avatar },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Avatar label="Иван Иванович" :reduction="true"/>
           <D1Avatar label="Иван Иванович" :reduction="false"/>
         </div>
+      
     `
   })
 }
@@ -62,11 +66,13 @@ export const AvatarSkeleton: Story = {
   render: () => ({
     components: { D1Avatar, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-flex">
             <D1Avatar :isSkeleton="true" label="JD"/>
           </div>
         </D1Skeleton>
+      
     `
   })
 }

@@ -42,6 +42,7 @@ export const InputCodeVModel: Story = {
       return { codeValue }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Current value: {{ codeValue }}</span>
@@ -53,6 +54,7 @@ export const InputCodeVModel: Story = {
             label="Code input"
           />
         </div>
+      
     `
   })
 }
@@ -61,6 +63,7 @@ export const InputCodeSkeleton: Story = {
   render: () => ({
     components: { D1InputCode, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true" style="max-width:320px">
           <D1InputCode
             isSkeleton
@@ -68,6 +71,7 @@ export const InputCodeSkeleton: Story = {
             helperMessage="This field is loading..."
           />
         </D1Skeleton>
+      
     `
   })
 }

@@ -60,6 +60,7 @@ export const TableRecordIsHeader: Story = {
   render: () => ({
     components: { D1TableRecord },
     template: `
+        
         <table style="border-collapse: collapse; width: 100%;">
           <thead>
             <D1TableRecord
@@ -69,6 +70,7 @@ export const TableRecordIsHeader: Story = {
             />
           </thead>
         </table>
+      
     `
   })
 }
@@ -77,6 +79,7 @@ export const TableRecordSkeleton: Story = {
   render: () => ({
     components: { D1TableRecord, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <table style="border-collapse: collapse; width: 100%;">
             <tbody>
@@ -88,6 +91,7 @@ export const TableRecordSkeleton: Story = {
             </tbody>
           </table>
         </D1Skeleton>
+      
     `
   })
 }

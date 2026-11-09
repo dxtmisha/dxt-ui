@@ -36,6 +36,7 @@ export const NavigationListHighlight: Story = {
   render: () => ({
     components: { D1NavigationList },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
             <D1NavigationList
@@ -49,6 +50,7 @@ export const NavigationListHighlight: Story = {
             />
           </div>
         </div>
+      
     `
   })
 }

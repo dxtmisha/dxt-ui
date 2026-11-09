@@ -46,11 +46,13 @@ export const CarouselItemSlot: Story = {
   render: () => ({
     components: { D1CarouselItem },
     template: `
+        
         <div class="wiki-storybook-item wiki-storybook-item--widescreen">
           <D1CarouselItem>
             <template #default>Default slot</template>
           </D1CarouselItem>
         </div>
+      
     `
   })
 }
@@ -59,11 +61,13 @@ export const CarouselItemSkeleton: Story = {
   render: () => ({
     components: { D1CarouselItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
             <D1CarouselItem isSkeleton />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

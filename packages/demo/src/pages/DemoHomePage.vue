@@ -61,6 +61,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="SegmentControl" name="component-segment-control"/>
         <DemoLink label="SelectableArea" name="component-selectable-area"/>
         <DemoLink label="Select" name="component-select"/>
+        <DemoLink label="Skeleton" name="component-skeleton"/>
         <DemoLink label="Snackbar" name="component-snackbar"/>
         <DemoLink label="Switch" name="component-switch"/>
         <DemoLink label="Textarea" name="component-textarea"/>

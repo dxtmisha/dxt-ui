@@ -36,6 +36,7 @@ export const FormattedUnitBasic: Story = {
   render: () => ({
     components: { D1FormattedUnit },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-row-gap">
             <D1FormattedUnit :value="100" unit="celsius" language="ru-RU"/> →
@@ -49,6 +50,7 @@ export const FormattedUnitBasic: Story = {
             <D1FormattedUnit :value="100" unit="kilometer-per-hour" language="en-US"/>
           </div>
         </div>
+      
     `
   })
 }

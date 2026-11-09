@@ -51,17 +51,18 @@ export const MenuNavigation: Story = {
       return {
         selectedValue: ref('color2'),
         colors: ref([
-          {label: '[1]Red', value: 'color1', icon: 'palette'},
-          {label: '[2]Green', value: 'color2', icon: 'palette'},
-          {label: '[3]Blue', value: 'color3', icon: 'palette'},
-          {label: '[4]Yellow', value: 'color4', icon: 'palette'},
-          {label: '[5]Purple', value: 'color5', icon: 'palette'},
-          {label: '[6]Orange', value: 'color6', icon: 'palette'}
+          { label: '[1]Red', value: 'color1', icon: 'palette' },
+          { label: '[2]Green', value: 'color2', icon: 'palette' },
+          { label: '[3]Blue', value: 'color3', icon: 'palette' },
+          { label: '[4]Yellow', value: 'color4', icon: 'palette' },
+          { label: '[5]Purple', value: 'color5', icon: 'palette' },
+          { label: '[6]Orange', value: 'color6', icon: 'palette' }
         ]),
         step: ref(1)
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label">Step size:</div>
@@ -108,6 +109,7 @@ export const MenuNavigation: Story = {
             <div>Step: {{ step }}</div>
           </div>
         </div>
+      
     `
   })
 }
@@ -117,15 +119,16 @@ export const MenuAjax: Story = {
     components: { D1Menu },
     setup() {
       const loadMenuData = () => new Promise(resolve => setTimeout(() => resolve([
-          {label: 'Dashboard', value: 'dashboard', icon: 'dashboard'},
-          {label: 'Users', value: 'users', icon: 'people'},
-          {label: 'Settings', value: 'settings', icon: 'settings'},
-          {label: 'Reports', value: 'reports', icon: 'assessment'}
-        ]), 512))
+        { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
+        { label: 'Users', value: 'users', icon: 'people' },
+        { label: 'Settings', value: 'settings', icon: 'settings' },
+        { label: 'Reports', value: 'reports', icon: 'assessment' }
+      ]), 512))
 
-        return { loadMenuData }
+      return { loadMenuData }
     },
     template: `
+        
         <D1Menu :ajax="loadMenuData" selected="settings">
           <template #control="{binds, loading}">
             <button class="wiki-storybook-button" v-bind="binds">
@@ -133,6 +136,7 @@ export const MenuAjax: Story = {
             </button>
           </template>
         </D1Menu>
+      
     `
   })
 }
@@ -144,15 +148,16 @@ export const MenuVModel: Story = {
       return {
         selectedValue: ref('settings'),
         menuItems: ref([
-          {label: 'Dashboard', value: 'dashboard', icon: 'dashboard'},
-          {label: 'Users', value: 'users', icon: 'people'},
-          {label: 'Settings', value: 'settings', icon: 'settings'},
-          {label: 'Reports', value: 'reports', icon: 'assessment'},
-          {label: 'Help', value: 'help', icon: 'help'}
+          { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
+          { label: 'Users', value: 'users', icon: 'people' },
+          { label: 'Settings', value: 'settings', icon: 'settings' },
+          { label: 'Reports', value: 'reports', icon: 'assessment' },
+          { label: 'Help', value: 'help', icon: 'help' }
         ])
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="selectedValue = 'dashboard'">Select Dashboard</button>
@@ -174,6 +179,7 @@ export const MenuVModel: Story = {
           </div>
           <div>Selected value: {{ selectedValue }}</div>
         </div>
+      
     `
   })
 }

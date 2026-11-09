@@ -38,6 +38,7 @@ export const BarsBasic: Story = {
   render: () => ({
     components: { D1Bars },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Bars
             label="Page Title"
@@ -60,6 +61,7 @@ export const BarsBasic: Story = {
             ]"
           />
         </div>
+      
     `
   })
 }
@@ -73,6 +75,7 @@ export const BarsVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="isAction = !isAction">Toggle action ({{ isAction ? 'on' : 'off' }})</button>
@@ -96,6 +99,7 @@ export const BarsVModel: Story = {
             style="margin-top: 8px;"
           />
         </div>
+      
     `
   })
 }
@@ -104,6 +108,7 @@ export const BarsSkeleton: Story = {
   render: () => ({
     components: { D1Bars, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1Bars
             :isSkeleton="true"
@@ -116,6 +121,7 @@ export const BarsSkeleton: Story = {
             ]"
           />
         </D1Skeleton>
+      
     `
   })
 }
@@ -129,6 +135,7 @@ export const BarsSlots: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="isAction = !isAction">Toggle action ({{ isAction ? 'on' : 'off' }})</button>
@@ -140,6 +147,7 @@ export const BarsSlots: Story = {
             <template #actionBars>Custom ActionBars Slot</template>
           </D1Bars>
         </div>
+      
     `
   })
 }

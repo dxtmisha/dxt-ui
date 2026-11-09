@@ -40,10 +40,12 @@ export const PaginationBasic: Story = {
       return {}
     },
     template: `
+        
         <D1Pagination
           :count="100"
           :rows="10"
         />
+      
     `
   })
 }
@@ -52,6 +54,7 @@ export const PaginationShowMore: Story = {
   render: () => ({
     components: { D1Pagination },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Pagination
             :count="100"
@@ -67,6 +70,7 @@ export const PaginationShowMore: Story = {
             show-more
           />
         </div>
+      
     `
   })
 }
@@ -82,6 +86,7 @@ export const PaginationVModel: Story = {
       return { page, rows, menuRows }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Page: <strong>{{ page }}</strong></span>
@@ -98,6 +103,7 @@ export const PaginationVModel: Story = {
             show-info
           />
         </div>
+      
     `
   })
 }

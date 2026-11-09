@@ -52,9 +52,11 @@ export const PageAreaBasic: Story = {
   render: () => ({
     components: { D1PageArea },
     template: `
+        
         <D1PageArea>
           <p>This is a basic example of PageArea content. It can contain any combination of blocks, sections, or individual UI elements.</p>
         </D1PageArea>
+      
     `
   })
 }
@@ -63,6 +65,7 @@ export const PageAreaSlots: Story = {
   render: () => ({
     components: { D1PageArea },
     template: `
+        
         <D1PageArea>
           <template #default>Default slot</template>
           <template #headline>Headline slot</template>
@@ -71,6 +74,7 @@ export const PageAreaSlots: Story = {
           <template #caption>Caption slot</template>
           <template #trailing>Trailing slot</template>
         </D1PageArea>
+      
     `
   })
 }

@@ -46,6 +46,7 @@ export const CellSkeleton: Story = {
   render: () => ({
     components: { D1Cell, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1Cell
             :isSkeleton="true"
@@ -66,6 +67,7 @@ export const CellSkeleton: Story = {
             label="Very Long Label Example for Skeleton"
           />
         </D1Skeleton>
+      
     `
   })
 }
@@ -74,6 +76,7 @@ export const CellSlots: Story = {
   render: () => ({
     components: { D1Cell },
     template: `
+        
         <D1Cell icon="home">
           <template #default>Default slot</template>
           <template #description>Description slot</template>
@@ -81,6 +84,7 @@ export const CellSlots: Story = {
           <template #trailing>Trailing slot</template>
           <template #body>Body slot</template>
         </D1Cell>
+      
     `
   })
 }

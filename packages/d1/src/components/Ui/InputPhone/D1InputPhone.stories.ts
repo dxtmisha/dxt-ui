@@ -42,6 +42,7 @@ export const InputPhoneVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1InputPhone
             v-model:value="phone"
@@ -50,6 +51,7 @@ export const InputPhoneVModel: Story = {
           />
           <div>Entered phone: {{ phone || '—' }}</div>
         </div>
+      
     `
   })
 }
@@ -58,6 +60,7 @@ export const InputPhoneCountryBlock: Story = {
   render: () => ({
     components: { D1InputPhone },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1InputPhone
             country-default="DE"
@@ -70,6 +73,7 @@ export const InputPhoneCountryBlock: Story = {
             label="Locked Country (DE)"
           />
         </div>
+      
     `
   })
 }

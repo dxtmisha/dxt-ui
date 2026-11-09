@@ -36,11 +36,13 @@ export const ButtonGroupSlots: Story = {
   render: () => ({
     components: { D1ButtonGroup },
     template: `
+        
         <D1ButtonGroup>
           <template #default>
             Default Slot
           </template>
         </D1ButtonGroup>
+      
     `
   })
 }

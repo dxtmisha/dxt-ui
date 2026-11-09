@@ -38,10 +38,11 @@ export const PlaceholderBasic: Story = {
     components: { D1Placeholder },
     setup() {
       return {
-          image1
-        }
+        image1
+      }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Placeholder
             :image="image1"
@@ -50,6 +51,7 @@ export const PlaceholderBasic: Story = {
             :actions-list="[{ label: 'Retry', palette: 'primary' }]"
           />
         </div>
+      
     `
   })
 }
@@ -59,10 +61,11 @@ export const PlaceholderSlots: Story = {
     components: { D1Placeholder },
     setup() {
       return {
-          image1
-        }
+        image1
+      }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Placeholder>
             <template #default>
@@ -76,6 +79,7 @@ export const PlaceholderSlots: Story = {
             </template>
           </D1Placeholder>
         </div>
+      
     `
   })
 }

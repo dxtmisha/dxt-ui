@@ -65,6 +65,7 @@ export const MotionAxisBasic: Story = {
       return { selected }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="selected = 'slide1'">1</button>
@@ -91,6 +92,7 @@ export const MotionAxisBasic: Story = {
             </template>
           </D1MotionAxis>
         </div>
+      
     `
   })
 }
@@ -103,6 +105,7 @@ export const MotionAxisScroll: Story = {
       return { selected }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column d1-motionAxis__scroll">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="selected = 'short'">short</button>
@@ -125,6 +128,7 @@ export const MotionAxisScroll: Story = {
             </template>
           </D1MotionAxis>
         </div>
+      
     `
   })
 }
@@ -137,6 +141,7 @@ export const MotionAxisVModel: Story = {
       return { selected }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Current value: {{ selected }}</span>
@@ -163,6 +168,7 @@ export const MotionAxisVModel: Story = {
             </template>
           </D1MotionAxis>
         </div>
+      
     `
   })
 }

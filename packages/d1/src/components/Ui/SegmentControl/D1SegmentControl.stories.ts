@@ -53,6 +53,7 @@ export const SegmentControlVModel: Story = {
       return { list, selected }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Current value: {{ selected }}</span>
@@ -63,6 +64,7 @@ export const SegmentControlVModel: Story = {
 
           <D1SegmentControl :list="list" v-model:selected="selected"/>
         </div>
+      
     `
   })
 }

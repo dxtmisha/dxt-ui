@@ -43,7 +43,9 @@ export const BulletHtml: Story = {
   render: () => ({
     components: { D1Bullet },
     template: `
+        
         <D1Bullet html="<li>First parsed item</li><li>Second parsed item</li>"/>
+      
     `
   })
 }

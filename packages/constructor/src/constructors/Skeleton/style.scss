@@ -1,5 +1,17 @@
 @use "@dxtmisha/styles/properties" as ui;
 
+$skeletonSubclasses: (
+  'text',
+  'textVariant',
+  'background',
+  'backgroundAfter',
+  'backgroundBefore',
+  'backgroundVariant',
+  'border',
+  'borderVariant',
+  'none'
+);
+
 @mixin mixinSkeletonText {
   text-decoration-line: line-through !important;
   text-decoration-thickness: calc(var(--sys-font-size) * .64) !important;
@@ -10,7 +22,32 @@
   --sys-color-opacity: #{ui.v('??colorOpacity', 1)} !important;
 }
 
+@mixin mixinSkeletonSubInvisible {
+  &,
+  * {
+    @include ui.scrollbarHide;
+
+    &,
+    &::before,
+    &::after,
+    &::placeholder {
+      color: transparent !important;
+      background: transparent !important;
+      border-color: transparent !important;
+
+      box-shadow: none !important;
+    }
+  }
+
+  svg {
+    opacity: 0;
+    filter: opacity(0);
+  }
+}
+
 @mixin mixinSkeletonInvisible {
+  contain: style;
+
   @include ui.absoluteAfter {
     z-index: 999999;
   }
@@ -46,9 +83,18 @@
   }
 
   @include ui.state('visible') {
+    contain: style;
     animation: ui.v('??animation');
 
-    @include mixinSkeletonInvisible;
+    @include ui.mediaPrefersReducedMotion {
+      animation: none;
+    }
+
+    @each $subclass in $skeletonSubclasses {
+      @include ui.subclass($subclass) {
+        @include mixinSkeletonSubInvisible;
+      }
+    }
 
     @include ui.subclass('text') {
       @include mixinSkeletonText;

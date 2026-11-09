@@ -49,6 +49,7 @@ export const InputPhoneDialCodeVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="selected = [{ value: 'US' }]">Select US</button>
@@ -61,6 +62,7 @@ export const InputPhoneDialCodeVModel: Story = {
           />
           <div>Selected: {{ selected?.[0]?.value ?? '—' }}</div>
         </div>
+      
     `
   })
 }

@@ -62,6 +62,7 @@ export const HorizontalScrollBasic: Story = {
   render: () => ({
     components: { D1HorizontalScroll },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1HorizontalScroll>
             <template #default="{ classItem }">
@@ -82,6 +83,7 @@ export const HorizontalScrollBasic: Story = {
             </template>
           </D1HorizontalScroll>
         </div>
+      
     `
   })
 }

@@ -43,6 +43,7 @@ export const SwitchVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="switchValue = !switchValue">Toggle {{ switchValue }}</button>
@@ -52,6 +53,7 @@ export const SwitchVModel: Story = {
             label="Switch with v-model"
           />
         </div>
+      
     `
   })
 }
@@ -60,12 +62,14 @@ export const SwitchSkeleton: Story = {
   render: () => ({
     components: { D1Switch, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-flex-column">
             <D1Switch isSkeleton label="Loading switch" />
             <D1Switch isSkeleton label="Another loading switch" />
           </div>
         </D1Skeleton>
+      
     `
   })
 }
@@ -74,6 +78,7 @@ export const SwitchSlots: Story = {
   render: () => ({
     components: { D1Switch },
     template: `
+        
         <D1Switch>
           <template #default>
             <strong>Custom label slot</strong>
@@ -82,6 +87,7 @@ export const SwitchSlots: Story = {
             <em>Custom description slot</em>
           </template>
         </D1Switch>
+      
     `
   })
 }

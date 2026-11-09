@@ -56,6 +56,7 @@ import DemoScrollStickyPage from './pages/components/DemoScrollStickyPage.vue'
 import DemoSegmentControlPage from './pages/components/DemoSegmentControlPage.vue'
 import DemoSelectableAreaPage from './pages/components/DemoSelectableAreaPage.vue'
 import DemoSelectPage from './pages/components/DemoSelectPage.vue'
+import DemoSkeletonPage from './pages/components/DemoSkeletonPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
 import DemoSwitchPage from './pages/components/DemoSwitchPage.vue'
 import DemoTextareaPage from './pages/components/DemoTextareaPage.vue'
@@ -335,6 +336,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-select',
     name: 'component-select',
     component: DemoSelectPage
+  },
+  {
+    path: '/component-skeleton',
+    name: 'component-skeleton',
+    component: DemoSkeletonPage
   },
   {
     path: '/component-snackbar',

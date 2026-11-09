@@ -46,6 +46,7 @@ export const ProgressTypes: Story = {
   render: () => ({
     components: { D1Progress },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Linear Progress</div>
@@ -56,6 +57,7 @@ export const ProgressTypes: Story = {
             <D1Progress visible indeterminate="type2" circular/>
           </div>
         </div>
+      
     `
   })
 }
@@ -64,6 +66,7 @@ export const ProgressLinear: Story = {
   render: () => ({
     components: { D1Progress },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Value: 50</div>
@@ -90,6 +93,7 @@ export const ProgressLinear: Story = {
             <D1Progress visible linear position="static" indeterminate="type3" />
           </div>
         </div>
+      
     `
   })
 }
@@ -98,6 +102,7 @@ export const ProgressCircular: Story = {
   render: () => ({
     components: { D1Progress },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Basic</div>
@@ -116,6 +121,7 @@ export const ProgressCircular: Story = {
             <D1Progress visible circular dense indeterminate="type2" />
           </div>
         </div>
+      
     `
   })
 }
@@ -124,6 +130,7 @@ export const ProgressValues: Story = {
   render: () => ({
     components: { D1Progress },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">value: 25, max: 100</div>
@@ -142,6 +149,7 @@ export const ProgressValues: Story = {
             <D1Progress visible circular :value="75" :max="200"/>
           </div>
         </div>
+      
     `
   })
 }
@@ -159,6 +167,7 @@ export const ProgressDelays: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="onClick">Visible: {{ visible }}</button>
@@ -181,6 +190,7 @@ export const ProgressDelays: Story = {
             </div>
           </div>
         </div>
+      
     `
   })
 }

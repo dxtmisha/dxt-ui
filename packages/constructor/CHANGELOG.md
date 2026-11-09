@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.6] - 2026-11-09
+
+### Changed
+- **`Skeleton` State Management, Accessibility & Styling (`Skeleton`, `style.scss`, `props.ts`)**:
+  - Moved `active?: boolean` from `SkeletonPropsToken` (`properties.json`) to `SkeletonPropsBasic` (`src/constructors/Skeleton/props.ts`) and added `[this.naming.getStatusClass('active')]: this.isActive()` to `Skeleton.classes` (`src/constructors/Skeleton/Skeleton.ts`) so nested skeletons inheriting state via `SKELETON_NAME_STATUS` also receive the `--active` modifier.
+  - Added `isInvisible()` method (`Boolean(this.props.invisible && (this.isActive() || this.visible.value))`) in `Skeleton` to preserve `--invisible` masking and bind the native `inert` attribute (`inert: this.isInvisible() || undefined`) on the root element during active loading and `delayHide` transitions.
+  - Synchronized `aria-busy` in `Skeleton.aria` (`AriaStaticInclude.busy(this.isActive() || this.visible.value)`) so assistive technologies keep `aria-busy="true"` until `delayHide` completes.
+  - Scoped content masking inside `@include ui.state('visible')` (`src/constructors/Skeleton/style.scss`) to skeleton utility subclasses (`$skeletonSubclasses` via `mixinSkeletonSubInvisible`) instead of the root container, keeping unmasked child nodes visible when `invisible` is `false`.
+  - Added `contain: style` and `@include ui.mediaPrefersReducedMotion { animation: none; }` in `src/constructors/Skeleton/style.scss`.
+  - Updated unit and type contract tests in `Skeleton.test.ts` and `Skeleton.types.test.ts`.
+
 ## [1.4.5] - 2026-11-09
 
 ### Added

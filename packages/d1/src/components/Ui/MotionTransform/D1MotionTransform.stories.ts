@@ -68,6 +68,7 @@ export const MotionTransformAnimationHeadPosition: Story = {
   render: () => ({
     components: { D1MotionTransform },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1MotionTransform animationHeadPosition="top">
             <template #head>
@@ -115,6 +116,7 @@ export const MotionTransformAnimationHeadPosition: Story = {
             </template>
           </D1MotionTransform>
         </div>
+      
     `
   })
 }
@@ -123,6 +125,7 @@ export const MotionTransformIgnore: Story = {
   render: () => ({
     components: { D1MotionTransform },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1MotionTransform ignoreSelector=".mt-ignore">
             <template #head>
@@ -152,6 +155,7 @@ export const MotionTransformIgnore: Story = {
             <button class="wiki-storybook-button">Ignored button</button>
           </div>
         </div>
+      
     `
   })
 }
@@ -165,6 +169,7 @@ export const MotionTransformVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="open = !open">Toggle ({{ open }})</button>
@@ -186,6 +191,7 @@ export const MotionTransformVModel: Story = {
             </template>
           </D1MotionTransform>
         </div>
+      
     `
   })
 }

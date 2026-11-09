@@ -89,6 +89,7 @@ export const MotionFlipBasic: Story = {
       return { flipRef, items, add, remove, shuffle }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="add">Add</button>
@@ -104,6 +105,7 @@ export const MotionFlipBasic: Story = {
             </div>
           </D1MotionFlip>
         </div>
+      
     `
   })
 }

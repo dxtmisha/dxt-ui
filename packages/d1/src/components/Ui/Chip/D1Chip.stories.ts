@@ -37,12 +37,14 @@ export const ChipInput: Story = {
   render: () => ({
     components: { D1Chip },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Chip>Chip</D1Chip>
           <D1Chip input>Tag</D1Chip>
           <D1Chip input icon="person">Contact</D1Chip>
           <D1Chip input selected icon="tag">Keyword</D1Chip>
         </div>
+      
     `
   })
 }
@@ -51,12 +53,14 @@ export const ChipAssistive: Story = {
   render: () => ({
     components: { D1Chip },
     template: `
+        
         <div class="wiki-storybook-flex">
           <D1Chip>Chip</D1Chip>
           <D1Chip assistive>Chip</D1Chip>
           <D1Chip assistive icon="lightbulb">Suggestion</D1Chip>
           <D1Chip assistive selected icon="check">Recommended</D1Chip>
         </div>
+      
     `
   })
 }
@@ -65,6 +69,7 @@ export const ChipAdaptive: Story = {
   render: () => ({
     components: { D1Chip },
     template: `
+        
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Default</div>
@@ -79,6 +84,7 @@ export const ChipAdaptive: Story = {
             <D1Chip container="fullSm" icon="star" label="Chip"/>
           </div>
         </div>
+      
     `
   })
 }
@@ -87,9 +93,11 @@ export const ChipSkeleton: Story = {
   render: () => ({
     components: { D1Chip, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1Chip isSkeleton>Chip</D1Chip>
         </D1Skeleton>
+      
     `
   })
 }

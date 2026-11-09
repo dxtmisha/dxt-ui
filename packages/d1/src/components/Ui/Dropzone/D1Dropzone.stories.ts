@@ -52,6 +52,7 @@ export const DropzoneVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span class="wiki-storybook-item__label wiki-storybook-item__label--static">Files count: {{ files?.length || 0 }}</span>
@@ -65,6 +66,7 @@ export const DropzoneVModel: Story = {
             />
           </div>
         </div>
+      
     `
   })
 }
@@ -73,11 +75,13 @@ export const DropzoneSkeleton: Story = {
   render: () => ({
     components: { D1Dropzone, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
             <D1Dropzone isSkeleton />
           </div>
         </D1Skeleton>
+      
     `
   })
 }
@@ -86,6 +90,7 @@ export const DropzoneSlots: Story = {
   render: () => ({
     components: { D1Dropzone },
     template: `
+        
         <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
           <D1Dropzone icon="upload">
             <template #default>
@@ -96,6 +101,7 @@ export const DropzoneSlots: Story = {
             </template>
           </D1Dropzone>
         </div>
+      
     `
   })
 }

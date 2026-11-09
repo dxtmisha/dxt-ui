@@ -45,6 +45,7 @@ export const InputTypes: Story = {
   render: () => ({
     components: { D1Input },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Input type="text" label="Text" placeholder="Enter text" />
           <D1Input type="email" label="Email" placeholder="email@example.com" />
@@ -54,6 +55,7 @@ export const InputTypes: Story = {
           <D1Input type="date" label="Date" />
           <D1Input type="search" label="Search" placeholder="Search..." />
         </div>
+      
     `
   })
 }
@@ -62,6 +64,7 @@ export const InputNumber: Story = {
   render: () => ({
     components: { D1Input },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Input type="number" value="1234567" label="Number" />
           <D1Input type="number-format" value="1234567" language="en-US" label="Formatted" />
@@ -69,6 +72,7 @@ export const InputNumber: Story = {
           <D1Input type="number" value="10" arrow="stepper" :step="5" :arrow-step="10" label="Step 5/10" />
           <D1Input type="number-format" value="1234567.89" align="center" :fraction="2" label="Centered" />
         </div>
+      
     `
   })
 }
@@ -77,6 +81,7 @@ export const InputCurrency: Story = {
   render: () => ({
     components: { D1Input },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Input
             type="currency"
@@ -97,6 +102,7 @@ export const InputCurrency: Story = {
             value="1234.56"
           />
         </div>
+      
     `
   })
 }
@@ -105,6 +111,7 @@ export const InputDate: Story = {
   render: () => ({
     components: { D1Input },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Input type="date" label="Date" language="ru-RU" />
           <D1Input type="datetime" label="Date and Time" language="en-US" />
@@ -113,6 +120,7 @@ export const InputDate: Story = {
           <D1Input type="hour-minute" label="Hours:Minutes" />
           <D1Input type="date" label="Limited Date" language="ru-RU" min="2024-01-01" max="2024-12-31" />
         </div>
+      
     `
   })
 }
@@ -121,11 +129,13 @@ export const InputMask: Story = {
   render: () => ({
     components: { D1Input },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <D1Input type="tel" mask="+1 (***) ***-****" placeholder="+1 (555) 000-0000" label="Phone" />
           <D1Input type="text" mask="**** **** **** ****" placeholder="0000 0000 0000 0000" label="Card" />
           <D1Input type="tel" mask="+1 (***) ***-****" :mask-visible="false" label="No placeholder" />
         </div>
+      
     `
   })
 }
@@ -141,6 +151,7 @@ export const InputVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Current value: {{ inputValue }}</span>
@@ -177,6 +188,7 @@ export const InputVModel: Story = {
             :step="1"
           />
         </div>
+      
     `
   })
 }
@@ -185,6 +197,7 @@ export const InputSkeleton: Story = {
   render: () => ({
     components: { D1Input, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true" style="max-width:320px">
           <div class="wiki-storybook-flex-column">
             <D1Input
@@ -199,6 +212,7 @@ export const InputSkeleton: Story = {
             />
           </div>
         </D1Skeleton>
+      
     `
   })
 }

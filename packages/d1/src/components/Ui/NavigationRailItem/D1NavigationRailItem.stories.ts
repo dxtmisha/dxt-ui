@@ -40,6 +40,7 @@ export const NavigationRailItemSkeleton: Story = {
   render: () => ({
     components: { D1NavigationRailItem, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <D1NavigationRailItem
             :isSkeleton="true"
@@ -51,6 +52,7 @@ export const NavigationRailItemSkeleton: Story = {
             icon="settings"
           >Navigation Rail Item Label Example</D1NavigationRailItem>
         </D1Skeleton>
+      
     `
   })
 }
@@ -59,11 +61,13 @@ export const NavigationRailItemSlots: Story = {
   render: () => ({
     components: { D1NavigationRailItem },
     template: `
+        
         <D1NavigationRailItem>
           <template #default>Default slot</template>
           <template #leading>Leading slot</template>
           <template #body>Body slot</template>
         </D1NavigationRailItem>
+      
     `
   })
 }

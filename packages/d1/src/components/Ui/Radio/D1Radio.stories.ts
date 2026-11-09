@@ -43,6 +43,7 @@ export const RadioVModel: Story = {
       }
     },
     template: `
+        
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Selected path: <strong>{{ radioValue }}</strong></span>
@@ -65,6 +66,7 @@ export const RadioVModel: Story = {
             description="Discover the secrets of the abyss"
           />
         </div>
+      
     `
   })
 }
@@ -73,12 +75,14 @@ export const RadioSkeleton: Story = {
   render: () => ({
     components: { D1Radio, D1Skeleton },
     template: `
+        
         <D1Skeleton :active="true">
           <div class="wiki-storybook-flex-column">
             <D1Radio isSkeleton label="Loading radio" />
             <D1Radio isSkeleton label="Another loading radio" />
           </div>
         </D1Skeleton>
+      
     `
   })
 }
@@ -87,6 +91,7 @@ export const RadioSlots: Story = {
   render: () => ({
     components: { D1Radio },
     template: `
+        
         <D1Radio>
           <template #default>
             <strong>Custom label slot for Radio</strong>
@@ -95,6 +100,7 @@ export const RadioSlots: Story = {
             <em>Custom description slot for Radio</em>
           </template>
         </D1Radio>
+      
     `
   })
 }

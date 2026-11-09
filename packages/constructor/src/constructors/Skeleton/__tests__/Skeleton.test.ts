@@ -135,6 +135,7 @@ describe('Skeleton (isolated class)', () => {
       expect(skeleton.isVisibleState).toBe(false)
       expect(skeleton.classesSkeleton).toEqual(Skeleton.getClassesList('d1-skeleton'))
       expect(skeleton.classes).toEqual({
+        'd1-skeleton--active': false,
         'd1-skeleton--visible': false,
         'd1-skeleton--invisible': false
       })
@@ -165,6 +166,7 @@ describe('Skeleton (isolated class)', () => {
       expect(skeleton.isActive()).toBe(true)
       expect(skeleton.isVisibleState).toBe(true)
       expect(skeleton.classes).toEqual({
+        'd1-skeleton--active': true,
         'd1-skeleton--visible': true,
         'd1-skeleton--invisible': true
       })
@@ -172,9 +174,15 @@ describe('Skeleton (isolated class)', () => {
         'aria-busy': 'true',
         'aria-live': 'polite'
       })
+      expect(skeleton.binds).toEqual({
+        'inert': true,
+        'aria-busy': 'true',
+        'aria-live': 'polite'
+      })
 
       props.invisible = false
       expect(skeleton.classes).toEqual({
+        'd1-skeleton--active': true,
         'd1-skeleton--visible': true,
         'd1-skeleton--invisible': false
       })
@@ -219,6 +227,7 @@ describe('Skeleton (isolated class)', () => {
       expect(skeleton.isActive()).toBe(true)
       expect(skeleton.isVisibleState).toBe(false)
       expect(skeleton.classes).toEqual({
+        'd1-skeleton--active': true,
         'd1-skeleton--visible': false,
         'd1-skeleton--invisible': true
       })
@@ -256,17 +265,25 @@ describe('Skeleton (isolated class)', () => {
       props.active = false
       await nextTick()
 
-      // Immediately after deactivation: invisible becomes false, but visible remains true during delayHide
+      // Immediately after deactivation: both invisible and visible remain true during delayHide
       expect(skeleton.isActive()).toBe(false)
-      expect(skeleton.classes['d1-skeleton--invisible']).toBe(false)
+      expect(skeleton.aria['aria-busy']).toBe('true')
+      expect(skeleton.binds.inert).toBe(true)
+      expect(skeleton.classes['d1-skeleton--invisible']).toBe(true)
       expect(skeleton.classes['d1-skeleton--visible']).toBe(true)
 
       vi.advanceTimersByTime(249)
       expect(skeleton.isVisibleState).toBe(true)
+      expect(skeleton.aria['aria-busy']).toBe('true')
+      expect(skeleton.binds.inert).toBe(true)
+      expect(skeleton.classes['d1-skeleton--invisible']).toBe(true)
 
       vi.advanceTimersByTime(1)
       expect(skeleton.isVisibleState).toBe(false)
+      expect(skeleton.aria['aria-busy']).toBe('false')
+      expect(skeleton.binds.inert).toBeUndefined()
       expect(skeleton.classes['d1-skeleton--visible']).toBe(false)
+      expect(skeleton.classes['d1-skeleton--invisible']).toBe(false)
 
       scope.stop()
     })
@@ -391,6 +408,7 @@ describe('Skeleton (isolated class)', () => {
       expect(skeleton.isActive()).toBe(true)
       expect(skeleton.isVisibleState).toBe(true)
       expect(skeleton.classes).toEqual({
+        'd1-skeleton--active': true,
         'd1-skeleton--visible': true,
         'd1-skeleton--invisible': false
       })
@@ -450,6 +468,7 @@ describe('Skeleton (isolated class)', () => {
 
       expect(parentSkeleton.isActive()).toBe(true)
       expect(childSkeleton.isActive()).toBe(true)
+      expect(childSkeleton.classes['d1-skeleton--active']).toBe(true)
       expect(injectedGrandchildStatus?.value).toBe(true)
 
       parentProps.active = false
@@ -457,6 +476,7 @@ describe('Skeleton (isolated class)', () => {
 
       expect(parentSkeleton.isActive()).toBe(false)
       expect(childSkeleton.isActive()).toBe(false)
+      expect(childSkeleton.classes['d1-skeleton--active']).toBe(false)
       expect(injectedGrandchildStatus?.value).toBe(false)
 
       childProps.active = true
@@ -464,6 +484,7 @@ describe('Skeleton (isolated class)', () => {
 
       expect(parentSkeleton.isActive()).toBe(false)
       expect(childSkeleton.isActive()).toBe(true)
+      expect(childSkeleton.classes['d1-skeleton--active']).toBe(true)
       expect(injectedGrandchildStatus?.value).toBe(true)
     })
 
