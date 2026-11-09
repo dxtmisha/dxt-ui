@@ -15,6 +15,17 @@ import { SKELETON_NAME_STATUS } from './const'
  * Класс для подключения и работы с компонентом Skeleton.
  */
 export class SkeletonInclude {
+  /**
+   * Checks whether the skeleton state is active in properties.
+   *
+   * Проверяет, активен ли режим скелетона в свойствах.
+   * @param props input data / входные данные
+   * @returns true if skeleton is active / true, если скелетон активен
+   */
+  static is(props?: SkeletonPropsInclude): boolean {
+    return Boolean(props?.isSkeleton)
+  }
+
   /** A list of available classes for the Skeleton / Список доступных классов для Skeleton */
   readonly classesSkeleton: SkeletonClassesList
 

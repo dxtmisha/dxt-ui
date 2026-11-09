@@ -1,32 +1,63 @@
 import {
-  onMounted,
-  onUnmounted,
   ref,
+  type Ref,
   watch
 } from 'vue'
 import {
+  type ConstrBind,
   type ConstrClassObject,
-  type DesignName,
+  type ConstrEmit,
+  type ConstrItems,
   type ConstrStyles,
+  type DesignComponents,
+  DesignLogicAbstract,
+  type DesignName,
   toNumber
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
-import type { ProgressProps } from './props'
+import type { AriaList } from '../../types/ariaTypes'
+import type { RoleType } from '../../types/roleTypes'
+import { defaultsProgress, type ProgressProps } from './props'
+import type {
+  ProgressComponents,
+  ProgressEmits,
+  ProgressSlots
+} from './types'
+
+/** Progress dependency constructors type / Тип конструкторов зависимостей Progress */
+export type ProgressConstructors = {
+  /** Localized text strings helper constructor / Конструктор помощника локализованных текстовых строк */
+  text: typeof TextInclude
+}
 
 /**
- * Base class for working with the loader.
+ * Base class for working with the loader (orchestrator).
  * It manages loader states, transitions, accessibility attributes, and dynamic value calculations.
  *
- * Базовый класс для работы с загрузчиком.
+ * Базовый класс для работы с загрузчиком (оркестратор).
  * Управляет состояниями загрузчика, анимациями, атрибутами доступности и вычислением динамических значений.
  */
-export class Progress {
+export class Progress extends DesignLogicAbstract<
+  HTMLDivElement,
+  ProgressComponents,
+  ProgressEmits,
+  ProgressSlots,
+  ProgressProps,
+  ProgressConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ProgressConstructors> = {
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    }
+  }
+
   /** Timer instance for delayed visibility updates / Экземпляр таймера для отложенного обновления видимости */
-  protected timeout?: any
+  protected timeout?: ReturnType<typeof setTimeout>
 
   /** Reactive state for hiding animation / Реактивное состояние для анимации скрытия */
   readonly hide = ref<boolean>(false)
@@ -34,45 +65,149 @@ export class Progress {
   /** Reactive state for visibility status / Реактивное состояние для статуса видимости */
   readonly visible = ref<boolean>(false)
 
-  /** Instance for client-only rendering / Экземпляр для рендеринга только на клиенте */
-  readonly clientOnly: ClientOnlyInclude
-
-  /** Instance for handling localized text strings / Экземпляр для обработки локализованных текстовых строк */
-  readonly text: TextInclude
-
   /**
-   * Constructor for progress control.
+   * Constructor for initializing Progress logic.
    *
-   * Конструктор для управления прогрессом.
-   * @param props input data / входные данные
+   * Конструктор для инициализации логики Progress.
+   * @param props input properties / входные свойства
+   * @param element root element reference / ссылка на корневой элемент
    * @param naming component naming helper / помощник именования компонента
-   * @param constructors object with helper classes / объект с вспомогательными классами
+   * @param components connected component registry / реестр подключённых компонентов
+   * @param slots named slot registry / реестр именованных слотов
+   * @param emits component event emitter / функция событий компонента
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
+   * @param hasLifecycle whether to register component lifecycle hooks / регистрировать ли хуки жизненного цикла компонента
    */
   constructor(
-    protected readonly props: ProgressProps,
-    protected readonly naming: DesignName,
-    constructors: {
-      TextIncludeConstructor?: typeof TextInclude
-      ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
-    } = {}
+    props: Readonly<ProgressProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComponents<ProgressComponents, ProgressProps>,
+    slots?: ProgressSlots,
+    emits?: ConstrEmit<ProgressEmits>,
+    constructors?: Partial<ProgressConstructors>,
+    hasLifecycle: boolean = true
   ) {
-    const {
-      TextIncludeConstructor = TextInclude,
-      ClientOnlyIncludeConstructor = ClientOnlyInclude
-    } = constructors
-
-    this.clientOnly = new ClientOnlyIncludeConstructor(this.props)
-    this.text = new TextIncludeConstructor(this.props)
-
-    watch(
-      () => props.visible,
-      this.switch
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors,
+      hasLifecycle
     )
-    onMounted(this.switch)
+  }
 
-    onUnmounted(() => {
-      clearTimeout(this.timeout)
-    })
+  /**
+   * List of ARIA attributes for the progress element.
+   *
+   * Список ARIA-атрибутов для элемента прогресса.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
+   */
+  get aria(): AriaList {
+    const { max, value } = this.props
+    const valueMinMax = value
+      ? AriaStaticInclude.valueMinMax(value, 0, max)
+      : undefined
+
+    return {
+      ...AriaStaticInclude.role(this.role),
+      ...AriaStaticInclude.label(this.label),
+      ...valueMinMax
+    }
+  }
+
+  /**
+   * Properties for the main element.
+   *
+   * Свойства для главного элемента.
+   * @returns main element properties / свойства главного элемента
+   */
+  get binds(): ConstrBind {
+    const properties: ConstrBind = {
+      onAnimationend: this.onAnimation,
+      ...this.aria
+    }
+
+    if (this.props.circular) {
+      properties.viewBox = '0 0 48 48'
+    }
+
+    return properties
+  }
+
+  /**
+   * Values for the class.
+   *
+   * Значения для класса.
+   * @returns list of computed classes / список вычисленных классов
+   */
+  get classes(): ConstrClassObject {
+    return {
+      [this.naming.getStatusClass('hide')]: this.hide.value,
+      [this.naming.getStatusClass('visible')]: this.visible.value,
+      [this.naming.getStatusClass('value')]: this.isValue(),
+      [this.naming.getStatusClass('clientOnly')]: !this.isRender()
+    }
+  }
+
+  /**
+   * Returns the label text.
+   *
+   * Возвращает текст метки.
+   * @returns aria-label or loading text / aria-label или текст загрузки
+   */
+  get label(): string | undefined {
+    if (this.props.ariaLabel) {
+      return this.props.ariaLabel
+    }
+
+    if (
+      !this.isValue()
+      && this.props.visible
+    ) {
+      return this.i('text').loading
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns the maximum allowable value.
+   *
+   * Возвращает максимально допустимое значение.
+   * @returns maximum value / максимальное значение
+   */
+  get max(): number {
+    return toNumber(this.props.max ?? defaultsProgress.max)
+  }
+
+  /**
+   * Returns the role for the component.
+   *
+   * Возвращает роль для компонента.
+   * @returns ARIA role string / строка роли ARIA
+   */
+  get role(): RoleType {
+    if (this.isValue()) {
+      return 'progressbar'
+    }
+
+    return 'status'
+  }
+
+  /**
+   * Returns the property for style.
+   *
+   * Возвращает свойство для стиля.
+   * @returns custom CSS variables / пользовательские переменные CSS
+   */
+  get styles(): ConstrStyles {
+    return {
+      [this.naming.getStyle('value')]: this.valueInPercent
+    }
   }
 
   /**
@@ -86,23 +221,13 @@ export class Progress {
   }
 
   /**
-   * Returns values.
+   * Returns current progress value.
    *
-   * Возвращает значения.
+   * Возвращает текущее значение прогресса.
    * @returns current progress value / текущее значение прогресса
    */
   get value(): number {
     return toNumber(this.props.value ?? 0)
-  }
-
-  /**
-   * Returns the maximum allowable value.
-   *
-   * Возвращает максимально допустимое значение.
-   * @returns maximum value / максимальное значение
-   */
-  get max(): number {
-    return toNumber(this.props.max ?? 100)
   }
 
   /**
@@ -127,96 +252,13 @@ export class Progress {
   }
 
   /**
-   * Returns the label text.
+   * Checks whether the progress element is ready for rendering.
    *
-   * Возвращает текст метки.
-   * @returns aria-label or loading text / aria-label или текст загрузки
+   * Проверяет, готов ли элемент прогресса к рендерингу.
+   * @returns true if progress can be rendered / true, если прогресс может быть отрендерен
    */
-  get label(): string | undefined {
-    if (this.props.ariaLabel) {
-      return this.props.ariaLabel
-    }
-
-    if (
-      !this.isValue()
-      && this.props.visible
-    ) {
-      return this.text.loading
-    }
-
-    return undefined
-  }
-
-  /**
-   * Returns the role for the component.
-   *
-   * Возвращает роль для компонента.
-   * @returns aria role string / строка роли aria
-   */
-  get role(): string {
-    if (this.isValue()) {
-      return 'progressbar'
-    }
-
-    return 'status'
-  }
-
-  /**
-   * Values for the class.
-   *
-   * Значения для класса.
-   * @returns list of computed classes / список вычисленных классов
-   */
-  get classes(): ConstrClassObject {
-    return {
-      [this.naming.getStatusClass('hide')]: this.hide.value,
-      [this.naming.getStatusClass('visible')]: this.visible.value,
-      [this.naming.getStatusClass('value')]: this.isValue(),
-      [this.naming.getStatusClass('clientOnly')]: !this.clientOnly.isRender()
-    }
-  }
-
-  /**
-   * Returns the property for style.
-   *
-   * Возвращает свойство для стиля.
-   * @returns custom CSS variables / пользовательские переменные CSS
-   */
-  get styles(): ConstrStyles {
-    return {
-      [this.naming.getStyle('value')]: this.valueInPercent
-    }
-  }
-
-  /**
-   * Properties for the main element.
-   *
-   * Свойства для главного элемента.
-   * @returns main element properties / свойства главного элемента
-   */
-  get binds() {
-    const props: Record<string, any> = {
-      onAnimationend: this.onAnimation,
-      ...AriaStaticInclude.role(this.role),
-      ...AriaStaticInclude.label(this.label)
-    }
-
-    if (this.props.circular) {
-      props.viewBox = '0 0 48 48'
-    }
-
-    if (this.props.value) {
-      return {
-        ...props,
-        ...AriaStaticInclude.valueMinMax(
-          this.props.value,
-          0,
-          this.props.max
-        )
-      }
-    }
-
-    return props
+  isRender(): boolean {
+    return this.isValue() || !this.props.clientOnly || this.isMounted.value
   }
 
   /**
@@ -236,38 +278,8 @@ export class Progress {
    * @param event DOM animation event / событие анимации DOM
    */
   readonly onAnimation = ({ animationName }: AnimationEvent): void => {
-    if (animationName.match('-hidden')) {
+    if (animationName.includes('-hidden')) {
       this.hide.value = false
-    }
-  }
-
-  /**
-   * Method triggers when the visible property changes to change the status of the output of the element.
-   *
-   * Метод срабатывает при изменении свойства visible для изменения статуса вывода элемента.
-   */
-  protected readonly switch = (): void => {
-    if (!this.clientOnly.isRender()) {
-      return
-    }
-
-    const visible = this.props.visible
-
-    clearTimeout(this.timeout)
-
-    if (this.isValue()) {
-      this.reset()
-    } else if (Boolean(this.visible.value) !== visible) {
-      const delay = toNumber(this.props.delay ?? 0)
-      const delayHide = toNumber(this.props.delayHide ?? 0)
-
-      if (visible && delay) {
-        this.timeout = setTimeout(() => this.update(), delay)
-      } else if (!visible && delayHide) {
-        this.timeout = setTimeout(() => this.update(), delayHide)
-      } else {
-        this.update()
-      }
     }
   }
 
@@ -295,5 +307,55 @@ export class Progress {
     this.visible.value = false
 
     return this
+  }
+
+  /**
+   * Method triggers when the visible property changes to change the status of the output of the element.
+   *
+   * Метод срабатывает при изменении свойства visible для изменения статуса вывода элемента.
+   */
+  protected readonly switch = (): void => {
+    if (!this.isRender()) {
+      return
+    }
+
+    const visible = this.props.visible
+
+    clearTimeout(this.timeout)
+
+    if (this.isValue()) {
+      this.reset()
+    } else if (Boolean(this.visible.value) !== visible) {
+      const delay = toNumber(this.props.delay ?? defaultsProgress.delay)
+      const delayHide = toNumber(this.props.delayHide ?? defaultsProgress.delayHide)
+
+      if (visible && delay) {
+        this.timeout = setTimeout(() => this.update(), delay)
+      } else if (!visible && delayHide) {
+        this.timeout = setTimeout(() => this.update(), delayHide)
+      } else {
+        this.update()
+      }
+    }
+  }
+
+  /**
+   * Hook executed when component mounts.
+   *
+   * Хук, выполняемый при монтировании компонента.
+   */
+  protected override readonly onMounted = (): void => {
+    this.switch()
+    watch(() => this.props.visible, this.switch)
+    watch(() => this.props.value, this.switch)
+  }
+
+  /**
+   * Hook executed when component unmounts.
+   *
+   * Хук, выполняемый при размонтировании компонента.
+   */
+  protected override readonly onUnmounted = (): void => {
+    clearTimeout(this.timeout)
   }
 }

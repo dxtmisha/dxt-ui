@@ -26,6 +26,17 @@ export class ProgressInclude extends ComponentIncludeAbstract<
   ProgressExpose,
   ProgressSlots
 > {
+  /**
+   * Checks whether progress is enabled in properties.
+   *
+   * Проверяет, включён ли прогресс в свойствах.
+   * @param props input data / входные данные
+   * @returns true if progress is enabled / true, если прогресс включён
+   */
+  static is(props?: ProgressPropsInclude): boolean {
+    return Boolean(props?.loading)
+  }
+
   protected readonly name = 'progress'
   protected readonly propsAttrsName = undefined
 

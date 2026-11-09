@@ -24,10 +24,11 @@ The component logic layer in `dxt-ui` isolates business logic, accessibility (`A
    - Instead, classes requiring lifecycle hooks extend `DesignLifecycleAbstract`.
    - `DesignLogicAbstract` orchestrates synchronous execution of `onMounted` and `onUnmounted` across all active instances. If a lifecycle dependency is lazily instantiated *after* the component has already mounted, `onMounted` is triggered on it immediately upon instantiation.
    - **Deferred Watchers**: All reactive watchers (`watch(...)`) and active DOM event listeners must be placed inside `onMounted`, never in the class constructor body.
-4. **Declarative Conditions (`conditions`)**:
-   - `constructorItems` can declare a reactive condition `conditions: () => boolean`.
-   - On component mount, `initConditions()` establishes a `watch(item.conditions, (active) => { if (active) this.getInstance(name) }, { immediate: true })`, automatically activating dependencies when conditions are met.
-   - **Crucial Rule on Explicit Call Sites**: If a subordinate class is already explicitly accessed in code via `this.getInstance(...)` or `this.i(...)` under a condition (e.g., `this.props.isSkeleton ? this.i('skeleton').classes : {}` or `this.props.dynamic ? this.i('event').binds : ...`), **do NOT define `conditions`**. `conditions` is strictly for autonomous or background dependencies (such as lifecycle listeners, scroll monitors, or DOM observers extending `DesignLifecycleAbstract`) that must activate reactively on mount without any explicit call site in getters or templates. Adding `conditions` when an explicit call site already exists is redundant and forces premature instantiation on mount via `watch`.
+4. **Declarative Conditions (`conditions`) & Lazy Loading**:
+   - `constructorItems` declares a reactive condition `conditions: () => boolean` for optional subordinate classes and inclusion helpers (e.g., `icon`, `label`, `progress`, `ripple`, `skeleton`, `adaptiveItem`, `event`).
+   - If conditions are not met, the subordinate class is **never allocated in memory** on component creation or mount.
+   - On component mount, `initConditions()` establishes a `watch(item.conditions, (active) => { if (active) this.getInstance(name) }, { immediate: true })`, ensuring that dependencies automatically activate when their trigger conditions become true.
+   - **Static Predicate Guards (`SubClass.is(...)`)**: Always encapsulate condition logic into static `is` methods on the respective subordinate classes (e.g. `IconTrailingInclude.is(this.props)`, `ProgressInclude.is(this.props)`, `ImageAdaptiveItem.is(this.props)`). Never invent ad-hoc instance helper methods on the orchestrator class (such as `this.isIcon()` or `this.isProgress()`).
 5. **Full Dependency Injection (DI)**:
    - All sub-constructors can be overridden via the `constructors?: Partial<CONSTRUCTORS>` parameter, enabling comprehensive unit testing and subclass extension without mocking modules.
 
@@ -133,10 +134,17 @@ export class MyComponent extends DesignLogicAbstract<
    * @returns classes values / значения классов
    */
   get classes(): ConstrClassObject {
-    return {
+    const isA = this.i('a').isActive()
+    const classes: ConstrClassObject = {
       [this.naming.getStatusClass('disabled')]: Boolean(this.props.disabled),
-      [this.naming.getStatusClass('active')]: this.i('a').isActive()
+      [this.naming.getStatusClass('active')]: isA
     }
+
+    if (MyComponentB.is(this.props)) {
+      Object.assign(classes, this.i('b').classes)
+    }
+
+    return classes
   }
 
   /**
@@ -257,11 +265,10 @@ When helper class `B` depends on helper class `A`:
 3. **STRICT BAN on Dual Variants / Union Types (`Type | (() => Type)`)**: Subordinate helper classes must strictly receive and type dependencies as pure functions `() => SubClass` (e.g. `protected readonly elementItem: () => ArrowElement`). Using union types such as `SubClass | (() => SubClass)` or accepting raw instances is **STRICTLY FORBIDDEN**. Always require a pure getter function `() => SubClass` and invoke it on demand as `this.elementItem()`.
 4. **CRITICAL RULE**: Sub-class constructors must **never** call `this.a()` eagerly in their constructor body. Call `this.a()` strictly inside methods or computed properties.
 
-### Step 4: Conditional Instantiation (`conditions`)
-Use `conditions` **ONLY** for autonomous background or lifecycle dependencies (such as classes extending `DesignLifecycleAbstract`) that need to start or attach listeners when specific props change without being explicitly called from template getters:
-1. **Rule of Explicit Call Sites**: If a sub-class is called explicitly in code via `this.i(name)` behind a condition (e.g., `this.props.isSkeleton ? this.i('skeleton').classes : {}` or `this.props.dynamic ? this.i('event').binds : ...`), **NEVER specify `conditions`**. The on-demand call `this.i(...)` already provides true lazy instantiation. Specifying `conditions` in this case is an anti-pattern that creates redundant watchers and prematurely instantiates the instance on mount.
-2. If a dependency is purely autonomous (e.g., `border` observing scroll, or `adaptiveItem` watching screen width):
-   - Add a static guard method in the sub-class:
+### Step 4: Conditional Instantiation (`conditions`) & Lazy Loading Guard
+To ensure optional features and subordinate inclusion classes are not prematurely or needlessly instantiated, declare `conditions` in `constructorItems`:
+1. **Encapsulate Condition Logic in `static is`**:
+   - Every subordinate or inclusion helper managing an optional feature must declare a static guard method:
      ```typescript
      /**
       * Helper class managing component border and divider styles.
@@ -281,7 +288,8 @@ Use `conditions` **ONLY** for autonomous background or lifecycle dependencies (s
        }
      }
      ```
-   - In `constructorItems`, attach `conditions`:
+2. **Attach `conditions` in `constructorItems`**:
+   - In `constructorItems`, specify `conditions: () => SubClass.is(...)`:
      ```typescript
      border: {
        item: MyComponentBorder,
@@ -289,7 +297,35 @@ Use `conditions` **ONLY** for autonomous background or lifecycle dependencies (s
        parameters: () => [this.props, this.element]
      }
      ```
-`DesignLogicAbstract.initConditions()` will automatically observe this condition with Vue's `watch(..., { immediate: true })`.
+   - On component mount, `DesignLogicAbstract.initConditions()` sets up `watch(item.conditions, ...)` to reactively instantiate dependencies as soon as their trigger conditions are met.
+3. **Guard Access in Getters via Variables and `if`**:
+   - In aggregate getters (`classes`, `aria`, `styles`), avoid inline ternary spreads that allocate redundant empty objects on every evaluation (e.g. avoid `...(cond ? this.i('foo').classes : {})`).
+   - Extract conditions to local variables and use explicit `if` blocks with `Object.assign`:
+     ```typescript
+     get classes(): ConstrClassObject {
+       const icon = IconTrailingInclude.is(this.props) && this.i('icon').isIcon()
+       const classes: ConstrClassObject = {
+         [this.naming.getStatusClass('icon')]: icon,
+         [getClassTagAStatic(this.naming.getDesign())]: true
+       }
+
+       if (SkeletonInclude.is(this.props)) {
+         Object.assign(classes, this.i('skeleton').classes)
+       }
+
+       return classes
+     }
+     ```
+4. **Guard Calls in `[Name]Design.tsx` Render Methods**:
+   - In companion design classes (`[Name]Design.tsx`), decomposed render methods must check `SubClass.is(this.props)` before calling `this.item.i(name).render()`:
+     ```typescript
+     readonly renderIcon = (): VNode[] => {
+       if (IconTrailingInclude.is(this.props)) {
+         return this.item.i('icon').render()
+       }
+       return []
+     }
+     ```
 
 ### Step 5: Connect to the Design Class (`[Name]Design.tsx`)
 In `[Name]Design.tsx`, instantiate the orchestrator supporting dependency injection:
@@ -399,6 +435,20 @@ See [`Arrow.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor
 - `styles` getter checks `parent.isBorder()` before querying `position.clipPath.value`, and checks `ArrowElementTarget.is(this.props)` before querying `elementTarget.is()` and `position.shift.value`.
 - As a result, static arrows without border or target element consume zero allocations for `ArrowPosition`, `ArrowElementTarget`, and `ArrowEvent`.
 
+### Reference 6: Complete Subordinate Inclusions & Guarded Assembly (`Button`)
+See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Button/Button.ts) and [`ButtonDesign.tsx`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Button/ButtonDesign.tsx):
+- Manages 7 subordinate helpers (`enabled`, `event`, `icon`, `label`, `progress`, `ripple`, `skeleton`).
+- All optional inclusions declare `conditions: () => SubClass.is(...)` in `constructorItems`:
+  - `icon: { item: IconTrailingInclude, conditions: () => IconTrailingInclude.is(this.props), ... }`
+  - `label: { item: LabelInclude, conditions: () => LabelInclude.is(this.props, this.slots), ... }`
+  - `progress: { item: ProgressInclude, conditions: () => ProgressInclude.is(this.props), ... }`
+  - `ripple: { item: RippleInclude, conditions: () => RippleInclude.is(this.props), ... }`
+  - `skeleton: { item: SkeletonInclude, conditions: () => SkeletonInclude.is(this.props), ... }`
+- Getters evaluate values via intermediate variables and `if` branches with `Object.assign`:
+  - In `aria`: `if (isProgress) { Object.assign(aria, this.i('progress').aria.value) }`
+  - In `classes`: `if (SkeletonInclude.is(this.props)) { Object.assign(classes, this.i('skeleton').classes) }`
+- `ButtonDesign.tsx` guards each render helper method (`renderProgress`, `renderLabel`, `renderIcon`, `renderRipple`) with `SubClass.is(...)` to ensure zero allocations when optional features are omitted.
+
 ---
 
 ## 5. Mandatory Coding Rules & Checklists
@@ -422,9 +472,10 @@ See [`Arrow.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor
 6. **Strict Types & Zero `any`**:
    - Use generics and exact interfaces. Avoid `any`.
    - When writing unit tests with `reactive<PropsInclude>`, avoid passing reactive objects with recursive constructor types into test constructors to prevent `TS2589` infinite type instantiation.
-7. **No `conditions` for Explicitly Called Dependencies**:
-   - If a subordinate class is called explicitly anywhere in the orchestrator or design via `this.i('name')` (e.g., `this.props.isSkeleton ? this.i('skeleton').classes : {}` or in template binds/methods), DO NOT declare `conditions` in `constructorItems`.
-   - Use `conditions` strictly for autonomous, lifecycle-driven dependencies (`DesignLifecycleAbstract`) that have no explicit call site in getters or templates.
+7. **Declarative `conditions` and Static Guards for Inclusions (Mandatory `static is`)**:
+   - All optional subordinate classes and inclusion helpers (such as `*Include`, `lazy`, `adaptive`, etc.) must declare `conditions: () => SubClass.is(...)` in `constructorItems`.
+   - Never define ad-hoc instance helper methods on the orchestrator class (such as `this.isIcon()` or `this.isLabel()`). Encapsulate all feature predicate logic inside static `static is(...)` methods on the subordinate classes.
+   - For classes inheriting from base includes (e.g., `IconTrailingInclude` extending `IconInclude`), only override `static is` when extending the property conditions (e.g. adding `iconTrailing`), otherwise inherit the static method directly.
 8. **No Overly Strict Types for Internal Elements (Component Boundary Rule)**:
    - For properties, element bindings, and helpers that do **not** escape beyond the component boundary (e.g., `get binds(): ConstrBind`, internal helper objects, DOM event properties), do **NOT** declare redundant, over-specialized strict types (such as custom `[Name]Binds` in `basicTypes.ts`).
    - Use standard general ecosystem types from `@dxtmisha/functional` (`ConstrBind` for element binds, `ConstrClassObject` for classes, `ConstrStyles` for styles, `ConstrItem` for generic items).
@@ -436,13 +487,21 @@ See [`Arrow.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor
      2. External components or include helpers access the root element via `.elementHtml` (e.g., `scroll.elementHtml`, `field.elementHtml`).
    - **Permissible Omission**: For pure leaf visual primitives (such as `Icon`) where neither the internal logic class (`Icon.ts`) nor external consumers/parent components ever query or interact with the DOM element or `elementHtml`, omitting `ref: this.element` does not break runtime behavior and is completely safe.
    - **Code Review Standard**: Do NOT classify missing `ref: this.element` as a critical bug (P0/P1) unless `this.element` is actually required and used by the logic class or by consumers. If `this.element` is unused everywhere, missing `ref: this.element` is benign and has no functional impact.
-10. **Lazy Loading Optimization & Guarding Subordinate Instances (Short-Circuit Guard & Mandatory `static is`)**:
-    - **Extracting Prop Checks into Subordinate `static is`**: Never write raw inline prop checks across orchestrators or helpers when checking if a helper's feature is enabled or in which mode it operates (e.g. avoid raw `isFilled(this.props.position)` or `this.props.position !== 'auto'`). Always encapsulate these checks into static methods on the respective helper class: `static is(props?: Props): boolean`, `static isAuto(props?: Props): boolean`, `static isPicture(props?: Props): boolean` (as demonstrated in `Image` with `ImageImg.is`, `ImageAdaptiveItem.is`, `ImageCoordinator.is` and in `Arrow` with `ArrowPosition.is`, `ArrowPosition.isAuto`, `ArrowElementTarget.is`, `ArrowEvent.is`).
+10. **Lazy Loading Optimization, Variables & Guarding Subordinate Instances (Short-Circuit Guard & `if` Branching)**:
+    - **Extracting Prop Checks into Subordinate `static is`**: Never write raw inline prop checks across orchestrators or helpers when checking if a helper's feature is enabled or in which mode it operates. Always encapsulate these checks into static methods on the respective helper class: `static is(props?: Props): boolean`, `static isAuto(props?: Props): boolean`, `static isPicture(props?: Props): boolean` (as demonstrated in `Image`, `Arrow`, and `Button`).
+    - **Variables and `if` Branching over Ternary Spreads**: In aggregate getters (`classes`, `aria`, `styles`), avoid inline ternary spreads that allocate redundant empty objects on every evaluation (e.g. avoid `...(cond ? this.i('foo').classes : {})`). Instead:
+      1. Extract predicate evaluations and values into local variables: `const isProgress = ProgressInclude.is(this.props)`.
+      2. Use clean `if` blocks with `Object.assign`: `if (SkeletonInclude.is(this.props)) { Object.assign(classes, this.i('skeleton').classes) }`.
     - **Direct Prop Resolution in Getters**: If a property or state can be determined directly from `this.props` using static guards (e.g. fixed position `ArrowPosition.is(this.props) && !ArrowPosition.isAuto(this.props)`), return the value immediately without calling `this.i(subClass)`. Do NOT instantiate complex subordinate helper classes just to read back values already present in props.
-    - **Conditional Access in Aggregate Getters (`styles`, `classes`, `binds`)**: In aggregate getters (`get styles()`, `get classes()`, `get binds()`), NEVER unconditionally call `this.i(name)` just to check `.is()` or read optional properties (e.g., forbidden: `this.i('elementTarget').is()`). Always guard subordinate class instantiation with static checks or prop conditions (e.g. `SubClass.is(this.props)`). If prerequisite props or conditions are absent, the sub-class must remain completely uninstantiated in memory.
+    - **Conditional Access in Aggregate Getters (`styles`, `classes`, `binds`)**: In aggregate getters (`get styles()`, `get classes()`, `get binds()`), NEVER unconditionally call `this.i(name)` just to check `.is()` or read optional properties (e.g., forbidden: `this.i('elementTarget').is()`). Always guard subordinate class instantiation with static checks or prop conditions (e.g. `SubClass.is(this.props) && this.i('subClass').is()`). If prerequisite props or conditions are absent, the sub-class must remain completely uninstantiated in memory.
 11. **Prohibition of Redundant Getter Proxies for Subordinate Classes (`get event()`, `get elementTarget()`)**:
     - **No Subordinate Getter Proxies on Orchestrators**: Orchestrator classes extending `DesignLogicAbstract` must **NEVER** expose public getters that merely proxy access to internal subordinate helper instances (e.g., strictly forbidden: `get event(): ArrowEvent { return this.i('event') }`, `get elementTarget(): ArrowElementTarget { return this.i('elementTarget') }`).
     - **Encapsulation & Architecture Integrity**: Subordinate helper classes are internal implementation details of the logic orchestrator. Exposing them pollutes the public API surface of the component, breaks encapsulation, and leaks internal mechanics into the component layer.
     - **Preserving Lazy Loading**: Exposing getter proxies encourages consumers, child components, or tests to touch subordinate instances directly, prematurely instantiating them and defeating the entire on-demand memory optimization model.
     - **Internal and External Access via `this.i(...)`**: Inside the orchestrator, subordinate instances must be accessed strictly via `this.i('name')`. If external companion classes (such as `[Name]Design.tsx`) or tests genuinely require direct access to a subordinate helper, `DesignLogicAbstract` already provides the public method `.i(name)` (e.g. `this.item.i('type').get()` in `ImageDesign.tsx` or `this.item.i('item').add(...)` in `RippleDesign.tsx`).
     - **Clean Public Surface**: The public interface of the orchestrator must consist strictly of high-level aggregated getters and domain methods (`classes`, `styles`, `binds`, `points`, `update`, `isBorder`).
+12. **Native Client-Only & Mount Handling via `DesignLogicAbstract.isMounted` (Deprecation of `ClientOnlyInclude` in `DesignLogicAbstract`)**:
+    - **No `ClientOnlyInclude` in `DesignLogicAbstract`**: Do **NOT** use `ClientOnlyInclude` as a subordinate helper or register it in `constructorItems` / `<Component>Constructors` when implementing or refactoring classes extending `DesignLogicAbstract`.
+    - **Why `ClientOnlyInclude` is Prohibited in Orchestrators**: `ClientOnlyInclude` is an obsolete helper designed for legacy component constructors. It calls Vue's `onMounted` directly within its constructor. Instantiating it lazily (e.g. inside `isRender()`, getters, or during template execution) attempts to register Vue lifecycle hooks outside `setup()`, triggering runtime warnings (`[Vue warn]: onMounted is called when there is no active component instance...`) and breaking SSR hydration.
+    - **Native Lifecycle Integration**: `DesignLogicAbstract` already natively manages the component lifecycle and exposes `readonly isMounted = ref(false)`, which transitions to `true` upon component mount inside the captured setup effect scope.
+    - **Direct Client-Only Resolution (`isRender`)**: For components supporting `clientOnly?: boolean` (such as `Progress`), determine render eligibility directly via `!this.props.clientOnly || this.isMounted.value` (or encapsulated within an `isRender()` method: `isRender(): boolean { return this.isValue() || !this.props.clientOnly || this.isMounted.value }`).

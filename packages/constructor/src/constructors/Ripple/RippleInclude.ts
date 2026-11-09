@@ -5,7 +5,7 @@ import { type DesignComponents, type DesignName } from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
 
-import type { RippleComponentInclude } from './basicTypes'
+import type { RippleComponentInclude, RipplePropsInclude } from './basicTypes'
 import type { RipplePropsBasic } from './props'
 
 /**
@@ -14,6 +14,21 @@ import type { RipplePropsBasic } from './props'
  * Вспомогательный класс для условного рендеринга компонента Ripple в целевых компонентах.
  */
 export class RippleInclude {
+  /**
+   * Checks whether the ripple effect can be active based on properties.
+   *
+   * Проверяет, может ли быть активен эффект волны на основе свойств.
+   * @param props input properties / входные свойства
+   * @returns true if ripple is enabled / true, если волна активна
+   */
+  static is(props?: RipplePropsInclude): boolean {
+    return Boolean(
+      !props?.disabled
+      && !props?.readonly
+      && !props?.loading
+    )
+  }
+
   /**
    * Constructor for creating a RippleInclude instance.
    *

@@ -25,9 +25,7 @@ src/classes/EnabledInclude.ts
 
 src/classes/EventClickInclude.ts
 
-src/constructors/Skeleton/Skeleton.ts
 src/constructors/Skeleton/SkeletonDesign.tsx
-src/constructors/Skeleton/SkeletonInclude.ts
 
 src/constructors/ComponentOutlet/ComponentOutlet.ts
 src/constructors/ComponentOutlet/ComponentOutletDesign.tsx
@@ -41,4 +39,14 @@ src/constructors/Icon/IconTrailingInclude.ts
 src/constructors/Ripple/RippleItem.ts
 src/constructors/Ripple/Ripple.ts
 
+src/constructors/Skeleton/Skeleton.ts
+src/constructors/Skeleton/SkeletonInclude.ts
+
+src/constructors/Progress/Progress.ts
+src/constructors/Progress/ProgressDesign.tsx
+src/constructors/Progress/ProgressInclude.ts
+
+src/constructors/Button/Button.ts
+src/constructors/Button/ButtonDesign.tsx
+src/constructors/Button/ButtonInclude.ts
 

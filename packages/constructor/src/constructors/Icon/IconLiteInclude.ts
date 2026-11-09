@@ -25,6 +25,17 @@ import type { IconPropsBasic } from './props'
  */
 export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsInclude> {
   /**
+   * Checks whether an icon is specified.
+   *
+   * Проверяет, указана ли иконка.
+   * @param props input parameter / входной параметр
+   * @returns true if icon is specified / true, если указана иконка
+   */
+  static is(props?: IconLitePropsInclude): boolean {
+    return Boolean(props?.icon)
+  }
+
+  /**
    * Constructor for initializing the IconLiteInclude helper.
    *
    * Конструктор для инициализации помощника IconLiteInclude.

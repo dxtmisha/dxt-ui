@@ -302,13 +302,15 @@ describe('Skeleton (complete component integration)', () => {
       await nextTick()
 
       expect(fixture.expose.isActive()).toBe(false)
-      expect(fixture.root.getAttribute('aria-busy')).toBe('false')
-      expect(fixture.root.classList.contains('d1-skeleton--invisible')).toBe(false)
+      expect(fixture.root.getAttribute('aria-busy')).toBe('true')
+      expect(fixture.root.classList.contains('d1-skeleton--invisible')).toBe(true)
       expect(fixture.root.classList.contains('d1-skeleton--visible')).toBe(true)
       expect(childSkeletonInclude.isSkeleton()).toBe(true)
 
       vi.advanceTimersByTime(300)
       await nextTick()
+      expect(fixture.root.getAttribute('aria-busy')).toBe('false')
+      expect(fixture.root.classList.contains('d1-skeleton--invisible')).toBe(false)
       expect(fixture.root.classList.contains('d1-skeleton--visible')).toBe(false)
       expect(childSkeletonInclude.isSkeleton()).toBe(false)
       expect(buttonElement.getAttribute('data-skeleton-status')).toBe('false')

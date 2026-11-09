@@ -207,7 +207,7 @@ describe('Skeleton (SSR)', () => {
       )
 
       expect(ssrIncludeStatus).toBe(true)
-      expect(html).toContain('class="d1-skeleton--visible d1-skeleton--invisible nested-skeleton" style="" aria-busy="true" aria-live="polite"')
+      expect(html).toContain('class="d1-skeleton--active d1-skeleton--visible d1-skeleton--invisible nested-skeleton" style="" inert aria-busy="true" aria-live="polite"')
       expect(html).toContain('class="d1-skeleton__backgroundVariant"')
       expect(html).toContain('class="d1-skeleton__text d1-skeleton__background"')
       expect(html).toContain('data-ssr-skeleton="true"')

@@ -152,25 +152,6 @@ export class Skeleton extends DesignLogicAbstract<
   }
 
   /**
-   * Hook executed when component mounts.
-   *
-   * Хук, выполняемый при монтировании компонента.
-   */
-  protected override readonly onMounted = (): void => {
-    this.switch()
-    watch(this.isActive, this.switch)
-  }
-
-  /**
-   * Hook executed when component unmounts.
-   *
-   * Хук, выполняемый при размонтировании компонента.
-   */
-  protected override readonly onUnmounted = (): void => {
-    clearTimeout(this.timeout)
-  }
-
-  /**
    * List of ARIA attributes for the skeleton element.
    *
    * Список ARIA-атрибутов для элемента скелетона.
@@ -283,5 +264,24 @@ export class Skeleton extends DesignLogicAbstract<
    */
   protected toVisible(): void {
     this.setVisible(true, this.props.delay ?? defaultsSkeleton.delay)
+  }
+
+  /**
+   * Hook executed when component mounts.
+   *
+   * Хук, выполняемый при монтировании компонента.
+   */
+  protected override readonly onMounted = (): void => {
+    this.switch()
+    watch(this.isActive, this.switch)
+  }
+
+  /**
+   * Hook executed when component unmounts.
+   *
+   * Хук, выполняемый при размонтировании компонента.
+   */
+  protected override readonly onUnmounted = (): void => {
+    clearTimeout(this.timeout)
   }
 }

@@ -18,8 +18,7 @@ import type { ButtonExpose } from './types'
 export class ButtonInclude extends ComponentIncludeAbstract<
   ButtonPropsInclude,
   ButtonPropsBasic,
-  ButtonExpose,
-  any
+  ButtonExpose
 > {
   /** Name of the component for style prefixing and resolution / Имя компонента для префикса стилей и разрешения */
   protected override readonly name = 'button'

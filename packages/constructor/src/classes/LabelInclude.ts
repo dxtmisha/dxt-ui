@@ -22,6 +22,24 @@ import type { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/lab
  * Управляет состояниями меток, слотами, динамическими переводами и скелетонами загрузки.
  */
 export class LabelInclude {
+  /**
+   * Checks whether a label or slot content is specified.
+   *
+   * Проверяет, указана ли метка или содержимое слота.
+   * @param props input properties / входные свойства
+   * @param slots slots dictionary / объект слотов
+   * @returns true if label or slot is present / true, если метка или слот присутствуют
+   */
+  static is(
+    props?: LabelProps,
+    slots?: LabelSlots | LabelAlternativeSlots
+  ): boolean {
+    return Boolean(
+      props?.label
+      || (slots && ('default' in slots || 'label' in slots))
+    )
+  }
+
   /** Default element identifier / Идентификатор элемента по умолчанию */
   protected readonly elementIdDefault = getElementId()
 

@@ -11,9 +11,9 @@ const buttonRef = ref<ButtonExpose | null>(null)
 
 const statusValue = computed<string>(() => {
   if (buttonRef.value) {
-    const val = buttonRef.value.getValue?.()
+    const value = buttonRef.value.getValue?.()
     const detail = buttonRef.value.getDetail?.()
-    return `getValue(): ${JSON.stringify(val)}, getDetail(): ${JSON.stringify(detail)}`
+    return `getValue(): ${JSON.stringify(value)}, getDetail(): ${JSON.stringify(detail)}`
   }
   return 'Ref not initialized'
 })
@@ -54,16 +54,30 @@ const statusValue = computed<string>(() => {
       <D1Group label="States">
         <DemoFlex>
           <D1Button label="Disabled" disabled />
-          <D1Button label="Loading" loading />
+          <D1Button label="Selected" selected />
+          <D1Button label="Readonly" readonly />
           <D1Button label="Active" active />
           <D1Button label="Focus" focus />
+          <D1Button label="Loading" loading />
+          <D1Button label="Skeleton" isSkeleton />
+          <D1Button label="Disabled + Selected" disabled selected />
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Shapes">
+      <D1Group label="Shapes & Styling">
         <DemoFlex>
           <D1Button label="Rounded Full" roundedFull />
           <D1Button label="Square" icon="add" />
+          <D1Button label="Inverse" inverse />
+          <D1Button label="Grid Layout" grid icon="star" />
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Text Alignment">
+        <DemoFlex>
+          <D1Button label="Left Aligned" textAlign="left" style="min-width: 140px" />
+          <D1Button label="Center Aligned" textAlign="center" style="min-width: 140px" />
+          <D1Button label="Right Aligned" textAlign="right" style="min-width: 140px" />
         </DemoFlex>
       </D1Group>
 
@@ -82,6 +96,29 @@ const statusValue = computed<string>(() => {
           <D1Button label="Block" adaptive="block" />
           <D1Button label="Full SM" adaptive="fullSm" />
           <D1Button label="Icon SM" adaptive="iconSm" icon="home" />
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Tags & Types">
+        <DemoFlex>
+          <D1Button label="Button Tag" tag="button" type="button" />
+          <D1Button label="Submit Type" tag="button" type="submit" />
+          <D1Button label="Reset Type" tag="button" type="reset" />
+          <D1Button label="Link (A Tag)" tag="a" href="https://github.com" target="_blank" />
+          <D1Button label="Span Tag" tag="span" />
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Slots">
+        <DemoFlex>
+          <D1Button>
+            Custom Default Content
+          </D1Button>
+          <D1Button icon="star">
+            <template #label>
+              Custom Label Slot
+            </template>
+          </D1Button>
         </DemoFlex>
       </D1Group>
 

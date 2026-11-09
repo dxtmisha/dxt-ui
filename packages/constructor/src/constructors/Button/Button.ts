@@ -1,5 +1,9 @@
-import { type Ref } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -13,113 +17,194 @@ import { RippleInclude } from '../Ripple'
 import { SkeletonInclude } from '../Skeleton'
 
 import type { AriaList } from '../../types/ariaTypes'
-import type { ButtonComponents, ButtonEmits, ButtonSlots } from './types'
 import type { ButtonPropsBasic } from './props'
+import type { ButtonComponents, ButtonEmits, ButtonSlots } from './types'
+
+/** Button dependency constructors type / Тип конструкторов зависимостей Button */
+export type ButtonConstructors = {
+  /** Enabled status constructor / Конструктор статуса активности */
+  enabled: typeof EnabledInclude
+  /** Event click constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Icon trailing constructor / Конструктор иконки и завершающей иконки */
+  icon: typeof IconTrailingInclude
+  /** Label constructor / Конструктор метки */
+  label: typeof LabelInclude
+  /** Progress constructor / Конструктор индикатора прогресса */
+  progress: typeof ProgressInclude
+  /** Ripple constructor / Конструктор эффекта волны */
+  ripple: typeof RippleInclude
+  /** Skeleton constructor / Конструктор скелетона */
+  skeleton: typeof SkeletonInclude
+}
 
 /**
- * Button class for managing the business logic of a button component.
+ * Button class for managing the business logic of a button component (orchestrator).
  * It coordinates label, enabled state, icon, progress, ripple effect, skeleton, and event handling.
  *
- * Класс Button для управления бизнес-логикой компонента кнопки.
+ * Класс Button для управления бизнес-логикой компонента кнопки (оркестратор).
  * Координирует метку, состояние активности, иконку, прогресс, эффект волны, скелетон и обработку событий.
  */
-export class Button {
-  /** Label control instance / Экземпляр управления меткой */
-  readonly label: LabelInclude
-
-  /** Enabled state control instance / Экземпляр управления состоянием активности */
-  readonly enabled: EnabledInclude
-
-  /** Icon control instance / Экземпляр управления иконкой */
-  readonly icon: IconTrailingInclude
-
-  /** Progress control instance / Экземпляр управления индикатором прогресса */
-  readonly progress: ProgressInclude
-
-  /** Ripple effect control instance / Экземпляр управления эффектом волны */
-  readonly ripple: RippleInclude
-
-  /** Skeleton control instance / Экземпляр управления скелетоном */
-  readonly skeleton: SkeletonInclude
-
-  /** Click event control instance / Экземпляр управления событием клика */
-  readonly event: EventClickInclude
+export class Button extends DesignLogicAbstract<
+  HTMLDivElement,
+  ButtonComponents,
+  ButtonEmits,
+  ButtonSlots,
+  ButtonPropsBasic,
+  ButtonConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ButtonConstructors> = {
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('progress')
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    },
+    icon: {
+      item: IconTrailingInclude,
+      conditions: () => IconTrailingInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => ({ disabled: this.props.disabled })
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      conditions: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots
+      ]
+    },
+    progress: {
+      item: ProgressInclude,
+      conditions: () => ProgressInclude.is(this.props),
+      parameters: () => [
+        this.naming,
+        this.props,
+        this.components,
+        {
+          circular: true,
+          inverse: true
+        }
+      ]
+    },
+    ripple: {
+      item: RippleInclude,
+      conditions: () => RippleInclude.is(this.props),
+      parameters: () => [
+        this.naming,
+        this.components,
+        this.i('enabled')
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      conditions: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classBackground']
+      ]
+    }
+  }
 
   /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.EnabledConstructor class for creating the enabled state / класс для создания состояния активности
-   * @param constructors.EventConstructor class for creating an event / класс для создания события
-   * @param constructors.IconConstructor class for creating an icon / класс для создания иконки
-   * @param constructors.LabelConstructor class for creating a label / класс для создания метки
-   * @param constructors.ProgressConstructor class for creating a progress indicator / класс для создания индикатора прогресса
-   * @param constructors.RippleConstructor class for creating a ripple effect / класс для создания эффекта волны
-   * @param constructors.SkeletonConstructor class for creating a skeleton / класс для создания скелета
+   * Returns list of aria properties for the button component.
+   *
+   * Возвращает список aria свойств для компонента Button.
+   * @returns list of aria properties / список свойств aria
    */
-  constructor(
-    protected readonly props: ButtonPropsBasic,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ButtonComponents, ButtonPropsBasic>,
-    protected readonly slots?: ButtonSlots,
-    protected readonly emits?: ConstrEmit<ButtonEmits>,
-    constructors: {
-      EnabledConstructor?: typeof EnabledInclude
-      EventConstructor?: typeof EventClickInclude
-      IconConstructor?: typeof IconTrailingInclude
-      LabelConstructor?: typeof LabelInclude
-      ProgressConstructor?: typeof ProgressInclude
-      RippleConstructor?: typeof RippleInclude
-      SkeletonConstructor?: typeof SkeletonInclude
-    } = {}
-  ) {
-    const {
-      EnabledConstructor = EnabledInclude,
-      EventConstructor = EventClickInclude,
-      IconConstructor = IconTrailingInclude,
-      LabelConstructor = LabelInclude,
-      ProgressConstructor = ProgressInclude,
-      RippleConstructor = RippleInclude,
-      SkeletonConstructor = SkeletonInclude
-    } = constructors
+  get aria(): AriaList {
+    const isProgress = ProgressInclude.is(this.props)
+    const aria: AriaList = {
+      ...AriaStaticInclude.label(this.props.ariaLabel)
+    }
 
-    this.progress = new ProgressConstructor(
-      naming,
-      props,
-      components,
-      {
-        circular: true,
-        inverse: true
+    if (isProgress) {
+      Object.assign(aria, this.i('progress').aria.value)
+    }
+
+    if (this.isTagNotButton()) {
+      return {
+        tabindex: '0',
+        ...aria,
+        ...AriaStaticInclude.role('button'),
+        ...AriaStaticInclude.disabled(isProgress || !this.i('enabled').isEnabled)
       }
-    )
+    }
 
-    this.label = new LabelConstructor(props, naming, undefined, slots)
-    this.enabled = new EnabledConstructor(props, () => this.progress)
+    return aria
+  }
 
-    this.icon = new IconConstructor(
-      props,
-      naming,
-      components,
-      () => ({ disabled: this.props.disabled })
-    )
-    this.ripple = new RippleConstructor(naming, components, this.enabled)
-    this.skeleton = new SkeletonConstructor(
-      props,
-      naming,
-      ['classBackground']
-    )
+  /**
+   * Returns attributes for the main element.
+   *
+   * Возвращает атрибуты для главного элемента.
+   * @returns main element properties / свойства главного элемента
+   */
+  get binds(): ConstrBind {
+    return {
+      'type': this.props.type ?? (this.tag === 'button' ? 'button' : undefined),
+      'data-value': this.props.value,
+      'disabled': this.i('enabled').isDisabledOrUndefined,
+      ...this.eventList,
+      ...this.aria
+    }
+  }
 
-    this.event = new EventConstructor(
-      props,
-      () => this.enabled,
-      emits
-    )
+  /**
+   * Returns values for the class.
+   *
+   * Возвращает значения для класса.
+   * @returns classes values / значения классов
+   */
+  get classes(): ConstrClassObject {
+    const icon = IconTrailingInclude.is(this.props) && this.i('icon').isIcon()
+    const classes: ConstrClassObject = {
+      [this.naming.getStatusClass('icon')]: icon,
+      [getClassTagAStatic(this.naming.getDesign())]: true
+    }
+
+    if (SkeletonInclude.is(this.props)) {
+      Object.assign(classes, this.i('skeleton').classes)
+    }
+
+    return classes
+  }
+
+  /**
+   * Returns events for the button component.
+   *
+   * Возвращает события для компонента кнопки.
+   * @returns object of events / объект событий
+   */
+  get eventList(): ConstrBind {
+    const event = this.i('event')
+    const events: ConstrBind = {
+      ...event.href,
+      onClick: event.onClick
+    }
+
+    if (this.isTagNotButton()) {
+      events.onKeydown = event.onKeydown
+    }
+
+    return events
   }
 
   /**
@@ -141,78 +226,6 @@ export class Button {
   }
 
   /**
-   * Returns list of aria properties for the button component.
-   *
-   * Возвращает список aria свойств для компонента Button.
-   * @returns list of aria properties / список свойств aria
-   */
-  get aria(): AriaList {
-    const aria: AriaList = {
-      ...this.progress.aria.value,
-      ...AriaStaticInclude.label(this.props.ariaLabel)
-    }
-
-    if (this.isTagNotButton()) {
-      return {
-        tabindex: '0',
-        ...aria,
-        ...AriaStaticInclude.role('button'),
-        ...AriaStaticInclude.disabled(this.progress.is || !this.enabled.isEnabled)
-      }
-    }
-
-    return aria
-  }
-
-  /**
-   * Returns events for the button component.
-   *
-   * Возвращает события для компонента кнопки.
-   * @returns object of events / объект событий
-   */
-  get eventList(): Record<string, any> {
-    const events: Record<string, any> = {
-      ...this.event.href,
-      onClick: this.event.onClick
-    }
-
-    if (this.isTagNotButton()) {
-      events.onKeydown = this.event.onKeydown
-    }
-
-    return events
-  }
-
-  /**
-   * Returns values for the class.
-   *
-   * Возвращает значения для класса.
-   * @returns classes values / значения классов
-   */
-  get classes(): ConstrClass {
-    return {
-      [this.naming.getStatusClass('icon')]: this.icon.isIcon(),
-      [getClassTagAStatic(this.naming.getDesign())]: true,
-      ...this.skeleton.classes
-    }
-  }
-
-  /**
-   * Returns attributes for the main element.
-   *
-   * Возвращает атрибуты для главного элемента.
-   */
-  get binds() {
-    return {
-      'type': this.props.type ?? (this.tag === 'button' ? 'button' : undefined),
-      'data-value': this.props.value,
-      'disabled': this.enabled.isDisabledOrUndefined,
-      ...this.eventList,
-      ...this.aria
-    }
-  }
-
-  /**
    * Checks if the tag is not a button or link.
    *
    * Проверяет, не является ли тег кнопкой или ссылкой.
@@ -221,7 +234,7 @@ export class Button {
   protected isTagNotButton(): boolean {
     return Boolean(
       this.props.tag
-      && ['a', 'button'].indexOf(this.props.tag) === -1
+      && !['a', 'button'].includes(this.props.tag)
     )
   }
 }

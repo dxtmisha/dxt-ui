@@ -20,6 +20,17 @@ export class IconTrailingInclude<
   Props extends IconTrailingPropsInclude = IconTrailingPropsInclude
 > extends IconInclude<Props> {
   /**
+   * Checks whether an icon or trailing icon is specified.
+   *
+   * Проверяет, указана ли иконка или завершающая иконка.
+   * @param props input parameter / входной параметр
+   * @returns true if icon or trailing icon is specified / true, если указана иконка или завершающая иконка
+   */
+  static override is(props?: IconTrailingPropsInclude): boolean {
+    return Boolean(props?.icon || props?.iconTrailing)
+  }
+
+  /**
    * Constructor for initializing the IconTrailingInclude helper.
    *
    * Конструктор для инициализации помощника IconTrailingInclude.

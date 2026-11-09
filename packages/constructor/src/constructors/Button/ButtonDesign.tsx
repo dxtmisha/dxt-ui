@@ -5,6 +5,11 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { LabelInclude } from '../../classes/LabelInclude'
+
+import { IconTrailingInclude } from '../Icon'
+import { ProgressInclude } from '../Progress'
+import { RippleInclude } from '../Ripple'
 import { Button } from './Button'
 
 import {
@@ -79,7 +84,7 @@ export class ButtonDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose
+      ...this.item.i('event').expose
     } as EXPOSE
   }
 
@@ -131,11 +136,67 @@ export class ButtonDesign<
         style: this.styles?.value
       },
       [
-        ...this.item.progress.render(),
-        ...this.item.label.render(),
-        ...this.item.icon.render(),
-        ...this.item.ripple.render()
+        ...this.renderProgress(),
+        ...this.renderLabel(),
+        ...this.renderIcon(),
+        ...this.renderRipple()
       ]
     )
+  }
+
+  /**
+   * Renders the progress indicator element.
+   *
+   * Рендерит элемент индикатора прогресса.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderProgress = (): VNode[] => {
+    if (ProgressInclude.is(this.props)) {
+      return this.item.i('progress').render()
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the label element.
+   *
+   * Рендерит элемент метки.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderLabel = (): VNode[] => {
+    if (LabelInclude.is(this.props, this.slots)) {
+      return this.item.i('label').render()
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the icon element.
+   *
+   * Рендерит элемент иконки.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderIcon = (): VNode[] => {
+    if (IconTrailingInclude.is(this.props)) {
+      return this.item.i('icon').render()
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the ripple element.
+   *
+   * Рендерит элемент эффекта волны.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderRipple = (): VNode[] => {
+    if (RippleInclude.is(this.props)) {
+      return this.item.i('ripple').render()
+    }
+
+    return []
   }
 }

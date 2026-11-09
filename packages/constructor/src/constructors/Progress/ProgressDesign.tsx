@@ -9,6 +9,7 @@ import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Progress } from './Progress'
 
 import {
+  type ProgressProps,
   type ProgressPropsBasic
 } from './props'
 import {
@@ -66,7 +67,11 @@ export class ProgressDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.naming
+      this.element,
+      this.naming,
+      this.components,
+      this.slots,
+      this.emits
     )
   }
 
@@ -117,10 +122,9 @@ export class ProgressDesign<
    */
   protected initRender(): VNode | undefined {
     if (
-      this.item.clientOnly.isRender()
-      || this.item.isValue()
+      this.item.isRender()
     ) {
-      const children: any[] = [
+      const children: VNode[] = [
         ...this.renderCircle(),
         ...this.renderPoint()
       ]
@@ -129,6 +133,7 @@ export class ProgressDesign<
         this.item.tag,
         {
           ...this.getAttrs(),
+          ref: this.element,
           class: this.classes?.value.main,
           style: this.styles?.value,
           ...this.item.binds
@@ -178,9 +183,10 @@ export class ProgressDesign<
   readonly renderPoint = (): VNode[] => {
     if (
       this.props.linear
-      && this.props.point && (
+      && this.props.point
+      && (
         this.props.value
-        || ((this.props as any).indeterminate) === 'type1'
+        || (this.props as ProgressProps).indeterminate === 'type1'
       )
     ) {
       return [h('span', this.getKeyClass('point'))]
