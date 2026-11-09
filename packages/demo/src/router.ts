@@ -23,6 +23,7 @@ import DemoChipPage from './pages/components/DemoChipPage.vue'
 import DemoChipGroupPage from './pages/components/DemoChipGroupPage.vue'
 import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
 import DemoCollagePage from './pages/components/DemoCollagePage.vue'
+import DemoComponentOutletPage from './pages/components/DemoComponentOutletPage.vue'
 import DemoDialogPage from './pages/components/DemoDialogPage.vue'
 import DemoDraggableWrapperPage from './pages/components/DemoDraggableWrapperPage.vue'
 import DemoFormattedPage from './pages/components/DemoFormattedPage.vue'
@@ -171,6 +172,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-collage',
     name: 'component-collage',
     component: DemoCollagePage
+  },
+  {
+    path: '/component-component-outlet',
+    name: 'component-component-outlet',
+    component: DemoComponentOutletPage
   },
   {
     path: '/component-dialog',
