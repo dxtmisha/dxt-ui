@@ -1,0 +1,45 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as ComponentOutlet from './D1ComponentOutlet.stories'
+import {ComponentOutletWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={ComponentOutlet}/>
+<StorybookMain
+    name={ComponentOutletWikiStorybook.getName()}
+    description={ComponentOutletWikiStorybook.getDescription()}
+    story={ComponentOutlet.ComponentOutlet}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'ComponentOutlet'} type={'componentOutlet'}/>
+<Canvas of={ComponentOutlet.ComponentOutletBasic}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'ComponentOutlet'} type={'expose.getElement'}/>
+<Canvas of={ComponentOutlet.ComponentOutletExpose}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'ComponentOutlet'} type={'slot.any'}/>
+<Canvas of={ComponentOutlet.ComponentOutletSlots}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

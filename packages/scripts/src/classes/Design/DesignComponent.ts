@@ -1008,8 +1008,8 @@ export class DesignComponent extends DesignCommand {
 
             return ''
           })
-          .replace(new RegExp('DesignComponent', 'g'), componentFull)
-          .replace(new RegExp('Component', 'g'), component)
+          .replace(/\bDesignComponent\b/g, componentFull)
+          .replace(/\bComponent\b/g, component)
       )
       sample.replaceMark(`documentation-${type}`, data)
     }

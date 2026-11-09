@@ -10,7 +10,7 @@ It decouples consumer templates from concrete component imports and preset confi
 - **Centralized Registry Resolution:** Resolves components registered in `ComponentStorage` by string `name` across client and SSR environments
 - **Non-Destructive Property & Style Merging:** Combines registered default properties from `ComponentStorage`, the `props` prop, fallthrough attributes, classes, and inline styles via `toBinds`
 - **Transparent Slot Forwarding & Fallback:** Forwards `default` and all named/scoped slots to the resolved component, or renders the `default` slot as fallback markup when the component is not found
-- **Typed Instance Access:** Exposes `getElement<T>()` and `elementHtml` to inspect or invoke methods on the resolved component instance or root DOM element
+- **Typed Instance Access:** Exposes `getElement<T>()` to inspect or invoke methods on the resolved component instance or root DOM element
 
 **Common use cases:**
 
@@ -33,19 +33,19 @@ ComponentStorage.add('promo-banner', MyBanner, {
 
 <template>
   <!-- Resolves 'promo-banner' and merges default props with :props -->
-  <DesignComponent
+  <ComponentOutlet
     name="promo-banner"
     :props="{ title: 'Special Offer' }"
   >
     <template #default>
       Limited-time discount on all plans.
     </template>
-  </DesignComponent>
+  </ComponentOutlet>
 
   <!-- Renders fallback default slot when component is not registered -->
-  <DesignComponent name="unregistered-widget">
+  <ComponentOutlet name="unregistered-widget">
     <span>Fallback content when widget is unavailable</span>
-  </DesignComponent>
+  </ComponentOutlet>
 </template>
   `}
     language="html"

@@ -10,7 +10,7 @@ import { Source } from '@storybook/addon-docs/blocks';
 - **Разрешение из централизованного реестра:** Извлекает компоненты из `ComponentStorage` по строковому идентификатору `name` как на клиенте, так и в SSR
 - **Неразрушающее слияние свойств и стилей:** Объединяет дефолтные свойства из `ComponentStorage`, свойство `props`, внешние атрибуты, классы и инлайн-стили через `toBinds`
 - **Прозрачный проброс слотов и Fallback:** Передаёт слот `default` и все именованные/scoped-слоты в целевой компонент либо рендерит слот `default` как резервную разметку, если компонент не зарегистрирован
-- **Типизированный доступ к экземпляру:** Предоставляет метод `getElement<T>()` и ссылку `elementHtml` для обращения к публичному API разрешённого компонента или его DOM-элементу
+- **Типизированный доступ к экземпляру:** Предоставляет метод `getElement<T>()` для обращения к публичному API разрешённого компонента или его DOM-элементу
 
 **Типовые сценарии использования:**
 
@@ -33,19 +33,19 @@ ComponentStorage.add('promo-banner', MyBanner, {
 
 <template>
   <!-- Разрешает 'promo-banner' и объединяет свойства по умолчанию с :props -->
-  <DesignComponent
+  <ComponentOutlet
     name="promo-banner"
     :props="{ title: 'Специальное предложение' }"
   >
     <template #default>
       Скидка на все тарифы в течение ограниченного времени.
     </template>
-  </DesignComponent>
+  </ComponentOutlet>
 
   <!-- Отрисовывает резервный слот default, если компонент не зарегистрирован -->
-  <DesignComponent name="unregistered-widget">
+  <ComponentOutlet name="unregistered-widget">
     <span>Резервный контент, когда виджет недоступен</span>
-  </DesignComponent>
+  </ComponentOutlet>
 </template>
   `}
     language="html"

@@ -21,6 +21,18 @@ describe('DesignReplace', () => {
     expect(result).toBe('Project: ui-core, Design: Dxt, Component: button, File: DxtButton')
   })
 
+  it('does not duplicate suffix when component name starts with the replacement mark (e.g. ComponentOutlet)', () => {
+    vi.spyOn(PropertiesConfig, 'getDesignName').mockReturnValue('d1')
+    vi.spyOn(PropertiesConfig, 'getProjectName').mockReturnValue('Ui')
+
+    const structure = new DesignStructure('componentOutlet')
+    const sample = 'import DesignComponent from "./DesignComponent.vue"; new ComponentDesign()'
+    const replace = new DesignReplace(structure, 'component', sample)
+
+    expect(replace.getNameFile('DesignComponent.vue')).toBe('D1ComponentOutlet.vue')
+    expect(replace.getNameFile(sample)).toBe('import D1ComponentOutlet from "./D1ComponentOutlet.vue"; new ComponentOutletDesign()')
+  })
+
   it('replaces relative paths and updates internal sample string', () => {
     const structure = new DesignStructure('badge')
     const sample = 'import { x } from "../../../core"'

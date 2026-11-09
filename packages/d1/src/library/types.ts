@@ -32,6 +32,7 @@ import _D1ClockPeriod from '../components/Ui/ClockPeriod/D1ClockPeriod.vue'
 import _D1Collage from '../components/Ui/Collage/D1Collage.vue'
 import _D1CollageBar from '../components/Ui/CollageBar/D1CollageBar.vue'
 import _D1CollageItem from '../components/Ui/CollageItem/D1CollageItem.vue'
+import _D1ComponentOutlet from '../components/Ui/ComponentOutlet/D1ComponentOutlet.vue'
 import _D1Container from '../components/Ui/Container/D1Container.vue'
 import _D1CropArea from '../components/Ui/CropArea/D1CropArea.vue'
 import _D1Dialog from '../components/Ui/Dialog/D1Dialog.vue'
@@ -158,6 +159,7 @@ declare module '@vue/runtime-core' {
     D1Collage: typeof _D1Collage
     D1CollageBar: typeof _D1CollageBar
     D1CollageItem: typeof _D1CollageItem
+    D1ComponentOutlet: typeof _D1ComponentOutlet
     D1Container: typeof _D1Container
     D1CropArea: typeof _D1CropArea
     D1Dialog: typeof _D1Dialog

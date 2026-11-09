@@ -1,0 +1,20 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as ComponentOutlet;
+
+@include ui.initDesignBasic('d1.componentOutlet') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include ComponentOutlet.mixinComponentOutlet;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-componentOutlet-main: var(--d-componentOutlet);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

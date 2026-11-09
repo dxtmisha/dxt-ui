@@ -593,6 +593,10 @@
     "./D1InputSearch": {
       "types": "./dist/library/D1InputSearch.d.ts",
       "default": "./dist/library/D1InputSearch.js"
+    },
+    "./D1ComponentOutlet": {
+      "types": "./dist/library/D1ComponentOutlet.d.ts",
+      "default": "./dist/library/D1ComponentOutlet.js"
     }
   },
   "buildOptions": {

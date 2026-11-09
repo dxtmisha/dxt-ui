@@ -32,6 +32,7 @@ import D1ClockPeriod from '../../src/components/Ui/ClockPeriod/D1ClockPeriodAiWi
 import D1Collage from '../../src/components/Ui/Collage/D1CollageAiWiki.vue'
 import D1CollageBar from '../../src/components/Ui/CollageBar/D1CollageBarAiWiki.vue'
 import D1CollageItem from '../../src/components/Ui/CollageItem/D1CollageItemAiWiki.vue'
+import D1ComponentOutlet from '../../src/components/Ui/ComponentOutlet/D1ComponentOutletAiWiki.vue'
 import D1Container from '../../src/components/Ui/Container/D1ContainerAiWiki.vue'
 import D1CropArea from '../../src/components/Ui/CropArea/D1CropAreaAiWiki.vue'
 import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
@@ -157,6 +158,7 @@ export const aiList: any[] = [
   D1Collage,
   D1CollageBar,
   D1CollageItem,
+  D1ComponentOutlet,
   D1Container,
   D1CropArea,
   D1Dialog,

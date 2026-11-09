@@ -9252,6 +9252,17 @@
           }
         }
       },
+      "componentOutlet": {
+        "name": "d1-componentOutlet",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-componentOutlet-main",
+            "type": "var",
+            "value": "{d.componentOutlet}"
+          }
+        }
+      },
       "container": {
         "name": "d1-container",
         "type": "component",
