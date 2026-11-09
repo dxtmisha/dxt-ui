@@ -59,7 +59,10 @@ export class RippleItem {
 
     const element = this.element.value
 
-    if (element) {
+    if (
+      element
+      && getComputedStyle(element).display !== 'none'
+    ) {
       const x = coordinator?.x ?? element.offsetWidth / 2
       const y = coordinator?.y ?? element.offsetHeight / 2
 

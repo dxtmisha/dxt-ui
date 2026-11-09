@@ -1,47 +1,41 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for creating animated wave effect on element click.
+The `Ripple` component provides fluid, interactive visual feedback on user touch and click interactions across design system elements.
 
-Ripple provides visual feedback during user interaction with interactive elements, automatically tracking clicks and generating an animated wave expanding from the touch point. The effect enhances user experience by making the interface more responsive and modern.
+It automatically coordinates pointerdown events, calculates relative click coordinates, and animates expanding circular waves that gracefully fade out and clean themselves up from the DOM upon transition completion. The element is purely decorative and automatically tagged with `aria-hidden="true"` to prevent screen reader distractions.
 
-**Key Features:**
+**Key features:**
 
-- Automatic click event tracking
-- Wave animation from touch point
-- Control via `disabled` property
-- Automatic animation removal after completion
-- Support for any interactive elements
+- **Automatic Click Tracking:** Listens to primary pointer interactions and dynamically places waves at exact touch coordinates
+- **Programmatic Control:** Exposes `add()` and `addCenter()` methods for programmatic wave generation
+- **State Control:** Cleanly disables wave generation via the `disabled` prop
+- **Automatic DOM Cleanup:** Removes wave elements from the DOM after the end transition completes
+- **Design Token Adaptability:** Inherits surface contrast and border radius automatically from its parent container
 
-**Common Use Cases:**
+**Common use cases:**
 
-- Buttons and links
-- Cards and lists
-- Toggles and checkboxes
-- Menu and navigation elements
-- Interactive icons
+- Interactive button surfaces and action sheet items
+- Clickable cards, list items, and table records
+- Chip items, segmented controls, and navigation rails
+- Custom interactive surfaces and touch areas
 
 <Source
     code={`
 <template>
-  <!-- Button with ripple effect -->
-  <button style="position: relative;">
+  <!-- Interactive button with embedded ripple -->
+  <button style="position: relative; overflow: hidden;">
     Click me
     <Ripple />
   </button>
 
-  <!-- Disabled effect -->
-  <button style="position: relative;">
-    No effect
-    <Ripple :disabled="true" />
-  </button>
-
-  <!-- Card with effect -->
-  <div class="card" style="position: relative; cursor: pointer;">
-    <h3>Interactive card</h3>
-    <p>Card content</p>
-    <Ripple />
+  <!-- Card with programmatic ripple -->
+  <div style="position: relative; overflow: hidden; border-radius: 12px;">
+    <h3>Interactive Card</h3>
+    <Ripple ref="rippleRef" />
   </div>
 </template>
   `}
     language="html"
 />
+
+> Ripple provides responsive, fluid interaction feedback with automatic touch tracking, lifecycle cleanup, and full accessibility hiding.

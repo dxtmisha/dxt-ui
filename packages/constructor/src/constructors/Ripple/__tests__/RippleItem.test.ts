@@ -118,6 +118,25 @@ describe('RippleItem', () => {
         ripple.addCenter()
       }).not.toThrow()
     })
+
+    it('should not add ripple elements when container has display: none (e.g. prefers-reduced-motion)', () => {
+      const props = reactive<RippleProps>({ disabled: false })
+      const container = document.createElement('span')
+      document.body.appendChild(container)
+      container.style.display = 'none'
+      const elementRef = ref<HTMLSpanElement | undefined>(container)
+      const ripple = new RippleItem(props, elementRef, new DesignName('d1.ripple'))
+
+      ripple.add({ x: 50, y: 100 })
+      ripple.addCenter()
+      expect(container.children).toHaveLength(0)
+
+      container.style.display = 'block'
+      ripple.add({ x: 50, y: 100 })
+      expect(container.children).toHaveLength(1)
+
+      container.remove()
+    })
   })
 
   describe('Statefulness and animation lifecycle', () => {

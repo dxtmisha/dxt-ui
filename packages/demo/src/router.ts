@@ -52,6 +52,7 @@ import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
 import DemoProgressBarPage from './pages/components/DemoProgressBarPage.vue'
 import DemoRadioPage from './pages/components/DemoRadioPage.vue'
+import DemoRipplePage from './pages/components/DemoRipplePage.vue'
 import DemoScrollbarPage from './pages/components/DemoScrollbarPage.vue'
 import DemoScrollStickyPage from './pages/components/DemoScrollStickyPage.vue'
 import DemoSegmentControlPage from './pages/components/DemoSegmentControlPage.vue'
@@ -317,6 +318,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-radio',
     name: 'component-radio',
     component: DemoRadioPage
+  },
+  {
+    path: '/component-ripple',
+    name: 'component-ripple',
+    component: DemoRipplePage
   },
   {
     path: '/component-scrollbar',

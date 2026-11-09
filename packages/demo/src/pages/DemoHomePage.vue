@@ -57,6 +57,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Progress" name="component-progress"/>
         <DemoLink label="ProgressBar" name="component-progress-bar"/>
         <DemoLink label="Radio" name="component-radio"/>
+        <DemoLink label="Ripple" name="component-ripple"/>
         <DemoLink label="Scrollbar" name="component-scrollbar"/>
         <DemoLink label="ScrollSticky" name="component-scroll-sticky"/>
         <DemoLink label="SegmentControl" name="component-segment-control"/>

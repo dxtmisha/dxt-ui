@@ -21,6 +21,7 @@
 
   &__item {
     @include ui.absolute;
+    pointer-events: none;
 
     @include ui.backgroundColor(
       ui.v('??sys.color', var(--sys-color, ui.v('??backgroundColor'))),

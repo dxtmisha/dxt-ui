@@ -37,3 +37,8 @@ src/constructors/Icon/IconDesign.tsx
 src/constructors/Icon/IconLiteInclude.ts
 src/constructors/Icon/IconInclude.ts
 src/constructors/Icon/IconTrailingInclude.ts
+
+src/constructors/Ripple/RippleItem.ts
+src/constructors/Ripple/Ripple.ts
+
+

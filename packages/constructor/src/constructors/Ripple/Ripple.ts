@@ -31,18 +31,6 @@ export class Ripple extends DesignLogicAbstract<
   RippleProps,
   RippleConstructors
 > {
-  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
-  protected override readonly constructorItems: ConstrItems<RippleConstructors> = {
-    item: {
-      item: RippleItem,
-      parameters: () => [
-        this.props,
-        this.element,
-        this.naming
-      ]
-    }
-  }
-
   /**
    * Pointer press handler that adds a new ripple effect element at the cursor coordinates.
    * Only the main button of the primary pointer triggers the effect when not disabled.
@@ -61,6 +49,18 @@ export class Ripple extends DesignLogicAbstract<
         x: event.offsetX,
         y: event.offsetY
       })
+    }
+  }
+
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<RippleConstructors> = {
+    item: {
+      item: RippleItem,
+      parameters: () => [
+        this.props,
+        this.element,
+        this.naming
+      ]
     }
   }
 }
