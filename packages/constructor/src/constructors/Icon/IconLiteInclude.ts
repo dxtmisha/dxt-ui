@@ -41,7 +41,12 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
   ) {
   }
 
-  /** List of properties for the icon component / Список свойств для компонента иконки */
+  /**
+   * List of properties for the icon component.
+   *
+   * Список свойств для компонента иконки.
+   * @returns icon component bindings / привязки компонента иконки
+   */
   get iconBind(): ConstrBind<IconPropsBasic> {
     return getBind(
       this.getProps().icon,
@@ -85,26 +90,6 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
   }
 
   /**
-   * Returns the normalized properties.
-   *
-   * Возвращает нормализованные свойства.
-   * @returns resolved properties / разрешенные свойства
-   */
-  protected getProps(): Props {
-    return executeFunction(this.props)
-  }
-
-  /**
-   * Returns additional properties.
-   *
-   * Возвращает дополнительные свойства.
-   * @returns additional properties / дополнительные свойства
-   */
-  protected getExtra(): ConstrBind<IconPropsBasic> | undefined {
-    return executeFunctionRef(this.extra)
-  }
-
-  /**
    * Returns a list of classes.
    *
    * Возвращает список классов.
@@ -130,5 +115,25 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
     return {
       'data-event-type': type
     }
+  }
+
+  /**
+   * Returns additional properties.
+   *
+   * Возвращает дополнительные свойства.
+   * @returns additional properties / дополнительные свойства
+   */
+  protected getExtra(): ConstrBind<IconPropsBasic> | undefined {
+    return executeFunctionRef(this.extra)
+  }
+
+  /**
+   * Returns the normalized properties.
+   *
+   * Возвращает нормализованные свойства.
+   * @returns resolved properties / разрешенные свойства
+   */
+  protected getProps(): Props {
+    return executeFunction(this.props)
   }
 }

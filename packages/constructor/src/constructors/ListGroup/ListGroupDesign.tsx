@@ -116,6 +116,7 @@ export class ListGroupDesign<
       {
         ...this.getAttrs(),
         'class': this.classes?.value.main,
+        'style': this.styles?.value,
         'data-open': this.item.open.is() ? 'open' : 'close',
         'data-divider': this.props.divider ? 'divider' : undefined,
         ...AriaStaticInclude.role('group')

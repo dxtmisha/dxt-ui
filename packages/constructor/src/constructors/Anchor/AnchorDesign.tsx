@@ -161,7 +161,8 @@ export class AnchorDesign<
       h('a', {
         ...this.getAttrs(),
         ...this.item.binds,
-        class: classes
+        class: classes,
+        style: this.styles?.value
       }, this.renderChildren())
     ]
   }

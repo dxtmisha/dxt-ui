@@ -124,7 +124,8 @@ export class HeaderDesign<
       class: [
         this.classes?.value.main,
         ...this.item.classList
-      ]
+      ],
+      style: this.styles?.value
     }, children)
   }
 

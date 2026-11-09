@@ -9,7 +9,7 @@ import { IconDesign } from '../IconDesign'
 import { EnabledInclude } from '../../../classes/EnabledInclude'
 import { EventClickInclude } from '../../../classes/EventClickInclude'
 import { SKELETON_NAME_STATUS, SkeletonInclude } from '../../Skeleton'
-import type { IconProps } from '../props'
+import { defaultsIcon, type IconProps } from '../props'
 import { ImageTypeValue, type ImageEventData } from '../../Image'
 import type { IconClasses, IconComponents, IconExpose } from '../types'
 
@@ -230,6 +230,37 @@ describe('Icon', () => {
       scope.stop()
     })
 
+    it('should synchronize aria-pressed and aria-checked for dual-icon interactive toggles', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({
+        icon: 'favorite_border',
+        iconActive: 'favorite',
+        active: false,
+        dynamic: true
+      })
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+
+      expect(icon.role).toBe('button')
+      expect(icon.aria['aria-pressed']).toBe('false')
+      expect(icon.aria['aria-checked']).toBeUndefined()
+
+      props.active = true
+      expect(icon.aria['aria-pressed']).toBe('true')
+
+      props.role = 'switch'
+      expect(icon.aria['aria-checked']).toBe('true')
+      expect(icon.aria['aria-pressed']).toBeUndefined()
+
+      props.active = false
+      expect(icon.aria['aria-checked']).toBe('false')
+
+      props.role = 'checkbox'
+      expect(icon.aria['aria-checked']).toBe('false')
+
+      scope.stop()
+    })
+
     it('should bind tabindex and trigger click and keyboard events when dynamic is true', () => {
       const scope = effectScope()
       const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
@@ -318,6 +349,70 @@ describe('Icon', () => {
       expect(emits).not.toHaveBeenCalled()
 
       scope.stop()
+    })
+
+    it('should bind href and trigger Space key events when dynamic is true', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const emits = vi.fn()
+      const props = createReactiveProps({
+        icon: 'open_in_new',
+        dynamic: true,
+        href: 'https://example.com/docs',
+        value: 'open-docs'
+      })
+
+      const icon = scope.run(() => new Icon(
+        props,
+        element,
+        new DesignName('d1.icon'),
+        undefined,
+        undefined,
+        emits
+      ))!
+
+      const binds = icon.binds
+      expect(binds.role).toBe('button')
+      expect(binds.href).toBe('https://example.com/docs')
+      expect(binds.tabindex).toBe(0)
+
+      const spaceEvent = new KeyboardEvent('keydown', { key: ' ', code: 'Space' })
+      binds.onKeydown?.(spaceEvent)
+      expect(emits).toHaveBeenCalledWith('click', spaceEvent, {
+        type: 'click',
+        value: 'open-docs',
+        detail: undefined
+      })
+
+      scope.stop()
+    })
+
+    it.each([
+      [undefined, 0],
+      [0, 0],
+      [-1, -1],
+      ['0', '0'],
+      ['-1', '-1'],
+      [5, 5]
+    ])('should resolve tabindex=%j to %j in dynamic mode without falsy value traps', (inputTabindex, expectedTabindex) => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({
+        icon: 'home',
+        dynamic: true,
+        tabindex: inputTabindex
+      })
+
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+      expect(icon.binds.tabindex).toBe(expectedTabindex)
+
+      scope.stop()
+    })
+
+    it('should expose default animationType token in defaultsIcon', () => {
+      expect(defaultsIcon).toEqual({
+        animationType: 'type1'
+      })
     })
   })
 

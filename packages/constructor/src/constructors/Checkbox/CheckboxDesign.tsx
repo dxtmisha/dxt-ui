@@ -123,6 +123,7 @@ export class CheckboxDesign<
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
+        style: this.styles?.value,
         ...AriaStaticInclude.labelledby(this.item.label.id),
         ...AriaStaticInclude.describedby(this.item.description.id)
       },

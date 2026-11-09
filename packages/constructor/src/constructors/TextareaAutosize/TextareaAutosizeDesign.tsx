@@ -128,6 +128,7 @@ export class TextareaAutosizeDesign<
         ref: this.element,
         value: this.item.value.item.value,
         class: this.classes?.value.main,
+        style: this.styles?.value,
         onFocus: this.item.resize.on,
         onInput: this.item.resize.onInput
       }

@@ -128,6 +128,7 @@ export class InputSocialDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
+        style: this.styles?.value,
         validationMessage: this.item.validation.message,
         icon: this.item.icon,
         label: this.item.label,

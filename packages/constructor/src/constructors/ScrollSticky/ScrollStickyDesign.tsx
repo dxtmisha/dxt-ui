@@ -120,7 +120,8 @@ export class ScrollStickyDesign<
   protected initRender(): VNode {
     return h('div', {
       ...this.getAttrs(),
-      class: this.classes?.value.main
+      class: this.classes?.value.main,
+      style: this.styles?.value
     }, [
       this.renderContext(),
       this.renderScroll()

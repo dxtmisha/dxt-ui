@@ -119,6 +119,7 @@ export class TableItemDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
+        style: this.styles?.value,
         ...this.item.binds
       },
       this.renderContext()

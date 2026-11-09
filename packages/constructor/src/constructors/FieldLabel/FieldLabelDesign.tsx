@@ -124,6 +124,7 @@ export class FieldLabelDesign<
         {
           ...this.getAttrs(),
           class: this.classes?.value.main,
+          style: this.styles?.value,
           for: this.props.for
         },
         children

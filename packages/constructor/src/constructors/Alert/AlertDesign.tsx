@@ -140,6 +140,7 @@ export class AlertDesign<
       ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main,
+      style: this.styles?.value,
       onTransitionend: this.item.alertEvent.onTransition,
       ...this.item.ariaBind
     }, children)

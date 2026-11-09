@@ -45,7 +45,12 @@ export class IconTrailingInclude<
     )
   }
 
-  /** List of properties for the secondary icon component / Список свойств для вторичного компонента иконки */
+  /**
+   * List of properties for the secondary icon component.
+   *
+   * Список свойств для вторичного компонента иконки.
+   * @returns trailing icon component bindings / привязки вторичного компонента иконки
+   */
   get trailingBind(): ConstrBind<IconPropsBasic> {
     const props = this.getProps()
 
@@ -90,6 +95,19 @@ export class IconTrailingInclude<
   }
 
   /**
+   * Renders all icons (first the main icon, then the additional trailing icon).
+   *
+   * Метод для рендеринга всех иконок — сначала основной, затем дополнительной.
+   * @returns list of virtual nodes / список виртуальных узлов
+   */
+  readonly render = (): VNode[] => {
+    return [
+      ...this.renderIcon(),
+      ...this.renderIconTrailing()
+    ]
+  }
+
+  /**
    * Renders the secondary icon component.
    *
    * Рендерит вторичный компонент иконки.
@@ -112,16 +130,14 @@ export class IconTrailingInclude<
   }
 
   /**
-   * Renders all icons (first the main icon, then the additional trailing icon).
+   * Checks whether the main icon should be mirrored.
    *
-   * Метод для рендеринга всех иконок — сначала основной, затем дополнительной.
-   * @returns list of virtual nodes / список виртуальных узлов
+   * Проверяет, надо ли зеркально отображать основную иконку.
+   * @returns check result / результат проверки
    */
-  readonly render = (): VNode[] => {
-    return [
-      ...this.renderIcon(),
-      ...this.renderIconTrailing()
-    ]
+  protected isDir(): boolean {
+    const props = this.getProps()
+    return Boolean(!props.iconTrailing && !props.iconTrailingDirOnly && props.iconDir)
   }
 
   /**
@@ -133,16 +149,5 @@ export class IconTrailingInclude<
   protected isTurn(): boolean {
     const props = this.getProps()
     return Boolean(!props.iconTrailing && !props.iconTrailingTurnOnly && props.iconTurn)
-  }
-
-  /**
-   * Checks whether the main icon should be mirrored.
-   *
-   * Проверяет, надо ли зеркально отображать основную иконку.
-   * @returns check result / результат проверки
-   */
-  protected isDir(): boolean {
-    const props = this.getProps()
-    return Boolean(!props.iconTrailing && !props.iconTrailingDirOnly && props.iconDir)
   }
 }

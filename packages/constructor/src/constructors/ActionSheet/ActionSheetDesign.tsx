@@ -85,6 +85,7 @@ export class ActionSheetDesign<
       {
         ...this.getAttrs(),
         'class': this.classes?.value.main,
+        'style': this.styles?.value,
         'data-touch': 'touch'
       }
     )

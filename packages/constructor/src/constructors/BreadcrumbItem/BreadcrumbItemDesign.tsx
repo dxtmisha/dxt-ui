@@ -172,7 +172,8 @@ export class BreadcrumbItemDesign<
     return h('span', {
       ...this.getAttrs(),
       ref: this.element,
-      class: this.classes?.value.main
+      class: this.classes?.value.main,
+      style: this.styles?.value
     }, this.renderChildren())
   }
 
@@ -187,7 +188,8 @@ export class BreadcrumbItemDesign<
       ...this.getAttrs(),
       ref: this.element,
       ...this.item.binds,
-      class: this.classes?.value.main
+      class: this.classes?.value.main,
+      style: this.styles?.value
     }, this.renderChildren())
   }
 }

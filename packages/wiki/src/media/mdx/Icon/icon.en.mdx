@@ -1,19 +1,19 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for displaying vector icons and graphic symbols with support for active state switching, interactive accessibility, visual transformations, and skeleton integration.
+The `Icon` component is an orchestrator for displaying vector icons, images, and graphic symbols with built-in state management, interactive accessibility, visual transformations, and skeleton integration.
 
-Icon provides a unified orchestrator interface on top of the `Image` component, managing both a primary icon (`icon`) and an alternative active icon (`iconActive`). By default, the component renders as a decorative element (`aria-hidden="true"`). When the `dynamic` mode is enabled, it automatically attaches keyboard navigation (`tabindex`, `Enter`, `Space`), click handlers (`EventClickInclude`), enabled/disabled state tracking (`EnabledInclude`), and semantic ARIA attributes (`role="button"`, `aria-label`, `aria-disabled`). It also integrates with `SkeletonInclude` via `isSkeleton` to display loading placeholders.
+It provides a unified interface on top of the `Image` component, managing both a primary icon (`icon`) and an alternative active icon (`iconActive`). By default, the component renders as a decorative element (`aria-hidden="true"`). When the `dynamic` mode is enabled, it automatically attaches keyboard navigation (`tabindex`, `Enter`, `Space`), click handlers (`EventClickInclude`), enabled/disabled state tracking (`EnabledInclude`), and semantic ARIA attributes (`role="button"`, `aria-label`, `aria-disabled`). It also integrates with `SkeletonInclude` via `isSkeleton` to display loading placeholders.
 
 **Key features:**
 
-- Dual-icon state management with smooth transition animations (`icon`, `iconActive`, `active`, `animationType`, `animationShow`)
-- Interactive mode (`dynamic`) with click events (`@click`, `@clickLite`), keyboard navigation (`tabindex`), and automatic ARIA attributes (`role`, `ariaLabel`, `aria-disabled`)
-- Decorative mode by default (`aria-hidden="true"`) without extraneous ARIA attributes
-- Visual transformations including 180-degree rotation (`turn`), automatic RTL mirroring (`dir`), background substrate (`overlay`), and color palette inheritance (`asPalette`)
-- Flex layout ordering and elevation modifiers (`start`, `end`, `high`)
-- Visibility and interaction control via `hide` and `disabled` states
-- Forwarding of underlying image `@load` events and programmatic state inspection via `isActive()`, `getValue()`, and `getDetail()`
-- Built-in skeleton loading placeholder support (`isSkeleton`) and seamless composition in parent components via `IconLiteInclude`, `IconInclude`, and `IconTrailingInclude`
+- **Dual-Icon State Management:** Seamless switching between primary (`icon`) and active (`iconActive`) icons based on `active` with transition animations (`animationType`, `animationShow`)
+- **Interactive Mode & Accessibility:** Full keyboard navigation (`tabindex`, `Enter`, `Space`), click events (`@click`, `@clickLite`), link support (`href`), and automatic ARIA attributes (`role`, `ariaLabel`, `aria-disabled`) when `dynamic` is enabled
+- **Decorative Default:** Renders with `aria-hidden="true"` and zero extraneous ARIA attributes when `dynamic` is not enabled
+- **Visual Transformations:** Built-in 180-degree rotation (`turn`), automatic RTL mirroring (`dir`), background substrate (`overlay`), and color palette inheritance (`asPalette`)
+- **Layout & Stacking Control:** Flex layout ordering (`start`, `end`) and elevated stacking context (`high`)
+- **Visibility & Disabled States:** Granular control via `hide` and `disabled` modifiers propagated to child `Image` elements
+- **Lifecycle & Programmatic API:** Forwarding of child image `@load` events and exposed inspection methods (`isActive()`, `getValue()`, `getDetail()`)
+- **Skeleton & Composite Integration:** Built-in placeholder support (`isSkeleton`) and seamless composition in parent components via `IconLiteInclude`, `IconInclude`, and `IconTrailingInclude`
 
 **Common use cases:**
 

@@ -117,6 +117,7 @@ export class AccordionDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
+        style: this.styles?.value,
         ...this.item.model.getBinds()
       }
     )

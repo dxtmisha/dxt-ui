@@ -115,7 +115,8 @@ export class SkeletonItemDesign<
     const props = {
       ...this.getAttrs(),
       ...this.item.binds,
-      class: this.classes?.value.main
+      class: this.classes?.value.main,
+      style: this.styles?.value
     }
 
     this.initSlot('default', children)

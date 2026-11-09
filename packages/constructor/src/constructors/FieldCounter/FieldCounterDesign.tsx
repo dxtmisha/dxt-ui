@@ -123,6 +123,7 @@ export class FieldCounterDesign<
           ...this.getAttrs(),
           id: this.props.id,
           class: this.classes?.value.main,
+          style: this.styles?.value,
           innerHTML: this.item.item
         }),
         ...this.renderAria()

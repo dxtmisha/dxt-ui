@@ -120,6 +120,7 @@ export class MotionFlipDesign<
       {
         ref: this.element,
         class: this.classes?.value.main,
+        style: this.styles?.value,
         onTransitionend: this.item.action.onTransition
       },
       this.initSlot('default')

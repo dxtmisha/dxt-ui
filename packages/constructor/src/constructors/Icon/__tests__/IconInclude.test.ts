@@ -310,6 +310,25 @@ describe('Icon Include Classes', () => {
       expect(include.trailingBind.dir).toBe(true)
     })
 
+    it('should fall back trailingBind.asPalette to iconPalette when iconTrailingPalette is omitted or false, and support object iconTrailing values', () => {
+      const props = createReactiveProps<IconTrailingPropsInclude>({
+        icon: { icon: 'folder', overlay: true },
+        iconTrailing: { icon: 'chevron_right', hide: true },
+        iconPalette: true
+      })
+
+      const include = new IconTrailingInclude(props, naming)
+
+      expect(include.iconBind.icon).toBe('folder')
+      expect(include.iconBind.overlay).toBe(true)
+      expect(include.trailingBind.icon).toBe('chevron_right')
+      expect(include.trailingBind.hide).toBe(true)
+      expect(include.trailingBind.asPalette).toBe(true)
+
+      props.iconPalette = false
+      expect(Boolean(include.trailingBind.asPalette)).toBe(false)
+    })
+
     it('should render both main and trailing icons in order via render()', () => {
       const props = createReactiveProps<IconTrailingPropsInclude>({
         icon: 'person',

@@ -1,5 +1,7 @@
 @mixin initDir {
-  html {
+  html,
+  [dir="ltr"],
+  .dir-ltr {
     --d-dir: 1;
     --d-dir-left: 1;
     --d-dir-right: 0;
@@ -22,7 +24,7 @@
     --d-dir-padding-right: var(--sys-padding-right, 0);
   }
 
-  html[dir="rtl"],
+  [dir="rtl"],
   .dir-rtl {
     @include dirToRtl;
   }

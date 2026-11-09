@@ -127,6 +127,7 @@ export class RippleDesign<
       ref: this.element,
       key: 'ripple',
       class: this.classes?.value.main,
+      style: this.styles?.value,
       onPointerdown: this.item.onPointerdown,
       ...AriaStaticInclude.hidden()
     })

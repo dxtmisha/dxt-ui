@@ -1,0 +1,31 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Интерактивный режим (`dynamic`) и доступность
+
+По умолчанию `Icon` рендерится как декоративный элемент с атрибутом `aria-hidden="true"`. Включение свойства `dynamic` переводит компонент в интерактивный режим с визуальным откликом при наведении и нажатии, поддержкой клавиатуры (`Enter` / `Space`), событиями `@click` / `@clickLite` и семантическими ARIA-атрибутами.
+
+**Свойства:**
+
+- `dynamic` — включает интерактивный режим (по умолчанию `role="button"`, `tabindex="0"`, обработчики клика и клавиш `Enter` / `Space`)
+- `ariaLabel` — доступная текстовая метка `aria-label` (применяется в режиме `dynamic`)
+- `role` — пользовательская ARIA-роль, переопределяющая стандартную роль `'button'` в режиме `dynamic`
+- `tabindex` — индекс фокусировки с клавиатуры (автоматически убирается при `disabled="true"`)
+- `value` / `detail` — полезная нагрузка, передаваемая в события `@click` и `@clickLite` и доступная через методы `getValue()` / `getDetail()`
+- `href` — необязательный атрибут ссылки в режиме `dynamic`
+
+<Source
+    code={`
+<Icon
+  icon="visibility"
+  icon-active="visibility_off"
+  :active="isVisible"
+  dynamic
+  aria-label="Переключить видимость пароля"
+  value="password-toggle"
+  :detail="{ field: 'password' }"
+  @click="isVisible = !isVisible"
+/>
+  `}
+    language="html"
+/>
+

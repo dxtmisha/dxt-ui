@@ -2,10 +2,10 @@
 
 @mixin mixinIcon {
   $clipPath: clip-path #{ui.v('d.sys.transitionDuration.fade.enter')} #{ui.v('d.sys.transitionFunction.deceleration')};
-  $margin: margin #{ui.v('d.ref.transitionDuration.1')} linear;
-  $background: background #{ui.v('d.sys.transitionDuration.standard')} linear;
+  $margin: margin #{ui.v('d.sys.transitionDuration.standard')} #{ui.v('d.sys.transitionFunction.standard')};
   $opacity: opacity #{ui.v('d.sys.transitionDuration.standard')} linear;
   $transform: transform #{ui.v('d.sys.transitionDuration.standard')} linear;
+  $background: background #{ui.v('d.sys.transitionDuration.standard')} linear;
 
   @include ui.initByCustom('_factor', ui.v('??factor', 1.5));
   @include ui.initByCustom('_width', ui.v('??width', #{calc(var(--sys-font-size, 16px) * #{ui.v('??_factor')})}));
@@ -23,8 +23,12 @@
 
   border-radius: ui.v('??rounded', inherit);
 
-  transition-property: clip-path, margin, opacity, transform;
+  transition-property: clip-path, opacity, transform;
   transition-duration: ui.v('d.sys.transitionDuration.standard');
+
+  @include ui.mediaPrefersReducedMotion {
+    transition-duration: 0ms;
+  }
 
   @include ui.disabled {
     cursor: default;
@@ -68,16 +72,24 @@
     &--type2 {
       clip-path: inset(0 0 0 0);
 
-      transition: #{$clipPath}, #{$margin}, #{$background}, #{$opacity}, #{$transform};
+      transition: #{$clipPath}, #{$margin}, #{$opacity}, #{$transform}, #{$background};
+
+      @include ui.mediaPrefersReducedMotion {
+        transition: none;
+      }
 
       @include ui.state('hide') {
-        clip-path: inset(0 100% 0 0);
         @include ui.marginRight(calc(#{ui.v('??_width')} * -1) !important);
+        clip-path: inset(0 100% 0 0);
         opacity: 1;
 
         transition-duration: ui.v('d.sys.transitionDuration.fade.exit');
         transition-timing-function: linear;
         transform: none;
+
+        @include ui.mediaPrefersReducedMotion {
+          transition: none;
+        }
       }
     }
   }
@@ -85,6 +97,10 @@
   &--animationShow {
     animation-name: ui.n('??show');
     animation-duration: ui.v('d.sys.transitionDuration.standard');
+
+    @include ui.mediaPrefersReducedMotion {
+      animation: none;
+    }
   }
 
   @keyframes #{ui.n('??show')} {

@@ -131,6 +131,7 @@ export class MenuDesign<
       },
       {
         class: this.classes?.value.main,
+        style: this.styles?.value,
         closeOnEsc: false,
         ariaHaspopup: 'listbox',
         embedded: this.props.embedded

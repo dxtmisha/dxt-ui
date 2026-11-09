@@ -52,7 +52,12 @@ export class IconInclude<
     super(props, naming, components, extra)
   }
 
-  /** List of properties for the icon component / Список свойств для компонента иконки */
+  /**
+   * List of properties for the icon component.
+   *
+   * Список свойств для компонента иконки.
+   * @returns icon component bindings / привязки компонента иконки
+   */
   override get iconBind(): ConstrBind<IconPropsBasic> {
     const props = this.getProps()
 

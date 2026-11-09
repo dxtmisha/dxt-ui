@@ -1,10 +1,11 @@
 import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
-import iconEn from './icon.en.mdx'
-import iconRu from './icon.ru.mdx'
-
+import dynamicEn from './dynamic.en.mdx'
+import dynamicRu from './dynamic.ru.mdx'
 import exposeIsActiveEn from './expose.isActive.en.mdx'
 import exposeIsActiveRu from './expose.isActive.ru.mdx'
+import iconEn from './icon.en.mdx'
+import iconRu from './icon.ru.mdx'
 
 /**
  * MDX files for Icon component
@@ -14,13 +15,17 @@ import exposeIsActiveRu from './expose.isActive.ru.mdx'
 export const wikiMdxIcon: StorybookComponentsMdxItem = {
   name: 'Icon',
   descriptions: {
-    'icon': {
-      en: iconEn,
-      ru: iconRu
+    'dynamic': {
+      en: dynamicEn,
+      ru: dynamicRu
     },
     'expose.isActive': {
       en: exposeIsActiveEn,
       ru: exposeIsActiveRu
+    },
+    'icon': {
+      en: iconEn,
+      ru: iconRu
     }
   }
 }

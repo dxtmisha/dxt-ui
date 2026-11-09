@@ -130,6 +130,7 @@ export class PlaceholderDesign<
     return h('div', {
       ...this.getAttrs(),
       class: this.classes?.value.main,
+      style: this.styles?.value,
       ...this.item.binds
     }, children)
   }

@@ -115,6 +115,7 @@ export class BarsDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
+        style: this.styles?.value,
         ...AriaStaticInclude.live(this.item.ariaLive)
       },
       [

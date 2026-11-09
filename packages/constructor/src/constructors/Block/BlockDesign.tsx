@@ -127,6 +127,7 @@ export class BlockDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
+        style: this.styles?.value,
         ...this.item.binds
       },
       children

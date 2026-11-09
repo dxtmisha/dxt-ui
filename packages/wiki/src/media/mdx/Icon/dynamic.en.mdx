@@ -1,0 +1,31 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Interactive mode (`dynamic`) and accessibility
+
+By default, `Icon` renders as a decorative element with `aria-hidden="true"`. Setting `dynamic` transforms the component into an interactive, keyboard-accessible control with hover/active feedback, click event emission (`@click`, `@clickLite`), and ARIA attributes.
+
+**Properties:**
+
+- `dynamic` — enables interactive mode (`role="button"` by default, `tabindex="0"`, click and `Enter`/`Space` keyboard handlers)
+- `ariaLabel` — accessible label applied as `aria-label` when `dynamic` is enabled
+- `role` — custom ARIA role overriding the default `'button'` role in `dynamic` mode
+- `tabindex` — custom tab order index (omitted automatically when `disabled` is `true`)
+- `value` / `detail` — payload data emitted with `@click` and `@clickLite` and accessible via `getValue()` / `getDetail()`
+- `href` — optional link URL attribute bound in `dynamic` mode
+
+<Source
+    code={`
+<Icon
+  icon="visibility"
+  icon-active="visibility_off"
+  :active="isVisible"
+  dynamic
+  aria-label="Toggle password visibility"
+  value="password-toggle"
+  :detail="{ field: 'password' }"
+  @click="isVisible = !isVisible"
+/>
+  `}
+    language="html"
+/>
+

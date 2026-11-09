@@ -121,6 +121,7 @@ export class AvatarDesign<
       ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main,
+      style: this.styles?.value,
       ...this.item.binds
     }, [
       ...this.item.label.render(),

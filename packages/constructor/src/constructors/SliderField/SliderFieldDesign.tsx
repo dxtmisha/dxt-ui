@@ -137,7 +137,8 @@ export class SliderFieldDesign<
       {
         key: 'main',
         ...this.getAttrs(),
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        style: this.styles?.value
       },
       [
         ...this.item.fieldLabel.render(this.slots),

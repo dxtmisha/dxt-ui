@@ -134,7 +134,8 @@ export class TabsNavigationDesign<
       { default: this.renderList },
       {
         ...this.item.binds,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        style: this.styles?.value
       }
     )
   }

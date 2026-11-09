@@ -188,8 +188,8 @@ export const TableFlexSearch: Story = {
     components: { D1TableFlex },
     setup() {
       return {
-        searchValue: ref('an')
-      }
+          searchValue: ref('an')
+        }
     },
     template: `
         

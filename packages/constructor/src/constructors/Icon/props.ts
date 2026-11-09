@@ -49,9 +49,15 @@ export type IconPropsBasic<
     iconActive?: ImageValue<Image>
 
     // ARIA
-    /** ARIA role for the icon / ARIA-роль для иконки */
+    /**
+     * ARIA role for the icon (applied only when `dynamic` is enabled; static icons render `aria-hidden="true"` and ignore `role` and `ariaLabel`) /
+     * ARIA-роль для иконки (применяется только при включённом `dynamic`; статичные иконки рендерят `aria-hidden="true"` и игнорируют `role` и `ariaLabel`)
+     */
     role?: RoleType
-    /** Tab index for keyboard navigation / Индекс табуляции для навигации с клавиатуры */
+    /**
+     * Tab index for keyboard navigation (applied only when `dynamic` is enabled and not `disabled`) /
+     * Индекс табуляции для навигации с клавиатуры (применяется только при включённом `dynamic` и отсутствии `disabled`)
+     */
     tabindex?: number | string
   }
 

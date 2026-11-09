@@ -136,7 +136,8 @@ export class InputFileItemDesign<
       {
         ...this.getAttrs(),
         ...this.item.aria,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        style: this.styles?.value
       },
       this.renderChildren()
     )

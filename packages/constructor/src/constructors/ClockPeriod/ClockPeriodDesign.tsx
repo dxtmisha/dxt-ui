@@ -122,6 +122,7 @@ export class ClockPeriodDesign<
       'div',
       {
         class: this.classes?.value.main,
+        style: this.styles?.value,
         ...this.item.binds
       },
       [

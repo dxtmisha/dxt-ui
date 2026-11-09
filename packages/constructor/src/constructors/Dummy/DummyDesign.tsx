@@ -106,7 +106,8 @@ export class DummyDesign<
    */
   protected initRender(): VNode {
     return h('div', {
-      class: this.classes?.value.main
+      class: this.classes?.value.main,
+      style: this.styles?.value
     }, this.initSlot('default'))
   }
 }

@@ -156,11 +156,15 @@ export abstract class DesignConstructorAbstract<
       }
     })
 
-    return () => {
+    const item = () => {
       // Track slot changes in the render effect / Отслеживаем изменения слотов в эффекте рендеринга
       void slotsState.value
       return this.initRender()
     }
+
+    item.inheritAttrs = false
+
+    return item
   }
 
   /**

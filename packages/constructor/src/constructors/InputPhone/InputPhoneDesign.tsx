@@ -128,6 +128,7 @@ export class InputPhoneDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
+        style: this.styles?.value,
         validationMessage: this.item.i('validation').message
       }
     )

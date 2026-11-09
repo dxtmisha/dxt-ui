@@ -121,6 +121,7 @@ export class BadgeDesign<
       ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main,
+      style: this.styles?.value,
       ...AriaStaticInclude.label(this.props.ariaLabel)
     }, children)
   }

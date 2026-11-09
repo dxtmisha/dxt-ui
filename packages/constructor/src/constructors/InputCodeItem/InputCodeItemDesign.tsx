@@ -135,7 +135,8 @@ export class InputCodeItemDesign<
     return h('div', {
       ...this.getAttrs(),
       ref: this.element,
-      class: this.classes?.value.main
+      class: this.classes?.value.main,
+      style: this.styles?.value
     }, children)
   }
 

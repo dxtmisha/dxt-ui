@@ -163,6 +163,7 @@ export class MotionTransformDesign<
           ref: this.element,
           key: 'main',
           class: this.classes?.value.main,
+          style: this.styles?.value,
           onTransitionend: this.item.event.onTransitionend
         },
         [

@@ -119,6 +119,7 @@ export class ListMenuDesign<
         ...this.getAttrs(),
         open: this.item.open.is(),
         class: this.classes?.value.main,
+        style: this.styles?.value,
         inert: false,
         autoTabIndex: false,
         closeOnEsc: false

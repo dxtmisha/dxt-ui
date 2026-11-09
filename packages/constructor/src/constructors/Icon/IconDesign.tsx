@@ -72,17 +72,33 @@ export class IconDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work.
+   * Render the main icon.
    *
-   * Инициализация всех необходимых свойств для работы.
-   * @returns exposed properties / открытые свойства
+   * Рендер основной иконки.
+   * @returns rendered icon virtual node / отрендеренный виртуальный узел иконки
    */
-  protected initExpose(): EXPOSE {
-    return {
-      getDetail: () => this.item.i('event').expose.getDetail?.(),
-      getValue: () => this.item.i('event').expose.getValue?.(),
-      isActive: this.item.isActive
-    } as EXPOSE
+  readonly renderIcon = (): VNode | undefined => {
+    return this.components?.renderOne(
+      'image',
+      this.item.iconBind,
+      undefined,
+      'icon'
+    )
+  }
+
+  /**
+   * Render the secondary icon.
+   *
+   * Рендер вторичной иконки.
+   * @returns rendered active icon virtual node / отрендеренный виртуальный узел активной иконки
+   */
+  readonly renderIconActive = (): VNode | undefined => {
+    return this.components?.renderOne(
+      'image',
+      this.item.iconActiveBind,
+      undefined,
+      'iconActive'
+    )
   }
 
   /**
@@ -104,13 +120,17 @@ export class IconDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Initialization of all the necessary properties for work.
    *
-   * Доработка полученного списка стилей.
-   * @returns list of styles / список стилей
+   * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / открытые свойства
    */
-  protected initStyles(): ConstrStyles {
-    return {}
+  protected initExpose(): EXPOSE {
+    return {
+      getDetail: () => this.item.i('event').expose.getDetail?.(),
+      getValue: () => this.item.i('event').expose.getValue?.(),
+      isActive: this.item.isActive
+    } as EXPOSE
   }
 
   /**
@@ -153,32 +173,12 @@ export class IconDesign<
   }
 
   /**
-   * Render the main icon.
+   * Refinement of the received list of styles.
    *
-   * Рендер основной иконки.
-   * @returns rendered icon virtual node / отрендеренный виртуальный узел иконки
+   * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
-  readonly renderIcon = (): VNode | undefined => {
-    return this.components?.renderOne(
-      'image',
-      this.item.iconBind,
-      undefined,
-      'icon'
-    )
-  }
-
-  /**
-   * Render the secondary icon.
-   *
-   * Рендер вторичной иконки.
-   * @returns rendered active icon virtual node / отрендеренный виртуальный узел активной иконки
-   */
-  readonly renderIconActive = (): VNode | undefined => {
-    return this.components?.renderOne(
-      'image',
-      this.item.iconActiveBind,
-      undefined,
-      'iconActive'
-    )
+  protected initStyles(): ConstrStyles {
+    return {}
   }
 }

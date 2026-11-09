@@ -137,7 +137,8 @@ export class MotionAxisDesign<
       {
         ...this.getAttrs(),
         ref: this.element,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        style: this.styles?.value
       },
       this.renderSlides()
     )

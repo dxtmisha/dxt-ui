@@ -125,6 +125,7 @@ export class InputSearchDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
+        style: this.styles?.value,
         validationMessage: this.item.validation.message
       }
     )

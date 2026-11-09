@@ -73,8 +73,14 @@ export class Icon extends DesignLogicAbstract<
 
   /**
    * List of ARIA attributes for the icon element.
+   * When `dynamic` is `true`, returns `role`, `aria-label`, `aria-disabled`,
+   * and state attributes (`aria-checked` for `switch`/`checkbox` or `aria-pressed` for `button`) when `iconActive` is present.
+   * When `dynamic` is `false` (static decorative icon), ignores `role` and `ariaLabel` and returns `aria-hidden="true"`.
    *
    * Список ARIA-атрибутов для элемента иконки.
+   * При `dynamic: true` возвращает `role`, `aria-label`, `aria-disabled`,
+   * а также атрибуты состояния (`aria-checked` для `switch`/`checkbox` или `aria-pressed` для `button`) при наличии `iconActive`.
+   * При `dynamic: false` (статичная декоративная иконка) игнорирует `role` и `ariaLabel` и возвращает `aria-hidden="true"`.
    * @returns ARIA attributes / ARIA атрибуты
    */
   get aria(): AriaList {
@@ -82,7 +88,8 @@ export class Icon extends DesignLogicAbstract<
       return {
         ...AriaStaticInclude.role(this.role),
         ...AriaStaticInclude.label(this.props.ariaLabel),
-        ...(this.i('enabled').isDisabled ? AriaStaticInclude.disabled(true) : {})
+        ...(this.i('enabled').isDisabled ? AriaStaticInclude.disabled(true) : {}),
+        ...this.ariaState
       }
     }
 
@@ -90,9 +97,33 @@ export class Icon extends DesignLogicAbstract<
   }
 
   /**
+   * Returns ARIA state attributes (`aria-checked` or `aria-pressed`) for dual-icon interactive toggles.
+   *
+   * Возвращает атрибуты состояния ARIA (`aria-checked` или `aria-pressed`) для двухсоставных интерактивных переключателей.
+   * @returns ARIA state attributes / атрибуты состояния ARIA
+   */
+  protected get ariaState(): AriaList {
+    if (this.props.iconActive) {
+      const role = this.role
+
+      if (role === 'switch' || role === 'checkbox') {
+        return AriaStaticInclude.checked(this.isActive())
+      }
+
+      if (role === 'button') {
+        return AriaStaticInclude.pressed(this.isActive())
+      }
+    }
+
+    return {}
+  }
+
+  /**
    * Computed bindings for the icon element.
+   * Includes `tabindex` and click event listeners only when `dynamic` is enabled.
    *
    * Вычисляемые привязки для элемента иконки.
+   * Включает `tabindex` и обработчики клика только при включённом `dynamic`.
    * @returns root element bindings / привязки корневого элемента
    */
   get binds(): ConstrBind {

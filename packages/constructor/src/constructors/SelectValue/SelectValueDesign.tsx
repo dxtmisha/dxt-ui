@@ -122,7 +122,8 @@ export class SelectValueDesign<
       'div',
       {
         ...this.getAttrs(),
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        style: this.styles?.value
       },
       this.renderData()
     )

@@ -111,7 +111,8 @@ export class BulletDesign<
     const tag = 'ul'
     const props = {
       ...this.getAttrs(),
-      class: this.classes?.value.main
+      class: this.classes?.value.main,
+      style: this.styles?.value
     }
     const children: any[] = [
       ...this.item.list.render()

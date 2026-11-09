@@ -31,3 +31,9 @@ src/constructors/Skeleton/SkeletonInclude.ts
 
 src/constructors/ComponentOutlet/ComponentOutlet.ts
 src/constructors/ComponentOutlet/ComponentOutletDesign.tsx
+
+src/constructors/Icon/Icon.ts
+src/constructors/Icon/IconDesign.tsx
+src/constructors/Icon/IconLiteInclude.ts
+src/constructors/Icon/IconInclude.ts
+src/constructors/Icon/IconTrailingInclude.ts

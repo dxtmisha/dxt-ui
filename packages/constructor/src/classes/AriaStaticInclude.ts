@@ -287,6 +287,19 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Returns the ARIA pressed attribute indicating the current pressed state of toggle buttons.
+   *
+   * Возвращает атрибут ARIA pressed, указывающий текущее состояние нажатия кнопок-переключателей.
+   * @param isPressed whether the toggle button is pressed / нажата ли кнопка-переключатель
+   * @returns ARIA attributes object / Объект ARIA атрибутов
+   */
+  static pressed(isPressed?: boolean): AriaList {
+    return {
+      'aria-pressed': this.isTrueOrFalse(isPressed)
+    }
+  }
+
+  /**
    * Returns the ARIA readonly attribute indicating that the element is not editable, but remains focusable and operable.
    *
    * Возвращает атрибут ARIA readonly, указывающий, что элемент не редактируется, но доступен для фокуса и навигации.

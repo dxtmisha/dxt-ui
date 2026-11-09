@@ -124,7 +124,8 @@ export class FieldMessageDesign<
         {
           ...this.getAttrs(),
           key: 'main',
-          class: this.classes?.value.main
+          class: this.classes?.value.main,
+          style: this.styles?.value
         },
         [
           ...this.renderInfo(),

@@ -331,6 +331,30 @@ describe('DesignConstructorAbstract external classes', () => {
     expect(markup).toContain('<b class="base-label">label</b>')
     expect(markup).toContain('<i class="base-content">content</i>')
   })
+
+  it('does not duplicate external classes when rendering design.render() as a child component without inheritAttrs: false', async () => {
+    class RootClassDesign extends SlotDesign {
+      protected override initClasses(): Partial<ConstrClasses> {
+        return { main: 'd1-icon' }
+      }
+
+      protected override initRender(): VNode {
+        return h('span', { ...this.getAttrs(), class: this.classes?.value.main }, 'icon')
+      }
+    }
+
+    const host = defineComponent({
+      setup() {
+        const render = new RootClassDesign().render()
+        return (): VNode => h(render)
+      }
+    })
+    const markup = await renderToString(createSSRApp({
+      setup: () => () => h(host, { class: 'd1-palette--red' })
+    }))
+
+    expect(markup).toBe('<span class="d1-icon d1-palette--red">icon</span>')
+  })
 })
 
 describe('DesignConstructorAbstract slot rendering', () => {

@@ -270,9 +270,9 @@ export const SkeletonDelays: Story = {
       await expect(skeletons[3]).not.toHaveClass('d1-skeleton--invisible')
       await expect(skeletons[3]).toHaveAttribute('aria-busy', 'false')
 
-      // Delay-before-hiding skeleton (index 2, delayHide="1000") removes invisible immediately but keeps visible during delayHide
+      // Delay-before-hiding skeleton (index 2, delayHide="1000") keeps invisible and visible during delayHide
       await expect(skeletons[2]).not.toHaveClass('d1-skeleton--active')
-      await expect(skeletons[2]).not.toHaveClass('d1-skeleton--invisible')
+      await expect(skeletons[2]).toHaveClass('d1-skeleton--invisible')
       await expect(skeletons[2]).toHaveClass('d1-skeleton--visible')
     })
   }
@@ -480,6 +480,7 @@ export const SkeletonTestProviderAndChildren: Story = {
     await expect(parentSkeleton).toHaveClass('d1-skeleton--invisible')
     await expect(parentSkeleton).toHaveAttribute('aria-busy', 'true')
 
+    await expect(nestedSkeleton).toHaveClass('d1-skeleton--active')
     await expect(nestedSkeleton).toHaveClass('d1-skeleton--visible')
     await expect(nestedSkeleton).toHaveClass('d1-skeleton--invisible')
     await expect(nestedSkeleton).toHaveAttribute('aria-busy', 'true')
@@ -606,10 +607,11 @@ export const SkeletonTestExposeAndDelayTimers: Story = {
       await userEvent.click(readExposeButton)
 
       await expect(exposedStatus).toHaveTextContent('isActive(): false')
-      await expect(skeleton).not.toHaveClass('d1-skeleton--invisible')
+      await expect(skeleton).toHaveClass('d1-skeleton--invisible')
 
       await waitFor(() => {
         expect(skeleton).not.toHaveClass('d1-skeleton--visible')
+        expect(skeleton).not.toHaveClass('d1-skeleton--invisible')
       })
     })
 

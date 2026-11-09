@@ -133,6 +133,7 @@ export class ListDesign<
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
+        style: this.styles?.value,
         ...AriaStaticInclude.role(this.props.role),
         tabindex: this.props.control ? undefined : this.props.tabindex,
         onFocus: this.item.control.onFocus,
