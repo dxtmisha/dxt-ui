@@ -11,9 +11,9 @@ export class FigmaUiMessenger extends FigmaPostAbstract {
    * Getting an instance of the class for working with Figma UI messenger (frontend).
    *
    * Получение экземпляра класса для работы с мессенджером UI Figma (frontend).
-   * @returns current instance/ текущий экземпляр
+   * @returns Current instance / Текущий экземпляр
    */
-  static getInstance() {
+  static getInstance(): FigmaUiMessenger {
     if (item) {
       return item
     }
@@ -49,7 +49,7 @@ export class FigmaUiMessenger extends FigmaPostAbstract {
    *
    * Инициализирует слушатель, используя событие message объекта window.
    */
-  protected prepare() {
+  protected prepare(): void {
     window.addEventListener(
       'message',
       (event: MessageEvent) => this.onMessage(event.data?.pluginMessage)
@@ -57,4 +57,5 @@ export class FigmaUiMessenger extends FigmaPostAbstract {
   }
 }
 
+/** Singleton instance of FigmaUiMessenger / Одиночный экземпляр FigmaUiMessenger */
 let item: FigmaUiMessenger | undefined

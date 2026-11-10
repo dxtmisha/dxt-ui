@@ -1,5 +1,6 @@
 import { FigmaUiMessenger } from '../classes/FigmaUiMessenger'
 import { UI_FIGMA_STORAGE_SET } from '../types/framesTypes'
+import type { StorageMessengerData } from '../types/storageTypes'
 
 /**
  * Sends the storage data to the Figma plugin.
@@ -9,12 +10,12 @@ import { UI_FIGMA_STORAGE_SET } from '../types/framesTypes'
  * @param value The value to store / Значение для хранения
  * @param id The ID of the object / Идентификатор объекта
  */
-export function sendStorage<T>(
+export function sendStorage<T = unknown>(
   name: string,
   value: T,
   id?: string
 ): void {
   FigmaUiMessenger
     .getInstance()
-    .post(UI_FIGMA_STORAGE_SET, { name, value, id })
+    .post<StorageMessengerData<T>>(UI_FIGMA_STORAGE_SET, { name, value, id })
 }

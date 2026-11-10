@@ -14,5 +14,5 @@ export function sendFramesSelected(
 ): void {
   FigmaUiMessenger
     .getInstance()
-    .post(UI_FIGMA_FRAMES_SELECTED_ADD_NAME, { id, selected })
+    .post<{ id: string, selected: boolean }>(UI_FIGMA_FRAMES_SELECTED_ADD_NAME, { id, selected })
 }

@@ -2,13 +2,13 @@ import { FigmaUiMessenger } from '../classes/FigmaUiMessenger'
 import { UI_FIGMA_FRAME_SET_SELECTION } from '../types/framesTypes'
 
 /**
- * Send selection frame to UI
+ * Sends selected frame ID to the Figma plugin to change document selection.
  *
- * Отправка выделенного фрейма в UI
- * @param id - Frame ID / ID фрейма
+ * Отправляет идентификатор фрейма в плагин Figma для изменения выделения в документе.
+ * @param id Frame ID / ID фрейма
  */
-export function sendFrameSelection(id?: string) {
+export function sendFrameSelection(id?: string): void {
   FigmaUiMessenger
     .getInstance()
-    .post(UI_FIGMA_FRAME_SET_SELECTION, { id })
+    .post<{ id?: string }>(UI_FIGMA_FRAME_SET_SELECTION, { id })
 }

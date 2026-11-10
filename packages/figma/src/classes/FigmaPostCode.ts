@@ -6,7 +6,10 @@ import { random } from '@dxtmisha/functional-basic'
  * Класс для управления уникальным кодом, используемым для проверки сообщений между плагином Figma и UI.
  */
 export class FigmaPostCode {
+  /** Current verification code / Текущий проверочный код */
   private static code: string = `figma-${random(100_000, 999_999)}`
+
+  /** Flag indicating if the code can still be modified / Флаг, указывающий, можно ли ещё изменить код */
   private static isEditable: boolean = true
 
   /**
@@ -14,8 +17,9 @@ export class FigmaPostCode {
    *
    * Проверяет, совпадает ли предоставленный код с текущим кодом сообщения.
    * @param code The code to check / Проверяемый код
+   * @returns `true` if the code matches, `false` otherwise / `true`, если код совпадает, иначе `false`
    */
-  static is(code: string): boolean {
+  static is(code?: string): boolean {
     return this.code === code
   }
 
@@ -23,6 +27,7 @@ export class FigmaPostCode {
    * Returns the current post code.
    *
    * Возвращает текущий код сообщения.
+   * @returns Current verification code / Текущий проверочный код
    */
   static get(): string {
     return this.code
@@ -34,7 +39,7 @@ export class FigmaPostCode {
    * Устанавливает новый код сообщения. Можно вызвать только один раз.
    * @param code The new code to set / Новый код для установки
    */
-  static set(code: string) {
+  static set(code: string): void {
     if (this.isEditable) {
       this.code = `figma-${code}`
       this.isEditable = false

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { sendFramesSelected } from '../sendFramesSelected'
 import { FigmaUiMessenger } from '../../classes/FigmaUiMessenger'
+import { UI_FIGMA_FRAMES_SELECTED_ADD_NAME } from '../../types/framesTypes'
 
 vi.mock('../../classes/FigmaUiMessenger', () => {
   const mockPost = vi.fn()
@@ -18,13 +19,19 @@ describe('sendFramesSelected', () => {
     vi.clearAllMocks()
   })
 
-  it('should post selected frames to plugin', () => {
-    sendFramesSelected('frame-id', true)
-
+  it('should post frame selection toggle with id and boolean true/false', () => {
     const messenger = FigmaUiMessenger.getInstance()
-    expect(messenger.post).toHaveBeenCalledWith(expect.any(String), {
-      id: 'frame-id',
+
+    sendFramesSelected('frame-1', true)
+    expect(messenger.post).toHaveBeenCalledWith(UI_FIGMA_FRAMES_SELECTED_ADD_NAME, {
+      id: 'frame-1',
       selected: true
+    })
+
+    sendFramesSelected('frame-1', false)
+    expect(messenger.post).toHaveBeenCalledWith(UI_FIGMA_FRAMES_SELECTED_ADD_NAME, {
+      id: 'frame-1',
+      selected: false
     })
   })
 })

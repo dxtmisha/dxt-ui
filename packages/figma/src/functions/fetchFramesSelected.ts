@@ -37,13 +37,13 @@ export function fetchFramesSelected(
    * Функция обратного вызова, которая обновляет состояние выбранных фреймов и уведомляет запрашивающего.
    * @param selectedNew The new list of selected frame IDs / Новый список идентификаторов выбранных фреймов
    */
-  const update = (selectedNew: string[]) => {
+  const update = (selectedNew: string[]): void => {
     selected = selectedNew
     loading = false
 
     callback(selected)
   }
 
-  messenger.add(UI_FIGMA_FRAMES_SELECTED_POST_NAME, update)
+  messenger.add(UI_FIGMA_FRAMES_SELECTED_POST_NAME, update, true)
     .post(UI_FIGMA_FRAMES_SELECTED_POST_NAME)
 }

@@ -17,7 +17,7 @@ let isInit: boolean = false
  */
 export function fetchFrameStyles(
   callback: (value: UiFigmaFrameStylesMessengerResponse) => void
-) {
+): void {
   initStyles()
 
   /** Storage callback / Колбэк хранилища */
@@ -33,7 +33,7 @@ export function fetchFrameStyles(
  * Получить ключ хранилища стилей фреймов.
  * @returns Key / Ключ
  */
-const getKey = () => 'figma:frame-styles:get'
+const getKey = (): string => 'figma:frame-styles:get'
 
 /**
  * Get the storage callback instance for frame styles.
@@ -41,7 +41,7 @@ const getKey = () => 'figma:frame-styles:get'
  * Получить экземпляр колбэка хранилища для стилей фреймов.
  * @returns Storage callback / Колбэк хранилища
  */
-const getStorageCallback = () =>
+const getStorageCallback = (): StorageCallback<UiFigmaFrameStylesMessengerResponse> =>
   StorageCallback.getInstance<UiFigmaFrameStylesMessengerResponse>(getKey())
 
 /**
@@ -49,7 +49,7 @@ const getStorageCallback = () =>
  *
  * Инициализировать мессенджер для стилей фреймов.
  */
-const initStyles = () => {
+const initStyles = (): void => {
   if (isInit) {
     return
   }
@@ -63,6 +63,5 @@ const initStyles = () => {
     .add(FIGMA_FRAME_STYLES_MESSENGER_NAME, (data: UiFigmaFrameStylesMessengerResponse) => {
       getStorageCallback()
         .run(data)
-        .then()
     })
 }

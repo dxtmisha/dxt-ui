@@ -18,6 +18,18 @@ const messenger = new FigmaUiMessenger()
   .add('plugin-update', (data) => console.log('Plugin:', data))
 ```
 
+## Các phương thức tĩnh
+
+### `getInstance`
+
+Trả về phiên bản đơn (singleton) của `FigmaUiMessenger` và tự động khởi tạo trình lắng nghe tin nhắn (`make()`).
+
+**Trả về:** `FigmaUiMessenger`
+
+```typescript
+const messenger = FigmaUiMessenger.getInstance()
+```
+
 ## Các phương thức công khai
 
 ### `make`

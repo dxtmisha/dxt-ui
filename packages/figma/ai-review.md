@@ -1,0 +1,15 @@
+FigmaPostCode
+FigmaPostAbstract
+FigmaUiMessenger
+fetchClientStorage
+fetchFrameSelection
+fetchFramesSelected
+fetchFrameStyles
+fetchStorage
+fetchTopLevelFrames
+sendClientStorage
+sendFrameSelection
+sendFramesSelected
+sendFrameStyles
+sendStorage
+

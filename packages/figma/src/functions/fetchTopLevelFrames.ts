@@ -37,15 +37,12 @@ export function fetchTopLevelFrames(
    * Функция обратного вызова, которая обновляет состояние фреймов и уведомляет запрашивающего.
    * @param framesNew The new list of frames / Новый список фреймов
    */
-  const update = (framesNew: UiFigmaFramesList) => {
+  const update = (framesNew: UiFigmaFramesList): void => {
     frames = framesNew
+    callback(frames)
+    messenger.remove(UI_FIGMA_FRAMES_POST_NAME, update)
 
-    if (frames.length > 0) {
-      callback(frames)
-      messenger.remove(UI_FIGMA_FRAMES_POST_NAME, update)
-
-      loading = false
-    }
+    loading = false
   }
 
   messenger.add(UI_FIGMA_FRAMES_POST_NAME, update)

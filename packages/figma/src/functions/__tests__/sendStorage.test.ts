@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { sendStorage } from '../sendStorage'
 import { FigmaUiMessenger } from '../../classes/FigmaUiMessenger'
+import { UI_FIGMA_STORAGE_SET } from '../../types/framesTypes'
 
 vi.mock('../../classes/FigmaUiMessenger', () => {
   const mockPost = vi.fn()
@@ -18,14 +19,28 @@ describe('sendStorage', () => {
     vi.clearAllMocks()
   })
 
-  it('should post storage data to plugin', () => {
-    sendStorage('test-name', 'test-value', 'test-id')
-
+  it('should post storage data with and without id', () => {
     const messenger = FigmaUiMessenger.getInstance()
-    expect(messenger.post).toHaveBeenCalledWith(expect.any(String), {
-      name: 'test-name',
-      value: 'test-value',
-      id: 'test-id'
+
+    sendStorage('status', 'active')
+    expect(messenger.post).toHaveBeenCalledWith(UI_FIGMA_STORAGE_SET, {
+      name: 'status',
+      value: 'active',
+      id: undefined
+    })
+
+    sendStorage('node-meta', { visible: true }, '12:34')
+    expect(messenger.post).toHaveBeenCalledWith(UI_FIGMA_STORAGE_SET, {
+      name: 'node-meta',
+      value: { visible: true },
+      id: '12:34'
+    })
+
+    sendStorage('counter', 0, 'node-1')
+    expect(messenger.post).toHaveBeenCalledWith(UI_FIGMA_STORAGE_SET, {
+      name: 'counter',
+      value: 0,
+      id: 'node-1'
     })
   })
 })

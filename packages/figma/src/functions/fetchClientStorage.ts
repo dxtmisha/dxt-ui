@@ -16,12 +16,12 @@ let isInit: boolean = false
  * @param defaultValue Default value / Значение по умолчанию
  * @param isOnce Call only once / Вызвать только один раз
  */
-export function fetchClientStorage<T>(
+export function fetchClientStorage<T = unknown>(
   name: string,
   callback: (value: T) => void,
   defaultValue?: T,
   isOnce: boolean = true
-) {
+): void {
   initMessenger()
 
   /** Storage callback / Колбэк хранилища */
@@ -35,9 +35,9 @@ export function fetchClientStorage<T>(
 
     FigmaUiMessenger
       .getInstance()
-      .post(UI_FIGMA_CLIENT_STORAGE_GET, {
+      .post<ClientStorageMessengerData<T | undefined>>(UI_FIGMA_CLIENT_STORAGE_GET, {
         name,
-        defaultValue
+        value: defaultValue
       })
   }
 }
@@ -49,7 +49,7 @@ export function fetchClientStorage<T>(
  * @param name Storage name / Имя хранилища
  * @returns Storage key / Ключ хранилища
  */
-const getKey = (name: string) =>
+const getKey = (name: string): string =>
   `figma:client-storage:${name}`
 
 /**
@@ -59,7 +59,7 @@ const getKey = (name: string) =>
  * @param name Storage name / Имя хранилища
  * @returns Storage callback / Колбэк хранилища
  */
-const getStorageCallback = <T>(name: string) =>
+const getStorageCallback = <T>(name: string): StorageCallback<T> =>
   StorageCallback.getInstance<T>(getKey(name))
 
 /**
@@ -67,7 +67,7 @@ const getStorageCallback = <T>(name: string) =>
  *
  * Инициализировать мессенджер для клиентского хранилища.
  */
-const initMessenger = () => {
+const initMessenger = (): void => {
   if (isInit) {
     return
   }
@@ -81,6 +81,5 @@ const initMessenger = () => {
     .add(UI_FIGMA_CLIENT_STORAGE_GET, (data: ClientStorageMessengerData) => {
       getStorageCallback(data.name)
         .run(data.value)
-        .then()
     })
 }

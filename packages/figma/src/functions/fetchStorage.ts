@@ -17,13 +17,13 @@ let isInit: boolean = false
  * @param defaultValue Default value / Значение по умолчанию
  * @param isOnce Call only once / Вызвать только один раз
  */
-export function fetchStorage<T>(
+export function fetchStorage<T = unknown>(
   name: string,
   callback: (value: T) => void,
   id?: string,
   defaultValue?: T,
   isOnce: boolean = true
-) {
+): void {
   initMessenger()
 
   /** Storage callback / Колбэк хранилища */
@@ -37,10 +37,10 @@ export function fetchStorage<T>(
 
     FigmaUiMessenger
       .getInstance()
-      .post(UI_FIGMA_STORAGE_GET, {
+      .post<StorageMessengerData<T | undefined>>(UI_FIGMA_STORAGE_GET, {
         name,
         id,
-        defaultValue
+        value: defaultValue
       })
   }
 }
@@ -53,7 +53,7 @@ export function fetchStorage<T>(
  * @param id Storage id / Идентификатор хранилища
  * @returns Storage key / Ключ хранилища
  */
-const getKey = (name: string, id?: string) =>
+const getKey = (name: string, id?: string): string =>
   `figma:storage:${id ? `${name}:${id}` : name}`
 
 /**
@@ -64,7 +64,7 @@ const getKey = (name: string, id?: string) =>
  * @param id Storage id / Идентификатор хранилища
  * @returns Storage callback / Колбэк хранилища
  */
-const getStorageCallback = <T>(name: string, id?: string) =>
+const getStorageCallback = <T>(name: string, id?: string): StorageCallback<T> =>
   StorageCallback.getInstance<T>(getKey(name, id))
 
 /**
@@ -72,7 +72,7 @@ const getStorageCallback = <T>(name: string, id?: string) =>
  *
  * Инициализировать мессенджер.
  */
-const initMessenger = () => {
+const initMessenger = (): void => {
   if (isInit) {
     return
   }

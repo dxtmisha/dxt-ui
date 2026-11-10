@@ -10,8 +10,8 @@ import {
  * Отправить запрос на получение стилей фреймов.
  * @param attributes Attributes for fetching styles / Атрибуты для получения стилей
  */
-export function sendFrameStyles(attributes: UiFigmaFrameStylesMessengerAttributes) {
+export function sendFrameStyles(attributes: UiFigmaFrameStylesMessengerAttributes): void {
   FigmaUiMessenger
     .getInstance()
-    .post(FIGMA_FRAME_STYLES_MESSENGER_NAME, attributes)
+    .post<UiFigmaFrameStylesMessengerAttributes>(FIGMA_FRAME_STYLES_MESSENGER_NAME, attributes)
 }

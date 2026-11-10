@@ -18,6 +18,18 @@ const messenger = new FigmaUiMessenger()
   .add('plugin-update', (data) => console.log('Plugin:', data))
 ```
 
+## Static Methods
+
+### `getInstance`
+
+Returns the singleton instance of `FigmaUiMessenger` and initializes its window message listener (`make()`) automatically.
+
+**Returns:** `FigmaUiMessenger`
+
+```typescript
+const messenger = FigmaUiMessenger.getInstance()
+```
+
 ## Public Methods
 
 ### `make`

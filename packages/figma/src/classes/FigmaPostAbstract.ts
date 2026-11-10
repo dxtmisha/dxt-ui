@@ -8,20 +8,11 @@ import type { UiFigmaMessengerCallback, UiFigmaMessengerData, UiFigmaMessengerLi
  * Базовый абстрактный класс для управления обменом сообщениями между плагином Figma и UI.
  */
 export abstract class FigmaPostAbstract {
+  /** Flag indicating whether the message listener is initialized / Флаг, указывающий, инициализирован ли слушатель сообщений */
   protected isMake: boolean = false
-  protected readonly posts: UiFigmaMessengerList = {}
 
-  /**
-   * Sends a message to the other side.
-   *
-   * Отправляет сообщение на другую сторону.
-   * @param type The type of the message / Тип сообщения
-   * @param message The message data / Данные сообщения
-   */
-  abstract post<Message>(
-    type: string,
-    message?: Message
-  ): void
+  /** Dictionary of registered message callbacks indexed by type / Словарь зарегистрированных колбэков сообщений, индексированный по типу */
+  protected readonly posts: UiFigmaMessengerList = {}
 
   /**
    * Adds a callback listener for a specific message type.
@@ -30,13 +21,14 @@ export abstract class FigmaPostAbstract {
    * @param type The type of the message / Тип сообщения
    * @param callback The function to call when the message is received / Функция, вызываемая при получении сообщения
    * @param once Whether the callback should only be called once / Вызывать ли колбэк только один раз
+   * @returns Current instance / Текущий экземпляр
    */
   add<Message>(
     type: string,
     callback: UiFigmaMessengerCallback<Message>,
     once: boolean = false
   ): this {
-    if (!this.posts[type]) {
+    if (!Object.hasOwn(this.posts, type)) {
       this.posts[type] = {
         type,
         callbackList: []
@@ -57,12 +49,13 @@ export abstract class FigmaPostAbstract {
    * Удаляет колбэк-слушатель для определенного типа сообщения.
    * @param type The type of the message / Тип сообщения
    * @param callback The function to remove / Функция для удаления
+   * @returns Current instance / Текущий экземпляр
    */
   remove<Message>(
     type: string,
     callback: UiFigmaMessengerCallback<Message>
   ): this {
-    if (!this.posts[type]) {
+    if (!Object.hasOwn(this.posts, type)) {
       return this
     }
 
@@ -77,6 +70,7 @@ export abstract class FigmaPostAbstract {
    * Initializes the message listener.
    *
    * Инициализирует слушатель сообщений.
+   * @returns Current instance / Текущий экземпляр
    */
   make(): this {
     if (!this.isMake) {
@@ -88,11 +82,16 @@ export abstract class FigmaPostAbstract {
   }
 
   /**
-   * Sets up the actual environment-specific message listener.
+   * Sends a message to the other side.
    *
-   * Настраивает фактический слушатель сообщений, зависящий от среды.
+   * Отправляет сообщение на другую сторону.
+   * @param type The type of the message / Тип сообщения
+   * @param message The message data / Данные сообщения
    */
-  protected abstract prepare(): void
+  abstract post<Message>(
+    type: string,
+    message?: Message
+  ): void
 
   /**
    * Notifies all registered listeners for a specific message type.
@@ -104,8 +103,8 @@ export abstract class FigmaPostAbstract {
   protected notify<Message>(
     type: string,
     message: Message
-  ) {
-    if (type in this.posts) {
+  ): void {
+    if (Object.hasOwn(this.posts, type)) {
       this.posts[type].callbackList.forEach((item) => {
         item.callback(message)
 
@@ -122,7 +121,7 @@ export abstract class FigmaPostAbstract {
    * Внутренний обработчик сообщений, который фильтрует по коду сообщения и уведомляет слушателей.
    * @param data The received message data / Данные полученного сообщения
    */
-  protected onMessage = (data?: UiFigmaMessengerData) => {
+  protected onMessage = (data?: UiFigmaMessengerData): void => {
     if (
       data
       && FigmaPostCode.is(data.code)
@@ -133,4 +132,11 @@ export abstract class FigmaPostAbstract {
       )
     }
   }
+
+  /**
+   * Sets up the actual environment-specific message listener.
+   *
+   * Настраивает фактический слушатель сообщений, зависящий от среды.
+   */
+  protected abstract prepare(): void
 }

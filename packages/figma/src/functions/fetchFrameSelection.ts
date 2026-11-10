@@ -14,7 +14,7 @@ let isInit: boolean = false
  */
 export function fetchFrameSelection(
   callback: (value: UiFigmaFramesList) => void
-) {
+): void {
   initSelection()
 
   /** Storage callback / Колбэк хранилища */
@@ -38,7 +38,7 @@ export function fetchFrameSelection(
  * Получить ключ хранилища выборки фреймов.
  * @returns Key / Ключ
  */
-const getKey = () => `figma:frame-selection:get`
+const getKey = (): string => `figma:frame-selection:get`
 
 /**
  * Get the storage callback instance for frame selection.
@@ -46,14 +46,15 @@ const getKey = () => `figma:frame-selection:get`
  * Получить экземпляр колбэка хранилища для выборки фреймов.
  * @returns Storage callback / Колбэк хранилища
  */
-const getStorageCallback = <T>() => StorageCallback.getInstance<T>(getKey())
+const getStorageCallback = <T>(): StorageCallback<T> =>
+  StorageCallback.getInstance<T>(getKey())
 
 /**
  * Initialize the messenger for frame selection.
  *
  * Инициализировать мессенджер для выборки фреймов.
  */
-const initSelection = () => {
+const initSelection = (): void => {
   if (isInit) {
     return
   }
