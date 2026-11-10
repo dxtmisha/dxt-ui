@@ -1,8 +1,15 @@
-import { onMounted, onUnmounted, type Ref, watch } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  type DesignName,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
 import { TeleportInclude } from '../../classes/TeleportInclude'
@@ -11,31 +18,80 @@ import { TextInclude } from '../../classes/TextInclude'
 import { ScrollbarInclude } from '../Scrollbar'
 import { ImageInclude } from '../Image'
 
-import { WindowClient } from './WindowClient'
-import { WindowHook } from './WindowHook'
-
 import { WindowClassesData } from './WindowClassesData'
-import { WindowElement } from './WindowElement'
-
-import { WindowStatus } from './WindowStatus'
-import { WindowPersistent } from './WindowPersistent'
-import { WindowFlash } from './WindowFlash'
+import { WindowClient } from './WindowClient'
 import { WindowCoordinates } from './WindowCoordinates'
-import { WindowPosition } from './WindowPosition'
-import { WindowOrigin } from './WindowOrigin'
-import { WindowStatic } from './WindowStatic'
+import { WindowElement } from './WindowElement'
 import { WindowEmit } from './WindowEmit'
-
-import { WindowStyles } from './WindowStyles'
-import { WindowOpen } from './WindowOpen'
-import { WindowVerification } from './WindowVerification'
-import { WindowEvent } from './WindowEvent'
 import { WindowEsc } from './WindowEsc'
+import { WindowEvent } from './WindowEvent'
+import { WindowFlash } from './WindowFlash'
 import { WindowHidden } from './WindowHidden'
+import { WindowHook } from './WindowHook'
+import { WindowOpen } from './WindowOpen'
+import { WindowOrigin } from './WindowOrigin'
+import { WindowPersistent } from './WindowPersistent'
+import { WindowPosition } from './WindowPosition'
+import { WindowStatic } from './WindowStatic'
+import { WindowStatus } from './WindowStatus'
+import { WindowStyles } from './WindowStyles'
+import { WindowVerification } from './WindowVerification'
 
 import type { WindowControlItem } from './basicTypes'
 import type { WindowComponents, WindowEmits, WindowSlots } from './types'
 import type { WindowPropsBasic } from './props'
+
+/** Window dependency constructors type / Тип конструкторов зависимостей Window */
+export type WindowConstructors = {
+  /** Classes helper constructor / Конструктор помощника по классам */
+  classesData: typeof WindowClassesData
+  /** Client coordinates manager constructor / Конструктор менеджера координат клиента */
+  client: typeof WindowClient
+  /** Coordinates calculation constructor / Конструктор расчета координат */
+  coordinates: typeof WindowCoordinates
+  /** Element manager constructor / Конструктор менеджера элементов */
+  element: typeof WindowElement
+  /** Emit event manager constructor / Конструктор менеджера событий */
+  emit: typeof WindowEmit
+  /** Escape key handler constructor / Конструктор обработчика клавиши Escape */
+  esc: typeof WindowEsc
+  /** Event listener manager constructor / Конструктор менеджера прослушивателей событий */
+  event: typeof WindowEvent
+  /** Flash animation constructor / Конструктор анимации вспышки */
+  flash: typeof WindowFlash
+  /** Hidden elements outside window constructor / Конструктор скрытия элементов вне окна */
+  hidden: typeof WindowHidden
+  /** Hook manager constructor / Конструктор менеджера хуков */
+  hook: typeof WindowHook
+  /** Image manager constructor / Конструктор менеджера изображений */
+  image: typeof ImageInclude
+  /** Model synchronization constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude
+  /** Open state manager constructor / Конструктор менеджера состояния открытия */
+  open: typeof WindowOpen
+  /** Transform origin manager constructor / Конструктор менеджера точки трансформации */
+  origin: typeof WindowOrigin
+  /** Persistent state manager constructor / Конструктор менеджера постоянного состояния */
+  persistent: typeof WindowPersistent
+  /** Position manager constructor / Конструктор менеджера позиции */
+  position: typeof WindowPosition
+  /** Scrollbar manager constructor / Конструктор менеджера скроллбара */
+  scrollbar: typeof ScrollbarInclude
+  /** Static mode manager constructor / Конструктор менеджера статического режима */
+  staticMode: typeof WindowStatic
+  /** Status manager constructor / Конструктор менеджера статуса */
+  status: typeof WindowStatus
+  /** Styles manager constructor / Конструктор менеджера стилей */
+  styles: typeof WindowStyles
+  /** Tab index manager constructor / Конструктор менеджера таб-индекса */
+  tabIndex: typeof TabIndexInclude
+  /** Teleport manager constructor / Конструктор менеджера телепорта */
+  teleport: typeof TeleportInclude
+  /** Text localization manager constructor / Конструктор менеджера текста */
+  text: typeof TextInclude
+  /** Verification manager constructor / Конструктор менеджера проверки */
+  verification: typeof WindowVerification
+}
 
 /**
  * Main Window class that manages all window-related functionality including positioning,
@@ -46,276 +102,258 @@ import type { WindowPropsBasic } from './props'
  * события, стили, анимации и интеграции компонентов. Этот класс служит центральным координатором
  * для операций с окнами в дизайн-системе.
  */
-export class Window {
-  /** ClientOnly instance / Экземпляр ClientOnly */
-  readonly clientOnly: ClientOnlyInclude
-  /** Client instance for window management/ Экземпляр клиента для управления окном */
-  readonly client: WindowClient
-  /** Hook instance for window events/ Экземпляр хука для событий окна */
-  readonly hook: WindowHook
-
-  /** Class manager for window styles/ Менеджер классов для стилей окна */
-  readonly classes: WindowClassesData
-  /** Element manager for window DOM element/ Менеджер элементов для DOM элемента окна */
-  readonly element: WindowElement
-  /** Tab index manager for window/ Менеджер таб индекса для окна */
-  readonly tabIndex: TabIndexInclude
-
-  /** Status manager for window state/ Менеджер статуса для состояния окна */
-  readonly status: WindowStatus
-  /** Persistent manager for window data/ Менеджер постоянных данных для окна */
-  readonly persistent: WindowPersistent
-  /** Flash manager for window animations/ Менеджер анимаций для окна */
-  readonly flash: WindowFlash
-  /** Coordinates manager for window positioning/ Менеджер координат для позиционирования окна */
-  readonly coordinates: WindowCoordinates
-  /** Position manager for window placement/ Менеджер позиции для размещения окна */
-  readonly position: WindowPosition
-  /** Origin manager for window transformations/ Менеджер начальной точки для трансформаций окна */
-  readonly origin: WindowOrigin
-  /** Static mode manager for window behavior/ Менеджер статического режима для поведения окна */
-  readonly staticMode: WindowStatic
-  /** Emit manager for window events/ Менеджер событий для окна */
-  readonly emit: WindowEmit
-
-  /** Styles manager for window appearance/ Менеджер стилей для внешнего вида окна */
-  readonly styles: WindowStyles
-  /** Open manager for window visibility/ Менеджер открытия для видимости окна */
-  readonly open: WindowOpen
-  /** Verification manager for window state validation/ Менеджер проверки для валидации состояния окна */
-  readonly verification: WindowVerification
-  /** Event manager for window interactions/ Менеджер событий для взаимодействий с окном */
-  readonly event: WindowEvent
-
-  /** Scrollbar manager for window content/ Менеджер скроллбара для содержимого окна */
-  readonly scrollbar: ScrollbarInclude
-  /** Image manager for window content/ Менеджер изображений для содержимого окна */
-  readonly image: ImageInclude
-
-  /** Escape key manager for window closing/ Менеджер клавиши Escape для закрытия окна */
-  readonly esc: WindowEsc
-  /** Teleport manager for window placement in DOM / Менеджер телепортации для размещения окна в DOM */
-  readonly teleport: TeleportInclude
-
-  /** Text manager for window content/ Менеджер текста для содержимого окна */
-  readonly text: TextInclude
-
-  /** Hidden manager for hiding elements outside the window when open/ Менеджер скрытия элементов вне окна при открытии */
-  readonly hidden: WindowHidden
+export class Window extends DesignLogicAbstract<
+  HTMLDivElement,
+  WindowComponents,
+  WindowEmits,
+  WindowSlots,
+  WindowPropsBasic,
+  WindowConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<WindowConstructors> = {
+    classesData: {
+      item: WindowClassesData,
+      parameters: () => [this.naming]
+    },
+    client: {
+      item: WindowClient,
+      parameters: () => [() => this.i('element')]
+    },
+    coordinates: {
+      item: WindowCoordinates,
+      parameters: () => [
+        () => this.i('classesData'),
+        () => this.i('element')
+      ]
+    },
+    element: {
+      item: WindowElement,
+      parameters: () => [
+        () => this.i('classesData'),
+        this.element
+      ]
+    },
+    emit: {
+      item: WindowEmit,
+      parameters: () => [
+        () => this.i('classesData'),
+        () => this.i('element'),
+        this.emits
+      ]
+    },
+    esc: {
+      item: WindowEsc,
+      conditions: () => WindowEsc.is(this.props),
+      parameters: () => [
+        this.i('open').item,
+        () => this.i('open').close(),
+        () => !this.props.persistent && (this.props.closeOnEsc ?? true)
+      ]
+    },
+    event: {
+      item: WindowEvent,
+      parameters: () => [
+        this.props,
+        () => this.i('tabIndex'),
+        () => this.i('status'),
+        () => this.i('client'),
+        () => this.i('flash'),
+        () => this.i('open'),
+        () => this.i('verification')
+      ]
+    },
+    flash: {
+      item: WindowFlash,
+      parameters: () => [
+        this.props,
+        () => this.i('classesData')
+      ]
+    },
+    hidden: {
+      item: WindowHidden,
+      conditions: () => WindowHidden.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('classesData'),
+        () => this.i('staticMode'),
+        () => this.i('open'),
+        () => this.i('teleport')
+      ]
+    },
+    hook: {
+      item: WindowHook,
+      parameters: () => [this.props]
+    },
+    image: {
+      item: ImageInclude,
+      conditions: () => Boolean(this.props.image),
+      parameters: () => [
+        this.naming,
+        this.props,
+        this.components,
+        undefined,
+        this.emits
+      ]
+    },
+    model: {
+      item: ModelInclude,
+      parameters: () => [
+        'open',
+        this.emits,
+        this.i('open').item
+      ]
+    },
+    open: {
+      item: WindowOpen,
+      parameters: () => [
+        this.props,
+        this.isMounted,
+        () => this.i('client'),
+        () => this.i('hook'),
+        () => this.i('element'),
+        () => this.i('tabIndex'),
+        () => this.i('status'),
+        () => this.i('flash'),
+        () => this.i('coordinates'),
+        () => this.i('position'),
+        () => this.i('origin'),
+        () => this.i('emit'),
+        () => this.i('styles')
+      ]
+    },
+    origin: {
+      item: WindowOrigin,
+      parameters: () => [
+        () => this.i('client'),
+        () => this.i('element'),
+        () => this.i('position')
+      ]
+    },
+    persistent: {
+      item: WindowPersistent,
+      conditions: () => WindowPersistent.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('classesData'),
+        () => this.i('element')
+      ]
+    },
+    position: {
+      item: WindowPosition,
+      parameters: () => [
+        this.props,
+        () => this.i('client'),
+        () => this.i('element'),
+        () => this.i('coordinates')
+      ]
+    },
+    scrollbar: {
+      item: ScrollbarInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        this.emits
+      ]
+    },
+    staticMode: {
+      item: WindowStatic,
+      conditions: () => WindowStatic.is(this.props),
+      parameters: () => [
+        this.props,
+        () => this.i('element')
+      ]
+    },
+    status: {
+      item: WindowStatus,
+      parameters: () => [() => this.i('element')]
+    },
+    styles: {
+      item: WindowStyles,
+      parameters: () => [
+        () => this.i('element'),
+        () => this.i('coordinates'),
+        () => this.i('position'),
+        () => this.i('origin'),
+        this.naming
+      ]
+    },
+    tabIndex: {
+      item: TabIndexInclude,
+      parameters: () => [
+        () => this.i('element').getBody(),
+        undefined,
+        () => Boolean(this.props.autoTabIndex)
+      ]
+    },
+    teleport: {
+      item: TeleportInclude
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    },
+    verification: {
+      item: WindowVerification,
+      parameters: () => [
+        this.props,
+        this.isMounted,
+        () => this.i('persistent'),
+        () => this.i('classesData'),
+        () => this.i('element'),
+        () => this.i('staticMode'),
+        () => this.i('open')
+      ]
+    }
+  }
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
+   * @param props input data / входные данные
+   * @param element input element / элемент ввода
    * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.ImageConstructor class for working with image/ класс для работы с изображением
-   * @param constructors.ModelConstructor class for working with model/ класс для работы с моделью
-   * @param constructors.ScrollbarConstructor class for working with scrollbar/ класс для работы со скроллбаром
-   * @param constructors.TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
-   * @param constructors.TeleportIncludeConstructor class for working with teleport/ класс для работы с телепортом
-   * @param constructors.TextConstructor class for working with text/ класс для работы с текстом
-   * @param constructors.WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
-   * @param constructors.WindowClientConstructor class for working with window client/ класс для работы с клиентом окна
-   * @param constructors.WindowCoordinatesConstructor class for working with coordinates/ класс для работы с координатами
-   * @param constructors.WindowElementConstructor class for working with window elements/ класс для работы с элементами окна
-   * @param constructors.WindowEmitConstructor class for working with emits/ класс для работы с событиями
-   * @param constructors.WindowEscConstructor class for working with escape key/ класс для работы с клавишей Escape
-   * @param constructors.WindowEventConstructor class for working with events/ класс для работы с событиями
-   * @param constructors.WindowFlashConstructor class for working with flash animation/ класс для работы с анимацией вспышки
-   * @param constructors.WindowHiddenConstructor class for working with hidden elements/ класс для работы со скрытыми элементами
-   * @param constructors.WindowHookConstructor class for working with window hooks/ класс для работы с хуками окна
-   * @param constructors.WindowOpenConstructor class for working with open state/ класс для работы с состоянием открытия
-   * @param constructors.WindowOriginConstructor class for working with origin/ класс для работы с точкой начала
-   * @param constructors.WindowPersistentConstructor class for working with persistent state/ класс для работы с постоянным состоянием
-   * @param constructors.WindowPositionConstructor class for working with position/ класс для работы с позицией
-   * @param constructors.WindowStaticConstructor class for working with static mode/ класс для работы со статическим режимом
-   * @param constructors.WindowStatusConstructor class for working with window status/ класс для работы со статусом окна
-   * @param constructors.WindowStylesConstructor class for working with styles/ класс для работы со стилями
-   * @param constructors.WindowVerificationConstructor class for working with verification/ класс для работы с проверкой
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
    */
   constructor(
-    protected readonly props: WindowPropsBasic,
+    props: WindowPropsBasic,
     element: Ref<HTMLDivElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<WindowComponents, WindowPropsBasic>,
-    protected readonly slots?: WindowSlots,
-    protected readonly emits?: ConstrEmit<WindowEmits>,
-    constructors: {
-      ImageConstructor?: typeof ImageInclude
-      ModelConstructor?: typeof ModelInclude
-      ScrollbarConstructor?: typeof ScrollbarInclude
-      TabIndexConstructor?: typeof TabIndexInclude
-      TeleportIncludeConstructor?: typeof TeleportInclude
-      TextConstructor?: typeof TextInclude
-      WindowClassesConstructor?: typeof WindowClassesData
-      WindowClientConstructor?: typeof WindowClient
-      WindowCoordinatesConstructor?: typeof WindowCoordinates
-      WindowElementConstructor?: typeof WindowElement
-      WindowEmitConstructor?: typeof WindowEmit
-      WindowEscConstructor?: typeof WindowEsc
-      WindowEventConstructor?: typeof WindowEvent
-      WindowFlashConstructor?: typeof WindowFlash
-      WindowHiddenConstructor?: typeof WindowHidden
-      WindowHookConstructor?: typeof WindowHook
-      WindowOpenConstructor?: typeof WindowOpen
-      WindowOriginConstructor?: typeof WindowOrigin
-      WindowPersistentConstructor?: typeof WindowPersistent
-      WindowPositionConstructor?: typeof WindowPosition
-      WindowStaticConstructor?: typeof WindowStatic
-      WindowStatusConstructor?: typeof WindowStatus
-      WindowStylesConstructor?: typeof WindowStyles
-      WindowVerificationConstructor?: typeof WindowVerification
-      ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
-    } = {}
+    naming: DesignName,
+    components?: DesignComp<WindowComponents, WindowPropsBasic>,
+    slots?: WindowSlots,
+    emits?: ConstrEmit<WindowEmits>,
+    constructors?: Partial<WindowConstructors>
   ) {
-    const {
-      ImageConstructor = ImageInclude,
-      ModelConstructor = ModelInclude,
-      ScrollbarConstructor = ScrollbarInclude,
-      TabIndexConstructor = TabIndexInclude,
-      TeleportIncludeConstructor = TeleportInclude,
-      TextConstructor = TextInclude,
-      WindowClassesConstructor = WindowClassesData,
-      WindowClientConstructor = WindowClient,
-      WindowCoordinatesConstructor = WindowCoordinates,
-      WindowElementConstructor = WindowElement,
-      WindowEmitConstructor = WindowEmit,
-      WindowEscConstructor = WindowEsc,
-      WindowEventConstructor = WindowEvent,
-      WindowFlashConstructor = WindowFlash,
-      WindowHiddenConstructor = WindowHidden,
-      WindowHookConstructor = WindowHook,
-      WindowOpenConstructor = WindowOpen,
-      WindowOriginConstructor = WindowOrigin,
-      WindowPersistentConstructor = WindowPersistent,
-      WindowPositionConstructor = WindowPosition,
-      WindowStaticConstructor = WindowStatic,
-      WindowStatusConstructor = WindowStatus,
-      WindowStylesConstructor = WindowStyles,
-      WindowVerificationConstructor = WindowVerification,
-      ClientOnlyIncludeConstructor = ClientOnlyInclude
-    } = constructors
-
-    this.hook = new WindowHookConstructor(props)
-    this.clientOnly = new ClientOnlyIncludeConstructor()
-
-    this.classes = new WindowClassesConstructor(naming)
-    this.element = new WindowElementConstructor(this.classes, element)
-    this.client = new WindowClientConstructor(this.element)
-    this.tabIndex = new TabIndexConstructor(
-      () => this.element.getBody(),
-      undefined,
-      () => Boolean(this.props.autoTabIndex)
-    )
-
-    this.status = new WindowStatusConstructor(this.element)
-    this.persistent = new WindowPersistentConstructor(props, this.classes, this.element)
-    this.flash = new WindowFlashConstructor(props, this.classes)
-    this.coordinates = new WindowCoordinatesConstructor(this.classes, this.element)
-    this.position = new WindowPositionConstructor(props, this.client, this.element, this.coordinates)
-    this.origin = new WindowOriginConstructor(this.client, this.element, this.position)
-    this.staticMode = new WindowStaticConstructor(props, this.element)
-    this.emit = new WindowEmitConstructor(this.classes, this.element, emits)
-
-    this.styles = new WindowStylesConstructor(
-      this.element,
-      this.coordinates,
-      this.position,
-      this.origin,
-      naming
-    )
-    this.open = new WindowOpenConstructor(
+    super(
       props,
-      this.clientOnly,
-      this.client,
-      this.hook,
-      this.element,
-      this.tabIndex,
-      this.status,
-      this.flash,
-      this.coordinates,
-      this.position,
-      this.origin,
-      this.emit,
-      this.styles
-    )
-
-    this.verification = new WindowVerificationConstructor(
-      props,
-      this.clientOnly,
-      this.persistent,
-      this.classes,
-      this.element,
-      this.staticMode,
-      this.open
-    )
-    this.event = new WindowEventConstructor(
-      props,
-      this.tabIndex,
-      this.status,
-      this.client,
-      this.flash,
-      this.open,
-      this.verification
-    )
-
-    this.scrollbar = new ScrollbarConstructor(
-      props,
+      element,
       naming,
       components,
-      emits
-    )
-    this.image = new ImageConstructor(
-      naming,
-      props,
-      components,
-      undefined,
-      emits
-    )
-    this.esc = new WindowEscConstructor(
-      this.open.item,
-      () => this.open.close(),
-      () => !this.props.persistent && (this.props.closeOnEsc ?? true)
-    )
-    this.teleport = new TeleportIncludeConstructor()
-    this.text = new TextConstructor(this.props)
-    this.hidden = new WindowHiddenConstructor(
-      this.props,
-      this.classes,
-      this.staticMode,
-      this.open,
-      this.teleport
+      slots,
+      emits,
+      constructors
     )
 
-    new ModelConstructor<boolean>('open', this.emits, this.open.item)
-
-    watch(() => props.open, () => this.open.set(props.open))
-
-    onMounted(() => {
-      if (props.open) {
-        this.open.set(props.open)
-      }
-    })
-    onUnmounted(this.stop)
+    this.i('model')
   }
 
   /**
    * Returns attributes for the main element.
    *
    * Возвращает атрибуты для главного элемента.
+   * @returns element binding attributes / атрибуты привязки элемента
    */
-  get binds() {
+  get binds(): ConstrBind {
     const props: Record<string, any> = {
       'key': 'main',
-      'data-window': this.classes.getId(),
-      'onTransitionend': this.event.onTransition
+      'data-window': this.i('classesData').getId(),
+      'onTransitionend': this.i('event').onTransition
     }
 
-    if (this.staticMode.is()) {
+    if (WindowStatic.is(this.props) && this.i('staticMode').is()) {
       return props
     }
 
@@ -330,25 +368,34 @@ export class Window {
     }
   }
 
-  /** Returns data for managing slot data/ Возвращает данные для управления данными слотами */
+  /**
+   * Returns data for managing slot data.
+   *
+   * Возвращает данные для управления данными слотами.
+   * @returns control and binding data for slots / данные управления и привязки для слотов
+   */
   get slotData(): WindowControlItem {
+    const classes = this.i('classesData')
+    const event = this.i('event')
+    const open = this.i('open')
+
     return {
-      classesWindow: this.classes.list,
-      class: this.classes.list.controlId,
-      open: this.open.item,
-      onClick: this.event.onClick,
-      onKeydown: this.event.onKeydown,
-      onContextmenu: this.event.onContextmenu,
+      classesWindow: classes.list,
+      class: classes.list.controlId,
+      open: open.item,
+      onClick: event.onClick,
+      onKeydown: event.onKeydown,
+      onContextmenu: event.onContextmenu,
       binds: {
-        class: this.classes.list.controlId,
-        onClick: this.event.onClick,
-        onKeydown: this.event.onKeydown,
-        onContextmenu: this.event.onContextmenu,
+        class: classes.list.controlId,
+        onClick: event.onClick,
+        onKeydown: event.onKeydown,
+        onContextmenu: event.onContextmenu,
         ...AriaStaticInclude.control(
-          this.classes.getControlId(),
-          this.open.inDom ? this.classes.getId() : undefined,
+          classes.getControlId(),
+          open.inDom ? classes.getId() : undefined,
           this.props.ariaHaspopup,
-          this.open.item.value
+          open.item.value
         )
       }
     }
@@ -358,16 +405,22 @@ export class Window {
    * Returns the list of available classes.
    *
    * Возвращает список доступных классов.
+   * @returns classes object / объект классов
    */
-  get classesList(): ConstrClassObject {
+  get classes(): ConstrClassObject {
     return {
-      [this.classes.getId()]: true,
-      [this.naming.getStatusClass('staticMode')]: this.staticMode.item.value,
+      [this.i('classesData').getId()]: true,
+      [this.naming.getStatusClass('staticMode')]: WindowStatic.is(this.props) && Boolean(this.i('staticMode').item.value),
       [this.naming.getStatusClass('embedded')]: Boolean(this.props.embedded)
     }
   }
 
-  /** Checks if the role is a menu/ Проверяет, является ли роль меню */
+  /**
+   * Checks if the role is a menu.
+   *
+   * Проверяет, является ли роль меню.
+   * @returns boolean true if role is menu / true если роль является меню
+   */
   isMenu(): boolean {
     return this.props.role === 'menu'
       || this.props.role === 'menuitemcheckbox'
@@ -375,12 +428,12 @@ export class Window {
   }
 
   /**
-   * Restores the data to its previous state.
+   * Checks if the component is rendered on client.
    *
-   * Восстанавливает данные в прежнее состояние.
+   * Проверяет, отрендерен ли компонент на клиенте.
+   * @returns boolean true if rendered on client / true если компонент отрендерен на клиенте
    */
-  protected readonly stop = (): void => {
-    this.event.stop()
-    this.staticMode.stop()
+  isRender(): boolean {
+    return this.isMounted.value
   }
 }

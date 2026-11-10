@@ -25,7 +25,7 @@ describe('WindowElement', () => {
     } as unknown as WindowClassesData
 
     const elementRef = ref<HTMLDivElement | undefined>(undefined)
-    const windowElement = new WindowElement(mockClasses, elementRef)
+    const windowElement = new WindowElement(() => mockClasses, elementRef)
 
     // Initially undefined element ref
     expect(windowElement.isMain()).toBe(false)
@@ -49,7 +49,7 @@ describe('WindowElement', () => {
       findBody: vi.fn().mockReturnValue(undefined)
     } as unknown as WindowClassesData
 
-    const windowElement = new WindowElement(mockClasses, ref(undefined))
+    const windowElement = new WindowElement(() => mockClasses, ref(undefined))
 
     expect(windowElement.getControlRect()).toBeUndefined()
     expect(windowElement.getBodyRect()).toBeUndefined()

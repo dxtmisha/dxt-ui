@@ -66,7 +66,7 @@ export class LabelInclude {
     protected readonly elementsExtra?: () => VNode[],
     protected readonly labelReplacing?: Ref<string | number | undefined>,
     protected readonly alternativeSlots?: boolean,
-    protected readonly skeleton?: SkeletonInclude,
+    protected readonly skeleton?: RefOrNormalOrFunction<SkeletonInclude | undefined>,
     protected readonly tag?: RefOrNormalOrFunction<string | undefined>,
     protected readonly ignoreLabelIfSlot?: boolean
   ) {
@@ -94,6 +94,16 @@ export class LabelInclude {
   }
 
   /**
+   * Identifier for the element.
+   *
+   * Идентификатор для элемента.
+   * @returns unique identifier / уникальный идентификатор
+   */
+  get id(): string {
+    return this.getProps().labelId || this.elementIdDefault
+  }
+
+  /**
    * Checks if the target slot is present.
    *
    * Проверяет наличие целевого слота.
@@ -109,16 +119,6 @@ export class LabelInclude {
     }
 
     return false
-  }
-
-  /**
-   * Identifier for the element.
-   *
-   * Идентификатор для элемента.
-   * @returns unique identifier / уникальный идентификатор
-   */
-  get id(): string {
-    return this.getProps().labelId || this.elementIdDefault
   }
 
   /**
@@ -189,13 +189,14 @@ export class LabelInclude {
    */
   protected getClassName(): ConstrClass {
     const classes: ConstrClass = [this.naming.getSubClass('label')]
+    const skeleton = executeFunctionRef(this.skeleton)
 
     if (this.classesExtra) {
       classes.push(this.classesExtra)
     }
 
-    if (this.skeleton) {
-      classes.push(this.skeleton.classes)
+    if (skeleton) {
+      classes.push(skeleton.classes)
     }
 
     return classes

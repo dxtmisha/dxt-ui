@@ -12,7 +12,7 @@ import type { WindowClassesList } from './basicTypes'
 export class WindowClassesInclude {
   /**
    * Constructor
-   * @param design design name/ название дизайна
+   * @param design design name / название дизайна
    */
   constructor(
     protected readonly design: string
@@ -33,7 +33,7 @@ export class WindowClassesInclude {
    *
    * Возвращает объект с классами окна под ключом classesWindow.
    */
-  getObject() {
+  getObject(): { classesWindow: WindowClassesList } {
     return {
       classesWindow: this.get()
     }

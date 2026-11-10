@@ -5,17 +5,25 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { CaptionInclude } from '../../classes/CaptionInclude'
+import { DescriptionInclude } from '../../classes/DescriptionInclude'
+import { LabelInclude } from '../../classes/LabelInclude'
+
+import { IconTrailingInclude } from '../Icon'
+import { ProgressInclude } from '../Progress'
+import { RippleInclude } from '../Ripple'
+
 import { Cell } from './Cell'
 
-import {
-  type CellPropsBasic
+import type {
+  CellPropsBasic
 } from './props'
-import {
-  type CellClasses,
-  type CellComponents,
-  type CellEmits,
-  type CellExpose,
-  type CellSlots
+import type {
+  CellClasses,
+  CellComponents,
+  CellEmits,
+  CellExpose,
+  CellSlots
 } from './types'
 
 /**
@@ -79,7 +87,7 @@ export class CellDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose
+      ...this.item.i('event').expose
     } as EXPOSE
   }
 
@@ -128,20 +136,35 @@ export class CellDesign<
     return h(
       this.props.tag ?? 'div',
       {
+        ref: this.element,
         ...this.getAttrs(),
         class: this.classes?.value.main,
         style: this.styles?.value,
         ...this.item.binds
       },
       [
-        ...this.item.icon.render(),
+        ...this.renderIcon(),
         ...this.renderContext(),
         ...this.renderTrailing(),
         ...this.renderBody(),
-        ...this.item.ripple.render(),
-        ...this.item.progress.render()
+        ...this.renderRipple(),
+        ...this.renderProgress()
       ]
     )
+  }
+
+  /**
+   * Renders the icon element if icon prop is provided.
+   *
+   * Рендерит элемент иконки, если передан проп иконки.
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
+   */
+  readonly renderIcon = (): VNode[] => {
+    if (IconTrailingInclude.is(this.props)) {
+      return this.item.i('icon').render()
+    }
+
+    return []
   }
 
   /**
@@ -156,12 +179,54 @@ export class CellDesign<
         'div',
         this.getKeyClass('context'),
         [
-          ...this.item.label.render(),
-          ...this.item.caption.render(),
-          ...this.item.description.render()
+          ...this.renderLabel(),
+          ...this.renderCaption(),
+          ...this.renderDescription()
         ]
       )
     ]
+  }
+
+  /**
+   * Renders the label element if label prop or slot is provided.
+   *
+   * Рендерит элемент метки, если передано свойство label или слот.
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
+   */
+  readonly renderLabel = (): VNode[] => {
+    if (LabelInclude.is(this.props, this.slots)) {
+      return this.item.i('label').render()
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the caption element if caption prop or slot is provided.
+   *
+   * Рендерит элемент подписи, если передано свойство caption или слот.
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
+   */
+  readonly renderCaption = (): VNode[] => {
+    if (CaptionInclude.is(this.props, this.slots)) {
+      return this.item.i('caption').render()
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the description element if description prop or slot is provided.
+   *
+   * Рендерит элемент описания, если передано свойство description или слот.
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
+   */
+  readonly renderDescription = (): VNode[] => {
+    if (DescriptionInclude.is(this.props, this.slots)) {
+      return this.item.i('description').render()
+    }
+
+    return []
   }
 
   /**
@@ -205,6 +270,34 @@ export class CellDesign<
           this.initSlot('body', undefined, this.item.classesSub)
         )
       ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the ripple element if ripple is enabled.
+   *
+   * Рендерит элемент эффекта волны, если включен эффект волны.
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
+   */
+  readonly renderRipple = (): VNode[] => {
+    if (RippleInclude.is(this.props)) {
+      return this.item.i('ripple').render()
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the progress indicator element if progress is enabled.
+   *
+   * Рендерит элемент индикатора прогресса, если включен прогресс.
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
+   */
+  readonly renderProgress = (): VNode[] => {
+    if (ProgressInclude.is(this.props)) {
+      return this.item.i('progress').render()
     }
 
     return []

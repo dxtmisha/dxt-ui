@@ -3,14 +3,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ref, nextTick } from 'vue'
 import { WindowEsc } from '../WindowEsc'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (callback: () => void) => callback()
-  }
-})
-
 describe('WindowEsc', () => {
   let openRef: any
 
@@ -23,7 +15,8 @@ describe('WindowEsc', () => {
   })
 
   it('should start listening when open state changes to true and active is true', async () => {
-    new WindowEsc(openRef, undefined, true)
+    const esc = new WindowEsc(openRef, undefined, true)
+    esc.onMounted()
 
     // Watch triggers on value change
     openRef.value = true
@@ -39,7 +32,8 @@ describe('WindowEsc', () => {
 
   it('should call custom callback when Escape is pressed if callback is provided', async () => {
     const customCallback = vi.fn()
-    new WindowEsc(openRef, customCallback, true)
+    const esc = new WindowEsc(openRef, customCallback, true)
+    esc.onMounted()
 
     openRef.value = true
     await nextTick()
@@ -54,7 +48,8 @@ describe('WindowEsc', () => {
 
   it('should stop listening when open state changes to false', async () => {
     const customCallback = vi.fn()
-    new WindowEsc(openRef, customCallback, true)
+    const esc = new WindowEsc(openRef, customCallback, true)
+    esc.onMounted()
 
     // Open first
     openRef.value = true
@@ -73,7 +68,8 @@ describe('WindowEsc', () => {
 
   it('should not listen or toggle state if active option resolves to false', async () => {
     const customCallback = vi.fn()
-    new WindowEsc(openRef, customCallback, () => false)
+    const esc = new WindowEsc(openRef, customCallback, () => false)
+    esc.onMounted()
 
     openRef.value = true
     await nextTick()

@@ -24,13 +24,19 @@ import {CellWikiStorybook} from './wiki'
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={Cell.CellSkeleton}/>
 
+<StorybookDescriptions componentName={'Icon'} type={'icon'}/>
+<Canvas of={Cell.CellIcons}/>
+
+<StorybookDescriptions componentName={'Event'} type={'dynamic'}/>
+<Canvas of={Cell.CellDynamic}/>
+
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 [//]: # (:documentation-events [!] System label / Системная метка)
 ## Events
 
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
-    
+
 [//]: # (:documentation-events [!] System label / Системная метка)
 
 [//]: # (:documentation-expose [!] System label / Системная метка)
@@ -38,7 +44,7 @@ import {CellWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
 <StorybookDescriptions componentName={'Expose'} type={'getDetail'}/>
-    
+
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)

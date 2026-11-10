@@ -1,7 +1,8 @@
 // ai-none
 
-import { WindowClassesData } from './WindowClassesData'
-import { WindowElement } from './WindowElement'
+import { isDomRuntime } from '@dxtmisha/functional'
+import type { WindowClassesData } from './WindowClassesData'
+import type { WindowElement } from './WindowElement'
 
 /**
  * A class for working with coordinates.
@@ -23,13 +24,15 @@ export class WindowCoordinates {
   protected location: string = ''
 
   /**
-   * Constructor
-   * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
-   * @param element an object of the class for working with elements/ объект класса для работы с элементами
+   * Constructor.
+   *
+   * Конструктор.
+   * @param classes function returning an object for working with classes and searching for elements / функция, возвращающая объект для работы с классами и поиском элементов
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
    */
   constructor(
-    protected readonly classes: WindowClassesData,
-    protected readonly element: WindowElement
+    protected readonly classes: () => WindowClassesData,
+    protected readonly element: () => WindowElement
   ) {
   }
 
@@ -147,7 +150,7 @@ export class WindowCoordinates {
    * Возвращает максимальную высоту у body.
    */
   getMaxHeight(): number {
-    return window.innerHeight - (this.padding * 2)
+    return (isDomRuntime() ? window.innerHeight : 0) - (this.padding * 2)
   }
 
   /**
@@ -156,8 +159,12 @@ export class WindowCoordinates {
    * Обновления данных.
    */
   update(): boolean {
-    const element = this.element.getMain()
-    const rect = this.element.getControlRect()
+    const element = this.element().getMain()
+    const rect = this.element().getControlRect()
+
+    if (!isDomRuntime()) {
+      return false
+    }
 
     if (
       element
@@ -216,7 +223,7 @@ export class WindowCoordinates {
    * Инициализирует значение отступов из вычисленных стилей.
    */
   protected initPadding(): number {
-    const element = this.element.getMain()
+    const element = this.element().getMain()
     let padding = 0
 
     if (element) {
@@ -234,12 +241,12 @@ export class WindowCoordinates {
    * Calculates control position values.
    *
    * Вычисляет значения положения контроля.
-   * @param top position of an element/ положение элемента
+   * @param top position of an element / положение элемента
    */
   protected initLocation(
     top: number
   ): string {
-    const height = this.element.getBody()?.offsetHeight ?? 0
+    const height = this.element().getBody()?.offsetHeight ?? 0
     const half = height / 2
     const max = this.innerHeight - (this.padding * 2) - height
     const position = top - half - this.padding

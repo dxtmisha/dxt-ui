@@ -1,16 +1,12 @@
 import type { Ref } from 'vue'
 import type { ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
 
-import { ModelInclude } from '../../classes/ModelInclude'
-
-import { ActionsInclude } from '../Actions'
-import { BarsInclude } from '../Bars'
-import { WindowInclude } from '../Window'
-
-import { ModalAbstract } from './ModalAbstract'
+import { ModalAbstract, type ModalConstructors, type ModalLegacyConstructors } from './ModalAbstract'
 
 import type { ModalComponents, ModalEmits, ModalSlots } from './types'
 import type { ModalProps } from './props'
+
+export type { ModalConstructors, ModalLegacyConstructors }
 
 /**
  * Class for managing a modal window component.
@@ -31,23 +27,15 @@ export class Modal extends ModalAbstract {
    * @param slots slots / слоты
    * @param emits the function called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors object with constructor classes / объект с классами конструкторов
-   * @param constructors.WindowConstructor class for creating a window / класс для создания окна
-   * @param constructors.BarsConstructor class for creating bars / класс для создания панелей
-   * @param constructors.ActionsConstructor class for creating actions / класс для создания действий
    */
   constructor(
-    protected readonly props: ModalProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ModalComponents, ModalProps>,
-    protected readonly slots?: ModalSlots,
-    protected readonly emits?: ConstrEmit<ModalEmits>,
-    constructors?: {
-      ActionsConstructor?: typeof ActionsInclude
-      BarsConstructor?: typeof BarsInclude
-      ModelIncludeConstructor?: typeof ModelInclude
-      WindowConstructor?: typeof WindowInclude
-    }
+    props: ModalProps,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<ModalComponents, ModalProps>,
+    slots?: ModalSlots,
+    emits?: ConstrEmit<ModalEmits>,
+    constructors?: Partial<ModalConstructors> | ModalLegacyConstructors
   ) {
     super(
       props,
@@ -57,11 +45,11 @@ export class Modal extends ModalAbstract {
       slots,
       emits,
       () => ({
-        image: props.image,
+        image: this.props.image,
 
         adaptive: 'modal',
-        imagePosition: props.imagePosition,
-        closeButton: props.barsBackHide
+        imagePosition: this.props.imagePosition,
+        closeButton: this.props.barsBackHide
       }),
       undefined,
       undefined,

@@ -87,7 +87,7 @@ export class WindowClassesData {
    * Returns the full name of the class for the status.
    *
    * Возвращает полное название класса для статуса.
-   * @param status названия статуса
+   * @param status status name / название статуса
    */
   getClassStatus(status: WindowStatusItem): string {
     return `${this.naming.getName()}[data-status="${status}"]`
@@ -106,9 +106,9 @@ export class WindowClassesData {
    * Search and return the window element at the selected item.
    *
    * Поиск и возврат элемента окна у выбранного элемента.
-   * @param target selected item/ выбранный элемент
+   * @param target selected item / выбранный элемент
    */
-  findMain<T extends HTMLElement>(target: HTMLElement): T | undefined {
+  findMain<T extends HTMLElement = HTMLElement>(target?: HTMLElement): T | undefined {
     return target?.closest<T>(`.${this.naming.getName()}`) ?? undefined
   }
 
@@ -207,7 +207,7 @@ export class WindowClassesData {
    * Returns a list of available classes by design name.
    *
    * Возвращает список доступных классов по названию дизайна.
-   * @param design design name/ названия дизайна
+   * @param design design name / название дизайна
    */
   static getClassesListByDesign(design: string) {
     return this.getClassesList(`${design}-window`)

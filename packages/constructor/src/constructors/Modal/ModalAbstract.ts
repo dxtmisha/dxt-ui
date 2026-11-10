@@ -1,21 +1,74 @@
-import { onMounted, ref, watch, type Ref } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 import {
   type ConstrEmit,
+  type ConstrItems,
   type DesignComp,
   type DesignName,
+  DesignLogicAbstract,
   executeFunctionRef,
   getElementId
 } from '@dxtmisha/functional'
 
-import { ModelInclude } from '../../classes/ModelInclude'
-
 import { ActionsInclude, type ActionsProps } from '../Actions'
 import { BarsInclude, type BarsProps } from '../Bars'
+import { ModelInclude } from '../../classes/ModelInclude'
 import { WindowInclude, type WindowProps } from '../Window'
 
 import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { ModalComponents, ModalEmits, ModalSlots } from './types'
 import type { ModalProps } from './props'
+
+/** Modal dependency constructors type / Тип конструкторов зависимостей Modal */
+export type ModalConstructors = {
+  /** Actions include constructor / Конструктор кнопок действий */
+  actions: typeof ActionsInclude
+  /** Bars include constructor / Конструктор панелей заголовка и подвала */
+  bars: typeof BarsInclude
+  /** Model include constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude
+  /** Window include constructor / Конструктор основного окна */
+  window: typeof WindowInclude
+}
+
+/** Legacy constructors interface for backward compatibility / Устаревший интерфейс конструкторов для обратной совместимости */
+export type ModalLegacyConstructors = {
+  ActionsConstructor?: typeof ActionsInclude
+  BarsConstructor?: typeof BarsInclude
+  ModelIncludeConstructor?: typeof ModelInclude
+  WindowConstructor?: typeof WindowInclude
+}
+
+/**
+ * Normalizes constructor overrides for ModalAbstract.
+ *
+ * Нормализует переопределения конструкторов для ModalAbstract.
+ * @param constructors constructor overrides object / объект переопределений конструкторов
+ * @returns normalized constructors / нормализованные конструкторы
+ */
+function normalizeModalConstructors<T extends ModalConstructors>(
+  constructors?: Partial<T> | ModalLegacyConstructors | Record<string, any>
+): Partial<T> | undefined {
+  if (!constructors) {
+    return undefined
+  }
+
+  const result: Record<string, any> = { ...constructors }
+
+  if ('ActionsConstructor' in constructors && !('actions' in result)) {
+    result.actions = constructors.ActionsConstructor
+  }
+  if ('BarsConstructor' in constructors && !('bars' in result)) {
+    result.bars = constructors.BarsConstructor
+  }
+  if ('ModelIncludeConstructor' in constructors && !('model' in result)) {
+    result.model = constructors.ModelIncludeConstructor
+  }
+  if ('WindowConstructor' in constructors && !('window' in result)) {
+    result.window = constructors.WindowConstructor
+  }
+
+  return result as Partial<T>
+}
 
 /**
  * Abstract class representing the base logic and structure for a modal window component.
@@ -24,18 +77,74 @@ import type { ModalProps } from './props'
  * Абстрактный класс, представляющий базовую логику и структуру для компонента модального окна.
  * Координирует и управляет подкомпонентами: верхними/нижними панелями (BarsInclude), кнопками действий (ActionsInclude) и основной областью окна (WindowInclude).
  */
-export abstract class ModalAbstract {
-  /** Instance for managing the core modal window container / Экземпляр для управления основным контейнером модального окна */
-  readonly window: WindowInclude
-  /** Instance for managing the modal header and footer bars / Экземпляр для управления панелями заголовка и подвала модального окна */
-  readonly bars: BarsInclude
-  /** Instance for managing action buttons or controls / Экземпляр для управления кнопками действий или элементами управления */
-  readonly actions: ActionsInclude
+export abstract class ModalAbstract extends DesignLogicAbstract<
+  HTMLElement,
+  ModalComponents,
+  ModalEmits,
+  ModalSlots,
+  ModalProps,
+  ModalConstructors
+> {
+  /** Label identifier for ARIA / Идентификатор метки для ARIA */
+  readonly labelId: string = getElementId()
+  /** Description identifier for ARIA / Идентификатор описания для ARIA */
+  readonly descriptionId: string = getElementId()
 
   /** Open state reference / Ссылка на состояние открытия */
-  readonly open = ref<boolean>(false)
-  /** Model synchronization manager / Менеджер синхронизации модели */
-  readonly model: ModelInclude<boolean>
+  readonly open = ref<boolean>(Boolean(this.props.open))
+
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ModalConstructors> = {
+    actions: {
+      item: ActionsInclude,
+      parameters: () => [
+        this.naming,
+        this.props,
+        this.components,
+        () => executeFunctionRef(this.extraActionsCallback),
+        undefined,
+        this.emits
+      ]
+    },
+    bars: {
+      item: BarsInclude,
+      parameters: () => [
+        this.naming,
+        this.props,
+        this.components,
+        () => executeFunctionRef(this.extraBars),
+        undefined,
+        this.emits,
+        this.labelId,
+        this.descriptionId
+      ]
+    },
+    model: {
+      item: ModelInclude,
+      parameters: () => [
+        'open',
+        this.emits,
+        this.open
+      ]
+    },
+    window: {
+      item: WindowInclude,
+      parameters: () => [
+        this.naming,
+        this.props,
+        this.components,
+        () => ({
+          open: this.open.value,
+          ...executeFunctionRef(this.extraWindow)
+        }),
+        undefined,
+        this.emits,
+        this.labelId,
+        this.descriptionId,
+        this.model
+      ]
+    }
+  }
 
   /**
    * Constructor for initializing all sub-components of the modal window.
@@ -49,78 +158,80 @@ export abstract class ModalAbstract {
    * @param emits the function called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param extraWindow additional parameters for WindowInclude / дополнительные параметры для WindowInclude
    * @param extraBars additional parameters for BarsInclude / дополнительные параметры для BarsInclude
-   * @param extraActions additional parameters for ActionsInclude / дополнительные параметры для ActionsInclude
+   * @param extraActionsCallback additional parameters for ActionsInclude / дополнительные параметры для ActionsInclude
    * @param constructors object with constructor classes / объект с классами конструкторов
-   * @param constructors.WindowConstructor class for creating a window / класс для создания окна
-   * @param constructors.BarsConstructor class for creating bars / класс для создания панелей
-   * @param constructors.ActionsConstructor class for creating actions / класс для создания действий
    */
   protected constructor(
-    protected readonly props: ModalProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ModalComponents, ModalProps>,
-    protected readonly slots?: ModalSlots,
-    protected readonly emits?: ConstrEmit<ModalEmits>,
-    extraWindow?: () => ComponentIncludeExtra<WindowProps>,
-    extraBars?: () => ComponentIncludeExtra<BarsProps>,
-    extraActions?: () => ComponentIncludeExtra<ActionsProps>,
-    constructors: {
-      ActionsConstructor?: typeof ActionsInclude
-      BarsConstructor?: typeof BarsInclude
-      ModelIncludeConstructor?: typeof ModelInclude
-      WindowConstructor?: typeof WindowInclude
-    } = {}
+    props: ModalProps,
+    element: Ref<HTMLElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<ModalComponents, ModalProps>,
+    slots?: ModalSlots,
+    emits?: ConstrEmit<ModalEmits>,
+    protected readonly extraWindow?: () => ComponentIncludeExtra<WindowProps>,
+    protected readonly extraBars?: () => ComponentIncludeExtra<BarsProps>,
+    protected readonly extraActionsCallback?: () => ComponentIncludeExtra<ActionsProps>,
+    constructors?: Partial<ModalConstructors> | ModalLegacyConstructors
   ) {
-    const {
-      ActionsConstructor = ActionsInclude,
-      BarsConstructor = BarsInclude,
-      ModelIncludeConstructor = ModelInclude,
-      WindowConstructor = WindowInclude
-    } = constructors
-
-    const labelId: string = getElementId()
-    const descriptionId: string = getElementId()
-
-    this.model = new ModelIncludeConstructor('open', emits, this.open)
-
-    this.window = new WindowConstructor(
-      naming,
+    super(
       props,
+      element,
+      naming,
       components,
-      () => ({
-        open: this.open.value,
-        ...executeFunctionRef(extraWindow)
-      }),
-      undefined,
+      slots,
       emits,
-      labelId,
-      descriptionId,
-      this.model
+      normalizeModalConstructors(constructors)
     )
+  }
 
-    this.bars = new BarsConstructor(
-      naming,
-      props,
-      components,
-      () => executeFunctionRef(extraBars),
-      undefined,
-      emits,
-      labelId,
-      descriptionId
-    )
+  /**
+   * Instance for managing the core modal window container.
+   *
+   * Экземпляр для управления основным контейнером модального окна.
+   * @returns window include instance / экземпляр включения окна
+   */
+  get window(): WindowInclude {
+    return this.i('window')
+  }
 
-    this.actions = new ActionsConstructor(
-      naming,
-      props,
-      components,
-      () => executeFunctionRef(extraActions),
-      undefined,
-      emits
-    )
+  /**
+   * Instance for managing the modal header and footer bars.
+   *
+   * Экземпляр для управления панелями заголовка и подвала модального окна.
+   * @returns bars include instance / экземпляр включения панелей
+   */
+  get bars(): BarsInclude {
+    return this.i('bars')
+  }
 
-    watch(() => props.open, this.update)
-    onMounted(this.update)
+  /**
+   * Instance for managing action buttons or controls.
+   *
+   * Экземпляр для управления кнопками действий или элементами управления.
+   * @returns actions include instance / экземпляр включения действий
+   */
+  get actions(): ActionsInclude {
+    return this.i('actions')
+  }
+
+  /**
+   * Model synchronization manager.
+   *
+   * Менеджер синхронизации модели.
+   * @returns model include instance / экземпляр включения модели
+   */
+  get model(): ModelInclude<boolean> {
+    return this.i('model') as unknown as ModelInclude<boolean>
+  }
+
+  /**
+   * Setup lifecycle listeners and watchers on mount.
+   *
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
+   */
+  protected override readonly onMounted = (): void => {
+    watch(() => this.props.open, this.update)
+    this.update()
   }
 
   /**

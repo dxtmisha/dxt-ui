@@ -1,30 +1,61 @@
 // ai-none
 
-import { type Ref, watch } from 'vue'
-import { EventItem, executeFunction, getRef, type RefOrNormal } from '@dxtmisha/functional'
+import { type Ref, type WatchStopHandle, watch } from 'vue'
+import {
+  DesignLifecycleAbstract,
+  EventItem,
+  executeFunction,
+  getRef,
+  type RefOrNormal
+} from '@dxtmisha/functional'
+
+import type { WindowProps } from './props'
 
 /**
  * Class for handling Escape key press to close windows.
  *
  * Класс для обработки нажатия клавиши Escape для закрытия окон.
  */
-export class WindowEsc {
-  /** Event handler instance/ Экземпляр обработчика событий */
+export class WindowEsc extends DesignLifecycleAbstract {
+  /** Event handler instance / Экземпляр обработчика событий */
   protected event?: EventItem<HTMLElement, any>
+  protected watchStop?: WatchStopHandle
 
   /**
-   * Constructor
-   * @param open Reference to the open state/ Ссылка на состояние открытия
-   * @param on Optional callback function when Escape is pressed/ Необязательная функция обратного вызова при нажатии Escape
-   * @param active Reference to the active state/ Ссылка на состояние активности
+   * Checks whether escape key handling should be active.
+   *
+   * Проверяет, должна ли быть активна обработка клавиши Escape.
+   * @param props component properties / свойства компонента
+   * @returns true if close on escape is enabled / true, если закрытие по escape включено
+   */
+  static is(props?: WindowProps): boolean {
+    return !props?.persistent && (props?.closeOnEsc ?? true)
+  }
+
+  /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param open Reference to the open state / Ссылка на состояние открытия
+   * @param on Optional callback function when Escape is pressed / Необязательная функция обратного вызова при нажатии Escape
+   * @param active Reference to the active state / Ссылка на состояние активности
    */
   constructor(
     protected readonly open: Ref<boolean>,
     protected readonly on?: () => void,
     protected readonly active: RefOrNormal<boolean | (() => boolean)> = true
   ) {
-    watch(
-      open,
+    super()
+  }
+
+  /**
+   * Setup lifecycle listeners and watchers on mount.
+   *
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.watchStop = watch(
+      this.open,
       (value) => {
         if (executeFunction(getRef(this.active))) {
           if (value) {
@@ -33,8 +64,19 @@ export class WindowEsc {
             this.stop()
           }
         }
-      }
+      },
+      { immediate: true }
     )
+  }
+
+  /**
+   * Cleanup lifecycle listeners on unmount.
+   *
+   * Очистка слушателей жизненного цикла при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.stop()
   }
 
   /**
@@ -67,7 +109,7 @@ export class WindowEsc {
    * Check if the pressed key is Escape.
    *
    * Проверяет, является ли нажатая клавиша Escape.
-   * @param event Keyboard event/ Событие клавиатуры
+   * @param event Keyboard event / Событие клавиатуры
    */
   protected isEsc(event: KeyboardEvent): boolean {
     return (

@@ -1,7 +1,7 @@
 // ai-none
 
-import { watch } from 'vue'
-import type { DesignName } from '@dxtmisha/functional'
+import { watch, type WatchStopHandle } from 'vue'
+import { DesignLifecycleAbstract, type DesignName } from '@dxtmisha/functional'
 
 import { WindowElement } from './WindowElement'
 import { WindowCoordinates } from './WindowCoordinates'
@@ -13,23 +13,48 @@ import { WindowOrigin } from './WindowOrigin'
  *
  * Класс управления стилями.
  */
-export class WindowStyles {
+export class WindowStyles extends DesignLifecycleAbstract {
+  protected watchStop?: WatchStopHandle
+
   /**
-   * Constructor
-   * @param element an object of the class for working with elements/ объект класса для работы с элементами
-   * @param coordinates object for working with coordinates/ объект для работы с координатами
-   * @param position object for working with the position of the element/ объект для работы с положением элемента
-   * @param origin the object for work is in the initial position upon opening/ объект для работы в начальной позиции при открытии
+   * Constructor.
+   *
+   * Конструктор.
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
+   * @param coordinates function returning coordinates manager / функция, возвращающая менеджер координат
+   * @param position function returning position manager / функция, возвращающая менеджер позиции
+   * @param origin function returning origin manager / функция, возвращающая менеджер начальной точки
    * @param naming component naming helper / помощник именования компонента
    */
   constructor(
-    protected readonly element: WindowElement,
-    protected readonly coordinates: WindowCoordinates,
-    protected readonly position: WindowPosition,
-    protected readonly origin: WindowOrigin,
+    protected readonly element: () => WindowElement,
+    protected readonly coordinates: () => WindowCoordinates,
+    protected readonly position: () => WindowPosition,
+    protected readonly origin: () => WindowOrigin,
     protected readonly naming: DesignName
   ) {
-    watch(this.element.element, () => this.update())
+    super()
+  }
+
+  /**
+   * Setup lifecycle listeners and watchers on mount.
+   *
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.update()
+    this.watchStop?.()
+    this.watchStop = watch(this.element().element, () => this.update())
+  }
+
+  /**
+   * Cleanup lifecycle listeners on unmount.
+   *
+   * Очистка слушателей жизненного цикла при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
   }
 
   /**
@@ -38,16 +63,16 @@ export class WindowStyles {
    * Обновление данных.
    */
   update(): void {
-    const element = this.element.getMain()
+    const element = this.element?.()?.getMain?.()
 
     if (element) {
-      element.style.setProperty(this.naming.getStyle('inset-x'), this.position.getStyleX())
-      element.style.setProperty(this.naming.getStyle('inset-y'), this.position.getStyleY())
-      element.style.setProperty(`--${this.naming.getName()}-origin-x`, this.origin.getStyleX())
-      element.style.setProperty(`--${this.naming.getName()}-origin-y`, this.origin.getStyleY())
-      element.style.setProperty(this.naming.getStyle('control-width'), `${this.coordinates.getControlWidth()}px`)
-      element.style.setProperty(this.naming.getStyle('control-height'), `${this.coordinates.getControlHeight()}px`)
-      element.style.setProperty(this.naming.getStyle('location'), this.coordinates.getLocation())
+      element.style.setProperty(this.naming.getStyle('inset-x'), this.position().getStyleX())
+      element.style.setProperty(this.naming.getStyle('inset-y'), this.position().getStyleY())
+      element.style.setProperty(`--${this.naming.getName()}-origin-x`, this.origin().getStyleX())
+      element.style.setProperty(`--${this.naming.getName()}-origin-y`, this.origin().getStyleY())
+      element.style.setProperty(this.naming.getStyle('control-width'), `${this.coordinates().getControlWidth()}px`)
+      element.style.setProperty(this.naming.getStyle('control-height'), `${this.coordinates().getControlHeight()}px`)
+      element.style.setProperty(this.naming.getStyle('location'), this.coordinates().getLocation())
     }
   }
 
@@ -55,10 +80,10 @@ export class WindowStyles {
    * Updates the window type (menu or modal).
    *
    * Обновляет тип окна (меню или модальное).
-   * @param isMenu whether the window is a menu/ является ли окно меню
+   * @param isMenu whether the window is a menu / является ли окно меню
    */
   updateType(isMenu: boolean): void {
-    const element = this.element.getMain()
+    const element = this.element?.()?.getMain?.()
 
     if (
       element && (

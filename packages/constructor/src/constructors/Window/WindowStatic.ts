@@ -1,7 +1,7 @@
 // ai-none
 
-import { onMounted, ref, watch } from 'vue'
-import { EventItem, setRef } from '@dxtmisha/functional'
+import { ref, watch, type WatchStopHandle } from 'vue'
+import { DesignLifecycleAbstract, EventItem, isDomRuntime, setRef } from '@dxtmisha/functional'
 
 import { WindowElement } from './WindowElement'
 
@@ -13,33 +13,67 @@ import type { WindowProps } from './props'
  *
  * Класс для работы со статичным окном.
  */
-export class WindowStatic {
+export class WindowStatic extends DesignLifecycleAbstract {
   protected event?: EventItem<Window, Event>
+  protected watchStop?: WatchStopHandle
 
   readonly item = ref<boolean>(false)
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element an object of the class for working with elements/ объект класса для работы с элементами
+   * Checks whether static mode is enabled.
+   *
+   * Проверяет, включён ли статический режим.
+   * @param props component properties / свойства компонента
+   * @returns true if staticMode is true / true, если staticMode равен true
+   */
+  static is(props?: WindowProps): boolean {
+    return Boolean(props?.staticMode)
+  }
+
+  /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param props input data / входные данные
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
    */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly element: WindowElement
+    protected readonly element: () => WindowElement
   ) {
-    watch(() => props.staticMode, this.make)
+    super()
+  }
 
-    onMounted(() => {
-      if (this.is()) {
-        requestAnimationFrame(this.listener)
-      }
-    })
+  /**
+   * Setup lifecycle listeners and watchers on mount.
+   *
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    if (this.is() && isDomRuntime()) {
+      requestAnimationFrame(this.listener)
+    }
+
+    this.watchStop?.()
+    this.watchStop = watch(() => this.props.staticMode, this.make)
+  }
+
+  /**
+   * Cleanup lifecycle listeners on unmount.
+   *
+   * Очистка слушателей жизненного цикла при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
+    this.stop()
   }
 
   /**
    * Checks if the static mode is enabled.
    *
    * Проверяет, включен ли режим статичности.
+   * @returns true if static mode is active / true, если статический режим активен
    */
   is(): boolean {
     return Boolean(this.props.staticMode)
@@ -51,6 +85,10 @@ export class WindowStatic {
    * Стартует событие слежения за статусами.
    */
   start(): void {
+    if (!isDomRuntime()) {
+      return
+    }
+
     if (!this.event) {
       this.event = new EventItem(window, ['resize'], this.listener)
     }
@@ -74,9 +112,14 @@ export class WindowStatic {
    * Checks if the static window is active.
    *
    * Проверяет, активно ли статичное окно.
+   * @returns true if static window is active / true, если статичное окно активно
    */
   protected isStatic(): boolean {
-    const element = this.element.getMain()
+    if (!isDomRuntime()) {
+      return false
+    }
+
+    const element = this.element?.()?.getMain?.()
 
     return Boolean(
       element

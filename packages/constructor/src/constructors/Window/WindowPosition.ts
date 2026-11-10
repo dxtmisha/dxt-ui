@@ -18,34 +18,27 @@ export class WindowPosition {
   protected y: number = 0
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
-   * @param element an object of the class for working with elements/ объект класса для работы с элементами
-   * @param coordinates object for working with coordinates/ объект для работы с координатами
+   * Constructor.
+   *
+   * Конструктор.
+   * @param props input data / входные данные
+   * @param client function returning client coordinates manager / функция, возвращающая менеджер клиентских координат
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
+   * @param coordinates function returning coordinates manager / функция, возвращающая менеджер координат
    */
-
   constructor(
     protected readonly props: WindowProps,
-    protected readonly client: WindowClient,
-    protected readonly element: WindowElement,
-    protected readonly coordinates: WindowCoordinates
+    protected readonly client: () => WindowClient,
+    protected readonly element: () => WindowElement,
+    protected readonly coordinates: () => WindowCoordinates
   ) {
-  }
-
-  /**
-   * Checks if the alignment type is above the element.
-   *
-   * Проверяет, является ли тип выравнивания над элементом.
-   */
-  isOver(): boolean {
-    return this.props.axis === 'on'
   }
 
   /**
    * Returns the X position.
    *
    * Возвращает позицию X.
+   * @returns X coordinate / координата X
    */
   getX(): number {
     return this.x
@@ -55,6 +48,7 @@ export class WindowPosition {
    * Returns the Y position.
    *
    * Возвращает позицию Y.
+   * @returns Y coordinate / координата Y
    */
   getY(): number {
     return this.y
@@ -64,6 +58,7 @@ export class WindowPosition {
    * Returns the X position for styles.
    *
    * Возвращает позицию X для стилей.
+   * @returns style string with px / строка стилей с px
    */
   getStyleX(): string {
     return `${this.x}px`
@@ -73,9 +68,20 @@ export class WindowPosition {
    * Returns the Y position for styles.
    *
    * Возвращает позицию Y для стилей.
+   * @returns style string with px / строка стилей с px
    */
   getStyleY(): string {
     return `${this.y}px`
+  }
+
+  /**
+   * Checks if the alignment type is above the element.
+   *
+   * Проверяет, является ли тип выравнивания над элементом.
+   * @returns true if axis is 'on' / true, если axis равен 'on'
+   */
+  isOver(): boolean {
+    return this.props.axis === 'on'
   }
 
   /**
@@ -84,7 +90,7 @@ export class WindowPosition {
    * Обновление координаты положения элемента.
    */
   update(): boolean {
-    if (this.coordinates.update()) {
+    if (this.coordinates().update()) {
       this.setX()
       this.setY()
 
@@ -100,7 +106,7 @@ export class WindowPosition {
    * Обновляет место скрола, если выбран элемент.
    */
   updateScroll(): void {
-    const elementBodyContext = this.element.getBodyContext()
+    const elementBodyContext = this.element().getBodyContext()
 
     if (
       this.isOver()
@@ -109,9 +115,9 @@ export class WindowPosition {
       && elementBodyContext.scrollHeight > elementBodyContext.offsetHeight
     ) {
       const rect = getElement(this.props.overElement)?.getBoundingClientRect()
-      const rectBody = this.element.getBody()?.getBoundingClientRect()
+      const rectBody = this.element().getBody()?.getBoundingClientRect()
       const rectBodyContext = elementBodyContext?.getBoundingClientRect()
-      const rectControl = this.element.getControl()?.getBoundingClientRect()
+      const rectControl = this.element().getControl()?.getBoundingClientRect()
 
       if (
         elementBodyContext
@@ -124,7 +130,7 @@ export class WindowPosition {
 
         if (
           rectControl
-          && this.coordinates.getMaxHeight() === rectBody.height
+          && this.coordinates().getMaxHeight() === rectBody.height
         ) {
           if (rectControl.top + center < rectBody.top) {
             elementBodyContext.scrollTop += shift
@@ -186,16 +192,17 @@ export class WindowPosition {
    * Вычисление места положения для выравнивания окна.
    * @param rectTop high control coordinates/ высокие координаты контрола
    * @param rectBottom lower control coordinates/ нижние координаты контрола
+   * @returns calculated over height / вычисленная высота перекрытия
    */
   protected getOverHeight(
     rectTop: number,
     rectBottom: number
-  ) {
+  ): number {
     const over = (rectBottom - rectTop) / 2
 
     if (this.props.overElement) {
       const rect = getElement(this.props.overElement)?.getBoundingClientRect()
-      const rectBody = this.element.getBody()?.getBoundingClientRect()
+      const rectBody = this.element().getBody()?.getBoundingClientRect()
 
       if (rect && rectBody) {
         const top = rect.top - rectBody.top
@@ -205,7 +212,7 @@ export class WindowPosition {
       }
     }
 
-    const height = this.coordinates.getHeight() / 2
+    const height = this.coordinates().getHeight() / 2
 
     return rectBottom - over - height
   }
@@ -214,14 +221,15 @@ export class WindowPosition {
    * Changes in position along the X coordinate.
    *
    * Изменения положения по координате X.
+   * @returns this instance / текущий экземпляр
    */
   protected setX(): this {
-    const element = this.element.getMain()
+    const element = this.element().getMain()
 
     if (element) {
       const indent = this.getIndent('x')
-      const rectRight = this.props.contextmenu ? this.client.getX() : this.coordinates.getRight() + indent
-      const rectLeft = this.props.contextmenu ? this.client.getX() : this.coordinates.getLeft() - indent
+      const rectRight = this.props.contextmenu ? this.client().getX() : this.coordinates().getRight() + indent
+      const rectLeft = this.props.contextmenu ? this.client().getX() : this.coordinates().getLeft() - indent
       const argumentValues: number[] = []
 
       if (this.getAxis() === 'x') {
@@ -230,12 +238,14 @@ export class WindowPosition {
         argumentValues.push(rectLeft, rectRight)
       }
 
+      const innerWidth = isDomRuntime() ? window.innerWidth : 0
+
       this.x = this.calculationInner(
         argumentValues[0] as number,
         argumentValues[1] as number,
         element.offsetWidth,
-        window.innerWidth,
-        this.coordinates.getWidth()
+        innerWidth,
+        this.coordinates().getWidth()
       )
     }
 
@@ -246,15 +256,18 @@ export class WindowPosition {
    * Changes in position along the Y coordinate.
    *
    * Изменения положения по координате Y.
+   * @returns this instance / текущий экземпляр
    */
   protected setY(): this {
-    const element = this.element.getMain()
+    const element = this.element().getMain()
 
     if (element) {
       const indent = this.getIndent('y')
-      const rectTop = this.props.contextmenu ? this.client.getY() : this.coordinates.getTop() - indent
-      const rectBottom = this.props.contextmenu ? this.client.getY() : this.coordinates.getBottom() + indent
+      const rectTop = this.props.contextmenu ? this.client().getY() : this.coordinates().getTop() - indent
+      const rectBottom = this.props.contextmenu ? this.client().getY() : this.coordinates().getBottom() + indent
       const argumentValues: number[] = []
+
+      const innerHeight = isDomRuntime() ? window.innerHeight : 0
 
       if (this.isOver()) {
         this.y = this.calculationOver(
@@ -262,7 +275,7 @@ export class WindowPosition {
           rectTop,
           rectBottom,
           element.offsetHeight,
-          window.innerHeight
+          innerHeight
         )
 
         return this
@@ -276,8 +289,8 @@ export class WindowPosition {
         argumentValues[0] as number,
         argumentValues[1] as number,
         element.offsetHeight,
-        window.innerHeight,
-        this.coordinates.getHeight()
+        innerHeight,
+        this.coordinates().getHeight()
       )
     }
 
@@ -301,7 +314,7 @@ export class WindowPosition {
     innerLength: number,
     maxSize: number
   ): number {
-    const padding = this.coordinates.getPadding()
+    const padding = this.coordinates().getPadding()
 
     if (inValue + length <= innerLength - padding) {
       return inValue
@@ -331,7 +344,7 @@ export class WindowPosition {
     length: number,
     innerLength: number
   ): number {
-    const padding = this.coordinates.getPadding()
+    const padding = this.coordinates().getPadding()
 
     if (bottom < padding) {
       return bottom

@@ -1,29 +1,45 @@
-## Description
+import { Source } from '@storybook/addon-docs/blocks';
 
-Interactive button component for triggering user actions with support for multiple visual variants, states, and accessibility features.
+Interactive button component for triggering user actions, form submissions, and navigation workflows with built-in icons, progress indicators, skeleton loading, and accessibility.
 
-Button provides a comprehensive solution for creating consistent, accessible action elements with built-in support for icons, loading states, ripple effects, and skeleton placeholders. The component integrates visual variants (primary, secondary, outline, text), state management (focus, hover, disabled, selected), and adaptive behavior for responsive interfaces.
+Button provides a comprehensive solution for creating consistent, accessible action elements. It encapsulates full interaction state handling (focus, active, disabled, selected, readonly), polymorphic rendering as button, link (`a`), or custom element, and integrated progress indicators with seamless loading transitions.
 
 **Key features:**
 
-- Multiple visual variants (primary, secondary, outline, text)
-- Comprehensive state support (focus, hover, active, disabled, selected, readonly)
-- Built-in icon positioning (leading and trailing)
-- Progress indicator integration for loading states
-- Ripple effect for tactile feedback
-- Skeleton system for loading placeholders
-- Adaptive and responsive behavior options
-- Full accessibility support (ARIA, keyboard navigation)
-- Customizable through design tokens
+- **Visual Variants:** Full design system styling with `primary`, `secondary`, `outline`, and `text` modes alongside custom palettes
+- **Icon Support:** Integrated leading and trailing icon positioning with Material Symbols and custom SVG assets
+- **Progress & Loading:** Embedded circular progress indicators with automated `aria-disabled` and loading states
+- **Polymorphic Container:** Seamless rendering as native `<button>`, navigation link (`<a>` with `href`/`to`), or custom tag
+- **State Management:** Complete support for `focus`, `active`, `selected`, `disabled`, and `readonly` states
+- **Skeleton Mode:** Zero-duplication skeleton loading placeholders via `isSkeleton` within `DesignSkeleton`
+- **Adaptive Behavior:** Flexible viewport scaling options (`block`, `iconAlways`, `auto`) and container query responsiveness
+- **Accessibility & ARIA:** Comprehensive keyboard navigation, focus management, and ARIA attribute orchestration
 
-**Typical use cases:**
+**Common use cases:**
 
-- Primary actions in forms and dialogs
-- Navigation and menu items
-- Toolbars and action bars
-- Call-to-action elements
-- Icon-only action buttons
-- Loading state indicators
-- Confirmation and cancellation actions
+- **Form Actions:** Primary submit and secondary reset actions within form layouts
+- **Call-to-Action Elements:** High-prominence conversion and navigation buttons
+- **Navigation Controls:** Links and router navigation with button appearance
+- **Toolbar Actions:** Icon-only and compact buttons in application toolbars and headers
+- **Asynchronous Workflows:** Buttons with interactive progress loaders for API requests
 
-> Button is designed as a universal interactive element with comprehensive state management, visual variants, and accessibility features for creating consistent action interfaces.
+<Source
+    code={`
+<template>
+  <!-- Primary button with leading icon -->
+  <Button primary icon="send" label="Submit Form" @click="onSubmit" />
+
+  <!-- Secondary outline button with trailing icon -->
+  <Button secondary outline icon-trailing="arrow_forward" label="Continue" />
+
+  <!-- Asynchronous loading state -->
+  <Button primary :loading="isLoading" label="Saving Changes..." />
+
+  <!-- Navigation link button -->
+  <Button tag="a" href="https://example.com" target="_blank" label="External Documentation" />
+</template>
+  `}
+    language="html"
+/>
+
+> Button combines versatile interaction states, rich icon and progress integration, and strict accessibility standards into a universal action primitive.

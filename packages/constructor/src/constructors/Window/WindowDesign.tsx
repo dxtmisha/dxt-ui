@@ -7,6 +7,7 @@ import {
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Window } from './Window'
+import { WindowStatic } from './WindowStatic'
 
 import {
   type WindowPropsBasic
@@ -20,7 +21,11 @@ import {
 } from './types'
 
 /**
- * WindowDesign
+ * WindowDesign class that handles component rendering, exposure of public methods,
+ * class management, and slot delegation for Window.
+ *
+ * Класс WindowDesign, управляющий рендерингом компонента, экспонированием публичных методов,
+ * управлением классами и делегированием слотов для Window.
  */
 export class WindowDesign<
   COMP extends WindowComponents,
@@ -71,17 +76,18 @@ export class WindowDesign<
    * Initialization of all the necessary properties for work
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed methods and properties / экспонированные методы и свойства
    */
   protected initExpose(): EXPOSE {
     return {
-      getId: () => this.item.classes.getId(),
-      getOpen: () => this.item.open.item.value,
+      getId: () => this.item.i('classesData').getId(),
+      getOpen: () => this.item.i('open').item.value,
       getControl: () => this.item.slotData,
 
-      setOpen: this.item.open.set,
-      toOpen: this.item.open.open,
-      toClose: this.item.open.close,
-      toggle: this.item.open.toggle
+      setOpen: this.item.i('open').set,
+      toOpen: this.item.i('open').open,
+      toClose: this.item.i('open').close,
+      toggle: this.item.i('open').toggle
     } as EXPOSE
   }
 
@@ -89,10 +95,11 @@ export class WindowDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns class list object / объект списка классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classesList,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         body: this.naming.getSubClass('body'),
@@ -111,6 +118,7 @@ export class WindowDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -120,29 +128,31 @@ export class WindowDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered virtual nodes / отрендеренные виртуальные узлы
    */
   protected initRender(): VNode[] {
     const main: any[] = []
 
     this.initSlot('control', main, this.item.slotData)
 
-    if (this.item.open.inDom) {
+    if (this.item.i('open').inDom) {
       if (
         (
-          this.item.staticMode.item.value
-          && this.item.clientOnly.isRender()
+          WindowStatic.is(this.props)
+          && this.item.i('staticMode').item.value
+          && this.item.isRender()
         )
         || this.props.embedded
       ) {
         main.push(this.renderMain())
       } else {
         main.push(
-          ...this.item.teleport.render(
+          ...this.item.i('teleport').render(
             h(
               'div',
               {
                 'class': this.classes?.value.teleport,
-                'data-window-teleport': this.item.classes.getId()
+                'data-window-teleport': this.item.i('classesData').getId()
               },
               this.renderMain()
             )
@@ -158,6 +168,7 @@ export class WindowDesign<
    * Render main window element.
    *
    * Рендер главного элемента окна.
+   * @returns main window virtual node / виртуальный узел главного окна
    */
   readonly renderMain = (): VNode => {
     return h(
@@ -176,6 +187,7 @@ export class WindowDesign<
    * Render body element.
    *
    * Рендер элемента тела.
+   * @returns body virtual node / виртуальный узел тела
    */
   readonly renderBody = (): VNode => {
     return h(
@@ -200,6 +212,7 @@ export class WindowDesign<
    * Generates an element to group the displayed data.
    *
    * Генерирует элемент для группировки выводимых данных.
+   * @returns array of body group nodes / массив узлов группы тела
    */
   readonly renderBodyGroup = (): VNode[] => {
     const children: any[] = []
@@ -217,9 +230,10 @@ export class WindowDesign<
    * Render context element.
    *
    * Рендер элемента контекста.
+   * @returns array of context nodes / массив узлов контекста
    */
   readonly renderBodyContext = (): VNode[] => {
-    return this.item.scrollbar.render(
+    return this.item.i('scrollbar').render(
       'div',
       {
         'key': 'bodyContext',
@@ -234,16 +248,22 @@ export class WindowDesign<
   /**
    * Generates an element to display the image.
    *
-   * Генерирует элемент для вывода изображения
+   * Генерирует элемент для вывода изображения.
+   * @returns array of image nodes / массив узлов изображения
    */
   readonly renderBodyImage = (): VNode[] => {
-    return this.item.image.render()
+    if (this.props.image) {
+      return this.item.i('image').render()
+    }
+
+    return []
   }
 
   /**
    * Generates an element to display the close button.
    *
    * Генерирует элемент для вывода кнопки закрытия.
+   * @returns array of close button nodes / массив узлов кнопки закрытия
    */
   readonly renderBodyClose = (): VNode[] => {
     if (this.props.closeButton) {
@@ -253,10 +273,10 @@ export class WindowDesign<
           key: 'button-close',
           class: [
             this.classes?.value.close,
-            this.item.classes.list.close
+            this.item.i('classesData').list.close
           ],
           icon: this.props.iconClose,
-          ...AriaStaticInclude.label(this.item.text.close)
+          ...AriaStaticInclude.label(this.item.i('text').close)
         }
       ) ?? []
     }

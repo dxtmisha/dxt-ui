@@ -20,14 +20,14 @@ describe('WindowStatus', () => {
   })
 
   it('should initialize with close status', () => {
-    const status = new WindowStatus(mockElement)
+    const status = new WindowStatus(() => mockElement)
     expect(status.item.value).toBe(WindowStatusItem.close)
     expect(status.isOpen()).toBe(false)
     expect(status.isHide()).toBe(false)
   })
 
   it('should update element datasets on set()', () => {
-    const status = new WindowStatus(mockElement)
+    const status = new WindowStatus(() => mockElement)
 
     status.set(WindowStatusItem.open)
 
@@ -39,7 +39,7 @@ describe('WindowStatus', () => {
   })
 
   it('should correctly set each status helper', () => {
-    const status = new WindowStatus(mockElement)
+    const status = new WindowStatus(() => mockElement)
 
     status.toDisplay()
     expect(status.item.value).toBe(WindowStatusItem.display)

@@ -40,7 +40,7 @@ export class RippleInclude {
   constructor(
     protected readonly naming: DesignName,
     protected readonly components?: DesignComponents<RippleComponentInclude, RipplePropsBasic>,
-    protected readonly enabled?: EnabledInclude
+    protected readonly enabled?: EnabledInclude | (() => EnabledInclude)
   ) {
   }
 
@@ -51,12 +51,14 @@ export class RippleInclude {
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   readonly render = (): VNode[] => {
+    const enabled = typeof this.enabled === 'function' ? this.enabled() : this.enabled
+
     if (
       this.components
       && this.components.is('ripple')
       && (
-        !this.enabled
-        || this.enabled.isEnabled
+        !enabled
+        || enabled.isEnabled
       )
     ) {
       return this.components.render(

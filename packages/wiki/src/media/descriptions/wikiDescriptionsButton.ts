@@ -44,7 +44,8 @@ await expect(component).toBeInTheDocument()
 await expect(component).toHaveTextContent('Button')
   `,
   import: [
-    'import { ref } from \'vue\''
+    'import { ref } from \'vue\'',
+    'import type { EventClickValue } from \'@dxtmisha/constructor/Button\''
   ],
   stories: [
     // =========================================================================
@@ -197,6 +198,10 @@ await expect(items[3]).toBeDisabled()
             <DesignComponent adaptive="block" icon="home" label="Block Button"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Adaptive auto</div>
+            <DesignComponent adaptive="auto" icon="home" label="Auto Width"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Adaptive iconAlways</div>
             <DesignComponent adaptive="iconAlways" icon="home" label="Icon Only"/>
           </div>
@@ -204,11 +209,12 @@ await expect(items[3]).toBeDisabled()
       `,
       play: `
 const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(items.length).toBe(3)
+await expect(items.length).toBe(4)
 
 await expect(items[0]).toBeInTheDocument()
 await expect(items[1]).toHaveClass('design-component--adaptive--block')
-await expect(items[2]).toHaveClass('design-component--adaptive--iconAlways')
+await expect(items[2]).toHaveClass('design-component--adaptive--auto')
+await expect(items[3]).toHaveClass('design-component--adaptive--iconAlways')
       `
     },
     {
@@ -237,31 +243,39 @@ await expect(items[1]).toHaveClass('d1-skeleton__background')
     {
       id: 'ButtonEvents',
       name: {
-        en: 'Events (Click)',
-        ru: 'События (Click)'
+        en: 'Events (Click & ClickLite)',
+        ru: 'События (Click & ClickLite)'
       },
       setup: `
       const clickCount = ref(0)
+      const clickLiteCount = ref(0)
       const lastDetail = ref('')
 
-      const onClick = (event: MouseEvent) => {
+      const onClick = (event: MouseEvent, _value?: EventClickValue) => {
         clickCount.value++
         lastDetail.value = 'Clicked at ' + event.clientX + 'x' + event.clientY
       }
 
+      const onClickLite = (_value?: EventClickValue) => {
+        clickLiteCount.value++
+      }
+
       return {
         clickCount,
+        clickLiteCount,
         lastDetail,
-        onClick
+        onClick,
+        onClickLite
       }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <DesignComponent primary label="Click Me" @click="onClick"/>
+            <DesignComponent primary label="Click Me" @click="onClick" @click-lite="onClickLite"/>
           </div>
           <div class="wiki-storybook-card">
             <div>Clicks: <span class="click-counter">{{ clickCount }}</span></div>
+            <div>Lite Clicks: <span class="click-lite-counter">{{ clickLiteCount }}</span></div>
             <div>Detail: <span class="click-detail">{{ lastDetail }}</span></div>
           </div>
         </div>
@@ -270,12 +284,15 @@ await expect(items[1]).toHaveClass('d1-skeleton__background')
 const canvas = within(canvasElement)
 const button = canvas.getByText('Click Me')
 const counter = canvasElement.querySelector<HTMLElement>('.click-counter')
+const liteCounter = canvasElement.querySelector<HTMLElement>('.click-lite-counter')
 
 await expect(counter).toHaveTextContent('0')
+await expect(liteCounter).toHaveTextContent('0')
 await step('Click button', async () => {
   await userEvent.click(button)
 })
 await expect(counter).toHaveTextContent('1')
+await expect(liteCounter).toHaveTextContent('1')
       `
     },
     {
@@ -480,10 +497,10 @@ await expect(items[2]).toHaveAttribute('aria-label', 'Accessible Span')
     {
       id: 'ButtonTestTokensAndModifiers',
       name: {
-        en: 'Test: Inverse, grid and text alignment tokens',
-        ru: 'Тест: Инвертированные, сеточные и выравнивающие модификаторы'
+        en: 'Test: Inverse, grid, container and text alignment tokens',
+        ru: 'Тест: Инвертированные, сеточные, контейнерные и выравнивающие модификаторы'
       },
-      propsName: ['inverse', 'grid', 'textAlign'],
+      propsName: ['inverse', 'grid', 'container', 'textAlign'],
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
@@ -495,8 +512,16 @@ await expect(items[2]).toHaveAttribute('aria-label', 'Accessible Span')
             <DesignComponent grid icon="home" label="Grid Layout"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">container</div>
+            <DesignComponent container icon="home" label="Container Query"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">textAlign: left</div>
             <DesignComponent text-align="left" adaptive="block" label="Left Aligned"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">textAlign: center</div>
+            <DesignComponent text-align="center" adaptive="block" label="Center Aligned"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">textAlign: right</div>
@@ -506,12 +531,14 @@ await expect(items[2]).toHaveAttribute('aria-label', 'Accessible Span')
       `,
       play: `
 const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(items.length).toBe(4)
+await expect(items.length).toBe(6)
 
 await expect(items[0]).toHaveClass('design-component--inverse')
 await expect(items[1]).toHaveClass('design-component--grid')
-await expect(items[2]).toHaveClass('design-component--textAlign--left')
-await expect(items[3]).toHaveClass('design-component--textAlign--right')
+await expect(items[2]).toHaveClass('design-component--container')
+await expect(items[3]).toHaveClass('design-component--textAlign--left')
+await expect(items[4]).toHaveClass('design-component--textAlign--center')
+await expect(items[5]).toHaveClass('design-component--textAlign--right')
       `
     }
   ],
@@ -557,6 +584,7 @@ await expect(items[3]).toHaveClass('design-component--textAlign--right')
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'}/>
 <Canvas of={Component.ButtonSlots}/>
     `
   },

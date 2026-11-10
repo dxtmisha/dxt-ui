@@ -1,6 +1,7 @@
 // ai-none
 
 import {
+  type ConstrBind,
   type ConstrEmit,
   type DesignComponents,
   type DesignName
@@ -77,22 +78,25 @@ export class WindowInclude<
   }
 
   /**
-   * Returns preparation result /
-   * Возвращает результат preparation
+   * Returns preparation result.
+   *
+   * Возвращает результат подготовки.
    */
   protected readonly getPreparation = () =>
     this.getExtra()?.preparation?.() ?? this.getProps().windowAttrs?.preparation?.()
 
   /**
-   * Returns opening result /
-   * Возвращает результат opening
+   * Returns opening result.
+   *
+   * Возвращает результат открытия.
    */
   protected readonly getOpening = () =>
     this.getExtra()?.opening?.() ?? this.getProps().windowAttrs?.opening?.() ?? true
 
   /**
-   * Returns closing result /
-   * Возвращает результат closing
+   * Returns closing result.
+   *
+   * Возвращает результат закрытия.
    */
   protected readonly getClosing = () =>
     this.getExtra()?.closing?.() ?? this.getProps().windowAttrs?.closing?.() ?? true
@@ -103,7 +107,7 @@ export class WindowInclude<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<PropsExtra>> {
     const props = this.getProps()
     const binds = super.toBinds()
 
@@ -121,7 +125,7 @@ export class WindowInclude<
       ariaDescribedby: this.ariaDescribedby,
 
       onWindow: this.onWindow
-    }
+    } as Partial<ConstrBind<PropsExtra>>
   }
 
   /**
@@ -138,8 +142,9 @@ export class WindowInclude<
   }
 
   /**
-   * Emits 'window' event upward /
-   * Поднимает событие 'window' наверх
+   * Emits 'window' event upward.
+   *
+   * Поднимает событие 'window' наверх.
    * @param options event payload / параметры события
    */
   protected readonly onWindow = (options: WindowEmitOptions) => {

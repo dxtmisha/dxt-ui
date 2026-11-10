@@ -1,14 +1,14 @@
 // ai-none
 
-import { onMounted, watch } from 'vue'
-import { isDomRuntime, isInput } from '@dxtmisha/functional'
+import { watch } from 'vue'
+import type { WatchStopHandle } from 'vue'
+import { DesignLifecycleAbstract, isDomRuntime, isInput } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { TeleportInclude } from '../../classes/TeleportInclude'
+import type { TeleportInclude } from '../../classes/TeleportInclude'
 
-import { WindowClassesData } from './WindowClassesData'
-import { WindowStatic } from './WindowStatic'
-
+import type { WindowClassesData } from './WindowClassesData'
+import type { WindowStatic } from './WindowStatic'
 import type { WindowOpen } from './WindowOpen'
 import type { WindowProps } from './props'
 
@@ -19,27 +19,48 @@ let windowOpenCounter: number = 0
  *
  * Класс для управления скрытием элементов вне окна при его открытии.
  */
-export class WindowHidden {
+export class WindowHidden extends DesignLifecycleAbstract {
+  /**
+   * Checks if hidden mode can be activated.
+   *
+   * Проверяет, может ли быть активирован скрытый режим.
+   * @param props input data / входные данные
+   */
+  static is(props?: WindowProps): boolean {
+    return Boolean(props?.inert && !props?.embedded && !props?.staticMode)
+  }
+
+  protected watchOpenEnd?: WatchStopHandle
+
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param classes an object for working with class names / объект для работы с названиями классов
-   * @param staticMode class object for working with static status / объект класса для работы со статическим статусом
-   * @param open an object for working with the open state of the window / объект для работы с состоянием открытия окна
-   * @param teleport an object for working with the teleport status of the window / объект для работы с состоянием телепорта окна
+   * @param classes function returning an object for working with class names / функция, возвращающая объект для работы с названиями классов
+   * @param staticMode function returning class object for working with static status / функция, возвращающая объект класса для работы со статическим статусом
+   * @param open function returning an object for working with the open state / функция, возвращающая объект для работы с состоянием открытия окна
+   * @param teleport function returning an object for working with teleport status / функция, возвращающая объект для работы с состоянием телепорта окна
    */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly classes: WindowClassesData,
-    protected readonly staticMode: WindowStatic,
-    protected readonly open: WindowOpen,
-    protected readonly teleport: TeleportInclude
+    protected readonly classes: () => WindowClassesData,
+    protected readonly staticMode: () => WindowStatic,
+    protected readonly open: () => WindowOpen,
+    protected readonly teleport: () => TeleportInclude
   ) {
-    watch(
-      this.open.openEnd,
+    super()
+  }
+
+  override readonly onMounted = (): void => {
+    this.watchOpenEnd = watch(
+      this.open().openEnd,
       this.update
     )
-    onMounted(this.update)
+    this.update()
+  }
+
+  override readonly onUnmounted = (): void => {
+    this.watchOpenEnd?.()
+    this.toShow()
   }
 
   /**
@@ -49,14 +70,13 @@ export class WindowHidden {
    */
   readonly update = (): void => {
     if (
-      !this.props.inert
-      || this.props.embedded
-      || this.staticMode.item.value
+      !WindowHidden.is(this.props)
+      || this.staticMode().item.value
     ) {
       return
     }
 
-    if (this.open.openEnd.value) {
+    if (this.open().openEnd.value) {
       this.toHidden()
     } else {
       this.toShow()
@@ -68,14 +88,14 @@ export class WindowHidden {
    *
    * Возвращает данные aria-атрибута для скрытия элементов.
    */
-  protected getAriaData() {
+  protected getAriaData(): { key: string, value: string } {
     const ariaHidden = AriaStaticInclude.hidden()
-    const ariaKey: any = Object.keys(ariaHidden)[0]
-    const ariaValue: any = Object.values(ariaHidden)[0]
+    const [ariaKey = 'aria-hidden'] = Object.keys(ariaHidden)
+    const [ariaValue = 'true'] = Object.values(ariaHidden)
 
     return {
       key: ariaKey,
-      value: ariaValue
+      value: String(ariaValue)
     }
   }
 
@@ -86,7 +106,7 @@ export class WindowHidden {
    */
   protected findElements(): NodeListOf<HTMLElement> | undefined {
     if (isDomRuntime()) {
-      const id = this.classes.getId()
+      const id = this.classes().getId()
       return document.querySelectorAll<HTMLElement>(
         `body > *:not([data-window-teleport="${id}"]):not(.${id}):not(script):not(style)`
       )
@@ -101,8 +121,12 @@ export class WindowHidden {
    * Возвращает все элементы, заблокированные в данный момент окном (имеющие атрибут data-window-block).
    * @returns array of blocked elements / массив заблокированных элементов
    */
-  protected findBlockedElements(): NodeListOf<HTMLElement> {
-    return document.querySelectorAll<HTMLElement>('[data-window-block]')
+  protected findBlockedElements(): NodeListOf<HTMLElement> | HTMLElement[] {
+    if (isDomRuntime()) {
+      return document.querySelectorAll<HTMLElement>('[data-window-block]')
+    }
+
+    return []
   }
 
   /**
@@ -129,7 +153,7 @@ export class WindowHidden {
         if (
           element.hasAttribute(aria.key)
           || element.hasAttribute('inert')
-          || this.teleport.isTeleportElement(element)
+          || this.teleport().isTeleportElement(element)
         ) {
           return
         }
@@ -137,7 +161,7 @@ export class WindowHidden {
         element.setAttribute(aria.key, aria.value)
         element.setAttribute('data-window-block', 'true')
 
-        if (!this.classes.isWindowOrTeleport(element)) {
+        if (!this.classes().isWindowOrTeleport(element)) {
           element.setAttribute('inert', '')
         }
       })

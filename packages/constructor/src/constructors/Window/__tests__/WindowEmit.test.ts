@@ -20,7 +20,7 @@ describe('WindowEmit', () => {
 
     const mockEmits = vi.fn()
 
-    const windowEmit = new WindowEmit(mockClasses, mockElement, mockEmits)
+    const windowEmit = new WindowEmit(() => mockClasses, () => mockElement, mockEmits)
 
     windowEmit.on(true)
 

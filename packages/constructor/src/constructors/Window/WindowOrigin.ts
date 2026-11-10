@@ -1,5 +1,7 @@
 // ai-none
 
+import { isDomRuntime } from '@dxtmisha/functional'
+
 import { WindowClient } from './WindowClient'
 import { WindowElement } from './WindowElement'
 import { WindowPosition } from './WindowPosition'
@@ -16,15 +18,17 @@ export class WindowOrigin {
   protected y: number | null = null
 
   /**
-   * Constructor
-   * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
-   * @param element an object of the class for working with elements/ объект класса для работы с элементами
-   * @param position object for working with the position of the element/ объект для работы с положением элемента
+   * Constructor.
+   *
+   * Конструктор.
+   * @param client function returning client coordinates manager / функция, возвращающая менеджер клиентских координат
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
+   * @param position function returning position manager / функция, возвращающая менеджер позиции
    */
   constructor(
-    protected readonly client: WindowClient,
-    protected readonly element: WindowElement,
-    protected readonly position: WindowPosition
+    protected readonly client: () => WindowClient,
+    protected readonly element: () => WindowElement,
+    protected readonly position: () => WindowPosition
   ) {
   }
 
@@ -32,6 +36,7 @@ export class WindowOrigin {
    * Returns the initial X point for the start of the animation.
    *
    * Возвращает начальную точку X для начала анимации.
+   * @returns initial X coordinate string with px or null / строка начальной координаты X с px или null
    */
   getStyleX(): string | null {
     return this.x !== null ? `${this.x}px` : null
@@ -41,6 +46,7 @@ export class WindowOrigin {
    * Returns the initial Y point for the start of the animation.
    *
    * Возвращает начальную точку Y для начала анимации.
+   * @returns initial Y coordinate string with px or null / строка начальной координаты Y с px или null
    */
   getStyleY(): string | null {
     return this.y !== null ? `${this.y}px` : null
@@ -50,30 +56,32 @@ export class WindowOrigin {
    * Updating the initial position of the element for the animation.
    *
    * Обновление начального положения элемента для анимации.
+   * @returns this instance / текущий экземпляр
    */
   update(): this {
-    const element = this.element.getMain()
+    const element = this.element().getMain()
 
-    this.client.update()
+    this.client().update()
 
-    if (!this.client.is()) {
+    if (!this.client().is()) {
       this.x = 0
       this.y = 0
     } else if (
-      element
+      isDomRuntime()
+      && element
       && getComputedStyle(element)
         .getPropertyValue(__WINDOW_TYPE_BODY_NAME)
         .includes('--MENU--')
     ) {
-      const rect = this.element.getBodyRect()
+      const rect = this.element().getBodyRect()
 
       if (rect) {
-        this.x = this.client.getShiftX(rect.left)
-        this.y = this.client.getShiftY(rect.top)
+        this.x = this.client().getShiftX(rect.left)
+        this.y = this.client().getShiftY(rect.top)
       }
     } else {
-      this.x = this.client.getShiftX(this.position.getX())
-      this.y = this.client.getShiftY(this.position.getY())
+      this.x = this.client().getShiftX(this.position().getX())
+      this.y = this.client().getShiftY(this.position().getY())
     }
 
     return this
@@ -83,6 +91,7 @@ export class WindowOrigin {
    * Resets all data to initial values.
    *
    * Сбрасывает все данные к начальным значениям.
+   * @returns this instance / текущий экземпляр
    */
   reset(): this {
     this.x = null

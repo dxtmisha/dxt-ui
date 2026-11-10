@@ -6,7 +6,7 @@ import type { WindowElement } from '../WindowElement'
 describe('WindowClient', () => {
   it('should initialize to unset coordinates', () => {
     const mockElement = {} as WindowElement
-    const windowClient = new WindowClient(mockElement)
+    const windowClient = new WindowClient(() => mockElement)
 
     expect(windowClient.is()).toBe(false)
     expect(windowClient.isZero()).toBe(false)
@@ -16,7 +16,7 @@ describe('WindowClient', () => {
 
   it('should set coordinates and return correct is() state', () => {
     const mockElement = {} as WindowElement
-    const windowClient = new WindowClient(mockElement)
+    const windowClient = new WindowClient(() => mockElement)
 
     windowClient.set(10, 20)
 
@@ -28,7 +28,7 @@ describe('WindowClient', () => {
 
   it('should identify coordinates at origin (0,0) as zero', () => {
     const mockElement = {} as WindowElement
-    const windowClient = new WindowClient(mockElement)
+    const windowClient = new WindowClient(() => mockElement)
 
     windowClient.set(0, 0)
 
@@ -38,7 +38,7 @@ describe('WindowClient', () => {
 
   it('should return correct shifts relative to input values', () => {
     const mockElement = {} as WindowElement
-    const windowClient = new WindowClient(mockElement)
+    const windowClient = new WindowClient(() => mockElement)
 
     windowClient.set(50, 100)
 
@@ -48,7 +48,7 @@ describe('WindowClient', () => {
 
   it('should reset coordinates to unset state', () => {
     const mockElement = {} as WindowElement
-    const windowClient = new WindowClient(mockElement)
+    const windowClient = new WindowClient(() => mockElement)
 
     windowClient.set(10, 20)
     windowClient.reset()
@@ -67,7 +67,7 @@ describe('WindowClient', () => {
       } as DOMRect)
     } as unknown as WindowElement
 
-    const windowClient = new WindowClient(mockElement)
+    const windowClient = new WindowClient(() => mockElement)
     windowClient.set(0, 0)
 
     windowClient.update()
@@ -88,7 +88,7 @@ describe('WindowClient', () => {
       } as DOMRect)
     } as unknown as WindowElement
 
-    const windowClient = new WindowClient(mockElement)
+    const windowClient = new WindowClient(() => mockElement)
     windowClient.set(10, 20)
 
     windowClient.update()

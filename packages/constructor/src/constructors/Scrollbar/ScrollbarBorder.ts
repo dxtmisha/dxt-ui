@@ -10,6 +10,7 @@ import {
 import type { ScrollbarProps } from './props'
 import type { ScrollbarEmits } from './types'
 
+/** Scroll shift offset threshold in pixels / Пороговое смещение скролла в пикселях */
 const SCROLLBAR_SHIFT = 8
 
 /**
@@ -47,6 +48,9 @@ export class ScrollbarBorder extends DesignLifecycleAbstract {
   /** Bottom boundary state / Состояние нижней границы */
   protected bottom?: boolean
 
+  /** Watcher stop handle / Функция остановки наблюдателя */
+  protected readonly stopWatch?: () => void
+
   /**
    * Constructor for ScrollbarBorder class.
    *
@@ -62,7 +66,7 @@ export class ScrollbarBorder extends DesignLifecycleAbstract {
   ) {
     super()
 
-    watch([
+    this.stopWatch = watch([
       this.element,
       () => props.divider,
       () => props.dividerTop,
@@ -78,6 +82,7 @@ export class ScrollbarBorder extends DesignLifecycleAbstract {
   /** Callback after component unmounting / Обработчик после демонтирования компонента */
   override readonly onUnmounted = (): void => {
     this.stop()
+    this.stopWatch?.()
   }
 
   /**

@@ -38,7 +38,9 @@ export const wikiDescriptionsCell: StorybookComponentsDescriptionItem = {
     <DesignComponent v-bind="args"/>
     <DesignComponent v-bind="args"/>
     `,
-  import: [],
+  import: [
+    'import { ref } from \'vue\''
+  ],
   stories: [
     {
       id: 'CellSkeleton',
@@ -52,8 +54,8 @@ export const wikiDescriptionsCell: StorybookComponentsDescriptionItem = {
           <DesignComponent
             :isSkeleton="true"
             caption="Caption"
-            description="Short desc."
-            label="A"
+            description="Short description"
+            label="Label A"
           />
           <DesignComponent
             :isSkeleton="true"
@@ -61,13 +63,11 @@ export const wikiDescriptionsCell: StorybookComponentsDescriptionItem = {
             description="A bit longer description for the cell component."
             label="Label Example"
           />
-          <DesignComponent
-            :isSkeleton="true"
-            caption="Caption"
-            description="This is a much longer description to demonstrate how the skeleton adapts to different content lengths in the cell."
-            label="Very Long Label Example for Skeleton"
-          />
         </DesignSkeleton>
+      `,
+      play: `
+        const cellElements = canvasElement.querySelectorAll('.design-component')
+        expect(cellElements.length).toBeGreaterThanOrEqual(2)
       `
     },
     {
@@ -78,12 +78,224 @@ export const wikiDescriptionsCell: StorybookComponentsDescriptionItem = {
       },
       template: `
         <DesignComponent icon="home">
-          <template #default>Default slot</template>
-          <template #description>Description slot</template>
-          <template #caption>Caption slot</template>
-          <template #trailing>Trailing slot</template>
-          <template #body>Body slot</template>
+          <template #default>Default slot content</template>
+          <template #description>Description slot content</template>
+          <template #caption>Caption slot content</template>
+          <template #trailing>Trailing slot content</template>
+          <template #body>Body slot content</template>
         </DesignComponent>
+      `,
+      play: `
+        const canvas = within(canvasElement)
+        expect(canvas.getByText('Default slot content')).toBeInTheDocument()
+        expect(canvas.getByText('Description slot content')).toBeInTheDocument()
+        expect(canvas.getByText('Caption slot content')).toBeInTheDocument()
+        expect(canvas.getByText('Trailing slot content')).toBeInTheDocument()
+        expect(canvas.getByText('Body slot content')).toBeInTheDocument()
+      `
+    },
+    {
+      id: 'CellIcons',
+      name: {
+        en: 'Start and trailing icons',
+        ru: 'Начальная и завершающая иконки'
+      },
+      template: `
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <DesignComponent
+            label="Home navigation"
+            description="Leading icon aligned with text"
+            icon="home"
+          />
+          <DesignComponent
+            label="Settings section"
+            description="Trailing chevron accessory"
+            iconTrailing="chevron_right"
+          />
+          <DesignComponent
+            label="Profile account"
+            description="Leading icon aligned to top row"
+            icon="person"
+            iconTop
+          />
+        </div>
+      `,
+      play: `
+        const canvas = within(canvasElement)
+        expect(canvas.getByText('Home navigation')).toBeInTheDocument()
+        expect(canvas.getByText('Settings section')).toBeInTheDocument()
+        expect(canvas.getByText('Profile account')).toBeInTheDocument()
+      `
+    },
+    {
+      id: 'CellDynamic',
+      name: {
+        en: 'Dynamic and interactive behavior',
+        ru: 'Динамическое и интерактивное поведение'
+      },
+      setup: `
+      const clickedCount = ref(0)
+      const onClick = () => {
+        clickedCount.value++
+      }
+
+      return {
+        clickedCount,
+        onClick
+      }
+      `,
+      template: `
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <DesignComponent
+            label="Clickable cell item"
+            description="Click to increment counter"
+            dynamic
+            dynamicHover
+            @click="onClick"
+          />
+          <div data-testid="counter-value" style="font-size: 12px;">Clicks: {{ clickedCount }}</div>
+        </div>
+      `,
+      play: `
+        const canvas = within(canvasElement)
+        const clickable = canvas.getByText('Clickable cell item')
+        expect(clickable).toBeInTheDocument()
+        await userEvent.click(clickable)
+        const counter = canvas.getByTestId('counter-value')
+        expect(counter.textContent).toContain('Clicks: 1')
+      `
+    },
+    {
+      id: 'CellTestStates',
+      name: {
+        en: 'Test: Disabled, selected, readonly and focus states',
+        ru: 'Тест: Отключенное, выбранное, только чтение и состояние фокуса'
+      },
+      template: `
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <DesignComponent
+            label="Disabled cell"
+            description="Disabled interaction"
+            disabled
+          />
+          <DesignComponent
+            label="Selected cell"
+            description="Selected state"
+            selected
+          />
+          <DesignComponent
+            label="Readonly cell"
+            description="Readonly state"
+            readonly
+          />
+          <DesignComponent
+            label="Focus cell"
+            description="Focus state"
+            focus
+          />
+        </div>
+      `,
+      play: `
+        const canvas = within(canvasElement)
+        const disabledElement = canvas.getByText('Disabled cell').closest('.design-component')
+        expect(disabledElement?.className).toContain('disabled')
+
+        const selectedElement = canvas.getByText('Selected cell').closest('.design-component')
+        expect(selectedElement?.className).toContain('selected')
+
+        const readonlyElement = canvas.getByText('Readonly cell').closest('.design-component')
+        expect(readonlyElement?.className).toContain('readonly')
+
+        const focusElement = canvas.getByText('Focus cell').closest('.design-component')
+        expect(focusElement?.className).toContain('focus')
+      `
+    },
+    {
+      id: 'CellTestDividers',
+      name: {
+        en: 'Test: Divider options and label dividers',
+        ru: 'Тест: Варианты разделителей и разделители меток'
+      },
+      template: `
+        <div style="display: flex; flex-direction: column;">
+          <DesignComponent
+            label="Item with default divider"
+            divider
+          />
+          <DesignComponent
+            label="Item with disabled divider"
+            :divider="false"
+          />
+          <DesignComponent
+            label="Item with always divider label"
+            dividerLabel="always"
+          />
+        </div>
+      `,
+      play: `
+        const canvas = within(canvasElement)
+        const firstCell = canvas.getByText('Item with default divider').closest('.design-component')
+        expect(firstCell?.getAttribute('data-divider')).toBe('active')
+
+        const secondCell = canvas.getByText('Item with disabled divider').closest('.design-component')
+        expect(secondCell?.getAttribute('data-divider')).toBeNull()
+
+        const thirdCell = canvas.getByText('Item with always divider label').closest('.design-component')
+        expect(thirdCell?.className).toContain('dividerLabel')
+      `
+    },
+    {
+      id: 'CellTestTagsAndRoles',
+      name: {
+        en: 'Test: Semantic tags, custom roles and ARIA',
+        ru: 'Тест: Семантические теги, кастомные роли и ARIA'
+      },
+      template: `
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <DesignComponent
+            label="Section tag item"
+            tag="section"
+          />
+          <DesignComponent
+            label="Custom role listitem"
+            role="listitem"
+          />
+          <DesignComponent
+            label="Dynamic button role"
+            dynamic
+          />
+        </div>
+      `,
+      play: `
+        const canvas = within(canvasElement)
+        const sectionCell = canvas.getByText('Section tag item').closest('section')
+        expect(sectionCell).not.toBeNull()
+
+        const listitemCell = canvas.getByText('Custom role listitem').closest('[role="listitem"]')
+        expect(listitemCell).not.toBeNull()
+
+        const dynamicCell = canvas.getByText('Dynamic button role').closest('[role="button"]')
+        expect(dynamicCell).not.toBeNull()
+        expect(dynamicCell?.getAttribute('tabindex')).toBe('0')
+      `
+    },
+    {
+      id: 'CellTestProgress',
+      name: {
+        en: 'Test: Loading progress bar indicator',
+        ru: 'Тест: Индикатор выполнения прогресс-бара'
+      },
+      template: `
+        <DesignComponent
+          label="Cell with loading progress"
+          description="In-flight asynchronous process"
+          loading
+        />
+      `,
+      play: `
+        const canvas = within(canvasElement)
+        const cell = canvas.getByText('Cell with loading progress').closest('.design-component')
+        expect(cell).not.toBeNull()
       `
     }
   ],
@@ -93,14 +305,20 @@ export const wikiDescriptionsCell: StorybookComponentsDescriptionItem = {
 
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={Component.CellSkeleton}/>
+
+<StorybookDescriptions componentName={'Icon'} type={'icon'}/>
+<Canvas of={Component.CellIcons}/>
+
+<StorybookDescriptions componentName={'Event'} type={'dynamic'}/>
+<Canvas of={Component.CellDynamic}/>
 `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
-    `,
+`,
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
 <StorybookDescriptions componentName={'Expose'} type={'getDetail'}/>
-    `,
+`,
     slots: `
 <Canvas of={Component.CellSlots}/>
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>

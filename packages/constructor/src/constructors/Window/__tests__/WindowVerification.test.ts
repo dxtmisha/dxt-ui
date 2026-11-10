@@ -6,7 +6,7 @@ import type { WindowProps } from '../props'
 
 describe('WindowVerification', () => {
   let mockProps: Partial<WindowProps>
-  let mockClientOnly: any
+  let isMountedRef: any
   let mockPersistent: any
   let mockClasses: any
   let mockElement: any
@@ -23,9 +23,7 @@ describe('WindowVerification', () => {
       disabled: false,
       contextmenu: false
     }
-    mockClientOnly = {
-      isRender: vi.fn().mockReturnValue(true)
-    }
+    isMountedRef = ref(true)
     mockPersistent = {
       on: vi.fn().mockReturnValue(false)
     }
@@ -68,12 +66,12 @@ describe('WindowVerification', () => {
   it('should call toggle() if window is closed and enabled', async () => {
     const verification = new WindowVerification(
       mockProps as WindowProps,
-      mockClientOnly,
-      mockPersistent,
-      mockClasses,
-      mockElement,
-      mockStatic,
-      mockOpen
+      isMountedRef,
+      () => mockPersistent,
+      () => mockClasses,
+      () => mockElement,
+      () => mockStatic,
+      () => mockOpen
     )
 
     await verification.update(targetElement)
@@ -85,12 +83,12 @@ describe('WindowVerification', () => {
   it('should ignore verification updates if target is not in body', async () => {
     const verification = new WindowVerification(
       mockProps as WindowProps,
-      mockClientOnly,
-      mockPersistent,
-      mockClasses,
-      mockElement,
-      mockStatic,
-      mockOpen
+      isMountedRef,
+      () => mockPersistent,
+      () => mockClasses,
+      () => mockElement,
+      () => mockStatic,
+      () => mockOpen
     )
 
     const orphanElement = document.createElement('div')
@@ -103,12 +101,12 @@ describe('WindowVerification', () => {
     mockProps.disabled = true
     const verification = new WindowVerification(
       mockProps as WindowProps,
-      mockClientOnly,
-      mockPersistent,
-      mockClasses,
-      mockElement,
-      mockStatic,
-      mockOpen
+      isMountedRef,
+      () => mockPersistent,
+      () => mockClasses,
+      () => mockElement,
+      () => mockStatic,
+      () => mockOpen
     )
 
     await verification.update(targetElement)

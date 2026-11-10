@@ -24,8 +24,14 @@ export class WindowClient {
   protected x: number = WINDOW_NULL_VALUE
   protected y: number = WINDOW_NULL_VALUE
 
+  /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
+   */
   constructor(
-    protected readonly element: WindowElement
+    protected readonly element: () => WindowElement
   ) {
   }
 
@@ -87,24 +93,12 @@ export class WindowClient {
    * Changes the coordinates.
    *
    * Изменяет координаты.
-   * @param x value of X/ значение X
-   * @param y value of Y/ значение Y
+   * @param x value of X / значение X
+   * @param y value of Y / значение Y
    */
   set(x: number, y: number): this {
     this.x = x
     this.y = y
-
-    return this
-  }
-
-  /**
-   * Resets all data to initial values.
-   *
-   * Сбрасывает все данные к начальным значениям.
-   */
-  reset(): this {
-    this.x = WINDOW_NULL_VALUE
-    this.y = WINDOW_NULL_VALUE
 
     return this
   }
@@ -119,7 +113,7 @@ export class WindowClient {
       this.is()
       && this.isZero()
     ) {
-      const rect = this.element.getControlRect()
+      const rect = this.element().getControlRect()
 
       if (rect) {
         this.set(
@@ -128,6 +122,18 @@ export class WindowClient {
         )
       }
     }
+
+    return this
+  }
+
+  /**
+   * Resets all data to initial values.
+   *
+   * Сбрасывает все данные к начальным значениям.
+   */
+  reset(): this {
+    this.x = WINDOW_NULL_VALUE
+    this.y = WINDOW_NULL_VALUE
 
     return this
   }

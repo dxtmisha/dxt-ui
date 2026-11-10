@@ -2,8 +2,8 @@
 
 import type { ConstrEmit } from '@dxtmisha/functional'
 
-import { WindowClassesData } from './WindowClassesData'
-import { WindowElement } from './WindowElement'
+import type { WindowClassesData } from './WindowClassesData'
+import type { WindowElement } from './WindowElement'
 
 import type { WindowEmits } from './types'
 import type { WindowEmitOptions } from './basicTypes'
@@ -15,14 +15,16 @@ import type { WindowEmitOptions } from './basicTypes'
  */
 export class WindowEmit {
   /**
-   * Constructor
-   * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
-   * @param element an object of the class for working with elements/ объект класса для работы с элементами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * Constructor.
+   *
+   * Конструктор.
+   * @param classes function returning class manager / функция, возвращающая менеджер классов
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly classes: WindowClassesData,
-    protected readonly element: WindowElement,
+    protected readonly classes: () => WindowClassesData,
+    protected readonly element: () => WindowElement,
     protected readonly emits?: ConstrEmit<WindowEmits>
   ) {
   }
@@ -31,9 +33,9 @@ export class WindowEmit {
    * Perform events.
    *
    * Выполнить события.
-   * @param open current state of the window/ текущее состояние окна
+   * @param open current state of the window / текущее состояние окна
    */
-  on(open: boolean) {
+  on(open: boolean): void {
     this.emits?.('window', this.getEmitOptions(open))
   }
 
@@ -41,13 +43,13 @@ export class WindowEmit {
    * Returns an object for calling the event handler.
    *
    * Возвращает объект для вызова обработчика события.
-   * @param open current state of the window/ текущее состояние окна
+   * @param open current state of the window / текущее состояние окна
    */
   protected getEmitOptions(open: boolean): WindowEmitOptions {
     return {
-      id: this.classes.getId(),
-      element: this.element.getMain() as HTMLDivElement,
-      control: this.element.getControl() as HTMLElement,
+      id: this.classes().getId(),
+      element: this.element().getMain() as HTMLDivElement,
+      control: this.element().getControl() as HTMLElement,
       open
     }
   }

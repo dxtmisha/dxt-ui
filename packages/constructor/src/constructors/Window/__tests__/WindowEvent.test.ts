@@ -4,14 +4,6 @@ import { ref } from 'vue'
 import { WindowEvent } from '../WindowEvent'
 import type { WindowProps } from '../props'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (callback: () => void) => callback()
-  }
-})
-
 describe('WindowEvent', () => {
   let mockProps: Partial<WindowProps>
   let mockTabIndex: any
@@ -51,13 +43,14 @@ describe('WindowEvent', () => {
 
     windowEvent = new WindowEvent(
       mockProps as WindowProps,
-      mockTabIndex,
-      mockStatus,
-      mockClient,
-      mockFlash,
-      mockOpen,
-      mockVerification
+      () => mockTabIndex,
+      () => mockStatus,
+      () => mockClient,
+      () => mockFlash,
+      () => mockOpen,
+      () => mockVerification
     )
+    windowEvent.onMounted()
   })
 
   afterEach(() => {

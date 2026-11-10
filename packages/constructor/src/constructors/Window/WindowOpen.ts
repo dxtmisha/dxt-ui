@@ -1,9 +1,8 @@
 // ai-none
 
-import { ref } from 'vue'
-import { frame } from '@dxtmisha/functional'
+import { ref, watch, type Ref, type WatchStopHandle } from 'vue'
+import { DesignLifecycleAbstract, frame, isDomRuntime } from '@dxtmisha/functional'
 
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
 
 import { WindowStatus } from './WindowStatus'
@@ -27,7 +26,7 @@ import type { WindowProps } from './props'
  *
  * Класс для управления статусом открытого окна.
  */
-export class WindowOpen {
+export class WindowOpen extends DesignLifecycleAbstract {
   /** Reactive state of window open status / Реактивное состояние статуса открытия окна */
   readonly item = ref<boolean>(false)
 
@@ -41,41 +40,70 @@ export class WindowOpen {
   protected clicks: number = 0
 
   /** Timer ID for interval check of element DOM presence / Идентификатор таймера для периодической проверки присутствия элемента в DOM */
-  protected timer?: any
+  protected timer?: ReturnType<typeof setInterval>
+
+  /** Watcher handle for open prop / Дескриптор наблюдателя за свойством open */
+  protected watchStop?: WatchStopHandle
 
   /**
    * Constructor.
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param clientOnly class object to check if rendering on client side / объект класса для проверки рендеринга на стороне клиента
-   * @param client object for working with mouse pointer coordinates / объект для работы с координатами указателя мыши
-   * @param hook object for working with hooks / объект для работы с хуками
-   * @param element an object of the class for working with elements / объект класса для работы с элементами
-   * @param tabIndex class object for working with tab indices / объект класса для работы с табуляцией
-   * @param status object for working with statuses / объект для работы со статусами
-   * @param flash class object for working with fast window opening / объект класса для работы с быстрым открытием окна
-   * @param coordinates object for working with coordinates / объект для работы с координатами
-   * @param position object for working with the position of the element / объект для работы с положением элемента
-   * @param origin the object for work is in the initial position upon opening / объект для работы в начальной позиции при открытии
-   * @param emit the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param styles an object for working with the styles of an element / объект для работы со стилями элемента
+   * @param isMounted reactive mounted state on client / реактивное состояние монтирования на клиенте
+   * @param client function returning client coordinates manager / функция, возвращающая менеджер клиентских координат
+   * @param hook function returning hook manager / функция, возвращающая менеджер хуков
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
+   * @param tabIndex function returning tab index manager / функция, возвращающая менеджер табуляции
+   * @param status function returning status manager / функция, возвращающая менеджер статусов
+   * @param flash function returning flash animation manager / функция, возвращающая менеджер быстрого открытия
+   * @param coordinates function returning coordinates manager / функция, возвращающая менеджер координат
+   * @param position function returning position manager / функция, возвращающая менеджер положения
+   * @param origin function returning origin manager / функция, возвращающая менеджер начальной точки
+   * @param emit function returning emit manager / функция, возвращающая менеджер событий
+   * @param styles function returning styles manager / функция, возвращающая менеджер стилей
    */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly clientOnly: ClientOnlyInclude,
-    protected readonly client: WindowClient,
-    protected readonly hook: WindowHook,
-    protected readonly element: WindowElement,
-    protected readonly tabIndex: TabIndexInclude,
-    protected readonly status: WindowStatus,
-    protected readonly flash: WindowFlash,
-    protected readonly coordinates: WindowCoordinates,
-    protected readonly position: WindowPosition,
-    protected readonly origin: WindowOrigin,
-    protected readonly emit: WindowEmit,
-    protected readonly styles: WindowStyles
+    protected readonly isMounted: Ref<boolean>,
+    protected readonly client: () => WindowClient,
+    protected readonly hook: () => WindowHook,
+    protected readonly element: () => WindowElement,
+    protected readonly tabIndex: () => TabIndexInclude,
+    protected readonly status: () => WindowStatus,
+    protected readonly flash: () => WindowFlash,
+    protected readonly coordinates: () => WindowCoordinates,
+    protected readonly position: () => WindowPosition,
+    protected readonly origin: () => WindowOrigin,
+    protected readonly emit: () => WindowEmit,
+    protected readonly styles: () => WindowStyles
   ) {
+    super()
+  }
+
+  /**
+   * Setup lifecycle listeners and watchers on mount.
+   *
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = watch(() => this.props.open, () => this.set(this.props.open))
+
+    if (this.props.open) {
+      this.set(this.props.open)
+    }
+  }
+
+  /**
+   * Cleanup lifecycle listeners on unmount.
+   *
+   * Очистка слушателей жизненного цикла при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
+    clearInterval(this.timer)
   }
 
   /**
@@ -100,20 +128,20 @@ export class WindowOpen {
    * @returns true if the element is in the DOM, or false if it was closed / true, если элемент в DOM, или false, если окно было закрыто
    */
   async checkInDom(): Promise<boolean> {
-    const main = this.element.getMain()
+    const main = this.element?.()?.getMain?.()
 
     if (this.item.value) {
       if (
         !main
-        || !document.body.contains(main)
+        || (isDomRuntime() && !document.body.contains(main))
       ) {
-        clearTimeout(this.timer)
+        clearInterval(this.timer)
         this.item.value = false
         this.openEnd.value = false
         return false
       }
     } else {
-      clearTimeout(this.timer)
+      clearInterval(this.timer)
     }
 
     return true
@@ -171,53 +199,53 @@ export class WindowOpen {
 
     const toOpen = !this.item.value
 
-    if (await this.hook.before(toOpen)) {
+    if (await this.hook().before(toOpen)) {
       if (toOpen) {
         this.reset()
-        this.status.toDisplay()
+        this.status?.()?.toDisplay()
 
         await this.setOpen(toOpen)
 
         requestAnimationFrame(async () => {
-          this.status.update()
-          await this.hook.preparation()
+          this.status?.()?.update()
+          await this.hook?.()?.preparation()
           await this.watchPosition()
-          this.styles.updateType(true)
+          this.styles?.()?.updateType(true)
 
           requestAnimationFrame(async () => {
-            this.position.updateScroll()
-            this.status.toPreparation()
+            this.position?.()?.updateScroll()
+            this.status?.()?.toPreparation()
 
             requestAnimationFrame(async () => {
-              if (this.flash.isClose()) {
-                this.status.toFlash()
+              if (this.flash?.()?.isClose()) {
+                this.status?.()?.toFlash()
               } else {
-                this.status.toOpen()
+                this.status?.()?.toOpen()
               }
 
               requestAnimationFrame(() => {
-                this.hook.opening()
+                this.hook?.()?.opening()
                 this.resetClicks()
 
                 if (!this.props.embedded) {
-                  this.tabIndex.goTo()
+                  this.tabIndex?.()?.goTo()
                   this.openEnd.value = true
                 }
               })
 
-              this.emit.on(this.item.value)
+              this.emit?.()?.on(this.item.value)
               this.timer = setInterval(() => this.checkInDom(), 400)
             })
           })
         })
       } else {
-        this.client.reset()
+        this.client?.()?.reset()
 
-        if (this.flash.isOpen()) {
+        if (this.flash?.()?.isOpen()) {
           this.toClose()
         } else {
           requestAnimationFrame(() => {
-            this.status.toHide()
+            this.status?.()?.toHide()
             this.resetClicks()
           })
         }
@@ -231,10 +259,10 @@ export class WindowOpen {
    * Обработчик закрытия по окончании анимации.
    */
   closeForEvent(): void {
-    if (this.status.isHide()) {
+    if (this.status?.()?.isHide()) {
       this.toClose()
-    } else if (!this.status.isOpen()) {
-      this.hook.closing().then()
+    } else if (!this.status?.()?.isOpen()) {
+      this.hook?.()?.closing().then()
     }
   }
 
@@ -245,8 +273,8 @@ export class WindowOpen {
    * @returns this instance / текущий экземпляр класса
    */
   reset(): this {
-    this.coordinates.reset()
-    this.origin.reset()
+    this.coordinates().reset()
+    this.origin().reset()
 
     return this
   }
@@ -283,15 +311,15 @@ export class WindowOpen {
   async watchPosition(): Promise<void> {
     if (
       this.item.value
-      && this.element.isMain()
-      && this.clientOnly.isRender()
+      && this.element().isMain()
+      && this.isMounted.value
     ) {
-      this.position.update()
-      this.position.updateBody()
-      this.styles.update()
+      this.position().update()
+      this.position().updateBody()
+      this.styles().update()
 
-      this.origin.update()
-      this.styles.update()
+      this.origin().update()
+      this.styles().update()
 
       this.watchCoordinates()
     } else {
@@ -325,21 +353,21 @@ export class WindowOpen {
   protected watchCoordinates(): this {
     frame(
       () => {
-        const element = this.element.getMain()
+        const element = this.element?.()?.getMain?.()
 
-        if (element) {
+        if (element && isDomRuntime()) {
           const isMenu = getComputedStyle(element)
             .getPropertyValue(__WINDOW_TYPE_BODY_NAME)
             .includes('--MENU--')
 
-          if (isMenu && this.position.update()) {
-            this.styles.update()
+          if (isMenu && this.position().update()) {
+            this.styles().update()
           }
 
-          this.styles.updateType(isMenu)
+          this.styles().updateType(isMenu)
         }
       },
-      () => this.item.value && !this.status.isHide()
+      () => this.item.value && !this.status().isHide()
     )
 
     return this
@@ -354,14 +382,14 @@ export class WindowOpen {
     setTimeout(async () => {
       await this.setOpen(false)
 
-      await this.hook.closing()
+      await this.hook().closing()
 
       this.resetClicks()
-      this.tabIndex.reset()
+      this.tabIndex().reset()
       this.openEnd.value = false
-      this.emit.on(this.item.value)
+      this.emit().on(this.item.value)
     }, 48)
 
-    this.status.toClose()
+    this.status().toClose()
   }
 }

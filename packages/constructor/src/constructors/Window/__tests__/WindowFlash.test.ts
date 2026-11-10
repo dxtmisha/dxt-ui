@@ -26,7 +26,7 @@ describe('WindowFlash', () => {
   })
 
   it('should return is() based on props.flash', () => {
-    const windowFlash = new WindowFlash(mockProps as WindowProps, mockClasses)
+    const windowFlash = new WindowFlash(mockProps as WindowProps, () => mockClasses)
     expect(windowFlash.is()).toBe(false)
 
     mockProps.flash = true
@@ -34,7 +34,7 @@ describe('WindowFlash', () => {
   })
 
   it('should return isOpen() true if flash is true or control is true', () => {
-    const windowFlash = new WindowFlash(mockProps as WindowProps, mockClasses)
+    const windowFlash = new WindowFlash(mockProps as WindowProps, () => mockClasses)
     expect(windowFlash.isOpen()).toBe(false)
 
     // Set control to true by mapping target
@@ -48,7 +48,7 @@ describe('WindowFlash', () => {
   })
 
   it('should return isClose() true if flash is true or query selector matches status hide', () => {
-    const windowFlash = new WindowFlash(mockProps as WindowProps, mockClasses)
+    const windowFlash = new WindowFlash(mockProps as WindowProps, () => mockClasses)
     expect(windowFlash.isClose()).toBe(false)
 
     // Create a hidden status element in body

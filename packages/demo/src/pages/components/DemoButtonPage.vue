@@ -4,15 +4,14 @@ import type { ButtonExpose } from '@dxtmisha/constructor/Button'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
-import DemoFlex from '../../components/DemoFlex.vue'
 
 const { eventName, onEvent } = useDemoEvent()
-const buttonRef = ref<ButtonExpose | null>(null)
+const buttonReference = ref<ButtonExpose | null>(null)
 
 const statusValue = computed<string>(() => {
-  if (buttonRef.value) {
-    const value = buttonRef.value.getValue?.()
-    const detail = buttonRef.value.getDetail?.()
+  if (buttonReference.value) {
+    const value = buttonReference.value.getValue?.()
+    const detail = buttonReference.value.getDetail?.()
     return `getValue(): ${JSON.stringify(value)}, getDetail(): ${JSON.stringify(detail)}`
   }
   return 'Ref not initialized'
@@ -24,35 +23,36 @@ const statusValue = computed<string>(() => {
   <D1Page label="Button">
     <D1Section>
       <D1Group label="Types">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button label="Primary" primary />
           <D1Button label="Secondary" secondary />
           <D1Button label="Outline" outline />
           <D1Button label="Text" text />
-        </DemoFlex>
+        </div>
       </D1Group>
 
       <D1Group label="Sizes">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button label="XS Size" size="xs" />
           <D1Button label="SM Size" size="sm" />
           <D1Button label="MD Size" size="md" />
           <D1Button label="LG Size" size="lg" />
           <D1Button label="XL Size" size="xl" />
-        </DemoFlex>
+        </div>
       </D1Group>
 
       <D1Group label="Icons">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button label="Leading Icon" icon="home" />
           <D1Button label="Trailing Icon" iconTrailing="arrow_forward" />
           <D1Button label="Both Icons" icon="home" iconTrailing="arrow_forward" />
+          <D1Button label="Icon Object" :icon="{ icon: 'star' }" />
           <D1Button icon="settings" />
-        </DemoFlex>
+        </div>
       </D1Group>
 
       <D1Group label="States">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button label="Disabled" disabled />
           <D1Button label="Selected" selected />
           <D1Button label="Readonly" readonly />
@@ -61,56 +61,60 @@ const statusValue = computed<string>(() => {
           <D1Button label="Loading" loading />
           <D1Button label="Skeleton" isSkeleton />
           <D1Button label="Disabled + Selected" disabled selected />
-        </DemoFlex>
+          <D1Button label="Loading + Disabled" loading disabled />
+        </div>
       </D1Group>
 
       <D1Group label="Shapes & Styling">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button label="Rounded Full" roundedFull />
           <D1Button label="Square" icon="add" />
           <D1Button label="Inverse" inverse />
           <D1Button label="Grid Layout" grid icon="star" />
-        </DemoFlex>
+          <D1Button label="Min Width" :hasLabelMinWidth="true" />
+        </div>
       </D1Group>
 
       <D1Group label="Text Alignment">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button label="Left Aligned" textAlign="left" style="min-width: 140px" />
           <D1Button label="Center Aligned" textAlign="center" style="min-width: 140px" />
           <D1Button label="Right Aligned" textAlign="right" style="min-width: 140px" />
-        </DemoFlex>
+        </div>
       </D1Group>
 
       <D1Group label="Palettes">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button label="Red" palette="red" />
           <D1Button label="Green" palette="green" />
           <D1Button label="Blue" palette="blue" />
           <D1Button label="Orange" palette="orange" />
           <D1Button label="Purple" palette="purple" />
-        </DemoFlex>
+        </div>
       </D1Group>
 
       <D1Group label="Adaptive">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button label="Block" adaptive="block" />
+          <D1Button label="Auto Width" adaptive="auto" />
+          <D1Button label="Icon Always" adaptive="iconAlways" icon="home" />
           <D1Button label="Full SM" adaptive="fullSm" />
           <D1Button label="Icon SM" adaptive="iconSm" icon="home" />
-        </DemoFlex>
+        </div>
       </D1Group>
 
       <D1Group label="Tags & Types">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button label="Button Tag" tag="button" type="button" />
           <D1Button label="Submit Type" tag="button" type="submit" />
           <D1Button label="Reset Type" tag="button" type="reset" />
           <D1Button label="Link (A Tag)" tag="a" href="https://github.com" target="_blank" />
-          <D1Button label="Span Tag" tag="span" />
-        </DemoFlex>
+          <D1Button label="Span Tag" tag="span" ariaLabel="Custom Span Button" />
+        </div>
       </D1Group>
 
       <D1Group label="Slots">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button>
             Custom Default Content
           </D1Button>
@@ -119,13 +123,13 @@ const statusValue = computed<string>(() => {
               Custom Label Slot
             </template>
           </D1Button>
-        </DemoFlex>
+        </div>
       </D1Group>
 
       <D1Group label="Events & Expose Methods">
-        <DemoFlex>
+        <div class="demo-button-page">
           <D1Button
-            ref="buttonRef"
+            ref="buttonReference"
             label="Click Me"
             primary
             value="my-button-value"
@@ -133,7 +137,7 @@ const statusValue = computed<string>(() => {
             @click="onEvent('click', $event)"
             @click-lite="onEvent('clickLite', $event)"
           />
-        </DemoFlex>
+        </div>
         <DemoValue :value="statusValue"/>
         <DemoValue :value="eventName"/>
       </D1Group>
@@ -142,4 +146,10 @@ const statusValue = computed<string>(() => {
 </template>
 
 <style lang="scss">
+.demo-button-page {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
 </style>

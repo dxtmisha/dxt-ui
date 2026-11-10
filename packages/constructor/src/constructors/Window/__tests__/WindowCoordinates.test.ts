@@ -51,13 +51,13 @@ describe('WindowCoordinates', () => {
   })
 
   it('should initialize with default zero values', () => {
-    const coordinates = new WindowCoordinates(mockClasses, mockElement)
+    const coordinates = new WindowCoordinates(() => mockClasses, () => mockElement)
     expect(coordinates.getTop()).toBe(0)
     expect(coordinates.getLeft()).toBe(0)
   })
 
   it('should update coordinates on first call and return true', () => {
-    const coordinates = new WindowCoordinates(mockClasses, mockElement)
+    const coordinates = new WindowCoordinates(() => mockClasses, () => mockElement)
     const result = coordinates.update()
 
     expect(result).toBe(true)
@@ -75,7 +75,7 @@ describe('WindowCoordinates', () => {
   })
 
   it('should return false on update if coordinates are unchanged', () => {
-    const coordinates = new WindowCoordinates(mockClasses, mockElement)
+    const coordinates = new WindowCoordinates(() => mockClasses, () => mockElement)
     coordinates.update()
 
     const secondResult = coordinates.update()
@@ -83,7 +83,7 @@ describe('WindowCoordinates', () => {
   })
 
   it('should reset coordinate properties', () => {
-    const coordinates = new WindowCoordinates(mockClasses, mockElement)
+    const coordinates = new WindowCoordinates(() => mockClasses, () => mockElement)
     coordinates.update()
     coordinates.reset()
 
@@ -100,14 +100,14 @@ describe('WindowCoordinates', () => {
       paddingBottom: '0px'
     } as any))
 
-    const coordinates = new WindowCoordinates(mockClasses, mockElement)
+    const coordinates = new WindowCoordinates(() => mockClasses, () => mockElement)
     coordinates.update()
 
     expect(coordinates.getPadding()).toBe(16)
   })
 
   it('should compute correct location position within limits', () => {
-    const coordinates = new WindowCoordinates(mockClasses, mockElement)
+    const coordinates = new WindowCoordinates(() => mockClasses, () => mockElement)
 
     // Test normal position
     // top control center = rect.top (100) + rect.height / 2 (25) = 125
@@ -124,7 +124,7 @@ describe('WindowCoordinates', () => {
       height: 20
     } as DOMRect) // control center = 60 => position = 60 - 100 - 12 = -52 < padding(12)
 
-    const coordinates = new WindowCoordinates(mockClasses, mockElement)
+    const coordinates = new WindowCoordinates(() => mockClasses, () => mockElement)
     coordinates.update()
 
     expect(coordinates.getLocation()).toBe('0px')
@@ -136,7 +136,7 @@ describe('WindowCoordinates', () => {
       height: 20
     } as DOMRect) // control center = 710 => top + half = 710 + 100 = 810 >= innerHeight - padding (768 - 12 = 756)
 
-    const coordinates = new WindowCoordinates(mockClasses, mockElement)
+    const coordinates = new WindowCoordinates(() => mockClasses, () => mockElement)
     coordinates.update()
 
     // max = innerHeight - padding*2 - height = 768 - 24 - 200 = 544

@@ -1,7 +1,13 @@
 // ai-none
 
-import { EventItem, getMouseClientX, getMouseClientY, isEnter } from '@dxtmisha/functional'
-import { onMounted, watch } from 'vue'
+import {
+  DesignLifecycleAbstract,
+  EventItem,
+  getMouseClientX,
+  getMouseClientY,
+  isEnter
+} from '@dxtmisha/functional'
+import { watch, type WatchStopHandle } from 'vue'
 
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
 import { WindowClient } from './WindowClient'
@@ -18,51 +24,73 @@ import type { WindowProps } from './props'
  *
  * Класс для работы с событиями.
  */
-export class WindowEvent {
+export class WindowEvent extends DesignLifecycleAbstract {
   protected event?: EventItem<HTMLBodyElement, MouseEvent>
+  protected watchStop?: WatchStopHandle
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param tabIndex class object for working with tab indices/ объект класса для работы с табуляцией
-   * @param status object for working with statuses/ объект для работы со статусами
-   * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
-   * @param flash class object for working with fast window opening/ объект класса для работы с быстрым открытием окна
-   * @param open the class object for working with the status of closing or opening the window/ объект класса для работы со статусом закрытия или открытия окна
-   * @param verification an object for working with the check for changing the status of opening or closing/ объект для работы с проверкой изменения статуса открытия или закрытия
+   * Constructor.
+   *
+   * Конструктор.
+   * @param props input data / входные данные
+   * @param tabIndex function returning tab index manager / функция, возвращающая менеджер табуляции
+   * @param status function returning status manager / функция, возвращающая менеджер статусов
+   * @param client function returning client coordinates manager / функция, возвращающая менеджер клиентских координат
+   * @param flash function returning flash animation manager / функция, возвращающая менеджер быстрого открытия
+   * @param open function returning open state manager / функция, возвращающая менеджер состояния открытия
+   * @param verification function returning verification manager / функция, возвращающая менеджер проверки
    */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly tabIndex: TabIndexInclude,
-    protected readonly status: WindowStatus,
-    protected readonly client: WindowClient,
-    protected readonly flash: WindowFlash,
-    protected readonly open: WindowOpen,
-    protected readonly verification: WindowVerification
+    protected readonly tabIndex: () => TabIndexInclude,
+    protected readonly status: () => WindowStatus,
+    protected readonly client: () => WindowClient,
+    protected readonly flash: () => WindowFlash,
+    protected readonly open: () => WindowOpen,
+    protected readonly verification: () => WindowVerification
   ) {
-    watch(
+    super()
+  }
+
+  /**
+   * Setup lifecycle listeners and watchers on mount.
+   *
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.event = new EventItem<HTMLBodyElement, MouseEvent>(
+      'body',
+      ['click', 'contextmenu'],
+      this.onGlobal
+    )
+    this.toggle()
+
+    this.watchStop?.()
+    this.watchStop = watch(
       [
-        this.open.item,
-        this.status.item
+        this.open().item,
+        this.status().item
       ],
       () => this.toggle()
     )
+  }
 
-    onMounted(() => {
-      this.event = new EventItem<HTMLBodyElement, MouseEvent>(
-        'body',
-        ['click', 'contextmenu'],
-        this.onGlobal
-      )
-      this.toggle()
-    })
+  /**
+   * Cleanup lifecycle listeners on unmount.
+   *
+   * Очистка слушателей жизненного цикла при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
+    this.stop()
   }
 
   /**
    * Events of pressing a control element.
    *
    * События нажатия на элемент управления.
-   * @param event event object/ объект события
+   * @param event event object / объект события
    */
   readonly onClick = async (event: WindowEventClickType): Promise<void> => {
     if (!this.props.contextmenu) {
@@ -74,7 +102,7 @@ export class WindowEvent {
    * Events of pressing a key.
    *
    * События нажатия на клавишу.
-   * @param event event object/ объект события
+   * @param event event object / объект события
    */
   readonly onKeydown = async (event: WindowEventClickType): Promise<void> => {
     if (
@@ -82,13 +110,13 @@ export class WindowEvent {
         isEnter(event as KeyboardEvent, false)
         || this.isArrowDown(event as KeyboardEvent)
       )
-      && !this.open.item.value
+      && !this.open().item.value
     ) {
       event.preventDefault()
       await this.onClick(event)
     } else if (
       this.isTab(event as KeyboardEvent)
-      && this.open.item.value
+      && this.open().item.value
     ) {
       await this.onGlobal(event)
     }
@@ -98,7 +126,7 @@ export class WindowEvent {
    * Events of pressing the right mouse button on a control element.
    *
    * События нажатия на правую кнопку мыши на элемент управления.
-   * @param event event object/ объект события
+   * @param event event object / объект события
    */
   readonly onContextmenu = async (event: WindowEventClickType): Promise<void> => {
     if (this.props.contextmenu) {
@@ -112,12 +140,13 @@ export class WindowEvent {
    *
    * Событие окончания анимации при закрытии окна.
    */
-  readonly onTransition = (): void => this.open.closeForEvent()
+  readonly onTransition = (): void => this.open().closeForEvent()
 
   /**
    * Starts listening to global events.
    *
    * Стартует прослушивание глобальных событий.
+   * @returns this instance / текущий экземпляр
    */
   start(): this {
     if (!this.props.embedded && this.event) {
@@ -131,6 +160,7 @@ export class WindowEvent {
    * Stop the global event.
    *
    * Остановить глобальное событие.
+   * @returns this instance / текущий экземпляр
    */
   stop(): this {
     if (this.event) {
@@ -144,12 +174,13 @@ export class WindowEvent {
    * Changes the event listening status depending on the window's open status.
    *
    * Изменяет статус прослушивания события в зависимости от статуса открытия окна.
+   * @returns this instance / текущий экземпляр
    */
   toggle(): this {
     if (this.event) {
       if (
-        this.open.item.value
-        && this.status.isOpen()
+        this.open().item.value
+        && this.status().isOpen()
       ) {
         this.start()
       } else {
@@ -197,14 +228,14 @@ export class WindowEvent {
    * @param event event object/ объект события
    */
   protected async on(event: WindowEventClickType): Promise<void> {
-    this.tabIndex.updateOldElement()
-    this.client.set(
+    this.tabIndex().updateOldElement()
+    this.client().set(
       getMouseClientX(event as MouseEvent | TouchEvent),
       getMouseClientY(event as MouseEvent | TouchEvent)
     )
 
     if ('target' in event) {
-      await this.verification.update(event.target as HTMLElement)
+      await this.verification().update(event.target as HTMLElement)
     }
   }
 
@@ -218,12 +249,12 @@ export class WindowEvent {
     if (
       !event
       || this.isTab(event as KeyboardEvent)
-      || (event.type === 'click' && (!this.props.contextmenu || this.open.item.value))
+      || (event.type === 'click' && (!this.props.contextmenu || this.open().item.value))
       || (event.type === 'contextmenu' && this.props.contextmenu)
     ) {
-      if (this.open.item.value) {
-        this.flash.setControl(event?.target as HTMLElement)
-        await this.verification.update(event?.target as HTMLElement)
+      if (this.open().item.value) {
+        this.flash().setControl(event?.target as HTMLElement)
+        await this.verification().update(event?.target as HTMLElement)
       } else if (this.event) {
         this.event.stop()
       }

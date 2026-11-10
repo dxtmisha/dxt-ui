@@ -8,19 +8,23 @@ import {
 import type { ModalAbstract } from './ModalAbstract'
 import type { WindowControlItem } from '../Window'
 
-import {
-  type ModalPropsBasic
-} from './props'
-import {
-  type ModalClasses,
-  type ModalComponents,
-  type ModalEmits,
-  type ModalExpose,
-  type ModalSlots
+import type { ModalPropsBasic } from './props'
+import type {
+  ModalClasses,
+  ModalComponents,
+  ModalEmits,
+  ModalExpose,
+  ModalSlots
 } from './types'
 
 /**
- * ModalDesign
+ * ModalDesignAbstract
+ *
+ * Abstract design constructor class for modal window components.
+ * Manages rendering, slots, headers, footers, control templates, and expose APIs.
+ *
+ * Абстрактный класс конструктора дизайна для компонентов модального окна.
+ * Управляет рендерингом, слотами, заголовками, подвалами, шаблонами управления и экспортом API.
  */
 export abstract class ModalDesignAbstract<
   COMP extends ModalComponents,
@@ -39,14 +43,15 @@ export abstract class ModalDesignAbstract<
     CLASSES,
     P
   > {
+  /** Logic item instance / Экземпляр элемента логики */
   protected readonly item: ITEM
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor window item class/ класс элемента окна
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor window item class / класс элемента окна
    */
   constructor(
     name: string,
@@ -64,20 +69,23 @@ export abstract class ModalDesignAbstract<
   }
 
   /**
-   * Initialization of the main item
+   * Initialization of the main item.
    *
-   * Инициализация основного элемента
+   * Инициализация основного элемента.
+   * @param ItemConstructor constructor class / класс конструктора
+   * @returns item instance / экземпляр элемента
    */
   protected abstract initItem(ItemConstructor?: any): ITEM
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns expose object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.window.expose
+      ...this.item.i('window').expose
     } as EXPOSE
   }
 
@@ -85,6 +93,7 @@ export abstract class ModalDesignAbstract<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -94,9 +103,10 @@ export abstract class ModalDesignAbstract<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns array of VNodes / массив VNode
    */
   protected initRender(): VNode[] {
-    return this.item.window.render(
+    return this.item.i('window').render(
       {
         control: this.renderControl,
         title: this.renderTitle,
@@ -105,15 +115,18 @@ export abstract class ModalDesignAbstract<
       },
       {
         ...this.getAttrs(),
+        ref: this.element,
         class: this.classes?.value.main
       }
     )
   }
 
   /**
-   * Generates data for control.<br>
+   * Generates data for control.
+   *
    * Генерирует данные для контроля.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns VNode element or undefined / элемент VNode или undefined
    */
   readonly renderControl = (
     props: WindowControlItem
@@ -125,13 +138,14 @@ export abstract class ModalDesignAbstract<
    * Generates data for the header.
    *
    * Генерирует данные для заголовка.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns array of VNodes / массив VNode
    */
   readonly renderTitle = (
     props: WindowControlItem
   ): VNode[] => {
-    const children: any[] = [
-      ...this.item.bars.render()
+    const children: VNode[] = [
+      ...this.item.i('bars').render()
     ]
 
     if (
@@ -154,12 +168,13 @@ export abstract class ModalDesignAbstract<
    * Generates bodies.
    *
    * Генерирует тела.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns array of VNodes / массив VNode
    */
   readonly renderDefault = (
     props: WindowControlItem
   ): VNode[] => {
-    const children: any[] = []
+    const children: VNode[] = []
 
     if (
       this.slots
@@ -191,18 +206,19 @@ export abstract class ModalDesignAbstract<
   }
 
   /**
-   * Generates data for the required part.
+   * Generates data for the footer part.
    *
    * Генерирует данные для нужной части.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns array of VNodes / массив VNode
    */
   readonly renderFooter = (
     props: WindowControlItem
   ): VNode[] => {
-    const children: any[] = []
+    const children: VNode[] = []
 
-    if (this.item.actions.is) {
-      children.push(...this.item.actions.render())
+    if (this.item.i('actions').is) {
+      children.push(...this.item.i('actions').render())
     }
 
     if (

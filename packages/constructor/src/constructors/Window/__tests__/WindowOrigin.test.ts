@@ -45,7 +45,7 @@ describe('WindowOrigin', () => {
   })
 
   it('should initialize with null styles', () => {
-    const origin = new WindowOrigin(mockClient, mockElement, mockPosition)
+    const origin = new WindowOrigin(() => mockClient, () => mockElement, () => mockPosition)
     expect(origin.getStyleX()).toBeNull()
     expect(origin.getStyleY()).toBeNull()
   })
@@ -53,7 +53,7 @@ describe('WindowOrigin', () => {
   it('should set styles to 0px if client is not set', () => {
     mockClient.is.mockReturnValue(false)
 
-    const origin = new WindowOrigin(mockClient, mockElement, mockPosition)
+    const origin = new WindowOrigin(() => mockClient, () => mockElement, () => mockPosition)
     origin.update()
 
     expect(origin.getStyleX()).toBe('0px')
@@ -66,7 +66,7 @@ describe('WindowOrigin', () => {
       getPropertyValue: () => '--MENU--'
     } as any))
 
-    const origin = new WindowOrigin(mockClient, mockElement, mockPosition)
+    const origin = new WindowOrigin(() => mockClient, () => mockElement, () => mockPosition)
     origin.update()
 
     // shiftX = 50 - rect.left (20) = 30
@@ -76,7 +76,7 @@ describe('WindowOrigin', () => {
   })
 
   it('should compute standard popup origin shift based on position if type does not match --MENU--', () => {
-    const origin = new WindowOrigin(mockClient, mockElement, mockPosition)
+    const origin = new WindowOrigin(() => mockClient, () => mockElement, () => mockPosition)
     origin.update()
 
     // shiftX = 50 - position.getX() (10) = 40
@@ -86,7 +86,7 @@ describe('WindowOrigin', () => {
   })
 
   it('should reset coordinate properties to null', () => {
-    const origin = new WindowOrigin(mockClient, mockElement, mockPosition)
+    const origin = new WindowOrigin(() => mockClient, () => mockElement, () => mockPosition)
     origin.update()
     origin.reset()
 

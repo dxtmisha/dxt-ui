@@ -1,6 +1,8 @@
 // ai-none
 
-import { WindowClassesData } from './WindowClassesData'
+import { isDomRuntime } from '@dxtmisha/functional'
+
+import type { WindowClassesData } from './WindowClassesData'
 
 import type { WindowProps } from './props'
 import { WindowStatusItem } from './basicTypes'
@@ -18,14 +20,26 @@ export class WindowFlash {
   protected control: boolean = false
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
+   * Checks whether flash functionality is active.
+   *
+   * Проверяет, активна ли функциональность flash.
+   * @param props component properties / свойства компонента
+   * @returns true if flash is enabled / true, если flash включён
    */
+  static is(props?: WindowProps): boolean {
+    return Boolean(props?.flash)
+  }
 
+  /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param props input data / входные данные
+   * @param classes function returning class manager / функция, возвращающая менеджер классов
+   */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly classes: WindowClassesData
+    protected readonly classes: () => WindowClassesData
   ) {
   }
 
@@ -55,7 +69,8 @@ export class WindowFlash {
   isClose(): boolean {
     return this.is()
       || Boolean(
-        document.querySelector(`.${this.classes.getClassStatus(WindowStatusItem.hide)}`)
+        isDomRuntime()
+        && document.querySelector(`.${this.classes().getClassStatus(WindowStatusItem.hide)}`)
       )
   }
 
@@ -63,10 +78,10 @@ export class WindowFlash {
    * Change the value of the control parameter.
    *
    * Изменить значение параметра control.
-   * @param target the element that gets focus on click/ элемент, который получает фокус при клике
+   * @param target the element that gets focus on click / элемент, который получает фокус при клике
    */
   setControl(target?: HTMLElement): this {
-    this.control = target?.closest<HTMLElement>(`.${this.classes.list.control}`)?.dataset.window === this.classes.getId()
+    this.control = target?.closest<HTMLElement>(`.${this.classes().list.control}`)?.dataset.window === this.classes().getId()
     return this
   }
 }

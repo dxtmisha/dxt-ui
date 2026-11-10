@@ -17,11 +17,13 @@ export class WindowStatus {
   readonly item = ref<WindowStatusItem>(WindowStatusItem.close)
 
   /**
-   * Constructor
-   * @param element an object of the class for working with elements/ объект класса для работы с элементами
+   * Constructor.
+   *
+   * Конструктор.
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
    */
   constructor(
-    protected readonly element: WindowElement
+    protected readonly element: () => WindowElement
   ) {
   }
 
@@ -29,6 +31,7 @@ export class WindowStatus {
    * Checks if the current status is closed (hide).
    *
    * Проверяет, является ли текущий статус закрытым (hide).
+   * @returns true if status is hide / true, если статус равен hide
    */
   isHide(): boolean {
     return this.item.value === WindowStatusItem.hide
@@ -38,6 +41,7 @@ export class WindowStatus {
    * Checks if the current status is open (open/flash).
    *
    * Проверяет, является ли текущий статус открытым (open/flash).
+   * @returns true if status is open or flash / true, если статус равен open или flash
    */
   isOpen(): boolean {
     return this.item.value === WindowStatusItem.open || this.item.value === WindowStatusItem.flash
@@ -47,7 +51,8 @@ export class WindowStatus {
    * Change the current status.
    *
    * Изменить текущий статус.
-   * @param value value/ значение
+   * @param value value / значение
+   * @returns this instance / текущий экземпляр
    */
   set(value: WindowStatusItem): this {
     this.item.value = value
@@ -60,6 +65,7 @@ export class WindowStatus {
    * Translates status to display.
    *
    * Переводит статус в display.
+   * @returns this instance / текущий экземпляр
    */
   toDisplay(): this {
     this.set(WindowStatusItem.display)
@@ -70,6 +76,7 @@ export class WindowStatus {
    * Translates status to preparation.
    *
    * Переводит статус в preparation.
+   * @returns this instance / текущий экземпляр
    */
   toPreparation(): this {
     this.set(WindowStatusItem.preparation)
@@ -80,6 +87,7 @@ export class WindowStatus {
    * Translates status to flash.
    *
    * Переводит статус в flash.
+   * @returns this instance / текущий экземпляр
    */
   toFlash(): this {
     this.set(WindowStatusItem.flash)
@@ -90,6 +98,7 @@ export class WindowStatus {
    * Translates status to open.
    *
    * Переводит статус в open.
+   * @returns this instance / текущий экземпляр
    */
   toOpen(): this {
     this.set(WindowStatusItem.open)
@@ -100,6 +109,7 @@ export class WindowStatus {
    * Translates status to hide.
    *
    * Переводит статус в hide.
+   * @returns this instance / текущий экземпляр
    */
   toHide(): this {
     this.set(WindowStatusItem.hide)
@@ -110,6 +120,7 @@ export class WindowStatus {
    * Translates status to close.
    *
    * Переводит статус в close.
+   * @returns this instance / текущий экземпляр
    */
   toClose(): this {
     this.set(WindowStatusItem.close)
@@ -122,7 +133,7 @@ export class WindowStatus {
    * Обновляет атрибут data-status на основном элементе и элементе телепорта.
    */
   update(): void {
-    const element = this.element.getMain()
+    const element = this.element?.()?.getMain?.()
 
     if (element) {
       const teleportElement = element.parentElement

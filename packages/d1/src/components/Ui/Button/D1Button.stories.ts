@@ -6,6 +6,7 @@ import { ButtonWikiStorybook } from './wiki'
 // :story-import [!] System label / Системная метка
 import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 import { ref } from 'vue'
+import type { EventClickValue } from '@dxtmisha/constructor/Button'
 import { expect, within, userEvent } from 'storybook/test'
 // :story-import [!] System label / Системная метка
 
@@ -195,6 +196,10 @@ export const ButtonAdaptive: Story = {
             <D1Button adaptive="block" icon="home" label="Block Button"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Adaptive auto</div>
+            <D1Button adaptive="auto" icon="home" label="Auto Width"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Adaptive iconAlways</div>
             <D1Button adaptive="iconAlways" icon="home" label="Icon Only"/>
           </div>
@@ -204,11 +209,12 @@ export const ButtonAdaptive: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll<HTMLElement>('.d1-button')
-    await expect(items.length).toBe(3)
+    await expect(items.length).toBe(4)
 
     await expect(items[0]).toBeInTheDocument()
     await expect(items[1]).toHaveClass('d1-button--adaptive--block')
-    await expect(items[2]).toHaveClass('d1-button--adaptive--iconAlways')
+    await expect(items[2]).toHaveClass('d1-button--adaptive--auto')
+    await expect(items[3]).toHaveClass('d1-button--adaptive--iconAlways')
   }
 }
 export const ButtonSkeleton: Story = {
@@ -235,32 +241,40 @@ export const ButtonSkeleton: Story = {
   }
 }
 export const ButtonEvents: Story = {
-  name: 'События (Click)',
+  name: 'События (Click & ClickLite)',
   render: () => ({
     components: { D1Button },
     setup() {
       const clickCount = ref(0)
+      const clickLiteCount = ref(0)
       const lastDetail = ref('')
 
-      const onClick = (event: MouseEvent) => {
+      const onClick = (event: MouseEvent, _value?: EventClickValue) => {
         clickCount.value++
         lastDetail.value = 'Clicked at ' + event.clientX + 'x' + event.clientY
       }
 
+      const onClickLite = (_value?: EventClickValue) => {
+        clickLiteCount.value++
+      }
+
       return {
         clickCount,
+        clickLiteCount,
         lastDetail,
-        onClick
+        onClick,
+        onClickLite
       }
     },
     template: `
         
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <D1Button primary label="Click Me" @click="onClick"/>
+            <D1Button primary label="Click Me" @click="onClick" @click-lite="onClickLite"/>
           </div>
           <div class="wiki-storybook-card">
             <div>Clicks: <span class="click-counter">{{ clickCount }}</span></div>
+            <div>Lite Clicks: <span class="click-lite-counter">{{ clickLiteCount }}</span></div>
             <div>Detail: <span class="click-detail">{{ lastDetail }}</span></div>
           </div>
         </div>
@@ -271,12 +285,15 @@ export const ButtonEvents: Story = {
     const canvas = within(canvasElement)
     const button = canvas.getByText('Click Me')
     const counter = canvasElement.querySelector<HTMLElement>('.click-counter')
+    const liteCounter = canvasElement.querySelector<HTMLElement>('.click-lite-counter')
 
     await expect(counter).toHaveTextContent('0')
+    await expect(liteCounter).toHaveTextContent('0')
     await step('Click button', async () => {
       await userEvent.click(button)
     })
     await expect(counter).toHaveTextContent('1')
+    await expect(liteCounter).toHaveTextContent('1')
   }
 }
 export const ButtonExpose: Story = {
@@ -433,7 +450,7 @@ export const ButtonTestStates: Story = {
   }
 }
 export const ButtonTestTokensAndModifiers: Story = {
-  name: 'Тест: Инвертированные, сеточные и выравнивающие модификаторы',
+  name: 'Тест: Инвертированные, сеточные, контейнерные и выравнивающие модификаторы',
   render: () => ({
     components: { D1Button },
     template: `
@@ -448,8 +465,16 @@ export const ButtonTestTokensAndModifiers: Story = {
             <D1Button grid icon="home" label="Grid Layout"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">container</div>
+            <D1Button container icon="home" label="Container Query"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">textAlign: left</div>
             <D1Button text-align="left" adaptive="block" label="Left Aligned"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">textAlign: center</div>
+            <D1Button text-align="center" adaptive="block" label="Center Aligned"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">textAlign: right</div>
@@ -461,12 +486,14 @@ export const ButtonTestTokensAndModifiers: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll<HTMLElement>('.d1-button')
-    await expect(items.length).toBe(4)
+    await expect(items.length).toBe(6)
 
     await expect(items[0]).toHaveClass('d1-button--inverse')
     await expect(items[1]).toHaveClass('d1-button--grid')
-    await expect(items[2]).toHaveClass('d1-button--textAlign--left')
-    await expect(items[3]).toHaveClass('d1-button--textAlign--right')
+    await expect(items[2]).toHaveClass('d1-button--container')
+    await expect(items[3]).toHaveClass('d1-button--textAlign--left')
+    await expect(items[4]).toHaveClass('d1-button--textAlign--center')
+    await expect(items[5]).toHaveClass('d1-button--textAlign--right')
   }
 }
 // :story-items [!] System label / Системная метка

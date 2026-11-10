@@ -10,9 +10,9 @@ const cellRef = ref<CellExpose | null>(null)
 
 const statusValue = computed<string>(() => {
   if (cellRef.value) {
-    const val = cellRef.value.getValue?.()
+    const value = cellRef.value.getValue?.()
     const detail = cellRef.value.getDetail?.()
-    return `getValue(): ${JSON.stringify(val)}, getDetail(): ${JSON.stringify(detail)}`
+    return `getValue(): ${JSON.stringify(value)}, getDetail(): ${JSON.stringify(detail)}`
   }
   return 'Ref not initialized'
 })
@@ -32,6 +32,12 @@ const statusValue = computed<string>(() => {
           label="Cell with Custom Tag"
           description="Rendered as a section tag"
           tag="section"
+        />
+        <D1Cell
+          label="Cell as Link"
+          description="Rendered as an anchor element with href"
+          tag="a"
+          href="#demo-link"
         />
       </D1Group>
 
@@ -55,6 +61,11 @@ const statusValue = computed<string>(() => {
           label="Focus State"
           description="Visual indicator of focus"
           focus
+        />
+        <D1Cell
+          label="Skeleton Loading State"
+          description="Placeholder skeleton lines"
+          isSkeleton
         />
       </D1Group>
 
@@ -85,7 +96,7 @@ const statusValue = computed<string>(() => {
       <D1Group label="Interactions & Dividers">
         <D1Cell
           label="Dynamic Hover Cell"
-          description="Hover effect is active"
+          description="Hover and pointer effects are active"
           dynamic
           dynamicHover
         />
@@ -98,6 +109,11 @@ const statusValue = computed<string>(() => {
           label="Divider with Always Label"
           description="Divider label is set to always"
           dividerLabel="always"
+        />
+        <D1Cell
+          label="Custom Role Listitem"
+          description="Explicit ARIA role set to listitem"
+          role="listitem"
         />
       </D1Group>
 
@@ -114,6 +130,16 @@ const statusValue = computed<string>(() => {
           </template>
           <template #trailing>
             <D1Chip label="Status" />
+          </template>
+        </D1Cell>
+        <D1Cell
+          label="Cell with Body Slot"
+          description="Includes an expandable body section"
+        >
+          <template #body>
+            <div style="padding-top: 8px; width: 100%;">
+              <small>Extended body content rendered in its own full-width row</small>
+            </div>
           </template>
         </D1Cell>
       </D1Group>

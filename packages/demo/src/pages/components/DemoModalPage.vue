@@ -459,7 +459,7 @@ const statusValue = computed<string>(() => {
             <p>This modal dialog is controlled programmatically via exposed methods like `toOpen`, `toClose`, `toggle`, `setOpen`, and `getWindowElement`.</p>
           </div>
           <template #footer="{ classesWindow }">
-            <div class="demo-window-page__footer">
+            <div class="demo-modal-page__footer">
               <D1Button
                 label="Close"
                 primary

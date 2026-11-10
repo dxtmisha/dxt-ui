@@ -11,12 +11,14 @@ import { WindowClassesData } from './WindowClassesData'
  */
 export class WindowElement {
   /**
-   * Constructor
-   * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
-   * @param element the element of the window itself/ элемент самого окна
+   * Constructor.
+   *
+   * Конструктор.
+   * @param classes function returning an object for working with classes and searching for elements / функция, возвращающая объект для работы с классами и поиском элементов
+   * @param element the element of the window itself / элемент самого окна
    */
   constructor(
-    protected readonly classes: WindowClassesData,
+    protected readonly classes: () => WindowClassesData,
     public readonly element: Ref<HTMLDivElement | undefined>
   ) {
   }
@@ -33,7 +35,7 @@ export class WindowElement {
   /**
    * Returns the main element.
    *
-   * Возвращает главного элемента.
+   * Возвращает главный элемент.
    */
   getMain(): HTMLDivElement | undefined {
     return this.element.value
@@ -45,7 +47,7 @@ export class WindowElement {
    * Возвращает элемент управления текущего компонента.
    */
   getControl(): HTMLElement | undefined {
-    return this.classes.findControl()
+    return this.classes().findControl()
   }
 
   /**
@@ -54,7 +56,7 @@ export class WindowElement {
    * Возвращает размеры элемента управления.
    */
   getControlRect(): DOMRect | undefined {
-    return this.getControl()?.getBoundingClientRect() || undefined
+    return this.getControl()?.getBoundingClientRect()
   }
 
   /**
@@ -63,7 +65,7 @@ export class WindowElement {
    * Возвращает элемент тела окна.
    */
   getBody(): HTMLDivElement | undefined {
-    return this.classes.findBody()
+    return this.classes().findBody()
   }
 
   /**
@@ -72,7 +74,7 @@ export class WindowElement {
    * Возвращает размеры элемента тела окна.
    */
   getBodyRect(): DOMRect | undefined {
-    return this.getBody()?.getBoundingClientRect() || undefined
+    return this.getBody()?.getBoundingClientRect()
   }
 
   /**
@@ -81,6 +83,6 @@ export class WindowElement {
    * Возвращает элемент контекста окна.
    */
   getBodyContext(): HTMLDivElement | undefined {
-    return this.classes.findBodyContext()
+    return this.classes().findBodyContext()
   }
 }

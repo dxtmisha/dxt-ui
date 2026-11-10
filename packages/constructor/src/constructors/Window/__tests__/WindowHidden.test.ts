@@ -4,14 +4,6 @@ import { ref, nextTick } from 'vue'
 import { WindowHidden } from '../WindowHidden'
 import type { WindowProps } from '../props'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (callback: () => void) => callback()
-  }
-})
-
 describe('WindowHidden', () => {
   let mockProps: Partial<WindowProps>
   let mockClasses: any
@@ -61,13 +53,14 @@ describe('WindowHidden', () => {
   })
 
   it('should set inert and aria-hidden on siblings when window is opened and openEnd is true', async () => {
-    new WindowHidden(
+    const hidden = new WindowHidden(
       mockProps as WindowProps,
-      mockClasses,
-      mockStatic,
-      mockOpen,
-      mockTeleport
+      () => mockClasses,
+      () => mockStatic,
+      () => mockOpen,
+      () => mockTeleport
     )
+    hidden.onMounted()
 
     mockOpen.openEnd.value = true
     await nextTick()
@@ -78,13 +71,14 @@ describe('WindowHidden', () => {
   })
 
   it('should remove inert and aria-hidden on siblings when window is closed and openEnd is false', async () => {
-    new WindowHidden(
+    const hidden = new WindowHidden(
       mockProps as WindowProps,
-      mockClasses,
-      mockStatic,
-      mockOpen,
-      mockTeleport
+      () => mockClasses,
+      () => mockStatic,
+      () => mockOpen,
+      () => mockTeleport
     )
+    hidden.onMounted()
 
     // Open first to apply attributes
     mockOpen.openEnd.value = true
@@ -103,13 +97,14 @@ describe('WindowHidden', () => {
 
   it('should do nothing when opening if props.inert is false', async () => {
     mockProps.inert = false
-    new WindowHidden(
+    const hidden = new WindowHidden(
       mockProps as WindowProps,
-      mockClasses,
-      mockStatic,
-      mockOpen,
-      mockTeleport
+      () => mockClasses,
+      () => mockStatic,
+      () => mockOpen,
+      () => mockTeleport
     )
+    hidden.onMounted()
 
     mockOpen.openEnd.value = true
     await nextTick()

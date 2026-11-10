@@ -1,6 +1,7 @@
 // ai-none
 
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
+import type { Ref } from 'vue'
+import { isDomRuntime } from '@dxtmisha/functional'
 
 import { WindowPersistent } from './WindowPersistent'
 import { WindowClassesData } from './WindowClassesData'
@@ -28,21 +29,21 @@ export class WindowVerification {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param clientOnly class object to check if rendering on client side / объект класса для проверки рендеринга на стороне клиента
-   * @param persistent object for working with the animation before turning off the window / объект для работы с анимацией перед выключением окна
-   * @param classes an object for working with classes and searching for elements / объект для работы с классами и поиском элементов
-   * @param element an object of the class for working with elements / объект класса для работы с элементами
-   * @param staticMode class object for working with static status / объект класса для работы со статическим статусом
-   * @param open the class object for working with the status of closing or opening the window / объект класса для работы со статусом закрытия или открытия окна
+   * @param isMounted reactive mounted state on client / реактивное состояние монтирования на клиенте
+   * @param persistent function returning persistent manager / функция, возвращающая менеджер анимации закрытия
+   * @param classes function returning class manager / функция, возвращающая менеджер классов
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
+   * @param staticMode function returning static mode manager / функция, возвращающая менеджер статического режима
+   * @param open function returning open state manager / функция, возвращающая менеджер состояния открытия
    */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly clientOnly: ClientOnlyInclude,
-    protected readonly persistent: WindowPersistent,
-    protected readonly classes: WindowClassesData,
-    protected readonly element: WindowElement,
-    protected readonly staticMode: WindowStatic,
-    protected readonly open: WindowOpen
+    protected readonly isMounted: Ref<boolean>,
+    protected readonly persistent: () => WindowPersistent,
+    protected readonly classes: () => WindowClassesData,
+    protected readonly element: () => WindowElement,
+    protected readonly staticMode: () => WindowStatic,
+    protected readonly open: () => WindowOpen
   ) {
   }
 
@@ -53,14 +54,14 @@ export class WindowVerification {
    * @param target the selected window / выбранное окно
    */
   async update(target: HTMLElement): Promise<void> {
-    if (this.open.isClicks()) {
+    if (this.open().isClicks()) {
       return
     }
 
     this.target = target
     this.focus = this.getFocus()
 
-    if (!this.clientOnly.isRender()) {
+    if (!this.isMounted.value) {
       return
     }
 
@@ -68,45 +69,46 @@ export class WindowVerification {
       return
     }
 
-    if (this.staticMode.item.value) {
+    if (WindowStatic.is(this.props) && this.staticMode().item.value) {
       return
     }
 
-    this.open.pressed()
+    this.open().pressed()
 
-    if (this.open.item.value) {
+    if (this.open().item.value) {
       if (
         this.isOpenOnly()
         || this.isBlockOther()
       ) {
         return
       } else if (this.isContextmenu()) {
-        await this.open
+        await this.open()
           .reset()
           .watchPosition()
       } else if (!this.focus) {
-        await this.open.toggle()
+        await this.open().toggle()
       } else if (!this.isFocus()) {
         if (this.isNotBlock()) {
           if (this.isChildren()) {
             setTimeout(() => {
               requestAnimationFrame(async () => {
                 if (
-                  ['open', 'flash'].indexOf(this.focus?.dataset.status || '') === -1
+                  this.focus
+                  && !['open', 'flash'].includes(this.focus.dataset.status ?? '')
                   && this.isMenu()
                 ) {
-                  await this.open.toggle()
+                  await this.open().toggle()
                 }
               })
             }, 40)
           } else {
-            await this.open.toggle()
+            await this.open().toggle()
           }
         }
       } else if (this.isTarget()) {
         if (this.isNotBlockChildren()) {
-          if (!this.persistent.on()) {
-            await this.open.toggle()
+          if (!(WindowPersistent.is(this.props) && this.persistent().on())) {
+            await this.open().toggle()
           }
         }
       } else if (
@@ -114,10 +116,10 @@ export class WindowVerification {
         || this.isAutoClose()
         || !this.isChildren()
       ) {
-        await this.open.toggle()
+        await this.open().toggle()
       }
     } else if (this.isEnabled()) {
-      await this.open.toggle()
+      await this.open().toggle()
     }
   }
 
@@ -127,8 +129,8 @@ export class WindowVerification {
    * Возвращает элемент в фокусе.
    * @returns element in focus or undefined / элемент в фокусе или undefined
    */
-  getFocus() {
-    return this.classes.findMain(this.getTarget())
+  getFocus(): HTMLElement | undefined {
+    return this.classes().findMain(this.getTarget())
   }
 
   /**
@@ -138,7 +140,7 @@ export class WindowVerification {
    * @returns target element / целевой элемент
    */
   protected getTarget<R extends HTMLElement>(): R {
-    return (this.target ?? this.element.getMain() ?? document.body) as R
+    return (this.target ?? this.element().getMain() ?? (isDomRuntime() ? document.body : undefined)) as R
   }
 
   /**
@@ -148,7 +150,7 @@ export class WindowVerification {
    * @returns true if the element is in focus / true, если элемент находится в фокусе
    */
   protected isFocus(): boolean {
-    return this.element.getMain() === this.focus
+    return this.element().getMain() === this.focus
   }
 
   /**
@@ -158,7 +160,7 @@ export class WindowVerification {
    * @returns true if the target element is the window itself / true, если целевой элемент является самим окном
    */
   protected isTarget(): boolean {
-    return this.element.getMain() === this.target
+    return this.element().getMain() === this.target
   }
 
   /**
@@ -181,14 +183,14 @@ export class WindowVerification {
   protected isChildren(
     target: HTMLElement = this.getTarget()
   ): boolean {
-    const focus = this.classes.findMain(target)
+    const focus = this.classes().findMain(target)
 
     if (focus) {
-      if (focus.dataset.window === this.classes.getId()) {
+      if (focus.dataset.window === this.classes().getId()) {
         return true
       }
 
-      const control = this.classes.findControlByElement(focus)
+      const control = this.classes().findControlByElement(focus)
 
       if (control) {
         return this.isChildren(control)
@@ -206,7 +208,7 @@ export class WindowVerification {
    */
   protected isEnabled(): boolean {
     return !this.props.disabled
-      && !this.getTarget().closest(`.${this.classes.list.controlStatic}`)
+      && !this.getTarget().closest(`.${this.classes().list.controlStatic}`)
   }
 
   /**
@@ -218,7 +220,7 @@ export class WindowVerification {
   protected isAutoClose(): boolean {
     return Boolean(this.props.autoClose)
       && !this.getTarget()
-        .closest(`.${this.classes.list.static}, .${this.classes.getId()} .${this.classes.list.control}`)
+        .closest(`.${this.classes().list.static}, .${this.classes().getId()} .${this.classes().list.control}`)
   }
 
   /**
@@ -241,8 +243,8 @@ export class WindowVerification {
   protected isNotBlockItem(item?: HTMLElement): boolean {
     const target = this.getTarget()
 
-    return (!this.isMenu(target) || !this.classes.isWindow(target))
-      && !this.classes.findControlByElement(item)?.closest(`.${this.classes.list.block}`)
+    return (!this.isMenu(target) || !this.classes().isWindow(target))
+      && !this.classes().findControlByElement(item)?.closest(`.${this.classes().list.block}`)
   }
 
   /**
@@ -252,8 +254,8 @@ export class WindowVerification {
    * @returns true if closing is not blocked by children / true, если закрытие не заблокировано дочерними элементами
    */
   protected isNotBlockChildren(): boolean {
-    return !this.classes.findBody()?.querySelector(`.${this.classes.list.blockChildren}`)
-      && !this.classes.findBody()?.querySelector('[data-window-open="open"]')
+    return !this.classes().findBody()?.querySelector(`.${this.classes().list.blockChildren}`)
+      && !this.classes().findBody()?.querySelector('[data-window-open="open"]')
   }
 
   /**
@@ -264,13 +266,13 @@ export class WindowVerification {
    */
   protected isBlockOther(): boolean {
     if (this.target) {
-      const window = this.classes.findMain(this.target)
+      const window = this.classes().findMain(this.target)
 
       if (
         window
         && (
-          window === this.element.getMain()
-          || this.classes.findControl()
+          window === this.element().getMain()
+          || this.classes().findControl()
             ?.closest(`[data-window="${window.dataset.window}"]`)
         )
       ) {
@@ -279,7 +281,7 @@ export class WindowVerification {
     }
 
     return Boolean(
-      this.classes.findBodyOther(`.${this.classes.list.blockOther}`)
+      this.classes().findBodyOther(`.${this.classes().list.blockOther}`)
     )
   }
 
@@ -292,7 +294,7 @@ export class WindowVerification {
   protected isContextmenu(): boolean {
     return Boolean(
       this.props.contextmenu
-      && this.getTarget().closest(this.classes.getSelectorControl())
+      && this.getTarget().closest(this.classes().getSelectorControl())
     )
   }
 
@@ -305,7 +307,7 @@ export class WindowVerification {
   protected isClose(): boolean {
     return Boolean(
       this.getTarget()
-        .closest(`.${this.classes.list.close}:not(.${this.classes.list.static})`)
+        .closest(`.${this.classes().list.close}:not(.${this.classes().list.static})`)
     )
   }
 
@@ -316,8 +318,8 @@ export class WindowVerification {
    * @param element the element to check / проверяемый элемент
    * @returns true if the element is a menu / true, если элемент является меню
    */
-  protected isMenu(element: HTMLElement | undefined = this.element.getMain()): boolean {
-    if (element) {
+  protected isMenu(element: HTMLElement | undefined = this.element().getMain()): boolean {
+    if (element && isDomRuntime()) {
       const style = getComputedStyle(element)
       const value = style.getPropertyValue(__WINDOW_TYPE_BODY_NAME)
 
@@ -334,10 +336,10 @@ export class WindowVerification {
    * Проверяет, должен ли элемент только открываться.
    * @returns true if the element only opens / true, если элемент должен только открываться
    */
-  protected isOpenOnly() {
+  protected isOpenOnly(): boolean {
     return Boolean(
       this.getTarget()
-        .closest(`.${this.classes.list.controlOpenOnly}`)
+        .closest(`.${this.classes().list.controlOpenOnly}`)
     )
   }
 }

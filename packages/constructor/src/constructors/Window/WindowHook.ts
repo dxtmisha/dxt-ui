@@ -12,7 +12,7 @@ import type { WindowProps } from './props'
 export class WindowHook {
   /**
    * Constructor
-   * @param props input data/ входные данные
+   * @param props input data / входные данные
    */
   constructor(
     protected readonly props: WindowProps
@@ -34,14 +34,14 @@ export class WindowHook {
    * Hook before opening/closing.
    *
    * Хук перед открытием/закрытием.
-   * @param open current state of the window/ текущее состояние окна
+   * @param open current state of the window / текущее состояние окна
    */
-  async before(open: boolean) {
+  async before(open: boolean): Promise<boolean> {
     if (open) {
-      return await this.beforeOpening()
+      return this.beforeOpening()
     }
 
-    return await this.beforeClosing()
+    return this.beforeClosing()
   }
 
   /**
@@ -74,14 +74,14 @@ export class WindowHook {
    * Hook after opening/closing.
    *
    * Хук после открытия/закрытия.
-   * @param open current state of the window/ текущее состояние окна
+   * @param open current state of the window / текущее состояние окна
    */
   async after(open: boolean): Promise<boolean> {
     if (open) {
-      return await this.opening()
+      return this.opening()
     }
 
-    return await this.closing()
+    return this.closing()
   }
 
   /**

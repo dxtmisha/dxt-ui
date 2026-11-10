@@ -1,24 +1,26 @@
-import { onUnmounted, type Ref } from 'vue'
+import { getCurrentInstance, onUnmounted, type Ref } from 'vue'
 import { EventItem, getRef, isDomRuntime, isElementVisible, isFunction, isTab } from '@dxtmisha/functional'
 
 /**
- * Class for managing focus and tab index of elements
+ * Class for managing focus and tab index of elements.
  *
- * Класс для управления фокусом и табиндексом элементов
+ * Класс для управления фокусом и табиндексом элементов.
  */
 export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   /** Previously focused element / Ранее сфокусированный элемент */
   protected oldElement?: HTMLElement | Element | null
 
   /** Event item for focus events / Элемент события для событий фокуса */
-  protected event?: EventItem<HTMLElement, any>
+  protected event?: EventItem<HTMLElement, KeyboardEvent>
 
   /**
-   * Constructor
-   * @param element - Reference to the element / Ссылка на элемент
-   * @param active - Return focus to the previous element / Возвращать фокус на предыдущий элемент
-   * @param activeOpen - Is active when opening / Активен при открытии
-   * @param activeClose - Is active when closing / Активен при закрытии
+   * Constructor.
+   *
+   * Конструктор.
+   * @param element reference to the element / ссылка на элемент
+   * @param active return focus to the previous element / возвращать фокус на предыдущий элемент
+   * @param activeOpen is active when opening / активен при открытии
+   * @param activeClose is active when closing / активен при закрытии
    */
   constructor(
     protected readonly element: Ref<E | undefined> | (() => E | undefined),
@@ -26,16 +28,18 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     protected readonly activeOpen: () => boolean = () => true,
     protected readonly activeClose: () => boolean = () => true
   ) {
-    onUnmounted(() => {
-      this.stopEvent()
-      this.event = undefined
-    })
+    if (getCurrentInstance()) {
+      onUnmounted(() => {
+        this.destroy()
+      })
+    }
   }
 
   /**
    * Set focus to the element.
    *
    * Устанавливает фокус на элемент.
+   * @returns this instance / текущий экземпляр
    */
   goTo(): this {
     if (
@@ -55,11 +59,13 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Reset focus to the previously focused element.
    *
    * Сбрасывает фокус на ранее сфокусированный элемент.
+   * @returns this instance / текущий экземпляр
    */
   reset(): this {
     if (
       this.active()
       && this.activeClose()
+      && isDomRuntime()
     ) {
       requestAnimationFrame(() => {
         if (
@@ -70,7 +76,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
             || document.activeElement === document.body
           )
         ) {
-          this.oldElement.focus()
+          (this.oldElement as HTMLElement).focus()
         }
       })
 
@@ -84,7 +90,8 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Toggle focus based on status.
    *
    * Переключает фокус в зависимости от статуса.
-   * @param status Focus status / Статус фокуса
+   * @param status focus status / статус фокуса
+   * @returns this instance / текущий экземпляр
    */
   toggle(status: boolean): this {
     if (status) {
@@ -112,45 +119,14 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   }
 
   /**
-   * Check if the element is defined.
-   *
-   * Проверяет, определен ли элемент.
-   */
-  protected isElement(): this is { element: Ref<E> } {
-    return this.getElement() !== undefined
-  }
-
-  /**
-   * Check if the Shift key is pressed.
-   *
-   * Проверяет, нажата ли клавиша Shift.
-   * @param event Keyboard event / Событие клавиатуры
-   */
-  protected isShift(event: KeyboardEvent): boolean {
-    return event.shiftKey
-  }
-
-  /**
-   * Get the element.
-   *
-   * Получает элемент.
-   */
-  protected getElement(): E | undefined {
-    if (isFunction(this.element)) {
-      return this.element()
-    }
-
-    return getRef(this.element)
-  }
-
-  /**
    * Find the first focusable element.
    *
    * Находит первый фокусируемый элемент.
+   * @returns first focusable element / первый фокусируемый элемент
    */
   findFirstElement(): HTMLElement | undefined {
     const elements = this.getElement()
-      ?.querySelectorAll<HTMLButtonElement>('*')
+      ?.querySelectorAll<HTMLElement>('*')
 
     if (elements) {
       for (const element of elements) {
@@ -171,10 +147,11 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Find the last focusable element.
    *
    * Находит последний фокусируемый элемент.
+   * @returns last focusable element / последний фокусируемый элемент
    */
   findLastElement(): HTMLElement | undefined {
     const elements = this.getElement()
-      ?.querySelectorAll<HTMLButtonElement>('*')
+      ?.querySelectorAll<HTMLElement>('*')
 
     if (elements) {
       for (let i = elements.length - 1; i >= 0; i--) {
@@ -195,9 +172,57 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   }
 
   /**
+   * Destroy event listeners and clean up resources.
+   *
+   * Уничтожает слушатели событий и освобождает ресурсы.
+   * @returns this instance / текущий экземпляр
+   */
+  destroy(): this {
+    this.stopEvent()
+    this.event = undefined
+    return this
+  }
+
+  /**
+   * Check if the element is defined.
+   *
+   * Проверяет, определен ли элемент.
+   * @returns true if element is defined / true, если элемент определен
+   */
+  protected isElement(): this is { element: Ref<E> } {
+    return this.getElement() !== undefined
+  }
+
+  /**
+   * Check if the Shift key is pressed.
+   *
+   * Проверяет, нажата ли клавиша Shift.
+   * @param event keyboard event / событие клавиатуры
+   * @returns true if shiftKey is pressed / true, если shiftKey нажат
+   */
+  protected isShift(event: KeyboardEvent): boolean {
+    return event.shiftKey
+  }
+
+  /**
+   * Get the element.
+   *
+   * Получает элемент.
+   * @returns element or undefined / элемент или undefined
+   */
+  protected getElement(): E | undefined {
+    if (isFunction(this.element)) {
+      return this.element()
+    }
+
+    return getRef(this.element)
+  }
+
+  /**
    * Set focus with temporary tab index modification.
    *
    * Устанавливает фокус с временным изменением табиндекса.
+   * @returns this instance / текущий экземпляр
    */
   protected toFocus(): this {
     const firstElement = this.findFirstElement()
@@ -209,7 +234,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
 
     const element = this.getElement()
 
-    if (element) {
+    if (element && isDomRuntime()) {
       element.setAttribute('tabindex', '-1')
       element.focus()
 
@@ -225,7 +250,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Event listener for keyboard events.
    *
    * Слушатель событий для событий клавиатуры.
-   * @param event Keyboard event / Событие клавиатуры
+   * @param event keyboard event / событие клавиатуры
    */
   protected listenEvent = (event: KeyboardEvent): void => {
     if (!isTab(event)) {
@@ -261,7 +286,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
       return
     }
 
-    this.event = new EventItem<HTMLElement, any>(
+    this.event = new EventItem<HTMLElement, KeyboardEvent>(
       document.body,
       'keydown',
       this.listenEvent

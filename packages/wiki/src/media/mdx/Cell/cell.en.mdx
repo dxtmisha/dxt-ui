@@ -1,62 +1,41 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
+The `Cell` component is a versatile container designed to display structured content rows with hierarchical text (label, caption, description), media elements, trailing accessories, and integrated interactive states.
 
-Universal container component for displaying structured content with labels, descriptions, and interactive actions in lists and interface elements.
-
-Cell provides a consistent way to represent information blocks with support for text hierarchy (label, description, caption), interactive states, icons, and progress indicators. The component integrates ripple effects, skeleton states, and flexible content positioning for creating modern interface lists.
+It acts as the foundational building block for lists, navigation items, settings panels, menus, and data cards across the design system. The component pairs composable content areas with built-in Ripple tactile feedback, progressive loading indicators, and loading skeleton adapters.
 
 **Key features:**
 
-- Structured content hierarchy (label, description, caption)
-- Interactive states (focus, selected, disabled, readonly)
-- Built-in icon and progress indicator support
-- Ripple effect integration for tactile feedback
-- Skeleton system for loading states
-- Customizable dividers and dynamic behavior
-- Flexible slot system for custom content
-- Optimized for list and menu interfaces
+- **Structured Text Hierarchy:** Dedicated typography areas for primary label, supplementary caption, and extended description
+- **Interactive State Machine:** Native handling of selected, disabled, readonly, focus, dynamic, and dynamicHover states
+- **Flexible Media Accessories:** First-class support for leading icon, iconTop alignment, and trailing accessories
+- **Responsive Skeletons & Progress:** Seamless integration with skeleton placeholder lines and circular/bar progress indicators
+- **Semantic HTML & Accessibility:** Automatic ARIA role calculation (`button`, `listitem`, etc.) with keyboard interaction and custom tag wrapping
+- **Composable Slot Architecture:** Fine-grained template slots for default, label, caption, description, trailing, and expandable body
 
-**Typical use cases:**
+**Common use cases:**
 
-- List items in navigation menus and settings
-- Contact cards and profile entries
-- Action sheets and selection lists
-- Settings panels and configuration items
-- Data tables and structured information displays
-- Mobile-first interface components
+- List rows in navigation menus, drawer sidebars, and action sheets
+- Settings rows and configuration toggles in preference dialogs
+- User profile cards, contact entries, and directory listings
+- Selectable option items in dropdown menus and search pickers
 
 <Source
     code={`
-<script setup>
-import { ref } from 'vue'
-
-const selected = ref(false)
-const loading = ref(false)
-
-const handleClick = () => {
-  console.log('Cell clicked')
-  selected.value = !selected.value
-}
-</script>
-
 <template>
   <Cell
     label="Notification Settings"
-    description="Manage how you receive notifications"
-    caption="Updated today"
+    description="Manage your push and email alerts"
+    caption="Updated recently"
     icon="notifications"
-    :selected="selected"
-    :skeleton="loading"
-    @click="handleClick"
-  >
-    <template #trailing>
-      <Icon name="chevron_right" />
-    </template>
-  </Cell>
+    iconTrailing="chevron_right"
+    dynamic
+    dynamicHover
+    @click="onOpenSettings"
+  />
 </template>
   `}
     language="html"
 />
 
-> Cell is designed as a universal building block for creating consistent list-based interfaces with rich content and interactive states.
+> Cell combines atomic typography hierarchy and interactive feedback into a high-performance building block for list interfaces.

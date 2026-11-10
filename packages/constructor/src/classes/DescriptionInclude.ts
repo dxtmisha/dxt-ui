@@ -23,6 +23,24 @@ import type { DescriptionProps, DescriptionSlots } from '../types/descriptionTyp
  * Управляет состояниями видимости описания, слотами, динамическими переводами и скелетонами загрузки.
  */
 export class DescriptionInclude {
+  /**
+   * Checks if description content is present in props or slots.
+   *
+   * Проверяет наличие содержимого описания в свойствах или слотах.
+   * @param props description properties / свойства описания
+   * @param slots description slots / слоты описания
+   * @returns true if description is present / true, если описание присутствует
+   */
+  static is(
+    props?: DescriptionProps,
+    slots?: DescriptionSlots
+  ): boolean {
+    return Boolean(
+      props?.description
+      || (slots && 'description' in slots)
+    )
+  }
+
   /** Default element identifier / Идентификатор элемента по умолчанию */
   protected readonly elementIdDefault = getElementId()
 
@@ -40,7 +58,7 @@ export class DescriptionInclude {
     protected readonly props: RefOrNormalOrFunction<DescriptionProps>,
     protected readonly naming: DesignName,
     protected readonly slots?: DescriptionSlots,
-    protected readonly skeleton?: SkeletonInclude,
+    protected readonly skeleton?: RefOrNormalOrFunction<SkeletonInclude | undefined>,
     protected readonly tag?: RefOrNormal<string | undefined>
   ) {
   }
@@ -101,7 +119,7 @@ export class DescriptionInclude {
               id: this.id,
               class: {
                 [this.naming.getSubClass('description')]: true,
-                ...this.skeleton?.classes
+                ...executeFunctionRef(this.skeleton)?.classes
               }
             },
             props

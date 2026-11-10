@@ -1,5 +1,6 @@
 import { type VNode } from 'vue'
 import {
+  type ConstrBind,
   executeFunctionRef,
   type DesignName,
   isFilled,
@@ -24,6 +25,24 @@ import type { CaptionProps, CaptionSlots } from '../types/captionTypes'
  */
 export class CaptionInclude {
   /**
+   * Checks if caption content is present in props or slots.
+   *
+   * Проверяет наличие содержимого подписи в свойствах или слотах.
+   * @param props caption properties / свойства подписи
+   * @param slots caption slots / слоты подписи
+   * @returns true if caption is present / true, если подпись присутствует
+   */
+  static is(
+    props?: CaptionProps,
+    slots?: CaptionSlots
+  ): boolean {
+    return Boolean(
+      props?.caption
+      || (slots && 'caption' in slots)
+    )
+  }
+
+  /**
    * Constructor
    *
    * Конструктор
@@ -37,7 +56,7 @@ export class CaptionInclude {
     protected readonly props: RefOrNormalOrFunction<CaptionProps>,
     protected readonly naming: DesignName,
     protected readonly slots?: CaptionSlots,
-    protected readonly skeleton?: SkeletonInclude,
+    protected readonly skeleton?: RefOrNormalOrFunction<SkeletonInclude | undefined>,
     protected readonly tag: string = 'div'
   ) {
   }
@@ -56,13 +75,14 @@ export class CaptionInclude {
    * Returns bindings for the caption element.
    *
    * Возвращает привязки для элемента подписи.
-   * @returns list of attributes / список атрибутов
+   * @returns element bindings object / объект привязок элемента
    */
-  get binds() {
+  get binds(): ConstrBind {
+    const skeleton = executeFunctionRef(this.skeleton)
     const binds = {
       'class': {
         [this.naming.getSubClass('caption')]: true,
-        ...this.skeleton?.classes
+        ...skeleton?.classes
       },
       'data-event-type': 'caption'
     }

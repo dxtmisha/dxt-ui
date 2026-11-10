@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
+import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
@@ -15,47 +17,127 @@ const paragraphs = [
 
 // 2. Events Tracking
 const { eventName, onEvent } = useDemoEvent()
+
+// 3. Interactive programmatic scroll controls
+const interactiveScrollbarRef = ref<{ $el?: HTMLElement } | null>(null)
+
+const getScrollElement = (): HTMLElement | null => {
+  const target = interactiveScrollbarRef.value
+  if (!target) {
+    return null
+  }
+  return target.$el instanceof HTMLElement ? target.$el : (target as unknown as HTMLElement)
+}
+
+const scrollToTop = (): void => {
+  const element = getScrollElement()
+  if (element) {
+    element.scrollTop = 0
+  }
+}
+
+const scrollToMiddle = (): void => {
+  const element = getScrollElement()
+  if (element) {
+    element.scrollTop = Math.floor((element.scrollHeight - element.clientHeight) / 2)
+  }
+}
+
+const scrollToBottom = (): void => {
+  const element = getScrollElement()
+  if (element) {
+    element.scrollTop = element.scrollHeight
+  }
+}
 </script>
 
 <template>
-  <DemoLinkBlack />
+  <DemoLinkBlack/>
   <D1Page label="Scrollbar">
     <D1Section>
-      <D1Block label="Basic Usage">
+      <D1Group label="Basic Usage">
         <D1Scrollbar class="demo-scrollbar-page__scrollbar">
-          <D1Group label="Cosmos and Astronomy">
-            <p v-for="(p, i) in paragraphs" :key="i">{{ p }}</p>
-          </D1Group>
+          <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
         </D1Scrollbar>
-      </D1Block>
-      <D1Block label="Dynamic Dividers">
+      </D1Group>
+
+      <D1Group label="Always Visible Thumb (visible)">
+        <D1Scrollbar class="demo-scrollbar-page__scrollbar" visible>
+          <p>The scrollbar thumb remains continuously visible regardless of user hover or active scrolling interaction.</p>
+          <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
+        </D1Scrollbar>
+      </D1Group>
+
+      <D1Group label="Dynamic Dividers (dividerTop & dividerBottom)">
         <D1Scrollbar class="demo-scrollbar-page__scrollbar" dividerTop dividerBottom>
-          <D1Group label="Cosmos and Astronomy">
-            <p>Scroll down to see the top border appear, and scroll to the bottom to see the bottom border disappear.</p>
-            <p v-for="(p, i) in paragraphs" :key="i">{{ p }}</p>
-          </D1Group>
+          <p>Scroll down to see the top border appear, and scroll to the bottom to see the bottom border disappear.</p>
+          <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
         </D1Scrollbar>
-      </D1Block>
+      </D1Group>
 
-      <D1Block label="Dynamic Dividers (Inverse)">
+      <D1Group label="Individual Dividers (dividerTop only vs dividerBottom only)">
+        <DemoFlex>
+          <div class="demo-scrollbar-page__column">
+            <h4>Top Divider Only</h4>
+            <D1Scrollbar class="demo-scrollbar-page__scrollbar" dividerTop>
+              <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
+            </D1Scrollbar>
+          </div>
+          <div class="demo-scrollbar-page__column">
+            <h4>Bottom Divider Only</h4>
+            <D1Scrollbar class="demo-scrollbar-page__scrollbar" dividerBottom>
+              <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
+            </D1Scrollbar>
+          </div>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Dynamic Dividers (inverse)">
         <D1Scrollbar class="demo-scrollbar-page__scrollbar" dividerTop dividerBottom inverse>
-          <D1Group label="Cosmos and Astronomy">
-            <p>Inverts the boundary logic: swaps top and bottom divider visibility depending on the scroll direction.</p>
-            <p v-for="(p, i) in paragraphs" :key="i">{{ p }}</p>
-          </D1Group>
+          <p>Inverts the boundary logic: shows borders at starting edges and hides them when scrolled inside.</p>
+          <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
         </D1Scrollbar>
-      </D1Block>
+      </D1Group>
 
-      <D1Block label="Scrollbar Engines">
+      <D1Group label="Hidden Dividers (dividerHide)">
+        <D1Scrollbar class="demo-scrollbar-page__scrollbar" divider dividerHide>
+          <p>Suppresses all divider borders completely even though divider monitoring is active.</p>
+          <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
+        </D1Scrollbar>
+      </D1Group>
+
+      <D1Group label="Native Browser Engine (standard)">
         <D1Scrollbar class="demo-scrollbar-page__scrollbar" standard>
-          <D1Group label="Native Browser Scrollbar (standard)">
-            <p v-for="(p, i) in paragraphs" :key="i">{{ p }}</p>
-          </D1Group>
+          <p>Preserves native browser scrollbar rendering without custom overlay styling.</p>
+          <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
         </D1Scrollbar>
-      </D1Block>
+      </D1Group>
 
-      <D1Block label="Edge Events">
+      <D1Group label="Custom Container Tag (tag)">
+        <DemoFlex>
+          <div class="demo-scrollbar-page__column">
+            <h4>Rendered as &lt;section&gt;</h4>
+            <D1Scrollbar class="demo-scrollbar-page__scrollbar" tag="section" divider>
+              <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
+            </D1Scrollbar>
+          </div>
+          <div class="demo-scrollbar-page__column">
+            <h4>Rendered as &lt;article&gt;</h4>
+            <D1Scrollbar class="demo-scrollbar-page__scrollbar" tag="article" divider>
+              <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
+            </D1Scrollbar>
+          </div>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Interactive Controls & Boundary Events">
+        <DemoFlex>
+          <D1Button label="Scroll to Top" @click="scrollToTop"/>
+          <D1Button label="Scroll to Middle" @click="scrollToMiddle"/>
+          <D1Button label="Scroll to Bottom" @click="scrollToBottom"/>
+        </DemoFlex>
         <D1Scrollbar
+          ref="interactiveScrollbarRef"
           class="demo-scrollbar-page__scrollbar"
           divider
           @bottom="onEvent('bottom')"
@@ -66,13 +148,11 @@ const { eventName, onEvent } = useDemoEvent()
           @reachTop="onEvent('reachTop')"
           @top="onEvent('top')"
         >
-          <D1Group label="Scroll to the Edges">
-            <p>Scroll up and down to trigger boundary detection events.</p>
-            <p v-for="(p, i) in paragraphs" :key="i">{{ p }}</p>
-          </D1Group>
+          <p>Scroll or use the control buttons above to trigger boundary events.</p>
+          <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
         </D1Scrollbar>
-        <DemoValue :value="eventName" />
-      </D1Block>
+        <DemoValue :value="eventName"/>
+      </D1Group>
     </D1Section>
   </D1Page>
 </template>
@@ -81,6 +161,18 @@ const { eventName, onEvent } = useDemoEvent()
 .demo-scrollbar-page {
   &__scrollbar {
     height: 160px;
+  }
+
+  &__column {
+    flex: 1;
+    min-width: 0;
+
+    h4 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
   }
 }
 </style>

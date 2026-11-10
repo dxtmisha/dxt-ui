@@ -1,15 +1,8 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { ref } from 'vue'
 import { WindowOpen } from '../WindowOpen'
 import type { WindowProps } from '../props'
-
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (callback: () => void) => callback()
-  }
-})
 
 vi.mock('@dxtmisha/functional', async () => {
   const actual = await vi.importActual('@dxtmisha/functional') as any
@@ -21,7 +14,7 @@ vi.mock('@dxtmisha/functional', async () => {
 
 describe('WindowOpen', () => {
   let mockProps: Partial<WindowProps>
-  let mockClientOnly: any
+  let isMountedRef: any
   let mockClient: any
   let mockHook: any
   let mockElement: any
@@ -50,9 +43,7 @@ describe('WindowOpen', () => {
       inDom: false,
       embedded: false
     }
-    mockClientOnly = {
-      isRender: vi.fn().mockReturnValue(true)
-    }
+    isMountedRef = ref(true)
     mockClient = {
       reset: vi.fn()
     }
@@ -107,19 +98,20 @@ describe('WindowOpen', () => {
 
     windowOpen = new WindowOpen(
       mockProps as WindowProps,
-      mockClientOnly,
-      mockClient,
-      mockHook,
-      mockElement,
-      mockTabIndex,
-      mockStatus,
-      mockFlash,
-      mockCoordinates,
-      mockPosition,
-      mockOrigin,
-      mockEmit,
-      mockStyles
+      isMountedRef,
+      () => mockClient,
+      () => mockHook,
+      () => mockElement,
+      () => mockTabIndex,
+      () => mockStatus,
+      () => mockFlash,
+      () => mockCoordinates,
+      () => mockPosition,
+      () => mockOrigin,
+      () => mockEmit,
+      () => mockStyles
     )
+    windowOpen.onMounted()
   })
 
   afterEach(() => {

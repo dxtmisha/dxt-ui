@@ -4,14 +4,6 @@ import { nextTick } from 'vue'
 import { WindowPersistent } from '../WindowPersistent'
 import type { WindowProps } from '../props'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (callback: () => void) => callback()
-  }
-})
-
 describe('WindowPersistent', () => {
   let mockProps: Partial<WindowProps>
   let mockClasses: any
@@ -37,8 +29,16 @@ describe('WindowPersistent', () => {
     vi.restoreAllMocks()
   })
 
+  it('should correctly check whether persistent is enabled via static is()', () => {
+    expect(WindowPersistent.is()).toBe(false)
+    expect(WindowPersistent.is({} as WindowProps)).toBe(false)
+    expect(WindowPersistent.is({ persistent: false } as WindowProps)).toBe(false)
+    expect(WindowPersistent.is({ persistent: true } as WindowProps)).toBe(true)
+  })
+
   it('should ignore request to enable persistent animation if persistent prop is false', () => {
-    const persistent = new WindowPersistent(mockProps as WindowProps, mockClasses, mockElement)
+    const persistent = new WindowPersistent(mockProps as WindowProps, () => mockClasses, () => mockElement)
+    persistent.onMounted()
     const result = persistent.on()
 
     expect(result).toBe(false)
@@ -47,7 +47,8 @@ describe('WindowPersistent', () => {
 
   it('should enable persistent animation and add class/event listener if persistent prop is true', async () => {
     mockProps.persistent = true
-    const persistent = new WindowPersistent(mockProps as WindowProps, mockClasses, mockElement)
+    const persistent = new WindowPersistent(mockProps as WindowProps, () => mockClasses, () => mockElement)
+    persistent.onMounted()
 
     // Spy on event listener
     const addEventListenerSpy = vi.spyOn(mainElement, 'addEventListener')
@@ -64,7 +65,8 @@ describe('WindowPersistent', () => {
 
   it('should disable persistent animation and remove class', async () => {
     mockProps.persistent = true
-    const persistent = new WindowPersistent(mockProps as WindowProps, mockClasses, mockElement)
+    const persistent = new WindowPersistent(mockProps as WindowProps, () => mockClasses, () => mockElement)
+    persistent.onMounted()
 
     persistent.on()
     await nextTick()
@@ -78,7 +80,8 @@ describe('WindowPersistent', () => {
 
   it('should clean up event listener on animationend', async () => {
     mockProps.persistent = true
-    const persistent = new WindowPersistent(mockProps as WindowProps, mockClasses, mockElement)
+    const persistent = new WindowPersistent(mockProps as WindowProps, () => mockClasses, () => mockElement)
+    persistent.onMounted()
 
     persistent.on()
     await nextTick()

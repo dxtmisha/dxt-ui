@@ -5,14 +5,6 @@ import { ref, nextTick } from 'vue'
 import { WindowStatic } from '../WindowStatic'
 import type { WindowProps } from '../props'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (callback: () => void) => callback()
-  }
-})
-
 function createWindowStatic(
   initialProperties: Partial<WindowProps>,
   mockElement: any
@@ -24,8 +16,9 @@ function createWindowStatic(
 
   const windowStatic = new WindowStatic(
     reactiveProperties.value as unknown as WindowProps,
-    mockElement
+    () => mockElement
   )
+  windowStatic.onMounted()
   return { windowStatic, reactiveProperties }
 }
 
@@ -48,6 +41,10 @@ describe('WindowStatic', () => {
   })
 
   it('should return is() based on staticMode prop', () => {
+    expect(WindowStatic.is()).toBe(false)
+    expect(WindowStatic.is({} as WindowProps)).toBe(false)
+    expect(WindowStatic.is({ staticMode: true } as WindowProps)).toBe(true)
+
     const { windowStatic } = createWindowStatic({ staticMode: false }, mockElement)
     expect(windowStatic.is()).toBe(false)
 

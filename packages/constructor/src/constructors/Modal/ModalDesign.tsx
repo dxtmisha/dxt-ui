@@ -1,19 +1,20 @@
 import { ModalDesignAbstract } from './ModalDesignAbstract'
 import { Modal } from './Modal'
 
-import {
-  type ModalPropsBasic
-} from './props'
-import {
-  type ModalClasses,
-  type ModalComponents,
-  type ModalEmits,
-  type ModalExpose,
-  type ModalSlots
+import type { ModalPropsBasic } from './props'
+import type {
+  ModalClasses,
+  ModalComponents,
+  ModalEmits,
+  ModalExpose,
+  ModalSlots
 } from './types'
 
 /**
  * ModalDesign
+ *
+ * Class for designing and rendering a modal window component.
+ * Класс для создания дизайна и рендеринга компонента модального окна.
  */
 export class ModalDesign<
   COMP extends ModalComponents,
@@ -29,6 +30,13 @@ export class ModalDesign<
     P,
     Modal
   > {
+  /**
+   * Initialization of the main item.
+   *
+   * Инициализация основного элемента.
+   * @param Item constructor class for Modal / класс конструктора для Modal
+   * @returns modal instance / экземпляр модального окна
+   */
   protected initItem(Item?: typeof Modal): Modal {
     return new (Item ?? Modal)(
       this.props,
@@ -44,6 +52,7 @@ export class ModalDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial class object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {

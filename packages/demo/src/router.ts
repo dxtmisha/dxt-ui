@@ -365,14 +365,24 @@ export const routes: RouteRecordRaw[] = [
     component: DemoSwitchPage
   },
   {
-    path: '/component-textarea',
-    name: 'component-textarea',
-    component: DemoTextareaPage
+    path: '/component-table',
+    name: 'component-table',
+    component: DemoTablePage
+  },
+  {
+    path: '/component-table-flex',
+    name: 'component-table-flex',
+    component: DemoTableFlexPage
   },
   {
     path: '/component-tabs',
     name: 'component-tabs',
     component: DemoTabsPage
+  },
+  {
+    path: '/component-textarea',
+    name: 'component-textarea',
+    component: DemoTextareaPage
   },
   {
     path: '/component-tooltip',
@@ -383,15 +393,5 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-window',
     name: 'component-window',
     component: DemoWindowPage
-  },
-  {
-    path: '/component-table',
-    name: 'component-table',
-    component: DemoTablePage
-  },
-  {
-    path: '/component-table-flex',
-    name: 'component-table-flex',
-    component: DemoTableFlexPage
   }
 ]
