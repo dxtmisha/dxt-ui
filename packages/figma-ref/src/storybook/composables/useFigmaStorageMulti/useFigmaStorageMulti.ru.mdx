@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-ref/Composables/useFigmaStorageMulti - Управление составным хранилищем'/>
+
+# `useFigmaStorageMulti`
+
+Композабл для комбинированной синхронизации данных между макетом Figma (`document storage`) и локальным хранилищем пользователя (`client storage`). Позволяет динамически управлять флагами сохранения в зависимости от пользовательских настроек плагина.
+
+**Параметры:**
+- `name: string` — идентификатор ключа хранилища.
+- `inDocument?: RefOrNormal<boolean>` — флаг или `Ref` для сохранения в макете документа Figma (по умолчанию `false`).
+- `inLocal?: RefOrNormal<boolean>` — флаг или `Ref` для локального сохранения на машине пользователя (по умолчанию `false`).
+- `defaultValue?: T` — начальное значение по умолчанию.
+
+**Возвращает:**
+- `item: ShallowRef<T | undefined>` — реактивная ссылка на сохраненное значение.
+- `isDocument: Ref<boolean>` — реактивный флаг сохранения в документе.
+- `isLocal: Ref<boolean>` — реактивный флаг локального сохранения.
+
+## Пример использования
+
+```typescript
+import { ref } from 'vue'
+import { useFigmaStorageMulti } from '@dxtmisha/figma-ref'
+
+const inDocument = ref(false)
+const inLocal = ref(true)
+
+const { item: apiKey } = useFigmaStorageMulti<string>(
+  'user-api-key',
+  inDocument,
+  inLocal,
+  ''
+)
+
+// При изменении apiKey значение будет сохранено в соответствии с флагами inDocument / inLocal
+apiKey.value = 'sk-...'
+```
+

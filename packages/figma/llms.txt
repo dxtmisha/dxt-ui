@@ -2,18 +2,30 @@
 
 > Core communication middleware for Figma plugins, providing a structured bidirectional messaging bridge between sandbox logic and the UI layer.
 
-Abstracts `window.postMessage` and `figma.ui.postMessage` into a type-safe, verified event bus with security codes (`FigmaPostCode`) to prevent collision and ensure origin authenticity.
+Abstracts `window.postMessage` and `figma.ui.postMessage` into a type-safe, verified event bus with security tokens (`FigmaPostCode`) to prevent message collisions, ensure origin authenticity, and coordinate asynchronous data queries between the Figma plugin backend and UI iframes.
 
 ## Key Classes & Functions
 
-- [FigmaUiMessenger](src/classes/FigmaUiMessenger.ts): UI-side messaging singleton for subscribing to backend events and posting requests.
-- [fetchTopLevelFrames](src/functions/fetchTopLevelFrames.ts): Async helper to query top-level canvas frame hierarchies from the UI.
-- [fetchFramesSelected](src/functions/fetchFramesSelected.ts): Async helper to query currently selected Figma canvas nodes.
-- [fetchStorage / fetchClientStorage](src/functions/fetchStorage.ts): Async wrappers for retrieving pluginData and clientStorage values.
-- [sendFrameStyles](src/functions/sendFrameStyles.ts): Dispatch extracted CSS style payloads to the UI layer.
-- [FigmaPostCode](src/classes/FigmaPostCode.ts): Security token verification for message authenticity.
+### Messaging & Security
+- [FigmaUiMessenger](src/classes/FigmaUiMessenger.ts): UI-side messaging singleton (`getInstance()`) for subscribing to backend events and posting requests.
+- [FigmaPostAbstract](src/classes/FigmaPostAbstract.ts): Abstract base class for type-safe message verification, payload validation, and event handling.
+- [FigmaPostCode](src/classes/FigmaPostCode.ts): Security token verification ensuring channel authenticity and message uniqueness.
+
+### Frame & Selection Synchronization
+- [fetchTopLevelFrames](src/functions/fetchTopLevelFrames.ts): Async helper to query top-level canvas frame hierarchies from the UI with empty-list safety.
+- [fetchFramesSelected / sendFramesSelected](src/functions/fetchFramesSelected.ts): Query and toggle selected Figma canvas nodes from UI components with lifecycle auto-cleanup.
+- [fetchFrameSelection / sendFrameSelection](src/functions/fetchFrameSelection.ts): Subscribe to canvas selection changes or programmatically select frames by ID.
+- [fetchFrameStyles / sendFrameStyles](src/functions/fetchFrameStyles.ts): Query extracted CSS styles for specified frames and dispatch style update attributes.
+
+### Storage Persistence
+- [fetchClientStorage / sendClientStorage](src/functions/fetchClientStorage.ts): Async wrappers for retrieving and persisting user preferences via `figma.clientStorage` with fallback value support.
+- [fetchStorage / sendStorage](src/functions/fetchStorage.ts): Async wrappers for reading and writing node or document `pluginData` with optional node ID targeting.
 
 ## Optional & AI Resources
 
 - [ai-types.md](ai-types.md): Public TypeScript declarations and payload contracts.
-- [README.md](README.md): Usage guide and UI messaging patterns.
+- [ai-description.md](ai-description.md): High-level package architectural overview and capability index.
+- [ai-review.md](ai-review.md): Audit registry of reviewed and verified package entities.
+- [README.md](README.md): Usage guide, quick start examples, and UI messaging patterns.
+- [CHANGELOG.md](CHANGELOG.md): Release history and version updates.
+- [package.json](package.json): Package metadata, export maps, and dependency ranges.

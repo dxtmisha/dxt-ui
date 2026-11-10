@@ -6,6 +6,7 @@ describe('FigmaUiMessenger', () => {
   let messageHandler: ((event: MessageEvent) => void) | undefined
 
   beforeEach(() => {
+    FigmaUiMessenger.reset()
     messageHandler = undefined
 
     vi.stubGlobal('window', {
@@ -21,11 +22,12 @@ describe('FigmaUiMessenger', () => {
   })
 
   afterEach(() => {
+    FigmaUiMessenger.reset()
     vi.unstubAllGlobals()
   })
 
-  describe('Singleton initialization (getInstance)', () => {
-    it('getInstance() should return a singleton and initialize it on first call', () => {
+  describe('Standard functional requirements (Happy path)', () => {
+    it('getInstance() should return a singleton instance and bind window message listener', () => {
       const instance1 = FigmaUiMessenger.getInstance()
       const instance2 = FigmaUiMessenger.getInstance()
 
@@ -34,13 +36,11 @@ describe('FigmaUiMessenger', () => {
       expect(window.addEventListener).toHaveBeenCalledTimes(1)
       expect(window.addEventListener).toHaveBeenCalledWith('message', expect.any(Function))
     })
-  })
 
-  describe('Sending messages (post)', () => {
-    it('post() should send message to parent with code, type, and payload', () => {
+    it('post() should send message to parent with verification code, type, and payload', () => {
       const messenger = FigmaUiMessenger.getInstance()
-      const type = 'test-type'
-      const message = { foo: 'bar' }
+      const type = 'custom-action'
+      const message = { id: 'btn-1', active: true }
 
       messenger.post(type, message)
 
@@ -53,62 +53,166 @@ describe('FigmaUiMessenger', () => {
       }, '*')
     })
 
-    it('post() should support sending messages without payload (message = undefined)', () => {
+    it('should dispatch valid incoming pluginMessage to registered listeners', () => {
       const messenger = FigmaUiMessenger.getInstance()
-
-      messenger.post('ping')
-
-      expect(parent.postMessage).toHaveBeenCalledWith({
-        pluginMessage: {
-          code: FigmaPostCode.get(),
-          type: 'ping',
-          message: undefined
-        }
-      }, '*')
-    })
-  })
-
-  describe('Receiving messages (prepare & window message listener)', () => {
-    it('should dispatch valid pluginMessage events from window message listener to registered callbacks', () => {
-      const messenger = new FigmaUiMessenger().make()
       const callback = vi.fn()
 
-      messenger.add('incoming-event', callback)
-      expect(messageHandler).toBeTypeOf('function')
+      messenger.add('selection-changed', callback)
 
       messageHandler?.({
         data: {
           pluginMessage: {
             code: FigmaPostCode.get(),
-            type: 'incoming-event',
-            message: { status: 'ok' }
+            type: 'selection-changed',
+            message: { frameId: '1:100' }
           }
         }
       } as MessageEvent)
 
       expect(callback).toHaveBeenCalledTimes(1)
-      expect(callback).toHaveBeenCalledWith({ status: 'ok' })
+      expect(callback).toHaveBeenCalledWith({ frameId: '1:100' })
+    })
+  })
+
+  describe('Boundary values and limit thresholds', () => {
+    it('post() should safely handle undefined message argument', () => {
+      const messenger = FigmaUiMessenger.getInstance()
+
+      messenger.post('ping-event')
+
+      expect(parent.postMessage).toHaveBeenCalledWith({
+        pluginMessage: {
+          code: FigmaPostCode.get(),
+          type: 'ping-event',
+          message: undefined
+        }
+      }, '*')
     })
 
-    it('should safely ignore window message events without pluginMessage or with invalid code', () => {
-      const messenger = new FigmaUiMessenger().make()
-      const callback = vi.fn()
+    it('post() and listener dispatch should correctly preserve numeric 0, false, and empty string', () => {
+      const messenger = FigmaUiMessenger.getInstance()
+      const zeroCb = vi.fn()
+      const falseCb = vi.fn()
 
-      messenger.add('incoming-event', callback)
+      messenger.add('zero-event', zeroCb)
+      messenger.add('false-event', falseCb)
 
-      messageHandler?.({ data: null } as MessageEvent)
-      messageHandler?.({ data: {} } as MessageEvent)
+      messenger.post('zero-event', 0)
+      expect(parent.postMessage).toHaveBeenCalledWith({
+        pluginMessage: {
+          code: FigmaPostCode.get(),
+          type: 'zero-event',
+          message: 0
+        }
+      }, '*')
+
       messageHandler?.({
         data: {
           pluginMessage: {
-            code: 'invalid-code',
-            type: 'incoming-event',
-            message: 'ignored'
+            code: FigmaPostCode.get(),
+            type: 'zero-event',
+            message: 0
+          }
+        }
+      } as MessageEvent)
+      expect(zeroCb).toHaveBeenCalledWith(0)
+
+      messenger.post('false-event', false)
+      expect(parent.postMessage).toHaveBeenCalledWith({
+        pluginMessage: {
+          code: FigmaPostCode.get(),
+          type: 'false-event',
+          message: false
+        }
+      }, '*')
+
+      messageHandler?.({
+        data: {
+          pluginMessage: {
+            code: FigmaPostCode.get(),
+            type: 'false-event',
+            message: false
+          }
+        }
+      } as MessageEvent)
+      expect(falseCb).toHaveBeenCalledWith(false)
+    })
+
+    it('should ignore window message events with null data, empty objects, or missing pluginMessage', () => {
+      const messenger = FigmaUiMessenger.getInstance()
+      const callback = vi.fn()
+
+      messenger.add('test', callback)
+
+      messageHandler?.({ data: null } as MessageEvent)
+      messageHandler?.({ data: {} } as MessageEvent)
+      messageHandler?.({ data: { otherData: true } } as MessageEvent)
+
+      expect(callback).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('Metacharacters, escaping, and security', () => {
+    it('should strictly ignore messages with invalid or missing post codes', () => {
+      const messenger = FigmaUiMessenger.getInstance()
+      const callback = vi.fn()
+
+      messenger.add('secure-action', callback)
+
+      messageHandler?.({
+        data: {
+          pluginMessage: {
+            code: 'invalid-auth-code',
+            type: 'secure-action',
+            message: 'malicious payload'
           }
         }
       } as MessageEvent)
 
       expect(callback).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('Multilingual and Unicode support', () => {
+    it('should correctly post and receive multilingual messages (Cyrillic, Vietnamese, Emoji)', () => {
+      const messenger = FigmaUiMessenger.getInstance()
+      const callback = vi.fn()
+      const unicodeType = 'событие_giao_diện_🌐'
+      const payload = { ru: 'Тестовое сообщение', vi: 'Tin nhắn kiểm tra 🚀' }
+
+      messenger.add(unicodeType, callback)
+      messenger.post(unicodeType, payload)
+
+      expect(parent.postMessage).toHaveBeenCalledWith({
+        pluginMessage: {
+          code: FigmaPostCode.get(),
+          type: unicodeType,
+          message: payload
+        }
+      }, '*')
+
+      messageHandler?.({
+        data: {
+          pluginMessage: {
+            code: FigmaPostCode.get(),
+            type: unicodeType,
+            message: payload
+          }
+        }
+      } as MessageEvent)
+
+      expect(callback).toHaveBeenCalledWith(payload)
+    })
+  })
+
+  describe('Statefulness, isolation, and lifecycle cleanup', () => {
+    it('reset() should invalidate singleton instance allowing fresh listener binding', () => {
+      const instance1 = FigmaUiMessenger.getInstance()
+      FigmaUiMessenger.reset()
+      const instance2 = FigmaUiMessenger.getInstance()
+
+      expect(instance1).not.toBe(instance2)
+      expect(window.addEventListener).toHaveBeenCalledTimes(2)
     })
   })
 })

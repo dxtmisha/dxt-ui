@@ -12,16 +12,26 @@ import type { UiFigmaExportFormat, UiFigmaNode } from '../types/figmaTypes'
  * Class for working with Figma nodes.
  *
  * Класс для работы с узлами Figma.
- * @template T type of Figma node/ тип узла Figma
+ * @template T type of Figma node / тип узла Figma
  */
 export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
   /**
    * Constructor
-   * @param item Figma node/ узел Figma
+   * @param item Figma node / узел Figma
    */
   constructor(
     protected item: T
   ) {
+  }
+
+  /**
+   * Returns the Figma node.
+   *
+   * Возвращает узел Figma.
+   * @returns Figma node / узел Figma
+   */
+  get(): T {
+    return this.item
   }
 
   /**
@@ -94,27 +104,90 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
   }
 
   /**
-   * Returns the Figma node.
+   * Returns the child nodes.
    *
-   * Возвращает узел Figma.
-   * @returns Figma node / узел Figma
+   * Возвращает дочерние узлы.
+   * @returns list of child nodes / список дочерних узлов
    */
-  get(): T {
-    return this.item
+  getChildren(): UiFigmaNode[] {
+    if ('children' in this.item) {
+      return this.item.children as UiFigmaNode[]
+    }
+
+    return []
   }
 
   /**
-   * Returns the type of the node.
+   * Returns the child nodes wrapped in FigmaItem.
    *
-   * Возвращает тип узла.
-   * @returns node type / тип узла
+   * Возвращает дочерние узлы, обернутые в FigmaItem.
+   * @returns list of child FigmaItems / список дочерних FigmaItems
    */
-  getType() {
-    if ('type' in this.item) {
-      return this.item.type
+  getChildrenItems(): FigmaItem[] {
+    const children: FigmaItem[] = []
+
+    for (const child of this.getChildren()) {
+      children.push(new FigmaItem(child))
     }
 
-    return undefined
+    return children
+  }
+
+  /**
+   * Returns the CSS styles of the node.
+   *
+   * Возвращает CSS-стили узла.
+   * @returns promise with CSS styles / промис с CSS-стилями
+   */
+  async getCss(): Promise<Record<string, string>> {
+    if ('getCSSAsync' in this.item) {
+      return await this.item.getCSSAsync()
+    }
+
+    return {}
+  }
+
+  /**
+   * Returns the node ID.
+   *
+   * Возвращает идентификатор узла.
+   * @returns node ID / идентификатор узла
+   */
+  getId(): string {
+    if ('id' in this.item) {
+      return this.item.id
+    }
+
+    return ''
+  }
+
+  /**
+   * Returns information about the node.
+   *
+   * Возвращает информацию об узле.
+   * @returns promise with node information / промис с информацией об узле
+   */
+  async getInfo(): Promise<UiFigmaFramesItem> {
+    return {
+      name: this.getName(),
+      id: this.getId(),
+      image: await this.exportJpg(),
+      svg: await this.exportSvg()
+    }
+  }
+
+  /**
+   * Returns the node name.
+   *
+   * Возвращает имя узла.
+   * @returns node name / имя узла
+   */
+  getName(): string {
+    if ('name' in this.item) {
+      return this.item.name
+    }
+
+    return this.getId()
   }
 
   /**
@@ -123,7 +196,7 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
    * Возвращает родительский узел.
    * @returns parent node / родительский узел
    */
-  getParent() {
+  getParent(): (BaseNode & ChildrenMixin) | undefined {
     if ('parent' in this.item) {
       return this.item.parent ?? undefined
     }
@@ -184,61 +257,18 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
   }
 
   /**
-   * Returns the child nodes.
+   * Returns the styles of the node.
    *
-   * Возвращает дочерние узлы.
-   * @returns list of child nodes / список дочерних узлов
+   * Возвращает стили узла.
+   * @returns promise with node styles / промис со стилями узла
    */
-  getChildren(): UiFigmaNode[] {
-    if ('children' in this.item) {
-      return this.item.children as UiFigmaNode[]
+  async getStyles(): Promise<UiFigmaFrameStylesItem> {
+    return {
+      ...(await this.getInfo()),
+      json: await this.exportJsonCompact(),
+      text: this.getText(),
+      styles: await this.getCss()
     }
-
-    return []
-  }
-
-  /**
-   * Returns the child nodes wrapped in FigmaItem.
-   *
-   * Возвращает дочерние узлы, обернутые в FigmaItem.
-   * @returns list of child FigmaItems / список дочерних FigmaItems
-   */
-  getChildrenItems(): FigmaItem[] {
-    const children: FigmaItem[] = []
-
-    for (const child of this.getChildren()) {
-      children.push(new FigmaItem(child))
-    }
-
-    return children
-  }
-
-  /**
-   * Returns the node ID.
-   *
-   * Возвращает идентификатор узла.
-   * @returns node ID / идентификатор узла
-   */
-  getId(): string {
-    if ('id' in this.item) {
-      return this.item.id
-    }
-
-    return ''
-  }
-
-  /**
-   * Returns the node name.
-   *
-   * Возвращает имя узла.
-   * @returns node name / имя узла
-   */
-  getName(): string {
-    if ('name' in this.item) {
-      return this.item.name
-    }
-
-    return this.getId()
   }
 
   /**
@@ -256,56 +286,26 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
   }
 
   /**
-   * Returns the CSS styles of the node.
+   * Returns the type of the node.
    *
-   * Возвращает CSS-стили узла.
-   * @returns promise with CSS styles / промис с CSS-стилями
+   * Возвращает тип узла.
+   * @returns node type / тип узла
    */
-  async getCss(): Promise<Record<string, string>> {
-    if ('getCSSAsync' in this.item) {
-      return await this.item.getCSSAsync()
+  getType(): string | undefined {
+    if ('type' in this.item) {
+      return this.item.type
     }
 
-    return {}
-  }
-
-  /**
-   * Returns information about the node.
-   *
-   * Возвращает информацию об узле.
-   * @returns promise with node information / промис с информацией об узле
-   */
-  async getInfo(): Promise<UiFigmaFramesItem> {
-    return {
-      name: this.getName(),
-      id: this.getId(),
-      image: await this.exportJpg(),
-      svg: await this.exportSvg()
-    }
-  }
-
-  /**
-   * Returns the styles of the node.
-   *
-   * Возвращает стили узла.
-   * @returns promise with node styles / промис со стилями узла
-   */
-  async getStyles(): Promise<UiFigmaFrameStylesItem> {
-    return {
-      ...(await this.getInfo()),
-      json: await this.exportJsonCompact(),
-      text: this.getText(),
-      styles: await this.getCss()
-    }
+    return undefined
   }
 
   /**
    * Exports the node as JPG.
    *
    * Экспортирует узел в формате JPG.
-   * @returns promise with image data as Uint8Array / промис с данными изображения в формате Uint8Array
+   * @returns promise with image data / промис с данными изображения
    */
-  async exportJpg() {
+  async exportJpg(): Promise<string | Uint8Array> {
     return await this.exportItem('JPG')
   }
 
@@ -315,7 +315,7 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
    * Экспортирует узел в формате JSON.
    * @returns promise with node data in JSON format / промис с данными узла в формате JSON
    */
-  async exportJson() {
+  async exportJson(): Promise<string | Uint8Array | Record<string, any>> {
     return await this.exportItem('JSON_REST_V1')
   }
 
@@ -326,12 +326,20 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
    * @returns promise with compact JSON data / промис с компактными данными JSON
    */
   async exportJsonCompact(): Promise<UiFigmaFrameStylesData | undefined> {
-    const json = (await this.exportJson()) as Record<string, any>
+    const raw = await this.exportJson()
 
-    if (json) {
-      return {
-        document: this.toJsonCompact(json.document),
-        styles: json.styles
+    if (raw) {
+      try {
+        const json = (typeof raw === 'string' ? JSON.parse(raw) : raw) as Record<string, any>
+
+        if (json && typeof json === 'object') {
+          return {
+            document: this.toJsonCompact(json.document ?? json),
+            styles: json.styles
+          }
+        }
+      } catch {
+        return undefined
       }
     }
 
@@ -343,9 +351,9 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
    *
    * Экспортирует узел в формате SVG.
    * @param svgIdAttribute whether to include layer names as ID attributes in the SVG / включать ли имена слоев в качестве атрибутов ID в SVG
-   * @returns promise with SVG data as Uint8Array / промис с данными SVG в формате Uint8Array
+   * @returns promise with SVG data / промис с данными SVG
    */
-  async exportSvg(svgIdAttribute: boolean = true) {
+  async exportSvg(svgIdAttribute: boolean = true): Promise<string | Uint8Array> {
     return await this.exportItem({
       format: 'SVG',
       svgIdAttribute
@@ -353,21 +361,11 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
   }
 
   /**
-   * Selects the node.
-   *
-   * Выделяет узел.
-   */
-  toSelection() {
-    figma.currentPage.selection = [this.item as never]
-    figma.viewport.scrollAndZoomIntoView([this.item as never])
-  }
-
-  /**
    * Moves to the page containing the node and selects it.
    *
    * Перемещает на страницу, содержащую узел, и выделяет его.
    */
-  async toPageAndSelection() {
+  async toPageAndSelection(): Promise<void> {
     if (this.inCurrentPage()) {
       this.toSelection()
     }
@@ -378,6 +376,16 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
       await figma.setCurrentPageAsync(parentPage)
       this.toSelection()
     }
+  }
+
+  /**
+   * Selects the node.
+   *
+   * Выделяет узел.
+   */
+  toSelection(): void {
+    figma.currentPage.selection = [this.item as never]
+    figma.viewport.scrollAndZoomIntoView([this.item as never])
   }
 
   /**
@@ -413,7 +421,7 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
    */
   protected async exportItem(
     formatSettings: UiFigmaExportFormat | ExportSettings
-  ) {
+  ): Promise<string | Uint8Array> {
     if ('exportAsync' in this.item) {
       return await (this.item as FrameNode)
         .exportAsync(this.getExportSettings(formatSettings))

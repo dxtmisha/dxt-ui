@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-ref/Composables/useFigmaStorageMulti - Multi-storage management'/>
+
+# `useFigmaStorageMulti`
+
+A composable for combined synchronization across Figma document storage and user client storage. It allows dynamic control over persistence targets based on reactive flags.
+
+**Parameters:**
+- `name: string` — Storage key name.
+- `inDocument?: RefOrNormal<boolean>` — Flag or `Ref` to persist data in Figma document (defaults to `false`).
+- `inLocal?: RefOrNormal<boolean>` — Flag or `Ref` to persist data locally in client storage (defaults to `false`).
+- `defaultValue?: T` — Default initial value.
+
+**Returns:**
+- `item: ShallowRef<T | undefined>` — A reactive reference to the stored value.
+- `isDocument: Ref<boolean>` — A reactive boolean indicating persistence in document.
+- `isLocal: Ref<boolean>` — A reactive boolean indicating persistence in client storage.
+
+## Usage Example
+
+```typescript
+import { ref } from 'vue'
+import { useFigmaStorageMulti } from '@dxtmisha/figma-ref'
+
+const inDocument = ref(false)
+const inLocal = ref(true)
+
+const { item: apiKey } = useFigmaStorageMulti<string>(
+  'user-api-key',
+  inDocument,
+  inLocal,
+  ''
+)
+
+// When apiKey changes, it is saved according to inDocument and inLocal flags
+apiKey.value = 'sk-...'
+```
+

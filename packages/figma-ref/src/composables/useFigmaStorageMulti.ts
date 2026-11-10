@@ -1,4 +1,4 @@
-import { shallowRef, watch } from 'vue'
+import { shallowRef, watch, type Ref, type ShallowRef } from 'vue'
 import { toRefItem, type RefOrNormal } from '@dxtmisha/functional'
 import { isFilled } from '@dxtmisha/functional-basic'
 import {
@@ -7,6 +7,30 @@ import {
   sendClientStorage,
   sendStorage
 } from '@dxtmisha/figma'
+
+/**
+ * Return type for `useFigmaStorageMulti`.
+ *
+ * Тип возвращаемого значения для `useFigmaStorageMulti`.
+ */
+export type UseFigmaStorageMultiReturn<T> = {
+  /** Storage value / Значение хранилища */
+  item: ShallowRef<T | undefined>
+  /** Save in document flag / Флаг сохранения в макете */
+  isDocument: Ref<boolean>
+  /** Save in local storage flag / Флаг локального сохранения */
+  isLocal: Ref<boolean>
+}
+
+/**
+ * Checks if a value is present for storage persistence.
+ *
+ * Проверяет, присутствует ли значение для сохранения в хранилище.
+ * @param value Value to check / Проверяемое значение
+ * @returns True if value is present / True, если значение присутствует
+ */
+const hasValue = (value: unknown): boolean =>
+  typeof value === 'boolean' || typeof value === 'number' || isFilled(value)
 
 /**
  * Composable for working with multiple Figma storage types (document and client).
@@ -24,7 +48,7 @@ export function useFigmaStorageMulti<T = unknown>(
   inDocument?: RefOrNormal<boolean>,
   inLocal?: RefOrNormal<boolean>,
   defaultValue?: T
-) {
+): UseFigmaStorageMultiReturn<T> {
   /** Save in document flag / Флаг сохранения в макете */
   const isDocument = toRefItem(inDocument ?? false)
 
@@ -49,7 +73,7 @@ export function useFigmaStorageMulti<T = unknown>(
   fetchClientStorage<T>(
     name,
     (value) => {
-      if (isFilled(value)) {
+      if (hasValue(value)) {
         update(value)
       } else {
         fetchStorage<T>(
@@ -68,12 +92,12 @@ export function useFigmaStorageMulti<T = unknown>(
   watch([item, isLocal, isDocument], () => {
     sendClientStorage(
       name,
-      isLocal.value && isFilled(item.value) ? item.value : ''
+      isLocal.value && hasValue(item.value) ? item.value : ''
     )
 
     sendStorage(
       name,
-      isDocument.value && isFilled(item.value) ? item.value : ''
+      isDocument.value && hasValue(item.value) ? item.value : ''
     )
   })
 

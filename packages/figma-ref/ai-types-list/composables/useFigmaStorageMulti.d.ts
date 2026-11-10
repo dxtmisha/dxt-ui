@@ -1,8 +1,28 @@
-// md5:7eb22815f1fcf57b7c87adbe4a55c573 true
+// md5:5f184d986ea3946a8e6caa30d1a6be91
+import { type Ref, type ShallowRef } from 'vue';
 import { type RefOrNormal } from '@dxtmisha/functional';
-/** Composable for working with multiple Figma storage types (document and client). @keywords figma, storage, document, client, multi, persist */
-export declare function useFigmaStorageMulti<T = unknown>(name: string, inDocument?: RefOrNormal<boolean>, inLocal?: RefOrNormal<boolean>, defaultValue?: T): {
-    item: import("vue").Ref<any, any> extends T | undefined ? import("vue").ShallowRef<undefined, undefined> | (T extends T & import("vue").Ref<any, any> ? import("@vue/shared").IfAny<T, import("vue").ShallowRef<T, T>, T> : import("vue").ShallowRef<T, T>) : import("vue").ShallowRef<T | undefined, T | undefined>;
-    isDocument: import("vue").Ref<boolean, boolean>;
-    isLocal: import("vue").Ref<boolean, boolean>;
+/**
+ * Return type for `useFigmaStorageMulti`.
+ *
+ * Тип возвращаемого значения для `useFigmaStorageMulti`.
+ */
+export type UseFigmaStorageMultiReturn<T> = {
+    /** Storage value / Значение хранилища */
+    item: ShallowRef<T | undefined>;
+    /** Save in document flag / Флаг сохранения в макете */
+    isDocument: Ref<boolean>;
+    /** Save in local storage flag / Флаг локального сохранения */
+    isLocal: Ref<boolean>;
 };
+/**
+ * Composable for working with multiple Figma storage types (document and client).
+ *
+ * Композиция для работы с несколькими типами хранилищ Figma (макет и клиент).
+ * @param name Storage name / Название хранилища
+ * @param inDocument Save in document flag or ref / Флаг или ref сохранения в макете
+ * @param inLocal Save in local storage flag or ref / Флаг или ref локального сохранения
+ * @param defaultValue Default value / Значение по умолчанию
+ * @returns An object containing the storage value and storage flags /
+ * Объект, содержащий значение хранилища и флаги хранилища
+ */
+export declare function useFigmaStorageMulti<T = unknown>(name: string, inDocument?: RefOrNormal<boolean>, inLocal?: RefOrNormal<boolean>, defaultValue?: T): UseFigmaStorageMultiReturn<T>;

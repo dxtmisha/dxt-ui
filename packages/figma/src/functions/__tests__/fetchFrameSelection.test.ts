@@ -62,44 +62,77 @@ describe('fetchFrameSelection', () => {
     mockIsLoading.mockReturnValue(false)
   })
 
-  it('should initialize messenger listener and request frame selection on first call', () => {
-    const callback = vi.fn()
-    fetchFrameSelection(callback)
+  describe('Standard functional requirements (Happy path)', () => {
+    it('should initialize listener and request frame selection on first call', () => {
+      const callback = vi.fn()
+      fetchFrameSelection(callback)
 
-    expect(mockAdd).toHaveBeenCalledTimes(1)
-    expect(mockAdd).toHaveBeenCalledWith(UI_FIGMA_FRAME_GET_SELECTION, expect.any(Function))
-    expect(StorageCallback.getInstance).toHaveBeenCalledWith('figma:frame-selection:get')
-    expect(mockAddCallback).toHaveBeenCalledWith(callback)
-    expect(mockPreparation).toHaveBeenCalledTimes(1)
-    expect(mockPost).toHaveBeenCalledWith(UI_FIGMA_FRAME_GET_SELECTION)
+      expect(mockAdd).toHaveBeenCalledTimes(1)
+      expect(mockAdd).toHaveBeenCalledWith(UI_FIGMA_FRAME_GET_SELECTION, expect.any(Function))
+      expect(StorageCallback.getInstance).toHaveBeenCalledWith('figma:frame-selection:get')
+      expect(mockAddCallback).toHaveBeenCalledWith(callback)
+      expect(mockPreparation).toHaveBeenCalledTimes(1)
+      expect(mockPost).toHaveBeenCalledWith(UI_FIGMA_FRAME_GET_SELECTION)
 
-    // Second call should not re-register listener
-    fetchFrameSelection(vi.fn())
-    expect(mockAdd).toHaveBeenCalledTimes(1)
+      // Subsequent calls must not re-register messenger.add listener
+      fetchFrameSelection(vi.fn())
+      expect(mockAdd).toHaveBeenCalledTimes(1)
+    })
+
+    it('should forward received frame selection data from messenger to StorageCallback.run()', () => {
+      const callback = vi.fn()
+      fetchFrameSelection(callback)
+
+      const listener = getRegisteredListener()
+      expect(listener).toBeTypeOf('function')
+
+      const mockFrames: UiFigmaFramesList = [
+        { id: '1:2', name: 'Frame 1' },
+        { id: '3:4', name: 'Frame 2' }
+      ]
+      listener?.(mockFrames)
+
+      expect(StorageCallback.getInstance).toHaveBeenLastCalledWith('figma:frame-selection:get')
+      expect(mockRun).toHaveBeenCalledWith(mockFrames)
+    })
   })
 
-  it('should not call preparation() or post() if already loading', () => {
-    mockIsLoading.mockReturnValue(true)
-    const callback = vi.fn()
+  describe('Boundary values and limit thresholds', () => {
+    it('should safely forward empty frames array', () => {
+      const callback = vi.fn()
+      fetchFrameSelection(callback)
 
-    fetchFrameSelection(callback)
+      const listener = getRegisteredListener()
+      listener?.([])
 
-    expect(mockAddCallback).toHaveBeenCalledWith(callback)
-    expect(mockPreparation).not.toHaveBeenCalled()
-    expect(mockPost).not.toHaveBeenCalled()
+      expect(mockRun).toHaveBeenCalledWith([])
+    })
+
+    it('should not call preparation() or post() when request is already in-flight (isLoading = true)', () => {
+      mockIsLoading.mockReturnValue(true)
+      const callback = vi.fn()
+
+      fetchFrameSelection(callback)
+
+      expect(mockAddCallback).toHaveBeenCalledWith(callback)
+      expect(mockPreparation).not.toHaveBeenCalled()
+      expect(mockPost).not.toHaveBeenCalled()
+    })
   })
 
-  it('should route incoming messenger data to StorageCallback.run()', () => {
-    const callback = vi.fn()
-    fetchFrameSelection(callback)
+  describe('Multilingual and Unicode support', () => {
+    it('should preserve multilingual frame names in selection payload', () => {
+      const callback = vi.fn()
+      fetchFrameSelection(callback)
 
-    const listener = getRegisteredListener()
-    expect(listener).toBeTypeOf('function')
+      const listener = getRegisteredListener()
+      const unicodeFrames: UiFigmaFramesList = [
+        { id: 'ru:1', name: 'Главный экран 🚀' },
+        { id: 'vi:1', name: 'Khung hình chính 🇻🇳' }
+      ]
+      listener?.(unicodeFrames)
 
-    const mockFrames: UiFigmaFramesList = [{ id: '1:2', name: 'Frame 1' }]
-    listener?.(mockFrames)
-
-    expect(StorageCallback.getInstance).toHaveBeenLastCalledWith('figma:frame-selection:get')
-    expect(mockRun).toHaveBeenCalledWith(mockFrames)
+      expect(mockRun).toHaveBeenCalledWith(unicodeFrames)
+    })
   })
 })

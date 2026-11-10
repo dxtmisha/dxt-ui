@@ -1,21 +1,21 @@
-import { toArray } from '@dxtmisha/functional-basic'
 import {
   FIGMA_FRAME_STYLES_MESSENGER_NAME,
   type UiFigmaFrameStylesList,
   type UiFigmaFrameStylesMessengerAttributes,
   type UiFigmaFrameStylesMessengerResponse
 } from '@dxtmisha/figma'
+import { toArray } from '@dxtmisha/functional-basic'
 
-import { getFigmaFrameById } from './getFigmaFrameById'
 import { FigmaPluginMessenger } from '../classes/FigmaPluginMessenger'
+import { getFigmaFrameById } from './getFigmaFrameById'
 
 /**
  * Sets up a listener for style update messages.
  *
  * Настраивает слушатель сообщений об обновлении стилей.
  */
-export function setupFrameStyles() {
-  /** Message instance/ Экземпляр сообщения */
+export function setupFrameStyles(): void {
+  /** Message instance / Экземпляр сообщения */
   const message = FigmaPluginMessenger.getInstance()
 
   /**
@@ -24,6 +24,7 @@ export function setupFrameStyles() {
    * Возвращает стили для указанного фрейма.
    * @param id node ID / идентификатор узла
    * @param children whether to return children styles / возвращать ли стили дочерних элементов
+   * @returns promise with frame styles list / промис со списком стилей фрейма
    */
   const getFrame = async (
     id: string,
@@ -56,5 +57,6 @@ export function setupFrameStyles() {
       }
 
       message.post(FIGMA_FRAME_STYLES_MESSENGER_NAME, data)
-    })
+    }
+  )
 }

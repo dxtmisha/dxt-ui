@@ -11,26 +11,37 @@ export class FigmaClientStorage<T> {
    * Getting an instance of the class for working with Figma client storage (clientStorage).
    *
    * Получение экземпляра класса для работы с клиентским хранилищем Figma (clientStorage).
-   * @param name value name/ название значения
-   * @returns current instance/ текущий экземпляр
+   * @param name value name / название значения
+   * @returns current instance / текущий экземпляр
    */
-  static getInstance<T>(name: string) {
+  static getInstance<T>(name: string): FigmaClientStorage<T> {
     if (name in items) {
       return items[name] as FigmaClientStorage<T>
     }
 
     const storage = new FigmaClientStorage<T>(name)
 
-    items[name] = storage
+    items[name] = storage as FigmaClientStorage<unknown>
     return storage
+  }
+
+  /**
+   * Resets all cached instances in the registry.
+   *
+   * Сбрасывает все кэшированные экземпляры в реестре.
+   */
+  static reset(): void {
+    for (const key of Object.keys(items)) {
+      delete items[key]
+    }
   }
 
   protected data: FigmaStorageData<T>
 
   /**
    * Constructor
-   * @param name value name/ название значения
-   * @param cache cache time/ время кэширования
+   * @param name value name / название значения
+   * @param cache cache time / время кэширования
    */
   constructor(
     protected readonly name: string,
@@ -43,28 +54,31 @@ export class FigmaClientStorage<T> {
    * Getting data from storage.
    *
    * Получение данных из хранилища.
-   * @param defaultValue default value/ значение по умолчанию
+   * @param defaultValue default value / значение по умолчанию
+   * @returns promise with stored data / промис с сохраненными данными
    */
-  async get(defaultValue?: T | (() => T | Promise<T>)): Promise<T | undefined> {
+  async get<D extends T | (() => T | Promise<T>) | undefined = undefined>(
+    defaultValue?: D
+  ): Promise<[D] extends [undefined] ? T | undefined : T> {
     await this.make()
 
     if (this.data.isValue()) {
-      return this.data.get()
+      return this.data.get() as [D] extends [undefined] ? T | undefined : T
     }
 
     if (defaultValue !== undefined) {
-      return await this.set(defaultValue)
+      return (await this.set(defaultValue)) as [D] extends [undefined] ? T | undefined : T
     }
 
-    return undefined
+    return undefined as [D] extends [undefined] ? T | undefined : T
   }
 
   /**
    * Changing data in storage.
    *
    * Изменение данных в хранилище.
-   * @param value new values/ новые значения
-   * @returns current value/ текущее значение
+   * @param value new values / новые значения
+   * @returns current value / текущее значение
    */
   async set(value?: T | (() => T | Promise<T>)): Promise<T | undefined> {
     this.data.update(await executeFunction(value))
@@ -81,7 +95,7 @@ export class FigmaClientStorage<T> {
    * Removing data from storage.
    *
    * Удаление данных из хранилища.
-   * @returns current instance/ текущий экземпляр
+   * @returns current instance / текущий экземпляр
    */
   async remove(): Promise<this> {
     this.data.remove()
@@ -95,7 +109,7 @@ export class FigmaClientStorage<T> {
    * Getting data from storage.
    *
    * Получение данных из хранилища.
-   * @returns data from storage/ данные из хранилища
+   * @returns data from storage / данные из хранилища
    */
   protected async getValue(): Promise<FigmaStorageDataValue<T> | undefined> {
     return await figma.clientStorage.getAsync(this.data.getName())
@@ -105,7 +119,7 @@ export class FigmaClientStorage<T> {
    * Making an instance from storage data.
    *
    * Создание экземпляра из данных хранилища.
-   * @returns current instance/ текущий экземпляр
+   * @returns current instance / текущий экземпляр
    */
   protected async make(): Promise<this> {
     if (this.data.isNull()) {
@@ -118,4 +132,4 @@ export class FigmaClientStorage<T> {
   }
 }
 
-const items: Record<string, FigmaClientStorage<any>> = {}
+const items: Record<string, FigmaClientStorage<unknown>> = {}

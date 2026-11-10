@@ -25,6 +25,15 @@ export class FigmaUiMessenger extends FigmaPostAbstract {
   }
 
   /**
+   * Resets the current singleton instance.
+   *
+   * Сбрасывает текущий экземпляр одиночки.
+   */
+  static reset(): void {
+    item = undefined
+  }
+
+  /**
    * Sends a message to the Figma plugin.
    *
    * Отправляет сообщение в плагин Figma.

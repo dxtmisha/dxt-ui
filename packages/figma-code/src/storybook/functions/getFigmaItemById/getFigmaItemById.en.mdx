@@ -7,7 +7,7 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 An asynchronous utility for retrieving a Figma node by its ID and wrapping it in a `FigmaItem` class instance. This simplifies further interactions with the node, such as type checking, selection, or exporting.
 
 **Parameters:**
-- `id: string` — The identifier (ID) of the Figma node.
+- `id?: string` — The identifier (ID) of the Figma node.
 
 **Returns:**
 `Promise<FigmaItem | undefined>` — A `FigmaItem` instance wrapping the node, or `undefined` if the node was not found.

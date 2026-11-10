@@ -52,33 +52,63 @@ describe('fetchFrameStyles', () => {
     vi.clearAllMocks()
   })
 
-  it('should initialize messenger listener once and register styles callback', () => {
-    const callback = vi.fn()
-    fetchFrameStyles(callback)
+  describe('Standard functional requirements (Happy path)', () => {
+    it('should initialize messenger listener and register styles callback in StorageCallback', () => {
+      const callback = vi.fn()
+      fetchFrameStyles(callback)
 
-    expect(StorageCallback.getInstance).toHaveBeenCalledWith('figma:frame-styles:get')
-    expect(mockAddCallback).toHaveBeenCalledWith(callback)
-    expect(mockAdd).toHaveBeenCalledTimes(1)
-    expect(mockAdd).toHaveBeenCalledWith(FIGMA_FRAME_STYLES_MESSENGER_NAME, expect.any(Function))
+      expect(StorageCallback.getInstance).toHaveBeenCalledWith('figma:frame-styles:get')
+      expect(mockAddCallback).toHaveBeenCalledWith(callback)
+      expect(mockAdd).toHaveBeenCalledTimes(1)
+      expect(mockAdd).toHaveBeenCalledWith(FIGMA_FRAME_STYLES_MESSENGER_NAME, expect.any(Function))
 
-    // Second call should not re-register messenger listener
-    fetchFrameStyles(vi.fn())
-    expect(mockAdd).toHaveBeenCalledTimes(1)
+      // Subsequent call must not duplicate listener registration
+      fetchFrameStyles(vi.fn())
+      expect(mockAdd).toHaveBeenCalledTimes(1)
+    })
+
+    it('should forward received styles update from messenger to StorageCallback.run()', () => {
+      const callback = vi.fn()
+      fetchFrameStyles(callback)
+
+      const listener = getRegisteredListener()
+      expect(listener).toBeTypeOf('function')
+
+      const mockStylesResponse: UiFigmaFrameStylesMessengerResponse = [
+        { id: '1:1', data: [] },
+        { id: '2:2', data: [] }
+      ]
+      listener?.(mockStylesResponse)
+
+      expect(StorageCallback.getInstance).toHaveBeenLastCalledWith('figma:frame-styles:get')
+      expect(mockRun).toHaveBeenCalledWith(mockStylesResponse)
+    })
   })
 
-  it('should route incoming messenger data to StorageCallback.run()', () => {
-    const callback = vi.fn()
-    fetchFrameStyles(callback)
+  describe('Boundary values and limit thresholds', () => {
+    it('should safely forward empty styles response', () => {
+      const callback = vi.fn()
+      fetchFrameStyles(callback)
 
-    const listener = getRegisteredListener()
-    expect(listener).toBeTypeOf('function')
+      const listener = getRegisteredListener()
+      listener?.([])
 
-    const mockStylesResponse: UiFigmaFrameStylesMessengerResponse = [
-      { id: '1:1', data: [] }
-    ]
-    listener?.(mockStylesResponse)
+      expect(mockRun).toHaveBeenCalledWith([])
+    })
+  })
 
-    expect(StorageCallback.getInstance).toHaveBeenLastCalledWith('figma:frame-styles:get')
-    expect(mockRun).toHaveBeenCalledWith(mockStylesResponse)
+  describe('Multilingual and Unicode support', () => {
+    it('should preserve Unicode frame IDs in styles response', () => {
+      const callback = vi.fn()
+      fetchFrameStyles(callback)
+
+      const listener = getRegisteredListener()
+      const unicodeResponse: UiFigmaFrameStylesMessengerResponse = [
+        { id: '1:1_шапка_màu_sắc_🎨', data: [] }
+      ]
+      listener?.(unicodeResponse)
+
+      expect(mockRun).toHaveBeenCalledWith(unicodeResponse)
+    })
   })
 })

@@ -43,3 +43,4 @@ Các phương thức để truy xuất các thực thể của lớp.
 
 - `static getInstance<T>(name: string, item: UiFigmaNode): FigmaStorage<T>` — Trả về một thực thể cho một node cụ thể.
 - `static getInstanceById<T>(name: string, id?: string): Promise<FigmaStorage<T>>` — Lấy một thực thể một cách bất đồng bộ bằng ID node.
+- `static reset(): void` — Đặt lại sổ đăng ký các thực thể bộ nhớ được lưu trong cache.

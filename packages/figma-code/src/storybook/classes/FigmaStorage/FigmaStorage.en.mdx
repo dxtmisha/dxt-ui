@@ -43,3 +43,4 @@ Methods for retrieving class instances.
 
 - `static getInstance<T>(name: string, item: UiFigmaNode): FigmaStorage<T>` — Returns an instance for a specific node.
 - `static getInstanceById<T>(name: string, id?: string): Promise<FigmaStorage<T>>` — Asynchronously retrieves an instance using a node ID.
+- `static reset(): void` — Resets the registry of cached storage instances.

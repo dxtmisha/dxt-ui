@@ -5,7 +5,8 @@ import type { UiFigmaNode } from '../types/figmaTypes'
  * Returns the Figma node used for storage by ID or figma.root.
  *
  * Возвращает узел Figma, используемый для хранения, по идентификатору или figma.root.
- * @param id node ID/ идентификатор узла
+ * @param id node ID / идентификатор узла
+ * @returns promise with Figma node or figma.root / промис с узлом Figma или figma.root
  */
 export async function getFigmaItemByIdOrRoot<
   T extends UiFigmaNode = UiFigmaNode

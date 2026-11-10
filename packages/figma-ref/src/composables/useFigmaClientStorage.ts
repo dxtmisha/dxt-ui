@@ -1,5 +1,20 @@
-import { shallowRef, watch } from 'vue'
+import { shallowRef, watch, type ShallowRef } from 'vue'
 import { fetchClientStorage, sendClientStorage } from '@dxtmisha/figma'
+
+/**
+ * Return type for `useFigmaClientStorage`.
+ *
+ * Тип возвращаемого значения для `useFigmaClientStorage`.
+ */
+export type UseFigmaClientStorageReturn<T> = {
+  /** Storage value / Значение хранилища */
+  item: ShallowRef<T | undefined>
+  /**
+   * Indicates if a fetch operation is currently in progress /
+   * Указывает, выполняется ли в данный момент операция получения
+   */
+  loading: ShallowRef<boolean>
+}
 
 /**
  * Composable for working with Figma client storage.
@@ -10,10 +25,10 @@ import { fetchClientStorage, sendClientStorage } from '@dxtmisha/figma'
  * @returns An object containing the storage value and a loading state /
  * Объект, содержащий значение хранилища и состояние загрузки
  */
-export function useFigmaClientStorage<T = any>(
+export function useFigmaClientStorage<T = unknown>(
   name: string,
   defaultValue?: T
-) {
+): UseFigmaClientStorageReturn<T> {
   /** Value from storage / Значение из хранилища */
   let storageValue: T | undefined = undefined
 

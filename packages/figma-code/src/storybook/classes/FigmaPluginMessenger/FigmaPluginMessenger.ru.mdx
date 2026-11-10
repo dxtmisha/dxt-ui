@@ -29,5 +29,6 @@ const messenger = FigmaPluginMessenger.getInstance()
 Методы для отправки и получения сообщений.
 
 - `post<Message>(type: string, message?: Message): void` — Отправляет сообщение определенного типа в UI Figma.
+- `reset(): void` — Сбрасывает текущий экземпляр синглтона.
 - `add(type: string, callback: (data: any) => void): this` — (Наследуется) Регистрирует слушателя для сообщений из UI.
 - `remove(type: string): this` — (Наследуется) Удаляет слушателя.

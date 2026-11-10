@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4] - 2026-11-10
+
+### Added
+- **Multi-Storage Composable**: Added `useFigmaStorageMulti` for combined synchronization across Figma document storage and client storage with reactive flags (`inDocument`, `inLocal`) and fallback support.
+- **Storybook Documentation**: Added full MDX documentation for `useFigmaStorageMulti` in English, Russian, and Vietnamese.
+- **Unit Testing**: Added dedicated test suite for `useFigmaStorageMulti` covering loading fallback, dynamic flags, and value persistence.
+
+### Fixed
+- **Falsy Boundary Traps**: Guarded `useFigmaStorageMulti` against falsy boundary traps, ensuring valid `0` and `false` values are preserved instead of being cleared.
+- **Type Stability in Selection**: Stabilized return type of `useFigmaUiSelected.isSelected(id)` to return strict `ComputedRef<boolean>` instead of `boolean | undefined`.
+- **Memory & Listener Cleanup**: Added singleton lifecycle guard (`start`) to `useFigmaFrameStyles` to prevent listener accumulation on repeated invocations.
+
+### Changed
+- **Strict TypeScript**: Removed all `any` types in favor of `unknown` and generics; added explicit return types (`UseFigma...Return`) across all composables.
+- **Unit Testing**: Expanded comprehensive unit test suites across all 7 composables to 46 passing tests with 100% pass rate.
+- **Review Registry**: Registered all composables in `packages/figma-ref/ai-review.md`.
+
 ## [0.1.3] - 2026-09-07
 
 ### Changed

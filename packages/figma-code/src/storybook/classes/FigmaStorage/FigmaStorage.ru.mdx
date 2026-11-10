@@ -43,3 +43,4 @@ const nodeStorage = await FigmaStorage.getInstanceById<string>('element-name', '
 
 - `static getInstance<T>(name: string, item: UiFigmaNode): FigmaStorage<T>` — Возвращает экземпляр для конкретного узла.
 - `static getInstanceById<T>(name: string, id?: string): Promise<FigmaStorage<T>>` — Асинхронно получает экземпляр, используя ID узла.
+- `static reset(): void` — Сбрасывает реестр кэшированных экземпляров хранилища.

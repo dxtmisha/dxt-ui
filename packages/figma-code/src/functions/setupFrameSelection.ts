@@ -2,7 +2,6 @@ import { UI_FIGMA_FRAME_SET_SELECTION } from '@dxtmisha/figma'
 
 import { makeFigmaFrameSelection } from './makeFigmaFrameSelection'
 import { toFrameSelection } from './toFrameSelection'
-
 import { FigmaPluginMessenger } from '../classes/FigmaPluginMessenger'
 
 /**
@@ -16,13 +15,12 @@ import { FigmaPluginMessenger } from '../classes/FigmaPluginMessenger'
  * 1. Активирует автоматическое отслеживание выделения (Backend -> UI).
  * 2. Устанавливает слушатель для запросов программного выделения (UI -> Backend).
  */
-export function setupFrameSelection() {
+export function setupFrameSelection(): void {
   const message = FigmaPluginMessenger.getInstance()
 
   makeFigmaFrameSelection()
 
-  message.add(UI_FIGMA_FRAME_SET_SELECTION, ({ id }: { id: string }) => {
-    toFrameSelection(id)
-      .then()
+  message.add(UI_FIGMA_FRAME_SET_SELECTION, async ({ id }: { id?: string }) => {
+    await toFrameSelection(id)
   })
 }

@@ -23,7 +23,7 @@ describe('FigmaPostAbstract', () => {
     messenger = new MockFigmaPost()
   })
 
-  describe('Registration and notification (add & notify)', () => {
+  describe('Standard functional requirements (Happy path)', () => {
     it('add() should register a callback and return this for chaining', () => {
       const callback = vi.fn()
       const result = messenger.add('test-event', callback)
@@ -63,6 +63,17 @@ describe('FigmaPostAbstract', () => {
       expect(callbackBeta).not.toHaveBeenCalled()
     })
 
+    it('make() should call prepare() exactly once and return this', () => {
+      const firstResult = messenger.make()
+      const secondResult = messenger.make()
+
+      expect(firstResult).toBe(messenger)
+      expect(secondResult).toBe(messenger)
+      expect(messenger.prepare).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('Boundary values and limit thresholds', () => {
     it('should safely handle falsy payload values (0, false, empty string, null, undefined)', () => {
       const callback = vi.fn()
       messenger.add('falsy-event', callback)
@@ -85,10 +96,18 @@ describe('FigmaPostAbstract', () => {
       expect(() => messenger.testNotify('unregistered', { test: true })).not.toThrow()
       expect(() => messenger.testNotify('toString', { test: true })).not.toThrow()
       expect(() => messenger.testNotify('constructor', { test: true })).not.toThrow()
+      expect(() => messenger.testNotify('hasOwnProperty', { test: true })).not.toThrow()
+    })
+
+    it('remove() on non-existent message type should safely return this without throwing', () => {
+      const callback = vi.fn()
+      const result = messenger.remove('non-existent', callback)
+
+      expect(result).toBe(messenger)
     })
   })
 
-  describe('One-time execution (once = true)', () => {
+  describe('One-time execution and unregistration', () => {
     it('add() with once: true should remove callback after one invocation', () => {
       const callback = vi.fn()
       messenger.add('test-event', callback, true)
@@ -114,10 +133,8 @@ describe('FigmaPostAbstract', () => {
       expect(onceCallback).toHaveBeenCalledTimes(1)
       expect(persistentCallback).toHaveBeenCalledTimes(2)
     })
-  })
 
-  describe('Unregistration (remove)', () => {
-    it('remove() should unregister a specific callback and return this', () => {
+    it('remove() should unregister a specific callback and leave others untouched', () => {
       const callbackKeep = vi.fn()
       const callbackRemove = vi.fn()
 
@@ -132,27 +149,9 @@ describe('FigmaPostAbstract', () => {
       expect(callbackRemove).not.toHaveBeenCalled()
       expect(callbackKeep).toHaveBeenCalledWith({ data: 'hello' })
     })
-
-    it('remove() on non-existent message type should safely return this without throwing', () => {
-      const callback = vi.fn()
-      const result = messenger.remove('non-existent', callback)
-
-      expect(result).toBe(messenger)
-    })
   })
 
-  describe('Lifecycle initialization (make)', () => {
-    it('make() should call prepare() exactly once and return this', () => {
-      const firstResult = messenger.make()
-      const secondResult = messenger.make()
-
-      expect(firstResult).toBe(messenger)
-      expect(secondResult).toBe(messenger)
-      expect(messenger.prepare).toHaveBeenCalledTimes(1)
-    })
-  })
-
-  describe('Incoming message filtering (onMessage)', () => {
+  describe('Metacharacters, escaping, and security in onMessage', () => {
     it('onMessage() should notify listeners when code matches FigmaPostCode', () => {
       const callback = vi.fn()
       const code = FigmaPostCode.get()
@@ -181,12 +180,43 @@ describe('FigmaPostAbstract', () => {
       expect(callback).not.toHaveBeenCalled()
     })
 
-    it('onMessage() should safely ignore undefined or empty message payloads', () => {
+    it('onMessage() should safely ignore undefined or empty data without throwing', () => {
       const callback = vi.fn()
       messenger.add('test-event', callback)
 
       expect(() => messenger.testOnMessage(undefined)).not.toThrow()
       expect(callback).not.toHaveBeenCalled()
+    })
+
+    it('should support event types containing regex metacharacters safely', () => {
+      const callback = vi.fn()
+      const regexType = 'event.*+?^$()[]{}|\\'
+
+      messenger.add(regexType, callback)
+      messenger.testOnMessage({
+        code: FigmaPostCode.get(),
+        type: regexType,
+        message: { safe: true }
+      })
+
+      expect(callback).toHaveBeenCalledWith({ safe: true })
+    })
+  })
+
+  describe('Multilingual and Unicode support', () => {
+    it('should handle Cyrillic, Vietnamese, and Emoji event types and message contents', () => {
+      const callback = vi.fn()
+      const unicodeType = 'событие_đặc_biệt_🎉'
+      const payload = { ru: 'Тест', vi: 'Thử nghiệm', icon: '🚀' }
+
+      messenger.add(unicodeType, callback)
+      messenger.testOnMessage({
+        code: FigmaPostCode.get(),
+        type: unicodeType,
+        message: payload
+      })
+
+      expect(callback).toHaveBeenCalledWith(payload)
     })
   })
 })

@@ -10,8 +10,23 @@ import { FigmaStorage } from './FigmaStorage'
 export class FigmaFramesSelected {
   /** Storage for persistent selected frames / Хранилище для постоянного списка выбранных фреймов */
   protected static storage: FigmaStorage<string[]> = new FigmaStorage(UI_FIGMA_FRAMES_SELECTED_POST_NAME)
+
   /** Cached list of selected frame IDs / Кэшированный список идентификаторов выбранных фреймов */
   protected static selected: string[] | undefined = undefined
+
+  /**
+   * Retrieves the current list of selected frame IDs, using cache if available.
+   *
+   * Получает текущий список идентификаторов выбранных фреймов, используя кэш при его наличии.
+   * @returns An array of selected frame IDs / Массив идентификаторов выбранных фреймов
+   */
+  static get(): string[] {
+    if (!this.selected) {
+      this.selected = this.getList()
+    }
+
+    return this.selected
+  }
 
   /**
    * Checks if a frame with the given ID is selected.
@@ -20,22 +35,8 @@ export class FigmaFramesSelected {
    * @param id Frame ID / Идентификатор фрейма
    * @returns `true` if selected / `true`, если выбран
    */
-  static has(id: string) {
+  static has(id: string): boolean {
     return this.get().includes(id)
-  }
-
-  /**
-   * Retrieves the current list of selected frame IDs, using cache if available.
-   *
-   * Получает текущий список идентификаторов выбранных фреймов, используя кэш при его наличии.
-   * @returns An array of selected frame IDs / Массив идентификаторов выбранных фреймов
-   */
-  static get() {
-    if (!this.selected) {
-      this.selected = this.getList()
-    }
-
-    return this.selected
   }
 
   /**
@@ -71,18 +72,12 @@ export class FigmaFramesSelected {
   }
 
   /**
-   * Toggles the selection state of a frame.
+   * Resets the cached list of selected frame IDs.
    *
-   * Переключает состояние выбора фрейма.
-   * @param id Frame ID / Идентификатор фрейма
-   * @param selected Whether to select or deselect / Выбрать или отменить выбор
+   * Сбрасывает кэшированный список идентификаторов выбранных фреймов.
    */
-  static toggle(id: string, selected: boolean) {
-    if (selected) {
-      this.add(id)
-    } else {
-      this.remove(id)
-    }
+  static reset(): void {
+    this.selected = undefined
   }
 
   /**
@@ -90,7 +85,7 @@ export class FigmaFramesSelected {
    *
    * Настраивает связь через мессенджер плагина для управления состоянием выбора.
    */
-  static send() {
+  static send(): void {
     const messenger = FigmaPluginMessenger.getInstance()
 
     messenger.add(
@@ -102,6 +97,21 @@ export class FigmaFramesSelected {
       UI_FIGMA_FRAMES_SELECTED_ADD_NAME,
       ({ id, selected }: { id: string, selected: boolean }) => this.toggle(id, selected)
     )
+  }
+
+  /**
+   * Toggles the selection state of a frame.
+   *
+   * Переключает состояние выбора фрейма.
+   * @param id Frame ID / Идентификатор фрейма
+   * @param selected Whether to select or deselect / Выбрать или отменить выбор
+   */
+  static toggle(id: string, selected: boolean): void {
+    if (selected) {
+      this.add(id)
+    } else {
+      this.remove(id)
+    }
   }
 
   /**
@@ -130,7 +140,7 @@ export class FigmaFramesSelected {
    *
    * Публикует текущий список выбора в интерфейс Figma.
    */
-  protected static post() {
+  protected static post(): void {
     FigmaPluginMessenger
       .getInstance()
       .post(UI_FIGMA_FRAMES_SELECTED_POST_NAME, this.get())

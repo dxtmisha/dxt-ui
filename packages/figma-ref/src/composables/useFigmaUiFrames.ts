@@ -1,4 +1,4 @@
-import { computed, shallowRef } from 'vue'
+import { computed, shallowRef, type ComputedRef } from 'vue'
 import { fetchTopLevelFrames, type UiFigmaFramesList } from '@dxtmisha/figma'
 
 /** Cached list of top-level frames / Кэшированный список фреймов верхнего уровня */
@@ -17,13 +17,28 @@ const loading = shallowRef(false)
 let start: boolean = true
 
 /**
+ * Return type for `useFigmaUiFrames`.
+ *
+ * Тип возвращаемого значения для `useFigmaUiFrames`.
+ */
+export type UseFigmaUiFramesReturn = {
+  /** List of top-level frames / Список фреймов верхнего уровня */
+  frames: ComputedRef<UiFigmaFramesList>
+  /**
+   * Indicates if a fetch operation is currently in progress /
+   * Указывает, выполняется ли в данный момент операция получения
+   */
+  loading: ComputedRef<boolean>
+}
+
+/**
  * Composable for managing and observing the list of top-level frames.
  *
  * Композабл для управления и наблюдения за списком фреймов верхнего уровня.
  * @returns An object containing the list of top-level frames and a loading state /
  * Объект, содержащий список фреймов верхнего уровня и состояние загрузки
  */
-export function useFigmaUiFrames() {
+export function useFigmaUiFrames(): UseFigmaUiFramesReturn {
   if (start) {
     start = false
     loading.value = true

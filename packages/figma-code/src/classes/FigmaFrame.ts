@@ -6,7 +6,6 @@ import type {
 } from '@dxtmisha/figma'
 
 import { FigmaItem } from './FigmaItem'
-
 import type { UiFigmaItemText, UiFigmaNode } from '../types/figmaTypes'
 
 /**
@@ -15,8 +14,9 @@ import type { UiFigmaItemText, UiFigmaNode } from '../types/figmaTypes'
  * Класс для работы с фреймами Figma и их элементами.
  */
 export class FigmaFrame {
-  /** List of main Figma items/ Список основных элементов Figma */
+  /** List of main Figma items / Список основных элементов Figma */
   protected mainItem: FigmaItem[] = []
+
   /**
    * List of all Figma items.
    *
@@ -48,46 +48,6 @@ export class FigmaFrame {
   }
 
   /**
-   * Returns all frame items.
-   *
-   * Возвращает все элементы-фреймы.
-   * @returns list of frame items / список элементов-фреймов
-   */
-  getItemsFrame(): FigmaItem<FrameNode>[] {
-    return this.filter<FrameNode>(item => item.isFrame())
-  }
-
-  /**
-   * Returns all section items.
-   *
-   * Возвращает все элементы-секции.
-   * @returns list of section items / список элементов-секций
-   */
-  getItemsSection(): FigmaItem<SectionNode>[] {
-    return this.filter<SectionNode>(item => item.isSection())
-  }
-
-  /**
-   * Returns all text items.
-   *
-   * Возвращает все текстовые элементы.
-   * @returns list of text items / список текстовых элементов
-   */
-  getItemsText(): FigmaItem<TextNode>[] {
-    return this.filter<TextNode>(item => item.isText())
-  }
-
-  /**
-   * Returns a list of frames with their names, IDs, and screenshots.
-   *
-   * Возвращает список фреймов с их названиями, идентификаторами и скриншотами.
-   * @returns promise with frame information list / промис со списком информации о фреймах
-   */
-  async getItemsInfo(): Promise<UiFigmaFramesList> {
-    return await this.getInfoByItems(this.items)
-  }
-
-  /**
    * Returns CSS styles for all items.
    *
    * Возвращает CSS-стили для всех элементов.
@@ -104,6 +64,36 @@ export class FigmaFrame {
   }
 
   /**
+   * Returns all frame items.
+   *
+   * Возвращает все элементы-фреймы.
+   * @returns list of frame items / список элементов-фреймов
+   */
+  getItemsFrame(): FigmaItem<FrameNode>[] {
+    return this.filter<FrameNode>(item => item.isFrame())
+  }
+
+  /**
+   * Returns a list of frames with their names, IDs, and screenshots.
+   *
+   * Возвращает список фреймов с их названиями, идентификаторами и скриншотами.
+   * @returns promise with frame information list / промис со списком информации о фреймах
+   */
+  async getItemsInfo(): Promise<UiFigmaFramesList> {
+    return await this.getInfoByItems(this.items)
+  }
+
+  /**
+   * Returns all section items.
+   *
+   * Возвращает все элементы-секции.
+   * @returns list of section items / список элементов-секций
+   */
+  getItemsSection(): FigmaItem<SectionNode>[] {
+    return this.filter<SectionNode>(item => item.isSection())
+  }
+
+  /**
    * Returns a list of frames with their styles.
    *
    * Возвращает список фреймов с их стилями.
@@ -111,6 +101,16 @@ export class FigmaFrame {
    */
   async getItemsStyles(): Promise<UiFigmaFrameStylesList> {
     return await this.getStylesByItems(this.items)
+  }
+
+  /**
+   * Returns all text items.
+   *
+   * Возвращает все текстовые элементы.
+   * @returns list of text items / список текстовых элементов
+   */
+  getItemsText(): FigmaItem<TextNode>[] {
+    return this.filter<TextNode>(item => item.isText())
   }
 
   /**
@@ -186,7 +186,7 @@ export class FigmaFrame {
    * Делает скриншоты основных элементов.
    * @returns promise with list of screenshots as Uint8Array / промис со списком скриншотов в формате Uint8Array
    */
-  async screenshot() {
+  async screenshot(): Promise<Uint8Array[]> {
     const images: Uint8Array[] = []
 
     for (const item of this.mainItem) {
@@ -194,6 +194,19 @@ export class FigmaFrame {
     }
 
     return images
+  }
+
+  /**
+   * Filters items by the specified condition.
+   *
+   * Фильтрует элементы по указанному условию.
+   * @param callback filter function / функция фильтрации
+   * @returns filtered list of items / отфильтрованный список элементов
+   */
+  protected filter<R extends UiFigmaNode>(callback: (
+    item: FigmaItem) => boolean
+  ): FigmaItem<R>[] {
+    return this.items.filter(callback) as FigmaItem<R>[]
   }
 
   /**
@@ -241,20 +254,23 @@ export class FigmaFrame {
   }
 
   /**
-   * Initializes main items based on selection or entire page.
+   * Initializes items based on the current selection or entire page.
    *
-   * Инициализирует основные элементы на основе выделения или всей страницы.
-   * @returns list of main Figma items / список основных элементов Figma
+   * Инициализирует элементы на основе текущего выделения или всей страницы.
+   * @returns list of initialized Figma items / список инициализированных элементов Figma
    */
-  protected initMain() {
+  protected initBySelection(): FigmaItem[] {
     if (this.isSelection()) {
-      return forEach(
-        [...this.page.selection],
-        item => new FigmaItem(item)
-      )
+      const items: FigmaItem[] = []
+
+      for (const item of this.page.selection) {
+        items.push(...this.initItems(item))
+      }
+
+      return items
     }
 
-    return [new FigmaItem(this.page)]
+    return this.initItems(this.page)
   }
 
   /**
@@ -282,36 +298,20 @@ export class FigmaFrame {
   }
 
   /**
-   * Initializes items based on the current selection or entire page.
+   * Initializes main items based on selection or entire page.
    *
-   * Инициализирует элементы на основе текущего выделения или всей страницы.
-   * @returns list of initialized Figma items / список инициализированных элементов Figma
+   * Инициализирует основные элементы на основе выделения или всей страницы.
+   * @returns list of main Figma items / список основных элементов Figma
    */
-  protected initBySelection() {
+  protected initMain(): FigmaItem[] {
     if (this.isSelection()) {
-      const items: FigmaItem[] = []
-
-      for (const item of this.page.selection) {
-        items.push(...this.initItems(item))
-      }
-
-      return items
+      return forEach(
+        [...this.page.selection],
+        item => new FigmaItem(item)
+      )
     }
 
-    return this.initItems(this.page)
-  }
-
-  /**
-   * Filters items by the specified condition.
-   *
-   * Фильтрует элементы по указанному условию.
-   * @param callback filter function/ функция фильтрации
-   * @returns filtered list of items / отфильтрованный список элементов
-   */
-  protected filter<R extends UiFigmaNode>(callback: (
-    item: FigmaItem) => boolean
-  ): FigmaItem<R>[] {
-    return this.items.filter(callback) as FigmaItem<R>[]
+    return [new FigmaItem(this.page)]
   }
 
   /**

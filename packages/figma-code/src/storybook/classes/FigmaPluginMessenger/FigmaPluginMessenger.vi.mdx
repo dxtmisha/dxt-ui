@@ -29,5 +29,6 @@ const messenger = FigmaPluginMessenger.getInstance()
 Các phương thức để gửi và nhận tin nhắn.
 
 - `post<Message>(type: string, message?: Message): void` — Gửi tin nhắn thuộc một loại cụ thể đến UI của Figma.
+- `reset(): void` — Đặt lại thực thể singleton hiện tại.
 - `add(type: string, callback: (data: any) => void): this` — (Kế thừa) Đăng ký một trình lắng nghe cho các tin nhắn từ UI.
 - `remove(type: string): this` — (Kế thừa) Xóa một trình lắng nghe.

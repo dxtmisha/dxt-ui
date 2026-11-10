@@ -63,47 +63,84 @@ describe('fetchClientStorage', () => {
     mockIsLoading.mockReturnValue(false)
   })
 
-  it('should initialize messenger listener once and request client storage data with value fallback', () => {
-    const callback = vi.fn()
-    fetchClientStorage('test-name', callback, 'default-val')
+  describe('Standard functional requirements (Happy path)', () => {
+    it('should initialize messenger listener and request client storage with fallback value', () => {
+      const callback = vi.fn()
+      fetchClientStorage('user-theme', callback, 'dark', true)
 
-    expect(mockAdd).toHaveBeenCalledTimes(1)
-    expect(mockAdd).toHaveBeenCalledWith(UI_FIGMA_CLIENT_STORAGE_GET, expect.any(Function))
-    expect(StorageCallback.getInstance).toHaveBeenCalledWith('figma:client-storage:test-name')
-    expect(mockAddCallback).toHaveBeenCalledWith(callback, true)
-    expect(mockPreparation).toHaveBeenCalledTimes(1)
-    expect(mockPost).toHaveBeenCalledWith(UI_FIGMA_CLIENT_STORAGE_GET, {
-      name: 'test-name',
-      value: 'default-val'
+      expect(mockAdd).toHaveBeenCalledWith(UI_FIGMA_CLIENT_STORAGE_GET, expect.any(Function))
+      expect(StorageCallback.getInstance).toHaveBeenCalledWith('figma:client-storage:user-theme')
+      expect(mockAddCallback).toHaveBeenCalledWith(callback, true)
+      expect(mockPreparation).toHaveBeenCalledTimes(1)
+      expect(mockPost).toHaveBeenCalledWith(UI_FIGMA_CLIENT_STORAGE_GET, {
+        name: 'user-theme',
+        value: 'dark'
+      })
     })
 
-    // Second call should not re-register messenger.add listener
-    fetchClientStorage('other-name', callback, 0, false)
-    expect(mockAdd).toHaveBeenCalledTimes(1)
-    expect(mockAddCallback).toHaveBeenLastCalledWith(callback, false)
+    it('should route incoming messenger data to StorageCallback.run()', () => {
+      const callback = vi.fn()
+      fetchClientStorage('user-theme', callback)
+
+      const listener = getRegisteredListener()
+      expect(listener).toBeTypeOf('function')
+
+      listener?.({ name: 'user-theme', value: 'light-mode' })
+
+      expect(StorageCallback.getInstance).toHaveBeenLastCalledWith('figma:client-storage:user-theme')
+      expect(mockRun).toHaveBeenCalledWith('light-mode')
+    })
   })
 
-  it('should not call preparation() or post() when storageCallback.isLoading() is true', () => {
-    mockIsLoading.mockReturnValue(true)
-    const callback = vi.fn()
+  describe('Boundary values and limit thresholds', () => {
+    it('should preserve falsy default values without substituting undefined (0, false, empty string)', () => {
+      const callback = vi.fn()
 
-    fetchClientStorage('in-flight-key', callback)
+      fetchClientStorage('counter', callback, 0)
+      expect(mockPost).toHaveBeenLastCalledWith(UI_FIGMA_CLIENT_STORAGE_GET, {
+        name: 'counter',
+        value: 0
+      })
 
-    expect(mockAddCallback).toHaveBeenCalledWith(callback, true)
-    expect(mockPreparation).not.toHaveBeenCalled()
-    expect(mockPost).not.toHaveBeenCalled()
+      fetchClientStorage('active', callback, false)
+      expect(mockPost).toHaveBeenLastCalledWith(UI_FIGMA_CLIENT_STORAGE_GET, {
+        name: 'active',
+        value: false
+      })
+
+      fetchClientStorage('tag', callback, '')
+      expect(mockPost).toHaveBeenLastCalledWith(UI_FIGMA_CLIENT_STORAGE_GET, {
+        name: 'tag',
+        value: ''
+      })
+    })
+
+    it('should not call preparation() or post() if request is already in-flight (isLoading = true)', () => {
+      mockIsLoading.mockReturnValue(true)
+      const callback = vi.fn()
+
+      fetchClientStorage('in-flight-key', callback)
+
+      expect(mockAddCallback).toHaveBeenCalledWith(callback, true)
+      expect(mockPreparation).not.toHaveBeenCalled()
+      expect(mockPost).not.toHaveBeenCalled()
+    })
+
+    it('should pass isOnce: false flag when persistent subscription is requested', () => {
+      const callback = vi.fn()
+
+      fetchClientStorage('persistent-key', callback, 'default', false)
+
+      expect(mockAddCallback).toHaveBeenCalledWith(callback, false)
+    })
   })
 
-  it('should forward incoming messenger response to the matching StorageCallback.run()', () => {
-    const callback = vi.fn()
-    fetchClientStorage('theme', callback)
+  describe('Multilingual and Unicode support', () => {
+    it('should build proper storage keys for Unicode names', () => {
+      const callback = vi.fn()
+      fetchClientStorage('ngôn_ngữ_языка', callback)
 
-    const listener = getRegisteredListener()
-    expect(listener).toBeTypeOf('function')
-
-    listener?.({ name: 'theme', value: 'dark' })
-
-    expect(StorageCallback.getInstance).toHaveBeenLastCalledWith('figma:client-storage:theme')
-    expect(mockRun).toHaveBeenCalledWith('dark')
+      expect(StorageCallback.getInstance).toHaveBeenCalledWith('figma:client-storage:ngôn_ngữ_языка')
+    })
   })
 })

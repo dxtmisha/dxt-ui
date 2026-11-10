@@ -1,0 +1,20 @@
+# ai-review: @dxtmisha/figma-code
+- FigmaPluginMessenger
+- FigmaStorageData
+- FigmaItem
+- FigmaAiText
+- FigmaClientStorage
+- getFigmaItemById
+- FigmaFrame
+- getFigmaItemByIdOrRoot
+- toFrameSelection
+- getFigmaFrameById
+- makeFigmaFrameSelection
+- makeFigmaTexts
+- setupClientStorage
+- FigmaTopLevelFrames
+- FigmaStorage
+- setupFrameStyles
+- setupFrameSelection
+- FigmaFramesSelected
+- setupStorage

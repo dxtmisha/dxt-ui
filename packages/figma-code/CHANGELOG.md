@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.5] - 2026-11-10
+
+### Changed
+- **Strict TypeScript & Class Architecture**: Enforced canonical class member ordering and method visibility across `FigmaAiText`, `FigmaClientStorage`, `FigmaFrame`, `FigmaFramesSelected`, `FigmaItem`, `FigmaPluginMessenger`, `FigmaStorage`, `FigmaStorageData`, and `FigmaTopLevelFrames`.
+- **Typing Ergonomics**: Replaced `any` with `unknown` and generic constraints, added explicit return types for all public methods and functions (`getFigmaFrameById`, `getFigmaItemById`, `setupStorage`, etc.).
+- **JSDoc & Documentation**: Aligned bilingual JSDoc descriptions and synchronized Storybook MDX documentation across English, Russian, and Vietnamese.
+- **Unit Testing**: Authoring and expanding comprehensive unit test suites across classes and functions to 100% pass rate.
+- **Review Registry**: Registered all reviewed entities in `ai-review.md`.
+
+## [0.1.4] - 2026-09-20
+
+### Changed
+- **Maintenance**: Cleaned up debug console logs in `FigmaAiText`.
+- **Dependencies**: Synchronized internal workspace dependencies to latest releases.
+
 ## [0.1.3] - 2026-09-07
 
 ### Added

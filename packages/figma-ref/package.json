@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/figma-ref",
   "private": false,
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
   "description": "Vue 3 composables for Figma plugin development, providing reactive wrappers for Figma storage, selection, and node manipulation.",
   "keywords": [

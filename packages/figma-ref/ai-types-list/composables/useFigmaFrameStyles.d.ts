@@ -1,10 +1,27 @@
-// md5:cf1f5c7e09092c57cc557a366c6419c9 true
+// md5:0c4110d01ab73176caf5ce083398bd16
+import { type ComputedRef } from 'vue';
 import { type UiFigmaFrameStylesMessengerAttributes, type UiFigmaFrameStylesMessengerResponse } from '@dxtmisha/figma';
-
-/** Composable for managing and observing frame styles from Figma. @keywords figma, frame styles, composable */
-export declare function useFigmaFrameStyles(): {
-    /** Reactive frame styles from Figma. */
-    styles: import("vue").ComputedRef<UiFigmaFrameStylesMessengerResponse>;
-    /** Sends a style update request to Figma. @keywords figma, update, styles, messenger */
+/**
+ * Return type for `useFigmaFrameStyles`.
+ *
+ * Тип возвращаемого значения для `useFigmaFrameStyles`.
+ */
+export type UseFigmaFrameStylesReturn = {
+    /** Frame styles / Стили фреймов */
+    styles: ComputedRef<UiFigmaFrameStylesMessengerResponse>;
+    /**
+     * Send style update request.
+     *
+     * Отправить запрос на обновление стилей.
+     * @param attributes Attributes / Атрибуты
+     */
     send(attributes: UiFigmaFrameStylesMessengerAttributes): void;
 };
+/**
+ * Composable for managing and observing frame styles from Figma.
+ *
+ * Композабл для управления и наблюдения за стилями фреймов из Figma.
+ * @returns An object containing the frame styles and methods for updating /
+ * Объект, содержащий стили фреймов и методы для обновления
+ */
+export declare function useFigmaFrameStyles(): UseFigmaFrameStylesReturn;

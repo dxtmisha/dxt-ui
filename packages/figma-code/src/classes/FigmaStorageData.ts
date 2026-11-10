@@ -1,11 +1,11 @@
 import { getCurrentTime, isNull } from '@dxtmisha/functional-basic'
 import { FigmaPostCode } from '@dxtmisha/figma'
 
-/** Type for storing data in Figma Storage/ Тип для хранения данных в Figma Storage */
+/** Type for storing data in Figma Storage / Тип для хранения данных в Figma Storage */
 export type FigmaStorageDataValue<T> = {
-  /** Value/ Значение */
+  /** Value / Значение */
   value: T
-  /** Age/ Возраст */
+  /** Age / Возраст */
   age: number
 }
 
@@ -13,19 +13,19 @@ export type FigmaStorageDataValue<T> = {
  * Class for managing Figma storage data.
  *
  * Класс для управления данными хранилища Figma.
- * @template T type of data/ тип данных
+ * @template T type of data / тип данных
  */
 export class FigmaStorageData<T> {
-  /** Current value in the instance/ Текущее значение в экземпляре */
+  /** Current value in the instance / Текущее значение в экземпляре */
   protected value?: T
 
-  /** Value update time/ Время обновления значения */
+  /** Value update time / Время обновления значения */
   protected age?: number
 
   /**
    * Constructor
-   * @param name value name/ название значения
-   * @param cache cache time/ время кэширования
+   * @param name value name / название значения
+   * @param cache cache time / время кэширования
    */
   constructor(
     protected readonly name: string,
@@ -34,12 +34,42 @@ export class FigmaStorageData<T> {
   }
 
   /**
-   * Checks if the value is null or undefined.
+   * Returns the current value.
    *
-   * Проверяет, является ли значение null или undefined.
+   * Возвращает текущее значение.
    */
-  isNull(): boolean {
-    return isNull(this.value)
+  get(): T | undefined {
+    return this.value
+  }
+
+  /**
+   * Sets the value and age.
+   *
+   * Устанавливает значение и время.
+   * @param value new value / новое значение
+   * @param age update time / время обновления
+   */
+  set(
+    value?: T,
+    age?: number
+  ): this {
+    return this
+      .setValue(value)
+      .setAge(age)
+  }
+
+  /**
+   * Sets data from a FigmaStorageDataValue object.
+   *
+   * Устанавливает данные из объекта FigmaStorageDataValue.
+   * @param value data object / объект данных
+   */
+  setByObject(value?: FigmaStorageDataValue<T>): this {
+    if (value) {
+      return this.set(value.value, value.age)
+    }
+
+    return this
   }
 
   /**
@@ -58,21 +88,21 @@ export class FigmaStorageData<T> {
   }
 
   /**
+   * Checks if the value is null or undefined.
+   *
+   * Проверяет, является ли значение null или undefined.
+   */
+  isNull(): boolean {
+    return isNull(this.value)
+  }
+
+  /**
    * Checks if the value is defined and within the cache limit.
    *
    * Проверяет, определено ли значение и находится ли оно в пределах лимита кэша.
    */
   isValue(): boolean {
     return this.value !== undefined && this.isCache()
-  }
-
-  /**
-   * Returns the current value.
-   *
-   * Возвращает текущее значение.
-   */
-  get(): T | undefined {
-    return this.value
   }
 
   /**
@@ -85,15 +115,6 @@ export class FigmaStorageData<T> {
   }
 
   /**
-   * Returns the storage key name.
-   *
-   * Возвращает имя ключа в хранилище.
-   */
-  getName(): string {
-    return `${FigmaPostCode.get()}-${this.name}`
-  }
-
-  /**
    * Returns the cache time.
    *
    * Возвращает время кэширования.
@@ -103,52 +124,19 @@ export class FigmaStorageData<T> {
   }
 
   /**
-   * Sets the value and age.
+   * Returns the storage key name.
    *
-   * Устанавливает значение и время.
-   * @param value new value/ новое значение
-   * @param age update time/ время обновления
+   * Возвращает имя ключа в хранилище.
    */
-  set(
-    value?: T,
-    age?: number
-  ): this {
-    return this
-      .setValue(value)
-      .setAge(age)
-  }
-
-  /**
-   * Sets data from a FigmaStorageDataValue object.
-   *
-   * Устанавливает данные из объекта FigmaStorageDataValue.
-   * @param value data object/ объект данных
-   */
-  setByObject(value?: FigmaStorageDataValue<T>): this {
-    if (value) {
-      return this.set(value.value, value.age)
-    }
-
-    return this
-  }
-
-  /**
-   * Sets the value.
-   *
-   * Устанавливает значение.
-   * @param value new value/ новое значение
-   */
-  setValue(value?: T): this {
-    this.value = value
-
-    return this
+  getName(): string {
+    return `${FigmaPostCode.get()}-${this.name}`
   }
 
   /**
    * Sets the update time.
    *
    * Устанавливает время обновления.
-   * @param age update time/ время обновления
+   * @param age update time / время обновления
    */
   setAge(age?: number): this {
     this.age = age
@@ -157,19 +145,15 @@ export class FigmaStorageData<T> {
   }
 
   /**
-   * Updates the value and sets the current time as age.
+   * Sets the value.
    *
-   * Обновляет значение и устанавливает текущее время.
-   * @param value new value/ новое значение
+   * Устанавливает значение.
+   * @param value new value / новое значение
    */
-  update(value?: T): this {
-    if (value !== undefined) {
-      return this
-        .setValue(value)
-        .setAge(getCurrentTime())
-    }
+  setValue(value?: T): this {
+    this.value = value
 
-    return this.remove()
+    return this
   }
 
   /**
@@ -182,6 +166,22 @@ export class FigmaStorageData<T> {
       undefined,
       undefined
     )
+  }
+
+  /**
+   * Updates the value and sets the current time as age.
+   *
+   * Обновляет значение и устанавливает текущее время.
+   * @param value new value / новое значение
+   */
+  update(value?: T): this {
+    if (value !== undefined) {
+      return this
+        .setValue(value)
+        .setAge(getCurrentTime())
+    }
+
+    return this.remove()
   }
 
   /**

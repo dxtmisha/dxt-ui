@@ -10,9 +10,9 @@ export class FigmaPluginMessenger extends FigmaPostAbstract {
    * Getting an instance of the class for working with Figma plugin messenger (backend).
    *
    * Получение экземпляра класса для работы с мессенджером плагина Figma (backend).
-   * @returns current instance/ текущий экземпляр
+   * @returns current instance / текущий экземпляр
    */
-  static getInstance() {
+  static getInstance(): FigmaPluginMessenger {
     if (item) {
       return item
     }
@@ -21,6 +21,15 @@ export class FigmaPluginMessenger extends FigmaPostAbstract {
     item.make()
 
     return item
+  }
+
+  /**
+   * Resets the current singleton instance.
+   *
+   * Сбрасывает текущий экземпляр одиночки.
+   */
+  static reset(): void {
+    item = undefined
   }
 
   /**
@@ -46,7 +55,7 @@ export class FigmaPluginMessenger extends FigmaPostAbstract {
    *
    * Инициализирует слушатель, используя API figma.ui.onmessage.
    */
-  protected prepare() {
+  protected prepare(): void {
     figma.ui.onmessage = (message: UiFigmaMessengerData) => this.onMessage(message)
   }
 }

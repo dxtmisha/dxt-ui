@@ -29,5 +29,6 @@ const messenger = FigmaPluginMessenger.getInstance()
 Methods for sending and receiving messages.
 
 - `post<Message>(type: string, message?: Message): void` — Sends a message of a specific type to the Figma UI.
+- `reset(): void` — Resets the current singleton instance.
 - `add(type: string, callback: (data: any) => void): this` — (Inherited) Registers a listener for messages from the UI.
 - `remove(type: string): this` — (Inherited) Removes a listener.

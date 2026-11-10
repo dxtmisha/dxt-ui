@@ -5,10 +5,13 @@ import { FigmaFrame } from '../classes/FigmaFrame'
  *
  * Возвращает объект FigmaFrame по его идентификатору.
  * @param id node ID / идентификатор узла
- * @returns promise with FigmaFrame object or undefined /
- * промис с объектом FigmaFrame или undefined
+ * @returns promise with FigmaFrame object or undefined / промис с объектом FigmaFrame или undefined
  */
-export async function getFigmaFrameById(id: string): Promise<FigmaFrame | undefined> {
+export async function getFigmaFrameById(id?: string): Promise<FigmaFrame | undefined> {
+  if (!id) {
+    return undefined
+  }
+
   const node = await figma.getNodeByIdAsync(id)
 
   if (node) {

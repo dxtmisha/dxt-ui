@@ -13,18 +13,45 @@ describe('getFigmaItemById', () => {
     vi.unstubAllGlobals()
   })
 
-  it('should return FigmaItem if node exists', async () => {
-    const mockNode = { id: 'item-1', type: 'RECTANGLE' }
-    vi.mocked(figma.getNodeByIdAsync).mockResolvedValue(mockNode as any)
+  describe('Standard functional requirements (Happy path)', () => {
+    it('should return FigmaItem wrapping retrieved node when node exists', async () => {
+      const mockNode = { id: 'frame-123:456', name: 'Header', type: 'FRAME' }
+      vi.mocked(figma.getNodeByIdAsync).mockResolvedValue(mockNode as any)
 
-    const result = await getFigmaItemById('item-1')
-    expect(result).toBeInstanceOf(FigmaItem)
-    expect(result?.getId()).toBe('item-1')
+      const result = await getFigmaItemById('frame-123:456')
+
+      expect(result).toBeInstanceOf(FigmaItem)
+      expect(result?.getId()).toBe('frame-123:456')
+      expect(result?.getName()).toBe('Header')
+      expect(figma.getNodeByIdAsync).toHaveBeenCalledWith('frame-123:456')
+    })
   })
 
-  it('should return undefined if node does not exist', async () => {
-    vi.mocked(figma.getNodeByIdAsync).mockResolvedValue(null)
-    const result = await getFigmaItemById('none')
-    expect(result).toBeUndefined()
+  describe('Boundary values and limit thresholds', () => {
+    it('should return undefined without invoking figma API when id is empty or undefined', async () => {
+      expect(await getFigmaItemById(undefined)).toBeUndefined()
+      expect(await getFigmaItemById('')).toBeUndefined()
+      expect(figma.getNodeByIdAsync).not.toHaveBeenCalled()
+    })
+
+    it('should return undefined when figma API returns null or undefined', async () => {
+      vi.mocked(figma.getNodeByIdAsync).mockResolvedValue(null)
+      expect(await getFigmaItemById('non-existent')).toBeUndefined()
+
+      vi.mocked(figma.getNodeByIdAsync).mockResolvedValue(undefined as any)
+      expect(await getFigmaItemById('non-existent-2')).toBeUndefined()
+    })
+  })
+
+  describe('Special characters and IDs format', () => {
+    it('should query figma correctly with standard Figma ID format (colon notation: "0:1", "123:456")', async () => {
+      const mockNode = { id: '0:1', type: 'PAGE' }
+      vi.mocked(figma.getNodeByIdAsync).mockResolvedValue(mockNode as any)
+
+      const result = await getFigmaItemById('0:1')
+
+      expect(result?.getId()).toBe('0:1')
+      expect(figma.getNodeByIdAsync).toHaveBeenCalledWith('0:1')
+    })
   })
 })

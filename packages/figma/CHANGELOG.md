@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.5] - 2026-11-10
+
+### Fixed
+- **Contract Mismatch**: Fixed data payload in `fetchClientStorage` and `fetchStorage` by transmitting fallback value in the `value` property.
+- **Boundary Trap in Frame Polling**: Fixed `fetchTopLevelFrames` to properly handle empty top-level frame lists without infinite polling.
+- **Listener Cleanup**: Added `{ once: true }` listener lifecycle cleanup in `fetchFramesSelected`.
+- **Object Prototype Security**: Enforced `Object.hasOwn` in `FigmaPostAbstract` to prevent prototype pollution and ignore prototype properties.
+
+### Changed
+- **Strict TypeScript**: Added explicit return types and replaced `any` with `unknown` / generic constraints across `FigmaPostAbstract`, `FigmaPostCode`, `FigmaUiMessenger`, and all helper functions.
+- **JSDoc & Documentation**: Aligned bilingual JSDoc (English / Russian) across all classes, functions, and Storybook MDX documentation.
+- **Unit Testing**: Expanded comprehensive unit test suite to 96 passing tests across 15 test files with 100% pass rate.
+- **Review Registry**: Registered all audited classes and functions in `ai-review.md`.
+
 ## [0.1.4] - 2026-09-07
 
 ### Added

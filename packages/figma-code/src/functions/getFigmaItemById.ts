@@ -5,11 +5,16 @@ import type { UiFigmaNode } from '../types/figmaTypes'
  * Returns the Figma item by ID.
  *
  * Возвращает узел Figma по идентификатору.
- * @param id node ID/ идентификатор узла
+ * @param id node ID / идентификатор узла
+ * @returns promise with Figma item or undefined / промис с элементом Figma или undefined
  */
 export async function getFigmaItemById<
   T extends UiFigmaNode = UiFigmaNode
->(id: string): Promise<FigmaItem<T> | undefined> {
+>(id?: string): Promise<FigmaItem<T> | undefined> {
+  if (!id) {
+    return undefined
+  }
+
   const node = await figma.getNodeByIdAsync(id)
 
   if (node) {
