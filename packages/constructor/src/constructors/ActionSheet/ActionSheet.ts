@@ -61,6 +61,11 @@ export class ActionSheet extends ModalAbstract {
       components,
       slots,
       emits,
+      {
+        actions: constructors.ActionsConstructor,
+        bars: constructors.BarsConstructor,
+        window: constructors.WindowConstructor
+      },
       () => ({
         adaptive: 'actionSheetRight',
         closeButton: this.props.barsBackHide,
@@ -69,8 +74,7 @@ export class ActionSheet extends ModalAbstract {
       undefined,
       () => ({
         align: 'auto'
-      }),
-      constructors
+      })
     )
 
     this.touchEvent = new TouchEventIncludeConstructor(
@@ -83,7 +87,7 @@ export class ActionSheet extends ModalAbstract {
       ) => clientY >= 0,
       (_, type: TouchEventTypeY) => {
         if (type === 'bottom') {
-          this.window.expose.setOpen(false).then()
+          this.i('window').expose.setOpen(false).then()
           return false
         }
 

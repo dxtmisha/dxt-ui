@@ -221,8 +221,8 @@ export class InputImage {
     this.text = new TextIncludeConstructor(this.props)
 
     this.dropzone = new DropzoneIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         accept: this.props.accept,
@@ -241,8 +241,8 @@ export class InputImage {
     )
 
     this.label = new FieldLabelConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         ...this.size.getExtra(),
@@ -254,8 +254,8 @@ export class InputImage {
     )
 
     this.message = new FieldMessageConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       undefined,
       undefined,
@@ -263,8 +263,8 @@ export class InputImage {
     )
 
     this.imageCrop = new ImageCropIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         value: this.files.crop,
@@ -276,8 +276,8 @@ export class InputImage {
     )
 
     this.actions = new ActionsIncludeConstructor(
-      this.naming,
       props,
+      this.naming,
       this.components,
       () => ({
         list: [

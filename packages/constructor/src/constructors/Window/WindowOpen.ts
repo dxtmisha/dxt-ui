@@ -50,33 +50,33 @@ export class WindowOpen extends DesignLifecycleAbstract {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param isMounted reactive mounted state on client / реактивное состояние монтирования на клиенте
    * @param client function returning client coordinates manager / функция, возвращающая менеджер клиентских координат
-   * @param hook function returning hook manager / функция, возвращающая менеджер хуков
-   * @param element function returning element manager / функция, возвращающая менеджер элементов
-   * @param tabIndex function returning tab index manager / функция, возвращающая менеджер табуляции
-   * @param status function returning status manager / функция, возвращающая менеджер статусов
-   * @param flash function returning flash animation manager / функция, возвращающая менеджер быстрого открытия
    * @param coordinates function returning coordinates manager / функция, возвращающая менеджер координат
-   * @param position function returning position manager / функция, возвращающая менеджер положения
-   * @param origin function returning origin manager / функция, возвращающая менеджер начальной точки
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
    * @param emit function returning emit manager / функция, возвращающая менеджер событий
+   * @param flash function returning flash animation manager / функция, возвращающая менеджер быстрого открытия
+   * @param hook function returning hook manager / функция, возвращающая менеджер хуков
+   * @param origin function returning origin manager / функция, возвращающая менеджер начальной точки
+   * @param position function returning position manager / функция, возвращающая менеджер положения
+   * @param status function returning status manager / функция, возвращающая менеджер статусов
    * @param styles function returning styles manager / функция, возвращающая менеджер стилей
+   * @param tabIndex function returning tab index manager / функция, возвращающая менеджер табуляции
+   * @param isMounted reactive mounted state on client / реактивное состояние монтирования на клиенте
    */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly isMounted: Ref<boolean>,
     protected readonly client: () => WindowClient,
-    protected readonly hook: () => WindowHook,
-    protected readonly element: () => WindowElement,
-    protected readonly tabIndex: () => TabIndexInclude,
-    protected readonly status: () => WindowStatus,
-    protected readonly flash: () => WindowFlash,
     protected readonly coordinates: () => WindowCoordinates,
-    protected readonly position: () => WindowPosition,
-    protected readonly origin: () => WindowOrigin,
+    protected readonly element: () => WindowElement,
     protected readonly emit: () => WindowEmit,
-    protected readonly styles: () => WindowStyles
+    protected readonly flash: () => WindowFlash,
+    protected readonly hook: () => WindowHook,
+    protected readonly origin: () => WindowOrigin,
+    protected readonly position: () => WindowPosition,
+    protected readonly status: () => WindowStatus,
+    protected readonly styles: () => WindowStyles,
+    protected readonly tabIndex: () => TabIndexInclude,
+    protected readonly isMounted: Ref<boolean>
   ) {
     super()
   }

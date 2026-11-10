@@ -58,22 +58,22 @@ export class MotionTransformInclude<
    * Constructor for initializing MotionTransform properties and inclusion managers.
    *
    * Конструктор для инициализации свойств MotionTransform и включенных менеджеров.
-   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
+   * @param naming component naming helper / помощник именования компонента
    * @param components design components registry / реестр дизайн-компонентов
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    naming: DesignName,
     props: Readonly<Props>,
+    naming: DesignName,
     components?: DesignComponents<MotionTransformComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
     protected readonly emits?: ConstrEmit<MotionTransformEmits>
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /**

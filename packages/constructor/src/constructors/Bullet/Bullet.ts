@@ -42,8 +42,8 @@ export class Bullet {
     } = constructors
 
     this.list = new BulletItemIncludeConstructor(
-      naming,
       props,
+      naming,
       components
     )
   }

@@ -31,8 +31,8 @@ describe('MaskInclude', () => {
     } as unknown as FieldTypeInclude
 
     maskInclude = new MaskInclude(
-      new DesignName('d1.mask'),
       () => mockPropsRef.value,
+      new DesignName('d1.mask'),
       undefined,
       undefined,
       undefined,

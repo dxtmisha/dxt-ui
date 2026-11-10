@@ -31,22 +31,22 @@ export class ImageInclude extends ComponentIncludeAbstract<
    * Constructor for working with images.
    *
    * Конструктор для работы с изображениями.
-   * @param naming component naming helper / помощник именования компонента
    * @param props input component properties / входные свойства компонента
+   * @param naming component naming helper / помощник именования компонента
    * @param components registry of design components / реестр дизайн-компонентов
    * @param extra additional design attributes or settings / дополнительные дизайн-атрибуты или настройки
    * @param emits constructor emitter for component events / конструктор событий для событий компонента
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    naming: DesignName,
     props: ComponentIncludeProps<ImagePropsInclude>,
+    naming: DesignName,
     components?: DesignComponents<ImageComponentInclude, ImagePropsInclude>,
     extra?: ComponentIncludeExtra<ImageProps>,
     protected readonly emits?: ConstrEmit<ImageEmitsInclude>,
     index?: string
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /**

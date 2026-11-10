@@ -75,14 +75,14 @@ export class FieldLabel {
     )
 
     this.fieldCounter = new FieldCounterConstructor(
-      naming,
       props,
+      naming,
       components
     )
 
     this.progress = new ProgressConstructor(
-      naming,
       props,
+      naming,
       components,
       {
         circular: true,

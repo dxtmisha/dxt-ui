@@ -92,8 +92,8 @@ export class InputPhone extends DesignLogicAbstract<
     dialCode: {
       item: InputPhoneDialCodeInclude,
       parameters: () => [
-        this.naming,
         this.props,
+        this.naming,
         this.components,
         () => ({
           value: this.i('data').country.value,
@@ -122,8 +122,8 @@ export class InputPhone extends DesignLogicAbstract<
     field: {
       item: FieldInclude,
       parameters: () => [
-        this.naming,
         this.props,
+        this.naming,
         this.components,
         undefined,
         undefined,
@@ -143,8 +143,8 @@ export class InputPhone extends DesignLogicAbstract<
     mask: {
       item: MaskInclude,
       parameters: () => [
-        this.naming,
         () => this.i('phoneMask').maskProps,
+        this.naming,
         this.components,
         undefined,
         undefined,

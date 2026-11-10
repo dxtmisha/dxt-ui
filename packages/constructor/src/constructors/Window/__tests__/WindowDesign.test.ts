@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from 'vitest'
-import { createApp, defineComponent, nextTick, reactive } from 'vue'
+import { createApp, defineComponent, h, nextTick, reactive } from 'vue'
 
 import { WindowDesign } from '../WindowDesign'
 import type { WindowPropsBasic } from '../props'
@@ -208,5 +208,79 @@ describe('WindowDesign', () => {
 
     const imageNodes = designInstance.renderBodyImage()
     expect(Array.isArray(imageNodes)).toBe(true)
+  })
+
+  it('should render body context as native div when scrollbar component is not provided', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    cleanups.push(() => container.remove())
+
+    let designInstance!: WindowDesign<WindowComponents, WindowExpose, WindowClasses, WindowPropsBasic>
+
+    const Component = defineComponent({
+      setup() {
+        const props: WindowPropsBasic = reactive({ divider: true })
+        designInstance = new WindowDesign<
+          WindowComponents,
+          WindowExpose,
+          WindowClasses,
+          WindowPropsBasic
+        >('d1.window', props)
+
+        return designInstance.render()
+      }
+    })
+
+    const app = createApp(Component)
+    app.mount(container)
+    cleanups.push(() => app.unmount())
+
+    await nextTick()
+
+    const contextNodes = designInstance.renderBodyContext()
+    expect(contextNodes).toHaveLength(1)
+    expect(contextNodes[0]?.type).toBe('div')
+    expect(contextNodes[0]?.props).toEqual(expect.objectContaining({
+      'key': 'bodyContext',
+      'divider': true,
+      'data-window-body': '1'
+    }))
+  })
+
+  it('should delegate body context rendering to scrollbar component when registered', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    cleanups.push(() => container.remove())
+
+    let designInstance!: WindowDesign<WindowComponents, WindowExpose, WindowClasses, WindowPropsBasic>
+    const mockScrollbar = (p: any, { slots }: any) => h('div', { ...p, 'data-mock': 'scrollbar' }, slots?.default?.())
+
+    const Component = defineComponent({
+      setup() {
+        const props: WindowPropsBasic = reactive({ divider: false })
+        designInstance = new WindowDesign<
+          WindowComponents,
+          WindowExpose,
+          WindowClasses,
+          WindowPropsBasic
+        >('d1.window', props, {
+          components: {
+            scrollbar: mockScrollbar
+          } as any
+        })
+
+        return designInstance.render()
+      }
+    })
+
+    const app = createApp(Component)
+    app.mount(container)
+    cleanups.push(() => app.unmount())
+
+    await nextTick()
+
+    const contextNodes = designInstance.renderBodyContext()
+    expect(contextNodes).toHaveLength(1)
+    expect(contextNodes[0]?.type).toBe(mockScrollbar)
   })
 })

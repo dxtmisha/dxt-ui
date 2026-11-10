@@ -14,13 +14,23 @@ export class WindowElement {
    * Constructor.
    *
    * Конструктор.
-   * @param classes function returning an object for working with classes and searching for elements / функция, возвращающая объект для работы с классами и поиском элементов
    * @param element the element of the window itself / элемент самого окна
+   * @param classes function returning an object for working with classes and searching for elements / функция, возвращающая объект для работы с классами и поиском элементов
    */
   constructor(
-    protected readonly classes: () => WindowClassesData,
-    public readonly element: Ref<HTMLDivElement | undefined>
+    protected readonly element: Ref<HTMLDivElement | undefined>,
+    protected readonly classes: () => WindowClassesData
   ) {
+  }
+
+  /**
+   * Returns the reactive reference to the main element.
+   *
+   * Возвращает реактивную ссылку на главный элемент.
+   * @returns reactive reference to the main element / реактивная ссылка на главный элемент
+   */
+  getElement(): Ref<HTMLDivElement | undefined> {
+    return this.element
   }
 
   /**

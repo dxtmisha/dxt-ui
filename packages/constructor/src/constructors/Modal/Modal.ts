@@ -1,12 +1,12 @@
 import type { Ref } from 'vue'
 import type { ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
 
-import { ModalAbstract, type ModalConstructors, type ModalLegacyConstructors } from './ModalAbstract'
+import { ModalAbstract, type ModalConstructors } from './ModalAbstract'
 
-import type { ModalComponents, ModalEmits, ModalSlots } from './types'
 import type { ModalProps } from './props'
+import type { ModalComponents, ModalEmits, ModalSlots } from './types'
 
-export type { ModalConstructors, ModalLegacyConstructors }
+export type { ModalConstructors }
 
 /**
  * Class for managing a modal window component.
@@ -35,7 +35,7 @@ export class Modal extends ModalAbstract {
     components?: DesignComp<ModalComponents, ModalProps>,
     slots?: ModalSlots,
     emits?: ConstrEmit<ModalEmits>,
-    constructors?: Partial<ModalConstructors> | ModalLegacyConstructors
+    constructors?: Partial<ModalConstructors>
   ) {
     super(
       props,
@@ -44,16 +44,14 @@ export class Modal extends ModalAbstract {
       components,
       slots,
       emits,
+      constructors,
       () => ({
         image: this.props.image,
 
         adaptive: 'modal',
         imagePosition: this.props.imagePosition,
         closeButton: this.props.barsBackHide
-      }),
-      undefined,
-      undefined,
-      constructors
+      })
     )
   }
 }

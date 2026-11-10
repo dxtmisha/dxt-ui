@@ -75,8 +75,8 @@ export class InputPhoneDialCode {
     )
 
     this.menu = new MenuCountryConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         selected: this.model.value.value,
@@ -87,8 +87,8 @@ export class InputPhoneDialCode {
     )
 
     this.button = new ButtonConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => this.bindsButton
     )

@@ -94,8 +94,8 @@ export class Table {
     this.pagination = new PaginationIncludeConstructor(props, () => this.sort.getList())
 
     this.tableRecord = new TableRecordIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       () => ({ onSort: this.sort.onSort }),
       slots

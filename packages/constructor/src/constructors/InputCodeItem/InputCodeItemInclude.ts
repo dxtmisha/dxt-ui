@@ -37,18 +37,18 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    * Constructor
    *
    * Конструктор
-   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param onUpdate event for value update / событие обновления значения
    */
   constructor(
-    naming: DesignName,
     props: Readonly<InputCodeItemPropsInclude>,
+    naming: DesignName,
     components?: DesignComponents<InputCodeItemComponentInclude, InputCodeItemPropsInclude>,
     protected readonly onUpdate?: (value: string) => void
   ) {
-    super(naming, props, components)
+    super(props, naming, components)
   }
 
   /**

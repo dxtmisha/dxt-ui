@@ -5,18 +5,18 @@ import { ArrowInclude } from '../ArrowInclude'
 
 describe('ArrowInclude', () => {
   it('should return correct display presence (is)', () => {
-    const arrowShow = new ArrowInclude(new DesignName('my.class'), { arrowShow: true })
+    const arrowShow = new ArrowInclude({ arrowShow: true }, new DesignName('my.class'))
     expect(arrowShow.is).toBe(true)
 
-    const arrowHide = new ArrowInclude(new DesignName('my.class'), { arrowShow: false })
+    const arrowHide = new ArrowInclude({ arrowShow: false }, new DesignName('my.class'))
     expect(arrowHide.is).toBe(false)
   })
 
   it('should compile component binds correctly', () => {
     const targetElement = document.createElement('div')
     const arrow = new ArrowInclude(
-      new DesignName('my.class'),
       { arrowShow: true, arrowPosition: 'bottom' },
+      new DesignName('my.class'),
       undefined,
       undefined,
       undefined,
@@ -32,12 +32,12 @@ describe('ArrowInclude', () => {
     const targetElement = document.createElement('div')
     const customTarget = document.createElement('span')
     const arrow = new ArrowInclude(
-      new DesignName('my.class'),
       {
         arrowShow: true,
         arrowPosition: 'bottom',
         arrowAttrs: { position: 'top', elementTarget: customTarget }
       },
+      new DesignName('my.class'),
       undefined,
       undefined,
       undefined,

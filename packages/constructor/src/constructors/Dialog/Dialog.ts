@@ -88,6 +88,11 @@ export class Dialog extends ModalAbstract {
       components,
       slots,
       emits,
+      {
+        actions: constructors.ActionsConstructor,
+        bars: constructors.BarsConstructor,
+        window: constructors.WindowConstructor
+      },
       () => ({
         image: props.image,
 
@@ -96,8 +101,7 @@ export class Dialog extends ModalAbstract {
         closeButton: props.closeButton
       }),
       undefined,
-      () => this.extraActions,
-      constructors
+      () => this.extraActions
     )
 
     this.icon = new IconIncludeConstructor(

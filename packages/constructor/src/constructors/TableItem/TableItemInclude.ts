@@ -45,22 +45,22 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * Constructor for TableItemInclude.
    *
    * Конструктор для TableItemInclude.
-   * @param naming component naming helper / помощник именования компонента
    * @param props input properties / входные свойства
+   * @param naming component naming helper / помощник именования компонента
    * @param components design components registry / реестр дизайн-компонентов
    * @param extra additional properties or attributes / дополнительные свойства или атрибуты
    * @param slots parent slots / родительские слоты
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    protected readonly naming: DesignName,
     props: ComponentIncludeProps<TableItemPropsInclude>,
+    protected readonly naming: DesignName,
     components?: DesignComponents<any, TableItemPropsInclude>,
     extra?: ComponentIncludeExtra<TableItemPropsBasic>,
     protected readonly slots?: Record<string, any>,
     index?: string
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /**

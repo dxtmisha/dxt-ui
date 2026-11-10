@@ -20,18 +20,18 @@ export class WindowStyles extends DesignLifecycleAbstract {
    * Constructor.
    *
    * Конструктор.
-   * @param element function returning element manager / функция, возвращающая менеджер элементов
-   * @param coordinates function returning coordinates manager / функция, возвращающая менеджер координат
-   * @param position function returning position manager / функция, возвращающая менеджер позиции
-   * @param origin function returning origin manager / функция, возвращающая менеджер начальной точки
    * @param naming component naming helper / помощник именования компонента
+   * @param coordinates function returning coordinates manager / функция, возвращающая менеджер координат
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
+   * @param origin function returning origin manager / функция, возвращающая менеджер начальной точки
+   * @param position function returning position manager / функция, возвращающая менеджер позиции
    */
   constructor(
-    protected readonly element: () => WindowElement,
+    protected readonly naming: DesignName,
     protected readonly coordinates: () => WindowCoordinates,
-    protected readonly position: () => WindowPosition,
+    protected readonly element: () => WindowElement,
     protected readonly origin: () => WindowOrigin,
-    protected readonly naming: DesignName
+    protected readonly position: () => WindowPosition
   ) {
     super()
   }
@@ -44,7 +44,7 @@ export class WindowStyles extends DesignLifecycleAbstract {
   override readonly onMounted = (): void => {
     this.update()
     this.watchStop?.()
-    this.watchStop = watch(this.element().element, () => this.update())
+    this.watchStop = watch(this.element().getElement(), () => this.update())
   }
 
   /**

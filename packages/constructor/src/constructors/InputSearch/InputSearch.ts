@@ -167,8 +167,8 @@ export class InputSearch {
     )
 
     this.field = new FieldIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         loading: this.props.loading ?? this.query.loading.value

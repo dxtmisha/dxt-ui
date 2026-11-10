@@ -34,22 +34,22 @@ export class TooltipInclude extends ComponentIncludeAbstract<
    * Constructor for initializing TooltipInclude properties.
    *
    * Конструктор для инициализации свойств TooltipInclude.
-   * @param naming component naming helper / помощник именования компонента
    * @param props input properties / входные свойства
+   * @param naming component naming helper / помощник именования компонента
    * @param components design components registry / реестр дизайн-компонентов
    * @param slots tooltip slots / слоты тултипа
    * @param extra additional properties or attributes / дополнительные свойства или атрибуты
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    naming: DesignName,
     props: ComponentIncludeProps<TooltipPropsInclude>,
+    naming: DesignName,
     components?: DesignComponents<any, TooltipPropsInclude>,
     protected readonly slots?: TooltipSlotsInclude,
     extra?: ComponentIncludeExtra<any>,
     index?: string
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /**

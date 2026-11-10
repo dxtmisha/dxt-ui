@@ -80,8 +80,8 @@ export class ImageCrop {
     this.cropImage = new ImageCropImageConstructor(naming, props, emits)
 
     this.image = new ImageIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       () => ({
         alt: this.props.alt,
@@ -95,8 +95,8 @@ export class ImageCrop {
     )
 
     this.cropArea = new CropAreaIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       () => ({
         value: this.props.value,
@@ -111,10 +111,10 @@ export class ImageCrop {
     )
 
     this.progress = new ProgressConstructor(
-      naming,
       () => ({
         loading: this.cropImage.isLoading()
       }),
+      naming,
       components,
       {
         circular: true

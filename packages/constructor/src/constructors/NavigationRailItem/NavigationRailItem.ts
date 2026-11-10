@@ -95,8 +95,8 @@ export class NavigationRailItem {
       ['classTextVariant']
     )
     this.progress = new ProgressIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       {
         circular: true
@@ -116,8 +116,8 @@ export class NavigationRailItem {
       this.skeleton
     )
     this.badge = new BadgeIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       () => ({
         overlap: this.icon.isIcon() ? 'circular' : 'static'

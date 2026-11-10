@@ -53,28 +53,28 @@ export class WindowInclude<
 
   /**
    * Constructor
-   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index index identifier / идентификатор индекса
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param ariaLabelledby identifier for the label / идентификатор для метки
    * @param ariaDescribedby identifier for the description / идентификатор для описания
-   * @param model instance for managing modal open state / экземпляр для управления состоянием открытия модального окна
+   * @param model model include getter / геттер экземпляра для управления состоянием открытия модального окна
    */
   constructor(
-    naming: DesignName,
     props: Readonly<Props>,
+    naming: DesignName,
     components?: DesignComponents<WindowComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
     protected readonly emits?: ConstrEmit<WindowEmitsInclude>,
     protected readonly ariaLabelledby?: string,
     protected readonly ariaDescribedby?: string,
-    protected readonly model?: ModelInclude<boolean>
+    protected readonly model?: () => ModelInclude<boolean>
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /**
@@ -148,7 +148,7 @@ export class WindowInclude<
    * @param options event payload / параметры события
    */
   protected readonly onWindow = (options: WindowEmitOptions) => {
-    this.model?.emit(options.open)
+    this.model?.().emit(options.open)
     this.emits?.('window', options)
   }
 }

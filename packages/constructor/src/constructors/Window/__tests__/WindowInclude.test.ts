@@ -36,15 +36,15 @@ describe('WindowInclude', () => {
     }
 
     windowInclude = new WindowInclude(
-      new DesignName('d1.dialog'),
       mockProps as WindowPropsInclude,
+      new DesignName('d1.dialog'),
       undefined, // components
       () => mockExtra, // extra
       'index-key',
       mockEmits,
       'title-id',
       'desc-id',
-      mockModel
+      () => mockModel
     )
 
     ;(windowInclude as any).element.value = mockWindowElement

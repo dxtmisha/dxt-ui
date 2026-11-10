@@ -148,8 +148,8 @@ export abstract class SelectAbstract {
     this.event.onMounted?.()
 
     this.menu = new MenuIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         windowAttrs: {

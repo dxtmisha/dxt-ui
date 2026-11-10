@@ -1,5 +1,5 @@
-import { ModalDesignAbstract } from './ModalDesignAbstract'
 import { Modal } from './Modal'
+import { ModalDesignAbstract } from './ModalDesignAbstract'
 
 import type { ModalPropsBasic } from './props'
 import type {

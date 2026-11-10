@@ -161,14 +161,14 @@ export class SliderField {
     )
 
     this.fieldLabel = new FieldLabelIncludeConstructor(
-      this.naming,
       () => this.label.labelProps,
+      this.naming,
       this.components
     )
 
     this.fieldMessage = new FieldMessageIncludeConstructor(
-      this.naming,
       props,
+      this.naming,
       this.components,
       undefined,
       undefined,

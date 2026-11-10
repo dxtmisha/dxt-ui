@@ -56,8 +56,8 @@ describe('WindowHidden', () => {
     const hidden = new WindowHidden(
       mockProps as WindowProps,
       () => mockClasses,
-      () => mockStatic,
       () => mockOpen,
+      () => mockStatic,
       () => mockTeleport
     )
     hidden.onMounted()
@@ -74,8 +74,8 @@ describe('WindowHidden', () => {
     const hidden = new WindowHidden(
       mockProps as WindowProps,
       () => mockClasses,
-      () => mockStatic,
       () => mockOpen,
+      () => mockStatic,
       () => mockTeleport
     )
     hidden.onMounted()

@@ -21,8 +21,8 @@ describe('FieldInclude', () => {
     } as any
 
     const fieldInclude = new FieldInclude(
-      new DesignName('field.class'),
       { focus: true, label: 'My Label' },
+      new DesignName('field.class'),
       undefined,
       undefined,
       undefined,
@@ -65,8 +65,8 @@ describe('FieldInclude', () => {
     } as any
 
     const fieldInclude = new FieldInclude(
-      new DesignName('field.class'),
       {},
+      new DesignName('field.class'),
       undefined,
       undefined,
       undefined,

@@ -224,24 +224,24 @@ export class InputFileItem {
     )
 
     this.buttonCrop = new ButtonIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => this.button.crop,
       'buttonCrop'
     )
 
     this.buttonDelete = new ButtonIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => this.button.delete,
       'buttonDelete'
     )
 
     this.buttonRetry = new ButtonIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => this.button.retry,
       'buttonRetry'
@@ -267,12 +267,12 @@ export class InputFileItem {
     )
 
     this.image = new ImageIncludeConstructor(
-      this.naming,
       () => ({
         ...this.props,
         image: this.file.image,
         coordinator: this.crop.coordinator
       }),
+      this.naming,
       this.components,
       () => ({
         alt: this.file.name
@@ -280,8 +280,8 @@ export class InputFileItem {
     )
 
     this.imageCrop = new ImageCropIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         coordinator: this.crop.coordinator,
@@ -296,11 +296,11 @@ export class InputFileItem {
     )
 
     this.progress = new ProgressIncludeConstructor(
-      this.naming,
       () => ({
         ...this.props,
         loading: this.props.loading ?? this.status.isUploading()
       }),
+      this.naming,
       this.components,
       () => this.progressProps
     )

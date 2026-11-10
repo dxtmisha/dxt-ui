@@ -159,8 +159,8 @@ export class Checkbox {
 
     this.skeleton = new SkeletonConstructor(this.props, this.naming, ['classText'])
     this.progress = new ProgressConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       {
         circular: true,
@@ -213,8 +213,8 @@ export class Checkbox {
     this.event.onMounted?.()
 
     this.message = new FieldMessageConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       undefined,
       undefined,

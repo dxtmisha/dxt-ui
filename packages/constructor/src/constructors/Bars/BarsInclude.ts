@@ -37,18 +37,18 @@ export class BarsInclude<
 
   /**
    * Constructor
-   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя
-   * @param labelId identifier for the label / идентификатор для метки
-   * @param descriptionId identifier for the description / идентификатор для описания
    * @param index index identifier / идентификатор индекса
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param labelId identifier for the label / идентификатор для метки
+   * @param descriptionId identifier for the description / идентификатор для описания
    */
   constructor(
-    naming: DesignName,
     props: Readonly<Props>,
+    naming: DesignName,
     components?: DesignComponents<BarsComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
@@ -56,7 +56,7 @@ export class BarsInclude<
     protected readonly labelId?: string,
     protected readonly descriptionId?: string
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /**

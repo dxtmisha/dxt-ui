@@ -33,20 +33,20 @@ export class WindowEvent extends DesignLifecycleAbstract {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param tabIndex function returning tab index manager / функция, возвращающая менеджер табуляции
-   * @param status function returning status manager / функция, возвращающая менеджер статусов
    * @param client function returning client coordinates manager / функция, возвращающая менеджер клиентских координат
    * @param flash function returning flash animation manager / функция, возвращающая менеджер быстрого открытия
    * @param open function returning open state manager / функция, возвращающая менеджер состояния открытия
+   * @param status function returning status manager / функция, возвращающая менеджер статусов
+   * @param tabIndex function returning tab index manager / функция, возвращающая менеджер табуляции
    * @param verification function returning verification manager / функция, возвращающая менеджер проверки
    */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly tabIndex: () => TabIndexInclude,
-    protected readonly status: () => WindowStatus,
     protected readonly client: () => WindowClient,
     protected readonly flash: () => WindowFlash,
     protected readonly open: () => WindowOpen,
+    protected readonly status: () => WindowStatus,
+    protected readonly tabIndex: () => TabIndexInclude,
     protected readonly verification: () => WindowVerification
   ) {
     super()

@@ -43,11 +43,11 @@ describe('WindowEvent', () => {
 
     windowEvent = new WindowEvent(
       mockProps as WindowProps,
-      () => mockTabIndex,
-      () => mockStatus,
       () => mockClient,
       () => mockFlash,
       () => mockOpen,
+      () => mockStatus,
+      () => mockTabIndex,
       () => mockVerification
     )
     windowEvent.onMounted()

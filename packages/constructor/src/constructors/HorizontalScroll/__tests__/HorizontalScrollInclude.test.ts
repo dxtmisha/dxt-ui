@@ -9,7 +9,7 @@ describe('HorizontalScrollInclude', () => {
       horizontalScrollBleed: true,
       horizontalScrollAlign: 'block' as const
     }
-    const include = new HorizontalScrollInclude(new DesignName('parent.class'), props)
+    const include = new HorizontalScrollInclude(props, new DesignName('parent.class'))
 
     expect(include.elementHtml).toBeUndefined()
 
@@ -33,7 +33,7 @@ describe('HorizontalScrollInclude', () => {
       horizontalScrollBleed: false,
       horizontalScrollAlign: 'left' as const
     }
-    const include = new HorizontalScrollInclude(new DesignName('parent.class'), props)
+    const include = new HorizontalScrollInclude(props, new DesignName('parent.class'))
 
     const binds = include.binds.value
     expect(binds.bleed).toBe(false)

@@ -100,8 +100,8 @@ export class Select extends SelectAbstract {
     )
 
     this.field = new FieldIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         iconTrailing: this.iconTrailing,

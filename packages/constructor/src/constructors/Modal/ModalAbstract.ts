@@ -9,14 +9,15 @@ import {
   getElementId
 } from '@dxtmisha/functional'
 
+import { ModelInclude } from '../../classes/ModelInclude'
+
 import { ActionsInclude, type ActionsProps } from '../Actions'
 import { BarsInclude, type BarsProps } from '../Bars'
-import { ModelInclude } from '../../classes/ModelInclude'
 import { WindowInclude, type WindowProps } from '../Window'
 
 import type { ComponentIncludeExtra } from '../../types/componentInclude'
-import type { ModalComponents, ModalEmits, ModalSlots } from './types'
 import type { ModalProps } from './props'
+import type { ModalComponents, ModalEmits, ModalSlots } from './types'
 
 /** Modal dependency constructors type / Тип конструкторов зависимостей Modal */
 export type ModalConstructors = {
@@ -25,49 +26,9 @@ export type ModalConstructors = {
   /** Bars include constructor / Конструктор панелей заголовка и подвала */
   bars: typeof BarsInclude
   /** Model include constructor / Конструктор синхронизации модели */
-  model: typeof ModelInclude
+  model: typeof ModelInclude<boolean>
   /** Window include constructor / Конструктор основного окна */
   window: typeof WindowInclude
-}
-
-/** Legacy constructors interface for backward compatibility / Устаревший интерфейс конструкторов для обратной совместимости */
-export type ModalLegacyConstructors = {
-  ActionsConstructor?: typeof ActionsInclude
-  BarsConstructor?: typeof BarsInclude
-  ModelIncludeConstructor?: typeof ModelInclude
-  WindowConstructor?: typeof WindowInclude
-}
-
-/**
- * Normalizes constructor overrides for ModalAbstract.
- *
- * Нормализует переопределения конструкторов для ModalAbstract.
- * @param constructors constructor overrides object / объект переопределений конструкторов
- * @returns normalized constructors / нормализованные конструкторы
- */
-function normalizeModalConstructors<T extends ModalConstructors>(
-  constructors?: Partial<T> | ModalLegacyConstructors | Record<string, any>
-): Partial<T> | undefined {
-  if (!constructors) {
-    return undefined
-  }
-
-  const result: Record<string, any> = { ...constructors }
-
-  if ('ActionsConstructor' in constructors && !('actions' in result)) {
-    result.actions = constructors.ActionsConstructor
-  }
-  if ('BarsConstructor' in constructors && !('bars' in result)) {
-    result.bars = constructors.BarsConstructor
-  }
-  if ('ModelIncludeConstructor' in constructors && !('model' in result)) {
-    result.model = constructors.ModelIncludeConstructor
-  }
-  if ('WindowConstructor' in constructors && !('window' in result)) {
-    result.window = constructors.WindowConstructor
-  }
-
-  return result as Partial<T>
 }
 
 /**
@@ -98,8 +59,8 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
     actions: {
       item: ActionsInclude,
       parameters: () => [
-        this.naming,
         this.props,
+        this.naming,
         this.components,
         () => executeFunctionRef(this.extraActionsCallback),
         undefined,
@@ -109,8 +70,8 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
     bars: {
       item: BarsInclude,
       parameters: () => [
-        this.naming,
         this.props,
+        this.naming,
         this.components,
         () => executeFunctionRef(this.extraBars),
         undefined,
@@ -120,7 +81,7 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
       ]
     },
     model: {
-      item: ModelInclude,
+      item: ModelInclude<boolean>,
       parameters: () => [
         'open',
         this.emits,
@@ -130,8 +91,8 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
     window: {
       item: WindowInclude,
       parameters: () => [
-        this.naming,
         this.props,
+        this.naming,
         this.components,
         () => ({
           open: this.open.value,
@@ -141,7 +102,7 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
         this.emits,
         this.labelId,
         this.descriptionId,
-        this.model
+        () => this.i('model')
       ]
     }
   }
@@ -168,10 +129,10 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
     components?: DesignComp<ModalComponents, ModalProps>,
     slots?: ModalSlots,
     emits?: ConstrEmit<ModalEmits>,
+    constructors?: Partial<ModalConstructors>,
     protected readonly extraWindow?: () => ComponentIncludeExtra<WindowProps>,
     protected readonly extraBars?: () => ComponentIncludeExtra<BarsProps>,
-    protected readonly extraActionsCallback?: () => ComponentIncludeExtra<ActionsProps>,
-    constructors?: Partial<ModalConstructors> | ModalLegacyConstructors
+    protected readonly extraActionsCallback?: () => ComponentIncludeExtra<ActionsProps>
   ) {
     super(
       props,
@@ -180,48 +141,8 @@ export abstract class ModalAbstract extends DesignLogicAbstract<
       components,
       slots,
       emits,
-      normalizeModalConstructors(constructors)
+      constructors
     )
-  }
-
-  /**
-   * Instance for managing the core modal window container.
-   *
-   * Экземпляр для управления основным контейнером модального окна.
-   * @returns window include instance / экземпляр включения окна
-   */
-  get window(): WindowInclude {
-    return this.i('window')
-  }
-
-  /**
-   * Instance for managing the modal header and footer bars.
-   *
-   * Экземпляр для управления панелями заголовка и подвала модального окна.
-   * @returns bars include instance / экземпляр включения панелей
-   */
-  get bars(): BarsInclude {
-    return this.i('bars')
-  }
-
-  /**
-   * Instance for managing action buttons or controls.
-   *
-   * Экземпляр для управления кнопками действий или элементами управления.
-   * @returns actions include instance / экземпляр включения действий
-   */
-  get actions(): ActionsInclude {
-    return this.i('actions')
-  }
-
-  /**
-   * Model synchronization manager.
-   *
-   * Менеджер синхронизации модели.
-   * @returns model include instance / экземпляр включения модели
-   */
-  get model(): ModelInclude<boolean> {
-    return this.i('model') as unknown as ModelInclude<boolean>
   }
 
   /**

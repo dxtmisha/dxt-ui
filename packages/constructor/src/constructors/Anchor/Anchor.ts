@@ -74,8 +74,8 @@ export class Anchor {
     this.label = new LabelIncludeConstructor(props, naming, undefined, slots)
     this.text = new TextIncludeConstructor(this.props)
     this.tooltip = new TooltipIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       slots,
       () => ({

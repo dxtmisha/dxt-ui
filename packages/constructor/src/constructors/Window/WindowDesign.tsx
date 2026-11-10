@@ -233,16 +233,38 @@ export class WindowDesign<
    * @returns array of context nodes / массив узлов контекста
    */
   readonly renderBodyContext = (): VNode[] => {
-    return this.item.i('scrollbar').render(
-      'div',
-      {
-        'key': 'bodyContext',
-        'class': this.classes?.value.bodyContext,
-        'divider': this.props.divider,
-        'data-window-body': '1'
-      },
-      () => this.initSlot('default', undefined, this.item.slotData)
-    )
+    const binds = {
+      'key': 'bodyContext',
+      'class': this.classes?.value.bodyContext,
+      'divider': this.props.divider,
+      'data-window-body': '1'
+    }
+
+    if (this.components?.is('scrollbar')) {
+      return this.item.i('scrollbar').render(
+        'div',
+        binds,
+        this.renderDefault
+      )
+    }
+
+    return [
+      h(
+        'div',
+        binds,
+        this.renderDefault()
+      )
+    ]
+  }
+
+  /**
+   * Render default slot content.
+   *
+   * Рендер содержимого слота по умолчанию.
+   * @returns default slot virtual node or undefined / виртуальный узел слота по умолчанию или undefined
+   */
+  readonly renderDefault = (): VNode | undefined => {
+    return this.initSlot('default', undefined, this.item.slotData)
   }
 
   /**

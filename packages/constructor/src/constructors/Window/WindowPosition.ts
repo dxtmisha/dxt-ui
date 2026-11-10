@@ -23,14 +23,14 @@ export class WindowPosition {
    * Конструктор.
    * @param props input data / входные данные
    * @param client function returning client coordinates manager / функция, возвращающая менеджер клиентских координат
-   * @param element function returning element manager / функция, возвращающая менеджер элементов
    * @param coordinates function returning coordinates manager / функция, возвращающая менеджер координат
+   * @param element function returning element manager / функция, возвращающая менеджер элементов
    */
   constructor(
     protected readonly props: WindowProps,
     protected readonly client: () => WindowClient,
-    protected readonly element: () => WindowElement,
-    protected readonly coordinates: () => WindowCoordinates
+    protected readonly coordinates: () => WindowCoordinates,
+    protected readonly element: () => WindowElement
   ) {
   }
 

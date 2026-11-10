@@ -41,22 +41,22 @@ export class HeaderInclude<
   /**
    * Constructor /
    * Конструктор
-   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index index identifier / идентификатор индекса
    * @param labelId identifier for the label / идентификатор для метки
    */
   constructor(
-    naming: DesignName,
     props: ComponentIncludeProps<Props>,
+    naming: DesignName,
     components?: DesignComponents<HeaderComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
     protected readonly labelId?: string
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /** Checks whether header should be displayed / Проверяет, нужно ли отображать заголовок */

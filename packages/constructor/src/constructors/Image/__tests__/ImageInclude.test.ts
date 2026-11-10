@@ -13,16 +13,16 @@ describe('ImageInclude', () => {
     it('should report display presence (is) based on the image property', () => {
       const naming = new DesignName('d1.card')
 
-      const withString = new ImageInclude(naming, { image: '/photo.png' })
+      const withString = new ImageInclude({ image: '/photo.png' }, naming)
       expect(withString.is).toBe(true)
 
-      const withObject = new ImageInclude(naming, { image: { value: '/photo.png', alt: 'Photo' } })
+      const withObject = new ImageInclude({ image: { value: '/photo.png', alt: 'Photo' } }, naming)
       expect(withObject.is).toBe(true)
 
-      const withEmptyString = new ImageInclude(naming, { image: '' })
+      const withEmptyString = new ImageInclude({ image: '' }, naming)
       expect(withEmptyString.is).toBe(false)
 
-      const withUndefined = new ImageInclude(naming, {})
+      const withUndefined = new ImageInclude({}, naming)
       expect(withUndefined.is).toBe(false)
     })
 
@@ -33,7 +33,7 @@ describe('ImageInclude', () => {
         imageAttrs: { alt: 'Banner', tagImg: true }
       })
       const extra = computed<ImageProps>(() => ({ size: 'cover', lazy: true }))
-      const include = new ImageInclude(naming, props, undefined, extra)
+      const include = new ImageInclude(props, naming, undefined, extra)
 
       expect(include.binds.value).toEqual(expect.objectContaining({
         value: '/photo.png',
@@ -61,8 +61,8 @@ describe('ImageInclude', () => {
     it('should forward load events via emits when onLoad is triggered', () => {
       const emits = vi.fn()
       const include = new ImageInclude(
-        new DesignName('d1.card'),
         { image: '/photo.png' },
+        new DesignName('d1.card'),
         undefined,
         undefined,
         emits
@@ -85,8 +85,8 @@ describe('ImageInclude', () => {
       })
 
       const include = new ImageInclude(
-        new DesignName('d1.card'),
         props,
+        new DesignName('d1.card'),
         undefined,
         () => ({ onLoad: customOnLoad }),
         emits
@@ -115,7 +115,7 @@ describe('ImageInclude', () => {
         },
         props
       )
-      const include = new ImageInclude(new DesignName('d1.card'), props, components)
+      const include = new ImageInclude(props, new DesignName('d1.card'), components)
 
       const rendered = include.render()
       expect(rendered).toHaveLength(1)
@@ -133,8 +133,8 @@ describe('ImageInclude', () => {
   describe('Empty, nullish, and optional dependency handling', () => {
     it('should not throw when onLoad is invoked without an emits handler', () => {
       const include = new ImageInclude(
-        new DesignName('d1.card'),
-        { image: '/photo.png' }
+        { image: '/photo.png' },
+        new DesignName('d1.card')
       )
 
       expect(() => include.onLoad({
@@ -145,8 +145,8 @@ describe('ImageInclude', () => {
 
     it('should return an empty VNode array when components registry is omitted', () => {
       const include = new ImageInclude(
-        new DesignName('d1.card'),
-        { image: '/photo.png' }
+        { image: '/photo.png' },
+        new DesignName('d1.card')
       )
 
       expect(include.render()).toEqual([])
@@ -158,8 +158,8 @@ describe('ImageInclude', () => {
         alt: 'Home icon'
       })
       const include = new ImageInclude(
-        new DesignName('d1.card'),
         () => ({ image: state.image }),
+        new DesignName('d1.card'),
         undefined,
         () => ({ alt: state.alt })
       )
@@ -182,8 +182,8 @@ describe('ImageInclude', () => {
       ['image:图片.png', '图片说明 🚀']
     ])('should preserve Unicode source %s and alt %s in compiled bindings', (image, alt) => {
       const include = new ImageInclude(
-        new DesignName('d1.card'),
-        { image, imageAttrs: { alt } }
+        { image, imageAttrs: { alt } },
+        new DesignName('d1.card')
       )
 
       expect(include.binds.value).toEqual(expect.objectContaining({

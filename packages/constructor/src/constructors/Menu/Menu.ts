@@ -107,8 +107,8 @@ export class Menu {
     this.go = new MenuGoConstructor(this.props, this.value, this.data)
 
     this.bars = new BarsIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       undefined,
       undefined,
@@ -117,8 +117,8 @@ export class Menu {
 
     this.menuWindow = new MenuWindowConstructor(this.props, this.request)
     this.window = new WindowIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       this.menuWindow.getExtra(),
       undefined,

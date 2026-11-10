@@ -98,18 +98,18 @@ describe('WindowOpen', () => {
 
     windowOpen = new WindowOpen(
       mockProps as WindowProps,
-      isMountedRef,
       () => mockClient,
-      () => mockHook,
-      () => mockElement,
-      () => mockTabIndex,
-      () => mockStatus,
-      () => mockFlash,
       () => mockCoordinates,
-      () => mockPosition,
-      () => mockOrigin,
+      () => mockElement,
       () => mockEmit,
-      () => mockStyles
+      () => mockFlash,
+      () => mockHook,
+      () => mockOrigin,
+      () => mockPosition,
+      () => mockStatus,
+      () => mockStyles,
+      () => mockTabIndex,
+      isMountedRef
     )
     windowOpen.onMounted()
   })

@@ -29,21 +29,21 @@ export class WindowVerification {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param isMounted reactive mounted state on client / реактивное состояние монтирования на клиенте
-   * @param persistent function returning persistent manager / функция, возвращающая менеджер анимации закрытия
    * @param classes function returning class manager / функция, возвращающая менеджер классов
    * @param element function returning element manager / функция, возвращающая менеджер элементов
-   * @param staticMode function returning static mode manager / функция, возвращающая менеджер статического режима
    * @param open function returning open state manager / функция, возвращающая менеджер состояния открытия
+   * @param persistent function returning persistent manager / функция, возвращающая менеджер анимации закрытия
+   * @param staticMode function returning static mode manager / функция, возвращающая менеджер статического режима
+   * @param isMounted reactive mounted state on client / реактивное состояние монтирования на клиенте
    */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly isMounted: Ref<boolean>,
-    protected readonly persistent: () => WindowPersistent,
     protected readonly classes: () => WindowClassesData,
     protected readonly element: () => WindowElement,
+    protected readonly open: () => WindowOpen,
+    protected readonly persistent: () => WindowPersistent,
     protected readonly staticMode: () => WindowStatic,
-    protected readonly open: () => WindowOpen
+    protected readonly isMounted: Ref<boolean>
   ) {
   }
 

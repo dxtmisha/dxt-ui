@@ -96,8 +96,8 @@ export class InputFileDropzone {
     this.text = new TextIncludeConstructor(this.props)
 
     this.dropzone = new DropzoneIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         accept: this.props.accept,
@@ -116,8 +116,8 @@ export class InputFileDropzone {
     )
 
     this.label = new FieldLabelConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         isSkeleton: this.props.isSkeleton
@@ -125,8 +125,8 @@ export class InputFileDropzone {
     )
 
     this.message = new FieldMessageConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components
     )
   }

@@ -45,6 +45,102 @@ A standard orchestrator consists of:
 
 ### Orchestrator Template:
 
+### 2.1 Standard Parameter Ordering in Constructors / Стандартный порядок параметров конструкторов
+
+All constructors in the logic layer, orchestrators, and subordinate classes must follow a strict, standardized parameter ordering:
+
+1. **Core Context Trio (always first, in this exact sequence if present / всегда идут первыми в таком порядке)**:
+   - `props` (component properties / входные данные)
+   - `element` (DOM Element Ref / реактивная ссылка на элемент)
+   - `naming` (DesignName helper / помощник именования)
+2. **Subordinate / Connected Dependency Classes (strictly in alphabetical order / подключаемые классы строго по алфавиту)**:
+   - Any connected sub-constructors, helper instances, or their getter factories (`() => SubClass`) must follow **strict alphabetical order** by their parameter name:
+     - Example: `client`, `coordinates`, `element`, `flash`, `open`, `status`, `tabIndex`, `verification`
+3. **Design Infrastructure Parameters (in this exact sequence if present / параметры инфраструктуры дизайна в таком порядке)**:
+   - `components` (design sub-components object / объект компонентов)
+   - `slots` (slots object / объект слотов)
+   - `emits` (event emit function / функция испускания событий)
+   - `constructors` (dependency injection overrides object / объект переопределения конструкторов)
+4. **Custom Options, Flags & Lifecycles (all remaining parameters / далее всё остальное)**:
+   - Any remaining custom parameters (such as `isMounted: Ref<boolean>`, callbacks, extra configurations, or flags) are placed last.
+
+### 2.2 Strict Prohibition of Subordinate Getter Proxies / Строгий запрет на геттеры для подключаемых классов
+
+**КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО** объявлять в оркестраторах логики публичные геттеры, возвращающие экземпляры подключенных классов из `constructorItems` (такие как `get window()`, `get bars()`, `get actions()`, `get model()`, `get event()`, `get client()`, `get coordinates()`, `get element()` и др.):
+
+1. **Инкапсуляция и ленивость (Encapsulation & Lazy Instantiation)**:
+   - Все подключаемые классы из `constructorItems` являются внутренней механикой компонента.
+   - Объявление геттеров нарушает ленивую модель инстанцирования, так как любое случайное обращение к свойству или сериализация объекта приводит к немедленному созданию экземпляра в памяти.
+2. **Единый способ доступа — `this.i('name')` (Unified Access via `this.i`)**:
+   - Внутри оркестратора доступ к подклассам осуществляется **только** через `this.i('name')`.
+   - В фабриках параметров `constructorItems` зависимость передается другим классам в виде ленивой функции `() => this.i('name')` (либо `this.i('name')`, если конструктор требует готовый экземпляр).
+   - В классах слоя дизайна (`DesignConstructorAbstract`, `*DesignAbstract`) обращение к функционалу подклассов логики выполняется строго через `this.item.i('name')` (например: `this.item.i('window').render(...)`, `this.item.i('bars').render()`).
+   - В модульных тестах зависимости проверяются через `instance.i('name')`.
+3. **Состав публичного API оркестратора (Public API Composition)**:
+   - Публичный интерфейс оркестратора должен содержать **только** агрегированные свойства компонента: `binds`, `classes`, `slotData`, `styles`, `aria`, `tag`, либо семантические методы проверки (например: `isMenu()`, `isRender()`).
+   - Ни один экземпляр подключаемого класса не должен выставляться в виде отдельного геттера.
+   - Эталонный пример архитектуры: [`Window`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Window/Window.ts).
+
+### 2.3 Mandatory Lazy-Loading Audit & Refactoring Rule / Обязательный аудит и рефакторинг на ленивое подключение
+
+**ОБЯЗАТЕЛЬНОЕ ПРАВИЛО**: При разработке, анализе кода (code-review) или рефакторинге любого конструктора логики и его вспомогательных классов необходимо **в обязательном порядке проверить каждую зависимость** на возможность ленивого подключения:
+
+1. **Анализ возможности ленивой загрузки (Feasibility Check)**:
+   - Если класс-помощник или инклюд можно сделать ленивым — его **ОБЯЗАНЫ сделать ленивым**. Не допускается оставлять жадную (eager) загрузку «на потом» или из-за удобства передачи.
+2. **Переделка конструкторов зависимостей на функции-геттеры (`() => SubClass`)**:
+   - Если один вспомогательный класс принимает в конструктор другой вспомогательный класс, конструктор **ОБЯЗАТЕЛЬНО должен быть переделан на приём чистой функции-геттера**:
+     ```typescript
+     // ❌ ЗАПРЕЩЕНО (жадная привязка):
+     constructor(protected readonly client: WindowClient) {}
+
+     // ✅ ОБЯЗАТЕЛЬНО (ленивая привязка):
+     constructor(protected readonly client: () => WindowClient) {}
+     ```
+   - Внутри методов класса обращение к экземпляру происходит по требованию (on demand): `this.client().doSomething()`.
+   - В теле конструктора вызывать `this.client()` **СТРОГО ЗАПРЕЩЕНО**.
+3. **Условная инициализация через `conditions`**:
+   - Если функциональность класса требуется только при определённых входных свойствах или флагах (например: `icon`, `image`, `label`, `progress`, `ripple`, `skeleton`, `persistent`, `staticMode`, `border`, `flash`), для него **ОБЯЗАТЕЛЬНО** объявляется статический метод `static is(props)` и указывается `conditions: () => SubClass.is(this.props)` в `constructorItems`.
+4. **Синхронизация фабрик параметров в `constructorItems`**:
+   - При переделке сигнатуры на ленивый геттер фабрика параметров в `constructorItems` обновляется на передачу стрелочной функции:
+     ```typescript
+     // ❌ Было (жадная инстанциация при первом же обращении):
+     parameters: () => [this.props, this.i('client')]
+
+     // ✅ Стало (инстанциация произойдет только когда метод класса реально вызовет this.client()):
+     parameters: () => [this.props, () => this.i('client')]
+     ```
+5. **Обязательный рефакторинг существующего кода**:
+   - Если в существующем коде обнаружен вспомогательный класс, принимающий прямой экземпляр зависимости вместо `() => SubClass`, агент **ОБЯЗАН переписать** этот класс и связанные файлы (тесты, оркестратор, фабрики параметров) на ленивую схему `() => SubClass`.
+
+### 2.4 Strict Prohibition of Legacy Constructor Adapters & Normalizers / Строгий запрет на устаревшие интерфейсы конструкторов и функции нормализации
+
+**КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО** объявлять устаревшие типы конструкторов (вроде `*LegacyConstructors`) и функции-нормализаторы (вроде `normalize*Constructors`):
+
+1. **Единый типизированный интерфейс внедрения зависимостей (Unified Modern DI)**:
+   - В параметрах конструкторов слоёв логики и дизайна допустим **только** стандартный объект переопределения конструкторов:
+     ```typescript
+     // ❌ ЗАПРЕЩЕНО (легаси-интерфейсы и нормализаторы):
+     export type MyComponentLegacyConstructors = {
+       ActionsConstructor?: typeof ActionsInclude
+       BarsConstructor?: typeof BarsInclude
+     }
+     function normalizeConstructors(...) { ... }
+     constructor(..., constructors?: Partial<MyComponentConstructors> | MyComponentLegacyConstructors) {
+       super(..., normalizeConstructors(constructors))
+     }
+
+     // ✅ ОБЯЗАТЕЛЬНО (чистый современный стандарт):
+     constructor(..., constructors?: Partial<MyComponentConstructors>) {
+       super(..., constructors)
+     }
+     ```
+2. **Только camelCase ключи конструкторов**:
+   - Ключи в типе `<Component>Constructors` и в объекте `constructors?: Partial<...>` именуются строго в `camelCase` без постфикса `Constructor` (например: `actions`, `bars`, `window`, `model`, `client`, `coordinates`, `element`).
+   - Имена в PascalCase с постфиксом `Constructor` (`WindowConstructor`, `BarsConstructor`) являются устаревшим рудиментом и не должны поддерживаться.
+3. **Прямая передача в `super(...)`**:
+   - Объект `constructors` передается в `super(...)` напрямую без каких-либо адаптеров или мутаций.
+   - Любые обнаруженные `LegacyConstructors` и функции `normalize*Constructors` подлежат немедленному удалению при рефакторинге или проверке кода.
+
 ```typescript
 import {
   type ConstrBind,
@@ -264,6 +360,7 @@ When helper class `B` depends on helper class `A`:
    ```
 3. **STRICT BAN on Dual Variants / Union Types (`Type | (() => Type)`)**: Subordinate helper classes must strictly receive and type dependencies as pure functions `() => SubClass` (e.g. `protected readonly elementItem: () => ArrowElement`). Using union types such as `SubClass | (() => SubClass)` or accepting raw instances is **STRICTLY FORBIDDEN**. Always require a pure getter function `() => SubClass` and invoke it on demand as `this.elementItem()`.
 4. **CRITICAL RULE**: Sub-class constructors must **never** call `this.a()` eagerly in their constructor body. Call `this.a()` strictly inside methods or computed properties.
+5. **Mandatory Refactoring of Concrete Instances / Обязательный рефакторинг прямых экземпляров**: Always audit existing subordinate classes. If any subordinate class accepts a concrete instance instead of a getter function `() => SubClass`, you **MUST** refactor its constructor signature and implementation to receive a pure getter function `() => SubClass`, and update `constructorItems` in the orchestrator (`() => this.i(...)`) and all corresponding unit tests accordingly.
 
 ### Step 4: Conditional Instantiation (`conditions`) & Lazy Loading Guard
 To ensure optional features and subordinate inclusion classes are not prematurely or needlessly instantiated, declare `conditions` in `constructorItems`:

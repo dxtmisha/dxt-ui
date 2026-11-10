@@ -26,7 +26,7 @@ describe('ButtonInclude (isolated class)', () => {
     it('should determine is based on label, icon, or iconTrailing in binds', () => {
       const props: ButtonPropsInclude = reactive({})
       const naming = new DesignName('d1.alert')
-      const include = new ButtonInclude(naming, props)
+      const include = new ButtonInclude(props, naming)
 
       expect(include.is).toBe(false)
 
@@ -48,7 +48,7 @@ describe('ButtonInclude (isolated class)', () => {
         buttonAttrs: { label: 'Save', disabled: true }
       })
       const naming = new DesignName('d1.alert')
-      const include = new ButtonInclude(naming, props)
+      const include = new ButtonInclude(props, naming)
 
       expect(include.binds.value).toEqual({
         class: 'd1-alert__button',
@@ -62,7 +62,7 @@ describe('ButtonInclude (isolated class)', () => {
         buttonAttrs: { label: 'Confirm' }
       })
       const naming = new DesignName('d1.alert')
-      const include = new ButtonInclude(naming, props, undefined, { primary: true } as any)
+      const include = new ButtonInclude(props, naming, undefined, { primary: true } as any)
 
       expect(include.binds.value).toEqual({
         class: 'd1-alert__button',
@@ -75,7 +75,7 @@ describe('ButtonInclude (isolated class)', () => {
   describe('Edge cases and reactivity', () => {
     it('should handle undefined and empty props gracefully', () => {
       const naming = new DesignName('d1.alert')
-      const include = new ButtonInclude(naming, {})
+      const include = new ButtonInclude({}, naming)
 
       expect(include.is).toBe(false)
       expect(include.binds.value).toEqual({
@@ -90,7 +90,7 @@ describe('ButtonInclude (isolated class)', () => {
 
       const HostComponent = defineComponent({
         setup() {
-          const localInstance = new ButtonInclude(naming, props)
+          const localInstance = new ButtonInclude(props, naming)
           includeInstance = localInstance
           return () => h('div', { class: 'host' }, localInstance.render())
         }

@@ -81,8 +81,8 @@ export class CollageItem {
     this.event = new EventClickIncludeConstructor(props, undefined, emits)
 
     this.image = new ImageIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       () => ({
         tagImg: true,
@@ -103,8 +103,8 @@ export class CollageItem {
     )
 
     this.collageBar = new CollageBarIncludeConstructor(
-      naming,
       props,
+      naming,
       components
     )
   }

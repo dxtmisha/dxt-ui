@@ -74,17 +74,17 @@ describe('Modal', () => {
       const modal = scope.run(() => new InspectableModal(props, element, naming))!
 
       expect(modal.instantiatedItems.window).toBeUndefined()
-      const windowItem = modal.window
+      const windowItem = modal.i('window')
       expect(windowItem).toBeDefined()
       expect(modal.instantiatedItems.window).toBeDefined()
 
       expect(modal.instantiatedItems.bars).toBeUndefined()
-      const barsItem = modal.bars
+      const barsItem = modal.i('bars')
       expect(barsItem).toBeDefined()
       expect(modal.instantiatedItems.bars).toBeDefined()
 
       expect(modal.instantiatedItems.actions).toBeUndefined()
-      const actionsItem = modal.actions
+      const actionsItem = modal.i('actions')
       expect(actionsItem).toBeDefined()
       expect(modal.instantiatedItems.actions).toBeDefined()
 
@@ -172,40 +172,9 @@ describe('Modal', () => {
           )
       )!
 
-      const windowInstance = modal.window
+      const windowInstance = modal.i('window')
       expect(mockWindowConstructor).toHaveBeenCalled()
       expect(windowInstance).toEqual({ mockWindow: true })
-
-      scope.stop()
-    })
-
-    it('should support legacy constructor overrides format', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ModalProps = reactive({})
-
-      const mockBarsConstructor = vi.fn().mockImplementation(function () {
-        return { mockBars: true }
-      })
-
-      const modal = scope.run(
-        () =>
-          new InspectableModal(
-            props,
-            element,
-            naming,
-            undefined,
-            undefined,
-            undefined,
-            {
-              BarsConstructor: mockBarsConstructor as any
-            }
-          )
-      )!
-
-      const barsInstance = modal.bars
-      expect(mockBarsConstructor).toHaveBeenCalled()
-      expect(barsInstance).toEqual({ mockBars: true })
 
       scope.stop()
     })

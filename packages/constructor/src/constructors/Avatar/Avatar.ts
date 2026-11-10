@@ -87,8 +87,8 @@ export class Avatar {
     this.enabled = new EnabledIncludeConstructor(props)
 
     this.image = new ImageIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       () => ({
         disabled: this.props.disabled
@@ -107,8 +107,8 @@ export class Avatar {
       this.skeleton
     )
     this.badge = new BadgeIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       { overlap: 'circular' }
     )

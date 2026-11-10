@@ -45,13 +45,13 @@ describe('WindowPosition', () => {
   })
 
   it('should initialize positioning to 0', () => {
-    const position = new WindowPosition(mockProps as WindowProps, () => mockClient, () => mockElement, () => mockCoordinates)
+    const position = new WindowPosition(mockProps as WindowProps, () => mockClient, () => mockCoordinates, () => mockElement)
     expect(position.getX()).toBe(0)
     expect(position.getY()).toBe(0)
   })
 
   it('should calculate style positions in pixels', () => {
-    const position = new WindowPosition(mockProps as WindowProps, () => mockClient, () => mockElement, () => mockCoordinates)
+    const position = new WindowPosition(mockProps as WindowProps, () => mockClient, () => mockCoordinates, () => mockElement)
     position.update()
 
     expect(position.getStyleX()).toBe(`${position.getX()}px`)
@@ -59,7 +59,7 @@ describe('WindowPosition', () => {
   })
 
   it('should verify overelement state using isOver', () => {
-    const position = new WindowPosition(mockProps as WindowProps, () => mockClient, () => mockElement, () => mockCoordinates)
+    const position = new WindowPosition(mockProps as WindowProps, () => mockClient, () => mockCoordinates, () => mockElement)
     expect(position.isOver()).toBe(false)
 
     mockProps.axis = 'on'
@@ -67,14 +67,14 @@ describe('WindowPosition', () => {
   })
 
   it('should update body scroll dataset attribute via updateBody()', () => {
-    const position = new WindowPosition(mockProps as WindowProps, () => mockClient, () => mockElement, () => mockCoordinates)
+    const position = new WindowPosition(mockProps as WindowProps, () => mockClient, () => mockCoordinates, () => mockElement)
     position.updateBody()
 
     expect(document.body.dataset.scroll).toBeDefined()
   })
 
   it('should handle updateScroll() when isOver() is false without error', () => {
-    const position = new WindowPosition(mockProps as WindowProps, () => mockClient, () => mockElement, () => mockCoordinates)
+    const position = new WindowPosition(mockProps as WindowProps, () => mockClient, () => mockCoordinates, () => mockElement)
     expect(() => position.updateScroll()).not.toThrow()
   })
 })

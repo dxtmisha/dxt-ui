@@ -66,12 +66,12 @@ describe('WindowVerification', () => {
   it('should call toggle() if window is closed and enabled', async () => {
     const verification = new WindowVerification(
       mockProps as WindowProps,
-      isMountedRef,
-      () => mockPersistent,
       () => mockClasses,
       () => mockElement,
+      () => mockOpen,
+      () => mockPersistent,
       () => mockStatic,
-      () => mockOpen
+      isMountedRef
     )
 
     await verification.update(targetElement)
@@ -83,12 +83,12 @@ describe('WindowVerification', () => {
   it('should ignore verification updates if target is not in body', async () => {
     const verification = new WindowVerification(
       mockProps as WindowProps,
-      isMountedRef,
-      () => mockPersistent,
       () => mockClasses,
       () => mockElement,
+      () => mockOpen,
+      () => mockPersistent,
       () => mockStatic,
-      () => mockOpen
+      isMountedRef
     )
 
     const orphanElement = document.createElement('div')
@@ -101,12 +101,12 @@ describe('WindowVerification', () => {
     mockProps.disabled = true
     const verification = new WindowVerification(
       mockProps as WindowProps,
-      isMountedRef,
-      () => mockPersistent,
       () => mockClasses,
       () => mockElement,
+      () => mockOpen,
+      () => mockPersistent,
       () => mockStatic,
-      () => mockOpen
+      isMountedRef
     )
 
     await verification.update(targetElement)

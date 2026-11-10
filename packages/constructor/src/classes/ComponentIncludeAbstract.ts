@@ -65,15 +65,15 @@ export abstract class ComponentIncludeAbstract<
    * Abstract constructor for initializing basic component inclusion properties.
    *
    * Абстрактный конструктор для инициализации базовых свойств включения компонента.
-   * @param naming component naming helper / помощник именования компонента
    * @param props input properties / входные свойства
+   * @param naming component naming helper / помощник именования компонента
    * @param components design components registry / реестр дизайн-компонентов
    * @param extra additional properties or attributes / дополнительные свойства или атрибуты
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    protected readonly naming: DesignName,
     protected readonly props: ComponentIncludeProps<Props>,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComponents<any, Props>,
     protected readonly extra?: ComponentIncludeExtra<PropsExtra>,
     protected readonly index?: string

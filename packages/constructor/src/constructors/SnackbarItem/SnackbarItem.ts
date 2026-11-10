@@ -92,14 +92,14 @@ export class SnackbarItem {
     this.icon = new IconConstructor(props, naming, components)
 
     this.button = new ButtonConstructor(
-      naming,
       () => this.props?.button,
+      naming,
       components,
       { onClick: this.event.onClick }
     )
     this.actions = new ActionsConstructor(
-      naming,
       props,
+      naming,
       components,
       { align: 'left' } as ActionsProps,
       undefined,

@@ -34,7 +34,7 @@ describe('ProgressInclude (isolated class)', () => {
     it('should determine reactive is property based on loading prop', () => {
       const props: ProgressPropsInclude = reactive({ loading: false })
       const naming = new DesignName('d1.button')
-      const include = new ProgressInclude(naming, props)
+      const include = new ProgressInclude(props, naming)
 
       expect(include.is).toBe(false)
 
@@ -48,7 +48,7 @@ describe('ProgressInclude (isolated class)', () => {
     it('should provide aria attributes matching disabled state when loading', () => {
       const props: ProgressPropsInclude = reactive({ loading: false })
       const naming = new DesignName('d1.button')
-      const include = new ProgressInclude(naming, props)
+      const include = new ProgressInclude(props, naming)
 
       expect(include.aria.value).toEqual({})
 
@@ -59,7 +59,7 @@ describe('ProgressInclude (isolated class)', () => {
     it('should resolve extra properties mapping loading to visible and include loading class', () => {
       const props: ProgressPropsInclude = reactive({ loading: true })
       const naming = new DesignName('d1.button')
-      const include = new ProgressInclude(naming, props)
+      const include = new ProgressInclude(props, naming)
 
       expect(include.binds.value).toEqual({
         class: 'd1-button__loading',
@@ -77,7 +77,7 @@ describe('ProgressInclude (isolated class)', () => {
   describe('Edge cases, boundaries, and reactivity', () => {
     it('should handle undefined and empty props gracefully', () => {
       const naming = new DesignName('d1.button')
-      const include = new ProgressInclude(naming, {})
+      const include = new ProgressInclude({}, naming)
 
       expect(include.is).toBe(false)
       expect(include.aria.value).toEqual({})
@@ -89,7 +89,7 @@ describe('ProgressInclude (isolated class)', () => {
     it('should handle extra configurations passed to constructor', () => {
       const props: ProgressPropsInclude = reactive({ loading: true })
       const naming = new DesignName('d1.button')
-      const include = new ProgressInclude(naming, props, undefined, { circular: true, inverse: true })
+      const include = new ProgressInclude(props, naming, undefined, { circular: true, inverse: true })
 
       expect(include.binds.value).toEqual({
         circular: true,
@@ -106,7 +106,7 @@ describe('ProgressInclude (isolated class)', () => {
 
       const HostComponent = defineComponent({
         setup() {
-          const localInstance = new ProgressInclude(naming, props)
+          const localInstance = new ProgressInclude(props, naming)
           includeInstance = localInstance
           return () => h('div', { ...localInstance.aria.value }, localInstance.render())
         }

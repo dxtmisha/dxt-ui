@@ -60,8 +60,8 @@ export class Block {
     } = constructors
 
     this.header = new HeaderIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       undefined,
       undefined,

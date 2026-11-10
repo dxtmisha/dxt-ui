@@ -132,36 +132,36 @@ class MinimalComponentInclude extends ComponentIncludeAbstract<TestProps, TestEx
 describe('ComponentIncludeAbstract', () => {
   describe('Standard functional requirements (Happy path)', () => {
     it('should return the BEM sub-element class name via getClassName()', () => {
-      const include = new TestComponentInclude(new DesignName('parent.class'), {})
+      const include = new TestComponentInclude({}, new DesignName('parent.class'))
       expect(include.testGetClassName()).toBe('parent-class__test-sub')
       expect(include.is).toBe(true)
     })
 
     it('should resolve and strip undefined properties in getProps()', () => {
       const getProperties = (): TestProps => ({ value: 'active', emptyField: undefined })
-      const include = new TestComponentInclude(new DesignName('parent.class'), getProperties)
+      const include = new TestComponentInclude(getProperties, new DesignName('parent.class'))
 
       expect(include.testGetProps()).toEqual({ value: 'active' })
     })
 
     it('should extract custom attributes from props via getPropsAttrs()', () => {
       const props: TestProps = { subAttrs: { 'data-custom': 'hello' } }
-      const include = new TestComponentInclude(new DesignName('parent.class'), props)
+      const include = new TestComponentInclude(props, new DesignName('parent.class'))
 
       expect(include.testGetPropsAttrs()).toEqual({ 'data-custom': 'hello' })
     })
 
     it('should resolve reactive and function extra attributes via getExtra()', () => {
       const extraRef = ref<Partial<ConstrBind<TestExtraProps>>>({ 'aria-expanded': true })
-      const include = new TestComponentInclude(new DesignName('parent.class'), {}, undefined, extraRef)
+      const include = new TestComponentInclude({}, new DesignName('parent.class'), undefined, extraRef)
 
       expect(include.testGetExtra()).toEqual({ 'aria-expanded': true })
     })
 
     it('should construct reactive binds including element ref and merge override attrs in getAttrs()', () => {
       const include = new TestComponentInclude(
-        new DesignName('parent.class'),
-        { subAttrs: { 'data-custom': 'from-props' } }
+        { subAttrs: { 'data-custom': 'from-props' } },
+        new DesignName('parent.class')
       )
       const binds = include.binds.value
 
@@ -177,7 +177,7 @@ describe('ComponentIncludeAbstract', () => {
     })
 
     it('should proxy and cast exposed sub-component methods across boolean, string, number, and default types', () => {
-      const include = new TestComponentInclude(new DesignName('parent.class'), {})
+      const include = new TestComponentInclude({}, new DesignName('parent.class'))
       const expose = include.expose
 
       expect(expose.focus()).toBe(false)
@@ -219,8 +219,8 @@ describe('ComponentIncludeAbstract', () => {
       } as unknown as DesignComponents<Record<string, object>, TestProps>
 
       const include = new TestComponentInclude(
-        new DesignName('parent.class'),
         {},
+        new DesignName('parent.class'),
         componentsMock,
         undefined,
         'default-idx'
@@ -239,7 +239,7 @@ describe('ComponentIncludeAbstract', () => {
 
   describe('Boundary values, optional configurations, and fallback branches', () => {
     it('should omit ref in binds when hasInitElement is false and return undefined when propsAttrsName is absent', () => {
-      const minimal = new MinimalComponentInclude(new DesignName('parent.class'), undefined)
+      const minimal = new MinimalComponentInclude(undefined, new DesignName('parent.class'))
 
       expect(minimal.binds.value.ref).toBeUndefined()
       expect(minimal.binds.value.class).toBe('parent-class__minimal')
@@ -252,10 +252,10 @@ describe('ComponentIncludeAbstract', () => {
         render: renderMock
       } as unknown as DesignComponents<Record<string, object>, TestProps>
 
-      const withoutComponents = new TestComponentInclude(new DesignName('parent.class'), {})
+      const withoutComponents = new TestComponentInclude({}, new DesignName('parent.class'))
       expect(withoutComponents.render()).toEqual([])
 
-      const withComponents = new TestComponentInclude(new DesignName('parent.class'), {}, componentsMock)
+      const withComponents = new TestComponentInclude({}, new DesignName('parent.class'), componentsMock)
       expect(withComponents.render(undefined, undefined, () => false)).toEqual([])
       expect(renderMock).not.toHaveBeenCalled()
     })

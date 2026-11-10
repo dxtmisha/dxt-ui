@@ -96,13 +96,13 @@ export class TableHeaderItem extends TableItem {
     this.sort = new TableHeaderItemSortConstructor(props, emits)
 
     this.chip = new ChipIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       this.sort.chipExtra
     )
 
-    this.tooltip = new TooltipIncludeConstructor(naming, props, components, this.slots)
+    this.tooltip = new TooltipIncludeConstructor(props, naming, components, this.slots)
   }
 
   /**

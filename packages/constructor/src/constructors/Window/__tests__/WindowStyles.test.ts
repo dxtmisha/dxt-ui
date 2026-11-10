@@ -46,11 +46,11 @@ describe('WindowStyles', () => {
 
   it('should set style properties on update()', () => {
     const styles = new WindowStyles(
-      () => mockElement,
+      new DesignName('d1.window'),
       () => mockCoordinates,
-      () => mockPosition,
+      () => mockElement,
       () => mockOrigin,
-      new DesignName('d1.window')
+      () => mockPosition
     )
     styles.update()
 
@@ -65,11 +65,11 @@ describe('WindowStyles', () => {
 
   it('should update window type datasets', () => {
     const styles = new WindowStyles(
-      () => mockElement,
+      new DesignName('d1.window'),
       () => mockCoordinates,
-      () => mockPosition,
+      () => mockElement,
       () => mockOrigin,
-      new DesignName('d1.window')
+      () => mockPosition
     )
 
     // Initial state setup to trigger update

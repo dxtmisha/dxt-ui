@@ -127,8 +127,8 @@ export class Tooltip {
     )
 
     this.arrow = new ArrowIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       undefined,
       undefined,

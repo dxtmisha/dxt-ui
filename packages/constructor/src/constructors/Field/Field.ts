@@ -154,8 +154,8 @@ export class Field {
     this.suffix = new SuffixIncludeConstructor(props, naming, slots)
 
     this.progress = new ProgressIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       {
         circular: true,
@@ -176,8 +176,8 @@ export class Field {
 
     this.fieldElement = new FieldElement(props, element)
     this.fieldLabel = new FieldLabelIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       () => this.skeleton.binds,
       undefined,
@@ -185,8 +185,8 @@ export class Field {
       () => props.counterTop
     )
     this.fieldMessage = new FieldMessageIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       () => this.skeleton.binds,
       undefined,

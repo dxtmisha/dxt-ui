@@ -49,8 +49,8 @@ export class FieldMessageInclude<
 
   /**
    * Constructor
-   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index index identifier / идентификатор индекса
@@ -58,17 +58,17 @@ export class FieldMessageInclude<
    * @param isCounter whether to display the counter / отображать ли счетчик
    */
   constructor(
-    naming: DesignName,
     props: ComponentIncludeProps<Props>,
+    naming: DesignName,
     components?: DesignComponents<FieldMessageComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
     protected readonly validationMessage?: RefOrNormalOrFunction<string>,
     protected readonly isCounter?: RefOrNormalOrFunction<boolean | undefined>
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
 
-    this.fieldCounter = new FieldCounterInclude(this.naming, this.props)
+    this.fieldCounter = new FieldCounterInclude(this.props, this.naming)
   }
 
   /**

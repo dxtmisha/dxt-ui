@@ -38,22 +38,22 @@ export class ActionsInclude extends ComponentIncludeAbstract<
    * Constructor for ActionsInclude class.
    *
    * Конструктор для класса ActionsInclude.
-   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index index identifier / идентификатор индекса
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    naming: DesignName,
     props: Readonly<ActionsPropsInclude>,
+    naming: DesignName,
     components?: DesignComponents<ActionsComponentInclude, ActionsPropsInclude>,
     extra?: ComponentIncludeExtra<ActionsProps>,
     index?: string,
     protected readonly emits?: ConstrEmit<ActionsEmitsInclude>
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /**

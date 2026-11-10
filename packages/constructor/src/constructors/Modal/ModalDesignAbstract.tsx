@@ -5,9 +5,9 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import type { ModalAbstract } from './ModalAbstract'
 import type { WindowControlItem } from '../Window'
 
+import type { ModalAbstract } from './ModalAbstract'
 import type { ModalPropsBasic } from './props'
 import type {
   ModalClasses,

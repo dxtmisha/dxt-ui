@@ -38,18 +38,18 @@ export class AlertLinkInclude<
 
   /**
    * Constructor
-   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    naming: DesignName,
     props: Readonly<Props>,
+    naming: DesignName,
     components?: DesignComponents<any, Props>,
     protected readonly emits?: ConstrEmit<AlertLinkEmitsInclude>
   ) {
-    super(naming, props, components)
+    super(props, naming, components)
   }
 
   /**

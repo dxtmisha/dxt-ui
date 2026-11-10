@@ -75,7 +75,7 @@ export class ActionSheetDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode[] {
-    return this.item.window.render(
+    return this.item.i('window').render(
       {
         control: this.renderControl,
         title: this.renderTitleTouch,

@@ -15,8 +15,8 @@ import { TabIndexInclude } from '../../classes/TabIndexInclude'
 import { TeleportInclude } from '../../classes/TeleportInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
-import { ScrollbarInclude } from '../Scrollbar'
 import { ImageInclude } from '../Image'
+import { ScrollbarInclude } from '../Scrollbar'
 
 import { WindowClassesData } from './WindowClassesData'
 import { WindowClient } from './WindowClient'
@@ -38,8 +38,8 @@ import { WindowStyles } from './WindowStyles'
 import { WindowVerification } from './WindowVerification'
 
 import type { WindowControlItem } from './basicTypes'
-import type { WindowComponents, WindowEmits, WindowSlots } from './types'
 import type { WindowPropsBasic } from './props'
+import type { WindowComponents, WindowEmits, WindowSlots } from './types'
 
 /** Window dependency constructors type / Тип конструкторов зависимостей Window */
 export type WindowConstructors = {
@@ -130,8 +130,8 @@ export class Window extends DesignLogicAbstract<
     element: {
       item: WindowElement,
       parameters: () => [
-        () => this.i('classesData'),
-        this.element
+        this.element,
+        () => this.i('classesData')
       ]
     },
     emit: {
@@ -155,11 +155,11 @@ export class Window extends DesignLogicAbstract<
       item: WindowEvent,
       parameters: () => [
         this.props,
-        () => this.i('tabIndex'),
-        () => this.i('status'),
         () => this.i('client'),
         () => this.i('flash'),
         () => this.i('open'),
+        () => this.i('status'),
+        () => this.i('tabIndex'),
         () => this.i('verification')
       ]
     },
@@ -176,8 +176,8 @@ export class Window extends DesignLogicAbstract<
       parameters: () => [
         this.props,
         () => this.i('classesData'),
-        () => this.i('staticMode'),
         () => this.i('open'),
+        () => this.i('staticMode'),
         () => this.i('teleport')
       ]
     },
@@ -189,8 +189,8 @@ export class Window extends DesignLogicAbstract<
       item: ImageInclude,
       conditions: () => Boolean(this.props.image),
       parameters: () => [
-        this.naming,
         this.props,
+        this.naming,
         this.components,
         undefined,
         this.emits
@@ -208,18 +208,18 @@ export class Window extends DesignLogicAbstract<
       item: WindowOpen,
       parameters: () => [
         this.props,
-        this.isMounted,
         () => this.i('client'),
-        () => this.i('hook'),
-        () => this.i('element'),
-        () => this.i('tabIndex'),
-        () => this.i('status'),
-        () => this.i('flash'),
         () => this.i('coordinates'),
-        () => this.i('position'),
-        () => this.i('origin'),
+        () => this.i('element'),
         () => this.i('emit'),
-        () => this.i('styles')
+        () => this.i('flash'),
+        () => this.i('hook'),
+        () => this.i('origin'),
+        () => this.i('position'),
+        () => this.i('status'),
+        () => this.i('styles'),
+        () => this.i('tabIndex'),
+        this.isMounted
       ]
     },
     origin: {
@@ -244,8 +244,8 @@ export class Window extends DesignLogicAbstract<
       parameters: () => [
         this.props,
         () => this.i('client'),
-        () => this.i('element'),
-        () => this.i('coordinates')
+        () => this.i('coordinates'),
+        () => this.i('element')
       ]
     },
     scrollbar: {
@@ -272,11 +272,11 @@ export class Window extends DesignLogicAbstract<
     styles: {
       item: WindowStyles,
       parameters: () => [
-        () => this.i('element'),
+        this.naming,
         () => this.i('coordinates'),
-        () => this.i('position'),
+        () => this.i('element'),
         () => this.i('origin'),
-        this.naming
+        () => this.i('position')
       ]
     },
     tabIndex: {
@@ -298,12 +298,12 @@ export class Window extends DesignLogicAbstract<
       item: WindowVerification,
       parameters: () => [
         this.props,
-        this.isMounted,
-        () => this.i('persistent'),
         () => this.i('classesData'),
         () => this.i('element'),
+        () => this.i('open'),
+        () => this.i('persistent'),
         () => this.i('staticMode'),
-        () => this.i('open')
+        this.isMounted
       ]
     }
   }

@@ -51,8 +51,8 @@ export class FieldLabelInclude extends ComponentIncludeAbstract<
 
   /**
    * Constructor
-   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index index identifier / идентификатор индекса
@@ -60,17 +60,17 @@ export class FieldLabelInclude extends ComponentIncludeAbstract<
    * @param isCounter whether to display the counter / отображать ли счетчик
    */
   constructor(
-    naming: DesignName,
     props: ComponentIncludeProps<FieldLabelPropsInclude>,
+    naming: DesignName,
     components?: DesignComponents<FieldLabelComponentInclude, FieldLabelPropsInclude>,
     extra?: ComponentIncludeExtra<FieldLabelPropsBasic>,
     index?: string,
     protected readonly forId?: RefOrNormalOrFunction<string>,
     protected readonly isCounter?: RefOrNormalOrFunction<boolean | undefined>
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
 
-    this.fieldCounter = new FieldCounterInclude(naming, props)
+    this.fieldCounter = new FieldCounterInclude(props, naming)
   }
 
   /**

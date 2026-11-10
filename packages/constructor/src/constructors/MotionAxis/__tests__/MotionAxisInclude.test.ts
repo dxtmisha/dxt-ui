@@ -5,7 +5,7 @@ import { MotionAxisInclude } from '../MotionAxisInclude'
 
 describe('MotionAxisInclude', () => {
   it('should test inclusion props', () => {
-    const include = new MotionAxisInclude(new DesignName('class.base'), { selected: 'slide-1' })
+    const include = new MotionAxisInclude({ selected: 'slide-1' }, new DesignName('class.base'))
     expect(include.selectedItem).toBe('slide-1')
   })
 })

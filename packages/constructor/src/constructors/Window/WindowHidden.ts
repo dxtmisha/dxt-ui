@@ -36,15 +36,15 @@ export class WindowHidden extends DesignLifecycleAbstract {
    * Constructor
    * @param props input data / входные данные
    * @param classes function returning an object for working with class names / функция, возвращающая объект для работы с названиями классов
-   * @param staticMode function returning class object for working with static status / функция, возвращающая объект класса для работы со статическим статусом
    * @param open function returning an object for working with the open state / функция, возвращающая объект для работы с состоянием открытия окна
+   * @param staticMode function returning class object for working with static status / функция, возвращающая объект класса для работы со статическим статусом
    * @param teleport function returning an object for working with teleport status / функция, возвращающая объект для работы с состоянием телепорта окна
    */
   constructor(
     protected readonly props: WindowProps,
     protected readonly classes: () => WindowClassesData,
-    protected readonly staticMode: () => WindowStatic,
     protected readonly open: () => WindowOpen,
+    protected readonly staticMode: () => WindowStatic,
     protected readonly teleport: () => TeleportInclude
   ) {
     super()

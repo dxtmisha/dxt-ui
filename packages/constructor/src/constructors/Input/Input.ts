@@ -191,8 +191,8 @@ export class Input {
     )
 
     this.field = new FieldIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       () => ({
         iconTrailing: this.password.icon ?? this.props.iconTrailing,
@@ -206,8 +206,8 @@ export class Input {
       this.password.toggle
     )
     this.mask = new MaskIncludeConstructor(
-      this.naming,
       this.props,
+      this.naming,
       this.components,
       undefined,
       undefined,

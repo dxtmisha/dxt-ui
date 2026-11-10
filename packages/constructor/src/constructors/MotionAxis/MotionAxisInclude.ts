@@ -50,8 +50,8 @@ export class MotionAxisInclude<
    * Constructor for programmatic inclusion of MotionAxis.
    *
    * Конструктор для программного включения MotionAxis.
-   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index index identifier / идентификатор индекса
@@ -59,15 +59,15 @@ export class MotionAxisInclude<
    * @param selected selected element / выбранный элемент
    */
   constructor(
-    naming: DesignName,
     props: Readonly<Props>,
+    naming: DesignName,
     components?: DesignComponents<MotionAxisComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
     protected readonly emits?: ConstrEmit<MotionAxisEmitsInclude>,
     protected readonly selected?: RefOrNormalOrFunction<MotionAxisSelectedValue>
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /** Selected element / Выбранный элемент */

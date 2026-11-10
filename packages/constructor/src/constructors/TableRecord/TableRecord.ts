@@ -60,16 +60,16 @@ export class TableRecord {
     } = constructors
 
     this.tableHeaderItem = new TableHeaderItemIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       { onSort: (item: SortColumnItem) => this.emits?.('sort', item) },
       slots
     )
 
     this.tableItem = new TableItemIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       undefined,
       slots

@@ -54,8 +54,8 @@ export class FieldInclude extends ComponentIncludeAbstract<
    * @param onPrevious Previous arrow click handler / Обработчик клика по предыдущей стрелке
    */
   constructor(
-    naming: DesignName,
     props: ComponentIncludeProps<FieldPropsInclude & FieldArrowProps>,
+    naming: DesignName,
     components?: DesignComponents<FieldComponentInclude, FieldPropsInclude & FieldArrowProps>,
     extra?: ComponentIncludeExtra<FieldPropsBasic>,
     index?: string,
@@ -68,8 +68,8 @@ export class FieldInclude extends ComponentIncludeAbstract<
     protected readonly onPrevious?: () => void
   ) {
     super(
-      naming,
       props,
+      naming,
       components,
       extra,
       index

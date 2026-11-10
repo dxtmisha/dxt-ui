@@ -33,6 +33,7 @@ export class MaskInclude<
    * Constructor
    * @param naming component naming helper / помощник именования компонента
    * @param props input data / входные данные
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index index identifier / идентификатор индекса
@@ -41,8 +42,8 @@ export class MaskInclude<
    * @param type function returning object for working with the input type / функция, возвращающая объект для работы с типом ввода
    */
   constructor(
-    naming: DesignName,
     props: ComponentIncludeProps<Props>,
+    naming: DesignName,
     components?: DesignComponents<MaskComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
@@ -50,7 +51,7 @@ export class MaskInclude<
     protected readonly valueDefault: RefOrNormalOrFunction<any> = '',
     protected readonly type?: () => FieldTypeInclude
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /** Callback after component mounting / Обработчик после монтирования компонента */

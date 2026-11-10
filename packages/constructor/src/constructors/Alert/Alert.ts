@@ -114,14 +114,14 @@ export class Alert {
     this.description = new DescriptionIncludeConstructor(props, naming, slots)
 
     this.button = new ButtonIncludeConstructor(
-      naming,
       undefined,
+      naming,
       components,
       () => getBind(props.button, 'label')
     )
     this.buttonClose = new ButtonIncludeConstructor(
-      naming,
       undefined,
+      naming,
       components,
       () => ({
         icon: props.iconClose,
@@ -131,16 +131,16 @@ export class Alert {
     )
 
     this.actions = new ActionsIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       undefined,
       undefined,
       emits
     )
     this.link = new AlertLinkIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       emits
     )

@@ -114,8 +114,8 @@ export class ListItem {
     } = constructors
 
     const progress = new ProgressIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       {
         circular: true
@@ -142,8 +142,8 @@ export class ListItem {
     this.suffix = new SuffixIncludeConstructor(props, naming, slots)
     this.description = new DescriptionIncludeConstructor(props, naming, slots, skeleton)
     this.badge = new BadgeIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       {
         overlap: 'static'

@@ -58,7 +58,7 @@ export class FieldMessage {
       SkeletonIncludeConstructor = SkeletonInclude
     } = constructors
 
-    this.fieldCounter = new FieldCounterIncludeConstructor(naming, props, components)
+    this.fieldCounter = new FieldCounterIncludeConstructor(props, naming, components)
     this.message = new FieldMessageMessageConstructor(props, slots)
     this.skeleton = new SkeletonIncludeConstructor(props, naming, ['classTextVariant'])
   }

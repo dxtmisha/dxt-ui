@@ -5,12 +5,12 @@ import { InputCodeItemInclude } from '../InputCodeItemInclude'
 
 describe('InputCodeItemInclude', () => {
   it('should filter values against match regex', () => {
-    const include = new InputCodeItemInclude(new DesignName('base.class'), { match: /^[0-9]$/ })
+    const include = new InputCodeItemInclude({ match: /^[0-9]$/ }, new DesignName('base.class'))
     expect(include.getValue('1a2b3')).toEqual(['1', '2', '3'])
   })
 
   it('should update tab indices of items correctly', () => {
-    const include = new InputCodeItemInclude(new DesignName('base.class'), {})
+    const include = new InputCodeItemInclude({}, new DesignName('base.class'))
     const item1 = {
       getValue: () => '1',
       setTabindex: vi.fn(),
@@ -38,7 +38,7 @@ describe('InputCodeItemInclude', () => {
 
   it('should collect inputs and propagate updates', () => {
     const onUpdate = vi.fn()
-    const include = new InputCodeItemInclude(new DesignName('base.class'), {}, undefined, onUpdate)
+    const include = new InputCodeItemInclude({}, new DesignName('base.class'), undefined, onUpdate)
 
     const item1 = {
       getValue: () => 'A',
@@ -56,7 +56,7 @@ describe('InputCodeItemInclude', () => {
   })
 
   it('should update values and focus on the first empty item on update()', () => {
-    const include = new InputCodeItemInclude(new DesignName('base.class'), { match: /[0-9]/ })
+    const include = new InputCodeItemInclude({ match: /[0-9]/ }, new DesignName('base.class'))
     const item1 = {
       getValue: () => '1',
       set: vi.fn(),
@@ -80,7 +80,7 @@ describe('InputCodeItemInclude', () => {
   })
 
   it('should focus on the last item when all items are filled on focus()', () => {
-    const include = new InputCodeItemInclude(new DesignName('base.class'), { match: /[0-9]/ })
+    const include = new InputCodeItemInclude({ match: /[0-9]/ }, new DesignName('base.class'))
     const item1 = {
       getValue: () => '1',
       set: vi.fn(),

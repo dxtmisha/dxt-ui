@@ -48,22 +48,22 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
    * Constructor for TableRecordInclude.
    *
    * Конструктор для TableRecordInclude.
-   * @param naming component naming helper / помощник именования компонента
    * @param props input properties / входные свойства
+   * @param naming component naming helper / помощник именования компонента
    * @param components design components registry / реестр дизайн-компонентов
    * @param extra additional properties or attributes / дополнительные свойства или атрибуты
    * @param slots parent slots / родительские слоты
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    protected readonly naming: DesignName,
     props: ComponentIncludeProps<TableRecordPropsInclude>,
+    protected readonly naming: DesignName,
     components?: DesignComponents<any, TableRecordPropsInclude>,
     extra?: ComponentIncludeExtra<TableRecordPropsBasic>,
     protected readonly slots?: Record<string, any>,
     index?: string
   ) {
-    super(naming, props, components, extra, index)
+    super(props, naming, components, extra, index)
   }
 
   /**

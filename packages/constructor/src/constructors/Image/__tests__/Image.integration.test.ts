@@ -239,8 +239,8 @@ describe('Image (complete component)', () => {
     it('should bind onLoad in ImageInclude and forward load events via emits', () => {
       const emits = vi.fn()
       const include = new ImageInclude(
-        new DesignName('test.image'),
         { image: '/photo.png' },
+        new DesignName('test.image'),
         undefined,
         undefined,
         emits

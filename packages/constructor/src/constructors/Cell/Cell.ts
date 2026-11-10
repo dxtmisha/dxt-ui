@@ -127,8 +127,8 @@ export class Cell extends DesignLogicAbstract<
       item: ProgressInclude,
       conditions: () => ProgressInclude.is(this.props),
       parameters: () => [
-        this.naming,
         this.props,
+        this.naming,
         this.components,
         { position: 'bottom' }
       ]

@@ -82,8 +82,8 @@ export class CollageBar {
     )
 
     this.button = new ButtonIncludeConstructor(
-      naming,
       props,
+      naming,
       components,
       () => ({
         ...getBind(this.props.button, 'label'),
