@@ -11,7 +11,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `options: FunctionalPluginOptions` — Configuration object for functional services.
 
 **Returns:**
-`Plugin` — A Vue plugin object that integrates core functional logic into the application.
+`Plugin<[options?: FunctionalPluginOptions]>` — A Vue plugin object that integrates core functional logic into the application.
 
 ## Installation
 
@@ -63,7 +63,7 @@ The plugin uses the following interfaces for configuration:
 - `router?: Router` — The Vue Router instance. If omitted, the plugin will attempt to extract it from `app.config.globalProperties.$router`.
 - `errorCauses?: ErrorCenterCauseList` — Predefined list of error causes for `ErrorCenter`.
 - `errorHandlers?: ErrorCenterHandlerList` — List of error handlers for `ErrorCenter`.
-- `errorCallbacks?: ErrorCenterHandlerCallback[]` — Global error callback functions for `ErrorCenter`.
+- `errorCallbacks?: readonly ErrorCenterHandlerCallback[]` — Global error callback functions for `ErrorCenter`.
 - `components?: ComponentStorageList` — List of Vue components for registration in `ComponentStorage`.
 
 ### `ApiConfig`

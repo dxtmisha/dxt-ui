@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { createApp, ref, type InjectionKey } from 'vue'
 
 import { getInject } from '../getInject'
@@ -129,20 +129,22 @@ describe('getInject', () => {
   })
 
   describe('Default value fallback', () => {
-    it('returns raw defaultValue when key is missing', () => {
+    it('returns raw defaultValue when key is missing and infers its exact type', () => {
       const application = createApp({})
       vi.spyOn(console, 'warn').mockImplementation(() => {})
 
       const result = application.runWithContext(() => getInject('missing', 'fallback'))
+      expectTypeOf(result).toEqualTypeOf<string>()
       expect(result).toBe('fallback')
     })
 
-    it('returns factory result when defaultValue is a function', () => {
+    it('returns factory result when defaultValue is a function and infers its return type', () => {
       const application = createApp({})
       vi.spyOn(console, 'warn').mockImplementation(() => {})
       const factory = vi.fn(() => 42)
 
       const result = application.runWithContext(() => getInject('count', factory))
+      expectTypeOf(result).toEqualTypeOf<number>()
       expect(result).toBe(42)
       expect(factory).toHaveBeenCalledTimes(1)
     })

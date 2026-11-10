@@ -1,11 +1,9 @@
-src/classes/ref/EffectScopeGlobal.ts
-src/classes/ref/GeoRef.ts
-src/functions/ref/toRefItem.ts
-src/classes/ref/DatetimeRef.ts
+src/functions/toBind.ts
+src/classes/ComponentStorageInstance.ts
+src/classes/ComponentStorage.ts
 src/functions/ref/getRef.ts
 src/functions/render/getIndexForRender.ts
 src/functions/ref/render.ts
-src/functions/toBind.ts
 src/functions/toBinds.ts
 src/classes/design/DesignComponents.ts
 src/classes/design/DesignComp.ts
@@ -13,6 +11,10 @@ src/classes/design/DesignName.ts
 src/classes/design/DesignConstructorAbstract.ts
 src/classes/design/DesignLifecycleAbstract.ts
 src/classes/design/DesignLogicAbstract.ts
+src/classes/ref/EffectScopeGlobal.ts
+src/classes/ref/GeoRef.ts
+src/functions/ref/toRefItem.ts
+src/classes/ref/DatetimeRef.ts
 src/classes/ref/EventRef.ts
 src/classes/ref/GeoFlagRef.ts
 src/classes/ref/GeoIntlRef.ts
@@ -54,6 +56,7 @@ src/functions/watchEffectAsync.ts
 src/functions/computedAsync.ts
 src/functions/computedByLanguage.ts
 src/functions/computedEternity.ts
+src/functions/dxtFunctionalPlugin.ts
 src/functions/ref/executeFunctionRef.ts
 src/functions/render/getBind.ts
 src/functions/ref/getBindRef.ts
@@ -61,6 +64,3 @@ src/functions/render/getClassName.ts
 src/functions/getInject.ts
 src/functions/ref/setRef.ts
 src/functions/ref/toShallowRefItem.ts
-src/classes/ComponentStorageInstance.ts
-src/classes/ComponentStorage.ts
-src/functions/dxtFunctionalPlugin.ts

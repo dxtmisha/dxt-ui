@@ -98,14 +98,16 @@ describe('dxtFunctionalPlugin', () => {
     expect(MediaSocial.addIcons).toHaveBeenCalledWith(options.iconsSocial)
   })
 
-  it('should call useMeta().setSuffix if metaSuffix option is provided', () => {
-    const options = { metaSuffix: ' - Test' }
+  it('should call useMeta().setSuffix if metaSuffix option is provided, including empty string', () => {
     const setSuffixSpy = vi.fn()
     vi.mocked(useMeta).mockReturnValue({ setSuffix: setSuffixSpy } as unknown as ReturnType<typeof useMeta>)
 
-    dxtFunctionalPlugin?.install?.(appMock, options)
+    dxtFunctionalPlugin?.install?.(appMock, { metaSuffix: ' - Test' })
     expect(useMeta).toHaveBeenCalled()
     expect(setSuffixSpy).toHaveBeenCalledWith(' - Test')
+
+    dxtFunctionalPlugin?.install?.(appMock, { metaSuffix: '' })
+    expect(setSuffixSpy).toHaveBeenCalledWith('')
   })
 
   it('should set router in RouterItemRef if router option is provided', () => {
@@ -139,10 +141,10 @@ describe('dxtFunctionalPlugin', () => {
     expect(ErrorCenter.addHandlerList).toHaveBeenCalledWith(options.errorHandlers)
   })
 
-  it('should call ErrorCenter.addCallback for each callback in errorCallbacks option', () => {
+  it('should call ErrorCenter.addCallback for each callback in errorCallbacks option (including readonly array)', () => {
     const callback1 = vi.fn()
     const callback2 = vi.fn()
-    const options = { errorCallbacks: [callback1, callback2] }
+    const options = { errorCallbacks: [callback1, callback2] as const }
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(ErrorCenter.addCallback).toHaveBeenCalledWith(callback1)
     expect(ErrorCenter.addCallback).toHaveBeenCalledWith(callback2)

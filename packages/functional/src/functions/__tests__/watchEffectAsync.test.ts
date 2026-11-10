@@ -2,8 +2,8 @@
  * @vitest-environment jsdom
  */
 
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick, ref } from 'vue'
+import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { effectScope, nextTick, ref, type WatchStopHandle } from 'vue'
 import * as functionalBasic from '@dxtmisha/functional-basic'
 
 import { watchEffectAsync } from '../watchEffectAsync'
@@ -23,6 +23,7 @@ describe('watchEffectAsync', () => {
         currentInRun = isCurrent()
       })
 
+      expectTypeOf(stop).toEqualTypeOf<WatchStopHandle>()
       expect(executed).toBe(true)
       expect(currentInRun).toBe(true)
       stop()

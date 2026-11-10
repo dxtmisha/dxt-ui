@@ -1,10 +1,13 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
+import { type ConstrBind } from '../../../types/constructorTypes'
 import { getBind } from '../getBind'
 
 describe('getBind', () => {
   describe('Standard functional requirements (Happy path)', () => {
     it('should return empty object when value and extra are undefined', () => {
-      expect(getBind(undefined)).toEqual({})
+      const result = getBind<string, { value?: string }>(undefined)
+      expectTypeOf(result).toEqualTypeOf<ConstrBind<{ value?: string }>>()
+      expect(result).toEqual({})
       expect(getBind(null)).toEqual({})
     })
 

@@ -516,7 +516,7 @@ describe('useApiRef', () => {
       // Change path
       pathRef.value = 'new/path'
       await nextTick()
-      await new Promise(resolve => setTimeout(resolve, 0))
+      await nextTick()
 
       expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'new/path' }))
     })
@@ -540,7 +540,7 @@ describe('useApiRef', () => {
 
       conditions.value = true
       await nextTick()
-      await new Promise(resolve => setTimeout(resolve, 0))
+      await nextTick()
 
       expect(mockApiInstance.request).toHaveBeenCalled()
     })
@@ -555,7 +555,7 @@ describe('useApiRef', () => {
 
       // Access to init
       expect(data.value).toBeUndefined()
-      await new Promise(resolve => setTimeout(resolve, 0))
+      await nextTick()
 
       expect(data.value).toEqual({ cleanInfo: 'text' })
     })
@@ -845,9 +845,11 @@ describe('useApiRef', () => {
 
   describe('utility methods', () => {
     it('should return correct values for isStarting, isLoading, isReading, getItem', async () => {
-      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise((resolve) => {
-        setTimeout(() => resolve({ data: 'ok' }), 50)
-      }))
+      let resolveRequest!: (value: { data: string }) => void
+      const requestPromise = new Promise<{ data: string }>((resolve) => {
+        resolveRequest = resolve
+      })
+      vi.mocked(mockApiInstance.request).mockReturnValueOnce(requestPromise)
 
       const apiRef = useApiRef('test/path')
 
@@ -862,7 +864,9 @@ describe('useApiRef', () => {
       expect(apiRef.isLoading()).toBe(true)
       expect(apiRef.isReading()).toBe(true)
 
-      await new Promise(r => setTimeout(r, 60))
+      resolveRequest({ data: 'ok' })
+      await requestPromise
+      await nextTick()
 
       expect(apiRef.isStarting()).toBe(false)
       expect(apiRef.isLoading()).toBe(false)
@@ -891,7 +895,7 @@ describe('useApiRef', () => {
       const { data, loading } = useApiRef('test/path')
 
       expect(data.value).toBeUndefined() // init
-      await new Promise(r => setTimeout(r, 0))
+      await nextTick()
 
       expect(data.value).toBeUndefined()
       expect(loading.value).toBe(false)

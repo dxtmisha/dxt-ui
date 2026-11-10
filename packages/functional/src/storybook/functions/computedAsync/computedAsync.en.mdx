@@ -11,7 +11,7 @@ Only the current evaluation updates the result; late results and errors from pre
 A resolved value matching the `ignore` argument (defaulting to `undefined`) is ignored and does not overwrite previous data. A current getter error clears the data and is reported through `ErrorCenter` with group `functional` and code `computed-async`. Reactive dependencies must be accessed before the first `await` statement because dependencies accessed after an asynchronous pause are not tracked by the watcher.
 
 **Parameters:**
-- `getter: (() => Promise<R>) | (() => R) | R` — An async function, synchronous function, or raw value to compute the result from.
+- `getter: (() => Promise<R> | R) | Promise<R> | R` — An async function, synchronous function, promise, or raw value to compute the result from.
 - `initialState?: (() => I) | I` — The initial result or a factory evaluated once when the property is created (supports a distinct type `I`).
 - `ignore?: R` — A value to ignore (defaulting to `undefined`, preserving previous data).
 - `debugOptions?: DebuggerOptions` — Options used for debugging reactive computations, supported by Vue.js.

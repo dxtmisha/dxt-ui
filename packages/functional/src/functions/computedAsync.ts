@@ -25,8 +25,8 @@ import { watchEffectAsync } from './watchEffectAsync'
  * Ошибки актуального вычисления очищают результат и передаются в ErrorCenter.
  * Реактивные зависимости должны быть прочитаны до первого выражения `await`.
  * По умолчанию возврат `undefined` из геттера сохраняет предыдущие данные, если не задано иное значение `ignore`.
- * @param getter Asynchronous function, synchronous function, or direct value to compute the result /
- * Асинхронная функция, синхронная функция или прямое значение для вычисления результата
+ * @param getter Asynchronous function, synchronous function, promise, or direct value to compute the result /
+ * Асинхронная функция, синхронная функция, промис или прямое значение для вычисления результата
  * @param initialState initial value of result / начальное значение результата
  * @param ignore value to ignore (defaults to undefined, preserving previous data) /
  * значение для исключения (по умолчанию undefined, сохраняя предыдущие данные)
@@ -35,7 +35,7 @@ import { watchEffectAsync } from './watchEffectAsync'
  * @returns read-only reference to the latest result / ссылка только для чтения на актуальный результат
  */
 export function computedAsync<R, I = R>(
-  getter: (() => Promise<R>) | (() => R) | R,
+  getter: (() => Promise<R> | R) | Promise<R> | R,
   initialState?: (() => I) | I,
   ignore?: R,
   debugOptions?: DebuggerOptions

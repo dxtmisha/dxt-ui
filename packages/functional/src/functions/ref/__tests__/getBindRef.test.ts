@@ -1,12 +1,14 @@
-import { describe, expect, it } from 'vitest'
-import { computed, ref } from 'vue'
+import { describe, expect, expectTypeOf, it } from 'vitest'
+import { computed, type ComputedRef, ref } from 'vue'
 import { type ItemList } from '@dxtmisha/functional-basic'
+import { type ConstrBind } from '../../../types/constructorTypes'
 import { getBindRef } from '../getBindRef'
 
 describe('getBindRef', () => {
   describe('Standard functional requirements (Happy path)', () => {
-    it('should work with a static value', () => {
-      const bind = getBindRef('hello')
+    it('should work with a static value and preserve ComputedRef<ConstrBind<R>> type', () => {
+      const bind = getBindRef<string, { value?: string }>('hello')
+      expectTypeOf(bind).toEqualTypeOf<ComputedRef<ConstrBind<{ value?: string }>>>()
       expect(bind.value).toEqual({ value: 'hello' })
     })
 

@@ -11,7 +11,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `options: FunctionalPluginOptions` — Đối tượng cấu hình cho các dịch vụ tính năng.
 
 **Trả về:**
-`Plugin` — Một đối tượng plugin Vue tích hợp logic tính năng cốt lõi vào ứng dụng.
+`Plugin<[options?: FunctionalPluginOptions]>` — Một đối tượng plugin Vue tích hợp logic tính năng cốt lõi vào ứng dụng.
 
 ## Cài đặt
 
@@ -63,7 +63,7 @@ Plugin sử dụng các giao diện (interface) sau để cấu hình:
 - `router?: Router` — Thực thể Vue Router. Nếu bỏ qua, plugin sẽ cố gắng lấy nó từ `app.config.globalProperties.$router`.
 - `errorCauses?: ErrorCenterCauseList` — Danh sách các nguyên nhân lỗi định trước cho `ErrorCenter`.
 - `errorHandlers?: ErrorCenterHandlerList` — Danh sách các trình xử lý lỗi cho `ErrorCenter`.
-- `errorCallbacks?: ErrorCenterHandlerCallback[]` — Danh sách các hàm gọi lại khi xảy ra lỗi cho `ErrorCenter`.
+- `errorCallbacks?: readonly ErrorCenterHandlerCallback[]` — Danh sách các hàm gọi lại khi xảy ra lỗi cho `ErrorCenter`.
 - `components?: ComponentStorageList` — Danh sách các component Vue cần đăng ký vào kho lưu trữ `ComponentStorage`.
 
 ### `ApiConfig`

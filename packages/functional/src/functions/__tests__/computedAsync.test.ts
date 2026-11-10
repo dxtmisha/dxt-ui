@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import {
   type ComputedRef,
   createApp,
@@ -67,11 +67,14 @@ describe('computedAsync', () => {
   it.each([
     { getter: async (): Promise<string> => 'async value', expected: 'async value' },
     { getter: (): string => 'sync value', expected: 'sync value' },
+    { getter: (): Promise<string> | string => 'mixed value', expected: 'mixed value' },
+    { getter: Promise.resolve('direct promise'), expected: 'direct promise' },
     { getter: 'raw value', expected: 'raw value' }
   ])('resolves $expected and returns a read-only computed ref', async ({ getter, expected }) => {
     await scope.run(async () => {
       const result = computedAsync(getter)
 
+      expectTypeOf(result).toEqualTypeOf<ComputedRef<string | undefined>>()
       expect(isRef(result)).toBe(true)
       expect(isReadonly(result)).toBe(true)
       expect(result.value).toBeUndefined()

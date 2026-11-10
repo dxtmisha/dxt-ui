@@ -1,10 +1,12 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { getClassName } from '../getClassName'
 
 describe('getClassName', () => {
   describe('Standard functional requirements (Happy path)', () => {
     it('should return the class name when it is a single class string', () => {
-      expect(getClassName({ class: 'my-class' })).toBe('my-class')
+      const result = getClassName({ class: 'my-class' })
+      expectTypeOf(result).toEqualTypeOf<string | undefined>()
+      expect(result).toBe('my-class')
     })
 
     it('should return multiple space-separated classes when string contains them', () => {

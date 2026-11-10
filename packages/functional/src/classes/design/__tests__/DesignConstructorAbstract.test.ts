@@ -346,14 +346,15 @@ describe('DesignConstructorAbstract external classes', () => {
     const host = defineComponent({
       setup() {
         const render = new RootClassDesign().render()
+        expect((render as { inheritAttrs?: boolean }).inheritAttrs).toBe(false)
         return (): VNode => h(render)
       }
     })
     const markup = await renderToString(createSSRApp({
-      setup: () => () => h(host, { class: 'd1-palette--red' })
+      setup: () => () => h(host, { id: 'icon-1', class: 'd1-palette--red' })
     }))
 
-    expect(markup).toBe('<span class="d1-icon d1-palette--red">icon</span>')
+    expect(markup).toBe('<span id="icon-1" class="d1-icon d1-palette--red">icon</span>')
   })
 })
 

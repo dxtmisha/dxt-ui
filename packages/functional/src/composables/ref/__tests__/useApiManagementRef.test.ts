@@ -130,7 +130,7 @@ describe('useApiManagementRef', () => {
       expect(list.value).toBeUndefined()
 
       await nextTick()
-      await new Promise(r => setTimeout(r, 0))
+      await nextTick()
 
       expect(starting.value).toBe(false)
       expect(data.value).toEqual({ data: 'MOCK_DATA' })
@@ -150,7 +150,7 @@ describe('useApiManagementRef', () => {
 
       expect(data.value).toBeUndefined()
       await nextTick()
-      await new Promise(r => setTimeout(r, 0))
+      await nextTick()
 
       expect(customInstance.request).toHaveBeenCalled()
       expect(mockApiInstance.request).not.toHaveBeenCalled()
@@ -223,7 +223,7 @@ describe('useApiManagementRef', () => {
       // Trigger init
       expect(list.value).toBeUndefined()
       await nextTick()
-      await new Promise(r => setTimeout(r, 0))
+      await nextTick()
 
       vi.mocked(customInstance.request).mockClear()
 
@@ -290,7 +290,7 @@ describe('useApiManagementRef', () => {
 
           resolveLocal()
           await vi.waitFor(() => expect(commonAction).toHaveBeenCalledOnce())
-          await new Promise<void>(resolve => setTimeout(resolve, 0))
+          await nextTick()
 
           expect(completed).not.toHaveBeenCalled()
           expect(loading?.value).toBe(true)
@@ -542,9 +542,11 @@ describe('useApiManagementRef', () => {
 
   describe('utility properties', () => {
     it('should expose starting, reading and loading from useApiRef', async () => {
-      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise((resolve) => {
-        setTimeout(() => resolve({ data: 'ok' }), 50)
-      }))
+      let resolveGet!: (value: { data: string }) => void
+      const getPromise = new Promise<{ data: string }>((resolve) => {
+        resolveGet = resolve
+      })
+      vi.mocked(mockApiInstance.request).mockReturnValueOnce(getPromise)
 
       const { starting, reading, loading, list } = useApiManagementRef({ path: 'test/path' })
 
@@ -559,7 +561,9 @@ describe('useApiManagementRef', () => {
       expect(loading.value).toBe(true)
       expect(reading.value).toBe(true)
 
-      await new Promise(r => setTimeout(r, 60))
+      resolveGet({ data: 'ok' })
+      await getPromise
+      await nextTick()
 
       expect(starting.value).toBe(false)
       expect(loading.value).toBe(false)
@@ -583,7 +587,6 @@ describe('useApiManagementRef', () => {
       expect(list.value).toBeUndefined()
       await nextTick()
       await nextTick()
-      await new Promise(r => setTimeout(r, 0))
 
       expect(lengthData.value).toBe(2)
       expect(length.value).toBe(1) // searched list
@@ -604,22 +607,25 @@ describe('useApiManagementRef', () => {
       // trigger GET
       expect(list.value).toBeUndefined()
       await nextTick()
-      await new Promise(r => setTimeout(r, 0))
+      await nextTick()
 
       expect(loadingPost!.value).toBe(false)
       expect(loadingPut!.value).toBe(false)
       expect(loadingDelete!.value).toBe(false)
 
       // trigger POST
-      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise((resolve) => {
-        setTimeout(() => resolve({ success: true }), 50)
-      }))
+      let resolvePost!: (value: { success: boolean }) => void
+      const postPromise = new Promise<{ success: boolean }>((resolve) => {
+        resolvePost = resolve
+      })
+      vi.mocked(mockApiInstance.request).mockReturnValueOnce(postPromise)
 
-      sendPost()
-      await new Promise(r => setTimeout(r, 10))
+      const pendingPost = sendPost()
+      await nextTick()
       expect(loadingPost!.value).toBe(true)
 
-      await new Promise(r => setTimeout(r, 50))
+      resolvePost({ success: true })
+      await pendingPost
       expect(loadingPost!.value).toBe(false)
     })
 
@@ -634,7 +640,7 @@ describe('useApiManagementRef', () => {
       // trigger fetch
       expect(list.value).toBeUndefined()
       await nextTick()
-      await new Promise(r => setTimeout(r, 0))
+      await nextTick()
 
       expect(list.value).toEqual([{ id: 1, price: 100, priceFormat: '100 USD' }])
     })
@@ -658,7 +664,7 @@ describe('useApiManagementRef', () => {
       // trigger fetch
       expect(list.value).toBeUndefined()
       await nextTick()
-      await new Promise(r => setTimeout(r, 0))
+      await nextTick()
 
       expect(list.value).toHaveLength(2)
 
@@ -732,7 +738,7 @@ describe('useApiManagementRef', () => {
       // trigger
       expect(list.value).toBeUndefined()
       await nextTick()
-      await new Promise(r => setTimeout(r, 0))
+      await nextTick()
 
       vi.mocked(mockApiInstance.request).mockClear()
 
@@ -761,7 +767,7 @@ describe('useApiManagementRef', () => {
       // init
       expect(list.value).toBeUndefined()
       await nextTick()
-      await new Promise(r => setTimeout(r, 0))
+      await nextTick()
 
       await sendPost()
 

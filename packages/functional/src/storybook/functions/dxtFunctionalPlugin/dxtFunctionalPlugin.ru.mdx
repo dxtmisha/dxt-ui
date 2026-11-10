@@ -11,7 +11,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `options: FunctionalPluginOptions` — Объект конфигурации для функциональных сервисов.
 
 **Возвращает:**
-`Plugin` — Объект плагина Vue, который интегрирует основную функциональную логику в приложение.
+`Plugin<[options?: FunctionalPluginOptions]>` — Объект плагина Vue, который интегрирует основную функциональную логику в приложение.
 
 ## Установка
 
@@ -63,7 +63,7 @@ app.mount('#app')
 - `router?: Router` — Экземпляр Vue Router. Если не указан, плагин попытается извлечь его из `app.config.globalProperties.$router`.
 - `errorCauses?: ErrorCenterCauseList` — Список предопределенных причин ошибок для `ErrorCenter`.
 - `errorHandlers?: ErrorCenterHandlerList` — Список обработчиков ошибок для `ErrorCenter`.
-- `errorCallbacks?: ErrorCenterHandlerCallback[]` — Список функций обратного вызова при возникновении ошибок.
+- `errorCallbacks?: readonly ErrorCenterHandlerCallback[]` — Список функций обратного вызова при возникновении ошибок.
 - `components?: ComponentStorageList` — Список компонентов Vue для регистрации в хранилище `ComponentStorage`.
 
 ### `ApiConfig`

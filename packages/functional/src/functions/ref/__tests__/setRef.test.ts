@@ -1,11 +1,12 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, expectTypeOf, vi } from 'vitest'
 import { ref, shallowRef, watch } from 'vue'
 import { setRef } from '../setRef'
 
 describe('setRef', () => {
   it('should update the Ref value when value is different', () => {
     const item = ref(1)
-    setRef(item, 2)
+    const result = setRef(item, 2)
+    expectTypeOf(result).toEqualTypeOf<void>()
     expect(item.value).toBe(2)
   })
 

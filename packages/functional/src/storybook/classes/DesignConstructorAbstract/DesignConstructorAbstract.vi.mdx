@@ -75,9 +75,9 @@ const Example = /*#__PURE__*/ defineComponent({
 
 `render(): () => VNode | VNode[] | undefined`
 
-Đăng ký theo dõi thay slot và trả hàm kết xuất qua `initRender()`.
+Đăng ký theo dõi thay slot, tắt kế thừa thuộc tính tự động (`inheritAttrs = false`) và trả hàm kết xuất qua `initRender()`.
 
-**Trả về:** `() => VNode | VNode[] | undefined` — Giá trị hoặc đối tượng được yêu cầu theo chữ ký.
+**Trả về:** `() => VNode | VNode[] | undefined` — Hàm kết xuất cho `setup()` của Vue hoặc gắn kết thành phần hàm.
 
 ```typescript
 const render = /*#__PURE__*/ design.render()

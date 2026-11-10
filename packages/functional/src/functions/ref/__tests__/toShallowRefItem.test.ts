@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
-import { ref, computed, shallowRef, isRef, watch } from 'vue'
+import { describe, it, expect, expectTypeOf, vi } from 'vitest'
+import { ref, computed, shallowRef, isRef, watch, type ShallowRef } from 'vue'
 import { toShallowRefItem } from '../toShallowRefItem'
 
 describe('toShallowRefItem', () => {
@@ -7,6 +7,7 @@ describe('toShallowRefItem', () => {
     const original = shallowRef({ count: 1 })
     const result = toShallowRefItem(original)
 
+    expectTypeOf(result).toEqualTypeOf<ShallowRef<{ count: number }>>()
     expect(isRef(result)).toBe(true)
     expect(result).toBe(original)
     expect(result.value).toEqual({ count: 1 })

@@ -2,8 +2,8 @@
  * @vitest-environment jsdom
  */
 
-import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest'
-import { effectScope, getCurrentScope, nextTick, ref, watch, type EffectScope } from 'vue'
+import { afterEach, beforeEach, describe, it, expect, expectTypeOf, vi } from 'vitest'
+import { effectScope, getCurrentScope, nextTick, ref, watch, type EffectScope, type Ref } from 'vue'
 import * as functionalBasic from '@dxtmisha/functional-basic'
 import { ErrorCenter, ServerStorage } from '@dxtmisha/functional-basic'
 
@@ -121,6 +121,7 @@ describe('computedEternity', () => {
       const pending = createDeferred<{ id: number }>()
       const result = computedEternity(() => pending.promise, null)
 
+      expectTypeOf(result).toEqualTypeOf<Ref<{ id: number } | null>>()
       expect(result.value).toBeNull()
       pending.resolve({ id: 1 })
       await flushEvaluation()

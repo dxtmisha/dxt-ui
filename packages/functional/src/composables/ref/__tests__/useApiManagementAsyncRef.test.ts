@@ -89,7 +89,7 @@ describe('useApiManagementAsyncRef', () => {
     expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'test/path' }))
 
     await nextTick()
-    await new Promise(r => setTimeout(r, 0))
+    await nextTick()
 
     expect(management.list.value).toHaveLength(2)
     expect(management.list.value![0].nameFormat).toBe('Fruit: Apple')

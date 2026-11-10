@@ -1,11 +1,13 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { computed, ref, shallowRef } from 'vue'
 import { executeFunctionRef } from '../executeFunctionRef'
 
 describe('executeFunctionRef', () => {
   describe('Standard functional requirements (Happy path)', () => {
-    it('should return primitive static values directly', () => {
-      expect(executeFunctionRef('hello')).toBe('hello')
+    it('should return primitive static values directly and preserve exact types', () => {
+      const strResult = executeFunctionRef('hello')
+      expectTypeOf(strResult).toEqualTypeOf<string>()
+      expect(strResult).toBe('hello')
       expect(executeFunctionRef(123)).toBe(123)
       expect(executeFunctionRef(true)).toBe(true)
     })

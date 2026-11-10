@@ -140,10 +140,10 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * Registers slot-change tracking and returns a function delegating rendering to `initRender()`.
+   * Registers slot-change tracking, disables automatic attribute inheritance (`inheritAttrs = false`), and returns a function delegating rendering to `initRender()`.
    *
-   * Регистрирует отслеживание замены слотов и возвращает функцию, делегирующую рендеринг `initRender()`.
-   * @returns The requested value or object as declared in the signature. / Запрошенное значение либо объект согласно сигнатуре.
+   * Регистрирует отслеживание замены слотов, отключает автоматическое наследование атрибутов (`inheritAttrs = false`) и возвращает функцию, делегирующую рендеринг `initRender()`.
+   * @returns Render function for Vue setup or functional component mounting. / Функция рендеринга для `setup()` Vue или монтирования функционального компонента.
    */
   render(): () => VNode | VNode[] | undefined {
     const slotsState = shallowRef<Record<string, unknown>>({

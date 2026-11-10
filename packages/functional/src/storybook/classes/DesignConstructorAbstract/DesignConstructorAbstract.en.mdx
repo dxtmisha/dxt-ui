@@ -75,9 +75,9 @@ const Example = /*#__PURE__*/ defineComponent({
 
 `render(): () => VNode | VNode[] | undefined`
 
-Registers slot-change tracking and returns a function delegating rendering to `initRender()`.
+Registers slot-change tracking, disables automatic attribute inheritance (`inheritAttrs = false`), and returns a function delegating rendering to `initRender()`.
 
-**Returns:** `() => VNode | VNode[] | undefined` — The requested value or object as declared in the signature.
+**Returns:** `() => VNode | VNode[] | undefined` — Render function for Vue setup or functional component mounting.
 
 ```typescript
 const render = /*#__PURE__*/ design.render()

@@ -2,8 +2,8 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { describe, it, expect, expectTypeOf, beforeEach, vi } from 'vitest'
+import { type ComputedRef, nextTick, ref } from 'vue'
 
 import { computedByLanguage } from '../computedByLanguage'
 import { GeoRef } from '../../classes/ref/GeoRef'
@@ -91,6 +91,7 @@ describe('computedByLanguage', () => {
         () => undefined as string | undefined,
         () => 42
       )
+      expectTypeOf(result).toEqualTypeOf<ComputedRef<string | number | undefined>>()
       expect(result.value).toBe(42)
     })
   })

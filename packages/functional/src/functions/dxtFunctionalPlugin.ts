@@ -55,7 +55,7 @@ export interface FunctionalPluginOptions {
   errorHandlers?: ErrorCenterHandlerList
 
   /** Global error callback functions for error center / Список глобальных функций обратного вызова для центра ошибок */
-  errorCallbacks?: ErrorCenterHandlerCallback[]
+  errorCallbacks?: readonly ErrorCenterHandlerCallback[]
 
   /** List of Vue components for registration in component storage / Список Vue компонентов для регистрации в хранилище компонентов */
   components?: ComponentStorageList
@@ -82,7 +82,7 @@ export interface FunctionalPluginOptions {
  * })
  * ```
  */
-export const dxtFunctionalPlugin: Plugin = {
+export const dxtFunctionalPlugin: Plugin<[options?: FunctionalPluginOptions]> = {
   /**
    * Plugin installation method.
    *
@@ -118,7 +118,7 @@ export const dxtFunctionalPlugin: Plugin = {
     }
 
     // 5. Configure Meta Suffix
-    if (options.metaSuffix) {
+    if (options.metaSuffix !== undefined) {
       useMeta().setSuffix(options.metaSuffix)
     }
 
