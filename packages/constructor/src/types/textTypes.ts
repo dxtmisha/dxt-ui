@@ -1,8 +1,9 @@
-/** Type for text value/ Тип для текстового значения */
+/** Type for text value / Тип для текстового значения */
 export type TextValue = string | (() => string) | undefined
 
-/** List of available text indexes/ Список доступных индексов текста */
+/** List of available text indexes / Список доступных индексов текста */
 export type TextIndex = 'am'
+  | 'breadcrumb'
   | 'cancel'
   | 'change'
   | 'characterLimit'

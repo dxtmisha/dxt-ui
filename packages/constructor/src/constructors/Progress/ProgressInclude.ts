@@ -37,27 +37,28 @@ export class ProgressInclude extends ComponentIncludeAbstract<
     return Boolean(props?.loading)
   }
 
+  /** Sub-component name identifier / Идентификатор имени субкомпонента */
   protected readonly name = 'progress'
+  /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
   protected readonly propsAttrsName = undefined
 
   /** Determines whether to initialize the element reference during binding / Определяет, нужно ли инициализировать ссылку на элемент при привязке */
-  protected readonly hasInitElement: boolean = false
+  protected override readonly hasInitElement: boolean = false
 
-  /**
-   * Checks whether progress should be displayed /
-   * Проверяет, нужно ли отображать индикатор прогресса
-   */
-  override get is(): boolean {
-    return Boolean(this.getProps().loading)
-  }
-
-  /**
-   * list of aria properties for the progress component /
-   * список aria свойств для компонента Progress
-   */
+  /** List of ARIA properties for the progress component / Список ARIA-свойств для компонента Progress */
   readonly aria = computed<AriaList>(
     () => AriaStaticInclude.disabled(this.is)
   )
+
+  /**
+   * Checks whether progress should be displayed.
+   *
+   * Проверяет, нужно ли отображать индикатор прогресса.
+   * @returns true if progress should be displayed / true, если прогресс должен отображаться
+   */
+  override get is(): boolean {
+    return ProgressInclude.is(this.getProps())
+  }
 
   /**
    * Generates the CSS class name according to BEM structure.

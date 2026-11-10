@@ -52,19 +52,6 @@ export class TextIncludeInstance {
   })
 
   /**
-   * Initialize global texts.
-   *
-   * Инициализация глобальных текстов.
-   * @param texts List of texts / Список текстов
-   */
-  initText(texts: TextList): void {
-    this.list.value = {
-      ...this.list.value,
-      ...texts
-    }
-  }
-
-  /**
    * Get text from global list.
    *
    * Получение текста из глобального списка.
@@ -74,10 +61,25 @@ export class TextIncludeInstance {
   getGlobalText(
     index: TextIndex
   ): string | undefined {
-    if (this.list.value?.[index]) {
-      return executeFunction(this.list.value[index])
+    const value = this.list.value?.[index]
+
+    if (value) {
+      return executeFunction(value)
     }
 
     return undefined
+  }
+
+  /**
+   * Initialize global texts.
+   *
+   * Инициализация глобальных текстов.
+   * @param texts List of texts / Список текстов
+   */
+  initText(texts: Partial<TextList>): void {
+    this.list.value = {
+      ...this.list.value,
+      ...texts
+    }
   }
 }

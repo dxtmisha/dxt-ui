@@ -167,15 +167,16 @@ describe('Progress (isolated class)', () => {
         const hiddenIndeterminate = new Progress({ visible: false }, element, naming)
         expect(hiddenIndeterminate.label).toBeUndefined()
 
-        // Determinate without ariaLabel has undefined label
+        // Determinate without ariaLabel falls back to TextInclude.loading for accessible role="progressbar"
         const determinate = new Progress({ value: 10 }, element, naming)
-        expect(determinate.label).toBeUndefined()
+        expect(determinate.label).toBeDefined()
+        expect(typeof determinate.label).toBe('string')
       })
 
       scope.stop()
     })
 
-    it('should generate comprehensive ARIA attributes including valueMinMax when value is present', () => {
+    it('should generate comprehensive ARIA attributes including valueMinMax and fallback aria-label when value is present', () => {
       const scope = effectScope()
       const element = ref<HTMLDivElement>()
 
@@ -184,7 +185,18 @@ describe('Progress (isolated class)', () => {
 
         expect(progress.aria).toEqual({
           'role': 'progressbar',
+          'aria-label': progress.label,
           'aria-valuenow': 30,
+          'aria-valuemin': 0,
+          'aria-valuemax': 100
+        })
+
+        // Omitted max resolves defaultsProgress.max (100) consistently
+        const progressWithDefaultMax = new Progress({ value: '45' }, element, naming)
+        expect(progressWithDefaultMax.aria).toEqual({
+          'role': 'progressbar',
+          'aria-label': progressWithDefaultMax.label,
+          'aria-valuenow': 45,
           'aria-valuemin': 0,
           'aria-valuemax': 100
         })
@@ -193,17 +205,20 @@ describe('Progress (isolated class)', () => {
       scope.stop()
     })
 
-    it('should generate binds with onAnimationend and viewBox when circular', () => {
+    it('should generate binds with conditional onAnimationend (only when hiding) and viewBox when circular', () => {
       const scope = effectScope()
       const element = ref<HTMLDivElement>()
 
       scope.run(() => {
         const circular = new Progress({ circular: true, value: 50 }, element, naming)
 
-        const binds = circular.binds
-        expect(binds.viewBox).toBe('0 0 48 48')
-        expect(binds.role).toBe('progressbar')
-        expect(typeof binds.onAnimationend).toBe('function')
+        const bindsInitial = circular.binds
+        expect(bindsInitial.viewBox).toBe('0 0 48 48')
+        expect(bindsInitial.role).toBe('progressbar')
+        expect(bindsInitial.onAnimationend).toBeUndefined()
+
+        circular.hide.value = true
+        expect(typeof circular.binds.onAnimationend).toBe('function')
       })
 
       scope.stop()
@@ -439,16 +454,55 @@ describe('Progress (isolated class)', () => {
   })
 
   describe('Boundary & Edge Cases', () => {
-    it('should treat value = 0 as indeterminate', () => {
+    it('should treat value = 0 and string "0" as determinate 0% progress, and negative numbers as indeterminate', () => {
       const scope = effectScope()
       const element = ref<HTMLDivElement>()
 
       scope.run(() => {
-        const progress = new Progress({ value: 0 }, element, naming)
+        const progressZero = new Progress({ value: 0 }, element, naming)
 
-        expect(progress.isValue()).toBe(false)
-        expect(progress.role).toBe('status')
-        expect(progress.valueInPercent).toBeNull()
+        expect(progressZero.isValue()).toBe(true)
+        expect(progressZero.role).toBe('progressbar')
+        expect(progressZero.valueInPercent).toBe('100%')
+        expect(progressZero.aria).toEqual({
+          'role': 'progressbar',
+          'aria-label': progressZero.label,
+          'aria-valuenow': 0,
+          'aria-valuemin': 0,
+          'aria-valuemax': 100
+        })
+
+        const progressStringZero = new Progress({ value: '0' }, element, naming)
+        expect(progressStringZero.isValue()).toBe(true)
+        expect(progressStringZero.aria).toEqual({
+          'role': 'progressbar',
+          'aria-label': progressStringZero.label,
+          'aria-valuenow': 0,
+          'aria-valuemin': 0,
+          'aria-valuemax': 100
+        })
+
+        const progressNegative = new Progress({ value: -10 }, element, naming)
+        expect(progressNegative.isValue()).toBe(false)
+        expect(progressNegative.aria).toEqual({ role: 'status' })
+      })
+
+      scope.stop()
+    })
+
+    it('should clamp valueInPercent to [0, 100] and prevent division by zero when max <= 0', () => {
+      const scope = effectScope()
+      const element = ref<HTMLDivElement>()
+
+      scope.run(() => {
+        const overflowLinear = new Progress({ value: 150, max: 100 }, element, naming)
+        expect(overflowLinear.valueInPercent).toBe('0%')
+
+        const overflowCircular = new Progress({ circular: true, value: 150, max: 100 }, element, naming)
+        expect(overflowCircular.valueInPercent).toBe('100')
+
+        const zeroMaxLinear = new Progress({ value: 50, max: 0 }, element, naming)
+        expect(zeroMaxLinear.valueInPercent).toBe('0%')
       })
 
       scope.stop()

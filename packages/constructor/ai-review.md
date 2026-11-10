@@ -1,6 +1,5 @@
 src/classes/AriaStaticInclude.ts
 src/classes/CaptionInclude.ts
-src/classes/ComponentIncludeAbstract.ts
 src/classes/DescriptionInclude.ts
 src/classes/EnabledInclude.ts
 src/classes/EventClickInclude.ts
@@ -49,10 +48,6 @@ src/constructors/Modal/ModalAbstract.ts
 src/constructors/Modal/ModalDesign.tsx
 src/constructors/Modal/ModalDesignAbstract.tsx
 
-src/constructors/Progress/Progress.ts
-src/constructors/Progress/ProgressDesign.tsx
-src/constructors/Progress/ProgressInclude.ts
-
 src/constructors/Ripple/Ripple.ts
 src/constructors/Ripple/RippleItem.ts
 
@@ -87,4 +82,13 @@ src/constructors/Window/WindowStatic.ts
 src/constructors/Window/WindowStatus.ts
 src/constructors/Window/WindowStyles.ts
 src/constructors/Window/WindowVerification.ts
+
+src/classes/ComponentIncludeAbstract.ts
+src/classes/TextIncludeInstance.ts
+src/classes/TextInclude.ts
+
+src/constructors/Progress/Progress.ts
+src/constructors/Progress/ProgressDesign.tsx
+src/constructors/Progress/ProgressInclude.ts
+
 

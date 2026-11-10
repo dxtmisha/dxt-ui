@@ -2,6 +2,7 @@ import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
 import type { TextLoadingPropsInclude } from '../../types/textTypes'
 import type { ClientOnlyPropsInclude } from '../../types/clientOnlyTypes'
 
+/** Token properties for Progress / Свойства токенов для Progress */
 export type ProgressPropsToken = {
   // :type [!] System label / Системная метка
   point?: boolean
@@ -14,31 +15,35 @@ export type ProgressPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties for Progress / Базовые свойства для Progress */
 export type ProgressPropsBasic = AriaLabelPropsInclude
   & TextLoadingPropsInclude
   & ClientOnlyPropsInclude
   & {
-    /** Status/ Статус */
-    /** Whether the progress is visible/ Видим ли прогресс */
+    /** Status / Статус */
+    /** Whether the progress is visible / Видим ли прогресс */
     visible?: boolean
 
-    /** Value/ Значения */
-    /** Current progress value/ Текущее значение прогресса */
+    /** Value / Значения */
+    /** Current progress value / Текущее значение прогресса */
     value?: number | string
-    /** Maximum progress value/ Максимальное значение прогресса */
+    /** Maximum progress value / Максимальное значение прогресса */
     max?: number | string
 
-    /** Style/ Стили */
-    /** Whether to use linear progress/ Использовать ли линейный прогресс */
+    /** Style / Стили */
+    /** Whether to use linear progress / Использовать ли линейный прогресс */
     linear?: boolean
-    /** Whether to use circular progress/ Использовать ли круговой прогресс */
+    /** Whether to use circular progress / Использовать ли круговой прогресс */
     circular?: boolean
-    /** Whether to use point progress/ Использовать ли точечный прогресс */
+    /**
+     * Whether to display a stop indicator dot at the end of the linear track (supported only for determinate `value` or `indeterminate="type1"`) /
+     * Отображать ли точку-индикатор в конце линейного трека (поддерживается только для детерминированного `value` или `indeterminate="type1"`)
+     */
     point?: boolean
 
-    /** Delay before showing/ Задержка перед показом */
+    /** Delay before showing / Задержка перед показом */
     delay?: number | string
-    /** Delay before hiding/ Задержка перед скрытием */
+    /** Delay before hiding / Задержка перед скрытием */
     delayHide?: number | string
   }
 

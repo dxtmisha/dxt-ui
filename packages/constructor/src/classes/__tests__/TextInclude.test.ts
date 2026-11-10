@@ -1,57 +1,116 @@
-import { describe, it, expect, vi } from 'vitest'
+// @vitest-environment node
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { ServerStorage } from '@dxtmisha/functional'
 import { TextInclude } from '../TextInclude'
-import { TextIncludeInstance } from '../TextIncludeInstance'
-
-const testInstance = new TextIncludeInstance()
-
-vi.mock('@dxtmisha/functional-basic', async () => {
-  const actual = await vi.importActual('@dxtmisha/functional-basic') as any
-  return {
-    ...actual,
-    ServerStorage: {
-      ...actual.ServerStorage,
-      get: (key: string, factory: () => any) => {
-        if (key === '__ui:text-include-instance__') {
-          return testInstance
-        }
-        return factory()
-      }
-    }
-  }
-})
+import type { TextAllPropsInclude } from '../../types/textTypes'
 
 describe('TextInclude', () => {
-  it('should resolve local property values first', () => {
-    const textInclude = new TextInclude({ textCancel: 'Local Cancel', textChange: 'Local Change', textEdit: 'Local Edit' })
-    expect(textInclude.cancel).toBe('Local Cancel')
-    expect(textInclude.change).toBe('Local Change')
-    expect(textInclude.edit).toBe('Local Edit')
+  let currentRequest: Record<string, unknown> = {}
+
+  beforeEach(() => {
+    ServerStorage.reset()
+    currentRequest = {}
+    ServerStorage.init(() => currentRequest)
   })
 
-  it('should resolve function properties dynamically', () => {
-    const textInclude = new TextInclude({ textOk: () => 'Dynamic Local OK' })
-    expect(textInclude.ok).toBe('Dynamic Local OK')
+  afterEach(() => {
+    ServerStorage.reset()
+    vi.restoreAllMocks()
   })
 
-  it('should resolve global fallback values if local property is undefined', () => {
-    const textInclude = new TextInclude({})
-    expect(textInclude.cancel).toBe('Cancel')
+  describe('Standard functional requirements (Happy path & All 39 getters)', () => {
+    it.each<[keyof TextInclude, keyof TextAllPropsInclude, string]>([
+      ['am', 'textAm', 'AM'],
+      ['breadcrumb', 'textBreadcrumb', 'Breadcrumb'],
+      ['cancel', 'textCancel', 'Cancel'],
+      ['change', 'textChange', 'Change'],
+      ['characterLimit', 'textCharacterLimit', 'Character limit exceeded'],
+      ['characterRemaining', 'textCharacterRemaining', 'Remaining [left] characters'],
+      ['close', 'textClose', 'Close'],
+      ['copiedClipboard', 'textCopiedClipboard', 'Copied to the clipboard'],
+      ['crop', 'textCrop', 'Crop'],
+      ['decrement', 'textDecrement', 'Decrease'],
+      ['delete', 'textDelete', 'Delete'],
+      ['deleteConfirm', 'textDeleteConfirm', 'Are you sure you want to delete this file?'],
+      ['dropzone', 'textDropzone', 'Drop files here or click to upload'],
+      ['edit', 'textEdit', 'Edit'],
+      ['entriesMatch', 'textEntriesMatch', 'Entries do not match'],
+      ['error', 'textError', 'Error'],
+      ['first', 'textFirst', 'First'],
+      ['hide', 'textHide', 'Hide'],
+      ['increment', 'textIncrement', 'Increase'],
+      ['info', 'textInfo', '[item] of [count]'],
+      ['last', 'textLast', 'Last'],
+      ['loading', 'textLoading', 'Loading'],
+      ['loadingFile', 'textLoadingFile', 'Uploading your file'],
+      ['more', 'textMore', 'Show more'],
+      ['morePrev', 'textMorePrev', 'Show previous'],
+      ['next', 'textNext', 'Next'],
+      ['notFound', 'textNotFound', 'Nothing found'],
+      ['notifications', 'textNotifications', 'Notifications'],
+      ['ok', 'textOk', 'OK'],
+      ['page', 'textPage', 'Page'],
+      ['pagination', 'textPagination', 'Pagination'],
+      ['pm', 'textPm', 'PM'],
+      ['previous', 'textPrevious', 'Previous'],
+      ['retry', 'textRetry', 'Retry'],
+      ['rowsPerPage', 'textRowsPerPage', 'Rows per page'],
+      ['search', 'textSearch', 'Search'],
+      ['show', 'textShow', 'Show'],
+      ['symbol', 'textSymbol', 'Symbol [index]'],
+      ['uploadSuccess', 'textUploadSuccess', 'File uploaded successfully']
+    ])('should resolve getter "%s" from global fallback and local override "%s"', (getterName, propName, defaultText) => {
+      const defaultInclude = new TextInclude()
+      expect(defaultInclude[getterName]).toBe(defaultText)
+
+      const customText = `Custom ${String(getterName)}`
+      const customInclude = new TextInclude({ [propName]: customText })
+      expect(customInclude[getterName]).toBe(customText)
+    })
+
+    it('should evaluate function property overrides dynamically and cache getter closures in texts', () => {
+      let step = 0
+      const textInclude = new TextInclude({
+        textOk: () => `Confirm #${++step}`,
+        textClose: 'Close Window'
+      })
+
+      expect(textInclude.ok).toBe('Confirm #1')
+      expect(textInclude.ok).toBe('Confirm #2')
+      expect(textInclude.close).toBe('Close Window')
+      expect(textInclude.texts.textClose).toBeDefined()
+      expect(textInclude.texts.textClose?.()).toBe('Close Window')
+      expectTypeOf(textInclude.ok).toEqualTypeOf<string | undefined>()
+    })
+
+    it('should expose static list and initText to update request-scoped global texts', () => {
+      expect(TextInclude.list.value.ok).toBe('OK')
+
+      TextInclude.initText({ ok: 'Globalized OK' })
+      const textInclude = new TextInclude({})
+      expect(textInclude.ok).toBe('Globalized OK')
+    })
   })
 
-  it('should cache resolved getter functions', () => {
-    const textInclude = new TextInclude({ textClose: 'Close Me' })
-    expect(textInclude.close).toBe('Close Me')
+  describe('Boundary values, omitted props, and SSR request isolation', () => {
+    it('should safely handle omitted props in constructor and fall back to global text on empty string', () => {
+      const withoutProps = new TextInclude()
+      expect(withoutProps.loading).toBe('Loading')
 
-    expect(textInclude.texts['textClose']).toBeDefined()
-    expect(textInclude.texts['textClose']()).toBe('Close Me')
-  })
+      const withEmptyString = new TextInclude({ textLoading: '' })
+      expect(withEmptyString.loading).toBe('Loading')
+    })
 
-  it('should allow modifying global texts statically', () => {
-    TextInclude.initText({ ok: 'Globalized OK' } as any)
-    const textInclude = new TextInclude({})
-    expect(textInclude.ok).toBe('Globalized OK')
+    it('should isolate global text mutations across separate SSR request contexts', () => {
+      const requestA: Record<string, unknown> = {}
+      const requestB: Record<string, unknown> = {}
 
-    // Reset back
-    TextInclude.initText({ ok: 'OK' } as any)
+      currentRequest = requestA
+      TextInclude.initText({ loading: 'Загрузка (Запрос А)' })
+      expect(new TextInclude().loading).toBe('Загрузка (Запрос А)')
+
+      currentRequest = requestB
+      expect(new TextInclude().loading).toBe('Loading')
+    })
   })
 })

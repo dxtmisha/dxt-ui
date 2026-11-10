@@ -31,7 +31,7 @@
 
   &__point {
     position: absolute;
-    right: 0;
+    @include ui.right(0);
 
     width: ui.v('??height');
     height: ui.v('??height');
@@ -70,22 +70,22 @@
   }
 
   &--linear {
-    left: 0;
-    right: 0;
+    @include ui.horizon(0);
     @include ui.paddingX(0);
 
     width: 100%;
     height: ui.v('??height');
 
     @include ui.backgroundColor(ui.v('??palette'), ui.v('??opacity'));
+    border-radius: ui.v('??borderRadius');
 
     &::after,
     &::before {
       position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 100%;
+      @include ui.inset(0);
+      width: 100%;
+      transform-origin: #{ui.dirLeft()} center;
+      transform: translateX(calc(var(--d-dir, 1) * -100%));
 
       content: ' ';
       @include ui.backgroundColor(ui.v('??palette'), 1);
@@ -109,8 +109,8 @@
       }
 
       &::before {
-        right: ui.v('??sys.value', '0%');
-        transition-property: right;
+        transform: translateX(calc(var(--d-dir, 1) * -1 * #{ui.v('??sys.value', '0%')}));
+        transition-property: transform;
       }
     }
 
@@ -147,8 +147,8 @@
           }
 
           &::before {
-            right: 0;
-            transition-property: right;
+            transform: translateX(0);
+            transition-property: transform;
           }
         }
       }
@@ -157,16 +157,32 @@
         &::after {
           animation: #{ui.n('??linear-type3')} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
           animation-delay: 1.15s;
+
+          @include ui.mediaPrefersReducedMotion {
+            animation-duration: 6s;
+            animation-delay: 3.3s;
+          }
         }
 
         &::before {
           animation: #{ui.n('??linear-type2')} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+
+          @include ui.mediaPrefersReducedMotion {
+            animation-duration: 6s;
+          }
         }
       }
 
       &--type3 {
         &::after {
+          @include ui.left(0);
+          @include ui.right(auto);
+          width: 25%;
           animation: #{ui.n('??linear-type4')} 1.2s linear infinite;
+
+          @include ui.mediaPrefersReducedMotion {
+            animation-duration: 4s;
+          }
         }
       }
     }
@@ -215,6 +231,10 @@
         @include ui.subclass('circle') {
           transform-origin: center;
           animation: #{ui.n('??circle-type2')} 2s linear infinite, #{ui.n('??circle-type3')} 1.5s ease-in-out infinite;
+
+          @include ui.mediaPrefersReducedMotion {
+            animation-duration: 6s, 4.5s;
+          }
         }
       }
 
@@ -224,6 +244,10 @@
           stroke-dashoffset: 0;
           transform-origin: center;
           animation: #{ui.n('??circle-type2')} 1.2s linear infinite;
+
+          @include ui.mediaPrefersReducedMotion {
+            animation-duration: 4s;
+          }
         }
       }
     }
@@ -263,57 +287,49 @@
 
   @keyframes #{ui.n('??linear-type1')} {
     0% {
-      right: 100%
+      transform: translateX(calc(var(--d-dir, 1) * -100%));
     }
     5% {
-      right: 60%
+      transform: translateX(calc(var(--d-dir, 1) * -60%));
     }
     50% {
-      right: 10%
+      transform: translateX(calc(var(--d-dir, 1) * -10%));
     }
     100% {
-      right: 5%
+      transform: translateX(calc(var(--d-dir, 1) * -5%));
     }
   }
 
   @keyframes #{ui.n('??linear-type2')} {
     0% {
-      left: -35%;
-      right: 100%
+      transform: translateX(calc(var(--d-dir, 1) * -35%)) scaleX(0.35);
     }
     60% {
-      left: 100%;
-      right: -90%
+      transform: translateX(calc(var(--d-dir, 1) * 100%)) scaleX(0.9);
     }
     100% {
-      left: 100%;
-      right: -90%
+      transform: translateX(calc(var(--d-dir, 1) * 100%)) scaleX(0.9);
     }
   }
 
   @keyframes #{ui.n('??linear-type3')} {
     0% {
-      left: -200%;
-      right: 100%
+      transform: translateX(calc(var(--d-dir, 1) * -200%)) scaleX(1);
     }
     60% {
-      left: 107%;
-      right: -8%
+      transform: translateX(calc(var(--d-dir, 1) * 107%)) scaleX(0.08);
     }
     100% {
-      left: 107%;
-      right: -8%
+      transform: translateX(calc(var(--d-dir, 1) * 107%)) scaleX(0.08);
     }
   }
 
   @keyframes #{ui.n('??linear-type4')} {
     0% {
-      left: -25%;
-      right: 100%;
+      transform: translateX(calc(var(--d-dir, 1) * -100%));
     }
     100% {
-      left: 100%;
-      right: -25%;
+      transform: translateX(calc(var(--d-dir, 1) * 400%));
     }
   }
 

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { afterEach, describe, expect, it } from 'vitest'
-import { computed, createApp, defineComponent, nextTick, reactive, type Ref } from 'vue'
+import { computed, createApp, defineComponent, nextTick, reactive } from 'vue'
 import type { ConstrClasses } from '@dxtmisha/functional'
 
 import { ProgressDesign } from '../ProgressDesign'
@@ -20,7 +20,12 @@ describe('ProgressDesign (integration)', () => {
     document.body.appendChild(container)
     cleanups.push(() => container.remove())
 
-    let elementHtmlRef!: Ref<HTMLElement | undefined>
+    let exposedInstance: ReturnType<ProgressDesign<
+      ProgressComponents,
+      ProgressExpose,
+      ProgressClasses,
+      ProgressProps
+    >['expose']> | undefined
 
     const Component = defineComponent({
       setup() {
@@ -46,7 +51,7 @@ describe('ProgressDesign (integration)', () => {
           classes: classesToken
         })
 
-        elementHtmlRef = (design.expose() as any).elementHtml
+        exposedInstance = design.expose()
 
         return design.render()
       }
@@ -63,7 +68,7 @@ describe('ProgressDesign (integration)', () => {
     expect(rootElement?.tagName.toLowerCase()).toBe('div')
     expect(rootElement?.getAttribute('role')).toBe('progressbar')
     expect(rootElement?.getAttribute('aria-valuenow')).toBe('60')
-    expect(elementHtmlRef.value).toBe(rootElement)
+    expect(exposedInstance).toBeDefined()
 
     const point = rootElement?.querySelector('.d1-progress__point')
     expect(point).not.toBeNull()

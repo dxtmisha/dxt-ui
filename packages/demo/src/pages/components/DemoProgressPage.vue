@@ -89,16 +89,16 @@ const onTogglePoint = () => {
       <D1Group label="Mode: Point">
         <D1Grid>
           <D1GridItem :base="'2'" class="demo-progress-page__item">
-            <D1Progress point linear visible :value="50" position="static" />
+            <D1Progress point linear visible :value="25" position="static" />
+          </D1GridItem>
+          <D1GridItem :base="'2'" class="demo-progress-page__item">
+            <D1Progress point linear visible :value="75" position="static" />
           </D1GridItem>
           <D1GridItem :base="'2'" class="demo-progress-page__item">
             <D1Progress point linear visible indeterminate="type1" position="static" />
           </D1GridItem>
           <D1GridItem :base="'2'" class="demo-progress-page__item">
-            <D1Progress point linear visible indeterminate="type2" position="static" />
-          </D1GridItem>
-          <D1GridItem :base="'2'" class="demo-progress-page__item">
-            <D1Progress point linear visible inverse indeterminate="type3" position="static" />
+            <D1Progress point linear visible inverse indeterminate="type1" position="static" />
           </D1GridItem>
         </D1Grid>
       </D1Group>
@@ -207,6 +207,7 @@ const onTogglePoint = () => {
               <D1Progress
                 :visible="isVisibleDelay"
                 circular
+                position="static"
                 delay="360"
                 delayHide="200"
               />
@@ -287,6 +288,7 @@ const onTogglePoint = () => {
   &__container {
     position: relative;
     width: 100%;
+    padding: 12px 0;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ref, type VNode } from 'vue'
 import { type ConstrBind, type DesignComponents, DesignName } from '@dxtmisha/functional'
 import { ComponentIncludeAbstract } from '../ComponentIncludeAbstract'
@@ -130,6 +130,10 @@ class MinimalComponentInclude extends ComponentIncludeAbstract<TestProps, TestEx
 }
 
 describe('ComponentIncludeAbstract', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   describe('Standard functional requirements (Happy path)', () => {
     it('should return the BEM sub-element class name via getClassName()', () => {
       const include = new TestComponentInclude({}, new DesignName('parent.class'))

@@ -76,13 +76,53 @@ export class ProgressDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work.
+   * Render elements for the circular loader.
    *
-   * Инициализация всех необходимых свойств для работы.
-   * @returns exposed properties / экспортируемые свойства
+   * Рендер элементов для кругового загрузчика.
+   * @returns list of virtual nodes for the circle / список виртуальных узлов для круга
    */
-  protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+  readonly renderCircle = (): VNode[] => {
+    if (this.props.circular) {
+      return [
+        h('circle', {
+          class: this.classes?.value.circleSub,
+          cx: '24',
+          cy: '24',
+          r: '20',
+          ...AriaStaticInclude.hidden()
+        }),
+        h('circle', {
+          class: this.classes?.value.circle,
+          cx: '24',
+          cy: '24',
+          r: '20',
+          ...AriaStaticInclude.hidden()
+        })
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Render dot at the end of the linear progress indicator (supported only for determinate `value` or `indeterminate="type1"`).
+   *
+   * Рендер точки в конце линейного индикатора прогресса (поддерживается только для детерминированного `value` или `indeterminate="type1"`).
+   * @returns list of virtual nodes for the point / список виртуальных узлов для точки
+   */
+  readonly renderPoint = (): VNode[] => {
+    if (
+      this.props.linear
+      && this.props.point
+      && (
+        this.item.isValue()
+        || (this.props as ProgressProps).indeterminate === 'type1'
+      )
+    ) {
+      return [h('span', this.getKeyClass('point'))]
+    }
+
+    return []
   }
 
   /**
@@ -105,13 +145,13 @@ export class ProgressDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Initialization of all the necessary properties for work.
    *
-   * Доработка полученного списка стилей.
-   * @returns refined styles / доработанные стили
+   * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспортируемые свойства
    */
-  protected initStyles(): ConstrStyles {
-    return this.item.styles
+  protected initExpose(): EXPOSE {
+    return {} as EXPOSE
   }
 
   /**
@@ -146,52 +186,12 @@ export class ProgressDesign<
   }
 
   /**
-   * Render elements for the circular loader.
+   * Refinement of the received list of styles.
    *
-   * Рендер элементов для кругового загрузчика.
-   * @returns list of virtual nodes for the circle / список виртуальных узлов для круга
+   * Доработка полученного списка стилей.
+   * @returns refined styles / доработанные стили
    */
-  readonly renderCircle = (): VNode[] => {
-    if (this.props.circular) {
-      return [
-        h('circle', {
-          class: this.classes?.value.circleSub,
-          cx: '24',
-          cy: '24',
-          r: '20',
-          ...AriaStaticInclude.hidden()
-        }),
-        h('circle', {
-          class: this.classes?.value.circle,
-          cx: '24',
-          cy: '24',
-          r: '20',
-          ...AriaStaticInclude.hidden()
-        })
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Render dot at the end of the progress indicator.
-   *
-   * Рендер точки в конце индикатора прогресса.
-   * @returns list of virtual nodes for the point / список виртуальных узлов для точки
-   */
-  readonly renderPoint = (): VNode[] => {
-    if (
-      this.props.linear
-      && this.props.point
-      && (
-        this.props.value
-        || (this.props as ProgressProps).indeterminate === 'type1'
-      )
-    ) {
-      return [h('span', this.getKeyClass('point'))]
-    }
-
-    return []
+  protected initStyles(): ConstrStyles {
+    return this.item.styles
   }
 }

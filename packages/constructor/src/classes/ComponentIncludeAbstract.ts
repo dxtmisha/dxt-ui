@@ -276,7 +276,7 @@ export abstract class ComponentIncludeAbstract<
    * @returns exposed API object / объект экспортируемого API
    */
   protected toExpose(): ComponentExpose {
-    const data: Record<string, any> = {}
+    const data: Record<string, unknown> = {}
 
     if (this.exposeItems) {
       this.exposeItems.forEach((item) => {

@@ -12,6 +12,7 @@ import {
   type DesignComponents,
   DesignLogicAbstract,
   type DesignName,
+  isNumber,
   toNumber
 } from '@dxtmisha/functional'
 
@@ -59,12 +60,6 @@ export class Progress extends DesignLogicAbstract<
   /** Timer instance for delayed visibility updates / Экземпляр таймера для отложенного обновления видимости */
   protected timeout?: ReturnType<typeof setTimeout>
 
-  /** Reactive state for hiding animation / Реактивное состояние для анимации скрытия */
-  readonly hide = ref<boolean>(false)
-
-  /** Reactive state for visibility status / Реактивное состояние для статуса видимости */
-  readonly visible = ref<boolean>(false)
-
   /**
    * Constructor for initializing Progress logic.
    *
@@ -100,6 +95,12 @@ export class Progress extends DesignLogicAbstract<
     )
   }
 
+  /** Reactive state for hiding animation / Реактивное состояние для анимации скрытия */
+  readonly hide = ref<boolean>(false)
+
+  /** Reactive state for visibility status / Реактивное состояние для статуса видимости */
+  readonly visible = ref<boolean>(false)
+
   /**
    * List of ARIA attributes for the progress element.
    *
@@ -107,15 +108,10 @@ export class Progress extends DesignLogicAbstract<
    * @returns ARIA attributes object / объект ARIA-атрибутов
    */
   get aria(): AriaList {
-    const { max, value } = this.props
-    const valueMinMax = value
-      ? AriaStaticInclude.valueMinMax(value, 0, max)
-      : undefined
-
     return {
       ...AriaStaticInclude.role(this.role),
       ...AriaStaticInclude.label(this.label),
-      ...valueMinMax
+      ...(this.isValue() ? AriaStaticInclude.valueMinMax(this.value, 0, this.max) : {})
     }
   }
 
@@ -127,8 +123,11 @@ export class Progress extends DesignLogicAbstract<
    */
   get binds(): ConstrBind {
     const properties: ConstrBind = {
-      onAnimationend: this.onAnimation,
       ...this.aria
+    }
+
+    if (this.hide.value) {
+      properties.onAnimationend = this.onAnimation
     }
 
     if (this.props.circular) {
@@ -165,8 +164,8 @@ export class Progress extends DesignLogicAbstract<
     }
 
     if (
-      !this.isValue()
-      && this.props.visible
+      this.isValue()
+      || this.props.visible
     ) {
       return this.i('text').loading
     }
@@ -239,7 +238,7 @@ export class Progress extends DesignLogicAbstract<
   get valueInPercent(): string | null {
     if (this.isValue()) {
       const value = this.value
-      const percent = (100 / this.max * value)
+      const percent = Math.min(100, Math.max(0, (100 / Math.max(1, this.max)) * value))
 
       if (this.props.circular) {
         return percent.toString()
@@ -268,7 +267,7 @@ export class Progress extends DesignLogicAbstract<
    * @returns check result / результат проверки
    */
   isValue(): this is { props: { value: number } } {
-    return this.value > 0
+    return isNumber(this.props.value) && this.value >= 0
   }
 
   /**
@@ -310,6 +309,26 @@ export class Progress extends DesignLogicAbstract<
   }
 
   /**
+   * Hook executed when component mounts.
+   *
+   * Хук, выполняемый при монтировании компонента.
+   */
+  protected override readonly onMounted = (): void => {
+    this.switch()
+    watch(() => this.props.visible, this.switch)
+    watch(() => this.props.value, this.switch)
+  }
+
+  /**
+   * Hook executed when component unmounts.
+   *
+   * Хук, выполняемый при размонтировании компонента.
+   */
+  protected override readonly onUnmounted = (): void => {
+    clearTimeout(this.timeout)
+  }
+
+  /**
    * Method triggers when the visible property changes to change the status of the output of the element.
    *
    * Метод срабатывает при изменении свойства visible для изменения статуса вывода элемента.
@@ -337,25 +356,5 @@ export class Progress extends DesignLogicAbstract<
         this.update()
       }
     }
-  }
-
-  /**
-   * Hook executed when component mounts.
-   *
-   * Хук, выполняемый при монтировании компонента.
-   */
-  protected override readonly onMounted = (): void => {
-    this.switch()
-    watch(() => this.props.visible, this.switch)
-    watch(() => this.props.value, this.switch)
-  }
-
-  /**
-   * Hook executed when component unmounts.
-   *
-   * Хук, выполняемый при размонтировании компонента.
-   */
-  protected override readonly onUnmounted = (): void => {
-    clearTimeout(this.timeout)
   }
 }
