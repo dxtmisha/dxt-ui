@@ -5,10 +5,18 @@
   display: flex;
   align-items: center;
 
+  color: inherit;
+  text-decoration: none;
+
+  @include ui.hover {
+    text-decoration: none;
+  }
+
   &__context {
     display: flex;
     flex-wrap: wrap;
     @include ui.flexDynamic;
+    min-width: 0;
 
     order: 4;
   }

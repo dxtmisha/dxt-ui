@@ -6,12 +6,12 @@ import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const { eventName, onEvent } = useDemoEvent()
-const cellRef = ref<CellExpose | null>(null)
+const cellReference = ref<CellExpose | null>(null)
 
 const statusValue = computed<string>(() => {
-  if (cellRef.value) {
-    const value = cellRef.value.getValue?.()
-    const detail = cellRef.value.getDetail?.()
+  if (cellReference.value) {
+    const value = cellReference.value.getValue?.()
+    const detail = cellReference.value.getDetail?.()
     return `getValue(): ${JSON.stringify(value)}, getDetail(): ${JSON.stringify(detail)}`
   }
   return 'Ref not initialized'
@@ -22,138 +22,293 @@ const statusValue = computed<string>(() => {
   <DemoLinkBlack/>
   <D1Page label="Cell">
     <D1Section>
-      <D1Group label="Basic">
+      <D1Group label="Basic & Data Formats">
         <D1Cell
           label="Default Cell"
           description="Standard cell description goes here"
           caption="Cell Caption"
         />
         <D1Cell
-          label="Cell with Custom Tag"
-          description="Rendered as a section tag"
+          label="Only Label"
+        />
+        <D1Cell
+          label="Label with Caption"
+          caption="Top caption information"
+        />
+        <D1Cell
+          label="Label with Description"
+          description="Detailed multi-line description of the item"
+        />
+        <D1Cell
+          :label="2048"
+          :caption="42"
+          :description="100000"
+        />
+      </D1Group>
+
+      <D1Group label="Tags & Links">
+        <D1Cell
+          label="Cell with Section Tag"
+          description="Rendered as a semantic section tag"
           tag="section"
         />
         <D1Cell
-          label="Cell as Link"
-          description="Rendered as an anchor element with href"
-          tag="a"
+          label="Cell with Button Tag"
+          description="Rendered as a native button element"
+          tag="button"
+          type="button"
+        />
+        <D1Cell
+          label="Cell as Anchor Link"
+          description="Rendered as an anchor element with href target"
           href="#demo-link"
+        />
+        <D1Cell
+          label="Cell with Router Navigation"
+          description="Navigates via Vue Router target"
+          to="/component-cell"
         />
       </D1Group>
 
       <D1Group label="States">
         <D1Cell
-          label="Disabled State"
-          description="Interaction is disabled"
-          disabled
+          label="Focus State"
+          description="Visual indicator of active focus"
+          focus
         />
         <D1Cell
           label="Selected State"
-          description="Visual indicator of selection"
+          description="Visual indicator of selected item"
           selected
         />
         <D1Cell
           label="Readonly State"
-          description="Only readable state"
+          description="Readonly state with disabled actions"
           readonly
         />
         <D1Cell
-          label="Focus State"
-          description="Visual indicator of focus"
-          focus
+          label="Disabled State"
+          description="Interaction is completely disabled"
+          disabled
         />
         <D1Cell
-          label="Skeleton Loading State"
-          description="Placeholder skeleton lines"
-          isSkeleton
-        />
-      </D1Group>
-
-      <D1Group label="Icons & Progress">
-        <D1Cell
-          label="Cell with Start Icon"
-          description="Includes standard icon on the left"
-          icon="home"
-        />
-        <D1Cell
-          label="Cell with Trailing Icon"
-          description="Includes icon on the right"
-          iconTrailing="chevron_right"
-        />
-        <D1Cell
-          label="Cell with Icon Top"
-          description="Start icon is aligned to the top"
-          icon="settings"
-          iconTop
-        />
-        <D1Cell
-          label="Loading Cell"
-          description="Displays a progress indicator"
-          loading
+          label="Disabled and Selected"
+          description="Disabled interaction with selected appearance"
+          disabled
+          selected
         />
       </D1Group>
 
-      <D1Group label="Interactions & Dividers">
+      <D1Group label="Dynamic & Interactive">
         <D1Cell
-          label="Dynamic Hover Cell"
-          description="Hover and pointer effects are active"
+          label="Dynamic Only"
+          description="Keyboard accessible with tabindex and button role"
+          dynamic
+        />
+        <D1Cell
+          label="Dynamic with Hover"
+          description="Hover effects and active gradient styling enabled"
           dynamic
           dynamicHover
         />
+      </D1Group>
+
+      <D1Group label="Loading & Skeleton">
         <D1Cell
-          label="Without Divider"
-          description="Divider is disabled"
-          :divider="false"
+          label="Loading State"
+          description="Displays an active bottom progress bar"
+          loading
         />
         <D1Cell
-          label="Divider with Always Label"
-          description="Divider label is set to always"
-          dividerLabel="always"
+          label="Custom Progress Value"
+          description="Configured with explicit progress percentage"
+          :progress="{ value: 65 }"
         />
         <D1Cell
-          label="Custom Role Listitem"
-          description="Explicit ARIA role set to listitem"
-          role="listitem"
+          label="Skeleton Mode via isSkeleton"
+          description="Placeholder skeleton line layout"
+          isSkeleton
+        />
+        <D1Cell
+          label="Skeleton Mode via skeleton Object"
+          description="Configured with active skeleton props"
+          :skeleton="{ active: true }"
+        />
+        <D1Cell
+          label="Loading and Disabled"
+          description="Asynchronous operation in disabled state"
+          loading
+          disabled
         />
       </D1Group>
 
-      <D1Group label="Custom Slots">
+      <D1Group label="Icons & Alignment">
+        <D1Cell
+          label="Start Icon String"
+          description="Leading icon specified as a material symbol name"
+          icon="home"
+        />
+        <D1Cell
+          label="Start Icon Object"
+          description="Leading icon specified with IconProps object"
+          :icon="{ icon: 'person', size: 'sm' }"
+        />
+        <D1Cell
+          label="Trailing Icon String"
+          description="Trailing icon specified as a material symbol name"
+          iconTrailing="chevron_right"
+        />
+        <D1Cell
+          label="Trailing Icon Object"
+          description="Trailing icon specified with IconProps object"
+          :iconTrailing="{ icon: 'arrow_forward' }"
+        />
+        <D1Cell
+          label="Leading and Trailing Icons"
+          description="Both start and trailing accessories displayed simultaneously"
+          icon="folder"
+          iconTrailing="open_in_new"
+        />
+        <D1Cell
+          label="Top Aligned Icon"
+          description="Start icon aligned to the top row rather than vertically centered when description is tall"
+          icon="info"
+          iconTop
+        />
+      </D1Group>
+
+      <D1Group label="Dividers & Divider Labels">
+        <D1Cell
+          label="Default Divider"
+          description="Bottom border divider active by default"
+          divider
+        />
+        <D1Cell
+          label="Disabled Divider"
+          description="Bottom border divider turned off"
+          :divider="false"
+        />
+        <D1Cell
+          label="Divider Label Always"
+          description="Divider positioned directly below the label context container"
+          dividerLabel="always"
+        />
+        <D1Cell
+          label="Divider Label None"
+          description="Context divider explicitly turned off"
+          dividerLabel="none"
+        />
+        <D1Cell
+          label="Divider Label Adaptive SM"
+          description="Adaptive divider under context below small breakpoint"
+          dividerLabel="adaptiveSm"
+        />
+      </D1Group>
+
+      <D1Group label="Padding & Indent">
+        <D1Cell
+          label="Padding SM"
+          description="Compact horizontal and vertical spacing"
+          padding="sm"
+        />
+        <D1Cell
+          label="Padding MD"
+          description="Medium standard spacing"
+          padding="md"
+        />
+        <D1Cell
+          label="Padding LG"
+          description="Generous spacing for spacious layouts"
+          padding="lg"
+        />
+        <D1Cell
+          label="Padding Vertical SM"
+          description="Vertical padding small without horizontal padding"
+          padding="ySm"
+        />
+        <D1Cell
+          label="Padding Vertical MD"
+          description="Vertical padding medium without horizontal padding"
+          padding="yMd"
+        />
+        <D1Cell
+          label="Padding Vertical LG"
+          description="Vertical padding large without horizontal padding"
+          padding="yLg"
+        />
+        <D1Cell
+          label="Padding None"
+          description="Zero internal padding"
+          padding="none"
+        />
+        <D1Cell
+          label="Padding by Indent Disabled"
+          description="Layout indent padding turned off"
+          :paddingByIndent="false"
+        />
+      </D1Group>
+
+      <D1Group label="Slots">
         <D1Cell>
+          <template #caption>
+            <span>Custom Caption Slot</span>
+          </template>
           <template #label>
-            <strong style="color: var(--d1-sys-palette-primary)">Custom HTML Label</strong>
+            <strong>Custom Bold Label Slot</strong>
           </template>
           <template #description>
-            <span style="font-style: italic">Custom italicized description slot</span>
+            <span>Custom Description Slot with extended formatted text</span>
           </template>
-          <template #caption>
-            <span style="font-size: 0.8rem; opacity: 0.6">Custom Caption Slot</span>
-          </template>
+        </D1Cell>
+        <D1Cell
+          label="Cell with Trailing Slot"
+          description="Accessory component rendered in the trailing slot"
+        >
           <template #trailing>
-            <D1Chip label="Status" />
+            <D1Chip label="Active" palette="primary" />
           </template>
         </D1Cell>
         <D1Cell
           label="Cell with Body Slot"
-          description="Includes an expandable body section"
+          description="Includes an expandable full-width body row"
         >
           <template #body>
-            <div style="padding-top: 8px; width: 100%;">
-              <small>Extended body content rendered in its own full-width row</small>
-            </div>
+            <D1TextDescription>
+              Extended body section rendered below the main cell row.
+            </D1TextDescription>
           </template>
         </D1Cell>
       </D1Group>
 
+      <D1Group label="ARIA & Roles">
+        <D1Cell
+          label="Role List Item"
+          description="Explicit ARIA role set to listitem"
+          role="listitem"
+        />
+        <D1Cell
+          label="Role Menu Item"
+          description="Explicit ARIA role set to menuitem"
+          role="menuitem"
+        />
+        <D1Cell
+          label="Role Option"
+          description="Explicit ARIA role set to option"
+          role="option"
+        />
+      </D1Group>
+
       <D1Group label="Events & Expose Methods">
         <D1Cell
-          ref="cellRef"
+          ref="cellReference"
           label="Interactive Cell"
-          description="Click this cell to trigger events and expose methods"
+          description="Click to trigger click events and test exposed controller methods"
           dynamic
           dynamicHover
           value="my-cell-value"
-          :detail="{ section: 'demo' }"
-          @click="onEvent('click')"
+          :detail="{ category: 'demo', action: 'trigger' }"
+          @click="(event, value) => onEvent('click', event, value)"
+          @click-lite="(value) => onEvent('clickLite', value)"
         />
         <DemoValue :value="statusValue"/>
         <DemoValue :value="eventName"/>
@@ -162,5 +317,4 @@ const statusValue = computed<string>(() => {
   </D1Page>
 </template>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

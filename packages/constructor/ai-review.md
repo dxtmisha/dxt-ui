@@ -62,7 +62,6 @@ src/constructors/Progress/Progress.ts
 src/constructors/Progress/ProgressDesign.tsx
 src/constructors/Progress/ProgressInclude.ts
 
-
 src/constructors/Ripple/Ripple.ts
 src/constructors/Ripple/RippleItem.ts
 
@@ -104,6 +103,11 @@ src/classes/TextInclude.ts
 
 src/constructors/Progress/Progress.ts
 src/constructors/Progress/ProgressDesign.tsx
-src/constructors/Progress/ProgressInclude.ts
+src/constructors/Progress/ProgressInclude.tsts
+
+src/constructors/Accordion/AccordionHead.ts
+src/constructors/Accordion/Accordion.ts
+src/constructors/Accordion/AccordionDesign.tsx
+
 
 

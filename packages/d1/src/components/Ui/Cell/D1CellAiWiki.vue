@@ -18,6 +18,19 @@ defineOptions({
     :component="D1Cell"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ classDemo }">
+    <div :class="classDemo.item">
+  <DesignComponent
+    label="Account Profile"
+    description="Manage your account preferences and notifications"
+    caption="Admin"
+    icon="account_circle"
+    iconTrailing="chevron_right"
+    dynamic
+    dynamicHover
+  />
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

@@ -214,6 +214,27 @@ export class Cell extends DesignLogicAbstract<
   }
 
   /**
+   * Tag type.
+   *
+   * Тип тега.
+   * @returns tag name / название тега
+   */
+  get tag(): string {
+    if (this.props.tag) {
+      return this.props.tag
+    }
+
+    if (
+      this.props.to
+      || this.props.href
+    ) {
+      return 'a'
+    }
+
+    return 'div'
+  }
+
+  /**
    * Computed role for the cell component.
    *
    * Вычисляемая роль для компонента ячейки.
@@ -222,6 +243,10 @@ export class Cell extends DesignLogicAbstract<
   get role(): string | undefined {
     if (this.props.role) {
       return this.props.role
+    }
+
+    if (this.tag === 'a') {
+      return undefined
     }
 
     if (this.props.dynamic) {

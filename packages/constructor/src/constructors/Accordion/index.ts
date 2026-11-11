@@ -1,5 +1,6 @@
 export * from './Accordion'
 export * from './AccordionDesign'
+export * from './AccordionHead'
 export * from './props'
 export * from './types'
 export * from './basicTypes'

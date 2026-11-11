@@ -134,7 +134,7 @@ export class CellDesign<
    */
   protected initRender(): VNode {
     return h(
-      this.props.tag ?? 'div',
+      this.item.tag,
       {
         ref: this.element,
         ...this.getAttrs(),

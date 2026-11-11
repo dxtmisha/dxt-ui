@@ -59,7 +59,6 @@ export type CellProps = CellPropsBasic & CellPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsCell = {
-  tag: 'div',
   ...{
     // :default [!] System label / Системная метка
     divider: true

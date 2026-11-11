@@ -1,5 +1,6 @@
 import { isReadonly, isRef, onMounted, type Ref, watch } from 'vue'
 import {
+  isDomRuntime,
   isFunction,
   type RefType,
   toCamelCase,
@@ -27,7 +28,7 @@ export class ModelInclude<Value = string> {
     protected readonly emits?: any,
     protected readonly syncValue?: RefType<Value>
   ) {
-    if (syncValue) {
+    if (syncValue && isDomRuntime()) {
       onMounted(() => {
         watch(syncValue, (newValue: Value) => {
           this.emit(newValue)

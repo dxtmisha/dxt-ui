@@ -9,19 +9,19 @@ import {
 import { Accordion } from './Accordion'
 
 import type { MotionTransformControlItem } from '../MotionTransform'
-import {
-  type AccordionProps
-} from './props'
-import {
-  type AccordionClasses,
-  type AccordionComponents,
-  type AccordionEmits,
-  type AccordionExpose,
-  type AccordionSlots
+import type { AccordionProps } from './props'
+import type {
+  AccordionClasses,
+  AccordionComponents,
+  AccordionEmits,
+  AccordionExpose,
+  AccordionSlots
 } from './types'
 
 /**
- * AccordionDesign
+ * AccordionDesign rendering and composition class.
+ *
+ * Класс рендеринга и композиции AccordionDesign.
  */
 export class AccordionDesign<
   COMP extends AccordionComponents,
@@ -37,18 +37,23 @@ export class AccordionDesign<
     CLASSES,
     P
   > {
+  /** Accordion logic orchestrator instance / Экземпляр оркестратора логики Accordion */
   protected readonly item: Accordion
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
+   * Constructor for creating an AccordionDesign instance.
+   *
+   * Конструктор для создания экземпляра дизайна аккордеона.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor accordion item class / класс элемента аккордеона
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, AccordionEmits, P>
+    options?: ConstrOptions<COMP, AccordionEmits, P>,
+    ItemConstructor: typeof Accordion = Accordion
   ) {
     super(
       name,
@@ -56,7 +61,7 @@ export class AccordionDesign<
       options
     )
 
-    this.item = new Accordion(
+    this.item = new ItemConstructor(
       this.props,
       this.element,
       this.naming,
@@ -67,13 +72,14 @@ export class AccordionDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns expose object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.motionTransform.expose
+      ...this.item.i('motionTransform').expose
     } as EXPOSE
   }
 
@@ -81,10 +87,11 @@ export class AccordionDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         head: this.naming.getSubClass('head'),
@@ -98,6 +105,7 @@ export class AccordionDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -107,9 +115,10 @@ export class AccordionDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual nodes array / массив виртуальных узлов
    */
   protected initRender(): VNode[] {
-    return this.item.motionTransform.render(
+    return this.item.i('motionTransform').render(
       {
         head: this.renderHead,
         body: this.renderBody
@@ -118,7 +127,7 @@ export class AccordionDesign<
         ...this.getAttrs(),
         class: this.classes?.value.main,
         style: this.styles?.value,
-        ...this.item.model.getBinds()
+        ...this.item.binds
       }
     )
   }
@@ -127,49 +136,62 @@ export class AccordionDesign<
    * Generates data for the header.
    *
    * Генерирует данные для заголовка.
-   * @param open open status/ статус открытия
+   * @param controlItem motion transform control items / параметры управления анимацией перехода
+   * @returns virtual node or undefined / виртуальный узел или undefined
    */
   readonly renderHead = (
     { isOpen, binds }: MotionTransformControlItem
   ): VNode | undefined => {
-    const slots: Record<string, any> = {}
-
-    if (this.slots) {
-      if ('label' in this.slots) {
-        slots.label = (props: any) => this.initSlot('label', undefined, props)
-      }
-      if ('description' in this.slots) {
-        slots.description = (props: any) => this.initSlot('description', undefined, props)
-      }
-      if ('caption' in this.slots) {
-        slots.caption = (props: any) => this.initSlot('caption', undefined, props)
-      }
-      if ('trailing' in this.slots) {
-        slots.trailing = (props: any) => this.initSlot('trailing', undefined, props)
-      }
-      if ('body' in this.slots) {
-        slots.body = (props: any) => this.initSlot('body', undefined, props)
-      }
-    }
-
     return this.components?.renderOne(
       'cell',
       toBinds(
-        this.item.bindsCell,
+        this.item.i('head').binds,
         binds,
         {
           iconTurn: isOpen,
           class: this.classes?.value.head
         }
       ),
-      slots
+      this.renderHeadSlots()
     )
+  }
+
+  /**
+   * Generates slots for the header cell.
+   *
+   * Генерирует слоты для ячейки заголовка.
+   * @returns slots object / объект слотов
+   */
+  readonly renderHeadSlots = (): Record<string, any> => {
+    const slots: Record<string, any> = {}
+
+    if (this.slots) {
+      if ('body' in this.slots) {
+        slots.body = (props: any) => this.initSlot('body', undefined, props)
+      }
+      if ('caption' in this.slots) {
+        slots.caption = (props: any) => this.initSlot('caption', undefined, props)
+      }
+      if ('description' in this.slots) {
+        slots.description = (props: any) => this.initSlot('description', undefined, props)
+      }
+      if ('label' in this.slots) {
+        slots.label = (props: any) => this.initSlot('label', undefined, props)
+      }
+      if ('trailing' in this.slots) {
+        slots.trailing = (props: any) => this.initSlot('trailing', undefined, props)
+      }
+    }
+
+    return slots
   }
 
   /**
    * Generates data for the body.
    *
    * Генерирует данные для тела.
+   * @param props slot props / параметры слота
+   * @returns virtual node / виртуальный узел
    */
   readonly renderBody = (props: any): VNode => {
     return h(

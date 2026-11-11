@@ -1,14 +1,42 @@
-import { ref, type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName, getElementId, toBinds } from '@dxtmisha/functional'
+import { ref, watch, type Ref } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  type DesignName,
+  DesignLogicAbstract,
+  isDomRuntime
+} from '@dxtmisha/functional'
 
+import { AccordionHead } from './AccordionHead'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
+import {
+  type MotionTransformEmitOptions,
+  type MotionTransformEmits,
+  MotionTransformInclude
+} from '../MotionTransform'
 
-import type { CellExpose } from '../Cell'
-import { MotionTransformInclude } from '../MotionTransform'
-
-import type { AccordionComponents, AccordionEmits, AccordionSlots } from './types'
 import type { AccordionProps } from './props'
+import type {
+  AccordionComponents,
+  AccordionEmits,
+  AccordionSlots
+} from './types'
+
+/** Accordion dependency constructors type / Тип конструкторов зависимостей Accordion */
+export type AccordionConstructors = {
+  /** Event click constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Header cell constructor / Конструктор ячейки заголовка */
+  head: typeof AccordionHead
+  /** Model synchronization constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude<boolean>
+  /** Motion transform manager constructor / Конструктор менеджера анимации переходов */
+  motionTransform: typeof MotionTransformInclude
+}
 
 /**
  * Class representing the core logic and state manager for the Accordion component.
@@ -19,27 +47,62 @@ import type { AccordionProps } from './props'
  * Координирует состояния открытия/закрытия панели, переходы анимации, идентификаторы
  * доступности, динамические ячейки и реактивные обновления модели.
  */
-export class Accordion {
-  /** Motion transform manager for transition animation / Менеджер анимации переходов */
-  readonly motionTransform: MotionTransformInclude
-
-  /** Event manager for click events / Менеджер клик-событий */
-  readonly event: EventClickInclude
-
+export class Accordion extends DesignLogicAbstract<
+  HTMLDivElement,
+  AccordionComponents,
+  AccordionEmits,
+  AccordionSlots,
+  AccordionProps,
+  AccordionConstructors
+> {
   /** Open state reference / Ссылка на состояние открытия */
-  readonly open = ref<boolean>(false)
+  readonly open: Ref<boolean> = ref<boolean>(Boolean(this.props.open))
 
-  /** Model synchronization manager / Менеджер синхронизации модели */
-  readonly model: ModelInclude<boolean>
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<AccordionConstructors> = {
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    head: {
+      item: AccordionHead,
+      parameters: () => [
+        this.props,
+        () => this.i('event')
+      ]
+    },
+    model: {
+      item: ModelInclude<boolean>,
+      parameters: () => [
+        'open',
+        this.emits,
+        this.open
+      ]
+    },
+    motionTransform: {
+      item: MotionTransformInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        this.onEmitsTransform,
+        () => ({
+          'adaptive': 'planeAlways',
+          'inDom': true,
+          'section': true,
 
-  /** Reference to the head cell component / Ссылка на компонент ячейки заголовка */
-  readonly elementHead = ref<CellExpose>()
+          'ariaDescribedby': this.i('head').descriptionId,
+          'ariaLabelledby': this.i('head').labelId,
 
-  /** Unique element identifier for label ARIA binding / Уникальный идентификатор элемента для ARIA-привязки метки */
-  protected readonly labelId: string = getElementId()
-
-  /** Unique element identifier for description ARIA binding / Уникальный идентификатор элемента для ARIA-привязки описания */
-  protected readonly descriptionId: string = getElementId()
+          'data-divider': this.props.divider ? 'divider' : undefined
+        })
+      ]
+    }
+  }
 
   /**
    * Constructor for initializing Accordion properties and inclusion managers.
@@ -50,53 +113,54 @@ export class Accordion {
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param emits the function called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors object with classes / объект с классами
-   * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы с событием клика
-   * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
-   * @param constructors.MotionTransformIncludeConstructor class for working with motion transform / класс для работы с анимацией перехода
+   * @param hasLifecycle whether to register component lifecycle hooks / регистрировать ли хуки жизненного цикла компонента
    */
   constructor(
-    protected readonly props: AccordionProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<AccordionComponents, AccordionProps>,
-    protected readonly slots?: AccordionSlots,
-    protected readonly emits?: ConstrEmit<AccordionEmits>,
-    constructors: {
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      ModelIncludeConstructor?: typeof ModelInclude
-      MotionTransformIncludeConstructor?: typeof MotionTransformInclude
-    } = {}
+    props: AccordionProps,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<AccordionComponents, AccordionProps>,
+    slots?: AccordionSlots,
+    emits?: ConstrEmit<AccordionEmits>,
+    constructors?: Partial<AccordionConstructors>,
+    hasLifecycle: boolean = isDomRuntime()
   ) {
-    const {
-      EventClickIncludeConstructor = EventClickInclude,
-      ModelIncludeConstructor = ModelInclude,
-      MotionTransformIncludeConstructor = MotionTransformInclude
-    } = constructors
-
-    this.motionTransform = new MotionTransformIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      this.emits,
-      () => ({
-        'section': true,
-        'adaptive': 'planeAlways',
-        'inDom': true,
-        'ariaLabelledby': this.labelId,
-        'ariaDescribedby': this.descriptionId,
-        'data-divider': this.props.divider ? 'divider' : undefined
-      })
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors,
+      hasLifecycle
     )
 
-    this.event = new EventClickIncludeConstructor(
-      undefined,
-      undefined,
-      emits
-    )
+    if (hasLifecycle) {
+      this.i('model')
+    }
+  }
 
-    this.model = new ModelIncludeConstructor('open', this.emits, this.open)
+  /**
+   * Setup lifecycle listeners and watchers on mount.
+   *
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
+   */
+  protected override readonly onMounted = (): void => {
+    watch(() => this.props.open, this.update)
+    this.update()
+  }
+
+  /**
+   * Computed bindings for the element.
+   *
+   * Вычисляемые привязки для элемента.
+   * @returns element bindings / привязки элемента
+   */
+  get binds(): ConstrBind {
+    return this.i('model').getBinds()
   }
 
   /**
@@ -105,21 +169,48 @@ export class Accordion {
    * Возвращает привязки для ячейки заголовка.
    * @returns bindings object / объект привязок
    */
-  get bindsCell() {
-    return toBinds(
-      this.props.cellAttrs,
-      {
-        ref: this.elementHead,
-        icon: this.props.icon,
-        iconTrailing: this.props.iconArrowDown,
-        label: this.props.label,
-        description: this.props.description,
-        dynamic: true,
-        labelId: this.labelId,
-        descriptionId: this.descriptionId,
-        onClick: this.event.onClick,
-        onKeydown: this.event.onKeydown
+  get bindsCell(): ConstrBind {
+    return this.i('head').binds
+  }
+
+  /**
+   * Values for the class.
+   *
+   * Значения для класса.
+   * @returns classes values / значения классов
+   */
+  get classes(): ConstrClassObject {
+    return {}
+  }
+
+  /**
+   * Dispatches MotionTransform events and synchronizes the open state.
+   *
+   * Диспетчеризирует события MotionTransform и синхронизирует состояние открытия.
+   * @param type event name / название события
+   * @param args event arguments / аргументы события
+   */
+  readonly onEmitsTransform: ConstrEmit<MotionTransformEmits> = (
+    type: string,
+    ...args: any[]
+  ): void => {
+    if (type === 'transform' || type === 'transformLite') {
+      const options = (type === 'transform' ? args[1] : args[0]) as MotionTransformEmitOptions | undefined
+
+      if (options && typeof options.open === 'boolean') {
+        this.open.value = options.open
       }
-    )
+    }
+
+    (this.emits as any)?.(type, ...args)
+  }
+
+  /**
+   * Updates the open state based on props.
+   *
+   * Обновляет состояние открытия на основе свойств.
+   */
+  readonly update = (): void => {
+    this.open.value = Boolean(this.props.open)
   }
 }
