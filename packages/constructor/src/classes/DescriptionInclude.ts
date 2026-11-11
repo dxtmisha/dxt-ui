@@ -51,14 +51,14 @@ export class DescriptionInclude {
    * @param props input properties / входные свойства
    * @param naming component naming helper / помощник именования компонента
    * @param slots slots dictionary / объект слотов
-   * @param skeleton optional loading skeleton include / необязательный скелетон загрузки
+   * @param skeleton callback returning optional loading skeleton include / функция обратного вызова, возвращающая необязательный скелетон загрузки
    * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
     protected readonly props: RefOrNormalOrFunction<DescriptionProps>,
     protected readonly naming: DesignName,
     protected readonly slots?: DescriptionSlots,
-    protected readonly skeleton?: RefOrNormalOrFunction<SkeletonInclude | undefined>,
+    protected readonly skeleton?: () => SkeletonInclude | undefined,
     protected readonly tag?: RefOrNormal<string | undefined>
   ) {
   }
@@ -111,6 +111,8 @@ export class DescriptionInclude {
     }
 
     if (children.length > 0) {
+      const skeleton = this.skeleton?.()
+
       return [
         render(
           getRef(this.tag) ?? 'div',
@@ -119,7 +121,7 @@ export class DescriptionInclude {
               id: this.id,
               class: {
                 [this.naming.getSubClass('description')]: true,
-                ...executeFunctionRef(this.skeleton)?.classes
+                ...skeleton?.classes
               }
             },
             props

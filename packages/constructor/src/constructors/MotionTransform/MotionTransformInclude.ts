@@ -1,5 +1,3 @@
-// ai-none
-
 import {
   type ConstrBind,
   type DesignComponents,
@@ -25,19 +23,13 @@ import type { MotionTransformProps } from './props'
  *
  * Класс возвращает данные для работы с компонентом MotionTransform.
  * Расширяет ComponentIncludeAbstract для управления состояниями анимации перехода, рендером и привязками.
- *
- * @template Props - Properties interface extending MotionTransformPropsInclude / Интерфейс свойств, расширяющий MotionTransformPropsInclude
- * @template PropsExtra - Extra properties interface / Дополнительный интерфейс свойств
  */
-export class MotionTransformInclude<
-  Props extends MotionTransformPropsInclude = MotionTransformPropsInclude,
-  PropsExtra extends MotionTransformProps = MotionTransformProps
-> extends ComponentIncludeAbstract<
-    Props,
-    PropsExtra,
-    MotionTransformExposeInclude,
-    MotionTransformSlots
-  > {
+export class MotionTransformInclude extends ComponentIncludeAbstract<
+  MotionTransformPropsInclude,
+  MotionTransformProps,
+  MotionTransformExposeInclude,
+  MotionTransformSlots
+> {
   /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
   protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
     { name: 'isShow', type: 'boolean' },
@@ -61,17 +53,17 @@ export class MotionTransformInclude<
    * @param props input parameter / входной параметр
    * @param naming component naming helper / помощник именования компонента
    * @param components design components registry / реестр дизайн-компонентов
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    props: Readonly<Props>,
+    props: Readonly<MotionTransformPropsInclude>,
     naming: DesignName,
-    components?: DesignComponents<MotionTransformComponentInclude, Props>,
-    extra?: ComponentIncludeExtra<PropsExtra>,
-    index?: string,
-    protected readonly emits?: ConstrEmit<MotionTransformEmits>
+    components?: DesignComponents<MotionTransformComponentInclude, MotionTransformPropsInclude>,
+    protected readonly emits?: ConstrEmit<MotionTransformEmits>,
+    extra?: ComponentIncludeExtra<MotionTransformProps>,
+    index?: string
   ) {
     super(props, naming, components, extra, index)
   }
@@ -84,8 +76,8 @@ export class MotionTransformInclude<
    * @returns merged binding attributes / объединенные атрибуты привязки
    */
   protected override getAttrs(
-    attrs?: ConstrBind<PropsExtra>
-  ) {
+    attrs?: ConstrBind<MotionTransformProps>
+  ): ConstrBind<MotionTransformProps> {
     const props = this.getProps()
 
     return {
@@ -100,7 +92,7 @@ export class MotionTransformInclude<
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): ConstrBind<MotionTransformProps> {
     const props = this.getProps()
 
     return {
@@ -135,7 +127,7 @@ export class MotionTransformInclude<
   protected readonly onTransform = (
     event: Event | undefined,
     options: MotionTransformEmitOptions
-  ) => {
+  ): void => {
     this.emits?.('transform', event, options)
     this.emits?.('transformLite', options)
   }

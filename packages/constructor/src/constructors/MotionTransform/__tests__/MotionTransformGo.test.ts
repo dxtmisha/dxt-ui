@@ -10,8 +10,14 @@ describe('MotionTransformGo', () => {
       toggle: vi.fn(),
       set: vi.fn()
     } as any
-    const go = new MotionTransformGo(stateMock)
+    const go = new MotionTransformGo(() => stateMock)
     go.open()
+    expect(stateMock.set).toHaveBeenCalledWith(true)
+    go.close()
+    expect(stateMock.set).toHaveBeenCalledWith(false)
+    go.toggle()
+    expect(stateMock.toggle).toHaveBeenCalled()
+    go.to(true)
     expect(stateMock.set).toHaveBeenCalledWith(true)
   })
 })

@@ -61,7 +61,7 @@ export class TableItem {
     } = constructors
 
     this.skeleton = new SkeletonConstructor(props, naming, ['classTextVariant'])
-    this.description = new DescriptionConstructor(props, naming, slots, this.skeleton)
+    this.description = new DescriptionConstructor(props, naming, slots, () => this.skeleton)
     this.label = new LabelConstructor(
       props,
       naming,

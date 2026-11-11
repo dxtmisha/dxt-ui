@@ -62,4 +62,19 @@ describe('DescriptionInclude', () => {
     const nodes = include.render()
     expect(nodes).toEqual([])
   })
+
+  it('should render correct vnodes with skeleton classes', () => {
+    const skeletonMock = {
+      classes: { 'sys-skeleton': true, 'sys-skeleton--loading': true }
+    } as any
+    const include = new DescriptionInclude(
+      { description: 'Hello Description' },
+      new DesignName('my.class'),
+      undefined,
+      () => skeletonMock
+    )
+    const nodes = include.render()
+    expect(nodes.length).toBe(1)
+    expect(nodes[0].props?.class).toBe('my-class__description sys-skeleton sys-skeleton--loading')
+  })
 })

@@ -7,15 +7,15 @@ import {
 
 import { MotionTransform } from './MotionTransform'
 
-import {
-  type MotionTransformPropsBasic
+import type {
+  MotionTransformPropsBasic
 } from './props'
-import {
-  type MotionTransformClasses,
-  type MotionTransformComponents,
-  type MotionTransformEmits,
-  type MotionTransformExpose,
-  type MotionTransformSlots
+import type {
+  MotionTransformClasses,
+  MotionTransformComponents,
+  MotionTransformEmits,
+  MotionTransformExpose,
+  MotionTransformSlots
 } from './types'
 
 /**
@@ -66,11 +66,12 @@ export class MotionTransformDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.elementContext,
       this.naming,
       this.components,
       this.slots,
-      this.emits
+      this.emits,
+      undefined,
+      this.elementContext
     )
   }
 
@@ -82,13 +83,13 @@ export class MotionTransformDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getOpen: () => this.item.state.open.value,
-      isShow: () => this.item.state.isShow(),
+      getOpen: () => this.item.i('state').open.value,
+      isShow: () => this.item.i('state').isShow(),
 
-      setOpen: this.item.go.to,
-      toOpen: this.item.go.open,
-      toClose: this.item.go.close,
-      toggle: this.item.go.toggle
+      setOpen: (open: boolean) => this.item.i('go').to(open),
+      toOpen: () => this.item.i('go').open(),
+      toClose: () => this.item.i('go').close(),
+      toggle: () => this.item.i('go').toggle()
     } as EXPOSE
   }
 
@@ -100,7 +101,7 @@ export class MotionTransformDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         context: this.naming.getSubClass('context'),
@@ -131,7 +132,7 @@ export class MotionTransformDesign<
    * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
   protected initRender(): VNode {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderMain(),
       ...this.renderScrim()
     ]
@@ -142,9 +143,9 @@ export class MotionTransformDesign<
         ref: this.elementContext,
         class: this.classes?.value.context
       },
-      this.item.teleport.render(
+      this.item.i('teleport').render(
         children,
-        { disabled: !this.item.state.teleport.value }
+        { disabled: !this.item.i('state').teleport.value }
       )
     )
   }
@@ -153,6 +154,7 @@ export class MotionTransformDesign<
    * Rendering the main element.
    *
    * Рендеринг главного элемента.
+   * @returns rendered main element virtual node list / список виртуальных узлов главного элемента
    */
   readonly renderMain = (): VNode[] => {
     return [
@@ -164,7 +166,7 @@ export class MotionTransformDesign<
           key: 'main',
           class: this.classes?.value.main,
           style: this.styles?.value,
-          onTransitionend: this.item.event.onTransitionend
+          onTransitionend: this.item.i('event').onTransitionend
         },
         [
           ...this.renderHead(),
@@ -178,8 +180,9 @@ export class MotionTransformDesign<
    * Rendering the title.
    *
    * Рендеринг заголовка.
+   * @returns rendered head virtual node list / список виртуальных узлов заголовка
    */
-  readonly renderHead = () => {
+  readonly renderHead = (): VNode[] => {
     return [
       h(
         'div',
@@ -196,11 +199,12 @@ export class MotionTransformDesign<
    * Rendering the content.
    *
    * Рендеринг содержимого.
+   * @returns rendered body virtual node list / список виртуальных узлов тела
    */
-  readonly renderBody = () => {
+  readonly renderBody = (): VNode[] => {
     if (
       this.props.inDom
-      || this.item.state.isShow()
+      || this.item.i('state').isShow()
     ) {
       return [
         h(
@@ -221,9 +225,10 @@ export class MotionTransformDesign<
    * Rendering the background.
    *
    * Рендеринг задника.
+   * @returns rendered scrim virtual node list / список виртуальных узлов задника
    */
   readonly renderScrim = (): VNode[] => {
-    if (this.item.state.teleport.value) {
+    if (this.item.i('state').teleport.value) {
       return [
         h('div', this.getKeyClass('scrim'))
       ]

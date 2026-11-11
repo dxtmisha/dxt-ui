@@ -48,6 +48,21 @@ src/constructors/Modal/ModalAbstract.ts
 src/constructors/Modal/ModalDesign.tsx
 src/constructors/Modal/ModalDesignAbstract.tsx
 
+src/constructors/MotionTransform/MotionTransform.ts
+src/constructors/MotionTransform/MotionTransformClassesInclude.ts
+src/constructors/MotionTransform/MotionTransformDesign.tsx
+src/constructors/MotionTransform/MotionTransformElement.ts
+src/constructors/MotionTransform/MotionTransformEvent.ts
+src/constructors/MotionTransform/MotionTransformGo.ts
+src/constructors/MotionTransform/MotionTransformInclude.ts
+src/constructors/MotionTransform/MotionTransformSize.ts
+src/constructors/MotionTransform/MotionTransformState.ts
+
+src/constructors/Progress/Progress.ts
+src/constructors/Progress/ProgressDesign.tsx
+src/constructors/Progress/ProgressInclude.ts
+
+
 src/constructors/Ripple/Ripple.ts
 src/constructors/Ripple/RippleItem.ts
 

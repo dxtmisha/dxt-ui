@@ -236,7 +236,7 @@ export class Checkbox {
       props,
       naming,
       slots,
-      this.skeleton
+      () => this.skeleton
     )
 
     new CheckboxSelected(

@@ -49,14 +49,14 @@ export class CaptionInclude {
    * @param props input property / входное свойство
    * @param naming component naming helper / помощник именования компонента
    * @param slots object for working with slots / объект для работы со слотами
-   * @param skeleton optional skeleton for loading state / необязательный скелетон для состояния загрузки
+   * @param skeleton callback returning optional skeleton for loading state / функция обратного вызова, возвращающая необязательный скелетон для состояния загрузки
    * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
     protected readonly props: RefOrNormalOrFunction<CaptionProps>,
     protected readonly naming: DesignName,
     protected readonly slots?: CaptionSlots,
-    protected readonly skeleton?: RefOrNormalOrFunction<SkeletonInclude | undefined>,
+    protected readonly skeleton?: () => SkeletonInclude | undefined,
     protected readonly tag: string = 'div'
   ) {
   }
@@ -78,7 +78,7 @@ export class CaptionInclude {
    * @returns element bindings object / объект привязок элемента
    */
   get binds(): ConstrBind {
-    const skeleton = executeFunctionRef(this.skeleton)
+    const skeleton = this.skeleton?.()
     const binds = {
       'class': {
         [this.naming.getSubClass('caption')]: true,

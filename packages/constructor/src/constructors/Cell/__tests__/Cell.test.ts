@@ -23,6 +23,26 @@ class InspectableCell extends Cell {
   }
 
   /**
+   * Exposes isDescription for testing.
+   *
+   * Предоставляет isDescription для тестирования.
+   * @returns check result / результат проверки
+   */
+  public override isDescription(): boolean {
+    return super.isDescription()
+  }
+
+  /**
+   * Exposes getSkeleton for testing.
+   *
+   * Предоставляет getSkeleton для тестирования.
+   * @returns skeleton instance or undefined / экземпляр скелетона или undefined
+   */
+  public override getSkeleton() {
+    return super.getSkeleton()
+  }
+
+  /**
    * Simulates component mount lifecycle.
    *
    * Симулирует жизненный цикл монтирования компонента.
@@ -196,6 +216,40 @@ describe('Cell', () => {
         )
 
         expect(cell.i('enabled')).toBeInstanceOf(MockEnabled)
+      })
+
+      scope.stop()
+    })
+
+    it('should return skeleton instance or undefined via getSkeleton', () => {
+      const scope = effectScope()
+      const element = ref<HTMLDivElement>()
+
+      scope.run(() => {
+        const cellWithoutSkeleton = new InspectableCell(reactive({}), element, naming)
+        expect(cellWithoutSkeleton.getSkeleton()).toBeUndefined()
+
+        const cellWithSkeleton = new InspectableCell(reactive({ isSkeleton: true }), element, naming)
+        expect(cellWithSkeleton.getSkeleton()).toBeDefined()
+      })
+
+      scope.stop()
+    })
+
+    it('should evaluate isDescription method correctly', () => {
+      const scope = effectScope()
+      const element = ref<HTMLDivElement>()
+
+      scope.run(() => {
+        const cellWithoutDesc = new InspectableCell(reactive({}), element, naming)
+        expect(cellWithoutDesc.isDescription()).toBe(false)
+
+        const cellWithDesc = new InspectableCell(
+          reactive({ description: 'Description text' }),
+          element,
+          naming
+        )
+        expect(cellWithDesc.isDescription()).toBe(true)
       })
 
       scope.stop()

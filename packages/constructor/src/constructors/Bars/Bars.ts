@@ -125,7 +125,7 @@ export class Bars {
       }),
       naming,
       slots,
-      this.skeleton
+      () => this.skeleton
     )
 
     this.action = new BarsActionConstructor(props)
