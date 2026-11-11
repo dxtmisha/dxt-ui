@@ -72,7 +72,7 @@ export class Cell extends DesignLogicAbstract<
         this.props,
         this.naming,
         this.slots,
-        () => (SkeletonInclude.is(this.props) ? this.i('skeleton') : undefined)
+        () => this.getSkeleton()
       ]
     },
     description: {
@@ -82,14 +82,14 @@ export class Cell extends DesignLogicAbstract<
         this.props,
         this.naming,
         this.slots,
-        () => (SkeletonInclude.is(this.props) ? this.i('skeleton') : undefined)
+        () => this.getSkeleton()
       ]
     },
     enabled: {
       item: EnabledInclude,
       parameters: () => [
         this.props,
-        () => this.i('progress')
+        () => (ProgressInclude.is(this.props) ? this.i('progress') : undefined)
       ]
     },
     event: {
@@ -120,7 +120,7 @@ export class Cell extends DesignLogicAbstract<
         undefined,
         undefined,
         undefined,
-        () => (SkeletonInclude.is(this.props) ? this.i('skeleton') : undefined)
+        () => this.getSkeleton()
       ]
     },
     progress: {
@@ -190,9 +190,8 @@ export class Cell extends DesignLogicAbstract<
    * @returns classes object / объект классов
    */
   get classes(): ConstrClassObject {
-    const isDescription = DescriptionInclude.is(this.props, this.slots) && this.i('description').is
     const classes: ConstrClassObject = {
-      [this.naming.getStatusClass('description')]: isDescription,
+      [this.naming.getStatusClass('description')]: this.isDescription(),
       [getClassTagAStatic(this.naming.getDesign())]: true
     }
 
@@ -254,5 +253,28 @@ export class Cell extends DesignLogicAbstract<
     }
 
     return props
+  }
+
+  /**
+   * Checks if description is present and active.
+   *
+   * Проверяет наличие и активность описания.
+   * @returns check result / результат проверки
+   */
+  protected isDescription(): boolean {
+    return Boolean(
+      DescriptionInclude.is(this.props, this.slots)
+      && this.i('description').is
+    )
+  }
+
+  /**
+   * Returns the skeleton instance if skeleton mode is active.
+   *
+   * Возвращает экземпляр скелетона, если включен режим скелетона.
+   * @returns skeleton instance or undefined / экземпляр скелетона или undefined
+   */
+  protected getSkeleton(): SkeletonInclude | undefined {
+    return SkeletonInclude.is(this.props) ? this.i('skeleton') : undefined
   }
 }

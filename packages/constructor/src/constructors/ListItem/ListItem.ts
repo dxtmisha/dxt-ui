@@ -140,7 +140,7 @@ export class ListItem {
     this.prefix = new PrefixIncludeConstructor(props, naming, slots, skeleton)
     this.caption = new CaptionIncludeConstructor(props, naming, slots)
     this.suffix = new SuffixIncludeConstructor(props, naming, slots)
-    this.description = new DescriptionIncludeConstructor(props, naming, slots, skeleton)
+    this.description = new DescriptionIncludeConstructor(props, naming, slots, () => skeleton)
     this.badge = new BadgeIncludeConstructor(
       props,
       naming,

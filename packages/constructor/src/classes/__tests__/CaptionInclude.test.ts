@@ -42,7 +42,7 @@ describe('CaptionInclude', () => {
     const skeletonMock = {
       classes: { 'sys-skeleton': true, 'sys-skeleton--loading': true }
     } as any
-    const include = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'), undefined, skeletonMock)
+    const include = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'), undefined, () => skeletonMock)
     expect(include.binds.class).toEqual({
       'my-class__caption': true,
       'sys-skeleton': true,
