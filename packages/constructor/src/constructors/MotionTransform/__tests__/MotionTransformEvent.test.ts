@@ -26,8 +26,8 @@ describe('MotionTransformEvent', () => {
     } as any
     const event = new MotionTransformEvent(
       {} as any,
-      elementMock,
-      stateMock,
+      () => elementMock,
+      () => stateMock,
       {} as any
     )
     expect(event).toBeDefined()

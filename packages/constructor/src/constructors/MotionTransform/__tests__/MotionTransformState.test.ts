@@ -27,11 +27,45 @@ describe('MotionTransformState', () => {
 
     const state = new MotionTransformState(
       { open: true } as any,
-      mockElement,
-      { updateOldElement: vi.fn(), toggle: vi.fn() } as any,
-      { update: vi.fn(), reset: vi.fn() } as any
+      () => mockElement,
+      () => ({ update: vi.fn(), reset: vi.fn() } as any),
+      () => ({ updateOldElement: vi.fn(), toggle: vi.fn() } as any)
     )
+    state.onMounted()
     expect(state.open.value).toBe(true)
     expect(state.isOpen()).toBe(true)
+  })
+
+  it('should restore focus to elementHead on reset when closing', async () => {
+    const div = document.createElement('div')
+    const head = document.createElement('div')
+    head.focus = vi.fn()
+    document.body.appendChild(div)
+    document.body.appendChild(head)
+
+    const mockElement = {
+      element: ref(div),
+      elementHead: head,
+      isAnimation: () => false,
+      isWindow: () => false,
+      getElement: () => div,
+      getElementContext: () => undefined,
+      style: {}
+    } as any
+
+    const state = new MotionTransformState(
+      { open: false, clickOpen: true } as any,
+      () => mockElement,
+      () => ({ update: vi.fn(), reset: vi.fn() } as any),
+      () => ({ updateOldElement: vi.fn(), toggle: vi.fn() } as any)
+    )
+
+    state.reset()
+
+    await new Promise((resolve) => requestAnimationFrame(resolve))
+    expect(head.focus).toHaveBeenCalled()
+
+    div.remove()
+    head.remove()
   })
 })

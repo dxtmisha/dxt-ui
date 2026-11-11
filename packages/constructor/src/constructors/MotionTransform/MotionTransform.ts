@@ -1,10 +1,19 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  type DesignName,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
 import { TeleportInclude } from '../../classes/TeleportInclude'
+import { WindowEsc } from '../Window'
 
 import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformEvent } from './MotionTransformEvent'
@@ -12,139 +21,175 @@ import { MotionTransformGo } from './MotionTransformGo'
 import { MotionTransformSize } from './MotionTransformSize'
 import { MotionTransformState } from './MotionTransformState'
 
-import { WindowEsc } from '../Window'
-
 import type { MotionTransformControlItem } from './basicTypes'
+import type { MotionTransformProps } from './props'
 import type {
   MotionTransformComponents,
   MotionTransformEmits,
   MotionTransformSlots
 } from './types'
-import type { MotionTransformProps } from './props'
+
+/** MotionTransform dependency constructors type / Тип конструкторов зависимостей MotionTransform */
+export type MotionTransformConstructors = {
+  /** Element manager constructor / Конструктор менеджера элементов */
+  element: typeof MotionTransformElement
+  /** Window escape key handler constructor / Конструктор обработчика клавиши Escape для окна */
+  esc: typeof WindowEsc
+  /** Event listener manager constructor / Конструктор менеджера прослушивателей событий */
+  event: typeof MotionTransformEvent
+  /** Control actions manager constructor / Конструктор менеджера действий перехода */
+  go: typeof MotionTransformGo
+  /** Model synchronization constructor / Конструктор синхронизации модели */
+  model: typeof ModelInclude
+  /** Size calculation manager constructor / Конструктор менеджера расчёта размеров */
+  size: typeof MotionTransformSize
+  /** State manager constructor / Конструктор менеджера состояния */
+  state: typeof MotionTransformState
+  /** Tab index manager constructor / Конструктор менеджера таб-индекса */
+  tabIndex: typeof TabIndexInclude<HTMLDivElement>
+  /** Teleport manager constructor / Конструктор менеджера телепорта */
+  teleport: typeof TeleportInclude
+}
 
 /**
- * MotionTransform
+ * MotionTransform.
+ * The main class for managing the logic of the MotionTransform component.
+ * It coordinates elements, state, sizing, events, accessibility, and transitions.
+ *
+ * MotionTransform.
+ * Основной класс для управления логикой компонента MotionTransform.
+ * Координирует элементы, состояние, размеры, события, доступность и переходы.
  */
-export class MotionTransform {
-  /** Reference helper for element interactions / Вспомогательный класс для работы с элементами */
-  readonly element: MotionTransformElement
-  /** Tab index accessibility manager / Менеджер управления фокусом табуляции */
-  readonly tabIndex: TabIndexInclude<HTMLDivElement>
-
-  /** Size calculation manager / Менеджер расчёта размеров */
-  readonly size: MotionTransformSize
-  /** State manager / Менеджер состояния */
-  readonly state: MotionTransformState
-
-  /** Event manager / Менеджер событий */
-  readonly event: MotionTransformEvent
-  /** Control actions manager / Менеджер действий перехода */
-  readonly go: MotionTransformGo
-
-  /** Window escape key event manager / Менеджер событий клавиши Escape для окна */
-  readonly esc: WindowEsc
-  /** Teleport manager for window placement in DOM / Менеджер телепортации для размещения окна в DOM */
-  readonly teleport: TeleportInclude
+export class MotionTransform extends DesignLogicAbstract<
+  HTMLDivElement,
+  MotionTransformComponents,
+  MotionTransformEmits,
+  MotionTransformSlots,
+  MotionTransformProps,
+  MotionTransformConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<MotionTransformConstructors> = {
+    element: {
+      item: MotionTransformElement,
+      parameters: () => [
+        this.props,
+        this.element,
+        this.naming,
+        this.elementContext
+      ]
+    },
+    esc: {
+      item: WindowEsc,
+      conditions: () => Boolean(this.props.clickOpen),
+      parameters: () => [
+        this.i('state').open,
+        () => this.i('go').close(),
+        () => Boolean(this.props.clickOpen)
+      ]
+    },
+    event: {
+      item: MotionTransformEvent,
+      parameters: () => [
+        this.props,
+        () => this.i('element'),
+        () => this.i('state'),
+        this.emits
+      ]
+    },
+    go: {
+      item: MotionTransformGo,
+      parameters: () => [
+        () => this.i('state')
+      ]
+    },
+    model: {
+      item: ModelInclude,
+      parameters: () => [
+        'open',
+        this.emits,
+        this.i('state').open
+      ]
+    },
+    size: {
+      item: MotionTransformSize,
+      parameters: () => [
+        () => this.i('element')
+      ]
+    },
+    state: {
+      item: MotionTransformState,
+      parameters: () => [
+        this.props,
+        () => this.i('element'),
+        () => this.i('size'),
+        () => this.i('tabIndex')
+      ]
+    },
+    tabIndex: {
+      item: TabIndexInclude,
+      parameters: () => [
+        () => this.i('element').elementBody,
+        () => this.i('element').isWindow()
+      ]
+    },
+    teleport: {
+      item: TeleportInclude
+    }
+  }
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input properties / входные свойства
    * @param element target window element / элемент окна
-   * @param elementContext substrate element / элемент подложка
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
-   * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
-   * @param constructors.MotionTransformElementConstructor class for working with elements / класс для работы с элементами
-   * @param constructors.MotionTransformEventConstructor class for working with events / класс для работы с событиями
-   * @param constructors.MotionTransformGoConstructor class for working with go / класс для работы с переходом
-   * @param constructors.MotionTransformSizeConstructor class for working with size / класс для работы с размером
-   * @param constructors.MotionTransformStateConstructor class for working with state / класс для работы с состоянием
-   * @param constructors.TabIndexIncludeConstructor class for working with tab index / класс для работы с индексом табуляции
-   * @param constructors.TeleportIncludeConstructor class for working with teleport / класс для работы с телепортом
-   * @param constructors.WindowEscConstructor class for working with esc / класс для работы с esc
+   * @param elementContext substrate element / элемент подложка
    */
   constructor(
-    protected readonly props: MotionTransformProps,
+    props: MotionTransformProps,
     element: Ref<HTMLDivElement | undefined>,
-    elementContext: Ref<HTMLDivElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<MotionTransformComponents, MotionTransformProps>,
-    protected readonly slots?: MotionTransformSlots,
-    protected readonly emits?: ConstrEmit<MotionTransformEmits>,
-    constructors: {
-      ModelIncludeConstructor?: typeof ModelInclude
-      MotionTransformElementConstructor?: typeof MotionTransformElement
-      MotionTransformEventConstructor?: typeof MotionTransformEvent
-      MotionTransformGoConstructor?: typeof MotionTransformGo
-      MotionTransformSizeConstructor?: typeof MotionTransformSize
-      MotionTransformStateConstructor?: typeof MotionTransformState
-      TabIndexIncludeConstructor?: typeof TabIndexInclude
-      TeleportIncludeConstructor?: typeof TeleportInclude
-      WindowEscConstructor?: typeof WindowEsc
-    } = {}
+    naming: DesignName,
+    components?: DesignComp<MotionTransformComponents, MotionTransformProps>,
+    slots?: MotionTransformSlots,
+    emits?: ConstrEmit<MotionTransformEmits>,
+    constructors?: Partial<MotionTransformConstructors>,
+    protected readonly elementContext?: Ref<HTMLDivElement | undefined>
   ) {
-    const {
-      ModelIncludeConstructor = ModelInclude,
-      MotionTransformElementConstructor = MotionTransformElement,
-      MotionTransformEventConstructor = MotionTransformEvent,
-      MotionTransformGoConstructor = MotionTransformGo,
-      MotionTransformSizeConstructor = MotionTransformSize,
-      MotionTransformStateConstructor = MotionTransformState,
-      TabIndexIncludeConstructor = TabIndexInclude,
-      TeleportIncludeConstructor = TeleportInclude,
-      WindowEscConstructor = WindowEsc
-    } = constructors
-
-    this.element = new MotionTransformElementConstructor(
+    super(
       props,
       element,
-      elementContext,
-      naming
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
     )
-    this.tabIndex = new TabIndexIncludeConstructor(
-      () => this.element.elementBody,
-      () => this.element.isWindow()
-    )
-
-    this.size = new MotionTransformSizeConstructor(this.element)
-    this.state = new MotionTransformStateConstructor(
-      props,
-      this.element,
-      this.tabIndex,
-      this.size
-    )
-
-    this.event = new MotionTransformEventConstructor(props, this.element, this.state, emits)
-    this.go = new MotionTransformGoConstructor(this.state)
-
-    this.esc = new WindowEscConstructor(
-      this.state.open,
-      () => this.go.close(),
-      () => Boolean(this.props.clickOpen)
-    )
-    this.teleport = new TeleportIncludeConstructor()
-
-    new ModelIncludeConstructor('open', emits, this.state.open)
   }
 
   /**
    * Computed HTML attributes and bindings for the header element.
    *
    * Вычисляемые HTML-атрибуты и привязки для элемента заголовка.
+   * @returns element binding attributes / атрибуты привязки элемента
    */
-  get bindsHead() {
-    const props = {
+  get bindsHead(): ConstrBind {
+    const props: ConstrBind = {
       key: 'head',
-      onClick: this.event.onClick
+      onClick: this.i('event').onClick
     }
 
     if (this.props.clickOpen) {
       return {
         ...props,
-        onKeydown: this.event.onKeydown,
+        tabindex: 0,
+        ...AriaStaticInclude.role('button'),
+        onKeydown: this.i('event').onKeydown,
         ...this.slotData.binds
       }
     }
@@ -156,11 +201,12 @@ export class MotionTransform {
    * Computed HTML attributes and bindings for the body element.
    *
    * Вычисляемые HTML-атрибуты и привязки для элемента тела.
+   * @returns element binding attributes / атрибуты привязки элемента
    */
-  get bindsBody() {
+  get bindsBody(): ConstrBind {
     return {
       key: 'body',
-      id: this.element.idBody,
+      id: this.i('element').idBody,
       ...AriaStaticInclude.role('region'),
       ...AriaStaticInclude.modal(
         false,
@@ -171,23 +217,37 @@ export class MotionTransform {
   }
 
   /**
+   * Values for the class.
+   *
+   * Значения для класса.
+   * @returns classes values / значения классов
+   */
+  get classes(): ConstrClassObject {
+    return {}
+  }
+
+  /**
    * Returns data for managing slot data.
    *
    * Возвращает данные для управления данными слотами.
    * @returns slot data object / объект данных слотов
    */
   get slotData(): MotionTransformControlItem {
+    const state = this.i('state')
+    const element = this.i('element')
+    const isOpen = state.isOpen()
+
     return {
-      isOpen: this.state.isOpen(),
-      isShow: this.state.isShow(),
+      isOpen,
+      isShow: state.isShow(),
       classes: MotionTransformElement.getClassesList(this.naming.getName()),
-      idControl: this.element.idControl,
-      idBody: this.element.idBody,
+      idControl: element.idControl,
+      idBody: element.idBody,
       binds: AriaStaticInclude.control(
-        this.element.idControl,
-        this.element.idBody,
+        element.idControl,
+        element.idBody,
         undefined,
-        this.state.isOpen()
+        isOpen
       )
     }
   }

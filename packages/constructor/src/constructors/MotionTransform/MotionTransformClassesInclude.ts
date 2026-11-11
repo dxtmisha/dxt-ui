@@ -1,5 +1,3 @@
-// ai-none
-
 import { MotionTransformElement } from './MotionTransformElement'
 
 import type { MotionTransformClassList } from './basicTypes'
@@ -11,8 +9,10 @@ import type { MotionTransformClassList } from './basicTypes'
  */
 export class MotionTransformClassesInclude {
   /**
-   * Constructor
-   * @param design design name/ название дизайна
+   * Constructor.
+   *
+   * Конструктор.
+   * @param design design name / название дизайна
    */
   constructor(
     protected readonly design: string
@@ -22,6 +22,7 @@ export class MotionTransformClassesInclude {
    * Returns list of MotionTransform classes for the specified design.
    *
    * Возвращает список классов MotionTransform для указанного дизайна.
+   * @returns classes list object / объект списка классов
    */
   get(): MotionTransformClassList {
     return MotionTransformElement.getClassesListByDesign(this.design)
@@ -31,8 +32,9 @@ export class MotionTransformClassesInclude {
    * Returns an object with MotionTransform classes under classesMotionTransform key.
    *
    * Возвращает объект с классами MotionTransform под ключом classesMotionTransform.
+   * @returns object with classes / объект с классами
    */
-  getObject() {
+  getObject(): { classesMotionTransform: MotionTransformClassList } {
     return {
       classesMotionTransform: this.get()
     }

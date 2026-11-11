@@ -1,11 +1,9 @@
-// ai-none
+import { ref, watch } from 'vue'
+import { DesignLifecycleAbstract, isDomRuntime } from '@dxtmisha/functional'
 
-import { onMounted, onUnmounted, ref, watch } from 'vue'
-
-import { TabIndexInclude } from '../../classes/TabIndexInclude'
-import { MotionTransformElement } from './MotionTransformElement'
-import { MotionTransformSize } from './MotionTransformSize'
-
+import type { TabIndexInclude } from '../../classes/TabIndexInclude'
+import type { MotionTransformElement } from './MotionTransformElement'
+import type { MotionTransformSize } from './MotionTransformSize'
 import type { MotionTransformProps } from './props'
 
 /**
@@ -13,50 +11,64 @@ import type { MotionTransformProps } from './props'
  *
  * Класс управления состоянием.
  */
-export class MotionTransformState {
-  /** Open state flag/ Флаг состояния открытия */
+export class MotionTransformState extends DesignLifecycleAbstract {
+  /** Open state flag / Флаг состояния открытия */
   readonly open = ref<boolean>(false)
-  /** Temporary show state for animation/ Временный флаг показа для анимации */
+  /** Temporary show state for animation / Временный флаг показа для анимации */
   readonly show = ref<boolean>(false)
-  /** Teleportation state flag/ Флаг состояния телепортации */
+  /** Teleportation state flag / Флаг состояния телепортации */
   readonly teleport = ref<boolean>(false)
 
-  protected timer?: any
+  protected timer?: ReturnType<typeof setTimeout>
 
   /**
    * Constructor.
    *
    * Конструктор.
-   * @param props input data/ входные данные
-   * @param element class object for managing an element/ объект класса для управления элементом
-   * @param tabIndex class object for managing tab indices/ объект класса для управления табуляцией
-   * @param size class object for managing sizes/ объект класса для управления размерами
+   * @param props input data / входные данные
+   * @param element class object getter for managing an element / геттер объекта класса для управления элементом
+   * @param size class object getter for managing sizes / геттер объекта класса для управления размерами
+   * @param tabIndex class object getter for managing tab indices / геттер объекта класса для управления табуляцией
    */
   constructor(
-    props: MotionTransformProps,
-    protected element: MotionTransformElement,
-    protected tabIndex: TabIndexInclude<HTMLDivElement>,
-    protected size: MotionTransformSize
+    protected readonly props: MotionTransformProps,
+    protected readonly element: () => MotionTransformElement,
+    protected readonly size: () => MotionTransformSize,
+    protected readonly tabIndex: () => TabIndexInclude<HTMLDivElement>
   ) {
-    watch([this.element.element, this.show], this.makeShow)
-    watch([this.element.element, this.open], this.makeOpen)
-    watch([this.element.element, this.teleport], this.makeTeleport)
-    watch(() => props.open, () => this.set(Boolean(props.open)))
+    super()
+  }
 
-    onMounted(() => {
-      this.makeShow()
-      this.makeOpen()
-      this.makeTeleport()
+  /**
+   * Setup lifecycle listeners and watchers on mount.
+   *
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    watch([() => this.element().getElement(), this.show], this.makeShow)
+    watch([() => this.element().getElement(), this.open], this.makeOpen)
+    watch([() => this.element().getElement(), this.teleport], this.makeTeleport)
+    watch(() => this.props.open, () => this.set(Boolean(this.props.open)))
 
-      if (props.open) {
-        requestAnimationFrame(() => {
-          this.open.value = Boolean(props.open)
-          this.calculations()
-        })
-      }
-    })
+    this.makeShow()
+    this.makeOpen()
+    this.makeTeleport()
 
-    onUnmounted(() => clearTimeout(this.timer))
+    if (this.props.open) {
+      requestAnimationFrame(() => {
+        this.open.value = Boolean(this.props.open)
+        this.calculations()
+      })
+    }
+  }
+
+  /**
+   * Cleanup lifecycle listeners on unmount.
+   *
+   * Очистка слушателей жизненного цикла при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    clearTimeout(this.timer)
   }
 
   /**
@@ -83,6 +95,7 @@ export class MotionTransformState {
    * Checks if teleportation should be disabled.
    *
    * Проверяет, нужно ли отключить телепортацию.
+   * @returns true if teleport is close / true, если телепортация закрыта
    */
   isTeleportClose(): boolean {
     return this.teleport.value && !this.open.value
@@ -92,23 +105,23 @@ export class MotionTransformState {
    * Changes in the state of the open window.
    *
    * Изменения состояния открытого окна.
-   * @param open opening status/ статус открытия
-   * @param animation opening with animation/ открытие с анимацией
+   * @param open opening status / статус открытия
+   * @param animation opening with animation / открытие с анимацией
    */
   set(
     open: boolean,
     animation = true
-  ) {
+  ): void {
     if (this.open.value !== open) {
       clearTimeout(this.timer)
 
       if (open) {
-        this.tabIndex.updateOldElement()
+        this.tabIndex().updateOldElement()
       }
 
       if (
         animation
-        && this.element.isAnimation()
+        && this.element().isAnimation()
       ) {
         this.show.value = true
 
@@ -142,6 +155,7 @@ export class MotionTransformState {
    * Resets the data to the initial state.
    *
    * Сбрасывает данные в первичное состояние.
+   * @returns current instance / текущий экземпляр
    */
   reset(): this {
     if (this.show.value) {
@@ -152,8 +166,24 @@ export class MotionTransformState {
       }
 
       this.make()
-      this.tabIndex.toggle(this.open.value)
-      this.size.reset()
+      this.tabIndex().toggle(this.open.value)
+      this.size().reset()
+    }
+
+    if (
+      !this.open.value
+      && this.props.clickOpen
+      && isDomRuntime()
+    ) {
+      requestAnimationFrame(() => {
+        if (
+          !document.activeElement
+          || document.activeElement === document.body
+          || !document.activeElement.isConnected
+        ) {
+          this.element().elementHead?.focus()
+        }
+      })
     }
 
     return this
@@ -164,8 +194,8 @@ export class MotionTransformState {
    *
    * Обновление класса показа.
    */
-  protected readonly makeShow = () => {
-    const element = this.element.getElement()
+  protected readonly makeShow = (): void => {
+    const element = this.element().getElement()
 
     if (element) {
       element.dataset.show = this.show.value ? 'show' : 'none'
@@ -177,8 +207,8 @@ export class MotionTransformState {
    *
    * Обновление класса открытия.
    */
-  protected readonly makeOpen = () => {
-    const element = this.element.getElement()
+  protected readonly makeOpen = (): void => {
+    const element = this.element().getElement()
 
     if (element) {
       element.dataset.open = this.open.value ? 'open' : 'none'
@@ -190,8 +220,8 @@ export class MotionTransformState {
    *
    * Обновление класса телепорта.
    */
-  protected readonly makeTeleport = () => {
-    const element = this.element.getElement()
+  protected readonly makeTeleport = (): void => {
+    const element = this.element().getElement()
 
     if (element) {
       element.dataset.teleport = this.teleport.value ? 'teleport' : 'none'
@@ -204,7 +234,7 @@ export class MotionTransformState {
    * Вычисления перед анимацией.
    */
   protected calculations(): void {
-    this.size.update()
+    this.size().update()
     this.toTeleport()
   }
 
@@ -214,7 +244,7 @@ export class MotionTransformState {
    * Управление анимацией.
    */
   protected toTeleport(): void {
-    if (this.element.isWindow()) {
+    if (this.element().isWindow()) {
       this.teleport.value = this.isShow()
     }
   }
@@ -224,7 +254,7 @@ export class MotionTransformState {
    *
    * Обновляет список стилей.
    */
-  protected make() {
+  protected make(): void {
     this.makeShow()
     this.makeMain()
     this.makeContext()
@@ -236,20 +266,21 @@ export class MotionTransformState {
    * Обновляет список стилей для главного элемента.
    */
   protected makeMain(): void {
-    const element = this.element.getElement()
+    const element = this.element().getElement()
 
     if (element) {
-      const style = this.element.style
+      const style = this.element().style
+      const size = this.size()
 
       if (this.show.value) {
-        element.style.setProperty(style.top, this.size.top)
-        element.style.setProperty(style.left, this.size.left)
-        element.style.setProperty(style.height, this.size.height)
-        element.style.setProperty(style.scale, this.size.scale)
-        element.style.setProperty(style.headWidth, this.size.headWidth)
-        element.style.setProperty(style.headHeight, this.size.headHeight)
-        element.style.setProperty(style.headScale, this.size.headScale)
-        element.style.setProperty(style.bodyHeight, this.size.bodyHeight)
+        element.style.setProperty(style.top, size.top)
+        element.style.setProperty(style.left, size.left)
+        element.style.setProperty(style.height, size.height)
+        element.style.setProperty(style.scale, size.scale)
+        element.style.setProperty(style.headWidth, size.headWidth)
+        element.style.setProperty(style.headHeight, size.headHeight)
+        element.style.setProperty(style.headScale, size.headScale)
+        element.style.setProperty(style.bodyHeight, size.bodyHeight)
       } else {
         element.style.removeProperty(style.top)
         element.style.removeProperty(style.left)
@@ -269,17 +300,18 @@ export class MotionTransformState {
    * Обновляет список стилей для элемента контекста.
    */
   protected makeContext(): void {
-    const context = this.element.getElementContext()
+    const context = this.element().getElementContext()
 
     if (context) {
-      const style = this.element.style
+      const style = this.element().style
+      const size = this.size()
 
       if (
-        this.element.isWindow()
+        this.element().isWindow()
         && this.isShow()
       ) {
-        context.style.setProperty(style.contextWidth, this.size.contextWidth)
-        context.style.setProperty(style.contextHeight, this.size.contextHeight)
+        context.style.setProperty(style.contextWidth, size.contextWidth)
+        context.style.setProperty(style.contextHeight, size.contextHeight)
       } else {
         context.style.removeProperty(style.contextWidth)
         context.style.removeProperty(style.contextHeight)

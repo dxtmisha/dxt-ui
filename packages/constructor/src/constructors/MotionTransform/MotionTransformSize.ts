@@ -1,6 +1,5 @@
-// ai-none
-
-import { MotionTransformElement } from './MotionTransformElement'
+import { isDomRuntime } from '@dxtmisha/functional'
+import type { MotionTransformElement } from './MotionTransformElement'
 
 /**
  * Class for managing size calculation.
@@ -8,38 +7,39 @@ import { MotionTransformElement } from './MotionTransformElement'
  * Класс для управления вычислением размера.
  */
 export class MotionTransformSize {
-  /** Top offset for transform/ Верхнее смещение для трансформации */
+  /** Top offset for transform / Верхнее смещение для трансформации */
   top: string | null = null
-  /** Left offset for transform/ Левое смещение для трансформации */
+  /** Left offset for transform / Левое смещение для трансформации */
   left: string | null = null
-  /** Head width value/ Ширина шапки */
+  /** Head width value / Ширина шапки */
   headWidth: string | null = null
-  /** Total height value/ Общая высота */
+  /** Total height value / Общая высота */
   height: string | null = null
-  /** Scale factor/ Коэффициент масштаба */
+  /** Scale factor / Коэффициент масштаба */
   scale: string | null = null
 
-  /** Context width/ Ширина контекста */
+  /** Context width / Ширина контекста */
   contextWidth: string | null = null
-  /** Context height/ Высота контекста */
+  /** Context height / Высота контекста */
   contextHeight: string | null = null
 
-  /** Head height value/ Высота шапки */
+  /** Head height value / Высота шапки */
   headHeight: string | null = null
-  /** Head scale factor/ Коэффициент масштаба шапки */
+  /** Head scale factor / Коэффициент масштаба шапки */
   headScale: string | null = null
 
-  /** Body height value/ Высота тела */
+  /** Body height value / Высота тела */
   bodyHeight: string | null = null
 
   /**
-   * Constructor
-   * @param element class object for managing an element/ объект класса для управления элементом
+   * Constructor.
+   *
+   * Конструктор.
+   * @param element helper object getter for element operations / геттер вспомогательного объекта для работы с элементами
    */
   constructor(
-    protected element: MotionTransformElement
-  ) {
-  }
+    protected readonly element: () => MotionTransformElement
+  ) {}
 
   /**
    * Update all sizes.
@@ -47,14 +47,16 @@ export class MotionTransformSize {
    * Обновить все размеры.
    */
   update(): void {
-    const rect = this.element.rect
+    const element = this.element()
+    const rect = element.rect
 
     if (
       rect
       && rect.width
+      && isDomRuntime()
     ) {
-      const elementHead = this.element.elementHead
-      const elementBody = this.element.elementBody
+      const elementHead = element.elementHead
+      const elementBody = element.elementBody
 
       const scale = 1 / window.innerWidth * rect.width
       const headScale = 1 / rect.width * window.innerWidth
@@ -73,7 +75,7 @@ export class MotionTransformSize {
         this.headScale = headScale.toString()
 
         if (elementBody) {
-          this.bodyHeight = `${elementBody.offsetHeight + (this.element.isSection() ? elementHead.offsetHeight : 0)}px`
+          this.bodyHeight = `${elementBody.offsetHeight + (element.isSection() ? elementHead.offsetHeight : 0)}px`
         }
       }
     }

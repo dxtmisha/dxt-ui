@@ -1,11 +1,13 @@
-// ai-none
+import { watch } from 'vue'
+import {
+  type ConstrEmit,
+  DesignLifecycleAbstract,
+  EventItem,
+  isEnter
+} from '@dxtmisha/functional'
 
-import { onMounted, onUnmounted, watch } from 'vue'
-import { type ConstrEmit, EventItem, isEnter } from '@dxtmisha/functional'
-
-import { MotionTransformElement } from './MotionTransformElement'
-import { MotionTransformState } from './MotionTransformState'
-
+import type { MotionTransformElement } from './MotionTransformElement'
+import type { MotionTransformState } from './MotionTransformState'
 import type { MotionTransformEmitOptions } from './basicTypes'
 import type { MotionTransformEmits } from './types'
 import type { MotionTransformProps } from './props'
@@ -15,7 +17,7 @@ import type { MotionTransformProps } from './props'
  *
  * Класс для управления событиями в системе MotionTransform.
  */
-export class MotionTransformEvent {
+export class MotionTransformEvent extends DesignLifecycleAbstract {
   /** Pointer click event item listener instance / Экземпляр слушателя событий клика указателя (pointer click) */
   protected item?: EventItem<HTMLElement, PointerEvent>
 
@@ -24,26 +26,41 @@ export class MotionTransformEvent {
    *
    * Конструктор для создания экземпляра MotionTransformEvent.
    * @param props input properties / входные свойства
-   * @param element helper object for element operations / вспомогательный объект для работы с элементами
-   * @param state state manager / менеджер состояния
+   * @param element helper object getter for element operations / геттер вспомогательного объекта для работы с элементами
+   * @param state state manager getter / геттер менеджера состояния
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    */
   constructor(
     protected readonly props: MotionTransformProps,
-    protected readonly element: MotionTransformElement,
-    protected readonly state: MotionTransformState,
+    protected readonly element: () => MotionTransformElement,
+    protected readonly state: () => MotionTransformState,
     protected readonly emits?: ConstrEmit<MotionTransformEmits>
   ) {
-    watch(
-      this.state.open,
-      () => this.item?.toggle(this.state.open.value)
-    )
+    super()
+  }
 
-    onMounted(() => {
-      this.item = new EventItem(document.body, 'click', this.listener)
-      this.item.toggle(this.state.open.value)
-    })
-    onUnmounted(() => this.stop())
+  /**
+   * Setup lifecycle listeners and watchers on mount.
+   *
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
+   */
+  override readonly onMounted = (): void => {
+    this.item = new EventItem(document.body, 'click', this.listener)
+    this.item.toggle(this.state().open.value)
+
+    watch(
+      this.state().open,
+      () => this.item?.toggle(this.state().open.value)
+    )
+  }
+
+  /**
+   * Cleanup lifecycle listeners on unmount.
+   *
+   * Очистка слушателей жизненного цикла при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.stop()
   }
 
   /**
@@ -70,7 +87,7 @@ export class MotionTransformEvent {
   ): void {
     const options: MotionTransformEmitOptions = {
       type,
-      open: !this.state.open.value
+      open: !this.state().open.value
     }
 
     this.emits?.('transform', event, options)
@@ -83,10 +100,10 @@ export class MotionTransformEvent {
    * Обработчик события клика на элемент заголовка/шапки.
    * @param event native event object / объект нативного события
    */
-  readonly onClick = (event: Event) => {
+  readonly onClick = (event: Event): void => {
     if (this.isTrigger(event.target as HTMLElement)) {
       this.emit(event, 'head')
-      this.state.toggle()
+      this.state().toggle()
     }
   }
 
@@ -98,13 +115,14 @@ export class MotionTransformEvent {
    */
   readonly onKeydown = async (event: KeyboardEvent): Promise<void> => {
     if (
-      isEnter(event as KeyboardEvent)
+      !event.isComposing
+      && isEnter(event as KeyboardEvent)
       && this.isTrigger(event.target as HTMLElement)
     ) {
       event.preventDefault()
 
       this.emit(event, 'head')
-      this.state.toggle()
+      this.state().toggle()
     }
   }
 
@@ -114,12 +132,12 @@ export class MotionTransformEvent {
    * Обработчик завершения анимации перехода, сбрасывающий состояние после окончания перехода высоты.
    * @param event transition event object / объект события окончания перехода
    */
-  readonly onTransitionend = (event: TransitionEvent) => {
+  readonly onTransitionend = (event: TransitionEvent): void => {
     if (
-      this.element.getElement() === event.target
+      this.element().getElement() === event.target
       && event.propertyName === 'height'
     ) {
-      this.state.reset()
+      this.state().reset()
     }
   }
 
@@ -131,7 +149,7 @@ export class MotionTransformEvent {
    * @returns true if target is a trigger / true, если цель является триггером
    */
   protected isTrigger(target: HTMLElement): boolean {
-    return Boolean(this.props.clickOpen && this.element.isClick(target))
+    return Boolean(this.props.clickOpen && this.element().isClick(target))
   }
 
   /**
@@ -140,23 +158,25 @@ export class MotionTransformEvent {
    * Слушатель кликов на уровне документа для обработки автозакрытия и триггеров закрытия.
    * @param event pointer event object / объект события указателя (pointer)
    */
-  protected listener = (event: PointerEvent) => {
+  protected readonly listener = (event: PointerEvent): void => {
     const target = event.target as HTMLDivElement
+    const state = this.state()
+    const element = this.element()
 
     if (
-      this.state.open.value
-      && this.element.isClickGlobal(target)
+      state.open.value
+      && element.isClickGlobal(target)
       && (
-        this.element.isClose(target)
+        element.isClose(target)
         || (
           this.props.autoClose
-          && this.element.isOutside(target)
-          && this.element.isIgnore(target)
+          && element.isOutside(target)
+          && element.isIgnore(target)
         )
       )
     ) {
       this.emit(event, 'body')
-      this.state.set(false)
+      state.set(false)
     }
   }
 }

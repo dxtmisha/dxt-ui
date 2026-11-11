@@ -15,6 +15,16 @@
     --d1-motionTransform-backgroundFull: var(--d1-sys-background-4);
     --d1-motionTransform-boxShadow: var(--d1-sys-shadow-xl);
     
+    &__head {
+      &:focus-visible {
+        @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+        
+        outline-width: var(--d1-ref-spacing-1);
+        outline-style: solid;
+        @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+      }
+    }
+    
     &__scrim {
       @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});

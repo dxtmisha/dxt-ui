@@ -79,6 +79,7 @@ export class Accordion {
       this.props,
       this.naming,
       this.components,
+      this.emits,
       () => ({
         'section': true,
         'adaptive': 'planeAlways',
@@ -86,9 +87,7 @@ export class Accordion {
         'ariaLabelledby': this.labelId,
         'ariaDescribedby': this.descriptionId,
         'data-divider': this.props.divider ? 'divider' : undefined
-      }),
-      undefined,
-      this.emits
+      })
     )
 
     this.event = new EventClickIncludeConstructor(

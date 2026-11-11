@@ -27,7 +27,10 @@ describe('MotionTransformElement', () => {
     const element = document.createElement('div')
     const context = document.createElement('div')
     const item = new MotionTransformElement(
-      { animationShow: true }, ref(element), ref(context), new DesignName('test-motion')
+      { animationShow: true },
+      ref(element),
+      new DesignName('test-motion'),
+      ref(context)
     )
 
     expect(item.getElement()).toBe(element)
@@ -42,7 +45,10 @@ describe('MotionTransformElement', () => {
       const child = document.createElement('span')
       const close = document.createElement('button')
       const item = new MotionTransformElement(
-        {}, ref(element), ref(document.createElement('div')), new DesignName('test-motion')
+        {},
+        ref(element),
+        new DesignName('test-motion'),
+        ref(document.createElement('div'))
       )
       close.className = item.classes.close
       element.append(child, close)
@@ -61,8 +67,10 @@ describe('MotionTransformElement', () => {
       const child = document.createElement('span')
       ignored.appendChild(child)
       const item = new MotionTransformElement(
-        { ignore: ignored }, ref(document.createElement('div')),
-        ref(document.createElement('div')), new DesignName('test-motion')
+        { ignore: ignored },
+        ref(document.createElement('div')),
+        new DesignName('test-motion'),
+        ref(document.createElement('div'))
       )
 
       expect(item.isIgnore(child)).toBe(false)
@@ -74,7 +82,10 @@ describe('MotionTransformElement', () => {
     const element = document.createElement('div')
     element.id = 'server-id'
     const item = new MotionTransformElement(
-      {}, ref(element), ref(document.createElement('div')), new DesignName('test-motion')
+      {},
+      ref(element),
+      new DesignName('test-motion'),
+      ref(document.createElement('div'))
     )
     vi.spyOn(functional, 'isDomRuntime').mockReturnValue(false)
     vi.stubGlobal('CSS', undefined)
