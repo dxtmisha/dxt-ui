@@ -427,16 +427,30 @@ To ensure optional features and subordinate inclusion classes are not prematurel
        return classes
      }
      ```
-4. **Guard Calls in `[Name]Design.tsx` Render Methods**:
-   - In companion design classes (`[Name]Design.tsx`), decomposed render methods must check `SubClass.is(this.props)` before calling `this.item.i(name).render()`:
+4. **Direct Inclusion Rendering in `[Name]Design.tsx` via `*Include.renderLazy` (Zero Boilerplate)**:
+   - In companion design classes (`[Name]Design.tsx`), do **NOT** write redundant boilerplate wrapper methods like `renderIcon()`, `renderProgress()`, `renderLabel()`, `renderRipple()`.
+   - Instead, invoke `*Include.renderLazy(...)` directly in the children array of `initRender()`:
      ```typescript
-     readonly renderIcon = (): VNode[] => {
-       if (IconTrailingInclude.is(this.props)) {
-         return this.item.i('icon').render()
-       }
-       return []
+     protected initRender = (): VNode => {
+       return h(
+         this.item.tag ?? 'div',
+         {
+           ...this.getAttrs(),
+           ref: this.element,
+           ...this.item.binds,
+           class: this.classes?.value.main,
+           style: this.styles?.value
+         },
+         [
+           ...ProgressInclude.renderLazy(() => this.item.i('progress'), this.props),
+           ...LabelInclude.renderLazy(() => this.item.i('label'), this.props, this.slots),
+           ...IconTrailingInclude.renderLazy(() => this.item.i('icon'), this.props),
+           ...RippleInclude.renderLazy(() => this.item.i('ripple'), this.props)
+         ]
+       )
      }
      ```
+   - **Lazy Factory (`() => this.item.i('...')`)**: Always pass the instance as a getter function `() => this.item.i('name')`. `renderLazy` checks `static is(props)` first and only invokes the getter if enabled, preserving strict lazy instantiation with zero premature allocations.
 
 ### Step 5: Connect to the Design Class (`[Name]Design.tsx`)
 In `[Name]Design.tsx`, instantiate the orchestrator supporting dependency injection:
@@ -558,7 +572,7 @@ See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructo
 - Getters evaluate values via intermediate variables and `if` branches with `Object.assign`:
   - In `aria`: `if (isProgress) { Object.assign(aria, this.i('progress').aria.value) }`
   - In `classes`: `if (SkeletonInclude.is(this.props)) { Object.assign(classes, this.i('skeleton').classes) }`
-- `ButtonDesign.tsx` guards each render helper method (`renderProgress`, `renderLabel`, `renderIcon`, `renderRipple`) with `SubClass.is(...)` to ensure zero allocations when optional features are omitted.
+- `ButtonDesign.tsx` inlines all inclusion rendering directly in `initRender()` using `*Include.renderLazy(() => this.item.i('...'), this.props)` without boilerplate wrapper methods, ensuring zero premature allocations when optional features are omitted.
 
 ---
 
@@ -632,3 +646,32 @@ See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructo
       - For styles: `initStyles()` returns `{}`.
       - For root tag: `initRender()` renders the literal element directly, e.g. `h('div', ...)` or `h('span', ...)`.
     - **Запрет пустых заглушек в оркестраторах**: Оркестраторы не должны содержать пустые геттеры-пустышки (`binds`, `classes`, `styles`, `tag`), если логика не рассчитывает для них динамических значений. Слой дизайна самостоятельно задаёт статические значения (`main: {}`, `h('div', ...)`).
+15. **Direct Inclusion Rendering via `*Include.renderLazy` and Prohibition of Boilerplate Render Wrappers / Прямой рендеринг инклюдов через `*Include.renderLazy` и запрет шаблонных методов-обёрток**:
+    - **Strict Prohibition of Redundant Render Wrappers**: In companion design classes (`[Name]Design.tsx`), it is **STRICTLY FORBIDDEN** to create redundant boilerplate wrapper methods (`readonly renderProgress = (): VNode[] => ...`, `readonly renderLabel = (): VNode[] => ...`, `readonly renderIcon = (): VNode[] => ...`, `readonly renderRipple = (): VNode[] => ...`) that merely guard an inclusion with `SubClass.is(...)` and invoke `.render()`.
+    - **Direct Inlining in `initRender`**: All standard inclusion elements must be rendered directly inside the children array of `initRender()` by spreading `...[Include].renderLazy(...)`:
+      ```typescript
+      protected initRender = (): VNode => {
+        return h(
+          this.item.tag ?? 'div',
+          {
+            ...this.getAttrs(),
+            ref: this.element,
+            ...this.item.binds,
+            class: this.classes?.value.main,
+            style: this.styles?.value
+          },
+          [
+            ...ProgressInclude.renderLazy(() => this.item.i('progress'), this.props),
+            ...LabelInclude.renderLazy(() => this.item.i('label'), this.props, this.slots),
+            ...IconTrailingInclude.renderLazy(() => this.item.i('icon'), this.props),
+            ...RippleInclude.renderLazy(() => this.item.i('ripple'), this.props)
+          ]
+        )
+      }
+      ```
+    - **Mandatory Getter Function (`() => this.item.i('[name]')`)**: Always pass the subordinate instance to `renderLazy` as a getter function `() => this.item.i('[name]')`, NEVER as an eager call `this.item.i('[name]')`. The `renderLazy` method evaluates `Include.is(props)` first and invokes the getter only if the condition is satisfied. If the feature prop is not provided or disabled, the subordinate class is completely bypassed and never allocated in memory.
+    - **Supported Inclusions**: Standard inclusion classes (`ProgressInclude`, `LabelInclude`, `IconTrailingInclude`, `IconInclude`, `RippleInclude`) provide static `renderLazy(item: T | (() => T), props, ...): VNode[]`.
+    - **Запрет шаблонных методов-обёрток и прямой рендеринг инклюдов**:
+      - **Категорически запрещено** создавать в `[Name]Design.tsx` отдельные методы-обёртки (`renderProgress`, `renderLabel`, `renderIcon`, `renderRipple`), дублирующие проверки условий `SubClass.is(...)` и вызов `.render()`.
+      - Рендеринг инклюдов производится **напрямую** в массиве дочерних элементов `initRender()` через spread `...*Include.renderLazy(() => this.item.i('...'), this.props, ...)`.
+      - Экземпляр инклюда передается в `renderLazy` строго как геттер-фабрика `() => this.item.i('...')`, что обеспечивает вызов `.i(...)` только при положительном результате статической проверки `is(props)` и предотвращает преждевременную аллокацию памяти.

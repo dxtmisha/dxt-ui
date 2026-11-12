@@ -1,13 +1,11 @@
 import { ref, watch, type Ref } from 'vue'
 import {
   type ConstrBind,
-  type ConstrClassObject,
   type ConstrEmit,
   type ConstrItems,
   type DesignComp,
   type DesignName,
-  DesignLogicAbstract,
-  isDomRuntime
+  DesignLogicAbstract
 } from '@dxtmisha/functional'
 
 import { AccordionHead } from './AccordionHead'
@@ -115,7 +113,6 @@ export class Accordion extends DesignLogicAbstract<
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors object with classes / объект с классами
-   * @param hasLifecycle whether to register component lifecycle hooks / регистрировать ли хуки жизненного цикла компонента
    */
   constructor(
     props: AccordionProps,
@@ -124,8 +121,7 @@ export class Accordion extends DesignLogicAbstract<
     components?: DesignComp<AccordionComponents, AccordionProps>,
     slots?: AccordionSlots,
     emits?: ConstrEmit<AccordionEmits>,
-    constructors?: Partial<AccordionConstructors>,
-    hasLifecycle: boolean = isDomRuntime()
+    constructors?: Partial<AccordionConstructors>
   ) {
     super(
       props,
@@ -134,13 +130,10 @@ export class Accordion extends DesignLogicAbstract<
       components,
       slots,
       emits,
-      constructors,
-      hasLifecycle
+      constructors
     )
 
-    if (hasLifecycle) {
-      this.i('model')
-    }
+    this.i('model')
   }
 
   /**
@@ -171,16 +164,6 @@ export class Accordion extends DesignLogicAbstract<
    */
   get bindsCell(): ConstrBind {
     return this.i('head').binds
-  }
-
-  /**
-   * Values for the class.
-   *
-   * Значения для класса.
-   * @returns classes values / значения классов
-   */
-  get classes(): ConstrClassObject {
-    return {}
   }
 
   /**

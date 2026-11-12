@@ -379,19 +379,14 @@ describe('Accordion (Unified Component)', () => {
           accordion = new InspectableAccordion(
             props,
             element,
-            naming,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            false
+            naming
           )
 
-          // Should not eagerly instantiate before access
+          // Should not eagerly instantiate optional dependencies before access
           expect(accordion.instantiatedItems.event).toBeUndefined()
           expect(accordion.instantiatedItems.head).toBeUndefined()
-          expect(accordion.instantiatedItems.model).toBeUndefined()
           expect(accordion.instantiatedItems.motionTransform).toBeUndefined()
+          expect(accordion.instantiatedItems.model).toBeDefined()
 
           event = accordion.i('event')
           head = accordion.i('head')
@@ -437,12 +432,7 @@ describe('Accordion (Unified Component)', () => {
           accordion = new InspectableAccordion(
             props,
             element,
-            naming,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            false
+            naming
           )
           head = accordion.i('head')
           return () => null

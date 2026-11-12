@@ -124,7 +124,30 @@ protected initRender(): VNode {
 
 ---
 
-## 6. Main Checklist for AI
+## 6. Mandatory Testing Strategy: Integrated Component & SSR
+
+For every component constructor in `src/constructors/<Component>/`, the AI developer **MUST** implement comprehensive tests located in the `__tests__/` directory:
+
+### 1. Integrated Component Test (`[Component].test.ts`)
+- **Full Component Integration**: Tests the component as a whole — integrating `[Component]Design.tsx`, the logic orchestrator `[Component].ts`, subordinate `Include` classes, and mock sub-components.
+- **Key Test Areas**:
+  - **DOM & Class Hierarchy**: Verifies root DOM rendering, BEM block class, sub-classes generated in `initClasses()`, and CSS modifier states.
+  - **Reactivity & Props**: Tests default props, reactive synchronization when props update, and two-way model binding (`v-model`).
+  - **User Interactions & Emits**: Validates event listeners, user click/input interactions, and custom event emissions.
+  - **Slots Projection**: Ensures correct slot mapping (`default`, header, body, etc.) into the rendered output.
+  - **Lazy Dependency Instantiation**: Confirms that optional subordinate helper classes remain unallocated until explicitly accessed via `this.i(...)`.
+
+### 2. SSR Isomorphism Test (`[Component].ssr.test.ts`)
+- **Server-Side Rendering Safety**: Verifies that the component executes and renders flawlessly in a server-side environment (Node.js runtime without browser DOM globals `window`, `document`, or `navigator`).
+- **Key Test Areas**:
+  - **String HTML Output**: Tests rendering via `createSSRApp` and `@vue/server-renderer` (`renderToString`) to ensure complete, valid HTML markup.
+  - **Zero Browser Leaks**: Guarantees no direct browser API calls (`window`, `document`, `getBoundingClientRect`, `requestAnimationFrame`) crash during SSR execution.
+  - **Deterministic Markup & State**: Ensures server-rendered attributes, IDs, and initial states match client expectations for hydration without hydration mismatch warnings.
+  - **Lifecycle Isolation**: Verifies that DOM-dependent hooks (`onMounted`, DOM observers, browser event listeners) do not run prematurely on the server.
+
+---
+
+## 7. Main Checklist for AI
 1. **No styles:** Absolute ban on hardcoding colors, paddings, and any UI solutions in the `constructor` package.
 2. **Total decomposition:** The main `[Name].ts` class is an orchestrator. All logic must reside in `Include` classes.
 3. **Dependency Injection:** All child dependency classes must be passed in the `constructors` argument during initialization.
@@ -132,3 +155,4 @@ protected initRender(): VNode {
 5. **Typing:** `any` is prohibited. Use `readonly`. All props and events must be strictly described in `types.ts` and `props.ts`.
 6. **TSDoc:** Documenting classes, methods, `@param`, and `@returns` strictly in two languages separated by ` / ` (English / Russian).
 7. **Unified Text Handling:** Component labels and translations must always go through the `TextInclude` system. Do not hardcode translation lists or use `useTranslateRef` in components.
+8. **Mandatory Testing:** Every constructor must provide both an integrated component test suite (`[Component].test.ts`) covering all states, interactions, and lazy instantiation, and an SSR safety test suite (`[Component].ssr.test.ts`) validating server-side rendering without browser API leaks.

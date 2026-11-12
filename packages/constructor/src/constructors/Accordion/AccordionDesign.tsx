@@ -91,7 +91,7 @@ export class AccordionDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes,
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
         head: this.naming.getSubClass('head'),
