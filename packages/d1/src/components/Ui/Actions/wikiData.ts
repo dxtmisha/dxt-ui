@@ -7,6 +7,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'align', type: 'string', option: ['none', 'center', 'left', 'right', 'block', 'auto'] },
   { name: 'area', type: 'string' },
+  { name: 'ariaLabel', type: 'string' },
   { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps>' },
   { name: 'buttonSecondaryAttrs', type: 'ConstrBind<ButtonProps>' },
   { name: 'flexible', type: 'string', option: ['adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl', 'containerSm', 'containerMd', 'containerLg', 'containerXl', 'container2xl'] },
@@ -14,6 +15,7 @@ const propsNames: StorybookProps = [
   { name: 'listSecondary', type: 'ConstrBind<ButtonProps>[]' },
   { name: 'padding', type: 'string', option: ['none', 'sm', 'md', 'lg', 'ySm', 'yMd', 'yLg'] },
   { name: 'paddingByIndent', type: 'boolean' },
+  { name: 'role', type: 'string' },
   { name: 'wrap', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]

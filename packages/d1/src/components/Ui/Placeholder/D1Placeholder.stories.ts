@@ -38,8 +38,8 @@ export const PlaceholderBasic: Story = {
     components: { D1Placeholder },
     setup() {
       return {
-          image1
-        }
+        image1
+      }
     },
     template: `
         
@@ -61,8 +61,8 @@ export const PlaceholderSlots: Story = {
     components: { D1Placeholder },
     setup() {
       return {
-          image1
-        }
+        image1
+      }
     },
     template: `
         

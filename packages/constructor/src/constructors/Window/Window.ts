@@ -187,7 +187,6 @@ export class Window extends DesignLogicAbstract<
     },
     image: {
       item: ImageInclude,
-      conditions: () => Boolean(this.props.image),
       parameters: () => [
         this.props,
         this.naming,

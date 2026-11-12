@@ -7,8 +7,8 @@ import DemoGeoRefPage from './pages/DemoGeoRefPage.vue'
 
 import DemoAccordionPage from './pages/components/DemoAccordionPage.vue'
 import DemoActionSheetPage from './pages/components/DemoActionSheetPage.vue'
-import DemoAlertPage from './pages/components/DemoAlertPage.vue'
 import DemoActionsPage from './pages/components/DemoActionsPage.vue'
+import DemoAlertPage from './pages/components/DemoAlertPage.vue'
 import DemoAnchorPage from './pages/components/DemoAnchorPage.vue'
 import DemoAvatarPage from './pages/components/DemoAvatarPage.vue'
 import DemoBadgePage from './pages/components/DemoBadgePage.vue'
@@ -95,14 +95,14 @@ export const routes: RouteRecordRaw[] = [
     component: DemoActionSheetPage
   },
   {
-    path: '/component-alert',
-    name: 'component-alert',
-    component: DemoAlertPage
-  },
-  {
     path: '/component-actions',
     name: 'component-actions',
     component: DemoActionsPage
+  },
+  {
+    path: '/component-alert',
+    name: 'component-alert',
+    component: DemoAlertPage
   },
   {
     path: '/component-anchor',

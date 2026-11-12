@@ -479,5 +479,29 @@ describe('Ripple (Component Integration)', () => {
       expect(customCoordinates).toEqual([{ x: 48, y: 72 }])
       expect(root.children).toHaveLength(1)
     })
+
+    it('should lazily render ripple via renderLazy only when enabled in props', () => {
+      let called = false
+      const naming = new DesignName('d1.button')
+      const components = new DesignComponents<RippleComponentInclude, RippleProps>({
+        ripple: defineComponent({ setup: () => () => h('div', { class: 'ripple' }) })
+      })
+      const rippleInclude = new RippleInclude(naming, components)
+
+      const getter = () => {
+        called = true
+        return rippleInclude
+      }
+
+      expect(RippleInclude.renderLazy(getter, { disabled: true })).toEqual([])
+      expect(called).toBe(false)
+
+      const activeResult = RippleInclude.renderLazy(getter, {})
+      expect(called).toBe(true)
+      expect(activeResult).toHaveLength(1)
+
+      const directResult = RippleInclude.renderLazy(rippleInclude, {})
+      expect(directResult).toHaveLength(1)
+    })
   })
 })

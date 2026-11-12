@@ -62,7 +62,7 @@ describe('MotionTransformState', () => {
 
     state.reset()
 
-    await new Promise((resolve) => requestAnimationFrame(resolve))
+    await new Promise(resolve => requestAnimationFrame(resolve))
     expect(head.focus).toHaveBeenCalled()
 
     div.remove()

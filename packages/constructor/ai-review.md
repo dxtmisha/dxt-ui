@@ -6,6 +6,10 @@ src/classes/EventClickInclude.ts
 src/classes/LabelInclude.ts
 src/classes/TabIndexInclude.ts
 
+src/constructors/Actions/Actions.ts
+src/constructors/Actions/ActionsDesign.tsx
+src/constructors/Actions/ActionsInclude.ts
+
 src/constructors/Button/Button.ts
 src/constructors/Button/ButtonDesign.tsx
 src/constructors/Button/ButtonInclude.ts

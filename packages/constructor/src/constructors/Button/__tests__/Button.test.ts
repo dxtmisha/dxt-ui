@@ -333,6 +333,27 @@ describe('Button', () => {
 
       scope.stop()
     })
+
+    it('should not instantiate label on creation or classes calculation, and instantiate on-demand when accessed', () => {
+      const scope = effectScope()
+      const element = ref<HTMLDivElement>()
+      const props: ButtonPropsBasic = reactive({ label: 'Submit' })
+
+      scope.run(() => {
+        const button = new InspectableButton(props, element, naming)
+        expect(button.instantiatedItems.label).toBeUndefined()
+
+        const classes = button.classes
+        expect(classes).toBeDefined()
+        expect(button.instantiatedItems.label).toBeUndefined()
+
+        const label = button.i('label')
+        expect(label).toBeDefined()
+        expect(button.instantiatedItems.label).toBeDefined()
+      })
+
+      scope.stop()
+    })
   })
 
   describe('Dependency Injection', () => {

@@ -367,6 +367,33 @@ describe('Icon Include Classes', () => {
       expect(include.renderIconTrailing()).toEqual([])
       expect(include.render()).toHaveLength(1)
     })
+
+    it('should lazily render icons via renderLazy only when icon or iconTrailing is present', () => {
+      let called = false
+      const include = new IconTrailingInclude(
+        { icon: 'home' },
+        naming,
+        new DesignComponents<IconComponentInclude, IconTrailingPropsInclude>(
+          { icon: (binds: any) => h('i', binds) },
+          { icon: 'home' }
+        )
+      )
+
+      const getter = () => {
+        called = true
+        return include
+      }
+
+      expect(IconTrailingInclude.renderLazy(getter, {})).toEqual([])
+      expect(called).toBe(false)
+
+      const activeResult = IconTrailingInclude.renderLazy(getter, { icon: 'home' })
+      expect(called).toBe(true)
+      expect(activeResult).toHaveLength(1)
+
+      const directResult = IconTrailingInclude.renderLazy(include, { icon: 'home' })
+      expect(directResult).toHaveLength(1)
+    })
   })
 
   describe('Multilingual and Unicode support', () => {

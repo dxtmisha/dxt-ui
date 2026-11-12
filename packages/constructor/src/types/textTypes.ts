@@ -2,7 +2,8 @@
 export type TextValue = string | (() => string) | undefined
 
 /** List of available text indexes / Список доступных индексов текста */
-export type TextIndex = 'am'
+export type TextIndex = 'actions'
+  | 'am'
   | 'breadcrumb'
   | 'cancel'
   | 'change'
@@ -45,6 +46,12 @@ export type TextIndex = 'am'
 
 /** List of text values/ Список текстовых значений */
 export type TextList = Record<TextIndex, TextValue>
+
+/** Interface for including actions text/ Интерфейс для включения текста действий */
+export type TextActionsPropsInclude = {
+  /** Actions text/ Текст действий */
+  textActions?: TextValue
+}
 
 /** Interface for including AM text/ Интерфейс для включения текста AM */
 export type TextAmPropsInclude = {
@@ -281,7 +288,8 @@ export type TextUploadSuccessPropsInclude = {
 }
 
 /** Type for including all text properties/ Тип для включения всех текстовых свойств */
-export type TextAllPropsInclude = TextAmPropsInclude
+export type TextAllPropsInclude = TextActionsPropsInclude
+  & TextAmPropsInclude
   & TextBreadcrumbPropsInclude
   & TextCancelPropsInclude
   & TextChangePropsInclude

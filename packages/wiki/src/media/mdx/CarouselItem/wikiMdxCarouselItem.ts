@@ -15,11 +15,11 @@ import exposeGetSlideRu from './expose.getSlide.ru.mdx'
 export const wikiMdxCarouselItem: StorybookComponentsMdxItem = {
   name: 'CarouselItem',
   descriptions: {
-    carouselItem: {
+    'carouselItem': {
       en: carouselItemEn,
       ru: carouselItemRu
     },
-    slots: {
+    'slots': {
       en: slotsEn,
       ru: slotsRu
     },
@@ -29,4 +29,3 @@ export const wikiMdxCarouselItem: StorybookComponentsMdxItem = {
     }
   }
 }
-

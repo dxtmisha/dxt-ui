@@ -1,13 +1,23 @@
 // ai-none
 
 import { type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, type DesignName, getBind, toBinds } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type DesignComponents,
+  type DesignName,
+  executeFunction,
+  getBind,
+  toBinds
+} from '@dxtmisha/functional'
 
 import { IconInclude } from './IconInclude'
 
 import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { IconComponentInclude, IconTrailingPropsInclude } from './basicTypes'
 import type { IconPropsBasic } from './props'
+
+/** Icon trailing include item getter callback or instance / Функция получения экземпляра подключения иконки или сам экземпляр */
+export type IconTrailingIncludeItem = IconTrailingInclude | (() => IconTrailingInclude)
 
 /**
  * Class for simplified integration of the icon-handling component with an additional trailing icon.
@@ -28,6 +38,25 @@ export class IconTrailingInclude<
    */
   static override is(props?: IconTrailingPropsInclude): boolean {
     return Boolean(props?.icon || props?.iconTrailing)
+  }
+
+  /**
+   * Lazily renders the icon component if it is enabled.
+   *
+   * Лениво рендерит компонент иконки, если он включен.
+   * @param item callback function returning icon instance or instance / функция обратного вызова или экземпляр иконки
+   * @param props input properties / входные свойства
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  static renderLazy(
+    item: IconTrailingIncludeItem,
+    props?: IconTrailingPropsInclude
+  ): VNode[] {
+    if (IconTrailingInclude.is(props)) {
+      return executeFunction(item)?.render() ?? []
+    }
+
+    return []
   }
 
   /**

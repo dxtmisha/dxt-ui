@@ -132,6 +132,8 @@ describe('Window', () => {
 
       expect(windowItem.instantiatedItems.persistent).toBeDefined()
       expect(windowItem.instantiatedItems.staticMode).toBeDefined()
+      expect(windowItem.instantiatedItems.image).toBeUndefined()
+      expect(windowItem.i('image')).toBeDefined()
       expect(windowItem.instantiatedItems.image).toBeDefined()
 
       scope.stop()

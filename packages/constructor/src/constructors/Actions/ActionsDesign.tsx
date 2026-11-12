@@ -125,15 +125,35 @@ export class ActionsDesign<
       'div',
       {
         ...this.getAttrs(),
+        ref: this.element,
         class: this.classes?.value.main,
-        style: this.styles?.value
+        style: this.styles?.value,
+        ...this.item.aria
       },
-      [
+      this.renderData()
+    )
+  }
+
+  /**
+   * Data rendering method according to alignment order.
+   *
+   * Метод рендеринга данных в соответствии с порядком выравнивания.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderData = (): VNode[] => {
+    if (this.item.isLeft()) {
+      return [
         ...this.renderList(),
         ...this.renderSpacer(),
         ...this.renderSecondary()
       ]
-    )
+    }
+
+    return [
+      ...this.renderSecondary(),
+      ...this.renderSpacer(),
+      ...this.renderList()
+    ]
   }
 
   /**
@@ -157,7 +177,7 @@ export class ActionsDesign<
                   this.classes?.value.item,
                   this.classes?.value.list
                 ],
-                onClick: this.item.event.onClick
+                onClick: this.item.i('event').onClick
               },
               this.props.buttonAttrs,
               item
@@ -195,7 +215,7 @@ export class ActionsDesign<
                   this.classes?.value.item,
                   this.classes?.value.secondary
                 ],
-                onClick: this.item.event.onClick
+                onClick: this.item.i('event').onClick
               },
               this.props.buttonSecondaryAttrs,
               item

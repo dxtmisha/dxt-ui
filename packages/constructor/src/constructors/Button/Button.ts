@@ -72,7 +72,6 @@ export class Button extends DesignLogicAbstract<
     },
     icon: {
       item: IconTrailingInclude,
-      conditions: () => IconTrailingInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -82,7 +81,6 @@ export class Button extends DesignLogicAbstract<
     },
     label: {
       item: LabelInclude,
-      conditions: () => LabelInclude.is(this.props, this.slots),
       parameters: () => [
         this.props,
         this.naming,
@@ -92,7 +90,6 @@ export class Button extends DesignLogicAbstract<
     },
     progress: {
       item: ProgressInclude,
-      conditions: () => ProgressInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -105,7 +102,6 @@ export class Button extends DesignLogicAbstract<
     },
     ripple: {
       item: RippleInclude,
-      conditions: () => RippleInclude.is(this.props),
       parameters: () => [
         this.naming,
         this.components,
@@ -114,7 +110,6 @@ export class Button extends DesignLogicAbstract<
     },
     skeleton: {
       item: SkeletonInclude,
-      conditions: () => SkeletonInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,

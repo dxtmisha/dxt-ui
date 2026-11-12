@@ -19,23 +19,23 @@ import typeRu from './type.ru.mdx'
 export const wikiMdxCarouselPagination: StorybookComponentsMdxItem = {
   name: 'CarouselPagination',
   descriptions: {
-    'carouselPagination': {
+    carouselPagination: {
       en: carouselPaginationEn,
       ru: carouselPaginationRu
     },
-    'type': {
+    type: {
       en: typeEn,
       ru: typeRu
     },
-    'events': {
+    events: {
       en: eventsEn,
       ru: eventsRu
     },
-    'expose': {
+    expose: {
       en: exposeEn,
       ru: exposeRu
     },
-    'slots': {
+    slots: {
       en: slotsEn,
       ru: slotsRu
     }

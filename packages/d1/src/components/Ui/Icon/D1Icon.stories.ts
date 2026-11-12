@@ -47,7 +47,7 @@ export const Icon: Story = {
     await expect(component).toBeInTheDocument()
     await expect(component).toHaveClass('d1-icon--animationType--type1')
     await expect(component).toHaveAttribute('aria-hidden', 'true')
-  
+
     const mainIcon = component?.querySelector<HTMLElement>('.d1-icon__icon')
     const activeIcon = component?.querySelector<HTMLElement>('.d1-icon__iconActive')
     await expect(mainIcon).toBeInTheDocument()

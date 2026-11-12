@@ -1,11 +1,34 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import type { Ref } from 'vue'
+import {
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  type DesignName,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../classes/AreaInclude'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
-import type { ActionsComponents, ActionsEmits, ActionsSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes'
 import type { ActionsProps } from './props'
+import type {
+  ActionsComponents,
+  ActionsEmits,
+  ActionsSlots
+} from './types'
+
+/** Actions dependency constructors type / Тип конструкторов зависимостей Actions */
+export type ActionsConstructors = {
+  /** Area manager constructor / Конструктор менеджера области */
+  area: typeof AreaInclude
+  /** Event click constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Text manager constructor / Конструктор менеджера текста */
+  text: typeof TextInclude
+}
 
 /**
  * Class Actions manages the core logic of the actions component.
@@ -14,17 +37,38 @@ import type { ActionsProps } from './props'
  * Класс Actions управляет основной логикой компонента действий.
  * Отвечает за обработку событий клика и определение видимости списков действий.
  */
-export class Actions {
-  /** Object for working with area values / Объект для работы со значениями области */
-  readonly area: AreaInclude
-
-  /** Object for handling click events / Объект для обработки событий клика */
-  readonly event: EventClickInclude
+export class Actions extends DesignLogicAbstract<
+  HTMLDivElement,
+  ActionsComponents,
+  ActionsEmits,
+  ActionsSlots,
+  ActionsProps,
+  ActionsConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ActionsConstructors> = {
+    area: {
+      item: AreaInclude,
+      parameters: () => [this.props]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    }
+  }
 
   /**
-   * Constructor for the Actions class.
+   * Constructor.
    *
-   * Конструктор для класса Actions.
+   * Конструктор.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
    * @param naming component naming helper / помощник именования компонента
@@ -34,24 +78,49 @@ export class Actions {
    * @param constructors object with classes / объект с классами
    */
   constructor(
-    protected readonly props: ActionsProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ActionsComponents, ActionsProps>,
-    protected readonly slots?: ActionsSlots,
-    protected readonly emits?: ConstrEmit<ActionsEmits>,
-    constructors: {
-      AreaIncludeConstructor?: typeof AreaInclude
-      EventConstructor?: typeof EventClickInclude
-    } = {}
+    props: Readonly<ActionsProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<ActionsComponents, ActionsProps>,
+    slots?: ActionsSlots,
+    emits?: ConstrEmit<ActionsEmits>,
+    constructors?: Partial<ActionsConstructors>
   ) {
-    const {
-      AreaIncludeConstructor = AreaInclude,
-      EventConstructor = EventClickInclude
-    } = constructors
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
+    )
 
-    this.area = new AreaIncludeConstructor(props)
-    this.event = new EventConstructor(undefined, undefined, emits)
+    this.i('area')
+  }
+
+  /**
+   * Returns list of ARIA attributes for the actions container.
+   *
+   * Возвращает список ARIA-атрибутов для контейнера действий.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
+   */
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role(this.props.role),
+      ...AriaStaticInclude.label(this.props.ariaLabel ?? this.i('text').actions)
+    }
+  }
+
+  /**
+   * Checks if the list should be rendered in left alignment order.
+   *
+   * Проверяет, должен ли список отображаться в порядке выравнивания по левому краю.
+   * @returns true if alignment is left or none / true, если выравнивание left или none
+   */
+  isLeft(): boolean {
+    return this.props.align === 'left'
+      || this.props.align === 'none'
   }
 
   /**

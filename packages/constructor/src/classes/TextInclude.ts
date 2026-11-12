@@ -55,6 +55,11 @@ export class TextInclude {
   ) {
   }
 
+  /** Actions text / Текст действий */
+  get actions(): string | undefined {
+    return this.get('textActions')
+  }
+
   /** AM text / Текст AM */
   get am(): string | undefined {
     return this.get('textAm')

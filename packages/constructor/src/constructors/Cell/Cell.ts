@@ -67,7 +67,6 @@ export class Cell extends DesignLogicAbstract<
   protected override readonly constructorItems: ConstrItems<CellConstructors> = {
     caption: {
       item: CaptionInclude,
-      conditions: () => CaptionInclude.is(this.props, this.slots),
       parameters: () => [
         this.props,
         this.naming,
@@ -77,7 +76,6 @@ export class Cell extends DesignLogicAbstract<
     },
     description: {
       item: DescriptionInclude,
-      conditions: () => DescriptionInclude.is(this.props, this.slots),
       parameters: () => [
         this.props,
         this.naming,
@@ -102,7 +100,6 @@ export class Cell extends DesignLogicAbstract<
     },
     icon: {
       item: IconTrailingInclude,
-      conditions: () => IconTrailingInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -111,7 +108,6 @@ export class Cell extends DesignLogicAbstract<
     },
     label: {
       item: LabelInclude,
-      conditions: () => LabelInclude.is(this.props, this.slots),
       parameters: () => [
         this.props,
         this.naming,
@@ -125,7 +121,6 @@ export class Cell extends DesignLogicAbstract<
     },
     progress: {
       item: ProgressInclude,
-      conditions: () => ProgressInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -135,7 +130,6 @@ export class Cell extends DesignLogicAbstract<
     },
     ripple: {
       item: RippleInclude,
-      conditions: () => RippleInclude.is(this.props),
       parameters: () => [
         this.naming,
         this.components,
@@ -144,7 +138,6 @@ export class Cell extends DesignLogicAbstract<
     },
     skeleton: {
       item: SkeletonInclude,
-      conditions: () => SkeletonInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -191,7 +184,7 @@ export class Cell extends DesignLogicAbstract<
    */
   get classes(): ConstrClassObject {
     const classes: ConstrClassObject = {
-      [this.naming.getStatusClass('description')]: this.isDescription(),
+      [this.naming.getStatusClass('description')]: DescriptionInclude.is(this.props, this.slots),
       [getClassTagAStatic(this.naming.getDesign())]: true
     }
 
@@ -278,19 +271,6 @@ export class Cell extends DesignLogicAbstract<
     }
 
     return props
-  }
-
-  /**
-   * Checks if description is present and active.
-   *
-   * Проверяет наличие и активность описания.
-   * @returns check result / результат проверки
-   */
-  protected isDescription(): boolean {
-    return Boolean(
-      DescriptionInclude.is(this.props, this.slots)
-      && this.i('description').is
-    )
   }
 
   /**

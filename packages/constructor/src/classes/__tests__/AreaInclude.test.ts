@@ -17,6 +17,18 @@ describe('AreaInclude', () => {
     vi.clearAllMocks()
   })
 
+  describe('static is()', () => {
+    it('should return true when area is defined and non-empty', () => {
+      expect(AreaInclude.is({ area: 'header' })).toBe(true)
+    })
+
+    it('should return false when area is empty string or undefined', () => {
+      expect(AreaInclude.is({ area: '' })).toBe(false)
+      expect(AreaInclude.is({ area: undefined })).toBe(false)
+      expect(AreaInclude.is(undefined)).toBe(false)
+    })
+  })
+
   it('should provide the area value on initialization if props.area is defined', () => {
     const props = reactive({ area: 'test-area-initial' })
     new AreaInclude(props)

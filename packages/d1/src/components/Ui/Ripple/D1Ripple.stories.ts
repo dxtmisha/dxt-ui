@@ -47,14 +47,14 @@ export const Ripple: Story = {
     const ripple = canvasElement.querySelector<HTMLElement>('.d1-ripple')
     await expect(ripple).toBeInTheDocument()
     await expect(ripple).toHaveAttribute('aria-hidden', 'true')
-  
+
     if (ripple) {
       const event = new MouseEvent('pointerdown', { bubbles: true, cancelable: true, button: 0 })
       Object.defineProperty(event, 'isPrimary', { value: true })
       Object.defineProperty(event, 'offsetX', { value: 60 })
       Object.defineProperty(event, 'offsetY', { value: 60 })
       ripple.dispatchEvent(event)
-  
+
       await waitFor(() => {
         const wave = ripple.querySelector<HTMLElement>('.d1-ripple__item')
         expect(wave).toBeInTheDocument()

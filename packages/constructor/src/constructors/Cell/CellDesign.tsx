@@ -296,10 +296,6 @@ export class CellDesign<
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   readonly renderProgress = (): VNode[] => {
-    if (ProgressInclude.is(this.props)) {
-      return this.item.i('progress').render()
-    }
-
-    return []
+    return ProgressInclude.renderLazy(() => this.item.i('progress'), this.props)
   }
 }

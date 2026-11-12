@@ -1,7 +1,11 @@
 // ai-none
 
-import { computed } from 'vue'
-import { getBind } from '@dxtmisha/functional'
+import { computed, type VNode } from 'vue'
+import {
+  type ConstrBind,
+  executeFunction,
+  getBind
+} from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -10,6 +14,9 @@ import type { AriaList } from '../../types/ariaTypes'
 import type { ProgressPropsInclude } from './basicTypes'
 import type { ProgressProps } from './props'
 import type { ProgressExpose, ProgressSlots } from './types'
+
+/** Progress include item getter callback / Функция получения экземпляра подключения прогресса */
+export type ProgressIncludeItem = ProgressInclude | (() => ProgressInclude)
 
 /**
  * ProgressInclude class provides functionality for conditionally rendering progress components
@@ -35,6 +42,31 @@ export class ProgressInclude extends ComponentIncludeAbstract<
    */
   static is(props?: ProgressPropsInclude): boolean {
     return Boolean(props?.loading)
+  }
+
+  /**
+   * Lazily renders the progress component if it is enabled.
+   *
+   * Лениво рендерит компонент прогресса, если он включен.
+   * @param item callback function returning progress instance or instance / функция обратного вызова или экземпляр прогресса
+   * @param props input properties / входные свойства
+   * @param slotsChildren sub-component slots / слоты субкомпонента
+   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
+   * @param index unique rendering key / уникальный ключ рендеринга
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  static renderLazy(
+    item: ProgressIncludeItem,
+    props?: ProgressPropsInclude,
+    slotsChildren?: ProgressSlots,
+    attrs?: ConstrBind<ProgressProps>,
+    index?: string
+  ): VNode[] {
+    if (ProgressInclude.is(props)) {
+      return executeFunction(item)?.render(slotsChildren, attrs, undefined, index) ?? []
+    }
+
+    return []
   }
 
   /** Sub-component name identifier / Идентификатор имени субкомпонента */

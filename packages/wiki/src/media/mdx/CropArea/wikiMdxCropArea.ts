@@ -29,5 +29,3 @@ export const wikiMdxCropArea: StorybookComponentsMdxItem = {
     }
   }
 }
-
-

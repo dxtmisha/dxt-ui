@@ -141,6 +141,20 @@ All constructors in the logic layer, orchestrators, and subordinate classes must
    - Объект `constructors` передается в `super(...)` напрямую без каких-либо адаптеров или мутаций.
    - Любые обнаруженные `LegacyConstructors` и функции `normalize*Constructors` подлежат немедленному удалению при рефакторинге или проверке кода.
 
+### 2.5 Strict Prohibition of Empty / Redundant Stub Getters / Строгий запрет на пустые заглушечные геттеры
+
+**КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО** объявлять в оркестраторах логики пустые или фиктивные геттеры-заглушки, возвращающие пустые объекты или фиксированные значения по умолчанию (`get binds(): ConstrBind { return {} }`, `get classes(): ConstrClassObject { return {} }`, `get styles(): ConstrStyles { return {} }`, `get tag(): string { return 'div' }`), если у компонента нет соответствующей динамической логики:
+
+1. **Объявление только при наличии реальной логики (Declare Only When Needed)**:
+   - Геттеры `binds`, `classes`, `styles`, `aria`, `tag` объявляются **СТРОГО ТОЛЬКО ТОГДА**, когда они агрегируют реальные вычисляемые значения из подклассов или входных свойств.
+   - Если оркестратор не формирует динамических классов для корневого элемента — геттер `classes` **НЕ ОБЪЯВЛЯЕТСЯ**. Слой дизайна (`*Design.tsx`) в `initClasses()` задаёт `main: {}` самостоятельно.
+   - Если оркестратор не формирует HTML-атрибутов или привязок для корневого элемента — геттер `binds` **НЕ ОБЪЯВЛЯЕТСЯ**. Слой дизайна не вызывает `...this.item.binds`.
+   - Если у компонента нет стилей, рассчитываемых в логике — геттер `styles` **НЕ ОБЪЯВЛЯЕТСЯ**.
+   - Если тег корневого элемента фиксирован (например, всегда `'div'` или `'span'`) и не зависит от пропсов (нет `tag?: string` или динамики) — геттер `tag` **НЕ ОБЪЯВЛЯЕТСЯ**. Слой дизайна напрямую передаёт строковый литерал в `h('div', ...)` или `h('span', ...)`.
+2. **Чистота и отсутствие мертвого кода (Purity & Zero Dead Code)**:
+   - Создание пустых заглушек засоряет класс, раздувает размер бандла и вводит в заблуждение потребителей API.
+   - Эталонный пример: [`Ripple`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Ripple/Ripple.ts), [`ComponentOutlet`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/ComponentOutlet/ComponentOutlet.ts), [`Actions`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Actions/Actions.ts).
+
 ```typescript
 import {
   type ConstrBind,
@@ -610,3 +624,11 @@ See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructo
     - **Строгое соответствие типов параметров в `constructorItems` (`Readonly<Props>` и дженерики инклюдов)**:
       - **`Readonly<Props>` в конструкторах подклассов**: В `DesignLogicAbstract` свойства типизированы как `protected readonly props: Readonly<P>`. Фабрика параметров `parameters: () => [this.props, ...]` возвращает кортеж с типом `Readonly<P>`. Конструкторы всех вспомогательных классов, принимающие `props`, ОБЯЗАНЫ объявлять параметр строго как `props: Readonly<MyComponentProps>`. Пропуск `Readonly` приводит к ошибке несовместимости типов возвращаемого кортежа (`[Readonly<Props>, ...] is not assignable to [props: Props, ...]`).
       - **Каноническая типизация инклюдов (`TabIndexInclude`, `ModelInclude`)**: Классы-инклюды имеют базовые параметры дженериков по умолчанию (например, `TabIndexInclude<E extends HTMLElement = HTMLElement>`). В словаре `<Component>Constructors` они регистрируются как `tabIndex: typeof TabIndexInclude`, поэтому `this.i('tabIndex')` возвращает базовый тип `TabIndexInclude<HTMLElement>`. Вспомогательные классы, принимающие инклюды, должны типизировать их базовым типом (`tabIndex: () => TabIndexInclude`), а не специфическим подтипом (например, `tabIndex: () => TabIndexInclude<HTMLDivElement>`). Избыточная специализация приводит к ошибке вариативности: `Type 'TabIndexInclude<HTMLElement>' is not assignable to type 'TabIndexInclude<HTMLDivElement>'. Property 'align' is missing in type 'HTMLElement' but required in type 'HTMLDivElement'`. Всегда используйте канонический тип `() => TabIndexInclude`.
+14. **Strict Prohibition of Empty / Redundant Stub Getters (No Empty Binds, Classes, Styles, Tag) / Запрет пустых заглушечных геттеров**:
+    - **No Redundant Empty Getters**: Orchestrator classes extending `DesignLogicAbstract` must **NEVER** declare empty or trivial stub getters that merely return empty objects (`get binds(): ConstrBind { return {} }`, `get classes(): ConstrClassObject { return {} }`, `get styles(): ConstrStyles { return {} }`) or static string literals (`get tag(): string { return 'div' }`).
+    - **Declare Only When Meaningful**: Declare `binds`, `classes`, `styles`, `aria`, `tag` **only** if the orchestrator actually computes dynamic classes, collects element attributes/listeners, computes inline styles, or switches HTML tags dynamically based on props.
+    - **Design Layer Responsibility for Static Defaults**: When an orchestrator has no dynamic classes, styles, or binds, the companion design class (`[Name]Design.tsx`) directly handles static fallbacks:
+      - For classes: `initClasses()` returns `main: {}`.
+      - For styles: `initStyles()` returns `{}`.
+      - For root tag: `initRender()` renders the literal element directly, e.g. `h('div', ...)` or `h('span', ...)`.
+    - **Запрет пустых заглушек в оркестраторах**: Оркестраторы не должны содержать пустые геттеры-пустышки (`binds`, `classes`, `styles`, `tag`), если логика не рассчитывает для них динамических значений. Слой дизайна самостоятельно задаёт статические значения (`main: {}`, `h('div', ...)`).

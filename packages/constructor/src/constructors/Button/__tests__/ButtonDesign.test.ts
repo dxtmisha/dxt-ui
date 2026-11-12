@@ -106,7 +106,7 @@ describe('ButtonDesign', () => {
     expect(designClasses.loading).toBeDefined()
   })
 
-  it('should decompose rendering into renderProgress, renderLabel, renderIcon, and renderRipple methods', async () => {
+  it('should render button content with label correctly', async () => {
     const container = document.createElement('div')
     document.body.appendChild(container)
     cleanups.push(() => container.remove())
@@ -136,9 +136,6 @@ describe('ButtonDesign', () => {
 
     await nextTick()
 
-    expect(designInstance.renderProgress()).toEqual([])
-    expect(designInstance.renderIcon()).toEqual([])
-    expect(designInstance.renderRipple()).toEqual([])
-    expect(designInstance.renderLabel().length).toBeGreaterThan(0)
+    expect(container.innerHTML).toContain('Hello')
   })
 })

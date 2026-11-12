@@ -116,11 +116,11 @@ export class ArrowEvent extends DesignLifecycleAbstract {
       this.frameId = undefined
 
       if (ArrowPosition.isAuto(this.props)) {
-        this.elementTarget().update()
+        this.elementTarget?.()?.update?.()
       }
 
       this.makeEvents()
-      this.position().update()
+      this.position?.()?.update?.()
     })
   }
 

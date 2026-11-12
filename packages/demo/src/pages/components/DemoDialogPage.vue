@@ -205,6 +205,7 @@ const barsList = [
             description="Interact with the action buttons to log events in the value panel below. Available events: update:open, update:modelOpen, window, actions, actionsLite, bars, barsLite, barsBack, ok, close."
             buttonOk="Confirm (ok)"
             buttonClose="Cancel (close)"
+            :actions="actionsList"
             :barsList="barsList"
             :closeButton="true"
             @ok="onEvent('ok', $event)"

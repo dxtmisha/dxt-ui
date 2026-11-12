@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
-import DemoFlex from '../../components/DemoFlex.vue'
 </script>
 
 <template>

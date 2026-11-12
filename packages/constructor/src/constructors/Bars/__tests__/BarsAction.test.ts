@@ -1,17 +1,9 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
-import { ref, nextTick } from 'vue'
+import { describe, expect, it } from 'vitest'
+import { nextTick, ref } from 'vue'
 
 import { BarsAction } from '../BarsAction'
 import type { BarsProps } from '../props'
-
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (fn: () => void) => fn()
-  }
-})
 
 function createBarsAction(initialProps: Partial<BarsProps>) {
   const reactiveProperties = ref({
@@ -23,6 +15,7 @@ function createBarsAction(initialProps: Partial<BarsProps>) {
   })
 
   const barsAction = new BarsAction(reactiveProperties.value as unknown as BarsProps)
+  barsAction.onMounted?.()
   return { barsAction, reactiveProperties }
 }
 
@@ -63,6 +56,14 @@ describe('BarsAction', () => {
 
     const { barsAction: barsActionWithBars } = createBarsAction({ actionBars: [] })
     expect(barsActionWithBars.isPossible()).toBe(true)
+  })
+
+  it('should return correct status check result from static is()', () => {
+    expect(BarsAction.is({})).toBe(false)
+    expect(BarsAction.is({ action: true })).toBe(true)
+    expect(BarsAction.is({ actionLabel: 'Test Label' })).toBe(true)
+    expect(BarsAction.is({ actionDescription: 'Test Description' })).toBe(true)
+    expect(BarsAction.is({ actionBars: [] })).toBe(true)
   })
 
   it('should set action value manually using set()', () => {

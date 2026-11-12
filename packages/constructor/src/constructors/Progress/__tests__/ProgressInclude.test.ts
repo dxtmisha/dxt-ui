@@ -10,7 +10,7 @@ import {
 } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 
-import { ProgressInclude } from '../ProgressInclude'
+import { ProgressInclude, type ProgressIncludeItem } from '../ProgressInclude'
 import type { ProgressPropsInclude } from '../basicTypes'
 
 /** Mounted application cleanup callbacks / Обработчики очистки смонтированных приложений */
@@ -124,6 +124,30 @@ describe('ProgressInclude (isolated class)', () => {
 
       expect(includeInstance?.is).toBe(true)
       expect(container.firstElementChild?.getAttribute('aria-disabled')).toBe('true')
+    })
+
+    it('should render progress nodes via static renderLazy only when loading is active', () => {
+      let called = false
+      const naming = new DesignName('d1.button')
+      const progressInstance = new ProgressInclude({ loading: true }, naming)
+      const fakeNode = h('div', { class: 'progress-render-test' })
+      const renderSpy = vi.spyOn(progressInstance, 'render').mockReturnValue([fakeNode])
+
+      const getter: ProgressIncludeItem = () => {
+        called = true
+        return progressInstance
+      }
+
+      expect(ProgressInclude.renderLazy(getter, { loading: false })).toEqual([])
+      expect(called).toBe(false)
+
+      const activeResult = ProgressInclude.renderLazy(getter, { loading: true })
+      expect(called).toBe(true)
+      expect(renderSpy).toHaveBeenCalled()
+      expect(activeResult).toEqual([fakeNode])
+
+      const directResult = ProgressInclude.renderLazy(progressInstance, { loading: true })
+      expect(directResult).toEqual([fakeNode])
     })
   })
 })

@@ -1,5 +1,10 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 import type { AreaPropsInclude } from '../../types/areaTypes'
+import type {
+  AriaLabelPropsInclude,
+  AriaRolePropsInclude
+} from '../../types/ariaTypes'
+import type { TextActionsPropsInclude } from '../../types/textTypes'
 import type { ButtonPropsBasic } from '../Button'
 
 export type ActionsPropsToken = {
@@ -13,6 +18,9 @@ export type ActionsPropsToken = {
 export type ActionsPropsBasic<
   Button extends ButtonPropsBasic = ButtonPropsBasic
 > = AreaPropsInclude
+  & AriaLabelPropsInclude
+  & AriaRolePropsInclude
+  & TextActionsPropsInclude
   & {
     // Value
     /** Primary list of action configurations/ Основной список конфигураций действий */

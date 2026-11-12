@@ -1,6 +1,8 @@
 // ai-none
 
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+
 import type { BarsProps } from './props'
 
 /**
@@ -10,7 +12,7 @@ import type { BarsProps } from './props'
  * Класс для управления режимом действий (action-режимом) компонента Bars.
  * Отслеживает активное состояние панели действий и инициирует обновления панели.
  */
-export class BarsAction {
+export class BarsAction extends DesignLifecycleAbstract {
   /** Current action mode state / Текущее состояние action-режима */
   readonly action = ref<boolean>(false)
 
@@ -21,19 +23,35 @@ export class BarsAction {
    * @param props input data / входные данные
    */
   constructor(
-    protected readonly props: BarsProps
+    protected readonly props: Readonly<BarsProps>
   ) {
-    watch(() => props.action, this.update)
-    onMounted(this.update)
+    super()
+    this.update()
   }
 
   /**
-   * Updates the action mode state based on props.
+   * Setup lifecycle listeners and watchers on mount.
    *
-   * Обновляет состояние режима действий на основе свойств.
+   * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
    */
-  readonly update = (): void => {
-    this.action.value = Boolean(this.props.action)
+  override readonly onMounted = (): void => {
+    watch(() => this.props.action, this.update)
+  }
+
+  /**
+   * Checks if action mode is possible.
+   *
+   * Проверяет, возможен ли режим действий.
+   * @param props component properties / свойства компонента
+   * @returns true if action mode is active or possible / true, если режим действий активен или возможен
+   */
+  static is(props?: Readonly<BarsProps>): boolean {
+    return Boolean(
+      props?.action
+      || props?.actionLabel
+      || props?.actionDescription
+      || props?.actionBars
+    )
   }
 
   /**
@@ -60,6 +78,15 @@ export class BarsAction {
     if (this.action.value !== value) {
       this.action.value = value
     }
+  }
+
+  /**
+   * Updates the action mode state based on props.
+   *
+   * Обновляет состояние режима действий на основе свойств.
+   */
+  readonly update = (): void => {
+    this.action.value = Boolean(this.props.action)
   }
 
   /**

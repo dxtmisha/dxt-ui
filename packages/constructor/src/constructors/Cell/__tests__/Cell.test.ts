@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
-import { effectScope, nextTick, reactive, ref } from 'vue'
+import { effectScope, reactive, ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 
 import { Cell, type CellConstructors } from '../Cell'
@@ -20,16 +20,6 @@ class InspectableCell extends Cell {
    */
   get instantiatedItems(): Partial<Record<keyof CellConstructors, unknown>> {
     return this.instances
-  }
-
-  /**
-   * Exposes isDescription for testing.
-   *
-   * Предоставляет isDescription для тестирования.
-   * @returns check result / результат проверки
-   */
-  public override isDescription(): boolean {
-    return super.isDescription()
   }
 
   /**
@@ -88,7 +78,7 @@ describe('Cell', () => {
       scope.stop()
     })
 
-    it('should activate conditional items when props are set and mounted', async () => {
+    it('should not eagerly instantiate items upon mount, and instantiate on-demand when accessed', () => {
       const scope = effectScope()
       const element = ref<HTMLDivElement>()
       const props: CellProps = reactive({
@@ -102,13 +92,25 @@ describe('Cell', () => {
 
       const cell = scope.run(() => new InspectableCell(props, element, naming))!
       cell.triggerMounted()
-      await nextTick()
 
+      expect(cell.instantiatedItems.label).toBeUndefined()
+      expect(cell.instantiatedItems.caption).toBeUndefined()
+      expect(cell.instantiatedItems.description).toBeUndefined()
+      expect(cell.instantiatedItems.icon).toBeUndefined()
+      expect(cell.instantiatedItems.progress).toBeUndefined()
+      expect(cell.instantiatedItems.skeleton).toBeUndefined()
+
+      expect(cell.i('label')).toBeDefined()
       expect(cell.instantiatedItems.label).toBeDefined()
+      expect(cell.i('caption')).toBeDefined()
       expect(cell.instantiatedItems.caption).toBeDefined()
+      expect(cell.i('description')).toBeDefined()
       expect(cell.instantiatedItems.description).toBeDefined()
+      expect(cell.i('icon')).toBeDefined()
       expect(cell.instantiatedItems.icon).toBeDefined()
+      expect(cell.i('progress')).toBeDefined()
       expect(cell.instantiatedItems.progress).toBeDefined()
+      expect(cell.i('skeleton')).toBeDefined()
       expect(cell.instantiatedItems.skeleton).toBeDefined()
 
       scope.stop()
@@ -236,20 +238,20 @@ describe('Cell', () => {
       scope.stop()
     })
 
-    it('should evaluate isDescription method correctly', () => {
+    it('should compute description status class directly via DescriptionInclude.is', () => {
       const scope = effectScope()
       const element = ref<HTMLDivElement>()
 
       scope.run(() => {
         const cellWithoutDesc = new InspectableCell(reactive({}), element, naming)
-        expect(cellWithoutDesc.isDescription()).toBe(false)
+        expect(cellWithoutDesc.classes[naming.getStatusClass('description')]).toBe(false)
 
         const cellWithDesc = new InspectableCell(
           reactive({ description: 'Description text' }),
           element,
           naming
         )
-        expect(cellWithDesc.isDescription()).toBe(true)
+        expect(cellWithDesc.classes[naming.getStatusClass('description')]).toBe(true)
       })
 
       scope.stop()

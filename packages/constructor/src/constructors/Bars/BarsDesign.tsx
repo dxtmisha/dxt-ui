@@ -5,7 +5,6 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Bars } from './Bars'
 
 import {
@@ -21,7 +20,11 @@ import {
 } from './types'
 
 /**
- * BarsDesign
+ * BarsDesign is a design constructor for the Bars component.
+ * It connects the Bars logic, sets up slots, classes, styles, and defines the rendering function.
+ *
+ * BarsDesign — конструктор дизайна для компонента Bars.
+ * Он связывает логику Bars, настраивает слоты, классы, стили и определяет функцию рендеринга.
  */
 export class BarsDesign<
   COMP extends BarsComponents,
@@ -37,14 +40,17 @@ export class BarsDesign<
     CLASSES,
     P
   > {
+  /** Bars class instance managing component logic / Экземпляр класса Bars, управляющий логикой компонента */
   protected readonly item: Bars
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor bars item class/ класс элемента bars
+   * Constructor.
+   *
+   * Конструктор.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor bars item class / класс элемента bars
    */
   constructor(
     name: string,
@@ -69,9 +75,10 @@ export class BarsDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспонируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -81,6 +88,7 @@ export class BarsDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns class object / объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -99,6 +107,7 @@ export class BarsDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -108,15 +117,17 @@ export class BarsDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns component virtual node / виртуальный узел компонента
    */
   protected initRender(): VNode {
     return h(
       'div',
       {
         ...this.getAttrs(),
+        ref: this.element,
         class: this.classes?.value.main,
         style: this.styles?.value,
-        ...AriaStaticInclude.live(this.item.ariaLive)
+        ...this.item.aria
       },
       [
         ...this.renderBackButton(),
@@ -131,16 +142,17 @@ export class BarsDesign<
    * Rendering the close button.
    *
    * Рендеринг кнопки закрытия.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderBackButton = (): VNode[] => {
     if (
       (
         this.props.backHide
-        && !this.item.action.action.value
+        && !this.item.isAction()
       )
       || (
         this.props.backActionHide
-        && this.item.action.action.value
+        && this.item.isAction()
       )
     ) {
       return []
@@ -152,7 +164,7 @@ export class BarsDesign<
         {
           ...this.item.backBinds.value,
           label: this.item.backLabel,
-          selected: this.item.action.action.value
+          selected: this.item.isAction()
         }
       ) as VNode
     ]
@@ -162,6 +174,7 @@ export class BarsDesign<
    * Rendering the content.
    *
    * Рендеринг контента.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderContext = (): VNode[] => {
     return [
@@ -169,22 +182,51 @@ export class BarsDesign<
         'div',
         this.getKeyClass('context'),
         [
-          ...this.item.label.render(),
-          ...this.item.description.render()
+          ...this.renderLabel(),
+          ...this.renderDescription()
         ]
       )
     ]
   }
 
   /**
+   * Rendering the label element.
+   *
+   * Рендеринг элемента заголовка.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderLabel = (): VNode[] => {
+    if (this.item.isLabel()) {
+      return this.item.i('label').render()
+    }
+
+    return []
+  }
+
+  /**
+   * Rendering the description element.
+   *
+   * Рендеринг элемента описания.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderDescription = (): VNode[] => {
+    if (this.item.isDescription()) {
+      return this.item.i('description').render()
+    }
+
+    return []
+  }
+
+  /**
    * Rendering the control button.
    *
    * Рендеринг кнопки управления.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderBars = (): VNode[] => {
     const children: any[] = []
 
-    if (this.item.action.action.value) {
+    if (this.item.isAction()) {
       return children
     }
 
@@ -195,14 +237,15 @@ export class BarsDesign<
   }
 
   /**
-   * Rendering the control button.
+   * Rendering the action control button.
    *
-   * Рендеринг кнопки управления.
+   * Рендеринг кнопки управления в режиме действия.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderActionBars = (): VNode[] => {
     const children: any[] = []
 
-    if (this.item.action.action.value) {
+    if (this.item.isAction()) {
       children.push(...this.renderList(this.item.actionBarsBinds.value))
       this.initSlot('actionBars', children)
     }
@@ -214,7 +257,8 @@ export class BarsDesign<
    * Rendering a list of buttons from the list.
    *
    * Рендеринг списка кнопок по списку.
-   * @param list list of data for the button/ список данных для кнопки
+   * @param list list of data for the button / список данных для кнопки
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderList = (
     list: BarsPropsBasic['bars']

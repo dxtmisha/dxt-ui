@@ -18,6 +18,18 @@ defineOptions({
     :component="D1Actions"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <D1Actions
+    v-bind="args"
+    align="right"
+    :list="[
+      { label: 'Cancel', text: true },
+      { label: 'Confirm', primary: true }
+    ]"
+  />
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>
