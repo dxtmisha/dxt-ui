@@ -35,12 +35,12 @@ export class RippleInclude {
    * Конструктор для создания экземпляра RippleInclude.
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
-   * @param enabled enabled state manager / менеджер состояния активности
+   * @param enabled callback returning enabled state manager / функция обратного вызова, возвращающая менеджер состояния активности
    */
   constructor(
     protected readonly naming: DesignName,
     protected readonly components?: DesignComponents<RippleComponentInclude, RipplePropsBasic>,
-    protected readonly enabled?: EnabledInclude | (() => EnabledInclude)
+    protected readonly enabled?: () => EnabledInclude | undefined
   ) {
   }
 
@@ -51,20 +51,18 @@ export class RippleInclude {
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   readonly render = (): VNode[] => {
-    const enabled = typeof this.enabled === 'function' ? this.enabled() : this.enabled
+    if (this.components?.is('ripple')) {
+      const enabled = this.enabled?.()
 
-    if (
-      this.components
-      && this.components.is('ripple')
-      && (
+      if (
         !enabled
         || enabled.isEnabled
-      )
-    ) {
-      return this.components.render(
-        'ripple',
-        { class: this.naming.getSubClass('ripple') }
-      )
+      ) {
+        return this.components.render(
+          'ripple',
+          { class: this.naming.getSubClass('ripple') }
+        )
+      }
     }
 
     return []

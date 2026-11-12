@@ -18,9 +18,10 @@ defineOptions({
     :component="D1Cell"
   >
     <!-- :component-render [!] System label / Системная метка -->
-    <template #render="{ classDemo }">
+    <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <DesignComponent
+  <D1Cell
+    v-bind="args"
     label="Account Profile"
     description="Manage your account preferences and notifications"
     caption="Admin"

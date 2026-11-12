@@ -410,7 +410,7 @@ describe('Ripple (Component Integration)', () => {
         ripple: RealRipple
       })
       const enabled = new EnabledInclude({ disabled: false })
-      const rippleInclude = new RippleInclude(naming, components, enabled)
+      const rippleInclude = new RippleInclude(naming, components, () => enabled)
 
       const HostButton = defineComponent({
         setup() {

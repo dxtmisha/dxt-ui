@@ -172,7 +172,7 @@ describe('Ripple (SSR)', () => {
         ripple: RealSsrRipple
       })
       const enabled = new EnabledInclude({ disabled: false })
-      const rippleInclude = new RippleInclude(naming, components, enabled)
+      const rippleInclude = new RippleInclude(naming, components, () => enabled)
 
       const HostComponent = defineComponent({
         setup() {
@@ -219,7 +219,7 @@ describe('Ripple (SSR)', () => {
         ripple: RealSsrRipple
       })
       const enabled = new EnabledInclude({ disabled: true })
-      const rippleInclude = new RippleInclude(naming, components, enabled)
+      const rippleInclude = new RippleInclude(naming, components, () => enabled)
 
       const HostComponent = defineComponent({
         setup() {

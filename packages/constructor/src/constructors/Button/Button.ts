@@ -59,7 +59,7 @@ export class Button extends DesignLogicAbstract<
       item: EnabledInclude,
       parameters: () => [
         this.props,
-        () => this.i('progress')
+        () => (ProgressInclude.is(this.props) ? this.i('progress') : undefined)
       ]
     },
     event: {
@@ -109,7 +109,7 @@ export class Button extends DesignLogicAbstract<
       parameters: () => [
         this.naming,
         this.components,
-        this.i('enabled')
+        () => this.i('enabled')
       ]
     },
     skeleton: {
@@ -130,12 +130,11 @@ export class Button extends DesignLogicAbstract<
    * @returns list of aria properties / список свойств aria
    */
   get aria(): AriaList {
-    const isProgress = ProgressInclude.is(this.props)
     const aria: AriaList = {
       ...AriaStaticInclude.label(this.props.ariaLabel)
     }
 
-    if (isProgress) {
+    if (ProgressInclude.is(this.props)) {
       Object.assign(aria, this.i('progress').aria.value)
     }
 
@@ -144,7 +143,7 @@ export class Button extends DesignLogicAbstract<
         tabindex: '0',
         ...aria,
         ...AriaStaticInclude.role('button'),
-        ...AriaStaticInclude.disabled(isProgress || !this.i('enabled').isEnabled)
+        ...AriaStaticInclude.disabled(!this.i('enabled').isEnabled)
       }
     }
 

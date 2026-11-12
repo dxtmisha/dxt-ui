@@ -103,6 +103,20 @@ const statusValue = computed<string>(() => {
         </div>
       </D1Group>
 
+      <D1Group label="Container Query">
+        <div class="demo-button-page">
+          <D1Button label="Container Full SM" container="fullSm" />
+          <D1Button label="Container Icon SM" container="iconSm" icon="star" />
+        </div>
+      </D1Group>
+
+      <D1Group label="Data Types">
+        <div class="demo-button-page">
+          <D1Button :label="12345" />
+          <D1Button label="Long Text Button Label For Overflow Boundary" />
+        </div>
+      </D1Group>
+
       <D1Group label="Tags & Types">
         <div class="demo-button-page">
           <D1Button label="Button Tag" tag="button" type="button" />

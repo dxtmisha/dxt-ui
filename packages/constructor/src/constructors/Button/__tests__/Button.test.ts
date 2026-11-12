@@ -252,6 +252,7 @@ describe('Button', () => {
         const ripple = button.i('ripple')
         expect(ripple).toBeDefined()
         expect(button.instantiatedItems.ripple).toBeDefined()
+        expect(button.instantiatedItems.enabled).toBeUndefined()
       })
 
       scope.stop()

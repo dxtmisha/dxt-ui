@@ -44,7 +44,7 @@ await expect(component).toBeInTheDocument()
   `,
   import: [
     'import { ref } from \'vue\'',
-    'import type { CellExpose } from \'@dxtmisha/constructor/Cell\''
+    'import type { CellExpose as CellExposeType } from \'@dxtmisha/constructor/Cell\''
   ],
   stories: [
     // =========================================================================
@@ -254,13 +254,13 @@ await expect(items.length).toBe(2)
         ru: 'Программные методы и инспекция'
       },
       setup: `
-      const cellReference = ref<CellExpose>()
+      const cellReference = ref<CellExposeType>()
       const inspectedValue = ref<string>('')
       const inspectedDetail = ref<string>('')
 
       const onInspect = () => {
-        inspectedValue.value = String(cellReference.value?.getValue() ?? 'none')
-        inspectedDetail.value = JSON.stringify(cellReference.value?.getDetail() ?? {})
+        inspectedValue.value = String(cellReference.value?.getValue?.() ?? 'none')
+        inspectedDetail.value = JSON.stringify(cellReference.value?.getDetail?.() ?? {})
       }
 
       return {
@@ -706,7 +706,8 @@ await expect(canvas.getByText('Nested sub-information')).toBeInTheDocument()
   ai: {
     render: `
 <div :class="classDemo.item">
-  <DesignComponent
+  <Cell
+    v-bind="args"
     label="Account Profile"
     description="Manage your account preferences and notifications"
     caption="Admin"
