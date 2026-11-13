@@ -10,7 +10,6 @@ import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 
 import { IconTrailingInclude } from '../Icon'
-import { ProgressInclude } from '../Progress'
 import { RippleInclude } from '../Ripple'
 
 import { Cell } from './Cell'
@@ -296,6 +295,6 @@ export class CellDesign<
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   readonly renderProgress = (): VNode[] => {
-    return ProgressInclude.renderLazy(() => this.item.i('progress'), this.props)
+    return this.item.callInstance('progress', item => item.render()) ?? []
   }
 }

@@ -167,6 +167,17 @@ async function renderIconSsr(
 }
 
 describe('Icon (SSR)', () => {
+  it.each([
+    { href: 'https://example.com' },
+    { to: '/settings' },
+    { to: { name: 'settings' } }
+  ])('should render an anchor for navigation properties %j on the server', async (properties) => {
+    const html = await renderIconSsr({ icon: 'settings', ...properties })
+
+    expect(html).toMatch(/^<a[\s>]/)
+    expect(html).toMatch(/<\/a>$/)
+  })
+
   describe('Standard functional requirements (Happy path)', () => {
     it('should render a static decorative icon with aria-hidden="true", token classes, and real Image output without accessing browser globals', async () => {
       const html = await renderIconSsr(
@@ -255,7 +266,7 @@ describe('Icon (SSR)', () => {
         href: 'https://example.com/help'
       })
 
-      const rootOpeningTag = html.match(/^<span[^>]*>/)?.[0] ?? ''
+      const rootOpeningTag = html.match(/^<a[^>]*>/)?.[0] ?? ''
       expect(rootOpeningTag).toContain('d1-icon--dynamic')
       expect(rootOpeningTag).toContain('role="button"')
       expect(rootOpeningTag).toContain('aria-label="Close dialog"')

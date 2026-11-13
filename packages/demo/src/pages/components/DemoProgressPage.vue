@@ -4,6 +4,14 @@ import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
+const palettes = [
+  'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan',
+  'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate',
+  'gray', 'zinc', 'neutral', 'stone', 'black', 'white'
+] as const
+
+const getLoadingText = (): string => 'Processing request'
+
 // Delays demo state
 const isVisibleDelay = ref<boolean>(false)
 const onToggleDelay = () => {
@@ -151,23 +159,31 @@ const onTogglePoint = () => {
 
       <D1Group label="Palettes">
         <D1Grid>
+          <D1GridItem v-for="palette in palettes" :key="palette" :base="'2'" class="demo-progress-page__item">
+            <D1Progress linear visible :palette="palette" :value="70" position="static" />
+          </D1GridItem>
+        </D1Grid>
+      </D1Group>
+
+      <D1Group label="Values and accessible labels">
+        <D1Grid>
           <D1GridItem :base="'2'" class="demo-progress-page__item">
-            <D1Progress linear visible palette="red" :value="70" position="static" />
+            <D1Progress linear visible position="static" :value="0" />
           </D1GridItem>
           <D1GridItem :base="'2'" class="demo-progress-page__item">
-            <D1Progress circular visible palette="green" :value="70" />
+            <D1Progress linear visible position="static" value="50" max="200" />
           </D1GridItem>
           <D1GridItem :base="'2'" class="demo-progress-page__item">
-            <D1Progress linear visible palette="blue" indeterminate="type2" position="static" />
+            <D1Progress circular visible :value="0.5" :max="0.5" point />
           </D1GridItem>
           <D1GridItem :base="'2'" class="demo-progress-page__item">
-            <D1Progress circular visible palette="orange" indeterminate="type1" />
+            <D1Progress linear visible position="static" :value="150" :max="100" />
           </D1GridItem>
           <D1GridItem :base="'2'" class="demo-progress-page__item">
-            <D1Progress linear visible palette="purple" :value="85" position="static" />
+            <D1Progress linear visible position="static" text-loading="Loading files" :client-only="false" />
           </D1GridItem>
           <D1GridItem :base="'2'" class="demo-progress-page__item">
-            <D1Progress circular visible palette="amber" :value="85" />
+            <D1Progress circular visible :text-loading="getLoadingText" :client-only="true" />
           </D1GridItem>
         </D1Grid>
       </D1Group>

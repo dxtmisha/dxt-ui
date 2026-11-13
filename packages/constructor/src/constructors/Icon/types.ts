@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
@@ -35,7 +36,7 @@ export interface IconExpose extends EventClickExpose {
  */
 export interface IconSlots {
   /** Slot for custom icon content / Слот для пользовательского контента иконки */
-  default?(props: any): any
+  default?(props: unknown): VNode[]
 }
 
 /**

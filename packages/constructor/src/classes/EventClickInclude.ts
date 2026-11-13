@@ -100,15 +100,22 @@ export class EventClickInclude {
     event: MouseEvent,
     options?: EventClickValue
   ): void => {
-    if (this.emits) {
-      const enabled = this.getEnabled()
+    const enabled = this.getEnabled()
 
+    if (enabled?.isDisabled) {
+      event.preventDefault()
+      return
+    }
+
+    if (this.emits) {
       if (options) {
         if (!enabled || enabled.isEnabled) {
           this.emit(event, options)
         }
       } else if (this.toRouter()) {
         event.preventDefault()
+      } else if (this.isTargetHref(event)) {
+        return
       } else if (enabled) {
         const optionsItem = this.getOptions(event)
 
@@ -138,10 +145,39 @@ export class EventClickInclude {
     event: KeyboardEvent,
     options?: EventClickValue
   ): void => {
+    if (
+      this.getEnabled()?.isDisabled
+      || this.isTargetHref(event)
+    ) {
+      return
+    }
+
     if (isEnter(event)) {
       this.onClick(event as unknown as MouseEvent, options)
       event.preventDefault()
     }
+  }
+
+  /**
+   * Checks if the clicked target belongs to an `<a>` element matching this component's `href`.
+   *
+   * Проверяет, относится ли целевой элемент клика к элементу `<a>`, ссылка которого совпадает с собственным `href` компонента.
+   * @param event mouse or keyboard event object / объект события мыши или клавиатуры
+   * @returns true if target is inside `<a href>` matching `props.href` / true, если цель находится внутри `<a href>`, совпадающего с `props.href`
+   */
+  protected isTargetHref(event: MouseEvent | KeyboardEvent): boolean {
+    const href = this.props?.href
+
+    if (
+      href
+      && !this.props?.to
+    ) {
+      return (event.target as HTMLElement | null)
+        ?.closest?.('a[href]')
+        ?.getAttribute('href') === href
+    }
+
+    return false
   }
 
   /**

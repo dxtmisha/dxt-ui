@@ -5,11 +5,6 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { LabelInclude } from '../../classes/LabelInclude'
-
-import { IconTrailingInclude } from '../Icon'
-import { ProgressInclude } from '../Progress'
-import { RippleInclude } from '../Ripple'
 import { Button } from './Button'
 
 import {
@@ -136,10 +131,10 @@ export class ButtonDesign<
         style: this.styles?.value
       },
       [
-        ...ProgressInclude.renderLazy(() => this.item.i('progress'), this.props),
-        ...LabelInclude.renderLazy(() => this.item.i('label'), this.props, this.slots),
-        ...IconTrailingInclude.renderLazy(() => this.item.i('icon'), this.props),
-        ...RippleInclude.renderLazy(() => this.item.i('ripple'), this.props)
+        ...this.item.callInstance('progress', item => item.render(), []),
+        ...this.item.callInstance('label', item => item.render(), []),
+        ...this.item.callInstance('icon', item => item.render(), []),
+        ...this.item.callInstance('ripple', item => item.render(), [])
       ]
     )
   }

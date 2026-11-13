@@ -1,67 +1,132 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { computed, createApp, defineComponent, effectScope, h, nextTick, provide, reactive, ref } from 'vue'
-import { DesignName } from '@dxtmisha/functional'
+import {
+  computed,
+  createApp,
+  createSSRApp,
+  defineComponent,
+  h,
+  nextTick,
+  reactive,
+  type VNodeChild
+} from 'vue'
+import { renderToString } from 'vue/server-renderer'
+import {
+  type ConstrClasses,
+  type ConstrEmit,
+  type ConstrExpose,
+  type ConstrStyles,
+  DesignComponents,
+  DesignName,
+  inArray
+} from '@dxtmisha/functional'
 
-import { Icon, type IconConstructors } from '../Icon'
+import { Icon } from '../Icon'
 import { IconDesign } from '../IconDesign'
-import { EnabledInclude } from '../../../classes/EnabledInclude'
-import { EventClickInclude } from '../../../classes/EventClickInclude'
-import { SKELETON_NAME_STATUS, SkeletonInclude } from '../../Skeleton'
+import { IconLiteInclude } from '../IconLiteInclude'
+import { IconInclude } from '../IconInclude'
+import { IconTrailingInclude } from '../IconTrailingInclude'
 import { defaultsIcon, type IconProps } from '../props'
-import { ImageTypeValue, type ImageEventData } from '../../Image'
-import type { IconClasses, IconComponents, IconExpose } from '../types'
-
-/**
- * Exposes internal DesignLogicAbstract instances map for lazy-loading verification.
- *
- * Предоставляет внутреннюю карту экземпляров DesignLogicAbstract для проверки ленивой инициализации.
- */
-class InspectableIcon extends Icon {
-  /**
-   * Returns currently instantiated sub-constructors.
-   *
-   * Возвращает созданные на текущий момент подконструкторы.
-   * @returns map of instantiated sub-constructors / карта созданных подконструкторов
-   */
-  get instantiatedItems(): Partial<Record<keyof IconConstructors, unknown>> {
-    return this.instances
-  }
-}
+import type {
+  IconComponentInclude,
+  IconTrailingPropsInclude
+} from '../basicTypes'
+import type {
+  IconClasses,
+  IconComponents,
+  IconEmits,
+  IconExpose
+} from '../types'
+import {
+  ImageDesign,
+  ImageTypeValue,
+  type ImageClasses,
+  type ImageComponents,
+  type ImageExpose,
+  type ImageProps
+} from '../../Image'
+import {
+  SkeletonDesign,
+  defaultsSkeleton,
+  type SkeletonClasses,
+  type SkeletonComponents,
+  type SkeletonExpose,
+  type SkeletonProps
+} from '../../Skeleton'
 
 /** Mounted application cleanup callbacks / Обработчики очистки смонтированных приложений */
 const mountedCleanups: Array<() => void> = []
 
 afterEach(() => {
   mountedCleanups.splice(0).reverse().forEach(unmount => unmount())
+  vi.useRealTimers()
 })
 
 /**
- * Executes a factory callback inside a real Vue component setup context so provide/inject works without warnings.
+ * Real Image component built on ImageDesign for full end-to-end Icon integration tests.
  *
- * Выполняет фабричную функцию внутри реального контекста setup компонента Vue, чтобы provide/inject работал без предупреждений.
- * @param factory callback executed inside setup / обратный вызов, выполняемый внутри setup
- * @param skeletonActive optional provided skeleton status / необязательный предоставляемый статус скелетона
- * @returns factory return value / возвращаемое значение фабрики
+ * Реальный компонент Image на базе ImageDesign для сквозных интеграционных тестов Icon.
  */
-function runInVueSetup<Result>(
-  factory: () => Result,
-  skeletonActive: boolean = true
-): Result {
-  let result!: Result
-  const container = document.createElement('div')
-  const app = createApp(defineComponent({
-    setup() {
-      provide(SKELETON_NAME_STATUS, computed(() => skeletonActive))
-      result = factory()
-      return () => h('div')
-    }
-  }))
+const RealImageComponent = defineComponent({
+  name: 'D1ImageTest',
+  props: [
+    'value',
+    'turn',
+    'disabled',
+    'hide',
+    'alt',
+    'lazy',
+    'adaptive',
+    'tagImg',
+    'onLoad'
+  ],
+  emits: ['load'],
+  setup(componentProps, { emit }) {
+    const classesToken = computed<ConstrClasses>(() => ({
+      main: {
+        'd1-image': true,
+        'd1-image--turn': Boolean(componentProps.turn),
+        'd1-image--disabled': Boolean(componentProps.disabled),
+        'd1-image--hide': Boolean(componentProps.hide)
+      }
+    }))
 
-  app.mount(container)
-  mountedCleanups.push(() => app.unmount())
-  return result
+    const design = new ImageDesign<
+      ImageComponents,
+      ImageExpose,
+      ImageClasses,
+      ImageProps
+    >(
+      'd1.image',
+      componentProps as ImageProps,
+      {
+        emits: ((name: 'load', payload: unknown) => {
+          emit(name, payload)
+          ;(componentProps as { onLoad?: (data: unknown) => void }).onLoad?.(payload)
+        }) as ConstrEmit,
+        classes: classesToken
+      }
+    )
+
+    return design.render()
+  }
+})
+
+/**
+ * Result of mounting a complete IconDesign component.
+ *
+ * Результат монтирования полного компонента IconDesign.
+ */
+type MountedIcon = {
+  /** Host container element / Элемент хост-контейнера */
+  host: HTMLDivElement
+  /** Rendered root Icon element / Отрендеренный корневой элемент Icon */
+  root: HTMLElement
+  /** Exposed public API / Открытый публичный API */
+  expose: ConstrExpose<HTMLElement, IconExpose>
+  /** Unmount function / Функция размонтирования */
+  unmount: () => void
 }
 
 /**
@@ -72,704 +137,679 @@ function runInVueSetup<Result>(
  * @returns reactive icon properties / реактивные свойства иконки
  */
 function createReactiveProps(initial: IconProps = {}): IconProps {
-  return reactive<Record<string, unknown>>(initial) as IconProps
+  return reactive<Record<string, unknown>>({
+    ...(defaultsIcon as IconProps),
+    ...initial
+  }) as IconProps
 }
 
-describe('Icon', () => {
+/**
+ * Mounts a full IconDesign component with RealImageComponent, token classes, styles, attributes, and slots.
+ *
+ * Монтирует полный компонент IconDesign с RealImageComponent, классами токенов, стилями, атрибутами и слотами.
+ * @param props reactive icon properties / реактивные свойства иконки
+ * @param emits optional event spy / необязательный шпион событий
+ * @param slotBuilder optional default slot builder / необязательный построитель слота по умолчанию
+ * @param rootAttrs optional fallthrough HTML attributes / необязательные сквозные HTML-атрибуты
+ * @param ItemConstructor optional custom Icon logic class / необязательный пользовательский класс логики Icon
+ * @returns mounted icon fixture / смонтированная фикстура иконки
+ */
+function mountIcon(
+  props: IconProps,
+  emits?: ConstrEmit<IconEmits>,
+  slotBuilder?: () => VNodeChild,
+  rootAttrs?: Record<string, unknown>,
+  ItemConstructor?: typeof Icon
+): MountedIcon {
+  let expose!: ConstrExpose<HTMLElement, IconExpose>
+
+  const IconComponent = defineComponent({
+    name: 'D1IconTest',
+    setup() {
+      const classesToken = computed<ConstrClasses>(() => ({
+        main: {
+          'd1-icon': true,
+          'd1-icon--turn': Boolean(props.turn),
+          'd1-icon--disabled': Boolean(props.disabled),
+          'd1-icon--hide': Boolean(props.hide),
+          'd1-icon--asPalette': Boolean(props.asPalette),
+          'd1-icon--dir': Boolean(props.dir),
+          'd1-icon--overlay': Boolean(props.overlay),
+          'd1-icon--dynamic': Boolean(props.dynamic),
+          'd1-icon--start': Boolean(props.start),
+          'd1-icon--end': Boolean(props.end),
+          'd1-icon--high': Boolean(props.high),
+          [`d1-icon--animationType--${props.animationType ?? defaultsIcon.animationType}`]: inArray(
+            ['type1', 'type2'],
+            props.animationType ?? defaultsIcon.animationType
+          ),
+          'd1-icon--animationShow': Boolean(props.animationShow)
+        }
+      }))
+      const stylesToken = computed<ConstrStyles>(() => ({
+        '--d1-icon-width': '24px'
+      }))
+
+      const design = new IconDesign<
+        IconComponents,
+        IconExpose,
+        IconClasses,
+        IconProps
+      >(
+        'd1.icon',
+        props,
+        {
+          emits,
+          components: {
+            image: RealImageComponent
+          },
+          classes: classesToken,
+          styles: stylesToken
+        },
+        ItemConstructor
+      )
+
+      expose = design.expose()
+      return design.render()
+    }
+  })
+
+  const HostComponent = defineComponent({
+    setup() {
+      return () => h(
+        IconComponent,
+        rootAttrs ?? null,
+        slotBuilder ? { default: slotBuilder } : undefined
+      )
+    }
+  })
+
+  const host = document.createElement('div')
+  document.body.appendChild(host)
+  const app = createApp(HostComponent)
+  app.mount(host)
+
+  const unmount = (): void => {
+    app.unmount()
+    host.remove()
+  }
+
+  mountedCleanups.push(unmount)
+
+  return {
+    host,
+    root: host.firstElementChild as HTMLElement,
+    expose,
+    unmount
+  }
+}
+
+describe('Icon (complete component integration)', () => {
+  it.each([
+    { href: 'https://example.com' },
+    { to: '/settings' },
+    { to: { name: 'settings' } }
+  ])('should use an anchor for navigation properties %j without requiring dynamic', (properties) => {
+    const fixture = mountIcon(createReactiveProps({ icon: 'settings', ...properties }))
+
+    expect(fixture.root.tagName).toBe('A')
+  })
+
+  it('should reactively switch between span and anchor as navigation targets change', async () => {
+    const props = createReactiveProps({ icon: 'home', dynamic: true })
+    const fixture = mountIcon(props)
+
+    expect(fixture.host.firstElementChild?.tagName).toBe('SPAN')
+
+    props.href = 'https://example.com'
+    await nextTick()
+    expect(fixture.host.firstElementChild?.tagName).toBe('A')
+    expect(fixture.host.firstElementChild?.getAttribute('href')).toBe(props.href)
+
+    props.href = undefined
+    props.to = '/home'
+    await nextTick()
+    expect(fixture.host.firstElementChild?.tagName).toBe('A')
+
+    props.to = undefined
+    await nextTick()
+    expect(fixture.host.firstElementChild?.tagName).toBe('SPAN')
+  })
+
+  it('should render a navigable hyperlink when href is provided', () => {
+    const fixture = mountIcon(createReactiveProps({
+      icon: 'open_in_new',
+      dynamic: true,
+      href: 'https://example.com',
+      ariaLabel: 'External link'
+    }))
+
+    expect(fixture.root.getAttribute('href')).toBe('https://example.com')
+    expect(fixture.root.matches('a[href]')).toBe(true)
+  })
+
+  it('should prevent native navigation on a disabled icon link', () => {
+    const emits = vi.fn()
+    const fixture = mountIcon(createReactiveProps({
+      icon: 'open_in_new',
+      dynamic: true,
+      disabled: true,
+      href: 'https://example.com',
+      ariaLabel: 'External link'
+    }), emits)
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+
+    expect(fixture.root.matches('a[href]')).toBe(true)
+    expect(fixture.root.hasAttribute('disabled')).toBe(true)
+    expect((fixture.root as HTMLElement).tabIndex).toBe(-1)
+    fixture.root.dispatchEvent(event)
+    expect(event.defaultPrevented).toBe(true)
+    expect(emits).not.toHaveBeenCalled()
+  })
+
+  it('should update the disabled attribute and focusability when the state changes', async () => {
+    const props = createReactiveProps({ icon: 'home', dynamic: true, href: '/home', disabled: false })
+    const fixture = mountIcon(props)
+
+    expect(fixture.root.hasAttribute('disabled')).toBe(false)
+    expect((fixture.root as HTMLElement).tabIndex).toBe(0)
+
+    props.disabled = true
+    await nextTick()
+    expect(fixture.root.hasAttribute('disabled')).toBe(true)
+    expect((fixture.root as HTMLElement).tabIndex).toBe(-1)
+
+    props.disabled = false
+    await nextTick()
+    expect(fixture.root.hasAttribute('disabled')).toBe(false)
+    expect((fixture.root as HTMLElement).tabIndex).toBe(0)
+  })
+
+  it('should add the disabled attribute to a static icon', () => {
+    const fixture = mountIcon(createReactiveProps({ icon: 'home', disabled: true }))
+
+    expect(fixture.root.tagName).toBe('SPAN')
+    expect(fixture.root.hasAttribute('disabled')).toBe(true)
+  })
+
+  it.each(['Enter', ' '])('should ignore %j while IME composition is active', (key) => {
+    const emits = vi.fn()
+    const fixture = mountIcon(createReactiveProps({
+      icon: 'search',
+      dynamic: true,
+      ariaLabel: 'Search'
+    }), emits)
+
+    fixture.root.dispatchEvent(new KeyboardEvent('keydown', {
+      key,
+      isComposing: true,
+      bubbles: true
+    }))
+
+    expect(emits).not.toHaveBeenCalled()
+  })
+
   describe('Standard functional requirements (Happy path)', () => {
-    it('should compute iconBind and iconActiveBind for string and object values with visibility states', () => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+    it('should render root span with real Image sub-components, token classes, styles, fallthrough attributes, and slot content', async () => {
       const props = createReactiveProps({
-        icon: 'home',
-        iconActive: 'home-active',
+        icon: 'filled-home',
+        iconActive: 'outlined-home',
         active: false,
-        turn: true,
-        disabled: false
+        turn: false,
+        asPalette: true
       })
 
-      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+      const fixture = mountIcon(
+        props,
+        undefined,
+        () => h('i', { class: 'badge-dot' }, '!'),
+        {
+          'id': 'nav-home-icon',
+          'data-testid': 'icon-root'
+        }
+      )
 
-      expect(icon.isActive()).toBe(false)
+      expect(fixture.root.tagName.toLowerCase()).toBe('span')
+      expect(fixture.root.id).toBe('nav-home-icon')
+      expect(fixture.root.getAttribute('data-testid')).toBe('icon-root')
+      expect(fixture.root.getAttribute('aria-hidden')).toBe('true')
+      expect(fixture.root.style.getPropertyValue('--d1-icon-width')).toBe('24px')
+      expect(fixture.root.classList.contains('d1-icon')).toBe(true)
+      expect(fixture.root.classList.contains('d1-icon--asPalette')).toBe(true)
+      expect(fixture.root.classList.contains('d1-icon--animationType--type1')).toBe(true)
+      expect(fixture.root.querySelector('.badge-dot')?.textContent).toBe('!')
 
-      const mainBind = icon.iconBind
-      expect(mainBind).toBeDefined()
-      expect(mainBind?.value).toBe('home')
-      expect(mainBind?.key).toBe('mainIcon')
-      expect(mainBind?.class).toBe('d1-icon__icon')
-      expect(mainBind?.turn).toBe(true)
-      expect(mainBind?.disabled).toBe(false)
-      expect(mainBind?.hide).toBe(false)
+      const mainIconElement = fixture.root.querySelector('.d1-icon__icon') as HTMLElement
+      const activeIconElement = fixture.root.querySelector('.d1-icon__iconActive') as HTMLElement
 
-      const activeBind = icon.iconActiveBind
-      expect(activeBind).toBeDefined()
-      expect(activeBind?.value).toBe('home-active')
-      expect(activeBind?.key).toBe('activeIcon')
-      expect(activeBind?.class).toBe('d1-icon__iconActive')
-      expect(activeBind?.turn).toBe(true)
-      expect(activeBind?.disabled).toBe(false)
-      expect(activeBind?.hide).toBe(true)
+      expect(mainIconElement).not.toBeNull()
+      expect(activeIconElement).not.toBeNull()
+      expect(mainIconElement.textContent).toBe('home')
+      expect(mainIconElement.classList.contains('material-icons')).toBe(true)
+      expect(mainIconElement.classList.contains('d1-image--hide')).toBe(false)
 
+      expect(activeIconElement.textContent).toBe('home')
+      expect(activeIconElement.classList.contains('material-symbols-outlined')).toBe(true)
+      expect(activeIconElement.classList.contains('d1-image--hide')).toBe(true)
+      expect(fixture.expose.isActive()).toBe(false)
+
+      // Switch to active state and enable turn
       props.active = true
-      expect(icon.isActive()).toBe(true)
-      expect(icon.iconBind?.hide).toBe(true)
-      expect(icon.iconActiveBind?.hide).toBe(false)
+      props.turn = true
+      await nextTick()
 
-      props.icon = { value: 'custom-home', adaptive: true }
-      expect(icon.iconBind?.value).toBe('custom-home')
-      expect(icon.iconBind?.adaptive).toBe(true)
-
-      scope.stop()
+      expect(fixture.expose.isActive()).toBe(true)
+      expect(fixture.root.classList.contains('d1-icon--turn')).toBe(true)
+      expect(mainIconElement.classList.contains('d1-image--hide')).toBe(true)
+      expect(mainIconElement.classList.contains('d1-image--turn')).toBe(true)
+      expect(activeIconElement.classList.contains('d1-image--hide')).toBe(false)
+      expect(activeIconElement.classList.contains('d1-image--turn')).toBe(true)
     })
 
-    it('should forward image load events to emits for both iconBind and iconActiveBind', () => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+    it('should handle interactive click and keyboard (Enter / Space) events and expose getValue / getDetail in dynamic mode', async () => {
       const emits = vi.fn()
       const props = createReactiveProps({
-        icon: 'settings',
-        iconActive: 'settings-active'
-      })
-
-      const icon = scope.run(() => new Icon(
-        props,
-        element,
-        new DesignName('d1.icon'),
-        undefined,
-        undefined,
-        emits
-      ))!
-
-      const loadEventData: ImageEventData = {
-        type: ImageTypeValue.image,
-        image: 'settings'
-      }
-
-      icon.iconBind?.onLoad?.(loadEventData)
-      expect(emits).toHaveBeenCalledTimes(1)
-      expect(emits).toHaveBeenCalledWith('load', loadEventData)
-
-      const loadActiveEventData: ImageEventData = {
-        type: ImageTypeValue.image,
-        image: 'settings-active'
-      }
-
-      icon.iconActiveBind?.onLoad?.(loadActiveEventData)
-      expect(emits).toHaveBeenCalledTimes(2)
-      expect(emits).toHaveBeenLastCalledWith('load', loadActiveEventData)
-
-      scope.stop()
-    })
-
-    it('should compute decorative ARIA attributes for static icons', () => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = createReactiveProps({ icon: 'search' })
-      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
-
-      expect(icon.role).toBeUndefined()
-      expect(icon.aria).toEqual({
-        'aria-hidden': 'true'
-      })
-      const binds = icon.binds
-      expect(binds).toEqual({
-        'key': 'icon',
-        'aria-hidden': 'true'
-      })
-
-      scope.stop()
-    })
-
-    it('should not pass aria-label or role when dynamic is not true', () => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = createReactiveProps({
-        icon: 'search',
-        ariaLabel: 'Search site',
-        role: 'img'
-      })
-      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
-
-      expect(icon.role).toBe('img')
-      expect(icon.aria).toEqual({
-        'aria-hidden': 'true'
-      })
-      const binds = icon.binds
-      expect(binds.key).toBe('icon')
-      expect(binds['aria-hidden']).toBe('true')
-      expect(binds['aria-label']).toBeUndefined()
-      expect(binds.role).toBeUndefined()
-      expect(binds.tabindex).toBeUndefined()
-
-      scope.stop()
-    })
-
-    it('should compute accessible aria-label and custom role when dynamic is true', () => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = createReactiveProps({
-        icon: 'search',
-        dynamic: true,
-        ariaLabel: 'Search site',
-        role: 'img'
-      })
-      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
-
-      expect(icon.role).toBe('img')
-      expect(icon.aria).toEqual({
-        'role': 'img',
-        'aria-label': 'Search site'
-      })
-      const binds = icon.binds
-      expect(binds.key).toBe('icon')
-      expect(binds['aria-label']).toBe('Search site')
-      expect(binds.role).toBe('img')
-      expect(binds.tabindex).toBe(0)
-      expect(binds['aria-hidden']).toBeUndefined()
-
-      scope.stop()
-    })
-
-    it('should synchronize aria-pressed and aria-checked for dual-icon interactive toggles', () => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = createReactiveProps({
-        icon: 'favorite_border',
-        iconActive: 'favorite',
+        icon: 'visibility',
+        iconActive: 'visibility_off',
         active: false,
-        dynamic: true
-      })
-      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
-
-      expect(icon.role).toBe('button')
-      expect(icon.aria['aria-pressed']).toBe('false')
-      expect(icon.aria['aria-checked']).toBeUndefined()
-
-      props.active = true
-      expect(icon.aria['aria-pressed']).toBe('true')
-
-      props.role = 'switch'
-      expect(icon.aria['aria-checked']).toBe('true')
-      expect(icon.aria['aria-pressed']).toBeUndefined()
-
-      props.active = false
-      expect(icon.aria['aria-checked']).toBe('false')
-
-      props.role = 'checkbox'
-      expect(icon.aria['aria-checked']).toBe('false')
-
-      scope.stop()
-    })
-
-    it('should bind tabindex and trigger click and keyboard events when dynamic is true', () => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const emits = vi.fn()
-      const props = createReactiveProps({
-        icon: 'close',
         dynamic: true,
-        tabindex: 2,
-        value: 'close-action',
-        detail: { source: 'modal' }
+        ariaLabel: 'Toggle password visibility',
+        value: 'toggle-password',
+        detail: { fieldId: 'password-input' }
       })
 
-      const icon = scope.run(() => new Icon(
-        props,
-        element,
-        new DesignName('d1.icon'),
-        undefined,
-        undefined,
-        emits
-      ))!
+      const fixture = mountIcon(props, emits)
 
-      expect(icon.role).toBe('button')
-      const binds = icon.binds
-      expect(binds.key).toBe('icon')
-      expect(binds.role).toBe('button')
-      expect(binds.tabindex).toBe(2)
-      expect(binds.onClick).toBeTypeOf('function')
-      expect(binds.onKeydown).toBeTypeOf('function')
+      expect(fixture.root.getAttribute('role')).toBe('button')
+      expect(fixture.root.getAttribute('aria-label')).toBe('Toggle password visibility')
+      expect(fixture.root.getAttribute('tabindex')).toBe('0')
+      expect(fixture.root.hasAttribute('aria-hidden')).toBe(false)
+      expect(fixture.expose.getValue?.()).toBe('toggle-password')
+      expect(fixture.expose.getDetail?.()).toEqual({ fieldId: 'password-input' })
 
-      const mouseEvent = new MouseEvent('click')
-      binds.onClick?.(mouseEvent)
-      expect(emits).toHaveBeenCalledWith('click', mouseEvent, {
+      fixture.root.click()
+      expect(emits).toHaveBeenCalledWith('click', expect.any(MouseEvent), {
         type: 'click',
-        value: 'close-action',
-        detail: { source: 'modal' }
+        value: 'toggle-password',
+        detail: { fieldId: 'password-input' }
       })
       expect(emits).toHaveBeenCalledWith('clickLite', {
         type: 'click',
-        value: 'close-action',
-        detail: { source: 'modal' }
+        value: 'toggle-password',
+        detail: { fieldId: 'password-input' }
       })
 
       emits.mockClear()
-      const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' })
-      binds.onKeydown?.(enterEvent)
-      expect(emits).toHaveBeenCalledWith('click', enterEvent, {
+      fixture.root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+      expect(emits).toHaveBeenCalledWith('click', expect.any(KeyboardEvent), {
         type: 'click',
-        value: 'close-action',
-        detail: { source: 'modal' }
+        value: 'toggle-password',
+        detail: { fieldId: 'password-input' }
       })
 
-      scope.stop()
-    })
-
-    it('should handle disabled state properly when dynamic is true', () => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const emits = vi.fn()
-      const props = createReactiveProps({
-        icon: 'close',
-        dynamic: true,
-        disabled: true,
-        tabindex: 2
-      })
-
-      const icon = scope.run(() => new Icon(
-        props,
-        element,
-        new DesignName('d1.icon'),
-        undefined,
-        undefined,
-        emits
-      ))!
-
-      const binds = icon.binds
-      expect(binds.key).toBe('icon')
-      expect(binds.role).toBe('button')
-      expect(binds.tabindex).toBeUndefined()
-      expect(binds['aria-disabled']).toBe('true')
-      expect(binds['aria-hidden']).toBeUndefined()
-
-      const mouseEvent = new MouseEvent('click')
-      binds.onClick?.(mouseEvent)
-      const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' })
-      binds.onKeydown?.(enterEvent)
-      expect(emits).not.toHaveBeenCalled()
-
-      scope.stop()
-    })
-
-    it('should bind href and trigger Space key events when dynamic is true', () => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const emits = vi.fn()
-      const props = createReactiveProps({
-        icon: 'open_in_new',
-        dynamic: true,
-        href: 'https://example.com/docs',
-        value: 'open-docs'
-      })
-
-      const icon = scope.run(() => new Icon(
-        props,
-        element,
-        new DesignName('d1.icon'),
-        undefined,
-        undefined,
-        emits
-      ))!
-
-      const binds = icon.binds
-      expect(binds.role).toBe('button')
-      expect(binds.href).toBe('https://example.com/docs')
-      expect(binds.tabindex).toBe(0)
-
-      const spaceEvent = new KeyboardEvent('keydown', { key: ' ', code: 'Space' })
-      binds.onKeydown?.(spaceEvent)
-      expect(emits).toHaveBeenCalledWith('click', spaceEvent, {
+      emits.mockClear()
+      fixture.root.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', code: 'Space', bubbles: true }))
+      expect(emits).toHaveBeenCalledWith('click', expect.any(KeyboardEvent), {
         type: 'click',
-        value: 'open-docs',
-        detail: undefined
+        value: 'toggle-password',
+        detail: { fieldId: 'password-input' }
       })
 
-      scope.stop()
-    })
-
-    it.each([
-      [undefined, 0],
-      [0, 0],
-      [-1, -1],
-      ['0', '0'],
-      ['-1', '-1'],
-      [5, 5]
-    ])('should resolve tabindex=%j to %j in dynamic mode without falsy value traps', (inputTabindex, expectedTabindex) => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = createReactiveProps({
-        icon: 'home',
-        dynamic: true,
-        tabindex: inputTabindex
-      })
-
-      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
-      expect(icon.binds.tabindex).toBe(expectedTabindex)
-
-      scope.stop()
-    })
-
-    it('should expose default animationType token in defaultsIcon', () => {
-      expect(defaultsIcon).toEqual({
-        animationType: 'type1'
-      })
-    })
-  })
-
-  describe('Skeleton loading state', () => {
-    it('should return empty classes when isSkeleton is not set, and apply skeleton classes when true', () => {
-      runInVueSetup(() => {
-        const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-        const props = createReactiveProps({ icon: 'star' })
-        const icon = new InspectableIcon(props, element, new DesignName('d1.icon'))
-
-        expect(icon.classes).toEqual({})
-        expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
-
-        props.isSkeleton = true
-        const classes = icon.classes
-        expect(classes).toEqual({
-          'd1-skeleton__backgroundVariant': true
-        })
-        expect(icon.instantiatedItems.skeleton).toBeInstanceOf(SkeletonInclude)
-      })
-    })
-  })
-
-  describe('Empty, nullish, and optional dependency handling', () => {
-    it.each([undefined, null, ''])('should keep value falsy in iconBind and iconActiveBind for %j and report isActive as false', (emptyValue) => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = createReactiveProps({
-        icon: emptyValue,
-        iconActive: emptyValue,
-        active: true
-      })
-
-      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
-
-      expect(icon.isActive()).toBe(false)
-      expect(Boolean(icon.iconBind?.value)).toBe(false)
-      expect(Boolean(icon.iconActiveBind?.value)).toBe(false)
-
-      scope.stop()
-    })
-
-    it('should not throw when onLoad is triggered without an emits function', () => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = createReactiveProps({ icon: 'home' })
-      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
-
-      expect(() => icon.iconBind?.onLoad?.({
-        type: ImageTypeValue.image,
-        image: 'home'
-      })).not.toThrow()
-
-      scope.stop()
-    })
-  })
-
-  describe('Statefulness, lazy instantiation, and Dependency Injection', () => {
-    it('should keep enabled, event, and skeleton lazy upon construction and instantiate only on demand', () => {
-      runInVueSetup(() => {
-        const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-        const props = createReactiveProps({ icon: 'user' })
-        const icon = new InspectableIcon(props, element, new DesignName('d1.icon'))
-
-        expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
-
-        // Accessing static binds should not instantiate enabled, event, or skeleton
-        void icon.binds
-        expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
-
-        const skeletonInstance = icon.i('skeleton')
-        expect(skeletonInstance).toBeInstanceOf(SkeletonInclude)
-        expect(icon.instantiatedItems.skeleton).toBe(skeletonInstance)
-        expect(icon.instantiatedItems.enabled).toBeUndefined()
-        expect(icon.instantiatedItems.event).toBeUndefined()
-
-        const eventInstance = icon.i('event')
-        expect(eventInstance).toBeInstanceOf(EventClickInclude)
-        expect(icon.instantiatedItems.event).toBe(eventInstance)
-      })
-    })
-
-    it('should instantiate enabled, event, and skeleton strictly on demand via explicit call sites and not on initConditions', async () => {
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = createReactiveProps({
-        icon: 'bell',
-        dynamic: false,
-        isSkeleton: false
-      })
-
-      const icon = runInVueSetup(() => new InspectableIcon(props, element, new DesignName('d1.icon')))
-      expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
-
-      // Simulate mounting - since there are no background conditions, nothing is eagerly watched/instantiated
-      // @ts-expect-error accessing protected method for testing
-      icon.initConditions()
-
-      props.dynamic = true
-      props.isSkeleton = true
+      // Disable icon and verify interactions are blocked
+      emits.mockClear()
+      props.disabled = true
       await nextTick()
-      expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
 
-      // Instantiation occurs on explicit access
-      void icon.binds
-      expect(icon.instantiatedItems.enabled).toBeInstanceOf(EnabledInclude)
-      expect(icon.instantiatedItems.event).toBeInstanceOf(EventClickInclude)
-      expect(icon.instantiatedItems.skeleton).toBeUndefined()
+      expect(fixture.root.getAttribute('aria-disabled')).toBe('true')
+      expect(fixture.root.hasAttribute('tabindex')).toBe(false)
 
-      runInVueSetup(() => {
-        void icon.classes
-      })
-      expect(icon.instantiatedItems.skeleton).toBeInstanceOf(SkeletonInclude)
+      fixture.root.click()
+      fixture.root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+      expect(emits).not.toHaveBeenCalled()
     })
 
-    it('should support Dependency Injection overrides for enabled, event, and skeleton via constructors option', () => {
-      let customEnabledConstructed = false
-      let customEventConstructed = false
-      let customSkeletonConstructed = false
+    it('should coordinate with parent SkeletonDesign across active, delay, and delayHide states', async () => {
+      vi.useFakeTimers()
 
-      /**
-       * Custom EnabledInclude for DI verification.
-       *
-       * Пользовательский EnabledInclude для проверки DI.
-       */
-      class CustomEnabled extends EnabledInclude {
-        constructor(...args: ConstructorParameters<typeof EnabledInclude>) {
-          super(...args)
-          customEnabledConstructed = true
-        }
-      }
-
-      /**
-       * Custom EventClickInclude for DI verification.
-       *
-       * Пользовательский EventClickInclude для проверки DI.
-       */
-      class CustomEventClick extends EventClickInclude {
-        constructor(...args: ConstructorParameters<typeof EventClickInclude>) {
-          super(...args)
-          customEventConstructed = true
-        }
-      }
-
-      /**
-       * Custom SkeletonInclude for DI verification.
-       *
-       * Пользовательский SkeletonInclude для проверки DI.
-       */
-      class CustomSkeleton extends SkeletonInclude {
-        constructor(...args: ConstructorParameters<typeof SkeletonInclude>) {
-          super(...args)
-          customSkeletonConstructed = true
-        }
-      }
-
-      runInVueSetup(() => {
-        const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-        const props = createReactiveProps({ icon: 'settings' })
-
-        const icon = new InspectableIcon(
-          props,
-          element,
-          new DesignName('d1.icon'),
-          undefined,
-          undefined,
-          undefined,
-          {
-            enabled: CustomEnabled,
-            event: CustomEventClick,
-            skeleton: CustomSkeleton
-          }
-        )
-
-        expect(customEnabledConstructed).toBe(false)
-        expect(customEventConstructed).toBe(false)
-        expect(customSkeletonConstructed).toBe(false)
-
-        const enabledInstance = icon.i('enabled')
-        expect(enabledInstance).toBeInstanceOf(CustomEnabled)
-        expect(customEnabledConstructed).toBe(true)
-
-        const eventInstance = icon.i('event')
-        expect(eventInstance).toBeInstanceOf(CustomEventClick)
-        expect(customEventConstructed).toBe(true)
-
-        const skeletonInstance = icon.i('skeleton')
-        expect(skeletonInstance).toBeInstanceOf(CustomSkeleton)
-        expect(customSkeletonConstructed).toBe(true)
+      const skeletonProps = reactive<SkeletonProps>({
+        ...defaultsSkeleton,
+        active: false,
+        delay: 100,
+        delayHide: 150
       })
-    })
-  })
-
-  describe('IconDesign composition and rendering', () => {
-    it('should expose isActive, getValue, and getDetail without prematurely instantiating event', () => {
-      const props = createReactiveProps({
-        icon: 'home',
-        value: 'home-value',
-        detail: { page: 'index' }
+      const iconProps = createReactiveProps({
+        icon: 'star',
+        isSkeleton: true
       })
 
-      let exposedValue: IconExpose | undefined
-
-      const HostComponent = defineComponent({
+      const ChildIcon = defineComponent({
         setup() {
-          const design = new IconDesign(
+          const design = new IconDesign<IconComponents, IconExpose, IconClasses, IconProps>(
             'd1.icon',
-            props,
-            undefined,
-            InspectableIcon
+            iconProps,
+            {
+              components: { image: RealImageComponent },
+              classes: computed(() => ({ main: { 'd1-icon': true } }))
+            }
           )
-
-          exposedValue = design.expose()
           return design.render()
         }
       })
 
-      const container = document.createElement('div')
-      const app = createApp(HostComponent)
-      app.mount(container)
-      mountedCleanups.push(() => app.unmount())
-
-      expect(exposedValue).toBeDefined()
-      expect(exposedValue?.isActive()).toBe(false)
-
-      expect(exposedValue?.getValue?.()).toBe('home-value')
-      expect(exposedValue?.getDetail?.()).toEqual({ page: 'index' })
-
-      props.active = true
-      props.iconActive = 'home-filled'
-      expect(exposedValue?.isActive()).toBe(true)
-    })
-
-    it('should render a span element with classes, attrs, and sub-elements, and update reactively', async () => {
-      const props = createReactiveProps({
-        icon: 'home',
-        iconActive: 'home-filled',
-        active: false,
-        dynamic: false
-      })
-
-      const MockImage = defineComponent({
-        name: 'MockImage',
-        props: ['value', 'turn', 'disabled', 'hide'],
-        setup(componentProps) {
-          return () => h('img', {
-            'class': 'mock-image',
-            'data-value': String(componentProps.value ?? ''),
-            'data-hide': String(componentProps.hide)
+      const ParentSkeleton = defineComponent({
+        setup() {
+          const design = new SkeletonDesign<
+            SkeletonComponents,
+            SkeletonExpose,
+            SkeletonClasses,
+            SkeletonProps
+          >('d1.skeleton', skeletonProps, {
+            classes: computed(() => ({ main: { 'd1-skeleton': true } }))
           })
+          return design.render()
         }
       })
 
-      const InnerComponent = defineComponent({
+      const host = document.createElement('div')
+      document.body.appendChild(host)
+      const app = createApp({
         setup() {
-          const design = new IconDesign<
-            IconComponents,
-            IconExpose,
-            IconClasses,
-            IconProps
-          >(
+          return () => h(ParentSkeleton, null, {
+            default: () => [h(ChildIcon)]
+          })
+        }
+      })
+      app.mount(host)
+      mountedCleanups.push(() => {
+        app.unmount()
+        host.remove()
+      })
+
+      const iconElement = host.querySelector('.d1-icon') as HTMLElement
+      expect(iconElement.classList.contains('d1-skeleton__backgroundVariant')).toBe(true)
+
+      skeletonProps.active = true
+      await nextTick()
+      vi.advanceTimersByTime(100)
+      await nextTick()
+
+      expect(host.querySelector('.d1-skeleton')?.classList.contains('d1-skeleton--visible')).toBe(true)
+
+      iconProps.isSkeleton = false
+      await nextTick()
+      expect(iconElement.classList.contains('d1-skeleton__backgroundVariant')).toBe(false)
+
+      iconProps.isSkeleton = true
+      await nextTick()
+      expect(iconElement.classList.contains('d1-skeleton__backgroundVariant')).toBe(true)
+    })
+
+    it('should integrate seamlessly inside a parent component via IconLiteInclude, IconInclude, and IconTrailingInclude', async () => {
+      const parentProps = reactive<Record<string, unknown>>({
+        icon: 'person',
+        iconTrailing: 'expand_more',
+        selected: false,
+        iconTurn: false,
+        iconDir: true,
+        iconPalette: true
+      }) as IconTrailingPropsInclude
+
+      const EmbeddedIconComponent = defineComponent({
+        name: 'EmbeddedIconComponent',
+        props: [
+          'icon',
+          'active',
+          'turn',
+          'hide',
+          'asPalette',
+          'animationType',
+          'dir',
+          'start',
+          'end',
+          'high'
+        ],
+        setup(componentProps) {
+          const classesToken = computed<ConstrClasses>(() => ({
+            main: {
+              'd1-icon': true,
+              'd1-icon--turn': Boolean(componentProps.turn),
+              'd1-icon--hide': Boolean(componentProps.hide),
+              'd1-icon--asPalette': Boolean(componentProps.asPalette),
+              'd1-icon--dir': Boolean(componentProps.dir),
+              'd1-icon--start': Boolean(componentProps.start),
+              'd1-icon--end': Boolean(componentProps.end),
+              'd1-icon--high': Boolean(componentProps.high),
+              [`d1-icon--animationType--${componentProps.animationType ?? 'type1'}`]: true
+            }
+          }))
+
+          const design = new IconDesign<IconComponents, IconExpose, IconClasses, IconProps>(
+            'd1.icon',
+            componentProps as IconProps,
+            {
+              components: { image: RealImageComponent },
+              classes: classesToken
+            }
+          )
+          return design.render()
+        }
+      })
+
+      const ParentButton = defineComponent({
+        setup() {
+          const naming = new DesignName('d1.button')
+          const components = new DesignComponents<IconComponentInclude, IconTrailingPropsInclude>(
+            { icon: EmbeddedIconComponent },
+            parentProps
+          )
+          const iconInclude = new IconTrailingInclude(parentProps, naming, components)
+          const liteInclude = new IconLiteInclude(
+            () => ({ icon: 'star' }),
+            new DesignName('d1.chip'),
+            components
+          )
+          const standardInclude = new IconInclude(
+            parentProps,
+            new DesignName('d1.badge'),
+            components
+          )
+
+          return () => h('div', { class: 'parent-button' }, [
+            ...iconInclude.render(),
+            ...liteInclude.renderIcon(),
+            ...standardInclude.renderIcon()
+          ])
+        }
+      })
+
+      const host = document.createElement('div')
+      document.body.appendChild(host)
+      const app = createApp(ParentButton)
+      app.mount(host)
+      mountedCleanups.push(() => {
+        app.unmount()
+        host.remove()
+      })
+
+      const mainButtonIcon = host.querySelector('.d1-button__icon') as HTMLElement
+      const trailingButtonIcon = host.querySelector('.d1-button__trailing') as HTMLElement
+      const chipLiteIcon = host.querySelector('.d1-chip__icon') as HTMLElement
+      const badgeStandardIcon = host.querySelector('.d1-badge__icon') as HTMLElement
+
+      expect(mainButtonIcon).not.toBeNull()
+      expect(mainButtonIcon.getAttribute('data-event-type')).toBe('icon')
+      expect(mainButtonIcon.classList.contains('d1-icon--start')).toBe(true)
+      expect(mainButtonIcon.classList.contains('d1-icon--turn')).toBe(false)
+
+      expect(trailingButtonIcon).not.toBeNull()
+      expect(trailingButtonIcon.getAttribute('data-event-type')).toBe('icon-trailing')
+      expect(trailingButtonIcon.classList.contains('d1-icon--end')).toBe(true)
+      expect(trailingButtonIcon.classList.contains('d1-icon--high')).toBe(true)
+      expect(trailingButtonIcon.classList.contains('d1-icon--dir')).toBe(true)
+
+      expect(chipLiteIcon).not.toBeNull()
+      expect(chipLiteIcon.textContent).toBe('star')
+
+      expect(badgeStandardIcon).not.toBeNull()
+      expect(badgeStandardIcon.classList.contains('d1-icon--animationType--type2')).toBe(true)
+
+      // Toggle iconTurn on parent: trailing icon turns while main icon stays un-turned
+      parentProps.iconTurn = true
+      await nextTick()
+      expect(mainButtonIcon.classList.contains('d1-icon--turn')).toBe(false)
+      expect(trailingButtonIcon.classList.contains('d1-icon--turn')).toBe(true)
+    })
+
+    it('should support injecting a custom ItemConstructor into IconDesign', () => {
+      /**
+       * Custom Icon logic subclass for DI verification.
+       *
+       * Пользовательский подкласс логики Icon для проверки DI.
+       */
+      class CustomIcon extends Icon {}
+
+      const fixture = mountIcon(
+        createReactiveProps({ icon: 'check', iconActive: 'close', active: true }),
+        undefined,
+        undefined,
+        undefined,
+        CustomIcon
+      )
+
+      expect(fixture.expose.isActive()).toBe(true)
+      expect(fixture.root.querySelector('.d1-icon__iconActive')?.textContent).toBe('close')
+    })
+  })
+
+  describe('SSR client hydration compatibility', () => {
+    it('should hydrate server-rendered decorative and interactive Icon HTML on the client without hydration mismatch warnings', async () => {
+      const createSharedAppRoot = () => defineComponent({
+        setup() {
+          const StaticIconNode = defineComponent({
+            setup() {
+              const props = createReactiveProps({
+                icon: 'filled-home',
+                iconActive: 'outlined-home',
+                active: false
+              })
+              const design = new IconDesign<IconComponents, IconExpose, IconClasses, IconProps>(
+                'd1.icon',
+                props,
+                {
+                  components: { image: RealImageComponent },
+                  classes: computed(() => ({ main: { 'd1-icon': true } }))
+                }
+              )
+              return design.render()
+            }
+          })
+
+          const DynamicIconNode = defineComponent({
+            setup() {
+              const props = createReactiveProps({
+                icon: 'close',
+                dynamic: true,
+                ariaLabel: 'Close modal',
+                tabindex: 0
+              })
+              const design = new IconDesign<IconComponents, IconExpose, IconClasses, IconProps>(
+                'd1.icon',
+                props,
+                {
+                  components: { image: RealImageComponent },
+                  classes: computed(() => ({
+                    main: {
+                      'd1-icon': true,
+                      'd1-icon--dynamic': true
+                    }
+                  }))
+                }
+              )
+              return design.render()
+            }
+          })
+
+          return () => h('div', { id: 'hydration-root' }, [
+            h(StaticIconNode, { id: 'hydrated-static-icon' }, {
+              default: () => [h('span', { class: 'hydrated-slot' }, 'Slot Badge')]
+            }),
+            h(DynamicIconNode, { id: 'hydrated-dynamic-icon' })
+          ])
+        }
+      })
+
+      const serverHtml = await renderToString(createSSRApp(createSharedAppRoot()))
+      expect(serverHtml).toContain('id="hydrated-static-icon"')
+      expect(serverHtml).toContain('aria-hidden="true"')
+      expect(serverHtml).toContain('id="hydrated-dynamic-icon"')
+      expect(serverHtml).toContain('role="button"')
+      expect(serverHtml).toContain('aria-label="Close modal"')
+
+      const container = document.createElement('div')
+      container.innerHTML = serverHtml
+      document.body.appendChild(container)
+
+      const clientApp = createSSRApp(createSharedAppRoot())
+      clientApp.mount(container)
+      mountedCleanups.push(() => {
+        clientApp.unmount()
+        container.remove()
+      })
+
+      const hydratedStatic = container.querySelector('#hydrated-static-icon')
+      const hydratedDynamic = container.querySelector('#hydrated-dynamic-icon')
+
+      expect(hydratedStatic).not.toBeNull()
+      expect(hydratedStatic?.getAttribute('aria-hidden')).toBe('true')
+      expect(hydratedStatic?.querySelector('.hydrated-slot')?.textContent).toBe('Slot Badge')
+      expect(hydratedStatic?.querySelector('.d1-icon__icon')?.textContent).toBe('home')
+
+      expect(hydratedDynamic).not.toBeNull()
+      expect(hydratedDynamic?.getAttribute('role')).toBe('button')
+      expect(hydratedDynamic?.getAttribute('aria-label')).toBe('Close modal')
+      expect(hydratedDynamic?.getAttribute('tabindex')).toBe('0')
+    })
+
+    it('should forward load events emitted from child Image components', () => {
+      const emits = vi.fn()
+      const props = createReactiveProps({
+        icon: 'settings'
+      })
+
+      let capturedIconBindOnLoad: ((event: unknown) => void) | undefined
+
+      const CapturingImage = defineComponent({
+        props: ['value', 'onLoad'],
+        setup(componentProps) {
+          capturedIconBindOnLoad = componentProps.onLoad as ((event: unknown) => void) | undefined
+          return () => h('span', { class: 'capturing-image' })
+        }
+      })
+
+      const host = document.createElement('div')
+      const app = createApp({
+        setup() {
+          const design = new IconDesign<IconComponents, IconExpose, IconClasses, IconProps>(
             'd1.icon',
             props,
             {
-              components: {
-                image: MockImage
-              }
+              emits,
+              components: { image: CapturingImage }
             }
           )
-
           return design.render()
         }
       })
-
-      const RootComponent = defineComponent({
-        setup() {
-          return () => h(InnerComponent, null, {
-            default: () => h('span', { class: 'custom-slot' }, 'Custom content')
-          })
-        }
-      })
-
-      const container = document.createElement('div')
-      const app = createApp(RootComponent)
-      app.mount(container)
+      app.mount(host)
       mountedCleanups.push(() => app.unmount())
 
-      const rootElement = container.firstElementChild as HTMLElement
-      expect(rootElement).not.toBeNull()
-      expect(rootElement.tagName.toLowerCase()).toBe('span')
-      expect(rootElement.getAttribute('aria-hidden')).toBe('true')
-      expect(rootElement.hasAttribute('role')).toBe(false)
-      expect(rootElement.querySelector('.custom-slot')?.textContent).toBe('Custom content')
+      const payload = {
+        type: ImageTypeValue.material,
+        image: 'settings'
+      }
+      capturedIconBindOnLoad?.(payload)
 
-      const images = rootElement.querySelectorAll('.mock-image')
-      expect(images).toHaveLength(2)
-      expect(images[0]?.getAttribute('data-hide')).toBe('false')
-      expect(images[1]?.getAttribute('data-hide')).toBe('true')
-
-      props.active = true
-      props.dynamic = true
-      props.ariaLabel = 'Toggle favorite'
-      await nextTick()
-
-      expect(rootElement.hasAttribute('aria-hidden')).toBe(false)
-      expect(rootElement.getAttribute('role')).toBe('button')
-      expect(rootElement.getAttribute('aria-label')).toBe('Toggle favorite')
-      expect(rootElement.getAttribute('tabindex')).toBe('0')
-      expect(images[0]?.getAttribute('data-hide')).toBe('true')
-      expect(images[1]?.getAttribute('data-hide')).toBe('false')
-    })
-
-    it('should render safely when components registry is omitted even if icon and iconActive are provided', () => {
-      const props = createReactiveProps({
-        icon: 'home',
-        iconActive: 'home-filled'
-      })
-
-      const HostComponent = defineComponent({
-        setup() {
-          const design = new IconDesign('d1.icon', props)
-          return design.render()
-        }
-      })
-
-      const container = document.createElement('div')
-      const app = createApp(HostComponent)
-      app.mount(container)
-      mountedCleanups.push(() => app.unmount())
-
-      const rootElement = container.firstElementChild as HTMLElement
-      expect(rootElement).not.toBeNull()
-      expect(rootElement.tagName.toLowerCase()).toBe('span')
-      expect(rootElement.children).toHaveLength(0)
-    })
-  })
-
-  describe('Multilingual and Unicode support', () => {
-    it.each([
-      ['иконка_дом', 'Главная страница'],
-      ['biểu_tượng_nhà', 'Trang chủ 🇻🇳'],
-      ['图标_主页', '首页 🚀']
-    ])('should preserve Unicode icon %s and ariaLabel %s in aria and binds', (iconName, ariaLabel) => {
-      const scope = effectScope()
-      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
-      const props = createReactiveProps({
-        icon: iconName,
-        dynamic: true,
-        ariaLabel
-      })
-
-      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
-
-      expect(icon.aria['aria-label']).toBe(ariaLabel)
-      expect(icon.binds['aria-label']).toBe(ariaLabel)
-      expect(icon.iconBind?.value).toBe(iconName)
-
-      scope.stop()
+      expect(emits).toHaveBeenCalledExactlyOnceWith('load', payload)
     })
   })
 })

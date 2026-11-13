@@ -29,7 +29,7 @@ export class IconDesign<
   CLASSES extends IconClasses,
   P extends IconPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLSpanElement,
+    HTMLElement,
     COMP,
     IconEmits,
     EXPOSE,
@@ -161,7 +161,7 @@ export class IconDesign<
     }
 
     return h(
-      'span',
+      this.item.tag,
       {
         ...this.getAttrs(),
         ...this.item.binds,

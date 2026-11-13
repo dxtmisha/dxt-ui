@@ -19,7 +19,7 @@ export const wikiDescriptionsProgress: StorybookComponentsDescriptionItem = {
       'different positioning options (top, bottom, static)',
       'delay settings for showing and hiding',
       'dense and inverse styling variants',
-      'point mode for minimal display'
+      'point marker for linear progress'
     ],
     ru: [
       'линейные и круглые индикаторы прогресса',
@@ -28,7 +28,7 @@ export const wikiDescriptionsProgress: StorybookComponentsDescriptionItem = {
       'различные варианты позиционирования (сверху, снизу, статично)',
       'настройки задержки для показа и скрытия',
       'компактный и инвертированный варианты стилизации',
-      'точечный режим для минимального отображения'
+      'точечный маркер для линейного прогресса'
     ]
   },
   render: `
@@ -371,7 +371,7 @@ await step('Toggle visibility off', async () => {
             <DesignComponent visible linear point inverse position="static" :value="80"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">value 0 (status role)</div>
+            <div class="wiki-storybook-item__label">value 0 (progressbar role)</div>
             <DesignComponent visible linear position="static" :value="0"/>
           </div>
         </div>
@@ -399,10 +399,10 @@ await waitFor(() => {
   expect(itemPointInverse).toHaveClass('design-component--inverse')
   expect(itemPointInverse.querySelector('span')).toBeInTheDocument()
 
-  // 4. value 0 edge case: value=0 is not considered a determinate value, role stays status
+  // 4. value 0 is a determinate progress value
   const itemValueZero = items[3]
-  expect(itemValueZero).toHaveAttribute('role', 'status')
-  expect(itemValueZero).not.toHaveAttribute('aria-valuenow')
+  expect(itemValueZero).toHaveAttribute('role', 'progressbar')
+  expect(itemValueZero).toHaveAttribute('aria-valuenow', '0')
 })
       `
     },
@@ -561,9 +561,10 @@ await step('Toggle Dense mode on circular progress', async () => {
 await step('Reset progress value to zero', async () => {
   await userEvent.click(resetButton)
   await waitFor(() => {
-    // Value 0 switches role to status
-    expect(linearDynamic).toHaveAttribute('role', 'status')
-    expect(circularDynamic).toHaveAttribute('role', 'status')
+    expect(linearDynamic).toHaveAttribute('role', 'progressbar')
+    expect(linearDynamic).toHaveAttribute('aria-valuenow', '0')
+    expect(circularDynamic).toHaveAttribute('role', 'progressbar')
+    expect(circularDynamic).toHaveAttribute('aria-valuenow', '0')
   })
 })
       `
@@ -598,7 +599,7 @@ await step('Reset progress value to zero', async () => {
     `,
     description: `
 Status indicator for ongoing processes, supporting both linear and circular visual styles. Capable of representing determinate (known percentage) and indeterminate (loading) states with customizable delays for showing/hiding.
-Features horizontal bars (linear) and spinner rings (circular) with multiple indeterminate animation types. Includes advanced positioning (top, bottom, static), dense styling for compact UIs, and a point mode for minimal pulsating indicators.
+Features horizontal bars (linear) and spinner rings (circular) with multiple indeterminate animation types. Includes positioning (top, bottom, static), dense styling for compact UIs, and a point marker for linear progress.
 Controlled via the visible, value, and indeterminate props, with support for custom min/max bounds. Use for page-level loading bars, button action feedback, or inline file upload progress.
     `
   }

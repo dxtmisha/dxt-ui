@@ -1,5 +1,5 @@
 import { shallowRef } from 'vue'
-import { executeFunction } from '@dxtmisha/functional'
+import { executeFunction, getObjectNoUndefined } from '@dxtmisha/functional'
 import type { TextIndex, TextList } from '../types/textTypes'
 
 /**
@@ -80,7 +80,7 @@ export class TextIncludeInstance {
   initText(texts: Partial<TextList>): void {
     this.list.value = {
       ...this.list.value,
-      ...texts
+      ...getObjectNoUndefined(texts)
     }
   }
 }

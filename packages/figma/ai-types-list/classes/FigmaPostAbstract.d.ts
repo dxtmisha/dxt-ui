@@ -1,12 +1,13 @@
-// md5:c60ea43dfe4b704dfb5dfb5b07420d94 true
-/** Base abstract class for bidirectional messaging between Figma plugin logic and UI iframe. @keywords figma, messaging, bridge, postMessage, comms */
+// md5:483b055e2f04e5d5a314949eb40629bb true
+import type { UiFigmaMessengerCallback, UiFigmaMessengerData, UiFigmaMessengerList } from '../types/figmaMessengerTypes';
+/** Base abstract class for managing messaging between the Figma plugin and UI. @keywords figma, messenger, post-message, bridge */
 export declare abstract class FigmaPostAbstract {
-    /** Sends a typed message to the counterpart environment. @keywords postMessage, emit, send, dispatch */
-    abstract post<Message>(type: string, message?: Message): void;
-    /** Registers an event listener callback for a specific message type. @keywords addEventListener, on, listen, subscribe */
+    /** Adds a callback listener for a specific message type. @keywords add, listener, subscribe, on */
     add<Message>(type: string, callback: UiFigmaMessengerCallback<Message>, once?: boolean): this;
-    /** Unregisters an event listener callback for a specific message type. @keywords removeEventListener, off, unlisten, unsubscribe */
+    /** Removes a callback listener for a specific message type. @keywords remove, listener, unsubscribe, off */
     remove<Message>(type: string, callback: UiFigmaMessengerCallback<Message>): this;
-    /** Initializes and binds the message listener. @keywords init, start, listen, setup */
+    /** Initializes the message listener. @keywords init, listener, setup */
     make(): this;
+    /** Sends a message to the target endpoint. @keywords post, send, message, emit */
+    abstract post<Message>(type: string, message?: Message): void;
 }

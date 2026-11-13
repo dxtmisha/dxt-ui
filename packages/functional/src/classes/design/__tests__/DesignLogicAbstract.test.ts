@@ -909,4 +909,126 @@ describe('DesignLogicAbstract', () => {
 
     unmount()
   })
+
+  it('checks whether a dependency instance has been created via hasInstance without triggering instantiation', () => {
+    const scope = createScope()
+    const logic = scope.run(() => new TestLogic({}, false))
+
+    assert(logic)
+    expect(logic.hasInstance('DependencyConstructor')).toBe(false)
+    expect(logic.hasInstance('CountConstructor')).toBe(false)
+    expect(logic.hasInstance('toString' as keyof TestConstructors & string)).toBe(false)
+    expect(logic.onArguments).not.toHaveBeenCalled()
+
+    logic.getInstance('DependencyConstructor')
+
+    expect(logic.hasInstance('DependencyConstructor')).toBe(true)
+    expect(logic.hasInstance('CountConstructor')).toBe(false)
+  })
+
+  it('executes callback in callInstance based on instance presence and canCreate guard', () => {
+    interface CallInstanceConstructors {
+      withoutGuard?: typeof CountDependency
+      guarded?: typeof CountDependency
+      booleanFalse?: typeof CountDependency
+      booleanTrue?: typeof CountDependency
+    }
+
+    const canCreateGuarded = vi.fn(() => false)
+
+    class CallInstanceLogic extends DesignLogicAbstract<
+      HTMLElement,
+      ConstrComponent,
+      ConstrItem,
+      ConstrItem,
+      { label: string },
+      CallInstanceConstructors
+    > {
+      protected readonly constructorItems = {
+        withoutGuard: {
+          item: CountDependency,
+          parameters: (): [number] => [5]
+        },
+        guarded: {
+          item: CountDependency,
+          canCreate: canCreateGuarded,
+          parameters: (): [number] => [9]
+        },
+        booleanFalse: {
+          item: CountDependency,
+          canCreate: false,
+          parameters: (): [number] => [11]
+        },
+        booleanTrue: {
+          item: CountDependency,
+          canCreate: true,
+          parameters: (): [number] => [12]
+        }
+      }
+
+      constructor() {
+        super(
+          { label: 'test' },
+          ref<HTMLElement>(),
+          new DesignName('d1.call-instance-test'),
+          undefined,
+          undefined,
+          undefined,
+          {
+            withoutGuard: CountDependency,
+            guarded: CountDependency,
+            booleanFalse: CountDependency,
+            booleanTrue: CountDependency
+          },
+          false
+        )
+      }
+    }
+
+    const scope = createScope()
+    const logic = scope.run(() => new CallInstanceLogic())
+    assert(logic)
+
+    const withoutGuardResult = logic.callInstance('withoutGuard', instance => instance.count)
+    expect(withoutGuardResult).toBe(5)
+    expect(logic.hasInstance('withoutGuard')).toBe(true)
+
+    const blockedCallback = vi.fn((instance: CountDependency) => instance.count)
+    expect(logic.callInstance('guarded', blockedCallback)).toBeUndefined()
+    expect(canCreateGuarded).toHaveBeenCalledTimes(1)
+    expect(blockedCallback).not.toHaveBeenCalled()
+    expect(logic.hasInstance('guarded')).toBe(false)
+
+    expect(logic.callInstance('booleanFalse', blockedCallback)).toBeUndefined()
+    expect(blockedCallback).not.toHaveBeenCalled()
+    expect(logic.hasInstance('booleanFalse')).toBe(false)
+
+    const fallbackList: number[] = logic.callInstance('booleanFalse', instance => [instance.count], [])
+    expect(fallbackList).toEqual([])
+    expectTypeOf(fallbackList).toEqualTypeOf<number[]>()
+
+    const defaultFactory = vi.fn(() => 'fallback')
+    const fallbackString = logic.callInstance('booleanFalse', instance => instance.count, defaultFactory)
+    expect(fallbackString).toBe('fallback')
+    expect(defaultFactory).toHaveBeenCalledTimes(1)
+    expectTypeOf(fallbackString).toEqualTypeOf<number | string>()
+
+    const unusedDefaultFactory = vi.fn(() => 0)
+    const directTrue = logic.callInstance('booleanTrue', instance => instance.count, unusedDefaultFactory)
+    expect(directTrue).toBe(12)
+    expect(unusedDefaultFactory).not.toHaveBeenCalled()
+    expect(logic.hasInstance('booleanTrue')).toBe(true)
+    expectTypeOf(directTrue).toEqualTypeOf<number>()
+
+    canCreateGuarded.mockReturnValue(true)
+    const allowedResult = logic.callInstance('guarded', instance => instance.count * 2)
+    expect(allowedResult).toBe(18)
+    expect(canCreateGuarded).toHaveBeenCalledTimes(2)
+    expect(logic.hasInstance('guarded')).toBe(true)
+
+    canCreateGuarded.mockReturnValue(false)
+    const existingResult = logic.callInstance('guarded', instance => instance.count + 1)
+    expect(existingResult).toBe(10)
+    expect(canCreateGuarded).toHaveBeenCalledTimes(2)
+  })
 })

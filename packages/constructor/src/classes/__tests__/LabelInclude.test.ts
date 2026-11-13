@@ -46,25 +46,4 @@ describe('LabelInclude', () => {
     expect(highlightNode.type).toBe('span')
     expect(highlightNode.props.innerHTML).toBe('<strong>replacing</strong>')
   })
-
-  it('should lazily render label nodes only when label or slot is active', () => {
-    let called = false
-    const include = new LabelInclude({ label: 'Test Label' }, new DesignName('prefix'))
-
-    const getter = () => {
-      called = true
-      return include
-    }
-
-    expect(LabelInclude.renderLazy(getter, {})).toEqual([])
-    expect(called).toBe(false)
-
-    const activeResult = LabelInclude.renderLazy(getter, { label: 'Test Label' })
-    expect(called).toBe(true)
-    expect(activeResult.length).toBe(1)
-    expect(activeResult[0].children).toContain('Test Label')
-
-    const directResult = LabelInclude.renderLazy(include, { label: 'Test Label' })
-    expect(directResult.length).toBe(1)
-  })
 })

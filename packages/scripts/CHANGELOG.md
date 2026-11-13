@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.1] - 2026-11-14
+
+### Changed
+- **AI Prompt Initialization (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`)**:
+  - Updated Step 1 in `src/media/templates/prompts/aiCodeGlobalPrompt.en.md` and `src/media/templates/prompts/aiCodeGlobalPrompt.ru.md` to explicitly skip reading `ai-developer.md` when the file does not exist.
+
+## [1.7.0] - 2026-11-13
+
+### Changed
+- **AI Type Definition Generation (`DesignTypesMakeFile`, `DesignTypesMakeTsTransformer`, `aiTypeOptimization`)**:
+  - Preserved relative and external `import` declarations in `DesignTypesMakeTsTransformer` (`src/classes/Design/DesignTypesMakeTsTransformer.ts`) and updated `aiTypeOptimization.en.md` / `aiTypeOptimization.ru.md` prompt templates so AI retains all `import` statements while removing internal re-exports.
+  - Updated `DesignTypesMakeFile.toOneFile` (`src/classes/Design/DesignTypesMakeFile.ts`) to prepend each non-empty file with a `// File: <path>` header (normalized with `/`), separate files with `// ----------------------------------------` without extra blank lines around the divider, and skip empty declaration files.
+  - Updated unit tests in `DesignTypesMake.test.ts`, `DesignTypesMakeFile.test.ts`, and `DesignTypesMakeTsTransformer.test.ts`.
+
+### Fixed
+- **Component Name Token Replacement (`DesignComponent`, `DesignReplace`)**:
+  - Fixed token replacement ordering in `DesignReplace.getNameFile` (`src/classes/Design/DesignReplace.ts`) to prevent duplicate suffixes when a component name starts with the replacement mark (e.g. `ComponentOutlet`), and added unit test coverage in `DesignReplace.test.ts`.
+  - Updated `DesignComponent` (`src/classes/Design/DesignComponent.ts`) documentation token replacement to use word boundaries (`\bDesignComponent\b`, `\bComponent\b`).
+
 ## [1.6.1] - 2026-11-08
 
 ### Changed

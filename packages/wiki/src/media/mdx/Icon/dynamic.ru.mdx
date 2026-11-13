@@ -12,6 +12,9 @@ import { Source } from '@storybook/addon-docs/blocks';
 - `tabindex` — индекс фокусировки с клавиатуры (автоматически убирается при `disabled="true"`)
 - `value` / `detail` — полезная нагрузка, передаваемая в события `@click` и `@clickLite` и доступная через методы `getValue()` / `getDetail()`
 - `href` — необязательный атрибут ссылки в режиме `dynamic`
+- `to` — цель навигации роутера, обрабатываемая в режиме `dynamic`
+
+При переданном `to` или `href` вместо `<span>` используется корневой тег `<a>`, независимо от `dynamic`.
 
 <Source
     code={`

@@ -33,6 +33,8 @@ export type ConstrItemsItem<
   item?: T[K]
   /** Condition for lazy instantiation / Условие для ленивого создания */
   conditions?: () => boolean
+  /** Condition checking whether an instance can be created / Проверка, подходят ли условия для создания экземпляра */
+  canCreate?: boolean | (() => boolean)
   /** Constructor parameters factory / Фабрика параметров конструктора */
   parameters?: () => ConstrParameters<T, K>
 }

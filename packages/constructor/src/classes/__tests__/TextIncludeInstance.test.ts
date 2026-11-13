@@ -9,6 +9,7 @@ describe('TextIncludeInstance', () => {
 
   describe('Standard functional requirements (Happy path & Usage scenarios)', () => {
     it.each<[TextIndex, string]>([
+      ['actions', 'Actions'],
       ['am', 'AM'],
       ['breadcrumb', 'Breadcrumb'],
       ['cancel', 'Cancel'],
@@ -82,6 +83,16 @@ describe('TextIncludeInstance', () => {
   })
 
   describe('Boundary values, empty inputs, and instance isolation', () => {
+    it('should preserve existing texts when overrides are undefined', () => {
+      const instance = new TextIncludeInstance()
+      instance.initText({ customKey: 'Custom Label' })
+      instance.initText({ loading: undefined, customKey: undefined, cancel: 'Abort' })
+
+      expect(instance.getGlobalText('loading')).toBe('Loading')
+      expect(instance.getGlobalText('customKey')).toBe('Custom Label')
+      expect(instance.getGlobalText('cancel')).toBe('Abort')
+    })
+
     it('should return undefined for non-existent or empty keys', () => {
       const instance = new TextIncludeInstance()
       instance.initText({

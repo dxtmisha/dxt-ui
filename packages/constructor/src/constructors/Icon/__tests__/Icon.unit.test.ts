@@ -1,0 +1,645 @@
+// @vitest-environment jsdom
+import './testWarnings'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { computed, createApp, defineComponent, effectScope, h, nextTick, provide, reactive, ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
+import { Icon, type IconConstructors } from '../Icon'
+import { EnabledInclude } from '../../../classes/EnabledInclude'
+import { EventClickInclude } from '../../../classes/EventClickInclude'
+import { SKELETON_NAME_STATUS, SkeletonInclude } from '../../Skeleton'
+import { defaultsIcon, type IconProps } from '../props'
+import { ImageTypeValue, type ImageEventData } from '../../Image'
+
+/**
+ * Exposes internal DesignLogicAbstract instances map for lazy-loading verification.
+ *
+ * Предоставляет внутреннюю карту экземпляров DesignLogicAbstract для проверки ленивой инициализации.
+ */
+class InspectableIcon extends Icon {
+  /**
+   * Returns currently instantiated sub-constructors.
+   *
+   * Возвращает созданные на текущий момент подконструкторы.
+   * @returns map of instantiated sub-constructors / карта созданных подконструкторов
+   */
+  get instantiatedItems(): Partial<Record<keyof IconConstructors, unknown>> {
+    return this.instances
+  }
+}
+
+/** Mounted application cleanup callbacks / Обработчики очистки смонтированных приложений */
+const mountedCleanups: Array<() => void> = []
+
+afterEach(() => {
+  mountedCleanups.splice(0).reverse().forEach(unmount => unmount())
+})
+
+/**
+ * Executes a factory callback inside a real Vue component setup context so provide/inject works without warnings.
+ *
+ * Выполняет фабричную функцию внутри реального контекста setup компонента Vue, чтобы provide/inject работал без предупреждений.
+ * @param factory callback executed inside setup / обратный вызов, выполняемый внутри setup
+ * @param skeletonActive optional provided skeleton status / необязательный предоставляемый статус скелетона
+ * @returns factory return value / возвращаемое значение фабрики
+ */
+function runInVueSetup<Result>(
+  factory: () => Result,
+  skeletonActive: boolean = true
+): Result {
+  let result!: Result
+  const container = document.createElement('div')
+  const app = createApp(defineComponent({
+    setup() {
+      provide(SKELETON_NAME_STATUS, computed(() => skeletonActive))
+      result = factory()
+      return () => h('div')
+    }
+  }))
+
+  app.mount(container)
+  mountedCleanups.push(() => app.unmount())
+  return result
+}
+
+/**
+ * Creates a reactive IconProps object without triggering deep UnwrapNestedRefs recursion in TypeScript.
+ *
+ * Создает реактивный объект IconProps без вызова глубокой рекурсии UnwrapNestedRefs в TypeScript.
+ * @param initial initial icon properties / начальные свойства иконки
+ * @returns reactive icon properties / реактивные свойства иконки
+ */
+function createReactiveProps(initial: IconProps = {}): IconProps {
+  return reactive<Record<string, unknown>>(initial) as IconProps
+}
+
+describe('Icon', () => {
+  it('should derive the root tag from navigation properties without creating dependencies', () => {
+    runInVueSetup(() => {
+      const props = createReactiveProps({})
+      const icon = new InspectableIcon(props, ref<HTMLElement>(), new DesignName('d1.icon'))
+
+      expect(icon.tag).toBe('span')
+      props.href = 'https://example.com'
+      expect(icon.tag).toBe('a')
+      props.to = { name: 'settings' }
+      props.href = undefined
+      expect(icon.tag).toBe('a')
+      props.to = undefined
+      expect(icon.tag).toBe('span')
+      expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
+    })
+  })
+
+  describe('Standard functional requirements (Happy path)', () => {
+    it('should compute iconBind and iconActiveBind for string and object values with visibility states', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({
+        icon: 'home',
+        iconActive: 'home-active',
+        active: false,
+        turn: true,
+        disabled: false
+      })
+
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+
+      expect(icon.isActive()).toBe(false)
+
+      const mainBind = icon.iconBind
+      expect(mainBind).toBeDefined()
+      expect(mainBind?.value).toBe('home')
+      expect(mainBind?.key).toBe('mainIcon')
+      expect(mainBind?.class).toBe('d1-icon__icon')
+      expect(mainBind?.turn).toBe(true)
+      expect(mainBind?.disabled).toBe(false)
+      expect(mainBind?.hide).toBe(false)
+
+      const activeBind = icon.iconActiveBind
+      expect(activeBind).toBeDefined()
+      expect(activeBind?.value).toBe('home-active')
+      expect(activeBind?.key).toBe('activeIcon')
+      expect(activeBind?.class).toBe('d1-icon__iconActive')
+      expect(activeBind?.turn).toBe(true)
+      expect(activeBind?.disabled).toBe(false)
+      expect(activeBind?.hide).toBe(true)
+
+      props.active = true
+      expect(icon.isActive()).toBe(true)
+      expect(icon.iconBind?.hide).toBe(true)
+      expect(icon.iconActiveBind?.hide).toBe(false)
+
+      props.icon = { value: 'custom-home', adaptive: true }
+      expect(icon.iconBind?.value).toBe('custom-home')
+      expect(icon.iconBind?.adaptive).toBe(true)
+
+      scope.stop()
+    })
+
+    it('should forward image load events to emits for both iconBind and iconActiveBind', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const emits = vi.fn()
+      const props = createReactiveProps({
+        icon: 'settings',
+        iconActive: 'settings-active'
+      })
+
+      const icon = scope.run(() => new Icon(
+        props,
+        element,
+        new DesignName('d1.icon'),
+        undefined,
+        undefined,
+        emits
+      ))!
+
+      const loadEventData: ImageEventData = {
+        type: ImageTypeValue.image,
+        image: 'settings'
+      }
+
+      icon.iconBind?.onLoad?.(loadEventData)
+      expect(emits).toHaveBeenCalledTimes(1)
+      expect(emits).toHaveBeenCalledWith('load', loadEventData)
+
+      const loadActiveEventData: ImageEventData = {
+        type: ImageTypeValue.image,
+        image: 'settings-active'
+      }
+
+      icon.iconActiveBind?.onLoad?.(loadActiveEventData)
+      expect(emits).toHaveBeenCalledTimes(2)
+      expect(emits).toHaveBeenLastCalledWith('load', loadActiveEventData)
+
+      scope.stop()
+    })
+
+    it('should compute decorative ARIA attributes for static icons', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({ icon: 'search' })
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+
+      expect(icon.role).toBeUndefined()
+      expect(icon.aria).toEqual({
+        'aria-hidden': 'true'
+      })
+      const binds = icon.binds
+      expect(binds).toEqual({
+        'key': 'icon',
+        'aria-hidden': 'true'
+      })
+
+      scope.stop()
+    })
+
+    it('should not pass aria-label or role when dynamic is not true', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({
+        icon: 'search',
+        ariaLabel: 'Search site',
+        role: 'img'
+      })
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+
+      expect(icon.role).toBe('img')
+      expect(icon.aria).toEqual({
+        'aria-hidden': 'true'
+      })
+      const binds = icon.binds
+      expect(binds.key).toBe('icon')
+      expect(binds['aria-hidden']).toBe('true')
+      expect(binds['aria-label']).toBeUndefined()
+      expect(binds.role).toBeUndefined()
+      expect(binds.tabindex).toBeUndefined()
+
+      scope.stop()
+    })
+
+    it('should compute accessible aria-label and custom role when dynamic is true', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({
+        icon: 'search',
+        dynamic: true,
+        ariaLabel: 'Search site',
+        role: 'img'
+      })
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+
+      expect(icon.role).toBe('img')
+      expect(icon.aria).toEqual({
+        'role': 'img',
+        'aria-label': 'Search site'
+      })
+      const binds = icon.binds
+      expect(binds.key).toBe('icon')
+      expect(binds['aria-label']).toBe('Search site')
+      expect(binds.role).toBe('img')
+      expect(binds.tabindex).toBe(0)
+      expect(binds['aria-hidden']).toBeUndefined()
+
+      scope.stop()
+    })
+
+    it('should synchronize aria-pressed and aria-checked for dual-icon interactive toggles', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({
+        icon: 'favorite_border',
+        iconActive: 'favorite',
+        active: false,
+        dynamic: true
+      })
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+
+      expect(icon.role).toBe('button')
+      expect(icon.aria['aria-pressed']).toBe('false')
+      expect(icon.aria['aria-checked']).toBeUndefined()
+
+      props.active = true
+      expect(icon.aria['aria-pressed']).toBe('true')
+
+      props.role = 'switch'
+      expect(icon.aria['aria-checked']).toBe('true')
+      expect(icon.aria['aria-pressed']).toBeUndefined()
+
+      props.active = false
+      expect(icon.aria['aria-checked']).toBe('false')
+
+      props.role = 'checkbox'
+      expect(icon.aria['aria-checked']).toBe('false')
+
+      scope.stop()
+    })
+
+    it('should bind tabindex and trigger click and keyboard events when dynamic is true', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const emits = vi.fn()
+      const props = createReactiveProps({
+        icon: 'close',
+        dynamic: true,
+        tabindex: 2,
+        value: 'close-action',
+        detail: { source: 'modal' }
+      })
+
+      const icon = scope.run(() => new Icon(
+        props,
+        element,
+        new DesignName('d1.icon'),
+        undefined,
+        undefined,
+        emits
+      ))!
+
+      expect(icon.role).toBe('button')
+      const binds = icon.binds
+      expect(binds.key).toBe('icon')
+      expect(binds.role).toBe('button')
+      expect(binds.tabindex).toBe(2)
+      expect(binds.onClick).toBeTypeOf('function')
+      expect(binds.onKeydown).toBeTypeOf('function')
+
+      const mouseEvent = new MouseEvent('click')
+      binds.onClick?.(mouseEvent)
+      expect(emits).toHaveBeenCalledWith('click', mouseEvent, {
+        type: 'click',
+        value: 'close-action',
+        detail: { source: 'modal' }
+      })
+      expect(emits).toHaveBeenCalledWith('clickLite', {
+        type: 'click',
+        value: 'close-action',
+        detail: { source: 'modal' }
+      })
+
+      emits.mockClear()
+      const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' })
+      binds.onKeydown?.(enterEvent)
+      expect(emits).toHaveBeenCalledWith('click', enterEvent, {
+        type: 'click',
+        value: 'close-action',
+        detail: { source: 'modal' }
+      })
+
+      scope.stop()
+    })
+
+    it('should handle disabled state properly when dynamic is true', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const emits = vi.fn()
+      const props = createReactiveProps({
+        icon: 'close',
+        dynamic: true,
+        disabled: true,
+        tabindex: 2
+      })
+
+      const icon = scope.run(() => new Icon(
+        props,
+        element,
+        new DesignName('d1.icon'),
+        undefined,
+        undefined,
+        emits
+      ))!
+
+      const binds = icon.binds
+      expect(binds.key).toBe('icon')
+      expect(binds.role).toBe('button')
+      expect(binds.tabindex).toBeUndefined()
+      expect(binds['aria-disabled']).toBe('true')
+      expect(binds['aria-hidden']).toBeUndefined()
+
+      const mouseEvent = new MouseEvent('click')
+      binds.onClick?.(mouseEvent)
+      const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' })
+      binds.onKeydown?.(enterEvent)
+      expect(emits).not.toHaveBeenCalled()
+
+      scope.stop()
+    })
+
+    it('should bind href and trigger Space key events when dynamic is true', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const emits = vi.fn()
+      const props = createReactiveProps({
+        icon: 'open_in_new',
+        dynamic: true,
+        href: 'https://example.com/docs',
+        value: 'open-docs'
+      })
+
+      const icon = scope.run(() => new Icon(
+        props,
+        element,
+        new DesignName('d1.icon'),
+        undefined,
+        undefined,
+        emits
+      ))!
+
+      const binds = icon.binds
+      expect(binds.role).toBe('button')
+      expect(binds.href).toBe('https://example.com/docs')
+      expect(binds.tabindex).toBe(0)
+
+      const spaceEvent = new KeyboardEvent('keydown', { key: ' ', code: 'Space' })
+      binds.onKeydown?.(spaceEvent)
+      expect(emits).toHaveBeenCalledWith('click', spaceEvent, {
+        type: 'click',
+        value: 'open-docs',
+        detail: undefined
+      })
+
+      scope.stop()
+    })
+
+    it.each([
+      [undefined, 0],
+      [0, 0],
+      [-1, -1],
+      ['0', '0'],
+      ['-1', '-1'],
+      [5, 5]
+    ])('should resolve tabindex=%j to %j in dynamic mode without falsy value traps', (inputTabindex, expectedTabindex) => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({
+        icon: 'home',
+        dynamic: true,
+        tabindex: inputTabindex
+      })
+
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+      expect(icon.binds.tabindex).toBe(expectedTabindex)
+
+      scope.stop()
+    })
+
+    it('should expose default animationType token in defaultsIcon', () => {
+      expect(defaultsIcon).toEqual({
+        animationType: 'type1'
+      })
+    })
+  })
+
+  describe('Skeleton loading state', () => {
+    it('should return empty classes when isSkeleton is not set, and apply skeleton classes when true', () => {
+      runInVueSetup(() => {
+        const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+        const props = createReactiveProps({ icon: 'star' })
+        const icon = new InspectableIcon(props, element, new DesignName('d1.icon'))
+
+        expect(icon.classes).toEqual({})
+        expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
+
+        props.isSkeleton = true
+        const classes = icon.classes
+        expect(classes).toEqual({
+          'd1-skeleton__backgroundVariant': true
+        })
+        expect(icon.instantiatedItems.skeleton).toBeInstanceOf(SkeletonInclude)
+      })
+    })
+  })
+
+  describe('Empty, nullish, and optional dependency handling', () => {
+    it.each([undefined, null, ''])('should keep value falsy in iconBind and iconActiveBind for %j and report isActive as false', (emptyValue) => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({
+        icon: emptyValue,
+        iconActive: emptyValue,
+        active: true
+      })
+
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+
+      expect(icon.isActive()).toBe(false)
+      expect(Boolean(icon.iconBind?.value)).toBe(false)
+      expect(Boolean(icon.iconActiveBind?.value)).toBe(false)
+
+      scope.stop()
+    })
+
+    it('should not throw when onLoad is triggered without an emits function', () => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({ icon: 'home' })
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+
+      expect(() => icon.iconBind?.onLoad?.({
+        type: ImageTypeValue.image,
+        image: 'home'
+      })).not.toThrow()
+
+      scope.stop()
+    })
+  })
+
+  describe('Statefulness, lazy instantiation, and Dependency Injection', () => {
+    it('should keep enabled, event, and skeleton lazy upon construction and instantiate only on demand', () => {
+      runInVueSetup(() => {
+        const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+        const props = createReactiveProps({ icon: 'user' })
+        const icon = new InspectableIcon(props, element, new DesignName('d1.icon'))
+
+        expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
+
+        // Accessing static binds should not instantiate enabled, event, or skeleton
+        void icon.binds
+        expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
+
+        const skeletonInstance = icon.i('skeleton')
+        expect(skeletonInstance).toBeInstanceOf(SkeletonInclude)
+        expect(icon.instantiatedItems.skeleton).toBe(skeletonInstance)
+        expect(icon.instantiatedItems.enabled).toBeUndefined()
+        expect(icon.instantiatedItems.event).toBeUndefined()
+
+        const eventInstance = icon.i('event')
+        expect(eventInstance).toBeInstanceOf(EventClickInclude)
+        expect(icon.instantiatedItems.event).toBe(eventInstance)
+      })
+    })
+
+    it('should instantiate enabled, event, and skeleton strictly on demand via explicit call sites and not on initConditions', async () => {
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({
+        icon: 'bell',
+        dynamic: false,
+        isSkeleton: false
+      })
+
+      const icon = runInVueSetup(() => new InspectableIcon(props, element, new DesignName('d1.icon')))
+      expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
+
+      // Simulate mounting - since there are no background conditions, nothing is eagerly watched/instantiated
+      // @ts-expect-error accessing protected method for testing
+      icon.initConditions()
+
+      props.dynamic = true
+      props.isSkeleton = true
+      await nextTick()
+      expect(Object.keys(icon.instantiatedItems)).toHaveLength(0)
+
+      // Instantiation occurs on explicit access
+      void icon.binds
+      expect(icon.instantiatedItems.enabled).toBeInstanceOf(EnabledInclude)
+      expect(icon.instantiatedItems.event).toBeInstanceOf(EventClickInclude)
+      expect(icon.instantiatedItems.skeleton).toBeUndefined()
+
+      runInVueSetup(() => {
+        void icon.classes
+      })
+      expect(icon.instantiatedItems.skeleton).toBeInstanceOf(SkeletonInclude)
+    })
+
+    it('should support Dependency Injection overrides for enabled, event, and skeleton via constructors option', () => {
+      let customEnabledConstructed = false
+      let customEventConstructed = false
+      let customSkeletonConstructed = false
+
+      /**
+       * Custom EnabledInclude for DI verification.
+       *
+       * Пользовательский EnabledInclude для проверки DI.
+       */
+      class CustomEnabled extends EnabledInclude {
+        constructor(...args: ConstructorParameters<typeof EnabledInclude>) {
+          super(...args)
+          customEnabledConstructed = true
+        }
+      }
+
+      /**
+       * Custom EventClickInclude for DI verification.
+       *
+       * Пользовательский EventClickInclude для проверки DI.
+       */
+      class CustomEventClick extends EventClickInclude {
+        constructor(...args: ConstructorParameters<typeof EventClickInclude>) {
+          super(...args)
+          customEventConstructed = true
+        }
+      }
+
+      /**
+       * Custom SkeletonInclude for DI verification.
+       *
+       * Пользовательский SkeletonInclude для проверки DI.
+       */
+      class CustomSkeleton extends SkeletonInclude {
+        constructor(...args: ConstructorParameters<typeof SkeletonInclude>) {
+          super(...args)
+          customSkeletonConstructed = true
+        }
+      }
+
+      runInVueSetup(() => {
+        const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+        const props = createReactiveProps({ icon: 'settings' })
+
+        const icon = new InspectableIcon(
+          props,
+          element,
+          new DesignName('d1.icon'),
+          undefined,
+          undefined,
+          undefined,
+          {
+            enabled: CustomEnabled,
+            event: CustomEventClick,
+            skeleton: CustomSkeleton
+          }
+        )
+
+        expect(customEnabledConstructed).toBe(false)
+        expect(customEventConstructed).toBe(false)
+        expect(customSkeletonConstructed).toBe(false)
+
+        const enabledInstance = icon.i('enabled')
+        expect(enabledInstance).toBeInstanceOf(CustomEnabled)
+        expect(customEnabledConstructed).toBe(true)
+
+        const eventInstance = icon.i('event')
+        expect(eventInstance).toBeInstanceOf(CustomEventClick)
+        expect(customEventConstructed).toBe(true)
+
+        const skeletonInstance = icon.i('skeleton')
+        expect(skeletonInstance).toBeInstanceOf(CustomSkeleton)
+        expect(customSkeletonConstructed).toBe(true)
+      })
+    })
+  })
+
+  describe('Multilingual and Unicode support', () => {
+    it.each([
+      ['иконка_дом', 'Главная страница'],
+      ['biểu_tượng_nhà', 'Trang chủ 🇻🇳'],
+      ['图标_主页', '首页 🚀']
+    ])('should preserve Unicode icon %s and ariaLabel %s in aria and binds', (iconName, ariaLabel) => {
+      const scope = effectScope()
+      const element = ref<HTMLSpanElement | undefined>(document.createElement('span'))
+      const props = createReactiveProps({
+        icon: iconName,
+        dynamic: true,
+        ariaLabel
+      })
+
+      const icon = scope.run(() => new Icon(props, element, new DesignName('d1.icon')))!
+
+      expect(icon.aria['aria-label']).toBe(ariaLabel)
+      expect(icon.binds['aria-label']).toBe(ariaLabel)
+      expect(icon.iconBind?.value).toBe(iconName)
+
+      scope.stop()
+    })
+  })
+})

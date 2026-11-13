@@ -88,6 +88,22 @@ describe('EventClickInclude', () => {
       expect(emits).not.toHaveBeenCalled()
     })
 
+    it('should cancel native navigation for a disabled link with or without emits', () => {
+      const emits = vi.fn()
+      const enabled = new EnabledInclude({ disabled: true })
+
+      for (const handler of [emits, undefined]) {
+        const include = new EventClickInclude({ href: '/profile' }, () => enabled, handler)
+        const event = new MouseEvent('click', { cancelable: true })
+
+        include.onClick(event)
+        expect(event.defaultPrevented).toBe(true)
+      }
+
+      expect(emits).not.toHaveBeenCalled()
+      expect(RouterItemRef.push).not.toHaveBeenCalled()
+    })
+
     it('should emit custom options on click only when enabled or when enabled manager is omitted', () => {
       const emits = vi.fn()
       const event = new MouseEvent('click')
@@ -166,6 +182,94 @@ describe('EventClickInclude', () => {
         detail: undefined
       })
     })
+
+    it('should do nothing on click when target is an <a> element (or inside <a>) matching own props.href', () => {
+      const emits = vi.fn()
+      const enabled = new EnabledInclude({})
+      const include = new EventClickInclude({ value: 'card', href: 'https://example.com' }, () => enabled, emits)
+
+      const anchor = document.createElement('a')
+      anchor.setAttribute('href', 'https://example.com')
+      const innerSpan = document.createElement('span')
+      anchor.appendChild(innerSpan)
+
+      for (const target of [anchor, innerSpan]) {
+        const event = new MouseEvent('click', { cancelable: true })
+        Object.defineProperty(event, 'target', { value: target })
+
+        include.onClick(event)
+        expect(event.defaultPrevented).toBe(false)
+      }
+
+      expect(emits).not.toHaveBeenCalled()
+    })
+
+    it('should still emit click when target <a href> does not match own props.href or props.href is absent', () => {
+      const emits = vi.fn()
+      const enabled = new EnabledInclude({})
+
+      const nestedAnchor = document.createElement('a')
+      nestedAnchor.setAttribute('href', '/other-link')
+      const eventNested = new MouseEvent('click', { cancelable: true })
+      Object.defineProperty(eventNested, 'target', { value: nestedAnchor })
+
+      const includeWithOwnHref = new EventClickInclude({ value: 'card', href: '/own-link' }, () => enabled, emits)
+      includeWithOwnHref.onClick(eventNested)
+      expect(emits).toHaveBeenCalledTimes(2)
+
+      emits.mockClear()
+      const includeWithoutHref = new EventClickInclude({ value: 'card' }, () => enabled, emits)
+      includeWithoutHref.onClick(eventNested)
+      expect(emits).toHaveBeenCalledTimes(2)
+    })
+
+    it('should still run router push when to prop is set even if anchor href is present', () => {
+      const emits = vi.fn()
+      const enabled = new EnabledInclude({})
+      const include = new EventClickInclude({ to: { name: 'profile' }, href: '/mock-href' }, () => enabled, emits)
+
+      const anchor = document.createElement('a')
+      anchor.setAttribute('href', '/mock-href')
+      const event = new MouseEvent('click', { cancelable: true })
+      Object.defineProperty(event, 'target', { value: anchor })
+
+      include.onClick(event)
+      expect(RouterItemRef.push).toHaveBeenCalledWith({ name: 'profile' })
+      expect(event.defaultPrevented).toBe(true)
+      expect(emits).not.toHaveBeenCalled()
+    })
+
+    it('should still emit click when target is an <a> element without href', () => {
+      const emits = vi.fn()
+      const enabled = new EnabledInclude({})
+      const include = new EventClickInclude({ value: 'card' }, () => enabled, emits)
+
+      const anchorWithoutHref = document.createElement('a')
+      const event = new MouseEvent('click', { cancelable: true })
+      Object.defineProperty(event, 'target', { value: anchorWithoutHref })
+
+      include.onClick(event)
+      expect(emits).toHaveBeenCalledWith('click', event, {
+        type: 'click',
+        value: 'card',
+        detail: undefined
+      })
+    })
+
+    it('should still call preventDefault for disabled <a href> before checking target href', () => {
+      const emits = vi.fn()
+      const enabled = new EnabledInclude({ disabled: true })
+      const include = new EventClickInclude({ href: '/profile' }, () => enabled, emits)
+
+      const anchor = document.createElement('a')
+      anchor.setAttribute('href', '/profile')
+      const event = new MouseEvent('click', { cancelable: true })
+      Object.defineProperty(event, 'target', { value: anchor })
+
+      include.onClick(event)
+      expect(event.defaultPrevented).toBe(true)
+      expect(emits).not.toHaveBeenCalled()
+    })
   })
 
   describe('Keyboard event handling (onKeydown)', () => {
@@ -185,6 +289,83 @@ describe('EventClickInclude', () => {
       include.onKeydown(tabEvent)
       expect(emits).not.toHaveBeenCalled()
       expect(tabPreventSpy).not.toHaveBeenCalled()
+    })
+
+    it('should do nothing on Enter when href matches target <a> element and component is enabled', () => {
+      const emits = vi.fn()
+      const enabled = new EnabledInclude({})
+      const include = new EventClickInclude({ href: '/profile' }, () => enabled, emits)
+
+      const anchor = document.createElement('a')
+      anchor.setAttribute('href', '/profile')
+      const span = document.createElement('span')
+      anchor.appendChild(span)
+
+      const anchorEvent = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true })
+      Object.defineProperty(anchorEvent, 'target', { value: anchor })
+      include.onKeydown(anchorEvent)
+      expect(anchorEvent.defaultPrevented).toBe(false)
+      expect(emits).not.toHaveBeenCalled()
+
+      const childEvent = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true })
+      Object.defineProperty(childEvent, 'target', { value: span })
+      include.onKeydown(childEvent)
+      expect(childEvent.defaultPrevented).toBe(false)
+      expect(emits).not.toHaveBeenCalled()
+    })
+
+    it('should do nothing on Enter when component is disabled', () => {
+      const emits = vi.fn()
+      const enabled = new EnabledInclude({ disabled: true })
+      const include = new EventClickInclude({ href: '/profile', value: 'card' }, () => enabled, emits)
+
+      const anchor = document.createElement('a')
+      anchor.setAttribute('href', '/profile')
+      const anchorEvent = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true })
+      Object.defineProperty(anchorEvent, 'target', { value: anchor })
+
+      include.onKeydown(anchorEvent)
+      expect(anchorEvent.defaultPrevented).toBe(false)
+      expect(emits).not.toHaveBeenCalled()
+
+      const button = document.createElement('button')
+      const buttonEvent = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true })
+      Object.defineProperty(buttonEvent, 'target', { value: button })
+
+      include.onKeydown(buttonEvent)
+      expect(buttonEvent.defaultPrevented).toBe(false)
+      expect(emits).not.toHaveBeenCalled()
+    })
+
+    it('should trigger onClick and preventDefault on Enter when target <a> href differs or props.to is set', () => {
+      const emits = vi.fn()
+      const enabled = new EnabledInclude({})
+      const includeHref = new EventClickInclude({ href: '/profile', value: 'card' }, () => enabled, emits)
+
+      const nestedAnchor = document.createElement('a')
+      nestedAnchor.setAttribute('href', '/other')
+      const hrefEvent = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true })
+      Object.defineProperty(hrefEvent, 'target', { value: nestedAnchor })
+
+      includeHref.onKeydown(hrefEvent)
+      expect(hrefEvent.defaultPrevented).toBe(true)
+      expect(emits).toHaveBeenCalledWith('click', hrefEvent, {
+        type: 'click',
+        value: 'card',
+        detail: undefined
+      })
+
+      emits.mockClear()
+      const includeTo = new EventClickInclude({ href: '/profile', to: '/profile', value: 'card' }, () => enabled, emits)
+      const sameAnchor = document.createElement('a')
+      sameAnchor.setAttribute('href', '/profile')
+      const toEvent = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true })
+      Object.defineProperty(toEvent, 'target', { value: sameAnchor })
+
+      includeTo.onKeydown(toEvent)
+      expect(RouterItemRef.push).toHaveBeenCalledWith('/profile')
+      expect(toEvent.defaultPrevented).toBe(true)
+      expect(emits).not.toHaveBeenCalled()
     })
   })
 })

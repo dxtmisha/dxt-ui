@@ -14,6 +14,7 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
   possibilities: {
     en: [
       'rendering icons by identifier or `Image` property bindings',
+      'using an anchor root when `to` or `href` is provided, and a span otherwise',
       'toggling between primary (`icon`) and active (`iconActive`) icons based on the `active` state',
       'interactive mode (`dynamic`) with `@click` / `@clickLite` events, keyboard navigation (`tabindex`), and automatic ARIA attributes (`role`, `ariaLabel`, `aria-disabled`)',
       'visual state transformations via 180-degree rotation (`turn`), automatic RTL mirroring (`dir`), `hide`, and `disabled`',
@@ -23,6 +24,7 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
     ],
     ru: [
       'рендеринг иконок по идентификатору или объекту свойств `Image`',
+      'использование корневого тега ссылки при переданном `to` или `href`, иначе span',
       'переключение между основной (`icon`) и активной (`iconActive`) иконками в зависимости от состояния `active`',
       'интерактивный режим (`dynamic`) с событиями `@click` / `@clickLite`, навигацией с клавиатуры (`tabindex`) и автоматическими ARIA-атрибутами (`role`, `ariaLabel`, `aria-disabled`)',
       'визуальные трансформации состояния с помощью поворота на 180 градусов (`turn`), автоматического зеркалирования для RTL (`dir`), `hide` и `disabled`',
@@ -291,6 +293,35 @@ expect(component?.className).toContain('skeleton__backgroundVariant')
     // =========================================================================
     // TIER 2: TEST STORIES (Automated QA Only — NOT included in documentation)
     // =========================================================================
+    {
+      id: 'IconTestNavigationTags',
+      name: {
+        en: 'Test: Anchor roots for href and router targets',
+        ru: 'Тест: Корневой тег ссылки для href и целей роутера'
+      },
+      propsName: ['dynamic', 'href', 'to'],
+      template: `
+        <div class="wiki-storybook-group">
+          <DesignComponent icon="home"/>
+          <DesignComponent icon="open_in_new" dynamic href="https://example.com" aria-label="External link"/>
+          <DesignComponent icon="home" dynamic to="/" aria-label="Router link"/>
+          <DesignComponent icon="settings" :to="{ path: '/settings' }"/>
+          <DesignComponent icon="open_in_new" href="https://example.com"/>
+        </div>
+      `,
+      play: `
+await waitFor(() => {
+  const icons = canvasElement.querySelectorAll<HTMLElement>('.design-component')
+  expect(icons.length).toBe(5)
+  expect(icons[0].tagName).toBe('SPAN')
+  expect(icons[1].tagName).toBe('A')
+  expect(icons[1]).toHaveAttribute('href', 'https://example.com')
+  expect(icons[2].tagName).toBe('A')
+  expect(icons[3].tagName).toBe('A')
+  expect(icons[4].tagName).toBe('A')
+})
+      `
+    },
     {
       id: 'IconTestSourcesAndActive',
       name: {
@@ -656,6 +687,7 @@ await expect(icons[4]).toHaveAttribute('tabindex', '0')
 await expect(icons[4]).toHaveAttribute('aria-label', 'Menu')
 
 // 5. Dynamic + href
+expect(icons[5].tagName).toBe('A')
 await expect(icons[5]).toHaveAttribute('role', 'button')
 await expect(icons[5]).toHaveAttribute('href', 'https://example.com/docs')
 await expect(icons[5]).toHaveAttribute('aria-label', 'External docs')
@@ -862,6 +894,7 @@ await step('Disable icon and verify clicks are blocked', async () => {
     description: `
 Vector icon orchestrator component that renders icons, images, and flags via the underlying Image component. Supports dynamic state switching between primary (icon) and active (iconActive) representations, 180-degree rotation (turn), automatic RTL mirroring (dir), background substrate (overlay), and color palette inheritance (asPalette).
 Operates as a decorative element (aria-hidden="true") by default, or as an accessible interactive control with role="button", keyboard navigation (tabindex, Enter/Space), and @click/@clickLite events when dynamic is enabled. Integrates with Skeleton via isSkeleton and forwards @load events from child images.
+Uses an anchor root when to or href is provided, otherwise a span; interactive bindings remain controlled by dynamic.
 Controlled via icon, iconActive, active, dynamic, turn, dir, and disabled props, and exposes isActive(), getValue(), and getDetail() methods. Use standalone or within composite components (Button, Chip, Field, Cell) for navigation, actions, and status indicators.
     `
   }

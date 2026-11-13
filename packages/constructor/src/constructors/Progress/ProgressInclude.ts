@@ -1,11 +1,7 @@
 // ai-none
 
 import { computed, type VNode } from 'vue'
-import {
-  type ConstrBind,
-  executeFunction,
-  getBind
-} from '@dxtmisha/functional'
+import { getBind, type ConstrBind } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -14,9 +10,6 @@ import type { AriaList } from '../../types/ariaTypes'
 import type { ProgressPropsInclude } from './basicTypes'
 import type { ProgressProps } from './props'
 import type { ProgressExpose, ProgressSlots } from './types'
-
-/** Progress include item getter callback / Функция получения экземпляра подключения прогресса */
-export type ProgressIncludeItem = ProgressInclude | (() => ProgressInclude)
 
 /**
  * ProgressInclude class provides functionality for conditionally rendering progress components
@@ -44,31 +37,6 @@ export class ProgressInclude extends ComponentIncludeAbstract<
     return Boolean(props?.loading)
   }
 
-  /**
-   * Lazily renders the progress component if it is enabled.
-   *
-   * Лениво рендерит компонент прогресса, если он включен.
-   * @param item callback function returning progress instance or instance / функция обратного вызова или экземпляр прогресса
-   * @param props input properties / входные свойства
-   * @param slotsChildren sub-component slots / слоты субкомпонента
-   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
-   * @param index unique rendering key / уникальный ключ рендеринга
-   * @returns array of virtual nodes / массив виртуальных узлов
-   */
-  static renderLazy(
-    item: ProgressIncludeItem,
-    props?: ProgressPropsInclude,
-    slotsChildren?: ProgressSlots,
-    attrs?: ConstrBind<ProgressProps>,
-    index?: string
-  ): VNode[] {
-    if (ProgressInclude.is(props)) {
-      return executeFunction(item)?.render(slotsChildren, attrs, undefined, index) ?? []
-    }
-
-    return []
-  }
-
   /** Sub-component name identifier / Идентификатор имени субкомпонента */
   protected readonly name = 'progress'
   /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
@@ -76,6 +44,9 @@ export class ProgressInclude extends ComponentIncludeAbstract<
 
   /** Determines whether to initialize the element reference during binding / Определяет, нужно ли инициализировать ссылку на элемент при привязке */
   protected override readonly hasInitElement: boolean = false
+
+  /** Whether the progress component has been rendered / Был ли отрисован компонент прогресса */
+  protected hasRendered = false
 
   /** List of ARIA properties for the progress component / Список ARIA-свойств для компонента Progress */
   readonly aria = computed<AriaList>(
@@ -90,6 +61,36 @@ export class ProgressInclude extends ComponentIncludeAbstract<
    */
   override get is(): boolean {
     return ProgressInclude.is(this.getProps())
+  }
+
+  /**
+   * Keeps a previously rendered progress component mounted while it hides.
+   *
+   * Сохраняет ранее отрисованный компонент прогресса во время его скрытия.
+   * @param slotsChildren sub-component slots / слоты субкомпонента
+   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
+   * @param isShow optional rendering condition / необязательное условие отрисовки
+   * @param index unique rendering key / уникальный ключ рендеринга
+   * @returns rendered virtual nodes / отрисованные виртуальные узлы
+   */
+  override readonly render = (
+    slotsChildren?: ProgressSlots,
+    attrs?: Partial<ConstrBind<ProgressProps>>,
+    isShow?: () => boolean,
+    index?: string
+  ): VNode[] => {
+    const nodes = this.initRender(
+      slotsChildren,
+      attrs,
+      isShow ?? (() => this.is || this.hasRendered),
+      index
+    )
+
+    if (nodes.length > 0) {
+      this.hasRendered = true
+    }
+
+    return nodes
   }
 
   /**

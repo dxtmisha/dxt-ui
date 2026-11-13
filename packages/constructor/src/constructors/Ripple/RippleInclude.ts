@@ -3,17 +3,13 @@
 import type { VNode } from 'vue'
 import {
   type DesignComponents,
-  type DesignName,
-  executeFunction
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
 
 import type { RippleComponentInclude, RipplePropsInclude } from './basicTypes'
 import type { RipplePropsBasic } from './props'
-
-/** Ripple include item getter callback or instance / Функция получения экземпляра подключения волны или сам экземпляр */
-export type RippleIncludeItem = RippleInclude | (() => RippleInclude)
 
 /**
  * Helper class for conditionally rendering the Ripple component in target components.
@@ -34,25 +30,6 @@ export class RippleInclude {
       && !props?.readonly
       && !props?.loading
     )
-  }
-
-  /**
-   * Lazily renders the ripple component if it is enabled.
-   *
-   * Лениво рендерит компонент волны, если он включен.
-   * @param item callback function returning ripple instance or instance / функция обратного вызова или экземпляр волны
-   * @param props input properties / входные свойства
-   * @returns array of virtual nodes / массив виртуальных узлов
-   */
-  static renderLazy(
-    item: RippleIncludeItem,
-    props?: RipplePropsInclude
-  ): VNode[] {
-    if (RippleInclude.is(props)) {
-      return executeFunction(item)?.render() ?? []
-    }
-
-    return []
   }
 
   /**

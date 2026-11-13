@@ -38,14 +38,16 @@ describe('DesignTypesMake', () => {
     expect(make.testHasJSDoc('// regular comment')).toBe(false)
   })
 
-  it('cleans content via transformer', () => {
+  it('cleans content via transformer while preserving imports', () => {
     const raw = [
       'import { foo } from \'./foo\';',
+      'export * from \'./bar\';',
       'export type A = string;'
     ].join('\n')
 
     const cleaned = make.testCleanContent(raw)
-    expect(cleaned).not.toContain('import { foo } from \'./foo\'')
+    expect(cleaned).toContain('import { foo } from \'./foo\';')
+    expect(cleaned).not.toContain('export * from \'./bar\'')
     expect(cleaned).toContain('export type A = string;')
   })
 

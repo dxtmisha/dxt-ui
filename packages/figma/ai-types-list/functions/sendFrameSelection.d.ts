@@ -1,3 +1,3 @@
-// md5:707c62778413c76c4a521c099bd9c6d7 true
-/** Sends selected frame ID to the UI. @keywords frame, selection, ui, message */
+// md5:69aa8c2ea5b112eaa17325add671c36e true
+/** Sends selected frame ID to the Figma plugin to update document selection. @keywords figma, selection, frame, plugin */
 export declare function sendFrameSelection(id?: string): void;

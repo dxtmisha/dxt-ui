@@ -3,14 +3,16 @@ import './testWarnings'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   createApp,
+  computed,
   defineComponent,
   h,
   nextTick,
   reactive
 } from 'vue'
-import { DesignName } from '@dxtmisha/functional'
+import { DesignComponents, DesignName } from '@dxtmisha/functional'
 
-import { ProgressInclude, type ProgressIncludeItem } from '../ProgressInclude'
+import { ProgressInclude } from '../ProgressInclude'
+import { ProgressDesign } from '../ProgressDesign'
 import type { ProgressPropsInclude } from '../basicTypes'
 
 /** Mounted application cleanup callbacks / Обработчики очистки смонтированных приложений */
@@ -75,6 +77,23 @@ describe('ProgressInclude (isolated class)', () => {
   })
 
   describe('Edge cases, boundaries, and reactivity', () => {
+    it('should render lazily and respect an explicit rendering condition', () => {
+      const props: ProgressPropsInclude = reactive({ loading: false })
+      const component = defineComponent({ render: () => null })
+      const include = new ProgressInclude(
+        props,
+        new DesignName('d1.button'),
+        new DesignComponents({ progress: component })
+      )
+
+      expect(include.render()).toEqual([])
+      props.loading = true
+      expect(include.render()).toHaveLength(1)
+      props.loading = false
+      expect(include.render()).toHaveLength(1)
+      expect(include.render(undefined, undefined, () => false)).toEqual([])
+    })
+
     it('should handle undefined and empty props gracefully', () => {
       const naming = new DesignName('d1.button')
       const include = new ProgressInclude({}, naming)
@@ -126,28 +145,60 @@ describe('ProgressInclude (isolated class)', () => {
       expect(container.firstElementChild?.getAttribute('aria-disabled')).toBe('true')
     })
 
-    it('should render progress nodes via static renderLazy only when loading is active', () => {
-      let called = false
-      const naming = new DesignName('d1.button')
-      const progressInstance = new ProgressInclude({ loading: true }, naming)
-      const fakeNode = h('div', { class: 'progress-render-test' })
-      const renderSpy = vi.spyOn(progressInstance, 'render').mockReturnValue([fakeNode])
+    it('should retain the progress component until its hide delay has elapsed', async () => {
+      vi.useFakeTimers()
+      const props: ProgressPropsInclude = reactive({ loading: true })
+      const progressComponent = defineComponent({
+        props: {
+          visible: Boolean
+        },
+        setup(progressProps) {
+          const properties = reactive({
+            get visible() { return progressProps.visible },
+            clientOnly: false,
+            delay: 0,
+            delayHide: 100
+          })
+          const design = new ProgressDesign('d1.progress', properties, {
+            classes: computed(() => ({ main: { 'test-progress': true } }))
+          })
+          return design.render()
+        }
+      })
+      const components = new DesignComponents({ progress: progressComponent })
+      const HostComponent = defineComponent({
+        setup() {
+          const include = new ProgressInclude(props, new DesignName('d1.button'), components)
+          return () => h('div', { ...include.aria.value }, include.render())
+        }
+      })
+      const container = document.createElement('div')
+      const app = createApp(HostComponent)
+      app.mount(container)
+      mountedCleanups.push(() => app.unmount())
+      await nextTick()
 
-      const getter: ProgressIncludeItem = () => {
-        called = true
-        return progressInstance
-      }
+      const progress = container.querySelector('.test-progress')
+      expect(progress?.classList.contains('d1-progress--visible')).toBe(true)
+      expect(container.firstElementChild?.getAttribute('aria-disabled')).toBe('true')
 
-      expect(ProgressInclude.renderLazy(getter, { loading: false })).toEqual([])
-      expect(called).toBe(false)
+      props.loading = false
+      await nextTick()
+      expect(container.querySelector('.test-progress')).toBe(progress)
+      expect(container.firstElementChild?.hasAttribute('aria-disabled')).toBe(false)
+      expect(progress?.classList.contains('d1-progress--visible')).toBe(true)
 
-      const activeResult = ProgressInclude.renderLazy(getter, { loading: true })
-      expect(called).toBe(true)
-      expect(renderSpy).toHaveBeenCalled()
-      expect(activeResult).toEqual([fakeNode])
+      await vi.advanceTimersByTimeAsync(100)
+      await nextTick()
+      expect(container.querySelector('.test-progress')).toBe(progress)
+      expect(progress?.classList.contains('d1-progress--hide')).toBe(true)
+      expect(progress?.classList.contains('d1-progress--visible')).toBe(false)
 
-      const directResult = ProgressInclude.renderLazy(progressInstance, { loading: true })
-      expect(directResult).toEqual([fakeNode])
+      props.loading = true
+      await nextTick()
+      expect(container.querySelector('.test-progress')).toBe(progress)
+      expect(progress?.classList.contains('d1-progress--visible')).toBe(true)
+      expect(container.firstElementChild?.getAttribute('aria-disabled')).toBe('true')
     })
   })
 })

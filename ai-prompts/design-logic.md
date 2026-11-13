@@ -13,8 +13,9 @@ The component logic layer in `dxt-ui` isolates business logic, accessibility (`A
 
 ### Why `DesignLogicAbstract`?
 1. **True Lazy Loading (On-Demand Instantiation)**:
-   - Subordinate helper classes are **not instantiated eagerly** on component creation.
-   - Dependencies are instantiated only on first access via `this.getInstance(name)` (or its shorthand `this.i(name)`).
+   - Subordinate helper classes are **not instantiated eagerly** on component creation unless their mechanics must start immediately during `setup`.
+   - By default, dependencies are instantiated on first access via `this.getInstance(name)` (or its shorthand `this.i(name)`). To check whether a dependency has already been created without triggering instantiation, use `this.hasInstance(name)`. If a dependency must start immediately during `setup`, explicitly call `this.i(name)` in the master orchestrator constructor after `super(...)`.
+   - For **any** situation where availability must be checked before calling a method or reading a property on a dependency (in getters, orchestrator methods, `parameters`, or design rendering), declare `canCreate?: boolean | (() => boolean)` in `constructorItems` and access the dependency via `this.callInstance(name, callback, defaultValue?)` (or `this.item.callInstance(...)` in `[Name]Design.tsx`). `callInstance` invokes `callback(this.getInstance(name))` only if the instance already exists (`this.hasInstance(name)`), `canCreate` is absent, or `executeFunction(canCreate)` returns truthy; otherwise it skips instantiation and returns `executeFunction(defaultValue)`.
    - If a feature is never used (e.g., image load events when rendering a plain icon, or scrollbar borders when borders are disabled), its sub-class is **never allocated in memory**.
 2. **Captured Reactivity Scope (`getCurrentScope`)**:
    - `DesignLogicAbstract` captures the active Vue effect scope (`getCurrentScope()`) during constructor execution.
@@ -25,9 +26,11 @@ The component logic layer in `dxt-ui` isolates business logic, accessibility (`A
    - `DesignLogicAbstract` orchestrates synchronous execution of `onMounted` and `onUnmounted` across all active instances. If a lifecycle dependency is lazily instantiated *after* the component has already mounted, `onMounted` is triggered on it immediately upon instantiation.
    - **Deferred Watchers**: All reactive watchers (`watch(...)`) and active DOM event listeners must be placed inside `onMounted`, never in the class constructor body.
 4. **Declarative Conditions (`conditions`) & Lazy Loading**:
-   - `constructorItems` declares a reactive condition `conditions: () => boolean` for optional subordinate classes and inclusion helpers (e.g., `icon`, `label`, `progress`, `ripple`, `skeleton`, `adaptiveItem`, `event`).
-   - If conditions are not met, the subordinate class is **never allocated in memory** on component creation or mount.
+   - Declare `conditions: () => SubClass.is(this.props)` **only** when a dependency must automatically start its own mechanics when enabled (for example, lifecycle work in `onMounted`) and no normal execution path already instantiates it at the required time.
+   - Being optional, having a `static is` predicate, or depending on a prop is **not** sufficient reason to add `conditions`. Helpers accessed naturally through rendering, getters, or event handlers stay lazy through those existing call sites.
+   - When a condition is false, `initConditions()` does not instantiate that dependency. Explicit `this.i(name)` calls can still instantiate it; `conditions` is an activation mechanism, not an access guard.
    - On component mount, `initConditions()` establishes a `watch(item.conditions, (active) => { if (active) this.getInstance(name) }, { immediate: true })`, ensuring that dependencies automatically activate when their trigger conditions become true.
+   - If startup is required immediately during `setup`, call `this.i(name)` directly in the master orchestrator constructor after `super(...)`; do not use `conditions` for setup-time startup. DOM work and lifecycle watchers still belong in `onMounted`.
    - **Static Predicate Guards (`SubClass.is(...)`)**: Always encapsulate condition logic into static `is` methods on the respective subordinate classes (e.g. `IconTrailingInclude.is(this.props)`, `ProgressInclude.is(this.props)`, `ImageAdaptiveItem.is(this.props)`). Never invent ad-hoc instance helper methods on the orchestrator class (such as `this.isIcon()` or `this.isProgress()`).
 5. **Full Dependency Injection (DI)**:
    - All sub-constructors can be overridden via the `constructors?: Partial<CONSTRUCTORS>` parameter, enabling comprehensive unit testing and subclass extension without mocking modules.
@@ -40,120 +43,52 @@ A standard orchestrator consists of:
 1. **Alphabetically sorted sub-constructor imports**.
 2. **`<Component>Constructors` Type**: Declared and exported directly in `[Component].ts` (not in `basicTypes.ts`, to prevent circular dependencies and type pollution).
 3. **Orchestrator Class**: Extends `DesignLogicAbstract<Element, Components, Emits, Slots, Props, Constructors>`.
-4. **`constructorItems`**: Alphabetically sorted map defining constructors, factories (`parameters`), and reactive guards (`conditions`).
-5. **Public API (Getters & Methods)**: Aggregated getters (`classes`, `binds`, `aria`, `tag`, `styles`) accessing dependencies via `this.i(name)`. For internal properties and element bindings that do not leave the component boundary, reuse general ecosystem types (`ConstrBind`, `ConstrClassObject`, `ConstrStyles`) instead of creating redundant strict types. **Strict Prohibition of Subordinate Getter Proxies**: Do NOT declare redundant public getters that merely proxy access to subordinate helper instances (e.g. no `get event() { return this.i('event') }`, no `get elementTarget() { return this.i('elementTarget') }`). Subordinates are internal mechanics accessed via `this.i(...)`.
+4. **`constructorItems`**: Alphabetically sorted map defining constructors, factories (`parameters`), creation guards (`canCreate`), and reactive lifecycle activation guards (`conditions`).
+5. **Public API (Getters & Methods)**: Aggregated getters (`classes`, `binds`, `aria`, `tag`, `styles`) accessing dependencies via `this.i(name)` (for direct unconditional calls) or `this.callInstance(name, ...)` (when conditional/lazy `canCreate` gating must be respected). For internal properties and element bindings that do not leave the component boundary, reuse general ecosystem types (`ConstrBind`, `ConstrClassObject`, `ConstrStyles`) instead of creating redundant strict types. **Strict Prohibition of Subordinate Getter Proxies**: Do NOT declare redundant public getters that merely proxy access to subordinate helper instances (e.g. no `get event() { return this.i('event') }`, no `get elementTarget() { return this.i('elementTarget') }`). Subordinates are internal mechanics accessed via `this.i(...)` or `this.callInstance(...)`.
 
-### Orchestrator Template:
-
-### 2.1 Standard Parameter Ordering in Constructors / Стандартный порядок параметров конструкторов
+### 2.1 Standard Parameter Ordering in Constructors
 
 All constructors in the logic layer, orchestrators, and subordinate classes must follow a strict, standardized parameter ordering:
 
-1. **Core Context Trio (always first, in this exact sequence if present / всегда идут первыми в таком порядке)**:
-   - `props` (component properties / входные данные)
-   - `element` (DOM Element Ref / реактивная ссылка на элемент)
-   - `naming` (DesignName helper / помощник именования)
-2. **Subordinate / Connected Dependency Classes (strictly in alphabetical order / подключаемые классы строго по алфавиту)**:
+1. **Core Context Trio (always first, in this exact sequence if present)**:
+   - `props` (component properties)
+   - `element` (DOM Element Ref)
+   - `naming` (DesignName helper)
+2. **Subordinate / Connected Dependency Classes (strictly in alphabetical order)**:
    - Any connected sub-constructors, helper instances, or their getter factories (`() => SubClass`) must follow **strict alphabetical order** by their parameter name:
      - Example: `client`, `coordinates`, `element`, `flash`, `open`, `status`, `tabIndex`, `verification`
-3. **Design Infrastructure Parameters (in this exact sequence if present / параметры инфраструктуры дизайна в таком порядке)**:
-   - `components` (design sub-components object / объект компонентов)
-   - `slots` (slots object / объект слотов)
-   - `emits` (event emit function / функция испускания событий)
-   - `constructors` (dependency injection overrides object / объект переопределения конструкторов)
-4. **Custom Options, Flags & Lifecycles (all remaining parameters / далее всё остальное)**:
+3. **Design Infrastructure Parameters (in this exact sequence if present)**:
+   - `components` (design sub-components object)
+   - `slots` (slots object)
+   - `emits` (event emit function)
+   - `constructors` (dependency injection overrides object)
+4. **Custom Options, Flags & Lifecycles (all remaining parameters)**:
    - Any remaining custom parameters (such as `isMounted: Ref<boolean>`, callbacks, extra configurations, or flags) are placed last.
 
-### 2.2 Strict Prohibition of Subordinate Getter Proxies / Строгий запрет на геттеры для подключаемых классов
+### 2.2 Legacy Constructor Adapters & Normalizers Ban
 
-**КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО** объявлять в оркестраторах логики публичные геттеры, возвращающие экземпляры подключенных классов из `constructorItems` (такие как `get window()`, `get bars()`, `get actions()`, `get model()`, `get event()`, `get client()`, `get coordinates()`, `get element()` и др.):
+Strictly prohibit legacy constructor types (such as `*LegacyConstructors`) and normalizer helpers (such as `normalize*Constructors`):
 
-1. **Инкапсуляция и ленивость (Encapsulation & Lazy Instantiation)**:
-   - Все подключаемые классы из `constructorItems` являются внутренней механикой компонента.
-   - Объявление геттеров нарушает ленивую модель инстанцирования, так как любое случайное обращение к свойству или сериализация объекта приводит к немедленному созданию экземпляра в памяти.
-2. **Единый способ доступа — `this.i('name')` (Unified Access via `this.i`)**:
-   - Внутри оркестратора доступ к подклассам осуществляется **только** через `this.i('name')`.
-   - В фабриках параметров `constructorItems` зависимость передается другим классам в виде ленивой функции `() => this.i('name')` (либо `this.i('name')`, если конструктор требует готовый экземпляр).
-   - В классах слоя дизайна (`DesignConstructorAbstract`, `*DesignAbstract`) обращение к функционалу подклассов логики выполняется строго через `this.item.i('name')` (например: `this.item.i('window').render(...)`, `this.item.i('bars').render()`).
-   - В модульных тестах зависимости проверяются через `instance.i('name')`.
-3. **Состав публичного API оркестратора (Public API Composition)**:
-   - Публичный интерфейс оркестратора должен содержать **только** агрегированные свойства компонента: `binds`, `classes`, `slotData`, `styles`, `aria`, `tag`, либо семантические методы проверки (например: `isMenu()`, `isRender()`).
-   - Ни один экземпляр подключаемого класса не должен выставляться в виде отдельного геттера.
-   - Эталонный пример архитектуры: [`Window`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Window/Window.ts).
+1. **Unified Modern DI**: Constructor parameters in logic and design layers must accept only `constructors?: Partial<MyComponentConstructors>`, passed directly to `super(..., constructors)` without adapters or mutations:
+   ```typescript
+   // ❌ Forbidden (legacy interfaces & normalizers):
+   export type MyComponentLegacyConstructors = {
+     ActionsConstructor?: typeof ActionsInclude
+     BarsConstructor?: typeof BarsInclude
+   }
+   function normalizeConstructors(...) { ... }
+   constructor(..., constructors?: Partial<MyComponentConstructors> | MyComponentLegacyConstructors) {
+     super(..., normalizeConstructors(constructors))
+   }
 
-### 2.3 Mandatory Lazy-Loading Audit & Refactoring Rule / Обязательный аудит и рефакторинг на ленивое подключение
+   // ✅ Required (clean modern standard):
+   constructor(..., constructors?: Partial<MyComponentConstructors>) {
+     super(..., constructors)
+   }
+   ```
+2. **CamelCase Keys Only**: Keys in `<Component>Constructors` and `constructors?: Partial<...>` must be `camelCase` without the `Constructor` suffix (e.g. `actions`, `bars`, `window`, `model`, `client`, `coordinates`, `element`; never `WindowConstructor` or `BarsConstructor`). Remove any discovered `LegacyConstructors` or `normalize*Constructors` immediately during refactoring.
 
-**ОБЯЗАТЕЛЬНОЕ ПРАВИЛО**: При разработке, анализе кода (code-review) или рефакторинге любого конструктора логики и его вспомогательных классов необходимо **в обязательном порядке проверить каждую зависимость** на возможность ленивого подключения:
-
-1. **Анализ возможности ленивой загрузки (Feasibility Check)**:
-   - Если класс-помощник или инклюд можно сделать ленивым — его **ОБЯЗАНЫ сделать ленивым**. Не допускается оставлять жадную (eager) загрузку «на потом» или из-за удобства передачи.
-2. **Переделка конструкторов зависимостей на функции-геттеры (`() => SubClass`)**:
-   - Если один вспомогательный класс принимает в конструктор другой вспомогательный класс, конструктор **ОБЯЗАТЕЛЬНО должен быть переделан на приём чистой функции-геттера**:
-     ```typescript
-     // ❌ ЗАПРЕЩЕНО (жадная привязка):
-     constructor(protected readonly client: WindowClient) {}
-
-     // ✅ ОБЯЗАТЕЛЬНО (ленивая привязка):
-     constructor(protected readonly client: () => WindowClient) {}
-     ```
-   - Внутри методов класса обращение к экземпляру происходит по требованию (on demand): `this.client().doSomething()`.
-   - В теле конструктора вызывать `this.client()` **СТРОГО ЗАПРЕЩЕНО**.
-3. **Условная инициализация через `conditions`**:
-   - Если функциональность класса требуется только при определённых входных свойствах или флагах (например: `icon`, `image`, `label`, `progress`, `ripple`, `skeleton`, `persistent`, `staticMode`, `border`, `flash`), для него **ОБЯЗАТЕЛЬНО** объявляется статический метод `static is(props)` и указывается `conditions: () => SubClass.is(this.props)` в `constructorItems`.
-4. **Синхронизация фабрик параметров в `constructorItems`**:
-   - При переделке сигнатуры на ленивый геттер фабрика параметров в `constructorItems` обновляется на передачу стрелочной функции:
-     ```typescript
-     // ❌ Было (жадная инстанциация при первом же обращении):
-     parameters: () => [this.props, this.i('client')]
-
-     // ✅ Стало (инстанциация произойдет только когда метод класса реально вызовет this.client()):
-     parameters: () => [this.props, () => this.i('client')]
-     ```
-5. **Обязательный рефакторинг существующего кода**:
-   - Если в существующем коде обнаружен вспомогательный класс, принимающий прямой экземпляр зависимости вместо `() => SubClass`, агент **ОБЯЗАН переписать** этот класс и связанные файлы (тесты, оркестратор, фабрики параметров) на ленивую схему `() => SubClass`.
-
-### 2.4 Strict Prohibition of Legacy Constructor Adapters & Normalizers / Строгий запрет на устаревшие интерфейсы конструкторов и функции нормализации
-
-**КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО** объявлять устаревшие типы конструкторов (вроде `*LegacyConstructors`) и функции-нормализаторы (вроде `normalize*Constructors`):
-
-1. **Единый типизированный интерфейс внедрения зависимостей (Unified Modern DI)**:
-   - В параметрах конструкторов слоёв логики и дизайна допустим **только** стандартный объект переопределения конструкторов:
-     ```typescript
-     // ❌ ЗАПРЕЩЕНО (легаси-интерфейсы и нормализаторы):
-     export type MyComponentLegacyConstructors = {
-       ActionsConstructor?: typeof ActionsInclude
-       BarsConstructor?: typeof BarsInclude
-     }
-     function normalizeConstructors(...) { ... }
-     constructor(..., constructors?: Partial<MyComponentConstructors> | MyComponentLegacyConstructors) {
-       super(..., normalizeConstructors(constructors))
-     }
-
-     // ✅ ОБЯЗАТЕЛЬНО (чистый современный стандарт):
-     constructor(..., constructors?: Partial<MyComponentConstructors>) {
-       super(..., constructors)
-     }
-     ```
-2. **Только camelCase ключи конструкторов**:
-   - Ключи в типе `<Component>Constructors` и в объекте `constructors?: Partial<...>` именуются строго в `camelCase` без постфикса `Constructor` (например: `actions`, `bars`, `window`, `model`, `client`, `coordinates`, `element`).
-   - Имена в PascalCase с постфиксом `Constructor` (`WindowConstructor`, `BarsConstructor`) являются устаревшим рудиментом и не должны поддерживаться.
-3. **Прямая передача в `super(...)`**:
-   - Объект `constructors` передается в `super(...)` напрямую без каких-либо адаптеров или мутаций.
-   - Любые обнаруженные `LegacyConstructors` и функции `normalize*Constructors` подлежат немедленному удалению при рефакторинге или проверке кода.
-
-### 2.5 Strict Prohibition of Empty / Redundant Stub Getters / Строгий запрет на пустые заглушечные геттеры
-
-**КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО** объявлять в оркестраторах логики пустые или фиктивные геттеры-заглушки, возвращающие пустые объекты или фиксированные значения по умолчанию (`get binds(): ConstrBind { return {} }`, `get classes(): ConstrClassObject { return {} }`, `get styles(): ConstrStyles { return {} }`, `get tag(): string { return 'div' }`), если у компонента нет соответствующей динамической логики:
-
-1. **Объявление только при наличии реальной логики (Declare Only When Needed)**:
-   - Геттеры `binds`, `classes`, `styles`, `aria`, `tag` объявляются **СТРОГО ТОЛЬКО ТОГДА**, когда они агрегируют реальные вычисляемые значения из подклассов или входных свойств.
-   - Если оркестратор не формирует динамических классов для корневого элемента — геттер `classes` **НЕ ОБЪЯВЛЯЕТСЯ**. Слой дизайна (`*Design.tsx`) в `initClasses()` задаёт `main: {}` самостоятельно.
-   - Если оркестратор не формирует HTML-атрибутов или привязок для корневого элемента — геттер `binds` **НЕ ОБЪЯВЛЯЕТСЯ**. Слой дизайна не вызывает `...this.item.binds`.
-   - Если у компонента нет стилей, рассчитываемых в логике — геттер `styles` **НЕ ОБЪЯВЛЯЕТСЯ**.
-   - Если тег корневого элемента фиксирован (например, всегда `'div'` или `'span'`) и не зависит от пропсов (нет `tag?: string` или динамики) — геттер `tag` **НЕ ОБЪЯВЛЯЕТСЯ**. Слой дизайна напрямую передаёт строковый литерал в `h('div', ...)` или `h('span', ...)`.
-2. **Чистота и отсутствие мертвого кода (Purity & Zero Dead Code)**:
-   - Создание пустых заглушек засоряет класс, раздувает размер бандла и вводит в заблуждение потребителей API.
-   - Эталонный пример: [`Ripple`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Ripple/Ripple.ts), [`ComponentOutlet`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/ComponentOutlet/ComponentOutlet.ts), [`Actions`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Actions/Actions.ts).
+### 2.3 Orchestrator Template
 
 ```typescript
 import {
@@ -175,20 +110,18 @@ import type {
   MyComponentSlots
 } from './types'
 
-/** MyComponent dependency constructors type / Тип конструкторов зависимостей MyComponent */
+/** MyComponent dependency constructors type */
 export type MyComponentConstructors = {
-  /** First helper constructor / Первый вспомогательный конструктор */
+  /** First helper constructor */
   a: typeof MyComponentA
-  /** Second helper constructor / Второй вспомогательный конструктор */
+  /** Second helper constructor */
   b: typeof MyComponentB
-  /** Third helper constructor / Третий вспомогательный конструктор */
+  /** Third helper constructor */
   c: typeof MyComponentC
 }
 
 /**
  * Orchestrator class for MyComponent.
- *
- * Класс-оркестратор для MyComponent.
  */
 export class MyComponent extends DesignLogicAbstract<
   HTMLElement,
@@ -198,7 +131,7 @@ export class MyComponent extends DesignLogicAbstract<
   MyComponentProps,
   MyComponentConstructors
 > {
-  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  /** Item configurations and default constructors by constructor name */
   protected override readonly constructorItems: ConstrItems<MyComponentConstructors> = {
     a: {
       item: MyComponentA,
@@ -209,26 +142,24 @@ export class MyComponent extends DesignLogicAbstract<
     },
     b: {
       item: MyComponentB,
-      conditions: () => MyComponentB.is(this.props),
+      canCreate: () => MyComponentB.is(this.props),
       parameters: () => [
         this.props,
-        () => this.i('a'), // Lazy getter factory!
+        () => this.i('a'), // Lazy getter factory (never pass this.i('a') directly!)
         this.emits
       ]
     },
     c: {
       item: MyComponentC,
       parameters: () => [
-        () => this.i('b') // Never pass this.i('b') directly!
+        () => this.callInstance('b', item => item) // Guarded lazy getter respecting b's canCreate
       ]
     }
   }
 
   /**
    * Computed bindings for the element.
-   *
-   * Вычисляемые привязки для элемента.
-   * @returns element bindings / привязки элемента
+   * @returns element bindings
    */
   get binds(): ConstrBind {
     return {
@@ -239,19 +170,18 @@ export class MyComponent extends DesignLogicAbstract<
 
   /**
    * Values for the class.
-   *
-   * Значения для класса.
-   * @returns classes values / значения классов
+   * @returns classes values
    */
   get classes(): ConstrClassObject {
     const isA = this.i('a').isActive()
+    const bClasses = this.callInstance('b', item => item.classes)
     const classes: ConstrClassObject = {
       [this.naming.getStatusClass('disabled')]: Boolean(this.props.disabled),
       [this.naming.getStatusClass('active')]: isA
     }
 
-    if (MyComponentB.is(this.props)) {
-      Object.assign(classes, this.i('b').classes)
+    if (bClasses) {
+      Object.assign(classes, bClasses)
     }
 
     return classes
@@ -259,9 +189,7 @@ export class MyComponent extends DesignLogicAbstract<
 
   /**
    * Tag name.
-   *
-   * Название тега.
-   * @returns tag name / название тега
+   * @returns tag name
    */
   get tag(): string {
     return this.props.tag ?? 'div'
@@ -289,16 +217,12 @@ If a sub-class binds global DOM event listeners, creates `IntersectionObserver` 
 
    /**
     * Class for managing component event listeners and lifecycle watchers.
-    *
-    * Класс для управления слушателями событий компонента и наблюдателями жизненного цикла.
     */
    export class MyComponentEvents extends DesignLifecycleAbstract {
      /**
       * Constructor.
-      *
-      * Конструктор.
-      * @param props component properties / свойства компонента
-      * @param elementTarget target element getter / геттер целевого элемента
+      * @param props component properties
+      * @param elementTarget target element getter
       */
      constructor(
        protected readonly props: MyComponentProps,
@@ -310,8 +234,6 @@ If a sub-class binds global DOM event listeners, creates `IntersectionObserver` 
 
      /**
       * Setup lifecycle listeners and watchers on mount.
-      *
-      * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
       */
      override readonly onMounted = (): void => {
        this.start()
@@ -323,8 +245,6 @@ If a sub-class binds global DOM event listeners, creates `IntersectionObserver` 
 
      /**
       * Cleanup lifecycle listeners on unmount.
-      *
-      * Очистка слушателей жизненного цикла при размонтировании.
       */
      override readonly onUnmounted = (): void => {
        this.stop()
@@ -344,16 +264,12 @@ When helper class `B` depends on helper class `A`:
    ```typescript
    /**
     * Helper class B demonstrating lazy dependency injection.
-    *
-    * Вспомогательный класс B, демонстрирующий ленивое внедрение зависимостей.
     */
    export class MyComponentB {
      /**
       * Constructor.
-      *
-      * Конструктор.
-      * @param props component properties / свойства компонента
-      * @param a helper class A getter / геттер вспомогательного класса A
+      * @param props component properties
+      * @param a helper class A getter
       */
      constructor(
        protected readonly props: MyComponentProps,
@@ -362,8 +278,6 @@ When helper class `B` depends on helper class `A`:
 
      /**
       * Executes action requiring helper A.
-      *
-      * Выполняет действие, требующее помощника A.
       */
      someAction(): void {
        // Call the getter on demand, only when needed!
@@ -374,25 +288,27 @@ When helper class `B` depends on helper class `A`:
    ```
 3. **STRICT BAN on Dual Variants / Union Types (`Type | (() => Type)`)**: Subordinate helper classes must strictly receive and type dependencies as pure functions `() => SubClass` (e.g. `protected readonly elementItem: () => ArrowElement`). Using union types such as `SubClass | (() => SubClass)` or accepting raw instances is **STRICTLY FORBIDDEN**. Always require a pure getter function `() => SubClass` and invoke it on demand as `this.elementItem()`.
 4. **CRITICAL RULE**: Sub-class constructors must **never** call `this.a()` eagerly in their constructor body. Call `this.a()` strictly inside methods or computed properties.
-5. **Mandatory Refactoring of Concrete Instances / Обязательный рефакторинг прямых экземпляров**: Always audit existing subordinate classes. If any subordinate class accepts a concrete instance instead of a getter function `() => SubClass`, you **MUST** refactor its constructor signature and implementation to receive a pure getter function `() => SubClass`, and update `constructorItems` in the orchestrator (`() => this.i(...)`) and all corresponding unit tests accordingly.
+5. **Mandatory Refactoring of Concrete Instances**: Always audit existing subordinate classes. If any subordinate class accepts a concrete instance instead of a getter function `() => SubClass`, you **MUST** refactor its constructor signature and implementation to receive `() => SubClass`, and update `constructorItems` (`() => this.i(...)`) and all corresponding unit tests accordingly.
 
-### Step 4: Conditional Instantiation (`conditions`) & Lazy Loading Guard
-To ensure optional features and subordinate inclusion classes are not prematurely or needlessly instantiated, declare `conditions` in `constructorItems`:
+### Step 4: Conditional Startup (`conditions`) & Guarded Access (`canCreate` + `callInstance`)
+First identify when the dependency must start and which existing call site instantiates it. Choose the required startup path:
+
+- **Normal on-demand access**: rendering, getters, event handlers, or another existing execution path already instantiate the helper when needed. Keep those call sites and omit `conditions`. Steps 3–4 below handle guarded on-demand access without `conditions`.
+- **Automatic lifecycle startup**: the dependency must start its own mechanics when enabled (for example, in `onMounted`), without waiting for normal access. Declare `conditions` using steps 1–2 below.
+- **Immediate setup startup**: the dependency must be instantiated during `setup`. Call `this.i('name')` directly in the master orchestrator constructor after `super(...)`; do not replace this with `conditions`. DOM work and lifecycle watchers still belong in `onMounted`.
+
 1. **Encapsulate Condition Logic in `static is`**:
-   - Every subordinate or inclusion helper managing an optional feature must declare a static guard method:
+   - A dependency requiring automatic conditional startup must declare a static activation predicate. Optional helpers used only on demand do not need `conditions`, even when they have a static predicate for guarding access:
+   - The following border example illustrates predicate and map syntax only. A helper that only computes styles on access must omit `conditions`; use the map entry in step 2 only if that helper also has mechanics requiring automatic startup.
      ```typescript
      /**
       * Helper class managing component border and divider styles.
-      *
-      * Вспомогательный класс для управления стилями границы и разделителя компонента.
       */
      export class MyComponentBorder extends DesignLifecycleAbstract {
        /**
         * Checks if border functionality is enabled.
-        *
-        * Проверяет, включена ли функциональность границы.
-        * @param props component properties / свойства компонента
-        * @returns true if border or divider is active / true, если граница или разделитель активны
+        * @param props component properties
+        * @returns true if border or divider is active
         */
        static is(props?: MyComponentProps): boolean {
          return Boolean(props?.divider || props?.border)
@@ -408,32 +324,35 @@ To ensure optional features and subordinate inclusion classes are not prematurel
        parameters: () => [this.props, this.element]
      }
      ```
-   - On component mount, `DesignLogicAbstract.initConditions()` sets up `watch(item.conditions, ...)` to reactively instantiate dependencies as soon as their trigger conditions are met.
-3. **Guard Access in Getters via Variables and `if`**:
-   - In aggregate getters (`classes`, `aria`, `styles`), avoid inline ternary spreads that allocate redundant empty objects on every evaluation (e.g. avoid `...(cond ? this.i('foo').classes : {})`).
-   - Extract conditions to local variables and use explicit `if` blocks with `Object.assign`:
+   - On component mount, `DesignLogicAbstract.initConditions()` sets up `watch(item.conditions, ...)` to reactively instantiate dependencies as soon as their trigger conditions are met. A false condition does not block explicit `this.i(name)` access.
+3. **Guard Check-Then-Call Access via `canCreate` + `callInstance` (No Manual `if (SubClass.is(...))` around `this.i(...)`)**:
+   - Whenever you need to check if a subordinate dependency is enabled/available before calling its method or reading its property (in aggregate getters `classes`, `aria`, `styles`, inside `parameters`, or in orchestrator methods), declare `canCreate: () => SubClass.is(...)` on that entry in `constructorItems` and access it via `this.callInstance(name, item => ..., defaultValue?)`.
+   - Do **NOT** repeat manual `if (SubClass.is(this.props))` / `SubClass.is(this.props) && this.i(...)` guards before `this.i(...)`, and avoid inline ternary spreads that allocate empty objects (e.g. `...(cond ? this.i('foo').classes : {})`).
+   - Example in orchestrator getters:
      ```typescript
      get classes(): ConstrClassObject {
-       const icon = IconTrailingInclude.is(this.props) && this.i('icon').isIcon()
+       const icon = this.callInstance('icon', item => item.isIcon(), false)
+       const skeletonClasses = this.callInstance('skeleton', item => item.classes)
        const classes: ConstrClassObject = {
          [this.naming.getStatusClass('icon')]: icon,
          [getClassTagAStatic(this.naming.getDesign())]: true
        }
 
-       if (SkeletonInclude.is(this.props)) {
-         Object.assign(classes, this.i('skeleton').classes)
+       if (skeletonClasses) {
+         Object.assign(classes, skeletonClasses)
        }
 
        return classes
      }
      ```
-4. **Direct Inclusion Rendering in `[Name]Design.tsx` via `*Include.renderLazy` (Zero Boilerplate)**:
-   - In companion design classes (`[Name]Design.tsx`), do **NOT** write redundant boilerplate wrapper methods like `renderIcon()`, `renderProgress()`, `renderLabel()`, `renderRipple()`.
-   - Instead, invoke `*Include.renderLazy(...)` directly in the children array of `initRender()`:
+4. **Direct Inclusion Rendering in `[Name]Design.tsx` via `this.item.callInstance` & `canCreate` (Zero Boilerplate)**:
+   - In the orchestrator (`[Name].ts`), declare `canCreate: () => SubClass.is(this.props)` (or a `boolean | (() => boolean)` guard) on optional inclusion entries in `constructorItems`.
+   - In companion design classes (`[Name]Design.tsx`), do **NOT** write redundant boilerplate wrapper methods like `renderIcon()`, `renderProgress()`, `renderLabel()`, `renderRipple()`, and do **NOT** introduce or retain static `*Include.renderLazy(...)` helpers.
+   - Instead, invoke `this.item.callInstance(name, item => item.render(...), [])` directly in the children array of `initRender()`:
      ```typescript
      protected initRender = (): VNode => {
        return h(
-         this.item.tag ?? 'div',
+         'div', // or this.item.tag when get tag(): string is dynamic
          {
            ...this.getAttrs(),
            ref: this.element,
@@ -442,36 +361,38 @@ To ensure optional features and subordinate inclusion classes are not prematurel
            style: this.styles?.value
          },
          [
-           ...ProgressInclude.renderLazy(() => this.item.i('progress'), this.props),
-           ...LabelInclude.renderLazy(() => this.item.i('label'), this.props, this.slots),
-           ...IconTrailingInclude.renderLazy(() => this.item.i('icon'), this.props),
-           ...RippleInclude.renderLazy(() => this.item.i('ripple'), this.props)
+           ...this.item.callInstance('progress', item => item.render(), []),
+           ...this.item.callInstance('label', item => item.render(), []),
+           ...this.item.callInstance('icon', item => item.render(), []),
+           ...this.item.callInstance('ripple', item => item.render(), [])
          ]
        )
      }
      ```
-   - **Lazy Factory (`() => this.item.i('...')`)**: Always pass the instance as a getter function `() => this.item.i('name')`. `renderLazy` checks `static is(props)` first and only invokes the getter if enabled, preserving strict lazy instantiation with zero premature allocations.
+   - **How `callInstance` Preserves Laziness & Updates**: `callInstance(name, callback, defaultValue)` checks `this.hasInstance(name) || isNull(canCreate) || executeFunction(canCreate)` first. If the feature is disabled and not yet created, `getInstance(name)` is never called and `executeFunction(defaultValue)` (`undefined` if omitted) is returned immediately. Once created, subsequent calls still execute `callback` even if `canCreate()` later flips to `false`, allowing the existing sub-instance to update or hide cleanly.
+   - **Migration Checklist (`renderLazy`, `render*()` wrappers, and manual `SubClass.is(...)` guards -> `canCreate` + `callInstance`)**:
+     1. Remove `static renderLazy` and `*IncludeItem` (plus unused imports like `VNode`, `ConstrBind`, `executeFunction`) from the `*Include` class (see [`ProgressInclude.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Progress/ProgressInclude.ts)).
+     2. Add `canCreate: () => SubClass.is(...)` (or `boolean | (() => boolean)`) in `constructorItems` of every orchestrator (`[Name].ts`) using that dependency (see [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Button/Button.ts) and [`Cell.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Cell/Cell.ts)).
+     3. Replace `*Include.renderLazy(...)` and `render*()` wrappers in `[Name]Design.tsx` with `this.item.callInstance('name', item => item.render(...), [])` inline in `initRender()` and remove unused `*Include` imports (see [`ButtonDesign.tsx`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Button/ButtonDesign.tsx)).
+     4. Replace manual guarded `this.i(...)` / `this.item.i(...)` reads, method calls, and `parameters` ternaries (`if (SubClass.is(...)) ... this.i(...)`, `SubClass.is(...) ? this.i(...) : undefined`, `SubClass.is(...) && this.i(...).method()`) with `this.callInstance(...)` / `this.item.callInstance(...)`.
+     5. Remove obsolete `renderLazy` / `*IncludeItem` tests from `*Include.test.ts` and verify lazy instantiation behavior.
 
 ### Step 5: Connect to the Design Class (`[Name]Design.tsx`)
 In `[Name]Design.tsx`, instantiate the orchestrator supporting dependency injection:
 ```typescript
 /**
  * Design constructor class for MyComponent.
- *
- * Класс конструктора дизайна для MyComponent.
  */
 export class MyComponentDesign<...> extends DesignConstructorAbstract<...> {
-  /** Logic orchestrator instance / Экземпляр оркестратора логики */
+  /** Logic orchestrator instance */
   protected readonly item: MyComponent
 
   /**
    * Constructor.
-   *
-   * Конструктор.
-   * @param name component name / название компонента
-   * @param props component properties / свойства компонента
-   * @param options constructor options / параметры конструктора
-   * @param ItemConstructor logic constructor class / класс конструктора логики
+   * @param name component name
+   * @param props component properties
+   * @param options constructor options
+   * @param ItemConstructor logic constructor class
    */
   constructor(
     name: string,
@@ -493,9 +414,7 @@ export class MyComponentDesign<...> extends DesignConstructorAbstract<...> {
 
   /**
    * Initializes class names for the component.
-   *
-   * Инициализирует названия классов для компонента.
-   * @returns class object / объект классов
+   * @returns class object
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -506,9 +425,7 @@ export class MyComponentDesign<...> extends DesignConstructorAbstract<...> {
 
   /**
    * Initializes component render function.
-   *
-   * Инициализирует функцию рендера компонента.
-   * @returns VNode element / VNode элемент
+   * @returns VNode element
    */
   protected initRender = (): VNode => {
     return h(
@@ -531,25 +448,25 @@ export class MyComponentDesign<...> extends DesignConstructorAbstract<...> {
 ## 4. Reference Implementations
 
 ### Reference 1: Multi-Dependency Lazy Coordination (`DraggableWrapper`)
-See [`DraggableWrapper.ts`](file:///Volumes/T7/development/dxt-ui/packages/constructor/src/constructors/DraggableWrapper/DraggableWrapper.ts):
+See [`DraggableWrapper.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/DraggableWrapper/DraggableWrapper.ts):
 - Manages 13 distinct sub-constructors (`classesData`, `client`, `delay`, `emit`, `events`, `item`, `itemActive`, `itemFocus`, `itemGo`, `itemSelection`, `position`, `selection`, `square`).
 - High inter-dependency without circular instantiation bugs because every dependency is wired with lazy getters `() => this.i(...)`.
 - `DraggableWrapperEvents` extends `DesignLifecycleAbstract` to automatically deregister pointer/mouse listeners in `onUnmounted`.
 
 ### Reference 2: Conditional Lifecycle Dependencies (`Image`)
-See [`Image.ts`](file:///Volumes/T7/development/dxt-ui/packages/constructor/src/constructors/Image/Image.ts):
+See [`Image.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Image/Image.ts):
 - `adaptiveItem` activates only when `conditions: () => ImageAdaptiveItem.is(this.props)`.
 - `event` activates conditionally when `conditions: () => ImageData.isImage(this.i('type').get()) && this.i('data').isImage()`.
 - `ImageLazy` extends `DesignLifecycleAbstract`, cleanly handling `IntersectionObserver` setup in `onMounted` and disconnection in `onUnmounted`.
 
 ### Reference 3: Reactive Boundary Monitoring (`Scrollbar`)
-See [`Scrollbar.ts`](file:///Volumes/T7/development/dxt-ui/packages/constructor/src/constructors/Scrollbar/Scrollbar.ts):
+See [`Scrollbar.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Scrollbar/Scrollbar.ts):
 - `border` activates on `conditions: () => ScrollbarBorder.is(this.props)`.
 - `width` uses `ScrollbarWidthRef`.
 - `classes` checks `this.isMounted.value && Boolean(this.i('width').item.value)`.
 
 ### Reference 4: Lightweight Delegation (`Ripple`)
-See [`Ripple.ts`](file:///Volumes/T7/development/dxt-ui/packages/constructor/src/constructors/Ripple/Ripple.ts):
+See [`Ripple.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Ripple/Ripple.ts):
 - Single dependency `item: RippleItem`.
 - Coordinates pointerdown filtering and delegates DOM wave generation to `this.i('item').add(...)`.
 
@@ -561,18 +478,13 @@ See [`Arrow.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor
 - As a result, static arrows without border or target element consume zero allocations for `ArrowPosition`, `ArrowElementTarget`, and `ArrowEvent`.
 
 ### Reference 6: Complete Subordinate Inclusions & Guarded Assembly (`Button`)
+These references illustrate existing implementations, not a requirement to copy every `conditions` entry. For each dependency, apply the startup decision in Step 4; a helper already instantiated by normal rendering or another working call site does not require `conditions`.
+
 See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Button/Button.ts) and [`ButtonDesign.tsx`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Button/ButtonDesign.tsx):
 - Manages 7 subordinate helpers (`enabled`, `event`, `icon`, `label`, `progress`, `ripple`, `skeleton`).
-- All optional inclusions declare `conditions: () => SubClass.is(...)` in `constructorItems`:
-  - `icon: { item: IconTrailingInclude, conditions: () => IconTrailingInclude.is(this.props), ... }`
-  - `label: { item: LabelInclude, conditions: () => LabelInclude.is(this.props, this.slots), ... }`
-  - `progress: { item: ProgressInclude, conditions: () => ProgressInclude.is(this.props), ... }`
-  - `ripple: { item: RippleInclude, conditions: () => RippleInclude.is(this.props), ... }`
-  - `skeleton: { item: SkeletonInclude, conditions: () => SkeletonInclude.is(this.props), ... }`
-- Getters evaluate values via intermediate variables and `if` branches with `Object.assign`:
-  - In `aria`: `if (isProgress) { Object.assign(aria, this.i('progress').aria.value) }`
-  - In `classes`: `if (SkeletonInclude.is(this.props)) { Object.assign(classes, this.i('skeleton').classes) }`
-- `ButtonDesign.tsx` inlines all inclusion rendering directly in `initRender()` using `*Include.renderLazy(() => this.item.i('...'), this.props)` without boilerplate wrapper methods, ensuring zero premature allocations when optional features are omitted.
+- Optional rendered inclusions (`icon`, `label`, `progress`, `ripple`) declare `canCreate: () => SubClass.is(...)` directly in `constructorItems`.
+- `ButtonDesign.tsx` renders all four optional inclusions directly inside `initRender()` via `...this.item.callInstance('<name>', item => item.render(), [])` without boilerplate wrapper methods or static `*Include.renderLazy(...)`.
+- Remaining legacy `SubClass.is(...)` + `this.i(...)` checks inside orchestrator getters/methods across existing components must be migrated to `canCreate` + `this.callInstance(...)` whenever touched or refactored (see Rules 10 and 15).
 
 ---
 
@@ -583,7 +495,7 @@ See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructo
    - Keys in `<Name>Constructors` must be sorted alphabetically.
    - Entries in `constructorItems` must be sorted alphabetically.
 2. **Strict Lazy Parameters & Pure Function Typing**:
-   - ALWAYS pass dependent sub-classes as getter functions: `() => this.i('subClass')`.
+   - ALWAYS pass dependent sub-classes as getter functions: `() => this.i('subClass')` (or `() => this.callInstance('subClass', item => item)` when respecting `canCreate`).
    - NEVER call `this.i(...)` directly inside `parameters: () => [ ... ]` when passing another sub-class.
    - Subordinate helper classes must strictly type and receive dependencies as functions `() => SubClass`. It is strictly forbidden to use union types like `SubClass | (() => SubClass)` (no dual variants) or raw instances. Invoke dependencies strictly on demand as `this.subClass()`.
 3. **No Direct Vue Lifecycle in Helpers & Watcher Placement**:
@@ -598,7 +510,9 @@ See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructo
    - Use generics and exact interfaces. Avoid `any`.
    - When writing unit tests with `reactive<PropsInclude>`, avoid passing reactive objects with recursive constructor types into test constructors to prevent `TS2589` infinite type instantiation.
 7. **Declarative `conditions` and Static Guards for Inclusions (Mandatory `static is`)**:
-   - All optional subordinate classes and inclusion helpers (such as `*Include`, `lazy`, `adaptive`, etc.) must declare `conditions: () => SubClass.is(...)` in `constructorItems`.
+   - Declare `conditions: () => SubClass.is(...)` in `constructorItems` only when a dependency needs automatic startup of its own mechanics upon activation, such as lifecycle work in `onMounted`, and normal call sites do not already instantiate it at the required time.
+   - Do not add `conditions` solely because a helper is optional or exposes `static is`. If rendering, a getter, an event handler, or another existing execution path creates it when needed, retain on-demand access without `conditions`.
+   - For required startup during `setup`, explicitly call `this.i('name')` in the master orchestrator constructor after `super(...)`. Keep DOM work and lifecycle watchers in `onMounted`.
    - Never define ad-hoc instance helper methods on the orchestrator class (such as `this.isIcon()` or `this.isLabel()`). Encapsulate all feature predicate logic inside static `static is(...)` methods on the subordinate classes.
    - For classes inheriting from base includes (e.g., `IconTrailingInclude` extending `IconInclude`), only override `static is` when extending the property conditions (e.g. adding `iconTrailing`), otherwise inherit the static method directly.
 8. **No Overly Strict Types for Internal Elements (Component Boundary Rule)**:
@@ -612,19 +526,14 @@ See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructo
      2. External components or include helpers access the root element via `.elementHtml` (e.g., `scroll.elementHtml`, `field.elementHtml`).
    - **Permissible Omission**: For pure leaf visual primitives (such as `Icon`) where neither the internal logic class (`Icon.ts`) nor external consumers/parent components ever query or interact with the DOM element or `elementHtml`, omitting `ref: this.element` does not break runtime behavior and is completely safe.
    - **Code Review Standard**: Do NOT classify missing `ref: this.element` as a critical bug (P0/P1) unless `this.element` is actually required and used by the logic class or by consumers. If `this.element` is unused everywhere, missing `ref: this.element` is benign and has no functional impact.
-10. **Lazy Loading Optimization, Variables & Guarding Subordinate Instances (Short-Circuit Guard & `if` Branching)**:
-    - **Extracting Prop Checks into Subordinate `static is`**: Never write raw inline prop checks across orchestrators or helpers when checking if a helper's feature is enabled or in which mode it operates. Always encapsulate these checks into static methods on the respective helper class: `static is(props?: Props): boolean`, `static isAuto(props?: Props): boolean`, `static isPicture(props?: Props): boolean` (as demonstrated in `Image`, `Arrow`, and `Button`).
-    - **Variables and `if` Branching over Ternary Spreads**: In aggregate getters (`classes`, `aria`, `styles`), avoid inline ternary spreads that allocate redundant empty objects on every evaluation (e.g. avoid `...(cond ? this.i('foo').classes : {})`). Instead:
-      1. Extract predicate evaluations and values into local variables: `const isProgress = ProgressInclude.is(this.props)`.
-      2. Use clean `if` blocks with `Object.assign`: `if (SkeletonInclude.is(this.props)) { Object.assign(classes, this.i('skeleton').classes) }`.
-    - **Direct Prop Resolution in Getters**: If a property or state can be determined directly from `this.props` using static guards (e.g. fixed position `ArrowPosition.is(this.props) && !ArrowPosition.isAuto(this.props)`), return the value immediately without calling `this.i(subClass)`. Do NOT instantiate complex subordinate helper classes just to read back values already present in props.
-    - **Conditional Access in Aggregate Getters (`styles`, `classes`, `binds`)**: In aggregate getters (`get styles()`, `get classes()`, `get binds()`), NEVER unconditionally call `this.i(name)` just to check `.is()` or read optional properties (e.g., forbidden: `this.i('elementTarget').is()`). Always guard subordinate class instantiation with static checks or prop conditions (e.g. `SubClass.is(this.props) && this.i('subClass').is()`). If prerequisite props or conditions are absent, the sub-class must remain completely uninstantiated in memory.
-11. **Prohibition of Redundant Getter Proxies for Subordinate Classes (`get event()`, `get elementTarget()`)**:
-    - **No Subordinate Getter Proxies on Orchestrators**: Orchestrator classes extending `DesignLogicAbstract` must **NEVER** expose public getters that merely proxy access to internal subordinate helper instances (e.g., strictly forbidden: `get event(): ArrowEvent { return this.i('event') }`, `get elementTarget(): ArrowElementTarget { return this.i('elementTarget') }`).
-    - **Encapsulation & Architecture Integrity**: Subordinate helper classes are internal implementation details of the logic orchestrator. Exposing them pollutes the public API surface of the component, breaks encapsulation, and leaks internal mechanics into the component layer.
-    - **Preserving Lazy Loading**: Exposing getter proxies encourages consumers, child components, or tests to touch subordinate instances directly, prematurely instantiating them and defeating the entire on-demand memory optimization model.
-    - **Internal and External Access via `this.i(...)`**: Inside the orchestrator, subordinate instances must be accessed strictly via `this.i('name')`. If external companion classes (such as `[Name]Design.tsx`) or tests genuinely require direct access to a subordinate helper, `DesignLogicAbstract` already provides the public method `.i(name)` (e.g. `this.item.i('type').get()` in `ImageDesign.tsx` or `this.item.i('item').add(...)` in `RippleDesign.tsx`).
-    - **Clean Public Surface**: The public interface of the orchestrator must consist strictly of high-level aggregated getters and domain methods (`classes`, `styles`, `binds`, `points`, `update`, `isBorder`).
+10. **Guarded Check-Then-Call Access & Direct Prop Short-Circuits**:
+    - **Static `is*` Predicates**: Encapsulate prop-based feature and mode checks in static helper methods (`static is`, `static isAuto`, `static isPicture`), never raw inline prop expressions across orchestrators.
+    - **`canCreate` + `callInstance` Over Manual Guards**: Whenever availability must be checked before calling a method or reading a property (in `classes`, `aria`, `styles`, `binds`, `parameters`, orchestrator methods, or `[Name]Design.tsx`), declare `canCreate` in `constructorItems` and use `this.callInstance(name, item => ..., defaultValue?)` / `this.item.callInstance(...)` (see Step 4.3). Avoid manual `if (SubClass.is(...))`, `SubClass.is(...) && this.i(...)`, inline ternary object spreads, or unconditional `this.i(name).is()`.
+    - **Direct Prop Short-Circuits**: When a state can be resolved purely from `this.props` via static guards without touching any sub-instance method or property (e.g. fixed direction in `Arrow`), return immediately without calling `this.i(...)` or `this.callInstance(...)`.
+11. **Encapsulation, Unified Access & Prohibition of Subordinate Getter Proxies**:
+    - **No Getter Proxies**: Never expose public getters that proxy internal `constructorItems` instances (e.g. forbidden: `get window()`, `get event()`, `get elementTarget()`, `get bars()`, `get model()`). Subordinate helpers are internal mechanics; getter proxies break encapsulation and defeat lazy instantiation.
+    - **Clean Public Surface**: Expose only aggregated getters (`binds`, `classes`, `slotData`, `styles`, `aria`, `tag`) and domain predicate methods (`isMenu()`, `isRender()`). Reference: [`Window.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Window/Window.ts).
+    - **Unified Access (`callInstance` vs `i`)**: Respect `canCreate` gating via `this.callInstance('name', ...)` / `this.item.callInstance('name', ...)`. Use direct `this.i('name')` / `this.item.i('name')` only when an unconditional call is required (e.g. `this.item.i('type').get()` in `ImageDesign.tsx` or `this.item.i('item').add(...)` in `RippleDesign.tsx`). Verify instances in unit tests via `instance.i('name')` and `instance.hasInstance('name')`.
 12. **Native Client-Only & Mount Handling via `DesignLogicAbstract.isMounted` (Deprecation of `ClientOnlyInclude` in `DesignLogicAbstract`)**:
     - **No `ClientOnlyInclude` in `DesignLogicAbstract`**: Do **NOT** use `ClientOnlyInclude` as a subordinate helper or register it in `constructorItems` / `<Component>Constructors` when implementing or refactoring classes extending `DesignLogicAbstract`.
     - **Why `ClientOnlyInclude` is Prohibited in Orchestrators**: `ClientOnlyInclude` is an obsolete helper designed for legacy component constructors. It calls Vue's `onMounted` directly within its constructor. Instantiating it lazily (e.g. inside `isRender()`, getters, or during template execution) attempts to register Vue lifecycle hooks outside `setup()`, triggering runtime warnings (`[Vue warn]: onMounted is called when there is no active component instance...`) and breaking SSR hydration.
@@ -635,43 +544,13 @@ See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructo
       In `DesignLogicAbstract`, `this.props` is typed as `protected readonly props: Readonly<P>`. When passing `this.props` in `parameters: () => [this.props, ...]`, the returned tuple element is `Readonly<P>`. All subordinate helper class constructors that receive `props` from `DesignLogicAbstract` MUST type the parameter strictly as `props: Readonly<MyComponentProps>` (e.g. `constructor(protected readonly props: Readonly<MyComponentProps>, ...)`). Omitting `Readonly` causes TypeScript tuple return type incompatibility (`[Readonly<Props>, ...]` is not assignable to `[props: Props, ...]`).
     - **Canonical Typing for Inclusion Dependencies (`TabIndexInclude`, `ModelInclude`)**:
       Inclusion classes declare default generic parameters (e.g. `TabIndexInclude<E extends HTMLElement = HTMLElement>`). In the `<Component>Constructors` map, they are registered using their base constructor type (e.g. `tabIndex: typeof TabIndexInclude`), so `this.i('tabIndex')` returns `TabIndexInclude<HTMLElement>`. Subordinate helper classes that receive such inclusions must type them using the canonical base type (`tabIndex: () => TabIndexInclude`), rather than over-specialized derived element types (such as `tabIndex: () => TabIndexInclude<HTMLDivElement>`). Because derived DOM types (`HTMLDivElement`) declare additional properties (like `align`) absent on `HTMLElement`, over-specializing the parameter type causes TypeScript variance errors: `Type 'TabIndexInclude<HTMLElement>' is not assignable to type 'TabIndexInclude<HTMLDivElement>'. Property 'align' is missing in type 'HTMLElement' but required in type 'HTMLDivElement'`. Always use the canonical base generic in helper constructor parameters: `() => TabIndexInclude`.
-    - **Строгое соответствие типов параметров в `constructorItems` (`Readonly<Props>` и дженерики инклюдов)**:
-      - **`Readonly<Props>` в конструкторах подклассов**: В `DesignLogicAbstract` свойства типизированы как `protected readonly props: Readonly<P>`. Фабрика параметров `parameters: () => [this.props, ...]` возвращает кортеж с типом `Readonly<P>`. Конструкторы всех вспомогательных классов, принимающие `props`, ОБЯЗАНЫ объявлять параметр строго как `props: Readonly<MyComponentProps>`. Пропуск `Readonly` приводит к ошибке несовместимости типов возвращаемого кортежа (`[Readonly<Props>, ...] is not assignable to [props: Props, ...]`).
-      - **Каноническая типизация инклюдов (`TabIndexInclude`, `ModelInclude`)**: Классы-инклюды имеют базовые параметры дженериков по умолчанию (например, `TabIndexInclude<E extends HTMLElement = HTMLElement>`). В словаре `<Component>Constructors` они регистрируются как `tabIndex: typeof TabIndexInclude`, поэтому `this.i('tabIndex')` возвращает базовый тип `TabIndexInclude<HTMLElement>`. Вспомогательные классы, принимающие инклюды, должны типизировать их базовым типом (`tabIndex: () => TabIndexInclude`), а не специфическим подтипом (например, `tabIndex: () => TabIndexInclude<HTMLDivElement>`). Избыточная специализация приводит к ошибке вариативности: `Type 'TabIndexInclude<HTMLElement>' is not assignable to type 'TabIndexInclude<HTMLDivElement>'. Property 'align' is missing in type 'HTMLElement' but required in type 'HTMLDivElement'`. Всегда используйте канонический тип `() => TabIndexInclude`.
-14. **Strict Prohibition of Empty / Redundant Stub Getters (No Empty Binds, Classes, Styles, Tag) / Запрет пустых заглушечных геттеров**:
-    - **No Redundant Empty Getters**: Orchestrator classes extending `DesignLogicAbstract` must **NEVER** declare empty or trivial stub getters that merely return empty objects (`get binds(): ConstrBind { return {} }`, `get classes(): ConstrClassObject { return {} }`, `get styles(): ConstrStyles { return {} }`) or static string literals (`get tag(): string { return 'div' }`).
-    - **Declare Only When Meaningful**: Declare `binds`, `classes`, `styles`, `aria`, `tag` **only** if the orchestrator actually computes dynamic classes, collects element attributes/listeners, computes inline styles, or switches HTML tags dynamically based on props.
-    - **Design Layer Responsibility for Static Defaults**: When an orchestrator has no dynamic classes, styles, or binds, the companion design class (`[Name]Design.tsx`) directly handles static fallbacks:
-      - For classes: `initClasses()` returns `main: {}`.
-      - For styles: `initStyles()` returns `{}`.
-      - For root tag: `initRender()` renders the literal element directly, e.g. `h('div', ...)` or `h('span', ...)`.
-    - **Запрет пустых заглушек в оркестраторах**: Оркестраторы не должны содержать пустые геттеры-пустышки (`binds`, `classes`, `styles`, `tag`), если логика не рассчитывает для них динамических значений. Слой дизайна самостоятельно задаёт статические значения (`main: {}`, `h('div', ...)`).
-15. **Direct Inclusion Rendering via `*Include.renderLazy` and Prohibition of Boilerplate Render Wrappers / Прямой рендеринг инклюдов через `*Include.renderLazy` и запрет шаблонных методов-обёрток**:
-    - **Strict Prohibition of Redundant Render Wrappers**: In companion design classes (`[Name]Design.tsx`), it is **STRICTLY FORBIDDEN** to create redundant boilerplate wrapper methods (`readonly renderProgress = (): VNode[] => ...`, `readonly renderLabel = (): VNode[] => ...`, `readonly renderIcon = (): VNode[] => ...`, `readonly renderRipple = (): VNode[] => ...`) that merely guard an inclusion with `SubClass.is(...)` and invoke `.render()`.
-    - **Direct Inlining in `initRender`**: All standard inclusion elements must be rendered directly inside the children array of `initRender()` by spreading `...[Include].renderLazy(...)`:
-      ```typescript
-      protected initRender = (): VNode => {
-        return h(
-          this.item.tag ?? 'div',
-          {
-            ...this.getAttrs(),
-            ref: this.element,
-            ...this.item.binds,
-            class: this.classes?.value.main,
-            style: this.styles?.value
-          },
-          [
-            ...ProgressInclude.renderLazy(() => this.item.i('progress'), this.props),
-            ...LabelInclude.renderLazy(() => this.item.i('label'), this.props, this.slots),
-            ...IconTrailingInclude.renderLazy(() => this.item.i('icon'), this.props),
-            ...RippleInclude.renderLazy(() => this.item.i('ripple'), this.props)
-          ]
-        )
-      }
-      ```
-    - **Mandatory Getter Function (`() => this.item.i('[name]')`)**: Always pass the subordinate instance to `renderLazy` as a getter function `() => this.item.i('[name]')`, NEVER as an eager call `this.item.i('[name]')`. The `renderLazy` method evaluates `Include.is(props)` first and invokes the getter only if the condition is satisfied. If the feature prop is not provided or disabled, the subordinate class is completely bypassed and never allocated in memory.
-    - **Supported Inclusions**: Standard inclusion classes (`ProgressInclude`, `LabelInclude`, `IconTrailingInclude`, `IconInclude`, `RippleInclude`) provide static `renderLazy(item: T | (() => T), props, ...): VNode[]`.
-    - **Запрет шаблонных методов-обёрток и прямой рендеринг инклюдов**:
-      - **Категорически запрещено** создавать в `[Name]Design.tsx` отдельные методы-обёртки (`renderProgress`, `renderLabel`, `renderIcon`, `renderRipple`), дублирующие проверки условий `SubClass.is(...)` и вызов `.render()`.
-      - Рендеринг инклюдов производится **напрямую** в массиве дочерних элементов `initRender()` через spread `...*Include.renderLazy(() => this.item.i('...'), this.props, ...)`.
-      - Экземпляр инклюда передается в `renderLazy` строго как геттер-фабрика `() => this.item.i('...')`, что обеспечивает вызов `.i(...)` только при положительном результате статической проверки `is(props)` и предотвращает преждевременную аллокацию памяти.
+14. **Strict Prohibition of Empty / Redundant Stub Getters (No Empty Binds, Classes, Styles, Tag)**:
+    - **Declare Only When Meaningful**: Never declare empty or trivial stub getters (`get binds(): ConstrBind { return {} }`, `get classes(): ConstrClassObject { return {} }`, `get styles(): ConstrStyles { return {} }`, `get tag(): string { return 'div' }`) when an orchestrator computes no dynamic values for them. References: [`Ripple.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Ripple/Ripple.ts), [`ComponentOutlet.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/ComponentOutlet/ComponentOutlet.ts), [`Actions.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Actions/Actions.ts).
+    - **Design Layer Fallbacks**: When omitted from the orchestrator, the design class handles static defaults directly:
+      - `binds`: `initRender()` omits `...this.item.binds`.
+      - `classes`: `initClasses()` returns `main: {}`.
+      - `styles`: `initStyles()` returns `{}`.
+      - `tag`: `initRender()` renders the literal element directly (e.g. `h('div', ...)` or `h('span', ...)`).
+15. **Direct Inclusion Rendering & Mandatory Migration (`renderLazy`, `render*()` Wrappers, and Guarded Access -> `canCreate` + `callInstance`)**:
+    - **Ban on Render Wrappers & `renderLazy`**: In `[Name]Design.tsx`, never write redundant wrapper methods (`renderProgress()`, `renderLabel()`, `renderIcon()`, `renderRipple()`) or use legacy `*Include.renderLazy(...)`. Render optional inclusions inline inside `initRender()` via `this.item.callInstance('name', item => item.render(...), [])` with `canCreate` configured in `[Name].ts` (see Step 4.4).
+    - **Mandatory Migration**: Whenever creating, auditing, or refactoring any component or `*Include` class still using `*Include.renderLazy`, `render*()` wrappers, or manual `SubClass.is(...)` / `components?.is(...)` / `item.i(...).is` guards before `this.i(...)` / `this.item.i(...)`, apply the 5-step migration checklist in Step 4.4.

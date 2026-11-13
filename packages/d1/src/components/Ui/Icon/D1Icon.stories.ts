@@ -291,6 +291,35 @@ export const IconSkeleton: Story = {
     expect(component?.className).toContain('skeleton__backgroundVariant')
   }
 }
+export const IconTestNavigationTags: Story = {
+  name: 'Тест: Корневой тег ссылки для href и целей роутера',
+  render: () => ({
+    components: { D1Icon },
+    template: `
+
+        <div class="wiki-storybook-group">
+          <D1Icon icon="home"/>
+          <D1Icon icon="open_in_new" dynamic href="https://example.com" aria-label="External link"/>
+          <D1Icon icon="home" dynamic to="/" aria-label="Router link"/>
+          <D1Icon icon="settings" :to="{ path: '/settings' }"/>
+          <D1Icon icon="open_in_new" href="https://example.com"/>
+        </div>
+
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    await waitFor(() => {
+      const icons = canvasElement.querySelectorAll<HTMLElement>('.d1-icon')
+      expect(icons.length).toBe(5)
+      expect(icons[0].tagName).toBe('SPAN')
+      expect(icons[1].tagName).toBe('A')
+      expect(icons[1]).toHaveAttribute('href', 'https://example.com')
+      expect(icons[2].tagName).toBe('A')
+      expect(icons[3].tagName).toBe('A')
+      expect(icons[4].tagName).toBe('A')
+    })
+  }
+}
 export const IconTestSourcesAndActive: Story = {
   name: 'Тест: Источники icon и iconActive (иконки, флаги, цвета, объекты ImageProps, файлы, слот default)',
   render: () => ({
@@ -659,6 +688,7 @@ export const IconTestAccessibilityAndDynamic: Story = {
     await expect(icons[4]).toHaveAttribute('aria-label', 'Menu')
 
     // 5. Dynamic + href
+    expect(icons[5].tagName).toBe('A')
     await expect(icons[5]).toHaveAttribute('role', 'button')
     await expect(icons[5]).toHaveAttribute('href', 'https://example.com/docs')
     await expect(icons[5]).toHaveAttribute('aria-label', 'External docs')

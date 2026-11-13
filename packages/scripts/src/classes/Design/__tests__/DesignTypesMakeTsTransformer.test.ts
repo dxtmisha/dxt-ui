@@ -4,7 +4,7 @@ import { DesignTypesMakeTsTransformer } from '../DesignTypesMakeTsTransformer'
 describe('DesignTypesMakeTsTransformer', () => {
   const transformer = new DesignTypesMakeTsTransformer()
 
-  it('cleans content by removing relative imports and re-exports', () => {
+  it('preserves relative imports while removing relative re-exports and comments', () => {
     const raw = [
       'import { foo } from \'./foo\';',
       'import \'./style\';',
@@ -14,8 +14,10 @@ describe('DesignTypesMakeTsTransformer', () => {
     ].join('\n')
 
     const cleaned = transformer.cleanContent(raw)
-    expect(cleaned).not.toContain('import { foo } from \'./foo\'')
+    expect(cleaned).toContain('import { foo } from \'./foo\';')
+    expect(cleaned).toContain('import \'./style\';')
     expect(cleaned).not.toContain('export * from \'./bar\'')
+    expect(cleaned).not.toContain('// comment line')
     expect(cleaned).toContain('export type A = string;')
   })
 

@@ -91,6 +91,12 @@ describe('TextInclude', () => {
       const textInclude = new TextInclude({})
       expect(textInclude.ok).toBe('Globalized OK')
     })
+
+    it('should retain the loading label when an undefined override is provided', () => {
+      TextInclude.initText({ loading: undefined })
+
+      expect(new TextInclude().loading).toBe('Loading')
+    })
   })
 
   describe('Boundary values, omitted props, and SSR request isolation', () => {

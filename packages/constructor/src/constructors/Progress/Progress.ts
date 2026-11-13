@@ -111,7 +111,7 @@ export class Progress extends DesignLogicAbstract<
     return {
       ...AriaStaticInclude.role(this.role),
       ...AriaStaticInclude.label(this.label),
-      ...(this.isValue() ? AriaStaticInclude.valueMinMax(this.value, 0, this.max) : {})
+      ...(this.isValue() ? AriaStaticInclude.valueMinMax(Math.min(this.value, this.max), 0, this.max) : {})
     }
   }
 
@@ -180,7 +180,13 @@ export class Progress extends DesignLogicAbstract<
    * @returns maximum value / максимальное значение
    */
   get max(): number {
-    return toNumber(this.props.max ?? defaultsProgress.max)
+    const max = toNumber(this.props.max ?? defaultsProgress.max)
+
+    if (max > 0) {
+      return max
+    }
+
+    return 1
   }
 
   /**
@@ -238,7 +244,7 @@ export class Progress extends DesignLogicAbstract<
   get valueInPercent(): string | null {
     if (this.isValue()) {
       const value = this.value
-      const percent = Math.min(100, Math.max(0, (100 / Math.max(1, this.max)) * value))
+      const percent = Math.min(100, Math.max(0, (value / this.max) * 100))
 
       if (this.props.circular) {
         return percent.toString()

@@ -19,11 +19,6 @@ src/constructors/Cell/CellDesign.tsx
 src/constructors/ComponentOutlet/ComponentOutlet.ts
 src/constructors/ComponentOutlet/ComponentOutletDesign.tsx
 
-src/constructors/Icon/Icon.ts
-src/constructors/Icon/IconDesign.tsx
-src/constructors/Icon/IconInclude.ts
-src/constructors/Icon/IconLiteInclude.ts
-src/constructors/Icon/IconTrailingInclude.ts
 
 src/constructors/Image/ImageAdaptiveGroup.ts
 src/constructors/Image/ImageCalculationList.ts
@@ -46,9 +41,6 @@ src/constructors/MotionTransform/MotionTransformInclude.ts
 src/constructors/MotionTransform/MotionTransformSize.ts
 src/constructors/MotionTransform/MotionTransformState.ts
 
-src/constructors/Progress/Progress.ts
-src/constructors/Progress/ProgressDesign.tsx
-src/constructors/Progress/ProgressInclude.ts
 
 src/constructors/Ripple/Ripple.ts
 src/constructors/Ripple/RippleItem.ts
@@ -83,11 +75,7 @@ src/constructors/Window/WindowStyles.ts
 src/constructors/Window/WindowVerification.ts
 
 src/classes/ComponentIncludeAbstract.ts
-src/classes/TextIncludeInstance.ts
-src/classes/TextInclude.ts
 
-src/constructors/Progress/Progress.ts
-src/constructors/Progress/ProgressDesign.tsx
 src/constructors/Progress/ProgressInclude.tsts
 
 src/constructors/Accordion/AccordionHead.ts
@@ -114,3 +102,14 @@ src/constructors/Image/ImageDesign.tsx
 src/constructors/Skeleton/Skeleton.ts
 src/constructors/Skeleton/SkeletonDesign.tsx
 src/constructors/Skeleton/SkeletonInclude.ts
+
+src/constructors/Icon/Icon.ts
+src/constructors/Icon/IconDesign.tsx
+src/constructors/Icon/IconInclude.ts
+src/constructors/Icon/IconLiteInclude.ts
+src/constructors/Icon/IconTrailingInclude.ts
+src/classes/TextIncludeInstance.ts
+src/classes/TextInclude.ts
+src/constructors/Progress/ProgressInclude.ts
+src/constructors/Progress/Progress.ts
+src/constructors/Progress/ProgressDesign.tsx

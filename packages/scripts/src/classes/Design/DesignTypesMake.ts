@@ -121,9 +121,9 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
   }
 
   /**
-   * Cleans up the declaration content via TypeScript AST transformation by removing relative imports, relative re-exports, non-public members, and empty lines.
+   * Cleans up the declaration content via TypeScript AST transformation by removing relative re-exports, non-public members, and empty lines while preserving imports.
    *
-   * Очищает контент деклараций через AST-трансформацию TypeScript, удаляя относительные импорты, относительные реэкспорты, непубличные члены и пустые строки.
+   * Очищает контент деклараций через AST-трансформацию TypeScript, удаляя относительные реэкспорты, непубличные члены и пустые строки с сохранением импортов.
    * @param content content to clean / контент для очистки
    * @returns cleaned content string / очищенная строка контента
    */

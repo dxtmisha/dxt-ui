@@ -379,6 +379,16 @@ const onIconLoad = (event: ImageEventData): void => {
         </DemoFlex>
       </D1Group>
 
+      <D1Group label="Empty Sources & Active-Only Icons">
+        <DemoFlex align="center">
+          <D1Icon size="2xl" overlay />
+          <D1Icon icon="" size="2xl" overlay />
+          <D1Icon :icon="null" size="2xl" overlay />
+          <D1Icon :icon="undefined" size="2xl" overlay />
+          <D1Icon iconActive="favorite" active size="2xl" overlay />
+        </DemoFlex>
+      </D1Group>
+
       <D1Group label="Interactive Mode, Navigation & Accessibility (dynamic, ariaLabel, role, tabindex, href, to, disabled)">
         <DemoFlex align="center">
           <D1Icon
@@ -426,6 +436,14 @@ const onIconLoad = (event: ImageEventData): void => {
             overlay
             to="/"
             ariaLabel="Router link home"
+          />
+          <D1Icon
+            icon="home"
+            dynamic
+            size="2xl"
+            overlay
+            :to="{ path: '/' }"
+            ariaLabel="Router object link home"
           />
           <D1Icon
             icon="block"

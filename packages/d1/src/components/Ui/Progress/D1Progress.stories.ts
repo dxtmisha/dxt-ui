@@ -363,7 +363,7 @@ export const ProgressTestStates: Story = {
             <D1Progress visible linear point inverse position="static" :value="80"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">value 0 (status role)</div>
+            <div class="wiki-storybook-item__label">value 0 (progressbar role)</div>
             <D1Progress visible linear position="static" :value="0"/>
           </div>
         </div>
@@ -393,10 +393,10 @@ export const ProgressTestStates: Story = {
       expect(itemPointInverse).toHaveClass('d1-progress--inverse')
       expect(itemPointInverse.querySelector('span')).toBeInTheDocument()
 
-      // 4. value 0 edge case: value=0 is not considered a determinate value, role stays status
+      // 4. value 0 is a determinate progress value
       const itemValueZero = items[3]
-      expect(itemValueZero).toHaveAttribute('role', 'status')
-      expect(itemValueZero).not.toHaveAttribute('aria-valuenow')
+      expect(itemValueZero).toHaveAttribute('role', 'progressbar')
+      expect(itemValueZero).toHaveAttribute('aria-valuenow', '0')
     })
   }
 }
@@ -555,9 +555,10 @@ export const ProgressTestInteractive: Story = {
     await step('Reset progress value to zero', async () => {
       await userEvent.click(resetButton)
       await waitFor(() => {
-        // Value 0 switches role to status
-        expect(linearDynamic).toHaveAttribute('role', 'status')
-        expect(circularDynamic).toHaveAttribute('role', 'status')
+        expect(linearDynamic).toHaveAttribute('role', 'progressbar')
+        expect(linearDynamic).toHaveAttribute('aria-valuenow', '0')
+        expect(circularDynamic).toHaveAttribute('role', 'progressbar')
+        expect(circularDynamic).toHaveAttribute('aria-valuenow', '0')
       })
     })
   }

@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0] - 2026-11-13
+
+### Added
+- **`DesignLogicAbstract` & `ConstrItemsItem`**:
+  - Added `hasInstance(name)` public method to `DesignLogicAbstract` (`src/classes/design/DesignLogicAbstract.ts`) to check whether a dependency instance has already been created and cached without triggering lazy instantiation.
+  - Added optional `canCreate?: boolean | (() => boolean)` property to `ConstrItemsItem` (`src/types/constructorTypes.ts`) to specify whether a dependency instance can be created.
+  - Added `callInstance(name, callback)` public method to `DesignLogicAbstract` to invoke `callback` with the dependency instance only when it already exists, has no `canCreate` guard, or `executeFunction(canCreate)` evaluates to truthy.
+  - Added unit tests covering `hasInstance` and `callInstance` (including boolean and function `canCreate` guards) in `src/classes/design/__tests__/DesignLogicAbstract.test.ts`.
+
+### Changed
+- **`DesignConstructorAbstract`**:
+  - Set `inheritAttrs = false` on the render function returned by `render()` so root attributes are bound explicitly via `getAttrs()`.
+  - Updated `DesignConstructorAbstract` unit tests and synchronized JSDoc and Storybook MDX documentation (EN, RU, VI).
+- **`computedAsync` & `dxtFunctionalPlugin`**:
+  - Widened `computedAsync` getter signature to accept direct `Promise<R>` and mixed sync/async getters (`() => Promise<R> | R`).
+  - Refined `dxtFunctionalPlugin` typing to `Plugin<[options?: FunctionalPluginOptions]>`, supported `readonly ErrorCenterHandlerCallback[]` for `errorCallbacks`, and checked `options.metaSuffix !== undefined` to allow empty strings.
+- **Tests & Documentation**:
+  - Replaced timer-based delays in `useApiRef`, `useApiManagementRef`, and `useApiManagementAsyncRef` unit tests with deterministic promise resolution and `nextTick()`, and added `expectTypeOf` assertions across `src/functions` test suites.
+  - Updated bilingual JSDoc comments and localized Storybook MDX documentation (EN, RU, VI) for `DesignConstructorAbstract`, `useMeta`, `computedAsync`, and `dxtFunctionalPlugin`.
+
 ## [2.1.0] - 2026-11-08
 
 ### Added

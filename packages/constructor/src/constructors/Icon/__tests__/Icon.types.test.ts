@@ -46,6 +46,7 @@ describe('Icon (contracts checked by TypeScript)', () => {
 
       expectTypeOf<IconProps['role']>().toEqualTypeOf<RoleType | undefined>()
       expectTypeOf<Icon['role']>().toEqualTypeOf<RoleType | undefined>()
+      expectTypeOf<Icon['tag']>().toEqualTypeOf<'a' | 'span'>()
       expectTypeOf<IconProps['tabindex']>().toEqualTypeOf<number | string | undefined>()
     })
 
@@ -72,6 +73,8 @@ describe('Icon (contracts checked by TypeScript)', () => {
       expectTypeOf<NonNullable<IconExpose['getDetail']>>().toBeFunction()
 
       expectTypeOf<IconSlots>().toBeObject()
+      expectTypeOf<Parameters<NonNullable<IconSlots['default']>>[0]>().toBeUnknown()
+      expectTypeOf<ReturnType<NonNullable<IconSlots['default']>>>().not.toBeAny()
       expectTypeOf<IconClasses['main']>().not.toBeAny()
       expectTypeOf<IconComponents>().toBeObject()
       expectTypeOf<IconConstructors>().toHaveProperty('enabled')

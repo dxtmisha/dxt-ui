@@ -16,8 +16,8 @@ export const wikiProgress: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Adds a point at the end of the progress indicator',
-        ru: 'Добавляет точку в конце индикатора прогресса'
+        en: 'Adds a point to linear progress with a value or indeterminate="type1"; ignored for circular progress',
+        ru: 'Добавляет точку к линейному прогрессу со значением или indeterminate="type1"; игнорируется для кругового прогресса'
       }
     },
     isDemo: true

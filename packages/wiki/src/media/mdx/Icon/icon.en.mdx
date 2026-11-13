@@ -6,6 +6,7 @@ It provides a unified interface on top of the `Image` component, managing both a
 
 **Key features:**
 
+- **Navigation Tag:** Uses an `<a>` root when `to` or `href` is provided, otherwise a `<span>`. Interactive bindings and handlers remain controlled by `dynamic`.
 - **Dual-Icon State Management:** Seamless switching between primary (`icon`) and active (`iconActive`) icons based on `active` with transition animations (`animationType`, `animationShow`)
 - **Interactive Mode & Accessibility:** Full keyboard navigation (`tabindex`, `Enter`, `Space`), click events (`@click`, `@clickLite`), link support (`href`), and automatic ARIA attributes (`role`, `ariaLabel`, `aria-disabled`) when `dynamic` is enabled
 - **Decorative Default:** Renders with `aria-hidden="true"` and zero extraneous ARIA attributes when `dynamic` is not enabled

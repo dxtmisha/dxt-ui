@@ -32,7 +32,7 @@ description: Run a full dependency-first update cycle for one constructor when r
 
 ## General Execution Rules
 
-- **Analyze and update only one constructor per invocation**, together with its local helper classes. Dependency traversal is allowed only to select the first incomplete component; perform architectural analysis, code review, and Steps 2–7 only for the selected constructor.
+- **Analyze and update only one constructor per invocation**, together with its local helper classes. Constructor dependency traversal selects the first incomplete component; perform Steps 2–7 only for that component. Step 3 also permits the executable intra-package dependency reviews and finalization required by `code-review.md`, without running the full constructor cycle for those dependencies.
 - After completing the selected constructor, record the result in the registry, provide a report, and stop. Do not automatically proceed to its parent, a sibling dependency, or the next component in the queue. Continue only upon the user's next instruction, checking the registry and traversing dependencies again.
 - Follow the [project rules](../ai-prompt.md) and their mandatory references for affected packages.
 - This file defines execution order only. Before each step, read its linked instruction completely and follow the current version. Do not copy or duplicate its rules here.
@@ -40,7 +40,7 @@ description: Run a full dependency-first update cycle for one constructor when r
 - **Explicitly Ignorable Warnings**: `PLUGIN_TIMINGS` build performance diagnostics and Storybook `No story files found for the specified pattern` warnings for unrelated or empty package patterns may be ignored. They do **not** require stopping, additional user confirmation, or another verification run solely because they appeared. Continue the cycle and note them in the final report. The command must still succeed, and the selected component's required tests must actually be discovered and pass; missing tests for the selected component or a zero-test run do not qualify for this exception. This exception takes precedence over warning-free requirements in linked instructions and does not require suppressing the diagnostics or disabling checks.
 - Report the component, step, specific problem, supporting evidence, and unfinished work. Except for the explicitly ignorable warnings above and allowed build fixes in Step 3.2, do not automatically fix or bypass the problem or proceed further. Continue only upon a separate user instruction; after resolving the cause, repeat the interrupted step and checks that depend on it.
 - Planned migration, architectural compliance work, and updates to tests, demo, and wiki belong to their respective steps. A defect, conflicting requirements, or failed verification discovered during that work requires stopping.
-- This workflow's ordering and stop rules take precedence over automatic fixes, Fast Track, finalization, and advancement to other entities in linked instructions. Do not execute their later steps ahead of the order below. Never record full completion prematurely.
+- This workflow's ordering and stop rules take precedence over automatic fixes, Fast Track, finalization, and advancement to other entities in linked instructions, except for the prerequisite dependency review and finalization explicitly required in Step 3. Do not execute other later steps ahead of the order below. Never record full completion prematurely.
 - When stopping, preserve completed work and registry entries for previously completed components. Do not add an incomplete component to the registry.
 
 ## 1. Traverse Dependencies from Leaves to Parent
@@ -63,6 +63,8 @@ Fully apply [design-logic.md](./design-logic.md) to the current component and it
 ## 3. Perform Code Review
 
 Apply [code-review.md](./code-review.md) to the resulting component implementation and affected helper classes.
+
+Before reviewing a file, recursively review and finalize its unreviewed or changed executable intra-package dependencies, including their required checks and `ai-review.md` entries, as specified by `code-review.md`. These prerequisite reviews are part of Step 3 and do not complete a constructor cycle or permit advancing to another constructor. Ignore the per-run file-count limits and automatic pauses tied to those limits in `code-review.md` for this workflow; retain its dependency ordering, freshness checks, and other applicable requirements.
 
 Any finding stops the entire cycle under the general rules above. Automatic fixes and continuation in `code-review.md` do not override this stop. An earlier review does not replace verification of a changed implementation.
 

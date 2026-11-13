@@ -485,14 +485,18 @@ Explanation of the feature for developers.
 
 ## Step 11: Post-Change Verification & D1 Synchronization
 
-1. **Regenerate Design System Component & Stories**:
+1. **Regenerate Design System Component & Stories**: Run the generator from the target design-system package and pass the component name with `--name`. For example, for D1 Progress:
    ```bash
-   npx dxt-ui d1.[component]
+   cd packages/d1
+   npx dxt-ui --name progress
    ```
+   Replace `progress` with the component's kebab-case name. `dxt-ui` does not accept a positional component argument.
 2. **Verify Generated Files**:
    - Inspect `packages/d1/src/components/Ui/[Component]/D1[Component].stories.ts` and `D1[Component].mdx`.
    - Ensure there are no syntax errors (e.g., unescaped backticks), no implicit `any` TypeScript warnings (`TS7006`), and no `[Component]Test...` stories inside `D1[Component].mdx`.
-3. **Run Storybook Test Runner**:
+3. **Run Storybook Test Runner**: Run the Storybook Vitest project from `packages/storybook`, passing the generated story path. For example, for D1 Progress:
    ```bash
-   npm run test:storybook -- --url http://localhost:6006 packages/d1/src/components/Ui/[Component]/D1[Component].stories.ts
+   cd packages/storybook
+   npm run test-storybook -- ../d1/src/components/Ui/Progress/D1Progress.stories.ts
    ```
+   Replace the path with the selected component's generated story. Confirm that its tests are discovered and pass; a zero-test run is not verification.

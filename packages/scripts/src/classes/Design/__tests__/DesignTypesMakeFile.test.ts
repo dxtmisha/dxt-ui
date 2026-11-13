@@ -43,12 +43,15 @@ describe('DesignTypesMakeFile', () => {
     expect(makeFile.testGetMd5Header(md5, true)).toBe(`// md5:${md5} true`)
   })
 
-  it('combines file items into one string', () => {
+  it('combines file items into one string with file path headers and separators, skipping empty content', () => {
     const list = [
-      { path: 'a.d.ts', content: 'export type A = 1;' },
-      { path: 'b.d.ts', content: 'export type B = 2;' }
+      { path: 'classes/a.d.ts', content: 'export type A = 1;' },
+      { path: 'empty.d.ts', content: '' },
+      { path: 'types\\b.d.ts', content: 'export type B = 2;' }
     ] as any
-    expect(makeFile.toOneFile(list)).toBe('export type A = 1;\n\nexport type B = 2;')
+    expect(makeFile.toOneFile(list)).toBe(
+      '// File: classes/a.d.ts\nexport type A = 1;\n// ----------------------------------------\n// File: types/b.d.ts\nexport type B = 2;'
+    )
   })
 
   it('resolves temporary directory and dist directory correctly', () => {

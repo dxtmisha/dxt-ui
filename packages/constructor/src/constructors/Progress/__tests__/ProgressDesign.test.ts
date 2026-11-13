@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
 import './testWarnings'
-import { afterEach, describe, expect, it } from 'vitest'
-import { computed, createApp, defineComponent, nextTick, reactive } from 'vue'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { computed, createApp, defineComponent, h, nextTick, reactive } from 'vue'
 import type { ConstrClasses } from '@dxtmisha/functional'
 
 import { ProgressDesign } from '../ProgressDesign'
+import { Progress } from '../Progress'
 import { defaultsProgress, type ProgressProps } from '../props'
 import type { ProgressClasses, ProgressComponents, ProgressExpose } from '../types'
 
@@ -12,9 +13,32 @@ const cleanups: Array<() => void> = []
 
 afterEach(() => {
   cleanups.splice(0).reverse().forEach(unmount => unmount())
+  vi.restoreAllMocks()
 })
 
 describe('ProgressDesign (integration)', () => {
+  it('renders the point only in linear mode with a determinate value', () => {
+    const properties = reactive<ProgressProps>({ linear: true, point: true })
+    const isValue = vi.spyOn(Progress.prototype, 'isValue').mockReturnValue(true)
+    let design: ProgressDesign<ProgressComponents, ProgressExpose, ProgressClasses, ProgressProps> | undefined
+    const component = defineComponent({
+      setup() {
+        design = new ProgressDesign('d1.progress', properties)
+        return () => h('div')
+      }
+    })
+    const container = document.createElement('div')
+    const app = createApp(component)
+    app.mount(container)
+    cleanups.push(() => app.unmount())
+
+    expect(design?.renderPoint()).toHaveLength(1)
+    expect(isValue).toHaveBeenCalled()
+    properties.circular = true
+    expect(design?.renderPoint()).toEqual([])
+    expect(design?.renderCircle()).toHaveLength(2)
+  })
+
   it('should render linear progress in DOM and bind root DOM element to elementHtml', async () => {
     const container = document.createElement('div')
     document.body.appendChild(container)

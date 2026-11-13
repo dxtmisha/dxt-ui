@@ -7,7 +7,7 @@ import {
   watch,
   type Ref
 } from 'vue'
-import { forEach, forOwn } from '@dxtmisha/functional-basic'
+import { executeFunction, forEach, forOwn, hasKey, isNull } from '@dxtmisha/functional-basic'
 
 import { DesignLifecycleAbstract } from './DesignLifecycleAbstract'
 import type { DesignComponents } from './DesignComponents'
@@ -104,6 +104,17 @@ export abstract class DesignLogicAbstract<
   readonly isMounted = ref(false)
 
   /**
+   * Checks whether a dependency instance has already been created and cached.
+   *
+   * Проверяет, был ли уже создан и сохранён экземпляр зависимости.
+   * @param name String key of a dependency constructor. / Строковый ключ конструктора зависимости.
+   * @returns True if the dependency instance has been created. / True, если экземпляр зависимости уже создан.
+   */
+  hasInstance<K extends keyof CONSTRUCTORS & string>(name: K): boolean {
+    return hasKey(this.instances, name) && Boolean(this.instances[name])
+  }
+
+  /**
    * Returns a cached dependency or creates it inside the captured active scope. Constructor arguments come from the optional `parameters()` factory. A failed constructor is not cached and can be retried.
    *
    * Возвращает кэшированную зависимость или создаёт её в сохранённой активной области. Аргументы берутся из необязательной фабрики `parameters()`. Ошибка конструктора не кэшируется и допускает повторную попытку.
@@ -136,6 +147,37 @@ export abstract class DesignLogicAbstract<
     }
 
     return instance as ConstrInstance<CONSTRUCTORS, K>
+  }
+
+  /**
+   * Executes a callback with the dependency instance when it already exists, has no `canCreate` guard, or `canCreate()` returns true.
+   *
+   * Выполняет функцию обратного вызова с экземпляром зависимости, если он уже создан, отсутствует проверка `canCreate` или `canCreate()` возвращает true.
+   * @param name String key of a dependency constructor. / Строковый ключ конструктора зависимости.
+   * @param callback Callback invoked with the dependency instance. / Функция обратного вызова, получающая экземпляр зависимости.
+   * @param defaultValue Default value or factory returned when the instance cannot be created. / Значение по умолчанию или фабрика, возвращаемая, если экземпляр нельзя создать.
+   * @returns Callback result if executed, otherwise `defaultValue` or `undefined`. / Результат выполнения функции обратного вызова, иначе `defaultValue` или `undefined`.
+   */
+  callInstance<
+    K extends keyof CONSTRUCTORS & string,
+    R = void,
+    D = undefined
+  >(
+    name: K,
+    callback: (instance: ConstrInstance<CONSTRUCTORS, K>) => R,
+    defaultValue?: D | (() => D)
+  ): R | D {
+    const canCreate = this.constructorItems[name]?.canCreate
+
+    if (
+      this.hasInstance(name)
+      || isNull(canCreate)
+      || executeFunction(canCreate)
+    ) {
+      return callback(this.getInstance(name))
+    }
+
+    return executeFunction(defaultValue) as R | D
   }
 
   /**

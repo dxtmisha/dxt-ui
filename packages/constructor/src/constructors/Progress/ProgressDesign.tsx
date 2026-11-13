@@ -113,6 +113,7 @@ export class ProgressDesign<
   readonly renderPoint = (): VNode[] => {
     if (
       this.props.linear
+      && !this.props.circular
       && this.props.point
       && (
         this.item.isValue()

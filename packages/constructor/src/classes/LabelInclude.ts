@@ -2,7 +2,6 @@ import { type Ref, type VNode } from 'vue'
 import {
   type ConstrClass,
   type DesignName,
-  executeFunction,
   executeFunctionRef,
   getElementId,
   isFilled,
@@ -14,9 +13,6 @@ import {
 import { SkeletonInclude } from '../constructors/Skeleton'
 
 import type { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/labelTypes'
-
-/** Label include item getter callback or instance / Функция получения экземпляра подключения метки или сам экземпляр */
-export type LabelIncludeItem = LabelInclude | (() => LabelInclude)
 
 /**
  * Utility class for connecting and rendering label elements.
@@ -42,31 +38,6 @@ export class LabelInclude {
       props?.label
       || (slots && ('default' in slots || 'label' in slots))
     )
-  }
-
-  /**
-   * Lazily renders the label component if it is enabled.
-   *
-   * Лениво рендерит компонент метки, если он включен.
-   * @param item callback function returning label instance or instance / функция обратного вызова или экземпляр метки
-   * @param props input properties / входные свойства
-   * @param slots slots dictionary / объект слотов
-   * @param childrenExtra additional children elements / дополнительные дочерние элементы
-   * @param propsExtra additional HTML properties / дополнительные HTML-свойства
-   * @returns array of virtual nodes / массив виртуальных узлов
-   */
-  static renderLazy(
-    item: LabelIncludeItem,
-    props?: LabelProps,
-    slots?: LabelSlots | LabelAlternativeSlots,
-    childrenExtra?: any[],
-    propsExtra: Record<string, any> = {}
-  ): VNode[] {
-    if (LabelInclude.is(props, slots)) {
-      return executeFunction(item)?.render(childrenExtra, propsExtra) ?? []
-    }
-
-    return []
   }
 
   /** Default element identifier / Идентификатор элемента по умолчанию */

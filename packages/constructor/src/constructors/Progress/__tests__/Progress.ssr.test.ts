@@ -102,6 +102,32 @@ describe('Progress (SSR)', () => {
       expect(html).toContain('<circle')
     })
 
+    it('should render a point only for linear progress', async () => {
+      const linear = await renderProgressSsr({ point: true, value: 50 })
+      const circular = await renderProgressSsr({ circular: true, point: true, value: 50 })
+
+      expect(linear).toContain('d1-progress__point')
+      expect(circular).toContain('<svg')
+      expect(circular).not.toContain('d1-progress__point')
+      expect(circular).not.toContain('<span')
+    })
+
+    it('should keep the reported value within the accessible range in SSR', async () => {
+      const html = await renderProgressSsr({ value: 150, max: 100 })
+
+      expect(html).toContain('aria-valuenow="100"')
+      expect(html).toContain('aria-valuemax="100"')
+      expect(html).toContain('sys-value:0%')
+    })
+
+    it('should render a completed fractional range consistently in SSR', async () => {
+      const html = await renderProgressSsr({ value: 0.5, max: 0.5 })
+
+      expect(html).toContain('aria-valuenow="0.5"')
+      expect(html).toContain('aria-valuemax="0.5"')
+      expect(html).toContain('sys-value:0%')
+    })
+
     it('should render indeterminate progress in SSR when clientOnly is false', async () => {
       const html = await renderProgressSsr({
         clientOnly: false,

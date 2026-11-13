@@ -36,8 +36,8 @@ export type ProgressPropsBasic = AriaLabelPropsInclude
     /** Whether to use circular progress / Использовать ли круговой прогресс */
     circular?: boolean
     /**
-     * Whether to display a stop indicator dot at the end of the linear track (supported only for determinate `value` or `indeterminate="type1"`) /
-     * Отображать ли точку-индикатор в конце линейного трека (поддерживается только для детерминированного `value` или `indeterminate="type1"`)
+     * Whether to display a stop indicator dot on linear progress (only with determinate `value` or `indeterminate="type1"`; ignored for circular progress) /
+     * Отображать ли точку-индикатор на линейном прогрессе (только с определённым `value` или `indeterminate="type1"`; игнорируется для кругового прогресса)
      */
     point?: boolean
 

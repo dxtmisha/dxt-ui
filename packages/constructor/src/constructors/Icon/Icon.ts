@@ -40,7 +40,7 @@ export type IconConstructors = {
  * загрузки скелетона и разрешением активной/неактивной иконки.
  */
 export class Icon extends DesignLogicAbstract<
-  HTMLSpanElement,
+  HTMLElement,
   IconComponents,
   IconEmits,
   IconSlots,
@@ -97,45 +97,26 @@ export class Icon extends DesignLogicAbstract<
   }
 
   /**
-   * Returns ARIA state attributes (`aria-checked` or `aria-pressed`) for dual-icon interactive toggles.
-   *
-   * Возвращает атрибуты состояния ARIA (`aria-checked` или `aria-pressed`) для двухсоставных интерактивных переключателей.
-   * @returns ARIA state attributes / атрибуты состояния ARIA
-   */
-  protected get ariaState(): AriaList {
-    if (this.props.iconActive) {
-      const role = this.role
-
-      if (role === 'switch' || role === 'checkbox') {
-        return AriaStaticInclude.checked(this.isActive())
-      }
-
-      if (role === 'button') {
-        return AriaStaticInclude.pressed(this.isActive())
-      }
-    }
-
-    return {}
-  }
-
-  /**
    * Computed bindings for the icon element.
-   * Includes `tabindex` and click event listeners only when `dynamic` is enabled.
+   * Includes the disabled attribute, and adds `tabindex` and click event listeners when `dynamic` is enabled.
    *
    * Вычисляемые привязки для элемента иконки.
-   * Включает `tabindex` и обработчики клика только при включённом `dynamic`.
+   * Включает атрибут disabled, а при включённом `dynamic` добавляет `tabindex` и обработчики клика.
    * @returns root element bindings / привязки корневого элемента
    */
   get binds(): ConstrBind {
     const properties: ConstrBind = {
       key: 'icon',
+      disabled: this.props.disabled || undefined,
       ...this.aria
     }
 
     if (this.props.dynamic) {
       return {
         ...properties,
-        tabindex: this.i('enabled').isDisabled ? undefined : (this.props.tabindex ?? 0),
+        tabindex: this.i('enabled').isDisabled
+          ? (this.tag === 'a' ? -1 : undefined)
+          : (this.props.tabindex ?? 0),
         ...this.i('event').binds
       }
     }
@@ -150,9 +131,13 @@ export class Icon extends DesignLogicAbstract<
    * @returns classes values / значения классов
    */
   get classes(): ConstrClassObject {
-    return {
-      ...(this.props.isSkeleton ? this.i('skeleton').classes : {})
+    const classes: ConstrClassObject = {}
+
+    if (SkeletonInclude.is(this.props)) {
+      Object.assign(classes, this.i('skeleton').classes)
     }
+
+    return classes
   }
 
   /**
@@ -214,6 +199,20 @@ export class Icon extends DesignLogicAbstract<
   }
 
   /**
+   * Returns the anchor tag for a navigation target, or the span tag otherwise.
+   *
+   * Возвращает тег ссылки для цели навигации, иначе тег span.
+   * @returns root element tag / тег корневого элемента
+   */
+  get tag(): 'a' | 'span' {
+    if (this.props.to || this.props.href) {
+      return 'a'
+    }
+
+    return 'span'
+  }
+
+  /**
    * Checks if the additional icon is active.
    *
    * Проверяет, активна ли дополнительная иконка.
@@ -221,6 +220,28 @@ export class Icon extends DesignLogicAbstract<
    */
   readonly isActive = (): boolean => {
     return Boolean(this.props.active && this.props.iconActive)
+  }
+
+  /**
+   * Returns ARIA state attributes for interactive dual-icon toggles.
+   *
+   * Возвращает атрибуты состояния ARIA для интерактивных переключателей с двумя иконками.
+   * @returns ARIA state attributes / атрибуты состояния ARIA
+   */
+  protected get ariaState(): AriaList {
+    if (this.props.iconActive) {
+      const role = this.role
+
+      if (role === 'switch' || role === 'checkbox') {
+        return AriaStaticInclude.checked(this.isActive())
+      }
+
+      if (role === 'button') {
+        return AriaStaticInclude.pressed(this.isActive())
+      }
+    }
+
+    return {}
   }
 
   /**

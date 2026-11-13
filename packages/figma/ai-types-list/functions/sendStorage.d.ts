@@ -1,3 +1,3 @@
-// md5:2e329ecbccf0cc64d6e1cd462e528a22 true
-/** Sends storage data to the Figma plugin. @keywords figma plugin storage send */
-export declare function sendStorage<T>(name: string, value: T, id?: string): void;
+// md5:13fac845df0fdbb1513975408d5a139a true
+/** Sends storage data to the Figma plugin. @keywords figma, storage, plugin, data, send */
+export declare function sendStorage<T = unknown>(name: string, value: T, id?: string): void;

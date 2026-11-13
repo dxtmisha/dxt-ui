@@ -108,18 +108,24 @@ export class DesignTypesMakeFile {
   }
 
   /**
-   * Combines a list of files into a single string.
+   * Combines a list of files into a single string, prepending each non-empty file with its project-relative file path comment and separating files with a divider.
    *
-   * Объединяет список файлов в одну строку.
+   * Объединяет список файлов в одну строку, добавляя в начало каждого непустого файла комментарий с путем к файлу от проекта и разделяя файлы разделителем.
    * @param list list of files / список файлов
    * @returns combined content string / объединенная строка контента
    */
   toOneFile(list: DesignTypesList): string {
     return forEach(
       list,
-      item => item.content
+      (item) => {
+        if (isFilled(item.content)) {
+          return `// File: ${item.path.replace(/\\/g, '/')}\n${item.content}`
+        }
+
+        return undefined
+      }
     )
-      .join('\n\n')
+      .join('\n// ----------------------------------------\n')
   }
 
   /**

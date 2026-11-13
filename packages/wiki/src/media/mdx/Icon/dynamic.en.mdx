@@ -12,6 +12,9 @@ By default, `Icon` renders as a decorative element with `aria-hidden="true"`. Se
 - `tabindex` — custom tab order index (omitted automatically when `disabled` is `true`)
 - `value` / `detail` — payload data emitted with `@click` and `@clickLite` and accessible via `getValue()` / `getDetail()`
 - `href` — optional link URL attribute bound in `dynamic` mode
+- `to` — router navigation target handled in `dynamic` mode
+
+Providing either `to` or `href` selects an `<a>` root instead of `<span>`, independently of `dynamic`.
 
 <Source
     code={`

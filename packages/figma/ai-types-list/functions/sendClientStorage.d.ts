@@ -1,4 +1,3 @@
-// md5:d435837c28f4f01e42e1a719d38ff8ea true
-
-/** Sends client storage data to the Figma plugin. @keywords client storage, figma plugin, persistence */
-export declare function sendClientStorage<T>(name: string, value: T): void;
+// md5:dccf69723ded41557a2f790ee3b70d4e true
+/** Sends client storage data to the Figma plugin. @keywords figma, plugin, clientStorage, send */
+export declare function sendClientStorage<T = unknown>(name: string, value: T): void;

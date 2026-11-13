@@ -4,7 +4,7 @@ SCOPE & CONTEXT:
 - Process STRICTLY entities in `File Content`. Do NOT add unexported entities or code from `File JS Code`.
 - Use `File JS Code` ONLY as reference to understand implementation logic for writing JSDoc descriptions.
 - AI coding agents will rely EXCLUSIVELY on this output. Ensure complete type contracts and clear JSDoc descriptions.
-- Do NOT include file paths, links, or internal imports in the output.
+- Do NOT add external links or commentary in the output.
 
 JSDOC RULES:
 - MANDATORY FOR ALL CLASSES, METHODS, FUNCTIONS & ACCESSORS: Every `class`, `declare class`, `abstract class`, `function`, `declare function`, method (public/static/abstract), `constructor`, and `get`/`set` accessor MUST ALWAYS have a JSDoc description.
@@ -19,7 +19,7 @@ JSDOC RULES:
 - Place JSDoc directly above declarations. Remove regular inline comments (`//` or `/* */`).
 
 CLEANING & STRUCTURING:
-- Remove internal `import` statements and internal re-exports. Keep external package exports.
+- Preserve all `import` statements (both external package imports and internal/relative imports). Remove internal re-exports, and keep external package exports.
 - Delete non-public content (private/protected members, unexported elements). Keep all public API surfaces.
 - Do NOT delete any `type` definitions. Preserve abstract classes.
 - Format output tightly without unnecessary blank lines.
