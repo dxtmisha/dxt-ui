@@ -117,7 +117,7 @@ await expect(component?.querySelector('.design-component__textVariant')).toBeInT
             <DesignComponent :active="true">
               <div
                 class="design-component__border"
-                style="width: 128px; height: 128px; border: 2px solid #ccc;"
+                style="width: 128px; height: 128px; border-width: 2px; border-style: solid;"
               >
                 Border placeholder
               </div>
@@ -129,7 +129,7 @@ await expect(component?.querySelector('.design-component__textVariant')).toBeInT
             <DesignComponent :active="true">
               <div
                 class="design-component__borderVariant"
-                style="width: 128px; height: 128px; border: 2px solid #ccc;"
+                style="width: 128px; height: 128px; border-width: 2px; border-style: solid;"
               >
                 Border Variant
               </div>
@@ -270,10 +270,10 @@ await step('Deactivate skeletons and verify immediate vs delayed hiding', async 
       `
     },
     {
-      id: 'SkeletonTestClassesAndSlot',
+      id: 'SkeletonSlot',
       name: {
-        en: 'Test: All skeleton classes and scoped slot props',
-        ru: 'Тест: Все классы скелетона и свойства слота'
+        en: 'Scoped slot classes',
+        ru: 'Классы scoped-слота'
       },
       template: `
         <div class="wiki-storybook-group">
@@ -288,8 +288,8 @@ await step('Deactivate skeletons and verify immediate vs delayed hiding', async 
                   <div data-testid="slot-background-after" :class="classBackgroundAfter" style="width: 48px; height: 32px;">After</div>
                   <div data-testid="slot-background-before" :class="classBackgroundBefore" style="width: 48px; height: 32px;">Before</div>
                   <div data-testid="slot-background-variant" :class="classBackgroundVariant" style="width: 48px; height: 32px;">BG Variant</div>
-                  <div data-testid="slot-border" :class="classBorder" style="width: 48px; height: 32px; border: 2px solid #ccc;">Border</div>
-                  <div data-testid="slot-border-variant" :class="classBorderVariant" style="width: 48px; height: 32px; border: 2px solid #ccc;">Border Variant</div>
+                  <div data-testid="slot-border" :class="classBorder" style="width: 48px; height: 32px; border-width: 2px; border-style: solid;">Border</div>
+                  <div data-testid="slot-border-variant" :class="classBorderVariant" style="width: 48px; height: 32px; border-width: 2px; border-style: solid;">Border Variant</div>
                   <span data-testid="slot-none" :class="classNone">Hidden Content</span>
                 </div>
               </template>
@@ -517,10 +517,10 @@ await step('Restore initial state', async () => {
       `
     },
     {
-      id: 'SkeletonTestExposeAndDelayTimers',
+      id: 'SkeletonExpose',
       name: {
-        en: 'Test: Exposed isActive method and delay transitions',
-        ru: 'Тест: Метод isActive и переходы с задержкой'
+        en: 'Exposed isActive method and delay transitions',
+        ru: 'Метод isActive и переходы с задержкой'
       },
       setup: `
       const skeletonRef = ref<{ isActive: () => boolean }>()
@@ -617,6 +617,52 @@ await step('Activate with 120ms delay and wait for visible state', async () => {
   })
 })
       `
+    },
+    {
+      id: 'SkeletonTestEmptyAndUnmount',
+      name: {
+        en: 'Test: Empty slots and unmount during appearance delay',
+        ru: 'Тест: Пустые слоты и размонтирование во время задержки'
+      },
+      setup: `
+      const mounted = ref(false)
+      return { mounted }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <button class="wiki-storybook-button" @click="mounted = !mounted">Toggle Mount</button>
+          <DesignComponent data-testid="empty-inactive"/>
+          <DesignComponent data-testid="empty-active" active/>
+          <DesignComponent v-if="mounted" data-testid="delayed-mount" active :delay="120">
+            <span class="design-component__text">Delayed content</span>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const toggleButton = canvas.getByRole('button', { name: 'Toggle Mount' })
+await expect(canvas.getByTestId('empty-inactive')).toHaveAttribute('aria-busy', 'false')
+await expect(canvas.getByTestId('empty-active')).toHaveAttribute('aria-busy', 'true')
+await expect(canvas.getByTestId('empty-inactive').children.length).toBe(0)
+await expect(canvas.getByTestId('empty-active').children.length).toBe(0)
+await expect(canvas.queryByTestId('delayed-mount')).not.toBeInTheDocument()
+
+await step('Unmount while the appearance timer is pending', async () => {
+  await userEvent.click(toggleButton)
+  await expect(canvas.getByTestId('delayed-mount')).toHaveAttribute('aria-busy', 'true')
+  await userEvent.click(toggleButton)
+  await expect(canvas.queryByTestId('delayed-mount')).not.toBeInTheDocument()
+})
+
+await step('Remount and allow the new instance to become visible', async () => {
+  await userEvent.click(toggleButton)
+  await waitFor(() => {
+    expect(canvas.getByTestId('delayed-mount')).toHaveClass('design-component--visible')
+  })
+  await userEvent.click(toggleButton)
+  await expect(canvas.queryByTestId('delayed-mount')).not.toBeInTheDocument()
+})
+      `
     }
   ],
   documentation: {
@@ -630,9 +676,11 @@ await step('Activate with 120ms delay and wait for visible state', async () => {
     `,
     expose: `
 <StorybookDescriptions componentName={'Skeleton'} type={'expose.isActive'}/>
+<Canvas of={Component.SkeletonExpose}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<Canvas of={Component.SkeletonSlot}/>
     `
   },
   ai: {

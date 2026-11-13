@@ -1,5 +1,5 @@
-// md5:69d10a2d2a1ae770b24914133d5dc4c3 true
-/** Icon design token and modifier properties. @keywords icon, tokens, modifiers */
+// md5:d4283a35e23a27d50ad2f539a94f9913 true
+/** Icon design tokens and visual modifier properties. @keywords icon, tokens, modifiers */
 export type IconPropsToken = {
     turn?: boolean;
     disabled?: boolean;
@@ -14,22 +14,22 @@ export type IconPropsToken = {
     animationType?: 'type1' | 'type2';
     animationShow?: boolean;
 };
-/** Base properties for the icon component. @keywords icon, properties, base */
+/** Core properties for the icon component. @keywords icon, properties, basic */
 export type IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> = SkeletonPropsInclude & AriaLabelPropsInclude & EventClickProps & {
     /** Active state of the icon. */
     active?: boolean;
-    /** Main icon value. */
+    /** Primary icon image source or identifier. */
     icon?: ImageValue<Image>;
-    /** Active state icon value. */
+    /** Icon image source or identifier for the active state. */
     iconActive?: ImageValue<Image>;
-    /** ARIA role for accessibility. */
+    /** ARIA role (applied only when `dynamic` is enabled; static icons render `aria-hidden="true"`). */
     role?: RoleType;
-    /** Tab index for keyboard navigation. */
+    /** Tab index for keyboard navigation (applied when `dynamic` is enabled and not `disabled`). */
     tabindex?: number | string;
 };
-/** Complete icon component properties combining basic and token settings. @keywords icon, props */
+/** Complete icon component properties combining core and token properties. */
 export type IconProps = IconPropsBasic & IconPropsToken;
-/** Default property values for the icon component. @keywords icon, defaults */
+/** Default property values for the icon component. @keywords defaults, icon */
 export declare const defaultsIcon: {
     animationType: string;
 };

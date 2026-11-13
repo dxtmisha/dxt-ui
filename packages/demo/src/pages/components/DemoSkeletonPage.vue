@@ -21,6 +21,9 @@ const parentActive = ref<boolean>(true)
 /** Reactive active state for the nested child skeleton / Реактивное состояние активности вложенного дочернего скелетона */
 const nestedChildActive = ref<boolean>(false)
 
+/** Mounted state for the delayed lifecycle demonstration / Состояние монтирования демонстрации жизненного цикла с задержкой */
+const lifecycleMounted = ref<boolean>(false)
+
 /** Reference to the controlled D1Skeleton instance / Ссылка на управляемый экземпляр D1Skeleton */
 const skeletonRef = ref<SkeletonExpose | null>(null)
 
@@ -88,6 +91,15 @@ const toggleParentActive = (): void => {
  */
 const toggleNestedChildActive = (): void => {
   nestedChildActive.value = !nestedChildActive.value
+}
+
+/**
+ * Mounts or unmounts a skeleton with a pending appearance timer.
+ *
+ * Монтирует или размонтирует скелетон с таймером отложенного появления.
+ */
+const toggleLifecycleMounted = (): void => {
+  lifecycleMounted.value = !lifecycleMounted.value
 }
 
 /**
@@ -411,6 +423,27 @@ const readExposeState = (): void => {
                 <div class="d1-skeleton__textVariant">Secondary inherited text line</div>
               </D1Skeleton>
             </DemoBox>
+          </D1Skeleton>
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Empty Default Slot">
+        <DemoFlex>
+          <DemoBox size="sm">
+            <D1Skeleton data-testid="empty-inactive-skeleton"/>
+          </DemoBox>
+          <DemoBox size="sm">
+            <D1Skeleton data-testid="empty-active-skeleton" active/>
+          </DemoBox>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Mount and Unmount During Appearance Delay">
+        <D1Button label="Toggle Mount" @click="toggleLifecycleMounted"/>
+        <DemoValue label="Mounted" :value="lifecycleMounted"/>
+        <DemoBox size="md">
+          <D1Skeleton v-if="lifecycleMounted" active :delay="500" data-testid="lifecycle-skeleton">
+            <div class="d1-skeleton__text">Delayed content after mount</div>
           </D1Skeleton>
         </DemoBox>
       </D1Group>

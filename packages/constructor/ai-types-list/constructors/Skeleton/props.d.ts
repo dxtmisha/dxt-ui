@@ -1,18 +1,17 @@
-// md5:3207d90192ff7cfff467f1d6e8137036 true
-export type SkeletonPropsToken = {
-    active?: boolean;
-};
+// md5:7e34d3bdfc5679371b72546eb0cde702 true
+export type SkeletonPropsToken = {};
 export type SkeletonPropsBasic = {
-    /** Delay before showing @keywords delay, show */
+    /** Activates skeleton placeholder state. */
+    active?: boolean;
+    /** Delay before showing skeleton. */
     delay?: number | string;
-    /** Delay before hiding @keywords delay, hide */
+    /** Delay before hiding skeleton. */
     delayHide?: number | string;
-    /** Makes content invisible upon activation @keywords invisible, visibility */
+    /** Hides content while skeleton is active. */
     invisible?: boolean;
 };
-/** Properties for Skeleton component @keywords skeleton, props */
 export type SkeletonProps = SkeletonPropsBasic & SkeletonPropsToken;
-/** Default properties for Skeleton component @keywords skeleton, defaults */
+/** Default property values for the Skeleton component. @keywords skeleton, defaults */
 export declare const defaultsSkeleton: {
     delay: number;
     delayHide: number;

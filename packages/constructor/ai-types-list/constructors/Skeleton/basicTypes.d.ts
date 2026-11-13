@@ -1,5 +1,5 @@
-// md5:928f63c7cc4bf623a3cd82f1fc2d03e1 true
-/** CSS class names for skeleton elements @keywords skeleton, classes, styling */
+// md5:bded8c23697151f3d3206ae516be3d25 true
+/** Skeleton element CSS class name mapping. @keywords skeleton, classes, styles */
 export type SkeletonClassesList = {
     classText: string;
     classTextVariant: string;
@@ -11,7 +11,7 @@ export type SkeletonClassesList = {
     classBorderVariant: string;
     classNone: string;
 };
-/** Properties for components supporting skeleton loading state @keywords skeleton, loading, props */
+
 export type SkeletonPropsInclude = {
     isSkeleton?: boolean;
 };

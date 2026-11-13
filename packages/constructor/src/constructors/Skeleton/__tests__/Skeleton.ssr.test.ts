@@ -1,6 +1,6 @@
 // @vitest-environment node
 import './testWarnings'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, createSSRApp, defineComponent, h, reactive, type VNodeChild } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { type ConstrClasses, DesignName, ServerStorage } from '@dxtmisha/functional'
@@ -128,6 +128,7 @@ describe('Skeleton (SSR)', () => {
     })
 
     it('should defer d1-skeleton--visible in SSR when active is true and delay > 0 without starting server timers', async () => {
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout')
       const html = await renderSkeletonSsr({
         active: true,
         delay: 300,
@@ -138,6 +139,7 @@ describe('Skeleton (SSR)', () => {
       expect(html).toContain('d1-skeleton--invisible')
       expect(html).not.toContain('d1-skeleton--visible')
       expect(html).toContain('aria-busy="true"')
+      expect(setTimeoutSpy).not.toHaveBeenCalled()
     })
   })
 

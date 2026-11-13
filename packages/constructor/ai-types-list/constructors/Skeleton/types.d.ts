@@ -1,20 +1,16 @@
-// md5:a8e926bf241abb921a920307a55bdaf8 true
+// md5:95c325f0946376a2c32caff29b2cd4f6 true
 import type { ConstrClass } from '@dxtmisha/functional';
-
 export type SkeletonComponents = {};
-
 export type SkeletonEmits = {};
-
 export interface SkeletonExpose {
-    /** Checks whether the skeleton is currently active. @keywords skeleton, active, status */
-    isActive(): boolean;
+  /** Checks whether the skeleton is currently active. @keywords active, status */
+  isActive(): boolean;
 }
-
 export interface SkeletonSlots {
-    /** Default skeleton content slot. @keywords slot, default */
-    default?(props: SkeletonClassesList): any;
+  /** Default skeleton content slot. @keywords default, slot */
+  default?(props: SkeletonClassesList): any;
 }
-
 export type SkeletonClasses = {
-    main: ConstrClass;
+  /** Root element classes. @keywords root, main, classes */
+  main: ConstrClass;
 };

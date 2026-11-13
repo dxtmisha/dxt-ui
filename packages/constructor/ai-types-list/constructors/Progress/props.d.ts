@@ -1,4 +1,4 @@
-// md5:52f3fce60648182dfd91cfeb2467458f true
+// md5:a7cc8782a849773808c2ed5b24392d71 true
 export type ProgressPropsToken = {
     point?: boolean;
     linear?: boolean;
@@ -9,26 +9,19 @@ export type ProgressPropsToken = {
     inverse?: boolean;
 };
 export type ProgressPropsBasic = AriaLabelPropsInclude & TextLoadingPropsInclude & ClientOnlyPropsInclude & {
-    /** Whether progress is visible. */
     visible?: boolean;
-    /** Current progress value. */
     value?: number | string;
-    /** Maximum progress value. */
     max?: number | string;
-    /** Whether to use linear progress display. */
     linear?: boolean;
-    /** Whether to use circular progress display. */
     circular?: boolean;
-    /** Whether to use point progress display. */
+    /** Whether to display an indicator dot at the end of the linear track. @keywords point, indicator, track */
     point?: boolean;
-    /** Delay before showing in milliseconds. */
     delay?: number | string;
-    /** Delay before hiding in milliseconds. */
     delayHide?: number | string;
 };
-/** Progress component properties. @keywords progress, props */
+/** Properties for the Progress component. @keywords progress, props */
 export type ProgressProps = ProgressPropsBasic & ProgressPropsToken;
-/** Default property values for progress component. @keywords progress, defaults */
+/** Default property values for the Progress component. @keywords progress, defaults */
 export declare const defaultsProgress: {
     linear: boolean;
     indeterminate: string;

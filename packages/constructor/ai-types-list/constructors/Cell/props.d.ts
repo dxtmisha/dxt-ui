@@ -1,4 +1,4 @@
-// md5:3cfd02dad56a930a5113f2e85be74469 true
+// md5:48dfb973242868b46e0133a6995be423 true
 export type CellPropsToken = {
     focus?: boolean;
     selected?: boolean;
@@ -11,14 +11,16 @@ export type CellPropsToken = {
     iconTop?: boolean;
 };
 export type CellPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & CaptionProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & AriaRolePropsInclude & {
+    /** HTML tag for the cell container. */
     tag?: string;
+    /** Whether to show the divider. */
     divider?: boolean;
+    /** Whether the cell has dynamic hover and active behavior. */
     dynamic?: boolean;
 };
-/** Properties for the Cell component. @keywords cell, props */
+/** Cell component properties. @keywords cell, props */
 export type CellProps = CellPropsBasic & CellPropsToken;
-/** Default property values for the Cell component. @keywords cell, defaults */
+/** Default property values for the cell. @keywords cell, defaults */
 export declare const defaultsCell: {
     divider: boolean;
-    tag: string;
 };

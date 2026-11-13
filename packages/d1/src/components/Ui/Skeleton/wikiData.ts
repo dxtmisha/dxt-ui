@@ -14,7 +14,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Slot for default skeleton content / Слот для основного содержимого скелета`, properties: [{ name: 'props', type: '(SkeletonClassesList) | undefined' }] }
+  { name: 'default', description: `Slot for default skeleton content / Слот для основного содержимого скелета`, properties: [{ name: 'props', type: '((props: SkeletonClassesList) => VNode<RendererNode, RendererElement, { [key: string]: any; }>[]) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

@@ -1,3 +1,4 @@
+import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { SkeletonClassesList } from './basicTypes'
 
@@ -19,7 +20,7 @@ export interface SkeletonExpose {
 /** Type describing available slots / Тип, описывающий доступные слоты */
 export interface SkeletonSlots {
   /** Slot for default skeleton content / Слот для основного содержимого скелета */
-  default?(props: SkeletonClassesList): any
+  default?(props: SkeletonClassesList): VNode[]
 }
 
 /** Type describing subclasses / Тип, описывающий подклассы */

@@ -122,7 +122,7 @@ export const SkeletonBasic: Story = {
             <D1Skeleton :active="true">
               <div
                 class="d1-skeleton__border"
-                style="width: 128px; height: 128px; border: 2px solid #ccc;"
+                style="width: 128px; height: 128px; border-width: 2px; border-style: solid;"
               >
                 Border placeholder
               </div>
@@ -134,7 +134,7 @@ export const SkeletonBasic: Story = {
             <D1Skeleton :active="true">
               <div
                 class="d1-skeleton__borderVariant"
-                style="width: 128px; height: 128px; border: 2px solid #ccc;"
+                style="width: 128px; height: 128px; border-width: 2px; border-style: solid;"
               >
                 Border Variant
               </div>
@@ -277,8 +277,8 @@ export const SkeletonDelays: Story = {
     })
   }
 }
-export const SkeletonTestClassesAndSlot: Story = {
-  name: 'Тест: Все классы скелетона и свойства слота',
+export const SkeletonSlot: Story = {
+  name: 'Классы scoped-слота',
   render: () => ({
     components: { D1Skeleton },
     template: `
@@ -295,8 +295,8 @@ export const SkeletonTestClassesAndSlot: Story = {
                   <div data-testid="slot-background-after" :class="classBackgroundAfter" style="width: 48px; height: 32px;">After</div>
                   <div data-testid="slot-background-before" :class="classBackgroundBefore" style="width: 48px; height: 32px;">Before</div>
                   <div data-testid="slot-background-variant" :class="classBackgroundVariant" style="width: 48px; height: 32px;">BG Variant</div>
-                  <div data-testid="slot-border" :class="classBorder" style="width: 48px; height: 32px; border: 2px solid #ccc;">Border</div>
-                  <div data-testid="slot-border-variant" :class="classBorderVariant" style="width: 48px; height: 32px; border: 2px solid #ccc;">Border Variant</div>
+                  <div data-testid="slot-border" :class="classBorder" style="width: 48px; height: 32px; border-width: 2px; border-style: solid;">Border</div>
+                  <div data-testid="slot-border-variant" :class="classBorderVariant" style="width: 48px; height: 32px; border-width: 2px; border-style: solid;">Border Variant</div>
                   <span data-testid="slot-none" :class="classNone">Hidden Content</span>
                 </div>
               </template>
@@ -525,8 +525,8 @@ export const SkeletonTestProviderAndChildren: Story = {
     })
   }
 }
-export const SkeletonTestExposeAndDelayTimers: Story = {
-  name: 'Тест: Метод isActive и переходы с задержкой',
+export const SkeletonExpose: Story = {
+  name: 'Метод isActive и переходы с задержкой',
   render: () => ({
     components: { D1Skeleton },
     setup() {
@@ -625,6 +625,53 @@ export const SkeletonTestExposeAndDelayTimers: Story = {
       await waitFor(() => {
         expect(skeleton).toHaveClass('d1-skeleton--visible')
       })
+    })
+  }
+}
+export const SkeletonTestEmptyAndUnmount: Story = {
+  name: 'Тест: Пустые слоты и размонтирование во время задержки',
+  render: () => ({
+    components: { D1Skeleton },
+    setup() {
+      const mounted = ref(false)
+      return { mounted }
+    },
+    template: `
+
+        <div class="wiki-storybook-flex-column">
+          <button class="wiki-storybook-button" @click="mounted = !mounted">Toggle Mount</button>
+          <D1Skeleton data-testid="empty-inactive"/>
+          <D1Skeleton data-testid="empty-active" active/>
+          <D1Skeleton v-if="mounted" data-testid="delayed-mount" active :delay="120">
+            <span class="d1-skeleton__text">Delayed content</span>
+          </D1Skeleton>
+        </div>
+
+    `
+  }),
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement)
+    const toggleButton = canvas.getByRole('button', { name: 'Toggle Mount' })
+    await expect(canvas.getByTestId('empty-inactive')).toHaveAttribute('aria-busy', 'false')
+    await expect(canvas.getByTestId('empty-active')).toHaveAttribute('aria-busy', 'true')
+    await expect(canvas.getByTestId('empty-inactive').children.length).toBe(0)
+    await expect(canvas.getByTestId('empty-active').children.length).toBe(0)
+    await expect(canvas.queryByTestId('delayed-mount')).not.toBeInTheDocument()
+
+    await step('Unmount while the appearance timer is pending', async () => {
+      await userEvent.click(toggleButton)
+      await expect(canvas.getByTestId('delayed-mount')).toHaveAttribute('aria-busy', 'true')
+      await userEvent.click(toggleButton)
+      await expect(canvas.queryByTestId('delayed-mount')).not.toBeInTheDocument()
+    })
+
+    await step('Remount and allow the new instance to become visible', async () => {
+      await userEvent.click(toggleButton)
+      await waitFor(() => {
+        expect(canvas.getByTestId('delayed-mount')).toHaveClass('d1-skeleton--visible')
+      })
+      await userEvent.click(toggleButton)
+      await expect(canvas.queryByTestId('delayed-mount')).not.toBeInTheDocument()
     })
   }
 }

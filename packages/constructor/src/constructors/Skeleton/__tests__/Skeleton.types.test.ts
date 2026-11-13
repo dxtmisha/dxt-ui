@@ -1,6 +1,7 @@
 // @vitest-environment node
 import './testWarnings'
 import { describe, expectTypeOf, it } from 'vitest'
+import type { VNode } from 'vue'
 import type { ConstrBind, ConstrClass, ConstrClassObject } from '@dxtmisha/functional'
 
 import type { Skeleton, SkeletonConstructors } from '../Skeleton'
@@ -69,6 +70,9 @@ describe('Skeleton (contracts checked by TypeScript)', () => {
       expectTypeOf<SkeletonClasses['main']>().toEqualTypeOf<ConstrClass>()
 
       expectTypeOf<Parameters<NonNullable<SkeletonSlots['default']>>>().toEqualTypeOf<[props: SkeletonClassesList]>()
+      expectTypeOf<ReturnType<NonNullable<SkeletonSlots['default']>>>().not.toBeAny()
+      expectTypeOf<ReturnType<NonNullable<SkeletonSlots['default']>>>().toEqualTypeOf<VNode[]>()
+      expectTypeOf<ConstructorParameters<typeof SkeletonInclude>[0]>().toEqualTypeOf<Readonly<SkeletonPropsInclude>>()
       expectTypeOf<SkeletonComponents>().toBeObject()
       expectTypeOf<SkeletonEmits>().toBeObject()
       expectTypeOf<SkeletonConstructors>().toBeObject()

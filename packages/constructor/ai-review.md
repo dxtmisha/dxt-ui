@@ -58,9 +58,6 @@ src/constructors/Scrollbar/ScrollbarBorder.ts
 src/constructors/Scrollbar/ScrollbarDesign.tsx
 src/constructors/Scrollbar/ScrollbarInclude.ts
 
-src/constructors/Skeleton/Skeleton.ts
-src/constructors/Skeleton/SkeletonDesign.tsx
-src/constructors/Skeleton/SkeletonInclude.ts
 
 src/constructors/Window/Window.ts
 src/constructors/Window/WindowDesign.tsx
@@ -113,3 +110,7 @@ src/constructors/Image/ImageText.ts
 src/constructors/Image/ImageType.ts
 src/constructors/Image/ImageUint8Array.ts
 src/constructors/Image/ImageDesign.tsx
+
+src/constructors/Skeleton/Skeleton.ts
+src/constructors/Skeleton/SkeletonDesign.tsx
+src/constructors/Skeleton/SkeletonInclude.ts

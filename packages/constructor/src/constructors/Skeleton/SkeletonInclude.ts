@@ -43,7 +43,7 @@ export class SkeletonInclude {
    * @param classesList list of available classes / список доступных классов
    */
   constructor(
-    protected readonly props: SkeletonPropsInclude,
+    protected readonly props: Readonly<SkeletonPropsInclude>,
     protected readonly naming: DesignName,
     protected readonly classesList?: (keyof SkeletonClassesList)[]
   ) {

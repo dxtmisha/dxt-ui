@@ -4,6 +4,13 @@ The `Skeleton` component is a structural loading container that transforms real 
 
 It implements a zero-duplication architecture: instead of maintaining separate loading templates with `v-if` / `v-else`, developers wrap the actual layout inside `Skeleton`, apply utility classes (such as `*__text`, `*__background`, `*__border`) to HTML elements, and set `isSkeleton` on design system components. When `active` is enabled, `Skeleton` broadcasts its loading state to descendants via Vue `provide` / `inject`, manages show and hide delays (`delay`, `delayHide`), hides raw content via `invisible`, and updates `aria-busy` and `aria-live` accessibility attributes automatically.
 
+
+The default values are `active: false` (when omitted), `delay: 0`, `delayHide: 0`, and `invisible: true`. Both delay props accept milliseconds as numbers or numeric strings; nonpositive delays apply immediately. Descendants inherit the parent's **visible** state, so a delayed parent does not activate nested containers until its appearance delay finishes.
+
+When `invisible` is enabled, the root is `inert` while loading or waiting for delayed hiding: descendants cannot be focused or interacted with. With `invisible: false`, this interaction lock is not applied. `aria-busy` remains true until both loading and delayed visibility have ended. Reduced-motion preferences disable the pulse animation.
+
+Use the `Skeleton`, `Button`, and `Input` implementations supplied by your design system in the example below. The default scoped slot receives `SkeletonClassesList`; Vue normalizes its rendered content to `VNode[]`. The public `isActive()` method reports logical loading activity rather than delayed visibility. Empty slots are supported; pending timers are cancelled on unmount.
+
 **Key features:**
 
 - **Zero-Duplication Markup:** Transforms real DOM elements and typography into pulsing placeholders without duplicating templates
@@ -24,7 +31,6 @@ It implements a zero-duplication architecture: instead of maintaining separate l
     code={`
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Skeleton, Button, Input } from '@dxtmisha/constructor'
 
 const isLoading = ref(true)
 </script>
@@ -34,7 +40,7 @@ const isLoading = ref(true)
     <template #default="{ classText, classTextVariant, classBackground }">
       <div class="profile-card">
         <div :class="['profile-card__avatar', classBackground]">
-          <img src="/avatar.jpg" alt="User avatar" />
+          Profile image placeholder
         </div>
         <h3 :class="classText">Alex Morgan</h3>
         <p :class="classTextVariant">Senior Product Designer</p>

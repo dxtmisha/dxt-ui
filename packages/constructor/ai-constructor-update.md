@@ -9,3 +9,4 @@ After a successful repeated cycle, update the component's row, completion timest
 | Component | Completion timestamp (ISO 8601, UTC) | Git commit (HEAD) | Code review report | Visual testing |
 | --- | --- | --- | --- | --- |
 | Image | 2026-11-13T00:58:27Z | d4ea4c4140e077c3ab3a9ddd5f93ac09a32ce27e | /Users/tung/.codex/visualizations/2026/11/12/01a1d081-f6dd-7cc3-bab3-d151ef90be7d/code_review_Image.md | Skipped: cases already exist — packages/d1/ai-tests/D1Image/test-cases.md |
+| Skeleton | 2026-11-13T09:06:49Z | 124b545510f1ce1c88ef58936f7dd594b03a3c4e | /Users/tung/.codex/visualizations/2026/11/13/01a1d3e9-e910-7380-8b83-39b7072c93a9/code_review_Skeleton.md | Skipped: cases already exist — packages/d1/ai-tests/D1Skeleton/test-cases.md |
