@@ -61,7 +61,7 @@ export class ImageImg {
    * @param type class for working with types / класс для работы с типами
    */
   constructor(
-    protected readonly props: ImageProps,
+    protected readonly props: Readonly<ImageProps>,
     protected readonly background: () => ImageBackground,
     protected readonly lazy: () => ImageLazy,
     protected readonly position: () => ImagePosition,

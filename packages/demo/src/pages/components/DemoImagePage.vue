@@ -87,6 +87,11 @@ const pictureBreakpointsRecord: Record<string, string> = {
   768: demoImage1,
   1024: demoImage2
 }
+/** Picture breakpoints with CSS units in source order / Брейкпоинты picture с CSS-единицами в порядке источников */
+const pictureUnitBreakpointsRecord: Record<string, string> = {
+  '64rem': demoImage2,
+  '0px': demoImage1
+}
 /** Picture fallback record configuration / Конфигурация объекта picture для фоллбэка */
 const pictureFallbackRecord: Record<string, string> = {
   768: demoImage2
@@ -208,6 +213,20 @@ const onImageLoad = (event: ImageEventData): void => {
           </D1GridItem>
           <D1GridItem :base="'2'" class="demo-image-page__item">
             <D1Image :value="demoPdf" />
+          </D1GridItem>
+        </D1Grid>
+      </D1Group>
+
+      <D1Group label="Empty Sources (Omitted Value, Empty String, Null)">
+        <D1Grid>
+          <D1GridItem :base="'2'" class="demo-image-page__item">
+            <D1Image/>
+          </D1GridItem>
+          <D1GridItem :base="'2'" class="demo-image-page__item">
+            <D1Image value=""/>
+          </D1GridItem>
+          <D1GridItem :base="'2'" class="demo-image-page__item">
+            <D1Image :value="null"/>
           </D1GridItem>
         </D1Grid>
       </D1Group>
@@ -384,6 +403,9 @@ const onImageLoad = (event: ImageEventData): void => {
           <D1GridItem :base="'2'" class="demo-image-page__item">
             <D1Image :value="demoImage2" tagImg x="20%" y="-10%" alt="Offset XY img" />
           </D1GridItem>
+          <D1GridItem :base="'2'" class="demo-image-page__item">
+            <D1Image :value="demoImage2" :coordinator="null" :x="0" :y="0" tagImg alt="Numeric zero position" />
+          </D1GridItem>
         </D1Grid>
       </D1Group>
 
@@ -403,6 +425,9 @@ const onImageLoad = (event: ImageEventData): void => {
           </D1GridItem>
           <D1GridItem :base="'2'" class="demo-image-page__item">
             <D1Image :value="demoImage1" :picture="pictureSourcesList" tagImg alt="Art direction picture" />
+          </D1GridItem>
+          <D1GridItem :base="'2'" class="demo-image-page__item">
+            <D1Image :value="demoImage1" :picture="pictureUnitBreakpointsRecord" tagImg alt="CSS unit breakpoint picture" />
           </D1GridItem>
           <D1GridItem :base="'2'" class="demo-image-page__item">
             <D1Image
@@ -447,7 +472,7 @@ const onImageLoad = (event: ImageEventData): void => {
             <D1Image
               :value="demoImagePortrait"
               adaptive
-              objectWidth="76.2"
+              :objectWidth="76.2"
               adaptiveGroup="phones-x"
               adaptiveAlways
             />
@@ -465,7 +490,7 @@ const onImageLoad = (event: ImageEventData): void => {
             <D1Image
               :value="demoImagePortrait"
               adaptive
-              objectHeight="150"
+              :objectHeight="150"
               adaptiveGroup="phones-y"
               adaptiveAlways
             />

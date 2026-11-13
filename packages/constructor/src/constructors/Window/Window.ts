@@ -191,7 +191,6 @@ export class Window extends DesignLogicAbstract<
         this.props,
         this.naming,
         this.components,
-        undefined,
         this.emits
       ]
     },

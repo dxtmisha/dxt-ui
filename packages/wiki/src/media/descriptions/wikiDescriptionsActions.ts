@@ -40,7 +40,7 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
   `,
   import: [
     'import { ref } from \'vue\'',
-    'import type { EventClickValue } from \'@dxtmisha/constructor/types\''
+    'import type { EventClickValue } from \'@dxtmisha/constructor\''
   ],
   stories: [
     // =========================================================================
@@ -549,6 +549,7 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
     render: `
 <div :class="classDemo.item">
   <Actions
+    v-bind="args"
     align="right"
     :list="[
       { label: 'Cancel', text: true },

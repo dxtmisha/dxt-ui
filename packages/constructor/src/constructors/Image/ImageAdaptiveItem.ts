@@ -21,19 +21,8 @@ import { ImageAdaptiveGroup } from './ImageAdaptiveGroup'
 import { ImageCalculationList } from './ImageCalculationList'
 import type { ImageData } from './ImageData'
 
-import { type ImageElement, type ImageSize } from './basicTypes'
+import { ImageAdaptiveItemType, type ImageElement, type ImageSize } from './basicTypes'
 import { type ImageProps } from './props'
-
-/**
- * Types of image scaling axis /
- * Типы осей масштабирования изображения
- */
-enum ImageAdaptiveItemType {
-  /** Scaling by X axis / Масштабирование по оси X */
-  x = 'x',
-  /** Scaling by Y axis / Масштабирование по оси Y */
-  y = 'y'
-}
 
 /** Basic group name / Базовое название группы */
 const GROUP_BASIC = 'basic'
@@ -67,15 +56,6 @@ export class ImageAdaptiveItem extends DesignLifecycleAbstract {
     return Boolean(props?.adaptive)
   }
 
-  /** Scaling percentages / Проценты масштабирования */
-  protected readonly percent = ref<ImageSize>({
-    width: 0,
-    height: 0
-  })
-
-  /** Reactive DOM dimensions / Реактивные размеры DOM */
-  protected readonly elementSize = ref<ImageSize>({ width: 0, height: 0 })
-
   /** Resize manager available only during active adaptation / Менеджер resize, доступный только при активной адаптации */
   protected resize?: EventRef<HTMLElement, Event>
 
@@ -97,17 +77,26 @@ export class ImageAdaptiveItem extends DesignLifecycleAbstract {
    * Конструктор для создания менеджера масштабирования элемента.
    * @param props input data / входные данные
    * @param element image element for scaling / элемент изображения для масштабирования
-   * @param isMounted whether the component is mounted / смонтирован ли компонент
    * @param data function returning ImageData object / функция, возвращающая объект ImageData
+   * @param isMounted whether the component is mounted / смонтирован ли компонент
    */
   constructor(
-    protected readonly props: ImageProps,
+    protected readonly props: Readonly<ImageProps>,
     protected readonly element: Ref<ImageElement>,
-    protected readonly isMounted: Ref<boolean>,
-    protected readonly data: () => ImageData
+    protected readonly data: () => ImageData,
+    protected readonly isMounted: Ref<boolean>
   ) {
     super()
   }
+
+  /** Scaling percentages / Проценты масштабирования */
+  protected readonly percent = ref<ImageSize>({
+    width: 0,
+    height: 0
+  })
+
+  /** Reactive DOM dimensions / Реактивные размеры DOM */
+  protected readonly elementSize = ref<ImageSize>({ width: 0, height: 0 })
 
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {

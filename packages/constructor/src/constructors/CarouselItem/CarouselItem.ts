@@ -73,7 +73,6 @@ export class CarouselItem {
       props,
       naming,
       components,
-      undefined,
       emits
     )
   }

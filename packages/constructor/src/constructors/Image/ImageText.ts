@@ -64,7 +64,7 @@ export class ImageText {
    * @param type function returning ImageType object / функция, возвращающая объект ImageType
    */
   constructor(
-    protected readonly props: ImageProps,
+    protected readonly props: Readonly<ImageProps>,
     protected readonly data: () => ImageData,
     protected readonly type: () => ImageType
   ) {

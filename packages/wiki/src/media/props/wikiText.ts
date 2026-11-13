@@ -10,6 +10,18 @@ import {
  * Объект wikiText содержит описание всех текстовых свойств
  */
 export const wikiText: StorybookArgsToList = {
+  textActions: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Accessible label for the action group',
+        ru: 'Доступное имя группы действий'
+      }
+    },
+    hide: true
+  },
   textAm: {
     type: StorybookControl.text,
     options: {

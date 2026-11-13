@@ -28,6 +28,21 @@ import { type ImageProps } from './props'
  */
 export class ImageData {
   /**
+   * Checks whether the source type requires reactive image data.
+   *
+   * Проверяет, требует ли тип источника реактивных данных изображения.
+   * @param type image source type / тип источника изображения
+   * @returns true if the source has image data / true, если источник содержит данные изображения
+   */
+  static is(type?: ImageTypeItem): boolean {
+    return ImageData.isImage(type)
+      || type === ImageTypeValue.pdf
+      || type === ImageTypeValue.public
+      || type === ImageTypeValue.icon
+      || type === ImageTypeValue.flag
+  }
+
+  /**
    * Checks if the image type can produce an ImageItem object.
    *
    * Проверяет, может ли тип изображения создать объект ImageItem.
@@ -48,25 +63,22 @@ export class ImageData {
     )
   }
 
-  /** Image data / Данные изображения */
-  readonly image: ComputedRef<ImageEventItem>
-
   /**
    * Constructor for initializing reactive image data resolution.
    *
    * Конструктор для инициализации реактивного получения данных изображения.
    * @param props input data / входные данные
-   * @param isMounted whether the component is mounted / смонтирован ли компонент
    * @param lazy function returning ImageLazy object / функция, возвращающая объект ImageLazy
    * @param type function returning ImageType object / функция, возвращающая объект ImageType
    * @param uint8Array function returning ImageUint8Array object / функция, возвращающая объект ImageUint8Array
+   * @param isMounted whether the component is mounted / смонтирован ли компонент
    */
   constructor(
-    protected readonly props: ImageProps,
-    protected readonly isMounted: Ref<boolean>,
+    protected readonly props: Readonly<ImageProps>,
     protected readonly lazy: () => ImageLazy,
     protected readonly type: () => ImageType,
-    protected readonly uint8Array: () => ImageUint8Array
+    protected readonly uint8Array: () => ImageUint8Array,
+    protected readonly isMounted: Ref<boolean>
   ) {
     this.image = computedAsync<ImageEventItem>(
       () => this.init(),
@@ -74,6 +86,9 @@ export class ImageData {
       null as unknown as ImageEventItem
     )
   }
+
+  /** Image data / Данные изображения */
+  readonly image: ComputedRef<ImageEventItem>
 
   /**
    * Checks if there are values.

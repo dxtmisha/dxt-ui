@@ -274,6 +274,7 @@ export class InputFileItem {
       }),
       this.naming,
       this.components,
+      undefined,
       () => ({
         alt: this.file.name
       })

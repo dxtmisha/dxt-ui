@@ -34,9 +34,6 @@ export class ImageLazy extends DesignLifecycleAbstract {
     return Boolean(props?.lazy)
   }
 
-  /** Initialization status / Статус инициализации */
-  protected readonly init = ref<boolean>(false)
-
   /** Item tracking instance / Экземпляр отслеживания появления */
   protected item?: ReturnType<typeof useLazyItemByMarginRef>
 
@@ -51,11 +48,14 @@ export class ImageLazy extends DesignLifecycleAbstract {
    * @param element image element / элемент изображения
    */
   constructor(
-    protected readonly props: ImageProps,
+    protected readonly props: Readonly<ImageProps>,
     protected readonly element: Ref<HTMLElement | undefined>
   ) {
     super()
   }
+
+  /** Initialization status / Статус инициализации */
+  protected readonly init = ref<boolean>(false)
 
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {

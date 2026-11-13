@@ -7,10 +7,11 @@ import {
   isObject
 } from '@dxtmisha/functional'
 
-import type { ImageData } from './ImageData'
+import { ImageData } from './ImageData'
 import type { ImageType } from './ImageType'
 
 import type { ImageEmits } from './types'
+import type { ImageTypeItem } from './basicTypes'
 
 /**
  * Class for working with image events.
@@ -18,6 +19,17 @@ import type { ImageEmits } from './types'
  * Класс для работы с событиями изображения.
  */
 export class ImageEvent extends DesignLifecycleAbstract {
+  /**
+   * Checks whether the image type can emit a decoded load event.
+   *
+   * Проверяет, может ли тип изображения испускать событие завершения декодирования.
+   * @param type image source type / тип источника изображения
+   * @returns true for decoded image types / true для декодируемых типов изображений
+   */
+  static is(type?: ImageTypeItem): boolean {
+    return ImageData.isImage(type)
+  }
+
   /**
    * Constructor for initializing image load event watching.
    *

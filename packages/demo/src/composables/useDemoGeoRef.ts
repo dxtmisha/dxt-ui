@@ -1,5 +1,6 @@
 import { computed, onMounted, ref, watch } from 'vue'
-import { Geo, GeoIntl, GeoRef } from '@dxtmisha/functional'
+import { Geo, GeoIntl, GeoRef, type NumberOrString, toString } from '@dxtmisha/functional'
+import type { FieldValidationItem } from '@dxtmisha/constructor'
 
 /**
  * Composable for managing and interacting with GeoRef reactive geographic state.
@@ -118,8 +119,8 @@ export const useDemoGeoRef = () => {
      * @param options event data container / контейнер данных события
      * @param options.value new locale code / новый код локали
      */
-    onChange: ({ value }: { value: string }) => {
-      GeoRef.set(value)
+    onChange: ({ value }: FieldValidationItem<NumberOrString>): void => {
+      GeoRef.set(toString(value))
     },
 
     countryOptions,

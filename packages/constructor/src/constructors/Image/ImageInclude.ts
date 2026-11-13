@@ -22,6 +22,17 @@ export class ImageInclude extends ComponentIncludeAbstract<
   ImageExpose,
   ImageSlots
 > {
+  /**
+   * Checks whether image inclusion is enabled by the supplied properties.
+   *
+   * Проверяет, включено ли изображение переданными свойствами.
+   * @param props image inclusion properties / свойства включения изображения
+   * @returns true when an image is configured / true, если изображение задано
+   */
+  static is(props?: ImagePropsInclude): boolean {
+    return Boolean(props?.image)
+  }
+
   /** Sub-component key identifier / Идентификатор ключа субкомпонента */
   protected override readonly name = 'image'
   /** Property name containing image attributes / Имя свойства, содержащего атрибуты изображения */
@@ -34,16 +45,16 @@ export class ImageInclude extends ComponentIncludeAbstract<
    * @param props input component properties / входные свойства компонента
    * @param naming component naming helper / помощник именования компонента
    * @param components registry of design components / реестр дизайн-компонентов
-   * @param extra additional design attributes or settings / дополнительные дизайн-атрибуты или настройки
    * @param emits constructor emitter for component events / конструктор событий для событий компонента
+   * @param extra additional design attributes or settings / дополнительные дизайн-атрибуты или настройки
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
     props: ComponentIncludeProps<ImagePropsInclude>,
     naming: DesignName,
     components?: DesignComponents<ImageComponentInclude, ImagePropsInclude>,
-    extra?: ComponentIncludeExtra<ImageProps>,
     protected readonly emits?: ConstrEmit<ImageEmitsInclude>,
+    extra?: ComponentIncludeExtra<ImageProps>,
     index?: string
   ) {
     super(props, naming, components, extra, index)
@@ -56,7 +67,7 @@ export class ImageInclude extends ComponentIncludeAbstract<
    * @returns true if the image property is defined / true, если свойство изображения задано
    */
   override get is(): boolean {
-    return Boolean(this.getProps().image)
+    return ImageInclude.is(this.getProps())
   }
 
   /**

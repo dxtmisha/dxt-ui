@@ -185,7 +185,7 @@ async function createAdaptive(overrides: Partial<ImageProps> = {}): Promise<Adap
   const application = createApp({
     setup(): () => VNode {
       const isMounted = ref(false)
-      item = new ImageAdaptiveItemFixture(props, element, isMounted, () => data)
+      item = new ImageAdaptiveItemFixture(props, element, () => data, isMounted)
       const coordinator = new ImageCoordinator(props)
       background = new ImageBackground(props, () => item!, () => coordinator, () => data)
       onMounted(() => {

@@ -8,6 +8,29 @@ import type { ImageData } from '../ImageData'
 import type { ImageType } from '../ImageType'
 
 describe('ImageEvent', () => {
+  describe('Decoded source activation', () => {
+    it.each([
+      [ImageTypeValue.file, true],
+      [ImageTypeValue.image, true],
+      [ImageTypeValue.array, true],
+      [ImageTypeValue.pdf, false],
+      [ImageTypeValue.public, false],
+      [ImageTypeValue.icon, false],
+      [ImageTypeValue.flag, false],
+      [ImageTypeValue.flagCompressed, false],
+      [ImageTypeValue.color, false],
+      [ImageTypeValue.filled, false],
+      [ImageTypeValue.outlined, false],
+      [ImageTypeValue.round, false],
+      [ImageTypeValue.sharp, false],
+      [ImageTypeValue.twoTone, false],
+      [ImageTypeValue.material, false],
+      [undefined, false]
+    ] as const)('should activate %s events only for decoded sources', (type, expected) => {
+      expect(ImageEvent.is(type)).toBe(expected)
+    })
+  })
+
   describe('Standard functional requirements (Happy path)', () => {
     it('should not invoke data() or emits() in constructor before onMounted is called', () => {
       const emits = vi.fn()

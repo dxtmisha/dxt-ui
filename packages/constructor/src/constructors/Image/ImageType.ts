@@ -43,7 +43,7 @@ export class ImageType {
    * @param isMounted whether the component is mounted / смонтирован ли компонент
    */
   constructor(
-    protected readonly props: ImageProps,
+    protected readonly props: Readonly<ImageProps>,
     protected readonly isMounted: Ref<boolean>
   ) {
   }

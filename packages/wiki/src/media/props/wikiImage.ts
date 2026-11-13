@@ -15,10 +15,10 @@ export const wikiImage: StorybookArgsToList = {
     type: StorybookControl.string,
     options: {
       category: StorybookCategory.value,
-      type: ['string', 'File'],
+      type: ['string', 'File', 'Uint8Array', 'ArrayBuffer', 'null'],
       description: {
-        en: 'Accepts the name of an icon, a link to an image, a File object, or a link to a PDF file',
-        ru: 'Принимает название иконки, ссылку на изображение, объект File или ссылку на PDF файл'
+        en: 'Accepts an icon name, image or PDF URL, File, binary buffer, or null to clear the source',
+        ru: 'Принимает имя иконки, URL изображения или PDF, File, бинарный буфер либо null для очистки источника'
       },
       value: 'rocket_launch'
     },
@@ -76,8 +76,8 @@ export const wikiImage: StorybookArgsToList = {
     options: {
       category: StorybookCategory.information,
       description: {
-        en: 'Alternative text for the image when using the img tag',
-        ru: 'Альтернативный текст для изображения при использовании тега img'
+        en: 'Accessible name for backgrounds and icons; native alternative text in img mode',
+        ru: 'Доступное имя фонов и иконок; нативный альтернативный текст в режиме img'
       }
     },
     hide: true
@@ -88,7 +88,7 @@ export const wikiImage: StorybookArgsToList = {
     type: StorybookControl.array,
     options: {
       category: StorybookCategory.style,
-      type: 'number[]',
+      type: 'ImageCoordinatorItem',
       description: {
         en: 'Defines the crop area of the image, accepting an array of values for top, right, bottom, and left',
         ru: 'Определяет область обрезки изображения, принимает массив значений для top, right, bottom, left'
@@ -127,8 +127,8 @@ export const wikiImage: StorybookArgsToList = {
     options: {
       category: StorybookCategory.option,
       description: {
-        en: 'Enables lazy loading of the image using the native loading="lazy" attribute',
-        ru: 'Включает ленивую загрузку изображения с использованием нативного атрибута loading="lazy"'
+        en: 'Defers background image loading until the preload area is reached; adds a native loading hint in img mode',
+        ru: 'Откладывает загрузку фонового изображения до области предзагрузки; в режиме img добавляет нативную подсказку загрузки'
       }
     },
     hide: true
@@ -217,6 +217,7 @@ export const wikiImage: StorybookArgsToList = {
     type: StorybookControl.string,
     options: {
       category: StorybookCategory.style,
+      type: 'string | number',
       description: {
         en: 'Moves the image along the X-axis, accepts a string in % or px format',
         ru: 'Сдвигает изображение по оси X, принимает строку в формате % или px'
@@ -228,6 +229,7 @@ export const wikiImage: StorybookArgsToList = {
     type: StorybookControl.string,
     options: {
       category: StorybookCategory.style,
+      type: 'string | number',
       description: {
         en: 'Moves the image along the Y-axis, accepts a string in % or px format',
         ru: 'Сдвигает изображение по оси Y, принимает строку в формате % или px'

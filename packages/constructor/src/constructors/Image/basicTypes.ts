@@ -51,6 +51,17 @@ export type ImageValue<
 
 // --- Dimensions & Coordinates / Размеры и координаты ---
 
+/** Image scaling axes / Оси масштабирования изображения */
+export enum ImageAdaptiveItemType {
+  /** Scaling by X axis / Масштабирование по оси X */
+  x = 'x',
+  /** Scaling by Y axis / Масштабирование по оси Y */
+  y = 'y'
+}
+
+/** Full coordinate tuple [top, right, bottom, left] / Полный кортеж координат [сверху, справа, снизу, слева] */
+export type ImageCoordinatorItemFull = [number, number, number, number]
+
 /** Image coordinator item type / Тип элемента координат изображения */
 export type ImageCoordinatorItem
   = readonly [number]

@@ -90,10 +90,10 @@ export class Avatar {
       props,
       naming,
       components,
+      emits,
       () => ({
         disabled: this.props.disabled
-      }),
-      emits
+      })
     )
 
     this.label = new LabelIncludeConstructor(

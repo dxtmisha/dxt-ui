@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { ListItemProps } from '@dxtmisha/d1/D1ListItem'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
@@ -43,7 +44,13 @@ const selectedEmbedded = ref('play')
 const selectedIndent = ref('play')
 
 const selectedAjax = ref('settings')
-const loadMenuData = () => new Promise(resolve => setTimeout(() => resolve([
+/**
+ * Loads the menu items after a simulated request delay.
+ *
+ * Загружает пункты меню после имитации задержки запроса.
+ * @returns menu items / пункты меню
+ */
+const loadMenuData = (): Promise<ListItemProps[]> => new Promise<ListItemProps[]>(resolve => setTimeout(() => resolve([
   { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
   { label: 'Users', value: 'users', icon: 'people' },
   { label: 'Settings', value: 'settings', icon: 'settings' },

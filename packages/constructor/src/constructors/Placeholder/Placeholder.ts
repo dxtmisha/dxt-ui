@@ -70,7 +70,6 @@ export class Placeholder {
       props,
       naming,
       components,
-      undefined,
       emits
     )
 

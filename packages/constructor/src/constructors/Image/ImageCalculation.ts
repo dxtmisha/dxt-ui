@@ -19,9 +19,6 @@ export const MAX_IMAGE_OFFSET = 7680
  * Управляет физическими размерами и множителями для обеспечения согласованного масштабирования связанных изображений.
  */
 export class ImageCalculation {
-  /** Reactive maximum scaling multiplier / Реактивный максимальный множитель масштабирования */
-  protected readonly factorMaxState = ref<number>(1)
-
   /** Maximum physical dimensions in the group / Максимальные физические размеры в группе */
   protected size: ImageSize = {
     width: 0,
@@ -44,6 +41,9 @@ export class ImageCalculation {
     protected readonly name: string
   ) {
   }
+
+  /** Reactive maximum scaling multiplier / Реактивный максимальный множитель масштабирования */
+  protected readonly factorMaxState = ref<number>(1)
 
   /**
    * Returns the reactive maximum scaling multiplier for the group.

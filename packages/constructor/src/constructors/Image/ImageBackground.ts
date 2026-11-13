@@ -57,7 +57,7 @@ export class ImageBackground {
    * @param data function returning ImageData object / функция, возвращающая объект ImageData
    */
   constructor(
-    protected readonly props: ImageProps,
+    protected readonly props: Readonly<ImageProps>,
     protected readonly adaptive: () => ImageAdaptiveItem,
     protected readonly coordinator: () => ImageCoordinator,
     protected readonly data: () => ImageData

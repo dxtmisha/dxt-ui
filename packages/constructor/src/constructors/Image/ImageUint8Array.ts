@@ -33,7 +33,7 @@ export class ImageUint8Array extends DesignLifecycleAbstract {
    * @param props input data / входные данные
    */
   constructor(
-    protected readonly props: ImageProps
+    protected readonly props: Readonly<ImageProps>
   ) {
     super()
   }

@@ -1,5 +1,6 @@
 import { computed, h, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
@@ -11,7 +12,6 @@ import { ImageText } from './ImageText'
 
 import {
   type ImageEventItem,
-  type ImageRootAttrs,
   type ImageTypeItem,
   ImageTypeValue
 } from './basicTypes'
@@ -80,7 +80,7 @@ export class ImageDesign<
   }
 
   /** Shared image element bindings / Общие привязки элемента изображения */
-  readonly propsImage = computed<ImageRootAttrs>(() => ({
+  readonly propsImage = computed<ConstrBind>(() => ({
     ...this.getAttrs(),
     ref: this.element,
     key: 'image',
@@ -88,7 +88,7 @@ export class ImageDesign<
   }))
 
   /** Root image bindings with styles and accessibility / Корневые привязки изображения со стилями и доступностью */
-  readonly propsMain = computed<ImageRootAttrs>(() => ({
+  readonly propsMain = computed<ConstrBind>(() => ({
     ...this.propsImage.value,
     ...this.item.binds,
     style: this.styles?.value

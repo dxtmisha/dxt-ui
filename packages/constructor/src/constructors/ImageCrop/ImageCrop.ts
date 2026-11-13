@@ -83,6 +83,7 @@ export class ImageCrop {
       props,
       naming,
       components,
+      emits,
       () => ({
         alt: this.props.alt,
         disabled: this.props.disabled,
@@ -90,8 +91,7 @@ export class ImageCrop {
         static: true,
         tagImg: true,
         onLoad: this.cropImage.onLoad
-      }),
-      emits
+      })
     )
 
     this.cropArea = new CropAreaIncludeConstructor(

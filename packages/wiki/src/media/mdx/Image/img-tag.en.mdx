@@ -25,7 +25,7 @@ The `picture` property enables the use of the HTML `<picture>` tag for art direc
 
 The `lazy` property activates native browser lazy loading via the `loading="lazy"` attribute. Images with this attribute are loaded only when approaching the visible screen area, which significantly speeds up initial page load and reduces traffic consumption. It is especially effective for pages with a large number of images or long lists.
 
-The `preloadOffset` property defines the pixel offset for preloading images when using lazy loading. The default value is `1024px`, which means the image starts loading 1024 pixels before it enters the visible area. This ensures smooth image loading without delays during scrolling. You can specify either a numeric value or a string with a unit of measurement.
+The `preloadOffset` property sets the viewport margin used by deferred loading. It accepts a string in pixels or percentages, such as `'1024px'` (the default) or `'50%'`. In background mode the observer starts loading when the element reaches that area; in img mode native loading also follows the browser's scheduling.
 
 The `fetchPriority` property allows you to control the browser's image loading priority. It accepts three values: `high` — high priority for critical images (such as hero images or main banners), `low` — low priority for secondary images, `auto` — the browser determines the priority automatically (default value). Proper use of this property helps optimize page loading by ensuring fast loading of important content.
 

@@ -4,6 +4,8 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 Image предоставляет гибкий API для работы с различными типами визуального контента. Компонент автоматически определяет тип источника (изображение, иконка, цвет, файл), выбирает оптимальный способ рендеринга (`<img>`, `background-image`, `<picture>`, `<object>` или иконочный шрифт) и поддерживает продвинутые функции кадрирования и адаптации.
 
+В примерах используется компонент Image, зарегистрированный вашей дизайн-системой. Экспорт `Image` из пакета constructor — класс логики, а не Vue-компонент.
+
 **Основные возможности:**
 
 - Поддержка множества типов источников (URL, File, бинарные буферы, PDF, Material Icons, флаги, цвета)
@@ -26,9 +28,9 @@ Image предоставляет гибкий API для работы с раз�
     code={`
 <script setup>
 import { ref } from 'vue'
-import { Image } from '@dxtmisha/constructor'
+import { image1 } from '@dxtmisha/wiki/media'
 
-const imageUrl = ref('https://example.com/image.jpg')
+const imageUrl = ref(image1)
 </script>
 
 <template>

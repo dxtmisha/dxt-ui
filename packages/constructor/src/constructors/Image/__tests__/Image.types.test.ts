@@ -2,12 +2,13 @@
 import './testWarnings'
 import { describe, expectTypeOf, it } from 'vitest'
 import type { ComputedRef, CSSProperties } from 'vue'
+import type { ConstrBind } from '@dxtmisha/functional'
 import type { ImageConstructors } from '../Image'
 import type { ImageCoordinator } from '../ImageCoordinator'
 import type { ImageData } from '../ImageData'
 import type { ImageDesign } from '../ImageDesign'
 import type { ImageImg } from '../ImageImg'
-import type { ImageAttrs, ImageEventData, ImageItem, ImagePictureItem, ImagePictureList, ImagePropsInclude, ImageRootAttrs } from '../basicTypes'
+import type { ImageAttrs, ImageEventData, ImageItem, ImagePictureItem, ImagePictureList, ImagePropsInclude } from '../basicTypes'
 import type { ImageProps } from '../props'
 import type { ImageClasses, ImageComponents, ImageEmits, ImageExpose } from '../types'
 
@@ -62,9 +63,9 @@ describe('Image (contracts checked by TypeScript)', () => {
 
     it('should keep renderer attribute computations typed', () => {
       expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsImage']['value']>().not.toBeAny()
-      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsImage']['value']>().toEqualTypeOf<ImageRootAttrs>()
+      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsImage']['value']>().toEqualTypeOf<ConstrBind>()
       expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsMain']['value']>().not.toBeAny()
-      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsMain']['value']>().toEqualTypeOf<ImageRootAttrs>()
+      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsMain']['value']>().toEqualTypeOf<ConstrBind>()
     })
   })
 

@@ -208,8 +208,10 @@ export class AriaStaticInclude {
 
   /**
    * Returns the ARIA label attribute defining an accessible name string for the element when visible text is absent.
+   * Empty strings and numeric zero intentionally omit the label; pass the string '0' to preserve a zero label.
    *
    * Возвращает атрибут ARIA label, задающий текстовую метку (доступное имя) для элемента при отсутствии видимого текста.
+   * Пустые строки и числовой ноль намеренно исключают метку; для сохранения метки нуля передавайте строку '0'.
    * @param label accessible label text or number / текст доступной метки или число
    * @returns ARIA attributes object / Объект ARIA атрибутов
    */

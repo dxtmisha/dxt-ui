@@ -18,7 +18,7 @@ export class ImagePosition {
    * @param coordinator coordinates for margins / координаты для отступов
    */
   constructor(
-    protected readonly props: ImageProps,
+    protected readonly props: Readonly<ImageProps>,
     protected readonly coordinator: () => ImageCoordinator
   ) {
   }

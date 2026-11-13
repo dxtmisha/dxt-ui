@@ -2,14 +2,8 @@
 
 import { isArray, isNumber } from '@dxtmisha/functional'
 
-import type { ImageCoordinatorItem, ImageSize } from './basicTypes'
+import type { ImageCoordinatorItem, ImageCoordinatorItemFull, ImageSize } from './basicTypes'
 import type { ImageProps } from './props'
-
-/**
- * Full coordinate array [top, right, bottom, left] /
- * Полный массив координат [сверху, справа, снизу, слева]
- */
-type ImageCoordinatorItemFull = [number, number, number, number]
 
 /**
  * A class for calculating the central part of the image by its coordinates.
@@ -43,7 +37,7 @@ export class ImageCoordinator {
    * @param props input data / входные данные
    */
   constructor(
-    protected readonly props: ImageProps
+    protected readonly props: Readonly<ImageProps>
   ) {
   }
 

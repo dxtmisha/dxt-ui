@@ -117,6 +117,8 @@
   }
 
   &--disabled {
+    // Intentional direct color binding preserves the original color in the disabled state.
+    // Намеренная прямая привязка цвета сохраняет исходный цвет в состоянии disabled.
     color: rgba(var(--sys-color, ui.v('??color')), var(--sys-color-opacity, ui.v('??colorOpacity', 1)));
   }
 

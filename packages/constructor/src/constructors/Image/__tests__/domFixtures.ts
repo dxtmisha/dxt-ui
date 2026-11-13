@@ -239,10 +239,10 @@ export function mountImageGraph(
     const uint8Array = new ImageUint8Array(props)
     const data = new ImageData(
       props,
-      isMounted,
       () => lazy,
       () => type,
-      () => uint8Array
+      () => uint8Array,
+      isMounted
     )
     const event = new ImageEvent(
       () => data,
@@ -251,7 +251,7 @@ export function mountImageGraph(
     )
     const coordinator = new ImageCoordinator(props)
     const position = new ImagePosition(props, () => coordinator)
-    const adaptive = new ImageAdaptiveItem(props, element, isMounted, () => data)
+    const adaptive = new ImageAdaptiveItem(props, element, () => data, isMounted)
     const background = new ImageBackground(props, () => adaptive, () => coordinator, () => data)
     const img = new ImageImg(props, () => background, () => lazy, () => position, () => type)
     const text = new ImageText(props, () => data, () => type)

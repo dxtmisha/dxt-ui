@@ -10,6 +10,14 @@ import type { ImageProps } from '../props'
 
 describe('ImageInclude', () => {
   describe('Standard functional requirements (Happy path)', () => {
+    it('should check optional image inclusion before creating an include instance', () => {
+      expect(ImageInclude.is()).toBe(false)
+      expect(ImageInclude.is({})).toBe(false)
+      expect(ImageInclude.is({ image: '' })).toBe(false)
+      expect(ImageInclude.is({ image: '/photo.png' })).toBe(true)
+      expect(ImageInclude.is({ image: { value: '/photo.png', alt: 'Photo' } })).toBe(true)
+    })
+
     it('should report display presence (is) based on the image property', () => {
       const naming = new DesignName('d1.card')
 
@@ -33,7 +41,7 @@ describe('ImageInclude', () => {
         imageAttrs: { alt: 'Banner', tagImg: true }
       })
       const extra = computed<ImageProps>(() => ({ size: 'cover', lazy: true }))
-      const include = new ImageInclude(props, naming, undefined, extra)
+      const include = new ImageInclude(props, naming, undefined, undefined, extra)
 
       expect(include.binds.value).toEqual(expect.objectContaining({
         value: '/photo.png',
@@ -64,8 +72,9 @@ describe('ImageInclude', () => {
         { image: '/photo.png' },
         new DesignName('d1.card'),
         undefined,
-        undefined,
-        emits
+        emits,
+        { alt: 'Photo', size: 'cover' },
+        'photo'
       )
 
       const payload: ImageEventData = {
@@ -73,7 +82,9 @@ describe('ImageInclude', () => {
         image: '/photo.png'
       }
 
-      include.onLoad(payload)
+      expect(include.binds.value.alt).toBe('Photo')
+      expect(include.binds.value.size).toBe('cover')
+      include.binds.value.onLoad?.(payload)
       expect(emits).toHaveBeenCalledExactlyOnceWith('load', payload)
     })
 
@@ -88,8 +99,8 @@ describe('ImageInclude', () => {
         props,
         new DesignName('d1.card'),
         undefined,
-        () => ({ onLoad: customOnLoad }),
-        emits
+        emits,
+        () => ({ onLoad: customOnLoad })
       )
 
       const payload: ImageEventData = {
@@ -160,6 +171,7 @@ describe('ImageInclude', () => {
       const include = new ImageInclude(
         () => ({ image: state.image }),
         new DesignName('d1.card'),
+        undefined,
         undefined,
         () => ({ alt: state.alt })
       )

@@ -265,7 +265,7 @@ const statusValue = computed<string>(() => {
           description="Accessory component rendered in the trailing slot"
         >
           <template #trailing>
-            <D1Chip label="Active" palette="primary" />
+            <D1Chip label="Active" />
           </template>
         </D1Cell>
         <D1Cell

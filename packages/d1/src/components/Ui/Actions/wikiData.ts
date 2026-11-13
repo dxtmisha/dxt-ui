@@ -16,6 +16,7 @@ const propsNames: StorybookProps = [
   { name: 'padding', type: 'string', option: ['none', 'sm', 'md', 'lg', 'ySm', 'yMd', 'yLg'] },
   { name: 'paddingByIndent', type: 'boolean' },
   { name: 'role', type: 'string' },
+  { name: 'textActions', type: 'TextValue' },
   { name: 'wrap', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]

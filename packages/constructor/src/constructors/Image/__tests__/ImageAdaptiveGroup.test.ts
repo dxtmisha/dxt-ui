@@ -69,9 +69,9 @@ function mountAdaptiveUnit(
     const lazy = new ImageLazy(props, element)
     const type = new ImageType(props, isMounted)
     const uint8Array = new ImageUint8Array(props)
-    const data = new ImageData(props, isMounted, () => lazy, () => type, () => uint8Array)
+    const data = new ImageData(props, () => lazy, () => type, () => uint8Array, isMounted)
     const coordinator = new ImageCoordinator(props)
-    const adaptive = new ImageAdaptiveItem(props, element, isMounted, () => data)
+    const adaptive = new ImageAdaptiveItem(props, element, () => data, isMounted)
     const background = new ImageBackground(props, () => adaptive, () => coordinator, () => data)
 
     onMounted(() => {

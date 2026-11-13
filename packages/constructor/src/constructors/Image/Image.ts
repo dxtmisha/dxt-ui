@@ -1,4 +1,5 @@
 import {
+  type ConstrBind,
   type ConstrClassObject,
   type ConstrItems,
   type ConstrStyles,
@@ -22,7 +23,7 @@ import { ImageType } from './ImageType'
 import { ImageUint8Array } from './ImageUint8Array'
 
 import type { AriaList } from '../../types/ariaTypes'
-import { type ImageBinds, ImageTypeValue, type ImageValueBinds } from './basicTypes'
+import { ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
 import type { ImageComponents, ImageEmits, ImageSlots } from './types'
 
@@ -73,12 +74,13 @@ export class Image extends DesignLogicAbstract<
       parameters: () => [
         this.props,
         this.element,
-        this.isMounted,
-        () => this.i('data')
+        () => this.i('data'),
+        this.isMounted
       ]
     },
     background: {
       item: ImageBackground,
+      conditions: () => ImageBackground.is(this.i('type').get()),
       parameters: () => [
         this.props,
         () => this.i('adaptiveItem'),
@@ -88,21 +90,23 @@ export class Image extends DesignLogicAbstract<
     },
     coordinator: {
       item: ImageCoordinator,
+      conditions: () => ImageCoordinator.is(this.props),
       parameters: () => [this.props]
     },
     data: {
       item: ImageData,
+      conditions: () => ImageData.is(this.i('type').get()),
       parameters: () => [
         this.props,
-        this.isMounted,
         () => this.i('lazy'),
         () => this.i('type'),
-        () => this.i('uint8Array')
+        () => this.i('uint8Array'),
+        this.isMounted
       ]
     },
     event: {
       item: ImageEvent,
-      conditions: () => ImageData.isImage(this.i('type').get()) && this.i('data').isImage(),
+      conditions: () => ImageEvent.is(this.i('type').get()) && this.i('data').isImage(),
       parameters: () => [
         () => this.i('data'),
         () => this.i('type'),
@@ -111,6 +115,7 @@ export class Image extends DesignLogicAbstract<
     },
     img: {
       item: ImageImg,
+      conditions: () => ImageImg.is(this.props),
       parameters: () => [
         this.props,
         () => this.i('background'),
@@ -121,6 +126,7 @@ export class Image extends DesignLogicAbstract<
     },
     lazy: {
       item: ImageLazy,
+      conditions: () => ImageLazy.is(this.props),
       parameters: () => [
         this.props,
         this.element
@@ -135,6 +141,7 @@ export class Image extends DesignLogicAbstract<
     },
     text: {
       item: ImageText,
+      conditions: () => ImageText.is(this.i('type').get()),
       parameters: () => [
         this.props,
         () => this.i('data'),
@@ -147,6 +154,7 @@ export class Image extends DesignLogicAbstract<
     },
     uint8Array: {
       item: ImageUint8Array,
+      conditions: () => ImageUint8Array.is(this.props.value),
       parameters: () => [this.props]
     }
   }
@@ -181,7 +189,7 @@ export class Image extends DesignLogicAbstract<
    * Возвращает атрибуты корневого элемента изображения, включая привязки доступности.
    * @returns root element bindings / привязки корневого элемента
    */
-  get binds(): ImageBinds {
+  get binds(): ConstrBind {
     return {
       translate: 'no',
       ...this.aria
@@ -272,7 +280,7 @@ export class Image extends DesignLogicAbstract<
    * Привязки для значения изображения.
    * @returns value element bindings / привязки элемента значения
    */
-  get valueBinds(): ImageValueBinds {
+  get valueBinds(): ConstrBind {
     return {
       key: 'value',
       data: this.i('data').image.value

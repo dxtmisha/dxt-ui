@@ -53,7 +53,11 @@ export const Image: Story = {
         <D1Image v-bind="args"/>
       </div>
     `
-  })
+  }),
+  play: async ({ canvasElement }) => {
+    const component = canvasElement.querySelector('.d1-image')
+    await expect(component).toBeInTheDocument()
+  }
   // :story-main [!] System label / Системная метка
 }
 

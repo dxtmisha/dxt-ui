@@ -84,6 +84,7 @@ export class CollageItem {
       props,
       naming,
       components,
+      emits,
       () => ({
         tagImg: true,
         size: this.props.size,
@@ -91,8 +92,7 @@ export class CollageItem {
         x: this.props.x,
         y: this.props.y,
         onLoad: this.dimensions.onLoad
-      }),
-      emits
+      })
     )
     this.icon = new IconLiteIncludeConstructor(
       () => ({

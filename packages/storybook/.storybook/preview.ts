@@ -26,6 +26,11 @@ const preview: Preview = {
     },
 
     a11y: {
+      config: {
+        // JSDOM cannot evaluate color contrast; keep the rule enabled in browsers.
+        // JSDOM не проверяет контраст; в браузерах правило остаётся включённым.
+        rules: 'jsdom' in globalThis ? [{ id: 'color-contrast', enabled: false }] : []
+      },
       // 'todo' - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely

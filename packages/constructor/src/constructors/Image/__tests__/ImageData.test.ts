@@ -9,6 +9,29 @@ import type { ImageProps } from '../props'
 import { browser, flushUpdates, intersect, loadImage, mountImageGraph } from './domFixtures'
 
 describe('ImageData', () => {
+  describe('Source data activation', () => {
+    it.each([
+      [ImageTypeValue.file, true],
+      [ImageTypeValue.image, true],
+      [ImageTypeValue.array, true],
+      [ImageTypeValue.pdf, true],
+      [ImageTypeValue.public, true],
+      [ImageTypeValue.icon, true],
+      [ImageTypeValue.flag, true],
+      [ImageTypeValue.flagCompressed, false],
+      [ImageTypeValue.color, false],
+      [ImageTypeValue.filled, false],
+      [ImageTypeValue.outlined, false],
+      [ImageTypeValue.round, false],
+      [ImageTypeValue.sharp, false],
+      [ImageTypeValue.twoTone, false],
+      [ImageTypeValue.material, false],
+      [undefined, false]
+    ] as const)('should activate %s data only when needed', (type, expected) => {
+      expect(ImageData.is(type)).toBe(expected)
+    })
+  })
+
   describe('Static type guard (ImageData.isImage)', () => {
     it.each([
       [ImageTypeValue.file, true],

@@ -39,6 +39,11 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
       </div>
     `,
 
+  play: `
+    const component = canvasElement.querySelector('.design-component')
+    await expect(component).toBeInTheDocument()
+  `,
+
   import: [
     'import { ref } from \'vue\'',
     'import { demoPdf, image1, image2, phone1, phone2, phone3 } from \'@dxtmisha/wiki/media\'',
