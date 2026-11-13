@@ -108,8 +108,8 @@ export class Button extends DesignLogicAbstract<
       canCreate: () => RippleInclude.is(this.props),
       parameters: () => [
         this.naming,
-        this.components,
-        () => this.i('enabled')
+        () => this.i('enabled'),
+        this.components
       ]
     },
     skeleton: {

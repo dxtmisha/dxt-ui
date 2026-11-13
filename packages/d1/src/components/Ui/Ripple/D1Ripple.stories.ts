@@ -179,11 +179,17 @@ export const RippleExpose: Story = {
         lastAction.value = 'add({ x: 30, y: 30 })'
       }
 
+      const triggerOrigin = () => {
+        rippleRef.value?.add({ x: 0, y: 0 })
+        lastAction.value = 'add({ x: 0, y: 0 })'
+      }
+
       return {
         rippleRef,
         lastAction,
         triggerCenter,
-        triggerCoordinates
+        triggerCoordinates,
+        triggerOrigin
       }
     },
     template: `
@@ -192,6 +198,7 @@ export const RippleExpose: Story = {
           <div class="wiki-storybook-flex-align-center">
             <button class="wiki-storybook-button" @click="triggerCenter">Add at Center</button>
             <button class="wiki-storybook-button" @click="triggerCoordinates">Add at (30, 30)</button>
+            <button class="wiki-storybook-button" @click="triggerOrigin">Add at (0, 0)</button>
             <span data-testid="expose-status">Action: {{ lastAction }}</span>
           </div>
 
@@ -211,6 +218,7 @@ export const RippleExpose: Story = {
     const canvas = within(canvasElement)
     const addCenterButton = canvas.getByRole('button', { name: 'Add at Center' })
     const addCoordinatesButton = canvas.getByRole('button', { name: 'Add at (30, 30)' })
+    const addOriginButton = canvas.getByRole('button', { name: 'Add at (0, 0)' })
     const ripple = canvasElement.querySelector<HTMLElement>('.d1-ripple')
 
     await expect(ripple).toBeInTheDocument()
@@ -230,6 +238,16 @@ export const RippleExpose: Story = {
         const lastWave = waves?.[waves.length - 1]
         expect(lastWave?.style.getPropertyValue('--d1-ripple-sys-x')).toBe('30px')
         expect(lastWave?.style.getPropertyValue('--d1-ripple-sys-y')).toBe('30px')
+      })
+    })
+
+    await step('Preserve zero coordinates', async () => {
+      await userEvent.click(addOriginButton)
+      await waitFor(() => {
+        const waves = ripple?.querySelectorAll<HTMLElement>('.d1-ripple__item')
+        const lastWave = waves?.[waves.length - 1]
+        expect(lastWave?.style.getPropertyValue('--d1-ripple-sys-x')).toBe('0px')
+        expect(lastWave?.style.getPropertyValue('--d1-ripple-sys-y')).toBe('0px')
       })
     })
   }

@@ -179,11 +179,17 @@ expect(disabledRipple.querySelector('.design-component__item')).not.toBeInTheDoc
         lastAction.value = 'add({ x: 30, y: 30 })'
       }
 
+      const triggerOrigin = () => {
+        rippleRef.value?.add({ x: 0, y: 0 })
+        lastAction.value = 'add({ x: 0, y: 0 })'
+      }
+
       return {
         rippleRef,
         lastAction,
         triggerCenter,
-        triggerCoordinates
+        triggerCoordinates,
+        triggerOrigin
       }
       `,
       template: `
@@ -191,6 +197,7 @@ expect(disabledRipple.querySelector('.design-component__item')).not.toBeInTheDoc
           <div class="wiki-storybook-flex-align-center">
             <button class="wiki-storybook-button" @click="triggerCenter">Add at Center</button>
             <button class="wiki-storybook-button" @click="triggerCoordinates">Add at (30, 30)</button>
+            <button class="wiki-storybook-button" @click="triggerOrigin">Add at (0, 0)</button>
             <span data-testid="expose-status">Action: {{ lastAction }}</span>
           </div>
 
@@ -208,6 +215,7 @@ expect(disabledRipple.querySelector('.design-component__item')).not.toBeInTheDoc
 const canvas = within(canvasElement)
 const addCenterButton = canvas.getByRole('button', { name: 'Add at Center' })
 const addCoordinatesButton = canvas.getByRole('button', { name: 'Add at (30, 30)' })
+const addOriginButton = canvas.getByRole('button', { name: 'Add at (0, 0)' })
 const ripple = canvasElement.querySelector<HTMLElement>('.design-component')
 
 await expect(ripple).toBeInTheDocument()
@@ -227,6 +235,16 @@ await step('Trigger coordinate wave programmatically', async () => {
     const lastWave = waves?.[waves.length - 1]
     expect(lastWave?.style.getPropertyValue('--design-component-sys-x')).toBe('30px')
     expect(lastWave?.style.getPropertyValue('--design-component-sys-y')).toBe('30px')
+  })
+})
+
+await step('Preserve zero coordinates', async () => {
+  await userEvent.click(addOriginButton)
+  await waitFor(() => {
+    const waves = ripple?.querySelectorAll<HTMLElement>('.design-component__item')
+    const lastWave = waves?.[waves.length - 1]
+    expect(lastWave?.style.getPropertyValue('--design-component-sys-x')).toBe('0px')
+    expect(lastWave?.style.getPropertyValue('--design-component-sys-y')).toBe('0px')
   })
 })
       `

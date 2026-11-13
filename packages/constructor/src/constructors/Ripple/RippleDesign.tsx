@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -123,13 +123,13 @@ export class RippleDesign<
    * @returns virtual node of the root element / виртуальный узел корневого элемента
    */
   protected initRender(): VNode {
-    return h('span', {
+    return h('span', mergeProps(this.getAttrs(), {
       ref: this.element,
       key: 'ripple',
       class: this.classes?.value.main,
       style: this.styles?.value,
       onPointerdown: this.item.onPointerdown,
       ...AriaStaticInclude.hidden()
-    })
+    }))
   }
 }

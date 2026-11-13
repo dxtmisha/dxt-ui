@@ -113,3 +113,5 @@ src/classes/TextInclude.ts
 src/constructors/Progress/ProgressInclude.ts
 src/constructors/Progress/Progress.ts
 src/constructors/Progress/ProgressDesign.tsx
+src/constructors/Ripple/RippleDesign.tsx
+src/constructors/Ripple/RippleInclude.ts

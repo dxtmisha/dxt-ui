@@ -150,7 +150,7 @@ export class ListItem {
       }
     )
 
-    this.ripple = new RippleIncludeConstructor(naming, components, () => enabled)
+    this.ripple = new RippleIncludeConstructor(naming, () => enabled, components)
     this.progress = progress
     this.skeleton = skeleton
 

@@ -37,13 +37,13 @@ export class RippleInclude {
    *
    * Конструктор для создания экземпляра RippleInclude.
    * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
    * @param enabled callback returning enabled state manager / функция обратного вызова, возвращающая менеджер состояния активности
+   * @param components object for working with components / объект для работы с компонентами
    */
   constructor(
     protected readonly naming: DesignName,
-    protected readonly components?: DesignComponents<RippleComponentInclude, RipplePropsBasic>,
-    protected readonly enabled?: () => EnabledInclude | undefined
+    protected readonly enabled?: () => EnabledInclude | undefined,
+    protected readonly components?: DesignComponents<RippleComponentInclude, RipplePropsBasic>
   ) {
   }
 

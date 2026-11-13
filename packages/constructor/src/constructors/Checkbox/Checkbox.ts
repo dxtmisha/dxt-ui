@@ -247,7 +247,7 @@ export class Checkbox {
 
     this.enabled = new EnabledConstructor(props, () => this.progress)
 
-    this.ripple = new RippleConstructor(naming, components, () => this.enabled)
+    this.ripple = new RippleConstructor(naming, () => this.enabled, components)
   }
 
   /**

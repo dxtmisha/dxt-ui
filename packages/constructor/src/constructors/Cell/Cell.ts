@@ -133,8 +133,8 @@ export class Cell extends DesignLogicAbstract<
       item: RippleInclude,
       parameters: () => [
         this.naming,
-        this.components,
-        () => this.i('enabled')
+        () => this.i('enabled'),
+        this.components
       ]
     },
     skeleton: {

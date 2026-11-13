@@ -126,6 +126,19 @@ describe('Ripple (SSR)', () => {
       expect(html).toContain('aria-hidden="true"')
       expect(html).toContain('class="d1-ripple"')
     })
+
+    it('should render forwarded attributes with Vue fallthrough precedence', async () => {
+      const app = createSSRApp(defineComponent({
+        setup: () => () => h(RealSsrRipple, {
+          'data-testid': 'ripple-ssr',
+          'aria-hidden': 'false'
+        })
+      }))
+
+      const html = await renderToString(app)
+      expect(html).toContain('data-testid="ripple-ssr"')
+      expect(html).toContain('aria-hidden="false"')
+    })
   })
 
   describe('Tokens, styles, and classes in SSR', () => {
@@ -172,7 +185,7 @@ describe('Ripple (SSR)', () => {
         ripple: RealSsrRipple
       })
       const enabled = new EnabledInclude({ disabled: false })
-      const rippleInclude = new RippleInclude(naming, components, () => enabled)
+      const rippleInclude = new RippleInclude(naming, () => enabled, components)
 
       const HostComponent = defineComponent({
         setup() {
@@ -195,7 +208,7 @@ describe('Ripple (SSR)', () => {
     it('should omit ripple element in SSR when ripple is not registered in components', async () => {
       const naming = new DesignName('d1.button')
       const components = new DesignComponents<RippleComponentInclude, RippleProps>({})
-      const rippleInclude = new RippleInclude(naming, components)
+      const rippleInclude = new RippleInclude(naming, undefined, components)
 
       const HostComponent = defineComponent({
         setup() {
@@ -219,7 +232,7 @@ describe('Ripple (SSR)', () => {
         ripple: RealSsrRipple
       })
       const enabled = new EnabledInclude({ disabled: true })
-      const rippleInclude = new RippleInclude(naming, components, () => enabled)
+      const rippleInclude = new RippleInclude(naming, () => enabled, components)
 
       const HostComponent = defineComponent({
         setup() {

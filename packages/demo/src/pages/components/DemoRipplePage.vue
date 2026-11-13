@@ -49,6 +49,18 @@ const triggerTopLeft = (): void => {
 }
 
 /**
+ * Programmatically triggers a ripple wave at the origin.
+ *
+ * Программно запускает эффект волны в начале координат.
+ */
+const triggerOrigin = (): void => {
+  if (rippleRef.value) {
+    rippleRef.value.add({ x: 0, y: 0 })
+    lastTriggeredAction.value = 'add({ x: 0, y: 0 })'
+  }
+}
+
+/**
  * Programmatically triggers a ripple wave near the bottom-right corner.
  *
  * Программно запускает эффект волны около нижнего правого угла.
@@ -101,6 +113,10 @@ const triggerBottomRight = (): void => {
             @click="triggerTopLeft"
           />
           <D1Button
+            label="Trigger Origin (add 0, 0)"
+            @click="triggerOrigin"
+          />
+          <D1Button
             label="Trigger Bottom-Right (add 200, 80)"
             @click="triggerBottomRight"
           />
@@ -133,6 +149,8 @@ const triggerBottomRight = (): void => {
 </template>
 
 <style lang="scss">
+@use '@dxtmisha/d1/ui-properties' as ui;
+
 .demo-ripple-page {
   display: block;
 
@@ -143,11 +161,11 @@ const triggerBottomRight = (): void => {
     user-select: none;
 
     &--rounded {
-      border-radius: 16px;
+      border-radius: ui.v('?sys.rounded.xl');
     }
 
     &--pill {
-      border-radius: 9999px;
+      border-radius: ui.v('?sys.rounded.full');
     }
 
     &--circle {
