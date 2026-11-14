@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.2] - 2026-11-14
+
+### Changed
+- **Component Documentation & Wiki Prompt Rules (`ai-resources/componentPrompt.md`, `ai-resources/componentWiki.md`)**:
+  - Added Rule 6 in `ai-resources/componentPrompt.md` prohibiting automatic generation or modification of Storybook stories (`*.stories.ts`) and MDX documentation (`*.mdx`) in `wiki/` without an explicit user request.
+  - Updated `ai-resources/componentWiki.md` to require populating and describing all component props in `argTypes`, populating `args` only when strictly necessary for visual display (never with default values), adding all possible story variations and `play` interaction tests with a mandatory `Test` prefix in both the exported identifier (`Test...` / `[ComponentName]Test...`) and `name` (`Test: ...` / `Тест: ...`), and strictly excluding test, variant, and subcomponent stories from `.mdx` documentation pages.
+- **Constructor Render Template (`src/media/templates/constructors/ConstructorsDesign.tsx`)**:
+  - Updated `initRender()` in `ConstructorsDesign` to combine `this.getAttrs()`, base element props (`ref`, `class`, `style`), and `this.item.binds` using Vue's `mergeProps`.
+
 ## [1.7.1] - 2026-11-14
 
 ### Changed

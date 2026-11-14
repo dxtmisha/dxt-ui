@@ -214,6 +214,8 @@ Used to display components inside a unified visual frame (aspect-ratio `1/1` by 
    - All text and headings must be in the requested target language.
 5. **Copy-Paste Ready**:
    - Output complete, production-ready code with valid imports.
+6. **Do Not Proceed to Stories and Documentation Without Explicit Request**:
+   - Do NOT automatically proceed to generating or modifying Storybook stories (`*.stories.ts`) and MDX documentation (`*.mdx`) (i.e., the `wiki/` files based on `ComponentDoc.stories.ts` and `ComponentDoc.mdx`) unless explicitly requested by the user.
 
 ---
 
