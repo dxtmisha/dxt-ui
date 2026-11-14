@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': 'Перегляд налаштувань',
   'cms-permission-settings_read_description': 'Дозволяє переглядати системні налаштування CMS',
   'cms-permission-settings_update': 'Зміна налаштувань',
-  'cms-permission-settings_update_description': 'Дозволяє змінювати системні налаштування CMS'
+  'cms-permission-settings_update_description': 'Дозволяє змінювати системні налаштування CMS',
+
+  'cms-role-super_admin': 'Суперадміністратор',
+  'cms-role-super_admin_description': 'Повний необмежений доступ до всіх модулів, ролей та системних налаштувань CMS',
+  'cms-role-admin': 'Адміністратор',
+  'cms-role-admin_description': 'Керування користувачами, контентом, медіафайлами та системними налаштуваннями',
+  'cms-role-editor': 'Редактор',
+  'cms-role-editor_description': 'Створення, редагування, видалення та публікація контенту й медіафайлів',
+  'cms-role-author': 'Автор',
+  'cms-role-author_description': 'Створення та редагування записів контенту й завантаження медіафайлів',
+  'cms-role-viewer': 'Спостерігач',
+  'cms-role-viewer_description': 'Доступ лише для читання контенту й медіафайлів в адмін-панелі'
 }

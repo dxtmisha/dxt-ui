@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': '查看设置',
   'cms-permission-settings_read_description': '允许查看 CMS 系统设置',
   'cms-permission-settings_update': '更新设置',
-  'cms-permission-settings_update_description': '允许修改 CMS 系统设置'
+  'cms-permission-settings_update_description': '允许修改 CMS 系统设置',
+
+  'cms-role-super_admin': '超级管理员',
+  'cms-role-super_admin_description': '拥有所有 CMS 模块、角色和系统设置的完全无限制访问权限',
+  'cms-role-admin': '管理员',
+  'cms-role-admin_description': '管理用户、内容、媒体文件和系统设置',
+  'cms-role-editor': '编辑',
+  'cms-role-editor_description': '创建、编辑、删除和发布内容及媒体文件',
+  'cms-role-author': '作者',
+  'cms-role-author_description': '创建和编辑内容条目并上传媒体文件',
+  'cms-role-viewer': '查看者',
+  'cms-role-viewer_description': '在管理后台中仅具有查看内容和媒体文件的只读权限'
 }

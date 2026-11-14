@@ -1,6 +1,6 @@
 export default {
-  'cms-permission-admin_access': "Accès au panneau d'administration",
-  'cms-permission-admin_access_description': "Permet de se connecter et d'accéder au panneau d'administration du CMS",
+  'cms-permission-admin_access': 'Accès au panneau d\'administration',
+  'cms-permission-admin_access_description': 'Permet de se connecter et d\'accéder au panneau d\'administration du CMS',
 
   'cms-permission-users_read': 'Voir les utilisateurs',
   'cms-permission-users_read_description': 'Permet de consulter les profils et les listes des utilisateurs',
@@ -34,12 +34,23 @@ export default {
   'cms-permission-media_read': 'Voir les médias',
   'cms-permission-media_read_description': 'Permet de parcourir et de consulter les fichiers médias importés',
   'cms-permission-media_upload': 'Importer des médias',
-  'cms-permission-media_upload_description': "Permet d'importer de nouveaux fichiers médias et ressources",
+  'cms-permission-media_upload_description': 'Permet d\'importer de nouveaux fichiers médias et ressources',
   'cms-permission-media_delete': 'Supprimer des médias',
   'cms-permission-media_delete_description': 'Permet de supprimer les fichiers médias importés',
 
   'cms-permission-settings_read': 'Voir les paramètres',
   'cms-permission-settings_read_description': 'Permet de consulter les paramètres système du CMS',
   'cms-permission-settings_update': 'Modifier les paramètres',
-  'cms-permission-settings_update_description': 'Permet de modifier les paramètres système du CMS'
+  'cms-permission-settings_update_description': 'Permet de modifier les paramètres système du CMS',
+
+  'cms-role-super_admin': 'Super administrateur',
+  'cms-role-super_admin_description': 'Accès complet et illimité à tous les modules, rôles et paramètres système du CMS',
+  'cms-role-admin': 'Administrateur',
+  'cms-role-admin_description': 'Gère les utilisateurs, les contenus, les fichiers médias et les paramètres système',
+  'cms-role-editor': 'Éditeur',
+  'cms-role-editor_description': 'Crée, modifie, supprime et publie les contenus et fichiers médias',
+  'cms-role-author': 'Auteur',
+  'cms-role-author_description': 'Crée et modifie des contenus et téléverse des fichiers médias',
+  'cms-role-viewer': 'Lecteur',
+  'cms-role-viewer_description': 'Accès en lecture seule aux contenus et fichiers médias dans le panneau d’administration'
 }

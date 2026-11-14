@@ -1,0 +1,16 @@
+{
+  "divider": {
+    "name": "divider",
+    "index": "divider",
+    "type": "property",
+    "value": [
+      true
+    ],
+    "valueAll": [
+      true
+    ],
+    "state": [],
+    "style": false,
+    "default": true
+  }
+}

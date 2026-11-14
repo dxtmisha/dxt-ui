@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': 'Xem cài đặt',
   'cms-permission-settings_read_description': 'Cho phép xem cài đặt hệ thống CMS',
   'cms-permission-settings_update': 'Cập nhật cài đặt',
-  'cms-permission-settings_update_description': 'Cho phép thay đổi cài đặt hệ thống CMS'
+  'cms-permission-settings_update_description': 'Cho phép thay đổi cài đặt hệ thống CMS',
+
+  'cms-role-super_admin': 'Quản trị viên cấp cao',
+  'cms-role-super_admin_description': 'Toàn quyền truy cập không giới hạn vào mọi mô-đun, vai trò và cài đặt hệ thống CMS',
+  'cms-role-admin': 'Quản trị viên',
+  'cms-role-admin_description': 'Quản lý người dùng, nội dung, tệp phương tiện và cài đặt hệ thống',
+  'cms-role-editor': 'Biên tập viên',
+  'cms-role-editor_description': 'Tạo, chỉnh sửa, xóa và xuất bản nội dung cũng như tệp phương tiện',
+  'cms-role-author': 'Tác giả',
+  'cms-role-author_description': 'Tạo, chỉnh sửa nội dung và tải lên tệp phương tiện',
+  'cms-role-viewer': 'Người xem',
+  'cms-role-viewer_description': 'Quyền chỉ đọc đối với nội dung và tệp phương tiện trong bảng quản trị'
 }

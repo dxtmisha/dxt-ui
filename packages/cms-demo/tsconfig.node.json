@@ -2,7 +2,11 @@
   "extends": "@dxtmisha/configuration/tsconfig/tsconfig.node.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "paths": {
+      "@dxtmisha/cms-api": ["../cms-api/src/library.ts"],
+      "@dxtmisha/cms-nitro": ["../cms-nitro/src/library.ts"]
+    }
   },
   "include": [
     "nitro.config.ts",

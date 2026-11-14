@@ -7,7 +7,11 @@ import {
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
+import type {
+  ComponentIncludeExposeItem,
+  ComponentIncludeExtra,
+  ComponentIncludeProps
+} from '../../types/componentInclude'
 import type {
   MotionTransformComponentInclude,
   MotionTransformEmitOptions,
@@ -58,7 +62,7 @@ export class MotionTransformInclude extends ComponentIncludeAbstract<
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    props: Readonly<MotionTransformPropsInclude>,
+    props: ComponentIncludeProps<MotionTransformPropsInclude>,
     naming: DesignName,
     components?: DesignComponents<MotionTransformComponentInclude, MotionTransformPropsInclude>,
     protected readonly emits?: ConstrEmit<MotionTransformEmits>,

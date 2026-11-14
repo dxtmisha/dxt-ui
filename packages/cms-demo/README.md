@@ -49,6 +49,7 @@ You can run these scripts directly inside `packages/cms-demo` (`npm run <script>
 | `db:generate` | `drizzle-kit generate` | Compares the current Drizzle schema with previous snapshots and generates versioned `.sql` migration files in `./drizzle`. |
 | `db:migrate` | `drizzle-kit migrate` | Applies all pending `.sql` migrations from `./drizzle` to the PostgreSQL database specified by `DATABASE_URL`. |
 | `db:push` | `drizzle-kit push` | Synchronizes the Drizzle schema directly with PostgreSQL without creating migration files. Ideal for fast local prototyping. |
+| `db:seed` | `tsx --env-file=.env --tsconfig tsconfig.node.json server/db/seed.ts` | Seeds default CMS permissions into PostgreSQL independently without starting the Nitro server. |
 | `db:studio` | `drizzle-kit studio` | Opens Drizzle Studio in the browser for visual inspection and editing of PostgreSQL tables and rows. |
 
 ## Docker Commands

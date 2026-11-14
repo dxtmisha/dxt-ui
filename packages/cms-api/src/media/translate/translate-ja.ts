@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': '設定の閲覧',
   'cms-permission-settings_read_description': 'CMS システム設定の閲覧を許可します',
   'cms-permission-settings_update': '設定の更新',
-  'cms-permission-settings_update_description': 'CMS システム設定の変更を許可します'
+  'cms-permission-settings_update_description': 'CMS システム設定の変更を許可します',
+
+  'cms-role-super_admin': 'スーパー管理者',
+  'cms-role-super_admin_description': 'すべての CMS モジュール、ロール、システム設定への無制限のフルアクセス権',
+  'cms-role-admin': '管理者',
+  'cms-role-admin_description': 'ユーザー、コンテンツ、メディアファイル、システム設定を管理します',
+  'cms-role-editor': '編集者',
+  'cms-role-editor_description': 'コンテンツとメディアファイルの作成、編集、削除、公開を行います',
+  'cms-role-author': '作成者',
+  'cms-role-author_description': 'コンテンツの作成・編集およびメディアファイルのアップロードを行います',
+  'cms-role-viewer': '閲覧者',
+  'cms-role-viewer_description': '管理画面内のコンテンツおよびメディアファイルに対する読み取り専用アクセス権'
 }

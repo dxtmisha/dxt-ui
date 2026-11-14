@@ -29,7 +29,7 @@ const CellMock = defineComponent({
     ariaDescribedby: String,
     ariaLabelledby: String,
     caption: [String, Number],
-    class: String,
+    class: [String, Array, Object],
     description: [String, Number],
     descriptionId: String,
     dynamic: Boolean,
@@ -54,10 +54,11 @@ const CellMock = defineComponent({
         'onKeydown': props.onKeydown
       },
       [
-        slots.label ? slots.label() : props.label,
+        slots.default ? slots.default() : props.label,
         slots.caption ? slots.caption() : props.caption,
         slots.description ? slots.description() : props.description,
-        slots.trailing ? slots.trailing() : undefined
+        slots.trailing ? slots.trailing() : undefined,
+        slots.body ? slots.body() : undefined
       ]
     )
   }
@@ -72,14 +73,14 @@ const MotionTransformMock = defineComponent({
     'ariaDescribedby': String,
     'ariaLabelledby': String,
     'autoClose': Boolean,
-    'class': String,
+    'class': [String, Array, Object],
     'clickOpen': Boolean,
     'dataDivider': [Boolean, String],
     'inDom': Boolean,
     'modelOpen': Boolean,
     'open': Boolean,
     'section': Boolean,
-    'style': [Object, String],
+    'style': [Object, String, Array],
     'tag': String
   },
   emits: ['transform', 'transformLite'],
@@ -90,7 +91,7 @@ const MotionTransformMock = defineComponent({
         ...attrs,
         'class': props.class,
         'style': props.style,
-        'data-divider': props.dataDivider ? 'true' : undefined
+        'data-divider': props.dataDivider ? String(props.dataDivider) : undefined
       },
       [
         slots.head?.({
@@ -293,20 +294,24 @@ describe('Accordion (Unified Component)', () => {
       expect(head?.getAttribute('aria-expanded')).toBe('false')
     })
 
-    it('should apply divider attribute when divider prop is set to true', async () => {
-      const { container } = mountAccordion({
+    it('should apply divider attribute when divider prop is set to true and omit when false', async () => {
+      const { container, props } = mountAccordion({
         divider: true,
         label: 'Divider Accordion'
       })
       await nextTick()
 
-      const motionTransform = container.querySelector('[data-divider="true"]')
-      expect(motionTransform).not.toBeNull()
+      expect(container.querySelector('[data-divider="divider"]')).not.toBeNull()
+
+      props.divider = false
+      await nextTick()
+
+      expect(container.querySelector('[data-divider]')).toBeNull()
     })
   })
 
   describe('User Interaction & Event Emission', () => {
-    it('should emit click events when header cell is clicked', async () => {
+    it('should emit click events when header cell is clicked or Enter is pressed', async () => {
       const emitSpy = vi.fn()
       const { container } = mountAccordion(
         {
@@ -321,6 +326,13 @@ describe('Accordion (Unified Component)', () => {
       expect(head).not.toBeNull()
 
       head.click()
+      await nextTick()
+
+      expect(emitSpy).toHaveBeenCalledWith('click', expect.anything(), expect.anything())
+      expect(emitSpy).toHaveBeenCalledWith('clickLite', expect.anything())
+
+      emitSpy.mockClear()
+      head.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
       await nextTick()
 
       expect(emitSpy).toHaveBeenCalledWith('click', expect.anything(), expect.anything())
@@ -345,14 +357,15 @@ describe('Accordion (Unified Component)', () => {
       expect(bodyContent?.textContent).toBe('Injected Body Content')
     })
 
-    it('should project head slots (label, caption, description, trailing) to head cell', async () => {
+    it('should project head slots (label, caption, description, trailing, body) to head cell', async () => {
       const { container } = mountAccordion(
         {},
         {
           label: () => h('span', { class: 'custom-label' }, 'Custom Label'),
           caption: () => h('span', { class: 'custom-caption' }, 'Custom Caption'),
           description: () => h('span', { class: 'custom-description' }, 'Custom Description'),
-          trailing: () => h('span', { class: 'custom-trailing' }, 'Custom Trailing')
+          trailing: () => h('span', { class: 'custom-trailing' }, 'Custom Trailing'),
+          body: () => h('span', { class: 'custom-head-body' }, 'Custom Head Body')
         }
       )
       await nextTick()
@@ -361,6 +374,7 @@ describe('Accordion (Unified Component)', () => {
       expect(container.querySelector('.custom-caption')?.textContent).toBe('Custom Caption')
       expect(container.querySelector('.custom-description')?.textContent).toBe('Custom Description')
       expect(container.querySelector('.custom-trailing')?.textContent).toBe('Custom Trailing')
+      expect(container.querySelector('.custom-head-body')?.textContent).toBe('Custom Head Body')
     })
   })
 

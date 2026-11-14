@@ -45,7 +45,7 @@ export interface AccordionExpose extends MotionTransformExposeInclude {
  * Тип, описывающий доступные слоты.
  */
 export interface AccordionSlots extends CellSlotsInclude {
-  /** Main expandable content of the accordion/ Основное раскрывающееся содержимое аккордеона */
+  /** Main expandable content of the accordion / Основное раскрывающееся содержимое аккордеона */
   default?(props: MotionTransformControlItem): any
 }
 

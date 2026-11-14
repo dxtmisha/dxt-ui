@@ -1,6 +1,49 @@
 {
   "ui": {
     "value": {
+      "accordion": {
+        "value": {
+          "borderWidth": {
+            "value": {},
+            "_type": "var",
+            "__i": "border-width",
+            "__v": "var"
+          },
+          "borderColor": {
+            "value": {},
+            "_type": "var",
+            "__i": "border-color",
+            "__v": "var"
+          },
+          "borderOpacity": {
+            "value": {},
+            "_type": "var",
+            "__i": "border-opacity",
+            "__v": "var"
+          },
+          "head": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#head",
+            "__v": "subclass"
+          },
+          "body": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#body",
+            "__v": "subclass"
+          },
+          "divider": {
+            "value": {},
+            "_default": true,
+            "_type": "state",
+            "__i": "~divider",
+            "__v": "state"
+          }
+        },
+        "__i": "accordion",
+        "__v": "component"
+      },
       "button": {
         "value": {
           "padding": {
@@ -403,6 +446,49 @@
   },
   "d": {
     "value": {
+      "accordion": {
+        "value": {
+          "borderWidth": {
+            "value": {},
+            "_type": "var",
+            "__i": "border-width",
+            "__v": "var"
+          },
+          "borderColor": {
+            "value": {},
+            "_type": "var",
+            "__i": "border-color",
+            "__v": "var"
+          },
+          "borderOpacity": {
+            "value": {},
+            "_type": "var",
+            "__i": "border-opacity",
+            "__v": "var"
+          },
+          "head": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#head",
+            "__v": "subclass"
+          },
+          "body": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#body",
+            "__v": "subclass"
+          },
+          "divider": {
+            "value": {},
+            "_default": true,
+            "_type": "state",
+            "__i": "~divider",
+            "__v": "state"
+          }
+        },
+        "__i": "Accordion",
+        "__v": "component"
+      },
       "button": {
         "value": {
           "padding": {

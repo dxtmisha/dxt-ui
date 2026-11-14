@@ -11,10 +11,12 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
+    "db:seed": "tsx --env-file=.env --tsconfig tsconfig.node.json server/db/seed.ts",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@dxtmisha/cms-api": "*"
+    "@dxtmisha/cms-api": "*",
+    "@dxtmisha/cms-nitro": "*"
   },
   "devDependencies": {
     "@dxtmisha/configuration": "*",

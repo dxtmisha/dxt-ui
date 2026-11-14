@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': 'Ayarları görüntüle',
   'cms-permission-settings_read_description': 'CMS sistem ayarlarını görüntülemeye izin verir',
   'cms-permission-settings_update': 'Ayarları güncelle',
-  'cms-permission-settings_update_description': 'CMS sistem ayarlarını değiştirmeye izin verir'
+  'cms-permission-settings_update_description': 'CMS sistem ayarlarını değiştirmeye izin verir',
+
+  'cms-role-super_admin': 'Süper Yönetici',
+  'cms-role-super_admin_description': 'Tüm CMS modüllerine, rollere ve sistem ayarlarına sınırsız tam erişim',
+  'cms-role-admin': 'Yönetici',
+  'cms-role-admin_description': 'Kullanıcıları, içeriği, medya dosyalarını ve sistem ayarlarını yönetir',
+  'cms-role-editor': 'Editör',
+  'cms-role-editor_description': 'İçerik ve medya dosyalarını oluşturur, düzenler, siler ve yayınlar',
+  'cms-role-author': 'Yazar',
+  'cms-role-author_description': 'İçerik kayıtları oluşturur, düzenler ve medya dosyaları yükler',
+  'cms-role-viewer': 'Görüntüleyici',
+  'cms-role-viewer_description': 'Yönetim panelinde içerik ve medya dosyalarına salt okunur erişim'
 }

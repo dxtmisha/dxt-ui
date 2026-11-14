@@ -20,6 +20,12 @@ export type CmsRole = typeof roles.$inferSelect
 /** New role payload for database insert / Данные новой роли для вставки в базу данных */
 export type CmsNewRole = typeof roles.$inferInsert
 
+/** New role payload with assigned permission codes for seeding / Данные новой роли со списком кодов прав доступа для инициализации */
+export interface CmsRoleSeed extends CmsNewRole {
+  /** List of permission codes assigned to the role / Список кодов прав доступа, назначаемых роли */
+  permissions: readonly string[]
+}
+
 /** Role permission relation record selected from database / Запись связи роли и права доступа, полученная из базы данных */
 export type CmsRolePermission = typeof rolePermissions.$inferSelect
 
@@ -57,3 +63,19 @@ export type CmsNewUserRole = typeof userRoles.$inferInsert
 
 /** Typed Drizzle database instance for CMS / Типизированный экземпляр базы данных Drizzle для CMS */
 export type CmsDb = PostgresJsDatabase<typeof cmsSchema>
+
+/** Options for seeding default or custom CMS records / Опции инициализации стандартных или пользовательских записей CMS */
+export interface CmsSeedOptions {
+  /** Custom permissions list to seed / Пользовательский список прав доступа для инициализации */
+  permissions?: readonly CmsNewPermission[]
+  /** Custom roles list to seed / Пользовательский список ролей для инициализации */
+  roles?: readonly CmsRoleSeed[]
+}
+
+/** Result of seeding CMS database records / Результат инициализации записей базы данных CMS */
+export interface CmsSeedResult {
+  /** Seeded or existing permission records / Добавленные или существующие записи прав доступа */
+  permissions: CmsPermission[]
+  /** Seeded or existing role records / Добавленные или существующие записи ролей */
+  roles: CmsRole[]
+}

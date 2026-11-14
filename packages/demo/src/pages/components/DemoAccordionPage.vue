@@ -13,6 +13,9 @@ const { eventName, onEvent } = useDemoEvent()
 /** Reactive value for manual v-model control / Реактивное значение для ручного управления v-model */
 const openManual = ref(false)
 
+/** Reactive value for v-model:model-open control / Реактивное значение для управления v-model:model-open */
+const openModel = ref(false)
+
 /** Reactive value for click-disabled programmatic accordion / Реактивное значение для аккордеона с отключенным кликом */
 const openNonClick = ref(false)
 
@@ -139,6 +142,23 @@ const statusValue = computed<string>(() => {
         >
           <span>The trailing indicator smoothly rotates 180 degrees when expanded.</span>
         </D1Accordion>
+
+        <D1Accordion
+          label="Object Trailing Arrow Indicator"
+          description="Trailing icon configured as an object with primary palette."
+          :iconArrowDown="{ icon: 'expand_circle_down', palette: 'primary' }"
+        >
+          <span>Both string and object configurations are supported for iconArrowDown.</span>
+        </D1Accordion>
+
+        <D1Accordion
+          label="Hidden Icons (null)"
+          description="Leading and trailing icons explicitly disabled via null."
+          :icon="null"
+          :iconArrowDown="null"
+        >
+          <span>Passing null suppresses default icon rendering cleanly.</span>
+        </D1Accordion>
       </D1Group>
 
       <D1Group label="V-Model Control">
@@ -150,13 +170,29 @@ const statusValue = computed<string>(() => {
           />
         </DemoFlex>
         <D1Accordion
-          label="Two-Way Bound Accordion"
+          label="Two-Way Bound Accordion (v-model:open)"
           description="Controlled dynamically through v-model:open."
           v-model:open="openManual"
         >
           <span>This accordion state is synchronized bidirectionally. Clicking either the button above or this header updates the model value.</span>
         </D1Accordion>
         <DemoValue :value="openManual"/>
+
+        <DemoFlex>
+          <D1Button
+            :label="openModel ? 'Close Model Panel' : 'Open Model Panel'"
+            secondary
+            @click="openModel = !openModel"
+          />
+        </DemoFlex>
+        <D1Accordion
+          label="Two-Way Bound Accordion (v-model:model-open)"
+          description="Controlled dynamically through v-model:model-open."
+          v-model:model-open="openModel"
+        >
+          <span>Supports legacy or alternative model-open v-model binding seamlessly.</span>
+        </D1Accordion>
+        <DemoValue :value="openModel"/>
       </D1Group>
 
       <D1Group label="Programmatic Control (Expose Methods)">
@@ -198,18 +234,19 @@ const statusValue = computed<string>(() => {
       <D1Group label="Custom Slots">
         <D1Accordion>
           <template #label>
-            <strong style="color: var(--d1-sys-palette-primary)">Custom Colored Label Slot</strong>
+            <strong>Custom Label Slot</strong>
           </template>
           <template #caption>
-            <span style="font-size: 0.8rem; opacity: 0.75">Custom Top Caption Slot</span>
+            <span>Custom Top Caption Slot</span>
           </template>
           <template #description>
-            <span style="font-style: italic">Custom italic description slot</span>
+            <em>Custom italic description slot</em>
           </template>
           <template #trailing>
             <D1Badge
               label="New"
               primary
+              overlap="static"
             />
           </template>
           <template #default="{ isOpen, isShow }">
@@ -225,19 +262,17 @@ const statusValue = computed<string>(() => {
 
         <D1Accordion label="Header Body Slot">
           <template #body>
-            <div style="padding: 4px 0; font-size: 0.85rem; opacity: 0.8">
-              Extra auxiliary content injected directly into the header cell body slot.
-            </div>
+            <span>Extra auxiliary content injected directly into the header cell body slot.</span>
           </template>
           <span>Main body content below the custom header body slot.</span>
         </D1Accordion>
       </D1Group>
 
-      <D1Group label="Header Styling via cellAttrs">
+      <D1Group label="Header Styling & Metadata via cellAttrs">
         <D1Accordion
           label="Primary Palette Header"
-          description="Header cell styled with primary color palette."
-          :cellAttrs="{ palette: 'primary' }"
+          description="Header cell styled with primary color palette and caption via cellAttrs."
+          :cellAttrs="{ palette: 'primary', caption: 'Primary Caption' }"
         >
           <span>The cellAttrs prop allows forwarding any D1Cell properties to the header.</span>
         </D1Accordion>
@@ -259,13 +294,38 @@ const statusValue = computed<string>(() => {
         </D1Accordion>
       </D1Group>
 
-      <D1Group label="DOM & Lifecycle (inDom & clickOpen)">
+      <D1Group label="DOM, Accessibility & Lifecycle">
         <D1Accordion
-          label="In-DOM when Closed (inDom: true)"
+          label="In-DOM when Closed (motionTransformAttrs.inDom)"
           description="Body remains in the DOM tree when collapsed for SEO and SSR accessibility."
-          :inDom="true"
+          :motionTransformAttrs="{ inDom: true }"
         >
           <span>Inspect the DOM to verify this content remains rendered inside a hidden region even when closed.</span>
+        </D1Accordion>
+
+        <D1Accordion
+          label="Custom Body Tag & Instant Toggle"
+          description="Uses tagBody div, section mode, and disables transition animation."
+          :motionTransformAttrs="{ tagBody: 'div', animationShow: false, section: true }"
+        >
+          <span>Rendered with div tag instead of section and immediate expand/collapse transition.</span>
+        </D1Accordion>
+
+        <D1Accordion
+          label="Disabled Auto-Close (autoClose: false)"
+          description="Remains open when clicking outside or pressing Escape globally."
+          :autoClose="false"
+        >
+          <span>This accordion stays expanded until its header is clicked again.</span>
+        </D1Accordion>
+
+        <D1Accordion
+          label="Custom Accessibility IDs (labelId & descriptionId)"
+          description="Assigns deterministic IDs for aria-labelledby and aria-describedby bindings."
+          labelId="demo-accordion-custom-label"
+          descriptionId="demo-accordion-custom-description"
+        >
+          <span>Verify the region aria-labelledby and aria-describedby attributes match custom IDs.</span>
         </D1Accordion>
 
         <DemoFlex>
@@ -288,8 +348,9 @@ const statusValue = computed<string>(() => {
       <D1Group label="Events">
         <D1Accordion
           label="Interactive Event Tracker"
-          description="Listens to update:open, click, and transform events."
+          description="Listens to update:open, update:model-open, click, transform, and transform-lite events."
           @update:open="onEvent('update:open')"
+          @update:model-open="onEvent('update:modelOpen')"
           @click="onEvent('click')"
           @transform="onEvent('transform')"
           @transform-lite="onEvent('transformLite')"
@@ -302,8 +363,4 @@ const statusValue = computed<string>(() => {
   </D1Page>
 </template>
 
-<style lang="scss">
-.demo-accordion-page {
-  display: block;
-}
-</style>
+<style lang="scss"></style>

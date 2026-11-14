@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': 'View settings',
   'cms-permission-settings_read_description': 'Allows viewing CMS system settings',
   'cms-permission-settings_update': 'Update settings',
-  'cms-permission-settings_update_description': 'Allows modifying CMS system settings'
+  'cms-permission-settings_update_description': 'Allows modifying CMS system settings',
+
+  'cms-role-super_admin': 'Super Administrator',
+  'cms-role-super_admin_description': 'Full unrestricted access to all CMS modules, roles, and system settings',
+  'cms-role-admin': 'Administrator',
+  'cms-role-admin_description': 'Manages users, content, media files, and system settings',
+  'cms-role-editor': 'Editor',
+  'cms-role-editor_description': 'Creates, edits, deletes, and publishes content and media files',
+  'cms-role-author': 'Author',
+  'cms-role-author_description': 'Creates and edits content entries and uploads media files',
+  'cms-role-viewer': 'Viewer',
+  'cms-role-viewer_description': 'Read-only access to content entries and media files in the admin panel'
 }

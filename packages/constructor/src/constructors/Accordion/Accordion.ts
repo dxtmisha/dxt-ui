@@ -9,10 +9,11 @@ import {
 } from '@dxtmisha/functional'
 
 import { AccordionHead } from './AccordionHead'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import {
-  type MotionTransformEmitOptions,
   type MotionTransformEmits,
   MotionTransformInclude
 } from '../MotionTransform'
@@ -54,7 +55,7 @@ export class Accordion extends DesignLogicAbstract<
   AccordionConstructors
 > {
   /** Open state reference / Ссылка на состояние открытия */
-  readonly open: Ref<boolean> = ref<boolean>(Boolean(this.props.open))
+  readonly open: Ref<boolean> = ref<boolean>(Boolean(this.getOpenProp()))
 
   /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
   protected override readonly constructorItems: ConstrItems<AccordionConstructors> = {
@@ -84,20 +85,34 @@ export class Accordion extends DesignLogicAbstract<
     motionTransform: {
       item: MotionTransformInclude,
       parameters: () => [
-        this.props,
+        () => ({
+          open: this.getOpenProp(),
+          clickOpen: this.props.cellAttrs?.disabled
+            ? false
+            : this.props.clickOpen,
+          autoClose: this.props.autoClose,
+          motionTransformAttrs: this.props.motionTransformAttrs
+        }),
         this.naming,
         this.components,
         this.onEmitsTransform,
-        () => ({
-          'adaptive': 'planeAlways',
-          'inDom': true,
-          'section': true,
+        () => {
+          const head = this.i('head')
+          const hasDescription = DescriptionInclude.is(this.props, this.slots)
+            || Boolean(this.props.cellAttrs?.description)
 
-          'ariaDescribedby': this.i('head').descriptionId,
-          'ariaLabelledby': this.i('head').labelId,
+          return {
+            'adaptive': 'planeAlways',
+            'inDom': true,
+            'open': this.getOpenProp(),
+            'section': true,
 
-          'data-divider': this.props.divider ? 'divider' : undefined
-        })
+            ...AriaStaticInclude.labelledby(head.getLabelId()),
+            ...AriaStaticInclude.describedby(hasDescription ? head.getDescriptionId() : undefined),
+
+            'data-divider': this.props.divider ? 'divider' : undefined
+          }
+        }
       ]
     }
   }
@@ -142,7 +157,7 @@ export class Accordion extends DesignLogicAbstract<
    * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
    */
   protected override readonly onMounted = (): void => {
-    watch(() => this.props.open, this.update)
+    watch(() => this.getOpenProp(), this.update)
     this.update()
   }
 
@@ -174,18 +189,49 @@ export class Accordion extends DesignLogicAbstract<
    * @param args event arguments / аргументы события
    */
   readonly onEmitsTransform: ConstrEmit<MotionTransformEmits> = (
-    type: string,
-    ...args: any[]
+    type: keyof MotionTransformEmits,
+    ...args: unknown[]
   ): void => {
-    if (type === 'transform' || type === 'transformLite') {
-      const options = (type === 'transform' ? args[1] : args[0]) as MotionTransformEmitOptions | undefined
+    if (type === 'transform') {
+      const [event, options] = args as MotionTransformEmits['transform']
 
-      if (options && typeof options.open === 'boolean') {
+      if (typeof options?.open === 'boolean') {
         this.open.value = options.open
       }
+
+      this.emits?.('transform', event, options)
+    } else if (type === 'transformLite') {
+      const [options] = args as MotionTransformEmits['transformLite']
+
+      if (typeof options?.open === 'boolean') {
+        this.open.value = options.open
+      }
+
+      this.emits?.('transformLite', options)
+    } else if (type === 'update:open') {
+      const [value] = args as MotionTransformEmits['update:open']
+      this.emits?.('update:open', value)
+    } else if (type === 'update:modelOpen') {
+      const [value] = args as MotionTransformEmits['update:modelOpen']
+      this.emits?.('update:modelOpen', value)
+    }
+  }
+
+  /**
+   * Resolves the incoming open state across open and modelOpen props.
+   *
+   * Разрешает входное состояние открытия с учётом свойств open и modelOpen.
+   * @returns resolved open flag or undefined / разрешённый флаг открытия или undefined
+   */
+  protected getOpenProp(): boolean | undefined {
+    if (
+      this.props.open === undefined
+      && this.props.modelOpen === undefined
+    ) {
+      return undefined
     }
 
-    (this.emits as any)?.(type, ...args)
+    return Boolean(this.props.open || this.props.modelOpen)
   }
 
   /**
@@ -194,6 +240,6 @@ export class Accordion extends DesignLogicAbstract<
    * Обновляет состояние открытия на основе свойств.
    */
   readonly update = (): void => {
-    this.open.value = Boolean(this.props.open)
+    this.open.value = Boolean(this.getOpenProp())
   }
 }

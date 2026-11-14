@@ -132,6 +132,10 @@
     "./UiMotionTransform": {
       "types": "./dist/library/UiMotionTransform.d.ts",
       "default": "./dist/library/UiMotionTransform.js"
+    },
+    "./UiAccordion": {
+      "types": "./dist/library/UiAccordion.d.ts",
+      "default": "./dist/library/UiAccordion.js"
     }
   },
   "workspaces": [

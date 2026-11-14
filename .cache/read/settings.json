@@ -1,6 +1,15 @@
 {
   "ui": {
     "value": {
+      "accordion": {
+        "value": {
+          "main": {
+            "value": "{d.accordion}",
+            "__i": "main"
+          }
+        },
+        "__i": "accordion"
+      },
       "button": {
         "value": {
           "main": {

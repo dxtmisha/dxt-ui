@@ -86,3 +86,6 @@ src/constructors/MotionTransform/MotionTransformGo.ts
 src/constructors/MotionTransform/MotionTransform.ts
 src/constructors/MotionTransform/MotionTransformDesign.tsx
 src/constructors/MotionTransform/MotionTransformInclude.ts
+src/constructors/Accordion/AccordionHead.ts
+src/constructors/Accordion/Accordion.ts
+src/constructors/Accordion/AccordionDesign.tsx

@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': '설정 조회',
   'cms-permission-settings_read_description': 'CMS 시스템 설정을 볼 수 있도록 허용합니다',
   'cms-permission-settings_update': '설정 수정',
-  'cms-permission-settings_update_description': 'CMS 시스템 설정을 변경할 수 있도록 허용합니다'
+  'cms-permission-settings_update_description': 'CMS 시스템 설정을 변경할 수 있도록 허용합니다',
+
+  'cms-role-super_admin': '최고 관리자',
+  'cms-role-super_admin_description': '모든 CMS 모듈, 역할 및 시스템 설정에 대한 무제한 전체 접근 권한',
+  'cms-role-admin': '관리자',
+  'cms-role-admin_description': '사용자, 콘텐츠, 미디어 파일 및 시스템 설정을 관리합니다',
+  'cms-role-editor': '편집자',
+  'cms-role-editor_description': '콘텐츠와 미디어 파일을 생성, 수정, 삭제 및 게시합니다',
+  'cms-role-author': '작성자',
+  'cms-role-author_description': '콘텐츠를 생성 및 수정하고 미디어 파일을 업로드합니다',
+  'cms-role-viewer': '조회자',
+  'cms-role-viewer_description': '관리자 패널에서 콘텐츠와 미디어 파일에 대한 읽기 전용 접근 권한'
 }

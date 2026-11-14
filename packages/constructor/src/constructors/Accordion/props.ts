@@ -9,12 +9,22 @@ import type { MotionTransformPropsBasic, MotionTransformPropsInclude } from '../
 
 import type { ModelPropsOpen } from '../../types/modelTypes'
 
+/**
+ * Token properties for Accordion.
+ *
+ * Токен-свойства для Accordion.
+ */
 export type AccordionPropsToken = {
   // :type [!] System label / Системная метка
   divider?: boolean
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Base properties for Accordion.
+ *
+ * Базовые свойства для Accordion.
+ */
 export type AccordionPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Cell extends CellPropsBasic = CellPropsBasic,
@@ -26,10 +36,10 @@ export type AccordionPropsBasic<
   & ModelPropsOpen
   & {
     // Style
-    /** Icon for the dropdown indicator/ Иконка для индикатора раскрывающегося списка */
+    /** Icon for the dropdown indicator / Иконка для индикатора раскрывающегося списка */
     iconArrowDown?: IconValue<Icon>
 
-    /** Additional attributes for the header cell component/ Дополнительные атрибуты для компонента ячейки заголовка */
+    /** Additional attributes for the header cell component / Дополнительные атрибуты для компонента ячейки заголовка */
     cellAttrs?: ConstrBind<Cell>
   }
 

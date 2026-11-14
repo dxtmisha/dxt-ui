@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': 'عرض الإعدادات',
   'cms-permission-settings_read_description': 'يسمح بعرض إعدادات نظام CMS',
   'cms-permission-settings_update': 'تحديث الإعدادات',
-  'cms-permission-settings_update_description': 'يسمح بتعديل إعدادات نظام CMS'
+  'cms-permission-settings_update_description': 'يسمح بتعديل إعدادات نظام CMS',
+
+  'cms-role-super_admin': 'مشرف عام',
+  'cms-role-super_admin_description': 'وصول كامل وغير مقيد إلى جميع وحدات CMS والأدوار وإعدادات النظام',
+  'cms-role-admin': 'مدير النظام',
+  'cms-role-admin_description': 'إدارة المستخدمين والمحتوى وملفات الوسائط وإعدادات النظام',
+  'cms-role-editor': 'محرر',
+  'cms-role-editor_description': 'إنشاء المحتوى وملفات الوسائط وتعديلها وحذفها ونشرها',
+  'cms-role-author': 'مؤلف',
+  'cms-role-author_description': 'إنشاء عناصر المحتوى وتعديلها ورفع ملفات الوسائط',
+  'cms-role-viewer': 'مُشاهِد',
+  'cms-role-viewer_description': 'صلاحية القراءة فقط للمحتوى وملفات الوسائط في لوحة التحكم'
 }

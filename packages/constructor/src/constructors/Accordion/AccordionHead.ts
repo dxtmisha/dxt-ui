@@ -1,5 +1,5 @@
-import { ref, type Ref } from 'vue'
-import { type ConstrBind, getElementId, toBinds } from '@dxtmisha/functional'
+import { mergeProps, ref, type Ref } from 'vue'
+import { type ConstrBind, getElementId, getObjectNoUndefined } from '@dxtmisha/functional'
 
 import type { EventClickInclude } from '../../classes/EventClickInclude'
 import type { CellExpose } from '../Cell'
@@ -43,25 +43,45 @@ export class AccordionHead {
   get binds(): ConstrBind {
     const event = this.event()
 
-    return toBinds(
-      this.props.cellAttrs,
+    return mergeProps(
+      this.props.cellAttrs ?? {},
+      getObjectNoUndefined({
+        description: this.props.description,
+        label: this.props.label,
+        icon: this.props.icon,
+        iconTrailing: this.props.iconArrowDown
+      }),
       {
         ref: this.element,
 
-        description: this.props.description,
-        label: this.props.label,
-
-        icon: this.props.icon,
-        iconTrailing: this.props.iconArrowDown,
-
         dynamic: true,
 
-        descriptionId: this.descriptionId,
-        labelId: this.labelId,
+        descriptionId: this.getDescriptionId(),
+        labelId: this.getLabelId(),
 
         onClick: event.onClick,
         onKeydown: event.onKeydown
       }
     )
+  }
+
+  /**
+   * Returns the resolved description identifier for ARIA binding.
+   *
+   * Возвращает итоговый идентификатор описания для ARIA-привязки.
+   * @returns description element ID / идентификатор элемента описания
+   */
+  getDescriptionId(): string {
+    return this.props.descriptionId || this.descriptionId
+  }
+
+  /**
+   * Returns the resolved label identifier for ARIA binding.
+   *
+   * Возвращает итоговый идентификатор метки для ARIA-привязки.
+   * @returns label element ID / идентификатор элемента метки
+   */
+  getLabelId(): string {
+    return this.props.labelId || this.labelId
   }
 }

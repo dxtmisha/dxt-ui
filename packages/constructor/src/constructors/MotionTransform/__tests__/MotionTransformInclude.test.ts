@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { MotionTransformInclude } from '../MotionTransformInclude'
 
@@ -59,5 +60,33 @@ describe('MotionTransformInclude', () => {
     expect(typeof exposed.toClose).toBe('function')
     expect(typeof exposed.toggle).toBe('function')
     expect(exposed.getMotionTransformElement()).toBeUndefined()
+  })
+
+  it('should accept a reactive factory function for props like ComponentIncludeAbstract', () => {
+    const isDisabled = ref(false)
+    const isAutoClose = ref(true)
+
+    const include = new MotionTransformInclude(
+      () => ({
+        open: isDisabled.value,
+        clickOpen: !isDisabled.value,
+        autoClose: isAutoClose.value,
+        motionTransformAttrs: {
+          tagBody: isDisabled.value ? 'section' : 'div'
+        }
+      }),
+      new DesignName('base.class')
+    )
+
+    expect(include.binds.value.clickOpen).toBe(true)
+    expect(include.binds.value.autoClose).toBe(true)
+    expect(include.binds.value.tagBody).toBe('div')
+
+    isDisabled.value = true
+    isAutoClose.value = false
+
+    expect(include.binds.value.clickOpen).toBe(false)
+    expect(include.binds.value.autoClose).toBe(false)
+    expect(include.binds.value.tagBody).toBe('section')
   })
 })

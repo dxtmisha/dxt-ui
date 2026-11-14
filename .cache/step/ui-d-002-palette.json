@@ -1,6 +1,15 @@
 {
   "ui": {
     "value": {
+      "accordion": {
+        "value": {
+          "main": {
+            "value": "{d.accordion}",
+            "__i": "main"
+          }
+        },
+        "__i": "accordion"
+      },
       "button": {
         "value": {
           "main": {
@@ -15,6 +24,42 @@
   },
   "d": {
     "value": {
+      "accordion": {
+        "value": {
+          "borderWidth": {
+            "value": {},
+            "_type": "var",
+            "__i": "border-width"
+          },
+          "borderColor": {
+            "value": {},
+            "_type": "var",
+            "__i": "border-color"
+          },
+          "borderOpacity": {
+            "value": {},
+            "_type": "var",
+            "__i": "border-opacity"
+          },
+          "head": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#head"
+          },
+          "body": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#body"
+          },
+          "divider": {
+            "value": {},
+            "_default": true,
+            "_type": "state",
+            "__i": "~divider"
+          }
+        },
+        "__i": "Accordion"
+      },
       "button": {
         "value": {
           "padding": {

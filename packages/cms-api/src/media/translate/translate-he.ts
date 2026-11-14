@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': 'צפייה בהגדרות',
   'cms-permission-settings_read_description': 'מאפשר צפייה בהגדרות המערכת של ה-CMS',
   'cms-permission-settings_update': 'עדכון הגדרות',
-  'cms-permission-settings_update_description': 'מאפשר שינוי הגדרות המערכת של ה-CMS'
+  'cms-permission-settings_update_description': 'מאפשר שינוי הגדרות המערכת של ה-CMS',
+
+  'cms-role-super_admin': 'מנהל על',
+  'cms-role-super_admin_description': 'גישה מלאה וללא הגבלה לכל המודולים, התפקידים והגדרות המערכת של ה-CMS',
+  'cms-role-admin': 'מנהל מערכת',
+  'cms-role-admin_description': 'ניהול משתמשים, תוכן, קובצי מדיה והגדרות מערכת',
+  'cms-role-editor': 'עורך',
+  'cms-role-editor_description': 'יצירה, עריכה, מחיקה ופרסום של תוכן וקובצי מדיה',
+  'cms-role-author': 'כותב',
+  'cms-role-author_description': 'יצירה ועריכה של פריטי תוכן והעלאת קובצי מדיה',
+  'cms-role-viewer': 'צופה',
+  'cms-role-viewer_description': 'גישת קריאה בלבד לתוכן ולקובצי מדיה בלוח הניהול'
 }

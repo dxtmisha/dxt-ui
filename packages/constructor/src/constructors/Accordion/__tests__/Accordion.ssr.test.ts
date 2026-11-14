@@ -43,7 +43,7 @@ const CellMock = defineComponent({
         'data-icon-turn': props.iconTurn ? 'true' : undefined
       },
       [
-        slots.label ? slots.label() : props.label,
+        slots.default ? slots.default() : props.label,
         slots.caption ? slots.caption() : props.caption,
         slots.description ? slots.description() : props.description,
         slots.trailing ? slots.trailing() : undefined
@@ -73,7 +73,7 @@ const MotionTransformMock = defineComponent({
       props.tag ?? 'div',
       {
         ...attrs,
-        'data-divider': props.dataDivider ? 'true' : undefined
+        'data-divider': props.dataDivider ? String(props.dataDivider) : undefined
       },
       [
         slots.head?.({
@@ -180,7 +180,15 @@ describe('Accordion (SSR)', () => {
       label: 'Divider Accordion'
     })
 
-    expect(html).toContain('data-divider="true"')
+    expect(html).toContain('data-divider="divider"')
+  })
+
+  it('omits aria-describedby in SSR when description is absent', async () => {
+    const html = await renderAccordionSsr({
+      label: 'No Description Accordion'
+    })
+
+    expect(html).not.toContain('aria-describedby')
   })
 
   it('renders custom slots in SSR correctly', async () => {
@@ -226,7 +234,9 @@ describe('Accordion (SSR)', () => {
           expect(html).toContain('aria-expanded="false"')
         }
         if (divider) {
-          expect(html).toContain('data-divider="true"')
+          expect(html).toContain('data-divider="divider"')
+        } else {
+          expect(html).not.toContain('data-divider')
         }
       }
     }

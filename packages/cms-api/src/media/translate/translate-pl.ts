@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': 'Przeglądanie ustawień',
   'cms-permission-settings_read_description': 'Pozwala przeglądać ustawienia systemowe CMS',
   'cms-permission-settings_update': 'Zmiana ustawień',
-  'cms-permission-settings_update_description': 'Pozwala zmieniać ustawienia systemowe CMS'
+  'cms-permission-settings_update_description': 'Pozwala zmieniać ustawienia systemowe CMS',
+
+  'cms-role-super_admin': 'Superadministrator',
+  'cms-role-super_admin_description': 'Pełny nieograniczony dostęp do wszystkich modułów, ról i ustawień systemowych CMS',
+  'cms-role-admin': 'Administrator',
+  'cms-role-admin_description': 'Zarządza użytkownikami, treścią, plikami multimedialnymi i ustawieniami systemowymi',
+  'cms-role-editor': 'Redaktor',
+  'cms-role-editor_description': 'Tworzy, edytuje, usuwa i publikuje treści oraz pliki multimedialne',
+  'cms-role-author': 'Autor',
+  'cms-role-author_description': 'Tworzy i edytuje wpisy oraz przesyła pliki multimedialne',
+  'cms-role-viewer': 'Obserwator',
+  'cms-role-viewer_description': 'Dostęp tylko do odczytu treści i plików multimedialnych w panelu administracyjnym'
 }

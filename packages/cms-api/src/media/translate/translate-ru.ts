@@ -41,5 +41,16 @@ export default {
   'cms-permission-settings_read': 'Просмотр настроек',
   'cms-permission-settings_read_description': 'Позволяет просматривать системные настройки CMS',
   'cms-permission-settings_update': 'Изменение настроек',
-  'cms-permission-settings_update_description': 'Позволяет изменять системные настройки CMS'
+  'cms-permission-settings_update_description': 'Позволяет изменять системные настройки CMS',
+
+  'cms-role-super_admin': 'Суперадминистратор',
+  'cms-role-super_admin_description': 'Полный неограниченный доступ ко всем модулям, ролям и системным настройкам CMS',
+  'cms-role-admin': 'Администратор',
+  'cms-role-admin_description': 'Управление пользователями, контентом, медиафайлами и системными настройками',
+  'cms-role-editor': 'Редактор',
+  'cms-role-editor_description': 'Создание, редактирование, удаление и публикация контента и медиафайлов',
+  'cms-role-author': 'Автор',
+  'cms-role-author_description': 'Создание и редактирование записей контента и загрузка медиафайлов',
+  'cms-role-viewer': 'Наблюдатель',
+  'cms-role-viewer_description': 'Доступ только для чтения контента и медиафайлов в админ-панели'
 }

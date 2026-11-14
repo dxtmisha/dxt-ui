@@ -1,6 +1,6 @@
 import { inArray } from 'drizzle-orm'
-import { CMS_DEFAULT_PERMISSIONS } from '../media/permissions/cmsDefaultPermissions'
-import { permissions } from '../media/schema/cmsSchema'
+import { CMS_DEFAULT_PERMISSIONS } from '../media/defaults/cmsDefaultPermissions'
+import { permissions } from '../media/schema/permissions'
 import type {
   CmsDb,
   CmsNewPermission,

@@ -1,6 +1,41 @@
 {
   "ui": {
     "value": {
+      "accordion": {
+        "value": {
+          "head": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#head",
+            "__v": "subclass",
+            "__n": "&__head",
+            "__ni": "head",
+            "__s": "subclass"
+          },
+          "body": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#body",
+            "__v": "subclass",
+            "__n": "&__body",
+            "__ni": "body",
+            "__s": "subclass"
+          },
+          "divider": {
+            "value": {},
+            "_default": true,
+            "_type": "state",
+            "__i": "~divider",
+            "__v": "state",
+            "__n": "&--divider",
+            "__s": "state"
+          }
+        },
+        "__i": "accordion",
+        "__v": "component",
+        "__n": "ui-accordion",
+        "__s": "component"
+      },
       "button": {
         "value": {
           "transitionFunction": {
@@ -669,6 +704,41 @@
         "__v": "var",
         "__n": "sys",
         "__s": "var"
+      },
+      "accordion": {
+        "value": {
+          "head": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#head",
+            "__v": "subclass",
+            "__n": "&__head",
+            "__ni": "head",
+            "__s": "subclass"
+          },
+          "body": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#body",
+            "__v": "subclass",
+            "__n": "&__body",
+            "__ni": "body",
+            "__s": "subclass"
+          },
+          "divider": {
+            "value": {},
+            "_default": true,
+            "_type": "state",
+            "__i": "~divider",
+            "__v": "state",
+            "__n": "&--divider",
+            "__s": "state"
+          }
+        },
+        "__i": "Accordion",
+        "__v": "component",
+        "__n": "d-accordion",
+        "__s": "component"
       },
       "button": {
         "value": {

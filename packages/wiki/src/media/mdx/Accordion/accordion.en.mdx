@@ -1,20 +1,18 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
-
 Expandable container for organizing content with smooth opening and closing animations, simplifying information structuring in the interface.
 
-Accordion allows creating expandable sections with automatic animations, interactive header, and state management via v-model. The component supports padding configuration, visual dividers, and content customization through slots.
+Accordion provides an interactive header built on Cell and animated collapsible body powered by MotionTransform. The component supports two-way state binding (`v-model:open`), visual dividers, header/cell attribute customization (`cellAttrs`, `motionTransformAttrs`), and flexible slot overrides.
 
 **Key features:**
 
 - Smooth expand and collapse animations
-- Header with label, description, and icons
-- State management via v-model:open
-- Programmatic control (toggle, toOpen, toClose)
-- Internal padding configuration (padding)
-- Visual divider between sections
-- Customization via head and default slots
+- Header with `label`, `description`, `icon`, and customizable expand arrow (`iconArrowDown`)
+- Controlled (`v-model:open`, `v-model:modelOpen`) and uncontrolled (`open`, `clickOpen`, `autoClose`) state management
+- Programmatic control (`toggle`, `toOpen`, `toClose`, `setOpen`, `getOpen`, `isShow`)
+- Visual divider between sections (`divider`)
+- Header and Cell attribute customization (`cellAttrs`, `motionTransformAttrs`)
+- Content customization via `#label`, `#description`, `#caption`, `#trailing`, `#body`, and `#default` slots
 
 **Common use cases:**
 
@@ -34,11 +32,11 @@ const isOpen = ref(false)
 
 <template>
   <!-- Basic accordion -->
-  <Accordion label="Question 1">
+  <Accordion label="Question 1" description="Click to reveal answer">
     <p>Answer to the question.</p>
   </Accordion>
 
-  <!-- With state management -->
+  <!-- Controlled accordion with icon -->
   <Accordion
     v-model:open="isOpen"
     label="Settings"
@@ -47,11 +45,10 @@ const isOpen = ref(false)
     <p>Settings content.</p>
   </Accordion>
 
-  <!-- With custom header -->
-  <Accordion>
-    <template #head>
-      <div>Custom header</div>
-    </template>
+  <!-- With custom header slots -->
+  <Accordion :divider="false">
+    <template #label>Custom header label</template>
+    <template #trailing>Badge</template>
     <template #default>
       <p>Section content.</p>
     </template>
@@ -61,4 +58,4 @@ const isOpen = ref(false)
     language="html"
 />
 
-> Accordion is a component for creating expandable sections with animation support, state management, and flexible customization.
+> Accordion is a component for creating expandable sections with animation support, state management, and flexible slot customization.

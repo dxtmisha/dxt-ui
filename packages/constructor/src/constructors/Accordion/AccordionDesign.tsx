@@ -1,13 +1,15 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  toBinds
+  isFunction,
+  type RawSlots
 } from '@dxtmisha/functional'
 
 import { Accordion } from './Accordion'
 
+import type { CellClassesSub } from '../Cell'
 import type { MotionTransformControlItem } from '../MotionTransform'
 import type { AccordionProps } from './props'
 import type {
@@ -17,6 +19,15 @@ import type {
   AccordionExpose,
   AccordionSlots
 } from './types'
+
+/** Header slot names forwarded to Cell / Имена слотов заголовка, передаваемые в Cell */
+const HEAD_SLOTS = [
+  'body',
+  'caption',
+  'description',
+  'label',
+  'trailing'
+] as const
 
 /**
  * AccordionDesign rendering and composition class.
@@ -123,12 +134,14 @@ export class AccordionDesign<
         head: this.renderHead,
         body: this.renderBody
       },
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds
-      }
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      )
     )
   }
 
@@ -144,8 +157,8 @@ export class AccordionDesign<
   ): VNode | undefined => {
     return this.components?.renderOne(
       'cell',
-      toBinds(
-        this.item.i('head').binds,
+      mergeProps(
+        this.item.bindsCell,
         binds,
         {
           iconTurn: isOpen,
@@ -162,24 +175,15 @@ export class AccordionDesign<
    * Генерирует слоты для ячейки заголовка.
    * @returns slots object / объект слотов
    */
-  readonly renderHeadSlots = (): Record<string, any> => {
-    const slots: Record<string, any> = {}
+  readonly renderHeadSlots = (): RawSlots => {
+    const slots: RawSlots = {}
 
     if (this.slots) {
-      if ('body' in this.slots) {
-        slots.body = (props: any) => this.initSlot('body', undefined, props)
-      }
-      if ('caption' in this.slots) {
-        slots.caption = (props: any) => this.initSlot('caption', undefined, props)
-      }
-      if ('description' in this.slots) {
-        slots.description = (props: any) => this.initSlot('description', undefined, props)
-      }
-      if ('label' in this.slots) {
-        slots.label = (props: any) => this.initSlot('label', undefined, props)
-      }
-      if ('trailing' in this.slots) {
-        slots.trailing = (props: any) => this.initSlot('trailing', undefined, props)
+      for (const name of HEAD_SLOTS) {
+        if (isFunction(this.slots[name])) {
+          const targetSlot = name === 'label' ? 'default' : name
+          slots[targetSlot] = (props: CellClassesSub) => this.initSlot(name, undefined, props)
+        }
       }
     }
 
@@ -193,7 +197,7 @@ export class AccordionDesign<
    * @param props slot props / параметры слота
    * @returns virtual node / виртуальный узел
    */
-  readonly renderBody = (props: any): VNode => {
+  readonly renderBody = (props: MotionTransformControlItem): VNode => {
     return h(
       'div',
       this.getKeyClass('body'),
