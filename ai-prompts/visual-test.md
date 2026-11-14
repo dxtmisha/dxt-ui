@@ -1,6 +1,6 @@
 ---
 name: visual-test
-description: Conduct automated AI-driven browser and visual testing via Chrome DevTools MCP/CDP and Xcode Simulator, generating test-cases.md and living test-report.md in the language specified by wikiLanguage in ./design.config.json.
+description: Conduct automated AI-driven browser and visual testing via Headless Chrome CDP / Chrome DevTools MCP and Xcode Simulator, generating test-cases.md and living test-report.md in the language specified by wikiLanguage in ./design.config.json.
 ---
 
 # Task: AI-Driven Browser & Visual Testing (Industrial-Grade QA Protocol)
@@ -58,16 +58,23 @@ Before creating folders or starting tests, verify that all required browser auto
 
 ### 1. Required Browser Automation Stack
 - **STRICT PROHIBITION (`browser_subagent`)**: Calling `browser_subagent` is **CATEGORICALLY FORBIDDEN** under all circumstances (causes process deadlocks and session freezes on macOS).
-- **Desktop Browser Testing (Mandatory)**:
-  - Check for **Chrome DevTools MCP** tools (`navigate_page`, `evaluate_script`, `click`, `hover`, `fill`, `press_key`, `take_screenshot`, `take_snapshot`, `resize_page`, `list_console_messages`, `list_network_requests`, etc.); **OR**
-  - Direct connection to Google Chrome via **Chrome Remote Debugging Protocol (CDP)** at `http://127.0.0.1:9222`.
+- **Desktop Browser Testing (Mandatory — Headless Chrome via CDP)**:
+  - Desktop visual testing runs in **Headless Chrome** (`--headless=new`) over **Chrome Remote Debugging Protocol (CDP)** on `http://127.0.0.1:9222` so no visible browser window is opened on screen while preserving full Blink rendering, CSS layout, fonts, and screenshot capture.
+  - Check for **Chrome DevTools MCP** tools (`navigate_page`, `evaluate_script`, `click`, `hover`, `fill`, `press_key`, `take_screenshot`, `take_snapshot`, `resize_page`, `list_console_messages`, `list_network_requests`, etc.) connected to the headless CDP instance (`http://127.0.0.1:9222`); **OR**
+  - Direct connection to Headless Chrome via **CDP** at `http://127.0.0.1:9222`.
+  - If port `9222` is not yet listening, start Headless Chrome in the background (`--headless=new --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-headless-profile`) and verify `http://127.0.0.1:9222/json/version` responds before running tests.
 - **Mobile / iOS Testing (When Mobile Device Testing is Required)**:
   - Check for **Apple Xcode Simulator** (`Simulator.app` + `xcrun simctl` with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`).
+- **Cross-Browser Testing (Firefox / Native Safari — When Cross-Browser Verification Is Required)**:
+  - **Mozilla Firefox (Gecko, Headless)**: Because `chrome-devtools` MCP only supports Chrome/CDP, run headless Firefox via **Puppeteer** (already installed in `packages/scripts`: `puppeteer.launch({ browser: 'firefox', headless: true })` over WebDriver BiDi) for real Gecko CSS/layout rendering and screenshot verification without a visible window.
+  - **Native Safari (WebKit)**:
+    - *Native Desktop `Safari.app`*: macOS `Safari.app` has no native headless mode; automate the real browser via macOS built-in `/usr/bin/safaridriver` (WebDriver, enabled once via `safaridriver --enable`).
+    - *Mobile Safari (iOS WebKit)*: Use **Apple Xcode Simulator** (`xcrun simctl openurl booted` + `xcrun simctl io booted screenshot`).
 - **Target Server Reachability**:
   - Verify that the target URL provided by the developer is reachable and serving the application (e.g., HTTP `200 OK` without connection refused errors).
 
 ### 2. Immediate Halt & Setup Instructions on Missing Tools
-If the browser automation tool (Chrome DevTools MCP / Chrome CDP / Xcode Simulator) is missing/unavailable, or if the target local dev server is not running and cannot be reached:
+If the required browser automation tool (Chrome DevTools MCP / Headless Chrome CDP / Puppeteer Firefox / `safaridriver` / Xcode Simulator) is missing/unavailable and cannot be started, or if the target local dev server is not running and cannot be reached:
 1. **IMMEDIATELY STOP** the testing process. Do NOT fabricate test results or simulate browser behavior mentally.
 2. **Notify the Developer** clearly specifying which tool, browser instance, or dev server is missing or unreachable.
 3. **Provide Step-by-Step Installation & Launch Instructions**:
@@ -82,11 +89,22 @@ If the browser automation tool (Chrome DevTools MCP / Chrome CDP / Xcode Simulat
        }
      }
      ```
-   - **To launch Google Chrome with Remote Debugging (CDP on port 9222)**:
+   - **To launch Google Chrome in Headless mode with Remote Debugging (CDP on port 9222)**:
      ```bash
      /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+       --headless=new \
        --remote-debugging-port=9222 \
-       --user-data-dir=/tmp/chrome-dev-profile &
+       --user-data-dir=/tmp/chrome-headless-profile &
+     ```
+   - **To run Headless Firefox (Gecko) via Puppeteer (WebDriver BiDi, installed in `packages/scripts`)**:
+     ```bash
+     # Launch with Puppeteer: puppeteer.launch({ browser: 'firefox', headless: true })
+     # If Firefox binary for Puppeteer is not yet cached:
+     npx puppeteer browsers install firefox
+     ```
+   - **To enable Native macOS Safari WebDriver (`safaridriver`, opens `Safari.app` window)**:
+     ```bash
+     safaridriver --enable
      ```
    - **To boot Apple Xcode Simulator (for mobile WebKit testing)**:
      ```bash
@@ -255,6 +273,8 @@ Once `test-cases.md` is ready, execute **every single test case** systematically
    - **When Only Console / Event / Non-Visual Output Matters (`Evidence Type: Console/Log`)**:
      - If the test case verifies a console message, event emission payload, or internal state where a screenshot adds no visual value, **do NOT take a screenshot**.
      - Instead, record the exact console message, event output, or returned DOM value directly in the report.
+5. **Cross-Browser Verification (Firefox & Native Safari, When Requested)**:
+   - When cross-browser checks are requested (or for components using engine-sensitive CSS such as `backdrop-filter`, `position: sticky`, custom scrollbars, `:focus-visible`, or complex grid/flex layouts), verify the key `VIS`, `INT`, and `RSP` scenarios in **Firefox Headless** (Gecko via Puppeteer) and **Native Safari** (`safaridriver` for desktop `Safari.app`, or Mobile Safari in **Apple Xcode Simulator**), saving engine-specific screenshots (e.g., `TC-VIS-001-firefox.png`, `TC-VIS-001-safari.png`) if differences or failures are found.
 
 ---
 
@@ -304,7 +324,7 @@ Structure `ai-tests/<entity-name>/test-report.md` according to the template belo
 - **Source Code**: [`<EntityName>`](<relative-path-to-source>)
 - **Target URL**: `<target-url>`
 - **Materials Checked**: `<path-to-materials-or-"None">`
-- **Browser / Environment**: `Chrome (CDP / DevTools MCP), macOS`
+- **Browser / Environment**: `Chrome Headless (CDP / DevTools MCP)[, Firefox Headless (Puppeteer), Safari (safaridriver / Xcode Simulator)], macOS`
 - **Last Run Date**: `YYYY-MM-DD HH:mm`
 - **Overall Status**: `✅ PASSED` | `❌ FAILED (<F> issues)`
 

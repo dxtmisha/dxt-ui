@@ -606,10 +606,10 @@
     "@dxtmisha/functional-basic": ">=2.1.4",
     "@dxtmisha/media": ">=1.1.2",
     "@dxtmisha/styles": ">=1.0.14",
-    "magic-string": ">=0.30.21",
-    "rollup": ">=4.67.4",
-    "vue": ">=3.5.44",
-    "vue-router": ">=5.4.0"
+    "magic-string": ">=1.4.5",
+    "rollup": ">=4.68.3",
+    "vue": ">=3.5.45",
+    "vue-router": ">=5.5.1"
   },
   "sideEffects": false,
   "ui-priority": 300

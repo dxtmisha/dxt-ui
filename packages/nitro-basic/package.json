@@ -77,10 +77,10 @@
   "dependencies": {
     "@dxtmisha/functional": ">=2.0.3",
     "@dxtmisha/functional-basic": ">=2.1.4",
-    "nitro": ">=3.0.261102-rc",
+    "nitro": ">=3.0.261103-rc",
     "unctx": ">=3.0.1",
-    "vue": ">=3.5.44",
-    "vue-router": ">=5.4.0"
+    "vue": ">=3.5.45",
+    "vue-router": ">=5.5.1"
   },
   "sideEffects": false,
   "ui-priority": 300

@@ -353,13 +353,15 @@ First identify when the dependency must start and which existing call site insta
      protected initRender = (): VNode => {
        return h(
          'div', // or this.item.tag when get tag(): string is dynamic
-         {
-           ...this.getAttrs(),
-           ref: this.element,
-           ...this.item.binds,
-           class: this.classes?.value.main,
-           style: this.styles?.value
-         },
+         mergeProps(
+           this.getAttrs(),
+           this.item.binds,
+           {
+             ref: this.element,
+             class: this.classes?.value.main,
+             style: this.styles?.value
+           }
+         ),
          [
            ...this.item.callInstance('progress', item => item.render(), []),
            ...this.item.callInstance('label', item => item.render(), []),
@@ -430,13 +432,15 @@ export class MyComponentDesign<...> extends DesignConstructorAbstract<...> {
   protected initRender = (): VNode => {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ref: this.element, // Binds root DOM element to this.element and expose().elementHtml
-        ...this.item.binds,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element, // Binds root DOM element to this.element and expose().elementHtml
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.initSlot('default')
     )
   }
@@ -521,7 +525,7 @@ See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructo
    - Strict specialized interfaces are strictly for external/public component boundaries: `Props`, `Emits`, `Expose`, `Slots`, `Components`, and inclusion interfaces (`*PropsInclude`).
 9. **Root Element DOM Ref Binding (`ref: this.element` & `elementHtml`)**:
    - In `[Name]Design.tsx`, `this.element` is automatically initialized by `DesignConstructorAbstract` and exposed via `expose().elementHtml`.
-   - **Mandatory Binding**: In `initRender()`, always bind `ref: this.element` to the root element (`h('div', { ...this.getAttrs(), ref: this.element, ...this.item.binds, ... })`) if:
+   - **Mandatory Binding**: In `initRender()`, always bind `ref: this.element` to the root element (`h('div', mergeProps(this.getAttrs(), this.item.binds, { ref: this.element, ... }))`) if:
      1. The logic orchestrator (`DesignLogicAbstract`) or any subordinate helper class (`*Coordinator`, `*Events`, `*Lazy`, `*Client`, `*Scroll`, etc.) accepts `this.element` and accesses it for DOM measurements, event listeners, observers (`ResizeObserver`, `IntersectionObserver`), or coordinate calculations.
      2. External components or include helpers access the root element via `.elementHtml` (e.g., `scroll.elementHtml`, `field.elementHtml`).
    - **Permissible Omission**: For pure leaf visual primitives (such as `Icon`) where neither the internal logic class (`Icon.ts`) nor external consumers/parent components ever query or interact with the DOM element or `elementHtml`, omitting `ref: this.element` does not break runtime behavior and is completely safe.
@@ -547,10 +551,27 @@ See [`Button.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructo
 14. **Strict Prohibition of Empty / Redundant Stub Getters (No Empty Binds, Classes, Styles, Tag)**:
     - **Declare Only When Meaningful**: Never declare empty or trivial stub getters (`get binds(): ConstrBind { return {} }`, `get classes(): ConstrClassObject { return {} }`, `get styles(): ConstrStyles { return {} }`, `get tag(): string { return 'div' }`) when an orchestrator computes no dynamic values for them. References: [`Ripple.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Ripple/Ripple.ts), [`ComponentOutlet.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/ComponentOutlet/ComponentOutlet.ts), [`Actions.ts`](file:///Users/tung/Documents/GitHub/dxt-ui/packages/constructor/src/constructors/Actions/Actions.ts).
     - **Design Layer Fallbacks**: When omitted from the orchestrator, the design class handles static defaults directly:
-      - `binds`: `initRender()` omits `...this.item.binds`.
+      - `binds`: `initRender()` omits `this.item.binds` from `mergeProps(...)`.
       - `classes`: `initClasses()` returns `main: {}`.
       - `styles`: `initStyles()` returns `{}`.
       - `tag`: `initRender()` renders the literal element directly (e.g. `h('div', ...)` or `h('span', ...)`).
 15. **Direct Inclusion Rendering & Mandatory Migration (`renderLazy`, `render*()` Wrappers, and Guarded Access -> `canCreate` + `callInstance`)**:
     - **Ban on Render Wrappers & `renderLazy`**: In `[Name]Design.tsx`, never write redundant wrapper methods (`renderProgress()`, `renderLabel()`, `renderIcon()`, `renderRipple()`) or use legacy `*Include.renderLazy(...)`. Render optional inclusions inline inside `initRender()` via `this.item.callInstance('name', item => item.render(...), [])` with `canCreate` configured in `[Name].ts` (see Step 4.4).
     - **Mandatory Migration**: Whenever creating, auditing, or refactoring any component or `*Include` class still using `*Include.renderLazy`, `render*()` wrappers, or manual `SubClass.is(...)` / `components?.is(...)` / `item.i(...).is` guards before `this.i(...)` / `this.item.i(...)`, apply the 5-step migration checklist in Step 4.4.
+16. **Component Props Merging Audit (`{ ...a, ...b }`, `toBind` / `toBinds`, and Vue `mergeProps`)**:
+    Whenever creating, auditing, or migrating a component (`[Name]Design.tsx`, `[Name].ts`, subordinate classes, or `*Include.ts`), inspect every place where component or element `props`, `attrs`, or `binds` are merged and enforce both checks below:
+    - **1. Object Spread Merging (`{ ...a, ...b }`)**:
+      - Inspect the exact data sources combined via spread (`{ ...a, ...b }`):
+        - **Keep `{ ...a, ...b }` ONLY IF** all merged sources contain strictly internal, predictable data with **no external/outside data** (such as `this.getAttrs()`, user-supplied `props.*Attrs`, external `attrs`/`extra`, dynamic `on*` event listeners, or colliding `class`/`style` properties) AND using spread in that exact place is justified (e.g., spreading static predictable ARIA attributes like `...AriaStaticInclude.hidden()`, as in [`RippleDesign.tsx`](file:///Volumes/T7/development/dxt-ui/packages/constructor/src/constructors/Ripple/RippleDesign.tsx)).
+        - **Refactor to Vue's `mergeProps` (`import { mergeProps } from 'vue'`) OTHERWISE**: Whenever external data is present or `class`, `style`, or `on*` event handlers may collide across sources (e.g., `mergeProps(this.getAttrs(), this.item.binds, { ref: this.element, class: this.classes?.value.main, style: this.styles?.value })`), replace `{ ...a, ...b }` with `mergeProps(...)` so `class`, `style`, and event listeners are merged rather than silently overwritten.
+    - **2. `toBind` / `toBinds` Audit & Safe Migration to `mergeProps`**:
+      - Inspect every usage of `toBind(...)` and `toBinds(...)` (from `@dxtmisha/functional`) in the audited files.
+      - Evaluate whether replacing `toBind` / `toBinds` with Vue's `mergeProps(...)` is **safe** by checking:
+        1. **Event handler (`on*`) semantics**: `toBind`/`toBinds` overwrites earlier `on*` handlers with later ones, whereas `mergeProps` composes `on*` handlers into arrays so all handlers execute. Verify callers/tests do not intentionally rely on overwrite behavior.
+        2. **`class` / `style` shape & normalization**: `toBind` stores `[extra.class, value.class]` / `[extra.style, value.style]`, whereas `mergeProps` normalizes `class` into a string and merges `style`. Verify no consumer, helper, or unit test inspects or depends on raw `toBind` array/object structure.
+        3. **Nullish inputs & TypeScript contract**: `toBinds` accepts `null | undefined` entries and returns `ConstrBind<R>`, whereas `mergeProps` expects non-nullish `Record<string, unknown>` objects in TypeScript (e.g., `attrs ?? {}`) and returns `Data`. Verify the return type and callers remain strictly typed without hacks.
+      - **If safe**: Automatically refactor `toBind` / `toBinds` to `mergeProps(...)` (passing normalized non-nullish objects where needed and removing unused `toBind` / `toBinds` imports).
+      - **If NOT safe (or uncertain / behavioral difference exists)**: **STOP immediately and ask the developer** before replacing `toBind` / `toBinds`, explaining the exact behavioral or typing risk identified.
+17. **Use Native `unref` Instead of `getRef`**:
+    - Whenever creating, auditing, or refactoring a component, helper, or test, do **NOT** use `getRef(...)` from `@dxtmisha/functional`.
+    - Replace all existing `getRef(...)` calls with Vue's native `unref(...)` (`import { unref } from 'vue'`) and remove the unused `getRef` import.

@@ -296,7 +296,7 @@ export const IconTestNavigationTags: Story = {
   render: () => ({
     components: { D1Icon },
     template: `
-
+        
         <div class="wiki-storybook-group">
           <D1Icon icon="home"/>
           <D1Icon icon="open_in_new" dynamic href="https://example.com" aria-label="External link"/>
@@ -304,7 +304,7 @@ export const IconTestNavigationTags: Story = {
           <D1Icon icon="settings" :to="{ path: '/settings' }"/>
           <D1Icon icon="open_in_new" href="https://example.com"/>
         </div>
-
+      
     `
   }),
   play: async ({ canvasElement }) => {

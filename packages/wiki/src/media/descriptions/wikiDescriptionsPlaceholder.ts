@@ -38,9 +38,9 @@ export const wikiDescriptionsPlaceholder: StorybookComponentsDescriptionItem = {
         ru: 'Базовый'
       },
       setup: `
-        return {
-          image1
-        }
+      return {
+        image1
+      }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
@@ -60,9 +60,9 @@ export const wikiDescriptionsPlaceholder: StorybookComponentsDescriptionItem = {
         ru: 'Использование слотов'
       },
       setup: `
-        return {
-          image1
-        }
+      return {
+        image1
+      }
       `,
       template: `
         <div class="wiki-storybook-flex-column">

@@ -637,7 +637,7 @@ export const SkeletonTestEmptyAndUnmount: Story = {
       return { mounted }
     },
     template: `
-
+        
         <div class="wiki-storybook-flex-column">
           <button class="wiki-storybook-button" @click="mounted = !mounted">Toggle Mount</button>
           <D1Skeleton data-testid="empty-inactive"/>
@@ -646,7 +646,7 @@ export const SkeletonTestEmptyAndUnmount: Story = {
             <span class="d1-skeleton__text">Delayed content</span>
           </D1Skeleton>
         </div>
-
+      
     `
   }),
   play: async ({ canvasElement, step }) => {

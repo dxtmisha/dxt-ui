@@ -140,7 +140,12 @@ export class DesignReplace {
     if (typeof space === 'string') {
       const inString = `\r\n${space}`
       const value = data
-        .join(`${end}${inString}`)
+        .map((item, index) => (
+          index === 0
+            ? item
+            : `${end}\r\n${item === '' ? '' : space}${item}`
+        ))
+        .join('')
         .replace(/\[space]/g, inString)
         .replace(/\$/g, '$$$$')
 

@@ -743,16 +743,14 @@ export class DesignComponent extends DesignCommand {
   }
 
   /**
-   * Converts the play or test code into Storybook play function lines.
+   * Trims outer blank lines and strips common leading indentation from a code block.
    *
-   * Преобразует код play или test в строки play-функции Storybook.
-   * @param play play or test code string / строка кода play или test
-   * @param indent initial line indentation / начальный отступ строки
-   * @returns array of formatted lines / массив отформатированных строк
+   * Обрезает внешние пустые строки и удаляет общий ведущий отступ из блока кода.
+   * @param code source code string / исходная строка кода
+   * @returns normalized lines / нормализованные строки
    */
-  private toPlayStories(play: string, indent = ''): string[] {
-    const componentPlay = this.toComponentName(play)
-    const rawLines = componentPlay.split(/\r?\n/)
+  private normalizeIndentLines(code: string): string[] {
+    const rawLines = code.split(/\r?\n/)
 
     while (rawLines.length > 0 && rawLines[0].trim().length === 0) {
       rawLines.shift()
@@ -769,10 +767,34 @@ export class DesignComponent extends DesignCommand {
         return Math.min(min, len)
       }, Infinity)
 
-    const normalizedLines = rawLines.map(line =>
+    return rawLines.map(line =>
       line.trim().length > 0 ? line.slice(minIndent) : ''
     )
+  }
 
+  /**
+   * Normalizes setup code indentation for Storybook stories.
+   *
+   * Нормализует отступы кода setup для историй Storybook.
+   * @param setup setup code string / строка кода setup
+   * @returns array of formatted lines / массив отформатированных строк
+   */
+  private toSetupStories(setup: string): string[] {
+    return this.normalizeIndentLines(setup).map(line =>
+      line.length > 0 ? `      ${line}` : ''
+    )
+  }
+
+  /**
+   * Converts the play or test code into Storybook play function lines.
+   *
+   * Преобразует код play или test в строки play-функции Storybook.
+   * @param play play or test code string / строка кода play или test
+   * @param indent initial line indentation / начальный отступ строки
+   * @returns array of formatted lines / массив отформатированных строк
+   */
+  private toPlayStories(play: string, indent = ''): string[] {
+    const normalizedLines = this.normalizeIndentLines(this.toComponentName(play))
     const fullPlay = normalizedLines.join('\n')
 
     if (fullPlay.startsWith('async') || fullPlay.startsWith('(') || fullPlay.startsWith('function')) {
@@ -947,7 +969,7 @@ export class DesignComponent extends DesignCommand {
 
         if (story.setup) {
           stories.push(`    setup() {`)
-          stories.push(`      ${story.setup.trim()}`)
+          stories.push(...this.toSetupStories(story.setup))
           stories.push(`    },`)
         }
 

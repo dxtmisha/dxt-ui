@@ -15,7 +15,8 @@ export default tseslint.config(
       '**/.output/**',
       '**/coverage/**',
       '**/*.d.ts',
-      '**/storybook-static/**'
+      '**/storybook-static/**',
+      '**/docs/**'
     ]
   },
   {

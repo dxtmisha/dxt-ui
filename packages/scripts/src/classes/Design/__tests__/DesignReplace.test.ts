@@ -47,4 +47,13 @@ describe('DesignReplace', () => {
     const replace = new DesignReplace(structure, 'Card', '<div>Hello</div>')
     expect(replace.get()).toBe('<div>Hello</div>')
   })
+
+  it('does not add trailing indentation spaces to empty lines in replaceMark', () => {
+    const structure = new DesignStructure('icon')
+    const sample = 'export const Story = {\r\n  // :story-main [!]\r\n  old\r\n  // :story-main [!]\r\n}'
+    const replace = new DesignReplace(structure, 'Icon', sample)
+
+    replace.replaceMark('story-main', ['line1', '', 'line2'])
+    expect(replace.get()).toBe('export const Story = {\r\n  // :story-main [!]\r\n  line1\r\n\r\n  line2\r\n  // :story-main [!]\r\n}')
+  })
 })

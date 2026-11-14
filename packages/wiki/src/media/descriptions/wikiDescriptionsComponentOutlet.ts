@@ -54,37 +54,37 @@ await expect(fallbackBlock?.textContent).toContain('ComponentOutlet Fallback Con
         ru: 'Базовое использование и резервный слот'
       },
       setup: `
-ComponentStorage.add(
-  'wiki-outlet-banner',
-  defineComponent({
-    name: 'WikiOutletBanner',
-    props: {
-      title: { type: String, default: 'Registered Banner' },
-      subtitle: { type: String, default: 'Resolved from ComponentStorage' },
-      badge: { type: String, default: 'DEFAULT' }
-    },
-    setup(componentProps: { title: string, subtitle: string, badge: string }) {
-      return () => h(
-        'div',
+      ComponentStorage.add(
+        'wiki-outlet-banner',
+        defineComponent({
+          name: 'WikiOutletBanner',
+          props: {
+            title: { type: String, default: 'Registered Banner' },
+            subtitle: { type: String, default: 'Resolved from ComponentStorage' },
+            badge: { type: String, default: 'DEFAULT' }
+          },
+          setup(componentProps: { title: string, subtitle: string, badge: string }) {
+            return () => h(
+              'div',
+              {
+                'class': 'wiki-outlet-banner',
+                'data-testid': 'outlet-banner',
+                'data-badge': componentProps.badge
+              },
+              [
+                h('strong', { class: 'wiki-outlet-banner__title' }, componentProps.title),
+                h('p', { class: 'wiki-outlet-banner__subtitle' }, componentProps.subtitle)
+              ]
+            )
+          }
+        }),
         {
-          class: 'wiki-outlet-banner',
-          'data-testid': 'outlet-banner',
-          'data-badge': componentProps.badge
-        },
-        [
-          h('strong', { class: 'wiki-outlet-banner__title' }, componentProps.title),
-          h('p', { class: 'wiki-outlet-banner__subtitle' }, componentProps.subtitle)
-        ]
+          subtitle: 'Default subtitle from ComponentStorage registration',
+          badge: 'STORAGE'
+        }
       )
-    }
-  }),
-  {
-    subtitle: 'Default subtitle from ComponentStorage registration',
-    badge: 'STORAGE'
-  }
-)
 
-return {}
+      return {}
       `,
       template: `
         <div class="wiki-storybook-flex-column">
@@ -126,43 +126,43 @@ expect(fallbackElement?.textContent).toContain('Fallback content rendered')
         ru: 'Передача стандартного, именованных и scoped-слотов'
       },
       setup: `
-ComponentStorage.add(
-  'wiki-outlet-layout',
-  defineComponent({
-    name: 'WikiOutletLayout',
-    props: {
-      sectionTitle: { type: String, default: 'Overview' }
-    },
-    setup(componentProps: { sectionTitle: string }, { slots }: { slots: Slots }) {
-      return () => h(
-        'section',
-        { class: 'wiki-outlet-layout', 'data-testid': 'outlet-layout' },
-        [
-          h(
-            'header',
-            { 'data-testid': 'outlet-layout-header' },
-            slots.header ? slots.header({ title: componentProps.sectionTitle }) : 'Default Header'
-          ),
-          h(
-            'div',
-            { 'data-testid': 'outlet-layout-body' },
-            slots.default ? slots.default() : 'Default Body'
-          ),
-          h(
-            'footer',
-            { 'data-testid': 'outlet-layout-footer' },
-            slots.footer ? slots.footer() : 'Default Footer'
-          )
-        ]
+      ComponentStorage.add(
+        'wiki-outlet-layout',
+        defineComponent({
+          name: 'WikiOutletLayout',
+          props: {
+            sectionTitle: { type: String, default: 'Overview' }
+          },
+          setup(componentProps: { sectionTitle: string }, { slots }: { slots: Slots }) {
+            return () => h(
+              'section',
+              { 'class': 'wiki-outlet-layout', 'data-testid': 'outlet-layout' },
+              [
+                h(
+                  'header',
+                  { 'data-testid': 'outlet-layout-header' },
+                  slots.header ? slots.header({ title: componentProps.sectionTitle }) : 'Default Header'
+                ),
+                h(
+                  'div',
+                  { 'data-testid': 'outlet-layout-body' },
+                  slots.default ? slots.default() : 'Default Body'
+                ),
+                h(
+                  'footer',
+                  { 'data-testid': 'outlet-layout-footer' },
+                  slots.footer ? slots.footer() : 'Default Footer'
+                )
+              ]
+            )
+          }
+        }),
+        {
+          sectionTitle: 'Dashboard Overview'
+        }
       )
-    }
-  }),
-  {
-    sectionTitle: 'Dashboard Overview'
-  }
-)
 
-return {}
+      return {}
       `,
       template: `
         <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
@@ -199,51 +199,51 @@ expect(footerElement?.textContent).toContain('Custom Footer Slot')
         ru: 'Доступ к разрешённому экземпляру через getElement'
       },
       setup: `
-ComponentStorage.add(
-  'wiki-outlet-article',
-  defineComponent({
-    name: 'WikiOutletArticle',
-    props: {
-      heading: { type: String, default: 'Article Heading' }
-    },
-    setup(componentProps: { heading: string }, { expose }) {
-      const articleElement = ref<HTMLElement>()
+      ComponentStorage.add(
+        'wiki-outlet-article',
+        defineComponent({
+          name: 'WikiOutletArticle',
+          props: {
+            heading: { type: String, default: 'Article Heading' }
+          },
+          setup(componentProps: { heading: string }, { expose }) {
+            const articleElement = ref<HTMLElement>()
 
-      expose({
-        getSummary: () => componentProps.heading,
-        getTagName: () => articleElement.value?.tagName.toLowerCase() ?? 'none'
-      })
+            expose({
+              getSummary: () => componentProps.heading,
+              getTagName: () => articleElement.value?.tagName.toLowerCase() ?? 'none'
+            })
 
-      return () => h(
-        'article',
-        {
-          ref: articleElement,
-          class: 'wiki-outlet-article',
-          'data-testid': 'outlet-article'
-        },
-        componentProps.heading
+            return () => h(
+              'article',
+              {
+                'ref': articleElement,
+                'class': 'wiki-outlet-article',
+                'data-testid': 'outlet-article'
+              },
+              componentProps.heading
+            )
+          }
+        })
       )
-    }
-  })
-)
 
-const outletReference = ref<{
-  getElement: <T = { getSummary: () => string, getTagName: () => string }>() => T | undefined
-} | null>(null)
-const inspectedTagName = ref<string>('none')
+      const outletReference = ref<{
+        getElement: <T = { getSummary: () => string, getTagName: () => string }>() => T | undefined
+      } | null>(null)
+      const inspectedTagName = ref<string>('none')
 
-const inspectElement = () => {
-  const resolvedInstance = outletReference.value?.getElement()
-  inspectedTagName.value = resolvedInstance
-    ? resolvedInstance.getTagName() + ': ' + resolvedInstance.getSummary()
-    : 'undefined'
-}
+      const inspectElement = () => {
+        const resolvedInstance = outletReference.value?.getElement()
+        inspectedTagName.value = resolvedInstance
+          ? resolvedInstance.getTagName() + ': ' + resolvedInstance.getSummary()
+          : 'undefined'
+      }
 
-return {
-  outletReference,
-  inspectedTagName,
-  inspectElement
-}
+      return {
+        outletReference,
+        inspectedTagName,
+        inspectElement
+      }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
@@ -290,62 +290,62 @@ await step('Inspect resolved component instance via getElement()', async () => {
         ru: 'Тест: Слияние свойств, addList, falsy-значения и сквозные атрибуты'
       },
       setup: `
-ComponentStorage.addList([
-  {
-    name: 'wiki-outlet-test-merged',
-    component: defineComponent({
-      name: 'WikiOutletTestMerged',
-      props: {
-        label: { type: String, default: 'Component Default' },
-        variant: { type: String, default: 'default' },
-        count: { type: Number, default: 1 },
-        active: { type: Boolean, default: false }
-      },
-      setup(componentProps: { label: string, variant: string, count: number, active: boolean }) {
-        return () => h(
-          'div',
-          {
-            'data-testid': 'outlet-merged-item',
-            'data-variant': componentProps.variant,
-            'data-count': String(componentProps.count),
-            'data-active': String(componentProps.active),
-            'data-label': componentProps.label
-          },
-          componentProps.label
-        )
-      }
-    }),
-    props: {
-      label: 'Storage Default Label',
-      variant: 'storage-elevated',
-      count: 10,
-      active: true,
-      class: 'storage-class',
-      style: { '--storage-offset': '4px' }
-    }
-  },
-  {
-    name: 'wiki-outlet-test-plain',
-    component: defineComponent({
-      name: 'WikiOutletTestPlain',
-      props: {
-        status: { type: String, default: 'ready' }
-      },
-      setup(componentProps: { status: string }) {
-        return () => h(
-          'span',
-          {
-            'data-testid': 'outlet-plain-item',
-            'data-status': componentProps.status
-          },
-          componentProps.status
-        )
-      }
-    })
-  }
-])
+      ComponentStorage.addList([
+        {
+          name: 'wiki-outlet-test-merged',
+          component: defineComponent({
+            name: 'WikiOutletTestMerged',
+            props: {
+              label: { type: String, default: 'Component Default' },
+              variant: { type: String, default: 'default' },
+              count: { type: Number, default: 1 },
+              active: { type: Boolean, default: false }
+            },
+            setup(componentProps: { label: string, variant: string, count: number, active: boolean }) {
+              return () => h(
+                'div',
+                {
+                  'data-testid': 'outlet-merged-item',
+                  'data-variant': componentProps.variant,
+                  'data-count': String(componentProps.count),
+                  'data-active': String(componentProps.active),
+                  'data-label': componentProps.label
+                },
+                componentProps.label
+              )
+            }
+          }),
+          props: {
+            label: 'Storage Default Label',
+            variant: 'storage-elevated',
+            count: 10,
+            active: true,
+            class: 'storage-class',
+            style: { '--storage-offset': '4px' }
+          }
+        },
+        {
+          name: 'wiki-outlet-test-plain',
+          component: defineComponent({
+            name: 'WikiOutletTestPlain',
+            props: {
+              status: { type: String, default: 'ready' }
+            },
+            setup(componentProps: { status: string }) {
+              return () => h(
+                'span',
+                {
+                  'data-testid': 'outlet-plain-item',
+                  'data-status': componentProps.status
+                },
+                componentProps.status
+              )
+            }
+          })
+        }
+      ])
 
-return {}
+      return {}
       `,
       template: `
         <div class="wiki-storybook-group">
@@ -429,11 +429,11 @@ expect(plainItem?.textContent).toBe('ready')
         ru: 'Тест: Резервные состояния при незарегистрированном, пустом и пропущенном name'
       },
       setup: `
-const emptyOutletReference = ref<{ getElement: () => Element | undefined } | null>(null)
+      const emptyOutletReference = ref<{ getElement: () => Element | undefined } | null>(null)
 
-return {
-  emptyOutletReference
-}
+      return {
+        emptyOutletReference
+      }
       `,
       template: `
         <div class="wiki-storybook-group">
@@ -496,78 +496,78 @@ expect(emptyHost?.children.length).toBe(0)
         ru: 'Тест: Реактивное переключение компонентов и обновление свойств'
       },
       setup: `
-ComponentStorage.add(
-  'wiki-outlet-alpha',
-  defineComponent({
-    name: 'WikiOutletAlpha',
-    props: {
-      label: { type: String, default: 'Alpha Default' }
-    },
-    setup(componentProps: { label: string }) {
-      return () => h(
-        'button',
+      ComponentStorage.add(
+        'wiki-outlet-alpha',
+        defineComponent({
+          name: 'WikiOutletAlpha',
+          props: {
+            label: { type: String, default: 'Alpha Default' }
+          },
+          setup(componentProps: { label: string }) {
+            return () => h(
+              'button',
+              {
+                'type': 'button',
+                'data-testid': 'outlet-dynamic-node'
+              },
+              componentProps.label
+            )
+          }
+        }),
         {
-          type: 'button',
-          'data-testid': 'outlet-dynamic-node'
-        },
-        componentProps.label
+          label: 'Alpha Storage Default'
+        }
       )
-    }
-  }),
-  {
-    label: 'Alpha Storage Default'
-  }
-)
 
-ComponentStorage.add(
-  'wiki-outlet-beta',
-  defineComponent({
-    name: 'WikiOutletBeta',
-    props: {
-      label: { type: String, default: 'Beta Default' }
-    },
-    setup(componentProps: { label: string }) {
-      return () => h(
-        'article',
+      ComponentStorage.add(
+        'wiki-outlet-beta',
+        defineComponent({
+          name: 'WikiOutletBeta',
+          props: {
+            label: { type: String, default: 'Beta Default' }
+          },
+          setup(componentProps: { label: string }) {
+            return () => h(
+              'article',
+              {
+                'data-testid': 'outlet-dynamic-node'
+              },
+              componentProps.label
+            )
+          }
+        }),
         {
-          'data-testid': 'outlet-dynamic-node'
-        },
-        componentProps.label
+          label: 'Beta Storage Default'
+        }
       )
-    }
-  }),
-  {
-    label: 'Beta Storage Default'
-  }
-)
 
-const activeName = ref<string>('wiki-outlet-alpha')
-const activeProps = ref< Record<string, string> | undefined >({
-  label: 'Alpha Initial Runtime'
-})
+      const activeName = ref<string>('wiki-outlet-alpha')
+      const activeProps = ref<Record<string, string> | undefined>({
+        label: 'Alpha Initial Runtime'
+      })
 
-const showAlphaUpdated = () => {
-  activeName.value = 'wiki-outlet-alpha'
-  activeProps.value = { label: 'Alpha Updated Runtime' }
-}
+      const showAlphaUpdated = () => {
+        activeName.value = 'wiki-outlet-alpha'
+        activeProps.value = { label: 'Alpha Updated Runtime' }
+      }
 
-const showBetaDefault = () => {
-  activeName.value = 'wiki-outlet-beta'
-  activeProps.value = undefined
-}
+      const showBetaDefault = () => {
+        activeName.value = 'wiki-outlet-beta'
+        activeProps.value = undefined
+      }
 
-const showFallback = () => {
-  activeName.value = 'unregistered-target'
-  activeProps.value = undefined
-}
+      const showFallback = () => {
+        activeName.value = 'unregistered-target'
+        activeProps.value = undefined
+      }
 
-return {
-  activeName,
-  activeProps,
-  showAlphaUpdated,
-  showBetaDefault,
-  showFallback
-}
+      return {
+        activeName,
+        activeProps,
+        showAlphaUpdated,
+        showBetaDefault,
+        showFallback
+      }
       `,
       template: `
         <div class="wiki-storybook-flex-column">

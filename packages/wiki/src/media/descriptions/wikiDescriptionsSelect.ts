@@ -54,14 +54,14 @@ export const wikiDescriptionsSelect: StorybookComponentsDescriptionItem = {
       },
       setup: `
       const options = ref([
-        {label: 'JavaScript', value: 'js'},
-        {label: 'TypeScript', value: 'ts'},
-        {label: 'Python', value: 'py'},
-        {label: 'Java', value: 'java'},
-        {label: 'C++', value: 'cpp'},
-        {label: 'Ruby', value: 'rb'},
-        {label: 'Go', value: 'go'},
-        {label: 'PHP', value: 'php'}
+        { label: 'JavaScript', value: 'js' },
+        { label: 'TypeScript', value: 'ts' },
+        { label: 'Python', value: 'py' },
+        { label: 'Java', value: 'java' },
+        { label: 'C++', value: 'cpp' },
+        { label: 'Ruby', value: 'rb' },
+        { label: 'Go', value: 'go' },
+        { label: 'PHP', value: 'php' }
       ])
 
       return { options }
@@ -172,9 +172,9 @@ export const wikiDescriptionsSelect: StorybookComponentsDescriptionItem = {
               label="Loading select"
               helperMessage="Options are loading..."
               :option="[
-                {label: 'First option', value: 'option1'},
-                {label: 'Second option', value: 'option2'},
-                {label: 'Third option', value: 'option3'}
+                { label: 'First option', value: 'option1' },
+                { label: 'Second option', value: 'option2' },
+                { label: 'Third option', value: 'option3' }
               ]"
             />
           </div>

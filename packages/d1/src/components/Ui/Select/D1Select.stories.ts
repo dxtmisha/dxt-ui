@@ -171,9 +171,9 @@ export const SelectSkeleton: Story = {
               label="Loading select"
               helperMessage="Options are loading..."
               :option="[
-                {label: 'First option', value: 'option1'},
-                {label: 'Second option', value: 'option2'},
-                {label: 'Third option', value: 'option3'}
+                { label: 'First option', value: 'option1' },
+                { label: 'Second option', value: 'option2' },
+                { label: 'Third option', value: 'option3' }
               ]"
             />
           </div>

@@ -70,10 +70,10 @@
     "@dxtmisha/functional": ">=2.1.0",
     "@dxtmisha/functional-basic": ">=2.1.4",
     "@dxtmisha/styles": ">=1.0.14",
-    "@storybook/addon-docs": ">=10.6.5",
+    "@storybook/addon-docs": ">=10.6.7",
     "react": ">=19.3.1",
     "react-dom": ">=19.3.1",
-    "vue": ">=3.5.44"
+    "vue": ">=3.5.45"
   },
   "ui-priority": 400,
   "devDependencies": {

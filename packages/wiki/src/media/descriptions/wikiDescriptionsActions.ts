@@ -54,14 +54,14 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       },
       propsName: ['list', 'listSecondary'],
       setup: `
-        const list = [
-          { label: 'Cancel', text: true, value: 'cancel' },
-          { label: 'Apply', primary: true, value: 'apply' }
-        ]
-        const listSecondary = [
-          { label: 'Delete', palette: 'red', text: true, value: 'delete' }
-        ]
-        return { list, listSecondary }
+      const list = [
+        { label: 'Cancel', text: true, value: 'cancel' },
+        { label: 'Apply', primary: true, value: 'apply' }
+      ]
+      const listSecondary = [
+        { label: 'Delete', palette: 'red', text: true, value: 'delete' }
+      ]
+      return { list, listSecondary }
       `,
       template: `
         <div class="wiki-storybook-group">
@@ -99,14 +99,14 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       },
       propsName: ['align'],
       setup: `
-        const list = [
-          { label: 'Cancel', text: true, value: 'cancel' },
-          { label: 'Apply', primary: true, value: 'apply' }
-        ]
-        const listSecondary = [
-          { label: 'Delete', palette: 'red', text: true, value: 'delete' }
-        ]
-        return { list, listSecondary }
+      const list = [
+        { label: 'Cancel', text: true, value: 'cancel' },
+        { label: 'Apply', primary: true, value: 'apply' }
+      ]
+      const listSecondary = [
+        { label: 'Delete', palette: 'red', text: true, value: 'delete' }
+      ]
+      return { list, listSecondary }
       `,
       template: `
         <div class="wiki-storybook-group">
@@ -151,14 +151,14 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       },
       propsName: ['flexible'],
       setup: `
-        const list = [
-          { label: 'Cancel', text: true, value: 'cancel' },
-          { label: 'Apply', primary: true, value: 'apply' }
-        ]
-        const listSecondary = [
-          { label: 'Delete', palette: 'red', text: true, value: 'delete' }
-        ]
-        return { list, listSecondary }
+      const list = [
+        { label: 'Cancel', text: true, value: 'cancel' },
+        { label: 'Apply', primary: true, value: 'apply' }
+      ]
+      const listSecondary = [
+        { label: 'Delete', palette: 'red', text: true, value: 'delete' }
+      ]
+      return { list, listSecondary }
       `,
       template: `
         <div class="wiki-storybook-group">
@@ -188,14 +188,14 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       },
       propsName: ['buttonAttrs', 'buttonSecondaryAttrs'],
       setup: `
-        const list = [
-          { label: 'Draft', value: 'draft' },
-          { label: 'Publish', value: 'publish' }
-        ]
-        const listSecondary = [
-          { label: 'Discard', value: 'discard' }
-        ]
-        return { list, listSecondary }
+      const list = [
+        { label: 'Draft', value: 'draft' },
+        { label: 'Publish', value: 'publish' }
+      ]
+      const listSecondary = [
+        { label: 'Discard', value: 'discard' }
+      ]
+      return { list, listSecondary }
       `,
       template: `
         <div class="wiki-storybook-group">
@@ -259,15 +259,15 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
         ru: 'Обработка события клика'
       },
       setup: `
-        const lastEvent = ref('none')
-        const list = [
-          { label: 'Cancel', text: true, value: 'cancel' },
-          { label: 'Apply', primary: true, value: 'apply' }
-        ]
-        const onClick = (_event: MouseEvent, value: EventClickValue) => {
-          lastEvent.value = 'click:' + String(value?.value ?? '')
-        }
-        return { lastEvent, list, onClick }
+      const lastEvent = ref('none')
+      const list = [
+        { label: 'Cancel', text: true, value: 'cancel' },
+        { label: 'Apply', primary: true, value: 'apply' }
+      ]
+      const onClick = (_event: MouseEvent, value: EventClickValue) => {
+        lastEvent.value = 'click:' + String(value?.value ?? '')
+      }
+      return { lastEvent, list, onClick }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
@@ -307,9 +307,9 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       },
       propsName: ['align'],
       setup: `
-        const list = [{ label: 'Item 1', value: '1' }, { label: 'Item 2', value: '2' }]
-        const listSecondary = [{ label: 'Secondary', value: 'sec' }]
-        return { list, listSecondary }
+      const list = [{ label: 'Item 1', value: '1' }, { label: 'Item 2', value: '2' }]
+      const listSecondary = [{ label: 'Secondary', value: 'sec' }]
+      return { list, listSecondary }
       `,
       template: `
         <div class="wiki-storybook-group">
@@ -359,15 +359,15 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       },
       propsName: ['wrap'],
       setup: `
-        const manyItems = [
-          { label: 'Action 1', value: '1' },
-          { label: 'Action 2', value: '2' },
-          { label: 'Action 3', value: '3' },
-          { label: 'Action 4', value: '4' },
-          { label: 'Action 5', value: '5' },
-          { label: 'Action 6', value: '6' }
-        ]
-        return { manyItems }
+      const manyItems = [
+        { label: 'Action 1', value: '1' },
+        { label: 'Action 2', value: '2' },
+        { label: 'Action 3', value: '3' },
+        { label: 'Action 4', value: '4' },
+        { label: 'Action 5', value: '5' },
+        { label: 'Action 6', value: '6' }
+      ]
+      return { manyItems }
       `,
       template: `
         <div class="wiki-storybook-group">
@@ -397,13 +397,13 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       },
       propsName: ['list'],
       setup: `
-        const stateItems = [
-          { label: 'Disabled', disabled: true, value: 'disabled' },
-          { label: 'Loading', loading: true, value: 'loading' },
-          { label: 'With Icon', icon: 'download', outline: true, value: 'icon' },
-          { label: 'Custom Palette', palette: 'red', value: 'palette' }
-        ]
-        return { stateItems }
+      const stateItems = [
+        { label: 'Disabled', disabled: true, value: 'disabled' },
+        { label: 'Loading', loading: true, value: 'loading' },
+        { label: 'With Icon', icon: 'download', outline: true, value: 'icon' },
+        { label: 'Custom Palette', palette: 'red', value: 'palette' }
+      ]
+      return { stateItems }
       `,
       template: `
         <div class="wiki-storybook-group">
@@ -435,9 +435,9 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       propsName: ['list', 'listSecondary'],
       components: ['Button'],
       setup: `
-        const list = [{ label: 'Data Action', value: 'data' }]
-        const listSecondary = [{ label: 'Secondary Data', value: 'sec' }]
-        return { list, listSecondary }
+      const list = [{ label: 'Data Action', value: 'data' }]
+      const listSecondary = [{ label: 'Secondary Data', value: 'sec' }]
+      return { list, listSecondary }
       `,
       template: `
         <div class="wiki-storybook-group">
@@ -484,8 +484,8 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       },
       propsName: ['padding', 'paddingByIndent'],
       setup: `
-        const list = [{ label: 'Action', value: '1' }]
-        return { list }
+      const list = [{ label: 'Action', value: '1' }]
+      return { list }
       `,
       template: `
         <div class="wiki-storybook-group">

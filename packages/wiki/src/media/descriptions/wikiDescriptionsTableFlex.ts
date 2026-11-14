@@ -193,9 +193,9 @@ export const wikiDescriptionsTableFlex: StorybookComponentsDescriptionItem = {
         ru: 'Поиск'
       },
       setup: `
-        return {
-          searchValue: ref('an')
-        }
+      return {
+        searchValue: ref('an')
+      }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
