@@ -356,7 +356,7 @@ export const ButtonExpose: Story = {
   }
 }
 export const ButtonSlots: Story = {
-  name: 'Слоты (default & label)',
+  name: 'Слоты (default)',
   render: () => ({
     components: { D1Button },
     template: `
@@ -367,9 +367,9 @@ export const ButtonSlots: Story = {
               <span>Custom <strong>Rich Default</strong> Content</span>
             </template>
           </D1Button>
-          <D1Button secondary>
-            <template #label>
-              <span>Custom <em>Scoped Label</em></span>
+          <D1Button secondary icon="star">
+            <template #default>
+              <span>Custom <em>Icon Slot</em></span>
             </template>
           </D1Button>
         </div>
@@ -381,7 +381,7 @@ export const ButtonSlots: Story = {
     await expect(items.length).toBe(2)
 
     await expect(items[0]).toHaveTextContent('Rich Default')
-    await expect(items[1]).toHaveTextContent('Scoped Label')
+    await expect(items[1]).toHaveTextContent('Icon Slot')
   }
 }
 export const ButtonTestStates: Story = {
@@ -431,7 +431,6 @@ export const ButtonTestStates: Story = {
     await expect(items[1]).toHaveClass('d1-button--readonly')
 
     // 3. loading: has loading sub-class, progress indicator, and aria-disabled
-    await expect(items[2]).toHaveClass('d1-button--loading')
     await expect(items[2].querySelector('.d1-button__loading')).toBeInTheDocument()
     await expect(items[2]).toHaveAttribute('aria-disabled', 'true')
 
@@ -444,7 +443,7 @@ export const ButtonTestStates: Story = {
     await expect(items[4]).toBeDisabled()
 
     // 6. loading + disabled
-    await expect(items[5]).toHaveClass('d1-button--loading')
+    await expect(items[5].querySelector('.d1-button__loading')).toBeInTheDocument()
     await expect(items[5]).toHaveClass('d1-button--disabled')
     await expect(items[5]).toBeDisabled()
   }
@@ -466,7 +465,7 @@ export const ButtonTestTokensAndModifiers: Story = {
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">container</div>
-            <D1Button container icon="home" label="Container Query"/>
+            <D1Button container="iconSm" icon="home" label="Container Query"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">textAlign: left</div>
@@ -490,7 +489,7 @@ export const ButtonTestTokensAndModifiers: Story = {
 
     await expect(items[0]).toHaveClass('d1-button--inverse')
     await expect(items[1]).toHaveClass('d1-button--grid')
-    await expect(items[2]).toHaveClass('d1-button--container')
+    await expect(items[2]).toHaveClass('d1-button--container--iconSm')
     await expect(items[3]).toHaveClass('d1-button--textAlign--left')
     await expect(items[4]).toHaveClass('d1-button--textAlign--center')
     await expect(items[5]).toHaveClass('d1-button--textAlign--right')

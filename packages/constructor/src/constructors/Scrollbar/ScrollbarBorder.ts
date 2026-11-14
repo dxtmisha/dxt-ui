@@ -49,7 +49,7 @@ export class ScrollbarBorder extends DesignLifecycleAbstract {
   protected bottom?: boolean
 
   /** Watcher stop handle / Функция остановки наблюдателя */
-  protected readonly stopWatch?: () => void
+  protected stopWatch?: () => void
 
   /**
    * Constructor for ScrollbarBorder class.
@@ -60,29 +60,30 @@ export class ScrollbarBorder extends DesignLifecycleAbstract {
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: ScrollbarProps,
+    protected readonly props: Readonly<ScrollbarProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly emits?: ConstrEmit<ScrollbarEmits>
   ) {
     super()
-
-    this.stopWatch = watch([
-      this.element,
-      () => props.divider,
-      () => props.dividerTop,
-      () => props.dividerBottom
-    ], this.reset)
   }
 
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {
     this.reset()
+
+    this.stopWatch = watch([
+      this.element,
+      () => this.props.divider,
+      () => this.props.dividerTop,
+      () => this.props.dividerBottom
+    ], this.reset)
   }
 
   /** Callback after component unmounting / Обработчик после демонтирования компонента */
   override readonly onUnmounted = (): void => {
     this.stop()
     this.stopWatch?.()
+    this.stopWatch = undefined
   }
 
   /**

@@ -1,14 +1,13 @@
 // ai-none
 
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrEmit,
   type DesignComponents,
   type DesignName,
   executeFunction,
   type RawChildren,
-  type RawSlots,
-  toBinds
+  type RawSlots
 } from '@dxtmisha/functional'
 
 import type {
@@ -85,14 +84,14 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
     if (this.components) {
       const scrollbar = this.components.renderOne(
         'scrollbar',
-        toBinds(
+        mergeProps(
           {
             tag,
             class: this.naming.getSubClass('scrollbar'),
             ...this.scrollbarEvents
           },
-          props,
-          this.props.scrollbarAttrs
+          props ?? {},
+          (this.props.scrollbarAttrs ?? {}) as Record<string, unknown>
         ),
         children
       )

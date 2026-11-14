@@ -1,0 +1,185 @@
+{
+  "d": {
+    "value": {
+      "ref": {
+        "value": {
+          "transitionDuration": {
+            "value": {
+              "1": {
+                "value": "45ms",
+                "__i": "1"
+              },
+              "2": {
+                "value": "75ms",
+                "__i": "2"
+              },
+              "3": {
+                "value": "100ms",
+                "__i": "3"
+              },
+              "4": {
+                "value": "150ms",
+                "__i": "4"
+              },
+              "5": {
+                "value": "200ms",
+                "__i": "5"
+              },
+              "6": {
+                "value": "250ms",
+                "__i": "6"
+              },
+              "7": {
+                "value": "280ms",
+                "__i": "7"
+              },
+              "8": {
+                "value": "300ms",
+                "__i": "8"
+              }
+            },
+            "__i": "transitionDuration"
+          },
+          "transitionFunction": {
+            "value": {
+              "linear": {
+                "value": "linear",
+                "__i": "linear"
+              },
+              "e0i80": {
+                "value": "cubic-bezier(0.0, 0.0, 0.2, 1)",
+                "__i": "e0i80"
+              },
+              "e40i0": {
+                "value": "cubic-bezier(0.4, 0.0, 1, 1)",
+                "__i": "e40i0"
+              },
+              "e40i80": {
+                "value": "cubic-bezier(0.4, 0.0, 0.2, 1)",
+                "__i": "e40i80"
+              },
+              "e40i40": {
+                "value": "cubic-bezier(0.4, 0.0, 0.6, 1)",
+                "__i": "e40i40"
+              }
+            },
+            "__i": "transitionFunction"
+          }
+        },
+        "_type": "var",
+        "_category": "root",
+        "__i": "ref"
+      },
+      "sys": {
+        "value": {
+          "transitionDuration": {
+            "value": {
+              "standard": {
+                "value": "{ref.transitionDuration.4}",
+                "__i": "standard"
+              },
+              "xs": {
+                "value": "{ref.transitionDuration.1}",
+                "__i": "xs"
+              },
+              "sm": {
+                "value": "{ref.transitionDuration.3}",
+                "__i": "sm"
+              },
+              "md": {
+                "value": {
+                  "open": {
+                    "value": "{ref.transitionDuration.6}",
+                    "__i": "open"
+                  },
+                  "close": {
+                    "value": "{ref.transitionDuration.5}",
+                    "__i": "close"
+                  }
+                },
+                "__i": "md"
+              },
+              "lg": {
+                "value": {
+                  "open": {
+                    "value": "{ref.transitionDuration.8}",
+                    "__i": "open"
+                  },
+                  "close": {
+                    "value": "{ref.transitionDuration.6}",
+                    "__i": "close"
+                  }
+                },
+                "__i": "lg"
+              },
+              "axis": {
+                "value": "{ref.transitionDuration.8}",
+                "__i": "axis"
+              },
+              "container": {
+                "value": {
+                  "open": {
+                    "value": "{ref.transitionDuration.8}",
+                    "__i": "open"
+                  },
+                  "close": {
+                    "value": "{ref.transitionDuration.6}",
+                    "__i": "close"
+                  }
+                },
+                "__i": "container"
+              },
+              "fade": {
+                "value": {
+                  "enter": {
+                    "value": "{ref.transitionDuration.4}",
+                    "__i": "enter"
+                  },
+                  "exit": {
+                    "value": "{ref.transitionDuration.2}",
+                    "__i": "exit"
+                  },
+                  "through": {
+                    "value": "{ref.transitionDuration.8}",
+                    "__i": "through"
+                  }
+                },
+                "__i": "fade"
+              }
+            },
+            "__i": "transitionDuration"
+          },
+          "transitionFunction": {
+            "value": {
+              "linear": {
+                "value": "linear",
+                "__i": "linear"
+              },
+              "standard": {
+                "value": "{ref.transitionFunction.e40i80}",
+                "__i": "standard"
+              },
+              "emphasized": {
+                "value": "{ref.transitionFunction.e40i40}",
+                "__i": "emphasized"
+              },
+              "acceleration": {
+                "value": "{ref.transitionFunction.e40i0}",
+                "__i": "acceleration"
+              },
+              "deceleration": {
+                "value": "{ref.transitionFunction.e0i80}",
+                "__i": "deceleration"
+              }
+            },
+            "__i": "transitionFunction"
+          }
+        },
+        "_type": "var",
+        "_category": "root",
+        "__i": "sys"
+      }
+    },
+    "__i": "d"
+  }
+}

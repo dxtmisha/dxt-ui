@@ -1,0 +1,16 @@
+{
+  "ui": {
+    "value": {
+      "button": {
+        "value": {
+          "main": {
+            "value": "{d.button}",
+            "__i": "main"
+          }
+        },
+        "__i": "button"
+      }
+    },
+    "__i": "ui"
+  }
+}

@@ -1,0 +1,1015 @@
+{
+  "ui": {
+    "value": {
+      "button": {
+        "value": {
+          "padding": {
+            "value": {},
+            "_type": "var",
+            "__i": "padding",
+            "__v": "var"
+          },
+          "borderRadius": {
+            "value": "0",
+            "__i": "border-radius",
+            "__v": "property"
+          },
+          "transitionProperty": {
+            "value": "grid-template-columns, background-color, background-image, border, box-shadow",
+            "__i": "transition-property",
+            "__v": "property"
+          },
+          "transitionDuration": {
+            "value": "{d.sys.transitionDuration.fade.enter}",
+            "__i": "transition-duration",
+            "__v": "property"
+          },
+          "transitionFunction": {
+            "value": "{d.sys.transitionFunction.standard}",
+            "__i": "transition-function",
+            "__v": "var"
+          },
+          "label": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#label",
+            "__v": "subclass"
+          },
+          "icon": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#icon",
+            "__v": "subclass"
+          },
+          "trailing": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#trailing",
+            "__v": "subclass"
+          },
+          "loading": {
+            "value": {
+              "colorOpacity": {
+                "value": {},
+                "_type": "var",
+                "__i": "color-opacity",
+                "__v": "var"
+              }
+            },
+            "_type": "subclass",
+            "__i": "#loading",
+            "__v": "subclass"
+          },
+          "focus": {
+            "value": {},
+            "__i": "focus",
+            "__v": "selector"
+          },
+          "hover": {
+            "value": {
+              "transitionDuration": {
+                "value": "{d.sys.transitionDuration.sm}",
+                "__i": "transition-duration",
+                "__v": "property"
+              }
+            },
+            "__i": "hover",
+            "__v": "selector"
+          },
+          "active": {
+            "value": {
+              "transitionDuration": {
+                "value": "{d.sys.transitionDuration.sm}",
+                "__i": "transition-duration",
+                "__v": "property"
+              }
+            },
+            "__i": "active",
+            "__v": "selector"
+          },
+          "selected": {
+            "value": {},
+            "_type": "state",
+            "__i": "selected",
+            "__v": "state"
+          },
+          "readonly": {
+            "value": {},
+            "_type": "state",
+            "__i": "readonly",
+            "__v": "state"
+          },
+          "disabled": {
+            "value": {
+              "transitionDuration": {
+                "value": "{d.sys.transitionDuration.sm}",
+                "__i": "transition-duration",
+                "__v": "property"
+              }
+            },
+            "__i": "disabled",
+            "__v": "selector"
+          },
+          "adaptive": {
+            "value": {
+              "iconAlways": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "& > .??__icon": {
+                    "value": {
+                      "padding": {
+                        "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+                        "_important": true,
+                        "__i": "padding",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > .??__icon",
+                    "__v": "scss"
+                  },
+                  "& > *:not(.??__icon)": {
+                    "value": {
+                      "display": {
+                        "value": "none",
+                        "__i": "display",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > *:not(.??__icon)",
+                    "__v": "scss"
+                  }
+                },
+                "_type": "state",
+                "__i": "~iconAlways",
+                "__v": "state"
+              },
+              "block": {
+                "value": {
+                  "width": {
+                    "value": "100%",
+                    "__i": "width",
+                    "__v": "property"
+                  }
+                },
+                "_type": "state",
+                "__i": "~block",
+                "__v": "state"
+              },
+              "auto": {
+                "value": {
+                  "width": {
+                    "value": "fit-content",
+                    "__i": "width",
+                    "__v": "property"
+                  }
+                },
+                "_type": "state",
+                "__i": "~auto",
+                "__v": "state"
+              },
+              "icon": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "& > .??__icon": {
+                    "value": {
+                      "padding": {
+                        "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+                        "_important": true,
+                        "__i": "padding",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > .??__icon",
+                    "__v": "scss"
+                  },
+                  "& > *:not(.??__icon)": {
+                    "value": {
+                      "display": {
+                        "value": "none",
+                        "__i": "display",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > *:not(.??__icon)",
+                    "__v": "scss"
+                  }
+                },
+                "_type": "media-group",
+                "__i": "group|icon",
+                "__v": "media-group"
+              },
+              "full": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "& > .??__icon": {
+                    "value": {
+                      "padding": {
+                        "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+                        "_important": true,
+                        "__i": "padding",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > .??__icon",
+                    "__v": "scss"
+                  },
+                  "& > *:not(.??__icon)": {
+                    "value": {
+                      "display": {
+                        "value": "none",
+                        "__i": "display",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > *:not(.??__icon)",
+                    "__v": "scss"
+                  }
+                },
+                "_type": "media-max-group",
+                "__i": "group|full",
+                "__v": "media-max-group"
+              }
+            },
+            "_type": "state",
+            "__i": "~adaptive",
+            "__v": "state"
+          },
+          "container": {
+            "value": {
+              "icon": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "& > .??__icon": {
+                    "value": {
+                      "padding": {
+                        "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+                        "_important": true,
+                        "__i": "padding",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > .??__icon",
+                    "__v": "scss"
+                  },
+                  "& > *:not(.??__icon)": {
+                    "value": {
+                      "display": {
+                        "value": "none",
+                        "__i": "display",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > *:not(.??__icon)",
+                    "__v": "scss"
+                  }
+                },
+                "_type": "container-group",
+                "__i": "group|icon",
+                "__v": "container-group"
+              },
+              "full": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "& > .??__icon": {
+                    "value": {
+                      "padding": {
+                        "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+                        "_important": true,
+                        "__i": "padding",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > .??__icon",
+                    "__v": "scss"
+                  },
+                  "& > *:not(.??__icon)": {
+                    "value": {
+                      "display": {
+                        "value": "none",
+                        "__i": "display",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > *:not(.??__icon)",
+                    "__v": "scss"
+                  }
+                },
+                "_type": "container-max-group",
+                "__i": "group|full",
+                "__v": "container-max-group"
+              }
+            },
+            "__i": "container",
+            "__v": "state"
+          },
+          "inverse": {
+            "value": {},
+            "_type": "state",
+            "__i": "~inverse",
+            "__v": "state"
+          },
+          "grid": {
+            "value": {},
+            "_type": "state",
+            "__i": "~grid",
+            "__v": "state"
+          },
+          "textAlign": {
+            "value": {
+              "left": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "textAlign": {
+                    "value": "left",
+                    "__i": "text-align",
+                    "__v": "property"
+                  }
+                },
+                "__i": "left",
+                "__v": "property"
+              },
+              "center": {
+                "value": {},
+                "__i": "center",
+                "__v": "state"
+              },
+              "right": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-end",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "textAlign": {
+                    "value": "right",
+                    "__i": "text-align",
+                    "__v": "property"
+                  }
+                },
+                "__i": "right",
+                "__v": "property"
+              }
+            },
+            "_type": "state",
+            "__i": "~textAlign",
+            "__v": "state"
+          }
+        },
+        "__i": "button",
+        "__v": "component"
+      }
+    },
+    "__i": "ui",
+    "__v": "design"
+  },
+  "d": {
+    "value": {
+      "button": {
+        "value": {
+          "padding": {
+            "value": {},
+            "_type": "var",
+            "__i": "padding",
+            "__v": "var"
+          },
+          "borderRadius": {
+            "value": "0",
+            "__i": "border-radius",
+            "__v": "property"
+          },
+          "transitionProperty": {
+            "value": "grid-template-columns, background-color, background-image, border, box-shadow",
+            "__i": "transition-property",
+            "__v": "property"
+          },
+          "transitionDuration": {
+            "value": "{d.sys.transitionDuration.fade.enter}",
+            "__i": "transition-duration",
+            "__v": "property"
+          },
+          "transitionFunction": {
+            "value": "{d.sys.transitionFunction.standard}",
+            "__i": "transition-function",
+            "__v": "var"
+          },
+          "label": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#label",
+            "__v": "subclass"
+          },
+          "icon": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#icon",
+            "__v": "subclass"
+          },
+          "trailing": {
+            "value": {},
+            "_type": "subclass",
+            "__i": "#trailing",
+            "__v": "subclass"
+          },
+          "loading": {
+            "value": {
+              "colorOpacity": {
+                "value": {},
+                "_type": "var",
+                "__i": "color-opacity",
+                "__v": "var"
+              }
+            },
+            "_type": "subclass",
+            "__i": "#loading",
+            "__v": "subclass"
+          },
+          "focus": {
+            "value": {},
+            "__i": "focus",
+            "__v": "selector"
+          },
+          "hover": {
+            "value": {
+              "transitionDuration": {
+                "value": "{d.sys.transitionDuration.sm}",
+                "__i": "transition-duration",
+                "__v": "property"
+              }
+            },
+            "__i": "hover",
+            "__v": "selector"
+          },
+          "active": {
+            "value": {
+              "transitionDuration": {
+                "value": "{d.sys.transitionDuration.sm}",
+                "__i": "transition-duration",
+                "__v": "property"
+              }
+            },
+            "__i": "active",
+            "__v": "selector"
+          },
+          "selected": {
+            "value": {},
+            "_type": "state",
+            "__i": "selected",
+            "__v": "state"
+          },
+          "readonly": {
+            "value": {},
+            "_type": "state",
+            "__i": "readonly",
+            "__v": "state"
+          },
+          "disabled": {
+            "value": {
+              "transitionDuration": {
+                "value": "{d.sys.transitionDuration.sm}",
+                "__i": "transition-duration",
+                "__v": "property"
+              }
+            },
+            "__i": "disabled",
+            "__v": "selector"
+          },
+          "adaptive": {
+            "value": {
+              "iconAlways": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "& > .??__icon": {
+                    "value": {
+                      "padding": {
+                        "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+                        "_important": true,
+                        "__i": "padding",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > .??__icon",
+                    "__v": "scss"
+                  },
+                  "& > *:not(.??__icon)": {
+                    "value": {
+                      "display": {
+                        "value": "none",
+                        "__i": "display",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > *:not(.??__icon)",
+                    "__v": "scss"
+                  }
+                },
+                "_type": "state",
+                "__i": "~iconAlways",
+                "__v": "state"
+              },
+              "block": {
+                "value": {
+                  "width": {
+                    "value": "100%",
+                    "__i": "width",
+                    "__v": "property"
+                  }
+                },
+                "_type": "state",
+                "__i": "~block",
+                "__v": "state"
+              },
+              "auto": {
+                "value": {
+                  "width": {
+                    "value": "fit-content",
+                    "__i": "width",
+                    "__v": "property"
+                  }
+                },
+                "_type": "state",
+                "__i": "~auto",
+                "__v": "state"
+              },
+              "icon": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "& > .??__icon": {
+                    "value": {
+                      "padding": {
+                        "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+                        "_important": true,
+                        "__i": "padding",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > .??__icon",
+                    "__v": "scss"
+                  },
+                  "& > *:not(.??__icon)": {
+                    "value": {
+                      "display": {
+                        "value": "none",
+                        "__i": "display",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > *:not(.??__icon)",
+                    "__v": "scss"
+                  }
+                },
+                "_type": "media-group",
+                "__i": "group|icon",
+                "__v": "media-group"
+              },
+              "full": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "& > .??__icon": {
+                    "value": {
+                      "padding": {
+                        "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+                        "_important": true,
+                        "__i": "padding",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > .??__icon",
+                    "__v": "scss"
+                  },
+                  "& > *:not(.??__icon)": {
+                    "value": {
+                      "display": {
+                        "value": "none",
+                        "__i": "display",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > *:not(.??__icon)",
+                    "__v": "scss"
+                  }
+                },
+                "_type": "media-max-group",
+                "__i": "group|full",
+                "__v": "media-max-group"
+              }
+            },
+            "_type": "state",
+            "__i": "~adaptive",
+            "__v": "state"
+          },
+          "container": {
+            "value": {
+              "icon": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "& > .??__icon": {
+                    "value": {
+                      "padding": {
+                        "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+                        "_important": true,
+                        "__i": "padding",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > .??__icon",
+                    "__v": "scss"
+                  },
+                  "& > *:not(.??__icon)": {
+                    "value": {
+                      "display": {
+                        "value": "none",
+                        "__i": "display",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > *:not(.??__icon)",
+                    "__v": "scss"
+                  }
+                },
+                "_type": "container-group",
+                "__i": "group|icon",
+                "__v": "container-group"
+              },
+              "full": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "& > .??__icon": {
+                    "value": {
+                      "padding": {
+                        "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+                        "_important": true,
+                        "__i": "padding",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > .??__icon",
+                    "__v": "scss"
+                  },
+                  "& > *:not(.??__icon)": {
+                    "value": {
+                      "display": {
+                        "value": "none",
+                        "__i": "display",
+                        "__v": "property"
+                      }
+                    },
+                    "_type": "scss",
+                    "__i": "& > *:not(.??__icon)",
+                    "__v": "scss"
+                  }
+                },
+                "_type": "container-max-group",
+                "__i": "group|full",
+                "__v": "container-max-group"
+              }
+            },
+            "__i": "container",
+            "__v": "state"
+          },
+          "inverse": {
+            "value": {},
+            "_type": "state",
+            "__i": "~inverse",
+            "__v": "state"
+          },
+          "grid": {
+            "value": {},
+            "_type": "state",
+            "__i": "~grid",
+            "__v": "state"
+          },
+          "textAlign": {
+            "value": {
+              "left": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-start",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "textAlign": {
+                    "value": "left",
+                    "__i": "text-align",
+                    "__v": "property"
+                  }
+                },
+                "__i": "left",
+                "__v": "property"
+              },
+              "center": {
+                "value": {},
+                "__i": "center",
+                "__v": "state"
+              },
+              "right": {
+                "value": {
+                  "justifyContent": {
+                    "value": "flex-end",
+                    "__i": "justify-content",
+                    "__v": "property"
+                  },
+                  "textAlign": {
+                    "value": "right",
+                    "__i": "text-align",
+                    "__v": "property"
+                  }
+                },
+                "__i": "right",
+                "__v": "property"
+              }
+            },
+            "_type": "state",
+            "__i": "~textAlign",
+            "__v": "state"
+          }
+        },
+        "__i": "Button",
+        "__v": "component"
+      },
+      "ref": {
+        "value": {
+          "transitionDuration": {
+            "value": {
+              "1": {
+                "value": "45ms",
+                "__i": "1",
+                "__v": "var"
+              },
+              "2": {
+                "value": "75ms",
+                "__i": "2",
+                "__v": "var"
+              },
+              "3": {
+                "value": "100ms",
+                "__i": "3",
+                "__v": "var"
+              },
+              "4": {
+                "value": "150ms",
+                "__i": "4",
+                "__v": "var"
+              },
+              "5": {
+                "value": "200ms",
+                "__i": "5",
+                "__v": "var"
+              },
+              "6": {
+                "value": "250ms",
+                "__i": "6",
+                "__v": "var"
+              },
+              "7": {
+                "value": "280ms",
+                "__i": "7",
+                "__v": "var"
+              },
+              "8": {
+                "value": "300ms",
+                "__i": "8",
+                "__v": "var"
+              }
+            },
+            "__i": "transitionDuration",
+            "__v": "var"
+          },
+          "transitionFunction": {
+            "value": {
+              "linear": {
+                "value": "linear",
+                "__i": "linear",
+                "__v": "var"
+              },
+              "e0i80": {
+                "value": "cubic-bezier(0.0, 0.0, 0.2, 1)",
+                "__i": "e0i80",
+                "__v": "var"
+              },
+              "e40i0": {
+                "value": "cubic-bezier(0.4, 0.0, 1, 1)",
+                "__i": "e40i0",
+                "__v": "var"
+              },
+              "e40i80": {
+                "value": "cubic-bezier(0.4, 0.0, 0.2, 1)",
+                "__i": "e40i80",
+                "__v": "var"
+              },
+              "e40i40": {
+                "value": "cubic-bezier(0.4, 0.0, 0.6, 1)",
+                "__i": "e40i40",
+                "__v": "var"
+              }
+            },
+            "__i": "transitionFunction",
+            "__v": "var"
+          }
+        },
+        "_type": "var",
+        "_category": "root",
+        "__i": "ref",
+        "__v": "var"
+      },
+      "sys": {
+        "value": {
+          "transitionDuration": {
+            "value": {
+              "standard": {
+                "value": "{ref.transitionDuration.4}",
+                "__i": "standard",
+                "__v": "var"
+              },
+              "xs": {
+                "value": "{ref.transitionDuration.1}",
+                "__i": "xs",
+                "__v": "var"
+              },
+              "sm": {
+                "value": "{ref.transitionDuration.3}",
+                "__i": "sm",
+                "__v": "var"
+              },
+              "md": {
+                "value": {
+                  "open": {
+                    "value": "{ref.transitionDuration.6}",
+                    "__i": "open",
+                    "__v": "var"
+                  },
+                  "close": {
+                    "value": "{ref.transitionDuration.5}",
+                    "__i": "close",
+                    "__v": "var"
+                  }
+                },
+                "__i": "md",
+                "__v": "var"
+              },
+              "lg": {
+                "value": {
+                  "open": {
+                    "value": "{ref.transitionDuration.8}",
+                    "__i": "open",
+                    "__v": "var"
+                  },
+                  "close": {
+                    "value": "{ref.transitionDuration.6}",
+                    "__i": "close",
+                    "__v": "var"
+                  }
+                },
+                "__i": "lg",
+                "__v": "var"
+              },
+              "axis": {
+                "value": "{ref.transitionDuration.8}",
+                "__i": "axis",
+                "__v": "var"
+              },
+              "container": {
+                "value": {
+                  "open": {
+                    "value": "{ref.transitionDuration.8}",
+                    "__i": "open",
+                    "__v": "var"
+                  },
+                  "close": {
+                    "value": "{ref.transitionDuration.6}",
+                    "__i": "close",
+                    "__v": "var"
+                  }
+                },
+                "__i": "container",
+                "__v": "var"
+              },
+              "fade": {
+                "value": {
+                  "enter": {
+                    "value": "{ref.transitionDuration.4}",
+                    "__i": "enter",
+                    "__v": "var"
+                  },
+                  "exit": {
+                    "value": "{ref.transitionDuration.2}",
+                    "__i": "exit",
+                    "__v": "var"
+                  },
+                  "through": {
+                    "value": "{ref.transitionDuration.8}",
+                    "__i": "through",
+                    "__v": "var"
+                  }
+                },
+                "__i": "fade",
+                "__v": "var"
+              }
+            },
+            "__i": "transitionDuration",
+            "__v": "var"
+          },
+          "transitionFunction": {
+            "value": {
+              "linear": {
+                "value": "linear",
+                "__i": "linear",
+                "__v": "var"
+              },
+              "standard": {
+                "value": "{ref.transitionFunction.e40i80}",
+                "__i": "standard",
+                "__v": "var"
+              },
+              "emphasized": {
+                "value": "{ref.transitionFunction.e40i40}",
+                "__i": "emphasized",
+                "__v": "var"
+              },
+              "acceleration": {
+                "value": "{ref.transitionFunction.e40i0}",
+                "__i": "acceleration",
+                "__v": "var"
+              },
+              "deceleration": {
+                "value": "{ref.transitionFunction.e0i80}",
+                "__i": "deceleration",
+                "__v": "var"
+              }
+            },
+            "__i": "transitionFunction",
+            "__v": "var"
+          }
+        },
+        "_type": "var",
+        "_category": "root",
+        "__i": "sys",
+        "__v": "var"
+      }
+    },
+    "__i": "d",
+    "__v": "design"
+  }
+}

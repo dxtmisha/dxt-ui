@@ -317,6 +317,7 @@ describe('ScrollbarBorder', () => {
       const elementRef = ref<HTMLElement | undefined>(undefined)
 
       const border = scope.run(() => new ScrollbarBorder(props, elementRef))!
+      border.onMounted()
 
       // Calling start() when element.value is undefined should safely no-op
       expect(() => border.start()).not.toThrow()

@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -116,12 +116,14 @@ export class ScrollbarDesign<
   protected initRender(): VNode {
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.initSlot('default')
     )
   }

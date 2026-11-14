@@ -59,7 +59,7 @@ export class Button extends DesignLogicAbstract<
       item: EnabledInclude,
       parameters: () => [
         this.props,
-        () => (ProgressInclude.is(this.props) ? this.i('progress') : undefined)
+        () => this.callInstance('progress', item => item)
       ]
     },
     event: {
@@ -114,6 +114,7 @@ export class Button extends DesignLogicAbstract<
     },
     skeleton: {
       item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -133,8 +134,10 @@ export class Button extends DesignLogicAbstract<
       ...AriaStaticInclude.label(this.props.ariaLabel)
     }
 
-    if (ProgressInclude.is(this.props)) {
-      Object.assign(aria, this.i('progress').aria.value)
+    const progressAria = this.callInstance('progress', item => item.aria.value)
+
+    if (progressAria) {
+      Object.assign(aria, progressAria)
     }
 
     if (this.isTagNotButton()) {
@@ -172,14 +175,15 @@ export class Button extends DesignLogicAbstract<
    * @returns classes values / значения классов
    */
   get classes(): ConstrClassObject {
-    const icon = IconTrailingInclude.is(this.props) && this.i('icon').isIcon()
+    const icon = this.callInstance('icon', item => item.isIcon(), false)
+    const skeletonClasses = this.callInstance('skeleton', item => item.classes)
     const classes: ConstrClassObject = {
       [this.naming.getStatusClass('icon')]: icon,
       [getClassTagAStatic(this.naming.getDesign())]: true
     }
 
-    if (SkeletonInclude.is(this.props)) {
-      Object.assign(classes, this.i('skeleton').classes)
+    if (skeletonClasses) {
+      Object.assign(classes, skeletonClasses)
     }
 
     return classes

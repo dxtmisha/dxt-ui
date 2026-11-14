@@ -114,6 +114,10 @@
     "./UiCell": {
       "types": "./dist/library/UiCell.d.ts",
       "default": "./dist/library/UiCell.js"
+    },
+    "./UiButton": {
+      "types": "./dist/library/UiButton.d.ts",
+      "default": "./dist/library/UiButton.js"
     }
   },
   "workspaces": [

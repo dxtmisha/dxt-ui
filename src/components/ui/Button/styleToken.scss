@@ -1,0 +1,73 @@
+@use "../../../styles/ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Button;
+
+@include ui.initDesignBasic('ui.button') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Button.mixinButton;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --ui-button-transitionFunction: var(--d-sys-transitionFunction-standard);
+    
+    border-radius: 0;
+    
+    transition-duration: var(--d-sys-transitionDuration-fade-enter);
+    transition-property: grid-template-columns, background-color, background-image, border, box-shadow;
+    
+    @include ui.hover {
+      transition-duration: var(--d-sys-transitionDuration-sm);
+    }
+    
+    @include ui.active {
+      transition-duration: var(--d-sys-transitionDuration-sm);
+    }
+    
+    @include ui.disabled {
+      transition-duration: var(--d-sys-transitionDuration-sm);
+    }
+    
+    &--adaptive {
+      &--iconAlways {
+        @include ui.justifyContent(#{flex-start});
+        
+        & > .ui-button__icon {
+          --ui-button-padding: calc((var(--sys-height) - var(--ui-iconWidth)) / 2) !important;
+        }
+        
+        & > *:not(.ui-button__icon) {
+          display: none;
+        }
+      }
+      
+      &--block {
+        @include ui.width(#{100%});
+      }
+      
+      &--auto {
+        @include ui.width(#{fit-content});
+      }
+    }
+    
+    &--textAlign {
+      &--left {
+        @include ui.justifyContent(#{flex-start});
+        
+        @include ui.textAlign(#{left});
+      }
+      
+      &--right {
+        @include ui.justifyContent(#{flex-end});
+        
+        @include ui.textAlign(#{right});
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

@@ -1,10 +1,12 @@
 // @vitest-environment node
 import './testWarnings'
 import { describe, expect, it } from 'vitest'
-import { effectScope, reactive, ref } from 'vue'
-import { DesignName } from '@dxtmisha/functional'
+import { createSSRApp, defineComponent, effectScope, h, reactive, ref } from 'vue'
+import { renderToString } from '@vue/server-renderer'
+import { DesignName, ServerStorage } from '@dxtmisha/functional'
 
 import { Button } from '../Button'
+import { ButtonDesign } from '../ButtonDesign'
 import type { ButtonPropsBasic } from '../props'
 
 describe('Button (SSR)', () => {
@@ -48,5 +50,61 @@ describe('Button (SSR)', () => {
     })
 
     scope.stop()
+  })
+
+  it('should render full ButtonDesign component to HTML string in SSR without DOM globals', async () => {
+    expect(typeof window).toBe('undefined')
+    expect(typeof document).toBe('undefined')
+
+    const props: ButtonPropsBasic = {
+      label: 'SSR Button',
+      value: 'ssr-val',
+      ariaLabel: 'SSR Action'
+    }
+
+    const TestComponent = defineComponent({
+      setup() {
+        const design = new ButtonDesign('d1.button', props)
+        const render = design.render()
+        return () => h(render)
+      }
+    })
+
+    const storage: Record<string, unknown> = {}
+    ServerStorage.init(() => storage)
+
+    const app = createSSRApp(TestComponent)
+    const html = await renderToString(app)
+
+    expect(html).toContain('<button')
+    expect(html).toContain('SSR Button')
+    expect(html).toContain('data-value="ssr-val"')
+    expect(html).toContain('aria-label="SSR Action"')
+  })
+
+  it('should render link and disabled variants cleanly across multiple SSR renders', async () => {
+    const variants: ButtonPropsBasic[] = [
+      { label: 'Link', href: 'https://example.com' },
+      { label: 'Disabled', disabled: true },
+      { label: 'Loading', loading: true }
+    ]
+
+    for (const props of variants) {
+      const TestComponent = defineComponent({
+        setup() {
+          const design = new ButtonDesign('d1.button', props)
+          const render = design.render()
+          return () => h(render)
+        }
+      })
+
+      const storage: Record<string, unknown> = {}
+      ServerStorage.init(() => storage)
+
+      const app = createSSRApp(TestComponent)
+      const html = await renderToString(app)
+      expect(typeof html).toBe('string')
+      expect(html).toContain(props.label as string)
+    }
   })
 })

@@ -356,8 +356,8 @@ await expect(detailOutput).toHaveTextContent('orderId')
     {
       id: 'ButtonSlots',
       name: {
-        en: 'Slots (default & label)',
-        ru: 'Слоты (default & label)'
+        en: 'Slots (default)',
+        ru: 'Слоты (default)'
       },
       template: `
         <div class="wiki-storybook-flex">
@@ -366,9 +366,9 @@ await expect(detailOutput).toHaveTextContent('orderId')
               <span>Custom <strong>Rich Default</strong> Content</span>
             </template>
           </DesignComponent>
-          <DesignComponent secondary>
-            <template #label>
-              <span>Custom <em>Scoped Label</em></span>
+          <DesignComponent secondary icon="star">
+            <template #default>
+              <span>Custom <em>Icon Slot</em></span>
             </template>
           </DesignComponent>
         </div>
@@ -378,7 +378,7 @@ const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
 await expect(items.length).toBe(2)
 
 await expect(items[0]).toHaveTextContent('Rich Default')
-await expect(items[1]).toHaveTextContent('Scoped Label')
+await expect(items[1]).toHaveTextContent('Icon Slot')
       `
     },
 
@@ -433,7 +433,6 @@ await expect(items[0]).toBeDisabled()
 await expect(items[1]).toHaveClass('design-component--readonly')
 
 // 3. loading: has loading sub-class, progress indicator, and aria-disabled
-await expect(items[2]).toHaveClass('design-component--loading')
 await expect(items[2].querySelector('.design-component__loading')).toBeInTheDocument()
 await expect(items[2]).toHaveAttribute('aria-disabled', 'true')
 
@@ -446,7 +445,7 @@ await expect(items[4]).toHaveClass('design-component--selected')
 await expect(items[4]).toBeDisabled()
 
 // 6. loading + disabled
-await expect(items[5]).toHaveClass('design-component--loading')
+await expect(items[5].querySelector('.design-component__loading')).toBeInTheDocument()
 await expect(items[5]).toHaveClass('design-component--disabled')
 await expect(items[5]).toBeDisabled()
       `
@@ -513,7 +512,7 @@ await expect(items[2]).toHaveAttribute('aria-label', 'Accessible Span')
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">container</div>
-            <DesignComponent container icon="home" label="Container Query"/>
+            <DesignComponent container="iconSm" icon="home" label="Container Query"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">textAlign: left</div>
@@ -535,7 +534,7 @@ await expect(items.length).toBe(6)
 
 await expect(items[0]).toHaveClass('design-component--inverse')
 await expect(items[1]).toHaveClass('design-component--grid')
-await expect(items[2]).toHaveClass('design-component--container')
+await expect(items[2]).toHaveClass('design-component--container--iconSm')
 await expect(items[3]).toHaveClass('design-component--textAlign--left')
 await expect(items[4]).toHaveClass('design-component--textAlign--center')
 await expect(items[5]).toHaveClass('design-component--textAlign--right')

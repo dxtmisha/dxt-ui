@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -43,7 +43,9 @@ export class ButtonDesign<
   protected readonly item: Button
 
   /**
-   * Constructor
+   * Constructor for creating a ButtonDesign instance.
+   *
+   * Конструктор для создания экземпляра дизайна кнопки.
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -122,14 +124,16 @@ export class ButtonDesign<
   protected initRender(): VNode {
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ...this.item.binds,
-        ref: this.element,
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
 
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       [
         ...this.item.callInstance('progress', item => item.render(), []),
         ...this.item.callInstance('label', item => item.render(), []),

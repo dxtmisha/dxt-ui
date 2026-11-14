@@ -1,0 +1,127 @@
+{
+  "focus": {
+    "name": "focus",
+    "index": "focus",
+    "type": "property",
+    "value": [
+      true
+    ],
+    "valueAll": [
+      true
+    ],
+    "state": [],
+    "style": false
+  },
+  "disabled": {
+    "name": "disabled",
+    "index": "disabled",
+    "type": "property",
+    "value": [
+      true
+    ],
+    "valueAll": [
+      true
+    ],
+    "state": [],
+    "style": false
+  },
+  "selected": {
+    "name": "selected",
+    "index": "selected",
+    "type": "property",
+    "value": [
+      true
+    ],
+    "valueAll": [
+      true
+    ],
+    "state": [],
+    "style": false
+  },
+  "readonly": {
+    "name": "readonly",
+    "index": "readonly",
+    "type": "property",
+    "value": [
+      true
+    ],
+    "valueAll": [
+      true
+    ],
+    "state": [],
+    "style": false
+  },
+  "adaptive": {
+    "name": "adaptive",
+    "index": "adaptive",
+    "type": "property",
+    "value": [
+      "iconAlways",
+      "block",
+      "auto"
+    ],
+    "valueAll": [
+      "iconAlways",
+      "block",
+      "auto"
+    ],
+    "state": [],
+    "style": false
+  },
+  "container": {
+    "name": "container",
+    "index": "container",
+    "type": "property",
+    "value": [
+      true
+    ],
+    "valueAll": [
+      true
+    ],
+    "state": [],
+    "style": false
+  },
+  "inverse": {
+    "name": "inverse",
+    "index": "inverse",
+    "type": "property",
+    "value": [
+      true
+    ],
+    "valueAll": [
+      true
+    ],
+    "state": [],
+    "style": false
+  },
+  "grid": {
+    "name": "grid",
+    "index": "grid",
+    "type": "property",
+    "value": [
+      true
+    ],
+    "valueAll": [
+      true
+    ],
+    "state": [],
+    "style": false
+  },
+  "textAlign": {
+    "name": "textAlign",
+    "index": "textAlign",
+    "type": "property",
+    "value": [
+      "left",
+      "center",
+      "right"
+    ],
+    "valueAll": [
+      "left",
+      "center",
+      "right"
+    ],
+    "state": [],
+    "style": false
+  }
+}

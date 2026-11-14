@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import './testWarnings'
-import { afterEach, describe, expect, it } from 'vitest'
-import { computed, createApp, defineComponent, nextTick, reactive, type Ref } from 'vue'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { computed, createApp, defineComponent, h, nextTick, reactive, type Ref } from 'vue'
 import type { ConstrClasses } from '@dxtmisha/functional'
 
 import { ButtonDesign } from '../ButtonDesign'
@@ -137,5 +137,66 @@ describe('ButtonDesign', () => {
     await nextTick()
 
     expect(container.innerHTML).toContain('Hello')
+  })
+
+  it('should merge external attrs class, style, and onClick handlers with Button binds', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    cleanups.push(() => container.remove())
+
+    const externalClick = vi.fn()
+    const emitClick = vi.fn()
+
+    const Component = defineComponent({
+      inheritAttrs: false,
+      setup() {
+        const props: ButtonPropsBasic = reactive({
+          label: 'Merge Test'
+        })
+
+        const classesToken = computed<ConstrClasses>(() => ({
+          main: {
+            'd1-button': true
+          }
+        }))
+
+        const design = new ButtonDesign<
+          ButtonComponents,
+          ButtonExpose,
+          ButtonClasses,
+          ButtonPropsBasic
+        >('d1.button', props, {
+          classes: classesToken,
+          emits: emitClick
+        })
+
+        return design.render()
+      }
+    })
+
+    const app = createApp({
+      render() {
+        return h(Component, {
+          class: 'custom-cls',
+          style: 'color: red',
+          onClick: externalClick
+        })
+      }
+    })
+
+    app.mount(container)
+    cleanups.push(() => app.unmount())
+
+    await nextTick()
+
+    const buttonElement = container.querySelector('button') as HTMLButtonElement
+    expect(buttonElement).not.toBeNull()
+    expect(buttonElement.classList.contains('d1-button')).toBe(true)
+    expect(buttonElement.classList.contains('custom-cls')).toBe(true)
+
+    buttonElement.click()
+    expect(externalClick).toHaveBeenCalledTimes(1)
+    expect(emitClick).toHaveBeenCalledWith('click', expect.any(Object), expect.any(Object))
+    expect(emitClick).toHaveBeenCalledWith('clickLite', expect.any(Object))
   })
 })

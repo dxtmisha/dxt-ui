@@ -1,0 +1,6 @@
+@use "./basic";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/media/style.css";
+
+@include ui.initGlobal;
+@include ui.initDesignBody('ui.main');
