@@ -7,9 +7,15 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "component": "dxt-component"
+    "component": "dxt-component",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@dxtmisha/cms-api": "*"
+  },
   "devDependencies": {
     "@dxtmisha/configuration": "*",
     "@dxtmisha/functional": "*",
@@ -17,6 +23,7 @@
     "@dxtmisha/media": "*",
     "@dxtmisha/nitro-basic": "*",
     "@dxtmisha/styles": "*",
+    "drizzle-kit": "^0.31.11",
     "nitro": "*",
     "nitropack": "*",
     "vue": "*",

@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': '访问管理面板',
+  'cms-permission-admin_access_description': '允许登录并访问 CMS 管理后台面板',
+
+  'cms-permission-users_read': '查看用户',
+  'cms-permission-users_read_description': '允许查看用户资料和用户列表',
+  'cms-permission-users_create': '创建用户',
+  'cms-permission-users_create_description': '允许创建新的用户账户',
+  'cms-permission-users_update': '更新用户',
+  'cms-permission-users_update_description': '允许编辑用户资料、状态和分配的角色',
+  'cms-permission-users_delete': '删除用户',
+  'cms-permission-users_delete_description': '允许删除或停用用户账户',
+
+  'cms-permission-roles_read': '查看角色',
+  'cms-permission-roles_read_description': '允许查看角色及其分配的权限',
+  'cms-permission-roles_create': '创建角色',
+  'cms-permission-roles_create_description': '允许创建新角色',
+  'cms-permission-roles_update': '更新角色',
+  'cms-permission-roles_update_description': '允许编辑角色并管理角色权限',
+  'cms-permission-roles_delete': '删除角色',
+  'cms-permission-roles_delete_description': '允许删除自定义角色',
+
+  'cms-permission-content_read': '查看内容',
+  'cms-permission-content_read_description': '允许查看内容条目和草稿',
+  'cms-permission-content_create': '创建内容',
+  'cms-permission-content_create_description': '允许创建新的内容条目',
+  'cms-permission-content_update': '更新内容',
+  'cms-permission-content_update_description': '允许编辑现有的内容条目',
+  'cms-permission-content_delete': '删除内容',
+  'cms-permission-content_delete_description': '允许删除内容条目',
+  'cms-permission-content_publish': '发布内容',
+  'cms-permission-content_publish_description': '允许发布和取消发布内容条目',
+
+  'cms-permission-media_read': '查看媒体',
+  'cms-permission-media_read_description': '允许浏览和查看已上传的媒体文件',
+  'cms-permission-media_upload': '上传媒体',
+  'cms-permission-media_upload_description': '允许上传新的媒体文件和资源',
+  'cms-permission-media_delete': '删除媒体',
+  'cms-permission-media_delete_description': '允许删除已上传的媒体文件',
+
+  'cms-permission-settings_read': '查看设置',
+  'cms-permission-settings_read_description': '允许查看 CMS 系统设置',
+  'cms-permission-settings_update': '更新设置',
+  'cms-permission-settings_update_description': '允许修改 CMS 系统设置'
+}

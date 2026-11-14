@@ -77,3 +77,12 @@ src/constructors/Window/WindowVerification.ts
 src/constructors/Window/Window.ts
 src/constructors/Window/WindowDesign.tsx
 src/constructors/Window/WindowInclude.ts
+src/constructors/MotionTransform/MotionTransformClassesInclude.ts
+src/constructors/MotionTransform/MotionTransformElement.ts
+src/constructors/MotionTransform/MotionTransformSize.ts
+src/constructors/MotionTransform/MotionTransformState.ts
+src/constructors/MotionTransform/MotionTransformEvent.ts
+src/constructors/MotionTransform/MotionTransformGo.ts
+src/constructors/MotionTransform/MotionTransform.ts
+src/constructors/MotionTransform/MotionTransformDesign.tsx
+src/constructors/MotionTransform/MotionTransformInclude.ts

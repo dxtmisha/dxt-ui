@@ -32,7 +32,7 @@ export class MotionTransformElement {
    * @param elementContext substrate element / элемент подложка
    */
   constructor(
-    protected readonly props: MotionTransformProps,
+    protected readonly props: Readonly<MotionTransformProps>,
     protected readonly element: Ref<HTMLDivElement | undefined>,
     protected readonly naming: DesignName,
     protected readonly elementContext?: Ref<HTMLDivElement | undefined>

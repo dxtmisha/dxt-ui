@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': '관리 패널 접근',
+  'cms-permission-admin_access_description': 'CMS 관리 패널에 로그인하고 접근할 수 있도록 허용합니다',
+
+  'cms-permission-users_read': '사용자 조회',
+  'cms-permission-users_read_description': '사용자 프로필 및 사용자 목록을 볼 수 있도록 허용합니다',
+  'cms-permission-users_create': '사용자 생성',
+  'cms-permission-users_create_description': '새 사용자 계정을 생성할 수 있도록 허용합니다',
+  'cms-permission-users_update': '사용자 수정',
+  'cms-permission-users_update_description': '사용자 프로필, 상태 및 할당된 역할을 수정할 수 있도록 허용합니다',
+  'cms-permission-users_delete': '사용자 삭제',
+  'cms-permission-users_delete_description': '사용자 계정을 삭제하거나 비활성화할 수 있도록 허용합니다',
+
+  'cms-permission-roles_read': '역할 조회',
+  'cms-permission-roles_read_description': '역할과 할당된 권한을 볼 수 있도록 허용합니다',
+  'cms-permission-roles_create': '역할 생성',
+  'cms-permission-roles_create_description': '새 역할을 생성할 수 있도록 허용합니다',
+  'cms-permission-roles_update': '역할 수정',
+  'cms-permission-roles_update_description': '역할을 수정하고 역할 권한을 관리할 수 있도록 허용합니다',
+  'cms-permission-roles_delete': '역할 삭제',
+  'cms-permission-roles_delete_description': '사용자 지정 역할을 삭제할 수 있도록 허용합니다',
+
+  'cms-permission-content_read': '콘텐츠 조회',
+  'cms-permission-content_read_description': '콘텐츠 항목과 초안을 볼 수 있도록 허용합니다',
+  'cms-permission-content_create': '콘텐츠 생성',
+  'cms-permission-content_create_description': '새 콘텐츠 항목을 생성할 수 있도록 허용합니다',
+  'cms-permission-content_update': '콘텐츠 수정',
+  'cms-permission-content_update_description': '기존 콘텐츠 항목을 수정할 수 있도록 허용합니다',
+  'cms-permission-content_delete': '콘텐츠 삭제',
+  'cms-permission-content_delete_description': '콘텐츠 항목을 삭제할 수 있도록 허용합니다',
+  'cms-permission-content_publish': '콘텐츠 게시',
+  'cms-permission-content_publish_description': '콘텐츠 항목을 게시하거나 게시 취소할 수 있도록 허용합니다',
+
+  'cms-permission-media_read': '미디어 조회',
+  'cms-permission-media_read_description': '업로드된 미디어 파일을 탐색하고 볼 수 있도록 허용합니다',
+  'cms-permission-media_upload': '미디어 업로드',
+  'cms-permission-media_upload_description': '새 미디어 파일과 자산을 업로드할 수 있도록 허용합니다',
+  'cms-permission-media_delete': '미디어 삭제',
+  'cms-permission-media_delete_description': '업로드된 미디어 파일을 삭제할 수 있도록 허용합니다',
+
+  'cms-permission-settings_read': '설정 조회',
+  'cms-permission-settings_read_description': 'CMS 시스템 설정을 볼 수 있도록 허용합니다',
+  'cms-permission-settings_update': '설정 수정',
+  'cms-permission-settings_update_description': 'CMS 시스템 설정을 변경할 수 있도록 허용합니다'
+}

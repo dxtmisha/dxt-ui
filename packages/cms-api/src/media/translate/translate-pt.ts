@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'Acesso ao painel administrativo',
+  'cms-permission-admin_access_description': 'Permite fazer login e acessar o painel de administração do CMS',
+
+  'cms-permission-users_read': 'Visualizar usuários',
+  'cms-permission-users_read_description': 'Permite visualizar perfis e listas de usuários',
+  'cms-permission-users_create': 'Criar usuários',
+  'cms-permission-users_create_description': 'Permite criar novas contas de usuário',
+  'cms-permission-users_update': 'Atualizar usuários',
+  'cms-permission-users_update_description': 'Permite editar perfis, status e funções atribuídas aos usuários',
+  'cms-permission-users_delete': 'Excluir usuários',
+  'cms-permission-users_delete_description': 'Permite excluir ou desativar contas de usuário',
+
+  'cms-permission-roles_read': 'Visualizar funções',
+  'cms-permission-roles_read_description': 'Permite visualizar funções e suas permissões atribuídas',
+  'cms-permission-roles_create': 'Criar funções',
+  'cms-permission-roles_create_description': 'Permite criar novas funções',
+  'cms-permission-roles_update': 'Atualizar funções',
+  'cms-permission-roles_update_description': 'Permite editar funções e gerenciar suas permissões',
+  'cms-permission-roles_delete': 'Excluir funções',
+  'cms-permission-roles_delete_description': 'Permite excluir funções personalizadas',
+
+  'cms-permission-content_read': 'Visualizar conteúdo',
+  'cms-permission-content_read_description': 'Permite visualizar entradas de conteúdo e rascunhos',
+  'cms-permission-content_create': 'Criar conteúdo',
+  'cms-permission-content_create_description': 'Permite criar novas entradas de conteúdo',
+  'cms-permission-content_update': 'Atualizar conteúdo',
+  'cms-permission-content_update_description': 'Permite editar entradas de conteúdo existentes',
+  'cms-permission-content_delete': 'Excluir conteúdo',
+  'cms-permission-content_delete_description': 'Permite excluir entradas de conteúdo',
+  'cms-permission-content_publish': 'Publicar conteúdo',
+  'cms-permission-content_publish_description': 'Permite publicar e despublicar entradas de conteúdo',
+
+  'cms-permission-media_read': 'Visualizar mídia',
+  'cms-permission-media_read_description': 'Permite navegar e visualizar arquivos de mídia enviados',
+  'cms-permission-media_upload': 'Enviar mídia',
+  'cms-permission-media_upload_description': 'Permite enviar novos arquivos de mídia e recursos',
+  'cms-permission-media_delete': 'Excluir mídia',
+  'cms-permission-media_delete_description': 'Permite excluir arquivos de mídia enviados',
+
+  'cms-permission-settings_read': 'Visualizar configurações',
+  'cms-permission-settings_read_description': 'Permite visualizar as configurações do sistema CMS',
+  'cms-permission-settings_update': 'Atualizar configurações',
+  'cms-permission-settings_update_description': 'Permite modificar as configurações do sistema CMS'
+}

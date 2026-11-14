@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'Access admin panel',
+  'cms-permission-admin_access_description': 'Allows signing in and accessing the CMS administration panel',
+
+  'cms-permission-users_read': 'View users',
+  'cms-permission-users_read_description': 'Allows viewing user profiles and user lists',
+  'cms-permission-users_create': 'Create users',
+  'cms-permission-users_create_description': 'Allows creating new user accounts',
+  'cms-permission-users_update': 'Update users',
+  'cms-permission-users_update_description': 'Allows editing user profiles, statuses, and assigned roles',
+  'cms-permission-users_delete': 'Delete users',
+  'cms-permission-users_delete_description': 'Allows deleting or deactivating user accounts',
+
+  'cms-permission-roles_read': 'View roles',
+  'cms-permission-roles_read_description': 'Allows viewing roles and their assigned permissions',
+  'cms-permission-roles_create': 'Create roles',
+  'cms-permission-roles_create_description': 'Allows creating new roles',
+  'cms-permission-roles_update': 'Update roles',
+  'cms-permission-roles_update_description': 'Allows editing roles and managing role permissions',
+  'cms-permission-roles_delete': 'Delete roles',
+  'cms-permission-roles_delete_description': 'Allows deleting custom roles',
+
+  'cms-permission-content_read': 'View content',
+  'cms-permission-content_read_description': 'Allows viewing content entries and drafts',
+  'cms-permission-content_create': 'Create content',
+  'cms-permission-content_create_description': 'Allows creating new content entries',
+  'cms-permission-content_update': 'Update content',
+  'cms-permission-content_update_description': 'Allows editing existing content entries',
+  'cms-permission-content_delete': 'Delete content',
+  'cms-permission-content_delete_description': 'Allows deleting content entries',
+  'cms-permission-content_publish': 'Publish content',
+  'cms-permission-content_publish_description': 'Allows publishing and unpublishing content entries',
+
+  'cms-permission-media_read': 'View media',
+  'cms-permission-media_read_description': 'Allows browsing and viewing uploaded media files',
+  'cms-permission-media_upload': 'Upload media',
+  'cms-permission-media_upload_description': 'Allows uploading new media files and assets',
+  'cms-permission-media_delete': 'Delete media',
+  'cms-permission-media_delete_description': 'Allows deleting uploaded media files',
+
+  'cms-permission-settings_read': 'View settings',
+  'cms-permission-settings_read_description': 'Allows viewing CMS system settings',
+  'cms-permission-settings_update': 'Update settings',
+  'cms-permission-settings_update_description': 'Allows modifying CMS system settings'
+}

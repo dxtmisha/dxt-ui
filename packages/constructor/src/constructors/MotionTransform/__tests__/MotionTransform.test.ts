@@ -69,7 +69,7 @@ describe('MotionTransform', () => {
     expect(transform.bindsBody.key).toBe('body')
     expect(transform.bindsBody.role).toBe('region')
 
-    expect(transform.classes).toEqual({})
+    expect(transform.instantiatedItems.model).toBeDefined()
 
     const slotData = transform.slotData
     expect(slotData).toBeDefined()
@@ -167,6 +167,32 @@ describe('MotionTransform', () => {
     ))!
 
     expect(transform.i('go')).toBeInstanceOf(MockGo)
+
+    scope.stop()
+  })
+
+  it('should instantiate model eagerly and emit v-model:open updates when state changes', async () => {
+    const scope = effectScope()
+    const element = ref(document.createElement('div'))
+    const naming = new DesignName('test-motion')
+    const emits = vi.fn()
+
+    const transform = scope.run(() => new InspectableMotionTransform(
+      { clickOpen: true },
+      element,
+      naming,
+      undefined,
+      undefined,
+      emits
+    ))!
+
+    expect(transform.instantiatedItems.model).toBeDefined()
+
+    transform.i('state').open.value = true
+    await nextTick()
+
+    expect(emits).toHaveBeenCalledWith('update:open', true)
+    expect(emits).toHaveBeenCalledWith('update:modelOpen', true)
 
     scope.stop()
   })

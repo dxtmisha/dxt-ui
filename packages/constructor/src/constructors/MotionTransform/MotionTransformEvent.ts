@@ -31,7 +31,7 @@ export class MotionTransformEvent extends DesignLifecycleAbstract {
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    */
   constructor(
-    protected readonly props: MotionTransformProps,
+    protected readonly props: Readonly<MotionTransformProps>,
     protected readonly element: () => MotionTransformElement,
     protected readonly state: () => MotionTransformState,
     protected readonly emits?: ConstrEmit<MotionTransformEmits>
@@ -61,6 +61,7 @@ export class MotionTransformEvent extends DesignLifecycleAbstract {
    */
   override readonly onUnmounted = (): void => {
     this.stop()
+    this.item = undefined
   }
 
   /**
@@ -113,10 +114,10 @@ export class MotionTransformEvent extends DesignLifecycleAbstract {
    * Обработчик события нажатия клавиши для взаимодействия с клавиатурой.
    * @param event keyboard event object / объект события клавиатуры
    */
-  readonly onKeydown = async (event: KeyboardEvent): Promise<void> => {
+  readonly onKeydown = (event: KeyboardEvent): void => {
     if (
       !event.isComposing
-      && isEnter(event as KeyboardEvent)
+      && isEnter(event)
       && this.isTrigger(event.target as HTMLElement)
     ) {
       event.preventDefault()
@@ -159,6 +160,10 @@ export class MotionTransformEvent extends DesignLifecycleAbstract {
    * @param event pointer event object / объект события указателя (pointer)
    */
   protected readonly listener = (event: PointerEvent): void => {
+    if (!(event.target instanceof Element)) {
+      return
+    }
+
     const target = event.target as HTMLDivElement
     const state = this.state()
     const element = this.element()

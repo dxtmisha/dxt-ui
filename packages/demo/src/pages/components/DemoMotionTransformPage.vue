@@ -19,6 +19,9 @@ const openExternal = ref(false)
 /** Ref to the MotionTransform component instance / Ссылка на экземпляр компонента MotionTransform */
 const transformRef = ref<MotionTransformExpose | null>(null)
 
+/** Ref to an external ignored element / Ссылка на внешний игнорируемый элемент */
+const ignoreElementRef = ref<HTMLElement | undefined>(undefined)
+
 /** Reactive value for printing the component status / Реактивное значение для вывода статуса компонента */
 const statusValue = computed<string>(() => {
   if (transformRef.value) {
@@ -40,6 +43,15 @@ const statusValue = computed<string>(() => {
           </template>
           <template #body>
             <D1Input label="Search query" prefix-icon="search" autofocus />
+          </template>
+        </D1MotionTransform>
+
+        <D1MotionTransform :open="true">
+          <template #head>
+            <span>Initially Open (:open="true")</span>
+          </template>
+          <template #body>
+            <span>Rendered in the open state on initial mount.</span>
           </template>
         </D1MotionTransform>
       </D1Group>
@@ -87,10 +99,46 @@ const statusValue = computed<string>(() => {
 
         <D1MotionTransform adaptive="planeMd">
           <template #head>
-            <span>Adaptive Plane (planeMd — Static on desktop, animated on mobile)</span>
+            <span>Adaptive Plane (planeMd — Static on md and above)</span>
           </template>
           <template #body>
             <span>This layout automatically switches to plane mode on medium screens and above, while providing smooth transform transitions on smaller screens.</span>
+          </template>
+        </D1MotionTransform>
+
+        <D1MotionTransform adaptive="planeSm">
+          <template #head>
+            <span>Adaptive Plane (planeSm — Static on sm and above)</span>
+          </template>
+          <template #body>
+            <span>Switches to static plane mode starting from sm breakpoint and above.</span>
+          </template>
+        </D1MotionTransform>
+
+        <D1MotionTransform adaptive="planeLg">
+          <template #head>
+            <span>Adaptive Plane (planeLg — Static on lg and above)</span>
+          </template>
+          <template #body>
+            <span>Switches to static plane mode starting from lg breakpoint and above.</span>
+          </template>
+        </D1MotionTransform>
+
+        <D1MotionTransform adaptive="planeXl">
+          <template #head>
+            <span>Adaptive Plane (planeXl — Static on xl and above)</span>
+          </template>
+          <template #body>
+            <span>Switches to static plane mode starting from xl breakpoint and above.</span>
+          </template>
+        </D1MotionTransform>
+
+        <D1MotionTransform adaptive="plane2xl">
+          <template #head>
+            <span>Adaptive Plane (plane2xl — Static on 2xl and above)</span>
+          </template>
+          <template #body>
+            <span>Switches to static plane mode starting from 2xl breakpoint and above.</span>
           </template>
         </D1MotionTransform>
       </D1Group>
@@ -138,8 +186,11 @@ const statusValue = computed<string>(() => {
           <template #head>
             <span>Auto Close Disabled</span>
           </template>
-          <template #body>
-            <span>This component remains open when clicking outside. You must click the header again to close it.</span>
+          <template #body="{ classes }">
+            <span>This component remains open when clicking outside. Use the Close button or press Escape to close it.</span>
+            <DemoFlex>
+              <D1Button :class="classes.close" label="Close" />
+            </DemoFlex>
           </template>
         </D1MotionTransform>
 
@@ -155,6 +206,31 @@ const statusValue = computed<string>(() => {
           </template>
           <template #body>
             <span>Clicking the button above will NOT trigger auto-close because it matches the ignore-selector property.</span>
+          </template>
+        </D1MotionTransform>
+
+        <DemoFlex>
+          <div id="demo-ignore-id-zone">
+            <D1Button label="Ignored by ID (ignore=&quot;#demo-ignore-id-zone&quot;)" />
+          </div>
+          <div id="demo-ignore-ref-zone" ref="ignoreElementRef">
+            <D1Button label="Ignored by HTMLElement Ref" />
+          </div>
+        </DemoFlex>
+        <D1MotionTransform ignore="#demo-ignore-id-zone">
+          <template #head>
+            <span>Ignore by ID Selector (ignore="#demo-ignore-id-zone")</span>
+          </template>
+          <template #body>
+            <span>Clicking the ignored ID button above keeps this panel open.</span>
+          </template>
+        </D1MotionTransform>
+        <D1MotionTransform :ignore="ignoreElementRef">
+          <template #head>
+            <span>Ignore by HTMLElement Ref (:ignore="ignoreElementRef")</span>
+          </template>
+          <template #body>
+            <span>Clicking the element ref button above keeps this panel open.</span>
           </template>
         </D1MotionTransform>
       </D1Group>
@@ -203,7 +279,7 @@ const statusValue = computed<string>(() => {
 
       <D1Group label="Scoped Slots & Built-in Close Trigger">
         <D1MotionTransform>
-          <template #head="{ isOpen }">
+          <template #head="{ isOpen, isShow, classes, idControl, idBody }">
             <DemoFlex>
               <span>Scoped Header</span>
               <D1Button
@@ -211,17 +287,36 @@ const statusValue = computed<string>(() => {
                 size="sm"
                 secondary
               />
+              <span :class="classes.none">Ignored in head (classes.none)</span>
+              <span>Show: {{ isShow }} | Control: {{ idControl }} | Body: {{ idBody }}</span>
             </DemoFlex>
           </template>
-          <template #body="{ classes }">
-            <span>The button below utilizes the built-in close class from scoped slot properties to dismiss the component:</span>
+          <template #body="{ classes, idControl, idBody }">
+            <span>The button below utilizes the built-in close class from scoped slot properties to dismiss the component (Control: {{ idControl }}, Body: {{ idBody }}):</span>
             <DemoFlex>
               <D1Button
                 :class="classes.close"
                 label="Dismiss with classes.close"
                 primary
               />
+              <span :class="classes.noneGlobal">Global ignored span (classes.noneGlobal)</span>
             </DemoFlex>
+          </template>
+        </D1MotionTransform>
+      </D1Group>
+
+      <D1Group label="Accessibility (ARIA Attributes)">
+        <span id="demo-mt-aria-label">External ARIA Label</span>
+        <span id="demo-mt-aria-desc">Detailed description linked via aria-describedby.</span>
+        <D1MotionTransform
+          aria-labelledby="demo-mt-aria-label"
+          aria-describedby="demo-mt-aria-desc"
+        >
+          <template #head>
+            <span>ARIA Labelled & Described Panel</span>
+          </template>
+          <template #body>
+            <span>This panel connects aria-labelledby and aria-describedby to external semantic elements.</span>
           </template>
         </D1MotionTransform>
       </D1Group>
@@ -280,14 +375,15 @@ const statusValue = computed<string>(() => {
 
       <D1Group label="Events">
         <D1MotionTransform
+          @update:open="onEvent('update:open')"
           @transform="onEvent('transform')"
           @transform-lite="onEvent('transform-lite')"
         >
           <template #head>
-            <span>Event Tracking (@transform / @transform-lite)</span>
+            <span>Event Tracking (@update:open / @transform / @transform-lite)</span>
           </template>
           <template #body>
-            <span>Toggling this component emits transform and transform-lite events with trigger source options.</span>
+            <span>Toggling this component emits update:open, transform and transform-lite events with trigger source options.</span>
           </template>
         </D1MotionTransform>
         <DemoValue :value="eventName" />

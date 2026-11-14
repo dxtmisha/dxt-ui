@@ -187,8 +187,6 @@ describe('MotionTransform (SSR)', () => {
       expect(transform.bindsBody.key).toBe('body')
       expect(transform.bindsBody.role).toBe('region')
 
-      expect(transform.classes).toEqual({})
-
       const slotData = transform.slotData
       expect(slotData).toBeDefined()
       expect(slotData.isOpen).toBe(false)

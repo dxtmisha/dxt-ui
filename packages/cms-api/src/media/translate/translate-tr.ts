@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'Yönetim paneline erişim',
+  'cms-permission-admin_access_description': 'CMS yönetim paneline giriş yapmaya ve erişmeye izin verir',
+
+  'cms-permission-users_read': 'Kullanıcıları görüntüle',
+  'cms-permission-users_read_description': 'Kullanıcı profillerini ve kullanıcı listelerini görüntülemeye izin verir',
+  'cms-permission-users_create': 'Kullanıcı oluştur',
+  'cms-permission-users_create_description': 'Yeni kullanıcı hesapları oluşturmaya izin verir',
+  'cms-permission-users_update': 'Kullanıcıları güncelle',
+  'cms-permission-users_update_description': 'Kullanıcı profillerini, durumlarını ve atanan rollerini düzenlemeye izin verir',
+  'cms-permission-users_delete': 'Kullanıcıları sil',
+  'cms-permission-users_delete_description': 'Kullanıcı hesaplarını silmeye veya devre dışı bırakmaya izin verir',
+
+  'cms-permission-roles_read': 'Rolleri görüntüle',
+  'cms-permission-roles_read_description': 'Rolleri ve atanan izinlerini görüntülemeye izin verir',
+  'cms-permission-roles_create': 'Rol oluştur',
+  'cms-permission-roles_create_description': 'Yeni roller oluşturmaya izin verir',
+  'cms-permission-roles_update': 'Rolleri güncelle',
+  'cms-permission-roles_update_description': 'Rolleri düzenlemeye ve rol izinlerini yönetmeye izin verir',
+  'cms-permission-roles_delete': 'Rolleri sil',
+  'cms-permission-roles_delete_description': 'Özel rolleri silmeye izin verir',
+
+  'cms-permission-content_read': 'İçeriği görüntüle',
+  'cms-permission-content_read_description': 'İçerik kayıtlarını ve taslakları görüntülemeye izin verir',
+  'cms-permission-content_create': 'İçerik oluştur',
+  'cms-permission-content_create_description': 'Yeni içerik kayıtları oluşturmaya izin verir',
+  'cms-permission-content_update': 'İçeriği güncelle',
+  'cms-permission-content_update_description': 'Mevcut içerik kayıtlarını düzenlemeye izin verir',
+  'cms-permission-content_delete': 'İçeriği sil',
+  'cms-permission-content_delete_description': 'İçerik kayıtlarını silmeye izin verir',
+  'cms-permission-content_publish': 'İçeriği yayınla',
+  'cms-permission-content_publish_description': 'İçerik kayıtlarını yayınlamaya ve yayından kaldırmaya izin verir',
+
+  'cms-permission-media_read': 'Medyayı görüntüle',
+  'cms-permission-media_read_description': 'Yüklenen medya dosyalarına göz atmaya ve görüntülemeye izin verir',
+  'cms-permission-media_upload': 'Medya yükle',
+  'cms-permission-media_upload_description': 'Yeni medya dosyaları ve varlıklar yüklemeye izin verir',
+  'cms-permission-media_delete': 'Medyayı sil',
+  'cms-permission-media_delete_description': 'Yüklenen medya dosyalarını silmeye izin verir',
+
+  'cms-permission-settings_read': 'Ayarları görüntüle',
+  'cms-permission-settings_read_description': 'CMS sistem ayarlarını görüntülemeye izin verir',
+  'cms-permission-settings_update': 'Ayarları güncelle',
+  'cms-permission-settings_update_description': 'CMS sistem ayarlarını değiştirmeye izin verir'
+}

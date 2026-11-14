@@ -10,7 +10,7 @@ import {
   text,
   timestamp
 } from 'drizzle-orm/pg-core'
-import type { CmsUserMetadata, CmsUserStatus } from '../types/cmsDbTypes'
+import type { CmsUserMetadata, CmsUserStatus } from '../../types/cmsDbTypes'
 
 /**
  * Permissions table schema for CMS /

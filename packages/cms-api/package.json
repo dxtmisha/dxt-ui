@@ -37,6 +37,10 @@
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
+    "./translate": {
+      "import": "./dist/translate.js",
+      "types": "./dist/translate.d.ts"
+    },
     "./ai-types.md": "./ai-types.md",
     "./ai-description.md": "./ai-description.md",
     "./ai-resources/*": "./ai-resources/*",
@@ -44,6 +48,7 @@
     "./style.css": "./dist/style.css"
   },
   "dependencies": {
+    "@dxtmisha/functional-basic": ">=2.1.4",
     "drizzle-orm": "^0.45.4",
     "postgres": "^4.1.1"
   },

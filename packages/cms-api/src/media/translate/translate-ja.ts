@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': '管理パネルへのアクセス',
+  'cms-permission-admin_access_description': 'CMS 管理パネルへのログインとアクセスを許可します',
+
+  'cms-permission-users_read': 'ユーザーの閲覧',
+  'cms-permission-users_read_description': 'ユーザープロフィールとユーザー一覧の閲覧を許可します',
+  'cms-permission-users_create': 'ユーザーの作成',
+  'cms-permission-users_create_description': '新しいユーザーアカウントの作成を許可します',
+  'cms-permission-users_update': 'ユーザーの更新',
+  'cms-permission-users_update_description': 'ユーザープロフィール、ステータス、割り当てられたロールの編集を許可します',
+  'cms-permission-users_delete': 'ユーザーの削除',
+  'cms-permission-users_delete_description': 'ユーザーアカウントの削除または無効化を許可します',
+
+  'cms-permission-roles_read': 'ロールの閲覧',
+  'cms-permission-roles_read_description': 'ロールと割り当てられた権限の閲覧を許可します',
+  'cms-permission-roles_create': 'ロールの作成',
+  'cms-permission-roles_create_description': '新しいロールの作成を許可します',
+  'cms-permission-roles_update': 'ロールの更新',
+  'cms-permission-roles_update_description': 'ロールの編集とロール権限の管理を許可します',
+  'cms-permission-roles_delete': 'ロールの削除',
+  'cms-permission-roles_delete_description': 'カスタムロールの削除を許可します',
+
+  'cms-permission-content_read': 'コンテンツの閲覧',
+  'cms-permission-content_read_description': 'コンテンツ項目と下書きの閲覧を許可します',
+  'cms-permission-content_create': 'コンテンツの作成',
+  'cms-permission-content_create_description': '新しいコンテンツ項目の作成を許可します',
+  'cms-permission-content_update': 'コンテンツの更新',
+  'cms-permission-content_update_description': '既存のコンテンツ項目の編集を許可します',
+  'cms-permission-content_delete': 'コンテンツの削除',
+  'cms-permission-content_delete_description': 'コンテンツ項目の削除を許可します',
+  'cms-permission-content_publish': 'コンテンツの公開',
+  'cms-permission-content_publish_description': 'コンテンツ項目の公開および非公開設定を許可します',
+
+  'cms-permission-media_read': 'メディアの閲覧',
+  'cms-permission-media_read_description': 'アップロードされたメディアファイルの閲覧を許可します',
+  'cms-permission-media_upload': 'メディアのアップロード',
+  'cms-permission-media_upload_description': '新しいメディアファイルとアセットのアップロードを許可します',
+  'cms-permission-media_delete': 'メディアの削除',
+  'cms-permission-media_delete_description': 'アップロードされたメディアファイルの削除を許可します',
+
+  'cms-permission-settings_read': '設定の閲覧',
+  'cms-permission-settings_read_description': 'CMS システム設定の閲覧を許可します',
+  'cms-permission-settings_update': '設定の更新',
+  'cms-permission-settings_update_description': 'CMS システム設定の変更を許可します'
+}

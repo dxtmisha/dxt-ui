@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'الوصول إلى لوحة الإدارة',
+  'cms-permission-admin_access_description': 'يسمح بتسجيل الدخول والوصول إلى لوحة إدارة نظام CMS',
+
+  'cms-permission-users_read': 'عرض المستخدمين',
+  'cms-permission-users_read_description': 'يسمح بعرض ملفات المستخدمين وقوائمهم',
+  'cms-permission-users_create': 'إنشاء المستخدمين',
+  'cms-permission-users_create_description': 'يسمح بإنشاء حسابات مستخدمين جديدة',
+  'cms-permission-users_update': 'تحديث المستخدمين',
+  'cms-permission-users_update_description': 'يسمح بتعديل ملفات المستخدمين وحالاتهم والأدوار المعينة لهم',
+  'cms-permission-users_delete': 'حذف المستخدمين',
+  'cms-permission-users_delete_description': 'يسمح بحذف حسابات المستخدمين أو تعطيلها',
+
+  'cms-permission-roles_read': 'عرض الأدوار',
+  'cms-permission-roles_read_description': 'يسمح بعرض الأدوار والصلاحيات المعينة لها',
+  'cms-permission-roles_create': 'إنشاء الأدوار',
+  'cms-permission-roles_create_description': 'يسمح بإنشاء أدوار جديدة',
+  'cms-permission-roles_update': 'تحديث الأدوار',
+  'cms-permission-roles_update_description': 'يسمح بتعديل الأدوار وإدارة صلاحياتها',
+  'cms-permission-roles_delete': 'حذف الأدوار',
+  'cms-permission-roles_delete_description': 'يسمح بحذف الأدوار المخصصة',
+
+  'cms-permission-content_read': 'عرض المحتوى',
+  'cms-permission-content_read_description': 'يسمح بعرض عناصر المحتوى والمسودات',
+  'cms-permission-content_create': 'إنشاء المحتوى',
+  'cms-permission-content_create_description': 'يسمح بإنشاء عناصر محتوى جديدة',
+  'cms-permission-content_update': 'تحديث المحتوى',
+  'cms-permission-content_update_description': 'يسمح بتعديل عناصر المحتوى الحالية',
+  'cms-permission-content_delete': 'حذف المحتوى',
+  'cms-permission-content_delete_description': 'يسمح بحذف عناصر المحتوى',
+  'cms-permission-content_publish': 'نشر المحتوى',
+  'cms-permission-content_publish_description': 'يسمح بنشر عناصر المحتوى وإلغاء نشرها',
+
+  'cms-permission-media_read': 'عرض الوسائط',
+  'cms-permission-media_read_description': 'يسمح بتصفح ملفات الوسائط المرفوعة وعرضها',
+  'cms-permission-media_upload': 'رفع الوسائط',
+  'cms-permission-media_upload_description': 'يسمح برفع ملفات وسائط وأصول جديدة',
+  'cms-permission-media_delete': 'حذف الوسائط',
+  'cms-permission-media_delete_description': 'يسمح بحذف ملفات الوسائط المرفوعة',
+
+  'cms-permission-settings_read': 'عرض الإعدادات',
+  'cms-permission-settings_read_description': 'يسمح بعرض إعدادات نظام CMS',
+  'cms-permission-settings_update': 'تحديث الإعدادات',
+  'cms-permission-settings_update_description': 'يسمح بتعديل إعدادات نظام CMS'
+}

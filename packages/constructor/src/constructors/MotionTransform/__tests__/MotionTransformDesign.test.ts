@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { computed, createApp, defineComponent, h, nextTick, reactive } from 'vue'
 import type { ConstrClasses } from '@dxtmisha/functional'
 
@@ -546,6 +546,74 @@ describe('MotionTransformDesign', () => {
       expect(designInstance.renderHead()).toHaveLength(1)
       expect(designInstance.renderBody()).toEqual([])
       expect(designInstance.renderScrim()).toEqual([])
+    })
+
+    it('should merge external class, style, and onTransitionend via mergeProps and emit update:open', async () => {
+      const container = document.createElement('div')
+      document.body.appendChild(container)
+      cleanups.push(() => container.remove())
+
+      const externalTransitionend = vi.fn()
+      const emits = vi.fn()
+      let exposedResult!: MotionTransformExpose
+
+      const Component = defineComponent({
+        setup() {
+          const props = reactive<MotionTransformPropsBasic>({
+            ...defaultsMotionTransform,
+            animationShow: false,
+            open: false
+          })
+
+          const classesToken = computed<ConstrClasses>(() => ({
+            main: {
+              'd1-motion-transform': true
+            }
+          }))
+
+          const design = new MotionTransformDesign<
+            MotionTransformComponents,
+            MotionTransformExpose,
+            MotionTransformClasses,
+            MotionTransformPropsBasic
+          >('d1.motionTransform', props, {
+            emits: emits as any,
+            classes: classesToken
+          })
+
+          exposedResult = design.expose()
+          return design.render()
+        }
+      })
+
+      const Root = defineComponent({
+        render() {
+          return h(Component, {
+            class: 'external-custom-class',
+            style: { zIndex: 10 },
+            onTransitionend: externalTransitionend
+          })
+        }
+      })
+
+      const app = createApp(Root)
+      app.mount(container)
+      cleanups.push(() => app.unmount())
+
+      await nextTick()
+
+      const mainElement = container.querySelector('.d1-motion-transform') as HTMLElement
+      expect(mainElement).not.toBeNull()
+      expect(mainElement.classList.contains('external-custom-class')).toBe(true)
+      expect(mainElement.style.zIndex).toBe('10')
+
+      mainElement.dispatchEvent(new Event('transitionend', { bubbles: false }))
+      expect(externalTransitionend).toHaveBeenCalledTimes(1)
+
+      exposedResult.toOpen()
+      await nextTick()
+      expect(emits).toHaveBeenCalledWith('update:open', true)
+      expect(emits).toHaveBeenCalledWith('update:modelOpen', true)
     })
   })
 })

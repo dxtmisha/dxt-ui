@@ -54,6 +54,8 @@ export class MotionTransformSize {
       rect
       && rect.width
       && isDomRuntime()
+      && window.innerWidth > 0
+      && window.innerHeight > 0
     ) {
       const elementHead = element.elementHead
       const elementBody = element.elementBody
@@ -61,8 +63,8 @@ export class MotionTransformSize {
       const scale = 1 / window.innerWidth * rect.width
       const headScale = 1 / rect.width * window.innerWidth
 
-      this.top = `${rect.top - (scale * rect.top / (scale - 1))}px`
-      this.left = `${rect.left - (scale * rect.left / (scale - 1))}px`
+      this.top = scale === 1 ? '0px' : `${rect.top - (scale * rect.top / (scale - 1))}px`
+      this.left = scale === 1 ? '0px' : `${rect.left - (scale * rect.left / (scale - 1))}px`
       this.height = `${100 / window.innerHeight * rect.height * headScale}%`
       this.scale = scale.toString()
 

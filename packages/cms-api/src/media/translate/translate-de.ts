@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'Zugriff auf das Admin-Panel',
+  'cms-permission-admin_access_description': 'Ermöglicht die Anmeldung und den Zugriff auf das CMS-Administrationspanel',
+
+  'cms-permission-users_read': 'Benutzer anzeigen',
+  'cms-permission-users_read_description': 'Ermöglicht das Anzeigen von Benutzerprofilen und Benutzerlisten',
+  'cms-permission-users_create': 'Benutzer erstellen',
+  'cms-permission-users_create_description': 'Ermöglicht das Erstellen neuer Benutzerkonten',
+  'cms-permission-users_update': 'Benutzer bearbeiten',
+  'cms-permission-users_update_description': 'Ermöglicht das Bearbeiten von Benutzerprofilen, Status und zugewiesenen Rollen',
+  'cms-permission-users_delete': 'Benutzer löschen',
+  'cms-permission-users_delete_description': 'Ermöglicht das Löschen oder Deaktivieren von Benutzerkonten',
+
+  'cms-permission-roles_read': 'Rollen anzeigen',
+  'cms-permission-roles_read_description': 'Ermöglicht das Anzeigen von Rollen und deren zugewiesenen Berechtigungen',
+  'cms-permission-roles_create': 'Rollen erstellen',
+  'cms-permission-roles_create_description': 'Ermöglicht das Erstellen neuer Rollen',
+  'cms-permission-roles_update': 'Rollen bearbeiten',
+  'cms-permission-roles_update_description': 'Ermöglicht das Bearbeiten von Rollen und das Verwalten von Rollenberechtigungen',
+  'cms-permission-roles_delete': 'Rollen löschen',
+  'cms-permission-roles_delete_description': 'Ermöglicht das Löschen benutzerdefinierter Rollen',
+
+  'cms-permission-content_read': 'Inhalte anzeigen',
+  'cms-permission-content_read_description': 'Ermöglicht das Anzeigen von Inhaltseinträgen und Entwürfen',
+  'cms-permission-content_create': 'Inhalte erstellen',
+  'cms-permission-content_create_description': 'Ermöglicht das Erstellen neuer Inhaltseinträge',
+  'cms-permission-content_update': 'Inhalte bearbeiten',
+  'cms-permission-content_update_description': 'Ermöglicht das Bearbeiten bestehender Inhaltseinträge',
+  'cms-permission-content_delete': 'Inhalte löschen',
+  'cms-permission-content_delete_description': 'Ermöglicht das Löschen von Inhaltseinträgen',
+  'cms-permission-content_publish': 'Inhalte veröffentlichen',
+  'cms-permission-content_publish_description': 'Ermöglicht das Veröffentlichen und Zurückziehen von Inhaltseinträgen',
+
+  'cms-permission-media_read': 'Medien anzeigen',
+  'cms-permission-media_read_description': 'Ermöglicht das Durchsuchen und Anzeigen hochgeladener Mediendateien',
+  'cms-permission-media_upload': 'Medien hochladen',
+  'cms-permission-media_upload_description': 'Ermöglicht das Hochladen neuer Mediendateien und Assets',
+  'cms-permission-media_delete': 'Medien löschen',
+  'cms-permission-media_delete_description': 'Ermöglicht das Löschen hochgeladener Mediendateien',
+
+  'cms-permission-settings_read': 'Einstellungen anzeigen',
+  'cms-permission-settings_read_description': 'Ermöglicht das Anzeigen der CMS-Systemeinstellungen',
+  'cms-permission-settings_update': 'Einstellungen ändern',
+  'cms-permission-settings_update_description': 'Ermöglicht das Ändern der CMS-Systemeinstellungen'
+}

@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'גישה ללוח הניהול',
+  'cms-permission-admin_access_description': 'מאפשר התחברות וגישה ללוח הניהול של מערכת ה-CMS',
+
+  'cms-permission-users_read': 'צפייה במשתמשים',
+  'cms-permission-users_read_description': 'מאפשר צפייה בפרופילי משתמשים וברשימות משתמשים',
+  'cms-permission-users_create': 'יצירת משתמשים',
+  'cms-permission-users_create_description': 'מאפשר יצירת חשבונות משתמש חדשים',
+  'cms-permission-users_update': 'עדכון משתמשים',
+  'cms-permission-users_update_description': 'מאפשר עריכת פרופילי משתמשים, סטטוסים ותפקידים משויכים',
+  'cms-permission-users_delete': 'מחיקת משתמשים',
+  'cms-permission-users_delete_description': 'מאפשר מחיקה או השבתה של חשבונות משתמש',
+
+  'cms-permission-roles_read': 'צפייה בתפקידים',
+  'cms-permission-roles_read_description': 'מאפשר צפייה בתפקידים ובהרשאות המשויכות להם',
+  'cms-permission-roles_create': 'יצירת תפקידים',
+  'cms-permission-roles_create_description': 'מאפשר יצירת תפקידים חדשים',
+  'cms-permission-roles_update': 'עדכון תפקידים',
+  'cms-permission-roles_update_description': 'מאפשר עריכת תפקידים וניהול הרשאות התפקיד',
+  'cms-permission-roles_delete': 'מחיקת תפקידים',
+  'cms-permission-roles_delete_description': 'מאפשר מחיקת תפקידים מותאמים אישית',
+
+  'cms-permission-content_read': 'צפייה בתוכן',
+  'cms-permission-content_read_description': 'מאפשר צפייה ברשומות תוכן ובטיוטות',
+  'cms-permission-content_create': 'יצירת תוכן',
+  'cms-permission-content_create_description': 'מאפשר יצירת רשומות תוכן חדשות',
+  'cms-permission-content_update': 'עדכון תוכן',
+  'cms-permission-content_update_description': 'מאפשר עריכת רשומות תוכן קיימות',
+  'cms-permission-content_delete': 'מחיקת תוכן',
+  'cms-permission-content_delete_description': 'מאפשר מחיקת רשומות תוכן',
+  'cms-permission-content_publish': 'פרסום תוכן',
+  'cms-permission-content_publish_description': 'מאפשר פרסום וביטול פרסום של רשומות תוכן',
+
+  'cms-permission-media_read': 'צפייה במדיה',
+  'cms-permission-media_read_description': 'מאפשר עיון וצפייה בקובצי מדיה שהועלו',
+  'cms-permission-media_upload': 'העלאת מדיה',
+  'cms-permission-media_upload_description': 'מאפשר העלאת קובצי מדיה ונכסים חדשים',
+  'cms-permission-media_delete': 'מחיקת מדיה',
+  'cms-permission-media_delete_description': 'מאפשר מחיקת קובצי מדיה שהועלו',
+
+  'cms-permission-settings_read': 'צפייה בהגדרות',
+  'cms-permission-settings_read_description': 'מאפשר צפייה בהגדרות המערכת של ה-CMS',
+  'cms-permission-settings_update': 'עדכון הגדרות',
+  'cms-permission-settings_update_description': 'מאפשר שינוי הגדרות המערכת של ה-CMS'
+}

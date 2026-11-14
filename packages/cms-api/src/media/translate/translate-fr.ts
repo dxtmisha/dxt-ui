@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': "Accès au panneau d'administration",
+  'cms-permission-admin_access_description': "Permet de se connecter et d'accéder au panneau d'administration du CMS",
+
+  'cms-permission-users_read': 'Voir les utilisateurs',
+  'cms-permission-users_read_description': 'Permet de consulter les profils et les listes des utilisateurs',
+  'cms-permission-users_create': 'Créer des utilisateurs',
+  'cms-permission-users_create_description': 'Permet de créer de nouveaux comptes utilisateurs',
+  'cms-permission-users_update': 'Modifier les utilisateurs',
+  'cms-permission-users_update_description': 'Permet de modifier les profils, statuts et rôles attribués aux utilisateurs',
+  'cms-permission-users_delete': 'Supprimer des utilisateurs',
+  'cms-permission-users_delete_description': 'Permet de supprimer ou de désactiver des comptes utilisateurs',
+
+  'cms-permission-roles_read': 'Voir les rôles',
+  'cms-permission-roles_read_description': 'Permet de consulter les rôles et leurs permissions attribuées',
+  'cms-permission-roles_create': 'Créer des rôles',
+  'cms-permission-roles_create_description': 'Permet de créer de nouveaux rôles',
+  'cms-permission-roles_update': 'Modifier les rôles',
+  'cms-permission-roles_update_description': 'Permet de modifier les rôles et de gérer leurs permissions',
+  'cms-permission-roles_delete': 'Supprimer des rôles',
+  'cms-permission-roles_delete_description': 'Permet de supprimer des rôles personnalisés',
+
+  'cms-permission-content_read': 'Voir le contenu',
+  'cms-permission-content_read_description': 'Permet de consulter les contenus et les brouillons',
+  'cms-permission-content_create': 'Créer du contenu',
+  'cms-permission-content_create_description': 'Permet de créer de nouveaux contenus',
+  'cms-permission-content_update': 'Modifier le contenu',
+  'cms-permission-content_update_description': 'Permet de modifier les contenus existants',
+  'cms-permission-content_delete': 'Supprimer du contenu',
+  'cms-permission-content_delete_description': 'Permet de supprimer des contenus',
+  'cms-permission-content_publish': 'Publier du contenu',
+  'cms-permission-content_publish_description': 'Permet de publier et de dépublier des contenus',
+
+  'cms-permission-media_read': 'Voir les médias',
+  'cms-permission-media_read_description': 'Permet de parcourir et de consulter les fichiers médias importés',
+  'cms-permission-media_upload': 'Importer des médias',
+  'cms-permission-media_upload_description': "Permet d'importer de nouveaux fichiers médias et ressources",
+  'cms-permission-media_delete': 'Supprimer des médias',
+  'cms-permission-media_delete_description': 'Permet de supprimer les fichiers médias importés',
+
+  'cms-permission-settings_read': 'Voir les paramètres',
+  'cms-permission-settings_read_description': 'Permet de consulter les paramètres système du CMS',
+  'cms-permission-settings_update': 'Modifier les paramètres',
+  'cms-permission-settings_update_description': 'Permet de modifier les paramètres système du CMS'
+}

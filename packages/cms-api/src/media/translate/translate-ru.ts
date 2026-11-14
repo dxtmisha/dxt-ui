@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'Доступ к админ-панели',
+  'cms-permission-admin_access_description': 'Позволяет входить в систему и открывать панель управления CMS',
+
+  'cms-permission-users_read': 'Просмотр пользователей',
+  'cms-permission-users_read_description': 'Позволяет просматривать список и профили пользователей',
+  'cms-permission-users_create': 'Создание пользователей',
+  'cms-permission-users_create_description': 'Позволяет создавать новые учётные записи пользователей',
+  'cms-permission-users_update': 'Редактирование пользователей',
+  'cms-permission-users_update_description': 'Позволяет изменять профили, статусы и назначенные роли пользователей',
+  'cms-permission-users_delete': 'Удаление пользователей',
+  'cms-permission-users_delete_description': 'Позволяет удалять или деактивировать учётные записи пользователей',
+
+  'cms-permission-roles_read': 'Просмотр ролей',
+  'cms-permission-roles_read_description': 'Позволяет просматривать роли и назначенные им права доступа',
+  'cms-permission-roles_create': 'Создание ролей',
+  'cms-permission-roles_create_description': 'Позволяет создавать новые роли',
+  'cms-permission-roles_update': 'Редактирование ролей',
+  'cms-permission-roles_update_description': 'Позволяет редактировать роли и управлять их правами доступа',
+  'cms-permission-roles_delete': 'Удаление ролей',
+  'cms-permission-roles_delete_description': 'Позволяет удалять пользовательские роли',
+
+  'cms-permission-content_read': 'Просмотр контента',
+  'cms-permission-content_read_description': 'Позволяет просматривать записи контента и черновики',
+  'cms-permission-content_create': 'Создание контента',
+  'cms-permission-content_create_description': 'Позволяет создавать новые записи контента',
+  'cms-permission-content_update': 'Редактирование контента',
+  'cms-permission-content_update_description': 'Позволяет редактировать существующие записи контента',
+  'cms-permission-content_delete': 'Удаление контента',
+  'cms-permission-content_delete_description': 'Позволяет удалять записи контента',
+  'cms-permission-content_publish': 'Публикация контента',
+  'cms-permission-content_publish_description': 'Позволяет публиковать и снимать с публикации записи контента',
+
+  'cms-permission-media_read': 'Просмотр медиафайлов',
+  'cms-permission-media_read_description': 'Позволяет просматривать загруженные медиафайлы',
+  'cms-permission-media_upload': 'Загрузка медиафайлов',
+  'cms-permission-media_upload_description': 'Позволяет загружать новые медиафайлы и ресурсы',
+  'cms-permission-media_delete': 'Удаление медиафайлов',
+  'cms-permission-media_delete_description': 'Позволяет удалять загруженные медиафайлы',
+
+  'cms-permission-settings_read': 'Просмотр настроек',
+  'cms-permission-settings_read_description': 'Позволяет просматривать системные настройки CMS',
+  'cms-permission-settings_update': 'Изменение настроек',
+  'cms-permission-settings_update_description': 'Позволяет изменять системные настройки CMS'
+}

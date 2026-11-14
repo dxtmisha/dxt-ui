@@ -42,9 +42,9 @@ export class MotionTransformInclude extends ComponentIncludeAbstract<
   ]
 
   /** Component sub-name / Дополнительное имя компонента */
-  protected name = 'motionTransform'
+  protected readonly name = 'motionTransform'
   /** Property name containing raw attributes / Имя свойства, содержащего сырые атрибуты */
-  protected propsAttrsName = 'motionTransformAttrs'
+  protected readonly propsAttrsName = 'motionTransformAttrs'
 
   /**
    * Constructor for initializing MotionTransform properties and inclusion managers.
@@ -82,7 +82,7 @@ export class MotionTransformInclude extends ComponentIncludeAbstract<
 
     return {
       ...super.getAttrs(attrs),
-      open: props.open
+      ...(props.open !== undefined ? { open: props.open } : {})
     }
   }
 
@@ -98,8 +98,8 @@ export class MotionTransformInclude extends ComponentIncludeAbstract<
     return {
       ...super.toBinds(),
 
-      clickOpen: props.clickOpen,
-      autoClose: props.autoClose,
+      ...(props.clickOpen !== undefined ? { clickOpen: props.clickOpen } : {}),
+      ...(props.autoClose !== undefined ? { autoClose: props.autoClose } : {}),
       onTransform: this.onTransform
     }
   }
@@ -110,7 +110,7 @@ export class MotionTransformInclude extends ComponentIncludeAbstract<
    * Собирает и экспортирует определенные прокси-методы субкомпонента.
    * @returns exposed API object / объект экспортируемого API
    */
-  protected toExpose(): MotionTransformExposeInclude {
+  protected override toExpose(): MotionTransformExposeInclude {
     return {
       ...super.toExpose(),
       getMotionTransformElement: () => this.element.value

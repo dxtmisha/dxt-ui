@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
+import { cmsSchema } from '../media/schema/cmsSchema'
 import type { CmsDb } from '../types/cmsDbTypes'
-import { cmsSchema } from './cmsSchema'
 
 /**
  * Creates a Drizzle PostgreSQL database instance for CMS.

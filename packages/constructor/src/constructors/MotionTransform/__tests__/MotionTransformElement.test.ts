@@ -39,7 +39,8 @@ describe('MotionTransformElement', () => {
   })
 
   it.each([':r0:', '101', 'row:1', 'panel:content', 'field.name'])(
-    'should handle the root HTML ID %s in closest selectors', (id) => {
+    'should handle the root HTML ID %s in closest selectors',
+    (id) => {
       const element = document.createElement('div')
       element.id = id
       const child = document.createElement('span')
@@ -61,7 +62,8 @@ describe('MotionTransformElement', () => {
   )
 
   it.each([':r0:', '101', 'row:1', 'panel:content', 'field.name'])(
-    'should handle the ignored element HTML ID %s', (id) => {
+    'should handle the ignored element HTML ID %s',
+    (id) => {
       const ignored = document.createElement('div')
       ignored.id = id
       const child = document.createElement('span')

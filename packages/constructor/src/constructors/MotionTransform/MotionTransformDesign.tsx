@@ -1,4 +1,4 @@
-import { h, ref, type VNode } from 'vue'
+import { h, mergeProps, ref, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -38,7 +38,7 @@ export class MotionTransformDesign<
     P
   > {
   /** Substrate context element / Элемент подложки контекста */
-  protected elementContext = ref<HTMLDivElement>()
+  protected readonly elementContext = ref<HTMLDivElement>()
   /** MotionTransform controller instance / Экземпляр контроллера MotionTransform */
   protected readonly item: MotionTransform
 
@@ -101,7 +101,7 @@ export class MotionTransformDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes,
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
         context: this.naming.getSubClass('context'),
@@ -160,14 +160,16 @@ export class MotionTransformDesign<
     return [
       h(
         'div',
-        {
-          ...this.getAttrs(),
-          ref: this.element,
-          key: 'main',
-          class: this.classes?.value.main,
-          style: this.styles?.value,
-          onTransitionend: this.item.i('event').onTransitionend
-        },
+        mergeProps(
+          this.getAttrs(),
+          {
+            ref: this.element,
+            key: 'main',
+            class: this.classes?.value.main,
+            style: this.styles?.value,
+            onTransitionend: this.item.i('event').onTransitionend
+          }
+        ),
         [
           ...this.renderHead(),
           ...this.renderBody()

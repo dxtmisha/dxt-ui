@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'Accesso al pannello di amministrazione',
+  'cms-permission-admin_access_description': 'Consente di accedere al pannello di amministrazione del CMS',
+
+  'cms-permission-users_read': 'Visualizza utenti',
+  'cms-permission-users_read_description': 'Consente di visualizzare i profili e gli elenchi degli utenti',
+  'cms-permission-users_create': 'Crea utenti',
+  'cms-permission-users_create_description': 'Consente di creare nuovi account utente',
+  'cms-permission-users_update': 'Modifica utenti',
+  'cms-permission-users_update_description': 'Consente di modificare profili, stati e ruoli assegnati agli utenti',
+  'cms-permission-users_delete': 'Elimina utenti',
+  'cms-permission-users_delete_description': 'Consente di eliminare o disattivare gli account utente',
+
+  'cms-permission-roles_read': 'Visualizza ruoli',
+  'cms-permission-roles_read_description': 'Consente di visualizzare i ruoli e i permessi assegnati',
+  'cms-permission-roles_create': 'Crea ruoli',
+  'cms-permission-roles_create_description': 'Consente di creare nuovi ruoli',
+  'cms-permission-roles_update': 'Modifica ruoli',
+  'cms-permission-roles_update_description': 'Consente di modificare i ruoli e gestire i relativi permessi',
+  'cms-permission-roles_delete': 'Elimina ruoli',
+  'cms-permission-roles_delete_description': 'Consente di eliminare ruoli personalizzati',
+
+  'cms-permission-content_read': 'Visualizza contenuti',
+  'cms-permission-content_read_description': 'Consente di visualizzare i contenuti e le bozze',
+  'cms-permission-content_create': 'Crea contenuti',
+  'cms-permission-content_create_description': 'Consente di creare nuovi contenuti',
+  'cms-permission-content_update': 'Modifica contenuti',
+  'cms-permission-content_update_description': 'Consente di modificare i contenuti esistenti',
+  'cms-permission-content_delete': 'Elimina contenuti',
+  'cms-permission-content_delete_description': 'Consente di eliminare i contenuti',
+  'cms-permission-content_publish': 'Pubblica contenuti',
+  'cms-permission-content_publish_description': 'Consente di pubblicare e rimuovere dalla pubblicazione i contenuti',
+
+  'cms-permission-media_read': 'Visualizza media',
+  'cms-permission-media_read_description': 'Consente di sfogliare e visualizzare i file multimediali caricati',
+  'cms-permission-media_upload': 'Carica media',
+  'cms-permission-media_upload_description': 'Consente di caricare nuovi file multimediali e risorse',
+  'cms-permission-media_delete': 'Elimina media',
+  'cms-permission-media_delete_description': 'Consente di eliminare i file multimediali caricati',
+
+  'cms-permission-settings_read': 'Visualizza impostazioni',
+  'cms-permission-settings_read_description': 'Consente di visualizzare le impostazioni di sistema del CMS',
+  'cms-permission-settings_update': 'Modifica impostazioni',
+  'cms-permission-settings_update_description': 'Consente di modificare le impostazioni di sistema del CMS'
+}

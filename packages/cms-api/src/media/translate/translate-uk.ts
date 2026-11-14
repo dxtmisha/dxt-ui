@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'Доступ до адмін-панелі',
+  'cms-permission-admin_access_description': 'Дозволяє входити в систему та відкривати панель керування CMS',
+
+  'cms-permission-users_read': 'Перегляд користувачів',
+  'cms-permission-users_read_description': 'Дозволяє переглядати список і профілі користувачів',
+  'cms-permission-users_create': 'Створення користувачів',
+  'cms-permission-users_create_description': 'Дозволяє створювати нові облікові записи користувачів',
+  'cms-permission-users_update': 'Редагування користувачів',
+  'cms-permission-users_update_description': 'Дозволяє змінювати профілі, статуси та призначені ролі користувачів',
+  'cms-permission-users_delete': 'Видалення користувачів',
+  'cms-permission-users_delete_description': 'Дозволяє видаляти або деактивувати облікові записи користувачів',
+
+  'cms-permission-roles_read': 'Перегляд ролей',
+  'cms-permission-roles_read_description': 'Дозволяє переглядати ролі та призначені їм права доступу',
+  'cms-permission-roles_create': 'Створення ролей',
+  'cms-permission-roles_create_description': 'Дозволяє створювати нові ролі',
+  'cms-permission-roles_update': 'Редагування ролей',
+  'cms-permission-roles_update_description': 'Дозволяє редагувати ролі та керувати їхніми правами доступу',
+  'cms-permission-roles_delete': 'Видалення ролей',
+  'cms-permission-roles_delete_description': 'Дозволяє видаляти користувацькі ролі',
+
+  'cms-permission-content_read': 'Перегляд контенту',
+  'cms-permission-content_read_description': 'Дозволяє переглядати записи контенту та чернетки',
+  'cms-permission-content_create': 'Створення контенту',
+  'cms-permission-content_create_description': 'Дозволяє створювати нові записи контенту',
+  'cms-permission-content_update': 'Редагування контенту',
+  'cms-permission-content_update_description': 'Дозволяє редагувати наявні записи контенту',
+  'cms-permission-content_delete': 'Видалення контенту',
+  'cms-permission-content_delete_description': 'Дозволяє видаляти записи контенту',
+  'cms-permission-content_publish': 'Публікація контенту',
+  'cms-permission-content_publish_description': 'Дозволяє публікувати та знімати з публікації записи контенту',
+
+  'cms-permission-media_read': 'Перегляд медіафайлів',
+  'cms-permission-media_read_description': 'Дозволяє переглядати завантажені медіафайли',
+  'cms-permission-media_upload': 'Завантаження медіафайлів',
+  'cms-permission-media_upload_description': 'Дозволяє завантажувати нові медіафайли та ресурси',
+  'cms-permission-media_delete': 'Видалення медіафайлів',
+  'cms-permission-media_delete_description': 'Дозволяє видаляти завантажені медіафайли',
+
+  'cms-permission-settings_read': 'Перегляд налаштувань',
+  'cms-permission-settings_read_description': 'Дозволяє переглядати системні налаштування CMS',
+  'cms-permission-settings_update': 'Зміна налаштувань',
+  'cms-permission-settings_update_description': 'Дозволяє змінювати системні налаштування CMS'
+}

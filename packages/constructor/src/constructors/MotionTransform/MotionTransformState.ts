@@ -19,7 +19,18 @@ export class MotionTransformState extends DesignLifecycleAbstract {
   /** Teleportation state flag / Флаг состояния телепортации */
   readonly teleport = ref<boolean>(false)
 
+  /** Timeout timer ID for resetting transition state / Идентификатор таймера сброса состояния перехода */
   protected timer?: ReturnType<typeof setTimeout>
+  /** Animation frame ID for initial open synchronization / Идентификатор кадра анимации для начальной синхронизации открытия */
+  protected frameOpen?: number
+  /** Animation frame ID for opening/closing measurements / Идентификатор кадра анимации для вычислений открытия/закрытия */
+  protected frameAnimation?: number
+  /** Next animation frame ID for applying open state / Идентификатор следующего кадра анимации для применения состояния открытия */
+  protected frameAnimationNext?: number
+  /** Animation frame ID for restoring focus to head element / Идентификатор кадра анимации для восстановления фокуса на элемент заголовка */
+  protected frameFocus?: number
+  /** Pending target open state during animated transition / Ожидаемое целевое состояние открытия во время анимированного перехода */
+  protected targetOpen?: boolean
 
   /**
    * Constructor.
@@ -31,10 +42,10 @@ export class MotionTransformState extends DesignLifecycleAbstract {
    * @param tabIndex class object getter for managing tab indices / геттер объекта класса для управления табуляцией
    */
   constructor(
-    protected readonly props: MotionTransformProps,
+    protected readonly props: Readonly<MotionTransformProps>,
     protected readonly element: () => MotionTransformElement,
     protected readonly size: () => MotionTransformSize,
-    protected readonly tabIndex: () => TabIndexInclude<HTMLDivElement>
+    protected readonly tabIndex: () => TabIndexInclude
   ) {
     super()
   }
@@ -55,7 +66,8 @@ export class MotionTransformState extends DesignLifecycleAbstract {
     this.makeTeleport()
 
     if (this.props.open) {
-      requestAnimationFrame(() => {
+      this.frameOpen = requestAnimationFrame(() => {
+        this.frameOpen = undefined
         this.open.value = Boolean(this.props.open)
         this.calculations()
       })
@@ -69,6 +81,9 @@ export class MotionTransformState extends DesignLifecycleAbstract {
    */
   override readonly onUnmounted = (): void => {
     clearTimeout(this.timer)
+    this.timer = undefined
+    this.targetOpen = undefined
+    this.cancelFrames()
   }
 
   /**
@@ -112,8 +127,12 @@ export class MotionTransformState extends DesignLifecycleAbstract {
     open: boolean,
     animation = true
   ): void {
-    if (this.open.value !== open) {
+    const currentOpen = this.targetOpen ?? this.open.value
+
+    if (currentOpen !== open) {
       clearTimeout(this.timer)
+      this.cancelAnimationFrames()
+      this.targetOpen = open
 
       if (open) {
         this.tabIndex().updateOldElement()
@@ -125,15 +144,19 @@ export class MotionTransformState extends DesignLifecycleAbstract {
       ) {
         this.show.value = true
 
-        requestAnimationFrame(() => {
+        this.frameAnimation = requestAnimationFrame(() => {
+          this.frameAnimation = undefined
           this.calculations()
           this.make()
 
-          requestAnimationFrame(() => {
+          this.frameAnimationNext = requestAnimationFrame(() => {
+            this.frameAnimationNext = undefined
+            this.targetOpen = undefined
             this.open.value = open
           })
         })
       } else {
+        this.targetOpen = undefined
         this.open.value = open
         this.calculations()
       }
@@ -175,7 +198,13 @@ export class MotionTransformState extends DesignLifecycleAbstract {
       && this.props.clickOpen
       && isDomRuntime()
     ) {
-      requestAnimationFrame(() => {
+      if (this.frameFocus !== undefined) {
+        cancelAnimationFrame(this.frameFocus)
+      }
+
+      this.frameFocus = requestAnimationFrame(() => {
+        this.frameFocus = undefined
+
         if (
           !document.activeElement
           || document.activeElement === document.body
@@ -187,6 +216,42 @@ export class MotionTransformState extends DesignLifecycleAbstract {
     }
 
     return this
+  }
+
+  /**
+   * Cancels pending opening and transition animation frames.
+   *
+   * Отменяет ожидающие кадры анимации открытия и перехода.
+   */
+  protected cancelAnimationFrames(): void {
+    if (this.frameAnimation !== undefined) {
+      cancelAnimationFrame(this.frameAnimation)
+      this.frameAnimation = undefined
+    }
+
+    if (this.frameAnimationNext !== undefined) {
+      cancelAnimationFrame(this.frameAnimationNext)
+      this.frameAnimationNext = undefined
+    }
+  }
+
+  /**
+   * Cancels all pending animation frames on lifecycle cleanup.
+   *
+   * Отменяет все ожидающие кадры анимации при очистке жизненного цикла.
+   */
+  protected cancelFrames(): void {
+    if (this.frameOpen !== undefined) {
+      cancelAnimationFrame(this.frameOpen)
+      this.frameOpen = undefined
+    }
+
+    if (this.frameFocus !== undefined) {
+      cancelAnimationFrame(this.frameFocus)
+      this.frameFocus = undefined
+    }
+
+    this.cancelAnimationFrames()
   }
 
   /**

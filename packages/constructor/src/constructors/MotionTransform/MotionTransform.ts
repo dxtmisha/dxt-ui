@@ -1,7 +1,6 @@
 import type { Ref } from 'vue'
 import {
   type ConstrBind,
-  type ConstrClassObject,
   type ConstrEmit,
   type ConstrItems,
   type DesignComp,
@@ -40,13 +39,13 @@ export type MotionTransformConstructors = {
   /** Control actions manager constructor / Конструктор менеджера действий перехода */
   go: typeof MotionTransformGo
   /** Model synchronization constructor / Конструктор синхронизации модели */
-  model: typeof ModelInclude
+  model: typeof ModelInclude<boolean>
   /** Size calculation manager constructor / Конструктор менеджера расчёта размеров */
   size: typeof MotionTransformSize
   /** State manager constructor / Конструктор менеджера состояния */
   state: typeof MotionTransformState
   /** Tab index manager constructor / Конструктор менеджера таб-индекса */
-  tabIndex: typeof TabIndexInclude<HTMLDivElement>
+  tabIndex: typeof TabIndexInclude
   /** Teleport manager constructor / Конструктор менеджера телепорта */
   teleport: typeof TeleportInclude
 }
@@ -170,6 +169,8 @@ export class MotionTransform extends DesignLogicAbstract<
       emits,
       constructors
     )
+
+    this.i('model')
   }
 
   /**
@@ -214,16 +215,6 @@ export class MotionTransform extends DesignLogicAbstract<
         this.props.ariaDescribedby
       )
     }
-  }
-
-  /**
-   * Values for the class.
-   *
-   * Значения для класса.
-   * @returns classes values / значения классов
-   */
-  get classes(): ConstrClassObject {
-    return {}
   }
 
   /**

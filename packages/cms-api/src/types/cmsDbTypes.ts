@@ -6,7 +6,7 @@ import type {
   roles,
   userRoles,
   users
-} from '../functions/cmsSchema'
+} from '../media/schema/cmsSchema'
 
 /** Permission record selected from database / Запись права доступа, полученная из базы данных */
 export type CmsPermission = typeof permissions.$inferSelect

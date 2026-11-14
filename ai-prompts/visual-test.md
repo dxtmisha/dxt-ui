@@ -30,7 +30,7 @@ The developer must provide two core pieces of information:
     - If `wikiLanguage` is `"ru"` -> write everything strictly in **Russian**.
     - If `wikiLanguage` is `"en"` (or if no language property is found) -> write in **English**.
     - If another language code is specified (e.g., `"vi"`) -> write in that corresponding language.
-  - Keep technical identifiers (`TC-VIS-001`, `VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`, `P0`–`P3`, `✅ PASS`, `⚠️ WARN`, `❌ FAIL`), TypeScript/Vue prop names, CSS classes/tokens, file paths, URLs, and raw console log strings untranslated in their original form.
+  - Keep technical identifiers (`TC-VIS-001`, `VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`, `P0`–`P3`), status icons (`✅`, `⚠️`, `❌`, `⏭️`), TypeScript/Vue prop names, CSS classes/tokens, file paths, URLs, and raw console log strings untranslated in their original form.
 
 ### 3. Deep Source Code Analysis (Code-First Phase)
 Before touching the browser, thoroughly read and analyze the source code at the provided path:
@@ -188,7 +188,7 @@ Every test suite in `test-cases.md` MUST systematically cover the following **6 
        - **Tablet Portrait (iPad)**: `768×1024`
        - **Mobile Smartphone**: `375×812` and compact `320×568` (as well as real **Apple Xcode Simulator** when mobile device testing is applicable)
      - Verify breakpoint switching, grid/column reflow, responsive asset selection (`<picture>`, `srcset`), visibility toggling of desktop vs. mobile elements, touch ergonomics, and absence of horizontal overflow (`document.documentElement.scrollWidth <= window.innerWidth`) or element overlap at every breakpoint.
-   - **Component vs. Test Stand Isolation Rule (CRITICAL)**: When testing a single UI component rendered inside a demo page or test stand (`Demo*Page.vue`, Storybook canvas, sandbox wrapper), **evaluate strictly the tested component itself**, NOT the surrounding layout/grid of the test stand. If the test stand's own wrapper grid, fixed demo column widths (e.g., `:base="'2'"`), or demo card containers become narrow on mobile viewports while the component itself adapts properly to the container given to it without breaking its own layout or throwing errors, **do NOT mark the test case as `❌ FAIL`**.
+   - **Component vs. Test Stand Isolation Rule (CRITICAL)**: When testing a single UI component rendered inside a demo page or test stand (`Demo*Page.vue`, Storybook canvas, sandbox wrapper), **evaluate strictly the tested component itself**, NOT the surrounding layout/grid of the test stand. If the test stand's own wrapper grid, fixed demo column widths (e.g., `:base="'2'"`), or demo card containers become narrow on mobile viewports while the component itself adapts properly to the container given to it without breaking its own layout or throwing errors, **do NOT mark the test case as `❌`**.
 5. **`A11Y` — Accessibility & Keyboard Navigation (`TC-A11Y-xxx`)**:
    - Full keyboard operability (`Tab`, `Shift+Tab` focus order, `Enter` and `Space` activation, `Escape` dismissal, `Arrow` key navigation in lists/tabs/menus/radios).
    - Visible focus ring (`:focus-visible` outline compliance).
@@ -199,7 +199,7 @@ Every test suite in `test-cases.md` MUST systematically cover the following **6 
 
 ### 3. Mandatory `test-cases.md` Structure & Template
 
-Structure `ai-tests/<entity-name>/test-cases.md` according to the template below (**IMPORTANT: translate all headings, metadata labels, table column headers, category descriptions, and test case descriptions into the language specified by `wikiLanguage` in `./design.config.json`**, e.g. Russian when `"wikiLanguage": "ru"`, keeping only IDs like `TC-VIS-001`, category codes `VIS`/`INT`/`BND`/`RSP`/`A11Y`/`LOG`, priorities `P0`–`P3`, and code identifiers in English):
+Structure `ai-tests/<entity-name>/test-cases.md` according to the template below, keeping detailed test cases grouped strictly into subsections `2.1` through `2.6` (`VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`) (**IMPORTANT: translate all headings, metadata labels, table column headers, category descriptions, and test case descriptions into the language specified by `wikiLanguage` in `./design.config.json`**, e.g. Russian when `"wikiLanguage": "ru"`, keeping only IDs like `TC-VIS-001`, category codes `VIS`/`INT`/`BND`/`RSP`/`A11Y`/`LOG`, priorities `P0`–`P3`, and code identifiers in English):
 
 ```markdown
 # Test Case Specification: <EntityName>
@@ -228,7 +228,9 @@ Structure `ai-tests/<entity-name>/test-cases.md` according to the template below
 
 ## 2. Detailed Test Cases
 
-### [TC-VIS-001] <Concise Action-Oriented Title>
+### 2.1 Visual & Design System (`VIS`)
+
+#### [TC-VIS-001] <Concise Action-Oriented Title>
 - **Priority**: `P0 (Critical)` | `P1 (High)` | `P2 (Medium)` | `P3 (Low)`
 - **Category**: `Visual & Design System`
 - **Preconditions**: Navigate to `<URL>`, viewport `1440×900`, theme `Light`.
@@ -238,7 +240,21 @@ Structure `ai-tests/<entity-name>/test-cases.md` according to the template below
 - **Expected Result**: Component renders with correct token colors, padding, typography, and zero clipping or overlap.
 - **Evidence Type**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
 
-### [TC-LOG-001] <Concise Action-Oriented Title for Console/Event Case>
+### 2.2 Interactive & Functional (`INT`)
+...
+
+### 2.3 Boundaries & Edge Cases (`BND`)
+...
+
+### 2.4 Responsive & Viewport (`RSP`)
+...
+
+### 2.5 Accessibility (`A11Y`)
+...
+
+### 2.6 Console & Runtime (`LOG`)
+
+#### [TC-LOG-001] <Concise Action-Oriented Title for Console/Event Case>
 - **Priority**: `P1 (High)`
 - **Category**: `Console & Runtime`
 - **Preconditions**: Navigate to `<URL>`, clear console messages.
@@ -288,20 +304,20 @@ You MUST treat `test-report.md` and `screenshots/` as a **living document**, nev
 
 1. **Reuse & Update Existing Report**:
    - If `ai-tests/<entity-name>/test-report.md` and `./screenshots/` **already exist**, **DO NOT create a new file from scratch**. Update the existing `test-report.md` in place (and if the existing report was written in a language different from `wikiLanguage` in `./design.config.json`, translate its headings, labels, and text into the configured `wikiLanguage`).
-2. **Transitioning Fixed Cases (`❌ FAIL` -> `✅ PASS`)**:
-   - If a test case in the existing `test-report.md` previously failed (`❌ FAIL`), and in the current test run it **passes without issues**:
-     - Change its status in the main Baseline Matrix table from `❌ FAIL` to `✅ PASS`.
+2. **Transitioning Fixed Cases (`❌` -> `✅`)**:
+   - If a test case in the existing `test-report.md` previously failed (`❌`), and in the current test run it **passes without issues**:
+     - Change its status in the corresponding grouped Baseline Matrix table (`2.1`–`2.6`) from `❌` to `✅`.
      - Update its inline screenshot (`![TC-...](./screenshots/TC-....png)`) or `Actual Result` column to reflect the healthy passing state.
      - **Delete/remove this resolved test case from the Failure Log section at the bottom of the file** (if all failures in a dated Failure Log block at the bottom are now resolved, delete that entire dated failure block).
 3. **Handling New or Persisting Failures (Appending Dated Failure Report at the End)**:
-   - If the current test run completes with one or more failed test cases (`❌ FAIL`):
-     - Mark those cases as `❌ FAIL` in the main Baseline Matrix tables.
+   - If the current test run completes with one or more failed test cases (`❌`):
+     - Mark those cases as `❌` in the corresponding grouped Baseline Matrix tables (`2.1`–`2.6`).
      - At the **very end of `test-report.md`**, append a **new dated Failure Log section** (`## 4. 🚨 Active Failure & Regression Log` / `### Run: YYYY-MM-DD HH:mm`) containing:
        1. **Execution Date & Time (UTC)**.
        2. **List of Failed Test Cases** (`TC-ID` and title).
        3. **What Broke (Symptom, Root Cause & Visual/Console Evidence)**: Detailed explanation of what failed in the browser, embedded/linked failure screenshot (`./screenshots/<TC-ID>.png`) or exact console error output, and the root cause identified in the source code.
        4. **How to Fix It (Actionable Remediation Guide)**: Concrete, step-by-step code instructions specifying the exact file path, component/class, lines, and code/SCSS changes required to fix the defect.
-   - Remember: as soon as these broken cases are fixed and verified in a subsequent test run, **remove the resolved failure report from the bottom of the file** and set the cases to `✅ PASS` in the main Baseline Matrix tables.
+   - Remember: as soon as these broken cases are fixed and verified in a subsequent test run, **remove the resolved failure report from the bottom of the file** and set the cases to `✅` in the corresponding grouped Baseline Matrix tables.
 
 ### 2. Mandatory Advisory Section: Performance, Speed, Architecture & UX Audit
 
@@ -314,11 +330,11 @@ Every `test-report.md` MUST include a concise, high-signal numbered engineering 
 
 Every `ai-tests/<entity-name>/test-report.md` **MUST strictly follow this exact document layout and 5-column table format**:
 1. **Do NOT use separate metric tables in Section 1**: format `Section 1` (`Executive Summary`) as the clean bullet metadata & summary block shown below.
-2. **Use uniform 5-column Markdown tables in Section 2 (`Baseline Matrix`)** split strictly into subsections `2.1` through `2.6` (`VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`) with columns:
+2. **ALWAYS split Section 2 (`Baseline Matrix`) into separate grouped subsections `2.1` through `2.6` (`VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`)**: NEVER merge all test cases into a single flat table. Each group gets its own `### 2.X <Group Name> (\`<CODE>\`)` heading and its own uniform 5-column Markdown table with columns:
    `| ID | Scenario | Status | Actual Result | Screenshot |` (headers translated into `wikiLanguage`).
 3. **Embed screenshots inline inside the `Screenshot` column** using standard Markdown image syntax (`![TC-VIS-001](./screenshots/TC-VIS-001.png)`), or place `—` when no screenshot is needed (console/DOM-only checks). **Do NOT create separate `Visual Previews` image blocks below the tables.**
-4. **Always use exact status badges**: `✅ PASS`, `⚠️ WARN`, `❌ FAIL`, and wrap every test ID in backticks (`\`TC-VIS-001\``).
-5. **Strict Language Translation Rule**: Translate all document titles, section headings, bullet labels, table column headers, scenario titles, observed results, AI audit items, and failure logs into the language specified by `wikiLanguage` in `./design.config.json` (e.g., Russian when `"wikiLanguage": "ru"`), keeping only IDs (`TC-VIS-001`, `VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`), status badges (`✅ PASS`, `⚠️ WARN`, `❌ FAIL`), file paths, CSS classes, prop names, and measured raw console/DOM values untranslated.
+4. **Icon-Only Status Column (STRICT)**: In the `Status` column of every table, place **ONLY the status icon without text labels** (`✅` passed, `⚠️` warning/partial/env-note, `❌` failed, `⏭️` skipped). **NEVER write words like `PASS`, `FAIL`, `WARN`, `OK`, or `SKIP` inside the `Status` column.** Always wrap every test ID in backticks (`\`TC-VIS-001\``).
+5. **Strict Language Translation Rule**: Translate all document titles, section headings, bullet labels, table column headers, scenario titles, observed results, AI audit items, and failure logs into the language specified by `wikiLanguage` in `./design.config.json` (e.g., Russian when `"wikiLanguage": "ru"`), keeping only IDs (`TC-VIS-001`, `VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`), status icons (`✅`, `⚠️`, `❌`, `⏭️`), file paths, CSS classes, prop names, and measured raw console/DOM values untranslated.
 
 ```markdown
 # Visual & Functional Test Report: <EntityName>
@@ -332,7 +348,7 @@ Every `ai-tests/<entity-name>/test-report.md` **MUST strictly follow this exact 
 - **Test Date (UTC):** `YYYY-MM-DDTHH:mm:ssZ`
 - **Environment:** `Headless Chrome (puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)[, Firefox Headless, Safari]`
 - **Test Case Coverage:** <Executed> / <Total> (`<Percent>%`)
-- **Summary:** **<P> ✅ PASS, <W> ⚠️ WARN, <F> ❌ FAIL** — <concise one-sentence overall engineering verdict on rendering, interactions, edge cases, responsiveness, accessibility, and runtime health>.
+- **Summary:** **<P> ✅, <W> ⚠️, <F> ❌** (`✅` passed, `⚠️` warning, `❌` failed) — <concise one-sentence overall engineering verdict on rendering, interactions, edge cases, responsiveness, accessibility, and runtime health>.
 
 ---
 
@@ -341,40 +357,40 @@ Every `ai-tests/<entity-name>/test-report.md` **MUST strictly follow this exact 
 ### 2.1 Visual Rendering (`VIS`)
 
 | ID | Scenario | Status | Actual Result | Screenshot |
-| --- | --- | --- | --- | --- |
-| `TC-VIS-001` | <Scenario description & key props> | ✅ PASS | <Exact observed layout/DOM/style facts and metrics>. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
-| `TC-VIS-002` | <Scenario description & key props> | ❌ FAIL | <Exact observed visual/layout defect and measured mismatch>. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-VIS-001` | <Scenario description & key props> | ✅ | <Exact observed layout/DOM/style facts and metrics>. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | <Scenario description & key props> | ❌ | <Exact observed visual/layout defect and measured mismatch>. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
 
 ### 2.2 Interactive & State Management (`INT`)
 
 | ID | Scenario | Status | Actual Result | Screenshot |
-| --- | --- | --- | --- | --- |
-| `TC-INT-001` | <Scenario description> | ✅ PASS | <Exact observed state transition / DOM count / behavior>. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
-| `TC-INT-002` | <Scenario description (non-visual DOM / v-model check)> | ✅ PASS | <Exact observed DOM/state synchronization facts>. | — |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-INT-001` | <Scenario description> | ✅ | <Exact observed state transition / DOM count / behavior>. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
+| `TC-INT-002` | <Scenario description (non-visual DOM / v-model check)> | ✅ | <Exact observed DOM/state synchronization facts>. | — |
 
 ### 2.3 Boundary Cases & Edge Scenarios (`BND`)
 
 | ID | Scenario | Status | Actual Result | Screenshot |
-| --- | --- | --- | --- | --- |
-| `TC-BND-001` | <Scenario description> | ✅ PASS | <Measured bounds / overflow / boundary handling details>. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-BND-001` | <Scenario description> | ✅ | <Measured bounds / overflow / boundary handling details>. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
 
 ### 2.4 Responsiveness (`RSP`)
 
 | ID | Scenario | Status | Actual Result | Screenshot |
-| --- | --- | --- | --- | --- |
-| `TC-RSP-001` | <Scenario description across viewports> | ✅ PASS | <Measured widths/layouts at 320px, 375px, 768px, 1440px>. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-RSP-001` | <Scenario description across viewports> | ✅ | <Measured widths/layouts at 320px, 375px, 768px, 1440px>. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
 
 ### 2.5 Accessibility (`A11Y`)
 
 | ID | Scenario | Status | Actual Result | Screenshot |
-| --- | --- | --- | --- | --- |
-| `TC-A11Y-001` | <ARIA / keyboard scenario> | ✅ PASS | <Verified role, aria-* attributes, focus-visible / keyboard flow>. | — |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-A11Y-001` | <ARIA / keyboard scenario> | ✅ | <Verified role, aria-* attributes, focus-visible / keyboard flow>. | — |
 
 ### 2.6 Logs & Console (`LOG`)
 
 | ID | Scenario | Status | Actual Result | Screenshot |
-| --- | --- | --- | --- | --- |
-| `TC-LOG-001` | <Events, expose, Vue warnings / JS errors check> | ✅ PASS | <Verified event payloads, expose methods; `vueWarnings`: `[]`, `pageErrors`: `[]`>. | — |
+| :--- | :--- | :---: | :--- | :--- |
+| `TC-LOG-001` | <Events, expose, Vue warnings / JS errors check> | ✅ | <Verified event payloads, expose methods; `vueWarnings`: `[]`, `pageErrors`: `[]`>. | — |
 
 ---
 
@@ -387,7 +403,7 @@ Every `ai-tests/<entity-name>/test-report.md` **MUST strictly follow this exact 
 <!--
   INCLUDE SECTION 4 ONLY WHEN ACTIVE FAILURES EXIST.
   When a new test run has failures, append a dated block below.
-  When previously failing cases are fixed and pass (✅ PASS), REMOVE them (or the entire resolved block) from this section!
+  When previously failing cases are fixed and pass (✅), REMOVE them (or the entire resolved block) from this section!
 -->
 ## 4. 🚨 Active Failure & Regression Log
 

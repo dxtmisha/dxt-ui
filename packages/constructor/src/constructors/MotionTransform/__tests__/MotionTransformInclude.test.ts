@@ -34,4 +34,30 @@ describe('MotionTransformInclude', () => {
     expect(emits).toHaveBeenCalledWith('transform', mockEvent, mockOptions)
     expect(emits).toHaveBeenCalledWith('transformLite', mockOptions)
   })
+
+  it('should preserve motionTransformAttrs values when parent props are undefined and expose proxy methods', () => {
+    const include = new MotionTransformInclude(
+      {
+        motionTransformAttrs: {
+          open: true,
+          clickOpen: false,
+          autoClose: false
+        }
+      },
+      new DesignName('base.class')
+    )
+
+    expect(include.binds.value.open).toBe(true)
+    expect(include.binds.value.clickOpen).toBe(false)
+    expect(include.binds.value.autoClose).toBe(false)
+
+    const exposed = include.expose
+    expect(typeof exposed.isShow).toBe('function')
+    expect(typeof exposed.getOpen).toBe('function')
+    expect(typeof exposed.setOpen).toBe('function')
+    expect(typeof exposed.toOpen).toBe('function')
+    expect(typeof exposed.toClose).toBe('function')
+    expect(typeof exposed.toggle).toBe('function')
+    expect(exposed.getMotionTransformElement()).toBeUndefined()
+  })
 })

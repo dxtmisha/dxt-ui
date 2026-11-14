@@ -3,7 +3,7 @@
 // Composables
 
 // Functions
-export * from './functions/cmsSchema'
+export * from './functions/cmsPermissions'
 export * from './functions/createCmsDb'
 
 // Types

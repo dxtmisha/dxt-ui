@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'Dostęp do panelu administratora',
+  'cms-permission-admin_access_description': 'Pozwala na logowanie się i dostęp do panelu administracyjnego CMS',
+
+  'cms-permission-users_read': 'Przeglądanie użytkowników',
+  'cms-permission-users_read_description': 'Pozwala przeglądać profile i listy użytkowników',
+  'cms-permission-users_create': 'Tworzenie użytkowników',
+  'cms-permission-users_create_description': 'Pozwala tworzyć nowe konta użytkowników',
+  'cms-permission-users_update': 'Edycja użytkowników',
+  'cms-permission-users_update_description': 'Pozwala edytować profile, statusy oraz przypisane role użytkowników',
+  'cms-permission-users_delete': 'Usuwanie użytkowników',
+  'cms-permission-users_delete_description': 'Pozwala usuwać lub dezaktywować konta użytkowników',
+
+  'cms-permission-roles_read': 'Przeglądanie ról',
+  'cms-permission-roles_read_description': 'Pozwala przeglądać role i przypisane im uprawnienia',
+  'cms-permission-roles_create': 'Tworzenie ról',
+  'cms-permission-roles_create_description': 'Pozwala tworzyć nowe role',
+  'cms-permission-roles_update': 'Edycja ról',
+  'cms-permission-roles_update_description': 'Pozwala edytować role i zarządzać ich uprawnieniami',
+  'cms-permission-roles_delete': 'Usuwanie ról',
+  'cms-permission-roles_delete_description': 'Pozwala usuwać własne role',
+
+  'cms-permission-content_read': 'Przeglądanie treści',
+  'cms-permission-content_read_description': 'Pozwala przeglądać wpisy i wersje robocze',
+  'cms-permission-content_create': 'Tworzenie treści',
+  'cms-permission-content_create_description': 'Pozwala tworzyć nowe wpisy treści',
+  'cms-permission-content_update': 'Edycja treści',
+  'cms-permission-content_update_description': 'Pozwala edytować istniejące wpisy treści',
+  'cms-permission-content_delete': 'Usuwanie treści',
+  'cms-permission-content_delete_description': 'Pozwala usuwać wpisy treści',
+  'cms-permission-content_publish': 'Publikowanie treści',
+  'cms-permission-content_publish_description': 'Pozwala publikować i cofać publikację wpisów treści',
+
+  'cms-permission-media_read': 'Przeglądanie mediów',
+  'cms-permission-media_read_description': 'Pozwala przeglądać przesłane pliki multimedialne',
+  'cms-permission-media_upload': 'Przesyłanie mediów',
+  'cms-permission-media_upload_description': 'Pozwala przesyłać nowe pliki multimedialne i zasoby',
+  'cms-permission-media_delete': 'Usuwanie mediów',
+  'cms-permission-media_delete_description': 'Pozwala usuwać przesłane pliki multimedialne',
+
+  'cms-permission-settings_read': 'Przeglądanie ustawień',
+  'cms-permission-settings_read_description': 'Pozwala przeglądać ustawienia systemowe CMS',
+  'cms-permission-settings_update': 'Zmiana ustawień',
+  'cms-permission-settings_update_description': 'Pozwala zmieniać ustawienia systemowe CMS'
+}

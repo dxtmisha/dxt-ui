@@ -45,6 +45,8 @@
     "postinstall": "npm run prompt"
   },
   "files": [
+    "packages/cms-nitro/dist",
+    "packages/cms-nitro/package.json",
     "packages/cms-api/dist",
     "packages/cms-api/package.json",
     "packages/cms/dist",
@@ -62,6 +64,10 @@
     "LICENSE"
   ],
   "exports": {
+    "./cms-nitro": {
+      "import": "./dist/cms-nitro.js",
+      "types": "./dist/cms-nitro.d.ts"
+    },
     "./cms-api": {
       "import": "./dist/cms-api.js",
       "types": "./dist/cms-api.d.ts"
@@ -122,6 +128,10 @@
     "./UiWindow": {
       "types": "./dist/library/UiWindow.d.ts",
       "default": "./dist/library/UiWindow.js"
+    },
+    "./UiMotionTransform": {
+      "types": "./dist/library/UiMotionTransform.d.ts",
+      "default": "./dist/library/UiMotionTransform.js"
     }
   },
   "workspaces": [
@@ -131,6 +141,7 @@
     "@microsoft/api-extractor": "^7.60.1"
   },
   "dependencies": {
+    "@dxtmisha/cms-nitro": "workspace:*",
     "@dxtmisha/cms-api": "workspace:*",
     "@dxtmisha/cms": "workspace:*",
     "@dxtmisha/configuration": ">=1.2.0",

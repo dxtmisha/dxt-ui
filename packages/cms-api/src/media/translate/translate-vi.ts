@@ -1,0 +1,45 @@
+export default {
+  'cms-permission-admin_access': 'Truy cập trang quản trị',
+  'cms-permission-admin_access_description': 'Cho phép đăng nhập và truy cập bảng điều khiển quản trị CMS',
+
+  'cms-permission-users_read': 'Xem người dùng',
+  'cms-permission-users_read_description': 'Cho phép xem danh sách và hồ sơ người dùng',
+  'cms-permission-users_create': 'Tạo người dùng',
+  'cms-permission-users_create_description': 'Cho phép tạo tài khoản người dùng mới',
+  'cms-permission-users_update': 'Cập nhật người dùng',
+  'cms-permission-users_update_description': 'Cho phép chỉnh sửa hồ sơ, trạng thái và vai trò của người dùng',
+  'cms-permission-users_delete': 'Xóa người dùng',
+  'cms-permission-users_delete_description': 'Cho phép xóa hoặc vô hiệu hóa tài khoản người dùng',
+
+  'cms-permission-roles_read': 'Xem vai trò',
+  'cms-permission-roles_read_description': 'Cho phép xem các vai trò và quyền được gán',
+  'cms-permission-roles_create': 'Tạo vai trò',
+  'cms-permission-roles_create_description': 'Cho phép tạo vai trò mới',
+  'cms-permission-roles_update': 'Cập nhật vai trò',
+  'cms-permission-roles_update_description': 'Cho phép chỉnh sửa vai trò và quản lý quyền của vai trò',
+  'cms-permission-roles_delete': 'Xóa vai trò',
+  'cms-permission-roles_delete_description': 'Cho phép xóa các vai trò tùy chỉnh',
+
+  'cms-permission-content_read': 'Xem nội dung',
+  'cms-permission-content_read_description': 'Cho phép xem các mục nội dung và bản nháp',
+  'cms-permission-content_create': 'Tạo nội dung',
+  'cms-permission-content_create_description': 'Cho phép tạo các mục nội dung mới',
+  'cms-permission-content_update': 'Cập nhật nội dung',
+  'cms-permission-content_update_description': 'Cho phép chỉnh sửa các mục nội dung hiện có',
+  'cms-permission-content_delete': 'Xóa nội dung',
+  'cms-permission-content_delete_description': 'Cho phép xóa các mục nội dung',
+  'cms-permission-content_publish': 'Xuất bản nội dung',
+  'cms-permission-content_publish_description': 'Cho phép xuất bản và hủy xuất bản các mục nội dung',
+
+  'cms-permission-media_read': 'Xem tệp phương tiện',
+  'cms-permission-media_read_description': 'Cho phép duyệt và xem các tệp phương tiện đã tải lên',
+  'cms-permission-media_upload': 'Tải lên tệp phương tiện',
+  'cms-permission-media_upload_description': 'Cho phép tải lên các tệp phương tiện và tài nguyên mới',
+  'cms-permission-media_delete': 'Xóa tệp phương tiện',
+  'cms-permission-media_delete_description': 'Cho phép xóa các tệp phương tiện đã tải lên',
+
+  'cms-permission-settings_read': 'Xem cài đặt',
+  'cms-permission-settings_read_description': 'Cho phép xem cài đặt hệ thống CMS',
+  'cms-permission-settings_update': 'Cập nhật cài đặt',
+  'cms-permission-settings_update_description': 'Cho phép thay đổi cài đặt hệ thống CMS'
+}
