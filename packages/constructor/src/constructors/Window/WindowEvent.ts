@@ -103,8 +103,13 @@ export class WindowEvent extends DesignLifecycleAbstract {
    *
    * События нажатия на клавишу.
    * @param event event object / объект события
+   * @returns promise that resolves after handling keydown / промис, завершающийся после обработки нажатия клавиши
    */
   readonly onKeydown = async (event: WindowEventClickType): Promise<void> => {
+    if ((event as KeyboardEvent).isComposing) {
+      return
+    }
+
     if (
       (
         isEnter(event as KeyboardEvent, false)

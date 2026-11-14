@@ -30,7 +30,7 @@ The developer must provide two core pieces of information:
     - If `wikiLanguage` is `"ru"` -> write everything strictly in **Russian**.
     - If `wikiLanguage` is `"en"` (or if no language property is found) -> write in **English**.
     - If another language code is specified (e.g., `"vi"`) -> write in that corresponding language.
-  - Keep technical identifiers (`TC-VIS-001`, `VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`, `P0`–`P3`, `✅ OK`, `❌ FAIL`), TypeScript/Vue prop names, CSS classes/tokens, file paths, URLs, and raw console log strings untranslated in their original form.
+  - Keep technical identifiers (`TC-VIS-001`, `VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`, `P0`–`P3`, `✅ PASS`, `⚠️ WARN`, `❌ FAIL`), TypeScript/Vue prop names, CSS classes/tokens, file paths, URLs, and raw console log strings untranslated in their original form.
 
 ### 3. Deep Source Code Analysis (Code-First Phase)
 Before touching the browser, thoroughly read and analyze the source code at the provided path:
@@ -288,143 +288,114 @@ You MUST treat `test-report.md` and `screenshots/` as a **living document**, nev
 
 1. **Reuse & Update Existing Report**:
    - If `ai-tests/<entity-name>/test-report.md` and `./screenshots/` **already exist**, **DO NOT create a new file from scratch**. Update the existing `test-report.md` in place (and if the existing report was written in a language different from `wikiLanguage` in `./design.config.json`, translate its headings, labels, and text into the configured `wikiLanguage`).
-2. **Transitioning Fixed Cases (`❌ FAIL` -> `✅ OK`)**:
+2. **Transitioning Fixed Cases (`❌ FAIL` -> `✅ PASS`)**:
    - If a test case in the existing `test-report.md` previously failed (`❌ FAIL`), and in the current test run it **passes without issues**:
-     - Change its status in the main Test Results section from `❌ FAIL` to `✅ OK`.
-     - Update its screenshot or console log evidence to reflect the healthy passing state.
+     - Change its status in the main Baseline Matrix table from `❌ FAIL` to `✅ PASS`.
+     - Update its inline screenshot (`![TC-...](./screenshots/TC-....png)`) or `Actual Result` column to reflect the healthy passing state.
      - **Delete/remove this resolved test case from the Failure Log section at the bottom of the file** (if all failures in a dated Failure Log block at the bottom are now resolved, delete that entire dated failure block).
 3. **Handling New or Persisting Failures (Appending Dated Failure Report at the End)**:
    - If the current test run completes with one or more failed test cases (`❌ FAIL`):
-     - Mark those cases as `❌ FAIL` in the main Test Results table/cards.
-     - At the **very end of `test-report.md`**, append a **new dated Failure Log section** (`## 🚨 Active Failure Report — YYYY-MM-DD HH:mm`) containing:
-       1. **Execution Date & Time**.
+     - Mark those cases as `❌ FAIL` in the main Baseline Matrix tables.
+     - At the **very end of `test-report.md`**, append a **new dated Failure Log section** (`## 4. 🚨 Active Failure & Regression Log` / `### Run: YYYY-MM-DD HH:mm`) containing:
+       1. **Execution Date & Time (UTC)**.
        2. **List of Failed Test Cases** (`TC-ID` and title).
        3. **What Broke (Symptom, Root Cause & Visual/Console Evidence)**: Detailed explanation of what failed in the browser, embedded/linked failure screenshot (`./screenshots/<TC-ID>.png`) or exact console error output, and the root cause identified in the source code.
        4. **How to Fix It (Actionable Remediation Guide)**: Concrete, step-by-step code instructions specifying the exact file path, component/class, lines, and code/SCSS changes required to fix the defect.
-   - Remember: as soon as these broken cases are fixed and verified in a subsequent test run, **remove the resolved failure report from the bottom of the file** and set the cases to `✅ OK` in the main table.
+   - Remember: as soon as these broken cases are fixed and verified in a subsequent test run, **remove the resolved failure report from the bottom of the file** and set the cases to `✅ PASS` in the main Baseline Matrix tables.
 
 ### 2. Mandatory Advisory Section: Performance, Speed, Architecture & UX Audit
 
-Every `test-report.md` MUST include a dedicated, deep-dive engineering and UX audit section (**Section 3: AI Audit — Performance, Speed & UX Recommendations**) where you critically evaluate the entity and write actionable proposals covering:
-- **What Works Poorly / Pain Points**:
-  - Any sluggish interactions, layout shifts (CLS), flickering transitions, awkward click/hover areas, focus loss, clipped tooltips/menus, or brittle DOM structures noticed during live browser testing.
-- **Performance & Speed Optimizations**:
-  - Rendering efficiency, DOM node count reduction, avoiding layout thrashing (`transform`/`opacity` animations instead of `top`/`left`/`width`/`height`), `v-memo` / `computed` caching, lazy rendering (`in-dom` / `IntersectionObserver`), event listener throttling/debouncing, and Core Web Vitals (LCP, INP, CLS).
-- **UX / UI & Accessibility Enhancements**:
-  - Micro-interactions, visual feedback clarity, touch ergonomics on mobile, keyboard navigation smoothness, empty/loading/error state ergonomics, and ARIA/screen-reader improvements.
+Every `test-report.md` MUST include a concise, high-signal numbered engineering & UX audit section (**Section 3: AI Audit & Recommendations**) evaluating the component and calling out concrete findings across:
+- **Pain Points / Test-Stand Isolation**: Any sluggish interactions, layout shifts (CLS), flickering transitions, clipped elements, brittle DOM structures, or demo-stand wrapper artifacts vs. real component defects.
+- **Performance & Speed Optimizations**: Rendering efficiency, DOM weight, CSS/compositor animation behavior, reactivity/caching, lazy rendering (`in-dom`), and Core Web Vitals (LCP, INP, CLS).
+- **UX / UI, Semantics & Accessibility**: Prop contract clarity, keyboard/focus flow, mobile ergonomics, and console/network cleanliness.
 
-### 3. Mandatory `test-report.md` Structure & Template
+### 3. Mandatory `test-report.md` Structure & Exact Table Format (STRICT)
 
-Structure `ai-tests/<entity-name>/test-report.md` according to the template below (**IMPORTANT: translate all document titles, section headings, metadata field labels, table column headers, metric names, observed results, AI audit subsections, and failure logs into the language specified by `wikiLanguage` in `./design.config.json`**, e.g. Russian when `"wikiLanguage": "ru"`, keeping technical IDs `TC-XXX-NNN`, status badges `✅ OK` / `❌ FAIL`, file paths, and raw console strings untranslated):
+Every `ai-tests/<entity-name>/test-report.md` **MUST strictly follow this exact document layout and 5-column table format**:
+1. **Do NOT use separate metric tables in Section 1**: format `Section 1` (`Executive Summary`) as the clean bullet metadata & summary block shown below.
+2. **Use uniform 5-column Markdown tables in Section 2 (`Baseline Matrix`)** split strictly into subsections `2.1` through `2.6` (`VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`) with columns:
+   `| ID | Scenario | Status | Actual Result | Screenshot |` (headers translated into `wikiLanguage`).
+3. **Embed screenshots inline inside the `Screenshot` column** using standard Markdown image syntax (`![TC-VIS-001](./screenshots/TC-VIS-001.png)`), or place `—` when no screenshot is needed (console/DOM-only checks). **Do NOT create separate `Visual Previews` image blocks below the tables.**
+4. **Always use exact status badges**: `✅ PASS`, `⚠️ WARN`, `❌ FAIL`, and wrap every test ID in backticks (`\`TC-VIS-001\``).
+5. **Strict Language Translation Rule**: Translate all document titles, section headings, bullet labels, table column headers, scenario titles, observed results, AI audit items, and failure logs into the language specified by `wikiLanguage` in `./design.config.json` (e.g., Russian when `"wikiLanguage": "ru"`), keeping only IDs (`TC-VIS-001`, `VIS`, `INT`, `BND`, `RSP`, `A11Y`, `LOG`), status badges (`✅ PASS`, `⚠️ WARN`, `❌ FAIL`), file paths, CSS classes, prop names, and measured raw console/DOM values untranslated.
 
 ```markdown
-# Visual & Browser Test Report: <EntityName>
+# Visual & Functional Test Report: <EntityName>
 
-- **Entity**: `<EntityName>`
-- **Source Code**: [`<EntityName>`](<relative-path-to-source>)
-- **Target URL**: `<target-url>`
-- **Materials Checked**: `<path-to-materials-or-"None">`
-- **Browser / Environment**: `Chrome Headless (CDP / DevTools MCP)[, Firefox Headless (Puppeteer), Safari (safaridriver / Xcode Simulator)], macOS`
-- **Last Run Date**: `YYYY-MM-DD HH:mm`
-- **Overall Status**: `✅ PASSED` | `❌ FAILED (<F> issues)`
+## 1. Executive Summary
 
----
-
-## 1. Executive Summary & Metrics
-
-| Metric | Count | Share |
-| :--- | :--- | :--- |
-| **Total Test Cases** | `<Total>` | `100%` |
-| **Passed (`✅ OK`)** | `<Passed>` | `<XX%>` |
-| **Failed (`❌ FAIL`)** | `<Failed>` | `<XX%>` |
-| **Console Errors / Warnings** | `<0 or N>` | — |
+- **Component:** `<EntityName>` (`@dxtmisha/<pkg>`)
+- **Source Code:** [`<EntityName>`](<relative-path-to-source>)
+- **Demo / Target URL:** `<target-url>`
+- **Materials:** `<path-to-materials-or-"None">`
+- **Test Date (UTC):** `YYYY-MM-DDTHH:mm:ssZ`
+- **Environment:** `Headless Chrome (puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)[, Firefox Headless, Safari]`
+- **Test Case Coverage:** <Executed> / <Total> (`<Percent>%`)
+- **Summary:** **<P> ✅ PASS, <W> ⚠️ WARN, <F> ❌ FAIL** — <concise one-sentence overall engineering verdict on rendering, interactions, edge cases, responsiveness, accessibility, and runtime health>.
 
 ---
 
-## 2. Test Execution Results (Baseline Matrix)
+## 2. Baseline Matrix
 
-### 2.1. Visual & Design System (`VIS`)
+### 2.1 Visual Rendering (`VIS`)
 
-| ID | Test Case | Status | Observed Result | Evidence (Screenshot / Console) |
-| :--- | :--- | :--- | :--- | :--- |
-| `TC-VIS-001` | <Title> | ✅ OK | Renders accurately according to D1 tokens; zero clipping or overlap. | [📸 TC-VIS-001](./screenshots/TC-VIS-001.png) |
-| `TC-VIS-002` | <Title> | ❌ FAIL | Text overflows button container on narrow width. | [📸 TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| ID | Scenario | Status | Actual Result | Screenshot |
+| --- | --- | --- | --- | --- |
+| `TC-VIS-001` | <Scenario description & key props> | ✅ PASS | <Exact observed layout/DOM/style facts and metrics>. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | <Scenario description & key props> | ❌ FAIL | <Exact observed visual/layout defect and measured mismatch>. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
 
-#### Visual Previews (`VIS`)
-![TC-VIS-001 — Default Rendering](./screenshots/TC-VIS-001.png)
+### 2.2 Interactive & State Management (`INT`)
 
----
+| ID | Scenario | Status | Actual Result | Screenshot |
+| --- | --- | --- | --- | --- |
+| `TC-INT-001` | <Scenario description> | ✅ PASS | <Exact observed state transition / DOM count / behavior>. | ![TC-INT-001](./screenshots/TC-INT-001.png) |
+| `TC-INT-002` | <Scenario description (non-visual DOM / v-model check)> | ✅ PASS | <Exact observed DOM/state synchronization facts>. | — |
 
-### 2.2. Interactive & Functional States (`INT`)
+### 2.3 Boundary Cases & Edge Scenarios (`BND`)
 
-| ID | Test Case | Status | Observed Result | Evidence (Screenshot / Console) |
-| :--- | :--- | :--- | :--- | :--- |
-| `TC-INT-001` | <Title> | ✅ OK | Hover, focus-visible ring, and active states transition smoothly. | [📸 TC-INT-001](./screenshots/TC-INT-001.png) |
-| `TC-INT-002` | <Title> | ✅ OK | Click event emitted once; value updated in DOM. | `Console/DOM: eventName = "click"` |
+| ID | Scenario | Status | Actual Result | Screenshot |
+| --- | --- | --- | --- | --- |
+| `TC-BND-001` | <Scenario description> | ✅ PASS | <Measured bounds / overflow / boundary handling details>. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
 
----
+### 2.4 Responsiveness (`RSP`)
 
-### 2.3. Boundaries & Edge Cases (`BND`)
+| ID | Scenario | Status | Actual Result | Screenshot |
+| --- | --- | --- | --- | --- |
+| `TC-RSP-001` | <Scenario description across viewports> | ✅ PASS | <Measured widths/layouts at 320px, 375px, 768px, 1440px>. | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
 
-| ID | Test Case | Status | Observed Result | Evidence (Screenshot / Console) |
-| :--- | :--- | :--- | :--- | :--- |
-| `TC-BND-001` | <Title> | ✅ OK | Value `0` and Unicode/Vietnamese strings render cleanly; XSS payload escaped. | [📸 TC-BND-001](./screenshots/TC-BND-001.png) |
+### 2.5 Accessibility (`A11Y`)
 
----
+| ID | Scenario | Status | Actual Result | Screenshot |
+| --- | --- | --- | --- | --- |
+| `TC-A11Y-001` | <ARIA / keyboard scenario> | ✅ PASS | <Verified role, aria-* attributes, focus-visible / keyboard flow>. | — |
 
-### 2.4. Responsive & Viewport Adaptivity (`RSP`)
+### 2.6 Logs & Console (`LOG`)
 
-| ID | Test Case | Status | Observed Result | Evidence (Screenshot / Console) |
-| :--- | :--- | :--- | :--- | :--- |
-| `TC-RSP-001` | <Title> | ✅ OK | Adapts cleanly across 1440px, 768px, and 375px viewports. | [📸 TC-RSP-001](./screenshots/TC-RSP-001.png) |
-
----
-
-### 2.5. Accessibility & Keyboard (`A11Y`)
-
-| ID | Test Case | Status | Observed Result | Evidence (Screenshot / Console) |
-| :--- | :--- | :--- | :--- | :--- |
-| `TC-A11Y-001` | <Title> | ✅ OK | Focus-visible ring appears on `Tab`; `Enter`/`Space` activates control. | [📸 TC-A11Y-001](./screenshots/TC-A11Y-001.png) |
+| ID | Scenario | Status | Actual Result | Screenshot |
+| --- | --- | --- | --- | --- |
+| `TC-LOG-001` | <Events, expose, Vue warnings / JS errors check> | ✅ PASS | <Verified event payloads, expose methods; `vueWarnings`: `[]`, `pageErrors`: `[]`>. | — |
 
 ---
 
-### 2.6. Console, Events & Runtime Health (`LOG`)
+## 3. AI Audit & Recommendations
 
-| ID | Test Case | Status | Observed Result | Evidence (Screenshot / Console) |
-| :--- | :--- | :--- | :--- | :--- |
-| `TC-LOG-001` | <Title> | ✅ OK | Zero console errors, zero `[Vue warn]` messages during full interaction cycle. | `Console: 0 errors, 0 warnings` |
-
----
-
-## 3. 💡 AI Audit: Performance, Speed & UX Improvement Recommendations
-
-### 3.1. What Works Poorly / Identified Weaknesses
-- **<Issue / Friction Point Title>**: <Detailed explanation of what feels suboptimal, fragile, or visually inconsistent in the current implementation>.
-
-### 3.2. Performance & Speed Optimizations
-- **<Optimization Title (e.g., Rendering / Animation / Reactivity / DOM Weight)>**:
-  - *Observation*: <What happens currently during browser execution>.
-  - *Recommendation*: <Concrete code/CSS optimization to improve frame rate, reduce re-renders, or speed up load/interaction time>.
-
-### 3.3. UX, UI & Accessibility Enhancements
-- **<UX Enhancement Title>**:
-  - *Observation*: <Current user experience behavior>.
-  - *Recommendation*: <How to improve micro-interactions, keyboard flow, visual clarity, or mobile touch ergonomics>.
-
----
+1. **<Audit Topic 1 (e.g., Test-Stand Isolation / Performance / Semantics)>:** <Concrete observation with measured evidence and actionable engineering recommendation>.
+2. **<Audit Topic 2 (e.g., UX / A11y / Rendering)>:** <Concrete observation and improvement recommendation>.
+3. **<Audit Topic 3 (e.g., Network / Console Hygiene)>:** <Concrete observation regarding console/network entries>.
 
 <!--
   INCLUDE SECTION 4 ONLY WHEN ACTIVE FAILURES EXIST.
   When a new test run has failures, append a dated block below.
-  When previously failing cases are fixed and pass (✅ OK), REMOVE them (or the entire resolved block) from this section!
+  When previously failing cases are fixed and pass (✅ PASS), REMOVE them (or the entire resolved block) from this section!
 -->
 ## 4. 🚨 Active Failure & Regression Log
 
-### Run: `YYYY-MM-DD HH:mm`
+### Run: `YYYY-MM-DDTHH:mm:ssZ`
 
 #### ❌ [TC-VIS-002] <Failed Test Case Title>
 - **What Broke**: <Detailed description of the visual, layout, functional, or console error observed in the browser>.
-- **Evidence**: [📸 Failure Screenshot](./screenshots/TC-VIS-002.png) / `Console Error: <exact message>`
+- **Evidence**: ![TC-VIS-002](./screenshots/TC-VIS-002.png) / `Console Error: <exact message>`
 - **Root Cause in Code**: In `<path/to/file.vue#LXX>`, <explanation of why the bug occurs>.
 - **How to Fix (Remediation Guide)**:
   1. Open `<path/to/file>`.

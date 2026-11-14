@@ -1,33 +1,35 @@
-// md5:d56d3d8555483e4aac3264adf257c63a true
+// md5:42db5cb03ddbd5fedac73c2b9ec010fa true
 import type { UiFigmaFramesList, UiFigmaFrameStylesCssList, UiFigmaFrameStylesList } from '@dxtmisha/figma';
-/** Handles extraction, inspection, and rendering of Figma frames, sections, styles, and text nodes. @keywords figma, frame, layout, inspector */
+import { FigmaItem } from './FigmaItem';
+import type { UiFigmaItemText, UiFigmaNode } from '../types/figmaTypes';
+/** Manages Figma frames and elements within a page or selection context. @keywords figma, frame, elements, manager */
 export declare class FigmaFrame {
-    /** Initializes FigmaFrame instance for a given page, node, or active selection. @keywords constructor, init, context */
+    /** Initializes Figma frame manager with a node and selection option. @keywords constructor, init, page, selection */
     constructor(page: UiFigmaNode, selection?: boolean);
-    /** Checks if the current context represents an active selection. @keywords isSelection, selection guard, pageNode */
+    /** Checks whether the current context is a selection. @keywords isSelection, check, selection */
     isSelection(): this is {
         page: PageNode;
     };
-    /** Retrieves all frame items from the context. @keywords frames, getItemsFrame, FrameNode */
-    getItemsFrame(): FigmaItem<FrameNode>[];
-    /** Retrieves all section items from the context. @keywords sections, getItemsSection, SectionNode */
-    getItemsSection(): FigmaItem<SectionNode>[];
-    /** Retrieves all text items from the context. @keywords text, getItemsText, TextNode */
-    getItemsText(): FigmaItem<TextNode>[];
-    /** Retrieves metadata, identifiers, and screenshot previews for all frames. @keywords frame info, metadata, screenshots */
-    getItemsInfo(): Promise<UiFigmaFramesList>;
-    /** Generates CSS style definitions for all elements in the context. @keywords css, styles, getItemsCss */
+    /** Retrieves CSS styles for all frame elements. @keywords getItemsCss, css, styles */
     getItemsCss(): Promise<UiFigmaFrameStylesCssList>;
-    /** Retrieves style configurations for all frames in the context. @keywords styles, getItemsStyles, figma styles */
+    /** Retrieves all frame items. @keywords getItemsFrame, frame, items */
+    getItemsFrame(): FigmaItem<FrameNode>[];
+    /** Retrieves frame information including names, identifiers, and screenshots. @keywords getItemsInfo, frames, metadata, screenshots */
+    getItemsInfo(): Promise<UiFigmaFramesList>;
+    /** Retrieves all section items. @keywords getItemsSection, section, items */
+    getItemsSection(): FigmaItem<SectionNode>[];
+    /** Retrieves style definitions for all frames. @keywords getItemsStyles, frames, styles */
     getItemsStyles(): Promise<UiFigmaFrameStylesList>;
-    /** Retrieves root-level main frames from the target context. @keywords main frames, root nodes, getMainFrames */
+    /** Retrieves all text items. @keywords getItemsText, text, items */
+    getItemsText(): FigmaItem<TextNode>[];
+    /** Retrieves top-level main frame items from the root node. @keywords getMainFrames, main, frames, root */
     getMainFrames(): FigmaItem[];
-    /** Retrieves metadata and screenshot previews for main root frames. @keywords main frames info, root info, metadata */
-    getMainItemsInfo(): Promise<UiFigmaFramesList>;
-    /** Retrieves style configurations for main root frames. @keywords main frames styles, root styles */
+    /** Retrieves metadata and screenshots for main frame items. @keywords getMainItemsInfo, main, frames, info, screenshots */
     getMainItemsStyles(): Promise<UiFigmaFrameStylesList>;
-    /** Retrieves all text nodes with their IDs grouped by string content. @keywords text grouped, strings, getTexts */
+    /** Retrieves style definitions for main frames. @keywords getMainItemsStyles, main, styles, frames */
+    getMainItemsInfo(): Promise<UiFigmaFramesList>;
+    /** Retrieves text nodes grouped by text content. @keywords getTexts, text, nodes, grouped */
     getTexts(): UiFigmaItemText[];
-    /** Captures screenshots of main items as binary byte arrays. @keywords screenshot, render, export, image buffer */
-    screenshot(): Promise<Uint8Array<ArrayBufferLike>[]>;
+    /** Captures screenshots of the main items. @keywords screenshot, capture, export, image */
+    screenshot(): Promise<Uint8Array[]>;
 }

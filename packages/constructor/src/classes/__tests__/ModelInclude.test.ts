@@ -1,39 +1,29 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { readonly, ref, nextTick } from 'vue'
+import { describe, it, expect, vi } from 'vitest'
+import { effectScope, readonly, ref, nextTick } from 'vue'
 import { ModelInclude } from '../ModelInclude'
 
-let mountedCallback: (() => void) | undefined
-
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as Record<string, unknown>
-  return {
-    ...actual,
-    onMounted: (fn: () => void) => {
-      mountedCallback = fn
-    }
-  }
-})
-
 describe('ModelInclude', () => {
-  beforeEach(() => {
-    mountedCallback = undefined
-  })
-
-  it('should sync changes from syncValue to emits on mount', async () => {
+  it('should sync changes from syncValue to emits and stop on scope dispose', async () => {
     const emits = vi.fn()
     const syncValue = ref('initial')
-    new ModelInclude('user-name', emits, syncValue)
+    const scope = effectScope()
 
-    expect(mountedCallback).toBeDefined()
-    if (mountedCallback) {
-      mountedCallback()
-    }
+    scope.run(() => {
+      new ModelInclude('user-name', emits, syncValue)
+    })
 
     syncValue.value = 'updated'
     await nextTick()
     expect(emits).toHaveBeenCalledWith('update:userName', 'updated')
     expect(emits).toHaveBeenCalledWith('update:modelUserName', 'updated')
+
+    emits.mockClear()
+    scope.stop()
+
+    syncValue.value = 'after-stop'
+    await nextTick()
+    expect(emits).not.toHaveBeenCalled()
   })
 
   it('should return correct binds for v-model', () => {

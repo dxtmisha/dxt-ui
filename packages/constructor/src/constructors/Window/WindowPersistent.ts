@@ -16,6 +16,7 @@ import type { WindowProps } from './props'
 export class WindowPersistent extends DesignLifecycleAbstract {
   readonly item = ref<boolean>(false)
 
+  protected elementListening?: HTMLDivElement
   protected watchStop?: WatchStopHandle
 
   /**
@@ -53,7 +54,7 @@ export class WindowPersistent extends DesignLifecycleAbstract {
   override readonly onMounted = (): void => {
     this.watchStop?.()
     this.watchStop = watch(this.item, (value) => {
-      const element = this.element().getMain()
+      const element = this.element()?.getMain()
 
       if (element) {
         if (value) {
@@ -61,6 +62,7 @@ export class WindowPersistent extends DesignLifecycleAbstract {
 
           element.classList.add(this.classes().list.persistent)
           element.addEventListener('animationend', this.onTransitionend)
+          this.elementListening = element
         } else {
           element.classList.remove(this.classes().list.persistent)
         }
@@ -124,7 +126,7 @@ export class WindowPersistent extends DesignLifecycleAbstract {
    * Удаляет событие окончания анимации.
    */
   protected removeEvent(): void {
-    this.element().getMain()
-      ?.removeEventListener('animationend', this.onTransitionend)
+    this.elementListening?.removeEventListener('animationend', this.onTransitionend)
+    this.elementListening = undefined
   }
 }

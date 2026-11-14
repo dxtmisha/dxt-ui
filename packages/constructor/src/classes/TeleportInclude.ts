@@ -1,7 +1,7 @@
-import { h, inject, Teleport, type VNode } from 'vue'
+import { getCurrentInstance, h, inject, Teleport, type VNode, unref } from 'vue'
 import {
+  type ConstrBind,
   domQuerySelector,
-  getRef,
   type RawChildren,
   type RawSlots,
   type RefOrNormal
@@ -21,7 +21,9 @@ const TELEPORT_BODY_KEY = '__ui-teleport-ssr-body__'
  */
 export class TeleportInclude {
   /** SSR teleport target identifier / Идентификатор цели телепортации SSR */
-  protected toSsr = inject<RefOrNormal<string>>(TELEPORT_BODY_KEY, TELEPORT_BODY_NAME)
+  protected toSsr: RefOrNormal<string> = getCurrentInstance()
+    ? inject<RefOrNormal<string>>(TELEPORT_BODY_KEY, TELEPORT_BODY_NAME)
+    : TELEPORT_BODY_NAME
 
   /**
    * Constructor
@@ -41,10 +43,10 @@ export class TeleportInclude {
    * @returns teleport target selector / селектор цели телепортации
    */
   get to(): string {
-    const to = getRef(this.toDefault)
+    const to = unref(this.toDefault)
 
     if (to === TELEPORT_BODY_NAME) {
-      return getRef(this.toSsr)
+      return unref(this.toSsr)
     }
 
     return to
@@ -71,7 +73,7 @@ export class TeleportInclude {
    */
   render(
     children?: RawChildren | RawSlots,
-    props: Record<string, any> = {}
+    props: ConstrBind = {}
   ): VNode[] {
     if (children) {
       return [

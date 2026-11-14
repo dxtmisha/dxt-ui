@@ -177,12 +177,13 @@ describe('WindowDesign', () => {
     expect(closeBtn.length).toBeGreaterThan(0)
   })
 
-  it('should render image node when image prop is set', async () => {
+  it('should render image node in body when image prop is set and image component is registered', async () => {
     const container = document.createElement('div')
     document.body.appendChild(container)
     cleanups.push(() => container.remove())
 
     let designInstance!: WindowDesign<WindowComponents, WindowExpose, WindowClasses, WindowPropsBasic>
+    const mockImage = (p: any) => h('img', { ...p, 'data-mock': 'image' })
 
     const Component = defineComponent({
       setup() {
@@ -194,7 +195,11 @@ describe('WindowDesign', () => {
           WindowExpose,
           WindowClasses,
           WindowPropsBasic
-        >('d1.window', props)
+        >('d1.window', props, {
+          components: {
+            image: mockImage
+          } as any
+        })
 
         return designInstance.render()
       }
@@ -206,8 +211,11 @@ describe('WindowDesign', () => {
 
     await nextTick()
 
-    const imageNodes = designInstance.renderBodyImage()
-    expect(Array.isArray(imageNodes)).toBe(true)
+    const bodyNode = designInstance.renderBody()
+    expect(bodyNode).toBeDefined()
+    expect(Array.isArray(bodyNode.children)).toBe(true)
+    const imageVNode = (bodyNode.children as any[]).find(child => child?.type === mockImage)
+    expect(imageVNode).toBeDefined()
   })
 
   it('should render body context as native div when scrollbar component is not provided', async () => {

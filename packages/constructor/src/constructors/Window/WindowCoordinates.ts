@@ -203,6 +203,7 @@ export class WindowCoordinates {
    * Resets all data to initial values.
    *
    * Сбрасывает все данные к начальным значениям.
+   * @returns this instance / текущий экземпляр
    */
   reset(): this {
     this.top = 0
@@ -213,6 +214,10 @@ export class WindowCoordinates {
     this.height = 0
     this.innerWidth = 0
     this.innerHeight = 0
+    this.controlWidth = 0
+    this.controlHeight = 0
+    this.padding = 0
+    this.location = ''
 
     return this
   }

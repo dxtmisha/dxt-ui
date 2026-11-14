@@ -63,7 +63,7 @@ export class WindowStyles extends DesignLifecycleAbstract {
    * Обновление данных.
    */
   update(): void {
-    const element = this.element?.()?.getMain?.()
+    const element = this.element().getMain()
 
     if (element) {
       element.style.setProperty(this.naming.getStyle('inset-x'), this.position().getStyleX())
@@ -83,7 +83,7 @@ export class WindowStyles extends DesignLifecycleAbstract {
    * @param isMenu whether the window is a menu / является ли окно меню
    */
   updateType(isMenu: boolean): void {
-    const element = this.element?.()?.getMain?.()
+    const element = this.element().getMain()
 
     if (
       element && (

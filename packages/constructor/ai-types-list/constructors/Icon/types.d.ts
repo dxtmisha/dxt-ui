@@ -1,5 +1,8 @@
-// md5:9cf2c1d239652f36771324bd647ef791 true
+// md5:22b94134a8dbd1bb4b29741477f40483 true
+import type { VNode } from 'vue';
 import type { ConstrClass } from '@dxtmisha/functional';
+import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes';
+import type { ImageComponentInclude, ImageEmitsInclude } from '../Image';
 
 export type IconComponents = ImageComponentInclude;
 export type IconEmits = ImageEmitsInclude & EventClickEmits;
@@ -10,8 +13,8 @@ export interface IconExpose extends EventClickExpose {
 }
 
 export interface IconSlots {
-    /** Slot for rendering custom icon content. @keywords slot, content, template */
-    default?(props: any): any;
+    /** Slot for custom icon content. @keywords slot, content, default */
+    default?(props: unknown): VNode[];
 }
 
 export type IconClasses = {

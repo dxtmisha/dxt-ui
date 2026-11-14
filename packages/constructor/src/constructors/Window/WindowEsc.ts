@@ -1,15 +1,16 @@
 // ai-none
 
-import { type Ref, type WatchStopHandle, watch } from 'vue'
+import { type Ref, unref, type WatchStopHandle, watch } from 'vue'
 import {
   DesignLifecycleAbstract,
   EventItem,
   executeFunction,
-  getRef,
   type RefOrNormal
 } from '@dxtmisha/functional'
 
 import type { WindowProps } from './props'
+
+const activeEscStack: WindowEsc[] = []
 
 /**
  * Class for handling Escape key press to close windows.
@@ -18,7 +19,7 @@ import type { WindowProps } from './props'
  */
 export class WindowEsc extends DesignLifecycleAbstract {
   /** Event handler instance / Экземпляр обработчика событий */
-  protected event?: EventItem<HTMLElement, any>
+  protected event?: EventItem<HTMLElement, KeyboardEvent>
   protected watchStop?: WatchStopHandle
 
   /**
@@ -54,10 +55,11 @@ export class WindowEsc extends DesignLifecycleAbstract {
    * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
    */
   override readonly onMounted = (): void => {
+    this.watchStop?.()
     this.watchStop = watch(
       this.open,
       (value) => {
-        if (executeFunction(getRef(this.active))) {
+        if (executeFunction(unref(this.active))) {
           if (value) {
             this.start()
           } else {
@@ -76,6 +78,7 @@ export class WindowEsc extends DesignLifecycleAbstract {
    */
   override readonly onUnmounted = (): void => {
     this.watchStop?.()
+    this.watchStop = undefined
     this.stop()
   }
 
@@ -83,10 +86,15 @@ export class WindowEsc extends DesignLifecycleAbstract {
    * Start listening for the Escape key press.
    *
    * Начать прослушивание нажатия клавиши Escape.
+   * @returns this instance / текущий экземпляр
    */
   start(): this {
     this.make()
     this.event?.start()
+
+    if (!activeEscStack.includes(this)) {
+      activeEscStack.push(this)
+    }
 
     return this
   }
@@ -95,8 +103,14 @@ export class WindowEsc extends DesignLifecycleAbstract {
    * Stop listening for the Escape key press.
    *
    * Остановить прослушивание нажатия клавиши Escape.
+   * @returns this instance / текущий экземпляр
    */
   stop(): this {
+    const index = activeEscStack.indexOf(this)
+    if (index !== -1) {
+      activeEscStack.splice(index, 1)
+    }
+
     if (this.event) {
       this.event.stop()
       this.event = undefined
@@ -110,6 +124,7 @@ export class WindowEsc extends DesignLifecycleAbstract {
    *
    * Проверяет, является ли нажатая клавиша Escape.
    * @param event Keyboard event / Событие клавиатуры
+   * @returns true if Escape key was pressed / true, если нажата клавиша Escape
    */
   protected isEsc(event: KeyboardEvent): boolean {
     return (
@@ -125,11 +140,20 @@ export class WindowEsc extends DesignLifecycleAbstract {
    * Event listener for keyboard events.
    *
    * Обработчик событий клавиатуры.
+   * @param event Keyboard event / Событие клавиатуры
    */
   protected readonly listener = (event: KeyboardEvent): void => {
+    if (
+      event.isComposing
+      || activeEscStack[activeEscStack.length - 1] !== this
+    ) {
+      return
+    }
+
     if (this.isEsc(event)) {
       event.preventDefault()
       event.stopPropagation()
+      event.stopImmediatePropagation()
 
       if (this.on) {
         this.on()
@@ -148,7 +172,7 @@ export class WindowEsc extends DesignLifecycleAbstract {
    */
   protected make(): void {
     if (!this.event) {
-      this.event = new EventItem<HTMLElement, any>(
+      this.event = new EventItem<HTMLElement, KeyboardEvent>(
         document.body,
         'keydown',
         this.listener

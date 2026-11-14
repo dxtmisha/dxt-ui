@@ -72,8 +72,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Blocks interaction with external elements',
-        ru: 'Блокирует управление внешними элементами'
+        en: 'Blocks interaction with external elements (automatically skipped in floating menu --MENU--, static, and embedded modes)',
+        ru: 'Блокирует управление внешними элементами (автоматически отключается в режиме меню --MENU--, staticMode и embedded)'
       }
     },
     hide: true

@@ -1,17 +1,23 @@
-import { getCurrentInstance, onUnmounted, type Ref } from 'vue'
-import { EventItem, getRef, isDomRuntime, isElementVisible, isFunction, isTab } from '@dxtmisha/functional'
+import { type Ref, unref } from 'vue'
+import { DesignLifecycleAbstract, EventItem, isDomRuntime, isElementVisible, isFunction, isTab } from '@dxtmisha/functional'
 
 /**
  * Class for managing focus and tab index of elements.
  *
  * Класс для управления фокусом и табиндексом элементов.
  */
-export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
+export class TabIndexInclude<E extends HTMLElement = HTMLElement> extends DesignLifecycleAbstract {
   /** Previously focused element / Ранее сфокусированный элемент */
   protected oldElement?: HTMLElement | Element | null
 
   /** Event item for focus events / Элемент события для событий фокуса */
   protected event?: EventItem<HTMLElement, KeyboardEvent>
+
+  /** Animation frame ID for reset focus / Идентификатор кадра анимации для сброса фокуса */
+  protected frameReset?: number
+
+  /** Animation frame ID for temporary tabindex cleanup / Идентификатор кадра анимации для очистки временного tabindex */
+  protected frameFocus?: number
 
   /**
    * Constructor.
@@ -28,11 +34,138 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     protected readonly activeOpen: () => boolean = () => true,
     protected readonly activeClose: () => boolean = () => true
   ) {
-    if (getCurrentInstance()) {
-      onUnmounted(() => {
-        this.destroy()
-      })
+    super()
+  }
+
+  /**
+   * Cleanup lifecycle listeners on unmount.
+   *
+   * Очистка слушателей жизненного цикла при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.destroy()
+  }
+
+  /**
+   * Save the currently focused element.
+   *
+   * Сохраняет текущий сфокусированный элемент.
+   */
+  updateOldElement(): void {
+    if (isDomRuntime()) {
+      const shadowRoot = document.activeElement
+        ?.shadowRoot
+        ?.activeElement
+
+      this.oldElement = shadowRoot ?? document.activeElement
     }
+  }
+
+  /**
+   * Reset focus to the previously focused element.
+   *
+   * Сбрасывает фокус на ранее сфокусированный элемент.
+   * @returns this instance / текущий экземпляр
+   */
+  reset(): this {
+    if (
+      this.active()
+      && this.activeClose()
+      && isDomRuntime()
+    ) {
+      if (this.frameReset !== undefined) {
+        cancelAnimationFrame(this.frameReset)
+      }
+
+      this.frameReset = requestAnimationFrame(() => {
+        this.frameReset = undefined
+
+        if (
+          this.oldElement
+          && this.oldElement.isConnected
+          && ('focus' in this.oldElement)
+          && (
+            !document.activeElement?.closest('body')
+            || document.activeElement === document.body
+          )
+        ) {
+          (this.oldElement as HTMLElement).focus()
+        }
+
+        this.oldElement = undefined
+      })
+
+      this.stopEvent()
+    }
+
+    return this
+  }
+
+  /**
+   * Destroy event listeners and clean up resources.
+   *
+   * Уничтожает слушатели событий и освобождает ресурсы.
+   * @returns this instance / текущий экземпляр
+   */
+  destroy(): this {
+    if (this.frameReset !== undefined) {
+      cancelAnimationFrame(this.frameReset)
+      this.frameReset = undefined
+    }
+
+    if (this.frameFocus !== undefined) {
+      cancelAnimationFrame(this.frameFocus)
+      this.frameFocus = undefined
+    }
+
+    this.oldElement = undefined
+    this.stopEvent()
+    this.event = undefined
+    return this
+  }
+
+  /**
+   * Find the first focusable element.
+   *
+   * Находит первый фокусируемый элемент.
+   * @returns first focusable element / первый фокусируемый элемент
+   */
+  findFirstElement(): HTMLElement | undefined {
+    const elements = this.getElement()
+      ?.querySelectorAll<HTMLElement>('*')
+
+    if (elements) {
+      for (const element of elements) {
+        if (this.isFocusableElement(element)) {
+          return element
+        }
+      }
+    }
+
+    return undefined
+  }
+
+  /**
+   * Find the last focusable element.
+   *
+   * Находит последний фокусируемый элемент.
+   * @returns last focusable element / последний фокусируемый элемент
+   */
+  findLastElement(): HTMLElement | undefined {
+    const elements = this.getElement()
+      ?.querySelectorAll<HTMLElement>('*')
+
+    if (elements) {
+      for (let index = elements.length - 1; index >= 0; index--) {
+        const element = elements[index]
+
+        if (element && this.isFocusableElement(element)) {
+          return element
+        }
+      }
+    }
+
+    return undefined
   }
 
   /**
@@ -56,37 +189,6 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   }
 
   /**
-   * Reset focus to the previously focused element.
-   *
-   * Сбрасывает фокус на ранее сфокусированный элемент.
-   * @returns this instance / текущий экземпляр
-   */
-  reset(): this {
-    if (
-      this.active()
-      && this.activeClose()
-      && isDomRuntime()
-    ) {
-      requestAnimationFrame(() => {
-        if (
-          this.oldElement
-          && ('focus' in this.oldElement)
-          && (
-            !document.activeElement?.closest('body')
-            || document.activeElement === document.body
-          )
-        ) {
-          (this.oldElement as HTMLElement).focus()
-        }
-      })
-
-      this.stopEvent()
-    }
-
-    return this
-  }
-
-  /**
    * Toggle focus based on status.
    *
    * Переключает фокус в зависимости от статуса.
@@ -104,86 +206,6 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   }
 
   /**
-   * Save the currently focused element.
-   *
-   * Сохраняет текущий сфокусированный элемент.
-   */
-  updateOldElement(): void {
-    if (isDomRuntime()) {
-      const shadowRoot = document.activeElement
-        ?.shadowRoot
-        ?.activeElement
-
-      this.oldElement = shadowRoot ?? document.activeElement
-    }
-  }
-
-  /**
-   * Find the first focusable element.
-   *
-   * Находит первый фокусируемый элемент.
-   * @returns first focusable element / первый фокусируемый элемент
-   */
-  findFirstElement(): HTMLElement | undefined {
-    const elements = this.getElement()
-      ?.querySelectorAll<HTMLElement>('*')
-
-    if (elements) {
-      for (const element of elements) {
-        if (
-          'tabIndex' in element
-          && element.tabIndex >= 0
-          && isElementVisible(element)
-        ) {
-          return element
-        }
-      }
-    }
-
-    return undefined
-  }
-
-  /**
-   * Find the last focusable element.
-   *
-   * Находит последний фокусируемый элемент.
-   * @returns last focusable element / последний фокусируемый элемент
-   */
-  findLastElement(): HTMLElement | undefined {
-    const elements = this.getElement()
-      ?.querySelectorAll<HTMLElement>('*')
-
-    if (elements) {
-      for (let i = elements.length - 1; i >= 0; i--) {
-        const element = elements[i]
-
-        if (
-          element
-          && 'tabIndex' in element
-          && element.tabIndex >= 0
-          && isElementVisible(element)
-        ) {
-          return element
-        }
-      }
-    }
-
-    return undefined
-  }
-
-  /**
-   * Destroy event listeners and clean up resources.
-   *
-   * Уничтожает слушатели событий и освобождает ресурсы.
-   * @returns this instance / текущий экземпляр
-   */
-  destroy(): this {
-    this.stopEvent()
-    this.event = undefined
-    return this
-  }
-
-  /**
    * Check if the element is defined.
    *
    * Проверяет, определен ли элемент.
@@ -191,6 +213,22 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    */
   protected isElement(): this is { element: Ref<E> } {
     return this.getElement() !== undefined
+  }
+
+  /**
+   * Check if the element is focusable.
+   *
+   * Проверяет, может ли элемент получать фокус.
+   * @param element element to check / элемент для проверки
+   * @returns true if the element is focusable / true, если элемент фокусируемый
+   */
+  protected isFocusableElement(element: HTMLElement): boolean {
+    return 'tabIndex' in element
+      && element.tabIndex >= 0
+      && !element.hasAttribute('disabled')
+      && !element.matches(':disabled')
+      && !element.closest('[inert]')
+      && isElementVisible(element)
   }
 
   /**
@@ -215,7 +253,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
       return this.element()
     }
 
-    return getRef(this.element)
+    return unref(this.element)
   }
 
   /**
@@ -234,12 +272,25 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
 
     const element = this.getElement()
 
-    if (element && isDomRuntime()) {
+    if (element) {
+      const hasTabIndex = element.hasAttribute('tabindex')
+      const previousTabIndex = element.getAttribute('tabindex')
+
       element.setAttribute('tabindex', '-1')
       element.focus()
 
-      requestAnimationFrame(() => {
-        element.removeAttribute('tabindex')
+      if (this.frameFocus !== undefined) {
+        cancelAnimationFrame(this.frameFocus)
+      }
+
+      this.frameFocus = requestAnimationFrame(() => {
+        this.frameFocus = undefined
+
+        if (hasTabIndex && previousTabIndex !== null) {
+          element.setAttribute('tabindex', previousTabIndex)
+        } else {
+          element.removeAttribute('tabindex')
+        }
       })
     }
 
@@ -253,7 +304,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * @param event keyboard event / событие клавиатуры
    */
   protected listenEvent = (event: KeyboardEvent): void => {
-    if (!isTab(event)) {
+    if (event.isComposing || !isTab(event)) {
       return
     }
 

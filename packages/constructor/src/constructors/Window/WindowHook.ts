@@ -35,6 +35,7 @@ export class WindowHook {
    *
    * Хук перед открытием/закрытием.
    * @param open current state of the window / текущее состояние окна
+   * @returns true if action is allowed / true, если действие разрешено
    */
   async before(open: boolean): Promise<boolean> {
     if (open) {
@@ -48,6 +49,7 @@ export class WindowHook {
    * Hook before opening.
    *
    * Хук перед открытием.
+   * @returns true if opening is allowed / true, если открытие разрешено
    */
   async beforeOpening(): Promise<boolean> {
     if (this.props.beforeOpening) {
@@ -61,6 +63,7 @@ export class WindowHook {
    * Hook before closing.
    *
    * Хук перед закрытием.
+   * @returns true if closing is allowed / true, если закрытие разрешено
    */
   async beforeClosing(): Promise<boolean> {
     if (this.props.beforeClosing) {
@@ -75,6 +78,7 @@ export class WindowHook {
    *
    * Хук после открытия/закрытия.
    * @param open current state of the window / текущее состояние окна
+   * @returns hook result / результат выполнения хука
    */
   async after(open: boolean): Promise<boolean> {
     if (open) {
@@ -88,6 +92,7 @@ export class WindowHook {
    * Hook after opening.
    *
    * Хук после открытия.
+   * @returns opening hook result / результат хука открытия
    */
   async opening(): Promise<boolean> {
     if (this.props.opening) {
@@ -101,6 +106,7 @@ export class WindowHook {
    * Hook after closing.
    *
    * Хук после закрытия.
+   * @returns closing hook result / результат хука закрытия
    */
   async closing(): Promise<boolean> {
     if (this.props.closing) {

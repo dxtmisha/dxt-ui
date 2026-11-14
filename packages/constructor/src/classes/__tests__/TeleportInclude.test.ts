@@ -7,6 +7,7 @@ vi.mock('vue', async () => {
   const actual = await vi.importActual('vue') as any
   return {
     ...actual,
+    getCurrentInstance: vi.fn().mockReturnValue({}),
     inject: vi.fn().mockImplementation((_key, defaultValue) => defaultValue)
   }
 })
@@ -70,5 +71,14 @@ describe('TeleportInclude', () => {
   it('should return empty array if no children are provided to render()', () => {
     const teleport = new TeleportInclude()
     expect(teleport.render()).toEqual([])
+  })
+
+  it('should fallback without calling inject when outside component instance', async () => {
+    const vue = await import('vue')
+    vi.mocked(vue.getCurrentInstance).mockReturnValueOnce(null)
+
+    const teleport = new TeleportInclude()
+    expect(teleport.to).toBe('body')
+    expect(vue.inject).not.toHaveBeenCalled()
   })
 })

@@ -24,6 +24,16 @@ export class WindowElement {
   }
 
   /**
+   * Checks if the main element exists.
+   *
+   * Проверяет, есть ли главный элемент.
+   * @returns true if main element exists / true, если главный элемент существует
+   */
+  isMain(): boolean {
+    return Boolean(this.element.value)
+  }
+
+  /**
    * Returns the reactive reference to the main element.
    *
    * Возвращает реактивную ссылку на главный элемент.
@@ -34,18 +44,10 @@ export class WindowElement {
   }
 
   /**
-   * Checks if the main element exists.
-   *
-   * Проверяет, есть ли главный элемент.
-   */
-  isMain(): boolean {
-    return Boolean(this.element.value)
-  }
-
-  /**
    * Returns the main element.
    *
    * Возвращает главный элемент.
+   * @returns main element or undefined / главный элемент или undefined
    */
   getMain(): HTMLDivElement | undefined {
     return this.element.value
@@ -55,6 +57,7 @@ export class WindowElement {
    * Returns the control element of the current component.
    *
    * Возвращает элемент управления текущего компонента.
+   * @returns control element or undefined / элемент управления или undefined
    */
   getControl(): HTMLElement | undefined {
     return this.classes().findControl()
@@ -64,6 +67,7 @@ export class WindowElement {
    * Returns the dimensions of the control element.
    *
    * Возвращает размеры элемента управления.
+   * @returns bounding rect of control element or undefined / прямоугольник размеров элемента управления или undefined
    */
   getControlRect(): DOMRect | undefined {
     return this.getControl()?.getBoundingClientRect()
@@ -73,6 +77,7 @@ export class WindowElement {
    * Returns the body element of the window.
    *
    * Возвращает элемент тела окна.
+   * @returns body element or undefined / элемент тела или undefined
    */
   getBody(): HTMLDivElement | undefined {
     return this.classes().findBody()
@@ -82,6 +87,7 @@ export class WindowElement {
    * Returns the dimensions of the window's body element.
    *
    * Возвращает размеры элемента тела окна.
+   * @returns bounding rect of body element or undefined / прямоугольник размеров тела окна или undefined
    */
   getBodyRect(): DOMRect | undefined {
     return this.getBody()?.getBoundingClientRect()
@@ -91,6 +97,7 @@ export class WindowElement {
    * Returns the window context element.
    *
    * Возвращает элемент контекста окна.
+   * @returns body context element or undefined / элемент контекста окна или undefined
    */
   getBodyContext(): HTMLDivElement | undefined {
     return this.classes().findBodyContext()

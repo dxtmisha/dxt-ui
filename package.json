@@ -118,6 +118,10 @@
     "./UiButton": {
       "types": "./dist/library/UiButton.d.ts",
       "default": "./dist/library/UiButton.js"
+    },
+    "./UiWindow": {
+      "types": "./dist/library/UiWindow.d.ts",
+      "default": "./dist/library/UiWindow.js"
     }
   },
   "workspaces": [

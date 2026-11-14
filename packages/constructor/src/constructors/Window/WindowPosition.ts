@@ -230,19 +230,15 @@ export class WindowPosition {
       const indent = this.getIndent('x')
       const rectRight = this.props.contextmenu ? this.client().getX() : this.coordinates().getRight() + indent
       const rectLeft = this.props.contextmenu ? this.client().getX() : this.coordinates().getLeft() - indent
-      const argumentValues: number[] = []
-
-      if (this.getAxis() === 'x') {
-        argumentValues.push(rectRight, rectLeft)
-      } else {
-        argumentValues.push(rectLeft, rectRight)
-      }
+      const argumentValues: [number, number] = this.getAxis() === 'x'
+        ? [rectRight, rectLeft]
+        : [rectLeft, rectRight]
 
       const innerWidth = isDomRuntime() ? window.innerWidth : 0
 
       this.x = this.calculationInner(
-        argumentValues[0] as number,
-        argumentValues[1] as number,
+        argumentValues[0],
+        argumentValues[1],
         element.offsetWidth,
         innerWidth,
         this.coordinates().getWidth()
@@ -265,8 +261,6 @@ export class WindowPosition {
       const indent = this.getIndent('y')
       const rectTop = this.props.contextmenu ? this.client().getY() : this.coordinates().getTop() - indent
       const rectBottom = this.props.contextmenu ? this.client().getY() : this.coordinates().getBottom() + indent
-      const argumentValues: number[] = []
-
       const innerHeight = isDomRuntime() ? window.innerHeight : 0
 
       if (this.isOver()) {
@@ -279,15 +273,15 @@ export class WindowPosition {
         )
 
         return this
-      } else if (this.getAxis() !== 'x') {
-        argumentValues.push(rectBottom, rectTop)
-      } else {
-        argumentValues.push(rectTop, rectBottom)
       }
 
+      const argumentValues: [number, number] = this.getAxis() !== 'x'
+        ? [rectBottom, rectTop]
+        : [rectTop, rectBottom]
+
       this.y = this.calculationInner(
-        argumentValues[0] as number,
-        argumentValues[1] as number,
+        argumentValues[0],
+        argumentValues[1],
         element.offsetHeight,
         innerHeight,
         this.coordinates().getHeight()

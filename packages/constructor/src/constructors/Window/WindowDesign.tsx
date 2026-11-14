@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -7,7 +7,6 @@ import {
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Window } from './Window'
-import { WindowStatic } from './WindowStatic'
 
 import {
   type WindowPropsBasic
@@ -131,15 +130,14 @@ export class WindowDesign<
    * @returns rendered virtual nodes / отрендеренные виртуальные узлы
    */
   protected initRender(): VNode[] {
-    const main: any[] = []
+    const main: VNode[] = []
 
     this.initSlot('control', main, this.item.slotData)
 
     if (this.item.i('open').inDom) {
       if (
         (
-          WindowStatic.is(this.props)
-          && this.item.i('staticMode').item.value
+          this.item.callInstance('staticMode', item => item.item.value, false)
           && this.item.isRender()
         )
         || this.props.embedded
@@ -173,12 +171,14 @@ export class WindowDesign<
   readonly renderMain = (): VNode => {
     return h(
       'div',
-      {
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds
-      },
+      mergeProps(
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.renderBody()
     )
   }
@@ -192,16 +192,15 @@ export class WindowDesign<
   readonly renderBody = (): VNode => {
     return h(
       'div',
-      {
-        key: 'body',
-        ...this.getAttrs(),
-        class: [
-          this.classes?.value.body,
-          this.attrs?.class
-        ]
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          key: 'body',
+          class: this.classes?.value.body
+        }
+      ),
       [
-        ...this.renderBodyImage(),
+        ...this.item.callInstance('image', item => item.render(), []),
         ...this.renderBodyClose(),
         ...this.renderBodyGroup()
       ]
@@ -215,10 +214,10 @@ export class WindowDesign<
    * @returns array of body group nodes / массив узлов группы тела
    */
   readonly renderBodyGroup = (): VNode[] => {
-    const children: any[] = []
+    const children: VNode[] = []
 
     this.initSlot('title', children, this.item.slotData)
-    children.push(this.renderBodyContext())
+    children.push(...this.renderBodyContext())
     this.initSlot('footer', children, this.item.slotData)
 
     return [
@@ -240,21 +239,17 @@ export class WindowDesign<
       'data-window-body': '1'
     }
 
-    if (this.components?.is('scrollbar')) {
-      return this.item.i('scrollbar').render(
-        'div',
-        binds,
-        this.renderDefault
-      )
-    }
-
-    return [
-      h(
-        'div',
-        binds,
-        this.renderDefault()
-      )
-    ]
+    return this.item.callInstance(
+      'scrollbar',
+      item => item.render('div', binds, this.renderDefault),
+      () => [
+        h(
+          'div',
+          binds,
+          this.renderDefault()
+        )
+      ]
+    )
   }
 
   /**
@@ -265,20 +260,6 @@ export class WindowDesign<
    */
   readonly renderDefault = (): VNode | undefined => {
     return this.initSlot('default', undefined, this.item.slotData)
-  }
-
-  /**
-   * Generates an element to display the image.
-   *
-   * Генерирует элемент для вывода изображения.
-   * @returns array of image nodes / массив узлов изображения
-   */
-  readonly renderBodyImage = (): VNode[] => {
-    if (this.props.image) {
-      return this.item.i('image').render()
-    }
-
-    return []
   }
 
   /**

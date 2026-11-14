@@ -148,7 +148,7 @@ export class Window extends DesignLogicAbstract<
       parameters: () => [
         this.i('open').item,
         () => this.i('open').close(),
-        () => !this.props.persistent && (this.props.closeOnEsc ?? true)
+        () => WindowEsc.is(this.props)
       ]
     },
     event: {
@@ -187,6 +187,7 @@ export class Window extends DesignLogicAbstract<
     },
     image: {
       item: ImageInclude,
+      canCreate: () => ImageInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -231,6 +232,7 @@ export class Window extends DesignLogicAbstract<
     persistent: {
       item: WindowPersistent,
       conditions: () => WindowPersistent.is(this.props),
+      canCreate: () => WindowPersistent.is(this.props),
       parameters: () => [
         this.props,
         () => this.i('classesData'),
@@ -248,6 +250,7 @@ export class Window extends DesignLogicAbstract<
     },
     scrollbar: {
       item: ScrollbarInclude,
+      canCreate: () => Boolean(this.components?.is('scrollbar')),
       parameters: () => [
         this.props,
         this.naming,
@@ -258,6 +261,7 @@ export class Window extends DesignLogicAbstract<
     staticMode: {
       item: WindowStatic,
       conditions: () => WindowStatic.is(this.props),
+      canCreate: () => WindowStatic.is(this.props),
       parameters: () => [
         this.props,
         () => this.i('element')
@@ -299,8 +303,8 @@ export class Window extends DesignLogicAbstract<
         () => this.i('classesData'),
         () => this.i('element'),
         () => this.i('open'),
-        () => this.i('persistent'),
-        () => this.i('staticMode'),
+        () => this.callInstance('persistent', item => item),
+        () => this.callInstance('staticMode', item => item),
         this.isMounted
       ]
     }
@@ -345,13 +349,13 @@ export class Window extends DesignLogicAbstract<
    * @returns element binding attributes / атрибуты привязки элемента
    */
   get binds(): ConstrBind {
-    const props: Record<string, any> = {
+    const props: ConstrBind = {
       'key': 'main',
       'data-window': this.i('classesData').getId(),
       'onTransitionend': this.i('event').onTransition
     }
 
-    if (WindowStatic.is(this.props) && this.i('staticMode').is()) {
+    if (WindowStatic.is(this.props)) {
       return props
     }
 
@@ -408,7 +412,7 @@ export class Window extends DesignLogicAbstract<
   get classes(): ConstrClassObject {
     return {
       [this.i('classesData').getId()]: true,
-      [this.naming.getStatusClass('staticMode')]: WindowStatic.is(this.props) && Boolean(this.i('staticMode').item.value),
+      [this.naming.getStatusClass('staticMode')]: this.callInstance('staticMode', item => item.item.value, false),
       [this.naming.getStatusClass('embedded')]: Boolean(this.props.embedded)
     }
   }

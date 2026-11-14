@@ -29,26 +29,26 @@ export enum WindowStatusItem {
  * Элементы управления статусом окна для управления поведением и внешним видом окна
  */
 export enum WindowStatusControlItem {
-  /** Block interaction/ Блокировка взаимодействия */
+  /** Block parent closing from child control/ Блокировка закрытия родителя от дочернего контрола */
   block = 'block',
   /**
-   * Block window closing, class added to elements inside window/
-   * Блокировка закрытия окна, класс добавляется к элементам внутри окна
+   * Block window closing on backdrop click when element exists inside window body/
+   * Блокировка закрытия окна по клику на фон при наличии элемента внутри тела окна
    */
   blockChildren = 'blockChildren',
-  /** Block other windows/ Блокировка других окон */
+  /** Block closing other underlying open windows/ Блокировка закрытия других открытых окон */
   blockOther = 'blockOther',
-  /** Close window/ Закрыть окно */
+  /** Close current window on click/ Закрытие текущего окна при клике */
   close = 'close',
-  /** Static positioning/ Статическое позиционирование */
+  /** Prevent autoClose and click actions on inner elements/ Отмена autoClose и клик-действий для внутренних элементов */
   static = 'static',
-  /** Static control/ Статическое управление */
+  /** Prevent control from opening the window/ Запрет открытия окна по контролу */
   controlStatic = 'controlStatic',
-  /** Control only when open/ Управление только когда открыто */
+  /** Control opens window only (does not close when already open)/ Контрол только открывает окно */
   controlOpenOnly = 'controlOpenOnly',
-  /** Active control/ Активное управление */
+  /** Active control state class/ Класс активного контрола */
   controlActive = 'controlActive',
-  /** Persistent window/ Постоянное окно */
+  /** Persistent wobble/flash animation modifier/ Модификатор анимации persistent */
   persistent = 'persistent'
 }
 
@@ -72,29 +72,29 @@ export type WindowEmitOptions = {
  * Список CSS классов для стилизации окна
  */
 export type WindowClassesList = {
-  /** Main block class/ Основной класс блока */
+  /** Class preventing parent close from child control/ Класс, блокирующий закрытие родителя от дочернего контрола */
   block: string
-  /** Block children class/ Класс дочерних элементов блока */
+  /** Class inside body blocking backdrop close of current window/ Класс внутри тела, блокирующий закрытие текущего окна по фону */
   blockChildren: string
-  /** Block other windows class/ Класс блокировки других окон */
+  /** Class blocking other underlying open windows from closing/ Класс, блокирующий закрытие других открытых окон */
   blockOther: string
-  /** Close button class/ Класс кнопки закрытия */
+  /** Explicit close trigger class inside window body/ Класс явного закрытия окна по клику */
   close: string
-  /** Static positioning class/ Класс статического позиционирования */
+  /** Class inside window preventing autoClose dismissal on click/ Класс внутри окна, отменяющий autoClose при клике */
   static: string
 
   /** Control element class/ Класс элемента управления */
   control: string
-  /** Control ID class/ Класс ID управления */
+  /** Control element class with unique window ID/ Класс элемента управления с ID окна */
   controlId: string
-  /** Static control class/ Класс статического управления */
+  /** Class disabling window opening from control/ Класс запрета открытия окна по контролу */
   controlStatic: string
-  /** Open-only control class/ Класс управления только для открытого состояния */
+  /** Class restricting control to open-only behavior/ Класс контрола только на открытие */
   controlOpenOnly: string
-  /** Active control class/ Класс активного управления */
+  /** Active control class when window is open/ Класс активного контрола при открытом окне */
   controlActive: string
 
-  /** Persistent window class/ Класс постоянного окна */
+  /** Persistent animation modifier class/ Класс модификатора persistent-анимации */
   persistent: string
 }
 

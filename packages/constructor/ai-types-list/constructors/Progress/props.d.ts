@@ -1,4 +1,8 @@
-// md5:a7cc8782a849773808c2ed5b24392d71 true
+// md5:1521dd607a087d415aec3216454f19e2 true
+import type { AriaLabelPropsInclude } from '../../types/ariaTypes';
+import type { TextLoadingPropsInclude } from '../../types/textTypes';
+import type { ClientOnlyPropsInclude } from '../../types/clientOnlyTypes';
+
 export type ProgressPropsToken = {
     point?: boolean;
     linear?: boolean;
@@ -8,19 +12,22 @@ export type ProgressPropsToken = {
     dense?: boolean;
     inverse?: boolean;
 };
+
 export type ProgressPropsBasic = AriaLabelPropsInclude & TextLoadingPropsInclude & ClientOnlyPropsInclude & {
     visible?: boolean;
     value?: number | string;
     max?: number | string;
     linear?: boolean;
     circular?: boolean;
-    /** Whether to display an indicator dot at the end of the linear track. @keywords point, indicator, track */
+    /** Display stop indicator dot on linear progress (determinate value or indeterminate type1; ignored for circular). @keywords point, dot */
     point?: boolean;
     delay?: number | string;
     delayHide?: number | string;
 };
-/** Properties for the Progress component. @keywords progress, props */
+
+/** Progress component incoming properties. @keywords progress, props */
 export type ProgressProps = ProgressPropsBasic & ProgressPropsToken;
+
 /** Default property values for the Progress component. @keywords progress, defaults */
 export declare const defaultsProgress: {
     linear: boolean;

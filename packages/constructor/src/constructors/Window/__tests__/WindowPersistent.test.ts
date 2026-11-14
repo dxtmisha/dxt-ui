@@ -97,4 +97,15 @@ describe('WindowPersistent', () => {
     expect(persistent.item.value).toBe(false)
     expect(removeEventListenerSpy).toHaveBeenCalledWith('animationend', expect.any(Function))
   })
+
+  it('should safely handle onUnmounted when element getter returns undefined', () => {
+    mockProps.persistent = true
+    const persistent = new WindowPersistent(
+      mockProps as WindowProps,
+      () => mockClasses,
+      () => undefined as any
+    )
+
+    expect(() => persistent.onUnmounted()).not.toThrow()
+  })
 })

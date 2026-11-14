@@ -6,24 +6,24 @@
 > **WindowControlItem:**
 > - `open: Ref<boolean>` — реактивное состояние открытия.
 > - `class: string` — CSS-класс окна.
-> - `onclick: WindowEventClick` — обработчик события клика.
+> - `onClick: WindowEventClick` — обработчик события клика.
 > - `onKeydown: WindowEventClick` — обработчик события нажатия клавиши.
-> - `oncontextmenu: WindowEventClick` — обработчик события контекстного меню.
-> - `classesWindow: WindowClassesList` — список CSS-классов для стилизации окна.
+> - `onContextmenu: WindowEventClick` — обработчик события контекстного меню.
+> - `classesWindow: WindowClassesList` — список CSS-классов для управления поведением и стилизации окна.
 > - `binds: Record<string, any>` — свойства привязки для элемента управления.
 
 > **WindowClassesList:**
-> - `block: string` — основной класс блока.
-> - `blockChildren: string` — класс дочерних элементов блока.
-> - `blockOther: string` — класс блокировки других окон.
-> - `close: string` — класс кнопки закрытия.
-> - `static: string` — класс статического позиционирования.
+> - `block: string` — блокирует закрытие родительского окна при взаимодействии с обёрткой/контролом дочернего окна.
+> - `blockChildren: string` — запрещает закрытие текущего окна по клику на фон, пока элемент находится в теле окна.
+> - `blockOther: string` — запрещает закрытие нижележащих открытых окон.
+> - `close: string` — закрывает текущее окно по клику.
+> - `static: string` — отменяет срабатывание `autoClose` при клике по элементу внутри окна.
 > - `control: string` — класс элемента управления.
-> - `controlId: string` — класс ID управления.
-> - `controlStatic: string` — класс статического управления.
-> - `controlOpenOnly: string` — класс управления только для открытого состояния.
-> - `controlActive: string` — класс активного управления.
-> - `persistent: string` — класс постоянного окна.
+> - `controlId: string` — класс ID элемента управления.
+> - `controlStatic: string` — отключает открытие окна по контролу.
+> - `controlOpenOnly: string` — ограничивает контрол только открытием окна.
+> - `controlActive: string` — класс активного контрола при открытом окне.
+> - `persistent: string` — класс модификатора `persistent`-анимации.
 
 > **WindowEventClick:**
 > - `(event: MouseEvent | TouchEvent | KeyboardEvent) => Promise<void>` — обработчик события клика окна.

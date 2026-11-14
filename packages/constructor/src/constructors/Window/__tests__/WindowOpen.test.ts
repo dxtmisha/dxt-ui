@@ -186,4 +186,98 @@ describe('WindowOpen', () => {
     windowOpen.resetClicks()
     expect(windowOpen.isClicks()).toBe(false)
   })
+
+  it('should cancel pending animation frames, timeouts and interval on unmount', async () => {
+    const queuedFrames: FrameRequestCallback[] = []
+    let nextFrameId = 1
+
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      queuedFrames.push(callback)
+      return nextFrameId++
+    })
+    const cancelFrameSpy = vi.fn()
+    vi.stubGlobal('cancelAnimationFrame', cancelFrameSpy)
+
+    const togglePromise = windowOpen.toggle()
+    await Promise.resolve()
+    await Promise.resolve()
+    await Promise.resolve()
+
+    // Unmount before queued rAFs execute
+    isMountedRef.value = false
+    windowOpen.onUnmounted()
+    await togglePromise
+
+    expect(cancelFrameSpy).toHaveBeenCalled()
+
+    // Flush queued rAFs and timers — openEnd must remain false and emit must not run
+    queuedFrames.splice(0).forEach(callback => callback(0))
+    vi.runAllTimers()
+    await Promise.resolve()
+
+    expect(windowOpen.openEnd.value).toBe(false)
+    expect(mockEmit.on).not.toHaveBeenCalled()
+  })
+
+  it('should prevent stale toClose timeout from closing a reopened window', async () => {
+    let resolveClosing!: () => void
+    mockHook.closing.mockImplementation(() => new Promise<void>((resolve) => {
+      resolveClosing = resolve
+    }))
+
+    await windowOpen.setOpen(true)
+    mockFlash.isOpen.mockReturnValue(true)
+
+    // Start close flow (schedules 48ms toClose timeout)
+    await windowOpen.toggle()
+    expect(mockStatus.toClose).toHaveBeenCalled()
+
+    // Let 48ms timeout run until it awaits hook.closing()
+    vi.advanceTimersByTime(48)
+    await Promise.resolve()
+    await Promise.resolve()
+    expect(windowOpen.item.value).toBe(false)
+
+    // Reopen while stale toClose is still awaiting hook.closing()
+    await windowOpen.open()
+    for (let index = 0; index < 10; index++) {
+      await Promise.resolve()
+    }
+
+    // Resolve stale closing hook — must NOT overwrite reopened state
+    resolveClosing()
+    await Promise.resolve()
+    await Promise.resolve()
+
+    expect(windowOpen.item.value).toBe(true)
+    expect(mockEmit.on).not.toHaveBeenCalledWith(false)
+  })
+
+  it('should detect --MENU-- mode via computed style and fallback to adaptive="menu"', async () => {
+    const getComputedStyleSpy = vi.spyOn(window, 'getComputedStyle')
+
+    getComputedStyleSpy.mockReturnValue({
+      getPropertyValue: () => '--MENU--'
+    } as any)
+
+    await windowOpen.setOpen(true)
+    await windowOpen.watchPosition()
+    expect(windowOpen.isMenu.value).toBe(true)
+    expect(mockStyles.updateType).toHaveBeenCalledWith(true)
+
+    getComputedStyleSpy.mockReturnValue({
+      getPropertyValue: () => '--MENU-WINDOW--'
+    } as any)
+    await windowOpen.watchPosition()
+    expect(windowOpen.isMenu.value).toBe(false)
+    expect(mockStyles.updateType).toHaveBeenCalledWith(false)
+
+    // Fallback in non-CSS environments (e.g. jsdom) when computed property is empty
+    getComputedStyleSpy.mockReturnValue({
+      getPropertyValue: () => ''
+    } as any)
+    mockProps.adaptive = 'menu'
+    await windowOpen.watchPosition()
+    expect(windowOpen.isMenu.value).toBe(true)
+  })
 })

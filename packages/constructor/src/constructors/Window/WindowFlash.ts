@@ -47,6 +47,7 @@ export class WindowFlash {
    * Is the flash property active.
    *
    * Активно ли свойство flash.
+   * @returns true if flash property is active / true, если свойство flash активно
    */
   is(): boolean {
     return Boolean(this.props.flash)
@@ -56,6 +57,7 @@ export class WindowFlash {
    * Checks whether the animation needs to be disabled.
    *
    * Проверяет, надо ли отключить анимацию.
+   * @returns true if opening animation should be disabled / true, если анимацию открытия нужно отключить
    */
   isOpen(): boolean {
     return this.is() || this.control
@@ -65,6 +67,7 @@ export class WindowFlash {
    * Checks whether the animation needs to be disabled when closing.
    *
    * Проверяет, надо ли отключить анимацию при закрытии.
+   * @returns true if closing animation should be disabled / true, если анимацию закрытия нужно отключить
    */
   isClose(): boolean {
     return this.is()
@@ -79,6 +82,7 @@ export class WindowFlash {
    *
    * Изменить значение параметра control.
    * @param target the element that gets focus on click / элемент, который получает фокус при клике
+   * @returns this instance / текущий экземпляр
    */
   setControl(target?: HTMLElement): this {
     this.control = target?.closest<HTMLElement>(`.${this.classes().list.control}`)?.dataset.window === this.classes().getId()

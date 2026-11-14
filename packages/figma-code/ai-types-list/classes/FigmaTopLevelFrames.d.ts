@@ -1,9 +1,13 @@
-// md5:dfecf70f901c20631981cc390cb81d2c true
+// md5:43cd9fd20659ba12e98c7dfcb87cda4a true
 import { type UiFigmaFramesList } from '@dxtmisha/figma';
-/** Manages and sends the list of top-level frames in the Figma plugin. @keywords figma frames top-level plugin */
+import type { FigmaItem } from './FigmaItem';
+
+/** Manages and dispatches top-level frames within the Figma plugin. @keywords figma, frames, top-level, manager */
 export declare class FigmaTopLevelFrames {
-    /** Retrieves and caches the formatted list of top-level frames. @keywords get frames cache list */
+    /** Retrieves and caches the formatted list of top-level frames. @keywords get, fetch, frames, cache */
     static get(): Promise<UiFigmaFramesList>;
-    /** Sets up a listener for frame requests and sends the data back using the plugin messenger. @keywords send listener messenger frames */
+    /** Resets the cached list of top-level frames. @keywords reset, clear, cache, frames */
+    static reset(): void;
+    /** Listens for frame requests and transmits frame data via plugin messenger. @keywords send, messenger, dispatch, listener */
     static send(): void;
 }

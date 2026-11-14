@@ -96,4 +96,19 @@ describe('WindowInclude', () => {
     expect(mockEmits).toHaveBeenCalledWith('window', emitOptions)
     expect(mockModel.emit).toHaveBeenCalledWith(true)
   })
+
+  it('should preserve windowAttrs disabled and autoClose when top-level props omit them', () => {
+    const includeWithWindowAttrs = new WindowInclude(
+      {
+        windowAttrs: {
+          disabled: true,
+          autoClose: false
+        }
+      } as WindowPropsInclude,
+      new DesignName('d1.dialog')
+    )
+
+    expect(includeWithWindowAttrs.binds.value.disabled).toBe(true)
+    expect(includeWithWindowAttrs.binds.value.autoClose).toBe(false)
+  })
 })

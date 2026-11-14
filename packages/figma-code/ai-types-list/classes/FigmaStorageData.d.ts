@@ -1,38 +1,38 @@
-// md5:0021379a6a8d400cdee162823d70966e true
+// md5:a52452cfe7ac491e067cd4d696e73a56 true
 export type FigmaStorageDataValue<T> = {
     value: T;
     age: number;
 };
-/** Class for managing cached Figma storage data @keywords figma, storage, cache */
+/** Manages cached key-value data with expiration tracking for Figma storage. @keywords figma storage data cache */
 export declare class FigmaStorageData<T> {
-    /** Initializes storage data item with key name and optional cache duration @keywords constructor, init, cache */
+    /** Initializes storage data item with key name and optional cache TTL. @keywords figma storage data constructor init */
     constructor(name: string, cache?: number | undefined);
-    /** Checks if the value is null or undefined @keywords isNull, empty, check */
-    isNull(): boolean;
-    /** Checks whether stored data is within the cache time limit @keywords isCache, expiration, ttl */
-    isCache(): boolean;
-    /** Checks if value is defined and within cache validity @keywords isValue, valid */
-    isValue(): boolean;
-    /** Retrieves the current stored value @keywords get, read, value */
+    /** Returns the current stored value. @keywords get read value */
     get(): T | undefined;
-    /** Retrieves the timestamp age of the value @keywords getAge, timestamp, age */
-    getAge(): number | undefined;
-    /** Retrieves the storage key name @keywords getName, key */
-    getName(): string;
-    /** Retrieves the cache expiration limit @keywords getCache, ttl, cache */
-    getCache(): number | undefined;
-    /** Sets the value and its update timestamp @keywords set, assign */
+    /** Sets the stored value and timestamp. @keywords set write value age */
     set(value?: T, age?: number): this;
-    /** Sets data from a FigmaStorageDataValue object @keywords setByObject, import */
+    /** Restores value and age from a storage data object. @keywords set by object restore */
     setByObject(value?: FigmaStorageDataValue<T>): this;
-    /** Sets the stored value @keywords setValue */
-    setValue(value?: T): this;
-    /** Sets the timestamp age @keywords setAge, timestamp */
+    /** Checks whether the cached value is still valid within its time limit. @keywords is cache valid expiration ttl */
+    isCache(): boolean;
+    /** Checks if the stored value is null or undefined. @keywords is null undefined empty */
+    isNull(): boolean;
+    /** Checks if the value is defined and within the valid cache duration. @keywords is value valid cached */
+    isValue(): boolean;
+    /** Returns the timestamp when the value was last updated. @keywords get age timestamp */
+    getAge(): number | undefined;
+    /** Returns the cache duration limit. @keywords get cache ttl duration */
+    getCache(): number | undefined;
+    /** Returns the storage key name. @keywords get name key */
+    getName(): string;
+    /** Sets the update timestamp. @keywords set age timestamp */
     setAge(age?: number): this;
-    /** Updates value and sets age to current timestamp @keywords update, refresh */
-    update(value?: T): this;
-    /** Clears stored data @keywords remove, clear, delete */
+    /** Sets the value without modifying the timestamp. @keywords set value */
+    setValue(value?: T): this;
+    /** Clears the stored value and timestamp. @keywords remove delete clear reset */
     remove(): this;
-    /** Converts data into a FigmaStorageDataValue representation @keywords toValue, serialize */
+    /** Updates the value and sets timestamp to current time. @keywords update value touch */
+    update(value?: T): this;
+    /** Serializes current data into a storage payload object. @keywords to value serialize export */
     toValue(): FigmaStorageDataValue<T>;
 }

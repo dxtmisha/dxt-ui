@@ -1,6 +1,6 @@
-import { isReadonly, isRef, onMounted, type Ref, watch } from 'vue'
+import { isReadonly, isRef, type Ref, watch } from 'vue'
 import {
-  isDomRuntime,
+  type ConstrBind,
   isFunction,
   type RefType,
   toCamelCase,
@@ -28,11 +28,9 @@ export class ModelInclude<Value = string> {
     protected readonly emits?: any,
     protected readonly syncValue?: RefType<Value>
   ) {
-    if (syncValue && isDomRuntime()) {
-      onMounted(() => {
-        watch(syncValue, (newValue: Value) => {
-          this.emit(newValue)
-        })
+    if (syncValue) {
+      watch(syncValue, (newValue: Value) => {
+        this.emit(newValue)
       })
     }
   }
@@ -58,7 +56,7 @@ export class ModelInclude<Value = string> {
    * Создает свойства для двусторонней привязки данных с обработчиками модели и обновления.
    * @returns Object with model value and update handlers / Объект со значением модели и обработчиками обновления
    */
-  getBinds(): Record<string, any> {
+  getBinds(): ConstrBind {
     if (this.isValue()) {
       const name = toCamelCaseFirst(this.index)
 

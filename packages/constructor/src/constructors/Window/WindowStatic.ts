@@ -1,7 +1,7 @@
 // ai-none
 
 import { ref, watch, type WatchStopHandle } from 'vue'
-import { DesignLifecycleAbstract, EventItem, isDomRuntime, setRef } from '@dxtmisha/functional'
+import { DesignLifecycleAbstract, EventItem, setRef } from '@dxtmisha/functional'
 
 import { WindowElement } from './WindowElement'
 
@@ -14,10 +14,11 @@ import type { WindowProps } from './props'
  * Класс для работы со статичным окном.
  */
 export class WindowStatic extends DesignLifecycleAbstract {
-  protected event?: EventItem<Window, Event>
-  protected watchStop?: WatchStopHandle
-
   readonly item = ref<boolean>(false)
+
+  protected event?: EventItem<Window, Event>
+  protected frameId?: number
+  protected watchStop?: WatchStopHandle
 
   /**
    * Checks whether static mode is enabled.
@@ -50,8 +51,11 @@ export class WindowStatic extends DesignLifecycleAbstract {
    * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
    */
   override readonly onMounted = (): void => {
-    if (this.is() && isDomRuntime()) {
-      requestAnimationFrame(this.listener)
+    if (this.is()) {
+      this.frameId = requestAnimationFrame(() => {
+        this.frameId = undefined
+        this.listener()
+      })
     }
 
     this.watchStop?.()
@@ -66,6 +70,10 @@ export class WindowStatic extends DesignLifecycleAbstract {
   override readonly onUnmounted = (): void => {
     this.watchStop?.()
     this.watchStop = undefined
+    if (this.frameId !== undefined && typeof cancelAnimationFrame !== 'undefined') {
+      cancelAnimationFrame(this.frameId)
+      this.frameId = undefined
+    }
     this.stop()
   }
 
@@ -85,10 +93,6 @@ export class WindowStatic extends DesignLifecycleAbstract {
    * Стартует событие слежения за статусами.
    */
   start(): void {
-    if (!isDomRuntime()) {
-      return
-    }
-
     if (!this.event) {
       this.event = new EventItem(window, ['resize'], this.listener)
     }
@@ -115,11 +119,7 @@ export class WindowStatic extends DesignLifecycleAbstract {
    * @returns true if static window is active / true, если статичное окно активно
    */
   protected isStatic(): boolean {
-    if (!isDomRuntime()) {
-      return false
-    }
-
-    const element = this.element?.()?.getMain?.()
+    const element = this.element().getMain()
 
     return Boolean(
       element

@@ -1,11 +1,13 @@
 ## CSS Classes for Behavior Control
 
-- `*--block` — prevents window from closing when clicking outside its boundaries
-- `*--blockChildren` — prevents current window from closing
-- `*--blockOther` — prevents other windows from closing until current one is closed
-- `*--close` — applies to elements for closing the window
-- `*--controlOpenOnly` — applies to control elements that only open the window
-- `*--controlStatic` — applies to control elements in static mode
-- `*--static` — applies to elements inside window, canceling all actions
+Expose `classesWindow` from slot props (`#default="{ classesWindow }"`, `#footer="{ classesWindow }"`, etc.) instead of hardcoding class names:
+
+- `classesWindow.static` (`*--static`) — prevents `autoClose` dismissal and click actions when clicking an element **inside** the window (use this to keep an `autoClose` menu/window open on click)
+- `classesWindow.close` (`*--close`) — explicitly closes the current window when clicked
+- `classesWindow.block` (`*--block`) — placed on a **child window control/wrapper** to prevent closing the parent/current window on click
+- `classesWindow.blockChildren` (`*--blockChildren`) — placed inside a window body to prevent closing that window on backdrop click
+- `classesWindow.blockOther` (`*--blockOther`) — prevents underlying open windows from closing while this window is active
+- `classesWindow.controlOpenOnly` (`*--controlOpenOnly`) — placed on a control so clicking it only opens the window (never closes)
+- `classesWindow.controlStatic` (`*--controlStatic`) — placed on a control to disable opening the window on click
 
 Where `*` is the component class name (e.g., `d1-window`, `m3-window`).

@@ -79,4 +79,41 @@ describe('WindowEsc', () => {
 
     expect(customCallback).not.toHaveBeenCalled()
   })
+
+  it('should ignore Escape during IME composition and close only the top-most nested window', async () => {
+    const outerCallback = vi.fn()
+    const innerCallback = vi.fn()
+    const outerOpen = ref(false)
+    const innerOpen = ref(false)
+
+    const outerEsc = new WindowEsc(outerOpen, outerCallback, true)
+    const innerEsc = new WindowEsc(innerOpen, innerCallback, true)
+    outerEsc.onMounted()
+    innerEsc.onMounted()
+
+    outerOpen.value = true
+    await nextTick()
+    innerOpen.value = true
+    await nextTick()
+
+    // IME composition active -> neither should close
+    const composingEscape = new KeyboardEvent('keydown', { key: 'Escape', isComposing: true })
+    document.body.dispatchEvent(composingEscape)
+    expect(innerCallback).not.toHaveBeenCalled()
+    expect(outerCallback).not.toHaveBeenCalled()
+
+    // First real Escape closes only inner window
+    const escape1 = new KeyboardEvent('keydown', { key: 'Escape' })
+    document.body.dispatchEvent(escape1)
+    expect(innerCallback).toHaveBeenCalledTimes(1)
+    expect(outerCallback).not.toHaveBeenCalled()
+
+    // Second Escape closes outer window
+    const escape2 = new KeyboardEvent('keydown', { key: 'Escape' })
+    document.body.dispatchEvent(escape2)
+    expect(outerCallback).toHaveBeenCalledTimes(1)
+
+    outerEsc.onUnmounted()
+    innerEsc.onUnmounted()
+  })
 })

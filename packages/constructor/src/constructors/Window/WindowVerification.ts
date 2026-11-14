@@ -1,7 +1,7 @@
 // ai-none
 
 import type { Ref } from 'vue'
-import { isDomRuntime } from '@dxtmisha/functional'
+import { DesignLifecycleAbstract, isDomRuntime } from '@dxtmisha/functional'
 
 import { WindowPersistent } from './WindowPersistent'
 import { WindowClassesData } from './WindowClassesData'
@@ -17,12 +17,18 @@ import type { WindowProps } from './props'
  *
  * Класс для управления открытием и закрытием окна.
  */
-export class WindowVerification {
+export class WindowVerification extends DesignLifecycleAbstract {
   /** Target element / Целевой элемент */
   protected target?: HTMLElement
 
   /** Element in focus / Элемент в фокусе */
   protected focus?: HTMLElement
+
+  /** Timeout ID for delayed child window check / Идентификатор таймера для отложенной проверки дочернего окна */
+  protected timeoutId?: ReturnType<typeof setTimeout>
+
+  /** Animation frame ID for delayed child window check / Идентификатор кадра анимации для отложенной проверки дочернего окна */
+  protected frameId?: number
 
   /**
    * Constructor.
@@ -41,10 +47,20 @@ export class WindowVerification {
     protected readonly classes: () => WindowClassesData,
     protected readonly element: () => WindowElement,
     protected readonly open: () => WindowOpen,
-    protected readonly persistent: () => WindowPersistent,
-    protected readonly staticMode: () => WindowStatic,
+    protected readonly persistent: () => WindowPersistent | undefined,
+    protected readonly staticMode: () => WindowStatic | undefined,
     protected readonly isMounted: Ref<boolean>
   ) {
+    super()
+  }
+
+  /**
+   * Cleanup pending timers on unmount.
+   *
+   * Очистка отложенных таймеров при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.clearTimers()
   }
 
   /**
@@ -52,12 +68,14 @@ export class WindowVerification {
    *
    * Обновляет статус открытия окна.
    * @param target the selected window / выбранное окно
+   * @returns promise that resolves after update / промис, завершающийся после обновления
    */
   async update(target: HTMLElement): Promise<void> {
     if (this.open().isClicks()) {
       return
     }
 
+    this.clearTimers()
     this.target = target
     this.focus = this.getFocus()
 
@@ -69,7 +87,7 @@ export class WindowVerification {
       return
     }
 
-    if (WindowStatic.is(this.props) && this.staticMode().item.value) {
+    if (WindowStatic.is(this.props) && this.staticMode()?.item.value) {
       return
     }
 
@@ -90,11 +108,16 @@ export class WindowVerification {
       } else if (!this.isFocus()) {
         if (this.isNotBlock()) {
           if (this.isChildren()) {
-            setTimeout(() => {
-              requestAnimationFrame(async () => {
+            const focusElement = this.focus
+            this.timeoutId = setTimeout(() => {
+              this.timeoutId = undefined
+              this.frameId = requestAnimationFrame(async () => {
+                this.frameId = undefined
                 if (
-                  this.focus
-                  && !['open', 'flash'].includes(this.focus.dataset.status ?? '')
+                  this.isMounted.value
+                  && this.open().item.value
+                  && focusElement
+                  && !['open', 'flash'].includes(focusElement.dataset.status ?? '')
                   && this.isMenu()
                 ) {
                   await this.open().toggle()
@@ -107,7 +130,7 @@ export class WindowVerification {
         }
       } else if (this.isTarget()) {
         if (this.isNotBlockChildren()) {
-          if (!(WindowPersistent.is(this.props) && this.persistent().on())) {
+          if (!(WindowPersistent.is(this.props) && this.persistent()?.on())) {
             await this.open().toggle()
           }
         }
@@ -341,5 +364,22 @@ export class WindowVerification {
       this.getTarget()
         .closest(`.${this.classes().list.controlOpenOnly}`)
     )
+  }
+
+  /**
+   * Clears pending timeout and animation frame timers.
+   *
+   * Очищает ожидающие таймер и кадр анимации.
+   */
+  protected clearTimers(): void {
+    if (this.timeoutId !== undefined) {
+      clearTimeout(this.timeoutId)
+      this.timeoutId = undefined
+    }
+
+    if (this.frameId !== undefined && typeof cancelAnimationFrame !== 'undefined') {
+      cancelAnimationFrame(this.frameId)
+      this.frameId = undefined
+    }
   }
 }

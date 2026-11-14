@@ -31,7 +31,7 @@ describe('WindowOrigin', () => {
     vi.spyOn(window, 'getComputedStyle').mockImplementation((_element: any) => {
       return {
         getPropertyValue: (property: string) => {
-          if (property === '--sys-window-type-body') {
+          if (property === '--sys-type-body') {
             return '--POPUP--'
           }
           return ''

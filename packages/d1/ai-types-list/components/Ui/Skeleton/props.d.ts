@@ -1,14 +1,8 @@
-// md5:780048ffa0ad97b1a6c312a6a3e9bda5 true
+// md5:d752afb1c9dbe1329a50603dc52f35ad true
 import { type SkeletonPropsBasic } from '@dxtmisha/constructor/Skeleton';
-
 export declare const propsValues: {};
-
-type PropsToken = {
-  active?: boolean;
-};
-
-/** Skeleton component properties. @keywords skeleton, props */
+type PropsToken = {};
+/** Incoming properties for Skeleton component. @keywords skeleton props */
 export type SkeletonProps = SkeletonPropsBasic & PropsToken;
-
-/** Default property values for Skeleton. @keywords skeleton, defaults */
+/** Default values for Skeleton properties. @keywords skeleton defaults */
 export declare const defaults: object;

@@ -1,14 +1,18 @@
-// md5:92276be1131e34f6806f04f6cda7979d true
-/** Client storage manager for Figma plugins. @keywords figma clientStorage storage persist */
+// md5:e985e79a9f3b2f7957c78ab196a27ffb true
+import { FigmaStorageData, type FigmaStorageDataValue } from './FigmaStorageData';
+
+/** Client storage manager for Figma plugins. @keywords figma, clientStorage, persistence, cache */
 export declare class FigmaClientStorage<T> {
-    /** Gets or creates an instance for a storage key. @keywords getInstance singleton clientStorage */
+    /** Gets or creates a cached client storage instance by name. @keywords figma, clientStorage, singleton, factory */
     static getInstance<T>(name: string): FigmaClientStorage<T>;
-    /** Initializes storage instance with a key name and optional cache duration. @keywords constructor init cache */
+    /** Clears all cached client storage instances in the registry. @keywords figma, reset, cache, clear */
+    static reset(): void;
+    /** Initializes client storage with an optional cache expiration time. @keywords figma, constructor, clientStorage */
     constructor(name: string, cache?: number | undefined);
-    /** Retrieves data from storage with an optional default value fallback. @keywords get read load retrieve */
-    get(defaultValue?: T | (() => T | Promise<T>)): Promise<T | undefined>;
-    /** Updates stored data with a value or resolver function. @keywords set write save update */
+    /** Retrieves data from client storage with an optional fallback. @keywords figma, get, read, clientStorage */
+    get<D extends T | (() => T | Promise<T>) | undefined = undefined>(defaultValue?: D): Promise<[D] extends [undefined] ? T | undefined : T>;
+    /** Saves or updates data in client storage. @keywords figma, set, write, persist, clientStorage */
     set(value?: T | (() => T | Promise<T>)): Promise<T | undefined>;
-    /** Deletes data from storage. @keywords remove delete clear */
+    /** Deletes data from client storage. @keywords figma, remove, delete, clientStorage */
     remove(): Promise<this>;
 }

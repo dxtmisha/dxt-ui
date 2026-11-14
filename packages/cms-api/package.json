@@ -43,10 +43,15 @@
     "./ai-screenshot/*": "./ai-screenshot/*",
     "./style.css": "./dist/style.css"
   },
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "drizzle-orm": "^0.45.4",
+    "postgres": "^4.1.1"
+  },
   "sideEffects": [
     "*.css",
     "**/*.css"
-  ]
+  ],
+  "devDependencies": {
+    "drizzle-kit": "^0.31.11"
+  }
 }

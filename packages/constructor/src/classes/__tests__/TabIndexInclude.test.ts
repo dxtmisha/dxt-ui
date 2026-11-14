@@ -3,14 +3,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ref } from 'vue'
 import { TabIndexInclude } from '../TabIndexInclude'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onUnmounted: vi.fn()
-  }
-})
-
 vi.mock('@dxtmisha/functional', async () => {
   const actual = await vi.importActual('@dxtmisha/functional') as any
   return {
@@ -102,5 +94,85 @@ describe('TabIndexInclude', () => {
 
     expect(document.activeElement).toBe(button2)
     expect(preventDefaultSpy).toHaveBeenCalled()
+  })
+
+  it('should skip disabled and inert elements in findFirstElement, findLastElement, and Tab trapping', () => {
+    const parentRef = ref(parentElement)
+    const tabIndexInc = new TabIndexInclude(parentRef)
+
+    button1.disabled = true
+    expect(tabIndexInc.findFirstElement()).toBe(button2)
+    expect(tabIndexInc.findLastElement()).toBe(button2)
+
+    button1.disabled = false
+    button2.disabled = true
+    expect(tabIndexInc.findFirstElement()).toBe(button1)
+    expect(tabIndexInc.findLastElement()).toBe(button1)
+
+    tabIndexInc.goTo()
+    button1.focus()
+    const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true })
+    const preventDefaultSpy = vi.spyOn(tabEvent, 'preventDefault')
+    document.body.dispatchEvent(tabEvent)
+
+    expect(preventDefaultSpy).toHaveBeenCalled()
+    expect(document.activeElement).toBe(button1)
+
+    button2.disabled = false
+    button2.setAttribute('inert', '')
+    expect(tabIndexInc.findLastElement()).toBe(button1)
+  })
+
+  it('should cancel pending rAF focus restoration when destroy() is called', async () => {
+    const previousButton = document.createElement('button')
+    document.body.appendChild(previousButton)
+    previousButton.focus()
+
+    const parentRef = ref(parentElement)
+    const tabIndexInc = new TabIndexInclude(parentRef)
+    tabIndexInc.updateOldElement()
+
+    const fallbackButton = document.createElement('button')
+    document.body.appendChild(fallbackButton)
+    fallbackButton.focus()
+    document.body.removeChild(fallbackButton)
+
+    tabIndexInc.reset()
+    tabIndexInc.destroy()
+
+    await new Promise(resolve => requestAnimationFrame(resolve))
+    expect(document.activeElement).not.toBe(previousButton)
+
+    document.body.removeChild(previousButton)
+  })
+
+  it('should ignore Tab keydown during IME composition', () => {
+    const parentRef = ref(parentElement)
+    const tabIndexInc = new TabIndexInclude(parentRef)
+    tabIndexInc.goTo()
+
+    button2.focus()
+    const composingEvent = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true })
+    Object.defineProperty(composingEvent, 'isComposing', { value: true })
+    const preventDefaultSpy = vi.spyOn(composingEvent, 'preventDefault')
+    document.body.dispatchEvent(composingEvent)
+
+    expect(preventDefaultSpy).not.toHaveBeenCalled()
+  })
+
+  it('should preserve pre-existing tabindex on container element when toFocus() falls back to container', async () => {
+    const emptyContainer = document.createElement('div')
+    emptyContainer.setAttribute('tabindex', '0')
+    document.body.appendChild(emptyContainer)
+
+    const tabIndexInc = new TabIndexInclude(ref(emptyContainer))
+    tabIndexInc.goTo()
+
+    expect(document.activeElement).toBe(emptyContainer)
+    await new Promise(resolve => requestAnimationFrame(resolve))
+    expect(emptyContainer.getAttribute('tabindex')).toBe('0')
+
+    tabIndexInc.destroy()
+    document.body.removeChild(emptyContainer)
   })
 })

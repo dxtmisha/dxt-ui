@@ -133,4 +133,19 @@ describe('WindowEvent', () => {
     windowEvent.toggle()
     expect(stopSpy).toHaveBeenCalled()
   })
+
+  it('should ignore Enter keydown during active IME composition', async () => {
+    const composingEvent = {
+      key: 'Enter',
+      isComposing: true,
+      preventDefault: vi.fn(),
+      clientX: 10,
+      clientY: 20
+    } as unknown as KeyboardEvent
+
+    await windowEvent.onKeydown(composingEvent)
+
+    expect(composingEvent.preventDefault).not.toHaveBeenCalled()
+    expect(mockVerification.update).not.toHaveBeenCalled()
+  })
 })

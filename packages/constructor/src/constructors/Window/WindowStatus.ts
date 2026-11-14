@@ -133,7 +133,7 @@ export class WindowStatus {
    * Обновляет атрибут data-status на основном элементе и элементе телепорта.
    */
   update(): void {
-    const element = this.element?.()?.getMain?.()
+    const element = this.element().getMain()
 
     if (element) {
       const teleportElement = element.parentElement

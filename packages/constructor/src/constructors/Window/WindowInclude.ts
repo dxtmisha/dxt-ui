@@ -4,7 +4,8 @@ import {
   type ConstrBind,
   type ConstrEmit,
   type DesignComponents,
-  type DesignName
+  type DesignName,
+  type NormalOrPromise
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
@@ -81,24 +82,27 @@ export class WindowInclude<
    * Returns preparation result.
    *
    * Возвращает результат подготовки.
+   * @returns preparation hook result / результат хука подготовки
    */
-  protected readonly getPreparation = () =>
+  protected readonly getPreparation = (): NormalOrPromise<void> | undefined =>
     this.getExtra()?.preparation?.() ?? this.getProps().windowAttrs?.preparation?.()
 
   /**
    * Returns opening result.
    *
    * Возвращает результат открытия.
+   * @returns opening hook result / результат хука открытия
    */
-  protected readonly getOpening = () =>
+  protected readonly getOpening = (): NormalOrPromise<boolean> =>
     this.getExtra()?.opening?.() ?? this.getProps().windowAttrs?.opening?.() ?? true
 
   /**
    * Returns closing result.
    *
    * Возвращает результат закрытия.
+   * @returns closing hook result / результат хука закрытия
    */
-  protected readonly getClosing = () =>
+  protected readonly getClosing = (): NormalOrPromise<boolean> =>
     this.getExtra()?.closing?.() ?? this.getProps().windowAttrs?.closing?.() ?? true
 
   /**
@@ -114,8 +118,8 @@ export class WindowInclude<
     return {
       ...binds,
 
-      disabled: props.disabled,
-      autoClose: props.autoClose,
+      ...(props.disabled !== undefined ? { disabled: props.disabled } : {}),
+      ...(props.autoClose !== undefined ? { autoClose: props.autoClose } : {}),
 
       preparation: this.getPreparation,
       opening: this.getOpening,
@@ -147,7 +151,7 @@ export class WindowInclude<
    * Поднимает событие 'window' наверх.
    * @param options event payload / параметры события
    */
-  protected readonly onWindow = (options: WindowEmitOptions) => {
+  protected readonly onWindow = (options: WindowEmitOptions): void => {
     this.model?.().emit(options.open)
     this.emits?.('window', options)
   }

@@ -6,24 +6,24 @@
 > **WindowControlItem:**
 > - `open: Ref<boolean>` — reactive open state.
 > - `class: string` — window CSS class.
-> - `onclick: WindowEventClick` — click event handler.
+> - `onClick: WindowEventClick` — click event handler.
 > - `onKeydown: WindowEventClick` — keydown event handler.
-> - `oncontextmenu: WindowEventClick` — context menu event handler.
-> - `classesWindow: WindowClassesList` — list of CSS classes for window styling.
+> - `onContextmenu: WindowEventClick` — context menu event handler.
+> - `classesWindow: WindowClassesList` — list of CSS classes for window behavior and styling.
 > - `binds: Record<string, any>` — binding properties for the control element.
 
 > **WindowClassesList:**
-> - `block: string` — main block class.
-> - `blockChildren: string` — block children class.
-> - `blockOther: string` — block other windows class.
-> - `close: string` — close button class.
-> - `static: string` — static positioning class.
+> - `block: string` — blocks parent close from a child control wrapper.
+> - `blockChildren: string` — blocks backdrop dismissal when placed inside the window body.
+> - `blockOther: string` — blocks other underlying windows from closing.
+> - `close: string` — closes the current window on click.
+> - `static: string` — prevents `autoClose` dismissal when clicking elements inside the window.
 > - `control: string` — control element class.
-> - `controlId: string` — control ID class.
-> - `controlStatic: string` — static control class.
-> - `controlOpenOnly: string` — open-only control class.
-> - `controlActive: string` — active control class.
-> - `persistent: string` — persistent window class.
+> - `controlId: string` — control element ID class.
+> - `controlStatic: string` — disables opening from the control element.
+> - `controlOpenOnly: string` — restricts control to open-only behavior.
+> - `controlActive: string` — active control class when window is open.
+> - `persistent: string` — persistent wobble animation modifier class.
 
 > **WindowEventClick:**
 > - `(event: MouseEvent | TouchEvent | KeyboardEvent) => Promise<void>` — window event click handler.

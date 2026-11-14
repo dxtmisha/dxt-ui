@@ -1,16 +1,21 @@
-// md5:1a99d5daafd8e8cae1a732c33a47f93e true
-/** Class for managing Figma PluginData storage. @keywords figma storage plugin data pluginData */
+// md5:b2e637f26409c535604bee7e94c2381e true
+import { FigmaStorageData, type FigmaStorageDataValue } from './FigmaStorageData';
+import type { UiFigmaNode } from '../types/figmaTypes';
+
+/** Manages Figma plugin data storage for nodes. @keywords figma storage pluginData persistence */
 export declare class FigmaStorage<T> {
-    /** Gets a FigmaStorage instance for a specific node. @keywords figma storage getInstance pluginData */
+    /** Retrieves or creates a cached FigmaStorage instance for a node. @keywords figma getInstance storage cache */
     static getInstance<T>(name: string, item?: UiFigmaNode): FigmaStorage<T>;
-    /** Asynchronously gets a FigmaStorage instance by node ID. @keywords figma storage getInstanceById pluginData async */
+    /** Asynchronously retrieves or creates a FigmaStorage instance by node ID. @keywords figma getInstanceById node id storage */
     static getInstanceById<T>(name: string, id?: string): Promise<FigmaStorage<T>>;
-    /** Initializes a new FigmaStorage instance. @keywords constructor figma storage pluginData cache */
+    /** Clears all cached FigmaStorage instances. @keywords reset cache clear */
+    static reset(): void;
+    /** Initializes a new FigmaStorage instance for a target item. @keywords constructor init pluginData */
     constructor(name: string, item?: PluginDataMixin, cache?: number | undefined);
-    /** Retrieves data from storage with an optional fallback default value. @keywords get read figma storage pluginData */
-    get(defaultValue?: T | (() => T)): T | undefined;
-    /** Updates stored data. @keywords set write update figma storage pluginData */
+    /** Reads a stored value from Figma plugin data or returns a default fallback. @keywords get read load pluginData */
+    get<D extends T | (() => T) | undefined = undefined>(defaultValue?: D): [D] extends [undefined] ? T | undefined : T;
+    /** Updates or sets a value in Figma plugin data. @keywords set write update save pluginData */
     set(value?: T | (() => T)): T | undefined;
-    /** Removes data from storage. @keywords remove delete clear figma storage pluginData */
+    /** Deletes the stored value from Figma plugin data. @keywords remove delete clear pluginData */
     remove(): this;
 }
