@@ -64,7 +64,8 @@ describe('RippleDesign', () => {
     const component = defineComponent({
       setup() {
         const design = new RippleDesign<RippleComponents, RippleExpose, RippleClasses, RippleProps>(
-          'd1.ripple', props
+          'd1.ripple',
+          props
         )
         exposed = design.expose()
         return design.render()

@@ -30,3 +30,12 @@ src/constructors/Icon/IconDesign.tsx
 src/constructors/Icon/IconLiteInclude.ts
 src/constructors/Icon/IconInclude.ts
 src/constructors/Icon/IconTrailingInclude.ts
+src/classes/TextIncludeInstance.ts
+src/classes/TextInclude.ts
+src/constructors/Progress/Progress.ts
+src/constructors/Progress/ProgressDesign.tsx
+src/constructors/Progress/ProgressInclude.ts
+src/constructors/Ripple/Ripple.ts
+src/constructors/Ripple/RippleDesign.tsx
+src/constructors/Ripple/RippleInclude.ts
+src/constructors/Ripple/RippleItem.ts

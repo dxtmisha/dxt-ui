@@ -5,9 +5,30 @@ import DemoFlex from '../../components/DemoFlex.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const palettes = [
-  'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan',
-  'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate',
-  'gray', 'zinc', 'neutral', 'stone', 'black', 'white'
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuchsia',
+  'pink',
+  'rose',
+  'slate',
+  'gray',
+  'zinc',
+  'neutral',
+  'stone',
+  'black',
+  'white'
 ] as const
 
 const getLoadingText = (): string => 'Processing request'
