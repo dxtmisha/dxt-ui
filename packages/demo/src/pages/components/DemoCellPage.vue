@@ -302,13 +302,15 @@ const statusValue = computed<string>(() => {
         <D1Cell
           ref="cellReference"
           label="Interactive Cell"
-          description="Click to trigger click events and test exposed controller methods"
+          description="Click or press Enter / Space to trigger events and test exposed controller methods"
           dynamic
           dynamicHover
           value="my-cell-value"
           :detail="{ category: 'demo', action: 'trigger' }"
           @click="(event, value) => onEvent('click', event, value)"
           @click-lite="(value) => onEvent('clickLite', value)"
+          @keydown.enter="onEvent('keydown:Enter')"
+          @keydown.space.prevent="onEvent('keydown:Space')"
         />
         <DemoValue :value="statusValue"/>
         <DemoValue :value="eventName"/>

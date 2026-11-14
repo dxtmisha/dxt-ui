@@ -67,27 +67,29 @@ export class Cell extends DesignLogicAbstract<
   protected override readonly constructorItems: ConstrItems<CellConstructors> = {
     caption: {
       item: CaptionInclude,
+      canCreate: () => CaptionInclude.is(this.props, this.slots),
       parameters: () => [
         this.props,
         this.naming,
         this.slots,
-        () => this.getSkeleton()
+        () => this.callInstance('skeleton', item => item)
       ]
     },
     description: {
       item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(this.props, this.slots),
       parameters: () => [
         this.props,
         this.naming,
         this.slots,
-        () => this.getSkeleton()
+        () => this.callInstance('skeleton', item => item)
       ]
     },
     enabled: {
       item: EnabledInclude,
       parameters: () => [
         this.props,
-        () => (ProgressInclude.is(this.props) ? this.i('progress') : undefined)
+        () => this.callInstance('progress', item => item)
       ]
     },
     event: {
@@ -100,6 +102,7 @@ export class Cell extends DesignLogicAbstract<
     },
     icon: {
       item: IconTrailingInclude,
+      canCreate: () => IconTrailingInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -108,6 +111,7 @@ export class Cell extends DesignLogicAbstract<
     },
     label: {
       item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
       parameters: () => [
         this.props,
         this.naming,
@@ -116,7 +120,7 @@ export class Cell extends DesignLogicAbstract<
         undefined,
         undefined,
         undefined,
-        () => this.getSkeleton()
+        () => this.callInstance('skeleton', item => item)
       ]
     },
     progress: {
@@ -131,6 +135,7 @@ export class Cell extends DesignLogicAbstract<
     },
     ripple: {
       item: RippleInclude,
+      canCreate: () => RippleInclude.is(this.props),
       parameters: () => [
         this.naming,
         () => this.i('enabled'),
@@ -139,6 +144,7 @@ export class Cell extends DesignLogicAbstract<
     },
     skeleton: {
       item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -272,15 +278,5 @@ export class Cell extends DesignLogicAbstract<
     }
 
     return props
-  }
-
-  /**
-   * Returns the skeleton instance if skeleton mode is active.
-   *
-   * Возвращает экземпляр скелетона, если включен режим скелетона.
-   * @returns skeleton instance or undefined / экземпляр скелетона или undefined
-   */
-  protected getSkeleton(): SkeletonInclude | undefined {
-    return SkeletonInclude.is(this.props) ? this.i('skeleton') : undefined
   }
 }

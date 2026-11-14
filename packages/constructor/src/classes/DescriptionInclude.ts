@@ -1,8 +1,7 @@
-import { type VNode } from 'vue'
+import { unref, type VNode } from 'vue'
 import {
   getElementId,
   type DesignName,
-  getRef,
   isFilled,
   type RefOrNormal,
   render,
@@ -115,7 +114,7 @@ export class DescriptionInclude {
 
       return [
         render(
-          getRef(this.tag) ?? 'div',
+          unref(this.tag) ?? 'div',
           toBinds(
             {
               id: this.id,

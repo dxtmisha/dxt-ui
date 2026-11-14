@@ -14,11 +14,13 @@
     "@dxtmisha/configuration": "*",
     "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
-    "@dxtmisha/media": "*",
     "@dxtmisha/nitro-basic": "*",
+    "@dxtmisha/scripts": "*",
     "@dxtmisha/styles": "*",
+    "@vitejs/plugin-vue": "*",
     "nitro": "*",
-    "nitropack": "*",
+    "sass": "*",
+    "vite": "*",
     "vue": "*",
     "vue-router": "*"
   }

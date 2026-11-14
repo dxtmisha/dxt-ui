@@ -44,6 +44,7 @@ await expect(component).toBeInTheDocument()
   `,
   import: [
     'import { ref } from \'vue\'',
+    'import type { EventClickValue } from \'@dxtmisha/constructor\'',
     'import type { CellExpose as CellExposeType } from \'@dxtmisha/constructor/Cell\''
   ],
   stories: [
@@ -315,14 +316,14 @@ await expect(detailElement.textContent).toContain('admin')
       const lastEventName = ref<string>('none')
       const lastEventValue = ref<string>('')
 
-      const handleClick = (_event: MouseEvent, value: any) => {
+      const handleClick = (_event: MouseEvent, value: EventClickValue) => {
         lastEventName.value = 'click'
-        lastEventValue.value = String(value)
+        lastEventValue.value = String(value.value)
       }
 
-      const handleClickLite = (_event: MouseEvent, value: any) => {
+      const handleClickLite = (value: EventClickValue) => {
         lastEventName.value = 'clickLite'
-        lastEventValue.value = String(value)
+        lastEventValue.value = String(value.value)
       }
 
       return {

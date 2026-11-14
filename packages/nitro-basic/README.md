@@ -34,7 +34,7 @@ Create a single app initialization module:
 
 ```typescript
 // main.ts
-import { uiCreateApp } from '@dxtmisha/nitro-basic'
+import { uiCreateApp } from '@dxtmisha/nitro-basic/client'
 import App from './App.vue'
 import { routes } from './router'
 
@@ -49,7 +49,7 @@ export function createApp() {
 
 ```typescript
 // entry-client.ts
-import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic'
+import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic/client'
 import { createApp } from './main'
 
 const { app, router, options } = createApp()

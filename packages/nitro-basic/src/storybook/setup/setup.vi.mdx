@@ -35,7 +35,7 @@ Tạo một tệp dùng chung để khởi tạo ứng dụng Vue sẽ được 
 
 ```typescript
 // src/main.ts
-import { uiCreateApp } from '@dxtmisha/nitro-basic'
+import { uiCreateApp } from '@dxtmisha/nitro-basic/client'
 import App from './App.vue'
 import { routes } from './router'
 
@@ -54,7 +54,7 @@ Trên client, bạn cần chuẩn bị trình tạo định danh và mount ứng
 
 ```typescript
 // src/entry-client.ts
-import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic'
+import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic/client'
 import { createApp } from './main'
 
 const { app, router, options } = createApp()
@@ -122,7 +122,7 @@ Ví dụ `main.html`:
 <body>
     <div id="app"><!--ssr-outlet--></div>
     
-    <!--ssr-teleports-->
+    <div id="teleports"><!--ssr-teleports--></div>
     <!--ssr-scriptsJson-->
 
     <script type="module" src="/src/entry-client.ts"></script>

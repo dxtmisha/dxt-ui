@@ -1,16 +1,9 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
-
-import { CaptionInclude } from '../../classes/CaptionInclude'
-import { DescriptionInclude } from '../../classes/DescriptionInclude'
-import { LabelInclude } from '../../classes/LabelInclude'
-
-import { IconTrailingInclude } from '../Icon'
-import { RippleInclude } from '../Ripple'
 
 import { Cell } from './Cell'
 
@@ -134,36 +127,24 @@ export class CellDesign<
   protected initRender(): VNode {
     return h(
       this.item.tag,
-      {
-        ref: this.element,
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       [
-        ...this.renderIcon(),
+        ...this.item.callInstance('icon', item => item.render(), []),
         ...this.renderContext(),
         ...this.renderTrailing(),
         ...this.renderBody(),
-        ...this.renderRipple(),
-        ...this.renderProgress()
+        ...this.item.callInstance('ripple', item => item.render(), []),
+        ...this.item.callInstance('progress', item => item.render(), [])
       ]
     )
-  }
-
-  /**
-   * Renders the icon element if icon prop is provided.
-   *
-   * Рендерит элемент иконки, если передан проп иконки.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderIcon = (): VNode[] => {
-    if (IconTrailingInclude.is(this.props)) {
-      return this.item.i('icon').render()
-    }
-
-    return []
   }
 
   /**
@@ -178,54 +159,12 @@ export class CellDesign<
         'div',
         this.getKeyClass('context'),
         [
-          ...this.renderLabel(),
-          ...this.renderCaption(),
-          ...this.renderDescription()
+          ...this.item.callInstance('label', item => item.render(), []),
+          ...this.item.callInstance('caption', item => item.render(), []),
+          ...this.item.callInstance('description', item => item.render(), [])
         ]
       )
     ]
-  }
-
-  /**
-   * Renders the label element if label prop or slot is provided.
-   *
-   * Рендерит элемент метки, если передано свойство label или слот.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderLabel = (): VNode[] => {
-    if (LabelInclude.is(this.props, this.slots)) {
-      return this.item.i('label').render()
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the caption element if caption prop or slot is provided.
-   *
-   * Рендерит элемент подписи, если передано свойство caption или слот.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderCaption = (): VNode[] => {
-    if (CaptionInclude.is(this.props, this.slots)) {
-      return this.item.i('caption').render()
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the description element if description prop or slot is provided.
-   *
-   * Рендерит элемент описания, если передано свойство description или слот.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderDescription = (): VNode[] => {
-    if (DescriptionInclude.is(this.props, this.slots)) {
-      return this.item.i('description').render()
-    }
-
-    return []
   }
 
   /**
@@ -272,29 +211,5 @@ export class CellDesign<
     }
 
     return []
-  }
-
-  /**
-   * Renders the ripple element if ripple is enabled.
-   *
-   * Рендерит элемент эффекта волны, если включен эффект волны.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderRipple = (): VNode[] => {
-    if (RippleInclude.is(this.props)) {
-      return this.item.i('ripple').render()
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the progress indicator element if progress is enabled.
-   *
-   * Рендерит элемент индикатора прогресса, если включен прогресс.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderProgress = (): VNode[] => {
-    return this.item.callInstance('progress', item => item.render()) ?? []
   }
 }

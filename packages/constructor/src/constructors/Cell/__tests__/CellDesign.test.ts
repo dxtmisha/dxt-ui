@@ -153,21 +153,11 @@ describe('CellDesign', () => {
     const contextNodes = designInstance.renderContext()
     expect(Array.isArray(contextNodes)).toBe(true)
     expect(contextNodes.length).toBeGreaterThan(0)
+    expect(container.textContent).toContain('Item Label')
+    expect(container.textContent).toContain('Item Caption')
+    expect(container.textContent).toContain('Item Description')
 
-    const labelNodes = designInstance.renderLabel()
-    expect(Array.isArray(labelNodes)).toBe(true)
-    expect(labelNodes.length).toBeGreaterThan(0)
-
-    const captionNodes = designInstance.renderCaption()
-    expect(Array.isArray(captionNodes)).toBe(true)
-    expect(captionNodes.length).toBeGreaterThan(0)
-
-    const descriptionNodes = designInstance.renderDescription()
-    expect(Array.isArray(descriptionNodes)).toBe(true)
-    expect(descriptionNodes.length).toBeGreaterThan(0)
-
-    // Optional features with omitted props return empty arrays
-    expect(designInstance.renderIcon()).toEqual([])
+    // Optional slot containers with omitted slots return empty arrays
     expect(designInstance.renderTrailing()).toEqual([])
     expect(designInstance.renderBody()).toEqual([])
   })

@@ -23,16 +23,6 @@ class InspectableCell extends Cell {
   }
 
   /**
-   * Exposes getSkeleton for testing.
-   *
-   * Предоставляет getSkeleton для тестирования.
-   * @returns skeleton instance or undefined / экземпляр скелетона или undefined
-   */
-  public override getSkeleton() {
-    return super.getSkeleton()
-  }
-
-  /**
    * Simulates component mount lifecycle.
    *
    * Симулирует жизненный цикл монтирования компонента.
@@ -223,16 +213,18 @@ describe('Cell', () => {
       scope.stop()
     })
 
-    it('should return skeleton instance or undefined via getSkeleton', () => {
+    it('should respect canCreate and lazily instantiate skeleton only when isSkeleton is true', () => {
       const scope = effectScope()
       const element = ref<HTMLDivElement>()
 
       scope.run(() => {
         const cellWithoutSkeleton = new InspectableCell(reactive({}), element, naming)
-        expect(cellWithoutSkeleton.getSkeleton()).toBeUndefined()
+        expect(cellWithoutSkeleton.callInstance('skeleton', item => item)).toBeUndefined()
+        expect(cellWithoutSkeleton.hasInstance('skeleton')).toBe(false)
 
         const cellWithSkeleton = new InspectableCell(reactive({ isSkeleton: true }), element, naming)
-        expect(cellWithSkeleton.getSkeleton()).toBeDefined()
+        expect(cellWithSkeleton.callInstance('skeleton', item => item)).toBeDefined()
+        expect(cellWithSkeleton.hasInstance('skeleton')).toBe(true)
       })
 
       scope.stop()

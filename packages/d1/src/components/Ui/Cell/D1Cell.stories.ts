@@ -6,6 +6,7 @@ import { CellWikiStorybook } from './wiki'
 // :story-import [!] System label / Системная метка
 import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 import { ref } from 'vue'
+import type { EventClickValue } from '@dxtmisha/constructor'
 import type { CellExpose as CellExposeType } from '@dxtmisha/constructor/Cell'
 import { expect, within, userEvent } from 'storybook/test'
 // :story-import [!] System label / Системная метка
@@ -270,14 +271,14 @@ export const CellEventClick: Story = {
       const lastEventName = ref<string>('none')
       const lastEventValue = ref<string>('')
 
-      const handleClick = (_event: MouseEvent, value: any) => {
+      const handleClick = (_event: MouseEvent, value: EventClickValue) => {
         lastEventName.value = 'click'
-        lastEventValue.value = String(value)
+        lastEventValue.value = String(value.value)
       }
 
-      const handleClickLite = (_event: MouseEvent, value: any) => {
+      const handleClickLite = (value: EventClickValue) => {
         lastEventName.value = 'clickLite'
-        lastEventValue.value = String(value)
+        lastEventValue.value = String(value.value)
       }
 
       return {

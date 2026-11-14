@@ -35,7 +35,7 @@ Create a shared file for Vue application initialization that will be used on bot
 
 ```typescript
 // src/main.ts
-import { uiCreateApp } from '@dxtmisha/nitro-basic'
+import { uiCreateApp } from '@dxtmisha/nitro-basic/client'
 import App from './App.vue'
 import { routes } from './router'
 
@@ -54,7 +54,7 @@ On the client, you need to prepare the identifier generator and mount the applic
 
 ```typescript
 // src/entry-client.ts
-import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic'
+import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic/client'
 import { createApp } from './main'
 
 const { app, router, options } = createApp()
@@ -122,7 +122,7 @@ Example `main.html`:
 <body>
     <div id="app"><!--ssr-outlet--></div>
     
-    <!--ssr-teleports-->
+    <div id="teleports"><!--ssr-teleports--></div>
     <!--ssr-scriptsJson-->
 
     <script type="module" src="/src/entry-client.ts"></script>

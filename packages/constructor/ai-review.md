@@ -39,3 +39,9 @@ src/constructors/Ripple/Ripple.ts
 src/constructors/Ripple/RippleDesign.tsx
 src/constructors/Ripple/RippleInclude.ts
 src/constructors/Ripple/RippleItem.ts
+src/functions/getClassTagAStatic.ts
+src/classes/CaptionInclude.ts
+src/classes/DescriptionInclude.ts
+src/classes/LabelInclude.ts
+src/constructors/Cell/Cell.ts
+src/constructors/Cell/CellDesign.tsx

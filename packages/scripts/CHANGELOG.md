@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.3] - 2026-11-14
+
+### Changed
+- **Nitro Package Template (`src/media/templates/packages/nitro/`)**:
+  - Updated client entry imports in `src/main.ts` and `src/entry-client.ts` to use `@dxtmisha/nitro-basic/client`.
+  - Removed the `as any` type assertion when calling `initPluginBasic(nitroApp)` in `server/plugins/ui-plugin.ts`.
+  - Updated `package.json` `devDependencies` by removing obsolete `nitropack` and unused `@dxtmisha/media`, and adding `@dxtmisha/scripts`, `@vitejs/plugin-vue`, `sass`, and `vite`.
+
+### Fixed
+- **Nitro HTML Template (`src/media/templates/packages/nitro/src/templates/main.html`)**:
+  - Wrapped `<!--ssr-teleports-->` in `<div id="teleports"><!--ssr-teleports--></div>` to match the default `#teleports` target provided by `uiCreateApp`.
+
 ## [1.7.2] - 2026-11-14
 
 ### Changed

@@ -104,24 +104,6 @@ export class LabelInclude {
   }
 
   /**
-   * Checks if the target slot is present.
-   *
-   * Проверяет наличие целевого слота.
-   * @returns checking result / результат проверки
-   */
-  protected hasSlot(): boolean {
-    if (this.slots) {
-      if (this.alternativeSlots) {
-        return 'label' in this.slots
-      }
-
-      return 'default' in this.slots
-    }
-
-    return false
-  }
-
-  /**
    * Renders the label element with children and properties.
    *
    * Рендерит элемент метки с дочерними элементами и свойствами.
@@ -169,6 +151,24 @@ export class LabelInclude {
     }
 
     return elements
+  }
+
+  /**
+   * Checks if the target slot is present.
+   *
+   * Проверяет наличие целевого слота.
+   * @returns checking result / результат проверки
+   */
+  protected hasSlot(): boolean {
+    if (this.slots) {
+      if (this.alternativeSlots) {
+        return 'label' in this.slots
+      }
+
+      return 'default' in this.slots
+    }
+
+    return false
   }
 
   /**
