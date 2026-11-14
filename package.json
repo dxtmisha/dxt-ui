@@ -44,6 +44,8 @@
     "postinstall": "npm run prompt"
   },
   "files": [
+    "packages/cms/dist",
+    "packages/cms/package.json",
     "packages/demo-mcp/dist",
     "packages/demo-mcp/package.json",
     "packages/mcp/dist",
@@ -57,6 +59,10 @@
     "LICENSE"
   ],
   "exports": {
+    "./cms": {
+      "import": "./dist/cms.js",
+      "types": "./dist/cms.d.ts"
+    },
     "./demo-mcp": {
       "import": "./dist/demo-mcp.js",
       "types": "./dist/demo-mcp.d.ts"
@@ -106,6 +112,7 @@
     "@microsoft/api-extractor": "^7.60.1"
   },
   "dependencies": {
+    "@dxtmisha/cms": "workspace:*",
     "@dxtmisha/configuration": ">=1.2.0",
     "@dxtmisha/constructor": ">=0.118.3",
     "@dxtmisha/demo-mcp": ">=0.0.0",

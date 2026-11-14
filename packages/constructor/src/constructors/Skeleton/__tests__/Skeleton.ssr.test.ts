@@ -209,7 +209,7 @@ describe('Skeleton (SSR)', () => {
       )
 
       expect(ssrIncludeStatus).toBe(true)
-      expect(html).toContain('class="d1-skeleton--active d1-skeleton--visible d1-skeleton--invisible nested-skeleton" style="" inert aria-busy="true" aria-live="polite"')
+      expect(html).toContain('inert aria-busy="true" aria-live="polite" class="d1-skeleton--active d1-skeleton--visible d1-skeleton--invisible nested-skeleton" style=""')
       expect(html).toContain('class="d1-skeleton__backgroundVariant"')
       expect(html).toContain('class="d1-skeleton__text d1-skeleton__background"')
       expect(html).toContain('data-ssr-skeleton="true"')
@@ -245,7 +245,7 @@ describe('Skeleton (SSR)', () => {
     it('should render empty server markup when default slot is omitted', async () => {
       const html = await renderSkeletonSsr({})
 
-      expect(html).toBe('<div class="d1-skeleton" style="" aria-busy="false" aria-live="polite"></div>')
+      expect(html).toBe('<div aria-busy="false" aria-live="polite" class="d1-skeleton" style=""></div>')
     })
 
     it('should preserve Unicode and multilingual content in SSR', async () => {

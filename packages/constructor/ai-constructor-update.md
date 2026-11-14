@@ -9,3 +9,4 @@ Maintain one row per component without duplicates. If a cycle stops mid-way, kee
 | Component | Date (ISO 8601, UTC) | Dependencies | Architecture | Code review | Tests | Build | Demo | Visual testing | Wiki |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Image | 2026-11-14T04:20:43Z | 2026-11-14T04:06:38Z | 2026-11-14T04:07:07Z | 2026-11-14T04:07:29Z | 2026-11-14T04:07:48Z | 2026-11-14T04:10:47Z | 2026-11-14T04:11:07Z | Skipped (2026-11-14T04:12:47Z) | 2026-11-14T04:20:43Z |
+| Skeleton | 2026-11-14T04:36:59Z | 2026-11-14T04:28:24Z | 2026-11-14T04:28:48Z | 2026-11-14T04:29:41Z | 2026-11-14T04:30:05Z | 2026-11-14T04:33:10Z | 2026-11-14T04:33:26Z | 2026-11-14T04:36:39Z | 2026-11-14T04:36:59Z |

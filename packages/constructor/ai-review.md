@@ -20,3 +20,6 @@ src/constructors/Image/ImageText.ts
 src/constructors/Image/Image.ts
 src/constructors/Image/ImageDesign.tsx
 src/constructors/Image/ImageInclude.ts
+src/constructors/Skeleton/Skeleton.ts
+src/constructors/Skeleton/SkeletonDesign.tsx
+src/constructors/Skeleton/SkeletonInclude.ts
