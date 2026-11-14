@@ -1,4 +1,4 @@
-import { initGetElementId } from '@dxtmisha/functional-basic'
+import { initGetElementId, resetGetElementId } from '@dxtmisha/functional-basic'
 import { getContextValue } from './getContextValue'
 
 /**
@@ -9,6 +9,7 @@ import { getContextValue } from './getContextValue'
  * Использует значение контекста запроса.
  */
 export function uiIdServer(): void {
+  resetGetElementId()
   initGetElementId(() => {
     const id = getContextValue<{ code: number }>('id')
 

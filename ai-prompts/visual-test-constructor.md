@@ -33,6 +33,8 @@ When the user provides a local demo URL (e.g., `http://localhost:3000/component-
      - Only after ensuring the demo page completely and exhaustively covers all component capabilities, proceed to Step 4.
 4. **Execute Visual Test**:
    - Target URL: the provided browser URL.
-   - Target Directory: `packages/d1/ai-tests/D1<Name>/` (or `packages/constructor/ai-tests/<Name>/`).
-   - Immediately proceed with executing [`ai-prompts/visual-test.md`](./visual-test.md) using the verified demo and resolved paths without asking the user for confirmation.
+   - **Test Results Directory (Mandatory)**: `packages/d1/ai-tests/D1<Name>/` (inside [`packages/d1/ai-tests/`](../packages/d1/ai-tests)).
+     - Always look up existing test specifications, living reports, and screenshots (`test-cases.md`, `test-report.md`, `screenshots/`) in `packages/d1/ai-tests/D1<Name>/`.
+     - Always store and update all test results, specifications, reports, and screenshots strictly in `packages/d1/ai-tests/D1<Name>/`.
+   - Immediately proceed with executing [`ai-prompts/visual-test.md`](./visual-test.md) using the verified demo, resolved paths, and `packages/d1/ai-tests/D1<Name>/` as the target results directory without asking the user for confirmation.
 

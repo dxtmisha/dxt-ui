@@ -250,7 +250,7 @@ describe('ImageAdaptiveItem', () => {
       expect(fixture.item.isBeyond()).toBe(true)
       expect(fixture.item.size.value).toBe(100)
       expect(fixture.item.factor.value).toBe(1)
-      expect(fixture.element.value?.style.backgroundSize).toBe('100%')
+      expect(fixture.element.value?.style.backgroundSize).toBe('100% auto')
     })
 
     it('should recalculate physical widths while the visible element list stays the same', async () => {
@@ -262,7 +262,7 @@ describe('ImageAdaptiveItem', () => {
       await flushCalculations()
 
       expect(ImageCalculationList.get('gallery').width).toBe(400)
-      expect(smaller.element.value?.style.backgroundSize).toBe('25%')
+      expect(smaller.element.value?.style.backgroundSize).toBe('25% auto')
     })
 
     it('should recalculate physical heights when scaling along the Y axis', async () => {
@@ -380,7 +380,7 @@ describe('ImageAdaptiveItem', () => {
 
       expect(ImageCalculationList.get('gallery').width).toBe(100)
       expect(ImageCalculationList.get('other').width).toBe(200)
-      expect(smaller.element.value?.style.backgroundSize).toBe('100%')
+      expect(smaller.element.value?.style.backgroundSize).toBe('100% auto')
     })
 
     it('should recalculate the group factor when loaded image dimensions change', async () => {
@@ -396,7 +396,7 @@ describe('ImageAdaptiveItem', () => {
       expect(fixture.item.size.value).toBe(400)
       expect(ImageCalculationList.get('gallery').factorMax).toBe(0.5)
       expect(fixture.background.size.value).toBe('50% auto')
-      expect(fixture.element.value?.style.backgroundSize).toBe('50%')
+      expect(fixture.element.value?.style.backgroundSize).toBe('50% auto')
     })
 
     it('should invalidate cached computed dimensions after a DOM resize', async () => {
@@ -421,7 +421,7 @@ describe('ImageAdaptiveItem', () => {
 
       expect(fixture.item.factor.value).toBe(0.5)
       expect(other.background.size.value).toBe('50% auto')
-      expect(other.element.value?.style.backgroundSize).toBe('50%')
+      expect(other.element.value?.style.backgroundSize).toBe('50% auto')
     })
 
     it('should batch property changes and resize notifications into a single animation frame', async () => {

@@ -62,10 +62,10 @@ describe('Image (contracts checked by TypeScript)', () => {
     })
 
     it('should keep renderer attribute computations typed', () => {
-      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsImage']['value']>().not.toBeAny()
-      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsImage']['value']>().toEqualTypeOf<ConstrBind>()
-      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsMain']['value']>().not.toBeAny()
-      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsMain']['value']>().toEqualTypeOf<ConstrBind>()
+      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsImage']>().not.toBeAny()
+      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsImage']>().toEqualTypeOf<ConstrBind>()
+      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsMain']>().not.toBeAny()
+      expectTypeOf<ImageDesign<ImageComponents, ImageExpose, ImageClasses, ImageProps>['propsMain']>().toEqualTypeOf<ConstrBind>()
     })
   })
 

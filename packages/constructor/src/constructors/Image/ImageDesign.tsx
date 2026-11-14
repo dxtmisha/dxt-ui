@@ -1,4 +1,4 @@
-import { computed, h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrOptions,
@@ -7,8 +7,6 @@ import {
 } from '@dxtmisha/functional'
 
 import { Image } from './Image'
-import { ImageImg } from './ImageImg'
-import { ImageText } from './ImageText'
 
 import {
   type ImageEventItem,
@@ -79,20 +77,105 @@ export class ImageDesign<
     )
   }
 
-  /** Shared image element bindings / Общие привязки элемента изображения */
-  readonly propsImage = computed<ConstrBind>(() => ({
-    ...this.getAttrs(),
-    ref: this.element,
-    key: 'image',
-    class: this.classes?.value.main
-  }))
+  /**
+   * Shared image element bindings.
+   *
+   * Общие привязки элемента изображения.
+   * @returns image bindings / привязки изображения
+   */
+  get propsImage(): ConstrBind {
+    return mergeProps(
+      this.getAttrs(),
+      {
+        ref: this.element,
+        key: 'image',
+        class: this.classes?.value.main
+      }
+    )
+  }
 
-  /** Root image bindings with styles and accessibility / Корневые привязки изображения со стилями и доступностью */
-  readonly propsMain = computed<ConstrBind>(() => ({
-    ...this.propsImage.value,
-    ...this.item.binds,
-    style: this.styles?.value
-  }))
+  /**
+   * Root image bindings with styles and accessibility.
+   *
+   * Корневые привязки изображения со стилями и доступностью.
+   * @returns root element bindings / привязки корневого элемента
+   */
+  get propsMain(): ConstrBind {
+    return mergeProps(
+      this.propsImage,
+      this.item.binds,
+      {
+        style: this.styles?.value
+      }
+    )
+  }
+
+  /**
+   * Rendering the img tag.
+   *
+   * Рендеринг тега img.
+   * @returns rendered img VNode / отрендеренный VNode img
+   */
+  readonly renderImg = (): VNode => {
+    return h('span', this.propsImage, this.renderImgItem())
+  }
+
+  /**
+   * Rendering the img item.
+   *
+   * Рендеринг элемента img.
+   * @returns rendered img item VNode / отрендеренный VNode элемента img
+   */
+  readonly renderImgItem = (): VNode => {
+    return h('img', this.item.i('img').binds.value)
+  }
+
+  /**
+   * Rendering the picture tag.
+   *
+   * Рендеринг тега picture.
+   * @returns rendered picture VNode / отрендеренный VNode picture
+   */
+  readonly renderPicture = (): VNode => {
+    const list = this.item.i('img').picture.value
+    const children: VNode[] = []
+
+    if (list) {
+      list.forEach(
+        item => children.push(h('source', item))
+      )
+    }
+
+    children.push(this.renderImgItem())
+
+    return h('picture', this.propsImage, children)
+  }
+
+  /**
+   * Rendering the value for the component.
+   *
+   * Рендеринг значения для компонента.
+   * @returns rendered value / отрендеренное значение
+   */
+  readonly renderValue = (): string | VNode | undefined => {
+    const type = this.item.i('type').get()
+
+    if (type === ImageTypeValue.pdf) {
+      return h(
+        'object',
+        this.item.valueBinds
+      )
+    }
+
+    if (type === ImageTypeValue.flagCompressed) {
+      return h(
+        'span',
+        { class: `ui-sys-flags ui-sys-flags--${this.item.i('text').get()}` }
+      )
+    }
+
+    return this.item.callInstance('text', item => item.get())
+  }
 
   /**
    * Improvement of the obtained list of classes.
@@ -130,9 +213,9 @@ export class ImageDesign<
    * @returns rendered image root / отрендеренный корневой элемент изображения
    */
   protected initRender(): VNode {
-    if (ImageImg.is(this.props)) {
-      const img = this.item.i('img')
+    const img = this.item.callInstance('img', item => item)
 
+    if (img) {
       if (img.isPicture()) {
         return this.renderPicture()
       }
@@ -144,7 +227,7 @@ export class ImageDesign<
 
     return h(
       'span',
-      this.propsMain.value,
+      this.propsMain,
       this.renderValue()
     )
   }
@@ -157,76 +240,5 @@ export class ImageDesign<
    */
   protected initStyles(): ConstrStyles {
     return this.item.styles
-  }
-
-  /**
-   * Rendering the img tag.
-   *
-   * Рендеринг тега img.
-   * @returns rendered img VNode / отрендеренный VNode img
-   */
-  protected readonly renderImg = (): VNode => {
-    return h('span', this.propsImage.value, this.renderImgItem())
-  }
-
-  /**
-   * Rendering the img item.
-   *
-   * Рендеринг элемента img.
-   * @returns rendered img item VNode / отрендеренный VNode элемента img
-   */
-  protected readonly renderImgItem = (): VNode => {
-    return h('img', this.item.i('img').binds.value)
-  }
-
-  /**
-   * Rendering the picture tag.
-   *
-   * Рендеринг тега picture.
-   * @returns rendered picture VNode / отрендеренный VNode picture
-   */
-  protected readonly renderPicture = (): VNode => {
-    const list = this.item.i('img').picture.value
-    const children: VNode[] = []
-
-    if (list) {
-      list.forEach(
-        item => children.push(h('source', item))
-      )
-    }
-
-    children.push(this.renderImgItem())
-
-    return h('picture', this.propsImage.value, children)
-  }
-
-  /**
-   * Rendering the value for the component.
-   *
-   * Рендеринг значения для компонента.
-   * @returns rendered value / отрендеренное значение
-   */
-  protected readonly renderValue = (): string | VNode | undefined => {
-    const type = this.item.i('type').get()
-
-    if (type === ImageTypeValue.pdf) {
-      return h(
-        'object',
-        this.item.valueBinds
-      )
-    }
-
-    if (type === ImageTypeValue.flagCompressed) {
-      return h(
-        'span',
-        { class: `ui-sys-flags ui-sys-flags--${this.item.i('text').get()}` }
-      )
-    }
-
-    if (ImageText.is(type)) {
-      return this.item.i('text').get()
-    }
-
-    return undefined
   }
 }

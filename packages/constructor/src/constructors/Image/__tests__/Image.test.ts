@@ -82,7 +82,7 @@ describe('Image (complete component)', () => {
       const root = fixture.host.querySelector<HTMLElement>('.test-image')!
       expect(root.style.getPropertyValue('background-position-x')).toBe('60%')
       expect(root.style.getPropertyValue('background-position-y')).toBe('40%')
-      expect(root.style.backgroundSize).toBe('auto 166.66666666666669%')
+      expect(root.style.backgroundSize).toBe('auto 166.667%')
     })
 
     it.each([
@@ -214,7 +214,7 @@ describe('Image (complete component)', () => {
       loadImage(browser.images[0]!, 400, 200)
       await flushUpdates()
 
-      expect(root.style.backgroundSize).toBe('100%')
+      expect(root.style.backgroundSize).toBe('100% auto')
     })
 
     it('should apply mask-image for public icons and contain background for SVG flags', async () => {

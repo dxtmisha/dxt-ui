@@ -181,6 +181,39 @@ export abstract class DesignLogicAbstract<
   }
 
   /**
+   * Executes a callback returning an array with the dependency instance when allowed, otherwise returns an empty array.
+   *
+   * Выполняет функцию обратного вызова, возвращающую массив, с экземпляром зависимости при наличии доступа, иначе возвращает пустой массив.
+   * @param name String key of a dependency constructor. / Строковый ключ конструктора зависимости.
+   * @param callback Callback invoked with the dependency instance. / Функция обратного вызова, получающая экземпляр зависимости.
+   * @returns Callback array result if executed, otherwise an empty array. / Результат-массив функции обратного вызова, иначе пустой массив.
+   */
+  callInstanceArray<
+    K extends keyof CONSTRUCTORS & string,
+    T = unknown
+  >(
+    name: K,
+    callback: (instance: ConstrInstance<CONSTRUCTORS, K>) => T[]
+  ): T[] {
+    return this.callInstance<K, T[], T[]>(name, callback, [])
+  }
+
+  /**
+   * Executes a callback returning a boolean with the dependency instance when allowed, otherwise returns `false`.
+   *
+   * Выполняет функцию обратного вызова, возвращающую булево значение, с экземпляром зависимости при наличии доступа, иначе возвращает `false`.
+   * @param name String key of a dependency constructor. / Строковый ключ конструктора зависимости.
+   * @param callback Callback invoked with the dependency instance. / Функция обратного вызова, получающая экземпляр зависимости.
+   * @returns Callback boolean result if executed, otherwise `false`. / Булев результат функции обратного вызова, иначе `false`.
+   */
+  callInstanceBoolean<K extends keyof CONSTRUCTORS & string>(
+    name: K,
+    callback: (instance: ConstrInstance<CONSTRUCTORS, K>) => boolean
+  ): boolean {
+    return this.callInstance<K, boolean, boolean>(name, callback, false)
+  }
+
+  /**
    * Delegates to `getInstance()` with the same key and result.
    *
    * Вызывает `getInstance()` с тем же ключом и результатом.

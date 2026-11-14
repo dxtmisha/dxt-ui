@@ -1,4 +1,4 @@
-import { initGetElementId } from '@dxtmisha/functional-basic'
+import { initGetElementId, resetGetElementId } from '@dxtmisha/functional-basic'
 
 /** Incremental counter for client-side element IDs / Инкрементный счётчик для клиентских идентификаторов элементов */
 let code = 10_000
@@ -11,6 +11,7 @@ let code = 10_000
  * Использует инкрементный счетчик, начиная с 10000.
  */
 export function uiIdClient(): void {
+  resetGetElementId()
   initGetElementId(() => {
     return `ui-${code++}`
   })

@@ -39,7 +39,7 @@ describe('ImageDesign', () => {
     const root = fixture.item.getRoot()
     expect(root.type).toBe('span')
     expect(root.key).toBe('image')
-    expect(root.props?.ref).toBe(fixture.item.propsImage.value.ref)
+    expect(root.props?.ref).toBe(fixture.item.propsImage.ref)
     expect(root.props?.class).toContain('token-image')
     expect(root.props?.['aria-label']).toBe('Accent')
     expect(root.props?.style).toMatchObject({ 'background-color': '#123456' })

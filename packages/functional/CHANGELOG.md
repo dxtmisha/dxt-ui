@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.1] - 2026-11-14
+
+### Added
+- **`DesignLogicAbstract`**:
+  - Added `callInstanceArray(name, callback)` and `callInstanceBoolean(name, callback)` helper methods (`src/classes/design/DesignLogicAbstract.ts`) delegating to `callInstance` with default fallback values `[]` and `false`, respectively.
+
+### Changed
+- **Dependencies**:
+  - Updated `vue` (`>=3.5.45`) and `vue-router` (`>=5.5.1`) dependency version ranges.
+
 ## [2.2.0] - 2026-11-13
 
 ### Added

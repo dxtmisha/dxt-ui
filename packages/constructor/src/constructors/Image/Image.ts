@@ -80,7 +80,7 @@ export class Image extends DesignLogicAbstract<
     },
     background: {
       item: ImageBackground,
-      conditions: () => ImageBackground.is(this.i('type').get()),
+      canCreate: () => ImageBackground.is(this.i('type').get()),
       parameters: () => [
         this.props,
         () => this.i('adaptiveItem'),
@@ -90,12 +90,10 @@ export class Image extends DesignLogicAbstract<
     },
     coordinator: {
       item: ImageCoordinator,
-      conditions: () => ImageCoordinator.is(this.props),
       parameters: () => [this.props]
     },
     data: {
       item: ImageData,
-      conditions: () => ImageData.is(this.i('type').get()),
       parameters: () => [
         this.props,
         () => this.i('lazy'),
@@ -115,7 +113,7 @@ export class Image extends DesignLogicAbstract<
     },
     img: {
       item: ImageImg,
-      conditions: () => ImageImg.is(this.props),
+      canCreate: () => ImageImg.is(this.props),
       parameters: () => [
         this.props,
         () => this.i('background'),
@@ -141,7 +139,7 @@ export class Image extends DesignLogicAbstract<
     },
     text: {
       item: ImageText,
-      conditions: () => ImageText.is(this.i('type').get()),
+      canCreate: () => ImageText.is(this.i('type').get()),
       parameters: () => [
         this.props,
         () => this.i('data'),
@@ -206,8 +204,8 @@ export class Image extends DesignLogicAbstract<
     const type = this.i('type').get()
     const data: ConstrClassObject = {
       [this.naming.getStatusClass('type', String(type))]: Boolean(type),
-      [this.naming.getStatusClass('background')]: ImageBackground.is(type) && this.i('background').isImage(),
-      [this.naming.getStatusClass('img')]: ImageImg.is(this.props) && this.i('img').is(),
+      [this.naming.getStatusClass('background')]: this.callInstanceBoolean('background', item => item.isImage()),
+      [this.naming.getStatusClass('img')]: this.callInstanceBoolean('img', item => item.is()),
       notranslate: true
     }
 
