@@ -1,13 +1,13 @@
 // ai-none
 
+import { mergeProps } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
   type DesignName,
   executeFunctionRef,
   getBind,
-  type RefOrNormalOrFunction,
-  toBinds
+  type RefOrNormalOrFunction
 } from '@dxtmisha/functional'
 
 import { IconLiteInclude } from './IconLiteInclude'
@@ -63,22 +63,22 @@ export class IconInclude<
 
     return getBind(
       props.icon,
-      {
-        active: props.selected,
-        turn: executeFunctionRef(this.turn) ?? props.iconTurn,
-        hide: props.iconHide,
-        asPalette: props.iconPalette,
-        animationType: 'type2',
-        dir: executeFunctionRef(this.dir) ?? props.iconDir,
-        start: executeFunctionRef(this.start),
-        end: executeFunctionRef(this.end),
-        ...toBinds(
-          this.getExtra(),
-          props.iconAttrs,
-          this.getClasses('icon')
-        ),
-        ...this.getEventType()
-      },
+      mergeProps(
+        {
+          active: props.selected,
+          turn: executeFunctionRef(this.turn) ?? props.iconTurn,
+          hide: props.iconHide,
+          asPalette: props.iconPalette,
+          animationType: 'type2',
+          dir: executeFunctionRef(this.dir) ?? props.iconDir,
+          start: executeFunctionRef(this.start),
+          end: executeFunctionRef(this.end)
+        },
+        this.getExtra() ?? {},
+        props.iconAttrs ?? {},
+        this.getClasses('icon'),
+        this.getEventType()
+      ),
       'icon'
     )
   }

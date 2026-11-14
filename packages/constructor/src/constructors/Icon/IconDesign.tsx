@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -162,12 +162,14 @@ export class IconDesign<
 
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ...this.item.binds,
-        class: this.classes?.value.main,
-        style: this.styles?.value
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
   }

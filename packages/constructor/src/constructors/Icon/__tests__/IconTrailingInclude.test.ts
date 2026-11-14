@@ -19,7 +19,7 @@ function extractClassList(value: ConstrClass | Undefined): string[] {
   }
 
   if (typeof value === 'string') {
-    return [value]
+    return value.trim().split(/\s+/).filter(Boolean)
   }
 
   if (Array.isArray(value)) {

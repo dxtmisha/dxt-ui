@@ -63,6 +63,7 @@ export class Icon extends DesignLogicAbstract<
     },
     skeleton: {
       item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -131,13 +132,13 @@ export class Icon extends DesignLogicAbstract<
    * @returns classes values / значения классов
    */
   get classes(): ConstrClassObject {
-    const classes: ConstrClassObject = {}
+    const skeletonClasses = this.callInstance('skeleton', item => item.classes)
 
-    if (SkeletonInclude.is(this.props)) {
-      Object.assign(classes, this.i('skeleton').classes)
+    if (skeletonClasses) {
+      return { ...skeletonClasses }
     }
 
-    return classes
+    return {}
   }
 
   /**

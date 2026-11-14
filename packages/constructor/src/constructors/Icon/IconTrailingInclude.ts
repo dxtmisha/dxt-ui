@@ -1,12 +1,11 @@
 // ai-none
 
-import { type VNode } from 'vue'
+import { type VNode, mergeProps } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
   type DesignName,
-  getBind,
-  toBinds
+  getBind
 } from '@dxtmisha/functional'
 
 import { IconInclude } from './IconInclude'
@@ -73,19 +72,19 @@ export class IconTrailingInclude<
 
     return getBind(
       props.iconTrailing,
-      {
-        turn: props.iconTurn,
-        asPalette: props.iconTrailingPalette || props.iconPalette,
-        dir: props.iconDir,
-        end: true,
-        high: true,
-        ...toBinds(
-          this.getExtra(),
-          props.iconAttrs,
-          this.getClasses('trailing'),
-          this.getEventType('icon-trailing')
-        )
-      },
+      mergeProps(
+        {
+          turn: props.iconTurn,
+          asPalette: props.iconTrailingPalette || props.iconPalette,
+          dir: props.iconDir,
+          end: true,
+          high: true
+        },
+        this.getExtra() ?? {},
+        props.iconAttrs ?? {},
+        this.getClasses('trailing'),
+        this.getEventType('icon-trailing')
+      ),
       'icon'
     )
   }

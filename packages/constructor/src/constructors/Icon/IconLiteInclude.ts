@@ -1,6 +1,6 @@
 // ai-none
 
-import { type VNode } from 'vue'
+import { type VNode, mergeProps } from 'vue'
 import {
   type ConstrBind,
   type ConstrClass,
@@ -8,8 +8,7 @@ import {
   type DesignName,
   executeFunction,
   executeFunctionRef,
-  getBind,
-  toBinds
+  getBind
 } from '@dxtmisha/functional'
 
 import type { ComponentIncludeExtra } from '../../types/componentInclude'
@@ -61,8 +60,8 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
   get iconBind(): ConstrBind<IconPropsBasic> {
     return getBind(
       this.getProps().icon,
-      toBinds(
-        this.getExtra(),
+      mergeProps(
+        this.getExtra() ?? {},
         this.getClasses(),
         this.getEventType()
       ),

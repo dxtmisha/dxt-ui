@@ -23,3 +23,10 @@ src/constructors/Image/ImageInclude.ts
 src/constructors/Skeleton/Skeleton.ts
 src/constructors/Skeleton/SkeletonDesign.tsx
 src/constructors/Skeleton/SkeletonInclude.ts
+src/classes/EnabledInclude.ts
+src/classes/EventClickInclude.ts
+src/constructors/Icon/Icon.ts
+src/constructors/Icon/IconDesign.tsx
+src/constructors/Icon/IconLiteInclude.ts
+src/constructors/Icon/IconInclude.ts
+src/constructors/Icon/IconTrailingInclude.ts
