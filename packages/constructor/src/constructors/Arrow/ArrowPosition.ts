@@ -45,19 +45,8 @@ export class ArrowPosition extends DesignLifecycleAbstract {
    * @param props input properties / входные свойства
    * @returns true if position is filled / true, если позиция задана
    */
-  static is(props?: ArrowProps): boolean {
+  static is(props?: Readonly<ArrowProps>): boolean {
     return isFilled(props?.position)
-  }
-
-  /**
-   * Checks whether automatic positioning is enabled.
-   *
-   * Проверяет, включено ли автоматическое позиционирование.
-   * @param props input properties / входные свойства
-   * @returns true if position is auto / true, если позиция auto
-   */
-  static isAuto(props?: ArrowProps): boolean {
-    return props?.position === 'auto'
   }
 
   /**
@@ -70,7 +59,7 @@ export class ArrowPosition extends DesignLifecycleAbstract {
    * @param parent function returning parent element / функция, возвращающая родительский элемент
    */
   constructor(
-    protected readonly props: ArrowProps,
+    protected readonly props: Readonly<ArrowProps>,
     protected readonly elementItem: () => ArrowElement,
     protected readonly elementTarget: () => ArrowElementTarget,
     protected readonly parent: () => ArrowParent
@@ -253,7 +242,11 @@ export class ArrowPosition extends DesignLifecycleAbstract {
     elementItemRect: DOMRect | undefined = this.elementItem().getRect(),
     elementTargetRect: DOMRect | undefined = this.elementTarget().getRect()
   ): ArrowDirection | undefined {
-    if (!ArrowPosition.isAuto(this.props)) {
+    if (!ArrowPosition.is(this.props)) {
+      return undefined
+    }
+
+    if (!ArrowElementTarget.isAuto(this.props)) {
       return this.props.position as ArrowDirection
     }
 

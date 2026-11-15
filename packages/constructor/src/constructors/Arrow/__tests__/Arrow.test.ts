@@ -1,337 +1,308 @@
 // @vitest-environment jsdom
-import { describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick, reactive, ref } from 'vue'
-import { DesignName } from '@dxtmisha/functional'
+import './testWarnings'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import {
+  computed,
+  createApp,
+  defineComponent,
+  nextTick,
+  reactive,
+  type Ref
+} from 'vue'
+import { inArray, type ConstrClasses, type ConstrStyles } from '@dxtmisha/functional'
 
-import { Arrow, type ArrowConstructors } from '../Arrow'
-import { ArrowDirection } from '../basicTypes'
-import type { ArrowProps } from '../props'
+import { ArrowDesign } from '../ArrowDesign'
+import { defaultsArrow, type ArrowProps } from '../props'
+import type {
+  ArrowClasses,
+  ArrowComponents,
+  ArrowExpose
+} from '../types'
+
+/** Active DOM and app cleanup callbacks / Колбэки очистки DOM и приложений */
+const cleanups: Array<() => void> = []
+
+afterEach(() => {
+  cleanups.splice(0).reverse().forEach(cleanup => cleanup())
+  vi.restoreAllMocks()
+})
 
 /**
- * Inspectable subclass exposing instances map and condition lifecycle triggers for test verification.
+ * Mounts full ArrowDesign component inside a parent element with optional target element and attrs.
  *
- * Подкласс для проверки карты экземпляров зависимостей и вызовов условий.
+ * Монтирует полный компонент ArrowDesign внутри родительского элемента с опциональным целевым элементом и атрибутами.
  */
-class InspectableArrow extends Arrow {
-  /**
-   * Returns currently instantiated sub-constructors.
-   *
-   * Возвращает созданные на текущий момент подконструкторы.
-   * @returns map of instantiated sub-constructors / карта созданных подконструкторов
-   */
-  get instantiatedItems(): Partial<Record<keyof ArrowConstructors, unknown>> {
-    return this.instances
-  }
+function mountArrowComponent(options: {
+  attrs?: Record<string, unknown>
+  initialProps?: ArrowProps
+  parentStyles?: Partial<CSSStyleDeclaration>
+} = {}) {
+  const parentElement = document.createElement('div')
+  document.body.appendChild(parentElement)
+  cleanups.push(() => parentElement.remove())
 
-  /**
-   * Triggers reactive condition watchers for sub-constructors.
-   *
-   * Запускает реактивные наблюдатели условий для подконструкторов.
-   */
-  testInitConditions(): void {
-    this.initConditions()
-  }
+  const props = reactive<ArrowProps>({
+    ...(defaultsArrow as ArrowProps),
+    ...options.initialProps
+  })
 
-  /**
-   * Simulates component mount lifecycle.
-   *
-   * Симулирует жизненный цикл монтирования компонента.
-   */
-  triggerMounted(): void {
-    this.isMounted.value = true
-    this.callLifecycle('onMounted')
-    this.initConditions()
-  }
+  let exposed!: ArrowExpose & { elementHtml: Ref<HTMLDivElement | undefined> }
 
-  /**
-   * Simulates component unmount lifecycle.
-   *
-   * Симулирует жизненный цикл размонтирования компонента.
-   */
-  triggerUnmounted(): void {
-    this.isMounted.value = false
-    this.callLifecycle('onUnmounted')
+  const ArrowComponent = defineComponent({
+    inheritAttrs: false,
+    setup() {
+      const classesToken = computed<ConstrClasses>(() => ({
+        main: {
+          'd1-arrow': true,
+          [`d1-arrow--position--${props.position}`]: inArray(
+            ['auto', 'top', 'bottom', 'left', 'right'],
+            props.position
+          )
+        }
+      }))
+      const stylesToken = computed<ConstrStyles>(() => ({}))
+
+      const design = new ArrowDesign<
+        ArrowComponents,
+        ArrowExpose,
+        ArrowClasses,
+        ArrowProps
+      >(
+        'd1.arrow',
+        props,
+        {
+          classes: classesToken,
+          styles: stylesToken
+        }
+      )
+
+      exposed = design.expose() as ArrowExpose & { elementHtml: Ref<HTMLDivElement | undefined> }
+
+      return design.render()
+    }
+  })
+
+  const app = createApp(ArrowComponent, options.attrs)
+  app.mount(parentElement)
+  cleanups.push(() => app.unmount())
+
+  return {
+    app,
+    exposed,
+    parentElement,
+    props
   }
 }
 
-describe('Arrow', () => {
-  describe('Standard functional requirements (Happy path)', () => {
-    it('should not instantiate any subordinate classes eagerly upon creation', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({})
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
+/**
+ * Flushes microtasks and a single animation frame.
+ *
+ * Выполняет микрозадачи и один кадр анимации.
+ */
+async function flushFrame(): Promise<void> {
+  await nextTick()
+  await new Promise(resolve => requestAnimationFrame(resolve))
+  await nextTick()
+}
 
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
+describe('Arrow (Integration)', () => {
+  describe('Full component DOM rendering & lifecycle', () => {
+    it('should render arrow SVG, bind aria-hidden, merge external attrs, and update points after mount', async () => {
+      vi.spyOn(window, 'getComputedStyle').mockImplementation((targetElement: Element) => {
+        if (targetElement.classList.contains('d1-arrow')) {
+          return {
+            getPropertyValue: (propertyName: string) => {
+              if (propertyName === '--d1-arrow-arrowWidth') return '16px'
+              if (propertyName === '--d1-arrow-arrowHeight') return '8px'
+              return ''
+            }
+          } as unknown as CSSStyleDeclaration
+        }
 
-      expect(arrow).toBeDefined()
-      expect(arrow.instantiatedItems.element).toBeUndefined()
-      expect(arrow.instantiatedItems.elementTarget).toBeUndefined()
-      expect(arrow.instantiatedItems.event).toBeUndefined()
-      expect(arrow.instantiatedItems.parent).toBeUndefined()
-      expect(arrow.instantiatedItems.position).toBeUndefined()
-
-      scope.stop()
-    })
-
-    it('should track isMounted state through lifecycle triggers', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({})
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
-
-      expect(arrow.isMounted.value).toBe(false)
-      arrow.triggerMounted()
-      expect(arrow.isMounted.value).toBe(true)
-      arrow.triggerUnmounted()
-      expect(arrow.isMounted.value).toBe(false)
-
-      scope.stop()
-    })
-
-    it('should resolve direction without instantiating position when position is static', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({ position: 'top' })
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
-
-      expect(arrow.instantiatedItems.position).toBeUndefined()
-      expect(arrow.direction).toBe(ArrowDirection.TOP)
-      expect(arrow.instantiatedItems.position).toBeUndefined()
-
-      arrow.update()
-      expect(arrow.instantiatedItems.position).toBeDefined()
-
-      scope.stop()
-    })
-
-    it('should lazily instantiate position when position is auto', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({ position: 'auto', elementTarget: '#target' })
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
-
-      expect(arrow.instantiatedItems.position).toBeUndefined()
-      expect(arrow.direction).toBe(ArrowDirection.HIDE)
-      expect(arrow.instantiatedItems.position).toBeDefined()
-
-      scope.stop()
-    })
-
-    it('should return ArrowDirection.HIDE if position prop is empty', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({ position: undefined })
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
-
-      expect(arrow.direction).toBe(ArrowDirection.HIDE)
-
-      scope.stop()
-    })
-
-    it('should calculate points according to direction and element dimensions', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({ position: 'bottom' })
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
-      arrow.update()
-
-      // Mock element dimensions
-      vi.spyOn(arrow.i('element'), 'width', 'get').mockReturnValue(20)
-      vi.spyOn(arrow.i('element'), 'height', 'get').mockReturnValue(10)
-
-      expect(arrow.points).toBe('0, 0 10, 10 20, 0')
-
-      props.position = 'left'
-      arrow.update()
-      expect(arrow.points).toBe('10, 0 0, 10 10, 20')
-
-      props.position = 'right'
-      arrow.update()
-      expect(arrow.points).toBe('0, 0 10, 10 0, 20')
-
-      props.position = 'top'
-      arrow.update()
-      expect(arrow.points).toBe('0, 10 10, 0 20, 10')
-
-      scope.stop()
-    })
-
-    it('should provide aria and binds getters with aria-hidden', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({})
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
-
-      expect(arrow.aria).toEqual({ 'aria-hidden': 'true' })
-      expect(arrow.binds).toEqual({ 'aria-hidden': 'true' })
-
-      scope.stop()
-    })
-
-    it('should compute classes based on direction status class', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({ position: 'bottom' })
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
-      arrow.update()
-
-      expect(arrow.classes).toEqual({
-        'd1-arrow--direction--bottom': true
+        return {
+          backgroundColor: 'rgb(255, 255, 255)',
+          borderWidth: '0px',
+          borderColor: 'transparent',
+          borderRadius: '0px',
+          getPropertyValue: () => ''
+        } as unknown as CSSStyleDeclaration
       })
 
-      scope.stop()
-    })
-
-    it('should assemble styles correctly with border and shift when target is present', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({ position: 'auto', elementTarget: '#target' })
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
-
-      // Mock parent properties
-      vi.spyOn(arrow.i('parent'), 'background', 'get').mockReturnValue('rgb(255, 0, 0)')
-      vi.spyOn(arrow.i('parent'), 'borderWidth', 'get').mockReturnValue('1px')
-      vi.spyOn(arrow.i('parent'), 'borderColor', 'get').mockReturnValue('rgb(0, 255, 0)')
-      vi.spyOn(arrow.i('parent'), 'borderRadius', 'get').mockReturnValue('4px')
-      vi.spyOn(arrow.i('parent'), 'isBorder').mockReturnValue(true)
-
-      // Mock position clipPath and shift
-      arrow.i('position').clipPath.value = 'path("M0,0 Z")'
-      arrow.i('position').shift.value = '15px'
-      vi.spyOn(arrow.i('elementTarget'), 'is').mockReturnValue(true)
-
-      const styles = arrow.styles as Record<string, string | undefined>
-      expect(styles['--d1-arrow-sys-background']).toBe('rgb(255, 0, 0)')
-      expect(styles['--d1-arrow-sys-borderWidth']).toBe('1px')
-      expect(styles['--d1-arrow-sys-borderColor']).toBe('rgb(0, 255, 0)')
-      expect(styles['--d1-arrow-sys-borderRadius']).toBe('4px')
-      expect(styles['--d1-arrow-sys-clipPath']).toBe('path("M0,0 Z")')
-      expect(styles['--d1-arrow-sys-shift']).toBe('15px')
-
-      scope.stop()
-    })
-
-    it('should not instantiate position or elementTarget when styles are computed without border or target', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({ position: 'bottom' })
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
-
-      // Mock parent with no border
-      vi.spyOn(arrow.i('parent'), 'isBorder').mockReturnValue(false)
-
-      const styles = arrow.styles as Record<string, string | undefined>
-      expect(styles['--d1-arrow-sys-clipPath']).toBeUndefined()
-      expect(styles['--d1-arrow-sys-shift']).toBeUndefined()
-
-      expect(arrow.instantiatedItems.position).toBeUndefined()
-      expect(arrow.instantiatedItems.elementTarget).toBeUndefined()
-
-      scope.stop()
-    })
-
-    it('should delegate update() to position.update()', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({})
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
-      const spyUpdate = vi.spyOn(arrow.i('position'), 'update')
-
-      arrow.update()
-      expect(spyUpdate).toHaveBeenCalledTimes(1)
-
-      scope.stop()
-    })
-
-    it('should support dependency injection overrides', () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({})
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
-
-      class MockElementTarget {
-        is(): boolean {
-          return true
+      const { exposed, parentElement, props } = mountArrowComponent({
+        attrs: {
+          'class': 'custom-arrow',
+          'data-testid': 'arrow-root',
+          'style': '--custom-var: 1;'
+        },
+        initialProps: {
+          position: 'top'
         }
-      }
+      })
 
-      const arrow = scope.run(() => new InspectableArrow(
-        props,
-        element,
-        naming,
-        undefined,
-        undefined,
-        undefined,
-        {
-          elementTarget: MockElementTarget as any
-        }
-      ))!
+      await flushFrame()
+      await flushFrame()
 
-      expect(arrow.i('elementTarget')).toBeInstanceOf(MockElementTarget)
+      const rootElement = parentElement.querySelector<HTMLDivElement>('.d1-arrow')
+      expect(rootElement).not.toBeNull()
+      expect(exposed.elementHtml.value).toBe(rootElement)
+      expect(rootElement?.getAttribute('aria-hidden')).toBe('true')
+      expect(rootElement?.getAttribute('data-testid')).toBe('arrow-root')
+      expect(rootElement?.classList.contains('custom-arrow')).toBe(true)
+      expect(rootElement?.classList.contains('d1-arrow--position--top')).toBe(true)
+      expect(rootElement?.classList.contains('d1-arrow--direction--top')).toBe(true)
+      expect(rootElement?.style.getPropertyValue('--custom-var')).toBe('1')
+      expect(rootElement?.style.getPropertyValue('--d1-arrow-sys-background')).toBe('rgb(255, 255, 255)')
 
-      scope.stop()
+      const svg = rootElement?.querySelector('svg.d1-arrow__arrowArea')
+      const polygon = rootElement?.querySelector('polygon.d1-arrow__arrow')
+      const polyline = rootElement?.querySelector('polyline.d1-arrow__arrowLine')
+      expect(svg).not.toBeNull()
+      expect(polygon?.getAttribute('points')).toBe('0, 8 8, 0 16, 8')
+      expect(polyline?.getAttribute('points')).toBe('0, 8 8, 0 16, 8')
+      expect(rootElement?.querySelector('.d1-arrow__border')).toBeNull()
+
+      props.position = 'bottom'
+      await flushFrame()
+      await flushFrame()
+
+      expect(rootElement?.classList.contains('d1-arrow--direction--bottom')).toBe(true)
+      expect(polygon?.getAttribute('points')).toBe('0, 0 8, 8 16, 0')
     })
 
-    it('should activate event conditionally when mounted and conditions match', async () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({ position: 'auto' })
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
+    it('should coordinate parent border styles, border element, and clean up parent DOM state on unmount', async () => {
+      const targetParent = { element: undefined as HTMLElement | undefined }
 
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
+      vi.spyOn(window, 'getComputedStyle').mockImplementation((targetElement: Element) => {
+        if (targetElement === targetParent.element) {
+          return {
+            backgroundColor: 'rgb(240, 240, 240)',
+            borderWidth: '2px',
+            borderColor: 'rgb(10, 20, 30)',
+            borderRadius: '6px',
+            getPropertyValue: () => ''
+          } as unknown as CSSStyleDeclaration
+        }
 
-      expect(arrow.instantiatedItems.event).toBeUndefined()
-      arrow.triggerMounted()
+        return {
+          getPropertyValue: (propertyName: string) => {
+            if (propertyName === '--d1-arrow-arrowWidth') return '12px'
+            if (propertyName === '--d1-arrow-arrowHeight') return '6px'
+            return ''
+          }
+        } as unknown as CSSStyleDeclaration
+      })
+
+      const { app, parentElement } = mountArrowComponent({
+        initialProps: {
+          position: 'left'
+        }
+      })
+      targetParent.element = parentElement
+
+      await flushFrame()
+      await flushFrame()
+
+      const rootElement = parentElement.querySelector<HTMLDivElement>('.d1-arrow')
+      const borderElement = rootElement?.querySelector<HTMLDivElement>('.d1-arrow__border')
+      expect(borderElement).not.toBeNull()
+      expect(parentElement.classList.contains('d1-arrow__parent')).toBe(true)
+      expect(parentElement.dataset.arrow).toBe('border')
+      expect(parentElement.style.getPropertyValue('--d1-arrow-sys-height')).toBe('6')
+      expect(rootElement?.style.getPropertyValue('--d1-arrow-sys-borderWidth')).toBe('2px')
+      expect(rootElement?.style.getPropertyValue('--d1-arrow-sys-borderColor')).toBe('rgb(10, 20, 30)')
+      expect(rootElement?.style.getPropertyValue('--d1-arrow-sys-borderRadius')).toBe('6px')
+
+      app.unmount()
+
+      expect(parentElement.classList.contains('d1-arrow__parent')).toBe(false)
+      expect(parentElement.dataset.arrow).toBeUndefined()
+      expect(parentElement.style.getPropertyValue('--d1-arrow-sys-height')).toBe('')
+    })
+
+    it('should compute auto direction and shift relative to target element and support exposed update()', async () => {
+      const targetElement = document.createElement('button')
+      targetElement.id = 'arrow-target'
+      document.body.appendChild(targetElement)
+      cleanups.push(() => targetElement.remove())
+
+      targetElement.getBoundingClientRect = () => ({
+        top: 50,
+        bottom: 80,
+        left: 120,
+        right: 180,
+        width: 60,
+        height: 30,
+        x: 120,
+        y: 50,
+        toJSON: () => ({})
+      })
+
+      vi.spyOn(window, 'getComputedStyle').mockImplementation((elementTarget: Element) => {
+        if (elementTarget.classList.contains('d1-arrow')) {
+          return {
+            getPropertyValue: (propertyName: string) => {
+              if (propertyName === '--d1-arrow-arrowWidth') return '10px'
+              if (propertyName === '--d1-arrow-arrowHeight') return '5px'
+              return ''
+            }
+          } as unknown as CSSStyleDeclaration
+        }
+
+        return {
+          backgroundColor: 'rgb(255, 255, 255)',
+          borderWidth: '0px',
+          borderColor: 'transparent',
+          borderRadius: '4px',
+          getPropertyValue: () => ''
+        } as unknown as CSSStyleDeclaration
+      })
+
+      const { exposed, parentElement, props } = mountArrowComponent({
+        initialProps: {
+          position: 'auto',
+          elementTarget: '#arrow-target'
+        }
+      })
 
       await nextTick()
+      const rootElement = parentElement.querySelector<HTMLDivElement>('.d1-arrow')!
+      rootElement.getBoundingClientRect = () => ({
+        top: 80,
+        bottom: 120,
+        left: 100,
+        right: 220,
+        width: 120,
+        height: 40,
+        x: 100,
+        y: 80,
+        toJSON: () => ({})
+      })
 
-      expect(arrow.instantiatedItems.event).toBeDefined()
+      await flushFrame()
+      await flushFrame()
 
-      scope.stop()
-    })
+      expect(rootElement.classList.contains('d1-arrow--direction--top')).toBe(true)
+      expect(rootElement.style.getPropertyValue('--d1-arrow-sys-shift')).toBe('50px')
 
-    it('should trigger position.onMounted when parent has border', async () => {
-      const scope = effectScope()
-      const props = reactive<ArrowProps>({ position: 'top' })
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.arrow')
+      targetElement.getBoundingClientRect = () => ({
+        top: 120,
+        bottom: 150,
+        left: 120,
+        right: 180,
+        width: 60,
+        height: 30,
+        x: 120,
+        y: 120,
+        toJSON: () => ({})
+      })
+      exposed.update()
+      await flushFrame()
 
-      const arrow = scope.run(() => new InspectableArrow(props, element, naming))!
+      expect(rootElement.classList.contains('d1-arrow--direction--bottom')).toBe(true)
 
-      // Instantiate parent and mock border
-      const parent = arrow.i('parent')
-      vi.spyOn(parent, 'isBorder').mockReturnValue(true)
-
-      // Mount
-      arrow.triggerMounted()
-      await nextTick()
-
-      // Reading styles evaluates parent.isBorder and instantiates position
-      expect(arrow.styles).toBeDefined()
-      expect(arrow.instantiatedItems.position).toBeDefined()
-
-      scope.stop()
+      props.position = undefined
+      await flushFrame()
+      expect(rootElement.classList.contains('d1-arrow--direction--hide')).toBe(true)
     })
   })
 })

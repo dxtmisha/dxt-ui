@@ -94,3 +94,11 @@ src/classes/AreaInclude.ts
 src/constructors/Actions/Actions.ts
 src/constructors/Actions/ActionsDesign.tsx
 src/constructors/Actions/ActionsInclude.ts
+src/constructors/Arrow/ArrowElement.ts
+src/constructors/Arrow/ArrowElementTarget.ts
+src/constructors/Arrow/ArrowParent.ts
+src/constructors/Arrow/ArrowPosition.ts
+src/constructors/Arrow/ArrowEvent.ts
+src/constructors/Arrow/ArrowInclude.ts
+src/constructors/Arrow/Arrow.ts
+src/constructors/Arrow/ArrowDesign.tsx

@@ -101,7 +101,7 @@ export class ArrowParent extends DesignLifecycleAbstract {
    * @returns border presence status / статус наличия границы
    */
   isBorder(): boolean {
-    return this.borderWidth !== '0px'
+    return Boolean(this.borderWidth && this.borderWidth !== '0px')
   }
 
   /**
@@ -132,6 +132,8 @@ export class ArrowParent extends DesignLifecycleAbstract {
 
         if (this.isBorder()) {
           nextParent.dataset.arrow = 'border'
+        } else {
+          delete nextParent.dataset.arrow
         }
       }
     })

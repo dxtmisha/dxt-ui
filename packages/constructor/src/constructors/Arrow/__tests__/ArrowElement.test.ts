@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import './testWarnings'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { ArrowElement } from '../ArrowElement'
@@ -11,13 +12,17 @@ describe('ArrowElement', () => {
     element = document.createElement('div')
     vi.spyOn(window, 'getComputedStyle').mockImplementation(() => {
       return {
-        getPropertyValue: (prop: string) => {
-          if (prop === '--my-arrow-arrowWidth') return '12px'
-          if (prop === '--my-arrow-arrowHeight') return '8px'
+        getPropertyValue: (propertyName: string) => {
+          if (propertyName === '--my-arrow-arrowWidth') return '12px'
+          if (propertyName === '--my-arrow-arrowHeight') return '8px'
           return ''
         }
-      } as any
+      } as unknown as CSSStyleDeclaration
     })
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('should return correct width and height from styles', () => {
@@ -27,28 +32,41 @@ describe('ArrowElement', () => {
     expect(arrow.height).toBe(8)
   })
 
-  it('should return 0 width and height if element is undefined', () => {
-    const arrow = new ArrowElement(ref(undefined), new DesignName('my.arrow'))
-    expect(arrow.is()).toBe(false)
-    expect(arrow.width).toBe(0)
-    expect(arrow.height).toBe(0)
+  it('should return 0 width and height if element is undefined or CSS variables are empty', () => {
+    const arrowUndefined = new ArrowElement(ref(undefined), new DesignName('my.arrow'))
+    expect(arrowUndefined.is()).toBe(false)
+    expect(arrowUndefined.width).toBe(0)
+    expect(arrowUndefined.height).toBe(0)
+    expect(arrowUndefined.getRect()).toBeUndefined()
+    expect(arrowUndefined.getRectBorder()).toBeUndefined()
+    expect(arrowUndefined.getRectArrowLine()).toBeUndefined()
+
+    vi.spyOn(window, 'getComputedStyle').mockImplementation(() => {
+      return {
+        getPropertyValue: () => ''
+      } as unknown as CSSStyleDeclaration
+    })
+
+    const arrowEmpty = new ArrowElement(ref(element), new DesignName('my.arrow'))
+    expect(arrowEmpty.width).toBe(0)
+    expect(arrowEmpty.height).toBe(0)
   })
 
   it('should return boundary rects correctly', () => {
-    const borderEl = document.createElement('div')
-    borderEl.className = 'my-arrow__border'
-    element.appendChild(borderEl)
+    const borderElement = document.createElement('div')
+    borderElement.className = 'my-arrow__border'
+    element.appendChild(borderElement)
 
-    const arrowLineEl = document.createElement('div')
-    arrowLineEl.className = 'my-arrow__arrowLine'
-    element.appendChild(arrowLineEl)
+    const arrowLineElement = document.createElement('div')
+    arrowLineElement.className = 'my-arrow__arrowLine'
+    element.appendChild(arrowLineElement)
 
     const arrow = new ArrowElement(ref(element), new DesignName('my.arrow'))
 
-    const mockRect = { top: 10, bottom: 20, left: 10, right: 30 } as any
+    const mockRect = { top: 10, bottom: 20, left: 10, right: 30 } as DOMRect
     vi.spyOn(element, 'getBoundingClientRect').mockReturnValue(mockRect)
-    vi.spyOn(borderEl, 'getBoundingClientRect').mockReturnValue(mockRect)
-    vi.spyOn(arrowLineEl, 'getBoundingClientRect').mockReturnValue(mockRect)
+    vi.spyOn(borderElement, 'getBoundingClientRect').mockReturnValue(mockRect)
+    vi.spyOn(arrowLineElement, 'getBoundingClientRect').mockReturnValue(mockRect)
 
     expect(arrow.getRect()).toBe(mockRect)
     expect(arrow.getRectBorder()).toBe(mockRect)

@@ -1,18 +1,10 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { ref } from 'vue'
+import './testWarnings'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { effectScope, nextTick, ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { ArrowParent } from '../ArrowParent'
 import type { ArrowElement } from '../ArrowElement'
-
-vi.mock('vue', async () => {
-  const actual = await vi.importActual<typeof import('vue')>('vue')
-  return {
-    ...actual,
-    onMounted: (callback: () => void) => callback(),
-    onUnmounted: (callback: () => void) => callback()
-  }
-})
 
 describe('ArrowParent', () => {
   let parentElement: HTMLElement
@@ -41,12 +33,13 @@ describe('ArrowParent', () => {
   })
 
   afterEach(() => {
-    document.body.removeChild(parentElement)
+    parentElement.remove()
     vi.restoreAllMocks()
   })
 
   it('should initialize parent parameters and set styling variables on make()', async () => {
-    const parent = new ArrowParent(ref(element), new DesignName('my.arrow'), () => mockElementItem)
+    const scope = effectScope()
+    const parent = scope.run(() => new ArrowParent(ref(element), new DesignName('my.arrow'), () => mockElementItem))!
     parent.onMounted()
 
     await new Promise(resolve => requestAnimationFrame(resolve))
@@ -67,11 +60,64 @@ describe('ArrowParent', () => {
     expect(parentElement.classList.contains('my-arrow__parent')).toBe(false)
     expect(parentElement.style.getPropertyValue('--my-arrow-sys-height')).toBe('')
     expect(parentElement.dataset.arrow).toBeUndefined()
+    scope.stop()
+  })
+
+  it('should treat empty or 0px borderWidth as no border and clear stale data-arrow attribute', async () => {
+    const scope = effectScope()
+    const elementRef = ref<HTMLElement | undefined>(element)
+    const parent = scope.run(() => new ArrowParent(elementRef, new DesignName('my.arrow'), () => mockElementItem))!
+
+    parentElement.dataset.arrow = 'border'
+    vi.spyOn(window, 'getComputedStyle').mockImplementation(() => {
+      return {
+        backgroundColor: 'transparent',
+        borderWidth: '',
+        borderColor: 'transparent',
+        borderRadius: '0px'
+      } as CSSStyleDeclaration
+    })
+
+    parent.onMounted()
+    await new Promise(resolve => requestAnimationFrame(resolve))
+
+    expect(parent.isBorder()).toBe(false)
+    expect(parentElement.dataset.arrow).toBeUndefined()
+
+    parent.onUnmounted()
+    scope.stop()
+  })
+
+  it('should clean up old parent when element moves or detaches', async () => {
+    const scope = effectScope()
+    const secondParent = document.createElement('div')
+    document.body.appendChild(secondParent)
+
+    const elementRef = ref<HTMLElement | undefined>(element)
+    const parent = scope.run(() => new ArrowParent(elementRef, new DesignName('my.arrow'), () => mockElementItem))!
+    parent.onMounted()
+
+    await new Promise(resolve => requestAnimationFrame(resolve))
+    expect(parentElement.classList.contains('my-arrow__parent')).toBe(true)
+
+    const secondElement = document.createElement('div')
+    secondParent.appendChild(secondElement)
+    elementRef.value = secondElement
+    await nextTick()
+    await new Promise(resolve => requestAnimationFrame(resolve))
+
+    expect(parentElement.classList.contains('my-arrow__parent')).toBe(false)
+    expect(secondParent.classList.contains('my-arrow__parent')).toBe(true)
+
+    parent.onUnmounted()
+    secondParent.remove()
+    scope.stop()
   })
 
   it('should clean up parent styles on unmount even when element is detached before onUnmounted', async () => {
+    const scope = effectScope()
     const elementRef = ref<HTMLElement | undefined>(element)
-    const parent = new ArrowParent(elementRef, new DesignName('my.arrow'), () => mockElementItem)
+    const parent = scope.run(() => new ArrowParent(elementRef, new DesignName('my.arrow'), () => mockElementItem))!
     parent.onMounted()
 
     await new Promise(resolve => requestAnimationFrame(resolve))
@@ -79,7 +125,6 @@ describe('ArrowParent', () => {
     expect(parentElement.classList.contains('my-arrow__parent')).toBe(true)
     expect(parentElement.dataset.arrow).toBe('border')
 
-    // Simulate Vue 3 unmount order: ref cleared and DOM detached before onUnmounted
     elementRef.value = undefined
     element.remove()
 
@@ -91,16 +136,19 @@ describe('ArrowParent', () => {
     expect(parentElement.classList.contains('my-arrow__parent')).toBe(false)
     expect(parentElement.style.getPropertyValue('--my-arrow-sys-height')).toBe('')
     expect(parentElement.dataset.arrow).toBeUndefined()
+    scope.stop()
   })
 
   it('should cancel pending animation frame if unmounted before make() executes', () => {
+    const scope = effectScope()
     const cancelSpy = vi.spyOn(window, 'cancelAnimationFrame')
-    const parent = new ArrowParent(ref(element), new DesignName('my.arrow'), () => mockElementItem)
+    const parent = scope.run(() => new ArrowParent(ref(element), new DesignName('my.arrow'), () => mockElementItem))!
 
     parent.onMounted()
     parent.onUnmounted()
 
     expect(cancelSpy).toHaveBeenCalled()
     expect(parentElement.classList.contains('my-arrow__parent')).toBe(false)
+    scope.stop()
   })
 })

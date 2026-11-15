@@ -1,38 +1,36 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for displaying a graphical indicator (arrow) used to visually link floating elements to their target.
+The `Arrow` component renders a contextual directional pointer (callout triangle) attached to a floating container edge such as a tooltip, popover, or menu.
 
-Arrow provides automatic or manual positioning of the indicator. It is often used within Tooltip, Popover, and Dropdown components to indicate the direction towards the trigger or target element. The component supports adaptation to various sizes and styles, and can dynamically update its position.
+It supports both explicit static placement (`top`, `bottom`, `left`, `right`) and automatic direction & axis offset calculation relative to a target element (`elementTarget`), while automatically inheriting the parent container's background color, border width, border color, and border radius.
 
-**Key Features:**
+**Key features:**
 
-- Automatic and manual positioning (top, bottom, left, right)
-- Support for inverted style
-- Binding to a target element (elementTarget)
-- Dynamic position updates
-- Customizable SVG arrow graphics
-- Integration with positioning components
+- **Automatic & Static Positioning:** Supports explicit placement on any side (`top`, `bottom`, `left`, `right`) or smart `auto` detection towards the target
+- **Flexible Target Binding:** Accepts either a CSS selector string or a direct `HTMLElement` reference via `elementTarget`
+- **Seamless Parent Surface Inheritance:** Automatically reads parent background, border, and corner radius to render continuous borders without visual seams (`data-arrow="border"`)
+- **Programmatic Synchronization:** Exposes `update()` to recalculate arrow position and shift after manual layout changes
+- **Scroll & Resize Tracking:** Automatically re-evaluates placement during window resize and scroll events when `position="auto"` is active
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Indicators in tooltips
-- Arrows in dropdown menus and popovers
-- Visual links in tour guides
-- Directional indicators in the interface
+- Callout pointers inside tooltips, popovers, and dropdown menus
+- Contextual onboarding hints and guided tours pointing to UI controls
+- Floating helper badges anchored dynamically to movable or scrollable targets
 
 <Source
     code={`
-<script setup>
-import { Arrow } from 'dxt-ui'
-</script>
-
 <template>
-  <div class="relative p-4 border rounded">
-    Content with arrow
-    <Arrow position="top" />
+  <div class="popover-surface">
+    Content with directional pointer
+    <Arrow
+      position="auto"
+      element-target="#trigger-button"
+    />
   </div>
 </template>
   `}
     language="html"
 />
 
+> `Arrow` handles edge alignment, parent border masking, and responsive target tracking with zero manual SVG or geometry wiring.

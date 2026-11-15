@@ -11,7 +11,6 @@ import {
 } from '@dxtmisha/functional'
 
 import { ArrowElementTarget } from './ArrowElementTarget'
-import { ArrowParent } from './ArrowParent'
 import { ArrowPosition } from './ArrowPosition'
 
 import type { ArrowProps } from './props'
@@ -43,8 +42,8 @@ export class ArrowEvent extends DesignLifecycleAbstract {
    * @param props properties / свойства
    * @returns true if event tracking is active / true, если отслеживание событий активно
    */
-  static is(props?: ArrowProps): boolean {
-    return ArrowPosition.isAuto(props)
+  static is(props?: Readonly<ArrowProps>): boolean {
+    return ArrowElementTarget.isAuto(props)
   }
 
   /**
@@ -54,14 +53,12 @@ export class ArrowEvent extends DesignLifecycleAbstract {
    * @param props input properties / входные свойства
    * @param element arrow element / элемент стрелки
    * @param elementTarget function returning target element / функция, возвращающая целевой элемент
-   * @param parent function returning parent element / функция, возвращающая родительский элемент
    * @param position function returning position object / функция, возвращающая объект позиции
    */
   constructor(
-    protected readonly props: ArrowProps,
+    protected readonly props: Readonly<ArrowProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly elementTarget: () => ArrowElementTarget,
-    protected readonly parent: () => ArrowParent,
     protected readonly position: () => ArrowPosition
   ) {
     super()
@@ -115,12 +112,12 @@ export class ArrowEvent extends DesignLifecycleAbstract {
     this.frameId = requestAnimationFrame(() => {
       this.frameId = undefined
 
-      if (ArrowPosition.isAuto(this.props)) {
-        this.elementTarget?.()?.update?.()
+      if (ArrowElementTarget.isAuto(this.props)) {
+        this.elementTarget().update()
       }
 
       this.makeEvents()
-      this.position?.()?.update?.()
+      this.position().update()
     })
   }
 
@@ -152,7 +149,10 @@ export class ArrowEvent extends DesignLifecycleAbstract {
    * Создать события.
    */
   protected makeEvents = (): void => {
-    if (this.elementTarget().is()) {
+    if (
+      ArrowEvent.is(this.props)
+      && this.elementTarget().is()
+    ) {
       this.initEvents()
         .startEvents()
     } else {

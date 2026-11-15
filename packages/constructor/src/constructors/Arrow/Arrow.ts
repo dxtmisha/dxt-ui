@@ -63,6 +63,7 @@ export class Arrow extends DesignLogicAbstract<
     },
     elementTarget: {
       item: ArrowElementTarget,
+      canCreate: () => ArrowElementTarget.is(this.props),
       parameters: () => [this.props]
     },
     event: {
@@ -72,7 +73,6 @@ export class Arrow extends DesignLogicAbstract<
         this.props,
         this.element,
         () => this.i('elementTarget'),
-        () => this.i('parent'),
         () => this.i('position')
       ]
     },
@@ -137,7 +137,7 @@ export class Arrow extends DesignLogicAbstract<
    */
   get direction(): ArrowDirection {
     if (ArrowPosition.is(this.props)) {
-      if (!ArrowPosition.isAuto(this.props)) {
+      if (!ArrowElementTarget.isAuto(this.props)) {
         return this.props.position as ArrowDirection
       }
 
@@ -190,19 +190,20 @@ export class Arrow extends DesignLogicAbstract<
       [this.naming.getStyle('borderRadius')]: parent.borderRadius
     }
 
-    if (
-      parent.isBorder()
-      && this.i('position').clipPath.value
-    ) {
-      styles[this.naming.getStyle('clipPath')] = this.i('position').clipPath.value
+    if (parent.isBorder()) {
+      const clipPath = this.i('position').clipPath.value
+
+      if (clipPath) {
+        styles[this.naming.getStyle('clipPath')] = clipPath
+      }
     }
 
-    if (
-      ArrowElementTarget.is(this.props)
-      && this.i('elementTarget').is()
-      && this.i('position').shift.value
-    ) {
-      styles[this.naming.getStyle('shift')] = this.i('position').shift.value
+    if (this.callInstance('elementTarget', item => item.is(), false)) {
+      const shift = this.i('position').shift.value
+
+      if (shift) {
+        styles[this.naming.getStyle('shift')] = shift
+      }
     }
 
     return styles

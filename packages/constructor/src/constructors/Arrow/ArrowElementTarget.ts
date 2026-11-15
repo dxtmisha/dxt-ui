@@ -7,8 +7,6 @@ import {
   isString
 } from '@dxtmisha/functional'
 
-import { ArrowPosition } from './ArrowPosition'
-
 import type { ArrowProps } from './props'
 
 /**
@@ -29,13 +27,24 @@ export class ArrowElementTarget {
    * @param props properties / свойства
    * @returns true if target tracking is active / true, если отслеживание целевого элемента активно
    */
-  static is(props?: ArrowProps): boolean {
+  static is(props?: Readonly<ArrowProps>): boolean {
     const target = props?.elementTarget
 
     return Boolean(
-      ArrowPosition.isAuto(props)
+      ArrowElementTarget.isAuto(props)
       && (isString(target) ? isFilled(target) : Boolean(target))
     )
+  }
+
+  /**
+   * Checks whether automatic positioning is enabled.
+   *
+   * Проверяет, включено ли автоматическое позиционирование.
+   * @param props input properties / входные свойства
+   * @returns true if position is auto / true, если позиция auto
+   */
+  static isAuto(props?: Readonly<ArrowProps>): boolean {
+    return props?.position === 'auto'
   }
 
   /**
@@ -45,7 +54,7 @@ export class ArrowElementTarget {
    * @param props input properties / входящие свойства
    */
   constructor(
-    protected readonly props: ArrowProps
+    protected readonly props: Readonly<ArrowProps>
   ) {
   }
 

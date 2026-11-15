@@ -10,6 +10,7 @@ import DemoActionSheetPage from './pages/components/DemoActionSheetPage.vue'
 import DemoActionsPage from './pages/components/DemoActionsPage.vue'
 import DemoAlertPage from './pages/components/DemoAlertPage.vue'
 import DemoAnchorPage from './pages/components/DemoAnchorPage.vue'
+import DemoArrowPage from './pages/components/DemoArrowPage.vue'
 import DemoAvatarPage from './pages/components/DemoAvatarPage.vue'
 import DemoBadgePage from './pages/components/DemoBadgePage.vue'
 import DemoBarsPage from './pages/components/DemoBarsPage.vue'
@@ -108,6 +109,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-anchor',
     name: 'component-anchor',
     component: DemoAnchorPage
+  },
+  {
+    path: '/component-arrow',
+    name: 'component-arrow',
+    component: DemoArrowPage
   },
   {
     path: '/component-avatar',

@@ -19,8 +19,8 @@ defineOptions({
   >
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
-    <div :class="classDemo.item" style="position: relative; width: 48px; height: 48px; background-color: oklch(93.2% 0.032 255.585);">
-    <D1Arrow position="top" v-bind="args"/>
+    <div :class="classDemo.item" style="position: relative; width: 48px; height: 48px; background-color: #dbeafe;">
+  <D1Arrow position="top" v-bind="args"/>
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

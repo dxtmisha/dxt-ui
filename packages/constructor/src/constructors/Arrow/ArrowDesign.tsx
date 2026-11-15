@@ -1,7 +1,7 @@
 import {
   h,
+  mergeProps,
   nextTick,
-  onMounted,
   ref,
   type VNode,
   watch
@@ -84,15 +84,41 @@ export class ArrowDesign<
       this.emits
     )
 
-    onMounted(() => {
-      watch(() => this.classes?.value, () => {
-        nextTick().then(
-          () => requestAnimationFrame(() => {
-            this.points.value = this.item.points
+    watch(
+      () => [this.item.isMounted.value, this.classes?.value],
+      ([isMounted], _previous, onCleanup) => {
+        if (!isMounted) {
+          return
+        }
+
+        let active = true
+        let frameId: number | undefined
+
+        onCleanup(() => {
+          active = false
+
+          if (frameId !== undefined) {
+            cancelAnimationFrame(frameId)
+            frameId = undefined
+          }
+        })
+
+        nextTick().then(() => {
+          if (!active) {
+            return
+          }
+
+          frameId = requestAnimationFrame(() => {
+            frameId = undefined
+
+            if (active) {
+              this.points.value = this.item.points
+            }
           })
-        )
-      }, { immediate: true })
-    })
+        })
+      },
+      { immediate: true }
+    )
   }
 
   /**
@@ -160,13 +186,19 @@ export class ArrowDesign<
       children.push(...this.renderBorder())
     }
 
-    return h('div', {
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      ...this.getAttrs(),
-      ...this.item.binds
-    }, children)
+    return h(
+      'div',
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      children
+    )
   }
 
   /**
@@ -175,7 +207,7 @@ export class ArrowDesign<
    * Метод для рендеринга стрелки.
    * @returns list of nodes / список узлов
    */
-  protected readonly renderArrow = (): VNode[] => {
+  readonly renderArrow = (): VNode[] => {
     return [
       h(
         'svg',
@@ -211,7 +243,7 @@ export class ArrowDesign<
    * Метод для рендеринга границы.
    * @returns list of nodes / список узлов
    */
-  protected readonly renderBorder = (): VNode[] => {
+  readonly renderBorder = (): VNode[] => {
     return [
       h('div', this.getKeyClass('border'))
     ]

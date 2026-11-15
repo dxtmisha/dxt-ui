@@ -1,22 +1,21 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { reactive, ref, nextTick } from 'vue'
+import './testWarnings'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { effectScope, nextTick, reactive, ref } from 'vue'
 import { ArrowEvent } from '../ArrowEvent'
+import type { ArrowElementTarget } from '../ArrowElementTarget'
+import type { ArrowPosition } from '../ArrowPosition'
 import type { ArrowProps } from '../props'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (fn: () => void) => fn(),
-    onUnmounted: (fn: () => void) => fn()
-  }
-})
-
 describe('ArrowEvent', () => {
-  let mockElementTarget: any
-  let mockParent: any
-  let mockPosition: any
+  let mockElementTarget: {
+    element: ReturnType<typeof ref<HTMLElement | undefined>>
+    update: ReturnType<typeof vi.fn>
+    is: ReturnType<typeof vi.fn>
+  }
+  let mockPosition: {
+    update: ReturnType<typeof vi.fn>
+  }
 
   beforeEach(() => {
     mockElementTarget = {
@@ -24,11 +23,13 @@ describe('ArrowEvent', () => {
       update: vi.fn(),
       is: vi.fn().mockReturnValue(false)
     }
-    mockParent = {}
     mockPosition = {
       update: vi.fn()
     }
-    vi.clearAllMocks()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('should call elementTarget.update and position.update on update()', async () => {
@@ -36,9 +37,8 @@ describe('ArrowEvent', () => {
     const event = new ArrowEvent(
       { position: 'auto' },
       elementRef,
-      () => mockElementTarget,
-      () => mockParent,
-      () => mockPosition
+      () => mockElementTarget as unknown as ArrowElementTarget,
+      () => mockPosition as unknown as ArrowPosition
     )
 
     event.update()
@@ -57,28 +57,34 @@ describe('ArrowEvent', () => {
     expect(ArrowEvent.is(undefined)).toBe(false)
   })
 
-  it('should update on initialization and reactive props changes', async () => {
+  it('should update on initialization and stop events when switching away from auto', async () => {
+    const scope = effectScope()
+    const targetDom = document.createElement('div')
+    document.body.appendChild(targetDom)
     mockElementTarget.is.mockReturnValue(true)
-    mockElementTarget.element.value = document.createElement('div')
+    mockElementTarget.element.value = targetDom
+
+    const addListenerSpy = vi.spyOn(window, 'addEventListener')
+    const removeListenerSpy = vi.spyOn(window, 'removeEventListener')
 
     const elementRef = ref(document.createElement('div'))
     const props = reactive<ArrowProps>({ position: 'auto' })
-    const event = new ArrowEvent(
+
+    const event = scope.run(() => new ArrowEvent(
       props,
       elementRef,
-      () => mockElementTarget,
-      () => mockParent,
-      () => mockPosition
-    )
+      () => mockElementTarget as unknown as ArrowElementTarget,
+      () => mockPosition as unknown as ArrowPosition
+    ))!
 
-    await event.onMounted()
+    event.onMounted()
 
-    // Wait for setup tick, immediate watch trigger, and animation frame
     await nextTick()
     await nextTick()
     await new Promise(resolve => requestAnimationFrame(resolve))
 
     expect(mockPosition.update).toHaveBeenCalled()
+    expect(addListenerSpy).toHaveBeenCalled()
 
     mockPosition.update.mockClear()
     mockElementTarget.update.mockClear()
@@ -88,32 +94,33 @@ describe('ArrowEvent', () => {
 
     expect(mockPosition.update).toHaveBeenCalledTimes(1)
     expect(mockElementTarget.update).not.toHaveBeenCalled()
+    expect(removeListenerSpy).toHaveBeenCalled()
 
     event.onUnmounted()
+    scope.stop()
+    targetDom.remove()
   })
 
-  it('should clean up listeners and cancel pending animation frame on onUnmounted()', async () => {
+  it('should clean up listeners and cancel pending animation frame on onUnmounted()', () => {
+    const scope = effectScope()
     const cancelSpy = vi.spyOn(window, 'cancelAnimationFrame')
     mockElementTarget.is.mockReturnValue(true)
     mockElementTarget.element.value = document.createElement('div')
 
     const elementRef = ref(document.createElement('div'))
     const props = reactive<ArrowProps>({ position: 'auto' })
-    const event = new ArrowEvent(
+    const event = scope.run(() => new ArrowEvent(
       props,
       elementRef,
-      () => mockElementTarget,
-      () => mockParent,
-      () => mockPosition
-    )
+      () => mockElementTarget as unknown as ArrowElementTarget,
+      () => mockPosition as unknown as ArrowPosition
+    ))!
 
     event.onMounted()
-    // Schedule an update that sets a pending frameId
     event.update()
-
     event.onUnmounted()
-    expect(cancelSpy).toHaveBeenCalled()
 
-    cancelSpy.mockRestore()
+    expect(cancelSpy).toHaveBeenCalled()
+    scope.stop()
   })
 })

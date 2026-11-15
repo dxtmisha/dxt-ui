@@ -1,4 +1,5 @@
 // @vitest-environment node
+import './testWarnings'
 import { describe, expect, it } from 'vitest'
 import { createSSRApp, defineComponent, h } from 'vue'
 import { renderToString } from '@vue/server-renderer'
@@ -11,8 +12,8 @@ describe('ArrowDesign in Node SSR', () => {
     expect(typeof document).toBe('undefined')
     expect(typeof requestAnimationFrame).toBe('undefined')
 
-    const props: ArrowProps = { position: 'auto' }
-    const TestComp = defineComponent({
+    const props: ArrowProps = { position: 'auto', elementTarget: '#target' }
+    const TestComponent = defineComponent({
       setup() {
         const design = new ArrowDesign('d1.arrow', props)
         const render = design.render()
@@ -20,22 +21,22 @@ describe('ArrowDesign in Node SSR', () => {
       }
     })
 
-    const app = createSSRApp(TestComp)
+    const app = createSSRApp(TestComponent)
     const html = await renderToString(app)
     expect(html).toBe('<!---->')
   })
 
-  it('handles multiple SSR renders without leaking or crashing', async () => {
-    for (const position of ['auto', 'top', 'bottom', 'left', 'right'] as const) {
-      const props: ArrowProps = { position }
-      const TestComp = defineComponent({
+  it('handles multiple SSR renders across all positions without leaking or crashing', async () => {
+    for (const position of ['auto', 'top', 'bottom', 'left', 'right', undefined] as const) {
+      const props: ArrowProps = { position, elementTarget: '#target' }
+      const TestComponent = defineComponent({
         setup() {
           const design = new ArrowDesign('d1.arrow', props)
           const render = design.render()
           return () => h(render)
         }
       })
-      const app = createSSRApp(TestComp)
+      const app = createSSRApp(TestComponent)
       const html = await renderToString(app)
       expect(html).toBe('<!---->')
     }
