@@ -412,12 +412,16 @@ await waitFor(() => {
         en: 'Test: ARIA labels, positioning and clientOnly',
         ru: 'Тест: ARIA метки, позиционирование и clientOnly'
       },
-      propsName: ['ariaLabel', 'position', 'clientOnly', 'visible'],
+      propsName: ['ariaLabel', 'textLoading', 'position', 'clientOnly', 'visible'],
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">Custom ariaLabel</div>
             <DesignComponent visible linear position="static" ariaLabel="Custom file upload in progress" :value="45"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">Custom textLoading</div>
+            <DesignComponent visible linear position="static" textLoading="Loading files"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">Default loading aria-label</div>
@@ -436,24 +440,29 @@ await waitFor(() => {
       play: `
 await waitFor(() => {
   const items = canvasElement.querySelectorAll('.design-component')
-  expect(items.length).toBe(4)
+  expect(items.length).toBe(5)
 
   // 1. Custom ariaLabel
   const itemCustomLabel = items[0]
   expect(itemCustomLabel).toHaveAttribute('aria-label', 'Custom file upload in progress')
   expect(itemCustomLabel).toHaveAttribute('role', 'progressbar')
 
-  // 2. Default loading aria-label
-  const itemDefaultLabel = items[1]
+  // 2. Custom textLoading
+  const itemCustomTextLoading = items[1]
+  expect(itemCustomTextLoading).toHaveAttribute('aria-label', 'Loading files')
+  expect(itemCustomTextLoading).toHaveAttribute('role', 'status')
+
+  // 3. Default loading aria-label
+  const itemDefaultLabel = items[2]
   expect(itemDefaultLabel).toHaveAttribute('aria-label')
   expect(itemDefaultLabel).toHaveAttribute('role', 'status')
 
-  // 3. position: top
-  const itemPositionTop = items[2]
+  // 4. position: top
+  const itemPositionTop = items[3]
   expect(itemPositionTop).toHaveClass('design-component--position--top')
 
-  // 4. clientOnly: false
-  const itemClientOnlyFalse = items[3]
+  // 5. clientOnly: false
+  const itemClientOnlyFalse = items[4]
   expect(itemClientOnlyFalse).toHaveAttribute('role', 'progressbar')
   expect(itemClientOnlyFalse).toHaveAttribute('aria-valuenow', '30')
 })

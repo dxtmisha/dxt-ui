@@ -1,199 +1,312 @@
 // @vitest-environment jsdom
-import { describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick, reactive, ref } from 'vue'
-import { DesignName } from '@dxtmisha/functional'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { computed, createApp, defineComponent, h, nextTick, reactive, type Ref } from 'vue'
+import type { ConstrClasses } from '@dxtmisha/functional'
 
-import { MotionTransform, type MotionTransformConstructors } from '../MotionTransform'
-import type { MotionTransformProps } from '../props'
+import { MotionTransformDesign } from '../MotionTransformDesign'
+import { __MOTION_TRANSFORM_TYPE_BODY_NAME } from '../basicTypes'
+import { defaultsMotionTransform, type MotionTransformPropsBasic } from '../props'
+import type {
+  MotionTransformClasses,
+  MotionTransformComponents,
+  MotionTransformExpose,
+  MotionTransformSlots
+} from '../types'
+
+const cleanups: Array<() => void> = []
+
+afterEach(() => {
+  cleanups.splice(0).reverse().forEach(unmount => unmount())
+  vi.restoreAllMocks()
+  vi.useRealTimers()
+})
 
 /**
- * Inspectable subclass exposing instances map and condition lifecycle triggers for test verification.
+ * Mounts the full MotionTransformDesign component with orchestrator and helpers into jsdom.
  *
- * Подкласс для проверки карты экземпляров зависимостей и вызовов условий.
+ * Монтирует полный компонент MotionTransformDesign с оркестратором и помощниками в jsdom.
+ * @param options mount configuration / конфигурация монтирования
+ * @returns mounted helpers, props, emits spy, and expose API / смонтированные хелперы, свойства, шпион событий и expose API
  */
-class InspectableMotionTransform extends MotionTransform {
-  /**
-   * Returns currently instantiated sub-constructors.
-   *
-   * Возвращает созданные на текущий момент подконструкторы.
-   * @returns map of instantiated sub-constructors / карта созданных подконструкторов
-   */
-  get instantiatedItems(): Partial<Record<keyof MotionTransformConstructors, unknown>> {
-    return this.instances
-  }
+function mountMotionTransform(options: {
+  initialProps?: MotionTransformPropsBasic
+  attrs?: Record<string, unknown>
+  slots?: MotionTransformSlots
+} = {}) {
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+  cleanups.push(() => container.remove())
 
-  /**
-   * Simulates component mount lifecycle.
-   *
-   * Симулирует жизненный цикл монтирования компонента.
-   */
-  triggerMounted(): void {
-    this.isMounted.value = true
-    this.callLifecycle('onMounted')
-    this.initConditions()
-    this.onMounted?.()
-  }
+  const emits = vi.fn()
+  const props = reactive<MotionTransformPropsBasic>({
+    ...defaultsMotionTransform,
+    ...options.initialProps
+  })
 
-  /**
-   * Simulates component unmount lifecycle.
-   *
-   * Симулирует жизненный цикл размонтирования компонента.
-   */
-  triggerUnmounted(): void {
-    this.isMounted.value = false
-    this.callLifecycle('onUnmounted')
-    this.onUnmounted?.()
+  let exposed!: MotionTransformExpose & { elementHtml: Ref<HTMLDivElement | undefined> }
+
+  const Component = defineComponent({
+    inheritAttrs: false,
+    setup() {
+      const classesToken = computed<ConstrClasses>(() => ({
+        main: {
+          'd1-motionTransform': true
+        }
+      }))
+
+      const design = new MotionTransformDesign<
+        MotionTransformComponents,
+        MotionTransformExpose,
+        MotionTransformClasses,
+        MotionTransformPropsBasic
+      >('d1.motionTransform', props, {
+        emits: emits as never,
+        classes: classesToken
+      })
+
+      exposed = design.expose() as MotionTransformExpose & { elementHtml: Ref<HTMLDivElement | undefined> }
+      return design.render()
+    }
+  })
+
+  const Root = defineComponent({
+    setup() {
+      return () => h(
+        Component,
+        options.attrs ?? null,
+        options.slots as Record<string, unknown> | undefined
+      )
+    }
+  })
+
+  const app = createApp(Root)
+  app.mount(container)
+  cleanups.push(() => app.unmount())
+
+  return {
+    container,
+    props,
+    emits,
+    exposed
   }
 }
 
-describe('MotionTransform', () => {
-  it('should initialize and provide binds and slotData', () => {
-    const scope = effectScope()
-    const element = ref(document.createElement('div'))
-    const naming = new DesignName('test-motion')
-
-    const transform = scope.run(() => new InspectableMotionTransform(
-      { clickOpen: true },
-      element,
-      naming
-    ))!
-
-    expect(transform.bindsHead).toBeDefined()
-    expect(transform.bindsHead.key).toBe('head')
-    expect(transform.bindsHead.tabindex).toBe(0)
-    expect(transform.bindsHead.role).toBe('button')
-    expect(typeof transform.bindsHead.onClick).toBe('function')
-    expect(typeof transform.bindsHead.onKeydown).toBe('function')
-
-    expect(transform.bindsBody).toBeDefined()
-    expect(transform.bindsBody.key).toBe('body')
-    expect(transform.bindsBody.role).toBe('region')
-
-    expect(transform.instantiatedItems.model).toBeDefined()
-
-    const slotData = transform.slotData
-    expect(slotData).toBeDefined()
-    expect(slotData.isOpen).toBe(false)
-    expect(slotData.isShow).toBe(false)
-    expect(slotData.idControl).toBeDefined()
-    expect(slotData.idBody).toBeDefined()
-    expect(slotData.binds).toBeDefined()
-
-    scope.stop()
-  })
-
-  it('should omit onKeydown in bindsHead when clickOpen is false', () => {
-    const scope = effectScope()
-    const element = ref(document.createElement('div'))
-    const naming = new DesignName('test-motion')
-
-    const transform = scope.run(() => new InspectableMotionTransform(
-      { clickOpen: false },
-      element,
-      naming
-    ))!
-
-    expect(transform.bindsHead.key).toBe('head')
-    expect(transform.bindsHead.tabindex).toBeUndefined()
-    expect(transform.bindsHead.role).toBeUndefined()
-    expect(transform.bindsHead.onKeydown).toBeUndefined()
-
-    scope.stop()
-  })
-
-  it('should track isMounted state through lifecycle triggers', () => {
-    const scope = effectScope()
-    const element = ref(document.createElement('div'))
-    const naming = new DesignName('test-motion')
-
-    const transform = scope.run(() => new InspectableMotionTransform(
-      { clickOpen: true },
-      element,
-      naming
-    ))!
-
-    expect(transform.isMounted.value).toBe(false)
-    transform.triggerMounted()
-    expect(transform.isMounted.value).toBe(true)
-    transform.triggerUnmounted()
-    expect(transform.isMounted.value).toBe(false)
-
-    scope.stop()
-  })
-
-  it('should activate esc conditionally when clickOpen is true upon mount', async () => {
-    const scope = effectScope()
-    const props = reactive<MotionTransformProps>({ clickOpen: true })
-    const element = ref(document.createElement('div'))
-    const naming = new DesignName('test-motion')
-
-    const transform = scope.run(() => new InspectableMotionTransform(
-      props,
-      element,
-      naming
-    ))!
-
-    expect(transform.instantiatedItems.esc).toBeUndefined()
-    transform.triggerMounted()
-    await nextTick()
-
-    expect(transform.instantiatedItems.esc).toBeDefined()
-
-    scope.stop()
-  })
-
-  it('should support dependency injection overrides', () => {
-    const scope = effectScope()
-    const element = ref(document.createElement('div'))
-    const naming = new DesignName('test-motion')
-
-    class MockGo {
-      open = vi.fn()
-      close = vi.fn()
-      toggle = vi.fn()
-      to = vi.fn()
-    }
-
-    const transform = scope.run(() => new InspectableMotionTransform(
-      { clickOpen: true },
-      element,
-      naming,
-      undefined,
-      undefined,
-      undefined,
-      {
-        go: MockGo as any
+describe('MotionTransform (Integration)', () => {
+  it('should render full DOM structure, support click and Enter/IME keyboard interactions, and sync emits', async () => {
+    const { container, emits, exposed } = mountMotionTransform({
+      initialProps: {
+        animationShow: false,
+        open: false,
+        inDom: false
+      },
+      slots: {
+        head: slotProps => h('span', { class: 'head-inner' }, slotProps?.isOpen ? 'Open' : 'Closed'),
+        body: () => h('div', { class: 'body-inner' }, 'Panel Content')
       }
-    ))!
+    })
 
-    expect(transform.i('go')).toBeInstanceOf(MockGo)
-
-    scope.stop()
-  })
-
-  it('should instantiate model eagerly and emit v-model:open updates when state changes', async () => {
-    const scope = effectScope()
-    const element = ref(document.createElement('div'))
-    const naming = new DesignName('test-motion')
-    const emits = vi.fn()
-
-    const transform = scope.run(() => new InspectableMotionTransform(
-      { clickOpen: true },
-      element,
-      naming,
-      undefined,
-      undefined,
-      emits
-    ))!
-
-    expect(transform.instantiatedItems.model).toBeDefined()
-
-    transform.i('state').open.value = true
     await nextTick()
 
+    const contextElement = container.querySelector('.d1-motionTransform__context') as HTMLElement
+    const mainElement = container.querySelector('.d1-motionTransform') as HTMLElement
+    const headElement = container.querySelector('.d1-motionTransform__head') as HTMLElement
+
+    expect(contextElement).not.toBeNull()
+    expect(mainElement).not.toBeNull()
+    expect(headElement).not.toBeNull()
+    expect(mainElement.dataset.open).toBe('none')
+    expect(mainElement.dataset.show).toBe('none')
+    expect(container.querySelector('.d1-motionTransform__body')).toBeNull()
+
+    // Click head opens panel
+    headElement.click()
+    await nextTick()
+
+    expect(exposed.getOpen()).toBe(true)
+    expect(exposed.isShow()).toBe(true)
+    expect(mainElement.dataset.open).toBe('open')
+    expect(container.querySelector('.d1-motionTransform__body')).not.toBeNull()
+    expect(container.querySelector('.head-inner')?.textContent).toBe('Open')
+    expect(emits).toHaveBeenCalledWith('transform', expect.any(MouseEvent), { type: 'head', open: true })
+    expect(emits).toHaveBeenCalledWith('transformLite', { type: 'head', open: true })
     expect(emits).toHaveBeenCalledWith('update:open', true)
     expect(emits).toHaveBeenCalledWith('update:modelOpen', true)
 
-    scope.stop()
+    // IME composition Enter must be ignored
+    const composingEvent = new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true })
+    Object.defineProperty(composingEvent, 'isComposing', { value: true })
+    headElement.dispatchEvent(composingEvent)
+    await nextTick()
+    expect(exposed.getOpen()).toBe(true)
+
+    // Regular Enter closes panel
+    headElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true }))
+    await nextTick()
+    expect(exposed.getOpen()).toBe(false)
+    expect(mainElement.dataset.open).toBe('none')
+  })
+
+  it('should support Escape closing via WindowEsc, outside auto-close, ignore elements, and close triggers', async () => {
+    const ignoredElement = document.createElement('button')
+    ignoredElement.id = 'ignored-trigger'
+    document.body.appendChild(ignoredElement)
+    cleanups.push(() => ignoredElement.remove())
+
+    const { container, exposed } = mountMotionTransform({
+      initialProps: {
+        animationShow: false,
+        clickOpen: true,
+        autoClose: true,
+        ignore: ignoredElement
+      },
+      slots: {
+        head: () => h('span', 'Trigger'),
+        body: () => h('button', { class: 'd1-motionTransform--close' }, 'Close')
+      }
+    })
+
+    await nextTick()
+
+    // Open via expose API
+    exposed.toOpen()
+    await nextTick()
+    expect(exposed.getOpen()).toBe(true)
+
+    // Clicking ignored element keeps it open
+    ignoredElement.click()
+    await nextTick()
+    expect(exposed.getOpen()).toBe(true)
+
+    // Clicking inside close trigger closes it
+    const closeButton = container.querySelector('.d1-motionTransform--close') as HTMLButtonElement
+    expect(closeButton).not.toBeNull()
+    closeButton.click()
+    await nextTick()
+    expect(exposed.getOpen()).toBe(false)
+
+    // Reopen and close via Escape key
+    exposed.toOpen()
+    await nextTick()
+    expect(exposed.getOpen()).toBe(true)
+
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true }))
+    await nextTick()
+    expect(exposed.getOpen()).toBe(false)
+
+    // Reopen and close via outside click
+    exposed.toOpen()
+    await nextTick()
+    expect(exposed.getOpen()).toBe(true)
+
+    const outsideButton = document.createElement('button')
+    document.body.appendChild(outsideButton)
+    cleanups.push(() => outsideButton.remove())
+    outsideButton.click()
+    await nextTick()
+    expect(exposed.getOpen()).toBe(false)
+  })
+
+  it('should handle animated transitions, teleport window mode, scrim rendering, and clean up timers on unmount', async () => {
+    vi.useFakeTimers()
+    vi.spyOn(window, 'innerWidth', 'get').mockReturnValue(1000)
+    vi.spyOn(window, 'innerHeight', 'get').mockReturnValue(800)
+
+    const originalGetComputedStyle = window.getComputedStyle.bind(window)
+    vi.spyOn(window, 'getComputedStyle').mockImplementation((element) => {
+      const style = originalGetComputedStyle(element)
+      return {
+        ...style,
+        getPropertyValue: (property: string) => (
+          property === __MOTION_TRANSFORM_TYPE_BODY_NAME
+            ? '"--WINDOW--"'
+            : style.getPropertyValue(property)
+        )
+      } as CSSStyleDeclaration
+    })
+
+    const { container, exposed } = mountMotionTransform({
+      initialProps: {
+        animationShow: true,
+        open: false
+      },
+      slots: {
+        head: () => h('div', 'Header'),
+        body: () => h('div', 'Window Body')
+      }
+    })
+
+    await nextTick()
+
+    const contextElement = container.querySelector('.d1-motionTransform__context') as HTMLElement
+    const mainElement = container.querySelector('.d1-motionTransform') as HTMLElement
+    vi.spyOn(contextElement, 'getBoundingClientRect').mockReturnValue({
+      top: 20,
+      left: 10,
+      width: 200,
+      height: 50,
+      right: 210,
+      bottom: 70,
+      x: 10,
+      y: 20,
+      toJSON: () => ({})
+    })
+
+    // Open with animation
+    exposed.toOpen()
+    await nextTick()
+    expect(exposed.isShow()).toBe(true)
+    expect(mainElement.dataset.show).toBe('show')
+
+    // First frame computes sizes and enables teleport; second frame opens
+    vi.advanceTimersToNextFrame()
+    await nextTick()
+    expect(document.body.querySelector('.d1-motionTransform__scrim')).not.toBeNull()
+
+    vi.advanceTimersToNextFrame()
+    await nextTick()
+    expect(exposed.getOpen()).toBe(true)
+    expect(mainElement.dataset.open).toBe('open')
+    expect(mainElement.dataset.teleport).toBe('teleport')
+
+    // Fallback timeout resets temporary show state
+    vi.runAllTimers()
+    await nextTick()
+    expect(mainElement.dataset.show).toBe('none')
+    expect(exposed.getOpen()).toBe(true)
+
+    // Close and finish via fallback timer
+    exposed.toClose()
+    vi.advanceTimersToNextFrame()
+    vi.advanceTimersToNextFrame()
+    vi.runAllTimers()
+    await nextTick()
+    expect(exposed.getOpen()).toBe(false)
+    expect(exposed.isShow()).toBe(false)
+    expect(document.body.querySelector('.d1-motionTransform__scrim')).toBeNull()
+  })
+
+  it('should react to props.open changes and avoid opening when clickOpen is false', async () => {
+    const { container, props, exposed } = mountMotionTransform({
+      initialProps: {
+        animationShow: false,
+        clickOpen: false,
+        open: false
+      }
+    })
+
+    await nextTick()
+    const headElement = container.querySelector('.d1-motionTransform__head') as HTMLElement
+
+    headElement.click()
+    await nextTick()
+    expect(exposed.getOpen()).toBe(false)
+
+    props.open = true
+    await nextTick()
+    expect(exposed.getOpen()).toBe(true)
+
+    props.open = false
+    await nextTick()
+    expect(exposed.getOpen()).toBe(false)
   })
 })

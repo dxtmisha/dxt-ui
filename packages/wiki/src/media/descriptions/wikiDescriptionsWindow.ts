@@ -19,7 +19,7 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
       'static mode for embedded inline layouts in normal document flow',
       'persistent window interaction blocking with wobble and flash feedback',
       'automatic scrollbar integration and body scroll lock management',
-      'accessibility features: focus trapping, inert attribute, and aria-haspopup',
+      'accessibility features: focus trapping, configurable focus return (disableFocusReturn), inert attribute, and aria-haspopup',
       'event-driven architecture with comprehensive lifecycle hooks',
       'header image and icon integration with top and left layouts',
       'responsive design with mobile action sheets and fullscreen views'
@@ -31,7 +31,7 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
       'статический режим для встроенных инлайн-представлений в обычном потоке документа',
       'блокировка взаимодействия с фоном (persistent) с визуальным эффектом wobble и flash',
       'автоматическая интеграция с полосой прокрутки и блокировка скролла страницы',
-      'доступность: захват фокуса клавиатуры, атрибут inert и aria-haspopup',
+      'доступность: захват фокуса клавиатуры, настраиваемый возврат фокуса (disableFocusReturn), атрибут inert и aria-haspopup',
       'событийно-ориентированная архитектура с хуками жизненного цикла',
       'интеграция изображений и иконок с верхним и левым расположением',
       'адаптивный дизайн с мобильными панелями действий и полноэкранным режимом'
@@ -977,6 +977,46 @@ const stillOpen = canvasElement.querySelector<HTMLElement>('.design-component:no
 await expect(stillOpen).toBeInTheDocument()
 
 await userEvent.click(trigger!)
+      `
+    },
+    {
+      id: 'WindowTestDisableFocusReturn',
+      name: {
+        en: 'Test: Disable focus return on close',
+        ru: 'Тест: Отключение возврата фокуса при закрытии'
+      },
+      propsName: ['disableFocusReturn', 'flash'],
+      template: `
+        <div class="wiki-storybook-flex">
+          <button class="wiki-storybook-button wiki-storybook-button--outside">Outside Focus Target</button>
+          <DesignComponent disableFocusReturn flash>
+            <template #control="{binds}">
+              <button class="wiki-storybook-button wiki-storybook-button--trigger" v-bind="binds">Open Window</button>
+            </template>
+            <template #default>
+              <div class="wiki-storybook-item--padding">
+                <button class="wiki-storybook-button wiki-storybook-button--inside">Inside Button</button>
+              </div>
+            </template>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+const triggerButton = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--trigger')
+await expect(triggerButton).toBeInTheDocument()
+
+await userEvent.click(triggerButton!)
+await waitFor(async () => {
+  const windowElement = document.querySelector<HTMLElement>('.design-component:not([data-status="hide"])')
+  await expect(windowElement).toBeInTheDocument()
+})
+
+await userEvent.keyboard('{Escape}')
+await waitFor(async () => {
+  const openWindow = document.querySelector<HTMLElement>('.design-component[data-status="open"]')
+  await expect(openWindow).toBeNull()
+})
+await expect(document.activeElement).not.toBe(triggerButton)
       `
     },
     {

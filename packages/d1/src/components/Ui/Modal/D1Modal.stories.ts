@@ -103,7 +103,7 @@ export const ModalAllSlots: Story = {
     components: { D1Modal },
     template: `
         
-        <D1Modal width="md">
+        <D1Modal width="480px">
           <template #control="{binds}">
             <button class="wiki-storybook-button" v-bind="binds">Open Modal with All Slots</button>
           </template>
@@ -152,7 +152,7 @@ export const ModalImage: Story = {
           <D1Modal
             image="https://picsum.photos/600/300?random=1"
             imagePosition="top"
-            width="md"
+            width="480px"
           >
             <template #control="{binds}">
               <button class="wiki-storybook-button" v-bind="binds">Top Image Modal</button>
@@ -172,7 +172,7 @@ export const ModalImage: Story = {
           <D1Modal
             image="https://picsum.photos/300/400?random=2"
             imagePosition="left"
-            width="lg"
+            width="640px"
           >
             <template #control="{binds}">
               <button class="wiki-storybook-button" v-bind="binds">Left Image Modal</button>
@@ -253,35 +253,30 @@ export const ModalExpose: Story = {
   }
 }
 export const ModalTestWidths: Story = {
-  name: 'Тест: Предустановленная ширина',
+  name: 'Тест: Режимы ширины (auto, max, custom)',
   render: () => ({
     components: { D1Modal },
     template: `
         
         <div class="wiki-storybook-flex wiki-storybook-gap">
-          <D1Modal width="sm">
-            <template #control="{binds}">
-              <button class="wiki-storybook-button" v-bind="binds">SM</button>
-            </template>
-          </D1Modal>
-          <D1Modal width="md">
-            <template #control="{binds}">
-              <button class="wiki-storybook-button" v-bind="binds">MD</button>
-            </template>
-          </D1Modal>
-          <D1Modal width="lg">
-            <template #control="{binds}">
-              <button class="wiki-storybook-button" v-bind="binds">LG</button>
-            </template>
-          </D1Modal>
-          <D1Modal width="xl">
-            <template #control="{binds}">
-              <button class="wiki-storybook-button" v-bind="binds">XL</button>
-            </template>
-          </D1Modal>
           <D1Modal width="auto">
             <template #control="{binds}">
               <button class="wiki-storybook-button" v-bind="binds">Auto</button>
+            </template>
+          </D1Modal>
+          <D1Modal width="max">
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">Max</button>
+            </template>
+          </D1Modal>
+          <D1Modal width="360px">
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">360px</button>
+            </template>
+          </D1Modal>
+          <D1Modal width="640px">
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">640px</button>
             </template>
           </D1Modal>
         </div>
@@ -290,12 +285,11 @@ export const ModalTestWidths: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll('.d1-modal')
-    await expect(items.length).toBe(5)
-    await expect(items[0]).toHaveClass('d1-modal--width--sm')
-    await expect(items[1]).toHaveClass('d1-modal--width--md')
-    await expect(items[2]).toHaveClass('d1-modal--width--lg')
-    await expect(items[3]).toHaveClass('d1-modal--width--xl')
-    await expect(items[4]).toHaveClass('d1-modal--width--auto')
+    await expect(items.length).toBe(4)
+    await expect(items[0]).toHaveClass('d1-modal--width--auto')
+    await expect(items[1]).toHaveClass('d1-modal--width--max')
+    await expect(items[2]).toHaveClass('d1-modal--width--custom')
+    await expect(items[3]).toHaveClass('d1-modal--width--custom')
   }
 }
 export const ModalTestImagePositions: Story = {

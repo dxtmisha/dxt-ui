@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { computed, createApp, defineComponent, h, nextTick, reactive } from 'vue'
 import type { ConstrClasses } from '@dxtmisha/functional'
 
+import { MotionTransform } from '../MotionTransform'
 import { MotionTransformDesign } from '../MotionTransformDesign'
 import { defaultsMotionTransform, type MotionTransformPropsBasic } from '../props'
 import type {
@@ -614,6 +615,45 @@ describe('MotionTransformDesign', () => {
       await nextTick()
       expect(emits).toHaveBeenCalledWith('update:open', true)
       expect(emits).toHaveBeenCalledWith('update:modelOpen', true)
+    })
+
+    it('should support custom ItemConstructor injection in MotionTransformDesign', async () => {
+      const container = document.createElement('div')
+      document.body.appendChild(container)
+      cleanups.push(() => container.remove())
+
+      let injectedCreated = false
+
+      class CustomMotionTransform extends MotionTransform {
+        constructor(...args: ConstructorParameters<typeof MotionTransform>) {
+          super(...args)
+          injectedCreated = true
+        }
+      }
+
+      const Component = defineComponent({
+        setup() {
+          const props = reactive<MotionTransformPropsBasic>({
+            ...defaultsMotionTransform
+          })
+
+          const design = new MotionTransformDesign<
+            MotionTransformComponents,
+            MotionTransformExpose,
+            MotionTransformClasses,
+            MotionTransformPropsBasic
+          >('d1.motionTransform', props, undefined, CustomMotionTransform)
+
+          return design.render()
+        }
+      })
+
+      const app = createApp(Component)
+      app.mount(container)
+      cleanups.push(() => app.unmount())
+
+      await nextTick()
+      expect(injectedCreated).toBe(true)
     })
   })
 })

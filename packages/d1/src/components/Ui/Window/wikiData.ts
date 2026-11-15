@@ -22,6 +22,7 @@ const propsNames: StorybookProps = [
   { name: 'contextmenu', type: 'boolean' },
   { name: 'dense', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
+  { name: 'disableFocusReturn', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
   { name: 'embedded', type: 'boolean' },
   { name: 'flash', type: 'boolean' },

@@ -19,6 +19,7 @@ export const wikiDescriptionsInputPhone: StorybookComponentsDescriptionItem = {
       'configurable default country and restriction of automatic detection via countryBlock',
       'fully custom pattern formatting via mask attributes',
       'supports two-way data binding (v-model)',
+      'automatically restores focus to the phone input whenever the country selection window closes',
       'integrated helper messages, status validation states, and label configurations'
     ],
     ru: [
@@ -28,6 +29,7 @@ export const wikiDescriptionsInputPhone: StorybookComponentsDescriptionItem = {
       'настройка страны по умолчанию и возможность отключения автоопределения через countryBlock',
       'полностью настраиваемое форматирование шаблонов через атрибуты маски',
       'поддержка двусторонней привязки данных (v-model)',
+      'автоматический перевод фокуса обратно на поле ввода при любом закрытии окна выбора страны',
       'интегрированные подсказки, статусы валидации и конфигурации меток'
     ]
   },
@@ -107,6 +109,7 @@ export const wikiDescriptionsInputPhone: StorybookComponentsDescriptionItem = {
 The InputPhone component is a specialized field for inputting and formatting phone numbers.
 It integrates with a country flag/code selector and applies automatic mask formatting based on the selected or detected country.
 By default, the country can be dynamically identified from the entered dialing digits, which can be restricted using the countryBlock prop.
+Whenever the country selector window closes, focus automatically moves to the phone input element.
 It supports two-way v-model binding, error validation states, helper messages, and custom mask settings.
     `
   }

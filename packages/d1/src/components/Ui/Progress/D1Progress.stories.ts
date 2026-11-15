@@ -412,6 +412,10 @@ export const ProgressTestAriaAndPositions: Story = {
             <D1Progress visible linear position="static" ariaLabel="Custom file upload in progress" :value="45"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">Custom textLoading</div>
+            <D1Progress visible linear position="static" textLoading="Loading files"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">Default loading aria-label</div>
             <D1Progress visible linear position="static"/>
           </div>
@@ -430,24 +434,29 @@ export const ProgressTestAriaAndPositions: Story = {
   play: async ({ canvasElement }) => {
     await waitFor(() => {
       const items = canvasElement.querySelectorAll('.d1-progress')
-      expect(items.length).toBe(4)
+      expect(items.length).toBe(5)
 
       // 1. Custom ariaLabel
       const itemCustomLabel = items[0]
       expect(itemCustomLabel).toHaveAttribute('aria-label', 'Custom file upload in progress')
       expect(itemCustomLabel).toHaveAttribute('role', 'progressbar')
 
-      // 2. Default loading aria-label
-      const itemDefaultLabel = items[1]
+      // 2. Custom textLoading
+      const itemCustomTextLoading = items[1]
+      expect(itemCustomTextLoading).toHaveAttribute('aria-label', 'Loading files')
+      expect(itemCustomTextLoading).toHaveAttribute('role', 'status')
+
+      // 3. Default loading aria-label
+      const itemDefaultLabel = items[2]
       expect(itemDefaultLabel).toHaveAttribute('aria-label')
       expect(itemDefaultLabel).toHaveAttribute('role', 'status')
 
-      // 3. position: top
-      const itemPositionTop = items[2]
+      // 4. position: top
+      const itemPositionTop = items[3]
       expect(itemPositionTop).toHaveClass('d1-progress--position--top')
 
-      // 4. clientOnly: false
-      const itemClientOnlyFalse = items[3]
+      // 5. clientOnly: false
+      const itemClientOnlyFalse = items[4]
       expect(itemClientOnlyFalse).toHaveAttribute('role', 'progressbar')
       expect(itemClientOnlyFalse).toHaveAttribute('aria-valuenow', '30')
     })

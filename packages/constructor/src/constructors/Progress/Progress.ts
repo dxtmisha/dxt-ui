@@ -350,13 +350,13 @@ export class Progress extends DesignLogicAbstract<
 
     if (this.isValue()) {
       this.reset()
-    } else if (Boolean(this.visible.value) !== visible) {
+    } else if (Boolean(this.visible.value) !== Boolean(visible)) {
       const delay = toNumber(this.props.delay ?? defaultsProgress.delay)
       const delayHide = toNumber(this.props.delayHide ?? defaultsProgress.delayHide)
 
-      if (visible && delay) {
+      if (visible && delay > 0) {
         this.timeout = setTimeout(() => this.update(), delay)
-      } else if (!visible && delayHide) {
+      } else if (!visible && delayHide > 0) {
         this.timeout = setTimeout(() => this.update(), delayHide)
       } else {
         this.update()

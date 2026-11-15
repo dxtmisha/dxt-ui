@@ -136,6 +136,7 @@ describe('Window', () => {
       expect(windowItem.i('image')).toBeDefined()
       expect(windowItem.instantiatedItems.image).toBeDefined()
 
+      windowItem.triggerUnmounted()
       scope.stop()
     })
 
@@ -260,6 +261,51 @@ describe('Window', () => {
       windowItem.triggerUnmounted()
       expect(stopSpy).toHaveBeenCalled()
 
+      scope.stop()
+    })
+
+    it('should not return focus on tabIndex.reset() when disableFocusReturn is true', async () => {
+      const previousButton = document.createElement('button')
+      document.body.appendChild(previousButton)
+      previousButton.focus()
+
+      const scope = effectScope()
+      const props: WindowPropsBasic = reactive({
+        disableFocusReturn: true
+      }) as any
+      const element = ref<HTMLDivElement>()
+      const naming = new DesignName('d1.window')
+
+      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
+      const tabIndex = windowItem.i('tabIndex')
+
+      tabIndex.updateOldElement()
+
+      const temporaryButton = document.createElement('button')
+      document.body.appendChild(temporaryButton)
+      temporaryButton.focus()
+      document.body.removeChild(temporaryButton)
+
+      tabIndex.reset()
+      await new Promise(resolve => requestAnimationFrame(resolve))
+
+      expect(document.activeElement).not.toBe(previousButton)
+
+      props.disableFocusReturn = false
+      previousButton.focus()
+      tabIndex.updateOldElement()
+
+      const secondTemporaryButton = document.createElement('button')
+      document.body.appendChild(secondTemporaryButton)
+      secondTemporaryButton.focus()
+      document.body.removeChild(secondTemporaryButton)
+
+      tabIndex.reset()
+      await new Promise(resolve => requestAnimationFrame(resolve))
+
+      expect(document.activeElement).toBe(previousButton)
+
+      document.body.removeChild(previousButton)
       scope.stop()
     })
   })

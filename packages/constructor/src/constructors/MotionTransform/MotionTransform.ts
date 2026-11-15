@@ -151,7 +151,7 @@ export class MotionTransform extends DesignLogicAbstract<
    * @param elementContext substrate element / элемент подложка
    */
   constructor(
-    props: MotionTransformProps,
+    props: Readonly<MotionTransformProps>,
     element: Ref<HTMLDivElement | undefined>,
     naming: DesignName,
     components?: DesignComp<MotionTransformComponents, MotionTransformProps>,

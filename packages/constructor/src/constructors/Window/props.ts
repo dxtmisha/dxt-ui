@@ -93,6 +93,8 @@ export type WindowPropsBasic<
     inert?: boolean
     /** Whether to automatically manage tab index/ Автоматически ли управлять tab-index */
     autoTabIndex?: boolean
+    /** Whether to disable returning focus to the previous element on close/ Отключить возврат фокуса на предыдущий элемент при закрытии */
+    disableFocusReturn?: boolean
     /** Whether to close the window on Esc key press/ Закрывать ли окно при нажатии Esc */
     closeOnEsc?: boolean
     /** Whether to open the window on Arrow Down key press/ Открывать ли окно при нажатии стрелки вниз */

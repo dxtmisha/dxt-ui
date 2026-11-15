@@ -117,4 +117,33 @@ describe('MotionTransformEvent', () => {
 
     expect(stateMock.toggle).not.toHaveBeenCalled()
   })
+
+  it('should ignore non-Element targets on click and keydown without throwing', () => {
+    const stateMock = {
+      open: ref(false),
+      toggle: vi.fn()
+    } as any
+
+    const elementMock = {
+      isClick: vi.fn().mockReturnValue(true)
+    } as any
+
+    const eventHandler = new MotionTransformEvent(
+      { clickOpen: true },
+      () => elementMock,
+      () => stateMock
+    )
+
+    const textNode = document.createTextNode('label')
+    const clickEvent = new MouseEvent('click')
+    Object.defineProperty(clickEvent, 'target', { value: textNode })
+    expect(() => eventHandler.onClick(clickEvent)).not.toThrow()
+
+    const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' })
+    Object.defineProperty(enterEvent, 'target', { value: null })
+    expect(() => eventHandler.onKeydown(enterEvent)).not.toThrow()
+
+    expect(stateMock.toggle).not.toHaveBeenCalled()
+    expect(elementMock.isClick).not.toHaveBeenCalled()
+  })
 })

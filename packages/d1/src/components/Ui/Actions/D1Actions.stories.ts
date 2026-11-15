@@ -54,11 +54,11 @@ export const ActionsList: Story = {
     components: { D1Actions },
     setup() {
       const list = [
-        { label: 'Cancel', text: true, value: 'cancel' },
-        { label: 'Apply', primary: true, value: 'apply' }
+        { label: 'Cancel', value: 'cancel' },
+        { label: 'Apply', selected: true, value: 'apply' }
       ]
       const listSecondary = [
-        { label: 'Delete', palette: 'red', text: true, value: 'delete' }
+        { label: 'Delete', icon: 'delete', value: 'delete' }
       ]
       return { list, listSecondary }
     },
@@ -99,11 +99,11 @@ export const ActionsAlign: Story = {
     components: { D1Actions },
     setup() {
       const list = [
-        { label: 'Cancel', text: true, value: 'cancel' },
-        { label: 'Apply', primary: true, value: 'apply' }
+        { label: 'Cancel', value: 'cancel' },
+        { label: 'Apply', selected: true, value: 'apply' }
       ]
       const listSecondary = [
-        { label: 'Delete', palette: 'red', text: true, value: 'delete' }
+        { label: 'Delete', icon: 'delete', value: 'delete' }
       ]
       return { list, listSecondary }
     },
@@ -151,11 +151,11 @@ export const ActionsFlexible: Story = {
     components: { D1Actions },
     setup() {
       const list = [
-        { label: 'Cancel', text: true, value: 'cancel' },
-        { label: 'Apply', primary: true, value: 'apply' }
+        { label: 'Cancel', value: 'cancel' },
+        { label: 'Apply', selected: true, value: 'apply' }
       ]
       const listSecondary = [
-        { label: 'Delete', palette: 'red', text: true, value: 'delete' }
+        { label: 'Delete', icon: 'delete', value: 'delete' }
       ]
       return { list, listSecondary }
     },
@@ -163,16 +163,12 @@ export const ActionsFlexible: Story = {
         
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">flexible: adaptiveMd</div>
-            <D1Actions :list="list" :listSecondary="listSecondary" flexible="adaptiveMd"/>
+            <div class="wiki-storybook-item__label">flexible: true</div>
+            <D1Actions :list="list" :listSecondary="listSecondary" flexible/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-container">
-            <div class="wiki-storybook-item__label">flexible: containerMd</div>
-            <D1Actions :list="list" :listSecondary="listSecondary" flexible="containerMd"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-container" style="max-width: 480px;">
-            <div class="wiki-storybook-item__label">flexible: containerMd (max-width: 480px)</div>
-            <D1Actions :list="list" :listSecondary="listSecondary" flexible="containerMd"/>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+            <div class="wiki-storybook-item__label">flexible: false</div>
+            <D1Actions :list="list" :listSecondary="listSecondary" :flexible="false"/>
           </div>
         </div>
       
@@ -180,13 +176,10 @@ export const ActionsFlexible: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll('.d1-actions')
-    await expect(items.length).toBe(3)
+    await expect(items.length).toBe(2)
 
-    await expect(items[0]).toHaveClass('d1-actions--flexible--adaptiveMd')
-    await expect(items[1]).toHaveClass('d1-actions--flexible--containerMd')
-    await expect(items[2]).toHaveClass('d1-actions--flexible--containerMd')
-    await expect(items[1].parentElement).toHaveClass('wiki-storybook-container')
-    await expect(items[2].parentElement).toHaveClass('wiki-storybook-container')
+    await expect(items[0]).toHaveClass('d1-actions--flexible')
+    await expect(items[1]).not.toHaveClass('d1-actions--flexible')
   }
 }
 export const ActionsButtonAttrs: Story = {
@@ -211,8 +204,8 @@ export const ActionsButtonAttrs: Story = {
             <D1Actions
               :list="list"
               :listSecondary="listSecondary"
-              :buttonAttrs="{ size: 'sm', outline: true }"
-              :buttonSecondaryAttrs="{ size: 'sm', palette: 'red', text: true }"
+              :buttonAttrs="{ inverse: true }"
+              :buttonSecondaryAttrs="{ iconTrailing: 'arrow_forward' }"
             />
           </div>
         </div>
@@ -238,11 +231,11 @@ export const ActionsSlots: Story = {
             <div class="wiki-storybook-item__label">Slots: default & secondary</div>
             <D1Actions>
               <template #secondary>
-                <D1Button label="Secondary Slot Action" text/>
+                <D1Button label="Secondary Slot Action" icon="delete"/>
               </template>
               <template #default>
-                <D1Button label="Cancel" outline/>
-                <D1Button label="Confirm" primary/>
+                <D1Button label="Cancel"/>
+                <D1Button label="Confirm" selected/>
               </template>
             </D1Actions>
           </div>
@@ -272,8 +265,8 @@ export const ActionsEventClick: Story = {
         clickTrace.value = [...clickTrace.value, source]
       }
       const list = [
-        { label: 'Cancel', text: true, value: 'cancel' },
-        { label: 'Apply', primary: true, value: 'apply', onClick: () => pushTrace('item') }
+        { label: 'Cancel', value: 'cancel' },
+        { label: 'Apply', selected: true, value: 'apply', onClick: () => pushTrace('item') }
       ]
       const buttonAttrs = {
         onClick: () => pushTrace('buttonAttrs')
@@ -412,15 +405,15 @@ export const ActionsTestWrapping: Story = {
   }
 }
 export const ActionsTestButtonStates: Story = {
-  name: 'Тест: Состояния кнопок, иконки и палитры',
+  name: 'Тест: Состояния кнопок и иконки',
   render: () => ({
     components: { D1Actions },
     setup() {
       const stateItems = [
         { label: 'Disabled', disabled: true, value: 'disabled' },
         { label: 'Loading', loading: true, value: 'loading' },
-        { label: 'With Icon', icon: 'download', outline: true, value: 'icon' },
-        { label: 'Custom Palette', palette: 'red', value: 'palette' }
+        { label: 'With Icon', icon: 'download', value: 'icon' },
+        { label: 'Selected', selected: true, value: 'selected' }
       ]
       return { stateItems }
     },
@@ -448,8 +441,8 @@ export const ActionsTestButtonStates: Story = {
       await expect(buttons[1].querySelector('[class*="__loading"]')).toBeTruthy()
       await expect(buttons[2]).toHaveAttribute('data-value', 'icon')
       await expect(buttons[2].textContent).toContain('With Icon')
-      await expect(buttons[3]).toHaveAttribute('data-value', 'palette')
-      await expect(buttons[3].textContent).toContain('Custom Palette')
+      await expect(buttons[3]).toHaveAttribute('data-value', 'selected')
+      await expect(buttons[3].textContent).toContain('Selected')
     }
   }
 }
@@ -477,7 +470,7 @@ export const ActionsTestEmptyAndMixed: Story = {
             <div class="wiki-storybook-item__label">List + Slot Mixed</div>
             <D1Actions :list="list">
               <template #default>
-                <D1Button label="Slotted Action" outline/>
+                <D1Button label="Slotted Action"/>
               </template>
             </D1Actions>
           </div>
@@ -502,80 +495,12 @@ export const ActionsTestEmptyAndMixed: Story = {
     await expect(mixedButtons.length).toBe(2)
   }
 }
-export const ActionsTestPaddings: Story = {
-  name: 'Тест: Варианты отступов и приоритет paddingByIndent',
-  render: () => ({
-    components: { D1Actions },
-    setup() {
-      const list = [{ label: 'Action', value: '1' }]
-      return { list }
-    },
-    template: `
-        
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: sm (paddingByIndent: false)</div>
-            <D1Actions :list="list" padding="sm" :paddingByIndent="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: md (paddingByIndent: false)</div>
-            <D1Actions :list="list" padding="md" :paddingByIndent="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: lg (paddingByIndent: false)</div>
-            <D1Actions :list="list" padding="lg" :paddingByIndent="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: ySm (paddingByIndent: false)</div>
-            <D1Actions :list="list" padding="ySm" :paddingByIndent="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: yMd (paddingByIndent: false)</div>
-            <D1Actions :list="list" padding="yMd" :paddingByIndent="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: yLg (paddingByIndent: false)</div>
-            <D1Actions :list="list" padding="yLg" :paddingByIndent="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: none (paddingByIndent: false)</div>
-            <D1Actions :list="list" padding="none" :paddingByIndent="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: lg + default paddingByIndent (overridden by paddingByIndent)</div>
-            <D1Actions :list="list" padding="lg"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">paddingByIndent: false</div>
-            <D1Actions :list="list" :paddingByIndent="false"/>
-          </div>
-        </div>
-      
-    `
-  }),
-  play: async ({ canvasElement }) => {
-    const items = canvasElement.querySelectorAll('.d1-actions')
-    await expect(items.length).toBe(9)
-
-    await expect(items[0]).toHaveClass('d1-actions--padding--sm')
-    await expect(items[0]).not.toHaveClass('d1-actions--paddingByIndent')
-    await expect(items[1]).toHaveClass('d1-actions--padding--md')
-    await expect(items[2]).toHaveClass('d1-actions--padding--lg')
-    await expect(items[3]).toHaveClass('d1-actions--padding--ySm')
-    await expect(items[4]).toHaveClass('d1-actions--padding--yMd')
-    await expect(items[5]).toHaveClass('d1-actions--padding--yLg')
-    await expect(items[6]).toHaveClass('d1-actions--padding--none')
-    await expect(items[7]).toHaveClass('d1-actions--padding--lg')
-    await expect(items[7]).toHaveClass('d1-actions--paddingByIndent')
-    await expect(items[8]).not.toHaveClass('d1-actions--paddingByIndent')
-  }
-}
 export const ActionsTestAccessibility: Story = {
   name: 'Тест: ARIA role, ariaLabel, textActions и area',
   render: () => ({
     components: { D1Actions },
     setup() {
-      const list = [{ label: 'Confirm', primary: true, value: 'confirm' }]
+      const list = [{ label: 'Confirm', selected: true, value: 'confirm' }]
       return { list }
     },
     template: `

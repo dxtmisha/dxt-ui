@@ -136,6 +136,14 @@
     "./UiAccordion": {
       "types": "./dist/library/UiAccordion.d.ts",
       "default": "./dist/library/UiAccordion.js"
+    },
+    "./UiSkeleton": {
+      "types": "./dist/library/UiSkeleton.d.ts",
+      "default": "./dist/library/UiSkeleton.js"
+    },
+    "./UiProgress": {
+      "types": "./dist/library/UiProgress.d.ts",
+      "default": "./dist/library/UiProgress.js"
     }
   },
   "workspaces": [

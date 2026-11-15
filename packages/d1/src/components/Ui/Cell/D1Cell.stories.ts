@@ -434,6 +434,45 @@ export const CellTestDividers: Story = {
     await expect(fifthCell).toHaveClass('d1-cell--dividerLabel--none')
   }
 }
+export const CellTestProgress: Story = {
+  name: 'Тест: Индикатор выполнения прогресс-бара',
+  render: () => ({
+    components: { D1Cell },
+    template: `
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <D1Cell
+            label="Cell with Active Progress"
+            description="In-flight asynchronous process"
+            loading
+          />
+          <D1Cell
+            label="Progress with Disabled State"
+            description="Combined loading and disabled states"
+            loading
+            disabled
+          />
+          <D1Cell
+            label="Progress with Custom Attrs"
+            description="Circular variant inside cell progress"
+            :loading="{ circular: true }"
+          />
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const firstCell = canvas.getByText('Cell with Active Progress').closest<HTMLElement>('.d1-cell')
+    await expect(firstCell).not.toBeNull()
+
+    const secondCell = canvas.getByText('Progress with Disabled State').closest<HTMLElement>('.d1-cell')
+    await expect(secondCell).toHaveClass('d1-cell--disabled')
+
+    const thirdCell = canvas.getByText('Progress with Custom Attrs').closest<HTMLElement>('.d1-cell')
+    await expect(thirdCell).not.toBeNull()
+  }
+}
 export const CellTestCombinations: Story = {
   name: 'Тест: Связанные свойства и интерактивные комбинации',
   render: () => ({

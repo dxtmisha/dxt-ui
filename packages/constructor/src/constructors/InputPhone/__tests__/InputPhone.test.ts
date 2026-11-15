@@ -150,4 +150,33 @@ describe('InputPhone', () => {
 
     scope.stop()
   })
+
+  it('should focus input when dialCode window closes', async () => {
+    const scope = effectScope()
+    const props: InputPhoneProps = reactive({ countryDefault: 'RU' })
+    const input = document.createElement('input')
+    const button = document.createElement('button')
+    document.body.append(button, input)
+    button.focus()
+
+    const element = ref({ elementHtml: input } as unknown as HTMLElement)
+    const naming = new DesignName('d1.inputPhone')
+
+    const inputPhone = scope.run(() => new InspectableInputPhone(props, element, naming))!
+    const dialCodeBinds = inputPhone.i('dialCode').binds.value
+
+    ;(dialCodeBinds as any).onWindow?.({
+      id: 'window-1',
+      element: document.createElement('div'),
+      control: button,
+      open: false
+    })
+
+    await nextTick()
+    expect(document.activeElement).toBe(input)
+
+    input.remove()
+    button.remove()
+    scope.stop()
+  })
 })

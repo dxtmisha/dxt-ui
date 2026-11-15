@@ -1,6 +1,6 @@
 import { isDomRuntime } from '@dxtmisha/functional'
 
-import type { Ref } from 'vue'
+import { type Ref, unref } from 'vue'
 import type { FieldAllProps, FieldElementInput } from '../../types/fieldTypes'
 
 /**
@@ -34,6 +34,10 @@ export class FieldElementInclude {
     if (element) {
       if ('input' in element) {
         return element.input
+      }
+
+      if ('elementHtml' in element) {
+        return unref(element.elementHtml) as HTMLInputElement | undefined
       }
 
       return element as HTMLInputElement

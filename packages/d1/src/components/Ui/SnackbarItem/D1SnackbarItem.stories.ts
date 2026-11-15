@@ -57,7 +57,7 @@ export const SnackbarItemBasic: Story = {
           <D1SnackbarItem
             label="Connection lost"
             icon="wifi_off"
-            :actions-list="[{ label: 'Retry', primary: true }]"
+            :actions-list="[{ label: 'Retry' }]"
             class="wiki-storybook-item--squared--lg"
           />
         </div>

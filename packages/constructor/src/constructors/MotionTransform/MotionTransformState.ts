@@ -6,6 +6,9 @@ import type { MotionTransformElement } from './MotionTransformElement'
 import type { MotionTransformSize } from './MotionTransformSize'
 import type { MotionTransformProps } from './props'
 
+/** Fallback delay before resetting transition state in ms / Резервная задержка перед сбросом состояния перехода в мс */
+const TRANSITION_RESET_DELAY_MS = 480
+
 /**
  * State management class.
  *
@@ -161,17 +164,8 @@ export class MotionTransformState extends DesignLifecycleAbstract {
         this.calculations()
       }
 
-      this.timer = setTimeout(() => this.reset(), 480)
+      this.timer = setTimeout(() => this.reset(), TRANSITION_RESET_DELAY_MS)
     }
-  }
-
-  /**
-   * Status switching.
-   *
-   * Переключение статуса.
-   */
-  toggle(): void {
-    this.set(!this.open.value)
   }
 
   /**
@@ -216,6 +210,15 @@ export class MotionTransformState extends DesignLifecycleAbstract {
     }
 
     return this
+  }
+
+  /**
+   * Status switching.
+   *
+   * Переключение статуса.
+   */
+  toggle(): void {
+    this.set(!this.open.value)
   }
 
   /**

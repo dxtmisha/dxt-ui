@@ -286,7 +286,8 @@ export class Window extends DesignLogicAbstract<
       parameters: () => [
         () => this.i('element').getBody(),
         undefined,
-        () => Boolean(this.props.autoTabIndex)
+        () => Boolean(this.props.autoTabIndex),
+        () => !this.props.disableFocusReturn
       ]
     },
     teleport: {

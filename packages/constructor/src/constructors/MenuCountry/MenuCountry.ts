@@ -13,6 +13,7 @@ import {
 import { ModelInclude } from '../../classes/ModelInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { MenuInclude } from '../Menu'
+import type { WindowEmitOptions } from '../Window'
 
 import type { MenuCountryComponents, MenuCountryEmits, MenuCountrySlots } from './types'
 import type { MenuCountryProps } from './props'
@@ -85,6 +86,7 @@ export class MenuCountry {
         'selected': this.props.selected,
         'isSelectedByValue': this.props.isSelectedByValue,
         'onClick': this.event.onClick,
+        'onWindow': (options: WindowEmitOptions) => this.emits?.('window', options),
         'onUpdate:selected': (value: ListSelectedList) => this.model.emit(value),
         'onUpdateValue': (value: NumberOrStringOrBoolean) => this.emits?.('updateValue', value)
       })

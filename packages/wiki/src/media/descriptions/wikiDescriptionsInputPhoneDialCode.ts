@@ -18,6 +18,7 @@ export const wikiDescriptionsInputPhoneDialCode: StorybookComponentsDescriptionI
       'configurable label display: country name, phone code, or none',
       'reactive model binding via v-model:selected',
       'customizable trailing icon (arrow) for open/close indication',
+      'disables automatic focus return on window close and forwards window events to parent controls',
       'inherits all Button and MenuCountry capabilities'
     ],
     ru: [
@@ -26,6 +27,7 @@ export const wikiDescriptionsInputPhoneDialCode: StorybookComponentsDescriptionI
       'настраиваемый тип метки: название страны, телефонный код или без метки',
       'реактивная привязка модели через v-model:selected',
       'настраиваемая иконка-стрелка для индикации открытия/закрытия',
+      'отключает автоматический возврат фокуса при закрытии окна и пробрасывает событие window наружу',
       'наследует все возможности компонентов Button и MenuCountry'
     ]
   },
@@ -70,6 +72,7 @@ export const wikiDescriptionsInputPhoneDialCode: StorybookComponentsDescriptionI
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
 <StorybookDescriptions componentName={'Menu'} type={'event.updateValue'}/>
+<StorybookDescriptions componentName={'Window'} type={'event.window'}/>
     `
   },
   ai: {
@@ -82,7 +85,7 @@ export const wikiDescriptionsInputPhoneDialCode: StorybookComponentsDescriptionI
 The InputPhoneDialCode component is a compact trigger button that opens a MenuCountry popup for selecting a country phone dial code.
 It automatically detects the user's current country via Geo.getCountry() as the default value and reactively binds the selection via v-model:selected.
 The trigger button can display the selected country's flag icon alongside an optional label — either the phone code (e.g. "+1") or the country name — controlled by the labelType prop ('code' | 'name' | 'none').
-The trailing arrow icon reflects the open/close state of the menu. Typically used as a prefix element inside a phone number input field.
+The trailing arrow icon reflects the open/close state of the menu. It configures the underlying window with disableFocusReturn enabled and forwards the window lifecycle event so host inputs can manage focus directly on close. Typically used as a prefix element inside a phone number input field.
     `,
     hide: true
   }

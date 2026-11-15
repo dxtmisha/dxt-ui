@@ -395,6 +395,30 @@ describe('Progress (isolated class)', () => {
 
       scope.stop()
     })
+
+    it('should not schedule a hide timer on mount when visible is undefined', () => {
+      vi.useFakeTimers()
+      const scope = effectScope()
+      let progress!: InspectableProgress
+
+      scope.run(() => {
+        const element = ref<HTMLDivElement>()
+        const props = reactive<ProgressProps>({
+          delayHide: 200,
+          clientOnly: false
+        })
+
+        progress = new InspectableProgress(props, element, naming, undefined, undefined, undefined, undefined, false)
+        progress.triggerMounted()
+      })
+
+      expect(progress.activeTimeout).toBeUndefined()
+      vi.advanceTimersByTime(200)
+      expect(progress.visible.value).toBe(false)
+      expect(progress.hide.value).toBe(false)
+
+      scope.stop()
+    })
   })
 
   describe('True Lazy Loading & Dependency Injection', () => {

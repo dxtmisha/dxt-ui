@@ -333,29 +333,13 @@ export const MotionTransformTestAdaptive: Story = {
     template: `
         
         <div class="wiki-storybook-flex-column">
+          <D1MotionTransform>
+            <template #head><div>default</div></template>
+            <template #body><div>Body default</div></template>
+          </D1MotionTransform>
           <D1MotionTransform adaptive="planeAlways">
             <template #head><div>planeAlways</div></template>
             <template #body><div>Body planeAlways</div></template>
-          </D1MotionTransform>
-          <D1MotionTransform adaptive="planeSm">
-            <template #head><div>planeSm</div></template>
-            <template #body><div>Body planeSm</div></template>
-          </D1MotionTransform>
-          <D1MotionTransform adaptive="planeMd">
-            <template #head><div>planeMd</div></template>
-            <template #body><div>Body planeMd</div></template>
-          </D1MotionTransform>
-          <D1MotionTransform adaptive="planeLg">
-            <template #head><div>planeLg</div></template>
-            <template #body><div>Body planeLg</div></template>
-          </D1MotionTransform>
-          <D1MotionTransform adaptive="planeXl">
-            <template #head><div>planeXl</div></template>
-            <template #body><div>Body planeXl</div></template>
-          </D1MotionTransform>
-          <D1MotionTransform adaptive="plane2xl">
-            <template #head><div>plane2xl</div></template>
-            <template #body><div>Body plane2xl</div></template>
           </D1MotionTransform>
         </div>
       
@@ -363,13 +347,9 @@ export const MotionTransformTestAdaptive: Story = {
   }),
   play: async ({ canvasElement }) => {
     const roots = canvasElement.querySelectorAll<HTMLElement>('.d1-motionTransform')
-    await expect(roots.length).toBe(6)
-    await expect(roots[0]).toHaveClass('d1-motionTransform--adaptive--planeAlways')
-    await expect(roots[1]).toHaveClass('d1-motionTransform--adaptive--planeSm')
-    await expect(roots[2]).toHaveClass('d1-motionTransform--adaptive--planeMd')
-    await expect(roots[3]).toHaveClass('d1-motionTransform--adaptive--planeLg')
-    await expect(roots[4]).toHaveClass('d1-motionTransform--adaptive--planeXl')
-    await expect(roots[5]).toHaveClass('d1-motionTransform--adaptive--plane2xl')
+    await expect(roots.length).toBe(2)
+    await expect(roots[0]).not.toHaveClass('d1-motionTransform--adaptive--planeAlways')
+    await expect(roots[1]).toHaveClass('d1-motionTransform--adaptive--planeAlways')
   }
 }
 export const MotionTransformTestClickAndAutoClose: Story = {

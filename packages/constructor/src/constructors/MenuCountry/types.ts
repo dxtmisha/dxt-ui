@@ -7,6 +7,7 @@ import type {
   MenuExposeInclude,
   MenuSlotInclude
 } from '../Menu'
+import type { WindowEmitsInclude } from '../Window'
 import type { ModelEmitsSelected } from '../../types/modelTypes'
 
 /**
@@ -23,6 +24,7 @@ export type MenuCountryComponents = MenuComponentInclude
  */
 export type MenuCountryEmits = ModelEmitsSelected
   & EventClickEmits
+  & WindowEmitsInclude
   & {
     /** Event for updating the value/ Событие обновления значения */
     updateValue: [value?: NumberOrStringOrBoolean]

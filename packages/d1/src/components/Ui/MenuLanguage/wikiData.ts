@@ -34,7 +34,8 @@ const eventsNames: StorybookSlots = [
   { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
   { name: 'update:modelSelected', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'string' }] },
   { name: 'update:selected', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'string' }] },
-  { name: 'updateValue', description: `Event for updating the value/ Событие обновления значения`, properties: [{ name: 'value?', type: 'NumberOrStringOrBoolean | undefined' }] }
+  { name: 'updateValue', description: `Event for updating the value/ Событие обновления значения`, properties: [{ name: 'value?', type: 'NumberOrStringOrBoolean | undefined' }] },
+  { name: 'window', description: `Window event triggered on state change/ Событие окна при изменении состояния`, properties: [{ name: 'options', type: 'WindowEmitOptions' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

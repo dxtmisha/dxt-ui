@@ -24,8 +24,8 @@ defineOptions({
     v-bind="args"
     align="right"
     :list="[
-      { label: 'Cancel', text: true },
-      { label: 'Confirm', primary: true }
+      { label: 'Cancel' },
+      { label: 'Confirm', selected: true }
     ]"
   />
 </div>

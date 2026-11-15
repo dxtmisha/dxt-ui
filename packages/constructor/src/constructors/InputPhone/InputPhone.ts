@@ -86,7 +86,8 @@ export class InputPhone extends DesignLogicAbstract<
       parameters: () => [
         this.props,
         () => this.i('value'),
-        () => this.i('event')
+        () => this.i('event'),
+        () => this.i('elementItem')
       ]
     },
     dialCode: {
@@ -97,7 +98,8 @@ export class InputPhone extends DesignLogicAbstract<
         this.components,
         () => ({
           value: this.i('data').country.value,
-          onClick: this.i('data').onCountry
+          onClick: this.i('data').onCountry,
+          onWindow: this.i('data').onWindow
         })
       ]
     },

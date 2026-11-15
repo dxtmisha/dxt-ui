@@ -152,4 +152,28 @@ describe('FieldElementInclude', () => {
       expect(fieldElement.findByName('test-input')).toBeUndefined()
     })
   })
+
+  describe('get with elementHtml component expose', () => {
+    it('should return unwrapped elementHtml when element exposes elementHtml directly', () => {
+      const elementRef = ref<FieldElementInput>({ elementHtml: inputElement })
+      const fieldElement = new FieldElementInclude({}, elementRef)
+
+      expect(fieldElement.get()).toBe(inputElement)
+    })
+
+    it('should return unref value when element exposes elementHtml as a ref', () => {
+      const htmlRef = ref<HTMLInputElement | undefined>(inputElement)
+      const elementRef = ref<FieldElementInput>({ elementHtml: htmlRef })
+      const fieldElement = new FieldElementInclude({}, elementRef)
+
+      expect(fieldElement.get()).toBe(inputElement)
+    })
+
+    it('should return undefined when elementHtml is undefined', () => {
+      const elementRef = ref<FieldElementInput>({ elementHtml: ref(undefined) })
+      const fieldElement = new FieldElementInclude({}, elementRef)
+
+      expect(fieldElement.get()).toBeUndefined()
+    })
+  })
 })

@@ -3,6 +3,7 @@ import { type ConstrEmit, type DesignComp, type DesignName, Geo } from '@dxtmish
 
 import { ButtonInclude } from '../Button'
 import { MenuCountryInclude } from '../MenuCountry'
+import type { WindowEmitOptions } from '../Window'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
@@ -75,14 +76,27 @@ export class InputPhoneDialCode {
     )
 
     this.menu = new MenuCountryConstructor(
-      this.props,
+      () => ({
+        ...this.props,
+        menuCountryAttrs: {
+          ...this.props.menuCountryAttrs,
+          menuAttrs: {
+            ...this.props.menuCountryAttrs?.menuAttrs,
+            windowAttrs: {
+              ...this.props.menuCountryAttrs?.menuAttrs?.windowAttrs,
+              disableFocusReturn: true
+            }
+          }
+        }
+      }),
       this.naming,
       this.components,
       () => ({
         selected: this.model.value.value,
         showPhoneCode: true,
         onUpdateValue: this.onUpdate,
-        onClick: this.model.onClick
+        onClick: this.model.onClick,
+        onWindow: (options: WindowEmitOptions) => this.emits?.('window', options)
       })
     )
 

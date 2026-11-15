@@ -563,6 +563,18 @@ export const WindowTestAdaptive: Story = {
             <D1Window adaptive="menu" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">adaptive: menuWindow</div>
+            <D1Window adaptive="menuWindow" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">adaptive: modal</div>
+            <D1Window adaptive="modal" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">adaptive: modalDynamic</div>
+            <D1Window adaptive="modalDynamic" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">adaptive: actionSheetBottom</div>
             <D1Window adaptive="actionSheetBottom" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
@@ -581,12 +593,15 @@ export const WindowTestAdaptive: Story = {
   play: async ({ canvasElement }) => {
     await waitFor(async () => {
       const items = canvasElement.querySelectorAll<HTMLElement>('.d1-window')
-      await expect(items.length).toBe(4)
+      await expect(items.length).toBe(7)
 
       await expect(items[0]).toHaveClass('d1-window--adaptive--menu')
-      await expect(items[1]).toHaveClass('d1-window--adaptive--actionSheetBottom')
-      await expect(items[2]).toHaveClass('d1-window--adaptive--actionSheetRight')
-      await expect(items[3]).toHaveClass('d1-window--fullscreen')
+      await expect(items[1]).toHaveClass('d1-window--adaptive--menuWindow')
+      await expect(items[2]).toHaveClass('d1-window--adaptive--modal')
+      await expect(items[3]).toHaveClass('d1-window--adaptive--modalDynamic')
+      await expect(items[4]).toHaveClass('d1-window--adaptive--actionSheetBottom')
+      await expect(items[5]).toHaveClass('d1-window--adaptive--actionSheetRight')
+      await expect(items[6]).toHaveClass('d1-window--fullscreen')
     })
   }
 }
@@ -597,6 +612,18 @@ export const WindowTestAlignments: Story = {
     template: `
         
         <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">alignment: center</div>
+            <D1Window alignment="center" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">alignment: top</div>
+            <D1Window alignment="top" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">alignment: topFull</div>
+            <D1Window alignment="topFull" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">alignment: leftFull</div>
             <D1Window alignment="leftFull" embedded open :autoTabIndex="false" :inert="false"/>
@@ -609,10 +636,6 @@ export const WindowTestAlignments: Story = {
             <div class="wiki-storybook-item__label">alignment: bottomFull</div>
             <D1Window alignment="bottomFull" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">alignment: top</div>
-            <D1Window alignment="top" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
         </div>
       
     `
@@ -620,12 +643,14 @@ export const WindowTestAlignments: Story = {
   play: async ({ canvasElement }) => {
     await waitFor(async () => {
       const items = canvasElement.querySelectorAll<HTMLElement>('.d1-window')
-      await expect(items.length).toBe(4)
+      await expect(items.length).toBe(6)
 
-      await expect(items[0]).toHaveClass('d1-window--alignment--leftFull')
-      await expect(items[1]).toHaveClass('d1-window--alignment--rightFull')
-      await expect(items[2]).toHaveClass('d1-window--alignment--bottomFull')
-      await expect(items[3]).toHaveClass('d1-window--alignment--top')
+      await expect(items[0]).toHaveClass('d1-window--alignment--center')
+      await expect(items[1]).toHaveClass('d1-window--alignment--top')
+      await expect(items[2]).toHaveClass('d1-window--alignment--topFull')
+      await expect(items[3]).toHaveClass('d1-window--alignment--leftFull')
+      await expect(items[4]).toHaveClass('d1-window--alignment--rightFull')
+      await expect(items[5]).toHaveClass('d1-window--alignment--bottomFull')
     })
   }
 }
@@ -637,16 +662,12 @@ export const WindowTestSizes: Story = {
         
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">width: sm</div>
-            <D1Window width="sm" embedded open :autoTabIndex="false" :inert="false"/>
+            <div class="wiki-storybook-item__label">width: auto, height: auto</div>
+            <D1Window width="auto" height="auto" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">width: md</div>
-            <D1Window width="md" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">width: lg</div>
-            <D1Window width="lg" embedded open :autoTabIndex="false" :inert="false"/>
+            <div class="wiki-storybook-item__label">width: max, height: max</div>
+            <D1Window width="max" height="max" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">custom width and height</div>
@@ -659,13 +680,14 @@ export const WindowTestSizes: Story = {
   play: async ({ canvasElement }) => {
     await waitFor(async () => {
       const items = canvasElement.querySelectorAll<HTMLElement>('.d1-window')
-      await expect(items.length).toBe(4)
+      await expect(items.length).toBe(3)
 
-      await expect(items[0]).toHaveClass('d1-window--width--sm')
-      await expect(items[1]).toHaveClass('d1-window--width--md')
-      await expect(items[2]).toHaveClass('d1-window--width--lg')
-      await expect(items[3]).toHaveClass('d1-window--width--custom')
-      await expect(items[3]).toHaveClass('d1-window--height--custom')
+      await expect(items[0]).toHaveClass('d1-window--width--auto')
+      await expect(items[0]).toHaveClass('d1-window--height--auto')
+      await expect(items[1]).toHaveClass('d1-window--width--max')
+      await expect(items[1]).toHaveClass('d1-window--height--max')
+      await expect(items[2]).toHaveClass('d1-window--width--custom')
+      await expect(items[2]).toHaveClass('d1-window--height--custom')
     })
   }
 }
@@ -676,6 +698,10 @@ export const WindowTestOrigins: Story = {
     template: `
         
         <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">origin: center</div>
+            <D1Window origin="center" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">origin: topToBottom</div>
             <D1Window origin="topToBottom" embedded open :autoTabIndex="false" :inert="false"/>
@@ -699,17 +725,18 @@ export const WindowTestOrigins: Story = {
   play: async ({ canvasElement }) => {
     await waitFor(async () => {
       const items = canvasElement.querySelectorAll<HTMLElement>('.d1-window')
-      await expect(items.length).toBe(4)
+      await expect(items.length).toBe(5)
 
-      await expect(items[0]).toHaveClass('d1-window--origin--topToBottom')
-      await expect(items[1]).toHaveClass('d1-window--origin--bottomToTop')
-      await expect(items[2]).toHaveClass('d1-window--origin--leftToRight')
-      await expect(items[3]).toHaveClass('d1-window--origin--rightToLeft')
+      await expect(items[0]).toHaveClass('d1-window--origin--center')
+      await expect(items[1]).toHaveClass('d1-window--origin--topToBottom')
+      await expect(items[2]).toHaveClass('d1-window--origin--bottomToTop')
+      await expect(items[3]).toHaveClass('d1-window--origin--leftToRight')
+      await expect(items[4]).toHaveClass('d1-window--origin--rightToLeft')
     })
   }
 }
 export const WindowTestStates: Story = {
-  name: 'Тест: Состояния disabled, hide, widthMatch, inDom и embedded',
+  name: 'Тест: Состояния disabled, hide, widthMatch, inDom, embedded, contextmenu и staticMode',
   render: () => ({
     components: { D1Window },
     template: `
@@ -719,14 +746,29 @@ export const WindowTestStates: Story = {
             <div class="wiki-storybook-item__label">disabled: true</div>
             <D1Window disabled>
               <template #control="{binds}">
-                <button class="wiki-storybook-button" v-bind="binds">Disabled Window</button>
+                <button class="wiki-storybook-button wiki-storybook-button--disabled" v-bind="binds">Disabled Window</button>
               </template>
               <div class="wiki-storybook-item--padding">Should stay closed</div>
             </D1Window>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">staticMode + disabled</div>
+            <D1Window staticMode disabled>
+              <template #control="{binds}">
+                <button class="wiki-storybook-button wiki-storybook-button--static-disabled" v-bind="binds">Static disabled</button>
+              </template>
+              <div class="wiki-storybook-item--padding">Static disabled</div>
+            </D1Window>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">hide: true</div>
             <D1Window hide embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">staticMode + hide</div>
+            <D1Window staticMode hide embedded open :autoTabIndex="false" :inert="false">
+              <div class="wiki-storybook-item--padding">Static hide</div>
+            </D1Window>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">widthMatch: true</div>
@@ -736,18 +778,34 @@ export const WindowTestStates: Story = {
             <div class="wiki-storybook-item__label">embedded + inDom</div>
             <D1Window embedded inDom open :autoTabIndex="false" :inert="false"/>
           </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">contextmenu: true</div>
+            <D1Window contextmenu>
+              <template #control="{binds}">
+                <button class="wiki-storybook-button wiki-storybook-button--context" v-bind="binds">Context Area</button>
+              </template>
+              <div class="wiki-storybook-item--padding">Context content</div>
+            </D1Window>
+          </div>
         </div>
       
     `
   }),
   play: async ({ canvasElement }) => {
-    const disabledTrigger = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button')
+    const disabledTrigger = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--disabled')
+    const staticDisabledTrigger = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--static-disabled')
+    const contextTrigger = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--context')
+
     await expect(disabledTrigger).toBeInTheDocument()
+    await expect(staticDisabledTrigger).toBeInTheDocument()
+    await expect(contextTrigger).toBeInTheDocument()
+
     await userEvent.click(disabledTrigger!)
+    await userEvent.click(staticDisabledTrigger!)
 
     await waitFor(async () => {
       await expect(document.querySelector('.d1-window[data-status="open"]')).toBeNull()
-      await expect(canvasElement.querySelector('.d1-window--hide')).toBeInTheDocument()
+      await expect(canvasElement.querySelectorAll('.d1-window--hide').length).toBe(2)
       await expect(canvasElement.querySelector('.d1-window--widthMatch')).toBeInTheDocument()
       await expect(canvasElement.querySelector('.d1-window--embedded')).toBeInTheDocument()
     })
@@ -776,15 +834,15 @@ export const WindowTestPersistent: Story = {
   }
 }
 export const WindowTestAnatomy: Story = {
-  name: 'Тест: Компактный отступ, разделители и кнопка закрытия',
+  name: 'Тест: Компактный отступ, разделители и overscroll',
   render: () => ({
     components: { D1Window },
     template: `
         
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">dense + divider + closeButton</div>
-            <D1Window dense divider closeButton embedded open :autoTabIndex="false" :inert="false"/>
+            <div class="wiki-storybook-item__label">dense + divider</div>
+            <D1Window dense divider embedded open :autoTabIndex="false" :inert="false"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">overscroll: true</div>
@@ -800,7 +858,6 @@ export const WindowTestAnatomy: Story = {
       await expect(items.length).toBe(2)
 
       await expect(items[0]).toHaveClass('d1-window--dense')
-      await expect(items[0]).toHaveClass('d1-window--closeButton')
       await expect(items[1]).toHaveClass('d1-window--overscroll')
     })
   }
@@ -831,140 +888,6 @@ export const WindowTestImage: Story = {
 
       await expect(items[0]).toHaveClass('d1-window--imagePosition--top')
       await expect(items[1]).toHaveClass('d1-window--imagePosition--left')
-    })
-  }
-}
-export const WindowTestExtendedLayouts: Story = {
-  name: 'Тест: Расширенные режимы адаптации, выравнивания и размеры auto/max',
-  render: () => ({
-    components: { D1Window },
-    template: `
-        
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">adaptive: modal</div>
-            <D1Window adaptive="modal" width="auto" height="auto" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">adaptive: modalDynamic</div>
-            <D1Window adaptive="modalDynamic" alignment="center" origin="center" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">adaptive: menuWindow</div>
-            <D1Window adaptive="menuWindow" alignment="topFull" width="max" height="max" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-        </div>
-      
-    `
-  }),
-  play: async ({ canvasElement }) => {
-    await waitFor(async () => {
-      const items = canvasElement.querySelectorAll<HTMLElement>('.d1-window')
-      await expect(items.length).toBe(3)
-
-      await expect(items[0]).toHaveClass('d1-window--adaptive--modal')
-      await expect(items[0]).toHaveClass('d1-window--width--auto')
-      await expect(items[0]).toHaveClass('d1-window--height--auto')
-      await expect(items[1]).toHaveClass('d1-window--adaptive--modalDynamic')
-      await expect(items[1]).toHaveClass('d1-window--alignment--center')
-      await expect(items[1]).toHaveClass('d1-window--origin--center')
-      await expect(items[2]).toHaveClass('d1-window--adaptive--menuWindow')
-      await expect(items[2]).toHaveClass('d1-window--alignment--topFull')
-      await expect(items[2]).toHaveClass('d1-window--width--max')
-      await expect(items[2]).toHaveClass('d1-window--height--max')
-    })
-  }
-}
-export const WindowTestStaticCombos: Story = {
-  name: 'Тест: Комбинации статического режима с disabled, hide и contextmenu',
-  render: () => ({
-    components: { D1Window },
-    template: `
-        
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">staticMode + disabled</div>
-            <D1Window staticMode disabled>
-              <template #control="{binds}">
-                <button class="wiki-storybook-button wiki-storybook-button--disabled" v-bind="binds">Static disabled</button>
-              </template>
-              <div class="wiki-storybook-item--padding">Static disabled</div>
-            </D1Window>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">staticMode + hide</div>
-            <D1Window staticMode hide embedded open :autoTabIndex="false" :inert="false">
-              <div class="wiki-storybook-item--padding">Static hide</div>
-            </D1Window>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">contextmenu: true</div>
-            <D1Window contextmenu>
-              <template #control="{binds}">
-                <button class="wiki-storybook-button" v-bind="binds">Context Area</button>
-              </template>
-              <div class="wiki-storybook-item--padding">Context content</div>
-            </D1Window>
-          </div>
-        </div>
-      
-    `
-  }),
-  play: async ({ canvasElement }) => {
-    const disabledButton = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--disabled')
-    await expect(disabledButton).toBeInTheDocument()
-    await userEvent.click(disabledButton!)
-
-    await waitFor(async () => {
-      await expect(document.querySelector('.d1-window[data-status="open"]')).toBeNull()
-      await expect(canvasElement.querySelector('.d1-window--hide')).toBeInTheDocument()
-    })
-
-    const contextButton = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button:not(.wiki-storybook-button--disabled)')
-    await expect(contextButton).toBeInTheDocument()
-  }
-}
-export const WindowTestImageSizes: Story = {
-  name: 'Тест: Размеры изображения баннера (sm, md, lg, quarter, half)',
-  render: () => ({
-    components: { D1Window },
-    template: `
-        
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">imageSize: sm</div>
-            <D1Window image="home" imageSize="sm" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">imageSize: md</div>
-            <D1Window image="home" imageSize="md" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">imageSize: lg</div>
-            <D1Window image="home" imageSize="lg" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">imageSize: quarter</div>
-            <D1Window image="home" imageSize="quarter" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">imageSize: half</div>
-            <D1Window image="home" imageSize="half" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-        </div>
-      
-    `
-  }),
-  play: async ({ canvasElement }) => {
-    await waitFor(async () => {
-      const items = canvasElement.querySelectorAll<HTMLElement>('.d1-window')
-      await expect(items.length).toBe(5)
-
-      await expect(items[0]).toHaveClass('d1-window--imageSize--sm')
-      await expect(items[1]).toHaveClass('d1-window--imageSize--md')
-      await expect(items[2]).toHaveClass('d1-window--imageSize--lg')
-      await expect(items[3]).toHaveClass('d1-window--imageSize--quarter')
-      await expect(items[4]).toHaveClass('d1-window--imageSize--half')
     })
   }
 }
@@ -1051,6 +974,46 @@ export const WindowTestAccessibility: Story = {
     await userEvent.click(trigger!)
   }
 }
+export const WindowTestDisableFocusReturn: Story = {
+  name: 'Тест: Отключение возврата фокуса при закрытии',
+  render: () => ({
+    components: { D1Window },
+    template: `
+        
+        <div class="wiki-storybook-flex">
+          <button class="wiki-storybook-button wiki-storybook-button--outside">Outside Focus Target</button>
+          <D1Window disableFocusReturn flash>
+            <template #control="{binds}">
+              <button class="wiki-storybook-button wiki-storybook-button--trigger" v-bind="binds">Open Window</button>
+            </template>
+            <template #default>
+              <div class="wiki-storybook-item--padding">
+                <button class="wiki-storybook-button wiki-storybook-button--inside">Inside Button</button>
+              </div>
+            </template>
+          </D1Window>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const triggerButton = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--trigger')
+    await expect(triggerButton).toBeInTheDocument()
+
+    await userEvent.click(triggerButton!)
+    await waitFor(async () => {
+      const windowElement = document.querySelector<HTMLElement>('.d1-window:not([data-status="hide"])')
+      await expect(windowElement).toBeInTheDocument()
+    })
+
+    await userEvent.keyboard('{Escape}')
+    await waitFor(async () => {
+      const openWindow = document.querySelector<HTMLElement>('.d1-window[data-status="open"]')
+      await expect(openWindow).toBeNull()
+    })
+    await expect(document.activeElement).not.toBe(triggerButton)
+  }
+}
 export const WindowTestLifecycleExtra: Story = {
   name: 'Тест: Хук preparation, колбэки opening/closing и autoClose',
   render: () => ({
@@ -1106,74 +1069,6 @@ export const WindowTestLifecycleExtra: Story = {
     await userEvent.keyboard('{Escape}')
     await waitFor(async () => {
       await expect(traceCard).toHaveTextContent('closed')
-    })
-  }
-}
-export const WindowTestCascadeMenus: Story = {
-  name: 'Тест: 3-уровневые каскадные меню и защитные пропы при вложенности',
-  render: () => ({
-    components: { D1Window },
-    template: `
-        
-        <div class="wiki-storybook-flex">
-          <D1Window adaptive="menu" flash>
-            <template #control="{binds}">
-              <button class="wiki-storybook-button wiki-storybook-button--l1" v-bind="binds">L1 Menu</button>
-            </template>
-            <div class="wiki-storybook-item--padding">
-              <D1Window adaptive="menu" axis="x" flash>
-                <template #control="{binds: l2Binds}">
-                  <button class="wiki-storybook-button wiki-storybook-button--l2" v-bind="l2Binds">L2 Submenu</button>
-                </template>
-                <div class="wiki-storybook-item--padding">
-                  <D1Window adaptive="menu" axis="x" :autoClose="true" flash>
-                    <template #control="{binds: l3Binds}">
-                      <button class="wiki-storybook-button wiki-storybook-button--l3" v-bind="l3Binds">L3 Submenu</button>
-                    </template>
-                    <div class="wiki-storybook-item--padding">
-                      <button class="wiki-storybook-button wiki-storybook-button--leaf">Leaf Action</button>
-                    </div>
-                  </D1Window>
-                </div>
-              </D1Window>
-            </div>
-          </D1Window>
-        </div>
-      
-    `
-  }),
-  play: async ({ canvasElement }) => {
-    const l1Trigger = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--l1')
-    await userEvent.click(l1Trigger!)
-    await waitFor(async () => {
-      await expect(document.querySelector('.wiki-storybook-button--l2')).toBeInTheDocument()
-    })
-
-    const l2Trigger = document.querySelector<HTMLButtonElement>('.wiki-storybook-button--l2')
-    await userEvent.click(l2Trigger!)
-    await waitFor(async () => {
-      await expect(document.querySelector('.wiki-storybook-button--l3')).toBeInTheDocument()
-    })
-
-    const l3Trigger = document.querySelector<HTMLButtonElement>('.wiki-storybook-button--l3')
-    await userEvent.click(l3Trigger!)
-    await waitFor(async () => {
-      await expect(document.querySelectorAll('.d1-window[data-status="open"], .d1-window[data-status="flash"]').length).toBe(3)
-    })
-
-    await userEvent.keyboard('{Escape}')
-    await waitFor(async () => {
-      await expect(document.querySelectorAll('.d1-window[data-status="open"], .d1-window[data-status="flash"]').length).toBe(2)
-    })
-
-    await userEvent.keyboard('{Escape}')
-    await waitFor(async () => {
-      await expect(document.querySelectorAll('.d1-window[data-status="open"], .d1-window[data-status="flash"]').length).toBe(1)
-    })
-
-    await userEvent.keyboard('{Escape}')
-    await waitFor(async () => {
-      await expect(document.querySelectorAll('.d1-window[data-status="open"], .d1-window[data-status="flash"]').length).toBe(0)
     })
   }
 }

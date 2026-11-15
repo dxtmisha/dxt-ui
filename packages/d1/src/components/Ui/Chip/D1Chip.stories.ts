@@ -77,11 +77,11 @@ export const ChipAdaptive: Story = {
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Adaptive</div>
-            <D1Chip adaptive="fullSm" icon="star" label="Chip"/>
+            <D1Chip adaptive="block" icon="star" label="Chip"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center wiki-storybook-container">
             <div class="wiki-storybook-item__label">Container</div>
-            <D1Chip container="fullSm" icon="star" label="Chip"/>
+            <D1Chip container icon="star" label="Chip"/>
           </div>
         </div>
       

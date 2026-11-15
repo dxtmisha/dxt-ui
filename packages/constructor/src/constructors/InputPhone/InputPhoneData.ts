@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import {
   type ConstrItem,
   DesignLifecycleAbstract,
@@ -7,8 +7,10 @@ import {
   type GeoPhoneMap
 } from '@dxtmisha/functional'
 
+import type { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import type { WindowEmitOptions } from '../Window'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { InputPhonePropsBasic } from './props'
@@ -31,11 +33,13 @@ export class InputPhoneData extends DesignLifecycleAbstract {
    * @param props input data / входные данные
    * @param value function returning field value manager / функция, возвращающая менеджер значения поля
    * @param event function returning field event manager / функция, возвращающая менеджер событий поля
+   * @param element function returning field element manager / функция, возвращающая менеджер элемента поля
    */
   constructor(
     protected readonly props: InputPhonePropsBasic,
     protected readonly value: () => FieldValueInclude,
-    protected readonly event?: () => FieldEventInclude
+    protected readonly event?: () => FieldEventInclude,
+    protected readonly element?: () => FieldElementInclude
   ) {
     super()
 
@@ -109,6 +113,31 @@ export class InputPhoneData extends DesignLifecycleAbstract {
     void event
     this.country.value = data?.value
     this.event?.().onValue(this.toPhone(data?.value))
+  }
+
+  /**
+   * Handler for dial code window state change event.
+   * Moves focus back to the phone input after closing the window.
+   *
+   * Обработчик события изменения состояния окна выбора кода страны.
+   * Перемещает фокус обратно на поле ввода телефона после закрытия окна.
+   * @param options window state options / параметры состояния окна
+   */
+  readonly onWindow = (options: WindowEmitOptions): void => {
+    if (!options.open) {
+      nextTick(() => {
+        this.focus()
+      })
+    }
+  }
+
+  /**
+   * Moves focus to the phone input element.
+   *
+   * Перемещает фокус на элемент ввода телефона.
+   */
+  focus(): void {
+    this.element?.().get()?.focus()
   }
 
   /**

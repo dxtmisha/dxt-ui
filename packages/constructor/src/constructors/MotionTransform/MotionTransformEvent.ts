@@ -102,7 +102,10 @@ export class MotionTransformEvent extends DesignLifecycleAbstract {
    * @param event native event object / объект нативного события
    */
   readonly onClick = (event: Event): void => {
-    if (this.isTrigger(event.target as HTMLElement)) {
+    if (
+      event.target instanceof Element
+      && this.isTrigger(event.target as HTMLElement)
+    ) {
       this.emit(event, 'head')
       this.state().toggle()
     }
@@ -118,6 +121,7 @@ export class MotionTransformEvent extends DesignLifecycleAbstract {
     if (
       !event.isComposing
       && isEnter(event)
+      && event.target instanceof Element
       && this.isTrigger(event.target as HTMLElement)
     ) {
       event.preventDefault()

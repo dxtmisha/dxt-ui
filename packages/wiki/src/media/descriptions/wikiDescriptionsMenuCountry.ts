@@ -16,13 +16,15 @@ export const wikiDescriptionsMenuCountry: StorybookComponentsDescriptionItem = {
       'automatic generation of country list via GeoFlagRef',
       'filtering by country codes via countryList prop',
       'all features of the base Menu component',
-      'support for internationalized country names'
+      'support for internationalized country names',
+      'forwarding of window lifecycle events'
     ],
     ru: [
       'автоматическая генерация списка стран через GeoFlagRef',
       'фильтрация по кодам стран через свойство countryList',
       'все возможности базового компонента Menu',
-      'поддержка интернационализированных названий стран'
+      'поддержка интернационализированных названий стран',
+      'проброс событий жизненного цикла окна window'
     ]
   },
   import: [
@@ -71,6 +73,7 @@ export const wikiDescriptionsMenuCountry: StorybookComponentsDescriptionItem = {
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
 <StorybookDescriptions componentName={'Menu'} type={'event.updateValue'}/>
+<StorybookDescriptions componentName={'Window'} type={'event.window'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Window'} type={'expose'}/>

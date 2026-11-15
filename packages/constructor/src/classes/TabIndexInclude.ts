@@ -2,6 +2,23 @@ import { type Ref, unref } from 'vue'
 import { DesignLifecycleAbstract, EventItem, isDomRuntime, isElementVisible, isFunction, isTab } from '@dxtmisha/functional'
 
 /**
+ * CSS selector matching potentially focusable DOM elements /
+ * CSS-селектор потенциально фокусируемых DOM-элементов
+ */
+const FOCUSABLE_SELECTOR = 'a[href],'
+  + 'area[href],'
+  + 'button:not([disabled]),'
+  + 'input:not([disabled]):not([type="hidden"]),'
+  + 'select:not([disabled]),'
+  + 'textarea:not([disabled]),'
+  + 'summary,'
+  + 'iframe,'
+  + 'audio[controls],'
+  + 'video[controls],'
+  + '[contenteditable]:not([contenteditable="false"]),'
+  + '[tabindex]:not([tabindex="-1"])'
+
+/**
  * Class for managing focus and tab index of elements.
  *
  * Класс для управления фокусом и табиндексом элементов.
@@ -24,7 +41,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> extends Design
    *
    * Конструктор.
    * @param element reference to the element / ссылка на элемент
-   * @param active return focus to the previous element / возвращать фокус на предыдущий элемент
+   * @param active whether focus management is active / активно ли управление фокусом
    * @param activeOpen is active when opening / активен при открытии
    * @param activeClose is active when closing / активен при закрытии
    */
@@ -70,30 +87,35 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> extends Design
   reset(): this {
     if (
       this.active()
-      && this.activeClose()
       && isDomRuntime()
     ) {
       if (this.frameReset !== undefined) {
         cancelAnimationFrame(this.frameReset)
+        this.frameReset = undefined
       }
 
-      this.frameReset = requestAnimationFrame(() => {
-        this.frameReset = undefined
+      if (this.activeClose()) {
+        this.frameReset = requestAnimationFrame(() => {
+          this.frameReset = undefined
 
-        if (
-          this.oldElement
-          && this.oldElement.isConnected
-          && ('focus' in this.oldElement)
-          && (
-            !document.activeElement?.closest('body')
-            || document.activeElement === document.body
-          )
-        ) {
-          (this.oldElement as HTMLElement).focus()
-        }
+          if (
+            this.oldElement
+            && this.oldElement.isConnected
+            && 'focus' in this.oldElement
+            && isFunction((this.oldElement as HTMLElement).focus)
+            && (
+              !document.activeElement?.closest('body')
+              || document.activeElement === document.body
+            )
+          ) {
+            (this.oldElement as HTMLElement).focus()
+          }
 
+          this.oldElement = undefined
+        })
+      } else {
         this.oldElement = undefined
-      })
+      }
 
       this.stopEvent()
     }
@@ -131,8 +153,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> extends Design
    * @returns first focusable element / первый фокусируемый элемент
    */
   findFirstElement(): HTMLElement | undefined {
-    const elements = this.getElement()
-      ?.querySelectorAll<HTMLElement>('*')
+    const elements = this.getFocusableCandidates()
 
     if (elements) {
       for (const element of elements) {
@@ -152,8 +173,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> extends Design
    * @returns last focusable element / последний фокусируемый элемент
    */
   findLastElement(): HTMLElement | undefined {
-    const elements = this.getElement()
-      ?.querySelectorAll<HTMLElement>('*')
+    const elements = this.getFocusableCandidates()
 
     if (elements) {
       for (let index = elements.length - 1; index >= 0; index--) {
@@ -257,6 +277,81 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> extends Design
   }
 
   /**
+   * Queries candidate focusable elements inside the target container.
+   *
+   * Возвращает список потенциально фокусируемых элементов внутри целевого контейнера.
+   * @returns list of candidate focusable elements or undefined / список потенциально фокусируемых элементов или undefined
+   */
+  protected getFocusableCandidates(): NodeListOf<HTMLElement> | undefined {
+    return this.getElement()?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+  }
+
+  /**
+   * Event listener for keyboard events.
+   *
+   * Слушатель событий для событий клавиатуры.
+   * @param event keyboard event / событие клавиатуры
+   */
+  protected listenEvent = (event: KeyboardEvent): void => {
+    if (event.isComposing || !isTab(event)) {
+      return
+    }
+
+    const focusActive = document.activeElement as HTMLElement
+
+    if (!focusActive) {
+      return
+    }
+
+    let targetElement: HTMLElement | undefined
+
+    if (focusActive === document.body) {
+      targetElement = this.findFirstElement()
+    } else if (this.isShift(event)) {
+      if (focusActive === this.findFirstElement()) {
+        targetElement = this.findLastElement()
+      }
+    } else if (focusActive === this.findLastElement()) {
+      targetElement = this.findFirstElement()
+    }
+
+    if (targetElement) {
+      targetElement.focus()
+      event.preventDefault()
+    }
+  }
+
+  /**
+   * Start the event listener.
+   *
+   * Запускает слушатель событий.
+   */
+  protected startEvent(): void {
+    if (this.event) {
+      this.event.start()
+      return
+    }
+
+    this.event = new EventItem<HTMLElement, KeyboardEvent>(
+      document.body,
+      'keydown',
+      this.listenEvent
+    )
+      .start()
+  }
+
+  /**
+   * Stop the event listener.
+   *
+   * Останавливает слушатель событий.
+   */
+  protected stopEvent(): void {
+    if (this.event) {
+      this.event.stop()
+    }
+  }
+
+  /**
    * Set focus with temporary tab index modification.
    *
    * Устанавливает фокус с временным изменением табиндекса.
@@ -295,64 +390,5 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> extends Design
     }
 
     return this
-  }
-
-  /**
-   * Event listener for keyboard events.
-   *
-   * Слушатель событий для событий клавиатуры.
-   * @param event keyboard event / событие клавиатуры
-   */
-  protected listenEvent = (event: KeyboardEvent): void => {
-    if (event.isComposing || !isTab(event)) {
-      return
-    }
-
-    const focusActive = document.activeElement as HTMLElement
-
-    if (focusActive) {
-      if (focusActive === document.body) {
-        this.findFirstElement()?.focus()
-        event.preventDefault()
-      } else if (this.isShift(event)) {
-        if (focusActive === this.findFirstElement()) {
-          this.findLastElement()?.focus()
-          event.preventDefault()
-        }
-      } else if (focusActive === this.findLastElement()) {
-        this.findFirstElement()?.focus()
-        event.preventDefault()
-      }
-    }
-  }
-
-  /**
-   * Start the event listener.
-   *
-   * Запускает слушатель событий.
-   */
-  protected startEvent(): void {
-    if (this.event) {
-      this.event.start()
-      return
-    }
-
-    this.event = new EventItem<HTMLElement, KeyboardEvent>(
-      document.body,
-      'keydown',
-      this.listenEvent
-    )
-      .start()
-  }
-
-  /**
-   * Stop the event listener.
-   *
-   * Останавливает слушатель событий.
-   */
-  protected stopEvent(): void {
-    if (this.event) {
-      this.event.stop()
-    }
   }
 }
