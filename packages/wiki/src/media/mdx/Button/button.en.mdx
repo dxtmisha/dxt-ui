@@ -6,7 +6,6 @@ Button provides a comprehensive solution for creating consistent, accessible act
 
 **Key features:**
 
-- **Visual Variants:** Full design system styling with `primary`, `secondary`, `outline`, and `text` modes alongside custom palettes
 - **Icon Support:** Integrated leading and trailing icon positioning with Material Symbols and custom SVG assets
 - **Progress & Loading:** Embedded circular progress indicators with automated `aria-disabled` and loading states
 - **Polymorphic Container:** Seamless rendering as native `<button>`, navigation link (`<a>` with `href`/`to`), or custom tag
@@ -17,7 +16,7 @@ Button provides a comprehensive solution for creating consistent, accessible act
 
 **Common use cases:**
 
-- **Form Actions:** Primary submit and secondary reset actions within form layouts
+- **Form Actions:** Form submit and reset actions within form layouts
 - **Call-to-Action Elements:** High-prominence conversion and navigation buttons
 - **Navigation Controls:** Links and router navigation with button appearance
 - **Toolbar Actions:** Icon-only and compact buttons in application toolbars and headers
@@ -26,14 +25,14 @@ Button provides a comprehensive solution for creating consistent, accessible act
 <Source
     code={`
 <template>
-  <!-- Primary button with leading icon -->
-  <Button primary icon="send" label="Submit Form" @click="onSubmit" />
+  <!-- Button with leading icon -->
+  <Button icon="send" label="Submit Form" @click="onSubmit" />
 
-  <!-- Secondary outline button with trailing icon -->
-  <Button secondary outline icon-trailing="arrow_forward" label="Continue" />
+  <!-- Inverse button with trailing icon -->
+  <Button inverse icon-trailing="arrow_forward" label="Continue" />
 
   <!-- Asynchronous loading state -->
-  <Button primary :loading="isLoading" label="Saving Changes..." />
+  <Button :loading="isLoading" label="Saving Changes..." />
 
   <!-- Navigation link button -->
   <Button tag="a" href="https://example.com" target="_blank" label="External Documentation" />

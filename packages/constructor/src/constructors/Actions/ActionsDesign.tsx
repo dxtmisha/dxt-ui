@@ -1,9 +1,8 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { Actions } from './Actions'
@@ -123,13 +122,15 @@ export class ActionsDesign<
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.aria
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.aria,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.renderData()
     )
   }
@@ -163,35 +164,17 @@ export class ActionsDesign<
    * @returns array of list virtual nodes / массив виртуальных узлов списка
    */
   readonly renderList = (): VNode[] => {
-    const children: any[] = []
-
     if (this.item.isList()) {
-      if (this.props.list) {
-        this.props.list.forEach((item, key) => {
-          this.components?.renderAdd(
-            children,
-            'button',
-            toBinds(
-              {
-                class: [
-                  this.classes?.value.item,
-                  this.classes?.value.list
-                ],
-                onClick: this.item.i('event').onClick
-              },
-              this.props.buttonAttrs,
-              item
-            ),
-            undefined,
-            `list-${key}`
-          )
-        })
-      }
-
-      this.initSlot('default', children)
+      return this.renderItems(
+        this.props.list,
+        this.classes?.value.list,
+        this.props.buttonAttrs,
+        'default',
+        'list'
+      )
     }
 
-    return children
+    return []
   }
 
   /**
@@ -201,35 +184,17 @@ export class ActionsDesign<
    * @returns array of secondary list virtual nodes / массив виртуальных узлов вторичного списка
    */
   readonly renderSecondary = (): VNode[] => {
-    const children: any[] = []
-
     if (this.item.isSecondary()) {
-      if (this.props.listSecondary) {
-        this.props.listSecondary.forEach((item, key) => {
-          this.components?.renderAdd(
-            children,
-            'button',
-            toBinds(
-              {
-                class: [
-                  this.classes?.value.item,
-                  this.classes?.value.secondary
-                ],
-                onClick: this.item.i('event').onClick
-              },
-              this.props.buttonSecondaryAttrs,
-              item
-            ),
-            undefined,
-            `secondary-${key}`
-          )
-        })
-      }
-
-      this.initSlot('secondary', children)
+      return this.renderItems(
+        this.props.listSecondary,
+        this.classes?.value.secondary,
+        this.props.buttonSecondaryAttrs,
+        'secondary',
+        'secondary'
+      )
     }
 
-    return children
+    return []
   }
 
   /**
@@ -240,5 +205,52 @@ export class ActionsDesign<
    */
   readonly renderSpacer = (): VNode[] => {
     return [h('div', this.getKeyClass('spacer'))]
+  }
+
+  /**
+   * Renders a list of action buttons and appends the corresponding slot content.
+   *
+   * Рендерит список кнопок действий и добавляет содержимое соответствующего слота.
+   * @param list button configuration list / список конфигураций кнопок
+   * @param className list-specific CSS class / CSS-класс конкретного списка
+   * @param buttonAttrs shared button attributes / общие атрибуты кнопок
+   * @param slotName slot name / имя слота
+   * @param keyPrefix key prefix for rendered items / префикс ключа для отрендеренных элементов
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  protected renderItems(
+    list: ActionsPropsBasic['list'],
+    className: string | undefined,
+    buttonAttrs: ActionsPropsBasic['buttonAttrs'],
+    slotName: keyof ActionsSlots,
+    keyPrefix: string
+  ): VNode[] {
+    const children: VNode[] = []
+
+    if (list) {
+      list.forEach((item, key) => {
+        this.components?.renderAdd(
+          children,
+          'button',
+          mergeProps(
+            {
+              class: [
+                this.classes?.value.item,
+                className
+              ],
+              onClick: this.item.i('event').onClick
+            },
+            buttonAttrs ?? {},
+            item
+          ),
+          undefined,
+          `${keyPrefix}-${key}`
+        )
+      })
+    }
+
+    this.initSlot(slotName, children)
+
+    return children
   }
 }

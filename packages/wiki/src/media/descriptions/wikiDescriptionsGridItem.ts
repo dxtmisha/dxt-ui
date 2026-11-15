@@ -13,12 +13,12 @@ export const wikiDescriptionsGridItem: StorybookComponentsDescriptionItem = {
   },
   possibilities: {
     en: [
-      'configurable span across columns',
-      'responsive span settings (base, sm, md, lg, xl, 2xl)'
+      'configurable span across columns (`base`: `1`–`12`)',
+      'vertical and cross-axis alignment (`align`)'
     ],
     ru: [
-      'настраиваемый охват колонок (span)',
-      'адаптивные настройки охвата (base, sm, md, lg, xl, 2xl)'
+      'настраиваемый охват колонок (`base`: `1`–`12`)',
+      'выравнивание элемента внутри ячейки сетки (`align`)'
     ]
   },
   import: [],
@@ -47,9 +47,9 @@ export const wikiDescriptionsGridItem: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Individual cell unit within a Grid layout, providing granular control over column spanning across various screen resolutions. Enables building complex, responsive layouts with minimal CSS.
-Features responsive span settings for all major breakpoints (base, sm, md, lg, xl, 2xl). Allows items to occupy different widths on mobile vs desktop, ensuring optimal use of screen space.
-Controlled via the base prop for default span and breakpoint-specific props (e.g., md="6"). Use inside a Grid container to define local widths for UI elements, widgets, or form fields.
+Individual cell unit within a Grid layout, providing control over column spanning and alignment.
+Features configurable column span settings (base from '1' to '12') and item alignment inside grid tracks (align).
+Controlled via the base and align props. Use inside a Grid container to define widths and alignment for UI elements, widgets, or form fields.
     `
   }
 }

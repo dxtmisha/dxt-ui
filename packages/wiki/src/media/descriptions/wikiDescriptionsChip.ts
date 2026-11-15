@@ -13,20 +13,18 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
   },
   possibilities: {
     en: [
-      'multiple visual variants for different contexts',
       'selectable state for user interaction',
-      'disabled state support',
+      'disabled, focus, and readonly state support',
       'customizable styling through design tokens',
-      'icon support for enhanced visual representation',
-      'adaptive behavior for different screen sizes'
+      'icon and progress indicator support for enhanced visual representation',
+      'adaptive behavior (`iconAlways`, `block`, `auto`) and container queries'
     ],
     ru: [
-      'множественные визуальные варианты для разных контекстов',
       'выбираемое состояние для взаимодействия пользователя',
-      'поддержка отключенного состояния',
+      'поддержка состояний disabled, focus и readonly',
       'настраиваемая стилизация через токены дизайна',
-      'поддержка иконок для улучшенного визуального представления',
-      'адаптивное поведение для разных размеров экрана'
+      'поддержка иконок и индикатора прогресса для улучшенного визуального представления',
+      'адаптивное поведение (`iconAlways`, `block`, `auto`) и container queries'
     ]
   },
   import: [],
@@ -77,11 +75,11 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Adaptive</div>
-            <DesignComponent adaptive="fullSm" icon="star" label="Chip"/>
+            <DesignComponent adaptive="block" icon="star" label="Chip"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center wiki-storybook-container">
             <div class="wiki-storybook-item__label">Container</div>
-            <DesignComponent container="fullSm" icon="star" label="Chip"/>
+            <DesignComponent container icon="star" label="Chip"/>
           </div>
         </div>
       `,
@@ -136,9 +134,9 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Compact interactive element representing an input, attribute, or action. Used for entering information, making selections, filtering content, or triggering immediate actions in a space-efficient way.
-Features multiple functional variants (Action, Input, Assistive, Filter) with support for leading icons and selection states. Includes built-in support for disabled/selected states and adaptive layout options.
-Controlled via value/label props and emits @click events with detailed data. Use for filter tags, choice groups (like radio buttons), or representing entities like contacts in input fields.
+Compact interactive element representing an attribute, selection, or action. Used for making selections, filtering content, or triggering immediate actions in a space-efficient way.
+Features support for leading and trailing icons, progress indicators, skeleton state, and disabled/selected/readonly/focus states with adaptive layout options (iconAlways, block, auto) and container queries.
+Controlled via label/value props and emits @click events with detailed data. Use for filter tags, toggleable choice groups, or compact interactive labels.
     `
   }
 }

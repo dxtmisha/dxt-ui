@@ -7,6 +7,10 @@ import type {
 import type { TextActionsPropsInclude } from '../../types/textTypes'
 import type { ButtonPropsBasic } from '../Button'
 
+/**
+ * Token properties for Actions component /
+ * Токен-свойства компонента Actions
+ */
 export type ActionsPropsToken = {
   // :type [!] System label / Системная метка
   align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto'
@@ -15,6 +19,10 @@ export type ActionsPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic properties for Actions component /
+ * Базовые свойства компонента Actions
+ */
 export type ActionsPropsBasic<
   Button extends ButtonPropsBasic = ButtonPropsBasic
 > = AreaPropsInclude
@@ -23,15 +31,15 @@ export type ActionsPropsBasic<
   & TextActionsPropsInclude
   & {
     // Value
-    /** Primary list of action configurations/ Основной список конфигураций действий */
+    /** Primary list of action configurations / Основной список конфигураций действий */
     list?: ConstrBind<Button>[]
-    /** Secondary list of action configurations/ Вторичный список конфигураций действий */
+    /** Secondary list of action configurations / Вторичный список конфигураций действий */
     listSecondary?: ConstrBind<Button>[]
 
     // Style
-    /** Shared attributes for buttons in the primary list/ Общие атрибуты для кнопок в основном списке */
+    /** Shared attributes for buttons in the primary list / Общие атрибуты для кнопок в основном списке */
     buttonAttrs?: ConstrBind<Button>
-    /** Shared attributes for buttons in the secondary list/ Общие атрибуты для кнопок во вторичном списке */
+    /** Shared attributes for buttons in the secondary list / Общие атрибуты для кнопок во вторичном списке */
     buttonSecondaryAttrs?: ConstrBind<Button>
   }
 

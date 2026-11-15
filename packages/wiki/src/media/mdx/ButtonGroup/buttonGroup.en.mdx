@@ -8,7 +8,7 @@ ButtonGroup allows organizing buttons into logical groups with shared styling an
 
 - Horizontal and vertical orientation
 - Automatic wrapping of buttons (wrap) when space is limited
-- Passing shared attributes (size, style, color) to all buttons via `buttonAttrs`
+- Passing shared attributes to all buttons via `buttonAttrs`
 - Flexible management of the button list via the `list` array or the `default` slot
 - Consistent spacing between buttons in the group
 
@@ -35,7 +35,7 @@ ButtonGroup allows organizing buttons into logical groups with shared styling an
   <!-- With shared attributes and vertical orientation -->
   <ButtonGroup 
     orientation="vertical"
-    :buttonAttrs="{ primary: true, outline: true }"
+    :buttonAttrs="{ inverse: true }"
     :list="[
       { label: 'Save', icon: 'save' },
       { label: 'Delete', icon: 'delete' }

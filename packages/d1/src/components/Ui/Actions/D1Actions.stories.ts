@@ -166,8 +166,12 @@ export const ActionsFlexible: Story = {
             <div class="wiki-storybook-item__label">flexible: adaptiveMd</div>
             <D1Actions :list="list" :listSecondary="listSecondary" flexible="adaptiveMd"/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-container">
             <div class="wiki-storybook-item__label">flexible: containerMd</div>
+            <D1Actions :list="list" :listSecondary="listSecondary" flexible="containerMd"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-container" style="max-width: 480px;">
+            <div class="wiki-storybook-item__label">flexible: containerMd (max-width: 480px)</div>
             <D1Actions :list="list" :listSecondary="listSecondary" flexible="containerMd"/>
           </div>
         </div>
@@ -176,10 +180,13 @@ export const ActionsFlexible: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll('.d1-actions')
-    await expect(items.length).toBe(2)
+    await expect(items.length).toBe(3)
 
     await expect(items[0]).toHaveClass('d1-actions--flexible--adaptiveMd')
     await expect(items[1]).toHaveClass('d1-actions--flexible--containerMd')
+    await expect(items[2]).toHaveClass('d1-actions--flexible--containerMd')
+    await expect(items[1].parentElement).toHaveClass('wiki-storybook-container')
+    await expect(items[2].parentElement).toHaveClass('wiki-storybook-container')
   }
 }
 export const ActionsButtonAttrs: Story = {
@@ -260,20 +267,36 @@ export const ActionsEventClick: Story = {
     components: { D1Actions },
     setup() {
       const lastEvent = ref('none')
+      const clickTrace = ref<string[]>([])
+      const pushTrace = (source: string) => {
+        clickTrace.value = [...clickTrace.value, source]
+      }
       const list = [
         { label: 'Cancel', text: true, value: 'cancel' },
-        { label: 'Apply', primary: true, value: 'apply' }
+        { label: 'Apply', primary: true, value: 'apply', onClick: () => pushTrace('item') }
       ]
+      const buttonAttrs = {
+        onClick: () => pushTrace('buttonAttrs')
+      }
       const onClick = (_event: MouseEvent, value: EventClickValue) => {
+        pushTrace('emit')
         lastEvent.value = 'click:' + String(value?.value ?? '')
       }
-      return { lastEvent, list, onClick }
+      const onClickLite = (value: EventClickValue) => {
+        lastEvent.value = lastEvent.value + '|clickLite:' + String(value?.value ?? '')
+      }
+      return { lastEvent, clickTrace, list, buttonAttrs, onClick, onClickLite }
     },
     template: `
         
         <div class="wiki-storybook-flex-column">
-          <div class="wiki-storybook-card">Last Event: {{ lastEvent }}</div>
-          <D1Actions :list="list" @click="onClick"/>
+          <div class="wiki-storybook-card">Last Event: {{ lastEvent }} | Trace: {{ clickTrace.join(' + ') || 'none' }}</div>
+          <D1Actions
+            :list="list"
+            :buttonAttrs="buttonAttrs"
+            @click="onClick"
+            @clickLite="onClickLite"
+          />
         </div>
       
     `
@@ -281,19 +304,20 @@ export const ActionsEventClick: Story = {
   play: async ({ canvasElement, step }) => {
     const eventCard = canvasElement.querySelector('.wiki-storybook-card')
     await expect(eventCard).toBeInTheDocument()
-    await expect(eventCard?.textContent).toContain('none')
+    await expect(eventCard?.textContent).toContain('Last Event: none')
 
     const canvas = within(canvasElement)
-    await step('Click Apply button and track event payload', async () => {
+    await step('Click Apply button and track click, clickLite, and composed handlers', async () => {
       const applyButton = canvas.getByRole('button', { name: 'Apply' })
       await userEvent.click(applyButton)
-      await expect(eventCard?.textContent).toContain('click:apply')
+      await expect(eventCard?.textContent).toContain('click:apply|clickLite:apply')
+      await expect(eventCard?.textContent).toContain('emit + buttonAttrs + item')
     })
 
     await step('Click Cancel button and track event payload', async () => {
       const cancelButton = canvas.getByRole('button', { name: 'Cancel' })
       await userEvent.click(cancelButton)
-      await expect(eventCard?.textContent).toContain('click:cancel')
+      await expect(eventCard?.textContent).toContain('click:cancel|clickLite:cancel')
     })
   }
 }
@@ -419,8 +443,13 @@ export const ActionsTestButtonStates: Story = {
     await expect(buttons?.length).toBe(4)
 
     if (buttons && buttons.length >= 4) {
-      const disabledButton = buttons[0].querySelector('button')
-      await expect(disabledButton).toBeDisabled()
+      await expect(buttons[0]).toBeDisabled()
+      await expect(buttons[1]).toHaveAttribute('aria-disabled', 'true')
+      await expect(buttons[1].querySelector('[class*="__loading"]')).toBeTruthy()
+      await expect(buttons[2]).toHaveAttribute('data-value', 'icon')
+      await expect(buttons[2].textContent).toContain('With Icon')
+      await expect(buttons[3]).toHaveAttribute('data-value', 'palette')
+      await expect(buttons[3].textContent).toContain('Custom Palette')
     }
   }
 }
@@ -474,7 +503,7 @@ export const ActionsTestEmptyAndMixed: Story = {
   }
 }
 export const ActionsTestPaddings: Story = {
-  name: 'Тест: Варианты отступов и настройки индентов',
+  name: 'Тест: Варианты отступов и приоритет paddingByIndent',
   render: () => ({
     components: { D1Actions },
     setup() {
@@ -485,20 +514,36 @@ export const ActionsTestPaddings: Story = {
         
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: sm</div>
-            <D1Actions :list="list" padding="sm"/>
+            <div class="wiki-storybook-item__label">padding: sm (paddingByIndent: false)</div>
+            <D1Actions :list="list" padding="sm" :paddingByIndent="false"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: md</div>
-            <D1Actions :list="list" padding="md"/>
+            <div class="wiki-storybook-item__label">padding: md (paddingByIndent: false)</div>
+            <D1Actions :list="list" padding="md" :paddingByIndent="false"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: lg</div>
+            <div class="wiki-storybook-item__label">padding: lg (paddingByIndent: false)</div>
+            <D1Actions :list="list" padding="lg" :paddingByIndent="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+            <div class="wiki-storybook-item__label">padding: ySm (paddingByIndent: false)</div>
+            <D1Actions :list="list" padding="ySm" :paddingByIndent="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+            <div class="wiki-storybook-item__label">padding: yMd (paddingByIndent: false)</div>
+            <D1Actions :list="list" padding="yMd" :paddingByIndent="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+            <div class="wiki-storybook-item__label">padding: yLg (paddingByIndent: false)</div>
+            <D1Actions :list="list" padding="yLg" :paddingByIndent="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+            <div class="wiki-storybook-item__label">padding: none (paddingByIndent: false)</div>
+            <D1Actions :list="list" padding="none" :paddingByIndent="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+            <div class="wiki-storybook-item__label">padding: lg + default paddingByIndent (overridden by paddingByIndent)</div>
             <D1Actions :list="list" padding="lg"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: none</div>
-            <D1Actions :list="list" padding="none"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
             <div class="wiki-storybook-item__label">paddingByIndent: false</div>
@@ -510,13 +555,56 @@ export const ActionsTestPaddings: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll('.d1-actions')
-    await expect(items.length).toBe(5)
+    await expect(items.length).toBe(9)
 
     await expect(items[0]).toHaveClass('d1-actions--padding--sm')
+    await expect(items[0]).not.toHaveClass('d1-actions--paddingByIndent')
     await expect(items[1]).toHaveClass('d1-actions--padding--md')
     await expect(items[2]).toHaveClass('d1-actions--padding--lg')
-    await expect(items[3]).toHaveClass('d1-actions--padding--none')
-    await expect(items[4]).not.toHaveClass('d1-actions--paddingByIndent')
+    await expect(items[3]).toHaveClass('d1-actions--padding--ySm')
+    await expect(items[4]).toHaveClass('d1-actions--padding--yMd')
+    await expect(items[5]).toHaveClass('d1-actions--padding--yLg')
+    await expect(items[6]).toHaveClass('d1-actions--padding--none')
+    await expect(items[7]).toHaveClass('d1-actions--padding--lg')
+    await expect(items[7]).toHaveClass('d1-actions--paddingByIndent')
+    await expect(items[8]).not.toHaveClass('d1-actions--paddingByIndent')
+  }
+}
+export const ActionsTestAccessibility: Story = {
+  name: 'Тест: ARIA role, ariaLabel, textActions и area',
+  render: () => ({
+    components: { D1Actions },
+    setup() {
+      const list = [{ label: 'Confirm', primary: true, value: 'confirm' }]
+      return { list }
+    },
+    template: `
+        
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+            <div class="wiki-storybook-item__label">Default aria-label</div>
+            <D1Actions :list="list" area="dialog-footer"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+            <div class="wiki-storybook-item__label">role + ariaLabel</div>
+            <D1Actions :list="list" role="toolbar" ariaLabel="Document Actions"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+            <div class="wiki-storybook-item__label">textActions fallback</div>
+            <D1Actions :list="list" textActions="Custom Landmark"/>
+          </div>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const items = canvasElement.querySelectorAll('.d1-actions')
+    await expect(items.length).toBe(3)
+
+    await expect(items[0]).toHaveAttribute('aria-label', 'Actions')
+    await expect(items[1]).toHaveAttribute('role', 'toolbar')
+    await expect(items[1]).toHaveAttribute('aria-label', 'Document Actions')
+    await expect(items[2]).toHaveAttribute('aria-label', 'Custom Landmark')
   }
 }
 // :story-items [!] System label / Системная метка

@@ -1,13 +1,13 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-A basic Dummy placeholder component for interface prototyping and visual testing. Allows you to quickly create blocks of specific sizes and colors.
+A basic Dummy placeholder component for interface prototyping and visual testing. Allows you to create lightweight structural placeholder blocks.
 
 Dummy is designed as a tool for developers to help structure views before actual components are implemented.
 
 **Key Features:**
 
-- Size customization via the size property
-- Color scheme configuration via the palette property
+- Lightweight structural placeholder block
+- Default slot support for inner placeholder content
 - Use as a space filler in layouts
 
 **Typical Usage Scenarios:**
@@ -26,11 +26,8 @@ Dummy is designed as a tool for developers to help structure views before actual
     <!-- Basic Dummy -->
     <Dummy />
 
-    <!-- Custom Size and Palette -->
-    <Dummy size="lg" palette="blue" />
-
-    <!-- Small Red Dummy -->
-    <Dummy size="sm" palette="red" />
+    <!-- Dummy with slot content -->
+    <Dummy>Placeholder</Dummy>
   </div>
 </template>
   `}

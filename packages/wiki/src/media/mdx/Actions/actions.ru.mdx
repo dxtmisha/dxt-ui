@@ -7,10 +7,11 @@ Actions централизует управление расположением
 **Основные возможности:**
 
 - Группировка кнопок (основная группа через list, вторичная через listSecondary)
-- Управление выравниванием (left, right, center, block, none)
-- Адаптивное поведение через свойство flexible (adaptive/container)
+- Управление выравниванием (left, right, center, block, auto, none)
+- Адаптивное поведение через свойство flexible
 - Автоматический спейсер между группами кнопок
 - Раздельная настройка атрибутов (buttonAttrs, buttonSecondaryAttrs)
+- Встроенная поддержка доступности (`role`, `ariaLabel`, `textActions`)
 - Поддержка слотов для кастомного контента (default, secondary)
 - Интеграция с компонентом Button со всеми его возможностями
 - Гибкая раскладка с автоматическим переходом в блочный режим
@@ -42,7 +43,7 @@ const handleSave = async () => {
     align="right"
     :list="[
       { label: 'Отмена' },
-      { label: 'Сохранить', primary: true, loading: isLoading }
+      { label: 'Сохранить', selected: true, loading: isLoading }
     ]"
   />
 </template>

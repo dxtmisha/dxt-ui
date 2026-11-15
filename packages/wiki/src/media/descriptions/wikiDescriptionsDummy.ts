@@ -13,12 +13,12 @@ export const wikiDescriptionsDummy: StorybookComponentsDescriptionItem = {
   },
   possibilities: {
     en: [
-      'multiple sizes from extra small to 5xl',
-      'various color palettes'
+      'lightweight structural placeholder',
+      'simple slot container for prototyping'
     ],
     ru: [
-      'множественные размеры от очень маленького до 5xl',
-      'различные цветовые палитры'
+      'лёгкая структурная заглушка',
+      'простой контейнер со слотом для прототипирования'
     ]
   },
   import: [],
@@ -33,9 +33,8 @@ export const wikiDescriptionsDummy: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Placeholder component used for structural presentation, testing, or laying out interfaces early in development. Provides a simple geometric shape to represent where a future component will be placed.
-Features configurable sizes (from 'xs' to '5xl') and customizable color palettes. Acts as a lightweight visual anchor without complex logic or dependencies.
-Controlled via size and palette props. Use during prototyping to define layout structures before final components are implemented or for testing responsive container behavior.
+Placeholder component used for structural presentation, testing, or laying out interfaces early in development. Provides a lightweight visual anchor without complex logic or dependencies.
+Use during prototyping to define layout structures before final components are implemented or for testing container behavior.
     `,
     hide: true
   }

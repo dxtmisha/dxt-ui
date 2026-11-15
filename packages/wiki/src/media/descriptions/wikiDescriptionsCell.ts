@@ -577,7 +577,7 @@ await expect(dynamicCell).toHaveAttribute('tabindex', '0')
         en: 'Test: Loading progress bar indicator',
         ru: 'Тест: Индикатор выполнения прогресс-бара'
       },
-      propsName: ['loading', 'progressAttrs'],
+      propsName: ['loading'],
       template: `
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <DesignComponent
@@ -594,8 +594,7 @@ await expect(dynamicCell).toHaveAttribute('tabindex', '0')
           <DesignComponent
             label="Progress with Custom Attrs"
             description="Circular variant inside cell progress"
-            loading
-            :progressAttrs="{ circular: true }"
+            :loading="{ circular: true }"
           />
         </div>
       `,

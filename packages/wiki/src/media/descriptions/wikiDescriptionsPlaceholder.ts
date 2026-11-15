@@ -48,7 +48,7 @@ export const wikiDescriptionsPlaceholder: StorybookComponentsDescriptionItem = {
             :image="image1"
             label="No Internet Connection"
             description="Please check your network settings and try again."
-            :actions-list="[{ label: 'Retry', palette: 'primary' }]"
+            :actions-list="[{ label: 'Retry' }]"
           />
         </div>
       `

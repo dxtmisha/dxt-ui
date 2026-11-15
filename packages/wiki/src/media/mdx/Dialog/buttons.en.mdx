@@ -38,8 +38,8 @@ import { ref } from 'vue'
   <!-- Using actionsList -->
   <Dialog
     :actionsList="[
-      { label: 'Save', onClick: handleSave },
-      { label: 'Cancel', outline: true, onClick: handleCancel }
+      { label: 'Save', selected: true, onClick: handleSave },
+      { label: 'Cancel', onClick: handleCancel }
     ]"
     label="Save"
   />

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { reactive } from 'vue'
+import { nextTick, reactive, ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 
 import { ActionsInclude } from '../ActionsInclude'
@@ -16,11 +16,21 @@ describe('ActionsInclude (Embedding Helper)', () => {
   const naming = new DesignName('d1.modal')
 
   describe('Visibility logic (is getter)', () => {
-    it('should return false when no action lists are provided in props or binds', () => {
-      const props: ActionsPropsInclude = reactive({})
-      const include = new ActionsInclude(props, naming)
+    it('should return false when props are undefined, empty, or contain empty arrays', () => {
+      const includeUndefined = new ActionsInclude(undefined, naming)
+      expect(includeUndefined.is).toBe(false)
 
-      expect(include.is).toBe(false)
+      const includeEmpty = new ActionsInclude(reactive<ActionsPropsInclude>({}), naming)
+      expect(includeEmpty.is).toBe(false)
+
+      const includeEmptyArrays = new ActionsInclude(
+        reactive<ActionsPropsInclude>({
+          actionsList: [],
+          actionsSecondary: []
+        }),
+        naming
+      )
+      expect(includeEmptyArrays.is).toBe(false)
     })
 
     it('should return true when actionsList is provided in props', () => {
@@ -51,6 +61,29 @@ describe('ActionsInclude (Embedding Helper)', () => {
 
       expect(include.is).toBe(false)
     })
+
+    it('should reactively track visibility and bindings when props are passed as a getter function', async () => {
+      const listRef = ref<ActionsPropsInclude['actionsList']>()
+      const hideRef = ref(false)
+      const include = new ActionsInclude(
+        () => ({
+          actionsHide: hideRef.value,
+          actionsList: listRef.value
+        }),
+        naming
+      )
+
+      expect(include.is).toBe(false)
+
+      listRef.value = [{ label: 'Apply' }]
+      await nextTick()
+      expect(include.is).toBe(true)
+      expect(include.binds.value.list).toEqual([{ label: 'Apply' }])
+
+      hideRef.value = true
+      await nextTick()
+      expect(include.is).toBe(false)
+    })
   })
 
   describe('Bindings resolution (toBinds)', () => {
@@ -67,7 +100,7 @@ describe('ActionsInclude (Embedding Helper)', () => {
       expect(typeof binds.onClick).toBe('function')
     })
 
-    it('should prefer actionsList / actionsSecondary from props over existing binds', () => {
+    it('should prefer actionsList / actionsSecondary from props over existing binds and support extra', () => {
       const props: ActionsPropsInclude = reactive({
         actionsList: [{ label: 'Overridden Primary' }],
         actionsSecondary: [{ label: 'Overridden Secondary' }],
@@ -81,13 +114,26 @@ describe('ActionsInclude (Embedding Helper)', () => {
       const binds = include.binds.value
       expect(binds.list).toEqual([{ label: 'Overridden Primary' }])
       expect(binds.listSecondary).toEqual([{ label: 'Overridden Secondary' }])
+
+      const extraOnly = new ActionsInclude(
+        reactive<ActionsPropsInclude>({}),
+        naming,
+        undefined,
+        { list: [{ label: 'From Extra' }] }
+      )
+      expect(extraOnly.is).toBe(true)
+      expect(extraOnly.binds.value.list).toEqual([{ label: 'From Extra' }])
     })
   })
 
-  describe('Event forwarding', () => {
-    it('should emit "actions" and "actionsLite" on parent emitter when clicked', () => {
+  describe('Event forwarding and mergeProps composition', () => {
+    it('should emit "actions" and "actionsLite" on parent emitter and compose actionsAttrs.onClick', () => {
       const onEmits = vi.fn()
+      const customAttrsClick = vi.fn()
       const props: ActionsPropsInclude = reactive({
+        actionsAttrs: {
+          onClick: customAttrsClick
+        },
         actionsList: [{ label: 'Clickable' }]
       })
       const include = new ActionsInclude(
@@ -106,8 +152,15 @@ describe('ActionsInclude (Embedding Helper)', () => {
         detail: { key: 'test-detail' }
       }
 
-      include.onClick(mouseEvent, payload)
+      const boundOnClick = include.binds.value.onClick
+      if (Array.isArray(boundOnClick)) {
+        boundOnClick.forEach(fn => fn(mouseEvent, payload))
+      } else {
+        (boundOnClick as ((e: MouseEvent, v: EventClickValue) => void) | undefined)?.(mouseEvent, payload)
+      }
 
+      expect(customAttrsClick).toHaveBeenCalledTimes(1)
+      expect(customAttrsClick).toHaveBeenCalledWith(mouseEvent, payload)
       expect(onEmits).toHaveBeenCalledTimes(2)
       expect(onEmits).toHaveBeenNthCalledWith(1, 'actions', mouseEvent, payload)
       expect(onEmits).toHaveBeenNthCalledWith(2, 'actionsLite', payload)

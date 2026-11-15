@@ -1,13 +1,13 @@
-import { watch } from 'vue'
+import { ref, type Ref, watch } from 'vue'
 import { setAreaValue } from '../functions/setAreaValue'
 import type { AreaPropsInclude } from '../types/areaTypes'
 
 /**
  * Class for managing the component layout area value.
- * Watches area props and applies CSS area variables to layout containers.
+ * Provides the layout area identifier to descendant components via Vue dependency injection.
  *
  * Класс для управления значением области макета компонента.
- * Отслеживает свойства области и применяет CSS-переменные области к контейнерам макета.
+ * Передает идентификатор области макета дочерним компонентам через внедрение зависимостей Vue.
  */
 export class AreaInclude {
   /**
@@ -21,24 +21,30 @@ export class AreaInclude {
     return Boolean(props?.area)
   }
 
+  /** Reactive area value / Реактивное значение области */
+  protected readonly value: Ref<string | undefined> = ref()
+
   /**
-   * Constructor
+   * Constructor for AreaInclude.
+   *
+   * Конструктор для AreaInclude.
    * @param props input data / входные данные
    */
   constructor(
     protected readonly props: Readonly<AreaPropsInclude>
   ) {
-    watch(() => props.area, this.updateValue, { immediate: true })
+    this.updateValue()
+
+    setAreaValue(this.value)
+    watch(() => props.area, this.updateValue)
   }
 
   /**
-   * Update value
+   * Updates the reactive area value when props.area changes.
    *
-   * Обновить значение
+   * Обновляет реактивное значение области при изменении props.area.
    */
   protected readonly updateValue = (): void => {
-    if (this.props.area) {
-      setAreaValue(this.props.area)
-    }
+    this.value.value = this.props.area
   }
 }

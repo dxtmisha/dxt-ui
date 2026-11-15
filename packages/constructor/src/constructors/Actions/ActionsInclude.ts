@@ -1,14 +1,17 @@
 // ai-none
 
+import { mergeProps } from 'vue'
 import {
+  type ConstrBind,
   type ConstrEmit,
   type DesignComponents,
-  type DesignName
+  type DesignName,
+  isFilled
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ComponentIncludeExtra } from '../../types/componentInclude'
+import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { ActionsComponentInclude, ActionsEmitsInclude, ActionsPropsInclude } from './basicTypes'
 import type { ActionsProps } from './props'
@@ -30,9 +33,9 @@ export class ActionsInclude extends ComponentIncludeAbstract<
   ActionsSlots
 > {
   /** Component name / Имя компонента */
-  protected name = 'actions'
+  protected override readonly name = 'actions'
   /** Property name for attributes / Имя свойства для атрибутов */
-  protected propsAttrsName = 'actionsAttrs'
+  protected override readonly propsAttrsName = 'actionsAttrs'
 
   /**
    * Constructor for ActionsInclude class.
@@ -46,7 +49,7 @@ export class ActionsInclude extends ComponentIncludeAbstract<
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    props: Readonly<ActionsPropsInclude>,
+    props: ComponentIncludeProps<ActionsPropsInclude>,
     naming: DesignName,
     components?: DesignComponents<ActionsComponentInclude, ActionsPropsInclude>,
     extra?: ComponentIncludeExtra<ActionsProps>,
@@ -68,8 +71,8 @@ export class ActionsInclude extends ComponentIncludeAbstract<
     return Boolean(
       !props.actionsHide
       && (
-        this.binds.value.list
-        || this.binds.value.listSecondary
+        isFilled(this.binds.value.list)
+        || isFilled(this.binds.value.listSecondary)
       )
     )
   }
@@ -81,7 +84,7 @@ export class ActionsInclude extends ComponentIncludeAbstract<
    * @param event native mouse event / native событие мыши
    * @param value payload with event details / данные события с подробностями
    */
-  readonly onClick = (event: MouseEvent, value: EventClickValue) => {
+  readonly onClick = (event: MouseEvent, value: EventClickValue): void => {
     this.emits?.('actions', event, value)
     this.emits?.('actionsLite', value)
   }
@@ -92,16 +95,17 @@ export class ActionsInclude extends ComponentIncludeAbstract<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<ActionsProps>> {
     const props = this.getProps()
     const binds = super.toBinds()
 
-    return {
-      ...binds,
-
-      list: props.actionsList ?? binds.list,
-      listSecondary: props.actionsSecondary ?? binds.listSecondary,
-      onClick: this.onClick
-    }
+    return mergeProps(
+      binds,
+      {
+        ...(props.actionsList !== undefined ? { list: props.actionsList } : {}),
+        ...(props.actionsSecondary !== undefined ? { listSecondary: props.actionsSecondary } : {}),
+        onClick: this.onClick
+      }
+    )
   }
 }

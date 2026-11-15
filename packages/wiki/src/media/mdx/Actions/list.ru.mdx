@@ -9,7 +9,7 @@ import { Source } from '@storybook/addon-docs/blocks';
 - `list` — массив конфигураций для основных кнопок действий (Отмена, Сохранить, Применить)
 - `listSecondary` — массив конфигураций для вторичных кнопок (Удалить, Сбросить, Экспорт)
 
-Каждый элемент массива представляет собой объект с конфигурацией кнопки, поддерживающий все свойства компонента Button (label, icon, disabled, primary, loading и другие). Компонент автоматически применяет базовые атрибуты из `buttonAttrs` к основным кнопкам и из `buttonSecondaryAttrs` к вторичным. Вторичные кнопки располагаются отдельно с автоматическим спейсером и скрываются в режимах `align="center"` и `align="block"`. Используйте `list` для основных действий и `listSecondary` для деструктивных или менее важных операций.
+Каждый элемент массива представляет собой объект с конфигурацией кнопки, поддерживающий все свойства компонента Button (`label`, `icon`, `disabled`, `selected`, `loading` и другие). Компонент автоматически применяет базовые атрибуты из `buttonAttrs` к основным кнопкам и из `buttonSecondaryAttrs` к вторичным. Вторичные кнопки располагаются отдельно с автоматическим спейсером и скрываются в режимах `align="center"` и `align="block"`. Используйте `list` для основных действий и `listSecondary` для деструктивных или менее важных операций.
 
 <Source
     code={`
@@ -17,7 +17,7 @@ import { Source } from '@storybook/addon-docs/blocks';
 <Actions
   :list="[
     { label: 'Отмена', onClick: () => close() },
-    { label: 'Сохранить', primary: true, onClick: () => save() }
+    { label: 'Сохранить', selected: true, onClick: () => save() }
   ]"
 />
 
@@ -25,10 +25,10 @@ import { Source } from '@storybook/addon-docs/blocks';
 <Actions
   :list="[
     { label: 'Отмена' },
-    { label: 'Сохранить', primary: true }
+    { label: 'Сохранить', selected: true }
   ]"
   :list-secondary="[
-    { label: 'Удалить', text: true, icon: 'delete', palette: 'error' }
+    { label: 'Удалить', icon: 'delete' }
   ]"
 />
 
@@ -36,9 +36,9 @@ import { Source } from '@storybook/addon-docs/blocks';
 <Actions
   :list="[
     { label: 'Отмена', disabled: isProcessing },
-    { label: 'Сохранить', primary: true, loading: isLoading }
+    { label: 'Сохранить', loading: isLoading }
   ]"
-  :button-attrs="{ size: 'medium' }"
+  :button-attrs="{ inverse: true }"
 />
 
 <!-- Вторичные кнопки с настройками -->
@@ -48,7 +48,7 @@ import { Source } from '@storybook/addon-docs/blocks';
     { label: 'Экспорт', icon: 'download' },
     { label: 'Справка', icon: 'help' }
   ]"
-  :button-secondary-attrs="{ size: 'small', text: true }"
+  :button-secondary-attrs="{ iconTrailing: 'arrow_forward' }"
 />
   `}
     language="html"

@@ -1,12 +1,58 @@
 <script setup lang="ts">
+import { ref, shallowRef } from 'vue'
+import type { ConstrBind } from '@dxtmisha/functional'
 import { type ButtonProps, D1Button } from '@dxtmisha/d1/D1Button'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
 import DemoBox from '../../components/DemoBox.vue'
+import DemoFlex from '../../components/DemoFlex.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const { eventName, onEvent } = useDemoEvent()
+const dynamicAlign = ref<'right' | 'left' | 'center' | 'block'>('right')
+const dynamicList = shallowRef<ConstrBind<ButtonProps>[]>([
+  { label: 'Cancel', text: true, value: 'cancel' },
+  { label: 'Confirm', primary: true, value: 'confirm' }
+])
+const customClickLog = ref<string[]>([])
+
+const pushClickLog = (source: string) => {
+  customClickLog.value = [...customClickLog.value, source]
+}
+
+const onAddDynamicItem = () => {
+  const nextIndex = dynamicList.value.length + 1
+  dynamicList.value = [
+    ...dynamicList.value,
+    { label: `Extra ${nextIndex}`, outline: true, value: `extra-${nextIndex}` }
+  ]
+}
+
+const onClearDynamicList = () => {
+  dynamicList.value = []
+}
+
+const onResetDynamicList = () => {
+  dynamicList.value = [
+    { label: 'Cancel', text: true, value: 'cancel' },
+    { label: 'Confirm', primary: true, value: 'confirm' }
+  ]
+}
+
+const listMergedHandlers: ConstrBind<ButtonProps>[] = [
+  {
+    label: 'Save & Notify',
+    primary: true,
+    value: 'save-notify',
+    onClick: () => pushClickLog('item')
+  }
+]
+
+const sharedButtonAttrsWithClick: ConstrBind<ButtonProps> = {
+  outline: true,
+  onClick: () => pushClickLog('buttonAttrs')
+}
 
 const listBasic: ButtonProps[] = [
   { label: 'Cancel', text: true, value: 'cancel' },
@@ -85,25 +131,28 @@ const listMany: ButtonProps[] = [
 
       <D1Group label="Paddings">
         <DemoBox>
-          <D1Actions :list="listBasic" padding="sm" />
+          <D1Actions :list="listBasic" padding="sm" :paddingByIndent="false" />
         </DemoBox>
         <DemoBox>
-          <D1Actions :list="listBasic" padding="md" />
+          <D1Actions :list="listBasic" padding="md" :paddingByIndent="false" />
+        </DemoBox>
+        <DemoBox>
+          <D1Actions :list="listBasic" padding="lg" :paddingByIndent="false" />
+        </DemoBox>
+        <DemoBox>
+          <D1Actions :list="listBasic" padding="ySm" :paddingByIndent="false" />
+        </DemoBox>
+        <DemoBox>
+          <D1Actions :list="listBasic" padding="yMd" :paddingByIndent="false" />
+        </DemoBox>
+        <DemoBox>
+          <D1Actions :list="listBasic" padding="yLg" :paddingByIndent="false" />
+        </DemoBox>
+        <DemoBox>
+          <D1Actions :list="listBasic" padding="none" :paddingByIndent="false" />
         </DemoBox>
         <DemoBox>
           <D1Actions :list="listBasic" padding="lg" />
-        </DemoBox>
-        <DemoBox>
-          <D1Actions :list="listBasic" padding="ySm" />
-        </DemoBox>
-        <DemoBox>
-          <D1Actions :list="listBasic" padding="yMd" />
-        </DemoBox>
-        <DemoBox>
-          <D1Actions :list="listBasic" padding="yLg" />
-        </DemoBox>
-        <DemoBox>
-          <D1Actions :list="listBasic" padding="none" />
         </DemoBox>
         <DemoBox>
           <D1Actions :list="listBasic" :paddingByIndent="false" />
@@ -196,7 +245,14 @@ const listMany: ButtonProps[] = [
             flexible="adaptiveMd"
           />
         </DemoBox>
-        <DemoBox>
+        <DemoBox container>
+          <D1Actions
+            :list="listBasic"
+            :listSecondary="listSecondary"
+            flexible="containerMd"
+          />
+        </DemoBox>
+        <DemoBox container class="demo-actions-page__narrow-container">
           <D1Actions
             :list="listBasic"
             :listSecondary="listSecondary"
@@ -205,7 +261,61 @@ const listMany: ButtonProps[] = [
         </DemoBox>
       </D1Group>
 
-      <D1Group label="Events">
+      <D1Group label="Empty & Boundary">
+        <DemoBox>
+          <D1Actions />
+        </DemoBox>
+        <DemoBox>
+          <D1Actions :list="[]" :listSecondary="[]" />
+        </DemoBox>
+        <DemoBox>
+          <D1Actions
+            :list="[
+              { label: 'Single Action', primary: true, value: 'single' },
+              { label: 'Extremely Long Action Button Text For Layout Boundaries', outline: true, value: 'long' }
+            ]"
+            wrap
+          />
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Accessibility & Semantics">
+        <DemoBox>
+          <D1Actions
+            :list="listBasic"
+            role="toolbar"
+            ariaLabel="Document Editing Actions"
+          />
+        </DemoBox>
+        <DemoBox>
+          <D1Actions
+            :list="listBasic"
+            textActions="Custom Actions Landmark"
+          />
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Dynamic Controls">
+        <DemoFlex>
+          <D1Button label="Align Left" size="sm" outline @click="dynamicAlign = 'left'" />
+          <D1Button label="Align Right" size="sm" outline @click="dynamicAlign = 'right'" />
+          <D1Button label="Align Center" size="sm" outline @click="dynamicAlign = 'center'" />
+          <D1Button label="Align Block" size="sm" outline @click="dynamicAlign = 'block'" />
+          <D1Button label="Add Item" size="sm" outline @click="onAddDynamicItem" />
+          <D1Button label="Clear" size="sm" outline @click="onClearDynamicList" />
+          <D1Button label="Reset" size="sm" primary @click="onResetDynamicList" />
+        </DemoFlex>
+        <DemoBox>
+          <D1Actions
+            :list="dynamicList"
+            :listSecondary="listSecondary"
+            :align="dynamicAlign"
+          />
+        </DemoBox>
+        <DemoValue :value="`${dynamicAlign} (${dynamicList.length} items)`" />
+      </D1Group>
+
+      <D1Group label="Events & Handler Composition">
         <DemoBox>
           <D1Actions
             :list="listBasic"
@@ -214,7 +324,18 @@ const listMany: ButtonProps[] = [
             @click-lite="(value) => onEvent('clickLite', value)"
           />
         </DemoBox>
+        <DemoBox>
+          <D1Actions
+            :list="listMergedHandlers"
+            :buttonAttrs="sharedButtonAttrsWithClick"
+            @click="(event, value) => {
+              pushClickLog('emit')
+              onEvent('mergedClick', event, value)
+            }"
+          />
+        </DemoBox>
         <DemoValue :value="eventName" />
+        <DemoValue :value="customClickLog.join(' + ') || 'none'" />
       </D1Group>
     </D1Section>
   </D1Page>
@@ -222,7 +343,8 @@ const listMany: ButtonProps[] = [
 
 <style lang="scss">
 .demo-actions-page {
-  display: flex;
-  flex-direction: column;
+  &__narrow-container {
+    max-width: 480px;
+  }
 }
 </style>

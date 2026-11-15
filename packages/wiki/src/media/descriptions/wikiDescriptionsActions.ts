@@ -55,11 +55,11 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       propsName: ['list', 'listSecondary'],
       setup: `
       const list = [
-        { label: 'Cancel', text: true, value: 'cancel' },
-        { label: 'Apply', primary: true, value: 'apply' }
+        { label: 'Cancel', value: 'cancel' },
+        { label: 'Apply', selected: true, value: 'apply' }
       ]
       const listSecondary = [
-        { label: 'Delete', palette: 'red', text: true, value: 'delete' }
+        { label: 'Delete', icon: 'delete', value: 'delete' }
       ]
       return { list, listSecondary }
       `,
@@ -100,11 +100,11 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       propsName: ['align'],
       setup: `
       const list = [
-        { label: 'Cancel', text: true, value: 'cancel' },
-        { label: 'Apply', primary: true, value: 'apply' }
+        { label: 'Cancel', value: 'cancel' },
+        { label: 'Apply', selected: true, value: 'apply' }
       ]
       const listSecondary = [
-        { label: 'Delete', palette: 'red', text: true, value: 'delete' }
+        { label: 'Delete', icon: 'delete', value: 'delete' }
       ]
       return { list, listSecondary }
       `,
@@ -152,23 +152,23 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       propsName: ['flexible'],
       setup: `
       const list = [
-        { label: 'Cancel', text: true, value: 'cancel' },
-        { label: 'Apply', primary: true, value: 'apply' }
+        { label: 'Cancel', value: 'cancel' },
+        { label: 'Apply', selected: true, value: 'apply' }
       ]
       const listSecondary = [
-        { label: 'Delete', palette: 'red', text: true, value: 'delete' }
+        { label: 'Delete', icon: 'delete', value: 'delete' }
       ]
       return { list, listSecondary }
       `,
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">flexible: adaptiveMd</div>
-            <DesignComponent :list="list" :listSecondary="listSecondary" flexible="adaptiveMd"/>
+            <div class="wiki-storybook-item__label">flexible: true</div>
+            <DesignComponent :list="list" :listSecondary="listSecondary" flexible/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">flexible: containerMd</div>
-            <DesignComponent :list="list" :listSecondary="listSecondary" flexible="containerMd"/>
+            <div class="wiki-storybook-item__label">flexible: false</div>
+            <DesignComponent :list="list" :listSecondary="listSecondary" :flexible="false"/>
           </div>
         </div>
       `,
@@ -176,8 +176,8 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
         const items = canvasElement.querySelectorAll('.design-component')
         await expect(items.length).toBe(2)
 
-        await expect(items[0]).toHaveClass('design-component--flexible--adaptiveMd')
-        await expect(items[1]).toHaveClass('design-component--flexible--containerMd')
+        await expect(items[0]).toHaveClass('design-component--flexible')
+        await expect(items[1]).not.toHaveClass('design-component--flexible')
       `
     },
     {
@@ -204,8 +204,8 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
             <DesignComponent
               :list="list"
               :listSecondary="listSecondary"
-              :buttonAttrs="{ size: 'sm', outline: true }"
-              :buttonSecondaryAttrs="{ size: 'sm', palette: 'red', text: true }"
+              :buttonAttrs="{ inverse: true }"
+              :buttonSecondaryAttrs="{ iconTrailing: 'arrow_forward' }"
             />
           </div>
         </div>
@@ -231,11 +231,11 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
             <div class="wiki-storybook-item__label">Slots: default & secondary</div>
             <DesignComponent>
               <template #secondary>
-                <DesignButton label="Secondary Slot Action" text/>
+                <DesignButton label="Secondary Slot Action" icon="delete"/>
               </template>
               <template #default>
-                <DesignButton label="Cancel" outline/>
-                <DesignButton label="Confirm" primary/>
+                <DesignButton label="Cancel"/>
+                <DesignButton label="Confirm" selected/>
               </template>
             </DesignComponent>
           </div>
@@ -258,39 +258,57 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
         en: 'Click event handling',
         ru: 'Обработка события клика'
       },
+      propsName: ['buttonAttrs'],
       setup: `
       const lastEvent = ref('none')
+      const clickTrace = ref<string[]>([])
+      const pushTrace = (source: string) => {
+        clickTrace.value = [...clickTrace.value, source]
+      }
       const list = [
-        { label: 'Cancel', text: true, value: 'cancel' },
-        { label: 'Apply', primary: true, value: 'apply' }
+        { label: 'Cancel', value: 'cancel' },
+        { label: 'Apply', selected: true, value: 'apply', onClick: () => pushTrace('item') }
       ]
+      const buttonAttrs = {
+        onClick: () => pushTrace('buttonAttrs')
+      }
       const onClick = (_event: MouseEvent, value: EventClickValue) => {
+        pushTrace('emit')
         lastEvent.value = 'click:' + String(value?.value ?? '')
       }
-      return { lastEvent, list, onClick }
+      const onClickLite = (value: EventClickValue) => {
+        lastEvent.value = lastEvent.value + '|clickLite:' + String(value?.value ?? '')
+      }
+      return { lastEvent, clickTrace, list, buttonAttrs, onClick, onClickLite }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
-          <div class="wiki-storybook-card">Last Event: {{ lastEvent }}</div>
-          <DesignComponent :list="list" @click="onClick"/>
+          <div class="wiki-storybook-card">Last Event: {{ lastEvent }} | Trace: {{ clickTrace.join(' + ') || 'none' }}</div>
+          <DesignComponent
+            :list="list"
+            :buttonAttrs="buttonAttrs"
+            @click="onClick"
+            @clickLite="onClickLite"
+          />
         </div>
       `,
       play: `
         const eventCard = canvasElement.querySelector('.wiki-storybook-card')
         await expect(eventCard).toBeInTheDocument()
-        await expect(eventCard?.textContent).toContain('none')
+        await expect(eventCard?.textContent).toContain('Last Event: none')
 
         const canvas = within(canvasElement)
-        await step('Click Apply button and track event payload', async () => {
+        await step('Click Apply button and track click, clickLite, and composed handlers', async () => {
           const applyButton = canvas.getByRole('button', { name: 'Apply' })
           await userEvent.click(applyButton)
-          await expect(eventCard?.textContent).toContain('click:apply')
+          await expect(eventCard?.textContent).toContain('click:apply|clickLite:apply')
+          await expect(eventCard?.textContent).toContain('emit + buttonAttrs + item')
         })
 
         await step('Click Cancel button and track event payload', async () => {
           const cancelButton = canvas.getByRole('button', { name: 'Cancel' })
           await userEvent.click(cancelButton)
-          await expect(eventCard?.textContent).toContain('click:cancel')
+          await expect(eventCard?.textContent).toContain('click:cancel|clickLite:cancel')
         })
       `
     },
@@ -392,16 +410,16 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
     {
       id: 'ActionsTestButtonStates',
       name: {
-        en: 'Test: Button states, icons and palettes',
-        ru: 'Тест: Состояния кнопок, иконки и палитры'
+        en: 'Test: Button states and icons',
+        ru: 'Тест: Состояния кнопок и иконки'
       },
       propsName: ['list'],
       setup: `
       const stateItems = [
         { label: 'Disabled', disabled: true, value: 'disabled' },
         { label: 'Loading', loading: true, value: 'loading' },
-        { label: 'With Icon', icon: 'download', outline: true, value: 'icon' },
-        { label: 'Custom Palette', palette: 'red', value: 'palette' }
+        { label: 'With Icon', icon: 'download', value: 'icon' },
+        { label: 'Selected', selected: true, value: 'selected' }
       ]
       return { stateItems }
       `,
@@ -421,8 +439,13 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
         await expect(buttons?.length).toBe(4)
 
         if (buttons && buttons.length >= 4) {
-          const disabledButton = buttons[0].querySelector('button')
-          await expect(disabledButton).toBeDisabled()
+          await expect(buttons[0]).toBeDisabled()
+          await expect(buttons[1]).toHaveAttribute('aria-disabled', 'true')
+          await expect(buttons[1].querySelector('[class*="__loading"]')).toBeTruthy()
+          await expect(buttons[2]).toHaveAttribute('data-value', 'icon')
+          await expect(buttons[2].textContent).toContain('With Icon')
+          await expect(buttons[3]).toHaveAttribute('data-value', 'selected')
+          await expect(buttons[3].textContent).toContain('Selected')
         }
       `
     },
@@ -453,7 +476,7 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
             <div class="wiki-storybook-item__label">List + Slot Mixed</div>
             <DesignComponent :list="list">
               <template #default>
-                <DesignButton label="Slotted Action" outline/>
+                <DesignButton label="Slotted Action"/>
               </template>
             </DesignComponent>
           </div>
@@ -477,49 +500,40 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
       `
     },
     {
-      id: 'ActionsTestPaddings',
+      id: 'ActionsTestAccessibility',
       name: {
-        en: 'Test: Padding variants and indent settings',
-        ru: 'Тест: Варианты отступов и настройки индентов'
+        en: 'Test: ARIA role, ariaLabel, textActions and area',
+        ru: 'Тест: ARIA role, ariaLabel, textActions и area'
       },
-      propsName: ['padding', 'paddingByIndent'],
+      propsName: ['ariaLabel', 'role', 'textActions', 'area'],
       setup: `
-      const list = [{ label: 'Action', value: '1' }]
+      const list = [{ label: 'Confirm', selected: true, value: 'confirm' }]
       return { list }
       `,
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: sm</div>
-            <DesignComponent :list="list" padding="sm"/>
+            <div class="wiki-storybook-item__label">Default aria-label</div>
+            <DesignComponent :list="list" area="dialog-footer"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: md</div>
-            <DesignComponent :list="list" padding="md"/>
+            <div class="wiki-storybook-item__label">role + ariaLabel</div>
+            <DesignComponent :list="list" role="toolbar" ariaLabel="Document Actions"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: lg</div>
-            <DesignComponent :list="list" padding="lg"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">padding: none</div>
-            <DesignComponent :list="list" padding="none"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">paddingByIndent: false</div>
-            <DesignComponent :list="list" :paddingByIndent="false"/>
+            <div class="wiki-storybook-item__label">textActions fallback</div>
+            <DesignComponent :list="list" textActions="Custom Landmark"/>
           </div>
         </div>
       `,
       play: `
         const items = canvasElement.querySelectorAll('.design-component')
-        await expect(items.length).toBe(5)
+        await expect(items.length).toBe(3)
 
-        await expect(items[0]).toHaveClass('design-component--padding--sm')
-        await expect(items[1]).toHaveClass('design-component--padding--md')
-        await expect(items[2]).toHaveClass('design-component--padding--lg')
-        await expect(items[3]).toHaveClass('design-component--padding--none')
-        await expect(items[4]).not.toHaveClass('design-component--paddingByIndent')
+        await expect(items[0]).toHaveAttribute('aria-label', 'Actions')
+        await expect(items[1]).toHaveAttribute('role', 'toolbar')
+        await expect(items[1]).toHaveAttribute('aria-label', 'Document Actions')
+        await expect(items[2]).toHaveAttribute('aria-label', 'Custom Landmark')
       `
     }
   ],
@@ -552,8 +566,8 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
     v-bind="args"
     align="right"
     :list="[
-      { label: 'Cancel', text: true },
-      { label: 'Confirm', primary: true }
+      { label: 'Cancel' },
+      { label: 'Confirm', selected: true }
     ]"
   />
 </div>

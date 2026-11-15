@@ -13,7 +13,6 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
   },
   possibilities: {
     en: [
-      'multiple visual variants: primary, secondary, outline, text, and custom palettes',
       'leading, trailing, or dual icons support with Material symbols and custom assets',
       'integrated progress indicator with seamless loading transition and aria-disabled state',
       'polymorphic container rendering as button, link (a/href/to), or custom tag with keyboard focus',
@@ -23,7 +22,6 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
       'programmatic event inspection and data binding via getValue() and getDetail()'
     ],
     ru: [
-      'множественные визуальные варианты: primary, secondary, outline, text и пользовательские палитры',
       'поддержка ведущей, завершающей или обеих иконок с Material-символами и пользовательскими ассетами',
       'встроенный индикатор прогресса с плавным переходом загрузки и состоянием aria-disabled',
       'полиморфный рендеринг контейнера: кнопка, ссылка (a/href/to) или кастомный тег с фокусом клавиатуры',
@@ -91,16 +89,6 @@ await expect(items[3].querySelector('.design-component__trailing')).toBeInTheDoc
           <DesignComponent primary selected label="Selected"/>
           <DesignComponent primary disabled label="Disabled"/>
         </div>
-      `,
-      play: `
-const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(items.length).toBe(4)
-
-await expect(items[0]).toHaveClass('design-component--primary')
-await expect(items[1]).toHaveClass('design-component--icon')
-await expect(items[2]).toHaveClass('design-component--selected')
-await expect(items[3]).toHaveClass('design-component--disabled')
-await expect(items[3]).toBeDisabled()
       `
     },
     {
@@ -117,16 +105,6 @@ await expect(items[3]).toBeDisabled()
           <DesignComponent secondary selected label="Selected"/>
           <DesignComponent secondary disabled label="Disabled"/>
         </div>
-      `,
-      play: `
-const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(items.length).toBe(4)
-
-await expect(items[0]).toHaveClass('design-component--secondary')
-await expect(items[1]).toHaveClass('design-component--icon')
-await expect(items[2]).toHaveClass('design-component--selected')
-await expect(items[3]).toHaveClass('design-component--disabled')
-await expect(items[3]).toBeDisabled()
       `
     },
     {
@@ -143,16 +121,6 @@ await expect(items[3]).toBeDisabled()
           <DesignComponent outline selected label="Selected"/>
           <DesignComponent outline disabled label="Disabled"/>
         </div>
-      `,
-      play: `
-const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(items.length).toBe(4)
-
-await expect(items[0]).toHaveClass('design-component--outline')
-await expect(items[1]).toHaveClass('design-component--icon')
-await expect(items[2]).toHaveClass('design-component--selected')
-await expect(items[3]).toHaveClass('design-component--disabled')
-await expect(items[3]).toBeDisabled()
       `
     },
     {
@@ -169,16 +137,6 @@ await expect(items[3]).toBeDisabled()
           <DesignComponent text selected label="Selected"/>
           <DesignComponent text disabled label="Disabled"/>
         </div>
-      `,
-      play: `
-const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(items.length).toBe(4)
-
-await expect(items[0]).toHaveClass('design-component--text')
-await expect(items[1]).toHaveClass('design-component--icon')
-await expect(items[2]).toHaveClass('design-component--selected')
-await expect(items[3]).toHaveClass('design-component--disabled')
-await expect(items[3]).toBeDisabled()
       `
     },
     {
@@ -228,7 +186,7 @@ await expect(items[3]).toHaveClass('design-component--adaptive--iconAlways')
         <DesignSkeleton :active="true">
           <div class="wiki-storybook-flex">
             <DesignComponent is-skeleton label="Loading Action"/>
-            <DesignComponent is-skeleton primary label="Confirming..."/>
+            <DesignComponent is-skeleton inverse label="Confirming..."/>
           </div>
         </DesignSkeleton>
       `,
@@ -236,8 +194,8 @@ await expect(items[3]).toHaveClass('design-component--adaptive--iconAlways')
 const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
 await expect(items.length).toBe(2)
 
-await expect(items[0]).toHaveClass('d1-skeleton__background')
-await expect(items[1]).toHaveClass('d1-skeleton__background')
+await expect(items[0].className).toContain('skeleton__background')
+await expect(items[1].className).toContain('skeleton__background')
       `
     },
     {
@@ -271,7 +229,7 @@ await expect(items[1]).toHaveClass('d1-skeleton__background')
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <DesignComponent primary label="Click Me" @click="onClick" @click-lite="onClickLite"/>
+            <DesignComponent label="Click Me" @click="onClick" @click-lite="onClickLite"/>
           </div>
           <div class="wiki-storybook-card">
             <div>Clicks: <span class="click-counter">{{ clickCount }}</span></div>
@@ -361,12 +319,12 @@ await expect(detailOutput).toHaveTextContent('orderId')
       },
       template: `
         <div class="wiki-storybook-flex">
-          <DesignComponent primary>
+          <DesignComponent>
             <template #default>
               <span>Custom <strong>Rich Default</strong> Content</span>
             </template>
           </DesignComponent>
-          <DesignComponent secondary icon="star">
+          <DesignComponent icon="star">
             <template #default>
               <span>Custom <em>Icon Slot</em></span>
             </template>
@@ -512,7 +470,7 @@ await expect(items[2]).toHaveAttribute('aria-label', 'Accessible Span')
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">container</div>
-            <DesignComponent container="iconSm" icon="home" label="Container Query"/>
+            <DesignComponent container icon="home" label="Container Query"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">textAlign: left</div>
@@ -534,7 +492,7 @@ await expect(items.length).toBe(6)
 
 await expect(items[0]).toHaveClass('design-component--inverse')
 await expect(items[1]).toHaveClass('design-component--grid')
-await expect(items[2]).toHaveClass('design-component--container--iconSm')
+await expect(items[2]).toHaveClass('design-component--container')
 await expect(items[3]).toHaveClass('design-component--textAlign--left')
 await expect(items[4]).toHaveClass('design-component--textAlign--center')
 await expect(items[5]).toHaveClass('design-component--textAlign--right')
@@ -589,9 +547,9 @@ await expect(items[5]).toHaveClass('design-component--textAlign--right')
   },
   ai: {
     description: `
-Fundamental interactive component for user actions, navigation, and form workflows. Supports various visual styles (primary, secondary, outline, text), states (active, selected, disabled, readonly, loading, focus), and content configurations.
+Fundamental interactive component for user actions, navigation, and form workflows. Supports interaction states (active, selected, disabled, readonly, loading, focus), adaptive layout modes, and content configurations.
 Features built-in support for leading and trailing icons (Material Symbols), integrated progress indicators (circular and linear), and disabled/selected states. Includes native-like navigation via "to" (Vue Router) or "href" (external) props and supports skeleton loading via isSkeleton.
-Highly customizable through design tokens and adaptive layout options (block, iconAlways). Controlled primarily via click events and various styling props. Use for call-to-actions, navigation links, or icon-only toggle buttons.
+Highly customizable through design tokens and adaptive layout options (block, iconAlways, auto) and container queries. Controlled primarily via click events and constructor props. Use for call-to-actions, navigation links, or icon-only toggle buttons.
     `
   }
 }

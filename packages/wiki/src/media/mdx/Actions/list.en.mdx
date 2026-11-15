@@ -9,7 +9,7 @@ The `list` and `listSecondary` properties work together to organize buttons in t
 - `list` — array of configurations for primary action buttons (Cancel, Save, Apply)
 - `listSecondary` — array of configurations for secondary buttons (Delete, Reset, Export)
 
-Each array element represents an object with button configuration, supporting all Button component properties (label, icon, disabled, primary, loading, and others). The component automatically applies base attributes from `buttonAttrs` to primary buttons and from `buttonSecondaryAttrs` to secondary ones. Secondary buttons are positioned separately with an automatic spacer and are hidden in `align="center"` and `align="block"` modes. Use `list` for primary actions and `listSecondary` for destructive or less important operations.
+Each array element represents an object with button configuration, supporting all Button component properties (`label`, `icon`, `disabled`, `selected`, `loading`, and others). The component automatically applies base attributes from `buttonAttrs` to primary buttons and from `buttonSecondaryAttrs` to secondary ones. Secondary buttons are positioned separately with an automatic spacer and are hidden in `align="center"` and `align="block"` modes. Use `list` for primary actions and `listSecondary` for destructive or less important operations.
 
 <Source
     code={`
@@ -17,7 +17,7 @@ Each array element represents an object with button configuration, supporting al
 <Actions
   :list="[
     { label: 'Cancel', onClick: () => close() },
-    { label: 'Save', primary: true, onClick: () => save() }
+    { label: 'Save', selected: true, onClick: () => save() }
   ]"
 />
 
@@ -25,10 +25,10 @@ Each array element represents an object with button configuration, supporting al
 <Actions
   :list="[
     { label: 'Cancel' },
-    { label: 'Save', primary: true }
+    { label: 'Save', selected: true }
   ]"
   :list-secondary="[
-    { label: 'Delete', text: true, icon: 'delete', palette: 'error' }
+    { label: 'Delete', icon: 'delete' }
   ]"
 />
 
@@ -36,9 +36,9 @@ Each array element represents an object with button configuration, supporting al
 <Actions
   :list="[
     { label: 'Cancel', disabled: isProcessing },
-    { label: 'Save', primary: true, loading: isLoading }
+    { label: 'Save', loading: isLoading }
   ]"
-  :button-attrs="{ size: 'medium' }"
+  :button-attrs="{ inverse: true }"
 />
 
 <!-- Secondary buttons with settings -->
@@ -48,7 +48,7 @@ Each array element represents an object with button configuration, supporting al
     { label: 'Export', icon: 'download' },
     { label: 'Help', icon: 'help' }
   ]"
-  :button-secondary-attrs="{ size: 'small', text: true }"
+  :button-secondary-attrs="{ iconTrailing: 'arrow_forward' }"
 />
   `}
     language="html"

@@ -6,18 +6,18 @@ The `flexible` property determines automatic switching to block mode when space 
 
 **Possible values:**
 
-- `'adaptive'` — uses media queries to determine breakpoint
-- `'container'` — uses container queries to adapt to parent size
+- `false` (default) — fixed layout behavior
+- `true` — enables automatic transition to block mode when space is constrained
 
-Automatically applies `align="block"` property when available space becomes smaller than a defined breakpoint. With `adaptive` it tracks screen width through media queries, with `container` it adapts to parent container size. Suitable for creating adaptive interfaces that display correctly on both desktop and mobile devices without additional code.
+When enabled, it applies block layout behavior when available space becomes smaller than a defined breakpoint, allowing interfaces to display cleanly on both desktop and mobile devices without additional code.
 
 <Source
     code={`
-<!-- Automatic transition on narrow screens -->
-<Actions flexible="adaptive" :list="[...]" />
+<!-- Automatic transition on narrow viewports/containers -->
+<Actions flexible :list="[...]" />
 
-<!-- Adapts to parent size -->
-<Actions flexible="container" :list="[...]" />
+<!-- Explicitly disabled -->
+<Actions :flexible="false" :list="[...]" />
   `}
     language="html"
 />

@@ -4,12 +4,11 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 Compact interactive element for representing input, attributes, actions, and filters in the user interface.
 
-Chip provides a unified component for displaying discrete information in a compact format with support for selection states, icons, adaptive behavior, and various visual variants (input, assistive). Inherits Button functionality while adding specialized styling and semantics for working with tags, filters, statuses, and user input. Ensures a consistent API for creating interactive chips with support for clicks, disabled/selected states, and icon integration.
+Chip provides a unified component for displaying discrete information in a compact format with support for selection states, icons, and adaptive behavior. Inherits Button functionality while adding specialized styling and semantics for working with tags, filters, and statuses. Ensures a consistent API for creating interactive chips with support for clicks, disabled/selected states, and icon integration.
 
 **Core capabilities:**
 
 - Button inheritance (icons, progress, click events)
-- Visual variants (input, assistive) for different contexts
 - State management (selected, disabled, focus, readonly)
 - Adaptive behavior (adaptive, container) for different screen sizes
 - Customizable text alignment (textAlign: left/center/right)
@@ -21,9 +20,7 @@ Chip provides a unified component for displaying discrete information in a compa
 
 - Tags and labels for content categorization
 - Filters in search interfaces and catalogs
-- Displaying user-entered data (emails, contacts)
 - Statuses and state indicators
-- Assistive elements (hints, recommendations)
 - Selectable options in forms and lists
 
 <Source
@@ -48,11 +45,8 @@ const toggleFilter = (filter) => {
   <!-- Basic chip -->
   <Chip>Standard</Chip>
 
-  <!-- Input chip for user input -->
-  <Chip input icon="person">Contact</Chip>
-
-  <!-- Assistive chip for hints -->
-  <Chip assistive icon="lightbulb">Recommendation</Chip>
+  <!-- Chip with icon -->
+  <Chip icon="person">Contact</Chip>
 
   <!-- Filters with selection state -->
   <Chip

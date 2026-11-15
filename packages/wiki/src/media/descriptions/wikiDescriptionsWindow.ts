@@ -245,7 +245,7 @@ await waitFor(async () => {
         en: 'Lifecycle Hooks',
         ru: 'Хуки жизненного цикла'
       },
-      propsName: ['beforeOpening', 'opening', 'beforeClosing', 'closing'],
+      propsName: ['beforeOpening', 'beforeClosing'],
       setup: `
       const statusText = ref('Ready')
       const beforeOpening = () => {
@@ -570,6 +570,18 @@ await waitFor(async () => {
             <DesignComponent adaptive="menu" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">adaptive: menuWindow</div>
+            <DesignComponent adaptive="menuWindow" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">adaptive: modal</div>
+            <DesignComponent adaptive="modal" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">adaptive: modalDynamic</div>
+            <DesignComponent adaptive="modalDynamic" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">adaptive: actionSheetBottom</div>
             <DesignComponent adaptive="actionSheetBottom" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
@@ -586,12 +598,15 @@ await waitFor(async () => {
       play: `
 await waitFor(async () => {
   const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-  await expect(items.length).toBe(4)
+  await expect(items.length).toBe(7)
 
   await expect(items[0]).toHaveClass('design-component--adaptive--menu')
-  await expect(items[1]).toHaveClass('design-component--adaptive--actionSheetBottom')
-  await expect(items[2]).toHaveClass('design-component--adaptive--actionSheetRight')
-  await expect(items[3]).toHaveClass('design-component--fullscreen')
+  await expect(items[1]).toHaveClass('design-component--adaptive--menuWindow')
+  await expect(items[2]).toHaveClass('design-component--adaptive--modal')
+  await expect(items[3]).toHaveClass('design-component--adaptive--modalDynamic')
+  await expect(items[4]).toHaveClass('design-component--adaptive--actionSheetBottom')
+  await expect(items[5]).toHaveClass('design-component--adaptive--actionSheetRight')
+  await expect(items[6]).toHaveClass('design-component--fullscreen')
 })
       `
     },
@@ -605,6 +620,18 @@ await waitFor(async () => {
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">alignment: center</div>
+            <DesignComponent alignment="center" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">alignment: top</div>
+            <DesignComponent alignment="top" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">alignment: topFull</div>
+            <DesignComponent alignment="topFull" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">alignment: leftFull</div>
             <DesignComponent alignment="leftFull" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
@@ -616,21 +643,19 @@ await waitFor(async () => {
             <div class="wiki-storybook-item__label">alignment: bottomFull</div>
             <DesignComponent alignment="bottomFull" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">alignment: top</div>
-            <DesignComponent alignment="top" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
         </div>
       `,
       play: `
 await waitFor(async () => {
   const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-  await expect(items.length).toBe(4)
+  await expect(items.length).toBe(6)
 
-  await expect(items[0]).toHaveClass('design-component--alignment--leftFull')
-  await expect(items[1]).toHaveClass('design-component--alignment--rightFull')
-  await expect(items[2]).toHaveClass('design-component--alignment--bottomFull')
-  await expect(items[3]).toHaveClass('design-component--alignment--top')
+  await expect(items[0]).toHaveClass('design-component--alignment--center')
+  await expect(items[1]).toHaveClass('design-component--alignment--top')
+  await expect(items[2]).toHaveClass('design-component--alignment--topFull')
+  await expect(items[3]).toHaveClass('design-component--alignment--leftFull')
+  await expect(items[4]).toHaveClass('design-component--alignment--rightFull')
+  await expect(items[5]).toHaveClass('design-component--alignment--bottomFull')
 })
       `
     },
@@ -644,16 +669,12 @@ await waitFor(async () => {
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">width: sm</div>
-            <DesignComponent width="sm" embedded open :autoTabIndex="false" :inert="false"/>
+            <div class="wiki-storybook-item__label">width: auto, height: auto</div>
+            <DesignComponent width="auto" height="auto" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">width: md</div>
-            <DesignComponent width="md" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">width: lg</div>
-            <DesignComponent width="lg" embedded open :autoTabIndex="false" :inert="false"/>
+            <div class="wiki-storybook-item__label">width: max, height: max</div>
+            <DesignComponent width="max" height="max" embedded open :autoTabIndex="false" :inert="false"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">custom width and height</div>
@@ -664,13 +685,14 @@ await waitFor(async () => {
       play: `
 await waitFor(async () => {
   const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-  await expect(items.length).toBe(4)
+  await expect(items.length).toBe(3)
 
-  await expect(items[0]).toHaveClass('design-component--width--sm')
-  await expect(items[1]).toHaveClass('design-component--width--md')
-  await expect(items[2]).toHaveClass('design-component--width--lg')
-  await expect(items[3]).toHaveClass('design-component--width--custom')
-  await expect(items[3]).toHaveClass('design-component--height--custom')
+  await expect(items[0]).toHaveClass('design-component--width--auto')
+  await expect(items[0]).toHaveClass('design-component--height--auto')
+  await expect(items[1]).toHaveClass('design-component--width--max')
+  await expect(items[1]).toHaveClass('design-component--height--max')
+  await expect(items[2]).toHaveClass('design-component--width--custom')
+  await expect(items[2]).toHaveClass('design-component--height--custom')
 })
       `
     },
@@ -683,6 +705,10 @@ await waitFor(async () => {
       propsName: ['origin'],
       template: `
         <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">origin: center</div>
+            <DesignComponent origin="center" embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">origin: topToBottom</div>
             <DesignComponent origin="topToBottom" embedded open :autoTabIndex="false" :inert="false"/>
@@ -704,36 +730,52 @@ await waitFor(async () => {
       play: `
 await waitFor(async () => {
   const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-  await expect(items.length).toBe(4)
+  await expect(items.length).toBe(5)
 
-  await expect(items[0]).toHaveClass('design-component--origin--topToBottom')
-  await expect(items[1]).toHaveClass('design-component--origin--bottomToTop')
-  await expect(items[2]).toHaveClass('design-component--origin--leftToRight')
-  await expect(items[3]).toHaveClass('design-component--origin--rightToLeft')
+  await expect(items[0]).toHaveClass('design-component--origin--center')
+  await expect(items[1]).toHaveClass('design-component--origin--topToBottom')
+  await expect(items[2]).toHaveClass('design-component--origin--bottomToTop')
+  await expect(items[3]).toHaveClass('design-component--origin--leftToRight')
+  await expect(items[4]).toHaveClass('design-component--origin--rightToLeft')
 })
       `
     },
     {
       id: 'WindowTestStates',
       name: {
-        en: 'Test: Disabled, hide, widthMatch, inDom and embedded states',
-        ru: 'Тест: Состояния disabled, hide, widthMatch, inDom и embedded'
+        en: 'Test: Disabled, hide, widthMatch, inDom, embedded, contextmenu and staticMode states',
+        ru: 'Тест: Состояния disabled, hide, widthMatch, inDom, embedded, contextmenu и staticMode'
       },
-      propsName: ['disabled', 'hide', 'widthMatch', 'inDom', 'embedded', 'contextmenu'],
+      propsName: ['disabled', 'hide', 'widthMatch', 'inDom', 'embedded', 'contextmenu', 'staticMode'],
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">disabled: true</div>
             <DesignComponent disabled>
               <template #control="{binds}">
-                <button class="wiki-storybook-button" v-bind="binds">Disabled Window</button>
+                <button class="wiki-storybook-button wiki-storybook-button--disabled" v-bind="binds">Disabled Window</button>
               </template>
               <div class="wiki-storybook-item--padding">Should stay closed</div>
             </DesignComponent>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">staticMode + disabled</div>
+            <DesignComponent staticMode disabled>
+              <template #control="{binds}">
+                <button class="wiki-storybook-button wiki-storybook-button--static-disabled" v-bind="binds">Static disabled</button>
+              </template>
+              <div class="wiki-storybook-item--padding">Static disabled</div>
+            </DesignComponent>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">hide: true</div>
             <DesignComponent hide embedded open :autoTabIndex="false" :inert="false"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">staticMode + hide</div>
+            <DesignComponent staticMode hide embedded open :autoTabIndex="false" :inert="false">
+              <div class="wiki-storybook-item--padding">Static hide</div>
+            </DesignComponent>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">widthMatch: true</div>
@@ -743,16 +785,32 @@ await waitFor(async () => {
             <div class="wiki-storybook-item__label">embedded + inDom</div>
             <DesignComponent embedded inDom open :autoTabIndex="false" :inert="false"/>
           </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">contextmenu: true</div>
+            <DesignComponent contextmenu>
+              <template #control="{binds}">
+                <button class="wiki-storybook-button wiki-storybook-button--context" v-bind="binds">Context Area</button>
+              </template>
+              <div class="wiki-storybook-item--padding">Context content</div>
+            </DesignComponent>
+          </div>
         </div>
       `,
       play: `
-const disabledTrigger = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button')
+const disabledTrigger = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--disabled')
+const staticDisabledTrigger = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--static-disabled')
+const contextTrigger = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--context')
+
 await expect(disabledTrigger).toBeInTheDocument()
+await expect(staticDisabledTrigger).toBeInTheDocument()
+await expect(contextTrigger).toBeInTheDocument()
+
 await userEvent.click(disabledTrigger!)
+await userEvent.click(staticDisabledTrigger!)
 
 await waitFor(async () => {
   await expect(document.querySelector('.design-component[data-status="open"]')).toBeNull()
-  await expect(canvasElement.querySelector('.design-component--hide')).toBeInTheDocument()
+  await expect(canvasElement.querySelectorAll('.design-component--hide').length).toBe(2)
   await expect(canvasElement.querySelector('.design-component--widthMatch')).toBeInTheDocument()
   await expect(canvasElement.querySelector('.design-component--embedded')).toBeInTheDocument()
 })
@@ -783,15 +841,15 @@ await waitFor(async () => {
     {
       id: 'WindowTestAnatomy',
       name: {
-        en: 'Test: Dense spacing, dividers and close button',
-        ru: 'Тест: Компактный отступ, разделители и кнопка закрытия'
+        en: 'Test: Dense spacing, dividers and overscroll behavior',
+        ru: 'Тест: Компактный отступ, разделители и overscroll'
       },
-      propsName: ['dense', 'divider', 'closeButton', 'overscroll'],
+      propsName: ['dense', 'divider', 'overscroll'],
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">dense + divider + closeButton</div>
-            <DesignComponent dense divider closeButton embedded open :autoTabIndex="false" :inert="false"/>
+            <div class="wiki-storybook-item__label">dense + divider</div>
+            <DesignComponent dense divider embedded open :autoTabIndex="false" :inert="false"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">overscroll: true</div>
@@ -805,7 +863,6 @@ await waitFor(async () => {
   await expect(items.length).toBe(2)
 
   await expect(items[0]).toHaveClass('design-component--dense')
-  await expect(items[0]).toHaveClass('design-component--closeButton')
   await expect(items[1]).toHaveClass('design-component--overscroll')
 })
       `
@@ -836,140 +893,6 @@ await waitFor(async () => {
 
   await expect(items[0]).toHaveClass('design-component--imagePosition--top')
   await expect(items[1]).toHaveClass('design-component--imagePosition--left')
-})
-      `
-    },
-    {
-      id: 'WindowTestExtendedLayouts',
-      name: {
-        en: 'Test: Extended adaptive modes, alignments, origins and auto/max sizes',
-        ru: 'Тест: Расширенные режимы адаптации, выравнивания и размеры auto/max'
-      },
-      propsName: ['adaptive', 'alignment', 'origin', 'width', 'height'],
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">adaptive: modal</div>
-            <DesignComponent adaptive="modal" width="auto" height="auto" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">adaptive: modalDynamic</div>
-            <DesignComponent adaptive="modalDynamic" alignment="center" origin="center" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">adaptive: menuWindow</div>
-            <DesignComponent adaptive="menuWindow" alignment="topFull" width="max" height="max" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-        </div>
-      `,
-      play: `
-await waitFor(async () => {
-  const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-  await expect(items.length).toBe(3)
-
-  await expect(items[0]).toHaveClass('design-component--adaptive--modal')
-  await expect(items[0]).toHaveClass('design-component--width--auto')
-  await expect(items[0]).toHaveClass('design-component--height--auto')
-  await expect(items[1]).toHaveClass('design-component--adaptive--modalDynamic')
-  await expect(items[1]).toHaveClass('design-component--alignment--center')
-  await expect(items[1]).toHaveClass('design-component--origin--center')
-  await expect(items[2]).toHaveClass('design-component--adaptive--menuWindow')
-  await expect(items[2]).toHaveClass('design-component--alignment--topFull')
-  await expect(items[2]).toHaveClass('design-component--width--max')
-  await expect(items[2]).toHaveClass('design-component--height--max')
-})
-      `
-    },
-    {
-      id: 'WindowTestStaticCombos',
-      name: {
-        en: 'Test: Static mode with disabled, hide and contextmenu combinations',
-        ru: 'Тест: Комбинации статического режима с disabled, hide и contextmenu'
-      },
-      propsName: ['staticMode', 'disabled', 'hide', 'contextmenu'],
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">staticMode + disabled</div>
-            <DesignComponent staticMode disabled>
-              <template #control="{binds}">
-                <button class="wiki-storybook-button wiki-storybook-button--disabled" v-bind="binds">Static disabled</button>
-              </template>
-              <div class="wiki-storybook-item--padding">Static disabled</div>
-            </DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">staticMode + hide</div>
-            <DesignComponent staticMode hide embedded open :autoTabIndex="false" :inert="false">
-              <div class="wiki-storybook-item--padding">Static hide</div>
-            </DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">contextmenu: true</div>
-            <DesignComponent contextmenu>
-              <template #control="{binds}">
-                <button class="wiki-storybook-button" v-bind="binds">Context Area</button>
-              </template>
-              <div class="wiki-storybook-item--padding">Context content</div>
-            </DesignComponent>
-          </div>
-        </div>
-      `,
-      play: `
-const disabledButton = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--disabled')
-await expect(disabledButton).toBeInTheDocument()
-await userEvent.click(disabledButton!)
-
-await waitFor(async () => {
-  await expect(document.querySelector('.design-component[data-status="open"]')).toBeNull()
-  await expect(canvasElement.querySelector('.design-component--hide')).toBeInTheDocument()
-})
-
-const contextButton = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button:not(.wiki-storybook-button--disabled)')
-await expect(contextButton).toBeInTheDocument()
-      `
-    },
-    {
-      id: 'WindowTestImageSizes',
-      name: {
-        en: 'Test: Image banner sizes (sm, md, lg, quarter, half)',
-        ru: 'Тест: Размеры изображения баннера (sm, md, lg, quarter, half)'
-      },
-      propsName: ['image', 'imageSize'],
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">imageSize: sm</div>
-            <DesignComponent image="home" imageSize="sm" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">imageSize: md</div>
-            <DesignComponent image="home" imageSize="md" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">imageSize: lg</div>
-            <DesignComponent image="home" imageSize="lg" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">imageSize: quarter</div>
-            <DesignComponent image="home" imageSize="quarter" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">imageSize: half</div>
-            <DesignComponent image="home" imageSize="half" embedded open :autoTabIndex="false" :inert="false"/>
-          </div>
-        </div>
-      `,
-      play: `
-await waitFor(async () => {
-  const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-  await expect(items.length).toBe(5)
-
-  await expect(items[0]).toHaveClass('design-component--imageSize--sm')
-  await expect(items[1]).toHaveClass('design-component--imageSize--md')
-  await expect(items[2]).toHaveClass('design-component--imageSize--lg')
-  await expect(items[3]).toHaveClass('design-component--imageSize--quarter')
-  await expect(items[4]).toHaveClass('design-component--imageSize--half')
 })
       `
     },
@@ -1111,74 +1034,6 @@ await waitFor(async () => {
 await userEvent.keyboard('{Escape}')
 await waitFor(async () => {
   await expect(traceCard).toHaveTextContent('closed')
-})
-      `
-    },
-    {
-      id: 'WindowTestCascadeMenus',
-      name: {
-        en: 'Test: 3-level cascading menus and nested modal guards',
-        ru: 'Тест: 3-уровневые каскадные меню и защитные пропы при вложенности'
-      },
-      propsName: ['adaptive', 'axis', 'persistent', 'closeOnEsc', 'autoClose'],
-      template: `
-        <div class="wiki-storybook-flex">
-          <DesignComponent adaptive="menu" flash>
-            <template #control="{binds}">
-              <button class="wiki-storybook-button wiki-storybook-button--l1" v-bind="binds">L1 Menu</button>
-            </template>
-            <div class="wiki-storybook-item--padding">
-              <DesignComponent adaptive="menu" axis="x" flash>
-                <template #control="{binds: l2Binds}">
-                  <button class="wiki-storybook-button wiki-storybook-button--l2" v-bind="l2Binds">L2 Submenu</button>
-                </template>
-                <div class="wiki-storybook-item--padding">
-                  <DesignComponent adaptive="menu" axis="x" :autoClose="true" flash>
-                    <template #control="{binds: l3Binds}">
-                      <button class="wiki-storybook-button wiki-storybook-button--l3" v-bind="l3Binds">L3 Submenu</button>
-                    </template>
-                    <div class="wiki-storybook-item--padding">
-                      <button class="wiki-storybook-button wiki-storybook-button--leaf">Leaf Action</button>
-                    </div>
-                  </DesignComponent>
-                </div>
-              </DesignComponent>
-            </div>
-          </DesignComponent>
-        </div>
-      `,
-      play: `
-const l1Trigger = canvasElement.querySelector<HTMLButtonElement>('.wiki-storybook-button--l1')
-await userEvent.click(l1Trigger!)
-await waitFor(async () => {
-  await expect(document.querySelector('.wiki-storybook-button--l2')).toBeInTheDocument()
-})
-
-const l2Trigger = document.querySelector<HTMLButtonElement>('.wiki-storybook-button--l2')
-await userEvent.click(l2Trigger!)
-await waitFor(async () => {
-  await expect(document.querySelector('.wiki-storybook-button--l3')).toBeInTheDocument()
-})
-
-const l3Trigger = document.querySelector<HTMLButtonElement>('.wiki-storybook-button--l3')
-await userEvent.click(l3Trigger!)
-await waitFor(async () => {
-  await expect(document.querySelectorAll('.design-component[data-status="open"], .design-component[data-status="flash"]').length).toBe(3)
-})
-
-await userEvent.keyboard('{Escape}')
-await waitFor(async () => {
-  await expect(document.querySelectorAll('.design-component[data-status="open"], .design-component[data-status="flash"]').length).toBe(2)
-})
-
-await userEvent.keyboard('{Escape}')
-await waitFor(async () => {
-  await expect(document.querySelectorAll('.design-component[data-status="open"], .design-component[data-status="flash"]').length).toBe(1)
-})
-
-await userEvent.keyboard('{Escape}')
-await waitFor(async () => {
-  await expect(document.querySelectorAll('.design-component[data-status="open"], .design-component[data-status="flash"]').length).toBe(0)
 })
       `
     }

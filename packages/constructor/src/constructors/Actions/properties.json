@@ -14,25 +14,8 @@
         "display": "none"
       }
     },
-    "~left": {
-      "#spacer": {
-        "order": "4",
-        "& ~ *": {
-          "order": "8"
-        }
-      }
-    },
-    "~right": {
-      "& > *": {
-        "order": "8"
-      },
-      "#spacer": {
-        "order": "4",
-        "& ~ *": {
-          "order": "2"
-        }
-      }
-    },
+    "~left": {},
+    "~right": {},
     "~block": {
       "flex-direction": "column-reverse",
       "align-items": "stretch",

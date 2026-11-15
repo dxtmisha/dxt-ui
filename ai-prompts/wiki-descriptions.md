@@ -6,10 +6,17 @@ description: Generate and update bilingual component descriptions, MDX documenta
 # Component Wiki Descriptions, MDX Documentation & Test Stories (`packages/wiki`)
 
 ## Role & Context
-You are an expert Frontend Developer, Technical Writer, and QA Engineer for the `dxt-ui` design system and `@dxtmisha/constructor`.
-Your goal is to create or update complete, industrial-grade bilingual documentation (English and Russian) and Storybook stories in `packages/wiki` so that `wikiDescriptions[Component].ts` serves simultaneously as:
-1. **Clean, high-signal interactive documentation** for MDX (`D1[Component].mdx`, `M2[Component].mdx`, etc.).
-2. **An exhaustive automated Storybook test suite** (`D1[Component].stories.ts`) covering 100% of component props, events, slots, exposed methods/properties, input data types, and interacting prop combinations.
+You are an expert Frontend Developer, Technical Writer, and QA Engineer for `@dxtmisha/constructor` and `packages/wiki`.
+Your goal is to create or update complete, industrial-grade bilingual documentation (English and Russian) and Storybook stories in `packages/wiki` **strictly for `@dxtmisha/constructor` components** so that `wikiDescriptions[Component].ts` serves simultaneously as:
+1. **Clean, high-signal interactive documentation** compiled into downstream MDX pages (`D1[Component].mdx`, `M2[Component].mdx`, etc.).
+2. **An exhaustive automated Storybook test suite** compiled into downstream story files (`D1[Component].stories.ts`, etc.) covering 100% of **constructor-level** component props, events, slots, exposed methods/properties, input data types, and interacting prop combinations.
+
+> **STRICT SCOPE RULE (CONSTRUCTOR ONLY — NO UNCONDITIONAL `d1` SPECIFICS IN `descriptions` AND `mdx`):**
+> Files in `packages/wiki/src/media/descriptions` and `packages/wiki/src/media/mdx` document and test **ONLY `@dxtmisha/constructor`** (`packages/constructor`).
+> `d1` (as well as `m2` or any other concrete design system) is a **private/derived design-system implementation**, NOT the constructor.
+> - **NEVER** hardcode anything specific to `d1` in unconditional documentation, stories, or `play` tests: no `D1*` component names, `d1-*`/`m3-*` CSS classes, `--d1-*` CSS variables, unguarded `d1`-only props (`padding`, `palette`, `primary`, `outline`, etc.), or `d1`-only option overrides on existing constructor props (such as `width="sm|md|lg"` on `Window`/`Modal`, `flexible="adaptiveMd"` on `Actions`, `adaptive="planeSm"` on `MotionTransform`, `container="iconSm"` on `Button`, or `adaptive="fullSm"` on `Chip`).
+> - **ALLOWED WHEN CONDITIONALLY GUARDED (`propsName` / `<template prop="...">`) — VISUAL DOCS ONLY**: Optional variant/feature visual stories and documentation sections guarded by `propsName: 'propName'` (or `propsName: ['propName', ...]`), `<template prop="propName">...</template>` in `documentation`, and dedicated standalone MDX files (`[propName].en|ru.mdx` linked inside `<template prop="propName">`) **are allowed and valid**, because `DesignComponent.ts` / the generator automatically strips them for any design system that does not define that prop.
+> - **NO TESTS FOR NON-CONSTRUCTOR / `d1` PROPERTIES**: For such design-system-specific / conditional properties, it is **STRICTLY FORBIDDEN** to write **Tier 2 test stories** (`[Component]Test...`), even with `propsName`, AND **STRICTLY FORBIDDEN** to add `play` test functions to their **Tier 1 visual stories**. `play` tests and `[Component]Test...` stories are permitted **ONLY** for constructor-level properties and behavior. This prohibition applies **only** to `packages/wiki/src/media/descriptions` and `packages/wiki/src/media/mdx`.
 
 **Reference Standard (Gold Standard):**
 Always treat `packages/wiki/src/media/descriptions/wikiDescriptionsImage.ts` as the canonical reference implementation.
@@ -39,20 +46,21 @@ packages/wiki/src/media/
 
 ## Step 1: Deep Component & Architecture Analysis
 
-Before writing or modifying files in `packages/wiki`, you **MUST** inspect the component's source files in `packages/constructor/src/constructors/[Component]/`:
+Before writing or modifying files in `packages/wiki/src/media/descriptions` or `packages/wiki/src/media/mdx`, you **MUST** inspect **ONLY** the component's source files in `packages/constructor/src/constructors/[Component]/` (**NEVER** use `packages/d1/src/components/Ui/[Component]/` — e.g. its `props.ts`, `properties.json`, `wikiData.ts`, or `styleToken.scss` — as a source of features, props, or options to document or test):
 
 1. **`props.ts`**:
-   - List every single prop, its TypeScript type, default value, tokens, and included features (`EnabledProps`, `FieldLabelPropsInclude`, `FieldMessagePropsInclude`, `SkeletonPropsInclude`, etc.).
+   - List every single prop defined in the constructor (`[Component]PropsBasic`, `[Component]PropsToken`, `[Component]Props`, and included constructor prop types such as `EnabledProps`, `FieldLabelPropsInclude`, `FieldMessagePropsInclude`, `SkeletonPropsInclude`, etc.), its TypeScript type, default value, and constructor-level tokens.
+   - Ignore any additional props or overridden token options that exist only in downstream design systems like `d1` (for example, `d1`-added `padding`, `palette`, `size` scales, or `d1`-specific `flexible` breakpoints).
    - Identify **coupled / interacting props** (e.g., `disabled + selected`, `turn + disabled`, `turn + hide`, `disabled + hide`, `static + tagImg`, `adaptive + objectWidth + objectHeight`, `coordinator` vs `x`/`y`, `loading + disabled`, `readonly + disabled`).
 2. **`types.ts` & `basicTypes.ts`**:
    - Extract all `Emits` (`[Component]Emits`: `onClick`, `load`, `add`, `update:modelValue`, etc.) and their payload types (e.g., `ImageEventData`). Identify which events are standard global events vs. component-specific events.
    - Extract all `Slots` (`[Component]Slots`: `default`, `label`, `description`, `prefix`, `suffix`, etc.) and slot scope props.
    - Extract all `Expose` properties and methods (`[Component]Expose`: `value`, `getType()`, `getData()`, `open()`, `clear()`, `focus()`, `setValue()`).
 3. **`[Component]Design.tsx` & `[Component].ts` (plus helper/sub-classes)**:
-   - Understand how the component renders DOM elements, tags, CSS modifier classes (`--turn`, `--disabled`, `--hide`, `--type--*`, `--adaptive`, etc.), inline styles (`--d1-image-sys-*`, `background-image`), and accessibility attributes (`role`, `aria-label`, `aria-hidden`, `aria-disabled`, `tabindex`).
+   - Understand how the constructor renders DOM elements, tags, CSS modifier classes (`--turn`, `--disabled`, `--hide`, `--type--*`, `--adaptive`, etc.), inline styles (`--[design]-[component]-sys-*` / `--design-component-sys-*` in `wiki`, `background-image`), and accessibility attributes (`role`, `aria-label`, `aria-hidden`, `aria-disabled`, `tabindex`).
    - Identify priority/override rules (for example, `coordinator` overriding `x` and `y`, or `picture` requiring `tagImg` to render `<picture>`).
 4. **Prop Presets (`packages/wiki/src/media/props/wiki[Prop].ts`)**:
-   - Check how props are categorized (`status`, `content`, `display`, `style`, `performance`, `accessibility`, `actions`, etc.) or whether `isTest: true` / `hide: true` is configured.
+   - Check how constructor props are categorized (`status`, `content`, `display`, `style`, `performance`, `accessibility`, `actions`, etc.) or whether `isTest: true` / `hide: true` is configured.
 
 ---
 
@@ -61,6 +69,7 @@ Before writing or modifying files in `packages/wiki`, you **MUST** inspect the c
 Create `packages/wiki/src/media/mdx/[Component]/[component].en.mdx` and `[component].ru.mdx`:
 
 ### Critical Rules for Main MDX Files:
+- **Constructor-Only Scope**: Describe strictly `@dxtmisha/constructor` capabilities, props, slots, events, and markup (e.g., `<InputFileDropzone ... />`). **NEVER** mention `d1`, `<D1...>`, or `d1`-specific props, tokens, variants, or styling.
 - **NO Headers at the top**: The file must start directly with the descriptive paragraph. **STRICTLY FORBIDDEN** to include `## Description`, `## Описание`, or `# [Component]`.
 - Always import Storybook Source block: `import { Source } from '@storybook/addon-docs/blocks';`.
 - Follow the standard sections:
@@ -157,12 +166,12 @@ export const wikiMdxInputFileDropzone: StorybookComponentsMdxItem = {
 
 `dxt-ui` (`DesignComponent.ts`) compiles `wikiDescriptions[Component].ts` into design-system-specific `*.stories.ts` and `*.mdx` files (`D1[Component]`, `M2[Component]`, etc.). You **MUST** follow these technical rules so code generation never breaks:
 
-1. **Generic Placeholders & No D1 References**:
-   - Component tag in templates: `<DesignComponent ... />` (automatically replaced with `<D1Image ... />`, `<D1Button ... />`, etc.).
-   - Child components in `components: ['Skeleton']`: `<DesignSkeleton ... />` (automatically replaced with `<D1Skeleton ... />`).
-   - Base CSS class in `play` functions and styles: `.design-component` (automatically replaced with `.d1-image`, `.d1-button`, etc.).
-   - CSS custom properties in `play` functions: `--design-component-...` (automatically replaced with `--d1-image-...`, etc.).
-   - **NEVER** hardcode `D1`, `M2`, `d1-`, `m2-`, or design-system-specific size modifiers (`sm`, `md`, `lg`) inside `wikiDescriptions[Component].ts`. Document strictly constructor-level baseline capabilities.
+1. **Generic Placeholders & Strict Constructor-Only Scope (No `d1` / Design-System Specifics)**:
+   - Component tag in templates: `<DesignComponent ... />` (automatically replaced with `<D1Image ... />`, `<D1Button ... />`, etc. at build time).
+   - Child components in `components: ['Skeleton']`: `<DesignSkeleton ... />` (automatically replaced with `<D1Skeleton ... />` at build time).
+   - Base CSS class in `play` functions and styles: `.design-component` (automatically replaced with `.d1-image`, `.d1-button`, etc. at build time).
+   - CSS custom properties in `play` functions: `--design-component-...` (automatically replaced with `--d1-image-...`, etc. at build time).
+   - **STRICT PROHIBITION (`d1` is a specific/private design system)**: **NEVER** hardcode `D1`, `M2`, `d1-`, `m2-`, `--d1-*`, or unguarded design-system-specific props, token values, size/palette modifiers (e.g., `sm`, `md`, `lg`, `primary`, `padding`, `d1`-only option lists), CSS classes, or behaviors inside `packages/wiki/src/media/descriptions` or `packages/wiki/src/media/mdx`. Optional design-system-specific props are allowed **only** as conditionally guarded Tier 1 visual stories (`propsName`), `<template prop="propName">...</template>` doc blocks, and standalone `[propName].en|ru.mdx` files — **without `play` tests and without Tier 2 test stories**. All `play` tests and `[Component]Test...` stories must test **strictly** constructor-level functionality from `packages/constructor/src/constructors/[Component]/`.
 2. **STRICT PROHIBITION: No Backticks Inside `render` or `story.template`**:
    - `DesignComponent.ts` injects `story.template` directly inside a template literal:
      ```ts
@@ -213,10 +222,10 @@ Every `wikiDescriptions[Component].ts` file divides its `stories` array into two
   }
   ```
 - **MDX Inclusion**: Every Documentation Story is referenced in `documentation.body`, `documentation.events`, `documentation.slots`, or `documentation.expose` via `<Canvas of={Component.[StoryId]}/>`.
-- **Play Function**: Every Documentation Story **MUST** also include a `play` function verifying that its rendered DOM and interactive controls work properly.
+- **Play Function**: Every constructor-level Documentation Story **MUST** include a `play` function verifying that its rendered DOM and interactive controls work properly. **Exception**: Tier 1 visual stories guarded for non-constructor / design-system-specific props (`propsName`) **MUST NOT** include a `play` function.
 
-### Tier 2: Test Stories (`[Component]Test...`) (Automated QA Only)
-- **Purpose**: Exhaustive verification of all remaining props, data formats, edge cases, fallback behaviors, and coupled prop combinations that would clutter the user-facing documentation.
+### Tier 2: Test Stories (`[Component]Test...`) (Automated QA Only — Constructor Props Only)
+- **Purpose**: Exhaustive verification of all remaining constructor props, data formats, edge cases, fallback behaviors, and coupled prop combinations that would clutter the user-facing documentation. **STRICTLY FORBIDDEN** for non-constructor / `d1`-specific props (even if guarded by `propsName`).
 - **Mandatory Prefix in `id`**: Must start with `'[Component]Test'` (e.g., `'ImageTestIcons'`, `'ImageTestFlags'`, `'ImageTestDisplayModes'`, `'ImageTestPositions'`, `'ImageTestSources'`, `'ImageTestBinaryAndFile'`, `'ImageTestPerformance'`, `'ImageTestStates'`).
 - **Mandatory Prefix in `name`**: Must start with `'Test: '` (EN) and `'Тест: '` (RU):
   ```ts
@@ -234,7 +243,8 @@ Every `wikiDescriptions[Component].ts` file divides its `stories` array into two
 
 ## Step 6: Mandatory 100% Prop & Combinatorial Coverage
 
-Your stories (Tier 1 + Tier 2 combined) must test **every single prop** defined in `props.ts`, as well as **coupled prop combinations**:
+Your stories (Tier 1 + Tier 2 combined) must test **every single prop** defined in **`packages/constructor/src/constructors/[Component]/props.ts`**, as well as **coupled prop combinations** implemented in the constructor.
+**NEVER** add Tier 2 test stories or `play` tests for props, token values, or behaviors that belong only to `d1` (or another specific design system) and are absent from `packages/constructor/src/constructors/[Component]/`. Design-system-specific props may only appear in guarded Tier 1 visual documentation (`propsName` / `<template prop="...">`) **without** `play` tests.
 
 ### 1. Individual Prop & Value Type Coverage
 - Test every value variant of polymorphic props. For example, in `Image`:
@@ -309,24 +319,24 @@ Keep story templates clean and structured using `.wiki-storybook-*` classes:
 - **Events Linking**:
   - Local component-specific events: `<StorybookDescriptions componentName={'[Component]'} type={'event.<eventName>'}/>`
   - Global events: `<StorybookDescriptions componentName={'Event'} type={'input'}/>`
-- **Conditional Prop Blocks**: Wrap sections that depend on a specific prop in `<template prop="propName">...</template>` so `DesignComponent.ts` automatically strips them if a design system omits that prop.
+- **Conditional Prop Blocks (Visual Docs Only — No Tests)**: Wrap documentation sections that depend on an optional/design-system-specific prop in `<template prop="propName">...</template>`, guard the matching **Tier 1 visual story** with `propsName: 'propName'` (or `propsName: ['propName', ...]`), and put dedicated prop MDX only in separate `[propName].en|ru.mdx` files (not in the main `[component].en|ru.mdx`), so `DesignComponent.ts` automatically strips them if a design system omits that prop. Do **NOT** add `play` functions to those visual stories, and do **NOT** create Tier 2 `[Component]Test...` stories for design-system-specific / non-constructor props.
 - **AI Section (`ai`)**: Provide a concise summary `description` and `render` template; set `hide: true` for auxiliary/composite controls when an isolated AI preview demo is not required.
 
 ---
 
 ## Step 9: Writing Comprehensive `play` Functions
 
-Every story (`render` and every item in `stories[]`) **MUST** have a `play` function:
+Every constructor-level story (`render` and every constructor item in `stories[]`) **MUST** have a `play` function (**exception**: Tier 1 visual stories guarded for non-constructor / design-system-specific props MUST NOT have a `play` function):
 
 1. **Wait for Async Rendering**:
    - When testing components that resolve icons, FileReader blobs, or async images (`Image`, `Icon`, etc.), wrap assertions in `await waitFor(() => { ... })`.
 2. **Test Both Interactive Flows (`step` + `userEvent`) and DOM State**:
    - If a story has interactive buttons or inputs, use `const canvas = within(canvasElement)` and `await step('Description', async () => { await userEvent.click(...) })` to test every interactive button and state transition.
-3. **Assert Exact Classes, Styles, Tags, and Attributes**:
-   - Verify modifier classes (`.design-component--turn`, `.design-component--disabled`, `.design-component--hide`, `.design-component--type--*`, `.design-component--adaptive`).
+3. **Assert Exact Constructor Classes, Styles, Tags, and Attributes**:
+   - Verify constructor-level modifier classes (`.design-component--turn`, `.design-component--disabled`, `.design-component--hide`, `.design-component--type--*`, `.design-component--adaptive`) — **never** assert `.d1-*` classes or `d1`-only styling/tokens.
    - Verify rendered tag names (`IMG`, `PICTURE`, `SOURCE`, `OBJECT`, `SVG`, `SPAN`, `DIV`).
    - Verify HTML & ARIA attributes (`src`, `srcset`, `alt`, `loading`, `decoding`, `fetchpriority`, `aria-label`, `aria-hidden`, `role`).
-   - Verify CSS variables and inline styles (`style.getPropertyValue('--design-component-sys-x')`, `style.backgroundImage`, `style.backgroundColor`).
+   - Verify constructor CSS variables and inline styles (`style.getPropertyValue('--design-component-sys-x')`, `style.backgroundImage`, `style.backgroundColor`) — **never** reference `--d1-*` variables directly.
 
 ---
 
@@ -399,6 +409,7 @@ await expect(items.length).toBe(1)
 
     // =========================================================================
     // TIER 2: TEST STORIES (Prefixed with ComponentTest... and "Test: " / "Тест: ")
+    // ONLY for constructor-level props/behavior! NEVER write Tier 2 tests for d1-only props.
     // NEVER add Tier 2 stories to the documentation section below!
     // =========================================================================
     {
@@ -483,9 +494,11 @@ Explanation of the feature for developers.
 
 ---
 
-## Step 11: Post-Change Verification & D1 Synchronization
+## Step 11: Post-Change Verification (Compiled Target Check)
 
-1. **Regenerate Design System Component & Stories**: Run the generator from the target design-system package and pass the component name with `--name`. For example, for D1 Progress:
+> **Note:** `packages/d1` is used here **strictly as a compilation and test-execution target** for Storybook. Do **NOT** copy any `d1`-specific props, tokens, variants, defaults, or styles into `packages/wiki/src/media/descriptions` or `packages/wiki/src/media/mdx`.
+
+1. **Regenerate Downstream Component & Stories**: Run the generator from the target design-system package and pass the component name with `--name`. For example, for Progress:
    ```bash
    cd packages/d1
    npx dxt-ui --name progress

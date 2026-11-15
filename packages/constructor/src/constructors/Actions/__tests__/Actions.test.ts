@@ -1,304 +1,285 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { createApp, defineComponent, effectScope, h, nextTick, reactive, ref } from 'vue'
-import { DesignName } from '@dxtmisha/functional'
+import {
+  computed,
+  createApp,
+  defineComponent,
+  h,
+  nextTick,
+  type PropType,
+  reactive,
+  ref
+} from 'vue'
+import type { ConstrClasses, ConstrStyles } from '@dxtmisha/functional'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    provide: vi.fn()
-  }
-})
-
-import { Actions, type ActionsConstructors } from '../Actions'
-import { AreaInclude } from '../../../classes/AreaInclude'
-import { EventClickInclude } from '../../../classes/EventClickInclude'
-import { TextInclude } from '../../../classes/TextInclude'
-import type { ActionsPropsBasic, ActionsSlots } from '../index'
+import { ActionsDesign } from '../ActionsDesign'
+import { getAreaValue } from '../../../functions/getAreaValue'
+import { setAreaValue } from '../../../functions/setAreaValue'
+import type { ActionsProps } from '../props'
+import type {
+  ActionsClasses,
+  ActionsComponents,
+  ActionsExpose,
+  ActionsSlots
+} from '../types'
 
 /** Active DOM and app cleanup callbacks / Колбэки очистки DOM и приложений */
 const cleanups: Array<() => void> = []
 
 afterEach(() => {
   cleanups.splice(0).reverse().forEach(cleanup => cleanup())
+  vi.restoreAllMocks()
+})
+
+/** Mock Button component faithfully forwarding merged attrs and click handlers / Мок-компонент кнопки */
+const ButtonMock = defineComponent({
+  name: 'ButtonMock',
+  inheritAttrs: false,
+  props: {
+    class: [String, Array, Object],
+    disabled: Boolean,
+    label: [String, Number],
+    onClick: [Function, Array] as PropType<((event: MouseEvent) => void) | Array<(event: MouseEvent) => void>>,
+    palette: String,
+    size: String,
+    style: [String, Object, Array],
+    value: [String, Number]
+  },
+  setup(props, { attrs }) {
+    const handleClick = (event: MouseEvent) => {
+      if (Array.isArray(props.onClick)) {
+        props.onClick.forEach(fn => fn?.(event))
+      } else {
+        props.onClick?.(event)
+      }
+    }
+
+    return () => h(
+      'button',
+      {
+        ...attrs,
+        'class': props.class,
+        'data-palette': props.palette,
+        'data-size': props.size,
+        'data-value': props.value,
+        'disabled': props.disabled ? true : undefined,
+        'onClick': handleClick,
+        'style': props.style
+      },
+      props.label
+    )
+  }
 })
 
 /**
- * Inspectable subclass of Actions exposing internal instances for testing.
+ * Mounts full ActionsDesign component into jsdom with reactive props and optional slots/attrs.
  *
- * Проверяемый подкласс Actions, предоставляющий доступ к внутренним экземплярам.
+ * Монтирует полный компонент ActionsDesign в jsdom с реактивными свойствами и опциональными слотами.
  */
-class InspectableActions extends Actions {
-  /**
-   * Returns internal instances map for lazy-evaluation verification.
-   *
-   * Возвращает внутреннюю карту экземпляров для проверки ленивой инициализации.
-   * @returns instantiated constructors map / карта созданных экземпляров конструкторов
-   */
-  get instantiatedItems(): Partial<Record<keyof ActionsConstructors, unknown>> {
-    return this.instances
-  }
-}
+function mountActionsComponent(options: {
+  attrs?: Record<string, unknown>
+  initialProps?: ActionsProps
+  onClick?: (...args: any[]) => void
+  onClickLite?: (...args: any[]) => void
+  outerArea?: string
+  slots?: ActionsSlots
+} = {}) {
+  const host = document.createElement('div')
+  document.body.appendChild(host)
+  cleanups.push(() => host.remove())
 
-describe('Actions (Logic Orchestrator)', () => {
-  const naming = new DesignName('d1.actions')
+  const props = reactive<ActionsProps>({ ...options.initialProps })
+  const onClick = options.onClick ?? vi.fn()
+  const onClickLite = options.onClickLite ?? vi.fn()
 
-  describe('Standard functional requirements (Happy path)', () => {
-    it('should initialize and evaluate list states to false when empty', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ActionsPropsBasic = reactive({})
+  const ActionsComponent = defineComponent({
+    inheritAttrs: false,
+    setup() {
+      const classesToken = computed<ConstrClasses>(() => ({
+        main: {
+          'd1-actions': true,
+          [`d1-actions--align--${props.align ?? 'right'}`]: true
+        }
+      }))
+      const stylesToken = computed<ConstrStyles>(() => ({
+        '--actions-gap': '8px'
+      }))
 
-      scope.run(() => {
-        const actions = new Actions(props, element, naming)
+      const design = new ActionsDesign<
+        ActionsComponents,
+        ActionsExpose,
+        ActionsClasses,
+        ActionsProps
+      >(
+        'd1.actions',
+        props,
+        {
+          classes: classesToken,
+          components: { button: ButtonMock },
+          emits: (type: string, ...args: any[]) => {
+            if (type === 'click') onClick(...args)
+            if (type === 'clickLite') onClickLite(...args)
+          },
+          styles: stylesToken
+        }
+      )
 
-        expect(actions.isList()).toBe(false)
-        expect(actions.isSecondary()).toBe(false)
-      })
-
-      scope.stop()
-    })
-
-    it('should evaluate isList() properly based on list prop and default slot', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-
-      scope.run(() => {
-        const actionsEmpty = new Actions(reactive({}), element, naming)
-        expect(actionsEmpty.isList()).toBe(false)
-
-        const actionsWithList = new Actions(
-          reactive({ list: [{ label: 'Action 1' }] }),
-          element,
-          naming
-        )
-        expect(actionsWithList.isList()).toBe(true)
-
-        const slotsWithDefault: ActionsSlots = { default: () => 'custom' }
-        const actionsWithSlot = new Actions(
-          reactive({}),
-          element,
-          naming,
-          undefined,
-          slotsWithDefault
-        )
-        expect(actionsWithSlot.isList()).toBe(true)
-
-        const actionsWithBoth = new Actions(
-          reactive({ list: [{ label: 'Action 1' }] }),
-          element,
-          naming,
-          undefined,
-          slotsWithDefault
-        )
-        expect(actionsWithBoth.isList()).toBe(true)
-      })
-
-      scope.stop()
-    })
-
-    it('should evaluate isSecondary() properly based on listSecondary prop and secondary slot', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-
-      scope.run(() => {
-        const actionsEmpty = new Actions(reactive({}), element, naming)
-        expect(actionsEmpty.isSecondary()).toBe(false)
-
-        const actionsWithSecondary = new Actions(
-          reactive({ listSecondary: [{ label: 'Secondary 1' }] }),
-          element,
-          naming
-        )
-        expect(actionsWithSecondary.isSecondary()).toBe(true)
-
-        const slotsWithSecondary: ActionsSlots = { secondary: () => 'secondary-slot' }
-        const actionsWithSlot = new Actions(
-          reactive({}),
-          element,
-          naming,
-          undefined,
-          slotsWithSecondary
-        )
-        expect(actionsWithSlot.isSecondary()).toBe(true)
-
-        const actionsWithBoth = new Actions(
-          reactive({ listSecondary: [{ label: 'Secondary 1' }] }),
-          element,
-          naming,
-          undefined,
-          slotsWithSecondary
-        )
-        expect(actionsWithBoth.isSecondary()).toBe(true)
-      })
-
-      scope.stop()
-    })
-
-    it('should evaluate isLeft() properly based on align prop', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-
-      scope.run(() => {
-        expect(new Actions(reactive({ align: 'left' }), element, naming).isLeft()).toBe(true)
-        expect(new Actions(reactive({ align: 'none' }), element, naming).isLeft()).toBe(true)
-        expect(new Actions(reactive({ align: 'right' }), element, naming).isLeft()).toBe(false)
-        expect(new Actions(reactive({ align: 'center' }), element, naming).isLeft()).toBe(false)
-        expect(new Actions(reactive({ align: 'block' }), element, naming).isLeft()).toBe(false)
-        expect(new Actions(reactive({ align: 'auto' }), element, naming).isLeft()).toBe(false)
-        expect(new Actions(reactive({}), element, naming).isLeft()).toBe(false)
-      })
-
-      scope.stop()
-    })
-
-    it('should compute aria getter with default actions label and role', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-
-      scope.run(() => {
-        const defaultActions = new Actions(reactive({}), element, naming)
-        expect(defaultActions.aria).toEqual({
-          'aria-label': 'Actions'
-        })
-
-        const withCustomLabel = new Actions(
-          reactive({ ariaLabel: 'Custom Bar' }),
-          element,
-          naming
-        )
-        expect(withCustomLabel.aria).toEqual({
-          'aria-label': 'Custom Bar'
-        })
-
-        const withCustomText = new Actions(
-          reactive({ textActions: 'Custom Actions Text' }),
-          element,
-          naming
-        )
-        expect(withCustomText.aria).toEqual({
-          'aria-label': 'Custom Actions Text'
-        })
-
-        const withRole = new Actions(
-          reactive({ role: 'toolbar' }),
-          element,
-          naming
-        )
-        expect(withRole.aria).toEqual({
-          'aria-label': 'Actions',
-          'role': 'toolbar'
-        })
-      })
-
-      scope.stop()
-    })
-
-    it('should reactively update isList and isSecondary when reactive props change', async () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ActionsPropsBasic = reactive({})
-
-      await scope.run(async () => {
-        const actions = new Actions(props, element, naming)
-
-        expect(actions.isList()).toBe(false)
-        expect(actions.isSecondary()).toBe(false)
-
-        props.list = [{ label: 'New Item' }]
-        await nextTick()
-        expect(actions.isList()).toBe(true)
-
-        props.listSecondary = [{ label: 'New Secondary' }]
-        await nextTick()
-        expect(actions.isSecondary()).toBe(true)
-
-        props.list = undefined
-        props.listSecondary = undefined
-        await nextTick()
-        expect(actions.isList()).toBe(false)
-        expect(actions.isSecondary()).toBe(false)
-      })
-
-      scope.stop()
-    })
+      return design.render()
+    }
   })
 
-  describe('Lazy instantiation & Dependency Injection', () => {
-    it('should initialize area on instantiation', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ActionsPropsBasic = reactive({ area: 'actions' })
+  const Wrapper = defineComponent({
+    setup() {
+      if (options.outerArea !== undefined) {
+        setAreaValue(ref(options.outerArea))
+      }
 
-      scope.run(() => {
-        const actions = new InspectableActions(props, element, naming)
-        expect(actions.instantiatedItems.area).toBeInstanceOf(AreaInclude)
-        expect(actions.instantiatedItems.event).toBeUndefined()
-      })
+      return () => h(ActionsComponent, options.attrs ?? {}, options.slots as any)
+    }
+  })
 
-      scope.stop()
+  const app = createApp(Wrapper)
+  app.mount(host)
+  cleanups.push(() => app.unmount())
+
+  return { host, onClick, onClickLite, props }
+}
+
+describe('Actions (Component Integration)', () => {
+  it('should render full component with ARIA, merged attrs, primary/secondary buttons, and alignment order', async () => {
+    const { host, props } = mountActionsComponent({
+      attrs: {
+        'class': 'external-actions',
+        'data-testid': 'actions-bar',
+        'style': { marginTop: '4px' }
+      },
+      initialProps: {
+        align: 'right',
+        buttonAttrs: { palette: 'primary', size: 'md' },
+        buttonSecondaryAttrs: { palette: 'secondary', size: 'sm' },
+        list: [{ label: 'Save', value: 'save' }],
+        listSecondary: [{ label: 'Cancel', value: 'cancel' }],
+        role: 'toolbar',
+        textActions: 'Dialog Actions'
+      }
     })
 
-    it('should instantiate event on demand when i("event") is accessed', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ActionsPropsBasic = reactive({})
+    await nextTick()
 
-      scope.run(() => {
-        const actions = new InspectableActions(props, element, naming)
-        expect(actions.instantiatedItems.event).toBeUndefined()
+    const root = host.querySelector('.d1-actions') as HTMLElement
+    expect(root).not.toBeNull()
+    expect(root.classList.contains('external-actions')).toBe(true)
+    expect(root.getAttribute('data-testid')).toBe('actions-bar')
+    expect(root.getAttribute('role')).toBe('toolbar')
+    expect(root.getAttribute('aria-label')).toBe('Dialog Actions')
+    expect(root.style.marginTop).toBe('4px')
 
-        const eventInstance = actions.i('event')
-        expect(eventInstance).toBeInstanceOf(EventClickInclude)
-        expect(actions.instantiatedItems.event).toBe(eventInstance)
+    // For align: 'right', order is: secondary -> spacer -> primary
+    const childrenRight = Array.from(root.children)
+    expect(childrenRight.map(el => el.className)).toEqual([
+      'd1-actions__item d1-actions__secondary',
+      'd1-actions__spacer',
+      'd1-actions__item d1-actions__list'
+    ])
+    expect(childrenRight[0]?.textContent).toBe('Cancel')
+    expect(childrenRight[2]?.textContent).toBe('Save')
 
-        // Multiple calls return the exact same cached instance
-        expect(actions.i('event')).toBe(eventInstance)
-      })
+    // Switch alignment dynamically to 'left' -> primary -> spacer -> secondary
+    props.align = 'left'
+    await nextTick()
 
-      scope.stop()
+    const childrenLeft = Array.from(root.children)
+    expect(childrenLeft.map(el => el.className)).toEqual([
+      'd1-actions__item d1-actions__list',
+      'd1-actions__spacer',
+      'd1-actions__item d1-actions__secondary'
+    ])
+  })
+
+  it('should compose onClick handlers via mergeProps without overwriting custom callbacks', async () => {
+    const sharedButtonClick = vi.fn()
+    const itemClick = vi.fn()
+
+    const { host, onClick, onClickLite } = mountActionsComponent({
+      initialProps: {
+        buttonAttrs: {
+          onClick: sharedButtonClick
+        },
+        list: [
+          {
+            label: 'Confirm',
+            value: 'confirm',
+            onClick: itemClick
+          }
+        ]
+      }
     })
 
-    it('should allow overriding constructors via Dependency Injection', () => {
-      const host = document.createElement('div')
-      document.body.appendChild(host)
-      cleanups.push(() => host.remove())
+    await nextTick()
 
-      class CustomArea extends AreaInclude {}
-      class CustomEvent extends EventClickInclude {}
-      class CustomText extends TextInclude {}
+    const button = host.querySelector('button')
+    button?.click()
 
-      let actionsInstance: InspectableActions | undefined
+    expect(sharedButtonClick).toHaveBeenCalledTimes(1)
+    expect(itemClick).toHaveBeenCalledTimes(1)
+    expect(onClick).toHaveBeenCalledTimes(1)
+    expect(onClickLite).toHaveBeenCalledTimes(1)
+  })
 
-      const TestComponent = defineComponent({
-        setup() {
-          const element = ref<HTMLDivElement>()
-          actionsInstance = new InspectableActions(
-            reactive({ area: 'custom-area' }),
-            element,
-            naming,
-            undefined,
-            undefined,
-            undefined,
-            {
-              area: CustomArea,
-              event: CustomEvent,
-              text: CustomText
-            }
-          )
-          return () => h('div')
+  it('should propagate reactive area value through slots via AreaInclude and getAreaValue', async () => {
+    const seenArea = ref<string | undefined>()
+
+    const SlotObserver = defineComponent({
+      setup() {
+        return () => {
+          const area = getAreaValue()
+          seenArea.value = area
+          return h('span', { class: 'slot-area' }, area ?? 'none')
         }
-      })
-
-      const app = createApp(TestComponent)
-      app.mount(host)
-      cleanups.push(() => app.unmount())
-
-      expect(actionsInstance?.instantiatedItems.area).toBeInstanceOf(CustomArea)
-      expect(actionsInstance?.i('event')).toBeInstanceOf(CustomEvent)
-      expect(actionsInstance?.i('text')).toBeInstanceOf(CustomText)
+      }
     })
+
+    const { host, props } = mountActionsComponent({
+      outerArea: 'page-header',
+      slots: {
+        default: () => [h(SlotObserver)]
+      }
+    })
+
+    await nextTick()
+    expect(seenArea.value).toBe('page-header')
+    expect(host.querySelector('.slot-area')?.textContent).toBe('page-header')
+
+    props.area = 'actions-zone'
+    await nextTick()
+    expect(seenArea.value).toBe('actions-zone')
+    expect(host.querySelector('.slot-area')?.textContent).toBe('actions-zone')
+
+    props.area = undefined
+    await nextTick()
+    expect(seenArea.value).toBe('page-header')
+    expect(host.querySelector('.slot-area')?.textContent).toBe('page-header')
+  })
+
+  it('should handle empty list arrays without rendering buttons while still rendering slots when provided', async () => {
+    const { host, props } = mountActionsComponent({
+      initialProps: {
+        list: [],
+        listSecondary: []
+      },
+      slots: {
+        secondary: () => [h('span', { class: 'extra-secondary' }, 'Extra')]
+      }
+    })
+
+    await nextTick()
+    expect(host.querySelectorAll('button')).toHaveLength(0)
+    expect(host.querySelector('.extra-secondary')?.textContent).toBe('Extra')
+
+    props.list = [{ label: 'Dynamic Save' }]
+    await nextTick()
+    expect(host.querySelectorAll('button')).toHaveLength(1)
+    expect(host.querySelector('button')?.textContent).toBe('Dynamic Save')
   })
 })

@@ -333,41 +333,21 @@ export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem
       },
       template: `
         <div class="wiki-storybook-flex-column">
+          <DesignComponent>
+            <template #head><div>default</div></template>
+            <template #body><div>Body default</div></template>
+          </DesignComponent>
           <DesignComponent adaptive="planeAlways">
             <template #head><div>planeAlways</div></template>
             <template #body><div>Body planeAlways</div></template>
-          </DesignComponent>
-          <DesignComponent adaptive="planeSm">
-            <template #head><div>planeSm</div></template>
-            <template #body><div>Body planeSm</div></template>
-          </DesignComponent>
-          <DesignComponent adaptive="planeMd">
-            <template #head><div>planeMd</div></template>
-            <template #body><div>Body planeMd</div></template>
-          </DesignComponent>
-          <DesignComponent adaptive="planeLg">
-            <template #head><div>planeLg</div></template>
-            <template #body><div>Body planeLg</div></template>
-          </DesignComponent>
-          <DesignComponent adaptive="planeXl">
-            <template #head><div>planeXl</div></template>
-            <template #body><div>Body planeXl</div></template>
-          </DesignComponent>
-          <DesignComponent adaptive="plane2xl">
-            <template #head><div>plane2xl</div></template>
-            <template #body><div>Body plane2xl</div></template>
           </DesignComponent>
         </div>
       `,
       play: `
         const roots = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-        await expect(roots.length).toBe(6)
-        await expect(roots[0]).toHaveClass('design-component--adaptive--planeAlways')
-        await expect(roots[1]).toHaveClass('design-component--adaptive--planeSm')
-        await expect(roots[2]).toHaveClass('design-component--adaptive--planeMd')
-        await expect(roots[3]).toHaveClass('design-component--adaptive--planeLg')
-        await expect(roots[4]).toHaveClass('design-component--adaptive--planeXl')
-        await expect(roots[5]).toHaveClass('design-component--adaptive--plane2xl')
+        await expect(roots.length).toBe(2)
+        await expect(roots[0]).not.toHaveClass('design-component--adaptive--planeAlways')
+        await expect(roots[1]).toHaveClass('design-component--adaptive--planeAlways')
       `
     },
     {

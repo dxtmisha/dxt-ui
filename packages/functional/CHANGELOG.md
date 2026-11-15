@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0] - 2026-11-15
+
+### Added
+- **`getInjectNearest`**:
+  - Added `getInjectNearest(key, defaultValue)` utility function (`src/functions/getInjectNearest.ts`) to resolve the nearest non-nullish injected value up the Vue provide/inject ancestor prototype chain or active injection context (`hasInjectionContext()`), unwrapping `Ref`/`ComputedRef` values via `getRef` at each level, preserving falsy values (`0`, `false`, `''`, `NaN`), and falling back to `defaultValue` when no non-nullish value is found.
+  - Exported `getInjectNearest` in the package entry point (`src/library.ts`).
+  - Added unit tests in `src/functions/__tests__/getInjectNearest.test.ts` covering ancestor chain lookup, reactive `Ref`/`ComputedRef` updates, falsy value preservation, `app.runWithContext`, out-of-context fallbacks, and `InjectionKey` typing.
+
 ## [2.2.1] - 2026-11-14
 
 ### Added

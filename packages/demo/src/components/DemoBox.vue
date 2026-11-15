@@ -4,10 +4,12 @@ import { computed } from 'vue'
 const props = withDefaults(
   defineProps<{
     center?: boolean
+    container?: boolean
     size?: 'sm' | 'md' | 'lg'
   }>(),
   {
     center: false,
+    container: false,
     size: 'md'
   }
 )
@@ -15,6 +17,7 @@ const props = withDefaults(
 const classList = computed(() => ({
   'demo-box': true,
   'demo-box--center': props.center,
+  'demo-box--container': props.container,
   [`demo-box--${props.size}`]: props.size
 }))
 </script>
@@ -39,6 +42,10 @@ const classList = computed(() => ({
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  &--container {
+    container-type: inline-size;
   }
 
   &--sm {

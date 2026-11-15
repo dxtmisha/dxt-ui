@@ -116,7 +116,7 @@ await expect(openButton).toBeInTheDocument()
       },
       propsName: ['width'],
       template: `
-        <DesignComponent width="md">
+        <DesignComponent width="480px">
           <template #control="{binds}">
             <button class="wiki-storybook-button" v-bind="binds">Open Modal with All Slots</button>
           </template>
@@ -165,7 +165,7 @@ await expect(trigger).toBeInTheDocument()
           <DesignComponent
             image="https://picsum.photos/600/300?random=1"
             imagePosition="top"
-            width="md"
+            width="480px"
           >
             <template #control="{binds}">
               <button class="wiki-storybook-button" v-bind="binds">Top Image Modal</button>
@@ -185,7 +185,7 @@ await expect(trigger).toBeInTheDocument()
           <DesignComponent
             image="https://picsum.photos/300/400?random=2"
             imagePosition="left"
-            width="lg"
+            width="640px"
           >
             <template #control="{binds}">
               <button class="wiki-storybook-button" v-bind="binds">Left Image Modal</button>
@@ -269,47 +269,41 @@ await expect(canvas.getByText('toggle()')).toBeInTheDocument()
     {
       id: 'ModalTestWidths',
       name: {
-        en: 'Test: Predefined widths',
-        ru: 'Тест: Предустановленная ширина'
+        en: 'Test: Width modes (auto, max, custom)',
+        ru: 'Тест: Режимы ширины (auto, max, custom)'
       },
       propsName: ['width'],
       template: `
         <div class="wiki-storybook-flex wiki-storybook-gap">
-          <DesignComponent width="sm">
-            <template #control="{binds}">
-              <button class="wiki-storybook-button" v-bind="binds">SM</button>
-            </template>
-          </DesignComponent>
-          <DesignComponent width="md">
-            <template #control="{binds}">
-              <button class="wiki-storybook-button" v-bind="binds">MD</button>
-            </template>
-          </DesignComponent>
-          <DesignComponent width="lg">
-            <template #control="{binds}">
-              <button class="wiki-storybook-button" v-bind="binds">LG</button>
-            </template>
-          </DesignComponent>
-          <DesignComponent width="xl">
-            <template #control="{binds}">
-              <button class="wiki-storybook-button" v-bind="binds">XL</button>
-            </template>
-          </DesignComponent>
           <DesignComponent width="auto">
             <template #control="{binds}">
               <button class="wiki-storybook-button" v-bind="binds">Auto</button>
+            </template>
+          </DesignComponent>
+          <DesignComponent width="max">
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">Max</button>
+            </template>
+          </DesignComponent>
+          <DesignComponent width="360px">
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">360px</button>
+            </template>
+          </DesignComponent>
+          <DesignComponent width="640px">
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">640px</button>
             </template>
           </DesignComponent>
         </div>
       `,
       play: `
 const items = canvasElement.querySelectorAll('.design-component')
-await expect(items.length).toBe(5)
-await expect(items[0]).toHaveClass('design-component--width--sm')
-await expect(items[1]).toHaveClass('design-component--width--md')
-await expect(items[2]).toHaveClass('design-component--width--lg')
-await expect(items[3]).toHaveClass('design-component--width--xl')
-await expect(items[4]).toHaveClass('design-component--width--auto')
+await expect(items.length).toBe(4)
+await expect(items[0]).toHaveClass('design-component--width--auto')
+await expect(items[1]).toHaveClass('design-component--width--max')
+await expect(items[2]).toHaveClass('design-component--width--custom')
+await expect(items[3]).toHaveClass('design-component--width--custom')
       `
     },
     {

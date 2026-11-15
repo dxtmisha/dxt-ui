@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.4] - 2026-11-15
+
+### Changed
+- **AI Type Definition Generation (`DesignTypesMake`, `DesignTypesMakeTsTransformer`, `aiTypeOptimization`)**:
+  - Restored `isRelativeImport(node)` in `DesignTypesMakeTsTransformer` (`src/classes/Design/DesignTypesMakeTsTransformer.ts`) so relative `import` declarations are removed during AST declaration cleaning while external package imports are preserved, and updated `cleanContent` JSDoc in `DesignTypesMake` (`src/classes/Design/DesignTypesMake.ts`).
+  - Restored instructions in `src/media/templates/prompts/aiTypeOptimization.en.md` and `src/media/templates/prompts/aiTypeOptimization.ru.md` to remove internal `import` statements and internal re-exports while keeping external package exports.
+  - Updated unit tests in `DesignTypesMake.test.ts` and `DesignTypesMakeTsTransformer.test.ts`.
+
 ## [1.7.3] - 2026-11-14
 
 ### Changed

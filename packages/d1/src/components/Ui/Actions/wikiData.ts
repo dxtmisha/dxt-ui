@@ -23,8 +23,8 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Slot for the main list of actions/ Слот для основного списка действий`, properties: [{ name: 'props', type: '(any) | undefined' }] },
-  { name: 'secondary', description: `Slot for the secondary list of actions/ Слот для вторичного списка действий`, properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'default', description: `Slot for the main list of actions / Слот для основного списка действий`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'secondary', description: `Slot for the secondary list of actions / Слот для вторичного списка действий`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

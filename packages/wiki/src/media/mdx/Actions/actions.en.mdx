@@ -7,10 +7,11 @@ Actions centralizes the management of interactive button placement in dialogs, f
 **Core capabilities:**
 
 - Button grouping (primary group via list, secondary via listSecondary)
-- Alignment control (left, right, center, block, none)
-- Adaptive behavior through flexible property (adaptive/container)
+- Alignment control (left, right, center, block, auto, none)
+- Adaptive behavior through flexible property
 - Automatic spacer between button groups
 - Separate attribute configuration (buttonAttrs, buttonSecondaryAttrs)
+- Built-in accessibility support (`role`, `ariaLabel`, `textActions`)
 - Slot support for custom content (default, secondary)
 - Integration with Button component with all its features
 - Flexible layout with automatic transition to block mode
@@ -42,7 +43,7 @@ const handleSave = async () => {
     align="right"
     :list="[
       { label: 'Cancel' },
-      { label: 'Save', primary: true, loading: isLoading }
+      { label: 'Save', selected: true, loading: isLoading }
     ]"
   />
 </template>

@@ -89,3 +89,8 @@ src/constructors/MotionTransform/MotionTransformInclude.ts
 src/constructors/Accordion/AccordionHead.ts
 src/constructors/Accordion/Accordion.ts
 src/constructors/Accordion/AccordionDesign.tsx
+src/functions/setAreaValue.ts
+src/classes/AreaInclude.ts
+src/constructors/Actions/Actions.ts
+src/constructors/Actions/ActionsDesign.tsx
+src/constructors/Actions/ActionsInclude.ts

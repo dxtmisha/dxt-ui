@@ -4,7 +4,9 @@ import {
   type ConstrItems,
   type DesignComp,
   type DesignName,
-  DesignLogicAbstract
+  DesignLogicAbstract,
+  isFilled,
+  isFunction
 } from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../classes/AreaInclude'
@@ -131,8 +133,8 @@ export class Actions extends DesignLogicAbstract<
    */
   isList(): boolean {
     return Boolean(
-      this.props.list
-      || (this.slots && 'default' in this.slots)
+      isFilled(this.props.list)
+      || isFunction(this.slots?.default)
     )
   }
 
@@ -144,8 +146,8 @@ export class Actions extends DesignLogicAbstract<
    */
   isSecondary(): boolean {
     return Boolean(
-      this.props.listSecondary
-      || (this.slots && 'secondary' in this.slots)
+      isFilled(this.props.listSecondary)
+      || isFunction(this.slots?.secondary)
     )
   }
 }
