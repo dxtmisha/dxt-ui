@@ -83,6 +83,7 @@ Complete reference of available SCSS mixins and utilities in `@dxtmisha/styles`.
 - **`@include mediaMaxWidth($width)`** — `@media screen and (max-width: ...)`.
 - **`@include mediaMinMaxWidth($min, $max)`** — `@media screen and (min-width: ...) and (max-width: ...)`.
 - **`@include mediaPrefersReducedMotion`** — `@media (prefers-reduced-motion: reduce)`.
+- **`@include mediaForcedColors`** — `@media (forced-colors: active)` (Windows High Contrast / forced colors mode).
 - **`@include containerMinWidth($width)`** — `@container (min-width: ...)`.
 - **`@include containerMaxWidth($width)`** — `@container (max-width: ...)`.
 - **`@include containerMinMaxWidth($min, $max)`** — `@container (min-width: ...) and (max-width: ...)`.

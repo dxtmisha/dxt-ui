@@ -159,8 +159,7 @@ export class Skeleton extends DesignLogicAbstract<
    */
   get aria(): AriaList {
     return {
-      ...AriaStaticInclude.busy(this.isActive() || this.visible.value),
-      ...AriaStaticInclude.live('polite')
+      ...AriaStaticInclude.busy(this.isActive() || this.visible.value)
     }
   }
 

@@ -312,7 +312,9 @@ export class Window extends DesignLogicAbstract<
   }
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
    * @param naming component naming helper / помощник именования компонента

@@ -437,6 +437,8 @@ export class WindowOpen extends DesignLifecycleAbstract {
    * @returns this instance / текущий экземпляр класса
    */
   protected watchCoordinates(): this {
+    const seq = this.frameSeq
+
     frame(
       () => {
         const element = this.element().getMain()
@@ -453,7 +455,10 @@ export class WindowOpen extends DesignLifecycleAbstract {
           this.styles().updateType(isMenu)
         }
       },
-      () => this.isMounted.value && this.item.value && !this.status().isHide()
+      () => seq === this.frameSeq
+        && this.isMounted.value
+        && this.item.value
+        && !this.status().isHide()
     )
 
     return this

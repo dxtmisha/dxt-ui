@@ -54,7 +54,6 @@ src/constructors/Window/WindowEvent.ts
 src/constructors/Window/WindowFlash.ts
 src/constructors/Window/WindowHidden.ts
 src/constructors/Window/WindowHook.ts
-src/constructors/Window/WindowOpen.ts
 src/constructors/Window/WindowOrigin.ts
 src/constructors/Window/WindowPersistent.ts
 src/constructors/Window/WindowPosition.ts
@@ -62,7 +61,6 @@ src/constructors/Window/WindowStatic.ts
 src/constructors/Window/WindowStatus.ts
 src/constructors/Window/WindowStyles.ts
 src/constructors/Window/WindowVerification.ts
-src/constructors/Window/Window.ts
 src/constructors/Window/WindowDesign.tsx
 src/constructors/Window/WindowInclude.ts
 src/constructors/Accordion/AccordionHead.ts
@@ -102,3 +100,5 @@ src/constructors/Icon/IconTrailingInclude.ts
 src/constructors/Progress/Progress.ts
 src/constructors/Progress/ProgressDesign.tsx
 src/constructors/Progress/ProgressInclude.ts
+src/constructors/Window/WindowOpen.ts
+src/constructors/Window/Window.ts

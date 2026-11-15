@@ -166,7 +166,7 @@ describe('Skeleton (complete component integration)', () => {
       expect(fixture.root.id).toBe('profile-skeleton')
       expect(fixture.root.getAttribute('data-testid')).toBe('skeleton-root')
       expect(fixture.root.getAttribute('aria-busy')).toBe('false')
-      expect(fixture.root.getAttribute('aria-live')).toBe('polite')
+      expect(fixture.root.getAttribute('aria-live')).toBeNull()
       expect(fixture.root.style.getPropertyValue('--d1-skeleton-opacity')).toBe('0.32')
       expect(fixture.root.classList.contains('d1-skeleton')).toBe(true)
       expect(fixture.root.classList.contains('d1-skeleton--active')).toBe(false)

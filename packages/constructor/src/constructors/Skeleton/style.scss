@@ -14,12 +14,34 @@ $skeletonSubclasses: (
 
 @mixin mixinSkeletonText {
   text-decoration-line: line-through !important;
-  text-decoration-thickness: calc(var(--sys-font-size) * .64) !important;
+  text-decoration-thickness: .64em !important;
   text-decoration-skip: #{spaces} !important;
   -webkit-text-decoration-skip: spaces !important;
 
   --sys-color: #{ui.v('??color')} !important;
   --sys-color-opacity: #{ui.v('??colorOpacity', 1)} !important;
+}
+
+@mixin mixinSkeletonTransparent {
+  color: transparent !important;
+  background: transparent !important;
+  border-color: transparent !important;
+
+  box-shadow: none !important;
+}
+
+@mixin mixinSkeletonMediaInvisible {
+  svg,
+  img,
+  video,
+  canvas,
+  iframe,
+  picture,
+  object,
+  embed {
+    opacity: 0 !important;
+    filter: opacity(0);
+  }
 }
 
 @mixin mixinSkeletonSubInvisible {
@@ -31,29 +53,19 @@ $skeletonSubclasses: (
     &::before,
     &::after,
     &::placeholder {
-      color: transparent !important;
-      background: transparent !important;
-      border-color: transparent !important;
-
-      box-shadow: none !important;
+      @include mixinSkeletonTransparent;
     }
   }
 
-  svg {
-    opacity: 0;
-    filter: opacity(0);
-  }
+  @include mixinSkeletonMediaInvisible;
 }
 
 @mixin mixinSkeletonInvisible {
   contain: style;
 
-  @include ui.absoluteAfter {
-    z-index: 999999;
-  }
-
   &,
   * {
+    pointer-events: none !important;
     @include ui.scrollbarHide;
   }
 
@@ -61,17 +73,10 @@ $skeletonSubclasses: (
   *::before,
   *::after,
   *::placeholder {
-    color: transparent !important;
-    background: transparent !important;
-    border-color: transparent !important;
-
-    box-shadow: none !important;
+    @include mixinSkeletonTransparent;
   }
 
-  svg {
-    opacity: 0;
-    filter: opacity(0);
-  }
+  @include mixinSkeletonMediaInvisible;
 }
 
 @mixin mixinSkeleton {
@@ -80,6 +85,10 @@ $skeletonSubclasses: (
 
   @include ui.state('invisible') {
     @include mixinSkeletonInvisible;
+
+    @include ui.mediaForcedColors {
+      forced-color-adjust: none;
+    }
   }
 
   @include ui.state('visible') {
@@ -88,6 +97,10 @@ $skeletonSubclasses: (
 
     @include ui.mediaPrefersReducedMotion {
       animation: none;
+    }
+
+    @include ui.mediaForcedColors {
+      forced-color-adjust: none;
     }
 
     @each $subclass in $skeletonSubclasses {

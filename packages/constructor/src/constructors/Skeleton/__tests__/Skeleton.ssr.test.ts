@@ -90,7 +90,7 @@ describe('Skeleton (SSR)', () => {
       expect(typeof document).toBe('undefined')
       expect(html).toContain('class="d1-skeleton"')
       expect(html).toContain('aria-busy="false"')
-      expect(html).toContain('aria-live="polite"')
+      expect(html).not.toContain('aria-live')
       expect(html).not.toContain('d1-skeleton--active')
       expect(html).not.toContain('d1-skeleton--visible')
       expect(html).not.toContain('d1-skeleton--invisible')
@@ -110,7 +110,7 @@ describe('Skeleton (SSR)', () => {
       expect(html).toContain('d1-skeleton--visible')
       expect(html).toContain('d1-skeleton--invisible')
       expect(html).toContain('aria-busy="true"')
-      expect(html).toContain('aria-live="polite"')
+      expect(html).not.toContain('aria-live')
       expect(html).toContain('<span class="d1-skeleton__border">Bordered Content</span>')
     })
 
@@ -209,7 +209,7 @@ describe('Skeleton (SSR)', () => {
       )
 
       expect(ssrIncludeStatus).toBe(true)
-      expect(html).toContain('inert aria-busy="true" aria-live="polite" class="d1-skeleton--active d1-skeleton--visible d1-skeleton--invisible nested-skeleton" style=""')
+      expect(html).toContain('inert aria-busy="true" class="d1-skeleton--active d1-skeleton--visible d1-skeleton--invisible nested-skeleton" style=""')
       expect(html).toContain('class="d1-skeleton__backgroundVariant"')
       expect(html).toContain('class="d1-skeleton__text d1-skeleton__background"')
       expect(html).toContain('data-ssr-skeleton="true"')
@@ -245,7 +245,7 @@ describe('Skeleton (SSR)', () => {
     it('should render empty server markup when default slot is omitted', async () => {
       const html = await renderSkeletonSsr({})
 
-      expect(html).toBe('<div aria-busy="false" aria-live="polite" class="d1-skeleton" style=""></div>')
+      expect(html).toBe('<div aria-busy="false" class="d1-skeleton" style=""></div>')
     })
 
     it('should preserve Unicode and multilingual content in SSR', async () => {

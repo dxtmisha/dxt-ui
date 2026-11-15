@@ -473,7 +473,7 @@ export const WindowClasses: Story = {
       await expect(document.querySelector('.wiki-storybook-button--static')).toBeInTheDocument()
     })
 
-    await new Promise((resolve) => setTimeout(resolve, 100))
+    await new Promise(resolve => setTimeout(resolve, 100))
     const rootSibling = canvasElement.closest('body > *') as HTMLElement | null
     await expect(rootSibling?.hasAttribute('inert') ?? false).toBe(false)
     await expect(rootSibling?.getAttribute('aria-hidden') ?? null).toBeNull()
@@ -484,7 +484,7 @@ export const WindowClasses: Story = {
       await expect(document.querySelector('.d1-window[data-status="open"], .d1-window[data-status="flash"]')).toBeInTheDocument()
     })
 
-    await new Promise((resolve) => setTimeout(resolve, 150))
+    await new Promise(resolve => setTimeout(resolve, 150))
     const autoButton = document.querySelector<HTMLButtonElement>('.wiki-storybook-button--auto')
     await userEvent.click(autoButton!)
     await waitFor(async () => {
@@ -1002,14 +1002,19 @@ export const WindowTestDisableFocusReturn: Story = {
 
     await userEvent.click(triggerButton!)
     await waitFor(async () => {
-      const windowElement = document.querySelector<HTMLElement>('.d1-window:not([data-status="hide"])')
+      const windowElement = document.querySelector<HTMLElement>('.d1-window[data-status="open"], .d1-window[data-status="flash"]')
       await expect(windowElement).toBeInTheDocument()
+      const blockedElement = document.querySelector<HTMLElement>('[data-window-block="true"]')
+      await expect(blockedElement).toBeInTheDocument()
+      await expect(document.activeElement).not.toBe(triggerButton)
     })
 
     await userEvent.keyboard('{Escape}')
     await waitFor(async () => {
-      const openWindow = document.querySelector<HTMLElement>('.d1-window[data-status="open"]')
+      const openWindow = document.querySelector<HTMLElement>('.d1-window[data-status="open"], .d1-window[data-status="flash"]')
       await expect(openWindow).toBeNull()
+      const blockedElement = document.querySelector<HTMLElement>('[data-window-block="true"]')
+      await expect(blockedElement).toBeNull()
     })
     await expect(document.activeElement).not.toBe(triggerButton)
   }

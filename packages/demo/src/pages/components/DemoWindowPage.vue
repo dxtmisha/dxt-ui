@@ -775,6 +775,32 @@ const statusValue = computed<string>(() => {
             </div>
           </D1Window>
 
+          <D1Window disableFocusReturn>
+            <template #control="{ binds }">
+              <D1Button label="disableFocusReturn (No Focus Restore)" secondary v-bind="binds" />
+            </template>
+            <template #title>
+              <h3 class="demo-window-page__title">Focus Return Disabled</h3>
+            </template>
+            <div class="demo-window-page__content">
+              <p>After closing, focus is not returned to the control button.</p>
+            </div>
+            <template #footer="{ classesWindow }">
+              <div class="demo-window-page__footer">
+                <D1Button label="Close" primary :class="classesWindow.close" />
+              </div>
+            </template>
+          </D1Window>
+
+          <D1Window adaptive="menu" role="menu" ariaHaspopup="menu">
+            <template #control="{ binds }">
+              <D1Button label="role: menu + ariaHaspopup: menu" secondary v-bind="binds" />
+            </template>
+            <div class="demo-window-page__content">
+              <p>Menu role window: control exposes aria-haspopup="menu" and background stays interactive.</p>
+            </div>
+          </D1Window>
+
           <D1Window autoClose>
             <template #control="{ binds }">
               <D1Button label="Slot Behavior Classes (autoClose / static / close)" secondary v-bind="binds" />

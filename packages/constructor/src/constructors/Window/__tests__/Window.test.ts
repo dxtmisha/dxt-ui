@@ -1,312 +1,347 @@
 // @vitest-environment jsdom
-import { describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick, reactive, ref } from 'vue'
-import { DesignName } from '@dxtmisha/functional'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createApp, defineComponent, h, nextTick, reactive, type Ref } from 'vue'
 
-import { Window } from '../Window'
-import type { WindowPropsBasic } from '../props'
+import { WindowDesign } from '../WindowDesign'
+import { defaultsWindow, type WindowPropsBasic } from '../props'
+import type {
+  WindowClasses,
+  WindowComponents,
+  WindowExpose,
+  WindowSlots
+} from '../types'
+import type { WindowControlItem, WindowEmitOptions } from '../basicTypes'
+
+const cleanups: Array<() => void> = []
+
+beforeEach(() => {
+  vi.useFakeTimers({
+    toFake: [
+      'setTimeout',
+      'clearTimeout',
+      'setInterval',
+      'clearInterval',
+      'requestAnimationFrame',
+      'cancelAnimationFrame'
+    ]
+  })
+})
+
+afterEach(() => {
+  cleanups.splice(0).reverse().forEach(unmount => unmount())
+  vi.restoreAllMocks()
+  vi.useRealTimers()
+  document.body.innerHTML = ''
+})
 
 /**
- * Inspectable subclass exposing instances map and condition lifecycle triggers for test verification.
+ * Mounts the full WindowDesign component (design layer, orchestrator, and helpers) into jsdom.
  *
- * Подкласс для проверки карты экземпляров зависимостей и вызовов условий.
+ * Монтирует полный компонент WindowDesign (слой дизайна, оркестратор и помощники) в jsdom.
+ * @param initialProps initial component properties / начальные свойства компонента
+ * @returns props, emits spy, and expose API / свойства, шпион событий и expose API
  */
-class InspectableWindow extends Window {
-  /**
-   * Returns currently instantiated sub-constructors.
-   *
-   * Возвращает созданные на текущий момент подконструкторы.
-   * @returns map of instantiated sub-constructors / карта созданных подконструкторов
-   */
-  get instantiatedItems(): Record<string, unknown> {
-    return this.instances as Record<string, unknown>
+function mountWindow(initialProps: WindowPropsBasic = {}) {
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+
+  const emits = vi.fn()
+  const props = reactive<WindowPropsBasic>({
+    ...defaultsWindow,
+    ...initialProps
+  } as WindowPropsBasic)
+
+  let exposed!: WindowExpose & { elementHtml: Ref<HTMLDivElement | undefined> }
+
+  const slots: WindowSlots = {
+    control: (control: WindowControlItem) => h('button', {
+      ...control.binds,
+      'type': 'button',
+      'data-test': 'control'
+    }, 'Open'),
+    title: () => h('h2', { 'data-test': 'title' }, 'Title'),
+    default: () => h('button', { 'type': 'button', 'data-test': 'content' }, 'Content'),
+    footer: () => h('div', { 'data-test': 'footer' }, 'Footer')
   }
 
-  /**
-   * Simulates component mount lifecycle.
-   *
-   * Симулирует жизненный цикл монтирования компонента.
-   */
-  triggerMounted(): void {
-    this.isMounted.value = true
-    this.callLifecycle('onMounted')
-    this.initConditions()
-  }
+  const Component = defineComponent({
+    inheritAttrs: false,
+    setup() {
+      const design = new WindowDesign<
+        WindowComponents,
+        WindowExpose,
+        WindowClasses,
+        WindowPropsBasic
+      >('d1.window', props, {
+        emits: emits as never
+      })
 
-  /**
-   * Simulates component unmount lifecycle.
-   *
-   * Симулирует жизненный цикл размонтирования компонента.
-   */
-  triggerUnmounted(): void {
-    this.isMounted.value = false
-    this.callLifecycle('onUnmounted')
+      exposed = design.expose() as WindowExpose & { elementHtml: Ref<HTMLDivElement | undefined> }
+      return design.render()
+    }
+  })
+
+  const Root = defineComponent({
+    setup() {
+      return () => h(
+        Component,
+        { 'data-attr': 'external' },
+        slots as Record<string, unknown>
+      )
+    }
+  })
+
+  const app = createApp(Root)
+  app.mount(container)
+
+  cleanups.push(() => {
+    app.unmount()
+    container.remove()
+  })
+
+  return {
+    container,
+    emits,
+    props,
+    get exposed() {
+      return exposed
+    }
   }
 }
 
-describe('Window', () => {
-  describe('Standard functional requirements (Happy path)', () => {
-    it('should not eagerly instantiate optional conditional classes upon creation', () => {
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({}) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
+/**
+ * Flushes pending animation frames, timers, and promises of the opening/closing sequence.
+ *
+ * Сбрасывает ожидающие кадры анимации, таймеры и промисы последовательности открытия/закрытия.
+ * @param duration time to advance in milliseconds / время продвижения в миллисекундах
+ */
+async function flush(duration: number = 200): Promise<void> {
+  await vi.advanceTimersByTimeAsync(duration)
+  await nextTick()
+}
 
-      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
+/**
+ * Returns the control button rendered by the control slot.
+ *
+ * Возвращает кнопку управления, отрисованную слотом control.
+ * @returns control button element / элемент кнопки управления
+ */
+function getControl(): HTMLButtonElement {
+  return document.querySelector<HTMLButtonElement>('[data-test="control"]')!
+}
 
-      expect(windowItem).toBeDefined()
-      // Conditional instances must remain undefined when props are not set
-      expect(windowItem.instantiatedItems.persistent).toBeUndefined()
-      expect(windowItem.instantiatedItems.staticMode).toBeUndefined()
-      expect(windowItem.instantiatedItems.hidden).toBeUndefined()
-      expect(windowItem.instantiatedItems.image).toBeUndefined()
+/**
+ * Returns the main window element.
+ *
+ * Возвращает главный элемент окна.
+ * @returns main window element or null / главный элемент окна или null
+ */
+function getMain(): HTMLDivElement | null {
+  return document.querySelector<HTMLDivElement>('[data-window]')
+}
 
-      scope.stop()
+/**
+ * Returns emitted window event payloads.
+ *
+ * Возвращает данные вызванных событий window.
+ * @param emits emits spy / шпион событий
+ * @returns list of window event options / список опций событий window
+ */
+function getWindowEvents(emits: ReturnType<typeof vi.fn>): WindowEmitOptions[] {
+  return emits.mock.calls
+    .filter(([name]) => name === 'window')
+    .map(([, options]) => options as WindowEmitOptions)
+}
+
+/**
+ * Completes the closing transition by dispatching transitionend on the main element.
+ *
+ * Завершает переход закрытия, отправляя transitionend на главный элемент.
+ */
+async function finishClosing(): Promise<void> {
+  await flush(32)
+  getMain()?.dispatchEvent(new Event('transitionend'))
+  await flush(200)
+}
+
+describe('Window (integration)', () => {
+  describe('Closed state and control slot', () => {
+    it('should render only the control with ARIA attributes while the window is closed', async () => {
+      mountWindow()
+      await flush()
+
+      const control = getControl()
+
+      expect(control).not.toBeNull()
+      expect(control.getAttribute('aria-haspopup')).toBe('dialog')
+      expect(control.getAttribute('aria-expanded')).toBe('false')
+      expect(control.getAttribute('aria-controls')).toBeNull()
+      expect(control.id).toContain('control')
+      expect(getMain()).toBeNull()
+    })
+  })
+
+  describe('Opening, rendering, and slots', () => {
+    it('should open on control click and teleport the window with modal ARIA, classes, and slots', async () => {
+      const { emits } = mountWindow({ ariaLabelledby: 'title-id' })
+      await flush()
+
+      getControl().click()
+      await flush()
+
+      const main = getMain()!
+      const control = getControl()
+
+      expect(main).not.toBeNull()
+      expect(main.parentElement?.getAttribute('data-window-teleport')).toBe(main.dataset.window)
+      expect(main.getAttribute('role')).toBe('dialog')
+      expect(main.getAttribute('aria-modal')).toBe('true')
+      expect(main.getAttribute('aria-labelledby')).toBe('title-id')
+      expect(main.classList.contains(main.dataset.window!)).toBe(true)
+
+      const body = main.querySelector('.d1-window__body')!
+
+      expect(body).not.toBeNull()
+      expect(body.getAttribute('data-attr')).toBe('external')
+      expect(body.querySelector('.d1-window__body__group [data-test="title"]')).not.toBeNull()
+      expect(body.querySelector('[data-window-body="1"] [data-test="content"]')).not.toBeNull()
+      expect(body.querySelector('[data-test="footer"]')).not.toBeNull()
+
+      expect(control.getAttribute('aria-expanded')).toBe('true')
+      expect(control.getAttribute('aria-controls')).toBe(main.dataset.window)
+
+      const openEvents = getWindowEvents(emits)
+
+      expect(openEvents.at(-1)?.open).toBe(true)
+      expect(openEvents.at(-1)?.id).toBe(main.dataset.window)
+      expect(emits).toHaveBeenCalledWith('update:open', true)
     })
 
-    it('should track isMounted state through lifecycle triggers', () => {
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({}) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
+    it('should render in place without teleport in embedded mode', async () => {
+      const { container } = mountWindow({ embedded: true, open: true })
+      await flush()
 
-      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
+      const main = getMain()!
 
-      expect(windowItem.isRender()).toBe(false)
-      expect(windowItem.isMounted.value).toBe(false)
-
-      windowItem.triggerMounted()
-      expect(windowItem.isRender()).toBe(true)
-      expect(windowItem.isMounted.value).toBe(true)
-
-      windowItem.triggerUnmounted()
-      expect(windowItem.isRender()).toBe(false)
-      expect(windowItem.isMounted.value).toBe(false)
-
-      scope.stop()
+      expect(main).not.toBeNull()
+      expect(container.contains(main)).toBe(true)
+      expect(document.querySelector('[data-window-teleport]')).toBeNull()
+      expect(main.classList.contains('d1-window--embedded')).toBe(true)
     })
 
-    it('should support dependency injection overrides', () => {
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({}) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
+    it('should render the close button only when closeButton is enabled', async () => {
+      mountWindow({ open: true, embedded: true })
+      await flush()
 
-      class MockClient {
-        is(): boolean {
-          return true
-        }
-      }
+      expect(getMain()?.querySelector('.d1-window__close')).toBeNull()
+    })
+  })
 
-      const windowItem = scope.run(() => new InspectableWindow(
-        props,
-        element,
-        naming,
-        undefined,
-        undefined,
-        undefined,
-        {
-          client: MockClient as any
-        }
-      ))!
+  describe('Closing and focus return', () => {
+    it('should close via expose API, emit closed state, and return focus to the control by default', async () => {
+      const { emits, exposed } = mountWindow()
+      await flush()
 
-      expect(windowItem.i('client')).toBeInstanceOf(MockClient)
+      const control = getControl()
 
-      scope.stop()
+      control.focus()
+      control.click()
+      await flush()
+
+      expect(exposed.getOpen()).toBe(true)
+
+      document.querySelector<HTMLButtonElement>('[data-test="content"]')!.focus()
+      expect(document.activeElement).not.toBe(control)
+
+      await exposed.toClose()
+      await finishClosing()
+
+      expect(exposed.getOpen()).toBe(false)
+      expect(getMain()).toBeNull()
+      expect(getWindowEvents(emits).at(-1)?.open).toBe(false)
+      expect(document.activeElement).toBe(control)
     })
 
-    it('should activate conditional items when props are set and mounted', async () => {
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({
-        persistent: true,
-        staticMode: true,
-        image: 'test.jpg'
-      }) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
+    it('should not return focus to the control when disableFocusReturn is enabled', async () => {
+      const { exposed } = mountWindow({ disableFocusReturn: true })
+      await flush()
 
-      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
+      const control = getControl()
 
-      windowItem.triggerMounted()
-      await nextTick()
+      control.focus()
+      control.click()
+      await flush()
 
-      expect(windowItem.instantiatedItems.persistent).toBeDefined()
-      expect(windowItem.instantiatedItems.staticMode).toBeDefined()
-      expect(windowItem.instantiatedItems.image).toBeUndefined()
-      expect(windowItem.i('image')).toBeDefined()
-      expect(windowItem.instantiatedItems.image).toBeDefined()
+      expect(exposed.getOpen()).toBe(true)
 
-      windowItem.triggerUnmounted()
-      scope.stop()
+      document.querySelector<HTMLButtonElement>('[data-test="content"]')!.focus()
+      expect(document.activeElement).not.toBe(control)
+
+      await exposed.toClose()
+      await finishClosing()
+
+      expect(exposed.getOpen()).toBe(false)
+      expect(document.activeElement).not.toBe(control)
+    })
+  })
+
+  describe('Keyboard interactions', () => {
+    it('should close the open window on Escape and ignore Escape for persistent windows', async () => {
+      const { exposed, props } = mountWindow()
+      await flush()
+
+      getControl().click()
+      await flush()
+
+      expect(exposed.getOpen()).toBe(true)
+
+      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true }))
+      await finishClosing()
+
+      expect(exposed.getOpen()).toBe(false)
+
+      props.persistent = true
+      await exposed.toOpen()
+      await flush()
+
+      expect(exposed.getOpen()).toBe(true)
+
+      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true }))
+      await flush()
+
+      expect(exposed.getOpen()).toBe(true)
     })
 
-    it('should activate hidden item conditionally when inert is true without staticMode', async () => {
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({
-        inert: true,
-        staticMode: false,
-        embedded: false
-      }) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
+    it('should ignore Enter on the control while IME composition is active', async () => {
+      const { exposed } = mountWindow()
+      await flush()
 
-      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
+      getControl().dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', isComposing: true, bubbles: true }))
+      await flush()
 
-      windowItem.triggerMounted()
-      await nextTick()
-
-      expect(windowItem.instantiatedItems.hidden).toBeDefined()
-
-      scope.stop()
+      expect(exposed.getOpen()).toBe(false)
     })
+  })
 
-    it('should correctly identify menu roles via isMenu()', () => {
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({}) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
+  describe('Lifecycle cleanup', () => {
+    it('should cancel the opening sequence on unmount and leave no self-rescheduling timers', async () => {
+      const cancelSpy = vi.spyOn(globalThis, 'cancelAnimationFrame')
+      const { emits } = mountWindow()
+      await flush()
 
-      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
+      getControl().click()
+      await flush(8)
 
-      expect(windowItem.isMenu()).toBe(false)
+      const callsBeforeUnmount = emits.mock.calls.length
 
-      props.role = 'menu'
-      expect(windowItem.isMenu()).toBe(true)
+      cleanups.splice(0).reverse().forEach(unmount => unmount())
 
-      props.role = 'menuitemcheckbox'
-      expect(windowItem.isMenu()).toBe(true)
+      expect(cancelSpy).toHaveBeenCalled()
 
-      props.role = 'menuitemradio'
-      expect(windowItem.isMenu()).toBe(true)
+      await flush(1000)
 
-      props.role = 'dialog'
-      expect(windowItem.isMenu()).toBe(false)
-
-      scope.stop()
-    })
-
-    it('should return binds with correct attributes and modal aria', () => {
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({
-        role: 'dialog',
-        ariaLabelledby: 'title-id'
-      }) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
-
-      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
-      const binds = windowItem.binds
-
-      expect(binds.key).toBe('main')
-      expect(binds['data-window']).toBeDefined()
-      expect(binds.role).toBe('dialog')
-      expect(binds['aria-labelledby']).toBe('title-id')
-      expect(binds['aria-modal']).toBe(true)
-
-      scope.stop()
-    })
-
-    it('should return slotData with control binds and event handlers', () => {
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({}) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
-
-      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
-      const slotData = windowItem.slotData
-
-      expect(slotData.classesWindow).toBeDefined()
-      expect(slotData.class).toBeDefined()
-      expect(slotData.open).toBeDefined()
-      expect(typeof slotData.onClick).toBe('function')
-      expect(typeof slotData.onKeydown).toBe('function')
-      expect(typeof slotData.onContextmenu).toBe('function')
-      expect(slotData.binds).toBeDefined()
-
-      scope.stop()
-    })
-
-    it('should return classes object with appropriate status classes', () => {
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({
-        embedded: true
-      }) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
-
-      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
-      const classes = windowItem.classes
-
-      const id = (windowItem.i('classesData') as any).getId()
-      expect(classes[id]).toBe(true)
-      expect(classes[naming.getStatusClass('embedded')]).toBe(true)
-
-      scope.stop()
-    })
-
-    it('should trigger onUnmounted lifecycle on subordinate instances', () => {
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({
-        persistent: true
-      }) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
-
-      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
-      windowItem.triggerMounted()
-
-      const persistent = windowItem.i('persistent')
-      const stopSpy = vi.spyOn(persistent, 'onUnmounted')
-
-      windowItem.triggerUnmounted()
-      expect(stopSpy).toHaveBeenCalled()
-
-      scope.stop()
-    })
-
-    it('should not return focus on tabIndex.reset() when disableFocusReturn is true', async () => {
-      const previousButton = document.createElement('button')
-      document.body.appendChild(previousButton)
-      previousButton.focus()
-
-      const scope = effectScope()
-      const props: WindowPropsBasic = reactive({
-        disableFocusReturn: true
-      }) as any
-      const element = ref<HTMLDivElement>()
-      const naming = new DesignName('d1.window')
-
-      const windowItem = scope.run(() => new InspectableWindow(props, element, naming))!
-      const tabIndex = windowItem.i('tabIndex')
-
-      tabIndex.updateOldElement()
-
-      const temporaryButton = document.createElement('button')
-      document.body.appendChild(temporaryButton)
-      temporaryButton.focus()
-      document.body.removeChild(temporaryButton)
-
-      tabIndex.reset()
-      await new Promise(resolve => requestAnimationFrame(resolve))
-
-      expect(document.activeElement).not.toBe(previousButton)
-
-      props.disableFocusReturn = false
-      previousButton.focus()
-      tabIndex.updateOldElement()
-
-      const secondTemporaryButton = document.createElement('button')
-      document.body.appendChild(secondTemporaryButton)
-      secondTemporaryButton.focus()
-      document.body.removeChild(secondTemporaryButton)
-
-      tabIndex.reset()
-      await new Promise(resolve => requestAnimationFrame(resolve))
-
-      expect(document.activeElement).toBe(previousButton)
-
-      document.body.removeChild(previousButton)
-      scope.stop()
+      expect(vi.getTimerCount()).toBe(0)
+      expect(emits.mock.calls.length).toBe(callsBeforeUnmount)
     })
   })
 })

@@ -4,11 +4,18 @@ import { ref } from 'vue'
 import { WindowOpen } from '../WindowOpen'
 import type { WindowProps } from '../props'
 
+const frameState = vi.hoisted(() => ({
+  next: undefined as (() => boolean) | undefined
+}))
+
 vi.mock('@dxtmisha/functional', async () => {
   const actual = await vi.importActual('@dxtmisha/functional') as any
   return {
     ...actual,
-    frame: (callback: () => void) => callback()
+    frame: (callback: () => void, next?: () => boolean) => {
+      frameState.next = next
+      callback()
+    }
   }
 })
 
@@ -115,6 +122,7 @@ describe('WindowOpen', () => {
   })
 
   afterEach(() => {
+    frameState.next = undefined
     document.body.innerHTML = ''
     vi.unstubAllGlobals()
     vi.restoreAllMocks()
@@ -279,5 +287,29 @@ describe('WindowOpen', () => {
     mockProps.adaptive = 'menu'
     await windowOpen.watchPosition()
     expect(windowOpen.isMenu.value).toBe(true)
+  })
+
+  it('should stop the coordinates frame loop on unmount even when the mounted flag stays true', async () => {
+    await windowOpen.setOpen(true)
+    await windowOpen.watchPosition()
+
+    expect(frameState.next?.()).toBe(true)
+
+    // DesignLogicAbstract keeps isMounted true after unmount, so the loop must rely on the sequence token
+    windowOpen.onUnmounted()
+
+    expect(isMountedRef.value).toBe(true)
+    expect(frameState.next?.()).toBe(false)
+  })
+
+  it('should stop the coordinates frame loop as soon as closing starts', async () => {
+    await windowOpen.setOpen(true)
+    await windowOpen.watchPosition()
+
+    expect(frameState.next?.()).toBe(true)
+
+    await windowOpen.close()
+
+    expect(frameState.next?.()).toBe(false)
   })
 })

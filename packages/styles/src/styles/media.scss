@@ -35,6 +35,12 @@
   }
 }
 
+@mixin mediaForcedColors() {
+  @media (forced-colors: active) {
+    @content;
+  }
+}
+
 @mixin containerMinWidth($width) {
   @container (min-width: media($width)) {
     @content;

@@ -140,12 +140,10 @@ describe('Skeleton (isolated class)', () => {
         'd1-skeleton--invisible': false
       })
       expect(skeleton.aria).toEqual({
-        'aria-busy': 'false',
-        'aria-live': 'polite'
+        'aria-busy': 'false'
       })
       expect(skeleton.binds).toEqual({
-        'aria-busy': 'false',
-        'aria-live': 'polite'
+        'aria-busy': 'false'
       })
 
       scope.stop()
@@ -171,13 +169,11 @@ describe('Skeleton (isolated class)', () => {
         'd1-skeleton--invisible': true
       })
       expect(skeleton.aria).toEqual({
-        'aria-busy': 'true',
-        'aria-live': 'polite'
+        'aria-busy': 'true'
       })
       expect(skeleton.binds).toEqual({
         'inert': true,
-        'aria-busy': 'true',
-        'aria-live': 'polite'
+        'aria-busy': 'true'
       })
 
       props.invisible = false
