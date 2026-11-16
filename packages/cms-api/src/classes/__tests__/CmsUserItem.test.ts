@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
+import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsRoleItem } from '../CmsRoleItem'
 import { CmsUserItem } from '../CmsUserItem'
@@ -141,11 +142,13 @@ function makeUserData(overrides: Partial<CmsUserWithRoles> = {}): CmsUserWithRol
 
 describe('CmsUserItem', () => {
   let errorCenter: ErrorCenterInstance
+  let cmsError: CmsErrorInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
+    cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
     errorCenter.addCallback((cause) => {
       capturedErrors.push({
@@ -171,7 +174,7 @@ describe('CmsUserItem', () => {
           makeRole({ id: 3, code: 'editor', permissions: [readPerm] })
         ]
       })
-      const item = new CmsUserItem(data, undefined, errorCenter)
+      const item = new CmsUserItem(data, undefined, cmsError)
 
       expect(item.getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
       expect(item.getId()).toBe(1)
@@ -261,7 +264,7 @@ describe('CmsUserItem', () => {
           })]
         ]
       })
-      const item = new CmsUserItem(makeUserData(), mock.dbInstance, errorCenter)
+      const item = new CmsUserItem(makeUserData(), mock.dbInstance, cmsError)
 
       const updated = await item.update({
         firstName: ' Updated ',
@@ -317,7 +320,7 @@ describe('CmsUserItem', () => {
         insertQueue: [[], [], []],
         deleteQueue: [[], [], []]
       })
-      const item = new CmsUserItem(makeUserData(), mock.dbInstance, errorCenter)
+      const item = new CmsUserItem(makeUserData(), mock.dbInstance, cmsError)
 
       expect(await item.addRoles([3])).toEqual([adminRole, editorRole])
       expect(item.hasRole('editor')).toBe(true)
@@ -340,7 +343,7 @@ describe('CmsUserItem', () => {
 
     it('reports userNotFound via ErrorCenter when mutating roles of missing user', async () => {
       const mock = createMockDb({ selectQueue: [[]] })
-      const item = new CmsUserItem(makeUserData({ id: 404 }), mock.dbInstance, errorCenter)
+      const item = new CmsUserItem(makeUserData({ id: 404 }), mock.dbInstance, cmsError)
 
       await expect(item.setRoles([1])).rejects.toThrow('CMS user with ID 404 was not found.')
       expect(capturedErrors[0]).toMatchObject({
@@ -371,7 +374,7 @@ describe('CmsUserItem', () => {
           [makeUserData({ metadata: { locale: 'ru' } })]
         ]
       })
-      const item = new CmsUserItem(makeUserData(), mock.dbInstance, errorCenter)
+      const item = new CmsUserItem(makeUserData(), mock.dbInstance, cmsError)
 
       expect(await item.reload()).toBe(item)
       expect(item.getFirstName()).toBe('Reloaded')

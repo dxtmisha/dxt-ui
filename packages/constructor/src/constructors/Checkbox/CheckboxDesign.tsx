@@ -1,12 +1,13 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { Skeleton } from '../Skeleton'
+
 import { Checkbox } from './Checkbox'
 
 import {
@@ -21,7 +22,9 @@ import {
 } from './types'
 
 /**
- * CheckboxDesign
+ * Design constructor class for the Checkbox component.
+ *
+ * Класс конструктора дизайна для компонента Checkbox.
  */
 export class CheckboxDesign<
   COMP extends CheckboxComponents,
@@ -29,7 +32,7 @@ export class CheckboxDesign<
   CLASSES extends CheckboxClasses,
   P extends CheckboxPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLLabelElement,
     COMP,
     CheckboxEmits,
     EXPOSE,
@@ -37,14 +40,17 @@ export class CheckboxDesign<
     CLASSES,
     P
   > {
+  /** Checkbox logic instance / Экземпляр логики Checkbox */
   protected readonly item: Checkbox
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   *
+   * Конструктор
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -69,14 +75,15 @@ export class CheckboxDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспонируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.value.expose(),
-      ...this.item.validation.expose()
+      ...this.item.i('value').expose(),
+      ...this.item.i('validation').expose()
     } as EXPOSE
   }
 
@@ -84,6 +91,7 @@ export class CheckboxDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -106,6 +114,7 @@ export class CheckboxDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -115,18 +124,20 @@ export class CheckboxDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered VNode / отрендеренный VNode
    */
   protected initRender(): VNode {
     return h(
       'label',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...AriaStaticInclude.labelledby(this.item.label.id),
-        ...AriaStaticInclude.describedby(this.item.description.id)
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       [
         this.renderInputHidden(),
         this.renderInput(),
@@ -139,9 +150,10 @@ export class CheckboxDesign<
    * Rendering of the main body.
    *
    * Рендеринг главного body.
+   * @returns body VNode / VNode тела
    */
   readonly renderBody = (): VNode => {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderChecked(),
       ...this.renderInfo()
     ]
@@ -155,16 +167,19 @@ export class CheckboxDesign<
    * Rendering of the main input.
    *
    * Рендеринг главного input.
+   * @returns input VNode / VNode элемента ввода
    */
   readonly renderInput = (): VNode => {
-    return h('input', toBinds(
-      this.item.attributes.listForCheckbox,
+    return h('input', mergeProps(
+      this.item.i('attributes').listForCheckbox,
       {
         class: this.classes?.value.input,
         type: this.item.type,
-        checked: this.item.value.item.value,
+        checked: Boolean(this.item.i('value').item.value),
+        onClick: this.item.onClick,
         onInput: this.item.onInput,
-        ...AriaStaticInclude.invalid(this.item.validation.isError())
+        ...AriaStaticInclude.readonly(Boolean(this.props.readonly)),
+        ...AriaStaticInclude.invalid(this.item.i('validation').isError())
       }
     ))
   }
@@ -173,6 +188,7 @@ export class CheckboxDesign<
    * Rendering of the hidden input.
    *
    * Рендеринг скрытого input.
+   * @returns hidden input VNode / VNode скрытого элемента ввода
    */
   readonly renderInputHidden = (): VNode => {
     return h('input', {
@@ -186,6 +202,7 @@ export class CheckboxDesign<
    * Rendering of the checkbox element.
    *
    * Рендеринг элемента checkbox.
+   * @returns array of VNodes / массив VNode
    */
   readonly renderChecked = (): VNode[] => {
     return this.renderCheckedItem()
@@ -195,6 +212,7 @@ export class CheckboxDesign<
    * Rendering of the internal checkbox element.
    *
    * Рендеринг внутреннего элемента checkbox.
+   * @returns array of VNodes / массив VNode
    */
   readonly renderCheckedItem = (): VNode[] => {
     return [
@@ -205,23 +223,27 @@ export class CheckboxDesign<
           ...AriaStaticInclude.hidden()
         },
         [
-          ...this.item.progress.render(),
+          ...this.item.callInstance('progress', item => item.render(), []),
           h(
             'span',
             {
               class: [
                 this.classes?.value.icon,
-                this.item.skeleton.classesSkeleton.classBackground
+                this.item.callInstance(
+                  'skeleton',
+                  item => item.classesSkeleton.classBackground,
+                  Skeleton.getClassesListByDesign(this.naming.getDesign()).classBackground
+                )
               ]
             },
             [
               this.components?.renderOne(
                 'image',
-                this.item.icon.item
+                this.item.i('icon').item
               )
             ]
           ),
-          ...this.item.ripple.render()
+          ...this.item.callInstance('ripple', item => item.render(), [])
         ]
       )
     ]
@@ -231,20 +253,22 @@ export class CheckboxDesign<
    * Rendering of the informational text element.
    *
    * Рендеринг элемента информационного текста.
+   * @returns array of VNodes / массив VNode
    */
   readonly renderInfo = (): VNode[] => {
     if (
-      this.item.label.is
-      || this.item.description.is
+      this.item.callInstance('label', item => item.is, false)
+      || this.item.callInstance('description', item => item.is, false)
     ) {
       return [h(
         'span',
         this.getKeyClass('info'),
         [
-          ...this.item.label.render(),
-          ...this.item.description.render(),
-          ...this.item.message.render()
-        ])]
+          ...this.item.callInstance('label', item => item.render(), []),
+          ...this.item.callInstance('description', item => item.render(), []),
+          ...this.item.i('message').render()
+        ]
+      )]
     }
 
     return []

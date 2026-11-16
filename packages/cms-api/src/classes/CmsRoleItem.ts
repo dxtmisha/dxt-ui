@@ -8,18 +8,18 @@ import {
 import {
   isPositiveInteger,
   isString,
-  uniqueArray,
-  type ErrorCenterInstance
+  uniqueArray
 } from '@dxtmisha/functional-basic'
 
+import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { CmsDbAbstract } from './CmsDbAbstract'
-import { CmsErrorInstance } from './CmsErrorInstance'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import type { CmsDbInstance } from './CmsDbInstance'
+import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
   CmsDbExecutor,
   CmsNewRole,
@@ -38,19 +38,19 @@ import type {
  */
 export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
   /**
-   * Initializes a role entity wrapper with role data, database instance manager, and error center.
+   * Initializes a role entity wrapper with role data, database instance manager, and error handler.
    *
-   * Инициализирует обёртку конкретной роли с её данными, менеджером БД и центром ошибок.
+   * Инициализирует обёртку конкретной роли с её данными, менеджером БД и обработчиком ошибок.
    * @param data Role record with assigned permissions / Запись роли с назначенными правами доступа
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CMS error instance handler / Обработчик ошибок CMS
    */
   constructor(
     protected data: CmsRoleWithPermissions,
     databaseInstance?: CmsDbInstance,
-    errorCenter?: ErrorCenterInstance
+    error?: CmsErrorInstance
   ) {
-    super(roles, databaseInstance, errorCenter)
+    super(roles, databaseInstance, error)
   }
 
   /**
@@ -188,7 +188,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    */
   getPermissionItems(): CmsPermissionItem[] {
     return this.data.permissions.map(
-      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance, this.getErrorCenter())
+      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance, this.error)
     )
   }
 
@@ -298,7 +298,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       return undefined
     }
 
-    const updateValues = CmsRoleItem.buildUpdateValues(input, this.getErrorCenter())
+    const updateValues = CmsRoleItem.buildUpdateValues(input, this.error)
 
     try {
       const updatedRecord = await this.getDatabase().transaction(async (transaction) => {
@@ -327,7 +327,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
         if (input.permissionIds !== undefined || input.permissionCodes !== undefined) {
           const resolvedPermissionIds = await CmsPermissionItem.resolveIds(
             transaction,
-            this.getErrorCenter(),
+            this.error,
             input.permissionIds,
             input.permissionCodes
           )
@@ -349,7 +349,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.handleTransactionError(
+      return this.error.handleTransaction(
         'roleUpdate',
         'Failed to update CMS role.',
         error
@@ -372,7 +372,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     try {
       return await this.deleteRecordById(roleId)
     } catch (error) {
-      return this.handleTransactionError(
+      return this.error.handleTransaction(
         'roleDelete',
         'Failed to delete CMS role.',
         error
@@ -435,10 +435,10 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
     try {
       const permissionsList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsRoleItem.ensureRoleExists(transaction, this.getErrorCenter(), roleId)
+        await CmsRoleItem.ensureRoleExists(transaction, this.error, roleId)
         const resolvedIds = await CmsPermissionItem.resolveIds(
           transaction,
-          this.getErrorCenter(),
+          this.error,
           permissionIds,
           permissionCodes
         )
@@ -454,7 +454,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.handleTransactionError(errorCode, errorMessage, error)
+      return this.error.handleTransaction(errorCode, errorMessage, error)
     }
   }
 
@@ -478,10 +478,10 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
     try {
       const permissionsList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsRoleItem.ensureRoleExists(transaction, this.getErrorCenter(), roleId)
+        await CmsRoleItem.ensureRoleExists(transaction, this.error, roleId)
         const resolvedIds = await CmsPermissionItem.resolveIds(
           transaction,
-          this.getErrorCenter(),
+          this.error,
           permissionIds,
           permissionCodes
         )
@@ -505,7 +505,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.handleTransactionError(errorCode, errorMessage, error)
+      return this.error.handleTransaction(errorCode, errorMessage, error)
     }
   }
 
@@ -529,7 +529,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
     try {
       const permissionsList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsRoleItem.ensureRoleExists(transaction, this.getErrorCenter(), roleId)
+        await CmsRoleItem.ensureRoleExists(transaction, this.error, roleId)
 
         const targetIds: number[] = []
 
@@ -577,7 +577,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.handleTransactionError(errorCode, errorMessage, error)
+      return this.error.handleTransaction(errorCode, errorMessage, error)
     }
   }
 
@@ -709,17 +709,16 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Проверяет наличие роли с указанным идентификатором или регистрирует ошибку.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @param roleId Role identifier / Идентификатор роли
    */
   static async ensureRoleExists(
     executor: CmsDbExecutor,
-    errorCenter: ErrorCenterInstance,
+    error: CmsErrorInstance,
     roleId: number
   ): Promise<void> {
     if (!isPositiveInteger(roleId)) {
-      CmsErrorInstance.report(
-        errorCenter,
+      error.report(
         'roleNotFound',
         `CMS role with ID ${String(roleId)} was not found.`,
         { roleId }
@@ -733,8 +732,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      CmsErrorInstance.report(
-        errorCenter,
+      error.report(
         'roleNotFound',
         `CMS role with ID ${roleId} was not found.`,
         { roleId }
@@ -743,36 +741,88 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
   }
 
   /**
-   * Resolves and validates role identifiers from role IDs and/or role codes.
+   * Validates and verifies role identifiers by their IDs.
    *
-   * Разрешает и валидирует идентификаторы ролей из переданных ID и/или кодов ролей.
+   * Проверяет и подтверждает идентификаторы ролей по их ID.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @param roleIds Optional list of role IDs / Необязательный список ID ролей
-   * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
    * @returns Deduplicated list of verified role IDs / Уникальный список проверенных ID ролей
    */
-  static async resolveIds(
+  static async resolveIdsByIds(
     executor: CmsDbExecutor,
-    errorCenter: ErrorCenterInstance,
-    roleIds?: readonly number[],
-    roleCodes?: readonly string[]
+    error: CmsErrorInstance,
+    roleIds?: readonly number[]
   ): Promise<number[]> {
-    return CmsDbAbstract.resolveEntityIds(
-      errorCenter,
+    return CmsDbAbstract.resolveEntityIdsByIds(
+      error,
       'roleNotFound',
       'CMS role',
       uniqueIds => executor
         .select({ id: roles.id })
         .from(roles)
         .where(inArray(roles.id, uniqueIds)),
+      roleIds
+    )
+  }
+
+  /**
+   * Resolves and verifies role identifiers by their unique codes.
+   *
+   * Разрешает и проверяет идентификаторы ролей по их уникальным кодам.
+   * @param executor Database or transaction executor / Исполнитель БД или транзакции
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
+   * @returns Deduplicated list of resolved role IDs / Уникальный список найденных ID ролей
+   */
+  static async resolveIdsByCodes(
+    executor: CmsDbExecutor,
+    error: CmsErrorInstance,
+    roleCodes?: readonly string[]
+  ): Promise<number[]> {
+    return CmsDbAbstract.resolveEntityIdsByCodes(
+      error,
+      'roleNotFound',
+      'CMS role',
       uniqueCodes => executor
         .select({ id: roles.id, code: roles.code })
         .from(roles)
         .where(inArray(roles.code, uniqueCodes)),
-      roleIds,
       roleCodes
     )
+  }
+
+  /**
+   * Resolves and validates role identifiers from role IDs and/or role codes.
+   *
+   * Разрешает и валидирует идентификаторы ролей из переданных ID и/или кодов ролей.
+   * @param executor Database or transaction executor / Исполнитель БД или транзакции
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param roleIds Optional list of role IDs / Необязательный список ID ролей
+   * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
+   * @returns Deduplicated list of verified role IDs / Уникальный список проверенных ID ролей
+   */
+  static async resolveIds(
+    executor: CmsDbExecutor,
+    error: CmsErrorInstance,
+    roleIds?: readonly number[],
+    roleCodes?: readonly string[]
+  ): Promise<number[]> {
+    const resolvedIds: number[] = []
+
+    if (roleIds !== undefined) {
+      resolvedIds.push(
+        ...await CmsRoleItem.resolveIdsByIds(executor, error, roleIds)
+      )
+    }
+
+    if (roleCodes !== undefined) {
+      resolvedIds.push(
+        ...await CmsRoleItem.resolveIdsByCodes(executor, error, roleCodes)
+      )
+    }
+
+    return uniqueArray(resolvedIds)
   }
 
   /**
@@ -809,17 +859,17 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Формирует и валидирует объект вставки в базу данных из входных данных создания роли.
    * @param input Role creation payload / Входные данные для создания роли
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
   static buildCreateValues(
     input: CmsRoleCreateInput,
-    errorCenter: ErrorCenterInstance
+    error: CmsErrorInstance
   ): CmsNewRole {
     return {
-      code: CmsRoleItem.normalizeCode(input.code, errorCenter),
-      name: CmsRoleItem.normalizeName(input.name, errorCenter),
-      description: CmsRoleItem.normalizeOptionalText(input.description)
+      code: CmsRoleItem.normalizeCode(input.code, error),
+      name: CmsRoleItem.normalizeName(input.name, error),
+      description: normalizeCmsOptionalText(input.description)
     }
   }
 
@@ -828,25 +878,25 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Формирует и валидирует объект обновления в базе данных из входных данных редактирования роли.
    * @param input Partial role update payload / Частичные данные для обновления роли
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
    */
   static buildUpdateValues(
     input: CmsRoleUpdateInput,
-    errorCenter: ErrorCenterInstance
+    error: CmsErrorInstance
   ): Partial<CmsNewRole> {
     const values: Partial<CmsNewRole> = {}
 
     if (input.code !== undefined) {
-      values.code = CmsRoleItem.normalizeCode(input.code, errorCenter)
+      values.code = CmsRoleItem.normalizeCode(input.code, error)
     }
 
     if (input.name !== undefined) {
-      values.name = CmsRoleItem.normalizeName(input.name, errorCenter)
+      values.name = CmsRoleItem.normalizeName(input.name, error)
     }
 
     if (input.description !== undefined) {
-      values.description = CmsRoleItem.normalizeOptionalText(input.description)
+      values.description = normalizeCmsOptionalText(input.description)
     }
 
     return values
@@ -857,18 +907,17 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Нормализует и проверяет код роли.
    * @param code Raw role code / Исходный код роли
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @returns Trimmed non-empty role code / Очищенный код роли
    */
   static normalizeCode(
     code: string,
-    errorCenter: ErrorCenterInstance
+    error: CmsErrorInstance
   ): string {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      CmsErrorInstance.report(
-        errorCenter,
+      error.report(
         'roleInvalidCode',
         'Valid role code is required.',
         { code }
@@ -883,18 +932,17 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Нормализует и проверяет название роли.
    * @param name Raw role name / Исходное название роли
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @returns Trimmed non-empty role name / Очищенное название роли
    */
   static normalizeName(
     name: string,
-    errorCenter: ErrorCenterInstance
+    error: CmsErrorInstance
   ): string {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      CmsErrorInstance.report(
-        errorCenter,
+      error.report(
         'roleInvalidName',
         'Role name is required.',
         { name }

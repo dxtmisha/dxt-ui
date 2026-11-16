@@ -13,6 +13,11 @@ import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
+/**
+ * Type describing token properties for Checkbox.
+ *
+ * Тип, описывающий свойства токенов для Checkbox.
+ */
 type CheckboxPropsToken = {
   // :type [!] System label / Системная метка
   block?: boolean
@@ -25,6 +30,11 @@ type CheckboxPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Interface describing basic properties of the Checkbox component.
+ *
+ * Интерфейс, описывающий базовые свойства компонента Checkbox.
+ */
 export type CheckboxPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
@@ -41,6 +51,7 @@ export type CheckboxPropsBasic<
   & SkeletonPropsInclude
   & {
     // Status
+    /** Selected value for variant matching / Выбранное значение для сопоставления варианта */
     selected?: string
 
     // Style

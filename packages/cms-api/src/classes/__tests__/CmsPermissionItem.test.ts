@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
+import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
 
@@ -93,11 +94,13 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
 
 describe('CmsPermissionItem', () => {
   let errorCenter: ErrorCenterInstance
+  let cmsError: CmsErrorInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
+    cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
     errorCenter.addCallback((cause) => {
       capturedErrors.push({
@@ -115,7 +118,7 @@ describe('CmsPermissionItem', () => {
   describe('Getters & immutability', () => {
     it('exposes all permission fields and returns immutable snapshots from getData/toJSON', () => {
       const data = makePermission()
-      const item = new CmsPermissionItem(data, undefined, errorCenter)
+      const item = new CmsPermissionItem(data, undefined, cmsError)
 
       expect(item.getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
       expect(item.getId()).toBe(10)
@@ -142,7 +145,7 @@ describe('CmsPermissionItem', () => {
       const mock = createMockDb({
         updateQueue: [[updatedRecord]]
       })
-      const item = new CmsPermissionItem(makePermission(), mock.dbInstance, errorCenter)
+      const item = new CmsPermissionItem(makePermission(), mock.dbInstance, cmsError)
 
       const result = await item.update({
         code: '  users:manage  ',
@@ -163,8 +166,8 @@ describe('CmsPermissionItem', () => {
 
     it('returns undefined when updating a missing or invalid permission ID', async () => {
       const mock = createMockDb({ updateQueue: [[]] })
-      const missingItem = new CmsPermissionItem(makePermission({ id: 404 }), mock.dbInstance, errorCenter)
-      const invalidItem = new CmsPermissionItem(makePermission({ id: 0 }), mock.dbInstance, errorCenter)
+      const missingItem = new CmsPermissionItem(makePermission({ id: 404 }), mock.dbInstance, cmsError)
+      const invalidItem = new CmsPermissionItem(makePermission({ id: 0 }), mock.dbInstance, cmsError)
 
       expect(await invalidItem.update({ name: 'Test' })).toBeUndefined()
       expect(await missingItem.update({ name: 'Test' })).toBeUndefined()
@@ -172,7 +175,7 @@ describe('CmsPermissionItem', () => {
 
     it('validates code and name on update via ErrorCenter', async () => {
       const mock = createMockDb()
-      const item = new CmsPermissionItem(makePermission(), mock.dbInstance, errorCenter)
+      const item = new CmsPermissionItem(makePermission(), mock.dbInstance, cmsError)
 
       await expect(item.update({ code: 'bad code' })).rejects.toThrow('Valid permission code is required.')
       await expect(item.update({ name: '   ' })).rejects.toThrow('Permission name is required.')
@@ -188,7 +191,7 @@ describe('CmsPermissionItem', () => {
         selectQueue: [[reloaded], []],
         deleteQueue: [[{ id: 10 }], []]
       })
-      const item = new CmsPermissionItem(makePermission(), mock.dbInstance, errorCenter)
+      const item = new CmsPermissionItem(makePermission(), mock.dbInstance, cmsError)
 
       expect(await item.reload()).toBe(item)
       expect(item.getName()).toBe('Reloaded name')
@@ -233,15 +236,42 @@ describe('CmsPermissionItem', () => {
 
       const resolved = await CmsPermissionItem.resolveIds(
         mock.db,
-        errorCenter,
+        new CmsErrorInstance(errorCenter),
         [1, 1],
         [' users:create ', '']
       )
       expect(resolved).toEqual([1, 2])
 
       await expect(
-        CmsPermissionItem.resolveIds(mock.db, errorCenter, [999])
+        CmsPermissionItem.resolveIds(mock.db, new CmsErrorInstance(errorCenter), [999])
       ).rejects.toThrow('CMS permissions not found for IDs: 999.')
+      expect(capturedErrors[0]?.code).toBe('permissionNotFound')
+    })
+
+    it('resolves permission IDs and codes separately via resolveIdsByIds and resolveIdsByCodes', async () => {
+      const mock = createMockDb({
+        selectQueue: [
+          [{ id: 3 }],
+          [{ id: 4, code: 'roles:read' }],
+          []
+        ]
+      })
+
+      expect(
+        await CmsPermissionItem.resolveIdsByIds(mock.db, new CmsErrorInstance(errorCenter), [3, 3])
+      ).toEqual([3])
+
+      expect(
+        await CmsPermissionItem.resolveIdsByCodes(
+          mock.db,
+          new CmsErrorInstance(errorCenter),
+          [' roles:read ', '']
+        )
+      ).toEqual([4])
+
+      await expect(
+        CmsPermissionItem.resolveIdsByCodes(mock.db, new CmsErrorInstance(errorCenter), ['missing:code'])
+      ).rejects.toThrow('CMS permissions not found for codes: missing:code.')
       expect(capturedErrors[0]?.code).toBe('permissionNotFound')
     })
   })

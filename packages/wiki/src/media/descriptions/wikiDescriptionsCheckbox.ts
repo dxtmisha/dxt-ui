@@ -14,31 +14,39 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
   possibilities: {
     en: [
       'checked, unchecked, and indeterminate states',
-      'built-in validation support with custom messages',
-      'label and description text support',
+      'two-way v-model and v-model:selected synchronization with valueVariant',
+      'built-in validation support with custom messages and expose helpers',
+      'label and description text support with default and description slots',
       'customizable icons for checked and indeterminate states',
-      'disabled and loading states',
-      'ripple effect on interaction',
-      'skeleton state for loading placeholders',
-      'adaptive layout options',
-      'form integration with name and value attributes'
+      'disabled, readonly, focus, loading, and skeleton states',
+      'ripple effect on interaction and adaptive layout options',
+      'form integration with name and valueVariantHide attributes'
     ],
     ru: [
       'состояния: отмечен, не отмечен и неопределённое',
-      'встроенная поддержка валидации с пользовательскими сообщениями',
-      'поддержка текста метки и описания',
+      'двусторонняя синхронизация v-model и v-model:selected с valueVariant',
+      'встроенная поддержка валидации с пользовательскими сообщениями и методами expose',
+      'поддержка текста метки, описания и слотов default / description',
       'настраиваемые иконки для состояний отмечен и неопределённое',
-      'состояния отключения и загрузки',
-      'эффект волны при взаимодействии',
-      'состояние скелетона для заполнителей загрузки',
-      'опции адаптивной разметки',
-      'интеграция с формами через атрибуты name и value'
+      'состояния disabled, readonly, focus, loading и skeleton',
+      'эффект волны при взаимодействии и опции адаптивной разметки',
+      'интеграция с формами через атрибуты name и valueVariantHide'
     ]
   },
   import: [
     'import { ref } from \'vue\''
   ],
+  render: `
+    <DesignComponent v-bind="args"/>
+  `,
+  play: `
+const component = canvasElement.querySelector('.design-component')
+await expect(component).toBeInTheDocument()
+  `,
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'CheckboxVModel',
       name: {
@@ -47,8 +55,7 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
       },
       setup: `
       return {
-        checkboxValue: ref(false),
-        indeterminateValue: ref(null)
+        checkboxValue: ref(false)
       }
       `,
       template: `
@@ -61,6 +68,26 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
             label="Checkbox with v-model"
           />
         </div>
+      `,
+      play: `
+const button = canvasElement.querySelector('button.wiki-storybook-button')
+const input = canvasElement.querySelector<HTMLInputElement>('input[type="checkbox"]')
+
+await expect(button).toBeInTheDocument()
+await expect(input).toBeInTheDocument()
+await expect(input?.checked).toBe(false)
+
+if (button) {
+  await userEvent.click(button)
+}
+await expect(input?.checked).toBe(true)
+await expect(button).toHaveTextContent('Check true')
+
+if (input) {
+  await userEvent.click(input)
+}
+await expect(input?.checked).toBe(false)
+await expect(button).toHaveTextContent('Check false')
       `
     },
     {
@@ -77,6 +104,12 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
             <DesignComponent isSkeleton label="Another loading checkbox" />
           </div>
         </DesignSkeleton>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(2)
+await expect(items[0].querySelector('.design-component__label')).toHaveTextContent('Loading checkbox')
+await expect(items[1].querySelector('.design-component__label')).toHaveTextContent('Another loading checkbox')
       `
     },
     {
@@ -94,6 +127,132 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
             <em>Custom description slot</em>
           </template>
         </DesignComponent>
+      `,
+      play: `
+const labelStrong = canvasElement.querySelector('.design-component__label strong')
+const descriptionEm = canvasElement.querySelector('.design-component__description em')
+
+await expect(labelStrong).toHaveTextContent('Custom label slot')
+await expect(descriptionEm).toHaveTextContent('Custom description slot')
+      `
+    },
+
+    // =========================================================================
+    // TIER 2: TEST STORIES (Constructor props only)
+    // =========================================================================
+    {
+      id: 'CheckboxTestStates',
+      name: {
+        en: 'Test: Disabled, readonly, focus, loading and indeterminate states',
+        ru: 'Тест: Состояния disabled, readonly, focus, loading и indeterminate'
+      },
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent label="Disabled" disabled />
+          <DesignComponent label="Readonly" readonly />
+          <DesignComponent label="Focus" focus />
+          <DesignComponent label="Loading boolean" loading :modelValue="true" />
+          <DesignComponent label="Loading object" :loading="{ visible: true, circular: true }" :modelValue="true" />
+          <DesignComponent label="Indeterminate" indeterminate :modelValue="true" />
+          <DesignComponent label="Disabled with forceShowMessage" disabled forceShowMessage helperMessage="Forced message" />
+        </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(7)
+
+const readonlyInput = items[1].querySelector<HTMLInputElement>('input[type="checkbox"]')
+await expect(readonlyInput).toHaveAttribute('aria-readonly', 'true')
+await expect(readonlyInput?.checked).toBe(false)
+
+if (readonlyInput) {
+  await userEvent.click(readonlyInput)
+}
+await expect(readonlyInput?.checked).toBe(false)
+
+await expect(items[3].querySelector('.design-component__loading')).toBeInTheDocument()
+await expect(items[4].querySelector('.design-component__loading')).toBeInTheDocument()
+await expect(items[6]).toHaveTextContent('Forced message')
+      `
+    },
+    {
+      id: 'CheckboxTestSelected',
+      name: {
+        en: 'Test: Selected synchronization and valueVariant',
+        ru: 'Тест: Синхронизация selected и valueVariant'
+      },
+      setup: `
+      return {
+        selectedValue: ref('alpha')
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-card">Selected: {{ selectedValue }}</div>
+          <DesignComponent
+            v-model:selected="selectedValue"
+            name="group-test"
+            valueVariant="alpha"
+            valueVariantHide="none"
+            label="Alpha"
+          />
+          <DesignComponent
+            v-model:selected="selectedValue"
+            name="group-test"
+            valueVariant="beta"
+            valueVariantHide="none"
+            label="Beta"
+          />
+        </div>
+      `,
+      play: `
+const card = canvasElement.querySelector('.wiki-storybook-card')
+const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')
+const hiddenInputs = canvasElement.querySelectorAll<HTMLInputElement>('input[type="hidden"]')
+
+await expect(inputs[0].checked).toBe(true)
+await expect(inputs[1].checked).toBe(false)
+await expect(hiddenInputs[0].value).toBe('none')
+await expect(card).toHaveTextContent('Selected: alpha')
+
+await userEvent.click(inputs[1])
+await expect(inputs[0].checked).toBe(false)
+await expect(inputs[1].checked).toBe(true)
+await expect(card).toHaveTextContent('Selected: beta')
+      `
+    },
+    {
+      id: 'CheckboxTestLayoutAndBoundaries',
+      name: {
+        en: 'Test: Layout, numeric zero, custom icons and HTML messages',
+        ru: 'Тест: Компоновка, числовой ноль, иконки и HTML-сообщения'
+      },
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent :label="0" :description="0" :modelValue="false" />
+          <DesignComponent label="Inline" :block="false" :itemCenter="false" description="Top aligned" />
+          <DesignComponent label="Required" required validationMessage="Validation failed" />
+          <DesignComponent label="HTML helper" hasHtmlCode helperMessage="Helper <strong>bold</strong> text" />
+          <DesignComponent label="Object icon" :iconCheckbox="{ value: 'verified' }" :modelValue="true" />
+        </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(5)
+
+await expect(items[0].querySelector('.design-component__label')).toHaveTextContent('0')
+await expect(items[0].querySelector('.design-component__description')).toHaveTextContent('0')
+await expect(items[0].querySelector<HTMLInputElement>('input[type="checkbox"]')?.checked).toBe(false)
+
+await expect(items[1]).not.toHaveClass('design-component--block')
+await expect(items[1]).not.toHaveClass('design-component--itemCenter')
+
+const requiredInput = items[2].querySelector<HTMLInputElement>('input[type="checkbox"]')
+await expect(items[2]).toHaveClass('design-component--required')
+await expect(requiredInput).toHaveAttribute('aria-invalid', 'true')
+await expect(items[2]).toHaveTextContent('Validation failed')
+
+await expect(items[3].querySelector('strong')).toHaveTextContent('bold')
       `
     }
   ],
@@ -128,8 +287,8 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
   ai: {
     description: `
 Form control component for binary (yes/no) or indeterminate state selection. Allows users to toggle specific options or select multiple items from a list with visual feedback.
-Features support for primary label, secondary description, and custom icons for checked/indeterminate states. Includes built-in validation, loading indicators, and adaptive layout options.
-Controlled via v-model or value prop and emits @input/@change events. Use for terms agreement, feature toggles, or parent-child coordinated selections (via indeterminate state).
+Features support for primary label, secondary description, and custom icons for checked/indeterminate states. Includes built-in validation, loading indicators, readonly click protection, and adaptive layout options.
+Controlled via v-model or v-model:selected/valueVariant and emits @input/@change events. Use for terms agreement, feature toggles, or parent-child coordinated selections (via indeterminate state).
     `
   }
 }

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'v
 import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
+import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsPermissionManager } from '../CmsPermissionManager'
 import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
@@ -118,11 +119,13 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
 
 describe('CmsPermissionManager', () => {
   let errorCenter: ErrorCenterInstance
+  let cmsError: CmsErrorInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
+    cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
     errorCenter.addCallback((cause) => {
       capturedErrors.push({
@@ -138,7 +141,7 @@ describe('CmsPermissionManager', () => {
   })
 
   it('defaults to useCmsDb().cmsDbInstance and supports setDatabaseInstance', () => {
-    const defaultManager = new CmsPermissionManager(undefined, errorCenter)
+    const defaultManager = new CmsPermissionManager(undefined, cmsError)
     expect(defaultManager.getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
 
     const mock = createMockDb()
@@ -151,7 +154,7 @@ describe('CmsPermissionManager', () => {
     const mock = createMockDb({
       insertQueue: [[created]]
     })
-    const manager = new CmsPermissionManager(mock.dbInstance, errorCenter)
+    const manager = new CmsPermissionManager(mock.dbInstance, cmsError)
 
     const result = await manager.create({
       code: '  content:publish  ',
@@ -172,7 +175,7 @@ describe('CmsPermissionManager', () => {
 
   it('rejects invalid code and name on create via ErrorCenter', async () => {
     const mock = createMockDb()
-    const manager = new CmsPermissionManager(mock.dbInstance, errorCenter)
+    const manager = new CmsPermissionManager(mock.dbInstance, cmsError)
 
     await expect(manager.create({ code: '  ', name: 'Name' })).rejects.toThrow('Valid permission code is required.')
     await expect(manager.create({ code: 'has space', name: 'Name' })).rejects.toThrow('Valid permission code is required.')
@@ -199,7 +202,7 @@ describe('CmsPermissionManager', () => {
         [permOne, permTwo]
       ]
     })
-    const manager = new CmsPermissionManager(mock.dbInstance, errorCenter)
+    const manager = new CmsPermissionManager(mock.dbInstance, cmsError)
 
     expect(await manager.hasById(0)).toBe(false)
     expect(await manager.hasByCode('   ')).toBe(false)
@@ -232,7 +235,7 @@ describe('CmsPermissionManager', () => {
         [{ count: 0 }]
       ]
     })
-    const manager = new CmsPermissionManager(mock.dbInstance, errorCenter)
+    const manager = new CmsPermissionManager(mock.dbInstance, cmsError)
 
     const result = await manager.getList({
       search: 'users',
@@ -269,7 +272,7 @@ describe('CmsPermissionManager', () => {
       updateQueue: [[updated]],
       deleteQueue: [[{ id: 3 }]]
     })
-    const manager = new CmsPermissionManager(mock.dbInstance, errorCenter)
+    const manager = new CmsPermissionManager(mock.dbInstance, cmsError)
 
     const updatedItem = await manager.update(3, { name: 'New' })
     expect(updatedItem?.getName()).toBe('New')

@@ -11,17 +11,19 @@ import {
 import {
   isPositiveInteger,
   isString,
-  uniqueArray,
-  type ErrorCenterInstance
+  uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
+import { normalizeCmsLimit } from '../functions/normalizeCmsLimit'
+import { normalizeCmsOffset } from '../functions/normalizeCmsOffset'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import type { CmsDbInstance } from './CmsDbInstance'
+import type { CmsErrorInstance } from './CmsErrorInstance'
 import type { CmsPermission } from '../types/cmsDbTypes'
 import type {
   CmsPermissionCreateInput,
@@ -37,17 +39,17 @@ import type {
  */
 export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
   /**
-   * Initializes the permission manager with a CmsDbInstance and error center.
+   * Initializes the permission manager with a CmsDbInstance and error handler.
    *
-   * Инициализирует менеджер прав доступа с экземпляром CmsDbInstance и центром ошибок.
+   * Инициализирует менеджер прав доступа с экземпляром CmsDbInstance и обработчиком ошибок.
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CMS error instance handler / Обработчик ошибок CMS
    */
   constructor(
     databaseInstance?: CmsDbInstance,
-    errorCenter?: ErrorCenterInstance
+    error?: CmsErrorInstance
   ) {
-    super(permissions, databaseInstance, errorCenter)
+    super(permissions, databaseInstance, error)
   }
 
   /**
@@ -182,8 +184,8 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    */
   async getList(options: CmsPermissionListOptions = {}): Promise<CmsPermissionListResult> {
     const database = this.getDatabase()
-    const limit = this.normalizeLimit(options.limit)
-    const offset = this.normalizeOffset(options.offset)
+    const limit = normalizeCmsLimit(options.limit)
+    const offset = normalizeCmsOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
     const total = await this.countRecords(whereCondition)
@@ -240,7 +242,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    * @returns Created CmsPermissionItem instance / Созданный экземпляр CmsPermissionItem
    */
   async create(input: CmsPermissionCreateInput): Promise<CmsPermissionItem> {
-    const createValues = CmsPermissionItem.buildCreateValues(input, this.getErrorCenter())
+    const createValues = CmsPermissionItem.buildCreateValues(input, this.error)
 
     try {
       const insertedRows = await this.getDatabase()
@@ -250,7 +252,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
 
       const createdPermission = insertedRows[0]
       if (!createdPermission) {
-        this.reportError(
+        this.error.report(
           'permissionCreate',
           'Failed to create CMS permission record.'
         )
@@ -258,7 +260,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
 
       return this.wrapPermissionItem(createdPermission)
     } catch (error) {
-      return this.handleTransactionError(
+      return this.error.handleTransaction(
         'permissionCreate',
         'Failed to create CMS permission.',
         error
@@ -290,7 +292,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    * @returns Wrapped CmsPermissionItem instance / Экземпляр CmsPermissionItem
    */
   protected wrapPermissionItem(permissionRecord: CmsPermission): CmsPermissionItem {
-    return new CmsPermissionItem(permissionRecord, this.databaseInstance, this.getErrorCenter())
+    return new CmsPermissionItem(permissionRecord, this.databaseInstance, this.error)
   }
 
   /**

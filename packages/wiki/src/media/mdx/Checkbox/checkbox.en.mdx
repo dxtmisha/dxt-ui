@@ -1,22 +1,36 @@
-Component for creating interactive checkboxes with support for multiple selection, validation, and state customization.
+import { Source } from '@storybook/addon-docs/blocks';
 
-Checkbox manages the selection state of elements (checked, unchecked, indeterminate state), supports validation, form integration, customizable icons, and transition animations. The component automatically handles state changes, focus management, and event generation during user interaction.
+The `Checkbox` component is an interactive form control for binary, value-variant, or indeterminate state selection with integrated validation, descriptions, and accessibility support.
+
+It wraps a native `<input type="checkbox">` inside a semantic `<label>`, coordinating two-way `v-model` and `v-model:selected` synchronization, read-only click protection (`aria-readonly`), custom checked/indeterminate icons, loading indicators, and skeleton placeholders.
 
 **Key features:**
 
-- Three states: checked, unchecked, indeterminate
-- Built-in validation with custom error messages
-- Support for labels and descriptions
-- Customizable icons for different states
-- Form integration via name and value attributes
-- Disabled, loading, and skeleton states
-- Ripple effect on interaction
-- Adaptive layout and styling
+- **Three States:** Checked, unchecked, and indeterminate visual states
+- **Model & Variant Sync:** Two-way `v-model` boolean binding and `v-model:selected` with `valueVariant` / `valueVariantHide`
+- **Built-in Validation:** Native constraint validation, `required`, `validationMessage`, and `expose` (`checkValidity`, `getValidationMessage`)
+- **Rich Anatomy:** Supports `label`, `description`, `helperMessage`, `hasHtmlCode`, and `#default` / `#description` slots
+- **Interactive & Loading States:** `disabled`, `readonly` (prevents native DOM toggling), `focus`, `loading`, and `isSkeleton`
 
 **Common use cases:**
 
-- Agreement with terms and policies
-- Multiple item selection from lists
-- Settings and feature toggles
-- Forms with checkboxes for confirmation
-- Group selection with parent indeterminate state
+- Agreement with terms and privacy policies in forms
+- Multi-option preferences and feature toggles
+- Grouped single-choice options synchronized via `v-model:selected`
+- Parent-child selection trees with `indeterminate` state
+
+<Source
+  code={`
+<template>
+  <Checkbox
+    v-model="accepted"
+    label="I agree to the terms"
+    description="Required to continue"
+    required
+  />
+</template>
+  `}
+  language="html"
+/>
+
+> Checkbox combines native HTML form semantics and keyboard accessibility with customizable icons, validation, and design-token styling.

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'v
 import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
+import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionManager } from '../CmsPermissionManager'
 import { CmsRoleManager } from '../CmsRoleManager'
 import { CmsUserItem } from '../CmsUserItem'
@@ -164,11 +165,13 @@ function makeRole(overrides: Partial<CmsRoleWithPermissions> = {}): CmsRoleWithP
 
 describe('CmsUserManager', () => {
   let errorCenter: ErrorCenterInstance
+  let cmsError: CmsErrorInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
+    cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
     errorCenter.addCallback((cause) => {
       capturedErrors.push({
@@ -186,13 +189,13 @@ describe('CmsUserManager', () => {
 
   describe('Database configuration & integrated managers', () => {
     it('defaults to useCmsDb().cmsDbInstance, provides synchronized role/permission managers, and propagates overrides', () => {
-      const defaultManager = new CmsUserManager(undefined, errorCenter)
+      const defaultManager = new CmsUserManager(undefined, cmsError)
       expect(defaultManager.getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
 
       const firstMock = createMockDb()
       const secondMock = createMockDb()
       const secondErrorCenter = new ErrorCenterInstance()
-      const manager = new CmsUserManager(firstMock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(firstMock.dbInstance, cmsError)
 
       const roleManager = manager.getRoleManager()
       const permissionManager = manager.getPermissionManager()
@@ -243,7 +246,7 @@ describe('CmsUserManager', () => {
         ]
       })
 
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
       const dirtyMetadata = JSON.parse('{"locale":"vi","__proto__":{"polluted":true}}') as Record<string, unknown>
 
       const result = await manager.create({
@@ -281,7 +284,7 @@ describe('CmsUserManager', () => {
 
     it('rejects invalid email, empty firstName, and invalid phone via ErrorCenter', async () => {
       const mock = createMockDb()
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       await expect(manager.create({ email: 'invalid-email', firstName: 'Alex' })).rejects.toThrow('Valid user email is required.')
       await expect(manager.create({ email: 'a@', firstName: 'Alex' })).rejects.toThrow('Valid user email is required.')
@@ -307,7 +310,7 @@ describe('CmsUserManager', () => {
         insertQueue: [[createdUser]],
         selectQueue: [[]]
       })
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       await expect(manager.create({
         email: 'alex@example.com',
@@ -325,7 +328,7 @@ describe('CmsUserManager', () => {
   describe('Reading & listing wrapped CmsUserItem records', () => {
     it('returns undefined / false immediately for invalid IDs and blank identifiers', async () => {
       const mock = createMockDb()
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       expect(await manager.getById(0)).toBeUndefined()
       expect(await manager.getById(-3)).toBeUndefined()
@@ -354,7 +357,7 @@ describe('CmsUserManager', () => {
           [{ roleId: 1, permission: perm }]
         ]
       })
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       const byId = await manager.getById(5)
       const byEmail = await manager.getByEmail(' ALEX@Example.com ')
@@ -391,7 +394,7 @@ describe('CmsUserManager', () => {
           ]
         ]
       })
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       const listResult = await manager.getList({
         search: '100%_test\\',
@@ -421,7 +424,7 @@ describe('CmsUserManager', () => {
       const mock = createMockDb({
         selectQueue: [[{ count: 0 }]]
       })
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       const listResult = await manager.getList({ limit: 0 })
 
@@ -453,7 +456,7 @@ describe('CmsUserManager', () => {
         ],
         updateQueue: [[updated]]
       })
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       const result = await manager.update(4, { firstName: ' Updated ' })
       expect(result).toBeInstanceOf(CmsUserItem)
@@ -463,7 +466,7 @@ describe('CmsUserManager', () => {
 
     it('returns undefined when updating a non-existent or invalid user ID', async () => {
       const mock = createMockDb({ selectQueue: [[]] })
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       expect(await manager.update(0, { firstName: 'Test' })).toBeUndefined()
       expect(await manager.update(999, { firstName: 'Test' })).toBeUndefined()
@@ -495,7 +498,7 @@ describe('CmsUserManager', () => {
           [restoredUser]
         ]
       })
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       expect(await manager.delete(12)).toBe(true)
       const restored = await manager.restore(12)
@@ -513,7 +516,7 @@ describe('CmsUserManager', () => {
         ],
         deleteQueue: [[{ id: 15 }]]
       })
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       expect(await manager.delete(0, { hard: true })).toBe(false)
       expect(await manager.delete(15, { hard: true })).toBe(true)
@@ -523,7 +526,7 @@ describe('CmsUserManager', () => {
     it('routes unexpected transaction errors through ErrorCenter', async () => {
       const mock = createMockDb()
       vi.spyOn(mock.raw, 'transaction').mockRejectedValue(new Error('DB connection lost'))
-      const manager = new CmsUserManager(mock.dbInstance, errorCenter)
+      const manager = new CmsUserManager(mock.dbInstance, cmsError)
 
       await expect(manager.create({
         email: 'alex@example.com',

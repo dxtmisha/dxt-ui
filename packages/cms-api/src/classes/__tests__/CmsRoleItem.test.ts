@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
+import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsRoleItem } from '../CmsRoleItem'
 import type { CmsDb, CmsPermission, CmsRole } from '../../types/cmsDbTypes'
@@ -121,11 +122,13 @@ function makeRoleData(overrides: Partial<CmsRoleWithPermissions> = {}): CmsRoleW
 
 describe('CmsRoleItem', () => {
   let errorCenter: ErrorCenterInstance
+  let cmsError: CmsErrorInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
+    cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
     errorCenter.addCallback((cause) => {
       capturedErrors.push({
@@ -145,7 +148,7 @@ describe('CmsRoleItem', () => {
       const readPerm = makePermission({ id: 10, code: 'users:read' })
       const createPerm = makePermission({ id: 11, code: 'users:create' })
       const data = makeRoleData({ permissions: [readPerm, createPerm] })
-      const item = new CmsRoleItem(data, undefined, errorCenter)
+      const item = new CmsRoleItem(data, undefined, cmsError)
 
       expect(item.getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
       expect(item.getId()).toBe(2)
@@ -191,7 +194,7 @@ describe('CmsRoleItem', () => {
         insertQueue: [[]],
         deleteQueue: [[]]
       })
-      const item = new CmsRoleItem(makeRoleData(), mock.dbInstance, errorCenter)
+      const item = new CmsRoleItem(makeRoleData(), mock.dbInstance, cmsError)
 
       const updated = await item.update({
         name: '  Content Admin  ',
@@ -235,7 +238,7 @@ describe('CmsRoleItem', () => {
         insertQueue: [[], [], []],
         deleteQueue: [[], [], []]
       })
-      const item = new CmsRoleItem(makeRoleData({ permissions: [permOne] }), mock.dbInstance, errorCenter)
+      const item = new CmsRoleItem(makeRoleData({ permissions: [permOne] }), mock.dbInstance, cmsError)
 
       expect(await item.addPermissions([11])).toEqual([permOne, permTwo])
       expect(await item.setPermissionsByCode(['users:read'])).toEqual([permOne])
@@ -247,7 +250,7 @@ describe('CmsRoleItem', () => {
 
     it('reports roleNotFound when mutating permissions of a missing role', async () => {
       const mock = createMockDb({ selectQueue: [[]] })
-      const item = new CmsRoleItem(makeRoleData({ id: 404 }), mock.dbInstance, errorCenter)
+      const item = new CmsRoleItem(makeRoleData({ id: 404 }), mock.dbInstance, cmsError)
 
       await expect(item.setPermissions([10])).rejects.toThrow('CMS role with ID 404 was not found.')
       expect(capturedErrors[0]).toMatchObject({
@@ -267,7 +270,7 @@ describe('CmsRoleItem', () => {
         ],
         deleteQueue: [[{ id: 2 }], []]
       })
-      const item = new CmsRoleItem(makeRoleData(), mock.dbInstance, errorCenter)
+      const item = new CmsRoleItem(makeRoleData(), mock.dbInstance, cmsError)
 
       expect(await item.reload()).toBe(item)
       expect(item.getName()).toBe('Reloaded Role')

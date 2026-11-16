@@ -65,6 +65,29 @@ describe('FieldValueInclude', () => {
       }
     })
 
+    it('should preserve boolean false in value and modelValue', async () => {
+      const scope = effectScope()
+      const props = reactive<{ value?: boolean, modelValue?: boolean }>({ modelValue: false })
+      const value = scope.run(() => {
+        const item = new FieldValueInclude<boolean>(props)
+        item.onMounted()
+        return item
+      })!
+
+      try {
+        expect(value.get()).toBe(false)
+        props.modelValue = true
+        await nextTick()
+        expect(value.get()).toBe(true)
+
+        props.modelValue = false
+        await nextTick()
+        expect(value.get()).toBe(false)
+      } finally {
+        scope.stop()
+      }
+    })
+
     it('should initialize from original ref when value and modelValue are absent', () => {
       const original = ref('fallback-val')
       const valueInclude = new FieldValueInclude({}, undefined, original)

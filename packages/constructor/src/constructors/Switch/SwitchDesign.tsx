@@ -5,6 +5,7 @@ import {
 
 import { Switch } from './Switch'
 import { CheckboxDesign } from '../Checkbox'
+import { Skeleton } from '../Skeleton'
 
 import {
   type SwitchPropsBasic
@@ -84,7 +85,11 @@ export class SwitchDesign<
       h('span', {
         class: [
           this.classes?.value.track,
-          this.item.skeleton.classesSkeleton.classBackground
+          this.item.callInstance(
+            'skeleton',
+            item => item.classesSkeleton.classBackground,
+            Skeleton.getClassesListByDesign(this.naming.getDesign()).classBackground
+          )
         ]
       }, this.renderCheckedItem())
     ]

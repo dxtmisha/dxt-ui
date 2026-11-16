@@ -16,6 +16,8 @@ import {
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
+import { normalizeCmsLimit } from '../functions/normalizeCmsLimit'
+import { normalizeCmsOffset } from '../functions/normalizeCmsOffset'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
@@ -25,6 +27,7 @@ import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsPermissionManager } from './CmsPermissionManager'
 import { CmsRoleItem } from './CmsRoleItem'
 import type { CmsDbInstance } from './CmsDbInstance'
+import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
   CmsDbExecutor,
   CmsPermission,
@@ -48,17 +51,17 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
   protected permissionManager?: CmsPermissionManager
 
   /**
-   * Initializes the role manager with a CmsDbInstance and error center.
+   * Initializes the role manager with a CmsDbInstance and error handler.
    *
-   * Инициализирует менеджер ролей с экземпляром CmsDbInstance и центром ошибок.
+   * Инициализирует менеджер ролей с экземпляром CmsDbInstance и обработчиком ошибок.
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CMS error instance handler / Обработчик ошибок CMS
    */
   constructor(
     databaseInstance?: CmsDbInstance,
-    errorCenter?: ErrorCenterInstance
+    error?: CmsErrorInstance
   ) {
-    super(roles, databaseInstance, errorCenter)
+    super(roles, databaseInstance, error)
   }
 
   /**
@@ -102,7 +105,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
    */
   getPermissionManager(): CmsPermissionManager {
     if (!this.permissionManager) {
-      this.permissionManager = new CmsPermissionManager(this.databaseInstance, this.getErrorCenter())
+      this.permissionManager = new CmsPermissionManager(this.databaseInstance, this.error)
     }
 
     return this.permissionManager
@@ -209,8 +212,8 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
    */
   async getList(options: CmsRoleListOptions = {}): Promise<CmsRoleListResult> {
     const database = this.getDatabase()
-    const limit = this.normalizeLimit(options.limit)
-    const offset = this.normalizeOffset(options.offset)
+    const limit = normalizeCmsLimit(options.limit)
+    const offset = normalizeCmsOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
     const total = await this.countRecords(whereCondition)
@@ -295,7 +298,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
    * @returns Created CmsRoleItem instance / Созданный экземпляр CmsRoleItem
    */
   async create(input: CmsRoleCreateInput): Promise<CmsRoleItem> {
-    const createValues = CmsRoleItem.buildCreateValues(input, this.getErrorCenter())
+    const createValues = CmsRoleItem.buildCreateValues(input, this.error)
 
     try {
       const createdRecord = await this.getDatabase().transaction(async (transaction) => {
@@ -306,7 +309,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
 
         const createdRole = insertedRows[0]
         if (!createdRole) {
-          this.reportError(
+          this.error.report(
             'roleCreate',
             'Failed to create CMS role record.'
           )
@@ -316,7 +319,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
         if (input.permissionIds !== undefined || input.permissionCodes !== undefined) {
           const resolvedPermissionIds = await CmsPermissionItem.resolveIds(
             transaction,
-            this.getErrorCenter(),
+            this.error,
             input.permissionIds,
             input.permissionCodes
           )
@@ -332,7 +335,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
 
       return this.wrapRoleItem(createdRecord)
     } catch (error) {
-      return this.handleTransactionError(
+      return this.error.handleTransaction(
         'roleCreate',
         'Failed to create CMS role.',
         error
@@ -364,7 +367,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
    * @returns Wrapped CmsRoleItem instance / Экземпляр CmsRoleItem
    */
   protected wrapRoleItem(roleRecord: CmsRoleWithPermissions): CmsRoleItem {
-    return new CmsRoleItem(roleRecord, this.databaseInstance, this.getErrorCenter())
+    return new CmsRoleItem(roleRecord, this.databaseInstance, this.error)
   }
 
   /**

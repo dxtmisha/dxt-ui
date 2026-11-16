@@ -1,24 +1,27 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
-import { ref, nextTick } from 'vue'
+import './testWarnings'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { effectScope, nextTick, reactive, ref } from 'vue'
 
 import { CheckboxSelected } from '../CheckboxSelected'
+import type { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
+import type { ModelInclude } from '../../../classes/ModelInclude'
 import type { CheckboxProps } from '../props'
-import { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: (fn: () => void) => fn()
-  }
-})
-
+/**
+ * Creates a CheckboxSelected instance inside an effectScope for testing lifecycle and watchers.
+ *
+ * Создаёт экземпляр CheckboxSelected внутри effectScope для тестирования жизненного цикла и наблюдателей.
+ * @param initialProps initial checkbox properties / начальные свойства флажка
+ * @param mockValueItem reactive value ref / реактивная ссылка значения
+ * @returns instance, reactive props, mocks, and scope cleanup / экземпляр, реактивные свойства, моки и очистка области
+ */
 function createCheckboxSelected(
   initialProps: Partial<CheckboxProps>,
-  mockValueItem = ref<any>(undefined)
+  mockValueItem = ref<boolean>(false)
 ) {
-  const reactiveProperties = ref({
+  const scope = effectScope()
+  const props = reactive<CheckboxProps>({
     selected: undefined,
     valueVariant: undefined,
     ...initialProps
@@ -26,77 +29,161 @@ function createCheckboxSelected(
 
   const mockValue = {
     item: mockValueItem,
-    set: vi.fn((val: any) => {
-      mockValueItem.value = val
+    set: vi.fn((value: boolean) => {
+      mockValueItem.value = value
     })
-  } as unknown as FieldValueInclude
+  } as unknown as FieldValueInclude<boolean>
 
-  const emits = vi.fn()
+  const mockModel = {
+    emit: vi.fn()
+  } as unknown as ModelInclude<string | undefined>
 
-  const checkboxSelected = new CheckboxSelected(
-    reactiveProperties.value as unknown as CheckboxProps,
+  let checkboxSelected!: CheckboxSelected
+
+  scope.run(() => {
+    checkboxSelected = new CheckboxSelected(
+      props,
+      () => mockValue,
+      () => mockModel
+    )
+  })
+
+  return {
+    checkboxSelected,
+    props,
     mockValue,
-    emits
-  )
-
-  return { checkboxSelected, reactiveProperties, mockValue, emits }
+    mockModel,
+    mount: () => {
+      scope.run(() => {
+        checkboxSelected.onMounted()
+      })
+    },
+    stop: () => scope.stop()
+  }
 }
 
 describe('CheckboxSelected', () => {
-  it('should initialize and run update on creation', () => {
-    const { checkboxSelected, mockValue } = createCheckboxSelected({
-      selected: undefined,
-      valueVariant: 'yes'
-    })
-    expect(mockValue.set).not.toHaveBeenCalled()
-    expect((checkboxSelected as any).selected.value).toBeUndefined()
+  const cleanups: Array<() => void> = []
+
+  afterEach(() => {
+    cleanups.splice(0).reverse().forEach(stop => stop())
+    vi.restoreAllMocks()
   })
 
-  it('should set value as true if selected matches valueVariant', () => {
-    const { checkboxSelected, mockValue } = createCheckboxSelected({
-      selected: 'yes',
-      valueVariant: 'yes'
+  describe('Static predicate', () => {
+    it('should return true when selected or valueVariant is defined and false otherwise', () => {
+      expect(CheckboxSelected.is()).toBe(false)
+      expect(CheckboxSelected.is({})).toBe(false)
+      expect(CheckboxSelected.is({ selected: '' })).toBe(true)
+      expect(CheckboxSelected.is({ valueVariant: '' })).toBe(true)
+      expect(CheckboxSelected.is({ valueVariant: 0 })).toBe(true)
+      expect(CheckboxSelected.is({ selected: 'yes', valueVariant: 'yes' })).toBe(true)
     })
-    expect(mockValue.set).toHaveBeenCalledWith(true)
-    expect((checkboxSelected as any).selected.value).toBe('yes')
   })
 
-  it('should set value as false if selected does not match valueVariant', () => {
-    const { checkboxSelected, mockValue } = createCheckboxSelected({
-      selected: 'no',
-      valueVariant: 'yes'
+  describe('Initialization and synchronous setup', () => {
+    it('should not mutate value when selected is undefined on creation', () => {
+      const { mockValue, mockModel, stop } = createCheckboxSelected({
+        selected: undefined,
+        valueVariant: 'yes'
+      })
+      cleanups.push(stop)
+
+      expect(mockValue.set).not.toHaveBeenCalled()
+      expect(mockModel.emit).not.toHaveBeenCalled()
     })
-    expect(mockValue.set).toHaveBeenCalledWith(false)
-    expect((checkboxSelected as any).selected.value).toBe('no')
+
+    it('should set value to true synchronously when selected matches valueVariant', () => {
+      const { mockValue, mockModel, stop } = createCheckboxSelected({
+        selected: 'yes',
+        valueVariant: 'yes'
+      })
+      cleanups.push(stop)
+
+      expect(mockValue.set).toHaveBeenCalledWith(true)
+      expect(mockModel.emit).not.toHaveBeenCalled()
+    })
+
+    it('should set value to false synchronously when selected does not match valueVariant', () => {
+      const { mockValue, stop } = createCheckboxSelected({
+        selected: 'no',
+        valueVariant: 'yes'
+      })
+      cleanups.push(stop)
+
+      expect(mockValue.set).toHaveBeenCalledWith(false)
+    })
   })
 
-  it('should watch props.selected and update state when it changes', async () => {
-    const { checkboxSelected, reactiveProperties, mockValue } = createCheckboxSelected({
-      selected: 'no',
-      valueVariant: 'yes'
+  describe('Lifecycle watchers and model emission', () => {
+    it('should not watch changes before onMounted and should sync after onMounted', async () => {
+      const { props, mockValue, mockModel, mount, stop } = createCheckboxSelected({
+        selected: 'no',
+        valueVariant: 'yes'
+      })
+      cleanups.push(stop)
+
+      props.selected = 'yes'
+      await nextTick()
+      expect(mockValue.set).toHaveBeenLastCalledWith(false)
+      expect(mockModel.emit).not.toHaveBeenCalled()
+
+      props.selected = 'no'
+      mount()
+
+      props.selected = 'yes'
+      await nextTick()
+      expect(mockValue.set).toHaveBeenLastCalledWith(true)
+      expect(mockModel.emit).toHaveBeenCalledWith('yes')
     })
-    expect(mockValue.set).toHaveBeenLastCalledWith(false)
-    expect((checkboxSelected as any).selected.value).toBe('no')
 
-    reactiveProperties.value.selected = 'yes'
-    await nextTick()
+    it('should emit selected variant when value.item becomes truthy after mount', async () => {
+      const valueItem = ref<boolean>(false)
+      const { mockModel, mount, stop } = createCheckboxSelected({
+        selected: undefined,
+        valueVariant: 'option-a'
+      }, valueItem)
+      cleanups.push(stop)
 
-    expect(mockValue.set).toHaveBeenLastCalledWith(true)
-    expect((checkboxSelected as any).selected.value).toBe('yes')
-  })
+      mount()
+      valueItem.value = true
+      await nextTick()
 
-  it('should watch value.item and update selected state when it becomes truthy', async () => {
-    const valueItem = ref<any>(false)
-    const { checkboxSelected } = createCheckboxSelected({
-      selected: undefined,
-      valueVariant: 'yes'
-    }, valueItem)
+      expect(mockModel.emit).toHaveBeenCalledTimes(1)
+      expect(mockModel.emit).toHaveBeenCalledWith('option-a')
+    })
 
-    expect((checkboxSelected as any).selected.value).toBeUndefined()
+    it('should handle numeric 0 valueVariant properly when checked', async () => {
+      const valueItem = ref<boolean>(false)
+      const { mockModel, mount, stop } = createCheckboxSelected({
+        selected: undefined,
+        valueVariant: 0
+      }, valueItem)
+      cleanups.push(stop)
 
-    valueItem.value = true
-    await nextTick()
+      mount()
+      valueItem.value = true
+      await nextTick()
 
-    expect((checkboxSelected as any).selected.value).toBe('yes')
+      expect(mockModel.emit).toHaveBeenCalledWith('0')
+    })
+
+    it('should stop reacting after effectScope disposal', async () => {
+      const valueItem = ref<boolean>(false)
+      const { props, mockValue, mockModel, mount, stop } = createCheckboxSelected({
+        selected: 'no',
+        valueVariant: 'yes'
+      }, valueItem)
+
+      mount()
+      stop()
+
+      props.selected = 'yes'
+      valueItem.value = true
+      await nextTick()
+
+      expect(mockValue.set).toHaveBeenCalledTimes(1)
+      expect(mockModel.emit).not.toHaveBeenCalled()
+    })
   })
 })

@@ -7,15 +7,15 @@ import {
 import {
   isPositiveInteger,
   isString,
-  uniqueArray,
-  type ErrorCenterInstance
+  uniqueArray
 } from '@dxtmisha/functional-basic'
 
+import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { CmsDbAbstract } from './CmsDbAbstract'
-import { CmsErrorInstance } from './CmsErrorInstance'
 import type { CmsDbInstance } from './CmsDbInstance'
+import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
   CmsDbExecutor,
   CmsNewPermission,
@@ -33,19 +33,19 @@ import type {
  */
 export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
   /**
-   * Initializes a permission entity wrapper with permission data, database instance manager, and error center.
+   * Initializes a permission entity wrapper with permission data, database instance manager, and error handler.
    *
-   * Инициализирует обёртку конкретного права доступа с его данными, менеджером БД и центром ошибок.
+   * Инициализирует обёртку конкретного права доступа с его данными, менеджером БД и обработчиком ошибок.
    * @param data Permission record from database / Запись права доступа из базы данных
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CMS error instance handler / Обработчик ошибок CMS
    */
   constructor(
     protected data: CmsPermission,
     databaseInstance?: CmsDbInstance,
-    errorCenter?: ErrorCenterInstance
+    error?: CmsErrorInstance
   ) {
-    super(permissions, databaseInstance, errorCenter)
+    super(permissions, databaseInstance, error)
   }
 
   /**
@@ -131,7 +131,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
       return undefined
     }
 
-    const updateValues = CmsPermissionItem.buildUpdateValues(input, this.getErrorCenter())
+    const updateValues = CmsPermissionItem.buildUpdateValues(input, this.error)
 
     try {
       const updatedRows = await this.getDatabase()
@@ -151,7 +151,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.handleTransactionError(
+      return this.error.handleTransaction(
         'permissionUpdate',
         'Failed to update CMS permission.',
         error
@@ -174,7 +174,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     try {
       return await this.deleteRecordById(permissionId)
     } catch (error) {
-      return this.handleTransactionError(
+      return this.error.handleTransaction(
         'permissionDelete',
         'Failed to delete CMS permission.',
         error
@@ -310,36 +310,88 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
   }
 
   /**
-   * Resolves and validates permission identifiers from permission IDs and/or permission codes.
+   * Validates and verifies permission identifiers by their IDs.
    *
-   * Разрешает и валидирует идентификаторы прав доступа из переданных ID и/или кодов прав.
+   * Проверяет и подтверждает идентификаторы прав доступа по их ID.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @param permissionIds Optional list of permission IDs / Необязательный список ID прав доступа
-   * @param permissionCodes Optional list of permission codes / Необязательный список кодов прав доступа
    * @returns Deduplicated list of verified permission IDs / Уникальный список проверенных ID прав доступа
    */
-  static async resolveIds(
+  static async resolveIdsByIds(
     executor: CmsDbExecutor,
-    errorCenter: ErrorCenterInstance,
-    permissionIds?: readonly number[],
-    permissionCodes?: readonly string[]
+    error: CmsErrorInstance,
+    permissionIds?: readonly number[]
   ): Promise<number[]> {
-    return CmsDbAbstract.resolveEntityIds(
-      errorCenter,
+    return CmsDbAbstract.resolveEntityIdsByIds(
+      error,
       'permissionNotFound',
       'CMS permission',
       uniqueIds => executor
         .select({ id: permissions.id })
         .from(permissions)
         .where(inArray(permissions.id, uniqueIds)),
+      permissionIds
+    )
+  }
+
+  /**
+   * Resolves and verifies permission identifiers by their unique codes.
+   *
+   * Разрешает и проверяет идентификаторы прав доступа по их уникальным кодам.
+   * @param executor Database or transaction executor / Исполнитель БД или транзакции
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param permissionCodes Optional list of permission codes / Необязательный список кодов прав доступа
+   * @returns Deduplicated list of resolved permission IDs / Уникальный список найденных ID прав доступа
+   */
+  static async resolveIdsByCodes(
+    executor: CmsDbExecutor,
+    error: CmsErrorInstance,
+    permissionCodes?: readonly string[]
+  ): Promise<number[]> {
+    return CmsDbAbstract.resolveEntityIdsByCodes(
+      error,
+      'permissionNotFound',
+      'CMS permission',
       uniqueCodes => executor
         .select({ id: permissions.id, code: permissions.code })
         .from(permissions)
         .where(inArray(permissions.code, uniqueCodes)),
-      permissionIds,
       permissionCodes
     )
+  }
+
+  /**
+   * Resolves and validates permission identifiers from permission IDs and/or permission codes.
+   *
+   * Разрешает и валидирует идентификаторы прав доступа из переданных ID и/или кодов прав.
+   * @param executor Database or transaction executor / Исполнитель БД или транзакции
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param permissionIds Optional list of permission IDs / Необязательный список ID прав доступа
+   * @param permissionCodes Optional list of permission codes / Необязательный список кодов прав доступа
+   * @returns Deduplicated list of verified permission IDs / Уникальный список проверенных ID прав доступа
+   */
+  static async resolveIds(
+    executor: CmsDbExecutor,
+    error: CmsErrorInstance,
+    permissionIds?: readonly number[],
+    permissionCodes?: readonly string[]
+  ): Promise<number[]> {
+    const resolvedIds: number[] = []
+
+    if (permissionIds !== undefined) {
+      resolvedIds.push(
+        ...await CmsPermissionItem.resolveIdsByIds(executor, error, permissionIds)
+      )
+    }
+
+    if (permissionCodes !== undefined) {
+      resolvedIds.push(
+        ...await CmsPermissionItem.resolveIdsByCodes(executor, error, permissionCodes)
+      )
+    }
+
+    return uniqueArray(resolvedIds)
   }
 
   /**
@@ -347,17 +399,17 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Формирует и валидирует объект вставки в базу данных из входных данных создания права доступа.
    * @param input Permission creation payload / Входные данные для создания права доступа
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
   static buildCreateValues(
     input: CmsPermissionCreateInput,
-    errorCenter: ErrorCenterInstance
+    error: CmsErrorInstance
   ): CmsNewPermission {
     return {
-      code: CmsPermissionItem.normalizeCode(input.code, errorCenter),
-      name: CmsPermissionItem.normalizeName(input.name, errorCenter),
-      description: CmsPermissionItem.normalizeOptionalText(input.description)
+      code: CmsPermissionItem.normalizeCode(input.code, error),
+      name: CmsPermissionItem.normalizeName(input.name, error),
+      description: normalizeCmsOptionalText(input.description)
     }
   }
 
@@ -366,25 +418,25 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Формирует и валидирует объект обновления в базе данных из входных данных редактирования права доступа.
    * @param input Partial permission update payload / Частичные данные для обновления права доступа
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
    */
   static buildUpdateValues(
     input: CmsPermissionUpdateInput,
-    errorCenter: ErrorCenterInstance
+    error: CmsErrorInstance
   ): Partial<CmsNewPermission> {
     const values: Partial<CmsNewPermission> = {}
 
     if (input.code !== undefined) {
-      values.code = CmsPermissionItem.normalizeCode(input.code, errorCenter)
+      values.code = CmsPermissionItem.normalizeCode(input.code, error)
     }
 
     if (input.name !== undefined) {
-      values.name = CmsPermissionItem.normalizeName(input.name, errorCenter)
+      values.name = CmsPermissionItem.normalizeName(input.name, error)
     }
 
     if (input.description !== undefined) {
-      values.description = CmsPermissionItem.normalizeOptionalText(input.description)
+      values.description = normalizeCmsOptionalText(input.description)
     }
 
     return values
@@ -395,18 +447,17 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Нормализует и проверяет код права доступа.
    * @param code Raw permission code / Исходный код права доступа
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @returns Trimmed non-empty permission code / Очищенный код права доступа
    */
   static normalizeCode(
     code: string,
-    errorCenter: ErrorCenterInstance
+    error: CmsErrorInstance
   ): string {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      CmsErrorInstance.report(
-        errorCenter,
+      error.report(
         'permissionInvalidCode',
         'Valid permission code is required.',
         { code }
@@ -421,18 +472,17 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Нормализует и проверяет название права доступа.
    * @param name Raw permission name / Исходное название права доступа
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @returns Trimmed non-empty permission name / Очищенное название права доступа
    */
   static normalizeName(
     name: string,
-    errorCenter: ErrorCenterInstance
+    error: CmsErrorInstance
   ): string {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      CmsErrorInstance.report(
-        errorCenter,
+      error.report(
         'permissionInvalidName',
         'Permission name is required.',
         { name }

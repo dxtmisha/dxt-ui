@@ -159,7 +159,6 @@ src/classes/Field/FieldElementInclude.ts
 src/classes/Field/FieldInputModeInclude.ts
 src/classes/Field/FieldPatternInclude.ts
 src/classes/Field/FieldTypeInclude.ts
-src/classes/Field/FieldValueInclude.ts
 src/classes/Field/FieldVisibilityInclude.ts
 src/classes/Field/FieldFormInclude.ts
 src/classes/Field/FieldMatchInclude.ts
@@ -179,3 +178,8 @@ src/classes/LabelNumberInclude.ts
 src/constructors/Badge/Badge.ts
 src/constructors/Badge/BadgeDesign.tsx
 src/constructors/Badge/BadgeInclude.ts
+src/classes/Field/FieldValueInclude.ts
+src/constructors/Checkbox/CheckboxIcon.ts
+src/constructors/Checkbox/CheckboxSelected.ts
+src/constructors/Checkbox/Checkbox.ts
+src/constructors/Checkbox/CheckboxDesign.tsx

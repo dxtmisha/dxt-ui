@@ -60,14 +60,7 @@ export class CmsErrorInstance {
     message: string,
     details?: unknown
   ): never {
-    this.errorCenter.on({
-      group: CMS_ERROR_GROUP,
-      code,
-      message,
-      details
-    })
-
-    throw new Error(`${CMS_ERROR_PREFIX} ${message}`)
+    return this.emitError(code, message, details)
   }
 
   /**
@@ -83,17 +76,40 @@ export class CmsErrorInstance {
     message: string,
     error: unknown
   ): never {
-    if (error instanceof Error && error.message.startsWith(CMS_ERROR_PREFIX)) {
+    if (
+      error instanceof Error
+      && error.message.startsWith(CMS_ERROR_PREFIX)
+    ) {
       throw error
     }
 
+    return this.emitError(code, message, error, error)
+  }
+
+  /**
+   * Registers an error in ErrorCenter and throws either the original Error or a prefixed CMS Error.
+   *
+   * Регистрирует ошибку в ErrorCenter и выбрасывает исходный Error или новую ошибку CMS с префиксом.
+   * @param code Error code within the cms group / Код ошибки в группе cms
+   * @param message Human-readable error message / Человекочитаемое сообщение об ошибке
+   * @param details Optional raw error payload / Необязательные дополнительные детали ошибки
+   * @param originalError Optional original caught error / Необязательная исходная перехваченная ошибка
+   */
+  protected emitError(
+    code: string,
+    message: string,
+    details?: unknown,
+    originalError?: unknown
+  ): never {
     this.errorCenter.on({
       group: CMS_ERROR_GROUP,
       code,
       message,
-      details: error
+      details
     })
 
-    throw error instanceof Error ? error : new Error(`${CMS_ERROR_PREFIX} ${message}`)
+    throw originalError instanceof Error
+      ? originalError
+      : new Error(`${CMS_ERROR_PREFIX} ${message}`)
   }
 }

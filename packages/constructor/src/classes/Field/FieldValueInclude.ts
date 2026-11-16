@@ -401,11 +401,19 @@ export class FieldValueInclude<Value = any> extends DesignLifecycleAbstract {
    * @returns original value / оригинальное значение
    */
   protected getOriginal(): any {
-    if (this.props.value || typeof this.props.value === 'number') {
+    if (
+      this.props.value
+      || typeof this.props.value === 'number'
+      || typeof this.props.value === 'boolean'
+    ) {
       return this.props.value
     }
 
-    if (this.props.modelValue || typeof this.props.modelValue === 'number') {
+    if (
+      this.props.modelValue
+      || typeof this.props.modelValue === 'number'
+      || typeof this.props.modelValue === 'boolean'
+    ) {
       return this.props.modelValue
     }
 
