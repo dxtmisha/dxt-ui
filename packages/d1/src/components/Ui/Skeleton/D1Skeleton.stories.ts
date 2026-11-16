@@ -58,7 +58,7 @@ export const Skeleton: Story = {
   play: async ({ canvasElement }) => {
     const component = canvasElement.querySelector<HTMLElement>('.d1-skeleton')
     await expect(component).toBeInTheDocument()
-    await expect(component).toHaveAttribute('aria-live', 'polite')
+    await expect(component).not.toHaveAttribute('aria-live')
     await expect(component).toHaveAttribute('aria-busy')
     await expect(component?.querySelector('.d1-skeleton__background')).toBeInTheDocument()
     await expect(component?.querySelector('.d1-skeleton__text')).toBeInTheDocument()
@@ -153,7 +153,7 @@ export const SkeletonBasic: Story = {
       expect(skeleton).toHaveClass('d1-skeleton--visible')
       expect(skeleton).toHaveClass('d1-skeleton--invisible')
       expect(skeleton).toHaveAttribute('aria-busy', 'true')
-      expect(skeleton).toHaveAttribute('aria-live', 'polite')
+      expect(skeleton).not.toHaveAttribute('aria-live')
     })
 
     await expect(skeletons[0].querySelectorAll('.d1-skeleton__text').length).toBe(3)
@@ -393,7 +393,7 @@ export const SkeletonTestInvisibleAndStates: Story = {
     await expect(skeletons[0]).not.toHaveClass('d1-skeleton--visible')
     await expect(skeletons[0]).not.toHaveClass('d1-skeleton--invisible')
     await expect(skeletons[0]).toHaveAttribute('aria-busy', 'false')
-    await expect(skeletons[0]).toHaveAttribute('aria-live', 'polite')
+    await expect(skeletons[0]).not.toHaveAttribute('aria-live')
 
     // 1. active=false, invisible=false
     await expect(skeletons[1]).not.toHaveClass('d1-skeleton--active')

@@ -88,9 +88,6 @@ src/constructors/MotionTransform/MotionTransformGo.ts
 src/constructors/MotionTransform/MotionTransform.ts
 src/constructors/MotionTransform/MotionTransformDesign.tsx
 src/constructors/MotionTransform/MotionTransformInclude.ts
-src/constructors/Skeleton/Skeleton.ts
-src/constructors/Skeleton/SkeletonDesign.tsx
-src/constructors/Skeleton/SkeletonInclude.ts
 src/classes/TabIndexInclude.ts
 src/constructors/Icon/Icon.ts
 src/constructors/Icon/IconDesign.tsx
@@ -105,3 +102,6 @@ src/constructors/Window/Window.ts
 src/constructors/FieldCounter/FieldCounter.ts
 src/constructors/FieldCounter/FieldCounterDesign.tsx
 src/constructors/FieldCounter/FieldCounterInclude.ts
+src/constructors/Skeleton/Skeleton.ts
+src/constructors/Skeleton/SkeletonDesign.tsx
+src/constructors/Skeleton/SkeletonInclude.ts

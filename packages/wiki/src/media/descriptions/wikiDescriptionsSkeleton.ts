@@ -18,7 +18,7 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
       'configurable appearance and hiding delays (`delay`, `delayHide`) to prevent layout flicker',
       'automatic state propagation to nested `Skeleton` containers and child components (`isSkeleton`) via `provide` / `inject`',
       '9 utility CSS classes (`text`, `textVariant`, `background`, `backgroundBefore`, `backgroundAfter`, `backgroundVariant`, `border`, `borderVariant`, `none`) exposed via default scoped slot props (`SkeletonClassesList`)',
-      'automatic accessibility attributes (`aria-busy`, `aria-live="polite"`) and programmatic state inspection via `isActive()`'
+      'automatic accessibility attributes (`aria-busy`, `inert`) and programmatic state inspection via `isActive()`'
     ],
     ru: [
       'анимированные заглушки загрузки без дублирования шаблонов для HTML-разметки и компонентов дизайн-системы',
@@ -26,7 +26,7 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
       'настраиваемые задержки появления и скрытия (`delay`, `delayHide`) для предотвращения мерцания интерфейса',
       'автоматическая передача состояния вложенным контейнерам `Skeleton` и дочерним компонентам (`isSkeleton`) через `provide` / `inject`',
       '9 утилитарных CSS-классов (`text`, `textVariant`, `background`, `backgroundBefore`, `backgroundAfter`, `backgroundVariant`, `border`, `borderVariant`, `none`), доступных через свойства слота `default` (`SkeletonClassesList`)',
-      'автоматические атрибуты доступности (`aria-busy`, `aria-live="polite"`) и программная проверка состояния через `isActive()`'
+      'автоматические атрибуты доступности (`aria-busy`, `inert`) и программная проверка состояния через `isActive()`'
     ]
   },
   render: `
@@ -51,7 +51,7 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
   play: `
 const component = canvasElement.querySelector<HTMLElement>('.design-component')
 await expect(component).toBeInTheDocument()
-await expect(component).toHaveAttribute('aria-live', 'polite')
+await expect(component).not.toHaveAttribute('aria-live')
 await expect(component).toHaveAttribute('aria-busy')
 await expect(component?.querySelector('.design-component__background')).toBeInTheDocument()
 await expect(component?.querySelector('.design-component__text')).toBeInTheDocument()
@@ -146,7 +146,7 @@ skeletons.forEach((skeleton) => {
   expect(skeleton).toHaveClass('design-component--visible')
   expect(skeleton).toHaveClass('design-component--invisible')
   expect(skeleton).toHaveAttribute('aria-busy', 'true')
-  expect(skeleton).toHaveAttribute('aria-live', 'polite')
+  expect(skeleton).not.toHaveAttribute('aria-live')
 })
 
 await expect(skeletons[0].querySelectorAll('.design-component__text').length).toBe(3)
@@ -384,7 +384,7 @@ await expect(skeletons[0]).not.toHaveClass('design-component--active')
 await expect(skeletons[0]).not.toHaveClass('design-component--visible')
 await expect(skeletons[0]).not.toHaveClass('design-component--invisible')
 await expect(skeletons[0]).toHaveAttribute('aria-busy', 'false')
-await expect(skeletons[0]).toHaveAttribute('aria-live', 'polite')
+await expect(skeletons[0]).not.toHaveAttribute('aria-live')
 
 // 1. active=false, invisible=false
 await expect(skeletons[1]).not.toHaveClass('design-component--active')
@@ -687,7 +687,7 @@ await step('Remount and allow the new instance to become visible', async () => {
     description: `
 Structural layout utility designed to display animated loading placeholders (ghost versions) for UI elements. Improves perceived performance and prevents Cumulative Layout Shift (CLS) by reserving space for incoming content.
 Features a logic-sharing mechanism via provide/inject that allows child components (Field, Image, Chip, Icon, Button) and nested Skeleton containers to automatically switch to their skeleton states. Exposes 9 specialized CSS classes (SkeletonClassesList) through default scoped slot props for styling raw HTML elements as text lines, backgrounds, borders, or hidden elements.
-Controlled via the active, delay, delayHide, and invisible props to manage loading transitions and accessibility Busy/Live attributes, and exposes isActive() method. Use as a wrapper for sections or entire pages during data fetching to maintain structural integrity without template duplication.
+Controlled via the active, delay, delayHide, and invisible props to manage loading transitions and accessibility (aria-busy, inert) attributes, and exposes isActive() method. Use as a wrapper for sections or entire pages during data fetching to maintain structural integrity without template duplication.
     `,
     hide: true
   }
