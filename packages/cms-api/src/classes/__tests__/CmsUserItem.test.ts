@@ -2,8 +2,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
+import { CmsPermissionItem } from '../CmsPermissionItem'
+import { CmsRoleItem } from '../CmsRoleItem'
 import { CmsUserItem } from '../CmsUserItem'
-import type { CmsDb, CmsRole } from '../../types/cmsDbTypes'
+import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
+import type { CmsRoleWithPermissions } from '../../types/cmsRoleTypes'
 import type { CmsUserWithRoles } from '../../types/cmsUserTypes'
 
 interface MockQueryChain {
@@ -84,7 +87,20 @@ function createMockDb(plan: MockDatabasePlan = {}) {
   }
 }
 
-function makeRole(overrides: Partial<CmsRole> = {}): CmsRole {
+function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
+  const now = new Date('2026-11-16T10:00:00.000Z')
+  return {
+    id: 10,
+    code: 'users:read',
+    name: 'cms-permission-users_read',
+    description: 'cms-permission-users_read_description',
+    createdAt: now,
+    updatedAt: now,
+    ...overrides
+  }
+}
+
+function makeRole(overrides: Partial<CmsRoleWithPermissions> = {}): CmsRoleWithPermissions {
   const now = new Date('2026-11-16T10:00:00.000Z')
   return {
     id: 2,
@@ -93,6 +109,7 @@ function makeRole(overrides: Partial<CmsRole> = {}): CmsRole {
     description: 'cms-role-admin_description',
     createdAt: now,
     updatedAt: now,
+    permissions: [makePermission()],
     ...overrides
   }
 }
@@ -144,9 +161,16 @@ describe('CmsUserItem', () => {
     vi.useRealTimers()
   })
 
-  describe('Getters, status & role helpers', () => {
-    it('exposes all fields via getters and returns immutable copies from getData/getMetadata/getRoles', () => {
-      const data = makeUserData()
+  describe('Getters, status, role & permission integration helpers', () => {
+    it('exposes all fields, wraps roles/permissions into CmsRoleItem/CmsPermissionItem, and returns immutable snapshots', () => {
+      const readPerm = makePermission({ id: 10, code: 'users:read' })
+      const createPerm = makePermission({ id: 11, code: 'users:create' })
+      const data = makeUserData({
+        roles: [
+          makeRole({ id: 2, code: 'admin', permissions: [readPerm, createPerm] }),
+          makeRole({ id: 3, code: 'editor', permissions: [readPerm] })
+        ]
+      })
       const item = new CmsUserItem(data, undefined, errorCenter)
 
       expect(item.getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
@@ -167,11 +191,35 @@ describe('CmsUserItem', () => {
       expect(item.hasRoleId(2)).toBe(true)
       expect(item.hasRoleId(99)).toBe(false)
 
+      expect(item.hasPermission('users:read')).toBe(true)
+      expect(item.hasPermission('users:delete')).toBe(false)
+      expect(item.hasPermissionId(11)).toBe(true)
+      expect(item.hasPermissionId(999)).toBe(false)
+      expect(item.hasAnyPermission(['users:delete', 'users:create'])).toBe(true)
+      expect(item.hasAnyPermission(['users:delete'])).toBe(false)
+      expect(item.hasAllPermissions(['users:read', 'users:create'])).toBe(true)
+      expect(item.hasAllPermissions(['users:read', 'users:delete'])).toBe(false)
+
+      const roleItems = item.getRoleItems()
+      expect(roleItems).toHaveLength(2)
+      expect(roleItems[0]).toBeInstanceOf(CmsRoleItem)
+      expect(roleItems[0]?.hasPermission('users:create')).toBe(true)
+
+      const permissionsList = item.getPermissions()
+      expect(permissionsList).toEqual([readPerm, createPerm])
+
+      const permissionItems = item.getPermissionItems()
+      expect(permissionItems).toHaveLength(2)
+      expect(permissionItems[0]).toBeInstanceOf(CmsPermissionItem)
+      expect(permissionItems[1]?.getCode()).toBe('users:create')
+
       const snapshot = item.getData()
       snapshot.metadata.locale = 'en'
+      snapshot.roles[0]?.permissions.pop()
       snapshot.roles.pop()
       expect(item.getMetadata()).toEqual({ locale: 'ru' })
-      expect(item.getRoles()).toHaveLength(1)
+      expect(item.getRoles()).toHaveLength(2)
+      expect(item.getRoles()[0]?.permissions).toHaveLength(2)
       expect(item.toJSON()).toEqual(data)
     })
 
@@ -195,11 +243,15 @@ describe('CmsUserItem', () => {
   })
 
   describe('Instance mutations (update, setStatus, roles, reload, delete, restore)', () => {
-    it('updates fields, merges metadata safely, and updates internal snapshot in place', async () => {
+    it('updates fields, merges metadata safely, and refreshes roles with permissions in place', async () => {
+      const contentPerm = makePermission({ id: 20, code: 'content:update' })
+      const editorRole = makeRole({ id: 3, code: 'editor', permissions: [contentPerm] })
+
       const mock = createMockDb({
         selectQueue: [
           [makeUserData({ metadata: { locale: 'en', timezone: 'UTC' } })],
-          [{ role: makeRole({ id: 3, code: 'editor' }) }]
+          [{ role: editorRole }],
+          [{ roleId: 3, permission: contentPerm }]
         ],
         updateQueue: [
           [makeUserData({
@@ -221,7 +273,8 @@ describe('CmsUserItem', () => {
       expect(item.getFirstName()).toBe('Updated')
       expect(item.getStatus()).toBe('invited')
       expect(item.getMetadata()).toEqual({ locale: 'ru', timezone: 'UTC' })
-      expect(item.getRoles()).toEqual([makeRole({ id: 3, code: 'editor' })])
+      expect(item.getRoles()).toEqual([editorRole])
+      expect(item.hasPermission('content:update')).toBe(true)
       expect(mock.updateChains[0]?.set).toHaveBeenCalledWith(expect.objectContaining({
         firstName: 'Updated',
         status: 'invited',
@@ -229,34 +282,60 @@ describe('CmsUserItem', () => {
       }))
     })
 
-    it('supports setRoles, addRoles, setRolesByCode, and removeRoles while keeping item roles in sync', async () => {
-      const adminRole = makeRole({ id: 2, code: 'admin' })
-      const editorRole = makeRole({ id: 3, code: 'editor' })
+    it('supports setRoles, addRoles, addRolesByCode, setRolesByCode, removeRolesByCode, and removeRoles with permissions sync', async () => {
+      const readPerm = makePermission({ id: 10, code: 'users:read' })
+      const editPerm = makePermission({ id: 11, code: 'content:update' })
+      const adminRole = makeRole({ id: 2, code: 'admin', permissions: [readPerm] })
+      const editorRole = makeRole({ id: 3, code: 'editor', permissions: [editPerm] })
 
       const mock = createMockDb({
         selectQueue: [
+          // addRoles([3])
           [{ id: 1 }],
           [{ id: 3 }],
           [{ role: adminRole }, { role: editorRole }],
+          [{ roleId: 2, permission: readPerm }, { roleId: 3, permission: editPerm }],
+          // setRolesByCode(['admin'])
           [{ id: 1 }],
           [{ id: 2, code: 'admin' }],
           [{ role: adminRole }],
+          [{ roleId: 2, permission: readPerm }],
+          // addRolesByCode(['editor'])
+          [{ id: 1 }],
+          [{ id: 3, code: 'editor' }],
+          [{ role: adminRole }, { role: editorRole }],
+          [{ roleId: 2, permission: readPerm }, { roleId: 3, permission: editPerm }],
+          // removeRolesByCode(['editor'])
+          [{ id: 1 }],
+          [{ id: 3 }],
+          [{ role: adminRole }],
+          [{ roleId: 2, permission: readPerm }],
+          // removeRoles([2])
           [{ id: 1 }],
           []
         ],
-        insertQueue: [[], []],
-        deleteQueue: [[], []]
+        insertQueue: [[], [], []],
+        deleteQueue: [[], [], []]
       })
       const item = new CmsUserItem(makeUserData(), mock.dbInstance, errorCenter)
 
       expect(await item.addRoles([3])).toEqual([adminRole, editorRole])
       expect(item.hasRole('editor')).toBe(true)
+      expect(item.hasPermission('content:update')).toBe(true)
 
       expect(await item.setRolesByCode(['admin'])).toEqual([adminRole])
+      expect(item.hasRole('editor')).toBe(false)
+      expect(item.hasPermission('content:update')).toBe(false)
+
+      expect(await item.addRolesByCode(['editor'])).toEqual([adminRole, editorRole])
+      expect(item.hasPermission('content:update')).toBe(true)
+
+      expect(await item.removeRolesByCode(['editor'])).toEqual([adminRole])
       expect(item.hasRole('editor')).toBe(false)
 
       expect(await item.removeRoles([2])).toEqual([])
       expect(item.getRoles()).toEqual([])
+      expect(item.getPermissions()).toEqual([])
     })
 
     it('reports userNotFound via ErrorCenter when mutating roles of missing user', async () => {
@@ -274,14 +353,18 @@ describe('CmsUserItem', () => {
       vi.useFakeTimers()
       vi.setSystemTime(new Date('2026-11-16T12:00:00.000Z'))
 
+      const perm = makePermission()
+      const role = makeRole({ permissions: [perm] })
       const reloadedUser = makeUserData({ firstName: 'Reloaded' })
       const mock = createMockDb({
         selectQueue: [
           [reloadedUser],
-          [{ role: makeRole() }],
+          [{ role }],
+          [{ roleId: 2, permission: perm }],
           [{ id: 1, metadata: { locale: 'ru' } }],
           [makeUserData({ metadata: { locale: 'ru', deletedAt: '2026-11-16T12:00:00.000Z' } })],
-          [{ role: makeRole() }]
+          [{ role }],
+          [{ roleId: 2, permission: perm }]
         ],
         updateQueue: [
           [],
@@ -292,6 +375,7 @@ describe('CmsUserItem', () => {
 
       expect(await item.reload()).toBe(item)
       expect(item.getFirstName()).toBe('Reloaded')
+      expect(item.hasPermission('users:read')).toBe(true)
 
       expect(await item.delete()).toBe(true)
       expect(item.isDeleted()).toBe(true)

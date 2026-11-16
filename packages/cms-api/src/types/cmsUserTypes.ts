@@ -1,22 +1,18 @@
 import type { CmsUserItem } from '../classes/CmsUserItem'
 import type {
-  CmsDb,
   CmsNewUser,
-  CmsRole,
   CmsUser,
   CmsUserStatus
 } from './cmsDbTypes'
-
-/** Database or transaction executor for CMS queries / Исполнитель запросов БД или транзакции для CMS */
-export type CmsDbExecutor = CmsDb | Parameters<Parameters<CmsDb['transaction']>[0]>[0]
+import type { CmsRoleWithPermissions } from './cmsRoleTypes'
 
 /** Public user record without password hash / Публичная запись пользователя без хэша пароля */
 export type CmsUserPublic = Omit<CmsUser, 'passwordHash'>
 
-/** Public user record with assigned CMS roles / Публичная запись пользователя с назначенными ролями CMS */
+/** Public user record with assigned CMS roles and their permissions / Публичная запись пользователя с назначенными ролями CMS и их правами доступа */
 export interface CmsUserWithRoles extends CmsUserPublic {
-  /** Assigned CMS roles / Назначенные роли CMS */
-  roles: CmsRole[]
+  /** Assigned CMS roles with permissions / Назначенные роли CMS с правами доступа */
+  roles: CmsRoleWithPermissions[]
 }
 
 /** Role assignment fields for creating or updating a CMS user / Поля назначения ролей при создании или редактировании пользователя CMS */
@@ -43,6 +39,10 @@ export interface CmsUserListOptions {
   roleId?: number
   /** Filter by assigned role code / Фильтр по коду назначенной роли */
   roleCode?: string
+  /** Filter by assigned permission identifier (via roles) / Фильтр по идентификатору права доступа (через роли) */
+  permissionId?: number
+  /** Filter by assigned permission code (via roles) / Фильтр по коду права доступа (через роли) */
+  permissionCode?: string
   /** Include soft-deleted users in results / Включать ли мягко удалённых пользователей в выборку */
   includeDeleted?: boolean
   /** Maximum number of records to return / Максимальное количество возвращаемых записей */

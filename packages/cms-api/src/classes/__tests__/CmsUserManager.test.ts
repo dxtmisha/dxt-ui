@@ -2,9 +2,12 @@ import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'v
 import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
+import { CmsPermissionManager } from '../CmsPermissionManager'
+import { CmsRoleManager } from '../CmsRoleManager'
 import { CmsUserItem } from '../CmsUserItem'
 import { CmsUserManager } from '../CmsUserManager'
-import type { CmsDb, CmsRole } from '../../types/cmsDbTypes'
+import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
+import type { CmsRoleWithPermissions } from '../../types/cmsRoleTypes'
 import type {
   CmsUserListResult,
   CmsUserPublic
@@ -132,7 +135,20 @@ function makeUser(overrides: Partial<CmsUserPublic> = {}): CmsUserPublic {
   }
 }
 
-function makeRole(overrides: Partial<CmsRole> = {}): CmsRole {
+function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
+  const now = new Date('2026-11-16T10:00:00.000Z')
+  return {
+    id: 10,
+    code: 'users:read',
+    name: 'View users',
+    description: null,
+    createdAt: now,
+    updatedAt: now,
+    ...overrides
+  }
+}
+
+function makeRole(overrides: Partial<CmsRoleWithPermissions> = {}): CmsRoleWithPermissions {
   const now = new Date('2026-11-16T10:00:00.000Z')
   return {
     id: 2,
@@ -141,6 +157,7 @@ function makeRole(overrides: Partial<CmsRole> = {}): CmsRole {
     description: 'cms-role-admin_description',
     createdAt: now,
     updatedAt: now,
+    permissions: [],
     ...overrides
   }
 }
@@ -167,25 +184,40 @@ describe('CmsUserManager', () => {
     vi.useRealTimers()
   })
 
-  describe('Database configuration', () => {
-    it('defaults to useCmsDb().cmsDbInstance and supports setDatabaseInstance', () => {
+  describe('Database configuration & integrated managers', () => {
+    it('defaults to useCmsDb().cmsDbInstance, provides synchronized role/permission managers, and propagates overrides', () => {
       const defaultManager = new CmsUserManager(undefined, errorCenter)
       expect(defaultManager.getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
 
       const firstMock = createMockDb()
       const secondMock = createMockDb()
+      const secondErrorCenter = new ErrorCenterInstance()
       const manager = new CmsUserManager(firstMock.dbInstance, errorCenter)
+
+      const roleManager = manager.getRoleManager()
+      const permissionManager = manager.getPermissionManager()
+      expect(roleManager).toBeInstanceOf(CmsRoleManager)
+      expect(permissionManager).toBeInstanceOf(CmsPermissionManager)
+      expect(manager.getRoleManager()).toBe(roleManager)
+      expect(manager.getPermissionManager()).toBe(permissionManager)
+      expect(roleManager.getDatabaseInstance()).toBe(firstMock.dbInstance)
+      expect(permissionManager.getDatabaseInstance()).toBe(firstMock.dbInstance)
 
       expect(manager.getDatabaseInstance()).toBe(firstMock.dbInstance)
       expect(manager.getDatabase()).toBe(firstMock.db)
       expect(manager.setDatabaseInstance(secondMock.dbInstance)).toBe(manager)
+      expect(manager.setErrorCenter(secondErrorCenter)).toBe(manager)
       expect(manager.getDatabaseInstance()).toBe(secondMock.dbInstance)
       expect(manager.getDatabase()).toBe(secondMock.db)
+      expect(roleManager.getDatabaseInstance()).toBe(secondMock.dbInstance)
+      expect(roleManager.getErrorCenter()).toBe(secondErrorCenter)
+      expect(permissionManager.getDatabaseInstance()).toBe(secondMock.dbInstance)
+      expect(permissionManager.getErrorCenter()).toBe(secondErrorCenter)
     })
   })
 
   describe('create', () => {
-    it('normalizes input, sanitizes metadata, creates user, and returns wrapped CmsUserItem', async () => {
+    it('normalizes input, sanitizes metadata, creates user, and returns wrapped CmsUserItem with role permissions', async () => {
       const createdUser = makeUser({
         id: 10,
         email: 'user@example.com',
@@ -193,8 +225,10 @@ describe('CmsUserManager', () => {
         firstName: 'Tung',
         metadata: { locale: 'vi' }
       })
-      const editorRole = makeRole({ id: 3, code: 'editor' })
-      const adminRole = makeRole({ id: 2, code: 'admin' })
+      const readPerm = makePermission({ id: 10, code: 'users:read' })
+      const editPerm = makePermission({ id: 11, code: 'content:update' })
+      const editorRole = makeRole({ id: 3, code: 'editor', permissions: [editPerm] })
+      const adminRole = makeRole({ id: 2, code: 'admin', permissions: [readPerm] })
 
       const mock = createMockDb({
         insertQueue: [
@@ -204,7 +238,8 @@ describe('CmsUserManager', () => {
         selectQueue: [
           [{ id: 2 }],
           [{ id: 3, code: 'editor' }],
-          [{ role: adminRole }, { role: editorRole }]
+          [{ role: adminRole }, { role: editorRole }],
+          [{ roleId: 2, permission: readPerm }, { roleId: 3, permission: editPerm }]
         ]
       })
 
@@ -225,6 +260,7 @@ describe('CmsUserManager', () => {
       expect(result).toBeInstanceOf(CmsUserItem)
       expect(result.getEmail()).toBe('user@example.com')
       expect(result.getRoles()).toEqual([adminRole, editorRole])
+      expect(result.hasPermission('content:update')).toBe(true)
       expect(result.getDatabaseInstance()).toBe(mock.dbInstance)
       expect(mock.insertChains[0]?.values).toHaveBeenCalledWith(expect.objectContaining({
         email: 'user@example.com',
@@ -301,17 +337,21 @@ describe('CmsUserManager', () => {
       expect(mock.raw.select).not.toHaveBeenCalled()
     })
 
-    it('finds user by ID, email, and username wrapped in CmsUserItem', async () => {
+    it('finds user by ID, email, and username wrapped in CmsUserItem with permissions', async () => {
       const user = makeUser({ id: 5, email: 'alex@example.com', username: 'alex' })
-      const role = makeRole({ id: 1, code: 'super_admin' })
+      const perm = makePermission({ id: 10, code: 'admin:access' })
+      const role = makeRole({ id: 1, code: 'super_admin', permissions: [perm] })
       const mock = createMockDb({
         selectQueue: [
           [user],
           [{ role }],
+          [{ roleId: 1, permission: perm }],
           [user],
           [{ role }],
+          [{ roleId: 1, permission: perm }],
           [user],
-          [{ role }]
+          [{ role }],
+          [{ roleId: 1, permission: perm }]
         ]
       })
       const manager = new CmsUserManager(mock.dbInstance, errorCenter)
@@ -326,13 +366,16 @@ describe('CmsUserManager', () => {
       expect(byId?.getData()).toEqual({ ...user, roles: [role] })
       expect(byEmail?.getData()).toEqual({ ...user, roles: [role] })
       expect(byUsername?.getData()).toEqual({ ...user, roles: [role] })
+      expect(byId?.hasPermission('admin:access')).toBe(true)
     })
 
-    it('lists paginated users wrapped in CmsUserItem instances and clamps limit/offset', async () => {
+    it('lists paginated users wrapped in CmsUserItem instances, filters by permission, and clamps limit/offset', async () => {
       const userOne = makeUser({ id: 1, email: 'one@example.com' })
       const userTwo = makeUser({ id: 2, email: 'two@example.com' })
-      const adminRole = makeRole({ id: 2, code: 'admin' })
-      const editorRole = makeRole({ id: 3, code: 'editor' })
+      const readPerm = makePermission({ id: 10, code: 'users:read' })
+      const editPerm = makePermission({ id: 11, code: 'content:update' })
+      const adminRole = makeRole({ id: 2, code: 'admin', permissions: [readPerm] })
+      const editorRole = makeRole({ id: 3, code: 'editor', permissions: [editPerm] })
 
       const mock = createMockDb({
         selectQueue: [
@@ -341,6 +384,10 @@ describe('CmsUserManager', () => {
           [
             { userId: 2, role: adminRole },
             { userId: 1, role: editorRole }
+          ],
+          [
+            { roleId: 2, permission: readPerm },
+            { roleId: 3, permission: editPerm }
           ]
         ]
       })
@@ -350,6 +397,7 @@ describe('CmsUserManager', () => {
         search: '100%_test\\',
         status: ['active', 'invited'],
         roleCode: 'admin',
+        permissionCode: 'users:read',
         limit: 500,
         offset: -10
       })
@@ -363,8 +411,10 @@ describe('CmsUserManager', () => {
       expect(listResult.items[1]).toBeInstanceOf(CmsUserItem)
       expect(listResult.items[0]?.getData()).toEqual({ ...userTwo, roles: [adminRole] })
       expect(listResult.items[1]?.getData()).toEqual({ ...userOne, roles: [editorRole] })
-      expect(mock.selectChains[2]?.limit).toHaveBeenCalledWith(100)
-      expect(mock.selectChains[2]?.offset).toHaveBeenCalledWith(0)
+      expect(listResult.items[0]?.hasPermission('users:read')).toBe(true)
+      expect(listResult.items[1]?.hasPermission('content:update')).toBe(true)
+      expect(mock.selectChains[3]?.limit).toHaveBeenCalledWith(100)
+      expect(mock.selectChains[3]?.offset).toHaveBeenCalledWith(0)
     })
 
     it('returns empty list immediately when total count is 0', async () => {
@@ -389,14 +439,17 @@ describe('CmsUserManager', () => {
     it('delegates update(id, input) through CmsUserItem and returns updated instance', async () => {
       const existing = makeUser({ id: 4, firstName: 'Old' })
       const updated = makeUser({ id: 4, firstName: 'Updated' })
-      const role = makeRole({ id: 3, code: 'editor' })
+      const perm = makePermission({ id: 10, code: 'content:update' })
+      const role = makeRole({ id: 3, code: 'editor', permissions: [perm] })
 
       const mock = createMockDb({
         selectQueue: [
           [existing],
           [{ role }],
+          [{ roleId: 3, permission: perm }],
           [existing],
-          [{ role }]
+          [{ role }],
+          [{ roleId: 3, permission: perm }]
         ],
         updateQueue: [[updated]]
       })
@@ -405,6 +458,7 @@ describe('CmsUserManager', () => {
       const result = await manager.update(4, { firstName: ' Updated ' })
       expect(result).toBeInstanceOf(CmsUserItem)
       expect(result?.getFirstName()).toBe('Updated')
+      expect(result?.hasPermission('content:update')).toBe(true)
     })
 
     it('returns undefined when updating a non-existent or invalid user ID', async () => {

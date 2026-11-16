@@ -64,6 +64,9 @@ export type CmsNewUserRole = typeof userRoles.$inferInsert
 /** Typed Drizzle database instance for CMS / Типизированный экземпляр базы данных Drizzle для CMS */
 export type CmsDb = PostgresJsDatabase<typeof cmsSchema>
 
+/** Database or transaction executor for CMS queries / Исполнитель запросов БД или транзакции для CMS */
+export type CmsDbExecutor = CmsDb | Parameters<Parameters<CmsDb['transaction']>[0]>[0]
+
 /** Options for seeding default or custom CMS records / Опции инициализации стандартных или пользовательских записей CMS */
 export interface CmsSeedOptions {
   /** Custom permissions list to seed / Пользовательский список прав доступа для инициализации */

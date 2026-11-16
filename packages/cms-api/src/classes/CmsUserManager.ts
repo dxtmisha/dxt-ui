@@ -1,6 +1,5 @@
 import {
   and,
-  asc,
   desc,
   eq,
   ilike,
@@ -16,18 +15,24 @@ import {
   type ErrorCenterInstance
 } from '@dxtmisha/functional-basic'
 
+import { permissions } from '../media/schema/permissions'
+import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { users } from '../media/schema/users'
 import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsPermissionItem } from './CmsPermissionItem'
+import { CmsPermissionManager } from './CmsPermissionManager'
+import { CmsRoleItem } from './CmsRoleItem'
+import { CmsRoleManager } from './CmsRoleManager'
 import { CmsUserItem } from './CmsUserItem'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
-  CmsRole,
+  CmsDbExecutor,
   CmsUserStatus
 } from '../types/cmsDbTypes'
+import type { CmsRoleWithPermissions } from '../types/cmsRoleTypes'
 import type {
-  CmsDbExecutor,
   CmsUserCreateInput,
   CmsUserDeleteOptions,
   CmsUserListOptions,
@@ -37,24 +42,24 @@ import type {
   CmsUserWithRoles
 } from '../types/cmsUserTypes'
 
-/** Default number of user records per page / Количество записей пользователей на странице по умолчанию */
-const DEFAULT_LIST_LIMIT = 20
-
-/** Maximum allowed number of user records per page / Максимально допустимое количество записей пользователей на странице */
-const MAX_LIST_LIMIT = 100
-
 /**
- * Manages CMS user collections: querying lists, searching, creating, and wrapping user records into CmsUserItem instances.
+ * Manages CMS user collections: querying lists, searching, creating, and wrapping user records into CmsUserItem instances with integrated role and permission managers.
  *
- * Класс для управления списком пользователей CMS: поиск и фильтрация списков, создание записей и оборачивание пользователей в экземпляры CmsUserItem.
+ * Класс для управления списком пользователей CMS: поиск и фильтрация списков, создание записей и оборачивание пользователей в экземпляры CmsUserItem с интеграцией менеджеров ролей и прав доступа.
  */
 export class CmsUserManager extends CmsDbAbstract {
+  /** Cached role manager sharing the same database and error center / Кэшированный менеджер ролей с общими настройками БД и центра ошибок */
+  protected roleManager?: CmsRoleManager
+
+  /** Cached permission manager sharing the same database and error center / Кэшированный менеджер прав доступа с общими настройками БД и центра ошибок */
+  protected permissionManager?: CmsPermissionManager
+
   /**
    * Initializes the user manager with a CmsDbInstance and error center.
    *
    * Инициализирует менеджер пользователей с экземпляром CmsDbInstance и центром ошибок.
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param errorCenter ErrorCenter instance / Экземляр ErrorCenter
+   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
    */
   constructor(
     databaseInstance?: CmsDbInstance,
@@ -122,6 +127,34 @@ export class CmsUserManager extends CmsDbAbstract {
       .limit(1)
 
     return found.length > 0
+  }
+
+  /**
+   * Returns a CmsRoleManager configured with the same database instance and error center.
+   *
+   * Возвращает экземпляр CmsRoleManager с теми же настройками базы данных и центра ошибок.
+   * @returns CmsRoleManager instance / Экземпляр CmsRoleManager
+   */
+  getRoleManager(): CmsRoleManager {
+    if (!this.roleManager) {
+      this.roleManager = new CmsRoleManager(this.databaseInstance, this.errorCenter)
+    }
+
+    return this.roleManager
+  }
+
+  /**
+   * Returns a CmsPermissionManager configured with the same database instance and error center.
+   *
+   * Возвращает экземпляр CmsPermissionManager с теми же настройками базы данных и центра ошибок.
+   * @returns CmsPermissionManager instance / Экземпляр CmsPermissionManager
+   */
+  getPermissionManager(): CmsPermissionManager {
+    if (!this.permissionManager) {
+      this.permissionManager = new CmsPermissionManager(this.databaseInstance, this.errorCenter)
+    }
+
+    return this.permissionManager
   }
 
   /**
@@ -260,6 +293,34 @@ export class CmsUserManager extends CmsDbAbstract {
   }
 
   /**
+   * Sets or overrides the CmsDbInstance wrapper and propagates it to child role and permission managers.
+   *
+   * Устанавливает или заменяет экземпляр CmsDbInstance и передаёт его дочерним менеджерам ролей и прав доступа.
+   * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
+   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
+   */
+  override setDatabaseInstance(databaseInstance: CmsDbInstance): this {
+    super.setDatabaseInstance(databaseInstance)
+    this.roleManager?.setDatabaseInstance(databaseInstance)
+    this.permissionManager?.setDatabaseInstance(databaseInstance)
+    return this
+  }
+
+  /**
+   * Sets or overrides the ErrorCenter instance and propagates it to child role and permission managers.
+   *
+   * Устанавливает или заменяет экземпляр ErrorCenter и передаёт его дочерним менеджерам ролей и прав доступа.
+   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
+   */
+  override setErrorCenter(errorCenter: ErrorCenterInstance): this {
+    super.setErrorCenter(errorCenter)
+    this.roleManager?.setErrorCenter(errorCenter)
+    this.permissionManager?.setErrorCenter(errorCenter)
+    return this
+  }
+
+  /**
    * Updates an existing non-deleted user by ID and returns the updated CmsUserItem.
    *
    * Редактирует существующего не удалённого пользователя по ID и возвращает обновлённый CmsUserItem.
@@ -304,16 +365,16 @@ export class CmsUserManager extends CmsDbAbstract {
           )
         }
 
-        let assignedRoles: CmsRole[] = []
+        let assignedRoles: CmsRoleWithPermissions[] = []
         if (input.roleIds !== undefined || input.roleCodes !== undefined) {
-          const resolvedRoleIds = await CmsUserItem.resolveRoleIds(
+          const resolvedRoleIds = await CmsRoleItem.resolveIds(
             transaction,
             this.errorCenter,
             input.roleIds,
             input.roleCodes
           )
           await CmsUserItem.syncUserRoles(transaction, createdUser.id, resolvedRoleIds)
-          assignedRoles = await CmsUserItem.fetchRolesByUserId(transaction, createdUser.id)
+          assignedRoles = await CmsRoleItem.fetchByUserId(transaction, createdUser.id)
         }
 
         return {
@@ -372,22 +433,11 @@ export class CmsUserManager extends CmsDbAbstract {
    * Wraps a plain user record with roles into a CmsUserItem instance.
    *
    * Оборачивает запись пользователя с ролями в экземпляр CmsUserItem.
-   * @param userRecord User record with assigned roles / Запись пользователя с назначенными ролями
+   * @param userRecord User record with assigned roles and permissions / Запись пользователя с назначенными ролями и правами доступа
    * @returns Wrapped CmsUserItem instance / Экземпляр CmsUserItem
    */
   protected wrapUserItem(userRecord: CmsUserWithRoles): CmsUserItem {
     return new CmsUserItem(userRecord, this.databaseInstance, this.errorCenter)
-  }
-
-  /**
-   * Escapes SQL LIKE wildcards in a user search term.
-   *
-   * Экранирует спецсимволы SQL LIKE в поисковой строке.
-   * @param value Raw search text / Исходная поисковая строка
-   * @returns Escaped LIKE pattern value / Экранированная строка для шаблона LIKE
-   */
-  protected escapeSearchPattern(value: string): string {
-    return value.replaceAll('\\', '\\\\').replaceAll('%', '\\%').replaceAll('_', '\\_')
   }
 
   /**
@@ -433,7 +483,7 @@ export class CmsUserManager extends CmsDbAbstract {
     }
 
     if (options.roleId !== undefined) {
-      if (!CmsUserItem.isValidId(options.roleId)) {
+      if (!CmsRoleItem.isValidId(options.roleId)) {
         conditions.push(sql`false`)
       } else {
         const roleSubquery = this.getDatabase()
@@ -456,13 +506,39 @@ export class CmsUserManager extends CmsDbAbstract {
       }
     }
 
+    if (options.permissionId !== undefined) {
+      if (!CmsPermissionItem.isValidId(options.permissionId)) {
+        conditions.push(sql`false`)
+      } else {
+        const permissionSubquery = this.getDatabase()
+          .select({ userId: userRoles.userId })
+          .from(userRoles)
+          .innerJoin(rolePermissions, eq(userRoles.roleId, rolePermissions.roleId))
+          .where(eq(rolePermissions.permissionId, options.permissionId))
+        conditions.push(inArray(users.id, permissionSubquery))
+      }
+    }
+
+    if (isString(options.permissionCode)) {
+      const trimmedPermissionCode = options.permissionCode.trim()
+      if (trimmedPermissionCode.length > 0) {
+        const permissionCodeSubquery = this.getDatabase()
+          .select({ userId: userRoles.userId })
+          .from(userRoles)
+          .innerJoin(rolePermissions, eq(userRoles.roleId, rolePermissions.roleId))
+          .innerJoin(permissions, eq(rolePermissions.permissionId, permissions.id))
+          .where(eq(permissions.code, trimmedPermissionCode))
+        conditions.push(inArray(users.id, permissionCodeSubquery))
+      }
+    }
+
     return conditions.length > 0 ? and(...conditions) : undefined
   }
 
   /**
-   * Attaches assigned roles to a list of public user records in a single batch query and wraps each in CmsUserItem.
+   * Attaches assigned roles and permissions to a list of public user records in batch queries and wraps each in CmsUserItem.
    *
-   * Загружает и прикрепляет назначенные роли к списку пользователей одним пакетным запросом и оборачивает каждую запись в CmsUserItem.
+   * Загружает и прикрепляет назначенные роли с правами доступа к списку пользователей пакетными запросами и оборачивает каждую запись в CmsUserItem.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
    * @param usersList List of public user records / Список публичных записей пользователей
    * @returns List of CmsUserItem instances / Список экземпляров CmsUserItem
@@ -475,65 +551,14 @@ export class CmsUserManager extends CmsDbAbstract {
       return []
     }
 
-    const userIds = usersList.map(userRecord => userRecord.id)
-    const relationRows = await executor
-      .select({
-        userId: userRoles.userId,
-        role: roles
-      })
-      .from(userRoles)
-      .innerJoin(roles, eq(userRoles.roleId, roles.id))
-      .where(inArray(userRoles.userId, userIds))
-      .orderBy(asc(roles.id))
-
-    const rolesByUserId = new Map<number, CmsRole[]>()
-    for (const relationRow of relationRows) {
-      const existingList = rolesByUserId.get(relationRow.userId)
-      if (existingList) {
-        existingList.push(relationRow.role)
-      } else {
-        rolesByUserId.set(relationRow.userId, [relationRow.role])
-      }
-    }
+    const rolesByUserId = await CmsRoleItem.fetchByUserIds(
+      executor,
+      usersList.map(userRecord => userRecord.id)
+    )
 
     return usersList.map(userRecord => this.wrapUserItem({
       ...userRecord,
       roles: rolesByUserId.get(userRecord.id) ?? []
     }))
-  }
-
-  /**
-   * Clamps and normalizes list limit parameter.
-   *
-   * Ограничивает и нормализует параметр количества записей на странице.
-   * @param limit Requested limit / Запрошенное количество записей
-   * @returns Normalized limit / Нормализованный лимит
-   */
-  protected normalizeLimit(limit?: number): number {
-    if (limit === undefined || !Number.isFinite(limit)) {
-      return DEFAULT_LIST_LIMIT
-    }
-
-    const integerLimit = Math.trunc(limit)
-    if (integerLimit < 1) {
-      return 1
-    }
-
-    return Math.min(integerLimit, MAX_LIST_LIMIT)
-  }
-
-  /**
-   * Normalizes list offset parameter.
-   *
-   * Нормализует параметр смещения выборки.
-   * @param offset Requested offset / Запрошенное смещение
-   * @returns Non-negative integer offset / Неотрицательное целочисленное смещение
-   */
-  protected normalizeOffset(offset?: number): number {
-    if (offset === undefined || !Number.isFinite(offset)) {
-      return 0
-    }
-
-    return Math.max(0, Math.trunc(offset))
   }
 }

@@ -1,6 +1,5 @@
 import {
   and,
-  asc,
   eq,
   getTableColumns,
   inArray,
@@ -19,15 +18,18 @@ import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { users } from '../media/schema/users'
 import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsPermissionItem } from './CmsPermissionItem'
+import { CmsRoleItem } from './CmsRoleItem'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
+  CmsDbExecutor,
   CmsNewUser,
-  CmsRole,
+  CmsPermission,
   CmsUserMetadata,
   CmsUserStatus
 } from '../types/cmsDbTypes'
+import type { CmsRoleWithPermissions } from '../types/cmsRoleTypes'
 import type {
-  CmsDbExecutor,
   CmsUserCreateInput,
   CmsUserDeleteOptions,
   CmsUserUpdateInput,
@@ -41,16 +43,16 @@ const FORBIDDEN_METADATA_KEYS = new Set(['__proto__', 'constructor', 'prototype'
 const { passwordHash: _passwordHash, ...USER_PUBLIC_COLUMNS } = /* #__PURE__ */ getTableColumns(users)
 
 /**
- * Represents a single CMS user entity and provides instance-level methods for reading, editing, role management, deletion, and restoration.
+ * Represents a single CMS user entity and provides instance-level methods for reading, editing, role and permission management, deletion, and restoration.
  *
- * Представляет конкретного пользователя CMS и предоставляет методы для чтения полей, редактирования, управления ролями, удаления и восстановления.
+ * Представляет конкретного пользователя CMS и предоставляет методы для чтения полей, редактирования, управления ролями и правами доступа, удаления и восстановления.
  */
 export class CmsUserItem extends CmsDbAbstract {
   /**
    * Initializes a user entity wrapper with user data, database instance manager, and error center.
    *
    * Инициализирует обёртку конкретного пользователя с его данными, менеджером БД и центром ошибок.
-   * @param data User record with assigned roles / Запись пользователя с назначенными ролями
+   * @param data User record with assigned roles and permissions / Запись пользователя с назначенными ролями и правами доступа
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
    * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
    */
@@ -105,6 +107,50 @@ export class CmsUserItem extends CmsDbAbstract {
   }
 
   /**
+   * Checks whether the user has a permission with the specified code through any assigned role.
+   *
+   * Проверяет, есть ли у пользователя право доступа с указанным кодом через любую из назначенных ролей.
+   * @param permissionCode Permission code / Код права доступа
+   * @returns True if permission is granted / True, если право доступа назначено
+   */
+  hasPermission(permissionCode: string): boolean {
+    return this.getRoleItems().some(roleItem => roleItem.hasPermission(permissionCode))
+  }
+
+  /**
+   * Checks whether the user has a permission with the specified identifier through any assigned role.
+   *
+   * Проверяет, есть ли у пользователя право доступа с указанным идентификатором через любую из назначенных ролей.
+   * @param permissionId Permission identifier / Идентификатор права доступа
+   * @returns True if permission is granted / True, если право доступа назначено
+   */
+  hasPermissionId(permissionId: number): boolean {
+    return this.getRoleItems().some(roleItem => roleItem.hasPermissionId(permissionId))
+  }
+
+  /**
+   * Checks whether the user has at least one of the specified permission codes.
+   *
+   * Проверяет, есть ли у пользователя хотя бы одно из указанных прав доступа.
+   * @param permissionCodes List of permission codes / Список кодов прав доступа
+   * @returns True if any permission is granted / True, если хотя бы одно право назначено
+   */
+  hasAnyPermission(permissionCodes: readonly string[]): boolean {
+    return permissionCodes.some(permissionCode => this.hasPermission(permissionCode))
+  }
+
+  /**
+   * Checks whether the user has all of the specified permission codes.
+   *
+   * Проверяет, есть ли у пользователя все указанные права доступа.
+   * @param permissionCodes List of permission codes / Список кодов прав доступа
+   * @returns True if all permissions are granted / True, если назначены все права
+   */
+  hasAllPermissions(permissionCodes: readonly string[]): boolean {
+    return permissionCodes.every(permissionCode => this.hasPermission(permissionCode))
+  }
+
+  /**
    * Returns the user identifier.
    *
    * Возвращает идентификатор пользователя.
@@ -115,16 +161,16 @@ export class CmsUserItem extends CmsDbAbstract {
   }
 
   /**
-   * Returns a cloned snapshot of the user record with roles.
+   * Returns a cloned snapshot of the user record with roles and their permissions.
    *
-   * Возвращает копию данных пользователя вместе с ролями.
-   * @returns User data with roles / Данные пользователя с ролями
+   * Возвращает копию данных пользователя вместе с ролями и их правами доступа.
+   * @returns User data with roles and permissions / Данные пользователя с ролями и правами доступа
    */
   getData(): CmsUserWithRoles {
     return {
       ...this.data,
       metadata: { ...this.data.metadata },
-      roles: [...this.data.roles]
+      roles: this.cloneRoles(this.data.roles)
     }
   }
 
@@ -229,13 +275,66 @@ export class CmsUserItem extends CmsDbAbstract {
   }
 
   /**
-   * Returns a copy of the user's currently assigned roles.
+   * Returns a copy of the user's currently assigned roles with their permissions.
    *
-   * Возвращает копию текущих назначенных ролей пользователя.
-   * @returns List of assigned roles / Список назначенных ролей
+   * Возвращает копию текущих назначенных ролей пользователя с их правами доступа.
+   * @returns List of assigned roles with permissions / Список назначенных ролей с правами доступа
    */
-  getRoles(): CmsRole[] {
-    return [...this.data.roles]
+  getRoles(): CmsRoleWithPermissions[] {
+    return this.cloneRoles(this.data.roles)
+  }
+
+  /**
+   * Returns assigned roles wrapped in CmsRoleItem instances.
+   *
+   * Возвращает назначенные роли пользователя в виде экземпляров CmsRoleItem.
+   * @returns List of CmsRoleItem instances / Список экземпляров CmsRoleItem
+   */
+  getRoleItems(): CmsRoleItem[] {
+    return this.data.roles.map(
+      roleRecord => new CmsRoleItem(
+        {
+          ...roleRecord,
+          permissions: [...roleRecord.permissions]
+        },
+        this.databaseInstance,
+        this.errorCenter
+      )
+    )
+  }
+
+  /**
+   * Returns a deduplicated list of all permissions granted to this user across assigned roles.
+   *
+   * Возвращает уникальный список всех прав доступа пользователя, объединённых по его ролям.
+   * @returns Deduplicated list of permissions ordered by ID / Уникальный список прав доступа, отсортированный по ID
+   */
+  getPermissions(): CmsPermission[] {
+    const permissionsById = new Map<number, CmsPermission>()
+
+    for (const roleRecord of this.data.roles) {
+      for (const permissionRecord of roleRecord.permissions) {
+        if (!permissionsById.has(permissionRecord.id)) {
+          permissionsById.set(permissionRecord.id, { ...permissionRecord })
+        }
+      }
+    }
+
+    return Array.from(permissionsById.values()).sort(
+      (firstPermission, secondPermission) => firstPermission.id - secondPermission.id
+    )
+  }
+
+  /**
+   * Returns deduplicated user permissions wrapped in CmsPermissionItem instances.
+   *
+   * Возвращает уникальные права доступа пользователя в виде экземпляров CmsPermissionItem.
+   * @returns List of CmsPermissionItem instances / Список экземпляров CmsPermissionItem
+   */
+  getPermissionItems(): CmsPermissionItem[] {
+    return this.getPermissions().map(
+      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance, this.errorCenter)
+    )
   }
 
   /**
@@ -243,33 +342,14 @@ export class CmsUserItem extends CmsDbAbstract {
    *
    * Полностью заменяет роли этого пользователя по списку идентификаторов ролей.
    * @param roleIds Role identifiers to assign / Идентификаторы ролей для назначения
-   * @returns Updated list of assigned roles / Обновлённый список назначенных ролей
+   * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
    */
-  async setRoles(roleIds: readonly number[]): Promise<CmsRole[]> {
-    const userId = this.data.id
-
-    try {
-      const rolesList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsUserItem.ensureUserExists(transaction, this.errorCenter, userId)
-        const resolvedIds = await CmsUserItem.resolveRoleIds(transaction, this.errorCenter, roleIds)
-        await CmsUserItem.syncUserRoles(transaction, userId, resolvedIds)
-
-        return CmsUserItem.fetchRolesByUserId(transaction, userId)
-      })
-
-      this.data = {
-        ...this.data,
-        roles: rolesList
-      }
-
-      return [...rolesList]
-    } catch (error) {
-      return this.handleTransactionError(
-        'userSetRoles',
-        'Failed to set CMS user roles.',
-        error
-      )
-    }
+  async setRoles(roleIds: readonly number[]): Promise<CmsRoleWithPermissions[]> {
+    return this.replaceRoles(
+      'userSetRoles',
+      'Failed to set CMS user roles.',
+      roleIds
+    )
   }
 
   /**
@@ -277,38 +357,15 @@ export class CmsUserItem extends CmsDbAbstract {
    *
    * Полностью заменяет роли этого пользователя по списку кодов ролей.
    * @param roleCodes Role codes to assign / Коды ролей для назначения
-   * @returns Updated list of assigned roles / Обновлённый список назначенных ролей
+   * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
    */
-  async setRolesByCode(roleCodes: readonly string[]): Promise<CmsRole[]> {
-    const userId = this.data.id
-
-    try {
-      const rolesList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsUserItem.ensureUserExists(transaction, this.errorCenter, userId)
-        const resolvedIds = await CmsUserItem.resolveRoleIds(
-          transaction,
-          this.errorCenter,
-          undefined,
-          roleCodes
-        )
-        await CmsUserItem.syncUserRoles(transaction, userId, resolvedIds)
-
-        return CmsUserItem.fetchRolesByUserId(transaction, userId)
-      })
-
-      this.data = {
-        ...this.data,
-        roles: rolesList
-      }
-
-      return [...rolesList]
-    } catch (error) {
-      return this.handleTransactionError(
-        'userSetRoles',
-        'Failed to set CMS user roles by code.',
-        error
-      )
-    }
+  async setRolesByCode(roleCodes: readonly string[]): Promise<CmsRoleWithPermissions[]> {
+    return this.replaceRoles(
+      'userSetRoles',
+      'Failed to set CMS user roles by code.',
+      undefined,
+      roleCodes
+    )
   }
 
   /**
@@ -323,87 +380,65 @@ export class CmsUserItem extends CmsDbAbstract {
   }
 
   /**
-   * Assigns additional roles to this user without removing existing ones.
+   * Assigns additional roles to this user by ID without removing existing ones.
    *
-   * Добавляет этому пользователю дополнительные роли без удаления уже назначенных.
+   * Добавляет этому пользователю дополнительные роли по ID без удаления уже назначенных.
    * @param roleIds Role identifiers to add / Идентификаторы добавляемых ролей
-   * @returns Updated list of assigned roles / Обновлённый список назначенных ролей
+   * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
    */
-  async addRoles(roleIds: readonly number[]): Promise<CmsRole[]> {
-    const userId = this.data.id
-
-    try {
-      const rolesList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsUserItem.ensureUserExists(transaction, this.errorCenter, userId)
-        const resolvedIds = await CmsUserItem.resolveRoleIds(transaction, this.errorCenter, roleIds)
-
-        if (resolvedIds.length > 0) {
-          await transaction
-            .insert(userRoles)
-            .values(resolvedIds.map(roleId => ({ userId, roleId })))
-            .onConflictDoNothing({
-              target: [userRoles.userId, userRoles.roleId]
-            })
-        }
-
-        return CmsUserItem.fetchRolesByUserId(transaction, userId)
-      })
-
-      this.data = {
-        ...this.data,
-        roles: rolesList
-      }
-
-      return [...rolesList]
-    } catch (error) {
-      return this.handleTransactionError(
-        'userAddRoles',
-        'Failed to add CMS user roles.',
-        error
-      )
-    }
+  async addRoles(roleIds: readonly number[]): Promise<CmsRoleWithPermissions[]> {
+    return this.assignRoles(
+      'userAddRoles',
+      'Failed to add CMS user roles.',
+      roleIds
+    )
   }
 
   /**
-   * Removes specific roles from this user.
+   * Assigns additional roles to this user by code without removing existing ones.
    *
-   * Удаляет указанные роли у этого пользователя.
-   * @param roleIds Role identifiers to remove / Идентификаторы удаляемых ролей
-   * @returns Updated list of remaining assigned roles / Обновлённый список оставшихся ролей
+   * Добавляет этому пользователю дополнительные роли по кодам без удаления уже назначенных.
+   * @param roleCodes Role codes to add / Коды добавляемых ролей
+   * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
    */
-  async removeRoles(roleIds: readonly number[]): Promise<CmsRole[]> {
-    const userId = this.data.id
+  async addRolesByCode(roleCodes: readonly string[]): Promise<CmsRoleWithPermissions[]> {
+    return this.assignRoles(
+      'userAddRoles',
+      'Failed to add CMS user roles by code.',
+      undefined,
+      roleCodes
+    )
+  }
 
-    try {
-      const rolesList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsUserItem.ensureUserExists(transaction, this.errorCenter, userId)
-        const uniqueIds = uniqueArray(roleIds).filter(roleId => CmsUserItem.isValidId(roleId))
+  /**
+   * Removes specific roles from this user by identifier.
+   *
+   * Удаляет указанные роли у этого пользователя по идентификаторам.
+   * @param roleIds Role identifiers to remove / Идентификаторы удаляемых ролей
+   * @returns Updated list of remaining assigned roles with permissions / Обновлённый список оставшихся ролей с правами доступа
+   */
+  async removeRoles(roleIds: readonly number[]): Promise<CmsRoleWithPermissions[]> {
+    return this.unassignRoles(
+      'userRemoveRoles',
+      'Failed to remove CMS user roles.',
+      roleIds
+    )
+  }
 
-        if (uniqueIds.length > 0) {
-          await transaction
-            .delete(userRoles)
-            .where(and(
-              eq(userRoles.userId, userId),
-              inArray(userRoles.roleId, uniqueIds)
-            ))
-        }
-
-        return CmsUserItem.fetchRolesByUserId(transaction, userId)
-      })
-
-      this.data = {
-        ...this.data,
-        roles: rolesList
-      }
-
-      return [...rolesList]
-    } catch (error) {
-      return this.handleTransactionError(
-        'userRemoveRoles',
-        'Failed to remove CMS user roles.',
-        error
-      )
-    }
+  /**
+   * Removes specific roles from this user by code.
+   *
+   * Удаляет указанные роли у этого пользователя по кодам.
+   * @param roleCodes Role codes to remove / Коды удаляемых ролей
+   * @returns Updated list of remaining assigned roles with permissions / Обновлённый список оставшихся ролей с правами доступа
+   */
+  async removeRolesByCode(roleCodes: readonly string[]): Promise<CmsRoleWithPermissions[]> {
+    return this.unassignRoles(
+      'userRemoveRoles',
+      'Failed to remove CMS user roles by code.',
+      undefined,
+      roleCodes
+    )
   }
 
   /**
@@ -449,7 +484,7 @@ export class CmsUserItem extends CmsDbAbstract {
         const updatedUser = updatedRows[0] ?? existingUser
 
         if (input.roleIds !== undefined || input.roleCodes !== undefined) {
-          const resolvedRoleIds = await CmsUserItem.resolveRoleIds(
+          const resolvedRoleIds = await CmsRoleItem.resolveIds(
             transaction,
             this.errorCenter,
             input.roleIds,
@@ -458,7 +493,7 @@ export class CmsUserItem extends CmsDbAbstract {
           await CmsUserItem.syncUserRoles(transaction, userId, resolvedRoleIds)
         }
 
-        const rolesList = await CmsUserItem.fetchRolesByUserId(transaction, userId)
+        const rolesList = await CmsRoleItem.fetchByUserId(transaction, userId)
 
         return {
           ...updatedUser,
@@ -553,9 +588,9 @@ export class CmsUserItem extends CmsDbAbstract {
   }
 
   /**
-   * Reloads this user's data and assigned roles from the database.
+   * Reloads this user's data, assigned roles, and role permissions from the database.
    *
-   * Перезагружает данные и назначенные роли этого пользователя из базы данных.
+   * Перезагружает данные, назначенные роли и права доступа этого пользователя из базы данных.
    * @param includeDeleted Include soft-deleted state / Учитывать ли мягко удалённую запись
    * @returns Reloaded user item or undefined if missing / Обновлённый экземпляр пользователя или undefined, если не найден
    */
@@ -625,7 +660,7 @@ export class CmsUserItem extends CmsDbAbstract {
           currentUser = restoredRows[0] ?? existingUser
         }
 
-        const rolesList = await CmsUserItem.fetchRolesByUserId(transaction, userId)
+        const rolesList = await CmsRoleItem.fetchByUserId(transaction, userId)
 
         return {
           ...currentUser,
@@ -652,10 +687,190 @@ export class CmsUserItem extends CmsDbAbstract {
    * Returns a plain JSON-serializable snapshot of the user record.
    *
    * Возвращает обычный объект данных пользователя для сериализации в JSON.
-   * @returns User record with roles / Запись пользователя с ролями
+   * @returns User record with roles and permissions / Запись пользователя с ролями и правами доступа
    */
   toJSON(): CmsUserWithRoles {
     return this.getData()
+  }
+
+  /**
+   * Replaces all roles on this user in a transaction and synchronizes local snapshot.
+   *
+   * Полностью заменяет роли пользователя в транзакции и синхронизирует локальное состояние.
+   * @param errorCode Error code on failure / Код ошибки при сбое
+   * @param errorMessage Fallback error message / Сообщение об ошибке по умолчанию
+   * @param roleIds Optional list of role IDs / Необязательный список ID ролей
+   * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
+   * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
+   */
+  protected async replaceRoles(
+    errorCode: string,
+    errorMessage: string,
+    roleIds?: readonly number[],
+    roleCodes?: readonly string[]
+  ): Promise<CmsRoleWithPermissions[]> {
+    const userId = this.data.id
+
+    try {
+      const rolesList = await this.getDatabase().transaction(async (transaction) => {
+        await CmsUserItem.ensureUserExists(transaction, this.errorCenter, userId)
+        const resolvedIds = await CmsRoleItem.resolveIds(
+          transaction,
+          this.errorCenter,
+          roleIds,
+          roleCodes
+        )
+        await CmsUserItem.syncUserRoles(transaction, userId, resolvedIds)
+
+        return CmsRoleItem.fetchByUserId(transaction, userId)
+      })
+
+      this.data = {
+        ...this.data,
+        roles: rolesList
+      }
+
+      return this.cloneRoles(rolesList)
+    } catch (error) {
+      return this.handleTransactionError(errorCode, errorMessage, error)
+    }
+  }
+
+  /**
+   * Adds roles to this user in a transaction without removing existing ones.
+   *
+   * Добавляет роли пользователю в транзакции без удаления существующих.
+   * @param errorCode Error code on failure / Код ошибки при сбое
+   * @param errorMessage Fallback error message / Сообщение об ошибке по умолчанию
+   * @param roleIds Optional list of role IDs / Необязательный список ID ролей
+   * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
+   * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
+   */
+  protected async assignRoles(
+    errorCode: string,
+    errorMessage: string,
+    roleIds?: readonly number[],
+    roleCodes?: readonly string[]
+  ): Promise<CmsRoleWithPermissions[]> {
+    const userId = this.data.id
+
+    try {
+      const rolesList = await this.getDatabase().transaction(async (transaction) => {
+        await CmsUserItem.ensureUserExists(transaction, this.errorCenter, userId)
+        const resolvedIds = await CmsRoleItem.resolveIds(
+          transaction,
+          this.errorCenter,
+          roleIds,
+          roleCodes
+        )
+
+        if (resolvedIds.length > 0) {
+          await transaction
+            .insert(userRoles)
+            .values(resolvedIds.map(roleId => ({ userId, roleId })))
+            .onConflictDoNothing({
+              target: [userRoles.userId, userRoles.roleId]
+            })
+        }
+
+        return CmsRoleItem.fetchByUserId(transaction, userId)
+      })
+
+      this.data = {
+        ...this.data,
+        roles: rolesList
+      }
+
+      return this.cloneRoles(rolesList)
+    } catch (error) {
+      return this.handleTransactionError(errorCode, errorMessage, error)
+    }
+  }
+
+  /**
+   * Removes specified roles from this user in a transaction.
+   *
+   * Удаляет указанные роли у пользователя в транзакции.
+   * @param errorCode Error code on failure / Код ошибки при сбое
+   * @param errorMessage Fallback error message / Сообщение об ошибке по умолчанию
+   * @param roleIds Optional list of role IDs / Необязательный список ID ролей
+   * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
+   * @returns Updated list of remaining assigned roles with permissions / Обновлённый список оставшихся ролей с правами доступа
+   */
+  protected async unassignRoles(
+    errorCode: string,
+    errorMessage: string,
+    roleIds?: readonly number[],
+    roleCodes?: readonly string[]
+  ): Promise<CmsRoleWithPermissions[]> {
+    const userId = this.data.id
+
+    try {
+      const rolesList = await this.getDatabase().transaction(async (transaction) => {
+        await CmsUserItem.ensureUserExists(transaction, this.errorCenter, userId)
+
+        const targetIds: number[] = []
+
+        if (roleIds !== undefined) {
+          targetIds.push(
+            ...uniqueArray(roleIds).filter(roleId => CmsUserItem.isValidId(roleId))
+          )
+        }
+
+        if (roleCodes !== undefined) {
+          const uniqueCodes = uniqueArray(
+            roleCodes
+              .filter(isString)
+              .map(code => code.trim())
+              .filter(code => code.length > 0)
+          )
+
+          if (uniqueCodes.length > 0) {
+            const matchedRoles = await transaction
+              .select({ id: roles.id })
+              .from(roles)
+              .where(inArray(roles.code, uniqueCodes))
+
+            targetIds.push(...matchedRoles.map(roleRecord => roleRecord.id))
+          }
+        }
+
+        const uniqueTargetIds = uniqueArray(targetIds)
+        if (uniqueTargetIds.length > 0) {
+          await transaction
+            .delete(userRoles)
+            .where(and(
+              eq(userRoles.userId, userId),
+              inArray(userRoles.roleId, uniqueTargetIds)
+            ))
+        }
+
+        return CmsRoleItem.fetchByUserId(transaction, userId)
+      })
+
+      this.data = {
+        ...this.data,
+        roles: rolesList
+      }
+
+      return this.cloneRoles(rolesList)
+    } catch (error) {
+      return this.handleTransactionError(errorCode, errorMessage, error)
+    }
+  }
+
+  /**
+   * Returns a shallow clone of a roles list with cloned permissions arrays.
+   *
+   * Возвращает копию списка ролей с копиями массивов их прав доступа.
+   * @param rolesList Source list of roles with permissions / Исходный список ролей с правами доступа
+   * @returns Cloned list of roles with permissions / Клонированный список ролей с правами доступа
+   */
+  protected cloneRoles(rolesList: readonly CmsRoleWithPermissions[]): CmsRoleWithPermissions[] {
+    return rolesList.map(roleRecord => ({
+      ...roleRecord,
+      permissions: [...roleRecord.permissions]
+    }))
   }
 
   /**
@@ -795,12 +1010,12 @@ export class CmsUserItem extends CmsDbAbstract {
   }
 
   /**
-   * Finds a single public user record matching a SQL predicate and attaches its roles.
+   * Finds a single public user record matching a SQL predicate and attaches its roles with permissions.
    *
-   * Находит одну публичную запись пользователя по SQL-предикату и прикрепляет её роли.
+   * Находит одну публичную запись пользователя по SQL-предикату и прикрепляет её роли с правами доступа.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
    * @param whereCondition SQL predicate / SQL-условие поиска
-   * @returns User record with roles or undefined / Запись пользователя с ролями или undefined
+   * @returns User record with roles and permissions or undefined / Запись пользователя с ролями и правами доступа или undefined
    */
   static async findOneWithRoles(
     executor: CmsDbExecutor,
@@ -821,34 +1036,12 @@ export class CmsUserItem extends CmsDbAbstract {
       return undefined
     }
 
-    const rolesList = await CmsUserItem.fetchRolesByUserId(executor, userRecord.id)
+    const rolesList = await CmsRoleItem.fetchByUserId(executor, userRecord.id)
 
     return {
       ...userRecord,
       roles: rolesList
     }
-  }
-
-  /**
-   * Queries all roles assigned to a specific user ordered by role ID.
-   *
-   * Запрашивает все роли, назначенные конкретному пользователю, с сортировкой по ID роли.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param userId User identifier / Идентификатор пользователя
-   * @returns List of assigned roles / Список назначенных ролей
-   */
-  static async fetchRolesByUserId(
-    executor: CmsDbExecutor,
-    userId: number
-  ): Promise<CmsRole[]> {
-    const rows = await executor
-      .select({ role: roles })
-      .from(userRoles)
-      .innerJoin(roles, eq(userRoles.roleId, roles.id))
-      .where(eq(userRoles.userId, userId))
-      .orderBy(asc(roles.id))
-
-    return rows.map(row => row.role)
   }
 
   /**
@@ -887,96 +1080,6 @@ export class CmsUserItem extends CmsDbAbstract {
         { userId }
       )
     }
-  }
-
-  /**
-   * Resolves and validates role identifiers from role IDs and/or role codes.
-   *
-   * Разрешает и валидирует идентификаторы ролей из переданных ID и/или кодов ролей.
-   * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
-   * @param roleIds Optional list of role IDs / Необязательный список ID ролей
-   * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
-   * @returns Deduplicated list of verified role IDs / Уникальный список проверенных ID ролей
-   */
-  static async resolveRoleIds(
-    executor: CmsDbExecutor,
-    errorCenter: ErrorCenterInstance,
-    roleIds?: readonly number[],
-    roleCodes?: readonly string[]
-  ): Promise<number[]> {
-    const resolvedIds: number[] = []
-
-    if (roleIds !== undefined) {
-      const uniqueIds = uniqueArray(roleIds)
-      for (const roleId of uniqueIds) {
-        if (!CmsUserItem.isValidId(roleId)) {
-          CmsUserItem.reportError(
-            errorCenter,
-            'roleNotFound',
-            `Invalid CMS role ID: ${String(roleId)}.`,
-            { roleId }
-          )
-        }
-      }
-
-      if (uniqueIds.length > 0) {
-        const persistedByIds = await executor
-          .select({ id: roles.id })
-          .from(roles)
-          .where(inArray(roles.id, uniqueIds))
-
-        const foundIdSet = new Set(persistedByIds.map(roleRecord => roleRecord.id))
-        const missingIds = uniqueIds.filter(roleId => !foundIdSet.has(roleId))
-
-        if (missingIds.length > 0) {
-          CmsUserItem.reportError(
-            errorCenter,
-            'roleNotFound',
-            `CMS roles not found for IDs: ${missingIds.join(', ')}.`,
-            { missingIds }
-          )
-        }
-
-        resolvedIds.push(...uniqueIds)
-      }
-    }
-
-    if (roleCodes !== undefined) {
-      const uniqueCodes = uniqueArray(
-        roleCodes
-          .map(code => code.trim())
-          .filter(code => code.length > 0)
-      )
-
-      if (uniqueCodes.length > 0) {
-        const persistedByCodes = await executor
-          .select({ id: roles.id, code: roles.code })
-          .from(roles)
-          .where(inArray(roles.code, uniqueCodes))
-
-        const idByCode = new Map(persistedByCodes.map(roleRecord => [roleRecord.code, roleRecord.id]))
-        const missingCodes = uniqueCodes.filter(code => !idByCode.has(code))
-
-        if (missingCodes.length > 0) {
-          CmsUserItem.reportError(
-            errorCenter,
-            'roleNotFound',
-            `CMS roles not found for codes: ${missingCodes.join(', ')}.`,
-            { missingCodes }
-          )
-        }
-
-        for (const code of uniqueCodes) {
-          const roleId = idByCode.get(code)
-          if (roleId !== undefined) {
-            resolvedIds.push(roleId)
-          }
-        }
-      }
-    }
-
-    return uniqueArray(resolvedIds)
   }
 
   /**
@@ -1055,26 +1158,6 @@ export class CmsUserItem extends CmsDbAbstract {
     }
 
     return normalized
-  }
-
-  /**
-   * Normalizes optional string fields, converting blank strings to null.
-   *
-   * Нормализует необязательные строковые поля, преобразуя пустые строки в null.
-   * @param value Raw optional string or null / Исходная строка, null или undefined
-   * @returns Trimmed string, null, or undefined / Очищенная строка, null или undefined
-   */
-  static normalizeOptionalText(value?: string | null): string | null | undefined {
-    if (value === undefined) {
-      return undefined
-    }
-
-    if (isNull(value)) {
-      return null
-    }
-
-    const trimmed = value.trim()
-    return trimmed.length > 0 ? trimmed : null
   }
 
   /**
