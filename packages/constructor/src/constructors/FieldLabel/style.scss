@@ -6,5 +6,7 @@
 
   &__label {
     @include ui.flexDynamic;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 }

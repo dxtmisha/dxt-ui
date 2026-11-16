@@ -105,3 +105,6 @@ src/constructors/FieldCounter/FieldCounterInclude.ts
 src/constructors/Skeleton/Skeleton.ts
 src/constructors/Skeleton/SkeletonDesign.tsx
 src/constructors/Skeleton/SkeletonInclude.ts
+src/constructors/FieldLabel/FieldLabel.ts
+src/constructors/FieldLabel/FieldLabelDesign.tsx
+src/constructors/FieldLabel/FieldLabelInclude.ts

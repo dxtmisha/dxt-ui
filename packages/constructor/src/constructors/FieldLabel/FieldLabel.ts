@@ -1,5 +1,8 @@
-import { type Ref } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrClassObject,
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
 
@@ -7,89 +10,84 @@ import { FieldCounterInclude } from '../FieldCounter'
 import { ProgressInclude } from '../Progress'
 import { SkeletonInclude } from '../Skeleton'
 
+import type { FieldLabelPropsBasic } from './props'
 import type { FieldLabelComponents, FieldLabelEmits, FieldLabelSlots } from './types'
-import type { FieldLabelProps } from './props'
+
+/** FieldLabel dependency constructors type / Тип конструкторов зависимостей FieldLabel */
+export type FieldLabelConstructors = {
+  /** Field counter constructor / Конструктор счетчика поля */
+  fieldCounter: typeof FieldCounterInclude
+  /** Label constructor / Конструктор метки */
+  label: typeof LabelInclude
+  /** Progress constructor / Конструктор индикатора прогресса */
+  progress: typeof ProgressInclude
+  /** Skeleton constructor / Конструктор скелетона */
+  skeleton: typeof SkeletonInclude
+}
 
 /**
- * FieldLabel
+ * FieldLabel logic orchestrator class.
+ * Manages label rendering, required indicator, loading progress, character counter, and skeleton state.
+ *
+ * Класс-оркестратор логики FieldLabel.
+ * Управляет рендерингом метки, индикатором обязательности, прогрессом загрузки, счетчиком символов и состоянием скелетона.
  */
-export class FieldLabel {
-  /** Label include/ Подключение метки */
-  readonly label: LabelInclude
-
-  /** Field counter include/ Подключение счетчика поля */
-  readonly fieldCounter: FieldCounterInclude
-
-  /** Progress include/ Подключение прогресса */
-  readonly progress: ProgressInclude
-
-  /** Skeleton include/ Подключение скелетона */
-  readonly skeleton: SkeletonInclude
-
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.FieldCounterConstructor class for working with field counter/ класс для работы со счетчиком поля
-   * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
-   * @param constructors.ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
-   * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
-   */
-  constructor(
-    protected readonly props: FieldLabelProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<FieldLabelComponents, FieldLabelProps>,
-    protected readonly slots?: FieldLabelSlots,
-    protected readonly emits?: ConstrEmit<FieldLabelEmits>,
-    constructors: {
-      FieldCounterConstructor?: typeof FieldCounterInclude
-      LabelConstructor?: typeof LabelInclude
-      ProgressConstructor?: typeof ProgressInclude
-      SkeletonConstructor?: typeof SkeletonInclude
-    } = {}
-  ) {
-    const {
-      FieldCounterConstructor = FieldCounterInclude,
-      LabelConstructor = LabelInclude,
-      ProgressConstructor = ProgressInclude,
-      SkeletonConstructor = SkeletonInclude
-    } = constructors
-
-    this.skeleton = new SkeletonConstructor(this.props, this.naming, ['classTextVariant'])
-
-    this.label = new LabelConstructor(
-      this.props,
-      this.naming,
-      undefined,
-      this.slots,
-      undefined,
-      undefined,
-      true,
-      this.skeleton
-    )
-
-    this.fieldCounter = new FieldCounterConstructor(
-      props,
-      naming,
-      components
-    )
-
-    this.progress = new ProgressConstructor(
-      props,
-      naming,
-      components,
-      {
-        circular: true,
-        position: 'static',
-        dense: true
-      }
-    )
+export class FieldLabel extends DesignLogicAbstract<
+  HTMLLabelElement,
+  FieldLabelComponents,
+  FieldLabelEmits,
+  FieldLabelSlots,
+  FieldLabelPropsBasic,
+  FieldLabelConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<FieldLabelConstructors> = {
+    fieldCounter: {
+      item: FieldCounterInclude,
+      canCreate: () => FieldCounterInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components
+      ]
+    },
+    label: {
+      item: LabelInclude,
+      canCreate: () => LabelInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        undefined,
+        this.slots,
+        undefined,
+        undefined,
+        true,
+        () => this.callInstance('skeleton', item => item)
+      ]
+    },
+    progress: {
+      item: ProgressInclude,
+      canCreate: () => ProgressInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        {
+          circular: true,
+          position: 'static',
+          dense: true
+        }
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classTextVariant']
+      ]
+    }
   }
 
   /**
@@ -100,8 +98,6 @@ export class FieldLabel {
    * @returns object of class names / объект названий классов
    */
   get classes(): ConstrClassObject {
-    return {
-      ...this.skeleton.classes
-    }
+    return this.callInstance('skeleton', item => item.classes, {})
   }
 }

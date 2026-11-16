@@ -1,10 +1,12 @@
 // ai-none
 
 import {
+  type ConstrBind,
   type DesignComponents,
   type DesignName,
   executeFunctionRef,
   getElementId,
+  getObjectNoUndefined,
   isFilled,
   type RefOrNormalOrFunction
 } from '@dxtmisha/functional'
@@ -22,6 +24,7 @@ import type {
   FieldLabelSlotsInclude
 } from './basicTypes'
 import type { FieldLabelPropsBasic } from './props'
+import type { FieldLabelExpose } from './types'
 
 /**
  * The class returns data for working with the FieldLabel component.
@@ -31,9 +34,24 @@ import type { FieldLabelPropsBasic } from './props'
 export class FieldLabelInclude extends ComponentIncludeAbstract<
   FieldLabelPropsInclude,
   FieldLabelPropsBasic,
-  Record<string, any>,
+  FieldLabelExpose,
   FieldLabelSlotsInclude
 > {
+  /**
+   * Checks whether the FieldLabel component should be displayed from properties.
+   *
+   * Проверяет, нужно ли отображать компонент FieldLabel на основе свойств.
+   * @param props input properties / входные свойства
+   * @param isCounter whether to display the counter / отображать ли счетчик
+   * @returns true if the label or counter should be displayed / true, если нужно отобразить метку или счетчик
+   */
+  static is(
+    props?: FieldLabelPropsInclude,
+    isCounter?: boolean
+  ): boolean {
+    return isFilled(props?.label) || Boolean(isCounter)
+  }
+
   /** Component name / Название компонента */
   protected readonly name = 'fieldLabel'
 
@@ -51,6 +69,8 @@ export class FieldLabelInclude extends ComponentIncludeAbstract<
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input parameter / входной параметр
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
@@ -77,22 +97,24 @@ export class FieldLabelInclude extends ComponentIncludeAbstract<
    * Checks whether the component should be displayed.
    *
    * Проверяет, нужно ли отображать компонент.
+   * @returns true if the component should be displayed / true, если компонент должен отображаться
    */
   override get is(): boolean {
-    return isFilled(this.getProps().label) || this.showCounter()
+    return FieldLabelInclude.is(this.getProps(), this.showCounter())
   }
 
   /**
    * Returns the identifier.
    *
    * Возвращает идентификатор.
+   * @returns counter identifier or empty string / идентификатор счетчика или пустая строка
    */
   get id(): string {
     if (
       this.showCounter()
-      && this.getProps().counterShow
+      && this.fieldCounter.is
     ) {
-      return this.counterId
+      return this.getProps().counterId ?? this.counterId
     }
 
     return ''
@@ -114,24 +136,27 @@ export class FieldLabelInclude extends ComponentIncludeAbstract<
    * Combines input attributes with internal component bindings.
    *
    * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<FieldLabelPropsBasic>> {
     const props = this.getProps()
-    const binds = {
-      ...super.toBinds(),
+    const superBinds = super.toBinds()
+    const binds: Partial<ConstrBind<FieldLabelPropsBasic>> = {
+      ...superBinds,
+      ...getObjectNoUndefined({
+        for: executeFunctionRef(this.forId),
+        label: props.label,
+        required: props.required,
 
-      for: executeFunctionRef(this.forId),
-      label: props.label,
-      required: props.required,
-
-      labelId: this.labelId,
-      counterId: this.counterId
+        labelId: props.labelId ?? superBinds.labelId ?? this.labelId,
+        counterId: props.counterId ?? superBinds.counterId ?? this.counterId
+      })
     }
 
     if (this.showCounter()) {
       return {
         ...binds,
-        ...this.fieldCounter.bindsIntermediary
+        ...getObjectNoUndefined(this.fieldCounter.bindsIntermediary)
       }
     }
 

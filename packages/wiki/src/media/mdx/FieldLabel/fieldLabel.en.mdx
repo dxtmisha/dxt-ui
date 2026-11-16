@@ -1,43 +1,52 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for displaying input field labels with support for required indicator, character counter, and progress indicator.
+Component for displaying form field labels with required indicator, character counter, loading progress, and skeleton support.
 
-FieldLabel provides uniform display of form field captions, automatically integrates with FieldCounter for character counting and Progress for loading indication. The component supports skeleton loading, customizable slots, and ensures consistent visual styling of form elements.
+`FieldLabel` renders a semantic HTML `<label>` element (`for` binding supported) combining label text or `#label` slot content, an optional required asterisk marker (`required`), an integrated `FieldCounter` when `counterShow` is active, and a circular `Progress` spinner when `loading` is active. When none of `label`, `#label` slot, `loading`, or an active `counterShow` counter is present, the component renders nothing in the DOM.
 
 **Key features:**
 
-- Text label display for input fields
-- Required field indicator (required marker)
-- FieldCounter integration for character counting
-- Built-in Progress indicator support
-- Skeleton loading support for pending states
-- Flexible customization via slots (leading, trailing)
-- Consistent spacing and styles within forms
+- Semantic `<label>` rendering with optional `for` association and `labelId` on the inner text span
+- Required field marker (`required`) with `aria-hidden="true"`
+- Integrated `FieldCounter` controlled by `counterShow` (`counter`, `maxlength`, `maxlengthOnce`, `counterTemplate`, `counterId`, `fieldCounterAttrs`)
+- Circular static `Progress` indicator via `loading` (`boolean` or `ProgressProps` object containing `visible`)
+- Loading skeleton support via `isSkeleton`
+- Custom content injection via the `#label` slot
 
 **Common use cases:**
 
-- Labels for text fields and textareas
-- Forms with required fields
-- Fields with character count limits
-- Forms with file upload progress indication
-- Dynamic forms with skeleton loading
+- Captions above inputs, selects, textareas, and custom form controls
+- Mandatory form fields requiring a visual asterisk indicator
+- Fields with live character counting and threshold alerts
+- Async field header states with progress spinner or skeleton placeholder
 
 <Source
     code={`
 <template>
-  <!-- Basic label -->
-  <Component label="Username" />
+  <!-- Basic label linked to an input -->
+  <FieldLabel label="Username" for="username-input" required />
 
-  <!-- Required field label -->
-  <Component label="Email" required />
-
-  <!-- With progress and counter -->
-  <Component
-    label="Loading"
-    :progress="45"
-    :counter="10"
+  <!-- Label with character counter and loading indicator -->
+  <FieldLabel
+    label="Description"
+    counter-show
+    :counter="42"
     :maxlength="100"
+    loading
   />
+
+  <!-- Object configuration for loading (visible: true is required) -->
+  <FieldLabel
+    label="Syncing"
+    :loading="{ visible: true, circular: true, dense: true }"
+  />
+
+  <!-- Custom #label slot -->
+  <FieldLabel required>
+    <template #label>
+      <span>Custom <strong>Field</strong> Label</span>
+    </template>
+  </FieldLabel>
 </template>
   `}
     language="html"

@@ -103,8 +103,8 @@ export const wikiStatus: StorybookArgsToList = {
     options: {
       category: StorybookCategory.status,
       description: {
-        en: 'Sets the element to a loading state',
-        ru: 'Переводит элемент в состояние загрузки'
+        en: 'Sets the element to a loading state. Supports boolean or ProgressProps object; when passing an object, always include `visible: true` (e.g. `{ visible: true, circular: true }`)',
+        ru: 'Переводит элемент в состояние загрузки. Поддерживает boolean или объект ProgressProps; при передаче объекта обязательно указывайте `visible: true` (например, `{ visible: true, circular: true }`)'
       }
     },
     isDemo: true

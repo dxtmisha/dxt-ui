@@ -18,6 +18,11 @@ defineOptions({
     :component="D1FieldLabel"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <D1FieldLabel label="Username" required v-bind="args"/>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

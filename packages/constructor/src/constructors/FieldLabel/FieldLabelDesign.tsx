@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -20,7 +20,11 @@ import {
 } from './types'
 
 /**
- * FieldLabelDesign
+ * FieldLabelDesign constructor class responsible for assembling and rendering the FieldLabel component.
+ * It coordinates class resolution, styles initialization, and the rendered label structure.
+ *
+ * Класс-конструктор FieldLabelDesign, отвечающий за сборку и рендеринг компонента FieldLabel.
+ * Координирует разрешение классов, инициализацию стилей и структуру рендеринга метки.
  */
 export class FieldLabelDesign<
   COMP extends FieldLabelComponents,
@@ -28,7 +32,7 @@ export class FieldLabelDesign<
   CLASSES extends FieldLabelClasses,
   P extends FieldLabelPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLLabelElement,
     COMP,
     FieldLabelEmits,
     EXPOSE,
@@ -36,14 +40,17 @@ export class FieldLabelDesign<
     CLASSES,
     P
   > {
+  /** FieldLabel logic instance / Экземпляр логики FieldLabel */
   protected readonly item: FieldLabel
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor field label item class/ класс элемента метки поля
+   *
+   * Конструктор
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor field label item class / класс элемента метки поля
    */
   constructor(
     name: string,
@@ -68,9 +75,33 @@ export class FieldLabelDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Display of the asterisk, an indication of required fields.
+   *
+   * Вывод звездочки, признак обязательного заполнения.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderRequired = (): VNode[] => {
+    if (this.props.required) {
+      return [
+        h(
+          'span',
+          {
+            class: this.classes?.value.required,
+            ...AriaStaticInclude.hidden()
+          },
+          '*'
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -80,6 +111,7 @@ export class FieldLabelDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns custom classes object / объект пользовательских классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -97,6 +129,7 @@ export class FieldLabelDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -106,53 +139,31 @@ export class FieldLabelDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered virtual node or undefined / отрендеренный виртуальный узел или undefined
    */
   protected initRender(): VNode | undefined {
-    const children: any[] = [
-      ...this.item.label.render(this.renderRequired()),
-      ...this.item.progress.render(),
-      ...this.item.fieldCounter.render()
+    const children: VNode[] = [
+      ...this.item.callInstance('label', item => item.render(this.renderRequired()), []),
+      ...this.item.callInstance('progress', item => item.render(), []),
+      ...this.item.callInstance('fieldCounter', item => item.render(), [])
     ]
 
-    if (
-      this.item.label.is
-      || this.item.progress.is
-      || this.item.fieldCounter.is
-    ) {
+    if (children.length > 0) {
       return h(
         'label',
-        {
-          ...this.getAttrs(),
-          class: this.classes?.value.main,
-          style: this.styles?.value,
-          for: this.props.for
-        },
+        mergeProps(
+          this.getAttrs(),
+          {
+            ref: this.element,
+            class: this.classes?.value.main,
+            style: this.styles?.value,
+            for: this.props.for
+          }
+        ),
         children
       )
     }
 
     return undefined
-  }
-
-  /**
-   * Display of the asterisk, an indication of required fields.
-   *
-   * Вывод звездочки, признак обязательного заполнения.
-   */
-  readonly renderRequired = (): VNode[] => {
-    if (this.props.required) {
-      return [
-        h(
-          'span',
-          {
-            class: this.classes?.value.required,
-            ...AriaStaticInclude.hidden()
-          },
-          '*'
-        )
-      ]
-    }
-
-    return []
   }
 }

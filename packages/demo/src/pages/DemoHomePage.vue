@@ -33,6 +33,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Dialog" name="component-dialog"/>
         <DemoLink label="DraggableWrapper" name="component-draggable-wrapper"/>
         <DemoLink label="FieldCounter" name="component-field-counter"/>
+        <DemoLink label="FieldLabel" name="component-field-label"/>
         <DemoLink label="Form" name="component-form"/>
         <DemoLink label="Formatted" name="component-formatted"/>
         <DemoLink label="HorizontalScroll" name="component-horizontal-scroll"/>
