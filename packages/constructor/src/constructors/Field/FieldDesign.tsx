@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -6,6 +6,8 @@ import {
 } from '@dxtmisha/functional'
 
 import { Field } from './Field'
+import { FieldElement } from './FieldElement'
+import { FieldIcons } from './FieldIcons'
 
 import {
   type FieldPropsBasic
@@ -128,26 +130,29 @@ export class FieldDesign<
    * @returns virtual node for rendering / виртуальный узел для рендеринга
    */
   protected initRender(): VNode {
-    const children: any[] = []
+    const fieldElement = this.item.i('fieldElement')
+    const children: VNode[] = []
 
-    if (this.item.fieldElement.isClassic()) {
-      children.push(...this.item.fieldLabel.render(this.slots))
+    if (FieldElement.isClassic(this.props)) {
+      children.push(...this.item.callInstance('fieldLabel', item => item.render(this.slots), []))
     }
 
     children.push(
       ...this.renderBody(),
-      ...this.item.fieldMessage.render()
+      ...this.item.i('fieldMessage').render()
     )
 
     return h(
-      this.item.fieldElement.tag,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        for: this.item.fieldElement.forId
-      },
+      fieldElement.tag,
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          for: fieldElement.forId
+        }
+      ),
       children
     )
   }
@@ -159,23 +164,27 @@ export class FieldDesign<
    * @returns body virtual nodes / виртуальные узлы тела
    */
   readonly renderBody = (): VNode[] => {
-    const children: any[] = [
-      this.initSlot('default', undefined, this.item.control),
+    const children: VNode[] = []
+
+    this.initSlot('default', children, this.item.control)
+    children.push(
       this.renderBodyLabel(),
       this.renderBodyScoreboard(),
       this.renderBodyBorder()
-    ]
+    )
 
     return [
       h(
         'span',
-        {
-          class: [
-            this.classes?.value.body,
-            this.item.skeleton.classes
-          ],
-          ...this.item.event.binds
-        },
+        mergeProps(
+          {
+            class: [
+              this.classes?.value.body,
+              this.item.callInstance('skeleton', item => item.classes, {})
+            ]
+          },
+          this.item.i('event').binds
+        ),
         children
       )
     ]
@@ -188,7 +197,7 @@ export class FieldDesign<
    * @returns title label virtual node / виртуальный узел метки заголовка
    */
   readonly renderBodyLabel = (): VNode => {
-    const children: any[] = [
+    const children: (string | number | VNode | undefined)[] = [
       this.props.label
     ]
 
@@ -221,12 +230,12 @@ export class FieldDesign<
    * @returns scoreboard virtual node / виртуальный узел scoreboard
    */
   readonly renderBodyScoreboard = (): VNode => {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderBodyScoreboardSlot(),
       ...this.renderBodyScoreboardIcon(),
-      ...this.item.prefix.render(),
-      ...this.item.suffix.render(),
-      ...this.item.progress.render(),
+      ...this.item.callInstance('prefix', item => item.render(), []),
+      ...this.item.callInstance('suffix', item => item.render(), []),
+      ...this.item.callInstance('progress', item => item.render(), []),
       ...this.renderBodyScoreboardSpace()
     ]
 
@@ -243,7 +252,7 @@ export class FieldDesign<
    * @returns slots virtual nodes / виртуальные узлы слотов
    */
   readonly renderBodyScoreboardSlot = (): VNode[] => {
-    const slots: any[] = []
+    const slots: VNode[] = []
 
     if (this.slots) {
       if ('leading' in this.slots) {
@@ -273,35 +282,39 @@ export class FieldDesign<
    * @returns icons virtual nodes / виртуальные узлы иконок
    */
   readonly renderBodyScoreboardIcon = (): VNode[] => {
-    const icons: any[] = [...this.item.icon.render()]
+    const icons: VNode[] = [
+      ...this.item.callInstance('icon', item => item.render(), [])
+    ]
 
-    if (this.item.icons.isCancel()) {
-      this.components?.renderAdd(
-        icons,
-        'icon',
-        this.item.icons.cancelBind,
-        undefined,
-        'cancel'
-      )
-    }
+    this.item.callInstance('icons', (iconsItem) => {
+      if (FieldIcons.isCancel(this.props)) {
+        this.components?.renderAdd(
+          icons,
+          'icon',
+          iconsItem.cancelBind,
+          undefined,
+          'cancel'
+        )
+      }
 
-    if (this.item.icons.isArrow()) {
-      this.components?.renderAdd(
-        icons,
-        'icon',
-        this.item.icons.previousBind,
-        undefined,
-        'previous'
-      )
+      if (FieldIcons.isArrow(this.props)) {
+        this.components?.renderAdd(
+          icons,
+          'icon',
+          iconsItem.previousBind,
+          undefined,
+          'previous'
+        )
 
-      this.components?.renderAdd(
-        icons,
-        'icon',
-        this.item.icons.nextBind,
-        undefined,
-        'next'
-      )
-    }
+        this.components?.renderAdd(
+          icons,
+          'icon',
+          iconsItem.nextBind,
+          undefined,
+          'next'
+        )
+      }
+    })
 
     return icons
   }
@@ -313,19 +326,23 @@ export class FieldDesign<
    * @returns spacing virtual nodes / виртуальные узлы отступов
    */
   readonly renderBodyScoreboardSpace = (): VNode[] => {
-    const children: any[] = []
+    const children: VNode[] = []
 
-    if (this.item.caption.is) {
+    if (this.item.callInstance('caption', item => item.is, false)) {
+      const space = this.item.i('space')
+
       children.push(
         h(
           'span',
           {
             class: this.classes?.value.bodyScoreboardInput,
-            style: `min-width: ${this.item.space.minWidth};`
+            style: {
+              minWidth: space.minWidth
+            }
           },
-          this.item.space.value
+          space.value
         ),
-        ...this.item.caption.render()
+        ...this.item.callInstance('caption', item => item.render(), [])
       )
     }
 

@@ -1,7 +1,7 @@
 // ai-none
 
-import { nextTick, onMounted, ref, watch, type Ref } from 'vue'
-import { getElementId } from '@dxtmisha/functional'
+import { nextTick, ref, watch, type Ref } from 'vue'
+import { DesignLifecycleAbstract, getElementId, isFilled } from '@dxtmisha/functional'
 
 import type { FieldProps } from './props'
 
@@ -12,12 +12,33 @@ import type { FieldProps } from './props'
  * Класс для управления DOM-элементами и их атрибутами в поле.
  * Управляет выбором тега (div/label), атрибутом 'for' для метки и ссылками на элемент ввода.
  */
-export class FieldElement {
+export class FieldElement extends DesignLifecycleAbstract {
+  /**
+   * Checks if the field style is classic.
+   *
+   * Проверяет, является ли поле классическим.
+   * @param props input properties / входящие свойства
+   * @returns true if style is classic / true, если стиль классический
+   */
+  static isClassic(props?: Readonly<FieldProps>): boolean {
+    return Boolean(
+      props?.classic
+      && !props.basic
+      && !props.boxed
+      && !props.filled
+      && !props.outlined
+      && !props.tonal
+    )
+  }
+
   /** Reactive reference to the input element / Реактивная ссылка на элемент ввода */
   readonly inputElement = ref<HTMLInputElement | undefined>()
 
   /** Default unique element identifier / Идентификатор элемента по умолчанию */
   protected readonly elementIdDefault = getElementId()
+
+  /** Watcher stop handle / Функция остановки наблюдателя */
+  protected stopWatch?: () => void
 
   /**
    * Constructor for initializing FieldElement.
@@ -27,25 +48,26 @@ export class FieldElement {
    * @param element reference to the parent DOM element / ссылка на родительский DOM-элемент
    */
   constructor(
-    protected readonly props: FieldProps,
+    protected readonly props: Readonly<FieldProps>,
     protected readonly element: Ref<HTMLLabelElement | undefined>
   ) {
-    watch(element, this.update)
+    super()
+  }
 
-    onMounted(async () => {
-      await nextTick()
-      this.update()
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    this.stopWatch = watch(this.element, this.update)
+    void nextTick().then(() => {
+      if (this.stopWatch) {
+        this.update()
+      }
     })
   }
 
-  /**
-   * Updates the input element reference.
-   *
-   * Обновляет ссылку на элемент ввода.
-   */
-  readonly update = (): void => {
-    this.inputElement.value = this.element.value
-      ?.querySelector<HTMLInputElement>('*[data-length]') ?? undefined
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = undefined
   }
 
   /**
@@ -55,7 +77,7 @@ export class FieldElement {
    * @returns unique identifier / уникальный идентификатор
    */
   get id(): string {
-    return String(this.props.id || this.elementIdDefault)
+    return isFilled(this.props.id) ? String(this.props.id) : this.elementIdDefault
   }
 
   /**
@@ -65,7 +87,7 @@ export class FieldElement {
    * @returns tag name / название тега
    */
   get tag(): 'div' | 'label' {
-    return this.isClassic() ? 'div' : 'label'
+    return FieldElement.isClassic(this.props) ? 'div' : 'label'
   }
 
   /**
@@ -75,24 +97,7 @@ export class FieldElement {
    * @returns element ID or undefined / идентификатор элемента или undefined
    */
   get forId(): string | undefined {
-    return this.isClassic() ? undefined : this.id
-  }
-
-  /**
-   * Checks if the field style is classic.
-   *
-   * Проверяет, является ли поле классическим.
-   * @returns true if style is classic / true, если стиль классический
-   */
-  isClassic(): boolean {
-    return Boolean(
-      (this.props as any).classic
-      && !(this.props as any).basic
-      && !(this.props as any).boxed
-      && !(this.props as any).filled
-      && !(this.props as any).outlined
-      && !(this.props as any).tonal
-    )
+    return FieldElement.isClassic(this.props) ? undefined : this.id
   }
 
   /**
@@ -112,5 +117,15 @@ export class FieldElement {
         )
       )
     )
+  }
+
+  /**
+   * Updates the input element reference.
+   *
+   * Обновляет ссылку на элемент ввода.
+   */
+  readonly update = (): void => {
+    this.inputElement.value = this.element.value
+      ?.querySelector<HTMLInputElement>('*[data-length]') ?? undefined
   }
 }

@@ -16,17 +16,66 @@ import type { FieldProps } from './props'
  */
 export class FieldIcons {
   /**
+   * Checks if any action icons (arrows or cancel button) should be displayed.
+   *
+   * Проверяет, требуется ли отображение каких-либо иконок действий (стрелок или кнопки отмены).
+   * @param props input properties / входящие свойства
+   * @returns true if any action icons should be displayed / true, если требуется отображение иконок действий
+   */
+  static is(props?: Readonly<FieldProps>): boolean {
+    return this.isArrow(props) || this.isCancel(props)
+  }
+
+  /**
+   * Determines whether to display control arrows.
+   *
+   * Определяет, требуется ли отображение стрелок управления.
+   * @param props input properties / входящие свойства
+   * @returns true if arrows should be displayed / true, если требуется отображение стрелок
+   */
+  static isArrow(props?: Readonly<FieldProps>): boolean {
+    return Boolean(
+      (
+        props?.arrowCarousel
+        || props?.arrowStepper
+      )
+      && !props.disabled
+    )
+  }
+
+  /**
+   * Determines whether to display the clear/cancel button.
+   *
+   * Определяет, требуется ли отображение кнопки очистки/отмены.
+   * @param props input properties / входящие свойства
+   * @returns true if the cancel button should be displayed / true, если требуется отображение кнопки «Удалить»
+   */
+  static isCancel(props?: Readonly<FieldProps>): boolean {
+    return Boolean(
+      props?.cancel
+      && !props.readonly
+      && !props.disabled
+      && !props.arrowCarousel
+      && !props.arrowStepper
+      && (
+        (props.cancel === 'auto' && props.cancelShow)
+        || props.cancel === 'always'
+      )
+    )
+  }
+
+  /**
    * Constructor for initializing FieldIcons.
    *
    * Конструктор для инициализации FieldIcons.
    * @param props input properties / входящие свойства
    * @param naming component naming helper / помощник именования компонента
-   * @param text text translations utility / утилита перевода текста
+   * @param text text translations utility getter / функция получения утилиты перевода текста
    */
   constructor(
-    protected readonly props: FieldProps,
+    protected readonly props: Readonly<FieldProps>,
     protected readonly naming: DesignName,
-    protected readonly text: TextInclude
+    protected readonly text: () => TextInclude
   ) {}
 
   /**
@@ -41,7 +90,7 @@ export class FieldIcons {
       'icon': this.props.iconClose,
       'dynamic': true,
       'data-event-type': 'cancel',
-      'ariaLabel': this.text.cancel
+      'ariaLabel': this.text().cancel
     }
   }
 
@@ -52,13 +101,15 @@ export class FieldIcons {
    * @returns data for the left arrow / данные для левой стрелки
    */
   get previousBind(): ConstrBind<IconProps> {
+    const text = this.text()
+
     return {
       'class': this.naming.getSubClass('previous'),
       'icon': this.props.arrowCarousel ? this.props.iconArrowLeft : this.props.iconMinus,
       'disabled': this.props.disabled || this.props.disabledPrevious,
       'dynamic': true,
       'data-event-type': 'previous',
-      'ariaLabel': this.props.arrowCarousel ? this.text.previous : this.text.decrement
+      'ariaLabel': this.props.arrowCarousel ? text.previous : text.decrement
     }
   }
 
@@ -69,49 +120,15 @@ export class FieldIcons {
    * @returns data for the right arrow / данные для правой стрелки
    */
   get nextBind(): ConstrBind<IconProps> {
+    const text = this.text()
+
     return {
       'class': this.naming.getSubClass('next'),
       'icon': this.props.arrowCarousel ? this.props.iconArrowRight : this.props.iconPlus,
       'disabled': this.props.disabled || this.props.disabledNext,
       'dynamic': true,
       'data-event-type': 'next',
-      'ariaLabel': this.props.arrowCarousel ? this.text.next : this.text.increment
+      'ariaLabel': this.props.arrowCarousel ? text.next : text.increment
     }
-  }
-
-  /**
-   * Determines whether to display control arrows.
-   *
-   * Определяет, требуется ли отображение стрелок управления.
-   * @returns true if arrows should be displayed / true, если требуется отображение стрелок
-   */
-  isArrow(): boolean {
-    return Boolean(
-      (
-        this.props.arrowCarousel
-        || this.props.arrowStepper
-      )
-      && !this.props.disabled
-    )
-  }
-
-  /**
-   * Determines whether to display the clear/cancel button.
-   *
-   * Определяет, требуется ли отображение кнопки очистки/отмены.
-   * @returns true if the cancel button should be displayed / true, если требуется отображение кнопки «Удалить»
-   */
-  isCancel(): boolean {
-    return Boolean(
-      this.props.cancel
-      && !this.props.readonly
-      && !this.props.disabled
-      && !this.props.arrowCarousel
-      && !this.props.arrowStepper
-      && (
-        (this.props.cancel === 'auto' && this.props.cancelShow)
-        || this.props.cancel === 'always'
-      )
-    )
   }
 }

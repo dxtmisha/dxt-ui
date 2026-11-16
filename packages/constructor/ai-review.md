@@ -112,3 +112,13 @@ src/constructors/FieldMessage/FieldMessageMessage.ts
 src/constructors/FieldMessage/FieldMessage.ts
 src/constructors/FieldMessage/FieldMessageDesign.tsx
 src/constructors/FieldMessage/FieldMessageInclude.ts
+src/classes/PrefixInclude.ts
+src/classes/SuffixInclude.ts
+src/constructors/Field/FieldElement.ts
+src/constructors/Field/FieldIcons.ts
+src/constructors/Field/FieldSize.ts
+src/constructors/Field/FieldSpace.ts
+src/constructors/Field/Field.ts
+src/constructors/Field/FieldDesign.tsx
+src/constructors/Field/FieldInclude.ts
+src/classes/FrameAbstract.ts

@@ -1,7 +1,7 @@
 import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
 
 /**
- * Descriptions for Field component
+ * Descriptions for Field properties
  *
  * Описания свойств компонента Field
  */
@@ -14,24 +14,27 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
   possibilities: {
     en: [
       'composes FieldLabel, FieldMessage, FieldCounter, Progress and icon includes',
-      'handles states: focus, disabled, readonly, selected, block',
-      'supports prefix, suffix and caption slots',
+      'handles states: focus, disabled, readonly, selected, block, isValue',
+      'supports prefix, suffix, caption, leading and trailing slots',
       'validation highlighting based on validationMessage and forceShowMessage',
       'optional cancel and navigation (arrow) icons with visibility flags',
       'counter position control with counterTop',
-      'integrated helpers for sizing and icons (FieldSize, FieldIcons)'
+      'integrated helpers for sizing, element semantics, and icons (FieldSize, FieldElement, FieldIcons)'
     ],
     ru: [
       'композит из FieldLabel, FieldMessage, FieldCounter, Progress и включений иконок',
-      'обрабатывает состояния: focus, disabled, readonly, selected, block',
-      'поддерживает слоты prefix, suffix и caption',
+      'обрабатывает состояния: focus, disabled, readonly, selected, block, isValue',
+      'поддерживает слоты prefix, suffix, caption, leading и trailing',
       'подсветка валидации на основе validationMessage и forceShowMessage',
       'дополнительные иконки отмены и навигации (стрелки) с флагами видимости',
       'управление позицией счётчика через counterTop',
-      'встроенные помощники для размеров и иконок (FieldSize, FieldIcons)'
+      'встроенные помощники для размеров, семантики элемента и иконок (FieldSize, FieldElement, FieldIcons)'
     ]
   },
-  import: [],
+  import: [
+    'import { ref } from \'vue\'',
+    'import type { EventClickValue } from \'@dxtmisha/constructor\''
+  ],
   render: `
       <DesignComponent v-bind="args">
         <template v-slot:default="{binds}">
@@ -39,36 +42,49 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
         </template>
       </DesignComponent>
     `,
+  play: `
+const component = canvasElement.querySelector('.design-component')
+await expect(component).toBeInTheDocument()
+  `,
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'FieldWidth',
       name: {
         en: 'Width',
         ru: 'Ширина'
       },
+      propsName: ['width', 'label'],
       template: `
         <div class="wiki-storybook-flex-column">
           <DesignComponent label="auto">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
+            <template #default="{binds}">
+              <input v-bind="binds" value="" readonly/>
             </template>
           </DesignComponent>
           <DesignComponent width="320px" label="320px">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
+            <template #default="{binds}">
+              <input v-bind="binds" value="" readonly/>
             </template>
           </DesignComponent>
           <DesignComponent width="50%" label="50%">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
+            <template #default="{binds}">
+              <input v-bind="binds" value="" readonly/>
             </template>
           </DesignComponent>
-          <DesignComponent width="min(100%,320px)" label="min(...)" >
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
+          <DesignComponent width="min(100%,320px)" label="min(...)">
+            <template #default="{binds}">
+              <input v-bind="binds" value="" readonly/>
             </template>
           </DesignComponent>
         </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(4)
+await expect(items[1]).toHaveClass('design-component--width--custom')
       `
     },
     {
@@ -77,24 +93,32 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
         en: 'Cancel button',
         ru: 'Кнопка очистки'
       },
+      propsName: ['cancel', 'cancelShow', 'label'],
       template: `
         <div class="wiki-storybook-flex-column">
           <DesignComponent cancel="auto" label="auto">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
+            <template #default="{binds}">
+              <input v-bind="binds" value="" readonly/>
             </template>
           </DesignComponent>
           <DesignComponent cancel="auto" :cancel-show="true" label="auto + value">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="Value" readonly/>
+            <template #default="{binds}">
+              <input v-bind="binds" value="Value" readonly/>
             </template>
           </DesignComponent>
           <DesignComponent cancel="always" label="always">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
+            <template #default="{binds}">
+              <input v-bind="binds" value="" readonly/>
             </template>
           </DesignComponent>
         </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(3)
+await expect(items[0]).not.toHaveClass('design-component--cancel')
+await expect(items[1]).toHaveClass('design-component--cancel')
+await expect(items[2]).toHaveClass('design-component--cancel')
       `
     },
     {
@@ -103,29 +127,37 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
         en: 'Navigation & arrows',
         ru: 'Навигация / стрелки'
       },
+      propsName: ['arrowCarousel', 'arrowStepper', 'align', 'disabledPrevious', 'disabledNext', 'label'],
       template: `
         <div class="wiki-storybook-flex-column">
           <DesignComponent arrow-carousel label="carousel (start)" :disabled-previous="true">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="Item 1" readonly/>
+            <template #default="{binds}">
+              <input v-bind="binds" value="Item 1" readonly/>
             </template>
           </DesignComponent>
           <DesignComponent arrow-carousel label="carousel (end)" :disabled-next="true">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="Item 9" readonly/>
+            <template #default="{binds}">
+              <input v-bind="binds" value="Item 9" readonly/>
             </template>
           </DesignComponent>
           <DesignComponent arrow-stepper align="center" label="stepper (center)">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="42" readonly/>
+            <template #default="{binds}">
+              <input v-bind="binds" value="42" readonly/>
             </template>
           </DesignComponent>
           <DesignComponent arrow-stepper label="stepper (prev off)" :disabled-previous="true">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="0" readonly/>
+            <template #default="{binds}">
+              <input v-bind="binds" value="0" readonly/>
             </template>
           </DesignComponent>
         </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(4)
+await expect(items[0]).toHaveClass('design-component--arrowCarousel')
+await expect(items[2]).toHaveClass('design-component--arrowStepper')
+await expect(items[2]).toHaveClass('design-component--align--center')
       `
     },
     {
@@ -135,14 +167,20 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
         ru: 'Скелетон'
       },
       components: ['Skeleton'],
+      propsName: ['isSkeleton', 'label', 'counter', 'helperMessage'],
       template: `
         <DesignSkeleton :active="true" style="max-width:280px">
-          <DesignComponent isSkeleton label="Skeleton" counter="12" helper-message="Helper message: loading description.">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" readonly/>
+          <DesignComponent is-skeleton label="Skeleton" :counter="12" helper-message="Helper message: loading description.">
+            <template #default="{binds}">
+              <input v-bind="binds" readonly/>
             </template>
           </DesignComponent>
         </DesignSkeleton>
+      `,
+      play: `
+const body = canvasElement.querySelector('.design-component__body')
+await expect(body).not.toBeNull()
+await expect(body?.className).toContain('skeleton__background')
       `
     },
     {
@@ -153,14 +191,14 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
       },
       template: `
         <DesignComponent
-          :cancelShow="true"
+          :cancel-show="true"
           label="Label prop"
           icon="home"
           icon-trailing="close"
           value="Value"
         >
-          <template #default="{id, className}">
-            <input :id="id" :class="className" value="Value" readonly/>
+          <template #default="{binds}">
+            <input v-bind="binds" value="Value" readonly/>
           </template>
           <template #leading>Leading slot</template>
           <template #trailing>Trailing slot</template>
@@ -169,6 +207,170 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
           <template #suffix>Suffix slot</template>
           <template #caption>Caption slot</template>
         </DesignComponent>
+      `,
+      play: `
+const component = canvasElement.querySelector('.design-component')
+await expect(component).toHaveTextContent('Leading slot')
+await expect(component).toHaveTextContent('Trailing slot')
+await expect(component).toHaveTextContent('Prefix slot')
+await expect(component).toHaveTextContent('Suffix slot')
+await expect(component).toHaveTextContent('Caption slot')
+      `
+    },
+
+    // =========================================================================
+    // TIER 2: TEST STORIES (Constructor Props Only)
+    // =========================================================================
+    {
+      id: 'FieldTestStates',
+      name: {
+        en: 'Test: Visual styles, states, and validation combinations',
+        ru: 'Тест: Стили, состояния и комбинации валидации'
+      },
+      propsName: [
+        'classic',
+        'outlined',
+        'filled',
+        'tonal',
+        'boxed',
+        'basic',
+        'focus',
+        'selected',
+        'disabled',
+        'readonly',
+        'block',
+        'isValue',
+        'loading',
+        'validationMessage',
+        'forceShowMessage',
+        'required'
+      ],
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent classic focus selected block is-value required label="Classic Focus" validation-message="Invalid">
+            <template #default="{binds}">
+              <input v-bind="binds" value="Val" readonly/>
+            </template>
+          </DesignComponent>
+          <DesignComponent outlined is-value readonly label="Outlined Readonly" validation-message="Hidden on readonly">
+            <template #default="{binds}">
+              <input v-bind="binds" value="RO" readonly/>
+            </template>
+          </DesignComponent>
+          <DesignComponent filled is-value disabled force-show-message label="Disabled Forced" validation-message="Visible error">
+            <template #default="{binds}">
+              <input v-bind="binds" value="Dis" readonly/>
+            </template>
+          </DesignComponent>
+          <DesignComponent tonal is-value loading label="Tonal Loading">
+            <template #default="{binds}">
+              <input v-bind="binds" value="Load" readonly/>
+            </template>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(4)
+
+await expect(items[0].tagName).toBe('DIV')
+await expect(items[0]).toHaveClass('design-component--classic')
+await expect(items[0]).toHaveClass('design-component--focus')
+await expect(items[0]).toHaveClass('design-component--selected')
+await expect(items[0]).toHaveClass('design-component--block')
+await expect(items[0]).toHaveClass('design-component--validation')
+
+await expect(items[1].tagName).toBe('LABEL')
+await expect(items[1]).toHaveClass('design-component--outlined')
+await expect(items[1]).not.toHaveClass('design-component--validation')
+
+await expect(items[2]).toHaveClass('design-component--filled')
+await expect(items[2]).toHaveClass('design-component--validation')
+
+await expect(items[3]).toHaveClass('design-component--tonal')
+await expect(items[3].querySelector('.design-component__loading')).not.toBeNull()
+      `
+    },
+    {
+      id: 'FieldTestPrefixSuffixCaption',
+      name: {
+        en: 'Test: Prefix, suffix, caption, and ARIA describedby',
+        ru: 'Тест: Префикс, суффикс, подпись и ARIA describedby'
+      },
+      propsName: ['prefix', 'prefixId', 'suffix', 'suffixId', 'caption', 'captionDecorative', 'value', 'id'],
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            id="field-aria-test"
+            label="Amount"
+            prefix="$"
+            prefix-id="field-pref-id"
+            suffix="USD"
+            suffix-id="field-suf-id"
+            caption="Net"
+            :caption-decorative="true"
+            value="100"
+            is-value
+          >
+            <template #default="{binds}">
+              <input v-bind="binds" value="100" readonly/>
+            </template>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+const field = canvasElement.querySelector('.design-component')
+const input = canvasElement.querySelector('#field-aria-test')
+const caption = canvasElement.querySelector('.design-component__caption')
+await expect(field).toHaveClass('design-component--suffix')
+await expect(input?.getAttribute('aria-describedby')).toContain('field-pref-id')
+await expect(input?.getAttribute('aria-describedby')).toContain('field-suf-id')
+await expect(caption?.getAttribute('aria-hidden')).toBe('true')
+      `
+    },
+    {
+      id: 'FieldTestCounterAndEvents',
+      name: {
+        en: 'Test: Top/bottom counter and scoreboard click events',
+        ru: 'Тест: Счётчик сверху/снизу и события клика'
+      },
+      propsName: ['counterTop', 'counter', 'counterShow', 'maxlength', 'cancel', 'icon', 'iconTrailing', 'arrowAlign'],
+      setup: `
+      const lastEvent = ref('none')
+      const onFieldClick = (_event: MouseEvent, options: EventClickValue) => {
+        lastEvent.value = options.type
+      }
+      return { lastEvent, onFieldClick }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            classic
+            label="Top Counter"
+            counter-top
+            counter-show
+            :counter="5"
+            :maxlength="20"
+            cancel="always"
+            icon="search"
+            icon-trailing="home"
+            @click="onFieldClick"
+          >
+            <template #default="{binds}">
+              <input v-bind="binds" value="Hello" readonly/>
+            </template>
+          </DesignComponent>
+          <div class="wiki-storybook-card" data-testid="field-event-output">{{ lastEvent }}</div>
+        </div>
+      `,
+      play: `
+const cancelButton = canvasElement.querySelector('[data-event-type="cancel"]') as HTMLElement | null
+const output = canvasElement.querySelector('[data-testid="field-event-output"]')
+await expect(cancelButton).not.toBeNull()
+await step('Trigger cancel icon click', async () => {
+  await userEvent.click(cancelButton!)
+  await expect(output?.textContent?.trim()).toBe('cancel')
+})
       `
     }
   ],

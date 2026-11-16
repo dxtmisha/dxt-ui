@@ -18,11 +18,11 @@ export class FieldSpace {
    *
    * Конструктор для инициализации FieldSpace.
    * @param props input properties / входящие свойства
-   * @param fieldElement field element instance / экземпляр элемента поля
+   * @param fieldElement field element instance getter / функция получения экземпляра элемента поля
    */
   constructor(
-    protected readonly props: FieldProps,
-    protected readonly fieldElement: FieldElement
+    protected readonly props: Readonly<FieldProps>,
+    protected readonly fieldElement: () => FieldElement
   ) {}
 
   /**
@@ -32,7 +32,7 @@ export class FieldSpace {
    * @returns element offset width string or undefined / ширина элемента в пикселях или undefined
    */
   get minWidth(): string | undefined {
-    const element = this.fieldElement.inputElement.value
+    const element = this.fieldElement().inputElement.value
 
     if (element) {
       return `${element.offsetWidth}px`
@@ -49,7 +49,7 @@ export class FieldSpace {
    */
   get value(): string {
     if (
-      !this.fieldElement.inputElement.value
+      !this.fieldElement().inputElement.value
       && isString(this.props.value)
     ) {
       return this.props.value

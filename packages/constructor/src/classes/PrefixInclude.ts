@@ -1,4 +1,4 @@
-import { type VNode } from 'vue'
+import { type VNode, type VNodeArrayChildren } from 'vue'
 import { getElementId, type DesignName, isFilled, render } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
@@ -15,6 +15,21 @@ import type { PrefixProps, PrefixSlots } from '../types/prefixTypes'
  * и генерирует виртуальный узел DOM префикса.
  */
 export class PrefixInclude {
+  /**
+   * Checks whether prefix content is present in properties or slots.
+   *
+   * Проверяет наличие содержимого префикса в свойствах или слотах.
+   * @param props prefix properties / свойства префикса
+   * @param slots prefix slots / слоты префикса
+   * @returns true if prefix is present / true, если префикс присутствует
+   */
+  static is(
+    props?: Readonly<PrefixProps>,
+    slots?: PrefixSlots
+  ): boolean {
+    return isFilled(props?.prefix) || Boolean(slots?.prefix)
+  }
+
   /** Default element identifier / Идентификатор элемента по умолчанию */
   protected readonly elementIdDefault = getElementId()
 
@@ -42,7 +57,7 @@ export class PrefixInclude {
    * @returns checking state / состояние проверки
    */
   get is(): boolean {
-    return Boolean(this.props.prefix || this.slots?.prefix)
+    return PrefixInclude.is(this.props, this.slots)
   }
 
   /**
@@ -62,10 +77,7 @@ export class PrefixInclude {
    * @returns unique identifier or empty string / уникальный идентификатор или пустая строка
    */
   get describedby(): string {
-    if (
-      isFilled(this.props.prefix)
-      || this.slots?.prefix
-    ) {
+    if (this.is) {
       return this.id
     }
 
@@ -79,7 +91,7 @@ export class PrefixInclude {
    * @returns list of virtual nodes / список виртуальных узлов
    */
   render(): VNode[] {
-    const children: any[] = []
+    const children: VNodeArrayChildren = []
 
     if (isFilled(this.props.prefix)) {
       children.push(this.props.prefix)

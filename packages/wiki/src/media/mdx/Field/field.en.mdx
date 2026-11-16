@@ -38,12 +38,12 @@ const value = ref('')
     label="Username"
     helper-message="Enter your name"
     :counter="value.length"
-    counter-max="50"
+    :maxlength="50"
+    counter-show
   >
-    <template #default="{ id, className }">
+    <template #default="{ binds }">
       <input
-        :id="id"
-        :class="className"
+        v-bind="binds"
         v-model="value"
         maxlength="50"
       />

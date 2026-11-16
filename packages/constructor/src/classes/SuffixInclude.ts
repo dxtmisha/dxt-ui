@@ -1,4 +1,4 @@
-import { type VNode } from 'vue'
+import { type VNode, type VNodeArrayChildren } from 'vue'
 import { getElementId, type DesignName, isFilled, render } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
@@ -15,6 +15,21 @@ import type { SuffixProps, SuffixSlots } from '../types/suffixTypes'
  * и генерирует виртуальный узел DOM суффикса.
  */
 export class SuffixInclude {
+  /**
+   * Checks whether suffix content is present in properties or slots.
+   *
+   * Проверяет наличие содержимого суффикса в свойствах или слотах.
+   * @param props suffix properties / свойства суффикса
+   * @param slots suffix slots / слоты суффикса
+   * @returns true if suffix is present / true, если суффикс присутствует
+   */
+  static is(
+    props?: Readonly<SuffixProps>,
+    slots?: SuffixSlots
+  ): boolean {
+    return isFilled(props?.suffix) || Boolean(slots?.suffix)
+  }
+
   /** Default element identifier / Идентификатор элемента по умолчанию */
   protected readonly elementIdDefault = getElementId()
 
@@ -42,7 +57,7 @@ export class SuffixInclude {
    * @returns checking state / состояние проверки
    */
   get is(): boolean {
-    return Boolean(this.props.suffix || this.slots?.suffix)
+    return SuffixInclude.is(this.props, this.slots)
   }
 
   /**
@@ -62,10 +77,7 @@ export class SuffixInclude {
    * @returns unique identifier or empty string / уникальный идентификатор или пустая строка
    */
   get describedby(): string {
-    if (
-      isFilled(this.props.suffix)
-      || this.slots?.suffix
-    ) {
+    if (this.is) {
       return this.id
     }
 
@@ -79,7 +91,7 @@ export class SuffixInclude {
    * @returns list of virtual nodes / список виртуальных узлов
    */
   render(): VNode[] {
-    const children: any[] = []
+    const children: VNodeArrayChildren = []
 
     if (isFilled(this.props.suffix)) {
       children.push(this.props.suffix)

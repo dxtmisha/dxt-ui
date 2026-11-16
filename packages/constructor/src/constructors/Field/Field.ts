@@ -1,28 +1,69 @@
-import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import { getCurrentInstance, onUpdated, type Ref } from 'vue'
+import {
+  type ConstrClassObject,
+  type ConstrEmit,
+  type ConstrItems,
+  type DesignComp,
+  DesignLogicAbstract,
+  type DesignName
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { CaptionInclude } from '../../classes/CaptionInclude'
-import { PrefixInclude } from '../../classes/PrefixInclude'
-import { SuffixInclude } from '../../classes/SuffixInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { PrefixInclude } from '../../classes/PrefixInclude'
+import { SuffixInclude } from '../../classes/SuffixInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
-import { IconTrailingInclude } from '../Icon'
 import { FieldLabelInclude } from '../FieldLabel'
 import { FieldMessageInclude } from '../FieldMessage'
+import { IconTrailingInclude } from '../Icon'
 import { ProgressInclude } from '../Progress'
-import { SkeletonInclude } from '../Skeleton'
+import { Skeleton, SkeletonInclude } from '../Skeleton'
 
 import { FieldElement } from './FieldElement'
 import { FieldIcons } from './FieldIcons'
 import { FieldSize } from './FieldSize'
 import { FieldSpace } from './FieldSpace'
 
-import type { FieldComponents, FieldEmits, FieldSlots } from './types'
-import type { FieldProps } from './props'
 import type { FieldControl } from './basicTypes'
+import type { FieldProps } from './props'
+import type { FieldComponents, FieldEmits, FieldSlots } from './types'
+
+/** Field dependency constructors type / Тип конструкторов зависимостей Field */
+export type FieldConstructors = {
+  /** Caption constructor / Конструктор подписи */
+  caption: typeof CaptionInclude
+  /** Enabled status constructor / Конструктор статуса активности */
+  enabled: typeof EnabledInclude
+  /** Event click constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Field element constructor / Конструктор элемента поля */
+  fieldElement: typeof FieldElement
+  /** Field label constructor / Конструктор метки поля */
+  fieldLabel: typeof FieldLabelInclude
+  /** Field message constructor / Конструктор сообщения поля */
+  fieldMessage: typeof FieldMessageInclude
+  /** Icon trailing constructor / Конструктор иконки и завершающей иконки */
+  icon: typeof IconTrailingInclude
+  /** Field icons constructor / Конструктор иконок действий поля */
+  icons: typeof FieldIcons
+  /** Prefix constructor / Конструктор префикса */
+  prefix: typeof PrefixInclude
+  /** Progress constructor / Конструктор индикатора прогресса */
+  progress: typeof ProgressInclude
+  /** Field size constructor / Конструктор размера поля */
+  size: typeof FieldSize
+  /** Skeleton constructor / Конструктор скелетона */
+  skeleton: typeof SkeletonInclude
+  /** Field space constructor / Конструктор пространства поля */
+  space: typeof FieldSpace
+  /** Suffix constructor / Конструктор суффикса */
+  suffix: typeof SuffixInclude
+  /** Text localization constructor / Конструктор локализации текста */
+  text: typeof TextInclude
+}
 
 /**
  * Class representing the core logic and dependencies of a Form Field.
@@ -31,51 +72,152 @@ import type { FieldControl } from './basicTypes'
  * Класс, представляющий основную логику и зависимости поля формы.
  * Управляет состояниями разметки, метками, валидационными сообщениями и вспомогательными элементами.
  */
-export class Field {
-  /** Text include / Подключение текста */
-  readonly text: TextInclude
-
-  /** Skeleton include / Подключение скелетона */
-  readonly skeleton: SkeletonInclude
-
-  /** Icon trailing include / Подключение иконки в конце */
-  readonly icon: IconTrailingInclude
-
-  /** Caption include / Подключение подписи */
-  readonly caption: CaptionInclude
-
-  /** Prefix include / Подключение префикса */
-  readonly prefix: PrefixInclude
-
-  /** Suffix include / Подключение суффикса */
-  readonly suffix: SuffixInclude
-
-  /** Progress include / Подключение прогресса */
-  readonly progress: ProgressInclude
-
-  /** Enabled include / Подключение активности */
-  readonly enabled: EnabledInclude
-
-  /** Event click include / Подключение события клика */
-  readonly event: EventClickInclude
-
-  /** Field icons / Иконки поля */
-  readonly icons: FieldIcons
-
-  /** Field size / Размер поля */
-  readonly size: FieldSize
-
-  /** Field element / Элемент поля */
-  readonly fieldElement: FieldElement
-
-  /** Field label include / Подключение метки поля */
-  readonly fieldLabel: FieldLabelInclude
-
-  /** Field message include / Подключение сообщения поля */
-  readonly fieldMessage: FieldMessageInclude
-
-  /** Field space / Пространство поля */
-  readonly space: FieldSpace
+export class Field extends DesignLogicAbstract<
+  HTMLLabelElement,
+  FieldComponents,
+  FieldEmits,
+  FieldSlots,
+  FieldProps,
+  FieldConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<FieldConstructors> = {
+    caption: {
+      item: CaptionInclude,
+      canCreate: () => CaptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots
+      ]
+    },
+    enabled: {
+      item: EnabledInclude,
+      parameters: () => [
+        this.props,
+        () => this.callInstance('progress', item => item)
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        this.props,
+        () => this.i('enabled'),
+        this.emits
+      ]
+    },
+    fieldElement: {
+      item: FieldElement,
+      parameters: () => [
+        this.props,
+        this.element
+      ]
+    },
+    fieldLabel: {
+      item: FieldLabelInclude,
+      canCreate: () => FieldElement.isClassic(this.props)
+        && FieldLabelInclude.is(this.props, Boolean(this.props.counterTop)),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => this.callInstance('skeleton', item => item.binds),
+        undefined,
+        () => this.i('fieldElement').id,
+        () => this.props.counterTop
+      ]
+    },
+    fieldMessage: {
+      item: FieldMessageInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => this.callInstance('skeleton', item => item.binds),
+        undefined,
+        undefined,
+        () => !this.props.counterTop
+      ]
+    },
+    icon: {
+      item: IconTrailingInclude,
+      canCreate: () => IconTrailingInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components
+      ]
+    },
+    icons: {
+      item: FieldIcons,
+      canCreate: () => FieldIcons.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        () => this.i('text')
+      ]
+    },
+    prefix: {
+      item: PrefixInclude,
+      canCreate: () => PrefixInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots
+      ]
+    },
+    progress: {
+      item: ProgressInclude,
+      canCreate: () => ProgressInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        {
+          circular: true,
+          position: 'static',
+          dense: true
+        }
+      ]
+    },
+    size: {
+      item: FieldSize,
+      parameters: () => [
+        this.element,
+        this.naming
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classBackground']
+      ]
+    },
+    space: {
+      item: FieldSpace,
+      canCreate: () => CaptionInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        () => this.i('fieldElement')
+      ]
+    },
+    suffix: {
+      item: SuffixInclude,
+      canCreate: () => SuffixInclude.is(this.props, this.slots),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.slots
+      ]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    }
+  }
 
   /**
    * Constructor for initializing all field sub-modules and state management utilities.
@@ -87,113 +229,32 @@ export class Field {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.CaptionIncludeConstructor class for working with caption / класс для работы с подписью
-   * @param constructors.EnabledIncludeConstructor class for working with enabled / класс для работы с активностью
-   * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы с событием клика
-   * @param constructors.FieldIconsConstructor class for working with field icons / класс для работы с иконками поля
-   * @param constructors.FieldLabelIncludeConstructor class for working with field label / класс для работы с меткой поля
-   * @param constructors.FieldMessageIncludeConstructor class for working with field message / класс для работы с сообщением поля
-   * @param constructors.FieldSizeConstructor class for working with field size / класс для работы с размером поля
-   * @param constructors.IconTrailingIncludeConstructor class for working with icon / класс для работы с иконкой
-   * @param constructors.PrefixIncludeConstructor class for working with prefix / класс для работы с префиксом
-   * @param constructors.ProgressIncludeConstructor class for working with progress / класс для работы с прогрессом
-   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
-   * @param constructors.SuffixIncludeConstructor class for working with suffix / класс для работы с суффиксом
-   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: FieldProps,
-    protected readonly element: Ref<HTMLLabelElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<FieldComponents, FieldProps>,
-    protected readonly slots?: FieldSlots,
-    protected readonly emits?: ConstrEmit<FieldEmits>,
-    constructors: {
-      CaptionIncludeConstructor?: typeof CaptionInclude
-      EnabledIncludeConstructor?: typeof EnabledInclude
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      FieldIconsConstructor?: typeof FieldIcons
-      FieldLabelIncludeConstructor?: typeof FieldLabelInclude
-      FieldMessageIncludeConstructor?: typeof FieldMessageInclude
-      FieldSizeConstructor?: typeof FieldSize
-      IconTrailingIncludeConstructor?: typeof IconTrailingInclude
-      PrefixIncludeConstructor?: typeof PrefixInclude
-      ProgressIncludeConstructor?: typeof ProgressInclude
-      SkeletonIncludeConstructor?: typeof SkeletonInclude
-      SuffixIncludeConstructor?: typeof SuffixInclude
-      TextIncludeConstructor?: typeof TextInclude
-    } = {}
+    props: Readonly<FieldProps>,
+    element: Ref<HTMLLabelElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<FieldComponents, FieldProps>,
+    slots?: FieldSlots,
+    emits?: ConstrEmit<FieldEmits>,
+    constructors?: Partial<FieldConstructors>
   ) {
-    const {
-      CaptionIncludeConstructor = CaptionInclude,
-      EnabledIncludeConstructor = EnabledInclude,
-      EventClickIncludeConstructor = EventClickInclude,
-      FieldIconsConstructor = FieldIcons,
-      FieldLabelIncludeConstructor = FieldLabelInclude,
-      FieldMessageIncludeConstructor = FieldMessageInclude,
-      FieldSizeConstructor = FieldSize,
-      IconTrailingIncludeConstructor = IconTrailingInclude,
-      PrefixIncludeConstructor = PrefixInclude,
-      ProgressIncludeConstructor = ProgressInclude,
-      SkeletonIncludeConstructor = SkeletonInclude,
-      SuffixIncludeConstructor = SuffixInclude,
-      TextIncludeConstructor = TextInclude
-    } = constructors
-
-    this.text = new TextIncludeConstructor(props)
-    this.skeleton = new SkeletonIncludeConstructor(
+    super(
       props,
-      this.naming,
-      ['classBackground']
-    )
-
-    this.icon = new IconTrailingIncludeConstructor(props, naming, components)
-    this.caption = new CaptionIncludeConstructor(props, naming, slots)
-    this.prefix = new PrefixIncludeConstructor(props, naming, slots)
-    this.suffix = new SuffixIncludeConstructor(props, naming, slots)
-
-    this.progress = new ProgressIncludeConstructor(
-      props,
+      element,
       naming,
       components,
-      {
-        circular: true,
-        position: 'static',
-        dense: true
-      }
+      slots,
+      emits,
+      constructors
     )
 
-    this.enabled = new EnabledIncludeConstructor(props, () => this.progress)
-    this.event = new EventClickIncludeConstructor(
-      props,
-      () => this.enabled,
-      emits
-    )
+    this.i('size')
 
-    this.icons = new FieldIconsConstructor(props, naming, this.text)
-    this.size = new FieldSizeConstructor(element, naming)
-
-    this.fieldElement = new FieldElement(props, element)
-    this.fieldLabel = new FieldLabelIncludeConstructor(
-      props,
-      naming,
-      components,
-      () => this.skeleton.binds,
-      undefined,
-      () => this.fieldElement.id,
-      () => props.counterTop
-    )
-    this.fieldMessage = new FieldMessageIncludeConstructor(
-      props,
-      naming,
-      components,
-      () => this.skeleton.binds,
-      undefined,
-      undefined,
-      () => !props.counterTop
-    )
-    this.space = new FieldSpace(props, this.fieldElement)
+    if (getCurrentInstance()) {
+      onUpdated(() => this.i('size').update())
+    }
   }
 
   /**
@@ -204,10 +265,10 @@ export class Field {
    */
   get describedby(): string {
     const list: string[] = [
-      this.prefix.describedby,
-      this.suffix.describedby,
-      this.fieldLabel.id,
-      this.fieldMessage.id
+      this.callInstance('prefix', item => item.describedby, ''),
+      this.callInstance('suffix', item => item.describedby, ''),
+      this.callInstance('fieldLabel', item => item.id, ''),
+      this.i('fieldMessage').id
     ]
 
     return list.filter(Boolean).join(' ')
@@ -220,8 +281,14 @@ export class Field {
    * @returns control bindings and classes / привязки и классы управления
    */
   get control(): FieldControl {
-    const id = this.fieldElement.id
-    const className = `${this.naming.getSubClass('body', 'input')} ${this.skeleton.classesSkeleton.classText}`
+    const fieldElement = this.i('fieldElement')
+    const id = fieldElement.id
+    const classText = this.callInstance(
+      'skeleton',
+      item => item.classesSkeleton.classText,
+      Skeleton.getClassesListByDesign(this.naming.getDesign()).classText
+    )
+    const className = `${this.naming.getSubClass('body', 'input')} ${classText}`
 
     return {
       id,
@@ -234,7 +301,7 @@ export class Field {
         'disabled': this.props.disabled,
         'readonly': this.props.readonly,
         'data-input': id,
-        ...AriaStaticInclude.invalid(this.fieldElement.isValidation()),
+        ...AriaStaticInclude.invalid(fieldElement.isValidation()),
         ...AriaStaticInclude.describedby(this.describedby)
       }
     }
@@ -246,11 +313,11 @@ export class Field {
    * Значения для CSS-классов.
    * @returns object with CSS classes / объект с CSS-классами
    */
-  get classes() {
+  get classes(): ConstrClassObject {
     return {
-      [this.naming.getStatusClass('cancel')]: this.icons.isCancel(),
-      [this.naming.getStatusClass('suffix')]: this.props.suffix,
-      [this.naming.getStatusClass('validation')]: this.fieldElement.isValidation()
+      [this.naming.getStatusClass('cancel')]: FieldIcons.isCancel(this.props),
+      [this.naming.getStatusClass('suffix')]: SuffixInclude.is(this.props, this.slots),
+      [this.naming.getStatusClass('validation')]: this.i('fieldElement').isValidation()
     }
   }
 }

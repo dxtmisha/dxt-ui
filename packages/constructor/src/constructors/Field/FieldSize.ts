@@ -1,7 +1,8 @@
 // ai-none
 
-import { onMounted, onUnmounted, onUpdated, type Ref, watch } from 'vue'
+import { type Ref, watch } from 'vue'
 import { EventItem, type DesignName } from '@dxtmisha/functional'
+import { FrameAbstract } from '../../classes/FrameAbstract'
 
 /**
  * Class for managing dynamic margins and padding of the input field based on accessory elements (prefix, suffix, space).
@@ -10,7 +11,7 @@ import { EventItem, type DesignName } from '@dxtmisha/functional'
  * Класс управления динамическими отступами для элемента ввода на основе вспомогательных элементов (префикс, суффикс, разделители).
  * Вычисляет значения реактивно и устанавливает пользовательские переменные CSS на элементе поля.
  */
-export class FieldSize {
+export class FieldSize extends FrameAbstract {
   /** Offset value from the left / Значение смещения слева */
   protected left: number = 0
 
@@ -34,14 +35,21 @@ export class FieldSize {
     protected readonly element: Ref<HTMLLabelElement | undefined>,
     protected readonly naming: DesignName
   ) {
-    watch(element, () => this.update())
+    super()
+  }
 
-    onMounted(() => {
-      this.event = new EventItem(window, 'resize', () => this.update())
-      this.update()
-    })
-    onUnmounted(() => this.event?.stop())
-    onUpdated(() => this.update())
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    watch(this.element, () => this.update())
+    this.event = new EventItem(window, 'resize', () => this.update()).start()
+    this.update()
+  }
+
+  /** Callback after component unmounting / Обработчик после демонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.event?.stop()
+    this.event = undefined
+    this.stopFrame()
   }
 
   /**
@@ -50,12 +58,12 @@ export class FieldSize {
    * Обновление отступов поля.
    * @param limit recursion limit to prevent infinite loops / лимит рекурсии для предотвращения бесконечных циклов
    */
-  readonly update = (limit: number = 128) => {
+  readonly update = (limit: number = 128): void => {
     if (limit <= 0) {
       return
     }
 
-    requestAnimationFrame(() => {
+    this.startFrame(() => {
       const elementSpace = this.getElementSpace()
       const elementPrefix = this.getElementPrefix()
 
@@ -99,7 +107,7 @@ export class FieldSize {
    *
    * Обновляет пользовательские свойства CSS для отступов поля ввода и запускает анимацию показа.
    */
-  protected make() {
+  protected make(): void {
     const element = this.element.value
 
     if (element) {
@@ -108,7 +116,9 @@ export class FieldSize {
       element.style.setProperty(this.naming.getStyle('title'), `${this.title}px`)
 
       if (!element.classList.contains(this.naming.getStatusClass('show'))) {
-        requestAnimationFrame(() => element.classList.add(this.naming.getStatusClass('show')))
+        this.startFrame(() => {
+          element.classList.add(this.naming.getStatusClass('show'))
+        })
       }
     }
   }

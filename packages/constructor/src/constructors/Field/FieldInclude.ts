@@ -1,4 +1,6 @@
+import { mergeProps, unref } from 'vue'
 import {
+  type ConstrBind,
   type DesignComponents,
   type DesignName,
   eventStopPropagation,
@@ -14,7 +16,7 @@ import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/c
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { FieldArrowProps } from '../../types/fieldTypes'
 import type { FieldComponentInclude, FieldPropsInclude } from './basicTypes'
-import type { FieldSlots } from './types'
+import type { FieldExpose, FieldSlots } from './types'
 import type { FieldPropsBasic } from './props'
 
 /**
@@ -27,7 +29,7 @@ import type { FieldPropsBasic } from './props'
 export class FieldInclude extends ComponentIncludeAbstract<
   FieldPropsInclude & FieldArrowProps,
   FieldPropsBasic,
-  Record<string, any>,
+  FieldExpose,
   FieldSlots
 > {
   /** Component name / Название компонента */
@@ -40,8 +42,8 @@ export class FieldInclude extends ComponentIncludeAbstract<
    * Constructor for FieldInclude helper class.
    *
    * Конструктор для вспомогательного класса FieldInclude.
-   * @param naming component naming helper / помощник именования компонента
    * @param props input data / входные данные
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index index identifier / идентификатор индекса
@@ -83,7 +85,7 @@ export class FieldInclude extends ComponentIncludeAbstract<
    * @param attrs attributes to merge / атрибуты для объединения
    * @returns merged binding attributes / объединенные атрибуты привязки
    */
-  protected override getAttrs(attrs?: FieldPropsBasic) {
+  protected override getAttrs(attrs?: FieldPropsBasic): Partial<ConstrBind<FieldPropsBasic>> {
     const value = this.value?.()
     const arrow = this.arrow?.()
 
@@ -107,62 +109,63 @@ export class FieldInclude extends ComponentIncludeAbstract<
    * Преобразует внутренние состояния компонента в прямые привязки HTML/VNode.
    * @returns merged binding attributes / объединенные атрибуты привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<FieldPropsBasic>> {
     const props = this.getProps()
 
-    return {
-      ...super.toBinds(),
+    return mergeProps(
+      super.toBinds(),
+      {
+        // Status
+        focus: props.focus,
+        selected: props.selected,
+        readonly: props.readonly,
+        disabled: props.disabled,
 
-      // Status
-      focus: props.focus,
-      selected: props.selected,
-      readonly: props.readonly,
-      disabled: props.disabled,
+        loading: props.loading,
+        forceShowMessage: props.forceShowMessage,
 
-      loading: props.loading,
-      forceShowMessage: props.forceShowMessage,
+        // Value
+        label: props.label,
+        prefix: props.prefix,
+        suffix: props.suffix,
+        caption: props.caption,
+        helperMessage: props.helperMessage,
 
-      // Value
-      label: props.label,
-      prefix: props.prefix,
-      suffix: props.suffix,
-      caption: props.caption,
-      helperMessage: props.helperMessage,
+        required: props.required,
 
-      required: props.required,
+        detail: props.detail,
 
-      detail: props.detail,
+        // Style
+        cancel: props.cancel,
+        counterShow: props.counterShow,
 
-      // Style
-      cancel: props.cancel,
-      counterShow: props.counterShow,
+        icon: props.icon,
+        iconTurn: props.iconTurn,
+        iconHide: props.iconHide,
+        iconDir: props.iconDir,
+        iconPalette: props.iconPalette,
+        iconTrailing: props.iconTrailing,
+        iconTrailingTurnOnly: props.iconTrailingTurnOnly,
+        iconTrailingDirOnly: props.iconTrailingDirOnly,
+        iconTrailingPalette: props.iconTrailingPalette,
+        iconAttrs: props.iconAttrs,
 
-      icon: props.icon,
-      iconTurn: props.iconTurn,
-      iconHide: props.iconHide,
-      iconDir: props.iconDir,
-      iconPalette: props.iconPalette,
-      iconTrailing: props.iconTrailing,
-      iconTrailingTurnOnly: props.iconTrailingTurnOnly,
-      iconTrailingDirOnly: props.iconTrailingDirOnly,
-      iconTrailingPalette: props.iconTrailingPalette,
-      iconAttrs: props.iconAttrs,
+        align: props.align,
 
-      align: props.align,
+        arrowCarousel: this.arrow?.().isCarousel() ?? props.arrow === 'carousel',
+        arrowStepper: this.arrow?.().isStepper() ?? props.arrow === 'stepper',
+        arrowAlign: this.arrow?.().align() ?? props.arrowAlign,
 
-      arrowCarousel: this.arrow?.().isCarousel() ?? props.arrow === 'carousel',
-      arrowStepper: this.arrow?.().isStepper() ?? props.arrow === 'stepper',
-      arrowAlign: this.arrow?.().align() ?? props.arrowAlign,
+        isSkeleton: props.isSkeleton,
 
-      isSkeleton: props.isSkeleton,
+        fieldLabelAttrs: props.fieldLabelAttrs,
+        fieldMessageAttrs: props.fieldMessageAttrs,
+        fieldCounterAttrs: props.fieldCounterAttrs,
 
-      fieldLabelAttrs: props.fieldLabelAttrs,
-      fieldMessageAttrs: props.fieldMessageAttrs,
-      fieldCounterAttrs: props.fieldCounterAttrs,
-
-      onClick: this.on,
-      onKeydown: this.onKeydown
-    }
+        onClick: this.on,
+        onKeydown: this.onKeydown
+      }
+    ) as Partial<ConstrBind<FieldPropsBasic>>
   }
 
   /**
@@ -170,8 +173,10 @@ export class FieldInclude extends ComponentIncludeAbstract<
    *
    * Сбрасывает фокус обратно на элемент ввода поля.
    */
-  protected resetFocus() {
-    const element: HTMLElement = this.element.value?.elementHtml
+  protected resetFocus(): void {
+    const element = unref(
+      (this.element.value as { elementHtml?: HTMLLabelElement } | undefined)?.elementHtml
+    )
 
     if (element) {
       element.querySelector<HTMLInputElement>('[data-input]')
@@ -189,11 +194,11 @@ export class FieldInclude extends ComponentIncludeAbstract<
   protected readonly on = (
     event: MouseEvent,
     { type }: EventClickValue
-  ) => {
+  ): void => {
     const eventItem = this.event?.()
 
     if (
-      (event.target as HTMLElement).closest('[data-element="scoreboard"]')
+      (event.target as HTMLElement | null)?.closest?.('[data-element="scoreboard"]')
       && (eventItem?.isEnabled() ?? true)
     ) {
       switch (type) {
@@ -236,7 +241,11 @@ export class FieldInclude extends ComponentIncludeAbstract<
   protected readonly onKeydown = (
     event: KeyboardEvent,
     options?: EventClickValue
-  ) => {
+  ): void => {
+    if (event.isComposing) {
+      return
+    }
+
     if (isEnter(event)) {
       this.on(event as unknown as MouseEvent, options ?? {} as EventClickValue)
       event.preventDefault()
