@@ -263,7 +263,6 @@ describe('CmsPermissionManager', () => {
     const mock = createMockDb({
       selectQueue: [
         [existing],
-        [{ id: 3 }],
         [existing],
         []
       ],

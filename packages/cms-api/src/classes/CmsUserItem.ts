@@ -9,6 +9,7 @@ import {
 import {
   isNull,
   isObjectNotArray,
+  isPositiveInteger,
   isString,
   uniqueArray,
   type ErrorCenterInstance
@@ -18,6 +19,7 @@ import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { users } from '../media/schema/users'
 import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsErrorInstance } from './CmsErrorInstance'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsRoleItem } from './CmsRoleItem'
 import type { CmsDbInstance } from './CmsDbInstance'
@@ -298,7 +300,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
           permissions: [...roleRecord.permissions]
         },
         this.databaseInstance,
-        this.errorCenter
+        this.getErrorCenter()
       )
     )
   }
@@ -333,7 +335,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    */
   getPermissionItems(): CmsPermissionItem[] {
     return this.getPermissions().map(
-      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance, this.errorCenter)
+      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance, this.getErrorCenter())
     )
   }
 
@@ -450,7 +452,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    */
   async update(input: CmsUserUpdateInput): Promise<this | undefined> {
     const userId = this.data.id
-    if (!CmsUserItem.isValidId(userId)) {
+    if (!isPositiveInteger(userId)) {
       return undefined
     }
 
@@ -470,7 +472,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         const updateValues = CmsUserItem.buildUpdateValues(
           input,
           existingUser.metadata,
-          this.errorCenter
+          this.getErrorCenter()
         )
         const updatedRows = await transaction
           .update(users)
@@ -486,7 +488,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         if (input.roleIds !== undefined || input.roleCodes !== undefined) {
           const resolvedRoleIds = await CmsRoleItem.resolveIds(
             transaction,
-            this.errorCenter,
+            this.getErrorCenter(),
             input.roleIds,
             input.roleCodes
           )
@@ -525,7 +527,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    */
   async delete(options: CmsUserDeleteOptions = {}): Promise<boolean> {
     const userId = this.data.id
-    if (!CmsUserItem.isValidId(userId)) {
+    if (!isPositiveInteger(userId)) {
       return false
     }
 
@@ -533,7 +535,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
     try {
       if (options.hard) {
-        return await this.deleteRecordById(userId, database)
+        return await this.deleteRecordById(userId)
       }
 
       return await database.transaction(async (transaction) => {
@@ -591,7 +593,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    */
   async reload(includeDeleted: boolean = false): Promise<this | undefined> {
     const userId = this.data.id
-    if (!CmsUserItem.isValidId(userId)) {
+    if (!isPositiveInteger(userId)) {
       return undefined
     }
 
@@ -621,7 +623,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    */
   async restore(): Promise<this | undefined> {
     const userId = this.data.id
-    if (!CmsUserItem.isValidId(userId)) {
+    if (!isPositiveInteger(userId)) {
       return undefined
     }
 
@@ -708,10 +710,10 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
     try {
       const rolesList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsUserItem.ensureUserExists(transaction, this.errorCenter, userId)
+        await CmsUserItem.ensureUserExists(transaction, this.getErrorCenter(), userId)
         const resolvedIds = await CmsRoleItem.resolveIds(
           transaction,
-          this.errorCenter,
+          this.getErrorCenter(),
           roleIds,
           roleCodes
         )
@@ -751,10 +753,10 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
     try {
       const rolesList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsUserItem.ensureUserExists(transaction, this.errorCenter, userId)
+        await CmsUserItem.ensureUserExists(transaction, this.getErrorCenter(), userId)
         const resolvedIds = await CmsRoleItem.resolveIds(
           transaction,
-          this.errorCenter,
+          this.getErrorCenter(),
           roleIds,
           roleCodes
         )
@@ -802,13 +804,13 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
     try {
       const rolesList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsUserItem.ensureUserExists(transaction, this.errorCenter, userId)
+        await CmsUserItem.ensureUserExists(transaction, this.getErrorCenter(), userId)
 
         const targetIds: number[] = []
 
         if (roleIds !== undefined) {
           targetIds.push(
-            ...uniqueArray(roleIds).filter(roleId => CmsUserItem.isValidId(roleId))
+            ...uniqueArray(roleIds).filter(roleId => isPositiveInteger(roleId))
           )
         }
 
@@ -1052,8 +1054,8 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     errorCenter: ErrorCenterInstance,
     userId: number
   ): Promise<void> {
-    if (!CmsUserItem.isValidId(userId)) {
-      CmsUserItem.reportError(
+    if (!isPositiveInteger(userId)) {
+      CmsErrorInstance.report(
         errorCenter,
         'userNotFound',
         `CMS user with ID ${String(userId)} was not found.`,
@@ -1068,7 +1070,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      CmsUserItem.reportError(
+      CmsErrorInstance.report(
         errorCenter,
         'userNotFound',
         `CMS user with ID ${userId} was not found.`,
@@ -1128,7 +1130,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       || emailParts[1].length === 0
       || /\s/.test(normalized)
     ) {
-      CmsUserItem.reportError(errorCenter, 'userInvalidEmail', 'Valid user email is required.', { email })
+      CmsErrorInstance.report(errorCenter, 'userInvalidEmail', 'Valid user email is required.', { email })
     }
 
     return normalized
@@ -1149,7 +1151,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     const normalized = isString(firstName) ? firstName.trim() : ''
 
     if (normalized.length === 0) {
-      CmsUserItem.reportError(errorCenter, 'userInvalidFirstName', 'User firstName is required.', { firstName })
+      CmsErrorInstance.report(errorCenter, 'userInvalidFirstName', 'User firstName is required.', { firstName })
     }
 
     return normalized
@@ -1176,7 +1178,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (!Number.isSafeInteger(phone) || phone <= 0) {
-      CmsUserItem.reportError(
+      CmsErrorInstance.report(
         errorCenter,
         'userInvalidPhone',
         'Phone must be a positive integer in E.164 digits format.',

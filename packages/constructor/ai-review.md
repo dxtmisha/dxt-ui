@@ -175,3 +175,7 @@ src/constructors/ListGroup/ListGroup.ts
 src/constructors/ListGroup/ListGroupDesign.tsx
 src/constructors/Mask/MaskDesign.tsx
 src/constructors/Mask/MaskInclude.ts
+src/classes/LabelNumberInclude.ts
+src/constructors/Badge/Badge.ts
+src/constructors/Badge/BadgeDesign.tsx
+src/constructors/Badge/BadgeInclude.ts

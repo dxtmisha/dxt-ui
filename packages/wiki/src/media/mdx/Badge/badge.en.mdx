@@ -1,38 +1,30 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
-
 Compact visual indicator for displaying status, notification counts, or markers on interface elements with support for various display modes and automatic overflow management.
 
-Badge provides a universal solution for creating informative indicators with flexible content configuration, positioning, and appearance. The component supports displaying text, numbers with maximum value limits, icons, and dot indicators, automatically hides when content is absent, and integrates with the slot system for customization.
+Badge provides a universal solution for creating informative indicators with flexible content configuration, positioning, and accessibility. The component supports displaying text, numbers (including numeric `0`) with maximum value limits and locale formatting, icons, and dot indicators, automatically hides when content is absent (`--hideAuto`), and integrates with the `default` slot for custom content.
 
 **Key features:**
 
-- Multiple display modes (text, numbers, icons, dot indicator)
-- Automatic overflow management with maximum value configuration
-- Flexible positioning relative to parent elements (overlap, vertical, horizontal)
-- Automatic hiding when content is absent (dot, icon, label)
-- Integration with LabelNumberInclude for numeric value processing
-- Icon support through IconInclude
-- Visibility control via hide property
-- Customization through slots for complete content control
+- **Display Modes:** Text, numeric counters (`0`, positive values), icons, and dot indicator (`dot`)
+- **Overflow & Locale Formatting:** Automatic `label-max` capping (e.g., `99+`) and locale-aware number formatting via `formatting` and `language`
+- **Flexible Positioning:** Relative positioning via `overlap` (`rectangular`, `circular`, `static`), `vertical` (`top`, `center`, `bottom`), and `horizontal` (`left`, `center`, `right`)
+- **Visibility Control:** Manual hiding via `hide` and automatic hiding when `dot`, `icon`, `label`, and `default` slot are absent
+- **Accessibility:** Supports `aria-label` on the root element while automatically applying `aria-hidden="true"` to the inner label node
 
 **Common use cases:**
 
 - Unread notification count indicators
 - Status markers on user avatars (online/offline)
 - Item counters in shopping carts or lists
-- New message indicators in chats
-- Status markers on product cards
-- Visual hints about available updates
-- Numeric indicators on tabs and menu items
+- New message indicators in chats and tabs
 
 <Source
     code={`
 <script setup>
 import { ref } from 'vue'
 
-const cartCount = ref(5)
+const cartCount = ref(0)
 const unreadMessages = ref(127)
 const isOnline = ref(true)
 
@@ -43,16 +35,16 @@ const addToCart = () => {
 
 <template>
   <div class="badge-examples">
-    <!-- Basic badge with number -->
+    <!-- Basic badge with numeric zero -->
     <div style="position: relative; display: inline-block;">
-      <IconButton icon="shopping_cart" @click="addToCart"/>
-      <Badge :label="cartCount"/>
+      <Button icon="shopping_cart" @click="addToCart"/>
+      <Badge :label="cartCount" aria-label="Items in cart"/>
     </div>
 
-    <!-- Badge with maximum value limit -->
+    <!-- Badge with maximum value limit and locale formatting -->
     <div style="position: relative; display: inline-block;">
-      <IconButton icon="notifications"/>
-      <Badge :label="unreadMessages" :label-max="99"/>
+      <Button icon="notifications"/>
+      <Badge :label="unreadMessages" :label-max="99" formatting language="en-US"/>
     </div>
 
     <!-- Dot status indicator -->
@@ -66,18 +58,15 @@ const addToCart = () => {
     </div>
 
     <!-- Badge with icon and text -->
-    <div style="position: relative; display: inline-block;">
-      <Button>Profile</Button>
-      <Badge
-        icon="verified"
-        label="Pro"
-        overlap="static"
-      />
-    </div>
+    <Badge
+      icon="verified"
+      label="Pro"
+      overlap="static"
+    />
 
     <!-- Badge with custom positioning -->
     <div style="position: relative; display: inline-block;">
-      <Card>Content</Card>
+      <span>Content</span>
       <Badge
         label="New"
         vertical="bottom"
@@ -90,4 +79,4 @@ const addToCart = () => {
     language="html"
 />
 
-> Badge is designed as a universal UI component for creating compact visual indicators with comprehensive support for various content types, automatic display management, and flexible positioning settings.
+> Badge is designed as a universal UI component for creating compact visual indicators with comprehensive support for numeric formatting, automatic display management, accessibility, and flexible positioning settings.

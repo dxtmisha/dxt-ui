@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/Kiểu & Kiểm tra/isPositiveInteger - Kiểm tra số nguyên dương an toàn'/>
+
+# `isPositiveInteger`
+
+Kiểm tra xem một giá trị có phải là số nguyên dương an toàn lớn hơn `0` hay không.
+
+Hàm kiểm tra `typeof value === 'number'`, gọi `Number.isSafeInteger(value)` và đảm bảo `value > 0`. Các giá trị như `0`, số âm, số thập phân, `NaN`, `Infinity`, số nguyên vượt ngưỡng an toàn (`Number.MAX_SAFE_INTEGER`), chuỗi, `bigint`, `null` và `undefined` đều trả về `false`.
+
+**Tham số:**
+- `value?: unknown` — Giá trị bất kỳ cần kiểm tra.
+
+**Trả về:**
+`boolean` (`value is number`) — `true` nếu giá trị là số nguyên dương an toàn, ngược lại là `false`. Đóng vai trò là type guard trong TypeScript giúp thu hẹp kiểu về `number`.
+
+```typescript
+import { isPositiveInteger } from '@dxtmisha/functional-basic'
+
+console.log(isPositiveInteger(1)) // true
+console.log(isPositiveInteger(42)) // true
+console.log(isPositiveInteger(0)) // false
+console.log(isPositiveInteger(-5)) // false
+console.log(isPositiveInteger(1.5)) // false
+console.log(isPositiveInteger('1')) // false
+console.log(isPositiveInteger(null)) // false
+```

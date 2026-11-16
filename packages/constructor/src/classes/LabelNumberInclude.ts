@@ -1,8 +1,15 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrClass, type DesignName, GeoRef, isNumber, toNumberByMax } from '@dxtmisha/functional'
+import {
+  type ConstrClass,
+  type DesignName,
+  GeoRef,
+  isNumber,
+  type RefOrNormalOrFunction,
+  toNumberByMax
+} from '@dxtmisha/functional'
 
 import { LabelInclude } from './LabelInclude'
-import { SkeletonInclude } from '../constructors/Skeleton'
+import type { SkeletonInclude } from '../constructors/Skeleton'
 
 import type { LabelNumberProps, LabelNumberSlots } from '../types/labelTypes'
 
@@ -26,12 +33,12 @@ export class LabelNumberInclude extends LabelInclude {
    * @param skeleton optional skeleton for loading state / необязательный скелетон для состояния загрузки
    */
   constructor(
-    protected readonly props: Readonly<LabelNumberProps>,
+    protected readonly props: RefOrNormalOrFunction<LabelNumberProps>,
     protected readonly naming: DesignName,
     protected readonly classesExtra?: ConstrClass,
     protected readonly slots?: LabelNumberSlots,
     protected readonly elementsExtra?: () => VNode[],
-    protected readonly skeleton?: SkeletonInclude
+    protected readonly skeleton?: RefOrNormalOrFunction<SkeletonInclude | undefined>
   ) {
     super(
       props,
@@ -49,14 +56,12 @@ export class LabelNumberInclude extends LabelInclude {
    * Returns text with conversion to maximum values.
    *
    * Возвращает текст с преобразованием в максимальные значения.
+   * @returns formatted number string or undefined / отформатированная строка числа или undefined
    */
   protected getNumber(): string | undefined {
-    const props = this.props
+    const props = this.getProps() as LabelNumberProps
 
-    if (
-      props.label
-      && isNumber(props.label)
-    ) {
+    if (isNumber(props.label)) {
       return toNumberByMax(
         props.label,
         props.labelMax,

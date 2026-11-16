@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/Типы и проверки/isPositiveInteger - Проверка на положительное целое число'/>
+
+# `isPositiveInteger`
+
+Проверяет, является ли значение положительным безопасным целым числом строго больше `0`.
+
+Функция проверяет `typeof value === 'number'`, вызывает `Number.isSafeInteger(value)` и убеждается, что `value > 0`. Для нуля, отрицательных чисел, дробных значений, `NaN`, `Infinity`, небезопасных целых чисел (больше `Number.MAX_SAFE_INTEGER`), строк, `bigint` и `null`/`undefined` возвращается `false`.
+
+**Параметры:**
+- `value?: unknown` — Проверяемое значение любого типа.
+
+**Возвращает:**
+`boolean` (`value is number`) — `true`, если значение является положительным безопасным целым числом, иначе `false`. Выступает в качестве защитника типа (type guard) TypeScript, сужая тип значения до `number`.
+
+```typescript
+import { isPositiveInteger } from '@dxtmisha/functional-basic'
+
+console.log(isPositiveInteger(1)) // true
+console.log(isPositiveInteger(42)) // true
+console.log(isPositiveInteger(0)) // false
+console.log(isPositiveInteger(-5)) // false
+console.log(isPositiveInteger(1.5)) // false
+console.log(isPositiveInteger('1')) // false
+console.log(isPositiveInteger(null)) // false
+```

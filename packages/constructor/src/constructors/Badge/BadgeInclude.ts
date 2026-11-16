@@ -1,6 +1,6 @@
 // ai-none
 
-import { getBind } from '@dxtmisha/functional'
+import { type ConstrBind, getBind, isFilled, isNumber } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
@@ -23,17 +23,34 @@ export class BadgeInclude extends ComponentIncludeAbstract<
   BadgeExpose,
   BadgeSlots
 > {
+  /**
+   * Checks whether a badge or dot is specified for rendering.
+   *
+   * Проверяет, указан ли бейдж или точка для отображения.
+   * @param props input properties / входные свойства
+   * @returns true if badge or dot is present / true, если бейдж или точка присутствуют
+   */
+  static is(props?: BadgePropsInclude): boolean {
+    return Boolean(
+      isFilled(props?.badge, true)
+      || isNumber(props?.badge)
+      || props?.badgeDot
+    )
+  }
+
+  /** Component sub-name or code identifier / Дополнительное имя компонента или идентификатор кода */
   protected name = 'badge'
+  /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
   protected propsAttrsName = 'badgeAttrs'
 
   /**
-   * Checks whether a badge is specified for rendering the component /
-   * Проверяет, указан ли бейдж для отображения компонента
+   * Checks whether a badge is specified for rendering the component.
+   *
+   * Проверяет, указан ли бейдж для отображения компонента.
+   * @returns true if badge should be displayed / true, если бейдж должен отображаться
    */
   override get is(): boolean {
-    const props = this.getProps()
-
-    return Boolean(props.badge || props.badgeDot)
+    return BadgeInclude.is(this.getProps())
   }
 
   /**
@@ -42,14 +59,14 @@ export class BadgeInclude extends ComponentIncludeAbstract<
    * Разрешает и возвращает свойства дизайна, привязанные именно к бейджу.
    * @returns resolved badge properties or undefined / разрешенные свойства бейджа или undefined
    */
-  protected override getExtra() {
+  protected override getExtra(): Partial<ConstrBind<BadgeProps>> | undefined {
     const props = this.getProps()
     const extra = super.getExtra()
 
     if (props.badgeDot) {
       return {
-        dot: props.badgeDot,
-        ...extra
+        ...extra,
+        dot: props.badgeDot
       }
     }
 

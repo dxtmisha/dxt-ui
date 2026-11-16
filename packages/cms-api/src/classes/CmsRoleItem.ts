@@ -6,6 +6,7 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
+  isPositiveInteger,
   isString,
   uniqueArray,
   type ErrorCenterInstance
@@ -16,6 +17,7 @@ import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsErrorInstance } from './CmsErrorInstance'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
@@ -186,7 +188,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    */
   getPermissionItems(): CmsPermissionItem[] {
     return this.data.permissions.map(
-      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance, this.errorCenter)
+      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance, this.getErrorCenter())
     )
   }
 
@@ -292,11 +294,11 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    */
   async update(input: CmsRoleUpdateInput): Promise<this | undefined> {
     const roleId = this.data.id
-    if (!CmsRoleItem.isValidId(roleId)) {
+    if (!isPositiveInteger(roleId)) {
       return undefined
     }
 
-    const updateValues = CmsRoleItem.buildUpdateValues(input, this.errorCenter)
+    const updateValues = CmsRoleItem.buildUpdateValues(input, this.getErrorCenter())
 
     try {
       const updatedRecord = await this.getDatabase().transaction(async (transaction) => {
@@ -325,7 +327,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
         if (input.permissionIds !== undefined || input.permissionCodes !== undefined) {
           const resolvedPermissionIds = await CmsPermissionItem.resolveIds(
             transaction,
-            this.errorCenter,
+            this.getErrorCenter(),
             input.permissionIds,
             input.permissionCodes
           )
@@ -363,7 +365,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    */
   async delete(): Promise<boolean> {
     const roleId = this.data.id
-    if (!CmsRoleItem.isValidId(roleId)) {
+    if (!isPositiveInteger(roleId)) {
       return false
     }
 
@@ -386,7 +388,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    */
   async reload(): Promise<this | undefined> {
     const roleId = this.data.id
-    if (!CmsRoleItem.isValidId(roleId)) {
+    if (!isPositiveInteger(roleId)) {
       return undefined
     }
 
@@ -433,10 +435,10 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
     try {
       const permissionsList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsRoleItem.ensureRoleExists(transaction, this.errorCenter, roleId)
+        await CmsRoleItem.ensureRoleExists(transaction, this.getErrorCenter(), roleId)
         const resolvedIds = await CmsPermissionItem.resolveIds(
           transaction,
-          this.errorCenter,
+          this.getErrorCenter(),
           permissionIds,
           permissionCodes
         )
@@ -476,10 +478,10 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
     try {
       const permissionsList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsRoleItem.ensureRoleExists(transaction, this.errorCenter, roleId)
+        await CmsRoleItem.ensureRoleExists(transaction, this.getErrorCenter(), roleId)
         const resolvedIds = await CmsPermissionItem.resolveIds(
           transaction,
-          this.errorCenter,
+          this.getErrorCenter(),
           permissionIds,
           permissionCodes
         )
@@ -527,13 +529,13 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
     try {
       const permissionsList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsRoleItem.ensureRoleExists(transaction, this.errorCenter, roleId)
+        await CmsRoleItem.ensureRoleExists(transaction, this.getErrorCenter(), roleId)
 
         const targetIds: number[] = []
 
         if (permissionIds !== undefined) {
           targetIds.push(
-            ...uniqueArray(permissionIds).filter(permissionId => CmsRoleItem.isValidId(permissionId))
+            ...uniqueArray(permissionIds).filter(permissionId => isPositiveInteger(permissionId))
           )
         }
 
@@ -626,7 +628,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     executor: CmsDbExecutor,
     userId: number
   ): Promise<CmsRoleWithPermissions[]> {
-    if (!CmsRoleItem.isValidId(userId)) {
+    if (!isPositiveInteger(userId)) {
       return []
     }
 
@@ -663,7 +665,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     userIds: readonly number[]
   ): Promise<Map<number, CmsRoleWithPermissions[]>> {
     const rolesByUserId = new Map<number, CmsRoleWithPermissions[]>()
-    const uniqueUserIds = uniqueArray(userIds).filter(userId => CmsRoleItem.isValidId(userId))
+    const uniqueUserIds = uniqueArray(userIds).filter(userId => isPositiveInteger(userId))
 
     if (uniqueUserIds.length === 0) {
       return rolesByUserId
@@ -715,8 +717,8 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     errorCenter: ErrorCenterInstance,
     roleId: number
   ): Promise<void> {
-    if (!CmsRoleItem.isValidId(roleId)) {
-      CmsRoleItem.reportError(
+    if (!isPositiveInteger(roleId)) {
+      CmsErrorInstance.report(
         errorCenter,
         'roleNotFound',
         `CMS role with ID ${String(roleId)} was not found.`,
@@ -731,7 +733,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      CmsRoleItem.reportError(
+      CmsErrorInstance.report(
         errorCenter,
         'roleNotFound',
         `CMS role with ID ${roleId} was not found.`,
@@ -865,7 +867,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      CmsRoleItem.reportError(
+      CmsErrorInstance.report(
         errorCenter,
         'roleInvalidCode',
         'Valid role code is required.',
@@ -891,7 +893,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      CmsRoleItem.reportError(
+      CmsErrorInstance.report(
         errorCenter,
         'roleInvalidName',
         'Role name is required.',

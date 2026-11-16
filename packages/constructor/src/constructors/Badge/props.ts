@@ -2,7 +2,12 @@ import type { IconPropsBasic, IconPropsInclude } from '../Icon'
 import type { LabelNumberProps } from '../../types/labelTypes'
 import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
 
-export type BadgePropsToken = {
+export /**
+ * Type describing token properties for Badge.
+ *
+ * Тип, описывающий свойства токенов для Badge.
+ */
+type BadgePropsToken = {
   // :type [!] System label / Системная метка
   selected?: boolean
   hide?: boolean
@@ -13,6 +18,11 @@ export type BadgePropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Type describing basic properties for the Badge component.
+ *
+ * Тип, описывающий базовые свойства компонента Badge.
+ */
 export type BadgePropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic
 > = IconPropsInclude<Icon>

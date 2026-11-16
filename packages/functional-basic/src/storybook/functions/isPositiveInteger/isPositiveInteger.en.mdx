@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/Types & Checks/isPositiveInteger - Check for positive safe integer'/>
+
+# `isPositiveInteger`
+
+Checks whether a value is a positive safe integer strictly greater than `0`.
+
+The function verifies `typeof value === 'number'`, checks `Number.isSafeInteger(value)`, and ensures `value > 0`. Zero, negative numbers, floats, `NaN`, `Infinity`, unsafe integers (above `Number.MAX_SAFE_INTEGER`), strings, `bigint`, and nullish values all return `false`.
+
+**Parameters:**
+- `value?: unknown` — The value to check.
+
+**Returns:**
+`boolean` (`value is number`) — `true` if the value is a positive safe integer, otherwise `false`. Acts as a TypeScript type guard narrowing the value to `number`.
+
+```typescript
+import { isPositiveInteger } from '@dxtmisha/functional-basic'
+
+console.log(isPositiveInteger(1)) // true
+console.log(isPositiveInteger(42)) // true
+console.log(isPositiveInteger(0)) // false
+console.log(isPositiveInteger(-5)) // false
+console.log(isPositiveInteger(1.5)) // false
+console.log(isPositiveInteger('1')) // false
+console.log(isPositiveInteger(null)) // false
+```

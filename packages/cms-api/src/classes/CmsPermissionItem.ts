@@ -5,6 +5,7 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
+  isPositiveInteger,
   isString,
   uniqueArray,
   type ErrorCenterInstance
@@ -13,6 +14,7 @@ import {
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsErrorInstance } from './CmsErrorInstance'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
   CmsDbExecutor,
@@ -125,30 +127,23 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    */
   async update(input: CmsPermissionUpdateInput): Promise<this | undefined> {
     const permissionId = this.data.id
-    if (!CmsPermissionItem.isValidId(permissionId)) {
+    if (!isPositiveInteger(permissionId)) {
       return undefined
     }
 
-    const updateValues = CmsPermissionItem.buildUpdateValues(input, this.errorCenter)
+    const updateValues = CmsPermissionItem.buildUpdateValues(input, this.getErrorCenter())
 
     try {
-      const updatedRecord = await this.getDatabase().transaction(async (transaction) => {
-        if (!(await this.existsRecordById(permissionId, undefined, transaction))) {
-          return undefined
-        }
+      const updatedRows = await this.getDatabase()
+        .update(permissions)
+        .set({
+          ...updateValues,
+          updatedAt: new Date()
+        })
+        .where(eq(permissions.id, permissionId))
+        .returning()
 
-        const updatedRows = await transaction
-          .update(permissions)
-          .set({
-            ...updateValues,
-            updatedAt: new Date()
-          })
-          .where(eq(permissions.id, permissionId))
-          .returning()
-
-        return updatedRows[0]
-      })
-
+      const updatedRecord = updatedRows[0]
       if (!updatedRecord) {
         return undefined
       }
@@ -172,7 +167,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    */
   async delete(): Promise<boolean> {
     const permissionId = this.data.id
-    if (!CmsPermissionItem.isValidId(permissionId)) {
+    if (!isPositiveInteger(permissionId)) {
       return false
     }
 
@@ -195,7 +190,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    */
   async reload(): Promise<this | undefined> {
     const permissionId = this.data.id
-    if (!CmsPermissionItem.isValidId(permissionId)) {
+    if (!isPositiveInteger(permissionId)) {
       return undefined
     }
 
@@ -259,7 +254,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     executor: CmsDbExecutor,
     roleId: number
   ): Promise<CmsPermission[]> {
-    if (!CmsPermissionItem.isValidId(roleId)) {
+    if (!isPositiveInteger(roleId)) {
       return []
     }
 
@@ -286,7 +281,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     roleIds: readonly number[]
   ): Promise<Map<number, CmsPermission[]>> {
     const permissionsByRoleId = new Map<number, CmsPermission[]>()
-    const uniqueRoleIds = uniqueArray(roleIds).filter(roleId => CmsPermissionItem.isValidId(roleId))
+    const uniqueRoleIds = uniqueArray(roleIds).filter(roleId => isPositiveInteger(roleId))
 
     if (uniqueRoleIds.length === 0) {
       return permissionsByRoleId
@@ -410,7 +405,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      CmsPermissionItem.reportError(
+      CmsErrorInstance.report(
         errorCenter,
         'permissionInvalidCode',
         'Valid permission code is required.',
@@ -436,7 +431,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      CmsPermissionItem.reportError(
+      CmsErrorInstance.report(
         errorCenter,
         'permissionInvalidName',
         'Permission name is required.',

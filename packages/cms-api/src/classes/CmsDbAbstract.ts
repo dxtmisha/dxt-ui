@@ -5,17 +5,17 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
-  ErrorCenter,
   isNull,
+  isPositiveInteger,
   uniqueArray,
   type ErrorCenterInstance
 } from '@dxtmisha/functional-basic'
 
 import { useCmsDb } from '../composables/useCmsDb'
+import { CmsErrorInstance } from './CmsErrorInstance'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
   CmsDb,
-  CmsDbExecutor,
   CmsIdTable
 } from '../types/cmsDbTypes'
 
@@ -26,11 +26,14 @@ const DEFAULT_LIST_LIMIT = 20
 const MAX_LIST_LIMIT = 100
 
 /**
- * Abstract base class providing unified CMS table binding, database instance management, and centralized ErrorCenter error handling.
+ * Abstract base class providing unified CMS table binding, database instance management, and centralized CmsErrorInstance delegation.
  *
- * Абстрактный базовый класс для единой привязки таблицы CMS, управления экземпляром базы данных и централизованной обработки ошибок через ErrorCenter.
+ * Абстрактный базовый класс для единой привязки таблицы CMS, управления экземпляром базы данных и делегирования обработки ошибок в CmsErrorInstance.
  */
 export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
+  /** Centralized CMS error handler / Централизованный обработчик ошибок CMS */
+  protected error: CmsErrorInstance
+
   /**
    * Initializes the base CMS database handler with a table schema, CmsDbInstance, and ErrorCenter.
    *
@@ -42,8 +45,10 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   constructor(
     protected table: TTable,
     protected databaseInstance: CmsDbInstance = useCmsDb().cmsDbInstance,
-    protected errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
-  ) {}
+    errorCenter?: ErrorCenterInstance
+  ) {
+    this.error = new CmsErrorInstance(errorCenter)
+  }
 
   /**
    * Returns the Drizzle table schema bound to this instance.
@@ -76,13 +81,23 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
+   * Returns the managed CmsErrorInstance handler.
+   *
+   * Возвращает управляемый экземпляр обработчика ошибок CmsErrorInstance.
+   * @returns CmsErrorInstance instance / Экземпляр CmsErrorInstance
+   */
+  getError(): CmsErrorInstance {
+    return this.error
+  }
+
+  /**
    * Returns the ErrorCenter instance used for centralized error reporting.
    *
    * Возвращает экземпляр ErrorCenter, используемый для централизованной регистрации ошибок.
    * @returns ErrorCenter instance / Экземпляр ErrorCenter
    */
   getErrorCenter(): ErrorCenterInstance {
-    return this.errorCenter
+    return this.error.getErrorCenter()
   }
 
   /**
@@ -105,7 +120,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
    * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
    */
   setErrorCenter(errorCenter: ErrorCenterInstance): this {
-    this.errorCenter = errorCenter
+    this.error.setErrorCenter(errorCenter)
     return this
   }
 
@@ -115,15 +130,13 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
    * Проверяет существование записи в привязанной таблице по идентификатору и необязательному SQL-условию.
    * @param id Record identifier / Идентификатор записи
    * @param condition Optional extra SQL predicate / Необязательное дополнительное SQL-условие
-   * @param executor Optional database or transaction executor / Необязательный исполнитель БД или транзакции
    * @returns True if record exists / True, если запись существует
    */
   protected async existsRecordById(
     id: number,
-    condition?: SQL,
-    executor: CmsDbExecutor = this.getDatabase()
+    condition?: SQL
   ): Promise<boolean> {
-    if (!CmsDbAbstract.isValidId(id)) {
+    if (!isPositiveInteger(id)) {
       return false
     }
 
@@ -132,7 +145,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
       ? and(eq(baseTable.id, id), condition)
       : eq(baseTable.id, id)
 
-    const found = await executor
+    const found = await this.getDatabase()
       .select({ id: baseTable.id })
       .from(baseTable)
       .where(whereCondition)
@@ -146,15 +159,11 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
    *
    * Подсчитывает количество записей в привязанной таблице по необязательному SQL-условию.
    * @param whereCondition Optional SQL predicate / Необязательное SQL-условие
-   * @param executor Optional database or transaction executor / Необязательный исполнитель БД или транзакции
    * @returns Number of matching records / Количество найденных записей
    */
-  protected async countRecords(
-    whereCondition?: SQL,
-    executor: CmsDbExecutor = this.getDatabase()
-  ): Promise<number> {
+  protected async countRecords(whereCondition?: SQL): Promise<number> {
     const baseTable: CmsIdTable = this.table
-    const countRows = await executor
+    const countRows = await this.getDatabase()
       .select({ count: sql<number>`count(*)::int` })
       .from(baseTable)
       .where(whereCondition)
@@ -167,19 +176,15 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
    *
    * Безвозвратно удаляет запись по идентификатору из привязанной таблицы.
    * @param id Record identifier / Идентификатор записи
-   * @param executor Optional database or transaction executor / Необязательный исполнитель БД или транзакции
    * @returns True if a record was deleted / True, если запись была удалена
    */
-  protected async deleteRecordById(
-    id: number,
-    executor: CmsDbExecutor = this.getDatabase()
-  ): Promise<boolean> {
-    if (!CmsDbAbstract.isValidId(id)) {
+  protected async deleteRecordById(id: number): Promise<boolean> {
+    if (!isPositiveInteger(id)) {
       return false
     }
 
     const baseTable: CmsIdTable = this.table
-    const deletedRows = await executor
+    const deletedRows = await this.getDatabase()
       .delete(baseTable)
       .where(eq(baseTable.id, id))
       .returning({ id: baseTable.id })
@@ -188,9 +193,9 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
-   * Reports an error via the instance ErrorCenter and throws an Error.
+   * Reports an error via the instance CmsError handler and throws an Error.
    *
-   * Регистрирует ошибку через ErrorCenter экземпляра и выбрасывает исключение Error.
+   * Регистрирует ошибку через обработчик CmsError экземпляра и выбрасывает исключение Error.
    * @param code Error code within the cms group / Код ошибки в группе cms
    * @param message Human-readable error message / Человекочитаемое сообщение об ошибке
    * @param details Optional raw error payload / Необязательные дополнительные детали ошибки
@@ -200,13 +205,13 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     message: string,
     details?: unknown
   ): never {
-    return CmsDbAbstract.reportError(this.errorCenter, code, message, details)
+    return this.error.report(code, message, details)
   }
 
   /**
-   * Reports unexpected transaction errors through the instance ErrorCenter without double-reporting domain errors.
+   * Reports unexpected transaction errors through the instance CmsError handler without double-reporting domain errors.
    *
-   * Передаёт неожиданные ошибки транзакции в ErrorCenter экземпляра, избегая повторной регистрации доменных ошибок.
+   * Передаёт неожиданные ошибки транзакции в обработчик CmsError экземпляра, избегая повторной регистрации доменных ошибок.
    * @param code Fallback error code / Код ошибки по умолчанию
    * @param message Fallback error message / Сообщение об ошибке по умолчанию
    * @param error Caught error instance / Перехваченная ошибка
@@ -216,18 +221,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     message: string,
     error: unknown
   ): never {
-    return CmsDbAbstract.handleTransactionError(this.errorCenter, code, message, error)
-  }
-
-  /**
-   * Escapes SQL LIKE wildcards in a search term.
-   *
-   * Экранирует спецсимволы SQL LIKE в поисковой строке.
-   * @param value Raw search text / Исходная поисковая строка
-   * @returns Escaped LIKE pattern value / Экранированная строка для шаблона LIKE
-   */
-  protected escapeSearchPattern(value: string): string {
-    return value.replaceAll('\\', '\\\\').replaceAll('%', '\\%').replaceAll('_', '\\_')
+    return this.error.handleTransaction(code, message, error)
   }
 
   /**
@@ -266,17 +260,6 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
-   * Checks that an identifier is a positive safe integer.
-   *
-   * Проверяет, что идентификатор является положительным безопасным целым числом.
-   * @param id Candidate identifier / Проверяемый идентификатор
-   * @returns True if valid positive safe integer / True, если корректный положительный идентификатор
-   */
-  static isValidId(id: number): boolean {
-    return Number.isSafeInteger(id) && id > 0
-  }
-
-  /**
    * Normalizes optional string fields, converting blank strings to null.
    *
    * Нормализует необязательные строковые поля, преобразуя пустые строки в null.
@@ -294,60 +277,6 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
 
     const trimmed = value.trim()
     return trimmed.length > 0 ? trimmed : null
-  }
-
-  /**
-   * Reports an error via ErrorCenter and throws an Error.
-   *
-   * Регистрирует ошибку через ErrorCenter и выбрасывает исключение Error.
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
-   * @param code Error code within the cms group / Код ошибки в группе cms
-   * @param message Human-readable error message / Человекочитаемое сообщение об ошибке
-   * @param details Optional raw error payload / Необязательные дополнительные детали ошибки
-   */
-  static reportError(
-    errorCenter: ErrorCenterInstance,
-    code: string,
-    message: string,
-    details?: unknown
-  ): never {
-    errorCenter.on({
-      group: 'cms',
-      code,
-      message,
-      details
-    })
-
-    throw new Error(`[@dxtmisha/cms-api] ${message}`)
-  }
-
-  /**
-   * Reports unexpected database transaction errors through ErrorCenter without double-reporting domain errors.
-   *
-   * Передаёт неожиданные ошибки транзакции БД в ErrorCenter, избегая повторной регистрации доменных ошибок.
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
-   * @param code Fallback error code / Код ошибки по умолчанию
-   * @param message Fallback error message / Сообщение об ошибке по умолчанию
-   * @param error Caught error instance / Перехваченная ошибка
-   */
-  static handleTransactionError(
-    errorCenter: ErrorCenterInstance,
-    code: string,
-    message: string,
-    error: unknown
-  ): never {
-    if (error instanceof Error && error.message.startsWith('[@dxtmisha/cms-api]')) {
-      throw error
-    }
-
-    errorCenter.on({
-      group: 'cms',
-      code,
-      message,
-      details: error
-    })
-
-    throw error instanceof Error ? error : new Error(`[@dxtmisha/cms-api] ${message}`)
   }
 
   /**
@@ -377,8 +306,8 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     if (ids !== undefined) {
       const uniqueIds = uniqueArray(ids)
       for (const entityId of uniqueIds) {
-        if (!CmsDbAbstract.isValidId(entityId)) {
-          CmsDbAbstract.reportError(
+        if (!isPositiveInteger(entityId)) {
+          CmsErrorInstance.report(
             errorCenter,
             errorCode,
             `Invalid ${entityName} ID: ${String(entityId)}.`,
@@ -393,7 +322,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
         const missingIds = uniqueIds.filter(entityId => !foundIdSet.has(entityId))
 
         if (missingIds.length > 0) {
-          CmsDbAbstract.reportError(
+          CmsErrorInstance.report(
             errorCenter,
             errorCode,
             `${entityName}s not found for IDs: ${missingIds.join(', ')}.`,
@@ -418,7 +347,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
         const missingCodes = uniqueCodes.filter(code => !idByCode.has(code))
 
         if (missingCodes.length > 0) {
-          CmsDbAbstract.reportError(
+          CmsErrorInstance.report(
             errorCenter,
             errorCode,
             `${entityName}s not found for codes: ${missingCodes.join(', ')}.`,

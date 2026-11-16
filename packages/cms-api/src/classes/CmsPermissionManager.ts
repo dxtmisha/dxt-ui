@@ -9,11 +9,13 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
+  isPositiveInteger,
   isString,
   uniqueArray,
   type ErrorCenterInstance
 } from '@dxtmisha/functional-basic'
 
+import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
@@ -89,7 +91,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    * @returns CmsPermissionItem instance or undefined / Экземпляр CmsPermissionItem или undefined
    */
   async getById(id: number): Promise<CmsPermissionItem | undefined> {
-    if (!CmsPermissionItem.isValidId(id)) {
+    if (!isPositiveInteger(id)) {
       return undefined
     }
 
@@ -130,7 +132,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    * @returns List of matching CmsPermissionItem instances / Список найденных экземпляров CmsPermissionItem
    */
   async getByIds(ids: readonly number[]): Promise<CmsPermissionItem[]> {
-    const validIds = uniqueArray(ids).filter(id => CmsPermissionItem.isValidId(id))
+    const validIds = uniqueArray(ids).filter(id => isPositiveInteger(id))
     if (validIds.length === 0) {
       return []
     }
@@ -184,7 +186,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
     const offset = this.normalizeOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
-    const total = await this.countRecords(whereCondition, database)
+    const total = await this.countRecords(whereCondition)
     if (total === 0) {
       return {
         items: [],
@@ -238,7 +240,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    * @returns Created CmsPermissionItem instance / Созданный экземпляр CmsPermissionItem
    */
   async create(input: CmsPermissionCreateInput): Promise<CmsPermissionItem> {
-    const createValues = CmsPermissionItem.buildCreateValues(input, this.errorCenter)
+    const createValues = CmsPermissionItem.buildCreateValues(input, this.getErrorCenter())
 
     try {
       const insertedRows = await this.getDatabase()
@@ -288,7 +290,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    * @returns Wrapped CmsPermissionItem instance / Экземпляр CmsPermissionItem
    */
   protected wrapPermissionItem(permissionRecord: CmsPermission): CmsPermissionItem {
-    return new CmsPermissionItem(permissionRecord, this.databaseInstance, this.errorCenter)
+    return new CmsPermissionItem(permissionRecord, this.databaseInstance, this.getErrorCenter())
   }
 
   /**
@@ -304,7 +306,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
     if (isString(options.search)) {
       const trimmedSearch = options.search.trim()
       if (trimmedSearch.length > 0) {
-        const pattern = `%${this.escapeSearchPattern(trimmedSearch)}%`
+        const pattern = `%${escapeCmsSearchPattern(trimmedSearch)}%`
         const searchPredicate = or(
           ilike(permissions.code, pattern),
           ilike(permissions.name, pattern),
@@ -317,7 +319,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
     }
 
     if (options.roleId !== undefined) {
-      if (!CmsPermissionItem.isValidId(options.roleId)) {
+      if (!isPositiveInteger(options.roleId)) {
         conditions.push(sql`false`)
       } else {
         const roleSubquery = this.getDatabase()

@@ -1,26 +1,29 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Badge } from './Badge'
 
-import {
-  type BadgePropsBasic
+import type {
+  BadgePropsBasic
 } from './props'
-import {
-  type BadgeClasses,
-  type BadgeComponents,
-  type BadgeEmits,
-  type BadgeExpose,
-  type BadgeSlots
+import type {
+  BadgeClasses,
+  BadgeComponents,
+  BadgeEmits,
+  BadgeExpose,
+  BadgeSlots
 } from './types'
 
 /**
- * BadgeDesign
+ * BadgeDesign constructor class responsible for assembling and rendering the Badge component.
+ * It manages class resolution, styles initialization, and the final DOM VNode rendering tree.
+ *
+ * Класс-конструктор BadgeDesign, отвечающий за сборку и рендеринг компонента бейджа.
+ * Управляет разрешением классов, инициализацией стилей и финальным деревом рендеринга VNode DOM.
  */
 export class BadgeDesign<
   COMP extends BadgeComponents,
@@ -36,14 +39,17 @@ export class BadgeDesign<
     CLASSES,
     P
   > {
+  /** Badge control item instance / Экземпляр элемента управления бейджем */
   protected readonly item: Badge
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   * Constructor for creating a BadgeDesign instance.
+   *
+   * Конструктор для создания экземпляра дизайна бейджа.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor badge item class / класс элемента бейджа
    */
   constructor(
     name: string,
@@ -68,9 +74,10 @@ export class BadgeDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -80,6 +87,7 @@ export class BadgeDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns custom classes object / объект пользовательских классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -97,6 +105,7 @@ export class BadgeDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -106,23 +115,30 @@ export class BadgeDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual node / виртуальная нода
    */
   protected initRender(): VNode {
-    const children: any[] = []
+    const children: VNode[] = []
 
     if (!this.props.dot) {
       children.push(
-        ...this.item.label.render(undefined, this.item.aria),
-        ...this.item.icon.renderIcon()
+        ...this.item.callInstance('label', item => item.render(undefined, this.item.aria), []),
+        ...this.item.callInstance('icon', item => item.renderIcon(), [])
       )
     }
 
-    return h('span', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      ...AriaStaticInclude.label(this.props.ariaLabel)
-    }, children)
+    return h(
+      'span',
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      children
+    )
   }
 }

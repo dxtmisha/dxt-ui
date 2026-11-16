@@ -140,7 +140,6 @@ describe('CmsPermissionItem', () => {
         description: null
       })
       const mock = createMockDb({
-        selectQueue: [[{ id: 10 }]],
         updateQueue: [[updatedRecord]]
       })
       const item = new CmsPermissionItem(makePermission(), mock.dbInstance, errorCenter)
@@ -163,7 +162,7 @@ describe('CmsPermissionItem', () => {
     })
 
     it('returns undefined when updating a missing or invalid permission ID', async () => {
-      const mock = createMockDb({ selectQueue: [[]] })
+      const mock = createMockDb({ updateQueue: [[]] })
       const missingItem = new CmsPermissionItem(makePermission({ id: 404 }), mock.dbInstance, errorCenter)
       const invalidItem = new CmsPermissionItem(makePermission({ id: 0 }), mock.dbInstance, errorCenter)
 

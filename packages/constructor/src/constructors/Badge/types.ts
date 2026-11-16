@@ -39,6 +39,7 @@ export interface BadgeSlots extends LabelNumberSlots {
  * Тип, описывающий подклассы.
  */
 export type BadgeClasses = {
+  /** Root element classes / Классы корневого элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   label: string

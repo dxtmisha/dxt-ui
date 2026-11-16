@@ -10,18 +10,19 @@ import {
 } from 'drizzle-orm'
 import {
   isArray,
+  isPositiveInteger,
   isString,
   uniqueArray,
   type ErrorCenterInstance
 } from '@dxtmisha/functional-basic'
 
+import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { users } from '../media/schema/users'
 import { CmsDbAbstract } from './CmsDbAbstract'
-import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsPermissionManager } from './CmsPermissionManager'
 import { CmsRoleItem } from './CmsRoleItem'
 import { CmsRoleManager } from './CmsRoleManager'
@@ -125,7 +126,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    */
   getRoleManager(): CmsRoleManager {
     if (!this.roleManager) {
-      this.roleManager = new CmsRoleManager(this.databaseInstance, this.errorCenter)
+      this.roleManager = new CmsRoleManager(this.databaseInstance, this.getErrorCenter())
     }
 
     return this.roleManager
@@ -139,7 +140,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    */
   getPermissionManager(): CmsPermissionManager {
     if (!this.permissionManager) {
-      this.permissionManager = new CmsPermissionManager(this.databaseInstance, this.errorCenter)
+      this.permissionManager = new CmsPermissionManager(this.databaseInstance, this.getErrorCenter())
     }
 
     return this.permissionManager
@@ -157,7 +158,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     id: number,
     includeDeleted: boolean = false
   ): Promise<CmsUserItem | undefined> {
-    if (!CmsUserItem.isValidId(id)) {
+    if (!isPositiveInteger(id)) {
       return undefined
     }
 
@@ -247,7 +248,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     const offset = this.normalizeOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
-    const total = await this.countRecords(whereCondition, database)
+    const total = await this.countRecords(whereCondition)
     if (total === 0) {
       return {
         items: [],
@@ -331,7 +332,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    * @returns Created CmsUserItem instance / Созданный экземпляр CmsUserItem
    */
   async create(input: CmsUserCreateInput): Promise<CmsUserItem> {
-    const createValues = CmsUserItem.buildCreateValues(input, this.errorCenter)
+    const createValues = CmsUserItem.buildCreateValues(input, this.getErrorCenter())
 
     try {
       const createdRecord = await this.getDatabase().transaction(async (transaction) => {
@@ -352,7 +353,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
         if (input.roleIds !== undefined || input.roleCodes !== undefined) {
           const resolvedRoleIds = await CmsRoleItem.resolveIds(
             transaction,
-            this.errorCenter,
+            this.getErrorCenter(),
             input.roleIds,
             input.roleCodes
           )
@@ -420,7 +421,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    * @returns Wrapped CmsUserItem instance / Экземпляр CmsUserItem
    */
   protected wrapUserItem(userRecord: CmsUserWithRoles): CmsUserItem {
-    return new CmsUserItem(userRecord, this.databaseInstance, this.errorCenter)
+    return new CmsUserItem(userRecord, this.databaseInstance, this.getErrorCenter())
   }
 
   /**
@@ -440,7 +441,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     if (isString(options.search)) {
       const trimmedSearch = options.search.trim()
       if (trimmedSearch.length > 0) {
-        const pattern = `%${this.escapeSearchPattern(trimmedSearch)}%`
+        const pattern = `%${escapeCmsSearchPattern(trimmedSearch)}%`
         const searchPredicate = or(
           ilike(users.email, pattern),
           ilike(users.username, pattern),
@@ -466,7 +467,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     }
 
     if (options.roleId !== undefined) {
-      if (!CmsRoleItem.isValidId(options.roleId)) {
+      if (!isPositiveInteger(options.roleId)) {
         conditions.push(sql`false`)
       } else {
         const roleSubquery = this.getDatabase()
@@ -490,7 +491,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     }
 
     if (options.permissionId !== undefined) {
-      if (!CmsPermissionItem.isValidId(options.permissionId)) {
+      if (!isPositiveInteger(options.permissionId)) {
         conditions.push(sql`false`)
       } else {
         const permissionSubquery = this.getDatabase()
