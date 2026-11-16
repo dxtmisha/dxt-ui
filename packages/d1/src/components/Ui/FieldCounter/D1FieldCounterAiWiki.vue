@@ -18,6 +18,11 @@ defineOptions({
     :component="D1FieldCounter"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <D1FieldCounter :counter="42" :maxlength="100" v-bind="args"/>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

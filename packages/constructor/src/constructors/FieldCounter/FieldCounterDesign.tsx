@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -31,7 +31,7 @@ export class FieldCounterDesign<
   CLASSES extends FieldCounterClasses,
   P extends FieldCounterPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLElement,
     COMP,
     FieldCounterEmits,
     EXPOSE,
@@ -46,10 +46,10 @@ export class FieldCounterDesign<
    * Constructor for FieldCounterDesign class.
    *
    * Конструктор для класса FieldCounterDesign.
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the item / класс для работы с элементом
    */
   constructor(
     name: string,
@@ -71,6 +71,39 @@ export class FieldCounterDesign<
       this.slots,
       this.emits
     )
+  }
+
+  /**
+   * Render hidden element for screen reader.
+   *
+   * Рендер скрытого элемента для скринридера.
+   * @returns list of virtual nodes / список виртуальных узлов
+   */
+  readonly renderAria = (): VNode[] => {
+    const ariaText = this.item.ariaText
+
+    if (ariaText) {
+      return [
+        h(
+          'div',
+          {
+            class: this.classes?.value.aria,
+            ...AriaStaticInclude.live('polite')
+          },
+          [
+            h(
+              'span',
+              {
+                ...AriaStaticInclude.role('img'),
+                ...AriaStaticInclude.label(ariaText)
+              }
+            )
+          ]
+        )
+      ]
+    }
+
+    return []
   }
 
   /**
@@ -119,48 +152,22 @@ export class FieldCounterDesign<
   protected initRender(): VNode[] | undefined {
     if (this.item.is()) {
       return [
-        h('span', {
-          ...this.getAttrs(),
-          id: this.props.id,
-          class: this.classes?.value.main,
-          style: this.styles?.value,
-          innerHTML: this.item.item
-        }),
+        h(
+          'span',
+          mergeProps(
+            this.getAttrs(),
+            {
+              id: this.props.id,
+              class: this.classes?.value.main,
+              style: this.styles?.value,
+              innerHTML: this.item.item
+            }
+          )
+        ),
         ...this.renderAria()
       ]
     }
 
     return undefined
-  }
-
-  /**
-   * Render hidden element for screen reader.
-   *
-   * Рендер скрытого элемента для скринридера.
-   * @returns list of virtual nodes / список виртуальных узлов
-   */
-  readonly renderAria = (): VNode[] => {
-    if (this.item.ariaText) {
-      return [
-        h(
-          'div',
-          {
-            class: this.classes?.value.aria,
-            ...AriaStaticInclude.live('polite')
-          },
-          [
-            h(
-              'span',
-              {
-                ...AriaStaticInclude.role('img'),
-                ...AriaStaticInclude.label(this.item.ariaText)
-              }
-            )
-          ]
-        )
-      ]
-    }
-
-    return []
   }
 }

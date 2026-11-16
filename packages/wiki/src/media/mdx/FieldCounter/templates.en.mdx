@@ -2,40 +2,40 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 ## Custom Display Templates
 
-The `template` property allows you to customize the counter display format using placeholders.
+The `template` property customizes counter formatting via placeholders.
 
 **Available placeholders:**
 
-- `[c]` — current number of entered characters
-- `[m]` — maximum character limit
+- `[c]` — current character count
+- `[m]` — maximum character limit (`maxlength`)
 
-Uses string interpolation to replace placeholders with actual counter values. Supports HTML markup inside the template for customizing styles of individual parts. When no template is provided, the component automatically determines the format: displays "50 / 100" when `maxlength` is present or just "50" when it's absent.
+Supports HTML markup inside the template string. When `template` is omitted, the default format renders `[c] / [m]` if `maxlength` is present or `[c]` when absent.
 
 <Source
     code={`
 <!-- Descriptive format -->
-<FieldCounter
+<DesignComponent
   :counter="75"
   :maxlength="150"
   template="Characters: [c] of [m]"
 />
 
 <!-- Compact format -->
-<FieldCounter
+<DesignComponent
   :counter="42"
   :maxlength="100"
   template="[c]/[m]"
 />
 
-<!-- With HTML for styling -->
-<FieldCounter
+<!-- HTML styling inside template -->
+<DesignComponent
   :counter="75"
   :maxlength="150"
   template="<b>[c]</b> of <i>[m]</i> characters"
 />
 
-<!-- Current counter only with text -->
-<FieldCounter
+<!-- Counter-only template -->
+<DesignComponent
   :counter="42"
   template="Characters entered: [c]"
 />

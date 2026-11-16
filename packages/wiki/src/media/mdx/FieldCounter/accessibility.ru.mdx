@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Порог оповещений и доступность (ARIA)
+
+Чтобы не перегружать скринридер при каждом нажатии клавиши, `FieldCounter` активирует скрытый регион `aria-live="polite"` только когда остаток символов не превышает порог `maxlengthOnce` (по умолчанию 10% от `maxlength`) либо при достижении/превышении лимита.
+
+**Свойства:**
+
+- `id` — явный HTML-идентификатор для связи через `aria-describedby` с элементом ввода
+- `maxlengthOnce` — пороговое количество оставшихся символов для начала оповещений (по умолчанию 10% от `maxlength`)
+- `textCharacterRemaining` — текст остатка с плейсхолдером `[left]` (`Remaining [left] characters`)
+- `textCharacterLimit` — текст при достижении или превышении лимита (`Character limit exceeded`)
+
+<Source
+    code={`
+<DesignComponent
+  id="comment-counter"
+  :counter="88"
+  :maxlength="100"
+  :maxlength-once="15"
+  text-character-remaining="Осталось [left] симв."
+  text-character-limit="Лимит достигнут!"
+/>
+  `}
+    language="html"
+/>

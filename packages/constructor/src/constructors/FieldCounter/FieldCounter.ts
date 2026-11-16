@@ -1,76 +1,42 @@
-import { type Ref } from 'vue'
 import {
   applyTemplate,
-  type ConstrEmit,
-  type DesignComp,
-  type DesignName,
+  type ConstrItems,
+  DesignLogicAbstract,
   isFilled,
+  isNull,
   toNumber
 } from '@dxtmisha/functional'
 
 import { TextInclude } from '../../classes/TextInclude'
 
-import type { FieldCounterComponents, FieldCounterEmits, FieldCounterSlots } from './types'
 import type { FieldCounterProps } from './props'
+import type { FieldCounterComponents, FieldCounterEmits, FieldCounterSlots } from './types'
+
+/** FieldCounter dependency constructors type / Тип конструкторов зависимостей FieldCounter */
+export type FieldCounterConstructors = {
+  /** Localized text strings helper constructor / Конструктор помощника локализованных текстовых строк */
+  text: typeof TextInclude
+}
 
 /**
  * FieldCounter class for managing character limit counters and screen reader announcements.
  *
  * Класс FieldCounter для управления счетчиками лимита символов и объявлениями для скринридеров.
  */
-export class FieldCounter {
-  /** Class for managing text-related properties / Класс для управления свойствами, связанными с текстом */
-  readonly text: TextInclude
-
-  /**
-   * Constructor for FieldCounter class.
-   *
-   * Конструктор для класса FieldCounter.
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
-   */
-  constructor(
-    protected readonly props: FieldCounterProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<FieldCounterComponents, FieldCounterProps>,
-    protected readonly slots?: FieldCounterSlots,
-    protected readonly emits?: ConstrEmit<FieldCounterEmits>,
-    constructors: {
-      TextIncludeConstructor?: typeof TextInclude
-    } = {}
-  ) {
-    const {
-      TextIncludeConstructor = TextInclude
-    } = constructors
-
-    this.text = new TextIncludeConstructor(this.props)
-  }
-
-  /**
-   * Returns the number of input characters.
-   *
-   * Возвращает количество вводимых символов.
-   * @returns number of input characters / количество вводимых символов
-   */
-  get counter(): number {
-    return toNumber(this.props.counter ?? 0)
-  }
-
-  /**
-   * Returns the maximum available input number.
-   *
-   * Возвращает максимально доступное вводимое число.
-   * @returns maximum available input number / максимально доступное вводимое число
-   */
-  get max(): number {
-    return toNumber(this.props.maxlength ?? 0)
+export class FieldCounter extends DesignLogicAbstract<
+  HTMLElement,
+  FieldCounterComponents,
+  FieldCounterEmits,
+  FieldCounterSlots,
+  FieldCounterProps,
+  FieldCounterConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<FieldCounterConstructors> = {
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    }
   }
 
   /**
@@ -84,21 +50,32 @@ export class FieldCounter {
       const remaining = this.getRemaining()
 
       if (remaining <= 0) {
-        return this.text.characterLimit
+        return this.i('text').characterLimit
       }
 
-      if (
-        remaining <= this.getMaxlengthOnce()
-        && this.text.characterRemaining
-      ) {
-        return applyTemplate(
-          this.text.characterRemaining,
-          { left: remaining }
-        )
+      if (remaining <= this.getMaxlengthOnce()) {
+        const characterRemaining = this.i('text').characterRemaining
+
+        if (characterRemaining) {
+          return applyTemplate(
+            characterRemaining,
+            { left: remaining }
+          )
+        }
       }
     }
 
     return undefined
+  }
+
+  /**
+   * Returns the number of input characters.
+   *
+   * Возвращает количество вводимых символов.
+   * @returns number of input characters / количество вводимых символов
+   */
+  get counter(): number {
+    return toNumber(this.props.counter ?? 0)
   }
 
   /**
@@ -125,13 +102,23 @@ export class FieldCounter {
   }
 
   /**
+   * Returns the maximum available input number.
+   *
+   * Возвращает максимально доступное вводимое число.
+   * @returns maximum available input number / максимально доступное вводимое число
+   */
+  get max(): number {
+    return toNumber(this.props.maxlength ?? 0)
+  }
+
+  /**
    * Checks if it is necessary to display the number of input characters.
    *
    * Проверяет, надо ли выводить количество вводимых символов.
    * @returns true if the counter should be displayed / true, если счетчик должен быть выведен
    */
   is(): boolean {
-    return this.props.counter !== undefined || this.isMax()
+    return !isNull(this.props.counter) || this.isMax()
   }
 
   /**

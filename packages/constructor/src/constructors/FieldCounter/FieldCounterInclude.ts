@@ -1,6 +1,8 @@
 // ai-none
 
 import {
+  type ConstrBind,
+  getObjectNoUndefined,
   isFilled,
   isNull
 } from '@dxtmisha/functional'
@@ -23,6 +25,22 @@ export class FieldCounterInclude extends ComponentIncludeAbstract<
   FieldCounterPropsInclude,
   FieldCounterProps
 > {
+  /**
+   * Checks whether the field counter should be displayed from properties.
+   *
+   * Проверяет, нужно ли отображать счетчик поля на основе свойств.
+   * @param props input data / входные данные
+   * @returns true if the counter should be displayed / true, если счетчик должен быть отображен
+   */
+  static is(props?: FieldCounterPropsInclude): boolean {
+    return Boolean(
+      props?.counterShow && (
+        !isNull(props.counter)
+        || isFilled(props.maxlength)
+      )
+    )
+  }
+
   /** Component sub-name or code identifier / Дополнительное имя компонента или идентификатор кода */
   protected readonly name = 'fieldCounter'
   /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
@@ -35,14 +53,7 @@ export class FieldCounterInclude extends ComponentIncludeAbstract<
    * @returns true if the counter should be displayed / true, если счетчик должен быть отображен
    */
   override get is(): boolean {
-    const props = this.getProps()
-
-    return Boolean(
-      props.counterShow && (
-        !isNull(props.counter)
-        || isFilled(props.maxlength)
-      )
-    )
+    return FieldCounterInclude.is(this.getProps())
   }
 
   /**
@@ -70,17 +81,18 @@ export class FieldCounterInclude extends ComponentIncludeAbstract<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<FieldCounterProps>> {
     const props = this.getProps()
     const binds = super.toBinds()
 
     return {
       ...binds,
-
-      id: props.counterId,
-      counter: props.counter,
-      maxlength: props.maxlength,
-      template: props.counterTemplate
+      ...getObjectNoUndefined({
+        id: props.counterId,
+        counter: props.counter,
+        maxlength: props.maxlength,
+        template: props.counterTemplate
+      })
     }
   }
 }

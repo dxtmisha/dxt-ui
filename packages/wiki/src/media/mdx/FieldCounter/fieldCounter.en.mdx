@@ -1,38 +1,45 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for displaying character count and input limits in form fields with customizable formatting templates.
+The `FieldCounter` component displays entered character counts and maximum limits with customizable formatting templates and built-in screen reader live announcements.
 
-FieldCounter provides visual feedback about the number of entered characters, automatically formats display depending on the presence of a maximum limit, and supports flexible customization through templates with placeholders. The component integrates with text fields and text areas, providing users with information about restrictions and remaining input space.
+It automatically resolves visual formatting between `[c] / [m]` (when `maxlength` is set) and `[c]` (counter-only mode), supports HTML formatting inside templates, handles `0` cleanly, and hides itself completely when both `counter` and `maxlength` are omitted. When the remaining character count enters the warning threshold (`maxlengthOnce`, defaulting to 10% of `maxlength`), it dynamically mounts an `aria-live="polite"` region announcing remaining characters or limit exceeded states.
 
 **Key features:**
 
-- Display current number of entered characters
-- Automatic maximum limit display when present
-- Flexible formatting templates with [c] and [m] placeholders
-- Automatic format detection (50 / 100 or just 50)
-- Support for string and numeric counter and maxlength values
-- Smart visibility management via counterShow property
-- Compact display for space efficiency
-
-**Common use cases:**
-
-- Text fields with character count limits
-- Multi-line text areas (textarea) for descriptions
-- Comment input fields with limits
-- Forms with minimum/maximum length requirements
-- SMS editors with character counting
+- **Automatic Conditional Visibility:** Renders only when `counter` or `maxlength` is defined (including `0`)
+- **Dual Display Modes:** Displays `counter / maxlength` when limit is provided, or `counter` alone otherwise
+- **Flexible Templates:** Customizable via `template` with `[c]` and `[m]` placeholders and inline HTML support
+- **Smart ARIA Live Announcements:** Automatically activates `aria-live="polite"` warnings within `maxlengthOnce` threshold (default 10%) and at limit
+- **Zero-Config & Custom Accessibility Texts:** Built-in fallback messages overridable via `textCharacterRemaining` (with `[left]`) and `textCharacterLimit`
 
 <Source
     code={`
+<script setup>
+import { ref } from 'vue'
+
+const valueLength = ref(42)
+</script>
+
 <template>
-  <!-- Basic counter -->
-  <Component :counter="10" />
+  <!-- Standard counter with limit -->
+  <DesignComponent :counter="valueLength" :maxlength="100" />
 
-  <!-- With limit -->
-  <Component :counter="10" :maxlength="100" />
+  <!-- Custom template with HTML styling -->
+  <DesignComponent
+    :counter="75"
+    :maxlength="150"
+    template="<b>[c]</b> / <i>[m]</i> chars"
+  />
 
-  <!-- Custom template -->
-  <Component :counter="5" :maxlength="50" template="[c] of [m]" />
+  <!-- Custom threshold and accessibility messages -->
+  <DesignComponent
+    id="bio-counter"
+    :counter="92"
+    :maxlength="100"
+    :maxlength-once="15"
+    text-character-remaining="Only [left] chars left"
+    text-character-limit="Limit reached!"
+  />
 </template>
   `}
     language="html"

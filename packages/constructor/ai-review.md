@@ -102,3 +102,6 @@ src/constructors/Progress/ProgressDesign.tsx
 src/constructors/Progress/ProgressInclude.ts
 src/constructors/Window/WindowOpen.ts
 src/constructors/Window/Window.ts
+src/constructors/FieldCounter/FieldCounter.ts
+src/constructors/FieldCounter/FieldCounterDesign.tsx
+src/constructors/FieldCounter/FieldCounterInclude.ts

@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Thresholds & Accessibility (ARIA)
+
+To prevent screen reader noise on every keystroke, `FieldCounter` activates its visually hidden `aria-live="polite"` region only when the remaining characters fall within `maxlengthOnce` (defaulting to 10% of `maxlength`) or when the limit is reached/exceeded.
+
+**Properties:**
+
+- `id` — explicit HTML ID for connecting via `aria-describedby` from form controls
+- `maxlengthOnce` — remaining-character warning threshold (defaults to 10% of `maxlength`)
+- `textCharacterRemaining` — announcement message with `[left]` placeholder (`Remaining [left] characters`)
+- `textCharacterLimit` — announcement message when remaining characters ≤ 0 (`Character limit exceeded`)
+
+<Source
+    code={`
+<DesignComponent
+  id="comment-counter"
+  :counter="88"
+  :maxlength="100"
+  :maxlength-once="15"
+  text-character-remaining="Only [left] chars left"
+  text-character-limit="Limit reached!"
+/>
+  `}
+    language="html"
+/>

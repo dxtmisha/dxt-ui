@@ -27,6 +27,7 @@ import DemoCollagePage from './pages/components/DemoCollagePage.vue'
 import DemoComponentOutletPage from './pages/components/DemoComponentOutletPage.vue'
 import DemoDialogPage from './pages/components/DemoDialogPage.vue'
 import DemoDraggableWrapperPage from './pages/components/DemoDraggableWrapperPage.vue'
+import DemoFieldCounterPage from './pages/components/DemoFieldCounterPage.vue'
 import DemoFormattedPage from './pages/components/DemoFormattedPage.vue'
 import DemoFormPage from './pages/components/DemoFormPage.vue'
 import DemoHorizontalScrollPage from './pages/components/DemoHorizontalScrollPage.vue'
@@ -194,6 +195,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-draggable-wrapper',
     name: 'component-draggable-wrapper',
     component: DemoDraggableWrapperPage
+  },
+  {
+    path: '/component-field-counter',
+    name: 'component-field-counter',
+    component: DemoFieldCounterPage
   },
   {
     path: '/component-formatted',
