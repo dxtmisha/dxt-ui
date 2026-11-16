@@ -63,6 +63,22 @@ describe('FieldInclude', () => {
     expect(Array.isArray(binds.onKeydown)).toBe(true)
   })
 
+  it('should preserve extra bindings such as iconTrailing when props.iconTrailing is undefined', () => {
+    const fieldInclude = new FieldInclude(
+      { label: 'Password' },
+      new DesignName('field.class'),
+      undefined,
+      () => ({
+        iconTrailing: 'visibility_off',
+        maxlength: 20
+      })
+    )
+
+    const binds = (fieldInclude as unknown as { toBinds: () => Record<string, unknown> }).toBinds()
+    expect(binds.iconTrailing).toBe('visibility_off')
+    expect(binds.maxlength).toBe(20)
+  })
+
   it('should trigger all scoreboard action callbacks and respect IME composition guard on keydown', () => {
     const onIcon = vi.fn()
     const onTrailing = vi.fn()

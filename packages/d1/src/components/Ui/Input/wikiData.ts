@@ -65,10 +65,10 @@ const propsNames: StorybookProps = [
   { name: 'maxlength', type: 'NumberOrString' },
   { name: 'min', type: 'NumberOrString' },
   { name: 'minlength', type: 'NumberOrString' },
-  { name: 'modelValue', type: 'string' },
+  { name: 'modelValue', type: 'NumberOrString' },
   { name: 'name', type: 'string' },
-  { name: 'onUpdate:modelValue', type: '(((value: string) => void) & ((value: NumberOrString) => void))' },
-  { name: 'onUpdate:value', type: '(((value: string) => void) & ((value: NumberOrString) => void))' },
+  { name: 'onUpdate:modelValue', type: '((value: NumberOrString) => void)' },
+  { name: 'onUpdate:value', type: '((value: NumberOrString) => void)' },
   { name: 'pattern', type: 'string' },
   { name: 'placeholder', type: 'string' },
   { name: 'prefix', type: 'string | number' },
@@ -82,11 +82,14 @@ const propsNames: StorybookProps = [
   { name: 'suffixId', type: 'string' },
   { name: 'tabindex', type: 'number' },
   { name: 'textCancel', type: 'TextValue' },
-  { name: 'type', type: 'string', option: ['number', 'text', 'search', 'number-format', 'currency', 'email', 'password', 'datetime', 'date', 'year-month', 'time', 'hour-minute', 'tel', 'url', 'checkbox', 'radio'] },
+  { name: 'textEntriesMatch', type: 'TextValue' },
+  { name: 'textHide', type: 'TextValue' },
+  { name: 'textShow', type: 'TextValue' },
+  { name: 'type', type: 'string', option: ['number', 'currency', 'text', 'search', 'number-format', 'email', 'password', 'datetime', 'date', 'year-month', 'time', 'hour-minute', 'tel', 'url', 'checkbox', 'radio'] },
   { name: 'validationCode', type: 'FieldValidityCode' },
   { name: 'validationId', type: 'string' },
   { name: 'validationMessage', type: 'string' },
-  { name: 'value', type: 'string' }
+  { name: 'value', type: 'NumberOrString' }
   // :propsList [!] System label / Системная метка
 ]
 

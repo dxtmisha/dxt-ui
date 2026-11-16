@@ -165,5 +165,19 @@ describe('FieldArrowInclude', () => {
       expect(arrow.toMax()).toBe(arrow)
       expect(mockValue.number).toBe(25)
     })
+
+    it('should allow negative values when min is omitted and enforce max when max is 0', () => {
+      mockValue.number = 0
+      const arrow = new FieldArrowInclude(
+        { step: 2, max: 0 },
+        () => mockValue as unknown as FieldValueInclude
+      )
+
+      expect(arrow.disabledPrevious).toBe(false)
+      expect(arrow.disabledNext).toBe(true)
+
+      arrow.previous()
+      expect(mockValue.set).toHaveBeenCalledWith('-2')
+    })
   })
 })

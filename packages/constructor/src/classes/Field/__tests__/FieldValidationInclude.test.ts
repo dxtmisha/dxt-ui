@@ -11,6 +11,7 @@ vi.mock('vue', async () => {
   const actual = await vi.importActual('vue') as Record<string, unknown>
   return {
     ...actual,
+    getCurrentInstance: () => ({}),
     onMounted: (fn: () => void) => fn()
   }
 })

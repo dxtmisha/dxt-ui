@@ -17,7 +17,12 @@ export class FieldChangeInclude {
    * @param props input data / входные данные
    */
   constructor(props: FieldAllProps) {
-    if (props.value || props.modelValue) {
+    if (
+      props.value
+      || props.modelValue
+      || typeof props.value === 'number'
+      || typeof props.modelValue === 'number'
+    ) {
       this.item.value = true
     }
   }

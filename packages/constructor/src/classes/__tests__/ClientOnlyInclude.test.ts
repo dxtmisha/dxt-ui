@@ -3,11 +3,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ClientOnlyInclude } from '../ClientOnlyInclude'
 
 let mountedCallback: (() => void) | undefined
+let hasInstance = true
 
 vi.mock('vue', async () => {
   const actual = await vi.importActual('vue') as Record<string, unknown>
   return {
     ...actual,
+    getCurrentInstance: () => (hasInstance ? {} : null),
     onMounted: (fn: () => void) => {
       mountedCallback = fn
     }
@@ -17,6 +19,7 @@ vi.mock('vue', async () => {
 describe('ClientOnlyInclude', () => {
   beforeEach(() => {
     mountedCallback = undefined
+    hasInstance = true
   })
 
   it('should initialize isMounted to false and set to true when onMounted fires', () => {
@@ -53,5 +56,14 @@ describe('ClientOnlyInclude', () => {
       mountedCallback()
     }
     expect(clientOnly.isRender()).toBe(true)
+  })
+
+  it('should not register onMounted when there is no active component instance', () => {
+    hasInstance = false
+    const clientOnly = new ClientOnlyInclude({ clientOnly: true })
+
+    expect(mountedCallback).toBeUndefined()
+    expect(clientOnly.isMounted.value).toBe(false)
+    expect(clientOnly.isRender()).toBe(false)
   })
 })

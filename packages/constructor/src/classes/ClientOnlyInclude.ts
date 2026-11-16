@@ -1,4 +1,4 @@
-import { onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
 import type { ClientOnlyPropsInclude } from '../types/clientOnlyTypes'
 
 /**
@@ -19,9 +19,11 @@ export class ClientOnlyInclude {
   constructor(
     protected readonly props?: ClientOnlyPropsInclude
   ) {
-    onMounted(() => {
-      this.isMounted.value = true
-    })
+    if (getCurrentInstance()) {
+      onMounted(() => {
+        this.isMounted.value = true
+      })
+    }
   }
 
   /**
@@ -31,6 +33,6 @@ export class ClientOnlyInclude {
    * @returns true if component is ready for rendering / true, если компонент готов к рендерингу
    */
   isRender(): boolean {
-    return (this.props && !this.props.clientOnly) || this.isMounted.value
+    return Boolean(this.props && !this.props.clientOnly) || this.isMounted.value
   }
 }

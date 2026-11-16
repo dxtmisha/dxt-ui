@@ -56,7 +56,8 @@ export class FieldValidationInclude {
       return global
     }
 
-    const check = this.checkItem() ?? this.match?.().check()
+    const check = this.checkItem()
+      ?? (this.clientOnly.isRender() ? this.match?.().check() : undefined)
 
     if (check) {
       return check
@@ -112,7 +113,7 @@ export class FieldValidationInclude {
    * @returns true if has error / true, если есть ошибка
    */
   isError(): boolean {
-    return !this.item.value?.status
+    return !this.item.value.status
   }
 
   /**

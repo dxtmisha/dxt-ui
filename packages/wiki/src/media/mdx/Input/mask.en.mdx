@@ -22,13 +22,13 @@ const value = ref('')
 
 <template>
   <!-- US Phone -->
-  <Input v-model="value" type="tel" mask="+1 (###) ###-####" placeholder="+1 (555) 000-0000" label="Phone" />
+  <Input v-model="value" type="tel" mask="+1 (***) ***-****" placeholder="+1 (555) 000-0000" label="Phone" />
 
   <!-- Credit Card -->
-  <Input v-model="value" type="text" mask="#### #### #### ####" placeholder="0000 0000 0000 0000" label="Card" />
+  <Input v-model="value" type="text" mask="**** **** **** ****" placeholder="0000 0000 0000 0000" label="Card" />
 
   <!-- Without placeholder display -->
-  <Input v-model="value" type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
+  <Input v-model="value" type="tel" mask="+1 (***) ***-****" :mask-visible="false" label="No placeholder" />
 </template>
   `}
     language="html"

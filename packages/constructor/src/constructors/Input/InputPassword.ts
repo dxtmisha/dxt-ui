@@ -1,7 +1,7 @@
 // ai-none
 
-import { FieldVisibilityInclude } from '../../classes/Field/FieldVisibilityInclude'
-import { TextInclude } from '../../classes/TextInclude'
+import type { FieldVisibilityInclude } from '../../classes/Field/FieldVisibilityInclude'
+import type { TextInclude } from '../../classes/TextInclude'
 
 import type { IconProps } from '../Icon'
 import type { InputProps } from './props'
@@ -12,33 +12,43 @@ import type { InputProps } from './props'
  * Класс для получения данных для управления типом пароля.
  */
 export class InputPassword {
-  /** Visibility status / Статус видимости */
-  protected visible: boolean = false
+  /**
+   * Checks if the input type is password.
+   *
+   * Проверяет, является ли тип ввода паролем.
+   * @param props input properties / входные свойства
+   * @returns true if type is password / true, если тип — пароль
+   */
+  static is(props?: Readonly<InputProps>): boolean {
+    return props?.type === 'password'
+  }
 
   /**
    * Constructor
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param visibility object for working with visualization / объект для работы с визуализацией
-   * @param text object for working with text / объект для работы с текстом
+   * @param text function returning object for working with text / функция, возвращающая объект для работы с текстом
+   * @param visibility function returning object for working with visualization / функция, возвращающая объект для работы с визуализацией
    */
   constructor(
-    protected readonly props: InputProps,
-    protected readonly visibility: FieldVisibilityInclude,
-    protected readonly text: TextInclude
+    protected readonly props: Readonly<InputProps>,
+    protected readonly text: () => TextInclude,
+    protected readonly visibility: () => FieldVisibilityInclude
   ) {
   }
 
   /** Returns the icon properties / Возвращает свойства иконки */
   get icon(): IconProps | undefined {
     if (this.is()) {
+      const visible = this.visibility().item.value
+
       return {
-        active: this.visibility.item.value,
-        icon: this.props.iconVisibilityOff,
-        iconActive: this.props.iconVisibility,
+        active: visible,
+        icon: this.props.iconVisibility,
+        iconActive: this.props.iconVisibilityOff,
         dynamic: true,
-        ariaLabel: this.visibility.item.value ? this.text.hide : this.text.show
+        ariaLabel: visible ? this.text().hide : this.text().show
       }
     }
 
@@ -52,7 +62,7 @@ export class InputPassword {
    * @returns true if type is password / true, если тип — пароль
    */
   is(): boolean {
-    return this.props.type === 'password'
+    return InputPassword.is(this.props)
   }
 
   /**
@@ -62,7 +72,7 @@ export class InputPassword {
    */
   readonly toggle = (): void => {
     if (this.is()) {
-      this.visibility.toggle()
+      this.visibility().toggle()
     }
   }
 }

@@ -4,6 +4,7 @@ import {
   type DesignComponents,
   type DesignName,
   eventStopPropagation,
+  getObjectNoUndefined,
   isEnter
 } from '@dxtmisha/functional'
 
@@ -113,8 +114,7 @@ export class FieldInclude extends ComponentIncludeAbstract<
     const props = this.getProps()
 
     return mergeProps(
-      super.toBinds(),
-      {
+      getObjectNoUndefined({
         // Status
         focus: props.focus,
         selected: props.selected,
@@ -164,7 +164,8 @@ export class FieldInclude extends ComponentIncludeAbstract<
 
         onClick: this.on,
         onKeydown: this.onKeydown
-      }
+      }),
+      super.toBinds()
     ) as Partial<ConstrBind<FieldPropsBasic>>
   }
 

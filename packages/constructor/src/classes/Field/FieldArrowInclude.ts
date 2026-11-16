@@ -1,4 +1,4 @@
-import { toNumber } from '@dxtmisha/functional'
+import { isNull, toNumber } from '@dxtmisha/functional'
 
 import type { FieldTypeInclude } from './FieldTypeInclude'
 import type { FieldValueInclude } from './FieldValueInclude'
@@ -214,11 +214,15 @@ export class FieldArrowInclude {
 
   /** Minimum value / Минимальное значение */
   protected get min(): number | undefined {
-    return toNumber(this.props.min)
+    return isNull(this.props.min) || this.props.min === ''
+      ? undefined
+      : toNumber(this.props.min)
   }
 
   /** Maximum value / Максимальное значение */
   protected get max(): number | undefined {
-    return toNumber(this.props.max) || undefined
+    return isNull(this.props.max) || this.props.max === ''
+      ? undefined
+      : toNumber(this.props.max)
   }
 }

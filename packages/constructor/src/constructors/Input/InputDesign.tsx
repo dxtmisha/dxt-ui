@@ -1,15 +1,14 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { Input } from './Input'
 
-import type { FieldControl } from '../Field'
+import type { FieldControl, FieldPropsBasic } from '../Field'
 import {
   type InputPropsBasic
 } from './props'
@@ -22,7 +21,9 @@ import {
 } from './types'
 
 /**
- * InputDesign
+ * Design constructor class for the Input component.
+ *
+ * Класс конструктора дизайна для компонента Input.
  */
 export class InputDesign<
   COMP extends InputComponents,
@@ -30,7 +31,7 @@ export class InputDesign<
   CLASSES extends InputClasses,
   P extends InputPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLElement,
     COMP,
     InputEmits,
     EXPOSE,
@@ -38,14 +39,17 @@ export class InputDesign<
     CLASSES,
     P
   > {
+  /** Input logic instance / Экземпляр логики Input */
   protected readonly item: Input
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   *
+   * Конструктор
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the item / класс для работы с элементом
    */
   constructor(
     name: string,
@@ -70,14 +74,15 @@ export class InputDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспонируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.value.expose(),
-      ...this.item.validation.expose()
+      ...this.item.i('value').expose(),
+      ...this.item.i('validation').expose()
     } as EXPOSE
   }
 
@@ -85,6 +90,7 @@ export class InputDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -100,6 +106,7 @@ export class InputDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -109,18 +116,22 @@ export class InputDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns array of VNodes / массив VNode
    */
   protected initRender(): VNode[] {
-    return this.item.field.render(
+    return this.item.i('field').render(
       {
+        ...this.slots,
         default: this.renderInput
       },
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        validationMessage: this.item.validation.message
-      }
+      mergeProps(
+        this.getAttrs(),
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          validationMessage: this.item.i('validation').message
+        }
+      ) as Partial<ConstrBind<FieldPropsBasic>>
     )
   }
 
@@ -132,13 +143,13 @@ export class InputDesign<
    * @returns array of VNodes / массив VNode
    */
   readonly renderInput = (input: FieldControl): VNode[] => {
-    if (this.item.mask.is) {
+    if (this.item.i('mask').is) {
       return this.renderMask(input)
     }
 
     return [h(
       'input',
-      toBinds(
+      mergeProps(
         this.item.binds,
         input.binds,
         {
@@ -156,17 +167,19 @@ export class InputDesign<
    * @returns array of VNodes / массив VNode
    */
   readonly renderMask = (input: FieldControl): VNode[] => {
-    return this.item.mask.render(undefined, {
+    const event = this.item.i('event')
+
+    return this.item.i('mask').render(undefined, {
       ref: this.element,
       class: input.className,
       align: this.props.align,
-      inputAttrs: toBinds<ConstrBind<any>>(
-        this.item.attributes.listForInput,
+      inputAttrs: mergeProps(
+        this.item.i('attributes').listForInput,
         input.binds
-      ),
-      onBlur: this.item.event.onBlur,
-      onInput: this.item.event.onInput,
-      onChange: this.item.event.onChange
+      ) as Partial<HTMLInputElement>,
+      onBlur: event.onBlur,
+      onInput: event.onInput,
+      onChange: event.onChange
     })
   }
 }

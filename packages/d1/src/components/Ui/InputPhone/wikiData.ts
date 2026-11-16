@@ -59,7 +59,7 @@ const propsNames: StorybookProps = [
   { name: 'suffixId', type: 'string' },
   { name: 'tabindex', type: 'number' },
   { name: 'textCancel', type: 'TextValue' },
-  { name: 'type', type: 'string', option: ['number', 'checkbox', 'radio', 'search', 'text', 'number-format', 'currency', 'email', 'password', 'datetime', 'date', 'year-month', 'time', 'hour-minute', 'tel', 'url'] },
+  { name: 'type', type: 'string', option: ['number', 'currency', 'checkbox', 'radio', 'search', 'text', 'number-format', 'email', 'password', 'datetime', 'date', 'year-month', 'time', 'hour-minute', 'tel', 'url'] },
   { name: 'validationCode', type: 'FieldValidityCode' },
   { name: 'validationId', type: 'string' },
   { name: 'validationMessage', type: 'string' },

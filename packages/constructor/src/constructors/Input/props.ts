@@ -9,12 +9,27 @@ import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { ProgressPropsBasic } from '../Progress'
 
 import type { FieldInputProps } from '../../types/fieldTypes'
+import type {
+  TextEntriesMatchPropsInclude,
+  TextHidePropsInclude,
+  TextShowPropsInclude
+} from '../../types/textTypes'
 
+/**
+ * Type describing token properties for Input.
+ *
+ * Тип, описывающий свойства токенов для Input.
+ */
 export type InputPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic properties type for the Input component.
+ *
+ * Базовый тип свойств для компонента Input.
+ */
 export type InputPropsBasic<
   Mask extends MaskPropsBasic = MaskPropsBasic,
   Icon extends IconPropsBasic = IconPropsBasic,
@@ -23,9 +38,12 @@ export type InputPropsBasic<
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> = MaskPropsInclude<Mask>
+> = Omit<MaskPropsInclude<Mask>, 'modelValue' | 'onUpdate:value' | 'onUpdate:modelValue' | 'value'>
   & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>
   & FieldInputProps<NumberOrString>
+  & TextEntriesMatchPropsInclude
+  & TextHidePropsInclude
+  & TextShowPropsInclude
 
 /**
  * Type describing incoming properties.

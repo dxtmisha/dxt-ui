@@ -42,6 +42,29 @@ describe('FieldValueInclude', () => {
       }
     })
 
+    it('should preserve numeric 0 in value and modelValue', async () => {
+      const scope = effectScope()
+      const props = reactive<{ value?: number, modelValue?: number }>({ modelValue: 0 })
+      const value = scope.run(() => {
+        const item = new FieldValueInclude<number>(props)
+        item.onMounted()
+        return item
+      })!
+
+      try {
+        expect(value.get()).toBe(0)
+        props.modelValue = 5
+        await nextTick()
+        expect(value.get()).toBe(5)
+
+        props.modelValue = 0
+        await nextTick()
+        expect(value.get()).toBe(0)
+      } finally {
+        scope.stop()
+      }
+    })
+
     it('should initialize from original ref when value and modelValue are absent', () => {
       const original = ref('fallback-val')
       const valueInclude = new FieldValueInclude({}, undefined, original)

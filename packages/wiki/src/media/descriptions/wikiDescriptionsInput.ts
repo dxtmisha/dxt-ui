@@ -1,49 +1,56 @@
 import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
 
 /**
- * Descriptions for Input component
+ * Descriptions for Input properties
  *
  * Описания свойств компонента Input
  */
 export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
   name: 'Input',
   description: {
-    en: 'Text input field component with validation, masking and formatting support',
-    ru: 'Компонент текстового поля ввода с поддержкой валидации, маскирования и форматирования'
+    en: 'Universal input component with support for masking, currency and number formatting, validation, password visibility toggle, counters, arrows, and slots.',
+    ru: 'Универсальный компонент ввода с поддержкой маскирования, форматирования чисел и валют, валидации, переключателя видимости пароля, счётчиков, стрелок и слотов.'
   },
   possibilities: {
     en: [
-      'multiple input types: text, number, email, password, tel, url, date, time and more',
-      'built-in validation with custom messages',
-      'mask support for formatted input (phone, date, custom patterns)',
-      'currency and number formatting',
-      'password visibility toggle',
-      'prefix and suffix support',
-      'counter for character limits',
-      'navigation arrows for numeric and selection inputs',
-      'autocomplete, spellcheck and autocorrect support',
-      'integrated with a Field component for consistent styling'
+      'supports standard, numeric (number, number-format, currency), date/time, email, tel, url, search, and password input types',
+      'built-in mask integration (mask, maskVisible, maskNone, maskAttrs) and localization (language, currency, currencyHide, fraction)',
+      'built-in validation via pattern, validationCode, validationMessage, forceShowMessage, and cross-field match checking',
+      'password visibility toggle with customizable textShow and textHide labels',
+      'numeric controls with min, max, step, arrow (auto, stepper, carousel, none), arrowStep, arrowAlign, and text align',
+      'supports two-way binding (value, modelValue), slots (leading, trailing, label, prefix, suffix, caption), and exposed methods (getValue, setValue, clear, checkValidity, getValidationMessage)'
     ],
     ru: [
-      'множественные типы ввода: text, number, email, password, tel, url, date, time и другие',
-      'встроенная валидация с пользовательскими сообщениями',
-      'поддержка маскирования для форматированного ввода (телефон, дата, пользовательские паттерны)',
-      'форматирование валюты и чисел',
-      'переключатель видимости пароля',
-      'поддержка префикса и суффикса',
-      'счётчик для ограничения символов',
-      'стрелки навигации для числовых и выборочных полей',
-      'поддержка автозаполнения, проверки орфографии и автокоррекции',
-      'интегрирован с компонентом Field для единообразной стилизации'
+      'поддерживает стандартные, числовые (number, number-format, currency), даты/времени, email, tel, url, search и password типы ввода',
+      'встроенная интеграция с масками (mask, maskVisible, maskNone, maskAttrs) и локализацией (language, currency, currencyHide, fraction)',
+      'встроенная валидация через pattern, validationCode, validationMessage, forceShowMessage и проверку совпадения match',
+      'переключатель видимости пароля с настраиваемыми метками textShow и textHide',
+      'числовое управление с min, max, step, arrow (auto, stepper, carousel, none), arrowStep, arrowAlign и выравниванием текста align',
+      'поддерживает двустороннюю привязку (value, modelValue), слоты (leading, trailing, label, prefix, suffix, caption) и методы (getValue, setValue, clear, checkValidity, getValidationMessage)'
     ]
   },
-  import: [
-    'import { ref } from \'vue\''
-  ],
   render: `
-      <DesignComponent v-bind="args" />
+      <div class="wiki-storybook-group">
+        <DesignComponent
+          class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding"
+          v-bind="args"
+        />
+      </div>
     `,
+  play: `
+const component = canvasElement.querySelector<HTMLElement>('.design-component')
+const inputElement = canvasElement.querySelector<HTMLInputElement>('input')
+await expect(component).toBeInTheDocument()
+await expect(inputElement).toBeInTheDocument()
+  `,
+  import: [
+    'import { ref } from \'vue\'',
+    'import type { FieldValidationItem } from \'@dxtmisha/constructor\''
+  ],
   stories: [
+    // =========================================================================
+    // TIER 1: DOCUMENTATION STORIES
+    // =========================================================================
     {
       id: 'InputTypes',
       name: {
@@ -60,6 +67,15 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
           <DesignComponent type="date" label="Date" />
           <DesignComponent type="search" label="Search" placeholder="Search..." />
         </div>
+      `,
+      play: `
+const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+await expect(inputs.length).toBe(7)
+await step('Type into text input', async () => {
+  await userEvent.click(inputs[0])
+  await userEvent.type(inputs[0], 'Hello')
+})
+await expect(inputs[0].value).toBe('Hello')
       `
     },
     {
@@ -76,12 +92,18 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
           <DesignComponent type="number" value="10" arrow="stepper" :step="5" :arrow-step="10" label="Step 5/10" />
           <DesignComponent type="number-format" value="1234567.89" align="center" :fraction="2" label="Centered" />
         </div>
+      `,
+      play: `
+const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+await expect(inputs.length).toBe(5)
+await expect(inputs[1].value).toMatch(/1[\\s,\\u00a0]234[\\s,\\u00a0]567/)
+await expect(inputs[4].value).toMatch(/1[\\s,\\u00a0]234[\\s,\\u00a0]567[.,]89/)
       `
     },
     {
       id: 'InputCurrency',
       name: {
-        en: 'Currency & number formatting',
+        en: 'Currency and number formatting',
         ru: 'Валюта и форматирование чисел'
       },
       template: `
@@ -90,11 +112,13 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
             type="currency"
             label="Price (USD)"
             currency="USD"
+            language="en-US"
           />
           <DesignComponent
             type="currency"
             label="Price (USD)"
             currency="USD"
+            language="en-US"
             value="1234.56"
           />
           <DesignComponent
@@ -102,9 +126,17 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
             label="Price (currency-hide)"
             currency="EUR"
             currency-hide
+            language="en-US"
             value="1234.56"
           />
         </div>
+      `,
+      play: `
+const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+await expect(inputs.length).toBe(3)
+await expect(inputs[1].value).toMatch(/1[\\s,\\u00a0]234[.,]56/)
+await expect(inputs[2].value).toMatch(/1[\\s,\\u00a0]234[.,]56/)
+await expect(inputs[2].value).not.toContain('€')
       `
     },
     {
@@ -122,6 +154,10 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
           <DesignComponent type="hour-minute" label="Hours:Minutes" />
           <DesignComponent type="date" label="Limited Date" language="ru-RU" min="2024-01-01" max="2024-12-31" />
         </div>
+      `,
+      play: `
+const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+await expect(inputs.length).toBe(6)
       `
     },
     {
@@ -135,7 +171,19 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
           <DesignComponent type="tel" mask="+1 (***) ***-****" placeholder="+1 (555) 000-0000" label="Phone" />
           <DesignComponent type="text" mask="**** **** **** ****" placeholder="0000 0000 0000 0000" label="Card" />
           <DesignComponent type="tel" mask="+1 (***) ***-****" :mask-visible="false" label="No placeholder" />
+          <DesignComponent type="text" mask="****-****" :mask-none="true" value="raw-123" label="Mask disabled" />
         </div>
+      `,
+      play: `
+const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+await expect(inputs.length).toBe(4)
+await expect(inputs[3].value).toBe('raw-123')
+await step('Type into phone mask', async () => {
+  await userEvent.click(inputs[0])
+  await userEvent.type(inputs[0], '5551234567')
+  await new Promise((resolve) => setTimeout(resolve, 50))
+})
+await expect(inputs[0].value).toContain('+1 (555) 123-4567')
       `
     },
     {
@@ -154,7 +202,7 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <span>Current value: {{ inputValue }}</span>
+            <span data-testid="text-value">Current value: {{ inputValue }}</span>
             <button class="wiki-storybook-button" @click="inputValue = 'Changed value'">Set text</button>
             <button class="wiki-storybook-button wiki-storybook-button-warning" @click="inputValue = ''">Clear</button>
           </div>
@@ -166,7 +214,7 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
           />
 
           <div class="wiki-storybook-flex">
-            <span>Current value: {{ maskValue }}</span>
+            <span data-testid="date-value">Current value: {{ maskValue }}</span>
             <button class="wiki-storybook-button" @click="maskValue = '2022-05-13'">Set date</button>
             <button class="wiki-storybook-button wiki-storybook-button-warning" @click="maskValue = ''">Clear</button>
           </div>
@@ -177,7 +225,7 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
           />
 
           <div class="wiki-storybook-flex">
-            <span>Current value: {{ numberValue }}</span>
+            <span data-testid="number-value">Current value: {{ numberValue }}</span>
             <button class="wiki-storybook-button" @click="numberValue += 10">+10</button>
             <button class="wiki-storybook-button" @click="numberValue -= 10">-10</button>
           </div>
@@ -188,6 +236,17 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
             :step="1"
           />
         </div>
+      `,
+      play: `
+const setTextBtn = Array.from(canvasElement.querySelectorAll('button')).find((b) => b.textContent === 'Set text')
+const plusBtn = Array.from(canvasElement.querySelectorAll('button')).find((b) => b.textContent === '+10')
+await step('Update reactive v-model via buttons', async () => {
+  await userEvent.click(setTextBtn!)
+  await userEvent.click(plusBtn!)
+  await new Promise((resolve) => setTimeout(resolve, 50))
+})
+await expect(canvasElement.querySelector('[data-testid="text-value"]')).toHaveTextContent('Changed value')
+await expect(canvasElement.querySelector('[data-testid="number-value"]')).toHaveTextContent('52')
       `
     },
     {
@@ -212,6 +271,250 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
             />
           </div>
         </DesignSkeleton>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(2)
+      `
+    },
+    // =========================================================================
+    // TIER 2: BEHAVIORAL & EDGE CASE TEST STORIES
+    // =========================================================================
+    {
+      id: 'InputTestPasswordAndZero',
+      name: {
+        en: 'Test: Password toggle and numeric zero',
+        ru: 'Тест: Переключатель пароля и числовой ноль'
+      },
+      propsName: ['type', 'textShow', 'textHide', 'modelValue', 'value'],
+      setup: `
+      return {
+        zeroValue: ref(0)
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            type="password"
+            value="Secret123"
+            label="Password"
+            text-show="Show secret"
+            text-hide="Hide secret"
+          />
+          <DesignComponent
+            type="number"
+            v-model="zeroValue"
+            label="Zero Value"
+          />
+        </div>
+      `,
+      play: `
+const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+await expect(inputs.length).toBe(2)
+await expect(inputs[0].type).toBe('password')
+await expect(inputs[1].value).toBe('0')
+
+const toggleBtn = canvasElement.querySelector<HTMLElement>('[aria-label="Show secret"]')
+await expect(toggleBtn).toBeInTheDocument()
+await step('Toggle password visibility on and off', async () => {
+  await userEvent.click(toggleBtn!)
+  await new Promise((resolve) => setTimeout(resolve, 50))
+})
+await expect(inputs[0].type).toBe('text')
+await expect(canvasElement.querySelector('[aria-label="Hide secret"]')).toBeInTheDocument()
+      `
+    },
+    {
+      id: 'InputTestValidationAndMatch',
+      name: {
+        en: 'Test: Validation, pattern, and match',
+        ru: 'Тест: Валидация, pattern и совпадение (match)'
+      },
+      propsName: [
+        'required',
+        'minlength',
+        'maxlength',
+        'pattern',
+        'validationCode',
+        'validationMessage',
+        'forceShowMessage',
+        'match',
+        'textEntriesMatch'
+      ],
+      setup: `
+      return {
+        password: ref('Secret123'),
+        confirm: ref('Secret')
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            label="Pattern Check"
+            pattern="[A-Za-z]+"
+            :validation-code="{ patternMismatch: 'Letters only allowed' }"
+            value="123"
+          />
+          <DesignComponent
+            label="Forced Error"
+            validation-message="Server validation error"
+            force-show-message
+            value="bad"
+          />
+          <DesignComponent
+            label="Password Source"
+            name="story-password-source"
+            type="password"
+            v-model="password"
+          />
+          <DesignComponent
+            label="Confirm Password"
+            type="password"
+            v-model="confirm"
+            match="[name='story-password-source']"
+            text-entries-match="Passwords do not match"
+          />
+        </div>
+      `,
+      play: `
+await new Promise((resolve) => setTimeout(resolve, 80))
+await expect(canvasElement.textContent).toContain('Letters only allowed')
+await expect(canvasElement.textContent).toContain('Server validation error')
+await expect(canvasElement.textContent).toContain('Passwords do not match')
+
+const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+await step('Type matching password into confirm field', async () => {
+  await userEvent.clear(inputs[3])
+  await userEvent.type(inputs[3], 'Secret123')
+  await new Promise((resolve) => setTimeout(resolve, 80))
+})
+await expect(canvasElement.textContent).not.toContain('Passwords do not match')
+      `
+    },
+    {
+      id: 'InputTestArrowsAndAlign',
+      name: {
+        en: 'Test: Arrows, step, and alignment',
+        ru: 'Тест: Стрелки, шаг и выравнивание'
+      },
+      propsName: ['arrow', 'arrowStep', 'arrowAlign', 'align', 'min', 'max', 'step'],
+      setup: `
+      return {
+        num: ref(10)
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            type="number"
+            v-model="num"
+            arrow="stepper"
+            :min="0"
+            :max="30"
+            :step="5"
+            :arrow-step="5"
+            arrow-align="right"
+            align="center"
+            label="Stepper Input"
+          />
+        </div>
+      `,
+      play: `
+const input = canvasElement.querySelector<HTMLInputElement>('input')
+await expect(input?.value).toBe('10')
+const nextBtn = canvasElement.querySelector<HTMLElement>('[data-event-type="next"]')
+await expect(nextBtn).toBeInTheDocument()
+await step('Increment number via stepper arrow', async () => {
+  await userEvent.click(nextBtn!)
+  await new Promise((resolve) => setTimeout(resolve, 50))
+})
+await expect(input?.value).toBe('15')
+      `
+    },
+    {
+      id: 'InputTestSlotsEventsAndExpose',
+      name: {
+        en: 'Test: Slots, events, and exposed methods',
+        ru: 'Тест: Слоты, события и экспонируемые методы'
+      },
+      propsName: [
+        'cancel',
+        'counterShow',
+        'icon',
+        'iconTrailing',
+        'fieldAttrs',
+        'inputAttrs',
+        'autocomplete',
+        'maskAttrs'
+      ],
+      setup: `
+      const inputRef = ref()
+      const val = ref('domain')
+      const lastEvent = ref('none')
+      const exposeStatus = ref('none')
+      return {
+        inputRef,
+        val,
+        lastEvent,
+        exposeStatus,
+        onInputLite: (data: FieldValidationItem) => {
+          lastEvent.value = 'inputLite:' + String(data.value)
+        },
+        runSetValue: () => {
+          inputRef.value?.setValue('updated')
+          exposeStatus.value = String(inputRef.value?.getValue()) + '|' + String(inputRef.value?.checkValidity())
+        },
+        runClear: () => {
+          inputRef.value?.clear()
+          exposeStatus.value = 'cleared:' + String(inputRef.value?.getValue() ?? '')
+        }
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            ref="inputRef"
+            v-model="val"
+            label="Domain"
+            cancel="always"
+            counter-show
+            :maxlength="30"
+            icon="search"
+            :field-attrs="{ 'data-test-field': 'true' }"
+            :input-attrs="{ 'data-test-input': 'true' }"
+            @input-lite="onInputLite"
+          >
+            <template #leading><span>[L]</span></template>
+            <template #trailing><span>[T]</span></template>
+            <template #prefix><span>https://</span></template>
+            <template #suffix><span>.dev</span></template>
+            <template #caption><span>Hint</span></template>
+          </DesignComponent>
+          <div class="wiki-storybook-flex">
+            <button data-testid="btn-set" class="wiki-storybook-button" @click="runSetValue">setValue</button>
+            <button data-testid="btn-clear" class="wiki-storybook-button" @click="runClear">clear</button>
+            <span data-testid="event-out">{{ lastEvent }}</span>
+            <span data-testid="expose-out">{{ exposeStatus }}</span>
+          </div>
+        </div>
+      `,
+      play: `
+await expect(canvasElement.textContent).toContain('[L]')
+await expect(canvasElement.textContent).toContain('[T]')
+await expect(canvasElement.textContent).toContain('https://')
+await expect(canvasElement.textContent).toContain('.dev')
+await expect(canvasElement.textContent).toContain('Hint')
+await expect(canvasElement.querySelector('[data-test-field="true"]')).toBeInTheDocument()
+await expect(canvasElement.querySelector('[data-test-input="true"]')).toBeInTheDocument()
+
+await step('Call exposed setValue and clear methods', async () => {
+  await userEvent.click(canvasElement.querySelector('[data-testid="btn-set"]')!)
+  await new Promise((resolve) => setTimeout(resolve, 50))
+  await expect(canvasElement.querySelector('[data-testid="expose-out"]')).toHaveTextContent('updated|true')
+  await userEvent.click(canvasElement.querySelector('[data-testid="btn-clear"]')!)
+  await new Promise((resolve) => setTimeout(resolve, 50))
+})
+await expect(canvasElement.querySelector('[data-testid="expose-out"]')).toHaveTextContent('cleared:')
       `
     }
   ],
@@ -245,20 +548,26 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Event'} type={'input'}/>
 <StorybookDescriptions componentName={'Event'} type={'change'}/>
     `,
+    expose: `
+<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
+<StorybookDescriptions componentName={'Expose'} type={'clear'}/>
+<StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValidationMessage'}/>
+<Canvas of={Component.InputTestSlotsEventsAndExpose}/>
+    `,
     slots: `
-<StorybookDescriptions componentName={'Slot'} type={'label'} />
-<StorybookDescriptions componentName={'Slot'} type={'prefix'} />
-<StorybookDescriptions componentName={'Slot'} type={'suffix'} />
-<StorybookDescriptions componentName={'Slot'} type={'caption'} />
-<StorybookDescriptions componentName={'Slot'} type={'leading'} />
-<StorybookDescriptions componentName={'Slot'} type={'trailing'} />
+<StorybookDescriptions componentName={'Slot'} type={'label'}/>
+<StorybookDescriptions componentName={'Slot'} type={'prefix'}/>
+<StorybookDescriptions componentName={'Slot'} type={'suffix'}/>
+<StorybookDescriptions componentName={'Slot'} type={'caption'}/>
+<StorybookDescriptions componentName={'Slot'} type={'leading'}/>
+<StorybookDescriptions componentName={'Slot'} type={'trailing'}/>
     `
   },
   ai: {
     description: `
-Primary component for user data entry, wrapping the native <input> element with enhanced functionality. Supports floating labels, validation, masking, and multiple formatting modes (numeric, currency, password).
-Features built-in support for input masks (e.g., phone numbers), automatic currency/number formatting, and password visibility toggles. Includes field affixes (prefix/suffix), leading/trailing icons, and a character counter.
-Controlled via v-model and type props, emitting standard input/change events. Use for all text-based data collection, from simple names to complex formatted financial or identification data.
+Universal input field component wrapping Field and Mask. Supports text, password (with visibility toggle), email, tel, url, search, number, number-format, currency, and localized date/time formats. Handles masking, pattern/length/match validation, numeric steppers/carousels, counters, slots (leading, trailing, prefix, suffix, caption, label), and v-model binding.
     `
   }
 }

@@ -11,6 +11,9 @@ describe('FieldChangeInclude', () => {
     const changeWithModel = new FieldChangeInclude({ modelValue: 'world' })
     expect(changeWithModel.is()).toBe(true)
 
+    const changeWithZero = new FieldChangeInclude({ modelValue: 0 })
+    expect(changeWithZero.is()).toBe(true)
+
     const changeEmpty = new FieldChangeInclude({})
     expect(changeEmpty.is()).toBe(false)
   })

@@ -34,7 +34,7 @@ export class FieldPatternInclude {
     }
 
     if (this.props.type) {
-      return PATTERNS?.[this.props.type]
+      return PATTERNS[this.props.type]
     }
 
     return undefined

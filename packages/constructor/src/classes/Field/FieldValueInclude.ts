@@ -1,9 +1,8 @@
-import { computed, ref, watch } from 'vue'
+import { computed, ref, unref, watch } from 'vue'
 import {
   anyToString,
   DesignLifecycleAbstract,
   getLength,
-  getRef,
   isFilled,
   type NumberOrStringOrBoolean,
   type RefOrNormal,
@@ -318,7 +317,7 @@ export class FieldValueInclude<Value = any> extends DesignLifecycleAbstract {
    * @returns current instance / текущий экземпляр
    */
   clear(): this {
-    this.item.value = getRef(this.original)
+    this.item.value = unref(this.original)
     this.element?.().clear()
 
     this.hasEdit.value = false
@@ -402,7 +401,15 @@ export class FieldValueInclude<Value = any> extends DesignLifecycleAbstract {
    * @returns original value / оригинальное значение
    */
   protected getOriginal(): any {
-    return this.props.value || this.props.modelValue || getRef(this.original)
+    if (this.props.value || typeof this.props.value === 'number') {
+      return this.props.value
+    }
+
+    if (this.props.modelValue || typeof this.props.modelValue === 'number') {
+      return this.props.modelValue
+    }
+
+    return unref(this.original)
   }
 
   /**

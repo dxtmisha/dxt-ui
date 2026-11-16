@@ -1,9 +1,9 @@
 import { anyToString, isObject } from '@dxtmisha/functional'
 
-import { TextInclude } from '../TextInclude'
+import type { TextInclude } from '../TextInclude'
 
-import { FieldElementInclude } from './FieldElementInclude'
-import { FieldValueInclude } from './FieldValueInclude'
+import type { FieldElementInclude } from './FieldElementInclude'
+import type { FieldValueInclude } from './FieldValueInclude'
 import { FieldInputCheckInclude } from './FieldInputCheckInclude'
 
 import type { FieldAllProps, FieldValidationItem } from '../../types/fieldTypes'
@@ -69,7 +69,7 @@ export class FieldMatchInclude {
     if (this.is()) {
       if (
         isObject(this.props.match)
-        && this.props.match?.validationMessage
+        && this.props.match.validationMessage
       ) {
         return this.props.match.validationMessage
       }
