@@ -3,6 +3,7 @@ import {
   getElementId,
   type DesignName,
   isFilled,
+  isNumber,
   type RefOrNormal,
   render,
   toBinds,
@@ -35,7 +36,8 @@ export class DescriptionInclude {
     slots?: DescriptionSlots
   ): boolean {
     return Boolean(
-      props?.description
+      isFilled(props?.description, true)
+      || isNumber(props?.description)
       || (slots && 'description' in slots)
     )
   }
@@ -69,7 +71,13 @@ export class DescriptionInclude {
    * @returns checking result / результат проверки
    */
   get is(): boolean {
-    return Boolean(this.getProps().description || this.slots?.description)
+    const description = this.getProps().description
+
+    return Boolean(
+      isFilled(description, true)
+      || isNumber(description)
+      || this.slots?.description
+    )
   }
 
   /**
@@ -97,7 +105,7 @@ export class DescriptionInclude {
     const children: any[] = []
     const description = this.getProps().description
 
-    if (isFilled(description)) {
+    if (isFilled(description, true) || isNumber(description)) {
       children.push(description)
     }
 

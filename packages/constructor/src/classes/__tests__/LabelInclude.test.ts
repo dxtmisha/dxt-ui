@@ -46,4 +46,22 @@ describe('LabelInclude', () => {
     expect(highlightNode.type).toBe('span')
     expect(highlightNode.props.innerHTML).toBe('<strong>replacing</strong>')
   })
+
+  it('should handle numeric 0 and string "0" as valid labels', () => {
+    expect(LabelInclude.is({ label: 0 })).toBe(true)
+    expect(LabelInclude.is({ label: '0' })).toBe(true)
+    expect(LabelInclude.is({ label: '' })).toBe(false)
+
+    const includeZero = new LabelInclude({ label: 0 }, new DesignName('prefix'))
+    expect(includeZero.is).toBe(true)
+    const zeroNodes = includeZero.render()
+    expect(zeroNodes.length).toBe(1)
+    expect(zeroNodes[0].children).toContain(0)
+
+    const includeStringZero = new LabelInclude({ label: '0' }, new DesignName('prefix'))
+    expect(includeStringZero.is).toBe(true)
+    const stringZeroNodes = includeStringZero.render()
+    expect(stringZeroNodes.length).toBe(1)
+    expect(stringZeroNodes[0].children).toContain('0')
+  })
 })

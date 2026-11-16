@@ -1,6 +1,6 @@
 import { computed, type Ref } from 'vue'
 import {
-  type ConstrClass,
+  type ConstrClassObject,
   type ConstrEmit,
   type ConstrItems,
   type DesignComp,
@@ -74,6 +74,10 @@ export class Bars extends DesignLogicAbstract<
     },
     description: {
       item: DescriptionInclude,
+      canCreate: () => DescriptionInclude.is(
+        { description: this.isAction() ? this.props.actionDescription : this.props.description },
+        this.slots
+      ),
       parameters: () => [
         () => ({
           description: this.isAction() ? this.props.actionDescription : this.props.description,
@@ -81,7 +85,7 @@ export class Bars extends DesignLogicAbstract<
         }),
         this.naming,
         this.slots,
-        () => (SkeletonInclude.is(this.props) ? this.i('skeleton') : undefined)
+        () => this.callInstance('skeleton', item => item)
       ]
     },
     event: {
@@ -94,6 +98,10 @@ export class Bars extends DesignLogicAbstract<
     },
     label: {
       item: LabelInclude,
+      canCreate: () => LabelInclude.is(
+        { label: this.isAction() ? this.props.actionLabel : this.props.label },
+        this.slots
+      ),
       parameters: () => [
         () => ({
           label: this.isAction() ? this.props.actionLabel : this.props.label,
@@ -105,7 +113,7 @@ export class Bars extends DesignLogicAbstract<
         undefined,
         undefined,
         undefined,
-        () => (SkeletonInclude.is(this.props) ? this.i('skeleton') : undefined)
+        () => this.callInstance('skeleton', item => item)
       ]
     },
     model: {
@@ -122,6 +130,7 @@ export class Bars extends DesignLogicAbstract<
     },
     skeleton: {
       item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
       parameters: () => [
         this.props,
         this.naming,
@@ -172,6 +181,36 @@ export class Bars extends DesignLogicAbstract<
     this.i('model')
   }
 
+  /** Returns the button data / Возвращает данные кнопки */
+  readonly backBinds = computed<BarsProps['buttonAttrs']>(
+    () => this.initItem(
+      toBinds(
+        {
+          icon: {
+            icon: this.props.iconBack,
+            iconActive: this.props.iconClose
+          },
+          iconDir: true,
+          value: 'back',
+          class: [
+            this.i('windowClasses').get().close,
+            this.i('motionTransformClasses').get().close
+          ],
+          onClick: this.onClickBack,
+          ...AriaStaticInclude.label(this.i('text').close)
+        },
+        this.props.backButton
+      ),
+      'main-back'
+    )
+  )
+
+  /** Returns the list of control buttons / Возвращает список кнопок управления */
+  readonly barsBinds = computed<BarsProps['bars']>(() => this.initList(this.props.bars))
+
+  /** Returns the list of active control buttons / Возвращает список активных кнопок управления */
+  readonly actionBarsBinds = computed<BarsProps['bars']>(() => this.initList(this.props.actionBars, true))
+
   /**
    * Returns list of ARIA attributes.
    *
@@ -214,7 +253,7 @@ export class Bars extends DesignLogicAbstract<
    * Значения для класса.
    * @returns classes values / значения классов
    */
-  get classes(): ConstrClass {
+  get classes(): ConstrClassObject {
     return {
       [this.naming.getStatusClass('action')]: this.isAction()
     }
@@ -241,64 +280,6 @@ export class Bars extends DesignLogicAbstract<
   }
 
   /**
-   * Checks if description is enabled.
-   *
-   * Проверяет, включено ли описание.
-   * @returns true if description is present / true, если описание присутствует
-   */
-  isDescription(): boolean {
-    return Boolean(
-      this.props.description
-      || this.props.actionDescription
-      || (this.slots && 'description' in this.slots)
-    )
-  }
-
-  /**
-   * Checks if label is enabled.
-   *
-   * Проверяет, включена ли метка.
-   * @returns true if label is present / true, если метка присутствует
-   */
-  isLabel(): boolean {
-    return Boolean(
-      this.props.label
-      || this.props.actionLabel
-      || (this.slots && ('default' in this.slots || 'label' in this.slots))
-    )
-  }
-
-  /** Returns the button data / Возвращает данные кнопки */
-  readonly backBinds = computed<BarsProps['buttonAttrs']>(
-    () => this.initItem(
-      toBinds(
-        {
-          icon: {
-            icon: this.props.iconBack,
-            iconActive: this.props.iconClose
-          },
-          iconDir: true,
-          value: 'back',
-          class: [
-            this.i('windowClasses').get().close,
-            this.i('motionTransformClasses').get().close
-          ],
-          onClick: this.onClickBack,
-          ...AriaStaticInclude.label(this.i('text').close)
-        },
-        this.props.backButton
-      ),
-      'main-back'
-    )
-  )
-
-  /** Returns the list of control buttons / Возвращает список кнопок управления */
-  readonly barsBinds = computed<BarsProps['bars']>(() => this.initList(this.props.bars))
-
-  /** Returns the list of active control buttons / Возвращает список активных кнопок управления */
-  readonly actionBarsBinds = computed<BarsProps['bars']>(() => this.initList(this.props.actionBars, true))
-
-  /**
    * Prepares all parameters for the button.
    *
    * Подготавливает все параметры для кнопки.
@@ -312,15 +293,17 @@ export class Bars extends DesignLogicAbstract<
     key: string | number,
     isAction: boolean = false
   ): BarsProps['buttonAttrs'] {
+    const binds = toBinds(
+      this.props.buttonAttrs,
+      item
+    )
+
     return {
       isSkeleton: this.props.isSkeleton,
       onClick: this.i('event').onClick,
-      ...toBinds(
-        this.props.buttonAttrs,
-        item
-      ),
+      ...binds,
       key: `${isAction ? 'action' : 'main'}Bar-${item?.value ?? key}`,
-      icon: getBind(item?.icon, { animationShow: isAction }, 'icon')
+      ...(binds.icon ? { icon: getBind(binds.icon, { animationShow: isAction }, 'icon') } : {})
     }
   }
 

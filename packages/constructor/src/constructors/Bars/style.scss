@@ -16,6 +16,11 @@
     @include ui.flexDynamic;
   }
 
+  &__context {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   &__context > &__label {
     width: calc(100% - 64px);
     min-width: 80%;

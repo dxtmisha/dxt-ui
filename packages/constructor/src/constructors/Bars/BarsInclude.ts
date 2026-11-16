@@ -1,6 +1,8 @@
 // ai-none
 
+import { mergeProps } from 'vue'
 import {
+  type ConstrBind,
   type ConstrEmit,
   type DesignComponents,
   type DesignName
@@ -8,7 +10,7 @@ import {
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ComponentIncludeExtra } from '../../types/componentInclude'
+import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { BarsComponentInclude, BarsEmitsInclude, BarsPropsInclude } from './basicTypes'
 import type { BarsExpose, BarsSlots } from './types'
@@ -32,7 +34,24 @@ export class BarsInclude<
     BarsExpose,
     BarsSlots
   > {
+  /**
+   * Checks whether bars should be displayed.
+   *
+   * Проверяет, нужно ли отображать панели.
+   * @param props input properties / входные свойства
+   * @returns true if bars should be displayed / true, если панели должны отображаться
+   */
+  static is(props?: BarsPropsInclude): boolean {
+    return !props?.barsHide && Boolean(
+      props?.barsLabel
+      || props?.barsDescription
+      || props?.barsBackHide !== true
+    )
+  }
+
+  /** Component sub-name / Под-имя компонента */
   protected name = 'bars'
+  /** Property name for attributes / Имя свойства для атрибутов */
   protected propsAttrsName = 'barsAttrs'
 
   /**
@@ -47,7 +66,7 @@ export class BarsInclude<
    * @param descriptionId identifier for the description / идентификатор для описания
    */
   constructor(
-    props: Readonly<Props>,
+    props: ComponentIncludeProps<Props>,
     naming: DesignName,
     components?: DesignComponents<BarsComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
@@ -64,13 +83,7 @@ export class BarsInclude<
    * Проверяет, нужно ли отображать панели
    */
   override get is(): boolean {
-    const props = this.getProps()
-
-    return !props.barsHide && Boolean(
-      props.barsLabel
-      || props.barsDescription
-      || props.barsBackHide !== true
-    )
+    return BarsInclude.is(this.getProps())
   }
 
   /**
@@ -79,7 +92,7 @@ export class BarsInclude<
    * @param event native mouse event / native событие мыши
    * @param value payload with { type, value, detail } / данные события с { type, value, detail }
    */
-  readonly onClick = (event: MouseEvent, value: EventClickValue) => {
+  readonly onClick = (event: MouseEvent, value: EventClickValue): void => {
     this.emits?.('bars', event, value)
     this.emits?.('barsLite', value)
 
@@ -94,20 +107,20 @@ export class BarsInclude<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<PropsExtra>> {
     const props = this.getProps()
-    const binds = super.toBinds()
 
-    return {
-      ...binds,
-
-      labelId: this.labelId,
-      label: props.barsLabel,
-      descriptionId: this.descriptionId,
-      description: props.barsDescription,
-      backHide: props.barsBackHide,
-      bars: props.barsList,
-      onClick: this.onClick
-    }
+    return mergeProps(
+      super.toBinds(),
+      {
+        labelId: this.labelId,
+        label: props.barsLabel,
+        descriptionId: this.descriptionId,
+        description: props.barsDescription,
+        backHide: props.barsBackHide,
+        bars: props.barsList,
+        onClick: this.onClick
+      }
+    ) as Partial<ConstrBind<PropsExtra>>
   }
 }

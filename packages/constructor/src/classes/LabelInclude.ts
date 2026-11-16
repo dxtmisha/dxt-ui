@@ -5,6 +5,7 @@ import {
   executeFunctionRef,
   getElementId,
   isFilled,
+  isNumber,
   type RefOrNormalOrFunction,
   render,
   toBinds
@@ -35,7 +36,8 @@ export class LabelInclude {
     slots?: LabelSlots | LabelAlternativeSlots
   ): boolean {
     return Boolean(
-      props?.label
+      isFilled(props?.label, true)
+      || isNumber(props?.label)
       || (slots && ('default' in slots || 'label' in slots))
     )
   }
@@ -83,9 +85,13 @@ export class LabelInclude {
       return true
     }
 
+    const label = this.getProps().label
+
     if (
-      this.getProps().label
-      || this.labelReplacing?.value
+      isFilled(label, true)
+      || isNumber(label)
+      || isFilled(this.labelReplacing?.value, true)
+      || isNumber(this.labelReplacing?.value)
     ) {
       return true
     }
@@ -219,8 +225,9 @@ export class LabelInclude {
     const label = this.getProps().label
 
     if (
-      !this.labelReplacing?.value
-      && isFilled(label)
+      !isFilled(this.labelReplacing?.value, true)
+      && !isNumber(this.labelReplacing?.value)
+      && (isFilled(label, true) || isNumber(label))
     ) {
       return [label]
     }
@@ -235,7 +242,10 @@ export class LabelInclude {
    * @returns array with virtual span node / массив с виртуальным узлом span
    */
   protected initLabelReplacing(): any[] {
-    if (isFilled(this.labelReplacing?.value)) {
+    if (
+      isFilled(this.labelReplacing?.value, true)
+      || isNumber(this.labelReplacing?.value)
+    ) {
       return [
         render(
           'span',

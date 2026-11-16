@@ -30,8 +30,6 @@ src/constructors/Ripple/RippleInclude.ts
 src/constructors/Ripple/RippleItem.ts
 src/functions/getClassTagAStatic.ts
 src/classes/CaptionInclude.ts
-src/classes/DescriptionInclude.ts
-src/classes/LabelInclude.ts
 src/constructors/Cell/Cell.ts
 src/constructors/Cell/CellDesign.tsx
 src/constructors/Scrollbar/ScrollbarBorder.ts
@@ -122,3 +120,9 @@ src/classes/FrameAbstract.ts
 src/constructors/Button/Button.ts
 src/constructors/Button/ButtonDesign.tsx
 src/constructors/Button/ButtonInclude.ts
+src/constructors/Bars/BarsAction.ts
+src/constructors/Bars/Bars.ts
+src/constructors/Bars/BarsDesign.tsx
+src/constructors/Bars/BarsInclude.ts
+src/classes/DescriptionInclude.ts
+src/classes/LabelInclude.ts

@@ -8,11 +8,21 @@ import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
 import type { TextClosePropsInclude } from '../../types/textTypes'
 
+/**
+ * Token properties for Bars.
+ *
+ * Токен-свойства для Bars.
+ */
 export type BarsPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Base properties for Bars.
+ *
+ * Базовые свойства для Bars.
+ */
 export type BarsPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic
@@ -21,38 +31,38 @@ export type BarsPropsBasic<
   & SkeletonPropsInclude
   & TextClosePropsInclude
   & {
-    /** Whether the action mode is active/ Активен ли режим действия */
+    /** Whether the action mode is active / Активен ли режим действия */
     'action'?: boolean
 
-    /** Properties for the back button/ Свойства для кнопки «Назад» */
+    /** Properties for the back button / Свойства для кнопки «Назад» */
     'backButton'?: ConstrBind<Button>
-    /** Whether to hide the back button/ Скрывать ли кнопку «Назад» */
+    /** Whether to hide the back button / Скрывать ли кнопку «Назад» */
     'backHide'?: boolean
-    /** Whether to hide the back button specifically in action mode/ Скрывать ли кнопку «Назад» именно в режиме действия */
+    /** Whether to hide the back button specifically in action mode / Скрывать ли кнопку «Назад» именно в режиме действия */
     'backActionHide'?: boolean
-    /** List of additional buttons/ Список дополнительных кнопок */
+    /** List of additional buttons / Список дополнительных кнопок */
     'bars'?: ConstrBind<Button>[]
 
-    /** Label override for action mode/ Переопределение заголовка для режима действия */
+    /** Label override for action mode / Переопределение заголовка для режима действия */
     'actionLabel'?: LabelProps['label']
-    /** Description override for action mode/ Переопределение описания для режима действия */
+    /** Description override for action mode / Переопределение описания для режима действия */
     'actionDescription'?: DescriptionProps['description']
-    /** List of buttons for action mode/ Список кнопок для режима действия */
+    /** List of buttons for action mode / Список кнопок для режима действия */
     'actionBars'?: ConstrBind<Button>[]
 
-    /** Attributes for the button component/ Атрибуты для компонента кнопки */
+    /** Attributes for the button component / Атрибуты для компонента кнопки */
     'buttonAttrs'?: ConstrBind<Button>
 
-    /** Icon for the back button/ Иконка для кнопки «Назад» */
+    /** Icon for the back button / Иконка для кнопки «Назад» */
     'iconBack'?: IconValue<Icon>
-    /** Icon for the close button/ Иконка для кнопки закрытия */
+    /** Icon for the close button / Иконка для кнопки закрытия */
     'iconClose'?: IconValue<Icon>
 
-    /** Whether the action mode model is active/ Активна ли модель режима действия */
+    /** Whether the action mode model is active / Активна ли модель режима действия */
     'modelAction'?: boolean
-    /** Event for updating the action mode status/ Событие обновления статуса режима действия */
+    /** Event for updating the action mode status / Событие обновления статуса режима действия */
     'onUpdate:action'?: (value: boolean) => void
-    /** Event for updating the action mode model status/ Событие обновления статуса модели режима действия */
+    /** Event for updating the action mode model status / Событие обновления статуса модели режима действия */
     'onUpdate:modelAction'?: (value: boolean) => void
   }
 

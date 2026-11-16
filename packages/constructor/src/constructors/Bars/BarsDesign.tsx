@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -122,13 +122,15 @@ export class BarsDesign<
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.aria
-      },
+      mergeProps(
+        this.getAttrs(),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        },
+        this.item.aria
+      ),
       [
         ...this.renderBackButton(),
         ...this.renderContext(),
@@ -158,16 +160,21 @@ export class BarsDesign<
       return []
     }
 
-    return [
-      this.components?.renderOne(
-        'button',
+    const children: VNode[] = []
+
+    this.components?.renderAdd(
+      children,
+      'button',
+      mergeProps(
+        this.item.backBinds.value ?? {},
         {
-          ...this.item.backBinds.value,
           label: this.item.backLabel,
           selected: this.item.isAction()
         }
-      ) as VNode
-    ]
+      )
+    )
+
+    return children
   }
 
   /**
@@ -182,39 +189,11 @@ export class BarsDesign<
         'div',
         this.getKeyClass('context'),
         [
-          ...this.renderLabel(),
-          ...this.renderDescription()
+          ...this.item.callInstance('label', item => item.render(), []),
+          ...this.item.callInstance('description', item => item.render(), [])
         ]
       )
     ]
-  }
-
-  /**
-   * Rendering the label element.
-   *
-   * Рендеринг элемента заголовка.
-   * @returns array of virtual nodes / массив виртуальных узлов
-   */
-  readonly renderLabel = (): VNode[] => {
-    if (this.item.isLabel()) {
-      return this.item.i('label').render()
-    }
-
-    return []
-  }
-
-  /**
-   * Rendering the description element.
-   *
-   * Рендеринг элемента описания.
-   * @returns array of virtual nodes / массив виртуальных узлов
-   */
-  readonly renderDescription = (): VNode[] => {
-    if (this.item.isDescription()) {
-      return this.item.i('description').render()
-    }
-
-    return []
   }
 
   /**
@@ -224,7 +203,7 @@ export class BarsDesign<
    * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderBars = (): VNode[] => {
-    const children: any[] = []
+    const children: VNode[] = []
 
     if (this.item.isAction()) {
       return children
@@ -243,7 +222,7 @@ export class BarsDesign<
    * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderActionBars = (): VNode[] => {
-    const children: any[] = []
+    const children: VNode[] = []
 
     if (this.item.isAction()) {
       children.push(...this.renderList(this.item.actionBarsBinds.value))

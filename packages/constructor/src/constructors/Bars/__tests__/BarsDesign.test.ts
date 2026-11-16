@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
+import './testWarnings'
 import { afterEach, describe, expect, it } from 'vitest'
-import { createApp, defineComponent, h, nextTick, reactive, type Ref } from 'vue'
+import { createApp, defineComponent, h, mergeProps, nextTick, reactive, type Ref } from 'vue'
 
 import { BarsDesign } from '../BarsDesign'
 import type { BarsProps } from '../props'
@@ -27,20 +28,22 @@ const ButtonMock = defineComponent({
   setup(props, { attrs }) {
     return () => h(
       'button',
-      {
-        ...attrs,
-        'class': props.class,
-        'data-selected': props.selected ? 'true' : undefined,
-        'data-value': props.value,
-        'onClick': props.onClick
-      },
+      mergeProps(
+        attrs,
+        {
+          'class': props.class,
+          'data-selected': props.selected ? 'true' : undefined,
+          'data-value': props.value,
+          'onClick': props.onClick
+        }
+      ),
       props.label
     )
   }
 })
 
 describe('BarsDesign', () => {
-  it('should initialize and render component with correct default root structure', async () => {
+  it('should initialize and render component with correct default root structure and merged attrs', async () => {
     const host = document.createElement('div')
     document.body.appendChild(host)
     cleanups.push(() => host.remove())
@@ -48,6 +51,7 @@ describe('BarsDesign', () => {
     let elementHtmlRef!: Ref<HTMLElement | undefined>
 
     const TestComponent = defineComponent({
+      inheritAttrs: false,
       setup() {
         const props = reactive<BarsProps>({
           label: 'Main Title',
@@ -60,13 +64,15 @@ describe('BarsDesign', () => {
         )
 
         const expose = design.expose()
-        elementHtmlRef = (expose as any).elementHtml
+        elementHtmlRef = (expose as unknown as { elementHtml: Ref<HTMLElement | undefined> }).elementHtml
 
         return design.render()
       }
     })
 
-    const app = createApp(TestComponent)
+    const app = createApp({
+      render: () => h(TestComponent, { 'class': 'custom-bars', 'data-testid': 'bars-root' })
+    })
     app.mount(host)
     cleanups.push(() => app.unmount())
 
@@ -75,6 +81,8 @@ describe('BarsDesign', () => {
     const rootElement = host.firstElementChild as HTMLElement
     expect(rootElement).not.toBeNull()
     expect(rootElement?.tagName.toLowerCase()).toBe('div')
+    expect(rootElement?.classList.contains('custom-bars')).toBe(true)
+    expect(rootElement?.dataset.testid).toBe('bars-root')
     expect(elementHtmlRef.value).toBe(rootElement)
 
     const labelElement = host.querySelector('.d1-bars__label')
@@ -84,7 +92,7 @@ describe('BarsDesign', () => {
     expect(descElement?.textContent).toContain('Main Description')
   })
 
-  it('should render back button when not hidden', async () => {
+  it('should render back button when not hidden and handle missing components gracefully', async () => {
     const host = document.createElement('div')
     document.body.appendChild(host)
     cleanups.push(() => host.remove())
@@ -120,19 +128,20 @@ describe('BarsDesign', () => {
     expect(button?.textContent).toBe('Back')
   })
 
-  it('should hide back button when backHide is true and action is inactive', async () => {
+  it('should hide back button when backHide is true in normal mode or backActionHide is true in action mode', async () => {
     const host = document.createElement('div')
     document.body.appendChild(host)
     cleanups.push(() => host.remove())
 
+    const props = reactive<BarsProps>({
+      backHide: true,
+      backActionHide: true,
+      action: false,
+      backButton: { label: 'Back' }
+    })
+
     const TestComponent = defineComponent({
       setup() {
-        const props = reactive<BarsProps>({
-          backHide: true,
-          action: false,
-          backButton: { label: 'Back' }
-        })
-
         const design = new BarsDesign<BarsComponents, BarsExpose, BarsClasses, BarsProps>(
           'd1.bars',
           props,
@@ -152,9 +161,15 @@ describe('BarsDesign', () => {
     cleanups.push(() => app.unmount())
 
     await nextTick()
+    expect(host.querySelector('button')).toBeNull()
 
-    const button = host.querySelector('button')
-    expect(button).toBeNull()
+    props.action = true
+    await nextTick()
+    expect(host.querySelector('button')).toBeNull()
+
+    props.backActionHide = false
+    await nextTick()
+    expect(host.querySelector('button')).not.toBeNull()
   })
 
   it('should render bars list when action mode is inactive', async () => {
@@ -190,7 +205,6 @@ describe('BarsDesign', () => {
     await nextTick()
 
     const buttons = host.querySelectorAll('button')
-    // back button is rendered (by default) + bars button
     expect(buttons.length).toBeGreaterThanOrEqual(1)
     const actionButton = host.querySelector('button[data-value="action-1"]')
     expect(actionButton).not.toBeNull()

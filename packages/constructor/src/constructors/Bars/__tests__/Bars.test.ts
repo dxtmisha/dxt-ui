@@ -1,12 +1,33 @@
 // @vitest-environment jsdom
-import { describe, expect, it, vi } from 'vitest'
-import { effectScope, reactive, ref } from 'vue'
-import { DesignName } from '@dxtmisha/functional'
+import './testWarnings'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import {
+  computed,
+  createApp,
+  defineComponent,
+  h,
+  mergeProps,
+  nextTick,
+  reactive
+} from 'vue'
+import type { ConstrClasses } from '@dxtmisha/functional'
 
 import { Bars, type BarsConstructors } from '../Bars'
-import { BarsAction } from '../BarsAction'
-import { SkeletonInclude } from '../../Skeleton'
+import { BarsDesign } from '../BarsDesign'
 import type { BarsProps } from '../props'
+import type {
+  BarsClasses,
+  BarsComponents,
+  BarsExpose,
+  BarsSlots
+} from '../types'
+
+const mountedCleanups: Array<() => void> = []
+
+afterEach(() => {
+  mountedCleanups.splice(0).reverse().forEach(unmount => unmount())
+  vi.restoreAllMocks()
+})
 
 class InspectableBars extends Bars {
   get instantiatedItems(): Partial<Record<keyof BarsConstructors, unknown>> {
@@ -14,268 +35,267 @@ class InspectableBars extends Bars {
   }
 }
 
-describe('Bars (Logic Orchestrator)', () => {
-  const naming = new DesignName('d1.bars')
-
-  describe('Standard functional requirements (Happy path)', () => {
-    it('should initialize and evaluate action states to false when empty', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-      const props: BarsProps = reactive({})
-
-      scope.run(() => {
-        const bars = new Bars(props, element, naming)
-
-        expect(bars.isAction()).toBe(false)
-        expect(bars.isActionPossible()).toBe(false)
-        expect(bars.isLabel()).toBe(false)
-        expect(bars.isDescription()).toBe(false)
-      })
-
-      scope.stop()
-    })
-
-    it('should evaluate isLabel() properly based on props and slots', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-
-      scope.run(() => {
-        const barsEmpty = new Bars(reactive({}), element, naming)
-        expect(barsEmpty.isLabel()).toBe(false)
-
-        const barsWithLabel = new Bars(reactive({ label: 'Header title' }), element, naming)
-        expect(barsWithLabel.isLabel()).toBe(true)
-
-        const barsWithActionLabel = new Bars(reactive({ actionLabel: 'Action title' }), element, naming)
-        expect(barsWithActionLabel.isLabel()).toBe(true)
-
-        const barsWithSlot = new Bars(
-          reactive({}),
-          element,
-          naming,
-          undefined,
-          { default: () => 'Slot Title' }
-        )
-        expect(barsWithSlot.isLabel()).toBe(true)
-      })
-
-      scope.stop()
-    })
-
-    it('should evaluate isDescription() properly based on props and slots', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-
-      scope.run(() => {
-        const barsEmpty = new Bars(reactive({}), element, naming)
-        expect(barsEmpty.isDescription()).toBe(false)
-
-        const barsWithDesc = new Bars(reactive({ description: 'Description text' }), element, naming)
-        expect(barsWithDesc.isDescription()).toBe(true)
-
-        const barsWithActionDesc = new Bars(reactive({ actionDescription: 'Action desc' }), element, naming)
-        expect(barsWithActionDesc.isDescription()).toBe(true)
-
-        const barsWithSlot = new Bars(
-          reactive({}),
-          element,
-          naming,
-          undefined,
-          { description: () => 'Slot Description' }
-        )
-        expect(barsWithSlot.isDescription()).toBe(true)
-      })
-
-      scope.stop()
-    })
-
-    it('should return correct classes according to action state', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-
-      scope.run(() => {
-        const barsInactive = new Bars(reactive({ action: false }), element, naming)
-        expect(barsInactive.classes).toEqual({
-          [naming.getStatusClass('action')]: false
-        })
-
-        const barsActive = new Bars(reactive({ action: true }), element, naming)
-        expect(barsActive.classes).toEqual({
-          [naming.getStatusClass('action')]: true
-        })
-      })
-
-      scope.stop()
-    })
-
-    it('should return correct aria and ariaLive attributes', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-
-      scope.run(() => {
-        const barsStatic = new Bars(reactive({}), element, naming)
-        expect(barsStatic.ariaLive).toBeUndefined()
-        expect(barsStatic.aria).toEqual({})
-
-        const barsWithAction = new Bars(
-          reactive({ actionLabel: 'Select items' }),
-          element,
-          naming
-        )
-        expect(barsWithAction.ariaLive).toBe('polite')
-        expect(barsWithAction.aria).toEqual({
-          'aria-live': 'polite'
-        })
-      })
-
-      scope.stop()
-    })
-
-    it('should compute backLabel and backBinds correctly', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-
-      scope.run(() => {
-        const bars = new Bars(
-          reactive({
-            backButton: { label: 'Go Back' },
-            iconBack: 'back-icon',
-            iconClose: 'close-icon'
-          }),
-          element,
-          naming
-        )
-
-        expect(bars.backLabel).toBe('Go Back')
-        expect(bars.backBinds.value?.value).toBe('back')
-        expect(bars.backBinds.value?.key).toBe('mainBar-back')
-      })
-
-      scope.stop()
-    })
-
-    it('should compute barsBinds and actionBarsBinds correctly', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-
-      scope.run(() => {
-        const bars = new Bars(
-          reactive({
-            bars: [{ value: 'edit', label: 'Edit' }],
-            actionBars: [{ value: 'delete', label: 'Delete' }]
-          }),
-          element,
-          naming
-        )
-
-        expect(bars.barsBinds.value?.[0]?.value).toBe('edit')
-        expect(bars.barsBinds.value?.[0]?.key).toBe('mainBar-edit')
-
-        expect(bars.actionBarsBinds.value?.[0]?.value).toBe('delete')
-        expect(bars.actionBarsBinds.value?.[0]?.key).toBe('actionBar-delete')
-      })
-
-      scope.stop()
-    })
-  })
-
-  describe('Lazy instantiation & Dependency Injection', () => {
-    it('should not instantiate optional subordinate items upfront', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-
-      scope.run(() => {
-        const inspectable = new InspectableBars(
-          reactive({}),
-          element,
-          naming
-        )
-
-        // skeleton, label, description should NOT be instantiated initially when empty
-        expect(inspectable.instantiatedItems.skeleton).toBeUndefined()
-        expect(inspectable.instantiatedItems.label).toBeUndefined()
-        expect(inspectable.instantiatedItems.description).toBeUndefined()
-      })
-
-      scope.stop()
-    })
-
-    it('should allow overriding subordinate classes via constructors DI', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-
-      class CustomAction extends BarsAction {
-        override isPossible(): boolean {
-          return true
+const MockButton = defineComponent({
+  name: 'MockButton',
+  inheritAttrs: false,
+  props: {
+    label: [String, Number],
+    value: [String, Number],
+    icon: [String, Object],
+    selected: Boolean,
+    isSkeleton: Boolean,
+    onClick: Function
+  },
+  emits: ['click'],
+  setup(componentProps, { attrs, emit }) {
+    return () => h(
+      'button',
+      mergeProps(
+        attrs,
+        {
+          'type': 'button',
+          'data-value': componentProps.value,
+          'data-selected': componentProps.selected ? 'true' : undefined,
+          'data-skeleton': componentProps.isSkeleton ? 'true' : undefined,
+          'data-has-icon': componentProps.icon ? 'true' : undefined,
+          'onClick': (event: MouseEvent) => {
+            componentProps.onClick?.(event, {
+              type: componentProps.value === 'back' ? 'back' : 'button',
+              value: componentProps.value
+            })
+            emit('click', event, {
+              type: componentProps.value === 'back' ? 'back' : 'button',
+              value: componentProps.value
+            })
+          }
         }
-      }
+      ),
+      componentProps.label !== undefined ? String(componentProps.label) : ''
+    )
+  }
+})
 
-      scope.run(() => {
-        const bars = new Bars(
-          reactive({}),
-          element,
-          naming,
-          undefined,
-          undefined,
-          undefined,
-          { action: CustomAction }
-        )
+/**
+ * Mounts full Bars component integration setup in jsdom.
+ *
+ * Монтирует полную интеграцию компонента Bars в jsdom.
+ * @param initialProps initial bars properties / начальные свойства панели
+ * @param customSlots slot renderers / функции рендеринга слотов
+ * @param extraAttrs external attributes / внешние атрибуты
+ * @returns container, reactive props, emitted events, and logic instance / контейнер, реактивные свойства, события и экземпляр логики
+ */
+async function mountBars(
+  initialProps: BarsProps = {},
+  customSlots: BarsSlots = {},
+  extraAttrs: Record<string, unknown> = {}
+) {
+  const host = document.createElement('div')
+  document.body.appendChild(host)
+  mountedCleanups.push(() => host.remove())
 
-        expect(bars.i('action')).toBeInstanceOf(CustomAction)
-        expect(bars.isActionPossible()).toBe(true)
-      })
+  const props = reactive<BarsProps>(initialProps)
+  const emitted: Array<{ event: string, args: unknown[] }> = []
+  let barsLogicInstance: InspectableBars | undefined
 
-      scope.stop()
+  class TestBarsDesign extends BarsDesign<BarsComponents, BarsExpose, BarsClasses, BarsProps> {
+    get logic(): InspectableBars {
+      return this.item as InspectableBars
+    }
+  }
+
+  const Host = defineComponent({
+    inheritAttrs: false,
+    setup(_, { attrs }) {
+      const classes = computed<ConstrClasses>(() => ({
+        main: {
+          'd1-bars': true
+        }
+      }))
+
+      const design = new TestBarsDesign(
+        'd1.bars',
+        props,
+        {
+          emits: (event: string, ...args: unknown[]) => {
+            emitted.push({ event, args })
+          },
+          classes,
+          components: {
+            button: MockButton
+          }
+        } as unknown as ConstructorParameters<typeof BarsDesign>[2],
+        InspectableBars as unknown as typeof Bars
+      )
+
+      barsLogicInstance = design.logic
+      const render = design.render()
+
+      return () => h(render, attrs)
+    }
+  })
+
+  const app = createApp({
+    render: () => h(Host, extraAttrs, customSlots as Record<string, () => unknown>)
+  })
+  app.mount(host)
+  mountedCleanups.push(() => app.unmount())
+
+  await nextTick()
+
+  return {
+    host,
+    props,
+    emitted,
+    logic: barsLogicInstance!
+  }
+}
+
+describe('Bars (Integration)', () => {
+  describe('DOM structure, classes, and lazy instantiation', () => {
+    it('should render root element with BEM classes, merged external attrs, and skip unused label/description/skeleton', async () => {
+      const { host, logic } = await mountBars(
+        { backHide: true },
+        {},
+        { class: 'extra-bars', style: { color: 'red' }, id: 'bars-main' }
+      )
+
+      const root = host.firstElementChild as HTMLElement
+      expect(root).not.toBeNull()
+      expect(root.id).toBe('bars-main')
+      expect(root.classList.contains('d1-bars')).toBe(true)
+      expect(root.classList.contains('extra-bars')).toBe(true)
+      expect(root.style.color).toBe('red')
+      expect(root.querySelector('.d1-bars__context')).not.toBeNull()
+      expect(root.querySelector('.d1-bars__label')).toBeNull()
+      expect(root.querySelector('.d1-bars__description')).toBeNull()
+      expect(root.querySelector('button')).toBeNull()
+
+      expect(logic.instantiatedItems.label).toBeUndefined()
+      expect(logic.instantiatedItems.description).toBeUndefined()
+      expect(logic.instantiatedItems.skeleton).toBeUndefined()
     })
 
-    it('should instantiate skeleton only when requested and enabled in props', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-
-      scope.run(() => {
-        const barsWithSkeleton = new InspectableBars(
-          reactive({ isSkeleton: true }),
-          element,
-          naming
-        )
-
-        expect(barsWithSkeleton.instantiatedItems.skeleton).toBeUndefined()
-        const skeletonInstance = barsWithSkeleton.i('skeleton')
-        expect(skeletonInstance).toBeInstanceOf(SkeletonInclude)
-        expect(barsWithSkeleton.instantiatedItems.skeleton).toBeDefined()
+    it('should render label, description, skeleton classes, and bar buttons reactively', async () => {
+      const { host, props, logic } = await mountBars({
+        label: 'Inbox',
+        description: 'Unread messages',
+        isSkeleton: true,
+        bars: [
+          { value: 'search', label: 'Search', icon: 'search' },
+          { value: 'filter', label: 'Filter' }
+        ]
       })
 
-      scope.stop()
+      expect(logic.instantiatedItems.label).toBeDefined()
+      expect(logic.instantiatedItems.description).toBeDefined()
+      expect(logic.instantiatedItems.skeleton).toBeDefined()
+
+      const label = host.querySelector('.d1-bars__label')
+      const description = host.querySelector('.d1-bars__description')
+      expect(label?.textContent).toBe('Inbox')
+      expect(description?.textContent).toBe('Unread messages')
+      expect(label?.classList.contains('d1-skeleton__textVariant')).toBe(true)
+      expect(description?.classList.contains('d1-skeleton__textVariant')).toBe(true)
+
+      const searchBtn = host.querySelector('button[data-value="search"]')
+      const filterBtn = host.querySelector('button[data-value="filter"]')
+      expect(searchBtn?.getAttribute('data-has-icon')).toBe('true')
+      expect(filterBtn?.getAttribute('data-has-icon')).toBeNull()
+
+      props.label = 'Updated Inbox'
+      await nextTick()
+      expect(host.querySelector('.d1-bars__label')?.textContent).toBe('Updated Inbox')
+    })
+
+    it('should render numeric 0 for label and description', async () => {
+      const { host } = await mountBars({
+        label: 0,
+        description: 0,
+        backHide: true
+      })
+
+      expect(host.querySelector('.d1-bars__label')?.textContent).toBe('0')
+      expect(host.querySelector('.d1-bars__description')?.textContent).toBe('0')
     })
   })
 
-  describe('User interactions & Events', () => {
-    it('should handle back button click and close action mode if value is back', () => {
-      const scope = effectScope()
-      const element = ref<HTMLElement>()
-      const emitFn = vi.fn()
-
-      scope.run(() => {
-        const bars = new Bars(
-          reactive({ action: true }),
-          element,
-          naming,
-          undefined,
-          undefined,
-          emitFn
-        )
-
-        expect(bars.isAction()).toBe(true)
-
-        // Trigger back button click
-        const clickEvent = new MouseEvent('click')
-        bars.backBinds.value?.onClick?.(clickEvent, { value: 'back', type: 'back' })
-
-        expect(bars.isAction()).toBe(false)
-        expect(emitFn).toHaveBeenCalledWith('click', clickEvent, { value: 'back', type: 'back' })
+  describe('Action mode switching & interactions', () => {
+    it('should switch to action mode via props, close on back click, and emit click/update events', async () => {
+      const { host, props, emitted } = await mountBars({
+        label: 'Normal Title',
+        description: 'Normal Desc',
+        actionLabel: '2 selected',
+        actionDescription: 'Bulk actions',
+        backButton: { label: 'Back' },
+        bars: [{ value: 'add', label: 'Add' }],
+        actionBars: [{ value: 'delete', label: 'Delete' }]
       })
 
-      scope.stop()
+      const root = host.firstElementChild as HTMLElement
+      expect(root.getAttribute('aria-live')).toBe('polite')
+      expect(root.classList.contains('d1-bars--action')).toBe(false)
+      expect(host.querySelector('.d1-bars__label')?.textContent).toBe('Normal Title')
+      expect(host.querySelector('button[data-value="add"]')).not.toBeNull()
+      expect(host.querySelector('button[data-value="delete"]')).toBeNull()
+
+      props.modelAction = true
+      await nextTick()
+
+      expect(root.classList.contains('d1-bars--action')).toBe(true)
+      expect(host.querySelector('.d1-bars__label')?.textContent).toBe('2 selected')
+      expect(host.querySelector('.d1-bars__description')?.textContent).toBe('Bulk actions')
+      expect(host.querySelector('button[data-value="add"]')).toBeNull()
+      expect(host.querySelector('button[data-value="delete"]')).not.toBeNull()
+
+      const backButton = host.querySelector('button[data-value="back"]') as HTMLButtonElement
+      expect(backButton.dataset.selected).toBe('true')
+      backButton.click()
+      await nextTick()
+
+      expect(root.classList.contains('d1-bars--action')).toBe(false)
+      expect(emitted.some(item => item.event === 'update:action' && item.args[0] === false)).toBe(true)
+      expect(emitted.some(item => item.event === 'update:modelAction' && item.args[0] === false)).toBe(true)
+      expect(emitted.some(item => item.event === 'click')).toBe(true)
+    })
+
+    it('should emit click events from regular bar buttons', async () => {
+      const { host, emitted } = await mountBars({
+        backHide: true,
+        bars: [{ value: 'refresh', label: 'Refresh' }]
+      })
+
+      const refreshBtn = host.querySelector('button[data-value="refresh"]') as HTMLButtonElement
+      refreshBtn.click()
+      await nextTick()
+
+      const clickEvent = emitted.find(item => item.event === 'click')
+      expect(clickEvent).toBeDefined()
+      expect(clickEvent?.args[1]).toEqual({ type: 'button', value: 'refresh' })
+    })
+  })
+
+  describe('Slots projection', () => {
+    it('should render default, description, bars, and actionBars slots', async () => {
+      const { host, props } = await mountBars(
+        { action: false, backHide: true },
+        {
+          default: () => h('span', { class: 'slot-title' }, 'Slot Title'),
+          description: () => h('span', { class: 'slot-desc' }, 'Slot Desc'),
+          bars: () => h('span', { class: 'slot-bars' }, 'Slot Bars'),
+          actionBars: () => h('span', { class: 'slot-action-bars' }, 'Slot Action Bars')
+        }
+      )
+
+      expect(host.querySelector('.slot-title')?.textContent).toBe('Slot Title')
+      expect(host.querySelector('.slot-desc')?.textContent).toBe('Slot Desc')
+      expect(host.querySelector('.slot-bars')?.textContent).toBe('Slot Bars')
+      expect(host.querySelector('.slot-action-bars')).toBeNull()
+
+      props.action = true
+      await nextTick()
+
+      expect(host.querySelector('.slot-bars')).toBeNull()
+      expect(host.querySelector('.slot-action-bars')?.textContent).toBe('Slot Action Bars')
     })
   })
 })

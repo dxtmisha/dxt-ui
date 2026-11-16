@@ -35,7 +35,7 @@ export class BarsAction extends DesignLifecycleAbstract {
    * Настройка слушателей жизненного цикла и наблюдателей при монтировании.
    */
   override readonly onMounted = (): void => {
-    watch(() => this.props.action, this.update)
+    watch(() => Boolean(this.props.action || this.props.modelAction), this.update)
   }
 
   /**
@@ -48,6 +48,7 @@ export class BarsAction extends DesignLifecycleAbstract {
   static is(props?: Readonly<BarsProps>): boolean {
     return Boolean(
       props?.action
+      || props?.modelAction
       || props?.actionLabel
       || props?.actionDescription
       || props?.actionBars
@@ -86,7 +87,7 @@ export class BarsAction extends DesignLifecycleAbstract {
    * Обновляет состояние режима действий на основе свойств.
    */
   readonly update = (): void => {
-    this.action.value = Boolean(this.props.action)
+    this.action.value = Boolean(this.props.action || this.props.modelAction)
   }
 
   /**
