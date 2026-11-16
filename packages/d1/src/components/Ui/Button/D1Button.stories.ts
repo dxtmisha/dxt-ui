@@ -409,7 +409,7 @@ export const ButtonTestStates: Story = {
   }
 }
 export const ButtonTestTokensAndModifiers: Story = {
-  name: 'Тест: Инвертированные, сеточные, контейнерные и выравнивающие модификаторы',
+  name: 'Тест: Инвертированные, сеточные и выравнивающие модификаторы',
   render: () => ({
     components: { D1Button },
     template: `
@@ -422,10 +422,6 @@ export const ButtonTestTokensAndModifiers: Story = {
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">grid</div>
             <D1Button grid icon="home" label="Grid Layout"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">container</div>
-            <D1Button container icon="home" label="Container Query"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">textAlign: left</div>
@@ -445,14 +441,53 @@ export const ButtonTestTokensAndModifiers: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll<HTMLElement>('.d1-button')
-    await expect(items.length).toBe(6)
+    await expect(items.length).toBe(5)
 
     await expect(items[0]).toHaveClass('d1-button--inverse')
     await expect(items[1]).toHaveClass('d1-button--grid')
-    await expect(items[2]).toHaveClass('d1-button--container')
-    await expect(items[3]).toHaveClass('d1-button--textAlign--left')
-    await expect(items[4]).toHaveClass('d1-button--textAlign--center')
-    await expect(items[5]).toHaveClass('d1-button--textAlign--right')
+    await expect(items[2]).toHaveClass('d1-button--textAlign--left')
+    await expect(items[3]).toHaveClass('d1-button--textAlign--center')
+    await expect(items[4]).toHaveClass('d1-button--textAlign--right')
+  }
+}
+export const ButtonTestPropsAndIcons: Story = {
+  name: 'Тест: ID метки, модификаторы иконки и нулевое значение',
+  render: () => ({
+    components: { D1Button },
+    template: `
+        
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">labelId + value=0</div>
+            <D1Button label="Custom Label" label-id="button-custom-label" :value="0"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">iconTurn</div>
+            <D1Button icon="home" icon-turn label="Turned Icon"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">iconHide</div>
+            <D1Button icon="home" icon-hide label="Hidden Icon"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">iconAttrs</div>
+            <D1Button icon="home" :icon-attrs="{ 'data-custom': 'icon-attr' }" label="Icon Attrs"/>
+          </div>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const items = canvasElement.querySelectorAll<HTMLElement>('.d1-button')
+    await expect(items.length).toBe(4)
+
+    await expect(items[0].querySelector('#button-custom-label')).toBeInTheDocument()
+    await expect(items[0]).toHaveAttribute('data-value', '0')
+    await expect(items[1]).toHaveClass('d1-button--icon')
+    await expect(items[1].querySelector('.d1-button__icon')?.className).toContain('--turn')
+    await expect(items[2]).toHaveClass('d1-button--icon')
+    await expect(items[2].querySelector('.d1-button__icon')?.className).toContain('--hide')
+    await expect(items[3].querySelector('.d1-button__icon')).toHaveAttribute('data-custom', 'icon-attr')
   }
 }
 // :story-items [!] System label / Системная метка

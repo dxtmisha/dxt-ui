@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import type { ButtonExpose } from '@dxtmisha/constructor/Button'
 import { useDemoEvent } from '../../composables/useDemoEvent'
+import DemoBox from '../../components/DemoBox.vue'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
@@ -47,7 +48,8 @@ const statusValue = computed<string>(() => {
           <D1Button label="Trailing Icon" iconTrailing="arrow_forward" />
           <D1Button label="Both Icons" icon="home" iconTrailing="arrow_forward" />
           <D1Button label="Icon Object" :icon="{ icon: 'star' }" />
-          <D1Button icon="settings" />
+          <D1Button label="Icon Turn" icon="expand_more" iconTurn />
+          <D1Button icon="settings" ariaLabel="Settings" />
         </div>
       </D1Group>
 
@@ -56,10 +58,11 @@ const statusValue = computed<string>(() => {
           <D1Button label="Disabled" disabled />
           <D1Button label="Selected" selected />
           <D1Button label="Readonly" readonly />
-          <D1Button label="Active" active />
           <D1Button label="Focus" focus />
           <D1Button label="Loading" loading />
-          <D1Button label="Skeleton" isSkeleton />
+          <D1Skeleton :active="true">
+            <D1Button label="Skeleton" isSkeleton />
+          </D1Skeleton>
           <D1Button label="Disabled + Selected" disabled selected />
           <D1Button label="Loading + Disabled" loading disabled />
         </div>
@@ -105,8 +108,12 @@ const statusValue = computed<string>(() => {
 
       <D1Group label="Container Query">
         <div class="demo-button-page">
-          <D1Button label="Container Full SM" container="fullSm" />
-          <D1Button label="Container Icon SM" container="iconSm" icon="star" />
+          <DemoBox container size="sm">
+            <D1Button label="Container Full SM" container="fullSm" />
+          </DemoBox>
+          <DemoBox container size="sm">
+            <D1Button label="Container Icon SM" container="iconSm" icon="star" />
+          </DemoBox>
         </div>
       </D1Group>
 
@@ -123,6 +130,7 @@ const statusValue = computed<string>(() => {
           <D1Button label="Submit Type" tag="button" type="submit" />
           <D1Button label="Reset Type" tag="button" type="reset" />
           <D1Button label="Link (A Tag)" tag="a" href="https://github.com" target="_blank" />
+          <D1Button label="Router Link" :to="{ name: 'home' }" />
           <D1Button label="Span Tag" tag="span" ariaLabel="Custom Span Button" />
         </div>
       </D1Group>
@@ -133,8 +141,8 @@ const statusValue = computed<string>(() => {
             Custom Default Content
           </D1Button>
           <D1Button icon="star">
-            <template #label>
-              Custom Label Slot
+            <template #default>
+              Custom Default With Icon
             </template>
           </D1Button>
         </div>

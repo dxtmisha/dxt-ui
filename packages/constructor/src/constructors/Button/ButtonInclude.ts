@@ -27,7 +27,7 @@ export class ButtonInclude extends ComponentIncludeAbstract<
   protected override readonly propsAttrsName = 'buttonAttrs'
 
   /** Determines whether to initialize the element reference during binding / Определяет, нужно ли инициализировать ссылку на элемент при привязке */
-  protected readonly hasInitElement: boolean = false
+  protected override readonly hasInitElement: boolean = false
 
   /**
    * Checks whether the button should be displayed.

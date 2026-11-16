@@ -38,9 +38,6 @@ src/constructors/Scrollbar/ScrollbarBorder.ts
 src/constructors/Scrollbar/Scrollbar.ts
 src/constructors/Scrollbar/ScrollbarDesign.tsx
 src/constructors/Scrollbar/ScrollbarInclude.ts
-src/constructors/Button/Button.ts
-src/constructors/Button/ButtonDesign.tsx
-src/constructors/Button/ButtonInclude.ts
 src/classes/ModelInclude.ts
 src/classes/TeleportInclude.ts
 src/constructors/Window/WindowClassesData.ts
@@ -122,3 +119,6 @@ src/constructors/Field/Field.ts
 src/constructors/Field/FieldDesign.tsx
 src/constructors/Field/FieldInclude.ts
 src/classes/FrameAbstract.ts
+src/constructors/Button/Button.ts
+src/constructors/Button/ButtonDesign.tsx
+src/constructors/Button/ButtonInclude.ts

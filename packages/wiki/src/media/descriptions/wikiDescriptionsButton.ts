@@ -454,10 +454,10 @@ await expect(items[2]).toHaveAttribute('aria-label', 'Accessible Span')
     {
       id: 'ButtonTestTokensAndModifiers',
       name: {
-        en: 'Test: Inverse, grid, container and text alignment tokens',
-        ru: 'Тест: Инвертированные, сеточные, контейнерные и выравнивающие модификаторы'
+        en: 'Test: Inverse, grid and text alignment tokens',
+        ru: 'Тест: Инвертированные, сеточные и выравнивающие модификаторы'
       },
-      propsName: ['inverse', 'grid', 'container', 'textAlign'],
+      propsName: ['inverse', 'grid', 'textAlign'],
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
@@ -467,10 +467,6 @@ await expect(items[2]).toHaveAttribute('aria-label', 'Accessible Span')
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">grid</div>
             <DesignComponent grid icon="home" label="Grid Layout"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
-            <div class="wiki-storybook-item__label">container</div>
-            <DesignComponent container icon="home" label="Container Query"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">textAlign: left</div>
@@ -488,14 +484,53 @@ await expect(items[2]).toHaveAttribute('aria-label', 'Accessible Span')
       `,
       play: `
 const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(items.length).toBe(6)
+await expect(items.length).toBe(5)
 
 await expect(items[0]).toHaveClass('design-component--inverse')
 await expect(items[1]).toHaveClass('design-component--grid')
-await expect(items[2]).toHaveClass('design-component--container')
-await expect(items[3]).toHaveClass('design-component--textAlign--left')
-await expect(items[4]).toHaveClass('design-component--textAlign--center')
-await expect(items[5]).toHaveClass('design-component--textAlign--right')
+await expect(items[2]).toHaveClass('design-component--textAlign--left')
+await expect(items[3]).toHaveClass('design-component--textAlign--center')
+await expect(items[4]).toHaveClass('design-component--textAlign--right')
+      `
+    },
+    {
+      id: 'ButtonTestPropsAndIcons',
+      name: {
+        en: 'Test: Label ID, icon modifiers and zero value',
+        ru: 'Тест: ID метки, модификаторы иконки и нулевое значение'
+      },
+      propsName: ['labelId', 'iconTurn', 'iconHide', 'iconAttrs', 'value'],
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">labelId + value=0</div>
+            <DesignComponent label="Custom Label" label-id="button-custom-label" :value="0"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">iconTurn</div>
+            <DesignComponent icon="home" icon-turn label="Turned Icon"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">iconHide</div>
+            <DesignComponent icon="home" icon-hide label="Hidden Icon"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">iconAttrs</div>
+            <DesignComponent icon="home" :icon-attrs="{ 'data-custom': 'icon-attr' }" label="Icon Attrs"/>
+          </div>
+        </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
+await expect(items.length).toBe(4)
+
+await expect(items[0].querySelector('#button-custom-label')).toBeInTheDocument()
+await expect(items[0]).toHaveAttribute('data-value', '0')
+await expect(items[1]).toHaveClass('design-component--icon')
+await expect(items[1].querySelector('.design-component__icon')?.className).toContain('--turn')
+await expect(items[2]).toHaveClass('design-component--icon')
+await expect(items[2].querySelector('.design-component__icon')?.className).toContain('--hide')
+await expect(items[3].querySelector('.design-component__icon')).toHaveAttribute('data-custom', 'icon-attr')
       `
     }
   ],
@@ -541,7 +576,6 @@ await expect(items[5]).toHaveClass('design-component--textAlign--right')
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
-<StorybookDescriptions componentName={'Slot'} type={'label'}/>
 <Canvas of={Component.ButtonSlots}/>
     `
   },

@@ -9,6 +9,11 @@ import type { EnabledProps } from '../../types/enabledTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
 
+/**
+ * Type describing token properties for Button.
+ *
+ * Тип, описывающий свойства токенов для Button.
+ */
 export type ButtonPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
@@ -23,6 +28,11 @@ export type ButtonPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Type describing basic properties for the Button component.
+ *
+ * Тип, описывающий базовые свойства компонента Button.
+ */
 export type ButtonPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
@@ -35,9 +45,9 @@ export type ButtonPropsBasic<
   & ConstrHrefProps
   & AriaLabelPropsInclude
   & {
-    /** HTML tag for the button container/ HTML-тег для контейнера кнопки */
+    /** HTML tag for the button container / HTML-тег для контейнера кнопки */
     tag?: 'button' | 'a' | 'span' | string
-    /** HTML type for the button element/ HTML-тип для элемента кнопки */
+    /** HTML type for the button element / HTML-тип для элемента кнопки */
     type?: 'button' | 'submit' | 'reset' | string
   }
 

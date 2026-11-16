@@ -1,7 +1,7 @@
 import type { NitroApp } from 'nitro/types'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { seedCmsDatabase, useCmsDb } from '@dxtmisha/cms-api'
 
+import { seedCms } from './seedCms'
 import type { CmsNitroInitResult, CmsNitroOptions } from '../types/cmsNitroTypes'
 
 /**
@@ -17,16 +17,7 @@ export async function initPluginCms<N = NitroApp>(
   options: CmsNitroOptions = {}
 ): Promise<CmsNitroInitResult> {
   try {
-    const { getCmsDb, setCmsDbConnectionString } = useCmsDb()
-
-    if (options.connectionString) {
-      setCmsDbConnectionString(options.connectionString)
-    }
-
-    return await seedCmsDatabase(getCmsDb(), {
-      permissions: options.permissions,
-      roles: options.roles
-    })
+    return await seedCms(options)
   } catch (error) {
     ErrorCenter.on({
       group: 'cms',

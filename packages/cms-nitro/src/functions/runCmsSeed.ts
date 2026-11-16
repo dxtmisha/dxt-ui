@@ -1,7 +1,8 @@
 import process from 'node:process'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
-import { seedCmsDatabase, useCmsDb } from '@dxtmisha/cms-api'
+import { useCmsDb } from '@dxtmisha/cms-api'
 
+import { seedCms } from './seedCms'
 import type { CmsNitroInitResult, CmsNitroSeedOptions } from '../types/cmsNitroTypes'
 
 /**
@@ -14,17 +15,10 @@ import type { CmsNitroInitResult, CmsNitroSeedOptions } from '../types/cmsNitroT
 export async function runCmsSeed(
   options: CmsNitroSeedOptions = {}
 ): Promise<CmsNitroInitResult | undefined> {
-  const { getCmsDb, setCmsDbConnectionString, closeCmsDb } = useCmsDb()
+  const { closeCmsDb } = useCmsDb()
 
   try {
-    if (options.connectionString) {
-      setCmsDbConnectionString(options.connectionString)
-    }
-
-    const result = await seedCmsDatabase(getCmsDb(), {
-      permissions: options.permissions,
-      roles: options.roles
-    })
+    const result = await seedCms(options)
 
     console.log(
       `Seeded ${result.permissions.length} CMS permissions and ${result.roles.length} CMS roles.`

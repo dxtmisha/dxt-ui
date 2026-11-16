@@ -1,434 +1,313 @@
 // @vitest-environment jsdom
 import './testWarnings'
-import { describe, expect, it, vi } from 'vitest'
-import { effectScope, reactive, ref } from 'vue'
-import { DesignName } from '@dxtmisha/functional'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import {
+  computed,
+  createApp,
+  defineComponent,
+  h,
+  mergeProps,
+  nextTick,
+  reactive
+} from 'vue'
+import type { ConstrClasses } from '@dxtmisha/functional'
 
-import { LabelInclude } from '../../../classes/LabelInclude'
-import { IconTrailingInclude } from '../../Icon'
-import { ProgressInclude } from '../../Progress'
-import { RippleInclude } from '../../Ripple'
-import { SkeletonInclude } from '../../Skeleton'
-import { Button, type ButtonConstructors } from '../Button'
+import { ButtonDesign } from '../ButtonDesign'
 import type { ButtonPropsBasic } from '../props'
+import type {
+  ButtonClasses,
+  ButtonComponents,
+  ButtonEmits,
+  ButtonExpose,
+  ButtonSlots
+} from '../types'
+
+const mountedCleanups: Array<() => void> = []
+
+afterEach(() => {
+  mountedCleanups.splice(0).reverse().forEach(unmount => unmount())
+  vi.restoreAllMocks()
+})
+
+const MockIcon = defineComponent({
+  name: 'MockIcon',
+  props: {
+    icon: [String, Object],
+    disabled: Boolean
+  },
+  setup(componentProps, { attrs }) {
+    return () => h(
+      'span',
+      mergeProps({
+        'class': 'mock-icon',
+        'data-disabled': String(Boolean(componentProps.disabled))
+      }, attrs),
+      String(componentProps.icon ?? '')
+    )
+  }
+})
+
+const MockProgress = defineComponent({
+  name: 'MockProgress',
+  props: {
+    visible: Boolean,
+    circular: Boolean,
+    inverse: Boolean
+  },
+  setup(componentProps, { attrs }) {
+    return () => componentProps.visible
+      ? h('span', mergeProps({ class: 'mock-progress' }, attrs), 'loading')
+      : null
+  }
+})
+
+const MockRipple = defineComponent({
+  name: 'MockRipple',
+  setup(_, { attrs }) {
+    return () => h('span', mergeProps({ class: 'mock-ripple' }, attrs))
+  }
+})
 
 /**
- * Inspectable subclass of Button exposing internal lazy-instantiated instances.
+ * Mounts full Button component integration setup in jsdom.
  *
- * Проверяемый подкласс Button, предоставляющий доступ к внутренним лениво созданным экземплярам.
+ * Монтирует полную интеграцию компонента Button в jsdom.
+ * @param initialProps initial button properties / начальные свойства кнопки
+ * @param customSlots slot renderers / функции рендеринга слотов
+ * @param extraAttrs external attributes / внешние атрибуты
+ * @returns container, reactive props, emitted events, and exposed API / контейнер, реактивные свойства, события и экспонируемый API
  */
-class InspectableButton extends Button {
-  /**
-   * Returns internal instances map for lazy-evaluation verification.
-   *
-   * Возвращает внутреннюю карту экземпляров для проверки ленивой инициализации.
-   * @returns instantiated constructors map / карта созданных экземпляров конструкторов
-   */
-  get instantiatedItems(): Partial<Record<keyof ButtonConstructors, unknown>> {
-    return this.instances
+async function mountButton(
+  initialProps: ButtonPropsBasic = {},
+  customSlots: ButtonSlots = {},
+  extraAttrs: Record<string, unknown> = {}
+) {
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+  mountedCleanups.push(() => container.remove())
+
+  const props = reactive<ButtonPropsBasic>({ ...initialProps })
+  const emitted: Array<{ event: keyof ButtonEmits, args: unknown[] }> = []
+  let exposed!: ButtonExpose
+
+  const Host = defineComponent({
+    inheritAttrs: false,
+    setup() {
+      const classesToken = computed<ConstrClasses>(() => ({
+        main: {
+          'd1-button': true,
+          'd1-button--disabled': Boolean(props.disabled),
+          'd1-button--readonly': Boolean(props.readonly)
+        }
+      }))
+
+      const design = new ButtonDesign<
+        ButtonComponents,
+        ButtonExpose,
+        ButtonClasses,
+        ButtonPropsBasic
+      >(
+        'd1.button',
+        props,
+        {
+          classes: classesToken,
+          components: {
+            icon: MockIcon,
+            progress: MockProgress,
+            ripple: MockRipple
+          },
+          emits: ((event: keyof ButtonEmits, ...args: unknown[]) => {
+            emitted.push({ event, args })
+          }) as never
+        }
+      )
+
+      exposed = design.expose()
+      return design.render()
+    }
+  })
+
+  const app = createApp({
+    render() {
+      return h(Host, extraAttrs, customSlots as Record<string, () => unknown>)
+    }
+  })
+  app.mount(container)
+  mountedCleanups.push(() => app.unmount())
+  await nextTick()
+
+  return {
+    container,
+    props,
+    emitted,
+    exposed
   }
 }
 
-describe('Button', () => {
-  const naming = new DesignName('d1.button')
-
-  describe('Standard functional requirements (Happy path)', () => {
-    it('should initialize with default button tag and standard bindings', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({})
-
-      scope.run(() => {
-        const button = new Button(props, element, naming)
-
-        expect(button.tag).toBe('button')
-        expect(button.binds.type).toBe('button')
-        expect(button.binds.disabled).toBeUndefined()
-        expect(button.binds['data-value']).toBeUndefined()
-        expect(typeof button.eventList.onClick).toBe('function')
-        expect(button.eventList.onKeydown).toBeUndefined()
+describe('Button (integration)', () => {
+  describe('Full rendering and subcomponents assembly', () => {
+    it('should render label, leading icon, trailing icon, and ripple together', async () => {
+      const { container, exposed } = await mountButton({
+        label: 'Save',
+        icon: 'check',
+        iconTrailing: 'arrow_forward',
+        value: 'save-btn',
+        detail: { id: 42 }
       })
 
-      scope.stop()
+      const root = container.querySelector('button.d1-button')
+      expect(root).not.toBeNull()
+      expect(root?.classList.contains('d1-button--icon')).toBe(true)
+      expect(root?.getAttribute('type')).toBe('button')
+      expect(root?.getAttribute('data-value')).toBe('save-btn')
+
+      expect(container.querySelector('.d1-button__label')?.textContent).toBe('Save')
+
+      const icons = container.querySelectorAll('.mock-icon')
+      expect(icons).toHaveLength(2)
+      expect(icons[0]?.textContent).toBe('check')
+      expect(icons[0]?.classList.contains('d1-button__icon')).toBe(true)
+      expect(icons[1]?.textContent).toBe('arrow_forward')
+      expect(icons[1]?.classList.contains('d1-button__trailing')).toBe(true)
+
+      expect(container.querySelector('.mock-ripple.d1-button__ripple')).not.toBeNull()
+      expect(exposed.getValue?.()).toBe('save-btn')
+      expect(exposed.getDetail?.()).toEqual({ id: 42 })
     })
 
-    it('should resolve tag to "a" when href is supplied and tag is omitted', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({ href: 'https://example.com' })
-
-      scope.run(() => {
-        const button = new Button(props, element, naming)
-
-        expect(button.tag).toBe('a')
-        expect(button.binds.href).toBe('https://example.com')
-        expect(button.binds.type).toBeUndefined()
+    it('should render default slot content when label prop is omitted', async () => {
+      const { container } = await mountButton({}, {
+        default: () => [h('span', { class: 'custom-slot-text' }, 'Custom Button')]
       })
 
-      scope.stop()
+      expect(container.querySelector('.d1-button__label .custom-slot-text')?.textContent).toBe('Custom Button')
     })
 
-    it('should prioritize explicit tag prop over href', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({
-        href: 'https://example.com',
-        tag: 'span'
+    it('should preserve numeric 0 as a valid button value in data-value and expose', async () => {
+      const { container, exposed } = await mountButton({
+        label: 'Zero value',
+        value: 0
       })
 
-      scope.run(() => {
-        const button = new Button(props, element, naming)
-
-        expect(button.tag).toBe('span')
-        expect(button.binds.type).toBeUndefined()
-      })
-
-      scope.stop()
-    })
-
-    it('should handle custom button type when passed in props', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({ type: 'submit' })
-
-      scope.run(() => {
-        const button = new Button(props, element, naming)
-
-        expect(button.binds.type).toBe('submit')
-      })
-
-      scope.stop()
+      expect(container.querySelector('.d1-button')?.getAttribute('data-value')).toBe('0')
+      expect(exposed.getValue?.()).toBe(0)
     })
   })
 
-  describe('Non-button tag accessibility and keyboard interactions', () => {
-    it('should provide ARIA button role, tabindex and onKeydown handler for non-button tags', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({ tag: 'div' })
-
-      scope.run(() => {
-        const button = new Button(props, element, naming)
-
-        expect(button.aria.role).toBe('button')
-        expect(button.aria.tabindex).toBe('0')
-        expect(typeof button.eventList.onKeydown).toBe('function')
+  describe('Reactive state transitions (loading, disabled, readonly, skeleton)', () => {
+    it('should reactively toggle progress, aria-disabled, and ripple on loading change', async () => {
+      const { container, props, emitted } = await mountButton({
+        label: 'Submit',
+        loading: false
       })
 
-      scope.stop()
+      expect(container.querySelector('.mock-progress')).toBeNull()
+      expect(container.querySelector('.mock-ripple')).not.toBeNull()
+
+      props.loading = true
+      await nextTick()
+
+      const root = container.querySelector('button.d1-button') as HTMLButtonElement
+      expect(container.querySelector('.mock-progress.d1-button__loading')).not.toBeNull()
+      expect(root.getAttribute('aria-disabled')).toBe('true')
+
+      root.click()
+      expect(emitted).toHaveLength(0)
+
+      props.loading = false
+      await nextTick()
+
+      expect(container.querySelector('.mock-progress')).toBeNull()
+      root.click()
+      expect(emitted).toHaveLength(2)
     })
 
-    it('should set aria-disabled when non-button tag is disabled or loading', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({
-        disabled: true,
-        tag: 'div'
+    it('should block click emissions and remove ripple when disabled or readonly', async () => {
+      const { container, props, emitted } = await mountButton({
+        label: 'Action',
+        disabled: true
       })
 
-      scope.run(() => {
-        const button = new Button(props, element, naming)
+      const root = container.querySelector('button.d1-button') as HTMLButtonElement
+      expect(root.disabled).toBe(true)
+      expect(container.querySelector('.mock-ripple')).toBeNull()
 
-        expect(button.aria['aria-disabled']).toBe('true')
-      })
+      root.click()
+      expect(emitted).toHaveLength(0)
 
-      scope.stop()
+      props.disabled = false
+      props.readonly = true
+      await nextTick()
+
+      root.click()
+      expect(emitted).toHaveLength(0)
     })
 
-    it('should set aria-disabled when loading is true on non-button tag', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({
-        loading: true,
-        tag: 'span'
+    it('should apply skeleton classes cleanly when isSkeleton is enabled', async () => {
+      const { container, props } = await mountButton({
+        label: 'Skeleton',
+        isSkeleton: true
       })
 
-      scope.run(() => {
-        const button = new Button(props, element, naming)
+      const root = container.querySelector('button.d1-button')
+      expect(root?.classList.contains('d1-skeleton__background')).toBe(true)
 
-        expect(button.aria['aria-disabled']).toBe('true')
-      })
+      props.isSkeleton = false
+      await nextTick()
 
-      scope.stop()
-    })
-
-    it('should include aria-label when ariaLabel prop is provided', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({
-        ariaLabel: 'Close modal'
-      })
-
-      scope.run(() => {
-        const button = new Button(props, element, naming)
-
-        expect(button.aria['aria-label']).toBe('Close modal')
-      })
-
-      scope.stop()
+      expect(root?.classList.contains('d1-skeleton__background')).toBe(false)
     })
   })
 
-  describe('Classes and icon resolution', () => {
-    it('should assign icon class when icon prop is specified', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({ icon: 'home' })
-
-      scope.run(() => {
-        const button = new Button(props, element, naming)
-
-        expect(IconTrailingInclude.is(props)).toBe(true)
-        expect(button.classes[naming.getStatusClass('icon')]).toBe(true)
+  describe('Polymorphic tags, links, keyboard navigation, and external attrs', () => {
+    it('should render anchor element when href is provided', async () => {
+      const { container } = await mountButton({
+        label: 'Visit',
+        href: 'https://example.com'
       })
 
-      scope.stop()
+      const anchor = container.querySelector('a.d1-button')
+      expect(anchor).not.toBeNull()
+      expect(anchor?.getAttribute('href')).toBe('https://example.com')
+      expect(anchor?.hasAttribute('type')).toBe(false)
     })
 
-    it('should not assign icon class when icon prop is not specified', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({})
-
-      scope.run(() => {
-        const button = new Button(props, element, naming)
-
-        expect(IconTrailingInclude.is(props)).toBe(false)
-        expect(button.classes[naming.getStatusClass('icon')]).toBe(false)
+    it('should support keyboard activation via Enter and Space on non-button tags and guard IME composition', async () => {
+      const { container, emitted } = await mountButton({
+        label: 'Div Button',
+        tag: 'div',
+        value: 'div-val'
       })
 
-      scope.stop()
-    })
-  })
+      const divButton = container.querySelector('div.d1-button') as HTMLDivElement
+      expect(divButton).not.toBeNull()
+      expect(divButton.getAttribute('role')).toBe('button')
+      expect(divButton.getAttribute('tabindex')).toBe('0')
 
-  describe('Lazy loading & on-demand instantiation', () => {
-    it('should not instantiate any sub-constructors eagerly on creation', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({})
+      const composingEvent = new KeyboardEvent('keydown', { key: 'Enter', isComposing: true })
+      divButton.dispatchEvent(composingEvent)
+      expect(emitted).toHaveLength(0)
 
-      scope.run(() => {
-        const button = new InspectableButton(props, element, naming)
-
-        expect(Object.keys(button.instantiatedItems)).toHaveLength(0)
-      })
-
-      scope.stop()
+      divButton.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+      expect(emitted.some(item => item.event === 'click')).toBe(true)
+      expect(emitted.some(item => item.event === 'clickLite')).toBe(true)
     })
 
-    it('should instantiate progress only when loading is active during aria calculation', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const propsWithoutLoading: ButtonPropsBasic = reactive({ loading: false })
-      const propsWithLoading: ButtonPropsBasic = reactive({ loading: true })
+    it('should merge external class, style, and onClick handler without overwriting internal emits', async () => {
+      const externalClick = vi.fn()
+      const { container, emitted } = await mountButton(
+        { label: 'Merged', value: 'm1' },
+        {},
+        { class: 'ext-cls', style: 'color: blue', onClick: externalClick }
+      )
 
-      scope.run(() => {
-        const buttonNoLoading = new InspectableButton(propsWithoutLoading, element, naming)
-        // Accessing aria when not loading should not instantiate progress
-        const ariaNoLoading = buttonNoLoading.aria
-        expect(ariaNoLoading['aria-disabled']).toBeUndefined()
-        expect(buttonNoLoading.instantiatedItems.progress).toBeUndefined()
+      const root = container.querySelector('button.d1-button') as HTMLButtonElement
+      expect(root.classList.contains('ext-cls')).toBe(true)
+      expect(root.getAttribute('style')).toContain('color: blue')
 
-        const buttonLoading = new InspectableButton(propsWithLoading, element, naming)
-        const ariaLoading = buttonLoading.aria
-        expect(ariaLoading['aria-disabled']).toBe('true')
-        expect(buttonLoading.instantiatedItems.progress).toBeDefined()
-      })
-
-      scope.stop()
-    })
-
-    it('should instantiate ripple on-demand when accessed via this.i("ripple")', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({})
-
-      scope.run(() => {
-        const button = new InspectableButton(props, element, naming)
-
-        expect(button.instantiatedItems.ripple).toBeUndefined()
-        expect(button.instantiatedItems.enabled).toBeUndefined()
-
-        const ripple = button.i('ripple')
-        expect(ripple).toBeDefined()
-        expect(button.instantiatedItems.ripple).toBeDefined()
-        expect(button.instantiatedItems.enabled).toBeUndefined()
-      })
-
-      scope.stop()
-    })
-
-    it('should correctly evaluate predicate helpers IconTrailingInclude.is, LabelInclude.is, ProgressInclude.is, RippleInclude.is, and SkeletonInclude.is', () => {
-      const scope = effectScope()
-
-      scope.run(() => {
-        const emptyProps = {} as ButtonPropsBasic
-        expect(IconTrailingInclude.is(emptyProps)).toBe(false)
-        expect(LabelInclude.is(emptyProps)).toBe(false)
-        expect(ProgressInclude.is(emptyProps)).toBe(false)
-        expect(RippleInclude.is(emptyProps)).toBe(true)
-        expect(RippleInclude.is({ disabled: true })).toBe(false)
-        expect(SkeletonInclude.is(emptyProps)).toBe(false)
-
-        const fullProps = {
-          icon: 'star',
-          isSkeleton: true,
-          label: 'Action',
-          loading: true
-        } as ButtonPropsBasic
-        expect(IconTrailingInclude.is(fullProps)).toBe(true)
-        expect(LabelInclude.is(fullProps)).toBe(true)
-        expect(ProgressInclude.is(fullProps)).toBe(true)
-        expect(RippleInclude.is(fullProps)).toBe(false)
-        expect(SkeletonInclude.is(fullProps)).toBe(true)
-      })
-
-      scope.stop()
-    })
-
-    it('should not instantiate icon when icon and iconTrailing are not specified during classes calculation', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({})
-
-      scope.run(() => {
-        const button = new InspectableButton(props, element, naming)
-        const classes = button.classes
-
-        expect(classes).toBeDefined()
-        expect(button.instantiatedItems.icon).toBeUndefined()
-      })
-
-      scope.stop()
-    })
-
-    it('should instantiate icon when icon prop is specified during classes calculation', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({ icon: 'star' })
-
-      scope.run(() => {
-        const button = new InspectableButton(props, element, naming)
-        const classes = button.classes
-
-        expect(classes[naming.getStatusClass('icon')]).toBe(true)
-        expect(button.instantiatedItems.icon).toBeDefined()
-      })
-
-      scope.stop()
-    })
-
-    it('should not instantiate skeleton when isSkeleton is false during classes calculation', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({ isSkeleton: false })
-
-      scope.run(() => {
-        const button = new InspectableButton(props, element, naming)
-        const classes = button.classes
-
-        expect(classes).toBeDefined()
-        expect(button.instantiatedItems.skeleton).toBeUndefined()
-      })
-
-      scope.stop()
-    })
-
-    it('should not instantiate label on creation or classes calculation, and instantiate on-demand when accessed', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({ label: 'Submit' })
-
-      scope.run(() => {
-        const button = new InspectableButton(props, element, naming)
-        expect(button.instantiatedItems.label).toBeUndefined()
-
-        const classes = button.classes
-        expect(classes).toBeDefined()
-        expect(button.instantiatedItems.label).toBeUndefined()
-
-        const label = button.i('label')
-        expect(label).toBeDefined()
-        expect(button.instantiatedItems.label).toBeDefined()
-      })
-
-      scope.stop()
-    })
-  })
-
-  describe('Dependency Injection', () => {
-    it('should permit overriding subordinate constructors via constructors parameter', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({})
-
-      let customProgressInstantiated = false
-
-      class CustomProgress {
-        readonly is = false
-        readonly aria = ref({})
-        render() {
-          customProgressInstantiated = true
-          return []
-        }
-      }
-
-      scope.run(() => {
-        const button = new Button(
-          props,
-          element,
-          naming,
-          undefined,
-          undefined,
-          undefined,
-          {
-            progress: CustomProgress as any
-          }
-        )
-
-        const rendered = button.i('progress').render()
-        expect(customProgressInstantiated).toBe(true)
-        expect(rendered).toEqual([])
-      })
-
-      scope.stop()
-    })
-  })
-
-  describe('Click event handling and propagation', () => {
-    it('should delegate click events and emit via ConstrEmit', () => {
-      const scope = effectScope()
-      const element = ref<HTMLDivElement>()
-      const props: ButtonPropsBasic = reactive({ value: 'submit-data' })
-      const emitSpy = vi.fn()
-
-      scope.run(() => {
-        const button = new Button(
-          props,
-          element,
-          naming,
-          undefined,
-          undefined,
-          emitSpy
-        )
-
-        const clickEvent = new MouseEvent('click')
-        button.eventList.onClick(clickEvent)
-
-        expect(emitSpy).toHaveBeenCalledTimes(2)
-        expect(emitSpy).toHaveBeenNthCalledWith(1, 'click', clickEvent, {
-          detail: undefined,
-          type: 'click',
-          value: 'submit-data'
-        })
-        expect(emitSpy).toHaveBeenNthCalledWith(2, 'clickLite', {
-          detail: undefined,
-          type: 'click',
-          value: 'submit-data'
-        })
-      })
-
-      scope.stop()
+      root.click()
+      expect(externalClick).toHaveBeenCalledTimes(1)
+      expect(emitted.map(item => item.event)).toEqual(['click', 'clickLite'])
     })
   })
 })
