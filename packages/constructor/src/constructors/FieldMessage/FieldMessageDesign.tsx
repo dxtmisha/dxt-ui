@@ -1,13 +1,15 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  isFilled
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { FieldMessage } from './FieldMessage'
 
+import type { FieldMessageSlot } from './basicTypes'
 import {
   type FieldMessagePropsBasic
 } from './props'
@@ -45,6 +47,8 @@ export class FieldMessageDesign<
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
@@ -70,6 +74,56 @@ export class FieldMessageDesign<
       this.slots,
       this.emits
     )
+  }
+
+  /**
+   * Rendering text.
+   *
+   * Рендеринг текста.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderInfo = (): VNode[] => {
+    if (this.item.isHelper()) {
+      return [
+        this.renderMessageItem(
+          'message',
+          this.props.helperId,
+          [
+            this.classes?.value.info,
+            this.item.callInstance('skeleton', item => item.classes, {})
+          ],
+          'helper',
+          this.item.slotHelperData,
+          this.props.helperMessage
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Rendering error.
+   *
+   * Рендеринг ошибки.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderError = (): VNode[] => {
+    if (this.item.isValidation()) {
+      return [
+        this.renderMessageItem(
+          'error',
+          this.props.validationId,
+          this.classes?.value.error,
+          'validation',
+          this.item.slotValidationData,
+          this.props.validationMessage,
+          AriaStaticInclude.role('alert')
+        )
+      ]
+    }
+
+    return []
   }
 
   /**
@@ -121,16 +175,19 @@ export class FieldMessageDesign<
     if (this.item.is()) {
       return h(
         'div',
-        {
-          ...this.getAttrs(),
-          key: 'main',
-          class: this.classes?.value.main,
-          style: this.styles?.value
-        },
+        mergeProps(
+          this.getAttrs(),
+          {
+            ref: this.element,
+            key: 'main',
+            class: this.classes?.value.main,
+            style: this.styles?.value
+          }
+        ),
         [
           ...this.renderInfo(),
           ...this.renderError(),
-          ...this.item.fieldCounter.render()
+          ...this.item.callInstance('fieldCounter', item => item.render(), [])
         ]
       )
     }
@@ -139,74 +196,48 @@ export class FieldMessageDesign<
   }
 
   /**
-   * Rendering text.
+   * Renders a single message container (helper or validation).
    *
-   * Рендеринг текста.
-   * @returns array of virtual nodes / массив виртуальных нод
+   * Рендерит один контейнер сообщения (вспомогательного или валидации).
+   * @param key virtual node key / ключ виртуального узла
+   * @param id element identifier / идентификатор элемента
+   * @param className class name or list / имя класса или список классов
+   * @param slotName slot name / имя слота
+   * @param slotData slot data / данные слота
+   * @param message message text / текст сообщения
+   * @param attrs additional attributes / дополнительные атрибуты
+   * @returns virtual node / виртуальный узел
    */
-  readonly renderInfo = (): VNode[] => {
-    if (this.item.isHelper()) {
-      const children: any[] = []
-      const props: Record<string, any> = {
-        key: 'message',
-        id: this.props.helperId,
-        class: [
-          this.classes?.value.info,
-          this.item.skeleton.classes
-        ]
-      }
-
-      this.initSlot('helper', children, this.item.slotHelperData)
-
-      if (this.props.helperMessage) {
-        if (
-          this.props.hasHtmlCode
-          && children.length < 1
-        ) {
-          props.innerHTML = this.props.helperMessage
-        } else {
-          children.push(this.props.helperMessage)
-        }
-      }
-
-      return [h('div', props, children)]
+  protected renderMessageItem(
+    key: string,
+    id: string | undefined,
+    className: unknown,
+    slotName: keyof FieldMessageSlots,
+    slotData: FieldMessageSlot,
+    message: string | undefined,
+    attrs: Record<string, unknown> = {}
+  ): VNode {
+    const children: VNode[] = []
+    const props: Record<string, unknown> = {
+      key,
+      id,
+      class: className,
+      ...attrs
     }
 
-    return []
-  }
+    this.initSlot(slotName, children, slotData)
 
-  /**
-   * Rendering error.
-   *
-   * Рендеринг ошибки.
-   * @returns array of virtual nodes / массив виртуальных нод
-   */
-  readonly renderError = (): VNode[] => {
-    if (this.item.isValidation()) {
-      const children: any[] = []
-      const props: Record<string, any> = {
-        key: 'error',
-        id: this.props.validationId,
-        class: this.classes?.value.error,
-        ...AriaStaticInclude.role('alert')
+    if (isFilled(message)) {
+      if (
+        this.props.hasHtmlCode
+        && children.length < 1
+      ) {
+        props.innerHTML = message
+      } else {
+        return h('div', props, [...children, message])
       }
-
-      this.initSlot('validation', children, this.item.slotValidationData)
-
-      if (this.props.validationMessage) {
-        if (
-          this.props.hasHtmlCode
-          && children.length < 1
-        ) {
-          props.innerHTML = this.props.validationMessage
-        } else {
-          children.push(this.props.validationMessage)
-        }
-      }
-
-      return [h('div', props, children)]
     }
 
-    return []
+    return h('div', props, children)
   }
 }

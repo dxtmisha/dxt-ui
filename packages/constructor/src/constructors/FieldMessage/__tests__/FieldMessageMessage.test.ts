@@ -1,47 +1,92 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest'
+import './testWarnings'
+import { describe, expect, it } from 'vitest'
 import { FieldMessageMessage } from '../FieldMessageMessage'
+import type { FieldMessageSlots } from '../types'
 
 describe('FieldMessageMessage', () => {
-  it('should return correct active message from item getter', () => {
-    const f1 = new FieldMessageMessage({})
-    expect(f1.item).toBeUndefined()
+  describe('Standard functional requirements (Happy path)', () => {
+    it('should return active message from item getter with validation priority over helper', () => {
+      const empty = new FieldMessageMessage({})
+      expect(empty.item).toBeUndefined()
 
-    const f2 = new FieldMessageMessage({ helperMessage: 'Helper' })
-    expect(f2.item).toBe('Helper')
+      const helperOnly = new FieldMessageMessage({ helperMessage: 'Helper' })
+      expect(helperOnly.item).toBe('Helper')
 
-    const f3 = new FieldMessageMessage({ validationMessage: 'Validation' })
-    expect(f3.item).toBe('Validation')
+      const validationOnly = new FieldMessageMessage({ validationMessage: 'Validation' })
+      expect(validationOnly.item).toBe('Validation')
 
-    const f4 = new FieldMessageMessage({ helperMessage: 'Helper', validationMessage: 'Validation' })
-    expect(f4.item).toBe('Validation')
+      const both = new FieldMessageMessage({
+        helperMessage: 'Helper',
+        validationMessage: 'Validation'
+      })
+      expect(both.item).toBe('Validation')
+    })
+
+    it('should evaluate is(), isHelper(), and isValidation() from props and slots', () => {
+      const empty = new FieldMessageMessage({})
+      expect(empty.is()).toBe(false)
+      expect(empty.isHelper()).toBe(false)
+      expect(empty.isValidation()).toBe(false)
+
+      const helperOnly = new FieldMessageMessage({ helperMessage: 'Helper' })
+      expect(helperOnly.is()).toBe(true)
+      expect(helperOnly.isHelper()).toBe(true)
+      expect(helperOnly.isValidation()).toBe(false)
+
+      const validationOnly = new FieldMessageMessage({ validationMessage: 'Validation' })
+      expect(validationOnly.is()).toBe(true)
+      expect(validationOnly.isHelper()).toBe(false)
+      expect(validationOnly.isValidation()).toBe(true)
+
+      const helperSlot: FieldMessageSlots = { helper: () => [] }
+      const withHelperSlot = new FieldMessageMessage({}, helperSlot)
+      expect(withHelperSlot.is()).toBe(true)
+      expect(withHelperSlot.isHelper()).toBe(true)
+      expect(withHelperSlot.isValidation()).toBe(false)
+
+      const validationSlot: FieldMessageSlots = { validation: () => [] }
+      const withValidationSlot = new FieldMessageMessage({}, validationSlot)
+      expect(withValidationSlot.is()).toBe(true)
+      expect(withValidationSlot.isHelper()).toBe(false)
+      expect(withValidationSlot.isValidation()).toBe(true)
+    })
   })
 
-  it('should verify is() condition correctly', () => {
-    const f1 = new FieldMessageMessage({})
-    expect(f1.is()).toBe(false)
+  describe('Boundary values, whitespace-only, and multilingual strings', () => {
+    it('should treat empty and whitespace-only messages as inactive', () => {
+      const whitespaceBoth = new FieldMessageMessage({
+        helperMessage: '   \t\n',
+        validationMessage: '   '
+      })
 
-    const f2 = new FieldMessageMessage({ helperMessage: 'Helper' })
-    expect(f2.is()).toBe(true)
+      expect(whitespaceBoth.item).toBeUndefined()
+      expect(whitespaceBoth.is()).toBe(false)
+      expect(whitespaceBoth.isHelper()).toBe(false)
+      expect(whitespaceBoth.isValidation()).toBe(false)
+    })
 
-    const mockSlotsHelper = { helper: () => {} } as any
-    const f3 = new FieldMessageMessage({}, mockSlotsHelper)
-    expect(f3.is()).toBe(true)
+    it('should fall back to helperMessage when validationMessage is whitespace-only', () => {
+      const fallback = new FieldMessageMessage({
+        helperMessage: 'Valid helper',
+        validationMessage: '   '
+      })
 
-    const mockSlotsValidation = { validation: () => {} } as any
-    const f4 = new FieldMessageMessage({}, mockSlotsValidation)
-    expect(f4.is()).toBe(true)
-  })
+      expect(fallback.item).toBe('Valid helper')
+      expect(fallback.is()).toBe(true)
+      expect(fallback.isHelper()).toBe(true)
+      expect(fallback.isValidation()).toBe(false)
+    })
 
-  it('should verify isValidation() condition correctly', () => {
-    const f1 = new FieldMessageMessage({ helperMessage: 'Helper' })
-    expect(f1.isValidation()).toBe(false)
+    it('should preserve Unicode, Cyrillic, Vietnamese diacritics, and Emoji strings', () => {
+      const multilingual = new FieldMessageMessage({
+        helperMessage: 'Подсказка tiếng Việt 🚀',
+        validationMessage: 'Ошибка Nguyễn 🔒'
+      })
 
-    const f2 = new FieldMessageMessage({ validationMessage: 'Validation' })
-    expect(f2.isValidation()).toBe(true)
-
-    const mockSlotsValidation = { validation: () => {} } as any
-    const f3 = new FieldMessageMessage({}, mockSlotsValidation)
-    expect(f3.isValidation()).toBe(true)
+      expect(multilingual.item).toBe('Ошибка Nguyễn 🔒')
+      expect(multilingual.isHelper()).toBe(true)
+      expect(multilingual.isValidation()).toBe(true)
+    })
   })
 })

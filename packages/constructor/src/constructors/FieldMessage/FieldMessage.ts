@@ -1,13 +1,27 @@
-import { type Ref } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrClassObject,
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
 
 import { FieldCounterInclude } from '../FieldCounter'
-import { FieldMessageMessage } from './FieldMessageMessage'
 import { SkeletonInclude } from '../Skeleton'
 
+import { FieldMessageMessage } from './FieldMessageMessage'
+
 import type { FieldMessageSlot } from './basicTypes'
+import type { FieldMessagePropsBasic } from './props'
 import type { FieldMessageComponents, FieldMessageEmits, FieldMessageSlots } from './types'
-import type { FieldMessageProps } from './props'
+
+/** FieldMessage dependency constructors type / Тип конструкторов зависимостей FieldMessage */
+export type FieldMessageConstructors = {
+  /** Field counter constructor / Конструктор счетчика поля */
+  fieldCounter: typeof FieldCounterInclude
+  /** Message helper constructor / Конструктор помощника сообщений */
+  message: typeof FieldMessageMessage
+  /** Skeleton constructor / Конструктор скелетона */
+  skeleton: typeof SkeletonInclude
+}
 
 /**
  * Manager for handling helper messages, validation messages, and counters.
@@ -16,51 +30,41 @@ import type { FieldMessageProps } from './props'
  * Менеджер для обработки вспомогательных сообщений, сообщений валидации и счетчиков.
  * Координирует вывод текста для информации или валидации и управляет соответствующими счетчиками символов.
  */
-export class FieldMessage {
-  /** Field counter functionality / Функциональность счетчика поля */
-  readonly fieldCounter: FieldCounterInclude
-
-  /** Message functionality / Функциональность сообщений */
-  readonly message: FieldMessageMessage
-
-  /** Skeleton include / Подключение скелетона */
-  readonly skeleton: SkeletonInclude
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.FieldCounterIncludeConstructor class for working with field counter / класс для работы со счетчиком поля
-   * @param constructors.FieldMessageMessageConstructor class for working with messages / класс для работы с сообщениями
-   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
-   */
-  constructor(
-    protected readonly props: FieldMessageProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<FieldMessageComponents, FieldMessageProps>,
-    protected readonly slots?: FieldMessageSlots,
-    protected readonly emits?: ConstrEmit<FieldMessageEmits>,
-    constructors: {
-      FieldCounterIncludeConstructor?: typeof FieldCounterInclude
-      FieldMessageMessageConstructor?: typeof FieldMessageMessage
-      SkeletonIncludeConstructor?: typeof SkeletonInclude
-    } = {}
-  ) {
-    const {
-      FieldCounterIncludeConstructor = FieldCounterInclude,
-      FieldMessageMessageConstructor = FieldMessageMessage,
-      SkeletonIncludeConstructor = SkeletonInclude
-    } = constructors
-
-    this.fieldCounter = new FieldCounterIncludeConstructor(props, naming, components)
-    this.message = new FieldMessageMessageConstructor(props, slots)
-    this.skeleton = new SkeletonIncludeConstructor(props, naming, ['classTextVariant'])
+export class FieldMessage extends DesignLogicAbstract<
+  HTMLElement,
+  FieldMessageComponents,
+  FieldMessageEmits,
+  FieldMessageSlots,
+  FieldMessagePropsBasic,
+  FieldMessageConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<FieldMessageConstructors> = {
+    fieldCounter: {
+      item: FieldCounterInclude,
+      canCreate: () => FieldCounterInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components
+      ]
+    },
+    message: {
+      item: FieldMessageMessage,
+      parameters: () => [
+        this.props,
+        this.slots
+      ]
+    },
+    skeleton: {
+      item: SkeletonInclude,
+      canCreate: () => SkeletonInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        ['classTextVariant']
+      ]
+    }
   }
 
   /**
@@ -71,7 +75,7 @@ export class FieldMessage {
    */
   get classes(): ConstrClassObject {
     return {
-      [this.naming.getStatusClass('validation')]: this.message.isValidation()
+      [this.naming.getStatusClass('validation')]: this.isValidation()
     }
   }
 
@@ -102,15 +106,16 @@ export class FieldMessage {
    * @returns boolean value / логическое значение
    */
   is(): boolean {
+    if (
+      !this.props.forceShow
+      && this.props.disabled
+    ) {
+      return false
+    }
+
     return (
-      (
-        this.props.forceShow
-        || !this.props.disabled
-      )
-      && (
-        this.message.is()
-        || this.fieldCounter.is
-      )
+      this.i('message').is()
+      || this.callInstance('fieldCounter', item => item.is, false)
     )
   }
 
@@ -121,7 +126,7 @@ export class FieldMessage {
    * @returns boolean value / логическое значение
    */
   isHelper(): boolean {
-    return Boolean(this.props.helperMessage || this.slots?.helper)
+    return this.i('message').isHelper()
   }
 
   /**
@@ -131,7 +136,7 @@ export class FieldMessage {
    * @returns boolean value / логическое значение
    */
   isValidation(): boolean {
-    return Boolean(this.props.validationMessage || this.slots?.validation)
+    return this.i('message').isValidation()
   }
 
   /**

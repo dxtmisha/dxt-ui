@@ -10,6 +10,8 @@
   &__error {
     flex-grow: 1;
     flex-shrink: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   &__error {
@@ -17,9 +19,10 @@
   }
 
   &__fieldCounter {
-    flex-grow: 1;
-    flex-shrink: 1;
-    text-align: right;
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    text-align: end;
+    white-space: nowrap;
   }
 
   &--validation {

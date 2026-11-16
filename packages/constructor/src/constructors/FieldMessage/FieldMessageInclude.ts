@@ -1,10 +1,12 @@
 // ai-none
 
 import {
+  type ConstrBind,
   type DesignComponents,
   type DesignName,
   executeFunctionRef,
   getElementId,
+  getObjectNoUndefined,
   isFilled,
   type RefOrNormalOrFunction
 } from '@dxtmisha/functional'
@@ -16,6 +18,7 @@ import { FieldCounterInclude } from '../FieldCounter'
 import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 import type { FieldMessageComponentInclude, FieldMessagePropsInclude } from './basicTypes'
 import type { FieldMessagePropsBasic } from './props'
+import type { FieldMessageExpose, FieldMessageSlots } from './types'
 
 /**
  * The class returns data for working with the FieldMessage component.
@@ -27,7 +30,9 @@ export class FieldMessageInclude<
   PropsExtra extends FieldMessagePropsBasic = FieldMessagePropsBasic
 > extends ComponentIncludeAbstract<
     Props,
-    PropsExtra
+    PropsExtra,
+    FieldMessageExpose,
+    FieldMessageSlots
   > {
   /** Default unique identifier for the helper message / Уникальный идентификатор по умолчанию для вспомогательного сообщения */
   readonly helperIdDefault: string = getElementId()
@@ -49,6 +54,8 @@ export class FieldMessageInclude<
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input parameter / входной параметр
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
@@ -79,21 +86,27 @@ export class FieldMessageInclude<
    */
   get id(): string {
     const props = this.getProps()
+    const propsAttrs = this.getPropsAttrs()
     const ids: string[] = []
 
-    if (props.helperMessage) {
-      ids.push(this.helperId)
-    }
-
-    if (props.validationMessage) {
-      ids.push(this.validationId)
-    }
-
     if (
-      this.showCounter()
-      && props.counterShow
+      !props.disabled
+      || props.forceShowMessage
     ) {
-      ids.push(this.counterId)
+      if (isFilled(props.helperMessage ?? propsAttrs?.helperMessage)) {
+        ids.push(this.helperId)
+      }
+
+      if (isFilled(this.validation ?? propsAttrs?.validationMessage)) {
+        ids.push(this.validationId)
+      }
+
+      if (
+        this.showCounter()
+        && this.fieldCounter.is
+      ) {
+        ids.push(this.counterId)
+      }
     }
 
     return ids.join(' ')
@@ -106,7 +119,7 @@ export class FieldMessageInclude<
    * @returns unique helper message ID / уникальный идентификатор вспомогательного сообщения
    */
   get helperId(): string {
-    return this.getProps().helperId ?? this.helperIdDefault
+    return this.getProps().helperId ?? this.getPropsAttrs()?.helperId ?? this.helperIdDefault
   }
 
   /**
@@ -116,7 +129,7 @@ export class FieldMessageInclude<
    * @returns unique validation message ID / уникальный идентификатор сообщения валидации
    */
   get validationId(): string {
-    return this.getProps().validationId ?? this.validationIdDefault
+    return this.getProps().validationId ?? this.getPropsAttrs()?.validationId ?? this.validationIdDefault
   }
 
   /**
@@ -126,7 +139,7 @@ export class FieldMessageInclude<
    * @returns unique counter ID / уникальный идентификатор счетчика
    */
   get counterId(): string {
-    return this.getProps().counterId ?? this.counterIdDefault
+    return this.getProps().counterId ?? this.getPropsAttrs()?.counterId ?? this.counterIdDefault
   }
 
   /**
@@ -159,27 +172,29 @@ export class FieldMessageInclude<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns combined bindings object / объект объединенных привязок
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<PropsExtra>> {
     const props = this.getProps()
+    const superBinds = super.toBinds()
     const binds = {
-      ...super.toBinds(),
+      ...superBinds,
+      ...getObjectNoUndefined({
+        disabled: props.disabled,
+        forceShow: props.forceShowMessage,
+        hasHtmlCode: props.hasHtmlCode,
+        helperMessage: props.helperMessage,
+        validationMessage: this.validation,
 
-      disabled: props.disabled,
-      forceShow: props.forceShowMessage,
-      hasHtmlCode: props.hasHtmlCode,
-      helperMessage: props.helperMessage,
-      validationMessage: this.validation,
-
-      helperId: this.helperId,
-      validationId: this.validationId,
-      counterId: this.counterId
-    }
+        helperId: props.helperId ?? superBinds.helperId ?? this.helperIdDefault,
+        validationId: props.validationId ?? superBinds.validationId ?? this.validationIdDefault,
+        counterId: props.counterId ?? superBinds.counterId ?? this.counterIdDefault
+      })
+    } as Partial<ConstrBind<PropsExtra>>
 
     if (this.showCounter()) {
       return {
         ...binds,
-        ...this.fieldCounter.bindsIntermediary
-      }
+        ...getObjectNoUndefined(this.fieldCounter.bindsIntermediary)
+      } as Partial<ConstrBind<PropsExtra>>
     }
 
     return binds

@@ -27,6 +27,8 @@ const classes = computed(() => ({
 .demo-flex {
   display: flex;
   flex-wrap: wrap;
+  max-width: 100%;
+  min-width: 0;
   column-gap: ui.v('?layout.gapX');
   row-gap: ui.v('?layout.gapY');
 
@@ -39,9 +41,11 @@ const classes = computed(() => ({
     }
     &--column {
       flex-direction: column;
+      flex-wrap: nowrap;
     }
     &--column-reverse {
       flex-direction: column-reverse;
+      flex-wrap: nowrap;
     }
   }
 

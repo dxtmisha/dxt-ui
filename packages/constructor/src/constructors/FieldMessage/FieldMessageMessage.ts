@@ -13,6 +13,8 @@ import type { FieldMessageSlots } from './types'
 export class FieldMessageMessage {
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data / входные данные
    * @param slots object for working with slots / объект для работы со слотами
    */
@@ -29,11 +31,11 @@ export class FieldMessageMessage {
    * @returns message text / текст сообщения
    */
   get item(): string | undefined {
-    if (this.props.validationMessage) {
+    if (isFilled(this.props.validationMessage)) {
       return this.props.validationMessage
     }
 
-    if (this.props.helperMessage) {
+    if (isFilled(this.props.helperMessage)) {
       return this.props.helperMessage
     }
 
@@ -47,10 +49,19 @@ export class FieldMessageMessage {
    * @returns boolean value / логическое значение
    */
   is(): boolean {
+    return this.isHelper() || this.isValidation()
+  }
+
+  /**
+   * Checks if there is a helper message or active helper slot.
+   *
+   * Проверяет, есть ли вспомогательное сообщение или активный слот helper.
+   * @returns boolean value / логическое значение
+   */
+  isHelper(): boolean {
     return Boolean(
-      isFilled(this.item)
+      isFilled(this.props.helperMessage)
       || this.slots?.helper
-      || this.slots?.validation
     )
   }
 

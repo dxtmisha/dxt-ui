@@ -1,43 +1,45 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for displaying helper and validation messages below form fields.
+Component for displaying helper text, validation messages, and an optional character counter beneath form fields.
 
-FieldMessage centralizes management of text hints and error messages in forms. The component automatically determines display priority (validation errors take precedence over hints), supports forced display via forceShow, and integrates with input fields and character counters. It provides a flexible slot system for customization and works with both static and reactive values.
+`FieldMessage` centralizes the presentation of field hints and validation errors. It automatically toggles the validation state (`--validation`) when `validationMessage` or the `#validation` slot is active, attaches `role="alert"` to error messages, hides output when `disabled` unless `forceShow` is enabled, supports explicit `hasHtmlCode` rendering, and integrates `FieldCounter` and `Skeleton` styling.
 
-**Key Features:**
+**Key features:**
 
-- Two message types: helper and validation
-- Message priority — validation message overrides helper message
-- Smart visibility — automatic display logic based on provided values
-- Forced display via forceShow property
-- Flexible sources — support for static and reactive values
-- Integration with FieldCounter for complex forms
-- Customizable rendering through design system and slots
+- **Helper & Validation Modes:** Separate `helperMessage` and `validationMessage` regions with automatic validation priority
+- **Accessible Semantics:** `role="alert"` on error nodes and configurable `helperId`, `validationId`, and `counterId` for `aria-describedby`
+- **Visibility Control:** Automatic unmounting when empty or `disabled`, overridden via `forceShow`
+- **Safe HTML & Slots:** Escaped text by default, opt-in `hasHtmlCode` markup, and `#helper` / `#validation` scoped slots
+- **Counter & Skeleton Integration:** Built-in character counter support (`counterShow`, `counter`, `maxlength`, `counterTemplate`) and `isSkeleton` state
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Helper hints below input fields
-- Displaying validation errors in forms
-- Dynamic messages with reactive content
-- Complex forms with counters and validation
+- Helper hints and validation errors beneath inputs, textareas, and selects
+- Accessible form feedback bound to controls via `aria-describedby`
+- Complex fields combining validation messages with character counters
 
 <Source
     code={`
 <template>
   <!-- Helper message -->
-  <Component helper="Enter your name" />
+  <FieldMessage helper-message="Enter your email address" />
 
-  <!-- Validation message -->
-  <Component validation="Minimum 3 characters" />
+  <!-- Validation message with counter -->
+  <FieldMessage
+    validation-message="Minimum 3 characters required"
+    counter-show
+    :counter="2"
+    :maxlength="50"
+  />
 
   <!-- Slots -->
-  <Component>
-    <template #helper>💡 Hint</template>
-    <template #validation>⚠️ Error</template>
-  </Component>
+  <FieldMessage>
+    <template #helper>Hint content</template>
+    <template #validation>Error content</template>
+  </FieldMessage>
 </template>
   `}
     language="html"
 />
 
-> The component focuses on text messages and should be used together with input control elements.
+> `FieldMessage` coordinates accessible validation feedback, helper hints, and character counters while unmounting from the DOM when inactive.

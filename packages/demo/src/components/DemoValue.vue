@@ -16,6 +16,8 @@ defineProps<{
 @use '@dxtmisha/d1/ui-properties' as ui;
 
 .demo-value {
+  min-width: 0;
+  overflow-wrap: anywhere;
   color: ui.v('?sys.palette.onSurface');
   @include ui.colorOpacity(ui.v('?sys.opacity.surface.medium'));
 }
