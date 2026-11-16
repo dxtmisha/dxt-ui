@@ -32,10 +32,10 @@ describe('MaskValueBasic', () => {
     } as unknown as MaskCharacter
 
     maskValueBasic = new MaskValueBasic(
-      mockRubberTransition,
-      mockMask,
-      mockSpecial,
-      mockCharacter
+      () => mockCharacter,
+      () => mockMask,
+      () => mockRubberTransition,
+      () => mockSpecial
     )
   })
 

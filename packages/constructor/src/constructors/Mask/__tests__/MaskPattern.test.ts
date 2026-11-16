@@ -36,9 +36,9 @@ describe('MaskPattern', () => {
 
     maskPattern = new MaskPattern(
       mockProps,
-      mockType,
-      mockDate,
-      mockSpecial
+      () => mockDate,
+      () => mockSpecial,
+      () => mockType
     )
   })
 
@@ -66,7 +66,14 @@ describe('MaskPattern', () => {
     expect(list.Y).toBeDefined()
   })
 
-  it('should retrieve FieldInputCheckInclude instance via getInput()', () => {
+  it('should return empty item map before mount for SSR hydration safety', () => {
+    expect(maskPattern.item.value).toEqual({})
+    expect(maskPattern.getInput('d')).toBeUndefined()
+  })
+
+  it('should retrieve FieldInputCheckInclude instance via getInput() after mount', () => {
+    maskPattern.onMounted()
+
     const checkItem = maskPattern.getInput('d')
 
     expect(checkItem).toBeDefined()

@@ -66,15 +66,15 @@ describe('MaskView', () => {
 
     maskView = new MaskView(
       mockProps,
-      mockType,
-      mockDate,
-      mockFormat,
-      mockSpecial,
-      mockRubber,
-      mockMask,
-      mockValueBasic,
-      mockValidation,
-      new DesignName('d1.mask')
+      new DesignName('d1.mask'),
+      () => mockDate,
+      () => mockFormat,
+      () => mockMask,
+      () => mockRubber,
+      () => mockSpecial,
+      () => mockType,
+      () => mockValidation,
+      () => mockValueBasic
     )
   })
 

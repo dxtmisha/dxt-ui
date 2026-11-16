@@ -2,11 +2,11 @@
 
 import { ref } from 'vue'
 
-import { MaskRubberItem } from './MaskRubberItem'
-import { MaskCharacterLength } from './MaskCharacterLength'
-import { MaskSpecial } from './MaskSpecial'
-import { MaskItem } from './MaskItem'
-import { MaskSelection } from './MaskSelection'
+import type { MaskCharacterLength } from './MaskCharacterLength'
+import type { MaskItem } from './MaskItem'
+import type { MaskRubberItem } from './MaskRubberItem'
+import type { MaskSelection } from './MaskSelection'
+import type { MaskSpecial } from './MaskSpecial'
 
 import { MASK_CHAR_DELETE } from './basicTypes'
 import type { MaskProps } from './props'
@@ -23,19 +23,19 @@ export class MaskCharacter {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param rubberItem object for working with rubber elements/ объект для работы с резиновыми элементами
    * @param characterLength object for managing input length/ объект управления длиной ввода
-   * @param special object for working with special characters/ объект для работы со специальными символами
    * @param mask object for managing masks/ объект управления маской
+   * @param rubberItem object for working with rubber elements/ объект для работы с резиновыми элементами
    * @param selection object for managing cursor position/ объект для управления положением курсора
+   * @param special object for working with special characters/ объект для работы со специальными символами
    */
   constructor(
-    protected readonly props: MaskProps,
-    protected readonly rubberItem: MaskRubberItem,
-    protected readonly characterLength: MaskCharacterLength,
-    protected readonly special: MaskSpecial,
-    protected readonly mask: MaskItem,
-    protected readonly selection: MaskSelection
+    protected readonly props: Readonly<MaskProps>,
+    protected readonly characterLength: () => MaskCharacterLength,
+    protected readonly mask: () => MaskItem,
+    protected readonly rubberItem: () => MaskRubberItem,
+    protected readonly selection: () => MaskSelection,
+    protected readonly special: () => MaskSpecial
   ) {
   }
 
@@ -54,7 +54,7 @@ export class MaskCharacter {
    * Проверяет, является ли выделенный символ ранее удалённым.
    */
   isCharDelete(): boolean {
-    const key = this.selection.get()
+    const key = this.selection().get()
 
     return key in this.item.value
       && this.item.value[key] === MASK_CHAR_DELETE
@@ -66,7 +66,7 @@ export class MaskCharacter {
    * Получение выбранного символа маски.
    */
   getFocus(): string {
-    return this.mask.get(this.selection.getFocus())
+    return this.mask().get(this.selection().getFocus())
   }
 
   /**
@@ -75,7 +75,7 @@ export class MaskCharacter {
    * Получение символа маски по номеру ключа ближайшего специального символа.
    */
   getImmediate(): string {
-    return this.mask.get(this.selection.getImmediate())
+    return this.mask().get(this.selection().getImmediate())
   }
 
   /**
@@ -84,7 +84,7 @@ export class MaskCharacter {
    * Получение следующего символа маски.
    */
   getNext(): string {
-    return this.mask.get(this.selection.getNext())
+    return this.mask().get(this.selection().getNext())
   }
 
   /**
@@ -94,8 +94,22 @@ export class MaskCharacter {
    * @param char entered character/ введённый символ
    */
   add(char: string): this {
-    this.item.value.splice(this.selection.get(), this.isCharDelete() ? 1 : 0, char)
-    this.selection.goNext().resetImmediate()
+    this.item.value.splice(this.selection().get(), this.isCharDelete() ? 1 : 0, char)
+    this.selection().goNext().resetImmediate()
+    this.updateLength()
+
+    return this
+  }
+
+  /**
+   * Resets the values to the initial values.
+   *
+   * Сбрасывает значения до начальных.
+   * @returns current instance / текущий экземпляр
+   */
+  reset(): this {
+    this.item.value = []
+    this.selection().set(0).resetImmediate()
     this.updateLength()
 
     return this
@@ -105,9 +119,10 @@ export class MaskCharacter {
    * Deleting 1 entered character at its selection location.
    *
    * Удаление 1 введённого символа по месту его выделения.
+   * @returns current instance / текущий экземпляр
    */
   pop(): this {
-    const key = this.selection.get() - 1
+    const key = this.selection().get() - 1
 
     if (this.isSpecialNextAnother()) {
       this.item.value[key] = MASK_CHAR_DELETE
@@ -116,20 +131,7 @@ export class MaskCharacter {
       this.updateLength()
     }
 
-    this.selection.goBack().resetImmediate()
-
-    return this
-  }
-
-  /**
-   * Resets the values to the initial values.
-   *
-   * Сбрасывает значения до начальных.
-   */
-  reset(): this {
-    this.item.value = []
-    this.selection.set(0).resetImmediate()
-    this.updateLength()
+    this.selection().goBack().resetImmediate()
 
     return this
   }
@@ -139,9 +141,10 @@ export class MaskCharacter {
    *
    * Сдвигает на 1 значение в зависимости от направления изменения выделения.
    * @param status shift status/ статус сдвига
+   * @returns current instance / текущий экземпляр
    */
   shift(status: number = 1): this {
-    this.characterLength.set(this.item.value.length + status)
+    this.characterLength().set(this.item.value.length + status)
     return this
   }
 
@@ -151,7 +154,7 @@ export class MaskCharacter {
    * Проверяет, есть ли впереди другая группа специальных символов.
    */
   protected isSpecialNextAnother(): boolean {
-    const selection = this.selection.get() - 1
+    const selection = this.selection().get() - 1
     const length = this.item.value.length
 
     if (
@@ -159,17 +162,17 @@ export class MaskCharacter {
       && selection >= 0
       && selection <= length
     ) {
-      const info = this.mask.info.value
+      const info = this.mask().info.value
       const char = info?.[selection]?.char
 
-      if (char && !this.rubberItem.is(char)) {
-        for (let i: number = selection; i < length; i++) {
-          if (info?.[i]) {
-            const charNext = info[i]?.char
+      if (char && !this.rubberItem().is(char)) {
+        for (let index: number = selection; index < length; index++) {
+          if (info?.[index]) {
+            const charNext = info[index]?.char
 
             if (
               charNext
-              && this.special.isSpecial(charNext)
+              && this.special().isSpecial(charNext)
               && char !== charNext
             ) {
               return true
@@ -188,7 +191,7 @@ export class MaskCharacter {
    * Обновляет длину введённых символов.
    */
   protected updateLength(): this {
-    this.characterLength.set(this.item.value.length)
+    this.characterLength().set(this.item.value.length)
     return this
   }
 }

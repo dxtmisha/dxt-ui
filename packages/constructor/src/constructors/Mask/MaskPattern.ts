@@ -1,16 +1,16 @@
 // ai-none
 
-import { computed } from 'vue'
-import { forEach, isObjectNotArray, isString } from '@dxtmisha/functional'
+import { computed, ref } from 'vue'
+import { DesignLifecycleAbstract, forEach, isObjectNotArray, isString } from '@dxtmisha/functional'
 
 import {
   FieldInputCheckInclude,
   type FieldInputCheckListInclude
 } from '../../classes/Field/FieldInputCheckInclude'
 
-import { MaskType } from './MaskType'
-import { MaskSpecial } from './MaskSpecial'
-import { MaskDate } from './MaskDate'
+import type { MaskDate } from './MaskDate'
+import type { MaskSpecial } from './MaskSpecial'
+import type { MaskType } from './MaskType'
 
 import type { FieldPatternItemOrFunction, FieldPatternList } from '../../types/fieldTypes'
 import type { MaskProps } from './props'
@@ -20,24 +20,50 @@ import type { MaskProps } from './props'
  *
  * Класс для получения данных паттернов валидации по группам маски.
  */
-export class MaskPattern {
+export class MaskPattern extends DesignLifecycleAbstract {
+  /** Whether component is mounted on client / Смонтирован ли компонент на клиенте */
+  protected readonly mounted = ref<boolean>(false)
+
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param type mask type helper/ объект помощник типа маски
    * @param date date mask helper/ объект помощник маски даты
    * @param special special symbols helper/ объект помощник специальных символов
+   * @param type mask type helper/ объект помощник типа маски
    */
   constructor(
-    protected readonly props: MaskProps,
-    protected readonly type: MaskType,
-    protected readonly date: MaskDate,
-    protected readonly special: MaskSpecial
+    protected readonly props: Readonly<MaskProps>,
+    protected readonly date: () => MaskDate,
+    protected readonly special: () => MaskSpecial,
+    protected readonly type: () => MaskType
   ) {
+    super()
+  }
+
+  /**
+   * Enables DOM-backed validation inputs after mount to avoid SSR hydration mismatches.
+   *
+   * Включает DOM-валидацию после монтирования во избежание расхождений гидратации SSR.
+   */
+  override readonly onMounted = (): void => {
+    this.mounted.value = true
+  }
+
+  /**
+   * Resets mounted state on unmount.
+   *
+   * Сбрасывает состояние монтирования при размонтировании.
+   */
+  override readonly onUnmounted = (): void => {
+    this.mounted.value = false
   }
 
   /** Validation input objects by group / Объекты проверки по названию группы */
   readonly item = computed<FieldInputCheckListInclude>(() => {
+    if (!this.mounted.value) {
+      return {}
+    }
+
     const inputList = {} as FieldInputCheckListInclude
 
     forEach(this.list.value, (pattern, group) => {
@@ -100,13 +126,13 @@ export class MaskPattern {
    * Формирует базовый объект паттернов в зависимости от типа маски.
    */
   protected getByType(): FieldPatternList {
-    if (this.type.isDate()) {
-      return this.date.getPattern()
+    if (this.type().isDate()) {
+      return this.date().getPattern()
     }
 
     const patterns: FieldPatternList = {}
 
-    this.special.item.value.forEach((name) => {
+    this.special().item.value.forEach((name) => {
       patterns[name] = {}
     })
 
@@ -120,6 +146,6 @@ export class MaskPattern {
    * @param groupName group name/ имя группы
    */
   protected getPattern(groupName?: string): FieldPatternItemOrFunction | undefined {
-    return (groupName && this.special.getPattern(groupName)) ?? this.props.pattern
+    return (groupName && this.special().getPattern(groupName)) ?? this.props.pattern
   }
 }

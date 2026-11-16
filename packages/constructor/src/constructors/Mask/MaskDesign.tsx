@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -68,14 +68,15 @@ export class MaskDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспонируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
       getValueBasic: () => this.item.basic.value,
-      getValue: () => this.item.value.item.value,
+      getValue: () => this.item.i('value').item.value,
       setValue: this.item.set,
       clear: this.item.clear
     } as EXPOSE
@@ -85,6 +86,7 @@ export class MaskDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -103,6 +105,7 @@ export class MaskDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -112,33 +115,41 @@ export class MaskDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual node / виртуальный узел
    */
   protected initRender(): VNode {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderData(),
       ...this.renderInput(),
       ...this.renderView()
     ]
 
-    return h('span', {
-      ...this.getAttrs(),
-      class: this.classes?.value.main,
-      style: this.styles?.value
-    }, children)
+    return h(
+      'span',
+      mergeProps(
+        this.getAttrs(),
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
+      children
+    )
   }
 
   /**
    * Element for storing the final data.
    *
    * Элемент для хранения конечных данных.
+   * @returns array of VNodes / массив VNode
    */
-  protected renderData = (): VNode[] => {
+  readonly renderData = (): VNode[] => {
     if (this.props.name) {
       return [
         h('input', {
           type: 'hidden',
           name: this.props.name,
-          value: this.item.value.item.value
+          value: this.item.i('value').item.value
         })
       ]
     }
@@ -150,17 +161,20 @@ export class MaskDesign<
    * Rendering method for input.
    *
    * Метод рендеринга для ввода.
+   * @returns array of VNodes / массив VNode
    */
-  protected renderInput = (): VNode[] => {
+  readonly renderInput = (): VNode[] => {
     return [
       h(
         'input',
-        {
-          ...this.item.binds,
-          ref: this.element,
-          class: this.classes?.value.input,
-          value: this.item.basic.value
-        }
+        mergeProps(
+          this.item.binds,
+          {
+            ref: this.element,
+            class: this.classes?.value.input,
+            value: this.item.basic.value
+          }
+        )
       )
     ]
   }
@@ -169,10 +183,11 @@ export class MaskDesign<
    * Rendering method for displaying the mask and the input data.
    *
    * Метод рендеринга для вывода маски и вводимых данных.
+   * @returns array of VNodes / массив VNode
    */
-  protected renderView = (): VNode[] => {
-    const view = this.item.view.item.value
-    const children: any[] = []
+  readonly renderView = (): VNode[] => {
+    const view = this.item.i('view').item.value
+    const children: VNode[] = []
     let innerHTML: undefined | string = undefined
 
     if (view.length > 0) {

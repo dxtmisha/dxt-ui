@@ -37,9 +37,9 @@ describe('MaskSpecial', () => {
 
     maskSpecial = new MaskSpecial(
       mockProps,
-      mockType,
-      mockDate,
-      mockFormat
+      () => mockDate,
+      () => mockFormat,
+      () => mockType
     )
   })
 

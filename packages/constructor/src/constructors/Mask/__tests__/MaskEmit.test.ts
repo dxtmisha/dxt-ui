@@ -19,7 +19,7 @@ describe('MaskEmit', () => {
     } as unknown as MaskValidation
 
     mockEmits = vi.fn() as unknown as ConstrEmit<MaskEmits>
-    maskEmit = new MaskEmit(mockValidation, mockEmits)
+    maskEmit = new MaskEmit(() => mockValidation, mockEmits)
   })
 
   it('should determine isValue correctly', () => {
@@ -84,5 +84,24 @@ describe('MaskEmit', () => {
     maskEmit.go()
 
     expect(mockEmits).not.toHaveBeenCalled()
+  })
+
+  it('should preserve deferred input emission across intermediate keyup events', () => {
+    const inputEvent = new Event('beforeinput')
+    const keyupEvent = new Event('keyup')
+
+    maskEmit.set('input', inputEvent)
+    maskEmit.set('keyup', keyupEvent).go()
+    maskEmit.go()
+
+    expect(mockEmits).toHaveBeenCalledWith('keyup', keyupEvent, undefined)
+    expect(mockEmits).toHaveBeenCalledWith('input', inputEvent, {
+      status: true,
+      value: '123'
+    })
+    expect(mockEmits).toHaveBeenCalledWith('inputLite', {
+      status: true,
+      value: '123'
+    })
   })
 })

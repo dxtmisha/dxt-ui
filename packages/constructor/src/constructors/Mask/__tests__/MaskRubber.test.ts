@@ -6,11 +6,9 @@ import type { MaskRubberTransition } from '../MaskRubberTransition'
 import type { MaskSpecial } from '../MaskSpecial'
 import type { MaskMatch } from '../MaskMatch'
 import type { MaskFormat } from '../MaskFormat'
-import type { MaskProps } from '../props'
 import type { FieldMasks } from '../../../types/fieldTypes'
 
 describe('MaskRubber', () => {
-  let mockProps: MaskProps
   let mockType: MaskType
   let mockRubberItem: MaskRubberItem
   let mockRubberTransition: MaskRubberTransition
@@ -20,8 +18,6 @@ describe('MaskRubber', () => {
   let maskRubber: MaskRubber
 
   beforeEach(() => {
-    mockProps = {}
-
     mockType = {
       isCurrencyOrNumber: vi.fn().mockReturnValue(false)
     } as unknown as MaskType
@@ -57,13 +53,12 @@ describe('MaskRubber', () => {
     } as unknown as MaskFormat
 
     maskRubber = new MaskRubber(
-      mockProps,
-      mockType,
-      mockRubberItem,
-      mockRubberTransition,
-      mockSpecial,
-      mockMatch,
-      mockFormat
+      () => mockFormat,
+      () => mockMatch,
+      () => mockRubberItem,
+      () => mockRubberTransition,
+      () => mockSpecial,
+      () => mockType
     )
   })
 

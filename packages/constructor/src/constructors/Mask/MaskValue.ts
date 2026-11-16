@@ -1,14 +1,15 @@
 // ai-none
 
 import { computed, watch } from 'vue'
+import { DesignLifecycleAbstract } from '@dxtmisha/functional'
 
 import { FieldInputCheckInclude } from '../../classes/Field/FieldInputCheckInclude'
-import { MaskType } from './MaskType'
-import { MaskDate } from './MaskDate'
-import { MaskFormat } from './MaskFormat'
-import { MaskItem } from './MaskItem'
-import { MaskSpecial } from './MaskSpecial'
-import { MaskValueBasic } from './MaskValueBasic'
+import type { MaskDate } from './MaskDate'
+import type { MaskFormat } from './MaskFormat'
+import type { MaskItem } from './MaskItem'
+import type { MaskSpecial } from './MaskSpecial'
+import type { MaskType } from './MaskType'
+import type { MaskValueBasic } from './MaskValueBasic'
 
 import type { FieldMaskItem, FieldMasks } from '../../types/fieldTypes'
 import { MASK_CHAR_DELETE } from './basicTypes'
@@ -19,33 +20,53 @@ import type { MaskProps } from './props'
  *
  * Класс для преобразования введенных данных в конечный результат.
  */
-export class MaskValue {
+export class MaskValue extends DesignLifecycleAbstract {
   protected infoCache?: FieldMasks
+  protected watchStop?: () => void
 
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param type object for working with the mask type/ объект для работы с типом маски
    * @param date object for working with date types/ объект для работы с типом даты
    * @param format object for managing numeric mask types/ объект для управления числовыми типами масок
    * @param mask object for managing masks/ объект управления маской
    * @param special object for working with special characters/ объект для работы со специальными символами
+   * @param type object for working with the mask type/ объект для работы с типом маски
    * @param valueBasic object for working with base values/ объект для работы с базовыми значениями
    */
   constructor(
-    protected readonly props: MaskProps,
-    protected readonly type: MaskType,
-    protected readonly date: MaskDate,
-    protected readonly format: MaskFormat,
-    protected readonly mask: MaskItem,
-    protected readonly special: MaskSpecial,
-    protected readonly valueBasic: MaskValueBasic
+    protected readonly props: Readonly<MaskProps>,
+    protected readonly date: () => MaskDate,
+    protected readonly format: () => MaskFormat,
+    protected readonly mask: () => MaskItem,
+    protected readonly special: () => MaskSpecial,
+    protected readonly type: () => MaskType,
+    protected readonly valueBasic: () => MaskValueBasic
   ) {
-    watch(this.info, (_, old) => {
-      if (this.type.isDate()) {
+    super()
+  }
+
+  /**
+   * Setup lifecycle watchers on mount.
+   *
+   * Инициализация наблюдателей при монтировании компонента.
+   */
+  override readonly onMounted = (): void => {
+    this.watchStop = watch(this.info, (_, old) => {
+      if (this.type().isDate()) {
         this.infoCache = old
       }
     })
+  }
+
+  /**
+   * Cleanup lifecycle watchers on unmount.
+   *
+   * Очистка наблюдателей при размонтировании компонента.
+   */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
   }
 
   /**
@@ -53,11 +74,11 @@ export class MaskValue {
    * Получение списка с информацией о стандартных значениях
    */
   readonly info = computed<FieldMasks>(() => {
-    const standard = this.valueBasic.item.value
+    const standard = this.valueBasic().item.value
     const data: FieldMasks = {}
 
-    this.mask.item.value.forEach((char, index) => {
-      if (this.special.isSpecial(char)) {
+    this.mask().item.value.forEach((char, index) => {
+      if (this.special().isSpecial(char)) {
         const value = this.add(data, char)
 
         if (
@@ -69,7 +90,7 @@ export class MaskValue {
 
         value.maxLength++
         value.end = value.maxLength === value.chars.length
-        value.full = this.special.isDefault(char) || value.end
+        value.full = this.special().isDefault(char) || value.end
         value.value = value.full ? value.chars.join('') : ''
       }
     })
@@ -145,15 +166,15 @@ export class MaskValue {
 
   /** Returns the final form of the value/ Возвращает финальный вид значения */
   protected readonly valueFinal = computed(() => {
-    const basic = this.valueBasic.item.value.split('')
-    const mask = this.mask.item.value
+    const basic = this.valueBasic().item.value.split('')
+    const mask = this.mask().item.value
     let data: string = ''
 
     for (const index in mask) {
       if (index in basic) {
         data += basic[index]
       } else if (mask[index]) {
-        const defaultValue = this.special.getDefault(mask[index])
+        const defaultValue = this.special().getDefault(mask[index])
 
         if (defaultValue) {
           data += defaultValue
@@ -171,7 +192,7 @@ export class MaskValue {
    * @param index key number/ номер ключа
    */
   protected isStandard(index: number): boolean {
-    return Boolean(this.valueBasic.getChar(index))
+    return Boolean(this.valueBasic().getChar(index))
   }
 
   /**
@@ -181,13 +202,13 @@ export class MaskValue {
    * @param info data information/ информация о данных
    */
   protected getValue(info: FieldMasks) {
-    if (this.type.isCurrencyOrNumber()) {
-      return this.format.getValueStandard(info)
+    if (this.type().isCurrencyOrNumber()) {
+      return this.format().getValueStandard(info)
     }
 
-    if (this.type.isDate()) {
+    if (this.type().isDate()) {
       if (this.isFull.value) {
-        return this.date.getValueStandard(info)
+        return this.date().getValueStandard(info)
       }
 
       return ''

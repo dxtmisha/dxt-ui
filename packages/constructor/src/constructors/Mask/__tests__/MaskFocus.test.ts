@@ -11,7 +11,7 @@ describe('MaskFocus', () => {
       reset: vi.fn()
     } as unknown as MaskBuffer
 
-    maskFocus = new MaskFocus(mockBuffer)
+    maskFocus = new MaskFocus(() => mockBuffer)
   })
 
   it('should initialize with focus inactive (false)', () => {

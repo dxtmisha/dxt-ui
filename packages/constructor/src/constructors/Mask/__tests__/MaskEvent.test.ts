@@ -73,14 +73,14 @@ describe('MaskEvent', () => {
     } as unknown as MaskData
 
     maskEvent = new MaskEvent(
-      mockBuffer,
-      mockFocus,
-      mockCharacterLength,
-      mockRight,
-      mockSelection,
-      mockValueBasic,
-      mockEmit,
-      mockData
+      () => mockBuffer,
+      () => mockCharacterLength,
+      () => mockData,
+      () => mockEmit,
+      () => mockFocus,
+      () => mockRight,
+      () => mockSelection,
+      () => mockValueBasic
     )
   })
 

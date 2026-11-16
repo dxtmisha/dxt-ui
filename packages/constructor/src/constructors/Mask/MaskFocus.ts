@@ -1,6 +1,6 @@
 // ai-none
 
-import { MaskBuffer } from './MaskBuffer'
+import type { MaskBuffer } from './MaskBuffer'
 
 /**
  * Class for storing element focus state.
@@ -16,7 +16,7 @@ export class MaskFocus {
    * @param buffer buffer helper object/ объект помощник буфера
    */
   constructor(
-    protected readonly buffer: MaskBuffer
+    protected readonly buffer: () => MaskBuffer
   ) {
   }
 
@@ -36,7 +36,7 @@ export class MaskFocus {
    */
   in(): void {
     this.value = true
-    this.buffer.reset()
+    this.buffer().reset()
   }
 
   /**
@@ -46,6 +46,6 @@ export class MaskFocus {
    */
   out(): void {
     this.value = false
-    this.buffer.reset()
+    this.buffer().reset()
   }
 }

@@ -3,12 +3,12 @@
 import { computed } from 'vue'
 import { getMaxLengthAllArray, isArray } from '@dxtmisha/functional'
 
-import { MaskType } from './MaskType'
-import { MaskRubberItem } from './MaskRubberItem'
-import { MaskDate } from './MaskDate'
-import { MaskCharacterLength } from './MaskCharacterLength'
-import { MaskSpecial } from './MaskSpecial'
-import { MaskFormat } from './MaskFormat'
+import type { MaskCharacterLength } from './MaskCharacterLength'
+import type { MaskDate } from './MaskDate'
+import type { MaskFormat } from './MaskFormat'
+import type { MaskRubberItem } from './MaskRubberItem'
+import type { MaskSpecial } from './MaskSpecial'
+import type { MaskType } from './MaskType'
 
 import type { MaskList, MaskSpecialInfo } from './basicTypes'
 import type { MaskProps } from './props'
@@ -22,21 +22,21 @@ export class MaskItem {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param type object for working with the mask type/ объект для работы с типом маски
-   * @param rubberItem object for working with rubber elements/ объект для работы с резиновыми элементами
    * @param characterLength object for managing input length/ объект управления длиной ввода
    * @param date object for working with date types/ объект для работы с типом даты
    * @param format object for managing numeric mask types/ объект для управления числовыми типами масок
+   * @param rubberItem object for working with rubber elements/ объект для работы с резиновыми элементами
    * @param special object for working with special characters/ объект для работы со специальными символами
+   * @param type object for working with the mask type/ объект для работы с типом маски
    */
   constructor(
-    protected readonly props: MaskProps,
-    protected readonly type: MaskType,
-    protected readonly rubberItem: MaskRubberItem,
-    protected readonly characterLength: MaskCharacterLength,
-    protected readonly date: MaskDate,
-    protected readonly format: MaskFormat,
-    protected readonly special: MaskSpecial
+    protected readonly props: Readonly<MaskProps>,
+    protected readonly characterLength: () => MaskCharacterLength,
+    protected readonly date: () => MaskDate,
+    protected readonly format: () => MaskFormat,
+    protected readonly rubberItem: () => MaskRubberItem,
+    protected readonly special: () => MaskSpecial,
+    protected readonly type: () => MaskType
   ) {
   }
 
@@ -46,12 +46,12 @@ export class MaskItem {
    * Возвращает текущую маску.
    */
   readonly item = computed<string[]>(() => {
-    if (this.type.isCurrencyOrNumber()) {
-      return this.format.mask
+    if (this.type().isCurrencyOrNumber()) {
+      return this.format().mask
     }
 
-    if (this.type.isDate()) {
-      return this.date.mask
+    if (this.type().isDate()) {
+      return this.date().mask
     }
 
     return this.basic
@@ -67,7 +67,7 @@ export class MaskItem {
     let index = 0
 
     this.item.value.forEach((char, key) => {
-      if (this.special.isSpecial(char)) {
+      if (this.special().isSpecial(char)) {
         data.push({
           index,
           key,
@@ -163,8 +163,8 @@ export class MaskItem {
 
     let quantity = 0
 
-    for (let i = start; i < end; i++) {
-      if (this.special.isSpecial(this.get(i))) {
+    for (let index = start; index < end; index++) {
+      if (this.special().isSpecial(this.get(index))) {
         quantity++
       }
     }
@@ -181,7 +181,7 @@ export class MaskItem {
     const mask = this.getMask()
 
     if (isArray(mask)) {
-      return mask.find(mask => this.getSpecialLength(mask) >= this.characterLength.get()) || mask?.[mask.length - 1] || ''
+      return mask.find(mask => this.getSpecialLength(mask) >= this.characterLength().get()) || mask?.[mask.length - 1] || ''
     }
 
     return mask
@@ -193,7 +193,7 @@ export class MaskItem {
    * Возвращает количество специальных символов в текущей маске.
    */
   protected get basic(): string[] {
-    return this.rubberItem.expandMask(this.maskActive).split('')
+    return this.rubberItem().expandMask(this.maskActive).split('')
   }
 
   /**
@@ -214,7 +214,7 @@ export class MaskItem {
   protected getSpecialLength(mask: string): number {
     return mask
       .split('')
-      .filter(char => this.special.isSpecial(char))
+      .filter(char => this.special().isSpecial(char))
       .length
   }
 }

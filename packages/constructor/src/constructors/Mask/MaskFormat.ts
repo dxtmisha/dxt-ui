@@ -2,8 +2,8 @@
 
 import { GeoIntl, strFill } from '@dxtmisha/functional'
 
-import { MaskType } from './MaskType'
-import { MaskRubberItem } from './MaskRubberItem'
+import type { MaskRubberItem } from './MaskRubberItem'
+import type { MaskType } from './MaskType'
 
 import type { FieldMasks } from '../../types/fieldTypes'
 import type { MaskSpecialList, MaskSpecialProp } from './basicTypes'
@@ -15,25 +15,25 @@ import type { MaskProps } from './props'
  * Класс для работы с форматированными масками числа / валюты.
  */
 export class MaskFormat {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param type mask type helper/ объект помощник типа маски
-   * @param rubberItem rubber groups helper/ объект помощник резиновых групп
-   */
-  constructor(
-    protected readonly props: MaskProps,
-    protected readonly type: MaskType,
-    protected readonly rubberItem: MaskRubberItem
-  ) {
-  }
-
   /** Special symbols configuration (groups) for numeric input / Конфигурация специальных символов (группы) для числового ввода */
   readonly special: MaskSpecialProp = {
     n: {},
     f: {
       defaultValue: '0'
     }
+  }
+
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   * @param rubberItem rubber groups helper/ объект помощник резиновых групп
+   * @param type mask type helper/ объект помощник типа маски
+   */
+  constructor(
+    protected readonly props: Readonly<MaskProps>,
+    protected readonly rubberItem: () => MaskRubberItem,
+    protected readonly type: () => MaskType
+  ) {
   }
 
   /** Rubber mask instructions (dynamic length per group) / Инструкции резиновой маски (динамическая длина по группам) */
@@ -53,7 +53,7 @@ export class MaskFormat {
 
   /** Base view symbol per group / Базовый отображаемый символ для группы */
   get view(): string {
-    if (this.type.isNumber()) {
+    if (this.type().isNumber()) {
       return String.fromCharCode(8288)
     }
 
@@ -62,7 +62,7 @@ export class MaskFormat {
 
   /** Fraction digits count / Количество знаков после запятой */
   get fraction(): number {
-    if (this.type.isCurrency()) {
+    if (this.type().isCurrency()) {
       return 2
     }
 
@@ -79,8 +79,8 @@ export class MaskFormat {
       return Number(fraction)
     }
 
-    if (this.rubberItem.is('f')) {
-      return this.rubberItem.getByIndex('f') + 1
+    if (this.rubberItem().is('f')) {
+      return this.rubberItem().getByIndex('f') + 1
     }
 
     if (fraction === true) {
@@ -92,11 +92,11 @@ export class MaskFormat {
 
   /** Returns mask characters for current numeric type / Возвращает символы маски для текущего числового типа */
   get mask(): string[] {
-    if (this.type.isCurrency()) {
+    if (this.type().isCurrency()) {
       return this.toSpecial(this.getCurrency())
     }
 
-    if (this.type.isNumberFormat()) {
+    if (this.type().isNumberFormat()) {
       return this.toSpecial(this.getNumberFormat())
     }
 
@@ -119,7 +119,7 @@ export class MaskFormat {
    * @param value masks data object/ объект масок
    */
   getValueStandard(value: FieldMasks): string {
-    if (this.type.isNumber()) {
+    if (this.type().isNumber()) {
       return value?.n?.value || ''
     }
 
@@ -197,9 +197,9 @@ export class MaskFormat {
   protected getNumberForString(): string {
     const fraction = this.fraction
 
-    const number = strFill('9', this.rubberItem.getByIndex('n') + 1)
+    const number = strFill('9', this.rubberItem().getByIndex('n') + 1)
     const numberFraction = fraction ? `.${strFill('3', fraction)}` : ''
-    const currency = this.type.isCurrency() && this.props.currency ? ` ${this.props.currency}` : ''
+    const currency = this.type().isCurrency() && this.props.currency ? ` ${this.props.currency}` : ''
 
     return `${number}${numberFraction}${currency}`
   }

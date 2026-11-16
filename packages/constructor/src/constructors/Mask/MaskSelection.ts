@@ -1,7 +1,6 @@
 // ai-none
 
-import { MaskSpecial } from './MaskSpecial'
-import { MaskItem } from './MaskItem'
+import type { MaskItem } from './MaskItem'
 
 /**
  * Class for working with the character input location.
@@ -18,12 +17,10 @@ export class MaskSelection {
 
   /**
    * Constructor
-   * @param special object for working with special characters/ объект для работы со специальными символами
    * @param mask object for managing masks/ объект управления маской
    */
   constructor(
-    protected readonly special: MaskSpecial,
-    protected readonly mask: MaskItem
+    protected readonly mask: () => MaskItem
   ) {
   }
 
@@ -42,7 +39,7 @@ export class MaskSelection {
    * Возвращает номер выделения для первого элемента, являющегося специальным символом.
    */
   getFirst(): number {
-    return this.mask.info.value?.[0]?.key ?? 0
+    return this.mask().info.value?.[0]?.key ?? 0
   }
 
   /**
@@ -117,7 +114,7 @@ export class MaskSelection {
       let value: number | undefined
       let immediate: number | undefined
 
-      this.mask.info.value.forEach((item) => {
+      this.mask().info.value.forEach((item) => {
         if (value === undefined && item.key >= selection) {
           value = item.index
         }
@@ -127,8 +124,8 @@ export class MaskSelection {
         }
       })
 
-      this.set(value !== undefined ? value : this.mask.getLengthBySpecial())
-      this.setImmediate(immediate !== undefined ? immediate : this.mask.getLengthBySpecial())
+      this.set(value !== undefined ? value : this.mask().getLengthBySpecial())
+      this.setImmediate(immediate !== undefined ? immediate : this.mask().getLengthBySpecial())
     }
 
     return this
@@ -185,7 +182,7 @@ export class MaskSelection {
    * Передвигаем место выделения вперед на 1 шаг.
    */
   goNext(): this {
-    if (this.value <= this.mask.getLength()) {
+    if (this.value <= this.mask().getLength()) {
       this.value++
     }
 
@@ -199,12 +196,12 @@ export class MaskSelection {
    * @param selection selection location/ место выделения
    */
   protected getCharacter(selection: number): number {
-    for (const item of this.mask.info.value) {
+    for (const item of this.mask().info.value) {
       if (item.index >= selection) {
         return item.key
       }
     }
 
-    return this.mask.getLength()
+    return this.mask().getLength()
   }
 }

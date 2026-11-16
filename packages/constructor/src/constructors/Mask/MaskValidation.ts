@@ -3,8 +3,8 @@
 import { computed } from 'vue'
 
 import { FieldInputCheckInclude } from '../../classes/Field/FieldInputCheckInclude'
-import { MaskPattern } from './MaskPattern'
-import { MaskValue } from './MaskValue'
+import type { MaskPattern } from './MaskPattern'
+import type { MaskValue } from './MaskValue'
 
 import type { FieldValidationItem } from '../../types/fieldTypes'
 
@@ -20,15 +20,15 @@ export class MaskValidation {
    * @param value object for working with entered data/ объект для работы с введёнными данными
    */
   constructor(
-    protected readonly pattern: MaskPattern,
-    protected readonly value: MaskValue
+    protected readonly pattern: () => MaskPattern,
+    protected readonly value: () => MaskValue
   ) {
   }
 
   /** Validation error info or undefined/ Информация об ошибке или undefined */
   readonly item = computed(() => {
-    for (const input of Object.values(this.pattern.item.value)) {
-      const item = this.value.getInfoItem(input.group)
+    for (const input of Object.values(this.pattern().item.value)) {
+      const item = this.value().getInfoItem(input.group)
 
       if (item && item.full) {
         const check = input.check(item.value)
@@ -36,7 +36,7 @@ export class MaskValidation {
         if (check && !check.status) {
           return {
             ...check,
-            value: this.value.item.value
+            value: this.value().item.value
           }
         }
       }
@@ -77,11 +77,11 @@ export class MaskValidation {
    * Получение данных глобальной проверки.
    */
   protected getValidationCheck(): FieldValidationItem {
-    if (this.value.isFull.value) {
-      const item = this.value.getForCheck()
+    if (this.value().isFull.value) {
+      const item = this.value().getForCheck()
 
-      if (this.pattern.isCheck()) {
-        const check = this.pattern.getInput(item.group)?.check(item.value)
+      if (this.pattern().isCheck()) {
+        const check = this.pattern().getInput(item.group)?.check(item.value)
 
         if (check && !check.status) {
           return check
@@ -97,7 +97,7 @@ export class MaskValidation {
 
     return {
       status: true,
-      value: this.value.item.value,
+      value: this.value().item.value,
       isFull: false
     }
   }

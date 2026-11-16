@@ -1,8 +1,8 @@
 // ai-none
 
-import { MaskType } from './MaskType'
+import type { MaskType } from './MaskType'
 
-import { type MaskProps } from './props'
+import type { MaskProps } from './props'
 
 /**
  * Class for handling alignment of masked value (direction & numeric rules).
@@ -16,8 +16,8 @@ export class MaskRight {
    * @param type mask type helper/ объект помощник типа маски
    */
   constructor(
-    protected readonly props: MaskProps,
-    protected readonly type: MaskType
+    protected readonly props: Readonly<MaskProps>,
+    protected readonly type: () => MaskType
   ) {
   }
 
@@ -29,8 +29,8 @@ export class MaskRight {
   isEnd(): boolean {
     return this.props.align !== 'left' && (
       this.props.dir === 'rtl'
-      || (this.type.isCurrency() && !this.props.currencyHide)
-      || this.type.isNumberFormat()
+      || (this.type().isCurrency() && !this.props.currencyHide)
+      || this.type().isNumberFormat()
     )
   }
 

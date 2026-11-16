@@ -29,7 +29,7 @@ describe('MaskFormat', () => {
       getByIndex: vi.fn().mockReturnValue(0)
     } as unknown as MaskRubberItem
 
-    maskFormat = new MaskFormat(mockProps, mockType, mockRubberItem)
+    maskFormat = new MaskFormat(mockProps, () => mockRubberItem, () => mockType)
   })
 
   it('should provide special groups configuration', () => {

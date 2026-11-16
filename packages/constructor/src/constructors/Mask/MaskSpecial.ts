@@ -3,9 +3,9 @@
 import { computed } from 'vue'
 import { forEach, isArray, isObject, isObjectNotArray } from '@dxtmisha/functional'
 
-import { MaskType } from './MaskType'
-import { MaskDate } from './MaskDate'
-import { MaskFormat } from './MaskFormat'
+import type { MaskDate } from './MaskDate'
+import type { MaskFormat } from './MaskFormat'
+import type { MaskType } from './MaskType'
 
 import type { FieldPatternItemOrFunction } from '../../types/fieldTypes'
 import type {
@@ -25,15 +25,15 @@ export class MaskSpecial {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param type mask type helper/ объект помощник типа маски
    * @param date date mask helper/ объект помощник маски даты
    * @param format numeric/currency mask helper/ объект помощник числовых масок
+   * @param type mask type helper/ объект помощник типа маски
    */
   constructor(
-    protected readonly props: MaskProps,
-    protected readonly type: MaskType,
-    protected readonly date: MaskDate,
-    protected readonly format: MaskFormat
+    protected readonly props: Readonly<MaskProps>,
+    protected readonly date: () => MaskDate,
+    protected readonly format: () => MaskFormat,
+    protected readonly type: () => MaskType
   ) {
   }
 
@@ -43,16 +43,16 @@ export class MaskSpecial {
    * Возвращает список специальных символов.
    */
   readonly item = computed<string[]>(() => {
-    if (this.type.isCurrencyOrNumber()) {
-      return this.format.getSpecial()
+    if (this.type().isCurrencyOrNumber()) {
+      return this.format().getSpecial()
     }
 
-    if (this.type.isTime()) {
-      return this.date.getSpecialFull()
+    if (this.type().isTime()) {
+      return this.date().getSpecialFull()
     }
 
-    if (this.type.isDate()) {
-      return this.date.getSpecialDate()
+    if (this.type().isDate()) {
+      return this.date().getSpecialDate()
     }
 
     const special = this.special.value
@@ -153,8 +153,8 @@ export class MaskSpecial {
    * Возвращает свойство special (оригинальное определение).
    */
   protected readonly special = computed<MaskSpecialProp>(() => {
-    if (this.type.isCurrencyOrNumber()) {
-      return this.format.special
+    if (this.type().isCurrencyOrNumber()) {
+      return this.format().special
     }
 
     return this.props.special ?? '*'

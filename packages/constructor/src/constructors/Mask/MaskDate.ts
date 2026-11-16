@@ -2,7 +2,7 @@
 
 import { Datetime } from '@dxtmisha/functional'
 
-import { MaskType } from './MaskType'
+import type { MaskType } from './MaskType'
 
 import type { FieldMasks, FieldPatternElement, FieldPatternList } from '../../types/fieldTypes'
 import type { MaskProps } from './props'
@@ -60,8 +60,8 @@ export class MaskDate {
    * @param type mask type helper/ объект помощник типа маски
    */
   constructor(
-    protected readonly props: MaskProps,
-    protected readonly type: MaskType
+    protected readonly props: Readonly<MaskProps>,
+    protected readonly type: () => MaskType
   ) {
   }
 
@@ -86,7 +86,7 @@ export class MaskDate {
    * @param date filled date string/ заполненная строка даты
    */
   getDatetime(date?: string): Datetime {
-    return new Datetime(date ?? '1987-12-18T10:20:30', this.type.getByDate(), this.props.language)
+    return new Datetime(date ?? '1987-12-18T10:20:30', this.type().getByDate(), this.props.language)
   }
 
   /**

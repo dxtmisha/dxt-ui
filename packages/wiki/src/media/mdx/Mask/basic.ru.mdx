@@ -43,37 +43,37 @@ const handleInput = (value) => {
 <template>
   <!-- Российский телефон -->
   <Mask
-    v-model="phone"
+    :value="phone"
     mask="+7 *** *** ** **"
-    placeholder="Введите номер телефона"
-    @input="handleInput"
+    @input-lite="handleInput"
   />
 
   <!-- Банковская карта -->
   <Mask
-    v-model="cardNumber"
+    :value="cardNumber"
     mask="**** **** **** ****"
-    placeholder="0000 0000 0000 0000"
+    view="0"
   />
 
   <!-- Множественные форматы телефонов -->
   <Mask
-    v-model="phone"
+    :value="phone"
     :mask="['+7 *** *** ** **', '8 *** *** ** **']"
   />
 
   <!-- Дата с встроенным типом -->
   <Mask
-    v-model="date"
+    :value="date"
     type="date"
-    pattern="DD.MM.YYYY"
+    language="ru"
   />
 
   <!-- Валюта -->
   <Mask
-    v-model="amount"
+    :value="amount"
     type="currency"
     currency="RUB"
+    language="ru"
   />
 </template>
   `}

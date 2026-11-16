@@ -70,11 +70,11 @@ describe('MaskCharacter', () => {
 
     maskCharacter = new MaskCharacter(
       mockProps,
-      mockRubberItem,
-      mockCharacterLength,
-      mockSpecial,
-      mockMask,
-      mockSelection
+      () => mockCharacterLength,
+      () => mockMask,
+      () => mockRubberItem,
+      () => mockSelection,
+      () => mockSpecial
     )
   })
 

@@ -18,7 +18,7 @@ describe('MaskDate', () => {
       getByDate: vi.fn().mockReturnValue('date')
     } as unknown as MaskType
 
-    maskDate = new MaskDate(mockProps, mockType)
+    maskDate = new MaskDate(mockProps, () => mockType)
   })
 
   it('should return date special character groups', () => {

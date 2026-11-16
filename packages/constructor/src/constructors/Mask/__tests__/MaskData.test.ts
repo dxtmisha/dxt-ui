@@ -122,21 +122,21 @@ describe('MaskData', () => {
     } as unknown as MaskEmit
 
     maskData = new MaskData(
-      mockType,
-      mockBuffer,
-      mockFocus,
-      mockRubberTransition,
-      mockDate,
-      mockSpecial,
-      mockMatch,
-      mockRubber,
-      mockMask,
-      mockSelection,
-      mockCharacter,
-      mockValueBasic,
-      mockValue,
-      mockEmit,
-      inputElementRef
+      inputElementRef,
+      () => mockBuffer,
+      () => mockCharacter,
+      () => mockDate,
+      () => mockEmit,
+      () => mockFocus,
+      () => mockMask,
+      () => mockMatch,
+      () => mockRubber,
+      () => mockRubberTransition,
+      () => mockSelection,
+      () => mockSpecial,
+      () => mockType,
+      () => mockValue,
+      () => mockValueBasic
     )
   })
 
@@ -176,11 +176,16 @@ describe('MaskData', () => {
     expect(mockRubber.reset).toHaveBeenCalled()
   })
 
-  it('should apply initial value on reset(value)', () => {
+  it('should apply initial value on reset(value) including string zero', () => {
     const spyAdd = vi.spyOn(maskData, 'add')
     maskData.reset('123')
 
     expect(spyAdd).toHaveBeenCalledWith(0, ['1', '2', '3'])
+
+    spyAdd.mockClear()
+    maskData.reset('0')
+
+    expect(spyAdd).toHaveBeenCalledWith(0, ['0'])
   })
 
   it('should return raw chars in extra() when character is already filled', () => {

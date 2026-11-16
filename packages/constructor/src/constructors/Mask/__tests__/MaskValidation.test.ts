@@ -38,7 +38,7 @@ describe('MaskValidation', () => {
       getForCheck: vi.fn().mockReturnValue({ group: 'check', value: '10' })
     } as unknown as MaskValue
 
-    maskValidation = new MaskValidation(mockPattern, mockValue)
+    maskValidation = new MaskValidation(() => mockPattern, () => mockValue)
   })
 
   it('should validate values and return valid status', () => {

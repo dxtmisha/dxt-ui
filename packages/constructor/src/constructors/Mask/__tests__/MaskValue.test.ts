@@ -52,13 +52,14 @@ describe('MaskValue', () => {
 
     maskValue = new MaskValue(
       mockProps,
-      mockType,
-      mockDate,
-      mockFormat,
-      mockMask,
-      mockSpecial,
-      mockValueBasic
+      () => mockDate,
+      () => mockFormat,
+      () => mockMask,
+      () => mockSpecial,
+      () => mockType,
+      () => mockValueBasic
     )
+    maskValue.onMounted()
   })
 
   it('should compute info for special groups and calculate fullness', () => {

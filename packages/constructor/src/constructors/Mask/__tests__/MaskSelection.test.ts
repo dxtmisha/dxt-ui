@@ -1,17 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
 import { MaskSelection } from '../MaskSelection'
-import type { MaskSpecial } from '../MaskSpecial'
 import type { MaskItem } from '../MaskItem'
 
 describe('MaskSelection', () => {
-  let mockSpecial: MaskSpecial
   let mockMask: MaskItem
   let maskSelection: MaskSelection
 
   beforeEach(() => {
-    mockSpecial = {} as MaskSpecial
-
     mockMask = {
       getLength: vi.fn().mockReturnValue(10),
       getLengthBySpecial: vi.fn().mockReturnValue(3),
@@ -22,7 +18,7 @@ describe('MaskSelection', () => {
       ])
     } as unknown as MaskItem
 
-    maskSelection = new MaskSelection(mockSpecial, mockMask)
+    maskSelection = new MaskSelection(() => mockMask)
   })
 
   it('should initialize with selection at 0', () => {

@@ -3,14 +3,14 @@
 import { computed } from 'vue'
 import type { DesignName } from '@dxtmisha/functional'
 
-import { MaskType } from './MaskType'
-import { MaskDate } from './MaskDate'
-import { MaskFormat } from './MaskFormat'
-import { MaskSpecial } from './MaskSpecial'
-import { MaskRubber } from './MaskRubber'
-import { MaskItem } from './MaskItem'
-import { MaskValueBasic } from './MaskValueBasic'
-import { MaskValidation } from './MaskValidation'
+import type { MaskDate } from './MaskDate'
+import type { MaskFormat } from './MaskFormat'
+import type { MaskItem } from './MaskItem'
+import type { MaskRubber } from './MaskRubber'
+import type { MaskSpecial } from './MaskSpecial'
+import type { MaskType } from './MaskType'
+import type { MaskValidation } from './MaskValidation'
+import type { MaskValueBasic } from './MaskValueBasic'
 
 import { MASK_CHAR_DELETE, type MaskViewList, MASK_VIEW_DEFAULT } from './basicTypes'
 import type { MaskProps } from './props'
@@ -27,27 +27,27 @@ export class MaskView {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param type object for working with the mask type/ объект для работы с типом маски
+   * @param naming component naming helper / помощник именования компонента
    * @param date object for working with date types/ объект для работы с типом даты
    * @param format object for managing numeric mask types/ объект для управления числовыми типами масок
-   * @param special object for working with special characters/ объект для работы со специальными символами
-   * @param rubber object for working with rubber types/ объект для работы с резиновыми типами
    * @param mask object for managing masks/ объект управления маской
-   * @param valueBasic object for working with base values/ объект для работы с базовыми значениями
+   * @param rubber object for working with rubber types/ объект для работы с резиновыми типами
+   * @param special object for working with special characters/ объект для работы со специальными символами
+   * @param type object for working with the mask type/ объект для работы с типом маски
    * @param validation object for working with validation/ объект для работы с валидацией
-   * @param naming component naming helper / помощник именования компонента
+   * @param valueBasic object for working with base values/ объект для работы с базовыми значениями
    */
   constructor(
-    protected readonly props: MaskProps,
-    protected readonly type: MaskType,
-    protected readonly date: MaskDate,
-    protected readonly format: MaskFormat,
-    protected readonly special: MaskSpecial,
-    protected readonly rubber: MaskRubber,
-    protected readonly mask: MaskItem,
-    protected readonly valueBasic: MaskValueBasic,
-    protected readonly validation: MaskValidation,
-    naming: DesignName
+    protected readonly props: Readonly<MaskProps>,
+    naming: DesignName,
+    protected readonly date: () => MaskDate,
+    protected readonly format: () => MaskFormat,
+    protected readonly mask: () => MaskItem,
+    protected readonly rubber: () => MaskRubber,
+    protected readonly special: () => MaskSpecial,
+    protected readonly type: () => MaskType,
+    protected readonly validation: () => MaskValidation,
+    protected readonly valueBasic: () => MaskValueBasic
   ) {
     this.classNameItem = naming.getSubClass('character', 'item')
   }
@@ -55,9 +55,9 @@ export class MaskView {
   /** View items list/ Список данных для отображения */
   readonly item = computed<MaskViewList>(() => {
     const data: MaskViewList = []
-    const valueBasic = this.valueBasic.item.value
+    const valueBasic = this.valueBasic().item.value
 
-    this.mask.item.value.forEach((char, index) => {
+    this.mask().item.value.forEach((char, index) => {
       const value = valueBasic?.[index]
 
       data.push({
@@ -72,12 +72,12 @@ export class MaskView {
   /** Input value with special view characters/ Значение ввода со спецсимволами отображения */
   readonly input = computed<string>(() => {
     const value: string[] = []
-    const list = this.mask.item.value
+    const list = this.mask().item.value
 
-    this.valueBasic.item.value.split('').forEach((char, index) => {
+    this.valueBasic().item.value.split('').forEach((char, index) => {
       if (char === MASK_CHAR_DELETE) {
         value.push(
-          this.getSpecialToView(list?.[index] ?? '') ?? char
+          this.getSpecialToView(list?.[index] ?? '')
         )
       } else {
         value.push(char)
@@ -106,18 +106,18 @@ export class MaskView {
    */
   protected getStatus(char: string, value?: string): string {
     if (this.isValue(value)) {
-      if (!this.special.isSpecial(char)) {
+      if (!this.special().isSpecial(char)) {
         return 'standard'
       }
 
-      if (this.validation.isError(char)) {
+      if (this.validation().isError(char)) {
         return 'error'
       }
 
       return 'special'
     }
 
-    if (this.rubber.isTransition(char)) {
+    if (this.rubber().isTransition(char)) {
       return 'transition'
     }
 
@@ -142,9 +142,9 @@ export class MaskView {
    * @param char mask symbol/ символ маски
    */
   protected getSpecialToView(char: string): string {
-    if (this.special.isSpecial(char)) {
+    if (this.special().isSpecial(char)) {
       return this.getViewChar(char)
-        ?? this.special.getView(char)
+        ?? this.special().getView(char)
         ?? this.props.view
         ?? MASK_VIEW_DEFAULT
     }
@@ -159,12 +159,12 @@ export class MaskView {
    * @param groupName group name/ имя группы
    */
   protected getViewChar(groupName: string): string | undefined {
-    if (this.type.isDate()) {
-      return this.date.getView(groupName)
+    if (this.type().isDate()) {
+      return this.date().getView(groupName)
     }
 
-    if (this.type.isCurrencyOrNumber()) {
-      return this.format.view
+    if (this.type().isCurrencyOrNumber()) {
+      return this.format().view
     }
 
     return undefined

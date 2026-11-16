@@ -16,7 +16,7 @@ export class MaskType {
    * @param props input data/ входные данные
    */
   constructor(
-    protected readonly props: MaskProps
+    protected readonly props: Readonly<MaskProps>
   ) {
   }
 

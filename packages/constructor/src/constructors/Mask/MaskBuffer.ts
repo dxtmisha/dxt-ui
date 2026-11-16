@@ -15,6 +15,7 @@ export class MaskBuffer {
    * Checks if buffer has records.
    *
    * Проверяет, есть ли записи в буфере.
+   * @returns true if buffer has characters / true, если в буфере есть символы
    */
   is(): boolean {
     return this.chars.length > 0
@@ -24,6 +25,7 @@ export class MaskBuffer {
    * Returns list of all buffered chars.
    *
    * Возвращает список всех символов в буфере.
+   * @returns list of buffered characters / список символов в буфере
    */
   get(): string[] {
     return this.chars
@@ -34,9 +36,34 @@ export class MaskBuffer {
    *
    * Добавляет новый символ в буфер.
    * @param key symbol to add / символ для добавления
+   * @returns current instance / текущий экземпляр
    */
   add(key: string): this {
     this.chars.push(key)
+    return this
+  }
+
+  /**
+   * Resets all data (chars + start flag).
+   *
+   * Сбрасывает все данные (символы и флаг запуска).
+   * @returns current instance / текущий экземпляр
+   */
+  reset(): this {
+    this.resetChars()
+    this.start = false
+
+    return this
+  }
+
+  /**
+   * Clears stored characters only.
+   *
+   * Очищает только сохранённые символы.
+   * @returns current instance / текущий экземпляр
+   */
+  resetChars(): this {
+    this.chars = []
     return this
   }
 
@@ -61,31 +88,10 @@ export class MaskBuffer {
    * Starts buffering.
    *
    * Запускает буферизацию.
+   * @returns current instance / текущий экземпляр
    */
   goStart(): this {
     this.start = true
-    return this
-  }
-
-  /**
-   * Resets all data (chars + start flag).
-   *
-   * Сбрасывает все данные (символы и флаг запуска).
-   */
-  reset(): this {
-    this.resetChars()
-    this.start = false
-
-    return this
-  }
-
-  /**
-   * Clears stored characters only.
-   *
-   * Очищает только сохранённые символы.
-   */
-  resetChars(): this {
-    this.chars = []
     return this
   }
 }

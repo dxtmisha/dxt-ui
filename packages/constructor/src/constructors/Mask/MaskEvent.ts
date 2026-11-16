@@ -1,15 +1,21 @@
 // ai-none
 
-import { eventStopPropagation, getClipboardData, isMetaKey, writeClipboardData } from '@dxtmisha/functional'
+import {
+  ErrorCenter,
+  eventStopPropagation,
+  getClipboardData,
+  isMetaKey,
+  writeClipboardData
+} from '@dxtmisha/functional'
 
-import { MaskBuffer } from './MaskBuffer'
-import { MaskFocus } from './MaskFocus'
-import { MaskCharacterLength } from './MaskCharacterLength'
-import { MaskRight } from './MaskRight'
-import { MaskSelection } from './MaskSelection'
-import { MaskValueBasic } from './MaskValueBasic'
-import { MaskEmit } from './MaskEmit'
-import { MaskData } from './MaskData'
+import type { MaskBuffer } from './MaskBuffer'
+import type { MaskCharacterLength } from './MaskCharacterLength'
+import type { MaskData } from './MaskData'
+import type { MaskEmit } from './MaskEmit'
+import type { MaskFocus } from './MaskFocus'
+import type { MaskRight } from './MaskRight'
+import type { MaskSelection } from './MaskSelection'
+import type { MaskValueBasic } from './MaskValueBasic'
 
 import type { MaskEventSelection } from './basicTypes'
 
@@ -31,23 +37,23 @@ export class MaskEvent {
   /**
    * Constructor
    * @param buffer object for managing cached input data/ объект управления кешированными вводимыми данными
-   * @param focus object for handling input field focus/ объект для работы с фокусировкой поля ввода
    * @param characterLength object for managing input length/ объект управления длиной ввода
+   * @param data object for managing input/ объект для управления вводом
+   * @param emit object for handling callback events/ объект для работы с обратными событиями
+   * @param focus object for handling input field focus/ объект для работы с фокусировкой поля ввода
    * @param right object for right alignment/ объект для выравнивания направо
    * @param selection object for managing cursor position/ объект для управления положением курсора
    * @param valueBasic object for working with base values/ объект для работы с базовыми значениями
-   * @param emit object for handling callback events/ объект для работы с обратными событиями
-   * @param data object for managing input/ объект для управления вводом
    */
   constructor(
-    protected readonly buffer: MaskBuffer,
-    protected readonly focus: MaskFocus,
-    protected readonly characterLength: MaskCharacterLength,
-    protected readonly right: MaskRight,
-    protected readonly selection: MaskSelection,
-    protected readonly valueBasic: MaskValueBasic,
-    protected readonly emit: MaskEmit,
-    protected readonly data: MaskData
+    protected readonly buffer: () => MaskBuffer,
+    protected readonly characterLength: () => MaskCharacterLength,
+    protected readonly data: () => MaskData,
+    protected readonly emit: () => MaskEmit,
+    protected readonly focus: () => MaskFocus,
+    protected readonly right: () => MaskRight,
+    protected readonly selection: () => MaskSelection,
+    protected readonly valueBasic: () => MaskValueBasic
   ) {
   }
 
@@ -59,11 +65,11 @@ export class MaskEvent {
    */
   readonly onFocus = (event: FocusEvent): void => {
     this.change = false
-    this.focus.in()
+    this.focus().in()
 
     this.checkAutofill(event)
 
-    this.emit
+    this.emit()
       .set('focus', event)
       .go()
   }
@@ -76,13 +82,13 @@ export class MaskEvent {
    */
   readonly onBlur = (event: FocusEvent): void => {
     if (this.change) {
-      this.emit
+      this.emit()
         .setType('change')
         .go()
     }
 
-    this.focus.out()
-    this.emit
+    this.focus().out()
+    this.emit()
       .set('blur', event)
       .go()
   }
@@ -97,7 +103,7 @@ export class MaskEvent {
     const info = this.getSelectionInfo(event)
     const { start, end } = info
 
-    this.emit
+    this.emit()
       .set('keydown', event)
       .go()
 
@@ -105,10 +111,16 @@ export class MaskEvent {
       this.isCut(event)
       && this.isSelection(info)
     ) {
-      this.data.pop(start, end)
+      this.data().pop(start, end)
       writeClipboardData(
         (event.target as HTMLInputElement).value.slice(start, end)
-      ).then()
+      ).catch((error) => {
+        ErrorCenter.on({
+          group: 'clipboard',
+          code: 'error',
+          details: error
+        })
+      })
 
       this.makeChange(event)
     }
@@ -122,18 +134,18 @@ export class MaskEvent {
 
       if (event.key === 'Backspace') {
         if (start > 0 || start !== end) {
-          this.data.pop(start, end)
+          this.data().pop(start, end)
         }
       } else if (event.key.length <= 1) {
         if (start === end) {
-          if (this.buffer.go(event.key)) {
-            this.data.add(start, event.key)
+          if (this.buffer().go(event.key)) {
+            this.data().add(start, event.key)
           }
         } else {
-          this.buffer.goStart()
-          this.data
+          this.buffer().goStart()
+          this.data()
             .pop(start, end)
-            .add(this.selection.getShift(), event.key)
+            .add(this.selection().getShift(), event.key)
         }
       }
     } else {
@@ -149,7 +161,7 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   readonly onKeyup = (event: KeyboardEvent): void => {
-    this.emit
+    this.emit()
       .set('keyup', event)
       .go()
 
@@ -178,7 +190,7 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   readonly onBeforeinput = (event: InputEvent): void => {
-    this.emit
+    this.emit()
       .set('beforeinput', event)
       .go()
 
@@ -204,7 +216,7 @@ export class MaskEvent {
     }
 
     if (this.isAutofillEvent(event, target)) {
-      this.data.reset(target.value)
+      this.data().reset(target.value)
       this.makeChange(event)
       this.unidentified = undefined
       this.isKeydown = false
@@ -216,13 +228,13 @@ export class MaskEvent {
         this.unidentified.length > target.value.length
         || this.unidentified.start !== this.unidentified.end
       ) {
-        this.data.pop(this.unidentified.start, this.unidentified.end)
+        this.data().pop(this.unidentified.start, this.unidentified.end)
       }
 
-      if (event.data && this.buffer.go(event.data)) {
-        this.data.add(this.unidentified.start, event.data)
+      if (event.data && this.buffer().go(event.data)) {
+        this.data().add(this.unidentified.start, event.data)
       } else {
-        this.data.reset(target.value)
+        this.data().reset(target.value)
       }
 
       this.makeChange(event)
@@ -248,22 +260,26 @@ export class MaskEvent {
         const text = data.split('')
 
         if (start === end) {
-          this.data.add(start, this.data.extra(text))
+          this.data().add(start, this.data().extra(text))
         } else {
-          this.data
+          this.data()
             .pop(start, end)
-            .add(this.selection.getShift(), this.data.extra(text))
+            .add(this.selection().getShift(), this.data().extra(text))
         }
 
         this.isPaste = false
         this.makeChange(event)
-        this.emit
+        this.emit()
           .set('paste', event)
           .go()
       })
       .catch((error) => {
         this.isPaste = false
-        console.error('getClipboardData', error)
+        ErrorCenter.on({
+          group: 'clipboard',
+          code: 'error',
+          details: error
+        })
       })
   }
 
@@ -276,8 +292,8 @@ export class MaskEvent {
   readonly onChange = (event: Event): void => {
     const target = event.target as HTMLInputElement
 
-    this.data.reset(target.value)
-    this.emit
+    this.data().reset(target.value)
+    this.emit()
       .set('change', event)
       .go()
   }
@@ -293,7 +309,7 @@ export class MaskEvent {
       const target = event.target as HTMLInputElement
 
       if (target?.value) {
-        this.data.reset(target.value)
+        this.data().reset(target.value)
         this.makeChange(event)
       }
     }
@@ -446,11 +462,11 @@ export class MaskEvent {
       && target.value
       && (
         this.isAutofill(target)
-        || !this.characterLength.is()
-        || target.value !== this.valueBasic.item.value
+        || !this.characterLength().is()
+        || target.value !== this.valueBasic().item.value
       )
     ) {
-      this.data.reset(target.value)
+      this.data().reset(target.value)
       this.makeChange(event)
     }
   }
@@ -464,14 +480,14 @@ export class MaskEvent {
   protected makeChange(event: Event): void {
     this.change = true
 
-    this.emit.set('input', event)
+    this.emit().set('input', event)
 
-    if (this.buffer.is()) {
+    if (this.buffer().is()) {
       return
     }
 
-    this.emit.go()
-    this.emit.resetType()
+    this.emit().go()
+    this.emit().resetType()
   }
 
   /**
@@ -481,8 +497,8 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   protected makeToEnd(event: Event): void {
-    if (this.right.isRight()) {
-      const length = this.valueBasic.getLength()
+    if (this.right().isRight()) {
+      const length = this.valueBasic().getLength()
       const { target, start, end } = this.getSelectionInfo(event)
 
       if (start > length) {
@@ -502,7 +518,7 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   protected makeToStart(event: Event): void {
-    const selection = this.selection.getFirst()
+    const selection = this.selection().getFirst()
     const { target, start } = this.getSelectionInfo(event)
 
     if (start < selection) {

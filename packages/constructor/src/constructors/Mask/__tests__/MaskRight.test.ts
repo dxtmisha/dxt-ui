@@ -16,7 +16,7 @@ describe('MaskRight', () => {
       isNumberFormat: vi.fn().mockReturnValue(false)
     } as unknown as MaskType
 
-    maskRight = new MaskRight(mockProps, mockType)
+    maskRight = new MaskRight(mockProps, () => mockType)
   })
 
   it('should return false for default alignment without rtl or numbers', () => {

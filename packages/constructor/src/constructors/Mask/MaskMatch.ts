@@ -1,7 +1,8 @@
 // ai-none
 
-import { MaskSpecial } from './MaskSpecial'
 import { isString } from '@dxtmisha/functional'
+
+import type { MaskSpecial } from './MaskSpecial'
 
 import type { MaskMatchItem } from './basicTypes'
 import type { MaskProps } from './props'
@@ -20,8 +21,8 @@ export class MaskMatch {
    * @param special special symbols helper/ объект помощник специальных символов
    */
   constructor(
-    protected readonly props: MaskProps,
-    protected readonly special: MaskSpecial
+    protected readonly props: Readonly<MaskProps>,
+    protected readonly special: () => MaskSpecial
   ) {
   }
 
@@ -56,7 +57,7 @@ export class MaskMatch {
    * @param groupName group name/ имя группы
    */
   get(groupName?: string): MaskMatchItem {
-    return (groupName && this.special.getMatch(groupName)) ?? this.props.match ?? MATCH_DEFAULT
+    return (groupName && this.special().getMatch(groupName)) ?? this.props.match ?? MATCH_DEFAULT
   }
 
   /**
@@ -66,7 +67,7 @@ export class MaskMatch {
    * @param text source text/ исходный текст
    */
   filter(text: string): string[] {
-    const special = this.special.item.value
+    const special = this.special().item.value
 
     return text
       .split('')

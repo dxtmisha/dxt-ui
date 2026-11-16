@@ -14,7 +14,7 @@ Special characters in the mask template denote positions where users can enter d
 
 When using a simple string (e.g., `special="*"`), all input positions in the mask are restricted by the same validation rules.
 
-An array of characters (e.g., `special="['*', 'A', '#']"`) allows creating different group types with individual constraints: one group for digits, another for letters, a third for special characters.
+An array of characters (e.g., `:special="['*', 'A', '#']"`) allows creating different group types with individual constraints: one group for digits, another for letters, a third for special characters.
 
 Object notation `MaskSpecialList` (see [detailed description below](#maskspeciallist)) provides maximum flexibility. Each special character is configured separately with the ability to set default values, rubber groups with variable length, auto-transition characters, and custom validation.
 
@@ -92,7 +92,7 @@ const value = ref('')
 <template>
   <!-- Example of a rubber mask for an IP address -->
   <Mask
-    v-model="value"
+    :value="value"
     mask="*.#.#.#"
     :special="{
       '*': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\d{1,3}' },

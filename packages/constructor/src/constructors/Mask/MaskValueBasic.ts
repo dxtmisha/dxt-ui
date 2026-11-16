@@ -2,10 +2,10 @@
 
 import { computed } from 'vue'
 
-import { MaskRubberTransition } from './MaskRubberTransition'
-import { MaskItem } from './MaskItem'
-import { MaskSpecial } from './MaskSpecial'
-import { MaskCharacter } from './MaskCharacter'
+import type { MaskCharacter } from './MaskCharacter'
+import type { MaskItem } from './MaskItem'
+import type { MaskRubberTransition } from './MaskRubberTransition'
+import type { MaskSpecial } from './MaskSpecial'
 
 /**
  * Class for getting basic input values.
@@ -15,16 +15,16 @@ import { MaskCharacter } from './MaskCharacter'
 export class MaskValueBasic {
   /**
    * Constructor
-   * @param rubberTransition object for managing the transition character/ объект для управления символом перехода
-   * @param mask object for managing masks/ объект управления маской
-   * @param special object for working with special characters/ объект для работы со специальными символами
    * @param character object for managing entered character/ объект для управления введённым символом
+   * @param mask object for managing masks/ объект управления маской
+   * @param rubberTransition object for managing the transition character/ объект для управления символом перехода
+   * @param special object for working with special characters/ объект для работы со специальными символами
    */
   constructor(
-    protected readonly rubberTransition: MaskRubberTransition,
-    protected readonly mask: MaskItem,
-    protected readonly special: MaskSpecial,
-    protected readonly character: MaskCharacter
+    protected readonly character: () => MaskCharacter,
+    protected readonly mask: () => MaskItem,
+    protected readonly rubberTransition: () => MaskRubberTransition,
+    protected readonly special: () => MaskSpecial
   ) {
   }
 
@@ -34,20 +34,20 @@ export class MaskValueBasic {
    * Получение базовых стандартных значений.
    */
   readonly item = computed(() => {
-    const character = this.character.item.value
+    const character = this.character().item.value
     const value: string[] = []
     let key = 0 as number
 
-    for (const char of this.mask.item.value) {
-      if (!this.special.isSpecial(char)) {
+    for (const char of this.mask().item.value) {
+      if (!this.special().isSpecial(char)) {
         value.push(char)
       } else if (key in character) {
         value.push(String(character[key++]))
 
         if (
           key > character.length
-          && this.rubberTransition.is()
-          && !this.rubberTransition.isChar(char)
+          && this.rubberTransition().is()
+          && !this.rubberTransition().isChar(char)
         ) {
           break
         }

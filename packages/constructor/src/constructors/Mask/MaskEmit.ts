@@ -1,8 +1,8 @@
 // ai-none
 
-import { MaskValidation } from './MaskValidation'
 import type { ConstrEmit } from '@dxtmisha/functional'
 
+import type { MaskValidation } from './MaskValidation'
 import type { MaskEventData } from './basicTypes'
 import type { MaskEmits } from './types'
 
@@ -16,6 +16,10 @@ export class MaskEmit {
   protected type?: string & keyof MaskEmits
   /** Native event object/ Объект нативного события */
   protected event?: Event
+  /** Deferred input/change type preserved across synchronous key/focus events/ Отложенный тип input/change, сохраняемый при синхронных событиях клавиш/фокуса */
+  protected deferredType?: 'input' | 'change'
+  /** Deferred native event object for input/change/ Отложенный нативный объект события для input/change */
+  protected deferredEvent?: Event
 
   /**
    * Constructor
@@ -23,7 +27,7 @@ export class MaskEmit {
    * @param emits emit function (Design system bridge)/ функция вызова события
    */
   constructor(
-    protected readonly validation: MaskValidation,
+    protected readonly validation: () => MaskValidation,
     protected readonly emits?: ConstrEmit<MaskEmits>
   ) {
   }
@@ -32,45 +36,12 @@ export class MaskEmit {
    * Checks whether extra data (validation) should be generated for current event
    *
    * Проверяет, нужно ли генерировать дополнительные данные (валидацию) для текущего события
+   * @returns true if validation data is required / true, если нужны данные валидации
    */
-  isValue(): boolean {
-    return Boolean(this.type && ['input', 'change'].indexOf(this.type) >= 0)
-  }
-
-  /**
-   * Initializes event handling and emits event with optional validation payload
-   *
-   * Инициализирует обработку и вызывает событие с опциональной валидацией
-   */
-  go(): this {
-    if (
-      this.type
-      && this.event
-    ) {
-      const validation = this.isValue() ? this.validation.item.value : undefined
-
-      this.emits?.(
-        this.type as 'input',
-        this.event as InputEvent,
-        validation as MaskEventData
-      )
-
-      if (this.type === 'input') {
-        this.emits?.(
-          'inputLite',
-          validation as never
-        )
-      }
-
-      if (this.type === 'change') {
-        this.emits?.(
-          'changeLite',
-          validation as never
-        )
-      }
-    }
-
-    return this
+  isValue(
+    type: (string & keyof MaskEmits) | undefined = this.type ?? this.deferredType
+  ): boolean {
+    return Boolean(type && ['input', 'change'].indexOf(type) >= 0)
   }
 
   /**
@@ -79,6 +50,7 @@ export class MaskEmit {
    * Устанавливает одновременно тип события и объект события
    * @param type event name/ название события
    * @param event event object/ объект события
+   * @returns current instance / текущий экземпляр
    */
   set<E extends Event>(
     type: string & keyof MaskEmits,
@@ -95,9 +67,15 @@ export class MaskEmit {
    *
    * Устанавливает тип события
    * @param type event name/ название события
+   * @returns current instance / текущий экземпляр
    */
   setType(type: string & keyof MaskEmits): this {
     this.type = type
+
+    if (type === 'input' || type === 'change') {
+      this.deferredType = type
+    }
+
     return this
   }
 
@@ -106,9 +84,15 @@ export class MaskEmit {
    *
    * Устанавливает объект события
    * @param event event object/ объект события
+   * @returns current instance / текущий экземпляр
    */
   setEvent<E extends Event>(event: E): this {
     this.event = event
+
+    if (this.type === 'input' || this.type === 'change') {
+      this.deferredEvent = event
+    }
+
     return this
   }
 
@@ -116,6 +100,7 @@ export class MaskEmit {
    * Resets all internal state (type + event)
    *
    * Сбрасывает всё внутреннее состояние (тип и событие)
+   * @returns current instance / текущий экземпляр
    */
   reset(): this {
     this.resetType()
@@ -128,9 +113,13 @@ export class MaskEmit {
    * Resets stored event type
    *
    * Сбрасывает сохранённый тип события
+   * @returns current instance / текущий экземпляр
    */
   resetType(): this {
     this.type = undefined
+    this.deferredType = undefined
+    this.deferredEvent = undefined
+
     return this
   }
 
@@ -138,9 +127,60 @@ export class MaskEmit {
    * Resets stored native event
    *
    * Сбрасывает сохранённый объект события
+   * @returns current instance / текущий экземпляр
    */
   resetEvent(): this {
     this.event = undefined
+    this.deferredEvent = undefined
+
+    return this
+  }
+
+  /**
+   * Initializes event handling and emits event with optional validation payload
+   *
+   * Инициализирует обработку и вызывает событие с опциональной валидацией
+   * @returns current instance / текущий экземпляр
+   */
+  go(): this {
+    const type = this.type ?? this.deferredType
+    const event = this.type ? this.event : this.deferredEvent
+
+    if (
+      type
+      && event
+    ) {
+      const isValueEvent = this.isValue(type)
+      const validation = isValueEvent ? this.validation().item.value : undefined
+
+      this.emits?.(
+        type as 'input',
+        event as InputEvent,
+        validation as MaskEventData
+      )
+
+      if (type === 'input' && validation) {
+        this.emits?.(
+          'inputLite',
+          validation
+        )
+      }
+
+      if (type === 'change' && validation) {
+        this.emits?.(
+          'changeLite',
+          validation
+        )
+      }
+
+      if (isValueEvent) {
+        this.deferredType = undefined
+        this.deferredEvent = undefined
+      }
+
+      this.type = undefined
+    }
+
     return this
   }
 }

@@ -21,7 +21,7 @@ describe('MaskMatch', () => {
       })
     } as unknown as MaskSpecial
 
-    maskMatch = new MaskMatch(mockProps, mockSpecial)
+    maskMatch = new MaskMatch(mockProps, () => mockSpecial)
   })
 
   it('should match characters using default pattern (digits)', () => {

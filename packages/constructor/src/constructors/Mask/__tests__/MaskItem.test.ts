@@ -50,12 +50,12 @@ describe('MaskItem', () => {
 
     maskItem = new MaskItem(
       mockProps,
-      mockType,
-      mockRubberItem,
-      mockCharacterLength,
-      mockDate,
-      mockFormat,
-      mockSpecial
+      () => mockCharacterLength,
+      () => mockDate,
+      () => mockFormat,
+      () => mockRubberItem,
+      () => mockSpecial,
+      () => mockType
     )
   })
 

@@ -1,5 +1,6 @@
-import { computed, watch } from 'vue'
+import { computed, mergeProps, watch } from 'vue'
 import {
+  type ConstrBind,
   type DesignComponents,
   type DesignName,
   executeFunctionRef,
@@ -8,8 +9,8 @@ import {
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
-import { FieldTypeInclude } from '../../classes/Field/FieldTypeInclude'
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import type { FieldTypeInclude } from '../../classes/Field/FieldTypeInclude'
+import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 import type { MaskComponentInclude, MaskPropsInclude } from './basicTypes'
@@ -28,10 +29,10 @@ export class MaskInclude<
 
   protected readonly name = 'mask'
   protected readonly propsAttrsName = 'maskAttrs'
+  protected watchStop?: () => void
 
   /**
    * Constructor
-   * @param naming component naming helper / помощник именования компонента
    * @param props input data / входные данные
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
@@ -57,7 +58,7 @@ export class MaskInclude<
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {
     if (this.value) {
-      watch(
+      this.watchStop = watch(
         this.active,
         (active) => {
           if (!active) {
@@ -66,6 +67,12 @@ export class MaskInclude<
         }
       )
     }
+  }
+
+  /** Callback on component unmounting / Обработчик при размонтировании компонента */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
   }
 
   /**
@@ -119,19 +126,21 @@ export class MaskInclude<
    *
    * Объединяет входные атрибуты со внутренними привязками компонента.
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<PropsExtra>> {
     const props = this.getProps()
 
-    return {
-      ...super.toBinds(),
-      name: props.name,
-      valueDefault: executeFunctionRef(this.valueDefault),
-      currency: props.currency,
-      currencyHide: props.currencyHide,
-      fraction: props.fraction,
-      type: this.type?.().get(),
-      visible: props.maskVisible,
-      value: props.modelValue ?? props.value
-    }
+    return mergeProps(
+      super.toBinds(),
+      {
+        name: props.name,
+        valueDefault: executeFunctionRef(this.valueDefault),
+        currency: props.currency,
+        currencyHide: props.currencyHide,
+        fraction: props.fraction,
+        type: this.type?.().get(),
+        visible: props.maskVisible,
+        value: props.modelValue ?? props.value
+      }
+    ) as Partial<ConstrBind<PropsExtra>>
   }
 }
