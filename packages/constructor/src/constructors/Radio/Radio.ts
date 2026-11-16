@@ -6,5 +6,6 @@ import { Checkbox } from '../Checkbox'
  * Класс, представляющий бизнес-логику и управление состоянием компонента Radio.
  */
 export class Radio extends Checkbox {
-  readonly type: string = 'radio'
+  /** Input element type / Тип элемента ввода */
+  override readonly type: string = 'radio'
 }

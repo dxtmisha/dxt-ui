@@ -177,7 +177,7 @@ export class Checkbox extends DesignLogicAbstract<
       ]
     },
     message: {
-      item: FieldMessageInclude<any, any>,
+      item: FieldMessageInclude,
       parameters: () => [
         this.props,
         this.naming,

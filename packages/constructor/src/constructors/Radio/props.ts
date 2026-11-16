@@ -5,6 +5,11 @@ import type { ProgressPropsBasic } from '../Progress'
 
 import type { CheckboxPropsBasic } from '../Checkbox'
 
+/**
+ * Type describing token properties for Radio.
+ *
+ * Тип, описывающий свойства токенов для Radio.
+ */
 type RadioPropsToken = {
   // :type [!] System label / Системная метка
   block?: boolean
@@ -17,6 +22,11 @@ type RadioPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Interface describing basic properties of the Radio component.
+ *
+ * Интерфейс, описывающий базовые свойства компонента Radio.
+ */
 export type RadioPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,

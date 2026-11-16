@@ -16,7 +16,9 @@ import {
 } from './types'
 
 /**
- * RadioDesign
+ * Design constructor class for the Radio component.
+ *
+ * Класс конструктора дизайна для компонента Radio.
  */
 export class RadioDesign<
   COMP extends RadioComponents,
@@ -31,10 +33,12 @@ export class RadioDesign<
   > {
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   *
+   * Конструктор
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
