@@ -48,6 +48,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="InputPhone" name="component-input-phone"/>
         <DemoLink label="InputSocial" name="component-input-social"/>
         <DemoLink label="List" name="component-list"/>
+        <DemoLink label="ListGroup" name="component-list-group"/>
         <DemoLink label="Mask" name="component-mask"/>
         <DemoLink label="Modal" name="component-modal"/>
         <DemoLink label="Menu" name="component-menu"/>

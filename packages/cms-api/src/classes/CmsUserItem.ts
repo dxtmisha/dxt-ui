@@ -47,7 +47,7 @@ const { passwordHash: _passwordHash, ...USER_PUBLIC_COLUMNS } = /* #__PURE__ */ 
  *
  * Представляет конкретного пользователя CMS и предоставляет методы для чтения полей, редактирования, управления ролями и правами доступа, удаления и восстановления.
  */
-export class CmsUserItem extends CmsDbAbstract {
+export class CmsUserItem extends CmsDbAbstract<typeof users> {
   /**
    * Initializes a user entity wrapper with user data, database instance manager, and error center.
    *
@@ -61,7 +61,7 @@ export class CmsUserItem extends CmsDbAbstract {
     databaseInstance?: CmsDbInstance,
     errorCenter?: ErrorCenterInstance
   ) {
-    super(databaseInstance, errorCenter)
+    super(users, databaseInstance, errorCenter)
   }
 
   /**
@@ -533,12 +533,7 @@ export class CmsUserItem extends CmsDbAbstract {
 
     try {
       if (options.hard) {
-        const deletedRows = await database
-          .delete(users)
-          .where(eq(users.id, userId))
-          .returning({ id: users.id })
-
-        return deletedRows.length > 0
+        return await this.deleteRecordById(userId, database)
       }
 
       return await database.transaction(async (transaction) => {

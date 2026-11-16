@@ -20,7 +20,11 @@ import {
 } from './types'
 
 /**
- * MaskDesign
+ * Constructor class for the Mask design component.
+ * Manages visual rendering, class bindings, and exposed methods of the Mask component.
+ *
+ * Класс-конструктор для дизайн-компонента Mask.
+ * Управляет визуальным рендерингом, привязкой классов и экспонируемыми методами компонента Mask.
  */
 export class MaskDesign<
   COMP extends MaskComponents,
@@ -36,10 +40,13 @@ export class MaskDesign<
     CLASSES,
     P
   > {
+  /** Mask logic orchestrator instance / Экземпляр оркестратора логики Mask */
   protected readonly item: Mask
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
@@ -188,7 +195,7 @@ export class MaskDesign<
   readonly renderView = (): VNode[] => {
     const view = this.item.i('view').item.value
     const children: VNode[] = []
-    let innerHTML: undefined | string = undefined
+    let innerHTML: string | undefined
 
     if (view.length > 0) {
       view.forEach((character, key) => {

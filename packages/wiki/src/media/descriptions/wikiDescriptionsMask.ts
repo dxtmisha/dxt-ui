@@ -78,14 +78,14 @@ await expect(inputs.length).toBe(2)
 await step('Type into single phone mask', async () => {
   await userEvent.click(inputs[0])
   await userEvent.type(inputs[0], '900123')
-  await new Promise((resolve) => setTimeout(resolve, 50))
+  await new Promise(resolve => setTimeout(resolve, 50))
 })
 await expect(inputs[0].value).toContain('+1 900 123')
 
 await step('Type into multi-pattern mask', async () => {
   await userEvent.click(inputs[1])
   await userEvent.type(inputs[1], '1234567890')
-  await new Promise((resolve) => setTimeout(resolve, 50))
+  await new Promise(resolve => setTimeout(resolve, 50))
 })
 await expect(inputs[1].value).toContain('1234 5678 90')
       `
@@ -119,7 +119,7 @@ await expect(inputs.length).toBe(3)
 await step('Type into custom special character mask', async () => {
   await userEvent.click(inputs[1])
   await userEvent.type(inputs[1], '31122026')
-  await new Promise((resolve) => setTimeout(resolve, 50))
+  await new Promise(resolve => setTimeout(resolve, 50))
 })
 await expect(inputs[1].value).toBe('31.12.2026')
       `
@@ -213,7 +213,7 @@ await expect(inputs.length).toBe(2)
 await step('Reject non-letter characters on letters-only mask', async () => {
   await userEvent.click(inputs[1])
   await userEvent.type(inputs[1], 'A1B2C3')
-  await new Promise((resolve) => setTimeout(resolve, 50))
+  await new Promise(resolve => setTimeout(resolve, 50))
 })
 await expect(inputs[1].value).toContain('ABC')
       `
@@ -368,7 +368,7 @@ await expect(inputElement).toBeInTheDocument()
 await step('Type characters and verify inputLite emission', async () => {
   await userEvent.click(inputElement!)
   await userEvent.type(inputElement!, '45')
-  await new Promise((resolve) => setTimeout(resolve, 120))
+  await new Promise(resolve => setTimeout(resolve, 120))
 })
 await expect(valueOutput).toHaveTextContent('45')
 await expect(logOutput).toHaveTextContent('inputLite')
@@ -592,13 +592,13 @@ const fullOnlyOutput = canvasElement.querySelector<HTMLElement>('.full-only-outp
 await step('Partial input must not emit fullOnly value', async () => {
   await userEvent.click(fullOnlyInput!)
   await userEvent.type(fullOnlyInput!, '12')
-  await new Promise((resolve) => setTimeout(resolve, 120))
+  await new Promise(resolve => setTimeout(resolve, 120))
 })
 await expect(fullOnlyOutput).toHaveTextContent('')
 
 await step('Complete input emits fullOnly value', async () => {
   await userEvent.type(fullOnlyInput!, '34')
-  await new Promise((resolve) => setTimeout(resolve, 120))
+  await new Promise(resolve => setTimeout(resolve, 120))
 })
 await expect(fullOnlyOutput).toHaveTextContent('1234')
       `

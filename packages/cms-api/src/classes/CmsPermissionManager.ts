@@ -33,7 +33,7 @@ import type {
  *
  * Класс для управления списком прав доступа CMS: поиск и фильтрация списков, создание записей и оборачивание прав в экземпляры CmsPermissionItem.
  */
-export class CmsPermissionManager extends CmsDbAbstract {
+export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
   /**
    * Initializes the permission manager with a CmsDbInstance and error center.
    *
@@ -45,7 +45,7 @@ export class CmsPermissionManager extends CmsDbAbstract {
     databaseInstance?: CmsDbInstance,
     errorCenter?: ErrorCenterInstance
   ) {
-    super(databaseInstance, errorCenter)
+    super(permissions, databaseInstance, errorCenter)
   }
 
   /**
@@ -56,17 +56,7 @@ export class CmsPermissionManager extends CmsDbAbstract {
    * @returns True if permission exists / True, если право доступа существует
    */
   async hasById(id: number): Promise<boolean> {
-    if (!CmsPermissionItem.isValidId(id)) {
-      return false
-    }
-
-    const found = await this.getDatabase()
-      .select({ id: permissions.id })
-      .from(permissions)
-      .where(eq(permissions.id, id))
-      .limit(1)
-
-    return found.length > 0
+    return this.existsRecordById(id)
   }
 
   /**
@@ -194,12 +184,7 @@ export class CmsPermissionManager extends CmsDbAbstract {
     const offset = this.normalizeOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
-    const countRows = await database
-      .select({ count: sql<number>`count(*)::int` })
-      .from(permissions)
-      .where(whereCondition)
-
-    const total = countRows[0]?.count ?? 0
+    const total = await this.countRecords(whereCondition, database)
     if (total === 0) {
       return {
         items: [],

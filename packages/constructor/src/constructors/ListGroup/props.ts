@@ -1,3 +1,4 @@
+/** Token properties for ListGroup / Токен-свойства для ListGroup */
 export type ListGroupPropsToken = {
   // :type [!] System label / Системная метка
   open?: boolean
@@ -5,6 +6,7 @@ export type ListGroupPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties for ListGroup / Базовые свойства для ListGroup */
 export type ListGroupPropsBasic = {
   /** Whether to show a divider/ Показывать ли разделитель */
   divider?: boolean

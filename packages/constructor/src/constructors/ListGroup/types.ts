@@ -46,6 +46,7 @@ export interface ListGroupSlots {
  * Тип, описывающий подклассы.
  */
 export type ListGroupClasses = {
+  /** Main class / Основной класс */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   head: string

@@ -1,3 +1,4 @@
+import type { PgColumn, PgTable } from 'drizzle-orm/pg-core'
 import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js'
 import type {
   cmsSchema,
@@ -7,6 +8,12 @@ import type {
   userRoles,
   users
 } from '../media/schema/cmsSchema'
+
+/** Base Drizzle PostgreSQL table constraint requiring an id column / Базовый тип таблицы Drizzle PostgreSQL с обязательной колонкой id */
+export type CmsIdTable = PgTable & {
+  /** Primary identifier column / Колонка первичного идентификатора */
+  id: PgColumn
+}
 
 /** Permission record selected from database / Запись права доступа, полученная из базы данных */
 export type CmsPermission = typeof permissions.$inferSelect

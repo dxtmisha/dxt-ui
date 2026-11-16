@@ -33,6 +33,8 @@ export class MaskInclude<
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data / входные данные
    * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
@@ -49,41 +51,13 @@ export class MaskInclude<
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
     protected readonly value?: () => FieldValueInclude,
-    protected readonly valueDefault: RefOrNormalOrFunction<any> = '',
+    protected readonly valueDefault: RefOrNormalOrFunction<string | number> = '',
     protected readonly type?: () => FieldTypeInclude
   ) {
     super(props, naming, components, extra, index)
   }
 
-  /** Callback after component mounting / Обработчик после монтирования компонента */
-  override readonly onMounted = (): void => {
-    if (this.value) {
-      this.watchStop = watch(
-        this.active,
-        (active) => {
-          if (!active) {
-            this.value?.().setFull(true)
-          }
-        }
-      )
-    }
-  }
-
-  /** Callback on component unmounting / Обработчик при размонтировании компонента */
-  override readonly onUnmounted = (): void => {
-    this.watchStop?.()
-    this.watchStop = undefined
-  }
-
-  /**
-   * Checks if the mask is active.
-   *
-   * Проверяет, активна ли маска.
-   */
-  override get is(): boolean {
-    return this.active.value
-  }
-
+  /** Reactive flag indicating whether the mask is active / Реактивный флаг, указывающий, активна ли маска */
   readonly active = computed(() => {
     const props = this.getProps()
     const type = this.type?.().get()
@@ -102,18 +76,59 @@ export class MaskInclude<
             'year-month',
             'time',
             'hour-minute'
-          ].indexOf(type) !== -1
+          ].includes(type)
         )
       )
   })
 
   /**
-   * Resolves and returns design properties specifically bound for the image.
+   * Checks if the mask is active.
    *
-   * Разрешает и возвращает свойства дизайна, привязанные именно к изображению.
-   * @returns resolved image properties or undefined / разрешенные свойства изображения или undefined
+   * Проверяет, активна ли маска.
    */
-  protected override getExtra() {
+  override get is(): boolean {
+    return this.active.value
+  }
+
+  /**
+   * Sets up reactive watchers after component mounting.
+   *
+   * Настраивает реактивные наблюдатели после монтирования компонента.
+   */
+  override readonly onMounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
+
+    const value = this.value
+    if (value) {
+      this.watchStop = watch(
+        this.active,
+        (active) => {
+          if (!active) {
+            value().setFull(true)
+          }
+        }
+      )
+    }
+  }
+
+  /**
+   * Cleans up reactive watchers on component unmounting.
+   *
+   * Очищает реактивные наблюдатели при размонтировании компонента.
+   */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
+  }
+
+  /**
+   * Resolves and returns design properties specifically bound for the mask.
+   *
+   * Разрешает и возвращает свойства дизайна, привязанные именно к маске.
+   * @returns resolved mask properties / разрешенные свойства маски
+   */
+  protected override getExtra(): PropsExtra {
     return getBind(
       this.getProps().mask,
       super.getExtra(),

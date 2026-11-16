@@ -34,7 +34,7 @@ import type {
  *
  * Представляет конкретную роль CMS и предоставляет методы для чтения полей, редактирования, управления правами доступа, перезагрузки и удаления.
  */
-export class CmsRoleItem extends CmsDbAbstract {
+export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
   /**
    * Initializes a role entity wrapper with role data, database instance manager, and error center.
    *
@@ -48,7 +48,7 @@ export class CmsRoleItem extends CmsDbAbstract {
     databaseInstance?: CmsDbInstance,
     errorCenter?: ErrorCenterInstance
   ) {
-    super(databaseInstance, errorCenter)
+    super(roles, databaseInstance, errorCenter)
   }
 
   /**
@@ -368,12 +368,7 @@ export class CmsRoleItem extends CmsDbAbstract {
     }
 
     try {
-      const deletedRows = await this.getDatabase()
-        .delete(roles)
-        .where(eq(roles.id, roleId))
-        .returning({ id: roles.id })
-
-      return deletedRows.length > 0
+      return await this.deleteRecordById(roleId)
     } catch (error) {
       return this.handleTransactionError(
         'roleDelete',

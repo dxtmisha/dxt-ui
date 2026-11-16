@@ -1,4 +1,10 @@
 import {
+  and,
+  eq,
+  sql,
+  type SQL
+} from 'drizzle-orm'
+import {
   ErrorCenter,
   isNull,
   uniqueArray,
@@ -7,7 +13,11 @@ import {
 
 import { useCmsDb } from '../composables/useCmsDb'
 import type { CmsDbInstance } from './CmsDbInstance'
-import type { CmsDb } from '../types/cmsDbTypes'
+import type {
+  CmsDb,
+  CmsDbExecutor,
+  CmsIdTable
+} from '../types/cmsDbTypes'
 
 /** Default number of records per page / Количество записей на странице по умолчанию */
 const DEFAULT_LIST_LIMIT = 20
@@ -16,22 +26,34 @@ const DEFAULT_LIST_LIMIT = 20
 const MAX_LIST_LIMIT = 100
 
 /**
- * Abstract base class providing unified CMS database instance management and centralized ErrorCenter error handling.
+ * Abstract base class providing unified CMS table binding, database instance management, and centralized ErrorCenter error handling.
  *
- * Абстрактный базовый класс для единого управления экземпляром базы данных CMS и централизованной обработки ошибок через ErrorCenter.
+ * Абстрактный базовый класс для единой привязки таблицы CMS, управления экземпляром базы данных и централизованной обработки ошибок через ErrorCenter.
  */
-export abstract class CmsDbAbstract {
+export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   /**
-   * Initializes the base CMS database handler with a CmsDbInstance and ErrorCenter.
+   * Initializes the base CMS database handler with a table schema, CmsDbInstance, and ErrorCenter.
    *
-   * Инициализирует базовый обработчик БД CMS с экземпляром CmsDbInstance и центром ошибок ErrorCenter.
+   * Инициализирует базовый обработчик БД CMS со схемой таблицы, экземпляром CmsDbInstance и центром ошибок ErrorCenter.
+   * @param table Drizzle PostgreSQL table schema with a required id column / Схема таблицы Drizzle PostgreSQL с обязательной колонкой id
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
    * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
    */
   constructor(
+    protected table: TTable,
     protected databaseInstance: CmsDbInstance = useCmsDb().cmsDbInstance,
     protected errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {}
+
+  /**
+   * Returns the Drizzle table schema bound to this instance.
+   *
+   * Возвращает схему таблицы Drizzle, привязанную к этому экземпляру.
+   * @returns Drizzle table schema with id column / Схема таблицы Drizzle с колонкой id
+   */
+  getTable(): TTable {
+    return this.table
+  }
 
   /**
    * Returns the active Drizzle database instance from the managed CmsDbInstance.
@@ -85,6 +107,84 @@ export abstract class CmsDbAbstract {
   setErrorCenter(errorCenter: ErrorCenterInstance): this {
     this.errorCenter = errorCenter
     return this
+  }
+
+  /**
+   * Checks whether a record exists in the bound table by identifier and optional SQL predicate.
+   *
+   * Проверяет существование записи в привязанной таблице по идентификатору и необязательному SQL-условию.
+   * @param id Record identifier / Идентификатор записи
+   * @param condition Optional extra SQL predicate / Необязательное дополнительное SQL-условие
+   * @param executor Optional database or transaction executor / Необязательный исполнитель БД или транзакции
+   * @returns True if record exists / True, если запись существует
+   */
+  protected async existsRecordById(
+    id: number,
+    condition?: SQL,
+    executor: CmsDbExecutor = this.getDatabase()
+  ): Promise<boolean> {
+    if (!CmsDbAbstract.isValidId(id)) {
+      return false
+    }
+
+    const baseTable: CmsIdTable = this.table
+    const whereCondition = condition
+      ? and(eq(baseTable.id, id), condition)
+      : eq(baseTable.id, id)
+
+    const found = await executor
+      .select({ id: baseTable.id })
+      .from(baseTable)
+      .where(whereCondition)
+      .limit(1)
+
+    return found.length > 0
+  }
+
+  /**
+   * Counts records in the bound table matching an optional SQL predicate.
+   *
+   * Подсчитывает количество записей в привязанной таблице по необязательному SQL-условию.
+   * @param whereCondition Optional SQL predicate / Необязательное SQL-условие
+   * @param executor Optional database or transaction executor / Необязательный исполнитель БД или транзакции
+   * @returns Number of matching records / Количество найденных записей
+   */
+  protected async countRecords(
+    whereCondition?: SQL,
+    executor: CmsDbExecutor = this.getDatabase()
+  ): Promise<number> {
+    const baseTable: CmsIdTable = this.table
+    const countRows = await executor
+      .select({ count: sql<number>`count(*)::int` })
+      .from(baseTable)
+      .where(whereCondition)
+
+    return countRows[0]?.count ?? 0
+  }
+
+  /**
+   * Permanently deletes a record by identifier from the bound table.
+   *
+   * Безвозвратно удаляет запись по идентификатору из привязанной таблицы.
+   * @param id Record identifier / Идентификатор записи
+   * @param executor Optional database or transaction executor / Необязательный исполнитель БД или транзакции
+   * @returns True if a record was deleted / True, если запись была удалена
+   */
+  protected async deleteRecordById(
+    id: number,
+    executor: CmsDbExecutor = this.getDatabase()
+  ): Promise<boolean> {
+    if (!CmsDbAbstract.isValidId(id)) {
+      return false
+    }
+
+    const baseTable: CmsIdTable = this.table
+    const deletedRows = await executor
+      .delete(baseTable)
+      .where(eq(baseTable.id, id))
+      .returning({ id: baseTable.id })
+
+    return deletedRows.length > 0
   }
 
   /**

@@ -47,7 +47,7 @@ import type {
  *
  * Класс для управления списком пользователей CMS: поиск и фильтрация списков, создание записей и оборачивание пользователей в экземпляры CmsUserItem с интеграцией менеджеров ролей и прав доступа.
  */
-export class CmsUserManager extends CmsDbAbstract {
+export class CmsUserManager extends CmsDbAbstract<typeof users> {
   /** Cached role manager sharing the same database and error center / Кэшированный менеджер ролей с общими настройками БД и центра ошибок */
   protected roleManager?: CmsRoleManager
 
@@ -65,7 +65,7 @@ export class CmsUserManager extends CmsDbAbstract {
     databaseInstance?: CmsDbInstance,
     errorCenter?: ErrorCenterInstance
   ) {
-    super(databaseInstance, errorCenter)
+    super(users, databaseInstance, errorCenter)
   }
 
   /**
@@ -80,22 +80,10 @@ export class CmsUserManager extends CmsDbAbstract {
     id: number,
     includeDeleted: boolean = false
   ): Promise<boolean> {
-    if (!CmsUserItem.isValidId(id)) {
-      return false
-    }
-
-    const conditions: SQL[] = [eq(users.id, id)]
-    if (!includeDeleted) {
-      conditions.push(CmsUserItem.getNotDeletedCondition())
-    }
-
-    const found = await this.getDatabase()
-      .select({ id: users.id })
-      .from(users)
-      .where(and(...conditions))
-      .limit(1)
-
-    return found.length > 0
+    return this.existsRecordById(
+      id,
+      includeDeleted ? undefined : CmsUserItem.getNotDeletedCondition()
+    )
   }
 
   /**
@@ -259,12 +247,7 @@ export class CmsUserManager extends CmsDbAbstract {
     const offset = this.normalizeOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
-    const countRows = await database
-      .select({ count: sql<number>`count(*)::int` })
-      .from(users)
-      .where(whereCondition)
-
-    const total = countRows[0]?.count ?? 0
+    const total = await this.countRecords(whereCondition, database)
     if (total === 0) {
       return {
         items: [],

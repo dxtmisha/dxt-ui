@@ -1,58 +1,93 @@
-import { type Ref } from 'vue'
-import { type ConstrBind, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrItems,
+  DesignLogicAbstract
+} from '@dxtmisha/functional'
+
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 import { ListGroupOpen } from './ListGroupOpen'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { MotionTransformProps } from '../MotionTransform'
-import type { ListGroupComponents, ListGroupEmits, ListGroupSlots } from './types'
 import type { ListGroupProps } from './props'
+import type { ListGroupComponents, ListGroupEmits, ListGroupSlots } from './types'
+
+/** ListGroup dependency constructors type / Тип конструкторов зависимостей ListGroup */
+export type ListGroupConstructors = {
+  /** Group open state constructor / Конструктор состояния открытия группы */
+  open: typeof ListGroupOpen<ListGroupProps>
+}
 
 /**
- * ListGroup
+ * Orchestrator class for the ListGroup component.
+ * Manages group expansion state, ARIA attributes, root bindings, and transformation properties.
+ *
+ * Класс-оркестратор для компонента ListGroup.
+ * Управляет состоянием раскрытия группы, ARIA-атрибутами, привязками корневого элемента и свойствами трансформации.
  */
-export class ListGroup {
-  readonly open: ListGroupOpen<ListGroupProps>
-
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
-   */
-  constructor(
-    protected readonly props: ListGroupProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ListGroupComponents, ListGroupProps>,
-    protected readonly slots?: ListGroupSlots,
-    protected readonly emits?: ConstrEmit<ListGroupEmits>,
-    constructors: {
-      ListGroupOpenConstructor?: typeof ListGroupOpen
-    } = {}
-  ) {
-    const {
-      ListGroupOpenConstructor = ListGroupOpen
-    } = constructors
-
-    this.open = new ListGroupOpenConstructor(this.props)
+export class ListGroup extends DesignLogicAbstract<
+  HTMLDivElement,
+  ListGroupComponents,
+  ListGroupEmits,
+  ListGroupSlots,
+  ListGroupProps,
+  ListGroupConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ListGroupConstructors> = {
+    open: {
+      item: ListGroupOpen<ListGroupProps>,
+      parameters: () => [this.props]
+    }
   }
 
   /**
-   * Returns the property for the transformation component.
+   * Returns list of ARIA attributes for the list group container.
    *
-   * Возвращает свойство для компонента трансформации.
+   * Возвращает список ARIA-атрибутов для контейнера группы списка.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
    */
-  readonly transformBinds = (): ConstrBind<MotionTransformProps> => {
+  get aria(): AriaList {
+    return AriaStaticInclude.role('group')
+  }
+
+  /**
+   * Returns binding attributes for the root list group element.
+   *
+   * Возвращает привязочные атрибуты для корневого элемента группы списка.
+   * @returns root element bindings / привязки корневого элемента
+   */
+  get binds(): ConstrBind {
+    return {
+      'data-open': this.isOpen() ? 'open' : 'close',
+      'data-divider': this.props.divider ? 'divider' : undefined
+    }
+  }
+
+  /**
+   * Returns properties for the MotionTransform component.
+   *
+   * Возвращает свойства для компонента MotionTransform.
+   * @returns transform component properties / свойства компонента трансформации
+   */
+  get transformBinds(): ConstrBind<MotionTransformProps> {
     return {
       autoClose: false,
       section: true,
       adaptive: 'planeAlways',
-      onTransformLite: this.open.onOpen
+      open: this.isOpen(),
+      onTransformLite: this.i('open').onOpen
     }
+  }
+
+  /**
+   * Checks whether the group is currently open.
+   *
+   * Проверяет, открыта ли группа в данный момент.
+   * @returns true if the group is open / true, если группа открыта
+   */
+  isOpen(): boolean {
+    return this.i('open').is()
   }
 }

@@ -29,7 +29,7 @@ import type {
  *
  * Представляет конкретное право доступа CMS и предоставляет методы для чтения полей, редактирования, перезагрузки и удаления.
  */
-export class CmsPermissionItem extends CmsDbAbstract {
+export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
   /**
    * Initializes a permission entity wrapper with permission data, database instance manager, and error center.
    *
@@ -43,7 +43,7 @@ export class CmsPermissionItem extends CmsDbAbstract {
     databaseInstance?: CmsDbInstance,
     errorCenter?: ErrorCenterInstance
   ) {
-    super(databaseInstance, errorCenter)
+    super(permissions, databaseInstance, errorCenter)
   }
 
   /**
@@ -133,13 +133,7 @@ export class CmsPermissionItem extends CmsDbAbstract {
 
     try {
       const updatedRecord = await this.getDatabase().transaction(async (transaction) => {
-        const existingRows = await transaction
-          .select({ id: permissions.id })
-          .from(permissions)
-          .where(eq(permissions.id, permissionId))
-          .limit(1)
-
-        if (existingRows.length === 0) {
+        if (!(await this.existsRecordById(permissionId, undefined, transaction))) {
           return undefined
         }
 
@@ -183,12 +177,7 @@ export class CmsPermissionItem extends CmsDbAbstract {
     }
 
     try {
-      const deletedRows = await this.getDatabase()
-        .delete(permissions)
-        .where(eq(permissions.id, permissionId))
-        .returning({ id: permissions.id })
-
-      return deletedRows.length > 0
+      return await this.deleteRecordById(permissionId)
     } catch (error) {
       return this.handleTransactionError(
         'permissionDelete',

@@ -150,8 +150,6 @@ src/constructors/Mask/MaskView.ts
 src/constructors/Mask/MaskData.ts
 src/constructors/Mask/MaskEvent.ts
 src/constructors/Mask/Mask.ts
-src/constructors/Mask/MaskDesign.tsx
-src/constructors/Mask/MaskInclude.ts
 src/classes/ClientOnlyInclude.ts
 src/classes/Field/FieldArrowInclude.ts
 src/classes/Field/FieldAttributesInclude.ts
@@ -171,3 +169,9 @@ src/constructors/Field/FieldInclude.ts
 src/constructors/Input/InputPassword.ts
 src/constructors/Input/Input.ts
 src/constructors/Input/InputDesign.tsx
+
+src/constructors/ListGroup/ListGroupOpen.ts
+src/constructors/ListGroup/ListGroup.ts
+src/constructors/ListGroup/ListGroupDesign.tsx
+src/constructors/Mask/MaskDesign.tsx
+src/constructors/Mask/MaskInclude.ts

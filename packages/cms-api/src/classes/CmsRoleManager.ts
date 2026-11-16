@@ -41,7 +41,7 @@ import type {
  *
  * Класс для управления списком ролей CMS: поиск и фильтрация списков, создание записей и оборачивание ролей с правами доступа в экземпляры CmsRoleItem.
  */
-export class CmsRoleManager extends CmsDbAbstract {
+export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
   /** Cached permission manager sharing the same database and error center / Кэшированный менеджер прав доступа с общими настройками БД и центра ошибок */
   protected permissionManager?: CmsPermissionManager
 
@@ -56,7 +56,7 @@ export class CmsRoleManager extends CmsDbAbstract {
     databaseInstance?: CmsDbInstance,
     errorCenter?: ErrorCenterInstance
   ) {
-    super(databaseInstance, errorCenter)
+    super(roles, databaseInstance, errorCenter)
   }
 
   /**
@@ -67,17 +67,7 @@ export class CmsRoleManager extends CmsDbAbstract {
    * @returns True if role exists / True, если роль существует
    */
   async hasById(id: number): Promise<boolean> {
-    if (!CmsRoleItem.isValidId(id)) {
-      return false
-    }
-
-    const found = await this.getDatabase()
-      .select({ id: roles.id })
-      .from(roles)
-      .where(eq(roles.id, id))
-      .limit(1)
-
-    return found.length > 0
+    return this.existsRecordById(id)
   }
 
   /**
@@ -221,12 +211,7 @@ export class CmsRoleManager extends CmsDbAbstract {
     const offset = this.normalizeOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
-    const countRows = await database
-      .select({ count: sql<number>`count(*)::int` })
-      .from(roles)
-      .where(whereCondition)
-
-    const total = countRows[0]?.count ?? 0
+    const total = await this.countRecords(whereCondition, database)
     if (total === 0) {
       return {
         items: [],

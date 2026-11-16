@@ -1,27 +1,28 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ListGroup } from './ListGroup'
 
-import {
-  type ListGroupPropsBasic
-} from './props'
-import {
-  type ListGroupClasses,
-  type ListGroupComponents,
-  type ListGroupEmits,
-  type ListGroupExpose,
-  type ListGroupSlots
-} from './types'
 import type { MotionTransformControlItem } from '../MotionTransform'
+import type { ListGroupPropsBasic } from './props'
+import type {
+  ListGroupClasses,
+  ListGroupComponents,
+  ListGroupEmits,
+  ListGroupExpose,
+  ListGroupSlots
+} from './types'
 
 /**
- * ListGroupDesign
+ * ListGroupDesign is a design constructor for the ListGroup component.
+ * It connects the ListGroup logic, sets up slots, classes, styles, and defines the rendering function.
+ *
+ * ListGroupDesign — конструктор дизайна для компонента ListGroup.
+ * Он связывает логику ListGroup, настраивает слоты, классы, стили и определяет функцию рендеринга.
  */
 export class ListGroupDesign<
   COMP extends ListGroupComponents,
@@ -37,14 +38,15 @@ export class ListGroupDesign<
     CLASSES,
     P
   > {
+  /** ListGroup logic orchestrator instance / Экземпляр логического оркестратора ListGroup */
   protected readonly item: ListGroup
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the item / класс для работы с элементом
    */
   constructor(
     name: string,
@@ -69,13 +71,14 @@ export class ListGroupDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for exposure.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализация всех необходимых свойств для экспозиции.
+   * @returns exposed properties / экспонируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
-      getOpen: () => this.item.open.is()
+      getOpen: () => this.item.isOpen()
     } as EXPOSE
   }
 
@@ -83,6 +86,7 @@ export class ListGroupDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns initialized classes / инициализированные классы
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -100,27 +104,31 @@ export class ListGroupDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns initialized styles / инициализированные стили
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the component.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга компонента.
+   * @returns component virtual node / виртуальный узел компонента
    */
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        'class': this.classes?.value.main,
-        'style': this.styles?.value,
-        'data-open': this.item.open.is() ? 'open' : 'close',
-        'data-divider': this.props.divider ? 'divider' : undefined,
-        ...AriaStaticInclude.role('group')
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        this.item.aria,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       this.renderTransform()
     )
   }
@@ -129,14 +137,12 @@ export class ListGroupDesign<
    * Render transformation element.
    *
    * Рендер элемента трансформации.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderTransform = (): VNode[] => {
     return this.components?.render(
       'motionTransform',
-      {
-        ...this.item.transformBinds(),
-        open: this.item.open.is()
-      },
+      this.item.transformBinds,
       {
         head: this.renderHead,
         body: this.renderList
@@ -148,7 +154,8 @@ export class ListGroupDesign<
    * Render title element.
    *
    * Рендер элемента заголовка.
-   * @param item motion transform item/ элемент движения трансформации
+   * @param item motion transform item / элемент движения трансформации
+   * @returns head virtual node / виртуальный узел заголовка
    */
   readonly renderHead = (item: MotionTransformControlItem): VNode => {
     return h(
@@ -158,7 +165,7 @@ export class ListGroupDesign<
         'head',
         undefined,
         {
-          open: this.item.open.is(),
+          open: this.item.isOpen(),
           ...item.binds
         }
       )
@@ -169,6 +176,7 @@ export class ListGroupDesign<
    * Render list element.
    *
    * Рендер элемента списка.
+   * @returns list virtual node / виртуальный узел списка
    */
   readonly renderList = (): VNode => {
     return h(
