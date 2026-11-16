@@ -151,11 +151,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction(
-        'permissionUpdate',
-        'Failed to update CMS permission.',
-        error
-      )
+      return this.error.handleTransaction('cms-permission', 'update', error)
     }
   }
 
@@ -174,11 +170,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     try {
       return await this.deleteRecordById(permissionId)
     } catch (error) {
-      return this.error.handleTransaction(
-        'permissionDelete',
-        'Failed to delete CMS permission.',
-        error
-      )
+      return this.error.handleTransaction('cms-permission', 'delete', error)
     }
   }
 
@@ -314,19 +306,16 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Проверяет и подтверждает идентификаторы прав доступа по их ID.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @param permissionIds Optional list of permission IDs / Необязательный список ID прав доступа
    * @returns Deduplicated list of verified permission IDs / Уникальный список проверенных ID прав доступа
    */
   static async resolveIdsByIds(
     executor: CmsDbExecutor,
-    error: CmsErrorInstance,
     permissionIds?: readonly number[]
   ): Promise<number[]> {
     return CmsDbAbstract.resolveEntityIdsByIds(
-      error,
-      'permissionNotFound',
-      'CMS permission',
+      'cms-permission',
+      'notFound',
       uniqueIds => executor
         .select({ id: permissions.id })
         .from(permissions)
@@ -340,19 +329,16 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Разрешает и проверяет идентификаторы прав доступа по их уникальным кодам.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @param permissionCodes Optional list of permission codes / Необязательный список кодов прав доступа
    * @returns Deduplicated list of resolved permission IDs / Уникальный список найденных ID прав доступа
    */
   static async resolveIdsByCodes(
     executor: CmsDbExecutor,
-    error: CmsErrorInstance,
     permissionCodes?: readonly string[]
   ): Promise<number[]> {
     return CmsDbAbstract.resolveEntityIdsByCodes(
-      error,
-      'permissionNotFound',
-      'CMS permission',
+      'cms-permission',
+      'notFound',
       uniqueCodes => executor
         .select({ id: permissions.id, code: permissions.code })
         .from(permissions)
@@ -366,14 +352,12 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Разрешает и валидирует идентификаторы прав доступа из переданных ID и/или кодов прав.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @param permissionIds Optional list of permission IDs / Необязательный список ID прав доступа
    * @param permissionCodes Optional list of permission codes / Необязательный список кодов прав доступа
    * @returns Deduplicated list of verified permission IDs / Уникальный список проверенных ID прав доступа
    */
   static async resolveIds(
     executor: CmsDbExecutor,
-    error: CmsErrorInstance,
     permissionIds?: readonly number[],
     permissionCodes?: readonly string[]
   ): Promise<number[]> {
@@ -381,13 +365,13 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
 
     if (permissionIds !== undefined) {
       resolvedIds.push(
-        ...await CmsPermissionItem.resolveIdsByIds(executor, error, permissionIds)
+        ...await CmsPermissionItem.resolveIdsByIds(executor, permissionIds)
       )
     }
 
     if (permissionCodes !== undefined) {
       resolvedIds.push(
-        ...await CmsPermissionItem.resolveIdsByCodes(executor, error, permissionCodes)
+        ...await CmsPermissionItem.resolveIdsByCodes(executor, permissionCodes)
       )
     }
 
@@ -457,11 +441,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      error.report(
-        'permissionInvalidCode',
-        'Valid permission code is required.',
-        { code }
-      )
+      error.report('cms-permission', 'invalidCode', { code })
     }
 
     return normalized
@@ -482,11 +462,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      error.report(
-        'permissionInvalidName',
-        'Permission name is required.',
-        { name }
-      )
+      error.report('cms-permission', 'invalidName', { name })
     }
 
     return normalized

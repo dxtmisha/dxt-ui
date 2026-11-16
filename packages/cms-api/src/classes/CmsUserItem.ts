@@ -347,11 +347,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
    */
   async setRoles(roleIds: readonly number[]): Promise<CmsRoleWithPermissions[]> {
-    return this.replaceRoles(
-      'userSetRoles',
-      'Failed to set CMS user roles.',
-      roleIds
-    )
+    return this.replaceRoles('setRoles', roleIds)
   }
 
   /**
@@ -362,12 +358,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
    */
   async setRolesByCode(roleCodes: readonly string[]): Promise<CmsRoleWithPermissions[]> {
-    return this.replaceRoles(
-      'userSetRoles',
-      'Failed to set CMS user roles by code.',
-      undefined,
-      roleCodes
-    )
+    return this.replaceRoles('setRoles', undefined, roleCodes)
   }
 
   /**
@@ -389,11 +380,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
    */
   async addRoles(roleIds: readonly number[]): Promise<CmsRoleWithPermissions[]> {
-    return this.assignRoles(
-      'userAddRoles',
-      'Failed to add CMS user roles.',
-      roleIds
-    )
+    return this.assignRoles('addRoles', roleIds)
   }
 
   /**
@@ -404,12 +391,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
    */
   async addRolesByCode(roleCodes: readonly string[]): Promise<CmsRoleWithPermissions[]> {
-    return this.assignRoles(
-      'userAddRoles',
-      'Failed to add CMS user roles by code.',
-      undefined,
-      roleCodes
-    )
+    return this.assignRoles('addRoles', undefined, roleCodes)
   }
 
   /**
@@ -420,11 +402,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * @returns Updated list of remaining assigned roles with permissions / Обновлённый список оставшихся ролей с правами доступа
    */
   async removeRoles(roleIds: readonly number[]): Promise<CmsRoleWithPermissions[]> {
-    return this.unassignRoles(
-      'userRemoveRoles',
-      'Failed to remove CMS user roles.',
-      roleIds
-    )
+    return this.unassignRoles('removeRoles', roleIds)
   }
 
   /**
@@ -435,12 +413,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * @returns Updated list of remaining assigned roles with permissions / Обновлённый список оставшихся ролей с правами доступа
    */
   async removeRolesByCode(roleCodes: readonly string[]): Promise<CmsRoleWithPermissions[]> {
-    return this.unassignRoles(
-      'userRemoveRoles',
-      'Failed to remove CMS user roles by code.',
-      undefined,
-      roleCodes
-    )
+    return this.unassignRoles('removeRoles', undefined, roleCodes)
   }
 
   /**
@@ -488,7 +461,6 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         if (input.roleIds !== undefined || input.roleCodes !== undefined) {
           const resolvedRoleIds = await CmsRoleItem.resolveIds(
             transaction,
-            this.error,
             input.roleIds,
             input.roleCodes
           )
@@ -510,11 +482,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction(
-        'userUpdate',
-        'Failed to update CMS user.',
-        error
-      )
+      return this.error.handleTransaction('cms-user', 'update', error)
     }
   }
 
@@ -576,11 +544,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         return true
       })
     } catch (error) {
-      return this.error.handleTransaction(
-        'userDelete',
-        'Failed to delete CMS user.',
-        error
-      )
+      return this.error.handleTransaction('cms-user', 'delete', error)
     }
   }
 
@@ -672,11 +636,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       this.data = restoredRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction(
-        'userRestore',
-        'Failed to restore CMS user.',
-        error
-      )
+      return this.error.handleTransaction('cms-user', 'restore', error)
     }
   }
 
@@ -695,14 +655,12 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Полностью заменяет роли пользователя в транзакции и синхронизирует локальное состояние.
    * @param errorCode Error code on failure / Код ошибки при сбое
-   * @param errorMessage Fallback error message / Сообщение об ошибке по умолчанию
    * @param roleIds Optional list of role IDs / Необязательный список ID ролей
    * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
    * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
    */
   protected async replaceRoles(
     errorCode: string,
-    errorMessage: string,
     roleIds?: readonly number[],
     roleCodes?: readonly string[]
   ): Promise<CmsRoleWithPermissions[]> {
@@ -713,7 +671,6 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         await CmsUserItem.ensureUserExists(transaction, this.error, userId)
         const resolvedIds = await CmsRoleItem.resolveIds(
           transaction,
-          this.error,
           roleIds,
           roleCodes
         )
@@ -729,7 +686,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handleTransaction(errorCode, errorMessage, error)
+      return this.error.handleTransaction('cms-user', errorCode, error)
     }
   }
 
@@ -738,14 +695,12 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Добавляет роли пользователю в транзакции без удаления существующих.
    * @param errorCode Error code on failure / Код ошибки при сбое
-   * @param errorMessage Fallback error message / Сообщение об ошибке по умолчанию
    * @param roleIds Optional list of role IDs / Необязательный список ID ролей
    * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
    * @returns Updated list of assigned roles with permissions / Обновлённый список назначенных ролей с правами доступа
    */
   protected async assignRoles(
     errorCode: string,
-    errorMessage: string,
     roleIds?: readonly number[],
     roleCodes?: readonly string[]
   ): Promise<CmsRoleWithPermissions[]> {
@@ -756,7 +711,6 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         await CmsUserItem.ensureUserExists(transaction, this.error, userId)
         const resolvedIds = await CmsRoleItem.resolveIds(
           transaction,
-          this.error,
           roleIds,
           roleCodes
         )
@@ -780,7 +734,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handleTransaction(errorCode, errorMessage, error)
+      return this.error.handleTransaction('cms-user', errorCode, error)
     }
   }
 
@@ -789,14 +743,12 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Удаляет указанные роли у пользователя в транзакции.
    * @param errorCode Error code on failure / Код ошибки при сбое
-   * @param errorMessage Fallback error message / Сообщение об ошибке по умолчанию
    * @param roleIds Optional list of role IDs / Необязательный список ID ролей
    * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
    * @returns Updated list of remaining assigned roles with permissions / Обновлённый список оставшихся ролей с правами доступа
    */
   protected async unassignRoles(
     errorCode: string,
-    errorMessage: string,
     roleIds?: readonly number[],
     roleCodes?: readonly string[]
   ): Promise<CmsRoleWithPermissions[]> {
@@ -852,7 +804,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handleTransaction(errorCode, errorMessage, error)
+      return this.error.handleTransaction('cms-user', errorCode, error)
     }
   }
 
@@ -1055,11 +1007,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     userId: number
   ): Promise<void> {
     if (!isPositiveInteger(userId)) {
-      error.report(
-        'userNotFound',
-        `CMS user with ID ${String(userId)} was not found.`,
-        { userId }
-      )
+      error.report('cms-user', 'notFound', { userId })
     }
 
     const foundRows = await executor
@@ -1069,11 +1017,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      error.report(
-        'userNotFound',
-        `CMS user with ID ${userId} was not found.`,
-        { userId }
-      )
+      error.report('cms-user', 'notFound', { userId })
     }
   }
 
@@ -1128,7 +1072,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       || emailParts[1].length === 0
       || /\s/.test(normalized)
     ) {
-      error.report('userInvalidEmail', 'Valid user email is required.', { email })
+      error.report('cms-user', 'invalidEmail', { email })
     }
 
     return normalized
@@ -1149,7 +1093,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     const normalized = isString(firstName) ? firstName.trim() : ''
 
     if (normalized.length === 0) {
-      error.report('userInvalidFirstName', 'User firstName is required.', { firstName })
+      error.report('cms-user', 'invalidFirstName', { firstName })
     }
 
     return normalized
@@ -1176,11 +1120,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (!Number.isSafeInteger(phone) || phone <= 0) {
-      error.report(
-        'userInvalidPhone',
-        'Phone must be a positive integer in E.164 digits format.',
-        { phone }
-      )
+      error.report('cms-user', 'invalidPhone', { phone })
     }
 
     return phone

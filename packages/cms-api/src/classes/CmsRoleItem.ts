@@ -200,11 +200,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    * @returns Updated list of assigned permissions / Обновлённый список назначенных прав доступа
    */
   async setPermissions(permissionIds: readonly number[]): Promise<CmsPermission[]> {
-    return this.replacePermissions(
-      'roleSetPermissions',
-      'Failed to set CMS role permissions.',
-      permissionIds
-    )
+    return this.replacePermissions('setPermissions', permissionIds)
   }
 
   /**
@@ -215,12 +211,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    * @returns Updated list of assigned permissions / Обновлённый список назначенных прав доступа
    */
   async setPermissionsByCode(permissionCodes: readonly string[]): Promise<CmsPermission[]> {
-    return this.replacePermissions(
-      'roleSetPermissions',
-      'Failed to set CMS role permissions by code.',
-      undefined,
-      permissionCodes
-    )
+    return this.replacePermissions('setPermissions', undefined, permissionCodes)
   }
 
   /**
@@ -231,11 +222,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    * @returns Updated list of assigned permissions / Обновлённый список назначенных прав доступа
    */
   async addPermissions(permissionIds: readonly number[]): Promise<CmsPermission[]> {
-    return this.assignPermissions(
-      'roleAddPermissions',
-      'Failed to add CMS role permissions.',
-      permissionIds
-    )
+    return this.assignPermissions('addPermissions', permissionIds)
   }
 
   /**
@@ -246,12 +233,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    * @returns Updated list of assigned permissions / Обновлённый список назначенных прав доступа
    */
   async addPermissionsByCode(permissionCodes: readonly string[]): Promise<CmsPermission[]> {
-    return this.assignPermissions(
-      'roleAddPermissions',
-      'Failed to add CMS role permissions by code.',
-      undefined,
-      permissionCodes
-    )
+    return this.assignPermissions('addPermissions', undefined, permissionCodes)
   }
 
   /**
@@ -262,11 +244,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    * @returns Updated list of remaining assigned permissions / Обновлённый список оставшихся прав доступа
    */
   async removePermissions(permissionIds: readonly number[]): Promise<CmsPermission[]> {
-    return this.unassignPermissions(
-      'roleRemovePermissions',
-      'Failed to remove CMS role permissions.',
-      permissionIds
-    )
+    return this.unassignPermissions('removePermissions', permissionIds)
   }
 
   /**
@@ -277,12 +255,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    * @returns Updated list of remaining assigned permissions / Обновлённый список оставшихся прав доступа
    */
   async removePermissionsByCode(permissionCodes: readonly string[]): Promise<CmsPermission[]> {
-    return this.unassignPermissions(
-      'roleRemovePermissions',
-      'Failed to remove CMS role permissions by code.',
-      undefined,
-      permissionCodes
-    )
+    return this.unassignPermissions('removePermissions', undefined, permissionCodes)
   }
 
   /**
@@ -327,7 +300,6 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
         if (input.permissionIds !== undefined || input.permissionCodes !== undefined) {
           const resolvedPermissionIds = await CmsPermissionItem.resolveIds(
             transaction,
-            this.error,
             input.permissionIds,
             input.permissionCodes
           )
@@ -349,11 +321,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction(
-        'roleUpdate',
-        'Failed to update CMS role.',
-        error
-      )
+      return this.error.handleTransaction('cms-role', 'update', error)
     }
   }
 
@@ -372,11 +340,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     try {
       return await this.deleteRecordById(roleId)
     } catch (error) {
-      return this.error.handleTransaction(
-        'roleDelete',
-        'Failed to delete CMS role.',
-        error
-      )
+      return this.error.handleTransaction('cms-role', 'delete', error)
     }
   }
 
@@ -420,14 +384,12 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Полностью заменяет права доступа роли в транзакции и синхронизирует локальное состояние.
    * @param errorCode Error code on failure / Код ошибки при сбое
-   * @param errorMessage Fallback error message / Сообщение об ошибке по умолчанию
    * @param permissionIds Optional list of permission IDs / Необязательный список ID прав доступа
    * @param permissionCodes Optional list of permission codes / Необязательный список кодов прав доступа
    * @returns Updated list of assigned permissions / Обновлённый список назначенных прав доступа
    */
   protected async replacePermissions(
     errorCode: string,
-    errorMessage: string,
     permissionIds?: readonly number[],
     permissionCodes?: readonly string[]
   ): Promise<CmsPermission[]> {
@@ -438,7 +400,6 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
         await CmsRoleItem.ensureRoleExists(transaction, this.error, roleId)
         const resolvedIds = await CmsPermissionItem.resolveIds(
           transaction,
-          this.error,
           permissionIds,
           permissionCodes
         )
@@ -454,7 +415,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handleTransaction(errorCode, errorMessage, error)
+      return this.error.handleTransaction('cms-role', errorCode, error)
     }
   }
 
@@ -463,14 +424,12 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Добавляет права доступа роли в транзакции без удаления существующих.
    * @param errorCode Error code on failure / Код ошибки при сбое
-   * @param errorMessage Fallback error message / Сообщение об ошибке по умолчанию
    * @param permissionIds Optional list of permission IDs / Необязательный список ID прав доступа
    * @param permissionCodes Optional list of permission codes / Необязательный список кодов прав доступа
    * @returns Updated list of assigned permissions / Обновлённый список назначенных прав доступа
    */
   protected async assignPermissions(
     errorCode: string,
-    errorMessage: string,
     permissionIds?: readonly number[],
     permissionCodes?: readonly string[]
   ): Promise<CmsPermission[]> {
@@ -481,7 +440,6 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
         await CmsRoleItem.ensureRoleExists(transaction, this.error, roleId)
         const resolvedIds = await CmsPermissionItem.resolveIds(
           transaction,
-          this.error,
           permissionIds,
           permissionCodes
         )
@@ -505,7 +463,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handleTransaction(errorCode, errorMessage, error)
+      return this.error.handleTransaction('cms-role', errorCode, error)
     }
   }
 
@@ -514,14 +472,12 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Удаляет указанные права доступа у роли в транзакции.
    * @param errorCode Error code on failure / Код ошибки при сбое
-   * @param errorMessage Fallback error message / Сообщение об ошибке по умолчанию
    * @param permissionIds Optional list of permission IDs / Необязательный список ID прав доступа
    * @param permissionCodes Optional list of permission codes / Необязательный список кодов прав доступа
    * @returns Updated list of remaining assigned permissions / Обновлённый список оставшихся прав доступа
    */
   protected async unassignPermissions(
     errorCode: string,
-    errorMessage: string,
     permissionIds?: readonly number[],
     permissionCodes?: readonly string[]
   ): Promise<CmsPermission[]> {
@@ -577,7 +533,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handleTransaction(errorCode, errorMessage, error)
+      return this.error.handleTransaction('cms-role', errorCode, error)
     }
   }
 
@@ -718,11 +674,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     roleId: number
   ): Promise<void> {
     if (!isPositiveInteger(roleId)) {
-      error.report(
-        'roleNotFound',
-        `CMS role with ID ${String(roleId)} was not found.`,
-        { roleId }
-      )
+      error.report('cms-role', 'notFound', { roleId })
     }
 
     const foundRows = await executor
@@ -732,11 +684,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      error.report(
-        'roleNotFound',
-        `CMS role with ID ${roleId} was not found.`,
-        { roleId }
-      )
+      error.report('cms-role', 'notFound', { roleId })
     }
   }
 
@@ -745,19 +693,16 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Проверяет и подтверждает идентификаторы ролей по их ID.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @param roleIds Optional list of role IDs / Необязательный список ID ролей
    * @returns Deduplicated list of verified role IDs / Уникальный список проверенных ID ролей
    */
   static async resolveIdsByIds(
     executor: CmsDbExecutor,
-    error: CmsErrorInstance,
     roleIds?: readonly number[]
   ): Promise<number[]> {
     return CmsDbAbstract.resolveEntityIdsByIds(
-      error,
-      'roleNotFound',
-      'CMS role',
+      'cms-role',
+      'notFound',
       uniqueIds => executor
         .select({ id: roles.id })
         .from(roles)
@@ -771,19 +716,16 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Разрешает и проверяет идентификаторы ролей по их уникальным кодам.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
    * @returns Deduplicated list of resolved role IDs / Уникальный список найденных ID ролей
    */
   static async resolveIdsByCodes(
     executor: CmsDbExecutor,
-    error: CmsErrorInstance,
     roleCodes?: readonly string[]
   ): Promise<number[]> {
     return CmsDbAbstract.resolveEntityIdsByCodes(
-      error,
-      'roleNotFound',
-      'CMS role',
+      'cms-role',
+      'notFound',
       uniqueCodes => executor
         .select({ id: roles.id, code: roles.code })
         .from(roles)
@@ -797,14 +739,12 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Разрешает и валидирует идентификаторы ролей из переданных ID и/или кодов ролей.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
    * @param roleIds Optional list of role IDs / Необязательный список ID ролей
    * @param roleCodes Optional list of role codes / Необязательный список кодов ролей
    * @returns Deduplicated list of verified role IDs / Уникальный список проверенных ID ролей
    */
   static async resolveIds(
     executor: CmsDbExecutor,
-    error: CmsErrorInstance,
     roleIds?: readonly number[],
     roleCodes?: readonly string[]
   ): Promise<number[]> {
@@ -812,13 +752,13 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
     if (roleIds !== undefined) {
       resolvedIds.push(
-        ...await CmsRoleItem.resolveIdsByIds(executor, error, roleIds)
+        ...await CmsRoleItem.resolveIdsByIds(executor, roleIds)
       )
     }
 
     if (roleCodes !== undefined) {
       resolvedIds.push(
-        ...await CmsRoleItem.resolveIdsByCodes(executor, error, roleCodes)
+        ...await CmsRoleItem.resolveIdsByCodes(executor, roleCodes)
       )
     }
 
@@ -917,11 +857,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      error.report(
-        'roleInvalidCode',
-        'Valid role code is required.',
-        { code }
-      )
+      error.report('cms-role', 'invalidCode', { code })
     }
 
     return normalized
@@ -942,11 +878,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      error.report(
-        'roleInvalidName',
-        'Role name is required.',
-        { name }
-      )
+      error.report('cms-role', 'invalidName', { name })
     }
 
     return normalized

@@ -211,6 +211,11 @@ describe('Input (unit)', () => {
 
       instance.i('password').toggle()
       expect(customToggle).toHaveBeenCalledTimes(1)
+
+      const inputElement = document.createElement('input')
+      inputElement.value = 'abc'
+      instance.i('event').onInput({ target: inputElement } as unknown as InputEvent)
+      expect(instance.hasInstance('form')).toBe(false)
     })
 
     it('should support inject lookup in form even when form constructor is verified', () => {

@@ -25,33 +25,36 @@ describe('CmsError', () => {
     const errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
 
-    const captured: Array<{ group?: string, code: string, message?: string }> = []
+    const captured: Array<{ group?: string, code: string, label?: string, message?: string }> = []
     errorCenter.addCallback((cause) => {
       captured.push({
         group: cause.group,
         code: cause.code,
+        label: cause.label,
         message: cause.message
       })
     })
 
     CmsError.setErrorCenter(errorCenter)
 
-    expect(() => CmsError.report('roleNotFound', 'Role missing.'))
-      .toThrow('[@dxtmisha/cms-api] Role missing.')
+    expect(() => CmsError.report('cms-role', 'notFound', { roleId: 42 }))
+      .toThrow('[@dxtmisha/cms-api] Requested CMS role was not found.')
 
     const unexpected = new Error('Timeout')
-    expect(() => CmsError.handleTransaction('txError', 'Transaction failed.', unexpected))
+    expect(() => CmsError.handleTransaction('cms-db', 'txError', unexpected, 'Transaction failed.'))
       .toThrow(unexpected)
 
     expect(captured).toEqual([
       {
-        group: 'cms',
-        code: 'roleNotFound',
-        message: 'Role missing.'
+        group: 'cms-role',
+        code: 'notFound',
+        label: 'Role Not Found',
+        message: 'Requested CMS role was not found.'
       },
       {
-        group: 'cms',
+        group: 'cms-db',
         code: 'txError',
+        label: undefined,
         message: 'Transaction failed.'
       }
     ])

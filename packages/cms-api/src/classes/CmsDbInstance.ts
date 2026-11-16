@@ -1,4 +1,5 @@
 import { createCmsDb } from '../functions/createCmsDb'
+import { CmsError } from './CmsError'
 import type { CmsDb } from '../types/cmsDbTypes'
 
 /**
@@ -53,7 +54,7 @@ export class CmsDbInstance {
   get(): CmsDb {
     if (!this.instance) {
       if (!this.connectionString) {
-        throw new Error('[@dxtmisha/cms-api] Database connection string is required.')
+        return CmsError.report('cms-db', 'connection')
       }
 
       this.instance = createCmsDb(this.connectionString)

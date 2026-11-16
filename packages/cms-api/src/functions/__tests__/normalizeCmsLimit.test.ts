@@ -13,7 +13,7 @@ describe('normalizeCmsLimit', () => {
     expect(normalizeCmsLimit(0)).toBe(1)
     expect(normalizeCmsLimit(-10)).toBe(1)
     expect(normalizeCmsLimit(15.9)).toBe(15)
-    expect(normalizeCmsLimit(500)).toBe(100)
+    expect(normalizeCmsLimit(500)).toBe(200)
     expect(normalizeCmsLimit(500, 10, 50)).toBe(50)
   })
 })

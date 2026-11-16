@@ -62,31 +62,35 @@ export class CmsError {
    * Reports an error via the active CmsErrorInstance and throws an Error.
    *
    * Регистрирует ошибку через активный CmsErrorInstance и выбрасывает исключение Error.
-   * @param code Error code within the cms group / Код ошибки в группе cms
-   * @param message Human-readable error message / Человекочитаемое сообщение об ошибке
+   * @param group Error group / Группа ошибки
+   * @param code Error code within the group / Код ошибки в группе
    * @param details Optional raw error payload / Необязательные дополнительные детали ошибки
+   * @param message Optional override error message / Необязательное переопределяющее сообщение об ошибке
    */
   static report(
+    group: string,
     code: string,
-    message: string,
-    details?: unknown
+    details?: unknown,
+    message?: string
   ): never {
-    return this.getItem().report(code, message, details)
+    return this.getItem().report(group, code, details, message)
   }
 
   /**
    * Reports unexpected transaction errors through the active CmsErrorInstance without double-reporting domain errors.
    *
    * Передаёт неожиданные ошибки транзакции через активный CmsErrorInstance, избегая повторной регистрации доменных ошибок.
+   * @param group Error group / Группа ошибки
    * @param code Fallback error code / Код ошибки по умолчанию
-   * @param message Fallback error message / Сообщение об ошибке по умолчанию
    * @param error Caught error instance / Перехваченная ошибка
+   * @param message Optional override error message / Необязательное переопределяющее сообщение об ошибке
    */
   static handleTransaction(
+    group: string,
     code: string,
-    message: string,
-    error: unknown
+    error: unknown,
+    message?: string
   ): never {
-    return this.getItem().handleTransaction(code, message, error)
+    return this.getItem().handleTransaction(group, code, error, message)
   }
 }

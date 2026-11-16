@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
+import { CmsError } from '../CmsError'
 import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
@@ -100,6 +101,7 @@ describe('CmsPermissionItem', () => {
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
+    CmsError.setErrorCenter(errorCenter)
     cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
     errorCenter.addCallback((cause) => {
@@ -112,6 +114,7 @@ describe('CmsPermissionItem', () => {
   })
 
   afterEach(() => {
+    CmsError.reset()
     vi.restoreAllMocks()
   })
 
@@ -179,9 +182,9 @@ describe('CmsPermissionItem', () => {
 
       await expect(item.update({ code: 'bad code' })).rejects.toThrow('Valid permission code is required.')
       await expect(item.update({ name: '   ' })).rejects.toThrow('Permission name is required.')
-      expect(capturedErrors.map(error => error.code)).toEqual([
-        'permissionInvalidCode',
-        'permissionInvalidName'
+      expect(capturedErrors.map(error => `${error.group}:${error.code}`)).toEqual([
+        'cms-permission:invalidCode',
+        'cms-permission:invalidName'
       ])
     })
 
@@ -236,16 +239,18 @@ describe('CmsPermissionItem', () => {
 
       const resolved = await CmsPermissionItem.resolveIds(
         mock.db,
-        new CmsErrorInstance(errorCenter),
         [1, 1],
         [' users:create ', '']
       )
       expect(resolved).toEqual([1, 2])
 
       await expect(
-        CmsPermissionItem.resolveIds(mock.db, new CmsErrorInstance(errorCenter), [999])
-      ).rejects.toThrow('CMS permissions not found for IDs: 999.')
-      expect(capturedErrors[0]?.code).toBe('permissionNotFound')
+        CmsPermissionItem.resolveIds(mock.db, [999])
+      ).rejects.toThrow('Requested CMS permissions were not found.')
+      expect(capturedErrors[0]).toMatchObject({
+        group: 'cms-permission',
+        code: 'notFound'
+      })
     })
 
     it('resolves permission IDs and codes separately via resolveIdsByIds and resolveIdsByCodes', async () => {
@@ -258,21 +263,23 @@ describe('CmsPermissionItem', () => {
       })
 
       expect(
-        await CmsPermissionItem.resolveIdsByIds(mock.db, new CmsErrorInstance(errorCenter), [3, 3])
+        await CmsPermissionItem.resolveIdsByIds(mock.db, [3, 3])
       ).toEqual([3])
 
       expect(
         await CmsPermissionItem.resolveIdsByCodes(
           mock.db,
-          new CmsErrorInstance(errorCenter),
           [' roles:read ', '']
         )
       ).toEqual([4])
 
       await expect(
-        CmsPermissionItem.resolveIdsByCodes(mock.db, new CmsErrorInstance(errorCenter), ['missing:code'])
-      ).rejects.toThrow('CMS permissions not found for codes: missing:code.')
-      expect(capturedErrors[0]?.code).toBe('permissionNotFound')
+        CmsPermissionItem.resolveIdsByCodes(mock.db, ['missing:code'])
+      ).rejects.toThrow('Requested CMS permissions were not found.')
+      expect(capturedErrors[0]).toMatchObject({
+        group: 'cms-permission',
+        code: 'notFound'
+      })
     })
   })
 })

@@ -309,17 +309,13 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
 
         const createdRole = insertedRows[0]
         if (!createdRole) {
-          this.error.report(
-            'roleCreate',
-            'Failed to create CMS role record.'
-          )
+          this.error.report('cms-role', 'create')
         }
 
         let assignedPermissions: CmsPermission[] = []
         if (input.permissionIds !== undefined || input.permissionCodes !== undefined) {
           const resolvedPermissionIds = await CmsPermissionItem.resolveIds(
             transaction,
-            this.error,
             input.permissionIds,
             input.permissionCodes
           )
@@ -335,11 +331,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
 
       return this.wrapRoleItem(createdRecord)
     } catch (error) {
-      return this.error.handleTransaction(
-        'roleCreate',
-        'Failed to create CMS role.',
-        error
-      )
+      return this.error.handleTransaction('cms-role', 'create', error)
     }
   }
 

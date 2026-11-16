@@ -131,7 +131,7 @@ export class Input extends DesignLogicAbstract<
         () => this.i('value'),
         () => this.i('validation'),
         this.emits,
-        () => this.i('form')
+        () => this.callInstance('form', item => item)
       ]
     },
     field: {
@@ -271,10 +271,7 @@ export class Input extends DesignLogicAbstract<
 
     this.i('event')
     this.i('validation')
-
-    if (FieldFormInclude.is(this.props)) {
-      this.i('form')
-    }
+    this.callInstance('form', item => item)
   }
 
   /** Input binding values and event handlers / Значения привязок ввода и обработчики событий */

@@ -181,10 +181,10 @@ describe('CmsPermissionManager', () => {
     await expect(manager.create({ code: 'has space', name: 'Name' })).rejects.toThrow('Valid permission code is required.')
     await expect(manager.create({ code: 'users:read', name: '  ' })).rejects.toThrow('Permission name is required.')
 
-    expect(capturedErrors.map(item => item.code)).toEqual([
-      'permissionInvalidCode',
-      'permissionInvalidCode',
-      'permissionInvalidName'
+    expect(capturedErrors.map(item => `${item.group}:${item.code}`)).toEqual([
+      'cms-permission:invalidCode',
+      'cms-permission:invalidCode',
+      'cms-permission:invalidName'
     ])
     expect(mock.raw.insert).not.toHaveBeenCalled()
   })
@@ -246,7 +246,7 @@ describe('CmsPermissionManager', () => {
 
     expectTypeOf(result).toEqualTypeOf<CmsPermissionListResult>()
     expect(result.total).toBe(1)
-    expect(result.limit).toBe(100)
+    expect(result.limit).toBe(200)
     expect(result.offset).toBe(0)
     expect(result.items).toHaveLength(1)
     expect(result.items[0]).toBeInstanceOf(CmsPermissionItem)
@@ -284,8 +284,8 @@ describe('CmsPermissionManager', () => {
     })
     await expect(manager.create({ code: 'a:b', name: 'AB' })).rejects.toThrow('Insert failed')
     expect(capturedErrors[0]).toMatchObject({
-      group: 'cms',
-      code: 'permissionCreate'
+      group: 'cms-permission',
+      code: 'create'
     })
   })
 })

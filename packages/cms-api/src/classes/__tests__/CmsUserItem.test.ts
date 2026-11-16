@@ -230,12 +230,12 @@ describe('CmsUserItem', () => {
       const deletedItem = new CmsUserItem(
         makeUserData({ status: 'active', metadata: { deletedAt: '2026-11-16T10:00:00.000Z' } }),
         undefined,
-        errorCenter
+        cmsError
       )
       const blockedItem = new CmsUserItem(
         makeUserData({ status: 'blocked', metadata: { deletedAt: '   ' } }),
         undefined,
-        errorCenter
+        cmsError
       )
 
       expect(deletedItem.isDeleted()).toBe(true)
@@ -345,10 +345,10 @@ describe('CmsUserItem', () => {
       const mock = createMockDb({ selectQueue: [[]] })
       const item = new CmsUserItem(makeUserData({ id: 404 }), mock.dbInstance, cmsError)
 
-      await expect(item.setRoles([1])).rejects.toThrow('CMS user with ID 404 was not found.')
+      await expect(item.setRoles([1])).rejects.toThrow('Requested CMS user was not found.')
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms',
-        code: 'userNotFound'
+        group: 'cms-user',
+        code: 'notFound'
       })
     })
 

@@ -277,6 +277,83 @@ const items = canvasElement.querySelectorAll('.design-component')
 await expect(items.length).toBe(2)
       `
     },
+    {
+      id: 'InputSlots',
+      name: {
+        en: 'Slots',
+        ru: 'Слоты'
+      },
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            label="Domain"
+            value="example"
+          >
+            <template #leading><span>[Lead]</span></template>
+            <template #trailing><span>[Trail]</span></template>
+            <template #prefix><span>https://</span></template>
+            <template #suffix><span>.dev</span></template>
+            <template #caption><span>Hint</span></template>
+          </DesignComponent>
+        </div>
+      `,
+      play: `
+await expect(canvasElement.textContent).toContain('[Lead]')
+await expect(canvasElement.textContent).toContain('[Trail]')
+await expect(canvasElement.textContent).toContain('https://')
+await expect(canvasElement.textContent).toContain('.dev')
+await expect(canvasElement.textContent).toContain('Hint')
+      `
+    },
+    {
+      id: 'InputExpose',
+      name: {
+        en: 'Exposed methods',
+        ru: 'Экспонируемые методы'
+      },
+      setup: `
+      const inputRef = ref()
+      const value = ref('Initial')
+      const exposeStatus = ref('none')
+      return {
+        inputRef,
+        value,
+        exposeStatus,
+        runSetValue: () => {
+          inputRef.value?.setValue('updated')
+          exposeStatus.value = String(inputRef.value?.getValue()) + '|' + String(inputRef.value?.checkValidity())
+        },
+        runClear: () => {
+          inputRef.value?.clear()
+          exposeStatus.value = 'cleared:' + String(inputRef.value?.getValue() ?? '')
+        }
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            ref="inputRef"
+            v-model="value"
+            label="Expose demo"
+          />
+          <div class="wiki-storybook-flex">
+            <button data-testid="btn-expose-set" class="wiki-storybook-button" @click="runSetValue">setValue</button>
+            <button data-testid="btn-expose-clear" class="wiki-storybook-button" @click="runClear">clear</button>
+            <span data-testid="btn-expose-out">{{ exposeStatus }}</span>
+          </div>
+        </div>
+      `,
+      play: `
+await step('Call exposed setValue and clear methods', async () => {
+  await userEvent.click(canvasElement.querySelector('[data-testid="btn-expose-set"]')!)
+  await new Promise((resolve) => setTimeout(resolve, 50))
+  await expect(canvasElement.querySelector('[data-testid="btn-expose-out"]')).toHaveTextContent('updated|true')
+  await userEvent.click(canvasElement.querySelector('[data-testid="btn-expose-clear"]')!)
+  await new Promise((resolve) => setTimeout(resolve, 50))
+})
+await expect(canvasElement.querySelector('[data-testid="btn-expose-out"]')).toHaveTextContent('cleared:')
+      `
+    },
     // =========================================================================
     // TIER 2: BEHAVIORAL & EDGE CASE TEST STORIES
     // =========================================================================
@@ -554,7 +631,7 @@ await expect(canvasElement.querySelector('[data-testid="expose-out"]')).toHaveTe
 <StorybookDescriptions componentName={'Expose'} type={'clear'}/>
 <StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
 <StorybookDescriptions componentName={'Expose'} type={'getValidationMessage'}/>
-<Canvas of={Component.InputTestSlotsEventsAndExpose}/>
+<Canvas of={Component.InputExpose}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'label'}/>
@@ -563,6 +640,7 @@ await expect(canvasElement.querySelector('[data-testid="expose-out"]')).toHaveTe
 <StorybookDescriptions componentName={'Slot'} type={'caption'}/>
 <StorybookDescriptions componentName={'Slot'} type={'leading'}/>
 <StorybookDescriptions componentName={'Slot'} type={'trailing'}/>
+<Canvas of={Component.InputSlots}/>
     `
   },
   ai: {

@@ -185,17 +185,15 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
    * Validates and verifies entity identifiers by their IDs using the provided lookup callback.
    *
    * Проверяет и подтверждает существование идентификаторов сущностей по их ID с помощью функции поиска.
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param errorGroup Error group / Группа ошибки
    * @param errorCode Error code reported when entities are invalid or missing / Код ошибки при невалидных или отсутствующих записях
-   * @param entityName Human-readable entity name for error messages / Название сущности для сообщений об ошибках
    * @param fetchByIds Callback fetching persisted records matching given IDs / Функция выборки записей по ID
    * @param ids List of entity IDs / Список ID сущностей
    * @returns Deduplicated list of verified entity IDs / Уникальный список проверенных ID сущностей
    */
   protected static async resolveEntityIdsByIds(
-    error: CmsErrorInstance,
+    errorGroup: string,
     errorCode: string,
-    entityName: string,
     fetchByIds: (ids: number[]) => Promise<Array<{ id: number }>>,
     ids?: readonly number[]
   ): Promise<number[]> {
@@ -206,11 +204,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     const uniqueIds = uniqueArray(ids)
     for (const entityId of uniqueIds) {
       if (!isPositiveInteger(entityId)) {
-        error.report(
-          errorCode,
-          `Invalid ${entityName} ID: ${String(entityId)}.`,
-          { id: entityId }
-        )
+        CmsError.report(errorGroup, errorCode, { id: entityId })
       }
     }
 
@@ -223,11 +217,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     const missingIds = uniqueIds.filter(entityId => !foundIdSet.has(entityId))
 
     if (missingIds.length > 0) {
-      error.report(
-        errorCode,
-        `${entityName}s not found for IDs: ${missingIds.join(', ')}.`,
-        { missingIds }
-      )
+      CmsError.report(errorGroup, errorCode, { missingIds })
     }
 
     return uniqueIds
@@ -237,17 +227,15 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
    * Resolves and verifies entity identifiers by their unique codes using the provided lookup callback.
    *
    * Разрешает и проверяет идентификаторы сущностей по их уникальным кодам с помощью функции поиска.
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param errorGroup Error group / Группа ошибки
    * @param errorCode Error code reported when entities are missing / Код ошибки при отсутствующих записях
-   * @param entityName Human-readable entity name for error messages / Название сущности для сообщений об ошибках
    * @param fetchByCodes Callback fetching persisted records matching given codes / Функция выборки записей по кодам
    * @param codes List of entity codes / Список кодов сущностей
    * @returns Deduplicated list of resolved entity IDs / Уникальный список найденных ID сущностей
    */
   protected static async resolveEntityIdsByCodes(
-    error: CmsErrorInstance,
+    errorGroup: string,
     errorCode: string,
-    entityName: string,
     fetchByCodes: (codes: string[]) => Promise<Array<{ id: number, code: string }>>,
     codes?: readonly string[]
   ): Promise<number[]> {
@@ -270,11 +258,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     const missingCodes = uniqueCodes.filter(code => !idByCode.has(code))
 
     if (missingCodes.length > 0) {
-      error.report(
-        errorCode,
-        `${entityName}s not found for codes: ${missingCodes.join(', ')}.`,
-        { missingCodes }
-      )
+      CmsError.report(errorGroup, errorCode, { missingCodes })
     }
 
     const resolvedIds: number[] = []

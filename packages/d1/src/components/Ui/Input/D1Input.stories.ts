@@ -188,7 +188,7 @@ export const InputMask: Story = {
     await step('Type into phone mask', async () => {
       await userEvent.click(inputs[0])
       await userEvent.type(inputs[0], '5551234567')
-      await new Promise((resolve) => setTimeout(resolve, 50))
+      await new Promise(resolve => setTimeout(resolve, 50))
     })
     await expect(inputs[0].value).toContain('+1 (555) 123-4567')
   }
@@ -246,12 +246,12 @@ export const InputVModel: Story = {
     `
   }),
   play: async ({ canvasElement, step }) => {
-    const setTextBtn = Array.from(canvasElement.querySelectorAll('button')).find((b) => b.textContent === 'Set text')
-    const plusBtn = Array.from(canvasElement.querySelectorAll('button')).find((b) => b.textContent === '+10')
+    const setTextBtn = Array.from(canvasElement.querySelectorAll('button')).find(b => b.textContent === 'Set text')
+    const plusBtn = Array.from(canvasElement.querySelectorAll('button')).find(b => b.textContent === '+10')
     await step('Update reactive v-model via buttons', async () => {
       await userEvent.click(setTextBtn!)
       await userEvent.click(plusBtn!)
-      await new Promise((resolve) => setTimeout(resolve, 50))
+      await new Promise(resolve => setTimeout(resolve, 50))
     })
     await expect(canvasElement.querySelector('[data-testid="text-value"]')).toHaveTextContent('Changed value')
     await expect(canvasElement.querySelector('[data-testid="number-value"]')).toHaveTextContent('52')
@@ -283,6 +283,85 @@ export const InputSkeleton: Story = {
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll('.d1-input')
     await expect(items.length).toBe(2)
+  }
+}
+export const InputSlots: Story = {
+  name: 'Слоты',
+  render: () => ({
+    components: { D1Input },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <D1Input
+            label="Domain"
+            value="example"
+          >
+            <template #leading><span>[Lead]</span></template>
+            <template #trailing><span>[Trail]</span></template>
+            <template #prefix><span>https://</span></template>
+            <template #suffix><span>.dev</span></template>
+            <template #caption><span>Hint</span></template>
+          </D1Input>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.textContent).toContain('[Lead]')
+    await expect(canvasElement.textContent).toContain('[Trail]')
+    await expect(canvasElement.textContent).toContain('https://')
+    await expect(canvasElement.textContent).toContain('.dev')
+    await expect(canvasElement.textContent).toContain('Hint')
+  }
+}
+export const InputExpose: Story = {
+  name: 'Экспонируемые методы',
+  render: () => ({
+    components: { D1Input },
+    setup() {
+      const inputRef = ref()
+      const value = ref('Initial')
+      const exposeStatus = ref('none')
+      return {
+        inputRef,
+        value,
+        exposeStatus,
+        runSetValue: () => {
+          inputRef.value?.setValue('updated')
+          exposeStatus.value = String(inputRef.value?.getValue()) + '|' + String(inputRef.value?.checkValidity())
+        },
+        runClear: () => {
+          inputRef.value?.clear()
+          exposeStatus.value = 'cleared:' + String(inputRef.value?.getValue() ?? '')
+        }
+      }
+    },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <D1Input
+            ref="inputRef"
+            v-model="value"
+            label="Expose demo"
+          />
+          <div class="wiki-storybook-flex">
+            <button data-testid="btn-expose-set" class="wiki-storybook-button" @click="runSetValue">setValue</button>
+            <button data-testid="btn-expose-clear" class="wiki-storybook-button" @click="runClear">clear</button>
+            <span data-testid="btn-expose-out">{{ exposeStatus }}</span>
+          </div>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement, step }) => {
+    await step('Call exposed setValue and clear methods', async () => {
+      await userEvent.click(canvasElement.querySelector('[data-testid="btn-expose-set"]')!)
+      await new Promise(resolve => setTimeout(resolve, 50))
+      await expect(canvasElement.querySelector('[data-testid="btn-expose-out"]')).toHaveTextContent('updated|true')
+      await userEvent.click(canvasElement.querySelector('[data-testid="btn-expose-clear"]')!)
+      await new Promise(resolve => setTimeout(resolve, 50))
+    })
+    await expect(canvasElement.querySelector('[data-testid="btn-expose-out"]')).toHaveTextContent('cleared:')
   }
 }
 export const InputTestPasswordAndZero: Story = {
@@ -323,7 +402,7 @@ export const InputTestPasswordAndZero: Story = {
     await expect(toggleBtn).toBeInTheDocument()
     await step('Toggle password visibility on and off', async () => {
       await userEvent.click(toggleBtn!)
-      await new Promise((resolve) => setTimeout(resolve, 50))
+      await new Promise(resolve => setTimeout(resolve, 50))
     })
     await expect(inputs[0].type).toBe('text')
     await expect(canvasElement.querySelector('[aria-label="Hide secret"]')).toBeInTheDocument()
@@ -372,7 +451,7 @@ export const InputTestValidationAndMatch: Story = {
     `
   }),
   play: async ({ canvasElement, step }) => {
-    await new Promise((resolve) => setTimeout(resolve, 80))
+    await new Promise(resolve => setTimeout(resolve, 80))
     await expect(canvasElement.textContent).toContain('Letters only allowed')
     await expect(canvasElement.textContent).toContain('Server validation error')
     await expect(canvasElement.textContent).toContain('Passwords do not match')
@@ -381,7 +460,7 @@ export const InputTestValidationAndMatch: Story = {
     await step('Type matching password into confirm field', async () => {
       await userEvent.clear(inputs[3])
       await userEvent.type(inputs[3], 'Secret123')
-      await new Promise((resolve) => setTimeout(resolve, 80))
+      await new Promise(resolve => setTimeout(resolve, 80))
     })
     await expect(canvasElement.textContent).not.toContain('Passwords do not match')
   }
@@ -421,7 +500,7 @@ export const InputTestArrowsAndAlign: Story = {
     await expect(nextBtn).toBeInTheDocument()
     await step('Increment number via stepper arrow', async () => {
       await userEvent.click(nextBtn!)
-      await new Promise((resolve) => setTimeout(resolve, 50))
+      await new Promise(resolve => setTimeout(resolve, 50))
     })
     await expect(input?.value).toBe('15')
   }
@@ -495,10 +574,10 @@ export const InputTestSlotsEventsAndExpose: Story = {
 
     await step('Call exposed setValue and clear methods', async () => {
       await userEvent.click(canvasElement.querySelector('[data-testid="btn-set"]')!)
-      await new Promise((resolve) => setTimeout(resolve, 50))
+      await new Promise(resolve => setTimeout(resolve, 50))
       await expect(canvasElement.querySelector('[data-testid="expose-out"]')).toHaveTextContent('updated|true')
       await userEvent.click(canvasElement.querySelector('[data-testid="btn-clear"]')!)
-      await new Promise((resolve) => setTimeout(resolve, 50))
+      await new Promise(resolve => setTimeout(resolve, 50))
     })
     await expect(canvasElement.querySelector('[data-testid="expose-out"]')).toHaveTextContent('cleared:')
   }

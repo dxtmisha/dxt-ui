@@ -346,17 +346,13 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
 
         const createdUser = insertedRows[0]
         if (!createdUser) {
-          this.error.report(
-            'userCreate',
-            'Failed to create CMS user record.'
-          )
+          this.error.report('cms-user', 'create')
         }
 
         let assignedRoles: CmsRoleWithPermissions[] = []
         if (input.roleIds !== undefined || input.roleCodes !== undefined) {
           const resolvedRoleIds = await CmsRoleItem.resolveIds(
             transaction,
-            this.error,
             input.roleIds,
             input.roleCodes
           )
@@ -372,11 +368,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
 
       return this.wrapUserItem(createdRecord)
     } catch (error) {
-      return this.error.handleTransaction(
-        'userCreate',
-        'Failed to create CMS user.',
-        error
-      )
+      return this.error.handleTransaction('cms-user', 'create', error)
     }
   }
 

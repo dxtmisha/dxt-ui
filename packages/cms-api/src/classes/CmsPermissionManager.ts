@@ -252,19 +252,12 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
 
       const createdPermission = insertedRows[0]
       if (!createdPermission) {
-        this.error.report(
-          'permissionCreate',
-          'Failed to create CMS permission record.'
-        )
+        this.error.report('cms-permission', 'create')
       }
 
       return this.wrapPermissionItem(createdPermission)
     } catch (error) {
-      return this.error.handleTransaction(
-        'permissionCreate',
-        'Failed to create CMS permission.',
-        error
-      )
+      return this.error.handleTransaction('cms-permission', 'create', error)
     }
   }
 

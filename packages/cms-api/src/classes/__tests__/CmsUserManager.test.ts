@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'v
 import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
+import { CmsError } from '../CmsError'
 import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionManager } from '../CmsPermissionManager'
 import { CmsRoleManager } from '../CmsRoleManager'
@@ -171,6 +172,7 @@ describe('CmsUserManager', () => {
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
+    CmsError.setErrorCenter(errorCenter)
     cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
     errorCenter.addCallback((cause) => {
@@ -183,6 +185,7 @@ describe('CmsUserManager', () => {
   })
 
   afterEach(() => {
+    CmsError.reset()
     vi.restoreAllMocks()
     vi.useRealTimers()
   })
@@ -293,13 +296,13 @@ describe('CmsUserManager', () => {
       await expect(manager.create({ email: 'alex@example.com', firstName: 'Alex', phone: -5 })).rejects.toThrow('Phone must be a positive integer')
       await expect(manager.create({ email: 'alex@example.com', firstName: 'Alex', phone: 12.5 })).rejects.toThrow('Phone must be a positive integer')
 
-      expect(capturedErrors.map(item => item.code)).toEqual([
-        'userInvalidEmail',
-        'userInvalidEmail',
-        'userInvalidFirstName',
-        'userInvalidPhone',
-        'userInvalidPhone',
-        'userInvalidPhone'
+      expect(capturedErrors.map(item => `${item.group}:${item.code}`)).toEqual([
+        'cms-user:invalidEmail',
+        'cms-user:invalidEmail',
+        'cms-user:invalidFirstName',
+        'cms-user:invalidPhone',
+        'cms-user:invalidPhone',
+        'cms-user:invalidPhone'
       ])
       expect(mock.raw.insert).not.toHaveBeenCalled()
     })
@@ -316,11 +319,11 @@ describe('CmsUserManager', () => {
         email: 'alex@example.com',
         firstName: 'Alex',
         roleIds: [999]
-      })).rejects.toThrow('CMS roles not found for IDs: 999.')
+      })).rejects.toThrow('Requested CMS role was not found.')
 
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms',
-        code: 'roleNotFound'
+        group: 'cms-role',
+        code: 'notFound'
       })
     })
   })
@@ -407,7 +410,7 @@ describe('CmsUserManager', () => {
 
       expectTypeOf(listResult).toEqualTypeOf<CmsUserListResult>()
       expect(listResult.total).toBe(2)
-      expect(listResult.limit).toBe(100)
+      expect(listResult.limit).toBe(200)
       expect(listResult.offset).toBe(0)
       expect(listResult.items).toHaveLength(2)
       expect(listResult.items[0]).toBeInstanceOf(CmsUserItem)
@@ -416,7 +419,7 @@ describe('CmsUserManager', () => {
       expect(listResult.items[1]?.getData()).toEqual({ ...userOne, roles: [editorRole] })
       expect(listResult.items[0]?.hasPermission('users:read')).toBe(true)
       expect(listResult.items[1]?.hasPermission('content:update')).toBe(true)
-      expect(mock.selectChains[3]?.limit).toHaveBeenCalledWith(100)
+      expect(mock.selectChains[3]?.limit).toHaveBeenCalledWith(200)
       expect(mock.selectChains[3]?.offset).toHaveBeenCalledWith(0)
     })
 
@@ -534,8 +537,8 @@ describe('CmsUserManager', () => {
       })).rejects.toThrow('DB connection lost')
 
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms',
-        code: 'userCreate'
+        group: 'cms-user',
+        code: 'create'
       })
     })
   })

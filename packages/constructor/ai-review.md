@@ -165,10 +165,6 @@ src/classes/Field/FieldMatchInclude.ts
 src/classes/Field/FieldValidationInclude.ts
 src/classes/Field/FieldEventInclude.ts
 src/constructors/Field/FieldInclude.ts
-src/constructors/Input/InputPassword.ts
-src/constructors/Input/Input.ts
-src/constructors/Input/InputDesign.tsx
-
 src/constructors/ListGroup/ListGroupOpen.ts
 src/constructors/ListGroup/ListGroup.ts
 src/constructors/ListGroup/ListGroupDesign.tsx
@@ -183,3 +179,6 @@ src/constructors/Checkbox/CheckboxIcon.ts
 src/constructors/Checkbox/CheckboxSelected.ts
 src/constructors/Checkbox/Checkbox.ts
 src/constructors/Checkbox/CheckboxDesign.tsx
+src/constructors/Input/InputPassword.ts
+src/constructors/Input/Input.ts
+src/constructors/Input/InputDesign.tsx

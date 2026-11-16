@@ -252,10 +252,10 @@ describe('CmsRoleItem', () => {
       const mock = createMockDb({ selectQueue: [[]] })
       const item = new CmsRoleItem(makeRoleData({ id: 404 }), mock.dbInstance, cmsError)
 
-      await expect(item.setPermissions([10])).rejects.toThrow('CMS role with ID 404 was not found.')
+      await expect(item.setPermissions([10])).rejects.toThrow('Requested CMS role was not found.')
       expect(capturedErrors[0]).toMatchObject({
-        group: 'cms',
-        code: 'roleNotFound'
+        group: 'cms-role',
+        code: 'notFound'
       })
     })
 

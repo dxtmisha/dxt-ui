@@ -16,25 +16,27 @@ describe('CmsErrorInstance', () => {
     const errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
 
-    const captured: Array<{ group?: string, code: string, message?: string, details?: unknown }> = []
+    const captured: Array<{ group?: string, code: string, label?: string, message?: string, details?: unknown }> = []
     errorCenter.addCallback((cause) => {
       captured.push({
         group: cause.group,
         code: cause.code,
+        label: cause.label,
         message: cause.message,
         details: cause.details
       })
     })
 
     const cmsError = new CmsErrorInstance(errorCenter)
-    expect(() => cmsError.report('userNotFound', 'User not found.', { id: 1 }))
-      .toThrow('[@dxtmisha/cms-api] User not found.')
+    expect(() => cmsError.report('cms-user', 'notFound', { id: 1 }))
+      .toThrow('[@dxtmisha/cms-api] Requested CMS user was not found.')
 
     expect(captured).toEqual([
       {
-        group: 'cms',
-        code: 'userNotFound',
-        message: 'User not found.',
+        group: 'cms-user',
+        code: 'notFound',
+        label: 'User Not Found',
+        message: 'Requested CMS user was not found.',
         details: { id: 1 }
       }
     ])
@@ -55,22 +57,22 @@ describe('CmsErrorInstance', () => {
 
     const cmsError = new CmsErrorInstance(errorCenter)
     const domainError = new Error('[@dxtmisha/cms-api] Already reported.')
-    expect(() => cmsError.handleTransaction('fallbackCode', 'Fallback message.', domainError))
+    expect(() => cmsError.handleTransaction('cms-db', 'fallbackCode', domainError, 'Fallback message.'))
       .toThrow(domainError)
     expect(captured).toHaveLength(0)
 
     const dbError = new Error('Connection refused')
-    expect(() => cmsError.handleTransaction('dbFail', 'Database failed.', dbError))
+    expect(() => cmsError.handleTransaction('cms-db', 'dbFail', dbError, 'Database failed.'))
       .toThrow(dbError)
     expect(captured).toEqual([
       {
-        group: 'cms',
+        group: 'cms-db',
         code: 'dbFail',
         message: 'Database failed.'
       }
     ])
 
-    expect(() => cmsError.handleTransaction('unknownFail', 'Unknown error.', 'raw-failure'))
+    expect(() => cmsError.handleTransaction('cms-db', 'unknownFail', 'raw-failure', 'Unknown error.'))
       .toThrow('[@dxtmisha/cms-api] Unknown error.')
     expect(captured).toHaveLength(2)
   })

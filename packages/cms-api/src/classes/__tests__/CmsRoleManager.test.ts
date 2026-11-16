@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'v
 import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
+import { CmsError } from '../CmsError'
 import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionManager } from '../CmsPermissionManager'
 import { CmsRoleItem } from '../CmsRoleItem'
@@ -141,6 +142,7 @@ describe('CmsRoleManager', () => {
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
+    CmsError.setErrorCenter(errorCenter)
     cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
     errorCenter.addCallback((cause) => {
@@ -153,6 +155,7 @@ describe('CmsRoleManager', () => {
   })
 
   afterEach(() => {
+    CmsError.reset()
     vi.restoreAllMocks()
   })
 
@@ -226,12 +229,12 @@ describe('CmsRoleManager', () => {
       code: 'mod',
       name: 'Mod',
       permissionIds: [999]
-    })).rejects.toThrow('CMS permissions not found for IDs: 999.')
+    })).rejects.toThrow('Requested CMS permissions were not found.')
 
-    expect(capturedErrors.map(item => item.code)).toEqual([
-      'roleInvalidCode',
-      'roleInvalidName',
-      'permissionNotFound'
+    expect(capturedErrors.map(item => `${item.group}:${item.code}`)).toEqual([
+      'cms-role:invalidCode',
+      'cms-role:invalidName',
+      'cms-permission:notFound'
     ])
   })
 
@@ -310,7 +313,7 @@ describe('CmsRoleManager', () => {
 
     expectTypeOf(listResult).toEqualTypeOf<CmsRoleListResult>()
     expect(listResult.total).toBe(1)
-    expect(listResult.limit).toBe(100)
+    expect(listResult.limit).toBe(200)
     expect(listResult.offset).toBe(0)
     expect(listResult.items[0]).toBeInstanceOf(CmsRoleItem)
     expect(listResult.items[0]?.getPermissions()).toEqual([perm])
