@@ -6,6 +6,8 @@ import type { CmsDb } from '../types/cmsDbTypes'
  * Интерфейс возвращаемого значения хука useCmsDb
  */
 export interface UseCmsDbReturn {
+  /** Managed CmsDbInstance class instance / Управляемый экземпляр класса CmsDbInstance */
+  cmsDbInstance: CmsDbInstance
   /** Returns the managed CMS database instance / Возвращает управляемый экземпляр базы данных CMS */
   getCmsDb: () => CmsDb
   /** Updates the PostgreSQL connection URI / Обновляет строку подключения PostgreSQL */
@@ -20,7 +22,7 @@ let instance: CmsDbInstance | undefined
  * Composable that exposes database lifecycle methods backed by a shared CmsDbInstance.
  *
  * Хук, который использует общий экземпляр CmsDbInstance и возвращает методы управления подключением.
- * @returns Object with getCmsDb, setCmsDbConnectionString and closeCmsDb methods / Объект с методами getCmsDb, setCmsDbConnectionString и closeCmsDb
+ * @returns Object with cmsDbInstance, getCmsDb, setCmsDbConnectionString and closeCmsDb / Объект с cmsDbInstance и методами getCmsDb, setCmsDbConnectionString и closeCmsDb
  */
 export function useCmsDb(): UseCmsDbReturn {
   if (!instance) {
@@ -30,6 +32,7 @@ export function useCmsDb(): UseCmsDbReturn {
   const dbInstance = instance
 
   return {
+    cmsDbInstance: dbInstance,
     getCmsDb: () => dbInstance.get(),
     setCmsDbConnectionString: (connectionString?: string) => {
       dbInstance.setConnectionString(connectionString)
