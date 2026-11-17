@@ -1,142 +1,145 @@
-import { toRef, type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName, ListDataRef } from '@dxtmisha/functional'
+import { toRef } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrItems,
+  DesignLogicAbstract,
+  ListDataRef,
+  type ListSelectedList
+} from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { ModelInclude } from '../../classes/ModelInclude'
 
 import { BarsInclude } from '../Bars'
+import type { ListProps } from '../List'
 import { WindowInclude } from '../Window'
 
-import { MenuRequest } from './MenuRequest'
-
-import { MenuWindow } from './MenuWindow'
-import { MenuValue } from './MenuValue'
 import { MenuGo } from './MenuGo'
+import { MenuRequest } from './MenuRequest'
+import { MenuValue } from './MenuValue'
+import { MenuWindow } from './MenuWindow'
 
-import type { MenuComponents, MenuEmits, MenuSlots } from './types'
-import type { MenuProps } from './props'
-import type { MenuControlBasic } from './basicTypes'
 import type { EventClickValue } from '../../types/eventClickTypes'
+import type { MenuControlBasic } from './basicTypes'
+import type { MenuProps } from './props'
+import type { MenuComponents, MenuEmits, MenuSlots } from './types'
+
+/** Menu dependency constructors type / Тип конструкторов зависимостей Menu */
+export type MenuConstructors = {
+  /** Bars constructor / Конструктор панелей действий */
+  bars: typeof BarsInclude
+  /** List data constructor / Конструктор данных списка */
+  data: typeof ListDataRef
+  /** Click event constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Navigation constructor / Конструктор навигации */
+  go: typeof MenuGo
+  /** Menu window manager constructor / Конструктор управления окном меню */
+  menuWindow: typeof MenuWindow
+  /** Model constructor / Конструктор модели */
+  model: typeof ModelInclude<ListSelectedList | undefined>
+  /** Request handler constructor / Конструктор обработчика запросов */
+  request: typeof MenuRequest
+  /** Value manager constructor / Конструктор менеджера значения */
+  value: typeof MenuValue
+  /** Window constructor / Конструктор окна */
+  window: typeof WindowInclude
+}
 
 /**
- * Menu
+ * Orchestrator class for the Menu component.
+ * Coordinates list data requests, selection state, navigation, bars, and window management.
+ *
+ * Класс-оркестратор для компонента Menu.
+ * Координирует запросы данных списка, состояние выбора, навигацию, панели действий и управление окном.
  */
-export class Menu {
-  /** Request handler for list data/ Обработчик запросов данных списка */
-  readonly request: MenuRequest
-  /** Value manager for selected handling/ Менеджер выбранного значения */
-  readonly value: MenuValue
-
-  /** Data manager for list selection and mapping/ Менеджер данных списка для выбора и сопоставления */
-  readonly data: ListDataRef
-  readonly go: MenuGo
-
-  /** Include for working with the Bars component/ Подключение для работы с компонентом Bars */
-  readonly bars: BarsInclude
-  /** Include for working with the Window component/ Подключение для работы с компонентом Window */
-  readonly window: WindowInclude
-
-  /** Window manager for Menu/ Класс управления окном Menu */
-  readonly menuWindow: MenuWindow
-
-  /** Click event helper to unify click emissions/ Вспомогательный класс кликов для унифицированной отправки событий */
-  readonly event: EventClickInclude
-
-  /** Data for binding to controls/ Данные для привязки к контролам */
-  readonly slotData: MenuControlBasic
-
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.BarsIncludeConstructor class for working with bars/ класс для работы с барами
-   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param constructors.ListDataRefConstructor class for working with list data/ класс для работы с данными списка
-   * @param constructors.MenuGoConstructor class for working with navigation/ класс для работы с навигацией
-   * @param constructors.MenuRequestConstructor class for working with request/ класс для работы с запросом
-   * @param constructors.MenuValueConstructor class for working with value/ класс для работы со значением
-   * @param constructors.MenuWindowConstructor class for working with menu window/ класс для работы с окном меню
-   * @param constructors.WindowIncludeConstructor class for working with window/ класс для работы с окном
-   */
-  constructor(
-    protected readonly props: MenuProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<MenuComponents, MenuProps>,
-    protected readonly slots?: MenuSlots,
-    protected readonly emits?: ConstrEmit<MenuEmits>,
-    constructors: {
-      BarsIncludeConstructor?: typeof BarsInclude
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      ListDataRefConstructor?: typeof ListDataRef
-      MenuGoConstructor?: typeof MenuGo
-      MenuRequestConstructor?: typeof MenuRequest
-      MenuValueConstructor?: typeof MenuValue
-      MenuWindowConstructor?: typeof MenuWindow
-      WindowIncludeConstructor?: typeof WindowInclude
-    } = {}
-  ) {
-    const {
-      BarsIncludeConstructor = BarsInclude,
-      EventClickIncludeConstructor = EventClickInclude,
-      ListDataRefConstructor = ListDataRef,
-      MenuGoConstructor = MenuGo,
-      MenuRequestConstructor = MenuRequest,
-      MenuValueConstructor = MenuValue,
-      MenuWindowConstructor = MenuWindow,
-      WindowIncludeConstructor = WindowInclude
-    } = constructors
-
-    this.request = new MenuRequestConstructor(this.props)
-    this.value = new MenuValueConstructor(this.props, this.emits)
-
-    this.data = new ListDataRefConstructor(
-      this.request.item,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      this.value.selected,
-      toRef(this.props, 'keyValue'),
-      toRef(this.props, 'keyLabel')
-    )
-    this.go = new MenuGoConstructor(this.props, this.value, this.data)
-
-    this.bars = new BarsIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      undefined,
-      undefined,
-      this.emits
-    )
-
-    this.menuWindow = new MenuWindowConstructor(this.props, this.request)
-    this.window = new WindowIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      this.menuWindow.getExtra(),
-      undefined,
-      this.emits
-    )
-
-    this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
-
-    this.slotData = {
-      loading: this.request.progress,
-
-      isSelected: this.data.isSelected,
-      selectedList: this.data.selectedList,
-      selectedNames: this.data.selectedNames,
-      selectedValues: this.data.selectedValues,
-
-      previous: this.go.previous,
-      next: this.go.next
+export class Menu extends DesignLogicAbstract<
+  HTMLDivElement,
+  MenuComponents,
+  MenuEmits,
+  MenuSlots,
+  MenuProps,
+  MenuConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<MenuConstructors> = {
+    bars: {
+      item: BarsInclude,
+      canCreate: () => BarsInclude.is(this.props),
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    data: {
+      item: ListDataRef,
+      parameters: () => [
+        this.i('request').item,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        this.i('value').selected,
+        toRef(this.props, 'keyValue'),
+        toRef(this.props, 'keyLabel')
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    go: {
+      item: MenuGo,
+      parameters: () => [
+        this.props,
+        () => this.i('data'),
+        () => this.i('value')
+      ]
+    },
+    menuWindow: {
+      item: MenuWindow,
+      parameters: () => [
+        this.props,
+        () => this.i('request')
+      ]
+    },
+    model: {
+      item: ModelInclude<ListSelectedList | undefined>,
+      parameters: () => [
+        'selected',
+        this.emits
+      ]
+    },
+    request: {
+      item: MenuRequest,
+      parameters: () => [this.props]
+    },
+    value: {
+      item: MenuValue,
+      parameters: () => [
+        this.props,
+        () => this.i('model'),
+        this.emits
+      ]
+    },
+    window: {
+      item: WindowInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => this.i('menuWindow').getExtra(),
+        undefined,
+        this.emits
+      ]
     }
   }
 
@@ -144,8 +147,9 @@ export class Menu {
    * Getting data for binding to the List component.
    *
    * Получение данных для привязки к компоненту List.
+   * @returns list binding attributes / атрибуты привязки для списка
    */
-  get binds() {
+  get binds(): ConstrBind<ListProps> {
     return {
       highlightLengthStart: this.props.highlightLengthStart,
       showSearch: this.props.showSearch,
@@ -159,7 +163,7 @@ export class Menu {
       tag: this.props.tag,
       selectionStyle: this.props.selectionStyle,
       onClick: this.onClick,
-      onClose: this.window.expose.toClose,
+      onClose: () => this.i('window').expose.toClose(),
 
       itemAttrs: this.props.itemAttrs,
 
@@ -171,18 +175,31 @@ export class Menu {
    * Getting data for binding to controls.
    *
    * Получение данных для привязки к контролам.
-   * @returns data for binding to controls/ данные для привязки к контролам
+   * @returns data for binding to controls / данные для привязки к контролам
    */
-  getControlBinds(): MenuControlBasic {
-    return this.slotData
+  get slotData(): MenuControlBasic {
+    const data = this.i('data')
+    const go = this.i('go')
+
+    return {
+      loading: this.i('request').progress,
+
+      isSelected: data.isSelected,
+      selectedList: data.selectedList,
+      selectedNames: data.selectedNames,
+      selectedValues: data.selectedValues,
+
+      previous: go.previous,
+      next: go.next
+    }
   }
 
   /**
    * Click handler.
    *
    * Обработчик клика.
-   * @param event event object/ объект события
-   * @param options data object/ объект с данными
+   * @param event event object / объект события
+   * @param options data object / объект с данными
    */
   readonly onClick = (
     event: MouseEvent,
@@ -192,25 +209,25 @@ export class Menu {
       options
       && 'value' in options
     ) {
-      this.value.setValue(options.value)
+      this.i('value').setValue(options.value)
     }
 
-    this.event.onClick(event, options)
+    this.i('event').onClick(event, options)
   }
 
   /**
    * Click on the slot handler.
    *
    * Обработчик клика по слоту.
-   * @param event event object/ объект события
+   * @param event event object / объект события
    */
-  readonly onClickSlot = (event: Event) => {
-    const element = event.target as HTMLElement
-    const item = element.closest<HTMLElement>('*[data-value]')
+  readonly onClickSlot = (event: Event): void => {
+    const element = event.target as HTMLElement | null
+    const item = element?.closest?.<HTMLElement>('*[data-value]')
 
     if (
       item
-      && !element.closest(`.${this.naming.getSubClass('list')}`)
+      && !element?.closest?.(`.${this.naming.getSubClass('list')}`)
     ) {
       this.emits?.('clickSlot', item.dataset.value)
     }

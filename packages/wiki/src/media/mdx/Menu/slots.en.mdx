@@ -1,14 +1,18 @@
-- `title(props: MenuControlItem): any` — Slot for placing the menu window title.
+- `title(props: MenuControlItem): any` — Slot for placing custom content inside the menu window title area.
 - `footer(props: MenuControlItem): any` — Slot for placing content in the bottom part of the menu window.
-- `contextTop(props: MenuControlItem): any` — Slot for placing contextual area above the menu list.
-- `contextBottom(props: MenuControlItem): any` — Slot for placing contextual area below the menu list.
+- `contextTop(props: MenuControlItem): any` — Slot for placing a contextual area above the menu list.
+- `contextBottom(props: MenuControlItem): any` — Slot for placing a contextual area below the menu list.
 
 > **MenuControlItem:**
+> - `binds: ConstrBind` — ready-to-bind attributes and event listeners for the trigger element (`v-bind="binds"`).
 > - `loading: Ref<boolean>` — reactive state of menu data loading.
 > - `open: Ref<boolean>` — reactive state of menu open/close.
 > - `isSelected: ComputedRef<boolean>` — presence of selected items.
-> - `selectedList: Ref<any[]>` — list of selected items.
-> - `selectedNames: Ref<string[]>` — labels of selected items.
-> - `selectedValues: Ref<any[]>` — values of selected items.
-> - `onclick: (event) => Promise<void>` — click handler for opening/closing menu.
-> - `oncontextmenu: (event) => Promise<void>` — context menu handler.
+> - `selectedList: ComputedRef<ListList>` — list of selected item objects.
+> - `selectedNames: ComputedRef<ListNames>` — labels of selected items.
+> - `selectedValues: ComputedRef<ListDataItem['value'][]>` — values of selected items.
+> - `previous(): NumberOrStringOrBoolean | undefined` — navigates to the previous item.
+> - `next(): NumberOrStringOrBoolean | undefined` — navigates to the next item.
+> - `onClick: (event: MouseEvent) => Promise<void>` — click handler for opening/closing menu.
+> - `onKeydown: (event: KeyboardEvent) => Promise<void>` — keyboard handler for opening menu.
+> - `onContextmenu: (event: MouseEvent) => Promise<void>` — context menu handler.

@@ -1,22 +1,21 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { ErrorCenter, ErrorCenterError, ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { CmsErrorInstance } from '../CmsErrorInstance'
 
 describe('CmsErrorInstance', () => {
-  it('defaults to global ErrorCenter and supports getErrorCenter/setErrorCenter', () => {
-    const cmsError = new CmsErrorInstance()
-    expect(cmsError.getErrorCenter()).toBe(ErrorCenter.getItem())
+  afterEach(() => {
+    ErrorCenter.reset()
+    ErrorCenter.setIsConsole(true)
+  })
 
-    const customCenter = new ErrorCenterInstance()
-    customCenter.setIsConsole(false)
+  it('defaults to global ErrorCenter when no instance is provided', () => {
+    ErrorCenter.setIsConsole(false)
     const captured: string[] = []
-    customCenter.addCallback((cause) => {
+    ErrorCenter.addCallback((cause) => {
       captured.push(`${cause.group}:${cause.code}`)
     })
 
-    expect(cmsError.setErrorCenter(customCenter)).toBe(cmsError)
-    expect(cmsError.getErrorCenter()).toBe(customCenter)
-
+    const cmsError = new CmsErrorInstance()
     expect(() => cmsError.report('cms-user', 'notFound'))
       .toThrow(ErrorCenterError)
     expect(captured).toEqual(['cms-user:notFound'])

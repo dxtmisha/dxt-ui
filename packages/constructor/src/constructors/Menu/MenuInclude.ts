@@ -1,10 +1,13 @@
 // ai-none
 
+import { mergeProps, type Ref } from 'vue'
+import type { ConstrBind } from '@dxtmisha/functional'
+
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
 import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
 import type { MenuExposeInclude, MenuPropsInclude } from './basicTypes'
-import type { MenuSlots } from './types'
+import type { MenuExpose, MenuSlots } from './types'
 import type { MenuProps } from './props'
 
 /**
@@ -24,9 +27,10 @@ export class MenuInclude<
     PropsExtra,
     MenuExposeInclude,
     MenuSlots,
-    any
+    Partial<ConstrBind<MenuProps>>
   > {
-  protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
+  /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
+  protected override readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
     { name: 'getId' },
     { name: 'getOpen', type: 'boolean' },
     { name: 'getControl' },
@@ -53,26 +57,30 @@ export class MenuInclude<
   protected override readonly propsAttrsName = 'menuAttrs'
 
   /**
-   * Exposes the API methods and properties /
-   * Экспортирует API-методы и свойства
-   */
-  override get expose(): MenuExposeInclude {
-    return {
-      ...super.toExpose(),
-      getMenuElement: () => this.element as any
-    }
-  }
-
-  /**
    * Builds and resolves all HTML attributes and classes for binding.
    *
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
+  protected override toBinds(): Partial<ConstrBind<PropsExtra>> {
+    const props = this.getProps()
+
+    return mergeProps(
+      super.toBinds(),
+      props.disabled !== undefined ? { disabled: props.disabled } : {}
+    ) as Partial<ConstrBind<PropsExtra>>
+  }
+
+  /**
+   * Collects and exposes defined proxy methods of the sub-component.
+   *
+   * Собирает и экспортирует определенные прокси-методы субкомпонента.
+   * @returns exposed API object / объект экспортируемого API
+   */
+  protected override toExpose(): MenuExposeInclude {
     return {
-      ...super.toBinds(),
-      disabled: this.getProps().disabled
+      ...super.toExpose(),
+      getMenuElement: () => this.element as Ref<ConstrBind<MenuExpose> | undefined>
     }
   }
 }

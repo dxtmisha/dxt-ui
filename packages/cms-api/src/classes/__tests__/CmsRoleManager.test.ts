@@ -1,8 +1,7 @@
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
+import { ErrorCenter, ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
-import { CmsError } from '../CmsError'
 import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionManager } from '../CmsPermissionManager'
 import { CmsRoleItem } from '../CmsRoleItem'
@@ -142,27 +141,30 @@ describe('CmsRoleManager', () => {
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
-    CmsError.setErrorCenter(errorCenter)
+    ErrorCenter.setIsConsole(false)
     cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
-    errorCenter.addCallback((cause) => {
+    const captureError = (cause: { group?: string, code: string, message?: string }) => {
       capturedErrors.push({
         group: cause.group,
         code: cause.code,
         message: cause.message
       })
-    })
+    }
+    errorCenter.addCallback(captureError)
+    ErrorCenter.addCallback(captureError)
   })
 
   afterEach(() => {
-    CmsError.reset()
+    ErrorCenter.reset()
+    ErrorCenter.setIsConsole(true)
     vi.restoreAllMocks()
   })
 
   it('provides a synchronized CmsPermissionManager and supports configuration overrides', () => {
     const firstMock = createMockDb()
     const secondMock = createMockDb()
-    const secondErrorCenter = new ErrorCenterInstance()
+    const secondError = new CmsErrorInstance(new ErrorCenterInstance())
     const manager = new CmsRoleManager(firstMock.dbInstance, cmsError)
 
     expect(new CmsRoleManager().getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
@@ -171,11 +173,11 @@ describe('CmsRoleManager', () => {
     expect(permissionManager).toBeInstanceOf(CmsPermissionManager)
     expect(manager.getPermissionManager()).toBe(permissionManager)
     expect(permissionManager.getDatabaseInstance()).toBe(firstMock.dbInstance)
-    expect(permissionManager.getErrorCenter()).toBe(errorCenter)
+    expect(permissionManager.getError()).toBe(cmsError)
 
-    manager.setDatabaseInstance(secondMock.dbInstance).setErrorCenter(secondErrorCenter)
+    manager.setDatabaseInstance(secondMock.dbInstance).setError(secondError)
     expect(permissionManager.getDatabaseInstance()).toBe(secondMock.dbInstance)
-    expect(permissionManager.getErrorCenter()).toBe(secondErrorCenter)
+    expect(permissionManager.getError()).toBe(secondError)
   })
 
   it('creates a role with permissions in a transaction and wraps it in CmsRoleItem', async () => {

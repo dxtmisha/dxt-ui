@@ -1,10 +1,9 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  type RawSlots,
-  toBinds
+  type RawSlots
 } from '@dxtmisha/functional'
 
 import { Menu } from './Menu'
@@ -23,7 +22,11 @@ import {
 } from './types'
 
 /**
- * MenuDesign
+ * MenuDesign is a design constructor for the Menu component.
+ * It connects the Menu logic, sets up slots, classes, styles, and defines the rendering function.
+ *
+ * MenuDesign — конструктор дизайна для компонента Menu.
+ * Он связывает логику Menu, настраивает слоты, классы, стили и определяет функцию рендеринга.
  */
 export class MenuDesign<
   COMP extends MenuComponents,
@@ -39,14 +42,17 @@ export class MenuDesign<
     CLASSES,
     P
   > {
+  /** Menu logic orchestrator instance / Экземпляр логического оркестратора Menu */
   protected readonly item: Menu
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   *
+   * Конструктор
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the item / класс для работы с элементом
    */
   constructor(
     name: string,
@@ -71,22 +77,23 @@ export class MenuDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспонируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.window.expose,
+      ...this.item.i('window').expose,
 
-      isSelected: () => this.item.data.isSelected.value,
-      getSelectedList: () => this.item.data.selectedList.value,
-      getSelectedNames: () => this.item.data.selectedNames.value,
-      getSelectedValues: () => this.item.data.selectedValues.value,
+      isSelected: () => this.item.i('data').isSelected.value,
+      getSelectedList: () => this.item.i('data').selectedList.value,
+      getSelectedNames: () => this.item.i('data').selectedNames.value,
+      getSelectedValues: () => this.item.i('data').selectedValues.value,
 
-      loading: () => this.item.request.progress.value,
-      previous: this.item.go.previous,
-      next: this.item.go.next
+      loading: () => this.item.i('request').progress.value,
+      previous: () => this.item.i('go').previous(),
+      next: () => this.item.i('go').next()
     } as EXPOSE
   }
 
@@ -94,6 +101,7 @@ export class MenuDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -111,6 +119,7 @@ export class MenuDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -120,9 +129,10 @@ export class MenuDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   protected initRender(): VNode[] {
-    return this.item.window.render(
+    return this.item.i('window').render(
       {
         control: this.renderControl,
         title: this.renderTitle,
@@ -143,7 +153,8 @@ export class MenuDesign<
    * Generates data for control.
    *
    * Генерирует данные для контроля.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns control virtual node or undefined / виртуальный узел управления или undefined
    */
   readonly renderControl = (
     props: WindowControlItem
@@ -155,13 +166,14 @@ export class MenuDesign<
    * Render title element.
    *
    * Рендер элемента заголовка.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderTitle = (
     props: WindowControlItem
   ): VNode[] => {
-    const children: any[] = [
-      ...this.item.bars.render()
+    const children: VNode[] = [
+      ...this.item.callInstance('bars', item => item.render(), [])
     ]
 
     this.initSlot('title', children, this.getBinds(props))
@@ -173,39 +185,40 @@ export class MenuDesign<
    * Render list element.
    *
    * Рендер элемента списка.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns list container virtual node or undefined / виртуальный узел контейнера списка или undefined
    */
   readonly renderList = (
     props: WindowControlItem
   ): VNode | undefined => {
-    const list = this.item.request.item.value
+    const list = this.item.i('request').item.value
 
     if (list) {
-      const children: any[] = []
+      const children: VNode[] = []
 
       this.initSlot('contextTop', children, this.getBinds(props))
 
       if (!this.props.hideList) {
         children.push(
-          this.components?.render(
+          ...(this.components?.render(
             'list',
-            toBinds(
+            mergeProps(
+              this.item.binds,
               {
-                ...this.item.binds,
                 class: this.classes?.value.list,
 
-                selected: this.item.value.selected.value,
+                selected: this.item.i('value').selected.value,
                 highlight: this.props.highlight,
 
                 list,
-                lite: this.item.menuWindow.lite.value,
+                lite: this.item.i('menuWindow').lite.value,
                 role: this.props.roleList,
                 roleItem: this.props.roleItem
               },
-              this.props.listAttrs
+              this.props.listAttrs ?? {}
             ),
             this.slots as RawSlots
-          ) ?? []
+          ) ?? [])
         )
       }
 
@@ -213,11 +226,13 @@ export class MenuDesign<
 
       return h(
         'div',
-        {
-          ...this.getAttrs(),
-          ref: this.element,
-          onClick: this.item.onClickSlot
-        },
+        mergeProps(
+          this.getAttrs(),
+          {
+            ref: this.element,
+            onClick: this.item.onClickSlot
+          }
+        ),
         children
       )
     }
@@ -229,7 +244,8 @@ export class MenuDesign<
    * Render footer element.
    *
    * Рендер элемента футера.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns footer virtual node or undefined / виртуальный узел футера или undefined
    */
   readonly renderFooter = (
     props: WindowControlItem
@@ -241,14 +257,15 @@ export class MenuDesign<
    * Generates data for control.
    *
    * Генерирует данные для контроля.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns combined menu and window control data / объединенные данные управления меню и окном
    */
   protected getBinds(
     props: WindowControlItem
   ): MenuControlItem {
     return {
       ...props,
-      ...this.item.getControlBinds()
+      ...this.item.slotData
     }
   }
 }

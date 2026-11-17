@@ -1,14 +1,18 @@
-- `title(props: MenuControlItem): any` — Слот для размещения заголовка окна меню.
+- `title(props: MenuControlItem): any` — Слот для размещения пользовательского содержимого в заголовке окна меню.
 - `footer(props: MenuControlItem): any` — Слот для размещения содержимого в нижней части окна меню.
 - `contextTop(props: MenuControlItem): any` — Слот для размещения контекстной области над списком меню.
 - `contextBottom(props: MenuControlItem): any` — Слот для размещения контекстной области под списком меню.
 
 > **MenuControlItem:**
-> - `loading: Ref<boolean>` — состояние загрузки данных меню.
-> - `open: Ref<boolean>` — состояние открытия меню.
+> - `binds: ConstrBind` — готовые привязки атрибутов и обработчиков для элемента-триггера (`v-bind="binds"`).
+> - `loading: Ref<boolean>` — реактивное состояние загрузки данных меню.
+> - `open: Ref<boolean>` — реактивное состояние открытия/закрытия меню.
 > - `isSelected: ComputedRef<boolean>` — наличие выбранных элементов.
-> - `selectedList: Ref<any[]>` — список выбранных элементов.
-> - `selectedNames: Ref<string[]>` — метки выбранных элементов.
-> - `selectedValues: Ref<any[]>` — значения выбранных элементов.
-> - `onclick: (event) => Promise<void>` — обработчик клика для открытия/закрытия меню.
-> - `oncontextmenu: (event) => Promise<void>` — обработчик контекстного меню.
+> - `selectedList: ComputedRef<ListList>` — список выбранных объектов элементов.
+> - `selectedNames: ComputedRef<ListNames>` — метки выбранных элементов.
+> - `selectedValues: ComputedRef<ListDataItem['value'][]>` — значения выбранных элементов.
+> - `previous(): NumberOrStringOrBoolean | undefined` — переключение на предыдущий элемент.
+> - `next(): NumberOrStringOrBoolean | undefined` — переключение на следующий элемент.
+> - `onClick: (event: MouseEvent) => Promise<void>` — обработчик клика для открытия/закрытия меню.
+> - `onKeydown: (event: KeyboardEvent) => Promise<void>` — обработчик клавиатуры для открытия меню.
+> - `onContextmenu: (event: MouseEvent) => Promise<void>` — обработчик контекстного меню.

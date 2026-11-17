@@ -42,6 +42,7 @@ export type MenuEmits
  * Тип, описывающий доступные свойства.
  */
 export interface MenuExpose extends WindowExposeInclude, ListExpose {
+  /** Checks whether data is currently loading / Проверяет, загружаются ли данные в данный момент */
   loading(): boolean
   /** Switches to the previous item/ Переключает на предыдущий элемент */
   previous(): NumberOrStringOrBoolean | undefined

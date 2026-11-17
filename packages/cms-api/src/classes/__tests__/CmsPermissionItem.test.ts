@@ -1,8 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
+import { ErrorCenter, ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
-import { CmsError } from '../CmsError'
 import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
@@ -101,20 +100,23 @@ describe('CmsPermissionItem', () => {
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
-    CmsError.setErrorCenter(errorCenter)
+    ErrorCenter.setIsConsole(false)
     cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
-    errorCenter.addCallback((cause) => {
+    const captureError = (cause: { group?: string, code: string, message?: string }) => {
       capturedErrors.push({
         group: cause.group,
         code: cause.code,
         message: cause.message
       })
-    })
+    }
+    errorCenter.addCallback(captureError)
+    ErrorCenter.addCallback(captureError)
   })
 
   afterEach(() => {
-    CmsError.reset()
+    ErrorCenter.reset()
+    ErrorCenter.setIsConsole(true)
     vi.restoreAllMocks()
   })
 

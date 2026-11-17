@@ -214,7 +214,7 @@ export const ListEvents: Story = {
     await expect(output).toHaveTextContent('Event: clickLite:alpha')
   }
 }
-export const ListExpose: Story = {
+export const ListExposeApi: Story = {
   name: 'Программный API (expose)',
   render: () => ({
     components: { D1List },

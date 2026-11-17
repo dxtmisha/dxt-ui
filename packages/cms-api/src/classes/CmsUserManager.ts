@@ -12,8 +12,7 @@ import {
   isArray,
   isPositiveInteger,
   isString,
-  uniqueArray,
-  type ErrorCenterInstance
+  uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
@@ -294,16 +293,16 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
   }
 
   /**
-   * Sets or overrides the ErrorCenter instance and propagates it to child role and permission managers.
+   * Sets or overrides the CmsErrorInstance handler and propagates it to child role and permission managers.
    *
-   * Устанавливает или заменяет экземпляр ErrorCenter и передаёт его дочерним менеджерам ролей и прав доступа.
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * Устанавливает или заменяет обработчик ошибок CmsErrorInstance и передаёт его дочерним менеджерам ролей и прав доступа.
+   * @param error CMS error instance handler / Обработчик ошибок CMS
    * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
    */
-  override setErrorCenter(errorCenter: ErrorCenterInstance): this {
-    super.setErrorCenter(errorCenter)
-    this.roleManager?.setErrorCenter(errorCenter)
-    this.permissionManager?.setErrorCenter(errorCenter)
+  override setError(error: CmsErrorInstance): this {
+    super.setError(error)
+    this.roleManager?.setError(error)
+    this.permissionManager?.setError(error)
     return this
   }
 

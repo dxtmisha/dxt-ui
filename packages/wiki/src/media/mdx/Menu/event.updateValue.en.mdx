@@ -2,33 +2,41 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 ### `updateValue`
 
-Event fires when the selected value in the menu changes.
+Event fires when the selected value changes programmatically (for example, via `previous()` / `next()` navigation) while `isSelectedByValue` is enabled.
 
 **Parameters:**
 - `value?: NumberOrStringOrBoolean` — new selected value
 
 <Source
     code={`
-<script setup>
-const handleUpdateValue = (value) => {
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { NumberOrStringOrBoolean } from '@dxtmisha/functional'
+
+const selected = ref('item1')
+const menuItems = [
+  { label: 'Menu Item 1', value: 'item1' },
+  { label: 'Menu Item 2', value: 'item2' },
+  { label: 'Menu Item 3', value: 'item3' }
+]
+
+const handleUpdateValue = (value?: NumberOrStringOrBoolean) => {
   console.log('New value:', value)
-  console.log('Value type:', typeof value)
 }
 </script>
 
 <template>
   <Menu
-    :isSelectedByValue="true"
-    @updateValue="handleUpdateValue"
+    v-model:selected="selected"
+    :list="menuItems"
+    is-selected-by-value
+    @update-value="handleUpdateValue"
   >
-    <template #default>
-      <MenuItem value="item1">Menu Item 1</MenuItem>
-      <MenuItem value="item2">Menu Item 2</MenuItem>
-      <MenuItem value="item3">Menu Item 3</MenuItem>
+    <template #control="{ next }">
+      <button type="button" @click="next">Next Item</button>
     </template>
   </Menu>
 </template>
   `}
     language="html"
 />
-

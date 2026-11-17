@@ -11,16 +11,20 @@ import type { MenuProps } from './props'
  * Класс для работы с запросами данных списка.
  */
 export class MenuRequest {
+  /** Loading state flag for active requests / Флаг состояния загрузки для активных запросов */
   readonly progress = ref<boolean>(false)
 
+  /** Cached response buffer / Буфер кэшированного ответа */
   protected readonly buffer = ref<ListRecord>()
 
   /**
    * Constructor
-   * @param props input data/ входные данные
+   *
+   * Конструктор
+   * @param props input data / входные данные
    */
   constructor(
-    protected readonly props: MenuProps
+    protected readonly props: Readonly<MenuProps>
   ) {
   }
 
@@ -35,6 +39,7 @@ export class MenuRequest {
    * Checks whether a request is needed.
    *
    * Проверяет, нужно ли делать запрос.
+   * @returns true if ajax or request option is provided / true, если задано ajax или request
    */
   is(): boolean {
     return Boolean(
@@ -47,6 +52,7 @@ export class MenuRequest {
    * Prepares data.
    *
    * Подготавливает данные.
+   * @returns promise resolving to true when preparation completes / промис, разрешающийся в true по завершении подготовки
    */
   async preparation(): Promise<boolean> {
     await this.update()
@@ -67,13 +73,14 @@ export class MenuRequest {
    * Returns data from AJAX or request function.
    *
    * Возвращает данные из AJAX или функции запроса.
+   * @returns fetched list record or undefined / загруженный список данных или undefined
    */
   protected async getAjax(): Promise<ListRecord | undefined> {
     if (isFunction(this.props.ajax)) {
       return executePromise(this.props.ajax)
     }
 
-    return await Api.request<Record<string, any>>({
+    return await Api.request<ListRecord>({
       path: this.props.ajax,
       ...this.props.request
     })
@@ -83,6 +90,7 @@ export class MenuRequest {
    * Executes a request to retrieve data.
    *
    * Выполняет запрос для получения данных.
+   * @param callback callback invoked with retrieved data / коллбэк, вызываемый с полученными данными
    */
   protected async read(callback: (data: ListRecord | undefined) => void): Promise<void> {
     if (this.is()) {
@@ -96,9 +104,11 @@ export class MenuRequest {
 
       this.progress.value = true
 
-      callback(await this.getAjax())
-
-      this.progress.value = false
+      try {
+        callback(await this.getAjax())
+      } finally {
+        this.progress.value = false
+      }
     }
   }
 }

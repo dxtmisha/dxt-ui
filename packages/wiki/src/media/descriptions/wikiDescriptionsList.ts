@@ -230,7 +230,7 @@ await expect(output).toHaveTextContent('Event: clickLite:alpha')
       `
     },
     {
-      id: 'ListExpose',
+      id: 'ListExposeApi',
       name: {
         en: 'Expose API',
         ru: 'Программный API (expose)'
@@ -411,7 +411,7 @@ await waitFor(() => {
     `,
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'selected'}/>
-<Canvas of={Component.ListExpose}/>
+<Canvas of={Component.ListExposeApi}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'List'} type={'slot.html'}/>

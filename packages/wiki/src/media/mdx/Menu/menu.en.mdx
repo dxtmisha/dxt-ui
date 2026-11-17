@@ -2,34 +2,33 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 Component for creating popup menus, dropdown lists, and context menus with navigation and action support.
 
-Menu combines the functionality of Window (positioning and visibility management), Bars (action and tool panel), and List (displaying items, groups, and nested submenus). The component provides keyboard navigation, nested structure support, asynchronous data loading, optimized rendering mode for large lists, and full control over open/close state.
+`Menu` combines the functionality of `Window` (positioning and visibility management), `Bars` (action and tool panel), and `List` (displaying items, groups, and nested submenus). The component provides keyboard navigation, nested structure support, asynchronous data loading, optimized rendering mode for large lists, and full control over selection and window state.
 
 **Key Features:**
 
-- Integration of Window, Bars, and List components
-- Keyboard navigation through menu items
+- Integration of `Window`, `Bars`, and `List` components
+- Keyboard navigation and programmatic step movement (`previous` / `next`)
 - Nested submenus with unlimited depth
-- Asynchronous data loading via AJAX
-- Lite mode for optimizing large lists (liteThreshold)
-- Search and filtering of menu items
-- Management of selected items (selected)
-- Flexible positioning relative to anchor
+- Asynchronous data loading via `ajax`, `request`, and `cache`
+- Lite rendering mode for large lists (`liteThreshold`)
+- Built-in search, filtering (`showSearch`, `filterMode`), and text highlighting (`highlight`)
+- Selection state management (`selected`, `isSelectedByValue`, `selectionStyle`, `max`)
+- Custom field mapping (`keyLabel`, `keyValue`) and attribute forwarding (`listAttrs`, `itemAttrs`, `barsAttrs`, `windowAttrs`)
 
 **Typical Use Cases:**
 
-- Navigation dropdown menus
-- Right-click context menus
-- Action and operation menus
-- Selectors with search and filtering
-- Multi-level navigation menus
-- Menus with dynamic data loading
+- Navigation dropdown menus and action panels
+- Context menus and toolbars with headers
+- Searchable selectors and multi-select lists
+- Menus with dynamic asynchronous data loading
 
 <Source
     code={`
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import type { EventClickValue } from '@dxtmisha/constructor'
 
-const isOpen = ref(false)
+const selected = ref('edit')
 const menuItems = ref([
   { label: 'Create', value: 'create', icon: 'add' },
   { label: 'Edit', value: 'edit', icon: 'edit' },
@@ -45,25 +44,25 @@ const menuItems = ref([
   }
 ])
 
-const handleClick = (value) => {
-  console.log('Selected item:', value)
-  isOpen.value = false
+const handleClick = (_event: MouseEvent, value: EventClickValue) => {
+  console.log('Selected item:', value.value)
 }
 </script>
 
 <template>
-  <button @click="isOpen = true">Open menu</button>
-
   <Menu
-    v-model:open="isOpen"
+    v-model:selected="selected"
     :list="menuItems"
+    is-selected-by-value
     @click="handleClick"
   >
-    <template #control="{ onclick }">
-      <button @click="onclick">Actions</button>
+    <template #control="{ binds }">
+      <button type="button" v-bind="binds">Actions</button>
     </template>
   </Menu>
 </template>
   `}
     language="html"
 />
+
+> `Menu` provides a unified, accessible foundation for dropdowns, command palettes, and nested action menus.

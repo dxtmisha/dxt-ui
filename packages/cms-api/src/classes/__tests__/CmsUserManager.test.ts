@@ -1,8 +1,7 @@
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
+import { ErrorCenter, ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
-import { CmsError } from '../CmsError'
 import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionManager } from '../CmsPermissionManager'
 import { CmsRoleManager } from '../CmsRoleManager'
@@ -172,20 +171,23 @@ describe('CmsUserManager', () => {
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
-    CmsError.setErrorCenter(errorCenter)
+    ErrorCenter.setIsConsole(false)
     cmsError = new CmsErrorInstance(errorCenter)
     capturedErrors = []
-    errorCenter.addCallback((cause) => {
+    const captureError = (cause: { group?: string, code: string, message?: string }) => {
       capturedErrors.push({
         group: cause.group,
         code: cause.code,
         message: cause.message
       })
-    })
+    }
+    errorCenter.addCallback(captureError)
+    ErrorCenter.addCallback(captureError)
   })
 
   afterEach(() => {
-    CmsError.reset()
+    ErrorCenter.reset()
+    ErrorCenter.setIsConsole(true)
     vi.restoreAllMocks()
     vi.useRealTimers()
   })
@@ -197,7 +199,7 @@ describe('CmsUserManager', () => {
 
       const firstMock = createMockDb()
       const secondMock = createMockDb()
-      const secondErrorCenter = new ErrorCenterInstance()
+      const secondError = new CmsErrorInstance(new ErrorCenterInstance())
       const manager = new CmsUserManager(firstMock.dbInstance, cmsError)
 
       const roleManager = manager.getRoleManager()
@@ -212,13 +214,13 @@ describe('CmsUserManager', () => {
       expect(manager.getDatabaseInstance()).toBe(firstMock.dbInstance)
       expect(manager.getDatabase()).toBe(firstMock.db)
       expect(manager.setDatabaseInstance(secondMock.dbInstance)).toBe(manager)
-      expect(manager.setErrorCenter(secondErrorCenter)).toBe(manager)
+      expect(manager.setError(secondError)).toBe(manager)
       expect(manager.getDatabaseInstance()).toBe(secondMock.dbInstance)
       expect(manager.getDatabase()).toBe(secondMock.db)
       expect(roleManager.getDatabaseInstance()).toBe(secondMock.dbInstance)
-      expect(roleManager.getErrorCenter()).toBe(secondErrorCenter)
+      expect(roleManager.getError()).toBe(secondError)
       expect(permissionManager.getDatabaseInstance()).toBe(secondMock.dbInstance)
-      expect(permissionManager.getErrorCenter()).toBe(secondErrorCenter)
+      expect(permissionManager.getError()).toBe(secondError)
     })
   })
 

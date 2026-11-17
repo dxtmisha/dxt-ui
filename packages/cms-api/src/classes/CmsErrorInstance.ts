@@ -29,30 +29,6 @@ export class CmsErrorInstance {
   }
 
   /**
-   * Returns the underlying ErrorCenter instance.
-   *
-   * Возвращает используемый экземпляр ErrorCenter.
-   * @returns ErrorCenter instance / Экземпляр ErrorCenter
-   */
-  getErrorCenter(): ErrorCenterInstance {
-    return this.errorCenter
-  }
-
-  /**
-   * Sets or overrides the ErrorCenter instance used for error reporting.
-   *
-   * Устанавливает или заменяет экземпляр ErrorCenter для регистрации ошибок.
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
-   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
-   */
-  setErrorCenter(errorCenter: ErrorCenterInstance): this {
-    this.errorCenter = errorCenter
-    this.errorThrow = new ErrorCenterThrow(errorCenter)
-    this.registerCauses()
-    return this
-  }
-
-  /**
    * Reports an error via ErrorCenterThrow and throws an ErrorCenterError.
    *
    * Регистрирует ошибку через ErrorCenterThrow и выбрасывает исключение ErrorCenterError.

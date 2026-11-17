@@ -6,8 +6,7 @@ import {
 } from 'drizzle-orm'
 import {
   isPositiveInteger,
-  uniqueArray,
-  type ErrorCenterInstance
+  uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { useCmsDb } from '../composables/useCmsDb'
@@ -80,16 +79,6 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
-   * Returns the ErrorCenter instance used for centralized error reporting.
-   *
-   * Возвращает экземпляр ErrorCenter, используемый для централизованной регистрации ошибок.
-   * @returns ErrorCenter instance / Экземпляр ErrorCenter
-   */
-  getErrorCenter(): ErrorCenterInstance {
-    return this.error.getErrorCenter()
-  }
-
-  /**
    * Sets or overrides the CmsDbInstance wrapper used by this instance.
    *
    * Устанавливает или заменяет экземпляр CmsDbInstance, используемый текущим объектом.
@@ -102,14 +91,14 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
-   * Sets or overrides the ErrorCenter instance used for error reporting.
+   * Sets or overrides the CmsErrorInstance handler used for error reporting.
    *
-   * Устанавливает или заменяет экземпляр ErrorCenter для регистрации ошибок.
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * Устанавливает или заменяет обработчик ошибок CmsErrorInstance.
+   * @param error CMS error instance handler / Обработчик ошибок CMS
    * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
    */
-  setErrorCenter(errorCenter: ErrorCenterInstance): this {
-    this.error.setErrorCenter(errorCenter)
+  setError(error: CmsErrorInstance): this {
+    this.error = error
     return this
   }
 

@@ -1,8 +1,4 @@
-import {
-  ErrorCenter,
-  ServerStorage,
-  type ErrorCenterInstance
-} from '@dxtmisha/functional-basic'
+import { ServerStorage } from '@dxtmisha/functional-basic'
 import { CmsErrorInstance } from './CmsErrorInstance'
 
 /** Key for the CMS error instance in server storage / Ключ экземпляра ошибок CMS в серверном хранилище */
@@ -30,38 +26,9 @@ export class CmsError {
   }
 
   /**
-   * Returns the underlying ErrorCenter instance of the active CmsErrorInstance.
+   * Reports an error via the active CmsErrorInstance and throws an ErrorCenterError.
    *
-   * Возвращает используемый экземпляр ErrorCenter активного CmsErrorInstance.
-   * @returns ErrorCenter instance / Экземпляр ErrorCenter
-   */
-  static getErrorCenter(): ErrorCenterInstance {
-    return this.getItem().getErrorCenter()
-  }
-
-  /**
-   * Sets or overrides the ErrorCenter instance on the active CmsErrorInstance.
-   *
-   * Устанавливает или заменяет экземпляр ErrorCenter у активного CmsErrorInstance.
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
-   */
-  static setErrorCenter(errorCenter: ErrorCenterInstance): void {
-    this.getItem().setErrorCenter(errorCenter)
-  }
-
-  /**
-   * Resets the active CmsErrorInstance back to the default ErrorCenter.
-   *
-   * Сбрасывает активный экземпляр CmsErrorInstance к стандартному ErrorCenter.
-   */
-  static reset(): void {
-    this.getItem().setErrorCenter(ErrorCenter.getItem())
-  }
-
-  /**
-   * Reports an error via the active CmsErrorInstance and throws an Error.
-   *
-   * Регистрирует ошибку через активный CmsErrorInstance и выбрасывает исключение Error.
+   * Регистрирует ошибку через активный CmsErrorInstance и выбрасывает исключение ErrorCenterError.
    * @param group Error group / Группа ошибки
    * @param code Error code within the group / Код ошибки в группе
    * @param details Optional raw error payload / Необязательные дополнительные детали ошибки

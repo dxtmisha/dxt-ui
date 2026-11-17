@@ -6,48 +6,54 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 **Свойства:**
 
-- `ajax` — включает режим удалённой загрузки данных (строка URL или функция)
+- `ajax` — строка URL или функция загрузки, возвращающая `ListRecord` (или `Promise<ListRecord>`)
 - `request` — объект типа `ApiFetch` с настройками HTTP-запроса
-- `cache` — включает кэширование загруженных элементов меню
+- `cache` — включает кэширование загруженных элементов меню после первого запроса
 
-Свойства работают совместно: если `ajax` не задан или равен `false`, меню использует локальные данные. При активации `ajax` (строка URL или `true`), `request` определяет параметры HTTP-запроса (метод, заголовки, тело), а `cache` управляет сохранением данных. При включённом `cache` повторные открытия меню используют сохранённые данные вместо новых запросов, снижая нагрузку на сервер.
+Когда задано `ajax` или `request`, `Menu` запускает загрузку данных на этапе подготовки окна перед открытием и передаёт реактивный флаг `loading` в слоты и `expose`. При включённом `cache` повторные открытия меню используют сохранённые данные без повторных запросов.
 
 <Source
     code={`
-<script setup>
-import { ref } from 'vue'
-
-const isOpen = ref(false)
+<script setup lang="ts">
+const loadMenu = async () => [
+  { label: 'Панель', value: 'dashboard' },
+  { label: 'Настройки', value: 'settings' }
+]
 </script>
 
 <template>
-  <!-- Загрузка с URL -->
+  <!-- Загрузка по URL с кэшированием -->
   <Menu
-    v-model:open="isOpen"
     ajax="/api/menu-items"
-    :cache="true"
-  />
+    cache
+  >
+    <template #control="{ binds, loading }">
+      <button type="button" v-bind="binds">
+        {{ loading.value ? 'Загрузка...' : 'Открыть меню по URL' }}
+      </button>
+    </template>
+  </Menu>
 
   <!-- С настройками запроса -->
   <Menu
-    v-model:open="isOpen"
     ajax="/api/menu"
     :request="{
       method: 'POST',
-      headers: { 'X-Custom': 'value' },
-      auth: true
+      headers: { 'X-Custom': 'value' }
     }"
-    :cache="true"
-  />
+    cache
+  >
+    <template #control="{ binds }">
+      <button type="button" v-bind="binds">Меню с request</button>
+    </template>
+  </Menu>
 
-  <!-- Функция загрузки -->
-  <Menu
-    v-model:open="isOpen"
-    :ajax="async () => {
-      const response = await fetch('/api/menu')
-      return response.json()
-    }"
-  />
+  <!-- Асинхронная функция загрузки -->
+  <Menu :ajax="loadMenu">
+    <template #control="{ binds }">
+      <button type="button" v-bind="binds">Меню из функции</button>
+    </template>
+  </Menu>
 </template>
   `}
     language="html"

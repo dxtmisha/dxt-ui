@@ -1,37 +1,40 @@
 // ai-none
 
 import { ref } from 'vue'
-import { getLength } from '@dxtmisha/functional-basic'
+import { getLength } from '@dxtmisha/functional'
 
-import { MenuRequest } from './MenuRequest'
+import type { MenuRequest } from './MenuRequest'
 
 import type { WindowProps } from '../Window'
 import type { MenuProps } from './props'
 
 /**
- * Window manager for Menu component
+ * Window manager for Menu component.
  *
- * Класс управления окном для компонента Menu
+ * Класс управления окном для компонента Menu.
  */
 export class MenuWindow {
+  /** Flag indicating whether lite rendering mode is active / Флаг, указывающий, активен ли упрощенный режим рендеринга */
   readonly lite = ref<boolean>()
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param request menu request handler/ обработчик запросов меню
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param request getter returning menu request handler / функция, возвращающая обработчик запросов меню
    */
   constructor(
-    protected readonly props: MenuProps,
-    protected readonly request: MenuRequest
+    protected readonly props: Readonly<MenuProps>,
+    protected readonly request: () => MenuRequest
   ) {
   }
 
   /**
-   * Returns extra methods for window management
+   * Returns extra methods for window management.
    *
-   * Возвращает дополнительные методы для управления окном
-   * @returns object with window management methods/ объект с методами управления окном
+   * Возвращает дополнительные методы для управления окном.
+   * @returns object with window management methods / объект с методами управления окном
    */
   getExtra(): WindowProps {
     return {
@@ -45,16 +48,16 @@ export class MenuWindow {
   }
 
   /**
-   * Preparing data before opening the menu
+   * Preparing data before opening the menu.
    *
-   * Подготовка данных перед открытием меню
-   * @returns Promise that resolves to true when preparation is complete/
-   * Promise, который разрешается в true после завершения подготовки
+   * Подготовка данных перед открытием меню.
+   * @returns Promise that resolves when preparation is complete / Promise, который разрешается после завершения подготовки
    */
   protected readonly preparation = async (): Promise<void> => {
-    await this.request.preparation()
+    const request = this.request()
+    await request.preparation()
 
-    const list = this.request.item.value
+    const list = request.item.value
 
     if (
       list
@@ -66,11 +69,10 @@ export class MenuWindow {
   }
 
   /**
-   * Actions performed after opening the window
+   * Actions performed after opening the window.
    *
-   * Действия, выполняемые после открытия окна
-   * @returns Promise that resolves to true when opening actions are complete/
-   * Promise, который разрешается в true после завершения действий открытия
+   * Действия, выполняемые после открытия окна.
+   * @returns Promise that resolves to true when opening actions are complete / Promise, который разрешается в true после завершения действий открытия
    */
   protected readonly opening = async (): Promise<boolean> => {
     this.lite.value = false
@@ -79,11 +81,10 @@ export class MenuWindow {
   }
 
   /**
-   * Actions performed when closing the window
+   * Actions performed when closing the window.
    *
-   * Действия, выполняемые при закрытии окна
-   * @returns Promise that resolves to true when closing actions are complete/
-   * Promise, который разрешается в true после завершения действий закрытия
+   * Действия, выполняемые при закрытии окна.
+   * @returns Promise that resolves to true when closing actions are complete / Promise, который разрешается в true после завершения действий закрытия
    */
   protected readonly closing = async (): Promise<boolean> => {
     this.lite.value = false
