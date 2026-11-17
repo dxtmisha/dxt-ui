@@ -85,6 +85,10 @@ export type ListItemPropsBasic<
     listId?: number
     /** Search string for highlighting/ Строка поиска для подсветки */
     search?: string
+    /** Lazy rendering of item contents/ Ленивый рендеринг содержимого элемента */
+    lazy?: boolean
+    /** Root margin for lazy visibility observer/ Отступ области наблюдения ленивого рендеринга */
+    lazyMargin?: string
   }
 
 /**
@@ -103,6 +107,7 @@ export const defaultsListItem = {
   tabindex: '-1',
   role: 'option',
   selectionStyle: 'none',
+  lazy: true,
   ...{
     // :default [!] System label / Системная метка
     iconAlign: 'center',

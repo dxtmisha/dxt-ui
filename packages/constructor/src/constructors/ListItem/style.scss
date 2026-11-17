@@ -99,6 +99,16 @@
     cursor: default;
   }
 
+  &--lazy {
+    content-visibility: auto;
+    contain-intrinsic-height: ui.v('??height', 40px);
+
+    &--hidden {
+      visibility: hidden;
+      min-height: ui.v('??height', 40px);
+    }
+  }
+
   &--controlPosition {
     &--start {
       @include ui.subclass('control') {

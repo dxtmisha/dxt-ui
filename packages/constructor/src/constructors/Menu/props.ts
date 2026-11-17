@@ -89,6 +89,10 @@ export type MenuPropsBasic<
     isSelectedByValue?: boolean
     /** Whether the menu is embedded/ Является ли меню встроенным */
     embedded?: boolean
+    /** Lazy rendering of list items via IntersectionObserver/ Ленивый рендеринг элементов списка через IntersectionObserver */
+    lazy?: boolean
+    /** Root margin for lazy visibility observer/ Отступ области наблюдения ленивого рендеринга */
+    lazyMargin?: string
   }
 
 /**
@@ -110,6 +114,7 @@ export const defaultsMenu = {
   tag: 'a',
   step: 1,
   autoClose: true,
+  lazy: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

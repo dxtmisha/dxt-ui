@@ -23,6 +23,7 @@ import { RippleInclude } from '../Ripple'
 import { SkeletonInclude } from '../Skeleton'
 
 import type { AriaList } from '../../types/ariaTypes'
+import { ListItemLazy } from './ListItemLazy'
 import type { ListItemProps } from './props'
 import type { ListItemComponents, ListItemEmits, ListItemSlots } from './types'
 
@@ -42,6 +43,8 @@ export type ListItemConstructors = {
   icon: typeof IconTrailingInclude
   /** Label highlight constructor / Конструктор метки с подсветкой */
   label: typeof LabelHighlightInclude
+  /** Lazy rendering constructor / Конструктор ленивого рендеринга */
+  lazy: typeof ListItemLazy
   /** Prefix constructor / Конструктор префикса */
   prefix: typeof PrefixInclude
   /** Progress constructor / Конструктор индикатора прогресса */
@@ -135,6 +138,15 @@ export class ListItem extends DesignLogicAbstract<
         this.slots,
         undefined,
         () => this.callInstance('skeleton', item => item)
+      ]
+    },
+    lazy: {
+      item: ListItemLazy,
+      canCreate: () => ListItemLazy.is(this.props),
+      parameters: () => [
+        this.props,
+        this.element,
+        this.naming
       ]
     },
     prefix: {
@@ -258,7 +270,8 @@ export class ListItem extends DesignLogicAbstract<
       [this.naming.getStatusClass('selected')]: Boolean(this.props.selected && selectionStyle === 'none'),
       [this.naming.getStatusClass('selectionStyle')]: selectionStyle !== 'none',
       [this.naming.getStatusClass('description')]: DescriptionInclude.is(this.props, this.slots),
-      [getClassTagAStatic(this.naming.getDesign())]: true
+      [getClassTagAStatic(this.naming.getDesign())]: true,
+      ...this.callInstance('lazy', item => item.classes, {})
     }
 
     if (this.props.selectionStyle) {

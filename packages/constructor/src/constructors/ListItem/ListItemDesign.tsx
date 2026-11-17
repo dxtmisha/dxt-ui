@@ -132,16 +132,18 @@ export class ListItemDesign<
 
     const children: VNode[] = []
 
-    this.initSlot('leading', children)
-    children.push(...this.renderBody())
-    children.push(...this.renderTrailing())
+    if (this.item.callInstance('lazy', item => item.is(), true)) {
+      this.initSlot('leading', children)
+      children.push(...this.renderBody())
+      children.push(...this.renderTrailing())
 
-    children.push(
-      ...this.item.callInstance('icon', item => item.render(), []),
-      ...this.item.callInstance('progress', item => item.render(), []),
-      ...this.renderControl(),
-      ...this.item.callInstance('ripple', item => item.render(), [])
-    )
+      children.push(
+        ...this.item.callInstance('icon', item => item.render(), []),
+        ...this.item.callInstance('progress', item => item.render(), []),
+        ...this.renderControl(),
+        ...this.item.callInstance('ripple', item => item.render(), [])
+      )
+    }
 
     return h(
       this.item.tag,

@@ -488,6 +488,17 @@ export const wikiOption: StorybookArgsToList = {
     },
     hide: true
   },
+  lazyMargin: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Root margin offset for IntersectionObserver in lazy rendering mode',
+        ru: 'Отступ области наблюдения IntersectionObserver для ленивого рендеринга'
+      }
+    },
+    hide: true
+  },
   limit: {
     type: StorybookControl.select,
     options: {

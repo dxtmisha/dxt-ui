@@ -25,6 +25,8 @@ const propsNames: StorybookProps = [
   { name: 'itemAttrs', type: 'ConstrBind<ListItemProps>' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },
+  { name: 'lazy', type: 'boolean' },
+  { name: 'lazyMargin', type: 'string' },
   { name: 'list', type: 'ListRecord<ListItemProps>' },
   { name: 'listAttrs', type: 'ConstrBind<ListProps>' },
   { name: 'liteThreshold', type: 'number' },

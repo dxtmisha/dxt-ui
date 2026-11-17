@@ -99,6 +99,10 @@ export type ListPropsBasic<
     /** Technical/ Технические свойства */
     /** Whether to enable external control/ Включено ли внешнее управление */
     control?: boolean
+    /** Lazy rendering of list items via IntersectionObserver/ Ленивый рендеринг элементов списка через IntersectionObserver */
+    lazy?: boolean
+    /** Root margin for lazy visibility observer/ Отступ области наблюдения ленивого рендеринга */
+    lazyMargin?: string
   }
 
 /**
@@ -119,6 +123,7 @@ export const defaultsList = {
   tag: 'div',
   role: 'listbox',
   tabindex: 0,
+  lazy: true,
   ...{
     // :default [!] System label / Системная метка
     axis: 'y'

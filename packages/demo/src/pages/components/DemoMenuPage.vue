@@ -148,6 +148,9 @@ const selectedLargePlain = ref('plain-1')
 const selectedLargeIcons = ref('icon-1')
 const selectedLargePictures = ref('picture-1')
 const selectedLargeMixed512 = ref('mixed-1')
+const selectedLargeMixed512Lazy = ref('mixed-1')
+const selectedLargeMixed512NoLite = ref('mixed-1')
+const selectedLargeMixed512NoLiteLazy = ref('mixed-1')
 
 const selectedAjax = ref('settings')
 const ajaxFetchCount = ref(0)
@@ -604,6 +607,7 @@ const { eventName, onEvent } = useDemoEvent()
           <D1Menu
             v-model:selected="selectedLargeMixed512"
             :list="largeMixed512Items"
+            :lazy="false"
             is-selected-by-value
             show-search
             filter-mode
@@ -616,12 +620,66 @@ const { eventName, onEvent } = useDemoEvent()
               />
             </template>
           </D1Menu>
+
+          <D1Menu
+            v-model:selected="selectedLargeMixed512Lazy"
+            :list="largeMixed512Items"
+            is-selected-by-value
+            show-search
+            filter-mode
+          >
+            <template #control="{ binds }">
+              <D1Button
+                v-bind="binds"
+                label="Large List: Mixed 512 (Lazy)"
+                tonal
+              />
+            </template>
+          </D1Menu>
+
+          <D1Menu
+            v-model:selected="selectedLargeMixed512NoLite"
+            :list="largeMixed512Items"
+            :lite-threshold="0"
+            :lazy="false"
+            is-selected-by-value
+            show-search
+            filter-mode
+          >
+            <template #control="{ binds }">
+              <D1Button
+                v-bind="binds"
+                label="Large List: Mixed 512 (No Lite)"
+                outline
+              />
+            </template>
+          </D1Menu>
+
+          <D1Menu
+            v-model:selected="selectedLargeMixed512NoLiteLazy"
+            :list="largeMixed512Items"
+            :lite-threshold="0"
+            is-selected-by-value
+            show-search
+            filter-mode
+          >
+            <template #control="{ binds }">
+              <D1Button
+                v-bind="binds"
+                label="Large List: Mixed 512 (No Lite, Lazy)"
+                outline
+              />
+            </template>
+          </D1Menu>
         </DemoFlex>
         <DemoFlex>
           <DemoValue label="largePlain" :value="selectedLargePlain"/>
           <DemoValue label="largeIcons" :value="selectedLargeIcons"/>
           <DemoValue label="largePictures" :value="selectedLargePictures"/>
           <DemoValue label="largeMixed512" :value="selectedLargeMixed512"/>
+          <DemoValue label="largeMixed512Lazy" :value="selectedLargeMixed512Lazy"/>
+          <DemoValue label="largeMixed512NoLite" :value="selectedLargeMixed512NoLite"/>
+          <DemoValue label="largeMixed512NoLiteLazy" :value="selectedLargeMixed512NoLiteLazy"/>
         </DemoFlex>
       </D1Group>
 

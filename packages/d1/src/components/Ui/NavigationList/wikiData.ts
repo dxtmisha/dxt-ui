@@ -24,6 +24,8 @@ const propsNames: StorybookProps = [
   { name: 'itemMenuAttrs', type: 'ConstrBind<NavigationItemProps>' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },
+  { name: 'lazy', type: 'boolean' },
+  { name: 'lazyMargin', type: 'string' },
   { name: 'list', type: 'ListRecord<NavigationItemProps>' },
   { name: 'lite', type: 'boolean' },
   { name: 'liteThreshold', type: 'number' },

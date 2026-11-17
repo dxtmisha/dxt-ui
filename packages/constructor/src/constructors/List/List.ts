@@ -184,6 +184,8 @@ export class List extends DesignLogicAbstract<
         tag: this.props.tag,
         divider: this.props.divider,
         selectionStyle: this.props.selectionStyle,
+        lazy: this.props.lazy,
+        lazyMargin: this.props.lazyMargin,
         onClick: this.i('event').onClick
       },
       this.props.itemAttrs ?? {},
