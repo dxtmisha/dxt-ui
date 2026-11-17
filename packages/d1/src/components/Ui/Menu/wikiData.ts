@@ -26,6 +26,7 @@ const propsNames: StorybookProps = [
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },
   { name: 'lazy', type: 'boolean' },
+  { name: 'lazyCacheHeight', type: 'boolean' },
   { name: 'lazyMargin', type: 'string' },
   { name: 'list', type: 'ListRecord<ListItemProps>' },
   { name: 'listAttrs', type: 'ConstrBind<ListProps>' },

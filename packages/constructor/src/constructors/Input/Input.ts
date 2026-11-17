@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import { mergeProps, type Ref } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
@@ -230,7 +230,11 @@ export class Input extends DesignLogicAbstract<
       item: FieldValueInclude<NumberOrString>,
       parameters: () => [
         this.props,
-        () => this.i('elementItem')
+        () => this.i('elementItem'),
+        undefined,
+        true,
+        false,
+        true
       ]
     },
     visibility: {
@@ -274,16 +278,23 @@ export class Input extends DesignLogicAbstract<
     this.callInstance('form', item => item)
   }
 
-  /** Input binding values and event handlers / Значения привязок ввода и обработчики событий */
+  /**
+   * Input binding values and event handlers.
+   *
+   * Значения привязок ввода и обработчики событий.
+   * @returns input element bindings / привязки элемента ввода
+   */
   get binds(): ConstrBind {
     const event = this.i('event')
 
-    return {
-      ...this.i('attributes').listForInput,
-      value: this.i('value').item.value,
-      onBlur: event.onBlur,
-      onInput: event.onInput,
-      onChange: event.onChange
-    }
+    return mergeProps(
+      this.i('attributes').listForInput,
+      {
+        value: this.i('value').item.value,
+        onBlur: event.onBlur,
+        onInput: event.onInput,
+        onChange: event.onChange
+      }
+    )
   }
 }

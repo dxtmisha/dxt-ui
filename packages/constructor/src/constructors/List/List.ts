@@ -186,6 +186,7 @@ export class List extends DesignLogicAbstract<
         selectionStyle: this.props.selectionStyle,
         lazy: this.props.lazy,
         lazyMargin: this.props.lazyMargin,
+        lazyCacheHeight: this.props.lazyCacheHeight,
         onClick: this.i('event').onClick
       },
       this.props.itemAttrs ?? {},

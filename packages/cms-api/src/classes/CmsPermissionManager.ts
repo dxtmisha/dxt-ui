@@ -14,14 +14,12 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
-import { normalizeCmsLimit } from '../functions/normalizeCmsLimit'
-import { normalizeCmsOffset } from '../functions/normalizeCmsOffset'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
+import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type { CmsPermission } from '../types/cmsDbTypes'
@@ -184,8 +182,8 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    */
   async getList(options: CmsPermissionListOptions = {}): Promise<CmsPermissionListResult> {
     const database = this.getDatabase()
-    const limit = normalizeCmsLimit(options.limit)
-    const offset = normalizeCmsOffset(options.offset)
+    const limit = CmsVerification.normalizeLimit(options.limit)
+    const offset = CmsVerification.normalizeOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
     const total = await this.countRecords(whereCondition)
@@ -252,12 +250,21 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
 
       const createdPermission = insertedRows[0]
       if (!createdPermission) {
-        this.error.report('cms-permission', 'create')
+        this.error.report({
+          group: 'cms-permission',
+          code: 'create'
+        })
       }
 
       return this.wrapPermissionItem(createdPermission)
     } catch (error) {
-      return this.error.handleTransaction('cms-permission', 'create', error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-permission',
+          code: 'create'
+        },
+        error
+      )
     }
   }
 
@@ -301,7 +308,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
     if (isString(options.search)) {
       const trimmedSearch = options.search.trim()
       if (trimmedSearch.length > 0) {
-        const pattern = `%${escapeCmsSearchPattern(trimmedSearch)}%`
+        const pattern = `%${CmsVerification.escapeSearchPattern(trimmedSearch)}%`
         const searchPredicate = or(
           ilike(permissions.code, pattern),
           ilike(permissions.name, pattern),
@@ -310,6 +317,13 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
         if (searchPredicate) {
           conditions.push(searchPredicate)
         }
+      }
+    }
+
+    if (isString(options.createdOrigin)) {
+      const trimmedCreatedOrigin = options.createdOrigin.trim()
+      if (trimmedCreatedOrigin.length > 0) {
+        conditions.push(eq(permissions.createdOrigin, trimmedCreatedOrigin))
       }
     }
 

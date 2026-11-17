@@ -10,26 +10,11 @@ export const CMS_DEFAULT_ROLES: readonly CmsRoleSeed[] = [
     code: 'super_admin',
     name: 'cms-role-super_admin',
     description: 'cms-role-super_admin_description',
+    createdOrigin: 'system',
     permissions: [
-      'admin:access',
-      'users:read',
-      'users:create',
-      'users:update',
-      'users:delete',
-      'roles:read',
-      'roles:create',
-      'roles:update',
-      'roles:delete',
-      'content:read',
-      'content:create',
-      'content:update',
-      'content:delete',
-      'content:publish',
-      'media:read',
-      'media:upload',
-      'media:delete',
-      'settings:read',
-      'settings:update'
+      'admin:super',
+      'admin:all',
+      'admin:access'
     ]
   },
   // Manage users, content, media, and settings / Управление пользователями, контентом, медиафайлами и настройками
@@ -37,23 +22,10 @@ export const CMS_DEFAULT_ROLES: readonly CmsRoleSeed[] = [
     code: 'admin',
     name: 'cms-role-admin',
     description: 'cms-role-admin_description',
+    createdOrigin: 'system',
     permissions: [
-      'admin:access',
-      'users:read',
-      'users:create',
-      'users:update',
-      'users:delete',
-      'roles:read',
-      'content:read',
-      'content:create',
-      'content:update',
-      'content:delete',
-      'content:publish',
-      'media:read',
-      'media:upload',
-      'media:delete',
-      'settings:read',
-      'settings:update'
+      'admin:all',
+      'admin:access'
     ]
   },
   // Create, edit, delete, and publish content and media / Создание, редактирование, удаление и публикация контента и медиафайлов
@@ -61,6 +33,7 @@ export const CMS_DEFAULT_ROLES: readonly CmsRoleSeed[] = [
     code: 'editor',
     name: 'cms-role-editor',
     description: 'cms-role-editor_description',
+    createdOrigin: 'system',
     permissions: [
       'admin:access',
       'content:read',
@@ -78,6 +51,7 @@ export const CMS_DEFAULT_ROLES: readonly CmsRoleSeed[] = [
     code: 'author',
     name: 'cms-role-author',
     description: 'cms-role-author_description',
+    createdOrigin: 'system',
     permissions: [
       'admin:access',
       'content:read',
@@ -92,6 +66,7 @@ export const CMS_DEFAULT_ROLES: readonly CmsRoleSeed[] = [
     code: 'viewer',
     name: 'cms-role-viewer',
     description: 'cms-role-viewer_description',
+    createdOrigin: 'system',
     permissions: [
       'admin:access',
       'content:read',

@@ -45,13 +45,15 @@ export class FieldValueInclude<Value = any> extends DesignLifecycleAbstract {
    * @param original original values / оригинальные значения
    * @param isMultiple flag or function enabling multiple selection handling in setValues / флаг или функция включения множественного выбора в setValues
    * @param isValueVariant flag or function enabling valueVariant support / флаг или функция включения поддержки valueVariant
+   * @param isZeroTrue flag or function treating numeric 0 and string '0' as filled values / флаг или функция, позволяющая считать числовой 0 и строку '0' заполненными значениями
    */
   constructor(
     protected readonly props: FieldValueProps<Value> & { valueVariant?: NumberOrStringOrBoolean },
     protected readonly element?: () => FieldElementInclude,
     protected readonly original?: RefOrNormal<Value>,
     protected readonly isMultiple: RefOrNormalOrFunction<boolean | undefined> = true,
-    protected readonly isValueVariant: RefOrNormalOrFunction<boolean | undefined> = false
+    protected readonly isValueVariant: RefOrNormalOrFunction<boolean | undefined> = false,
+    protected readonly isZeroTrue: RefOrNormalOrFunction<boolean | undefined> = false
   ) {
     super()
     this.item.value = this.getOriginal()
@@ -101,6 +103,10 @@ export class FieldValueInclude<Value = any> extends DesignLifecycleAbstract {
    * @returns boolean representation of the value / булево представление значения
    */
   get boolean(): boolean {
+    if (executeFunctionRef(this.isZeroTrue)) {
+      return this.item.value === 0 || isFilled(this.item.value, true)
+    }
+
     return isFilled(this.item.value)
   }
 

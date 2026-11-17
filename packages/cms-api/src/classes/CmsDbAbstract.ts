@@ -193,7 +193,11 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     const uniqueIds = uniqueArray(ids)
     for (const entityId of uniqueIds) {
       if (!isPositiveInteger(entityId)) {
-        CmsError.report(errorGroup, errorCode, { id: entityId })
+        CmsError.report({
+          group: errorGroup,
+          code: errorCode,
+          details: { id: entityId }
+        })
       }
     }
 
@@ -206,7 +210,11 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     const missingIds = uniqueIds.filter(entityId => !foundIdSet.has(entityId))
 
     if (missingIds.length > 0) {
-      CmsError.report(errorGroup, errorCode, { missingIds })
+      CmsError.report({
+        group: errorGroup,
+        code: errorCode,
+        details: { missingIds }
+      })
     }
 
     return uniqueIds
@@ -247,7 +255,11 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     const missingCodes = uniqueCodes.filter(code => !idByCode.has(code))
 
     if (missingCodes.length > 0) {
-      CmsError.report(errorGroup, errorCode, { missingCodes })
+      CmsError.report({
+        group: errorGroup,
+        code: errorCode,
+        details: { missingCodes }
+      })
     }
 
     const resolvedIds: number[] = []

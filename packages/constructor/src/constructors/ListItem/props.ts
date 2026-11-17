@@ -16,6 +16,8 @@ import type { SuffixProps } from '../../types/suffixTypes'
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 
+import type { ListItemLazyPropsInclude } from './basicTypes'
+
 export type ListItemPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
@@ -49,6 +51,7 @@ export type ListItemPropsBasic<
   & EnabledProps
   & EventClickProps
   & AriaRolePropsInclude
+  & ListItemLazyPropsInclude
   & {
     /** Value/ Значения */
     /** URL address for links/ URL-адрес для ссылок */
@@ -85,12 +88,6 @@ export type ListItemPropsBasic<
     listId?: number
     /** Search string for highlighting/ Строка поиска для подсветки */
     search?: string
-    /** Lazy rendering of item contents/ Ленивый рендеринг содержимого элемента */
-    lazy?: boolean
-    /** Root margin for lazy visibility observer/ Отступ области наблюдения ленивого рендеринга */
-    lazyMargin?: string
-    /** Whether to cache measured element height when hidden by lazy rendering / Сохранять ли измеренную высоту элемента при скрытии ленивым рендерингом */
-    lazyCacheHeight?: boolean
   }
 
 /**
@@ -109,7 +106,6 @@ export const defaultsListItem = {
   tabindex: '-1',
   role: 'option',
   selectionStyle: 'none',
-  lazy: true,
   lazyCacheHeight: true,
   ...{
     // :default [!] System label / Системная метка

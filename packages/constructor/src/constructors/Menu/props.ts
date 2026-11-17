@@ -7,7 +7,7 @@ import type {
 } from '@dxtmisha/functional'
 
 import type { ListPropsBasic } from '../List'
-import type { ListItemProps, ListItemPropsBasic } from '../ListItem'
+import type { ListItemLazyPropsInclude, ListItemProps, ListItemPropsBasic } from '../ListItem'
 import type { BarsPropsBasic, BarsPropsInclude } from '../Bars'
 import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
 
@@ -28,7 +28,9 @@ export type MenuPropsBasic<
   Window extends WindowPropsBasic = WindowPropsBasic
 > = BarsPropsInclude<Bars>
   & WindowPropsInclude<Window>
-  & ModelPropsSelected & {
+  & ModelPropsSelected
+  & ListItemLazyPropsInclude
+  & {
     /** Status/ Статус */
     /** List of selected items/ Список выбранных элементов */
     selected?: ListSelectedList
@@ -89,10 +91,6 @@ export type MenuPropsBasic<
     isSelectedByValue?: boolean
     /** Whether the menu is embedded/ Является ли меню встроенным */
     embedded?: boolean
-    /** Lazy rendering of list items via IntersectionObserver/ Ленивый рендеринг элементов списка через IntersectionObserver */
-    lazy?: boolean
-    /** Root margin for lazy visibility observer/ Отступ области наблюдения ленивого рендеринга */
-    lazyMargin?: string
   }
 
 /**
@@ -115,6 +113,7 @@ export const defaultsMenu = {
   step: 1,
   autoClose: true,
   lazy: true,
+  lazyCacheHeight: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

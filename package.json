@@ -144,6 +144,10 @@
     "./UiProgress": {
       "types": "./dist/library/UiProgress.d.ts",
       "default": "./dist/library/UiProgress.js"
+    },
+    "./UiInput": {
+      "types": "./dist/library/UiInput.d.ts",
+      "default": "./dist/library/UiInput.js"
     }
   },
   "workspaces": [

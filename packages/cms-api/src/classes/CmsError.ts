@@ -1,4 +1,7 @@
-import { ServerStorage } from '@dxtmisha/functional-basic'
+import {
+  ServerStorage,
+  type ErrorCenterCauseItem
+} from '@dxtmisha/functional-basic'
 import { CmsErrorInstance } from './CmsErrorInstance'
 
 /** Key for the CMS error instance in server storage / Ключ экземпляра ошибок CMS в серверном хранилище */
@@ -29,35 +32,29 @@ export class CmsError {
    * Reports an error via the active CmsErrorInstance and throws an ErrorCenterError.
    *
    * Регистрирует ошибку через активный CmsErrorInstance и выбрасывает исключение ErrorCenterError.
-   * @param group Error group / Группа ошибки
-   * @param code Error code within the group / Код ошибки в группе
-   * @param details Optional raw error payload / Необязательные дополнительные детали ошибки
-   * @param message Optional override error message / Необязательное переопределяющее сообщение об ошибке
+   * @param cause Error cause details / Детали причины ошибки
+   * @param options Standard Error options / Стандартные опции Error
+   * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
    */
-  static report(
-    group: string,
-    code: string,
-    details?: unknown,
-    message?: string
+  static report<D = unknown>(
+    cause: ErrorCenterCauseItem<D>,
+    options?: ErrorOptions
   ): never {
-    return this.getItem().report(group, code, details, message)
+    return this.getItem().report(cause, options)
   }
 
   /**
    * Reports unexpected transaction errors through the active CmsErrorInstance without double-reporting domain errors.
    *
    * Передаёт неожиданные ошибки транзакции через активный CmsErrorInstance, избегая повторной регистрации доменных ошибок.
-   * @param group Error group / Группа ошибки
-   * @param code Fallback error code / Код ошибки по умолчанию
+   * @param cause Error cause details / Детали причины ошибки
    * @param error Caught error instance / Перехваченная ошибка
-   * @param message Optional override error message / Необязательное переопределяющее сообщение об ошибке
+   * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
    */
-  static handleTransaction(
-    group: string,
-    code: string,
-    error: unknown,
-    message?: string
+  static handleTransaction<D = unknown>(
+    cause: ErrorCenterCauseItem<D>,
+    error: unknown = cause.details
   ): never {
-    return this.getItem().handleTransaction(group, code, error, message)
+    return this.getItem().handleTransaction(cause, error)
   }
 }

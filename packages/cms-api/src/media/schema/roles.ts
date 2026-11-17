@@ -1,4 +1,5 @@
 import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
+import { createdOrigins } from './createdOrigins'
 
 /**
  * Roles table schema for CMS /
@@ -16,6 +17,13 @@ export const roles = /* #__PURE__ */ pgTable('roles', {
   name: text('name').notNull(),
   /** Role description / Описание роли */
   description: text('description'),
+
+  // Origin
+  /** Creation origin code / Код источника создания записи */
+  createdOrigin: text('created_origin').references(() => createdOrigins.code, {
+    onUpdate: 'cascade',
+    onDelete: 'set null'
+  }),
 
   // Timestamps
   /** Creation timestamp / Дата создания */

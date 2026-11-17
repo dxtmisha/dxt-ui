@@ -153,7 +153,6 @@ src/classes/Field/FieldCodeInclude.ts
 src/classes/Field/FieldElementInclude.ts
 src/classes/Field/FieldInputModeInclude.ts
 src/classes/Field/FieldPatternInclude.ts
-src/classes/Field/FieldTypeInclude.ts
 src/classes/Field/FieldVisibilityInclude.ts
 src/classes/Field/FieldFormInclude.ts
 src/classes/Field/FieldMatchInclude.ts
@@ -169,12 +168,8 @@ src/classes/LabelNumberInclude.ts
 src/constructors/Badge/Badge.ts
 src/constructors/Badge/BadgeDesign.tsx
 src/constructors/Badge/BadgeInclude.ts
-src/constructors/Input/InputPassword.ts
-src/constructors/Input/Input.ts
-src/constructors/Input/InputDesign.tsx
 src/constructors/Radio/Radio.ts
 src/constructors/Radio/RadioDesign.tsx
-src/classes/Field/FieldValueInclude.ts
 src/constructors/Checkbox/CheckboxIcon.ts
 src/constructors/Checkbox/CheckboxSelected.ts
 src/constructors/Checkbox/CheckboxDesign.tsx
@@ -205,3 +200,8 @@ src/constructors/Menu/MenuWindow.ts
 src/constructors/Menu/MenuInclude.ts
 src/constructors/Menu/Menu.ts
 src/constructors/Menu/MenuDesign.tsx
+src/constructors/Input/InputPassword.ts
+src/constructors/Input/InputDesign.tsx
+src/classes/Field/FieldValueInclude.ts
+src/constructors/Input/Input.ts
+src/classes/Field/FieldTypeInclude.ts

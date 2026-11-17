@@ -86,6 +86,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'cms-permission-users_read',
     description: 'cms-permission-users_read_description',
+    createdOrigin: null,
     createdAt: now,
     updatedAt: now,
     ...overrides
@@ -130,6 +131,7 @@ describe('CmsPermissionItem', () => {
       expect(item.getCode()).toBe('users:read')
       expect(item.getName()).toBe('cms-permission-users_read')
       expect(item.getDescription()).toBe('cms-permission-users_read_description')
+      expect(item.getCreatedOrigin()).toBeNull()
       expect(item.getCreatedAt()).toEqual(data.createdAt)
       expect(item.getUpdatedAt()).toEqual(data.updatedAt)
 
@@ -145,7 +147,8 @@ describe('CmsPermissionItem', () => {
       const updatedRecord = makePermission({
         code: 'users:manage',
         name: 'Manage users',
-        description: null
+        description: null,
+        createdOrigin: 'admin'
       })
       const mock = createMockDb({
         updateQueue: [[updatedRecord]]
@@ -155,17 +158,20 @@ describe('CmsPermissionItem', () => {
       const result = await item.update({
         code: '  users:manage  ',
         name: '  Manage users  ',
-        description: '   '
+        description: '   ',
+        createdOrigin: '  admin  '
       })
 
       expect(result).toBe(item)
       expect(item.getCode()).toBe('users:manage')
       expect(item.getName()).toBe('Manage users')
       expect(item.getDescription()).toBeNull()
+      expect(item.getCreatedOrigin()).toBe('admin')
       expect(mock.updateChains[0]?.set).toHaveBeenCalledWith(expect.objectContaining({
         code: 'users:manage',
         name: 'Manage users',
-        description: null
+        description: null,
+        createdOrigin: 'admin'
       }))
     })
 

@@ -11,6 +11,8 @@ export type CmsPermissionUpdateInput = Partial<Omit<CmsNewPermission, 'id' | 'cr
 export interface CmsPermissionListOptions {
   /** Case-insensitive search query across code, name, and description fields / Поисковый запрос без учёта регистра по коду, названию и описанию */
   search?: string
+  /** Filter by creation origin code / Фильтр по коду источника создания */
+  createdOrigin?: string
   /** Filter by assigned role identifier / Фильтр по идентификатору роли */
   roleId?: number
   /** Filter by assigned role code / Фильтр по коду роли */

@@ -164,6 +164,7 @@ export class Menu extends DesignLogicAbstract<
       selectionStyle: this.props.selectionStyle,
       lazy: this.props.lazy,
       lazyMargin: this.props.lazyMargin,
+      lazyCacheHeight: this.props.lazyCacheHeight,
       onClick: this.onClick,
       onClose: () => this.i('window').expose.toClose(),
 

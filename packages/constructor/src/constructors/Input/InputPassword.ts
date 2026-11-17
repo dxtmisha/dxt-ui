@@ -38,7 +38,12 @@ export class InputPassword {
   ) {
   }
 
-  /** Returns the icon properties / Возвращает свойства иконки */
+  /**
+   * Returns the icon properties.
+   *
+   * Возвращает свойства иконки.
+   * @returns icon properties or undefined / свойства иконки или undefined
+   */
   get icon(): IconProps | undefined {
     if (this.is()) {
       const visible = this.visibility().item.value

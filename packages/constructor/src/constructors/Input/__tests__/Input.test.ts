@@ -155,7 +155,8 @@ const RealField = defineComponent({
   setup(componentProps, { emit, expose }) {
     const classesToken = computed<ConstrClasses>(() => ({
       main: {
-        'd1-field': true
+        'd1-field': true,
+        'd1-field--isValue': Boolean((componentProps as Readonly<FieldProps>).isValue)
       }
     }))
 
@@ -369,8 +370,10 @@ describe('Input (integration)', () => {
         modelValue: 0
       })
 
+      const field = container.querySelector('.d1-field') as HTMLElement
       const input = container.querySelector('input') as HTMLInputElement
       expect(input.value).toBe('0')
+      expect(field.classList.contains('d1-field--isValue')).toBe(true)
 
       const nextButton = container.querySelector('[data-event-type="next"]') as HTMLButtonElement
       const previousButton = container.querySelector('[data-event-type="previous"]') as HTMLButtonElement
@@ -508,6 +511,14 @@ describe('Input (integration)', () => {
       await nextTick()
 
       expect(updateDataSpy).toHaveBeenCalled()
+    })
+
+    it('should ignore checkbox and radio types and render text input', async () => {
+      const { container: checkboxContainer } = await mountInput({ type: 'checkbox' })
+      expect((checkboxContainer.querySelector('input') as HTMLInputElement).type).toBe('text')
+
+      const { container: radioContainer } = await mountInput({ type: 'radio' })
+      expect((radioContainer.querySelector('input') as HTMLInputElement).type).toBe('text')
     })
   })
 

@@ -424,14 +424,13 @@ const onClearExposed = (): void => {
         </DemoFlex>
       </D1Group>
 
-      <D1Group label="Types: Checkbox & Radio">
+      <D1Group label="Types: Checkbox & Radio (Fallback to Text)">
         <DemoFlex>
           <DemoBox>
             <D1Input
               v-model="valueCheckbox"
               type="checkbox"
-              cancel="none"
-              label="Native Checkbox Type"
+              label="Checkbox Type (Fallback to Text)"
             />
             <DemoValue :value="valueCheckbox"/>
           </DemoBox>
@@ -439,9 +438,8 @@ const onClearExposed = (): void => {
             <D1Input
               v-model="valueRadio"
               type="radio"
-              cancel="none"
               name="demo-radio-type"
-              label="Native Radio Type"
+              label="Radio Type (Fallback to Text)"
             />
             <DemoValue :value="valueRadio"/>
           </DemoBox>

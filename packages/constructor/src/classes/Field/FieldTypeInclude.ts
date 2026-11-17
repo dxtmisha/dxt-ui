@@ -31,8 +31,12 @@ export class FieldTypeInclude {
     const type = this.props.type
 
     if (
-      type === 'password'
-      && this.visibility?.().item.value
+      (
+        type === 'password'
+        && this.visibility?.().item.value
+      )
+      || type === 'checkbox'
+      || type === 'radio'
     ) {
       return 'text'
     }

@@ -16,7 +16,10 @@ describe('CmsErrorInstance', () => {
     })
 
     const cmsError = new CmsErrorInstance()
-    expect(() => cmsError.report('cms-user', 'notFound'))
+    expect(() => cmsError.report({
+      group: 'cms-user',
+      code: 'notFound'
+    }))
       .toThrow(ErrorCenterError)
     expect(captured).toEqual(['cms-user:notFound'])
   })
@@ -40,7 +43,11 @@ describe('CmsErrorInstance', () => {
     let caughtError: unknown
 
     try {
-      cmsError.report('cms-user', 'notFound', { id: 1 })
+      cmsError.report({
+        group: 'cms-user',
+        code: 'notFound',
+        details: { id: 1 }
+      })
     } catch (error) {
       caughtError = error
     }
@@ -84,14 +91,28 @@ describe('CmsErrorInstance', () => {
       code: 'notFound',
       message: 'Already reported.'
     })
-    expect(() => cmsError.handleTransaction('cms-db', 'fallbackCode', domainError, 'Fallback message.'))
+    expect(() => cmsError.handleTransaction(
+      {
+        group: 'cms-db',
+        code: 'fallbackCode',
+        message: 'Fallback message.'
+      },
+      domainError
+    ))
       .toThrow(domainError)
     expect(captured).toHaveLength(0)
 
     const dbError = new Error('Connection refused')
     let caughtDbError: unknown
     try {
-      cmsError.handleTransaction('cms-db', 'dbFail', dbError, 'Database failed.')
+      cmsError.handleTransaction(
+        {
+          group: 'cms-db',
+          code: 'dbFail',
+          message: 'Database failed.'
+        },
+        dbError
+      )
     } catch (error) {
       caughtDbError = error
     }
@@ -113,7 +134,14 @@ describe('CmsErrorInstance', () => {
 
     let caughtUnknownError: unknown
     try {
-      cmsError.handleTransaction('cms-db', 'unknownFail', 'raw-failure', 'Unknown error.')
+      cmsError.handleTransaction(
+        {
+          group: 'cms-db',
+          code: 'unknownFail',
+          message: 'Unknown error.'
+        },
+        'raw-failure'
+      )
     } catch (error) {
       caughtUnknownError = error
     }
@@ -125,5 +153,27 @@ describe('CmsErrorInstance', () => {
     }
 
     expect(captured).toHaveLength(2)
+
+    const detailsError = new Error('Details fallback')
+    let caughtDetailsError: unknown
+    try {
+      cmsError.handleTransaction({
+        group: 'cms-db',
+        code: 'detailsFail',
+        message: 'Details failed.',
+        details: detailsError
+      })
+    } catch (error) {
+      caughtDetailsError = error
+    }
+
+    expect(caughtDetailsError).toBeInstanceOf(ErrorCenterError)
+    if (caughtDetailsError instanceof ErrorCenterError) {
+      expect(caughtDetailsError.message).toBe('Details failed.')
+      expect(caughtDetailsError.cause).toBe(detailsError)
+      expect(caughtDetailsError.getDetails()).toBe(detailsError)
+    }
+
+    expect(captured).toHaveLength(3)
   })
 })

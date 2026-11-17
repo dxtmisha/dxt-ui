@@ -18,6 +18,7 @@ export const wikiDescriptionsList: StorybookComponentsDescriptionItem = {
       'hierarchical data structure with groups and menus',
       'focus management and item selection',
       'lightweight rendering mode for large datasets',
+      'lazy item rendering with viewport margin and height caching (lazy, lazyMargin, lazyCacheHeight)',
       'customizable item types and rendering',
       'event-driven interaction system',
       'accessibility support with ARIA attributes',
@@ -30,6 +31,7 @@ export const wikiDescriptionsList: StorybookComponentsDescriptionItem = {
       'иерархическая структура данных с группами и меню',
       'управление фокусом и выбором элементов',
       'облегченный режим рендеринга для больших наборов данных',
+      'ленивый рендеринг элементов с настройкой отступа и кэшированием высоты (lazy, lazyMargin, lazyCacheHeight)',
       'настраиваемые типы элементов и рендеринг',
       'событийно-ориентированная система взаимодействия',
       'поддержка доступности с ARIA атрибутами',
@@ -390,6 +392,42 @@ await waitFor(() => {
   expect(searchList?.querySelector('.design-component__none')).toHaveTextContent('Empty search')
 })
       `
+    },
+    {
+      id: 'ListTestLazy',
+      name: {
+        en: 'Test: Lazy rendering with margin and height caching',
+        ru: 'Тест: Ленивый рендеринг с отступом и кэшированием высоты'
+      },
+      propsName: ['lazy', 'lazyMargin', 'lazyCacheHeight'],
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding">
+            <div class="wiki-storybook-item__label">lazy + lazyMargin + lazyCacheHeight</div>
+            <DesignComponent
+              data-testid="list-lazy"
+              lazy
+              lazy-margin="128px 0px"
+              :lazy-cache-height="false"
+              :list="[
+                {label: 'Lazy Alpha', value: 'alpha'},
+                {label: 'Lazy Beta', value: 'beta'}
+              ]"
+            />
+          </div>
+        </div>
+      `,
+      play: `
+await waitFor(async () => {
+  const lazyList = canvasElement.querySelector('[data-testid="list-lazy"]')
+  const lazyItems = lazyList?.querySelectorAll('[data-item="true"]') ?? []
+
+  await expect(lazyItems.length).toBe(2)
+  await expect(lazyItems[0]?.className).toContain('--lazy')
+  await expect(lazyItems[0]).toHaveTextContent('Lazy Alpha')
+  await expect(lazyItems[1]).toHaveTextContent('Lazy Beta')
+})
+      `
     }
   ],
   documentation: {
@@ -420,7 +458,7 @@ await waitFor(() => {
   ai: {
     description: `
 Core engine for rendering interactive, searchable, and hierarchical lists. Serves as the foundation for complex components like Selects, Dropdowns, and multi-level Navigation Menus.
-Features support for multiple item types (group, menu, line, space, subtitle, html), real-time search highlighting, and full keyboard navigation. Includes automatic focus management, ARIA accessibility roles, and a "lite" rendering mode for performance optimization with large datasets.
+Features support for multiple item types (group, menu, line, space, subtitle, html), real-time search highlighting, and full keyboard navigation. Includes automatic focus management, ARIA accessibility roles, lazy item rendering (lazy, lazyMargin, lazyCacheHeight), and a "lite" rendering mode for performance optimization with large datasets.
 Controlled via the list prop for data and selected/focus props with @click/@click-lite events for state tracking. Use as the primary building block for any interface requiring item selection, structured data display, or interactive command menus.
     `
   }

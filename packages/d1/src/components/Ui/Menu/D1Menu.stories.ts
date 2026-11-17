@@ -618,4 +618,43 @@ export const MenuTestSearchHighlightAndStates: Story = {
     await expect(canvasElement.querySelector('[data-testid="states-output"]')).toHaveTextContent('click:two')
   }
 }
+export const MenuTestLazy: Story = {
+  name: 'Тест: Ленивый рендеринг с отступом и кэшированием высоты',
+  render: () => ({
+    components: { D1Menu },
+    setup() {
+      const lazyMenuItems = ref([
+        { label: 'Lazy Option One', value: 'lazy-one' },
+        { label: 'Lazy Option Two', value: 'lazy-two' }
+      ])
+
+      return { lazyMenuItems }
+    },
+    template: `
+        
+        <div data-testid="menu-lazy-wrap">
+          <D1Menu
+            :list="lazyMenuItems"
+            :window-attrs="{ embedded: true, open: true, flash: true }"
+            embedded
+            lazy
+            lazy-margin="128px 0px"
+            :lazy-cache-height="false"
+          />
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    await waitFor(async () => {
+      const lazyWrap = canvasElement.querySelector('[data-testid="menu-lazy-wrap"]')
+      const lazyItems = lazyWrap?.querySelectorAll('[data-item="true"]') ?? []
+
+      await expect(lazyItems.length).toBe(2)
+      await expect(lazyItems[0]?.className).toContain('--lazy')
+      await expect(lazyItems[0]).toHaveTextContent('Lazy Option One')
+      await expect(lazyItems[1]).toHaveTextContent('Lazy Option Two')
+    })
+  }
+}
 // :story-items [!] System label / Системная метка

@@ -14,9 +14,6 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
-import { normalizeCmsLimit } from '../functions/normalizeCmsLimit'
-import { normalizeCmsOffset } from '../functions/normalizeCmsOffset'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
@@ -25,6 +22,7 @@ import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsPermissionManager } from './CmsPermissionManager'
 import { CmsRoleItem } from './CmsRoleItem'
+import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
@@ -211,8 +209,8 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
    */
   async getList(options: CmsRoleListOptions = {}): Promise<CmsRoleListResult> {
     const database = this.getDatabase()
-    const limit = normalizeCmsLimit(options.limit)
-    const offset = normalizeCmsOffset(options.offset)
+    const limit = CmsVerification.normalizeLimit(options.limit)
+    const offset = CmsVerification.normalizeOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
     const total = await this.countRecords(whereCondition)
@@ -308,7 +306,10 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
 
         const createdRole = insertedRows[0]
         if (!createdRole) {
-          this.error.report('cms-role', 'create')
+          this.error.report({
+            group: 'cms-role',
+            code: 'create'
+          })
         }
 
         let assignedPermissions: CmsPermission[] = []
@@ -330,7 +331,13 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
 
       return this.wrapRoleItem(createdRecord)
     } catch (error) {
-      return this.error.handleTransaction('cms-role', 'create', error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-role',
+          code: 'create'
+        },
+        error
+      )
     }
   }
 
@@ -374,7 +381,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
     if (isString(options.search)) {
       const trimmedSearch = options.search.trim()
       if (trimmedSearch.length > 0) {
-        const pattern = `%${escapeCmsSearchPattern(trimmedSearch)}%`
+        const pattern = `%${CmsVerification.escapeSearchPattern(trimmedSearch)}%`
         const searchPredicate = or(
           ilike(roles.code, pattern),
           ilike(roles.name, pattern),
@@ -383,6 +390,13 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
         if (searchPredicate) {
           conditions.push(searchPredicate)
         }
+      }
+    }
+
+    if (isString(options.createdOrigin)) {
+      const trimmedCreatedOrigin = options.createdOrigin.trim()
+      if (trimmedCreatedOrigin.length > 0) {
+        conditions.push(eq(roles.createdOrigin, trimmedCreatedOrigin))
       }
     }
 

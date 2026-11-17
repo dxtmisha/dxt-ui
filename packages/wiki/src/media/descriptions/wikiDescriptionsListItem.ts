@@ -20,6 +20,7 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
       'selection styles: checkbox, radio, checkmark, and none with start/end control positioning',
       'search highlighting and filterMode visibility filtering',
       'progress and skeleton loading states',
+      'lazy content rendering with viewport margin and height caching (lazy, lazyMargin, lazyCacheHeight)',
       'ripple effect for enhanced user feedback',
       'flexible tag options: button, link, div, span, li',
       'built-in accessibility support',
@@ -33,6 +34,7 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
       'стили выбора: checkbox, radio, checkmark и none с позиционированием start/end',
       'подсветка совпадений поиска и фильтрация видимости filterMode',
       'состояния загрузки с прогрессом и скелетоном',
+      'ленивый рендеринг содержимого с настройкой отступа и кэшированием высоты (lazy, lazyMargin, lazyCacheHeight)',
       'эффект пульсации для визуальной обратной связи',
       'гибкие варианты тегов: button, a, div, span, li',
       'встроенная поддержка доступности',
@@ -457,6 +459,42 @@ const items = canvasElement.querySelectorAll<HTMLElement>('.design-component')
 await expect(items.length).toBe(8)
 await expect(items[7]).toHaveAttribute('data-highlight', 'vis')
       `
+    },
+    {
+      id: 'ListItemTestLazy',
+      name: {
+        en: 'Test: Lazy rendering with margin and height caching',
+        ru: 'Тест: Ленивый рендеринг с отступом и кэшированием высоты'
+      },
+      propsName: ['lazy', 'lazyMargin', 'lazyCacheHeight'],
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            data-testid="list-item-lazy"
+            label="Lazy item"
+            lazy
+            lazy-margin="128px 0px"
+          />
+          <DesignComponent
+            data-testid="list-item-lazy-no-cache"
+            label="Lazy item without height cache"
+            lazy
+            lazy-margin="64px 0px"
+            :lazy-cache-height="false"
+          />
+        </div>
+      `,
+      play: `
+await waitFor(async () => {
+  const lazyItem = canvasElement.querySelector('[data-testid="list-item-lazy"]')
+  const lazyNoCacheItem = canvasElement.querySelector('[data-testid="list-item-lazy-no-cache"]')
+
+  await expect(lazyItem).toHaveClass('design-component--lazy')
+  await expect(lazyNoCacheItem).toHaveClass('design-component--lazy')
+  await expect(lazyItem).toHaveTextContent('Lazy item')
+  await expect(lazyNoCacheItem).toHaveTextContent('Lazy item without height cache')
+})
+      `
     }
   ],
   documentation: {
@@ -495,7 +533,7 @@ await expect(items[7]).toHaveAttribute('data-highlight', 'vis')
   ai: {
     description: `
 Versatile structural component for rendering items within lists, menus, or navigation bars. Provides a standardized layout with high-density content support for labels, descriptions, and metadata.
-Features dedicated slots for leading, prefix, default (label), caption, suffix, description, body, and trailing. Includes built-in support for icons, badges, selection controls (checkbox, radio, checkmark), search highlighting/filtering, loading progress, skeleton states, and ripple effects.
+Features dedicated slots for leading, prefix, default (label), caption, suffix, description, body, and trailing. Includes built-in support for icons, badges, selection controls (checkbox, radio, checkmark), search highlighting/filtering, lazy content rendering (lazy, lazyMargin, lazyCacheHeight), loading progress, skeleton states, and ripple effects.
 Controlled via label, description, selectionStyle, selected, and href/to props; renders as an <a> tag when href is provided. Use for building navigation menus, data-rich list rows, or selectable list items.
     `
   }

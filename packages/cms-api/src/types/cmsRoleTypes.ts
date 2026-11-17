@@ -29,6 +29,8 @@ export type CmsRoleUpdateInput = Partial<Omit<CmsNewRole, 'id' | 'createdAt' | '
 export interface CmsRoleListOptions {
   /** Case-insensitive search query across code, name, and description fields / Поисковый запрос без учёта регистра по коду, названию и описанию */
   search?: string
+  /** Filter by creation origin code / Фильтр по коду источника создания */
+  createdOrigin?: string
   /** Filter by assigned permission identifier / Фильтр по идентификатору назначенного права доступа */
   permissionId?: number
   /** Filter by assigned permission code / Фильтр по коду назначенного права доступа */

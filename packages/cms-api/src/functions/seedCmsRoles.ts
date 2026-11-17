@@ -89,7 +89,8 @@ export async function seedCmsRoles(
   const rolePayloads: CmsNewRole[] = items.map(item => ({
     code: item.code,
     name: item.name,
-    description: item.description
+    description: item.description,
+    createdOrigin: item.createdOrigin
   }))
 
   await database

@@ -54,7 +54,10 @@ export class CmsDbInstance {
   get(): CmsDb {
     if (!this.instance) {
       if (!this.connectionString) {
-        return CmsError.report('cms-db', 'connection')
+        return CmsError.report({
+          group: 'cms-db',
+          code: 'connection'
+        })
       }
 
       this.instance = createCmsDb(this.connectionString)

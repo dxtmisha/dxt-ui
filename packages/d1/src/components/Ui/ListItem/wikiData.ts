@@ -42,6 +42,7 @@ const propsNames: StorybookProps = [
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
   { name: 'lazy', type: 'boolean' },
+  { name: 'lazyCacheHeight', type: 'boolean' },
   { name: 'lazyMargin', type: 'string' },
   { name: 'listId', type: 'number' },
   { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },

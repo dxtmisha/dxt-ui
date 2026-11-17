@@ -111,6 +111,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'View users',
     description: 'Allows viewing users',
+    createdOrigin: null,
     createdAt: now,
     updatedAt: now,
     ...overrides

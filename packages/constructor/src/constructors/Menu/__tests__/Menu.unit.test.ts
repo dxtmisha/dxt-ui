@@ -152,6 +152,9 @@ describe('Menu (Logic Orchestrator)', () => {
         max: 3,
         tag: 'button',
         selectionStyle: 'checkmark',
+        lazy: true,
+        lazyMargin: '128px 0px',
+        lazyCacheHeight: false,
         embedded: false,
         step: 1,
         isSelectedByValue: true
@@ -170,6 +173,9 @@ describe('Menu (Logic Orchestrator)', () => {
           max: 3,
           tag: 'button',
           selectionStyle: 'checkmark',
+          lazy: true,
+          lazyMargin: '128px 0px',
+          lazyCacheHeight: false,
           control: true
         })
         expect(typeof menu.binds.onClick).toBe('function')

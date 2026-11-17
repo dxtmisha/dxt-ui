@@ -488,6 +488,17 @@ export const wikiOption: StorybookArgsToList = {
     },
     hide: true
   },
+  lazyCacheHeight: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Caches measured element height when hidden by lazy rendering',
+        ru: 'Кэширует измеренную высоту элемента при скрытии ленивым рендерингом'
+      }
+    },
+    hide: true
+  },
   lazyMargin: {
     type: StorybookControl.text,
     options: {

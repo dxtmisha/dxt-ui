@@ -93,6 +93,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'View users',
     description: null,
+    createdOrigin: null,
     createdAt: now,
     updatedAt: now,
     ...overrides
@@ -106,6 +107,7 @@ function makeRole(overrides: Partial<CmsRole> = {}): CmsRole {
     code: 'admin',
     name: 'cms-role-admin',
     description: 'cms-role-admin_description',
+    createdOrigin: null,
     createdAt: now,
     updatedAt: now,
     ...overrides

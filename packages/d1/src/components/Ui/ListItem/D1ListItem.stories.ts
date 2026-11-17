@@ -8,7 +8,7 @@ import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 import { ref } from 'vue'
 import type { EventClickValue } from '@dxtmisha/constructor'
 import type { ListItemExpose as ListItemExposeType } from '@dxtmisha/constructor/ListItem'
-import { expect, userEvent } from 'storybook/test'
+import { expect, userEvent, waitFor } from 'storybook/test'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -456,6 +456,42 @@ export const ListItemTestTagsAriaFilterAndIds: Story = {
     const items = canvasElement.querySelectorAll<HTMLElement>('.d1-listItem')
     await expect(items.length).toBe(8)
     await expect(items[7]).toHaveAttribute('data-highlight', 'vis')
+  }
+}
+export const ListItemTestLazy: Story = {
+  name: 'Тест: Ленивый рендеринг с отступом и кэшированием высоты',
+  render: () => ({
+    components: { D1ListItem },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <D1ListItem
+            data-testid="list-item-lazy"
+            label="Lazy item"
+            lazy
+            lazy-margin="128px 0px"
+          />
+          <D1ListItem
+            data-testid="list-item-lazy-no-cache"
+            label="Lazy item without height cache"
+            lazy
+            lazy-margin="64px 0px"
+            :lazy-cache-height="false"
+          />
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    await waitFor(async () => {
+      const lazyItem = canvasElement.querySelector('[data-testid="list-item-lazy"]')
+      const lazyNoCacheItem = canvasElement.querySelector('[data-testid="list-item-lazy-no-cache"]')
+
+      await expect(lazyItem).toHaveClass('d1-listItem--lazy')
+      await expect(lazyNoCacheItem).toHaveClass('d1-listItem--lazy')
+      await expect(lazyItem).toHaveTextContent('Lazy item')
+      await expect(lazyNoCacheItem).toHaveTextContent('Lazy item without height cache')
+    })
   }
 }
 // :story-items [!] System label / Системная метка

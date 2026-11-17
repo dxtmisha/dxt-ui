@@ -35,6 +35,8 @@ export interface CmsUserListOptions {
   search?: string
   /** Filter by single status or list of statuses / Фильтр по одному статусу или списку статусов */
   status?: CmsUserStatus | readonly CmsUserStatus[]
+  /** Filter by creation origin code / Фильтр по коду источника создания */
+  createdOrigin?: string
   /** Filter by assigned role identifier / Фильтр по идентификатору назначенной роли */
   roleId?: number
   /** Filter by assigned role code / Фильтр по коду назначенной роли */

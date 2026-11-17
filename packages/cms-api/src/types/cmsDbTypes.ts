@@ -2,6 +2,7 @@ import type { PgColumn, PgTable } from 'drizzle-orm/pg-core'
 import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js'
 import type {
   cmsSchema,
+  createdOrigins,
   permissions,
   rolePermissions,
   roles,
@@ -14,6 +15,12 @@ export type CmsIdTable = PgTable & {
   /** Primary identifier column / Колонка первичного идентификатора */
   id: PgColumn
 }
+
+/** Created origin record selected from database / Запись источника создания, полученная из базы данных */
+export type CmsCreatedOrigin = typeof createdOrigins.$inferSelect
+
+/** New created origin payload for database insert / Данные нового источника создания для вставки в базу данных */
+export type CmsNewCreatedOrigin = typeof createdOrigins.$inferInsert
 
 /** Permission record selected from database / Запись права доступа, полученная из базы данных */
 export type CmsPermission = typeof permissions.$inferSelect
@@ -76,6 +83,8 @@ export type CmsDbExecutor = CmsDb | Parameters<Parameters<CmsDb['transaction']>[
 
 /** Options for seeding default or custom CMS records / Опции инициализации стандартных или пользовательских записей CMS */
 export interface CmsSeedOptions {
+  /** Custom created origins list to seed / Пользовательский список источников создания для инициализации */
+  createdOrigins?: readonly CmsNewCreatedOrigin[]
   /** Custom permissions list to seed / Пользовательский список прав доступа для инициализации */
   permissions?: readonly CmsNewPermission[]
   /** Custom roles list to seed / Пользовательский список ролей для инициализации */
@@ -84,6 +93,8 @@ export interface CmsSeedOptions {
 
 /** Result of seeding CMS database records / Результат инициализации записей базы данных CMS */
 export interface CmsSeedResult {
+  /** Seeded or existing created origin records / Добавленные или существующие записи источников создания */
+  createdOrigins: CmsCreatedOrigin[]
   /** Seeded or existing permission records / Добавленные или существующие записи прав доступа */
   permissions: CmsPermission[]
   /** Seeded or existing role records / Добавленные или существующие записи ролей */

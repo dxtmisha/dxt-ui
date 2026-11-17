@@ -260,6 +260,91 @@ describe('Input (unit)', () => {
       expect(typeof binds.onBlur).toBe('function')
       expect(typeof binds.onInput).toBe('function')
       expect(typeof binds.onChange).toBe('function')
+
+      expect(instance.i('value').boolean).toBe(true)
+      expect(instance.i('value').is()).toBe(true)
+      expect(instance.i('value').isValue()).toBe(true)
+    })
+
+    it('should treat numeric 0 and string "0" without placeholder as filled field values in Field attrs', () => {
+      const renderSpy = vi.fn(() => [])
+      const components = {
+        render: renderSpy
+      } as unknown as DesignComponents<InputComponents, InputProps>
+
+      const { instance: numericInstance, stop: stopNumeric } = createInput(
+        {
+          type: 'number',
+          modelValue: 0
+        },
+        undefined,
+        components
+      )
+      cleanups.push(stopNumeric)
+
+      numericInstance.i('field').render()
+      expect(renderSpy).toHaveBeenLastCalledWith(
+        'field',
+        expect.objectContaining({
+          isValue: true,
+          cancelShow: true,
+          value: 0
+        }),
+        undefined,
+        undefined
+      )
+
+      const { instance: textInstance, stop: stopText } = createInput(
+        {
+          type: 'text',
+          modelValue: '0'
+        },
+        undefined,
+        components
+      )
+      cleanups.push(stopText)
+
+      textInstance.i('field').render()
+      expect(renderSpy).toHaveBeenLastCalledWith(
+        'field',
+        expect.objectContaining({
+          isValue: true,
+          cancelShow: true,
+          value: '0'
+        }),
+        undefined,
+        undefined
+      )
+    })
+
+    it('should merge external inputAttrs event handlers with internal field event handlers', () => {
+      const externalOnInput = vi.fn()
+      const emitSpy = vi.fn()
+      const { instance, stop } = createInput(
+        {
+          inputAttrs: {
+            onInput: externalOnInput
+          }
+        },
+        undefined,
+        undefined,
+        emitSpy
+      )
+      cleanups.push(stop)
+
+      const binds = instance.binds
+      expect(Array.isArray(binds.onInput)).toBe(true)
+
+      const inputElement = document.createElement('input')
+      inputElement.value = 'merged'
+      const event = { target: inputElement } as unknown as InputEvent
+
+      for (const handler of binds.onInput as Array<(event: InputEvent) => void>) {
+        handler(event)
+      }
+
+      expect(externalOnInput).toHaveBeenCalledTimes(1)
+      expect(emitSpy).toHaveBeenCalledWith('update:modelValue', 'merged')
     })
 
     it('should pass text factory to FieldMatchInclude for localized match errors', () => {
@@ -270,6 +355,20 @@ describe('Input (unit)', () => {
       cleanups.push(stop)
 
       expect(instance.i('match').getValidationMessage()).toBe('Custom passwords do not match')
+    })
+
+    it('should ignore checkbox and radio types and normalize them to text', () => {
+      const { instance: checkboxInstance, props: checkboxProps, stop: stopCheckbox } = createInput({
+        type: 'checkbox'
+      })
+      cleanups.push(stopCheckbox)
+
+      expect(checkboxInstance.i('type').get()).toBe('text')
+      expect(checkboxInstance.binds.type).toBe('text')
+
+      checkboxProps.type = 'radio'
+      expect(checkboxInstance.i('type').get()).toBe('text')
+      expect(checkboxInstance.binds.type).toBe('text')
     })
   })
 })

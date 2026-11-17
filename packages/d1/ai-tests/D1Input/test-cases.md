@@ -121,8 +121,8 @@
 - **Шаги тестирования**:
   1. В группе `Types: Email, URL & Tel` проверить ввод и обновление `DemoValue` для `email`, `url`, `tel`.
   2. В группе `Types: Date & Time` проверить `date`, `datetime`, `year-month`, `time`, `hour-minute` и ввод цифр в дату/время.
-  3. В группе `Types: Checkbox & Radio` проверить отрисовку и переключение нативных `type="checkbox"` и `type="radio"`.
-- **Ожидаемый результат**: Каждый из типов корректно отображается, принимает ввод и обновляет связанный `DemoValue`.
+  3. В группе `Types: Checkbox & Radio (Fallback to Text)` проверить, что передача `type="checkbox"` и `type="radio"` игнорируется и рендерится текстовое поле `type="text"`.
+- **Ожидаемый результат**: Типы `email`, `url`, `tel`, `date`/`datetime`/`year-month`/`time`/`hour-minute` корректно отображаются, принимают ввод и обновляют `DemoValue` (для `date` строго в формате `YYYY-MM-DD`), а `type="checkbox"` и `type="radio"` приводятся к `type="text"`.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-005.png`)
 
 #### [TC-INT-006] Индивидуальная работа с масками (`mask`, `maskVisible`, `maskNone`, `maskAttrs`)

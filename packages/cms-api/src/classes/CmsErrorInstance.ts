@@ -2,6 +2,7 @@ import {
   ErrorCenter,
   ErrorCenterError,
   ErrorCenterThrow,
+  type ErrorCenterCauseItem,
   type ErrorCenterInstance
 } from '@dxtmisha/functional-basic'
 import { cmsErrorCauseList } from '../media/errors/cmsErrorCauseList'
@@ -32,42 +33,39 @@ export class CmsErrorInstance {
    * Reports an error via ErrorCenterThrow and throws an ErrorCenterError.
    *
    * Регистрирует ошибку через ErrorCenterThrow и выбрасывает исключение ErrorCenterError.
-   * @param group Error group / Группа ошибки
-   * @param code Error code within the group / Код ошибки в группе
-   * @param details Optional raw error payload / Необязательные дополнительные детали ошибки
-   * @param message Optional override error message / Необязательное переопределяющее сообщение об ошибке
+   * @param cause Error cause details / Детали причины ошибки
+   * @param options Standard Error options / Стандартные опции Error
    * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
    */
-  report(
-    group: string,
-    code: string,
-    details?: unknown,
-    message?: string
+  report<D = unknown>(
+    cause: ErrorCenterCauseItem<D>,
+    options?: ErrorOptions
   ): never {
-    return this.emitError(group, code, details, message)
+    return this.errorThrow.on(cause, options)
   }
 
   /**
    * Reports unexpected transaction errors through ErrorCenterThrow without double-reporting ErrorCenterError instances.
    *
    * Передаёт неожиданные ошибки транзакции через ErrorCenterThrow, избегая повторной регистрации экземпляров ErrorCenterError.
-   * @param group Error group / Группа ошибки
-   * @param code Fallback error code / Код ошибки по умолчанию
+   * @param cause Error cause details / Детали причины ошибки
    * @param error Caught error instance / Перехваченная ошибка
-   * @param message Optional override error message / Необязательное переопределяющее сообщение об ошибке
    * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
    */
-  handleTransaction(
-    group: string,
-    code: string,
-    error: unknown,
-    message?: string
+  handleTransaction<D = unknown>(
+    cause: ErrorCenterCauseItem<D>,
+    error: unknown = cause.details
   ): never {
     if (error instanceof ErrorCenterError) {
       throw error
     }
 
-    return this.emitError(group, code, error, message, error)
+    return this.report<unknown>(
+      cause.details === undefined && error !== undefined
+        ? { ...cause, details: error }
+        : cause,
+      error instanceof Error ? { cause: error } : undefined
+    )
   }
 
   /**
@@ -81,34 +79,5 @@ export class CmsErrorInstance {
         this.errorCenter.add(cause)
       }
     }
-  }
-
-  /**
-   * Dispatches an error via ErrorCenterThrow and throws an ErrorCenterError, preserving original Error instances as cause.
-   *
-   * Передаёт ошибку через ErrorCenterThrow и выбрасывает ErrorCenterError, сохраняя исходный Error в свойстве cause.
-   * @param group Error group / Группа ошибки
-   * @param code Error code within the group / Код ошибки в группе
-   * @param details Optional raw error payload / Необязательные дополнительные детали ошибки
-   * @param message Optional override error message / Необязательное переопределяющее сообщение об ошибке
-   * @param originalError Optional original caught error / Необязательная исходная перехваченная ошибка
-   * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
-   */
-  protected emitError(
-    group: string,
-    code: string,
-    details?: unknown,
-    message?: string,
-    originalError?: unknown
-  ): never {
-    return this.errorThrow.on(
-      {
-        group,
-        code,
-        ...(message !== undefined ? { message } : {}),
-        details
-      },
-      originalError instanceof Error ? { cause: originalError } : undefined
-    )
   }
 }

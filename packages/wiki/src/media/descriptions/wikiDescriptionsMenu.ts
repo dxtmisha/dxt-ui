@@ -18,6 +18,7 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
       'nested groups and menus with keyboard navigation and programmatic previous/next stepping',
       'asynchronous loading and caching via ajax, request, and cache',
       'lightweight rendering for large menus via liteThreshold',
+      'lazy item rendering with viewport margin and height caching (lazy, lazyMargin, lazyCacheHeight)',
       'built-in search, filtering, and text highlighting (showSearch, filterMode, highlight, highlightLengthStart)',
       'custom field mapping (keyLabel, keyValue) and attribute forwarding (listAttrs, itemAttrs, barsAttrs, windowAttrs)'
     ],
@@ -27,6 +28,7 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
       'вложенные группы и подменю с клавиатурной навигацией и программным переключением previous/next',
       'асинхронная загрузка и кэширование через ajax, request и cache',
       'облегчённый рендер для больших списков через liteThreshold',
+      'ленивый рендеринг элементов с настройкой отступа и кэшированием высоты (lazy, lazyMargin, lazyCacheHeight)',
       'встроенный поиск, фильтрация и подсветка текста (showSearch, filterMode, highlight, highlightLengthStart)',
       'пользовательское сопоставление полей (keyLabel, keyValue) и проброс атрибутов (listAttrs, itemAttrs, barsAttrs, windowAttrs)'
     ]
@@ -643,6 +645,45 @@ const secondItem = canvasElement.querySelector<HTMLElement>('[data-value="two"]'
 await userEvent.click(secondItem!)
 await expect(canvasElement.querySelector('[data-testid="states-output"]')).toHaveTextContent('click:two')
       `
+    },
+    {
+      id: 'MenuTestLazy',
+      name: {
+        en: 'Test: Lazy rendering with margin and height caching',
+        ru: 'Тест: Ленивый рендеринг с отступом и кэшированием высоты'
+      },
+      propsName: ['lazy', 'lazyMargin', 'lazyCacheHeight'],
+      setup: `
+      const lazyMenuItems = ref([
+        { label: 'Lazy Option One', value: 'lazy-one' },
+        { label: 'Lazy Option Two', value: 'lazy-two' }
+      ])
+
+      return { lazyMenuItems }
+      `,
+      template: `
+        <div data-testid="menu-lazy-wrap">
+          <DesignComponent
+            :list="lazyMenuItems"
+            :window-attrs="{ embedded: true, open: true, flash: true }"
+            embedded
+            lazy
+            lazy-margin="128px 0px"
+            :lazy-cache-height="false"
+          />
+        </div>
+      `,
+      play: `
+await waitFor(async () => {
+  const lazyWrap = canvasElement.querySelector('[data-testid="menu-lazy-wrap"]')
+  const lazyItems = lazyWrap?.querySelectorAll('[data-item="true"]') ?? []
+
+  await expect(lazyItems.length).toBe(2)
+  await expect(lazyItems[0]?.className).toContain('--lazy')
+  await expect(lazyItems[0]).toHaveTextContent('Lazy Option One')
+  await expect(lazyItems[1]).toHaveTextContent('Lazy Option Two')
+})
+      `
     }
   ],
   documentation: {
@@ -694,7 +735,7 @@ await expect(canvasElement.querySelector('[data-testid="states-output"]')).toHav
     `,
     description: `
 Comprehensive navigational component that integrates a trigger (Control), a floating container (Window), a header action bar (Bars), and a structured dataset (List). Designed for multi-level menus, context-sensitive actions, and complex selection interfaces requiring icons or grouping.
-Features support for hierarchical data structures (nested submenus), real-time AJAX loading with caching, search/highlighting, and full keyboard accessibility. Includes sophisticated focus management, automatic positioning relative to the trigger, and a lite rendering mode for optimized performance with large lists.
+Features support for hierarchical data structures (nested submenus), real-time AJAX loading with caching, search/highlighting, lazy item rendering (lazy, lazyMargin, lazyCacheHeight), and full keyboard accessibility. Includes sophisticated focus management, automatic positioning relative to the trigger, and a lite rendering mode for optimized performance with large lists.
 Controlled via the list prop for items and v-model:selected with isSelectedByValue for state tracking. Use for user profile menus, sidebar navigation, or advanced select-like UI patterns where standard dropdowns lack sufficient structural flexibility.
     `
   }

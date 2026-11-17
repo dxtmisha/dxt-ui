@@ -20,13 +20,17 @@ describe('FieldTypeInclude', () => {
       'time',
       'hour-minute',
       'tel',
-      'url',
-      'checkbox',
-      'radio'
+      'url'
     ])('should return %s directly from props', (type) => {
       const typeInclude = new FieldTypeInclude({ type })
       expect(typeInclude.get()).toBe(type)
       expect(typeInclude.item).toBe(type)
+    })
+
+    it.each<FieldType>(['checkbox', 'radio'])('should ignore %s and fallback to text', (type) => {
+      const typeInclude = new FieldTypeInclude({ type })
+      expect(typeInclude.get()).toBe('text')
+      expect(typeInclude.item).toBe('text')
     })
 
     it('should fallback to text if type is undefined', () => {

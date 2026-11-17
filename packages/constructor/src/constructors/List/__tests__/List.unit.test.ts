@@ -137,6 +137,9 @@ describe('List (Unit)', () => {
         tag: 'button',
         divider: true,
         selectionStyle: 'checkbox',
+        lazy: true,
+        lazyMargin: '128px 0px',
+        lazyCacheHeight: false,
         iconArrowDown: 'arrow_down',
         iconArrowRight: 'arrow_right',
         itemAttrs: { 'data-common': '1' },
@@ -171,6 +174,9 @@ describe('List (Unit)', () => {
       expect(standardItem.role).toBe('menuitem')
       expect(standardItem['data-item']).toBe(true)
       expect(standardItem['data-common']).toBe('1')
+      expect(standardItem.lazy).toBe(true)
+      expect(standardItem.lazyMargin).toBe('128px 0px')
+      expect(standardItem.lazyCacheHeight).toBe(false)
       expect(Array.isArray(standardItem.onClick)).toBe(true)
 
       const groupBinds = list.getItemGroup({ index: 'g', type: 'group', value: 'g', label: 'G' })

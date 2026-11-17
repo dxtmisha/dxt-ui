@@ -165,6 +165,55 @@ describe('FieldValueInclude', () => {
       valueInclude.setHasEdit(true)
       expect(valueInclude.isValue()).toBe(true)
     })
+
+    it('should treat 0 and "0" as empty when isZeroTrue is false and as filled when isZeroTrue is true', () => {
+      const defaultZero = new FieldValueInclude<number | string>({ modelValue: 0 })
+      expect(defaultZero.boolean).toBe(false)
+      expect(defaultZero.is()).toBe(false)
+      expect(defaultZero.isValue()).toBe(false)
+
+      const defaultStringZero = new FieldValueInclude<number | string>({ modelValue: '0' })
+      expect(defaultStringZero.boolean).toBe(false)
+      expect(defaultStringZero.is()).toBe(false)
+
+      const zeroTrueFlag = ref(true)
+      const numericZero = new FieldValueInclude<number | string | boolean>(
+        { modelValue: 0 },
+        undefined,
+        undefined,
+        true,
+        false,
+        zeroTrueFlag
+      )
+      expect(numericZero.boolean).toBe(true)
+      expect(numericZero.is()).toBe(true)
+      expect(numericZero.isValue()).toBe(true)
+      expect(numericZero.number).toBe(0)
+
+      numericZero.set('0')
+      expect(numericZero.boolean).toBe(true)
+      expect(numericZero.isValue()).toBe(true)
+
+      numericZero.set('')
+      expect(numericZero.boolean).toBe(false)
+      expect(numericZero.isValue()).toBe(false)
+
+      const booleanFalse = new FieldValueInclude<boolean>(
+        { modelValue: false },
+        undefined,
+        undefined,
+        false,
+        false,
+        true
+      )
+      expect(booleanFalse.boolean).toBe(false)
+      expect(booleanFalse.isValue()).toBe(false)
+
+      numericZero.set(0)
+      zeroTrueFlag.value = false
+      expect(numericZero.boolean).toBe(false)
+      expect(numericZero.isValue()).toBe(false)
+    })
   })
 
   describe('Setting and clearing values', () => {

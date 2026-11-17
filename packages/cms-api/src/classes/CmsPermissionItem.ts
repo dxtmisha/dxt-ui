@@ -10,10 +10,10 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
@@ -99,6 +99,16 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
   }
 
   /**
+   * Returns the creation origin code or null.
+   *
+   * Возвращает код источника создания записи или null.
+   * @returns Creation origin code or null / Код источника создания или null
+   */
+  getCreatedOrigin(): string | null {
+    return this.data.createdOrigin
+  }
+
+  /**
    * Returns the permission creation timestamp.
    *
    * Возвращает дату создания права доступа.
@@ -151,7 +161,13 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction('cms-permission', 'update', error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-permission',
+          code: 'update'
+        },
+        error
+      )
     }
   }
 
@@ -170,7 +186,13 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     try {
       return await this.deleteRecordById(permissionId)
     } catch (error) {
-      return this.error.handleTransaction('cms-permission', 'delete', error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-permission',
+          code: 'delete'
+        },
+        error
+      )
     }
   }
 
@@ -393,7 +415,8 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     return {
       code: CmsPermissionItem.normalizeCode(input.code, error),
       name: CmsPermissionItem.normalizeName(input.name, error),
-      description: normalizeCmsOptionalText(input.description)
+      description: CmsVerification.normalizeOptionalText(input.description),
+      createdOrigin: CmsVerification.normalizeOptionalText(input.createdOrigin)
     }
   }
 
@@ -420,7 +443,11 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     }
 
     if (input.description !== undefined) {
-      values.description = normalizeCmsOptionalText(input.description)
+      values.description = CmsVerification.normalizeOptionalText(input.description)
+    }
+
+    if (input.createdOrigin !== undefined) {
+      values.createdOrigin = CmsVerification.normalizeOptionalText(input.createdOrigin)
     }
 
     return values
@@ -441,7 +468,11 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      error.report('cms-permission', 'invalidCode', { code })
+      error.report({
+        group: 'cms-permission',
+        code: 'invalidCode',
+        details: { code }
+      })
     }
 
     return normalized
@@ -462,7 +493,11 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      error.report('cms-permission', 'invalidName', { name })
+      error.report({
+        group: 'cms-permission',
+        code: 'invalidName',
+        details: { name }
+      })
     }
 
     return normalized

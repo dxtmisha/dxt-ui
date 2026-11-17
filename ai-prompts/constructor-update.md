@@ -23,7 +23,7 @@ description: Run a full dependency-first update cycle for one constructor when r
 - If the identifier is already in the registry table as a **completed** entry, **always verify that the entry is still current before skipping the component**. Compare `Date (ISO 8601, UTC)` against subsequent changes to the component and its dependencies.
 - Check the entire constructor directory, including classes, tests, types, and styles, as well as related UI files, demo, and wiki. Follow the current dependency chain to check changes to dependency components; changes to the dependency set also invalidate the entry. This traversal only verifies freshness and selects a target; it is not a review of multiple constructors.
 - Account for commits after `Date (ISO 8601, UTC)` (`git log --since="<Date (ISO 8601, UTC)>" -- <paths>`), staged/unstaged changes, and new untracked files (`git status --porcelain --untracked-files=all -- <paths>`), including deletions and renames. Do not rely solely on file modification times or the latest commit date: neither proves that nothing has changed since verification.
-- **If any changes have occurred since `Date (ISO 8601, UTC)`, repeat the full dependency traversal from Step 1 and the entire cycle for the selected constructor**, retaining the one-constructor-per-invocation limit. Existing visual test cases still allow the skip described in Step 5.
+- **If any changes have occurred since `Date (ISO 8601, UTC)`, repeat the full dependency traversal from Step 1 and the entire cycle for the selected constructor**, retaining the one-constructor-per-invocation limit.
 - If the Git history is missing or unchanged status cannot be confirmed, treat the entry as stale and repeat the full cycle. Uncommitted changes always require re-verification, even if they may have been included in the previous cycle.
 - Skip Steps 2–7 **only** for a **completed** entry when the component and its dependencies are confirmed unchanged since `Date (ISO 8601, UTC)`. For a single original target, report the previous `Date (ISO 8601, UTC)` and that no changes have occurred since completion, then stop; for a queue, proceed to the next candidate.
 - If the registry is missing, create it with an empty table using the format in Step 7. Failure to read an existing registry requires stopping; do not treat it as empty.
@@ -99,15 +99,13 @@ Use the complete `prepublishOnly` scripts from the corresponding `package.json` 
 
 Create the demo or bring the existing demo into alignment with the current component contract according to [demo-component.md](./demo-component.md). Complete its required checks before proceeding, then record the `Demo` completion timestamp (UTC, ISO 8601) in the component's registry row.
 
-## 5. Run Visual Testing Unless Cases Already Exist
+## 5. Run Visual Testing
 
 **Before starting this step's checks, start the demo server with `npm run dev` in [packages/demo](../packages/demo/)** — the `"dev": "vite dev"` script in [packages/demo/package.json](../packages/demo/package.json). If the server is already running, use the existing process. Wait for server readiness and confirm that the current component's demo page is accessible; use the actual URL for visual testing. If startup fails or the page is unavailable, stop and report the problem.
 
-Check for an existing `test-cases.md` specifically for the current component in the testing directories specified by [visual-test-constructor.md](./visual-test-constructor.md).
+Fully execute [visual-test-constructor.md](./visual-test-constructor.md), including the visual testing instruction it invokes, for the current component's demo, and record its completion timestamp (UTC, ISO 8601) in the `Visual testing` column.
 
-- If cases already exist, **skip the entire visual testing stage** and record `Skipped (<UTC timestamp>)` in the `Visual testing` column. Report the case file path and reason for skipping; do not present a skip as a successful test run.
-- If cases do not exist, fully execute [visual-test-constructor.md](./visual-test-constructor.md), including the visual testing instruction it invokes, for the current component's demo, and record its completion timestamp (UTC, ISO 8601) in the `Visual testing` column.
-- Inability to access cases or required tools requires stopping, not skipping.
+- Inability to access required tools requires stopping, not skipping.
 
 ## 6. Update the Wiki
 
@@ -115,13 +113,13 @@ Update the current component's documentation according to [wiki-descriptions.md]
 
 ## 7. Record Successful Completion
 
-Only after all dependencies are complete, code review passes without unresolved `P0`/`P1` blockers, and every stage column (`Dependencies`, `Architecture`, `Code review`, `Tests`, `Build`, `Demo`, `Visual testing`, `Wiki`) for the current component is filled (with only the visual testing skip described above allowed), record the final completion timestamp in the `Date (ISO 8601, UTC)` column of the component's row in [ai-constructor-update.md](../packages/constructor/ai-constructor-update.md). The explicitly ignorable warnings in General Execution Rules do not count as failed checks and do not prevent recording final completion.
+Only after all dependencies are complete, code review passes without unresolved `P0`/`P1` blockers, and every stage column (`Dependencies`, `Architecture`, `Code review`, `Tests`, `Build`, `Demo`, `Visual testing`, `Wiki`) for the current component is filled, record the final completion timestamp in the `Date (ISO 8601, UTC)` column of the component's row in [ai-constructor-update.md](../packages/constructor/ai-constructor-update.md). The explicitly ignorable warnings in General Execution Rules do not count as failed checks and do not prevent recording final completion.
 
 Registry table format:
 
 | # | Component | Date (ISO 8601, UTC) | Dependencies | Architecture | Code review | Tests | Build | Demo | Visual testing | Wiki |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
-Keep all registry rows sorted strictly in alphabetical order by `Component` (A–Z, case-insensitive) and maintain sequential 1-based row numbering (`1`, `2`, `3`, ...) in the `#` column. Whenever adding a new component row, insert it in its alphabetical position and renumber `#` accordingly. Use actual UTC timestamps with second precision (`YYYY-MM-DDTHH:mm:ssZ`) for `Date (ISO 8601, UTC)` and for each completed stage column (and `Skipped (<YYYY-MM-DDTHH:mm:ssZ>)` in `Visual testing` when existing cases caused a skip), using `-` for any stage not yet completed. Maintain exactly one row per component without duplicates. If a cycle stops mid-way, preserve the row with completed stage timestamps and leave `Date (ISO 8601, UTC)` and unfinished stage columns as `-` so the component remains marked incomplete.
+Keep all registry rows sorted strictly in alphabetical order by `Component` (A–Z, case-insensitive) and maintain sequential 1-based row numbering (`1`, `2`, `3`, ...) in the `#` column. Whenever adding a new component row, insert it in its alphabetical position and renumber `#` accordingly. Use actual UTC timestamps with second precision (`YYYY-MM-DDTHH:mm:ssZ`) for `Date (ISO 8601, UTC)` and for each completed stage column, using `-` for any stage not yet completed. Maintain exactly one row per component without duplicates. If a cycle stops mid-way, preserve the row with completed stage timestamps and leave `Date (ISO 8601, UTC)` and unfinished stage columns as `-` so the component remains marked incomplete.
 
-After recording completion, **stop and report on the single constructor processed**: completed steps, stage timestamps, check results, links to the code review report and registry, and the reason and path for skipping visual testing if applicable. State the original target and remaining dependency chain for the next invocation without beginning their analysis or updates. When stopping because of a problem, explicitly state it and the unfinished steps.
+After recording completion, **stop and report on the single constructor processed**: completed steps, stage timestamps, check results, and links to the code review report and registry. State the original target and remaining dependency chain for the next invocation without beginning their analysis or updates. When stopping because of a problem, explicitly state it and the unfinished steps.

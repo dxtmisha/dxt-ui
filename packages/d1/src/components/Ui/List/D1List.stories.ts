@@ -375,4 +375,40 @@ export const ListTestSearchAndKeys: Story = {
     })
   }
 }
+export const ListTestLazy: Story = {
+  name: 'Тест: Ленивый рендеринг с отступом и кэшированием высоты',
+  render: () => ({
+    components: { D1List },
+    template: `
+        
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding">
+            <div class="wiki-storybook-item__label">lazy + lazyMargin + lazyCacheHeight</div>
+            <D1List
+              data-testid="list-lazy"
+              lazy
+              lazy-margin="128px 0px"
+              :lazy-cache-height="false"
+              :list="[
+                {label: 'Lazy Alpha', value: 'alpha'},
+                {label: 'Lazy Beta', value: 'beta'}
+              ]"
+            />
+          </div>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    await waitFor(async () => {
+      const lazyList = canvasElement.querySelector('[data-testid="list-lazy"]')
+      const lazyItems = lazyList?.querySelectorAll('[data-item="true"]') ?? []
+
+      await expect(lazyItems.length).toBe(2)
+      await expect(lazyItems[0]?.className).toContain('--lazy')
+      await expect(lazyItems[0]).toHaveTextContent('Lazy Alpha')
+      await expect(lazyItems[1]).toHaveTextContent('Lazy Beta')
+    })
+  }
+}
 // :story-items [!] System label / Системная метка

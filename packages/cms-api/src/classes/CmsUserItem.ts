@@ -14,13 +14,13 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { users } from '../media/schema/users'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsRoleItem } from './CmsRoleItem'
+import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
@@ -277,6 +277,16 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
   }
 
   /**
+   * Returns the creation origin code or null.
+   *
+   * Возвращает код источника создания записи или null.
+   * @returns Creation origin code or null / Код источника создания или null
+   */
+  getCreatedOrigin(): string | null {
+    return this.data.createdOrigin
+  }
+
+  /**
    * Returns a copy of the user's currently assigned roles with their permissions.
    *
    * Возвращает копию текущих назначенных ролей пользователя с их правами доступа.
@@ -482,7 +492,13 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction('cms-user', 'update', error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-user',
+          code: 'update'
+        },
+        error
+      )
     }
   }
 
@@ -544,7 +560,13 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         return true
       })
     } catch (error) {
-      return this.error.handleTransaction('cms-user', 'delete', error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-user',
+          code: 'delete'
+        },
+        error
+      )
     }
   }
 
@@ -636,7 +658,13 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       this.data = restoredRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction('cms-user', 'restore', error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-user',
+          code: 'restore'
+        },
+        error
+      )
     }
   }
 
@@ -686,7 +714,13 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handleTransaction('cms-user', errorCode, error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-user',
+          code: errorCode
+        },
+        error
+      )
     }
   }
 
@@ -734,7 +768,13 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handleTransaction('cms-user', errorCode, error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-user',
+          code: errorCode
+        },
+        error
+      )
     }
   }
 
@@ -804,7 +844,13 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handleTransaction('cms-user', errorCode, error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-user',
+          code: errorCode
+        },
+        error
+      )
     }
   }
 
@@ -856,7 +902,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
   ): CmsNewUser {
     const email = CmsUserItem.normalizeEmail(input.email, error)
     const firstName = CmsUserItem.normalizeFirstName(input.firstName, error)
-    const username = normalizeCmsOptionalText(input.username)
+    const username = CmsVerification.normalizeOptionalText(input.username)
     const phone = CmsUserItem.normalizePhone(input.phone, error)
     const metadata = CmsUserItem.normalizeMetadata(input.metadata)
 
@@ -865,17 +911,18 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       firstName,
       username,
       phone,
-      lastName: normalizeCmsOptionalText(input.lastName),
-      middleName: normalizeCmsOptionalText(input.middleName),
-      avatar: normalizeCmsOptionalText(input.avatar),
-      bio: normalizeCmsOptionalText(input.bio),
+      lastName: CmsVerification.normalizeOptionalText(input.lastName),
+      middleName: CmsVerification.normalizeOptionalText(input.middleName),
+      avatar: CmsVerification.normalizeOptionalText(input.avatar),
+      bio: CmsVerification.normalizeOptionalText(input.bio),
       passwordHash: input.passwordHash,
       status: input.status ?? 'active',
       emailVerifiedAt: input.emailVerifiedAt,
       phoneVerifiedAt: input.phoneVerifiedAt,
       twoFactorEnabled: input.twoFactorEnabled ?? false,
       lastLoginAt: input.lastLoginAt,
-      metadata
+      metadata,
+      createdOrigin: CmsVerification.normalizeOptionalText(input.createdOrigin)
     }
   }
 
@@ -904,7 +951,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (input.username !== undefined) {
-      values.username = normalizeCmsOptionalText(input.username)
+      values.username = CmsVerification.normalizeOptionalText(input.username)
     }
 
     if (input.phone !== undefined) {
@@ -912,19 +959,19 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (input.lastName !== undefined) {
-      values.lastName = normalizeCmsOptionalText(input.lastName)
+      values.lastName = CmsVerification.normalizeOptionalText(input.lastName)
     }
 
     if (input.middleName !== undefined) {
-      values.middleName = normalizeCmsOptionalText(input.middleName)
+      values.middleName = CmsVerification.normalizeOptionalText(input.middleName)
     }
 
     if (input.avatar !== undefined) {
-      values.avatar = normalizeCmsOptionalText(input.avatar)
+      values.avatar = CmsVerification.normalizeOptionalText(input.avatar)
     }
 
     if (input.bio !== undefined) {
-      values.bio = normalizeCmsOptionalText(input.bio)
+      values.bio = CmsVerification.normalizeOptionalText(input.bio)
     }
 
     if (input.passwordHash !== undefined) {
@@ -953,6 +1000,10 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
     if (input.metadata !== undefined) {
       values.metadata = CmsUserItem.normalizeMetadata(input.metadata, currentMetadata)
+    }
+
+    if (input.createdOrigin !== undefined) {
+      values.createdOrigin = CmsVerification.normalizeOptionalText(input.createdOrigin)
     }
 
     return values
@@ -1007,7 +1058,11 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     userId: number
   ): Promise<void> {
     if (!isPositiveInteger(userId)) {
-      error.report('cms-user', 'notFound', { userId })
+      error.report({
+        group: 'cms-user',
+        code: 'notFound',
+        details: { userId }
+      })
     }
 
     const foundRows = await executor
@@ -1017,7 +1072,11 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      error.report('cms-user', 'notFound', { userId })
+      error.report({
+        group: 'cms-user',
+        code: 'notFound',
+        details: { userId }
+      })
     }
   }
 
@@ -1072,7 +1131,11 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       || emailParts[1].length === 0
       || /\s/.test(normalized)
     ) {
-      error.report('cms-user', 'invalidEmail', { email })
+      error.report({
+        group: 'cms-user',
+        code: 'invalidEmail',
+        details: { email }
+      })
     }
 
     return normalized
@@ -1093,7 +1156,11 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     const normalized = isString(firstName) ? firstName.trim() : ''
 
     if (normalized.length === 0) {
-      error.report('cms-user', 'invalidFirstName', { firstName })
+      error.report({
+        group: 'cms-user',
+        code: 'invalidFirstName',
+        details: { firstName }
+      })
     }
 
     return normalized
@@ -1120,7 +1187,11 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (!Number.isSafeInteger(phone) || phone <= 0) {
-      error.report('cms-user', 'invalidPhone', { phone })
+      error.report({
+        group: 'cms-user',
+        code: 'invalidPhone',
+        details: { phone }
+      })
     }
 
     return phone

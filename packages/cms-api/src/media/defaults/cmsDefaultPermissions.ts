@@ -10,7 +10,22 @@ export const CMS_DEFAULT_PERMISSIONS: readonly CmsNewPermission[] = [
   {
     code: 'admin:access',
     name: 'cms-permission-admin_access',
-    description: 'cms-permission-admin_access_description'
+    description: 'cms-permission-admin_access_description',
+    createdOrigin: 'system'
+  },
+  // Full admin panel permissions / Полные права администратора
+  {
+    code: 'admin:all',
+    name: 'cms-permission-admin_all',
+    description: 'cms-permission-admin_all_description',
+    createdOrigin: 'system'
+  },
+  // Super administrator permissions / Права суперадминистратора
+  {
+    code: 'admin:super',
+    name: 'cms-permission-admin_super',
+    description: 'cms-permission-admin_super_description',
+    createdOrigin: 'system'
   },
 
   // Users / Пользователи
@@ -18,25 +33,29 @@ export const CMS_DEFAULT_PERMISSIONS: readonly CmsNewPermission[] = [
   {
     code: 'users:read',
     name: 'cms-permission-users_read',
-    description: 'cms-permission-users_read_description'
+    description: 'cms-permission-users_read_description',
+    createdOrigin: 'system'
   },
   // Create users / Создание пользователей
   {
     code: 'users:create',
     name: 'cms-permission-users_create',
-    description: 'cms-permission-users_create_description'
+    description: 'cms-permission-users_create_description',
+    createdOrigin: 'system'
   },
   // Update users / Редактирование пользователей
   {
     code: 'users:update',
     name: 'cms-permission-users_update',
-    description: 'cms-permission-users_update_description'
+    description: 'cms-permission-users_update_description',
+    createdOrigin: 'system'
   },
   // Delete users / Удаление пользователей
   {
     code: 'users:delete',
     name: 'cms-permission-users_delete',
-    description: 'cms-permission-users_delete_description'
+    description: 'cms-permission-users_delete_description',
+    createdOrigin: 'system'
   },
 
   // Roles & permissions / Роли и права доступа
@@ -44,25 +63,29 @@ export const CMS_DEFAULT_PERMISSIONS: readonly CmsNewPermission[] = [
   {
     code: 'roles:read',
     name: 'cms-permission-roles_read',
-    description: 'cms-permission-roles_read_description'
+    description: 'cms-permission-roles_read_description',
+    createdOrigin: 'system'
   },
   // Create roles / Создание ролей
   {
     code: 'roles:create',
     name: 'cms-permission-roles_create',
-    description: 'cms-permission-roles_create_description'
+    description: 'cms-permission-roles_create_description',
+    createdOrigin: 'system'
   },
   // Update roles and permissions / Редактирование ролей и назначение прав
   {
     code: 'roles:update',
     name: 'cms-permission-roles_update',
-    description: 'cms-permission-roles_update_description'
+    description: 'cms-permission-roles_update_description',
+    createdOrigin: 'system'
   },
   // Delete roles / Удаление ролей
   {
     code: 'roles:delete',
     name: 'cms-permission-roles_delete',
-    description: 'cms-permission-roles_delete_description'
+    description: 'cms-permission-roles_delete_description',
+    createdOrigin: 'system'
   },
 
   // Content / Контент
@@ -70,31 +93,36 @@ export const CMS_DEFAULT_PERMISSIONS: readonly CmsNewPermission[] = [
   {
     code: 'content:read',
     name: 'cms-permission-content_read',
-    description: 'cms-permission-content_read_description'
+    description: 'cms-permission-content_read_description',
+    createdOrigin: 'system'
   },
   // Create content entries / Создание контента
   {
     code: 'content:create',
     name: 'cms-permission-content_create',
-    description: 'cms-permission-content_create_description'
+    description: 'cms-permission-content_create_description',
+    createdOrigin: 'system'
   },
   // Update content entries / Редактирование контента
   {
     code: 'content:update',
     name: 'cms-permission-content_update',
-    description: 'cms-permission-content_update_description'
+    description: 'cms-permission-content_update_description',
+    createdOrigin: 'system'
   },
   // Delete content entries / Удаление контента
   {
     code: 'content:delete',
     name: 'cms-permission-content_delete',
-    description: 'cms-permission-content_delete_description'
+    description: 'cms-permission-content_delete_description',
+    createdOrigin: 'system'
   },
   // Publish content entries / Публикация и снятие с публикации контента
   {
     code: 'content:publish',
     name: 'cms-permission-content_publish',
-    description: 'cms-permission-content_publish_description'
+    description: 'cms-permission-content_publish_description',
+    createdOrigin: 'system'
   },
 
   // Media / Медиафайлы
@@ -102,19 +130,22 @@ export const CMS_DEFAULT_PERMISSIONS: readonly CmsNewPermission[] = [
   {
     code: 'media:read',
     name: 'cms-permission-media_read',
-    description: 'cms-permission-media_read_description'
+    description: 'cms-permission-media_read_description',
+    createdOrigin: 'system'
   },
   // Upload media files / Загрузка медиафайлов
   {
     code: 'media:upload',
     name: 'cms-permission-media_upload',
-    description: 'cms-permission-media_upload_description'
+    description: 'cms-permission-media_upload_description',
+    createdOrigin: 'system'
   },
   // Delete media files / Удаление медиафайлов
   {
     code: 'media:delete',
     name: 'cms-permission-media_delete',
-    description: 'cms-permission-media_delete_description'
+    description: 'cms-permission-media_delete_description',
+    createdOrigin: 'system'
   },
 
   // Settings / Настройки
@@ -122,12 +153,14 @@ export const CMS_DEFAULT_PERMISSIONS: readonly CmsNewPermission[] = [
   {
     code: 'settings:read',
     name: 'cms-permission-settings_read',
-    description: 'cms-permission-settings_read_description'
+    description: 'cms-permission-settings_read_description',
+    createdOrigin: 'system'
   },
   // Update system settings / Изменение настроек CMS
   {
     code: 'settings:update',
     name: 'cms-permission-settings_update',
-    description: 'cms-permission-settings_update_description'
+    description: 'cms-permission-settings_update_description',
+    createdOrigin: 'system'
   }
 ]

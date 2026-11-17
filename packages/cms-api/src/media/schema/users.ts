@@ -8,6 +8,7 @@ import {
   text,
   timestamp
 } from 'drizzle-orm/pg-core'
+import { createdOrigins } from './createdOrigins'
 import type { CmsUserMetadata, CmsUserStatus } from '../../types/cmsDbTypes'
 
 /**
@@ -56,6 +57,13 @@ export const users = /* #__PURE__ */ pgTable(
     lastLoginAt: timestamp('last_login_at'),
     /** User metadata (locale, timezone, settings, soft delete, custom fields) / Метаданные пользователя (локаль, часовой пояс, настройки, мягкое удаление, кастомные поля) */
     metadata: jsonb('metadata').$type<CmsUserMetadata>().notNull().default({}),
+
+    // Origin
+    /** Creation origin code / Код источника создания записи */
+    createdOrigin: text('created_origin').references(() => createdOrigins.code, {
+      onUpdate: 'cascade',
+      onDelete: 'set null'
+    }),
 
     // Timestamps
     /** Creation timestamp / Дата создания */

@@ -11,13 +11,13 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
+import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
@@ -148,6 +148,16 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    */
   getDescription(): string | null {
     return this.data.description
+  }
+
+  /**
+   * Returns the creation origin code or null.
+   *
+   * Возвращает код источника создания записи или null.
+   * @returns Creation origin code or null / Код источника создания или null
+   */
+  getCreatedOrigin(): string | null {
+    return this.data.createdOrigin
   }
 
   /**
@@ -321,7 +331,13 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction('cms-role', 'update', error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-role',
+          code: 'update'
+        },
+        error
+      )
     }
   }
 
@@ -340,7 +356,13 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     try {
       return await this.deleteRecordById(roleId)
     } catch (error) {
-      return this.error.handleTransaction('cms-role', 'delete', error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-role',
+          code: 'delete'
+        },
+        error
+      )
     }
   }
 
@@ -415,7 +437,13 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handleTransaction('cms-role', errorCode, error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-role',
+          code: errorCode
+        },
+        error
+      )
     }
   }
 
@@ -463,7 +491,13 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handleTransaction('cms-role', errorCode, error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-role',
+          code: errorCode
+        },
+        error
+      )
     }
   }
 
@@ -533,7 +567,13 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handleTransaction('cms-role', errorCode, error)
+      return this.error.handleTransaction(
+        {
+          group: 'cms-role',
+          code: errorCode
+        },
+        error
+      )
     }
   }
 
@@ -674,7 +714,11 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     roleId: number
   ): Promise<void> {
     if (!isPositiveInteger(roleId)) {
-      error.report('cms-role', 'notFound', { roleId })
+      error.report({
+        group: 'cms-role',
+        code: 'notFound',
+        details: { roleId }
+      })
     }
 
     const foundRows = await executor
@@ -684,7 +728,11 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      error.report('cms-role', 'notFound', { roleId })
+      error.report({
+        group: 'cms-role',
+        code: 'notFound',
+        details: { roleId }
+      })
     }
   }
 
@@ -809,7 +857,8 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     return {
       code: CmsRoleItem.normalizeCode(input.code, error),
       name: CmsRoleItem.normalizeName(input.name, error),
-      description: normalizeCmsOptionalText(input.description)
+      description: CmsVerification.normalizeOptionalText(input.description),
+      createdOrigin: CmsVerification.normalizeOptionalText(input.createdOrigin)
     }
   }
 
@@ -836,7 +885,11 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     }
 
     if (input.description !== undefined) {
-      values.description = normalizeCmsOptionalText(input.description)
+      values.description = CmsVerification.normalizeOptionalText(input.description)
+    }
+
+    if (input.createdOrigin !== undefined) {
+      values.createdOrigin = CmsVerification.normalizeOptionalText(input.createdOrigin)
     }
 
     return values
@@ -857,7 +910,11 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      error.report('cms-role', 'invalidCode', { code })
+      error.report({
+        group: 'cms-role',
+        code: 'invalidCode',
+        details: { code }
+      })
     }
 
     return normalized
@@ -878,7 +935,11 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      error.report('cms-role', 'invalidName', { name })
+      error.report({
+        group: 'cms-role',
+        code: 'invalidName',
+        details: { name }
+      })
     }
 
     return normalized

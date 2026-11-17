@@ -28,13 +28,24 @@ describe('CmsError', () => {
       })
     })
 
-    expect(() => CmsError.report('cms-role', 'notFound', { roleId: 42 }))
+    expect(() => CmsError.report({
+      group: 'cms-role',
+      code: 'notFound',
+      details: { roleId: 42 }
+    }))
       .toThrow('Requested CMS role was not found.')
 
     const unexpected = new Error('Timeout')
     let caughtTransactionError: unknown
     try {
-      CmsError.handleTransaction('cms-db', 'txError', unexpected, 'Transaction failed.')
+      CmsError.handleTransaction(
+        {
+          group: 'cms-db',
+          code: 'txError',
+          message: 'Transaction failed.'
+        },
+        unexpected
+      )
     } catch (error) {
       caughtTransactionError = error
     }

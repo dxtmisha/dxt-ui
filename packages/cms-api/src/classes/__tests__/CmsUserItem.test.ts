@@ -95,6 +95,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'cms-permission-users_read',
     description: 'cms-permission-users_read_description',
+    createdOrigin: null,
     createdAt: now,
     updatedAt: now,
     ...overrides
@@ -108,6 +109,7 @@ function makeRole(overrides: Partial<CmsRoleWithPermissions> = {}): CmsRoleWithP
     code: 'admin',
     name: 'cms-role-admin',
     description: 'cms-role-admin_description',
+    createdOrigin: null,
     createdAt: now,
     updatedAt: now,
     permissions: [makePermission()],
@@ -133,6 +135,7 @@ function makeUserData(overrides: Partial<CmsUserWithRoles> = {}): CmsUserWithRol
     twoFactorEnabled: false,
     lastLoginAt: null,
     metadata: { locale: 'ru' },
+    createdOrigin: null,
     createdAt: now,
     updatedAt: now,
     roles: [makeRole()],

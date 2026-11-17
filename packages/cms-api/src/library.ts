@@ -9,16 +9,14 @@ export * from './classes/CmsRoleItem'
 export * from './classes/CmsRoleManager'
 export * from './classes/CmsUserItem'
 export * from './classes/CmsUserManager'
+export * from './classes/CmsVerification'
 
 // Composables
 export * from './composables/useCmsDb'
 
 // Functions
 export * from './functions/createCmsDb'
-export * from './functions/escapeCmsSearchPattern'
-export * from './functions/normalizeCmsLimit'
-export * from './functions/normalizeCmsOffset'
-export * from './functions/normalizeCmsOptionalText'
+export * from './functions/seedCmsCreatedOrigins'
 export * from './functions/seedCmsDatabase'
 export * from './functions/seedCmsPermissions'
 export * from './functions/seedCmsRoles'
