@@ -2,6 +2,7 @@ import {
   type ConstrBind,
   type ConstrClassObject,
   type ConstrItems,
+  type ConstrStyles,
   DesignLogicAbstract
 } from '@dxtmisha/functional'
 
@@ -279,6 +280,16 @@ export class ListItem extends DesignLogicAbstract<
     }
 
     return classes
+  }
+
+  /**
+   * Values for inline styles.
+   *
+   * Значения для inline-стилей.
+   * @returns styles object / объект стилей
+   */
+  get styles(): ConstrStyles {
+    return this.callInstance('lazy', item => item.styles, {})
   }
 
   /**

@@ -1,11 +1,13 @@
 import {
   type Ref,
   shallowRef,
+  type ShallowRef,
   watch,
   type WatchStopHandle
 } from 'vue'
 import {
   type ConstrClassObject,
+  type ConstrStyles,
   DesignLifecycleAbstract,
   type DesignName,
   isDomRuntime,
@@ -43,7 +45,10 @@ export class ListItemLazy extends DesignLifecycleAbstract {
   protected stopStatusWatch?: WatchStopHandle
 
   /** Visibility state controlling child rendering / Состояние видимости, управляющее рендерингом дочерних узлов */
-  protected readonly visible = shallowRef<boolean>(!isDomRuntime())
+  protected readonly visible: ShallowRef<boolean>
+
+  /** Cached rendered height preserved when item leaves viewport / Кэшированная высота элемента, сохраняемая при выходе за экран */
+  protected readonly cachedHeight = shallowRef<string | undefined>(undefined)
 
   /**
    * Constructor
@@ -59,6 +64,7 @@ export class ListItemLazy extends DesignLifecycleAbstract {
     protected readonly naming: DesignName
   ) {
     super()
+    this.visible = shallowRef<boolean>(!isDomRuntime() || Boolean(this.element.value))
   }
 
   /**
@@ -103,6 +109,27 @@ export class ListItemLazy extends DesignLifecycleAbstract {
   }
 
   /**
+   * Returns inline styles preserving measured item height while hidden.
+   *
+   * Возвращает inline-стили, сохраняющие измеренную высоту элемента в скрытом состоянии.
+   * @returns styles object / объект стилей
+   */
+  get styles(): ConstrStyles {
+    if (
+      this.isLazy()
+      && !this.is()
+      && this.cachedHeight.value
+    ) {
+      return {
+        minHeight: this.cachedHeight.value,
+        containIntrinsicHeight: this.cachedHeight.value
+      }
+    }
+
+    return {}
+  }
+
+  /**
    * Checks whether lazy rendering is active via props.
    *
    * Проверяет, активирован ли ленивый рендеринг через свойства.
@@ -139,16 +166,28 @@ export class ListItemLazy extends DesignLifecycleAbstract {
       return
     }
 
-    if (!isDomRuntime()) {
-      this.visible.value = true
-      return
-    }
-
     this.lazyItem = useLazyItemByMarginRef(this.element, this.props.lazyMargin)
     this.stopStatusWatch = watch(
-      this.lazyItem.lazyItemStatus,
-      (status) => {
-        this.visible.value = Boolean(status)
+      () => [
+        this.lazyItem?.lazyItemStatus.value,
+        this.lazyItem?.lazyItem?.entry.value
+      ] as const,
+      ([status, entry]) => {
+        const nextStatus = Boolean(status)
+
+        if (!entry && this.visible.value && !nextStatus) {
+          return
+        }
+
+        if (this.visible.value && !nextStatus) {
+          const height = entry?.boundingClientRect?.height
+
+          if (height && height > 0) {
+            this.cachedHeight.value = `${height}px`
+          }
+        }
+
+        this.visible.value = nextStatus
       },
       { immediate: true }
     )
@@ -163,6 +202,7 @@ export class ListItemLazy extends DesignLifecycleAbstract {
     this.stopStatusWatch?.()
     this.stopStatusWatch = undefined
 
+    this.cachedHeight.value = undefined
     this.lazyItem?.removeLazyItem()
     this.lazyItem = undefined
   }

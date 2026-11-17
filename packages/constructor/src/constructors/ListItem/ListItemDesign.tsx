@@ -116,7 +116,7 @@ export class ListItemDesign<
    * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
-    return {}
+    return this.item.styles
   }
 
   /**

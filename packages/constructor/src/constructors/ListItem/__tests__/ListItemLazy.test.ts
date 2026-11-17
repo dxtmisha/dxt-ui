@@ -46,12 +46,13 @@ const installIntersectionObserverMock = () => {
     observe,
     unobserve,
     disconnect,
-    trigger: (target: Element, isIntersecting: boolean) => {
+    trigger: (target: Element, isIntersecting: boolean, height: number = 0) => {
       callbacks.forEach(({ callback }) => {
         callback([{
           target,
           isIntersecting,
-          intersectionRatio: isIntersecting ? 1 : 0
+          intersectionRatio: isIntersecting ? 1 : 0,
+          boundingClientRect: { height } as DOMRectReadOnly
         } as IntersectionObserverEntry])
       })
     }
@@ -74,7 +75,7 @@ describe('ListItemLazy', () => {
       lazyMargin: '256px 0px',
       label: 'Lazy Row'
     })
-    const element = ref<HTMLElement | undefined>(document.createElement('div'))
+    const element = ref<HTMLElement | undefined>()
     const lazy = new ListItemLazy(props, element, naming)
 
     expect(ListItemLazy.is(props)).toBe(true)
@@ -86,6 +87,7 @@ describe('ListItemLazy', () => {
       'd1-listItem--lazy--hidden': true
     })
 
+    element.value = document.createElement('div')
     lazy.onMounted()
     await nextTick()
 
@@ -93,25 +95,43 @@ describe('ListItemLazy', () => {
     expect(ioMock.callbacks.some(entry => entry.options?.rootMargin === '256px 0px')).toBe(true)
     expect(lazy.is()).toBe(false)
 
-    ioMock.trigger(element.value!, true)
+    ioMock.trigger(element.value!, true, 84)
     await nextTick()
 
     expect(lazy.is()).toBe(true)
+    expect(lazy.styles).toEqual({})
     expect(lazy.classes).toEqual({
       'd1-listItem--lazy': true,
       'd1-listItem--lazy--visible': true,
       'd1-listItem--lazy--hidden': false
     })
 
-    ioMock.trigger(element.value!, false)
+    ioMock.trigger(element.value!, false, 84)
     await nextTick()
     expect(lazy.is()).toBe(false)
+    expect(lazy.styles).toEqual({
+      minHeight: '84px',
+      containIntrinsicHeight: '84px'
+    })
+
+    // Returns to view (clears fixed height style), then leaves with height 0 (preserves cached 84px)
+    ioMock.trigger(element.value!, true, 84)
+    await nextTick()
+    expect(lazy.styles).toEqual({})
+
+    ioMock.trigger(element.value!, false, 0)
+    await nextTick()
+    expect(lazy.styles).toEqual({
+      minHeight: '84px',
+      containIntrinsicHeight: '84px'
+    })
 
     props.lazy = false
     await nextTick()
 
     expect(lazy.isLazy()).toBe(false)
     expect(lazy.is()).toBe(true)
+    expect(lazy.styles).toEqual({})
     expect(ioMock.unobserve).toHaveBeenCalledWith(element.value)
 
     lazy.onUnmounted()
@@ -167,12 +187,78 @@ describe('ListItemLazy', () => {
     expect(root.querySelector('.mock-icon')).toBeNull()
     expect(ioMock.observe).toHaveBeenCalledWith(root)
 
-    ioMock.trigger(root, true)
+    ioMock.trigger(root, true, 72)
     await nextTick()
 
     expect(root.classList.contains('d1-listItem--lazy--visible')).toBe(true)
     expect(root.querySelector('.d1-listItem__label')?.textContent).toBe('Deferred Label')
     expect(root.querySelector('.mock-icon')?.textContent).toBe('star')
+    expect(root.style.minHeight).toBe('')
+
+    ioMock.trigger(root, false, 72)
+    await nextTick()
+
+    expect(root.classList.contains('d1-listItem--lazy--hidden')).toBe(true)
+    expect(root.querySelector('.d1-listItem__label')).toBeNull()
+    expect(root.style.minHeight).toBe('72px')
+
+    app.unmount()
+    expect(ioMock.unobserve).toHaveBeenCalledWith(root)
+  })
+
+  it('keeps already-rendered content visible when lazy is enabled late until observer reports off-screen', async () => {
+    const ioMock = installIntersectionObserverMock()
+    const host = document.createElement('div')
+    document.body.appendChild(host)
+    cleanups.push(() => host.remove())
+
+    const props = reactive<ListItemProps>({
+      label: 'Pre-rendered Label',
+      value: 'pre-1',
+      lazy: false,
+      lazyMargin: '320px 0px'
+    })
+
+    const TestItem = defineComponent({
+      setup() {
+        const design = new ListItemDesign<ListItemComponents, ListItemExpose, ListItemClasses, ListItemProps>(
+          'd1.listItem',
+          props,
+          {
+            classes: computed(() => ({
+              main: { 'd1-listItem': true }
+            }))
+          } as unknown as ConstructorParameters<typeof ListItemDesign>[2]
+        )
+
+        return design.render()
+      }
+    })
+
+    const app = createApp(TestItem)
+    app.mount(host)
+    await nextTick()
+
+    const root = host.querySelector<HTMLElement>('.d1-listItem')!
+    expect(root.querySelector('.d1-listItem__label')?.textContent).toBe('Pre-rendered Label')
+
+    // Enable lazy after the element is already mounted & rendered
+    props.lazy = true
+    await nextTick()
+
+    // Must NOT flicker/hide before IntersectionObserver emits its first entry
+    expect(root.classList.contains('d1-listItem--lazy')).toBe(true)
+    expect(root.classList.contains('d1-listItem--lazy--visible')).toBe(true)
+    expect(root.querySelector('.d1-listItem__label')?.textContent).toBe('Pre-rendered Label')
+    expect(ioMock.observe).toHaveBeenCalledWith(root)
+
+    // When observer reports it is off-screen, preserves its measured height before hiding
+    ioMock.trigger(root, false, 68)
+    await nextTick()
+
+    expect(root.classList.contains('d1-listItem--lazy--hidden')).toBe(true)
+    expect(root.querySelector('.d1-listItem__label')).toBeNull()
+    expect(root.style.minHeight).toBe('68px')
 
     app.unmount()
     expect(ioMock.unobserve).toHaveBeenCalledWith(root)
