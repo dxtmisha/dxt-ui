@@ -7,13 +7,12 @@ import {
 } from 'vue'
 import {
   type ConstrClassObject,
-  type ConstrStyles,
   DesignLifecycleAbstract,
   type DesignName,
-  isDomRuntime,
   useLazyItemByMarginRef
 } from '@dxtmisha/functional'
 
+import type { ListItemLazyHeight } from './ListItemLazyHeight'
 import type { ListItemProps } from './props'
 
 /**
@@ -47,9 +46,6 @@ export class ListItemLazy extends DesignLifecycleAbstract {
   /** Visibility state controlling child rendering / Состояние видимости, управляющее рендерингом дочерних узлов */
   protected readonly visible: ShallowRef<boolean>
 
-  /** Cached rendered height preserved when item leaves viewport / Кэшированная высота элемента, сохраняемая при выходе за экран */
-  protected readonly cachedHeight = shallowRef<string | undefined>(undefined)
-
   /**
    * Constructor
    *
@@ -57,14 +53,16 @@ export class ListItemLazy extends DesignLifecycleAbstract {
    * @param props input properties / входные свойства
    * @param element target HTML element reference / ссылка на целевой HTML-элемент
    * @param naming component naming helper / помощник именования компонента
+   * @param lazyHeight callback returning optional cached height manager / функция обратного вызова, возвращающая менеджер кэшированной высоты
    */
   constructor(
     protected readonly props: Readonly<ListItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName
+    protected readonly naming: DesignName,
+    protected readonly lazyHeight?: () => ListItemLazyHeight | undefined
   ) {
     super()
-    this.visible = shallowRef<boolean>(!isDomRuntime() || Boolean(this.element.value))
+    this.visible = shallowRef<boolean>(Boolean(this.element.value))
   }
 
   /**
@@ -98,7 +96,7 @@ export class ListItemLazy extends DesignLifecycleAbstract {
    * @returns classes object / объект классов
    */
   get classes(): ConstrClassObject {
-    const isLazy = this.isLazy()
+    const isLazy = ListItemLazy.is(this.props)
     const isVisible = this.is()
 
     return {
@@ -109,44 +107,13 @@ export class ListItemLazy extends DesignLifecycleAbstract {
   }
 
   /**
-   * Returns inline styles preserving measured item height while hidden.
-   *
-   * Возвращает inline-стили, сохраняющие измеренную высоту элемента в скрытом состоянии.
-   * @returns styles object / объект стилей
-   */
-  get styles(): ConstrStyles {
-    if (
-      this.isLazy()
-      && !this.is()
-      && this.cachedHeight.value
-    ) {
-      return {
-        minHeight: this.cachedHeight.value,
-        containIntrinsicHeight: this.cachedHeight.value
-      }
-    }
-
-    return {}
-  }
-
-  /**
-   * Checks whether lazy rendering is active via props.
-   *
-   * Проверяет, активирован ли ленивый рендеринг через свойства.
-   * @returns true when lazy prop is enabled / true, если включено свойство lazy
-   */
-  isLazy(): boolean {
-    return ListItemLazy.is(this.props)
-  }
-
-  /**
    * Checks whether child elements should be rendered in the current frame.
    *
    * Проверяет, должны ли дочерние элементы отображаться в текущем кадре.
    * @returns true if children should render / true, если дочерние элементы должны рендериться
    */
   is(): boolean {
-    if (!this.isLazy()) {
+    if (!ListItemLazy.is(this.props)) {
       return true
     }
 
@@ -161,7 +128,7 @@ export class ListItemLazy extends DesignLifecycleAbstract {
   protected update(): void {
     this.reset()
 
-    if (!this.isLazy()) {
+    if (!ListItemLazy.is(this.props)) {
       this.visible.value = true
       return
     }
@@ -173,21 +140,21 @@ export class ListItemLazy extends DesignLifecycleAbstract {
         this.lazyItem?.lazyItem?.entry.value
       ] as const,
       ([status, entry]) => {
-        const nextStatus = Boolean(status)
-
-        if (!entry && this.visible.value && !nextStatus) {
+        if (
+          !entry
+          && this.visible.value
+          && !status
+        ) {
           return
         }
 
-        if (this.visible.value && !nextStatus) {
-          const height = entry?.boundingClientRect?.height
-
-          if (height && height > 0) {
-            this.cachedHeight.value = `${height}px`
-          }
+        if (status) {
+          this.lazyHeight?.()?.reset()
+        } else if (this.visible.value) {
+          this.lazyHeight?.()?.set(entry)
         }
 
-        this.visible.value = nextStatus
+        this.visible.value = Boolean(status)
       },
       { immediate: true }
     )
@@ -202,7 +169,7 @@ export class ListItemLazy extends DesignLifecycleAbstract {
     this.stopStatusWatch?.()
     this.stopStatusWatch = undefined
 
-    this.cachedHeight.value = undefined
+    this.lazyHeight?.()?.reset()
     this.lazyItem?.removeLazyItem()
     this.lazyItem = undefined
   }

@@ -25,6 +25,7 @@ import { SkeletonInclude } from '../Skeleton'
 
 import type { AriaList } from '../../types/ariaTypes'
 import { ListItemLazy } from './ListItemLazy'
+import { ListItemLazyHeight } from './ListItemLazyHeight'
 import type { ListItemProps } from './props'
 import type { ListItemComponents, ListItemEmits, ListItemSlots } from './types'
 
@@ -46,6 +47,8 @@ export type ListItemConstructors = {
   label: typeof LabelHighlightInclude
   /** Lazy rendering constructor / Конструктор ленивого рендеринга */
   lazy: typeof ListItemLazy
+  /** Lazy height cache constructor / Конструктор кэширования высоты ленивого рендеринга */
+  lazyHeight: typeof ListItemLazyHeight
   /** Prefix constructor / Конструктор префикса */
   prefix: typeof PrefixInclude
   /** Progress constructor / Конструктор индикатора прогресса */
@@ -147,7 +150,15 @@ export class ListItem extends DesignLogicAbstract<
       parameters: () => [
         this.props,
         this.element,
-        this.naming
+        this.naming,
+        () => this.callInstance('lazyHeight', item => item)
+      ]
+    },
+    lazyHeight: {
+      item: ListItemLazyHeight,
+      canCreate: () => ListItemLazyHeight.is(this.props),
+      parameters: () => [
+        this.props
       ]
     },
     prefix: {
@@ -289,7 +300,7 @@ export class ListItem extends DesignLogicAbstract<
    * @returns styles object / объект стилей
    */
   get styles(): ConstrStyles {
-    return this.callInstance('lazy', item => item.styles, {})
+    return this.callInstance('lazyHeight', item => item.styles, {})
   }
 
   /**

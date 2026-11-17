@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.1] - 2026-11-17
+
+### Changed
+- **`DesignLifecycleAbstract` & `DesignLogicAbstract`**:
+  - Updated `onMounted` and `onUnmounted` callback signatures in `DesignLifecycleAbstract` (`src/classes/design/DesignLifecycleAbstract.ts`) to accept an optional `scope?: EffectScope` parameter.
+  - Updated `callLifecycle` in `DesignLogicAbstract` (`src/classes/design/DesignLogicAbstract.ts`) to forward `this.scope` when invoking dependency lifecycle callbacks.
+  - Updated type assertions and unit tests in `src/classes/design/__tests__/DesignLifecycleAbstract.test.ts` and `src/classes/design/__tests__/DesignLogicAbstract.test.ts` to verify `EffectScope` forwarding.
+
 ## [2.3.0] - 2026-11-15
 
 ### Added

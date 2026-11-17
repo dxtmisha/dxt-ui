@@ -1,6 +1,7 @@
 export * from './ListItem'
 export * from './ListItemDesign'
 export * from './ListItemLazy'
+export * from './ListItemLazyHeight'
 export * from './props'
 export * from './types'
 export * from './basicTypes'

@@ -5,6 +5,7 @@ import { computed, createApp, defineComponent, h, nextTick, reactive, ref } from
 import { DesignName } from '@dxtmisha/functional'
 
 import { ListItemLazy } from '../ListItemLazy'
+import { ListItemLazyHeight } from '../ListItemLazyHeight'
 import { ListItemDesign } from '../ListItemDesign'
 import type { ListItemProps } from '../props'
 import type { ListItemClasses, ListItemComponents, ListItemExpose } from '../types'
@@ -76,10 +77,11 @@ describe('ListItemLazy', () => {
       label: 'Lazy Row'
     })
     const element = ref<HTMLElement | undefined>()
-    const lazy = new ListItemLazy(props, element, naming)
+    const lazy: ListItemLazy = new ListItemLazy(props, element, naming, () => lazyHeight)
+    const lazyHeight: ListItemLazyHeight = new ListItemLazyHeight(props)
 
     expect(ListItemLazy.is(props)).toBe(true)
-    expect(lazy.isLazy()).toBe(true)
+    expect(ListItemLazyHeight.is(props)).toBe(true)
     expect(lazy.is()).toBe(false)
     expect(lazy.classes).toEqual({
       'd1-listItem--lazy': true,
@@ -99,7 +101,7 @@ describe('ListItemLazy', () => {
     await nextTick()
 
     expect(lazy.is()).toBe(true)
-    expect(lazy.styles).toEqual({})
+    expect(lazyHeight.styles).toEqual({})
     expect(lazy.classes).toEqual({
       'd1-listItem--lazy': true,
       'd1-listItem--lazy--visible': true,
@@ -109,29 +111,26 @@ describe('ListItemLazy', () => {
     ioMock.trigger(element.value!, false, 84)
     await nextTick()
     expect(lazy.is()).toBe(false)
-    expect(lazy.styles).toEqual({
-      minHeight: '84px',
+    expect(lazyHeight.styles).toEqual({
       containIntrinsicHeight: '84px'
     })
 
-    // Returns to view (clears fixed height style), then leaves with height 0 (preserves cached 84px)
+    // Returns to view (resets cached height), then leaves with height 0 (does not cache 0px)
     ioMock.trigger(element.value!, true, 84)
     await nextTick()
-    expect(lazy.styles).toEqual({})
+    expect(lazyHeight.styles).toEqual({})
 
     ioMock.trigger(element.value!, false, 0)
     await nextTick()
-    expect(lazy.styles).toEqual({
-      minHeight: '84px',
-      containIntrinsicHeight: '84px'
-    })
+    expect(lazyHeight.styles).toEqual({})
 
     props.lazy = false
     await nextTick()
 
-    expect(lazy.isLazy()).toBe(false)
+    expect(ListItemLazy.is(props)).toBe(false)
+    expect(ListItemLazyHeight.is(props)).toBe(false)
     expect(lazy.is()).toBe(true)
-    expect(lazy.styles).toEqual({})
+    expect(lazyHeight.styles).toEqual({})
     expect(ioMock.unobserve).toHaveBeenCalledWith(element.value)
 
     lazy.onUnmounted()
@@ -194,13 +193,15 @@ describe('ListItemLazy', () => {
     expect(root.querySelector('.d1-listItem__label')?.textContent).toBe('Deferred Label')
     expect(root.querySelector('.mock-icon')?.textContent).toBe('star')
     expect(root.style.minHeight).toBe('')
+    expect(root.style.containIntrinsicHeight).toBe('')
 
     ioMock.trigger(root, false, 72)
     await nextTick()
 
     expect(root.classList.contains('d1-listItem--lazy--hidden')).toBe(true)
     expect(root.querySelector('.d1-listItem__label')).toBeNull()
-    expect(root.style.minHeight).toBe('72px')
+    expect(root.style.minHeight).toBe('')
+    expect(root.style.containIntrinsicHeight).toBe('72px')
 
     app.unmount()
     expect(ioMock.unobserve).toHaveBeenCalledWith(root)
@@ -258,9 +259,41 @@ describe('ListItemLazy', () => {
 
     expect(root.classList.contains('d1-listItem--lazy--hidden')).toBe(true)
     expect(root.querySelector('.d1-listItem__label')).toBeNull()
-    expect(root.style.minHeight).toBe('68px')
+    expect(root.style.minHeight).toBe('')
+    expect(root.style.containIntrinsicHeight).toBe('68px')
 
     app.unmount()
     expect(ioMock.unobserve).toHaveBeenCalledWith(root)
+  })
+
+  it('skips caching height and inline styles when lazyCacheHeight is false', async () => {
+    const ioMock = installIntersectionObserverMock()
+    const props = reactive<ListItemProps>({
+      lazy: true,
+      lazyMargin: '192px 0px',
+      lazyCacheHeight: false,
+      label: 'No Cached Height Row'
+    })
+    const element = ref<HTMLElement | undefined>()
+    const lazy: ListItemLazy = new ListItemLazy(props, element, naming, () => lazyHeight)
+    const lazyHeight: ListItemLazyHeight = new ListItemLazyHeight(props)
+
+    expect(ListItemLazyHeight.is(props)).toBe(false)
+
+    element.value = document.createElement('div')
+    lazy.onMounted()
+    await nextTick()
+
+    ioMock.trigger(element.value!, true, 96)
+    await nextTick()
+    expect(lazy.is()).toBe(true)
+    expect(lazyHeight.styles).toEqual({})
+
+    ioMock.trigger(element.value!, false, 96)
+    await nextTick()
+    expect(lazy.is()).toBe(false)
+    expect(lazyHeight.styles).toEqual({})
+
+    lazy.onUnmounted()
   })
 })

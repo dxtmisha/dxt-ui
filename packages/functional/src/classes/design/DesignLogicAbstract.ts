@@ -264,7 +264,7 @@ export abstract class DesignLogicAbstract<
   ): void {
     forEach(instances, (instance) => {
       if (this.isLifecycle(instance)) {
-        instance[name]?.()
+        instance[name]?.(this.scope)
       }
     })
   }

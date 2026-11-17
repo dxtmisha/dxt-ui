@@ -364,12 +364,14 @@ describe('DesignLogicAbstract', () => {
     assert(count)
 
     expect(dependency.onMounted).toHaveBeenCalledTimes(1)
+    expect(dependency.onMounted).toHaveBeenCalledWith(logic.onLifecycleArguments.mock.calls[0]?.[0])
     expect(dependency.onMounted.mock.contexts[0]).toBe(dependency)
     expect(dependency.onUnmounted).not.toHaveBeenCalled()
     expect(count.onMounted).not.toHaveBeenCalled()
 
     unmount()
     expect(dependency.onUnmounted).toHaveBeenCalledTimes(1)
+    expect(dependency.onUnmounted).toHaveBeenCalledWith(logic.onLifecycleArguments.mock.calls[0]?.[0])
     expect(dependency.onUnmounted.mock.contexts[0]).toBe(dependency)
     expect(count.onUnmounted).not.toHaveBeenCalled()
   })

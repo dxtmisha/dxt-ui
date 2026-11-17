@@ -89,6 +89,8 @@ export type ListItemPropsBasic<
     lazy?: boolean
     /** Root margin for lazy visibility observer/ Отступ области наблюдения ленивого рендеринга */
     lazyMargin?: string
+    /** Whether to cache measured element height when hidden by lazy rendering / Сохранять ли измеренную высоту элемента при скрытии ленивым рендерингом */
+    lazyCacheHeight?: boolean
   }
 
 /**
@@ -108,6 +110,7 @@ export const defaultsListItem = {
   role: 'option',
   selectionStyle: 'none',
   lazy: true,
+  lazyCacheHeight: true,
   ...{
     // :default [!] System label / Системная метка
     iconAlign: 'center',
