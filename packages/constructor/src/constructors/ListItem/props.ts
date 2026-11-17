@@ -51,8 +51,6 @@ export type ListItemPropsBasic<
   & AriaRolePropsInclude
   & {
     /** Value/ Значения */
-    /** Item index/ Индекс элемента */
-    index?: any
     /** URL address for links/ URL-адрес для ссылок */
     href?: string
 

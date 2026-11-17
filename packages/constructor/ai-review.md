@@ -107,8 +107,6 @@ src/constructors/FieldMessage/FieldMessageMessage.ts
 src/constructors/FieldMessage/FieldMessage.ts
 src/constructors/FieldMessage/FieldMessageDesign.tsx
 src/constructors/FieldMessage/FieldMessageInclude.ts
-src/classes/PrefixInclude.ts
-src/classes/SuffixInclude.ts
 src/constructors/Field/FieldElement.ts
 src/constructors/Field/FieldIcons.ts
 src/constructors/Field/FieldSize.ts
@@ -184,3 +182,8 @@ src/constructors/Checkbox/CheckboxIcon.ts
 src/constructors/Checkbox/CheckboxSelected.ts
 src/constructors/Checkbox/CheckboxDesign.tsx
 src/constructors/Checkbox/Checkbox.ts
+src/classes/LabelHighlightInclude.ts
+src/classes/PrefixInclude.ts
+src/classes/SuffixInclude.ts
+src/constructors/ListItem/ListItem.ts
+src/constructors/ListItem/ListItemDesign.tsx

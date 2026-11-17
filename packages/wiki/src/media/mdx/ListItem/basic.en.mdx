@@ -29,14 +29,14 @@ ListItem provides uniform presentation of items in lists, menus, and navigation 
 import { ref } from 'vue'
 
 const items = ref([
-  { text: 'List item 1', value: '1', selected: false },
-  { text: 'List item 2', value: '2', selected: true },
-  { text: 'List item 3', value: '3', selected: false }
+  { label: 'List item 1', value: '1', selected: false },
+  { label: 'List item 2', value: '2', selected: true },
+  { label: 'List item 3', value: '3', selected: false }
 ])
 
 const handleClick = (item) => {
   item.selected = !item.selected
-  console.log('Item selected:', item.text)
+  console.log('Item selected:', item.label)
 }
 </script>
 
@@ -45,7 +45,7 @@ const handleClick = (item) => {
     <ListItem
       v-for="item in items"
       :key="item.value"
-      :text="item.text"
+      :label="item.label"
       :selected="item.selected"
       @click="handleClick(item)"
     >

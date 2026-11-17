@@ -44,6 +44,7 @@ import DemoInputPhonePage from './pages/components/DemoInputPhonePage.vue'
 import DemoInputSocialPage from './pages/components/DemoInputSocialPage.vue'
 import DemoListPage from './pages/components/DemoListPage.vue'
 import DemoListGroupPage from './pages/components/DemoListGroupPage.vue'
+import DemoListItemPage from './pages/components/DemoListItemPage.vue'
 import DemoMaskPage from './pages/components/DemoMaskPage.vue'
 import DemoModalPage from './pages/components/DemoModalPage.vue'
 import DemoMenuPage from './pages/components/DemoMenuPage.vue'
@@ -284,6 +285,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-list-group',
     name: 'component-list-group',
     component: DemoListGroupPage
+  },
+  {
+    path: '/component-list-item',
+    name: 'component-list-item',
+    component: DemoListItemPage
   },
   {
     path: '/component-mask',

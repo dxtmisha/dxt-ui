@@ -40,13 +40,13 @@ export class PrefixInclude {
    * @param props input property / входное свойство
    * @param naming component naming helper / помощник именования компонента
    * @param slots object for working with slots / объект для работы со слотами
-   * @param skeleton optional skeleton for loading state / необязательный скелетон для состояния загрузки
+   * @param skeleton callback returning optional skeleton for loading state / функция обратного вызова, возвращающая необязательный скелетон для состояния загрузки
    */
   constructor(
     protected readonly props: Readonly<PrefixProps>,
     protected readonly naming: DesignName,
     protected readonly slots?: PrefixSlots,
-    protected readonly skeleton?: SkeletonInclude
+    protected readonly skeleton?: () => SkeletonInclude | undefined
   ) {
   }
 
@@ -109,7 +109,7 @@ export class PrefixInclude {
             'id': this.id,
             'class': {
               [this.naming.getSubClass('prefix')]: true,
-              ...this.skeleton?.classes
+              ...this.skeleton?.()?.classes
             },
             'data-event-type': 'prefix'
           },

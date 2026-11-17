@@ -38,7 +38,7 @@ describe('PrefixInclude', () => {
         { prefix: 'Pre', prefixId: 'pref-id' },
         new DesignName('my.class'),
         { prefix: () => h('span', 'SlotPre') },
-        skeleton
+        () => skeleton
       )
       const nodes = include.render()
 

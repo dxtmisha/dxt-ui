@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrClass, type DesignName, getExp, isFilled } from '@dxtmisha/functional'
+import { type ConstrClass, type DesignName, getExp, isFilled, isNumber } from '@dxtmisha/functional'
 
 import { LabelInclude } from './LabelInclude'
 import { SkeletonInclude } from '../constructors/Skeleton'
@@ -23,7 +23,7 @@ export class LabelHighlightInclude extends LabelInclude {
    * @param classesExtra additional classes / дополнительные классы
    * @param slots object for working with slots / объект для работы со слотами
    * @param elementsExtra additional elements / дополнительные элементы
-   * @param skeleton optional skeleton for loading state / необязательный скелетон для состояния загрузки
+   * @param skeleton callback returning optional skeleton for loading state / функция обратного вызова, возвращающая необязательный скелетон для состояния загрузки
    */
   constructor(
     protected readonly props: Readonly<LabelHighlightProps>,
@@ -31,7 +31,7 @@ export class LabelHighlightInclude extends LabelInclude {
     protected readonly classesExtra?: ConstrClass,
     protected readonly slots?: LabelHighlightSlots,
     protected readonly elementsExtra?: () => VNode[],
-    protected readonly skeleton?: SkeletonInclude
+    protected readonly skeleton?: () => SkeletonInclude | undefined
   ) {
     super(
       props,
@@ -49,6 +49,7 @@ export class LabelHighlightInclude extends LabelInclude {
    * Determines if highlighting is required.
    *
    * Определяет, требуется ли выделение.
+   * @returns true if item matches highlight or highlighting is inactive / true, если элемент совпадает или подсветка неактивна
    */
   isHighlight(): boolean {
     const props = this.props
@@ -74,7 +75,7 @@ export class LabelHighlightInclude extends LabelInclude {
     return Boolean(
       label.match(exp)
       || (
-        isFilled(props.value)
+        (isFilled(props.value, true) || isNumber(props.value))
         && props.value.toString().match(exp)
       )
     )
@@ -86,6 +87,7 @@ export class LabelHighlightInclude extends LabelInclude {
    *
    * Возвращает строку с выделенными частями.
    * Если выделение не требуется, возвращает исходную строку.
+   * @returns highlighted HTML string or undefined / подсвеченная HTML-строка или undefined
    */
   protected getLabel = (): string | undefined => {
     const props = this.props
@@ -104,7 +106,7 @@ export class LabelHighlightInclude extends LabelInclude {
       }
 
       if (
-        isFilled(props.value)
+        (isFilled(props.value, true) || isNumber(props.value))
         && props.value.toString().match(exp)
       ) {
         return `<span class="${className}">${label}</span>`
@@ -118,8 +120,9 @@ export class LabelHighlightInclude extends LabelInclude {
    * Returns the minimum length of the string to start highlighting.
    *
    * Возвращает минимальную длину строки для начала выделения.
+   * @returns minimum highlight length / минимальная длина для подсветки
    */
-  protected getLengthStart() {
+  protected getLengthStart(): number {
     return this.props.highlightLengthStart ?? 2
   }
 }

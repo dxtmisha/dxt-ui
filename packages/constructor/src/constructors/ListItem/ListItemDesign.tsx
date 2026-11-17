@@ -1,10 +1,9 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  getBind,
-  toBinds
+  getBind
 } from '@dxtmisha/functional'
 
 import { ListItem } from './ListItem'
@@ -79,7 +78,7 @@ export class ListItemDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose
+      ...this.item.i('event').expose
     } as EXPOSE
   }
 
@@ -127,36 +126,34 @@ export class ListItemDesign<
    * @returns rendered VNode or undefined / отрендеренный VNode или undefined
    */
   protected initRender(): VNode | undefined {
-    if (
-      this.props.filterMode
-      && !this.item.label.isHighlight()
-    ) {
+    if (!this.item.isRender()) {
       return undefined
     }
 
-    const children: any[] = []
+    const children: VNode[] = []
 
     this.initSlot('leading', children)
     children.push(...this.renderBody())
-    this.initSlot('trailing', children)
+    children.push(...this.renderTrailing())
 
     children.push(
-      ...this.item.icon.render(),
-      ...this.item.progress.render(),
+      ...this.item.callInstance('icon', item => item.render(), []),
+      ...this.item.callInstance('progress', item => item.render(), []),
       ...this.renderControl(),
-      ...this.item.ripple.render()
+      ...this.item.callInstance('ripple', item => item.render(), [])
     )
 
     return h(
       this.item.tag,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...this.item.binds,
-        ...this.item.aria
-      },
+      mergeProps(
+        this.getAttrs(),
+        this.item.binds,
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ),
       children
     )
   }
@@ -168,9 +165,9 @@ export class ListItemDesign<
    * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderBody = (): VNode[] => {
-    const children: any[] = [
+    const children: VNode[] = [
       ...this.renderContext(),
-      ...this.item.description.render()
+      ...this.item.callInstance('description', item => item.render(), [])
     ]
 
     this.initSlot('body', children)
@@ -198,14 +195,37 @@ export class ListItemDesign<
         'div',
         this.getKeyClass('context'),
         [
-          ...this.item.prefix.render(),
-          ...this.item.label.render(),
-          ...this.item.caption.render(),
-          ...this.item.suffix.render(),
-          ...this.item.badge.render()
+          ...this.item.callInstance('prefix', item => item.render(), []),
+          ...this.item.callInstance('label', item => item.render(), []),
+          ...this.item.callInstance('caption', item => item.render(), []),
+          ...this.item.callInstance('suffix', item => item.render(), []),
+          ...this.item.callInstance('badge', item => item.render(), [])
         ]
       )
     ]
+  }
+
+  /**
+   * Method for rendering the trailing slot container.
+   *
+   * Метод для рендеринга контейнера замыкающего слота.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderTrailing = (): VNode[] => {
+    if (
+      this.slots
+      && 'trailing' in this.slots
+    ) {
+      return [
+        h(
+          'div',
+          this.getKeyClass('trailing'),
+          this.initSlot('trailing')
+        )
+      ]
+    }
+
+    return []
   }
 
   /**
@@ -222,8 +242,8 @@ export class ListItemDesign<
         this.components?.renderAdd(
           children,
           'checkbox',
-          toBinds(
-            this.props.checkboxAttrs,
+          mergeProps(
+            this.props.checkboxAttrs ?? {},
             {
               value: this.props.selected
             }
@@ -234,8 +254,8 @@ export class ListItemDesign<
         this.components?.renderAdd(
           children,
           'radio',
-          toBinds(
-            this.props.radioAttrs,
+          mergeProps(
+            this.props.radioAttrs ?? {},
             {
               value: this.props.selected
             }

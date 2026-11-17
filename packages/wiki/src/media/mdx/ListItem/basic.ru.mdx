@@ -29,14 +29,14 @@ ListItem обеспечивает единообразное представл�
 import { ref } from 'vue'
 
 const items = ref([
-  { text: 'Элемент списка 1', value: '1', selected: false },
-  { text: 'Элемент списка 2', value: '2', selected: true },
-  { text: 'Элемент списка 3', value: '3', selected: false }
+  { label: 'Элемент списка 1', value: '1', selected: false },
+  { label: 'Элемент списка 2', value: '2', selected: true },
+  { label: 'Элемент списка 3', value: '3', selected: false }
 ])
 
 const handleClick = (item) => {
   item.selected = !item.selected
-  console.log('Элемент выбран:', item.text)
+  console.log('Элемент выбран:', item.label)
 }
 </script>
 
@@ -45,7 +45,7 @@ const handleClick = (item) => {
     <ListItem
       v-for="item in items"
       :key="item.value"
-      :text="item.text"
+      :label="item.label"
       :selected="item.selected"
       @click="handleClick(item)"
     >

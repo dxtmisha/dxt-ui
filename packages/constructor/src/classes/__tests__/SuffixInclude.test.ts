@@ -38,7 +38,7 @@ describe('SuffixInclude', () => {
         { suffix: 'Suf', suffixId: 'suf-id' },
         new DesignName('my.class'),
         { suffix: () => h('span', 'SlotSuf') },
-        skeleton
+        () => skeleton
       )
       const nodes = include.render()
 
