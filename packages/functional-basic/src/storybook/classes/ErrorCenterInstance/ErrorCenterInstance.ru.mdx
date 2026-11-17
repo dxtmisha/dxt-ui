@@ -32,6 +32,7 @@ const myErrorCenter = new ErrorCenterInstance([
 ## Методы
 
 ### Действие
+- `assign<D = unknown>(cause: ErrorCenterCauseItem<D>): ErrorCenterCauseItem<D>` — Объединяет входные данные причины с найденной записью из реестра с учётом приоритета без мутации входных объектов.
 - `on(cause: ErrorCenterCauseItem): this` — Запускает процесс обработки. Склеивает данные из реестра с входными данными и передает их обработчику.
 
 ### Проверка и доступ

@@ -1,0 +1,95 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/ErrorCenterThrow - Регистрация и выброс ошибки'/>
+
+# Класс ErrorCenterThrow
+
+`ErrorCenterThrow` — это **класс-обёртка** над `ErrorCenterInstance`, объединяющий централизованную регистрацию ошибки и выброс исключения в одной операции. Вызов `on()` сначала передаёт ошибку в `ErrorCenterInstance` (запуская обработчики, глобальные колбэки и вывод в консоль), а затем немедленно выбрасывает `ErrorCenterError` с объединёнными метаданными причины.
+
+## Ключевые особенности
+
+- **Единая регистрация и выброс** — исключает риск забыть либо отправить событие в телеметрию/обработчики, либо прервать выполнение исключением.
+- **Слияние с реестром причин** — формирует выбрасываемый `ErrorCenterError` через `errorCenter.assign(cause)`, применяя зарегистрированные `label`, `message` и правила `priority`.
+- **Готовность к SSR и DI** — по умолчанию использует `ErrorCenter.getItem()` (изолированный по запросам через `ServerStorage`) или принимает пользовательский `ErrorCenterInstance`.
+- **Строгий контракт `never` в TypeScript** — метод `on<D = unknown>(...)` гарантирует прерывание потока выполнения и сохраняет типизацию `details` в выброшенном `ErrorCenterError<D>`.
+
+## Инициализация
+
+Для создания экземпляра вызовите `new ErrorCenterThrow(errorCenter?)`.
+
+**Параметры:**
+- `errorCenter?: ErrorCenterInstance` — целевой экземпляр `ErrorCenterInstance` (по умолчанию `ErrorCenter.getItem()`).
+
+```typescript
+import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
+
+const errorThrow = new ErrorCenterThrow()
+```
+
+## Методы
+
+### `on`
+Передаёт причину ошибки в привязанный `ErrorCenterInstance` и выбрасывает исключение `ErrorCenterError<D>` с объединёнными данными причины.
+
+**Параметры:**
+- `cause: ErrorCenterCauseItem<D>` — структурированные данные причины ошибки (`group`, `code`, `priority`, `label`, `message`, `details`).
+- `options?: ErrorOptions` — стандартные опции `Error` (например, `{ cause: originalError }`).
+
+**Возвращает:** `never` — никогда не возвращает управление штатно; всегда выбрасывает `ErrorCenterError<D>`.
+
+```typescript
+errorThrow.on<{ resourceId: number }>({
+  group: 'api',
+  code: 'notFound',
+  details: { resourceId: 42 }
+})
+```
+
+## Примеры
+
+### Использование с активным глобальным ErrorCenter
+```typescript
+import { ErrorCenterError, ErrorCenterThrow } from '@dxtmisha/functional-basic'
+
+const errorThrow = new ErrorCenterThrow()
+
+try {
+  errorThrow.on({
+    group: 'api',
+    code: 'unauthorized',
+    details: { endpoint: '/profile' }
+  })
+} catch (error) {
+  if (error instanceof ErrorCenterError) {
+    console.log(error.getCode())    // 'unauthorized'
+    console.log(error.getMessage()) // Сообщение по умолчанию из реестра
+    console.log(error.getDetails()) // { endpoint: '/profile' }
+  }
+}
+```
+
+### Передача изолированного экземпляра и исходной ошибки
+```typescript
+import {
+  ErrorCenterHandler,
+  ErrorCenterInstance,
+  ErrorCenterThrow
+} from '@dxtmisha/functional-basic'
+
+const localInstance = new ErrorCenterInstance(
+  [{ group: 'storage', code: 'readFailed', message: 'Не удалось прочитать конфигурацию.' }],
+  new ErrorCenterHandler([], false)
+)
+
+const localThrow = new ErrorCenterThrow(localInstance)
+
+try {
+  // Операция, завершившаяся ошибкой
+  throw new SyntaxError('Unexpected token')
+} catch (originalError) {
+  localThrow.on(
+    { group: 'storage', code: 'readFailed', details: { key: 'settings' } },
+    { cause: originalError }
+  )
+}
+```

@@ -11,6 +11,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ## Методы
 
 ### Действие
+- `assign<D = unknown>(cause: ErrorCenterCauseItem<D>): ErrorCenterCauseItem<D>` — Объединяет входные данные причины с найденной записью из реестра активного экземпляра с учётом приоритета.
 - `on(cause: ErrorCenterCauseItem): void` — Запускает процесс обработки. Ищет данные в реестре, объединяет их и вызывает нужные функции обратного вызова.
 
 ### Проверка и доступ

@@ -36,10 +36,10 @@ export interface ListMenuExpose extends WindowExposeInclude {
  * Тип, описывающий доступные слоты.
  */
 export interface ListMenuSlots {
-  /** Slot for the menu header/ Слот для заголовка меню */
+  /** Slot for the menu header / Слот для заголовка меню */
   head?(props: WindowControlItem): any
 
-  /** Slot for the menu list content/ Слот для содержимого списка меню */
+  /** Slot for the menu list content / Слот для содержимого списка меню */
   list?(props: any): any
 }
 
@@ -49,6 +49,7 @@ export interface ListMenuSlots {
  * Тип, описывающий подклассы.
  */
 export type ListMenuClasses = {
+  /** Main class / Основной класс */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   head: string

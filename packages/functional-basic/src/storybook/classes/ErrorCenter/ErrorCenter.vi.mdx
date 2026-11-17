@@ -11,6 +11,7 @@ Lớp tĩnh dùng `ServerStorage` để tái sử dụng một `ErrorCenterInsta
 ## Các phương thức
 
 ### Hành động
+- `assign<D = unknown>(cause: ErrorCenterCauseItem<D>): ErrorCenterCauseItem<D>` — Hợp nhất dữ liệu nguyên nhân đầu vào với mục khớp trong sổ đăng ký của thực thể hiện tại theo mức độ ưu tiên.
 - `on(cause: ErrorCenterCauseItem): void` — Bắt đầu quá trình xử lý. Tìm kiếm dữ liệu trong sổ đăng ký, hợp nhất chúng và gọi các callback thích hợp.
 
 ### Xác minh và Truy cập

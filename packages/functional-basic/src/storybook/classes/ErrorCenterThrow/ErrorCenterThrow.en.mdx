@@ -1,0 +1,95 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ErrorCenterThrow - Dispatch & Throw Error'/>
+
+# ErrorCenterThrow Class
+
+`ErrorCenterThrow` is a **wrapper class** around `ErrorCenterInstance` that combines centralized error reporting and exception throwing into a single operation. Calling `on()` first dispatches the error through `ErrorCenterInstance` (triggering handlers, callbacks, and console logging) and immediately throws an `ErrorCenterError` populated with the merged cause metadata.
+
+## Key Features
+
+- **Unified Dispatch & Throw** — prevents forgetting either error telemetry/logging or throwing an exception.
+- **Registry Metadata Merging** — resolves the thrown `ErrorCenterError` via `errorCenter.assign(cause)` so registered `label`, `message`, and `priority` rules apply consistently.
+- **SSR & Dependency Injection Ready** — defaults to `ErrorCenter.getItem()` (request-isolated via `ServerStorage`) or accepts any custom `ErrorCenterInstance`.
+- **Strong TypeScript `never` Contract** — `on<D = unknown>(...)` guarantees non-returning control flow and preserves typed `details` on the thrown `ErrorCenterError<D>`.
+
+## Initialization
+
+To create an instance, call `new ErrorCenterThrow(errorCenter?)`.
+
+**Parameters:**
+- `errorCenter?: ErrorCenterInstance` — target `ErrorCenterInstance` (defaults to `ErrorCenter.getItem()`).
+
+```typescript
+import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
+
+const errorThrow = new ErrorCenterThrow()
+```
+
+## Methods
+
+### `on`
+Dispatches the error cause through the bound `ErrorCenterInstance` and throws an `ErrorCenterError<D>` containing the merged cause data.
+
+**Parameters:**
+- `cause: ErrorCenterCauseItem<D>` — structured error cause details (`group`, `code`, `priority`, `label`, `message`, `details`).
+- `options?: ErrorOptions` — standard `Error` options (such as `{ cause: originalError }`).
+
+**Returns:** `never` — never returns normally; always throws `ErrorCenterError<D>`.
+
+```typescript
+errorThrow.on<{ resourceId: number }>({
+  group: 'api',
+  code: 'notFound',
+  details: { resourceId: 42 }
+})
+```
+
+## Examples
+
+### Using the Active Global ErrorCenter
+```typescript
+import { ErrorCenterError, ErrorCenterThrow } from '@dxtmisha/functional-basic'
+
+const errorThrow = new ErrorCenterThrow()
+
+try {
+  errorThrow.on({
+    group: 'api',
+    code: 'unauthorized',
+    details: { endpoint: '/profile' }
+  })
+} catch (error) {
+  if (error instanceof ErrorCenterError) {
+    console.log(error.getCode())    // 'unauthorized'
+    console.log(error.getMessage()) // Default message from registry
+    console.log(error.getDetails()) // { endpoint: '/profile' }
+  }
+}
+```
+
+### Passing a Custom Instance and Original Error Cause
+```typescript
+import {
+  ErrorCenterHandler,
+  ErrorCenterInstance,
+  ErrorCenterThrow
+} from '@dxtmisha/functional-basic'
+
+const localInstance = new ErrorCenterInstance(
+  [{ group: 'storage', code: 'readFailed', message: 'Failed to read configuration.' }],
+  new ErrorCenterHandler([], false)
+)
+
+const localThrow = new ErrorCenterThrow(localInstance)
+
+try {
+  // Some failing operation
+  throw new SyntaxError('Unexpected token')
+} catch (originalError) {
+  localThrow.on(
+    { group: 'storage', code: 'readFailed', details: { key: 'settings' } },
+    { cause: originalError }
+  )
+}
+```

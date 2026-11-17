@@ -16,8 +16,8 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'head', description: `Slot for the menu header/ Слот для заголовка меню`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
-  { name: 'list', description: `Slot for the menu list content/ Слот для содержимого списка меню`, properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'head', description: `Slot for the menu header / Слот для заголовка меню`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
+  { name: 'list', description: `Slot for the menu list content / Слот для содержимого списка меню`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

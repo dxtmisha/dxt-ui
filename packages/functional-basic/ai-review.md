@@ -2,7 +2,6 @@ isFunction
 executeFunction
 isDomRuntime
 ErrorCenterHandler
-ErrorCenterInstance
 toString
 encodeAttribute
 getElementSafeScript
@@ -12,7 +11,6 @@ isObject
 isObjectNotArray
 getObjectNull
 ServerStorage
-ErrorCenter
 ApiCache
 ApiDataReturn
 hasKey
@@ -204,3 +202,6 @@ toPercentBy100
 uint8ArrayToBase64
 writeClipboardData
 ErrorCenterError
+ErrorCenterInstance
+ErrorCenter
+ErrorCenterThrow

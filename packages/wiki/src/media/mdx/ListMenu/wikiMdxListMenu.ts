@@ -2,6 +2,8 @@ import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
 import listMenuEn from './listMenu.en.mdx'
 import listMenuRu from './listMenu.ru.mdx'
+import slotsEn from './slots.en.mdx'
+import slotsRu from './slots.ru.mdx'
 
 /**
  * MDX files for ListMenu component
@@ -14,6 +16,10 @@ export const wikiMdxListMenu: StorybookComponentsMdxItem = {
     listMenu: {
       en: listMenuEn,
       ru: listMenuRu
+    },
+    slots: {
+      en: slotsEn,
+      ru: slotsRu
     }
   }
 }

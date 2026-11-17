@@ -32,6 +32,7 @@ const myErrorCenter = new ErrorCenterInstance([
 ## Methods
 
 ### Action
+- `assign<D = unknown>(cause: ErrorCenterCauseItem<D>): ErrorCenterCauseItem<D>` — Merges input cause data with a matching entry from the registry according to priority without mutating inputs.
 - `on(cause: ErrorCenterCauseItem): this` — Starts the processing. Merges data from the registry with input data and passes it to the handler.
 
 ### Verification & Access

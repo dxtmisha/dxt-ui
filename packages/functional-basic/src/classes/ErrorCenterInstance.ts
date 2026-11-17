@@ -1,6 +1,7 @@
 // ai-none
 
 import { ErrorCenterHandler } from './ErrorCenterHandler'
+import { getObjectNoUndefined } from '../functions/getObjectNoUndefined'
 
 import type {
   ErrorCenterCauseItem,
@@ -10,6 +11,9 @@ import type {
   ErrorCenterHandlerIsConsole,
   ErrorCenterHandlerList
 } from '../types/errorCenterTypes'
+
+/** Default priority for merging error causes / Приоритет по умолчанию для слияния причин ошибок */
+const DEFAULT_PRIORITY = 500
 
 /**
  * Class for managing error storage and handling within an instance.
@@ -228,16 +232,16 @@ export class ErrorCenterInstance {
     const causeMain = this.get(cause.code, cause.group)
 
     if (causeMain) {
-      if ((causeMain.priority ?? 500) > (cause.priority ?? 500)) {
+      if ((causeMain.priority ?? DEFAULT_PRIORITY) > (cause.priority ?? DEFAULT_PRIORITY)) {
         return {
-          ...cause,
-          ...causeMain
+          ...getObjectNoUndefined(cause),
+          ...getObjectNoUndefined(causeMain)
         }
       }
 
       return {
-        ...causeMain,
-        ...cause
+        ...getObjectNoUndefined(causeMain),
+        ...getObjectNoUndefined(cause)
       }
     }
 

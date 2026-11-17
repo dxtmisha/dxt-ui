@@ -1,5 +1,6 @@
 import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
 
+/** Token properties for ListMenu / Токен-свойства для ListMenu */
 export type ListMenuPropsToken = {
   // :type [!] System label / Системная метка
   open?: boolean
@@ -8,6 +9,7 @@ export type ListMenuPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties for ListMenu / Базовые свойства для ListMenu */
 export type ListMenuPropsBasic<
   Window extends WindowPropsBasic = WindowPropsBasic
 > = WindowPropsInclude<Window>

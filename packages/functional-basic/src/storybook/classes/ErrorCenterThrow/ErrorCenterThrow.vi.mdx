@@ -1,0 +1,95 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ErrorCenterThrow - Ghi nhận và ném lỗi'/>
+
+# Lớp ErrorCenterThrow
+
+`ErrorCenterThrow` là **lớp bọc (wrapper)** quanh `ErrorCenterInstance`, kết hợp việc ghi nhận lỗi tập trung và ném ngoại lệ trong một thao tác duy nhất. Khi gọi `on()`, lớp sẽ gửi lỗi qua `ErrorCenterInstance` (kích hoạt trình xử lý, callback toàn cục và xuất console), sau đó lập tức ném ra `ErrorCenterError` chứa siêu dữ liệu nguyên nhân đã được hợp nhất.
+
+## Các tính năng chính
+
+- **Ghi nhận và ném lỗi thống nhất** — tránh bỏ sót việc gửi thông tin lỗi tới hệ thống xử lý/telemetry hoặc ngắt luồng thực thi bằng ngoại lệ.
+- **Hợp nhất dữ liệu từ sổ đăng ký** — tạo `ErrorCenterError` thông qua `errorCenter.assign(cause)`, tự động áp dụng `label`, `message` và quy tắc `priority` đã đăng ký.
+- **Sẵn sàng cho SSR & DI** — mặc định sử dụng `ErrorCenter.getItem()` (cô lập theo từng yêu cầu qua `ServerStorage`) hoặc nhận vào bất kỳ `ErrorCenterInstance` tùy chỉnh nào.
+- **Hợp đồng kiểu `never` chặt chẽ trong TypeScript** — phương thức `on<D = unknown>(...)` đảm bảo không trả về bình thường và giữ nguyên kiểu dữ liệu `details` trên `ErrorCenterError<D>`.
+
+## Khởi tạo
+
+Để tạo một thực thể, gọi `new ErrorCenterThrow(errorCenter?)`.
+
+**Tham số:**
+- `errorCenter?: ErrorCenterInstance` — thực thể `ErrorCenterInstance` mục tiêu (mặc định là `ErrorCenter.getItem()`).
+
+```typescript
+import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
+
+const errorThrow = new ErrorCenterThrow()
+```
+
+## Các phương thức
+
+### `on`
+Gửi nguyên nhân lỗi tới `ErrorCenterInstance` được liên kết và ném ra ngoại lệ `ErrorCenterError<D>` với dữ liệu nguyên nhân đã được hợp nhất.
+
+**Tham số:**
+- `cause: ErrorCenterCauseItem<D>` — dữ liệu nguyên nhân lỗi có cấu trúc (`group`, `code`, `priority`, `label`, `message`, `details`).
+- `options?: ErrorOptions` — các tùy chọn chuẩn của `Error` (ví dụ `{ cause: originalError }`).
+
+**Trả về:** `never` — không bao giờ trả về bình thường; luôn ném ra `ErrorCenterError<D>`.
+
+```typescript
+errorThrow.on<{ resourceId: number }>({
+  group: 'api',
+  code: 'notFound',
+  details: { resourceId: 42 }
+})
+```
+
+## Ví dụ
+
+### Sử dụng với ErrorCenter toàn cục hiện tại
+```typescript
+import { ErrorCenterError, ErrorCenterThrow } from '@dxtmisha/functional-basic'
+
+const errorThrow = new ErrorCenterThrow()
+
+try {
+  errorThrow.on({
+    group: 'api',
+    code: 'unauthorized',
+    details: { endpoint: '/profile' }
+  })
+} catch (error) {
+  if (error instanceof ErrorCenterError) {
+    console.log(error.getCode())    // 'unauthorized'
+    console.log(error.getMessage()) // Thông báo mặc định từ sổ đăng ký
+    console.log(error.getDetails()) // { endpoint: '/profile' }
+  }
+}
+```
+
+### Truyền thực thể cô lập và lỗi gốc
+```typescript
+import {
+  ErrorCenterHandler,
+  ErrorCenterInstance,
+  ErrorCenterThrow
+} from '@dxtmisha/functional-basic'
+
+const localInstance = new ErrorCenterInstance(
+  [{ group: 'storage', code: 'readFailed', message: 'Không thể đọc cấu hình.' }],
+  new ErrorCenterHandler([], false)
+)
+
+const localThrow = new ErrorCenterThrow(localInstance)
+
+try {
+  // Thao tác gặp lỗi
+  throw new SyntaxError('Unexpected token')
+} catch (originalError) {
+  localThrow.on(
+    { group: 'storage', code: 'readFailed', details: { key: 'settings' } },
+    { cause: originalError }
+  )
+}
+```

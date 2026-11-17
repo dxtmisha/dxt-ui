@@ -11,6 +11,7 @@ The static facade uses `ServerStorage` to reuse one `ErrorCenterInstance` per SS
 ## Methods
 
 ### Action
+- `assign<D = unknown>(cause: ErrorCenterCauseItem<D>): ErrorCenterCauseItem<D>` — Merges input cause data with a matching entry from the active instance registry according to priority.
 - `on(cause: ErrorCenterCauseItem): void` — Starts the processing. Searches the registry, merges data, and calls the appropriate callbacks.
 
 ### Verification & Access

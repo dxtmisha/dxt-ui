@@ -1,68 +1,41 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for creating nested menus and organizing navigation elements with expandable structure.
+Component for creating nested dropdown menus and organizing hierarchical navigation elements.
 
-ListMenu is an auxiliary component for List, managing hierarchical menu structure with open/close submenu functionality. The component integrates with Window for positioning dropdown submenus, supports multiple nesting levels, and provides smooth navigation through tree-like data structures.
+`ListMenu` is an auxiliary component for `List` that manages submenu open/close state and integrates with `Window` for floating or embedded positioning, multi-level nesting, and accessible trigger bindings.
 
-**Key Features:**
+**Key features:**
 
-- Hierarchical menu organization with unlimited nesting
-- Open/close submenu state management
-- Integration with Window for dropdown menu positioning
-- Support for horizontal and vertical positioning axes
-- Automatic click and navigation handling
-- Adaptive submenu behavior
-- Menu item open/close events
+- Hierarchical submenu organization with nested `ListMenu` instances
+- Automatic open/close state management via `ListGroupOpen` and `Window`
+- Horizontal (`axis="x"`) and vertical (`axis="y"`) positioning axes
+- Safe nested menu behavior (`inert: false`, `autoTabIndex: false`, `closeOnEsc: false`)
+- Full slot customization via `#head` (with `WindowControlItem` bindings) and `#list`
+- Programmatic control via exposed `Window` API (`toOpen`, `toClose`, `toggle`, `getOpen`)
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Navigation menus with subsections
-- Multi-level catalogs and categories
-- Tree-like data structures
-- Context menus with submenus
-- Navigation panels with grouping
+- Dropdown submenus inside navigation lists and rails
+- Multi-level category and action menus
+- Nested context menus with independent open states
 
 <Source
     code={`
-<script setup>
-import { ref } from 'vue'
-
-const menuItems = ref([
-  {
-    text: 'Home',
-    value: 'home'
-  },
-  {
-    text: 'Products',
-    value: 'products',
-    sublist: [
-      { text: 'Category 1', value: 'cat1' },
-      { text: 'Category 2', value: 'cat2' }
-    ]
-  },
-  {
-    text: 'About',
-    value: 'about'
-  }
-])
-</script>
-
 <template>
-  <List :items="menuItems">
-    <template #item="{ item }">
-      <ListMenu
-        v-if="item.sublist"
-        :items="item.sublist"
-        :axis="'y'"
-      >
-        <template #default>
-          {{ item.text }}
-        </template>
-      </ListMenu>
-      <div v-else>{{ item.text }}</div>
+  <ListMenu axis="y">
+    <template #head="{ open, binds }">
+      <button v-bind="binds" type="button">
+        More actions ({{ open.value ? 'open' : 'closed' }})
+      </button>
     </template>
-  </List>
+    <template #list>
+      <div>Submenu item 1</div>
+      <div>Submenu item 2</div>
+    </template>
+  </ListMenu>
 </template>
   `}
     language="html"
 />
+
+> ListMenu coordinates Window positioning and open state for nested menus with minimal setup.

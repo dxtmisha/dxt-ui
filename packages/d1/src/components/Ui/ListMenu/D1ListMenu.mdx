@@ -20,6 +20,9 @@ import {ListMenuWikiStorybook} from './wiki'
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 <StorybookDescriptions componentName={'ListMenu'} type={'listMenu'}/>
+<Canvas of={ListMenu.ListMenuBasic}/>
+<Canvas of={ListMenu.ListMenuAxis}/>
+<Canvas of={ListMenu.ListMenuDivider}/>
     
 [//]: # (:documentation-body [!] System label / Системная метка)
 
@@ -27,8 +30,7 @@ import {ListMenuWikiStorybook} from './wiki'
 ## Events
 
 <StorybookDescriptions componentName={'Window'} type={'event.window'}/>
-
-<StorybookDescriptions componentName={'Image'} type={'event.load'}/>
+<Canvas of={ListMenu.ListMenuEventWindow}/>
     
 [//]: # (:documentation-events [!] System label / Системная метка)
 
@@ -36,12 +38,14 @@ import {ListMenuWikiStorybook} from './wiki'
 ## Expose
 
 <StorybookDescriptions componentName={'Window'} type={'expose'}/>
+<Canvas of={ListMenu.ListMenuExposed}/>
     
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)
 ## Slots
 
-<StorybookDescriptions componentName={'ListGroup'} type={'slots'}/>
+<StorybookDescriptions componentName={'ListMenu'} type={'slots'}/>
+<Canvas of={ListMenu.ListMenuSlots}/>
     
 [//]: # (:documentation-slots [!] System label / Системная метка)

@@ -50,6 +50,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="List" name="component-list"/>
         <DemoLink label="ListGroup" name="component-list-group"/>
         <DemoLink label="ListItem" name="component-list-item"/>
+        <DemoLink label="ListMenu" name="component-list-menu"/>
         <DemoLink label="Mask" name="component-mask"/>
         <DemoLink label="Modal" name="component-modal"/>
         <DemoLink label="Menu" name="component-menu"/>

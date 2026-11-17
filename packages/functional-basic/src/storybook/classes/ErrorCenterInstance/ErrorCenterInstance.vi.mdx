@@ -32,6 +32,7 @@ const myErrorCenter = new ErrorCenterInstance([
 ## Các phương thức
 
 ### Hành động
+- `assign<D = unknown>(cause: ErrorCenterCauseItem<D>): ErrorCenterCauseItem<D>` — Hợp nhất dữ liệu nguyên nhân đầu vào với mục khớp trong sổ đăng ký theo mức độ ưu tiên mà không làm thay đổi đối tượng đầu vào.
 - `on(cause: ErrorCenterCauseItem): this` — Bắt đầu quá trình xử lý. Hợp nhất dữ liệu từ sổ đăng ký với dữ liệu đầu vào và chuyển nó cho trình xử lý.
 
 ### Xác minh và Truy cập
