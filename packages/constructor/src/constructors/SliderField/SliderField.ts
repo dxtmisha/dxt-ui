@@ -126,7 +126,12 @@ export class SliderField {
     this.change = new FieldChangeIncludeConstructor(props)
     this.attributes = new FieldAttributesIncludeConstructor(props)
 
-    this.value = new FieldValueIncludeConstructor<SliderValueType>(props, undefined, undefined, false)
+    this.value = new FieldValueIncludeConstructor<SliderValueType>(
+      props,
+      undefined,
+      undefined,
+      false
+    )
     this.valueItem = new SliderFieldValueConstructor(props, this.value)
 
     this.code = new FieldCodeIncludeConstructor(props)

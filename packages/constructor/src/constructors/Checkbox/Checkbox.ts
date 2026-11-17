@@ -252,7 +252,7 @@ export class Checkbox extends DesignLogicAbstract<
         () => this.i('elementItem'),
         undefined,
         false,
-        this.props.valueVariant !== undefined
+        () => this.props.valueVariant !== undefined
       ]
     }
   }

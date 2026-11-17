@@ -2,10 +2,12 @@ import { computed, ref, unref, watch } from 'vue'
 import {
   anyToString,
   DesignLifecycleAbstract,
+  executeFunctionRef,
   getLength,
   isFilled,
   type NumberOrStringOrBoolean,
   type RefOrNormal,
+  type RefOrNormalOrFunction,
   setValues,
   toArray,
   toNumber
@@ -41,15 +43,15 @@ export class FieldValueInclude<Value = any> extends DesignLifecycleAbstract {
    * @param props input data / входные данные
    * @param element function returning object for working with the input element / функция, возвращающая объект для работы с элементом ввода
    * @param original original values / оригинальные значения
-   * @param isMultiple flag enabling multiple selection handling in setValues / флаг включения множественного выбора в setValues
-   * @param isValueVariant flag enabling valueVariant support / флаг включения поддержки valueVariant
+   * @param isMultiple flag or function enabling multiple selection handling in setValues / флаг или функция включения множественного выбора в setValues
+   * @param isValueVariant flag or function enabling valueVariant support / флаг или функция включения поддержки valueVariant
    */
   constructor(
     protected readonly props: FieldValueProps<Value> & { valueVariant?: NumberOrStringOrBoolean },
     protected readonly element?: () => FieldElementInclude,
     protected readonly original?: RefOrNormal<Value>,
-    protected readonly isMultiple: boolean = true,
-    protected readonly isValueVariant: boolean = false
+    protected readonly isMultiple: RefOrNormalOrFunction<boolean | undefined> = true,
+    protected readonly isValueVariant: RefOrNormalOrFunction<boolean | undefined> = false
   ) {
     super()
     this.item.value = this.getOriginal()
@@ -58,7 +60,7 @@ export class FieldValueInclude<Value = any> extends DesignLifecycleAbstract {
   /** Returns the current value if isFull is true / Возвращает текущее значение, если isFull истинно */
   readonly itemByFull = computed<Value | undefined>(() => {
     if (this.isFull.value) {
-      if (this.isValueVariant) {
+      if (executeFunctionRef(this.isValueVariant)) {
         return this.item.value ? (this.props.valueVariant as unknown as Value) : undefined
       }
 
@@ -167,7 +169,7 @@ export class FieldValueInclude<Value = any> extends DesignLifecycleAbstract {
         this.item.value,
         value,
         {
-          multiple: this.isMultiple ? this.props.multiple : false,
+          multiple: executeFunctionRef(this.isMultiple) ? this.props.multiple : false,
           maxlength: toNumber(this.props.maxlength)
         }
       ) as Value
@@ -339,7 +341,7 @@ export class FieldValueInclude<Value = any> extends DesignLifecycleAbstract {
         return this.itemByFull.value
       },
       setValue: (value: Value | undefined) => {
-        if (this.isValueVariant) {
+        if (executeFunctionRef(this.isValueVariant)) {
           this.setValueByRadio(value)
         } else {
           this.set(value)

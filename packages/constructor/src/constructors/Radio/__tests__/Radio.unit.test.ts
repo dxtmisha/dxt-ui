@@ -7,7 +7,7 @@ import { DesignComponents, DesignName } from '@dxtmisha/functional'
 import { CheckboxIcon, type CheckboxConstructors } from '../../Checkbox'
 import { FORM_NAME_ELEMENT, type FormElementRegistration } from '../../Form/basicTypes'
 import { Radio } from '../Radio'
-import type { RadioProps } from '../props'
+import { defaultsRadio, type RadioProps } from '../props'
 import type { RadioComponents, RadioEmits, RadioSlots } from '../types'
 
 /**
@@ -173,6 +173,19 @@ describe('Radio (unit)', () => {
         'aria-labelledby': 'radio-lbl-zero',
         'aria-describedby': 'radio-desc-zero'
       })
+    })
+
+    it('should treat numeric 0 valueVariant as active in FieldValueInclude and keep modelValue/valueVariant undefined in defaultsRadio', () => {
+      expect(defaultsRadio).toHaveProperty('modelValue', undefined)
+      expect(defaultsRadio).toHaveProperty('valueVariant', undefined)
+
+      const { instance, stop } = createRadio({
+        valueVariant: 0,
+        modelValue: true
+      })
+      cleanups.push(stop)
+
+      expect(instance.i('value').itemByFull.value).toBe(0)
     })
   })
 

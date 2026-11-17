@@ -1,22 +1,36 @@
-Component for creating interactive radio buttons designed to select a single value from a group of proposed options.
+import { Source } from '@storybook/addon-docs/blocks';
 
-Radio manages the selection state of elements, supports validation, integration with forms, customizable icons, and transition animations. The component automatically handles state changes, focus management, and event generation during user interaction. Unlike a checkbox, a radio button is typically used in a group where only one item can be selected.
+The `Radio` component is an interactive form control for single-option selection from a mutually exclusive group or standalone value-variant toggling, with integrated validation, descriptions, and accessibility support.
+
+It wraps a native `<input type="radio">` inside a semantic `<label>`, coordinating two-way `v-model:selected` and `v-model` synchronization, read-only click protection (`aria-readonly`), custom checked/indeterminate icons, loading indicators, and skeleton placeholders.
 
 **Key features:**
 
-- Selection of a single value from a group (exclusive selection)
-- Built-in validation with custom error messages
-- Support for labels and descriptions
-- Customizable icons for different states
-- Integration with forms via name and value
-- Disabled, loading, and skeleton states
-- Ripple effect on interaction
-- Adaptive layout and styling
+- **Exclusive Group Selection:** Two-way `v-model:selected` synchronization with `valueVariant` and `valueVariantHide`, plus standalone `v-model` support
+- **Built-in Validation:** Native constraint validation, `required`, `validationMessage`, and `expose` (`getValue`, `checkValidity`, `getValidationMessage`)
+- **Rich Anatomy:** Supports `label`, `description`, `helperMessage`, `hasHtmlCode`, and `#default` / `#description` slots
+- **Interactive & Loading States:** `disabled`, `readonly` (prevents native DOM toggling), `focus`, `loading`, and `isSkeleton`
+- **Adaptive Layout:** Supports `block`, `itemCenter`, and `adaptive` alignment options
 
 **Common use cases:**
 
-- Selection of gender or marital status
-- Setting delivery or payment methods
-- Switching between operating modes
-- Surveys with a single answer option
-- Settings forms where parameters are mutually exclusive
+- Selecting a shipping, payment, or subscription plan option
+- Switching between mutually exclusive application modes
+- Single-choice survey questions and preference forms
+
+<Source
+  code={`
+<template>
+  <Radio
+    v-model:selected="plan"
+    name="plan"
+    value-variant="pro"
+    label="Pro Plan"
+    description="Includes all advanced features"
+  />
+</template>
+  `}
+  language="html"
+/>
+
+> Radio combines native HTML radio semantics and keyboard accessibility with customizable icons, validation, and design-token styling.

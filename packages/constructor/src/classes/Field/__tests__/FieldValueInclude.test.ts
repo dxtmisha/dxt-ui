@@ -285,5 +285,40 @@ describe('FieldValueInclude', () => {
       expect(valueInclude.get()).toBe(false)
       expect(exposed.getValue()).toBeUndefined()
     })
+
+    it('should support functions and refs for isMultiple and isValueVariant', () => {
+      const isMultiple = ref(false)
+      const props = reactive<{ value?: unknown, multiple?: boolean, valueVariant?: string }>({
+        value: true,
+        multiple: true,
+        valueVariant: 'option-a'
+      })
+      const valueInclude = new FieldValueInclude(
+        props,
+        undefined,
+        undefined,
+        isMultiple,
+        () => props.valueVariant !== undefined
+      )
+      const exposed = valueInclude.expose()
+
+      expect(exposed.getValue()).toBe('option-a')
+
+      props.valueVariant = undefined
+      expect(exposed.getValue()).toBe(true)
+
+      props.valueVariant = 'option-b'
+      exposed.setValue('option-b')
+      expect(valueInclude.get()).toBe(true)
+      expect(exposed.getValue()).toBe('option-b')
+
+      props.valueVariant = undefined
+      valueInclude.set('a')
+      expect(valueInclude.get()).toBe('a')
+
+      isMultiple.value = true
+      valueInclude.set('b')
+      expect(valueInclude.get()).toEqual(['a', 'b'])
+    })
   })
 })

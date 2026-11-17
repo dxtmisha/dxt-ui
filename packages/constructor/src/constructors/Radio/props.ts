@@ -47,6 +47,8 @@ export type RadioProps = RadioPropsBasic & RadioPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsRadio = {
+  modelValue: undefined,
+  valueVariant: undefined,
   valueVariantHide: '0',
   ...{
     // :default [!] System label / Системная метка

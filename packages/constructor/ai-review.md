@@ -178,9 +178,9 @@ src/classes/Field/FieldValueInclude.ts
 src/constructors/Checkbox/CheckboxIcon.ts
 src/constructors/Checkbox/CheckboxSelected.ts
 src/constructors/Checkbox/CheckboxDesign.tsx
-src/constructors/Radio/Radio.ts
-src/constructors/Radio/RadioDesign.tsx
 src/constructors/Input/InputPassword.ts
 src/constructors/Input/Input.ts
 src/constructors/Input/InputDesign.tsx
 src/constructors/Checkbox/Checkbox.ts
+src/constructors/Radio/Radio.ts
+src/constructors/Radio/RadioDesign.tsx
