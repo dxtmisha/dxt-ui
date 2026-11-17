@@ -3,39 +3,50 @@
 import type { Ref } from 'vue'
 import {
   type ConstrEmit,
+  DesignLifecycleAbstract,
+  isDomRuntime,
   isSelected,
-  ListDataRef
+  type ListDataRef
 } from '@dxtmisha/functional'
 
-import { ListFocus } from './ListFocus'
+import type { ListFocus } from './ListFocus'
 
 import type { ListProps } from './props'
 import type { ListEmits } from './types'
 
 /**
- * Class for working with element focus.
+ * Class for working with element focus navigation.
  *
- * Класс для работы с фокусировкой элемента.
+ * Класс для работы с навигацией и фокусировкой элементов списка.
  */
-export class ListGo {
+export class ListGo extends DesignLifecycleAbstract {
   /** Current item index in the map / Текущий индекс элемента в карте */
   protected index: number = -1
 
+  /** Pending animation frame identifier for selected preparation / Идентификатор ожидающего кадра анимации для подготовки выбранного элемента */
+  protected preparationFrameId?: number
+
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param focus object of the class for working with focus/ объект класса для работы с фокусировкой
-   * @param data object of the class for working with the list/ объект класса для работы со списком
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param props input data / входные данные
+   * @param element input element / элемент ввода
+   * @param data getter returning list data manager / функция, возвращающая менеджер данных списка
+   * @param focus getter returning focus manager / функция, возвращающая менеджер фокусировки
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: ListProps,
+    protected readonly props: Readonly<ListProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly focus: ListFocus,
-    protected readonly data: ListDataRef,
+    protected readonly data: () => ListDataRef,
+    protected readonly focus: () => ListFocus,
     protected readonly emits?: ConstrEmit<ListEmits>
   ) {
+    super()
+  }
+
+  /** Cleanup lifecycle resources on unmount / Очистка ресурсов жизненного цикла при размонтировании */
+  override readonly onUnmounted = (): void => {
+    this.clearFrame()
   }
 
   /**
@@ -65,8 +76,8 @@ export class ListGo {
    * Изменяет выбранный элемент.
    * @param value new value / новое значение
    */
-  preparation(value: any): void {
-    const map = this.data.map.value
+  preparation(value: unknown): void {
+    const map = this.data().map.value
     const index = map.findIndex(item => isSelected(item.index, value))
 
     this.reset()
@@ -75,7 +86,7 @@ export class ListGo {
       this.index = index
 
       if (map?.[index]) {
-        this.focus.toElementSelected(map[index].index)
+        this.focus().toElementSelected(map[index].index)
       }
     }
   }
@@ -86,8 +97,15 @@ export class ListGo {
    * Прокрутить элемент до выбранного элемента.
    */
   preparationBySelected(): void {
-    if (this.props.selected) {
-      requestAnimationFrame(() => this.preparation(this.props.selected))
+    if (
+      this.props.selected !== undefined
+      && isDomRuntime()
+    ) {
+      this.clearFrame()
+      this.preparationFrameId = requestAnimationFrame(() => {
+        this.preparationFrameId = undefined
+        this.preparation(this.props.selected)
+      })
     }
   }
 
@@ -97,17 +115,22 @@ export class ListGo {
    * Перемещает выбранное значение назад.
    */
   previous(): void {
+    const length = this.data().getLengthByMap()
+
     if (
-      this.isFirstByParent()
+      length === 0
+      || this.isFirstByParent()
       || !this.isItemElement()
     ) {
       return
     }
 
-    this.setByIndex(this.index - 1)
+    for (let attempt = 0; attempt < length; attempt++) {
+      this.setByIndex(this.index - 1)
 
-    if (!this.focus.isElementFocus()) {
-      this.previous()
+      if (this.focus().isElementFocus()) {
+        return
+      }
     }
   }
 
@@ -117,17 +140,22 @@ export class ListGo {
    * Перемещает выбранное значение вперед.
    */
   next(): void {
+    const length = this.data().getLengthByMap()
+
     if (
-      this.isLastByParent()
+      length === 0
+      || this.isLastByParent()
       || !this.isItemElement()
     ) {
       return
     }
 
-    this.setByIndex(this.index + 1)
+    for (let attempt = 0; attempt < length; attempt++) {
+      this.setByIndex(this.index + 1)
 
-    if (!this.focus.isElementFocus()) {
-      this.next()
+      if (this.focus().isElementFocus()) {
+        return
+      }
     }
   }
 
@@ -138,11 +166,11 @@ export class ListGo {
    */
   first(): void {
     const parent = this.getParentId()
-    const item = this.data.getFirstItemByParent(parent)
+    const item = this.data().getFirstItemByParent(parent)
 
     if (item) {
       this.preparation(item.index)
-      this.focus.set(item)
+      this.focus().set(item)
     }
   }
 
@@ -153,11 +181,11 @@ export class ListGo {
    */
   last(): void {
     const parent = this.getParentId()
-    const item = this.data.getLastItemByParent(parent)
+    const item = this.data().getLastItemByParent(parent)
 
     if (item) {
       this.preparation(item.index)
-      this.focus.set(item)
+      this.focus().set(item)
     }
   }
 
@@ -168,7 +196,7 @@ export class ListGo {
    */
   reset(): void {
     this.index = -1
-    this.focus.reset()
+    this.focus().reset()
   }
 
   /**
@@ -177,13 +205,15 @@ export class ListGo {
    * Открывает окно, если элемент в нем.
    */
   open(): void {
-    if (this.focus.isItem()) {
-      this.focus.click()
+    const focus = this.focus()
+
+    if (focus.isItem()) {
+      focus.click()
     } else if (
-      this.focus.isGroup()
-      || this.focus.isMenu()
+      focus.isGroup()
+      || focus.isMenu()
     ) {
-      this.focus.click()
+      focus.click()
       this.nextByType()
     }
   }
@@ -199,11 +229,13 @@ export class ListGo {
     if (item) {
       item.click()
 
-      const focus = this.data.getItemByIndex(item.dataset.value)
+      const focus = item.dataset.value
+        ? this.data().getItemByIndex(item.dataset.value)
+        : undefined
 
       if (focus) {
         this.set(focus.key)
-        this.focus.set(focus.item)
+        this.focus().set(focus.item)
       }
     } else {
       this.emits?.('close')
@@ -216,7 +248,8 @@ export class ListGo {
    * Останавливает событие.
    */
   stop(): void {
-    this.focus.reset()
+    this.clearFrame()
+    this.focus().reset()
   }
 
   /**
@@ -230,7 +263,10 @@ export class ListGo {
 
     if (element) {
       this.preparation(element.dataset.value ?? '')
-      this.setByIndex(this.index)
+
+      if (this.index >= 0) {
+        this.setByIndex(this.index)
+      }
     }
 
     return this
@@ -256,12 +292,13 @@ export class ListGo {
    */
   protected isFirstByParent(): boolean {
     const parent = this.getParentId()
+    const focus = this.focus()
 
     if (
       parent
-      && this.focus.isElement()
+      && focus.isElement()
     ) {
-      return this.data.getFirstItemByParent(parent)?.index === this.focus.item.value?.index
+      return this.data().getFirstItemByParent(parent)?.index === focus.item.value?.index
     }
 
     return false
@@ -275,12 +312,13 @@ export class ListGo {
    */
   protected isLastByParent(): boolean {
     const parent = this.getParentId()
+    const focus = this.focus()
 
     if (
       parent
-      && this.focus.isElement()
+      && focus.isElement()
     ) {
-      return this.data.getLastItemByParent(parent)?.index === this.focus.item.value?.index
+      return this.data().getLastItemByParent(parent)?.index === focus.item.value?.index
     }
 
     return false
@@ -294,12 +332,13 @@ export class ListGo {
    */
   protected getMainItem(): HTMLDivElement | undefined {
     const parent = this.getParentId()
+    const focus = this.focus()
 
     if (
       parent
-      && !this.focus.isOpen()
+      && !focus.isOpen()
     ) {
-      return this.focus.getElement(parent)
+      return focus.getElement(parent)
     }
 
     return undefined
@@ -312,7 +351,7 @@ export class ListGo {
    * @returns parent identifier or undefined / идентификатор родителя или undefined
    */
   protected getParentId(): string | undefined {
-    return this.focus.item.value?.parent
+    return this.focus().item.value?.parent
   }
 
   /**
@@ -322,7 +361,15 @@ export class ListGo {
    * @param index number in the array / номер в массиве
    */
   protected setByIndex(index: number): void {
-    const length = this.data.getLengthByMap()
+    const data = this.data()
+    const focus = this.focus()
+    const length = data.getLengthByMap()
+
+    if (length === 0) {
+      this.index = -1
+      focus.reset()
+      return
+    }
 
     if (index >= length) {
       this.index = 0
@@ -332,7 +379,7 @@ export class ListGo {
       this.index = index
     }
 
-    const item = this.data.map.value[this.index]
+    const item = data.map.value[this.index]
 
     if (
       item
@@ -342,9 +389,9 @@ export class ListGo {
         || item.type === 'menu'
       )
     ) {
-      this.focus.set(item)
+      focus.set(item)
     } else {
-      this.focus.reset()
+      focus.reset()
     }
   }
 
@@ -354,16 +401,34 @@ export class ListGo {
    * Перемещает выбранное значение вперед по типу.
    */
   protected nextByType(): void {
-    this.setByIndex(this.index + 1)
+    const length = this.data().getLengthByMap()
+    const focus = this.focus()
 
+    for (let attempt = 0; attempt < length; attempt++) {
+      this.setByIndex(this.index + 1)
+
+      if (
+        focus.isItem()
+        || focus.isGroup()
+        || focus.isMenu()
+      ) {
+        return
+      }
+    }
+  }
+
+  /**
+   * Cancels any pending animation frame for selection preparation.
+   *
+   * Отменяет ожидающий кадр анимации подготовки выбора.
+   */
+  protected clearFrame(): void {
     if (
-      this.focus.isItem()
-      || this.focus.isGroup()
-      || this.focus.isMenu()
+      this.preparationFrameId !== undefined
+      && isDomRuntime()
     ) {
-      return
-    } else {
-      this.nextByType()
+      cancelAnimationFrame(this.preparationFrameId)
+      this.preparationFrameId = undefined
     }
   }
 }

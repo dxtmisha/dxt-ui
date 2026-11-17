@@ -1,8 +1,23 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `close`
 
 Event fires when attempting to close the list after navigation has reached the root level.
 
 **When it fires:**
-- Pressing the **Escape** key at the root level of the list
-- Pressing the **←** (left arrow) key when there are no open submenus/groups
-- Attempting to navigate back when there are no nested items
+- Pressing the **Escape** key when keyboard control is active
+- Pressing the **ArrowLeft** key when there are no open parent submenus or groups
+
+**Parameters:**
+- None (`[]`)
+
+<Source
+    code={`
+<List
+  control
+  :list="items"
+  @close="onClose"
+/>
+  `}
+    language="html"
+/>

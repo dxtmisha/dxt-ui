@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ErrorCenter, ErrorCenterInstance } from '@dxtmisha/functional-basic'
+import { ErrorCenter, ErrorCenterError, ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { CmsErrorInstance } from '../CmsErrorInstance'
 
 describe('CmsErrorInstance', () => {
@@ -8,11 +8,21 @@ describe('CmsErrorInstance', () => {
     expect(cmsError.getErrorCenter()).toBe(ErrorCenter.getItem())
 
     const customCenter = new ErrorCenterInstance()
+    customCenter.setIsConsole(false)
+    const captured: string[] = []
+    customCenter.addCallback((cause) => {
+      captured.push(`${cause.group}:${cause.code}`)
+    })
+
     expect(cmsError.setErrorCenter(customCenter)).toBe(cmsError)
     expect(cmsError.getErrorCenter()).toBe(customCenter)
+
+    expect(() => cmsError.report('cms-user', 'notFound'))
+      .toThrow(ErrorCenterError)
+    expect(captured).toEqual(['cms-user:notFound'])
   })
 
-  it('registers domain errors in ErrorCenter under cms group and throws prefixed Error', () => {
+  it('registers domain errors in ErrorCenter under cms group and throws ErrorCenterError', () => {
     const errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
 
@@ -28,8 +38,22 @@ describe('CmsErrorInstance', () => {
     })
 
     const cmsError = new CmsErrorInstance(errorCenter)
-    expect(() => cmsError.report('cms-user', 'notFound', { id: 1 }))
-      .toThrow('[@dxtmisha/cms-api] Requested CMS user was not found.')
+    let caughtError: unknown
+
+    try {
+      cmsError.report('cms-user', 'notFound', { id: 1 })
+    } catch (error) {
+      caughtError = error
+    }
+
+    expect(caughtError).toBeInstanceOf(ErrorCenterError)
+    if (caughtError instanceof ErrorCenterError) {
+      expect(caughtError.message).toBe('Requested CMS user was not found.')
+      expect(caughtError.getGroup()).toBe('cms-user')
+      expect(caughtError.getCode()).toBe('notFound')
+      expect(caughtError.getLabel()).toBe('User Not Found')
+      expect(caughtError.getDetails()).toEqual({ id: 1 })
+    }
 
     expect(captured).toEqual([
       {
@@ -42,7 +66,7 @@ describe('CmsErrorInstance', () => {
     ])
   })
 
-  it('avoids double-reporting domain errors and wraps unknown non-Error throws in handleTransaction', () => {
+  it('avoids double-reporting ErrorCenterError and wraps unexpected throws via ErrorCenterThrow in handleTransaction', () => {
     const errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
 
@@ -56,14 +80,30 @@ describe('CmsErrorInstance', () => {
     })
 
     const cmsError = new CmsErrorInstance(errorCenter)
-    const domainError = new Error('[@dxtmisha/cms-api] Already reported.')
+    const domainError = new ErrorCenterError({
+      group: 'cms-user',
+      code: 'notFound',
+      message: 'Already reported.'
+    })
     expect(() => cmsError.handleTransaction('cms-db', 'fallbackCode', domainError, 'Fallback message.'))
       .toThrow(domainError)
     expect(captured).toHaveLength(0)
 
     const dbError = new Error('Connection refused')
-    expect(() => cmsError.handleTransaction('cms-db', 'dbFail', dbError, 'Database failed.'))
-      .toThrow(dbError)
+    let caughtDbError: unknown
+    try {
+      cmsError.handleTransaction('cms-db', 'dbFail', dbError, 'Database failed.')
+    } catch (error) {
+      caughtDbError = error
+    }
+
+    expect(caughtDbError).toBeInstanceOf(ErrorCenterError)
+    if (caughtDbError instanceof ErrorCenterError) {
+      expect(caughtDbError.message).toBe('Database failed.')
+      expect(caughtDbError.cause).toBe(dbError)
+      expect(caughtDbError.getDetails()).toBe(dbError)
+    }
+
     expect(captured).toEqual([
       {
         group: 'cms-db',
@@ -72,8 +112,19 @@ describe('CmsErrorInstance', () => {
       }
     ])
 
-    expect(() => cmsError.handleTransaction('cms-db', 'unknownFail', 'raw-failure', 'Unknown error.'))
-      .toThrow('[@dxtmisha/cms-api] Unknown error.')
+    let caughtUnknownError: unknown
+    try {
+      cmsError.handleTransaction('cms-db', 'unknownFail', 'raw-failure', 'Unknown error.')
+    } catch (error) {
+      caughtUnknownError = error
+    }
+
+    expect(caughtUnknownError).toBeInstanceOf(ErrorCenterError)
+    if (caughtUnknownError instanceof ErrorCenterError) {
+      expect(caughtUnknownError.message).toBe('Unknown error.')
+      expect(caughtUnknownError.getDetails()).toBe('raw-failure')
+    }
+
     expect(captured).toHaveLength(2)
   })
 })

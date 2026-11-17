@@ -1,10 +1,17 @@
 // ai-none
 
-import { computed, nextTick, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
-import { EventItem, getKey, isDomRuntime, isInput, ListDataRef } from '@dxtmisha/functional'
+import { computed, nextTick, ref, watch, type Ref, type WatchStopHandle } from 'vue'
+import {
+  DesignLifecycleAbstract,
+  EventItem,
+  getKey,
+  isDomRuntime,
+  isInput,
+  type ListDataRef
+} from '@dxtmisha/functional'
 
-import { ListSearch } from './ListSearch'
-import { ListGo } from './ListGo'
+import type { ListGo } from './ListGo'
+import type { ListSearch } from './ListSearch'
 
 import type { FieldValidationItem } from '../../types/fieldTypes'
 import type { ListProps } from './props'
@@ -16,12 +23,21 @@ import type { ListProps } from './props'
  * Класс для управления навигацией с клавиатуры и обработкой событий в компонентах списка.
  * Предоставляет клавиатурные сокращения, функциональность поиска и элементы управления навигацией.
  */
-export class ListControl {
+export class ListControl extends DesignLifecycleAbstract {
   /** Reference to the input element / Ссылка на элемент ввода */
-  readonly inputElement = ref<Record<string, any>>()
+  readonly inputElement = ref<Record<string, unknown>>()
 
   /** Event manager for tracking keyboard events / Менеджер событий для отслеживания событий клавиатуры */
-  protected event?: EventItem<HTMLElement, any>
+  protected event?: EventItem<HTMLElement, KeyboardEvent>
+
+  /** Stop handle for the active state watcher / Функция остановки наблюдателя состояния активности */
+  protected stopWatch?: WatchStopHandle
+
+  /** Pending animation frame ID for input focus / Идентификатор ожидающего кадра анимации фокуса ввода */
+  protected focusFrameId?: number
+
+  /** Pending animation frame ID for search update / Идентификатор ожидающего кадра анимации обновления поиска */
+  protected searchFrameId?: number
 
   /**
    * Creates an instance of ListControl for managing keyboard navigation and events.
@@ -29,34 +45,18 @@ export class ListControl {
    * Создает экземпляр ListControl для управления навигацией с клавиатуры и событиями.
    * @param props input data / входные данные
    * @param element reference to the element / ссылка на элемент
-   * @param data list data manager / менеджер данных списка
-   * @param go navigation controller / контроллер навигации
-   * @param search search functionality controller / контроллер функциональности поиска
+   * @param data getter returning list data manager / функция, возвращающая менеджер данных списка
+   * @param go getter returning navigation controller / функция, возвращающая контроллер навигации
+   * @param search getter returning search functionality controller / функция, возвращающая контроллер функциональности поиска
    */
   constructor(
-    protected readonly props: ListProps,
+    protected readonly props: Readonly<ListProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly data: ListDataRef,
-    protected readonly go: ListGo,
-    protected readonly search?: ListSearch
+    protected readonly data: () => ListDataRef,
+    protected readonly go: () => ListGo,
+    protected readonly search?: () => ListSearch
   ) {
-    watch(
-      this.isActive,
-      (status) => {
-        if (status) {
-          this.start()
-        } else {
-          this.stop()
-        }
-      }
-    )
-
-    onMounted(() => {
-      if (this.isActive.value) {
-        this.start()
-      }
-    })
-    onUnmounted(() => this.stop())
+    super()
   }
 
   /**
@@ -69,12 +69,37 @@ export class ListControl {
     return Boolean(this.props.control)
   })
 
+  /** Mount lifecycle hook registering active-state watcher and starting listeners / Хук монтирования, регистрирующий наблюдатель и запускающий слушатели */
+  override readonly onMounted = (): void => {
+    this.stopWatch = watch(
+      this.isActive,
+      (status) => {
+        if (status) {
+          this.start()
+        } else {
+          this.stop()
+        }
+      }
+    )
+
+    if (this.isActive.value) {
+      this.start()
+    }
+  }
+
+  /** Cleanup lifecycle resources on unmount / Очистка ресурсов жизненного цикла при размонтировании */
+  override readonly onUnmounted = (): void => {
+    this.stop()
+    this.stopWatch?.()
+    this.stopWatch = undefined
+  }
+
   /**
    * Handler for the focus event.
    *
    * Обработчик события фокуса.
    */
-  readonly onFocus = () => {
+  readonly onFocus = (): void => {
     if (!this.props.control) {
       this.start()
     }
@@ -85,7 +110,7 @@ export class ListControl {
    *
    * Обработчик события потери фокуса.
    */
-  readonly onBlur = () => {
+  readonly onBlur = (): void => {
     if (!this.props.control) {
       this.stop()
     }
@@ -97,8 +122,8 @@ export class ListControl {
    * Обработчик события ввода.
    * @param data field validation data / данные валидации поля
    */
-  readonly onInput = (data: FieldValidationItem) => {
-    this.search?.set(data.value)
+  readonly onInput = (data: FieldValidationItem): void => {
+    this.search?.().set(data.value as string | undefined)
   }
 
   /**
@@ -139,7 +164,7 @@ export class ListControl {
 
         'Escape',
         'Esc',
-        37
+        27
       ].indexOf(key) !== -1
   }
 
@@ -169,9 +194,13 @@ export class ListControl {
    *
    * Запускает событие.
    */
-  protected start() {
+  protected start(): void {
+    if (!isDomRuntime()) {
+      return
+    }
+
     if (!this.event) {
-      this.event = new EventItem<HTMLElement, any>(
+      this.event = new EventItem<HTMLElement, KeyboardEvent>(
         document.body,
         ['keydown', 'keypress'],
         this.on
@@ -179,12 +208,21 @@ export class ListControl {
     }
 
     if (!this.event.isActive()) {
-      this.go.reset()
+      this.go().reset()
       this.event.start()
 
       if (this.props.control) {
         nextTick().then(() => {
-          requestAnimationFrame(() => {
+          if (
+            !this.event?.isActive()
+            || !isDomRuntime()
+          ) {
+            return
+          }
+
+          this.clearFocusFrame()
+          this.focusFrameId = requestAnimationFrame(() => {
+            this.focusFrameId = undefined
             const element = this.element.value?.querySelector<HTMLInputElement>('[data-menu-control="1"]')
 
             if (element) {
@@ -201,11 +239,14 @@ export class ListControl {
    *
    * Останавливает событие.
    */
-  protected stop() {
+  protected stop(): void {
+    this.clearFocusFrame()
+    this.clearSearchFrame()
+
     if (this.event) {
       this.event.stop()
       this.event = undefined
-      this.go.stop()
+      this.go().stop()
     }
   }
 
@@ -216,13 +257,20 @@ export class ListControl {
    * @param event keyboard event / событие клавиатуры
    * @param isAdd indicates if the key should be added to the search string / указывает, следует ли добавлять ключ к строке поиска
    */
-  protected updateSearch(event: KeyboardEvent, isAdd: boolean = true) {
+  protected updateSearch(event: KeyboardEvent, isAdd: boolean = true): void {
     const element = this.getActiveElement()
 
-    if (element) {
-      requestAnimationFrame(() => this.search?.set(element.value))
+    if (
+      element
+      && isDomRuntime()
+    ) {
+      this.clearSearchFrame()
+      this.searchFrameId = requestAnimationFrame(() => {
+        this.searchFrameId = undefined
+        this.search?.().set(element.value)
+      })
     } else if (isAdd) {
-      this.search?.add(event.key)
+      this.search?.().add(event.key)
     }
   }
 
@@ -232,8 +280,11 @@ export class ListControl {
    * Метод для отслеживания нажатий при открытом окне.
    * @param event event object / объект события
    */
-  protected readonly on = (event: KeyboardEvent) => {
-    if (!this.data.getLength()) {
+  protected readonly on = (event: KeyboardEvent): void => {
+    if (
+      event.isComposing
+      || !this.data().getLength()
+    ) {
       return
     }
 
@@ -254,49 +305,104 @@ export class ListControl {
         case 'ArrowUp':
         case 38:
           event.preventDefault()
-          this.go.previous()
+          this.go().previous()
           break
         case 'ArrowDown':
         case 40:
           event.preventDefault()
-          this.go.next()
+          this.go().next()
           break
         case 'Enter':
-        case 'ArrowRight':
-        case ' ':
         case 13:
-        case 39:
           event.preventDefault()
-          this.go.open()
+          this.go().open()
+          break
+        case 'ArrowRight':
+        case 39:
+          if (!this.getActiveElement()) {
+            event.preventDefault()
+            this.go().open()
+          }
           break
         case 'ArrowLeft':
+        case 37:
+          if (!this.getActiveElement()) {
+            event.preventDefault()
+            this.go().close()
+          }
+          break
         case 'Escape':
         case 'Esc':
         case 27:
-        case 37:
           event.preventDefault()
-          this.go.close()
+          this.go().close()
           break
         case 'Home':
         case 36:
-          event.preventDefault()
-          this.go.first()
+          if (!this.getActiveElement()) {
+            event.preventDefault()
+            this.go().first()
+          }
           break
         case 'End':
         case 35:
-          event.preventDefault()
-          this.go.last()
+          if (!this.getActiveElement()) {
+            event.preventDefault()
+            this.go().last()
+          }
           break
+        case ' ':
         case 'Space':
         case 32:
           if (!this.getActiveElement()) {
             event.preventDefault()
-            this.go.open()
+            this.go().open()
+          }
+          break
+        default:
+          if (
+            isKeypress
+            && !event.ctrlKey
+            && !event.metaKey
+            && !event.altKey
+            && event.key.length === 1
+          ) {
+            this.updateSearch(event, true)
           }
           break
       }
     } else {
       this.updateSearch(event, isKeypress)
+    }
+  }
+
+  /**
+   * Cancels pending focus animation frame.
+   *
+   * Отменяет ожидающий кадр анимации фокуса.
+   */
+  protected clearFocusFrame(): void {
+    if (
+      this.focusFrameId !== undefined
+      && isDomRuntime()
+    ) {
+      cancelAnimationFrame(this.focusFrameId)
+      this.focusFrameId = undefined
+    }
+  }
+
+  /**
+   * Cancels pending search animation frame.
+   *
+   * Отменяет ожидающий кадр анимации обновления поиска.
+   */
+  protected clearSearchFrame(): void {
+    if (
+      this.searchFrameId !== undefined
+      && isDomRuntime()
+    ) {
+      cancelAnimationFrame(this.searchFrameId)
+      this.searchFrameId = undefined
     }
   }
 }

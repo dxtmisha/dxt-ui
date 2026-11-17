@@ -1,4 +1,4 @@
-import type { ConstrClass, ListList, ListNames } from '@dxtmisha/functional'
+import type { ConstrClass, ListDataItem, ListList, ListNames } from '@dxtmisha/functional'
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
 import type { ListItemComponentInclude } from '../ListItem'
@@ -25,7 +25,7 @@ export type ListComponents
 export type ListEmits
   = EventClickEmits
     & {
-    /** Event for closing the list/ Событие закрытия списка */
+    /** Event for closing the list / Событие закрытия списка */
       close: []
     }
 
@@ -35,14 +35,14 @@ export type ListEmits
  * Тип, описывающий доступные свойства.
  */
 export interface ListExpose {
-  /** Whether at least one item is selected/ Выбран ли хотя бы один элемент */
+  /** Whether at least one item is selected / Выбран ли хотя бы один элемент */
   isSelected(): boolean
-  /** List of selected elements/ Список выбранных элементов */
+  /** List of selected elements / Список выбранных элементов */
   getSelectedList(): ListList
-  /** Names of selected elements/ Названия выбранных элементов */
+  /** Names of selected elements / Названия выбранных элементов */
   getSelectedNames(): ListNames
-  /** Values of selected elements/ Значения выбранных элементов */
-  getSelectedValues(): any[]
+  /** Values of selected elements / Значения выбранных элементов */
+  getSelectedValues(): ListDataItem['value'][]
 }
 
 /**

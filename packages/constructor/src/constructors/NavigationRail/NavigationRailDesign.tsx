@@ -1,29 +1,27 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
   isObject,
   type ListDataItem,
   type ListList,
-  type ListType,
-  toBinds
+  type ListType
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { NavigationRail } from './NavigationRail'
 
-import {
-  type NavigationRailPropsBasic
-} from './props'
-import {
-  type NavigationRailClasses,
-  type NavigationRailComponents,
-  type NavigationRailEmits,
-  type NavigationRailExpose,
-  type NavigationRailSlots
-} from './types'
 import type { WindowControlItem } from '../Window'
+import type { NavigationRailPropsBasic } from './props'
+import type {
+  NavigationRailClasses,
+  NavigationRailComponents,
+  NavigationRailEmits,
+  NavigationRailExpose,
+  NavigationRailSlots
+} from './types'
 
 /**
  * Design constructor class for NavigationRail component, rendering side navigation rail layout and child items.
@@ -77,27 +75,29 @@ export class NavigationRailDesign<
   }
 
   /**
-   * Initialization of exposed properties. /
+   * Initialization of exposed properties.
+   *
    * Инициализация экспортируемых свойств.
    * @returns object with exposed properties / объект с экспортируемыми свойствами
    */
   protected initExpose(): EXPOSE {
     return {
-      isSelected: () => this.item.data.isSelected.value,
-      getSelectedList: () => this.item.data.selectedList.value,
-      getSelectedNames: () => this.item.data.selectedNames.value,
-      getSelectedValues: () => this.item.data.selectedValues.value
+      isSelected: () => this.item.i('data').isSelected.value,
+      getSelectedList: () => this.item.i('data').selectedList.value,
+      getSelectedNames: () => this.item.i('data').selectedNames.value,
+      getSelectedValues: () => this.item.i('data').selectedValues.value
     } as EXPOSE
   }
 
   /**
-   * Improvement of the obtained list of classes. /
+   * Improvement of the obtained list of classes.
+   *
    * Доработка полученного списка классов.
    * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes,
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
         space: this.naming.getSubClass('space'),
@@ -111,7 +111,8 @@ export class NavigationRailDesign<
   }
 
   /**
-   * Refinement of the received list of styles. /
+   * Refinement of the received list of styles.
+   *
    * Доработка полученного списка стилей.
    * @returns list of styles / список стилей
    */
@@ -120,29 +121,33 @@ export class NavigationRailDesign<
   }
 
   /**
-   * A method for rendering. /
+   * A method for rendering.
+   *
    * Метод для рендеринга.
    * @returns rendered VNode / сгенерированный VNode
    */
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...AriaStaticInclude.role(this.props.role),
-        tabindex: this.props.control ? undefined : this.props.tabindex,
-        onFocus: this.item.control.onFocus,
-        onBlur: this.item.control.onBlur
-      },
+      mergeProps(
+        this.getAttrs(),
+        AriaStaticInclude.role(this.props.role),
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          tabindex: this.props.control ? undefined : this.props.tabindex,
+          onFocus: () => this.item.i('control').onFocus(),
+          onBlur: () => this.item.i('control').onBlur()
+        }
+      ),
       this.renderData()
     )
   }
 
   /**
-   * Generates all elements from the list. /
+   * Generates all elements from the list.
+   *
    * Генерирует все элементы из списка.
    * @returns array of rendered VNodes / массив сгенерированных узлов VNode
    */
@@ -151,51 +156,54 @@ export class NavigationRailDesign<
   }
 
   /**
-   * Generates an element. /
+   * Generates an element.
+   *
    * Генерирует элемент.
    * @param type type of list / тип списка
    * @param item selected element / выбранный элемент
    * @param inMenu is item inside menu / находится ли элемент в меню
-   * @returns rendered VNode / сгенерированный узел VNode
+   * @returns rendered VNode or undefined / сгенерированный узел VNode или undefined
    */
   readonly renderItem = (
     type: ListType,
     item: ListDataItem,
     inMenu: boolean = false
-  ): VNode => {
+  ): VNode | undefined => {
     return this.components?.renderOne(
       inMenu ? 'navigationItem' : 'navigationRailItem',
       this.getItemAttrs(type, item)
-    ) as VNode
+    )
   }
 
   /**
-   * Generates a menu element. /
+   * Generates a menu element.
+   *
    * Генерирует элемент меню.
    * @param item selected element / выбранный элемент
    * @param props data for working with the menu / данные для работы с меню
    * @param inMenu is item inside menu / находится ли элемент в меню
-   * @returns rendered VNode / сгенерированный узел VNode
+   * @returns rendered VNode or undefined / сгенерированный узел VNode или undefined
    */
   readonly renderItemMenu = (
     item: ListDataItem,
     props: WindowControlItem,
     inMenu: boolean = false
-  ): VNode => {
+  ): VNode | undefined => {
     return this.components?.renderOne(
       inMenu ? 'navigationItem' : 'navigationRailItem',
-      toBinds(
-        {
-          iconTrailing: inMenu ? this.props.iconArrowRight : undefined
-        },
+      mergeProps(
+        inMenu && this.props.iconArrowRight !== undefined
+          ? { iconTrailing: this.props.iconArrowRight }
+          : {},
         this.item.getItemManagementFormMenu(item, Boolean(props.open.value)),
         props.binds
       )
-    ) as VNode
+    )
   }
 
   /**
-   * Generates a break between elements. /
+   * Generates a break between elements.
+   *
    * Генерирует разрыв между элементами.
    * @param item selected element / выбранный элемент
    * @returns rendered space VNode / сгенерированный узел разрыва VNode
@@ -209,7 +217,8 @@ export class NavigationRailDesign<
   }
 
   /**
-   * Generates a dividing line. /
+   * Generates a dividing line.
+   *
    * Генерирует линию разделения.
    * @param item selected element / выбранный элемент
    * @returns rendered line VNode / сгенерированный узел линии VNode
@@ -223,7 +232,8 @@ export class NavigationRailDesign<
   }
 
   /**
-   * Generates HTML code by the slot name or the value of the `label` field. /
+   * Generates HTML code by the slot name or the value of the `label` field.
+   *
    * Генерирует HTML-код по названию слота или значению поля `label`.
    * @param item selected element / выбранный элемент
    * @returns rendered html VNode / сгенерированный узел HTML VNode
@@ -248,16 +258,17 @@ export class NavigationRailDesign<
   }
 
   /**
-   * Generates a menu of lists. /
+   * Generates a menu of lists.
+   *
    * Генерирует меню списков.
    * @param item selected element / выбранный элемент
    * @param inMenu is menu inside another menu / находится ли меню в другом меню
-   * @returns rendered menu VNode / сгенерированный узел меню VNode
+   * @returns rendered menu VNode or undefined / сгенерированный узел меню VNode или undefined
    */
   readonly renderMenu = (
     item: ListDataItem,
     inMenu: boolean = false
-  ): VNode => {
+  ): VNode | undefined => {
     return this.components?.renderOne(
       'listMenu',
       {
@@ -268,11 +279,12 @@ export class NavigationRailDesign<
         head: (props: WindowControlItem) => this.renderItemMenu(item, props, inMenu),
         list: () => this.renderDataByItem('menu', this.item.getList(item), true)
       }
-    ) as VNode
+    )
   }
 
   /**
-   * Generates all elements from the list. /
+   * Generates all elements from the list.
+   *
    * Генерирует все элементы из списка.
    * @param type type of list / тип списка
    * @param data selected element / выбранный элемент
@@ -297,12 +309,22 @@ export class NavigationRailDesign<
         case 'html':
           children.push(this.renderHtml(item))
           break
-        case 'menu':
-          children.push(this.renderMenu(item, inMenu))
+        case 'menu': {
+          const node = this.renderMenu(item, inMenu)
+
+          if (node) {
+            children.push(node)
+          }
           break
-        default:
-          children.push(this.renderItem(type, item, inMenu))
+        }
+        default: {
+          const node = this.renderItem(type, item, inMenu)
+
+          if (node) {
+            children.push(node)
+          }
           break
+        }
       }
     })
 
@@ -311,7 +333,8 @@ export class NavigationRailDesign<
   }
 
   /**
-   * Returns binding properties for the item. /
+   * Returns binding properties for the item.
+   *
    * Возвращает привязочные свойства для элемента.
    * @param type type of list / тип списка
    * @param item selected element / выбранный элемент
@@ -320,7 +343,7 @@ export class NavigationRailDesign<
   protected getItemAttrs(
     type: ListType,
     item: ListDataItem
-  ) {
+  ): ConstrBind<ListDataItem> {
     switch (type) {
       case 'menu':
         return this.item.getItemMenu(item)

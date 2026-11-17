@@ -282,7 +282,7 @@ describe('CmsPermissionManager', () => {
     vi.spyOn(mock.raw, 'insert').mockImplementation(() => {
       throw new Error('Insert failed')
     })
-    await expect(manager.create({ code: 'a:b', name: 'AB' })).rejects.toThrow('Insert failed')
+    await expect(manager.create({ code: 'a:b', name: 'AB' })).rejects.toThrow('Failed to create CMS permission.')
     expect(capturedErrors[0]).toMatchObject({
       group: 'cms-permission',
       code: 'create'

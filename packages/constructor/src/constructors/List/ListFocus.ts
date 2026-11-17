@@ -2,46 +2,61 @@
 
 import { computed, type Ref, ref } from 'vue'
 import {
+  DesignLifecycleAbstract,
   goScroll,
+  isDomRuntime,
   isInput,
   type ListDataItem,
   type ListSelectedItem
 } from '@dxtmisha/functional'
 import type { ListProps } from './props'
 
-/** Maximum number of attempts to set focus/ Максимальное количество попыток установки фокуса */
+/** Maximum number of attempts to set focus / Максимальное количество попыток установки фокуса */
 const LIST_MAX_EXPECTATIONS_FOCUS = 24
+
+/** Delay in milliseconds between focus polling attempts / Задержка (мс) между попытками установки фокуса */
+const LIST_FOCUS_RETRY_DELAY_MS = 128
 
 /**
  * Class for working with element focus.
  *
  * Класс для работы с фокусировкой элемента.
  */
-export class ListFocus {
-  /** Active item/ Активный элемент */
+export class ListFocus extends DesignLifecycleAbstract {
+  /** Active item / Активный элемент */
   readonly item = ref<ListDataItem>()
+
+  /** Pending focus retry timeout / Ожидающий тайм-аут повторной попытки фокуса */
+  protected focusTimeout?: ReturnType<typeof setTimeout>
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param listId unique list identifier/ уникальный идентификатор списка
+   * @param props input data / входные данные
+   * @param element input element / элемент ввода
+   * @param listId unique list identifier / уникальный идентификатор списка
    */
   constructor(
-    protected readonly props: ListProps,
+    protected readonly props: Readonly<ListProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly listId: number
   ) {
+    super()
   }
 
-  /** Returns the value of the selected element/ Возвращает значение выбранного элемента */
+  /** Returns the value of the selected element / Возвращает значение выбранного элемента */
   readonly focus = computed<ListSelectedItem | undefined>(() => this.item.value?.index ?? this.props.focus)
+
+  /** Cleanup lifecycle resources on unmount / Очистка ресурсов жизненного цикла при размонтировании */
+  override readonly onUnmounted = (): void => {
+    this.clearTimeout()
+  }
 
   /**
    * Checks if the element exists.
    *
    * Проверяет, существует ли элемент.
-   * @param index element index/ индекс элемента
+   * @param index element index / индекс элемента
+   * @returns true if element exists / true, если элемент существует
    */
   isElement(index?: string): boolean {
     return Boolean(this.getElement(index))
@@ -120,33 +135,41 @@ export class ListFocus {
    * Returns the selector for the desired element by its index.
    *
    * Возвращает селектор нужного элемента по его индексу.
-   * @param index element index/ индекс элемента
+   * @param index element index / индекс элемента
    * @returns selector string / строка селектора
    */
   getSelector(index?: string): string {
-    return `[data-list-id="${this.listId}"][data-value="${index ?? this.item.value?.index}"]`
+    const targetIndex = String(index ?? this.item.value?.index ?? '')
+    const escapedIndex = targetIndex.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+
+    return `[data-list-id="${this.listId}"][data-value="${escapedIndex}"]`
   }
 
   /**
    * Returns the HTML element of the selected item.
    *
    * Возвращает HTML элемент выбранного элемента.
-   * @param index element index/ индекс элемента
-   * @returns HTML element/ HTML-элемент
+   * @param index element index / индекс элемента
+   * @returns HTML element / HTML-элемент
    */
   getElement(index?: string): HTMLDivElement | undefined {
-    return document.querySelector<HTMLDivElement>(this.getSelector(index)) ?? undefined
+    if (isDomRuntime()) {
+      return document.querySelector<HTMLDivElement>(this.getSelector(index)) ?? undefined
+    }
+
+    return undefined
   }
 
   /**
    * Changes the selected element.
    *
    * Изменяет выбранный элемент.
-   * @param item new value/ новое значение
+   * @param item new value / новое значение
    * @returns this instance / этот экземпляр
    */
   set(item: ListDataItem | undefined): this {
     if (this.item.value !== item) {
+      this.clearTimeout()
       this.item.value = item
       this.toFocus()
     }
@@ -161,6 +184,7 @@ export class ListFocus {
    * @returns this instance / этот экземпляр
    */
   reset(): this {
+    this.clearTimeout()
     this.set(undefined)
     return this
   }
@@ -208,11 +232,12 @@ export class ListFocus {
    * Sets focus to the element.
    *
    * Устанавливает фокус на элемент.
-   * @param max maximum number of attempts/ максимальное количество попыток
+   * @param max maximum number of attempts / максимальное количество попыток
    */
   protected toFocus(max: number = LIST_MAX_EXPECTATIONS_FOCUS): void {
     if (
       max > 0
+      && isDomRuntime()
       && this.element.value
       && this.props.control
       && !isInput(document.activeElement)
@@ -223,10 +248,24 @@ export class ListFocus {
         element.focus()
       } else {
         (document.activeElement as HTMLElement)?.blur()
-        setTimeout(() => {
+        this.clearTimeout()
+        this.focusTimeout = setTimeout(() => {
+          this.focusTimeout = undefined
           this.toFocus(max - 1)
-        }, 128)
+        }, LIST_FOCUS_RETRY_DELAY_MS)
       }
+    }
+  }
+
+  /**
+   * Clears any pending focus retry timer.
+   *
+   * Очищает активный таймер повторной попытки фокусировки.
+   */
+  protected clearTimeout(): void {
+    if (this.focusTimeout !== undefined) {
+      clearTimeout(this.focusTimeout)
+      this.focusTimeout = undefined
     }
   }
 }

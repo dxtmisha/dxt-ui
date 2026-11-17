@@ -1,21 +1,20 @@
 import {
-  toRef,
-  type Ref,
   computed,
-  onMounted,
+  mergeProps,
   nextTick,
-  watch
+  toRef,
+  watch,
+  type WatchStopHandle
 } from 'vue'
 import {
   type ConstrBind,
-  type ConstrEmit,
-  type DesignComp,
-  type DesignName,
+  type ConstrClassObject,
+  type ConstrItems,
+  DesignLogicAbstract,
   ListDataRef,
   type ListDataItem,
   type ListList,
-  toBinds,
-  type ConstrClass
+  ServerStorage
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -24,181 +23,214 @@ import { TextInclude } from '../../classes/TextInclude'
 
 import { WindowClassesInclude } from '../Window'
 
-import { ListSearch } from './ListSearch'
+import { ListControl } from './ListControl'
 import { ListFocus } from './ListFocus'
 import { ListGo } from './ListGo'
-import { ListControl } from './ListControl'
+import { ListSearch } from './ListSearch'
 
 import type { IconValue } from '../Icon'
 import type { ListGroupSlotsPropsInclude } from '../ListGroup'
-import type { ListComponents, ListEmits, ListSlots } from './types'
 import type { ListProps } from './props'
+import type { ListComponents, ListEmits, ListSlots } from './types'
 
-/** Maximum number of lists/ Максимальное количество списков */
-let listIdMax = 1
+/** List dependency constructors type / Тип конструкторов зависимостей List */
+export type ListConstructors = {
+  /** Control constructor / Конструктор управления */
+  control: typeof ListControl
+  /** List data constructor / Конструктор данных списка */
+  data: typeof ListDataRef
+  /** Event click constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Focus constructor / Конструктор фокусировки */
+  focus: typeof ListFocus
+  /** Navigation constructor / Конструктор навигации */
+  go: typeof ListGo
+  /** Search constructor / Конструктор поиска */
+  search: typeof ListSearch
+  /** Text constructor / Конструктор текста */
+  text: typeof TextInclude
+  /** Window classes constructor / Конструктор классов окна */
+  windowClasses: typeof WindowClassesInclude
+}
 
 /**
- * List
+ * Orchestrator class for the List component.
+ * Coordinates list data normalization, keyboard navigation, focus management, search highlighting, and item bindings.
+ *
+ * Класс-оркестратор для компонента List.
+ * Координирует нормализацию данных списка, клавиатурную навигацию, управление фокусом, подсветку поиска и привязки элементов.
  */
-export class List {
-  readonly focus: ListFocus
-  readonly search: ListSearch
-  readonly text: TextInclude
+export class List extends DesignLogicAbstract<
+  HTMLElement,
+  ListComponents,
+  ListEmits,
+  ListSlots,
+  ListProps,
+  ListConstructors
+> {
+  /** Unique list identifier isolated per SSR request / Уникальный идентификатор списка с изоляцией SSR-запросов */
+  protected readonly id: number = ++ServerStorage.get<{ id: number }>('__ui:list-id__', () => ({ id: 1 })).id
 
-  readonly data: ListDataRef
-  readonly event: EventClickInclude
+  /** Stop handle for the search highlight watcher / Функция остановки наблюдателя подсветки поиска */
+  protected stopSearchWatch?: WatchStopHandle
 
-  readonly go: ListGo
-  readonly control: ListControl
+  /** Whether the component has been unmounted / Был ли компонент размонтирован */
+  protected isDestroyed = false
 
-  readonly windowClasses: WindowClassesInclude
-
-  /** Unique list identifier/ Уникальный идентификатор списка */
-  protected readonly id: number = ++listIdMax
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<ListConstructors> = {
+    control: {
+      item: ListControl,
+      conditions: () => Boolean(this.props.control),
+      parameters: () => [
+        this.props,
+        this.element,
+        () => this.i('data'),
+        () => this.i('go'),
+        () => this.i('search')
+      ]
+    },
+    data: {
+      item: ListDataRef,
+      parameters: () => [
+        toRef(this.props, 'list'),
+        this.i('focus').focus,
+        this.i('search').highlight,
+        toRef(this.props, 'highlightLengthStart'),
+        toRef(this.props, 'filterMode'),
+        toRef(this.props, 'selected'),
+        toRef(this.props, 'keyValue'),
+        toRef(this.props, 'keyLabel'),
+        toRef(this.props, 'liteThreshold'),
+        undefined,
+        toRef(this.props, 'max')
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    focus: {
+      item: ListFocus,
+      parameters: () => [
+        this.props,
+        this.element,
+        this.id
+      ]
+    },
+    go: {
+      item: ListGo,
+      parameters: () => [
+        this.props,
+        this.element,
+        () => this.i('data'),
+        () => this.i('focus'),
+        this.emits
+      ]
+    },
+    search: {
+      item: ListSearch,
+      parameters: () => [this.props]
+    },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    },
+    windowClasses: {
+      item: WindowClassesInclude,
+      parameters: () => [this.naming.getDesign()]
+    }
+  }
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.EventClickIncludeConstructor class for working with click event/ класс для работы с событием клика
-   * @param constructors.ListControlConstructor class for working with control/ класс для работы с управлением
-   * @param constructors.ListDataRefConstructor class for working with data list/ класс для работы со списком данных
-   * @param constructors.ListFocusConstructor class for working with focus/ класс для работы с фокусом
-   * @param constructors.ListGoConstructor class for working with navigation/ класс для работы с навигацией
-   * @param constructors.ListSearchConstructor class for working with search/ класс для работы с поиском
-   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
-   * @param constructors.WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
+   * Computed list data.
+   *
+   * Вычисляемые данные списка.
+   * @returns list data / данные списка
    */
-  constructor(
-    protected readonly props: ListProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<ListComponents, ListProps>,
-    protected readonly slots?: ListSlots,
-    protected readonly emits?: ConstrEmit<ListEmits>,
-    constructors: {
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      ListControlConstructor?: typeof ListControl
-      ListDataRefConstructor?: typeof ListDataRef
-      ListFocusConstructor?: typeof ListFocus
-      ListGoConstructor?: typeof ListGo
-      ListSearchConstructor?: typeof ListSearch
-      WindowClassesIncludeConstructor?: typeof WindowClassesInclude
-      TextIncludeConstructor?: typeof TextInclude
-    } = {}
-  ) {
-    const {
-      EventClickIncludeConstructor = EventClickInclude,
-      ListControlConstructor = ListControl,
-      ListDataRefConstructor = ListDataRef,
-      ListFocusConstructor = ListFocus,
-      ListGoConstructor = ListGo,
-      ListSearchConstructor = ListSearch,
-      WindowClassesIncludeConstructor = WindowClassesInclude,
-      TextIncludeConstructor = TextInclude
-    } = constructors
+  get list(): ListList {
+    const data = this.i('data')
 
-    this.focus = new ListFocusConstructor(this.props, this.element, this.id)
-    this.search = new ListSearchConstructor(this.props)
-    this.text = new TextIncludeConstructor(this.props)
+    if (this.props.lite) {
+      return data.liteData.value
+    }
 
-    this.data = new ListDataRefConstructor(
-      toRef(this.props, 'list'),
-      this.focus.focus,
-      this.search.highlight,
-      toRef(this.props, 'highlightLengthStart'),
-      toRef(this.props, 'filterMode'),
-      toRef(this.props, 'selected'),
-      toRef(this.props, 'keyValue'),
-      toRef(this.props, 'keyLabel'),
-      toRef(this.props, 'liteThreshold'),
-      undefined,
-      toRef(this.props, 'max')
+    return data.fullData.value
+  }
+
+  /**
+   * Computed CSS classes for the list component.
+   *
+   * Вычисляемые CSS классы для компонента списка.
+   * @returns classes object / объект классов
+   */
+  get classes(): ConstrClassObject {
+    const isFilterMode = Boolean(this.props.filterMode)
+
+    return {
+      [this.naming.getStatusClass('highlightActive')]: isFilterMode && this.i('data').isHighlight(),
+      [this.naming.getStatusClass('searchActive')]: isFilterMode && this.i('search').is()
+    }
+  }
+
+  /** Computed binding properties for list items / Вычисляемые привязочные свойства для элементов списка */
+  protected readonly itemBinds = computed<ConstrBind<ListDataItem>>(() => {
+    return mergeProps(
+      {
+        tag: this.props.tag,
+        divider: this.props.divider,
+        selectionStyle: this.props.selectionStyle,
+        onClick: this.i('event').onClick
+      },
+      this.props.itemAttrs ?? {},
+      {
+        listId: this.id
+      }
+    ) as ConstrBind<ListDataItem>
+  })
+
+  /** Mount lifecycle hook registering search highlight watcher and preparing selected item / Хук монтирования для наблюдателя поиска и подготовки выбранного элемента */
+  protected override readonly onMounted = async (): Promise<void> => {
+    this.stopSearchWatch = watch(
+      () => (this.props.control ? this.i('search').item.value : undefined),
+      () => {
+        if (this.props.control) {
+          this.i('go').toHighlight()
+        }
+      }
     )
-
-    this.go = new ListGoConstructor(
-      this.props,
-      this.element,
-      this.focus,
-      this.data,
-      this.emits
-    )
-    this.control = new ListControlConstructor(
-      this.props,
-      this.element,
-      this.data,
-      this.go,
-      this.search
-    )
-
-    this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
-    this.windowClasses = new WindowClassesIncludeConstructor(naming.getDesign())
 
     if (this.props.control) {
-      watch(this.search.item, () => this.go.toHighlight())
+      await nextTick()
 
-      onMounted(async () => {
-        await nextTick()
-        this.go.preparationBySelected()
-      })
+      if (!this.isDestroyed) {
+        this.i('go').preparationBySelected()
+      }
     }
   }
 
-  /**
-   * Computed list data
-   *
-   * Вычисляемые данные списка
-   * */
-  get list(): ListList {
-    if (this.props.lite) {
-      return this.data.liteData.value
-    }
-
-    return this.data.fullData.value
+  /** Cleanup lifecycle resources on unmount / Очистка ресурсов жизненного цикла при размонтировании */
+  protected override readonly onUnmounted = (): void => {
+    this.isDestroyed = true
+    this.stopSearchWatch?.()
+    this.stopSearchWatch = undefined
   }
-
-  /**
-   * Computed CSS classes for the cell component.
-   *
-   * Вычисляемые CSS классы для компонента ячейки.
-   */
-  get classes(): ConstrClass {
-    return {
-      [this.naming.getStatusClass('highlightActive')]: Boolean(this.props.filterMode) && this.data.isHighlight(),
-      [this.naming.getStatusClass('searchActive')]: Boolean(this.props.filterMode) && this.search.is()
-    }
-  }
-
-  /**
-   * Computed binding properties for list items/
-   * Вычисляемые привязочные свойства для элементов списка
-   * */
-  protected readonly itemBinds = computed(() => {
-    return {
-      tag: this.props.tag,
-      divider: this.props.divider,
-      selectionStyle: this.props.selectionStyle,
-      onClick: this.event.onClick,
-      ...(this.props.itemAttrs ?? {}),
-      listId: this.id
-    }
-  })
 
   /**
    * Returns information about the opening status of a group item.
    *
    * Возвращает информацию о статусе открытия группового элемента.
-   * @param item List item data/ данные элемента списка
+   * @param item List item data / данные элемента списка
+   * @returns true if group is open / true, если группа открыта
    */
   isOpenGroup(
     item: ConstrBind<ListDataItem>
   ): boolean {
-    const data = this.data.getSubList(item)
+    const data = this.i('data').getSubList(item)
 
     return data.isSelected.value
       || data.isFocus()
@@ -206,94 +238,101 @@ export class List {
   }
 
   /**
-   * Gets binding properties for a list item
+   * Gets binding properties for a list item.
    *
-   * Получает привязочные свойства для элемента списка
-   * @param item List item data/ данные элемента списка
+   * Получает привязочные свойства для элемента списка.
+   * @param item List item data / данные элемента списка
+   * @returns binding properties / привязочные свойства
    */
   getItem(
     item: ConstrBind<ListDataItem>
-  ) {
-    return toBinds(
+  ): ConstrBind<ListDataItem> {
+    return mergeProps(
       this.itemBinds.value,
       item,
       {
         'key': item.value,
-        'role': this.props.roleItem,
+        ...(this.props.roleItem !== undefined ? { role: this.props.roleItem } : {}),
         'data-item': true
       }
-    )
+    ) as ConstrBind<ListDataItem>
   }
 
   /**
-   * Gets binding properties for a group item in the list
+   * Gets binding properties for a group item in the list.
    *
-   * Получает привязочные свойства для группового элемента в списке
-   * @param item List item data/ данные элемента списка
+   * Получает привязочные свойства для группового элемента в списке.
+   * @param item List item data / данные элемента списка
+   * @returns binding properties / привязочные свойства
    */
   getItemGroup(
     item: ConstrBind<ListDataItem>
-  ) {
-    return toBinds(
+  ): ConstrBind<ListDataItem> {
+    return mergeProps(
       this.itemBinds.value,
-      this.props.itemGroupAttrs,
+      this.props.itemGroupAttrs ?? {},
       item,
       {
         key: item.value,
         class: this.naming.getSubClass('group')
       }
-    )
+    ) as ConstrBind<ListDataItem>
   }
 
   /**
-   * Gets binding properties for a menu item in the list
+   * Gets binding properties for a menu item in the list.
    *
-   * Получает привязочные свойства для элемента меню в списке
-   * @param item List item data/ данные элемента списка
+   * Получает привязочные свойства для элемента меню в списке.
+   * @param item List item data / данные элемента списка
+   * @returns binding properties / привязочные свойства
    */
   getItemMenu(
     item: ConstrBind<ListDataItem>
-  ) {
-    return toBinds(
+  ): ConstrBind<ListDataItem> {
+    return mergeProps(
       this.itemBinds.value,
-      this.props.itemMenuAttrs,
+      this.props.itemMenuAttrs ?? {},
       item,
       {
         key: item.value,
         class: this.naming.getSubClass('menu')
       }
-    )
+    ) as ConstrBind<ListDataItem>
   }
 
   /**
-   * Gets binding properties for a group management item with down arrow
+   * Gets binding properties for a group management item with down arrow.
    *
-   * Получает привязочные свойства для элемента управления группой со стрелкой вниз
-   * @param item List item data/ данные элемента списка
-   * @param props additional properties/ дополнительные свойства
+   * Получает привязочные свойства для элемента управления группой со стрелкой вниз.
+   * @param item List item data / данные элемента списка
+   * @param props additional properties / дополнительные свойства
+   * @returns binding properties / привязочные свойства
    */
   getItemManagementFormGroup(
     item: ConstrBind<ListDataItem>,
     props: ListGroupSlotsPropsInclude
   ): ConstrBind<ListDataItem> {
     return this.getItemManagement(
-      {
-        ...item,
-        ...props,
-        filterMode: false,
-        ...AriaStaticInclude.haspopup('listbox')
-      },
+      mergeProps(
+        item,
+        props,
+        {
+          filterMode: false,
+          ...AriaStaticInclude.haspopup('listbox')
+        }
+      ) as ConstrBind<ListDataItem>,
       props.open,
       this.props.iconArrowDown
     )
   }
 
   /**
-   * Gets binding properties for a menu management item with right arrow
+   * Gets binding properties for a menu management item with right arrow.
    *
-   * Получает привязочные свойства для элемента управления меню со стрелкой вправо
-   * @param item List item data/ данные элемента списка
-   * @param open Whether the menu is open/ открыто ли меню
+   * Получает привязочные свойства для элемента управления меню со стрелкой вправо.
+   * @param item List item data / данные элемента списка
+   * @param open Whether the menu is open / открыто ли меню
+   * @returns binding properties / привязочные свойства
    */
   getItemManagementFormMenu(
     item: ConstrBind<ListDataItem>,
@@ -313,37 +352,39 @@ export class List {
    * Returns a sublist for a group item.
    *
    * Возвращает подсписок для группового элемента.
-   * @param item List item data/ данные элемента списка
+   * @param item List item data / данные элемента списка
+   * @returns sublist data / данные подсписка
    */
   getList(
     item: ConstrBind<ListDataItem>
-  ) {
-    return this.data.getSubList(item).fullData.value
+  ): ListList {
+    return this.i('data').getSubList(item).fullData.value
   }
 
   /**
-   * Internal method to create management item binding properties
+   * Internal method to create management item binding properties.
    *
-   * Внутренний метод для создания привязочных свойств элемента управления
-   * @param item List item data/ данные элемента списка
-   * @param open Whether the item is open/ открыт ли элемент
-   * @param icon Icon to display/ иконка для отображения
+   * Внутренний метод для создания привязочных свойств элемента управления.
+   * @param item List item data / данные элемента списка
+   * @param open Whether the item is open / открыт ли элемент
+   * @param icon Icon to display / иконка для отображения
+   * @returns binding properties / привязочные свойства
    */
   protected getItemManagement(
     item: ConstrBind<ListDataItem>,
     open: boolean,
     icon?: IconValue
   ): ConstrBind<ListDataItem> {
-    return toBinds(
+    return mergeProps(
       this.itemBinds.value,
-      this.props.itemManagementAttrs,
+      this.props.itemManagementAttrs ?? {},
       item,
       {
         'class': [
           this.naming.getSubClass('management'),
-          this.windowClasses.get().static
+          this.i('windowClasses').get().static
         ],
-        'focus': item?.index === this.focus.focus.value,
+        'focus': item?.index === this.i('focus').focus.value,
         'selectedChild': this.isOpenGroup(item),
         open,
         'iconTurn': open,
@@ -352,6 +393,6 @@ export class List {
         'data-status': open ? 'open' : 'close',
         'selectionStyle': 'none'
       }
-    )
+    ) as ConstrBind<ListDataItem>
   }
 }

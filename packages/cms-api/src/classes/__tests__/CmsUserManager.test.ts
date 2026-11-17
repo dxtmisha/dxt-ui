@@ -534,7 +534,7 @@ describe('CmsUserManager', () => {
       await expect(manager.create({
         email: 'alex@example.com',
         firstName: 'Alex'
-      })).rejects.toThrow('DB connection lost')
+      })).rejects.toThrow('Failed to create CMS user.')
 
       expect(capturedErrors[0]).toMatchObject({
         group: 'cms-user',

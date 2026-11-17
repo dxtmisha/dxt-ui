@@ -1,18 +1,20 @@
 import {
   ErrorCenter,
+  ErrorCenterError,
+  ErrorCenterThrow,
   type ErrorCenterInstance
 } from '@dxtmisha/functional-basic'
 import { cmsErrorCauseList } from '../media/errors/cmsErrorCauseList'
 
-/** Prefix prepended to thrown CMS API error messages / Префикс для выбрасываемых сообщений об ошибках CMS API */
-const CMS_ERROR_PREFIX = '[@dxtmisha/cms-api]'
-
 /**
- * Instance-level error handler for CMS API operations backed by ErrorCenter.
+ * Instance-level error handler for CMS API operations backed by ErrorCenter and ErrorCenterThrow.
  *
- * Экземплярный обработчик ошибок для операций CMS API на базе ErrorCenter.
+ * Экземплярный обработчик ошибок для операций CMS API на базе ErrorCenter и ErrorCenterThrow.
  */
 export class CmsErrorInstance {
+  /** Throw helper backed by the active ErrorCenter instance / Помощник генерации исключений на базе активного экземпляра ErrorCenter */
+  protected errorThrow: ErrorCenterThrow
+
   /**
    * Initializes the CMS error handler with an ErrorCenter instance.
    *
@@ -22,6 +24,7 @@ export class CmsErrorInstance {
   constructor(
     protected errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {
+    this.errorThrow = new ErrorCenterThrow(errorCenter)
     this.registerCauses()
   }
 
@@ -44,18 +47,20 @@ export class CmsErrorInstance {
    */
   setErrorCenter(errorCenter: ErrorCenterInstance): this {
     this.errorCenter = errorCenter
+    this.errorThrow = new ErrorCenterThrow(errorCenter)
     this.registerCauses()
     return this
   }
 
   /**
-   * Reports an error via the instance ErrorCenter and throws an Error.
+   * Reports an error via ErrorCenterThrow and throws an ErrorCenterError.
    *
-   * Регистрирует ошибку через ErrorCenter экземпляра и выбрасывает исключение Error.
+   * Регистрирует ошибку через ErrorCenterThrow и выбрасывает исключение ErrorCenterError.
    * @param group Error group / Группа ошибки
    * @param code Error code within the group / Код ошибки в группе
    * @param details Optional raw error payload / Необязательные дополнительные детали ошибки
    * @param message Optional override error message / Необязательное переопределяющее сообщение об ошибке
+   * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
    */
   report(
     group: string,
@@ -67,13 +72,14 @@ export class CmsErrorInstance {
   }
 
   /**
-   * Reports unexpected transaction errors through the instance ErrorCenter without double-reporting domain errors.
+   * Reports unexpected transaction errors through ErrorCenterThrow without double-reporting ErrorCenterError instances.
    *
-   * Передаёт неожиданные ошибки транзакции в ErrorCenter экземпляра, избегая повторной регистрации доменных ошибок.
+   * Передаёт неожиданные ошибки транзакции через ErrorCenterThrow, избегая повторной регистрации экземпляров ErrorCenterError.
    * @param group Error group / Группа ошибки
    * @param code Fallback error code / Код ошибки по умолчанию
    * @param error Caught error instance / Перехваченная ошибка
    * @param message Optional override error message / Необязательное переопределяющее сообщение об ошибке
+   * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
    */
   handleTransaction(
     group: string,
@@ -81,10 +87,7 @@ export class CmsErrorInstance {
     error: unknown,
     message?: string
   ): never {
-    if (
-      error instanceof Error
-      && error.message.startsWith(CMS_ERROR_PREFIX)
-    ) {
+    if (error instanceof ErrorCenterError) {
       throw error
     }
 
@@ -105,14 +108,15 @@ export class CmsErrorInstance {
   }
 
   /**
-   * Registers an error in ErrorCenter and throws either the original Error or a prefixed CMS Error.
+   * Dispatches an error via ErrorCenterThrow and throws an ErrorCenterError, preserving original Error instances as cause.
    *
-   * Регистрирует ошибку в ErrorCenter и выбрасывает исходный Error или новую ошибку CMS с префиксом.
+   * Передаёт ошибку через ErrorCenterThrow и выбрасывает ErrorCenterError, сохраняя исходный Error в свойстве cause.
    * @param group Error group / Группа ошибки
    * @param code Error code within the group / Код ошибки в группе
    * @param details Optional raw error payload / Необязательные дополнительные детали ошибки
    * @param message Optional override error message / Необязательное переопределяющее сообщение об ошибке
    * @param originalError Optional original caught error / Необязательная исходная перехваченная ошибка
+   * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
    */
   protected emitError(
     group: string,
@@ -121,19 +125,14 @@ export class CmsErrorInstance {
     message?: string,
     originalError?: unknown
   ): never {
-    const resolvedMessage = message
-      ?? this.errorCenter.get(code, group)?.message
-      ?? code
-
-    this.errorCenter.on({
-      group,
-      code,
-      ...(message !== undefined ? { message } : {}),
-      details
-    })
-
-    throw originalError instanceof Error
-      ? originalError
-      : new Error(`${CMS_ERROR_PREFIX} ${resolvedMessage}`)
+    return this.errorThrow.on(
+      {
+        group,
+        code,
+        ...(message !== undefined ? { message } : {}),
+        details
+      },
+      originalError instanceof Error ? { cause: originalError } : undefined
+    )
   }
 }

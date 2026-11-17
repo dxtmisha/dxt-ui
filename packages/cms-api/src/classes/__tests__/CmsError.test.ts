@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { ErrorCenter, ErrorCenterInstance } from '@dxtmisha/functional-basic'
+import { ErrorCenter, ErrorCenterError, ErrorCenterInstance } from '@dxtmisha/functional-basic'
 import { CmsError } from '../CmsError'
 import { CmsErrorInstance } from '../CmsErrorInstance'
 
@@ -38,11 +38,21 @@ describe('CmsError', () => {
     CmsError.setErrorCenter(errorCenter)
 
     expect(() => CmsError.report('cms-role', 'notFound', { roleId: 42 }))
-      .toThrow('[@dxtmisha/cms-api] Requested CMS role was not found.')
+      .toThrow('Requested CMS role was not found.')
 
     const unexpected = new Error('Timeout')
-    expect(() => CmsError.handleTransaction('cms-db', 'txError', unexpected, 'Transaction failed.'))
-      .toThrow(unexpected)
+    let caughtTransactionError: unknown
+    try {
+      CmsError.handleTransaction('cms-db', 'txError', unexpected, 'Transaction failed.')
+    } catch (error) {
+      caughtTransactionError = error
+    }
+
+    expect(caughtTransactionError).toBeInstanceOf(ErrorCenterError)
+    if (caughtTransactionError instanceof ErrorCenterError) {
+      expect(caughtTransactionError.message).toBe('Transaction failed.')
+      expect(caughtTransactionError.cause).toBe(unexpected)
+    }
 
     expect(captured).toEqual([
       {

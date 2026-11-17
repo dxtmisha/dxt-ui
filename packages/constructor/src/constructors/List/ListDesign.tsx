@@ -1,33 +1,35 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
   isObject,
   type ListDataItem,
   type ListList,
-  type ListType,
-  toBinds
+  type ListType
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { List } from './List'
 
-import {
-  type ListPropsBasic
-} from './props'
-import {
-  type ListClasses,
-  type ListComponents,
-  type ListEmits,
-  type ListExpose,
-  type ListSlots
-} from './types'
-import type { WindowControlItem } from '../Window'
 import type { ListGroupSlotsPropsInclude } from '../ListGroup'
+import type { WindowControlItem } from '../Window'
+import type { ListPropsBasic } from './props'
+import type {
+  ListClasses,
+  ListComponents,
+  ListEmits,
+  ListExpose,
+  ListSlots
+} from './types'
 
 /**
- * ListDesign
+ * ListDesign is a design constructor for the List component.
+ * It connects the List logic, sets up slots, classes, styles, and defines the rendering function.
+ *
+ * ListDesign — конструктор дизайна для компонента List.
+ * Он связывает логику List, настраивает слоты, классы, стили и определяет функцию рендеринга.
  */
 export class ListDesign<
   COMP extends ListComponents,
@@ -43,14 +45,15 @@ export class ListDesign<
     CLASSES,
     P
   > {
+  /** List logic orchestrator instance / Экземпляр логического оркестратора List */
   protected readonly item: List
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the item / класс для работы с элементом
    */
   constructor(
     name: string,
@@ -75,16 +78,17 @@ export class ListDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for exposure.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализация всех необходимых свойств для экспозиции.
+   * @returns exposed properties / экспонируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
-      isSelected: () => this.item.data.isSelected.value,
-      getSelectedList: () => this.item.data.selectedList.value,
-      getSelectedNames: () => this.item.data.selectedNames.value,
-      getSelectedValues: () => this.item.data.selectedValues.value
+      isSelected: () => this.item.i('data').isSelected.value,
+      getSelectedList: () => this.item.i('data').selectedList.value,
+      getSelectedNames: () => this.item.i('data').selectedNames.value,
+      getSelectedValues: () => this.item.i('data').selectedValues.value
     } as EXPOSE
   }
 
@@ -92,6 +96,7 @@ export class ListDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns initialized classes / инициализированные классы
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -116,29 +121,36 @@ export class ListDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns initialized styles / инициализированные стили
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the component.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга компонента.
+   * @returns component virtual node / виртуальный узел компонента
    */
   protected initRender(): VNode {
     return h(
       'div',
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...AriaStaticInclude.role(this.props.role),
-        tabindex: this.props.control ? undefined : this.props.tabindex,
-        onFocus: this.item.control.onFocus,
-        onBlur: this.item.control.onBlur
-      },
+      mergeProps(
+        this.getAttrs(),
+        AriaStaticInclude.role(this.props.role),
+        this.props.ariaMultiselectable !== undefined
+          ? AriaStaticInclude.multiselectable(this.props.ariaMultiselectable)
+          : {},
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          tabindex: this.props.control ? undefined : this.props.tabindex,
+          onFocus: () => this.item.i('control').onFocus(),
+          onBlur: () => this.item.i('control').onBlur()
+        }
+      ),
       [
         ...this.renderFilterInput(),
         ...this.renderData()
@@ -150,6 +162,7 @@ export class ListDesign<
    * Generates all elements from the list.
    *
    * Генерирует все элементы из списка.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderData = (): VNode[] => {
     return this.renderDataByItem('item', this.item.list, true)
@@ -159,59 +172,66 @@ export class ListDesign<
    * Generates an element.
    *
    * Генерирует элемент.
-   * @param type type of list/ тип списка
-   * @param item selected element/ выбранный элемент
+   * @param type type of list / тип списка
+   * @param item selected element / выбранный элемент
+   * @returns item virtual node or undefined / виртуальный узел элемента или undefined
    */
   readonly renderItem = (
     type: ListType,
     item: ListDataItem
-  ): VNode => {
+  ): VNode | undefined => {
     return this.components?.renderOne(
       'listItem',
       this.getItemAttrs(type, item)
-    ) as VNode
+    )
   }
 
   /**
    * Generates a group element.
    *
    * Генерирует групповой элемент.
-   * @param item selected element/ выбранный элемент
-   * @param props data for working with the group/ данные для работы с группой
+   * @param item selected element / выбранный элемент
+   * @param props data for working with the group / данные для работы с группой
+   * @returns group head virtual node or undefined / виртуальный узел заголовка группы или undefined
    */
-  readonly renderItemGroup = (item: ListDataItem, props: ListGroupSlotsPropsInclude): VNode => {
+  readonly renderItemGroup = (
+    item: ListDataItem,
+    props: ListGroupSlotsPropsInclude
+  ): VNode | undefined => {
     return this.components?.renderOne(
       'listItem',
       this.item.getItemManagementFormGroup(item, props)
-    ) as VNode
+    )
   }
 
   /**
    * Generates a menu element.
    *
    * Генерирует элемент меню.
-   * @param item selected element/ выбранный элемент
-   * @param props data for working with the menu/ данные для работы с меню
+   * @param item selected element / выбранный элемент
+   * @param props data for working with the menu / данные для работы с меню
+   * @returns menu head virtual node or undefined / виртуальный узел заголовка меню или undefined
    */
   readonly renderItemMenu = (
     item: ListDataItem,
     props: WindowControlItem
-  ): VNode => {
+  ): VNode | undefined => {
     return this.components?.renderOne(
       'listItem',
-      toBinds(
+      mergeProps(
         this.item.getItemManagementFormMenu(item, Boolean(props.open.value)),
         props.binds
       )
-    ) as VNode
+    )
   }
 
   /**
    * Render filter input.
    *
    * Рендер фильтра ввода.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
-  protected readonly renderFilterInput = (): VNode[] => {
+  readonly renderFilterInput = (): VNode[] => {
     if (this.props.showSearch) {
       return [
         h(
@@ -219,23 +239,28 @@ export class ListDesign<
           {
             class: [
               this.classes?.value.filterInput,
-              this.item.windowClasses.get().static
+              this.item.i('windowClasses').get().static
             ]
           },
-          this.components?.renderOne(
+          this.components?.render(
             'input',
-            toBinds(
+            mergeProps(
               {
-                ref: this.item.control.inputElement,
+                ref: this.item.i('control').inputElement,
                 icon: this.props.iconSearch,
-                onInputLite: this.item.control.onInput,
-                inputAttrs: {
-                  'data-menu-control': '1'
-                }
+                onInputLite: this.item.i('control').onInput
               },
-              this.props.inputSearchAttrs
+              this.props.inputSearchAttrs ?? {},
+              {
+                inputAttrs: mergeProps(
+                  {
+                    'data-menu-control': '1'
+                  },
+                  (this.props.inputSearchAttrs?.inputAttrs as Record<string, unknown>) ?? {}
+                )
+              }
             )
-          )
+          ) ?? []
         )
       ]
     }
@@ -247,6 +272,7 @@ export class ListDesign<
    * Generates an element indicating that nothing was found.
    *
    * Генерирует элемент, указывающий на то, что ничего не найдено.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderNone = (): VNode[] => {
     if (this.props.filterMode) {
@@ -260,7 +286,7 @@ export class ListDesign<
           },
           h(
             'span',
-            this.item.text.notFound
+            this.item.i('text').notFound
           )
         )
       ]
@@ -273,14 +299,15 @@ export class ListDesign<
    * Generates a break between elements.
    *
    * Генерирует разрыв между элементами.
-   * @param item selected element/ выбранный элемент
+   * @param item selected element / выбранный элемент
+   * @returns space virtual node / виртуальный узел отступа
    */
   readonly renderSpace = (item: ListDataItem): VNode => {
     return h('div', {
       key: item.value,
       class: [
         this.classes?.value.space,
-        this.item.windowClasses.get().static
+        this.item.i('windowClasses').get().static
       ],
       ...AriaStaticInclude.role('separator')
     })
@@ -290,14 +317,15 @@ export class ListDesign<
    * Generates a dividing line.
    *
    * Генерирует линию разделения.
-   * @param item selected element/ выбранный элемент
+   * @param item selected element / выбранный элемент
+   * @returns line virtual node / виртуальный узел разделительной линии
    */
   readonly renderLine = (item: ListDataItem): VNode => {
     return h('div', {
       key: item.value,
       class: [
         this.classes?.value.line,
-        this.item.windowClasses.get().static
+        this.item.i('windowClasses').get().static
       ],
       ...AriaStaticInclude.role('separator')
     })
@@ -307,14 +335,15 @@ export class ListDesign<
    * Generates a subtitle.
    *
    * Генерирует подзаголовок.
-   * @param item selected element/ выбранный элемент
+   * @param item selected element / выбранный элемент
+   * @returns subtitle virtual node / виртуальный узел подзаголовка
    */
   readonly renderSubtitle = (item: ListDataItem): VNode => {
     return h('div', {
       key: item.value,
       class: [
         this.classes?.value.subtitle,
-        this.item.windowClasses.get().static
+        this.item.i('windowClasses').get().static
       ],
       ...AriaStaticInclude.role('separator')
     }, item.label)
@@ -324,14 +353,15 @@ export class ListDesign<
    * Generates HTML code by the slot name or the value of the `label` field.
    *
    * Генерирует HTML-код по названию слота или значению поля `label`.
-   * @param item selected element/ выбранный элемент
+   * @param item selected element / выбранный элемент
+   * @returns HTML virtual node / виртуальный узел HTML
    */
   readonly renderHtml = (item: ListDataItem): VNode => {
     const props = {
       key: item.label && isObject(item.value) ? item.label : item.value,
       class: [
         this.classes?.value.html,
-        this.item.windowClasses.get().static
+        this.item.i('windowClasses').get().static
       ]
     }
 
@@ -352,9 +382,10 @@ export class ListDesign<
    * Generates a group of lists.
    *
    * Генерирует группу списков.
-   * @param item selected element/ выбранный элемент
+   * @param item selected element / выбранный элемент
+   * @returns group virtual node or undefined / виртуальный узел группы или undefined
    */
-  readonly renderGroup = (item: ListDataItem): VNode => {
+  readonly renderGroup = (item: ListDataItem): VNode | undefined => {
     return this.components?.renderOne(
       'listGroup',
       {
@@ -366,17 +397,18 @@ export class ListDesign<
         head: (props: ListGroupSlotsPropsInclude) => this.renderItemGroup(item, props),
         list: () => this.renderDataByItem('group', this.item.getList(item))
       }
-    ) as VNode
+    )
   }
 
   /**
    * Generates a menu of lists.
    *
    * Генерирует меню списков.
-   * @param item selected element/ выбранный элемент
-   * @param first is the first element/ является ли первым элементом
+   * @param item selected element / выбранный элемент
+   * @param first is the first element / является ли первым элементом
+   * @returns menu virtual node or undefined / виртуальный узел меню или undefined
    */
-  readonly renderMenu = (item: ListDataItem, first: boolean): VNode => {
+  readonly renderMenu = (item: ListDataItem, first: boolean): VNode | undefined => {
     return this.components?.renderOne(
       'listMenu',
       {
@@ -388,16 +420,17 @@ export class ListDesign<
         head: (props: WindowControlItem) => this.renderItemMenu(item, props),
         list: () => this.renderDataByItem('menu', this.item.getList(item))
       }
-    ) as VNode
+    )
   }
 
   /**
    * Generates all elements from the list.
    *
    * Генерирует все элементы из списка.
-   * @param type type of list/ тип списка
-   * @param data selected element/ выбранный элемент
-   * @param first is the first element/ является ли первым элементом
+   * @param type type of list / тип списка
+   * @param data selected element / выбранный элемент
+   * @param first is the first element / является ли первым элементом
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   protected renderDataByItem(
     type: ListType,
@@ -422,17 +455,30 @@ export class ListDesign<
           break
         case 'group':
           if (this.isHighlight(item)) {
-            children.push(this.renderGroup(item))
+            const node = this.renderGroup(item)
+
+            if (node) {
+              children.push(node)
+            }
           }
           break
         case 'menu':
           if (this.isHighlight(item)) {
-            children.push(this.renderMenu(item, first))
+            const node = this.renderMenu(item, first)
+
+            if (node) {
+              children.push(node)
+            }
           }
           break
-        default:
-          children.push(this.renderItem(type, item))
+        default: {
+          const node = this.renderItem(type, item)
+
+          if (node) {
+            children.push(node)
+          }
           break
+        }
       }
     })
 
@@ -448,27 +494,29 @@ export class ListDesign<
    * Determines if highlighting is required.
    *
    * Определяет, требуется ли выделение.
-   * @param item selected element/ выбранный элемент
+   * @param item selected element / выбранный элемент
+   * @returns true if highlighting is required / true, если требуется выделение
    */
   protected isHighlight(item: ListDataItem): boolean {
     if (!this.props.filterMode) {
       return true
     }
 
-    return this.item.data.getSubList(item).isHighlightActive()
+    return this.item.i('data').getSubList(item).isHighlightActive()
   }
 
   /**
    * Returns binding properties for the item.
    *
    * Возвращает привязочные свойства для элемента.
-   * @param type type of list/ тип списка
-   * @param item selected element/ выбранный элемент
+   * @param type type of list / тип списка
+   * @param item selected element / выбранный элемент
+   * @returns binding properties / привязочные свойства
    */
   protected getItemAttrs(
     type: ListType,
     item: ListDataItem
-  ) {
+  ): ConstrBind<ListDataItem> {
     switch (type) {
       case 'group':
         return this.item.getItemGroup(item)
