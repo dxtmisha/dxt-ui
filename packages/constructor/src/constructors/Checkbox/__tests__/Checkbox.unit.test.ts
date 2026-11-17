@@ -159,6 +159,16 @@ describe('Checkbox (unit)', () => {
         'aria-describedby': 'desc-zero'
       })
     })
+
+    it('should treat numeric 0 valueVariant as active in FieldValueInclude', () => {
+      const { instance, stop } = createCheckbox({
+        valueVariant: 0,
+        modelValue: true
+      })
+      cleanups.push(stop)
+
+      expect(instance.i('value').itemByFull.value).toBe(0)
+    })
   })
 
   describe('Input event handling and dependency injection', () => {

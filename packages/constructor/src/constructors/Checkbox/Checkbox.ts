@@ -56,7 +56,7 @@ export type CheckboxConstructors = {
   /** Label constructor / Конструктор метки */
   label: typeof LabelInclude
   /** Field message constructor / Конструктор сообщения поля */
-  message: typeof FieldMessageInclude<any, any>
+  message: typeof FieldMessageInclude
   /** Model constructor / Конструктор модели */
   model: typeof ModelInclude<string | undefined>
   /** Progress constructor / Конструктор индикатора прогресса */
@@ -252,7 +252,7 @@ export class Checkbox extends DesignLogicAbstract<
         () => this.i('elementItem'),
         undefined,
         false,
-        Boolean(this.props.valueVariant)
+        this.props.valueVariant !== undefined
       ]
     }
   }
@@ -291,13 +291,8 @@ export class Checkbox extends DesignLogicAbstract<
     this.i('event')
     this.i('validation')
 
-    if (FieldFormInclude.is(this.props)) {
-      this.i('form')
-    }
-
-    if (CheckboxSelected.is(this.props)) {
-      this.i('selected')
-    }
+    this.callInstance('form', () => undefined)
+    this.callInstance('selected', () => undefined)
   }
 
   /**

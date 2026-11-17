@@ -6,7 +6,7 @@ import { CheckboxWikiStorybook } from './wiki'
 // :story-import [!] System label / Системная метка
 import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 import { ref } from 'vue'
-import { expect, userEvent } from 'storybook/test'
+import { expect, userEvent, waitFor } from 'storybook/test'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -79,14 +79,18 @@ export const CheckboxVModel: Story = {
     if (button) {
       await userEvent.click(button)
     }
-    await expect(input?.checked).toBe(true)
-    await expect(button).toHaveTextContent('Check true')
+    await waitFor(async () => {
+      await expect(input?.checked).toBe(true)
+      await expect(button).toHaveTextContent('Check true')
+    })
 
     if (input) {
       await userEvent.click(input)
     }
-    await expect(input?.checked).toBe(false)
-    await expect(button).toHaveTextContent('Check false')
+    await waitFor(async () => {
+      await expect(input?.checked).toBe(false)
+      await expect(button).toHaveTextContent('Check false')
+    })
   }
 }
 export const CheckboxSkeleton: Story = {
@@ -214,9 +218,11 @@ export const CheckboxTestSelected: Story = {
     await expect(card).toHaveTextContent('Selected: alpha')
 
     await userEvent.click(inputs[1])
-    await expect(inputs[0].checked).toBe(false)
-    await expect(inputs[1].checked).toBe(true)
-    await expect(card).toHaveTextContent('Selected: beta')
+    await waitFor(async () => {
+      await expect(inputs[0].checked).toBe(false)
+      await expect(inputs[1].checked).toBe(true)
+      await expect(card).toHaveTextContent('Selected: beta')
+    })
   }
 }
 export const CheckboxTestLayoutAndBoundaries: Story = {
@@ -252,6 +258,79 @@ export const CheckboxTestLayoutAndBoundaries: Story = {
     await expect(items[2]).toHaveTextContent('Validation failed')
 
     await expect(items[3].querySelector('strong')).toHaveTextContent('bold')
+  }
+}
+export const CheckboxTestCombinationsAndAttributes: Story = {
+  name: 'Тест: Комбинированные состояния, ARIA-атрибуты, adaptive и числовой valueVariant',
+  render: () => ({
+    components: { D1Checkbox },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <D1Checkbox
+            label="Disabled + Selected"
+            disabled
+            selected="yes"
+            valueVariant="yes"
+          />
+          <D1Checkbox
+            label="Readonly + Focus"
+            readonly
+            focus
+            :modelValue="true"
+          />
+          <D1Checkbox
+            label="Adaptive Right Always"
+            adaptive="rightAlways"
+            labelId="story-cb-label"
+            description="Accessible description"
+            descriptionId="story-cb-desc"
+            :tabindex="1"
+            :inputAttrs="{ 'data-custom': 'checkbox-input' }"
+          />
+          <D1Checkbox
+            label="Zero Variant"
+            :valueVariant="0"
+            :modelValue="true"
+            :iconCheckbox="null"
+          />
+          <D1Checkbox
+            label="Custom Indeterminate"
+            indeterminate
+            iconIndeterminate="close"
+            :modelValue="true"
+          />
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const items = canvasElement.querySelectorAll('.d1-checkbox')
+    await expect(items.length).toBe(5)
+
+    const disabledInput = items[0].querySelector<HTMLInputElement>('input[type="checkbox"]')
+    await expect(items[0]).toHaveClass('d1-checkbox--disabled')
+    await expect(disabledInput?.checked).toBe(true)
+    await expect(disabledInput?.disabled).toBe(true)
+
+    const readonlyInput = items[1].querySelector<HTMLInputElement>('input[type="checkbox"]')
+    await expect(items[1]).toHaveClass('d1-checkbox--focus')
+    await expect(readonlyInput).toHaveAttribute('aria-readonly', 'true')
+    await expect(readonlyInput?.checked).toBe(true)
+
+    const adaptiveInput = items[2].querySelector<HTMLInputElement>('input[type="checkbox"]')
+    await expect(items[2]).toHaveClass('d1-checkbox--adaptive--rightAlways')
+    await expect(items[2]).toHaveAttribute('aria-labelledby', 'story-cb-label')
+    await expect(items[2]).toHaveAttribute('aria-describedby', 'story-cb-desc')
+    await expect(adaptiveInput).toHaveAttribute('tabindex', '1')
+    await expect(adaptiveInput).toHaveAttribute('data-custom', 'checkbox-input')
+
+    const zeroInput = items[3].querySelector<HTMLInputElement>('input[type="checkbox"]')
+    await expect(zeroInput?.checked).toBe(true)
+    await expect(zeroInput?.value).toBe('0')
+
+    const indeterminateInput = items[4].querySelector<HTMLInputElement>('input[type="checkbox"]')
+    await expect(indeterminateInput?.checked).toBe(true)
   }
 }
 // :story-items [!] System label / Системная метка

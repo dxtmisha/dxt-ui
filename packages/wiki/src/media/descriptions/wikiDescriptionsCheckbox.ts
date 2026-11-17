@@ -80,14 +80,18 @@ await expect(input?.checked).toBe(false)
 if (button) {
   await userEvent.click(button)
 }
-await expect(input?.checked).toBe(true)
-await expect(button).toHaveTextContent('Check true')
+await waitFor(async () => {
+  await expect(input?.checked).toBe(true)
+  await expect(button).toHaveTextContent('Check true')
+})
 
 if (input) {
   await userEvent.click(input)
 }
-await expect(input?.checked).toBe(false)
-await expect(button).toHaveTextContent('Check false')
+await waitFor(async () => {
+  await expect(input?.checked).toBe(false)
+  await expect(button).toHaveTextContent('Check false')
+})
       `
     },
     {
@@ -216,9 +220,11 @@ await expect(hiddenInputs[0].value).toBe('none')
 await expect(card).toHaveTextContent('Selected: alpha')
 
 await userEvent.click(inputs[1])
-await expect(inputs[0].checked).toBe(false)
-await expect(inputs[1].checked).toBe(true)
-await expect(card).toHaveTextContent('Selected: beta')
+await waitFor(async () => {
+  await expect(inputs[0].checked).toBe(false)
+  await expect(inputs[1].checked).toBe(true)
+  await expect(card).toHaveTextContent('Selected: beta')
+})
       `
     },
     {
@@ -253,6 +259,78 @@ await expect(requiredInput).toHaveAttribute('aria-invalid', 'true')
 await expect(items[2]).toHaveTextContent('Validation failed')
 
 await expect(items[3].querySelector('strong')).toHaveTextContent('bold')
+      `
+    },
+    {
+      id: 'CheckboxTestCombinationsAndAttributes',
+      name: {
+        en: 'Test: Coupled states, ARIA attributes, adaptive and zero valueVariant',
+        ru: 'Тест: Комбинированные состояния, ARIA-атрибуты, adaptive и числовой valueVariant'
+      },
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            label="Disabled + Selected"
+            disabled
+            selected="yes"
+            valueVariant="yes"
+          />
+          <DesignComponent
+            label="Readonly + Focus"
+            readonly
+            focus
+            :modelValue="true"
+          />
+          <DesignComponent
+            label="Adaptive Right Always"
+            adaptive="rightAlways"
+            labelId="story-cb-label"
+            description="Accessible description"
+            descriptionId="story-cb-desc"
+            :tabindex="1"
+            :inputAttrs="{ 'data-custom': 'checkbox-input' }"
+          />
+          <DesignComponent
+            label="Zero Variant"
+            :valueVariant="0"
+            :modelValue="true"
+            :iconCheckbox="null"
+          />
+          <DesignComponent
+            label="Custom Indeterminate"
+            indeterminate
+            iconIndeterminate="close"
+            :modelValue="true"
+          />
+        </div>
+      `,
+      play: `
+const items = canvasElement.querySelectorAll('.design-component')
+await expect(items.length).toBe(5)
+
+const disabledInput = items[0].querySelector<HTMLInputElement>('input[type="checkbox"]')
+await expect(items[0]).toHaveClass('design-component--disabled')
+await expect(disabledInput?.checked).toBe(true)
+await expect(disabledInput?.disabled).toBe(true)
+
+const readonlyInput = items[1].querySelector<HTMLInputElement>('input[type="checkbox"]')
+await expect(items[1]).toHaveClass('design-component--focus')
+await expect(readonlyInput).toHaveAttribute('aria-readonly', 'true')
+await expect(readonlyInput?.checked).toBe(true)
+
+const adaptiveInput = items[2].querySelector<HTMLInputElement>('input[type="checkbox"]')
+await expect(items[2]).toHaveClass('design-component--adaptive--rightAlways')
+await expect(items[2]).toHaveAttribute('aria-labelledby', 'story-cb-label')
+await expect(items[2]).toHaveAttribute('aria-describedby', 'story-cb-desc')
+await expect(adaptiveInput).toHaveAttribute('tabindex', '1')
+await expect(adaptiveInput).toHaveAttribute('data-custom', 'checkbox-input')
+
+const zeroInput = items[3].querySelector<HTMLInputElement>('input[type="checkbox"]')
+await expect(zeroInput?.checked).toBe(true)
+await expect(zeroInput?.value).toBe('0')
+
+const indeterminateInput = items[4].querySelector<HTMLInputElement>('input[type="checkbox"]')
+await expect(indeterminateInput?.checked).toBe(true)
       `
     }
   ],

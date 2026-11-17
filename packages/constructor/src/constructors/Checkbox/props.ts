@@ -74,6 +74,8 @@ export type CheckboxProps = CheckboxPropsBasic & CheckboxPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsCheckbox = {
+  modelValue: undefined,
+  valueVariant: undefined,
   valueVariantHide: '0',
   ...{
     // :default [!] System label / Системная метка
