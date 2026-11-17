@@ -111,4 +111,42 @@ describe('WindowInclude', () => {
     expect(includeWithWindowAttrs.binds.value.disabled).toBe(true)
     expect(includeWithWindowAttrs.binds.value.autoClose).toBe(false)
   })
+
+  it('should support getter function props and compose onWindow handlers via mergeProps', () => {
+    const externalOnWindow = vi.fn()
+    const getterInclude = new WindowInclude(
+      () => ({
+        disabled: true,
+        windowAttrs: {
+          onWindow: externalOnWindow
+        }
+      }) as WindowPropsInclude,
+      new DesignName('d1.dialog'),
+      undefined,
+      undefined,
+      undefined,
+      mockEmits,
+      undefined,
+      undefined,
+      () => mockModel
+    )
+
+    const bindings = getterInclude.binds.value
+    const emitOptions = {
+      id: 'window-123',
+      element: document.createElement('div'),
+      control: document.createElement('button'),
+      open: true
+    }
+
+    expect(bindings.disabled).toBe(true)
+    expect(Array.isArray(bindings.onWindow)).toBe(true)
+
+    const handlers = bindings.onWindow as unknown as Array<(options: typeof emitOptions) => void>
+    handlers.forEach(handler => handler(emitOptions))
+
+    expect(externalOnWindow).toHaveBeenCalledWith(emitOptions)
+    expect(mockModel.emit).toHaveBeenCalledWith(true)
+    expect(mockEmits).toHaveBeenCalledWith('window', emitOptions)
+  })
 })

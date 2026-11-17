@@ -3,20 +3,20 @@
 import { ref, watch, type Ref, type WatchStopHandle } from 'vue'
 import { DesignLifecycleAbstract, frame, isDomRuntime } from '@dxtmisha/functional'
 
-import { TabIndexInclude } from '../../classes/TabIndexInclude'
+import type { TabIndexInclude } from '../../classes/TabIndexInclude'
 
-import { WindowStatus } from './WindowStatus'
-import { WindowClient } from './WindowClient'
-import { WindowHook } from './WindowHook'
+import type { WindowStatus } from './WindowStatus'
+import type { WindowClient } from './WindowClient'
+import type { WindowHook } from './WindowHook'
 
-import { WindowElement } from './WindowElement'
+import type { WindowElement } from './WindowElement'
 
-import { WindowFlash } from './WindowFlash'
-import { WindowCoordinates } from './WindowCoordinates'
-import { WindowPosition } from './WindowPosition'
-import { WindowOrigin } from './WindowOrigin'
-import { WindowEmit } from './WindowEmit'
-import { WindowStyles } from './WindowStyles'
+import type { WindowFlash } from './WindowFlash'
+import type { WindowCoordinates } from './WindowCoordinates'
+import type { WindowPosition } from './WindowPosition'
+import type { WindowOrigin } from './WindowOrigin'
+import type { WindowEmit } from './WindowEmit'
+import type { WindowStyles } from './WindowStyles'
 
 import { __WINDOW_TYPE_BODY_NAME } from './basicTypes'
 import type { WindowProps } from './props'
@@ -55,7 +55,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
   protected frameId?: number
 
   /** Sequence counter to cancel stale async transitions / Счётчик последовательности для отмены устаревших асинхронных переходов */
-  protected frameSeq: number = 0
+  protected frameSequence: number = 0
 
   /** Watcher handle for open prop / Дескриптор наблюдателя за свойством open */
   protected watchStop?: WatchStopHandle
@@ -218,7 +218,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
 
     if (await this.hook().before(toOpen)) {
       this.clearAsync()
-      const seq = this.frameSeq
+      const sequence = this.frameSequence
 
       if (toOpen) {
         this.reset()
@@ -226,24 +226,24 @@ export class WindowOpen extends DesignLifecycleAbstract {
 
         await this.setOpen(toOpen)
 
-        if (seq !== this.frameSeq || !this.isMounted.value) {
+        if (sequence !== this.frameSequence || !this.isMounted.value) {
           return
         }
 
         this.frameId = requestAnimationFrame(async () => {
           this.frameId = undefined
-          if (seq !== this.frameSeq || !this.isMounted.value) {
+          if (sequence !== this.frameSequence || !this.isMounted.value) {
             return
           }
 
           this.status().update()
           await this.hook().preparation()
-          if (seq !== this.frameSeq || !this.isMounted.value) {
+          if (sequence !== this.frameSequence || !this.isMounted.value) {
             return
           }
 
           await this.watchPosition()
-          if (seq !== this.frameSeq || !this.isMounted.value) {
+          if (sequence !== this.frameSequence || !this.isMounted.value) {
             return
           }
 
@@ -251,7 +251,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
 
           this.frameId = requestAnimationFrame(async () => {
             this.frameId = undefined
-            if (seq !== this.frameSeq || !this.isMounted.value) {
+            if (sequence !== this.frameSequence || !this.isMounted.value) {
               return
             }
 
@@ -260,7 +260,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
 
             this.frameId = requestAnimationFrame(async () => {
               this.frameId = undefined
-              if (seq !== this.frameSeq || !this.isMounted.value) {
+              if (sequence !== this.frameSequence || !this.isMounted.value) {
                 return
               }
 
@@ -272,7 +272,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
 
               this.frameId = requestAnimationFrame(() => {
                 this.frameId = undefined
-                if (seq !== this.frameSeq || !this.isMounted.value) {
+                if (sequence !== this.frameSequence || !this.isMounted.value) {
                   return
                 }
 
@@ -299,7 +299,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
         } else {
           this.frameId = requestAnimationFrame(() => {
             this.frameId = undefined
-            if (seq !== this.frameSeq || !this.isMounted.value) {
+            if (sequence !== this.frameSequence || !this.isMounted.value) {
               return
             }
 
@@ -437,7 +437,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
    * @returns this instance / текущий экземпляр класса
    */
   protected watchCoordinates(): this {
-    const seq = this.frameSeq
+    const sequence = this.frameSequence
 
     frame(
       () => {
@@ -455,7 +455,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
           this.styles().updateType(isMenu)
         }
       },
-      () => seq === this.frameSeq
+      () => sequence === this.frameSequence
         && this.isMounted.value
         && this.item.value
         && !this.status().isHide()
@@ -470,7 +470,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
    * Переход в состояние закрытия.
    */
   protected toClose(): void {
-    const seq = this.frameSeq
+    const sequence = this.frameSequence
 
     if (this.timeoutClose !== undefined) {
       clearTimeout(this.timeoutClose)
@@ -478,17 +478,17 @@ export class WindowOpen extends DesignLifecycleAbstract {
 
     this.timeoutClose = setTimeout(async () => {
       this.timeoutClose = undefined
-      if (seq !== this.frameSeq || !this.isMounted.value) {
+      if (sequence !== this.frameSequence || !this.isMounted.value) {
         return
       }
 
       await this.setOpen(false)
-      if (seq !== this.frameSeq || !this.isMounted.value) {
+      if (sequence !== this.frameSequence || !this.isMounted.value) {
         return
       }
 
       await this.hook().closing()
-      if (seq !== this.frameSeq || !this.isMounted.value) {
+      if (sequence !== this.frameSequence || !this.isMounted.value) {
         return
       }
 
@@ -532,7 +532,7 @@ export class WindowOpen extends DesignLifecycleAbstract {
    * Отменяет ожидающие кадры анимации, таймеры и интервал проверки DOM.
    */
   protected clearAsync(): void {
-    this.frameSeq++
+    this.frameSequence++
     this.clearTimer()
 
     if (this.timeoutClose !== undefined) {

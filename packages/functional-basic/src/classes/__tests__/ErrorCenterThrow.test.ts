@@ -19,20 +19,19 @@ describe('ErrorCenterThrow', () => {
     vi.restoreAllMocks()
   })
 
-  it('should use static ErrorCenter.getItem() by default', () => {
-    const errorThrow = new ErrorCenterThrow()
+  it('should use custom ErrorCenterInstance without triggering static ErrorCenter', () => {
+    const staticCallback = vi.fn()
+    const customCallback = vi.fn()
+    ErrorCenter.addCallback(staticCallback)
 
-    expect(errorThrow.getErrorCenter()).toBe(ErrorCenter.getItem())
-  })
+    const customInstance = new ErrorCenterInstance([], new ErrorCenterHandler([], false))
+    customInstance.addCallback(customCallback)
 
-  it('should accept and override a custom ErrorCenterInstance', () => {
-    const firstInstance = new ErrorCenterInstance([], new ErrorCenterHandler([], false))
-    const secondInstance = new ErrorCenterInstance([], new ErrorCenterHandler([], false))
-    const errorThrow = new ErrorCenterThrow(firstInstance)
+    const errorThrow = new ErrorCenterThrow(customInstance)
 
-    expect(errorThrow.getErrorCenter()).toBe(firstInstance)
-    expect(errorThrow.setErrorCenter(secondInstance)).toBe(errorThrow)
-    expect(errorThrow.getErrorCenter()).toBe(secondInstance)
+    expect(() => errorThrow.on({ group: 'custom', code: 'CUSTOM_ERR' })).toThrow(ErrorCenterError)
+    expect(customCallback).toHaveBeenCalledExactlyOnceWith({ group: 'custom', code: 'CUSTOM_ERR' })
+    expect(staticCallback).not.toHaveBeenCalled()
   })
 
   it('should trigger ErrorCenter.on() and throw ErrorCenterError with resolved cause', () => {
@@ -157,21 +156,25 @@ describe('ErrorCenterThrow', () => {
     }
   })
 
-  it('should resolve active SSR ErrorCenterInstance dynamically', () => {
+  it('should bind to the active SSR ErrorCenterInstance upon instantiation and isolate requests', () => {
     vi.stubGlobal('window', undefined)
     let context: Record<string, unknown> = {}
     ServerStorage.init(() => context)
 
-    const errorThrow = new ErrorCenterThrow()
+    const firstErrorThrow = new ErrorCenterThrow()
     const firstCallback = vi.fn()
     ErrorCenter.addCallback(firstCallback)
 
     context = {}
+    const secondErrorThrow = new ErrorCenterThrow()
     const secondCallback = vi.fn()
     ErrorCenter.addCallback(secondCallback)
 
-    expect(() => errorThrow.on({ code: 'SSR_ERROR' })).toThrow(ErrorCenterError)
+    expect(() => secondErrorThrow.on({ code: 'SSR_ERROR' })).toThrow(ErrorCenterError)
     expect(secondCallback).toHaveBeenCalledTimes(1)
     expect(firstCallback).not.toHaveBeenCalled()
+
+    expect(() => firstErrorThrow.on({ code: 'FIRST_ERROR' })).toThrow(ErrorCenterError)
+    expect(firstCallback).toHaveBeenCalledTimes(1)
   })
 })

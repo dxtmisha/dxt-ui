@@ -193,4 +193,16 @@ describe('ErrorCenter', () => {
     ErrorCenter.remove('STATIC_CAUSE', 'TEMP_G')
     expect(ErrorCenter.has('STATIC_CAUSE', 'TEMP_G')).toBe(false)
   })
+
+  it('should merge cause with stored metadata via static assign()', () => {
+    ErrorCenter.add({ code: 'STATIC_ASSIGN', group: 'G_ASSIGN', label: 'Static Label', message: 'Static Message' })
+
+    expect(ErrorCenter.assign({ code: 'STATIC_ASSIGN', group: 'G_ASSIGN', details: { ok: true } })).toEqual({
+      code: 'STATIC_ASSIGN',
+      group: 'G_ASSIGN',
+      label: 'Static Label',
+      message: 'Static Message',
+      details: { ok: true }
+    })
+  })
 })

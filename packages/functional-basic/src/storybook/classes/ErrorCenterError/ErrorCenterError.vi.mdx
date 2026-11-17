@@ -1,0 +1,71 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ErrorCenterError - Đối tượng lỗi'/>
+
+# Lớp ErrorCenterError
+
+`ErrorCenterError<D = unknown>` là **lớp con tùy chỉnh của `Error`** được thiết kế để xử lý lỗi chặt chẽ với TypeScript cùng với `ErrorCenter`. Lớp đóng gói dữ liệu có cấu trúc `ErrorCenterCauseItem<D>`, giúp mã gọi trong khối `try / catch` dễ dàng thu hẹp kiểu bằng `instanceof` và truy xuất an toàn các siêu dữ liệu (`group`, `code`, `label`, `message`, `details`).
+
+## Các tính năng chính
+
+- **Kiểu dữ liệu TypeScript chặt chẽ** — tham số hóa `details` qua generic `<D = unknown>` mà không dùng `any` hay ép kiểu thiếu an toàn.
+- **Hỗ trợ `Error` gốc và `cause` ES2022** — kế thừa `Error`, đặt `name = 'ErrorCenterError'`, xác định `message` (`causeItem.message ?? causeItem.code`) và gán `error.cause` (mặc định là `causeItem` hoặc giá trị từ `ErrorOptions`).
+- **Toàn vẹn chuỗi prototype** — gọi `Object.setPrototypeOf(this, new.target.prototype)` để `instanceof` hoạt động tin cậy ngay cả khi kế thừa thêm hoặc biên dịch lại.
+- **Đóng gói dữ liệu** — chỉ lưu trữ `causeItem` bên trong và cung cấp các phương thức truy xuất có kiểu cho từng trường.
+
+## Khởi tạo
+
+Để tạo đối tượng lỗi, truyền `ErrorCenterCauseItem<D>` và `ErrorOptions` (tùy chọn) vào constructor `new ErrorCenterError(causeItem, options)`.
+
+**Tham số:**
+- `causeItem: ErrorCenterCauseItem<D>` — dữ liệu nguyên nhân lỗi có cấu trúc (`group`, `code`, `label`, `message`, `details`).
+- `options?: ErrorOptions` — các tùy chọn chuẩn của `Error` (ví dụ `{ cause: originalError }`).
+
+```typescript
+import { ErrorCenterError } from '@dxtmisha/functional-basic'
+
+throw new ErrorCenterError<{ userId: number }>({
+  group: 'api',
+  code: 'notFound',
+  label: 'Không tìm thấy tài nguyên',
+  message: 'Người dùng không tồn tại',
+  details: { userId: 42 }
+})
+```
+
+## Các phương thức
+
+### Phương thức truy xuất
+- `getCauseItem(): ErrorCenterCauseItem<D>` — Trả về toàn bộ đối tượng nguyên nhân lỗi có cấu trúc.
+- `getCode(): string` — Trả về mã lỗi.
+- `getDetails(): D | undefined` — Trả về dữ liệu chi tiết bổ sung đã được định kiểu.
+- `getGroup(): ErrorCenterGroup` — Trả về định danh nhóm lỗi.
+- `getLabel(): string | undefined` — Trả về nhãn tiêu đề của lỗi.
+- `getMessage(): string | undefined` — Trả về thông báo lỗi gốc từ `causeItem`.
+
+## Các kiểu dữ liệu
+
+### ErrorCenterCauseItem&lt;D&gt;
+- `group?: ErrorCenterGroup` — định danh nhóm lỗi (ví dụ `'api'`, `'auth'`).
+- `code: string` — mã lỗi duy nhất trong nhóm.
+- `priority?: number` — mức độ ưu tiên hợp nhất (mặc định `500`).
+- `label?: string` — tiêu đề ngắn của lỗi.
+- `message?: string` — thông báo mô tả lỗi.
+- `details?: D` — dữ liệu bổ sung có kiểu chặt chẽ.
+
+## Ví dụ
+
+### Bắt lỗi và thu hẹp kiểu bằng `instanceof`
+```typescript
+import { ErrorCenterError } from '@dxtmisha/functional-basic'
+
+try {
+  // Thao tác ném ra ErrorCenterError
+} catch (error) {
+  if (error instanceof ErrorCenterError) {
+    console.log(error.getGroup())
+    console.log(error.getCode())
+    console.log(error.getDetails())
+  }
+}
+```

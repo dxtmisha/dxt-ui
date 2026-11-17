@@ -19,30 +19,8 @@ export class ErrorCenterThrow {
    * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
    */
   constructor(
-    protected errorCenter?: ErrorCenterInstance
+    protected errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {}
-
-  /**
-   * Returns the ErrorCenter instance used for error dispatching.
-   *
-   * Возвращает экземпляр ErrorCenter, используемый для отправки ошибок.
-   * @returns ErrorCenter instance / Экземпляр ErrorCenter
-   */
-  getErrorCenter(): ErrorCenterInstance {
-    return this.errorCenter ?? ErrorCenter.getItem()
-  }
-
-  /**
-   * Sets or overrides the ErrorCenter instance used for error dispatching.
-   *
-   * Устанавливает или заменяет экземпляр ErrorCenter, используемый для отправки ошибок.
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
-   * @returns this instance / текущий экземпляр
-   */
-  setErrorCenter(errorCenter: ErrorCenterInstance): this {
-    this.errorCenter = errorCenter
-    return this
-  }
 
   /**
    * Triggers error handling in ErrorCenter for a group and throws an ErrorCenterError.
@@ -56,44 +34,11 @@ export class ErrorCenterThrow {
     cause: ErrorCenterCauseItem<D>,
     options?: ErrorOptions
   ): never {
-    const errorCenter = this.getErrorCenter()
-
-    errorCenter.on(cause)
+    this.errorCenter.on(cause)
 
     throw new ErrorCenterError<D>(
-      this.resolveCause(errorCenter, cause),
+      this.errorCenter.assign(cause),
       options
     )
-  }
-
-  /**
-   * Merges provided cause with stored cause data from ErrorCenter respecting priority.
-   *
-   * Объединяет переданную причину с сохранёнными данными причины из ErrorCenter с учётом приоритета.
-   * @param errorCenter active ErrorCenter instance / активный экземпляр ErrorCenter
-   * @param cause input cause / входная причина
-   * @returns merged error cause / объединённая причина ошибки
-   */
-  protected resolveCause<D>(
-    errorCenter: ErrorCenterInstance,
-    cause: ErrorCenterCauseItem<D>
-  ): ErrorCenterCauseItem<D> {
-    const causeMain = errorCenter.get(cause.code, cause.group) as ErrorCenterCauseItem<D> | undefined
-
-    if (causeMain) {
-      if ((causeMain.priority ?? 500) > (cause.priority ?? 500)) {
-        return {
-          ...cause,
-          ...causeMain
-        }
-      }
-
-      return {
-        ...causeMain,
-        ...cause
-      }
-    }
-
-    return cause
   }
 }

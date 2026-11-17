@@ -1,5 +1,6 @@
 // ai-none
 
+import { mergeProps } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
@@ -11,7 +12,11 @@ import {
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { ModelInclude } from '../../classes/ModelInclude'
 
-import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
+import type {
+  ComponentIncludeExposeItem,
+  ComponentIncludeExtra,
+  ComponentIncludeProps
+} from '../../types/componentInclude'
 import type {
   WindowComponentInclude,
   WindowEmitOptions,
@@ -38,7 +43,7 @@ export class WindowInclude<
     WindowExposeInclude,
     WindowSlots
   > {
-  protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
+  protected override readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
     { name: 'getId' },
     { name: 'getOpen', type: 'boolean' },
     { name: 'getControl' },
@@ -49,8 +54,8 @@ export class WindowInclude<
     { name: 'toggle' }
   ]
 
-  protected name = 'window'
-  protected propsAttrsName = 'windowAttrs'
+  protected override readonly name = 'window'
+  protected override readonly propsAttrsName = 'windowAttrs'
 
   /**
    * Constructor
@@ -65,7 +70,7 @@ export class WindowInclude<
    * @param model model include getter / геттер экземпляра для управления состоянием открытия модального окна
    */
   constructor(
-    props: Readonly<Props>,
+    props: ComponentIncludeProps<Props>,
     naming: DesignName,
     components?: DesignComponents<WindowComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
@@ -106,6 +111,17 @@ export class WindowInclude<
     this.getExtra()?.closing?.() ?? this.getProps().windowAttrs?.closing?.() ?? true
 
   /**
+   * Emits 'window' event upward.
+   *
+   * Поднимает событие 'window' наверх.
+   * @param options event payload / параметры события
+   */
+  protected readonly onWindow = (options: WindowEmitOptions): void => {
+    this.model?.().emit(options.open)
+    this.emits?.('window', options)
+  }
+
+  /**
    * Combines input attributes with internal component bindings.
    *
    * Объединяет входные атрибуты со внутренними привязками компонента.
@@ -115,21 +131,22 @@ export class WindowInclude<
     const props = this.getProps()
     const binds = super.toBinds()
 
-    return {
-      ...binds,
+    return mergeProps(
+      binds,
+      {
+        ...(props.disabled !== undefined ? { disabled: props.disabled } : {}),
+        ...(props.autoClose !== undefined ? { autoClose: props.autoClose } : {}),
 
-      ...(props.disabled !== undefined ? { disabled: props.disabled } : {}),
-      ...(props.autoClose !== undefined ? { autoClose: props.autoClose } : {}),
+        preparation: this.getPreparation,
+        opening: this.getOpening,
+        closing: this.getClosing,
 
-      preparation: this.getPreparation,
-      opening: this.getOpening,
-      closing: this.getClosing,
+        ariaLabelledby: this.ariaLabelledby,
+        ariaDescribedby: this.ariaDescribedby,
 
-      ariaLabelledby: this.ariaLabelledby,
-      ariaDescribedby: this.ariaDescribedby,
-
-      onWindow: this.onWindow
-    } as Partial<ConstrBind<PropsExtra>>
+        onWindow: this.onWindow
+      }
+    ) as Partial<ConstrBind<PropsExtra>>
   }
 
   /**
@@ -143,16 +160,5 @@ export class WindowInclude<
       ...super.toExpose(),
       getWindowElement: () => this.element.value
     }
-  }
-
-  /**
-   * Emits 'window' event upward.
-   *
-   * Поднимает событие 'window' наверх.
-   * @param options event payload / параметры события
-   */
-  protected readonly onWindow = (options: WindowEmitOptions): void => {
-    this.model?.().emit(options.open)
-    this.emits?.('window', options)
   }
 }

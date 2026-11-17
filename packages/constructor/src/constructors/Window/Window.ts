@@ -324,7 +324,7 @@ export class Window extends DesignLogicAbstract<
    * @param constructors object with classes / объект с классами
    */
   constructor(
-    props: WindowPropsBasic,
+    props: Readonly<WindowPropsBasic>,
     element: Ref<HTMLDivElement | undefined>,
     naming: DesignName,
     components?: DesignComp<WindowComponents, WindowPropsBasic>,

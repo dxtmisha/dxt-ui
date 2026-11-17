@@ -218,25 +218,13 @@ export class ErrorCenterInstance {
   }
 
   /**
-   * Triggers error handling for a group.
-   *
-   * Вызывает обработку ошибки для группы.
-   * @param cause error cause details / детали причины ошибки
-   * @returns this instance / текущий экземпляр
-   */
-  on(cause: ErrorCenterCauseItem): this {
-    this.handler.on(this.assign(cause))
-    return this
-  }
-
-  /**
    * Merges provided cause with stored cause data.
    *
    * Объединяет предоставленную причину с сохраненными данными причины.
    * @param cause input cause / входная причина
    * @returns merged error cause / объединенная причина ошибки
    */
-  protected assign(cause: ErrorCenterCauseItem): ErrorCenterCauseItem {
+  assign<D = unknown>(cause: ErrorCenterCauseItem<D>): ErrorCenterCauseItem<D> {
     const causeMain = this.get(cause.code, cause.group)
 
     if (causeMain) {
@@ -254,5 +242,17 @@ export class ErrorCenterInstance {
     }
 
     return cause
+  }
+
+  /**
+   * Triggers error handling for a group.
+   *
+   * Вызывает обработку ошибки для группы.
+   * @param cause error cause details / детали причины ошибки
+   * @returns this instance / текущий экземпляр
+   */
+  on(cause: ErrorCenterCauseItem): this {
+    this.handler.on(this.assign(cause))
+    return this
   }
 }

@@ -1,0 +1,71 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/ErrorCenterError - Объект ошибки'/>
+
+# Класс ErrorCenterError
+
+`ErrorCenterError<D = unknown>` — это **пользовательский подкласс `Error`**, предназначенный для строго типизированной обработки ошибок совместно с `ErrorCenter`. Он инкапсулирует структурированный объект `ErrorCenterCauseItem<D>`, позволяя вызывающему коду в блоке `try / catch` выполнять сужение типа через `instanceof` и безопасно получать метаданные ошибки (`group`, `code`, `label`, `message`, `details`).
+
+## Ключевые особенности
+
+- **Строгая типизация TypeScript** — параметризует поле `details` через дженерик `<D = unknown>` без использования `any` и небезопасных приведений типов.
+- **Поддержка нативного `Error` и ES2022 `cause`** — наследует `Error`, устанавливает `name = 'ErrorCenterError'`, формирует `message` (`causeItem.message ?? causeItem.code`) и заполняет `error.cause` (по умолчанию `causeItem`, либо переданным значением из `ErrorOptions`).
+- **Целостность цепочки прототипов** — вызывает `Object.setPrototypeOf(this, new.target.prototype)`, гарантируя корректную работу `instanceof` при дальнейшем наследовании и транспиляции.
+- **Инкапсуляция данных** — хранит только исходный `causeItem` и предоставляет типизированные методы получения каждого поля.
+
+## Инициализация
+
+Для создания экземпляра передайте в конструктор `new ErrorCenterError(causeItem, options)` объект причины ошибки и опциональные параметры `ErrorOptions`.
+
+**Параметры:**
+- `causeItem: ErrorCenterCauseItem<D>` — структурированные данные причины ошибки (`group`, `code`, `label`, `message`, `details`).
+- `options?: ErrorOptions` — стандартные опции `Error` (например, `{ cause: originalError }`).
+
+```typescript
+import { ErrorCenterError } from '@dxtmisha/functional-basic'
+
+throw new ErrorCenterError<{ userId: number }>({
+  group: 'api',
+  code: 'notFound',
+  label: 'Ресурс не найден',
+  message: 'Пользователь не существует',
+  details: { userId: 42 }
+})
+```
+
+## Методы
+
+### Методы доступа
+- `getCauseItem(): ErrorCenterCauseItem<D>` — Возвращает полный структурированный объект причины ошибки.
+- `getCode(): string` — Возвращает код ошибки.
+- `getDetails(): D | undefined` — Возвращает типизированные дополнительные детали ошибки.
+- `getGroup(): ErrorCenterGroup` — Возвращает идентификатор группы ошибки.
+- `getLabel(): string | undefined` — Возвращает название ошибки.
+- `getMessage(): string | undefined` — Возвращает сообщение об ошибке из `causeItem`.
+
+## Типы
+
+### ErrorCenterCauseItem&lt;D&gt;
+- `group?: ErrorCenterGroup` — идентификатор группы ошибки (например, `'api'`, `'auth'`).
+- `code: string` — уникальный код ошибки внутри группы.
+- `priority?: number` — приоритет слияния (по умолчанию `500`).
+- `label?: string` — краткий заголовок ошибки.
+- `message?: string` — подробное сообщение об ошибке.
+- `details?: D` — типизированные дополнительные данные.
+
+## Примеры
+
+### Перехват и сужение типа через `instanceof`
+```typescript
+import { ErrorCenterError } from '@dxtmisha/functional-basic'
+
+try {
+  // Операция, выбрасывающая ErrorCenterError
+} catch (error) {
+  if (error instanceof ErrorCenterError) {
+    console.log(error.getGroup())
+    console.log(error.getCode())
+    console.log(error.getDetails())
+  }
+}
+```

@@ -190,6 +190,19 @@ export class ErrorCenter {
   }
 
   /**
+   * Merges provided cause with stored cause data.
+   *
+   * Объединяет предоставленную причину с сохранёнными данными причины.
+   * @param cause input cause / входная причина
+   * @returns merged error cause / объединённая причина ошибки
+   */
+  static assign<D = unknown>(
+    cause: ErrorCenterCauseItem<D>
+  ): ErrorCenterCauseItem<D> {
+    return this.getItem().assign(cause)
+  }
+
+  /**
    * Triggers error handling for a group.
    *
    * Вызывает обработку ошибки для группы.

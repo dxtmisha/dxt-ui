@@ -207,4 +207,16 @@ describe('ErrorCenterInstance', () => {
     expect(instance.remove('DYNAMIC_CAUSE', 'DYN')).toBe(instance)
     expect(instance.has('DYNAMIC_CAUSE', 'DYN')).toBe(false)
   })
+
+  it('should merge cause with stored metadata via public assign()', () => {
+    instance.add({ code: 'ASSIGN_ERR', group: 'G1', label: 'Stored', message: 'Stored Msg' })
+
+    expect(instance.assign({ code: 'ASSIGN_ERR', group: 'G1', details: { id: 1 } })).toEqual({
+      code: 'ASSIGN_ERR',
+      group: 'G1',
+      label: 'Stored',
+      message: 'Stored Msg',
+      details: { id: 1 }
+    })
+  })
 })

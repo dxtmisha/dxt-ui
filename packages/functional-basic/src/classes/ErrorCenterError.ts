@@ -21,7 +21,7 @@ export class ErrorCenterError<D = unknown> extends Error {
   ) {
     super(
       causeItem.message ?? causeItem.code,
-      options ?? { cause: causeItem }
+      { cause: causeItem, ...options }
     )
 
     this.name = 'ErrorCenterError'

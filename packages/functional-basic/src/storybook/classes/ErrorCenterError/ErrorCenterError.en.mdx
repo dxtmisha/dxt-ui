@@ -1,0 +1,71 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ErrorCenterError - Error Object'/>
+
+# ErrorCenterError Class
+
+`ErrorCenterError<D = unknown>` is a **custom `Error` subclass** designed for strict TypeScript error handling with `ErrorCenter`. It encapsulates a structured `ErrorCenterCauseItem<D>` payload so callers catching the exception via `try / catch` can safely narrow the error using `instanceof` and read typed metadata (`group`, `code`, `label`, `message`, `details`).
+
+## Key Features
+
+- **Strict TypeScript Typing** — parameterizes `details` via generic `<D = unknown>` without `any` or unsafe type assertions.
+- **Native `Error` & ES2022 `cause` Support** — extends `Error`, sets `name = 'ErrorCenterError'`, resolves `message` (`causeItem.message ?? causeItem.code`), and populates `error.cause` (`causeItem` by default or custom `ErrorOptions`).
+- **Prototype Chain Integrity** — invokes `Object.setPrototypeOf(this, new.target.prototype)` so `instanceof` works reliably across subclasses and transpiled targets.
+- **Encapsulated Data Access** — stores `causeItem` internally and exposes typed getters for every field.
+
+## Initialization
+
+To create an error object directly, pass `ErrorCenterCauseItem<D>` and optional `ErrorOptions` to the constructor `new ErrorCenterError(causeItem, options)`.
+
+**Parameters:**
+- `causeItem: ErrorCenterCauseItem<D>` — structured error cause data (`group`, `code`, `label`, `message`, `details`).
+- `options?: ErrorOptions` — standard `Error` options (such as `{ cause: originalError }`).
+
+```typescript
+import { ErrorCenterError } from '@dxtmisha/functional-basic'
+
+throw new ErrorCenterError<{ userId: number }>({
+  group: 'api',
+  code: 'notFound',
+  label: 'Resource Not Found',
+  message: 'User does not exist',
+  details: { userId: 42 }
+})
+```
+
+## Methods
+
+### Accessors
+- `getCauseItem(): ErrorCenterCauseItem<D>` — Returns the full structured cause item.
+- `getCode(): string` — Returns the error code.
+- `getDetails(): D | undefined` — Returns the typed additional error details payload.
+- `getGroup(): ErrorCenterGroup` — Returns the error group identifier.
+- `getLabel(): string | undefined` — Returns the error label.
+- `getMessage(): string | undefined` — Returns the original error message from `causeItem`.
+
+## Types
+
+### ErrorCenterCauseItem&lt;D&gt;
+- `group?: ErrorCenterGroup` — error group identifier (e.g., `'api'`, `'auth'`).
+- `code: string` — unique error code within the group.
+- `priority?: number` — merge priority (default `500`).
+- `label?: string` — short human-readable title.
+- `message?: string` — descriptive error message.
+- `details?: D` — strongly typed raw error payload.
+
+## Examples
+
+### Catching and Narrowing with `instanceof`
+```typescript
+import { ErrorCenterError } from '@dxtmisha/functional-basic'
+
+try {
+  // Operation that throws ErrorCenterError
+} catch (error) {
+  if (error instanceof ErrorCenterError) {
+    console.log(error.getGroup())
+    console.log(error.getCode())
+    console.log(error.getDetails())
+  }
+}
+```

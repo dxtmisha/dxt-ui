@@ -203,3 +203,4 @@ toPercent
 toPercentBy100
 uint8ArrayToBase64
 writeClipboardData
+ErrorCenterError

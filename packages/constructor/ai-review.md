@@ -57,7 +57,6 @@ src/constructors/Window/WindowStatus.ts
 src/constructors/Window/WindowStyles.ts
 src/constructors/Window/WindowVerification.ts
 src/constructors/Window/WindowDesign.tsx
-src/constructors/Window/WindowInclude.ts
 src/constructors/Accordion/AccordionHead.ts
 src/constructors/Accordion/Accordion.ts
 src/constructors/Accordion/AccordionDesign.tsx
@@ -92,8 +91,6 @@ src/constructors/Icon/IconTrailingInclude.ts
 src/constructors/Progress/Progress.ts
 src/constructors/Progress/ProgressDesign.tsx
 src/constructors/Progress/ProgressInclude.ts
-src/constructors/Window/WindowOpen.ts
-src/constructors/Window/Window.ts
 src/constructors/FieldCounter/FieldCounter.ts
 src/constructors/FieldCounter/FieldCounterDesign.tsx
 src/constructors/FieldCounter/FieldCounterInclude.ts
@@ -187,3 +184,6 @@ src/classes/PrefixInclude.ts
 src/classes/SuffixInclude.ts
 src/constructors/ListItem/ListItem.ts
 src/constructors/ListItem/ListItemDesign.tsx
+src/constructors/Window/WindowOpen.ts
+src/constructors/Window/WindowInclude.ts
+src/constructors/Window/Window.ts
