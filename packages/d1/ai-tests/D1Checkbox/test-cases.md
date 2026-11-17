@@ -4,7 +4,7 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Checkbox` (конструктор: `packages/constructor/src/constructors/Checkbox`)
 - **Целевой URL**: `http://localhost:3000/component-checkbox`
 - **Справочные материалы**: `Нет`
-- **Последняя проверка / обновление**: `2026-11-16`
+- **Последняя проверка / обновление**: `2026-11-17`
 - **Всего тест-кейсов**: `16`
 
 ---

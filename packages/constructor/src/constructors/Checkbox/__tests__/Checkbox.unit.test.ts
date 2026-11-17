@@ -169,6 +169,22 @@ describe('Checkbox (unit)', () => {
 
       expect(instance.i('value').itemByFull.value).toBe(0)
     })
+
+    it('should reactively track valueVariant transitions between undefined and defined values', () => {
+      const { instance, props, stop } = createCheckbox({
+        valueVariant: undefined,
+        modelValue: true
+      })
+      cleanups.push(stop)
+
+      expect(instance.i('value').itemByFull.value).toBe(true)
+
+      props.valueVariant = 'opt-a'
+      expect(instance.i('value').itemByFull.value).toBe('opt-a')
+
+      props.valueVariant = undefined
+      expect(instance.i('value').itemByFull.value).toBe(true)
+    })
   })
 
   describe('Input event handling and dependency injection', () => {

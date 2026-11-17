@@ -6,7 +6,7 @@
 - **Исходный код:** [`D1Checkbox`](../../src/components/Ui/Checkbox) ([`Checkbox`](../../../constructor/src/constructors/Checkbox))
 - **Демо / Целевой URL:** `http://localhost:3000/component-checkbox`
 - **Материалы:** `Нет`
-- **Дата тестирования (UTC):** `2026-11-16T16:34:45Z`
+- **Дата тестирования (UTC):** `2026-11-17T00:35:50Z`
 - **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
 - **Покрытие тест-кейсов:** 16 / 16 (`100%`)
 - **Сводка:** **16 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — `D1Checkbox` корректно отображает все состояния (`checked`, `indeterminate`, `disabled`, `readonly`, `focus`, `loading`, `isSkeleton`), палитры, кастомные иконки, слоты, адаптивность и ARIA-атрибуты при `0` ошибках и предупреждениях консоли.
@@ -19,10 +19,10 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовые состояния, обязательность (`required`), описание и сообщения (`helperMessage`, `validationMessage`) | ✅ | Проверено `39` экземпляров `D1Checkbox`; `.d1-checkbox--required` отображает `*`, `validationMessage` выводит ошибку и `aria-invalid="true"`, `Indeterminate checked` показывает `-`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
-| `TC-VIS-002` | Макет и адаптивные модификаторы (`block`, `itemCenter`, `container`, `adaptive`) | ✅ | `block` имеет `display: flex`; `adaptive="rightAlways"` выставляет `order: 4` у `.d1-checkbox__item`; `DemoBox container` корректно изолирует контейнерные запросы. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
-| `TC-VIS-003` | Состояния `disabled`, `readonly`, `focus`, `loading` и `isSkeleton` | ✅ | Присутствуют `.d1-checkbox--disabled`, `.d1-checkbox--focus`, `.d1-progress` при `loading` (`boolean` и объект `{ visible: true, circular: true }`), а также `.d1-skeleton__text` при `isSkeleton`. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
-| `TC-VIS-004` | Палитры (`palette`), кастомные иконки (`iconCheckbox`, `iconIndeterminate`, `null`) и слоты (`#default`, `#description`) | ✅ | Применяется `.d1-palette--red`/`green`/`blue`; иконка объектом `{ value: 'verified' }` отображается корректно; слоты `#default` (`<strong>`) и `#description` (`<em>`) рендерятся. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
+| `TC-VIS-001` | Базовые состояния, обязательность (`required`), описание и сообщения (`helperMessage`, `validationMessage`) | ✅ | Проверено `39` экземпляров `D1Checkbox`; `.d1-checkbox--required` отображает `*` (`::after`), `validationMessage` выводит `"Error: This field is required"` и `aria-invalid="true"`, `Indeterminate checked` показывает `-`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | Макет и адаптивные модификаторы (`block`, `itemCenter`, `container`, `adaptive`) | ✅ | `block` имеет `display: flex` (`width: 1280px`); `adaptive="rightAlways"` выставляет `order: 4` у `.d1-checkbox__item` и `order: 2` у `.d1-checkbox__info`; `DemoBox container` содержит `.d1-checkbox--container--rightSm`. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-003` | Состояния `disabled`, `readonly`, `focus`, `loading` и `isSkeleton` | ✅ | Присутствуют `.d1-checkbox--disabled` (`2`), `.d1-checkbox--focus` (`1`), `.d1-progress` (`2`) при `loading` (`boolean` и `{ visible: true, circular: true }`), а также `.d1-skeleton__text` (`3`) и `.d1-skeleton__background` (`2`) при `isSkeleton`. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
+| `TC-VIS-004` | Палитры (`palette`), кастомные иконки (`iconCheckbox`, `iconIndeterminate`, `null`) и слоты (`#default`, `#description`) | ✅ | Применяются `.d1-palette--red`/`green`/`blue`; 4 иконки в группе `Icons` (включая объект `{ value: 'verified' }` и `null`); слоты `#default` (`<strong>Custom Label Slot</strong>`) и `#description` (`<em>Custom Description Slot</em>`) рендерятся. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
 
 ### 2.2 Интерактивность и управление состоянием (`INT`)
 
@@ -52,7 +52,7 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-A11Y-001` | Семантика HTML и WAI-ARIA атрибуты | ✅ | `aria-labelledby` и `aria-describedby` указывают на существующие элементы (`lblIdExists: true`, `descIdExists: true`); `.d1-checkbox__item` скрыт (`aria-hidden="true"`); ошибка помечена `aria-invalid="true"`. | — |
+| `TC-A11Y-001` | Семантика HTML и WAI-ARIA атрибуты | ✅ | `aria-labelledby="ui-10016"` и `aria-describedby="ui-10017"` указывают на существующие элементы (`lblIdExists: true`, `descIdExists: true`); `.d1-checkbox__item` скрыт (`aria-hidden="true"`); ошибка помечена `aria-invalid="true"`. | — |
 | `TC-A11Y-002` | Клавиатурная навигация (`Tab` и `Space`) | ✅ | Нажатие `Space` на сфокусированном `<input type="checkbox">` переключило `checkedAfterSpace: true` и `Value: true`. | — |
 
 ### 2.6 Консоль и рантайм (`LOG`)
