@@ -14,13 +14,13 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
+import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { users } from '../media/schema/users'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsRoleItem } from './CmsRoleItem'
-import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
@@ -902,7 +902,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
   ): CmsNewUser {
     const email = CmsUserItem.normalizeEmail(input.email, error)
     const firstName = CmsUserItem.normalizeFirstName(input.firstName, error)
-    const username = CmsVerification.normalizeOptionalText(input.username)
+    const username = normalizeCmsOptionalText(input.username)
     const phone = CmsUserItem.normalizePhone(input.phone, error)
     const metadata = CmsUserItem.normalizeMetadata(input.metadata)
 
@@ -911,10 +911,10 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       firstName,
       username,
       phone,
-      lastName: CmsVerification.normalizeOptionalText(input.lastName),
-      middleName: CmsVerification.normalizeOptionalText(input.middleName),
-      avatar: CmsVerification.normalizeOptionalText(input.avatar),
-      bio: CmsVerification.normalizeOptionalText(input.bio),
+      lastName: normalizeCmsOptionalText(input.lastName),
+      middleName: normalizeCmsOptionalText(input.middleName),
+      avatar: normalizeCmsOptionalText(input.avatar),
+      bio: normalizeCmsOptionalText(input.bio),
       passwordHash: input.passwordHash,
       status: input.status ?? 'active',
       emailVerifiedAt: input.emailVerifiedAt,
@@ -922,7 +922,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       twoFactorEnabled: input.twoFactorEnabled ?? false,
       lastLoginAt: input.lastLoginAt,
       metadata,
-      createdOrigin: CmsVerification.normalizeOptionalText(input.createdOrigin)
+      createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
     }
   }
 
@@ -951,7 +951,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (input.username !== undefined) {
-      values.username = CmsVerification.normalizeOptionalText(input.username)
+      values.username = normalizeCmsOptionalText(input.username)
     }
 
     if (input.phone !== undefined) {
@@ -959,19 +959,19 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (input.lastName !== undefined) {
-      values.lastName = CmsVerification.normalizeOptionalText(input.lastName)
+      values.lastName = normalizeCmsOptionalText(input.lastName)
     }
 
     if (input.middleName !== undefined) {
-      values.middleName = CmsVerification.normalizeOptionalText(input.middleName)
+      values.middleName = normalizeCmsOptionalText(input.middleName)
     }
 
     if (input.avatar !== undefined) {
-      values.avatar = CmsVerification.normalizeOptionalText(input.avatar)
+      values.avatar = normalizeCmsOptionalText(input.avatar)
     }
 
     if (input.bio !== undefined) {
-      values.bio = CmsVerification.normalizeOptionalText(input.bio)
+      values.bio = normalizeCmsOptionalText(input.bio)
     }
 
     if (input.passwordHash !== undefined) {
@@ -1003,7 +1003,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (input.createdOrigin !== undefined) {
-      values.createdOrigin = CmsVerification.normalizeOptionalText(input.createdOrigin)
+      values.createdOrigin = normalizeCmsOptionalText(input.createdOrigin)
     }
 
     return values

@@ -6,8 +6,8 @@
 - **Исходный код:** [`Window`](../../src/components/Ui/Window) / [`Window`](../../../constructor/src/constructors/Window)
 - **Демо / целевой URL:** `http://localhost:3000/component-window`
 - **Материалы:** `Отсутствуют`
-- **Дата тестирования (UTC):** `2026-11-15T17:50:28Z`
-- **Среда:** `Headless Chrome (puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
+- **Дата тестирования (UTC):** `2026-11-18T01:58:30Z`
+- **Среда:** `Headless Chrome (puppeteer / CDP, Chrome/157.0.8103.79, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
 - **Покрытие тест-кейсами:** 24 / 24 (`100%`)
 - **Итог:** **24 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — компонент `D1Window` корректно рендерится и работает во всех адаптивных режимах (`modal`, `menu`, `actionSheetBottom`, др.), поддерживает вложенные окна и каскады меню с LIFO `Escape`, отключение возврата фокуса (`disableFocusReturn`), семантику `role="menu"` / `ariaHaspopup="menu"` без `inert` на фоне, и не вызывает ошибок консоли или предупреждений Vue.
 
@@ -19,10 +19,10 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовый рендеринг модального окна (`#control`, `#title`, `#default`, `#footer`) | ✅ | Окно открыто по центру (`768x204`, `top: 348`, `left: 329`), `data-status="open"`, `role="dialog"`, `aria-modal="true"`, `inertCount: 1`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
-| `TC-VIS-002` | Адаптивные режимы (`menu`, `actionSheetBottom` и др.) | ✅ | Для `adaptive="menu"` подтверждены `--sys-type-body: "--MENU--"`, `data-window-menu="menu"`, `inertCount: 0`, размер `384x130` (`top: 478, left: 356`); для `actionSheetBottom` — `1425x96`, `top: 804`, `bottom: 900`, `inertCount: 1`. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
-| `TC-VIS-003` | Выравнивание и явные размеры (`width: 420px`, `height: 260px`) | ✅ | Контейнер `.d1-window__body` получил классы `d1-window--width--custom` / `d1-window--height--custom` и точные размеры `420x260` (`top: 320, left: 503`). | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
-| `TC-VIS-004` | Анатомия и изображение (`imagePosition="left"`, `imageSize="quarter"`) | ✅ | Применены классы `d1-window--imagePosition--left` и `d1-window--imageSize--quarter`, размер `768x96`, контент не перекрыт. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
+| `TC-VIS-001` | Базовый рендеринг модального окна (`#control`, `#title`, `#default`, `#footer`) | ✅ | Окно открыто по центру (`768x204`, `top: 348`, `left: 336`), `data-status="open"`, `role="dialog"`, `aria-modal="true"`, `inertCount: 1`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-002` | Адаптивные режимы (`menu`, `actionSheetBottom` и др.) | ✅ | Для `adaptive="menu"` подтверждены `--sys-type-body: "--MENU--"`, `data-window-menu="menu"`, `inertCount: 0`, размер `384x130` (`top: 478, left: 363`); для `actionSheetBottom` — `1440x96`, `top: 804`, `bottom: 900`, `inertCount: 1`. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
+| `TC-VIS-003` | Выравнивание и явные размеры (`width: 420px`, `height: 260px`) | ✅ | Контейнер `.d1-window__body` получил классы `d1-window--width--custom` / `d1-window--height--custom` и точные размеры `420x260` (`top: 320, left: 510`). | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
+| `TC-VIS-004` | Анатомия и изображение (`imagePosition="left"`, `imageSize="quarter"`) | ✅ | Применены классы `d1-window--imagePosition--left` и `d1-window--imageSize--quarter`, размер `768x96` (`top: 402, left: 336`), контент не перекрыт. | ![TC-VIS-004](./screenshots/TC-VIS-004.png) |
 
 ### 2.2 Интерактивность и управление состоянием (`INT`)
 
@@ -41,10 +41,10 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-BND-001` | Осевое позиционирование и `widthMatch` с `width="auto"` | ✅ | Переменная `--d1-window-sys-control-width` равна `296.140625px`; тело окна расширяется под длинный контент (`614x58`, `top: 478, left: 336`) без обрезания. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
-| `TC-BND-002` | Гонка быстрого переключения (`toOpen` -> `toClose` -> `toOpen`) | ✅ | После синхронной серии вызовов и выдержки `500ms` окно остаётся открытым (`open: 1`, `inert: 1`) без ложного закрытия устаревшим таймером. | ![TC-BND-002](./screenshots/TC-BND-002.png) |
+| `TC-BND-001` | Осевое позиционирование и `widthMatch` с `width="auto"` | ✅ | Переменная `--d1-window-sys-control-width` равна `296.140625px`; тело окна расширяется под длинный контент (`614x58`, `top: 478, left: 344`) без обрезания. | ![TC-BND-001](./screenshots/TC-BND-001.png) |
+| `TC-BND-002` | Гонка быстрого переключения (`toOpen` -> `toClose` -> `toOpen`) | ✅ | После синхронной серии вызовов и выдержки `550ms` окно остаётся открытым (`open: 1`, `inert: 1`) без ложного закрытия устаревшим таймером. | ![TC-BND-002](./screenshots/TC-BND-002.png) |
 | `TC-BND-003` | Стек вложенных окон: LIFO `Escape` и счётчик `inert` (`WeakMap`) | ✅ | При 2 открытых окнах активен 1 `inert` (`open: 2, inert: 1`); первый `Escape` закрывает дочернее с сохранением `inert` (`open: 1, inert: 1`); второй `Escape` закрывает родителя и снимает `inert` (`open: 0, inert: 0`). | ![TC-BND-003](./screenshots/TC-BND-003.png) |
-| `TC-BND-004` | Меню внутри меню: 3-уровневый каскад (`L1 -> L2 axis:x -> L3 autoClose`) | ✅ | Все 3 уровня открыты без перекрытий (`left: 73`, `left: 444`, `left: 815`), `inert: 0`; `Escape` закрывает уровни строго в порядке LIFO (`3 -> 2 -> 1 -> 0`). | ![TC-BND-004](./screenshots/TC-BND-004.png) |
+| `TC-BND-004` | Меню внутри меню: 3-уровневый каскад (`L1 -> L2 axis:x -> L3 autoClose`) | ✅ | Все 3 уровня открыты без перекрытий (`left: 80`, `left: 451`, `left: 822`), `inert: 0`; `Escape` закрывает уровни строго в порядке LIFO (`3 -> 2 -> 1 -> 0`). | ![TC-BND-004](./screenshots/TC-BND-004.png) |
 | `TC-BND-005` | Матрица вложенности режимов (`Modal -> Modal` и др.) | ✅ | Для `Nested: Modal -> Modal` оба уровня открываются (`open: 2, inert: 1`) и пошагово закрываются по `Escape` (`2 -> 1 -> 0`, `inert: 0`). | ![TC-BND-005](./screenshots/TC-BND-005.png) |
 | `TC-BND-006` | Связанные свойства вложенности (`persistent`, `closeOnEsc: false`, `autoClose`) | ✅ | `Escape` сохраняет оба окна открытыми (`2`); внешний клик закрывает только не-`persistent` дочернее, сохраняя `persistent` родителя (`1`); явное закрытие родителя снимает `inert` (`0`). | ![TC-BND-006](./screenshots/TC-BND-006.png) |
 
@@ -52,8 +52,8 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-RSP-001` | Ширина тела модального окна на `320px`, `375px`, `768px`, `1440px` | ✅ | Ширина `.d1-window__body` помещается в каждый вьюпорт: `281px` (`320`), `336px` (`375`), `721px` (`768`), `768px` (`1440`). | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
-| `TC-RSP-002` | Мобильное отображение `Action Sheet (Bottom)` на `375×812` | ✅ | Панель прижата к нижней границе экрана и занимает доступную ширину мобильного вьюпорта (`360x120`, `top: 677, left: 0`). | ![TC-RSP-002](./screenshots/TC-RSP-002.png) |
+| `TC-RSP-001` | Ширина тела модального окна на `320px`, `375px`, `768px`, `1440px` | ✅ | Ширина `.d1-window__body` помещается в каждый вьюпорт: `296px` (`320`), `351px` (`375`), `736px` (`768`), `768px` (`1440`). | ![TC-RSP-001](./screenshots/TC-RSP-001.png) |
+| `TC-RSP-002` | Мобильное отображение `Action Sheet (Bottom)` на `375×812` | ✅ | Панель прижата к нижней границе экрана и занимает всю ширину мобильного вьюпорта (`375x120`, `top: 692, left: 0`). | ![TC-RSP-002](./screenshots/TC-RSP-002.png) |
 
 ### 2.5 Доступность (`A11Y`)
 

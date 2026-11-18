@@ -10,10 +10,10 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
+import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { CmsDbAbstract } from './CmsDbAbstract'
-import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
@@ -415,8 +415,8 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     return {
       code: CmsPermissionItem.normalizeCode(input.code, error),
       name: CmsPermissionItem.normalizeName(input.name, error),
-      description: CmsVerification.normalizeOptionalText(input.description),
-      createdOrigin: CmsVerification.normalizeOptionalText(input.createdOrigin)
+      description: normalizeCmsOptionalText(input.description),
+      createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
     }
   }
 
@@ -443,11 +443,11 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     }
 
     if (input.description !== undefined) {
-      values.description = CmsVerification.normalizeOptionalText(input.description)
+      values.description = normalizeCmsOptionalText(input.description)
     }
 
     if (input.createdOrigin !== undefined) {
-      values.createdOrigin = CmsVerification.normalizeOptionalText(input.createdOrigin)
+      values.createdOrigin = normalizeCmsOptionalText(input.createdOrigin)
     }
 
     return values

@@ -11,13 +11,13 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
+import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
-import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
@@ -857,8 +857,8 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     return {
       code: CmsRoleItem.normalizeCode(input.code, error),
       name: CmsRoleItem.normalizeName(input.name, error),
-      description: CmsVerification.normalizeOptionalText(input.description),
-      createdOrigin: CmsVerification.normalizeOptionalText(input.createdOrigin)
+      description: normalizeCmsOptionalText(input.description),
+      createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
     }
   }
 
@@ -885,11 +885,11 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     }
 
     if (input.description !== undefined) {
-      values.description = CmsVerification.normalizeOptionalText(input.description)
+      values.description = normalizeCmsOptionalText(input.description)
     }
 
     if (input.createdOrigin !== undefined) {
-      values.createdOrigin = CmsVerification.normalizeOptionalText(input.createdOrigin)
+      values.createdOrigin = normalizeCmsOptionalText(input.createdOrigin)
     }
 
     return values

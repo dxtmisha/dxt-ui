@@ -15,6 +15,9 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
+import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
+import { normalizeCmsLimit } from '../functions/normalizeCmsLimit'
+import { normalizeCmsOffset } from '../functions/normalizeCmsOffset'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
@@ -25,7 +28,6 @@ import { CmsPermissionManager } from './CmsPermissionManager'
 import { CmsRoleItem } from './CmsRoleItem'
 import { CmsRoleManager } from './CmsRoleManager'
 import { CmsUserItem } from './CmsUserItem'
-import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
@@ -244,8 +246,8 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    */
   async getList(options: CmsUserListOptions = {}): Promise<CmsUserListResult> {
     const database = this.getDatabase()
-    const limit = CmsVerification.normalizeLimit(options.limit)
-    const offset = CmsVerification.normalizeOffset(options.offset)
+    const limit = normalizeCmsLimit(options.limit)
+    const offset = normalizeCmsOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
 
     const total = await this.countRecords(whereCondition)
@@ -442,7 +444,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     if (isString(options.search)) {
       const trimmedSearch = options.search.trim()
       if (trimmedSearch.length > 0) {
-        const pattern = `%${CmsVerification.escapeSearchPattern(trimmedSearch)}%`
+        const pattern = `%${escapeCmsSearchPattern(trimmedSearch)}%`
         const searchPredicate = or(
           ilike(users.email, pattern),
           ilike(users.username, pattern),
