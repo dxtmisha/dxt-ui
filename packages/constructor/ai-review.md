@@ -206,3 +206,6 @@ src/constructors/Bars/BarsInclude.ts
 src/constructors/List/List.ts
 src/constructors/List/ListDesign.tsx
 src/constructors/Menu/Menu.ts
+src/constructors/MenuCountry/MenuCountryInclude.ts
+src/constructors/MenuCountry/MenuCountry.ts
+src/constructors/MenuCountry/MenuCountryDesign.tsx

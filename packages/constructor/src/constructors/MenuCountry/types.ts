@@ -26,7 +26,7 @@ export type MenuCountryEmits = ModelEmitsSelected
   & EventClickEmits
   & WindowEmitsInclude
   & {
-    /** Event for updating the value/ Событие обновления значения */
+    /** Event for updating the value / Событие обновления значения */
     updateValue: [value?: NumberOrStringOrBoolean]
   }
 

@@ -1,22 +1,22 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Specialized menu for selecting countries with automatic flag and name loading.
+A specialized menu for selecting countries with automatic flag and localized name loading.
 
-MenuCountry is an extension of the Menu component, designed specifically for country selection. It leverages the GeoFlagRef utility to automatically populate the menu with a list of countries, including their flags and localized names. It supports all the standard Menu functionalities like Window-based popups, custom controls, and sophisticated focus management.
+`MenuCountry` extends `Menu` specifically for country selection. It leverages `GeoFlagRef` to populate items with country flags, localized names, and optional international dialing codes (`showPhoneCode`). It supports all standard `Menu` features, including `Window`-based popups, embedded rendering, search, custom slots, and exposed navigation controls.
 
-**Key Features:**
+**Key features:**
 
-- Automatic generation of country list via GeoFlagRef utility
-- Filtering of available countries via the countryList property
-- Support for internationalized country names
-- Forwarding of popup window lifecycle events (`window`)
-- All standard features of the base Menu component (positioning, keyboard navigation, submenus, etc.)
+- **Automatic Country List:** Populates country flags and names via `GeoFlagRef`
+- **Code Filtering:** Restricts available countries via the `list` prop (ISO 3166-1 alpha-2 codes)
+- **Phone Dial Codes:** Displays `+<code>` captions when `showPhoneCode` is enabled
+- **Localization:** Supports dynamic name localization through the `language` prop
+- **Menu Capabilities:** Inherits `Window` popup positioning, `menuAttrs` customization, keyboard navigation, and `expose` API
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Country selection dropdowns
-- Language/region selectors in user profiles
-- Delivery or registration country forms
+- Country and region selectors in forms and user profiles
+- International shipping or billing address selectors
+- Country dial code pickers in phone input controls
 
 <Source
     code={`
@@ -29,11 +29,13 @@ const selectedValue = ref('US')
 <template>
   <MenuCountry
     v-model:selected="selectedValue"
+    :list="['US', 'VN', 'GB']"
+    show-phone-code
     is-selected-by-value
   >
-    <template #control="{ binds }">
+    <template #control="{ binds, selectedNames }">
       <button v-bind="binds">
-        Select Country
+        {{ selectedNames.value[0] || 'Select Country' }}
       </button>
     </template>
   </MenuCountry>
@@ -41,3 +43,5 @@ const selectedValue = ref('US')
   `}
     language="html"
 />
+
+> MenuCountry combines localized country metadata and flag rendering with full Menu popup and selection ergonomics.

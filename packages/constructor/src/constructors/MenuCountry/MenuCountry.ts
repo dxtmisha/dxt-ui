@@ -1,7 +1,10 @@
-import { toRef, computed, type ComputedRef, type Ref } from 'vue'
+import { computed, type ComputedRef, type Ref, toRef } from 'vue'
 import {
+  type ConstrBind,
   type ConstrEmit,
+  type ConstrItems,
   type DesignComp,
+  DesignLogicAbstract,
   type DesignName,
   forEach,
   type GeoFlagNational,
@@ -10,13 +13,27 @@ import {
   type NumberOrStringOrBoolean
 } from '@dxtmisha/functional'
 
-import { ModelInclude } from '../../classes/ModelInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
-import { MenuInclude } from '../Menu'
+import { ModelInclude } from '../../classes/ModelInclude'
+
+import { MenuInclude, type MenuProps } from '../Menu'
 import type { WindowEmitOptions } from '../Window'
 
-import type { MenuCountryComponents, MenuCountryEmits, MenuCountrySlots } from './types'
+import type { EventClickValue } from '../../types/eventClickTypes'
 import type { MenuCountryProps } from './props'
+import type { MenuCountryComponents, MenuCountryEmits, MenuCountrySlots } from './types'
+
+/** MenuCountry dependency constructors type / Тип конструкторов зависимостей MenuCountry */
+export type MenuCountryConstructors = {
+  /** Click event constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Flag reference constructor / Конструктор ссылки на флаги */
+  flag: typeof GeoFlagRef
+  /** Menu constructor / Конструктор меню */
+  menu: typeof MenuInclude
+  /** Model constructor / Конструктор модели */
+  model: typeof ModelInclude<ListSelectedList | undefined>
+}
 
 /**
  * Class for managing the country selection menu.
@@ -27,18 +44,48 @@ import type { MenuCountryProps } from './props'
  * Интегрирует функциональность меню, обработку событий и состояние модели для выбора стран,
  * включая автоматическую генерацию списка флагов на основе кодов стран.
  */
-export class MenuCountry {
-  /** Menu manager / Менеджер меню */
-  readonly menu: MenuInclude
-
-  /** Event manager / Менеджер событий */
-  readonly event: EventClickInclude
-
-  /** Model manager / Менеджер модели */
-  readonly model: ModelInclude<ListSelectedList | undefined>
-
+export class MenuCountry extends DesignLogicAbstract<
+  HTMLDivElement,
+  MenuCountryComponents,
+  MenuCountryEmits,
+  MenuCountrySlots,
+  MenuCountryProps,
+  MenuCountryConstructors
+> {
   /** List of flags / Список флагов */
   readonly flagList: ComputedRef<GeoFlagNational[]>
+
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<MenuCountryConstructors> = {
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    flag: {
+      item: GeoFlagRef,
+      parameters: () => [toRef(this.props, 'language')]
+    },
+    menu: {
+      item: MenuInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => this.binds
+      ]
+    },
+    model: {
+      item: ModelInclude<ListSelectedList | undefined>,
+      parameters: () => [
+        'selected',
+        this.emits
+      ]
+    }
+  }
 
   /**
    * Constructor
@@ -48,49 +95,28 @@ export class MenuCountry {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits function called when an event is triggered / функция, вызываемая при возникновении события
-   * @param constructors object with classes / объект с классами
-   * @param constructors.EventClickIncludeConstructor class for working with click events / класс для работы с событиями клика
-   * @param constructors.MenuIncludeConstructor class for working with menu / класс для работы с меню
-   * @param constructors.ModelIncludeConstructor class for working with models / класс для работы с моделями
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
   constructor(
-    protected readonly props: MenuCountryProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<MenuCountryComponents, MenuCountryProps>,
-    protected readonly slots?: MenuCountrySlots,
-    protected readonly emits?: ConstrEmit<MenuCountryEmits>,
-    constructors: {
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      MenuIncludeConstructor?: typeof MenuInclude
-      ModelIncludeConstructor?: typeof ModelInclude<ListSelectedList | undefined>
-    } = {}
+    props: Readonly<MenuCountryProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<MenuCountryComponents, MenuCountryProps>,
+    slots?: MenuCountrySlots,
+    emits?: ConstrEmit<MenuCountryEmits>,
+    constructors?: Partial<MenuCountryConstructors>
   ) {
-    const {
-      EventClickIncludeConstructor = EventClickInclude,
-      MenuIncludeConstructor = MenuInclude,
-      ModelIncludeConstructor = ModelInclude
-    } = constructors
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
+    )
 
     this.flagList = this.initFlagList()
-
-    this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
-    this.model = new ModelIncludeConstructor('selected', this.emits)
-
-    this.menu = new MenuIncludeConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      () => ({
-        'list': this.list.value,
-        'selected': this.props.selected,
-        'isSelectedByValue': this.props.isSelectedByValue,
-        'onClick': this.event.onClick,
-        'onWindow': (options: WindowEmitOptions) => this.emits?.('window', options),
-        'onUpdate:selected': (value: ListSelectedList) => this.model.emit(value),
-        'onUpdateValue': (value: NumberOrStringOrBoolean) => this.emits?.('updateValue', value)
-      })
-    )
   }
 
   /** List of flags / Список флагов */
@@ -115,13 +141,74 @@ export class MenuCountry {
   })
 
   /**
+   * Returns binding attributes for the menu component.
+   *
+   * Возвращает привязочные атрибуты для компонента меню.
+   * @returns menu component bindings / привязки компонента меню
+   */
+  get binds(): ConstrBind<MenuProps> {
+    return {
+      'list': this.list.value,
+      'selected': this.props.selected,
+      'isSelectedByValue': this.props.isSelectedByValue,
+      'onClick': this.onClick,
+      'onWindow': this.onWindow,
+      'onUpdate:selected': this.onUpdateSelected,
+      'onUpdateValue': this.onUpdateValue
+    }
+  }
+
+  /**
+   * Click handler.
+   *
+   * Обработчик клика.
+   * @param event mouse event object / объект события мыши
+   * @param options optional event value options / необязательные параметры значения события
+   */
+  readonly onClick = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ): void => {
+    this.i('event').onClick(event, options)
+  }
+
+  /**
+   * Selected value update handler.
+   *
+   * Обработчик обновления выбранного значения.
+   * @param value selected list value / выбранное значение списка
+   */
+  readonly onUpdateSelected = (value: ListSelectedList): void => {
+    this.i('model').emit(value)
+  }
+
+  /**
+   * Value update handler.
+   *
+   * Обработчик обновления значения.
+   * @param value updated item value / обновлённое значение элемента
+   */
+  readonly onUpdateValue = (value?: NumberOrStringOrBoolean): void => {
+    this.emits?.('updateValue', value)
+  }
+
+  /**
+   * Window state change handler.
+   *
+   * Обработчик изменения состояния окна.
+   * @param options window emit options / параметры события окна
+   */
+  readonly onWindow = (options: WindowEmitOptions): void => {
+    this.emits?.('window', options)
+  }
+
+  /**
    * Initializes the flag list.
    *
    * Инициализирует список флагов.
-   * @protected
    * @returns reactive list of national flag items / реактивный список элементов национальных флагов
    */
   protected initFlagList(): ComputedRef<GeoFlagNational[]> {
-    return new GeoFlagRef(toRef(this.props, 'language')).getNational(toRef(this.props, 'list'))
+    return this.i('flag').getNational(toRef(this.props, 'list'))
   }
 }

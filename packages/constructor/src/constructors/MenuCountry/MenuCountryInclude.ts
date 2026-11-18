@@ -1,10 +1,13 @@
 // ai-none
 
+import { mergeProps, type Ref } from 'vue'
+import type { ConstrBind } from '@dxtmisha/functional'
+
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
 import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
 import type { MenuCountryExposeInclude, MenuCountryPropsInclude } from './basicTypes'
-import type { MenuCountrySlots } from './types'
+import type { MenuCountryExpose, MenuCountrySlots } from './types'
 import type { MenuCountryProps } from './props'
 
 /**
@@ -22,7 +25,8 @@ export class MenuCountryInclude extends ComponentIncludeAbstract<
   MenuCountryExposeInclude,
   MenuCountrySlots
 > {
-  protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
+  /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
+  protected override readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
     { name: 'getId' },
     { name: 'getOpen', type: 'boolean' },
     { name: 'getControl' },
@@ -42,19 +46,10 @@ export class MenuCountryInclude extends ComponentIncludeAbstract<
     { name: 'next' }
   ]
 
+  /** Sub-component name / Название субкомпонента */
   protected override readonly name = 'menuCountry'
+  /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
   protected override readonly propsAttrsName = 'menuCountryAttrs'
-
-  /**
-   * Exposes the API methods and properties /
-   * Экспортирует API-методы и свойства
-   */
-  override get expose() {
-    return {
-      ...super.toExpose(),
-      getMenuCountryElement: () => this.element
-    }
-  }
 
   /**
    * Builds and resolves all HTML attributes and classes for binding.
@@ -62,10 +57,25 @@ export class MenuCountryInclude extends ComponentIncludeAbstract<
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds(): any {
+  protected override toBinds(): Partial<ConstrBind<MenuCountryProps>> {
+    const props = this.getProps()
+
+    return mergeProps(
+      super.toBinds(),
+      props.disabled !== undefined ? { disabled: props.disabled } : {}
+    ) as Partial<ConstrBind<MenuCountryProps>>
+  }
+
+  /**
+   * Collects and exposes defined proxy methods of the sub-component.
+   *
+   * Собирает и экспортирует определенные прокси-методы субкомпонента.
+   * @returns exposed API object / объект экспортируемого API
+   */
+  protected override toExpose(): MenuCountryExposeInclude {
     return {
-      ...super.toBinds(),
-      disabled: this.getProps().disabled
+      ...super.toExpose(),
+      getMenuCountryElement: () => this.element as Ref<ConstrBind<MenuCountryExpose> | undefined>
     }
   }
 }

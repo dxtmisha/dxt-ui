@@ -3,35 +3,45 @@ import type { ListSelectedList } from '@dxtmisha/functional'
 import type { MenuPropsBasic, MenuPropsInclude } from '../Menu'
 import type { ModelPropsSelected } from '../../types/modelTypes'
 
+/**
+ * Type describing token properties for MenuCountry.
+ *
+ * Тип, описывающий свойства токенов для MenuCountry.
+ */
 type MenuCountryPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Interface describing basic properties of the MenuCountry component.
+ *
+ * Интерфейс, описывающий базовые свойства компонента MenuCountry.
+ */
 export type MenuCountryPropsBasic<
   Menu extends MenuPropsBasic = MenuPropsBasic
 > = MenuPropsInclude<Menu>
   & ModelPropsSelected<ListSelectedList>
   & {
     // Status
-    /** List of selected items/ Список выбранных элементов */
+    /** List of selected items / Список выбранных элементов */
     selected?: ListSelectedList
 
     // Value
     /**
-     * Filter countries by code (ISO 3166-1 alpha-2)/
+     * Filter countries by code (ISO 3166-1 alpha-2) /
      * Фильтр стран по кодам (ISO 3166-1 alpha-2)
      */
     list?: string[]
 
     // Style
-    /** Whether to show the phone code/ Показывать ли код телефона */
+    /** Whether to show the phone code / Показывать ли код телефона */
     showPhoneCode?: boolean
 
     // Technical
-    /** Whether selection is determined by value/ Определяется ли выбор по значению */
+    /** Whether selection is determined by value / Определяется ли выбор по значению */
     isSelectedByValue?: boolean
-    /** Representation language/ Язык представления */
+    /** Representation language / Язык представления */
     language?: string
   }
 
