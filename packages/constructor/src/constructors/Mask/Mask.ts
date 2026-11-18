@@ -1,4 +1,4 @@
-import { computed, mergeProps, type Ref, watch } from 'vue'
+import { mergeProps, type Ref, watch } from 'vue'
 import {
   anyToString,
   type ConstrBind,
@@ -9,13 +9,13 @@ import {
   DesignLogicAbstract,
   type DesignName,
   GeoRef,
-  isFloat,
   isNull
 } from '@dxtmisha/functional'
 
 import { MaskBuffer } from './MaskBuffer'
 import { MaskCharacter } from './MaskCharacter'
 import { MaskCharacterLength } from './MaskCharacterLength'
+import { MaskControl } from './MaskControl'
 import { MaskData } from './MaskData'
 import { MaskDate } from './MaskDate'
 import { MaskEmit } from './MaskEmit'
@@ -29,6 +29,7 @@ import { MaskRight } from './MaskRight'
 import { MaskRubber } from './MaskRubber'
 import { MaskRubberItem } from './MaskRubberItem'
 import { MaskRubberTransition } from './MaskRubberTransition'
+import { MaskScroll } from './MaskScroll'
 import { MaskSelection } from './MaskSelection'
 import { MaskSpecial } from './MaskSpecial'
 import { MaskType } from './MaskType'
@@ -49,6 +50,8 @@ export type MaskConstructors = {
   character: typeof MaskCharacter
   /** Character length helper constructor / Конструктор помощника длины символов */
   characterLength: typeof MaskCharacterLength
+  /** Input control helper constructor / Конструктор помощника управления состоянием ввода */
+  control: typeof MaskControl
   /** Data helper constructor / Конструктор помощника данных */
   data: typeof MaskData
   /** Date helper constructor / Конструктор помощника даты */
@@ -75,6 +78,8 @@ export type MaskConstructors = {
   rubberItem: typeof MaskRubberItem
   /** Rubber transition symbol helper constructor / Конструктор помощника символа перехода резины */
   rubberTransition: typeof MaskRubberTransition
+  /** Scroll synchronization helper constructor / Конструктор помощника синхронизации прокрутки */
+  scroll: typeof MaskScroll
   /** Selection helper constructor / Конструктор помощника выделения */
   selection: typeof MaskSelection
   /** Special symbols helper constructor / Конструктор помощника специальных символов */
@@ -106,8 +111,6 @@ export class Mask extends DesignLogicAbstract<
 > {
   /** Watchers cleanup handlers / Функции остановки наблюдателей */
   protected watchStops: (() => void)[] = []
-  /** Pending animation frame ID for clear focus / Идентификатор ожидающего кадра анимации для фокуса при очистке */
-  protected animationFrame?: number
 
   /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
   protected override readonly constructorItems: ConstrItems<MaskConstructors> = {
@@ -127,6 +130,20 @@ export class Mask extends DesignLogicAbstract<
     },
     characterLength: {
       item: MaskCharacterLength
+    },
+    control: {
+      item: MaskControl,
+      parameters: () => [
+        this.props,
+        this.element,
+        () => this.i('data'),
+        () => this.i('emit'),
+        () => this.i('right'),
+        () => this.i('scroll'),
+        () => this.i('value'),
+        () => this.i('valueBasic'),
+        () => this.i('view')
+      ]
     },
     data: {
       item: MaskData,
@@ -241,6 +258,10 @@ export class Mask extends DesignLogicAbstract<
     rubberTransition: {
       item: MaskRubberTransition
     },
+    scroll: {
+      item: MaskScroll,
+      parameters: () => [this.element]
+    },
     selection: {
       item: MaskSelection,
       parameters: () => [
@@ -345,10 +366,15 @@ export class Mask extends DesignLogicAbstract<
    * Инициализация наблюдателей при монтировании компонента.
    */
   protected override readonly onMounted = (): void => {
+    const control = this.i('control')
+
     this.watchStops.push(
-      watch(() => this.props.value, () => this.reset(this.props.value)),
-      watch(this.basic, () => this.i('data').goSelection(false)),
-      watch([GeoRef.getStandard(), () => this.props.language], () => this.reset(this.i('value').getValueCache()))
+      watch(() => this.props.value, () => control.reset(this.props.value)),
+      watch(control.basic, () => {
+        this.i('data').goSelection(false)
+        this.i('scroll').sync(true)
+      }),
+      watch([GeoRef.getStandard(), () => this.props.language], () => control.reset(this.i('value').getValueCache()))
     )
   }
 
@@ -360,29 +386,7 @@ export class Mask extends DesignLogicAbstract<
   protected override readonly onUnmounted = (): void => {
     this.watchStops.forEach(stop => stop())
     this.watchStops = []
-
-    if (this.animationFrame !== undefined) {
-      cancelAnimationFrame(this.animationFrame)
-      this.animationFrame = undefined
-    }
   }
-
-  /** Receiving basic standard values/ Получение базовых стандартных значений */
-  readonly basic = computed<string>(() => {
-    const view = this.i('view')
-
-    if (this.i('right').isRight()) {
-      let data = ''
-
-      view.item.value.forEach((item) => {
-        data += item.value
-      })
-
-      return data
-    }
-
-    return view.input.value
-  })
 
   /** Returns the properties for the input element/ Возвращает свойства для элемента ввода */
   get binds(): ConstrBind {
@@ -403,6 +407,7 @@ export class Mask extends DesignLogicAbstract<
         onChange: event.onChange,
         onPaste: event.onPaste,
         onClick: event.onClick,
+        onScroll: this.i('scroll').onScroll,
         onAnimationstart: event.onAnimationstart
       }
     )
@@ -414,73 +419,5 @@ export class Mask extends DesignLogicAbstract<
       [this.naming.getStatusClass('value')]: this.i('characterLength').is(),
       [this.naming.getStatusClass('end')]: this.i('right').isEnd()
     }
-  }
-
-  /**
-   * Sets new value and reinitializes mask.
-   *
-   * Устанавливает новое значение и переинициализирует маску.
-   * @param value new value/ новое значение
-   * @returns true if value was reset/ true, если значение было сброшено
-   */
-  readonly set = (value: string): boolean => this.reset(value)
-
-  /**
-   * Resets all values or updates to the new one.
-   *
-   * Сбрасывает все значения или обновляется до нового.
-   * @param value new values/ новые значения
-   * @returns true if value was reset/ true, если значение было сброшено
-   */
-  reset(value?: string | number): boolean {
-    const newValue = anyToString(value)
-
-    if (
-      isNull(this.props.valueDefault)
-      || newValue !== anyToString(this.props.valueDefault)
-    ) {
-      if (
-        this.i('value').item.value !== newValue
-        || (
-          this.i('valueBasic').item.value !== newValue
-          && !isFloat(newValue)
-        )
-      ) {
-        this.i('data').reset(newValue)
-        this.i('emit').set('reset', {} as Event).go()
-        return true
-      }
-    }
-
-    return false
-  }
-
-  /**
-   * Clears value to default and focuses input.
-   *
-   * Очищает значение до значения по умолчанию и фокусирует поле ввода.
-   * @returns true after clearing/ true после очистки
-   */
-  readonly clear = (): boolean => {
-    this.i('data').reset((this.props.valueDefault ?? '').toString())
-    this.i('emit').set('reset', {} as Event).go()
-
-    if (this.element.value) {
-      this.element.value.value = this.basic.value
-
-      if (this.animationFrame !== undefined) {
-        cancelAnimationFrame(this.animationFrame)
-      }
-
-      this.animationFrame = requestAnimationFrame(() => {
-        this.animationFrame = undefined
-        if (this.element.value) {
-          this.element.value.value = this.basic.value
-          this.element.value.focus()
-        }
-      })
-    }
-
-    return true
   }
 }

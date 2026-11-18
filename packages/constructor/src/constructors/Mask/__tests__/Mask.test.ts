@@ -254,4 +254,28 @@ describe('Mask (integration)', () => {
     expect(root?.classList.contains('d1-mask--align--left')).toBe(true)
     expect(root?.classList.contains('d1-mask--end')).toBe(false)
   })
+
+  it('should sync character container scrollLeft when input scrolls horizontally', async () => {
+    const { container } = await mountMask({
+      mask: '+1-***-***-****',
+      value: '2025550147'
+    })
+
+    const input = container.querySelector<HTMLInputElement>('input.d1-mask__input')!
+    const character = container.querySelector<HTMLElement>('.d1-mask__character')!
+
+    expect(input).not.toBeNull()
+    expect(character).not.toBeNull()
+
+    Object.defineProperty(input, 'scrollLeft', {
+      value: 36,
+      writable: true,
+      configurable: true
+    })
+
+    input.dispatchEvent(new Event('scroll'))
+    await nextTick()
+
+    expect(character.scrollLeft).toBe(36)
+  })
 })

@@ -105,13 +105,14 @@ describe('Mask (unit)', () => {
   })
 
   describe('Lazy instantiation and Dependency Injection', () => {
-    it('should keep all 23 subordinate dependencies lazy when props.value is omitted', () => {
+    it('should keep all 25 subordinate dependencies lazy when props.value is omitted', () => {
       const { instance, stop } = createMask({ mask: '+1 ***' })
       cleanups.push(stop)
 
       expect(instance.hasInstance('buffer')).toBe(false)
       expect(instance.hasInstance('character')).toBe(false)
       expect(instance.hasInstance('characterLength')).toBe(false)
+      expect(instance.hasInstance('control')).toBe(false)
       expect(instance.hasInstance('data')).toBe(false)
       expect(instance.hasInstance('date')).toBe(false)
       expect(instance.hasInstance('emit')).toBe(false)
@@ -125,6 +126,7 @@ describe('Mask (unit)', () => {
       expect(instance.hasInstance('rubber')).toBe(false)
       expect(instance.hasInstance('rubberItem')).toBe(false)
       expect(instance.hasInstance('rubberTransition')).toBe(false)
+      expect(instance.hasInstance('scroll')).toBe(false)
       expect(instance.hasInstance('selection')).toBe(false)
       expect(instance.hasInstance('special')).toBe(false)
       expect(instance.hasInstance('type')).toBe(false)
@@ -143,7 +145,7 @@ describe('Mask (unit)', () => {
 
       expect(instance.hasInstance('data')).toBe(true)
       expect(instance.i('value').item.value).toBe('0')
-      expect(instance.basic.value).toBe('0')
+      expect(instance.i('control').basic.value).toBe('0')
     })
 
     it('should support constructor overrides via constructors parameter', () => {
@@ -208,10 +210,10 @@ describe('Mask (unit)', () => {
       })
       cleanups.push(stop)
 
-      expect(instance.basic.value).toBe('+1 23')
+      expect(instance.i('control').basic.value).toBe('+1 23')
 
       props.align = 'right'
-      expect(instance.basic.value).toBe('+1 23_')
+      expect(instance.i('control').basic.value).toBe('+1 23_')
     })
 
     it('should compute --value and --end status classes', () => {
@@ -244,10 +246,10 @@ describe('Mask (unit)', () => {
       }, emits)
       cleanups.push(stop)
 
-      expect(instance.reset(0)).toBe(false)
+      expect(instance.i('control').reset(0)).toBe(false)
       expect(emits).not.toHaveBeenCalled()
 
-      expect(instance.set('99')).toBe(true)
+      expect(instance.i('control').set('99')).toBe(true)
       expect(instance.i('value').item.value).toBe('99')
       expect(emits).toHaveBeenCalledWith('reset', expect.any(Object), undefined)
     })
@@ -268,7 +270,7 @@ describe('Mask (unit)', () => {
       input.focus = vi.fn()
       element.value = input
 
-      expect(instance.clear()).toBe(true)
+      expect(instance.i('control').clear()).toBe(true)
       expect(input.value).toBe('9')
       expect(rafSpy).toHaveBeenCalledTimes(1)
 
@@ -314,6 +316,40 @@ describe('Mask (unit)', () => {
 
       instance.unmount()
       expect(cancelSpy).toHaveBeenCalledWith(888)
+    })
+
+    it('should delegate horizontal scroll synchronization to MaskScroll and clean up on unmount', () => {
+      const rafSpy = vi.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 999)
+      const cancelSpy = vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => undefined)
+
+      const { instance, element, stop } = createMask({
+        mask: '***-***-***',
+        value: '123456789'
+      })
+      cleanups.push(stop)
+
+      const input = document.createElement('input')
+      const view = document.createElement('span')
+      const scroll = instance.i('scroll')
+      element.value = input
+      scroll.elementView.value = view
+
+      Object.defineProperty(input, 'scrollLeft', {
+        value: 42,
+        writable: true,
+        configurable: true
+      })
+
+      scroll.onScroll()
+      expect(view.scrollLeft).toBe(42)
+
+      input.scrollLeft = 64
+      scroll.sync(true)
+      expect(rafSpy).toHaveBeenCalledTimes(1)
+      expect(view.scrollLeft).toBe(64)
+
+      instance.unmount()
+      expect(cancelSpy).toHaveBeenCalledWith(999)
     })
   })
 })

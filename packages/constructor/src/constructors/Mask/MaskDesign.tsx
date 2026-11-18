@@ -82,10 +82,10 @@ export class MaskDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getValueBasic: () => this.item.basic.value,
+      getValueBasic: () => this.item.i('control').basic.value,
       getValue: () => this.item.i('value').item.value,
-      setValue: this.item.set,
-      clear: this.item.clear
+      setValue: (value: string) => this.item.i('control').set(value),
+      clear: () => this.item.i('control').clear()
     } as EXPOSE
   }
 
@@ -179,7 +179,7 @@ export class MaskDesign<
           {
             ref: this.element,
             class: this.classes?.value.input,
-            value: this.item.basic.value
+            value: this.item.i('control').basic.value
           }
         )
       )
@@ -215,6 +215,7 @@ export class MaskDesign<
       h(
         'span',
         {
+          'ref': this.item.i('scroll').elementView,
           'class': this.classes?.value.character,
           'data-length': '1',
           ...AriaStaticInclude.hidden(),
