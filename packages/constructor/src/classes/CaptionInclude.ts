@@ -4,6 +4,7 @@ import {
   executeFunctionRef,
   type DesignName,
   isFilled,
+  isNumber,
   type RefOrNormalOrFunction,
   render,
   toBinds
@@ -37,7 +38,8 @@ export class CaptionInclude {
     slots?: CaptionSlots
   ): boolean {
     return Boolean(
-      props?.caption
+      isFilled(props?.caption, true)
+      || isNumber(props?.caption)
       || (slots && 'caption' in slots)
     )
   }
@@ -68,7 +70,13 @@ export class CaptionInclude {
    * @returns checking state / состояние проверки
    */
   get is(): boolean {
-    return Boolean(this.getProps().caption || this.slots?.caption)
+    const caption = this.getProps().caption
+
+    return Boolean(
+      isFilled(caption, true)
+      || isNumber(caption)
+      || this.slots?.caption
+    )
   }
 
   /**
@@ -116,7 +124,7 @@ export class CaptionInclude {
     const children: any[] = []
     const caption = this.getProps().caption
 
-    if (isFilled(caption)) {
+    if (isFilled(caption, true) || isNumber(caption)) {
       children.push(caption)
     }
 

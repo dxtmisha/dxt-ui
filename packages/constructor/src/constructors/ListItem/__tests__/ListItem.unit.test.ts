@@ -17,6 +17,8 @@ import { ProgressInclude } from '../../Progress'
 import { RippleInclude } from '../../Ripple'
 import { SkeletonInclude } from '../../Skeleton'
 import { ListItem, type ListItemConstructors } from '../ListItem'
+import { ListItemLazy } from '../ListItemLazy'
+import { ListItemLazyHeight } from '../ListItemLazyHeight'
 import type { ListItemProps } from '../props'
 
 class InspectableListItem extends ListItem {
@@ -56,6 +58,8 @@ describe('ListItem (Logic Orchestrator)', () => {
         expect(item.hasInstance('description')).toBe(false)
         expect(item.hasInstance('icon')).toBe(false)
         expect(item.hasInstance('label')).toBe(false)
+        expect(item.hasInstance('lazy')).toBe(false)
+        expect(item.hasInstance('lazyHeight')).toBe(false)
         expect(item.hasInstance('prefix')).toBe(false)
         expect(item.hasInstance('progress')).toBe(false)
         expect(item.hasInstance('ripple')).toBe(false)
@@ -76,6 +80,7 @@ describe('ListItem (Logic Orchestrator)', () => {
         icon: 'star',
         isSkeleton: true,
         label: 'Item',
+        lazy: true,
         loading: true,
         prefix: 'Pre',
         suffix: 'Suf'
@@ -88,6 +93,8 @@ describe('ListItem (Logic Orchestrator)', () => {
       class CustomEvent extends EventClickInclude {}
       class CustomIcon<Props extends IconTrailingPropsInclude = IconTrailingPropsInclude> extends IconTrailingInclude<Props> {}
       class CustomLabel extends LabelHighlightInclude {}
+      class CustomLazy extends ListItemLazy {}
+      class CustomLazyHeight extends ListItemLazyHeight {}
       class CustomPrefix extends PrefixInclude {}
       class CustomProgress extends ProgressInclude {}
       class CustomRipple extends RippleInclude {}
@@ -110,6 +117,8 @@ describe('ListItem (Logic Orchestrator)', () => {
             event: CustomEvent,
             icon: CustomIcon,
             label: CustomLabel,
+            lazy: CustomLazy,
+            lazyHeight: CustomLazyHeight,
             prefix: CustomPrefix,
             progress: CustomProgress,
             ripple: CustomRipple,
@@ -125,6 +134,8 @@ describe('ListItem (Logic Orchestrator)', () => {
         expect(item.i('event')).toBeInstanceOf(CustomEvent)
         expect(item.i('icon')).toBeInstanceOf(CustomIcon)
         expect(item.i('label')).toBeInstanceOf(CustomLabel)
+        expect(item.i('lazy')).toBeInstanceOf(CustomLazy)
+        expect(item.i('lazyHeight')).toBeInstanceOf(CustomLazyHeight)
         expect(item.i('prefix')).toBeInstanceOf(CustomPrefix)
         expect(item.i('progress')).toBeInstanceOf(CustomProgress)
         expect(item.i('ripple')).toBeInstanceOf(CustomRipple)
@@ -137,7 +148,7 @@ describe('ListItem (Logic Orchestrator)', () => {
   })
 
   describe('Tag, classes, binds, and ARIA', () => {
-    it('should resolve tag from explicit tag, href, or default div', () => {
+    it('should resolve tag from explicit tag, to, href, or default div', () => {
       const scope = effectScope()
       const element = ref<HTMLElement>()
       const props = reactive<ListItemProps>({})
@@ -146,6 +157,10 @@ describe('ListItem (Logic Orchestrator)', () => {
         const item = new ListItem(props, element, naming)
         expect(item.tag).toBe('div')
 
+        props.to = '/profile'
+        expect(item.tag).toBe('a')
+
+        props.to = undefined
         props.href = '/about'
         expect(item.tag).toBe('a')
 

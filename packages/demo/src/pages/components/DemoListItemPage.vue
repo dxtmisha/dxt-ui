@@ -14,6 +14,8 @@ const filterQuery = ref<string>('app')
 const filterActive = ref<boolean>(true)
 const selectedCheckbox = ref<boolean>(true)
 const selectedRadio = ref<string>('alpha')
+const lazyEnabled = ref<boolean>(true)
+const lazyCacheHeight = ref<boolean>(true)
 const exposeTarget = ref<ListItemExpose | null>(null)
 const exposeResult = ref<Record<string, unknown>>({})
 
@@ -93,7 +95,7 @@ const checkExpose = (): void => {
       <D1Group label="Icons & Alignment">
         <DemoBox>
           <D1ListItem label="Icon String" icon="home"/>
-          <D1ListItem label="Icon Object" :icon="{ icon: 'person', size: 'sm' }"/>
+          <D1ListItem label="Icon Object" :icon="{ icon: 'person', size: 'sm' }" :icon-attrs="{ active: true }"/>
           <D1ListItem label="Icon Palette" icon="star" icon-palette/>
           <D1ListItem label="Trailing Icon" icon="folder" icon-trailing="chevron_right"/>
           <D1ListItem label="Trailing Icon Turned" icon="tune" icon-trailing="keyboard_arrow_down" icon-turn/>
@@ -230,9 +232,50 @@ const checkExpose = (): void => {
           <D1ListItem label="Tag Button" tag="button" type="button" icon="smart_button"/>
           <D1ListItem label="Anchor Link (href)" href="#demo-anchor" icon="link"/>
           <D1ListItem label="Router Navigation (to)" to="/component-list-item" icon="route"/>
+          <D1ListItem label="Router Route Object (to)" :to="{ name: 'component-list-item' }" icon="route"/>
           <D1ListItem label="Role Option (selected)" role="option" selected/>
           <D1ListItem label="Role Menuitem Radio (selected)" role="menuitemradio" selected/>
           <D1ListItem label="Role Menuitem Checkbox" role="menuitemcheckbox" :selected="false"/>
+          <D1ListItem
+            label="Custom Element IDs"
+            label-id="demo-list-item-label-id"
+            prefix="PRE"
+            prefix-id="demo-list-item-prefix-id"
+            suffix="SUF"
+            suffix-id="demo-list-item-suffix-id"
+            description="Custom IDs description"
+            description-id="demo-list-item-description-id"
+          />
+        </DemoBox>
+      </D1Group>
+
+      <D1Group label="Lazy Rendering">
+        <DemoFlex>
+          <D1Button
+            :label="lazyEnabled ? 'lazy: true' : 'lazy: false'"
+            size="sm"
+            @click="lazyEnabled = !lazyEnabled"
+          />
+          <D1Button
+            :label="lazyCacheHeight ? 'lazyCacheHeight: true' : 'lazyCacheHeight: false'"
+            size="sm"
+            outline
+            @click="lazyCacheHeight = !lazyCacheHeight"
+          />
+        </DemoFlex>
+        <DemoBox>
+          <div class="demo-list-item-page__lazy">
+            <D1ListItem
+              v-for="itemIndex in 16"
+              :key="itemIndex"
+              :label="'Lazy Item ' + itemIndex"
+              :description="'Deferred content row #' + itemIndex"
+              :lazy="lazyEnabled"
+              lazy-margin="64px 0px"
+              :lazy-cache-height="lazyCacheHeight"
+              icon="bolt"
+            />
+          </div>
         </DemoBox>
       </D1Group>
 
@@ -298,4 +341,11 @@ const checkExpose = (): void => {
   </D1Page>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.demo-list-item-page {
+  &__lazy {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+}
+</style>

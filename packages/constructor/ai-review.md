@@ -29,7 +29,6 @@ src/constructors/Ripple/RippleDesign.tsx
 src/constructors/Ripple/RippleInclude.ts
 src/constructors/Ripple/RippleItem.ts
 src/functions/getClassTagAStatic.ts
-src/classes/CaptionInclude.ts
 src/constructors/Cell/Cell.ts
 src/constructors/Cell/CellDesign.tsx
 src/constructors/Scrollbar/ScrollbarBorder.ts
@@ -111,7 +110,6 @@ src/constructors/Field/FieldSpace.ts
 src/constructors/Field/Field.ts
 src/constructors/Field/FieldDesign.tsx
 src/classes/FrameAbstract.ts
-src/constructors/Button/Button.ts
 src/constructors/Button/ButtonDesign.tsx
 src/constructors/Button/ButtonInclude.ts
 src/constructors/Bars/BarsAction.ts
@@ -177,9 +175,6 @@ src/constructors/Checkbox/Checkbox.ts
 src/classes/LabelHighlightInclude.ts
 src/classes/PrefixInclude.ts
 src/classes/SuffixInclude.ts
-src/constructors/ListItem/ListItemLazy.ts
-src/constructors/ListItem/ListItem.ts
-src/constructors/ListItem/ListItemDesign.tsx
 src/constructors/Window/WindowOpen.ts
 src/constructors/Window/WindowInclude.ts
 src/constructors/Window/Window.ts
@@ -205,3 +200,9 @@ src/constructors/Input/InputDesign.tsx
 src/classes/Field/FieldValueInclude.ts
 src/constructors/Input/Input.ts
 src/classes/Field/FieldTypeInclude.ts
+src/constructors/ListItem/ListItemLazyHeight.ts
+src/constructors/ListItem/ListItemLazy.ts
+src/constructors/ListItem/ListItemDesign.tsx
+src/classes/CaptionInclude.ts
+src/constructors/Button/Button.ts
+src/constructors/ListItem/ListItem.ts

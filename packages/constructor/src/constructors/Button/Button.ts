@@ -220,7 +220,10 @@ export class Button extends DesignLogicAbstract<
       return this.props.tag
     }
 
-    if (this.props.href) {
+    if (
+      this.props.to
+      || this.props.href
+    ) {
       return 'a'
     }
 

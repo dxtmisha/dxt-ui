@@ -278,12 +278,16 @@ export class ListItem extends DesignLogicAbstract<
    */
   get classes(): ConstrClassObject {
     const selectionStyle = this.props.selectionStyle ?? 'none'
+    const lazyClasses = this.callInstance('lazy', item => item.classes)
     const classes: ConstrClassObject = {
       [this.naming.getStatusClass('selected')]: Boolean(this.props.selected && selectionStyle === 'none'),
       [this.naming.getStatusClass('selectionStyle')]: selectionStyle !== 'none',
       [this.naming.getStatusClass('description')]: DescriptionInclude.is(this.props, this.slots),
-      [getClassTagAStatic(this.naming.getDesign())]: true,
-      ...this.callInstance('lazy', item => item.classes, {})
+      [getClassTagAStatic(this.naming.getDesign())]: true
+    }
+
+    if (lazyClasses) {
+      Object.assign(classes, lazyClasses)
     }
 
     if (this.props.selectionStyle) {
@@ -314,7 +318,10 @@ export class ListItem extends DesignLogicAbstract<
       return this.props.tag
     }
 
-    if (this.props.href) {
+    if (
+      this.props.to
+      || this.props.href
+    ) {
       return 'a'
     }
 

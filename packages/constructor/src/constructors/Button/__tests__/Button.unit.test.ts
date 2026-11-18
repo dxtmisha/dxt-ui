@@ -57,7 +57,7 @@ describe('Button (unit)', () => {
       })
     })
 
-    it('should resolve tag to "a" when href is supplied and tag is omitted', () => {
+    it('should resolve tag to "a" when href or to is supplied and tag is omitted', () => {
       const scope = effectScope()
       cleanups.push(() => scope.stop())
       const element = ref<HTMLDivElement>()
@@ -69,6 +69,14 @@ describe('Button (unit)', () => {
         expect(button.tag).toBe('a')
         expect(button.binds.href).toBe('https://example.com')
         expect(button.binds.type).toBeUndefined()
+
+        props.href = undefined
+        props.to = '/dashboard'
+        expect(button.tag).toBe('a')
+        expect(button.binds.type).toBeUndefined()
+
+        props.to = { name: 'dashboard' }
+        expect(button.tag).toBe('a')
       })
     })
 

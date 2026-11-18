@@ -207,6 +207,22 @@ describe('ListItem (Integration)', () => {
     expect(logic.hasInstance('suffix')).toBe(false)
   })
 
+  it('should render numeric 0 for label, caption, description, and badge', async () => {
+    const { host } = await mountListItem({
+      label: 0,
+      caption: 0,
+      description: 0,
+      badge: 0,
+      selectionStyle: 'none'
+    })
+
+    const root = host.querySelector('.d1-listItem') as HTMLElement
+    expect(root.querySelector('.d1-listItem__label')?.textContent).toBe('0')
+    expect(root.querySelector('.d1-listItem__caption')?.textContent).toBe('0')
+    expect(root.querySelector('.d1-listItem__description')?.textContent).toBe('0')
+    expect(root.querySelector('.mock-badge')?.textContent).toBe('0')
+  })
+
   it('should render all text, icon, badge, progress, and skeleton elements reactively', async () => {
     const { host, props, logic } = await mountListItem({
       label: 'Settings',

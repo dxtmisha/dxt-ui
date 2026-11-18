@@ -30,6 +30,7 @@
   &__body {
     align-self: center;
     flex-grow: 1;
+    min-width: 0;
     order: 16;
     z-index: 4;
 
@@ -49,6 +50,7 @@
 
   &__context {
     @include ui.flexX;
+    flex-wrap: wrap;
     order: 16;
 
     @include ui.subclass('prefix') {

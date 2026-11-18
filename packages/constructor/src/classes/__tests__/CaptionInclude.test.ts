@@ -4,15 +4,40 @@ import { DesignName } from '@dxtmisha/functional'
 import { CaptionInclude } from '../CaptionInclude'
 
 describe('CaptionInclude', () => {
-  it('should return correct is value', () => {
+  it('should return correct is value including zero and string zero', () => {
+    expect(CaptionInclude.is({ caption: 'Hello' })).toBe(true)
+    expect(CaptionInclude.is({ caption: 0 })).toBe(true)
+    expect(CaptionInclude.is({ caption: '0' })).toBe(true)
+    expect(CaptionInclude.is({ caption: '' })).toBe(false)
+    expect(CaptionInclude.is({ caption: undefined })).toBe(false)
+    expect(CaptionInclude.is({}, { caption: () => 'slot content' })).toBe(true)
+
     const include1 = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'))
     expect(include1.is).toBe(true)
+
+    const includeZero = new CaptionInclude({ caption: 0 }, new DesignName('my.class'))
+    expect(includeZero.is).toBe(true)
+
+    const includeStringZero = new CaptionInclude({ caption: '0' }, new DesignName('my.class'))
+    expect(includeStringZero.is).toBe(true)
 
     const include2 = new CaptionInclude({ caption: undefined }, new DesignName('my.class'))
     expect(include2.is).toBe(false)
 
     const include3 = new CaptionInclude({}, new DesignName('my.class'), { caption: () => 'slot content' })
     expect(include3.is).toBe(true)
+  })
+
+  it('should render numeric 0 and string "0" caption values', () => {
+    const numericZero = new CaptionInclude({ caption: 0 }, new DesignName('my.class'))
+    const numericNodes = numericZero.render()
+    expect(numericNodes.length).toBe(1)
+    expect(numericNodes[0].children).toEqual([0])
+
+    const stringZero = new CaptionInclude({ caption: '0' }, new DesignName('my.class'))
+    const stringNodes = stringZero.render()
+    expect(stringNodes.length).toBe(1)
+    expect(stringNodes[0].children).toEqual(['0'])
   })
 
   it('should return correct binds when not decorative', () => {

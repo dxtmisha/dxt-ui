@@ -129,8 +129,10 @@ const statusValue = computed<string>(() => {
           <D1Button label="Button Tag" tag="button" type="button" />
           <D1Button label="Submit Type" tag="button" type="submit" />
           <D1Button label="Reset Type" tag="button" type="reset" />
-          <D1Button label="Link (A Tag)" tag="a" href="https://github.com" target="_blank" />
-          <D1Button label="Router Link" :to="{ name: 'home' }" />
+          <D1Button label="Link (href)" href="https://github.com" target="_blank" rel="noopener noreferrer" />
+          <D1Button label="Link (A Tag)" tag="a" href="https://github.com" target="_blank" rel="noopener noreferrer" />
+          <D1Button label="Router Link (object)" :to="{ name: 'home' }" />
+          <D1Button label="Router Link (string)" to="/component-button" />
           <D1Button label="Span Tag" tag="span" ariaLabel="Custom Span Button" />
         </div>
       </D1Group>

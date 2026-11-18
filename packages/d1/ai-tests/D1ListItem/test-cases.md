@@ -4,8 +4,8 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/ListItem` (`packages/constructor/src/constructors/ListItem`, `packages/demo/src/pages/components/DemoListItemPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-list-item`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-17`
-- **Всего тест-кейсов**: `9`
+- **Последняя проверка / обновление**: `2026-11-18`
+- **Всего тест-кейсов**: `10`
 
 ---
 
@@ -14,8 +14,8 @@
 | Категория | Код | Кол-во | Распределение приоритетов | Область фокуса |
 | :--- | :--- | :--- | :--- | :--- |
 | **Визуал и токены** | `VIS` | 3 | P0, P1 | Базовая разметка, состояния, `loading`/`skeleton`, размеры, палитры, `fill`, `divider`, `selectionStyle`, `controlPosition` |
-| **Интерактивность и функционал** | `INT` | 2 | P0, P1 | Переключение `checkbox`/`radio` по клику, `highlight` и `filterMode`, события `click`/`clickLite`, `expose` (`getValue`, `getDetail`) |
-| **Границы и крайние случаи** | `BND` | 1 | P1 | Числовой `0`, все 8 слотов, теги и ссылки (`button`, `href`, `to`) |
+| **Интерактивность и функционал** | `INT` | 3 | P0, P1 | Переключение `checkbox`/`radio`, `highlight` и `filterMode`, события `click`/`clickLite`, `expose` (`getValue`, `getDetail`), ленивый рендеринг `lazy` / `lazyCacheHeight` |
+| **Границы и крайние случаи** | `BND` | 1 | P1 | Числовой `0`, все 8 слотов, пользовательские ID (`labelId`, `prefixId`, `suffixId`, `descriptionId`), теги и ссылки (`button`, `href`, `to`) |
 | **Адаптивность и viewport** | `RSP` | 1 | P1 | Десктоп (`1440×900`), планшет (`768×1024`), мобильные (`375×812`, `320×568`), медиа-переключение `controlPosition="autoMd"` |
 | **Доступность (A11y)** | `A11Y` | 1 | P1 | `role`, `aria-selected`, `aria-checked`, `aria-disabled`, `aria-hidden` на `captionDecorative`, клавиатурная активация `Enter` |
 | **Консоль и рантайм** | `LOG` | 1 | P0 | `0` ошибок `console.error`, `pageerror`, `[Vue warn]` и сетевых сбоев |
@@ -80,17 +80,28 @@
 - **Ожидаемый результат**: События регистрируются с полезной нагрузкой `value` и `detail`; `expose` возвращает `"list-item-value"` и `{"source":"demo"}`.
 - **Тип доказательства**: `Console/Log`
 
+#### [TC-INT-003] Ленивый рендеринг (`lazy`, `lazyMargin`, `lazyCacheHeight`) при прокрутке и переключении
+- **Приоритет**: `P0 (Critical)`
+- **Категория**: `Интерактивность и функционал`
+- **Предусловия**: Прокрутить к группе `Lazy Rendering` со списком `.demo-list-item-page__lazy`.
+- **Шаги теста**:
+  1. Проверить начальное состояние: видимые верхние элементы имеют `.d1-listItem--lazy--visible` и отрендеренную `.d1-listItem__label`, а нижние элементы вне зоны видимости (`lazyMargin="64px 0px"`) имеют `.d1-listItem--lazy--hidden` без дочернего `.d1-listItem__label`.
+  2. Прокрутить `.demo-list-item-page__lazy` вниз до конца, проверить появление нижних элементов (`visible`) и сохранение `contain-intrinsic-height` у ушедших за экран верхних элементов.
+  3. Переключить кнопку `lazyCacheHeight: false` и проверить очистку inline `contain-intrinsic-height`, затем переключить `lazy: false` и проверить рендеринг всех 16 элементов без `.d1-listItem--lazy`.
+- **Ожидаемый результат**: Внеэкранные элементы откладывают рендеринг дочерних узлов, сохраняют измеренную высоту в `containIntrinsicHeight` при выходе из области видимости и корректно реагируют на отключение `lazyCacheHeight` и `lazy`.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-003.png`)
+
 ### 2.3 Границы и крайние случаи (`BND`)
 
-#### [TC-BND-001] Нулевые значения (`0`), проекция всех 8 слотов, кастомные теги и ссылки
+#### [TC-BND-001] Нулевые значения (`0`), проекция всех 8 слотов, пользовательские ID, кастомные теги и ссылки
 - **Приоритет**: `P1 (High)`
 - **Категория**: `Границы и крайние случаи`
 - **Предусловия**: Группы `Basic & Data Formats`, `Slots`, `Tags, Links & ARIA Roles`.
 - **Шаги теста**:
   1. Проверить элемент с `:label="0" :caption="0" :description="0" :badge="0"`.
   2. Проверить наличие содержимого всех 8 слотов (`leading`, `prefix`, `default`, `caption`, `suffix`, `description`, `body`, `trailing`) в группе `Slots`.
-  3. Проверить рендеринг `<button>` и `<a>` (`href` и `to`) в группе `Tags, Links & ARIA Roles`.
-- **Ожидаемый результат**: Значение `0` отображается во всех текстовых слоях и бейдже; все 8 слотов и семантические теги (`button`, `a`) рендерятся корректно.
+  3. Проверить пользовательские ID (`#demo-list-item-label-id`, `#demo-list-item-prefix-id`, `#demo-list-item-suffix-id`, `#demo-list-item-description-id`) и рендеринг `<button>` и `<a>` (`href` и `to`) в группе `Tags, Links & ARIA Roles`.
+- **Ожидаемый результат**: Значение `0` отображается во всех текстовых слоях и бейдже; все 8 слотов, пользовательские ID и семантические теги (`button`, `a`) рендерятся корректно.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-BND-001.png`)
 
 ### 2.4 Адаптивность и viewport (`RSP`)
