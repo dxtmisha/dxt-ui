@@ -7,15 +7,16 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
+  ErrorCenterThrow,
   isNull,
   isObjectNotArray,
   isPositiveInteger,
   isString,
-  uniqueArray,
-  type ErrorCenterThrowInstance
+  uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
+import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { users } from '../media/schema/users'
@@ -51,19 +52,17 @@ const { passwordHash: _passwordHash, ...USER_PUBLIC_COLUMNS } = /* #__PURE__ */ 
  */
 export class CmsUserItem extends CmsDbAbstract<typeof users> {
   /**
-   * Initializes a user entity wrapper with user data, database instance manager, and error handler.
+   * Initializes a user entity wrapper with user data and database instance manager.
    *
-   * Инициализирует обёртку конкретного пользователя с его данными, менеджером БД и обработчиком ошибок.
+   * Инициализирует обёртку конкретного пользователя с его данными и менеджером БД.
    * @param data User record with assigned roles and permissions / Запись пользователя с назначенными ролями и правами доступа
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
     protected data: CmsUserWithRoles,
-    databaseInstance?: CmsDbInstance,
-    error?: ErrorCenterThrowInstance
+    databaseInstance?: CmsDbInstance
   ) {
-    super(users, databaseInstance, error)
+    super(users, databaseInstance)
   }
 
   /**
@@ -309,8 +308,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
           ...roleRecord,
           permissions: [...roleRecord.permissions]
         },
-        this.databaseInstance,
-        this.error
+        this.databaseInstance
       )
     )
   }
@@ -345,7 +343,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    */
   getPermissionItems(): CmsPermissionItem[] {
     return this.getPermissions().map(
-      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance, this.error)
+      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance)
     )
   }
 
@@ -440,7 +438,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     try {
-      const updatedRecord = await this.getDatabase().transaction(async (transaction) => {
+      const updatedRecord = await this.databaseInstance.get().transaction(async (transaction) => {
         const existingRows = await transaction
           .select(USER_PUBLIC_COLUMNS)
           .from(users)
@@ -454,8 +452,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
         const updateValues = CmsUserItem.buildUpdateValues(
           input,
-          existingUser.metadata,
-          this.error
+          existingUser.metadata
         )
         const updatedRows = await transaction
           .update(users)
@@ -492,7 +489,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-user',
           code: 'update'
@@ -515,7 +512,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       return false
     }
 
-    const database = this.getDatabase()
+    const database = this.databaseInstance.get()
 
     try {
       if (options.hard) {
@@ -560,7 +557,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         return true
       })
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-user',
           code: 'delete'
@@ -589,7 +586,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     const foundRecord = await CmsUserItem.findOneWithRoles(
-      this.getDatabase(),
+      this.databaseInstance.get(),
       and(...conditions)
     )
 
@@ -614,7 +611,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     try {
-      const restoredRecord = await this.getDatabase().transaction(async (transaction) => {
+      const restoredRecord = await this.databaseInstance.get().transaction(async (transaction) => {
         const existingRows = await transaction
           .select(USER_PUBLIC_COLUMNS)
           .from(users)
@@ -658,7 +655,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       this.data = restoredRecord
       return this
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-user',
           code: 'restore'
@@ -695,8 +692,8 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     const userId = this.data.id
 
     try {
-      const rolesList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsUserItem.ensureUserExists(transaction, this.error, userId)
+      const rolesList = await this.databaseInstance.get().transaction(async (transaction) => {
+        await CmsUserItem.ensureUserExists(transaction, userId)
         const resolvedIds = await CmsRoleItem.resolveIds(
           transaction,
           roleIds,
@@ -714,7 +711,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-user',
           code: errorCode
@@ -741,8 +738,8 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     const userId = this.data.id
 
     try {
-      const rolesList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsUserItem.ensureUserExists(transaction, this.error, userId)
+      const rolesList = await this.databaseInstance.get().transaction(async (transaction) => {
+        await CmsUserItem.ensureUserExists(transaction, userId)
         const resolvedIds = await CmsRoleItem.resolveIds(
           transaction,
           roleIds,
@@ -768,7 +765,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-user',
           code: errorCode
@@ -795,8 +792,8 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     const userId = this.data.id
 
     try {
-      const rolesList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsUserItem.ensureUserExists(transaction, this.error, userId)
+      const rolesList = await this.databaseInstance.get().transaction(async (transaction) => {
+        await CmsUserItem.ensureUserExists(transaction, userId)
 
         const targetIds: number[] = []
 
@@ -844,7 +841,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-user',
           code: errorCode
@@ -893,17 +890,15 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Формирует и валидирует объект вставки в базу данных из входных данных создания.
    * @param input User creation payload / Входные данные для создания пользователя
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
   static buildCreateValues(
-    input: CmsUserCreateInput,
-    error: ErrorCenterThrowInstance
+    input: CmsUserCreateInput
   ): CmsNewUser {
-    const email = CmsUserItem.normalizeEmail(input.email, error)
-    const firstName = CmsUserItem.normalizeFirstName(input.firstName, error)
+    const email = CmsUserItem.normalizeEmail(input.email)
+    const firstName = CmsUserItem.normalizeFirstName(input.firstName)
     const username = normalizeCmsOptionalText(input.username)
-    const phone = CmsUserItem.normalizePhone(input.phone, error)
+    const phone = CmsUserItem.normalizePhone(input.phone)
     const metadata = CmsUserItem.normalizeMetadata(input.metadata)
 
     return {
@@ -932,22 +927,20 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * Формирует и валидирует объект обновления в базе данных из входных данных редактирования.
    * @param input Partial user update payload / Частичные данные для обновления пользователя
    * @param currentMetadata Current stored metadata / Текущие сохранённые метаданные пользователя
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
    */
   static buildUpdateValues(
     input: CmsUserUpdateInput,
-    currentMetadata: CmsUserMetadata,
-    error: ErrorCenterThrowInstance
+    currentMetadata: CmsUserMetadata
   ): Partial<CmsNewUser> {
     const values: Partial<CmsNewUser> = {}
 
     if (input.email !== undefined) {
-      values.email = CmsUserItem.normalizeEmail(input.email, error)
+      values.email = CmsUserItem.normalizeEmail(input.email)
     }
 
     if (input.firstName !== undefined) {
-      values.firstName = CmsUserItem.normalizeFirstName(input.firstName, error)
+      values.firstName = CmsUserItem.normalizeFirstName(input.firstName)
     }
 
     if (input.username !== undefined) {
@@ -955,7 +948,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (input.phone !== undefined) {
-      values.phone = CmsUserItem.normalizePhone(input.phone, error)
+      values.phone = CmsUserItem.normalizePhone(input.phone)
     }
 
     if (input.lastName !== undefined) {
@@ -1049,16 +1042,15 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Проверяет наличие не удалённого пользователя с указанным идентификатором или регистрирует ошибку.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @param userId User identifier / Идентификатор пользователя
    */
   static async ensureUserExists(
     executor: CmsDbExecutor,
-    error: ErrorCenterThrowInstance,
     userId: number
   ): Promise<void> {
     if (!isPositiveInteger(userId)) {
-      error.on({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: 'cms-user',
         code: 'notFound',
         details: { userId }
@@ -1072,7 +1064,8 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      error.on({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: 'cms-user',
         code: 'notFound',
         details: { userId }
@@ -1114,12 +1107,10 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Нормализует и проверяет адрес электронной почты.
    * @param email Raw email input / Исходный адрес электронной почты
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Normalized lowercase email / Нормализованный email в нижнем регистре
    */
   static normalizeEmail(
-    email: string,
-    error: ErrorCenterThrowInstance
+    email: string
   ): string {
     const normalized = isString(email) ? email.trim().toLowerCase() : ''
     const emailParts = normalized.split('@')
@@ -1131,7 +1122,8 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       || emailParts[1].length === 0
       || /\s/.test(normalized)
     ) {
-      error.on({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: 'cms-user',
         code: 'invalidEmail',
         details: { email }
@@ -1146,17 +1138,16 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Нормализует и проверяет имя пользователя.
    * @param firstName Raw first name input / Исходное имя пользователя
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Trimmed first name / Очищенное имя пользователя
    */
   static normalizeFirstName(
-    firstName: string,
-    error: ErrorCenterThrowInstance
+    firstName: string
   ): string {
     const normalized = isString(firstName) ? firstName.trim() : ''
 
     if (normalized.length === 0) {
-      error.on({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: 'cms-user',
         code: 'invalidFirstName',
         details: { firstName }
@@ -1171,12 +1162,10 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Нормализует и проверяет международный номер телефона (только цифры, E.164 без +).
    * @param phone Raw phone number or null / Исходный номер телефона, null или undefined
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated phone number, null, or undefined / Проверенный номер телефона, null или undefined
    */
   static normalizePhone(
-    phone: number | null | undefined,
-    error: ErrorCenterThrowInstance
+    phone: number | null | undefined
   ): number | null | undefined {
     if (phone === undefined) {
       return undefined
@@ -1187,7 +1176,8 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (!Number.isSafeInteger(phone) || phone <= 0) {
-      error.on({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: 'cms-user',
         code: 'invalidPhone',
         details: { phone }

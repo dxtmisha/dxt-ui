@@ -1,7 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ErrorCenter, ErrorCenterInstance, ErrorCenterThrowInstance } from '@dxtmisha/functional-basic'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
-import { useCmsDb } from '../../composables/useCmsDb'
+import { ErrorCenter } from '@dxtmisha/functional-basic'
 import { CmsDbInstance } from '../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
@@ -95,26 +93,18 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
 }
 
 describe('CmsPermissionItem', () => {
-  let errorCenter: ErrorCenterInstance
-  let cmsError: ErrorCenterThrowInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
-    errorCenter = new ErrorCenterInstance()
-    errorCenter.setIsConsole(false)
     ErrorCenter.setIsConsole(false)
-    registerCmsErrorCauses(errorCenter)
-    cmsError = new ErrorCenterThrowInstance(errorCenter)
     capturedErrors = []
-    const captureError = (cause: { group?: string, code: string, message?: string }) => {
+    ErrorCenter.addCallback((cause) => {
       capturedErrors.push({
         group: cause.group,
         code: cause.code,
         message: cause.message
       })
-    }
-    errorCenter.addCallback(captureError)
-    ErrorCenter.addCallback(captureError)
+    })
   })
 
   afterEach(() => {
@@ -126,9 +116,8 @@ describe('CmsPermissionItem', () => {
   describe('Getters & immutability', () => {
     it('exposes all permission fields and returns immutable snapshots from getData/toJSON', () => {
       const data = makePermission()
-      const item = new CmsPermissionItem(data, undefined, cmsError)
+      const item = new CmsPermissionItem(data)
 
-      expect(item.getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
       expect(item.getId()).toBe(10)
       expect(item.getCode()).toBe('users:read')
       expect(item.getName()).toBe('cms-permission-users_read')
@@ -155,7 +144,7 @@ describe('CmsPermissionItem', () => {
       const mock = createMockDb({
         updateQueue: [[updatedRecord]]
       })
-      const item = new CmsPermissionItem(makePermission(), mock.dbInstance, cmsError)
+      const item = new CmsPermissionItem(makePermission(), mock.dbInstance)
 
       const result = await item.update({
         code: '  users:manage  ',
@@ -179,8 +168,8 @@ describe('CmsPermissionItem', () => {
 
     it('returns undefined when updating a missing or invalid permission ID', async () => {
       const mock = createMockDb({ updateQueue: [[]] })
-      const missingItem = new CmsPermissionItem(makePermission({ id: 404 }), mock.dbInstance, cmsError)
-      const invalidItem = new CmsPermissionItem(makePermission({ id: 0 }), mock.dbInstance, cmsError)
+      const missingItem = new CmsPermissionItem(makePermission({ id: 404 }), mock.dbInstance)
+      const invalidItem = new CmsPermissionItem(makePermission({ id: 0 }), mock.dbInstance)
 
       expect(await invalidItem.update({ name: 'Test' })).toBeUndefined()
       expect(await missingItem.update({ name: 'Test' })).toBeUndefined()
@@ -188,7 +177,7 @@ describe('CmsPermissionItem', () => {
 
     it('validates code and name on update via ErrorCenter', async () => {
       const mock = createMockDb()
-      const item = new CmsPermissionItem(makePermission(), mock.dbInstance, cmsError)
+      const item = new CmsPermissionItem(makePermission(), mock.dbInstance)
 
       await expect(item.update({ code: 'bad code' })).rejects.toThrow('Valid permission code is required.')
       await expect(item.update({ name: '   ' })).rejects.toThrow('Permission name is required.')
@@ -204,7 +193,7 @@ describe('CmsPermissionItem', () => {
         selectQueue: [[reloaded], []],
         deleteQueue: [[{ id: 10 }], []]
       })
-      const item = new CmsPermissionItem(makePermission(), mock.dbInstance, cmsError)
+      const item = new CmsPermissionItem(makePermission(), mock.dbInstance)
 
       expect(await item.reload()).toBe(item)
       expect(item.getName()).toBe('Reloaded name')

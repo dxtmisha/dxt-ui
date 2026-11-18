@@ -8,9 +8,10 @@ import {
   text,
   timestamp
 } from 'drizzle-orm/pg-core'
-import { createdOrigins } from './createdOrigins'
+import { getCmsCreatedOriginColumn } from '../../functions/schema/getCmsCreatedOriginColumn'
+import { getCmsSystemStatusColumn } from '../../functions/schema/getCmsSystemStatusColumn'
+import { getCmsTimestampColumns } from '../../functions/schema/getCmsTimestampColumns'
 import type {
-  CmsSystemStatus,
   CmsUserMetadata,
   CmsUserStatus
 } from '../../types/cmsDbTypes'
@@ -63,21 +64,13 @@ export const users = /* #__PURE__ */ pgTable(
     metadata: jsonb('metadata').$type<CmsUserMetadata>().notNull().default({}),
 
     // System status
-    /** System record status / Системный статус записи */
-    systemStatus: text('system_status').$type<CmsSystemStatus>().notNull().default('active'),
+    ...getCmsSystemStatusColumn(),
 
     // Origin
-    /** Creation origin code / Код источника создания записи */
-    createdOrigin: text('created_origin').references(() => createdOrigins.code, {
-      onUpdate: 'cascade',
-      onDelete: 'set null'
-    }),
+    ...getCmsCreatedOriginColumn(),
 
     // Timestamps
-    /** Creation timestamp / Дата создания */
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    /** Last update timestamp / Дата последнего обновления */
-    updatedAt: timestamp('updated_at').defaultNow().notNull()
+    ...getCmsTimestampColumns()
   },
   table => [
     index('users_metadata_gin_idx').using('gin', table.metadata)

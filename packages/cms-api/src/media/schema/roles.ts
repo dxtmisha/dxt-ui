@@ -1,6 +1,7 @@
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
-import { createdOrigins } from './createdOrigins'
-import type { CmsSystemStatus } from '../../types/cmsDbTypes'
+import { pgTable, serial, text } from 'drizzle-orm/pg-core'
+import { getCmsCreatedOriginColumn } from '../../functions/schema/getCmsCreatedOriginColumn'
+import { getCmsSystemStatusColumn } from '../../functions/schema/getCmsSystemStatusColumn'
+import { getCmsTimestampColumns } from '../../functions/schema/getCmsTimestampColumns'
 
 /**
  * Roles table schema for CMS /
@@ -20,19 +21,11 @@ export const roles = /* #__PURE__ */ pgTable('roles', {
   description: text('description'),
 
   // System status
-  /** System record status / Системный статус записи */
-  systemStatus: text('system_status').$type<CmsSystemStatus>().notNull().default('active'),
+  ...getCmsSystemStatusColumn(),
 
   // Origin
-  /** Creation origin code / Код источника создания записи */
-  createdOrigin: text('created_origin').references(() => createdOrigins.code, {
-    onUpdate: 'cascade',
-    onDelete: 'set null'
-  }),
+  ...getCmsCreatedOriginColumn(),
 
   // Timestamps
-  /** Creation timestamp / Дата создания */
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  /** Last update timestamp / Дата последнего обновления */
-  updatedAt: timestamp('updated_at').defaultNow().notNull()
+  ...getCmsTimestampColumns()
 })

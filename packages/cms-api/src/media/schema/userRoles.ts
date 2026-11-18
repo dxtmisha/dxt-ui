@@ -1,4 +1,5 @@
-import { index, integer, pgTable, primaryKey, timestamp } from 'drizzle-orm/pg-core'
+import { index, integer, pgTable, primaryKey } from 'drizzle-orm/pg-core'
+import { getCmsCreatedAtColumn } from '../../functions/schema/getCmsCreatedAtColumn'
 import { roles } from './roles'
 import { users } from './users'
 
@@ -20,8 +21,7 @@ export const userRoles = /* #__PURE__ */ pgTable(
       .references(() => roles.id, { onDelete: 'cascade' }),
 
     // Timestamps
-    /** Assignment timestamp / Дата назначения роли */
-    createdAt: timestamp('created_at').defaultNow().notNull()
+    ...getCmsCreatedAtColumn()
   },
   table => [
     primaryKey({ columns: [table.userId, table.roleId] }),

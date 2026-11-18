@@ -263,13 +263,14 @@ describe('InputPhoneDesign', () => {
     expect(input.id).toBe('phone-field-1')
     expect(input.name).toBe('phone-field')
     expect(input.getAttribute('inputmode')).toBe('tel')
-    expect(input.value).toBe('15551234567')
+    expect(input.value).toBe('+1-555-123-4567')
 
     props.disabled = false
     props.readonly = true
     await nextTick()
     const readonlyInput = container.querySelector('input.d1-field__body__input') as HTMLInputElement
     expect(readonlyInput.readOnly).toBe(true)
+    expect(readonlyInput.value).toBe('+1-555-123-4567')
     expect(container.querySelector('.mock-mask')).toBeNull()
   })
 

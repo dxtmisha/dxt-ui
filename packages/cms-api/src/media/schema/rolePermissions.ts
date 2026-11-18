@@ -1,4 +1,5 @@
-import { index, integer, pgTable, primaryKey, timestamp } from 'drizzle-orm/pg-core'
+import { index, integer, pgTable, primaryKey } from 'drizzle-orm/pg-core'
+import { getCmsCreatedAtColumn } from '../../functions/schema/getCmsCreatedAtColumn'
 import { permissions } from './permissions'
 import { roles } from './roles'
 
@@ -20,8 +21,7 @@ export const rolePermissions = /* #__PURE__ */ pgTable(
       .references(() => permissions.id, { onDelete: 'cascade' }),
 
     // Timestamps
-    /** Assignment timestamp / Дата назначения права */
-    createdAt: timestamp('created_at').defaultNow().notNull()
+    ...getCmsCreatedAtColumn()
   },
   table => [
     primaryKey({ columns: [table.roleId, table.permissionId] }),

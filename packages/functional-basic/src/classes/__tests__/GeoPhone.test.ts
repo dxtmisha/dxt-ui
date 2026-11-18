@@ -11,7 +11,7 @@ type GeoPhoneInternal = typeof GeoPhone & {
   getUnnecessaryLength: (mask: string) => number
   getWithinSymbol: (within?: string) => string
   removeZero: (phone: string) => string
-  toMask: (phone: string, masks?: string[], isRemoveZero?: boolean) => string | undefined
+  toMask: (phone: string, masks?: string[], isRemoveZero?: boolean, isPartial?: boolean) => string | undefined
   toNumber: (value: string) => string[]
   toStandard: (phone: string, mask: string) => string
   toWithin: (mask: string, within?: string) => string
@@ -158,6 +158,12 @@ describe('GeoPhone', () => {
       expect(matchShort.phone).toBe('999123')
       expect(matchShort.full).toBe('7999123')
       expect(matchShort.format).toBe('+7 (999) 123')
+
+      const matchPartial = GeoPhone.getByPhoneFull('+7 (999) 123', true)
+      expect(matchPartial.item?.value).toBe('RU')
+      expect(matchPartial.phone).toBe('999123')
+      expect(matchPartial.full).toBe('7999123')
+      expect(matchPartial.format).toBe('+7-999-123')
     })
   })
 
@@ -284,6 +290,7 @@ describe('GeoPhone', () => {
       it('should substitute placeholders sequentially via toStandard', () => {
         expect(GeoPhoneProtected.toStandard('7900', '+* (***)')).toBe('+7 (900)')
         expect(GeoPhoneProtected.toStandard('9001', '+~ ($=?)')).toBe('+9 (001)')
+        expect(GeoPhoneProtected.toStandard('7900123', '+*-***-***-**-**')).toBe('+7-900-123')
       })
 
       it('should apply within symbols for corresponding within variations', () => {

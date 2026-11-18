@@ -18,11 +18,41 @@ const valueVN = ref<string>('84912345678')
 const valueBlocked = ref<string>('')
 const valueMaskAttrs = ref<string>('')
 const valueValidation = ref<string>('7900')
+const valueRequired = ref<string>('')
 const valueLengthMask = ref<string>('49301234')
 const valueConflictCode = ref<string>('12025550147')
+const valueWithinRU = ref<string>('')
+const valueWithinVN = ref<string>('')
+const valueWithinRUBlocked = ref<string>('')
+const valueWithinVNBlocked = ref<string>('')
+const valuePasteCountry = ref<string>('')
+const valuePasteRU = ref<string>('')
+const valuePasteVN = ref<string>('')
+
+const countryDefaultDynamic = ref<string | undefined>(undefined)
+const valueDynamicUntouched = ref<string>('')
+const valueDynamicModified = ref<string>('79001234567')
+const dynamicResetKey = ref<number>(0)
+
+const requiredRef = ref<InputPhoneExpose>()
+const requiredValidResult = ref<string>('not checked')
 
 const exposedRef = ref<InputPhoneExpose>()
 const exposedResult = ref<string>('none')
+
+const onCheckRequired = (): void => {
+  const valid = requiredRef.value?.checkValidity()
+  const message = requiredRef.value?.getValidationMessage()
+
+  requiredValidResult.value = `valid=${String(valid)}, message=${message || 'none'}`
+}
+
+const onResetDynamicCountry = (): void => {
+  countryDefaultDynamic.value = undefined
+  valueDynamicUntouched.value = ''
+  valueDynamicModified.value = '79001234567'
+  dynamicResetKey.value++
+}
 
 const onReadExposed = (): void => {
   const value = exposedRef.value?.getValue()
@@ -112,6 +142,33 @@ const onClearExposed = (): void => {
               :input-phone-dial-code-attrs="{ labelType: 'name', menuCountryAttrs: { list: ['US', 'DE', 'RU', 'VN'] } }"
             />
           </DemoBox>
+          <DemoFlex>
+            <DemoBox>
+              <D1InputPhone
+                :key="`dynamic-untouched-${dynamicResetKey}`"
+                v-model:value="valueDynamicUntouched"
+                :country-default="countryDefaultDynamic"
+                label="Reactive countryDefault (Untouched)"
+                helper-message="Follows Geo default until changed; reacts when countryDefault updates"
+              />
+              <DemoValue :value="`${countryDefaultDynamic || 'auto'} -> ${valueDynamicUntouched || 'empty'}`"/>
+            </DemoBox>
+            <DemoBox>
+              <D1InputPhone
+                :key="`dynamic-modified-${dynamicResetKey}`"
+                v-model:value="valueDynamicModified"
+                :country-default="countryDefaultDynamic"
+                label="Reactive countryDefault (Modified)"
+                helper-message="Keeps existing non-default phone value when countryDefault updates"
+              />
+              <DemoValue :value="valueDynamicModified"/>
+            </DemoBox>
+          </DemoFlex>
+          <DemoFlex>
+            <D1Button label="Set countryDefault = DE" @click="countryDefaultDynamic = 'DE'"/>
+            <D1Button label="Set countryDefault = VN" @click="countryDefaultDynamic = 'VN'"/>
+            <D1Button label="Reset Dynamic Default" @click="onResetDynamicCountry"/>
+          </DemoFlex>
         </DemoFlex>
       </D1Group>
 
@@ -169,10 +226,18 @@ const onClearExposed = (): void => {
         <DemoFlex>
           <DemoBox>
             <D1InputPhone
+              ref="requiredRef"
+              v-model:value="valueRequired"
+              country-default="US"
               label="Required Field"
               required
-              helper-message="Required phone field"
+              :validation-code="{ valueMissing: 'Phone number is required' }"
+              helper-message="Bare dial prefix (+1-) is invalid when required"
             />
+            <DemoValue :value="requiredValidResult"/>
+            <DemoFlex>
+              <D1Button label="Validate Required" @click="onCheckRequired"/>
+            </DemoFlex>
           </DemoBox>
           <DemoBox>
             <D1InputPhone
@@ -242,6 +307,8 @@ const onClearExposed = (): void => {
         <DemoFlex>
           <DemoBox><D1InputPhone label="Disabled" disabled value="79001234567"/></DemoBox>
           <DemoBox><D1InputPhone label="Readonly" readonly value="79001234567"/></DemoBox>
+          <DemoBox><D1InputPhone label="Disabled (Partial)" disabled value="7900123"/></DemoBox>
+          <DemoBox><D1InputPhone label="Readonly (Blocked US)" readonly country-default="US" :country-block="true" value="2025550"/></DemoBox>
           <DemoBox><D1InputPhone label="Focused" focus value="79001234567"/></DemoBox>
           <DemoBox><D1InputPhone label="Selected" selected value="79001234567"/></DemoBox>
           <DemoBox>
@@ -383,6 +450,85 @@ const onClearExposed = (): void => {
               <D1Button label="GB (+44-20)" @click="valueConflictCode = '442079460958'"/>
               <D1Button label="GG (+44-1481)" @click="valueConflictCode = '441481123456'"/>
             </DemoFlex>
+          </DemoBox>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Domestic Trunk Prefixes (8 / 0)">
+        <DemoFlex>
+          <DemoBox>
+            <D1InputPhone
+              v-model:value="valueWithinRU"
+              country-default="RU"
+              label="Russia (Trunk Prefix 8)"
+              helper-message="Type 89001234567: leading 8 is skipped in +7-~**-***-**-**"
+              :input-phone-dial-code-attrs="{ labelType: 'code' }"
+            />
+            <DemoValue :value="valueWithinRU"/>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              v-model:value="valueWithinVN"
+              country-default="VN"
+              label="Vietnam (Trunk Prefix 0)"
+              helper-message="Type 0912345678: leading 0 is skipped in +84-=*-****-***"
+              :input-phone-dial-code-attrs="{ labelType: 'code' }"
+            />
+            <DemoValue :value="valueWithinVN"/>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              v-model:value="valueWithinRUBlocked"
+              country-default="RU"
+              :country-block="true"
+              label="Russia Blocked (Trunk Prefix 8)"
+              helper-message="With countryBlock=true, typing 89001234567 skips 8"
+            />
+            <DemoValue :value="valueWithinRUBlocked"/>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              v-model:value="valueWithinVNBlocked"
+              country-default="VN"
+              :country-block="true"
+              label="Vietnam Blocked (Trunk Prefix 0)"
+              helper-message="With countryBlock=true, typing 0912345678 skips 0"
+            />
+            <DemoValue :value="valueWithinVNBlocked"/>
+          </DemoBox>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Copy & Paste">
+        <DemoFlex>
+          <DemoBox>
+            <D1InputPhone
+              v-model:value="valuePasteCountry"
+              label="Paste With Country Code"
+              helper-message="Try pasting: +7 900 123-45-67, +84 91 234 5678, +49 30 123456"
+              :input-phone-dial-code-attrs="{ labelType: 'code' }"
+            />
+            <DemoValue :value="valuePasteCountry"/>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              v-model:value="valuePasteRU"
+              country-default="RU"
+              label="Paste RU (8 / Local / +7)"
+              helper-message="Try pasting: +7 (900) 123-45-67, 8 (900) 123-45-67, or 9001234567"
+              :input-phone-dial-code-attrs="{ labelType: 'code' }"
+            />
+            <DemoValue :value="valuePasteRU"/>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              v-model:value="valuePasteVN"
+              country-default="VN"
+              label="Paste VN (0 / Local / +84)"
+              helper-message="Try pasting: +84 91 234 5678, 0912345678, or 912345678"
+              :input-phone-dial-code-attrs="{ labelType: 'code' }"
+            />
+            <DemoValue :value="valuePasteVN"/>
           </DemoBox>
         </DemoFlex>
       </D1Group>

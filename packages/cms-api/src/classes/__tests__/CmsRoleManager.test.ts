@@ -1,6 +1,5 @@
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { ErrorCenter, ErrorCenterInstance, ErrorCenterThrowInstance } from '@dxtmisha/functional-basic'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
+import { ErrorCenter } from '@dxtmisha/functional-basic'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
 import { CmsPermissionManager } from '../CmsPermissionManager'
@@ -138,26 +137,18 @@ function makeRole(overrides: Partial<CmsRole> = {}): CmsRole {
 }
 
 describe('CmsRoleManager', () => {
-  let errorCenter: ErrorCenterInstance
-  let cmsError: ErrorCenterThrowInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
-    errorCenter = new ErrorCenterInstance()
-    errorCenter.setIsConsole(false)
     ErrorCenter.setIsConsole(false)
-    registerCmsErrorCauses(errorCenter)
-    cmsError = new ErrorCenterThrowInstance(errorCenter)
     capturedErrors = []
-    const captureError = (cause: { group?: string, code: string, message?: string }) => {
+    ErrorCenter.addCallback((cause) => {
       capturedErrors.push({
         group: cause.group,
         code: cause.code,
         message: cause.message
       })
-    }
-    errorCenter.addCallback(captureError)
-    ErrorCenter.addCallback(captureError)
+    })
   })
 
   afterEach(() => {
@@ -166,23 +157,20 @@ describe('CmsRoleManager', () => {
     vi.restoreAllMocks()
   })
 
-  it('provides a synchronized CmsPermissionManager and supports configuration overrides', () => {
-    const firstMock = createMockDb()
-    const secondMock = createMockDb()
-    const secondError = new ErrorCenterThrowInstance(new ErrorCenterInstance())
-    const manager = new CmsRoleManager(firstMock.dbInstance, cmsError)
+  it('provides a synchronized CmsPermissionManager with the configured database instance', async () => {
+    const defaultMock = createMockDb({ selectQueue: [[{ id: 1 }]] })
+    const defaultGetSpy = vi.spyOn(useCmsDb().cmsDbInstance, 'get').mockReturnValue(defaultMock.db)
+    expect(await new CmsRoleManager().hasById(1)).toBe(true)
+    expect(defaultGetSpy).toHaveBeenCalledTimes(1)
 
-    expect(new CmsRoleManager().getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
+    const mock = createMockDb({ selectQueue: [[{ id: 2 }]] })
+    const manager = new CmsRoleManager(mock.dbInstance)
 
     const permissionManager = manager.getPermissionManager()
     expect(permissionManager).toBeInstanceOf(CmsPermissionManager)
     expect(manager.getPermissionManager()).toBe(permissionManager)
-    expect(permissionManager.getDatabaseInstance()).toBe(firstMock.dbInstance)
-    expect(permissionManager.getError()).toBe(cmsError)
-
-    manager.setDatabaseInstance(secondMock.dbInstance).setError(secondError)
-    expect(permissionManager.getDatabaseInstance()).toBe(secondMock.dbInstance)
-    expect(permissionManager.getError()).toBe(secondError)
+    expect(await permissionManager.hasById(2)).toBe(true)
+    expect(mock.dbInstance.get).toHaveBeenCalledTimes(1)
   })
 
   it('creates a role with permissions in a transaction and wraps it in CmsRoleItem', async () => {
@@ -201,7 +189,7 @@ describe('CmsRoleManager', () => {
         [{ permission: permOne }, { permission: permTwo }]
       ]
     })
-    const manager = new CmsRoleManager(mock.dbInstance, cmsError)
+    const manager = new CmsRoleManager(mock.dbInstance)
 
     const result = await manager.create({
       code: '  moderator  ',
@@ -228,7 +216,7 @@ describe('CmsRoleManager', () => {
       insertQueue: [[createdRole]],
       selectQueue: [[]]
     })
-    const manager = new CmsRoleManager(mock.dbInstance, cmsError)
+    const manager = new CmsRoleManager(mock.dbInstance)
 
     await expect(manager.create({ code: '  ', name: 'Role' })).rejects.toThrow('Valid role code is required.')
     await expect(manager.create({ code: 'mod', name: '  ' })).rejects.toThrow('Role name is required.')
@@ -262,7 +250,7 @@ describe('CmsRoleManager', () => {
         [{ roleId: 2, permission: perm }]
       ]
     })
-    const manager = new CmsRoleManager(mock.dbInstance, cmsError)
+    const manager = new CmsRoleManager(mock.dbInstance)
 
     expect(await manager.hasById(0)).toBe(false)
     expect(await manager.hasByCode('   ')).toBe(false)
@@ -308,7 +296,7 @@ describe('CmsRoleManager', () => {
       updateQueue: [[updatedRole]],
       deleteQueue: [[{ id: 2 }]]
     })
-    const manager = new CmsRoleManager(mock.dbInstance, cmsError)
+    const manager = new CmsRoleManager(mock.dbInstance)
 
     const listResult = await manager.getList({
       search: 'admin',

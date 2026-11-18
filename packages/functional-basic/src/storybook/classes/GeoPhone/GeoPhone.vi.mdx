@@ -42,12 +42,12 @@ console.log(GeoPhone.cleanPhone('+84 90 123 45 67')) // '84901234567'
 - `get(code: string): GeoPhoneValue | undefined` — Lấy dữ liệu meta điện thoại liên kết với một mã quốc gia cụ thể.
 - `getByCode(code: string): GeoPhoneMap | undefined` — Trả về thông tin mặt nạ đầy đủ cho một mã nhất định.
 - `getByPhone(phone: string): GeoPhoneMapInfo` — Phân tích chuỗi số điện thoại để trích xuất thông tin và mặt nạ phù hợp.
-- `getByPhoneFull(phone: string): GeoPhoneMapInfoFull` — Trả về thông tin mở rộng về số điện thoại, bao gồm chuỗi chỉ chứa chữ số (`full`) và số đã được định dạng theo mặt nạ (`format`).
+- `getByPhoneFull(phone: string, isPartial?: boolean): GeoPhoneMapInfoFull` — Trả về thông tin mở rộng về số điện thoại, bao gồm chuỗi chỉ chứa chữ số (`full`) và số đã được định dạng theo mặt nạ (`format`). Khi `isPartial = true`, các số điện thoại chưa đầy đủ cũng được định dạng theo mặt nạ phù hợp gần nhất.
 - `cleanPhone(value: string): string` — Xóa tất cả các ký tự không phải chữ số khỏi chuỗi số điện thoại.
 
 ### Các phương thức phụ trợ bảo vệ (`protected`)
 
-- `toMask(phone: string, masks?: string[], isRemoveZero?: boolean): string | undefined` — Chuyển đổi chuỗi số điện thoại thô thành phiên bản đã định dạng theo mặt nạ.
+- `toMask(phone: string, masks?: string[], isRemoveZero?: boolean, isPartial?: boolean): string | undefined` — Chuyển đổi chuỗi số điện thoại thô thành phiên bản đã định dạng theo mặt nạ (hỗ trợ định dạng số chưa đầy đủ khi `isPartial = true`).
 - `removeZero(phone: string): string` — Bình thường hóa biểu diễn nội bộ của số bằng cách loại bỏ các số 0 ở đầu hoặc điều chỉnh tiền tố khu vực.
 
 ## Kiểu dữ liệu
@@ -76,7 +76,7 @@ Kết quả của phương thức tìm kiếm `getByPhone`:
 ### `GeoPhoneMapInfoFull`
 Kết quả mở rộng của phương thức `getByPhoneFull` (kế thừa `GeoPhoneMapInfo`):
 - `full: string` — Số điện thoại đầy đủ (chỉ gồm các chữ số).
-- `format: string` — Số điện thoại đã được định dạng theo mặt nạ (hoặc chuỗi gốc nếu độ dài không khớp).
+- `format: string` — Số điện thoại đã được định dạng theo mặt nạ (hỗ trợ định dạng một phần khi `isPartial = true`, hoặc trả về chuỗi gốc nếu không khớp mặt nạ).
 
 ## Ví dụ
 
@@ -99,4 +99,8 @@ console.log(result.item?.value) // 'RU'
 console.log(result.phone)       // '9991234567'
 console.log(result.full)        // '79991234567'
 console.log(result.format)      // '+7-999-123-45-67'
+
+// Định dạng một phần cho số điện thoại chưa đầy đủ
+const partial = GeoPhone.getByPhoneFull('+7 (999) 123', true)
+console.log(partial.format)     // '+7-999-123'
 ```

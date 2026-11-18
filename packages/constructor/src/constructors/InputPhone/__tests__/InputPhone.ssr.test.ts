@@ -180,7 +180,7 @@ describe('InputPhone (SSR)', () => {
     expect(disabledHtml).not.toContain('mock-mask')
     expect(disabledHtml).toContain('disabled')
     expect(disabledHtml).toContain('data-validation="Disabled error"')
-    expect(disabledHtml).toContain('value="15550001122"')
+    expect(disabledHtml).toContain('value="+1-555-000-1122"')
   })
 
   it('should isolate ServerStorage across separate SSR requests', async () => {

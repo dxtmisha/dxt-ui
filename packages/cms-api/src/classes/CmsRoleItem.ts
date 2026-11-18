@@ -6,13 +6,14 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
+  ErrorCenterThrow,
   isPositiveInteger,
   isString,
-  uniqueArray,
-  type ErrorCenterThrowInstance
+  uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
+import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
@@ -38,19 +39,17 @@ import type {
  */
 export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
   /**
-   * Initializes a role entity wrapper with role data, database instance manager, and error handler.
+   * Initializes a role entity wrapper with role data and database instance manager.
    *
-   * Инициализирует обёртку конкретной роли с её данными, менеджером БД и обработчиком ошибок.
+   * Инициализирует обёртку конкретной роли с её данными и менеджером БД.
    * @param data Role record with assigned permissions / Запись роли с назначенными правами доступа
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
     protected data: CmsRoleWithPermissions,
-    databaseInstance?: CmsDbInstance,
-    error?: ErrorCenterThrowInstance
+    databaseInstance?: CmsDbInstance
   ) {
-    super(roles, databaseInstance, error)
+    super(roles, databaseInstance)
   }
 
   /**
@@ -198,7 +197,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    */
   getPermissionItems(): CmsPermissionItem[] {
     return this.data.permissions.map(
-      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance, this.error)
+      permissionRecord => new CmsPermissionItem(permissionRecord, this.databaseInstance)
     )
   }
 
@@ -281,10 +280,10 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       return undefined
     }
 
-    const updateValues = CmsRoleItem.buildUpdateValues(input, this.error)
+    const updateValues = CmsRoleItem.buildUpdateValues(input)
 
     try {
-      const updatedRecord = await this.getDatabase().transaction(async (transaction) => {
+      const updatedRecord = await this.databaseInstance.get().transaction(async (transaction) => {
         const existingRows = await transaction
           .select()
           .from(roles)
@@ -331,7 +330,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-role',
           code: 'update'
@@ -356,7 +355,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     try {
       return await this.deleteRecordById(roleId)
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-role',
           code: 'delete'
@@ -379,7 +378,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     }
 
     const foundRecord = await CmsRoleItem.findOneWithPermissions(
-      this.getDatabase(),
+      this.databaseInstance.get(),
       eq(roles.id, roleId)
     )
 
@@ -418,8 +417,8 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     const roleId = this.data.id
 
     try {
-      const permissionsList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsRoleItem.ensureRoleExists(transaction, this.error, roleId)
+      const permissionsList = await this.databaseInstance.get().transaction(async (transaction) => {
+        await CmsRoleItem.ensureRoleExists(transaction, roleId)
         const resolvedIds = await CmsPermissionItem.resolveIds(
           transaction,
           permissionIds,
@@ -437,7 +436,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-role',
           code: errorCode
@@ -464,8 +463,8 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     const roleId = this.data.id
 
     try {
-      const permissionsList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsRoleItem.ensureRoleExists(transaction, this.error, roleId)
+      const permissionsList = await this.databaseInstance.get().transaction(async (transaction) => {
+        await CmsRoleItem.ensureRoleExists(transaction, roleId)
         const resolvedIds = await CmsPermissionItem.resolveIds(
           transaction,
           permissionIds,
@@ -491,7 +490,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-role',
           code: errorCode
@@ -518,8 +517,8 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     const roleId = this.data.id
 
     try {
-      const permissionsList = await this.getDatabase().transaction(async (transaction) => {
-        await CmsRoleItem.ensureRoleExists(transaction, this.error, roleId)
+      const permissionsList = await this.databaseInstance.get().transaction(async (transaction) => {
+        await CmsRoleItem.ensureRoleExists(transaction, roleId)
 
         const targetIds: number[] = []
 
@@ -567,7 +566,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-role',
           code: errorCode
@@ -705,16 +704,15 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Проверяет наличие роли с указанным идентификатором или регистрирует ошибку.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @param roleId Role identifier / Идентификатор роли
    */
   static async ensureRoleExists(
     executor: CmsDbExecutor,
-    error: ErrorCenterThrowInstance,
     roleId: number
   ): Promise<void> {
     if (!isPositiveInteger(roleId)) {
-      error.on({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: 'cms-role',
         code: 'notFound',
         details: { roleId }
@@ -728,7 +726,8 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      error.on({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: 'cms-role',
         code: 'notFound',
         details: { roleId }
@@ -847,16 +846,14 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Формирует и валидирует объект вставки в базу данных из входных данных создания роли.
    * @param input Role creation payload / Входные данные для создания роли
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
   static buildCreateValues(
-    input: CmsRoleCreateInput,
-    error: ErrorCenterThrowInstance
+    input: CmsRoleCreateInput
   ): CmsNewRole {
     return {
-      code: CmsRoleItem.normalizeCode(input.code, error),
-      name: CmsRoleItem.normalizeName(input.name, error),
+      code: CmsRoleItem.normalizeCode(input.code),
+      name: CmsRoleItem.normalizeName(input.name),
       description: normalizeCmsOptionalText(input.description),
       createdOrigin: normalizeCmsOptionalText(input.createdOrigin)
     }
@@ -867,21 +864,19 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Формирует и валидирует объект обновления в базе данных из входных данных редактирования роли.
    * @param input Partial role update payload / Частичные данные для обновления роли
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
    */
   static buildUpdateValues(
-    input: CmsRoleUpdateInput,
-    error: ErrorCenterThrowInstance
+    input: CmsRoleUpdateInput
   ): Partial<CmsNewRole> {
     const values: Partial<CmsNewRole> = {}
 
     if (input.code !== undefined) {
-      values.code = CmsRoleItem.normalizeCode(input.code, error)
+      values.code = CmsRoleItem.normalizeCode(input.code)
     }
 
     if (input.name !== undefined) {
-      values.name = CmsRoleItem.normalizeName(input.name, error)
+      values.name = CmsRoleItem.normalizeName(input.name)
     }
 
     if (input.description !== undefined) {
@@ -900,17 +895,16 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Нормализует и проверяет код роли.
    * @param code Raw role code / Исходный код роли
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Trimmed non-empty role code / Очищенный код роли
    */
   static normalizeCode(
-    code: string,
-    error: ErrorCenterThrowInstance
+    code: string
   ): string {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      error.on({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: 'cms-role',
         code: 'invalidCode',
         details: { code }
@@ -925,17 +919,16 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Нормализует и проверяет название роли.
    * @param name Raw role name / Исходное название роли
-   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Trimmed non-empty role name / Очищенное название роли
    */
   static normalizeName(
-    name: string,
-    error: ErrorCenterThrowInstance
+    name: string
   ): string {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      error.on({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: 'cms-role',
         code: 'invalidName',
         details: { name }

@@ -256,4 +256,65 @@ describe('InputPhoneData', () => {
       expect(data.activeCountry.value).toBe('RU')
     })
   })
+
+  describe('Reactive countryDefault watcher', () => {
+    it('should update country and default phone prefix when countryDefault changes while country equals Geo.getCountry()', async () => {
+      const defaultCountry = Geo.getCountry()
+      const targetCountry = defaultCountry === 'DE' ? 'FR' : 'DE'
+      const targetPrefix = String(GeoPhone.get(targetCountry)?.phone ?? '')
+      const { data, props, valueRef, setSpy } = createData({}, '')
+
+      expect(data.country.value).toBe(defaultCountry)
+
+      data.onMounted()
+      expect(valueRef.value).toBe(String(GeoPhone.get(defaultCountry)?.phone ?? '1'))
+
+      props.countryDefault = targetCountry
+      await nextTick()
+
+      expect(data.country.value).toBe(targetCountry)
+      expect(valueRef.value).toBe(targetPrefix)
+      expect(setSpy).toHaveBeenLastCalledWith(targetPrefix)
+
+      const secondTargetCountry = targetCountry === 'DE' ? 'VN' : 'DE'
+      props.countryDefault = secondTargetCountry
+      await nextTick()
+
+      expect(data.country.value).toBe(targetCountry)
+      expect(valueRef.value).toBe(targetPrefix)
+
+      data.onUnmounted()
+    })
+
+    it('should not update country when countryDefault changes after manual country selection or value change', async () => {
+      const defaultCountry = Geo.getCountry()
+      const manualCountry = defaultCountry === 'RU' ? 'VN' : 'RU'
+      const nextDefaultCountry = defaultCountry === 'DE' ? 'FR' : 'DE'
+      const { data, props } = createData({}, '')
+
+      data.onMounted()
+      data.onCountry(new MouseEvent('click'), { type: 'click', value: manualCountry, detail: undefined })
+      expect(data.country.value).toBe(manualCountry)
+
+      props.countryDefault = nextDefaultCountry
+      await nextTick()
+
+      expect(data.country.value).toBe(manualCountry)
+
+      data.onUnmounted()
+    })
+
+    it('should stop watching countryDefault on unmount', async () => {
+      const defaultCountry = Geo.getCountry()
+      const targetCountry = defaultCountry === 'DE' ? 'FR' : 'DE'
+      const { data: unmountedData, props: unmountedProps } = createData({}, '')
+      unmountedData.onMounted()
+      unmountedData.onUnmounted()
+
+      unmountedProps.countryDefault = targetCountry
+      await nextTick()
+
+      expect(unmountedData.country.value).toBe(defaultCountry)
+    })
+  })
 })

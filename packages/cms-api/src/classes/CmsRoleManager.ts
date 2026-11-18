@@ -9,10 +9,10 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
+  ErrorCenterThrow,
   isPositiveInteger,
   isString,
-  uniqueArray,
-  type ErrorCenterThrowInstance
+  uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
@@ -46,21 +46,19 @@ import type {
  * Класс для управления списком ролей CMS: поиск и фильтрация списков, создание записей и оборачивание ролей с правами доступа в экземпляры CmsRoleItem.
  */
 export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
-  /** Cached permission manager sharing the same database and error center / Кэшированный менеджер прав доступа с общими настройками БД и центра ошибок */
+  /** Cached permission manager sharing the same database instance / Кэшированный менеджер прав доступа с общими настройками БД */
   protected permissionManager?: CmsPermissionManager
 
   /**
-   * Initializes the role manager with a CmsDbInstance and error handler.
+   * Initializes the role manager with a CmsDbInstance.
    *
-   * Инициализирует менеджер ролей с экземпляром CmsDbInstance и обработчиком ошибок.
+   * Инициализирует менеджер ролей с экземпляром CmsDbInstance.
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
-    databaseInstance?: CmsDbInstance,
-    error?: ErrorCenterThrowInstance
+    databaseInstance?: CmsDbInstance
   ) {
-    super(roles, databaseInstance, error)
+    super(roles, databaseInstance)
   }
 
   /**
@@ -87,7 +85,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
       return false
     }
 
-    const found = await this.getDatabase()
+    const found = await this.databaseInstance.get()
       .select({ id: roles.id })
       .from(roles)
       .where(eq(roles.code, trimmedCode))
@@ -97,14 +95,14 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
   }
 
   /**
-   * Returns a CmsPermissionManager configured with the same database instance and error center.
+   * Returns a CmsPermissionManager configured with the same database instance.
    *
-   * Возвращает экземпляр CmsPermissionManager с теми же настройками базы данных и центра ошибок.
+   * Возвращает экземпляр CmsPermissionManager с теми же настройками базы данных.
    * @returns CmsPermissionManager instance / Экземпляр CmsPermissionManager
    */
   getPermissionManager(): CmsPermissionManager {
     if (!this.permissionManager) {
-      this.permissionManager = new CmsPermissionManager(this.databaseInstance, this.error)
+      this.permissionManager = new CmsPermissionManager(this.databaseInstance)
     }
 
     return this.permissionManager
@@ -123,7 +121,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
     }
 
     const foundRecord = await CmsRoleItem.findOneWithPermissions(
-      this.getDatabase(),
+      this.databaseInstance.get(),
       eq(roles.id, id)
     )
 
@@ -144,7 +142,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
     }
 
     const foundRecord = await CmsRoleItem.findOneWithPermissions(
-      this.getDatabase(),
+      this.databaseInstance.get(),
       eq(roles.code, trimmedCode)
     )
 
@@ -164,7 +162,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
       return []
     }
 
-    const database = this.getDatabase()
+    const database = this.databaseInstance.get()
     const roleRows = await database
       .select()
       .from(roles)
@@ -192,7 +190,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
       return []
     }
 
-    const database = this.getDatabase()
+    const database = this.databaseInstance.get()
     const roleRows = await database
       .select()
       .from(roles)
@@ -210,7 +208,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
    * @returns Paginated CmsRoleItem list and total count / Список CmsRoleItem и общее количество записей
    */
   async getList(options: CmsRoleListOptions = {}): Promise<CmsRoleListResult> {
-    const database = this.getDatabase()
+    const database = this.databaseInstance.get()
     const limit = normalizeCmsLimit(options.limit)
     const offset = normalizeCmsOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
@@ -244,32 +242,6 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
   }
 
   /**
-   * Sets or overrides the CmsDbInstance wrapper and propagates it to the child permission manager.
-   *
-   * Устанавливает или заменяет экземпляр CmsDbInstance и передаёт его дочернему менеджеру прав доступа.
-   * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
-   */
-  override setDatabaseInstance(databaseInstance: CmsDbInstance): this {
-    super.setDatabaseInstance(databaseInstance)
-    this.permissionManager?.setDatabaseInstance(databaseInstance)
-    return this
-  }
-
-  /**
-   * Sets or overrides the ErrorCenterThrowInstance handler and propagates it to the child permission manager.
-   *
-   * Устанавливает или заменяет обработчик ошибок ErrorCenterThrowInstance и передаёт его дочернему менеджеру прав доступа.
-   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
-   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
-   */
-  override setError(error: ErrorCenterThrowInstance): this {
-    super.setError(error)
-    this.permissionManager?.setError(error)
-    return this
-  }
-
-  /**
    * Updates an existing role by ID and returns the updated CmsRoleItem.
    *
    * Редактирует существующую роль по ID и возвращает обновлённый CmsRoleItem.
@@ -297,10 +269,10 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
    * @returns Created CmsRoleItem instance / Созданный экземпляр CmsRoleItem
    */
   async create(input: CmsRoleCreateInput): Promise<CmsRoleItem> {
-    const createValues = CmsRoleItem.buildCreateValues(input, this.error)
+    const createValues = CmsRoleItem.buildCreateValues(input)
 
     try {
-      const createdRecord = await this.getDatabase().transaction(async (transaction) => {
+      const createdRecord = await this.databaseInstance.get().transaction(async (transaction) => {
         const insertedRows = await transaction
           .insert(roles)
           .values(createValues)
@@ -308,7 +280,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
 
         const createdRole = insertedRows[0]
         if (!createdRole) {
-          this.error.on({
+          ErrorCenterThrow.on({
             group: 'cms-role',
             code: 'create'
           })
@@ -333,7 +305,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
 
       return this.wrapRoleItem(createdRecord)
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-role',
           code: 'create'
@@ -367,7 +339,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
    * @returns Wrapped CmsRoleItem instance / Экземпляр CmsRoleItem
    */
   protected wrapRoleItem(roleRecord: CmsRoleWithPermissions): CmsRoleItem {
-    return new CmsRoleItem(roleRecord, this.databaseInstance, this.error)
+    return new CmsRoleItem(roleRecord, this.databaseInstance)
   }
 
   /**
@@ -406,7 +378,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
       if (!isPositiveInteger(options.permissionId)) {
         conditions.push(sql`false`)
       } else {
-        const permissionSubquery = this.getDatabase()
+        const permissionSubquery = this.databaseInstance.get()
           .select({ roleId: rolePermissions.roleId })
           .from(rolePermissions)
           .where(eq(rolePermissions.permissionId, options.permissionId))
@@ -417,7 +389,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
     if (isString(options.permissionCode)) {
       const trimmedPermissionCode = options.permissionCode.trim()
       if (trimmedPermissionCode.length > 0) {
-        const permissionCodeSubquery = this.getDatabase()
+        const permissionCodeSubquery = this.databaseInstance.get()
           .select({ roleId: rolePermissions.roleId })
           .from(rolePermissions)
           .innerJoin(permissions, eq(rolePermissions.permissionId, permissions.id))
@@ -430,7 +402,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
       if (!isPositiveInteger(options.userId)) {
         conditions.push(sql`false`)
       } else {
-        const userSubquery = this.getDatabase()
+        const userSubquery = this.databaseInstance.get()
           .select({ roleId: userRoles.roleId })
           .from(userRoles)
           .where(eq(userRoles.userId, options.userId))

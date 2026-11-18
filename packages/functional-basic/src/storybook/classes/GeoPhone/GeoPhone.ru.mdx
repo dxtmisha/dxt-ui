@@ -42,12 +42,12 @@ console.log(GeoPhone.cleanPhone('+7 (900) 123-45-67')) // '79001234567'
 - `get(code: string): GeoPhoneValue | undefined` — Извлекает метаданные телефона, связанные с конкретным кодом страны.
 - `getByCode(code: string): GeoPhoneMap | undefined` — Возвращает полную информацию о маске, включая узел дерева поиска для заданного кода.
 - `getByPhone(phone: string): GeoPhoneMapInfo` — Анализирует строку номера телефона для извлечения информации и подходящей маски.
-- `getByPhoneFull(phone: string): GeoPhoneMapInfoFull` — Возвращает расширенную информацию о номере телефона, включая очищенную числовую строку (`full`) и отформатированный по маске номер (`format`).
+- `getByPhoneFull(phone: string, isPartial?: boolean): GeoPhoneMapInfoFull` — Возвращает расширенную информацию о номере телефона, включая очищенную числовую строку (`full`) и отформатированный по маске номер (`format`). При `isPartial = true` также форматирует неполные номера по ближайшей подходящей маске.
 - `cleanPhone(value: string): string` — Удаляет все нецифровые символы из строки телефона.
 
 ### Защищенные вспомогательные методы (`protected`)
 
-- `toMask(phone: string, masks?: string[], isRemoveZero?: boolean): string | undefined` — Преобразует сырую числовую строку телефона в отформатированную версию по маске.
+- `toMask(phone: string, masks?: string[], isRemoveZero?: boolean, isPartial?: boolean): string | undefined` — Преобразует сырую числовую строку телефона в отформатированную версию по маске (при `isPartial = true` также форматирует неполные номера).
 - `removeZero(phone: string): string` — Стандартизирует внутреннее представление номера, удаляя ведущие нули или корректируя региональные префиксы.
 
 ## Типы данных
@@ -76,7 +76,7 @@ console.log(GeoPhone.cleanPhone('+7 (900) 123-45-67')) // '79001234567'
 ### `GeoPhoneMapInfoFull`
 Расширенный результат выполнения метода `getByPhoneFull` (наследует `GeoPhoneMapInfo`):
 - `full: string` — Полный номер телефона (только цифры).
-- `format: string` — Отформатированный номер телефона по маске (или исходная строка при несовпадении длины).
+- `format: string` — Отформатированный номер телефона по маске (поддерживает частичное форматирование при `isPartial = true` или возвращает исходную строку при отсутствии подходящей маски).
 
 ## Примеры
 
@@ -99,4 +99,8 @@ console.log(result.item?.value) // 'RU'
 console.log(result.phone)       // '9991234567'
 console.log(result.full)        // '79991234567'
 console.log(result.format)      // '+7-999-123-45-67'
+
+// Частичное форматирование для неполного номера
+const partial = GeoPhone.getByPhoneFull('+7 (999) 123', true)
+console.log(partial.format)     // '+7-999-123'
 ```

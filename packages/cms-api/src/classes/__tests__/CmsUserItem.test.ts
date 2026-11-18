@@ -1,7 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ErrorCenterInstance, ErrorCenterThrowInstance } from '@dxtmisha/functional-basic'
-import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
-import { useCmsDb } from '../../composables/useCmsDb'
+import { ErrorCenter } from '@dxtmisha/functional-basic'
 import { CmsDbInstance } from '../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsRoleItem } from '../CmsRoleItem'
@@ -147,17 +145,12 @@ function makeUserData(overrides: Partial<CmsUserWithRoles> = {}): CmsUserWithRol
 }
 
 describe('CmsUserItem', () => {
-  let errorCenter: ErrorCenterInstance
-  let cmsError: ErrorCenterThrowInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
-    errorCenter = new ErrorCenterInstance()
-    errorCenter.setIsConsole(false)
-    registerCmsErrorCauses(errorCenter)
-    cmsError = new ErrorCenterThrowInstance(errorCenter)
+    ErrorCenter.setIsConsole(false)
     capturedErrors = []
-    errorCenter.addCallback((cause) => {
+    ErrorCenter.addCallback((cause) => {
       capturedErrors.push({
         group: cause.group,
         code: cause.code,
@@ -167,6 +160,8 @@ describe('CmsUserItem', () => {
   })
 
   afterEach(() => {
+    ErrorCenter.reset()
+    ErrorCenter.setIsConsole(true)
     vi.restoreAllMocks()
     vi.useRealTimers()
   })
@@ -181,9 +176,8 @@ describe('CmsUserItem', () => {
           makeRole({ id: 3, code: 'editor', permissions: [readPerm] })
         ]
       })
-      const item = new CmsUserItem(data, undefined, cmsError)
+      const item = new CmsUserItem(data)
 
-      expect(item.getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)
       expect(item.getId()).toBe(1)
       expect(item.getEmail()).toBe('alex@example.com')
       expect(item.getUsername()).toBe('alex')
@@ -235,14 +229,10 @@ describe('CmsUserItem', () => {
 
     it('detects soft-deleted and inactive states accurately', () => {
       const deletedItem = new CmsUserItem(
-        makeUserData({ status: 'active', metadata: { deletedAt: '2026-11-16T10:00:00.000Z' } }),
-        undefined,
-        cmsError
+        makeUserData({ status: 'active', metadata: { deletedAt: '2026-11-16T10:00:00.000Z' } })
       )
       const blockedItem = new CmsUserItem(
-        makeUserData({ status: 'blocked', metadata: { deletedAt: '   ' } }),
-        undefined,
-        cmsError
+        makeUserData({ status: 'blocked', metadata: { deletedAt: '   ' } })
       )
 
       expect(deletedItem.isDeleted()).toBe(true)
@@ -271,7 +261,7 @@ describe('CmsUserItem', () => {
           })]
         ]
       })
-      const item = new CmsUserItem(makeUserData(), mock.dbInstance, cmsError)
+      const item = new CmsUserItem(makeUserData(), mock.dbInstance)
 
       const updated = await item.update({
         firstName: ' Updated ',
@@ -327,7 +317,7 @@ describe('CmsUserItem', () => {
         insertQueue: [[], [], []],
         deleteQueue: [[], [], []]
       })
-      const item = new CmsUserItem(makeUserData(), mock.dbInstance, cmsError)
+      const item = new CmsUserItem(makeUserData(), mock.dbInstance)
 
       expect(await item.addRoles([3])).toEqual([adminRole, editorRole])
       expect(item.hasRole('editor')).toBe(true)
@@ -350,7 +340,7 @@ describe('CmsUserItem', () => {
 
     it('reports userNotFound via ErrorCenter when mutating roles of missing user', async () => {
       const mock = createMockDb({ selectQueue: [[]] })
-      const item = new CmsUserItem(makeUserData({ id: 404 }), mock.dbInstance, cmsError)
+      const item = new CmsUserItem(makeUserData({ id: 404 }), mock.dbInstance)
 
       await expect(item.setRoles([1])).rejects.toThrow('Requested CMS user was not found.')
       expect(capturedErrors[0]).toMatchObject({
@@ -381,7 +371,7 @@ describe('CmsUserItem', () => {
           [makeUserData({ metadata: { locale: 'ru' } })]
         ]
       })
-      const item = new CmsUserItem(makeUserData(), mock.dbInstance, cmsError)
+      const item = new CmsUserItem(makeUserData(), mock.dbInstance)
 
       expect(await item.reload()).toBe(item)
       expect(item.getFirstName()).toBe('Reloaded')

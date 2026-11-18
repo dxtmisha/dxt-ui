@@ -1,5 +1,6 @@
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
-import type { CmsSystemStatus } from '../../types/cmsDbTypes'
+import { pgTable, serial, text } from 'drizzle-orm/pg-core'
+import { getCmsSystemStatusColumn } from '../../functions/schema/getCmsSystemStatusColumn'
+import { getCmsTimestampColumns } from '../../functions/schema/getCmsTimestampColumns'
 
 /**
  * Created origins table schema for CMS /
@@ -19,12 +20,8 @@ export const createdOrigins = /* #__PURE__ */ pgTable('created_origins', {
   description: text('description'),
 
   // System status
-  /** System record status / Системный статус записи */
-  systemStatus: text('system_status').$type<CmsSystemStatus>().notNull().default('active'),
+  ...getCmsSystemStatusColumn(),
 
   // Timestamps
-  /** Creation timestamp / Дата создания */
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  /** Last update timestamp / Дата последнего обновления */
-  updatedAt: timestamp('updated_at').defaultNow().notNull()
+  ...getCmsTimestampColumns()
 })

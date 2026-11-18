@@ -28,6 +28,8 @@ export class InputPhoneData extends DesignLifecycleAbstract {
 
   /** Cleanup function for valueItem watcher / Функция очистки наблюдателя valueItem */
   protected watchStop?: () => void
+  /** Cleanup function for countryDefault watcher / Функция очистки наблюдателя countryDefault */
+  protected watchCountryDefaultStop?: () => void
 
   /**
    * Constructor
@@ -119,8 +121,8 @@ export class InputPhoneData extends DesignLifecycleAbstract {
 
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {
-    this.watchStop?.()
-    this.watchStop = undefined
+    this.resetWatch()
+    this.updateCountryDefault()
 
     if (!this.value().boolean) {
       this.value().set(this.toPhone(this.country.value))
@@ -131,12 +133,15 @@ export class InputPhoneData extends DesignLifecycleAbstract {
       [this.valueItem, () => this.value().item.value],
       () => this.updateCountry()
     )
+    this.watchCountryDefaultStop = watch(
+      () => this.props.countryDefault,
+      () => this.updateCountryDefault()
+    )
   }
 
   /** Callback after component unmounting / Обработчик после размонтирования компонента */
   override readonly onUnmounted = (): void => {
-    this.watchStop?.()
-    this.watchStop = undefined
+    this.resetWatch()
   }
 
   /**
@@ -202,5 +207,35 @@ export class InputPhoneData extends DesignLifecycleAbstract {
     ) {
       this.country.value = this.valueItem.value.value ?? Geo.getCountry()
     }
+  }
+
+  /**
+   * Updates the country code when countryDefault changes and the country has not been modified yet.
+   *
+   * Обновляет код страны при изменении countryDefault, если страна ещё не была изменена.
+   */
+  protected updateCountryDefault(): void {
+    const countryDefault = this.props.countryDefault
+
+    if (
+      countryDefault
+      && countryDefault !== this.country.value
+      && this.country.value === Geo.getCountry()
+    ) {
+      this.country.value = countryDefault
+      this.value().set(this.valueDefault.value)
+    }
+  }
+
+  /**
+   * Stops and resets active watchers.
+   *
+   * Останавливает и сбрасывает активные наблюдатели.
+   */
+  protected resetWatch(): void {
+    this.watchStop?.()
+    this.watchStop = undefined
+    this.watchCountryDefaultStop?.()
+    this.watchCountryDefaultStop = undefined
   }
 }

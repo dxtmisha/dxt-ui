@@ -14,6 +14,8 @@ import {
 
 /** Regular expression matching a single digit / Регулярное выражение для поиска одной цифры */
 const REGEXP_DIGIT = /\d/g
+/** Regular expression matching a single mask placeholder character / Регулярное выражение для поиска одного символа-заполнителя маски */
+const REGEXP_MASK_PLACEHOLDER_CHAR = /[*=~$?]/
 /** Regular expression matching mask placeholder characters / Регулярное выражение для поиска символов-заполнителей маски */
 const REGEXP_MASK_PLACEHOLDER = /[*=~$?]/g
 /** Regular expression matching non-digit sequences / Регулярное выражение для поиска нецифровых последовательностей */
@@ -110,16 +112,20 @@ export class GeoPhone {
    *
    * Получение полной информации по телефону, включая полный и отформатированный номер.
    * @param phone phone number / номер телефона
+   * @param isPartial whether to format incomplete phone numbers using the closest fitting mask / форматировать ли неполные номера по ближайшей подходящей маске
    * @returns extended phone mask info / расширенная информация о маске телефона
    */
-  static getByPhoneFull(phone: string): GeoPhoneMapInfoFull {
+  static getByPhoneFull(
+    phone: string,
+    isPartial: boolean = false
+  ): GeoPhoneMapInfoFull {
     const data = this.getByPhone(phone)
     const full = this.cleanPhone(phone)
 
     return {
       ...data,
       full,
-      format: this.toMask(full, data.item?.maskFull) ?? phone
+      format: this.toMask(full, data.item?.maskFull, false, isPartial) ?? phone
     }
   }
 
@@ -305,13 +311,15 @@ export class GeoPhone {
    * @param phone phone number / номер телефона
    * @param masks a mask to transform a phone number / маска для преобразования номера телефона
    * @param isRemoveZero whether to remove leading zero or country prefix / нужно ли удалять ведущий ноль или префикс страны
+   * @param isPartial whether to format incomplete phone numbers using the closest fitting mask / форматировать ли неполные номера по ближайшей подходящей маске
    * @protected
    * @returns masked phone string or undefined / отформатированный по маске номер телефона или undefined
    */
   protected static toMask(
     phone: string,
     masks?: string[],
-    isRemoveZero: boolean = false
+    isRemoveZero: boolean = false,
+    isPartial: boolean = false
   ): string | undefined {
     if (
       isFilled(phone)
@@ -320,11 +328,28 @@ export class GeoPhone {
     ) {
       const value = isRemoveZero ? this.removeZero(phone) : phone
       const length = value.length
+      let partialMask: string | undefined
+      let partialLength = Number.POSITIVE_INFINITY
 
       for (const mask of masks) {
-        if (this.getUnnecessaryLength(mask) === length) {
+        const maskLength = this.getUnnecessaryLength(mask)
+
+        if (maskLength === length) {
           return this.toStandard(value, mask)
         }
+
+        if (
+          isPartial
+          && maskLength > length
+          && maskLength < partialLength
+        ) {
+          partialMask = mask
+          partialLength = maskLength
+        }
+      }
+
+      if (partialMask) {
+        return this.toStandard(value, partialMask)
       }
     }
 
@@ -354,7 +379,23 @@ export class GeoPhone {
    */
   protected static toStandard(phone: string, mask: string): string {
     let character = 0
-    return mask.replace(REGEXP_MASK_PLACEHOLDER, () => String(phone[character++]))
+    let result = ''
+    let pendingLiterals = ''
+
+    for (const char of mask) {
+      if (REGEXP_MASK_PLACEHOLDER_CHAR.test(char)) {
+        if (character >= phone.length) {
+          return result
+        }
+
+        result += pendingLiterals + phone[character++]
+        pendingLiterals = ''
+      } else {
+        pendingLiterals += char
+      }
+    }
+
+    return result + pendingLiterals
   }
 
   /**

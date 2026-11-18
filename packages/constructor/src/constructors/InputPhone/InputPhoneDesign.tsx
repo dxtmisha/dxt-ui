@@ -160,7 +160,7 @@ export class InputPhoneDesign<
           input.binds,
           {
             ref: this.element,
-            value: this.item.i('value').item.value
+            value: this.item.i('format').item.value
           }
         )
       )]

@@ -572,6 +572,36 @@ describe('InputPhone (Integration)', () => {
     expect(input.disabled).toBe(true)
     expect(input.name).toBe('lockedPhone')
     expect(input.getAttribute('inputmode')).toBe('tel')
-    expect(input.value).toBe('79001234567')
+    expect(input.value).toBe('+7-900-123-45-67')
+  })
+
+  it('should fail required validation on untouched bare prefix and pass after entering subscriber digits', async () => {
+    const { container, exposed } = await mountInputPhone({
+      countryDefault: 'RU',
+      required: true,
+      validationCode: {
+        valueMissing: 'Phone is required'
+      }
+    })
+
+    expect(exposed.getValue()).toBe('7')
+    expect(exposed.checkValidity()).toBe(false)
+    expect(exposed.getValidationMessage()).toBe('')
+
+    const input = container.querySelector('.d1-mask input') as HTMLInputElement
+    expect(input).not.toBeNull()
+    input.dispatchEvent(new FocusEvent('blur'))
+    await nextTick()
+    expect(exposed.getValidationMessage()).toBe('Phone is required')
+
+    exposed.setValue('79001234567')
+    await nextTick()
+    expect(exposed.checkValidity()).toBe(true)
+    expect(exposed.getValidationMessage()).toBe('')
+
+    exposed.setValue('7')
+    await nextTick()
+    expect(exposed.checkValidity()).toBe(false)
+    expect(exposed.getValidationMessage()).toBe('Phone is required')
   })
 })

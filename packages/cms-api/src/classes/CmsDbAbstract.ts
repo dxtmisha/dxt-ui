@@ -7,19 +7,15 @@ import {
 import {
   ErrorCenterThrow,
   isPositiveInteger,
-  uniqueArray,
-  type ErrorCenterThrowInstance
+  uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { useCmsDb } from '../composables/useCmsDb'
 import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
+import { CmsDbSystemStatus } from './CmsDbSystemStatus'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
-import type {
-  CmsDb,
-  CmsIdTable,
-  CmsSystemStatus
-} from '../types/cmsDbTypes'
+import type { CmsIdTable } from '../types/cmsDbTypes'
 
 /**
  * Abstract base class providing unified CMS table binding, database instance management, and centralized ErrorCenterThrow delegation.
@@ -27,173 +23,56 @@ import type {
  * Абстрактный базовый класс для единой привязки таблицы CMS, управления экземпляром базы данных и делегирования обработки ошибок в ErrorCenterThrow.
  */
 export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
+  /** Lazily initialized system status manager / Лениво инициализируемый менеджер системного статуса */
+  protected systemStatus?: CmsDbSystemStatus<TTable>
+
   /**
-   * Initializes the base CMS database handler with a table schema, CmsDbInstance, and ErrorCenterThrowInstance.
+   * Initializes the base CMS database handler with a table schema and CmsDbInstance.
    *
-   * Инициализирует базовый обработчик БД CMS со схемой таблицы, экземпляром CmsDbInstance и обработчиком ошибок ErrorCenterThrowInstance.
+   * Инициализирует базовый обработчик БД CMS со схемой таблицы и экземпляром CmsDbInstance.
    * @param table Drizzle PostgreSQL table schema with a required id column / Схема таблицы Drizzle PostgreSQL с обязательной колонкой id
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
     protected table: TTable,
-    protected databaseInstance: CmsDbInstance = useCmsDb().cmsDbInstance,
-    protected error: ErrorCenterThrowInstance = ErrorCenterThrow.getItem()
-  ) {
-    registerCmsErrorCauses()
-  }
+    protected readonly databaseInstance: CmsDbInstance = useCmsDb().cmsDbInstance
+  ) {}
 
   /**
-   * Returns the Drizzle table schema bound to this instance.
+   * Returns the bound table typed as CmsIdTable for shared base queries.
    *
-   * Возвращает схему таблицы Drizzle, привязанную к этому экземпляру.
-   * @returns Drizzle table schema with id column / Схема таблицы Drizzle с колонкой id
+   * Возвращает привязанную таблицу с типом CmsIdTable для общих базовых запросов.
+   * @returns Base CMS table schema / Базовая схема таблицы CMS
    */
-  getTable(): TTable {
+  protected getBaseTable(): CmsIdTable {
     return this.table
   }
 
   /**
-   * Returns the active Drizzle database instance from the managed CmsDbInstance.
+   * Returns a lazily initialized CmsDbSystemStatus instance for managing record system statuses.
    *
-   * Возвращает активный экземпляр базы данных Drizzle из управляемого CmsDbInstance.
-   * @returns Typed Drizzle CMS database instance / Типизированный экземпляр базы данных Drizzle CMS
+   * Возвращает лениво инициализируемый экземпляр CmsDbSystemStatus для управления системным статусом записей.
+   * @returns CmsDbSystemStatus instance / Экземпляр CmsDbSystemStatus
    */
-  getDatabase(): CmsDb {
-    return this.databaseInstance.get()
-  }
-
-  /**
-   * Returns the managed CmsDbInstance wrapper.
-   *
-   * Возвращает управляемый экземпляр CmsDbInstance.
-   * @returns CMS database instance manager / Менеджер экземпляра базы данных CMS
-   */
-  getDatabaseInstance(): CmsDbInstance {
-    return this.databaseInstance
-  }
-
-  /**
-   * Returns the managed ErrorCenterThrowInstance handler.
-   *
-   * Возвращает управляемый экземпляр обработчика ошибок ErrorCenterThrowInstance.
-   * @returns ErrorCenterThrowInstance instance / Экземпляр ErrorCenterThrowInstance
-   */
-  getError(): ErrorCenterThrowInstance {
-    return this.error
-  }
-
-  /**
-   * Sets or overrides the CmsDbInstance wrapper used by this instance.
-   *
-   * Устанавливает или заменяет экземпляр CmsDbInstance, используемый текущим объектом.
-   * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
-   */
-  setDatabaseInstance(databaseInstance: CmsDbInstance): this {
-    this.databaseInstance = databaseInstance
-    return this
-  }
-
-  /**
-   * Sets or overrides the ErrorCenterThrowInstance handler used for error reporting.
-   *
-   * Устанавливает или заменяет обработчик ошибок ErrorCenterThrowInstance.
-   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
-   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
-   */
-  setError(error: ErrorCenterThrowInstance): this {
-    this.error = error
-    return this
-  }
-
-  /**
-   * Returns the system status of a record by identifier from the bound table.
-   *
-   * Возвращает системный статус записи по идентификатору из привязанной таблицы.
-   * @param id Record identifier / Идентификатор записи
-   * @returns System status or undefined if invalid or not found / Системный статус или undefined, если ID некорректен или запись не найдена
-   */
-  protected async getSystemStatusById(id: number): Promise<CmsSystemStatus | undefined> {
-    if (!CmsVerification.isPositiveInteger(id)) {
-      return undefined
+  protected getSystemStatus(): CmsDbSystemStatus<TTable> {
+    if (!this.systemStatus) {
+      this.systemStatus = new CmsDbSystemStatus(this.table, this.databaseInstance)
     }
 
-    const baseTable: CmsIdTable = this.table
-    const rows = await this.getDatabase()
-      .select({ systemStatus: baseTable.systemStatus })
-      .from(baseTable)
-      .where(eq(baseTable.id, id))
-      .limit(1)
-
-    return rows[0]?.systemStatus as CmsSystemStatus | undefined
+    return this.systemStatus
   }
 
   /**
-   * Updates the system status of a record by identifier in the bound table.
+   * Builds an update payload by combining the provided values with the current updatedAt timestamp when the bound table defines it.
    *
-   * Обновляет системный статус записи по идентификатору в привязанной таблице.
-   * @param id Record identifier / Идентификатор записи
-   * @param systemStatus Target system status / Целевой системный статус
-   * @returns True if a matching record was updated / True, если запись найдена и обновлена
+   * Формирует объект значений для обновления, объединяя переданные поля с текущей меткой времени updatedAt, если она присутствует в таблице.
+   * @param values Partial update values / Частичные значения для обновления
+   * @returns Combined update payload / Объединённый объект значений для обновления
    */
-  protected async updateSystemStatusById(
-    id: number,
-    systemStatus: CmsSystemStatus
-  ): Promise<boolean> {
-    if (!CmsVerification.isPositiveInteger(id)) {
-      return false
-    }
-
-    const baseTable: CmsIdTable = this.table
-    const updateValues: Record<string, unknown> = {
-      systemStatus
-    }
-
-    if (baseTable.updatedAt) {
-      updateValues.updatedAt = new Date()
-    }
-
-    const updatedRows = await this.getDatabase()
-      .update(baseTable)
-      .set(updateValues as Partial<typeof baseTable.$inferInsert>)
-      .where(eq(baseTable.id, id))
-      .returning({ id: baseTable.id })
-
-    return updatedRows.length > 0
-  }
-
-  /**
-   * Marks a record as active (`systemStatus = 'active'`) by identifier.
-   *
-   * Переводит запись в активный системный статус (`systemStatus = 'active'`) по идентификатору.
-   * @param id Record identifier / Идентификатор записи
-   * @returns True if a matching record was activated / True, если запись найдена и активирована
-   */
-  protected async activateRecordById(id: number): Promise<boolean> {
-    return this.updateSystemStatusById(id, 'active')
-  }
-
-  /**
-   * Marks a record as blocked (`systemStatus = 'blocked'`) by identifier.
-   *
-   * Переводит запись в заблокированный системный статус (`systemStatus = 'blocked'`) по идентификатору.
-   * @param id Record identifier / Идентификатор записи
-   * @returns True if a matching record was blocked / True, если запись найдена и заблокирована
-   */
-  protected async blockRecordById(id: number): Promise<boolean> {
-    return this.updateSystemStatusById(id, 'blocked')
-  }
-
-  /**
-   * Marks a record as soft-deleted (`systemStatus = 'deleted'`) by identifier.
-   *
-   * Помечает запись как мягко удалённую (`systemStatus = 'deleted'`) по идентификатору.
-   * @param id Record identifier / Идентификатор записи
-   * @returns True if a matching record was marked as deleted / True, если запись найдена и помечена как удалённая
-   */
-  protected async softDeleteRecordById(id: number): Promise<boolean> {
-    return this.updateSystemStatusById(id, 'deleted')
+  protected getUpdateValues(
+    values: Record<string, unknown> = {}
+  ): Partial<CmsIdTable['$inferInsert']> {
+    return CmsDbSystemStatus.buildUpdateValues(this.getBaseTable(), values)
   }
 
   /**
@@ -212,12 +91,12 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
       return false
     }
 
-    const baseTable: CmsIdTable = this.table
+    const baseTable = this.getBaseTable()
     const whereCondition = condition
       ? and(eq(baseTable.id, id), condition)
       : eq(baseTable.id, id)
 
-    const found = await this.getDatabase()
+    const found = await this.databaseInstance.get()
       .select({ id: baseTable.id })
       .from(baseTable)
       .where(whereCondition)
@@ -234,8 +113,8 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
    * @returns Number of matching records / Количество найденных записей
    */
   protected async countRecords(whereCondition?: SQL): Promise<number> {
-    const baseTable: CmsIdTable = this.table
-    const countRows = await this.getDatabase()
+    const baseTable = this.getBaseTable()
+    const countRows = await this.databaseInstance.get()
       .select({ count: sql<number>`count(*)::int` })
       .from(baseTable)
       .where(whereCondition)
@@ -255,8 +134,8 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
       return false
     }
 
-    const baseTable: CmsIdTable = this.table
-    const deletedRows = await this.getDatabase()
+    const baseTable = this.getBaseTable()
+    const deletedRows = await this.databaseInstance.get()
       .delete(baseTable)
       .where(eq(baseTable.id, id))
       .returning({ id: baseTable.id })

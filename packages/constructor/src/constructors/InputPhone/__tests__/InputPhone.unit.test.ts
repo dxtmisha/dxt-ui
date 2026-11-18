@@ -99,6 +99,7 @@ describe('InputPhone (unit)', () => {
       expect(instance.hasInstance('elementItem')).toBe(false)
       expect(instance.hasInstance('field')).toBe(false)
       expect(instance.hasInstance('form')).toBe(false)
+      expect(instance.hasInstance('format')).toBe(false)
       expect(instance.hasInstance('mask')).toBe(false)
       expect(instance.hasInstance('phoneMask')).toBe(false)
       expect(instance.hasInstance('value')).toBe(false)

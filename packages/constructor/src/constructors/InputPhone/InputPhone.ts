@@ -13,7 +13,6 @@ import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
-import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import { FieldInclude } from '../Field'
@@ -21,7 +20,9 @@ import { InputPhoneDialCodeInclude } from '../InputPhoneDialCode'
 import { MaskInclude } from '../Mask'
 
 import { InputPhoneData } from './InputPhoneData'
+import { InputPhoneFormat } from './InputPhoneFormat'
 import { InputPhoneMask } from './InputPhoneMask'
+import { InputPhoneValidation } from './InputPhoneValidation'
 
 import type { InputPhoneProps } from './props'
 import type { InputPhoneComponents, InputPhoneEmits, InputPhoneSlots } from './types'
@@ -46,12 +47,14 @@ export type InputPhoneConstructors = {
   field: typeof FieldInclude
   /** Field form constructor / Конструктор формы поля */
   form: typeof FieldFormInclude
+  /** Input phone format constructor / Конструктор форматирования ввода телефона */
+  format: typeof InputPhoneFormat
   /** Mask constructor / Конструктор маски */
   mask: typeof MaskInclude
   /** Input phone mask constructor / Конструктор маски ввода телефона */
   phoneMask: typeof InputPhoneMask
   /** Field validation constructor / Конструктор валидации поля */
-  validation: typeof FieldValidationInclude
+  validation: typeof InputPhoneValidation
   /** Field value constructor / Конструктор значения поля */
   value: typeof FieldValueInclude<string>
 }
@@ -147,6 +150,14 @@ export class InputPhone extends DesignLogicAbstract<
         () => this.i('validation')
       ]
     },
+    format: {
+      item: InputPhoneFormat,
+      parameters: () => [
+        this.props,
+        () => this.i('data'),
+        () => this.i('value')
+      ]
+    },
     mask: {
       item: MaskInclude,
       parameters: () => [
@@ -168,11 +179,12 @@ export class InputPhone extends DesignLogicAbstract<
       ]
     },
     validation: {
-      item: FieldValidationInclude,
+      item: InputPhoneValidation,
       parameters: () => [
         this.props,
         () => this.i('attributes'),
         () => this.i('value'),
+        () => this.i('data'),
         () => this.i('change'),
         () => this.i('code')
       ]

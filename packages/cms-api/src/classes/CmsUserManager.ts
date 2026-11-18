@@ -9,11 +9,11 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
+  ErrorCenterThrow,
   isArray,
   isPositiveInteger,
   isString,
-  uniqueArray,
-  type ErrorCenterThrowInstance
+  uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
@@ -51,24 +51,22 @@ import type {
  * Класс для управления списком пользователей CMS: поиск и фильтрация списков, создание записей и оборачивание пользователей в экземпляры CmsUserItem с интеграцией менеджеров ролей и прав доступа.
  */
 export class CmsUserManager extends CmsDbAbstract<typeof users> {
-  /** Cached role manager sharing the same database and error center / Кэшированный менеджер ролей с общими настройками БД и центра ошибок */
+  /** Cached role manager sharing the same database instance / Кэшированный менеджер ролей с общими настройками БД */
   protected roleManager?: CmsRoleManager
 
-  /** Cached permission manager sharing the same database and error center / Кэшированный менеджер прав доступа с общими настройками БД и центра ошибок */
+  /** Cached permission manager sharing the same database instance / Кэшированный менеджер прав доступа с общими настройками БД */
   protected permissionManager?: CmsPermissionManager
 
   /**
-   * Initializes the user manager with a CmsDbInstance and error handler.
+   * Initializes the user manager with a CmsDbInstance.
    *
-   * Инициализирует менеджер пользователей с экземпляром CmsDbInstance и обработчиком ошибок.
+   * Инициализирует менеджер пользователей с экземпляром CmsDbInstance.
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
-    databaseInstance?: CmsDbInstance,
-    error?: ErrorCenterThrowInstance
+    databaseInstance?: CmsDbInstance
   ) {
-    super(users, databaseInstance, error)
+    super(users, databaseInstance)
   }
 
   /**
@@ -111,7 +109,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
       conditions.push(CmsUserItem.getNotDeletedCondition())
     }
 
-    const found = await this.getDatabase()
+    const found = await this.databaseInstance.get()
       .select({ id: users.id })
       .from(users)
       .where(and(...conditions))
@@ -121,28 +119,28 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
   }
 
   /**
-   * Returns a CmsRoleManager configured with the same database instance and error center.
+   * Returns a CmsRoleManager configured with the same database instance.
    *
-   * Возвращает экземпляр CmsRoleManager с теми же настройками базы данных и центра ошибок.
+   * Возвращает экземпляр CmsRoleManager с теми же настройками базы данных.
    * @returns CmsRoleManager instance / Экземпляр CmsRoleManager
    */
   getRoleManager(): CmsRoleManager {
     if (!this.roleManager) {
-      this.roleManager = new CmsRoleManager(this.databaseInstance, this.error)
+      this.roleManager = new CmsRoleManager(this.databaseInstance)
     }
 
     return this.roleManager
   }
 
   /**
-   * Returns a CmsPermissionManager configured with the same database instance and error center.
+   * Returns a CmsPermissionManager configured with the same database instance.
    *
-   * Возвращает экземпляр CmsPermissionManager с теми же настройками базы данных и центра ошибок.
+   * Возвращает экземпляр CmsPermissionManager с теми же настройками базы данных.
    * @returns CmsPermissionManager instance / Экземпляр CmsPermissionManager
    */
   getPermissionManager(): CmsPermissionManager {
     if (!this.permissionManager) {
-      this.permissionManager = new CmsPermissionManager(this.databaseInstance, this.error)
+      this.permissionManager = new CmsPermissionManager(this.databaseInstance)
     }
 
     return this.permissionManager
@@ -170,7 +168,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     }
 
     const foundRecord = await CmsUserItem.findOneWithRoles(
-      this.getDatabase(),
+      this.databaseInstance.get(),
       and(...conditions)
     )
 
@@ -200,7 +198,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     }
 
     const foundRecord = await CmsUserItem.findOneWithRoles(
-      this.getDatabase(),
+      this.databaseInstance.get(),
       and(...conditions)
     )
 
@@ -230,7 +228,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     }
 
     const foundRecord = await CmsUserItem.findOneWithRoles(
-      this.getDatabase(),
+      this.databaseInstance.get(),
       and(...conditions)
     )
 
@@ -245,7 +243,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    * @returns Paginated CmsUserItem list and total count / Список CmsUserItem и общее количество записей
    */
   async getList(options: CmsUserListOptions = {}): Promise<CmsUserListResult> {
-    const database = this.getDatabase()
+    const database = this.databaseInstance.get()
     const limit = normalizeCmsLimit(options.limit)
     const offset = normalizeCmsOffset(options.offset)
     const whereCondition = this.buildListWhere(options)
@@ -279,34 +277,6 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
   }
 
   /**
-   * Sets or overrides the CmsDbInstance wrapper and propagates it to child role and permission managers.
-   *
-   * Устанавливает или заменяет экземпляр CmsDbInstance и передаёт его дочерним менеджерам ролей и прав доступа.
-   * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
-   */
-  override setDatabaseInstance(databaseInstance: CmsDbInstance): this {
-    super.setDatabaseInstance(databaseInstance)
-    this.roleManager?.setDatabaseInstance(databaseInstance)
-    this.permissionManager?.setDatabaseInstance(databaseInstance)
-    return this
-  }
-
-  /**
-   * Sets or overrides the ErrorCenterThrowInstance handler and propagates it to child role and permission managers.
-   *
-   * Устанавливает или заменяет обработчик ошибок ErrorCenterThrowInstance и передаёт его дочерним менеджерам ролей и прав доступа.
-   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
-   * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
-   */
-  override setError(error: ErrorCenterThrowInstance): this {
-    super.setError(error)
-    this.roleManager?.setError(error)
-    this.permissionManager?.setError(error)
-    return this
-  }
-
-  /**
    * Updates an existing non-deleted user by ID and returns the updated CmsUserItem.
    *
    * Редактирует существующего не удалённого пользователя по ID и возвращает обновлённый CmsUserItem.
@@ -334,10 +304,10 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    * @returns Created CmsUserItem instance / Созданный экземпляр CmsUserItem
    */
   async create(input: CmsUserCreateInput): Promise<CmsUserItem> {
-    const createValues = CmsUserItem.buildCreateValues(input, this.error)
+    const createValues = CmsUserItem.buildCreateValues(input)
 
     try {
-      const createdRecord = await this.getDatabase().transaction(async (transaction) => {
+      const createdRecord = await this.databaseInstance.get().transaction(async (transaction) => {
         const insertedRows = await transaction
           .insert(users)
           .values(createValues)
@@ -345,7 +315,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
 
         const createdUser = insertedRows[0]
         if (!createdUser) {
-          this.error.on({
+          ErrorCenterThrow.on({
             group: 'cms-user',
             code: 'create'
           })
@@ -370,7 +340,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
 
       return this.wrapUserItem(createdRecord)
     } catch (error) {
-      return this.error.handle(
+      return ErrorCenterThrow.handle(
         {
           group: 'cms-user',
           code: 'create'
@@ -424,7 +394,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    * @returns Wrapped CmsUserItem instance / Экземпляр CmsUserItem
    */
   protected wrapUserItem(userRecord: CmsUserWithRoles): CmsUserItem {
-    return new CmsUserItem(userRecord, this.databaseInstance, this.error)
+    return new CmsUserItem(userRecord, this.databaseInstance)
   }
 
   /**
@@ -480,7 +450,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
       if (!isPositiveInteger(options.roleId)) {
         conditions.push(sql`false`)
       } else {
-        const roleSubquery = this.getDatabase()
+        const roleSubquery = this.databaseInstance.get()
           .select({ userId: userRoles.userId })
           .from(userRoles)
           .where(eq(userRoles.roleId, options.roleId))
@@ -491,7 +461,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     if (isString(options.roleCode)) {
       const trimmedRoleCode = options.roleCode.trim()
       if (trimmedRoleCode.length > 0) {
-        const roleCodeSubquery = this.getDatabase()
+        const roleCodeSubquery = this.databaseInstance.get()
           .select({ userId: userRoles.userId })
           .from(userRoles)
           .innerJoin(roles, eq(userRoles.roleId, roles.id))
@@ -504,7 +474,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
       if (!isPositiveInteger(options.permissionId)) {
         conditions.push(sql`false`)
       } else {
-        const permissionSubquery = this.getDatabase()
+        const permissionSubquery = this.databaseInstance.get()
           .select({ userId: userRoles.userId })
           .from(userRoles)
           .innerJoin(rolePermissions, eq(userRoles.roleId, rolePermissions.roleId))
@@ -516,7 +486,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
     if (isString(options.permissionCode)) {
       const trimmedPermissionCode = options.permissionCode.trim()
       if (trimmedPermissionCode.length > 0) {
-        const permissionCodeSubquery = this.getDatabase()
+        const permissionCodeSubquery = this.databaseInstance.get()
           .select({ userId: userRoles.userId })
           .from(userRoles)
           .innerJoin(rolePermissions, eq(userRoles.roleId, rolePermissions.roleId))
