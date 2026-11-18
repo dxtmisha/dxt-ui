@@ -149,6 +149,7 @@ const selectedLargeIcons = ref('icon-1')
 const selectedLargePictures = ref('picture-1')
 const selectedLargeMixed512 = ref('mixed-1')
 const selectedLargeMixed512Lazy = ref('mixed-1')
+const selectedLargeMixed512LazyCustom = ref('mixed-1')
 const selectedLargeMixed512NoLite = ref('mixed-1')
 const selectedLargeMixed512NoLiteLazy = ref('mixed-1')
 
@@ -205,6 +206,8 @@ const { eventName, onEvent } = useDemoEvent()
           <D1Menu
             v-model:selected="selectedBasic"
             :list="menuItems"
+            :list-attrs="{ 'data-demo-list': 'true' }"
+            :item-attrs="{ 'data-demo-item': 'true' }"
             is-selected-by-value
             tag="button"
           >
@@ -397,6 +400,7 @@ const { eventName, onEvent } = useDemoEvent()
             bars-label="Category Selection"
             bars-description="Select an active category action below"
             :bars-list="[{ icon: 'refresh', label: 'Reset' }]"
+            :bars-attrs="{ 'data-demo-bars': 'true' }"
             @bars="onEvent('bars')"
             @bars-back="onEvent('barsBack')"
             @bars-lite="onEvent('barsLite')"
@@ -638,6 +642,24 @@ const { eventName, onEvent } = useDemoEvent()
           </D1Menu>
 
           <D1Menu
+            v-model:selected="selectedLargeMixed512LazyCustom"
+            :list="largeMixed512Items"
+            lazy-margin="128px 0px"
+            :lazy-cache-height="false"
+            is-selected-by-value
+            show-search
+            filter-mode
+          >
+            <template #control="{ binds }">
+              <D1Button
+                v-bind="binds"
+                label="Large List: Mixed 512 (Lazy, Custom Margin)"
+                tonal
+              />
+            </template>
+          </D1Menu>
+
+          <D1Menu
             v-model:selected="selectedLargeMixed512NoLite"
             :list="largeMixed512Items"
             :lite-threshold="0"
@@ -678,6 +700,7 @@ const { eventName, onEvent } = useDemoEvent()
           <DemoValue label="largePictures" :value="selectedLargePictures"/>
           <DemoValue label="largeMixed512" :value="selectedLargeMixed512"/>
           <DemoValue label="largeMixed512Lazy" :value="selectedLargeMixed512Lazy"/>
+          <DemoValue label="largeMixed512LazyCustom" :value="selectedLargeMixed512LazyCustom"/>
           <DemoValue label="largeMixed512NoLite" :value="selectedLargeMixed512NoLite"/>
           <DemoValue label="largeMixed512NoLiteLazy" :value="selectedLargeMixed512NoLiteLazy"/>
         </DemoFlex>

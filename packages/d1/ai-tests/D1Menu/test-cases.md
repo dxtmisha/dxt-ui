@@ -4,7 +4,7 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Menu` (`packages/constructor/src/constructors/Menu`, `packages/demo/src/pages/components/DemoMenuPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-menu`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-17`
+- **Последняя проверка / обновление**: `2026-11-18`
 - **Всего тест-кейсов**: `15`
 
 ---
@@ -32,9 +32,9 @@
 - **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
 - **Шаги теста**:
   1. Проверить рендеринг встроенного меню (`embedded`) на странице.
-  2. Открыть базовое всплывающее меню (`Open Basic Menu`) и меню со смещением (`Offset (indent: 24)`).
+  2. Открыть базовое всплывающее меню (`Open Basic Menu`, включая `listAttrs` и `itemAttrs`) и меню со смещением (`Offset (indent: 24)`).
   3. Открыть меню со стилями выбора (`Style: none`, `Style: checkmark`, `Style: radio`, `Style: checkbox`).
-- **Ожидаемый результат**: Всплывающее и встроенное меню отображаются без обрезания и наложений, стили выделения (`checkmark`, `radio`, `checkbox`, `none`) и отступ окна `indent: 24` применяются корректно.
+- **Ожидаемый результат**: Всплывающее и встроенное меню отображаются без обрезания и наложений, стили выделения (`checkmark`, `radio`, `checkbox`, `none`), атрибуты `data-demo-list`/`data-demo-item` и отступ окна `indent: 24` применяются корректно.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-001.png`)
 
 #### [TC-VIS-002] Панель `Bars` (`barsAdaptive`), `hideList` и пользовательские слоты
@@ -42,10 +42,10 @@
 - **Категория**: `Визуал и токены`
 - **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
 - **Шаги теста**:
-  1. Открыть меню `Open Menu with Bars` (`barsHide: false`, `barsAdaptive: showAlways`, `barsLabel`, `barsDescription`, `barsBackHide: false`, `barsList`).
+  1. Открыть меню `Open Menu with Bars` (`barsHide: false`, `barsAdaptive: showAlways`, `barsLabel`, `barsDescription`, `barsBackHide: false`, `barsList`, `barsAttrs`).
   2. Открыть меню `Open hideList Menu` (`hideList: true`).
   3. Открыть меню `Open Menu with Slots` со слотами `#title`, `#contextTop`, `#contextBottom`, `#footer`.
-- **Ожидаемый результат**: При `barsAdaptive="showAlways"` панель `.d1-menu__bars` отображается с заголовком, описанием и кнопками; при `hideList` список `.d1-menu__list` не рендерится; пользовательские слоты отображаются на своих позициях.
+- **Ожидаемый результат**: При `barsAdaptive="showAlways"` панель `.d1-menu__bars` (`data-demo-bars="true"`) отображается с заголовком, описанием и кнопками; при `hideList` список `.d1-menu__list` не рендерится; пользовательские слоты отображаются на своих позициях.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-002.png`)
 
 #### [TC-VIS-003] Большой список (60 элементов, без иконок)
@@ -97,7 +97,7 @@
 - **Категория**: `Визуал и токены`
 - **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
 - **Шаги теста**:
-  1. Открыть `Large List: Mixed 512 (Lazy)` (`lazy: true`), замерить время открытия, количество видимых/скрытых строк (`.d1-listItem--lazy--visible` / `--hidden`), общее число DOM-узлов и `scrollHeight`.
+  1. Открыть `Large List: Mixed 512 (Lazy)` (`lazy: true`) и `Large List: Mixed 512 (Lazy, Custom Margin)` (`lazy-margin="128px 0px"`, `:lazy-cache-height="false"`), замерить время открытия, количество видимых/скрытых строк (`.d1-listItem--lazy--visible` / `--hidden`), общее число DOM-узлов и `scrollHeight`.
   2. Прокрутить к середине списка (`50%`) и проверить подгрузку `mixed-256`.
   3. Выполнить поиск `"500"`, выбрать `mixed-500` и проверить обновление `largeMixed512Lazy: mixed-500` и чистоту консоли.
 - **Ожидаемый результат**: Отображаются только видимые строки (~16 из 512) при сохранении полной высоты скролла (`22596px`), сокращении DOM-узлов и ускорении открытия и фильтрации по сравнению с обычным `512`-списком.
@@ -146,7 +146,7 @@
 - **Категория**: `Интерактивность и функционал`
 - **Предусловия**: Открыть `http://localhost:3000/component-menu`, viewport `1440×900`.
 - **Шаги теста**:
-  1. Проверить наличие закрытого элемента `SSR inDom: true` в DOM до первого открытия.
+  1. Открыть `SSR inDom: true`, выбрать пункт `Edit` и убедиться, что после закрытия узел `.d1-window` остаётся в DOM (`totalWindows: 2`).
   2. В секции `Expose API & Events` нажать `toOpen()`, `Read Expose`, `next()`, `previous()`, `toggle()`, `toClose()`.
 - **Ожидаемый результат**: `expose` возвращает актуальные `id`, `open`, `isSelected=true`, `values`, `names`, `loading=false`; методы управления открывают, переключают и закрывают окно.
 - **Тип доказательства**: `Console/Log`

@@ -11,6 +11,7 @@ import {
 
 import { useCmsDb } from '../composables/useCmsDb'
 import { CmsError } from './CmsError'
+import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
@@ -114,7 +115,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     id: number,
     condition?: SQL
   ): Promise<boolean> {
-    if (!isPositiveInteger(id)) {
+    if (!CmsVerification.isPositiveInteger(id)) {
       return false
     }
 

@@ -185,7 +185,6 @@ src/constructors/Menu/MenuValue.ts
 src/constructors/Menu/MenuGo.ts
 src/constructors/Menu/MenuWindow.ts
 src/constructors/Menu/MenuInclude.ts
-src/constructors/Menu/Menu.ts
 src/constructors/Menu/MenuDesign.tsx
 src/constructors/Input/InputPassword.ts
 src/constructors/Input/InputDesign.tsx
@@ -206,3 +205,4 @@ src/constructors/Bars/BarsDesign.tsx
 src/constructors/Bars/BarsInclude.ts
 src/constructors/List/List.ts
 src/constructors/List/ListDesign.tsx
+src/constructors/Menu/Menu.ts

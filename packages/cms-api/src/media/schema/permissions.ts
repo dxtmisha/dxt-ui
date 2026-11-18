@@ -1,5 +1,6 @@
 import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
 import { createdOrigins } from './createdOrigins'
+import type { CmsStatus } from '../../types/cmsDbTypes'
 
 /**
  * Permissions table schema for CMS /
@@ -17,6 +18,10 @@ export const permissions = /* #__PURE__ */ pgTable('permissions', {
   name: text('name').notNull(),
   /** Permission description / Описание права доступа */
   description: text('description'),
+
+  // Status
+  /** Permission status / Статус права доступа */
+  status: text('status').$type<CmsStatus>().notNull().default('active'),
 
   // Origin
   /** Creation origin code / Код источника создания записи */

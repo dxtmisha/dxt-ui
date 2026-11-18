@@ -46,8 +46,11 @@ export type CmsRolePermission = typeof rolePermissions.$inferSelect
 /** New role permission relation payload for database insert / Данные новой связи роли и права доступа для вставки в базу данных */
 export type CmsNewRolePermission = typeof rolePermissions.$inferInsert
 
+/** Record status for main CMS entities / Статус записи для основных сущностей CMS */
+export type CmsStatus = 'active' | 'blocked' | 'deleted'
+
 /** User account status / Статус учётной записи пользователя */
-export type CmsUserStatus = 'active' | 'invited' | 'blocked' | 'suspended'
+export type CmsUserStatus = CmsStatus | 'invited' | 'suspended'
 
 /** User metadata and preferences stored in JSONB / Метаданные и персональные настройки пользователя в JSONB */
 export interface CmsUserMetadata {
