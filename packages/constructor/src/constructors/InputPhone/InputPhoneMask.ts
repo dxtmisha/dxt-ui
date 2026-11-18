@@ -1,4 +1,4 @@
-import { type ConstrBind } from '@dxtmisha/functional'
+import { type ConstrBind, isArray } from '@dxtmisha/functional'
 
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
@@ -38,14 +38,16 @@ const inputPhoneMaskSpecial = {
 export class InputPhoneMask {
   /**
    * Constructor
+   *
+   * Конструктор
    * @param props input data / входные данные
    * @param data function returning data manager / функция, возвращающая менеджер данных
    * @param value function returning field value manager / функция, возвращающая менеджер значения поля
    */
   constructor(
-    protected readonly props: InputPhonePropsBasic,
+    protected readonly props: Readonly<InputPhonePropsBasic>,
     protected readonly data: () => InputPhoneData,
-    protected readonly value?: () => FieldValueInclude
+    protected readonly value: () => FieldValueInclude<string>
   ) { }
 
   /**
@@ -78,7 +80,7 @@ export class InputPhoneMask {
 
     return {
       modelValue: this.props.modelValue,
-      value: this.value?.().item.value ?? this.data().valueDefault.value,
+      value: this.value().item.value ?? this.data().valueDefault.value,
 
       mask: {
         mask,
@@ -88,7 +90,7 @@ export class InputPhoneMask {
         check: '.{7,}'
       },
 
-      maskVisible: mask.length < 2,
+      maskVisible: isArray(mask) && mask.length < 2,
       maskAttrs: this.props.maskAttrs
     }
   }

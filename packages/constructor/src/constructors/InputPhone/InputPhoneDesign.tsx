@@ -1,14 +1,14 @@
-import { h, type VNode } from 'vue'
+import { h, mergeProps, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { InputPhone } from './InputPhone'
 
-import type { FieldControl } from '../Field'
+import type { FieldControl, FieldPropsBasic } from '../Field'
 import {
   type InputPhonePropsBasic
 } from './props'
@@ -31,7 +31,7 @@ export class InputPhoneDesign<
   CLASSES extends InputPhoneClasses,
   P extends InputPhonePropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLElement,
     COMP,
     InputPhoneEmits,
     EXPOSE,
@@ -82,8 +82,7 @@ export class InputPhoneDesign<
   protected initExpose(): EXPOSE {
     return {
       ...this.item.i('value').expose(),
-      checkValidity: () => this.item.i('validation').checkValidity(),
-      getValidationMessage: () => this.item.i('validation').message
+      ...this.item.i('validation').expose()
     } as EXPOSE
   }
 
@@ -122,15 +121,20 @@ export class InputPhoneDesign<
   protected initRender(): VNode[] {
     return this.item.i('field').render(
       {
+        ...this.slots,
         default: this.renderMask,
-        leading: this.renderDialCode
+        ...(!this.props.countryBlock
+          ? { leading: () => this.item.callInstance('dialCode', item => item.render(), []) }
+          : {})
       },
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        validationMessage: this.item.i('validation').message
-      }
+      mergeProps(
+        this.getAttrs(),
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          validationMessage: this.item.i('validation').message
+        }
+      ) as Partial<ConstrBind<FieldPropsBasic>>
     )
   }
 
@@ -146,42 +150,38 @@ export class InputPhoneDesign<
       this.props.disabled
       || this.props.readonly
     ) {
-      return [h('input', {
-        value: this.item.i('value').item.value,
-        disabled: this.props.disabled,
-        readonly: this.props.readonly,
-        class: input.className
-      })]
+      return [h(
+        'input',
+        mergeProps(
+          {
+            inputMode: 'tel'
+          },
+          this.item.i('attributes').listForInput,
+          input.binds,
+          {
+            ref: this.element,
+            value: this.item.i('value').item.value
+          }
+        )
+      )]
     }
+
+    const event = this.item.i('event')
 
     return this.item.i('mask').render(undefined, {
       ref: this.element,
       class: input.className,
       align: this.props.align,
-      inputAttrs: toBinds(
-        this.item.i('attributes').listForInput,
-        input.binds,
+      inputAttrs: mergeProps(
         {
           inputMode: 'tel'
         },
-        this.props.inputAttrs
+        this.item.i('attributes').listForInput,
+        input.binds
       ) as Partial<HTMLInputElement>,
-      onBlur: this.item.i('event').onBlur,
-      onInput: this.item.i('event').onInput
+      onBlur: event.onBlur,
+      onInput: event.onInput,
+      onChange: event.onChange
     })
-  }
-
-  /**
-   * Rendering dial code element.
-   *
-   * Рендеринг элемента телефонного кода.
-   * @returns array of VNodes / массив VNode
-   */
-  readonly renderDialCode = (): VNode[] => {
-    if (this.props.countryBlock) {
-      return []
-    }
-
-    return this.item.i('dialCode').render()
   }
 }

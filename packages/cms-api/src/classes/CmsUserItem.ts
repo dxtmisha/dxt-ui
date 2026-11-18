@@ -11,7 +11,8 @@ import {
   isObjectNotArray,
   isPositiveInteger,
   isString,
-  uniqueArray
+  uniqueArray,
+  type ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
 
 import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
@@ -22,7 +23,6 @@ import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsRoleItem } from './CmsRoleItem'
 import type { CmsDbInstance } from './CmsDbInstance'
-import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
   CmsDbExecutor,
   CmsNewUser,
@@ -56,12 +56,12 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * Инициализирует обёртку конкретного пользователя с его данными, менеджером БД и обработчиком ошибок.
    * @param data User record with assigned roles and permissions / Запись пользователя с назначенными ролями и правами доступа
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error CMS error instance handler / Обработчик ошибок CMS
+   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
     protected data: CmsUserWithRoles,
     databaseInstance?: CmsDbInstance,
-    error?: CmsErrorInstance
+    error?: ErrorCenterThrowInstance
   ) {
     super(users, databaseInstance, error)
   }
@@ -492,7 +492,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-user',
           code: 'update'
@@ -560,7 +560,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         return true
       })
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-user',
           code: 'delete'
@@ -658,7 +658,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       this.data = restoredRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-user',
           code: 'restore'
@@ -714,7 +714,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-user',
           code: errorCode
@@ -768,7 +768,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-user',
           code: errorCode
@@ -844,7 +844,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-user',
           code: errorCode
@@ -893,12 +893,12 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Формирует и валидирует объект вставки в базу данных из входных данных создания.
    * @param input User creation payload / Входные данные для создания пользователя
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
   static buildCreateValues(
     input: CmsUserCreateInput,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): CmsNewUser {
     const email = CmsUserItem.normalizeEmail(input.email, error)
     const firstName = CmsUserItem.normalizeFirstName(input.firstName, error)
@@ -932,13 +932,13 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * Формирует и валидирует объект обновления в базе данных из входных данных редактирования.
    * @param input Partial user update payload / Частичные данные для обновления пользователя
    * @param currentMetadata Current stored metadata / Текущие сохранённые метаданные пользователя
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
    */
   static buildUpdateValues(
     input: CmsUserUpdateInput,
     currentMetadata: CmsUserMetadata,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): Partial<CmsNewUser> {
     const values: Partial<CmsNewUser> = {}
 
@@ -1049,16 +1049,16 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Проверяет наличие не удалённого пользователя с указанным идентификатором или регистрирует ошибку.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @param userId User identifier / Идентификатор пользователя
    */
   static async ensureUserExists(
     executor: CmsDbExecutor,
-    error: CmsErrorInstance,
+    error: ErrorCenterThrowInstance,
     userId: number
   ): Promise<void> {
     if (!isPositiveInteger(userId)) {
-      error.report({
+      error.on({
         group: 'cms-user',
         code: 'notFound',
         details: { userId }
@@ -1072,7 +1072,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      error.report({
+      error.on({
         group: 'cms-user',
         code: 'notFound',
         details: { userId }
@@ -1114,12 +1114,12 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Нормализует и проверяет адрес электронной почты.
    * @param email Raw email input / Исходный адрес электронной почты
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Normalized lowercase email / Нормализованный email в нижнем регистре
    */
   static normalizeEmail(
     email: string,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): string {
     const normalized = isString(email) ? email.trim().toLowerCase() : ''
     const emailParts = normalized.split('@')
@@ -1131,7 +1131,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       || emailParts[1].length === 0
       || /\s/.test(normalized)
     ) {
-      error.report({
+      error.on({
         group: 'cms-user',
         code: 'invalidEmail',
         details: { email }
@@ -1146,17 +1146,17 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Нормализует и проверяет имя пользователя.
    * @param firstName Raw first name input / Исходное имя пользователя
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Trimmed first name / Очищенное имя пользователя
    */
   static normalizeFirstName(
     firstName: string,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): string {
     const normalized = isString(firstName) ? firstName.trim() : ''
 
     if (normalized.length === 0) {
-      error.report({
+      error.on({
         group: 'cms-user',
         code: 'invalidFirstName',
         details: { firstName }
@@ -1171,12 +1171,12 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    *
    * Нормализует и проверяет международный номер телефона (только цифры, E.164 без +).
    * @param phone Raw phone number or null / Исходный номер телефона, null или undefined
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated phone number, null, or undefined / Проверенный номер телефона, null или undefined
    */
   static normalizePhone(
     phone: number | null | undefined,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): number | null | undefined {
     if (phone === undefined) {
       return undefined
@@ -1187,7 +1187,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (!Number.isSafeInteger(phone) || phone <= 0) {
-      error.report({
+      error.on({
         group: 'cms-user',
         code: 'invalidPhone',
         details: { phone }

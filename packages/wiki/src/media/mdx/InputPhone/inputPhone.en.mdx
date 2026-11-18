@@ -1,24 +1,25 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Phone number input field component with country selection, validation, and masking support.
+A phone number input component combining automatic country dial code selection, dynamic phone masking, and built-in validation.
 
-InputPhone is a specialized input field designed for phone number entry. It integrates with a country flag/code selector and applies automatic mask formatting based on the selected or detected country. By default, the country can be dynamically identified from the entered dialing digits.
+InputPhone integrates the Field wrapper, InputPhoneDialCode country selector, and Mask formatting engine into a single component. It automatically detects the country as the user types or loads a formatted number, switches the input mask accordingly, or restricts input to a local national format when `countryBlock` is enabled.
 
-**Key Features:**
+**Key features:**
 
-- Automatic phone number masking based on selected country
-- Interactive country selection menu with search, flags and dialing codes
-- Dynamic country detection from entered phone number digits
-- Configurable default country and option to disable auto-detection via `countryBlock`
-- Fully custom pattern formatting via mask attributes
-- Supports two-way data binding (`v-model`)
-- Automatically moves focus back to the phone input when the country selector window closes
-- Integrated helper messages, status validation states, and label configurations
+- Automatic country detection by entered phone number prefix
+- Built-in `InputPhoneDialCode` selector with searchable country list, flags, and dial codes
+- Dynamic phone mask formatting with `Mask` (`maskAttrs`, `countryDefault`)
+- Country lock mode via `countryBlock` for national-only phone input without selector
+- Built-in pattern validation (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`)
+- Two-way binding (`v-model`, `v-model:value`) and exposed programmatic API (`getValue`, `setValue`, `clear`, `checkValidity`, `getValidationMessage`)
+- Full slot support (`leading`, `trailing`, `prefix`, `suffix`, `label`) and accessibility (`inputmode="tel"`, ARIA popup controls)
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Phone number fields in registration or checkout forms
-- Contact information sections in user profiles
+- User registration, checkout, and profile contact forms
+- International phone inputs with country search and dial code selector
+- Region-locked phone inputs for single-country forms (`countryBlock`)
+- Validated contact forms with custom error messages
 
 <Source
     code={`
@@ -26,13 +27,21 @@ InputPhone is a specialized input field designed for phone number entry. It inte
 import { ref } from 'vue'
 
 const phone = ref('')
+
+const handleInput = (event, validation) => {
+  console.log('Phone value:', validation.value)
+  console.log('Is valid:', validation.status)
+}
 </script>
 
 <template>
   <InputPhone
     v-model:value="phone"
-    label="Phone Number"
-    placeholder="Enter phone number"
+    country-default="US"
+    label="Phone number"
+    helper-message="Enter international phone number"
+    required
+    @input="handleInput"
   />
 </template>
   `}

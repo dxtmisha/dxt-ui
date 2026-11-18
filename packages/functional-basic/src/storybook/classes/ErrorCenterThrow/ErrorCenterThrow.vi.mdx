@@ -4,33 +4,33 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp ErrorCenterThrow
 
-`ErrorCenterThrow` là **lớp bọc (wrapper)** quanh `ErrorCenterInstance`, kết hợp việc ghi nhận lỗi tập trung và ném ngoại lệ trong một thao tác duy nhất. Khi gọi `on()`, lớp sẽ gửi lỗi qua `ErrorCenterInstance` (kích hoạt trình xử lý, callback toàn cục và xuất console), sau đó lập tức ném ra `ErrorCenterError` chứa siêu dữ liệu nguyên nhân đã được hợp nhất.
+`ErrorCenterThrow` là **lớp facade tĩnh** bọc quanh `ErrorCenterThrowInstance`, kết hợp việc ghi nhận lỗi tập trung và ném ngoại lệ trong một thao tác duy nhất. Khi gọi `ErrorCenterThrow.on()`, lớp sẽ gửi lỗi qua `ErrorCenterInstance` đang hoạt động (kích hoạt trình xử lý, callback toàn cục và xuất console), sau đó lập tức ném ra `ErrorCenterError` chứa siêu dữ liệu nguyên nhân đã được hợp nhất.
+
+Facade tĩnh sử dụng `ServerStorage` để tái sử dụng một `ErrorCenterThrowInstance` cho mỗi yêu cầu SSR. Trên trình duyệt và trong Node.js ngoài yêu cầu, lớp sử dụng bộ nhớ trong runtime hiện tại.
 
 ## Các tính năng chính
 
-- **Ghi nhận và ném lỗi thống nhất** — tránh bỏ sót việc gửi thông tin lỗi tới hệ thống xử lý/telemetry hoặc ngắt luồng thực thi bằng ngoại lệ.
+- **Giao diện tĩnh** — ghi nhận và ném lỗi mà không cần khởi tạo thủ công.
+- **Cô lập SSR** — quản lý một `ErrorCenterThrowInstance` riêng cho từng ngữ cảnh yêu cầu thông qua `ServerStorage`.
 - **Hợp nhất dữ liệu từ sổ đăng ký** — tạo `ErrorCenterError` thông qua `errorCenter.assign(cause)`, tự động áp dụng `label`, `message` và quy tắc `priority` đã đăng ký.
-- **Sẵn sàng cho SSR & DI** — mặc định sử dụng `ErrorCenter.getItem()` (cô lập theo từng yêu cầu qua `ServerStorage`) hoặc nhận vào bất kỳ `ErrorCenterInstance` tùy chỉnh nào.
 - **Hợp đồng kiểu `never` chặt chẽ trong TypeScript** — các phương thức `on<D = unknown>(...)` và `handle<D = unknown>(...)` đảm bảo không trả về bình thường và giữ nguyên kiểu dữ liệu `details` trên `ErrorCenterError<D>`.
 - **Ngăn chặn ghi nhận trùng lặp** — phương thức `handle()` ném lại trực tiếp thực thể `ErrorCenterError` đã tồn tại mà không kích hoạt lại các trình xử lý của `ErrorCenterInstance`.
 
-## Khởi tạo
+## Các phương thức
 
-Để tạo một thực thể, gọi `new ErrorCenterThrow(errorCenter?)`.
+### `getItem`
+Trả về `ErrorCenterThrowInstance` cho ngữ cảnh lưu trữ đang hoạt động.
 
-**Tham số:**
-- `errorCenter?: ErrorCenterInstance` — thực thể `ErrorCenterInstance` mục tiêu (mặc định là `ErrorCenter.getItem()`).
+**Trả về:** `ErrorCenterThrowInstance` — thực thể đang hoạt động được cô lập theo yêu cầu.
 
 ```typescript
 import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
 
-const errorThrow = new ErrorCenterThrow()
+const instance = ErrorCenterThrow.getItem()
 ```
 
-## Các phương thức
-
 ### `on`
-Gửi nguyên nhân lỗi tới `ErrorCenterInstance` được liên kết và ném ra ngoại lệ `ErrorCenterError<D>` với dữ liệu nguyên nhân đã được hợp nhất.
+Gửi nguyên nhân lỗi tới `ErrorCenterInstance` đang hoạt động và ném ra ngoại lệ `ErrorCenterError<D>` với dữ liệu nguyên nhân đã được hợp nhất.
 
 **Tham số:**
 - `cause: ErrorCenterCauseItem<D>` — dữ liệu nguyên nhân lỗi có cấu trúc (`group`, `code`, `priority`, `label`, `message`, `details`).
@@ -39,7 +39,7 @@ Gửi nguyên nhân lỗi tới `ErrorCenterInstance` được liên kết và n
 **Trả về:** `never` — không bao giờ trả về bình thường; luôn ném ra `ErrorCenterError<D>`.
 
 ```typescript
-errorThrow.on<{ resourceId: number }>({
+ErrorCenterThrow.on<{ resourceId: number }>({
   group: 'api',
   code: 'notFound',
   details: { resourceId: 42 }
@@ -60,7 +60,7 @@ Xử lý lỗi đã bắt được mà không ghi nhận trùng lặp các thự
 try {
   // Thao tác có thể ném ra ErrorCenterError hoặc một lỗi bất ngờ khác
 } catch (error) {
-  errorThrow.handle(
+  ErrorCenterThrow.handle(
     { group: 'api', code: 'server' },
     error,
     error instanceof Error ? { cause: error } : undefined
@@ -70,14 +70,12 @@ try {
 
 ## Ví dụ
 
-### Sử dụng với ErrorCenter toàn cục hiện tại
+### Sử dụng facade tĩnh
 ```typescript
 import { ErrorCenterError, ErrorCenterThrow } from '@dxtmisha/functional-basic'
 
-const errorThrow = new ErrorCenterThrow()
-
 try {
-  errorThrow.on({
+  ErrorCenterThrow.on({
     group: 'api',
     code: 'unauthorized',
     details: { endpoint: '/profile' }
@@ -91,12 +89,14 @@ try {
 }
 ```
 
-### Truyền thực thể cô lập và lỗi gốc
+### Sử dụng với ErrorCenterInstance tùy chỉnh
+Đối với các thực thể `ErrorCenterInstance` cô lập tùy chỉnh, hãy khởi tạo trực tiếp `ErrorCenterThrowInstance`:
+
 ```typescript
 import {
   ErrorCenterHandler,
   ErrorCenterInstance,
-  ErrorCenterThrow
+  ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
 
 const localInstance = new ErrorCenterInstance(
@@ -104,10 +104,9 @@ const localInstance = new ErrorCenterInstance(
   new ErrorCenterHandler([], false)
 )
 
-const localThrow = new ErrorCenterThrow(localInstance)
+const localThrow = new ErrorCenterThrowInstance(localInstance)
 
 try {
-  // Thao tác gặp lỗi
   throw new SyntaxError('Unexpected token')
 } catch (originalError) {
   localThrow.on(

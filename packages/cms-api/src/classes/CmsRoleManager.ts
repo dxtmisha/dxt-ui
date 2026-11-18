@@ -11,7 +11,8 @@ import {
 import {
   isPositiveInteger,
   isString,
-  uniqueArray
+  uniqueArray,
+  type ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
@@ -26,7 +27,6 @@ import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsPermissionManager } from './CmsPermissionManager'
 import { CmsRoleItem } from './CmsRoleItem'
 import type { CmsDbInstance } from './CmsDbInstance'
-import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
   CmsDbExecutor,
   CmsPermission,
@@ -54,11 +54,11 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
    *
    * Инициализирует менеджер ролей с экземпляром CmsDbInstance и обработчиком ошибок.
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error CMS error instance handler / Обработчик ошибок CMS
+   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
     databaseInstance?: CmsDbInstance,
-    error?: CmsErrorInstance
+    error?: ErrorCenterThrowInstance
   ) {
     super(roles, databaseInstance, error)
   }
@@ -257,13 +257,13 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
   }
 
   /**
-   * Sets or overrides the CmsErrorInstance handler and propagates it to the child permission manager.
+   * Sets or overrides the ErrorCenterThrowInstance handler and propagates it to the child permission manager.
    *
-   * Устанавливает или заменяет обработчик ошибок CmsErrorInstance и передаёт его дочернему менеджеру прав доступа.
-   * @param error CMS error instance handler / Обработчик ошибок CMS
+   * Устанавливает или заменяет обработчик ошибок ErrorCenterThrowInstance и передаёт его дочернему менеджеру прав доступа.
+   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
    */
-  override setError(error: CmsErrorInstance): this {
+  override setError(error: ErrorCenterThrowInstance): this {
     super.setError(error)
     this.permissionManager?.setError(error)
     return this
@@ -308,7 +308,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
 
         const createdRole = insertedRows[0]
         if (!createdRole) {
-          this.error.report({
+          this.error.on({
             group: 'cms-role',
             code: 'create'
           })
@@ -333,7 +333,7 @@ export class CmsRoleManager extends CmsDbAbstract<typeof roles> {
 
       return this.wrapRoleItem(createdRecord)
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-role',
           code: 'create'

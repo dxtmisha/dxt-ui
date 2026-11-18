@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { ErrorCenter, ErrorCenterInstance } from '@dxtmisha/functional-basic'
+import { ErrorCenter, ErrorCenterInstance, ErrorCenterThrowInstance } from '@dxtmisha/functional-basic'
+import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
-import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionManager } from '../CmsPermissionManager'
 import { CmsRoleItem } from '../CmsRoleItem'
 import { CmsRoleManager } from '../CmsRoleManager'
@@ -139,14 +139,15 @@ function makeRole(overrides: Partial<CmsRole> = {}): CmsRole {
 
 describe('CmsRoleManager', () => {
   let errorCenter: ErrorCenterInstance
-  let cmsError: CmsErrorInstance
+  let cmsError: ErrorCenterThrowInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
     ErrorCenter.setIsConsole(false)
-    cmsError = new CmsErrorInstance(errorCenter)
+    registerCmsErrorCauses(errorCenter)
+    cmsError = new ErrorCenterThrowInstance(errorCenter)
     capturedErrors = []
     const captureError = (cause: { group?: string, code: string, message?: string }) => {
       capturedErrors.push({
@@ -168,7 +169,7 @@ describe('CmsRoleManager', () => {
   it('provides a synchronized CmsPermissionManager and supports configuration overrides', () => {
     const firstMock = createMockDb()
     const secondMock = createMockDb()
-    const secondError = new CmsErrorInstance(new ErrorCenterInstance())
+    const secondError = new ErrorCenterThrowInstance(new ErrorCenterInstance())
     const manager = new CmsRoleManager(firstMock.dbInstance, cmsError)
 
     expect(new CmsRoleManager().getDatabaseInstance()).toBe(useCmsDb().cmsDbInstance)

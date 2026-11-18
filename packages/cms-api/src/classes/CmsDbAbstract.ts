@@ -5,15 +5,16 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
+  ErrorCenterThrow,
   isPositiveInteger,
-  uniqueArray
+  uniqueArray,
+  type ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
 
 import { useCmsDb } from '../composables/useCmsDb'
-import { CmsError } from './CmsError'
+import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
-import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
   CmsDb,
   CmsIdTable,
@@ -21,24 +22,26 @@ import type {
 } from '../types/cmsDbTypes'
 
 /**
- * Abstract base class providing unified CMS table binding, database instance management, and centralized CmsErrorInstance delegation.
+ * Abstract base class providing unified CMS table binding, database instance management, and centralized ErrorCenterThrow delegation.
  *
- * Абстрактный базовый класс для единой привязки таблицы CMS, управления экземпляром базы данных и делегирования обработки ошибок в CmsErrorInstance.
+ * Абстрактный базовый класс для единой привязки таблицы CMS, управления экземпляром базы данных и делегирования обработки ошибок в ErrorCenterThrow.
  */
 export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   /**
-   * Initializes the base CMS database handler with a table schema, CmsDbInstance, and CmsErrorInstance.
+   * Initializes the base CMS database handler with a table schema, CmsDbInstance, and ErrorCenterThrowInstance.
    *
-   * Инициализирует базовый обработчик БД CMS со схемой таблицы, экземпляром CmsDbInstance и обработчиком ошибок CmsErrorInstance.
+   * Инициализирует базовый обработчик БД CMS со схемой таблицы, экземпляром CmsDbInstance и обработчиком ошибок ErrorCenterThrowInstance.
    * @param table Drizzle PostgreSQL table schema with a required id column / Схема таблицы Drizzle PostgreSQL с обязательной колонкой id
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error CMS error instance handler / Обработчик ошибок CMS
+   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
     protected table: TTable,
     protected databaseInstance: CmsDbInstance = useCmsDb().cmsDbInstance,
-    protected error: CmsErrorInstance = CmsError.getItem()
-  ) {}
+    protected error: ErrorCenterThrowInstance = ErrorCenterThrow.getItem()
+  ) {
+    registerCmsErrorCauses()
+  }
 
   /**
    * Returns the Drizzle table schema bound to this instance.
@@ -71,12 +74,12 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
-   * Returns the managed CmsErrorInstance handler.
+   * Returns the managed ErrorCenterThrowInstance handler.
    *
-   * Возвращает управляемый экземпляр обработчика ошибок CmsErrorInstance.
-   * @returns CmsErrorInstance instance / Экземпляр CmsErrorInstance
+   * Возвращает управляемый экземпляр обработчика ошибок ErrorCenterThrowInstance.
+   * @returns ErrorCenterThrowInstance instance / Экземпляр ErrorCenterThrowInstance
    */
-  getError(): CmsErrorInstance {
+  getError(): ErrorCenterThrowInstance {
     return this.error
   }
 
@@ -93,13 +96,13 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   }
 
   /**
-   * Sets or overrides the CmsErrorInstance handler used for error reporting.
+   * Sets or overrides the ErrorCenterThrowInstance handler used for error reporting.
    *
-   * Устанавливает или заменяет обработчик ошибок CmsErrorInstance.
-   * @param error CMS error instance handler / Обработчик ошибок CMS
+   * Устанавливает или заменяет обработчик ошибок ErrorCenterThrowInstance.
+   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
    */
-  setError(error: CmsErrorInstance): this {
+  setError(error: ErrorCenterThrowInstance): this {
     this.error = error
     return this
   }
@@ -284,7 +287,8 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     const uniqueIds = uniqueArray(ids)
     for (const entityId of uniqueIds) {
       if (!isPositiveInteger(entityId)) {
-        CmsError.report({
+        registerCmsErrorCauses()
+        ErrorCenterThrow.on({
           group: errorGroup,
           code: errorCode,
           details: { id: entityId }
@@ -301,7 +305,8 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     const missingIds = uniqueIds.filter(entityId => !foundIdSet.has(entityId))
 
     if (missingIds.length > 0) {
-      CmsError.report({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: errorGroup,
         code: errorCode,
         details: { missingIds }
@@ -346,7 +351,8 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
     const missingCodes = uniqueCodes.filter(code => !idByCode.has(code))
 
     if (missingCodes.length > 0) {
-      CmsError.report({
+      registerCmsErrorCauses()
+      ErrorCenterThrow.on({
         group: errorGroup,
         code: errorCode,
         details: { missingCodes }

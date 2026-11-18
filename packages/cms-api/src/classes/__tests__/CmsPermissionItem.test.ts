@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ErrorCenter, ErrorCenterInstance } from '@dxtmisha/functional-basic'
+import { ErrorCenter, ErrorCenterInstance, ErrorCenterThrowInstance } from '@dxtmisha/functional-basic'
+import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
-import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
 
@@ -96,14 +96,15 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
 
 describe('CmsPermissionItem', () => {
   let errorCenter: ErrorCenterInstance
-  let cmsError: CmsErrorInstance
+  let cmsError: ErrorCenterThrowInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
     ErrorCenter.setIsConsole(false)
-    cmsError = new CmsErrorInstance(errorCenter)
+    registerCmsErrorCauses(errorCenter)
+    cmsError = new ErrorCenterThrowInstance(errorCenter)
     capturedErrors = []
     const captureError = (cause: { group?: string, code: string, message?: string }) => {
       capturedErrors.push({

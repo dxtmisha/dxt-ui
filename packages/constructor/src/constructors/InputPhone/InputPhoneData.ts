@@ -1,10 +1,10 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import {
-  type ConstrItem,
   DesignLifecycleAbstract,
   Geo,
   GeoPhone,
-  type GeoPhoneMap
+  type GeoPhoneMap,
+  isFilled
 } from '@dxtmisha/functional'
 
 import type { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
@@ -26,36 +26,29 @@ export class InputPhoneData extends DesignLifecycleAbstract {
   /** Selected country code ref / Ссылка на выбранный код страны */
   readonly country = ref<string>(Geo.getCountry())
 
+  /** Cleanup function for valueItem watcher / Функция очистки наблюдателя valueItem */
+  protected watchStop?: () => void
+
   /**
    * Constructor
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param value function returning field value manager / функция, возвращающая менеджер значения поля
-   * @param event function returning field event manager / функция, возвращающая менеджер событий поля
    * @param element function returning field element manager / функция, возвращающая менеджер элемента поля
+   * @param event function returning field event manager / функция, возвращающая менеджер событий поля
+   * @param value function returning field value manager / функция, возвращающая менеджер значения поля
    */
   constructor(
-    protected readonly props: InputPhonePropsBasic,
-    protected readonly value: () => FieldValueInclude,
-    protected readonly event?: () => FieldEventInclude,
-    protected readonly element?: () => FieldElementInclude
+    protected readonly props: Readonly<InputPhonePropsBasic>,
+    protected readonly element: () => FieldElementInclude,
+    protected readonly event: () => FieldEventInclude,
+    protected readonly value: () => FieldValueInclude<string>
   ) {
     super()
 
     if (this.props.countryDefault) {
       this.country.value = this.props.countryDefault
     }
-  }
-
-  /** Callback after component mounting / Обработчик после монтирования компонента */
-  override readonly onMounted = (): void => {
-    if (!this.value().boolean) {
-      this.value().set(this.toPhone(this.country.value))
-    }
-
-    this.updateCountry()
-    watch(this.valueItem, () => this.updateCountry())
   }
 
   /** Computed info of the current phone map / Вычисляемая информация о текущей карте телефона */
@@ -83,20 +76,12 @@ export class InputPhoneData extends DesignLifecycleAbstract {
   })
 
   /**
-   * Handler for input event.
+   * Moves focus to the phone input element.
    *
-   * Обработчик события ввода.
-   * @param event input event / событие ввода
-   * @param data event data / данные события
+   * Перемещает фокус на элемент ввода телефона.
    */
-  readonly onInput = (
-    event: InputEvent,
-    data: ConstrItem
-  ): void => {
-    this.event?.().onInput(event, {
-      ...data,
-      value: this.toPhone(data?.value)
-    })
+  focus(): void {
+    this.element().get()?.focus()
   }
 
   /**
@@ -111,8 +96,35 @@ export class InputPhoneData extends DesignLifecycleAbstract {
     data?: EventClickValue
   ): void => {
     void event
-    this.country.value = data?.value
-    this.event?.().onValue(this.toPhone(data?.value))
+
+    if (
+      data
+      && isFilled(data.value)
+    ) {
+      const country = String(data.value)
+
+      this.country.value = country
+      this.event().onValue(this.toPhone(country))
+    }
+  }
+
+  /** Callback after component mounting / Обработчик после монтирования компонента */
+  override readonly onMounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
+
+    if (!this.value().boolean) {
+      this.value().set(this.toPhone(this.country.value))
+    }
+
+    this.updateCountry()
+    this.watchStop = watch(this.valueItem, () => this.updateCountry())
+  }
+
+  /** Callback after component unmounting / Обработчик после размонтирования компонента */
+  override readonly onUnmounted = (): void => {
+    this.watchStop?.()
+    this.watchStop = undefined
   }
 
   /**
@@ -129,15 +141,6 @@ export class InputPhoneData extends DesignLifecycleAbstract {
         this.focus()
       })
     }
-  }
-
-  /**
-   * Moves focus to the phone input element.
-   *
-   * Перемещает фокус на элемент ввода телефона.
-   */
-  focus(): void {
-    this.element?.().get()?.focus()
   }
 
   /**

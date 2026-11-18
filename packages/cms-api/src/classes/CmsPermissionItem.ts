@@ -7,7 +7,8 @@ import {
 import {
   isPositiveInteger,
   isString,
-  uniqueArray
+  uniqueArray,
+  type ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
 
 import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
@@ -15,7 +16,6 @@ import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import type { CmsDbInstance } from './CmsDbInstance'
-import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
   CmsDbExecutor,
   CmsNewPermission,
@@ -38,12 +38,12 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    * Инициализирует обёртку конкретного права доступа с его данными, менеджером БД и обработчиком ошибок.
    * @param data Permission record from database / Запись права доступа из базы данных
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error CMS error instance handler / Обработчик ошибок CMS
+   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
     protected data: CmsPermission,
     databaseInstance?: CmsDbInstance,
-    error?: CmsErrorInstance
+    error?: ErrorCenterThrowInstance
   ) {
     super(permissions, databaseInstance, error)
   }
@@ -161,7 +161,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-permission',
           code: 'update'
@@ -186,7 +186,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     try {
       return await this.deleteRecordById(permissionId)
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-permission',
           code: 'delete'
@@ -405,12 +405,12 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Формирует и валидирует объект вставки в базу данных из входных данных создания права доступа.
    * @param input Permission creation payload / Входные данные для создания права доступа
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
   static buildCreateValues(
     input: CmsPermissionCreateInput,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): CmsNewPermission {
     return {
       code: CmsPermissionItem.normalizeCode(input.code, error),
@@ -425,12 +425,12 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Формирует и валидирует объект обновления в базе данных из входных данных редактирования права доступа.
    * @param input Partial permission update payload / Частичные данные для обновления права доступа
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
    */
   static buildUpdateValues(
     input: CmsPermissionUpdateInput,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): Partial<CmsNewPermission> {
     const values: Partial<CmsNewPermission> = {}
 
@@ -458,17 +458,17 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Нормализует и проверяет код права доступа.
    * @param code Raw permission code / Исходный код права доступа
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Trimmed non-empty permission code / Очищенный код права доступа
    */
   static normalizeCode(
     code: string,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): string {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      error.report({
+      error.on({
         group: 'cms-permission',
         code: 'invalidCode',
         details: { code }
@@ -483,17 +483,17 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    *
    * Нормализует и проверяет название права доступа.
    * @param name Raw permission name / Исходное название права доступа
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Trimmed non-empty permission name / Очищенное название права доступа
    */
   static normalizeName(
     name: string,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): string {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      error.report({
+      error.on({
         group: 'cms-permission',
         code: 'invalidName',
         details: { name }

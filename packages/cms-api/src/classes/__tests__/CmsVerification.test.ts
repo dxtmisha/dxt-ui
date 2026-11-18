@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ErrorCenter, ErrorCenterError, ErrorCenterInstance } from '@dxtmisha/functional-basic'
-import { CmsErrorInstance } from '../CmsErrorInstance'
+import { ErrorCenter, ErrorCenterError, ErrorCenterInstance, ErrorCenterThrowInstance } from '@dxtmisha/functional-basic'
+import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { CmsVerification } from '../CmsVerification'
 
 describe('CmsVerification', () => {
@@ -13,17 +13,18 @@ describe('CmsVerification', () => {
     it('returns true for positive safe integers without reporting an error', () => {
       const errorCenter = new ErrorCenterInstance()
       errorCenter.setIsConsole(false)
+      registerCmsErrorCauses(errorCenter)
 
-      const cmsError = new CmsErrorInstance(errorCenter)
-      const reportSpy = vi.spyOn(cmsError, 'report')
+      const errorThrow = new ErrorCenterThrowInstance(errorCenter)
+      const reportSpy = vi.spyOn(errorThrow, 'on')
       const cause = {
         group: 'cms-user',
         code: 'invalidId'
       }
 
-      expect(CmsVerification.isPositiveInteger(1, cause, undefined, cmsError)).toBe(true)
-      expect(CmsVerification.isPositiveInteger(42, cause, undefined, cmsError)).toBe(true)
-      expect(CmsVerification.isPositiveInteger(Number.MAX_SAFE_INTEGER, cause, undefined, cmsError)).toBe(true)
+      expect(CmsVerification.isPositiveInteger(1, cause, undefined, errorThrow)).toBe(true)
+      expect(CmsVerification.isPositiveInteger(42, cause, undefined, errorThrow)).toBe(true)
+      expect(CmsVerification.isPositiveInteger(Number.MAX_SAFE_INTEGER, cause, undefined, errorThrow)).toBe(true)
       expect(reportSpy).not.toHaveBeenCalled()
     })
 
@@ -44,9 +45,10 @@ describe('CmsVerification', () => {
     it('reports cause and throws ErrorCenterError when value is not a positive safe integer and cause is provided', () => {
       const errorCenter = new ErrorCenterInstance()
       errorCenter.setIsConsole(false)
+      registerCmsErrorCauses(errorCenter)
 
-      const cmsError = new CmsErrorInstance(errorCenter)
-      const reportSpy = vi.spyOn(cmsError, 'report')
+      const errorThrow = new ErrorCenterThrowInstance(errorCenter)
+      const reportSpy = vi.spyOn(errorThrow, 'on')
       const cause = {
         group: 'cms-user',
         code: 'invalidId',
@@ -54,7 +56,7 @@ describe('CmsVerification', () => {
       }
       const rootCause = new Error('Invalid ID')
 
-      expect(() => CmsVerification.isPositiveInteger(0, cause, { cause: rootCause }, cmsError))
+      expect(() => CmsVerification.isPositiveInteger(0, cause, { cause: rootCause }, errorThrow))
         .toThrow(ErrorCenterError)
       expect(reportSpy).toHaveBeenCalledTimes(1)
       expect(reportSpy).toHaveBeenCalledWith(cause, { cause: rootCause })
@@ -65,16 +67,17 @@ describe('CmsVerification', () => {
     it('does not report an error and returns true when the callback or boolean value is true', () => {
       const errorCenter = new ErrorCenterInstance()
       errorCenter.setIsConsole(false)
+      registerCmsErrorCauses(errorCenter)
 
-      const cmsError = new CmsErrorInstance(errorCenter)
-      const reportSpy = vi.spyOn(cmsError, 'report')
+      const errorThrow = new ErrorCenterThrowInstance(errorCenter)
+      const reportSpy = vi.spyOn(errorThrow, 'on')
       const cause = {
         group: 'cms-user',
         code: 'invalidEmail'
       }
 
-      expect(CmsVerification.verify(() => true, cause, undefined, cmsError)).toBe(true)
-      expect(CmsVerification.verify(true, cause, undefined, cmsError)).toBe(true)
+      expect(CmsVerification.verify(() => true, cause, undefined, errorThrow)).toBe(true)
+      expect(CmsVerification.verify(true, cause, undefined, errorThrow)).toBe(true)
       expect(reportSpy).not.toHaveBeenCalled()
     })
 
@@ -83,12 +86,13 @@ describe('CmsVerification', () => {
       expect(CmsVerification.verify(false)).toBe(false)
     })
 
-    it('calls CmsErrorInstance.report and throws ErrorCenterError when the callback or boolean value is false and cause is provided', () => {
+    it('calls ErrorCenterThrowInstance.on and throws ErrorCenterError when the callback or boolean value is false and cause is provided', () => {
       const errorCenter = new ErrorCenterInstance()
       errorCenter.setIsConsole(false)
+      registerCmsErrorCauses(errorCenter)
 
-      const cmsError = new CmsErrorInstance(errorCenter)
-      const reportSpy = vi.spyOn(cmsError, 'report')
+      const errorThrow = new ErrorCenterThrowInstance(errorCenter)
+      const reportSpy = vi.spyOn(errorThrow, 'on')
       const cause = {
         group: 'cms-user',
         code: 'invalidEmail',
@@ -96,15 +100,15 @@ describe('CmsVerification', () => {
       }
       const rootCause = new Error('Validation failed')
 
-      expect(() => CmsVerification.verify(() => false, cause, { cause: rootCause }, cmsError))
+      expect(() => CmsVerification.verify(() => false, cause, { cause: rootCause }, errorThrow))
         .toThrow(ErrorCenterError)
-      expect(() => CmsVerification.verify(false, cause, { cause: rootCause }, cmsError))
+      expect(() => CmsVerification.verify(false, cause, { cause: rootCause }, errorThrow))
         .toThrow(ErrorCenterError)
       expect(reportSpy).toHaveBeenCalledTimes(2)
       expect(reportSpy).toHaveBeenCalledWith(cause, { cause: rootCause })
     })
 
-    it('uses default CmsError.getItem() when no CmsErrorInstance is provided', () => {
+    it('uses default ErrorCenterThrow.getItem() when no ErrorCenterThrowInstance is provided', () => {
       ErrorCenter.setIsConsole(false)
 
       expect(() => CmsVerification.verify(
@@ -114,7 +118,7 @@ describe('CmsVerification', () => {
           code: 'notFound'
         }
       ))
-        .toThrow(ErrorCenterError)
+        .toThrow('Requested CMS role was not found.')
     })
   })
 })

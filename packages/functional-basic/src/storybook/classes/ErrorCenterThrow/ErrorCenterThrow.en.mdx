@@ -4,33 +4,33 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # ErrorCenterThrow Class
 
-`ErrorCenterThrow` is a **wrapper class** around `ErrorCenterInstance` that combines centralized error reporting and exception throwing into a single operation. Calling `on()` first dispatches the error through `ErrorCenterInstance` (triggering handlers, callbacks, and console logging) and immediately throws an `ErrorCenterError` populated with the merged cause metadata.
+`ErrorCenterThrow` is a **static facade** around `ErrorCenterThrowInstance` that combines centralized error reporting and exception throwing into a single operation. Calling `ErrorCenterThrow.on()` first dispatches the error through the active `ErrorCenterInstance` (triggering handlers, callbacks, and console logging) and immediately throws an `ErrorCenterError` populated with the merged cause metadata.
+
+The static facade uses `ServerStorage` to reuse one `ErrorCenterThrowInstance` per SSR request. In the browser and in Node.js outside a request, it uses the current runtime's in-memory storage.
 
 ## Key Features
 
-- **Unified Dispatch & Throw** — prevents forgetting either error telemetry/logging or throwing an exception.
+- **Static Interface** — dispatch and throw errors without manual instantiation.
+- **SSR Isolation** — manages one `ErrorCenterThrowInstance` per request context via `ServerStorage`.
 - **Registry Metadata Merging** — resolves the thrown `ErrorCenterError` via `errorCenter.assign(cause)` so registered `label`, `message`, and `priority` rules apply consistently.
-- **SSR & Dependency Injection Ready** — defaults to `ErrorCenter.getItem()` (request-isolated via `ServerStorage`) or accepts any custom `ErrorCenterInstance`.
 - **Strong TypeScript `never` Contract** — `on<D = unknown>(...)` and `handle<D = unknown>(...)` guarantee non-returning control flow and preserve typed `details` on the thrown `ErrorCenterError<D>`.
 - **Double-Report Prevention** — `handle()` rethrows existing `ErrorCenterError` instances directly without triggering `ErrorCenterInstance` handlers again.
 
-## Initialization
+## Methods
 
-To create an instance, call `new ErrorCenterThrow(errorCenter?)`.
+### `getItem`
+Returns the `ErrorCenterThrowInstance` for the active storage context.
 
-**Parameters:**
-- `errorCenter?: ErrorCenterInstance` — target `ErrorCenterInstance` (defaults to `ErrorCenter.getItem()`).
+**Returns:** `ErrorCenterThrowInstance` — the active request-isolated instance.
 
 ```typescript
 import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
 
-const errorThrow = new ErrorCenterThrow()
+const instance = ErrorCenterThrow.getItem()
 ```
 
-## Methods
-
 ### `on`
-Dispatches the error cause through the bound `ErrorCenterInstance` and throws an `ErrorCenterError<D>` containing the merged cause data.
+Dispatches the error cause through the active `ErrorCenterInstance` and throws an `ErrorCenterError<D>` containing the merged cause data.
 
 **Parameters:**
 - `cause: ErrorCenterCauseItem<D>` — structured error cause details (`group`, `code`, `priority`, `label`, `message`, `details`).
@@ -39,7 +39,7 @@ Dispatches the error cause through the bound `ErrorCenterInstance` and throws an
 **Returns:** `never` — never returns normally; always throws `ErrorCenterError<D>`.
 
 ```typescript
-errorThrow.on<{ resourceId: number }>({
+ErrorCenterThrow.on<{ resourceId: number }>({
   group: 'api',
   code: 'notFound',
   details: { resourceId: 42 }
@@ -60,7 +60,7 @@ Handles a caught error without double-reporting `ErrorCenterError` instances. If
 try {
   // Operation that may throw either ErrorCenterError or an unexpected Error
 } catch (error) {
-  errorThrow.handle(
+  ErrorCenterThrow.handle(
     { group: 'api', code: 'server' },
     error,
     error instanceof Error ? { cause: error } : undefined
@@ -70,14 +70,12 @@ try {
 
 ## Examples
 
-### Using the Active Global ErrorCenter
+### Using the Static Facade
 ```typescript
 import { ErrorCenterError, ErrorCenterThrow } from '@dxtmisha/functional-basic'
 
-const errorThrow = new ErrorCenterThrow()
-
 try {
-  errorThrow.on({
+  ErrorCenterThrow.on({
     group: 'api',
     code: 'unauthorized',
     details: { endpoint: '/profile' }
@@ -91,12 +89,14 @@ try {
 }
 ```
 
-### Passing a Custom Instance and Original Error Cause
+### Using a Custom ErrorCenterInstance
+For isolated custom `ErrorCenterInstance` instances, instantiate `ErrorCenterThrowInstance` directly:
+
 ```typescript
 import {
   ErrorCenterHandler,
   ErrorCenterInstance,
-  ErrorCenterThrow
+  ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
 
 const localInstance = new ErrorCenterInstance(
@@ -104,10 +104,9 @@ const localInstance = new ErrorCenterInstance(
   new ErrorCenterHandler([], false)
 )
 
-const localThrow = new ErrorCenterThrow(localInstance)
+const localThrow = new ErrorCenterThrowInstance(localInstance)
 
 try {
-  // Some failing operation
   throw new SyntaxError('Unexpected token')
 } catch (originalError) {
   localThrow.on(

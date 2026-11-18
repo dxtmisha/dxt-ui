@@ -148,6 +148,10 @@
     "./UiInput": {
       "types": "./dist/library/UiInput.d.ts",
       "default": "./dist/library/UiInput.js"
+    },
+    "./UiInputPhone": {
+      "types": "./dist/library/UiInputPhone.d.ts",
+      "default": "./dist/library/UiInputPhone.js"
     }
   },
   "workspaces": [

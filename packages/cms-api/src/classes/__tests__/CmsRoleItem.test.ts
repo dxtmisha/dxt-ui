@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
+import { ErrorCenterInstance, ErrorCenterThrowInstance } from '@dxtmisha/functional-basic'
+import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { useCmsDb } from '../../composables/useCmsDb'
 import { CmsDbInstance } from '../CmsDbInstance'
-import { CmsErrorInstance } from '../CmsErrorInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import { CmsRoleItem } from '../CmsRoleItem'
 import type { CmsDb, CmsPermission, CmsRole } from '../../types/cmsDbTypes'
@@ -126,13 +126,14 @@ function makeRoleData(overrides: Partial<CmsRoleWithPermissions> = {}): CmsRoleW
 
 describe('CmsRoleItem', () => {
   let errorCenter: ErrorCenterInstance
-  let cmsError: CmsErrorInstance
+  let cmsError: ErrorCenterThrowInstance
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
     errorCenter = new ErrorCenterInstance()
     errorCenter.setIsConsole(false)
-    cmsError = new CmsErrorInstance(errorCenter)
+    registerCmsErrorCauses(errorCenter)
+    cmsError = new ErrorCenterThrowInstance(errorCenter)
     capturedErrors = []
     errorCenter.addCallback((cause) => {
       capturedErrors.push({

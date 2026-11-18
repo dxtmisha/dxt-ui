@@ -11,7 +11,8 @@ import {
 import {
   isPositiveInteger,
   isString,
-  uniqueArray
+  uniqueArray,
+  type ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
@@ -23,7 +24,6 @@ import { roles } from '../media/schema/roles'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import type { CmsDbInstance } from './CmsDbInstance'
-import type { CmsErrorInstance } from './CmsErrorInstance'
 import type { CmsPermission } from '../types/cmsDbTypes'
 import type {
   CmsPermissionCreateInput,
@@ -43,11 +43,11 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
    *
    * Инициализирует менеджер прав доступа с экземпляром CmsDbInstance и обработчиком ошибок.
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error CMS error instance handler / Обработчик ошибок CMS
+   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
     databaseInstance?: CmsDbInstance,
-    error?: CmsErrorInstance
+    error?: ErrorCenterThrowInstance
   ) {
     super(permissions, databaseInstance, error)
   }
@@ -252,7 +252,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
 
       const createdPermission = insertedRows[0]
       if (!createdPermission) {
-        this.error.report({
+        this.error.on({
           group: 'cms-permission',
           code: 'create'
         })
@@ -260,7 +260,7 @@ export class CmsPermissionManager extends CmsDbAbstract<typeof permissions> {
 
       return this.wrapPermissionItem(createdPermission)
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-permission',
           code: 'create'

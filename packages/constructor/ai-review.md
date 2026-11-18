@@ -213,3 +213,7 @@ src/classes/ModelValueInclude.ts
 src/constructors/InputPhoneDialCode/InputPhoneDialCodeInclude.ts
 src/constructors/InputPhoneDialCode/InputPhoneDialCode.ts
 src/constructors/InputPhoneDialCode/InputPhoneDialCodeDesign.tsx
+src/constructors/InputPhone/InputPhoneData.ts
+src/constructors/InputPhone/InputPhoneMask.ts
+src/constructors/InputPhone/InputPhone.ts
+src/constructors/InputPhone/InputPhoneDesign.tsx

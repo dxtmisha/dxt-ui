@@ -1,9 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ErrorCenter, ErrorCenterInstance } from '@dxtmisha/functional-basic'
+import { ErrorCenter, ErrorCenterInstance, ErrorCenterThrowInstance } from '@dxtmisha/functional-basic'
 import { permissions } from '../../media/schema/permissions'
 import { CmsDbAbstract } from '../CmsDbAbstract'
 import { CmsDbInstance } from '../CmsDbInstance'
-import { CmsErrorInstance } from '../CmsErrorInstance'
 import type { CmsDb, CmsSystemStatus } from '../../types/cmsDbTypes'
 
 interface MockQueryChain {
@@ -100,7 +99,7 @@ describe('CmsDbAbstract', () => {
       const { dbInstance, raw } = createMockDb({ selectQueue: [[{ systemStatus: 'active' }]] })
       const errorCenter = new ErrorCenterInstance()
       errorCenter.setIsConsole(false)
-      const instance = new TestCmsDbItem(permissions, dbInstance, new CmsErrorInstance(errorCenter))
+      const instance = new TestCmsDbItem(permissions, dbInstance, new ErrorCenterThrowInstance(errorCenter))
 
       expect(await instance.readSystemStatusById(0)).toBeUndefined()
       expect(await instance.readSystemStatusById(-5)).toBeUndefined()
@@ -118,7 +117,7 @@ describe('CmsDbAbstract', () => {
       })
       const errorCenter = new ErrorCenterInstance()
       errorCenter.setIsConsole(false)
-      const instance = new TestCmsDbItem(permissions, dbInstance, new CmsErrorInstance(errorCenter))
+      const instance = new TestCmsDbItem(permissions, dbInstance, new ErrorCenterThrowInstance(errorCenter))
 
       expect(await instance.readSystemStatusById(12)).toBe('blocked')
       expect(await instance.readSystemStatusById(999)).toBeUndefined()
@@ -131,7 +130,7 @@ describe('CmsDbAbstract', () => {
       const { dbInstance, raw } = createMockDb({ updateQueue: [[{ id: 1 }]] })
       const errorCenter = new ErrorCenterInstance()
       errorCenter.setIsConsole(false)
-      const instance = new TestCmsDbItem(permissions, dbInstance, new CmsErrorInstance(errorCenter))
+      const instance = new TestCmsDbItem(permissions, dbInstance, new ErrorCenterThrowInstance(errorCenter))
 
       expect(await instance.changeSystemStatusById(0, 'blocked')).toBe(false)
       expect(await instance.activateById(-1)).toBe(false)
@@ -152,7 +151,7 @@ describe('CmsDbAbstract', () => {
       })
       const errorCenter = new ErrorCenterInstance()
       errorCenter.setIsConsole(false)
-      const instance = new TestCmsDbItem(permissions, dbInstance, new CmsErrorInstance(errorCenter))
+      const instance = new TestCmsDbItem(permissions, dbInstance, new ErrorCenterThrowInstance(errorCenter))
 
       expect(await instance.changeSystemStatusById(7, 'blocked')).toBe(true)
       expect(await instance.activateById(7)).toBe(true)

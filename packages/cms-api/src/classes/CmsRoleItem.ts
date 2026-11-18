@@ -8,7 +8,8 @@ import {
 import {
   isPositiveInteger,
   isString,
-  uniqueArray
+  uniqueArray,
+  type ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
 
 import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
@@ -19,7 +20,6 @@ import { userRoles } from '../media/schema/userRoles'
 import { CmsDbAbstract } from './CmsDbAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import type { CmsDbInstance } from './CmsDbInstance'
-import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
   CmsDbExecutor,
   CmsNewRole,
@@ -43,12 +43,12 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    * Инициализирует обёртку конкретной роли с её данными, менеджером БД и обработчиком ошибок.
    * @param data Role record with assigned permissions / Запись роли с назначенными правами доступа
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error CMS error instance handler / Обработчик ошибок CMS
+   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
     protected data: CmsRoleWithPermissions,
     databaseInstance?: CmsDbInstance,
-    error?: CmsErrorInstance
+    error?: ErrorCenterThrowInstance
   ) {
     super(roles, databaseInstance, error)
   }
@@ -331,7 +331,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-role',
           code: 'update'
@@ -356,7 +356,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     try {
       return await this.deleteRecordById(roleId)
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-role',
           code: 'delete'
@@ -437,7 +437,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-role',
           code: errorCode
@@ -491,7 +491,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-role',
           code: errorCode
@@ -567,7 +567,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-role',
           code: errorCode
@@ -705,16 +705,16 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Проверяет наличие роли с указанным идентификатором или регистрирует ошибку.
    * @param executor Database or transaction executor / Исполнитель БД или транзакции
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @param roleId Role identifier / Идентификатор роли
    */
   static async ensureRoleExists(
     executor: CmsDbExecutor,
-    error: CmsErrorInstance,
+    error: ErrorCenterThrowInstance,
     roleId: number
   ): Promise<void> {
     if (!isPositiveInteger(roleId)) {
-      error.report({
+      error.on({
         group: 'cms-role',
         code: 'notFound',
         details: { roleId }
@@ -728,7 +728,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      error.report({
+      error.on({
         group: 'cms-role',
         code: 'notFound',
         details: { roleId }
@@ -847,12 +847,12 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Формирует и валидирует объект вставки в базу данных из входных данных создания роли.
    * @param input Role creation payload / Входные данные для создания роли
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated Drizzle insert payload / Валидированные данные для вставки
    */
   static buildCreateValues(
     input: CmsRoleCreateInput,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): CmsNewRole {
     return {
       code: CmsRoleItem.normalizeCode(input.code, error),
@@ -867,12 +867,12 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Формирует и валидирует объект обновления в базе данных из входных данных редактирования роли.
    * @param input Partial role update payload / Частичные данные для обновления роли
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Validated partial Drizzle update payload / Валидированные поля для обновления
    */
   static buildUpdateValues(
     input: CmsRoleUpdateInput,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): Partial<CmsNewRole> {
     const values: Partial<CmsNewRole> = {}
 
@@ -900,17 +900,17 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Нормализует и проверяет код роли.
    * @param code Raw role code / Исходный код роли
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Trimmed non-empty role code / Очищенный код роли
    */
   static normalizeCode(
     code: string,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): string {
     const normalized = isString(code) ? code.trim() : ''
 
     if (normalized.length === 0 || /\s/.test(normalized)) {
-      error.report({
+      error.on({
         group: 'cms-role',
         code: 'invalidCode',
         details: { code }
@@ -925,17 +925,17 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    *
    * Нормализует и проверяет название роли.
    * @param name Raw role name / Исходное название роли
-   * @param error CmsErrorInstance handler / Обработчик ошибок CmsErrorInstance
+   * @param error ErrorCenterThrowInstance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Trimmed non-empty role name / Очищенное название роли
    */
   static normalizeName(
     name: string,
-    error: CmsErrorInstance
+    error: ErrorCenterThrowInstance
   ): string {
     const normalized = isString(name) ? name.trim() : ''
 
     if (normalized.length === 0) {
-      error.report({
+      error.on({
         group: 'cms-role',
         code: 'invalidName',
         details: { name }

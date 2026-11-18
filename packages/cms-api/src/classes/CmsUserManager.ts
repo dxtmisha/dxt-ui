@@ -12,7 +12,8 @@ import {
   isArray,
   isPositiveInteger,
   isString,
-  uniqueArray
+  uniqueArray,
+  type ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
 
 import { escapeCmsSearchPattern } from '../functions/escapeCmsSearchPattern'
@@ -29,7 +30,6 @@ import { CmsRoleItem } from './CmsRoleItem'
 import { CmsRoleManager } from './CmsRoleManager'
 import { CmsUserItem } from './CmsUserItem'
 import type { CmsDbInstance } from './CmsDbInstance'
-import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
   CmsDbExecutor,
   CmsUserStatus
@@ -62,11 +62,11 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
    *
    * Инициализирует менеджер пользователей с экземпляром CmsDbInstance и обработчиком ошибок.
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
-   * @param error CMS error instance handler / Обработчик ошибок CMS
+   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    */
   constructor(
     databaseInstance?: CmsDbInstance,
-    error?: CmsErrorInstance
+    error?: ErrorCenterThrowInstance
   ) {
     super(users, databaseInstance, error)
   }
@@ -293,13 +293,13 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
   }
 
   /**
-   * Sets or overrides the CmsErrorInstance handler and propagates it to child role and permission managers.
+   * Sets or overrides the ErrorCenterThrowInstance handler and propagates it to child role and permission managers.
    *
-   * Устанавливает или заменяет обработчик ошибок CmsErrorInstance и передаёт его дочерним менеджерам ролей и прав доступа.
-   * @param error CMS error instance handler / Обработчик ошибок CMS
+   * Устанавливает или заменяет обработчик ошибок ErrorCenterThrowInstance и передаёт его дочерним менеджерам ролей и прав доступа.
+   * @param error ErrorCenterThrow instance handler / Обработчик ошибок ErrorCenterThrowInstance
    * @returns Current instance for chaining / Текущий экземпляр для цепочки вызовов
    */
-  override setError(error: CmsErrorInstance): this {
+  override setError(error: ErrorCenterThrowInstance): this {
     super.setError(error)
     this.roleManager?.setError(error)
     this.permissionManager?.setError(error)
@@ -345,7 +345,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
 
         const createdUser = insertedRows[0]
         if (!createdUser) {
-          this.error.report({
+          this.error.on({
             group: 'cms-user',
             code: 'create'
           })
@@ -370,7 +370,7 @@ export class CmsUserManager extends CmsDbAbstract<typeof users> {
 
       return this.wrapUserItem(createdRecord)
     } catch (error) {
-      return this.error.handleTransaction(
+      return this.error.handle(
         {
           group: 'cms-user',
           code: 'create'

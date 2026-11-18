@@ -1,15 +1,16 @@
 import {
+  ErrorCenterThrow,
   executeFunction,
   isPositiveInteger,
-  type ErrorCenterCauseItem
+  type ErrorCenterCauseItem,
+  type ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
-import { CmsError } from './CmsError'
-import type { CmsErrorInstance } from './CmsErrorInstance'
+import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
 
 /**
- * Static utility class for verifying CMS conditions and reporting domain errors via CmsErrorInstance.
+ * Static utility class for verifying CMS conditions and reporting domain errors via ErrorCenterThrow.
  *
- * Статический вспомогательный класс для проверки условий CMS и регистрации доменных ошибок через CmsErrorInstance.
+ * Статический вспомогательный класс для проверки условий CMS и регистрации доменных ошибок через ErrorCenterThrow.
  */
 export class CmsVerification {
   /**
@@ -19,14 +20,14 @@ export class CmsVerification {
    * @param value Value to check / Проверяемое значение
    * @param cause Optional error cause details reported on failure / Необязательные детали причины ошибки при неудачной проверке
    * @param options Standard Error options / Стандартные опции Error
-   * @param error Optional CmsErrorInstance handler / Необязательный обработчик ошибок CmsErrorInstance
+   * @param error Optional ErrorCenterThrowInstance handler / Необязательный обработчик ошибок ErrorCenterThrowInstance
    * @returns True if the value is a positive safe integer, otherwise false / True, если значение является положительным безопасным целым числом, иначе false
    */
   static isPositiveInteger<D = unknown>(
     value?: unknown,
     cause?: ErrorCenterCauseItem<D>,
     options?: ErrorOptions,
-    error?: CmsErrorInstance
+    error?: ErrorCenterThrowInstance
   ): value is number {
     return this.verify(
       isPositiveInteger(value),
@@ -43,19 +44,23 @@ export class CmsVerification {
    * @param callback Boolean value or predicate function to verify / Логическое значение или функция-предикат для проверки
    * @param cause Optional error cause details reported on failure / Необязательные детали причины ошибки при неудачной проверке
    * @param options Standard Error options / Стандартные опции Error
-   * @param error Optional CmsErrorInstance handler / Необязательный обработчик ошибок CmsErrorInstance
+   * @param error Optional ErrorCenterThrowInstance handler / Необязательный обработчик ошибок ErrorCenterThrowInstance
    * @returns True if the check resolves to true, otherwise false / True, если проверка дала true, иначе false
    */
   static verify<D = unknown>(
     callback: boolean | (() => boolean),
     cause?: ErrorCenterCauseItem<D>,
     options?: ErrorOptions,
-    error?: CmsErrorInstance
+    error?: ErrorCenterThrowInstance
   ): boolean {
     const result = executeFunction(callback)
 
     if (!result && cause) {
-      (error ?? CmsError.getItem()).report(cause, options)
+      if (!error) {
+        registerCmsErrorCauses()
+      }
+
+      (error ?? ErrorCenterThrow.getItem()).on(cause, options)
     }
 
     return result

@@ -1,26 +1,34 @@
-import { ErrorCenter } from './ErrorCenter'
-import { ErrorCenterError } from './ErrorCenterError'
+import { ErrorCenterThrowInstance } from './ErrorCenterThrowInstance'
+import { ServerStorage } from './ServerStorage'
 
-import type { ErrorCenterInstance } from './ErrorCenterInstance'
 import type { ErrorCenterCauseItem } from '../types/errorCenterTypes'
 
+/** Key for the error throw instance in server storage / Ключ экземпляра выброса ошибок в серверном хранилище */
+const ERROR_CENTER_THROW_INSTANCE_KEY = '__ui:error-center-throw-instance__'
+
 /**
- * Wrapper around ErrorCenterInstance that dispatches errors to ErrorCenter and throws an ErrorCenterError.
- * Uses the active static ErrorCenter instance by default when no custom instance is provided.
+ * Static facade for dispatching errors through ErrorCenter and throwing ErrorCenterError.
+ * Delegates all operations to a request-isolated ErrorCenterThrowInstance.
  *
- * Обёртка над ErrorCenterInstance, которая регистрирует ошибку в ErrorCenter и выбрасывает ErrorCenterError.
- * По умолчанию использует активный статический экземпляр ErrorCenter, если пользовательский экземпляр не передан.
+ * Статический фасад для регистрации ошибок через ErrorCenter и выброса ErrorCenterError.
+ * Делегирует все операции изолированному в рамках запроса экземпляру ErrorCenterThrowInstance.
  */
 export class ErrorCenterThrow {
   /**
-   * Constructor for ErrorCenterThrow.
+   * Returns the ErrorCenterThrowInstance for the active storage context.
    *
-   * Конструктор ErrorCenterThrow.
-   * @param errorCenter ErrorCenter instance / Экземпляр ErrorCenter
+   * Возвращает экземпляр ErrorCenterThrowInstance для текущего контекста хранилища.
+   * @returns ErrorCenterThrowInstance instance / экземпляр ErrorCenterThrowInstance
    */
-  constructor(
-    protected errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
-  ) {}
+  static getItem(): ErrorCenterThrowInstance {
+    // ErrorCenterThrow may run inside error paths without an active SSR request context / ErrorCenterThrow может вызываться в обработчиках ошибок без активного контекста SSR-запроса
+    return ServerStorage.get(
+      ERROR_CENTER_THROW_INSTANCE_KEY,
+      () => new ErrorCenterThrowInstance(),
+      false,
+      false
+    )
+  }
 
   /**
    * Triggers error handling in ErrorCenter for a group and throws an ErrorCenterError.
@@ -30,16 +38,11 @@ export class ErrorCenterThrow {
    * @param options standard Error options / стандартные опции Error
    * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
    */
-  on<D = unknown>(
+  static on<D = unknown>(
     cause: ErrorCenterCauseItem<D>,
     options?: ErrorOptions
   ): never {
-    this.errorCenter.on(cause)
-
-    throw new ErrorCenterError<D>(
-      this.errorCenter.assign(cause),
-      options
-    )
+    return this.getItem().on(cause, options)
   }
 
   /**
@@ -51,15 +54,11 @@ export class ErrorCenterThrow {
    * @param options standard Error options / стандартные опции Error
    * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
    */
-  handle<D = unknown>(
+  static handle<D = unknown>(
     cause: ErrorCenterCauseItem<D>,
     error?: unknown,
     options?: ErrorOptions
   ): never {
-    if (error instanceof ErrorCenterError) {
-      throw error
-    }
-
-    return this.on(cause, options)
+    return this.getItem().handle(cause, error, options)
   }
 }

@@ -4,33 +4,33 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс ErrorCenterThrow
 
-`ErrorCenterThrow` — это **класс-обёртка** над `ErrorCenterInstance`, объединяющий централизованную регистрацию ошибки и выброс исключения в одной операции. Вызов `on()` сначала передаёт ошибку в `ErrorCenterInstance` (запуская обработчики, глобальные колбэки и вывод в консоль), а затем немедленно выбрасывает `ErrorCenterError` с объединёнными метаданными причины.
+`ErrorCenterThrow` — это **статический фасад** над `ErrorCenterThrowInstance`, объединяющий централизованную регистрацию ошибки и выброс исключения в одной операции. Вызов `ErrorCenterThrow.on()` сначала передаёт ошибку в активный `ErrorCenterInstance` (запуская обработчики, глобальные колбэки и вывод в консоль), а затем немедленно выбрасывает `ErrorCenterError` с объединёнными метаданными причины.
+
+Статический фасад использует `ServerStorage` для переиспользования одного экземпляра `ErrorCenterThrowInstance` в рамках одного SSR-запроса. В браузере и в Node.js вне запроса используется локальное хранилище текущего рантайма.
 
 ## Ключевые особенности
 
-- **Единая регистрация и выброс** — исключает риск забыть либо отправить событие в телеметрию/обработчики, либо прервать выполнение исключением.
+- **Статический интерфейс** — регистрация и выброс ошибок без ручного создания экземпляра.
+- **Изоляция при SSR** — управляет отдельным экземпляром `ErrorCenterThrowInstance` для каждого контекста запроса через `ServerStorage`.
 - **Слияние с реестром причин** — формирует выбрасываемый `ErrorCenterError` через `errorCenter.assign(cause)`, применяя зарегистрированные `label`, `message` и правила `priority`.
-- **Готовность к SSR и DI** — по умолчанию использует `ErrorCenter.getItem()` (изолированный по запросам через `ServerStorage`) или принимает пользовательский `ErrorCenterInstance`.
 - **Строгий контракт `never` в TypeScript** — методы `on<D = unknown>(...)` и `handle<D = unknown>(...)` гарантируют прерывание потока выполнения и сохраняют типизацию `details` в выброшенном `ErrorCenterError<D>`.
 - **Защита от повторной регистрации** — метод `handle()` повторно выбрасывает существующий экземпляр `ErrorCenterError` напрямую, не вызывая обработчики `ErrorCenterInstance` заново.
 
-## Инициализация
+## Методы
 
-Для создания экземпляра вызовите `new ErrorCenterThrow(errorCenter?)`.
+### `getItem`
+Возвращает экземпляр `ErrorCenterThrowInstance` для текущего контекста хранилища.
 
-**Параметры:**
-- `errorCenter?: ErrorCenterInstance` — целевой экземпляр `ErrorCenterInstance` (по умолчанию `ErrorCenter.getItem()`).
+**Возвращает:** `ErrorCenterThrowInstance` — активный изолированный в рамках запроса экземпляр.
 
 ```typescript
 import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
 
-const errorThrow = new ErrorCenterThrow()
+const instance = ErrorCenterThrow.getItem()
 ```
 
-## Методы
-
 ### `on`
-Передаёт причину ошибки в привязанный `ErrorCenterInstance` и выбрасывает исключение `ErrorCenterError<D>` с объединёнными данными причины.
+Передаёт причину ошибки в активный `ErrorCenterInstance` и выбрасывает исключение `ErrorCenterError<D>` с объединёнными данными причины.
 
 **Параметры:**
 - `cause: ErrorCenterCauseItem<D>` — структурированные данные причины ошибки (`group`, `code`, `priority`, `label`, `message`, `details`).
@@ -39,7 +39,7 @@ const errorThrow = new ErrorCenterThrow()
 **Возвращает:** `never` — никогда не возвращает управление штатно; всегда выбрасывает `ErrorCenterError<D>`.
 
 ```typescript
-errorThrow.on<{ resourceId: number }>({
+ErrorCenterThrow.on<{ resourceId: number }>({
   group: 'api',
   code: 'notFound',
   details: { resourceId: 42 }
@@ -60,7 +60,7 @@ errorThrow.on<{ resourceId: number }>({
 try {
   // Операция, которая может выбросить как ErrorCenterError, так и неожиданную ошибку
 } catch (error) {
-  errorThrow.handle(
+  ErrorCenterThrow.handle(
     { group: 'api', code: 'server' },
     error,
     error instanceof Error ? { cause: error } : undefined
@@ -70,14 +70,12 @@ try {
 
 ## Примеры
 
-### Использование с активным глобальным ErrorCenter
+### Использование статического фасада
 ```typescript
 import { ErrorCenterError, ErrorCenterThrow } from '@dxtmisha/functional-basic'
 
-const errorThrow = new ErrorCenterThrow()
-
 try {
-  errorThrow.on({
+  ErrorCenterThrow.on({
     group: 'api',
     code: 'unauthorized',
     details: { endpoint: '/profile' }
@@ -91,12 +89,14 @@ try {
 }
 ```
 
-### Передача изолированного экземпляра и исходной ошибки
+### Использование с пользовательским ErrorCenterInstance
+Для изолированных пользовательских экземпляров `ErrorCenterInstance` создавайте `ErrorCenterThrowInstance` напрямую:
+
 ```typescript
 import {
   ErrorCenterHandler,
   ErrorCenterInstance,
-  ErrorCenterThrow
+  ErrorCenterThrowInstance
 } from '@dxtmisha/functional-basic'
 
 const localInstance = new ErrorCenterInstance(
@@ -104,10 +104,9 @@ const localInstance = new ErrorCenterInstance(
   new ErrorCenterHandler([], false)
 )
 
-const localThrow = new ErrorCenterThrow(localInstance)
+const localThrow = new ErrorCenterThrowInstance(localInstance)
 
 try {
-  // Операция, завершившаяся ошибкой
   throw new SyntaxError('Unexpected token')
 } catch (originalError) {
   localThrow.on(

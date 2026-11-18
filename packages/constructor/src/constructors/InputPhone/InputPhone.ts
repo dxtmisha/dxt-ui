@@ -1,6 +1,10 @@
+import type { Ref } from 'vue'
 import {
+  type ConstrEmit,
   type ConstrItems,
-  DesignLogicAbstract
+  type DesignComp,
+  DesignLogicAbstract,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
@@ -85,19 +89,20 @@ export class InputPhone extends DesignLogicAbstract<
       item: InputPhoneData,
       parameters: () => [
         this.props,
-        () => this.i('value'),
+        () => this.i('elementItem'),
         () => this.i('event'),
-        () => this.i('elementItem')
+        () => this.i('value')
       ]
     },
     dialCode: {
       item: InputPhoneDialCodeInclude,
+      canCreate: () => !this.props.countryBlock,
       parameters: () => [
         this.props,
         this.naming,
         this.components,
         () => ({
-          value: this.i('data').country.value,
+          value: this.i('data').valueItem.value?.value ?? this.i('data').country.value,
           onClick: this.i('data').onCountry,
           onWindow: this.i('data').onWindow
         })
@@ -118,7 +123,7 @@ export class InputPhone extends DesignLogicAbstract<
         () => this.i('value'),
         () => this.i('validation'),
         this.emits,
-        () => this.i('form')
+        () => this.callInstance('form', item => item)
       ]
     },
     field: {
@@ -135,7 +140,7 @@ export class InputPhone extends DesignLogicAbstract<
     },
     form: {
       item: FieldFormInclude,
-      conditions: () => FieldFormInclude.is(this.props),
+      canCreate: () => FieldFormInclude.is(this.props),
       parameters: () => [
         this.props,
         () => this.i('value'),
@@ -179,5 +184,42 @@ export class InputPhone extends DesignLogicAbstract<
         () => this.i('elementItem')
       ]
     }
+  }
+
+  /**
+   * Constructor
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param element input element / элемент ввода
+   * @param naming component naming helper / помощник именования компонента
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
+   */
+  constructor(
+    props: Readonly<InputPhoneProps>,
+    element: Ref<HTMLElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<InputPhoneComponents, InputPhoneProps>,
+    slots?: InputPhoneSlots,
+    emits?: ConstrEmit<InputPhoneEmits>,
+    constructors?: Partial<InputPhoneConstructors>
+  ) {
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      constructors
+    )
+
+    this.i('data')
+    this.i('event')
+    this.i('validation')
+    this.callInstance('form', item => item)
   }
 }
