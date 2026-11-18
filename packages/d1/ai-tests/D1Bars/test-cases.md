@@ -4,7 +4,7 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Bars` (`packages/constructor/src/constructors/Bars`, `packages/demo/src/pages/components/DemoBarsPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-bars`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-16`
+- **Последняя проверка / обновление**: `2026-11-18`
 - **Всего тест-кейсов**: `10`
 
 ---

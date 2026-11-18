@@ -354,6 +354,44 @@ await step('Click regular bar button to emit click/clickLite', async () => {
   await expect(eventOutput).toHaveTextContent('clickLite:like')
 })
       `
+    },
+    {
+      id: 'BarsTestNumericZero',
+      name: {
+        en: 'Test: Numeric zero label and description',
+        ru: 'Тест: Числовое нулевое значение заголовка и описания'
+      },
+      propsName: ['label', 'description', 'action', 'actionLabel', 'actionDescription'],
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            data-testid="bars-zero-normal"
+            :label="0"
+            :description="0"
+            back-hide
+          />
+          <DesignComponent
+            data-testid="bars-zero-action"
+            action
+            :action-label="0"
+            :action-description="0"
+            back-action-hide
+          />
+        </div>
+      `,
+      play: `
+const canvas = within(canvasElement)
+const normalBars = canvas.getByTestId('bars-zero-normal')
+const actionBars = canvas.getByTestId('bars-zero-action')
+
+await expect(normalBars.querySelector('.design-component__label')).toHaveTextContent('0')
+await expect(normalBars.querySelector('.design-component__description')).toHaveTextContent('0')
+
+await expect(actionBars).toHaveClass('design-component--action')
+await expect(actionBars).toHaveAttribute('aria-live', 'polite')
+await expect(actionBars.querySelector('.design-component__label')).toHaveTextContent('0')
+await expect(actionBars.querySelector('.design-component__description')).toHaveTextContent('0')
+      `
     }
   ],
   documentation: {

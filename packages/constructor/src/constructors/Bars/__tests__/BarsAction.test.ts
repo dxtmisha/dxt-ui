@@ -85,6 +85,12 @@ describe('BarsAction', () => {
 
       const { barsAction: barsActionWithBars } = createBarsAction({ actionBars: [] })
       expect(barsActionWithBars.isPossible()).toBe(true)
+
+      const { barsAction: barsActionZeroLabel } = createBarsAction({ actionLabel: 0 })
+      expect(barsActionZeroLabel.isPossible()).toBe(true)
+
+      const { barsAction: barsActionZeroDesc } = createBarsAction({ actionDescription: 0 })
+      expect(barsActionZeroDesc.isPossible()).toBe(true)
     })
 
     it('should return correct status check result from static is()', () => {
@@ -93,7 +99,9 @@ describe('BarsAction', () => {
       expect(BarsAction.is({ action: true })).toBe(true)
       expect(BarsAction.is({ modelAction: true })).toBe(true)
       expect(BarsAction.is({ actionLabel: 'Test Label' })).toBe(true)
+      expect(BarsAction.is({ actionLabel: 0 })).toBe(true)
       expect(BarsAction.is({ actionDescription: 'Test Description' })).toBe(true)
+      expect(BarsAction.is({ actionDescription: 0 })).toBe(true)
       expect(BarsAction.is({ actionBars: [] })).toBe(true)
     })
   })

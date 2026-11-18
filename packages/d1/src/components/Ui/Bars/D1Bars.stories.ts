@@ -356,4 +356,42 @@ export const BarsTestModelActionAndEvents: Story = {
     })
   }
 }
+export const BarsTestNumericZero: Story = {
+  name: 'Тест: Числовое нулевое значение заголовка и описания',
+  render: () => ({
+    components: { D1Bars },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <D1Bars
+            data-testid="bars-zero-normal"
+            :label="0"
+            :description="0"
+            back-hide
+          />
+          <D1Bars
+            data-testid="bars-zero-action"
+            action
+            :action-label="0"
+            :action-description="0"
+            back-action-hide
+          />
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const normalBars = canvas.getByTestId('bars-zero-normal')
+    const actionBars = canvas.getByTestId('bars-zero-action')
+
+    await expect(normalBars.querySelector('.d1-bars__label')).toHaveTextContent('0')
+    await expect(normalBars.querySelector('.d1-bars__description')).toHaveTextContent('0')
+
+    await expect(actionBars).toHaveClass('d1-bars--action')
+    await expect(actionBars).toHaveAttribute('aria-live', 'polite')
+    await expect(actionBars.querySelector('.d1-bars__label')).toHaveTextContent('0')
+    await expect(actionBars.querySelector('.d1-bars__description')).toHaveTextContent('0')
+  }
+}
 // :story-items [!] System label / Системная метка

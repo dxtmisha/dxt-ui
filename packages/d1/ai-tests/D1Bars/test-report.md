@@ -6,7 +6,7 @@
 - **Исходный код:** [`D1Bars`](../../src/components/Ui/Bars/D1Bars.vue) ([`Bars`](../../../constructor/src/constructors/Bars/Bars.ts), [`DemoBarsPage`](../../../demo/src/pages/components/DemoBarsPage.vue))
 - **Целевой URL:** `http://localhost:3000/component-bars`
 - **Материалы:** `None`
-- **Дата тестирования (UTC):** `2026-11-16T09:06:09Z`
+- **Дата тестирования (UTC):** `2026-11-18T02:54:09Z`
 - **Окружение:** `Headless Chrome 157.0.8103.51 (Puppeteer / CDP 127.0.0.1:9222, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
 - **Покрытие тест-кейсов:** 10 / 10 (`100%`)
 - **Итог:** **10 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` ошибка) — `D1Bars` корректно рендерит иерархию текста, все токены отступов, режим скелетона, переключение `action`/`modelAction`, слоты и ARIA-атрибуты при нуле ошибок и предупреждений в консоли.
@@ -53,7 +53,7 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-LOG-001` | События `click` / `clickLite` и чистота консоли браузера | ✅ | Клик по `like` обновляет `DemoValue` до `"Value: clickLite: like"`; `vueWarnings: []`, `pageErrors: []` (один 404 для `/favicon.ico` на стенде dev-сервера, не связан с компонентом). | — |
+| `TC-LOG-001` | События `click` / `clickLite` и чистота консоли браузера | ✅ | Клик по `like` и `dislike` обновляет `DemoValue` до `"Value: clickLite: like"` / `"Value: clickLite: dislike"`; `consoleErrors: []`, `vueWarnings: []`, `pageErrors: []`. | — |
 
 ---
 

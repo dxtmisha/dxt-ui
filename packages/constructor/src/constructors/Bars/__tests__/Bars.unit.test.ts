@@ -71,6 +71,16 @@ describe('Bars (Logic Orchestrator)', () => {
         expect(barsWithAction.aria).toEqual({
           'aria-live': 'polite'
         })
+
+        const barsWithZeroAction = new Bars(
+          reactive({ actionLabel: 0 }),
+          element,
+          naming
+        )
+        expect(barsWithZeroAction.ariaLive).toBe('polite')
+        expect(barsWithZeroAction.aria).toEqual({
+          'aria-live': 'polite'
+        })
       })
 
       scope.stop()

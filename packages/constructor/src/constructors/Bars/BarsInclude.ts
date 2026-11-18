@@ -5,7 +5,9 @@ import {
   type ConstrBind,
   type ConstrEmit,
   type DesignComponents,
-  type DesignName
+  type DesignName,
+  isFilled,
+  isNumber
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
@@ -43,16 +45,17 @@ export class BarsInclude<
    */
   static is(props?: BarsPropsInclude): boolean {
     return !props?.barsHide && Boolean(
-      props?.barsLabel
-      || props?.barsDescription
+      isFilled(props?.barsLabel, true)
+      || isNumber(props?.barsLabel)
+      || isFilled(props?.barsDescription, true)
       || props?.barsBackHide !== true
     )
   }
 
   /** Component sub-name / Под-имя компонента */
-  protected name = 'bars'
+  protected override readonly name = 'bars'
   /** Property name for attributes / Имя свойства для атрибутов */
-  protected propsAttrsName = 'barsAttrs'
+  protected override readonly propsAttrsName = 'barsAttrs'
 
   /**
    * Constructor

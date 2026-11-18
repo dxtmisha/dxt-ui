@@ -27,6 +27,8 @@ describe('BarsInclude (isolated class)', () => {
       expect(BarsInclude.is({})).toBe(true)
       expect(BarsInclude.is({ barsBackHide: true })).toBe(false)
       expect(BarsInclude.is({ barsBackHide: true, barsLabel: 'Title' })).toBe(true)
+      expect(BarsInclude.is({ barsBackHide: true, barsLabel: 0 })).toBe(true)
+      expect(BarsInclude.is({ barsBackHide: true, barsLabel: '   ' })).toBe(false)
       expect(BarsInclude.is({ barsBackHide: true, barsDescription: 'Desc' })).toBe(true)
       expect(BarsInclude.is({ barsHide: true, barsLabel: 'Title' })).toBe(false)
 

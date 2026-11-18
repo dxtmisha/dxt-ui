@@ -1,7 +1,7 @@
 // ai-none
 
 import { ref, watch } from 'vue'
-import { DesignLifecycleAbstract } from '@dxtmisha/functional'
+import { DesignLifecycleAbstract, isFilled, isNumber } from '@dxtmisha/functional'
 
 import type { BarsProps } from './props'
 
@@ -49,8 +49,10 @@ export class BarsAction extends DesignLifecycleAbstract {
     return Boolean(
       props?.action
       || props?.modelAction
-      || props?.actionLabel
-      || props?.actionDescription
+      || isFilled(props?.actionLabel, true)
+      || isNumber(props?.actionLabel)
+      || isFilled(props?.actionDescription, true)
+      || isNumber(props?.actionDescription)
       || props?.actionBars
     )
   }
@@ -63,8 +65,10 @@ export class BarsAction extends DesignLifecycleAbstract {
    */
   isPossible(): boolean {
     return Boolean(
-      this.props.actionLabel
-      || this.props.actionDescription
+      isFilled(this.props.actionLabel, true)
+      || isNumber(this.props.actionLabel)
+      || isFilled(this.props.actionDescription, true)
+      || isNumber(this.props.actionDescription)
       || this.props.actionBars
     )
   }
