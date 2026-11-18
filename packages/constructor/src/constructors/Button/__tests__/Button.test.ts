@@ -183,13 +183,14 @@ describe('Button (integration)', () => {
       expect(container.querySelector('.d1-button__label .custom-slot-text')?.textContent).toBe('Custom Button')
     })
 
-    it('should preserve numeric 0 as a valid button value in data-value and expose', async () => {
+    it('should preserve numeric 0 as a valid button value and label', async () => {
       const { container, exposed } = await mountButton({
-        label: 'Zero value',
+        label: 0,
         value: 0
       })
 
       expect(container.querySelector('.d1-button')?.getAttribute('data-value')).toBe('0')
+      expect(container.querySelector('.d1-button__label')?.textContent).toBe('0')
       expect(exposed.getValue?.()).toBe(0)
     })
   })
@@ -260,8 +261,8 @@ describe('Button (integration)', () => {
   })
 
   describe('Polymorphic tags, links, keyboard navigation, and external attrs', () => {
-    it('should render anchor element when href is provided', async () => {
-      const { container } = await mountButton({
+    it('should render anchor element when href or to is provided', async () => {
+      const { container, props } = await mountButton({
         label: 'Visit',
         href: 'https://example.com'
       })
@@ -270,6 +271,14 @@ describe('Button (integration)', () => {
       expect(anchor).not.toBeNull()
       expect(anchor?.getAttribute('href')).toBe('https://example.com')
       expect(anchor?.hasAttribute('type')).toBe(false)
+
+      props.href = undefined
+      props.to = '/profile'
+      await nextTick()
+
+      const routerAnchor = container.querySelector('a.d1-button')
+      expect(routerAnchor).not.toBeNull()
+      expect(routerAnchor?.hasAttribute('type')).toBe(false)
     })
 
     it('should support keyboard activation via Enter and Space on non-button tags and guard IME composition', async () => {

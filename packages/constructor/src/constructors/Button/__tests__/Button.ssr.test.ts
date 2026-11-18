@@ -85,6 +85,8 @@ describe('Button (SSR)', () => {
   it('should render link and disabled variants cleanly across multiple SSR renders', async () => {
     const variants: ButtonPropsBasic[] = [
       { label: 'Link', href: 'https://example.com' },
+      { label: 'Router', to: '/profile' },
+      { label: 0 },
       { label: 'Disabled', disabled: true },
       { label: 'Loading', loading: true }
     ]
@@ -104,7 +106,7 @@ describe('Button (SSR)', () => {
       const app = createSSRApp(TestComponent)
       const html = await renderToString(app)
       expect(typeof html).toBe('string')
-      expect(html).toContain(props.label as string)
+      expect(html).toContain(String(props.label))
     }
   })
 })

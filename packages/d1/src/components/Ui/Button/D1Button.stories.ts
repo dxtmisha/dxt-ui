@@ -408,6 +408,56 @@ export const ButtonTestStates: Story = {
     await expect(items[5]).toBeDisabled()
   }
 }
+export const ButtonTestTagsAndTypes: Story = {
+  name: 'Тест: Полиморфизм тегов, атрибуты ссылок и типы кнопок',
+  render: () => ({
+    components: { D1Button },
+    template: `
+        
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">tag: button (submit)</div>
+            <D1Button tag="button" type="submit" label="Submit Form"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">tag: a (href + target)</div>
+            <D1Button href="https://example.com" target="_blank" label="External Link"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">tag: a (to)</div>
+            <D1Button to="/dashboard" label="Router Link"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">tag: span (custom)</div>
+            <D1Button tag="span" aria-label="Accessible Span" label="Span Button"/>
+          </div>
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const items = canvasElement.querySelectorAll<HTMLElement>('.d1-button')
+    await expect(items.length).toBe(4)
+
+    // 1. Tag button with type submit
+    expect(items[0].tagName).toBe('BUTTON')
+    await expect(items[0]).toHaveAttribute('type', 'submit')
+
+    // 2. Tag a with href and target
+    expect(items[1].tagName).toBe('A')
+    await expect(items[1]).toHaveAttribute('href', 'https://example.com')
+    await expect(items[1]).toHaveAttribute('target', '_blank')
+
+    // 3. Tag a when to prop is supplied
+    expect(items[2].tagName).toBe('A')
+
+    // 4. Tag span with role button and tabindex
+    expect(items[3].tagName).toBe('SPAN')
+    await expect(items[3]).toHaveAttribute('role', 'button')
+    await expect(items[3]).toHaveAttribute('tabindex', '0')
+    await expect(items[3]).toHaveAttribute('aria-label', 'Accessible Span')
+  }
+}
 export const ButtonTestTokensAndModifiers: Story = {
   name: 'Тест: Инвертированные, сеточные и выравнивающие модификаторы',
   render: () => ({
@@ -451,7 +501,7 @@ export const ButtonTestTokensAndModifiers: Story = {
   }
 }
 export const ButtonTestPropsAndIcons: Story = {
-  name: 'Тест: ID метки, модификаторы иконки и нулевое значение',
+  name: 'Тест: ID метки, модификаторы иконки и нулевое значение/метка',
   render: () => ({
     components: { D1Button },
     template: `
@@ -460,6 +510,10 @@ export const ButtonTestPropsAndIcons: Story = {
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">labelId + value=0</div>
             <D1Button label="Custom Label" label-id="button-custom-label" :value="0"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
+            <div class="wiki-storybook-item__label">label=0 + value=0</div>
+            <D1Button :label="0" :value="0"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm">
             <div class="wiki-storybook-item__label">iconTurn</div>
@@ -479,15 +533,17 @@ export const ButtonTestPropsAndIcons: Story = {
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll<HTMLElement>('.d1-button')
-    await expect(items.length).toBe(4)
+    await expect(items.length).toBe(5)
 
     await expect(items[0].querySelector('#button-custom-label')).toBeInTheDocument()
     await expect(items[0]).toHaveAttribute('data-value', '0')
-    await expect(items[1]).toHaveClass('d1-button--icon')
-    await expect(items[1].querySelector('.d1-button__icon')?.className).toContain('--turn')
+    await expect(items[1]).toHaveTextContent('0')
+    await expect(items[1]).toHaveAttribute('data-value', '0')
     await expect(items[2]).toHaveClass('d1-button--icon')
-    await expect(items[2].querySelector('.d1-button__icon')?.className).toContain('--hide')
-    await expect(items[3].querySelector('.d1-button__icon')).toHaveAttribute('data-custom', 'icon-attr')
+    await expect(items[2].querySelector('.d1-button__icon')?.className).toContain('--turn')
+    await expect(items[3]).toHaveClass('d1-button--icon')
+    await expect(items[3].querySelector('.d1-button__icon')?.className).toContain('--hide')
+    await expect(items[4].querySelector('.d1-button__icon')).toHaveAttribute('data-custom', 'icon-attr')
   }
 }
 // :story-items [!] System label / Системная метка

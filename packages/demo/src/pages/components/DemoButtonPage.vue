@@ -119,6 +119,7 @@ const statusValue = computed<string>(() => {
 
       <D1Group label="Data Types">
         <div class="demo-button-page">
+          <D1Button :label="0" :value="0" />
           <D1Button :label="12345" />
           <D1Button label="Long Text Button Label For Overflow Boundary" />
         </div>

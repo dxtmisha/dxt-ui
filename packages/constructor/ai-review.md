@@ -110,8 +110,6 @@ src/constructors/Field/FieldSpace.ts
 src/constructors/Field/Field.ts
 src/constructors/Field/FieldDesign.tsx
 src/classes/FrameAbstract.ts
-src/constructors/Button/ButtonDesign.tsx
-src/constructors/Button/ButtonInclude.ts
 src/constructors/Bars/BarsAction.ts
 src/constructors/Bars/Bars.ts
 src/constructors/Bars/BarsDesign.tsx
@@ -204,5 +202,7 @@ src/constructors/ListItem/ListItemLazyHeight.ts
 src/constructors/ListItem/ListItemLazy.ts
 src/constructors/ListItem/ListItemDesign.tsx
 src/classes/CaptionInclude.ts
-src/constructors/Button/Button.ts
 src/constructors/ListItem/ListItem.ts
+src/constructors/Button/ButtonDesign.tsx
+src/constructors/Button/ButtonInclude.ts
+src/constructors/Button/Button.ts

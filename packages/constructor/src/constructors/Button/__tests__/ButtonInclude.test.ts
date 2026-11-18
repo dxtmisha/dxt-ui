@@ -23,7 +23,7 @@ afterEach(() => {
 
 describe('ButtonInclude (isolated class)', () => {
   describe('Standard functional requirements (Happy path)', () => {
-    it('should determine is based on label, icon, or iconTrailing in binds', () => {
+    it('should determine is based on label (including 0), icon, or iconTrailing in binds', () => {
       const props: ButtonPropsInclude = reactive({})
       const naming = new DesignName('d1.alert')
       const include = new ButtonInclude(props, naming)
@@ -31,6 +31,9 @@ describe('ButtonInclude (isolated class)', () => {
       expect(include.is).toBe(false)
 
       props.buttonAttrs = { label: 'Click me' }
+      expect(include.is).toBe(true)
+
+      props.buttonAttrs = { label: 0 }
       expect(include.is).toBe(true)
 
       props.buttonAttrs = { icon: 'home' }
@@ -62,12 +65,12 @@ describe('ButtonInclude (isolated class)', () => {
         buttonAttrs: { label: 'Confirm' }
       })
       const naming = new DesignName('d1.alert')
-      const include = new ButtonInclude(props, naming, undefined, { primary: true } as any)
+      const include = new ButtonInclude(props, naming, undefined, { selected: true })
 
       expect(include.binds.value).toEqual({
         class: 'd1-alert__button',
         label: 'Confirm',
-        primary: true
+        selected: true
       })
     })
   })
