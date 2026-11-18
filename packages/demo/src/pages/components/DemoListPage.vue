@@ -113,7 +113,16 @@ const onSelectCustomKey = (event: EventClickValue) => {
   }
 }
 
-// 8. Expose State
+// 8. Lazy & Custom Role/Attrs Items
+const lazyItems = ref(
+  Array.from({ length: 12 }, (_, index) => ({
+    label: `Lazy Item ${index + 1}`,
+    value: `lazy-${index + 1}`,
+    icon: 'list_alt'
+  }))
+)
+
+// 9. Expose State
 const listExposeRef = ref<ListExpose | null>(null)
 const exposeSummary = ref<string>('Not checked')
 const checkExpose = () => {
@@ -122,7 +131,7 @@ const checkExpose = () => {
   }
 }
 
-// 9. Events State
+// 10. Events State
 const { eventName, onEvent } = useDemoEvent()
 </script>
 
@@ -145,7 +154,7 @@ const { eventName, onEvent } = useDemoEvent()
               :selected="selectedMultiple"
               :list="basicItems"
               :max="2"
-              aria-multiselectable="true"
+              :aria-multiselectable="true"
               selection-style="checkbox"
               @click-lite="onSelectMultiple"
             />
@@ -271,6 +280,32 @@ const { eventName, onEvent } = useDemoEvent()
               :list="basicItems"
               disabled
               selected="delete"
+            />
+          </DemoBox>
+        </DemoFlex>
+      </D1Group>
+
+      <D1Group label="Lazy Rendering & Custom Roles">
+        <DemoFlex>
+          <DemoBox>
+            <D1List
+              :list="lazyItems"
+              lazy
+              lazy-margin="64px 0px"
+              lazy-cache-height
+              selected="lazy-1"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1List
+              :list="structuredItems"
+              role="menu"
+              role-item="menuitem"
+              :item-attrs="{ 'data-demo-item': 'true' }"
+              :item-group-attrs="{ 'data-demo-group': 'true' }"
+              :item-menu-attrs="{ 'data-demo-menu': 'true' }"
+              :item-management-attrs="{ 'data-demo-mgmt': 'true' }"
+              selected="overview"
             />
           </DemoBox>
         </DemoFlex>

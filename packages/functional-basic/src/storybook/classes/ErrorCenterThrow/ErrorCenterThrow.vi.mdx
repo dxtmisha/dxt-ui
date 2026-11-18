@@ -11,7 +11,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Ghi nhận và ném lỗi thống nhất** — tránh bỏ sót việc gửi thông tin lỗi tới hệ thống xử lý/telemetry hoặc ngắt luồng thực thi bằng ngoại lệ.
 - **Hợp nhất dữ liệu từ sổ đăng ký** — tạo `ErrorCenterError` thông qua `errorCenter.assign(cause)`, tự động áp dụng `label`, `message` và quy tắc `priority` đã đăng ký.
 - **Sẵn sàng cho SSR & DI** — mặc định sử dụng `ErrorCenter.getItem()` (cô lập theo từng yêu cầu qua `ServerStorage`) hoặc nhận vào bất kỳ `ErrorCenterInstance` tùy chỉnh nào.
-- **Hợp đồng kiểu `never` chặt chẽ trong TypeScript** — phương thức `on<D = unknown>(...)` đảm bảo không trả về bình thường và giữ nguyên kiểu dữ liệu `details` trên `ErrorCenterError<D>`.
+- **Hợp đồng kiểu `never` chặt chẽ trong TypeScript** — các phương thức `on<D = unknown>(...)` và `handle<D = unknown>(...)` đảm bảo không trả về bình thường và giữ nguyên kiểu dữ liệu `details` trên `ErrorCenterError<D>`.
+- **Ngăn chặn ghi nhận trùng lặp** — phương thức `handle()` ném lại trực tiếp thực thể `ErrorCenterError` đã tồn tại mà không kích hoạt lại các trình xử lý của `ErrorCenterInstance`.
 
 ## Khởi tạo
 
@@ -43,6 +44,28 @@ errorThrow.on<{ resourceId: number }>({
   code: 'notFound',
   details: { resourceId: 42 }
 })
+```
+
+### `handle`
+Xử lý lỗi đã bắt được mà không ghi nhận trùng lặp các thực thể `ErrorCenterError`. Nếu `error` là một `ErrorCenterError`, ném lại trực tiếp lỗi đó; ngược lại sẽ ủy quyền cho `on(cause, options)`.
+
+**Tham số:**
+- `cause: ErrorCenterCauseItem<D>` — dữ liệu nguyên nhân lỗi có cấu trúc (`group`, `code`, `priority`, `label`, `message`, `details`).
+- `error?: unknown` — thực thể hoặc giá trị lỗi đã bắt được để kiểm tra.
+- `options?: ErrorOptions` — các tùy chọn chuẩn của `Error` (ví dụ `{ cause: originalError }`).
+
+**Trả về:** `never` — không bao giờ trả về bình thường; ném lại `error` (nếu là `ErrorCenterError`) hoặc ném ra `ErrorCenterError<D>`.
+
+```typescript
+try {
+  // Thao tác có thể ném ra ErrorCenterError hoặc một lỗi bất ngờ khác
+} catch (error) {
+  errorThrow.handle(
+    { group: 'api', code: 'server' },
+    error,
+    error instanceof Error ? { cause: error } : undefined
+  )
+}
 ```
 
 ## Ví dụ

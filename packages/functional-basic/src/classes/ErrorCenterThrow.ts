@@ -41,4 +41,25 @@ export class ErrorCenterThrow {
       options
     )
   }
+
+  /**
+   * Handles a caught error without double-reporting ErrorCenterError instances.
+   *
+   * Обрабатывает перехваченную ошибку без повторной регистрации экземпляров ErrorCenterError.
+   * @param cause error cause details / детали причины ошибки
+   * @param error caught error instance / перехваченная ошибка
+   * @param options standard Error options / стандартные опции Error
+   * @returns never returns; always throws ErrorCenterError / не возвращает значение; всегда выбрасывает ErrorCenterError
+   */
+  handle<D = unknown>(
+    cause: ErrorCenterCauseItem<D>,
+    error?: unknown,
+    options?: ErrorOptions
+  ): never {
+    if (error instanceof ErrorCenterError) {
+      throw error
+    }
+
+    return this.on(cause, options)
+  }
 }

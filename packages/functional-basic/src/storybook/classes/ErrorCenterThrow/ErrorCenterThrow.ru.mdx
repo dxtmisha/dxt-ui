@@ -11,7 +11,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Единая регистрация и выброс** — исключает риск забыть либо отправить событие в телеметрию/обработчики, либо прервать выполнение исключением.
 - **Слияние с реестром причин** — формирует выбрасываемый `ErrorCenterError` через `errorCenter.assign(cause)`, применяя зарегистрированные `label`, `message` и правила `priority`.
 - **Готовность к SSR и DI** — по умолчанию использует `ErrorCenter.getItem()` (изолированный по запросам через `ServerStorage`) или принимает пользовательский `ErrorCenterInstance`.
-- **Строгий контракт `never` в TypeScript** — метод `on<D = unknown>(...)` гарантирует прерывание потока выполнения и сохраняет типизацию `details` в выброшенном `ErrorCenterError<D>`.
+- **Строгий контракт `never` в TypeScript** — методы `on<D = unknown>(...)` и `handle<D = unknown>(...)` гарантируют прерывание потока выполнения и сохраняют типизацию `details` в выброшенном `ErrorCenterError<D>`.
+- **Защита от повторной регистрации** — метод `handle()` повторно выбрасывает существующий экземпляр `ErrorCenterError` напрямую, не вызывая обработчики `ErrorCenterInstance` заново.
 
 ## Инициализация
 
@@ -43,6 +44,28 @@ errorThrow.on<{ resourceId: number }>({
   code: 'notFound',
   details: { resourceId: 42 }
 })
+```
+
+### `handle`
+Обрабатывает перехваченную ошибку без повторной регистрации экземпляров `ErrorCenterError`. Если `error` является `ErrorCenterError`, выбрасывает его напрямую; в противном случае делегирует выполнение в `on(cause, options)`.
+
+**Параметры:**
+- `cause: ErrorCenterCauseItem<D>` — структурированные данные причины ошибки (`group`, `code`, `priority`, `label`, `message`, `details`).
+- `error?: unknown` — перехваченная ошибка или значение для проверки.
+- `options?: ErrorOptions` — стандартные опции `Error` (например, `{ cause: originalError }`).
+
+**Возвращает:** `never` — никогда не возвращает управление штатно; повторно выбрасывает `error` (если это `ErrorCenterError`) либо выбрасывает `ErrorCenterError<D>`.
+
+```typescript
+try {
+  // Операция, которая может выбросить как ErrorCenterError, так и неожиданную ошибку
+} catch (error) {
+  errorThrow.handle(
+    { group: 'api', code: 'server' },
+    error,
+    error instanceof Error ? { cause: error } : undefined
+  )
+}
 ```
 
 ## Примеры

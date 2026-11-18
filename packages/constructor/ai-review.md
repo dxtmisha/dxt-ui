@@ -178,8 +178,6 @@ src/constructors/List/ListSearch.ts
 src/constructors/List/ListFocus.ts
 src/constructors/List/ListGo.ts
 src/constructors/List/ListControl.ts
-src/constructors/List/List.ts
-src/constructors/List/ListDesign.tsx
 src/constructors/NavigationRail/NavigationRail.ts
 src/constructors/NavigationRail/NavigationRailDesign.tsx
 src/constructors/Menu/MenuRequest.ts
@@ -206,3 +204,5 @@ src/constructors/Bars/BarsAction.ts
 src/constructors/Bars/Bars.ts
 src/constructors/Bars/BarsDesign.tsx
 src/constructors/Bars/BarsInclude.ts
+src/constructors/List/List.ts
+src/constructors/List/ListDesign.tsx

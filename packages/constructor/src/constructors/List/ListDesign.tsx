@@ -432,7 +432,7 @@ export class ListDesign<
    * @param first is the first element / является ли первым элементом
    * @returns array of virtual nodes / массив виртуальных узлов
    */
-  protected renderDataByItem(
+  renderDataByItem(
     type: ListType,
     data: ListList,
     first: boolean = false

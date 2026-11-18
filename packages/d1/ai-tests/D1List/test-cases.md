@@ -4,8 +4,8 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/List` (`packages/constructor/src/constructors/List`, `packages/demo/src/pages/components/DemoListPage.vue`)
 - **Целевой URL**: `http://localhost:3000/component-list`
 - **Справочные материалы**: `None`
-- **Последняя проверка / обновление**: `2026-11-17`
-- **Всего тест-кейсов**: `9`
+- **Последняя проверка / обновление**: `2026-11-18`
+- **Всего тест-кейсов**: `10`
 
 ---
 
@@ -14,7 +14,7 @@
 | Категория | Код | Кол-во | Распределение приоритетов | Область фокуса |
 | :--- | :--- | :--- | :--- | :--- |
 | **Визуал и токены** | `VIS` | 2 | P0, P1 | Базовый рендеринг, `axis` (`y`/`x`), `divider`, `selectionStyle`, `group`/`menu`/`subtitle`/`line`/`space`/`html`, `lite`, `disabled` |
-| **Интерактивность и функционал** | `INT` | 3 | P0, P1 | Одиночный и множественный `v-model:selected` (`max=2`), `keyLabel`/`keyValue`, раскрытие `group`/`menu`, `showSearch`/`filterMode`, `expose` |
+| **Интерактивность и функционал** | `INT` | 4 | P0, P1 | Одиночный и множественный `v-model:selected` (`max=2`), `keyLabel`/`keyValue`, раскрытие `group`/`menu`, `showSearch`/`filterMode`, `lazy`/`lazyMargin`/`lazyCacheHeight`, `roleItem`/`item*Attrs`, `expose` |
 | **Границы и крайние случаи** | `BND` | 1 | P1 | Пустой результат поиска (`textNotFound` / `.d1-list__none`), блокировка `disabled` элементов и списков |
 | **Адаптивность и viewport** | `RSP` | 1 | P1 | Десктоп (`1440×900`), планшет (`768×1024`), мобильные (`375×812`, `320×568`), отсутствие горизонтального переполнения |
 | **Доступность (A11y)** | `A11Y` | 1 | P1 | `role="listbox"`, `role="option"`, `role="separator"`, `aria-selected`, `aria-disabled`, `aria-live="polite"`, клавиатурный фокус |
@@ -81,6 +81,17 @@
   2. Проверить обновлённое значение `DemoValue` `expose`.
 - **Ожидаемый результат**: Выводятся актуальные `isSelected=true`, `names=["Play"]`, `values=["play"]`.
 - **Тип доказательства**: `Console/Log` (Скриншот не требуется)
+
+#### [TC-INT-004] Ленивый рендеринг (`lazy`, `lazyMargin`, `lazyCacheHeight`) и кастомные роли/атрибуты (`roleItem`, `item*Attrs`)
+- **Приоритет**: `P1 (High)`
+- **Категория**: `Интерактивность и функционал`
+- **Предусловия**: Секция `Lazy Rendering & Custom Roles`, viewport `1440×900`.
+- **Шаги теста**:
+  1. Прокрутить страницу к секции `Lazy Rendering & Custom Roles` и дождаться активации `IntersectionObserver`.
+  2. Проверить рендеринг 12 элементов в списке с `lazy`, `lazy-margin="64px 0px"`, `lazy-cache-height`.
+  3. Проверить во втором списке секции наличие `role="menu"`, `role="menuitem"`, а также атрибутов `data-demo-item="true"`, `data-demo-group="true"`, `data-demo-menu="true"`, `data-demo-mgmt="true"`.
+- **Ожидаемый результат**: Ленивые элементы списка корректно активируются при попадании во viewport, а кастомные роли и `item*Attrs` применяются к соответствующим узлам без перезаписи служебных ролей.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-004.png`)
 
 ### 2.3 Граничные случаи и крайние сценарии (`BND`)
 

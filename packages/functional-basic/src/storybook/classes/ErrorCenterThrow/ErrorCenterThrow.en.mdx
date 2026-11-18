@@ -11,7 +11,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Unified Dispatch & Throw** — prevents forgetting either error telemetry/logging or throwing an exception.
 - **Registry Metadata Merging** — resolves the thrown `ErrorCenterError` via `errorCenter.assign(cause)` so registered `label`, `message`, and `priority` rules apply consistently.
 - **SSR & Dependency Injection Ready** — defaults to `ErrorCenter.getItem()` (request-isolated via `ServerStorage`) or accepts any custom `ErrorCenterInstance`.
-- **Strong TypeScript `never` Contract** — `on<D = unknown>(...)` guarantees non-returning control flow and preserves typed `details` on the thrown `ErrorCenterError<D>`.
+- **Strong TypeScript `never` Contract** — `on<D = unknown>(...)` and `handle<D = unknown>(...)` guarantee non-returning control flow and preserve typed `details` on the thrown `ErrorCenterError<D>`.
+- **Double-Report Prevention** — `handle()` rethrows existing `ErrorCenterError` instances directly without triggering `ErrorCenterInstance` handlers again.
 
 ## Initialization
 
@@ -43,6 +44,28 @@ errorThrow.on<{ resourceId: number }>({
   code: 'notFound',
   details: { resourceId: 42 }
 })
+```
+
+### `handle`
+Handles a caught error without double-reporting `ErrorCenterError` instances. If `error` is an `ErrorCenterError`, rethrows it directly; otherwise delegates to `on(cause, options)`.
+
+**Parameters:**
+- `cause: ErrorCenterCauseItem<D>` — structured error cause details (`group`, `code`, `priority`, `label`, `message`, `details`).
+- `error?: unknown` — caught error instance or value to inspect.
+- `options?: ErrorOptions` — standard `Error` options (such as `{ cause: originalError }`).
+
+**Returns:** `never` — never returns normally; rethrows `error` (when it is `ErrorCenterError`) or throws `ErrorCenterError<D>`.
+
+```typescript
+try {
+  // Operation that may throw either ErrorCenterError or an unexpected Error
+} catch (error) {
+  errorThrow.handle(
+    { group: 'api', code: 'server' },
+    error,
+    error instanceof Error ? { cause: error } : undefined
+  )
+}
 ```
 
 ## Examples

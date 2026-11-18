@@ -328,4 +328,73 @@ describe('ErrorCenterThrow', () => {
       expect(firstCallback).toHaveBeenCalledTimes(1)
     })
   })
+
+  describe('handle() error delegation and double-report prevention', () => {
+    it('should rethrow ErrorCenterError without double-reporting to ErrorCenter', () => {
+      const customInstance = new ErrorCenterInstance([], new ErrorCenterHandler([], false))
+      const callback = vi.fn()
+      customInstance.addCallback(callback)
+
+      const errorThrow = new ErrorCenterThrow(customInstance)
+      const domainError = new ErrorCenterError({
+        group: 'api',
+        code: 'notFound',
+        message: 'Already reported.'
+      })
+
+      expect(() => errorThrow.handle(
+        {
+          group: 'storage',
+          code: 'fallback',
+          message: 'Fallback message.'
+        },
+        domainError
+      )).toThrow(domainError)
+      expect(callback).not.toHaveBeenCalled()
+    })
+
+    it('should delegate to on() with cause and options when error is omitted or not ErrorCenterError', () => {
+      const customInstance = new ErrorCenterInstance([], new ErrorCenterHandler([], false))
+      const callback = vi.fn()
+      customInstance.addCallback(callback)
+
+      const errorThrow = new ErrorCenterThrow(customInstance)
+      const explicitCause = new Error('Explicit cause')
+      const causeItem = {
+        group: 'api',
+        code: 'server',
+        message: 'Request failed.',
+        details: { step: 1 }
+      }
+
+      let caughtWithoutError: unknown
+      try {
+        errorThrow.handle(causeItem)
+      } catch (error) {
+        caughtWithoutError = error
+      }
+
+      expect(caughtWithoutError).toBeInstanceOf(ErrorCenterError)
+      if (caughtWithoutError instanceof ErrorCenterError) {
+        expect(caughtWithoutError.message).toBe('Request failed.')
+        expect(caughtWithoutError.getDetails()).toEqual({ step: 1 })
+        expect(caughtWithoutError.cause).toEqual(causeItem)
+      }
+
+      let caughtWithNativeError: unknown
+      try {
+        errorThrow.handle(causeItem, new Error('Underlying failure'), { cause: explicitCause })
+      } catch (error) {
+        caughtWithNativeError = error
+      }
+
+      expect(caughtWithNativeError).toBeInstanceOf(ErrorCenterError)
+      if (caughtWithNativeError instanceof ErrorCenterError) {
+        expect(caughtWithNativeError.getDetails()).toEqual({ step: 1 })
+        expect(caughtWithNativeError.cause).toBe(explicitCause)
+      }
+
+      expect(callback).toHaveBeenCalledTimes(2)
+    })
+  })
 })
