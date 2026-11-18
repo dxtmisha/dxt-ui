@@ -16,7 +16,8 @@ import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsErrorInstance } from './CmsErrorInstance'
 import type {
   CmsDb,
-  CmsIdTable
+  CmsIdTable,
+  CmsSystemStatus
 } from '../types/cmsDbTypes'
 
 /**
@@ -101,6 +102,95 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   setError(error: CmsErrorInstance): this {
     this.error = error
     return this
+  }
+
+  /**
+   * Returns the system status of a record by identifier from the bound table.
+   *
+   * Возвращает системный статус записи по идентификатору из привязанной таблицы.
+   * @param id Record identifier / Идентификатор записи
+   * @returns System status or undefined if invalid or not found / Системный статус или undefined, если ID некорректен или запись не найдена
+   */
+  protected async getSystemStatusById(id: number): Promise<CmsSystemStatus | undefined> {
+    if (!CmsVerification.isPositiveInteger(id)) {
+      return undefined
+    }
+
+    const baseTable: CmsIdTable = this.table
+    const rows = await this.getDatabase()
+      .select({ systemStatus: baseTable.systemStatus })
+      .from(baseTable)
+      .where(eq(baseTable.id, id))
+      .limit(1)
+
+    return rows[0]?.systemStatus as CmsSystemStatus | undefined
+  }
+
+  /**
+   * Updates the system status of a record by identifier in the bound table.
+   *
+   * Обновляет системный статус записи по идентификатору в привязанной таблице.
+   * @param id Record identifier / Идентификатор записи
+   * @param systemStatus Target system status / Целевой системный статус
+   * @returns True if a matching record was updated / True, если запись найдена и обновлена
+   */
+  protected async updateSystemStatusById(
+    id: number,
+    systemStatus: CmsSystemStatus
+  ): Promise<boolean> {
+    if (!CmsVerification.isPositiveInteger(id)) {
+      return false
+    }
+
+    const baseTable: CmsIdTable = this.table
+    const updateValues: Record<string, unknown> = {
+      systemStatus
+    }
+
+    if (baseTable.updatedAt) {
+      updateValues.updatedAt = new Date()
+    }
+
+    const updatedRows = await this.getDatabase()
+      .update(baseTable)
+      .set(updateValues as Partial<typeof baseTable.$inferInsert>)
+      .where(eq(baseTable.id, id))
+      .returning({ id: baseTable.id })
+
+    return updatedRows.length > 0
+  }
+
+  /**
+   * Marks a record as active (`systemStatus = 'active'`) by identifier.
+   *
+   * Переводит запись в активный системный статус (`systemStatus = 'active'`) по идентификатору.
+   * @param id Record identifier / Идентификатор записи
+   * @returns True if a matching record was activated / True, если запись найдена и активирована
+   */
+  protected async activateRecordById(id: number): Promise<boolean> {
+    return this.updateSystemStatusById(id, 'active')
+  }
+
+  /**
+   * Marks a record as blocked (`systemStatus = 'blocked'`) by identifier.
+   *
+   * Переводит запись в заблокированный системный статус (`systemStatus = 'blocked'`) по идентификатору.
+   * @param id Record identifier / Идентификатор записи
+   * @returns True if a matching record was blocked / True, если запись найдена и заблокирована
+   */
+  protected async blockRecordById(id: number): Promise<boolean> {
+    return this.updateSystemStatusById(id, 'blocked')
+  }
+
+  /**
+   * Marks a record as soft-deleted (`systemStatus = 'deleted'`) by identifier.
+   *
+   * Помечает запись как мягко удалённую (`systemStatus = 'deleted'`) по идентификатору.
+   * @param id Record identifier / Идентификатор записи
+   * @returns True if a matching record was marked as deleted / True, если запись найдена и помечена как удалённая
+   */
+  protected async softDeleteRecordById(id: number): Promise<boolean> {
+    return this.updateSystemStatusById(id, 'deleted')
   }
 
   /**

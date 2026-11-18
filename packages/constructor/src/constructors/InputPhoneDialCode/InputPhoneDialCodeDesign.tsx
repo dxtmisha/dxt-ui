@@ -1,14 +1,16 @@
-import { type VNode } from 'vue'
+import { mergeProps, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { InputPhoneDialCode } from './InputPhoneDialCode'
 
+import type { ButtonPropsBasic } from '../Button'
 import type { MenuControlItem } from '../Menu'
+import type { MenuCountryPropsBasic } from '../MenuCountry'
 import {
   type InputPhoneDialCodePropsBasic
 } from './props'
@@ -120,8 +122,15 @@ export class InputPhoneDialCodeDesign<
    * @returns array of virtual nodes / массив виртуальных узлов
    */
   protected initRender(): VNode[] {
-    return this.item.menu.render(
-      { control: this.renderControl }
+    return this.item.i('menu').render(
+      { control: this.renderControl },
+      mergeProps(
+        this.getAttrs(),
+        {
+          class: this.classes?.value.main,
+          style: this.styles?.value
+        }
+      ) as Partial<ConstrBind<MenuCountryPropsBasic>>
     )
   }
 
@@ -133,12 +142,13 @@ export class InputPhoneDialCodeDesign<
    * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderControl = (props: MenuControlItem): VNode[] => {
-    return this.item.button.render(
+    return this.item.i('button').render(
       {},
-      toBinds(
+      mergeProps(
         props.binds,
         { class: this.classes?.value.button }
-      )
+      ) as Partial<ConstrBind<ButtonPropsBasic>>,
+      () => true
     )
   }
 }

@@ -77,9 +77,9 @@ export class LibraryList {
           list.push(`  {
     name: '${item.codeFull}',
     reg: ${this.getReg([item.name], true)}
-  }`
-          )
-        })
+  }`)
+        }
+      )
     }
 
     return list
@@ -149,7 +149,7 @@ export class LibraryList {
     return forEach(
       names,
       name => toKebabCase(name)
-        .replace('-', '-?')
+        .replace(/-/g, '-?')
     ).join('|')
   }
 

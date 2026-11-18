@@ -86,7 +86,7 @@ function makePermission(overrides: Partial<CmsPermission> = {}): CmsPermission {
     code: 'users:read',
     name: 'cms-permission-users_read',
     description: 'cms-permission-users_read_description',
-    status: 'active',
+    systemStatus: 'active',
     createdOrigin: null,
     createdAt: now,
     updatedAt: now,

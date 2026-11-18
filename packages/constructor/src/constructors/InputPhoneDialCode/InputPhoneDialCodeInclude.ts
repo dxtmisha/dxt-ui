@@ -1,5 +1,8 @@
 // ai-none
 
+import { mergeProps } from 'vue'
+import type { ConstrBind } from '@dxtmisha/functional'
+
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
 import type { InputPhoneDialCodePropsInclude } from './basicTypes'
@@ -31,10 +34,12 @@ export class InputPhoneDialCodeInclude extends ComponentIncludeAbstract<
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds() {
-    return {
-      ...super.toBinds(),
-      disabled: this.getProps().disabled
-    }
+  protected override toBinds(): Partial<ConstrBind<InputPhoneDialCodeProps>> {
+    const props = this.getProps()
+
+    return mergeProps(
+      super.toBinds(),
+      props.disabled !== undefined ? { disabled: props.disabled } : {}
+    ) as Partial<ConstrBind<InputPhoneDialCodeProps>>
   }
 }

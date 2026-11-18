@@ -10,10 +10,14 @@ import type {
   users
 } from '../media/schema/cmsSchema'
 
-/** Base Drizzle PostgreSQL table constraint requiring an id column / Базовый тип таблицы Drizzle PostgreSQL с обязательной колонкой id */
+/** Base Drizzle PostgreSQL table constraint requiring id and systemStatus columns / Базовый тип таблицы Drizzle PostgreSQL с обязательными колонками id и systemStatus */
 export type CmsIdTable = PgTable & {
   /** Primary identifier column / Колонка первичного идентификатора */
   id: PgColumn
+  /** System record status column / Колонка системного статуса записи */
+  systemStatus: PgColumn
+  /** Optional last update timestamp column / Необязательная колонка даты последнего обновления */
+  updatedAt?: PgColumn
 }
 
 /** Created origin record selected from database / Запись источника создания, полученная из базы данных */
@@ -46,11 +50,11 @@ export type CmsRolePermission = typeof rolePermissions.$inferSelect
 /** New role permission relation payload for database insert / Данные новой связи роли и права доступа для вставки в базу данных */
 export type CmsNewRolePermission = typeof rolePermissions.$inferInsert
 
-/** Record status for main CMS entities / Статус записи для основных сущностей CMS */
-export type CmsStatus = 'active' | 'blocked' | 'deleted'
+/** System record status for main CMS entities / Системный статус записи для основных сущностей CMS */
+export type CmsSystemStatus = 'active' | 'blocked' | 'deleted'
 
 /** User account status / Статус учётной записи пользователя */
-export type CmsUserStatus = CmsStatus | 'invited' | 'suspended'
+export type CmsUserStatus = 'active' | 'invited' | 'blocked' | 'suspended'
 
 /** User metadata and preferences stored in JSONB / Метаданные и персональные настройки пользователя в JSONB */
 export interface CmsUserMetadata {

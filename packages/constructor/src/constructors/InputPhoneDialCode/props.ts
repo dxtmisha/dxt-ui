@@ -6,11 +6,21 @@ import type { IconPropsBasic, IconValue } from '../Icon'
 
 import type { ModelPropsSelected } from '../../types/modelTypes'
 
+/**
+ * Type describing token properties for InputPhoneDialCode.
+ *
+ * Тип, описывающий свойства токенов для InputPhoneDialCode.
+ */
 type InputPhoneDialCodePropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Interface describing basic properties of the InputPhoneDialCode component.
+ *
+ * Интерфейс, описывающий базовые свойства компонента InputPhoneDialCode.
+ */
 export type InputPhoneDialCodePropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic,
@@ -26,7 +36,7 @@ export type InputPhoneDialCodePropsBasic<
     /** Display type for the selected country label: phone code, name, or none / Тип отображения метки выбранной страны: телефонный код, название или без метки */
     labelType?: 'name' | 'code' | 'none'
 
-    /** Icon for the down arrow/ Иконка для стрелки вниз */
+    /** Icon for the down arrow / Иконка для стрелки вниз */
     iconArrowDown?: IconValue<Icon>
   }
 

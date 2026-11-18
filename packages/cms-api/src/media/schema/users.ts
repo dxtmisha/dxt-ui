@@ -9,7 +9,11 @@ import {
   timestamp
 } from 'drizzle-orm/pg-core'
 import { createdOrigins } from './createdOrigins'
-import type { CmsUserMetadata, CmsUserStatus } from '../../types/cmsDbTypes'
+import type {
+  CmsSystemStatus,
+  CmsUserMetadata,
+  CmsUserStatus
+} from '../../types/cmsDbTypes'
 
 /**
  * Users table schema for CMS /
@@ -57,6 +61,10 @@ export const users = /* #__PURE__ */ pgTable(
     lastLoginAt: timestamp('last_login_at'),
     /** User metadata (locale, timezone, settings, soft delete, custom fields) / Метаданные пользователя (локаль, часовой пояс, настройки, мягкое удаление, кастомные поля) */
     metadata: jsonb('metadata').$type<CmsUserMetadata>().notNull().default({}),
+
+    // System status
+    /** System record status / Системный статус записи */
+    systemStatus: text('system_status').$type<CmsSystemStatus>().notNull().default('active'),
 
     // Origin
     /** Creation origin code / Код источника создания записи */

@@ -1,14 +1,35 @@
-import { computed, type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, type DesignName, Geo } from '@dxtmisha/functional'
+import { computed } from 'vue'
+import {
+  type ConstrBind,
+  type ConstrItems,
+  DesignLogicAbstract,
+  Geo,
+  type ListSelectedList,
+  type NumberOrStringOrBoolean
+} from '@dxtmisha/functional'
 
-import { ButtonInclude } from '../Button'
-import { MenuCountryInclude } from '../MenuCountry'
-import type { WindowEmitOptions } from '../Window'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
-import type { InputPhoneDialCodeComponents, InputPhoneDialCodeEmits, InputPhoneDialCodeSlots } from './types'
+import { ButtonInclude, type ButtonProps } from '../Button'
+import { MenuCountryInclude, type MenuCountryProps } from '../MenuCountry'
+import type { WindowEmitOptions } from '../Window'
+
+import type { EventClickValue } from '../../types/eventClickTypes'
 import type { InputPhoneDialCodeProps } from './props'
+import type { InputPhoneDialCodeComponents, InputPhoneDialCodeEmits, InputPhoneDialCodeSlots } from './types'
+
+/** InputPhoneDialCode dependency constructors type / Тип конструкторов зависимостей InputPhoneDialCode */
+export type InputPhoneDialCodeConstructors = {
+  /** Button constructor / Конструктор кнопки */
+  button: typeof ButtonInclude
+  /** Click event constructor / Конструктор события клика */
+  event: typeof EventClickInclude
+  /** Country menu constructor / Конструктор меню выбора страны */
+  menu: typeof MenuCountryInclude
+  /** Model value constructor / Конструктор значения модели */
+  model: typeof ModelValueInclude<ListSelectedList | undefined>
+}
 
 /**
  * Constructor class for the phone dial code selector component.
@@ -19,93 +40,63 @@ import type { InputPhoneDialCodeProps } from './props'
  * Управляет кнопкой-триггером, меню выбора страны, обработчиком событий клика
  * и реактивным значением модели для выбранного кода страны.
  */
-export class InputPhoneDialCode {
-  /** Trigger button aspect controller / Контроллер для кнопки-триггера */
-  readonly button: ButtonInclude
-
-  /** Click event handler / Обработчик события клика */
-  readonly event: EventClickInclude
-
-  /** Country selection menu inclusion manager / Менеджер включения меню выбора страны */
-  readonly menu: MenuCountryInclude
-
-  /** Model value manager for selected country / Менеджер значения модели для выбранной страны */
-  readonly model: ModelValueInclude<string>
-
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param element input element / элемент ввода
-   * @param naming component naming helper / помощник именования компонента
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors optional override constructors / необязательные переопределяющие конструкторы
-   * @param constructors.ButtonConstructor button include class constructor / конструктор класса button include
-   * @param constructors.EventClickIncludeConstructor class for working with click events / класс для работы с событиями клика
-   * @param constructors.MenuCountryConstructor menu country include class constructor / конструктор класса menu country include
-   * @param constructors.ModelValueIncludeConstructor class for working with model value / класс для работы со значением модели
-   */
-  constructor(
-    protected readonly props: InputPhoneDialCodeProps,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly naming: DesignName,
-    protected readonly components?: DesignComp<InputPhoneDialCodeComponents, InputPhoneDialCodeProps>,
-    protected readonly slots?: InputPhoneDialCodeSlots,
-    protected readonly emits?: ConstrEmit<InputPhoneDialCodeEmits>,
-    constructors: {
-      ButtonConstructor?: typeof ButtonInclude
-      EventClickIncludeConstructor?: typeof EventClickInclude
-      MenuCountryConstructor?: typeof MenuCountryInclude
-      ModelValueIncludeConstructor?: typeof ModelValueInclude
-    } = {}
-  ) {
-    const {
-      ButtonConstructor = ButtonInclude,
-      EventClickIncludeConstructor = EventClickInclude,
-      MenuCountryConstructor = MenuCountryInclude,
-      ModelValueIncludeConstructor = ModelValueInclude
-    } = constructors
-
-    this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
-    this.model = new ModelValueIncludeConstructor<string>(
-      'selected',
-      this.emits,
-      this.event,
-      computed(() => this.props.value || Geo.getCountry())
-    )
-
-    this.menu = new MenuCountryConstructor(
-      () => ({
-        ...this.props,
-        menuCountryAttrs: {
-          ...this.props.menuCountryAttrs,
-          menuAttrs: {
-            ...this.props.menuCountryAttrs?.menuAttrs,
-            windowAttrs: {
-              ...this.props.menuCountryAttrs?.menuAttrs?.windowAttrs,
-              disableFocusReturn: true
+export class InputPhoneDialCode extends DesignLogicAbstract<
+  HTMLDivElement,
+  InputPhoneDialCodeComponents,
+  InputPhoneDialCodeEmits,
+  InputPhoneDialCodeSlots,
+  InputPhoneDialCodeProps,
+  InputPhoneDialCodeConstructors
+> {
+  /** Item configurations and default constructors by constructor name / Конфигурации элементов и конструкторы по умолчанию по имени конструктора */
+  protected override readonly constructorItems: ConstrItems<InputPhoneDialCodeConstructors> = {
+    button: {
+      item: ButtonInclude,
+      parameters: () => [
+        this.props,
+        this.naming,
+        this.components,
+        () => this.bindsButton
+      ]
+    },
+    event: {
+      item: EventClickInclude,
+      parameters: () => [
+        undefined,
+        undefined,
+        this.emits
+      ]
+    },
+    menu: {
+      item: MenuCountryInclude,
+      parameters: () => [
+        () => ({
+          ...this.props,
+          menuCountryAttrs: {
+            ...this.props.menuCountryAttrs,
+            menuAttrs: {
+              ...this.props.menuCountryAttrs?.menuAttrs,
+              windowAttrs: {
+                ...this.props.menuCountryAttrs?.menuAttrs?.windowAttrs,
+                disableFocusReturn: true
+              }
             }
           }
-        }
-      }),
-      this.naming,
-      this.components,
-      () => ({
-        selected: this.model.value.value,
-        showPhoneCode: true,
-        onUpdateValue: this.onUpdate,
-        onClick: this.model.onClick,
-        onWindow: (options: WindowEmitOptions) => this.emits?.('window', options)
-      })
-    )
-
-    this.button = new ButtonConstructor(
-      this.props,
-      this.naming,
-      this.components,
-      () => this.bindsButton
-    )
+        }),
+        this.naming,
+        this.components,
+        () => this.bindsMenu
+      ]
+    },
+    model: {
+      item: ModelValueInclude<ListSelectedList | undefined>,
+      parameters: () => [
+        'selected',
+        this.emits,
+        this.i('event'),
+        computed(() => this.props.modelSelected || this.props.value || Geo.getCountry())
+      ]
+    }
   }
 
   /**
@@ -114,7 +105,7 @@ export class InputPhoneDialCode {
    * Вычисляемый список выбранных элементов страны из меню.
    */
   readonly item = computed(() => {
-    return this.menu.getElement()?.getSelectedList()
+    return this.i('menu').getElement()?.getSelectedList()
   })
 
   /**
@@ -127,13 +118,13 @@ export class InputPhoneDialCode {
    * метку, производную от выбранной страны на основе свойства labelType.
    * @returns resolved button props / разрешённые свойства кнопки
    */
-  get bindsButton() {
+  get bindsButton(): ConstrBind<ButtonProps> {
     const item = this.item.value?.[0]
-    const props = {
-      disabled: this.props.disabled,
+    const props: ConstrBind<ButtonProps> = {
+      ...(this.props.disabled !== undefined ? { disabled: this.props.disabled } : {}),
       icon: item?.icon,
       iconTrailing: this.props.disabled ? undefined : this.props.iconArrowDown,
-      iconTurn: this.menu.getElement()?.getOpen()
+      iconTurn: this.i('menu').getElement()?.getOpen()
     }
 
     if (
@@ -144,17 +135,50 @@ export class InputPhoneDialCode {
         case 'code':
           return {
             ...props,
-            label: item?.caption
+            label: item.caption
           }
         case 'name':
           return {
             ...props,
-            label: item?.label
+            label: item.label
           }
+        case 'none':
+        default:
+          return props
       }
     }
 
     return props
+  }
+
+  /**
+   * Returns binding attributes for the country menu component.
+   *
+   * Возвращает привязочные атрибуты для компонента меню выбора страны.
+   * @returns country menu bindings / привязки меню выбора страны
+   */
+  get bindsMenu(): ConstrBind<MenuCountryProps> {
+    return {
+      selected: this.i('model').value.value,
+      showPhoneCode: true,
+      onUpdateValue: this.onUpdate,
+      onClick: this.onClick,
+      onWindow: this.onWindow
+    }
+  }
+
+  /**
+   * Click handler for country selection.
+   *
+   * Обработчик клика при выборе страны.
+   * @param event mouse event object / объект события мыши
+   * @param options optional event value options / необязательные параметры значения события
+   */
+  readonly onClick = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ): void => {
+    this.i('model').onClick(event, options)
   }
 
   /**
@@ -163,8 +187,18 @@ export class InputPhoneDialCode {
    * Обновляет значение модели и генерирует событие updateValue.
    * @param value new country code value / новое значение кода страны
    */
-  onUpdate(value: string) {
-    this.model.onUpdate(value)
+  readonly onUpdate = (value?: NumberOrStringOrBoolean): void => {
+    this.i('model').onUpdate(value)
     this.emits?.('updateValue', value)
+  }
+
+  /**
+   * Window state change handler.
+   *
+   * Обработчик изменения состояния окна.
+   * @param options window emit options / параметры события окна
+   */
+  readonly onWindow = (options: WindowEmitOptions): void => {
+    this.emits?.('window', options)
   }
 }

@@ -1,47 +1,327 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
-import { effectScope, reactive, ref } from 'vue'
-import { DesignName } from '@dxtmisha/functional'
-import { InputPhoneDialCode } from '../InputPhoneDialCode'
-import type { InputPhoneDialCodeProps } from '../props'
+import './testWarnings'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { computed, createApp, defineComponent, h, nextTick, reactive, ref } from 'vue'
+import { type ConstrEmit, Geo, type ListSelectedList } from '@dxtmisha/functional'
 
-describe('InputPhoneDialCode', () => {
-  it('should disable window focus return in menuAttrs and forward onWindow event', () => {
-    const scope = effectScope()
-    const props: InputPhoneDialCodeProps = reactive({
+import { InputPhoneDialCodeDesign } from '../InputPhoneDialCodeDesign'
+import type { MenuControlItem } from '../../Menu'
+import type { WindowEmitOptions } from '../../Window'
+import type { InputPhoneDialCodeProps } from '../props'
+import type {
+  InputPhoneDialCodeClasses,
+  InputPhoneDialCodeComponents,
+  InputPhoneDialCodeEmits,
+  InputPhoneDialCodeExpose
+} from '../types'
+
+const mountedCleanups: Array<() => void> = []
+
+afterEach(() => {
+  mountedCleanups.splice(0).reverse().forEach(unmount => unmount())
+  vi.restoreAllMocks()
+})
+
+describe('InputPhoneDialCode (Integration)', () => {
+  const createHarness = (initialProps: InputPhoneDialCodeProps = {}) => {
+    const isOpen = ref(false)
+    const selectedItemMap: Record<string, { icon: string, caption: string, label: string, value: string }> = {
+      US: { icon: 'flag-us', caption: '+1', label: 'United States', value: 'US' },
+      VN: { icon: 'flag-vn', caption: '+84', label: 'Vietnam', value: 'VN' },
+      DE: { icon: 'flag-de', caption: '+49', label: 'Germany', value: 'DE' }
+    }
+    const lastMenuAttrs = ref<Record<string, unknown>>({})
+    const emitted: Array<{ event: string, args: unknown[] }> = []
+
+    const MockButton = defineComponent({
+      name: 'MockButton',
+      inheritAttrs: false,
+      props: {
+        disabled: Boolean,
+        icon: String,
+        iconTrailing: String,
+        iconTurn: Boolean,
+        label: String
+      },
+      setup(props, { attrs }) {
+        return () => h(
+          'button',
+          {
+            'type': 'button',
+            'class': attrs.class,
+            'disabled': props.disabled,
+            'aria-expanded': attrs['aria-expanded'],
+            'data-icon': props.icon ?? '',
+            'data-icon-trailing': props.iconTrailing ?? '',
+            'data-icon-turn': String(Boolean(props.iconTurn)),
+            'onClick': attrs.onClick as ((event: MouseEvent) => void) | undefined
+          },
+          props.label ?? ''
+        )
+      }
+    })
+
+    const MockMenuCountry = defineComponent({
+      name: 'MockMenuCountry',
+      inheritAttrs: false,
+      props: {
+        selected: [String, Number, Boolean, Array],
+        showPhoneCode: Boolean,
+        disabled: Boolean,
+        menuAttrs: Object
+      },
+      emits: ['click', 'updateValue', 'window'],
+      setup(props, { attrs, emit, expose, slots }) {
+        const getSelectedList = () => {
+          const key = String(props.selected ?? Geo.getCountry())
+          return selectedItemMap[key] ? [selectedItemMap[key]] : []
+        }
+
+        const getOpen = () => isOpen.value
+
+        expose({
+          getSelectedList,
+          getOpen
+        })
+
+        const controlProps = computed<MenuControlItem>(() => ({
+          class: 'd1-window__control',
+          open: isOpen,
+          classesWindow: {} as MenuControlItem['classesWindow'],
+          loading: ref(false),
+          isSelected: computed(() => Boolean(props.selected)),
+          selectedList: computed(() => []),
+          selectedNames: computed(() => []),
+          selectedValues: computed(() => []),
+          previous: () => undefined,
+          next: () => undefined,
+          onClick: async () => {
+            isOpen.value = !isOpen.value
+          },
+          onKeydown: async () => {},
+          onContextmenu: async () => {},
+          binds: {
+            'class': 'd1-window__control',
+            'aria-expanded': isOpen.value,
+            'onClick': async () => {
+              isOpen.value = !isOpen.value
+            },
+            'onKeydown': async () => {},
+            'onContextmenu': async () => {}
+          }
+        }))
+
+        return () => {
+          lastMenuAttrs.value = (props.menuAttrs ?? {}) as Record<string, unknown>
+
+          return h(
+            'div',
+            {
+              'class': ['mock-menu-country', attrs.class],
+              'data-selected': String(props.selected ?? ''),
+              'data-show-phone-code': String(Boolean(props.showPhoneCode)),
+              'data-disabled': String(Boolean(props.disabled))
+            },
+            [
+              slots.control?.(controlProps.value),
+              h(
+                'button',
+                {
+                  type: 'button',
+                  class: 'mock-select-vn',
+                  onClick: (event: MouseEvent) => {
+                    emit('click', event, { type: 'item', value: 'VN', detail: { code: '+84' } })
+                    emit('updateValue', 'VN')
+                  }
+                },
+                'Select VN'
+              ),
+              h(
+                'button',
+                {
+                  type: 'button',
+                  class: 'mock-close-window',
+                  onClick: () => {
+                    const options: WindowEmitOptions = {
+                      id: 'win-1',
+                      element: document.createElement('div'),
+                      control: document.createElement('button'),
+                      open: false
+                    }
+                    emit('window', options)
+                  }
+                },
+                'Close Window'
+              )
+            ]
+          )
+        }
+      }
+    })
+
+    const state = reactive<InputPhoneDialCodeProps>({
+      iconArrowDown: 'keyboard_arrow_down',
+      ...initialProps
+    })
+
+    const emitHandler = (event: string, ...args: unknown[]) => {
+      emitted.push({ event, args })
+      if (event === 'update:modelSelected') {
+        state.modelSelected = args[0] as ListSelectedList
+      }
+    }
+
+    const Host = defineComponent({
+      setup() {
+        const design = new InputPhoneDialCodeDesign<
+          InputPhoneDialCodeComponents,
+          InputPhoneDialCodeExpose,
+          InputPhoneDialCodeClasses,
+          InputPhoneDialCodeProps
+        >(
+          'd1.inputPhoneDialCode',
+          state,
+          {
+            emits: emitHandler as unknown as ConstrEmit<InputPhoneDialCodeEmits>,
+            classes: ref({
+              main: { 'd1-inputPhoneDialCode': true }
+            }),
+            components: {
+              button: MockButton,
+              menuCountry: MockMenuCountry
+            }
+          }
+        )
+
+        return design.render()
+      }
+    })
+
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+
+    const app = createApp(Host)
+    app.mount(container)
+    mountedCleanups.push(() => {
+      app.unmount()
+      container.remove()
+    })
+
+    return {
+      container,
+      state,
+      isOpen,
+      lastMenuAttrs,
+      emitted
+    }
+  }
+
+  it('should render with BEM classes, selected country flag, dial code label, and disableFocusReturn', async () => {
+    const { container, lastMenuAttrs } = createHarness({
+      value: 'US',
+      labelType: 'code',
       menuCountryAttrs: {
         menuAttrs: {
           showSearch: true
         }
       }
     })
-    const element = ref<HTMLElement>()
-    const naming = new DesignName('d1.inputPhoneDialCode')
-    const emits = vi.fn()
 
-    const dialCode = scope.run(() => new InputPhoneDialCode(
-      props,
-      element,
-      naming,
-      undefined,
-      undefined,
-      emits as any
-    ))!
+    await nextTick()
 
-    const menuBinds = dialCode.menu.binds.value as any
-    expect(menuBinds.menuAttrs?.windowAttrs?.disableFocusReturn).toBe(true)
-    expect(menuBinds.menuAttrs?.showSearch).toBe(true)
+    const menuEl = container.querySelector('.mock-menu-country') as HTMLElement
+    expect(menuEl).not.toBeNull()
+    expect(menuEl.classList.contains('d1-inputPhoneDialCode')).toBe(true)
+    expect(menuEl.classList.contains('d1-inputPhoneDialCode__menuCountry')).toBe(true)
+    expect(menuEl.getAttribute('data-selected')).toBe('US')
+    expect(menuEl.getAttribute('data-show-phone-code')).toBe('true')
 
-    const options = {
-      id: 'window-1',
-      element: document.createElement('div'),
-      control: document.createElement('button'),
-      open: false
-    }
-    menuBinds.onWindow?.(options)
+    const buttonEl = container.querySelector('button.d1-inputPhoneDialCode__button') as HTMLButtonElement
+    expect(buttonEl).not.toBeNull()
+    expect(buttonEl.classList.contains('d1-window__control')).toBe(true)
+    expect(buttonEl.getAttribute('data-icon')).toBe('flag-us')
+    expect(buttonEl.getAttribute('data-icon-trailing')).toBe('keyboard_arrow_down')
+    expect(buttonEl.textContent).toBe('+1')
 
-    expect(emits).toHaveBeenCalledWith('window', options)
+    expect(lastMenuAttrs.value).toMatchObject({
+      showSearch: true,
+      windowAttrs: {
+        disableFocusReturn: true
+      }
+    })
+  })
 
-    scope.stop()
+  it('should update label reactively across labelType variants and disabled state', async () => {
+    const { container, state } = createHarness({
+      value: 'DE',
+      labelType: 'name'
+    })
+
+    await nextTick()
+
+    const getButton = () => container.querySelector('button.d1-inputPhoneDialCode__button') as HTMLButtonElement
+    expect(getButton().textContent).toBe('Germany')
+    expect(getButton().getAttribute('data-icon')).toBe('flag-de')
+
+    state.labelType = 'code'
+    await nextTick()
+    expect(getButton().textContent).toBe('+49')
+
+    state.labelType = 'none'
+    await nextTick()
+    expect(getButton().textContent).toBe('')
+
+    state.disabled = true
+    await nextTick()
+    expect(getButton().disabled).toBe(true)
+    expect(getButton().getAttribute('data-icon-trailing')).toBe('')
+  })
+
+  it('should emit update:selected, updateValue, click, clickLite, and window on user interaction', async () => {
+    const { container, isOpen, emitted } = createHarness({
+      value: 'US',
+      labelType: 'code'
+    })
+
+    await nextTick()
+
+    const getButton = () => container.querySelector('button.d1-inputPhoneDialCode__button') as HTMLButtonElement
+    getButton().click()
+    await nextTick()
+
+    expect(isOpen.value).toBe(true)
+    expect(getButton().getAttribute('data-icon-turn')).toBe('true')
+
+    ;(container.querySelector('.mock-select-vn') as HTMLButtonElement).click()
+    await nextTick()
+
+    expect(emitted.filter(item => item.event === 'updateValue').map(item => item.args)).toEqual([['VN']])
+    expect(emitted.filter(item => item.event === 'update:selected').map(item => item.args)).toEqual([['VN']])
+    expect(emitted.filter(item => item.event === 'update:modelSelected').map(item => item.args)).toEqual([['VN']])
+    expect(emitted.find(item => item.event === 'click')?.args[1]).toEqual({ type: 'item', value: 'VN', detail: { code: '+84' } })
+    expect(emitted.find(item => item.event === 'clickLite')?.args).toEqual([{ type: 'item', value: 'VN', detail: { code: '+84' } }])
+    expect(getButton().textContent).toBe('+84')
+
+    ;(container.querySelector('.mock-close-window') as HTMLButtonElement).click()
+    await nextTick()
+    expect(emitted.find(item => item.event === 'window')?.args[0]).toMatchObject({ id: 'win-1', open: false })
+  })
+
+  it('should support reactive modelSelected prop updates', async () => {
+    const { container, state } = createHarness({
+      modelSelected: 'US',
+      labelType: 'name'
+    })
+
+    await nextTick()
+
+    const getButton = () => container.querySelector('button.d1-inputPhoneDialCode__button') as HTMLButtonElement
+    expect(getButton().textContent).toBe('United States')
+
+    state.modelSelected = 'VN'
+    await nextTick()
+
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('VN')
+    expect(getButton().textContent).toBe('Vietnam')
   })
 })

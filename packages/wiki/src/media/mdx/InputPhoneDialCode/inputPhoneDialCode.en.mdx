@@ -2,36 +2,39 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 Trigger button component for selecting a country phone dial code via a country menu popup.
 
-InputPhoneDialCode is a compact trigger button that opens a **MenuCountry** popup, allowing users to select a country and its associated phone dial code. It automatically detects the user's current country via `Geo.getCountry()` as the default value and reactively binds the selection via `v-model:selected`.
+InputPhoneDialCode is a compact trigger button that opens a **MenuCountry** popup, allowing users to select a country and its associated phone dial code. It automatically detects the user's current country via `Geo.getCountry()` as the default value and reactively binds the selection via `v-model:model-selected` or `value` + `@update:selected`.
 
-**Key Features:**
+**Key features:**
 
-- Automatic default country detection via `Geo.getCountry()`
-- Country selection via a `MenuCountry` popup with flag and phone code display
-- Configurable label: phone code (e.g. `+1`), country name, or no label
-- Trailing arrow icon reflects the open/close state of the menu
-- Disables automatic focus return on popup close (`disableFocusReturn: true`) and forwards the `window` event so parent inputs can control focus
-- Inherits all Button and MenuCountry capabilities
+- **Automatic Country Detection:** Detects the default country via `Geo.getCountry()`
+- **Country Popup Selection:** Opens a `MenuCountry` popup displaying country flags, names, and phone dial codes (`showPhoneCode: true`)
+- **Configurable Label Modes:** Supports `code` (e.g. `+1`), `name` (country name), or `none` via `labelType`
+- **Trailing Arrow Indicator:** Reflects the popup open/close state via `iconTurn` and supports custom `iconArrowDown` icons
+- **Focus Management:** Configures `disableFocusReturn: true` on the popup window and forwards `window` events so host phone inputs can manage focus on close
+- **Inherited Capabilities:** Inherits `Button` and `MenuCountry` configuration via `buttonAttrs`, `menuCountryAttrs`, and `disabled`
 
-**Typical Use Cases:**
+**Common use cases:**
 
-- Phone number input field prefix for selecting the dial code
-- Country/region pickers in registration or checkout forms
+- Phone number input field prefix for selecting the country dial code
+- Country or region picker in registration, profile, and checkout forms
 
 <Source
     code={`
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 
-const selected = ref(undefined)
+const selected = ref<string>('US')
 </script>
 
 <template>
   <InputPhoneDialCode
-    v-model:selected="selected"
+    v-model:model-selected="selected"
     label-type="code"
+    icon-arrow-down="keyboard_arrow_down"
   />
 </template>
   `}
     language="html"
 />
+
+> InputPhoneDialCode unifies country flag rendering, dial code selection, and accessible popup control into a reusable trigger component.

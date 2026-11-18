@@ -55,6 +55,7 @@ describe('LibraryList', () => {
     const reg = list.testGetReg(['button', 'user-badge'], true)
     expect(reg).toContain('dxt')
     expect(reg).toContain('button')
+    expect(list.testGetRegName(['input-phone-dial-code'])).toBe('input-?phone-?dial-?code')
   })
 
   it('extracts CSS variables and creates vars regular expression', () => {

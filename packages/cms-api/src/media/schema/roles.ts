@@ -1,6 +1,6 @@
 import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
 import { createdOrigins } from './createdOrigins'
-import type { CmsStatus } from '../../types/cmsDbTypes'
+import type { CmsSystemStatus } from '../../types/cmsDbTypes'
 
 /**
  * Roles table schema for CMS /
@@ -19,9 +19,9 @@ export const roles = /* #__PURE__ */ pgTable('roles', {
   /** Role description / Описание роли */
   description: text('description'),
 
-  // Status
-  /** Role status / Статус роли */
-  status: text('status').$type<CmsStatus>().notNull().default('active'),
+  // System status
+  /** System record status / Системный статус записи */
+  systemStatus: text('system_status').$type<CmsSystemStatus>().notNull().default('active'),
 
   // Origin
   /** Creation origin code / Код источника создания записи */

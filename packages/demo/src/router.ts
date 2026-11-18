@@ -41,6 +41,7 @@ import DemoInputPage from './pages/components/DemoInputPage.vue'
 import DemoInputCodePage from './pages/components/DemoInputCodePage.vue'
 import DemoInputImagePage from './pages/components/DemoInputImagePage.vue'
 import DemoInputPhonePage from './pages/components/DemoInputPhonePage.vue'
+import DemoInputPhoneDialCodePage from './pages/components/DemoInputPhoneDialCodePage.vue'
 import DemoInputSocialPage from './pages/components/DemoInputSocialPage.vue'
 import DemoListPage from './pages/components/DemoListPage.vue'
 import DemoListGroupPage from './pages/components/DemoListGroupPage.vue'
@@ -271,6 +272,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-input-phone',
     name: 'component-input-phone',
     component: DemoInputPhonePage
+  },
+  {
+    path: '/component-input-phone-dial-code',
+    name: 'component-input-phone-dial-code',
+    component: DemoInputPhoneDialCodePage
   },
   {
     path: '/component-input-social',

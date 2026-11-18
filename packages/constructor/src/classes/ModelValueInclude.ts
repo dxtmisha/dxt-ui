@@ -129,7 +129,7 @@ export class ModelValueInclude<Value = any> {
    * Напрямую обновляет значение модели переданным значением.
    * @param value new model value / новое значение модели
    */
-  readonly onUpdate = (value: Value) => {
+  readonly onUpdate = (value: Value): void => {
     this.value.value = value
   }
 
@@ -138,7 +138,7 @@ export class ModelValueInclude<Value = any> {
    *
    * Обновляет внутреннее значение модели из ссылки на входное значение.
    */
-  protected readonly update = () => {
+  protected readonly update = (): void => {
     this.value.value = this.inputValue?.value
   }
 }
