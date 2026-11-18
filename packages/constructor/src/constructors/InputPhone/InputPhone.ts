@@ -102,7 +102,7 @@ export class InputPhone extends DesignLogicAbstract<
         this.naming,
         this.components,
         () => ({
-          value: this.i('data').valueItem.value?.value ?? this.i('data').country.value,
+          value: this.i('data').activeCountry.value,
           onClick: this.i('data').onCountry,
           onWindow: this.i('data').onWindow
         })

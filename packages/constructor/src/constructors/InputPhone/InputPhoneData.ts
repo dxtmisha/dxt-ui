@@ -51,6 +51,15 @@ export class InputPhoneData extends DesignLifecycleAbstract {
     }
   }
 
+  /** Computed active country code preserving manual/default shared-code selection / Вычисляемый активный код страны с сохранением ручного или заданного выбора для общих префиксов */
+  readonly activeCountry = computed<string>(() => {
+    if (this.isSameCountryGroup()) {
+      return this.country.value
+    }
+
+    return this.valueItem.value?.value ?? this.country.value
+  })
+
   /** Computed info of the current phone map / Вычисляемая информация о текущей карте телефона */
   readonly item = computed<GeoPhoneMap | undefined>(() => {
     return this.valueItem.value ?? GeoPhone.getByCode(this.country.value)
@@ -118,7 +127,10 @@ export class InputPhoneData extends DesignLifecycleAbstract {
     }
 
     this.updateCountry()
-    this.watchStop = watch(this.valueItem, () => this.updateCountry())
+    this.watchStop = watch(
+      [this.valueItem, () => this.value().item.value],
+      () => this.updateCountry()
+    )
   }
 
   /** Callback after component unmounting / Обработчик после размонтирования компонента */
@@ -144,6 +156,30 @@ export class InputPhoneData extends DesignLifecycleAbstract {
   }
 
   /**
+   * Checks whether the current phone value still belongs to the selected country or only holds its shared prefix.
+   *
+   * Проверяет, соответствует ли текущее значение выбранной стране или содержит только её общий префикс.
+   * @returns true if the current country should be preserved / true, если текущую страну нужно сохранить
+   */
+  protected isSameCountryGroup(): boolean {
+    const valueItem = this.valueItem.value
+    const currentValue = this.value().item.value
+
+    if (
+      !valueItem
+      || !currentValue
+    ) {
+      return true
+    }
+
+    const country = this.country.value
+    const cleanValue = GeoPhone.cleanPhone(currentValue)
+
+    return cleanValue === this.toPhone(country)
+      || valueItem.items.some(item => item.value === country)
+  }
+
+  /**
    * Normalizes country code to a starting phone prefix.
    *
    * Нормализует код страны в стартовый телефонный префикс.
@@ -160,7 +196,10 @@ export class InputPhoneData extends DesignLifecycleAbstract {
    * Обновляет код страны на основе текущего элемента значения.
    */
   protected updateCountry(): void {
-    if (this.valueItem.value) {
+    if (
+      this.valueItem.value
+      && !this.isSameCountryGroup()
+    ) {
       this.country.value = this.valueItem.value.value ?? Geo.getCountry()
     }
   }

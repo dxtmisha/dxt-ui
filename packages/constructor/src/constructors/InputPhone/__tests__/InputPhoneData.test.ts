@@ -196,4 +196,64 @@ describe('InputPhoneData', () => {
       expect(() => data.focus()).not.toThrow()
     })
   })
+
+  describe('Shared country code preservation', () => {
+    it('should keep selected CA or KZ when value only contains shared prefix and switch only on full mismatching number', async () => {
+      const { data, valueRef, onValueSpy } = createData({ countryDefault: 'US' }, '79001234567')
+
+      data.onMounted()
+      expect(data.country.value).toBe('RU')
+
+      data.onCountry(new MouseEvent('click'), { type: 'click', value: 'CA', detail: undefined })
+      valueRef.value = String(onValueSpy.mock.calls.at(-1)?.[0] ?? '1')
+      await nextTick()
+
+      expect(valueRef.value).toBe('1')
+      expect(data.country.value).toBe('CA')
+      expect(data.activeCountry.value).toBe('CA')
+
+      // Entering a US number switches CA -> US
+      valueRef.value = '12025550147'
+      await nextTick()
+      expect(data.country.value).toBe('US')
+      expect(data.activeCountry.value).toBe('US')
+
+      // Re-selecting KZ stays KZ on prefix '7' and stays KZ on 7701...
+      data.onCountry(new MouseEvent('click'), { type: 'click', value: 'KZ', detail: undefined })
+      valueRef.value = '7'
+      await nextTick()
+      expect(data.country.value).toBe('KZ')
+      expect(data.activeCountry.value).toBe('KZ')
+
+      valueRef.value = '77011234567'
+      await nextTick()
+      expect(data.country.value).toBe('KZ')
+
+      data.onUnmounted()
+    })
+
+    it('should preserve shared root country BV even after full shared-format digits are entered', async () => {
+      const { data, valueRef } = createData({ countryDefault: 'US' }, '1')
+
+      data.onMounted()
+      data.onCountry(new MouseEvent('click'), { type: 'click', value: 'BV', detail: undefined })
+      valueRef.value = '47'
+      await nextTick()
+      expect(data.country.value).toBe('BV')
+      expect(data.activeCountry.value).toBe('BV')
+
+      valueRef.value = '4740123456'
+      await nextTick()
+      expect(data.country.value).toBe('BV')
+      expect(data.activeCountry.value).toBe('BV')
+
+      data.onUnmounted()
+    })
+
+    it('should resolve activeCountry during SSR when explicit initial value differs from default country', () => {
+      const { data } = createData({ countryDefault: 'CA' }, '79001234567')
+
+      expect(data.activeCountry.value).toBe('RU')
+    })
+  })
 })
