@@ -30,6 +30,18 @@ export interface CmsTimestampValues {
   updatedAt?: Date
 }
 
+/** Base CMS entity record shape containing identifier, system status, and timestamp fields / Базовая структура записи сущности CMS с полями идентификатора, системного статуса и временных меток */
+export interface CmsDbItemData {
+  /** Primary identifier / Первичный идентификатор */
+  id: number
+  /** System record status / Системный статус записи */
+  systemStatus: CmsSystemStatus
+  /** Creation timestamp / Дата создания */
+  createdAt: Date
+  /** Last update timestamp / Дата последнего обновления */
+  updatedAt: Date
+}
+
 /** Created origin record selected from database / Запись источника создания, полученная из базы данных */
 export type CmsCreatedOrigin = typeof createdOrigins.$inferSelect
 

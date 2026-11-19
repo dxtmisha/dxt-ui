@@ -17,6 +17,15 @@ const LIST_MAX_EXPECTATIONS_FOCUS = 24
 /** Delay in milliseconds between focus polling attempts / Задержка (мс) между попытками установки фокуса */
 const LIST_FOCUS_RETRY_DELAY_MS = 128
 
+/** Consecutive visible frames required to stop scroll tracking / Число стабильных видимых кадров для остановки прокрутки */
+const LIST_SCROLL_IDLE_FRAMES = 3
+
+/** Pixel tolerance when checking container visibility bounds / Допуск в пикселях при проверке видимости внутри контейнера */
+const LIST_SCROLL_POSITION_TOLERANCE = 1
+
+/** Window body scroll container selector / Селектор контейнера прокрутки тела окна */
+const LIST_WINDOW_BODY_SELECTOR = '*[data-window-body]'
+
 /**
  * Class for working with element focus.
  *
@@ -28,6 +37,12 @@ export class ListFocus extends DesignLifecycleAbstract {
 
   /** Pending focus retry timeout / Ожидающий тайм-аут повторной попытки фокуса */
   protected focusTimeout?: ReturnType<typeof setTimeout>
+
+  /** Active scroll stabilization animation frame identifier / Идентификатор кадра активной стабилизации прокрутки */
+  protected scrollFrameId?: number
+
+  /** Container monitored for user interaction during scroll tracking / Контейнер, отслеживаемый на действия пользователя при прокрутке */
+  protected scrollContainer?: HTMLElement
 
   /**
    * Constructor
@@ -49,6 +64,7 @@ export class ListFocus extends DesignLifecycleAbstract {
   /** Cleanup lifecycle resources on unmount / Очистка ресурсов жизненного цикла при размонтировании */
   override readonly onUnmounted = (): void => {
     this.clearTimeout()
+    this.clearScroll()
   }
 
   /**
@@ -185,6 +201,7 @@ export class ListFocus extends DesignLifecycleAbstract {
    */
   reset(): this {
     this.clearTimeout()
+    this.clearScroll()
     this.set(undefined)
     return this
   }
@@ -217,14 +234,129 @@ export class ListFocus extends DesignLifecycleAbstract {
    * @param element the element to scroll to / элемент, до которого надо проскроллить
    */
   protected toElement(element?: HTMLElement): void {
-    const selector = '*[data-window-body]'
+    const container = element?.closest<HTMLElement>(LIST_WINDOW_BODY_SELECTOR)
+
+    this.clearScroll()
 
     if (
       element
-      && element.closest(selector)
+      && container
     ) {
-      goScroll(selector, element)
+      goScroll(LIST_WINDOW_BODY_SELECTOR, element)
       this.toFocus()
+      this.watchScrollVisibility(container, element)
+    }
+  }
+
+  /**
+   * Re-runs scroll via goScroll in requestAnimationFrame until element stays visible or user interacts.
+   *
+   * Повторяет прокрутку через goScroll в requestAnimationFrame, пока элемент не станет видим или пользователь не начнёт действие.
+   * @param container scroll container element / элемент контейнера прокрутки
+   * @param element target item element / целевой элемент списка
+   */
+  protected watchScrollVisibility(
+    container: HTMLElement,
+    element: HTMLElement
+  ): void {
+    this.scrollContainer = container
+    container.addEventListener('wheel', this.onScrollAbort, { passive: true, once: true })
+    container.addEventListener('touchstart', this.onScrollAbort, { passive: true, once: true })
+    container.addEventListener('pointerdown', this.onScrollAbort, { passive: true, once: true })
+
+    this.stepScrollVisibility(container, element)
+  }
+
+  /**
+   * Checks element visibility on the next animation frame and re-scrolls if needed.
+   *
+   * Проверяет видимость элемента на следующем кадре анимации и при необходимости повторяет прокрутку.
+   * @param container scroll container element / элемент контейнера прокрутки
+   * @param element target item element / целевой элемент списка
+   * @param idleFrames consecutive visible frames count / количество последовательных видимых кадров
+   * @param attempts total check attempts / общее количество попыток проверки
+   */
+  protected stepScrollVisibility(
+    container: HTMLElement,
+    element: HTMLElement,
+    idleFrames: number = 0,
+    attempts: number = 0
+  ): void {
+    this.scrollFrameId = requestAnimationFrame(() => {
+      this.scrollFrameId = undefined
+
+      if (!element.isConnected) {
+        this.clearScroll()
+        return
+      }
+
+      idleFrames = this.updateScrollVisibility(container, element, idleFrames)
+      attempts++
+
+      if (
+        idleFrames >= LIST_SCROLL_IDLE_FRAMES
+        || attempts >= LIST_MAX_EXPECTATIONS_FOCUS
+      ) {
+        this.clearScroll()
+        return
+      }
+
+      this.stepScrollVisibility(container, element, idleFrames, attempts)
+    })
+  }
+
+  /**
+   * Verifies element visibility inside the scroll container, re-scrolls if hidden, and returns updated idle frame count.
+   *
+   * Проверяет видимость элемента внутри контейнера прокрутки, докручивает при необходимости и возвращает обновлённый счётчик стабильных кадров.
+   * @param container scroll container element / элемент контейнера прокрутки
+   * @param element target item element / целевой элемент списка
+   * @param idleFrames current consecutive visible frames count / текущее число последовательных видимых кадров
+   * @returns updated idle frames count / обновлённое число стабильных кадров
+   */
+  protected updateScrollVisibility(
+    container: HTMLElement,
+    element: HTMLElement,
+    idleFrames: number
+  ): number {
+    const containerRect = container.getBoundingClientRect()
+    const targetRect = element.getBoundingClientRect()
+    const isVisible = targetRect.top >= containerRect.top - LIST_SCROLL_POSITION_TOLERANCE
+      && targetRect.bottom <= containerRect.bottom + LIST_SCROLL_POSITION_TOLERANCE
+
+    if (!isVisible) {
+      goScroll(LIST_WINDOW_BODY_SELECTOR, element)
+      return 0
+    }
+
+    return idleFrames + 1
+  }
+
+  /**
+   * Aborts active scroll tracking when the user begins interacting with the container.
+   *
+   * Прерывает активное отслеживание прокрутки при начале взаимодействия пользователя с контейнером.
+   */
+  protected readonly onScrollAbort = (): void => {
+    this.clearScroll()
+  }
+
+  /**
+   * Clears active scroll tracking frame and interaction listeners.
+   *
+   * Очищает активный кадр отслеживания прокрутки и слушатели событий.
+   */
+  protected clearScroll(): void {
+    if (this.scrollFrameId !== undefined) {
+      cancelAnimationFrame(this.scrollFrameId)
+      this.scrollFrameId = undefined
+    }
+
+    if (this.scrollContainer) {
+      this.scrollContainer.removeEventListener('wheel', this.onScrollAbort)
+      this.scrollContainer.removeEventListener('touchstart', this.onScrollAbort)
+      this.scrollContainer.removeEventListener('pointerdown', this.onScrollAbort)
+      this.scrollContainer = undefined
     }
   }
 

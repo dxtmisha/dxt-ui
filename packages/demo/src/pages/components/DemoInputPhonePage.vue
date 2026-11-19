@@ -21,6 +21,7 @@ const valueBlocked = ref<string>('')
 const valueMaskAttrs = ref<string>('')
 const valueValidation = ref<string>('7900')
 const valueRequired = ref<string>('')
+const valueIncomplete = ref<string>('')
 const valueLengthMask = ref<string>('49301234')
 const valueConflictCode = ref<string>('12025550147')
 const valueWithinRU = ref<string>('')
@@ -43,6 +44,9 @@ const dynamicResetKey = ref<number>(0)
 const requiredRef = ref<InputPhoneExpose>()
 const requiredValidResult = ref<string>('not checked')
 
+const incompleteRef = ref<InputPhoneExpose>()
+const incompleteValidResult = ref<string>('not checked')
+
 const exposedRef = ref<InputPhoneExpose>()
 const exposedResult = ref<string>('none')
 
@@ -51,6 +55,13 @@ const onCheckRequired = (): void => {
   const message = requiredRef.value?.getValidationMessage()
 
   requiredValidResult.value = `valid=${String(valid)}, message=${message || 'none'}`
+}
+
+const onCheckIncomplete = (): void => {
+  const valid = incompleteRef.value?.checkValidity()
+  const message = incompleteRef.value?.getValidationMessage()
+
+  incompleteValidResult.value = `valid=${String(valid)}, message=${message || 'none'}`
 }
 
 const onResetDynamicCountry = (): void => {
@@ -278,6 +289,20 @@ const onResetPasteCases = (): void => {
             <DemoValue :value="requiredValidResult"/>
             <DemoFlex>
               <D1Button label="Validate Required" @click="onCheckRequired"/>
+            </DemoFlex>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              ref="incompleteRef"
+              v-model:value="valueIncomplete"
+              country-default="RU"
+              label="Incomplete Phone (Optional)"
+              text-invalid-phone="Enter full phone number"
+              helper-message="Partial number triggers error on blur even when not required"
+            />
+            <DemoValue :value="incompleteValidResult"/>
+            <DemoFlex>
+              <D1Button label="Validate Incomplete" @click="onCheckIncomplete"/>
             </DemoFlex>
           </DemoBox>
           <DemoBox>

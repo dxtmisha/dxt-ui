@@ -6,10 +6,10 @@
 - **Исходный код:** [`InputPhone`](packages/d1/src/components/Ui/InputPhone) ([`constructor`](packages/constructor/src/constructors/InputPhone), [`demo`](packages/demo/src/pages/components/DemoInputPhonePage.vue))
 - **Демо / целевой URL:** `http://localhost:3000/component-input-phone`
 - **Материалы:** `None`
-- **Дата тестирования (UTC):** `2026-11-19T02:07:47Z`
+- **Дата тестирования (UTC):** `2026-11-19T10:52:52Z`
 - **Окружение:** `Headless Chrome (Puppeteer / CDP, Desktop 1440x900, Tablet 768x1024, Mobile 375x812 / 320x568)`
-- **Покрытие тест-кейсов:** 17 / 17 (`100%`)
-- **Итог:** **17 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — после полной пересборки пакетов и демо-приложения компонент `D1InputPhone` успешно прошёл все 17 визуальных и функциональных сценариев, включая реактивное обновление `countryDefault` (`TC-INT-007`), обработку внутренних префиксов страны (`8` для `RU` и `0` для `VN` в `TC-INT-008`), раскрытие группы альтернативных кодов без выбора подкода (`TC-INT-009`), отформатированный вывод в состояниях `disabled` и `readonly` (`TC-BND-001`) и валидацию `required` при голом префиксе страны (`TC-BND-002`) при нулевом уровне ошибок и предупреждений в консоли.
+- **Покрытие тест-кейсов:** 18 / 18 (`100%`)
+- **Итог:** **18 ✅, 0 ⚠️, 0 ❌** (`✅` пройдено, `⚠️` предупреждение, `❌` провалено) — после полной пересборки пакетов (`constructor`, `d1`, `demo`) компонент `D1InputPhone` успешно прошёл все 18 визуальных и функциональных сценариев, включая новую валидацию неполного номера (`isFull === false` + `textInvalidPhone` в `TC-BND-003`), реактивное обновление `countryDefault` (`TC-INT-007`), обработку внутренних префиксов страны (`8` для `RU` и `0` для `VN` в `TC-INT-008`), раскрытие группы альтернативных кодов без выбора подкода (`TC-INT-009`), отформатированный вывод в состояниях `disabled` и `readonly` (`TC-BND-001`) и валидацию `required` при голом префиксе страны (`TC-BND-002`) при нулевом уровне ошибок и предупреждений в консоли.
 
 ---
 
@@ -19,7 +19,7 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-VIS-001` | Базовый рендеринг и варианты внешнего вида (`classic`, `filled`, `outlined`, `tonal`, `boxed`, `basic`, `width`, `block`, `palette`) | ✅ | Отрисовано `57` экземпляров `.d1-field`, `52` триггера `.d1-inputPhoneDialCode__button`, `53` маски `.d1-mask`, `9` карточек в `Appearances & Layout`, без нулевых размеров (`hasZeroSize: false`); блок `Custom Width (280px)` имеет точную ширину `280px`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
+| `TC-VIS-001` | Базовый рендеринг и варианты внешнего вида (`classic`, `filled`, `outlined`, `tonal`, `boxed`, `basic`, `width`, `block`, `palette`) | ✅ | Отрисовано `69` экземпляров `.d1-field`, `63` триггера `.d1-inputPhoneDialCode__button`, `65` масок `.d1-mask`, `9` карточек в `Appearances & Layout`, без нулевых размеров (`hasZeroSize: false`); блок `Custom Width (280px)` имеет точную ширину `280px`. | ![TC-VIS-001](./screenshots/TC-VIS-001.png) |
 | `TC-VIS-002` | Размеры (`sm`, `md`, `lg`, `display`), выравнивание (`align`) и настройки `inputPhoneDialCodeAttrs` | ✅ | Высоты `.d1-field__body` соответствуют градации: `32px` (`sm`), `48px` (`md`), `64px` (`lg`), `72px` (`display`); кнопки `DialCode` отобразили `+84expand_more` и `United Stateskeyboard_arrow_down`. | ![TC-VIS-002](./screenshots/TC-VIS-002.png) |
 | `TC-VIS-003` | Иконки (`iconTrailing`), состояния (`loading`, `focus`, `selected`, `isSkeleton`, `disabled`, `readonly`) и кнопка очистки | ✅ | Отображены `2` индикатора `.d1-progress` (`Loading Boolean` и `Loading Object`), применён класс скелетона (`hasSkeletonClass: true`), отформатированы все `disabled`/`readonly` поля, визуально различимы `focus` и `selected`. | ![TC-VIS-003](./screenshots/TC-VIS-003.png) |
 
@@ -42,7 +42,8 @@
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
 | `TC-BND-001` | Форматирование `disabled` / `readonly` (`InputPhoneFormat`), границы, Unicode и XSS | ✅ | Поля без `Mask` (`hasMaskLayer: false`) отображают отформатированное значение: `Disabled` -> `+7-900-123-45-67`, `Readonly` -> `+7-900-123-45-67`, `Disabled (Partial)` -> `+7-900-123`, `Readonly (Blocked US)` -> `+1-202-555-0`; все имеют `inputMode="tel"` и непустой `id`; строка `<img src=x onerror=alert(1)>` экранирована как текст (`xssEscapedAsText: true`, `xssNoImgInjected: true`). | ![TC-BND-001](./screenshots/TC-BND-001.png) |
-| `TC-BND-002` | Валидация `required` при голом префиксе страны (`InputPhoneValidation`) | ✅ | На старте при голом префиксе `+1-` вызов `checkValidity()` возвращает `valid=false` (фиксирует пустое поле); ввод `2025550147` (`+1-202-555-0147`) делает поле валидным (`valid=true`); сброс обратно до `+1-` немедленно активирует `.d1-field--validation`, `aria-invalid="true"` и сообщение `Phone number is required` (`valid=false`). | ![TC-BND-002](./screenshots/TC-BND-002.png) |
+| `TC-BND-002` | Валидация `required` при голом телефонном префиксе (`InputPhoneValidation`) | ✅ | На старте при голом префиксе `+1-` вызов `checkValidity()` возвращает `valid=false` (фиксирует пустое поле); ввод `2025550147` (`+1-202-555-0147`) делает поле валидным (`valid=true`); сброс обратно до `+1-` немедленно активирует `.d1-field--validation`, `aria-invalid="true"` и сообщение `Phone number is required` (`valid=false`). | ![TC-BND-002](./screenshots/TC-BND-002.png) |
+| `TC-BND-003` | Валидация неполного номера телефона (`isFull === false` + `textInvalidPhone`) | ✅ | На необязательном поле при голом префиксе `+7-` `checkValidity()` возвращает `valid=true, message=none`; при вводе `90012` (`+7-900-12`) и `blur` активируются `.d1-field--validation`, `aria-invalid="true"` и сообщение `Enter full phone number` (`valid=false`); дозаполнение до `+7-900-123-45-67` снимает ошибку (`valid=true`). | ![TC-BND-003](./screenshots/TC-BND-003.png) |
 
 ### 2.4 Адаптивность (`RSP`)
 
@@ -54,7 +55,7 @@
 
 | ID | Сценарий | Статус | Фактический результат | Скриншот |
 | :--- | :--- | :---: | :--- | :--- |
-| `TC-A11Y-001` | WAI-ARIA атрибуты и клавиатурная навигация (`Enter` / `Escape`) | ✅ | Все `57` инпутов имеют `inputMode="tel"` (`allTelMode: true`) и непустой `id` (`allHaveId: true`); все `52` триггера `DialCode` имеют `aria-haspopup="listbox"` (`allAriaHaspopup: true`); открытие меню по `Enter` и закрытие по `Escape` возвращает фокус на `<input>` поля (`focusReturnedOnEscape: true`). | — |
+| `TC-A11Y-001` | WAI-ARIA атрибуты и клавиатурная навигация (`Enter` / `Escape`) | ✅ | Все `69` инпутов имеют `inputMode="tel"` (`allTelMode: true`) и непустой `id` (`allHaveId: true`); все `63` триггера `DialCode` имеют `aria-haspopup="listbox"` (`allAriaHaspopup: true`); открытие меню по `Enter` и закрытие по `Escape` возвращает фокус на `<input>` поля (`focusReturnedOnEscape: true`). | — |
 
 ### 2.6 Логи и консоль (`LOG`)
 
@@ -70,3 +71,5 @@
 2. **Валидация `required` при голом префиксе ([InputPhoneValidation.ts](packages/constructor/src/constructors/InputPhone/InputPhoneValidation.ts))**: Переопределение `checkByInput` распознаёт нетронутый или сброшенный префикс страны (`cleanValue === valueDefault`) как пустую строку при `!countryBlock`. В `TC-BND-002` и `TC-LOG-001` оба обязательных поля (`Required Field` и `Exposed Target`) при голом префиксе `+1-` корректно возвращают `valid=false`.
 3. **Реактивный `countryDefault` ([InputPhoneData.ts](packages/constructor/src/constructors/InputPhone/InputPhoneData.ts))**: Наблюдатель `watchCountryDefaultStop` обновляет страну и префикс только пока выбрана дефолтная страна `Geo.getCountry()`, не перезаписывая введённые пользователем номера (подтверждено в `TC-INT-007`).
 4. **Игнорирование клика по заголовку группы в `DialCode` ([InputPhoneDialCode.ts](packages/constructor/src/constructors/InputPhoneDialCode/InputPhoneDialCode.ts))**: В `InputPhoneDialCode.onClick` добавлена защита от `options?.type === 'group' || isArray(options?.value)`, благодаря чему раскрытие/сворачивание группы альтернативных кодов без выбора подкода больше не перезаписывает модель массивами элементов и не приводит к пропаданию флага в кнопке (`TC-INT-009`).
+5. **Валидация неполного номера по `isFull` ([InputPhoneValidation.ts](packages/constructor/src/constructors/InputPhone/InputPhoneValidation.ts))**: При непустом значении и `!value().isFull.value` поле возвращает ошибку валидации с текстом из `TextInclude` (`textInvalidPhone`), даже если `required` не задан (`TC-BND-003`). Кэширование `mask` и `maskProps` в [InputPhoneMask.ts](packages/constructor/src/constructors/InputPhone/InputPhoneMask.ts) переведено на `computed`.
+6. **Позиционирование выбранного элемента при открытии ленивого списка ([ListFocus.ts](packages/constructor/src/constructors/List/ListFocus.ts), [List.ts](packages/constructor/src/constructors/List/List.ts))**: В `ListFocus.stepScrollVisibility` / `updateScrollVisibility` добавлена покадровая докрутка через `goScroll` в `requestAnimationFrame` с отменой по действию пользователя (`wheel`, `touchstart`, `pointerdown`), а в `List.ts` — повторная подготовка позиции при выходе из `lite` (`true -> false`). Проверка в Chrome подтвердила корректную видимость выбранного элемента при открытии для `GB` (`scrollTop: 9737`, ![MENU-SCROLL-GB](./screenshots/MENU-SCROLL-GB.png)), `VN` (`scrollTop: 10093`) и `US` (`scrollTop: 0`).

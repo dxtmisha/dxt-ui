@@ -1,6 +1,9 @@
 // Classes
+export * from './classes/CmsCreatedOriginItem'
+export * from './classes/CmsCreatedOriginManager'
 export * from './classes/CmsDbAbstract'
 export * from './classes/CmsDbInstance'
+export * from './classes/CmsDbItemAbstract'
 export * from './classes/CmsDbResolver'
 export * from './classes/CmsDbSystemStatus'
 export * from './classes/CmsDbTimestamp'
@@ -40,6 +43,7 @@ export * from './functions/seedCmsPermissions'
 export * from './functions/seedCmsRoles'
 
 // Types
+export * from './types/cmsCreatedOriginTypes'
 export * from './types/cmsDbTypes'
 export * from './types/cmsPermissionTypes'
 export * from './types/cmsRoleTypes'

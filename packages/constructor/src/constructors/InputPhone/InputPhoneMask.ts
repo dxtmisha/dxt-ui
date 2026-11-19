@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { type ConstrBind, isArray } from '@dxtmisha/functional'
 
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
@@ -51,12 +52,11 @@ export class InputPhoneMask {
   ) { }
 
   /**
-   * Gets the mask pattern for the current country.
+   * Computed mask pattern for the current country.
    *
-   * Возвращает шаблон маски для текущей страны.
-   * @returns mask pattern or array of patterns / шаблон маски или массив шаблонов
+   * Вычисляемый шаблон маски для текущей страны.
    */
-  get mask(): string | string[] {
+  readonly mask = computed<string | string[]>(() => {
     const masks = this.data().item.value?.[this.props.countryBlock ? 'mask' : 'maskFull']
 
     if (
@@ -67,16 +67,15 @@ export class InputPhoneMask {
     }
 
     return '+************'
-  }
+  })
 
   /**
-   * Gets properties for the Mask component.
+   * Computed properties for the Mask component.
    *
-   * Возвращает свойства для компонента Mask.
-   * @returns mask component properties / свойства компонента маски
+   * Вычисляемые свойства для компонента Mask.
    */
-  get maskProps(): ConstrBind<MaskPropsInclude> {
-    const mask = this.mask
+  readonly maskProps = computed<ConstrBind<MaskPropsInclude>>(() => {
+    const mask = this.mask.value
 
     return {
       modelValue: this.props.modelValue,
@@ -93,5 +92,5 @@ export class InputPhoneMask {
       maskVisible: isArray(mask) && mask.length < 2,
       maskAttrs: this.props.maskAttrs
     }
-  }
+  })
 }

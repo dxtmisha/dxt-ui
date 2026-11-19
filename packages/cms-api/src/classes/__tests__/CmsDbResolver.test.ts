@@ -1,8 +1,13 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenter, ErrorCenterError } from '@dxtmisha/functional-basic'
+import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { CmsDbResolver } from '../CmsDbResolver'
 
 describe('CmsDbResolver', () => {
+  beforeEach(() => {
+    registerCmsErrorCauses()
+  })
+
   afterEach(() => {
     ErrorCenter.reset()
     ErrorCenter.setIsConsole(true)

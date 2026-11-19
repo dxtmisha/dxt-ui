@@ -1,5 +1,6 @@
 import { anyToString, GeoPhone } from '@dxtmisha/functional'
 
+import { FieldInputCheckInclude } from '../../classes/Field/FieldInputCheckInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 
 import type { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
@@ -7,6 +8,7 @@ import type { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import type { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import type { FieldMatchInclude } from '../../classes/Field/FieldMatchInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import type { TextInclude } from '../../classes/TextInclude'
 import type { InputPhoneData } from './InputPhoneData'
 
 import type { FieldAllProps, FieldValidationItem } from '../../types/fieldTypes'
@@ -33,6 +35,7 @@ export class InputPhoneValidation extends FieldValidationInclude {
    * @param change function returning object for change state / функция, возвращающая объект для состояния изменения
    * @param code function returning object for error codes / функция, возвращающая объект для работы с кодами ошибок
    * @param match function returning object for match checking / функция, возвращающая объект для проверки совпадений
+   * @param text function returning text localization helper / функция, возвращающая помощник локализации текста
    */
   constructor(
     protected override readonly props: FieldAllProps & Pick<InputPhonePropsBasic, 'countryBlock'>,
@@ -41,7 +44,8 @@ export class InputPhoneValidation extends FieldValidationInclude {
     protected readonly data: () => InputPhoneData,
     change?: () => FieldChangeInclude,
     code?: () => FieldCodeInclude,
-    match?: () => FieldMatchInclude
+    match?: () => FieldMatchInclude,
+    protected readonly text?: () => TextInclude
   ) {
     super(
       props,
@@ -73,22 +77,65 @@ export class InputPhoneValidation extends FieldValidationInclude {
   }
 
   /**
-   * Checks the value using hidden input element, normalizing bare default country prefix to empty string.
+   * Checks the value using hidden input element, normalizing bare default country prefix to empty string
+   * and validating phone mask completeness for non-empty values.
    *
-   * Проверяет значение с помощью скрытого input, нормализуя голый префикс страны по умолчанию в пустую строку.
+   * Проверяет значение с помощью скрытого input, нормализуя голый префикс страны по умолчанию в пустую строку
+   * и проверяя полноту заполнения телефонной маски для непустых значений.
    * @param value value to check / значение для проверки
    * @returns validation item or undefined / элемент валидации или undefined
    */
   protected override checkByInput(value: unknown): FieldValidationItem | undefined {
     const cleanValue = GeoPhone.cleanPhone(anyToString(value))
 
-    if (
-      !this.props.countryBlock
-      && cleanValue === this.data().valueDefault.value
-    ) {
+    if (this.isBareDefaultPrefix(cleanValue)) {
       return super.checkByInput('')
     }
 
-    return super.checkByInput(value)
+    const nativeCheck = super.checkByInput(value)
+
+    if (
+      nativeCheck
+      && !nativeCheck.status
+    ) {
+      return nativeCheck
+    }
+
+    if (
+      cleanValue
+      && !this.value().isFull.value
+    ) {
+      return this.checkIncomplete(value)
+    }
+
+    return nativeCheck
+  }
+
+  /**
+   * Checks whether the cleaned phone value is just the bare default country dial prefix.
+   *
+   * Проверяет, является ли очищенное значение только голым префиксом страны по умолчанию.
+   * @param cleanValue digits-only phone string / строка телефона, содержащая только цифры
+   * @returns true if value equals the bare default prefix / true, если значение равно голому префиксу по умолчанию
+   */
+  protected isBareDefaultPrefix(cleanValue: string): boolean {
+    return !this.props.countryBlock
+      && cleanValue === this.data().valueDefault.value
+  }
+
+  /**
+   * Builds a failed validation result for an incomplete phone number.
+   *
+   * Формирует результат ошибки валидации для неполного номера телефона.
+   * @param value checked phone value / проверяемое значение телефона
+   * @returns validation item / элемент валидации
+   */
+  protected checkIncomplete(value: unknown): FieldValidationItem {
+    return {
+      group: FieldInputCheckInclude.getGroupDefault(),
+      status: false,
+      validationMessage: this.text?.().invalidPhone ?? '',
+      value
+    }
   }
 }

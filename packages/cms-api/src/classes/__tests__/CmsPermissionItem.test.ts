@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ErrorCenter } from '@dxtmisha/functional-basic'
+import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { CmsDbInstance } from '../CmsDbInstance'
 import { CmsPermissionItem } from '../CmsPermissionItem'
 import type { CmsDb, CmsPermission } from '../../types/cmsDbTypes'
@@ -96,6 +97,7 @@ describe('CmsPermissionItem', () => {
   let capturedErrors: Array<{ group?: string, code: string, message?: string }>
 
   beforeEach(() => {
+    registerCmsErrorCauses()
     ErrorCenter.setIsConsole(false)
     capturedErrors = []
     ErrorCenter.addCallback((cause) => {

@@ -202,4 +202,65 @@ describe('List (Integration)', () => {
     document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
     expect(onClose).toHaveBeenCalledTimes(1)
   })
+
+  it('re-scrolls to selected item when lite transitions from true to false', async () => {
+    ServerStorage.init(() => ({}))
+    const rafCallbacks: FrameRequestCallback[] = []
+    vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((callback) => {
+      rafCallbacks.push(callback)
+      return rafCallbacks.length
+    })
+    vi.spyOn(globalThis, 'cancelAnimationFrame').mockImplementation(() => {})
+
+    const listProps = shallowReactive<ListPropsBasic>({
+      control: true,
+      lite: true,
+      liteThreshold: 1,
+      selected: 'second',
+      list: [
+        { value: 'first', label: 'First' },
+        { value: 'second', label: 'Second' }
+      ]
+    })
+
+    const MockListItem = defineComponent({
+      name: 'MockListItem',
+      props: ['label', 'value', 'index', 'listId'],
+      setup(props) {
+        return () => h('div', { 'data-list-id': props.listId, 'data-value': props.index }, String(props.label))
+      }
+    })
+
+    const Host = defineComponent({
+      setup() {
+        const design = new ListDesign<ListComponents, ListExpose, ListClasses, ListPropsBasic>(
+          'd1.list',
+          shallowReadonly(listProps),
+          {
+            components: {
+              listItem: MockListItem
+            }
+          }
+        )
+        const renderList = design.render()
+        return () => h('div', { 'data-window-body': '' }, renderList())
+      }
+    })
+
+    const host = document.createElement('div')
+    document.body.appendChild(host)
+    const application = createApp(Host)
+    applications.push(application)
+    application.mount(host)
+
+    await nextTick()
+    const initialCalls = rafCallbacks.length
+    expect(initialCalls).toBeGreaterThanOrEqual(1)
+
+    listProps.lite = false
+    await nextTick()
+    await nextTick()
+
+    expect(rafCallbacks.length).toBeGreaterThan(initialCalls)
+  })
 })

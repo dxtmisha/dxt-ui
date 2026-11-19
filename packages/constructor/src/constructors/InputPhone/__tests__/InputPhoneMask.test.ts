@@ -20,11 +20,11 @@ describe('InputPhoneMask', () => {
 
     const mask = new InputPhoneMask({ countryBlock: true }, () => mockData, () => mockValue)
 
-    expect(mask.mask).toBe('+************')
-    expect(mask.maskProps.modelValue).toBeUndefined()
-    expect(mask.maskProps.value).toBe('123')
-    expect(mask.maskProps.maskVisible).toBe(false)
-    expect(mask.maskProps.mask).toMatchObject({
+    expect(mask.mask.value).toBe('+************')
+    expect(mask.maskProps.value.modelValue).toBeUndefined()
+    expect(mask.maskProps.value.value).toBe('123')
+    expect(mask.maskProps.value.maskVisible).toBe(false)
+    expect(mask.maskProps.value.mask).toMatchObject({
       mask: '+************',
       visiblePartly: true,
       groupSave: false,
@@ -55,11 +55,11 @@ describe('InputPhoneMask', () => {
       () => mockValue
     )
 
-    expect(unlockedMask.mask).toEqual(['+1 (***) ***-****', '+1 *** *** ****'])
-    expect(unlockedMask.maskProps.maskVisible).toBe(false)
-    expect(unlockedMask.maskProps.modelValue).toBe('15550001122')
-    expect(unlockedMask.maskProps.value).toBe('1')
-    expect(unlockedMask.maskProps.maskAttrs).toEqual({ clearable: true })
+    expect(unlockedMask.mask.value).toEqual(['+1 (***) ***-****', '+1 *** *** ****'])
+    expect(unlockedMask.maskProps.value.maskVisible).toBe(false)
+    expect(unlockedMask.maskProps.value.modelValue).toBe('15550001122')
+    expect(unlockedMask.maskProps.value.value).toBe('1')
+    expect(unlockedMask.maskProps.value.maskAttrs).toEqual({ clearable: true })
 
     const lockedMask = new InputPhoneMask(
       { countryBlock: true },
@@ -67,8 +67,8 @@ describe('InputPhoneMask', () => {
       () => mockValue
     )
 
-    expect(lockedMask.mask).toEqual(['(***) ***-****'])
-    expect(lockedMask.maskProps.maskVisible).toBe(true)
+    expect(lockedMask.mask.value).toEqual(['(***) ***-****'])
+    expect(lockedMask.maskProps.value.maskVisible).toBe(true)
   })
 
   it('should fall back to "+************" when country mask array is empty', () => {
@@ -89,7 +89,7 @@ describe('InputPhoneMask', () => {
     } as unknown as FieldValueInclude<string>
 
     const mask = new InputPhoneMask({}, () => mockData, () => mockValue)
-    expect(mask.mask).toBe('+************')
-    expect(mask.maskProps.value).toBe('')
+    expect(mask.mask.value).toBe('+************')
+    expect(mask.maskProps.value.value).toBe('')
   })
 })

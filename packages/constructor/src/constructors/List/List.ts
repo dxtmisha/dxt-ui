@@ -74,6 +74,9 @@ export class List extends DesignLogicAbstract<
   /** Stop handle for the search highlight watcher / Функция остановки наблюдателя подсветки поиска */
   protected stopSearchWatch?: WatchStopHandle
 
+  /** Stop handle for the lite mode transition watcher / Функция остановки наблюдателя выхода из режима lite */
+  protected stopLiteWatch?: WatchStopHandle
+
   /** Whether the component has been unmounted / Был ли компонент размонтирован */
   protected isDestroyed = false
 
@@ -207,6 +210,19 @@ export class List extends DesignLogicAbstract<
       }
     )
 
+    this.stopLiteWatch = watch(
+      () => this.props.lite,
+      async (lite, oldLite) => {
+        if (oldLite && !lite && this.props.control) {
+          await nextTick()
+
+          if (!this.isDestroyed) {
+            this.i('go').preparationBySelected()
+          }
+        }
+      }
+    )
+
     if (this.props.control) {
       await nextTick()
 
@@ -221,6 +237,8 @@ export class List extends DesignLogicAbstract<
     this.isDestroyed = true
     this.stopSearchWatch?.()
     this.stopSearchWatch = undefined
+    this.stopLiteWatch?.()
+    this.stopLiteWatch = undefined
   }
 
   /**

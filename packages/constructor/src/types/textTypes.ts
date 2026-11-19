@@ -23,6 +23,7 @@ export type TextIndex = 'actions'
   | 'hide'
   | 'increment'
   | 'info'
+  | 'invalidPhone'
   | 'last'
   | 'loading'
   | 'loadingFile'
@@ -173,6 +174,12 @@ export type TextInfoPropsInclude = {
   textInfo?: TextValue
 }
 
+/** Interface for including invalid phone text/ Интерфейс для включения текста некорректного телефона */
+export type TextInvalidPhonePropsInclude = {
+  /** Invalid phone text/ Текст некорректного телефона */
+  textInvalidPhone?: TextValue
+}
+
 /** Interface for including last text/ Интерфейс для включения текста последней страницы */
 export type TextLastPropsInclude = {
   /** Last text/ Текст последней страницы */
@@ -309,6 +316,7 @@ export type TextAllPropsInclude = TextActionsPropsInclude
   & TextHidePropsInclude
   & TextIncrementPropsInclude
   & TextInfoPropsInclude
+  & TextInvalidPhonePropsInclude
   & TextLastPropsInclude
   & TextLoadingPropsInclude
   & TextLoadingFilePropsInclude

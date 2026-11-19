@@ -127,5 +127,94 @@ describe('ListFocus', () => {
 
       vi.advanceTimersByTime(5000)
     })
+
+    it('re-scrolls across animation frames when lazy item expansion pushes target outside container', () => {
+      vi.useFakeTimers()
+
+      const container = document.createElement('div')
+      container.setAttribute('data-window-body', '')
+      Object.defineProperty(container, 'clientHeight', { value: 200, configurable: true })
+
+      let currentScrollHeight = 1000
+      Object.defineProperty(container, 'scrollHeight', {
+        get: () => currentScrollHeight,
+        configurable: true
+      })
+
+      let scrollTopValue = 0
+      Object.defineProperty(container, 'scrollTop', {
+        get: () => scrollTopValue,
+        set: (value: number) => {
+          scrollTopValue = value
+        },
+        configurable: true
+      })
+
+      const itemNode = document.createElement('div')
+      itemNode.setAttribute('data-list-id', '99')
+      itemNode.setAttribute('data-value', 'target')
+      container.appendChild(itemNode)
+      document.body.appendChild(container)
+
+      let itemOffsetFromScroll = 400
+      vi.spyOn(container, 'getBoundingClientRect').mockImplementation(() => ({
+        top: 0,
+        bottom: 200,
+        height: 200,
+        left: 0,
+        right: 100,
+        width: 100,
+        x: 0,
+        y: 0,
+        toJSON: () => {}
+      }))
+      vi.spyOn(itemNode, 'getBoundingClientRect').mockImplementation(() => {
+        const top = itemOffsetFromScroll - scrollTopValue
+        return {
+          top,
+          bottom: top + 40,
+          height: 40,
+          left: 0,
+          right: 100,
+          width: 100,
+          x: 0,
+          y: top,
+          toJSON: () => {}
+        }
+      })
+
+      const focus = new ListFocus({ control: true }, ref(container), 99)
+      focus.toElementSelected('target')
+      expect(scrollTopValue).toBe(240)
+
+      // Lazy items above target expand (+120px) on the next frame, pushing target outside container
+      currentScrollHeight = 1120
+      itemOffsetFromScroll = 520
+      vi.advanceTimersByTime(16)
+
+      expect(scrollTopValue).toBe(360)
+
+      vi.advanceTimersByTime(100)
+      focus.onUnmounted()
+    })
+
+    it('cancels scroll stabilization immediately upon user wheel interaction', () => {
+      const cancelSpy = vi.spyOn(globalThis, 'cancelAnimationFrame')
+      vi.spyOn(globalThis, 'requestAnimationFrame').mockReturnValue(777)
+
+      const container = document.createElement('div')
+      container.setAttribute('data-window-body', '')
+      const itemNode = document.createElement('div')
+      itemNode.setAttribute('data-list-id', '88')
+      itemNode.setAttribute('data-value', 'opt')
+      container.appendChild(itemNode)
+      document.body.appendChild(container)
+
+      const focus = new ListFocus({ control: true }, ref(container), 88)
+      focus.toElementSelected('opt')
+
+      container.dispatchEvent(new Event('wheel'))
+      expect(cancelSpy).toHaveBeenCalledWith(777)
+    })
   })
 })

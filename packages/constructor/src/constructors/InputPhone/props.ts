@@ -10,6 +10,7 @@ import type { MaskPropsBasic } from '../Mask'
 import type { ProgressPropsBasic } from '../Progress'
 
 import type { FieldInputPhoneProps } from '../../types/fieldTypes'
+import type { TextInvalidPhonePropsInclude } from '../../types/textTypes'
 
 /**
  * Type describing token properties for InputPhone.
@@ -38,6 +39,7 @@ export type InputPhonePropsBasic<
 > = InputPhoneDialCodePropsInclude<InputPhoneDialCode>
   & Omit<FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>, 'caption' | 'counterShow'>
   & FieldInputPhoneProps
+  & TextInvalidPhonePropsInclude
   & {
     /** Default country / Страна по умолчанию */
     countryDefault?: string

@@ -1,6 +1,5 @@
 import { ErrorCenterThrow } from '@dxtmisha/functional-basic'
 import { createCmsDb } from '../functions/createCmsDb'
-import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
 import type { CmsDb } from '../types/cmsDbTypes'
 
 /**
@@ -55,7 +54,6 @@ export class CmsDbInstance {
   get(): CmsDb {
     if (!this.instance) {
       if (!this.connectionString) {
-        registerCmsErrorCauses()
         return ErrorCenterThrow.on({
           group: 'cms-db',
           code: 'connection'

@@ -8,6 +8,7 @@ import { FieldAttributesInclude } from '../../../classes/Field/FieldAttributesIn
 import { FieldChangeInclude } from '../../../classes/Field/FieldChangeInclude'
 import { FieldCodeInclude } from '../../../classes/Field/FieldCodeInclude'
 import { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
+import { TextInclude } from '../../../classes/TextInclude'
 
 import type { InputPhoneData } from '../InputPhoneData'
 import { InputPhoneValidation } from '../InputPhoneValidation'
@@ -44,6 +45,7 @@ async function createValidation(
       const attributesInclude = new FieldAttributesInclude(reactiveProps as FieldAllProps)
       changeInclude = new FieldChangeInclude(reactiveProps)
       const codeInclude = new FieldCodeInclude(reactiveProps as FieldAllProps)
+      const textInclude = new TextInclude(reactiveProps)
       const mockData = {
         valueDefault: valueDefaultRef,
         item: itemRef
@@ -55,7 +57,9 @@ async function createValidation(
         () => valueInclude,
         () => mockData,
         () => changeInclude,
-        () => codeInclude
+        () => codeInclude,
+        undefined,
+        () => textInclude
       )
 
       return () => h('div')
@@ -202,5 +206,47 @@ describe('InputPhoneValidation', () => {
 
     valueInclude.set('4930123456')
     expect(validation.checkValidity()).toBe(true)
+  })
+
+  it('should fail validation on incomplete phone number even when required is false and pass when complete', async () => {
+    const { validation, valueInclude, changeInclude } = await createValidation(
+      {
+        required: false,
+        textInvalidPhone: 'Phone number is incomplete'
+      },
+      '7',
+      '7'
+    )
+
+    expect(validation.checkValidity()).toBe(true)
+
+    valueInclude.set('+7-900-12')
+    valueInclude.setFull(false)
+    changeInclude.to()
+
+    expect(validation.checkValidity()).toBe(false)
+    expect(validation.isError()).toBe(true)
+    expect(validation.message).toBe('Phone number is incomplete')
+
+    valueInclude.set('+7-900-123-45-67')
+    valueInclude.setFull(true)
+
+    expect(validation.checkValidity()).toBe(true)
+    expect(validation.isError()).toBe(false)
+    expect(validation.message).toBe('')
+  })
+
+  it('should fall back to default invalidPhone message when validationCode is not provided', async () => {
+    const { validation, valueInclude, changeInclude } = await createValidation(
+      { required: true },
+      '+7-900-12',
+      '7'
+    )
+
+    valueInclude.setFull(false)
+    changeInclude.to()
+
+    expect(validation.checkValidity()).toBe(false)
+    expect(validation.message).toBe('Please enter a valid phone number')
   })
 })

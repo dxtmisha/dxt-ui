@@ -16,11 +16,10 @@ import {
 } from '@dxtmisha/functional-basic'
 
 import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
-import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { users } from '../media/schema/users'
-import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsDbItemAbstract } from './CmsDbItemAbstract'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import { CmsRoleItem } from './CmsRoleItem'
 import type { CmsDbInstance } from './CmsDbInstance'
@@ -50,7 +49,7 @@ const { passwordHash: _passwordHash, ...USER_PUBLIC_COLUMNS } = /* #__PURE__ */ 
  *
  * Представляет конкретного пользователя CMS и предоставляет методы для чтения полей, редактирования, управления ролями и правами доступа, удаления и восстановления.
  */
-export class CmsUserItem extends CmsDbAbstract<typeof users> {
+export class CmsUserItem extends CmsDbItemAbstract<typeof users, CmsUserWithRoles> {
   /**
    * Initializes a user entity wrapper with user data and database instance manager.
    *
@@ -59,10 +58,10 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
    */
   constructor(
-    protected data: CmsUserWithRoles,
+    data: CmsUserWithRoles,
     databaseInstance?: CmsDbInstance
   ) {
-    super(users, databaseInstance)
+    super(users, data, 'cms-user', databaseInstance)
   }
 
   /**
@@ -152,24 +151,14 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
   }
 
   /**
-   * Returns the user identifier.
-   *
-   * Возвращает идентификатор пользователя.
-   * @returns User identifier / Идентификатор пользователя
-   */
-  getId(): number {
-    return this.data.id
-  }
-
-  /**
    * Returns a cloned snapshot of the user record with roles and their permissions.
    *
    * Возвращает копию данных пользователя вместе с ролями и их правами доступа.
    * @returns User data with roles and permissions / Данные пользователя с ролями и правами доступа
    */
-  getData(): CmsUserWithRoles {
+  override getData(): CmsUserWithRoles {
     return {
-      ...this.data,
+      ...super.getData(),
       metadata: { ...this.data.metadata },
       roles: this.cloneRoles(this.data.roles)
     }
@@ -456,10 +445,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         )
         const updatedRows = await transaction
           .update(users)
-          .set({
-            ...updateValues,
-            updatedAt: new Date()
-          })
+          .set(this.getUpdateValues(updateValues))
           .where(eq(users.id, userId))
           .returning(USER_PUBLIC_COLUMNS)
 
@@ -489,13 +475,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-user',
-          code: 'update'
-        },
-        error
-      )
+      return this.handleError('update', error)
     }
   }
 
@@ -506,7 +486,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * @param options Deletion options / Параметры удаления
    * @returns True if deleted / True, если пользователь был удалён
    */
-  async delete(options: CmsUserDeleteOptions = {}): Promise<boolean> {
+  override async delete(options: CmsUserDeleteOptions = {}): Promise<boolean> {
     const userId = this.data.id
     if (!isPositiveInteger(userId)) {
       return false
@@ -516,7 +496,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
     try {
       if (options.hard) {
-        return await this.deleteRecordById(userId)
+        return await super.delete()
       }
 
       return await database.transaction(async (transaction) => {
@@ -557,13 +537,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
         return true
       })
     } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-user',
-          code: 'delete'
-        },
-        error
-      )
+      return this.handleError('delete', error)
     }
   }
 
@@ -574,21 +548,13 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
    * @param includeDeleted Include soft-deleted state / Учитывать ли мягко удалённую запись
    * @returns Reloaded user item or undefined if missing / Обновлённый экземпляр пользователя или undefined, если не найден
    */
-  async reload(includeDeleted: boolean = false): Promise<this | undefined> {
+  override async reload(includeDeleted: boolean = false): Promise<this | undefined> {
     const userId = this.data.id
     if (!isPositiveInteger(userId)) {
       return undefined
     }
 
-    const conditions: SQL[] = [eq(users.id, userId)]
-    if (!includeDeleted) {
-      conditions.push(CmsUserItem.getNotDeletedCondition())
-    }
-
-    const foundRecord = await CmsUserItem.findOneWithRoles(
-      this.databaseInstance.get(),
-      and(...conditions)
-    )
+    const foundRecord = await this.fetchById(userId, includeDeleted)
 
     if (!foundRecord) {
       return undefined
@@ -655,24 +621,31 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       this.data = restoredRecord
       return this
     } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-user',
-          code: 'restore'
-        },
-        error
-      )
+      return this.handleError('restore', error)
     }
   }
 
   /**
-   * Returns a plain JSON-serializable snapshot of the user record.
+   * Loads the latest user snapshot together with assigned roles and permissions by ID.
    *
-   * Возвращает обычный объект данных пользователя для сериализации в JSON.
-   * @returns User record with roles and permissions / Запись пользователя с ролями и правами доступа
+   * Загружает актуальное состояние пользователя вместе с назначенными ролями и правами доступа по ID.
+   * @param id User identifier / Идентификатор пользователя
+   * @param includeDeleted Include soft-deleted state / Учитывать ли мягко удалённую запись
+   * @returns User record with roles or undefined / Запись пользователя с ролями или undefined
    */
-  toJSON(): CmsUserWithRoles {
-    return this.getData()
+  protected override async fetchById(
+    id: number,
+    includeDeleted: boolean = false
+  ): Promise<CmsUserWithRoles | undefined> {
+    const conditions: SQL[] = [eq(users.id, id)]
+    if (!includeDeleted) {
+      conditions.push(CmsUserItem.getNotDeletedCondition())
+    }
+
+    return CmsUserItem.findOneWithRoles(
+      this.databaseInstance.get(),
+      and(...conditions)
+    )
   }
 
   /**
@@ -711,13 +684,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-user',
-          code: errorCode
-        },
-        error
-      )
+      return this.handleError(errorCode, error)
     }
   }
 
@@ -765,13 +732,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-user',
-          code: errorCode
-        },
-        error
-      )
+      return this.handleError(errorCode, error)
     }
   }
 
@@ -841,13 +802,7 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
 
       return this.cloneRoles(rolesList)
     } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-user',
-          code: errorCode
-        },
-        error
-      )
+      return this.handleError(errorCode, error)
     }
   }
 
@@ -1049,7 +1004,6 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     userId: number
   ): Promise<void> {
     if (!isPositiveInteger(userId)) {
-      registerCmsErrorCauses()
       ErrorCenterThrow.on({
         group: 'cms-user',
         code: 'notFound',
@@ -1064,7 +1018,6 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      registerCmsErrorCauses()
       ErrorCenterThrow.on({
         group: 'cms-user',
         code: 'notFound',
@@ -1122,7 +1075,6 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
       || emailParts[1].length === 0
       || /\s/.test(normalized)
     ) {
-      registerCmsErrorCauses()
       ErrorCenterThrow.on({
         group: 'cms-user',
         code: 'invalidEmail',
@@ -1146,7 +1098,6 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     const normalized = isString(firstName) ? firstName.trim() : ''
 
     if (normalized.length === 0) {
-      registerCmsErrorCauses()
       ErrorCenterThrow.on({
         group: 'cms-user',
         code: 'invalidFirstName',
@@ -1176,7 +1127,6 @@ export class CmsUserItem extends CmsDbAbstract<typeof users> {
     }
 
     if (!Number.isSafeInteger(phone) || phone <= 0) {
-      registerCmsErrorCauses()
       ErrorCenterThrow.on({
         group: 'cms-user',
         code: 'invalidPhone',

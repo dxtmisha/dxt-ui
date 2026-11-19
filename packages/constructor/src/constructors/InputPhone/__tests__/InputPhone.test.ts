@@ -618,6 +618,38 @@ describe('InputPhone (Integration)', () => {
     expect(exposed.getValidationMessage()).toBe('Phone is required')
   })
 
+  it('should fail validation on partial phone input and show error after blur', async () => {
+    const { container, exposed } = await mountInputPhone({
+      countryDefault: 'RU',
+      required: true,
+      textInvalidPhone: 'Enter full phone number',
+      validationCode: {
+        valueMissing: 'Phone is required'
+      }
+    })
+
+    const input = container.querySelector('.d1-mask input') as HTMLInputElement
+    input.value = '+7-900-12'
+    input.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertReplacementText', data: '+7-900-12' }))
+    await nextTick()
+
+    expect(exposed.checkValidity()).toBe(false)
+
+    input.dispatchEvent(new FocusEvent('blur'))
+    await nextTick()
+
+    expect(exposed.getValidationMessage()).toBe('Enter full phone number')
+    expect(container.querySelector('.d1-field')?.classList.contains('d1-field--validation')).toBe(true)
+
+    input.value = '+7-900-123-45-67'
+    input.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertReplacementText', data: '+7-900-123-45-67' }))
+    await nextTick()
+
+    expect(exposed.checkValidity()).toBe(true)
+    expect(exposed.getValidationMessage()).toBe('')
+    expect(container.querySelector('.d1-field')?.classList.contains('d1-field--validation')).toBe(false)
+  })
+
   describe('Paste handling', () => {
     const dispatchPaste = (
       input: HTMLInputElement,

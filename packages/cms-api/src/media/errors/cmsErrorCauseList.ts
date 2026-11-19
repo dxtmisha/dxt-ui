@@ -1,4 +1,5 @@
 import type { ErrorCenterCauseList } from '@dxtmisha/functional-basic'
+import { cmsCreatedOriginErrorCauseList } from './cmsCreatedOriginErrorCauseList'
 import { cmsDbErrorCauseList } from './cmsDbErrorCauseList'
 import { cmsPermissionErrorCauseList } from './cmsPermissionErrorCauseList'
 import { cmsRoleErrorCauseList } from './cmsRoleErrorCauseList'
@@ -11,6 +12,7 @@ import { cmsVerificationErrorCauseList } from './cmsVerificationErrorCauseList'
  * Главный список стандартных описаний причин ошибок для операций CMS API.
  */
 export const cmsErrorCauseList: ErrorCenterCauseList = [
+  ...cmsCreatedOriginErrorCauseList,
   ...cmsDbErrorCauseList,
   ...cmsPermissionErrorCauseList,
   ...cmsRoleErrorCauseList,

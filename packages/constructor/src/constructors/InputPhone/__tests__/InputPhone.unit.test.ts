@@ -133,7 +133,7 @@ describe('InputPhone (unit)', () => {
       expect(instance.hasInstance('phoneMask')).toBe(false)
 
       const phoneMask = instance.i('phoneMask')
-      expect(phoneMask.maskProps.value).toBe('79001234567')
+      expect(phoneMask.maskProps.value.value).toBe('79001234567')
       expect(instance.hasInstance('phoneMask')).toBe(true)
     })
   })

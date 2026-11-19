@@ -14,6 +14,7 @@ import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
 import { FieldInclude } from '../Field'
 import { InputPhoneDialCodeInclude } from '../InputPhoneDialCode'
@@ -56,6 +57,8 @@ export type InputPhoneConstructors = {
   paste: typeof InputPhonePaste
   /** Input phone mask constructor / Конструктор маски ввода телефона */
   phoneMask: typeof InputPhoneMask
+  /** Text localization constructor / Конструктор локализации текста */
+  text: typeof TextInclude
   /** Field validation constructor / Конструктор валидации поля */
   validation: typeof InputPhoneValidation
   /** Field value constructor / Конструктор значения поля */
@@ -164,7 +167,7 @@ export class InputPhone extends DesignLogicAbstract<
     mask: {
       item: MaskInclude,
       parameters: () => [
-        () => this.i('phoneMask').maskProps,
+        () => this.i('phoneMask').maskProps.value,
         this.naming,
         this.components,
         undefined,
@@ -191,6 +194,10 @@ export class InputPhone extends DesignLogicAbstract<
         () => this.i('value')
       ]
     },
+    text: {
+      item: TextInclude,
+      parameters: () => [this.props]
+    },
     validation: {
       item: InputPhoneValidation,
       parameters: () => [
@@ -199,7 +206,9 @@ export class InputPhone extends DesignLogicAbstract<
         () => this.i('value'),
         () => this.i('data'),
         () => this.i('change'),
-        () => this.i('code')
+        () => this.i('code'),
+        undefined,
+        () => this.i('text')
       ]
     },
     value: {

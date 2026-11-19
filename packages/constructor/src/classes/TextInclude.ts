@@ -160,6 +160,11 @@ export class TextInclude {
     return this.get('textInfo')
   }
 
+  /** Invalid phone text / Текст некорректного телефона */
+  get invalidPhone(): string | undefined {
+    return this.get('textInvalidPhone')
+  }
+
   /** Last page text / Текст последней страницы */
   get last(): string | undefined {
     return this.get('textLast')

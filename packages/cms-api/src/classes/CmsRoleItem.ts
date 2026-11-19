@@ -13,12 +13,11 @@ import {
 } from '@dxtmisha/functional-basic'
 
 import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
-import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
-import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsDbItemAbstract } from './CmsDbItemAbstract'
 import { CmsDbResolver } from './CmsDbResolver'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import type { CmsDbInstance } from './CmsDbInstance'
@@ -38,7 +37,7 @@ import type {
  *
  * Представляет конкретную роль CMS и предоставляет методы для чтения полей, редактирования, управления правами доступа, перезагрузки и удаления.
  */
-export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
+export class CmsRoleItem extends CmsDbItemAbstract<typeof roles, CmsRoleWithPermissions> {
   /**
    * Initializes a role entity wrapper with role data and database instance manager.
    *
@@ -47,10 +46,10 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
    */
   constructor(
-    protected data: CmsRoleWithPermissions,
+    data: CmsRoleWithPermissions,
     databaseInstance?: CmsDbInstance
   ) {
-    super(roles, databaseInstance)
+    super(roles, data, 'cms-role', databaseInstance)
   }
 
   /**
@@ -98,24 +97,14 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
   }
 
   /**
-   * Returns the role identifier.
-   *
-   * Возвращает идентификатор роли.
-   * @returns Role identifier / Идентификатор роли
-   */
-  getId(): number {
-    return this.data.id
-  }
-
-  /**
    * Returns a cloned snapshot of the role record with permissions.
    *
    * Возвращает копию данных роли вместе с правами доступа.
    * @returns Role data with permissions / Данные роли с правами доступа
    */
-  getData(): CmsRoleWithPermissions {
+  override getData(): CmsRoleWithPermissions {
     return {
-      ...this.data,
+      ...super.getData(),
       permissions: [...this.data.permissions]
     }
   }
@@ -158,26 +147,6 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
    */
   getCreatedOrigin(): string | null {
     return this.data.createdOrigin
-  }
-
-  /**
-   * Returns the role creation timestamp.
-   *
-   * Возвращает дату создания роли.
-   * @returns Creation date / Дата создания
-   */
-  getCreatedAt(): Date {
-    return this.data.createdAt
-  }
-
-  /**
-   * Returns the role last update timestamp.
-   *
-   * Возвращает дату последнего обновления роли.
-   * @returns Last update date / Дата последнего обновления
-   */
-  getUpdatedAt(): Date {
-    return this.data.updatedAt
   }
 
   /**
@@ -298,10 +267,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
         const updatedRows = await transaction
           .update(roles)
-          .set({
-            ...updateValues,
-            updatedAt: new Date()
-          })
+          .set(this.getUpdateValues(updateValues))
           .where(eq(roles.id, roleId))
           .returning()
 
@@ -331,74 +297,22 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       this.data = updatedRecord
       return this
     } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-role',
-          code: 'update'
-        },
-        error
-      )
+      return this.handleError('update', error)
     }
   }
 
   /**
-   * Permanently deletes this role from the database (cascading user and permission links).
+   * Loads the latest role snapshot together with its assigned permissions by ID.
    *
-   * Безвозвратно удаляет эту роль из базы данных (каскадно удаляя связи с пользователями и правами).
-   * @returns True if deleted / True, если роль была удалена
+   * Загружает актуальное состояние роли вместе с назначенными правами доступа по ID.
+   * @param id Role identifier / Идентификатор роли
+   * @returns Role record with permissions or undefined / Запись роли с правами доступа или undefined
    */
-  async delete(): Promise<boolean> {
-    const roleId = this.data.id
-    if (!isPositiveInteger(roleId)) {
-      return false
-    }
-
-    try {
-      return await this.deleteRecordById(roleId)
-    } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-role',
-          code: 'delete'
-        },
-        error
-      )
-    }
-  }
-
-  /**
-   * Reloads this role's data and assigned permissions from the database.
-   *
-   * Перезагружает данные и назначенные права доступа этой роли из базы данных.
-   * @returns Reloaded role item or undefined if missing / Обновлённый экземпляр роли или undefined, если не найдена
-   */
-  async reload(): Promise<this | undefined> {
-    const roleId = this.data.id
-    if (!isPositiveInteger(roleId)) {
-      return undefined
-    }
-
-    const foundRecord = await CmsRoleItem.findOneWithPermissions(
+  protected override async fetchById(id: number): Promise<CmsRoleWithPermissions | undefined> {
+    return CmsRoleItem.findOneWithPermissions(
       this.databaseInstance.get(),
-      eq(roles.id, roleId)
+      eq(roles.id, id)
     )
-
-    if (!foundRecord) {
-      return undefined
-    }
-
-    this.data = foundRecord
-    return this
-  }
-
-  /**
-   * Returns a plain JSON-serializable snapshot of the role record.
-   *
-   * Возвращает обычный объект данных роли для сериализации в JSON.
-   * @returns Role record with permissions / Запись роли с правами доступа
-   */
-  toJSON(): CmsRoleWithPermissions {
-    return this.getData()
   }
 
   /**
@@ -437,13 +351,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-role',
-          code: errorCode
-        },
-        error
-      )
+      return this.handleError(errorCode, error)
     }
   }
 
@@ -491,13 +399,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-role',
-          code: errorCode
-        },
-        error
-      )
+      return this.handleError(errorCode, error)
     }
   }
 
@@ -567,13 +469,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
 
       return [...permissionsList]
     } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-role',
-          code: errorCode
-        },
-        error
-      )
+      return this.handleError(errorCode, error)
     }
   }
 
@@ -712,7 +608,6 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     roleId: number
   ): Promise<void> {
     if (!isPositiveInteger(roleId)) {
-      registerCmsErrorCauses()
       ErrorCenterThrow.on({
         group: 'cms-role',
         code: 'notFound',
@@ -727,7 +622,6 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
       .limit(1)
 
     if (foundRows.length === 0) {
-      registerCmsErrorCauses()
       ErrorCenterThrow.on({
         group: 'cms-role',
         code: 'notFound',
@@ -901,18 +795,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
   static normalizeCode(
     code: string
   ): string {
-    const normalized = isString(code) ? code.trim() : ''
-
-    if (normalized.length === 0 || /\s/.test(normalized)) {
-      registerCmsErrorCauses()
-      ErrorCenterThrow.on({
-        group: 'cms-role',
-        code: 'invalidCode',
-        details: { code }
-      })
-    }
-
-    return normalized
+    return CmsDbItemAbstract.normalizeCodeValue('cms-role', code)
   }
 
   /**
@@ -925,17 +808,6 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
   static normalizeName(
     name: string
   ): string {
-    const normalized = isString(name) ? name.trim() : ''
-
-    if (normalized.length === 0) {
-      registerCmsErrorCauses()
-      ErrorCenterThrow.on({
-        group: 'cms-role',
-        code: 'invalidName',
-        details: { name }
-      })
-    }
-
-    return normalized
+    return CmsDbItemAbstract.normalizeNameValue('cms-role', name)
   }
 }

@@ -4,8 +4,6 @@ import {
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
-import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
-
 /**
  * Static utility class for validating, resolving, and verifying CMS entity identifiers by IDs and unique codes.
  *
@@ -35,7 +33,6 @@ export class CmsDbResolver {
     const uniqueIds = uniqueArray(ids)
     for (const entityId of uniqueIds) {
       if (!isPositiveInteger(entityId)) {
-        registerCmsErrorCauses()
         ErrorCenterThrow.on({
           group: errorGroup,
           code: errorCode,
@@ -50,16 +47,13 @@ export class CmsDbResolver {
 
     const persistedByIds = await fetchByIds(uniqueIds)
     const foundIdSet = new Set(persistedByIds.map(record => record.id))
-    const missingIds = uniqueIds.filter(entityId => !foundIdSet.has(entityId))
 
-    if (missingIds.length > 0) {
-      registerCmsErrorCauses()
-      ErrorCenterThrow.on({
-        group: errorGroup,
-        code: errorCode,
-        details: { missingIds }
-      })
-    }
+    this.verifyFound(
+      errorGroup,
+      errorCode,
+      uniqueIds,
+      entityId => foundIdSet.has(entityId)
+    )
 
     return uniqueIds
   }
@@ -96,16 +90,13 @@ export class CmsDbResolver {
 
     const persistedByCodes = await fetchByCodes(uniqueCodes)
     const idByCode = new Map(persistedByCodes.map(record => [record.code, record.id]))
-    const missingCodes = uniqueCodes.filter(code => !idByCode.has(code))
 
-    if (missingCodes.length > 0) {
-      registerCmsErrorCauses()
-      ErrorCenterThrow.on({
-        group: errorGroup,
-        code: errorCode,
-        details: { missingCodes }
-      })
-    }
+    this.verifyFound(
+      errorGroup,
+      errorCode,
+      uniqueCodes,
+      code => idByCode.has(code)
+    )
 
     const resolvedIds: number[] = []
     for (const code of uniqueCodes) {
@@ -116,5 +107,30 @@ export class CmsDbResolver {
     }
 
     return uniqueArray(resolvedIds)
+  }
+
+  /**
+   * Checks that all expected items exist in persisted records and throws an error via ErrorCenterThrow otherwise.
+   *
+   * Проверяет наличие всех ожидаемых элементов среди сохранённых записей и при отсутствии выбрасывает ошибку через ErrorCenterThrow.
+   * @param errorGroup Error group / Группа ошибки
+   * @param errorCode Error code / Код ошибки
+   * @param expectedItems List of expected identifiers or codes / Список ожидаемых идентификаторов или кодов
+   * @param isFound Predicate checking whether an expected item exists / Предикат проверки наличия ожидаемого элемента
+   */
+  protected static verifyFound<T>(
+    errorGroup: string,
+    errorCode: string,
+    expectedItems: readonly T[],
+    isFound: (item: T) => boolean
+  ): void {
+    const hasMissing = expectedItems.some(item => !isFound(item))
+
+    if (hasMissing) {
+      ErrorCenterThrow.on({
+        group: errorGroup,
+        code: errorCode
+      })
+    }
   }
 }

@@ -30,6 +30,7 @@ describe('TextIncludeInstance', () => {
       ['hide', 'Hide'],
       ['increment', 'Increase'],
       ['info', '[item] of [count]'],
+      ['invalidPhone', 'Please enter a valid phone number'],
       ['last', 'Last'],
       ['loading', 'Loading'],
       ['loadingFile', 'Uploading your file'],

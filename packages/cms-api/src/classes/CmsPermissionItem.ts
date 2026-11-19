@@ -5,17 +5,14 @@ import {
   type SQL
 } from 'drizzle-orm'
 import {
-  ErrorCenterThrow,
   isPositiveInteger,
-  isString,
   uniqueArray
 } from '@dxtmisha/functional-basic'
 
 import { normalizeCmsOptionalText } from '../functions/normalizeCmsOptionalText'
-import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
-import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsDbItemAbstract } from './CmsDbItemAbstract'
 import { CmsDbResolver } from './CmsDbResolver'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
@@ -29,11 +26,11 @@ import type {
 } from '../types/cmsPermissionTypes'
 
 /**
- * Represents a single CMS permission entity and provides instance-level methods for reading, editing, reloading, and deletion.
+ * Represents a single CMS permission entity and provides instance-level methods for reading and editing.
  *
- * Представляет конкретное право доступа CMS и предоставляет методы для чтения полей, редактирования, перезагрузки и удаления.
+ * Представляет конкретное право доступа CMS и предоставляет методы для чтения и редактирования полей.
  */
-export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
+export class CmsPermissionItem extends CmsDbItemAbstract<typeof permissions, CmsPermission> {
   /**
    * Initializes a permission entity wrapper with permission data and database instance manager.
    *
@@ -42,30 +39,10 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    * @param databaseInstance CMS database instance manager / Менеджер экземпляра базы данных CMS
    */
   constructor(
-    protected data: CmsPermission,
+    data: CmsPermission,
     databaseInstance?: CmsDbInstance
   ) {
-    super(permissions, databaseInstance)
-  }
-
-  /**
-   * Returns the permission identifier.
-   *
-   * Возвращает идентификатор права доступа.
-   * @returns Permission identifier / Идентификатор права доступа
-   */
-  getId(): number {
-    return this.data.id
-  }
-
-  /**
-   * Returns a cloned snapshot of the permission record.
-   *
-   * Возвращает копию записи права доступа.
-   * @returns Permission record / Запись права доступа
-   */
-  getData(): CmsPermission {
-    return { ...this.data }
+    super(permissions, data, 'cms-permission', databaseInstance)
   }
 
   /**
@@ -109,26 +86,6 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
   }
 
   /**
-   * Returns the permission creation timestamp.
-   *
-   * Возвращает дату создания права доступа.
-   * @returns Creation date / Дата создания
-   */
-  getCreatedAt(): Date {
-    return this.data.createdAt
-  }
-
-  /**
-   * Returns the permission last update timestamp.
-   *
-   * Возвращает дату последнего обновления права доступа.
-   * @returns Last update date / Дата последнего обновления
-   */
-  getUpdatedAt(): Date {
-    return this.data.updatedAt
-  }
-
-  /**
    * Updates this permission's fields in the database.
    *
    * Обновляет поля этого права доступа в базе данных.
@@ -136,99 +93,11 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
    * @returns Updated permission item or undefined if not found / Обновлённый экземпляр права доступа или undefined, если не найден
    */
   async update(input: CmsPermissionUpdateInput): Promise<this | undefined> {
-    const permissionId = this.data.id
-    if (!isPositiveInteger(permissionId)) {
+    if (!isPositiveInteger(this.data.id)) {
       return undefined
     }
 
-    const updateValues = CmsPermissionItem.buildUpdateValues(input)
-
-    try {
-      const updatedRows = await this.databaseInstance.get()
-        .update(permissions)
-        .set({
-          ...updateValues,
-          updatedAt: new Date()
-        })
-        .where(eq(permissions.id, permissionId))
-        .returning()
-
-      const updatedRecord = updatedRows[0]
-      if (!updatedRecord) {
-        return undefined
-      }
-
-      this.data = updatedRecord
-      return this
-    } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-permission',
-          code: 'update'
-        },
-        error
-      )
-    }
-  }
-
-  /**
-   * Permanently deletes this permission from the database (cascading role permission links).
-   *
-   * Безвозвратно удаляет это право доступа из базы данных (каскадно удаляя связи с ролями).
-   * @returns True if deleted / True, если право доступа было удалено
-   */
-  async delete(): Promise<boolean> {
-    const permissionId = this.data.id
-    if (!isPositiveInteger(permissionId)) {
-      return false
-    }
-
-    try {
-      return await this.deleteRecordById(permissionId)
-    } catch (error) {
-      return ErrorCenterThrow.handle(
-        {
-          group: 'cms-permission',
-          code: 'delete'
-        },
-        error
-      )
-    }
-  }
-
-  /**
-   * Reloads this permission's data from the database.
-   *
-   * Перезагружает данные этого права доступа из базы данных.
-   * @returns Reloaded permission item or undefined if missing / Обновлённый экземпляр права доступа или undefined, если не найден
-   */
-  async reload(): Promise<this | undefined> {
-    const permissionId = this.data.id
-    if (!isPositiveInteger(permissionId)) {
-      return undefined
-    }
-
-    const foundRecord = await CmsPermissionItem.findOne(
-      this.databaseInstance.get(),
-      eq(permissions.id, permissionId)
-    )
-
-    if (!foundRecord) {
-      return undefined
-    }
-
-    this.data = foundRecord
-    return this
-  }
-
-  /**
-   * Returns a plain JSON-serializable snapshot of the permission record.
-   *
-   * Возвращает обычный объект данных права доступа для сериализации в JSON.
-   * @returns Permission record / Запись права доступа
-   */
-  toJSON(): CmsPermission {
-    return this.getData()
+    return this.updateRecord(CmsPermissionItem.buildUpdateValues(input))
   }
 
   /**
@@ -243,17 +112,11 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     executor: CmsDbExecutor,
     whereCondition: SQL | undefined
   ): Promise<CmsPermission | undefined> {
-    if (!whereCondition) {
-      return undefined
-    }
-
-    const foundRows = await executor
-      .select()
-      .from(permissions)
-      .where(whereCondition)
-      .limit(1)
-
-    return foundRows[0]
+    return CmsDbItemAbstract.findOneRecord<CmsPermission>(
+      executor,
+      permissions,
+      whereCondition
+    )
   }
 
   /**
@@ -459,18 +322,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
   static normalizeCode(
     code: string
   ): string {
-    const normalized = isString(code) ? code.trim() : ''
-
-    if (normalized.length === 0 || /\s/.test(normalized)) {
-      registerCmsErrorCauses()
-      ErrorCenterThrow.on({
-        group: 'cms-permission',
-        code: 'invalidCode',
-        details: { code }
-      })
-    }
-
-    return normalized
+    return CmsDbItemAbstract.normalizeCodeValue('cms-permission', code)
   }
 
   /**
@@ -483,17 +335,6 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
   static normalizeName(
     name: string
   ): string {
-    const normalized = isString(name) ? name.trim() : ''
-
-    if (normalized.length === 0) {
-      registerCmsErrorCauses()
-      ErrorCenterThrow.on({
-        group: 'cms-permission',
-        code: 'invalidName',
-        details: { name }
-      })
-    }
-
-    return normalized
+    return CmsDbItemAbstract.normalizeNameValue('cms-permission', name)
   }
 }

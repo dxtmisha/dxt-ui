@@ -41,6 +41,7 @@ describe('TextInclude', () => {
       ['hide', 'textHide', 'Hide'],
       ['increment', 'textIncrement', 'Increase'],
       ['info', 'textInfo', '[item] of [count]'],
+      ['invalidPhone', 'textInvalidPhone', 'Please enter a valid phone number'],
       ['last', 'textLast', 'Last'],
       ['loading', 'textLoading', 'Loading'],
       ['loadingFile', 'textLoadingFile', 'Uploading your file'],
