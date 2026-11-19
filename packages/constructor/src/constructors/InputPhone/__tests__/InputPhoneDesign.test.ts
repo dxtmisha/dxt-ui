@@ -67,7 +67,8 @@ const MockDialCode = defineComponent({
   name: 'MockDialCode',
   props: {
     value: String,
-    disabled: Boolean
+    disabled: Boolean,
+    readonly: Boolean
   },
   emits: ['click', 'window'],
   setup(componentProps, { emit }) {
@@ -77,6 +78,7 @@ const MockDialCode = defineComponent({
         'type': 'button',
         'class': 'mock-dial-code',
         'data-country': componentProps.value ?? '',
+        'data-readonly': String(Boolean(componentProps.readonly)),
         'disabled': componentProps.disabled,
         'onClick': (event: MouseEvent) => emit('click', event, { type: 'click', value: 'DE', detail: undefined })
       },
@@ -264,7 +266,9 @@ describe('InputPhoneDesign', () => {
     expect(input.name).toBe('phone-field')
     expect(input.getAttribute('inputmode')).toBe('tel')
     expect(input.value).toBe('+1-555-123-4567')
-    expect((container.querySelector('.mock-dial-code') as HTMLButtonElement).disabled).toBe(true)
+    const disabledDialCodeButton = container.querySelector('.mock-dial-code') as HTMLButtonElement
+    expect(disabledDialCodeButton.disabled).toBe(true)
+    expect(disabledDialCodeButton.getAttribute('data-readonly')).toBe('false')
 
     props.disabled = false
     props.readonly = true
@@ -273,7 +277,9 @@ describe('InputPhoneDesign', () => {
     expect(readonlyInput.readOnly).toBe(true)
     expect(readonlyInput.value).toBe('+1-555-123-4567')
     expect(container.querySelector('.mock-mask')).toBeNull()
-    expect((container.querySelector('.mock-dial-code') as HTMLButtonElement).disabled).toBe(true)
+    const dialCodeButton = container.querySelector('.mock-dial-code') as HTMLButtonElement
+    expect(dialCodeButton.disabled).toBe(false)
+    expect(dialCodeButton.getAttribute('data-readonly')).toBe('true')
   })
 
   it('should forward input, change, and blur events from Mask and expose value/validation API', async () => {

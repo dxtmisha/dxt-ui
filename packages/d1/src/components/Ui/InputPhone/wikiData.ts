@@ -12,6 +12,7 @@ const propsNames: StorybookProps = [
   { name: 'counterId', type: 'string' },
   { name: 'countryBlock', type: 'boolean' },
   { name: 'countryDefault', type: 'string' },
+  { name: 'countryReadonly', type: 'boolean' },
   { name: 'detail', type: 'Record<string, any>' },
   { name: 'disabled', type: 'boolean' },
   { name: 'fieldAttrs', type: 'ConstrBind<FieldProps>' },

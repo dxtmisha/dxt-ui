@@ -17,14 +17,20 @@ export type FieldMessagePropsBasic<
     hasHtmlCode?: boolean
     /** Whether the field is disabled/ Отключено ли поле */
     disabled?: boolean
+    /** Whether the field is in warning state/ Находится ли поле в состоянии предупреждения */
+    warning?: boolean
 
     /** Helper message text/ Текст вспомогательного сообщения */
     helperMessage?: string
+    /** Warning message text/ Текст предупреждающего сообщения */
+    warningMessage?: string
     /** Validation message text/ Текст сообщения валидации */
     validationMessage?: string
 
     /** Unique ID for the helper message/ Уникальный идентификатор вспомогательного сообщения */
     helperId?: string
+    /** Unique ID for the warning message/ Уникальный идентификатор предупреждающего сообщения */
+    warningId?: string
     /** Unique ID for the validation message/ Уникальный идентификатор сообщения валидации */
     validationId?: string
   }

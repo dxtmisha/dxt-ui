@@ -27,6 +27,11 @@
       @include ui.color(#{var(--d1-sys-palette-error)});
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
     }
+    
+    &--warning {
+      @include ui.color(#{var(--d1-sys-palette-warning)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+    }
   }
   // :style [!] System label / Системная метка
 

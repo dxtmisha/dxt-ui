@@ -38,6 +38,7 @@ describe('InputPhoneDialCode (Integration)', () => {
       inheritAttrs: false,
       props: {
         disabled: Boolean,
+        readonly: Boolean,
         icon: String,
         iconTrailing: String,
         iconTurn: Boolean,
@@ -51,6 +52,7 @@ describe('InputPhoneDialCode (Integration)', () => {
             'class': attrs.class,
             'disabled': props.disabled,
             'aria-expanded': attrs['aria-expanded'],
+            'data-readonly': String(Boolean(props.readonly)),
             'data-icon': props.icon ?? '',
             'data-icon-trailing': props.iconTrailing ?? '',
             'data-icon-turn': String(Boolean(props.iconTurn)),
@@ -135,6 +137,20 @@ describe('InputPhoneDialCode (Integration)', () => {
                   }
                 },
                 'Select VN'
+              ),
+              h(
+                'button',
+                {
+                  type: 'button',
+                  class: 'mock-select-group',
+                  onClick: (event: MouseEvent) => {
+                    emit('click', event, {
+                      type: 'group',
+                      value: [{ index: 'DO', value: 'DO' }, { index: 'DO-1-829', value: 'DO-1-829' }]
+                    })
+                  }
+                },
+                'Toggle DO Group'
               ),
               h(
                 'button',
@@ -323,5 +339,49 @@ describe('InputPhoneDialCode (Integration)', () => {
 
     expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('VN')
     expect(getButton().textContent).toBe('Vietnam')
+  })
+
+  it('should preserve selected country flag and value when a group header is clicked without selecting a subitem', async () => {
+    const { container, isOpen, emitted } = createHarness({
+      value: 'US',
+      labelType: 'code'
+    })
+
+    await nextTick()
+
+    const getButton = () => container.querySelector('button.d1-inputPhoneDialCode__button') as HTMLButtonElement
+    getButton().click()
+    await nextTick()
+    expect(isOpen.value).toBe(true)
+
+    ;(container.querySelector('.mock-select-group') as HTMLButtonElement).click()
+    await nextTick()
+
+    ;(container.querySelector('.mock-close-window') as HTMLButtonElement).click()
+    await nextTick()
+
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('US')
+    expect(getButton().getAttribute('data-icon')).toBe('flag-us')
+    expect(getButton().textContent).toBe('+1')
+    expect(emitted.some(item => item.event === 'click' || item.event === 'clickLite')).toBe(false)
+  })
+
+  it('should hide trailing arrow and lock menu for single-country lists while keeping flag visible', async () => {
+    const { container } = createHarness({
+      value: 'US',
+      labelType: 'code',
+      menuCountryAttrs: {
+        list: ['US']
+      }
+    })
+
+    await nextTick()
+
+    const button = container.querySelector('button.d1-inputPhoneDialCode__button') as HTMLButtonElement
+    expect(button.getAttribute('data-readonly')).toBe('true')
+    expect(button.getAttribute('data-icon')).toBe('flag-us')
+    expect(button.getAttribute('data-icon-trailing')).toBe('')
+    expect(button.textContent).toBe('+1')
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-disabled')).toBe('true')
   })
 })

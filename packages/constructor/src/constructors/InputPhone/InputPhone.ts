@@ -22,6 +22,7 @@ import { MaskInclude } from '../Mask'
 import { InputPhoneData } from './InputPhoneData'
 import { InputPhoneFormat } from './InputPhoneFormat'
 import { InputPhoneMask } from './InputPhoneMask'
+import { InputPhonePaste } from './InputPhonePaste'
 import { InputPhoneValidation } from './InputPhoneValidation'
 
 import type { InputPhoneProps } from './props'
@@ -51,6 +52,8 @@ export type InputPhoneConstructors = {
   format: typeof InputPhoneFormat
   /** Mask constructor / Конструктор маски */
   mask: typeof MaskInclude
+  /** Input phone paste constructor / Конструктор вставки телефона */
+  paste: typeof InputPhonePaste
   /** Input phone mask constructor / Конструктор маски ввода телефона */
   phoneMask: typeof InputPhoneMask
   /** Field validation constructor / Конструктор валидации поля */
@@ -168,6 +171,16 @@ export class InputPhone extends DesignLogicAbstract<
         undefined,
         () => this.i('value'),
         () => this.i('data').valueDefault.value
+      ]
+    },
+    paste: {
+      item: InputPhonePaste,
+      parameters: () => [
+        this.props,
+        () => this.i('data'),
+        () => this.i('elementItem'),
+        () => this.i('event'),
+        () => this.i('value')
       ]
     },
     phoneMask: {

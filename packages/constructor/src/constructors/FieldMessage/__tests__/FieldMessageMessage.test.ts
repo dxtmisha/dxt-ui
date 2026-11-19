@@ -88,5 +88,27 @@ describe('FieldMessageMessage', () => {
       expect(multilingual.isHelper()).toBe(true)
       expect(multilingual.isValidation()).toBe(true)
     })
+
+    it('should prioritize validation over warning and warning over helper message', () => {
+      const warnOnly = new FieldMessageMessage({
+        helperMessage: 'Helper hint',
+        warningMessage: 'Old profile phone'
+      })
+
+      expect(warnOnly.item).toBe('Old profile phone')
+      expect(warnOnly.is()).toBe(true)
+      expect(warnOnly.isWarning()).toBe(true)
+      expect(warnOnly.isValidation()).toBe(false)
+
+      const withError = new FieldMessageMessage({
+        helperMessage: 'Helper hint',
+        warningMessage: 'Old profile phone',
+        validationMessage: 'Required error'
+      })
+
+      expect(withError.item).toBe('Required error')
+      expect(withError.isWarning()).toBe(false)
+      expect(withError.isValidation()).toBe(true)
+    })
   })
 })

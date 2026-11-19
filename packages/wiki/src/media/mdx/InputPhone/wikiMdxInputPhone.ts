@@ -2,6 +2,8 @@ import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
 import countryBlockEn from './countryBlock.en.mdx'
 import countryBlockRu from './countryBlock.ru.mdx'
+import countryReadonlyEn from './countryReadonly.en.mdx'
+import countryReadonlyRu from './countryReadonly.ru.mdx'
 import inputPhoneEn from './inputPhone.en.mdx'
 import inputPhoneRu from './inputPhone.ru.mdx'
 
@@ -12,6 +14,10 @@ export const wikiMdxInputPhone: StorybookComponentsMdxItem = {
     countryBlock: {
       en: countryBlockEn,
       ru: countryBlockRu
+    },
+    countryReadonly: {
+      en: countryReadonlyEn,
+      ru: countryReadonlyRu
     },
     inputPhone: {
       en: inputPhoneEn,

@@ -15,6 +15,8 @@ const valueModel = ref<string>('12025550147')
 const valueUS = ref<string>('')
 const valueDE = ref<string>('')
 const valueVN = ref<string>('84912345678')
+const valueCountryReadonly = ref<string>('79001234567')
+const valueSingleCountry = ref<string>('79001234567')
 const valueBlocked = ref<string>('')
 const valueMaskAttrs = ref<string>('')
 const valueValidation = ref<string>('7900')
@@ -26,8 +28,12 @@ const valueWithinVN = ref<string>('')
 const valueWithinRUBlocked = ref<string>('')
 const valueWithinVNBlocked = ref<string>('')
 const valuePasteCountry = ref<string>('')
+const valuePasteSelectAllVN = ref<string>('84912345678')
+const valuePastePartialRU = ref<string>('79001234567')
 const valuePasteRU = ref<string>('')
 const valuePasteVN = ref<string>('')
+const valuePasteBlocked = ref<string>('')
+const copiedSample = ref<string>('none')
 
 const countryDefaultDynamic = ref<string | undefined>(undefined)
 const valueDynamicUntouched = ref<string>('')
@@ -70,6 +76,20 @@ const onSetExposed = (): void => {
 const onClearExposed = (): void => {
   exposedRef.value?.clear()
   onReadExposed()
+}
+
+const onCopySample = async (text: string): Promise<void> => {
+  await navigator.clipboard?.writeText(text)
+  copiedSample.value = text
+}
+
+const onResetPasteCases = (): void => {
+  valuePasteCountry.value = ''
+  valuePasteSelectAllVN.value = '84912345678'
+  valuePastePartialRU.value = '79001234567'
+  valuePasteRU.value = ''
+  valuePasteVN.value = ''
+  valuePasteBlocked.value = ''
 }
 </script>
 
@@ -186,6 +206,27 @@ const onClearExposed = (): void => {
           </DemoBox>
           <DemoBox>
             <D1InputPhone
+              v-model:value="valueCountryReadonly"
+              country-default="RU"
+              :country-readonly="true"
+              label="Country Readonly (Flag Visible)"
+              helper-message="Keeps colored flag visible without arrow or menu while input stays editable"
+              :input-phone-dial-code-attrs="{ labelType: 'code' }"
+            />
+            <DemoValue :value="valueCountryReadonly"/>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              v-model:value="valueSingleCountry"
+              country-default="RU"
+              label="Single Country List (Auto Readonly)"
+              helper-message="Menu list=['RU'] auto-hides arrow and disables selector click"
+              :input-phone-dial-code-attrs="{ labelType: 'code', menuCountryAttrs: { list: ['RU'] } }"
+            />
+            <DemoValue :value="valueSingleCountry"/>
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
               v-model:value="valueMaskAttrs"
               country-default="US"
               label="Custom Mask Attrs"
@@ -253,6 +294,29 @@ const onClearExposed = (): void => {
               validation-message="Phone number is invalid"
               force-show-message
               value="123"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              label="Warning Message"
+              warning-message="Phone from legacy profile needs confirmation"
+              value="79001234567"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              label="Warning Flag Only"
+              :warning="true"
+              helper-message="Highlights field border without blocking validity"
+              value="79001234567"
+            />
+          </DemoBox>
+          <DemoBox>
+            <D1InputPhone
+              label="Warning + Error (Error Wins)"
+              warning-message="Confirm phone"
+              validation-message="Phone number is invalid"
+              value="79001234567"
             />
           </DemoBox>
         </DemoFlex>
@@ -500,36 +564,79 @@ const onClearExposed = (): void => {
       </D1Group>
 
       <D1Group label="Copy & Paste">
-        <DemoFlex>
-          <DemoBox>
-            <D1InputPhone
-              v-model:value="valuePasteCountry"
-              label="Paste With Country Code"
-              helper-message="Try pasting: +7 900 123-45-67, +84 91 234 5678, +49 30 123456"
-              :input-phone-dial-code-attrs="{ labelType: 'code' }"
-            />
-            <DemoValue :value="valuePasteCountry"/>
-          </DemoBox>
-          <DemoBox>
-            <D1InputPhone
-              v-model:value="valuePasteRU"
-              country-default="RU"
-              label="Paste RU (8 / Local / +7)"
-              helper-message="Try pasting: +7 (900) 123-45-67, 8 (900) 123-45-67, or 9001234567"
-              :input-phone-dial-code-attrs="{ labelType: 'code' }"
-            />
-            <DemoValue :value="valuePasteRU"/>
-          </DemoBox>
-          <DemoBox>
-            <D1InputPhone
-              v-model:value="valuePasteVN"
-              country-default="VN"
-              label="Paste VN (0 / Local / +84)"
-              helper-message="Try pasting: +84 91 234 5678, 0912345678, or 912345678"
-              :input-phone-dial-code-attrs="{ labelType: 'code' }"
-            />
-            <DemoValue :value="valuePasteVN"/>
-          </DemoBox>
+        <DemoFlex direction="column">
+          <DemoFlex>
+            <D1Button label="Copy +7 (900) 123-45-67" @click="onCopySample('+7 (900) 123-45-67')"/>
+            <D1Button label="Copy +89023343333" @click="onCopySample('+89023343333')"/>
+            <D1Button label="Copy 8 (900) 123-45-67" @click="onCopySample('8 (900) 123-45-67')"/>
+            <D1Button label="Copy +84 91 234 5678" @click="onCopySample('+84 91 234 5678')"/>
+            <D1Button label="Copy +0912345678" @click="onCopySample('+0912345678')"/>
+            <D1Button label="Copy 911" @click="onCopySample('911')"/>
+            <D1Button label="Copy +8902334333 (10 digits)" @click="onCopySample('+8902334333')"/>
+            <D1Button label="Reset Paste Cases" @click="onResetPasteCases"/>
+          </DemoFlex>
+          <DemoValue :value="`Clipboard sample: ${copiedSample}`"/>
+          <DemoFlex>
+            <DemoBox>
+              <D1InputPhone
+                v-model:value="valuePasteCountry"
+                label="Paste With Country Code"
+                helper-message="Paste without selection: +7 900 123-45-67, +84 91 234 5678, +49 30 12345678"
+                :input-phone-dial-code-attrs="{ labelType: 'code' }"
+              />
+              <DemoValue :value="valuePasteCountry"/>
+            </DemoBox>
+            <DemoBox>
+              <D1InputPhone
+                v-model:value="valuePasteSelectAllVN"
+                country-default="VN"
+                label="Select All Filled VN -> RU"
+                helper-message="Select all (Cmd+A / Ctrl+A) in +84-91-2345-678 and paste +7 (900) 123-45-67 -> updates country & mask to RU"
+                :input-phone-dial-code-attrs="{ labelType: 'code' }"
+              />
+              <DemoValue :value="valuePasteSelectAllVN"/>
+            </DemoBox>
+            <DemoBox>
+              <D1InputPhone
+                v-model:value="valuePastePartialRU"
+                country-default="RU"
+                label="Partial Selection (Mask Paste)"
+                helper-message="Select middle digits (e.g. 900) and paste 911 -> standard Mask paste (+7-911-123-45-67)"
+                :input-phone-dial-code-attrs="{ labelType: 'code' }"
+              />
+              <DemoValue :value="valuePastePartialRU"/>
+            </DemoBox>
+            <DemoBox>
+              <D1InputPhone
+                v-model:value="valuePasteRU"
+                country-default="RU"
+                label="Paste RU (+8 / 8 -> +7 vs +84)"
+                helper-message="Paste +89023343333 or 8 (900) 123-45-67 -> +7; paste +84 91 234 5678 -> VN; incomplete +8902334333 goes to Mask"
+                :input-phone-dial-code-attrs="{ labelType: 'code' }"
+              />
+              <DemoValue :value="valuePasteRU"/>
+            </DemoBox>
+            <DemoBox>
+              <D1InputPhone
+                v-model:value="valuePasteVN"
+                country-default="VN"
+                label="Paste VN (+0 / 0 -> +84 vs Local)"
+                helper-message="Paste +0912345678 or 0912345678 -> +84-91-2345-678; incomplete 912345678 goes to Mask"
+                :input-phone-dial-code-attrs="{ labelType: 'code' }"
+              />
+              <DemoValue :value="valuePasteVN"/>
+            </DemoBox>
+            <DemoBox>
+              <D1InputPhone
+                v-model:value="valuePasteBlocked"
+                country-default="RU"
+                :country-block="true"
+                label="Paste Blocked (countryBlock=true)"
+                helper-message="Locked to RU: +7 (900) 123-45-67 and +89023343333 normalize to +7; foreign +84 91 234 5678 is blocked"
+              />
+              <DemoValue :value="valuePasteBlocked"/>
+            </DemoBox>
+          </DemoFlex>
         </DemoFlex>
       </D1Group>
     </D1Section>

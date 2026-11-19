@@ -27,6 +27,8 @@
     --d1-field-focusWithin-caption-opacity: var(--d1-sys-opacity-surface-disabled);
     --d1-field-validation-color: var(--d1-sys-palette-error);
     --d1-field-validation-borderColor: var(--d1-sys-palette-error);
+    --d1-field-warning-color: var(--d1-sys-palette-warning);
+    --d1-field-warning-borderColor: var(--d1-sys-palette-warning);
     
     @include ui.color(#{var(--d1-sys-palette-onSurface)});
     
@@ -156,6 +158,17 @@
         @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
         
         backdrop-filter: var(--d1-sys-blur-xl);
+      }
+      
+      &.d1-field--warning {
+        & .d1-field__body {
+          @include ui.backgroundColor(#{var(--d1-sys-palette-warning)});
+          @include ui.gradient(#{var(--d1-sys-palette-warning)});
+          
+          &__input {
+            @include ui.gradient(#{var(--d1-sys-palette-warning)});
+          }
+        }
       }
       
       &.d1-field--validation {

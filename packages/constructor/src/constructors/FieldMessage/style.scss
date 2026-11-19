@@ -7,6 +7,7 @@
   @include ui.paddingX(ui.v('??-padding', 0));
 
   &__info,
+  &__warning,
   &__error {
     flex-grow: 1;
     flex-shrink: 1;
@@ -14,6 +15,7 @@
     overflow-wrap: anywhere;
   }
 
+  &__warning,
   &__error {
     display: none;
   }
@@ -25,8 +27,22 @@
     white-space: nowrap;
   }
 
+  &--warning {
+    @include ui.subclass('info') {
+      display: none;
+    }
+
+    @include ui.subclass('warning') {
+      display: unset;
+    }
+  }
+
   &--validation {
     @include ui.subclass('info') {
+      display: none;
+    }
+
+    @include ui.subclass('warning') {
       display: none;
     }
 

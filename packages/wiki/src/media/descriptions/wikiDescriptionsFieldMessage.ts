@@ -13,17 +13,17 @@ export const wikiDescriptionsFieldMessage: StorybookComponentsDescriptionItem = 
   },
   possibilities: {
     en: [
-      'displaying helper text (`helperMessage`) and validation errors (`validationMessage`) with `--validation` priority',
-      'adding `role="alert"` on error nodes and custom `helperId`, `validationId`, and `counterId` identifiers',
+      'displaying helper text (`helperMessage`), non-blocking warnings (`warning`, `warningMessage`), and validation errors (`validationMessage`) with priority `--validation` > `--warning` > helper',
+      'adding `role="alert"` on error nodes and custom `helperId`, `warningId`, `validationId`, and `counterId` identifiers',
       'hiding output when `disabled` unless `forceShow` is active, and unmounting when inactive',
-      'supporting safe text escaping by default, opt-in `hasHtmlCode`, and `#helper` / `#validation` slots',
+      'supporting safe text escaping by default, opt-in `hasHtmlCode`, and `#helper` / `#warning` / `#validation` slots',
       'integrating character counters (`counterShow`, `counter`, `maxlength`, `maxlengthOnce`, `counterTemplate`, `fieldCounterAttrs`) and `isSkeleton`'
     ],
     ru: [
-      'отображение вспомогательного текста (`helperMessage`) и ошибок валидации (`validationMessage`) с приоритетом `--validation`',
-      'добавление `role="alert"` для ошибок и настраиваемых идентификаторов `helperId`, `validationId` и `counterId`',
+      'отображение вспомогательного текста (`helperMessage`), неблокирующих предупреждений (`warning`, `warningMessage`) и ошибок валидации (`validationMessage`) с приоритетом `--validation` > `--warning` > подсказка',
+      'добавление `role="alert"` для ошибок и настраиваемых идентификаторов `helperId`, `warningId`, `validationId` и `counterId`',
       'скрытие вывода при `disabled` без `forceShow` и полное размонтирование при отсутствии активного содержимого',
-      'экранирование текста по умолчанию, явный `hasHtmlCode` и поддержка слотов `#helper` / `#validation`',
+      'экранирование текста по умолчанию, явный `hasHtmlCode` и поддержка слотов `#helper` / `#warning` / `#validation`',
       'интеграция счётчика символов (`counterShow`, `counter`, `maxlength`, `maxlengthOnce`, `counterTemplate`, `fieldCounterAttrs`) и `isSkeleton`'
     ]
   },
@@ -58,13 +58,18 @@ if (component) {
             <DesignComponent helper-message="Enter your email address" helper-id="wiki-field-message-helper"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Warning Message</div>
+            <DesignComponent warning warning-message="Phone from legacy profile needs confirmation" warning-id="wiki-field-message-warning"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Validation Message</div>
             <DesignComponent validation-message="Invalid email format" validation-id="wiki-field-message-validation"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Validation Overrides Helper</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Validation Overrides Helper & Warning</div>
             <DesignComponent
               helper-message="Helper text hidden by CSS when invalid"
+              warning-message="Warning text hidden when invalid"
               validation-message="Validation takes visual priority"
             />
           </div>
@@ -72,22 +77,26 @@ if (component) {
       `,
       play: `
 const messages = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(messages.length).toBe(3)
+await expect(messages.length).toBe(4)
 
 expect(messages[0].classList.contains('design-component--validation')).toBe(false)
 expect(messages[0].querySelector('#wiki-field-message-helper')?.textContent?.trim()).toBe('Enter your email address')
 
-expect(messages[1].classList.contains('design-component--validation')).toBe(true)
-const errorElement = messages[1].querySelector<HTMLElement>('#wiki-field-message-validation')
+expect(messages[1].classList.contains('design-component--warning')).toBe(true)
+expect(messages[1].classList.contains('design-component--validation')).toBe(false)
+expect(messages[1].querySelector('#wiki-field-message-warning')?.textContent?.trim()).toBe('Phone from legacy profile needs confirmation')
+
+expect(messages[2].classList.contains('design-component--validation')).toBe(true)
+const errorElement = messages[2].querySelector<HTMLElement>('#wiki-field-message-validation')
 await expect(errorElement).toBeInTheDocument()
 await expect(errorElement).toHaveAttribute('role', 'alert')
 
-expect(messages[2].classList.contains('design-component--validation')).toBe(true)
-const thirdInfo = messages[2].querySelector<HTMLElement>('.design-component__info')
-const thirdError = messages[2].querySelector<HTMLElement>('.design-component__error')
-await expect(thirdInfo).toBeInTheDocument()
-await expect(thirdError).toBeInTheDocument()
-await expect(thirdError).toHaveAttribute('role', 'alert')
+expect(messages[3].classList.contains('design-component--validation')).toBe(true)
+const fourthInfo = messages[3].querySelector<HTMLElement>('.design-component__info')
+const fourthError = messages[3].querySelector<HTMLElement>('.design-component__error')
+await expect(fourthInfo).toBeInTheDocument()
+await expect(fourthError).toBeInTheDocument()
+await expect(fourthError).toHaveAttribute('role', 'alert')
       `
     },
     {
@@ -174,8 +183,8 @@ expect(customCounter?.textContent?.trim()).toBe('95 of 100')
     {
       id: 'FieldMessageSlots',
       name: {
-        en: 'Slots (#helper & #validation)',
-        ru: 'Слоты (#helper и #validation)'
+        en: 'Slots (#helper, #warning & #validation)',
+        ru: 'Слоты (#helper, #warning и #validation)'
       },
       template: `
         <div class="wiki-storybook-flex-column">
@@ -185,13 +194,21 @@ expect(customCounter?.textContent?.trim()).toBe('95 of 100')
             </template>
           </DesignComponent>
           <DesignComponent>
+            <template #warning>
+              <span><b>Warning:</b> Value needs confirmation</span>
+            </template>
+          </DesignComponent>
+          <DesignComponent>
             <template #validation>
               <span><b>Validation:</b> Please fill out this field</span>
             </template>
           </DesignComponent>
-          <DesignComponent helper-message="Details" validation-message="Required">
+          <DesignComponent helper-message="Details" warning-message="Check" validation-message="Required">
             <template #helper="{ helperMessage }">
               <span>Scoped ({{ helperMessage }}): </span>
+            </template>
+            <template #warning="{ warningMessage }">
+              <span>Warn ({{ warningMessage }}): </span>
             </template>
             <template #validation="{ validationMessage }">
               <span>Error ({{ validationMessage }}): </span>
@@ -201,12 +218,15 @@ expect(customCounter?.textContent?.trim()).toBe('95 of 100')
       `,
       play: `
 const messages = canvasElement.querySelectorAll<HTMLElement>('.design-component')
-await expect(messages.length).toBe(3)
+await expect(messages.length).toBe(4)
 expect(messages[0].textContent?.trim()).toBe('Helper: You can use Latin letters')
-expect(messages[1].classList.contains('design-component--validation')).toBe(true)
-expect(messages[1].textContent?.trim()).toBe('Validation: Please fill out this field')
-expect(messages[2].querySelector('.design-component__info')?.textContent?.trim()).toBe('Scoped (Details): Details')
-expect(messages[2].querySelector('.design-component__error')?.textContent?.trim()).toBe('Error (Required): Required')
+expect(messages[1].classList.contains('design-component--warning')).toBe(true)
+expect(messages[1].textContent?.trim()).toBe('Warning: Value needs confirmation')
+expect(messages[2].classList.contains('design-component--validation')).toBe(true)
+expect(messages[2].textContent?.trim()).toBe('Validation: Please fill out this field')
+expect(messages[3].querySelector('.design-component__info')?.textContent?.trim()).toBe('Scoped (Details): Details')
+expect(messages[3].querySelector('.design-component__warning')?.textContent?.trim()).toBe('Warn (Check): Check')
+expect(messages[3].querySelector('.design-component__error')?.textContent?.trim()).toBe('Error (Required): Required')
       `
     },
 
@@ -394,9 +414,9 @@ await step('HTML/XSS string renders strictly as escaped text when hasHtmlCode is
 </div>
     `,
     description: `
-Subcomponent of the Field wrapper used to display helper text, validation errors, and character counters beneath input fields.
-Automatically activates validation state (--validation) when validationMessage or #validation slot is present, adds role="alert" to error nodes, hides output when disabled unless forceShow is true, supports opt-in hasHtmlCode markup, and integrates FieldCounter and isSkeleton.
-Controlled via helperMessage, validationMessage, helperId, validationId, disabled, forceShow, hasHtmlCode, isSkeleton, counterShow, counter, maxlength, maxlengthOnce, counterTemplate, counterId, fieldCounterAttrs, and #helper/#validation slots.
+Subcomponent of the Field wrapper used to display helper text, non-blocking warning messages, validation errors, and character counters beneath input fields.
+Automatically activates validation state (--validation) when validationMessage or #validation slot is present, and warning state (--warning) when warning, warningMessage, or #warning slot is present (validation takes priority over warning, which takes priority over helper). Adds role="alert" to error nodes, hides output when disabled unless forceShow is true, supports opt-in hasHtmlCode markup, and integrates FieldCounter and isSkeleton.
+Controlled via helperMessage, warning, warningMessage, validationMessage, helperId, warningId, validationId, disabled, forceShow, hasHtmlCode, isSkeleton, counterShow, counter, maxlength, maxlengthOnce, counterTemplate, counterId, fieldCounterAttrs, and #helper/#warning/#validation slots.
     `,
     hide: true
   }

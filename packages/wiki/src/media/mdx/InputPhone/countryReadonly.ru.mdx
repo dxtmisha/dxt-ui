@@ -1,0 +1,35 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Блокировка селектора страны
+
+Свойство `countryReadonly` блокирует переключение страны в селекторе, сохраняя отображение флага и телефонного кода, при этом само поле ввода номера остаётся доступным для редактирования.
+
+В отличие от `countryBlock` (который полностью скрывает селектор и переводит маску в локальный формат без кода страны), `countryReadonly` сохраняет полную международную маску и наглядный префикс страны. Кроме того, селектор автоматически блокируется, если в `inputPhoneDialCodeAttrs.menuCountryAttrs.list` передана только одна страна (или страны с одним общим телефонным кодом).
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+const phone = ref('79001234567')
+</script>
+
+<template>
+  <!-- Явная блокировка селектора страны -->
+  <InputPhone
+    v-model:value="phone"
+    country-default="RU"
+    :country-readonly="true"
+    label="Зафиксированный селектор (RU)"
+  />
+
+  <!-- Автоматическая блокировка при списке из одной страны -->
+  <InputPhone
+    v-model:value="phone"
+    country-default="RU"
+    :input-phone-dial-code-attrs="{ menuCountryAttrs: { list: ['RU'] } }"
+    label="Список из одной страны (RU)"
+  />
+</template>
+  `}
+    language="html"
+/>

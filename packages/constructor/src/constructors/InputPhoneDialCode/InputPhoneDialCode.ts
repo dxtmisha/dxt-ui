@@ -4,6 +4,8 @@ import {
   type ConstrItems,
   DesignLogicAbstract,
   Geo,
+  GeoPhone,
+  isArray,
   type ListSelectedList,
   type NumberOrStringOrBoolean
 } from '@dxtmisha/functional'
@@ -120,10 +122,12 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
    */
   get bindsButton(): ConstrBind<ButtonProps> {
     const item = this.item.value?.[0]
+    const readonly = this.isReadonly()
     const props: ConstrBind<ButtonProps> = {
       ...(this.props.disabled !== undefined ? { disabled: this.props.disabled } : {}),
+      ...(readonly ? { readonly: true } : this.props.readonly !== undefined ? { readonly: this.props.readonly } : {}),
       icon: item?.icon ?? item?.detail?.icon,
-      iconTrailing: this.props.disabled ? undefined : this.props.iconArrowDown,
+      iconTrailing: (this.props.disabled || readonly) ? undefined : this.props.iconArrowDown,
       iconTurn: this.i('menu').getElement()?.getOpen()
     }
 
@@ -159,12 +163,38 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
    */
   get bindsMenu(): ConstrBind<MenuCountryProps> {
     return {
+      ...(this.props.disabled || this.isReadonly() ? { disabled: true } : {}),
       selected: this.i('model').value.value,
       showPhoneCode: true,
       onUpdateValue: this.onUpdate,
       onClick: this.onClick,
       onWindow: this.onWindow
     }
+  }
+
+  /**
+   * Checks whether country selection is read-only (explicit readonly or at most one single-code country in list).
+   *
+   * Проверяет, заблокирован ли выбор страны (явный readonly или список не более чем из одной страны с одним кодом).
+   * @returns true if selector interaction is read-only / true, если селектор доступен только для чтения
+   */
+  protected isReadonly(): boolean {
+    if (this.props.readonly) {
+      return true
+    }
+
+    const countryList = this.props.menuCountryAttrs?.list
+
+    if (
+      isArray(countryList)
+      && countryList.length <= 1
+    ) {
+      const singleCountry = countryList[0]
+
+      return !singleCountry || GeoPhone.getCodes(singleCountry).length <= 1
+    }
+
+    return false
   }
 
   /**
@@ -178,6 +208,13 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
     event: MouseEvent,
     options?: EventClickValue
   ): void => {
+    if (
+      options?.type === 'group'
+      || isArray(options?.value)
+    ) {
+      return
+    }
+
     this.i('model').onClick(event, options)
   }
 

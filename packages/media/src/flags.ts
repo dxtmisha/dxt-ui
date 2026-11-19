@@ -240,6 +240,7 @@ import VnSvg from './assets/flags/VN.svg'
 import VuSvg from './assets/flags/VU.svg'
 import WfSvg from './assets/flags/WF.svg'
 import WsSvg from './assets/flags/WS.svg'
+import XkSvg from './assets/flags/XK.svg'
 import YeSvg from './assets/flags/YE.svg'
 import YtSvg from './assets/flags/YT.svg'
 import ZaSvg from './assets/flags/ZA.svg'
@@ -489,6 +490,7 @@ export {
   VuSvg,
   WfSvg,
   WsSvg,
+  XkSvg,
   YeSvg,
   YtSvg,
   ZaSvg,
@@ -739,6 +741,7 @@ export default {
   VuSvg,
   WfSvg,
   WsSvg,
+  XkSvg,
   YeSvg,
   YtSvg,
   ZaSvg,

@@ -81,19 +81,25 @@ const MockFieldMessage = defineComponent({
   props: {
     helperMessage: String,
     helperId: String,
+    warningMessage: String,
+    warningId: String,
     validationMessage: String,
     validationId: String
   },
   setup(componentProps) {
     return () => {
-      if (!componentProps.helperMessage && !componentProps.validationMessage) {
+      if (!componentProps.helperMessage && !componentProps.warningMessage && !componentProps.validationMessage) {
         return null
       }
 
       return h('div', {
         class: 'mock-field-message',
-        id: componentProps.validationMessage ? componentProps.validationId : componentProps.helperId
-      }, componentProps.validationMessage || componentProps.helperMessage)
+        id: componentProps.validationMessage
+          ? componentProps.validationId
+          : componentProps.warningMessage
+            ? componentProps.warningId
+            : componentProps.helperId
+      }, componentProps.validationMessage || componentProps.warningMessage || componentProps.helperMessage)
     }
   }
 })
@@ -119,6 +125,9 @@ const RealField = defineComponent({
     'suffix',
     'caption',
     'helperMessage',
+    'warning',
+    'warningMessage',
+    'warningId',
     'validationMessage',
     'required',
     'readonly',
@@ -228,7 +237,7 @@ const RealMask = defineComponent({
     'dir',
     'modelValue'
   ]),
-  emits: ['update:value', 'update:modelValue', 'input', 'inputLite', 'change', 'changeLite', 'focus', 'blur', 'reset'],
+  emits: ['update:value', 'update:modelValue', 'input', 'inputLite', 'change', 'changeLite', 'focus', 'blur', 'reset', 'paste'],
   setup(componentProps, { emit, expose }) {
     const classesToken = computed<ConstrClasses>(() => ({
       main: {
@@ -263,7 +272,8 @@ const RealButton = defineComponent({
     'icon',
     'iconTrailing',
     'iconTurn',
-    'disabled'
+    'disabled',
+    'readonly'
   ]),
   emits: ['click', 'clickLite'],
   setup(componentProps, { emit, expose }) {
@@ -298,7 +308,8 @@ const RealButton = defineComponent({
 const MockMenuCountry = defineComponent({
   name: 'MockMenuCountry',
   props: {
-    selected: [String, Array, Object]
+    selected: [String, Array, Object],
+    disabled: Boolean
   },
   emits: ['update:value', 'update:selected', 'click', 'window'],
   setup(componentProps, { emit, expose }) {
@@ -319,7 +330,8 @@ const MockMenuCountry = defineComponent({
 
     return () => h('div', {
       'class': 'mock-menu-country',
-      'data-selected': String(componentProps.selected ?? '')
+      'data-selected': String(componentProps.selected ?? ''),
+      'data-disabled': String(Boolean(componentProps.disabled))
     }, [
       h('button', {
         type: 'button',
@@ -343,6 +355,7 @@ const RealInputPhoneDialCode = defineComponent({
     'labelType',
     'iconArrowDown',
     'disabled',
+    'readonly',
     'menuCountryAttrs'
   ]),
   emits: ['update:selected', 'update:modelSelected', 'update:value', 'click', 'clickLite', 'window'],
@@ -603,5 +616,281 @@ describe('InputPhone (Integration)', () => {
     await nextTick()
     expect(exposed.checkValidity()).toBe(false)
     expect(exposed.getValidationMessage()).toBe('Phone is required')
+  })
+
+  describe('Paste handling', () => {
+    const dispatchPaste = (
+      input: HTMLInputElement,
+      text: string,
+      selectionStart: number,
+      selectionEnd: number = selectionStart
+    ): ClipboardEvent => {
+      input.focus()
+      input.setSelectionRange(selectionStart, selectionEnd)
+
+      const pasteEvent = new Event('paste', {
+        bubbles: true,
+        cancelable: true
+      }) as ClipboardEvent
+
+      Object.defineProperty(pasteEvent, 'clipboardData', {
+        value: {
+          getData: (type: string) => (type === 'text' ? text : '')
+        }
+      })
+
+      input.dispatchEvent(pasteEvent)
+      return pasteEvent
+    }
+
+    it('should detect full phone format when pasting without selection without dropping digits or duplicating prefix', async () => {
+      const { container, exposed, emittedEvents } = await mountInputPhone({
+        countryDefault: 'GB',
+        value: ''
+      })
+
+      const input = container.querySelector('.d1-mask input') as HTMLInputElement
+      expect(input).not.toBeNull()
+      expect(input.value).toBe('+44-')
+
+      const pasteEvent = dispatchPaste(input, '+7 (900) 123-45-67', input.value.length)
+      await nextTick()
+      await nextTick()
+
+      expect(pasteEvent.defaultPrevented).toBe(true)
+      expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+      expect(input.value).toBe('+7-900-123-45-67')
+      expect(exposed.getValue()).toBe('+7-900-123-45-67')
+      expect(emittedEvents.some(event => event.type === 'update:modelValue' && event.args[0] === '+7-900-123-45-67')).toBe(true)
+
+      dispatchPaste(input, '+49 30 12345678', input.value.length)
+      await nextTick()
+      await nextTick()
+
+      expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('DE')
+      expect(input.value).toBe('+49-301-234-5678')
+      expect(exposed.getValue()).toBe('+49-301-234-5678')
+    })
+
+    it('should use normal Mask paste behavior when there is a text selection', async () => {
+      const { container } = await mountInputPhone({
+        countryDefault: 'RU',
+        value: '+7-900-123-45-67'
+      })
+
+      const input = container.querySelector('.d1-mask input') as HTMLInputElement
+      expect(input.value).toBe('+7-900-123-45-67')
+
+      dispatchPaste(input, '911', 3, 6)
+      await nextTick()
+      await nextTick()
+
+      expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+      expect(input.value).toBe('+7-911-123-45-67')
+    })
+
+    it('should update modelValue when pasting full phone without selection into component bound with empty modelValue', async () => {
+      const { container, exposed, emittedEvents } = await mountInputPhone({
+        countryDefault: 'GB',
+        modelValue: ''
+      })
+
+      const input = container.querySelector('.d1-mask input') as HTMLInputElement
+      expect(input).not.toBeNull()
+
+      const pasteEvent = dispatchPaste(input, '+7 (900) 123-45-67', input.value.length)
+      await nextTick()
+      await nextTick()
+
+      expect(pasteEvent.defaultPrevented).toBe(true)
+      expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+      expect(input.value).toBe('+7-900-123-45-67')
+      expect(exposed.getValue()).toBe('+7-900-123-45-67')
+      expect(emittedEvents.some(event => event.type === 'update:modelValue' && event.args[0] === '+7-900-123-45-67')).toBe(true)
+    })
+
+    it('should not duplicate country prefix when pasting full number after existing same-country prefix', async () => {
+      const { container, exposed } = await mountInputPhone({
+        countryDefault: 'RU',
+        value: ''
+      })
+
+      const input = container.querySelector('.d1-mask input') as HTMLInputElement
+      expect(input.value).toBe('+7-')
+
+      dispatchPaste(input, '+7 (900) 123-45-67', input.value.length)
+      await nextTick()
+      await nextTick()
+
+      expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+      expect(input.value).toBe('+7-900-123-45-67')
+      expect(exposed.getValue()).toBe('+7-900-123-45-67')
+    })
+
+    it('should handle non-full trunk and local numbers pasted after prefix via Mask', async () => {
+      const { container } = await mountInputPhone({
+        countryDefault: 'RU',
+        value: ''
+      })
+
+      const input = container.querySelector('.d1-mask input') as HTMLInputElement
+      expect(input.value).toBe('+7-')
+
+      dispatchPaste(input, '8 (900) 123-45-67', input.value.length)
+      await nextTick()
+      await nextTick()
+      expect(input.value).toBe('+7-900-123-45-67')
+
+      dispatchPaste(input, '9112223344', 3, input.value.length)
+      await nextTick()
+      await nextTick()
+      expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+      expect(input.value).toBe('+7-911-222-33-44')
+    })
+
+    it('should respect countryBlock while still preventing same-country prefix duplication', async () => {
+      const { container, exposed } = await mountInputPhone({
+        countryDefault: 'RU',
+        countryBlock: true,
+        modelValue: ''
+      })
+
+      const input = container.querySelector('.d1-mask input') as HTMLInputElement
+      expect(input.value).toBe('+7-')
+
+      dispatchPaste(input, '+7 (900) 123-45-67', input.value.length)
+      await nextTick()
+      await nextTick()
+      expect(input.value).toBe('+7-900-123-45-67')
+      expect(exposed.getValue()).toBe('+7-900-123-45-67')
+
+      dispatchPaste(input, '+84 91 234 5678', input.value.length)
+      await nextTick()
+      await nextTick()
+      expect(input.value.startsWith('+7-')).toBe(true)
+    })
+
+    it('should update country and mask when selecting a filled +84 phone completely and pasting a full Russian number', async () => {
+      const { container, exposed } = await mountInputPhone({
+        countryDefault: 'VN',
+        modelValue: '84912345678'
+      })
+
+      const input = container.querySelector('.d1-mask input') as HTMLInputElement
+      expect(input.value).toBe('+84-91-2345-678')
+      expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('VN')
+
+      const pasteEvent = dispatchPaste(input, '+7 (900) 123-45-67', 0, input.value.length)
+      await nextTick()
+      await nextTick()
+
+      expect(pasteEvent.defaultPrevented).toBe(true)
+      expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+      expect(input.value).toBe('+7-900-123-45-67')
+      expect(exposed.getValue()).toBe('+7-900-123-45-67')
+    })
+
+    it('should replace leading +8 with +7 when Russia is selected and pasting a full 8... number', async () => {
+      const { container, exposed } = await mountInputPhone({
+        countryDefault: 'RU',
+        modelValue: '79001234567'
+      })
+
+      const input = container.querySelector('.d1-mask input') as HTMLInputElement
+      expect(input.value).toBe('+7-900-123-45-67')
+
+      const pasteEvent = dispatchPaste(input, '+89023343333', 0, input.value.length)
+      await nextTick()
+      await nextTick()
+
+      expect(pasteEvent.defaultPrevented).toBe(true)
+      expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+      expect(input.value).toBe('+7-902-334-33-33')
+      expect(exposed.getValue()).toBe('+7-902-334-33-33')
+    })
+  })
+
+  it('should lock dial code selector for countryReadonly and single-country lists while keeping input editable', async () => {
+    const { container: roContainer } = await mountInputPhone({
+      countryDefault: 'RU',
+      countryReadonly: true,
+      modelValue: '79001234567',
+      inputPhoneDialCodeAttrs: {
+        iconArrowDown: 'expand_more'
+      }
+    })
+
+    const roInput = roContainer.querySelector('.d1-mask input') as HTMLInputElement
+    expect(roContainer.querySelector('.d1-inputPhoneDialCode')).not.toBeNull()
+    expect(roContainer.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+    expect(roContainer.querySelector('.mock-menu-country')?.getAttribute('data-disabled')).toBe('true')
+    expect(roInput.readOnly).toBe(false)
+
+    const { container: singleContainer } = await mountInputPhone({
+      countryDefault: 'RU',
+      modelValue: '79001234567',
+      inputPhoneDialCodeAttrs: {
+        iconArrowDown: 'expand_more',
+        menuCountryAttrs: {
+          list: ['RU']
+        }
+      }
+    })
+
+    expect(singleContainer.querySelector('.d1-inputPhoneDialCode')).not.toBeNull()
+    expect(singleContainer.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+    expect(singleContainer.querySelector('.mock-menu-country')?.getAttribute('data-disabled')).toBe('true')
+  })
+
+  it('should display warning state and message without failing form validity', async () => {
+    const { container, exposed } = await mountInputPhone({
+      countryDefault: 'RU',
+      modelValue: '79001234567',
+      warning: true,
+      warningMessage: 'Phone from legacy profile needs confirmation'
+    })
+
+    const fieldRoot = container.querySelector('.d1-field')
+    const messageEl = container.querySelector('.mock-field-message')
+    expect(fieldRoot?.classList.contains('d1-field--warning')).toBe(true)
+    expect(fieldRoot?.classList.contains('d1-field--validation')).toBe(false)
+    expect(messageEl?.textContent).toBe('Phone from legacy profile needs confirmation')
+    expect(exposed.checkValidity()).toBe(true)
+  })
+
+  it('should emit focus and blur events with FocusEvent in interactive and readonly modes', async () => {
+    const { container, emittedEvents } = await mountInputPhone({
+      countryDefault: 'XK',
+      modelValue: '38344123456'
+    })
+
+    const input = container.querySelector('.d1-mask input') as HTMLInputElement
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('XK')
+    expect(input.value).toBe('+383-44-123-456')
+
+    input.dispatchEvent(new FocusEvent('focus'))
+    input.dispatchEvent(new FocusEvent('blur'))
+    await nextTick()
+
+    const focusEvents = emittedEvents.filter(event => event.type === 'focus')
+    const blurEvents = emittedEvents.filter(event => event.type === 'blur')
+    expect(focusEvents).toHaveLength(1)
+    expect(focusEvents[0]?.args[0]).toBeInstanceOf(FocusEvent)
+    expect(blurEvents).toHaveLength(1)
+    expect(blurEvents[0]?.args[0]).toBeInstanceOf(FocusEvent)
+
+    const { container: readonlyContainer, emittedEvents: readonlyEmitted } = await mountInputPhone({
+      countryDefault: 'RU',
+      readonly: true,
+      modelValue: '79001234567'
+    })
+
+    const readonlyInput = readonlyContainer.querySelector('input') as HTMLInputElement
+    readonlyInput.dispatchEvent(new FocusEvent('focus'))
+    readonlyInput.dispatchEvent(new FocusEvent('blur'))
+    await nextTick()
+
+    expect(readonlyEmitted.some(event => event.type === 'focus' && event.args[0] instanceof FocusEvent)).toBe(true)
+    expect(readonlyEmitted.some(event => event.type === 'blur' && event.args[0] instanceof FocusEvent)).toBe(true)
   })
 })

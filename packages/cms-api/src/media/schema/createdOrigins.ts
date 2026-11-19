@@ -1,27 +1,19 @@
-import { pgTable, serial, text } from 'drizzle-orm/pg-core'
-import { getCmsSystemStatusColumn } from '../../functions/schema/getCmsSystemStatusColumn'
-import { getCmsTimestampColumns } from '../../functions/schema/getCmsTimestampColumns'
+import { pgTable } from 'drizzle-orm/pg-core'
+import { getCmsBaseColumns } from '../../functions/schema/getCmsBaseColumns'
+import { getCmsBasicInfoColumns } from '../../functions/schema/getCmsBasicInfoColumns'
+import { getCmsCodeColumn } from '../../functions/schema/getCmsCodeColumn'
 
 /**
  * Created origins table schema for CMS /
  * Схема таблицы источников создания записей для CMS
  */
 export const createdOrigins = /* #__PURE__ */ pgTable('created_origins', {
+  // Base columns
+  ...getCmsBaseColumns(),
+
   // Identifiers
-  /** Origin identifier / Идентификатор источника */
-  id: serial('id').primaryKey(),
-  /** Unique origin code / Уникальный код источника */
-  code: text('code').notNull().unique(),
+  ...getCmsCodeColumn(),
 
   // Basic info
-  /** Display title or translation key / Отображаемое название или ключ перевода */
-  name: text('name').notNull(),
-  /** Origin description / Описание источника */
-  description: text('description'),
-
-  // System status
-  ...getCmsSystemStatusColumn(),
-
-  // Timestamps
-  ...getCmsTimestampColumns()
+  ...getCmsBasicInfoColumns()
 })

@@ -14,18 +14,18 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
   possibilities: {
     en: [
       'composes FieldLabel, FieldMessage, FieldCounter, Progress and icon includes',
-      'handles states: focus, disabled, readonly, selected, block, isValue',
+      'handles states: focus, disabled, readonly, selected, block, warning, isValue',
       'supports prefix, suffix, caption, leading and trailing slots',
-      'validation highlighting based on validationMessage and forceShowMessage',
+      'validation and non-blocking warning highlighting based on validationMessage, warning, warningMessage, and forceShowMessage',
       'optional cancel and navigation (arrow) icons with visibility flags',
       'counter position control with counterTop',
       'integrated helpers for sizing, element semantics, and icons (FieldSize, FieldElement, FieldIcons)'
     ],
     ru: [
       'композит из FieldLabel, FieldMessage, FieldCounter, Progress и включений иконок',
-      'обрабатывает состояния: focus, disabled, readonly, selected, block, isValue',
+      'обрабатывает состояния: focus, disabled, readonly, selected, block, warning, isValue',
       'поддерживает слоты prefix, suffix, caption, leading и trailing',
-      'подсветка валидации на основе validationMessage и forceShowMessage',
+      'подсветка валидации и неблокирующих предупреждений на основе validationMessage, warning, warningMessage и forceShowMessage',
       'дополнительные иконки отмены и навигации (стрелки) с флагами видимости',
       'управление позицией счётчика через counterTop',
       'встроенные помощники для размеров, семантики элемента и иконок (FieldSize, FieldElement, FieldIcons)'
@@ -241,6 +241,8 @@ await expect(component).toHaveTextContent('Caption slot')
         'block',
         'isValue',
         'loading',
+        'warning',
+        'warningMessage',
         'validationMessage',
         'forceShowMessage',
         'required'
@@ -267,11 +269,16 @@ await expect(component).toHaveTextContent('Caption slot')
               <input v-bind="binds" value="Load" readonly/>
             </template>
           </DesignComponent>
+          <DesignComponent classic is-value warning label="Classic Warning" warning-message="Needs confirmation">
+            <template #default="{binds}">
+              <input v-bind="binds" value="Warn" readonly/>
+            </template>
+          </DesignComponent>
         </div>
       `,
       play: `
 const items = canvasElement.querySelectorAll('.design-component')
-await expect(items.length).toBe(4)
+await expect(items.length).toBe(5)
 
 await expect(items[0].tagName).toBe('DIV')
 await expect(items[0]).toHaveClass('design-component--classic')
@@ -289,6 +296,9 @@ await expect(items[2]).toHaveClass('design-component--validation')
 
 await expect(items[3]).toHaveClass('design-component--tonal')
 await expect(items[3].querySelector('.design-component__loading')).not.toBeNull()
+
+await expect(items[4]).toHaveClass('design-component--warning')
+await expect(items[4]).not.toHaveClass('design-component--validation')
       `
     },
     {
@@ -415,8 +425,8 @@ await step('Trigger cancel icon click', async () => {
 </div>
     `,
     description: `
-Foundational wrapper component for all form inputs. Provides the structural layout, styling, and state management for labels, helper messages, validation errors, icons, and progress indicators.
-Features a composable structure with prefix/suffix slots, leading/trailing icons, and a character counter. Automatically handles validation states, loading spinners, and disabled/readonly appearances.
+Foundational wrapper component for all form inputs. Provides the structural layout, styling, and state management for labels, helper messages, non-blocking warnings (warning, warningMessage, warningId), validation errors, icons, and progress indicators.
+Features a composable structure with prefix/suffix slots, leading/trailing icons, and a character counter. Automatically handles validation states, non-blocking warning highlights (without failing checkValidity), loading spinners, and disabled/readonly appearances.
 Integrates with native inputs via the #default slot, exposing essential bindings (id, class, aria) to maintain design consistency and accessibility. Use as a base when creating custom form controls.
     `,
     hide: true

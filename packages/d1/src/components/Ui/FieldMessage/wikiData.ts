@@ -18,7 +18,8 @@ const propsNames: StorybookProps = [
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'maxlength', type: 'string | number' },
   { name: 'validationId', type: 'string' },
-  { name: 'validationMessage', type: 'string' }
+  { name: 'validationMessage', type: 'string' },
+  { name: 'warning', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 

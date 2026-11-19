@@ -314,10 +314,13 @@ export class Field extends DesignLogicAbstract<
    * @returns object with CSS classes / объект с CSS-классами
    */
   get classes(): ConstrClassObject {
+    const fieldElement = this.i('fieldElement')
+
     return {
       [this.naming.getStatusClass('cancel')]: FieldIcons.isCancel(this.props),
       [this.naming.getStatusClass('suffix')]: SuffixInclude.is(this.props, this.slots),
-      [this.naming.getStatusClass('validation')]: this.i('fieldElement').isValidation()
+      [this.naming.getStatusClass('warning')]: fieldElement.isWarning(),
+      [this.naming.getStatusClass('validation')]: fieldElement.isValidation()
     }
   }
 }

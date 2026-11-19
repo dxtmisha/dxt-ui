@@ -24,6 +24,8 @@ export type InputPhoneDialCodePropsInclude<
   disabled?: boolean
   /** Whether the input phone dial code is read-only / Только ли для чтения input phone dial code */
   readonly?: boolean
+  /** Whether the country selector is read-only while keeping the flag visible / Блокировать ли выбор страны с сохранением флага */
+  countryReadonly?: boolean
   /** Additional attributes for the InputPhoneDialCode component / Дополнительные атрибуты для компонента InputPhoneDialCode */
   inputPhoneDialCodeAttrs?: ConstrBind<InputPhoneDialCode>
 }

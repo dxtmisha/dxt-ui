@@ -1,28 +1,31 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-Component for displaying helper text, validation messages, and an optional character counter beneath form fields.
+Component for displaying helper text, non-blocking warnings, validation messages, and an optional character counter beneath form fields.
 
-`FieldMessage` centralizes the presentation of field hints and validation errors. It automatically toggles the validation state (`--validation`) when `validationMessage` or the `#validation` slot is active, attaches `role="alert"` to error messages, hides output when `disabled` unless `forceShow` is enabled, supports explicit `hasHtmlCode` rendering, and integrates `FieldCounter` and `Skeleton` styling.
+`FieldMessage` centralizes the presentation of field hints, non-blocking warnings, and validation errors. It automatically toggles the validation state (`--validation`) when `validationMessage` or the `#validation` slot is active, and the warning state (`--warning`) when `warning`, `warningMessage`, or the `#warning` slot is active (`validation` takes visual priority over `warning`, which takes priority over `helper`). It attaches `role="alert"` to error nodes, hides output when `disabled` unless `forceShow` is enabled, supports explicit `hasHtmlCode` rendering, and integrates `FieldCounter` and `Skeleton` styling.
 
 **Key features:**
 
-- **Helper & Validation Modes:** Separate `helperMessage` and `validationMessage` regions with automatic validation priority
-- **Accessible Semantics:** `role="alert"` on error nodes and configurable `helperId`, `validationId`, and `counterId` for `aria-describedby`
+- **Helper, Warning & Validation Modes:** Separate `helperMessage`, `warningMessage` / `warning`, and `validationMessage` regions with automatic validation > warning > helper priority
+- **Accessible Semantics:** `role="alert"` on error nodes and configurable `helperId`, `warningId`, `validationId`, and `counterId` for `aria-describedby`
 - **Visibility Control:** Automatic unmounting when empty or `disabled`, overridden via `forceShow`
-- **Safe HTML & Slots:** Escaped text by default, opt-in `hasHtmlCode` markup, and `#helper` / `#validation` scoped slots
+- **Safe HTML & Slots:** Escaped text by default, opt-in `hasHtmlCode` markup, and `#helper` / `#warning` / `#validation` scoped slots
 - **Counter & Skeleton Integration:** Built-in character counter support (`counterShow`, `counter`, `maxlength`, `counterTemplate`) and `isSkeleton` state
 
 **Common use cases:**
 
-- Helper hints and validation errors beneath inputs, textareas, and selects
+- Helper hints, non-blocking warnings, and validation errors beneath inputs, textareas, and selects
 - Accessible form feedback bound to controls via `aria-describedby`
-- Complex fields combining validation messages with character counters
+- Complex fields combining warning or validation messages with character counters
 
 <Source
     code={`
 <template>
   <!-- Helper message -->
   <FieldMessage helper-message="Enter your email address" />
+
+  <!-- Warning message (non-blocking) -->
+  <FieldMessage warning warning-message="Phone from legacy profile needs confirmation" />
 
   <!-- Validation message with counter -->
   <FieldMessage
@@ -35,6 +38,7 @@ Component for displaying helper text, validation messages, and an optional chara
   <!-- Slots -->
   <FieldMessage>
     <template #helper>Hint content</template>
+    <template #warning>Warning content</template>
     <template #validation>Error content</template>
   </FieldMessage>
 </template>
@@ -42,4 +46,4 @@ Component for displaying helper text, validation messages, and an optional chara
     language="html"
 />
 
-> `FieldMessage` coordinates accessible validation feedback, helper hints, and character counters while unmounting from the DOM when inactive.
+> `FieldMessage` coordinates accessible validation feedback, non-blocking warnings, helper hints, and character counters while unmounting from the DOM when inactive.

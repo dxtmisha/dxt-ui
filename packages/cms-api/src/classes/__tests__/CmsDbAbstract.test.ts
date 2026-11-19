@@ -4,12 +4,15 @@ import { permissions } from '../../media/schema/permissions'
 import { CmsDbAbstract } from '../CmsDbAbstract'
 import { CmsDbInstance } from '../CmsDbInstance'
 import { CmsDbSystemStatus } from '../CmsDbSystemStatus'
+import { CmsDbTimestamp } from '../CmsDbTimestamp'
 import type { CmsDb, CmsSystemStatus } from '../../types/cmsDbTypes'
 
 interface MockQueryChain {
   from: ReturnType<typeof vi.fn>
   where: ReturnType<typeof vi.fn>
   limit: ReturnType<typeof vi.fn>
+  set: ReturnType<typeof vi.fn>
+  returning: ReturnType<typeof vi.fn>
   then: (onFulfilled: (value: unknown) => unknown, onRejected?: (reason: unknown) => unknown) => Promise<unknown>
 }
 
@@ -21,6 +24,8 @@ function createChain(resolveNext: () => unknown): MockQueryChain {
     from: vi.fn(() => chain),
     where: vi.fn(() => chain),
     limit: vi.fn(() => chain),
+    set: vi.fn(() => chain),
+    returning: vi.fn(() => chain),
     then: (onFulfilled, onRejected) => {
       if (!resolved) {
         resolved = true
@@ -34,10 +39,12 @@ function createChain(resolveNext: () => unknown): MockQueryChain {
   return chain
 }
 
-function createMockDb(selectQueue: unknown[][] = []) {
-  const queue = [...selectQueue]
+function createMockDb(selectQueue: unknown[][] = [], updateQueue: unknown[][] = []) {
+  const sQueue = [...selectQueue]
+  const uQueue = [...updateQueue]
   const db = {
-    select: vi.fn(() => createChain(() => queue.shift() ?? []))
+    select: vi.fn(() => createChain(() => sQueue.shift() ?? [])),
+    update: vi.fn(() => createChain(() => uQueue.shift() ?? []))
   }
 
   const dbInstance = new CmsDbInstance()
@@ -51,15 +58,27 @@ function createMockDb(selectQueue: unknown[][] = []) {
 
 class TestCmsDbItem extends CmsDbAbstract<typeof permissions> {
   hasSystemStatusInstance(): boolean {
-    return this.systemStatus !== undefined
+    return this.systemStatusInstance !== undefined
+  }
+
+  hasTimestampInstance(): boolean {
+    return this.timestampInstance !== undefined
   }
 
   readSystemStatus(): CmsDbSystemStatus<typeof permissions> {
-    return this.getSystemStatus()
+    return this.systemStatus
+  }
+
+  readTimestamp(): CmsDbTimestamp<typeof permissions> {
+    return this.timestamp
   }
 
   readSystemStatusById(id: number): Promise<CmsSystemStatus | undefined> {
-    return this.getSystemStatus().get(id)
+    return this.systemStatus.get(id)
+  }
+
+  activateRecord(id: number): Promise<boolean> {
+    return this.systemStatus.activate(id)
   }
 }
 
@@ -69,18 +88,26 @@ describe('CmsDbAbstract', () => {
     ErrorCenter.setIsConsole(true)
   })
 
-  it('lazily initializes and caches CmsDbSystemStatus via getSystemStatus()', async () => {
-    const { dbInstance, raw } = createMockDb([[{ systemStatus: 'active' }]])
+  it('lazily initializes and caches CmsDbSystemStatus and CmsDbTimestamp via getters', async () => {
+    const { dbInstance, raw } = createMockDb([[{ systemStatus: 'active' }]], [[{ id: 5 }]])
     const instance = new TestCmsDbItem(permissions, dbInstance)
 
     expect(instance.hasSystemStatusInstance()).toBe(false)
+    expect(instance.hasTimestampInstance()).toBe(false)
 
     const statusManager = instance.readSystemStatus()
     expect(statusManager).toBeInstanceOf(CmsDbSystemStatus)
     expect(instance.hasSystemStatusInstance()).toBe(true)
+    expect(instance.hasTimestampInstance()).toBe(false)
     expect(instance.readSystemStatus()).toBe(statusManager)
 
     expect(await instance.readSystemStatusById(5)).toBe('active')
+    expect(instance.hasTimestampInstance()).toBe(false)
+
+    expect(await instance.activateRecord(5)).toBe(true)
+    expect(instance.hasTimestampInstance()).toBe(true)
+    expect(instance.readTimestamp()).toBeInstanceOf(CmsDbTimestamp)
     expect(raw.select).toHaveBeenCalledTimes(1)
+    expect(raw.update).toHaveBeenCalledTimes(1)
   })
 })

@@ -80,7 +80,10 @@ describe('FieldMessageInclude (isolated class)', () => {
       const isCounter = ref(true)
       const props = reactive<FieldMessagePropsInclude>({
         helperMessage: 'Hint',
+        warning: true,
+        warningMessage: 'Needs confirmation',
         helperId: 'h-1',
+        warningId: 'w-1',
         validationId: 'v-1',
         counterId: 'c-1',
         forceShowMessage: true,
@@ -112,8 +115,10 @@ describe('FieldMessageInclude (isolated class)', () => {
         'forceShow': true,
         'hasHtmlCode': true,
         'helperMessage': 'Hint',
+        'warningMessage': 'Needs confirmation',
         'validationMessage': 'From attrs',
         'helperId': 'h-1',
+        'warningId': 'w-1',
         'validationId': 'v-1',
         'counterId': 'c-1',
         'counter': 0,

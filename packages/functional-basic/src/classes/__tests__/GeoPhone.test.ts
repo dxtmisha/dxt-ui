@@ -41,6 +41,13 @@ describe('GeoPhone', () => {
       expect(vietnamData).toBeDefined()
       expect(vietnamData?.value).toBe('VN')
       expect(vietnamData?.phone).toBe(84)
+
+      const kosovoData = GeoPhone.get('XK')
+      expect(kosovoData).toBeDefined()
+      expect(kosovoData?.value).toBe('XK')
+      expect(kosovoData?.phone).toBe(383)
+      expect(kosovoData?.within).toBe('0')
+      expect(kosovoData?.mask).toEqual(['+383-**-***-***', '+383-**-***-****'])
     })
 
     it('should resolve alternative country aliases (e.g. UK -> GB)', () => {

@@ -327,5 +327,18 @@ export const wikiInformation: StorybookArgsToList = {
     },
     isDemo: true,
     demo: 'Validation message'
+  },
+  warningMessage: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string',
+      description: {
+        en: 'Non-blocking warning message text',
+        ru: 'Текст предупреждающего сообщения, не блокирующего валидацию'
+      }
+    },
+    isDemo: true,
+    demo: 'Warning message'
   }
 }

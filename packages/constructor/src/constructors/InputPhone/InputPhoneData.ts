@@ -190,6 +190,17 @@ export class InputPhoneData extends DesignLifecycleAbstract {
   }
 
   /**
+   * Normalizes country code to a starting phone prefix.
+   *
+   * Нормализует код страны в стартовый телефонный префикс.
+   * @param country country code / код страны
+   * @returns phone prefix / телефонный префикс
+   */
+  toPhone(country: string): string {
+    return (GeoPhone.get(country)?.phone ?? 1).toString()
+  }
+
+  /**
    * Checks whether the current phone value still belongs to the selected country or only holds its shared prefix.
    *
    * Проверяет, соответствует ли текущее значение выбранной стране или содержит только её общий префикс.
@@ -211,17 +222,6 @@ export class InputPhoneData extends DesignLifecycleAbstract {
 
     return cleanValue === this.toPhone(country)
       || valueItem.items.some(item => item.value === country)
-  }
-
-  /**
-   * Normalizes country code to a starting phone prefix.
-   *
-   * Нормализует код страны в стартовый телефонный префикс.
-   * @param country country code / код страны
-   * @returns phone prefix / телефонный префикс
-   */
-  protected toPhone(country: string): string {
-    return (GeoPhone.get(country)?.phone ?? 1).toString()
   }
 
   /**

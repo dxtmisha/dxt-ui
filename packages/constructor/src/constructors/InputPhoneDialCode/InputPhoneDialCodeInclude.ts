@@ -36,12 +36,14 @@ export class InputPhoneDialCodeInclude extends ComponentIncludeAbstract<
    */
   protected override toBinds(): Partial<ConstrBind<InputPhoneDialCodeProps>> {
     const props = this.getProps()
+    const readonly = props.readonly || props.countryReadonly
 
     return mergeProps(
       super.toBinds(),
-      props.disabled !== undefined || props.readonly !== undefined
-        ? { disabled: Boolean(props.disabled || props.readonly) }
-        : {}
+      {
+        ...(props.disabled !== undefined ? { disabled: props.disabled } : {}),
+        ...(readonly || props.readonly !== undefined ? { readonly: Boolean(readonly) } : {})
+      }
     ) as Partial<ConstrBind<InputPhoneDialCodeProps>>
   }
 }

@@ -18,6 +18,7 @@ export const wikiDescriptionsInputPhoneDialCode: StorybookComponentsDescriptionI
       'configurable label display: country name, phone code, or none',
       'reactive model binding via v-model:model-selected and value',
       'customizable trailing icon (arrow) for open/close indication',
+      'supports readonly locking and automatically locks when menuCountryAttrs.list restricts choices to a single country',
       'disables automatic focus return on window close and forwards window events to parent controls',
       'inherits all Button and MenuCountry capabilities'
     ],
@@ -27,6 +28,7 @@ export const wikiDescriptionsInputPhoneDialCode: StorybookComponentsDescriptionI
       'настраиваемый тип метки: название страны, телефонный код или без метки',
       'реактивная привязка модели через v-model:model-selected и value',
       'настраиваемая иконка-стрелка для индикации открытия/закрытия',
+      'поддерживает блокировку выбора через readonly и автоматически блокируется, если menuCountryAttrs.list ограничен одной страной',
       'отключает автоматический возврат фокуса при закрытии окна и пробрасывает событие window наружу',
       'наследует все возможности компонентов Button и MenuCountry'
     ]
@@ -161,15 +163,23 @@ await waitFor(async () => {
     {
       id: 'InputPhoneDialCodeTestStates',
       name: {
-        en: 'Test: Disabled, arrow icon, and attributes',
-        ru: 'Тест: Отключённое состояние, стрелка и атрибуты'
+        en: 'Test: Disabled, readonly, single-country lock, arrow icon, and attributes',
+        ru: 'Тест: Отключённое состояние, readonly, одна страна, стрелка и атрибуты'
       },
-      propsName: ['disabled', 'iconArrowDown', 'buttonAttrs', 'menuCountryAttrs'],
+      propsName: ['disabled', 'readonly', 'iconArrowDown', 'buttonAttrs', 'menuCountryAttrs'],
       template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--auto">
             <div class="wiki-storybook-item__label">disabled</div>
             <DesignComponent value="US" label-type="code" disabled :menu-country-attrs="{ list: ['US', 'VN'] }"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--auto">
+            <div class="wiki-storybook-item__label">readonly</div>
+            <DesignComponent value="RU" label-type="code" readonly icon-arrow-down="expand_more" :menu-country-attrs="{ list: ['US', 'RU'] }"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--auto">
+            <div class="wiki-storybook-item__label">single country auto-lock</div>
+            <DesignComponent value="RU" label-type="code" icon-arrow-down="expand_more" :menu-country-attrs="{ list: ['RU'] }"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--auto">
             <div class="wiki-storybook-item__label">custom arrow & buttonAttrs</div>
@@ -185,12 +195,16 @@ await waitFor(async () => {
       `,
       play: `
 const triggers = canvasElement.querySelectorAll<HTMLButtonElement>('.design-component__button')
-await expect(triggers.length).toBe(2)
+await expect(triggers.length).toBe(4)
 
 await expect(triggers[0]).toBeDisabled()
-await expect(triggers[1]).not.toBeDisabled()
-await expect(triggers[1]).toHaveAttribute('data-custom', 'button-prop')
-await expect(triggers[1]).toHaveTextContent('expand_more')
+await expect(triggers[1]).toBeDisabled()
+await expect(triggers[1]).toHaveTextContent('+7')
+await expect(triggers[2]).toBeDisabled()
+await expect(triggers[2]).toHaveTextContent('+7')
+await expect(triggers[3]).not.toBeDisabled()
+await expect(triggers[3]).toHaveAttribute('data-custom', 'button-prop')
+await expect(triggers[3]).toHaveTextContent('expand_more')
       `
     },
     {
@@ -286,6 +300,7 @@ await waitFor(async () => {
 The InputPhoneDialCode component is a compact trigger button that opens a MenuCountry popup for selecting a country phone dial code.
 It automatically detects the user's current country via Geo.getCountry() as the default value and reactively binds the selection via v-model:model-selected (or value + @update:selected).
 The trigger button can display the selected country's flag icon alongside an optional label — either the phone code (e.g. "+1") or the country name — controlled by the labelType prop ('code' | 'name' | 'none').
+Supports readonly locking (and automatically locks when menuCountryAttrs.list contains a single country/dial code), keeping the flag and dial code visible while disabling menu interaction.
 The trailing arrow icon reflects the open/close state of the menu. It configures the underlying window with disableFocusReturn enabled and forwards the window lifecycle event so host inputs can manage focus directly on close. Typically used as a prefix element inside a phone number input field.
     `,
     hide: true

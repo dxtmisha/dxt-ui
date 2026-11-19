@@ -1,0 +1,35 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Country Selector Locking
+
+The `countryReadonly` property locks the country dial code selector while keeping the flag and country dial code visible, leaving the phone number field editable.
+
+Unlike `countryBlock` (which hides the selector completely and formats the value using only the local national pattern), `countryReadonly` preserves the full international mask and displays the locked country prefix. In addition, the selector automatically enters this locked state when `inputPhoneDialCodeAttrs.menuCountryAttrs.list` restricts available countries to a single entry (or a single phone dial code).
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+const phone = ref('79001234567')
+</script>
+
+<template>
+  <!-- Explicit country selector lock -->
+  <InputPhone
+    v-model:value="phone"
+    country-default="RU"
+    :country-readonly="true"
+    label="Locked selector (RU)"
+  />
+
+  <!-- Automatic lock when restricted to a single country -->
+  <InputPhone
+    v-model:value="phone"
+    country-default="RU"
+    :input-phone-dial-code-attrs="{ menuCountryAttrs: { list: ['RU'] } }"
+    label="Single-country list (RU)"
+  />
+</template>
+  `}
+    language="html"
+/>

@@ -9492,6 +9492,22 @@
               }
             }
           },
+          "warning": {
+            "name": "warning",
+            "type": "var",
+            "value": {
+              "color": {
+                "name": "--d1-field-warning-color",
+                "type": "var",
+                "value": "{sys.palette.warning}"
+              },
+              "borderColor": {
+                "name": "--d1-field-warning-borderColor",
+                "type": "var",
+                "value": "{sys.palette.warning}"
+              }
+            }
+          },
           "disabled": {
             "name": "disabled",
             "type": "selector",

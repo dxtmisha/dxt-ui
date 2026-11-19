@@ -6,12 +6,12 @@ InputPhone объединяет обёртку Field, селектор кода 
 
 **Основные возможности:**
 
-- Автоматическое определение страны по введённому префиксу номера телефона
-- Встроенный селектор `InputPhoneDialCode` с поиском по странам, флагами и телефонными кодами
+- Автоматическое определение страны по введённому или вставленному номеру (поддерживает замену при полном выделении поля и нормализацию ведущего `+` с национальным префиксом `within`, например `+8...` -> `+7...`)
+- Встроенный селектор `InputPhoneDialCode` с поиском по странам, флагами и телефонными кодами (включая `XK` Косово `+383`)
+- Режимы фиксации страны: `countryBlock` (скрывает селектор и включает локальный формат) и `countryReadonly` (блокирует выбор, сохраняя видимыми флаг и код; включается автоматически при списке из одной страны)
 - Динамическое форматирование маски через `Mask` (`maskAttrs`, `countryDefault`)
-- Режим блокировки страны (`countryBlock`) для ввода локального номера без селектора кода
-- Встроенная валидация (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`)
-- Двусторонняя привязка (`v-model`, `v-model:value`) и программный API (`getValue`, `setValue`, `clear`, `checkValidity`, `getValidationMessage`)
+- Встроенная валидация (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`) и неблокирующие предупреждения (`warning`, `warningMessage`, `warningId`)
+- События (`input`, `inputLite`, `change`, `changeLite`, `focus`, `blur`), двусторонняя привязка (`v-model`, `v-model:value`) и программный API (`getValue`, `setValue`, `clear`, `checkValidity`, `getValidationMessage`)
 - Поддержка слотов (`leading`, `trailing`, `prefix`, `suffix`, `label`) и доступность (`inputmode="tel"`, ARIA-атрибуты)
 
 **Типичные сценарии использования:**

@@ -140,6 +140,17 @@ export const wikiOption: StorybookArgsToList = {
     },
     hide: true
   },
+  countryReadonly: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Disables country selector interaction while keeping the country flag and dial code visible. Also activates automatically when the country list contains a single country',
+        ru: 'Блокирует выбор страны в селекторе, сохраняя отображение флага и телефонного кода. Также срабатывает автоматически, если в списке доступна только одна страна'
+      }
+    },
+    hide: true
+  },
   crop: {
     type: StorybookControl.boolean,
     options: {

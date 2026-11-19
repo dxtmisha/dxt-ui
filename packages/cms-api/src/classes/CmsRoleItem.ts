@@ -19,6 +19,7 @@ import { rolePermissions } from '../media/schema/rolePermissions'
 import { roles } from '../media/schema/roles'
 import { userRoles } from '../media/schema/userRoles'
 import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsDbResolver } from './CmsDbResolver'
 import { CmsPermissionItem } from './CmsPermissionItem'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
@@ -747,7 +748,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     executor: CmsDbExecutor,
     roleIds?: readonly number[]
   ): Promise<number[]> {
-    return CmsDbAbstract.resolveEntityIdsByIds(
+    return CmsDbResolver.resolveByIds(
       'cms-role',
       'notFound',
       uniqueIds => executor
@@ -770,7 +771,7 @@ export class CmsRoleItem extends CmsDbAbstract<typeof roles> {
     executor: CmsDbExecutor,
     roleCodes?: readonly string[]
   ): Promise<number[]> {
-    return CmsDbAbstract.resolveEntityIdsByCodes(
+    return CmsDbResolver.resolveByCodes(
       'cms-role',
       'notFound',
       uniqueCodes => executor

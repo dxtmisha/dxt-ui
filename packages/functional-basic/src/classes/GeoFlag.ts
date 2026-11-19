@@ -271,6 +271,7 @@ export class GeoFlag {
     VU: `${GEO_FLAG_ICON_NAME}-vu`,
     WF: `${GEO_FLAG_ICON_NAME}-wf`,
     WS: `${GEO_FLAG_ICON_NAME}-ws`,
+    XK: `${GEO_FLAG_ICON_NAME}-xk`,
     YE: `${GEO_FLAG_ICON_NAME}-ye`,
     YT: `${GEO_FLAG_ICON_NAME}-yt`,
     ZA: `${GEO_FLAG_ICON_NAME}-za`,

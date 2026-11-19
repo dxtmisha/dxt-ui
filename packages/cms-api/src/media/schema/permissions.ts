@@ -1,31 +1,23 @@
-import { pgTable, serial, text } from 'drizzle-orm/pg-core'
+import { pgTable } from 'drizzle-orm/pg-core'
+import { getCmsBaseColumns } from '../../functions/schema/getCmsBaseColumns'
+import { getCmsBasicInfoColumns } from '../../functions/schema/getCmsBasicInfoColumns'
+import { getCmsCodeColumn } from '../../functions/schema/getCmsCodeColumn'
 import { getCmsCreatedOriginColumn } from '../../functions/schema/getCmsCreatedOriginColumn'
-import { getCmsSystemStatusColumn } from '../../functions/schema/getCmsSystemStatusColumn'
-import { getCmsTimestampColumns } from '../../functions/schema/getCmsTimestampColumns'
 
 /**
  * Permissions table schema for CMS /
  * Схема таблицы прав доступа для CMS
  */
 export const permissions = /* #__PURE__ */ pgTable('permissions', {
+  // Base columns
+  ...getCmsBaseColumns(),
+
   // Identifiers
-  /** Permission identifier / Идентификатор права доступа */
-  id: serial('id').primaryKey(),
-  /** Unique permission code / Уникальный код права доступа */
-  code: text('code').notNull().unique(),
+  ...getCmsCodeColumn(),
 
   // Basic info
-  /** Display title / Отобраемое название */
-  name: text('name').notNull(),
-  /** Permission description / Описание права доступа */
-  description: text('description'),
-
-  // System status
-  ...getCmsSystemStatusColumn(),
+  ...getCmsBasicInfoColumns(),
 
   // Origin
-  ...getCmsCreatedOriginColumn(),
-
-  // Timestamps
-  ...getCmsTimestampColumns()
+  ...getCmsCreatedOriginColumn()
 })

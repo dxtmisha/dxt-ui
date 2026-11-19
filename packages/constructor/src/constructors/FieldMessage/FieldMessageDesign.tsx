@@ -103,6 +103,29 @@ export class FieldMessageDesign<
   }
 
   /**
+   * Rendering warning.
+   *
+   * Рендеринг предупреждения.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderWarning = (): VNode[] => {
+    if (this.item.isWarning()) {
+      return [
+        this.renderMessageItem(
+          'warning',
+          this.props.warningId,
+          this.classes?.value.warning,
+          'warning',
+          this.item.slotWarningData,
+          this.props.warningMessage
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
    * Rendering error.
    *
    * Рендеринг ошибки.
@@ -148,6 +171,7 @@ export class FieldMessageDesign<
       ...{
         // :classes [!] System label / Системная метка
         info: this.naming.getSubClass('info'),
+        warning: this.naming.getSubClass('warning'),
         error: this.naming.getSubClass('error'),
         fieldCounter: this.naming.getSubClass('fieldCounter')
         // :classes [!] System label / Системная метка
@@ -186,6 +210,7 @@ export class FieldMessageDesign<
         ),
         [
           ...this.renderInfo(),
+          ...this.renderWarning(),
           ...this.renderError(),
           ...this.item.callInstance('fieldCounter', item => item.render(), [])
         ]

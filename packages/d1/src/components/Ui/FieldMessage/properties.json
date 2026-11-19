@@ -4,6 +4,10 @@
   "padding-top": "{sys.spacing.x}",
   "link|font": "{font.bodyMedium}",
   "color-opacity": "{sys.opacity.surface.medium}",
+  "warning": {
+    "color": "{sys.palette.warning}",
+    "color-opacity": "{sys.opacity.surface.high}"
+  },
   "validation": {
     "color": "{sys.palette.error}",
     "color-opacity": "{sys.opacity.surface.high}"

@@ -133,6 +133,15 @@ describe('InputPhoneDialCode (Unit)', () => {
     expect(emits).toHaveBeenCalledWith('click', mouseEvent, { type: 'item', value: 'FR', detail: { code: '+33' } })
     expect(emits).toHaveBeenCalledWith('clickLite', { type: 'item', value: 'FR', detail: { code: '+33' } })
 
+    emits.mockClear()
+    dialCode.onClick(mouseEvent, {
+      type: 'group',
+      value: [{ index: 'DO', value: 'DO' }, { index: 'DO-1-829', value: 'DO-1-829' }],
+      detail: undefined
+    })
+    expect(dialCode.i('model').get()).toBe('FR')
+    expect(emits).not.toHaveBeenCalled()
+
     scope.stop()
   })
 
@@ -212,6 +221,47 @@ describe('InputPhoneDialCode (Unit)', () => {
       iconTrailing: 'keyboard_arrow_down',
       iconTurn: true
     })
+
+    props.readonly = true
+    selectedList.value = [{
+      icon: 'flag-vn',
+      caption: '+84',
+      label: 'Vietnam',
+      value: 'VN'
+    }]
+    expect(dialCode.bindsButton).toEqual({
+      disabled: false,
+      readonly: true,
+      icon: 'flag-vn',
+      iconTrailing: undefined,
+      iconTurn: true
+    })
+    expect(dialCode.bindsMenu.disabled).toBe(true)
+
+    props.readonly = false
+    props.menuCountryAttrs = { list: ['RU'] }
+    expect(dialCode.bindsButton).toEqual({
+      disabled: false,
+      readonly: true,
+      icon: 'flag-vn',
+      iconTrailing: undefined,
+      iconTurn: true
+    })
+    expect(dialCode.bindsMenu.disabled).toBe(true)
+
+    props.menuCountryAttrs = { list: ['DO'] }
+    expect(dialCode.bindsButton).toEqual({
+      disabled: false,
+      readonly: false,
+      icon: 'flag-vn',
+      iconTrailing: 'keyboard_arrow_down',
+      iconTurn: true
+    })
+    expect(dialCode.bindsMenu.disabled).toBeUndefined()
+
+    props.menuCountryAttrs = { list: ['US', 'DE'] }
+    expect(dialCode.bindsButton.iconTrailing).toBe('keyboard_arrow_down')
+    expect(dialCode.bindsMenu.disabled).toBeUndefined()
 
     scope.stop()
   })

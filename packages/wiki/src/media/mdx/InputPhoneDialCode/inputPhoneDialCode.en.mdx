@@ -10,8 +10,9 @@ InputPhoneDialCode is a compact trigger button that opens a **MenuCountry** popu
 - **Country Popup Selection:** Opens a `MenuCountry` popup displaying country flags, names, and phone dial codes (`showPhoneCode: true`)
 - **Configurable Label Modes:** Supports `code` (e.g. `+1`), `name` (country name), or `none` via `labelType`
 - **Trailing Arrow Indicator:** Reflects the popup open/close state via `iconTurn` and supports custom `iconArrowDown` icons
+- **Readonly & Single-Country Lock:** Locks menu interaction via `readonly` (or automatically when `menuCountryAttrs.list` contains only one country/dial code) while keeping the flag and dial code visible
 - **Focus Management:** Configures `disableFocusReturn: true` on the popup window and forwards `window` events so host phone inputs can manage focus on close
-- **Inherited Capabilities:** Inherits `Button` and `MenuCountry` configuration via `buttonAttrs`, `menuCountryAttrs`, and `disabled`
+- **Inherited Capabilities:** Inherits `Button` and `MenuCountry` configuration via `buttonAttrs`, `menuCountryAttrs`, `readonly`, and `disabled`
 
 **Common use cases:**
 

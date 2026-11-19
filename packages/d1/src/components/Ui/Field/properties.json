@@ -19,6 +19,11 @@
       "opacity": "{sys.opacity.surface.disabled}"
     }
   },
+  "warning": {
+    "color": "{sys.palette.warning}",
+    "border-color": "{sys.palette.warning}",
+    "_type": "var"
+  },
   "validation": {
     "color": "{sys.palette.error}",
     "border-color": "{sys.palette.error}"
@@ -109,6 +114,15 @@
       "palette-background": "{sys.palette.primary}",
       "background-opacity": "{sys.opacity.overlay}",
       "backdrop-filter": "{sys.blur.xl}"
+    },
+    "&.??--warning": {
+      "#body": {
+        "background-color": "{sys.palette.warning}",
+        "gradient": "{sys.palette.warning}",
+        "#input": {
+          "gradient": "{sys.palette.warning}"
+        }
+      }
     },
     "&.??--validation": {
       "#body": {

@@ -16,8 +16,18 @@ export type CmsIdTable = PgTable & {
   id: PgColumn
   /** System record status column / Колонка системного статуса записи */
   systemStatus: PgColumn
+  /** Optional creation timestamp column / Необязательная колонка даты создания */
+  createdAt?: PgColumn
   /** Optional last update timestamp column / Необязательная колонка даты последнего обновления */
   updatedAt?: PgColumn
+}
+
+/** Timestamp values pair returned for a CMS record / Пара временных меток, возвращаемая для записи CMS */
+export interface CmsTimestampValues {
+  /** Creation timestamp / Дата создания */
+  createdAt?: Date
+  /** Last update timestamp / Дата последнего обновления */
+  updatedAt?: Date
 }
 
 /** Created origin record selected from database / Запись источника создания, полученная из базы данных */

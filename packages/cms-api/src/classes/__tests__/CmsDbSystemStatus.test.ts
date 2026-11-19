@@ -4,6 +4,7 @@ import { registerCmsErrorCauses } from '../../functions/registerCmsErrorCauses'
 import { permissions } from '../../media/schema/permissions'
 import { CmsDbInstance } from '../CmsDbInstance'
 import { CmsDbSystemStatus } from '../CmsDbSystemStatus'
+import { CmsDbTimestamp } from '../CmsDbTimestamp'
 import type { CmsDb } from '../../types/cmsDbTypes'
 
 interface MockQueryChain {
@@ -146,6 +147,9 @@ describe('CmsDbSystemStatus', () => {
       expect(await status.softDelete(7)).toBe(true)
       expect(await status.softDelete(888)).toBe(false)
 
+      const minimalTimestamp = new CmsDbTimestamp(permissions, dbInstance)
+      expect(minimalTimestamp).toBeInstanceOf(CmsDbTimestamp)
+
       expect(raw.update).toHaveBeenCalledTimes(5)
       expect(updateChains[0].set).toHaveBeenCalledWith(expect.objectContaining({
         systemStatus: 'blocked',
@@ -163,6 +167,22 @@ describe('CmsDbSystemStatus', () => {
         systemStatus: 'deleted',
         updatedAt: expect.any(Date)
       }))
+    })
+
+    it('lazily invokes getTimestamp factory only during update operations', async () => {
+      const { dbInstance } = createMockDb({
+        selectQueue: [[{ systemStatus: 'active' }]],
+        updateQueue: [[{ id: 7 }]]
+      })
+      const timestampFactory = vi.fn(() => new CmsDbTimestamp(permissions, dbInstance))
+      const status = new CmsDbSystemStatus(permissions, dbInstance, timestampFactory)
+
+      expect(timestampFactory).not.toHaveBeenCalled()
+      expect(await status.get(7)).toBe('active')
+      expect(timestampFactory).not.toHaveBeenCalled()
+
+      expect(await status.activate(7)).toBe(true)
+      expect(timestampFactory).toHaveBeenCalledTimes(1)
     })
   })
 })

@@ -35,6 +35,10 @@ export class FieldMessageMessage {
       return this.props.validationMessage
     }
 
+    if (isFilled(this.props.warningMessage)) {
+      return this.props.warningMessage
+    }
+
     if (isFilled(this.props.helperMessage)) {
       return this.props.helperMessage
     }
@@ -49,7 +53,7 @@ export class FieldMessageMessage {
    * @returns boolean value / логическое значение
    */
   is(): boolean {
-    return this.isHelper() || this.isValidation()
+    return this.isHelper() || this.isWarning() || this.isValidation()
   }
 
   /**
@@ -62,6 +66,22 @@ export class FieldMessageMessage {
     return Boolean(
       isFilled(this.props.helperMessage)
       || this.slots?.helper
+    )
+  }
+
+  /**
+   * Checks if there is a warning message or active warning slot without validation errors.
+   *
+   * Проверяет, есть ли предупреждающее сообщение или слот warning при отсутствии ошибки валидации.
+   * @returns boolean value / логическое значение
+   */
+  isWarning(): boolean {
+    return Boolean(
+      !this.isValidation()
+      && (
+        isFilled(this.props.warningMessage)
+        || this.slots?.warning
+      )
     )
   }
 

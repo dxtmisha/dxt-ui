@@ -251,6 +251,10 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   readonly onPaste = (event: ClipboardEvent): void => {
+    if (event.defaultPrevented) {
+      return
+    }
+
     eventStopPropagation(event)
     this.isPaste = true
     const { start, end } = this.getSelectionInfo(event)

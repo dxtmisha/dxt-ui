@@ -120,6 +120,29 @@ export class FieldElement extends DesignLifecycleAbstract {
   }
 
   /**
+   * Checks if a warning state needs to be displayed (validation errors take precedence).
+   *
+   * Проверяет, надо ли отображать состояние предупреждения (ошибка валидации имеет приоритет).
+   * @returns true if warning should be shown / true, если предупреждение должно отображаться
+   */
+  isWarning(): boolean {
+    return Boolean(
+      !this.isValidation()
+      && (
+        this.props.warning
+        || isFilled(this.props.warningMessage)
+      )
+      && (
+        this.props.forceShowMessage
+        || (
+          !this.props.readonly
+          && !this.props.disabled
+        )
+      )
+    )
+  }
+
+  /**
    * Updates the input element reference.
    *
    * Обновляет ссылку на элемент ввода.

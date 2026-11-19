@@ -37,6 +37,9 @@ export class FieldMessageInclude<
   /** Default unique identifier for the helper message / Уникальный идентификатор по умолчанию для вспомогательного сообщения */
   readonly helperIdDefault: string = getElementId()
 
+  /** Default unique identifier for the warning message / Уникальный идентификатор по умолчанию для предупреждающего сообщения */
+  readonly warningIdDefault: string = getElementId()
+
   /** Default unique identifier for the validation message / Уникальный идентификатор по умолчанию для сообщения валидации */
   readonly validationIdDefault: string = getElementId()
 
@@ -97,6 +100,10 @@ export class FieldMessageInclude<
         ids.push(this.helperId)
       }
 
+      if (isFilled(props.warningMessage ?? propsAttrs?.warningMessage)) {
+        ids.push(this.warningId)
+      }
+
       if (isFilled(this.validation ?? propsAttrs?.validationMessage)) {
         ids.push(this.validationId)
       }
@@ -120,6 +127,16 @@ export class FieldMessageInclude<
    */
   get helperId(): string {
     return this.getProps().helperId ?? this.getPropsAttrs()?.helperId ?? this.helperIdDefault
+  }
+
+  /**
+   * Get the warning message identifier.
+   *
+   * Получить идентификатор предупреждающего сообщения.
+   * @returns unique warning message ID / уникальный идентификатор предупреждающего сообщения
+   */
+  get warningId(): string {
+    return this.getProps().warningId ?? this.getPropsAttrs()?.warningId ?? this.warningIdDefault
   }
 
   /**
@@ -182,9 +199,11 @@ export class FieldMessageInclude<
         forceShow: props.forceShowMessage,
         hasHtmlCode: props.hasHtmlCode,
         helperMessage: props.helperMessage,
+        warningMessage: props.warningMessage,
         validationMessage: this.validation,
 
         helperId: props.helperId ?? superBinds.helperId ?? this.helperIdDefault,
+        warningId: props.warningId ?? superBinds.warningId ?? this.warningIdDefault,
         validationId: props.validationId ?? superBinds.validationId ?? this.validationIdDefault,
         counterId: props.counterId ?? superBinds.counterId ?? this.counterIdDefault
       })

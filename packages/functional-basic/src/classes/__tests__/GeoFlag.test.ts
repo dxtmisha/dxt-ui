@@ -198,5 +198,7 @@ describe('GeoFlag', () => {
     expect(GeoFlag.flags['FR']).toBe('f-fr')
     expect(GeoFlag.flags['JP']).toBe('f-jp')
     expect(GeoFlag.flags['VN']).toBe('f-vn')
+    expect(GeoFlag.flags['XK']).toBe('f-xk')
+    expect(new GeoFlag('en-US').getFlag('XK')).toBe('f-xk')
   })
 })

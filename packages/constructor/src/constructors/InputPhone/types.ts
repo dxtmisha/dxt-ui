@@ -20,7 +20,12 @@ export type InputPhoneComponents = FieldComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type InputPhoneEmits = FieldBasicEmits
+export type InputPhoneEmits = FieldBasicEmits & {
+  /** Event triggered on focus / Событие при фокусе */
+  focus: [event: FocusEvent]
+  /** Event triggered on blur / Событие при потере фокуса */
+  blur: [event: FocusEvent]
+}
 
 /**
  * Type describing available properties.

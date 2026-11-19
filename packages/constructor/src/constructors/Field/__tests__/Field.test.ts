@@ -228,6 +228,34 @@ describe('Field component integration', () => {
     expect(container.querySelector('[data-event-type="cancel"]')).toBeNull()
   })
 
+  it('should apply warning class and describedby without setting aria-invalid until validationMessage is present', async () => {
+    const { container, props } = await mountField(
+      {
+        classic: true,
+        id: 'warn-field',
+        warning: true,
+        warningMessage: 'Verify phone number',
+        warningId: 'warn-msg'
+      },
+      {
+        default: control => h('input', { ...control.binds, type: 'text' })
+      }
+    )
+
+    const root = container.firstElementChild as HTMLElement
+    const input = root.querySelector('input') as HTMLInputElement
+    expect(root.classList.contains('d1-field--warning')).toBe(true)
+    expect(root.classList.contains('d1-field--validation')).toBe(false)
+    expect(input.getAttribute('aria-invalid')).toBeNull()
+    expect(input.getAttribute('aria-describedby')).toBe('warn-msg')
+
+    props.validationMessage = 'Invalid phone'
+    await nextTick()
+    expect(root.classList.contains('d1-field--warning')).toBe(false)
+    expect(root.classList.contains('d1-field--validation')).toBe(true)
+    expect(input.getAttribute('aria-invalid')).toBe('true')
+  })
+
   it('should clean up window resize listeners when unmounted', async () => {
     const addSpy = vi.spyOn(window, 'addEventListener')
     const removeSpy = vi.spyOn(window, 'removeEventListener')

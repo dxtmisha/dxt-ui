@@ -120,6 +120,7 @@ export class FieldInclude extends ComponentIncludeAbstract<
         selected: props.selected,
         readonly: props.readonly,
         disabled: props.disabled,
+        warning: props.warning,
 
         loading: props.loading,
         forceShowMessage: props.forceShowMessage,
@@ -130,6 +131,8 @@ export class FieldInclude extends ComponentIncludeAbstract<
         suffix: props.suffix,
         caption: props.caption,
         helperMessage: props.helperMessage,
+        warningMessage: props.warningMessage,
+        warningId: props.warningId,
 
         required: props.required,
 

@@ -104,6 +104,7 @@ describe('Field (unit)', () => {
       expect(instance.classes).toEqual({
         'd1-field--cancel': false,
         'd1-field--suffix': false,
+        'd1-field--warning': false,
         'd1-field--validation': false
       })
       expect(instance.hasInstance('fieldElement')).toBe(true)
@@ -166,6 +167,7 @@ describe('Field (unit)', () => {
       expect(instance.classes).toEqual({
         'd1-field--cancel': true,
         'd1-field--suffix': true,
+        'd1-field--warning': false,
         'd1-field--validation': false
       })
       expect(instance.hasInstance('icons')).toBe(false)

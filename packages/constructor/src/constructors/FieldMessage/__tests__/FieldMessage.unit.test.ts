@@ -148,29 +148,49 @@ describe('FieldMessage (unit)', () => {
       cleanups.push(stop)
 
       expect(instance.classes).toEqual({
-        'd1-fieldMessage--validation': false
+        'd1-fieldMessage--validation': false,
+        'd1-fieldMessage--warning': false
       })
       expect(instance.isHelper()).toBe(true)
+      expect(instance.isWarning()).toBe(false)
       expect(instance.isValidation()).toBe(false)
       expect(instance.slotHelperData).toEqual({
         message: 'Helper text',
         helperMessage: 'Helper text',
+        warningMessage: undefined,
         validationMessage: undefined
       })
       expect(instance.slotValidationData).toEqual({
         message: undefined,
         helperMessage: 'Helper text',
+        warningMessage: undefined,
+        validationMessage: undefined
+      })
+
+      props.warningMessage = 'Warn text'
+      expect(instance.classes).toEqual({
+        'd1-fieldMessage--validation': false,
+        'd1-fieldMessage--warning': true
+      })
+      expect(instance.isWarning()).toBe(true)
+      expect(instance.slotWarningData).toEqual({
+        message: 'Warn text',
+        helperMessage: 'Helper text',
+        warningMessage: 'Warn text',
         validationMessage: undefined
       })
 
       props.validationMessage = 'Error text'
       expect(instance.classes).toEqual({
-        'd1-fieldMessage--validation': true
+        'd1-fieldMessage--validation': true,
+        'd1-fieldMessage--warning': false
       })
+      expect(instance.isWarning()).toBe(false)
       expect(instance.isValidation()).toBe(true)
       expect(instance.slotValidationData).toEqual({
         message: 'Error text',
         helperMessage: 'Helper text',
+        warningMessage: 'Warn text',
         validationMessage: 'Error text'
       })
     })

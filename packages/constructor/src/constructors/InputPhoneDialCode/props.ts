@@ -4,6 +4,7 @@ import type { ButtonPropsBasic, ButtonPropsInclude } from '../Button'
 import type { MenuCountryPropsBasic, MenuCountryPropsInclude } from '../MenuCountry'
 import type { IconPropsBasic, IconValue } from '../Icon'
 
+import type { EnabledProps } from '../../types/enabledTypes'
 import type { ModelPropsSelected } from '../../types/modelTypes'
 
 /**
@@ -25,7 +26,8 @@ export type InputPhoneDialCodePropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic,
   MenuCountry extends MenuCountryPropsBasic = MenuCountryPropsBasic
-> = ButtonPropsInclude<Button>
+> = EnabledProps
+  & ButtonPropsInclude<Button>
   & MenuCountryPropsInclude<MenuCountry>
   & ModelPropsSelected<ListSelectedList>
   & {

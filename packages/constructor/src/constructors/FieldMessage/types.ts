@@ -33,6 +33,9 @@ export interface FieldMessageSlots {
   /** Slot for helper message/ Слот для вспомогательного сообщения */
   helper?(props: FieldMessageSlot): any
 
+  /** Slot for warning message/ Слот для предупреждающего сообщения */
+  warning?(props: FieldMessageSlot): any
+
   /** Slot for validation message/Слот для сообщения об ошибке */
   validation?(props: FieldMessageSlot): any
 }
@@ -46,6 +49,7 @@ export type FieldMessageClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   info: string
+  warning: string
   error: string
   fieldCounter: string
   // :classes [!] System label / Системная метка

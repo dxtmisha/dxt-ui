@@ -16,6 +16,7 @@ import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
 import { permissions } from '../media/schema/permissions'
 import { rolePermissions } from '../media/schema/rolePermissions'
 import { CmsDbAbstract } from './CmsDbAbstract'
+import { CmsDbResolver } from './CmsDbResolver'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
   CmsDbExecutor,
@@ -334,7 +335,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     executor: CmsDbExecutor,
     permissionIds?: readonly number[]
   ): Promise<number[]> {
-    return CmsDbAbstract.resolveEntityIdsByIds(
+    return CmsDbResolver.resolveByIds(
       'cms-permission',
       'notFound',
       uniqueIds => executor
@@ -357,7 +358,7 @@ export class CmsPermissionItem extends CmsDbAbstract<typeof permissions> {
     executor: CmsDbExecutor,
     permissionCodes?: readonly string[]
   ): Promise<number[]> {
-    return CmsDbAbstract.resolveEntityIdsByCodes(
+    return CmsDbResolver.resolveByCodes(
       'cms-permission',
       'notFound',
       uniqueCodes => executor

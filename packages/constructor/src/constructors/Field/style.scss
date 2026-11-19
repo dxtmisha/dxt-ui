@@ -1,5 +1,15 @@
 @use "@dxtmisha/styles/properties" as ui;
 
+@mixin statusColors($name) {
+  @include ui.initByCustom('focusWithin.color', ui.v('??#{$name}.color'), true);
+  @include ui.initByCustom('focusWithin.colorOpacity', ui.v('??#{$name}.colorOpacity'), true);
+
+  @include ui.initByCustom('borderColor', ui.v('??#{$name}.borderColor'), true);
+  @include ui.initByCustom('borderOpacity', ui.v('??#{$name}.borderOpacity'), true);
+  @include ui.initByCustom('focusWithin.borderColor', ui.v('??#{$name}.borderColor'), true);
+  @include ui.initByCustom('focusWithin.borderOpacity', ui.v('??#{$name}.borderOpacity'), true);
+}
+
 @mixin borderFull($this) {
   @include ui.initByCustom('sys.border.width', ui.v('??borderWidth'));
   @include ui.initByCustom('sys.border.color', ui.v('??borderColor'));
@@ -403,14 +413,12 @@
     }
   }
 
-  &--validation {
-    @include ui.initByCustom('focusWithin.color', ui.v('??validation.color'), true);
-    @include ui.initByCustom('focusWithin.colorOpacity', ui.v('??validation.colorOpacity'), true);
+  &--warning {
+    @include statusColors('warning');
+  }
 
-    @include ui.initByCustom('borderColor', ui.v('??validation.borderColor'), true);
-    @include ui.initByCustom('borderOpacity', ui.v('??validation.borderOpacity'), true);
-    @include ui.initByCustom('focusWithin.borderColor', ui.v('??validation.borderColor'), true);
-    @include ui.initByCustom('focusWithin.borderOpacity', ui.v('??validation.borderOpacity'), true);
+  &--validation {
+    @include statusColors('validation');
   }
 
   &--basic {

@@ -2505,6 +2505,18 @@
     "phoneMask": "+681-**-****"
   },
   {
+    "country": "XK",
+    "language": "sq",
+    "firstDay": "Mo",
+    "zone": "Europe/Belgrade",
+    "phoneCode": "383",
+    "phoneWithin": "0",
+    "phoneMask": [
+      "+383-**-***-***",
+      "+383-**-***-****"
+    ]
+  },
+  {
     "country": "YE",
     "language": "ar",
     "firstDay": "Su",

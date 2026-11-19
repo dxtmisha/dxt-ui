@@ -161,6 +161,16 @@ describe('MaskEvent', () => {
     expect(mockSelection.getFirst).toHaveBeenCalled()
   })
 
+  it('should skip onPaste when defaultPrevented is already true', () => {
+    const pasteEvent = new Event('paste', { cancelable: true }) as ClipboardEvent
+    pasteEvent.preventDefault()
+
+    maskEvent.onPaste(pasteEvent)
+
+    expect(mockData.add).not.toHaveBeenCalled()
+    expect(mockEmit.set).not.toHaveBeenCalled()
+  })
+
   it('should handle onAnimationstart for browser autofill', () => {
     const animationEvent = new Event('animationstart') as AnimationEvent
     Object.defineProperty(animationEvent, 'animationName', { value: 'onautofillstart' })

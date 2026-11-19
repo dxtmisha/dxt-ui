@@ -88,4 +88,14 @@ describe('FieldElement', () => {
     expect(new FieldElement({ validationMessage: 'Error', disabled: true, forceShowMessage: true }, ref(undefined)).isValidation()).toBe(true)
     expect(new FieldElement({ validationMessage: 'Error', readonly: true, forceShowMessage: true }, ref(undefined)).isValidation()).toBe(true)
   })
+
+  it('should return correct warning eligibility with validation precedence', () => {
+    expect(new FieldElement({}, ref(undefined)).isWarning()).toBe(false)
+    expect(new FieldElement({ warning: true }, ref(undefined)).isWarning()).toBe(true)
+    expect(new FieldElement({ warningMessage: 'Warn' }, ref(undefined)).isWarning()).toBe(true)
+    expect(new FieldElement({ warning: true, disabled: true }, ref(undefined)).isWarning()).toBe(false)
+    expect(new FieldElement({ warning: true, readonly: true }, ref(undefined)).isWarning()).toBe(false)
+    expect(new FieldElement({ warningMessage: 'Warn', readonly: true, forceShowMessage: true }, ref(undefined)).isWarning()).toBe(true)
+    expect(new FieldElement({ warning: true, warningMessage: 'Warn', validationMessage: 'Error' }, ref(undefined)).isWarning()).toBe(false)
+  })
 })

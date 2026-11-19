@@ -25,7 +25,8 @@ const props = withDefaults(defineProps<FieldMessageProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-fieldMessage': true
+    'd1-fieldMessage': true,
+    'd1-fieldMessage--warning': props.warning
     // :classes-values [!] System label / Системная метка
   }
 }))

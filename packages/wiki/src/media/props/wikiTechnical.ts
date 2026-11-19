@@ -276,5 +276,17 @@ export const wikiTechnical: StorybookArgsToList = {
       }
     },
     hide: true
+  },
+  warningId: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Unique identifier for the warning message element',
+        ru: 'Уникальный идентификатор для элемента предупреждающего сообщения'
+      }
+    },
+    hide: true
   }
 }

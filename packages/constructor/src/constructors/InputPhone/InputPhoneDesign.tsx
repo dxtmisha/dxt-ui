@@ -154,7 +154,9 @@ export class InputPhoneDesign<
         'input',
         mergeProps(
           {
-            inputMode: 'tel'
+            inputMode: 'tel',
+            onFocus: (focusEvent: FocusEvent) => this.emits?.('focus', focusEvent),
+            onBlur: (blurEvent: FocusEvent) => this.emits?.('blur', blurEvent)
           },
           this.item.i('attributes').listForInput,
           input.binds,
@@ -174,12 +176,19 @@ export class InputPhoneDesign<
       align: this.props.align,
       inputAttrs: mergeProps(
         {
-          inputMode: 'tel'
+          inputMode: 'tel',
+          onPaste: this.item.i('paste').onPaste
         },
         this.item.i('attributes').listForInput,
         input.binds
       ) as Partial<HTMLInputElement>,
-      onBlur: event.onBlur,
+      onFocus: (focusEvent: FocusEvent) => {
+        this.emits?.('focus', focusEvent)
+      },
+      onBlur: (blurEvent: FocusEvent) => {
+        event.onBlur()
+        this.emits?.('blur', blurEvent)
+      },
       onInput: event.onInput,
       onChange: event.onChange
     })

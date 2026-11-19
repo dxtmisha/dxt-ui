@@ -75,7 +75,8 @@ export class FieldMessage extends DesignLogicAbstract<
    */
   get classes(): ConstrClassObject {
     return {
-      [this.naming.getStatusClass('validation')]: this.isValidation()
+      [this.naming.getStatusClass('validation')]: this.isValidation(),
+      [this.naming.getStatusClass('warning')]: this.isWarning()
     }
   }
 
@@ -87,6 +88,16 @@ export class FieldMessage extends DesignLogicAbstract<
    */
   get slotHelperData(): FieldMessageSlot {
     return this.getSlotData(this.props.helperMessage)
+  }
+
+  /**
+   * Data for warning slot.
+   *
+   * Данные для слота warning.
+   * @returns slot data object / объект данных слота
+   */
+  get slotWarningData(): FieldMessageSlot {
+    return this.getSlotData(this.props.warningMessage)
   }
 
   /**
@@ -130,6 +141,16 @@ export class FieldMessage extends DesignLogicAbstract<
   }
 
   /**
+   * Checks if there is a warning message.
+   *
+   * Проверяет, есть ли предупреждающее сообщение.
+   * @returns boolean value / логическое значение
+   */
+  isWarning(): boolean {
+    return this.i('message').isWarning()
+  }
+
+  /**
    * Checks if there is a validation message.
    *
    * Проверяет, есть ли сообщение о валидации.
@@ -150,6 +171,7 @@ export class FieldMessage extends DesignLogicAbstract<
     return {
       message,
       helperMessage: this.props.helperMessage,
+      warningMessage: this.props.warningMessage,
       validationMessage: this.props.validationMessage
     }
   }

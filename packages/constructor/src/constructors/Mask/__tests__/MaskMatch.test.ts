@@ -49,6 +49,8 @@ describe('MaskMatch', () => {
     expect(maskMatch.get('d')).toEqual(/[0-9]/)
     expect(maskMatch.get('w')).toBe('[a-zA-Z]')
     expect(maskMatch.get('unknown')).toEqual(/[0-9]/)
+    expect(maskMatch.get('')).toEqual(/[0-9]/)
+    expect(maskMatch.is('-', '')).toBe(false)
   })
 
   it('should filter string returning only allowed characters across all special groups', () => {

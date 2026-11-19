@@ -13,20 +13,20 @@ export const wikiDescriptionsInputPhone: StorybookComponentsDescriptionItem = {
   },
   possibilities: {
     en: [
-      'automatic country detection and dynamic mask switching as the user enters digits',
-      'integrated country dial code selector (`inputPhoneDialCodeAttrs`) with searchable country list',
-      'optional country lock mode (`countryBlock`) for local phone number format without selector',
+      'automatic country detection and dynamic mask switching on input or full paste (supports full-field replacement and normalizing leading `+` + national `within` prefix such as `+8` -> `+7`)',
+      'integrated country dial code selector (`inputPhoneDialCodeAttrs`) with searchable country list, flags (including `XK` Kosovo `+383`), and dial codes',
+      'country lock modes: `countryBlock` (hides selector for local format) and `countryReadonly` (locks selector while keeping flag & dial code visible; auto-locks on single-country lists)',
       'custom mask configuration via `maskAttrs` and initial country fallback via `countryDefault`',
-      'built-in pattern validation (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`)',
-      'two-way binding (`v-model`, `v-model:value`), slots (`leading`, `trailing`, `prefix`, `suffix`, `label`), and exposed API'
+      'built-in pattern validation (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`) and non-blocking warning states (`warning`, `warningMessage`)',
+      'events (`input`, `inputLite`, `change`, `changeLite`, `focus`, `blur`), two-way binding (`v-model`, `v-model:value`), slots (`leading`, `trailing`, `prefix`, `suffix`, `label`), and exposed API'
     ],
     ru: [
-      'автоматическое определение страны и переключение телефонной маски по мере ввода цифр',
-      'встроенный селектор кода страны (`inputPhoneDialCodeAttrs`) со списком стран и поиском',
-      'режим блокировки страны (`countryBlock`) для локального формата номера без селектора',
+      'автоматическое определение страны и переключение телефонной маски при вводе или полной вставке (включая замену при полном выделении и нормализацию `+` + национальный префикс `within`, например `+8` -> `+7`)',
+      'встроенный селектор кода страны (`inputPhoneDialCodeAttrs`) с поиском по странам, флагами (включая `XK` Косово `+383`) и кодами',
+      'режимы фиксации страны: `countryBlock` (скрывает селектор для локального формата) и `countryReadonly` (блокирует выбор с сохранением флага и кода; включается автоматически для списка из одной страны)',
       'настройка маски через `maskAttrs` и выбор страны по умолчанию через `countryDefault`',
-      'встроенная валидация (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`)',
-      'двусторонняя привязка (`v-model`, `v-model:value`), слоты (`leading`, `trailing`, `prefix`, `suffix`, `label`) и программный API'
+      'встроенная валидация (`required`, `pattern`, `validationCode`, `validationMessage`, `forceShowMessage`) и неблокирующее предупреждение (`warning`, `warningMessage`)',
+      'события (`input`, `inputLite`, `change`, `changeLite`, `focus`, `blur`), двусторонняя привязка (`v-model`, `v-model:value`), слоты (`leading`, `trailing`, `prefix`, `suffix`, `label`) и программный API'
     ]
   },
   render: `
@@ -125,6 +125,61 @@ const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
 await expect(inputs.length).toBe(2)
 await expect(inputs[0].value).toContain('+49')
 await expect(inputs[1].value).toContain('+1')
+      `
+    },
+    {
+      id: 'InputPhoneCountryReadonly',
+      name: {
+        en: 'Country Selector Locking (countryReadonly)',
+        ru: 'Блокировка селектора страны (countryReadonly)'
+      },
+      propsName: ['countryDefault', 'countryReadonly', 'inputPhoneDialCodeAttrs'],
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            country-default="RU"
+            :country-readonly="true"
+            value="79001234567"
+            label="Country selector locked (RU)"
+          />
+          <DesignComponent
+            country-default="RU"
+            :input-phone-dial-code-attrs="{ menuCountryAttrs: { list: ['RU'] } }"
+            value="79001234567"
+            label="Single-country list auto-lock (RU)"
+          />
+        </div>
+      `,
+      play: `
+const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+await expect(inputs.length).toBe(2)
+await expect(inputs[0]).not.toHaveAttribute('readonly')
+await expect(inputs[0].value).toBe('+7-900-123-45-67')
+await expect(inputs[1].value).toBe('+7-900-123-45-67')
+      `
+    },
+    {
+      id: 'InputPhoneWarning',
+      name: {
+        en: 'Warning State (non-blocking)',
+        ru: 'Состояние предупреждения (warning)'
+      },
+      propsName: ['warning', 'warningMessage', 'countryDefault'],
+      template: `
+        <DesignComponent
+          country-default="XK"
+          value="38344123456"
+          :warning="true"
+          warning-message="Phone number from legacy profile needs confirmation"
+          label="Contact phone (XK)"
+        />
+      `,
+      play: `
+const component = canvasElement.querySelector<HTMLElement>('.design-component')
+await expect(component).toBeInTheDocument()
+await expect(canvasElement.textContent).toContain('Phone number from legacy profile needs confirmation')
+const inputElement = canvasElement.querySelector<HTMLInputElement>('input')
+await expect(inputElement?.value).toBe('+383-44-123-456')
       `
     },
     {
@@ -414,11 +469,19 @@ await expect(inputs[1].value).toBe('79001234567')
       const onChange = (_event: Event, validation: FieldValidationItem<string>) => {
         eventTracker.value = 'change:' + String(validation.value)
       }
+      const onFocus = () => {
+        eventTracker.value = 'focus'
+      }
+      const onBlur = () => {
+        eventTracker.value = 'blur'
+      }
       return {
         eventTracker,
         trackedValue,
         onInput,
-        onChange
+        onChange,
+        onFocus,
+        onBlur
       }
       `,
       template: `
@@ -436,6 +499,8 @@ await expect(inputs[1].value).toBe('79001234567')
             helper-message="Hint"
             @input="onInput"
             @change="onChange"
+            @focus="onFocus"
+            @blur="onBlur"
           >
             <template #label>
               <span>[LABEL]</span>
@@ -462,6 +527,9 @@ await expect(canvasElement.textContent).toContain('Hint')
 await expect(canvasElement.querySelector('[data-test-field="true"]')).toBeInTheDocument()
 await expect(canvasElement.querySelector('[data-test-input="true"]')).toBeInTheDocument()
 await expect(canvasElement.querySelector('input[name="phone-slots-name"]')).toBeInTheDocument()
+const inputElement = canvasElement.querySelector<HTMLInputElement>('input')
+await userEvent.click(inputElement!)
+await expect(canvasElement.querySelector('[data-testid="event-tracker"]')).toHaveTextContent('focus')
       `
     }
   ],
@@ -474,12 +542,18 @@ await expect(canvasElement.querySelector('input[name="phone-slots-name"]')).toBe
 <StorybookDescriptions componentName={'InputPhone'} type={'countryBlock'}/>
 <Canvas of={Component.InputPhoneCountryBlock}/>
 
+<StorybookDescriptions componentName={'InputPhone'} type={'countryReadonly'}/>
+<Canvas of={Component.InputPhoneCountryReadonly}/>
+
+<Canvas of={Component.InputPhoneWarning}/>
+
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={Component.InputPhoneSkeleton}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'input'}/>
 <StorybookDescriptions componentName={'Event'} type={'change'}/>
+<StorybookDescriptions componentName={'Event'} type={'focus'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'value'}/>
@@ -500,7 +574,7 @@ await expect(canvasElement.querySelector('input[name="phone-slots-name"]')).toBe
   },
   ai: {
     description: `
-Phone number input field combining Field, InputPhoneDialCode, and Mask. Automatically detects country codes, switches phone masks dynamically, supports country lock mode (countryBlock), custom dial code and mask options (inputPhoneDialCodeAttrs, maskAttrs, countryDefault), pattern validation, slots, events, and exposed validation/value methods.
+Phone number input field combining Field, InputPhoneDialCode, and Mask. Automatically detects country codes (including XK Kosovo +383), switches phone masks dynamically on input or full-selection paste (normalizing leading +within prefixes like +8 to +7), supports countryBlock (hides selector) and countryReadonly (locks selector while keeping flag & dial code visible, with automatic lock on single-country lists), custom dial code and mask options (inputPhoneDialCodeAttrs, maskAttrs, countryDefault), pattern validation and non-blocking warnings (warning, warningMessage, warningId), slots, events (input, inputLite, change, changeLite, focus, blur), and exposed validation/value methods.
     `
   }
 }

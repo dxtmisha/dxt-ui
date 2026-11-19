@@ -57,7 +57,9 @@ export class MaskMatch {
    * @param groupName group name/ имя группы
    */
   get(groupName?: string): MaskMatchItem {
-    return (groupName && this.special().getMatch(groupName)) ?? this.props.match ?? MATCH_DEFAULT
+    return (groupName ? this.special().getMatch(groupName) : undefined)
+      || this.props.match
+      || MATCH_DEFAULT
   }
 
   /**

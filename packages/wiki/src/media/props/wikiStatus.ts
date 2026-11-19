@@ -198,5 +198,16 @@ export const wikiStatus: StorybookArgsToList = {
       }
     },
     hide: true
+  },
+  warning: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Sets the element to a non-blocking warning state without failing form validation',
+        ru: 'Переводит элемент в состояние предупреждения без блокировки валидации формы'
+      }
+    },
+    isDemo: true
   }
 }

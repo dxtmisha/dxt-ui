@@ -2,15 +2,13 @@ import {
   bigint,
   boolean,
   index,
-  jsonb,
   pgTable,
-  serial,
   text,
   timestamp
 } from 'drizzle-orm/pg-core'
+import { getCmsBaseColumns } from '../../functions/schema/getCmsBaseColumns'
 import { getCmsCreatedOriginColumn } from '../../functions/schema/getCmsCreatedOriginColumn'
-import { getCmsSystemStatusColumn } from '../../functions/schema/getCmsSystemStatusColumn'
-import { getCmsTimestampColumns } from '../../functions/schema/getCmsTimestampColumns'
+import { getCmsMetadataColumn } from '../../functions/schema/getCmsMetadataColumn'
 import type {
   CmsUserMetadata,
   CmsUserStatus
@@ -23,9 +21,10 @@ import type {
 export const users = /* #__PURE__ */ pgTable(
   'users',
   {
+    // Base columns
+    ...getCmsBaseColumns(),
+
     // Identifiers & contacts
-    /** User identifier / Идентификатор пользователя */
-    id: serial('id').primaryKey(),
     /** Unique username or author slug / Уникальный логин или slug автора */
     username: text('username').unique(),
     /** User email / Электронная почта пользователя */
@@ -60,17 +59,10 @@ export const users = /* #__PURE__ */ pgTable(
     // Activity & metadata
     /** Last login timestamp / Дата последнего входа */
     lastLoginAt: timestamp('last_login_at'),
-    /** User metadata (locale, timezone, settings, soft delete, custom fields) / Метаданные пользователя (локаль, часовой пояс, настройки, мягкое удаление, кастомные поля) */
-    metadata: jsonb('metadata').$type<CmsUserMetadata>().notNull().default({}),
-
-    // System status
-    ...getCmsSystemStatusColumn(),
+    ...getCmsMetadataColumn<CmsUserMetadata>(),
 
     // Origin
-    ...getCmsCreatedOriginColumn(),
-
-    // Timestamps
-    ...getCmsTimestampColumns()
+    ...getCmsCreatedOriginColumn()
   },
   table => [
     index('users_metadata_gin_idx').using('gin', table.metadata)

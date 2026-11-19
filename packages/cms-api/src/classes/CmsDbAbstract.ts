@@ -4,15 +4,11 @@ import {
   sql,
   type SQL
 } from 'drizzle-orm'
-import {
-  ErrorCenterThrow,
-  isPositiveInteger,
-  uniqueArray
-} from '@dxtmisha/functional-basic'
+import { isPositiveInteger } from '@dxtmisha/functional-basic'
 
 import { useCmsDb } from '../composables/useCmsDb'
-import { registerCmsErrorCauses } from '../functions/registerCmsErrorCauses'
 import { CmsDbSystemStatus } from './CmsDbSystemStatus'
+import { CmsDbTimestamp } from './CmsDbTimestamp'
 import { CmsVerification } from './CmsVerification'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type { CmsIdTable } from '../types/cmsDbTypes'
@@ -24,7 +20,10 @@ import type { CmsIdTable } from '../types/cmsDbTypes'
  */
 export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   /** Lazily initialized system status manager / Лениво инициализируемый менеджер системного статуса */
-  protected systemStatus?: CmsDbSystemStatus<TTable>
+  protected systemStatusInstance?: CmsDbSystemStatus<TTable>
+
+  /** Lazily initialized timestamp manager / Лениво инициализируемый менеджер временных меток */
+  protected timestampInstance?: CmsDbTimestamp<TTable>
 
   /**
    * Initializes the base CMS database handler with a table schema and CmsDbInstance.
@@ -39,6 +38,37 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   ) {}
 
   /**
+   * Lazily initialized CmsDbSystemStatus instance for managing record system statuses /
+   * Лениво инициализируемый экземпляр CmsDbSystemStatus для управления системным статусом записей
+   */
+  protected get systemStatus(): CmsDbSystemStatus<TTable> {
+    if (!this.systemStatusInstance) {
+      this.systemStatusInstance = new CmsDbSystemStatus(
+        this.table,
+        this.databaseInstance,
+        () => this.timestamp
+      )
+    }
+
+    return this.systemStatusInstance
+  }
+
+  /**
+   * Lazily initialized CmsDbTimestamp instance for managing record timestamps /
+   * Лениво инициализируемый экземпляр CmsDbTimestamp для управления временными метками записей
+   */
+  protected get timestamp(): CmsDbTimestamp<TTable> {
+    if (!this.timestampInstance) {
+      this.timestampInstance = new CmsDbTimestamp(
+        this.table,
+        this.databaseInstance
+      )
+    }
+
+    return this.timestampInstance
+  }
+
+  /**
    * Returns the bound table typed as CmsIdTable for shared base queries.
    *
    * Возвращает привязанную таблицу с типом CmsIdTable для общих базовых запросов.
@@ -46,20 +76,6 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
    */
   protected getBaseTable(): CmsIdTable {
     return this.table
-  }
-
-  /**
-   * Returns a lazily initialized CmsDbSystemStatus instance for managing record system statuses.
-   *
-   * Возвращает лениво инициализируемый экземпляр CmsDbSystemStatus для управления системным статусом записей.
-   * @returns CmsDbSystemStatus instance / Экземпляр CmsDbSystemStatus
-   */
-  protected getSystemStatus(): CmsDbSystemStatus<TTable> {
-    if (!this.systemStatus) {
-      this.systemStatus = new CmsDbSystemStatus(this.table, this.databaseInstance)
-    }
-
-    return this.systemStatus
   }
 
   /**
@@ -72,7 +88,7 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
   protected getUpdateValues(
     values: Record<string, unknown> = {}
   ): Partial<CmsIdTable['$inferInsert']> {
-    return CmsDbSystemStatus.buildUpdateValues(this.getBaseTable(), values)
+    return this.timestamp.buildUpdateValues(values)
   }
 
   /**
@@ -141,111 +157,5 @@ export abstract class CmsDbAbstract<TTable extends CmsIdTable = CmsIdTable> {
       .returning({ id: baseTable.id })
 
     return deletedRows.length > 0
-  }
-
-  /**
-   * Validates and verifies entity identifiers by their IDs using the provided lookup callback.
-   *
-   * Проверяет и подтверждает существование идентификаторов сущностей по их ID с помощью функции поиска.
-   * @param errorGroup Error group / Группа ошибки
-   * @param errorCode Error code reported when entities are invalid or missing / Код ошибки при невалидных или отсутствующих записях
-   * @param fetchByIds Callback fetching persisted records matching given IDs / Функция выборки записей по ID
-   * @param ids List of entity IDs / Список ID сущностей
-   * @returns Deduplicated list of verified entity IDs / Уникальный список проверенных ID сущностей
-   */
-  protected static async resolveEntityIdsByIds(
-    errorGroup: string,
-    errorCode: string,
-    fetchByIds: (ids: number[]) => Promise<Array<{ id: number }>>,
-    ids?: readonly number[]
-  ): Promise<number[]> {
-    if (ids === undefined) {
-      return []
-    }
-
-    const uniqueIds = uniqueArray(ids)
-    for (const entityId of uniqueIds) {
-      if (!isPositiveInteger(entityId)) {
-        registerCmsErrorCauses()
-        ErrorCenterThrow.on({
-          group: errorGroup,
-          code: errorCode,
-          details: { id: entityId }
-        })
-      }
-    }
-
-    if (uniqueIds.length === 0) {
-      return []
-    }
-
-    const persistedByIds = await fetchByIds(uniqueIds)
-    const foundIdSet = new Set(persistedByIds.map(record => record.id))
-    const missingIds = uniqueIds.filter(entityId => !foundIdSet.has(entityId))
-
-    if (missingIds.length > 0) {
-      registerCmsErrorCauses()
-      ErrorCenterThrow.on({
-        group: errorGroup,
-        code: errorCode,
-        details: { missingIds }
-      })
-    }
-
-    return uniqueIds
-  }
-
-  /**
-   * Resolves and verifies entity identifiers by their unique codes using the provided lookup callback.
-   *
-   * Разрешает и проверяет идентификаторы сущностей по их уникальным кодам с помощью функции поиска.
-   * @param errorGroup Error group / Группа ошибки
-   * @param errorCode Error code reported when entities are missing / Код ошибки при отсутствующих записях
-   * @param fetchByCodes Callback fetching persisted records matching given codes / Функция выборки записей по кодам
-   * @param codes List of entity codes / Список кодов сущностей
-   * @returns Deduplicated list of resolved entity IDs / Уникальный список найденных ID сущностей
-   */
-  protected static async resolveEntityIdsByCodes(
-    errorGroup: string,
-    errorCode: string,
-    fetchByCodes: (codes: string[]) => Promise<Array<{ id: number, code: string }>>,
-    codes?: readonly string[]
-  ): Promise<number[]> {
-    if (codes === undefined) {
-      return []
-    }
-
-    const uniqueCodes = uniqueArray(
-      codes
-        .map(code => code.trim())
-        .filter(code => code.length > 0)
-    )
-
-    if (uniqueCodes.length === 0) {
-      return []
-    }
-
-    const persistedByCodes = await fetchByCodes(uniqueCodes)
-    const idByCode = new Map(persistedByCodes.map(record => [record.code, record.id]))
-    const missingCodes = uniqueCodes.filter(code => !idByCode.has(code))
-
-    if (missingCodes.length > 0) {
-      registerCmsErrorCauses()
-      ErrorCenterThrow.on({
-        group: errorGroup,
-        code: errorCode,
-        details: { missingCodes }
-      })
-    }
-
-    const resolvedIds: number[] = []
-    for (const code of uniqueCodes) {
-      const entityId = idByCode.get(code)
-      if (entityId !== undefined) {
-        resolvedIds.push(entityId)
-      }
-    }
-
-    return uniqueArray(resolvedIds)
   }
 }
