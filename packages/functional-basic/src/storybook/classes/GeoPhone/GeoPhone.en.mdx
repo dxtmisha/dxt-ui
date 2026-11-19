@@ -39,8 +39,9 @@ console.log(GeoPhone.cleanPhone('+7 (900) 123-45-67')) // '79001234567'
 
 ### Selection & Formatting
 
-- `get(code: string): GeoPhoneValue | undefined` — Retrieves phone metadata associated with a specific country code.
-- `getByCode(code: string): GeoPhoneMap | undefined` — Returns complete mask information, including the search tree node for a given code.
+- `get(code: string): GeoPhoneValue | undefined` — Retrieves phone metadata associated with a specific country code (including alternative country aliases).
+- `getByCode(code: string): GeoPhoneMap | undefined` — Returns complete mask information for a given country code, including all alternative subcode masks.
+- `getCodes(code: string): string[]` — Returns a list of distinct dial codes for a country, including alternative subcodes when present (e.g., `['1-809', '1-829', '1-849']` for `DO`).
 - `getByPhone(phone: string): GeoPhoneMapInfo` — Analyzes a phone number string to extract information and the suitable mask.
 - `getByPhoneFull(phone: string, isPartial?: boolean): GeoPhoneMapInfoFull` — Returns extended phone number information, including the cleaned digit string (`full`) and the formatted phone number (`format`). When `isPartial` is `true`, incomplete phone numbers are also formatted using the closest fitting mask.
 - `cleanPhone(value: string): string` — Removes all non-digit characters from a phone string.

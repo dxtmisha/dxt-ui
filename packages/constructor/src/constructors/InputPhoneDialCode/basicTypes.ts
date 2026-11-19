@@ -22,6 +22,8 @@ export type InputPhoneDialCodePropsInclude<
 > = {
   /** Whether the input phone dial code is disabled / Отключено ли input phone dial code */
   disabled?: boolean
+  /** Whether the input phone dial code is read-only / Только ли для чтения input phone dial code */
+  readonly?: boolean
   /** Additional attributes for the InputPhoneDialCode component / Дополнительные атрибуты для компонента InputPhoneDialCode */
   inputPhoneDialCodeAttrs?: ConstrBind<InputPhoneDialCode>
 }

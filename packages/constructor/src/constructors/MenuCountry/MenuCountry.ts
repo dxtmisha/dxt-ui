@@ -9,19 +9,38 @@ import {
   forEach,
   type GeoFlagNational,
   GeoFlagRef,
+  GeoPhone,
   type ListSelectedList,
+  type ListType,
   type NumberOrStringOrBoolean
 } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 
+import type { ListItemPropsBasic } from '../ListItem'
 import { MenuInclude, type MenuProps } from '../Menu'
 import type { WindowEmitOptions } from '../Window'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { MenuCountryProps } from './props'
 import type { MenuCountryComponents, MenuCountryEmits, MenuCountrySlots } from './types'
+
+/** MenuCountry item type supporting group entries for alternative codes / Тип элемента MenuCountry с поддержкой групп для альтернативных кодов */
+export type MenuCountryListItem = ConstrBind<
+  ListItemPropsBasic
+  & Partial<Omit<GeoFlagNational, 'value'>>
+  & {
+    /** Optional item type / Опциональный тип элемента */
+    type?: ListType
+    /** Optional item index / Опциональный индекс элемента */
+    index?: string
+    /** Optional search string / Опциональная строка поиска */
+    search?: string
+    /** Country code or nested alternative prefix items / Код страны или вложенные элементы альтернативных префиксов */
+    value?: string | MenuCountryListItem[]
+  }
+>
 
 /** MenuCountry dependency constructors type / Тип конструкторов зависимостей MenuCountry */
 export type MenuCountryConstructors = {
@@ -120,25 +139,58 @@ export class MenuCountry extends DesignLogicAbstract<
   }
 
   /** List of flags / Список флагов */
-  protected readonly list = computed<GeoFlagNational[]>(() => {
+  protected readonly list = computed<MenuCountryListItem[]>(() => {
     if (this.props.showPhoneCode) {
       return forEach(
         this.flagList.value,
-        (flag) => {
-          if (flag.phoneCode) {
-            return {
-              ...flag,
-              caption: `+${flag.phoneCode}`
-            }
-          }
-
-          return undefined
-        }
-      ) as GeoFlagNational[]
+        flag => this.getPhoneCodeItem(flag)
+      ) as MenuCountryListItem[]
     }
 
     return this.flagList.value
   })
+
+  /**
+   * Builds a menu item or group for a country when phone codes are displayed.
+   *
+   * Формирует элемент меню или группу для страны при отображении телефонных кодов.
+   * @param flag country flag item / элемент флага страны
+   * @returns list item, group item with alternative subcodes, or undefined / элемент списка, группа с альтернативными подкодами или undefined
+   */
+  protected getPhoneCodeItem(
+    flag: GeoFlagNational
+  ): MenuCountryListItem | undefined {
+    if (!flag.phoneCode) {
+      return undefined
+    }
+
+    const codes = GeoPhone.getCodes(flag.value)
+
+    if (codes.length > 1) {
+      return {
+        ...flag,
+        type: 'group',
+        index: flag.value,
+        search: codes.map(code => `+${code}`).join(' '),
+        value: codes.map((code, index) => ({
+          index: index === 0 ? flag.value : `${flag.value}-${code}`,
+          value: index === 0 ? flag.value : `${flag.value}-${code}`,
+          label: `+${code}`,
+          detail: {
+            country: flag.value,
+            icon: flag.icon,
+            label: flag.label,
+            phone: GeoPhone.cleanPhone(code)
+          }
+        }))
+      }
+    }
+
+    return {
+      ...flag,
+      caption: `+${flag.phoneCode}`
+    }
+  }
 
   /**
    * Returns binding attributes for the menu component.

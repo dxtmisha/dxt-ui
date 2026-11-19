@@ -122,7 +122,7 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
     const item = this.item.value?.[0]
     const props: ConstrBind<ButtonProps> = {
       ...(this.props.disabled !== undefined ? { disabled: this.props.disabled } : {}),
-      icon: item?.icon,
+      icon: item?.icon ?? item?.detail?.icon,
       iconTrailing: this.props.disabled ? undefined : this.props.iconArrowDown,
       iconTurn: this.i('menu').getElement()?.getOpen()
     }
@@ -135,12 +135,12 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
         case 'code':
           return {
             ...props,
-            label: item.caption
+            label: item.caption ?? item.label
           }
         case 'name':
           return {
             ...props,
-            label: item.label
+            label: item.detail?.label ?? item.label
           }
         case 'none':
         default:

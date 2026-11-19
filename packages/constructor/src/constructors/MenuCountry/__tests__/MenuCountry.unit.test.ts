@@ -237,6 +237,54 @@ describe('MenuCountry (Logic Orchestrator)', () => {
       scope.stop()
     })
 
+    it('should group countries with alternative dial codes when showPhoneCode is enabled', () => {
+      const scope = effectScope()
+      const element = ref<HTMLDivElement>()
+      const props = reactive<MenuCountryProps>({
+        showPhoneCode: true,
+        list: ['US', 'DO', 'VA']
+      })
+
+      scope.run(() => {
+        const menuCountry = new MenuCountry(props, element, naming)
+        const items = menuCountry.binds.list as Array<Record<string, any>>
+
+        const usItem = items.find(item => item.value === 'US')
+        expect(usItem?.type).toBeUndefined()
+        expect(usItem?.caption).toBe('+1')
+
+        const doGroup = items.find(item => item.index === 'DO')
+        expect(doGroup?.type).toBe('group')
+        expect(doGroup?.caption).toBeUndefined()
+        expect(doGroup?.value).toHaveLength(3)
+        expect(doGroup?.value[0]).toMatchObject({
+          index: 'DO',
+          value: 'DO',
+          label: '+1-809',
+          detail: { country: 'DO', icon: 'f-do', phone: '1809' }
+        })
+        expect(doGroup?.value[1]).toMatchObject({
+          index: 'DO-1-829',
+          value: 'DO-1-829',
+          label: '+1-829',
+          detail: { country: 'DO', icon: 'f-do', phone: '1829' }
+        })
+
+        const vaGroup = items.find(item => item.index === 'VA')
+        expect(vaGroup?.type).toBe('group')
+        expect(vaGroup?.caption).toBeUndefined()
+        expect(vaGroup?.value).toHaveLength(2)
+        expect(vaGroup?.value[1]).toMatchObject({
+          index: 'VA-39-06-698',
+          value: 'VA-39-06-698',
+          label: '+39-06-698',
+          detail: { country: 'VA', icon: 'f-va', phone: '3906698' }
+        })
+      })
+
+      scope.stop()
+    })
+
     it('should emit window, updateValue, update:selected, and click events properly', () => {
       const scope = effectScope()
       const element = ref<HTMLDivElement>()

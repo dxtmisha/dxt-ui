@@ -264,6 +264,7 @@ describe('InputPhoneDesign', () => {
     expect(input.name).toBe('phone-field')
     expect(input.getAttribute('inputmode')).toBe('tel')
     expect(input.value).toBe('+1-555-123-4567')
+    expect((container.querySelector('.mock-dial-code') as HTMLButtonElement).disabled).toBe(true)
 
     props.disabled = false
     props.readonly = true
@@ -272,6 +273,7 @@ describe('InputPhoneDesign', () => {
     expect(readonlyInput.readOnly).toBe(true)
     expect(readonlyInput.value).toBe('+1-555-123-4567')
     expect(container.querySelector('.mock-mask')).toBeNull()
+    expect((container.querySelector('.mock-dial-code') as HTMLButtonElement).disabled).toBe(true)
   })
 
   it('should forward input, change, and blur events from Mask and expose value/validation API', async () => {

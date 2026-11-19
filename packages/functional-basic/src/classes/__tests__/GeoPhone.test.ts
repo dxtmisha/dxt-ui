@@ -43,6 +43,12 @@ describe('GeoPhone', () => {
       expect(vietnamData?.phone).toBe(84)
     })
 
+    it('should resolve alternative country aliases (e.g. UK -> GB)', () => {
+      const gbData = GeoPhone.get('UK')
+      expect(gbData).toBeDefined()
+      expect(gbData?.value).toBe('GB')
+    })
+
     it('should return undefined for invalid or empty country code', () => {
       expect(GeoPhone.get('INVALID')).toBeUndefined()
       expect(GeoPhone.get('')).toBeUndefined()
@@ -55,6 +61,24 @@ describe('GeoPhone', () => {
       expect(mapInfo).toBeDefined()
       expect(mapInfo?.value).toBe('RU')
       expect(mapInfo?.info?.phone).toBe(7)
+    })
+
+    it('should collect all masks including alternative subcodes for DO, VA, PR and KZ', () => {
+      const doInfo = GeoPhone.getByCode('DO')
+      expect(doInfo?.value).toBe('DO')
+      expect(doInfo?.mask).toEqual([
+        '+1-809-***-****',
+        '+1-829-***-****',
+        '+1-849-***-****'
+      ])
+
+      const vaInfo = GeoPhone.getByCode('VA')
+      expect(vaInfo?.value).toBe('VA')
+      expect(vaInfo?.mask).toEqual(['+379-*****', '+39-06-698-*****'])
+
+      const kzInfo = GeoPhone.getByCode('KZ')
+      expect(kzInfo?.value).toBe('KZ')
+      expect(kzInfo?.mask).toEqual(['+7-6-~*-***-**-**', '+7-7-~*-***-**-**'])
     })
 
     it('should apply "within" symbol "~" for RU (within=8)', () => {
@@ -81,6 +105,27 @@ describe('GeoPhone', () => {
     it('should return undefined for unknown or empty code', () => {
       expect(GeoPhone.getByCode('INVALID')).toBeUndefined()
       expect(GeoPhone.getByCode('')).toBeUndefined()
+    })
+  })
+
+  describe('getCodes', () => {
+    it('should return a single code when all masks share the primary phoneCode', () => {
+      expect(GeoPhone.getCodes('RU')).toEqual(['7'])
+      expect(GeoPhone.getCodes('DE')).toEqual(['49'])
+      expect(GeoPhone.getCodes('CA')).toEqual(['1'])
+      expect(GeoPhone.getCodes('KZ')).toEqual(['7'])
+    })
+
+    it('should return primary and alternative codes when a country has distinct subcodes', () => {
+      expect(GeoPhone.getCodes('DO')).toEqual(['1-809', '1-829', '1-849'])
+      expect(GeoPhone.getCodes('PR')).toEqual(['1-787', '1-939'])
+      expect(GeoPhone.getCodes('VA')).toEqual(['379', '39-06-698'])
+      expect(GeoPhone.getCodes('BQ')).toEqual(['599-7', '599-3', '599-4'])
+    })
+
+    it('should return an empty array for unknown or empty code', () => {
+      expect(GeoPhone.getCodes('INVALID')).toEqual([])
+      expect(GeoPhone.getCodes('')).toEqual([])
     })
   })
 

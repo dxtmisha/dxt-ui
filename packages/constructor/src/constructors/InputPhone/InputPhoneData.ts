@@ -4,6 +4,7 @@ import {
   Geo,
   GeoPhone,
   type GeoPhoneMap,
+  isArray,
   isFilled
 } from '@dxtmisha/functional'
 
@@ -62,6 +63,30 @@ export class InputPhoneData extends DesignLifecycleAbstract {
     return this.valueItem.value?.value ?? this.country.value
   })
 
+  /** Computed active dial code value matching selected country or alternative subcode / Вычисляемый код для меню с учётом альтернативных подкодов */
+  readonly activeDialCode = computed<string>(() => {
+    const country = this.activeCountry.value
+    const codes = GeoPhone.getCodes(country)
+
+    if (codes.length > 1) {
+      const currentValue = this.value().item.value
+      const cleanValue = currentValue ? GeoPhone.cleanPhone(currentValue) : ''
+
+      for (let index = 1; index < codes.length; index++) {
+        const code = codes[index]
+
+        if (
+          code
+          && cleanValue.startsWith(GeoPhone.cleanPhone(code))
+        ) {
+          return `${country}-${code}`
+        }
+      }
+    }
+
+    return country
+  })
+
   /** Computed info of the current phone map / Вычисляемая информация о текущей карте телефона */
   readonly item = computed<GeoPhoneMap | undefined>(() => {
     return this.valueItem.value ?? GeoPhone.getByCode(this.country.value)
@@ -110,12 +135,16 @@ export class InputPhoneData extends DesignLifecycleAbstract {
 
     if (
       data
+      && !isArray(data.value)
       && isFilled(data.value)
     ) {
-      const country = String(data.value)
+      const country = String(data.detail?.country ?? data.value)
+      const phone = data.detail?.phone
+        ? String(data.detail.phone)
+        : this.toPhone(country)
 
       this.country.value = country
-      this.event().onValue(this.toPhone(country))
+      this.event().onValue(phone)
     }
   }
 

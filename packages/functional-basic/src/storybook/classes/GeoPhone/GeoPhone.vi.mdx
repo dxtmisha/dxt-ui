@@ -39,8 +39,9 @@ console.log(GeoPhone.cleanPhone('+84 90 123 45 67')) // '84901234567'
 
 ### Lựa chọn & Định dạng
 
-- `get(code: string): GeoPhoneValue | undefined` — Lấy dữ liệu meta điện thoại liên kết với một mã quốc gia cụ thể.
-- `getByCode(code: string): GeoPhoneMap | undefined` — Trả về thông tin mặt nạ đầy đủ cho một mã nhất định.
+- `get(code: string): GeoPhoneValue | undefined` — Lấy dữ liệu meta điện thoại liên kết với một mã quốc gia cụ thể (bao gồm cả mã bí danh thay thế).
+- `getByCode(code: string): GeoPhoneMap | undefined` — Trả về thông tin mặt nạ đầy đủ cho một mã quốc gia nhất định, bao gồm toàn bộ mặt nạ của các mã nhánh thay thế.
+- `getCodes(code: string): string[]` — Trả về danh sách các mã quay số riêng biệt cho một quốc gia, bao gồm cả các mã thay thế khi có (ví dụ: `['1-809', '1-829', '1-849']` cho `DO`).
 - `getByPhone(phone: string): GeoPhoneMapInfo` — Phân tích chuỗi số điện thoại để trích xuất thông tin và mặt nạ phù hợp.
 - `getByPhoneFull(phone: string, isPartial?: boolean): GeoPhoneMapInfoFull` — Trả về thông tin mở rộng về số điện thoại, bao gồm chuỗi chỉ chứa chữ số (`full`) và số đã được định dạng theo mặt nạ (`format`). Khi `isPartial = true`, các số điện thoại chưa đầy đủ cũng được định dạng theo mặt nạ phù hợp gần nhất.
 - `cleanPhone(value: string): string` — Xóa tất cả các ký tự không phải chữ số khỏi chuỗi số điện thoại.

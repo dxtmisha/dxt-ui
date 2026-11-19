@@ -316,5 +316,33 @@ describe('InputPhoneData', () => {
 
       expect(unmountedData.country.value).toBe(defaultCountry)
     })
+
+    it('should handle selecting an alternative phone code from a country group and ignore group header clicks', () => {
+      const { data, onValueSpy, valueRef } = createData({}, '')
+
+      data.onMounted()
+
+      data.onCountry(new MouseEvent('click'), {
+        type: 'item',
+        value: 'DO-1-829',
+        detail: { country: 'DO', phone: '1829' }
+      })
+
+      expect(data.country.value).toBe('DO')
+      expect(onValueSpy).toHaveBeenCalledWith('1829')
+
+      valueRef.value = '18295550123'
+      expect(data.activeCountry.value).toBe('DO')
+      expect(data.activeDialCode.value).toBe('DO-1-829')
+
+      data.onCountry(new MouseEvent('click'), {
+        type: 'group',
+        value: [{ value: 'DO' }],
+        detail: undefined
+      })
+
+      expect(data.country.value).toBe('DO')
+      data.onUnmounted()
+    })
   })
 })

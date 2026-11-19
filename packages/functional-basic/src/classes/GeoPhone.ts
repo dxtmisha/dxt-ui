@@ -40,13 +40,28 @@ export class GeoPhone {
    * @returns phone mask item or undefined / объект маски телефона или undefined
    */
   static get(code: string): GeoPhoneValue | undefined {
-    return this.getList().find(item => code === item.value)
+    const item = this.findItem(code)
+
+    if (item) {
+      return item
+    }
+
+    const country = Geo.getByCountry(code)?.country
+
+    if (
+      country
+      && country !== code
+    ) {
+      return this.findItem(country)
+    }
+
+    return undefined
   }
 
   /**
-   * Retrieves complete mask data by country code.
+   * Retrieves complete mask data by country code, including all alternative subcode masks.
    *
-   * Получает полные данные о маске по коду страны.
+   * Получает полные данные о масках по коду страны, включая все альтернативные подкоды.
    * @param code country and language code / код страны и языка
    * @returns phone mask map item or undefined / элемент карты маски телефона или undefined
    */
@@ -54,10 +69,67 @@ export class GeoPhone {
     const item = this.get(code)
 
     if (item) {
-      return this.getByPhone(item.phone.toString()).item
+      const baseNode = this.getByPhone(item.phone.toString()).item
+      const mask: string[] = []
+      const maskFull: string[] = []
+
+      item.mask.forEach((pattern) => {
+        const maskWithin = this.toWithin(pattern, item.within)
+        const fullPattern = maskWithin.replace(REGEXP_DIGIT, '*')
+
+        mask.push(maskWithin)
+
+        if (!maskFull.includes(fullPattern)) {
+          maskFull.push(fullPattern)
+        }
+      })
+
+      return {
+        items: baseNode?.value === item.value ? baseNode.items : [item],
+        info: item,
+        value: item.value,
+        mask,
+        maskFull,
+        next: baseNode?.value === item.value ? baseNode.next : {}
+      }
     }
 
     return undefined
+  }
+
+  /**
+   * Returns a list of distinct dial codes for a country, including alternatives when present.
+   *
+   * Возвращает список уникальных телефонных кодов страны, включая альтернативные при их наличии.
+   * @param code country and language code / код страны и языка
+   * @returns array of dial codes without leading "+" / массив телефонных кодов без ведущего "+"
+   */
+  static getCodes(code: string): string[] {
+    const item = this.get(code)
+
+    if (!item) {
+      return []
+    }
+
+    const primaryCode = Geo.getByCountry(item.value)?.phoneCode
+    const extracted = this.extractPrefixes(item.mask)
+
+    if (!primaryCode) {
+      return extracted
+    }
+
+    const hasAlternative = extracted.some(
+      prefix => prefix !== primaryCode && !prefix.startsWith(`${primaryCode}-`)
+    )
+
+    if (!hasAlternative) {
+      return [primaryCode]
+    }
+
+    return [
+      primaryCode,
+      ...extracted.filter(prefix => prefix !== primaryCode)
+    ]
   }
 
   /**
@@ -169,6 +241,18 @@ export class GeoPhone {
   }
 
   /**
+   * Finds a phone metadata item directly by exact country code.
+   *
+   * Находит элемент метаданных телефона по точному коду страны.
+   * @param code country code / код страны
+   * @protected
+   * @returns phone mask item or undefined / объект маски телефона или undefined
+   */
+  protected static findItem(code: string): GeoPhoneValue | undefined {
+    return this.getList().find(entry => code === entry.value)
+  }
+
+  /**
    * Deletes all characters that do not belong to the mask.
    *
    * Удаляет все символы, не относящиеся к маске.
@@ -178,6 +262,43 @@ export class GeoPhone {
    */
   protected static getUnnecessaryLength(mask: string): number {
     return mask.match(REGEXP_MASK_PLACEHOLDER)?.length ?? 0
+  }
+
+  /**
+   * Extracts distinct static dial code prefixes from an array of phone masks.
+   *
+   * Извлекает уникальные статические префиксы телефонных кодов из массива масок.
+   * @param masks array of phone masks / массив телефонных масок
+   * @protected
+   * @returns list of prefixes without leading "+" / список префиксов без ведущего "+"
+   */
+  protected static extractPrefixes(masks: string[]): string[] {
+    const prefixes: string[] = []
+
+    for (const mask of masks) {
+      const prefixChars: string[] = []
+
+      for (const char of mask) {
+        if (REGEXP_MASK_PLACEHOLDER_CHAR.test(char)) {
+          break
+        }
+
+        if (char !== '+') {
+          prefixChars.push(char)
+        }
+      }
+
+      const prefix = prefixChars.join('').replace(/-+$/, '')
+
+      if (
+        prefix
+        && !prefixes.includes(prefix)
+      ) {
+        prefixes.push(prefix)
+      }
+    }
+
+    return prefixes
   }
 
   /**

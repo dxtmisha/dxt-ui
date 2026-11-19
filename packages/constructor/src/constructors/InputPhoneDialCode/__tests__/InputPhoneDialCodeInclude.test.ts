@@ -28,6 +28,9 @@ describe('InputPhoneDialCodeInclude', () => {
 
     props.disabled = false
     expect(include.binds.value.disabled).toBe(false)
+
+    props.readonly = true
+    expect(include.binds.value.disabled).toBe(true)
   })
 
   it('should render inputPhoneDialCode component with extra binds and custom attributes', () => {

@@ -51,6 +51,7 @@ const design = new InputPhoneDialCodeDesign(
         text: true,
         size: 'xs',
         inverse: true,
+        hasLabelMinWidth: false,
         iconAttrs: {
           rect: true,
           rounded: 'sm'

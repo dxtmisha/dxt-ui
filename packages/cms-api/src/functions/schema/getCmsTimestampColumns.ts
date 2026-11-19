@@ -1,5 +1,5 @@
-import { timestamp } from 'drizzle-orm/pg-core'
 import { getCmsCreatedAtColumn } from './getCmsCreatedAtColumn'
+import { getCmsUpdatedAtColumn } from './getCmsUpdatedAtColumn'
 
 /**
  * Returns the standard `createdAt` and `updatedAt` timestamp column definitions for CMS tables.
@@ -10,7 +10,6 @@ import { getCmsCreatedAtColumn } from './getCmsCreatedAtColumn'
 export function getCmsTimestampColumns() {
   return {
     ...getCmsCreatedAtColumn(),
-    /** Last update timestamp / Дата последнего обновления */
-    updatedAt: timestamp('updated_at').defaultNow().notNull()
+    ...getCmsUpdatedAtColumn()
   }
 }
