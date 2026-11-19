@@ -11,6 +11,7 @@ import {
 import type { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import type { ModelInclude } from '../../classes/ModelInclude'
 import type { WindowEmitOptions } from '../Window'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
@@ -29,6 +30,10 @@ export class InputPhoneData extends DesignLifecycleAbstract {
 
   /** Cleanup function for valueItem watcher / Функция очистки наблюдателя valueItem */
   protected watchStop?: () => void
+  /** Cleanup function for activeCountry watcher / Функция очистки наблюдателя activeCountry */
+  protected watchActiveCountryStop?: () => void
+  /** Cleanup function for country prop watcher / Функция очистки наблюдателя свойства country */
+  protected watchCountryStop?: () => void
   /** Cleanup function for countryDefault watcher / Функция очистки наблюдателя countryDefault */
   protected watchCountryDefaultStop?: () => void
 
@@ -40,17 +45,21 @@ export class InputPhoneData extends DesignLifecycleAbstract {
    * @param element function returning field element manager / функция, возвращающая менеджер элемента поля
    * @param event function returning field event manager / функция, возвращающая менеджер событий поля
    * @param value function returning field value manager / функция, возвращающая менеджер значения поля
+   * @param modelCountry function returning country model manager / функция, возвращающая менеджер модели страны
    */
   constructor(
     protected readonly props: Readonly<InputPhonePropsBasic>,
     protected readonly element: () => FieldElementInclude,
     protected readonly event: () => FieldEventInclude,
-    protected readonly value: () => FieldValueInclude<string>
+    protected readonly value: () => FieldValueInclude<string>,
+    protected readonly modelCountry?: () => ModelInclude<string>
   ) {
     super()
 
-    if (this.props.countryDefault) {
-      this.country.value = this.props.countryDefault
+    const initialCountry = this.props.country ?? this.props.modelCountry ?? this.props.countryDefault
+
+    if (initialCountry) {
+      this.country.value = initialCountry
     }
   }
 
@@ -158,9 +167,27 @@ export class InputPhoneData extends DesignLifecycleAbstract {
     }
 
     this.updateCountry()
+
+    const countryProp = this.props.country ?? this.props.modelCountry
+
+    if (
+      countryProp !== undefined
+      && countryProp !== this.activeCountry.value
+    ) {
+      this.modelCountry?.().emit(this.activeCountry.value)
+    }
+
     this.watchStop = watch(
       [this.valueItem, () => this.value().item.value],
       () => this.updateCountry()
+    )
+    this.watchActiveCountryStop = watch(
+      this.activeCountry,
+      country => this.modelCountry?.().emit(country)
+    )
+    this.watchCountryStop = watch(
+      () => this.props.country ?? this.props.modelCountry,
+      country => this.updateByCountryProp(country)
     )
     this.watchCountryDefaultStop = watch(
       () => this.props.countryDefault,
@@ -239,6 +266,53 @@ export class InputPhoneData extends DesignLifecycleAbstract {
   }
 
   /**
+   * Checks whether the current phone value already belongs to the specified country.
+   *
+   * Проверяет, соответствует ли текущее значение номера телефона указанной стране.
+   * @param country country code / код страны
+   * @returns true if phone value matches country / true, если номер соответствует стране
+   */
+  protected isCountryMatchingValue(country: string): boolean {
+    const currentValue = this.value().item.value
+
+    if (!currentValue) {
+      return false
+    }
+
+    if (GeoPhone.cleanPhone(currentValue) === this.toPhone(country)) {
+      return true
+    }
+
+    const phoneItem = GeoPhone.getByPhone(currentValue)?.item
+
+    if (!phoneItem) {
+      return false
+    }
+
+    return phoneItem.value === country
+      || phoneItem.items.some(item => item.value === country)
+  }
+
+  /**
+   * Updates country state when the external country/modelCountry prop changes.
+   *
+   * Обновляет состояние страны при внешнем изменении пропса country/modelCountry.
+   * @param country new country code / новый код страны
+   */
+  protected updateByCountryProp(country?: string): void {
+    if (
+      country
+      && country !== this.activeCountry.value
+    ) {
+      this.country.value = country
+
+      if (!this.isCountryMatchingValue(country)) {
+        this.event().onValue(this.toPhone(country))
+      }
+    }
+  }
+
+  /**
    * Updates the country code when countryDefault changes and the country has not been modified yet.
    *
    * Обновляет код страны при изменении countryDefault, если страна ещё не была изменена.
@@ -248,6 +322,8 @@ export class InputPhoneData extends DesignLifecycleAbstract {
 
     if (
       countryDefault
+      && !this.props.country
+      && !this.props.modelCountry
       && countryDefault !== this.country.value
       && this.country.value === Geo.getCountry()
     ) {
@@ -264,6 +340,10 @@ export class InputPhoneData extends DesignLifecycleAbstract {
   protected resetWatch(): void {
     this.watchStop?.()
     this.watchStop = undefined
+    this.watchActiveCountryStop?.()
+    this.watchActiveCountryStop = undefined
+    this.watchCountryStop?.()
+    this.watchCountryStop = undefined
     this.watchCountryDefaultStop?.()
     this.watchCountryDefaultStop = undefined
   }

@@ -10,6 +10,7 @@ import type { MaskPropsBasic } from '../Mask'
 import type { ProgressPropsBasic } from '../Progress'
 
 import type { FieldInputPhoneProps } from '../../types/fieldTypes'
+import type { ModelPropsCountry } from '../../types/modelTypes'
 import type { TextInvalidPhonePropsInclude } from '../../types/textTypes'
 
 /**
@@ -39,6 +40,7 @@ export type InputPhonePropsBasic<
 > = InputPhoneDialCodePropsInclude<InputPhoneDialCode>
   & Omit<FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>, 'caption' | 'counterShow'>
   & FieldInputPhoneProps
+  & ModelPropsCountry
   & TextInvalidPhonePropsInclude
   & {
     /** Default country / Страна по умолчанию */

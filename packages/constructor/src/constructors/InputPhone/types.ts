@@ -5,6 +5,7 @@ import type { InputPhoneDialCodeComponentInclude } from '../InputPhoneDialCode'
 import type { MaskComponentInclude } from '../Mask'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
+import type { ModelEmitsCountry } from '../../types/modelTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -20,7 +21,7 @@ export type InputPhoneComponents = FieldComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type InputPhoneEmits = FieldBasicEmits & {
+export type InputPhoneEmits = FieldBasicEmits & ModelEmitsCountry & {
   /** Event triggered on focus / Событие при фокусе */
   focus: [event: FocusEvent]
   /** Event triggered on blur / Событие при потере фокуса */

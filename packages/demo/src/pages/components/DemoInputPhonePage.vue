@@ -41,6 +41,9 @@ const valueDynamicUntouched = ref<string>('')
 const valueDynamicModified = ref<string>('79001234567')
 const dynamicResetKey = ref<number>(0)
 
+const modelCountryCode = ref<string>('DE')
+const valueModelCountry = ref<string>('')
+
 const requiredRef = ref<InputPhoneExpose>()
 const requiredValidResult = ref<string>('not checked')
 
@@ -199,6 +202,24 @@ const onResetPasteCases = (): void => {
             <D1Button label="Set countryDefault = DE" @click="countryDefaultDynamic = 'DE'"/>
             <D1Button label="Set countryDefault = VN" @click="countryDefaultDynamic = 'VN'"/>
             <D1Button label="Reset Dynamic Default" @click="onResetDynamicCountry"/>
+          </DemoFlex>
+          <DemoFlex>
+            <DemoBox>
+              <D1InputPhone
+                v-model:value="valueModelCountry"
+                v-model:country="modelCountryCode"
+                label="Two-way v-model:country"
+                helper-message="Syncs ISO country code bidirectionally with phone input and selector"
+              />
+              <DemoValue :value="`country=${modelCountryCode}, phone=${valueModelCountry || 'empty'}`"/>
+            </DemoBox>
+            <DemoBox>
+              <DemoFlex>
+                <D1Button label="v-model:country = RU" @click="modelCountryCode = 'RU'"/>
+                <D1Button label="v-model:country = VN" @click="modelCountryCode = 'VN'"/>
+                <D1Button label="v-model:country = DE" @click="modelCountryCode = 'DE'"/>
+              </DemoFlex>
+            </DemoBox>
           </DemoFlex>
         </DemoFlex>
       </D1Group>

@@ -7,6 +7,7 @@ import { Geo, GeoPhone } from '@dxtmisha/functional'
 import type { FieldElementInclude } from '../../../classes/Field/FieldElementInclude'
 import type { FieldEventInclude } from '../../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
+import type { ModelInclude } from '../../../classes/ModelInclude'
 import { InputPhoneData } from '../InputPhoneData'
 import type { InputPhonePropsBasic } from '../props'
 
@@ -44,12 +45,18 @@ function createData(
     set: setSpy
   } as unknown as FieldValueInclude<string>
 
+  const emitCountrySpy = vi.fn()
+  const mockModelCountry = {
+    emit: emitCountrySpy
+  } as unknown as ModelInclude<string>
+
   const reactiveProps = reactive<InputPhonePropsBasic>({ ...props })
   const data = new InputPhoneData(
     reactiveProps,
     () => mockElement,
     () => mockEvent,
-    () => mockValue
+    () => mockValue,
+    () => mockModelCountry
   )
 
   return {
@@ -57,7 +64,8 @@ function createData(
     props: reactiveProps,
     valueRef,
     setSpy,
-    onValueSpy
+    onValueSpy,
+    emitCountrySpy
   }
 }
 
@@ -342,6 +350,67 @@ describe('InputPhoneData', () => {
       })
 
       expect(data.country.value).toBe('DO')
+      data.onUnmounted()
+    })
+  })
+
+  describe('v-model:country / modelCountry synchronization', () => {
+    it('should initialize country from country or modelCountry props overriding countryDefault', () => {
+      const { data: byCountry } = createData({ country: 'DE', countryDefault: 'US' })
+      expect(byCountry.country.value).toBe('DE')
+
+      const { data: byModelCountry } = createData({ modelCountry: 'VN', countryDefault: 'US' })
+      expect(byModelCountry.country.value).toBe('VN')
+    })
+
+    it('should emit activeCountry on mount when initial country prop mismatches phone value', () => {
+      const { data, emitCountrySpy } = createData({ country: 'US' }, '79001234567')
+
+      data.onMounted()
+      expect(data.country.value).toBe('RU')
+      expect(emitCountrySpy).toHaveBeenCalledWith('RU')
+
+      data.onUnmounted()
+    })
+
+    it('should update country and value when external country prop changes', async () => {
+      const { data, props, valueRef, onValueSpy, emitCountrySpy } = createData({ country: 'US' }, '12025550147')
+
+      data.onMounted()
+
+      props.country = 'VN'
+      await nextTick()
+      expect(data.country.value).toBe('VN')
+      expect(onValueSpy).toHaveBeenCalledWith('84')
+      expect(emitCountrySpy).toHaveBeenCalledWith('VN')
+
+      // Preserves existing phone number when changing to matching country in same tick
+      valueRef.value = '4930123456'
+      props.country = 'DE'
+      await nextTick()
+      expect(data.country.value).toBe('DE')
+      expect(onValueSpy).toHaveBeenCalledTimes(1)
+
+      // Shared prefix '1' switches country from US to CA without overwriting bare prefix
+      valueRef.value = '1'
+      props.country = 'US'
+      await nextTick()
+      props.country = 'CA'
+      await nextTick()
+      expect(data.country.value).toBe('CA')
+      expect(onValueSpy).toHaveBeenCalledTimes(1)
+
+      data.onUnmounted()
+    })
+
+    it('should not let countryDefault overwrite explicit country prop', async () => {
+      const { data, props } = createData({ country: 'DE', countryDefault: 'US' }, '')
+
+      data.onMounted()
+      props.countryDefault = 'VN'
+      await nextTick()
+
+      expect(data.country.value).toBe('DE')
       data.onUnmounted()
     })
   })

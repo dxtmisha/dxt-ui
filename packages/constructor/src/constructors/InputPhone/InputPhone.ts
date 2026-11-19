@@ -14,6 +14,7 @@ import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import { ModelInclude } from '../../classes/ModelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
 import { FieldInclude } from '../Field'
@@ -53,6 +54,8 @@ export type InputPhoneConstructors = {
   format: typeof InputPhoneFormat
   /** Mask constructor / Конструктор маски */
   mask: typeof MaskInclude
+  /** Country model constructor / Конструктор модели страны */
+  modelCountry: typeof ModelInclude<string>
   /** Input phone paste constructor / Конструктор вставки телефона */
   paste: typeof InputPhonePaste
   /** Input phone mask constructor / Конструктор маски ввода телефона */
@@ -100,7 +103,8 @@ export class InputPhone extends DesignLogicAbstract<
         this.props,
         () => this.i('elementItem'),
         () => this.i('event'),
-        () => this.i('value')
+        () => this.i('value'),
+        () => this.i('modelCountry')
       ]
     },
     dialCode: {
@@ -174,6 +178,13 @@ export class InputPhone extends DesignLogicAbstract<
         undefined,
         () => this.i('value'),
         () => this.i('data').valueDefault.value
+      ]
+    },
+    modelCountry: {
+      item: ModelInclude<string>,
+      parameters: () => [
+        'country',
+        this.emits
       ]
     },
     paste: {

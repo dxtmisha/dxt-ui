@@ -10,6 +10,17 @@ export type ModelEmits<Value = string> = {
 }
 
 /**
+ * Event signatures for model country updates/
+ * Сигнатуры событий для обновления страны модели
+ */
+export type ModelEmitsCountry<Value = string> = {
+  /** Update country event/ Событие обновления страны */
+  'update:country': [value: Value]
+  /** Update model country event/ Событие обновления страны модели */
+  'update:modelCountry': [value: Value]
+}
+
+/**
  * Event signatures for model files updates/
  * Сигнатуры событий для обновления файлов модели
  */
@@ -53,6 +64,21 @@ export type ModelProps<Value = string> = {
   'onUpdate:value'?: (value: Value) => void
   /** Update model value handler/ Обработчик обновления значения модели */
   'onUpdate:modelValue'?: (value: Value) => void
+}
+
+/**
+ * Props for model country used with v-model/
+ * Свойства для страны модели, используемой с v-model
+ */
+export type ModelPropsCountry<Value = string> = {
+  /** Country prop/ Свойство страны */
+  'country'?: Value
+  /** Model country prop/ Свойство страны модели */
+  'modelCountry'?: Value
+  /** Update country handler/ Обработчик обновления страны */
+  'onUpdate:country'?: (value: Value) => void
+  /** Update model country handler/ Обработчик обновления страны модели */
+  'onUpdate:modelCountry'?: (value: Value) => void
 }
 
 /**

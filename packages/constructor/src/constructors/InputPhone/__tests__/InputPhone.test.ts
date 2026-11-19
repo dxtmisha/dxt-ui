@@ -925,4 +925,43 @@ describe('InputPhone (Integration)', () => {
     expect(readonlyEmitted.some(event => event.type === 'focus' && event.args[0] instanceof FocusEvent)).toBe(true)
     expect(readonlyEmitted.some(event => event.type === 'blur' && event.args[0] instanceof FocusEvent)).toBe(true)
   })
+
+  it('should support two-way v-model:country and update:country / update:modelCountry emits', async () => {
+    const { container, props, emittedEvents, exposed } = await mountInputPhone({
+      country: 'DE'
+    })
+
+    const input = container.querySelector('.d1-mask input') as HTMLInputElement
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('DE')
+    expect(input.value).toBe('+49-')
+
+    // Typing a Russian phone emits update:country and update:modelCountry with 'RU'
+    input.value = '+79001234567'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await nextTick()
+    await nextTick()
+
+    expect(emittedEvents.some(event => event.type === 'update:country' && event.args[0] === 'RU')).toBe(true)
+    expect(emittedEvents.some(event => event.type === 'update:modelCountry' && event.args[0] === 'RU')).toBe(true)
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+
+    // Updating country prop externally switches dial code and phone prefix
+    props.country = 'VN'
+    await nextTick()
+    await nextTick()
+
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('VN')
+    expect(input.value).toBe('+84-')
+    expect(exposed.getValue()).toBeUndefined()
+
+    // Selecting country in DialCode emits update:country with 'DE'
+    const selectDeBtn = container.querySelector('.mock-select-de') as HTMLButtonElement
+    selectDeBtn.click()
+    await nextTick()
+    await nextTick()
+
+    expect(emittedEvents.some(event => event.type === 'update:country' && event.args[0] === 'DE')).toBe(true)
+    expect(emittedEvents.some(event => event.type === 'update:modelCountry' && event.args[0] === 'DE')).toBe(true)
+    expect(input.value).toBe('+49-')
+  })
 })
