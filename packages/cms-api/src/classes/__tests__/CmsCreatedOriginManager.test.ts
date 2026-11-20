@@ -260,28 +260,22 @@ describe('CmsCreatedOriginManager', () => {
     expect(result.map(item => item.getCode())).toEqual(['system', 'admin'])
   })
 
-  it('delegates update, setSystemStatus, and delete by ID and routes DB failures through ErrorCenter', async () => {
+  it('delegates update and delete by ID and routes DB failures through ErrorCenter', async () => {
     const existing = makeCreatedOrigin({ id: 3, name: 'Old' })
     const updated = makeCreatedOrigin({ id: 3, name: 'New' })
-    const blocked = makeCreatedOrigin({ id: 3, name: 'New', systemStatus: 'blocked' })
     const mock = createMockDb({
       selectQueue: [
         [existing],
         [existing],
-        [blocked],
-        [existing],
         []
       ],
-      updateQueue: [[updated], [{ id: 3 }]],
+      updateQueue: [[updated]],
       deleteQueue: [[{ id: 3 }]]
     })
     const manager = new CmsCreatedOriginManager(mock.dbInstance)
 
     const updatedItem = await manager.update(3, { name: 'New' })
     expect(updatedItem?.getName()).toBe('New')
-
-    const blockedItem = await manager.setSystemStatus(3, 'blocked')
-    expect(blockedItem?.getSystemStatus()).toBe('blocked')
 
     expect(await manager.delete(3)).toBe(true)
     expect(await manager.delete(999)).toBe(false)

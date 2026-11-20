@@ -62,6 +62,8 @@ export class SliderFieldEvent {
         target.value = String(this.valueItem.max)
         break
     }
+
+    this.event.onFocus(event)
   }
 
   /**
@@ -74,6 +76,7 @@ export class SliderFieldEvent {
     const target = event.target as HTMLInputElement
 
     target.value = ''
+    this.event.onBlur(event)
   }
 
   /**

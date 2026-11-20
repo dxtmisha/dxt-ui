@@ -37,6 +37,12 @@ export type MenuCountryPropsBasic<
     // Style
     /** Whether to show the phone code / Показывать ли код телефона */
     showPhoneCode?: boolean
+    /** Starting length for search highlighting / Начальная длина для подсветки поиска */
+    highlightLengthStart?: number
+    /** Whether to show the search input / Показывать ли поле поиска */
+    showSearch?: boolean
+    /** Whether to enable filtering mode / Включен ли режим фильтрации */
+    filterMode?: boolean
 
     // Technical
     /** Whether selection is determined by value / Определяется ли выбор по значению */
@@ -59,6 +65,9 @@ export type MenuCountryProps = MenuCountryPropsBasic & MenuCountryPropsToken
  */
 export const defaultsMenuCountry = {
   isSelectedByValue: true,
+  highlightLengthStart: 1,
+  showSearch: true,
+  filterMode: false,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

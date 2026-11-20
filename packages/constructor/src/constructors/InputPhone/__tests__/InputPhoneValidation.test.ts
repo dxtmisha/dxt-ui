@@ -10,6 +10,7 @@ import { FieldCodeInclude } from '../../../classes/Field/FieldCodeInclude'
 import { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
 import { TextInclude } from '../../../classes/TextInclude'
 
+import type { InputPhoneCountryList } from '../InputPhoneCountryList'
 import type { InputPhoneData } from '../InputPhoneData'
 import { InputPhoneValidation } from '../InputPhoneValidation'
 import type { InputPhonePropsBasic } from '../props'
@@ -46,6 +47,10 @@ async function createValidation(
       changeInclude = new FieldChangeInclude(reactiveProps)
       const codeInclude = new FieldCodeInclude(reactiveProps as FieldAllProps)
       const textInclude = new TextInclude(reactiveProps)
+      const mockCountryList = {
+        item: ref(undefined),
+        resolveAllowed: () => undefined
+      } as unknown as InputPhoneCountryList
       const mockData = {
         valueDefault: valueDefaultRef,
         item: itemRef
@@ -55,6 +60,7 @@ async function createValidation(
         reactiveProps as FieldAllProps & Pick<InputPhonePropsBasic, 'countryBlock'>,
         () => attributesInclude,
         () => valueInclude,
+        () => mockCountryList,
         () => mockData,
         () => changeInclude,
         () => codeInclude,
@@ -113,6 +119,9 @@ describe('InputPhoneValidation', () => {
     expect(validation.message).toBe('Phone is required')
 
     valueInclude.set('+7-')
+    expect(validation.checkValidity()).toBe(false)
+
+    valueInclude.set('+')
     expect(validation.checkValidity()).toBe(false)
 
     valueInclude.set('79001234567')
@@ -248,5 +257,42 @@ describe('InputPhoneValidation', () => {
 
     expect(validation.checkValidity()).toBe(false)
     expect(validation.message).toBe('Please enter a valid phone number')
+  })
+
+  it('should fail validation when phone belongs to a country outside countryList', async () => {
+    const { validation, valueInclude, changeInclude, props } = await createValidation(
+      {
+        required: false,
+        countryList: ['RU', 'BY'],
+        textInvalidPhone: 'Country is not allowed'
+      },
+      '79001234567',
+      '7'
+    )
+
+    // Inject item and resolveAllowed behavior through InputPhoneCountryList contract
+    const countryListTarget = (validation as unknown as { countryList: () => Record<string, unknown> }).countryList()
+    countryListTarget.item = ref(['RU', 'BY'])
+    countryListTarget.resolveAllowed = (item?: { value?: string, items?: Array<{ value: string }> }) => {
+      if (!item) return undefined
+      if (item.value && ['RU', 'BY'].includes(item.value)) return item.value
+      return item.items?.find(entry => ['RU', 'BY'].includes(entry.value))?.value
+    }
+
+    changeInclude.to()
+    expect(validation.checkValidity()).toBe(true)
+
+    valueInclude.set('+49-30-12345678')
+    valueInclude.setFull(true)
+    expect(validation.checkValidity()).toBe(false)
+    expect(validation.message).toBe('Country is not allowed')
+
+    valueInclude.set('+375-29-123-45-67')
+    expect(validation.checkValidity()).toBe(true)
+    expect(validation.message).toBe('')
+
+    props.countryBlock = true
+    valueInclude.set('+49-30-12345678')
+    expect(validation.checkValidity()).toBe(true)
   })
 })

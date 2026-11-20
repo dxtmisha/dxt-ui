@@ -178,6 +178,7 @@ export class InputSocialDesign<
         this.item.attributes.listForInput,
         input.binds
       ),
+      onFocus: this.item.event.onFocus,
       onBlur: this.item.event.onBlur,
       onInput: this.item.event.onInput
     })

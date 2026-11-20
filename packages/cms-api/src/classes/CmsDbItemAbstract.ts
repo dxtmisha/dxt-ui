@@ -95,33 +95,13 @@ export abstract class CmsDbItemAbstract<
   }
 
   /**
-   * Updates the system status of this entity and reloads its snapshot.
-   *
-   * Обновляет системный статус этой записи и перезагружает её данные.
-   * @param systemStatus Target system status / Целевой системный статус
-   * @returns Updated item instance or undefined if not found / Обновлённый экземпляр или undefined, если запись не найдена
-   */
-  async setSystemStatus(systemStatus: CmsSystemStatus): Promise<this | undefined> {
-    try {
-      const updated = await this.systemStatus.update(this.data.id, systemStatus)
-      if (!updated) {
-        return undefined
-      }
-
-      return await this.reload()
-    } catch (error) {
-      return this.handleError('update', error)
-    }
-  }
-
-  /**
    * Marks this entity as active (`systemStatus = 'active'`).
    *
    * Переводит запись в активный системный статус (`systemStatus = 'active'`).
    * @returns Updated item instance or undefined if not found / Обновлённый экземпляр или undefined, если запись не найдена
    */
   async activate(): Promise<this | undefined> {
-    return this.setSystemStatus('active')
+    return this.updateSystemStatus('active')
   }
 
   /**
@@ -131,7 +111,7 @@ export abstract class CmsDbItemAbstract<
    * @returns Updated item instance or undefined if not found / Обновлённый экземпляр или undefined, если запись не найдена
    */
   async block(): Promise<this | undefined> {
-    return this.setSystemStatus('blocked')
+    return this.updateSystemStatus('blocked')
   }
 
   /**
@@ -141,7 +121,7 @@ export abstract class CmsDbItemAbstract<
    * @returns Updated item instance or undefined if not found / Обновлённый экземпляр или undefined, если запись не найдена
    */
   async softDelete(): Promise<this | undefined> {
-    return this.setSystemStatus('deleted')
+    return this.updateSystemStatus('deleted')
   }
 
   /**
@@ -185,13 +165,13 @@ export abstract class CmsDbItemAbstract<
   }
 
   /**
-   * Returns a plain JSON-serializable snapshot of the entity record.
+   * Returns a JSON string representation of the entity record.
    *
-   * Возвращает обычный объект данных записи для сериализации в JSON.
-   * @returns Cloned entity record / Копия записи сущности
+   * Возвращает JSON-строку с данными записи сущности.
+   * @returns Serialized entity record / Сериализованная запись сущности
    */
-  toJSON(): TData {
-    return this.getData()
+  toJSONString(): string {
+    return JSON.stringify(this.getData())
   }
 
   /**
@@ -242,6 +222,28 @@ export abstract class CmsDbItemAbstract<
 
       this.data = updatedRecord
       return this
+    } catch (error) {
+      return this.handleError('update', error)
+    }
+  }
+
+  /**
+   * Updates the system status of this entity and reloads its snapshot.
+   *
+   * Обновляет системный статус этой записи и перезагружает её данные.
+   * @param systemStatus Target system status / Целевой системный статус
+   * @returns Updated item instance or undefined if not found / Обновлённый экземпляр или undefined, если запись не найдена
+   */
+  protected async updateSystemStatus(
+    systemStatus: CmsSystemStatus
+  ): Promise<this | undefined> {
+    try {
+      const updated = await this.systemStatus.update(this.data.id, systemStatus)
+      if (!updated) {
+        return undefined
+      }
+
+      return await this.reload()
     } catch (error) {
       return this.handleError('update', error)
     }

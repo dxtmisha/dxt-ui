@@ -9,6 +9,7 @@ import type { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import type { FieldMatchInclude } from '../../classes/Field/FieldMatchInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import type { TextInclude } from '../../classes/TextInclude'
+import type { InputPhoneCountryList } from './InputPhoneCountryList'
 import type { InputPhoneData } from './InputPhoneData'
 
 import type { FieldAllProps, FieldValidationItem } from '../../types/fieldTypes'
@@ -31,6 +32,7 @@ export class InputPhoneValidation extends FieldValidationInclude {
    * @param props input data / входные данные
    * @param attributes function returning object for working with input attributes / функция, возвращающая объект для работы с атрибутами ввода
    * @param value function returning object for value work / функция, возвращающая объект для работы со значениями
+   * @param countryList function returning country list manager / функция, возвращающая менеджер списка стран
    * @param data function returning phone data manager / функция, возвращающая менеджер данных телефона
    * @param change function returning object for change state / функция, возвращающая объект для состояния изменения
    * @param code function returning object for error codes / функция, возвращающая объект для работы с кодами ошибок
@@ -41,6 +43,7 @@ export class InputPhoneValidation extends FieldValidationInclude {
     protected override readonly props: FieldAllProps & Pick<InputPhonePropsBasic, 'countryBlock'>,
     attributes: () => FieldAttributesInclude,
     value: () => FieldValueInclude,
+    protected readonly countryList: () => InputPhoneCountryList,
     protected readonly data: () => InputPhoneData,
     change?: () => FieldChangeInclude,
     code?: () => FieldCodeInclude,
@@ -88,7 +91,10 @@ export class InputPhoneValidation extends FieldValidationInclude {
   protected override checkByInput(value: unknown): FieldValidationItem | undefined {
     const cleanValue = GeoPhone.cleanPhone(anyToString(value))
 
-    if (this.isBareDefaultPrefix(cleanValue)) {
+    if (
+      !cleanValue
+      || this.isBareDefaultPrefix(cleanValue)
+    ) {
       return super.checkByInput('')
     }
 
@@ -103,12 +109,39 @@ export class InputPhoneValidation extends FieldValidationInclude {
 
     if (
       cleanValue
-      && !this.value().isFull.value
+      && (
+        !this.value().isFull.value
+        || !this.isAllowedByCountryList(cleanValue)
+      )
     ) {
       return this.checkIncomplete(value)
     }
 
     return nativeCheck
+  }
+
+  /**
+   * Checks whether the phone digits belong to a country permitted by the configured country list.
+   *
+   * Проверяет, принадлежит ли номер телефона стране из разрешённого списка стран.
+   * @param cleanValue digits-only phone string / строка телефона, содержащая только цифры
+   * @returns true if allowed / true, если страна разрешена
+   */
+  protected isAllowedByCountryList(cleanValue: string): boolean {
+    if (
+      this.props.countryBlock
+      || !this.countryList().item.value
+    ) {
+      return true
+    }
+
+    const phoneItem = GeoPhone.getByPhone(cleanValue)?.item
+
+    if (!phoneItem) {
+      return false
+    }
+
+    return Boolean(this.countryList().resolveAllowed(phoneItem))
   }
 
   /**

@@ -67,7 +67,10 @@ export class MenuInclude<
 
     return mergeProps(
       super.toBinds(),
-      props.disabled !== undefined ? { disabled: props.disabled } : {}
+      {
+        ...(props.disabled !== undefined ? { disabled: props.disabled } : {}),
+        ...(props.disableFocusReturn !== undefined ? { disableFocusReturn: props.disableFocusReturn } : {})
+      }
     ) as Partial<ConstrBind<PropsExtra>>
   }
 

@@ -17,6 +17,7 @@ const propsNames: StorybookProps = [
   { name: 'barsLabel', type: 'string | number' },
   { name: 'barsList', type: 'ConstrBind<ButtonProps>[]' },
   { name: 'disabled', type: 'boolean' },
+  { name: 'disableFocusReturn', type: 'boolean' },
   { name: 'open', type: 'boolean' },
   { name: 'touchClose', type: 'boolean' },
   { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },

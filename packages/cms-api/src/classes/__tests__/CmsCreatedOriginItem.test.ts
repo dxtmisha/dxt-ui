@@ -119,7 +119,7 @@ describe('CmsCreatedOriginItem', () => {
       expect(item.getSystemStatus()).toBe('active')
       expect(item.getCreatedAt()).toEqual(data.createdAt)
       expect(item.getUpdatedAt()).toEqual(data.updatedAt)
-      expect(item.toJSON()).toEqual(data)
+      expect(item.toJSONString()).toBe(JSON.stringify(data))
 
       const snapshot = item.getData()
       snapshot.name = 'Mutated'
@@ -195,7 +195,7 @@ describe('CmsCreatedOriginItem', () => {
       expect((await item.block())?.getSystemStatus()).toBe('blocked')
       expect((await item.activate())?.getSystemStatus()).toBe('active')
       expect((await item.softDelete())?.getSystemStatus()).toBe('deleted')
-      expect(await item.setSystemStatus('active')).toBeUndefined()
+      expect(await item.activate()).toBeUndefined()
     })
 
     it('reloads and deletes the created origin record', async () => {

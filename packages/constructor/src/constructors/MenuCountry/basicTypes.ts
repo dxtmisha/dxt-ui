@@ -35,6 +35,16 @@ export type MenuCountryPropsInclude<
 > = {
   /** Whether the menu country is disabled / Отключено ли menu country */
   disabled?: boolean
+  /** Disable returning focus to the control element on close / Отключить возврат фокуса на элемент управления при закрытии */
+  disableFocusReturn?: boolean
+  /** Filter countries by code (ISO 3166-1 alpha-2) / Фильтр стран по кодам (ISO 3166-1 alpha-2) */
+  countryList?: string[]
+  /** Starting length for search highlighting / Начальная длина для подсветки поиска */
+  highlightLengthStart?: number
+  /** Whether to show the search input / Показывать ли поле поиска */
+  showSearch?: boolean
+  /** Whether to enable filtering mode / Включен ли режим фильтрации */
+  filterMode?: boolean
   /** Additional attributes for the MenuCountry component / Дополнительные атрибуты для компонента MenuCountry */
   menuCountryAttrs?: ConstrBind<MenuCountry>
 }

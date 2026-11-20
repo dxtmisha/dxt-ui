@@ -35,7 +35,9 @@ describe('SelectInput', () => {
 
     const mockEvent = {
       onInput: vi.fn(),
-      onSelect: vi.fn()
+      onSelect: vi.fn(),
+      onFocus: vi.fn(),
+      onBlur: vi.fn()
     } as any
 
     const selectInput = new SelectInput(props, mockAttributes, {} as any, mockEvent)
@@ -49,6 +51,8 @@ describe('SelectInput', () => {
     expect(binds?.placeholder).toBe('Choose one')
     expect(binds?.['data-menu-control']).toBe('1')
     expect(binds?.onInput).toBe(mockEvent.onInput)
+    expect(binds?.onFocus).toBe(mockEvent.onFocus)
+    expect(binds?.onBlur).toBe(mockEvent.onBlur)
     expect(binds?.['aria-expanded']).toBe('true')
     expect(binds?.['data-custom']).toBe('val')
   })

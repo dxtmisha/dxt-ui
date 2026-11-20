@@ -24,8 +24,7 @@ import { CmsDbAbstract } from './CmsDbAbstract'
 import type { CmsDbInstance } from './CmsDbInstance'
 import type {
   CmsCreatedOrigin,
-  CmsNewCreatedOrigin,
-  CmsSystemStatus
+  CmsNewCreatedOrigin
 } from '../types/cmsDbTypes'
 import type {
   CmsCreatedOriginCreateInput,
@@ -294,26 +293,6 @@ export class CmsCreatedOriginManager extends CmsDbAbstract<typeof createdOrigins
     }
 
     return originItem.update(input)
-  }
-
-  /**
-   * Updates the system status of an existing created origin by ID.
-   *
-   * Обновляет системный статус существующего источника создания записей по ID.
-   * @param id Created origin identifier / Идентификатор источника создания записей
-   * @param systemStatus Target system status / Целевой системный статус
-   * @returns Updated CmsCreatedOriginItem or undefined if not found / Обновлённый экземпляр CmsCreatedOriginItem или undefined, если не найден
-   */
-  async setSystemStatus(
-    id: number,
-    systemStatus: CmsSystemStatus
-  ): Promise<CmsCreatedOriginItem | undefined> {
-    const originItem = await this.getById(id)
-    if (!originItem) {
-      return undefined
-    }
-
-    return originItem.setSystemStatus(systemStatus)
   }
 
   /**

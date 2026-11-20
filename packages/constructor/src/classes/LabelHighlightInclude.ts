@@ -70,13 +70,32 @@ export class LabelHighlightInclude extends LabelInclude {
     }
 
     const label = props.label.toString()
-    const exp = getExp(props.highlight, 'i')
+    const expression = getExp(props.highlight, 'i')
 
     return Boolean(
-      label.match(exp)
-      || (
+      label.match(expression)
+      || this.isSearchMatch(expression)
+    )
+  }
+
+  /**
+   * Checks whether the value or search metadata matches the highlight expression.
+   *
+   * Проверяет, соответствует ли значение или строка поиска выражению подсветки.
+   * @param expression regular expression for highlight matching / регулярное выражение для проверки подсветки
+   * @returns true if value or search matches / true, если значение или поиск совпадает
+   */
+  protected isSearchMatch(expression: RegExp): boolean {
+    const props = this.props
+
+    return Boolean(
+      (
         (isFilled(props.value, true) || isNumber(props.value))
-        && props.value.toString().match(exp)
+        && props.value.toString().match(expression)
+      )
+      || (
+        isFilled(props.search)
+        && props.search.match(expression)
       )
     )
   }
@@ -99,16 +118,13 @@ export class LabelHighlightInclude extends LabelInclude {
     ) {
       const className = this.naming.getSubClass('highlight')
       const label = props.label.toString()
-      const exp = getExp(props.highlight, 'i')
+      const expression = getExp(props.highlight, 'i')
 
-      if (label.match(exp)) {
-        return label.replace(exp, text => `<span class="${className}">${text}</span>`)
+      if (label.match(expression)) {
+        return label.replace(expression, text => `<span class="${className}">${text}</span>`)
       }
 
-      if (
-        (isFilled(props.value, true) || isNumber(props.value))
-        && props.value.toString().match(exp)
-      ) {
+      if (this.isSearchMatch(expression)) {
         return `<span class="${className}">${label}</span>`
       }
     }

@@ -47,6 +47,8 @@ export interface GeoItem {
   phoneCode?: string
   /** Phone code for domestic calls / Телефонный код для внутренних звонков */
   phoneWithin?: string
+  /** Skip applying phoneWithin symbol replacement to the phone mask / Пропустить замену символа phoneWithin в маске телефона */
+  phoneWithinSkip?: boolean
   /** Phone number mask / Маска телефонного номера */
   phoneMask?: string | string[]
   /** Name format pattern / Шаблон формата имени */
@@ -144,6 +146,8 @@ export interface GeoPhoneValue {
   phone: number
   /** Internal dialing rule code / Код внутреннего правила набора */
   within?: string
+  /** Skip applying within symbol replacement to mask / Пропустить замену символа within в маске */
+  withinSkip?: boolean
   /** Array of mask patterns assigned to the country / Массив паттернов масок, закрепленных за страной */
   mask: string[]
   /** Country identifier (ISO 3166) / Идентификатор страны (ISO 3166) */

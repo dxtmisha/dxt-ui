@@ -1,10 +1,12 @@
 // ai-none
 
 import { ref } from 'vue'
+import type { ConstrEmit } from '@dxtmisha/functional'
 
 import { DropzoneEvents } from './DropzoneEvents'
 import { DropzoneFiles } from './DropzoneFiles'
 
+import type { DropzoneEmits } from './types'
 import type { DropzoneProps } from './props'
 
 /**
@@ -21,11 +23,13 @@ export class DropzoneInput {
    * @param props input data / входные данные
    * @param files file manager instance / экземпляр менеджера файлов
    * @param events events manager instance / экземпляр менеджера событий
+   * @param emits event emitter / эмиттер событий
    */
   constructor(
     protected readonly props: DropzoneProps,
     protected readonly files: DropzoneFiles,
-    protected readonly events?: DropzoneEvents
+    protected readonly events?: DropzoneEvents,
+    protected readonly emits?: ConstrEmit<DropzoneEmits>
   ) {
   }
 
@@ -46,7 +50,8 @@ export class DropzoneInput {
       ...this.props.inputAttrs,
       ...this.events?.binds,
       onFocus: this.onFocus,
-      onClick: this.onFocus,
+      onBlur: this.onBlur,
+      onClick: this.clear,
       onChange: this.onChange
     }
   }
@@ -78,12 +83,29 @@ export class DropzoneInput {
   }
 
   /**
-   * Resets file input value on click/focus so re-selecting the same file triggers change event.
+   * Resets file input value on focus and emits focus event.
    *
-   * Сбрасывает значение инпута при фокусе/клике, чтобы повторный выбор того же файла вызывал событие change.
+   * Сбрасывает значение инпута при фокусе и эмитит событие focus.
+   * @param event focus event / событие фокуса
    */
-  protected readonly onFocus = (): void => {
+  protected readonly onFocus = (event: FocusEvent): void => {
     this.clear()
+
+    if (this.props.disabled !== true) {
+      this.emits?.('focus', event)
+    }
+  }
+
+  /**
+   * File input blur event handler.
+   *
+   * Обработчик события потери фокуса инпута файлов.
+   * @param event blur event / событие потери фокуса
+   */
+  protected readonly onBlur = (event: FocusEvent): void => {
+    if (this.props.disabled !== true) {
+      this.emits?.('blur', event)
+    }
   }
 
   /**

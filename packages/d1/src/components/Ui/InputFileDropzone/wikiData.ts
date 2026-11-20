@@ -32,7 +32,10 @@ const propsNames: StorybookProps = [
   { name: 'required', type: 'boolean' },
   { name: 'textDropzone', type: 'TextValue' },
   { name: 'validationId', type: 'string' },
-  { name: 'validationMessage', type: 'string' }
+  { name: 'validationMessage', type: 'string' },
+  { name: 'warning', type: 'boolean' },
+  { name: 'warningId', type: 'string' },
+  { name: 'warningMessage', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

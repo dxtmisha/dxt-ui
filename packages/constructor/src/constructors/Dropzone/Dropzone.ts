@@ -131,7 +131,7 @@ export class Dropzone {
 
     this.files = new DropzoneFilesConstructor(this.props, this.emits)
     this.events = new DropzoneEventsConstructor(this.props)
-    this.input = new DropzoneInputConstructor(this.props, this.files, this.events)
+    this.input = new DropzoneInputConstructor(this.props, this.files, this.events, this.emits)
 
     new ModelIncludeConstructor('files', this.emits, this.files.item)
   }

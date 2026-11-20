@@ -70,6 +70,7 @@ describe('InputPhoneDialCode (Integration)', () => {
         selected: [String, Number, Boolean, Array],
         showPhoneCode: Boolean,
         disabled: Boolean,
+        disableFocusReturn: Boolean,
         menuAttrs: Object
       },
       emits: ['click', 'updateValue', 'window'],
@@ -122,7 +123,8 @@ describe('InputPhoneDialCode (Integration)', () => {
               'class': ['mock-menu-country', attrs.class],
               'data-selected': String(props.selected ?? ''),
               'data-show-phone-code': String(Boolean(props.showPhoneCode)),
-              'data-disabled': String(Boolean(props.disabled))
+              'data-disabled': String(Boolean(props.disabled)),
+              'data-disable-focus-return': String(Boolean(props.disableFocusReturn))
             },
             [
               slots.control?.(controlProps.value),
@@ -251,6 +253,7 @@ describe('InputPhoneDialCode (Integration)', () => {
     expect(menuEl.classList.contains('d1-inputPhoneDialCode__menuCountry')).toBe(true)
     expect(menuEl.getAttribute('data-selected')).toBe('US')
     expect(menuEl.getAttribute('data-show-phone-code')).toBe('true')
+    expect(menuEl.getAttribute('data-disable-focus-return')).toBe('true')
 
     const buttonEl = container.querySelector('button.d1-inputPhoneDialCode__button') as HTMLButtonElement
     expect(buttonEl).not.toBeNull()
@@ -260,10 +263,7 @@ describe('InputPhoneDialCode (Integration)', () => {
     expect(buttonEl.textContent).toBe('+1')
 
     expect(lastMenuAttrs.value).toMatchObject({
-      showSearch: true,
-      windowAttrs: {
-        disableFocusReturn: true
-      }
+      showSearch: true
     })
   })
 
@@ -370,9 +370,7 @@ describe('InputPhoneDialCode (Integration)', () => {
     const { container } = createHarness({
       value: 'US',
       labelType: 'code',
-      menuCountryAttrs: {
-        list: ['US']
-      }
+      countryList: ['US']
     })
 
     await nextTick()

@@ -187,6 +187,7 @@ export class List extends DesignLogicAbstract<
         tag: this.props.tag,
         divider: this.props.divider,
         selectionStyle: this.props.selectionStyle,
+        highlightLengthStart: this.props.highlightLengthStart,
         lazy: this.props.lazy,
         lazyMargin: this.props.lazyMargin,
         lazyCacheHeight: this.props.lazyCacheHeight,
@@ -204,10 +205,11 @@ export class List extends DesignLogicAbstract<
     this.stopSearchWatch = watch(
       () => (this.props.control ? this.i('search').item.value : undefined),
       () => {
-        if (this.props.control) {
+        if (this.props.control && !this.isDestroyed) {
           this.i('go').toHighlight()
         }
-      }
+      },
+      { flush: 'post' }
     )
 
     this.stopLiteWatch = watch(

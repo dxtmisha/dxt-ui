@@ -74,7 +74,9 @@ export class GeoPhone {
       const maskFull: string[] = []
 
       item.mask.forEach((pattern) => {
-        const maskWithin = this.toWithin(pattern, item.within)
+        const maskWithin = item.withinSkip
+          ? pattern
+          : this.toWithin(pattern, item.within)
         const fullPattern = maskWithin.replace(REGEXP_DIGIT, '*')
 
         mask.push(maskWithin)
@@ -359,6 +361,7 @@ export class GeoPhone {
         return {
           phone,
           within,
+          ...(item.phoneWithinSkip ? { withinSkip: true } : {}),
           mask: toArray(item.phoneMask),
           value: item.country
         }
@@ -410,7 +413,9 @@ export class GeoPhone {
             value.value = item.value
           }
 
-          const maskWithin = this.toWithin(mask, item.within)
+          const maskWithin = item.withinSkip
+            ? mask
+            : this.toWithin(mask, item.within)
 
           value.mask.push(maskWithin)
           value.maskFull.push(maskWithin.replace(REGEXP_DIGIT, '*'))

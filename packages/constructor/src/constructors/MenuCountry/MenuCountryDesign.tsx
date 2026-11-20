@@ -1,6 +1,5 @@
 import { mergeProps, type VNode } from 'vue'
 import {
-  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
@@ -8,7 +7,7 @@ import {
 
 import { MenuCountry } from './MenuCountry'
 
-import type { MenuControlItem, MenuPropsBasic } from '../Menu'
+import type { MenuControlItem } from '../Menu'
 import type {
   MenuCountryPropsBasic
 } from './props'
@@ -134,7 +133,7 @@ export class MenuCountryDesign<
           class: this.classes?.value.main,
           style: this.styles?.value
         }
-      ) as Partial<ConstrBind<MenuPropsBasic>>
+      )
     )
   }
 

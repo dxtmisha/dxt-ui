@@ -177,6 +177,7 @@ export class InputDesign<
         this.item.i('attributes').listForInput,
         input.binds
       ) as Partial<HTMLInputElement>,
+      onFocus: event.onFocus,
       onBlur: event.onBlur,
       onInput: event.onInput,
       onChange: event.onChange

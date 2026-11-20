@@ -1,7 +1,32 @@
-import { toRef, type ComputedRef } from 'vue'
-import { type GeoFlagNational, GeoFlagRef } from '@dxtmisha/functional'
+import { toRef, type ComputedRef, type Ref } from 'vue'
+import {
+  type ConstrEmit,
+  type DesignComp,
+  type DesignName,
+  type GeoFlagNational
+} from '@dxtmisha/functional'
 
-import { MenuCountry } from '../MenuCountry/MenuCountry'
+import { MenuCountry, type MenuCountryConstructors } from '../MenuCountry/MenuCountry'
+import { MenuCountryList } from '../MenuCountry/MenuCountryList'
+import type { MenuCountryComponents, MenuCountryEmits, MenuCountrySlots } from '../MenuCountry/types'
+import type { MenuLanguageProps } from './props'
+
+/**
+ * Class for generating and managing the localized language list for MenuLanguage.
+ *
+ * Класс для формирования и управления локализованным списком языков для MenuLanguage.
+ */
+export class MenuLanguageList extends MenuCountryList {
+  /**
+   * Initializes the language flag list.
+   *
+   * Инициализирует список языковых флагов.
+   * @returns reactive list of national flag language items / реактивный список элементов флагов языков
+   */
+  protected override initFlagList(): ComputedRef<GeoFlagNational[]> {
+    return this.flag().getNationalLanguage(toRef(this.props, 'list'))
+  }
+}
 
 /**
  * Class for managing the language selection menu.
@@ -14,13 +39,37 @@ import { MenuCountry } from '../MenuCountry/MenuCountry'
  */
 export class MenuLanguage extends MenuCountry {
   /**
-   * Initializes the flag list.
+   * Constructor
    *
-   * Инициализирует список флагов.
-   * @protected
-   * @returns reactive list of national flag items / реактивный список элементов национальных флагов
+   * Конструктор
+   * @param props input data / входные данные
+   * @param element input element / элемент ввода
+   * @param naming component naming helper / помощник именования компонента
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits event emitter callback / функция вызова событий
+   * @param constructors dependency constructor overrides / переопределения конструкторов зависимостей
    */
-  protected override initFlagList(): ComputedRef<GeoFlagNational[]> {
-    return new GeoFlagRef(toRef(this.props, 'language')).getNationalLanguage(toRef(this.props, 'list'))
+  constructor(
+    props: Readonly<MenuLanguageProps>,
+    element: Ref<HTMLDivElement | undefined>,
+    naming: DesignName,
+    components?: DesignComp<MenuCountryComponents, MenuLanguageProps>,
+    slots?: MenuCountrySlots,
+    emits?: ConstrEmit<MenuCountryEmits>,
+    constructors?: Partial<MenuCountryConstructors>
+  ) {
+    super(
+      props,
+      element,
+      naming,
+      components,
+      slots,
+      emits,
+      {
+        list: MenuLanguageList,
+        ...constructors
+      }
+    )
   }
 }

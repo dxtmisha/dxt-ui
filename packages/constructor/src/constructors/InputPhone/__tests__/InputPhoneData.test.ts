@@ -8,13 +8,15 @@ import type { FieldElementInclude } from '../../../classes/Field/FieldElementInc
 import type { FieldEventInclude } from '../../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
 import type { ModelInclude } from '../../../classes/ModelInclude'
+import { InputPhoneCountry } from '../InputPhoneCountry'
+import { InputPhoneCountryList } from '../InputPhoneCountryList'
 import { InputPhoneData } from '../InputPhoneData'
 import type { InputPhonePropsBasic } from '../props'
 
 /**
- * Helper to create InputPhoneData with typed mock dependencies.
+ * Helper to create InputPhoneData and InputPhoneCountry with typed mock dependencies.
  *
- * Вспомогательная функция для создания InputPhoneData с типизированными моками зависимостей.
+ * Вспомогательная функция для создания InputPhoneData и InputPhoneCountry с типизированными моками зависимостей.
  */
 function createData(
   props: InputPhonePropsBasic = {},
@@ -22,8 +24,12 @@ function createData(
   inputElement?: HTMLInputElement
 ) {
   const valueRef = ref<string | undefined>(initialValue)
+  const isFullRef = ref<boolean>(true)
   const setSpy = vi.fn((next: unknown) => {
     valueRef.value = next === undefined ? undefined : String(next)
+  })
+  const setFullSpy = vi.fn((next: boolean) => {
+    isFullRef.value = next
   })
   const onValueSpy = vi.fn((next?: unknown) => {
     if (next !== undefined) {
@@ -39,10 +45,12 @@ function createData(
   } as unknown as FieldEventInclude
   const mockValue = {
     item: valueRef,
+    isFull: isFullRef,
     get boolean() {
       return Boolean(valueRef.value && valueRef.value.length > 0)
     },
-    set: setSpy
+    set: setSpy,
+    setFull: setFullSpy
   } as unknown as FieldValueInclude<string>
 
   const emitCountrySpy = vi.fn()
@@ -51,19 +59,32 @@ function createData(
   } as unknown as ModelInclude<string>
 
   const reactiveProps = reactive<InputPhonePropsBasic>({ ...props })
-  const data = new InputPhoneData(
+  const countryList = new InputPhoneCountryList(reactiveProps)
+  const country: InputPhoneCountry = new InputPhoneCountry(
     reactiveProps,
-    () => mockElement,
+    () => countryList,
+    () => data,
     () => mockEvent,
     () => mockValue,
     () => mockModelCountry
   )
+  const data: InputPhoneData = new InputPhoneData(
+    reactiveProps,
+    () => country,
+    () => countryList,
+    () => mockElement,
+    () => mockEvent,
+    () => mockValue
+  )
 
   return {
+    country,
     data,
     props: reactiveProps,
     valueRef,
+    isFullRef,
     setSpy,
+    setFullSpy,
     onValueSpy,
     emitCountrySpy
   }
@@ -76,13 +97,13 @@ describe('InputPhoneData', () => {
   })
 
   describe('Initialization and computed phone metadata', () => {
-    it('should initialize country from countryDefault or Geo.getCountry()', () => {
-      const { data: customData } = createData({ countryDefault: 'US' })
-      expect(customData.country.value).toBe('US')
+    it('should resolve valueDefault from InputPhoneCountry', () => {
+      const { country, data: customData } = createData({ countryDefault: 'US' })
+      expect(country.item.value).toBe('US')
       expect(customData.valueDefault.value).toBe('1')
 
-      const { data: defaultData } = createData()
-      expect(defaultData.country.value).toBe(Geo.getCountry())
+      const { country: defaultCountry } = createData()
+      expect(defaultCountry.item.value).toBe(Geo.getCountry())
     })
 
     it('should resolve valueItem and item dynamically when countryBlock is false', () => {
@@ -106,60 +127,39 @@ describe('InputPhoneData', () => {
 
   describe('Lifecycle (onMounted and onUnmounted)', () => {
     it('should set default country phone prefix on mount when value is empty and sync country watcher', async () => {
-      const { data, valueRef, setSpy } = createData({ countryDefault: 'DE' }, '')
+      const { country, data, valueRef, setSpy } = createData({ countryDefault: 'DE' }, '')
 
+      country.onMounted()
       data.onMounted()
       expect(setSpy).toHaveBeenCalledWith('49')
       expect(valueRef.value).toBe('49')
-      expect(data.country.value).toBe('DE')
+      expect(country.item.value).toBe('DE')
 
       valueRef.value = '79001234567'
       await nextTick()
-      expect(data.country.value).toBe('RU')
+      expect(country.item.value).toBe('RU')
 
       data.onUnmounted()
+      country.onUnmounted()
       valueRef.value = '4930123456'
       await nextTick()
-      expect(data.country.value).toBe('RU')
+      expect(country.item.value).toBe('RU')
     })
 
     it('should not overwrite pre-existing value on mount and update country from it', () => {
-      const { data, setSpy } = createData({ countryDefault: 'US' }, '79001234567')
+      const { country, data, setSpy } = createData({ countryDefault: 'US' }, '79001234567')
 
+      country.onMounted()
       data.onMounted()
       expect(setSpy).not.toHaveBeenCalled()
-      expect(data.country.value).toBe('RU')
+      expect(country.item.value).toBe('RU')
 
       data.onUnmounted()
+      country.onUnmounted()
     })
   })
 
-  describe('User interactions (onCountry, onWindow, focus)', () => {
-    it('should update country and trigger event.onValue on valid country click without changing focus', () => {
-      const button = document.createElement('button')
-      const input = document.createElement('input')
-      document.body.append(button, input)
-      button.focus()
-
-      const { data, onValueSpy } = createData({ countryDefault: 'RU' }, '7', input)
-
-      data.onCountry(new MouseEvent('click'), { type: 'click', value: 'DE', detail: undefined })
-
-      expect(data.country.value).toBe('DE')
-      expect(onValueSpy).toHaveBeenCalledWith('49')
-      expect(document.activeElement).toBe(button)
-    })
-
-    it('should ignore empty or undefined country selection payloads in onCountry', () => {
-      const { data, onValueSpy } = createData({ countryDefault: 'RU' }, '7')
-
-      data.onCountry(new MouseEvent('click'), { type: 'click', value: undefined, detail: undefined })
-      data.onCountry(new MouseEvent('click'), { type: 'click', value: '', detail: undefined })
-
-      expect(data.country.value).toBe('RU')
-      expect(onValueSpy).not.toHaveBeenCalled()
-    })
-
+  describe('Window focus restoration and completeness sync', () => {
     it('should focus input element after nextTick when window closes via onWindow', async () => {
       const button = document.createElement('button')
       const input = document.createElement('input')
@@ -203,215 +203,26 @@ describe('InputPhoneData', () => {
       const { data } = createData({ countryDefault: 'US' }, '')
       expect(() => data.focus()).not.toThrow()
     })
-  })
 
-  describe('Shared country code preservation', () => {
-    it('should keep selected CA or KZ when value only contains shared prefix and switch only on full mismatching number', async () => {
-      const { data, valueRef, onValueSpy } = createData({ countryDefault: 'US' }, '79001234567')
+    it('should mark bare dial prefix as incomplete on mount and restore fullness when a complete number is set', async () => {
+      const { country, data, valueRef, isFullRef, setFullSpy } = createData({ countryDefault: 'RU' }, '')
 
+      country.onMounted()
       data.onMounted()
-      expect(data.country.value).toBe('RU')
+      expect(valueRef.value).toBe('7')
+      expect(setFullSpy).toHaveBeenCalledWith(false)
+      expect(isFullRef.value).toBe(false)
 
-      data.onCountry(new MouseEvent('click'), { type: 'click', value: 'CA', detail: undefined })
-      valueRef.value = String(onValueSpy.mock.calls.at(-1)?.[0] ?? '1')
+      valueRef.value = '79001234567'
       await nextTick()
+      expect(isFullRef.value).toBe(true)
 
-      expect(valueRef.value).toBe('1')
-      expect(data.country.value).toBe('CA')
-      expect(data.activeCountry.value).toBe('CA')
-
-      // Entering a US number switches CA -> US
-      valueRef.value = '12025550147'
-      await nextTick()
-      expect(data.country.value).toBe('US')
-      expect(data.activeCountry.value).toBe('US')
-
-      // Re-selecting KZ stays KZ on prefix '7' and stays KZ on 7701...
-      data.onCountry(new MouseEvent('click'), { type: 'click', value: 'KZ', detail: undefined })
       valueRef.value = '7'
       await nextTick()
-      expect(data.country.value).toBe('KZ')
-      expect(data.activeCountry.value).toBe('KZ')
-
-      valueRef.value = '77011234567'
-      await nextTick()
-      expect(data.country.value).toBe('KZ')
+      expect(isFullRef.value).toBe(false)
 
       data.onUnmounted()
-    })
-
-    it('should preserve shared root country BV even after full shared-format digits are entered', async () => {
-      const { data, valueRef } = createData({ countryDefault: 'US' }, '1')
-
-      data.onMounted()
-      data.onCountry(new MouseEvent('click'), { type: 'click', value: 'BV', detail: undefined })
-      valueRef.value = '47'
-      await nextTick()
-      expect(data.country.value).toBe('BV')
-      expect(data.activeCountry.value).toBe('BV')
-
-      valueRef.value = '4740123456'
-      await nextTick()
-      expect(data.country.value).toBe('BV')
-      expect(data.activeCountry.value).toBe('BV')
-
-      data.onUnmounted()
-    })
-
-    it('should resolve activeCountry during SSR when explicit initial value differs from default country', () => {
-      const { data } = createData({ countryDefault: 'CA' }, '79001234567')
-
-      expect(data.activeCountry.value).toBe('RU')
-    })
-  })
-
-  describe('Reactive countryDefault watcher', () => {
-    it('should update country and default phone prefix when countryDefault changes while country equals Geo.getCountry()', async () => {
-      const defaultCountry = Geo.getCountry()
-      const targetCountry = defaultCountry === 'DE' ? 'FR' : 'DE'
-      const targetPrefix = String(GeoPhone.get(targetCountry)?.phone ?? '')
-      const { data, props, valueRef, setSpy } = createData({}, '')
-
-      expect(data.country.value).toBe(defaultCountry)
-
-      data.onMounted()
-      expect(valueRef.value).toBe(String(GeoPhone.get(defaultCountry)?.phone ?? '1'))
-
-      props.countryDefault = targetCountry
-      await nextTick()
-
-      expect(data.country.value).toBe(targetCountry)
-      expect(valueRef.value).toBe(targetPrefix)
-      expect(setSpy).toHaveBeenLastCalledWith(targetPrefix)
-
-      const secondTargetCountry = targetCountry === 'DE' ? 'VN' : 'DE'
-      props.countryDefault = secondTargetCountry
-      await nextTick()
-
-      expect(data.country.value).toBe(targetCountry)
-      expect(valueRef.value).toBe(targetPrefix)
-
-      data.onUnmounted()
-    })
-
-    it('should not update country when countryDefault changes after manual country selection or value change', async () => {
-      const defaultCountry = Geo.getCountry()
-      const manualCountry = defaultCountry === 'RU' ? 'VN' : 'RU'
-      const nextDefaultCountry = defaultCountry === 'DE' ? 'FR' : 'DE'
-      const { data, props } = createData({}, '')
-
-      data.onMounted()
-      data.onCountry(new MouseEvent('click'), { type: 'click', value: manualCountry, detail: undefined })
-      expect(data.country.value).toBe(manualCountry)
-
-      props.countryDefault = nextDefaultCountry
-      await nextTick()
-
-      expect(data.country.value).toBe(manualCountry)
-
-      data.onUnmounted()
-    })
-
-    it('should stop watching countryDefault on unmount', async () => {
-      const defaultCountry = Geo.getCountry()
-      const targetCountry = defaultCountry === 'DE' ? 'FR' : 'DE'
-      const { data: unmountedData, props: unmountedProps } = createData({}, '')
-      unmountedData.onMounted()
-      unmountedData.onUnmounted()
-
-      unmountedProps.countryDefault = targetCountry
-      await nextTick()
-
-      expect(unmountedData.country.value).toBe(defaultCountry)
-    })
-
-    it('should handle selecting an alternative phone code from a country group and ignore group header clicks', () => {
-      const { data, onValueSpy, valueRef } = createData({}, '')
-
-      data.onMounted()
-
-      data.onCountry(new MouseEvent('click'), {
-        type: 'item',
-        value: 'DO-1-829',
-        detail: { country: 'DO', phone: '1829' }
-      })
-
-      expect(data.country.value).toBe('DO')
-      expect(onValueSpy).toHaveBeenCalledWith('1829')
-
-      valueRef.value = '18295550123'
-      expect(data.activeCountry.value).toBe('DO')
-      expect(data.activeDialCode.value).toBe('DO-1-829')
-
-      data.onCountry(new MouseEvent('click'), {
-        type: 'group',
-        value: [{ value: 'DO' }],
-        detail: undefined
-      })
-
-      expect(data.country.value).toBe('DO')
-      data.onUnmounted()
-    })
-  })
-
-  describe('v-model:country / modelCountry synchronization', () => {
-    it('should initialize country from country or modelCountry props overriding countryDefault', () => {
-      const { data: byCountry } = createData({ country: 'DE', countryDefault: 'US' })
-      expect(byCountry.country.value).toBe('DE')
-
-      const { data: byModelCountry } = createData({ modelCountry: 'VN', countryDefault: 'US' })
-      expect(byModelCountry.country.value).toBe('VN')
-    })
-
-    it('should emit activeCountry on mount when initial country prop mismatches phone value', () => {
-      const { data, emitCountrySpy } = createData({ country: 'US' }, '79001234567')
-
-      data.onMounted()
-      expect(data.country.value).toBe('RU')
-      expect(emitCountrySpy).toHaveBeenCalledWith('RU')
-
-      data.onUnmounted()
-    })
-
-    it('should update country and value when external country prop changes', async () => {
-      const { data, props, valueRef, onValueSpy, emitCountrySpy } = createData({ country: 'US' }, '12025550147')
-
-      data.onMounted()
-
-      props.country = 'VN'
-      await nextTick()
-      expect(data.country.value).toBe('VN')
-      expect(onValueSpy).toHaveBeenCalledWith('84')
-      expect(emitCountrySpy).toHaveBeenCalledWith('VN')
-
-      // Preserves existing phone number when changing to matching country in same tick
-      valueRef.value = '4930123456'
-      props.country = 'DE'
-      await nextTick()
-      expect(data.country.value).toBe('DE')
-      expect(onValueSpy).toHaveBeenCalledTimes(1)
-
-      // Shared prefix '1' switches country from US to CA without overwriting bare prefix
-      valueRef.value = '1'
-      props.country = 'US'
-      await nextTick()
-      props.country = 'CA'
-      await nextTick()
-      expect(data.country.value).toBe('CA')
-      expect(onValueSpy).toHaveBeenCalledTimes(1)
-
-      data.onUnmounted()
-    })
-
-    it('should not let countryDefault overwrite explicit country prop', async () => {
-      const { data, props } = createData({ country: 'DE', countryDefault: 'US' }, '')
-
-      data.onMounted()
-      props.countryDefault = 'VN'
-      await nextTick()
-
-      expect(data.country.value).toBe('DE')
-      data.onUnmounted()
+      country.onUnmounted()
     })
   })
 })

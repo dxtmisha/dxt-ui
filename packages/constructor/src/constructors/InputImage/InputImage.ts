@@ -230,7 +230,9 @@ export class InputImage {
         readonly: this.props.readonly,
         isSkeleton: this.props.isSkeleton,
         inputAttrs: this.attributes.listForInput,
-        onInput: this.eventItem.onDropzoneInput
+        onInput: this.eventItem.onDropzoneInput,
+        onFocus: this.event.onFocus,
+        onBlur: this.event.onBlur
       })
     )
 

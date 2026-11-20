@@ -422,4 +422,16 @@ describe('Checkbox (integration)', () => {
     expect(logicInstance.hasInstance('selected')).toBe(true)
     expect(input.checked).toBe(true)
   })
+
+  it('should emit focus and blur events from the checkbox input', async () => {
+    const { container, emitted } = mountCheckbox({ label: 'Accept terms' })
+    const input = container.querySelector('input[type="checkbox"]') as HTMLInputElement
+
+    input.dispatchEvent(new FocusEvent('focus'))
+    input.dispatchEvent(new FocusEvent('blur'))
+    await nextTick()
+
+    expect(emitted.some(([name]) => name === 'focus')).toBe(true)
+    expect(emitted.some(([name]) => name === 'blur')).toBe(true)
+  })
 })

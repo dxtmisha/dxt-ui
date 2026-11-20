@@ -88,6 +88,8 @@ describe('InputPhone (unit)', () => {
       const { instance, stop } = createInputPhone({ countryDefault: 'US' })
       cleanups.push(stop)
 
+      expect(instance.hasInstance('country')).toBe(true)
+      expect(instance.hasInstance('countryList')).toBe(true)
       expect(instance.hasInstance('data')).toBe(true)
       expect(instance.hasInstance('event')).toBe(true)
       expect(instance.hasInstance('validation')).toBe(true)
@@ -202,14 +204,19 @@ describe('InputPhone (unit)', () => {
       const { instance, stop } = createInputPhone({ countryDefault: 'US' })
       cleanups.push(stop)
 
+      const country = instance.i('country')
       const data = instance.i('data')
+      const countryMountedSpy = vi.spyOn(country, 'onMounted')
+      const countryUnmountedSpy = vi.spyOn(country, 'onUnmounted')
       const onMountedSpy = vi.spyOn(data, 'onMounted')
       const onUnmountedSpy = vi.spyOn(data, 'onUnmounted')
 
       instance.triggerMounted()
+      expect(countryMountedSpy).toHaveBeenCalledTimes(1)
       expect(onMountedSpy).toHaveBeenCalledTimes(1)
 
       instance.triggerUnmounted()
+      expect(countryUnmountedSpy).toHaveBeenCalledTimes(1)
       expect(onUnmountedSpy).toHaveBeenCalledTimes(1)
     })
 

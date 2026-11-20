@@ -5,6 +5,7 @@ import { computed, ref } from 'vue'
 import { GeoPhone, type GeoPhoneMap } from '@dxtmisha/functional'
 
 import type { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
+import type { InputPhoneCountry } from '../InputPhoneCountry'
 import type { InputPhoneData } from '../InputPhoneData'
 import { InputPhoneFormat } from '../InputPhoneFormat'
 import type { InputPhonePropsBasic } from '../props'
@@ -29,8 +30,10 @@ function createFormat(
   })
   const valueDefault = computed<string>(() => (GeoPhone.get(country)?.phone ?? 1).toString())
 
+  const mockCountry = {
+    item: ref(country)
+  } as unknown as InputPhoneCountry
   const mockData = {
-    country: ref(country),
     item,
     valueDefault
   } as unknown as InputPhoneData
@@ -40,6 +43,7 @@ function createFormat(
 
   const format = new InputPhoneFormat(
     props,
+    () => mockCountry,
     () => mockData,
     () => mockValue
   )

@@ -129,6 +129,61 @@ export const InputPhoneCountryBlock: Story = {
     await expect(inputs[1].value).toContain('+1')
   }
 }
+export const InputPhoneCountryReadonly: Story = {
+  name: 'Блокировка селектора страны (countryReadonly)',
+  render: () => ({
+    components: { D1InputPhone },
+    template: `
+        
+        <div class="wiki-storybook-flex-column">
+          <D1InputPhone
+            country-default="RU"
+            :country-readonly="true"
+            value="79001234567"
+            label="Country selector locked (RU)"
+          />
+          <D1InputPhone
+            country-default="RU"
+            :input-phone-dial-code-attrs="{ menuCountryAttrs: { list: ['RU'] } }"
+            value="79001234567"
+            label="Single-country list auto-lock (RU)"
+          />
+        </div>
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const inputs = canvasElement.querySelectorAll<HTMLInputElement>('input')
+    await expect(inputs.length).toBe(2)
+    await expect(inputs[0]).not.toHaveAttribute('readonly')
+    await expect(inputs[0].value).toBe('+7-900-123-45-67')
+    await expect(inputs[1].value).toBe('+7-900-123-45-67')
+  }
+}
+export const InputPhoneWarning: Story = {
+  name: 'Состояние предупреждения (warning)',
+  render: () => ({
+    components: { D1InputPhone },
+    template: `
+        
+        <D1InputPhone
+          country-default="XK"
+          value="38344123456"
+          :warning="true"
+          warning-message="Phone number from legacy profile needs confirmation"
+          label="Contact phone (XK)"
+        />
+      
+    `
+  }),
+  play: async ({ canvasElement }) => {
+    const component = canvasElement.querySelector<HTMLElement>('.d1-inputPhone')
+    await expect(component).toBeInTheDocument()
+    await expect(canvasElement.textContent).toContain('Phone number from legacy profile needs confirmation')
+    const inputElement = canvasElement.querySelector<HTMLInputElement>('input')
+    await expect(inputElement?.value).toBe('+383-44-123-456')
+  }
+}
 export const InputPhoneSkeleton: Story = {
   name: 'Состояние скелетона',
   render: () => ({
@@ -378,11 +433,19 @@ export const InputPhoneTestSlotsAndEvents: Story = {
       const onChange = (_event: Event, validation: FieldValidationItem<string>) => {
         eventTracker.value = 'change:' + String(validation.value)
       }
+      const onFocus = () => {
+        eventTracker.value = 'focus'
+      }
+      const onBlur = () => {
+        eventTracker.value = 'blur'
+      }
       return {
         eventTracker,
         trackedValue,
         onInput,
-        onChange
+        onChange,
+        onFocus,
+        onBlur
       }
     },
     template: `
@@ -401,6 +464,8 @@ export const InputPhoneTestSlotsAndEvents: Story = {
             helper-message="Hint"
             @input="onInput"
             @change="onChange"
+            @focus="onFocus"
+            @blur="onBlur"
           >
             <template #label>
               <span>[LABEL]</span>
@@ -429,6 +494,9 @@ export const InputPhoneTestSlotsAndEvents: Story = {
     await expect(canvasElement.querySelector('[data-test-field="true"]')).toBeInTheDocument()
     await expect(canvasElement.querySelector('[data-test-input="true"]')).toBeInTheDocument()
     await expect(canvasElement.querySelector('input[name="phone-slots-name"]')).toBeInTheDocument()
+    const inputElement = canvasElement.querySelector<HTMLInputElement>('input')
+    await userEvent.click(inputElement!)
+    await expect(canvasElement.querySelector('[data-testid="event-tracker"]')).toHaveTextContent('focus')
   }
 }
 // :story-items [!] System label / Системная метка

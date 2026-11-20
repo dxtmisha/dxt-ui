@@ -1,13 +1,20 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { createApp, defineComponent, h, nextTick, shallowReactive, shallowReadonly } from 'vue'
+import { computed, createApp, defineComponent, h, nextTick, shallowReactive, shallowReadonly } from 'vue'
 import type { App } from 'vue'
-import { ServerStorage } from '@dxtmisha/functional'
+import { type ConstrClasses, ServerStorage } from '@dxtmisha/functional'
 
 import { ListDesign } from '../ListDesign'
 import type { ListPropsBasic } from '../props'
 import type { ListClasses, ListComponents, ListExpose } from '../types'
+import {
+  ListItemDesign,
+  type ListItemClasses,
+  type ListItemComponents,
+  type ListItemExpose,
+  type ListItemPropsBasic
+} from '../../ListItem'
 
 const applications: App[] = []
 
@@ -127,7 +134,9 @@ describe('List (Integration)', () => {
             'data-list-id': props.listId,
             'data-value': props.value,
             'data-focus': String(Boolean(props.focus)),
-            'data-highlight': props.highlight || undefined,
+            'data-highlight': props.highlight && String(props.label).toLowerCase().includes(String(props.highlight).toLowerCase())
+              ? props.highlight
+              : undefined,
             'onClick': (event: MouseEvent) => emit('click', event, { value: props.value })
           },
           String(props.label)
@@ -262,5 +271,153 @@ describe('List (Integration)', () => {
     await nextTick()
 
     expect(rafCallbacks.length).toBeGreaterThan(initialCalls)
+  })
+
+  it('forwards highlightLengthStart to ListItem and focuses highlighted item after DOM update when filterMode is false', async () => {
+    ServerStorage.init(() => ({}))
+    vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((callback) => {
+      callback(0)
+      return 1
+    })
+    vi.spyOn(globalThis, 'cancelAnimationFrame').mockImplementation(() => {})
+
+    const RealListItem = defineComponent({
+      name: 'RealListItem',
+      inheritAttrs: false,
+      props: [
+        'label',
+        'value',
+        'index',
+        'caption',
+        'search',
+        'focus',
+        'selected',
+        'disabled',
+        'highlight',
+        'highlightLengthStart',
+        'filterMode',
+        'listId',
+        'type',
+        'parent',
+        'tag',
+        'role',
+        'tabindex',
+        'selectionStyle',
+        'lazy',
+        'lazyMargin',
+        'lazyCacheHeight'
+      ],
+      emits: ['click'],
+      setup(props, { emit }) {
+        const classesToken = computed<ConstrClasses>(() => ({
+          main: {
+            'd1-listItem': true,
+            'd1-listItem--focus': Boolean(props.focus)
+          }
+        }))
+
+        const design = new ListItemDesign<
+          ListItemComponents,
+          ListItemExpose,
+          ListItemClasses,
+          ListItemPropsBasic
+        >(
+          'd1.listItem',
+          props as Readonly<ListItemPropsBasic>,
+          {
+            classes: classesToken,
+            emits: emit as (...args: unknown[]) => void
+          }
+        )
+        return design.render()
+      }
+    })
+
+    const MockInput = defineComponent({
+      name: 'MockInput',
+      props: ['inputAttrs'],
+      emits: ['inputLite'],
+      setup(props, { emit }) {
+        return () => h('input', {
+          ...(props.inputAttrs as Record<string, unknown>),
+          onInput: (event: Event) => emit('inputLite', { value: (event.target as HTMLInputElement).value })
+        })
+      }
+    })
+
+    const Host = defineComponent({
+      setup() {
+        const design = new ListDesign<ListComponents, ListExpose, ListClasses, ListPropsBasic>(
+          'd1.list',
+          {
+            control: true,
+            showSearch: true,
+            filterMode: false,
+            highlightLengthStart: 1,
+            list: [
+              { value: 'AZ', label: 'Azerbaijan', caption: '+994', search: 'Azerbaijan AZ +994' },
+              { value: 'GR', label: 'Greece', caption: '+30', search: 'Greece GR +30' },
+              { value: 'LT', label: 'Lithuania', caption: '+370', search: 'Lithuania LT +370' },
+              { value: 'BY', label: 'Belarus', caption: '+375', search: 'Belarus BY +375' },
+              { value: 'RU', label: 'Russia', caption: '+7', search: 'Russia Россия RU +7' },
+              { value: 'VN', label: 'Vietnam', caption: '+84', search: 'Vietnam VN +84' }
+            ]
+          },
+          {
+            components: {
+              listItem: RealListItem,
+              input: MockInput
+            }
+          }
+        )
+        return design.render()
+      }
+    })
+
+    const host = document.createElement('div')
+    document.body.appendChild(host)
+    const application = createApp(Host)
+    applications.push(application)
+    application.mount(host)
+    await nextTick()
+
+    const searchInput = host.querySelector('input[data-menu-control="1"]') as HTMLInputElement
+
+    // 1-character search highlights and focuses Vietnam instead of the first item
+    searchInput.value = 'v'
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }))
+    await nextTick()
+    await nextTick()
+
+    expect(host.querySelector('[data-value="AZ"]')?.getAttribute('data-highlight')).toBeNull()
+    expect(host.querySelector('[data-value="VN"]')?.getAttribute('data-highlight')).toBe('v')
+    expect(host.querySelector('[data-value="VN"]')?.className).toContain('d1-listItem--focus')
+    expect(host.querySelector('[data-value="VN"] .d1-listItem__highlight')?.textContent).toBe('V')
+
+    // Multi-character dial code updates focus on the latest keystroke without lagging behind
+    searchInput.value = '3'
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }))
+    await nextTick()
+    await nextTick()
+    expect(host.querySelector('[data-value="GR"]')?.className).toContain('d1-listItem--focus')
+
+    searchInput.value = '37'
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }))
+    await nextTick()
+    await nextTick()
+    expect(host.querySelector('[data-value="LT"]')?.className).toContain('d1-listItem--focus')
+
+    searchInput.value = '375'
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }))
+    await nextTick()
+    await nextTick()
+    expect(host.querySelector('[data-value="BY"]')?.className).toContain('d1-listItem--focus')
+
+    // +7 dial code matches and focuses Russia
+    searchInput.value = '+7'
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }))
+    await nextTick()
+    await nextTick()
+    expect(host.querySelector('[data-value="RU"]')?.className).toContain('d1-listItem--focus')
   })
 })

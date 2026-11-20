@@ -71,6 +71,48 @@ describe('LabelHighlightInclude', () => {
     expect(zeroNode.props.innerHTML).toBe('<span class="prefix__highlight">Zero</span>')
   })
 
+  it('should match and highlight entire label when search property matches', () => {
+    const includeCode = new LabelHighlightInclude(
+      {
+        label: 'Vietnam',
+        value: 'VN',
+        search: 'Vietnam Việt Nam VN +84 84',
+        highlight: '+84',
+        highlightLengthStart: 1
+      },
+      new DesignName('prefix')
+    )
+    expect(includeCode.isHighlight()).toBe(true)
+    const codeNode = (includeCode.render()[0]?.children as unknown as { props: { innerHTML: string } }[])[0]
+    expect(codeNode.props.innerHTML).toBe('<span class="prefix__highlight">Vietnam</span>')
+
+    const includeNational = new LabelHighlightInclude(
+      {
+        label: 'Russia',
+        value: 'RU',
+        search: 'Russia Россия RU +7 7',
+        highlight: 'росс',
+        highlightLengthStart: 1
+      },
+      new DesignName('prefix')
+    )
+    expect(includeNational.isHighlight()).toBe(true)
+    const nationalNode = (includeNational.render()[0]?.children as unknown as { props: { innerHTML: string } }[])[0]
+    expect(nationalNode.props.innerHTML).toBe('<span class="prefix__highlight">Russia</span>')
+
+    const includeMismatch = new LabelHighlightInclude(
+      {
+        label: 'Russia',
+        value: 'RU',
+        search: 'Russia Россия RU +7 7',
+        highlight: '+84',
+        highlightLengthStart: 1
+      },
+      new DesignName('prefix')
+    )
+    expect(includeMismatch.isHighlight()).toBe(false)
+  })
+
   it('should apply skeleton classes lazily via getter callback', () => {
     const skeleton = new SkeletonInclude({ isSkeleton: true }, new DesignName('d1.listItem'), ['classTextVariant'])
     const include = new LabelHighlightInclude(

@@ -142,6 +142,15 @@ export class TextareaDesign<
       }) as VNode]
     }
 
-    return [h('textarea', props)]
+    return [h('textarea', toBinds(
+      props,
+      {
+        value: this.item.value.item.value,
+        onFocus: this.item.event.onFocus,
+        onBlur: this.item.event.onBlur,
+        onInput: this.item.event.onInput,
+        onChange: this.item.event.onChange
+      }
+    ))]
   }
 }

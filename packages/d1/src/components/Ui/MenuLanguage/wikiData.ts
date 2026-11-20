@@ -6,6 +6,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'disabled', type: 'boolean' },
+  { name: 'disableFocusReturn', type: 'boolean' },
   { name: 'isSelectedByValue', type: 'boolean' },
   { name: 'language', type: 'string' },
   { name: 'list', type: 'string[]' },

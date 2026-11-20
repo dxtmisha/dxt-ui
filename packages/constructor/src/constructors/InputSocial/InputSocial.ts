@@ -229,6 +229,7 @@ export class InputSocial {
     return {
       ...this.attributes.listForInput,
       value: this.value.item.value,
+      onFocus: this.event.onFocus,
       onBlur: this.event.onBlur,
       onInput: this.event.onInput,
       onChange: this.event.onChange

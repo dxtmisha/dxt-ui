@@ -10,8 +10,10 @@ const propsNames: StorybookProps = [
   { name: 'cancel', type: 'string', option: ['none', 'auto', 'always'] },
   { name: 'captionDecorative', type: 'boolean' },
   { name: 'counterId', type: 'string' },
+  { name: 'country', type: 'string' },
   { name: 'countryBlock', type: 'boolean' },
   { name: 'countryDefault', type: 'string' },
+  { name: 'countryList', type: 'string[]' },
   { name: 'countryReadonly', type: 'boolean' },
   { name: 'detail', type: 'Record<string, any>' },
   { name: 'disabled', type: 'boolean' },
@@ -45,8 +47,11 @@ const propsNames: StorybookProps = [
   { name: 'labelId', type: 'string' },
   { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
   { name: 'maskAttrs', type: 'ConstrBind<MaskProps>' },
+  { name: 'modelCountry', type: 'string' },
   { name: 'modelValue', type: 'string' },
   { name: 'name', type: 'string' },
+  { name: 'onUpdate:country', type: '((value: string) => void)' },
+  { name: 'onUpdate:modelCountry', type: '((value: string) => void)' },
   { name: 'onUpdate:modelValue', type: '((value: string) => void)' },
   { name: 'onUpdate:value', type: '((value: string) => void)' },
   { name: 'pattern', type: 'string' },
@@ -60,11 +65,15 @@ const propsNames: StorybookProps = [
   { name: 'suffixId', type: 'string' },
   { name: 'tabindex', type: 'number' },
   { name: 'textCancel', type: 'TextValue' },
+  { name: 'textInvalidPhone', type: 'TextValue' },
   { name: 'type', type: 'string', option: ['number', 'currency', 'checkbox', 'radio', 'search', 'text', 'number-format', 'email', 'password', 'datetime', 'date', 'year-month', 'time', 'hour-minute', 'tel', 'url'] },
   { name: 'validationCode', type: 'FieldValidityCode' },
   { name: 'validationId', type: 'string' },
   { name: 'validationMessage', type: 'string' },
-  { name: 'value', type: 'string' }
+  { name: 'value', type: 'string' },
+  { name: 'warning', type: 'boolean' },
+  { name: 'warningId', type: 'string' },
+  { name: 'warningMessage', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 
@@ -81,14 +90,20 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'blur', description: `Emitted when the field loses focus/
+Эмит при потере фокуса полем: [event]`, properties: [{ name: 'event', type: 'FocusEvent' }] },
   { name: 'change', description: `Emitted when value is committed (blur/confirm)/
 Эмит при подтверждении значения (blur/confirm): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<any>' }] },
   { name: 'changeLite', description: `Lightweight change emit without DOM event/
 Лёгкий эмит подтверждения без события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<any>' }] },
+  { name: 'focus', description: `Emitted when the field receives focus/
+Эмит при получении фокуса полем: [event]`, properties: [{ name: 'event', type: 'FocusEvent' }] },
   { name: 'input', description: `Emitted on input events (every change while typing)/
 Эмит при вводе (каждое изменение): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<any>' }] },
   { name: 'inputLite', description: `Lightweight input emit without DOM event/
 Лёгкий эмит ввода без DOM-события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<any>' }] },
+  { name: 'update:country', description: `Update country event/ Событие обновления страны`, properties: [{ name: 'value', type: 'string' }] },
+  { name: 'update:modelCountry', description: `Update model country event/ Событие обновления страны модели`, properties: [{ name: 'value', type: 'string' }] },
   { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'any' }] },
   { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'any' }] }
   // :eventsList [!] System label / Системная метка

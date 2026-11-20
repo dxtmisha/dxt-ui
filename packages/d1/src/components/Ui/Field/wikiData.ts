@@ -75,6 +75,9 @@ const propsNames: StorybookProps = [
   { name: 'validationId', type: 'string' },
   { name: 'validationMessage', type: 'string' },
   { name: 'value', type: 'EventClickValue[\'value\']' },
+  { name: 'warning', type: 'boolean' },
+  { name: 'warningId', type: 'string' },
+  { name: 'warningMessage', type: 'string' },
   { name: 'width', type: 'string', option: ['custom'] }
   // :propsList [!] System label / Системная метка
 ]

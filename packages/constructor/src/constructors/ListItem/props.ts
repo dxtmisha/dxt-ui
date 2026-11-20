@@ -86,8 +86,6 @@ export type ListItemPropsBasic<
     parent?: string
     /** List identifier/ Идентификатор списка */
     listId?: number
-    /** Search string for highlighting/ Строка поиска для подсветки */
-    search?: string
   }
 
 /**

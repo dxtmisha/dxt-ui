@@ -2,6 +2,7 @@ import { computed } from 'vue'
 import { GeoPhone } from '@dxtmisha/functional'
 
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import type { InputPhoneCountry } from './InputPhoneCountry'
 import type { InputPhoneData } from './InputPhoneData'
 
 import type { InputPhonePropsBasic } from './props'
@@ -17,11 +18,13 @@ export class InputPhoneFormat {
    *
    * Конструктор
    * @param props input data / входные данные
+   * @param country function returning country manager / функция, возвращающая менеджер страны
    * @param data function returning data manager / функция, возвращающая менеджер данных
    * @param value function returning field value manager / функция, возвращающая менеджер значения поля
    */
   constructor(
     protected readonly props: Readonly<InputPhonePropsBasic>,
+    protected readonly country: () => InputPhoneCountry,
     protected readonly data: () => InputPhoneData,
     protected readonly value: () => FieldValueInclude<string>
   ) {
@@ -57,7 +60,7 @@ export class InputPhoneFormat {
     if (
       cleanValue
       && (
-        info.item?.value !== this.data().country.value
+        info.item?.value !== this.country().item.value
         || !cleanValue.startsWith(defaultPrefix)
       )
     ) {

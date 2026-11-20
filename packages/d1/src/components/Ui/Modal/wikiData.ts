@@ -17,6 +17,7 @@ const propsNames: StorybookProps = [
   { name: 'barsLabel', type: 'string | number' },
   { name: 'barsList', type: 'ConstrBind<ButtonProps>[]' },
   { name: 'disabled', type: 'boolean' },
+  { name: 'disableFocusReturn', type: 'boolean' },
   { name: 'image', type: 'string | ConstrBind<ImageProps>' },
   { name: 'imageAttrs', type: 'ConstrBind<ImageProps>' },
   { name: 'imagePosition', type: 'string', option: ['top', 'left', 'adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl'] },

@@ -28,8 +28,11 @@ describe('InputPhoneDialCode (Unit)', () => {
 
     expect(dialCode.hasInstance('button')).toBe(false)
     expect(dialCode.hasInstance('event')).toBe(false)
+    expect(dialCode.hasInstance('events')).toBe(false)
+    expect(dialCode.hasInstance('item')).toBe(false)
     expect(dialCode.hasInstance('menu')).toBe(false)
     expect(dialCode.hasInstance('model')).toBe(false)
+    expect(dialCode.hasInstance('status')).toBe(false)
 
     scope.stop()
   })
@@ -59,7 +62,7 @@ describe('InputPhoneDialCode (Unit)', () => {
     ))!
 
     const menuBinds = dialCode.i('menu').binds.value
-    expect(menuBinds.menuAttrs?.windowAttrs?.disableFocusReturn).toBe(true)
+    expect(menuBinds.disableFocusReturn).toBe(true)
     expect(menuBinds.menuAttrs?.windowAttrs?.persistent).toBe(true)
     expect(menuBinds.menuAttrs?.showSearch).toBe(true)
     expect(menuBinds.showPhoneCode).toBe(true)
@@ -70,7 +73,7 @@ describe('InputPhoneDialCode (Unit)', () => {
       control: document.createElement('button'),
       open: false
     }
-    dialCode.onWindow(options)
+    dialCode.i('events').onWindow(options)
     expect(emits).toHaveBeenCalledWith('window', options)
 
     scope.stop()
@@ -123,18 +126,18 @@ describe('InputPhoneDialCode (Unit)', () => {
       emits as unknown as ConstrEmit<InputPhoneDialCodeEmits>
     ))!
 
-    dialCode.onUpdate('DE')
+    dialCode.i('events').onUpdate('DE')
     expect(dialCode.i('model').get()).toBe('DE')
     expect(emits).toHaveBeenCalledWith('updateValue', 'DE')
 
     const mouseEvent = new MouseEvent('click')
-    dialCode.onClick(mouseEvent, { type: 'item', value: 'FR', detail: { code: '+33' } })
+    dialCode.i('events').onClick(mouseEvent, { type: 'item', value: 'FR', detail: { code: '+33' } })
     expect(dialCode.i('model').get()).toBe('FR')
     expect(emits).toHaveBeenCalledWith('click', mouseEvent, { type: 'item', value: 'FR', detail: { code: '+33' } })
     expect(emits).toHaveBeenCalledWith('clickLite', { type: 'item', value: 'FR', detail: { code: '+33' } })
 
     emits.mockClear()
-    dialCode.onClick(mouseEvent, {
+    dialCode.i('events').onClick(mouseEvent, {
       type: 'group',
       value: [{ index: 'DO', value: 'DO' }, { index: 'DO-1-829', value: 'DO-1-829' }],
       detail: undefined
@@ -252,7 +255,6 @@ describe('InputPhoneDialCode (Unit)', () => {
     props.menuCountryAttrs = { list: ['DO'] }
     expect(dialCode.bindsButton).toEqual({
       disabled: false,
-      readonly: false,
       icon: 'flag-vn',
       iconTrailing: 'keyboard_arrow_down',
       iconTurn: true

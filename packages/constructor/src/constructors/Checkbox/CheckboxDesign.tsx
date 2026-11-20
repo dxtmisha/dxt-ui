@@ -178,6 +178,8 @@ export class CheckboxDesign<
         checked: Boolean(this.item.i('value').item.value),
         onClick: this.item.onClick,
         onInput: this.item.onInput,
+        onFocus: this.item.i('event').onFocus,
+        onBlur: this.item.i('event').onBlur,
         ...AriaStaticInclude.readonly(Boolean(this.props.readonly)),
         ...AriaStaticInclude.invalid(this.item.i('validation').isError())
       }

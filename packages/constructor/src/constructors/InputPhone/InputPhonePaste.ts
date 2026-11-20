@@ -4,7 +4,8 @@ import { eventStopPropagation, GeoPhone } from '@dxtmisha/functional'
 import type { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
-import type { InputPhoneData } from './InputPhoneData'
+import type { InputPhoneCountry } from './InputPhoneCountry'
+import type { InputPhoneCountryList } from './InputPhoneCountryList'
 
 import type { InputPhonePropsBasic } from './props'
 
@@ -23,14 +24,16 @@ export class InputPhonePaste {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param data function returning data manager / функция, возвращающая менеджер данных
+   * @param country function returning country manager / функция, возвращающая менеджер страны
+   * @param countryList function returning country list manager / функция, возвращающая менеджер списка стран
    * @param element function returning field element manager / функция, возвращающая менеджер элемента поля
    * @param event function returning field event manager / функция, возвращающая менеджер событий поля
    * @param value function returning field value manager / функция, возвращающая менеджер значения поля
    */
   constructor(
     protected readonly props: Readonly<InputPhonePropsBasic>,
-    protected readonly data: () => InputPhoneData,
+    protected readonly country: () => InputPhoneCountry,
+    protected readonly countryList: () => InputPhoneCountryList,
     protected readonly element: () => FieldElementInclude,
     protected readonly event: () => FieldEventInclude,
     protected readonly value: () => FieldValueInclude<string>
@@ -63,7 +66,7 @@ export class InputPhonePaste {
 
     if (
       resolved
-      && this.isAllowedPaste(resolved.format)
+      && this.isAllowedPaste(resolved.country, resolved.format)
     ) {
       eventStopPropagation(event)
       void this.applyFullPaste(resolved.country, resolved.format)
@@ -84,12 +87,12 @@ export class InputPhonePaste {
 
     if (directInfo?.item?.value) {
       return {
-        country: directInfo.item.value,
+        country: this.countryList().resolveAllowed(directInfo.item) ?? directInfo.item.value,
         format: directInfo.format
       }
     }
 
-    const activeCountry = this.data().activeCountry.value
+    const activeCountry = this.country().active.value
     const within = GeoPhone.get(activeCountry)?.within
 
     if (
@@ -100,7 +103,7 @@ export class InputPhonePaste {
     }
 
     const normalizedInfo = this.getFullInfo(
-      `${this.data().toPhone(activeCountry)}${cleanPasted.slice(within.length)}`
+      `${this.country().toPhone(activeCountry)}${cleanPasted.slice(within.length)}`
     )
 
     if (normalizedInfo?.item?.items.some(entry => entry.value === activeCountry)) {
@@ -134,16 +137,24 @@ export class InputPhonePaste {
   }
 
   /**
-   * Checks whether the pasted phone is allowed under the current `countryBlock` setting.
+   * Checks whether the pasted phone is allowed under the current `countryBlock` and `countryList` settings.
    *
-   * Проверяет, разрешена ли вставка номера с учётом флага `countryBlock`.
+   * Проверяет, разрешена ли вставка номера с учётом флага `countryBlock` и списка `countryList`.
+   * @param targetCountry resolved country code / определённый код страны
    * @param format formatted full phone string / отформатированный полный номер
    * @returns true if paste is allowed / true, если вставка разрешена
    */
-  protected isAllowedPaste(format: string): boolean {
+  protected isAllowedPaste(
+    targetCountry: string,
+    format: string
+  ): boolean {
+    if (!this.countryList().isAllowed(targetCountry)) {
+      return false
+    }
+
     return !this.props.countryBlock
       || GeoPhone.cleanPhone(format).startsWith(
-        this.data().toPhone(this.data().country.value)
+        this.country().toPhone()
       )
   }
 
@@ -176,7 +187,7 @@ export class InputPhonePaste {
     formattedPhone: string
   ): Promise<void> {
     if (!this.props.countryBlock) {
-      this.data().country.value = targetCountry
+      this.country().item.value = targetCountry
     }
 
     this.value().setFull?.(true)

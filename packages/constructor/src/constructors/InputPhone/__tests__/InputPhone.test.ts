@@ -26,6 +26,8 @@ import { MaskDesign } from '../../Mask/MaskDesign'
 import { defaultsMask, type MaskProps } from '../../Mask/props'
 import type { MaskClasses, MaskComponents, MaskExpose } from '../../Mask/types'
 
+import { defaultsMenuCountry } from '../../MenuCountry/props'
+
 import { InputPhoneDesign } from '../InputPhoneDesign'
 import { defaultsInputPhone, type InputPhoneProps } from '../props'
 import type {
@@ -309,7 +311,19 @@ const MockMenuCountry = defineComponent({
   name: 'MockMenuCountry',
   props: {
     selected: [String, Array, Object],
-    disabled: Boolean
+    disabled: Boolean,
+    highlightLengthStart: {
+      type: Number,
+      default: defaultsMenuCountry.highlightLengthStart
+    },
+    showSearch: {
+      type: Boolean,
+      default: defaultsMenuCountry.showSearch
+    },
+    filterMode: {
+      type: Boolean,
+      default: defaultsMenuCountry.filterMode
+    }
   },
   emits: ['update:value', 'update:selected', 'click', 'window'],
   setup(componentProps, { emit, expose }) {
@@ -331,7 +345,12 @@ const MockMenuCountry = defineComponent({
     return () => h('div', {
       'class': 'mock-menu-country',
       'data-selected': String(componentProps.selected ?? ''),
-      'data-disabled': String(Boolean(componentProps.disabled))
+      'data-disabled': String(Boolean(componentProps.disabled)),
+      'data-search-props': JSON.stringify({
+        highlightLengthStart: componentProps.highlightLengthStart,
+        showSearch: componentProps.showSearch,
+        filterMode: componentProps.filterMode
+      })
     }, [
       h('button', {
         type: 'button',
@@ -349,15 +368,28 @@ const MockMenuCountry = defineComponent({
 const RealInputPhoneDialCode = defineComponent({
   name: 'RealInputPhoneDialCode',
   inheritAttrs: false,
-  props: Object.keys(defaultsInputPhoneDialCode).concat([
-    'value',
-    'modelSelected',
-    'labelType',
-    'iconArrowDown',
-    'disabled',
-    'readonly',
-    'menuCountryAttrs'
-  ]),
+  props: {
+    value: String,
+    modelSelected: [String, Number, Boolean, Array],
+    labelType: String,
+    iconArrowDown: [String, Object],
+    disabled: Boolean,
+    readonly: Boolean,
+    countryList: Array,
+    highlightLengthStart: {
+      type: Number,
+      default: defaultsInputPhoneDialCode.highlightLengthStart
+    },
+    showSearch: {
+      type: Boolean,
+      default: defaultsInputPhoneDialCode.showSearch
+    },
+    filterMode: {
+      type: Boolean,
+      default: defaultsInputPhoneDialCode.filterMode
+    },
+    menuCountryAttrs: Object
+  },
   emits: ['update:selected', 'update:modelSelected', 'update:value', 'click', 'clickLite', 'window'],
   setup(componentProps, { emit, expose }) {
     const classesToken = computed<ConstrClasses>(() => ({
@@ -485,7 +517,8 @@ describe('InputPhone (Integration)', () => {
     expect(container.querySelector('.mock-field-message')?.textContent).toBe('Enter US phone')
     expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('US')
     expect(container.querySelector('.d1-mask')).not.toBeNull()
-    expect(exposed.getValue()).toBe('1')
+    expect(exposed.value.value).toBe('1')
+    expect(exposed.getValue()).toBeUndefined()
   })
 
   it('should dynamically detect country from phone value and switch mask', async () => {
@@ -527,8 +560,9 @@ describe('InputPhone (Integration)', () => {
     await nextTick()
     await nextTick()
 
-    expect(exposed.getValue()).toBe('49')
-    expect(emittedEvents.some(event => event.type === 'update:modelValue' && event.args[0] === '49')).toBe(true)
+    expect(exposed.value.value).toBe('49')
+    expect(exposed.getValue()).toBeUndefined()
+    expect(emittedEvents.some(event => event.type === 'update:modelValue' && event.args[0] === undefined)).toBe(true)
     const input = container.querySelector('.d1-mask input') as HTMLInputElement
     expect(document.activeElement).toBe(input)
   })
@@ -597,7 +631,8 @@ describe('InputPhone (Integration)', () => {
       }
     })
 
-    expect(exposed.getValue()).toBe('7')
+    expect(exposed.value.value).toBe('7')
+    expect(exposed.getValue()).toBeUndefined()
     expect(exposed.checkValidity()).toBe(false)
     expect(exposed.getValidationMessage()).toBe('')
 
@@ -963,5 +998,74 @@ describe('InputPhone (Integration)', () => {
     expect(emittedEvents.some(event => event.type === 'update:country' && event.args[0] === 'DE')).toBe(true)
     expect(emittedEvents.some(event => event.type === 'update:modelCountry' && event.args[0] === 'DE')).toBe(true)
     expect(input.value).toBe('+49-')
+  })
+
+  it('should enforce top-level countryList across menu, country detection, paste, and validation', async () => {
+    const { container, exposed } = await mountInputPhone({
+      countryList: ['RU', 'BY'],
+      countryDefault: 'US',
+      textInvalidPhone: 'Country not allowed'
+    })
+
+    const input = container.querySelector('.d1-mask input') as HTMLInputElement
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+    expect(input.value).toBe('+7-')
+    expect(exposed.getValue()).toBeUndefined()
+
+    // Typing a disallowed German number keeps RU flag and fails validation
+    exposed.setValue('+49-301-234-5678')
+    await nextTick()
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+    expect(exposed.checkValidity()).toBe(false)
+
+    // Typing an allowed Belarusian number switches to BY and passes validation
+    exposed.setValue('+375-29-123-45-67')
+    await nextTick()
+    expect(container.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('BY')
+    expect(exposed.getValue()).toBe('+375-29-123-45-67')
+    expect(exposed.checkValidity()).toBe(true)
+
+    // Single-country countryList locks dialCode selector while keeping flag visible
+    const { container: singleContainer } = await mountInputPhone({
+      countryList: ['RU']
+    })
+    expect(singleContainer.querySelector('.mock-menu-country')?.getAttribute('data-selected')).toBe('RU')
+    expect(singleContainer.querySelector('.mock-menu-country')?.getAttribute('data-disabled')).toBe('true')
+  })
+
+  it('should forward showSearch=true, filterMode=false, and highlightLengthStart=1 through InputPhoneDialCode to MenuCountry by default and allow overrides', async () => {
+    const { container, props } = await mountInputPhone({
+      countryDefault: 'RU',
+      inputPhoneDialCodeAttrs: {
+        menuCountryAttrs: {
+          list: ['RU', 'BY']
+        }
+      }
+    })
+
+    const getSearchProps = () => JSON.parse(
+      container.querySelector('.mock-menu-country')?.getAttribute('data-search-props') || '{}'
+    )
+
+    expect(getSearchProps()).toEqual({
+      highlightLengthStart: 1,
+      showSearch: true,
+      filterMode: false
+    })
+
+    props.inputPhoneDialCodeAttrs = {
+      showSearch: false,
+      filterMode: true,
+      highlightLengthStart: 2,
+      menuCountryAttrs: {
+        list: ['RU', 'BY']
+      }
+    }
+    await nextTick()
+    expect(getSearchProps()).toEqual({
+      highlightLengthStart: 2,
+      showSearch: false,
+      filterMode: true
+    })
   })
 })

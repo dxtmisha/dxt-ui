@@ -116,7 +116,7 @@ describe('CmsPermissionItem', () => {
   })
 
   describe('Getters & immutability', () => {
-    it('exposes all permission fields and returns immutable snapshots from getData/toJSON', () => {
+    it('exposes all permission fields and returns immutable snapshots from getData/toJSONString', () => {
       const data = makePermission()
       const item = new CmsPermissionItem(data)
 
@@ -131,7 +131,7 @@ describe('CmsPermissionItem', () => {
       const snapshot = item.getData()
       snapshot.name = 'mutated'
       expect(item.getName()).toBe('cms-permission-users_read')
-      expect(item.toJSON()).toEqual(data)
+      expect(item.toJSONString()).toBe(JSON.stringify(data))
     })
   })
 

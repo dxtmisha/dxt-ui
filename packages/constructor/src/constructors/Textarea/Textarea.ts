@@ -141,6 +141,7 @@ export class Textarea {
       ref: this.element,
       autosize: this.props.autosize,
       value: this.value.item.value,
+      onFocus: this.event.onFocus,
       onBlur: this.event.onBlur,
       onInput: this.event.onInput,
       onChange: this.event.onChange

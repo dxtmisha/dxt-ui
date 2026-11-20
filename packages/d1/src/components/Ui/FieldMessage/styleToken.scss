@@ -23,13 +23,13 @@
     
     @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     
-    &--validation {
-      @include ui.color(#{var(--d1-sys-palette-error)});
+    &__warning {
+      @include ui.color(#{var(--d1-sys-palette-warning)});
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
     }
     
-    &--warning {
-      @include ui.color(#{var(--d1-sys-palette-warning)});
+    &--validation {
+      @include ui.color(#{var(--d1-sys-palette-error)});
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
     }
   }

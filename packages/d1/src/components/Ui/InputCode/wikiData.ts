@@ -31,7 +31,10 @@ const propsNames: StorybookProps = [
   { name: 'validation', type: 'boolean' },
   { name: 'validationId', type: 'string' },
   { name: 'validationMessage', type: 'string' },
-  { name: 'value', type: 'string' }
+  { name: 'value', type: 'string' },
+  { name: 'warning', type: 'boolean' },
+  { name: 'warningId', type: 'string' },
+  { name: 'warningMessage', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

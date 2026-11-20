@@ -8,6 +8,7 @@ const propsNames: StorybookProps = [
   { name: 'autoClose', type: 'boolean' },
   { name: 'axis', type: 'string', option: ['x', 'y'] },
   { name: 'disabled', type: 'boolean' },
+  { name: 'disableFocusReturn', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
   { name: 'open', type: 'boolean' },
   { name: 'windowAttrs', type: 'ConstrBind<WindowProps>' }

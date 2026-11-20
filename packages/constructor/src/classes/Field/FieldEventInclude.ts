@@ -63,9 +63,30 @@ export class FieldEventInclude extends DesignLifecycleAbstract {
       && this.props.readonly !== true
   }
 
-  /** Events for losing focus / События для потери фокуса */
-  readonly onBlur = () => {
-    this.change().to()
+  /**
+   * Events for focus/
+   * События для фокуса
+   * @param event focus event / событие фокуса
+   */
+  readonly onFocus = (event?: FocusEvent): void => {
+    if (this.props.disabled !== true) {
+      this.emits?.('focus', event as FocusEvent)
+    }
+  }
+
+  /**
+   * Events for losing focus/
+   * События для потери фокуса
+   * @param event blur event / событие потери фокуса
+   */
+  readonly onBlur = (event?: FocusEvent): void => {
+    if (this.isEnabled()) {
+      this.change().to()
+    }
+
+    if (this.props.disabled !== true) {
+      this.emits?.('blur', event as FocusEvent)
+    }
   }
 
   /**

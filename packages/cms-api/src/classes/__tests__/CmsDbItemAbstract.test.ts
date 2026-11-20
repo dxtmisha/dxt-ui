@@ -112,7 +112,7 @@ describe('CmsDbItemAbstract', () => {
 
     expect(item.getId()).toBe(10)
     expect(item.getSystemStatus()).toBe('active')
-    expect(item.toJSON()).toEqual(item.getData())
+    expect(item.toJSONString()).toBe(JSON.stringify(item.getData()))
 
     expect((await item.updateName('Updated'))?.getData().name).toBe('Updated')
     expect((await item.reload())?.getData().name).toBe('Reloaded')

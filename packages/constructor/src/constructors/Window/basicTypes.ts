@@ -189,6 +189,8 @@ export type WindowPropsInclude<
   disabled?: boolean
   /** Enable auto close on outside click/ Включить авто-закрытие при клике вне */
   autoClose?: boolean
+  /** Disable returning focus to the control element on close / Отключить возврат фокуса на элемент управления при закрытии */
+  disableFocusReturn?: boolean
   /** Additional attributes for Window component/ Дополнительные атрибуты для компонента Window */
   windowAttrs?: ConstrBind<Window>
 }

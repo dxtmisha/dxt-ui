@@ -38,10 +38,14 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'blur', description: `Emitted when the field loses focus/
+Эмит при потере фокуса полем: [event]`, properties: [{ name: 'event', type: 'FocusEvent' }] },
   { name: 'change', description: `Emitted when value is committed (blur/confirm)/
 Эмит при подтверждении значения (blur/confirm): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<FileList | undefined>' }] },
   { name: 'changeLite', description: `Lightweight change emit without DOM event/
 Лёгкий эмит подтверждения без события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<FileList | undefined>' }] },
+  { name: 'focus', description: `Emitted when the field receives focus/
+Эмит при получении фокуса полем: [event]`, properties: [{ name: 'event', type: 'FocusEvent' }] },
   { name: 'input', description: `Emitted on input events (every change while typing)/
 Эмит при вводе (каждое изменение): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<FileList | undefined>' }] },
   { name: 'inputLite', description: `Lightweight input emit without DOM event/

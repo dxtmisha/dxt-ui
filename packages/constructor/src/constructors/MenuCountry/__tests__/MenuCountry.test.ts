@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { computed, createApp, defineComponent, h, nextTick, reactive, ref } from 'vue'
-import type { ConstrClasses, GeoFlagNational, ListList, ListSelectedList } from '@dxtmisha/functional'
+import { computed, createApp, defineComponent, effectScope, h, nextTick, reactive, ref } from 'vue'
+import { type ConstrClasses, DesignName, type GeoFlagNational, type ListList, type ListSelectedList } from '@dxtmisha/functional'
 
 import { MenuCountry } from '../MenuCountry'
 import { MenuCountryDesign } from '../MenuCountryDesign'
@@ -275,5 +275,47 @@ describe('MenuCountry (Integrated Component)', () => {
     trigger.click()
     await nextTick()
     expect(emitted.window.mock.calls.length).toBe(windowCallsBefore)
+  })
+
+  it('should populate searchable country and dial code metadata on list items', () => {
+    const scope = effectScope()
+    const props = reactive<MenuCountryProps>({
+      list: ['VN', 'RU', 'DO', 'GB'],
+      showPhoneCode: true,
+      language: 'en'
+    })
+
+    scope.run(() => {
+      const menuCountry = new MenuCountry(
+        props,
+        ref<HTMLDivElement>(),
+        new DesignName('d1.menuCountry')
+      )
+
+      const list = menuCountry.binds.list as Array<Record<string, unknown>>
+      const vnItem = list.find(item => item.value === 'VN')
+      expect(String(vnItem?.search ?? '')).toContain('VN')
+      expect(String(vnItem?.search ?? '')).toContain('+84')
+      expect(String(vnItem?.search ?? '')).toContain('84')
+
+      const gbItem = list.find(item => item.value === 'GB')
+      expect(String(gbItem?.search ?? '')).toContain('United Kingdom')
+      expect(String(gbItem?.search ?? '')).toContain('GB')
+      expect(String(gbItem?.search ?? '')).toContain('+44')
+
+      const doGroup = list.find(item => item.index === 'DO')
+      expect(doGroup?.type).toBe('group')
+      expect(String(doGroup?.search ?? '')).toContain('Dominican Republic')
+      expect(String(doGroup?.search ?? '')).not.toContain('+1-829')
+      expect(String(doGroup?.search ?? '')).not.toContain('+1829')
+      const doChildren = doGroup?.value as Array<Record<string, unknown>>
+      expect(String(doChildren[1]?.search ?? '')).toContain('+1-829')
+      expect(String(doChildren[1]?.search ?? '')).toContain('1-829')
+      expect(String(doChildren[1]?.search ?? '')).toContain('+1829')
+      expect(String(doChildren[1]?.search ?? '')).toContain('1829')
+      expect(String(doChildren[1]?.search ?? '')).toContain('DO')
+    })
+
+    scope.stop()
   })
 })

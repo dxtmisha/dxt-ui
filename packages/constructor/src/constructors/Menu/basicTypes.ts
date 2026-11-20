@@ -54,6 +54,8 @@ export type MenuSlotInclude = {
 export type MenuPropsInclude<Menu extends MenuPropsBasic = MenuPropsBasic> = {
   /** Whether the menu is disabled/ Отключено ли меню */
   disabled?: boolean
+  /** Disable returning focus to the control element on close / Отключить возврат фокуса на элемент управления при закрытии */
+  disableFocusReturn?: boolean
   /** Additional attributes for the Menu component/ Дополнительные атрибуты для компонента меню */
   menuAttrs?: ConstrBind<Menu>
 }

@@ -154,7 +154,7 @@ export const InputPhoneDialCodeLabelTypes: Story = {
   }
 }
 export const InputPhoneDialCodeTestStates: Story = {
-  name: 'Тест: Отключённое состояние, стрелка и атрибуты',
+  name: 'Тест: Отключённое состояние, readonly, одна страна, стрелка и атрибуты',
   render: () => ({
     components: { D1InputPhoneDialCode },
     template: `
@@ -163,6 +163,14 @@ export const InputPhoneDialCodeTestStates: Story = {
           <div class="wiki-storybook-item wiki-storybook-item--auto">
             <div class="wiki-storybook-item__label">disabled</div>
             <D1InputPhoneDialCode value="US" label-type="code" disabled :menu-country-attrs="{ list: ['US', 'VN'] }"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--auto">
+            <div class="wiki-storybook-item__label">readonly</div>
+            <D1InputPhoneDialCode value="RU" label-type="code" readonly icon-arrow-down="expand_more" :menu-country-attrs="{ list: ['US', 'RU'] }"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--auto">
+            <div class="wiki-storybook-item__label">single country auto-lock</div>
+            <D1InputPhoneDialCode value="RU" label-type="code" icon-arrow-down="expand_more" :menu-country-attrs="{ list: ['RU'] }"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--auto">
             <div class="wiki-storybook-item__label">custom arrow & buttonAttrs</div>
@@ -180,12 +188,16 @@ export const InputPhoneDialCodeTestStates: Story = {
   }),
   play: async ({ canvasElement }) => {
     const triggers = canvasElement.querySelectorAll<HTMLButtonElement>('.d1-inputPhoneDialCode__button')
-    await expect(triggers.length).toBe(2)
+    await expect(triggers.length).toBe(4)
 
     await expect(triggers[0]).toBeDisabled()
-    await expect(triggers[1]).not.toBeDisabled()
-    await expect(triggers[1]).toHaveAttribute('data-custom', 'button-prop')
-    await expect(triggers[1]).toHaveTextContent('expand_more')
+    await expect(triggers[1]).toBeDisabled()
+    await expect(triggers[1]).toHaveTextContent('+7')
+    await expect(triggers[2]).toBeDisabled()
+    await expect(triggers[2]).toHaveTextContent('+7')
+    await expect(triggers[3]).not.toBeDisabled()
+    await expect(triggers[3]).toHaveAttribute('data-custom', 'button-prop')
+    await expect(triggers[3]).toHaveTextContent('expand_more')
   }
 }
 export const InputPhoneDialCodeTestEvents: Story = {

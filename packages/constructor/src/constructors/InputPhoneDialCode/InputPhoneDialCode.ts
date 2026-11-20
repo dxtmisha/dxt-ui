@@ -4,10 +4,7 @@ import {
   type ConstrItems,
   DesignLogicAbstract,
   Geo,
-  GeoPhone,
-  isArray,
-  type ListSelectedList,
-  type NumberOrStringOrBoolean
+  type ListSelectedList
 } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -15,9 +12,10 @@ import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
 import { ButtonInclude, type ButtonProps } from '../Button'
 import { MenuCountryInclude, type MenuCountryProps } from '../MenuCountry'
-import type { WindowEmitOptions } from '../Window'
+import { InputPhoneDialCodeEvent } from './InputPhoneDialCodeEvent'
+import { InputPhoneDialCodeItem } from './InputPhoneDialCodeItem'
+import { InputPhoneDialCodeStatus } from './InputPhoneDialCodeStatus'
 
-import type { EventClickValue } from '../../types/eventClickTypes'
 import type { InputPhoneDialCodeProps } from './props'
 import type { InputPhoneDialCodeComponents, InputPhoneDialCodeEmits, InputPhoneDialCodeSlots } from './types'
 
@@ -27,10 +25,16 @@ export type InputPhoneDialCodeConstructors = {
   button: typeof ButtonInclude
   /** Click event constructor / Конструктор события клика */
   event: typeof EventClickInclude
+  /** Dial code events handler constructor / Конструктор обработчиков событий выбора телефонного кода */
+  events: typeof InputPhoneDialCodeEvent
+  /** Selected country item resolver constructor / Конструктор выбранного элемента страны */
+  item: typeof InputPhoneDialCodeItem
   /** Country menu constructor / Конструктор меню выбора страны */
   menu: typeof MenuCountryInclude
   /** Model value constructor / Конструктор значения модели */
   model: typeof ModelValueInclude<ListSelectedList | undefined>
+  /** Status handler constructor / Конструктор статуса отключения и чтения */
+  status: typeof InputPhoneDialCodeStatus
 }
 
 /**
@@ -69,22 +73,24 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
         this.emits
       ]
     },
+    events: {
+      item: InputPhoneDialCodeEvent,
+      parameters: () => [
+        () => this.i('model'),
+        this.emits
+      ]
+    },
+    item: {
+      item: InputPhoneDialCodeItem,
+      parameters: () => [
+        this.props,
+        () => this.i('menu')
+      ]
+    },
     menu: {
       item: MenuCountryInclude,
       parameters: () => [
-        () => ({
-          ...this.props,
-          menuCountryAttrs: {
-            ...this.props.menuCountryAttrs,
-            menuAttrs: {
-              ...this.props.menuCountryAttrs?.menuAttrs,
-              windowAttrs: {
-                ...this.props.menuCountryAttrs?.menuAttrs?.windowAttrs,
-                disableFocusReturn: true
-              }
-            }
-          }
-        }),
+        this.props,
         this.naming,
         this.components,
         () => this.bindsMenu
@@ -98,17 +104,12 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
         this.i('event'),
         computed(() => this.props.modelSelected || this.props.value || Geo.getCountry())
       ]
+    },
+    status: {
+      item: InputPhoneDialCodeStatus,
+      parameters: () => [this.props]
     }
   }
-
-  /**
-   * Computed list of currently selected country items from the menu.
-   *
-   * Вычисляемый список выбранных элементов страны из меню.
-   */
-  readonly item = computed(() => {
-    return this.i('menu').getElement()?.getSelectedList()
-  })
 
   /**
    * Returns the resolved props object for the trigger button.
@@ -121,38 +122,14 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
    * @returns resolved button props / разрешённые свойства кнопки
    */
   get bindsButton(): ConstrBind<ButtonProps> {
-    const item = this.item.value?.[0]
-    const readonly = this.isReadonly()
-    const props: ConstrBind<ButtonProps> = {
-      ...(this.props.disabled !== undefined ? { disabled: this.props.disabled } : {}),
-      ...(readonly ? { readonly: true } : this.props.readonly !== undefined ? { readonly: this.props.readonly } : {}),
-      icon: item?.icon ?? item?.detail?.icon,
-      iconTrailing: (this.props.disabled || readonly) ? undefined : this.props.iconArrowDown,
+    const status = this.i('status')
+
+    return {
+      ...status.binds,
+      ...this.i('item').binds,
+      iconTrailing: status.isBlocked() ? undefined : this.props.iconArrowDown,
       iconTurn: this.i('menu').getElement()?.getOpen()
     }
-
-    if (
-      item
-      && this.props.labelType
-    ) {
-      switch (this.props.labelType) {
-        case 'code':
-          return {
-            ...props,
-            label: item.caption ?? item.label
-          }
-        case 'name':
-          return {
-            ...props,
-            label: item.detail?.label ?? item.label
-          }
-        case 'none':
-        default:
-          return props
-      }
-    }
-
-    return props
   }
 
   /**
@@ -163,79 +140,11 @@ export class InputPhoneDialCode extends DesignLogicAbstract<
    */
   get bindsMenu(): ConstrBind<MenuCountryProps> {
     return {
-      ...(this.props.disabled || this.isReadonly() ? { disabled: true } : {}),
+      ...this.i('status').bindsMenu,
+      disableFocusReturn: true,
       selected: this.i('model').value.value,
       showPhoneCode: true,
-      onUpdateValue: this.onUpdate,
-      onClick: this.onClick,
-      onWindow: this.onWindow
+      ...this.i('events').binds
     }
-  }
-
-  /**
-   * Checks whether country selection is read-only (explicit readonly or at most one single-code country in list).
-   *
-   * Проверяет, заблокирован ли выбор страны (явный readonly или список не более чем из одной страны с одним кодом).
-   * @returns true if selector interaction is read-only / true, если селектор доступен только для чтения
-   */
-  protected isReadonly(): boolean {
-    if (this.props.readonly) {
-      return true
-    }
-
-    const countryList = this.props.menuCountryAttrs?.list
-
-    if (
-      isArray(countryList)
-      && countryList.length <= 1
-    ) {
-      const singleCountry = countryList[0]
-
-      return !singleCountry || GeoPhone.getCodes(singleCountry).length <= 1
-    }
-
-    return false
-  }
-
-  /**
-   * Click handler for country selection.
-   *
-   * Обработчик клика при выборе страны.
-   * @param event mouse event object / объект события мыши
-   * @param options optional event value options / необязательные параметры значения события
-   */
-  readonly onClick = (
-    event: MouseEvent,
-    options?: EventClickValue
-  ): void => {
-    if (
-      options?.type === 'group'
-      || isArray(options?.value)
-    ) {
-      return
-    }
-
-    this.i('model').onClick(event, options)
-  }
-
-  /**
-   * Updates the model value and emits the updateValue event.
-   *
-   * Обновляет значение модели и генерирует событие updateValue.
-   * @param value new country code value / новое значение кода страны
-   */
-  readonly onUpdate = (value?: NumberOrStringOrBoolean): void => {
-    this.i('model').onUpdate(value)
-    this.emits?.('updateValue', value)
-  }
-
-  /**
-   * Window state change handler.
-   *
-   * Обработчик изменения состояния окна.
-   * @param options window emit options / параметры события окна
-   */
-  readonly onWindow = (options: WindowEmitOptions): void => {
-    this.emits?.('window', options)
   }
 }

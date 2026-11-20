@@ -1,104 +1,53 @@
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, watch } from 'vue'
 import {
   DesignLifecycleAbstract,
-  Geo,
   GeoPhone,
-  type GeoPhoneMap,
-  isArray,
-  isFilled
+  type GeoPhoneMap
 } from '@dxtmisha/functional'
 
 import type { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
-import type { ModelInclude } from '../../classes/ModelInclude'
 import type { WindowEmitOptions } from '../Window'
+import type { InputPhoneCountry } from './InputPhoneCountry'
+import type { InputPhoneCountryList } from './InputPhoneCountryList'
 
-import type { EventClickValue } from '../../types/eventClickTypes'
 import type { InputPhonePropsBasic } from './props'
 
 /**
  * Data manager for InputPhone component.
- * Responsible for handling phone values, identifying the corresponding country, and normalizing phone values.
+ * Responsible for phone mask lookup, prefix defaults, completeness synchronization, and input focus.
  *
  * Менеджер данных для компонента InputPhone.
- * Отвечает за обработку значений телефона, определение соответствующей страны и нормализацию значений телефона.
+ * Отвечает за определение карты телефонной маски, префикс по умолчанию, синхронизацию полноты номера и фокус поля.
  */
 export class InputPhoneData extends DesignLifecycleAbstract {
-  /** Selected country code ref / Ссылка на выбранный код страны */
-  readonly country = ref<string>(Geo.getCountry())
-
   /** Cleanup function for valueItem watcher / Функция очистки наблюдателя valueItem */
   protected watchStop?: () => void
-  /** Cleanup function for activeCountry watcher / Функция очистки наблюдателя activeCountry */
-  protected watchActiveCountryStop?: () => void
-  /** Cleanup function for country prop watcher / Функция очистки наблюдателя свойства country */
-  protected watchCountryStop?: () => void
-  /** Cleanup function for countryDefault watcher / Функция очистки наблюдателя countryDefault */
-  protected watchCountryDefaultStop?: () => void
 
   /**
    * Constructor
-   *
-   * Конструктор
    * @param props input data / входные данные
+   * @param country function returning country manager / функция, возвращающая менеджер страны
    * @param element function returning field element manager / функция, возвращающая менеджер элемента поля
    * @param event function returning field event manager / функция, возвращающая менеджер событий поля
    * @param value function returning field value manager / функция, возвращающая менеджер значения поля
-   * @param modelCountry function returning country model manager / функция, возвращающая менеджер модели страны
    */
   constructor(
     protected readonly props: Readonly<InputPhonePropsBasic>,
+    protected readonly country: () => InputPhoneCountry,
+    protected readonly countryList: () => InputPhoneCountryList,
     protected readonly element: () => FieldElementInclude,
     protected readonly event: () => FieldEventInclude,
-    protected readonly value: () => FieldValueInclude<string>,
-    protected readonly modelCountry?: () => ModelInclude<string>
+    protected readonly value: () => FieldValueInclude<string>
   ) {
     super()
-
-    const initialCountry = this.props.country ?? this.props.modelCountry ?? this.props.countryDefault
-
-    if (initialCountry) {
-      this.country.value = initialCountry
-    }
+    void this.event
   }
-
-  /** Computed active country code preserving manual/default shared-code selection / Вычисляемый активный код страны с сохранением ручного или заданного выбора для общих префиксов */
-  readonly activeCountry = computed<string>(() => {
-    if (this.isSameCountryGroup()) {
-      return this.country.value
-    }
-
-    return this.valueItem.value?.value ?? this.country.value
-  })
-
-  /** Computed active dial code value matching selected country or alternative subcode / Вычисляемый код для меню с учётом альтернативных подкодов */
-  readonly activeDialCode = computed<string>(() => {
-    const country = this.activeCountry.value
-    const codes = GeoPhone.getCodes(country)
-
-    if (codes.length > 1) {
-      const currentValue = this.value().item.value
-      const cleanValue = currentValue ? GeoPhone.cleanPhone(currentValue) : ''
-
-      for (let index = 1; index < codes.length; index++) {
-        const code = codes[index]
-
-        if (
-          code
-          && cleanValue.startsWith(GeoPhone.cleanPhone(code))
-        ) {
-          return `${country}-${code}`
-        }
-      }
-    }
-
-    return country
-  })
 
   /** Computed info of the current phone map / Вычисляемая информация о текущей карте телефона */
   readonly item = computed<GeoPhoneMap | undefined>(() => {
-    return this.valueItem.value ?? GeoPhone.getByCode(this.country.value)
+    return this.valueItem.value ?? GeoPhone.getByCode(this.country().item.value)
   })
 
   /** Computed phone map based on current phone number / Вычисляемая карта телефона на основе текущего телефонного номера */
@@ -109,7 +58,14 @@ export class InputPhoneData extends DesignLifecycleAbstract {
       !this.props.countryBlock
       && currentValue
     ) {
-      return GeoPhone.getByPhone(currentValue)?.item
+      const matched = GeoPhone.getByPhone(currentValue)?.item
+
+      if (
+        matched
+        && this.countryList().resolveAllowed(matched)
+      ) {
+        return matched
+      }
     }
 
     return undefined
@@ -117,7 +73,7 @@ export class InputPhoneData extends DesignLifecycleAbstract {
 
   /** Default phone value based on current country / Значение телефона по умолчанию на основе текущей страны */
   readonly valueDefault = computed<string>(() => {
-    return this.toPhone(this.country.value)
+    return this.country().toPhone()
   })
 
   /**
@@ -129,69 +85,22 @@ export class InputPhoneData extends DesignLifecycleAbstract {
     this.element().get()?.focus()
   }
 
-  /**
-   * Handler for country code change event.
-   *
-   * Обработчик события изменения кода страны.
-   * @param event click or input event / событие клика или ввода
-   * @param data event data / данные события
-   */
-  readonly onCountry = (
-    event: MouseEvent | InputEvent,
-    data?: EventClickValue
-  ): void => {
-    void event
-
-    if (
-      data
-      && !isArray(data.value)
-      && isFilled(data.value)
-    ) {
-      const country = String(data.detail?.country ?? data.value)
-      const phone = data.detail?.phone
-        ? String(data.detail.phone)
-        : this.toPhone(country)
-
-      this.country.value = country
-      this.event().onValue(phone)
-    }
-  }
-
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {
     this.resetWatch()
-    this.updateCountryDefault()
 
     if (!this.value().boolean) {
-      this.value().set(this.toPhone(this.country.value))
-    }
-
-    this.updateCountry()
-
-    const countryProp = this.props.country ?? this.props.modelCountry
-
-    if (
-      countryProp !== undefined
-      && countryProp !== this.activeCountry.value
-    ) {
-      this.modelCountry?.().emit(this.activeCountry.value)
+      this.value().set(this.valueDefault.value)
+      this.value().setFull(false)
     }
 
     this.watchStop = watch(
       [this.valueItem, () => this.value().item.value],
-      () => this.updateCountry()
-    )
-    this.watchActiveCountryStop = watch(
-      this.activeCountry,
-      country => this.modelCountry?.().emit(country)
-    )
-    this.watchCountryStop = watch(
-      () => this.props.country ?? this.props.modelCountry,
-      country => this.updateByCountryProp(country)
-    )
-    this.watchCountryDefaultStop = watch(
-      () => this.props.countryDefault,
-      () => this.updateCountryDefault()
+      () => {
+        this.country().update()
+        this.syncFullState()
+      },
+      { flush: 'sync' }
     )
   }
 
@@ -217,122 +126,6 @@ export class InputPhoneData extends DesignLifecycleAbstract {
   }
 
   /**
-   * Normalizes country code to a starting phone prefix.
-   *
-   * Нормализует код страны в стартовый телефонный префикс.
-   * @param country country code / код страны
-   * @returns phone prefix / телефонный префикс
-   */
-  toPhone(country: string): string {
-    return (GeoPhone.get(country)?.phone ?? 1).toString()
-  }
-
-  /**
-   * Checks whether the current phone value still belongs to the selected country or only holds its shared prefix.
-   *
-   * Проверяет, соответствует ли текущее значение выбранной стране или содержит только её общий префикс.
-   * @returns true if the current country should be preserved / true, если текущую страну нужно сохранить
-   */
-  protected isSameCountryGroup(): boolean {
-    const valueItem = this.valueItem.value
-    const currentValue = this.value().item.value
-
-    if (
-      !valueItem
-      || !currentValue
-    ) {
-      return true
-    }
-
-    const country = this.country.value
-    const cleanValue = GeoPhone.cleanPhone(currentValue)
-
-    return cleanValue === this.toPhone(country)
-      || valueItem.items.some(item => item.value === country)
-  }
-
-  /**
-   * Updates the country code based on the current value item.
-   *
-   * Обновляет код страны на основе текущего элемента значения.
-   */
-  protected updateCountry(): void {
-    if (
-      this.valueItem.value
-      && !this.isSameCountryGroup()
-    ) {
-      this.country.value = this.valueItem.value.value ?? Geo.getCountry()
-    }
-  }
-
-  /**
-   * Checks whether the current phone value already belongs to the specified country.
-   *
-   * Проверяет, соответствует ли текущее значение номера телефона указанной стране.
-   * @param country country code / код страны
-   * @returns true if phone value matches country / true, если номер соответствует стране
-   */
-  protected isCountryMatchingValue(country: string): boolean {
-    const currentValue = this.value().item.value
-
-    if (!currentValue) {
-      return false
-    }
-
-    if (GeoPhone.cleanPhone(currentValue) === this.toPhone(country)) {
-      return true
-    }
-
-    const phoneItem = GeoPhone.getByPhone(currentValue)?.item
-
-    if (!phoneItem) {
-      return false
-    }
-
-    return phoneItem.value === country
-      || phoneItem.items.some(item => item.value === country)
-  }
-
-  /**
-   * Updates country state when the external country/modelCountry prop changes.
-   *
-   * Обновляет состояние страны при внешнем изменении пропса country/modelCountry.
-   * @param country new country code / новый код страны
-   */
-  protected updateByCountryProp(country?: string): void {
-    if (
-      country
-      && country !== this.activeCountry.value
-    ) {
-      this.country.value = country
-
-      if (!this.isCountryMatchingValue(country)) {
-        this.event().onValue(this.toPhone(country))
-      }
-    }
-  }
-
-  /**
-   * Updates the country code when countryDefault changes and the country has not been modified yet.
-   *
-   * Обновляет код страны при изменении countryDefault, если страна ещё не была изменена.
-   */
-  protected updateCountryDefault(): void {
-    const countryDefault = this.props.countryDefault
-
-    if (
-      countryDefault
-      && !this.props.country
-      && !this.props.modelCountry
-      && countryDefault !== this.country.value
-      && this.country.value === Geo.getCountry()
-    ) {
-      this.country.value = countryDefault
-      this.value().set(this.valueDefault.value)
-    }
-  }
-
-  /**
    * Stops and resets active watchers.
    *
    * Останавливает и сбрасывает активные наблюдатели.
@@ -340,11 +133,44 @@ export class InputPhoneData extends DesignLifecycleAbstract {
   protected resetWatch(): void {
     this.watchStop?.()
     this.watchStop = undefined
-    this.watchActiveCountryStop?.()
-    this.watchActiveCountryStop = undefined
-    this.watchCountryStop?.()
-    this.watchCountryStop = undefined
-    this.watchCountryDefaultStop?.()
-    this.watchCountryDefaultStop = undefined
+  }
+
+  /**
+   * Synchronizes the value completeness flag for bare dial prefixes and programmatically assigned full phone values.
+   *
+   * Синхронизирует флаг полноты значения для голых префиксов и программно заданных полных номеров телефона.
+   */
+  protected syncFullState(): void {
+    if (this.props.countryBlock) {
+      return
+    }
+
+    const currentValue = this.value().item.value
+
+    if (!currentValue) {
+      return
+    }
+
+    const cleanValue = GeoPhone.cleanPhone(currentValue)
+
+    if (cleanValue === this.valueDefault.value) {
+      this.value().setFull(false)
+      return
+    }
+
+    if (
+      !this.value().isFull.value
+      && cleanValue
+    ) {
+      const info = GeoPhone.getByPhoneFull(cleanValue)
+
+      if (
+        info.item?.value
+        && info.format !== cleanValue
+        && this.countryList().resolveAllowed(info.item)
+      ) {
+        this.value().setFull(true)
+      }
+    }
   }
 }

@@ -13,7 +13,9 @@ describe('SliderFieldEvent', () => {
   beforeEach(() => {
     eventMock = {
       onInput: vi.fn(),
-      onChange: vi.fn()
+      onChange: vi.fn(),
+      onFocus: vi.fn(),
+      onBlur: vi.fn()
     } as unknown as FieldEventInclude
 
     valueItemMock = {
@@ -71,6 +73,7 @@ describe('SliderFieldEvent', () => {
 
       sliderEvent.onFocus(focusEvent)
       expect(input.value).toBe('90')
+      expect(eventMock.onFocus).toHaveBeenCalledWith(focusEvent)
     })
   })
 
@@ -85,6 +88,7 @@ describe('SliderFieldEvent', () => {
 
       sliderEvent.onBlur(blurEvent)
       expect(input.value).toBe('')
+      expect(eventMock.onBlur).toHaveBeenCalledWith(blurEvent)
     })
   })
 

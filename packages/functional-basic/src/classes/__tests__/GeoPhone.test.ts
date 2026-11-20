@@ -85,7 +85,16 @@ describe('GeoPhone', () => {
 
       const kzInfo = GeoPhone.getByCode('KZ')
       expect(kzInfo?.value).toBe('KZ')
-      expect(kzInfo?.mask).toEqual(['+7-6-~*-***-**-**', '+7-7-~*-***-**-**'])
+      expect(kzInfo?.mask).toEqual(['+7-6-**-***-**-**', '+7-7-**-***-**-**'])
+
+      const ggInfo = GeoPhone.getByCode('GG')
+      expect(ggInfo?.value).toBe('GG')
+      expect(ggInfo?.mask).toEqual([
+        '+44-1481-******',
+        '+44-7781-******',
+        '+44-7839-******',
+        '+44-7911-******'
+      ])
     })
 
     it('should apply "within" symbol "~" for RU (within=8)', () => {
@@ -107,6 +116,29 @@ describe('GeoPhone', () => {
     it('should retain default symbol "*" when country has no within (US)', () => {
       const mapInfo = GeoPhone.getByCode('US')
       expect(mapInfo?.mask[0]?.includes('*')).toBe(true)
+    })
+
+    it('should skip within symbol replacement when phoneWithinSkip is true while preserving within metadata', () => {
+      Geo.add('ZZ', {
+        language: 'zz',
+        phoneCode: '7',
+        phoneWithin: '8',
+        phoneWithinSkip: true,
+        phoneMask: ['+7-6-**-***-**-**', '+7-7-**-***-**-**']
+      })
+
+      const customMeta = GeoPhone.get('ZZ')
+      expect(customMeta?.within).toBe('8')
+      expect(customMeta?.withinSkip).toBe(true)
+
+      const customByCode = GeoPhone.getByCode('ZZ')
+      expect(customByCode?.mask).toEqual(['+7-6-**-***-**-**', '+7-7-**-***-**-**'])
+      expect(customByCode?.maskFull).toEqual(['+*-*-**-***-**-**'])
+
+      const customByPhone = GeoPhone.getByPhone('77011234567')
+      expect(customByPhone.item?.mask.some(mask => mask.includes('~'))).toBe(
+        !GeoPhone.get('KZ')?.withinSkip
+      )
     })
 
     it('should return undefined for unknown or empty code', () => {

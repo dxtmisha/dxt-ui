@@ -21,6 +21,8 @@ import { FieldInclude } from '../Field'
 import { InputPhoneDialCodeInclude } from '../InputPhoneDialCode'
 import { MaskInclude } from '../Mask'
 
+import { InputPhoneCountry } from './InputPhoneCountry'
+import { InputPhoneCountryList } from './InputPhoneCountryList'
 import { InputPhoneData } from './InputPhoneData'
 import { InputPhoneFormat } from './InputPhoneFormat'
 import { InputPhoneMask } from './InputPhoneMask'
@@ -38,6 +40,10 @@ export type InputPhoneConstructors = {
   change: typeof FieldChangeInclude
   /** Field code constructor / Конструктор кода поля */
   code: typeof FieldCodeInclude
+  /** Input phone country constructor / Конструктор страны ввода телефона */
+  country: typeof InputPhoneCountry
+  /** Input phone country list constructor / Конструктор списка разрешённых стран ввода телефона */
+  countryList: typeof InputPhoneCountryList
   /** Input phone data constructor / Конструктор данных ввода телефона */
   data: typeof InputPhoneData
   /** Input phone dial code constructor / Конструктор телефонного кода ввода телефона */
@@ -97,14 +103,30 @@ export class InputPhone extends DesignLogicAbstract<
       item: FieldCodeInclude,
       parameters: () => [this.props]
     },
+    country: {
+      item: InputPhoneCountry,
+      parameters: () => [
+        this.props,
+        () => this.i('countryList'),
+        () => this.i('data'),
+        () => this.i('event'),
+        () => this.i('value'),
+        () => this.i('modelCountry')
+      ]
+    },
+    countryList: {
+      item: InputPhoneCountryList,
+      parameters: () => [this.props]
+    },
     data: {
       item: InputPhoneData,
       parameters: () => [
         this.props,
+        () => this.i('country'),
+        () => this.i('countryList'),
         () => this.i('elementItem'),
         () => this.i('event'),
-        () => this.i('value'),
-        () => this.i('modelCountry')
+        () => this.i('value')
       ]
     },
     dialCode: {
@@ -115,8 +137,9 @@ export class InputPhone extends DesignLogicAbstract<
         this.naming,
         this.components,
         () => ({
-          value: this.i('data').activeDialCode.value,
-          onClick: this.i('data').onCountry,
+          value: this.i('country').activeDialCode.value,
+          ...(this.props.countryReadonly ? { readonly: true } : {}),
+          onClick: this.i('country').onCountry,
           onWindow: this.i('data').onWindow
         })
       ]
@@ -164,6 +187,7 @@ export class InputPhone extends DesignLogicAbstract<
       item: InputPhoneFormat,
       parameters: () => [
         this.props,
+        () => this.i('country'),
         () => this.i('data'),
         () => this.i('value')
       ]
@@ -191,7 +215,8 @@ export class InputPhone extends DesignLogicAbstract<
       item: InputPhonePaste,
       parameters: () => [
         this.props,
-        () => this.i('data'),
+        () => this.i('country'),
+        () => this.i('countryList'),
         () => this.i('elementItem'),
         () => this.i('event'),
         () => this.i('value')
@@ -215,6 +240,7 @@ export class InputPhone extends DesignLogicAbstract<
         this.props,
         () => this.i('attributes'),
         () => this.i('value'),
+        () => this.i('countryList'),
         () => this.i('data'),
         () => this.i('change'),
         () => this.i('code'),
@@ -262,6 +288,7 @@ export class InputPhone extends DesignLogicAbstract<
       constructors
     )
 
+    this.i('country')
     this.i('data')
     this.i('event')
     this.i('validation')

@@ -16,6 +16,7 @@ const propsNames: StorybookProps = [
   { name: 'barsList', type: 'ConstrBind<ButtonProps>[]' },
   { name: 'cache', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
+  { name: 'disableFocusReturn', type: 'boolean' },
   { name: 'embedded', type: 'boolean' },
   { name: 'filterMode', type: 'boolean' },
   { name: 'hideList', type: 'boolean' },

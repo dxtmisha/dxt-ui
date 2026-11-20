@@ -226,7 +226,7 @@ describe('CmsUserItem', () => {
       expect(item.getMetadata()).toEqual({ locale: 'ru' })
       expect(item.getRoles()).toHaveLength(2)
       expect(item.getRoles()[0]?.permissions).toHaveLength(2)
-      expect(item.toJSON()).toEqual(data)
+      expect(item.toJSONString()).toBe(JSON.stringify(data))
     })
 
     it('detects soft-deleted and inactive states accurately', () => {

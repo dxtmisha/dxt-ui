@@ -23,6 +23,7 @@ const propsNames: StorybookProps = [
   { name: 'description', type: 'string | number' },
   { name: 'descriptionId', type: 'string' },
   { name: 'disabled', type: 'boolean' },
+  { name: 'disableFocusReturn', type: 'boolean' },
   { name: 'error', type: 'boolean' },
   { name: 'icon', type: 'IconValue<IconProps>' },
   { name: 'iconAttrs', type: 'ConstrBind<IconProps>' },

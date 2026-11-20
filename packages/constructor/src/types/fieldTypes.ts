@@ -177,6 +177,18 @@ export type FieldValueEmits<T = any> = {
    * Лёгкий эмит подтверждения без события: [value]
    */
   changeLite: [value: FieldValidationItem<T>]
+
+  /**
+   * Emitted when the field receives focus/
+   * Эмит при получении фокуса полем: [event]
+   */
+  focus: [event: FocusEvent]
+
+  /**
+   * Emitted when the field loses focus/
+   * Эмит при потере фокуса полем: [event]
+   */
+  blur: [event: FocusEvent]
 }
 
 /**

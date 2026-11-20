@@ -38,11 +38,49 @@ describe('FieldEventInclude', () => {
     emitsSpy = vi.fn()
   })
 
-  it('should mark change to true on onBlur', () => {
+  it('should emit focus event on onFocus unless disabled', () => {
     const eventInclude = new FieldEventInclude({}, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
-    eventInclude.onBlur()
+    const mockFocusEvent = new FocusEvent('focus')
+
+    eventInclude.onFocus(mockFocusEvent)
+    expect(emitsSpy).toHaveBeenCalledWith('focus', mockFocusEvent)
+
+    emitsSpy.mockClear()
+    const readonlyEventInclude = new FieldEventInclude({ readonly: true }, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
+    readonlyEventInclude.onFocus(mockFocusEvent)
+    expect(emitsSpy).toHaveBeenCalledWith('focus', mockFocusEvent)
+
+    emitsSpy.mockClear()
+    const disabledEventInclude = new FieldEventInclude({ disabled: true }, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
+    disabledEventInclude.onFocus(mockFocusEvent)
+    expect(emitsSpy).not.toHaveBeenCalled()
+  })
+
+  it('should mark change to true and emit blur event on onBlur', () => {
+    const eventInclude = new FieldEventInclude({}, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
+    const mockBlurEvent = new FocusEvent('blur')
+    eventInclude.onBlur(mockBlurEvent)
 
     expect(mockChange.to).toHaveBeenCalled()
+    expect(emitsSpy).toHaveBeenCalledWith('blur', mockBlurEvent)
+  })
+
+  it('should not mark change to true on onBlur when readonly, while still emitting blur', () => {
+    const eventInclude = new FieldEventInclude({ readonly: true }, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
+    const mockBlurEvent = new FocusEvent('blur')
+    eventInclude.onBlur(mockBlurEvent)
+
+    expect(mockChange.to).not.toHaveBeenCalled()
+    expect(emitsSpy).toHaveBeenCalledWith('blur', mockBlurEvent)
+  })
+
+  it('should not mark change or emit blur on onBlur when disabled', () => {
+    const eventInclude = new FieldEventInclude({ disabled: true }, () => mockChange, () => mockValue, () => mockValidation, emitsSpy)
+    const mockBlurEvent = new FocusEvent('blur')
+    eventInclude.onBlur(mockBlurEvent)
+
+    expect(mockChange.to).not.toHaveBeenCalled()
+    expect(emitsSpy).not.toHaveBeenCalled()
   })
 
   it('should update validation, set value, and emit input events on onInput', () => {

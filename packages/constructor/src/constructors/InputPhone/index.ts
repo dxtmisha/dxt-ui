@@ -1,5 +1,7 @@
 export * from './basicTypes'
 export * from './InputPhone'
+export * from './InputPhoneCountry'
+export * from './InputPhoneCountryList'
 export * from './InputPhoneData'
 export * from './InputPhoneDesign'
 export * from './InputPhoneFormat'

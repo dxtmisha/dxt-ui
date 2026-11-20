@@ -61,4 +61,6 @@ export type LabelHighlightProps = LabelProps & {
   highlightLengthStart?: number
   /** Current value/ Текущее значение */
   value?: any
+  /** Search string for highlighting and filtering / Строка поиска для подсветки и фильтрации */
+  search?: string
 }

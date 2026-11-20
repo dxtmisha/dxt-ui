@@ -6,7 +6,9 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps>' },
+  { name: 'countryList', type: 'string[]' },
   { name: 'disabled', type: 'boolean' },
+  { name: 'disableFocusReturn', type: 'boolean' },
   { name: 'iconArrowDown', type: 'IconValue<IconProps>' },
   { name: 'labelType', type: 'string', option: ['name', 'none', 'code'] },
   { name: 'menuCountryAttrs', type: 'ConstrBind<MenuCountryProps>' },

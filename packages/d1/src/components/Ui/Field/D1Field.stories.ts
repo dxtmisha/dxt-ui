@@ -244,13 +244,18 @@ export const FieldTestStates: Story = {
               <input v-bind="binds" value="Load" readonly/>
             </template>
           </D1Field>
+          <D1Field classic is-value warning label="Classic Warning" warning-message="Needs confirmation">
+            <template #default="{binds}">
+              <input v-bind="binds" value="Warn" readonly/>
+            </template>
+          </D1Field>
         </div>
       
     `
   }),
   play: async ({ canvasElement }) => {
     const items = canvasElement.querySelectorAll('.d1-field')
-    await expect(items.length).toBe(4)
+    await expect(items.length).toBe(5)
 
     await expect(items[0].tagName).toBe('DIV')
     await expect(items[0]).toHaveClass('d1-field--classic')
@@ -268,6 +273,9 @@ export const FieldTestStates: Story = {
 
     await expect(items[3]).toHaveClass('d1-field--tonal')
     await expect(items[3].querySelector('.d1-field__loading')).not.toBeNull()
+
+    await expect(items[4]).toHaveClass('d1-field--warning')
+    await expect(items[4]).not.toHaveClass('d1-field--validation')
   }
 }
 export const FieldTestPrefixSuffixCaption: Story = {

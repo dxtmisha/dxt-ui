@@ -25,8 +25,22 @@ describe('MenuCountryInclude', () => {
       showPhoneCode: true
     })
 
+    props.menuCountryAttrs = { showPhoneCode: true }
     props.disabled = false
     expect(include.binds.value.disabled).toBe(false)
+
+    props.countryList = ['RU', 'VN']
+    expect(include.binds.value.list).toEqual(['RU', 'VN'])
+
+    props.disableFocusReturn = true
+    expect(include.binds.value.disableFocusReturn).toBe(true)
+
+    props.highlightLengthStart = 1
+    props.showSearch = true
+    props.filterMode = false
+    expect(include.binds.value.highlightLengthStart).toBe(1)
+    expect(include.binds.value.showSearch).toBe(true)
+    expect(include.binds.value.filterMode).toBe(false)
   })
 
   it('should expose all proxy methods and render menuCountry component with slots and extra binds', () => {

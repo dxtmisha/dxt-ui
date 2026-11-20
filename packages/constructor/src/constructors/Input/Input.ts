@@ -291,6 +291,7 @@ export class Input extends DesignLogicAbstract<
       this.i('attributes').listForInput,
       {
         value: this.i('value').item.value,
+        onFocus: event.onFocus,
         onBlur: event.onBlur,
         onInput: event.onInput,
         onChange: event.onChange

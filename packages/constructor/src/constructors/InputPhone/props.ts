@@ -45,6 +45,8 @@ export type InputPhonePropsBasic<
   & {
     /** Default country / Страна по умолчанию */
     countryDefault?: string
+    /** Whether the country selector is read-only while keeping the flag visible / Блокировать ли выбор страны с сохранением флага */
+    countryReadonly?: boolean
     /** Flag to disable dynamic country detection by phone number / Флаг для отключения динамического определения страны по номеру телефона */
     countryBlock?: boolean
     /** Additional attributes for the mask / Дополнительные атрибуты для маски */

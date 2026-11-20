@@ -212,7 +212,7 @@ const RealMask = defineComponent({
     'dir',
     'modelValue'
   ]),
-  emits: ['update:value', 'update:modelValue', 'input', 'inputLite', 'change', 'changeLite', 'blur', 'reset'],
+  emits: ['update:value', 'update:modelValue', 'input', 'inputLite', 'change', 'changeLite', 'focus', 'blur', 'reset'],
   setup(componentProps, { emit, expose }) {
     const classesToken = computed<ConstrClasses>(() => ({
       main: {
@@ -519,6 +519,54 @@ describe('Input (integration)', () => {
 
       const { container: radioContainer } = await mountInput({ type: 'radio' })
       expect((radioContainer.querySelector('input') as HTMLInputElement).type).toBe('text')
+    })
+
+    it('should emit focus and blur events on plain, masked, and readonly inputs and ignore disabled inputs', async () => {
+      const { container, emittedEvents } = await mountInput({ modelValue: 'abc' })
+      const input = container.querySelector('input') as HTMLInputElement
+
+      input.dispatchEvent(new FocusEvent('focus'))
+      input.dispatchEvent(new FocusEvent('blur'))
+      await nextTick()
+
+      expect(emittedEvents.some(item => item.type === 'focus')).toBe(true)
+      expect(emittedEvents.some(item => item.type === 'blur')).toBe(true)
+
+      const { container: maskContainer, emittedEvents: maskEmitted } = await mountInput({ mask: '***-***', modelValue: '123456' })
+      const maskInput = maskContainer.querySelector('input') as HTMLInputElement
+
+      maskInput.dispatchEvent(new FocusEvent('focus'))
+      maskInput.dispatchEvent(new FocusEvent('blur'))
+      await nextTick()
+
+      expect(maskEmitted.some(item => item.type === 'focus')).toBe(true)
+      expect(maskEmitted.some(item => item.type === 'blur')).toBe(true)
+
+      const { container: readonlyContainer, emittedEvents: readonlyEmitted } = await mountInput({
+        required: true,
+        readonly: true
+      })
+      const readonlyInput = readonlyContainer.querySelector('input') as HTMLInputElement
+
+      readonlyInput.dispatchEvent(new FocusEvent('focus'))
+      readonlyInput.dispatchEvent(new FocusEvent('blur'))
+      await nextTick()
+
+      expect(readonlyEmitted.some(item => item.type === 'focus')).toBe(true)
+      expect(readonlyEmitted.some(item => item.type === 'blur')).toBe(true)
+      expect(readonlyContainer.querySelector('.mock-field-message')?.textContent ?? '').toBe('')
+
+      const { container: disabledContainer, emittedEvents: disabledEmitted } = await mountInput({
+        disabled: true
+      })
+      const disabledInput = disabledContainer.querySelector('input') as HTMLInputElement
+
+      disabledInput.dispatchEvent(new FocusEvent('focus'))
+      disabledInput.dispatchEvent(new FocusEvent('blur'))
+      await nextTick()
+
+      expect(disabledEmitted.some(item => item.type === 'focus')).toBe(false)
+      expect(disabledEmitted.some(item => item.type === 'blur')).toBe(false)
     })
   })
 

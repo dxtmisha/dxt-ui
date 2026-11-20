@@ -122,10 +122,8 @@ export class InputPhoneDesign<
     return this.item.i('field').render(
       {
         ...this.slots,
-        default: this.renderMask,
-        ...(!this.props.countryBlock
-          ? { leading: () => this.item.callInstance('dialCode', item => item.render(), []) }
-          : {})
+        ...this.renderDialCodeSlot(),
+        default: this.renderInput
       },
       mergeProps(
         this.getAttrs(),
@@ -139,6 +137,68 @@ export class InputPhoneDesign<
   }
 
   /**
+   * Rendering dial code leading slot.
+   *
+   * Рендеринг ведущего слота выбора телефонного кода.
+   * @returns leading slot object / объект ведущего слота
+   */
+  readonly renderDialCodeSlot = (): Partial<InputPhoneSlots> => {
+    if (!this.props.countryBlock) {
+      return {
+        leading: () => this.item.callInstance('dialCode', item => item.render(), [])
+      }
+    }
+
+    return {}
+  }
+
+  /**
+   * Rendering the phone input element.
+   *
+   * Рендеринг элемента ввода телефона.
+   * @param input data for the input element / данные для элемента ввода
+   * @returns array of VNodes / массив VNode
+   */
+  readonly renderInput = (input: FieldControl): VNode[] => {
+    if (
+      this.props.disabled
+      || this.props.readonly
+    ) {
+      return this.renderInputPlain(input)
+    }
+
+    return this.renderMask(input)
+  }
+
+  /**
+   * Rendering plain input element for disabled and readonly states.
+   *
+   * Рендеринг обычного элемента input для состояний disabled и readonly.
+   * @param input data for the input element / данные для элемента ввода
+   * @returns array of VNodes / массив VNode
+   */
+  readonly renderInputPlain = (input: FieldControl): VNode[] => {
+    const event = this.item.i('event')
+
+    return [h(
+      'input',
+      mergeProps(
+        {
+          inputMode: 'tel',
+          onFocus: event.onFocus,
+          onBlur: event.onBlur
+        },
+        this.item.i('attributes').listForInput,
+        input.binds,
+        {
+          ref: this.element,
+          value: this.item.i('format').item.value
+        }
+      )
+    )]
+  }
+
+  /**
    * Rendering mask element.
    *
    * Рендеринг элемента маски.
@@ -146,28 +206,6 @@ export class InputPhoneDesign<
    * @returns array of VNodes / массив VNode
    */
   readonly renderMask = (input: FieldControl): VNode[] => {
-    if (
-      this.props.disabled
-      || this.props.readonly
-    ) {
-      return [h(
-        'input',
-        mergeProps(
-          {
-            inputMode: 'tel',
-            onFocus: (focusEvent: FocusEvent) => this.emits?.('focus', focusEvent),
-            onBlur: (blurEvent: FocusEvent) => this.emits?.('blur', blurEvent)
-          },
-          this.item.i('attributes').listForInput,
-          input.binds,
-          {
-            ref: this.element,
-            value: this.item.i('format').item.value
-          }
-        )
-      )]
-    }
-
     const event = this.item.i('event')
 
     return this.item.i('mask').render(undefined, {
@@ -182,13 +220,8 @@ export class InputPhoneDesign<
         this.item.i('attributes').listForInput,
         input.binds
       ) as Partial<HTMLInputElement>,
-      onFocus: (focusEvent: FocusEvent) => {
-        this.emits?.('focus', focusEvent)
-      },
-      onBlur: (blurEvent: FocusEvent) => {
-        event.onBlur()
-        this.emits?.('blur', blurEvent)
-      },
+      onFocus: event.onFocus,
+      onBlur: event.onBlur,
       onInput: event.onInput,
       onChange: event.onChange
     })

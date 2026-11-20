@@ -55,6 +55,9 @@ export type InputPhoneDialCodeProps = InputPhoneDialCodePropsBasic & InputPhoneD
  * Значение по умолчанию для свойства.
  */
 export const defaultsInputPhoneDialCode = {
+  highlightLengthStart: 1,
+  showSearch: true,
+  filterMode: false,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

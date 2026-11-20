@@ -6,6 +6,8 @@ import { nextTick, reactive, ref } from 'vue'
 import type { FieldElementInclude } from '../../../classes/Field/FieldElementInclude'
 import type { FieldEventInclude } from '../../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
+import { InputPhoneCountry } from '../InputPhoneCountry'
+import { InputPhoneCountryList } from '../InputPhoneCountryList'
 import { InputPhoneData } from '../InputPhoneData'
 import { InputPhonePaste } from '../InputPhonePaste'
 import type { InputPhonePropsBasic } from '../props'
@@ -54,15 +56,26 @@ function createPaste(
   } as unknown as FieldValueInclude<string>
 
   const reactiveProps = reactive<InputPhonePropsBasic>({ ...props })
-  const data = new InputPhoneData(
+  const countryList = new InputPhoneCountryList(reactiveProps)
+  const country: InputPhoneCountry = new InputPhoneCountry(
     reactiveProps,
+    () => countryList,
+    () => data,
+    () => mockEvent,
+    () => mockValue
+  )
+  const data: InputPhoneData = new InputPhoneData(
+    reactiveProps,
+    () => country,
+    () => countryList,
     () => mockElement,
     () => mockEvent,
     () => mockValue
   )
   const paste = new InputPhonePaste(
     reactiveProps,
-    () => data,
+    () => country,
+    () => countryList,
     () => mockElement,
     () => mockEvent,
     () => mockValue
@@ -70,6 +83,7 @@ function createPaste(
 
   return {
     paste,
+    country,
     data,
     props: reactiveProps,
     valueRef,
@@ -119,14 +133,14 @@ describe('InputPhonePaste', () => {
   it('should switch country and apply formatted value when clipboard contains a full international number without selection', async () => {
     const input = document.createElement('input')
     input.value = '+44-'
-    const { paste, data, setFullSpy, onValueSpy, maskExpose } = createPaste({ countryDefault: 'GB' }, '44', input)
+    const { paste, country, setFullSpy, onValueSpy, maskExpose } = createPaste({ countryDefault: 'GB' }, '44', input)
 
     const pasteEvent = createPasteEvent('+7 (900) 123-45-67', input, 4)
     paste.onPaste(pasteEvent)
     await nextTick()
 
     expect(pasteEvent.defaultPrevented).toBe(true)
-    expect(data.country.value).toBe('RU')
+    expect(country.item.value).toBe('RU')
     expect(setFullSpy).toHaveBeenCalledWith(true)
     expect(onValueSpy).toHaveBeenCalledWith('+7-900-123-45-67')
     expect(maskExpose.setValue).toHaveBeenCalledWith('+7-900-123-45-67')
@@ -135,34 +149,34 @@ describe('InputPhonePaste', () => {
   it('should skip full-format check and let normal paste run when there is a partial selection', () => {
     const input = document.createElement('input')
     input.value = '+44-7911-123456'
-    const { paste, data, onValueSpy } = createPaste({ countryDefault: 'GB' }, '447911123456', input)
+    const { paste, country, onValueSpy } = createPaste({ countryDefault: 'GB' }, '447911123456', input)
 
     const partialEndEvent = createPasteEvent('+7 (900) 123-45-67', input, 4, input.value.length)
     paste.onPaste(partialEndEvent)
 
     expect(partialEndEvent.defaultPrevented).toBe(false)
-    expect(data.country.value).toBe('GB')
+    expect(country.item.value).toBe('GB')
     expect(onValueSpy).not.toHaveBeenCalled()
 
     const partialStartEvent = createPasteEvent('+7 (900) 123-45-67', input, 0, 4)
     paste.onPaste(partialStartEvent)
 
     expect(partialStartEvent.defaultPrevented).toBe(false)
-    expect(data.country.value).toBe('GB')
+    expect(country.item.value).toBe('GB')
     expect(onValueSpy).not.toHaveBeenCalled()
   })
 
   it('should switch country and replace value when the full field is selected', async () => {
     const input = document.createElement('input')
     input.value = '+84-91-2345-678'
-    const { paste, data, setFullSpy, onValueSpy, maskExpose } = createPaste({ countryDefault: 'VN' }, '84912345678', input)
+    const { paste, country, setFullSpy, onValueSpy, maskExpose } = createPaste({ countryDefault: 'VN' }, '84912345678', input)
 
     const pasteEvent = createPasteEvent('+7 (900) 123-45-67', input, 0, input.value.length)
     paste.onPaste(pasteEvent)
     await nextTick()
 
     expect(pasteEvent.defaultPrevented).toBe(true)
-    expect(data.country.value).toBe('RU')
+    expect(country.item.value).toBe('RU')
     expect(setFullSpy).toHaveBeenCalledWith(true)
     expect(onValueSpy).toHaveBeenCalledWith('+7-900-123-45-67')
     expect(maskExpose.setValue).toHaveBeenCalledWith('+7-900-123-45-67')
@@ -171,14 +185,14 @@ describe('InputPhonePaste', () => {
   it('should replace active country within trunk prefix on full paste without mistaking foreign codes', async () => {
     const input = document.createElement('input')
     input.value = '+7-'
-    const { paste, data, setFullSpy, onValueSpy, maskExpose } = createPaste({ countryDefault: 'RU' }, '7', input)
+    const { paste, country, setFullSpy, onValueSpy, maskExpose } = createPaste({ countryDefault: 'RU' }, '7', input)
 
     const trunkPlusEvent = createPasteEvent('+89023343333', input, 3)
     paste.onPaste(trunkPlusEvent)
     await nextTick()
 
     expect(trunkPlusEvent.defaultPrevented).toBe(true)
-    expect(data.country.value).toBe('RU')
+    expect(country.item.value).toBe('RU')
     expect(setFullSpy).toHaveBeenCalledWith(true)
     expect(onValueSpy).toHaveBeenCalledWith('+7-902-334-33-33')
     expect(maskExpose.setValue).toHaveBeenCalledWith('+7-902-334-33-33')
@@ -190,37 +204,37 @@ describe('InputPhonePaste', () => {
     await nextTick()
 
     expect(vietnamEvent.defaultPrevented).toBe(true)
-    expect(data.country.value).toBe('VN')
+    expect(country.item.value).toBe('VN')
     expect(onValueSpy).toHaveBeenCalledWith('+84-91-2345-678')
   })
 
   it('should not treat incomplete local or incomplete trunk numbers as full country phones', () => {
     const input = document.createElement('input')
     input.value = '+7-'
-    const { paste, data, onValueSpy } = createPaste({ countryDefault: 'RU' }, '7', input)
+    const { paste, country, onValueSpy } = createPaste({ countryDefault: 'RU' }, '7', input)
 
     const localEvent = createPasteEvent('9001234567', input, 3)
     paste.onPaste(localEvent)
     expect(localEvent.defaultPrevented).toBe(false)
-    expect(data.country.value).toBe('RU')
+    expect(country.item.value).toBe('RU')
     expect(onValueSpy).not.toHaveBeenCalled()
 
     const incompleteTrunkEvent = createPasteEvent('+8902334333', input, 3)
     paste.onPaste(incompleteTrunkEvent)
     expect(incompleteTrunkEvent.defaultPrevented).toBe(false)
-    expect(data.country.value).toBe('RU')
+    expect(country.item.value).toBe('RU')
     expect(onValueSpy).not.toHaveBeenCalled()
   })
 
   it('should respect countryBlock for foreign numbers while deduplicating same-country full paste', () => {
     const input = document.createElement('input')
     input.value = '+7-'
-    const { paste, data, onValueSpy } = createPaste({ countryDefault: 'RU', countryBlock: true }, '7', input)
+    const { paste, country, onValueSpy } = createPaste({ countryDefault: 'RU', countryBlock: true }, '7', input)
 
     const sameCountryEvent = createPasteEvent('+7 (900) 123-45-67', input, 3)
     paste.onPaste(sameCountryEvent)
     expect(sameCountryEvent.defaultPrevented).toBe(true)
-    expect(data.country.value).toBe('RU')
+    expect(country.item.value).toBe('RU')
     expect(onValueSpy).toHaveBeenCalledWith('+7-900-123-45-67')
 
     onValueSpy.mockClear()
@@ -228,19 +242,42 @@ describe('InputPhonePaste', () => {
     const foreignEvent = createPasteEvent('+84 91 234 5678', input, 3)
     paste.onPaste(foreignEvent)
     expect(foreignEvent.defaultPrevented).toBe(false)
-    expect(data.country.value).toBe('RU')
+    expect(country.item.value).toBe('RU')
     expect(onValueSpy).not.toHaveBeenCalled()
+  })
+
+  it('should enforce countryList on paste and avoid corrupting disallowed foreign numbers via trunk prefix', async () => {
+    const input = document.createElement('input')
+    input.value = '+7-'
+    const { paste, country, onValueSpy } = createPaste(
+      { countryDefault: 'RU', countryList: ['RU', 'BY'] },
+      '7',
+      input
+    )
+
+    const foreignVietnamEvent = createPasteEvent('+84 91 234 5678', input, 3)
+    paste.onPaste(foreignVietnamEvent)
+    expect(foreignVietnamEvent.defaultPrevented).toBe(false)
+    expect(country.item.value).toBe('RU')
+    expect(onValueSpy).not.toHaveBeenCalled()
+
+    const allowedBelarusEvent = createPasteEvent('+375 29 123 45 67', input, 3)
+    paste.onPaste(allowedBelarusEvent)
+    await nextTick()
+    expect(allowedBelarusEvent.defaultPrevented).toBe(true)
+    expect(country.item.value).toBe('BY')
+    expect(onValueSpy).toHaveBeenCalledWith('+375-29-123-45-67')
   })
 
   it('should ignore paste when disabled, readonly, or clipboard text is missing or empty', () => {
     const input = document.createElement('input')
     input.value = '+44-'
-    const { paste, data, onValueSpy } = createPaste({ countryDefault: 'GB', readonly: true }, '44', input)
+    const { paste, country, onValueSpy } = createPaste({ countryDefault: 'GB', readonly: true }, '44', input)
 
     const readonlyEvent = createPasteEvent('+7 (900) 123-45-67', input, 4)
     paste.onPaste(readonlyEvent)
     expect(readonlyEvent.defaultPrevented).toBe(false)
-    expect(data.country.value).toBe('GB')
+    expect(country.item.value).toBe('GB')
     expect(onValueSpy).not.toHaveBeenCalled()
 
     const { paste: enabledPaste, onValueSpy: enabledOnValueSpy } = createPaste({ countryDefault: 'GB' }, '44', input)

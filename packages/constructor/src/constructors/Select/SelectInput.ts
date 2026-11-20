@@ -50,6 +50,8 @@ export class SelectInput {
         'readonly': !this.isEdit(),
         'placeholder': this.props.placeholder,
         'data-menu-control': '1',
+        'onFocus': this.event.onFocus,
+        'onBlur': this.event.onBlur,
         'onInput': this.isEdit() ? this.event.onInput : this.event.onSelect
       }
     ) as ConstrBind<Partial<HTMLInputElement>>

@@ -176,7 +176,7 @@ describe('CmsRoleItem', () => {
       const snapshot = item.getData()
       snapshot.permissions.pop()
       expect(item.getPermissions()).toHaveLength(2)
-      expect(item.toJSON()).toEqual(data)
+      expect(item.toJSONString()).toBe(JSON.stringify(data))
     })
   })
 

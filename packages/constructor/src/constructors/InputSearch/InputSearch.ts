@@ -193,6 +193,7 @@ export class InputSearch {
     return {
       ...this.attributes.listForInput,
       value: this.value.item.value,
+      onFocus: this.event.onFocus,
       onBlur: this.event.onBlur,
       onInput: this.query.onInput,
       onChange: this.query.onChange,

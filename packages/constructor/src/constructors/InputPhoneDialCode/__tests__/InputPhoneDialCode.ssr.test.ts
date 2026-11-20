@@ -50,7 +50,7 @@ describe('InputPhoneDialCode (SSR)', () => {
       const menuBinds = dialCode.i('menu').binds.value
       expect(menuBinds.selected).toBe('VN')
       expect(menuBinds.showPhoneCode).toBe(true)
-      expect(menuBinds.menuAttrs?.windowAttrs?.disableFocusReturn).toBe(true)
+      expect(menuBinds.disableFocusReturn).toBe(true)
       expect(dialCode.bindsButton.iconTrailing).toBe('keyboard_arrow_down')
     })
 

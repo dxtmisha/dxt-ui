@@ -136,6 +136,7 @@ export class WindowInclude<
       {
         ...(props.disabled !== undefined ? { disabled: props.disabled } : {}),
         ...(props.autoClose !== undefined ? { autoClose: props.autoClose } : {}),
+        ...(props.disableFocusReturn !== undefined ? { disableFocusReturn: props.disableFocusReturn } : {}),
 
         preparation: this.getPreparation,
         opening: this.getOpening,

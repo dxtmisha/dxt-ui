@@ -160,7 +160,9 @@ export class MenuButtonDesign<
       },
       {
         ...props.binds,
-        iconTurn: props.open.value
+        iconTurn: props.open.value,
+        onFocus: this.item.event.onFocus,
+        onBlur: this.item.event.onBlur
       }
     )
   }
