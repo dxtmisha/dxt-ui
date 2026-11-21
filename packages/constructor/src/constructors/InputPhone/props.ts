@@ -12,6 +12,7 @@ import type { ProgressPropsBasic } from '../Progress'
 import type { FieldInputPhoneProps } from '../../types/fieldTypes'
 import type { ModelPropsCountry } from '../../types/modelTypes'
 import type { TextInvalidPhonePropsInclude } from '../../types/textTypes'
+import type { InputPhoneMatch } from './basicTypes'
 
 /**
  * Type describing token properties for InputPhone.
@@ -49,6 +50,8 @@ export type InputPhonePropsBasic<
     countryReadonly?: boolean
     /** Flag to disable dynamic country detection by phone number / Флаг для отключения динамического определения страны по номеру телефона */
     countryBlock?: boolean
+    /** Country-specific pattern map or custom phone validation rule / Карта паттернов по странам или пользовательское правило валидации телефона */
+    phoneMatch?: InputPhoneMatch
     /** Additional attributes for the mask / Дополнительные атрибуты для маски */
     maskAttrs?: ConstrBind<Mask>
   }

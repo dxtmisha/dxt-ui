@@ -1,4 +1,11 @@
-import { anyToString, GeoPhone } from '@dxtmisha/functional'
+import {
+  anyToString,
+  GeoPhone,
+  isFunction,
+  isObjectNotArray,
+  isRegExp,
+  isString
+} from '@dxtmisha/functional'
 
 import { FieldInputCheckInclude } from '../../classes/Field/FieldInputCheckInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
@@ -9,6 +16,7 @@ import type { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import type { FieldMatchInclude } from '../../classes/Field/FieldMatchInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import type { TextInclude } from '../../classes/TextInclude'
+import type { InputPhoneMatch, InputPhoneMatchRule, InputPhoneValidationContext } from './basicTypes'
 import type { InputPhoneCountryList } from './InputPhoneCountryList'
 import type { InputPhoneData } from './InputPhoneData'
 
@@ -40,7 +48,7 @@ export class InputPhoneValidation extends FieldValidationInclude {
    * @param text function returning text localization helper / функция, возвращающая помощник локализации текста
    */
   constructor(
-    protected override readonly props: FieldAllProps & Pick<InputPhonePropsBasic, 'countryBlock'>,
+    protected override readonly props: FieldAllProps & Pick<InputPhonePropsBasic, 'countryBlock' | 'phoneMatch'>,
     attributes: () => FieldAttributesInclude,
     value: () => FieldValueInclude,
     protected readonly countryList: () => InputPhoneCountryList,
@@ -117,6 +125,12 @@ export class InputPhoneValidation extends FieldValidationInclude {
       return this.checkIncomplete(value)
     }
 
+    const phoneMatchCheck = this.checkPhoneMatch(value)
+
+    if (phoneMatchCheck) {
+      return phoneMatchCheck
+    }
+
     return nativeCheck
   }
 
@@ -157,17 +171,134 @@ export class InputPhoneValidation extends FieldValidationInclude {
   }
 
   /**
-   * Builds a failed validation result for an incomplete phone number.
+   * Resolves the applicable validation rule for the active country from `phoneMatch`.
    *
-   * Формирует результат ошибки валидации для неполного номера телефона.
+   * Находит применимое правило валидации для активной страны из `phoneMatch`.
+   * @param phoneMatch configured phoneMatch rule or country map / настроенное правило phoneMatch или карта стран
+   * @param country active ISO country code / активный ISO-код страны
+   * @returns matching rule or undefined / подходящее правило или undefined
+   */
+  protected getPhoneMatchRule(
+    phoneMatch: InputPhoneMatch,
+    country: string
+  ): InputPhoneMatchRule | undefined {
+    if (
+      isFunction(phoneMatch)
+      || isString(phoneMatch)
+      || isRegExp(phoneMatch)
+    ) {
+      return phoneMatch
+    }
+
+    if (isObjectNotArray(phoneMatch)) {
+      return phoneMatch[country]
+        ?? phoneMatch[country.toUpperCase()]
+        ?? phoneMatch[country.toLowerCase()]
+    }
+
+    return undefined
+  }
+
+  /**
+   * Runs country-specific or custom validation configured via `phoneMatch`.
+   *
+   * Выполняет страно-специфичную или пользовательскую валидацию, заданную через `phoneMatch`.
    * @param value checked phone value / проверяемое значение телефона
+   * @returns failed validation item or undefined when valid / элемент ошибки валидации или undefined при успехе
+   */
+  protected checkPhoneMatch(
+    value: unknown
+  ): FieldValidationItem | undefined {
+    const phoneMatch = this.props.phoneMatch
+
+    if (!phoneMatch) {
+      return undefined
+    }
+
+    const context: InputPhoneValidationContext = {
+      ...this.data().getDetail(value),
+      value: anyToString(value)
+    }
+    const country = context.item?.value ?? ''
+    const rule = this.getPhoneMatchRule(phoneMatch, country)
+
+    if (!rule) {
+      return undefined
+    }
+
+    return this.evaluatePhoneMatchRule(rule, value, context)
+  }
+
+  /**
+   * Evaluates a resolved `phoneMatch` rule (callback, RegExp, or pattern string) against phone context.
+   *
+   * Проверяет найденное правило `phoneMatch` (колбэк, RegExp или строку паттерна) по контексту телефона.
+   * @param rule validation rule to evaluate / проверяемое правило валидации
+   * @param value checked phone value / проверяемое значение телефона
+   * @param context phone validation context / контекст валидации телефона
+   * @returns failed validation item or undefined when valid / элемент ошибки валидации или undefined при успехе
+   */
+  protected evaluatePhoneMatchRule(
+    rule: InputPhoneMatchRule,
+    value: unknown,
+    context: InputPhoneValidationContext
+  ): FieldValidationItem | undefined {
+    if (isFunction(rule)) {
+      const result = rule(context)
+
+      if (result === false) {
+        return this.checkIncomplete(value)
+      }
+
+      if (
+        isString(result)
+        && result.length > 0
+      ) {
+        return this.checkIncomplete(value, result)
+      }
+
+      return undefined
+    }
+
+    const phone = context.phone ?? ''
+
+    if (isRegExp(rule)) {
+      const matcher = new RegExp(rule.source, rule.flags.replace(/[gy]/g, ''))
+
+      if (!matcher.test(phone)) {
+        return this.checkIncomplete(value)
+      }
+
+      return undefined
+    }
+
+    try {
+      if (!new RegExp(rule).test(phone)) {
+        return this.checkIncomplete(value)
+      }
+    } catch {
+      return this.checkIncomplete(value)
+    }
+
+    return undefined
+  }
+
+  /**
+   * Builds a failed validation result for an incomplete or invalid phone number.
+   *
+   * Формирует результат ошибки валидации для неполного или некорректного номера телефона.
+   * @param value checked phone value / проверяемое значение телефона
+   * @param message optional custom error message / необязательное пользовательское сообщение об ошибке
    * @returns validation item / элемент валидации
    */
-  protected checkIncomplete(value: unknown): FieldValidationItem {
+  protected checkIncomplete(
+    value: unknown,
+    message?: string
+  ): FieldValidationItem {
     return {
       group: FieldInputCheckInclude.getGroupDefault(),
       status: false,
-      validationMessage: this.text?.().invalidPhone ?? '',
+      validationMessage: message ?? this.text?.().invalidPhone ?? '',
       value
     }
   }

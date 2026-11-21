@@ -6,6 +6,7 @@ import type { MaskComponentInclude } from '../Mask'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
 import type { ModelEmitsCountry } from '../../types/modelTypes'
+import type { InputPhoneDetail } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -29,6 +30,8 @@ export type InputPhoneEmits = FieldBasicEmits & ModelEmitsCountry
  * Тип, описывающий доступные свойства.
  */
 export interface InputPhoneExpose extends FieldBasicExpose {
+  /** Returns current phone metadata context / Возвращает текущий контекст метаданных телефона */
+  getDetail: () => InputPhoneDetail
 }
 
 /**

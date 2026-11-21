@@ -2,7 +2,7 @@
 import './testWarnings'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, defineComponent, h, nextTick, reactive, ref } from 'vue'
-import type { GeoPhoneMap } from '@dxtmisha/functional'
+import { anyToString, GeoPhone, type GeoPhoneMap } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../../classes/Field/FieldChangeInclude'
@@ -26,10 +26,12 @@ const mountedCleanups: Array<() => void> = []
 async function createValidation(
   props: InputPhonePropsBasic = {},
   initialValue: string | undefined = '',
-  defaultCountryPrefix: string = '7'
+  defaultCountryPrefix: string = '7',
+  initialCountry: string = 'RU'
 ) {
   const reactiveProps = reactive<InputPhonePropsBasic>({ ...props })
   const valueDefaultRef = ref<string>(defaultCountryPrefix)
+  const countryRef = ref<string>(initialCountry)
   const itemRef = ref<GeoPhoneMap | undefined>(undefined)
 
   let validation!: InputPhoneValidation
@@ -53,11 +55,22 @@ async function createValidation(
       } as unknown as InputPhoneCountryList
       const mockData = {
         valueDefault: valueDefaultRef,
-        item: itemRef
+        item: itemRef,
+        getDetail: (rawValue?: unknown) => {
+          const currentValue = rawValue === undefined ? anyToString(valueInclude.item.value) : anyToString(rawValue)
+          const info = GeoPhone.getByPhoneFull(currentValue, true)
+
+          return {
+            ...info,
+            item: info.item ?? GeoPhone.getByCode(countryRef.value),
+            phone: info.phone ?? '',
+            isFull: valueInclude.isFull.value
+          }
+        }
       } as unknown as InputPhoneData
 
       validation = new InputPhoneValidation(
-        reactiveProps as FieldAllProps & Pick<InputPhonePropsBasic, 'countryBlock'>,
+        reactiveProps as FieldAllProps & Pick<InputPhonePropsBasic, 'countryBlock' | 'phoneMatch'>,
         () => attributesInclude,
         () => valueInclude,
         () => mockCountryList,
@@ -87,7 +100,8 @@ async function createValidation(
     props: reactiveProps,
     valueInclude,
     changeInclude,
-    valueDefaultRef
+    valueDefaultRef,
+    countryRef
   }
 }
 
@@ -294,5 +308,112 @@ describe('InputPhoneValidation', () => {
     props.countryBlock = true
     valueInclude.set('+49-30-12345678')
     expect(validation.checkValidity()).toBe(true)
+  })
+
+  it('should validate country-specific pattern maps and stateful RegExps via phoneMatch', async () => {
+    const { validation, valueInclude, changeInclude, valueDefaultRef, countryRef } = await createValidation(
+      {
+        required: false,
+        textInvalidPhone: 'Invalid mobile format',
+        phoneMatch: {
+          LV: '^2',
+          RO: /^7/g
+        }
+      },
+      '371',
+      '371',
+      'LV'
+    )
+
+    changeInclude.to()
+    // Bare prefix on optional field must remain valid
+    expect(validation.checkValidity()).toBe(true)
+
+    // LV landline starting with 6 fails ^2 rule
+    valueInclude.set('+371-61-234-567')
+    valueInclude.setFull(true)
+    expect(validation.checkValidity()).toBe(false)
+    expect(validation.message).toBe('Invalid mobile format')
+
+    // LV mobile starting with 2 passes ^2 rule
+    valueInclude.set('+371-21-234-567')
+    expect(validation.checkValidity()).toBe(true)
+    expect(validation.message).toBe('')
+
+    // RO global-flag RegExp must remain stateless across repeated calls
+    countryRef.value = 'RO'
+    valueDefaultRef.value = '40'
+    valueInclude.set('+40-712-345-678')
+    expect(validation.checkValidity()).toBe(true)
+    expect(validation.checkValidity()).toBe(true)
+
+    valueInclude.set('+40-212-345-678')
+    expect(validation.checkValidity()).toBe(false)
+
+    // Countries absent from the map stay valid
+    countryRef.value = 'RU'
+    valueDefaultRef.value = '7'
+    valueInclude.set('+7-900-123-45-67')
+    expect(validation.checkValidity()).toBe(true)
+  })
+
+  it('should support custom callback and global pattern rules in phoneMatch', async () => {
+    const validator = vi.fn(({ item, phone }: { item?: { value?: string }, phone?: string }) => {
+      if (item?.value === 'LV' && !phone?.startsWith('2')) {
+        return 'Latvian mobile must start with 2'
+      }
+
+      if (phone?.startsWith('000')) {
+        return false
+      }
+
+      return true
+    })
+
+    const { validation, valueInclude, changeInclude, props, valueDefaultRef, countryRef } = await createValidation(
+      {
+        required: false,
+        textInvalidPhone: 'Fallback invalid phone',
+        phoneMatch: validator
+      },
+      '371',
+      '371',
+      'LV'
+    )
+
+    changeInclude.to()
+    // Bare prefix does not invoke phoneMatch
+    expect(validation.checkValidity()).toBe(true)
+    expect(validator).not.toHaveBeenCalled()
+
+    valueInclude.set('+371-61-234-567')
+    valueInclude.setFull(true)
+    expect(validation.checkValidity()).toBe(false)
+    expect(validation.message).toBe('Latvian mobile must start with 2')
+    expect(validator).toHaveBeenCalledWith(expect.objectContaining({
+      phone: '61234567',
+      full: '37161234567',
+      format: '+371-61-234-567',
+      isFull: true,
+      value: '+371-61-234-567'
+    }))
+    expect(validator.mock.calls[0]?.[0]?.item?.value).toBe('LV')
+
+    // Returning false uses fallback textInvalidPhone message
+    countryRef.value = 'RU'
+    valueDefaultRef.value = '7'
+    valueInclude.set('+7-000-123-45-67')
+    expect(validation.checkValidity()).toBe(false)
+    expect(validation.message).toBe('Fallback invalid phone')
+
+    // Returning true passes validation
+    valueInclude.set('+7-900-123-45-67')
+    expect(validation.checkValidity()).toBe(true)
+    expect(validation.message).toBe('')
+
+    // Invalid regex string fails safely without throwing
+    props.phoneMatch = '[invalid-regex'
+    expect(() => validation.checkValidity()).not.toThrow()
+    expect(validation.checkValidity()).toBe(false)
   })
 })

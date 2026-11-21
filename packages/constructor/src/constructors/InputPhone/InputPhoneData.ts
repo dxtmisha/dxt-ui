@@ -1,14 +1,17 @@
 import { computed, nextTick, watch } from 'vue'
 import {
+  anyToString,
   DesignLifecycleAbstract,
   GeoPhone,
-  type GeoPhoneMap
+  type GeoPhoneMap,
+  type GeoPhoneMapInfoFull
 } from '@dxtmisha/functional'
 
 import type { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import type { WindowEmitOptions } from '../Window'
+import type { InputPhoneDetail } from './basicTypes'
 import type { InputPhoneCountry } from './InputPhoneCountry'
 import type { InputPhoneCountryList } from './InputPhoneCountryList'
 
@@ -77,6 +80,29 @@ export class InputPhoneData extends DesignLifecycleAbstract {
   })
 
   /**
+   * Returns current phone metadata context preserving the `GeoPhoneMapInfoFull` structure (`item`, `phone`, `full`, `format`) plus `isFull`.
+   *
+   * Возвращает текущий контекст метаданных телефона в структуре `GeoPhoneMapInfoFull` (`item`, `phone`, `full`, `format`) с флагом `isFull`.
+   * @param rawValue optional raw phone value to inspect / необязательное исходное значение телефона
+   * @returns phone metadata context / контекст метаданных телефона
+   */
+  getDetail(rawValue?: unknown): InputPhoneDetail {
+    const currentValue = rawValue === undefined
+      ? anyToString(this.value().item.value)
+      : anyToString(rawValue)
+    const activeCountry = this.country().active.value
+    const info = this.getPhoneInfo(currentValue, activeCountry)
+    const activeItem = this.resolveActiveItem(info.item, activeCountry)
+
+    return {
+      ...info,
+      item: activeItem,
+      phone: info.phone ?? '',
+      isFull: this.value().isFull.value
+    }
+  }
+
+  /**
    * Moves focus to the phone input element.
    *
    * Перемещает фокус на элемент ввода телефона.
@@ -123,6 +149,108 @@ export class InputPhoneData extends DesignLifecycleAbstract {
         this.focus()
       })
     }
+  }
+
+  /**
+   * Checks whether a digit string in `countryBlock` mode already includes the country dial code.
+   *
+   * Проверяет, содержит ли строка цифр в режиме `countryBlock` уже включённый телефонный код страны.
+   * @param cleanValue cleaned digits string / строка из очищенных цифр
+   * @param dialCode active country dial code digits / цифры телефонного кода активной страны
+   * @returns true if digits already include the dial code / true, если цифры уже включают код страны
+   */
+  protected isPrefixedFullPhone(
+    cleanValue: string,
+    dialCode: string
+  ): boolean {
+    const directInfo = GeoPhone.getByPhoneFull(cleanValue)
+    const isDirectFull = Boolean(
+      directInfo.item?.value
+      && directInfo.format !== cleanValue
+    )
+
+    if (!isDirectFull) {
+      return false
+    }
+
+    const withPrefix = `${dialCode}${cleanValue}`
+    const prefixedInfo = GeoPhone.getByPhoneFull(withPrefix)
+    const isPrefixedFull = Boolean(
+      prefixedInfo.item?.value
+      && prefixedInfo.format !== withPrefix
+    )
+
+    return !isPrefixedFull
+  }
+
+  /**
+   * Resolves `GeoPhoneMapInfoFull` for the given phone value, prepending active dial code in `countryBlock` mode when needed.
+   *
+   * Получает `GeoPhoneMapInfoFull` для указанного значения телефона, при необходимости подставляя префикс страны в режиме `countryBlock`.
+   * @param rawValue raw input phone string / исходная строка номера
+   * @param activeCountry active ISO country code / активный ISO-код страны
+   * @returns extended GeoPhone info / расширенная информация GeoPhone
+   */
+  protected getPhoneInfo(
+    rawValue: string,
+    activeCountry: string
+  ): GeoPhoneMapInfoFull {
+    const cleanValue = GeoPhone.cleanPhone(rawValue)
+
+    if (!cleanValue) {
+      return {
+        item: GeoPhone.getByCode(activeCountry),
+        phone: '',
+        full: '',
+        format: ''
+      }
+    }
+
+    if (this.props.countryBlock) {
+      const defaultPrefix = this.country().toPhone(activeCountry)
+      const hasExplicitPrefix = defaultPrefix
+        && cleanValue.startsWith(defaultPrefix)
+        && (
+          rawValue.trim().startsWith('+')
+          || cleanValue === defaultPrefix
+          || this.isPrefixedFullPhone(cleanValue, defaultPrefix)
+        )
+
+      if (!hasExplicitPrefix) {
+        return GeoPhone.getByPhoneFull(`${defaultPrefix}${cleanValue}`, true)
+      }
+    }
+
+    return GeoPhone.getByPhoneFull(rawValue, true)
+  }
+
+  /**
+   * Resolves the `GeoPhoneMap` item matching the active country when nodes share a dial code or when empty.
+   *
+   * Определяет узел `GeoPhoneMap` для активной страны при общих телефонных кодах или пустом вводе.
+   * @param matchedItem item returned by GeoPhone lookup / элемент, найденный через GeoPhone
+   * @param activeCountry active ISO country code / активный ISO-код страны
+   * @returns resolved GeoPhoneMap item / определённый элемент GeoPhoneMap
+   */
+  protected resolveActiveItem(
+    matchedItem: GeoPhoneMap | undefined,
+    activeCountry: string
+  ): GeoPhoneMap | undefined {
+    if (!matchedItem) {
+      return GeoPhone.getByCode(activeCountry)
+    }
+
+    if (matchedItem.value === activeCountry) {
+      return matchedItem
+    }
+
+    const byCountry = GeoPhone.getByCode(activeCountry)
+
+    if (byCountry) {
+      return byCountry
+    }
+
+    return matchedItem
   }
 
   /**

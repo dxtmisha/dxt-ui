@@ -1087,4 +1087,76 @@ describe('InputPhone (Integration)', () => {
     expect(exposed.getValue()).toBe('+7-900-123-45-67')
     expect(exposed.checkValidity()).toBe(true)
   })
+
+  it('should support country-specific phoneMatch validation and expose phone context in detail and getDetail()', async () => {
+    const { container, exposed, emittedEvents } = await mountInputPhone({
+      countryDefault: 'LV',
+      phoneMatch: {
+        LV: ({ phone }) => Boolean(phone?.startsWith('2')) || 'Latvian mobile must start with 2',
+        RO: /^7/
+      }
+    })
+
+    const input = container.querySelector('.d1-mask input') as HTMLInputElement
+
+    const bareDetail = exposed.getDetail()
+    expect(bareDetail.item?.value).toBe('LV')
+    expect(bareDetail.item?.info?.phone).toBe(371)
+    expect(bareDetail.phone).toBe('')
+    expect(bareDetail.full).toBe('371')
+    expect(bareDetail.isFull).toBe(false)
+
+    // Invalid Latvian landline (+371-61-234-567) via input fails country-specific phoneMatch and emits detail
+    input.value = '+371-61-234-567'
+    input.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertReplacementText', data: null }))
+    await nextTick()
+    await nextTick()
+    const failedDetail = exposed.getDetail()
+    expect(failedDetail.item?.value).toBe('LV')
+    expect(failedDetail.phone).toBe('61234567')
+    expect(failedDetail.full).toBe('37161234567')
+    expect(failedDetail.format).toBe('+371-61-234-567')
+    expect(failedDetail.isFull).toBe(true)
+    expect(exposed.checkValidity()).toBe(false)
+    expect(exposed.getValidationMessage()).toBe('Latvian mobile must start with 2')
+
+    const failedInputLite = emittedEvents
+      .filter(entry => entry.type === 'inputLite')
+      .at(-1)?.args[0] as { detail?: Record<string, unknown>, status?: boolean, validationMessage?: string } | undefined
+
+    expect(failedInputLite?.status).toBe(false)
+    expect(failedInputLite?.validationMessage).toBe('Latvian mobile must start with 2')
+    expect(failedInputLite?.detail).toMatchObject({
+      phone: '61234567',
+      full: '37161234567',
+      format: '+371-61-234-567',
+      isFull: true
+    })
+
+    // Valid Latvian mobile (+371-21-234-567) passes validation and emits detail in inputLite
+    input.value = '+371-21-234-567'
+    input.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertReplacementText', data: null }))
+    await nextTick()
+    await nextTick()
+    expect(exposed.checkValidity()).toBe(true)
+    expect(exposed.getValidationMessage()).toBe('')
+    const validDetail = exposed.getDetail()
+    expect(validDetail.item?.value).toBe('LV')
+    expect(validDetail.phone).toBe('21234567')
+    expect(validDetail.full).toBe('37121234567')
+    expect(validDetail.format).toBe('+371-21-234-567')
+    expect(validDetail.isFull).toBe(true)
+
+    const lastInputLite = emittedEvents
+      .filter(entry => entry.type === 'inputLite')
+      .at(-1)?.args[0] as { detail?: Record<string, unknown>, status?: boolean } | undefined
+
+    expect(lastInputLite?.status).toBe(true)
+    expect(lastInputLite?.detail).toMatchObject({
+      phone: '21234567',
+      full: '37121234567',
+      format: '+371-21-234-567',
+      isFull: true
+    })
+  })
 })

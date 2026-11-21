@@ -82,7 +82,8 @@ export class InputPhoneDesign<
   protected initExpose(): EXPOSE {
     return {
       ...this.item.i('value').expose(),
-      ...this.item.i('validation').expose()
+      ...this.item.i('validation').expose(),
+      getDetail: () => this.item.i('data').getDetail()
     } as EXPOSE
   }
 

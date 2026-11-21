@@ -224,5 +224,69 @@ describe('InputPhoneData', () => {
       data.onUnmounted()
       country.onUnmounted()
     })
+
+    it('should compute phone metadata detail using GeoPhoneMapInfoFull structure with isFull across modes', () => {
+      const { data, valueRef, isFullRef } = createData({ countryDefault: 'RU' }, '7')
+      isFullRef.value = false
+      const bareDetail = data.getDetail()
+      expect(bareDetail.item?.value).toBe('RU')
+      expect(bareDetail.item?.info?.phone).toBe(7)
+      expect(bareDetail.phone).toBe('')
+      expect(bareDetail.full).toBe('7')
+      expect(bareDetail.format).toBe('+7')
+      expect(bareDetail.isFull).toBe(false)
+
+      valueRef.value = '+7-900-123-45-67'
+      isFullRef.value = true
+      const fullRuDetail = data.getDetail()
+      expect(fullRuDetail.item?.value).toBe('RU')
+      expect(fullRuDetail.phone).toBe('9001234567')
+      expect(fullRuDetail.full).toBe('79001234567')
+      expect(fullRuDetail.format).toBe('+7-900-123-45-67')
+      expect(fullRuDetail.isFull).toBe(true)
+
+      // Alternative subcode for Puerto Rico (1-939)
+      const { data: prData, isFullRef: prFull } = createData({ countryDefault: 'PR' }, '+1-939-555-1234')
+      prFull.value = true
+      const prDetail = prData.getDetail()
+      expect(prDetail.item?.value).toBe('PR')
+      expect(prDetail.phone).toBe('5551234')
+      expect(prDetail.full).toBe('19395551234')
+      expect(prDetail.format).toBe('+1-939-555-1234')
+      expect(prDetail.isFull).toBe(true)
+
+      // countryBlock with national-only digits (including KZ starting with 7) and prefixed paste
+      const { data: blockedDe, isFullRef: blockedDeFull } = createData(
+        { countryDefault: 'DE', countryBlock: true },
+        '30123456'
+      )
+      blockedDeFull.value = true
+      const blockedDeDetail = blockedDe.getDetail()
+      expect(blockedDeDetail.item?.value).toBe('DE')
+      expect(blockedDeDetail.item?.info?.phone).toBe(49)
+      expect(blockedDeDetail.phone).toBe('30123456')
+      expect(blockedDeDetail.full).toBe('4930123456')
+      expect(blockedDeDetail.format).toBe('+49-30-123-456')
+      expect(blockedDeDetail.isFull).toBe(true)
+
+      const { data: blockedKz, valueRef: blockedKzVal, isFullRef: blockedKzFull } = createData(
+        { countryDefault: 'KZ', countryBlock: true },
+        '7011234567'
+      )
+      blockedKzFull.value = true
+      const blockedKzNationalDetail = blockedKz.getDetail()
+      expect(blockedKzNationalDetail.item?.value).toBe('KZ')
+      expect(blockedKzNationalDetail.phone).toBe('011234567')
+      expect(blockedKzNationalDetail.full).toBe('77011234567')
+      expect(blockedKzNationalDetail.isFull).toBe(true)
+
+      blockedKzVal.value = '+7-7-01-123-45-67'
+      const blockedKzPrefixedDetail = blockedKz.getDetail()
+      expect(blockedKzPrefixedDetail.item?.value).toBe('KZ')
+      expect(blockedKzPrefixedDetail.phone).toBe('011234567')
+      expect(blockedKzPrefixedDetail.full).toBe('77011234567')
+      expect(blockedKzPrefixedDetail.format).toBe('+7-7-01-123-45-67')
+      expect(blockedKzPrefixedDetail.isFull).toBe(true)
+    })
   })
 })

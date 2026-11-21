@@ -11,7 +11,6 @@ import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclu
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
-import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -25,6 +24,7 @@ import { InputPhoneAutofill } from './InputPhoneAutofill'
 import { InputPhoneCountry } from './InputPhoneCountry'
 import { InputPhoneCountryList } from './InputPhoneCountryList'
 import { InputPhoneData } from './InputPhoneData'
+import { InputPhoneEvent } from './InputPhoneEvent'
 import { InputPhoneFormat } from './InputPhoneFormat'
 import { InputPhoneMask } from './InputPhoneMask'
 import { InputPhonePaste } from './InputPhonePaste'
@@ -53,8 +53,8 @@ export type InputPhoneConstructors = {
   dialCode: typeof InputPhoneDialCodeInclude
   /** Field element constructor / Конструктор элемента поля */
   elementItem: typeof FieldElementInclude
-  /** Field event constructor / Конструктор события поля */
-  event: typeof FieldEventInclude
+  /** Input phone event constructor / Конструктор события ввода телефона */
+  event: typeof InputPhoneEvent
   /** Field constructor / Конструктор поля */
   field: typeof FieldInclude
   /** Field form constructor / Конструктор формы поля */
@@ -163,11 +163,12 @@ export class InputPhone extends DesignLogicAbstract<
       ]
     },
     event: {
-      item: FieldEventInclude,
+      item: InputPhoneEvent,
       parameters: () => [
         this.props,
         () => this.i('change'),
         () => this.i('value'),
+        () => this.i('data'),
         () => this.i('validation'),
         this.emits,
         () => this.callInstance('form', item => item)
