@@ -48,19 +48,27 @@ const MockFieldMessage = defineComponent({
   props: {
     helperMessage: String,
     helperId: String,
+    warningMessage: String,
+    warningId: String,
     validationMessage: String,
     validationId: String
   },
   setup(componentProps) {
     return () => {
-      if (!componentProps.helperMessage && !componentProps.validationMessage) {
+      if (!componentProps.helperMessage && !componentProps.warningMessage && !componentProps.validationMessage) {
         return null
       }
 
+      const id = componentProps.validationMessage
+        ? componentProps.validationId
+        : componentProps.warningMessage
+          ? componentProps.warningId
+          : componentProps.helperId
+
       return h('div', {
         class: 'mock-field-message',
-        id: componentProps.validationMessage ? componentProps.validationId : componentProps.helperId
-      }, componentProps.validationMessage || componentProps.helperMessage)
+        id
+      }, componentProps.validationMessage || componentProps.warningMessage || componentProps.helperMessage)
     }
   }
 })
@@ -203,6 +211,29 @@ describe('Field (SSR)', () => {
       expect(html).toContain('>10<')
       expect(html).toContain('Net')
       expect(html).toContain('kg')
+    })
+
+    it('should render warning state and warning message in SSR without aria-invalid', async () => {
+      const html = await renderFieldSsr(
+        {
+          classic: true,
+          id: 'ssr-warning-field',
+          label: 'Code',
+          warning: true,
+          warningMessage: 'Double-check your code',
+          warningId: 'ssr-warning'
+        },
+        {
+          default: control => h('input', { ...control.binds, type: 'text' })
+        }
+      )
+
+      expect(html).toContain('d1-field--warning')
+      expect(html).not.toContain('d1-field--validation')
+      expect(html).not.toContain('aria-invalid="true"')
+      expect(html).toContain('aria-describedby="ssr-warning"')
+      expect(html).toContain('id="ssr-warning"')
+      expect(html).toContain('Double-check your code')
     })
 
     it('should isolate ServerStorage across concurrent SSR requests', async () => {

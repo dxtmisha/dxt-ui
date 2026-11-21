@@ -124,15 +124,24 @@ export class FieldInclude extends ComponentIncludeAbstract<
 
         loading: props.loading,
         forceShowMessage: props.forceShowMessage,
+        hasHtmlCode: props.hasHtmlCode,
 
         // Value
+        id: props.id,
         label: props.label,
+        labelId: props.labelId,
         prefix: props.prefix,
+        prefixId: props.prefixId,
         suffix: props.suffix,
+        suffixId: props.suffixId,
         caption: props.caption,
+        captionDecorative: props.captionDecorative,
         helperMessage: props.helperMessage,
+        helperId: props.helperId,
         warningMessage: props.warningMessage,
         warningId: props.warningId,
+        validationId: props.validationId,
+        counterId: props.counterId,
 
         required: props.required,
 
@@ -160,6 +169,7 @@ export class FieldInclude extends ComponentIncludeAbstract<
         arrowAlign: this.arrow?.().align() ?? props.arrowAlign,
 
         isSkeleton: props.isSkeleton,
+        textCancel: props.textCancel,
 
         fieldLabelAttrs: props.fieldLabelAttrs,
         fieldMessageAttrs: props.fieldMessageAttrs,

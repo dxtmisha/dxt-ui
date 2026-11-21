@@ -213,6 +213,7 @@ describe('FieldDesign', () => {
     const { container } = await mountFieldDesign(
       {
         classic: true,
+        id: 'amount-field',
         icon: 'search',
         cancel: 'always',
         iconClose: 'close',
@@ -222,14 +223,16 @@ describe('FieldDesign', () => {
         helperMessage: 'Amount in USD'
       },
       {
-        leading: () => h('span', { class: 'slot-leading' }, 'L'),
-        trailing: () => h('span', { class: 'slot-trailing' }, 'T'),
+        leading: control => h('span', { 'class': 'slot-leading', 'data-control-id': control.id }, 'L'),
+        trailing: control => h('span', { 'class': 'slot-trailing', 'data-control-id': control.id }, 'T'),
         default: control => h('input', { ...control.binds, 'data-length': '1' })
       }
     )
 
     expect(container.querySelector('.slot-leading')?.textContent).toBe('L')
+    expect(container.querySelector('.slot-leading')?.getAttribute('data-control-id')).toBe('amount-field')
     expect(container.querySelector('.slot-trailing')?.textContent).toBe('T')
+    expect(container.querySelector('.slot-trailing')?.getAttribute('data-control-id')).toBe('amount-field')
     expect(container.querySelector('.d1-field__prefix')?.textContent).toBe('$')
     expect(container.querySelector('.d1-field__suffix')?.textContent).toBe('USD')
     expect(container.querySelector('.mock-progress')).not.toBeNull()

@@ -9476,22 +9476,6 @@
               }
             }
           },
-          "validation": {
-            "name": "validation",
-            "type": "var",
-            "value": {
-              "color": {
-                "name": "--d1-field-validation-color",
-                "type": "var",
-                "value": "{sys.palette.error}"
-              },
-              "borderColor": {
-                "name": "--d1-field-validation-borderColor",
-                "type": "var",
-                "value": "{sys.palette.error}"
-              }
-            }
-          },
           "warning": {
             "name": "warning",
             "type": "var",
@@ -9505,6 +9489,22 @@
                 "name": "--d1-field-warning-borderColor",
                 "type": "var",
                 "value": "{sys.palette.warning}"
+              }
+            }
+          },
+          "validation": {
+            "name": "validation",
+            "type": "var",
+            "value": {
+              "color": {
+                "name": "--d1-field-validation-color",
+                "type": "var",
+                "value": "{sys.palette.error}"
+              },
+              "borderColor": {
+                "name": "--d1-field-validation-borderColor",
+                "type": "var",
+                "value": "{sys.palette.error}"
               }
             }
           },

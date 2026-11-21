@@ -224,6 +224,29 @@ describe('Field (unit)', () => {
       expect(instance.classes['d1-field--validation']).toBe(true)
       expect(instance.control.binds['aria-invalid']).toBe('true')
     })
+
+    it('should prioritize validation over warning and ignore whitespace-only validationMessage', () => {
+      const { instance, props, stop } = createField({
+        id: 'phone-field',
+        warning: true,
+        warningMessage: 'Check country code',
+        warningId: 'phone-warning',
+        validationMessage: '   '
+      })
+      cleanups.push(stop)
+
+      expect(instance.classes['d1-field--warning']).toBe(true)
+      expect(instance.classes['d1-field--validation']).toBe(false)
+      expect(instance.control.binds['aria-invalid']).toBeUndefined()
+      expect(instance.control.binds['aria-describedby']).toBe('phone-warning')
+
+      props.validationMessage = 'Invalid number'
+      props.validationId = 'phone-error'
+      expect(instance.classes['d1-field--warning']).toBe(false)
+      expect(instance.classes['d1-field--validation']).toBe(true)
+      expect(instance.control.binds['aria-invalid']).toBe('true')
+      expect(instance.control.binds['aria-describedby']).toBe('phone-warning phone-error')
+    })
   })
 
   describe('Dependency injection', () => {

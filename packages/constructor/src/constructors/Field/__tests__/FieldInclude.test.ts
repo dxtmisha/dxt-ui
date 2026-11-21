@@ -79,6 +79,44 @@ describe('FieldInclude', () => {
     expect(binds.maxlength).toBe(20)
   })
 
+  it('should forward warning, ID, HTML, captionDecorative, and textCancel properties from FieldPropsInclude', () => {
+    const fieldInclude = new FieldInclude(
+      {
+        id: 'phone-id',
+        warning: true,
+        warningMessage: 'Check number',
+        warningId: 'warn-id',
+        helperId: 'help-id',
+        validationId: 'val-id',
+        hasHtmlCode: true,
+        labelId: 'lbl-id',
+        prefixId: 'pre-id',
+        suffixId: 'suf-id',
+        captionDecorative: true,
+        counterId: 'cnt-id',
+        textCancel: 'Clear input'
+      },
+      new DesignName('field.class')
+    )
+
+    const binds = (fieldInclude as unknown as { toBinds: () => Record<string, unknown> }).toBinds()
+    expect(binds).toMatchObject({
+      id: 'phone-id',
+      warning: true,
+      warningMessage: 'Check number',
+      warningId: 'warn-id',
+      helperId: 'help-id',
+      validationId: 'val-id',
+      hasHtmlCode: true,
+      labelId: 'lbl-id',
+      prefixId: 'pre-id',
+      suffixId: 'suf-id',
+      captionDecorative: true,
+      counterId: 'cnt-id',
+      textCancel: 'Clear input'
+    })
+  })
+
   it('should trigger all scoreboard action callbacks and respect IME composition guard on keydown', () => {
     const onIcon = vi.fn()
     const onTrailing = vi.fn()

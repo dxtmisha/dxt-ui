@@ -22,8 +22,6 @@ src/constructors/Image/ImageDesign.tsx
 src/constructors/Image/ImageInclude.ts
 src/classes/EnabledInclude.ts
 src/classes/EventClickInclude.ts
-src/classes/TextIncludeInstance.ts
-src/classes/TextInclude.ts
 src/constructors/Ripple/Ripple.ts
 src/constructors/Ripple/RippleDesign.tsx
 src/constructors/Ripple/RippleInclude.ts
@@ -99,12 +97,6 @@ src/constructors/Skeleton/SkeletonInclude.ts
 src/constructors/FieldLabel/FieldLabel.ts
 src/constructors/FieldLabel/FieldLabelDesign.tsx
 src/constructors/FieldLabel/FieldLabelInclude.ts
-src/constructors/Field/FieldElement.ts
-src/constructors/Field/FieldIcons.ts
-src/constructors/Field/FieldSize.ts
-src/constructors/Field/FieldSpace.ts
-src/constructors/Field/Field.ts
-src/constructors/Field/FieldDesign.tsx
 src/classes/FrameAbstract.ts
 src/classes/DescriptionInclude.ts
 src/classes/LabelInclude.ts
@@ -146,7 +138,6 @@ src/classes/Field/FieldFormInclude.ts
 src/classes/Field/FieldMatchInclude.ts
 src/classes/Field/FieldValidationInclude.ts
 src/classes/Field/FieldEventInclude.ts
-src/constructors/Field/FieldInclude.ts
 src/constructors/ListGroup/ListGroupOpen.ts
 src/constructors/ListGroup/ListGroup.ts
 src/constructors/ListGroup/ListGroupDesign.tsx
@@ -217,3 +208,12 @@ src/constructors/FieldMessage/FieldMessageMessage.ts
 src/constructors/FieldMessage/FieldMessageInclude.ts
 src/constructors/FieldMessage/FieldMessage.ts
 src/constructors/FieldMessage/FieldMessageDesign.tsx
+src/classes/TextIncludeInstance.ts
+src/classes/TextInclude.ts
+src/constructors/Field/FieldElement.ts
+src/constructors/Field/FieldIcons.ts
+src/constructors/Field/FieldSize.ts
+src/constructors/Field/FieldSpace.ts
+src/constructors/Field/FieldInclude.ts
+src/constructors/Field/Field.ts
+src/constructors/Field/FieldDesign.tsx

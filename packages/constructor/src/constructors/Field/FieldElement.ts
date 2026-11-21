@@ -56,6 +56,7 @@ export class FieldElement extends DesignLifecycleAbstract {
 
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {
+    this.stopWatch?.()
     this.stopWatch = watch(this.element, this.update)
     void nextTick().then(() => {
       if (this.stopWatch) {
@@ -108,7 +109,7 @@ export class FieldElement extends DesignLifecycleAbstract {
    */
   isValidation(): boolean {
     return Boolean(
-      this.props.validationMessage
+      isFilled(this.props.validationMessage)
       && (
         this.props.forceShowMessage
         || (

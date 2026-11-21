@@ -24,6 +24,9 @@ export class FieldSize extends FrameAbstract {
   /** Window resize listener event / Событие слушателя изменения размеров окна */
   protected event?: EventItem<Window, Event>
 
+  /** Watcher stop handle / Функция остановки наблюдателя */
+  protected stopWatch?: () => void
+
   /**
    * Constructor for initializing FieldSize.
    *
@@ -40,13 +43,18 @@ export class FieldSize extends FrameAbstract {
 
   /** Callback after component mounting / Обработчик после монтирования компонента */
   override readonly onMounted = (): void => {
-    watch(this.element, () => this.update())
+    this.stopWatch?.()
+    this.event?.stop()
+
+    this.stopWatch = watch(this.element, () => this.update())
     this.event = new EventItem(window, 'resize', () => this.update()).start()
     this.update()
   }
 
   /** Callback after component unmounting / Обработчик после демонтирования компонента */
   override readonly onUnmounted = (): void => {
+    this.stopWatch?.()
+    this.stopWatch = undefined
     this.event?.stop()
     this.event = undefined
     this.stopFrame()

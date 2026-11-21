@@ -18,7 +18,7 @@ describe('TextInclude', () => {
     vi.restoreAllMocks()
   })
 
-  describe('Standard functional requirements (Happy path & All 40 getters)', () => {
+  describe('Standard functional requirements (Happy path & All 41 getters)', () => {
     it.each<[keyof TextInclude, keyof TextAllPropsInclude, string]>([
       ['actions', 'textActions', 'Actions'],
       ['am', 'textAm', 'AM'],

@@ -60,19 +60,27 @@ const MockFieldMessage = defineComponent({
   props: {
     helperMessage: String,
     helperId: String,
+    warningMessage: String,
+    warningId: String,
     validationMessage: String,
     validationId: String
   },
   setup(componentProps) {
     return () => {
-      if (!componentProps.helperMessage && !componentProps.validationMessage) {
+      if (!componentProps.helperMessage && !componentProps.warningMessage && !componentProps.validationMessage) {
         return null
       }
 
+      const id = componentProps.validationMessage
+        ? componentProps.validationId
+        : componentProps.warningMessage
+          ? componentProps.warningId
+          : componentProps.helperId
+
       return h('div', {
         class: 'mock-field-message',
-        id: componentProps.validationMessage ? componentProps.validationId : componentProps.helperId
-      }, componentProps.validationMessage || componentProps.helperMessage)
+        id
+      }, componentProps.validationMessage || componentProps.warningMessage || componentProps.helperMessage)
     }
   }
 })
@@ -248,12 +256,17 @@ describe('Field component integration', () => {
     expect(root.classList.contains('d1-field--validation')).toBe(false)
     expect(input.getAttribute('aria-invalid')).toBeNull()
     expect(input.getAttribute('aria-describedby')).toBe('warn-msg')
+    expect(root.querySelector('.mock-field-message')?.textContent).toBe('Verify phone number')
+    expect(root.querySelector('.mock-field-message')?.id).toBe('warn-msg')
 
     props.validationMessage = 'Invalid phone'
+    props.validationId = 'err-msg'
     await nextTick()
     expect(root.classList.contains('d1-field--warning')).toBe(false)
     expect(root.classList.contains('d1-field--validation')).toBe(true)
     expect(input.getAttribute('aria-invalid')).toBe('true')
+    expect(root.querySelector('.mock-field-message')?.textContent).toBe('Invalid phone')
+    expect(root.querySelector('.mock-field-message')?.id).toBe('err-msg')
   })
 
   it('should clean up window resize listeners when unmounted', async () => {

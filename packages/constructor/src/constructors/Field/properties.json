@@ -23,6 +23,9 @@
   "focusWithin": {
     "_type": "var"
   },
+  "warning": {
+    "_type": "var"
+  },
   "validation": {
     "_type": "var"
   },

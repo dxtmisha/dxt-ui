@@ -12,6 +12,7 @@ const interactiveSelected = ref<boolean>(false)
 const interactiveDisabled = ref<boolean>(false)
 const interactiveReadonly = ref<boolean>(false)
 const interactiveLoading = ref<boolean>(false)
+const interactiveWarning = ref<string>('')
 const interactiveValidation = ref<string>('')
 const interactiveForceShow = ref<boolean>(false)
 const interactiveSkeleton = ref<boolean>(false)
@@ -27,6 +28,7 @@ const interactiveSummary = computed<string>(() => JSON.stringify({
   disabled: interactiveDisabled.value,
   readonly: interactiveReadonly.value,
   loading: interactiveLoading.value,
+  warning: interactiveWarning.value,
   validation: interactiveValidation.value,
   forceShowMessage: interactiveForceShow.value,
   isSkeleton: interactiveSkeleton.value,
@@ -39,6 +41,12 @@ const onFieldClick = (_event: MouseEvent, options: EventClickValue): void => {
   if (options.type === 'cancel') {
     interactiveValue.value = ''
   }
+}
+
+const toggleWarning = (): void => {
+  interactiveWarning.value = interactiveWarning.value
+    ? ''
+    : 'Non-blocking warning message'
 }
 
 const toggleValidation = (): void => {
@@ -183,6 +191,61 @@ const cycleStyle = (): void => {
                 <input v-bind="binds" value="Loading data..." readonly/>
               </template>
             </D1Field>
+          </DemoBox>
+
+          <DemoBox data-testid="warning-field-box">
+            <DemoFlex direction="column">
+              <D1Field
+                outlined
+                warning
+                label="Warning (Highlight Only)"
+                is-value
+                helper-message="Helper text remains visible without warningMessage"
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Needs review" readonly/>
+                </template>
+              </D1Field>
+
+              <D1Field
+                outlined
+                warning
+                label="Warning Message"
+                is-value
+                warning-message="Please verify this value before submitting"
+                warning-id="demo-field-warning-msg"
+                helper-message="Helper hidden while warningMessage is active"
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Unverified value" readonly/>
+                </template>
+              </D1Field>
+
+              <D1Field
+                tonal
+                warning
+                label="Tonal Warning"
+                is-value
+                warning-message="Tonal surface with warning styling"
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Tonal warning" readonly/>
+                </template>
+              </D1Field>
+
+              <D1Field
+                outlined
+                warning
+                label="Validation Priority Over Warning"
+                is-value
+                warning-message="Suppressed warning text"
+                validation-message="Validation error takes priority over warning"
+              >
+                <template #default="{ binds }">
+                  <input v-bind="binds" value="Conflicting state" readonly/>
+                </template>
+              </D1Field>
+            </DemoFlex>
           </DemoBox>
 
           <DemoBox>
@@ -403,13 +466,20 @@ const cycleStyle = (): void => {
 
       <D1Group label="Slots & Skeleton">
         <DemoFlex direction="column">
-          <DemoBox>
-            <D1Field classic is-value value="Slot content">
+          <DemoBox data-testid="slots-field-box">
+            <D1Field
+              id="demo-field-slots"
+              classic
+              is-value
+              label="Label prop"
+              helper-message="Helper message text"
+              value="Slot content"
+            >
               <template #label>
                 <span>Custom <strong>Label Slot</strong></span>
               </template>
-              <template #leading>
-                <span class="demo-field-page__badge">L</span>
+              <template #leading="{ id }">
+                <span class="demo-field-page__badge" :data-control-id="id">L</span>
               </template>
               <template #prefix>PRE</template>
               <template #default="{ binds }">
@@ -417,11 +487,8 @@ const cycleStyle = (): void => {
               </template>
               <template #suffix>SUF</template>
               <template #caption>CAP</template>
-              <template #trailing>
-                <span class="demo-field-page__badge">T</span>
-              </template>
-              <template #helper>
-                <span>Helper slot message</span>
+              <template #trailing="{ id }">
+                <span class="demo-field-page__badge" :data-control-id="id">T</span>
               </template>
             </D1Field>
           </DemoBox>
@@ -455,6 +522,7 @@ const cycleStyle = (): void => {
             <D1Button label="Disabled" :selected="interactiveDisabled" outline @click="interactiveDisabled = !interactiveDisabled"/>
             <D1Button label="Readonly" :selected="interactiveReadonly" outline @click="interactiveReadonly = !interactiveReadonly"/>
             <D1Button label="Loading" :selected="interactiveLoading" outline @click="interactiveLoading = !interactiveLoading"/>
+            <D1Button label="Warning" :selected="Boolean(interactiveWarning)" outline @click="toggleWarning"/>
             <D1Button label="Validation" :selected="Boolean(interactiveValidation)" outline @click="toggleValidation"/>
             <D1Button label="Force Show" :selected="interactiveForceShow" outline @click="interactiveForceShow = !interactiveForceShow"/>
             <D1Button label="Skeleton" :selected="interactiveSkeleton" outline @click="interactiveSkeleton = !interactiveSkeleton"/>
@@ -474,6 +542,8 @@ const cycleStyle = (): void => {
               :disabled="interactiveDisabled"
               :readonly="interactiveReadonly"
               :loading="interactiveLoading"
+              :warning="Boolean(interactiveWarning)"
+              :warning-message="interactiveWarning"
               :validation-message="interactiveValidation"
               :force-show-message="interactiveForceShow"
               :is-skeleton="interactiveSkeleton"

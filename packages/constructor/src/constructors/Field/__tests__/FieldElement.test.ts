@@ -80,8 +80,9 @@ describe('FieldElement', () => {
     expect(nonClassicField.forId).toBe(nonClassicField.id)
   })
 
-  it('should return correct validation eligibility across disabled, readonly, and forceShowMessage states', () => {
+  it('should return correct validation eligibility across disabled, readonly, whitespace, and forceShowMessage states', () => {
     expect(new FieldElement({}, ref(undefined)).isValidation()).toBe(false)
+    expect(new FieldElement({ validationMessage: '   ' }, ref(undefined)).isValidation()).toBe(false)
     expect(new FieldElement({ validationMessage: 'Error', disabled: true }, ref(undefined)).isValidation()).toBe(false)
     expect(new FieldElement({ validationMessage: 'Error', readonly: true }, ref(undefined)).isValidation()).toBe(false)
     expect(new FieldElement({ validationMessage: 'Error' }, ref(undefined)).isValidation()).toBe(true)
@@ -91,11 +92,13 @@ describe('FieldElement', () => {
 
   it('should return correct warning eligibility with validation precedence', () => {
     expect(new FieldElement({}, ref(undefined)).isWarning()).toBe(false)
+    expect(new FieldElement({ warningMessage: '   ' }, ref(undefined)).isWarning()).toBe(false)
     expect(new FieldElement({ warning: true }, ref(undefined)).isWarning()).toBe(true)
     expect(new FieldElement({ warningMessage: 'Warn' }, ref(undefined)).isWarning()).toBe(true)
     expect(new FieldElement({ warning: true, disabled: true }, ref(undefined)).isWarning()).toBe(false)
     expect(new FieldElement({ warning: true, readonly: true }, ref(undefined)).isWarning()).toBe(false)
     expect(new FieldElement({ warningMessage: 'Warn', readonly: true, forceShowMessage: true }, ref(undefined)).isWarning()).toBe(true)
+    expect(new FieldElement({ warning: true, warningMessage: 'Warn', validationMessage: '   ' }, ref(undefined)).isWarning()).toBe(true)
     expect(new FieldElement({ warning: true, warningMessage: 'Warn', validationMessage: 'Error' }, ref(undefined)).isWarning()).toBe(false)
   })
 })

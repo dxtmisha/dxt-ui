@@ -191,6 +191,7 @@ await expect(body?.className).toContain('skeleton__background')
       },
       template: `
         <DesignComponent
+          id="field-slots-demo"
           :cancel-show="true"
           label="Label prop"
           icon="home"
@@ -200,8 +201,8 @@ await expect(body?.className).toContain('skeleton__background')
           <template #default="{binds}">
             <input v-bind="binds" value="Value" readonly/>
           </template>
-          <template #leading>Leading slot</template>
-          <template #trailing>Trailing slot</template>
+          <template #leading="{id}"><span :data-leading-id="id">Leading slot</span></template>
+          <template #trailing="{id}"><span :data-trailing-id="id">Trailing slot</span></template>
           <template #label><b>Label slot</b></template>
           <template #prefix>Prefix slot</template>
           <template #suffix>Suffix slot</template>
@@ -210,11 +211,15 @@ await expect(body?.className).toContain('skeleton__background')
       `,
       play: `
 const component = canvasElement.querySelector('.design-component')
+const leadingSlot = canvasElement.querySelector('[data-leading-id]')
+const trailingSlot = canvasElement.querySelector('[data-trailing-id]')
 await expect(component).toHaveTextContent('Leading slot')
 await expect(component).toHaveTextContent('Trailing slot')
 await expect(component).toHaveTextContent('Prefix slot')
 await expect(component).toHaveTextContent('Suffix slot')
 await expect(component).toHaveTextContent('Caption slot')
+await expect(leadingSlot?.getAttribute('data-leading-id')).toBe('field-slots-demo')
+await expect(trailingSlot?.getAttribute('data-trailing-id')).toBe('field-slots-demo')
       `
     },
 
@@ -243,6 +248,7 @@ await expect(component).toHaveTextContent('Caption slot')
         'loading',
         'warning',
         'warningMessage',
+        'warningId',
         'validationMessage',
         'forceShowMessage',
         'required'
@@ -269,16 +275,21 @@ await expect(component).toHaveTextContent('Caption slot')
               <input v-bind="binds" value="Load" readonly/>
             </template>
           </DesignComponent>
-          <DesignComponent classic is-value warning label="Classic Warning" warning-message="Needs confirmation">
+          <DesignComponent classic is-value warning label="Classic Warning" warning-message="Needs confirmation" warning-id="field-test-warning">
             <template #default="{binds}">
               <input v-bind="binds" value="Warn" readonly/>
+            </template>
+          </DesignComponent>
+          <DesignComponent outlined is-value warning label="Validation Priority" warning-message="Suppressed warning" validation-message="Blocking error">
+            <template #default="{binds}">
+              <input v-bind="binds" value="Conflict" readonly/>
             </template>
           </DesignComponent>
         </div>
       `,
       play: `
 const items = canvasElement.querySelectorAll('.design-component')
-await expect(items.length).toBe(5)
+await expect(items.length).toBe(6)
 
 await expect(items[0].tagName).toBe('DIV')
 await expect(items[0]).toHaveClass('design-component--classic')
@@ -297,8 +308,16 @@ await expect(items[2]).toHaveClass('design-component--validation')
 await expect(items[3]).toHaveClass('design-component--tonal')
 await expect(items[3].querySelector('.design-component__loading')).not.toBeNull()
 
+const warningInput = items[4].querySelector('input')
 await expect(items[4]).toHaveClass('design-component--warning')
 await expect(items[4]).not.toHaveClass('design-component--validation')
+await expect(warningInput?.getAttribute('aria-invalid')).toBeNull()
+await expect(warningInput?.getAttribute('aria-describedby')).toContain('field-test-warning')
+
+const conflictInput = items[5].querySelector('input')
+await expect(items[5]).toHaveClass('design-component--validation')
+await expect(items[5]).not.toHaveClass('design-component--warning')
+await expect(conflictInput?.getAttribute('aria-invalid')).toBe('true')
       `
     },
     {

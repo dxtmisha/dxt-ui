@@ -259,7 +259,7 @@ export class FieldDesign<
         slots.push(h(
           'span',
           this.getKeyClass('bodyScoreboardLeft'),
-          this.initSlot('leading')
+          this.initSlot('leading', undefined, this.item.control)
         ))
       }
 
@@ -267,7 +267,7 @@ export class FieldDesign<
         slots.push(h(
           'span',
           this.getKeyClass('bodyScoreboardRight'),
-          this.initSlot('trailing')
+          this.initSlot('trailing', undefined, this.item.control)
         ))
       }
     }

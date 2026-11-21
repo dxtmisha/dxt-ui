@@ -4,8 +4,8 @@
 - **Путь к исходному коду**: `packages/d1/src/components/Ui/Field` (`packages/constructor/src/constructors/Field`)
 - **Целевой URL**: `http://localhost:3000/component-field`
 - **Справочные материалы**: `Отсутствуют`
-- **Дата последней проверки / обновления**: `2026-11-16`
-- **Всего тест-кейсов**: `11`
+- **Дата последней проверки / обновления**: `2026-11-21`
+- **Всего тест-кейсов**: `12`
 
 ---
 
@@ -13,8 +13,8 @@
 
 | Категория | Код | Кол-во | Распределение приоритетов | Область фокуса |
 | :--- | :--- | :---: | :--- | :--- |
-| **Визуал и токены** | `VIS` | 3 | P0, P1 | Варианты стилей (`classic`, `basic`, `boxed`, `tonal`, `filled`, `outlined`), размеры, палитры, тёмная тема, иконки, скелетон |
-| **Интерактивность и функционал** | `INT` | 3 | P0, P1 | Переключение состояний, ввод и очистка (`cancel`), пересчёт `FieldSize`, слоты, `counterTop` |
+| **Визуал и токены** | `VIS` | 4 | P0, P1 | Варианты стилей (`classic`, `basic`, `boxed`, `tonal`, `filled`, `outlined`), размеры, палитры, тёмная тема, иконки, скелетон, состояние предупреждения (`warning`, `tonal + warning`, приоритет `validation > warning`) |
+| **Интерактивность и функционал** | `INT` | 3 | P0, P1 | Переключение состояний (включая `warning` и приоритет `validation`), ввод и очистка (`cancel`), пересчёт `FieldSize`, слоты (`leading`/`trailing` с `FieldControl`), `counterTop` |
 | **Границы и крайние случаи** | `BND` | 2 | P1, P2 | `disabled`/`forceShowMessage`, `hasHtmlCode`, выравнивание, многоязычность (вьетнамский, кириллица, арабский, Emoji), RTL |
 | **Адаптивность и вьюпорты** | `RSP` | 1 | P1 | Корректная геометрия без переполнения на `1440×900`, `768×1024`, `375×812`, `320×568` |
 | **Доступность (A11y)** | `A11Y` | 1 | P1 | Теги `div`/`label[for]`, `aria-invalid`, `aria-describedby`, видимость фокуса и клавиатурная навигация |
@@ -57,6 +57,17 @@
 - **Ожидаемый результат**: Все элементы `scoreboard` корректно упорядочены, не перекрывают значение поля ввода, а `d1-skeleton__background` / `d1-skeleton__text` скрывают контент при активном скелетоне.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-003.png`)
 
+#### [TC-VIS-004] Неблокирующее состояние предупреждения (`warning`, `warningMessage`, `tonal + warning`) и приоритет `validation > warning`
+- **Приоритет**: `P0 (Critical)`
+- **Категория**: `Visual & Design System`
+- **Предусловия**: Открыть `http://localhost:3000/component-field`, вьюпорт `1440×900`, светлая тема.
+- **Шаги теста**:
+  1. Найти блок `[data-testid="warning-field-box"]` в секции `States & Validation`.
+  2. Проверить 4 карточки: `Warning (Highlight Only)`, `Warning Message`, `Tonal Warning` и `Validation Priority Over Warning`.
+  3. Убедиться, что на карточках предупреждения активен `.d1-field--warning` без `.d1-field--validation` и без `aria-invalid`, а на карточке с конфликтом `warning + validationMessage` побеждает `.d1-field--validation` с `aria-invalid="true"`.
+- **Ожидаемый результат**: Подсветка `warning` (включая `tonal`) и текст предупреждения отображаются корректно; при наличии ошибки валидации приоритет всегда остаётся за `validation`.
+- **Тип доказательства**: `Screenshot` (`./screenshots/TC-VIS-004.png`)
+
 ### 2.2 Интерактивность и функционал (`INT`)
 
 #### [TC-INT-001] Реактивное переключение состояний и стилей в `Interactive & Multilingual`
@@ -64,9 +75,9 @@
 - **Категория**: `Interactive & Functional`
 - **Предусловия**: Открыть `http://localhost:3000/component-field`, прокрутить к группе `Interactive & Multilingual`.
 - **Шаги теста**:
-  1. Последовательно нажимать кнопки `Style`, `Focus`, `Selected`, `Disabled`, `Readonly`, `Loading`, `Validation`, `Force Show`, `Skeleton`, `Counter Top`.
+  1. Последовательно нажимать кнопки `Style`, `Focus`, `Selected`, `Disabled`, `Readonly`, `Loading`, `Warning`, `Validation`, `Force Show`, `Skeleton`, `Counter Top`.
   2. Проверять соответствующие классы и атрибуты в `[data-testid="interactive-field-box"]` и JSON-сводке `State`.
-- **Ожидаемый результат**: Все состояния переключаются реактивно без задержек и артефактов разметки.
+- **Ожидаемый результат**: Все состояния (включая переключение `warning` -> `validation` и обратно) переключаются реактивно без задержек и артефактов разметки.
 - **Тип доказательства**: `Screenshot` (`./screenshots/TC-INT-001.png`)
 
 #### [TC-INT-002] Ввод значения, очистка кнопкой `cancel`, событие `@click` и динамический расчёт `FieldSize`

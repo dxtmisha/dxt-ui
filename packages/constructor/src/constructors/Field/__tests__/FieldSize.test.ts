@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import './testWarnings'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, ref } from 'vue'
+import { effectScope, nextTick, ref } from 'vue'
 import { DesignName } from '@dxtmisha/functional'
 import { FieldSize } from '../FieldSize'
 
@@ -101,5 +101,25 @@ describe('FieldSize', () => {
 
     expect(rafCalls).toBe(3)
     expect(label.style.getPropertyValue('--field-class-sys-left')).toBe('')
+  })
+
+  it('should stop element watcher on unmount so subsequent element ref changes do not trigger update', async () => {
+    const rafSpy = vi.fn(() => 1)
+    window.requestAnimationFrame = rafSpy
+    window.cancelAnimationFrame = vi.fn()
+
+    const firstLabel = document.createElement('label')
+    const secondLabel = document.createElement('label')
+    const elementRef = ref<HTMLLabelElement | undefined>(firstLabel)
+    const fieldSize = new FieldSize(elementRef, new DesignName('field.class'))
+
+    fieldSize.onMounted()
+    expect(rafSpy).toHaveBeenCalledTimes(1)
+
+    fieldSize.onUnmounted()
+    elementRef.value = secondLabel
+    await nextTick()
+
+    expect(rafSpy).toHaveBeenCalledTimes(1)
   })
 })
